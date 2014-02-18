@@ -25,7 +25,8 @@ sub group_money_summary {
     return $e->event unless $e->checkauth;
     return $e->event unless $e->allowed('VIEW_USER');
 
-    my $users = $e->search_actor_user({usrgroup => $group_id}, {idlist => 1});
+    my $users = $e->search_actor_user(
+        {usrgroup => $group_id, deleted => 'f'}, {idlist => 1});
     my @mous;
 
     for my $uid ( @$users ) {
@@ -56,7 +57,8 @@ sub get_users_from_usergroup {
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
     return $e->event unless $e->allowed('VIEW_USER'); # XXX reley on editor perm
-    return $e->search_actor_user({usrgroup => $usergroup}, {idlist => 1});
+    return $e->search_actor_user(
+        {usrgroup => $usergroup, deleted => 'f'}, {idlist => 1});
 }
 
 
@@ -74,7 +76,8 @@ sub get_leaders_from_usergroup {
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
     return $e->event unless $e->allowed('VIEW_USER'); # XXX reley on editor perm
-    my $users = $e->search_actor_user({usrgroup => $usergroup})
+    my $users = $e->search_actor_user(
+        {usrgroup => $usergroup, deleted => 'f'})
         or return $e->event;
 
     my @res;
@@ -105,8 +108,10 @@ sub get_address_members {
     return $e->event unless $e->allowed('VIEW_USER'); # XXX reley on editor perm
 
     my $ad = $e->retrieve_actor_user_address($addrid) or return $e->event;
-    my $ma = $e->search_actor_user({mailing_address => $addrid}, {idlist => 1});
-    my $ba = $e->search_actor_user({billing_address => $addrid}, {idlist => 1});
+    my $ma = $e->search_actor_user(
+        {mailing_address => $addrid, deleted => 'f'}, {idlist => 1});
+    my $ba = $e->search_actor_user(
+        {billing_address => $addrid, deleted => 'f'}, {idlist => 1});
 
     my @list = (@$ma, @$ba, $ad->usr);
     my %dedup = map { $_ => 1 } @list;
