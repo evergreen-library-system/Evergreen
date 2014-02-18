@@ -1,11 +1,11 @@
--- Evergreen DB patch XXXX.data.staff-initials-settings.sql
+-- Evergreen DB patch 0859.data.staff-initials-settings.sql
 --
 -- More granular configuration settings for requiring use of staff initials
 --
 BEGIN;
 
 -- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0859', :eg_version);
 
 -- add new granular settings for requiring use of staff initials
 INSERT INTO config.org_unit_setting_type
