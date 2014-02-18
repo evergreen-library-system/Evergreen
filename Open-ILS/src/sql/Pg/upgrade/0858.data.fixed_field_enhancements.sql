@@ -1,6 +1,6 @@
 BEGIN;
 
--- SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0858', :eg_version);
 
 -- Fix faulty seed data. Otherwise for ptype 'f' we have subfield 'e'
 -- overlapping subfield 'd'
