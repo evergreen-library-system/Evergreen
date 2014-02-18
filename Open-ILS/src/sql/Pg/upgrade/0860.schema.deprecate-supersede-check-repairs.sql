@@ -1,3 +1,7 @@
+BEGIN;
+
+-- oh, the irony
+SELECT evergreen.upgrade_deps_block_check('0860', :eg_version);
 
 CREATE OR REPLACE FUNCTION evergreen.array_overlap_check (/* field */) RETURNS TRIGGER AS $$
 DECLARE
@@ -55,4 +59,6 @@ Upgrade script % can not be applied:
     RETURN TRUE;
 END;
 $$ LANGUAGE PLPGSQL;
+
+COMMIT;
 
