@@ -1,6 +1,6 @@
 #!perl
 
-use Test::More tests => 22;
+use Test::More tests => 23;
 
 diag("Test fine generation with closed date on checkin against the admin user.");
 
@@ -43,6 +43,16 @@ sub create_closed_date {
         'open-ils.actor.org_unit.closed.create',
         $script->authtoken, $aoucd);
     return $resp;
+}
+
+# returns "1" on success, event on error
+sub update_closed_date {
+    my $aoucd = shift;
+    $aoucd->reason($aoucd->reason . ' modified');
+    return $apputils->simplereq(
+        'open-ils.actor',
+        'open-ils.actor.org_unit.closed.update',
+        $script->authtoken, $aoucd);
 }
 
 sub delete_closed_date {
@@ -129,6 +139,12 @@ is(
     ref $closed_date_obj,
     'Fieldmapper::actor::org_unit::closed_date',
     'Created a closed date for 10 days ago'
+);
+
+is(
+    update_closed_date($closed_date_obj),
+    '1',
+    'Updated closed date reason'
 );
 
 my $checkout_resp = $script->do_checkout({

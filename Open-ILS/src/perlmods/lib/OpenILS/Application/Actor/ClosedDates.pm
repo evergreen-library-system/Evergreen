@@ -67,12 +67,13 @@ __PACKAGE__->register_method(
 
 sub delete_date {
     my( $self, $conn, $auth, $id ) = @_;
-    my $e = new_editor(authtoken=>$auth);
-    return $e->event unless $e->checkauth;
-    my $date = $e->retrieve_actor_org_unit_closed_date($id) or return $e->event;
-    return $e->event unless $e->allowed( # rely on the editor perm eventually
+    my $e = new_editor(authtoken=>$auth, xact => 1);
+    return $e->die_event unless $e->checkauth;
+    my $date = $e->retrieve_actor_org_unit_closed_date($id) or return $e->die_event;
+    return $e->die_event unless $e->allowed(
         'actor.org_unit.closed_date.delete', $date->org_unit);
-    $e->delete_actor_org_unit_closed_date($date) or return $e->event;
+    $e->delete_actor_org_unit_closed_date($date) or return $e->die_event;
+    $e->commit;
     return 1;
 }
 
@@ -91,15 +92,15 @@ sub create_date {
     my( $self, $conn, $auth, $date ) = @_;
 
     my $e = new_editor(authtoken=>$auth, xact =>1);
-    return $e->event unless $e->checkauth;
+    return $e->die_event unless $e->checkauth;
     
-    return $e->event unless $e->allowed( # rely on the editor perm eventually
+    return $e->die_event unless $e->allowed(
         'actor.org_unit.closed_date.create', $date->org_unit);
 
-    $e->create_actor_org_unit_closed_date($date) or return $e->event;
+    $e->create_actor_org_unit_closed_date($date) or return $e->die_event;
 
     my $newobj = $e->retrieve_actor_org_unit_closed_date($date->id)
-        or return $e->event;
+        or return $e->die_event;
 
     $e->commit;
     return $newobj;
@@ -117,16 +118,17 @@ __PACKAGE__->register_method(
 sub edit_date {
     my( $self, $conn, $auth, $date ) = @_;
     my $e = new_editor(authtoken=>$auth, xact =>1);
-    return $e->event unless $e->checkauth;
+    return $e->die_event unless $e->checkauth;
     
     # First make sure they have the right to update the selected date object
     my $odate = $e->retrieve_actor_org_unit_closed_date($date->id) 
-        or return $e->event;
+        or return $e->die_event;
 
-    return $e->event unless $e->allowed( # rely on the editor perm eventually
+    return $e->die_event unless $e->allowed(
         'actor.org_unit.closed_date.update', $odate->org_unit);
 
-    $e->update_actor_org_unit_closed_date($date) or return $e->event;
+    $e->update_actor_org_unit_closed_date($date) or return $e->die_event;
+    $e->commit;
 
     return 1;
 }
