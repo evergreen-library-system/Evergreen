@@ -1613,7 +1613,7 @@ BEGIN
             END IF;
 
             IF attr_def.sorter THEN
-                IF attr_vector ~~ tmp_val THEN
+                IF attr_vector @@ tmp_val THEN
                     DELETE FROM metabib.record_sorter WHERE source = rid AND attr = attr_def.name;
                     INSERT INTO metabib.record_sorter (source, attr, value) VALUES (rid, attr_def.name, ccvm_row.code);
                 END IF;
