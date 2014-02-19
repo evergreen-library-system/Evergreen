@@ -553,6 +553,117 @@ BEGIN
 END;
 $func$ LANGUAGE PLPGSQL;
 
+CREATE OR REPLACE FUNCTION public.oils_tsearch2 () RETURNS TRIGGER AS $$
+DECLARE
+    normalizer      RECORD;
+    value           TEXT := '';
+    temp_vector     TEXT := '';
+    ts_rec          RECORD;
+    cur_weight      "char";
+BEGIN
+
+    value := NEW.value;
+    NEW.index_vector = ''::tsvector;
+
+    IF TG_TABLE_NAME::TEXT ~ 'field_entry$' THEN
+        FOR normalizer IN
+            SELECT  n.func AS func,
+                    n.param_count AS param_count,
+                    m.params AS params
+              FROM  config.index_normalizer n
+                    JOIN config.metabib_field_index_norm_map m ON (m.norm = n.id)
+              WHERE field = NEW.field AND m.pos < 0
+              ORDER BY m.pos LOOP
+                EXECUTE 'SELECT ' || normalizer.func || '(' ||
+                    quote_literal( value ) ||
+                    CASE
+                        WHEN normalizer.param_count > 0
+                            THEN ',' || REPLACE(REPLACE(BTRIM(normalizer.params,'[]'),E'\'',E'\\\''),E'"',E'\'')
+                            ELSE ''
+                        END ||
+                    ')' INTO value;
+
+        END LOOP;
+
+        NEW.value = value;
+
+        FOR normalizer IN
+            SELECT  n.func AS func,
+                    n.param_count AS param_count,
+                    m.params AS params
+              FROM  config.index_normalizer n
+                    JOIN config.metabib_field_index_norm_map m ON (m.norm = n.id)
+              WHERE field = NEW.field AND m.pos >= 0
+              ORDER BY m.pos LOOP
+                EXECUTE 'SELECT ' || normalizer.func || '(' ||
+                    quote_literal( value ) ||
+                    CASE
+                        WHEN normalizer.param_count > 0
+                            THEN ',' || REPLACE(REPLACE(BTRIM(normalizer.params,'[]'),E'\'',E'\\\''),E'"',E'\'')
+                            ELSE ''
+                        END ||
+                    ')' INTO value;
+
+        END LOOP;
+   END IF;
+
+    IF TG_TABLE_NAME::TEXT ~ 'browse_entry$' THEN
+
+        value :=  ARRAY_TO_STRING(
+            evergreen.regexp_split_to_array(value, E'\\W+'), ' '
+        );
+        value := public.search_normalize(value);
+        NEW.index_vector = to_tsvector(TG_ARGV[0]::regconfig, value);
+
+    ELSIF TG_TABLE_NAME::TEXT ~ 'field_entry$' THEN
+        FOR ts_rec IN
+
+            SELECT DISTINCT m.ts_config, m.index_weight
+            FROM config.metabib_class_ts_map m
+                 LEFT JOIN metabib.record_attr_vector_list r ON (r.source = NEW.source)
+                 LEFT JOIN config.coded_value_map ccvm ON (
+                    ccvm.ctype IN ('item_lang', 'language') AND
+                    ccvm.code = m.index_lang AND
+                    r.vlist @> intset(ccvm.id)
+                )
+            WHERE m.field_class = TG_ARGV[0]
+                AND m.active
+                AND (m.always OR NOT EXISTS (SELECT 1 FROM config.metabib_field_ts_map WHERE metabib_field = NEW.field))
+                AND (m.index_lang IS NULL OR ccvm.id IS NOT NULL)
+                        UNION
+            SELECT DISTINCT m.ts_config, m.index_weight
+            FROM config.metabib_field_ts_map m
+                 LEFT JOIN metabib.record_attr_vector_list r ON (r.source = NEW.source)
+                 LEFT JOIN config.coded_value_map ccvm ON (
+                    ccvm.ctype IN ('item_lang', 'language') AND
+                    ccvm.code = m.index_lang AND
+                    r.vlist @> intset(ccvm.id)
+                )
+            WHERE m.metabib_field = NEW.field
+                AND m.active
+                AND (m.index_lang IS NULL OR ccvm.id IS NOT NULL)
+            ORDER BY index_weight ASC
+
+        LOOP
+
+            IF cur_weight IS NOT NULL AND cur_weight != ts_rec.index_weight THEN
+                NEW.index_vector = NEW.index_vector || setweight(temp_vector::tsvector,cur_weight);
+                temp_vector = '';
+            END IF;
+
+            cur_weight = ts_rec.index_weight;
+            SELECT INTO temp_vector temp_vector || ' ' || to_tsvector(ts_rec.ts_config::regconfig, value)::TEXT;
+
+        END LOOP;
+        NEW.index_vector = NEW.index_vector || setweight(temp_vector::tsvector,cur_weight);
+    ELSE
+        NEW.index_vector = to_tsvector(TG_ARGV[0]::regconfig, value);
+    END IF;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE PLPGSQL;
+
 -- add new sr_format attribute definition
 
 INSERT INTO config.record_attr_definition (name, label, phys_char_sf)
