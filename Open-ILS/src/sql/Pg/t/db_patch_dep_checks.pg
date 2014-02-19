@@ -29,7 +29,14 @@ SELECT is(
 
 -- AAAF deprecates AAAB, AAAC
 SELECT is(
-    (SELECT ARRAY_AGG(patch) FROM evergreen.upgrade_list_applied_deprecates('AAAF')),
+    (   SELECT ARRAY_AGG(patch)
+        FROM (
+            -- sort the patches to match the expected output
+            SELECT patch
+            FROM evergreen.upgrade_list_applied_deprecates('AAAF')
+            ORDER BY patch
+        ) AS patch
+    ),
     '{AAAB,AAAC}'
 );
 
