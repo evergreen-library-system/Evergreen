@@ -150,10 +150,22 @@
                     </td>
                     <td>
                         <div class="format_icon">
-                            [% IF attrs.all_formats.size %]
-                                [% FOR format IN attrs.all_formats %]
-                                <img title="[% format.label | html %]" alt="[% format.label | html %]" src="[% format.icon %]" />
-                                [% END %]
+                          [% 
+                            formats = attrs.all_formats.size;
+                            IF ahr.hold_type == 'M';
+                              # only show selected formats for metarecords
+                              formats = [];
+                              FOR ccvm IN hold.metarecord_selected_filters.icons;
+                                format = {};
+                                format.icon = PROCESS get_ccvm_icon id=ccvm.id search_label=1;
+                                format.label = PROCESS get_ccvm_label id=ccvm.id search_label=1;
+                                formats.push(format);
+                              END;
+                            END;
+                            FOR format IN formats 
+                          %]
+                            <img title="[% format.label | html %]" 
+                              alt="[% format.label | html %]" src="[% format.icon %]" />
                             [% END %]
                         </div>
                     </td>

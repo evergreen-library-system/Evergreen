@@ -88,6 +88,13 @@
         END;
     END;
 
+    BLOCK get_ccvm_icon;
+        ccvm = ctx.get_ccvm(id); # caches internally
+        label = PROCESS get_ccvm_label id=id search_label=search_label;
+        ctx.media_prefix _ '/images/format_icons/' _ ccvm.ctype _ '/' _ ccvm.code _ '.png';
+    END;
+
+
     # Extract MARC fields from XML
     #   get_marc_attrs( { marc_xml => doc } )
     BLOCK get_marc_attrs;
@@ -440,16 +447,20 @@
         FOR node IN xml.findnodes(formats_xpath);
             IF node AND node.textContent;
                 type = node.textContent;
-                label = PROCESS get_ccvm_label id=node.getAttribute('cvmid') search_label=1;
-                itemtype = schema_typemap.$type || 'CreativeWork';
-                icon = ctx.media_prefix _ '/images/format_icons/' _ icon_style _ '/' _ type _ '.png';
-                # collect all formats for metarecord support
-                args.all_formats.push({label => label, icon => icon, itemtype => itemtype});
+                format = {};
+                format.icon = PROCESS get_ccvm_icon 
+                    id=node.getAttribute('cvmid') search_label=1;
+                format.label = PROCESS get_ccvm_label 
+                    id=node.getAttribute('cvmid') search_label=1;
+                format.itemtype = schema_typemap.$type || 'CreativeWork';
+
+                args.all_formats.push(format); # metarecords want all formats
+
                 IF !args.format_label;
                     # use the first format as the default
-                    args.format_label = label; 
-                    args.schema.itemtype = itemtype;
-                    args.format_icon = icon;
+                    args.format_label = format.label; 
+                    args.schema.itemtype = format.itemtype;
+                    args.format_icon = format.icon;
                 END;
             END;
         END;
