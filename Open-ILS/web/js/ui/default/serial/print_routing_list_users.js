@@ -9,6 +9,8 @@ function ListRenderer() {
     var self = this;
 
     this.render = function() {
+        var rendered_something = false;
+
         for (var i = 0; i < this.streams.length; i++) {
             var stream = this.streams[i];
 
@@ -35,7 +37,7 @@ function ListRenderer() {
 
             this.render_users(stream, list);
 
-            if (i) {
+            if (rendered_something) {
                 dojo.create(
                     "hr",
                     {"style": "page-break-after: always"}, this.target, "last"
@@ -43,6 +45,7 @@ function ListRenderer() {
             }
 
             dojo.place(list, this.target, "last");
+            rendered_something = true;
         }
 
         return this; /* for chaining */
