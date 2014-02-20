@@ -383,7 +383,7 @@ sub load_rresults {
         }
     }
 
-    if ($metarecord and !$internal) {
+    if ($metarecord) {
 
         # TODO: other limits, like SVF/format, etc.
         $self->timelog("Getting metarecords to records");
