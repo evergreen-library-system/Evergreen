@@ -1,6 +1,8 @@
 
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('0865', :eg_version);
+
 -- First, explode the field into constituent parts
 WITH format_parts_array AS (
     SELECT  a.id,

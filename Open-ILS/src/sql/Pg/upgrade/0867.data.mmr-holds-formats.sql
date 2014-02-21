@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('0867', :eg_version);
+
 INSERT INTO config.global_flag (name, label, value, enabled) VALUES (
     'opac.metarecord.holds.format_attr', 
     oils_i18n_gettext(

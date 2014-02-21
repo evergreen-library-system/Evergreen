@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('0864', :eg_version);
+
 CREATE EXTENSION intarray;
 
 -- while we have this opportunity, and before we start collecting 

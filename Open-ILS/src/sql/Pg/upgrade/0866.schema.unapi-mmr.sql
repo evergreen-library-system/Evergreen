@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('0866', :eg_version);
+
 DROP FUNCTION asset.record_has_holdable_copy (BIGINT);
 CREATE FUNCTION asset.record_has_holdable_copy ( rid BIGINT, ou INT DEFAULT NULL) RETURNS BOOL AS $f$
 BEGIN
