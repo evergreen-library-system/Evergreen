@@ -3855,7 +3855,7 @@ INSERT into config.org_unit_setting_type
         'coust', 'description'),
     'bool', null)
 
-    ( 'credit.processor.stripe.enabled', 'credit',
+,( 'credit.processor.stripe.enabled', 'credit',
     oils_i18n_gettext('credit.processor.stripe.enabled',
         'Enable Stripe payments',
         'coust', 'label'),
