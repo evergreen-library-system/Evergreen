@@ -2,6 +2,8 @@
 
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('0868', :eg_version);
+
 CREATE OR REPLACE VIEW action.all_hold_request AS
     SELECT DISTINCT
            COALESCE(a.post_code, b.post_code) AS usr_post_code,
