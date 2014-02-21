@@ -6818,6 +6818,21 @@ INSERT INTO config.coded_value_map
     oils_i18n_gettext(607, 'Musical Sound Recording (Unknown Format)', 'ccvm', 'value'),
     oils_i18n_gettext(607, 'Musical Sound Recording (Unknown Format)', 'ccvm', 'search_label'));
 
+-- icon for blu-ray
+INSERT INTO config.coded_value_map
+    (id, ctype, code, value, search_label) VALUES 
+(608, 'icon_format', 'blu-ray', 
+    oils_i18n_gettext(608, 'Blu-ray', 'ccvm', 'value'),
+    oils_i18n_gettext(608, 'Blu-ray', 'ccvm', 'search_label'));
+
+-- metarecord hold format for blu-ray
+INSERT INTO config.coded_value_map
+    (id, ctype, code, value, search_label) VALUES 
+(609, 'mr_hold_format', 'blu-ray', 
+    oils_i18n_gettext(609, 'Blu-ray', 'ccvm', 'value'),
+    oils_i18n_gettext(609, 'Blu-ray', 'ccvm', 'search_label'));
+
+
 -- carve out a slot of 10k IDs for stock CCVMs
 SELECT SETVAL('config.coded_value_map_id_seq'::TEXT, 10000);
 
@@ -6827,7 +6842,7 @@ SELECT SETVAL('config.coded_value_map_id_seq'::TEXT, 10000);
 INSERT INTO config.composite_attr_entry_definition 
     (coded_value, definition) VALUES
 --book
-(564, '{"0":[{"_attr":"item_type","_val":"a"},{"_attr":"item_type","_val":"t"}],"1":{"_not":[{"_attr":"item_form","_val":"a"},{"_attr":"item_form","_val":"b"},{"_attr":"item_form","_val":"c"},{"_attr":"item_form","_val":"f"},{"_attr":"item_form","_val":"o"},{"_attr":"item_form","_val":"q"},{"_attr":"item_form","_val":"r"},{"_attr":"item_form","_val":"s"}]},"2":[{"_attr":"bib_level","_val":"a"},{"_attr":"bib_level","_val":"c"},{"_attr":"bib_level","_val":"d"},{"_attr":"bib_level","_val":"m"}]}'),
+(564, '{"0":[{"_attr":"item_type","_val":"a"},{"_attr":"item_type","_val":"t"}],"1":{"_not":[{"_attr":"item_form","_val":"a"},{"_attr":"item_form","_val":"b"},{"_attr":"item_form","_val":"c"},{"_attr":"item_form","_val":"d"},{"_attr":"item_form","_val":"f"},{"_attr":"item_form","_val":"o"},{"_attr":"item_form","_val":"q"},{"_attr":"item_form","_val":"r"},{"_attr":"item_form","_val":"s"}]},"2":[{"_attr":"bib_level","_val":"a"},{"_attr":"bib_level","_val":"c"},{"_attr":"bib_level","_val":"d"},{"_attr":"bib_level","_val":"m"}]}'),
 
 -- braille
 (565, '{"0":{"_attr":"item_type","_val":"a"},"1":{"_attr":"item_form","_val":"f"}}'),
@@ -6897,12 +6912,16 @@ INSERT INTO config.composite_attr_entry_definition
     (coded_value, definition) VALUES
 (607, '{"0":{"_attr":"item_type","_val":"j"},"1":{"_not":[{"_attr":"sr_format","_val":"a"},{"_attr":"sr_format","_val":"b"},{"_attr":"sr_format","_val":"c"},{"_attr":"sr_format","_val":"d"},{"_attr":"sr_format","_val":"f"},{"_attr":"sr_format","_val":"e"},{"_attr":"sr_format","_val":"l"}]}}');
 
+-- blu-ray icon_format
+INSERT INTO config.composite_attr_entry_definition 
+    (coded_value, definition) VALUES (608, '{"_attr":"vr_format","_val":"s"}');
+
 -- use the definitions from the icon_format as the basis for the MR hold format definitions
 DO $$
     DECLARE format TEXT;
 BEGIN
     FOR format IN SELECT UNNEST(
-        '{book,braille,software,dvd,kit,map,microform,score,picture,equip,serial,vhs,cdaudiobook,cdmusic,casaudiobook,casmusic,phonospoken,phonomusic,lpbook}'::text[])
+        '{book,braille,software,dvd,kit,map,microform,score,picture,equip,serial,vhs,cdaudiobook,cdmusic,casaudiobook,casmusic,phonospoken,phonomusic,lpbook,blu-ray}'::text[])
     LOOP
         INSERT INTO config.composite_attr_entry_definition 
             (coded_value, definition) VALUES
@@ -6917,6 +6936,7 @@ BEGIN
             );
     END LOOP; 
 END $$;
+
 
 -- Trigger Event Definitions -------------------------------------------------
 
