@@ -32,6 +32,14 @@
             [% l('Viewing Results for Grouped Record: [_1]', 
                 mr_attrs.title) | html %]
           </div>
+          [% IF CGI.param('query') %]
+          <div>
+            <a href="[% mkurl(ctx.opac_root _ '/results', {}, ['metarecord']); %]">
+              [% l('&#9668; Return to Grouped Search Results') %]
+            </a>
+          </div>
+          <br/>
+          [% END %]
         [% END %]
         <div class="results_header_bar[%- IF ctx.metarecord %] hidden[% END -%]">
             <div id="results_header_inner">
