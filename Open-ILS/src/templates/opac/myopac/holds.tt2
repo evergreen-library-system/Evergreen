@@ -156,9 +156,10 @@
                               # only show selected formats for metarecords
                               formats = [];
                               FOR ccvm IN hold.metarecord_selected_filters.icons;
+                                NEXT IF ccvm.opac_visible == 'f';
                                 format = {};
-                                format.icon = PROCESS get_ccvm_icon id=ccvm.id search_label=1;
-                                format.label = PROCESS get_ccvm_label id=ccvm.id search_label=1;
+                                format.label = ccvm.search_label || ccvm.value;
+                                format.icon = PROCESS get_ccvm_icon ccvm=ccvm;
                                 formats.push(format);
                               END;
                             END;

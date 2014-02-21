@@ -47,8 +47,9 @@ limiting the set of desired records for a given metarecord.
     </div>
     <select multiple='multiple' 
       name="metarecord_formats_[% target_id %]">
-      [% FOR ccvm IN 
-        hold_data.metarecord_filters.formats.sort('search_label') %]
+      [% FOR ccvm IN
+          hold_data.metarecord_filters.formats.sort('search_label');
+          NEXT IF ccvm.opac_visible == 'f' %]
         <option value="[% ccvm.code %]"[%- code = ccvm.code; 
             IF selected_formats.$code %] selected='selected'[% END -%]>
           [% ccvm.search_label | html %]
@@ -65,8 +66,9 @@ limiting the set of desired records for a given metarecord.
     </div>
     <select multiple='multiple' 
       name="metarecord_langs_[% target_id %]">
-      [% FOR lang_ccvm IN hold_data.metarecord_filters.langs.sort('value') %]
-        [%  selected = 0; 
+      [% FOR lang_ccvm IN hold_data.metarecord_filters.langs.sort('value');
+            NEXT IF lang_ccvm.opac_visible == 'f';
+            selected = 0; 
             code = lang_ccvm.code;
             IF selected_langs.size;
                 # user has already selected their preferred language(s)

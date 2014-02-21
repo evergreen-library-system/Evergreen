@@ -79,21 +79,9 @@
         END;
     END;
 
-    BLOCK get_ccvm_label;
-        ccvm = ctx.get_ccvm(id); # caches internally
-        IF search_label and ccvm.search_label;
-            ccvm.search_label;
-        ELSE;
-            ccvm.$id.value;
-        END;
-    END;
-
     BLOCK get_ccvm_icon;
-        ccvm = ctx.get_ccvm(id); # caches internally
-        label = PROCESS get_ccvm_label id=id search_label=search_label;
         ctx.media_prefix _ '/images/format_icons/' _ ccvm.ctype _ '/' _ ccvm.code _ '.png';
     END;
-
 
     # Extract MARC fields from XML
     #   get_marc_attrs( { marc_xml => doc } )
@@ -446,12 +434,13 @@
         args.all_formats = [];
         FOR node IN xml.findnodes(formats_xpath);
             IF node AND node.textContent;
-                type = node.textContent;
+                ccvm = ctx.get_ccvm(node.getAttribute('cvmid'));
+                NEXT IF ccvm.opac_visible == 'f';
+
                 format = {};
-                format.icon = PROCESS get_ccvm_icon 
-                    id=node.getAttribute('cvmid') search_label=1;
-                format.label = PROCESS get_ccvm_label 
-                    id=node.getAttribute('cvmid') search_label=1;
+                type = node.textContent;
+                format.label = ccvm.search_label || ccvm.value;
+                format.icon = PROCESS get_ccvm_icon ccvm=ccvm;
                 format.itemtype = schema_typemap.$type || 'CreativeWork';
 
                 args.all_formats.push(format); # metarecords want all formats
