@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-26 18:17-0400\n"
+"POT-Creation-Date: 2014-01-22 16:26-0400\n"
 "PO-Revision-Date: 2010-03-23 07:40+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-09-28 05:21+0000\n"
-"X-Generator: Launchpad (build 16774)\n"
+"X-Launchpad-Export-Date: 2014-01-23 05:21+0000\n"
+"X-Generator: Launchpad (build 16901)\n"
 "X-Accelerator-Marker: &\n"
 
 #: bib.no_marc
@@ -436,6 +436,10 @@ msgstr "Не находит корзину с ID = %1$s"
 msgid "Error retrieving bucket.  Did you use a valid bucket id?"
 msgstr ""
 "Ошибка при восстановлении корзины. Вы использовали правильную корзину ID?"
+
+#: staff.cat.copy_buckets.copy_buckets_batch_copy_delete.confirm
+msgid "Are you sure you want to delete all items in bucket from catalog?"
+msgstr ""
 
 #: staff.cat.copy_buckets.copy_buckets_add.error
 msgctxt "staff.cat.copy_buckets.copy_buckets_add.error"
