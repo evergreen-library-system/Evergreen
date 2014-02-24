@@ -3,13 +3,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2013-09-26 18:17:43-0400\n"
+"POT-Creation-Date: 2014-02-24 16:24:07-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
+
+#: acq.js:ACQ_SEARCH_CLASS_ABBR_acqlid
+msgid "LID"
+msgstr ""
 
 #: acq.js:ADD_LI_TO_PO_BAD_LI_STATE
 msgid "The selected lineitem is not in a state that can be added to a purchase order"
@@ -39,6 +43,10 @@ msgstr ""
 
 #: acq.js:INVOICE_EXTRA_COPIES
 msgid "You are attempting to invoice <b>${0}</b> more copies than originally ordered.  <br/><br/>To add these items to the original order, select a fund and choose 'Add New Items' below.  <br/>After saving the invoice, you may finish editing and importing the new copies from the lineitem details page."
+msgstr ""
+
+#: acq.js:ACQ_SEARCH_CLASS_ABBR_acqlia
+msgid "LIA"
 msgstr ""
 
 #: acq.js:LI_ATTR_SEARCH_CHOOSE_FILE
@@ -161,6 +169,10 @@ msgstr ""
 
 #: acq.js:UNNAMED
 msgid "Unnamed"
+msgstr ""
+
+#: acq.js:ACQ_SEARCH_CLASS_ABBR_acqpo
+msgid "PO"
 msgstr ""
 
 #: acq.js:DEL_LI_FROM_PO
@@ -334,6 +346,10 @@ msgstr ""
 msgid "Just now"
 msgstr ""
 
+#: acq.js:ACQ_SEARCH_CLASS_ABBR_acqpl
+msgid "SL"
+msgstr ""
+
 #: acq.js:CANCEL
 msgid "Cancel"
 msgstr ""
@@ -384,6 +400,10 @@ msgstr ""
 msgid "Are you sure you want to mark this lineitem as UN-received?"
 msgstr ""
 
+#: acq.js:ACQ_SEARCH_CLASS_ABBR_jub
+msgid "LI"
+msgstr ""
+
 #: acq.js:COULD_NOT_CREATE_MAPPING
 msgid "Error tagging fund."
 msgstr ""
@@ -398,6 +418,10 @@ msgstr ""
 
 #: acq.js:NO_PO_RESULTS
 msgid "No results"
+msgstr ""
+
+#: acq.js:ACQ_SEARCH_CLASS_ABBR_acqinv
+msgid "I"
 msgstr ""
 
 #: acq.js:FUND_NOT_YET_LOADED
