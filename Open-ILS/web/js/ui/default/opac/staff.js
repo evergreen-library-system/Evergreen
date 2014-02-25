@@ -27,13 +27,23 @@ function no_hold_submit(event) {
     return true;
 }
 function staff_hold_usr_barcode_changed(isload) {
+
+    if (!document.getElementById('place_hold_submit')) {
+        // in some cases, the submit button is not present.
+        // exit early to avoid needless JS errors
+        return;
+    }
+
     if(typeof xulG != 'undefined' && xulG.get_barcode_and_settings) {
         var cur_hold_barcode = undefined;
         var barcode = isload;
         if(!barcode || barcode === true) barcode = document.getElementById('staff_barcode').value;
         var only_settings = true;
+        var bc_from_cgi = false; // user_barcode passed via cgi
         if(!document.getElementById('hold_usr_is_requestor').checked) {
-            if(!isload) {
+            if (isload && document.getElementById('hold_usr_input').value)
+                bc_from_cgi = true;
+            if(!isload || bc_from_cgi) {
                 barcode = document.getElementById('hold_usr_input').value;
                 only_settings = false;
             }
@@ -94,8 +104,20 @@ function staff_hold_usr_barcode_changed(isload) {
             document.getElementById('patron_name').innerHTML = load_info.patron_name;
             document.getElementById("patron_usr_barcode_not_found").style.display = 'none';
         }
-        // Ok, now we can allow submitting again, unless this is a "true" load, in which case we likely have a blank barcode box active
-        if (isload !== true)
+        
+        // update the advanced hold options link to propagate the patron
+        // barcode if clicked.  This is needed when the patron barcode
+        // is manually entered (i.e. the staff client does not provide one).
+        var adv_link = document.getElementById('advanced_hold_link');
+        if (adv_link) { // not present on MR hold pages
+            var href = adv_link.getAttribute('href').replace(
+                /;usr_barcode=[^;\&]+|$/, 
+                ';usr_barcode=' + encodeURIComponent(cur_hold_barcode));
+            adv_link.setAttribute('href', href);
+        }
+
+        // if we're here, we have a valid barcode.  activate the sumbmit option
+        if(!isload || bc_from_cgi) 
             document.getElementById('place_hold_submit').disabled = false;
     }
 }
