@@ -6,6 +6,7 @@
     <div>
         <button dojoType='dijit.form.Button' onClick='ccvmGrid.showCreateDialog()'>[% l('New Map') %]</button>
         <button dojoType='dijit.form.Button' onClick='ccvmGrid.deleteSelected()'>[% l('Delete Selected') %]</button>
+        <button dojoType='dijit.form.Button' onClick='ccvmGrid.showClonePane(handleClone)'>[% l('Clone Selected') %]</button>
     </div>
 </div>
 
@@ -37,6 +38,7 @@
     dojo.require('dijit.form.FilteringSelect');
     dojo.require('openils.widget.AutoGrid');
     dojo.require('openils.widget.AutoFieldWidget');
+    dojo.require('openils.PermaCrud');
 
     function getCompositeDefLink(rowId, item) {
       if (!item) return '';
@@ -55,6 +57,42 @@
     }
 
     var cradName = '[% ctx.page_args.0 %]';
+
+    function handleClone(oldObj, newObj) {
+      if (!isComposite) return; // vanilla, non-composite clone
+
+      // fetch the composite def for the clone source object
+      var pcrud = new openils.PermaCrud();
+      pcrud.search('ccraed', {coded_value : oldObj.id}, {
+
+        oncomplete : function(r) {
+          composite_def = openils.Util.readResponse(r).pop();
+
+          // after cloning, jump to the composite def page
+          var dest = oilsBasePath
+            + '/conify/global/config/composite_attr_entry_definition/' 
+            + newObj.id();
+
+          if (!composite_def || !composite_def.definition()) {
+            // nothing to copy
+            location.href = dest;
+            return;
+          }
+
+          // copy the composite definition from the clone
+          // source object into the clone destination object
+          var new_def = new fieldmapper.ccraed();
+          new_def.coded_value(newObj.id());
+          new_def.definition(composite_def.definition());
+          pcrud.create(new_def, {
+            oncomplete : function(r) {
+              openils.Util.readResponse(r); // test for alerts
+              location.href = dest;
+            }
+          });
+        }
+      });
+    }
 
     openils.Util.addOnLoad(
         function() {
