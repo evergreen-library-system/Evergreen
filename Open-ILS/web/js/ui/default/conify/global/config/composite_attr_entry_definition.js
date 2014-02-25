@@ -258,7 +258,10 @@ function buildSelectors() {
                     var items = [];
                     dojo.forEach(maps, function(map) {
                         codedValueMaps[map.id()] = map;
-                        items.push({name : map.value(), value : map.id()});
+                        items.push({
+                            name : map.value() + ' (' + map.code() + ')', 
+                            value : map.id()
+                        });
                     });
                     ccvmSelector.store = new dojo.data.ItemFileReadStore({
                         data : {
