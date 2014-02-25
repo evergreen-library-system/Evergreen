@@ -1456,7 +1456,7 @@ BEGIN
 			-- amount directly instead of applying a currency translation
 			-- and thereby inviting round-off errors.
 			--
-			source_deduction := - orig_allocated_amt;
+			source_deduction := - curr_old_amt;
 		ELSE 
 			source_deduction := trunc(
 				( - curr_old_amt ) *
@@ -1513,7 +1513,7 @@ BEGIN
 				-- amount directly instead of applying a currency translation and
 				-- thereby inviting round-off errors.
 				--
-				source_addition := orig_allocated_amt;
+				source_addition := curr_new_amt;
 			ELSIF source.currency_type = old_fund_currency THEN
 				--
 				-- In this case we don't need a round trip currency translation,
