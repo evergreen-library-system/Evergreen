@@ -101,6 +101,9 @@ INSERT INTO config.metabib_class ( name, label ) VALUES ( 'author', oils_i18n_ge
 INSERT INTO config.metabib_class ( name, label ) VALUES ( 'subject', oils_i18n_gettext('subject', 'Subject', 'cmc', 'label') );
 INSERT INTO config.metabib_class ( name, label ) VALUES ( 'series', oils_i18n_gettext('series', 'Series', 'cmc', 'label') );
 
+-- enable combined search for only the subject class by default
+UPDATE config.metabib_class SET combined = TRUE WHERE name = 'subject';
+
 -- some more from 002.schema.config.sql:
 INSERT INTO config.xml_transform VALUES ( 'marcxml', 'http://www.loc.gov/MARC21/slim', 'marc', '---' );
 INSERT INTO config.xml_transform VALUES ( 'mods', 'http://www.loc.gov/mods/', 'mods', '');
