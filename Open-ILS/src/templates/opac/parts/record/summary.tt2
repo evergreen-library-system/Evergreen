@@ -32,9 +32,12 @@
     </div>
     <div id="format_actions">
         [%- IF attrs.format_label %]
-        <div id="rdetail_format_label">
-            <img alt="[% attrs.format_label %]" title="[% attrs.format_label | html %]" src="[% attrs.format_icon %]" /> [%- attrs.format_label -%]
-        </div>
+          [% FOR format IN attrs.all_formats %]
+              <img title="[% format.label | html %]" 
+                  alt="[% format.label | html %]" 
+                  src="[% format.icon %]" /> 
+              [% format.label | html %]
+          [% END %]
         [%- END %]
         <div id="rdetail_actions_div">
             [%- search_ou = ctx.search_ou;
