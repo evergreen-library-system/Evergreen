@@ -801,6 +801,56 @@ sub bill_payment_map_for_xact {
 # CStoreEditor, an arrayref of bill ids or bills, and an optional note.
 sub real_void_bills {
     my ($class, $e, $billids, $note) = @_;
+    return $e->die_event unless $e->checkauth;
+    return $e->die_event unless $e->allowed('VOID_BILLING');
+
+    my %users;
+    for my $billid (@$billids) {
+
+        my $bill = $e->retrieve_money_billing($billid)
+            or return $e->die_event;
+
+        my $xact = $e->retrieve_money_billable_transaction($bill->xact)
+            or return $e->die_event;
+
+        if($U->is_true($bill->voided)) {
+            # For now, it is not an error to attempt to re-void a bill, but
+            # don't actually do anything
+            #$e->rollback;
+            #return OpenILS::Event->new('BILL_ALREADY_VOIDED', payload => $bill)
+            next;
+        }
+
+        my $org = $U->xact_org($bill->xact, $e);
+        $users{$xact->usr} = {} unless $users{$xact->usr};
+        $users{$xact->usr}->{$org} = 1;
+
+        $bill->voided('t');
+        $bill->voider($e->requestor->id);
+        $bill->void_time('now');
+        my $n = ($bill->note) ? sprintf("%s\n", $bill->note) : "";
+        $bill->note(sprintf("$n%s", ($note) ? $note : "System: VOIDED FOR BACKDATE"));
+
+        $e->update_money_billing($bill) or return $e->die_event;
+        my $evt = $U->check_open_xact($e, $bill->xact, $xact);
+        return $evt if $evt;
+    }
+
+    # calculate penalties for all user/org combinations
+    for my $user_id (keys %users) {
+        for my $org_id (keys %{$users{$user_id}}) {
+            OpenILS::Utils::Penalty->calculate_penalties($e, $user_id, $org_id)
+        }
+    }
+
+    return 1;
+}
+
+
+# This subroutine actually handles "adjusting" bills to zero.  It takes a
+# CStoreEditor, an arrayref of bill ids or bills, and an optional note.
+sub adjust_bills_to_zero {
+    my ($class, $e, $billids, $note) = @_;
 
     # Get with the editor to see if we have permission to void bills.
     return $e->die_event unless $e->checkauth;
