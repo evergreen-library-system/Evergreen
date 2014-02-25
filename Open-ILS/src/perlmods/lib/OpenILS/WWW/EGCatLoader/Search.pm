@@ -502,6 +502,20 @@ sub load_rresults {
     # load temporary_list settings for user and ou:
     $self->_load_lists_and_settings if ($ctx->{user});
 
+    # fetch metarecord constituent counts for display
+    my $mr_counts = [];
+    if ($is_meta) {
+        $mr_counts = $e->json_query({
+            select => {mmrsm => [{
+                    column => 'id', transform => 'count', 
+                    alias => 'count', aggregate => 1
+                }, 'metarecord'
+            ]},
+            from => 'mmrsm',
+            where => {'+mmrsm' => {metarecord => $rec_ids}}
+        });
+    }
+
     # shove recs into context in search results order
     for my $rec_id (@$rec_ids) {
         my ($rec) = grep { $_->{$id_key} == $rec_id } @data;
@@ -510,10 +524,11 @@ sub load_rresults {
         $ctx->{metarecord_master} = $rec
             if $metarecord_master and $metarecord_master eq $rec_id;
 
-        # MR's with multiple constituent records will have a
-        # null value in position 2 of the result set.  
-        my ($res_rec) = grep { $_->[0] == $rec_id} @{$results->{ids}};
-        $rec->{mr_has_multi} = !$res_rec->[2];
+        if ($is_meta) {
+            # add the count of constituent records to the metarecord
+            my ($count) = grep {$_->{metarecord} == $rec_id} @$mr_counts;
+            $rec->{mr_constituent_count} = $count->{count};
+        }
     }
 
     if ($tag_circs) {

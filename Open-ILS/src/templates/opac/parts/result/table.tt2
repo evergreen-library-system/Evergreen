@@ -40,7 +40,7 @@
                             # note: rec.id refers to the record identifier, regardless
                             # of the type of record. i.e. rec.id = mmr_id ? mmr_id : bre_id
                             IF rec.mmr_id;
-                                IF rec.mr_has_multi;
+                                IF rec.mr_constituent_count > 1;
                                     # metarecords link to record list page
                                     record_url = mkurl(ctx.opac_root _ '/results', 
                                         {metarecord => rec.mmr_id}, ['page']);
@@ -77,8 +77,15 @@
                                                     [% END %]
                                                     <a class='record_title search_link' name='record_[% rec.id %]'
                                                         href="[% record_url %]"
-                                                        [% html_text_attr('title', l('Display record details for "[_1]"', attrs.title)) %]
-                                                        >[% attrs.title | html %]</a>
+                                                        [% html_text_attr('title', l('Display record details for "[_1]"', attrs.title)) %]>
+                                                        [% attrs.title | html %]
+                                                     </a>
+                                                     [% IF rec.mr_constituent_count > 1 %]
+                                                     <span title="[% l('This group contains [_1] records', rec.mr_constituent_count) %]">
+                                                      ([% rec.mr_constituent_count %])
+                                                     </span>
+                                                     [% END %]
+
 [%-
 FOR entry IN attrs.graphic_titles;
     FOR alt IN entry.graphic;
