@@ -907,7 +907,7 @@ __PACKAGE__->register_method(
 sub void_bill {
     my( $s, $c, $authtoken, @billids ) = @_;
     my $editor = new_editor(authtoken=>$authtoken, xact=>1);
-    my $rv = $CC->real_void_bills($editor, \@billids);
+    my $rv = $CC->void_bills($editor, \@billids);
     if (ref($rv) eq 'HASH') {
         # We got an event.
         $editor->rollback();

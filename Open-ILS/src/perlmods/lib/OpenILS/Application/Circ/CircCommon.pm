@@ -25,15 +25,19 @@ my $parser = DateTime::Format::ISO8601->new;
 # backdate is to within the grace period, in which case we void all
 # overdue fines.
 # -----------------------------------------------------------------
+sub void_overdues {
+#compatibility layer - TODO
+}
 sub void_or_zero_overdues {
-    my($class, $e, $circ, $backdate, $note) = @_;
+    my($class, $e, $circ, $opts) = @_;
 
     my $bill_search = { 
         xact => $circ->id, 
         btype => 1 
     };
 
-    if( $backdate ) {
+    if( $opts->{backdate} ) {
+        my $backdate = $opts->{backdate};
         # ------------------------------------------------------------------
         # Fines for overdue materials are assessed up to, but not including,
         # one fine interval after the fines are applicable.  Here, we add
@@ -61,7 +65,29 @@ sub void_or_zero_overdues {
 
     my $billids = $e->search_money_billing([$bill_search, {idlist=>1}]);
     if ($billids && @$billids) {
-        my $result = $class->real_void_bills($e, $billids, $note);
+        # overdue settings come from transaction org unit
+        my $prohibit_neg_balance_overdues = (
+            $U->ou_ancestor_setting($circ->circ_lib(), 'bill.prohibit_negative_balance_on_overdues')
+            ||
+            $U->ou_ancestor_setting($circ->circ_lib(), 'bill.prohibit_negative_balance_default')
+        );
+        my $neg_balance_interval_overdues = (
+            $U->ou_ancestor_setting($circ->circ_lib(), 'bill.negative_balance_interval_on_overdues')
+            ||
+            $U->ou_ancestor_setting($circ->circ_lib(), 'bill.negative_balance_interval_default')
+        );
+        my $result;
+        # if we prohibit negative overdue balances outright, OR we have an
+        # interval setting which determines what we do, let
+        # adjust_bills_to_zero() do the heavy lifting
+        if ($opts->{force_zero}
+            or (!$opts->{force_void} and ($U->is_true($prohibit_neg_balance_overdues) or $neg_balance_interval_overdues))
+            ) {
+            $result = $class->adjust_bills_to_zero($e, $billids, $opts->{note}, $neg_balance_interval_overdues);
+        } else {
+            # otherwise, just void the usual way
+            $result = $class->void_bills($e, $billids, $opts->{note});
+        }
         if (ref($result)) {
             return $result;
         }
@@ -107,10 +133,10 @@ sub void_lost {
 # Takes an editor, a circ object, the btype number for the bills you
 # want to void, and an optional note.
 #
-# Returns undef on success or the result from real_void_bills.
+# Returns undef on success or the result from void_bills.
 # ------------------------------------------------------------------
 sub void_or_zero_bills_of_type {
-    my ($class, $e, $circ, $btype, $note) = @_;
+    my ($class, $e, $circ, $copy, $btype, $note) = @_;
 
     # Get a bill payment map.
     my $bpmap = $class->bill_payment_map_for_xact($e, $circ);
@@ -118,7 +144,18 @@ sub void_or_zero_bills_of_type {
         # Filter out the unvoided bills of the type we're looking for:
         my @bills = map {$_->{bill}} grep { $_->{bill}->btype() == $btype && $_->{bill_amount} > $_->{void_amount} } @$bpmap;
         if (@bills) {
-            my $result = $class->real_void_bills($e, \@bills, $note);
+            # settings for lost come from copy circlib.
+            my $prohibit_neg_balance_lost = (
+                $U->ou_ancestor_setting($copy->circ_lib(), 'bill.prohibit_negative_balance_on_lost')
+                ||
+                $U->ou_ancestor_setting($copy->circ_lib(), 'bill.prohibit_negative_balance_default')
+            );
+            my $neg_balance_interval_lost = (
+                $U->ou_ancestor_setting($copy->circ_lib(), 'bill.negative_balance_interval_on_lost')
+                ||
+                $U->ou_ancestor_setting($copy->circ_lib(), 'bill.negative_balance_interval_default')
+            );
+            my $result = $class->void_bills($e, \@bills, $note);
             if (ref($result)) {
                 return $result;
             }
@@ -799,16 +836,20 @@ sub bill_payment_map_for_xact {
 
 # This subroutine actually handles voiding of bills.  It takes a
 # CStoreEditor, an arrayref of bill ids or bills, and an optional note.
-sub real_void_bills {
+sub void_bills {
     my ($class, $e, $billids, $note) = @_;
     return $e->die_event unless $e->checkauth;
     return $e->die_event unless $e->allowed('VOID_BILLING');
 
     my %users;
-    for my $billid (@$billids) {
-
-        my $bill = $e->retrieve_money_billing($billid)
+    my $bills;
+    if (ref($billids->[0])) {
+        $bills = $billids;
+    } else {
+        $bills = $e->search_money_billing([{id => $billids}])
             or return $e->die_event;
+    }
+    for my $bill (@$bills) {
 
         my $xact = $e->retrieve_money_billable_transaction($bill->xact)
             or return $e->die_event;
@@ -848,9 +889,10 @@ sub real_void_bills {
 
 
 # This subroutine actually handles "adjusting" bills to zero.  It takes a
-# CStoreEditor, an arrayref of bill ids or bills, and an optional note.
+# CStoreEditor, an arrayref of bill ids or bills, an optional note, and an
+# optional interval.
 sub adjust_bills_to_zero {
-    my ($class, $e, $billids, $note) = @_;
+    my ($class, $e, $billids, $note, $interval) = @_;
 
     # Get with the editor to see if we have permission to void bills.
     return $e->die_event unless $e->checkauth;
@@ -890,46 +932,7 @@ sub adjust_bills_to_zero {
         $circ = $mbt->circulation();
         $copy = $circ->target_copy() if ($circ);
 
-        # Retrieve settings based on transaction location and copy
-        # location if we have a circulation.
-        my ($prohibit_neg_balance_default, $prohibit_neg_balance_overdues,
-            $prohibit_neg_balance_lost, $neg_balance_interval_default,
-            $neg_balance_interval_overdues, $neg_balance_interval_lost);
-        if ($circ) {
-            # defaults and overdue settings come from transaction org unit.
-            $prohibit_neg_balance_default = $U->ou_ancestor_setting(
-                $circ->circ_lib(), 'bill.prohibit_negative_balance_default');
-            $prohibit_neg_balance_overdues = (
-                $U->ou_ancestor_setting($circ->circ_lib(), 'bill.prohibit_negative_balance_on_overdues')
-                ||
-                $U->ou_ancestor_setting($circ->circ_lib(), 'bill.prohibit_netgative_balance_default')
-            );
-            $neg_balance_interval_default = $U->ou_ancestor_setting(
-                $circ->circ_lib(), 'bill.negative_balance_interval_default');
-            $neg_balance_interval_overdues = (
-                $U->ou_ancestor_setting($circ->circ_lib(), 'bill.negative_balance_interval_on_overdues')
-                ||
-                $U->ou_ancestor_setting($circ->circ_lib(), 'bill.negative_balance_interval_default')
-            );
-            # settings for lost come from copy circlib.
-            $prohibit_neg_balance_lost = (
-                $U->ou_ancestor_setting($copy->circ_lib(), 'bill.prohibit_negative_balance_on_lost')
-                ||
-                $U->ou_ancestor_setting($copy->circ_lib(), 'bill.prohibit_negative_balance_default')
-            );
-            $neg_balance_interval_lost = (
-                $U->ou_ancestor_setting($copy->circ_lib(), 'bill.negative_balance_interval_on_lost')
-                ||
-                $U->ou_ancestor_setting($copy->circ_lib(), 'bill.negative_balance_interval_default')
-            );
-        } else {
-            # We only care about defaults, and they come from the
-            # billing location.
-            $prohibit_neg_balance_default = $U->ou_ancestor_setting(
-                $grocery->billing_location(), 'bill.prohibit_negative_balance_default');
-            $neg_balance_interval_default = $U->ou_ancestor_setting(
-            $grocery->billing_location(), 'bill.negative_balance_interval_default');
-        }
+
 
         # Get the bill_payment_map for the transaction.
         my $bpmap = $class->bill_payment_map_for_xact($e, $mbt);
@@ -943,9 +946,14 @@ sub adjust_bills_to_zero {
             # each bill.
             my $xact_total = 0;
             map {$xact_total += $_->{bill}->amount()} @$bpmap;
+            last if $xact_total == 0;
 
             # Get the bill_payment_map entry for this bill:
             my ($bpentry) = grep {$_->{bill}->id() == $bill->id()} @$bpmap;
+            if (_within_refund_interval($bpentry, $interval)) {
+#TODO
+                next;
+            }
 
             # From here on out, use the bill object from the bill
             # payment map entry.
@@ -956,60 +964,34 @@ sub adjust_bills_to_zero {
             my $amount_to_void = $U->fpdiff($bpentry->{bill_amount},$bpentry->{void_amount});
 
             # Check if this bill is already voided.  We don't allow
-            # "double" voids regardless of settings.  The old code
-            # made it impossible to void an already voided bill, so
-            # we're doing the same.
+            # "double" voids regardless of settings.
             if ($amount_to_void <= 0) {
-                my $event = OpenILS::Event->new('BILL_ALREADY_VOIDED', payload => $bill);
-                $e->event($event);
-                return $event;
+                #my $event = OpenILS::Event->new('BILL_ALREADY_VOIDED', payload => $bill);
+                #$e->event($event);
+                #return $event;
+                next;
             }
 
-            # If we're voiding a circulation-related bill we have
-            # stuff to check.
-            if ($circ) {
-                if ($amount_to_void > $xact_total) {
-                    my $btype = $bill->btype();
-                    if ($btype == 1) {
-                        # Overdues
-                        $amount_to_void = $xact_total unless(_check_payment_interval($bpentry, $neg_balance_interval_overdues));
-                        $amount_to_void = $xact_total if ($U->is_true($prohibit_neg_balance_overdues));
-                    } elsif ($btype == 3 || $btype == 10) {
-                        # Lost or Long Overdue
-                        $amount_to_void = $xact_total unless(_check_payment_interval($bpentry, $neg_balance_interval_lost));
-                        $amount_to_void = $xact_total if ($U->is_true($prohibit_neg_balance_lost));
-                    } else {
-                        # Any other bill that we're trying to void.
-                        $amount_to_void = $xact_total unless(_check_payment_interval($bpentry, $neg_balance_interval_default));
-                        $amount_to_void = $xact_total if ($U->is_true($prohibit_neg_balance_default));
-                    }
-                }
-            } else {
-                # Grocery bills are simple by comparison.
-                if ($amount_to_void > $xact_total) {
-                    $amount_to_void = $xact_total unless(_check_payment_interval($bpentry, $neg_balance_interval_default));
-                    $amount_to_void = $xact_total if ($U->is_true($prohibit_neg_balance_default));
-                }
+            if ($amount_to_void > $xact_total) {
+                $amount_to_void = $xact_total;
             }
 
-            # Create the void payment if necessary:
-            if ($amount_to_void > 0) {
-                my $payobj = Fieldmapper::money::adjustment_payment->new;
-                $payobj->amount($amount_to_void);
-                $payobj->amount_collected($amount_to_void);
-                $payobj->xact($xactid);
-                $payobj->accepting_usr($e->requestor->id);
-                $payobj->payment_ts('now');
-                $payobj->billing($bill->id());
-                $payobj->note($note) if ($note);
-                $e->create_money_adjustment_payment($payobj) or return $e->die_event;
-                # Adjust our bill_payment_map
-                $bpentry->{void_amount} += $amount_to_void;
-                push @{$bpentry->{voids}}, $payobj;
-                # Should come to zero:
-                my $new_bill_amount = $U->fpdiff($bill->amount(),$amount_to_void);
-                $bill->amount($new_bill_amount);
-            }
+            # Create the adjustment payment
+            my $payobj = Fieldmapper::money::adjustment_payment->new;
+            $payobj->amount($amount_to_void);
+            $payobj->amount_collected($amount_to_void);
+            $payobj->xact($xactid);
+            $payobj->accepting_usr($e->requestor->id);
+            $payobj->payment_ts('now');
+            $payobj->billing($bill->id());
+            $payobj->note($note) if ($note);
+            $e->create_money_adjustment_payment($payobj) or return $e->die_event;
+            # Adjust our bill_payment_map
+            $bpentry->{void_amount} += $amount_to_void;
+            push @{$bpentry->{voids}}, $payobj;
+            # Should come to zero:
+            my $new_bill_amount = $U->fpdiff($bill->amount(),$amount_to_void);
+            $bill->amount($new_bill_amount);
         }
 
         my $org = $U->xact_org($xactid, $e);
@@ -1038,7 +1020,7 @@ sub adjust_bills_to_zero {
 # returns true if the interval argument is undefined or empty, or if
 # the bill has no payments whatsoever.  It will return false if the
 # entry has no payments other than voids.
-sub _check_payment_interval {
+sub _within_refund_interval {
     my ($entry, $interval) = @_;
     my $result = ($interval ? 0 : 1);
 

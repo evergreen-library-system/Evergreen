@@ -2635,7 +2635,7 @@ sub finish_fines_and_voiding {
     my $note = 'System: Amnesty Checkin' if $self->void_overdues;
 
     my $evt = $CC->void_or_zero_overdues(
-        $self->editor, $self->circ, $self->backdate, $note);
+        $self->editor, $self->circ, {backdate => $self->backdate, note => $note});
 
     return $self->bail_on_events($evt) if $evt;
 
@@ -3799,7 +3799,7 @@ sub checkin_handle_lost_or_lo_now_found {
     my $tag = $is_longoverdue ? "LONGOVERDUE" : "LOST";
 
     $logger->debug("voiding $tag item billings");
-    my $result = $CC->void_or_zero_bills_of_type($self->editor, $self->circ, $bill_type, "System: VOIDED FOR $tag ITEM RETURNED");
+    my $result = $CC->void_or_zero_bills_of_type($self->editor, $self->circ, $self->copy, $bill_type, "System: VOIDED FOR $tag ITEM RETURNED");
     $self->bail_on_events($self->editor->event) if ($result);
 }
 

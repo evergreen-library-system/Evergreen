@@ -743,9 +743,9 @@ sub set_item_lost_or_lod {
     $e->update_action_circulation($circ) or return $e->die_event;
 
     # ---------------------------------------------------------------------
-    # void all overdue fines on this circ if configured
+    # zero out overdue fines on this circ if configured
     if( $void_overdue ) {
-        my $evt = OpenILS::Application::Circ::CircCommon->void_or_zero_overdues($e, $circ);
+        my $evt = OpenILS::Application::Circ::CircCommon->void_or_zero_overdues($e, $circ, {force_zero => 1});
         return $evt if $evt;
     }
 

@@ -461,7 +461,7 @@ sub set_circ_claims_returned {
 
         # make it look like the circ stopped at the cliams returned time
         $circ->stop_fines_time($backdate);
-        my $evt = OpenILS::Application::Circ::CircCommon->void_or_zero_overdues($e, $circ, $backdate);
+        my $evt = OpenILS::Application::Circ::CircCommon->void_or_zero_overdues($e, $circ, {backdate => $backdate, note => 'System: OVERDUE REVERSED FOR CLAIMS-RETURNED', force_zero => 1});
         return $evt if $evt;
     }
 
@@ -604,7 +604,7 @@ sub post_checkin_backdate_circ_impl {
     $e->update_action_circulation($circ) or return $e->die_event;
 
     # now void the overdues "erased" by the back-dating
-    my $evt = OpenILS::Application::Circ::CircCommon->void_or_zero_overdues($e, $circ, $backdate);
+    my $evt = OpenILS::Application::Circ::CircCommon->void_or_zero_overdues($e, $circ, {backdate => $backdate});
     return $evt if $evt;
 
     # If the circ was closed before and the balance owned !=0, re-open the transaction
@@ -1331,7 +1331,7 @@ sub handle_mark_damaged {
         # the assumption is that you would not void the overdues unless you 
         # were also charging for the item and/or applying a processing fee
         if($void_overdue) {
-            my $evt = OpenILS::Application::Circ::CircCommon->void_or_zero_overdues($e, $circ);
+            my $evt = OpenILS::Application::Circ::CircCommon->void_or_zero_overdues($e, $circ, {note => 'System: OVERDUE REVERSED FOR DAMAGE CHARGE'});
             return $evt if $evt;
         }
 
