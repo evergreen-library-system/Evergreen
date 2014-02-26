@@ -67,22 +67,26 @@ sub void_or_zero_overdues {
     if ($billids && @$billids) {
         # overdue settings come from transaction org unit
         my $prohibit_neg_balance_overdues = (
-            $U->ou_ancestor_setting($circ->circ_lib(), 'bill.prohibit_negative_balance_on_overdues')
+            $U->ou_ancestor_setting_value($circ->circ_lib(), 'bill.prohibit_negative_balance_on_overdues')
             ||
-            $U->ou_ancestor_setting($circ->circ_lib(), 'bill.prohibit_negative_balance_default')
+            $U->ou_ancestor_setting_value($circ->circ_lib(), 'bill.prohibit_negative_balance_default')
         );
         my $neg_balance_interval_overdues = (
-            $U->ou_ancestor_setting($circ->circ_lib(), 'bill.negative_balance_interval_on_overdues')
+            $U->ou_ancestor_setting_value($circ->circ_lib(), 'bill.negative_balance_interval_on_overdues')
             ||
-            $U->ou_ancestor_setting($circ->circ_lib(), 'bill.negative_balance_interval_default')
+            $U->ou_ancestor_setting_value($circ->circ_lib(), 'bill.negative_balance_interval_default')
         );
         my $result;
-        # if we prohibit negative overdue balances outright, OR we have an
-        # interval setting which determines what we do, let
-        # adjust_bills_to_zero() do the heavy lifting
+        # if we prohibit negative overdue balances and all payments
+        # are outside the refund interval (if given), zero the transaction
         if ($opts->{force_zero}
-            or (!$opts->{force_void} and ($U->is_true($prohibit_neg_balance_overdues) or $neg_balance_interval_overdues))
-            ) {
+            or (!$opts->{force_void}
+                and (
+                    $U->is_true($prohibit_neg_balance_overdues)
+                    and !_has_refundable_payments($e, $circ->id, $neg_balance_interval_overdues)
+                )
+            )
+        ) {
             $result = $class->adjust_bills_to_zero($e, $billids, $opts->{note}, $neg_balance_interval_overdues);
         } else {
             # otherwise, just void the usual way
@@ -136,7 +140,7 @@ sub void_lost {
 # Returns undef on success or the result from void_bills.
 # ------------------------------------------------------------------
 sub void_or_zero_bills_of_type {
-    my ($class, $e, $circ, $copy, $btype, $note) = @_;
+    my ($class, $e, $circ, $copy, $btype, $for_note) = @_;
 
     # Get a bill payment map.
     my $bpmap = $class->bill_payment_map_for_xact($e, $circ);
@@ -146,16 +150,24 @@ sub void_or_zero_bills_of_type {
         if (@bills) {
             # settings for lost come from copy circlib.
             my $prohibit_neg_balance_lost = (
-                $U->ou_ancestor_setting($copy->circ_lib(), 'bill.prohibit_negative_balance_on_lost')
+                $U->ou_ancestor_setting_value($copy->circ_lib(), 'bill.prohibit_negative_balance_on_lost')
                 ||
-                $U->ou_ancestor_setting($copy->circ_lib(), 'bill.prohibit_negative_balance_default')
+                $U->ou_ancestor_setting_value($copy->circ_lib(), 'bill.prohibit_negative_balance_default')
             );
             my $neg_balance_interval_lost = (
-                $U->ou_ancestor_setting($copy->circ_lib(), 'bill.negative_balance_interval_on_lost')
+                $U->ou_ancestor_setting_value($copy->circ_lib(), 'bill.negative_balance_interval_on_lost')
                 ||
-                $U->ou_ancestor_setting($copy->circ_lib(), 'bill.negative_balance_interval_default')
+                $U->ou_ancestor_setting_value($copy->circ_lib(), 'bill.negative_balance_interval_default')
             );
-            my $result = $class->void_bills($e, \@bills, $note);
+            my $result;
+            if (
+                $U->is_true($prohibit_neg_balance_lost)
+                and !_has_refundable_payments($e, $circ->id, $neg_balance_interval_lost)
+            ) {
+                $result = $class->adjust_bills_to_zero($e, \@bills, "System: ADJUSTED $for_note");
+            } else {
+                $result = $class->void_bills($e, \@bills, "System: VOIDED $for_note");
+            }
             if (ref($result)) {
                 return $result;
             }
@@ -889,10 +901,9 @@ sub void_bills {
 
 
 # This subroutine actually handles "adjusting" bills to zero.  It takes a
-# CStoreEditor, an arrayref of bill ids or bills, an optional note, and an
-# optional interval.
+# CStoreEditor, an arrayref of bill ids or bills, and an optional note.
 sub adjust_bills_to_zero {
-    my ($class, $e, $billids, $note, $interval) = @_;
+    my ($class, $e, $billids, $note) = @_;
 
     # Get with the editor to see if we have permission to void bills.
     return $e->die_event unless $e->checkauth;
@@ -950,10 +961,6 @@ sub adjust_bills_to_zero {
 
             # Get the bill_payment_map entry for this bill:
             my ($bpentry) = grep {$_->{bill}->id() == $bill->id()} @$bpmap;
-            if (_within_refund_interval($bpentry, $interval)) {
-#TODO
-                next;
-            }
 
             # From here on out, use the bill object from the bill
             # payment map entry.
@@ -1012,38 +1019,34 @@ sub adjust_bills_to_zero {
     return 1;
 }
 
-# A helper function to check if the payments on a bill are within the
-# range of a given interval.  The first argument is the entry hash
-# from the bill payment map for the bill to check and the second
-# argument is the interval.  It returns true (1) if any of the bills
-# are within range of the interval, or false (0) otherwise.  It also
-# returns true if the interval argument is undefined or empty, or if
-# the bill has no payments whatsoever.  It will return false if the
-# entry has no payments other than voids.
-sub _within_refund_interval {
-    my ($entry, $interval) = @_;
-    my $result = ($interval ? 0 : 1);
+# A helper function to check if the payments on a bill are inside the
+# range of a given interval.
+# TODO: here is one simple place we could do voids in the absence
+# of any payments
+sub _has_refundable_payments {
+    my ($e, $xactid, $interval) = @_;
 
-    # A check to see if we were given the settings hash or the value:
-    if (ref($interval) eq 'HASH') {
-        $interval = $interval->{value};
-    }
+    # for now, just short-circuit with no interval
+    return 0 if (!$interval);
 
-    if ($interval && $entry && $entry->{payments} && @{$entry->{payments}}) {
-        my $interval_secs = interval_to_seconds($interval);
-        my @pay_dates = map {$_->payment_ts()} sort {$b->payment_ts() cmp $a->payment_ts()}  grep {$_->payment_type() ne 'adjustment_payment'} @{$entry->{payments}};
-        if (@pay_dates) {
-            # Since we've sorted the payment dates from highest to
-            # lowest, we really only need to check the 0th one.
-            my $payment_date = DateTime::Format::ISO8601->parse_datetime(cleanse_ISO8601($pay_dates[0]))->epoch;
-            my $now = time;
-            $result = 1 if ($payment_date + $interval_secs >= $now);
+    my $last_payment = $e->search_money_payment(
+        {
+            xact => $xactid,
+            payment_type => {"!=" => 'adjustment_payment'}
+        },{
+            limit => 1,
+            order_by => { mp => "payment_ts DESC" }
         }
-    } elsif ($interval && (!$entry->{payments} || !@{$entry->{payments}})) {
-        $result = 1;
+    );
+
+    if ($last_payment->[0]) {
+        my $interval_secs = interval_to_seconds($interval);
+        my $payment_ts = DateTime::Format::ISO8601->parse_datetime(cleanse_ISO8601($last_payment->[0]->payment_ts))->epoch;
+        my $now = time;
+        return 1 if ($payment_ts + $interval_secs >= $now);
     }
 
-    return $result;
+    return 0;
 }
 
 1;

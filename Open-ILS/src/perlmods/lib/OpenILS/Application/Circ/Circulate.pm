@@ -3799,7 +3799,7 @@ sub checkin_handle_lost_or_lo_now_found {
     my $tag = $is_longoverdue ? "LONGOVERDUE" : "LOST";
 
     $logger->debug("voiding $tag item billings");
-    my $result = $CC->void_or_zero_bills_of_type($self->editor, $self->circ, $self->copy, $bill_type, "System: VOIDED FOR $tag ITEM RETURNED");
+    my $result = $CC->void_or_zero_bills_of_type($self->editor, $self->circ, $self->copy, $bill_type, "$tag ITEM RETURNED");
     $self->bail_on_events($self->editor->event) if ($result);
 }
 
