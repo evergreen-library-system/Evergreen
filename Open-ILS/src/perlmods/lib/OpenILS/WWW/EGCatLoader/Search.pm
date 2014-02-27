@@ -296,6 +296,22 @@ sub load_rresults_bookbag_item_notes {
     return;
 }
 
+# $filter -- CCVM filter expression (see also composite attr def)
+sub recs_from_metarecord {
+    my ($self, $mr_id, $org, $depth, $filter) = @_;
+    $self->timelog("Getting metarecords to records");
+
+    my $bre_ids = $U->simplereq(
+        'open-ils.circ',
+        'open-ils.circ.holds.metarecord.filtered_records',
+        $mr_id, $filter, $org, $depth);
+
+    $self->timelog("Got metarecords to records");
+    return $bre_ids;
+}
+
+
+
 # context additions: 
 #   page_size
 #   hit_count
@@ -384,16 +400,9 @@ sub load_rresults {
     }
 
     if ($metarecord) {
-
-        # TODO: other limits, like SVF/format, etc.
-        $self->timelog("Getting metarecords to records");
-        my $bre_ids = $U->simplereq(
-            'open-ils.circ',
-            'open-ils.circ.holds.metarecord.filtered_records',
-            $metarecord, undef, $ctx->{search_ou}, $depth);
-
-        $self->timelog("Got metarecords to records");
-
+        my $bre_ids = $self->recs_from_metarecord(
+            $metarecord, $ctx->{search_ou}, $depth);
+       
         # force the metarecord result blob to match the format of regular search results
         $results->{ids} = [map { [$_] } @$bre_ids];
 
@@ -502,20 +511,6 @@ sub load_rresults {
     # load temporary_list settings for user and ou:
     $self->_load_lists_and_settings if ($ctx->{user});
 
-    # fetch metarecord constituent counts for display
-    my $mr_counts = [];
-    if ($is_meta) {
-        $mr_counts = $e->json_query({
-            select => {mmrsm => [{
-                    column => 'id', transform => 'count', 
-                    alias => 'count', aggregate => 1
-                }, 'metarecord'
-            ]},
-            from => 'mmrsm',
-            where => {'+mmrsm' => {metarecord => $rec_ids}}
-        });
-    }
-
     # shove recs into context in search results order
     for my $rec_id (@$rec_ids) {
         my ($rec) = grep { $_->{$id_key} == $rec_id } @data;
@@ -525,9 +520,10 @@ sub load_rresults {
             if $metarecord_master and $metarecord_master eq $rec_id;
 
         if ($is_meta) {
-            # add the count of constituent records to the metarecord
-            my ($count) = grep {$_->{metarecord} == $rec_id} @$mr_counts;
-            $rec->{mr_constituent_count} = $count->{count};
+            # collect filtered, constituent records count for each MR
+            my $bre_ids = $self->recs_from_metarecord(
+                $rec_id, $ctx->{search_ou}, $depth);
+            $rec->{mr_constituent_count} = scalar(@$bre_ids);
         }
     }
 
