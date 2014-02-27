@@ -44,6 +44,7 @@ limiting the set of desired records for a given metarecord.
   <div class="metarecord_filter_container">
     <div class="metarecord_filter_header">
       <div>[% l('Select your desired format(s).') %]</div>
+      <div>[% l('If none are selected, any available formats may be used.') %]</div>
     </div>
     <select multiple='multiple' 
       name="metarecord_formats_[% target_id %]">
@@ -62,7 +63,8 @@ limiting the set of desired records for a given metarecord.
   %]
   <div class="metarecord_filter_container">
     <div class="metarecord_filter_header">
-      [% l('Select your desired language(s)') %]
+      <div>[% l('Select your desired language(s).') %]</div>
+      <div>[% l('If none are selected, any available languages may be used.') %]</div>
     </div>
     <select multiple='multiple' 
       name="metarecord_langs_[% target_id %]">

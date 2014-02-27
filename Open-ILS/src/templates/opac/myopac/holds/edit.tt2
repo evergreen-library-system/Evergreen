@@ -102,7 +102,7 @@
                     </tr>
                     [% END %]
                      
-                    <tr><td colspan='2'>
+                    <tr><td colspan='4'>
                     [% IF hold.metarecord_filters.formats.size OR
                         hold.metarecord_filters.langs.size > 1;
                             PROCESS metarecord_hold_filters_selector 
