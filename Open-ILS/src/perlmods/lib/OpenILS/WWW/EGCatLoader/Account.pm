@@ -583,10 +583,14 @@ sub fetch_user_holds {
                     (undef, @data) = $self->get_records_and_facets(
                         [$hold->target], undef, {flesh => '{mra}', metarecord => 1});
 
+                    my $filter_org = $U->org_unit_ancestor_at_depth(
+                        $hold->selection_ou,
+                        $hold->selection_depth);
+
                     my $filter_data = $U->simplereq(
                         'open-ils.circ',
                         'open-ils.circ.mmr.holds.filters.authoritative.atomic', 
-                        $hold->target, $hold->selection_ou, [$hold->id]
+                        $hold->target, $filter_org, [$hold->id]
                     );
 
                     $blob->{metarecord_filters} = 
@@ -1134,7 +1138,7 @@ sub compile_holdable_formats {
     my $cgi = $self->cgi;
 
     # exit early if not needed
-    return "" unless 
+    return undef unless 
         grep /metarecord_formats_|metarecord_langs_/, 
         $cgi->param;
 

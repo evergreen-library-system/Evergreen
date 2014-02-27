@@ -26,7 +26,7 @@ limiting the set of desired records for a given metarecord.
 
 [% BLOCK metarecord_hold_filters_selector;
     # in edit mode, pull the target from the existing hold
-    target_id = hold_data.target.id || hold_data.hold.hold.target;
+    target_id = hold_data.hold.hold.target || hold_data.target.id;
 
     selected_formats = {};
     selected_langs = {};
@@ -75,8 +75,9 @@ limiting the set of desired records for a given metarecord.
             IF selected_langs.size;
                 # user has already selected their preferred language(s)
                 SET selected = 1 IF selected_langs.$code;
-            ELSE;
-                # no prefered language selected, default to current locale
+
+            ELSIF !hold_data.hold.hold.target; # new hold
+                # no prefered language selected; use current locale
                 SET selected = 1 IF code == my_lang;
             END;
         %]
