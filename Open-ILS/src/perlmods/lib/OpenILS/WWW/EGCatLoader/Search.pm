@@ -387,15 +387,15 @@ sub load_rresults {
 
         # TODO: other limits, like SVF/format, etc.
         $self->timelog("Getting metarecords to records");
-        $results = $U->simplereq(
-            'open-ils.search', 
-            'open-ils.search.biblio.metarecord_to_records',
-            $metarecord, {org => $ctx->{search_ou}, depth => $depth}
-        );
+        my $bre_ids = $U->simplereq(
+            'open-ils.circ',
+            'open-ils.circ.holds.metarecord.filtered_records',
+            $metarecord, undef, $ctx->{search_ou}, $depth);
+
         $self->timelog("Got metarecords to records");
 
         # force the metarecord result blob to match the format of regular search results
-        $results->{ids} = [map { [$_] } @{$results->{ids}}]; 
+        $results->{ids} = [map { [$_] } @$bre_ids];
 
     } else {
 
