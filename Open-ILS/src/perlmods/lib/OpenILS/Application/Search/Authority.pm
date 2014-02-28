@@ -71,10 +71,9 @@ sub search_authority_by_simple_normalize_heading {
         from   => 'are',
         where  => {
             deleted => 'f',
-            marc => { 'startwith' => {
-                transform => 'authority.simple_normalize_heading',
-                value     => [ 'authority.simple_normalize_heading' => $marcxml ]
-            }},
+            simple_heading => {
+                'startwith' => [ 'authority.simple_normalize_heading' => $marcxml ]
+            },
             defined($controlset) ? ( control_set => $controlset ) : ()
         }
     };

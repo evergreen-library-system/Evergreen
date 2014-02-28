@@ -131,7 +131,9 @@ CREATE TABLE authority.record_entry (
     control_set     INT     REFERENCES authority.control_set (id) ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED,
     marc            TEXT    NOT NULL,
     last_xact_id    TEXT    NOT NULL,
-    owner           INT
+    owner           INT,
+    heading         TEXT,
+    simple_heading  TEXT
 );
 CREATE INDEX authority_record_entry_creator_idx ON authority.record_entry ( creator );
 CREATE INDEX authority_record_entry_editor_idx ON authority.record_entry ( editor );
@@ -207,7 +209,7 @@ CREATE RULE protect_authority_rec_delete AS ON DELETE TO authority.record_entry 
 
 -- Intended to be used in a unique index on authority.record_entry like so:
 -- CREATE UNIQUE INDEX unique_by_heading_and_thesaurus
---   ON authority.record_entry (authority.normalize_heading(marc))
+--   ON authority.record_entry (heading)
 --   WHERE deleted IS FALSE or deleted = FALSE;
 CREATE OR REPLACE FUNCTION authority.normalize_heading( marcxml TEXT, no_thesaurus BOOL ) RETURNS TEXT AS $func$
 DECLARE
@@ -409,6 +411,17 @@ index to defend against duplicated authority records from the same
 thesaurus.
 $$;
 
+-- Store these in line with the MARC for easier indexing
+CREATE OR REPLACE FUNCTION authority.normalize_heading_for_upsert () RETURNS TRIGGER AS $f$
+BEGIN
+    NEW.heading := authority.normalize_heading( NEW.marc );
+    NEW.simple_heading := authority.simple_normalize_heading( NEW.marc );
+    RETURN NEW;
+END;
+$f$ LANGUAGE PLPGSQL;
+
+CREATE TRIGGER update_headings_tgr BEFORE INSERT OR UPDATE ON authority.record_entry FOR EACH ROW EXECUTE PROCEDURE authority.normalize_heading_for_upsert();
+
 -- Adding indexes using oils_xpath_string() for the main entry tags described in
 -- authority.control_set_authority_field would speed this up, if we ever want to use it, though
 -- the existing index on authority.normalize_heading() helps already with a record in hand
@@ -424,7 +437,7 @@ CREATE OR REPLACE VIEW authority.tracing_links AS
             link.id AS link_id,
             link.tag AS link_tag,
             oils_xpath_string('//*[@tag="'||link.tag||'"]/*[local-name()="subfield"]', are.marc) AS link_value,
-            authority.normalize_heading(are.marc) AS normalized_main_value
+            are.heading AS normalized_main_value
       FROM  authority.full_rec main
             JOIN authority.record_entry are ON (main.record = are.id)
             JOIN authority.control_set_authority_field main_entry
