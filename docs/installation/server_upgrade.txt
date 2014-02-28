@@ -36,7 +36,7 @@ as catalogue skins.
 +
 [source, bash]
 -----------------------------
-osrf_ctl.sh -l -a stop_all
+osrf_control --localhost --stop-all
 -----------------------------
 +
  .. Back up the /openils directory.
@@ -197,7 +197,7 @@ Restart Evergreen and Test
 +
 [source, bash]
 --------------------------------------------------------------
-osrf_ctl.sh -l -a start_all
+osrf_control --localhost --start-all
 --------------------------------------------------------------
 +
 . As the opensrf user, run autogen to refresh the static organizational data files:

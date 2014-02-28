@@ -238,16 +238,10 @@ the fieldmapper definitions.
 /openils/bin/autogen.sh
 -------------
 +    
-. As the *opensrf* user, restart Perl services:
+. As the *opensrf* user, restart services:
 +
 -------------
-osrf_ctl.sh -l -a restart_perl
--------------
-+    
-. As the *opensrf* user, restart C services:
-+
--------------
-osrf_ctl.sh -l -a restart_c
+osrf_control --localhost --restart-services
 -------------
 +
 . As the *root* user, restart the Apache web server:

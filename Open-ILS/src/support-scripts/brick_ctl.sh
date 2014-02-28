@@ -42,18 +42,13 @@ function usage {
     echo "  -f <build_file> : the name of the bundle to fetch";
     echo "  -x <xul_dir> : staff client build directory";
     echo "  -i <xul_build_id> : staff client build ID";
+    echo "  -s <service_name> : apply action only to specified service";
     echo "Actions:";    
     echo "  fetch";
-    echo "  start_perl";
-    echo "  start_c";
     echo "  start_osrf";
     echo "  start_all";
-    echo "  stop_perl";
-    echo "  stop_c";
     echo "  stop_osrf";
     echo "  stop_all";
-    echo "  restart_perl";
-    echo "  restart_c";
     echo "  restart_osrf";
     echo "  restart_all";
     echo "  build";
@@ -94,14 +89,14 @@ else
     fi;
 fi;
 
-[ -n "$OPT_LOCALHOST" ] && PERL_LOCALHOST_FLAG="--localhost";
+[ -n "$OPT_LOCALHOST" ] && SERVICE_LOCALHOST_FLAG="--localhost";
 
 # make sure an action was specified
 [ -z "$OPT_ACTION" ] && usage;
 
-LOCAL_BASE="osrf_ctl.sh $OPT_LOCALHOST -d $OSRF_PID_DIR -c $OSRF_CONFIG";
-DRONE_BASE=". /etc/profile && osrf_ctl.sh -d $OSRF_PID_DIR -c $OSRF_CONFIG";
-PERL_CONTROLLER="opensrf-perl.pl --verbose $PERL_LOCALHOST_FLAG --config $OSRF_CONFIG --pid-dir $OSRF_PID_DIR --action $OPT_ACTION --service $OPT_SERVICE";
+LOCAL_BASE="osrf_control $OPT_LOCALHOST --pid-dir $OSRF_PID_DIR --config $OSRF_CONFIG";
+DRONE_BASE=". /etc/profile && osrf_control --pid-dir $OSRF_PID_DIR --config $OSRF_CONFIG";
+SERVICE_CONTROLLER="osrf_control $SERVICE_LOCALHOST_FLAG --config $OSRF_CONFIG --pid-dir $OSRF_PID_DIR --service $OPT_SERVICE";
 
 # -------------------------------------------------------------------
 # Runs DRONE_ACT on the drones, then LOCAL_ACT on the local machine
@@ -194,33 +189,34 @@ function fetch_build {
 # When other active languages are added, this script will need a language param
 # to determine which controller script to call.
 if [ -n "$OPT_SERVICE" ]; then
-    local_first "$PERL_CONTROLLER" "$PERL_CONTROLLER";
+    case $OPT_ACTION in
+        "start_osrf") local_first "$SERVICE_CONTROLLER --start" \
+            "$SERVICE_CONTROLLER --start";;
+        "stop_osrf") local_first "$SERVICE_CONTROLLER --stop" \
+            "$SERVICE_CONTROLLER --stop";;
+        "restart_osrf") local_first "$SERVICE_CONTROLLER --restart" \
+            "$SERVICE_CONTROLLER --restart";;
+        *) echo "Can only do start_osrf, stop_osrf, or restart_osrf for an individual service";;
+    esac;
     exit;
 fi;
 
 case $OPT_ACTION in
 
-    "start_osrf") local_first "$LOCAL_BASE -a start_perl && $LOCAL_BASE -a start_c" \
-        "$DRONE_BASE -a start_perl && $DRONE_BASE -a start_c";;
+    "start_osrf") local_first "$LOCAL_BASE --start-services" \
+        "$DRONE_BASE --start-services";;
 
-    "stop_osrf") drone_first "$LOCAL_BASE -a stop_perl && $LOCAL_BASE -a stop_c" \
-        "$DRONE_BASE -a stop_perl && $DRONE_BASE -a stop_c";;
+    "stop_osrf") drone_first "$LOCAL_BASE --stop-services" \
+        "$DRONE_BASE --stop-services";;
 
-    "restart_osrf") local_first "$LOCAL_BASE -a restart_perl && $LOCAL_BASE -a restart_c" \
-        "$DRONE_BASE -a restart_perl && $DRONE_BASE -a restart_c";;
+    "restart_osrf") local_first "$LOCAL_BASE --restart-services" \
+        "$DRONE_BASE --restart-services";;
 
-    "start_perl") local_first "$LOCAL_BASE -a start_perl" "$DRONE_BASE -a start_perl";;
-    "stop_perl") drone_first "$LOCAL_BASE -a stop_perl" "$DRONE_BASE -a stop_perl";;
-    "restart_perl") local_first "$LOCAL_BASE -a restart_perl" "$DRONE_BASE -a restart_perl";;
-    "start_c") local_first "$LOCAL_BASE -a start_c" "$DRONE_BASE -a start_c";;
-    "stop_c") drone_first "$LOCAL_BASE -a stop_c" "$DRONE_BASE -a stop_c";;
-    "restart_c") local_first "$LOCAL_BASE -a restart_c" "$DRONE_BASE -a restart_c";;
+    "start_all") local_first "$LOCAL_BASE --start-all" \
+        "$DRONE_BASE --start-services";;
 
-    "start_all") local_first "$LOCAL_BASE -a start_all" \
-        "$DRONE_BASE -a start_perl && $DRONE_BASE -a start_c";;
-
-    "stop_all") drone_first "$LOCAL_BASE -a stop_all" \
-        "$DRONE_BASE -a stop_perl && $DRONE_BASE -a stop_c";;
+    "stop_all") drone_first "$LOCAL_BASE --stop-all" \
+        "$DRONE_BASE --stop-services";;
 
     "restart_all") $0 $OPT_LOCALHOST -a stop_all; $0 $OPT_LOCALHOST -a start_all;;
     "build") cd ~/ILS/ && make clean default_config all;;

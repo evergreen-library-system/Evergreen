@@ -130,7 +130,7 @@ else
 fi
 
 sudo /etc/init.d/apache2 stop;
-$INSTALL/bin/osrf_ctl.sh -l -a stop_all;
+$INSTALL/bin/osrf_control --localhost --stop-all;
 
 # OpenSRF perl directory is not shared.  update the drone
 # ssh 10.5.0.202 "./update_osrf_perl.sh";
@@ -195,7 +195,7 @@ ln -s current/server server;
     
 
 sudo chown -R opensrf:opensrf $OSRF $ILS
-$INSTALL/bin/osrf_ctl.sh -l -a start_all
+$INSTALL/bin/osrf_control --localhost --start-all
 sleep 2;
 cd $INSTALL/bin; ./autogen.sh ../conf/opensrf_core.xml;
 sudo /etc/init.d/apache2 start;
