@@ -5,6 +5,9 @@
 
 <div id='holds_box' class='canvas' style='margin-top: 6px;'>
     <h1>[% l('Place Hold') %]</h1>
+
+    [% some_holds_allowed = -1 %]
+      
     <form method="post">
         <input type="hidden" name="hold_type" value="[% CGI.param('hold_type') | html %]" />
         [%  
@@ -49,12 +52,25 @@
         <table id='hold-items-list'>
         [% FOR hdata IN ctx.hold_data;
             attrs = {marc_xml => hdata.marc_xml};
-            PROCESS get_marc_attrs args=attrs %]
+            PROCESS get_marc_attrs args=attrs;
+            this_hold_disallowed = 0;
+
+            IF CGI.param('hold_type') == 'M';
+              IF hdata.metarecord_filters.formats.size == 0;
+                this_hold_disallowed = 1;
+                # if this is the first hold and it's disallowed, 
+                # assume all holds are, until we proven otherwise
+                SET some_holds_allowed = 0 IF some_holds_allowed == -1;
+              ELSE; some_holds_allowed = 1; END;
+            END %]
+
             <tr>
                 <td>
+                    [% IF !this_hold_disallowed %]
                     <input type="hidden" name="hold_target" value="[% hdata.target.id | html %]" />
+                    [% END %]
                     <div class='hold-items-list-title'>[% attrs.title_extended | html %]</div>
-                    [% IF hdata.parts %]
+                    [% IF hdata.parts AND !this_hold_disallowed %]
                         [% IF hdata.parts.size > 0 %]
                         <div style='padding-left: 10px'>
                             <span><label for='select_hold_part'>[%
@@ -86,8 +102,23 @@
                     END %]
                 </td>
             </tr>
+
+            [% IF this_hold_disallowed %]
+              <tr><td>
+                <div class="mr_holds_no_formats">
+                [% l('This item does not have any formats available for holds placement') %]
+                </div>
+              </td></tr>
+            [% END %]
+
+            [%  IF !loop.last AND ctx.hold_data.size > 1 %]
+            <tr class="holds_item_row_separator"><td> </td></tr>
+            [% END %]
+
         [% END %]
         </table>
+
+        [% IF some_holds_allowed %]
 
         <p>
             [%- org_select_id = 'pickup_lib'; -%]
@@ -128,8 +159,10 @@
                 [% END %]
             </blockquote>
         </p>
-        <input id="place_hold_submit" type="submit" name="submit" value="[% l('Submit') %]" title="[% l('Submit') %]"
+        <input id="place_hold_submit" type="submit" name="submit" 
+            value="[% l('Submit') %]" title="[% l('Submit') %]"
             alt="[% l('Submit') %]" class="opac-button" />
+        [% END # some_holds_allowed %]
         <input type="reset" name="cancel" onclick="javascript:history.go(-1);"
             value="[% l('Cancel') %]" id="holds_cancel" class="opac-button" />
     </form>
