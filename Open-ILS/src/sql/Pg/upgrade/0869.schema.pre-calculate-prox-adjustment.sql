@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('0869', :eg_version);
+
 CREATE OR REPLACE FUNCTION action.hold_copy_calculated_proximity_update () RETURNS TRIGGER AS $f$
 BEGIN
     NEW.proximity := action.hold_copy_calculated_proximity(NEW.hold,NEW.target_copy);
