@@ -9,6 +9,7 @@ use OpenSRF::AppSession;
 use OpenSRF::EX qw/:try/;
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Utils::PermitHold;
+use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use DateTime;
 use DateTime::Format::ISO8601;
 use OpenILS::Utils::Penalty;
@@ -58,12 +59,12 @@ sub isTrue {
 
 sub ou_ancestor_setting_value_or_cache {
 	# cache should be specific to setting
-	my ($actor, $org_id, $setting, $cache) = @_;
+    my ($e, $org_id, $setting, $cache) = @_;
 
 	if (not exists $cache->{$org_id}) {
-		my $r = $actor->request(
-			'open-ils.actor.ou_setting.ancestor_default', $org_id, $setting
-		)->gather(1);
+        my $r = $U->ou_ancestor_setting(
+            $org_id, $setting, $e # undef $e is ok
+        );
 
 		if ($r) {
 			$cache->{$org_id} = $r->{value};
@@ -1385,6 +1386,7 @@ sub new_hold_copy_targeter {
 
 	my @successes;
 	my $actor = OpenSRF::AppSession->create('open-ils.actor');
+    my $editor = new_editor;
 
 	my $target_when_closed = {};
 	my $target_when_closed_if_at_pickup_lib = {};
@@ -1575,7 +1577,7 @@ sub new_hold_copy_targeter {
 
 				if (''.$hold->pickup_lib eq ''.$c->circ_lib) {
 					$ignore_closing = ou_ancestor_setting_value_or_cache(
-                        $actor,
+                        $editor,
 						''.$c->circ_lib,
 						'circ.holds.target_when_closed_if_at_pickup_lib',
 						$target_when_closed_if_at_pickup_lib
@@ -1584,7 +1586,7 @@ sub new_hold_copy_targeter {
 				if (not $ignore_closing) {  # one more chance to find a reason
 											# to ignore OU closedness.
 					$ignore_closing = ou_ancestor_setting_value_or_cache(
-                        $actor,
+                        $editor,
 						''.$c->circ_lib,
 						'circ.holds.target_when_closed',
 						$target_when_closed
@@ -1663,9 +1665,9 @@ sub new_hold_copy_targeter {
 			if (!$best) {
 				$log->debug("\tNothing at the pickup lib, looking elsewhere among ".scalar(@$all_copies)." copies");
 
-				$self->{max_loops}{$pu_lib} = $actor->request(
-					'open-ils.actor.ou_setting.ancestor_default' => $pu_lib => 'circ.holds.max_org_unit_target_loops'
-				)->gather(1);
+                $self->{max_loops}{$pu_lib} = $U->ou_ancestor_setting(
+                    $pu_lib, 'circ.holds.max_org_unit_target_loops', $editor
+                );
 
 				if (defined($self->{max_loops}{$pu_lib})) {
 					$self->{max_loops}{$pu_lib} = $self->{max_loops}{$pu_lib}{value};
@@ -2241,18 +2243,17 @@ sub create_prox_list {
 	my $copies = shift;
 	my $hold = shift;
 
-	my $actor = OpenSRF::AppSession->create('open-ils.actor');
-
 	my %prox_list;
+    my $editor = new_editor;
 	for my $cp (@$copies) {
 		my ($prox) = $self->method_lookup('open-ils.storage.asset.copy.proximity')->run( $cp, $lib, $hold );
 		next unless (defined($prox));
 
         my $copy_circ_lib = ''.$cp->circ_lib;
 		# Fetch the weighting value for hold targeting, defaulting to 1
-		$self->{target_weight}{$copy_circ_lib} ||= $actor->request(
-			'open-ils.actor.ou_setting.ancestor_default' => $copy_circ_lib.'' => 'circ.holds.org_unit_target_weight'
-		)->gather(1);
+        $self->{target_weight}{$copy_circ_lib} ||= $U->ou_ancestor_setting(
+            $copy_circ_lib.'', 'circ.holds.org_unit_target_weight', $editor
+        );
         $self->{target_weight}{$copy_circ_lib} = $self->{target_weight}{$copy_circ_lib}{value} if (ref $self->{target_weight}{$copy_circ_lib});
         $self->{target_weight}{$copy_circ_lib} ||= 1;
 
