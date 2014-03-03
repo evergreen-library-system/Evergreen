@@ -75,14 +75,14 @@ BEGIN
     FOR current_selector IN SELECT * FROM url_verify.url_selector s WHERE s.session = session_id LOOP
         current_url_pos := 1;
         LOOP
-            SELECT  (XPATH(current_selector.xpath || '/text()', b.marc::XML))[current_url_pos]::TEXT INTO current_url
+            SELECT  (oils_xpath(current_selector.xpath || '/text()', b.marc))[current_url_pos] INTO current_url
               FROM  biblio.record_entry b
                     JOIN container.biblio_record_entry_bucket_item c ON (c.target_biblio_record_entry = b.id)
               WHERE c.id = item_id;
 
             EXIT WHEN current_url IS NULL;
 
-            SELECT  (XPATH(current_selector.xpath || '/../@tag', b.marc::XML))[current_url_pos]::TEXT INTO current_tag
+            SELECT  (oils_xpath(current_selector.xpath || '/../@tag', b.marc))[current_url_pos] INTO current_tag
               FROM  biblio.record_entry b
                     JOIN container.biblio_record_entry_bucket_item c ON (c.target_biblio_record_entry = b.id)
               WHERE c.id = item_id;
@@ -93,7 +93,7 @@ BEGIN
                 last_seen_tag := current_tag;
             END IF;
 
-            SELECT  (XPATH(current_selector.xpath || '/@code', b.marc::XML))[current_url_pos]::TEXT INTO current_sf
+            SELECT  (oils_xpath(current_selector.xpath || '/@code', b.marc))[current_url_pos] INTO current_sf
               FROM  biblio.record_entry b
                     JOIN container.biblio_record_entry_bucket_item c ON (c.target_biblio_record_entry = b.id)
               WHERE c.id = item_id;
