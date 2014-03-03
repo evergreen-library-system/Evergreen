@@ -469,18 +469,6 @@ sub load_rresults {
 
     my $fetch_recs = $rec_ids;
 
-    my $metarecord_master;
-    if ($metarecord) {
-        # when listing the contents of a metarecord, be sure to fetch
-        # the lead record for summary display.  Adding the ID to
-        # $fetch_recs lets us grab the record (if necessary) w/o it
-        # unintentially becoming a member of the result set.
-        my $mr = $e->retrieve_metabib_metarecord($metarecord);
-        push(@$fetch_recs, $mr->master_record)
-            unless grep {$_ eq $mr->master_record} @$fetch_recs;
-        $metarecord_master = $mr->master_record;
-    }
-
     $self->timelog("Calling get_records_and_facets()");
     my ($facets, @data) = $self->get_records_and_facets(
         $fetch_recs, $results->{facet_key}, 
@@ -515,9 +503,6 @@ sub load_rresults {
     for my $rec_id (@$rec_ids) {
         my ($rec) = grep { $_->{$id_key} == $rec_id } @data;
         push(@{$ctx->{records}}, $rec);
-
-        $ctx->{metarecord_master} = $rec
-            if $metarecord_master and $metarecord_master eq $rec_id;
 
         if ($is_meta) {
             # collect filtered, constituent records count for each MR
