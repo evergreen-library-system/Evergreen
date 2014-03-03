@@ -350,10 +350,10 @@ BEGIN
         nfi_used := acsaf.nfi;
         joiner_text := COALESCE(acsaf.joiner, ' ');
 
-        FOR tmp_xml IN SELECT UNNEST(XPATH('//*[@tag="'||tag_used||'"]', marcxml::XML)) LOOP
+        FOR tmp_xml IN SELECT UNNEST(XPATH('//*[@tag="'||tag_used||'"]', marcxml::XML)::TEXT[]) LOOP
 
             heading_text := COALESCE(
-                oils_xpath_string('./*[contains("'||acsaf.display_sf_list||'",@code)]', tmp_xml::TEXT, joiner_text),
+                oils_xpath_string('./*[contains("'||acsaf.display_sf_list||'",@code)]', tmp_xml, joiner_text),
                 ''
             );
 
