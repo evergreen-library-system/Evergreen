@@ -301,10 +301,12 @@ sub recs_from_metarecord {
     my ($self, $mr_id, $org, $depth, $filter) = @_;
     $self->timelog("Getting metarecords to records");
 
+    # in the context of searching, we include all records which
+    # have an opac-visible copy.
     my $bre_ids = $U->simplereq(
         'open-ils.circ',
         'open-ils.circ.holds.metarecord.filtered_records',
-        $mr_id, $filter, $org, $depth);
+        $mr_id, $filter, $org, $depth, 1);
 
     $self->timelog("Got metarecords to records");
     return $bre_ids;

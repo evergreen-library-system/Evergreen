@@ -2498,9 +2498,13 @@ sub MR_filter_records {
     my $f = shift;
     my $o = shift;
     my $d = shift;
+    my $opac_visible = shift;
     
     my $org_at_depth = defined($d) ? $U->org_unit_ancestor_at_depth($o, $d) : $o;
-    return $U->storagereq('open-ils.storage.metarecord.filtered_records.atomic', $m, $f, $org_at_depth);
+    return $U->storagereq(
+        'open-ils.storage.metarecord.filtered_records.atomic', 
+        $m, $f, $org_at_depth, $opac_visible
+    );
 }
 __PACKAGE__->register_method(
     method   => 'MR_filter_records',

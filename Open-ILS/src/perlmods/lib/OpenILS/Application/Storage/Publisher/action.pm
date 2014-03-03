@@ -1290,6 +1290,8 @@ sub MR_records_matching_format {
     my $MR = shift;
     my $filter = shift;
     my $org = shift;
+    # include all visible copies, regardless of holdability
+    my $opac_visible = shift;
 
     # find filters for MR holds
     my $mr_filter;
@@ -1303,10 +1305,22 @@ sub MR_records_matching_format {
 
     my $records = [metabib::metarecord->retrieve($MR)->source_records];
 
-    my $q = 'SELECT source FROM metabib.record_attr_vector_list WHERE source = ? AND vlist @@ ? AND asset.record_has_holdable_copy(?,?)';
+    my $vis_q = 'asset.record_has_holdable_copy(?,?)';
+    if ($opac_visible) {
+        $vis_q = <<'        SQL';
+            EXISTS(
+                SELECT 1 FROM asset.opac_visible_copies
+                WHERE record = ? AND circ_lib IN (
+                    SELECT id FROM actor.org_unit_descendants(?)
+                )
+            )
+        SQL
+    }
+
+    my $q = "SELECT source FROM metabib.record_attr_vector_list WHERE source = ? AND vlist @@ ? AND $vis_q";
     my @args = ( $mr_filter, $org );
     if (!$mr_filter) {
-        $q = 'SELECT true WHERE asset.record_has_holdable_copy(?,?)';
+        $q = "SELECT true WHERE $vis_q";
         @args = ( $org );
     }
 
