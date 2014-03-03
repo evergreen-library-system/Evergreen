@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2004-2008  Georgia Public Library Service
- * Copyright (C) 2008  Equinox Software, Inc.
+ * Copyright (C) 2008-2014  Equinox Software, Inc.
  * Mike Rylander <miker@esilibrary.com>
  *
  * This program is free software; you can redistribute it and/or
@@ -18,172 +18,50 @@
 
 BEGIN;
 
-/*
-CREATE OR REPLACE FUNCTION oils_xml_transform ( TEXT, TEXT ) RETURNS TEXT AS $_$
-	SELECT	CASE	WHEN (SELECT COUNT(*) FROM config.xml_transform WHERE name = $2 AND xslt = '---') > 0 THEN $1
-			ELSE xslt_process($1, (SELECT xslt FROM config.xml_transform WHERE name = $2))
-		END;
-$_$ LANGUAGE SQL STRICT IMMUTABLE;
+CREATE OR REPLACE FUNCTION evergreen.xml_famous5_to_text( TEXT ) RETURNS TEXT AS $f$
+ SELECT REPLACE(
+            REPLACE(
+                REPLACE(
+                    REPLACE(
+                        REPLACE( $1, '&lt;', '<'),
+                        '&gt;',
+                        '>'
+                    ),
+                    '&apos;',
+                    $$'$$
+                ), -- ' ... vim
+                '&quot;',
+                '"'
+            ),
+            '&amp;',
+            '&'
+        );
+$f$ LANGUAGE SQL IMMUTABLE;
 
-CREATE OR REPLACE FUNCTION public.extract_marc_field ( TEXT, BIGINT, TEXT, TEXT ) RETURNS TEXT AS $$
-    SELECT regexp_replace(string_agg(output,' '),$4,'','g') FROM oils_xpath_table('id', 'marc', $1, $3, 'id='||$2)x(id INT, output TEXT);
-$$ LANGUAGE SQL;
+CREATE OR REPLACE FUNCTION evergreen.oils_xpath ( TEXT, TEXT, TEXT[] ) RETURNS TEXT[] AS $f$
+    SELECT  ARRAY_AGG(
+                CASE WHEN strpos(x,'<') = 1 THEN -- It's an element node
+                    x
+                ELSE -- it's text-ish
+                    evergreen.xml_famous5_to_text(x)
+                END
+            )
+      FROM  UNNEST(XPATH( $1, $2::XML, $3 )::TEXT[]) x;
+$f$ LANGUAGE SQL IMMUTABLE;
 
-CREATE OR REPLACE FUNCTION oils_xml_uncache (xml TEXT) RETURNS BOOL AS $func$
-  delete $_SHARED{'_xslt_process'}{docs}{shift()};
-  return 1;
-$func$ LANGUAGE PLPERLU;
+-- Trust me, it's just simpler to duplicate these...
+CREATE OR REPLACE FUNCTION evergreen.oils_xpath ( TEXT, TEXT ) RETURNS TEXT[] AS $f$
+    SELECT  ARRAY_AGG(
+                CASE WHEN strpos(x,'<') = 1 THEN -- It's an element node
+                    x
+                ELSE -- it's text-ish
+                    evergreen.xml_famous5_to_text(x)
+                END
+            )
+      FROM  UNNEST(XPATH( $1, $2::XML)::TEXT[]) x;
+$f$ LANGUAGE SQL IMMUTABLE;
 
-CREATE OR REPLACE FUNCTION oils_xml_cache (xml TEXT) RETURNS BOOL AS $func$
-  use strict;
-  use XML::LibXML;
-
-  my $doc = shift;
-
-  # The following approach uses the older XML::LibXML 1.69 / XML::LibXSLT 1.68
-  # methods of parsing XML documents and stylesheets, in the hopes of broader
-  # compatibility with distributions
-  my $parser = $_SHARED{'_xslt_process'}{parsers}{xml} || XML::LibXML->new();
-
-  # Cache the XML parser, if we do not already have one
-  $_SHARED{'_xslt_process'}{parsers}{xml} = $parser
-    unless ($_SHARED{'_xslt_process'}{parsers}{xml});
-
-  # Parse and cache the doc
-  eval { $_SHARED{'_xslt_process'}{docs}{$doc} = $parser->parse_string($doc) };
-
-  return 0 if ($@);
-  return 1;
-$func$ LANGUAGE PLPERLU;
-
--- if we use these, we need to ...
-drop function oils_xpath(text, text, anyarray);
-
-CREATE OR REPLACE FUNCTION oils_xpath (xpath TEXT, xml TEXT, ns TEXT[][]) RETURNS TEXT[] AS $func$
-  use strict;
-  use XML::LibXML;
-
-  my $xpath = shift;
-  my $doc = shift;
-  my $ns_string = shift || '';
-  #elog(NOTICE,"ns_string: $ns_string");
-
-  my %ns_list = $ns_string =~ m/\{([^{,]+),([^}]+)\}/g;
-  #elog(NOTICE,"NS Prefix $_: $ns_list{$_}") for (keys %ns_list);
-
-  # The following approach uses the older XML::LibXML 1.69 / XML::LibXSLT 1.68
-  # methods of parsing XML documents and stylesheets, in the hopes of broader
-  # compatibility with distributions
-  my $parser = eval { $_SHARED{'_xslt_process'}{parsers}{xml} || XML::LibXML->new() };
-
-  return undef if ($@);
-
-  # Cache the XML parser, if we do not already have one
-  $_SHARED{'_xslt_process'}{parsers}{xml} = $parser
-    unless ($_SHARED{'_xslt_process'}{parsers}{xml});
-
-  # Look for a cached version of the doc, or parse it if none
-  my $dom = eval { $_SHARED{'_xslt_process'}{docs}{$doc} || $parser->parse_string($doc) };
-
-  return undef if ($@);
-
-  # Cache the parsed XML doc, if already there
-  $_SHARED{'_xslt_process'}{docs}{$doc} = $dom
-    unless ($_SHARED{'_xslt_process'}{docs}{$doc});
-
-  # Register the requested namespaces
-  $dom->documentElement->setNamespace( $ns_list{$_} => $_ ) for ( keys %ns_list );
-
-  # Gather and return nodes
-  my @nodes = $dom->findnodes($xpath);
-  #elog(NOTICE,"nodes found by $xpath: ". scalar(@nodes));
-
-  return [ map { $_->toString } @nodes ];
-$func$ LANGUAGE PLPERLU;
-
-CREATE OR REPLACE FUNCTION oils_xpath ( TEXT, TEXT ) RETURNS TEXT[] AS $$SELECT oils_xpath( $1, $2, '{}'::TEXT[] );$$ LANGUAGE SQL IMMUTABLE;
-
-*/
-
-CREATE FUNCTION version_specific_xpath () RETURNS TEXT AS $wrapper_function$
-DECLARE
-    out_text TEXT;
-BEGIN
-    
-    IF REGEXP_REPLACE(VERSION(),E'^.+?(\\d+\\.\\d+).*?$',E'\\1')::FLOAT < 8.3 THEN
-        out_text := 'Creating XPath functions that work like the native XPATH function in 8.3+';
-        
-        EXECUTE $create_82_funcs$
-                        
-CREATE OR REPLACE FUNCTION oils_xpath ( xpath TEXT, xml TEXT, ns ANYARRAY ) RETURNS TEXT[] AS $func$
-DECLARE
-    node_text   TEXT;
-    ns_regexp   TEXT;
-    munged_xpath    TEXT;
-BEGIN
-
-    munged_xpath := xpath;
-
-    IF ns IS NOT NULL AND array_upper(ns, 1) IS NOT NULL THEN
-        FOR namespace IN 1 .. array_upper(ns, 1) LOOP
-            munged_xpath := REGEXP_REPLACE(
-                munged_xpath,
-                E'(' || ns[namespace][1] || E'):(\\w+)',
-                E'*[local-name() = "\\2" and namespace-uri() = "' || ns[namespace][2] || E'"]',
-                'g'
-            );
-        END LOOP;
-
-        munged_xpath := REGEXP_REPLACE( munged_xpath, E'\\]\\[(\\D)',E' and \\1', 'g');
-    END IF;
-
-    -- RAISE NOTICE 'munged xpath: %', munged_xpath;
-
-    node_text := xpath_nodeset(xml, munged_xpath, 'XXX_OILS_NODESET');
-    -- RAISE NOTICE 'node_text: %', node_text;
-
-    IF munged_xpath ~ $re$/[^/[]*@[^/]+$$re$ THEN
-        node_text := REGEXP_REPLACE(node_text,'<XXX_OILS_NODESET>[^"]+"', '<XXX_OILS_NODESET>', 'g');
-        node_text := REGEXP_REPLACE(node_text,'"</XXX_OILS_NODESET>', '</XXX_OILS_NODESET>', 'g');
-    END IF;
-
-    node_text := REGEXP_REPLACE(node_text,'^<XXX_OILS_NODESET>', '');
-    node_text := REGEXP_REPLACE(node_text,'</XXX_OILS_NODESET>$', '');
-
-    RETURN  STRING_TO_ARRAY(node_text, '</XXX_OILS_NODESET><XXX_OILS_NODESET>');
-END;
-$func$ LANGUAGE PLPGSQL IMMUTABLE;
-
-CREATE OR REPLACE FUNCTION oils_xpath ( TEXT, TEXT ) RETURNS TEXT[] AS $$SELECT oils_xpath( $1, $2, '{}'::TEXT[] );$$ LANGUAGE SQL IMMUTABLE;
-
-CREATE OR REPLACE FUNCTION oils_xslt_process(TEXT, TEXT) RETURNS TEXT AS $$
-    SELECT xslt_process( $1, $2 );
-$$ LANGUAGE SQL IMMUTABLE;
-
-        $create_82_funcs$;
-    ELSIF REGEXP_REPLACE(VERSION(),E'^.+?(\\d+\\.\\d+).*?$',E'\\1')::FLOAT = 8.3 THEN
-        out_text := 'Creating XPath wrapper functions around the native XPATH function in 8.3.  contrib/xml2 still required!';
-
-        EXECUTE $create_83_funcs$
--- 8.3 or after
-CREATE OR REPLACE FUNCTION oils_xpath ( TEXT, TEXT, ANYARRAY ) RETURNS TEXT[] AS 'SELECT XPATH( $1, $2::XML, $3 )::TEXT[];' LANGUAGE SQL IMMUTABLE;
-CREATE OR REPLACE FUNCTION oils_xpath ( TEXT, TEXT ) RETURNS TEXT[] AS 'SELECT XPATH( $1, $2::XML )::TEXT[];' LANGUAGE SQL IMMUTABLE;
-
-CREATE OR REPLACE FUNCTION oils_xslt_process(TEXT, TEXT) RETURNS TEXT AS $$
-    SELECT xslt_process( $1, $2 );
-$$ LANGUAGE SQL IMMUTABLE;
-
-        $create_83_funcs$;
-
-    ELSE
-        out_text := 'Creating XPath wrapper functions around the native XPATH function in 8.4+, and plperlu-based xslt processor.  No contrib/xml2 needed!';
-
-        EXECUTE $create_84_funcs$
--- 8.4 or after
-CREATE OR REPLACE FUNCTION oils_xpath ( TEXT, TEXT, ANYARRAY ) RETURNS TEXT[] AS 'SELECT XPATH( $1, $2::XML, $3 )::TEXT[];' LANGUAGE SQL IMMUTABLE;
-CREATE OR REPLACE FUNCTION oils_xpath ( TEXT, TEXT ) RETURNS TEXT[] AS 'SELECT XPATH( $1, $2::XML )::TEXT[];' LANGUAGE SQL IMMUTABLE;
-
-CREATE OR REPLACE FUNCTION oils_xslt_process(TEXT, TEXT) RETURNS TEXT AS $func$
+CREATE OR REPLACE FUNCTION evergreen.oils_xslt_process(TEXT, TEXT) RETURNS TEXT AS $func$
   use strict;
 
   use XML::LibXSLT;
@@ -220,18 +98,6 @@ CREATE OR REPLACE FUNCTION oils_xslt_process(TEXT, TEXT) RETURNS TEXT AS $func$
   );
 
 $func$ LANGUAGE 'plperlu' STRICT IMMUTABLE;
-
-        $create_84_funcs$;
-
-    END IF;
-
-    RETURN out_text;
-END;
-$wrapper_function$ LANGUAGE PLPGSQL;
-
-SELECT version_specific_xpath();
-DROP FUNCTION version_specific_xpath();
-
 
 CREATE OR REPLACE FUNCTION oils_xpath_string ( TEXT, TEXT, TEXT, ANYARRAY ) RETURNS TEXT AS $func$
     SELECT  ARRAY_TO_STRING(
