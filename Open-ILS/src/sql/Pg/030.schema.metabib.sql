@@ -606,24 +606,9 @@ BEGIN
 
             -- XXX much of this should be moved into oils_xpath_string...
             curr_text := ARRAY_TO_STRING(evergreen.array_remove_item_by_value(evergreen.array_remove_item_by_value(
-                oils_xpath( '//text()',
-                    REGEXP_REPLACE(
-                        REGEXP_REPLACE( -- This escapes all &s not followed by "amp;".  Data ise returned from oils_xpath (above) in UTF-8, not entity encoded
-                            REGEXP_REPLACE( -- This escapes embeded <s
-                                xml_node,
-                                $re$(>[^<]+)(<)([^>]+<)$re$,
-                                E'\\1&lt;\\3',
-                                'g'
-                            ),
-                            '&(?!amp;)',
-                            '&amp;',
-                            'g'
-                        ),
-                        E'\\s+',
-                        ' ',
-                        'g'
-                    )
-                ), ' '), ''),
+                oils_xpath( '//text()', -- get the content of all the nodes within the main selected node
+                    REGEXP_REPLACE( xml_node, E'\\s+', ' ', 'g' ) -- Translate adjacent whitespace to a single space
+                ), ' '), ''),  -- throw away morally empty (bankrupt?) strings
                 joiner
             );
 
@@ -1475,7 +1460,7 @@ DECLARE
     attr_list       TEXT[] := pattr_list;
     attr_value      TEXT[];
     norm_attr_value TEXT[];
-    tmp_xml         XML;
+    tmp_xml         TEXT;
     attr_def        config.record_attr_definition%ROWTYPE;
     ccvm_row        config.coded_value_map%ROWTYPE;
 BEGIN
@@ -1540,10 +1525,10 @@ BEGIN
                 prev_xfrm := xfrm.name;
             END IF;
 
-            FOR tmp_xml IN SELECT XPATH(attr_def.xpath, transformed_xml, ARRAY[ARRAY[xfrm.prefix, xfrm.namespace_uri]]) LOOP
+            FOR tmp_xml IN SELECT oils_xpath(attr_def.xpath, transformed_xml, ARRAY[ARRAY[xfrm.prefix, xfrm.namespace_uri]]) LOOP
                 tmp_val := oils_xpath_string(
                                 '//*',
-                                tmp_xml::TEXT,
+                                tmp_xml,
                                 COALESCE(attr_def.joiner,' '),
                                 ARRAY[ARRAY[xfrm.prefix, xfrm.namespace_uri]]
                             );
