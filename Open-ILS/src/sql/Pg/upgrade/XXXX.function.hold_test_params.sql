@@ -1,65 +1,6 @@
-/*
-
--- If, for some reason, you need to reload this chunk of the schema
--- just use the following two statements to remove the tables before
--- running the rest of the file.  See 950.data.seed-values.sql for
--- the one default entry to add back to config.hold_matrix_matchpoint.
-
-DROP TABLE config.hold_matrix_matchpoint CASCADE;
-DROP TABLE config.hold_matrix_test CASCADE;
-
-*/
-
 BEGIN;
 
-
---
---                 ****** Which ruleset and tests to use *******
---
--- * Most specific range for org_unit and grp wins.
---
--- * circ_modifier match takes precidence over marc_type match, if circ_modifier is set here
---
--- * marc_type is first checked against the circ_as_type from the copy, then the item type from the marc record
---
--- * If neither circ_modifier nor marc_type is set (both are NULLABLE) then the entry defines the default
---   ruleset and tests for the OU + group (like BOOK in PINES)
---
-
-
-
-CREATE TABLE config.hold_matrix_matchpoint (
-    id                      SERIAL    PRIMARY KEY,
-    active                  BOOL    NOT NULL DEFAULT TRUE,
-    strict_ou_match         BOOL    NOT NULL DEFAULT FALSE,
-    -- Match Fields
-    user_home_ou            INT        REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,    -- Set to the top OU for the matchpoint applicability range; we can use org_unit_prox to choose the "best"
-    request_ou              INT        REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,    -- Set to the top OU for the matchpoint applicability range; we can use org_unit_prox to choose the "best"
-    pickup_ou               INT        REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,    -- Set to the top OU for the matchpoint applicability range; we can use org_unit_prox to choose the "best"
-    item_owning_ou          INT        REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,    -- Set to the top OU for the matchpoint applicability range; we can use org_unit_prox to choose the "best"
-    item_circ_ou            INT        REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,    -- Set to the top OU for the matchpoint applicability range; we can use org_unit_prox to choose the "best"
-    usr_grp                 INT        REFERENCES permission.grp_tree (id) DEFERRABLE INITIALLY DEFERRED,    -- Set to the top applicable group from the group tree; will need descendents and prox functions for filtering
-    requestor_grp           INT        NOT NULL REFERENCES permission.grp_tree (id) DEFERRABLE INITIALLY DEFERRED,    -- Set to the top applicable group from the group tree; will need descendents and prox functions for filtering
-    circ_modifier           TEXT    REFERENCES config.circ_modifier (code) DEFERRABLE INITIALLY DEFERRED,
-    marc_type               TEXT,
-    marc_form               TEXT,
-    marc_bib_level          TEXT,
-    marc_vr_format          TEXT,
-    juvenile_flag           BOOL,
-    ref_flag                BOOL,
-    item_age                INTERVAL,
-    -- "Result" Fields
-    holdable                BOOL    NOT NULL DEFAULT TRUE,                -- Hard "can't hold" flag requiring an override
-    distance_is_from_owner  BOOL    NOT NULL DEFAULT FALSE,                -- How to calculate transit_range.  True means owning lib, false means copy circ lib
-    transit_range           INT        REFERENCES actor.org_unit_type (id) DEFERRABLE INITIALLY DEFERRED,        -- Can circ inside range of cn.owner/cp.circ_lib at depth of the org_unit_type specified here
-    max_holds               INT,                            -- Total hold requests must be less than this, NULL means skip (always pass)
-    include_frozen_holds    BOOL    NOT NULL DEFAULT TRUE,                -- Include frozen hold requests in the count for max_holds test
-    stop_blocked_user       BOOL    NOT NULL DEFAULT FALSE,                -- Stop users who cannot check out items from placing holds
-    age_hold_protect_rule   INT        REFERENCES config.rule_age_hold_protect (id) DEFERRABLE INITIALLY DEFERRED    -- still not sure we want to move this off the copy
-);
-
--- Nulls don't count for a constraint match, so we have to coalesce them into something that does.
-CREATE UNIQUE INDEX chmm_once_per_paramset ON config.hold_matrix_matchpoint (COALESCE(user_home_ou::TEXT, ''), COALESCE(request_ou::TEXT, ''), COALESCE(pickup_ou::TEXT, ''), COALESCE(item_owning_ou::TEXT, ''), COALESCE(item_circ_ou::TEXT, ''), COALESCE(usr_grp::TEXT, ''), COALESCE(requestor_grp::TEXT, ''), COALESCE(circ_modifier, ''), COALESCE(marc_type, ''), COALESCE(marc_form, ''), COALESCE(marc_bib_level, ''), COALESCE(marc_vr_format, ''), COALESCE(juvenile_flag::TEXT, ''), COALESCE(ref_flag::TEXT, ''), COALESCE(item_age::TEXT, '')) WHERE active;
+SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
 
 CREATE OR REPLACE FUNCTION action.find_hold_matrix_matchpoint(pickup_ou integer, request_ou integer, match_item bigint, match_user integer, match_requestor integer)
   RETURNS integer AS
@@ -215,7 +156,6 @@ BEGIN
 END;
 $func$ LANGUAGE 'plpgsql';
 
-CREATE TYPE action.matrix_test_result AS ( success BOOL, matchpoint INT, fail_part TEXT );
 CREATE OR REPLACE FUNCTION action.hold_request_permit_test( pickup_ou INT, request_ou INT, match_item BIGINT, match_user INT, match_requestor INT, retargetting BOOL ) RETURNS SETOF action.matrix_test_result AS $func$
 DECLARE
     matchpoint_id        INT;
@@ -442,14 +382,6 @@ BEGIN
     RETURN;
 END;
 $func$ LANGUAGE plpgsql;
-
-CREATE OR REPLACE FUNCTION action.hold_request_permit_test( pickup_ou INT, request_ou INT, match_item BIGINT, match_user INT, match_requestor INT ) RETURNS SETOF action.matrix_test_result AS $func$
-    SELECT * FROM action.hold_request_permit_test( $1, $2, $3, $4, $5, FALSE );
-$func$ LANGUAGE SQL;
-
-CREATE OR REPLACE FUNCTION action.hold_retarget_permit_test( pickup_ou INT, request_ou INT, match_item BIGINT, match_user INT, match_requestor INT ) RETURNS SETOF action.matrix_test_result AS $func$
-    SELECT * FROM action.hold_request_permit_test( $1, $2, $3, $4, $5, TRUE );
-$func$ LANGUAGE SQL;
 
 COMMIT;
 
