@@ -1997,12 +1997,27 @@ function searchAuthority (term, tag, sf, limit) {
 function browseAuthority (sf_popup, menu_id, target, sf, limit, page) {
     dojo.require('dojox.xml.parser');
 
+    var target_tag = sf.parent().@tag.toString();
+
+    var found_acs = [];
+    dojo.forEach( acs.controlSetList(), function (acs_id) {
+        if (acs.controlSet(acs_id).control_map[target_tag]) found_acs.push(acs_id);
+    });
+
+    var cmap;
+    if (!found_acs.length) {
+        target.setAttribute('context', 'clipboard');
+        return false;
+    } else {
+        cmap = acs.controlSet(found_acs[0]).control_map;
+    }
+
     // map tag + subfield to the appropriate authority browse axis:
     // currently authority.author, authority.subject, authority.title, authority.topic
     // based on mappings in OpenILS::Application::SuperCat, though Authority Control
     // Sets will change that
 
-    var axis_list = acs.bibFieldBrowseAxes( sf.parent().@tag.toString() );
+    var axis_list = acs.bibFieldBrowseAxes( target_tag );
 
     // No matching tag means no authorities to search - shortcut
     if (axis_list.length == 0) {
@@ -2023,6 +2038,9 @@ function browseAuthority (sf_popup, menu_id, target, sf, limit, page) {
     var sf_string = '';
     var sf_list = sf.parent().subfield;
     for ( var i in sf_list) {
+        if (!cmap[target_tag][sf_list[i].@code.toString()]) {
+            continue; // This is not a controlled subfield, such as $0
+        }
         sf_string += sf_list[i].toString() + ' ';
         if (sf_list[i] === sf) break;
     }
