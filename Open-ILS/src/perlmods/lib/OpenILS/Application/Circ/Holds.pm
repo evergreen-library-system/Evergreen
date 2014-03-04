@@ -2477,6 +2477,9 @@ sub do_possibility_checks {
 
     } elsif( $hold_type eq OILS_HOLD_TYPE_METARECORD ) {
 
+        # pasing undef as the depth to filtered_records causes the depth
+        # of the selection_ou to be used, which is not what we want here.
+        $depth ||= 0;
 
         my ($recs) = __PACKAGE__->method_lookup('open-ils.circ.holds.metarecord.filtered_records')->run($mrid, $holdable_formats, $selection_ou, $depth);
         my @status = ();
