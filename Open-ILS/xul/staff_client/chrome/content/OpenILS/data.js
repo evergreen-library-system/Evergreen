@@ -1112,6 +1112,20 @@ OpenILS.data.prototype = {
 
         }
 
+        this.chain.push(
+            function () {
+                try {
+                    var prefs = Components.classes['@mozilla.org/preferences-service;1']
+                        .getService(Components.interfaces['nsIPrefBranch']);
+                    prefs.clearUserPref('general.useragent.override');
+                    obj.data_progress('Cleared deprecated "general.useragent.override" value. ');
+                } catch(E) {
+                    obj.error.sdump('D_ERROR','Error clearing "general.useragent.override" for '
+                        + location.href + '\n' + E + '\n');
+                }
+            }
+        );
+
         this.exec.chain( this.chain );
 
     }
