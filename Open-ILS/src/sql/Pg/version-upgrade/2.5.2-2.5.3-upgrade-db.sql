@@ -1,5 +1,10 @@
 --Upgrade Script for 2.5.2 to 2.5.3
 \set eg_version '''2.5.3'''
+
+\qecho *** This ALTER TABLE might fail depending on your DB vintage. ***
+\qecho *** It should be harmless. ***
+ALTER TABLE action.aged_hold_request ADD COLUMN behind_desk BOOLEAN;
+
 BEGIN;
 INSERT INTO config.upgrade_log (version, applied_to) VALUES ('2.5.3', :eg_version);
 

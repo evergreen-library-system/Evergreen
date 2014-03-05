@@ -1,5 +1,9 @@
 -- add missing behind_desk column
 
+\qecho *** This ALTER TABLE might fail depending on your DB vintage. ***
+\qecho *** It should be harmless. ***
+ALTER TABLE action.aged_hold_request ADD COLUMN behind_desk BOOLEAN;
+
 BEGIN;
 
 SELECT evergreen.upgrade_deps_block_check('0868', :eg_version);
