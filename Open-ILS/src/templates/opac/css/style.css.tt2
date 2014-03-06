@@ -297,7 +297,7 @@ for now until a better color is picked - if needed.
 .adv_filter_block {
     padding: 15px;
     float: left;
-    /*clear: both;*/
+    clear: both;
 }
 .adv_filter_block_item {
     float: left;
