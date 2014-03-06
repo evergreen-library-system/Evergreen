@@ -407,6 +407,7 @@ sub load_rresults {
        
         # force the metarecord result blob to match the format of regular search results
         $results->{ids} = [map { [$_] } @$bre_ids];
+        $results->{count} = scalar(@{$results->{ids}});
 
     } else {
 
