@@ -139,6 +139,7 @@ INSERT INTO metabib.record_attr_vector_list (source,vlist)
       WHERE COALESCE(u.id,c.id) IS NOT NULL
       GROUP BY 1;
 
+DROP VIEW IF EXISTS reporter.classic_current_circ; 
 DROP VIEW metabib.rec_descriptor;
 DROP TABLE metabib.record_attr;
 
@@ -898,3 +899,6 @@ CREATE OR REPLACE FUNCTION unapi.mra (
 $F$ LANGUAGE SQL STABLE;
 
 COMMIT;
+\qecho 'We dropped reporter.classic_current_circ earlier from the'
+\qecho 'example.reporter-extension.sql sample. You will need to'
+\qecho 'run it again to recreate that custom reporter view.'
