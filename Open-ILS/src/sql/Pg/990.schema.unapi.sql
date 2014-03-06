@@ -131,7 +131,7 @@ CREATE OR REPLACE FUNCTION evergreen.located_uris (
       WHERE acn.record = ANY ($1)
           AND acn.deleted IS FALSE
           AND auri.active IS TRUE
-          AND ((NOT all_orgs.flag AND aou.id IS NOT NULL) OR COALESCE(aou.id,aoud.id) IS NOT NULL)
+          AND ((NOT all_orgs.flag AND aou.id IS NOT NULL) OR (all_orgs.flag AND COALESCE(aou.id,aoud.id) IS NOT NULL))
     UNION
     SELECT acn.id, COALESCE(aou.name,aoud.name) AS name, acn.label_sortkey, evergreen.rank_ou(aou.id, $2, $3) AS pref_ou
       FROM asset.call_number acn
@@ -143,7 +143,7 @@ CREATE OR REPLACE FUNCTION evergreen.located_uris (
       WHERE acn.record = ANY ($1)
           AND acn.deleted IS FALSE
           AND auri.active IS TRUE
-          AND ((NOT all_orgs.flag AND aou.id IS NOT NULL) OR COALESCE(aou.id,aoud.id) IS NOT NULL))x
+          AND ((NOT all_orgs.flag AND aou.id IS NOT NULL) OR (all_orgs.flag AND COALESCE(aou.id,aoud.id) IS NOT NULL)))x
     ORDER BY id, pref_ou DESC;
 $$
 LANGUAGE SQL STABLE;
