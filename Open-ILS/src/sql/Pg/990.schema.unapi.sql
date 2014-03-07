@@ -1440,7 +1440,7 @@ BEGIN
     FOR subrec IN SELECT bre.* FROM biblio.record_entry bre
          JOIN metabib.metarecord_source_map mmsm ON (mmsm.source = bre.id)
          JOIN metabib.metarecord mmr ON (mmr.id = mmsm.metarecord)
-         WHERE mmr.id = obj_id
+         WHERE mmr.id = obj_id AND NOT bre.deleted
          ORDER BY CASE WHEN bre.id = mmr.master_record THEN 0 ELSE bre.id END
          LIMIT COALESCE((slimit->'bre')::INT, 5) LOOP
 
