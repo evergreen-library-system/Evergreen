@@ -802,7 +802,7 @@ cat.util.batch_edit_volumes = function(fleshed_volumes) {
         if (!r) { throw('Update method returned null or false.'); }
         if (typeof r.ilsevent != 'undefined') {
             if (r.ilsevent == 1705 /* VOLUME_LABEL_EXISTS */) {
-               /* not overriden, but otherwise handled, so ignore */
+               /* not overridden, but otherwise handled, so ignore */
                 return false;
             } else {
                 throw(r);

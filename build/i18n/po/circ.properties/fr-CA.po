@@ -246,7 +246,7 @@ msgstr ""
 
 #: staff.circ.checkout.override.will_auto
 msgid ""
-"If overriden now, subsequent checkouts during this patron's session will "
+"If overridden now, subsequent checkouts during this patron's session will "
 "auto-override this event."
 msgstr ""
 
