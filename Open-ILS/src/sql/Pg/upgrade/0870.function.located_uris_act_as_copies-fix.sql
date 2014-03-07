@@ -20,7 +20,7 @@ BEGIN;
 SELECT evergreen.upgrade_deps_block_check('0870', :eg_version);
 
 CREATE OR REPLACE FUNCTION evergreen.located_uris (
-    bibid BIGINT,
+    bibid BIGINT[],
     ouid INT,
     pref_lib INT DEFAULT NULL
 ) RETURNS TABLE (id BIGINT, name TEXT, label_sortkey TEXT, rank INT) AS $$
@@ -33,7 +33,7 @@ CREATE OR REPLACE FUNCTION evergreen.located_uris (
            LEFT JOIN actor.org_unit_ancestors( COALESCE($3, $2) ) aou ON (acn.owning_lib = aou.id)
            LEFT JOIN actor.org_unit_descendants( COALESCE($3, $2) ) aoud ON (acn.owning_lib = aoud.id),
            all_orgs
-      WHERE acn.record = $1
+      WHERE acn.record = ANY ($1)
           AND acn.deleted IS FALSE
           AND auri.active IS TRUE
           AND ((NOT all_orgs.flag AND aou.id IS NOT NULL) OR (all_orgs.flag AND COALESCE(aou.id,aoud.id) IS NOT NULL))
@@ -45,7 +45,7 @@ CREATE OR REPLACE FUNCTION evergreen.located_uris (
            LEFT JOIN actor.org_unit_ancestors( $2 ) aou ON (acn.owning_lib = aou.id)
            LEFT JOIN actor.org_unit_descendants( $2 ) aoud ON (acn.owning_lib = aoud.id),
            all_orgs
-      WHERE acn.record = $1
+      WHERE acn.record = ANY ($1)
           AND acn.deleted IS FALSE
           AND auri.active IS TRUE
           AND ((NOT all_orgs.flag AND aou.id IS NOT NULL) OR (all_orgs.flag AND COALESCE(aou.id,aoud.id) IS NOT NULL)))x
