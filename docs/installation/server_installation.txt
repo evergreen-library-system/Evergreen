@@ -63,7 +63,7 @@ Installing prerequisites
 Evergreen has a number of prerequisite packages that must be installed
 before you can successfully configure, compile, and install Evergreen.
 
-1. Begin by installing the most recent version of OpenSRF (2.2.1 or later).
+1. Begin by installing the most recent version of OpenSRF (2.3.0 or later).
    You can download OpenSRF releases from http://evergreen-ils.org/opensrf-downloads/
 2. On many distributions, it is necessary to install PostgreSQL 9 from external
    repositories.
