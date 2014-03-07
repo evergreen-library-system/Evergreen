@@ -64,33 +64,6 @@ sub get_users_from_usergroup {
 
 
 __PACKAGE__->register_method(
-    method => 'get_leaders_from_usergroup',
-    api_name    => 'open-ils.actor.usergroup.leaders.retrieve',
-    signature   => q/
-        Returns a list of ids for users that are leaders of the given usergroup
-    /
-);
-
-sub get_leaders_from_usergroup {
-    my( $self, $conn, $auth, $usergroup ) = @_;
-    my $e = new_editor(authtoken=>$auth);
-    return $e->event unless $e->checkauth;
-    return $e->event unless $e->allowed('VIEW_USER'); # XXX reley on editor perm
-    my $users = $e->search_actor_user(
-        {usrgroup => $usergroup, deleted => 'f'})
-        or return $e->event;
-
-    my @res;
-    for my $u (@$users) {
-        push( @res, $u->id ) if $u->master_account;
-    }
-
-    return \@res;
-}
-
-
-
-__PACKAGE__->register_method(
     method => 'get_address_members',
     api_name    => 'open-ils.actor.address.members',
     signature   => q/
