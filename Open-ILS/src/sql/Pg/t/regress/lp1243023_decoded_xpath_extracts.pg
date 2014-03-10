@@ -1,0 +1,10 @@
+BEGIN;
+
+SELECT plan(4);
+
+SELECT is((oils_xpath('//*', '<field attr="&quot;quoted&quot;">this &amp; that &lt; &gt;</field>'))[1], '<field attr="&quot;quoted&quot;">this &amp; that &lt; &gt;</field>', 'oils_xpath - encoded node extracts');
+SELECT is((oils_xpath('//text()', '<field attr="&quot;quoted&quot;">this &amp; that &lt; &gt;</field>'))[1], 'this & that < >', 'oils_xpath - decoded text() extracts');
+SELECT is((oils_xpath('//*/@attr', '<field attr="&quot;quoted&quot;">this &amp; that &lt; &gt;</field>'))[1], '"quoted"', 'oils_xpath - decoded &quot; in attribute extracts');
+SELECT is((oils_xpath('//*/@attr', E'<field attr=\'&apos;quoted&apos;\'>this &amp; that &lt; &gt;</field>'))[1], E'\'quoted\'', 'oils_xpath - decoded &apos; in attribute extracts');
+
+ROLLBACK;
