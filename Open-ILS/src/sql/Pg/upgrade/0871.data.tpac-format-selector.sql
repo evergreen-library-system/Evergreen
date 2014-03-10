@@ -1,6 +1,8 @@
 
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('0871', :eg_version);
+
 INSERT INTO config.record_attr_definition 
     (name, label, multi, filter, composite) VALUES (
         'search_format', 
