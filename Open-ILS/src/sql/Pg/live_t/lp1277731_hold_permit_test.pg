@@ -1,0 +1,15 @@
+BEGIN;
+
+SELECT plan(1);
+
+SELECT is(
+    permit_test.*,
+    ROW(true, 1, null)::action.matrix_test_result,
+    'verify action.hold_request_permit_test()'
+)
+FROM action.hold_request_permit_test( '8', '1', '2905', '1', '1' )
+AS permit_test;
+
+SELECT * FROM finish();
+
+ROLLBACK;
