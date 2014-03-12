@@ -204,6 +204,70 @@
         # Full publisher info
         args.pubinfo = "$args.pubplace $args.publisher $args.pubdate";
 
+        # Get RDA Copyright Info.
+        args.copyrights = [];
+        FOR sub IN xml.findnodes('//*[@tag="264" and @ind2="4"]/*[@code="c"]');
+            args.copyrights.push(sub.textContent);
+        END;
+        args.copyright = (args.copyrights.size) ? args.copyrights.0 : '';
+
+        # Get the RDA Production info.
+        args.producers = [];
+        FOR sub IN xml.findnodes('//*[@tag="264" and @ind2="0"]/*[@code="b"]');
+            args.producers.push(sub.textContent);
+        END;
+        args.producer = (args.producers.size) ? args.producers.0 : '';
+
+        args.prodplaces = [];
+        FOR sub IN xml.findnodes('//*[@tag="264" and @ind2="0"]/*[@code="a"]');
+            args.prodplaces.push(sub.textContent);
+        END;
+        args.prodplace = (args.prodplaces.size) ? args.prodplaces.0 : '';
+
+        args.proddates = [];
+        FOR sub IN xml.findnodes('//*[@tag="264" and @ind2="0"]/*[@code="c"]');
+            args.proddates.push(sub.textContent);
+        END;
+        args.proddate = (args.proddates.size) ? args.proddates.0 : '';
+
+        # Get the RDA Distribution args.
+        args.distributors = [];
+        FOR sub IN xml.findnodes('//*[@tag="264" and @ind2="2"]/*[@code="b"]');
+            args.distributors.push(sub.textContent);
+        END;
+        args.distributor = (args.distributors.size) ? args.distributors.0 : '';
+
+        args.distplaces = [];
+        FOR sub IN xml.findnodes('//*[@tag="264" and @ind2="2"]/*[@code="a"]');
+            args.distplaces.push(sub.textContent);
+        END;
+        args.distplace = (args.distplaces.size) ? args.distplaces.0 : '';
+
+        args.distdates = [];
+        FOR sub IN xml.findnodes('//*[@tag="264" and @ind2="2"]/*[@code="c"]');
+            args.distdates.push(sub.textContent);
+        END;
+        args.distdate = (args.distdates.size) ? args.distdates.0 : '';
+
+        # Get the RDA Manufacture args.
+        args.manufacturers = [];
+        FOR sub IN xml.findnodes('//*[@tag="264" and @ind2="3"]/*[@code="b"]');
+            args.manufacturers.push(sub.textContent);
+        END;
+        args.manufacturer = (args.manufacturers.size) ? args.manufacturers.0 : '';
+
+        args.manplaces = [];
+        FOR sub IN xml.findnodes('//*[@tag="264" and @ind2="3"]/*[@code="a"]');
+            args.manplaces.push(sub.textContent);
+        END;
+        args.manplace = (args.manplaces.size) ? args.manplaces.0 : '';
+
+        args.mandates = [];
+        FOR sub IN xml.findnodes('//*[@tag="264" and @ind2="3"]/*[@code="c"]');
+            args.mandates.push(sub.textContent);
+        END;
+        args.mandate = (args.mandates.size) ? args.mandates.0 : '';
+
         # RDA adds 264 to the pubinfo 880 consideration mix
         graphic_880s = [];
         get_graphic_880s(target_field='260');

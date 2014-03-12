@@ -233,6 +233,54 @@ IF num_uris > 0;
         -%]
     </li>
     [%- END %]
+    [%- IF attrs.producer %]
+        <li id='rdetail_producer'>
+            <strong class='rdetail_label'>[% l("Producer:") %]</strong>
+            <span class='rdetail_value'>
+            [%- IF attrs.prodplace; %]
+                <span>[% attrs.prodplace | html; %]</span>
+            [%- END; %]
+                <span>[% attrs.producer | html; %]</span>
+            [%- IF attrs.proddate; %]
+                <span>[% attrs.proddate | html; %]</span>
+            [%- END; %]
+            </span>
+        </li>
+    [%- END %]
+    [%- IF attrs.distributor %]
+        <li id='rdetail_distributor'>
+            <strong class='rdetail_label'>[% l("Distributor:") %]</strong>
+            <span class='rdetail_value'>
+            [%- IF attrs.distplace; %]
+                <span>[% attrs.distplace | html; %]</span>
+            [%- END; %]
+                <span>[% attrs.distributor | html; %]</span>
+            [%- IF attrs.distdate; %]
+                <span>[% attrs.distdate | html; %]</span>
+            [%- END; %]
+            </span>
+        </li>
+    [%- END %]
+    [%- IF attrs.manufacturer %]
+        <li id='rdetail_manufacturer'>
+            <strong class='rdetail_label'>[% l("Manufacturer:") %]</strong>
+            <span class='rdetail_value'>
+            [%- IF attrs.manplace; %]
+                <span>[% attrs.manplace | html; %]</span>
+            [%- END; %]
+                <span>[% attrs.manufacturer | html; %]</span>
+            [%- IF attrs.mandate; %]
+                <span>[% attrs.mandate | html; %]</span>
+            [%- END; %]
+            </span>
+        </li>
+    [%- END %]
+    [%- IF attrs.copyright %]
+    <li id='rdetail_copyright'>
+        <strong class='rdetail_label'>[% l("Copyright:") %]</strong>
+        <span class='rdetail_value'>[% attrs.copyright | html_entity; %]</span>
+    </li>
+    [%- END %]
 </ul>
 
 [%- INCLUDE "opac/parts/record/contents.tt2" %]
