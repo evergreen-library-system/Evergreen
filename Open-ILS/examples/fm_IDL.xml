@@ -10147,7 +10147,7 @@ SELECT  usr,
                         SELECT 
                             (SELECT id
                                 FROM biblio.record_entry 
-                                WHERE id = (SELECT record FROM asset.call_number WHERE id = call_number)
+                                WHERE id = (SELECT record FROM asset.call_number WHERE id = call_number and deleted is false)
                             ) AS "bre", 
                             COUNT(*) AS "copy_count"
                         FROM asset.copy
