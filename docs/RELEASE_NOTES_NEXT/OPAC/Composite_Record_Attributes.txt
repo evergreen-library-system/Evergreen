@@ -29,3 +29,12 @@ Format in various ways that provide a more patron-friendly set of choices.
 This new Format filter can be adjusted, or even replaced with a completely
 local one, through configuration and without template adjustment.
 
+Upgrade Notes
++++++++++++++
+
+As part of the DB upgrade, the reporter view
+"reporter.classic_current_circ" was dropped.  If you previously
+installed this view from example.reporter-extension.sql, it will
+have to be re-installed by executing the "CREATE OR REPLACE
+VIEW reporter.classic_current_circ AS..." SQL once again from
+example.reporter-extension.sql.
