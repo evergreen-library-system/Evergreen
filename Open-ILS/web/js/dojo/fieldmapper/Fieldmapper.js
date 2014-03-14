@@ -112,9 +112,10 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
                 if (fieldmapper.IDL && fieldmapper.IDL.loaded) {
                     this.Structure = fieldmapper.IDL.fmclasses[this.classname];
 
+                    var array_pos = 0;
                     for (f in fieldmapper.IDL.fmclasses[this.classname].fields) {
                         var field = fieldmapper.IDL.fmclasses[this.classname].fields[f];
-                        p = field.array_position;
+                        p = array_pos++;
                         this._fields.push( field.name );
                         this[field.name]=new Function('n', 'if(arguments.length==1)this.a['+p+']=n;return this.a['+p+'];');
                     }

@@ -20,8 +20,16 @@ if(!dojo._hasResource["fieldmapper.IDL"]) {
                     preload.push(c);
                     fieldmapper.IDL.fmclasses[c] = window._preload_fieldmapper_IDL[c];
 
+                    if (!fieldmapper.IDL.fmclasses[c].label) {
+                        fieldmapper.IDL.fmclasses[c].label = 
+                            fieldmapper.IDL.fmclasses[c].name;
+                    }
+
                     window.fmclasses[c] = [];
-                    dojo.forEach(fieldmapper.IDL.fmclasses[c].fields, function(obj){ window.fmclasses[c].push(obj.name); });
+                    dojo.forEach(fieldmapper.IDL.fmclasses[c].fields, function(obj){ 
+                        if (!obj.label) obj.label = obj.name;
+                        window.fmclasses[c].push(obj.name); 
+                    });
 
                     if (classlist && classlist.length)
                         classlist = dojo.filter(classlist, function(x){return x != c;});
