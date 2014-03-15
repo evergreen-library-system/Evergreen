@@ -1171,7 +1171,7 @@ vim:et:ts=4:sw=4:
             On Linux, the output of the following command is authoritative:
             $ perl -MNet::Domain -e 'print Net::Domain::hostfqdn() . "\n";'
 
-            To use 'localhost' instead, run osrf_control with the --localhost flag
+            To use 'localhost' instead, run osrf_control with the 'localhost' flag
             -->
 
             <activeapps>
