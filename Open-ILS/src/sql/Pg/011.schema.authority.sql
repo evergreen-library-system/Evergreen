@@ -299,7 +299,7 @@ BEGIN
 
     RETURN heading_text;
 END;
-$func$ LANGUAGE PLPGSQL IMMUTABLE;
+$func$ LANGUAGE PLPGSQL STABLE STRICT;
 
 CREATE TABLE authority.simple_heading (
     id              BIGSERIAL   PRIMARY KEY,
@@ -394,15 +394,15 @@ BEGIN
 
     RETURN;
 END;
-$func$ LANGUAGE PLPGSQL IMMUTABLE;
+$func$ LANGUAGE PLPGSQL STABLE STRICT;
 
 CREATE OR REPLACE FUNCTION authority.simple_normalize_heading( marcxml TEXT ) RETURNS TEXT AS $func$
     SELECT authority.normalize_heading($1, TRUE);
-$func$ LANGUAGE SQL IMMUTABLE;
+$func$ LANGUAGE SQL STABLE STRICT;
 
 CREATE OR REPLACE FUNCTION authority.normalize_heading( marcxml TEXT ) RETURNS TEXT AS $func$
     SELECT authority.normalize_heading($1, FALSE);
-$func$ LANGUAGE SQL IMMUTABLE;
+$func$ LANGUAGE SQL STABLE STRICT;
 
 COMMENT ON FUNCTION authority.normalize_heading( TEXT ) IS $$
 Extract the authority heading, thesaurus, and NACO-normalized values

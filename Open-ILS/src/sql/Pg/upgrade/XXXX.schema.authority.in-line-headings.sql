@@ -7,7 +7,7 @@ ALTER TABLE authority.record_entry DISABLE TRIGGER map_thesaurus_to_control_set;
 
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+--SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
 
 ALTER TABLE authority.record_entry ADD COLUMN heading TEXT, ADD COLUMN simple_heading TEXT;
 
@@ -33,6 +33,11 @@ END;
 $f$ LANGUAGE PLPGSQL;
 
 CREATE TRIGGER update_headings_tgr BEFORE INSERT OR UPDATE ON authority.record_entry FOR EACH ROW EXECUTE PROCEDURE authority.normalize_heading_for_upsert();
+
+ALTER FUNCTION authority.normalize_heading(TEXT, BOOL) STABLE STRICT;
+ALTER FUNCTION authority.normalize_heading(TEXT) STABLE STRICT;
+ALTER FUNCTION authority.simple_normalize_heading(TEXT) STABLE STRICT;
+ALTER FUNCTION authority.simple_heading_set(TEXT) STABLE STRICT;
 
 COMMIT;
 
