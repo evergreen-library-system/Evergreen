@@ -39,11 +39,8 @@ function staff_hold_usr_barcode_changed(isload) {
         var barcode = isload;
         if(!barcode || barcode === true) barcode = document.getElementById('staff_barcode').value;
         var only_settings = true;
-        var bc_from_cgi = false; // user_barcode passed via cgi
         if(!document.getElementById('hold_usr_is_requestor').checked) {
-            if (isload && document.getElementById('hold_usr_input').value)
-                bc_from_cgi = true;
-            if(!isload || bc_from_cgi) {
+            if(!isload) {
                 barcode = document.getElementById('hold_usr_input').value;
                 only_settings = false;
             }
@@ -104,7 +101,8 @@ function staff_hold_usr_barcode_changed(isload) {
             document.getElementById('patron_name').innerHTML = load_info.patron_name;
             document.getElementById("patron_usr_barcode_not_found").style.display = 'none';
         }
-        
+        // Ok, now we can allow submitting again, unless this is a "true" load, in which case we likely have a blank barcode box active
+
         // update the advanced hold options link to propagate the patron
         // barcode if clicked.  This is needed when the patron barcode
         // is manually entered (i.e. the staff client does not provide one).
@@ -116,8 +114,7 @@ function staff_hold_usr_barcode_changed(isload) {
             adv_link.setAttribute('href', href);
         }
 
-        // if we're here, we have a valid barcode.  activate the sumbmit option
-        if(!isload || bc_from_cgi) 
+        if (isload !== true)
             document.getElementById('place_hold_submit').disabled = false;
     }
 }
@@ -129,8 +126,11 @@ window.onload = function() {
         runEvt('rdetail', 'MFHDDrawn');
     }
     if(location.href.match(/place_hold/)) {
-        if(xulG.patron_barcode) {
-            staff_hold_usr_barcode_changed(xulG.patron_barcode);
+        // patron barcode may come from XUL or a CGI param
+        var patron_barcode = xulG.patron_barcode ||
+            document.getElementById('hold_usr_input').value;
+        if(patron_barcode) {
+            staff_hold_usr_barcode_changed(patron_barcode);
         } else {
             staff_hold_usr_barcode_changed(true);
         }
