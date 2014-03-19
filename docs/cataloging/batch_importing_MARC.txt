@@ -42,35 +42,33 @@ can add multiple record attributes and MARC tags to customize a record match
 set.
  
 
-1) Click *Cataloging -> MARC Batch Import/Export*.
+. Click *Cataloging -> MARC Batch Import/Export*.
 
-2) Create a new record match set.  Click *Record Match Sets -> New Match Set*.
+. Create a new record match set.  Click *Record Match Sets -> New Match Set*.
 
-3) Enter a name for the record match set.
+. Enter a name for the record match set.
 
-4) Select an *Owning Library* from the drop down menu.  Staff with permissions
+. Select an *Owning Library* from the drop down menu.  Staff with permissions
 at this location will be able to use this record match set.
 
-5) Select a *Match Set Type* from the drop down menu.  You can create a match
+. Select a *Match Set Type* from the drop down menu.  You can create a match
 set for authority records or bibliographic records.
 
-6) Click *Save*.
-
-
+. Click *Save*.
++
 image::media/Batch_Importing_MARC_Records1.jpg[Batch_Importing_MARC_Records1]
 
-
-7) The screen will refresh to list the record match set that you created. Click
+. The screen will refresh to list the record match set that you created. Click
 the link to the record match set.
 
-8) Create an expression that will define the match points for the incoming
+. Create an expression that will define the match points for the incoming
 record.  You can choose from two areas to create a match: *Record Attribute* or
 *MARC Tag and Subfield*.  You can use the Boolean operators AND and OR to
 combine these elements to create a match set.
 
-9) Select a *Record Attribute* from the drop-down menu.
+. Select a *Record Attribute* from the drop-down menu.
 
-10) Enter a *Match Score.*  The *Match Score* indicates the relative importance
+. Enter a *Match Score.*  The *Match Score* indicates the relative importance
 of that match point as Evergreen evaluates an incoming record against an
 existing record. You can enter any integer into this field.  The number that
 you enter is only important as it relates to other match points.  Recommended
@@ -78,42 +76,42 @@ practice is that you create a match score of one (1) for the least important
 match point and assign increasing match points to the power of 2 to working
 points in increasing importance.
 
-11) Check the *Negate?* box if you want to negate the match point. Checking
+. Check the *Negate?* box if you want to negate the match point. Checking
 this box would be the equivalent of applying a Boolean operator of NOT to the
 match point.
-
++
 image::media/Batch_Importing_MARC_Records2.jpg[Batch_Importing_MARC_Records2]
 
-12) Click *Ok.*
+. Click *Ok.*
 
-13) Drag the completed match point under the folder with the 
+. Drag the completed match point under the folder with the
 appropriately-named Boolean folder under the Expression tree.
-
++
 image::media/Batch_Importing_MARC_Records3.jpg[Batch_Importing_MARC_Records3]
-
++
 The match point will nest underneath the folder in the Expression tree.
-
++
 image::media/Batch_Importing_MARC_Records4.jpg[Batch_Importing_MARC_Records4]
 
-14) Enter another *Boolean Operator* to further refine your match set.
+. Enter another *Boolean Operator* to further refine your match set.
 
-15) Click *Boolean Operator*.
+. Click *Boolean Operator*.
 
-16) Select the *OR* operator from the drop down menu.
+. Select the *OR* operator from the drop down menu.
 
-17) Click *Ok*.
+. Click *Ok*.
 
-18) Drag the operator to the expression tree.
-
+. Drag the operator to the expression tree.
++
 image::media/Batch_Importing_MARC_Records5.jpg[Batch_Importing_MARC_Records5]
 
-19) Click *MARC Tag and Subfield*.
+. Click *MARC Tag and Subfield*.
 
-20) Enter a *MARC tag* on which you want the records to match.
+. Enter a *MARC tag* on which you want the records to match.
 
-21) Enter a *subfield* on which you want the records to match.
+. Enter a *subfield* on which you want the records to match.
 
-22) Enter a *Match Score.*  The *Match Score* indicates the relative importance
+. Enter a *Match Score.*  The *Match Score* indicates the relative importance
 of that match point as Evergreen evaluates an incoming record against an
 existing record. You can enter any integer into this field.  The number that
 you enter is only important as it relates to other match points.  Recommended
@@ -121,22 +119,22 @@ practice is that you create a match score of one (1) for the least important
 match point and assign increasing match points to the power of 2 to working
 points in increasing importance.
 
-23) Check the *Negate?* box if you want to negate the match point.  Checking
+. Check the *Negate?* box if you want to negate the match point.  Checking
 this box would be the equivalent of applying a Boolean operator of NOT to the
 match point.
 
-24) Click *Ok.*
-
+. Click *Ok.*
++
 image::media/Batch_Importing_MARC_Records6.jpg[Batch_Importing_MARC_Records6]
 
-25) Drag the completed match point under the folder with the
+. Drag the completed match point under the folder with the
 appropriately-named Boolean folder under the Expression tree. The Expression
 will build across the top of the screen.
 
-26) Add additional MARC tags or record attributes to build the expression tree.
+. Add additional MARC tags or record attributes to build the expression tree.
 
-27) Click *Save Changes to Expression*.
-
+. Click *Save Changes to Expression*.
++
 image::media/Batch_Importing_MARC_Records7.jpg[Batch_Importing_MARC_Records7]
 
 Replace Mode
@@ -146,21 +144,21 @@ Replace Mode enables you to replace an existing part of the expression tree
 with a new record attribute, MARC tag, or Boolean operator.  For example, if
 the top of the tree is AND, in replace mode, you could change that to an OR.
 
-1) Create a working match point.
+. Create a working match point.
 
-2) Click *Enter replace mode*.
+. Click *Enter replace mode*.
 
-3) Highlight the piece of the tree that you want to replace.
+. Highlight the piece of the tree that you want to replace.
 
-4) Drag the replacement piece over the highlighted piece.
+. Drag the replacement piece over the highlighted piece.
 
-5) Click *Exit Replace Mode*.
+. Click *Exit Replace Mode*.
 
 
 Quality Metrics
 ^^^^^^^^^^^^^^^
 
-1) Set the *Quality Metrics for this Match Set*.  Quality metrics are used to
+. Set the *Quality Metrics for this Match Set*.  Quality metrics are used to
 determine the overall quality of a record.  Each metric is given a weight and
 the total quality value for a record is equal to the sum of all metrics that
 apply to that record.  For example, a record that has been cataloged thoroughly
@@ -169,23 +167,23 @@ may want to ensure that the incoming record is of the same or better quality
 than the record that currently exists in your catalog; otherwise, you may want
 the match to fail.  The quality metric is optional.
 
-2) You can create quality metrics based on the record attribute or the MARC Tag
+. You can create quality metrics based on the record attribute or the MARC Tag
 and Subfield.
 
-3) Click *Record Attribute.*
+. Click *Record Attribute.*
 
-4) Select an attribute from the drop down menu.
+. Select an attribute from the drop down menu.
 
-5) Enter a value for the attribute.
+. Enter a value for the attribute.
 
-6.) Enter a match score.  You can enter any integer into this field. The number
+. Enter a match score.  You can enter any integer into this field. The number
 that you enter is only important as it relates to other quality values for the
 current configuration.  Higher scores would indicate increasing quality of
 incoming records. You can, as in the expression match score, increase the
 quality points by increasing subsequent records by a power of 2 (two).
 
-7) Click *Ok*.  
-
+. Click *Ok*.
++
 image::media/Batch_Importing_MARC_Records8.jpg[Batch_Importing_MARC_Records8]
 
 Import Records
@@ -310,6 +308,4 @@ The following *Library Settings* can be configured to apply these default values
 * *Vandelay: Default Copy Location* —Default copy location value for imported items
 
 * *Vandelay: Default Circulation Modifier* —Default circulation modifier value for imported items
-
-
 
