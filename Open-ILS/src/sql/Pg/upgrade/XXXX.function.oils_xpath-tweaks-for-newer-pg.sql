@@ -601,3 +601,11 @@ END;
 $func$ LANGUAGE PLPGSQL;
 
 COMMIT;
+
+\qecho This script will now attempt a "quick fix" of browse_entry only.
+\qecho If you have issues, a browse or full reingest is recommended.
+\qecho You may cancel now without losing the effect of the rest of the
+\qecho upgrade script, and arrange the reingest later.
+
+UPDATE metabib.browse_entry SET value=evergreen.xml_famous5_to_text(value) WHERE value LIKE '%&%';
+UPDATE metabib.browse_entry SET sort_value=evergreen.xml_famous5_to_text(sort_value) WHERE sort_value LIKE '%&%';
