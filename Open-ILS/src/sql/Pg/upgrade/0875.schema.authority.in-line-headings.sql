@@ -7,7 +7,7 @@ ALTER TABLE authority.record_entry DISABLE TRIGGER map_thesaurus_to_control_set;
 
 BEGIN;
 
---SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0875', :eg_version);
 
 ALTER TABLE authority.record_entry ADD COLUMN heading TEXT, ADD COLUMN simple_heading TEXT;
 
