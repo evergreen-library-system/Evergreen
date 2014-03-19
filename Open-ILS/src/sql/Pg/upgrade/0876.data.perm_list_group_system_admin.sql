@@ -1,6 +1,6 @@
 BEGIN;
 
--- SELECT evergreen.upgrade_deps_block_check('', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0876', :eg_version);
 
 INSERT INTO permission.perm_list ( code, description ) VALUES
  ( 'group_application.user.staff.admin.system_admin', oils_i18n_gettext( '',
