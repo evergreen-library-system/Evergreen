@@ -1,6 +1,6 @@
 BEGIN;
 
---SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0874', :eg_version);
 
 DROP FUNCTION IF EXISTS evergreen.oils_xpath( TEXT, TEXT, ANYARRAY);
 DROP FUNCTION IF EXISTS public.oils_xpath(TEXT, TEXT, ANYARRAY);
