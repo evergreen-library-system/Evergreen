@@ -171,6 +171,48 @@ Now, we will add the permission we just removed back to the Staff group.
 If you have saved your changes and you don't see them, you may have to click
 the Reload button in the upper left side of the staff client screen.
 
+Managing role-based permission groups in the staff client
+---------------------------------------------------------
+
+Main permission groups are granted in the staff client through Edit in the patron record using the Main (Profile) Permission Group field.  Additional permission
+groups can be granted using secondary permission groups.
+
+Secondary Group Permissions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The _Secondary Groups_ button functionality enables supplemental permission groups to be added to staff accounts. The _Secondary Groups_ button is only 
+visible to those users who have permission to grant secondary permission groups.
+
+In general when creating a secondary permission group do not grant the permissions to login to Evergreen.
+
+Granting Secondary Permissions Groups
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+. Open the account of the user you wish to grant secondary permission group to.
+. Click _Edit_.
+. Click _Secondary Groups_, located to the right of the _Main (Profile) Permission Group_.
+image::media/sup-permissions-1.png [Secondary Permissions Group]
+. From the dropdown menu select one of the secondary permission groups.
+image::media/sup-permissions-2.png [Secondary Permission Group List]
+. Click _Add_.
+. Click _Save_.
+image::media/sup-permissions-3.png [Secondary Permission Group Save]
+. Click _Save_ in the top right hand corner of the _Edit Screen_ to save the user's account.
+
+
+Removing Secondary Group Permissions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+. Open the account of the user you wish to remove the secondary permission group from.
+. Click _Edit_.
+. Click _Secondary Groups_, located to the right of the _Main (Profile) Permission Group_.
+image::media/sup-permissions-1.png [Secondary Permissions Group]
+. Click _Delete_ beside the permission group you would like to remove.
+image::media/sup-permissions-4.png [Secondary Permissions Group Delete]
+. Click _Save_.
+image::media/sup-permissions-5.png [Secondary Permissions Group Save]
+. Click _Save_ in the top right hand corner of the _Edit Screen_ to save the user's account.
+
 Managing role-based permission groups in the database
 -----------------------------------------------------
 While the ability to assign a user to multiple permission groups has existed in
