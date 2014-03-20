@@ -135,7 +135,13 @@ include::admin/auto_suggest_search.txt[]
 
 include::admin/customize_staff_client.txt[]
 
-include::admin/phonelist.txt
+// Push titles down one level.
+:leveloffset: 1
+
+include::admin/phonelist.txt[]
+
+// Return to normal title levels.
+:leveloffset: 0
 
 
 Using the Staff Client
@@ -150,6 +156,10 @@ logging in, navigation and shortcuts.
 
 
 include::admin/staff_client-login.txt[]
+
+include::admin/staff_client-button_bar_toolbar.txt[]
+
+include::admin/staff_client-sticky_settings.txt[]
 
 include::admin/staff_client-tab_buttons.txt[]
 

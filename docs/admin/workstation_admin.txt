@@ -20,24 +20,37 @@ on the workstation.
 Font and Sound Settings
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-
-indexterm:[staff client, fonts]
+indexterm:[staff client, fonts, zooming]
 indexterm:[staff client, sounds]
 
-You may change the size of displayed text or turn staff client sounds on and off.
-These settings are specific to each workstation and stored on local hard disk.
-They do not affect OPAC font sizes. 
+In the Staff Client
+^^^^^^^^^^^^^^^^^^^
+
+You may change the size of displayed text or turn staff client sounds on
+and off. These settings are specific to each workstation and stored on
+local hard disk. They do not affect OPAC font sizes.
 
 . Select *Admin -> Workstation Administration ->  Global Font and Sound
 Settings*.
-. To turn off the system sounds, like the noise that happens when a patron with a
-block is retrieved, check the _disable sound_ box and click _Save to Disk_.
-+ 
+. To turn off the system sounds, like the noise that happens when a patron
+with a block is retrieved, check the _disable sound_ box and click _Save
+to Disk_.
++
 image::media/workstation_admin-1.jpg[disable sound]
 +
-. To change the size of the font, pick the desired option and click _Save to Disk_.
+. To change the size of the font, pick the desired option and click _Save
+to Disk_.
  
 image::media/workstation_admin-2.jpg[font size]
+
+In the OPAC
+^^^^^^^^^^^
+
+It is also possible to zoom in and zoom out when viewing the OPAC in the
+staff client, making the font appear larger or smaller. (This will not
+affect other screens.) Use *CTRL + +* (plus sign, to zoom in), *CTRL + -*
+(minus sign, to zoom out), and *CTRL + 0* (to restore default). The
+workstation will remember the setting.
 
 Select Hotkeys
 ~~~~~~~~~~~~~~
@@ -279,54 +292,64 @@ Transit Slip. Libraries can switch to using their own templates by setting up a
 library setting: Use legacy hardcoded receipts/slips. Details see <<library_settings_editor, Library Settings>>. 
 =================
 
-Button Bar/Toolbar
-~~~~~~~~~~~~~~~~~~
 
-indexterm:[staff client, button bar, customization]
-indexterm:[staff client, toolbar, customization]
+Customizable Toolbar
+~~~~~~~~~~~~~~~~~~~~
 
-There is an optional toolbar with buttons providing quick access to commonly
-used staff client functions. When activated the toolbar appears below the menu
-bar. 
+By default, two toolbars are available in the staff client: circulation and
+cataloging. This feature enables you to customize toolbars in the staff client.
+You can create toolbars for specific org unit(s), workstation(s), or login(s).
 
-image::media/workstation-button_bar-1.png[button bar]
+Configure Toolbar
+^^^^^^^^^^^^^^^^^
 
-The look of the buttons can be customized. Use _Mode_, _Label Position_ and _Icon
-Size_ on the _Toolbar_ menu shown on the screen below to select your preference. 
+. Click *Admin* -> *Workstation Administration* -> *Toolbars* -> *Configure
+Toolbars*.
 
-A group of buttons can be selected or activated by default for all workstations
-at a particular library (see <<library_settings_editor, Library Settings>> for details). A different default
-group can be set up on individual workstations by the following steps.
+. Click *New Toolbar*.
 
-. Go to *Admin -> Workstation Administration -> Toolbars -> Current*.
-+ 
-image::media/workstation-button_bar-2.png[button bar 2]
+. Enter label for toolbar.
 +
-. Choose a group from the list. 
-. Go back to the above menu. Select *Set Workstation Default to Current*. The above
-selected toolbar group is set as default for this workstation.
-
-To clear an existing setting click *Clear Workstation Default*.
-
-Circulation and Cataloguing are the default toolbar groups. Local system
-administrators can create new groups for individual accounts, workstations or
-all in a particular library.
-
-. Go to *Admin -> Workstation Administration -> Toolbars -> Configure Toolbars. 
-. Click *New Toolbar*
+image::media/Customizable_Toolbar1.jpg[Customizable_Toolbar1]
 +
-image::media/workstation-button_bar-3.png[button bar 3]
+. Click *Ok*.
+
+. Select one of the buttons in the *Available* panel.  The *Button ID* describes
+that action that the button will take, and the *Label* will display in the
+toolbar.
+
+. Click the `--> (A)` button to add the selected function to the
+*Selected* panel on the bottom right side of the screen.  To remove a button,
+click the `<-- (R)` button.
 +
-. In the prompt window type in a name for the new group, and then click *OK*.
-. Choose the function buttons you want to add to the new group. Click *`-->(A)`* to
-add. You may select one in the Selected pane, and then click *`<--(R)`* to remove
-it.
-. Check one of the radio buttons: *Owning Org Unit*, *Owning Workstation*, or *Owning
-User* to specify the new group should be available to everyone/workstation in
-your library, or this workstation or yourself only.
-. If you chose _Owning Workstation_ in the above step, click the down-pointed
-arrow at the end of the _Permission Context_ box to select your library in the
-organization unit tree.
-. Click *Save Toolbar*.
-. The new toolbar group will be displayed together with Circulation and
-Cataloguing groups when you choose a toolbar group next time.
+image::media/Customizable_Toolbar2.jpg[Customizable_Toolbar2]
++
+. Continue adding buttons if desired.  The buttons will display in the order that you add
+them.  If you want to reorder the buttons, click the *Up* or *Down* buttons.
+
+. To separate buttons onto left and right sides of the screen on the same
+toolbar, select *toolbarspacer*, and click `--> (A)`.
++
+image::media/Customizable_Toolbar3.jpg[Customizable_Toolbar3]
++
+. To add a dividing line between buttons that appear on the same side of the
+screen, select *toolbarseparator*, and click `--> (A)`.
++
+image::media/Customizable_Toolbar4.jpg[Customizable_Toolbar4]
++
+. At the bottom of the screen, choose the owner of this toolbar.
+If you click *Owning Org Unit*, then the owning org unit that you specify will display this
+toolbar.  Select the owning org unit from the drop down menu.  The rule of
+parental inheritance applies, so all child units will inherit the toolbars of
+their parental units.
+If you click *Owning Workstation*, then the workstation to which you are logged
+in when you created the toolbar will display this toolbar.
+If you select *Owning User*, then your login has access to that toolbar.
+
+. When you are finished creating the toolbar, click *Save Toolbar*.  Any
+toolbar to which you have access displays under *Admin -> Workstation
+Administration -> Toolbars -> Current*.
+
+*Permissions*
+
+ADMIN_TOOLBAR - Allow a user to create, edit, and delete custom toolbars
