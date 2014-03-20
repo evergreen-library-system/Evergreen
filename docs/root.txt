@@ -153,6 +153,10 @@ logging in, navigation and shortcuts.
 
 include::admin/staff_client-login.txt[]
 
+include::admin/staff_client-button_bar_toolbar.txt[]
+
+include::admin/staff_client-sticky_settings.txt[]
+
 include::admin/staff_client-tab_buttons.txt[]
 
 include::admin/staff_client-double_clicking.txt[]
