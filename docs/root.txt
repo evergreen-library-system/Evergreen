@@ -161,6 +161,8 @@ include::admin/staff_client-patron_border.txt[]
 
 include::admin/staff_client-sorting_columns.txt[]
 
+include::admin/staff_client-column_picker.txt[]
+
 include::admin/staff_client-recent_searches.txt[]
 
 include::admin/staff_client-return_to_results_from_marc.txt[]
