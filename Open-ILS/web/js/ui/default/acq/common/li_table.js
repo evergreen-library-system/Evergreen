@@ -2918,8 +2918,13 @@ function AcqLiTable() {
     };
 
     this._cancelLineitems = function(reason) {
-        var id_list = this.getSelected(
-            null, null, true, li_active_states);
+
+        // ignore canceled lineitems during batch lineitem cancel
+        var states = li_active_states.filter(
+            function(s) { return s != 'cancelled' });
+
+        var id_list = this.getSelected(null, null, true, states);
+
         if (!id_list.length) {
             alert(localeStrings.NO_LI_GENERAL);
             return;
