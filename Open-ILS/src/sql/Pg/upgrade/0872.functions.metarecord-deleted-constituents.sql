@@ -345,7 +345,7 @@ END;
 $F$ LANGUAGE PLPGSQL STABLE;
 
 -- Forcibly remap deleted master records, retaining the linkage if so configured.
-SELECT  metabib.remap_metarecord_for_bib( bre.id, bre.fingerprint, TRUE, COALESCE(flag.enabled,FALSE))
+SELECT  count(metabib.remap_metarecord_for_bib( bre.id, bre.fingerprint, TRUE, COALESCE(flag.enabled,FALSE)))
   FROM  metabib.metarecord metar
         JOIN biblio.record_entry bre ON bre.id = metar.master_record,
         config.internal_flag flag
