@@ -16,7 +16,7 @@ preference.
 
 A group of buttons can be selected or activated by default for all
 workstations at a particular library (see
-xref:library_settings_editor[Library Settings] for details). A different
+<<library_settings_editor,Library Settings>> for details). A different
 default group can be set up on individual workstations by the following
 steps.
 
@@ -31,6 +31,6 @@ The above selected toolbar group is set as default for this workstation.
 To clear an existing setting click *Clear Workstation Default*.
 
 Circulation and Cataloguing are the default toolbar groups. Local system
-administrators can xref:_customizable_toolbar[create new groups] for
+administrators can <<_customizable_toolbar,create new groups>> for
 individual accounts, workstations or all in a particular library.
 
