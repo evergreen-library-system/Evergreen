@@ -95,7 +95,7 @@ CREATE TABLE staging_records_import (id BIGSERIAL, dest BIGINT, marc TEXT);
 +
 [source,sql]
 ------------------------------------------------------------------------------
-CREATE OR REPLACE FUNCTION staging_importer() RETURNS NULL AS $$
+CREATE OR REPLACE FUNCTION staging_importer() RETURNS VOID AS $$
 DECLARE stage RECORD;
 BEGIN
 FOR stage IN SELECT * FROM staging_records_import ORDER BY id LOOP
