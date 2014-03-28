@@ -1,6 +1,6 @@
 BEGIN;
 
---SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0877', :eg_version);
 
 -- Don't use Series search field as the browse field
 UPDATE config.metabib_field SET
