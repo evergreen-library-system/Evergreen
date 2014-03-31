@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2013-09-26 18:17-0400\n"
+"POT-Creation-Date: 2014-02-24 16:24-0400\n"
 "PO-Revision-Date: 2011-07-31 17:37+0000\n"
 "Last-Translator: Alexander Sapronov <Unknown>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-09-28 05:30+0000\n"
-"X-Generator: Launchpad (build 16774)\n"
+"X-Launchpad-Export-Date: 2014-02-26 06:26+0000\n"
+"X-Generator: Launchpad (build 16935)\n"
 
 #: register.js:USER_SETTINGS
 msgid "User Settings"
@@ -37,9 +37,13 @@ msgstr "Счет"
 msgid "This address is owned by another user: "
 msgstr "Этот адрес принадлежит другому пользователю: "
 
-#: register.js:ADDRESS_NEW
-msgid "New Address"
-msgstr "Новый адрес"
+#: register.js:ALL_CARDS_PRIMARY
+msgid "Primary"
+msgstr ""
+
+#: register.js:ALL_CARDS_BARCODE
+msgid "Barcode"
+msgstr ""
 
 #: register.js:SAVE
 msgid "Save"
@@ -69,8 +73,8 @@ msgstr "Замените штрих-код"
 msgid "An address is required during registration."
 msgstr "При регистрации требуется адрес"
 
-#: register.js:ALL_CARDS_PRIMARY
-msgid "Primary"
+#: register.js:REPLACED_ADDRESS
+msgid "Replaces address ${0}<br/> ${1} ${2}<br/> ${3}, ${4} ${5}"
 msgstr ""
 
 #: register.js:PARENT_OR_GUARDIAN
@@ -98,6 +102,10 @@ msgstr ""
 #: register.js:BARCODE_IN_USE
 msgid "Barcode is already in use"
 msgstr "Штрих-код уже используется"
+
+#: register.js:UPDATE_EXPIRE_DATE
+msgid "Update Expire Date"
+msgstr ""
 
 #: register.js:RESET_PASSWORD
 msgid "Generate Password"
@@ -163,9 +171,9 @@ msgstr ""
 msgid "Statistical Categories"
 msgstr "Статистические категории"
 
-#: register.js:ALL_CARDS_BARCODE
-msgid "Barcode"
-msgstr ""
+#: register.js:ADDRESS_NEW
+msgid "New Address"
+msgstr "Новый адрес"
 
 #: register.js:HOLD_NOTIFY_EMAIL
 msgid "Email: "
@@ -182,10 +190,6 @@ msgstr ""
 #: register.js:DELETE_ADDRESS
 msgid "Delete address ${0}?"
 msgstr "Удалить адрес ${0}?"
-
-#: register.js:REPLACED_ADDRESS
-msgid "Replaces address ${0}<br/> ${1} ${2}<br/> ${3}, ${4} ${5}"
-msgstr ""
 
 #~ msgid ""
 #~ "<div>Replaces address <b>${0}</b><br/> ${1} ${2}<br/> ${3}, ${4} ${5}</div>"

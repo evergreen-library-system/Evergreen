@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2013-09-26 18:17-0400\n"
+"POT-Creation-Date: 2014-02-24 16:24-0400\n"
 "PO-Revision-Date: 2012-11-02 12:25+0000\n"
 "Last-Translator: Cédric VALMARY (Tot en òc) <cvalmary@yahoo.fr>\n"
 "Language-Team: Occitan (post 1500) <oc@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-09-28 05:30+0000\n"
-"X-Generator: Launchpad (build 16774)\n"
+"X-Launchpad-Export-Date: 2014-02-26 06:26+0000\n"
+"X-Generator: Launchpad (build 16935)\n"
 
 #: register.js:USER_SETTINGS
 msgid "User Settings"
@@ -37,9 +37,13 @@ msgstr "Facturacion"
 msgid "This address is owned by another user: "
 msgstr "Aquesta adreça aparten a un autre utilizaire : "
 
-#: register.js:ADDRESS_NEW
-msgid "New Address"
-msgstr "Adreça novèla"
+#: register.js:ALL_CARDS_PRIMARY
+msgid "Primary"
+msgstr "Principal"
+
+#: register.js:ALL_CARDS_BARCODE
+msgid "Barcode"
+msgstr "Còde de barras"
 
 #: register.js:SAVE
 msgid "Save"
@@ -69,9 +73,9 @@ msgstr "Remplaçar lo còde de barras"
 msgid "An address is required during registration."
 msgstr "Una adreça es requesida al moment de l'inscripcion."
 
-#: register.js:ALL_CARDS_PRIMARY
-msgid "Primary"
-msgstr "Principal"
+#: register.js:REPLACED_ADDRESS
+msgid "Replaces address ${0}<br/> ${1} ${2}<br/> ${3}, ${4} ${5}"
+msgstr ""
 
 #: register.js:PARENT_OR_GUARDIAN
 msgid "Parent/Guardian"
@@ -97,6 +101,10 @@ msgstr ""
 #: register.js:BARCODE_IN_USE
 msgid "Barcode is already in use"
 msgstr "Lo còde de barras es ja utilizat"
+
+#: register.js:UPDATE_EXPIRE_DATE
+msgid "Update Expire Date"
+msgstr ""
 
 #: register.js:RESET_PASSWORD
 msgid "Generate Password"
@@ -162,9 +170,9 @@ msgstr "Salvar &amp; Clonar"
 msgid "Statistical Categories"
 msgstr "Categorias estatisticas"
 
-#: register.js:ALL_CARDS_BARCODE
-msgid "Barcode"
-msgstr "Còde de barras"
+#: register.js:ADDRESS_NEW
+msgid "New Address"
+msgstr "Adreça novèla"
 
 #: register.js:HOLD_NOTIFY_EMAIL
 msgid "Email: "
@@ -181,10 +189,6 @@ msgstr "Tampar"
 #: register.js:DELETE_ADDRESS
 msgid "Delete address ${0}?"
 msgstr "Suprimir l'adreça ${0}?"
-
-#: register.js:REPLACED_ADDRESS
-msgid "Replaces address ${0}<br/> ${1} ${2}<br/> ${3}, ${4} ${5}"
-msgstr ""
 
 #~ msgid ""
 #~ "<div>Replaces address <b>${0}</b><br/> ${1} ${2}<br/> ${3}, ${4} ${5}</div>"

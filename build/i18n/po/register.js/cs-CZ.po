@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2013-09-26 18:17-0400\n"
-"PO-Revision-Date: 2013-10-04 12:30+0000\n"
+"POT-Creation-Date: 2014-02-24 16:24-0400\n"
+"PO-Revision-Date: 2014-03-09 18:48+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-10-05 05:16+0000\n"
-"X-Generator: Launchpad (build 16791)\n"
+"X-Launchpad-Export-Date: 2014-03-10 05:49+0000\n"
+"X-Generator: Launchpad (build 16948)\n"
 
 #: register.js:USER_SETTINGS
 msgid "User Settings"
@@ -37,9 +37,13 @@ msgstr "Adresa trvalého bydliště"
 msgid "This address is owned by another user: "
 msgstr "Tuto adresu má  jiný uživatel: "
 
-#: register.js:ADDRESS_NEW
-msgid "New Address"
-msgstr "Nová adresa"
+#: register.js:ALL_CARDS_PRIMARY
+msgid "Primary"
+msgstr "Primární"
+
+#: register.js:ALL_CARDS_BARCODE
+msgid "Barcode"
+msgstr "Čárový kód"
 
 #: register.js:SAVE
 msgid "Save"
@@ -69,9 +73,9 @@ msgstr "Změnit čárový kód"
 msgid "An address is required during registration."
 msgstr "Během registrace je požadována adresa."
 
-#: register.js:ALL_CARDS_PRIMARY
-msgid "Primary"
-msgstr "Primární"
+#: register.js:REPLACED_ADDRESS
+msgid "Replaces address ${0}<br/> ${1} ${2}<br/> ${3}, ${4} ${5}"
+msgstr "Nahrazuje adresu  ${0}<br/> ${1} ${2}<br/> ${3}, ${4} ${5}"
 
 #: register.js:PARENT_OR_GUARDIAN
 msgid "Parent/Guardian"
@@ -96,6 +100,10 @@ msgstr "Formulář není správně vyplněn. Prosím, upravte ho a zkuste to zno
 #: register.js:BARCODE_IN_USE
 msgid "Barcode is already in use"
 msgstr "Čárový kód již existuje"
+
+#: register.js:UPDATE_EXPIRE_DATE
+msgid "Update Expire Date"
+msgstr "Aktualizovat datum expirace"
 
 #: register.js:RESET_PASSWORD
 msgid "Generate Password"
@@ -161,9 +169,9 @@ msgstr "Uložit a klonovat"
 msgid "Statistical Categories"
 msgstr "Statistické kategorie"
 
-#: register.js:ALL_CARDS_BARCODE
-msgid "Barcode"
-msgstr "Čárový kód"
+#: register.js:ADDRESS_NEW
+msgid "New Address"
+msgstr "Nová adresa"
 
 #: register.js:HOLD_NOTIFY_EMAIL
 msgid "Email: "
@@ -180,10 +188,6 @@ msgstr "Zavřít"
 #: register.js:DELETE_ADDRESS
 msgid "Delete address ${0}?"
 msgstr "Smazat adresu ${0}?"
-
-#: register.js:REPLACED_ADDRESS
-msgid "Replaces address ${0}<br/> ${1} ${2}<br/> ${3}, ${4} ${5}"
-msgstr "Nahrazuje adresu  ${0}<br/> ${1} ${2}<br/> ${3}, ${4} ${5}"
 
 #~ msgid ""
 #~ "<div>Replaces address <b>${0}</b><br/> ${1} ${2}<br/> ${3}, ${4} ${5}</div>"

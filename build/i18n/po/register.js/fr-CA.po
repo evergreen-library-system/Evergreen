@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2013-09-26 18:17-0400\n"
+"POT-Creation-Date: 2014-02-24 16:24-0400\n"
 "PO-Revision-Date: 2012-12-31 21:17+0000\n"
 "Last-Translator: Guillaume F <marsguo@wanadoo.fr>\n"
 "Language-Team: French <fr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-09-28 05:30+0000\n"
-"X-Generator: Launchpad (build 16774)\n"
+"X-Launchpad-Export-Date: 2014-02-26 06:26+0000\n"
+"X-Generator: Launchpad (build 16935)\n"
 
 #: register.js:USER_SETTINGS
 msgid "User Settings"
@@ -37,9 +37,13 @@ msgstr "Facturation"
 msgid "This address is owned by another user: "
 msgstr "Cette adresse appartient à un autre utilisateur : "
 
-#: register.js:ADDRESS_NEW
-msgid "New Address"
-msgstr "Nouvelle adresse"
+#: register.js:ALL_CARDS_PRIMARY
+msgid "Primary"
+msgstr "Principal"
+
+#: register.js:ALL_CARDS_BARCODE
+msgid "Barcode"
+msgstr "Code-barres"
 
 #: register.js:SAVE
 msgid "Save"
@@ -69,9 +73,9 @@ msgstr "Remplacer le code à barres"
 msgid "An address is required during registration."
 msgstr "Une adresse est requise lors de l'inscription."
 
-#: register.js:ALL_CARDS_PRIMARY
-msgid "Primary"
-msgstr "Principal"
+#: register.js:REPLACED_ADDRESS
+msgid "Replaces address ${0}<br/> ${1} ${2}<br/> ${3}, ${4} ${5}"
+msgstr ""
 
 #: register.js:PARENT_OR_GUARDIAN
 msgid "Parent/Guardian"
@@ -97,6 +101,10 @@ msgstr ""
 #: register.js:BARCODE_IN_USE
 msgid "Barcode is already in use"
 msgstr "Le code à barres est déjà utilisé"
+
+#: register.js:UPDATE_EXPIRE_DATE
+msgid "Update Expire Date"
+msgstr ""
 
 #: register.js:RESET_PASSWORD
 msgid "Generate Password"
@@ -162,9 +170,9 @@ msgstr "Sauvegarder &amp; Cloner"
 msgid "Statistical Categories"
 msgstr "Catégories statistiques"
 
-#: register.js:ALL_CARDS_BARCODE
-msgid "Barcode"
-msgstr "Code-barres"
+#: register.js:ADDRESS_NEW
+msgid "New Address"
+msgstr "Nouvelle adresse"
 
 #: register.js:HOLD_NOTIFY_EMAIL
 msgid "Email: "
@@ -181,10 +189,6 @@ msgstr "Fermer"
 #: register.js:DELETE_ADDRESS
 msgid "Delete address ${0}?"
 msgstr "Supprimer l'adresse ${0}?"
-
-#: register.js:REPLACED_ADDRESS
-msgid "Replaces address ${0}<br/> ${1} ${2}<br/> ${3}, ${4} ${5}"
-msgstr ""
 
 #~ msgid ""
 #~ "<div>Replaces address <b>${0}</b><br/> ${1} ${2}<br/> ${3}, ${4} ${5}</div>"

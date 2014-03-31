@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2013-09-26 18:16-0400\n"
-"PO-Revision-Date: 2013-11-16 18:43+0000\n"
+"POT-Creation-Date: 2014-02-24 16:23-0400\n"
+"PO-Revision-Date: 2014-03-26 17:29+0000\n"
 "Last-Translator: Gerson Vazquez <gerson.v.h@gmail.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-11-17 05:24+0000\n"
-"X-Generator: Launchpad (build 16831)\n"
+"X-Launchpad-Export-Date: 2014-03-27 07:37+0000\n"
+"X-Generator: Launchpad (build 16967)\n"
 
 #: lang.version
 msgid "remote v1"
@@ -281,17 +281,17 @@ msgstr "&Ayuda"
 #: common.browser.find.label
 #: common.browser.find.accesskey
 msgid "F&ind in Page"
-msgstr ""
+msgstr "Encontrar en la página"
 
 #: common.browser.set_url.label
 #: common.browser.set_url.accesskey
 msgid "Modify &URL"
-msgstr ""
+msgstr "Modificar &URL"
 
 #: common.browser.view_source.label
 #: common.browser.view_source.accesskey
 msgid "&View Source"
-msgstr ""
+msgstr "&Ver código fuente"
 
 #: common.textbox.cut
 msgctxt "common.textbox.cut"
@@ -320,13 +320,13 @@ msgstr "Seleccionar todo"
 
 #: common.clipboard.copy_data.desc
 msgid "Choose the data to copy into the clipboard:"
-msgstr ""
+msgstr "Elegir los datos a copiar en el portapapeles"
 
 #: common.clipboard.close.label
 #: common.clipboard.close.accesskey
 msgctxt "common.clipboard.close.label common.clipboard.close.accesskey"
 msgid "&Close"
-msgstr ""
+msgstr "&Cerrar"
 
 #: common.sort.first.ascending
 msgid "Sort First (Ascending)"
@@ -687,7 +687,7 @@ msgstr "ID de la Base de Datos"
 #: staff.au_label_prefix
 msgctxt "staff.au_label_prefix"
 msgid "Prefix"
-msgstr ""
+msgstr "Prefijo"
 
 #: staff.au_label_second_given_name
 msgctxt "staff.au_label_second_given_name"
@@ -707,7 +707,7 @@ msgstr ""
 #: staff.au_mailing_address_label
 msgctxt "staff.au_mailing_address_label"
 msgid "Mailing Address"
-msgstr ""
+msgstr "Dirección Postal"
 
 #: staff.au_master_account_label
 msgid "Master Account"
@@ -720,7 +720,7 @@ msgstr "Nivel de acceso a red"
 #: staff.au_other_phone_label
 msgctxt "staff.au_other_phone_label"
 msgid "Other Phone"
-msgstr ""
+msgstr "Otro Teléfono"
 
 #: staff.au_passwd_label
 msgctxt "staff.au_passwd_label"
@@ -734,12 +734,12 @@ msgstr "Contraseña"
 
 #: staff.au_photo_url_label
 msgid "Photo URL"
-msgstr ""
+msgstr "URL de la foto"
 
 #: staff.au_prefix_label
 msgctxt "staff.au_prefix_label"
 msgid "Prefix"
-msgstr ""
+msgstr "Prefijo"
 
 #: staff.au_profile_label
 msgctxt "staff.au_profile_label"
@@ -752,7 +752,7 @@ msgstr "Segundo nombre"
 
 #: staff.au_settings_label
 msgid "Settings"
-msgstr ""
+msgstr "Ajustes"
 
 #: staff.au_standing_label
 msgctxt "staff.au_standing_label"
@@ -770,7 +770,7 @@ msgstr ""
 
 #: staff.au_super_user_label
 msgid "Super User"
-msgstr ""
+msgstr "Super Usuario"
 
 #: staff.au_survey_responses_label
 msgid "Survey Responses"
@@ -778,7 +778,7 @@ msgstr "Respuestas de encuesta"
 
 #: staff.au_usrgroup_label
 msgid "User group"
-msgstr ""
+msgstr "Grupo de usuarios"
 
 #: staff.au_usrname_label
 msgid "User name"
@@ -790,11 +790,11 @@ msgstr "Disponible para:"
 
 #: staff.admin.survey.description.label
 msgid "Description:"
-msgstr ""
+msgstr "Descripción:"
 
 #: staff.admin.survey.end.label
 msgid "End:"
-msgstr ""
+msgstr "Final:"
 
 #: staff.admin.survey.format.label
 msgid "Poll Format:"
@@ -825,7 +825,7 @@ msgstr "Cliente del personal"
 
 #: staff.admin.survey.start.label
 msgid "Start:"
-msgstr ""
+msgstr "Inicio:"
 
 #: staff.admin.toolbar.new_toolbar.label
 #: staff.admin.toolbar.new_toolbar.accesskey
@@ -900,7 +900,7 @@ msgstr ""
 #: staff.admin.work_log.refresh_btn.label
 msgctxt "staff.admin.work_log.refresh_btn.label"
 msgid "Refresh"
-msgstr ""
+msgstr "Actualizar"
 
 #: staff.admin.work_log.list1.retrieve_item_btn.label
 #: staff.admin.work_log.list1.retrieve_item_btn.accesskey
@@ -910,7 +910,7 @@ msgstr "Obtener elemento"
 #: staff.admin.work_log.list1.retrieve_patron_btn.label
 #: staff.admin.work_log.list1.retrieve_patron_btn.accesskey
 msgid "Retrieve &Patron"
-msgstr ""
+msgstr "Recuperar &Usuario"
 
 #: staff.admin.work_log.list2.retrieve_patron_btn.label
 #: staff.admin.work_log.list2.retrieve_patron_btn.accesskey
@@ -5836,6 +5836,7 @@ msgid "ID 2:"
 msgstr ""
 
 #: staff.patron_display.hold_alias.label
+msgctxt "staff.patron_display.hold_alias.label"
 msgid "Holds Alias:"
 msgstr ""
 
@@ -6354,7 +6355,8 @@ msgid "&Clear Form"
 msgstr ""
 
 #: staff.patron_search_form.alias.label
-msgid "Alias:"
+msgctxt "staff.patron_search_form.alias.label"
+msgid "Holds Alias:"
 msgstr ""
 
 #: staff.patron_search_form.email.label
@@ -11467,6 +11469,11 @@ msgstr ""
 
 #: staff.cat.marcedit.source.submit.label
 msgid "Update source"
+msgstr ""
+
+#: staff.cat.marcedit.phys_char_wizard.label
+#: staff.cat.marcedit.phys_char_wizard.accesskey
+msgid "Physical Characteristics &Wizard"
 msgstr ""
 
 #: staff.cat.marc_new.load.label

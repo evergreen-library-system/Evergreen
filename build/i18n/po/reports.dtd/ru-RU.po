@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-18 21:44-0400\n"
+"POT-Creation-Date: 2014-02-24 16:23-0400\n"
 "PO-Revision-Date: 2010-01-31 16:17+0000\n"
 "Last-Translator: Nikolai Romanik <Unknown>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-05-18 04:47+0000\n"
-"X-Generator: Launchpad (build 12959)\n"
+"X-Launchpad-Export-Date: 2014-02-26 06:25+0000\n"
+"X-Generator: Launchpad (build 16935)\n"
 "X-Accelerator-Marker: &\n"
 
 #. Common Entities
@@ -564,19 +564,15 @@ msgstr "Вы уверены , что хотите удалить отмечен�
 
 #: reports.oils_rpt_folder_window.dependant_reports_no_delete
 msgid ""
-"One or more of the selected templates could not be deleted because there are "
-"reports that depend on them."
+"        One or more of the selected templates could not be deleted because \n"
+"there are reports or outputs that depend on them."
 msgstr ""
-"Один или несколько отобранных шаблонов не могут быть удалены, так как есть  "
-"отчеты зависящие от них"
 
 #: reports.oils_rpt_folder_window.dependant_outputs_no_delete
 msgid ""
-"One or more of The selected reports could not be deleted because there are "
-"outputs that depend on them."
+"        One or more of the selected reports could not be deleted because \n"
+"there are outputs that depend on them."
 msgstr ""
-"Один или несколько отобранных отчетов не могут быть удалены, так как есть  "
-"выводы зависящие от них"
 
 #: reports.oils_rpt_folder_window.cannot_delete_another_users_data
 msgid "You may not delete another user's items"
@@ -808,3 +804,17 @@ msgstr "SQL псевдоним"
 #: reports.xul.template_builder.relationship.label
 msgid "Relationship"
 msgstr "Взаимосвязь"
+
+#~ msgid ""
+#~ "One or more of the selected templates could not be deleted because there are "
+#~ "reports that depend on them."
+#~ msgstr ""
+#~ "Один или несколько отобранных шаблонов не могут быть удалены, так как есть  "
+#~ "отчеты зависящие от них"
+
+#~ msgid ""
+#~ "One or more of The selected reports could not be deleted because there are "
+#~ "outputs that depend on them."
+#~ msgstr ""
+#~ "Один или несколько отобранных отчетов не могут быть удалены, так как есть  "
+#~ "выводы зависящие от них"

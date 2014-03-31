@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2013-09-26 18:17-0400\n"
+"POT-Creation-Date: 2014-02-24 16:24-0400\n"
 "PO-Revision-Date: 2012-07-16 09:59+0000\n"
 "Last-Translator: Irmak Bıçakçıgil <Unknown>\n"
 "Language-Team: Turkish <tr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-09-28 05:30+0000\n"
-"X-Generator: Launchpad (build 16774)\n"
+"X-Launchpad-Export-Date: 2014-02-26 06:26+0000\n"
+"X-Generator: Launchpad (build 16935)\n"
 
 #: register.js:USER_SETTINGS
 msgid "User Settings"
@@ -37,9 +37,13 @@ msgstr "Ücretlendirme"
 msgid "This address is owned by another user: "
 msgstr "Bu adres başka bir kullanıcıya ait: "
 
-#: register.js:ADDRESS_NEW
-msgid "New Address"
-msgstr "Yeni Adres"
+#: register.js:ALL_CARDS_PRIMARY
+msgid "Primary"
+msgstr "Birincil"
+
+#: register.js:ALL_CARDS_BARCODE
+msgid "Barcode"
+msgstr "Barkod"
 
 #: register.js:SAVE
 msgid "Save"
@@ -69,9 +73,9 @@ msgstr "Barkodu Yenile"
 msgid "An address is required during registration."
 msgstr ""
 
-#: register.js:ALL_CARDS_PRIMARY
-msgid "Primary"
-msgstr "Birincil"
+#: register.js:REPLACED_ADDRESS
+msgid "Replaces address ${0}<br/> ${1} ${2}<br/> ${3}, ${4} ${5}"
+msgstr ""
 
 #: register.js:PARENT_OR_GUARDIAN
 msgid "Parent/Guardian"
@@ -96,6 +100,10 @@ msgstr "Form hatalı. Lütfen düzenleyip tekrar deneyin."
 #: register.js:BARCODE_IN_USE
 msgid "Barcode is already in use"
 msgstr "Barkod zaten kullanımda"
+
+#: register.js:UPDATE_EXPIRE_DATE
+msgid "Update Expire Date"
+msgstr ""
 
 #: register.js:RESET_PASSWORD
 msgid "Generate Password"
@@ -161,9 +169,9 @@ msgstr ""
 msgid "Statistical Categories"
 msgstr "İstatistiksel Kategoriler"
 
-#: register.js:ALL_CARDS_BARCODE
-msgid "Barcode"
-msgstr "Barkod"
+#: register.js:ADDRESS_NEW
+msgid "New Address"
+msgstr "Yeni Adres"
 
 #: register.js:HOLD_NOTIFY_EMAIL
 msgid "Email: "
@@ -180,7 +188,3 @@ msgstr "Kapat"
 #: register.js:DELETE_ADDRESS
 msgid "Delete address ${0}?"
 msgstr "${0} adresinii siliyorsun?"
-
-#: register.js:REPLACED_ADDRESS
-msgid "Replaces address ${0}<br/> ${1} ${2}<br/> ${3}, ${4} ${5}"
-msgstr ""

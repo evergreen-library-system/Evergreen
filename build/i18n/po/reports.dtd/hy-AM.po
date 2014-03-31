@@ -3,15 +3,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-18 21:44-0400\n"
+"POT-Creation-Date: 2014-02-24 16:23-0400\n"
 "PO-Revision-Date: 2011-07-14 08:50+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-07-15 04:53+0000\n"
-"X-Generator: Launchpad (build 13405)\n"
+"X-Launchpad-Export-Date: 2014-02-26 06:25+0000\n"
+"X-Generator: Launchpad (build 16935)\n"
 "X-Accelerator-Marker: &\n"
 
 #: reports.oils_rpt_builder.close_window
@@ -565,19 +565,15 @@ msgstr "Դու վստա՞հ ես որ ցանկանում ես ջնջել ընտ�
 
 #: reports.oils_rpt_folder_window.dependant_reports_no_delete
 msgid ""
-"One or more of the selected templates could not be deleted because there are "
-"reports that depend on them."
+"        One or more of the selected templates could not be deleted because \n"
+"there are reports or outputs that depend on them."
 msgstr ""
-"Ընտրված ձևանմուշներից մեկը կամ մի քանիսը հնարավոր չէ ջնջել քանի որ կան "
-"հաշվետվություններ, որ կախում ունեն դրանցից։"
 
 #: reports.oils_rpt_folder_window.dependant_outputs_no_delete
 msgid ""
-"One or more of The selected reports could not be deleted because there are "
-"outputs that depend on them."
+"        One or more of the selected reports could not be deleted because \n"
+"there are outputs that depend on them."
 msgstr ""
-"Ընտրված հաշվետվություններից մեկը կամ մի քանիսը հնարավոր չէ ջնջել քանի որ կան "
-"հաշվետվություններ, որ կախում ունեն դրանցից։"
 
 #: reports.oils_rpt_folder_window.cannot_delete_another_users_data
 msgid "You may not delete another user's items"
@@ -815,3 +811,17 @@ msgstr "SQL կեղծանուն"
 #: reports.xul.template_builder.relationship.label
 msgid "Relationship"
 msgstr "կապ"
+
+#~ msgid ""
+#~ "One or more of the selected templates could not be deleted because there are "
+#~ "reports that depend on them."
+#~ msgstr ""
+#~ "Ընտրված ձևանմուշներից մեկը կամ մի քանիսը հնարավոր չէ ջնջել քանի որ կան "
+#~ "հաշվետվություններ, որ կախում ունեն դրանցից։"
+
+#~ msgid ""
+#~ "One or more of The selected reports could not be deleted because there are "
+#~ "outputs that depend on them."
+#~ msgstr ""
+#~ "Ընտրված հաշվետվություններից մեկը կամ մի քանիսը հնարավոր չէ ջնջել քանի որ կան "
+#~ "հաշվետվություններ, որ կախում ունեն դրանցից։"

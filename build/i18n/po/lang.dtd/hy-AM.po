@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-26 18:16-0400\n"
+"POT-Creation-Date: 2014-02-24 16:23-0400\n"
 "PO-Revision-Date: 2013-12-30 14:21+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-12-31 04:58+0000\n"
-"X-Generator: Launchpad (build 16877)\n"
+"X-Launchpad-Export-Date: 2014-02-26 06:20+0000\n"
+"X-Generator: Launchpad (build 16935)\n"
 "X-Accelerator-Marker: &\n"
 
 #: common.logout
@@ -5867,8 +5867,9 @@ msgid "ID 2:"
 msgstr "ID 2:"
 
 #: staff.patron_display.hold_alias.label
+msgctxt "staff.patron_display.hold_alias.label"
 msgid "Holds Alias:"
-msgstr "Պահումների կեղծանուն"
+msgstr ""
 
 #: staff.patron_display.items.print_receipt.label
 #: staff.patron_display.items.print_receipt.accesskey
@@ -6385,8 +6386,9 @@ msgid "&Clear Form"
 msgstr "&Մաքրիր ձևը"
 
 #: staff.patron_search_form.alias.label
-msgid "Alias:"
-msgstr "Փոխանուն։"
+msgctxt "staff.patron_search_form.alias.label"
+msgid "Holds Alias:"
+msgstr ""
 
 #: staff.patron_search_form.email.label
 msgctxt "staff.patron_search_form.email.label"
@@ -11574,6 +11576,11 @@ msgstr "Մատենագիտական աղբյուր"
 msgid "Update source"
 msgstr "Թարմացման աղբյուր"
 
+#: staff.cat.marcedit.phys_char_wizard.label
+#: staff.cat.marcedit.phys_char_wizard.accesskey
+msgid "Physical Characteristics &Wizard"
+msgstr ""
+
 #: staff.cat.marc_new.load.label
 #: staff.cat.marc_new.load.accesskey
 msgid "&Load"
@@ -15710,6 +15717,12 @@ msgstr "Բացել հերթը"
 
 #~ msgid "Toggle &Button Bar"
 #~ msgstr "Toggle &Button Bar"
+
+#~ msgid "Holds Alias:"
+#~ msgstr "Պահումների կեղծանուն"
+
+#~ msgid "Alias:"
+#~ msgstr "Փոխանուն։"
 
 #~ msgid "Server Settings"
 #~ msgstr "Սպասարկող կայանի կարգաբերումներ"
