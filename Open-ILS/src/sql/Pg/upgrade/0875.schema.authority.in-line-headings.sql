@@ -41,12 +41,6 @@ ALTER FUNCTION authority.simple_heading_set(TEXT) STABLE STRICT;
 
 COMMIT;
 
-\qecho .
-\qecho This index might fail, and is outside the transaction for that reason.
-\qecho If it fails, you probably did not have it in the first place.
-\qecho .
-CREATE UNIQUE INDEX unique_by_heading_and_thesaurus ON authority.record_entry (heading) WHERE deleted IS FALSE or deleted = FALSE;
-
 ALTER TABLE authority.record_entry ENABLE TRIGGER a_marcxml_is_well_formed;
 ALTER TABLE authority.record_entry ENABLE TRIGGER aaa_auth_ingest_or_delete;
 ALTER TABLE authority.record_entry ENABLE TRIGGER b_maintain_901;
