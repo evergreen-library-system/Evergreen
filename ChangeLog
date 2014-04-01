@@ -1,3 +1,4271 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 0e41fcf6b32ea33d9e5226147ba2e1179c9d573c
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Mon Mar 31 15:59:25 2014 -0400
+
+    Remove unwanted index recreation
+    
+    After some discussion, it was noted that this index was formally
+    dropped eons ago.  The fact we are re-dropping it in this upgrade
+    is just a precaution, so there is no need to try to recreate it.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+0	6	Open-ILS/src/sql/Pg/upgrade/0875.schema.authority.in-line-headings.sql
+
+commit f51804fc5e899ecd2e5624fd4a05a095edb50fa2
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Mon Feb 24 17:43:29 2014 -0500
+
+    Bump OpenILS.pm version
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit 7d8628dfa3432ed005c0a07b3ffddf41833c68d4
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Mon Mar 31 13:43:29 2014 -0400
+
+    Translation updates - newpot
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+2378	2304	build/i18n/po/db.seed/db.seed.pot
+83	66	build/i18n/po/tpac/tpac.pot
+
+commit d9bfd83ced4a5723c74ef2000d7b47b7f84541cd
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Mon Mar 31 13:33:30 2014 -0400
+
+    Translation updates - po files
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+14	14	build/i18n/po/AutoFieldWidget.js/en-GB.po
+6	6	build/i18n/po/cat.properties/en-GB.po
+10	10	build/i18n/po/circ.properties/en-GB.po
+6	6	build/i18n/po/common.properties/en-GB.po
+1845	1492	build/i18n/po/db.seed/cs-CZ.po
+1490	1288	build/i18n/po/db.seed/de-DE.po
+1496	1291	build/i18n/po/db.seed/en-CA.po
+1496	1291	build/i18n/po/db.seed/en-GB.po
+1492	1290	build/i18n/po/db.seed/es-ES.po
+1503	1298	build/i18n/po/db.seed/fr-CA.po
+1503	1300	build/i18n/po/db.seed/hy-AM.po
+1490	1288	build/i18n/po/db.seed/oc-FR.po
+1496	1294	build/i18n/po/db.seed/pt-BR.po
+1495	1293	build/i18n/po/db.seed/ru-RU.po
+1487	1285	build/i18n/po/db.seed/tr-TR.po
+2563	2507	build/i18n/po/fm_IDL.dtd/cs-CZ.po
+2557	2501	build/i18n/po/fm_IDL.dtd/de-DE.po
+2561	2505	build/i18n/po/fm_IDL.dtd/en-CA.po
+2560	2504	build/i18n/po/fm_IDL.dtd/en-GB.po
+2559	2503	build/i18n/po/fm_IDL.dtd/es-ES.po
+2556	2500	build/i18n/po/fm_IDL.dtd/fr-CA.po
+2561	2505	build/i18n/po/fm_IDL.dtd/hy-AM.po
+2556	2500	build/i18n/po/fm_IDL.dtd/oc-FR.po
+2560	2504	build/i18n/po/fm_IDL.dtd/pt-BR.po
+2560	2504	build/i18n/po/fm_IDL.dtd/ru-RU.po
+2556	2500	build/i18n/po/fm_IDL.dtd/tr-TR.po
+9	6	build/i18n/po/ils_events.xml/en-GB.po
+11	4	build/i18n/po/lang.dtd/ar-AR.po
+20	7	build/i18n/po/lang.dtd/cs-CZ.po
+11	4	build/i18n/po/lang.dtd/de-DE.po
+19	6	build/i18n/po/lang.dtd/en-CA.po
+19	6	build/i18n/po/lang.dtd/en-GB.po
+30	23	build/i18n/po/lang.dtd/es-ES.po
+19	6	build/i18n/po/lang.dtd/fr-CA.po
+19	6	build/i18n/po/lang.dtd/hy-AM.po
+11	4	build/i18n/po/lang.dtd/oc-FR.po
+19	6	build/i18n/po/lang.dtd/pt-BR.po
+19	6	build/i18n/po/lang.dtd/ru-RU.po
+11	4	build/i18n/po/lang.dtd/tr-TR.po
+5	5	build/i18n/po/offline.properties/en-GB.po
+4	4	build/i18n/po/opac.dtd/cs-CZ.po
+12	12	build/i18n/po/patron.properties/en-GB.po
+21	17	build/i18n/po/register.js/cs-CZ.po
+19	15	build/i18n/po/register.js/de-DE.po
+20	16	build/i18n/po/register.js/en-CA.po
+24	20	build/i18n/po/register.js/en-GB.po
+20	16	build/i18n/po/register.js/es-ES.po
+20	16	build/i18n/po/register.js/fr-CA.po
+20	16	build/i18n/po/register.js/hy-AM.po
+20	16	build/i18n/po/register.js/oc-FR.po
+20	16	build/i18n/po/register.js/pt-BR.po
+19	15	build/i18n/po/register.js/ru-RU.po
+20	16	build/i18n/po/register.js/tr-TR.po
+26	12	build/i18n/po/reports.dtd/cs-CZ.po
+8	8	build/i18n/po/reports.dtd/de-DE.po
+21	11	build/i18n/po/reports.dtd/en-CA.po
+27	13	build/i18n/po/reports.dtd/en-GB.po
+21	11	build/i18n/po/reports.dtd/es-ES.po
+20	13	build/i18n/po/reports.dtd/fr-CA.po
+21	11	build/i18n/po/reports.dtd/hy-AM.po
+21	14	build/i18n/po/reports.dtd/pt-BR.po
+21	11	build/i18n/po/reports.dtd/ru-RU.po
+8	8	build/i18n/po/reports.dtd/tr-TR.po
+13	13	build/i18n/po/selfcheck.js/en-GB.po
+7	7	build/i18n/po/serial.properties/en-GB.po
+
+commit f92e1ff3c646f0fd300efb935ae11ca1593ab6c1
+Author: Ben Shum <bshum@biblio.org>
+Date:   Fri Mar 28 16:53:39 2014 -0400
+
+    LP#1259665 Stamping upgrade for 800t search and facets
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+25	0	Open-ILS/src/sql/Pg/upgrade/0877.data.re-add_800_t_search_and_facets.sql
+0	25	Open-ILS/src/sql/Pg/upgrade/XXXX.data.re-add_800_t_search_and_facets.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0877.data.re-add_800_t_search_and_facets.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.re-add_800_t_search_and_facets.sql
+
+commit ca359decc05131f82a7ebd4146c4acb68b7c4010
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Mar 27 14:19:34 2014 -0400
+
+    LP#1259665 Split series browse config from search
+    
+    When we added browse support in 2.5, we took extra care to ensure that
+    our series browse entries would sort and display reliably.
+    
+    800t does not specify non-filing characters, so it was excluded from
+    browse.  Unfortunately, since browse and search had a single root
+    config, this removed 800t from search as well.
+    
+    While we may want to reconsider expanding later on, this commit takes
+    a conservative approach, and uses all series values for search and
+    facets, but only entries with a usable filing indicator will be
+    extracted for browse.  It accomplishes this by splitting the series
+    config in two, one config for search/faceting, and a second config
+    dedicated to browse (similar to what was done for title).
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+4	2	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+25	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.re-add_800_t_search_and_facets.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.re-add_800_t_search_and_facets.sql
+
+commit ab20899685ce2660424ad732bbeceb87b4a18f29
+Author: Yamil Suarez <yamil@yamil.com>
+Date:   Fri Mar 28 11:45:11 2014 -0400
+
+    Documentation: Changed return type of staging_importer() SP
+    
+    Now it returns VOID, before it retunred NULL and gave an error
+
+1	1	docs/admin_initial_setup/migrating_your_data.txt
+
+commit 2d2e504c633ed30557324acf5ecff7971e68d581
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Tue Mar 25 13:59:55 2014 -0400
+
+    LP1297435: Make 0872 upgrade require less hand holding.
+    
+    Add a count() around the metabib.remap_metarecord_for_bib call in the
+    final select statement.  This allows the script to run without the
+    user having to scroll through rows of output.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/sql/Pg/upgrade/0872.functions.metarecord-deleted-constituents.sql
+
+commit 988605ececad7850f2a7276b64a697b6b5c9ae31
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Fri Mar 21 22:44:42 2014 -0400
+
+    LP#1290496: The quest for knowledge is over
+    
+    An apparently bad query plan causes Z39.50 searches of local
+    catalog to take an extremely long time to complete.  One theory
+    is that metabib.rec_descriptor is the culprit, but that has not
+    been verified.
+    
+    This commit works around the immediate problem, but will need to
+    be revisited.  Some questions include:
+    
+    1) Should we rewrite parts of open-ils.search.biblio.multiclass
+    (and the underlying storage methods) to use the new attr structures
+    more directly, rather than through a view of a view?
+    
+    2) Alternately, should we rip it out?  If so, we will need to also
+    remove/nullify the "use_staged_search" option, since there will be
+    no functional non-staged offering.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Search/Biblio.pm
+
+commit 5c364369b66ee41644dcc0b10b5dbf2695448faa
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Tue Mar 25 09:30:38 2014 -0400
+
+    Change xref syntax to avoid docs processing bug
+    
+    The current Documentation processing script can't handle the newer xref
+    syntax for cross references. Let's use the older syntax for now, and
+    consider changing over in the future, after the processing bug is fixed.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+2	2	docs/admin/staff_client-button_bar_toolbar.txt
+
+commit 18815ea422392e43683f182b235ac61f81307cb3
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Thu Mar 20 15:52:30 2014 -0400
+
+    Docs: Revive/merge content into "Using the Staff Client"
+    
+    This commit brings in three old sections and merges with any similar
+    content.
+    
+    - Revive old section about sticky check box settings
+    - Merge old section about Font and Sound settings
+    
+      Adds a brief section about zooming in the OPAC, and otherwise only
+      reformats some lines to make them git-friendly.
+    
+    - Docs: Fix and copy Customize Toolbars section
+    
+      The old "Customizable Toolbar" docs section is already revived in the
+      Evergreen Book "System Configuration and Customization" chapter. Since
+      this feature seems to belong under "Using the Staff Client ->
+      Workstation Administration", this commit duplicates it into that
+      chapter. This also fixes a few asciidoc bugs in both places. And it
+      fixes one bug in root.txt which caused "phonelist.txt" to be mentioned
+      at the bottom of this section, but not actually included in the docs
+      structure.
+    
+      In addition, the section "Button Bar/Toolbar" that was also under
+      "Workstation Administration" has been moved up a level, since it
+      pertains more to staff client users rather than admins. And the
+      admin-specific content at the end of that section has been replaced
+      with a link to the newly duplicated "Customizable Toolbar" section.
+    
+      The result of this reorganization should be:
+    
+      - Using the Staff Client
+        - Button Bar/Toolbar (for staff client users)
+        - Workstation Administration
+          - Customizable Toolbar (for staff client admins)
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+15	14	docs/admin/customize_staff_client.txt
+36	0	docs/admin/staff_client-button_bar_toolbar.txt
+17	0	docs/admin/staff_client-sticky_settings.txt
+77	54	docs/admin/workstation_admin.txt
+-	-	docs/media/staff_client-3.png
+-	-	docs/media/staff_client-4.png
+11	1	docs/root.txt
+ create mode 100644 docs/admin/staff_client-button_bar_toolbar.txt
+ create mode 100644 docs/admin/staff_client-sticky_settings.txt
+ create mode 100644 docs/media/staff_client-3.png
+ create mode 100644 docs/media/staff_client-4.png
+
+commit f0b6585d367484fe2f8af0a93f28aa564c6788db
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Thu Mar 20 14:53:00 2014 -0400
+
+    Docs: Revive old section about Column Picker
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+29	0	docs/admin/staff_client-column_picker.txt
+-	-	docs/media/column_picker_dojo.png
+-	-	docs/media/column_picker_xul.png
+-	-	docs/media/column_picker_xul_save.png
+2	0	docs/root.txt
+ create mode 100644 docs/admin/staff_client-column_picker.txt
+ create mode 100644 docs/media/column_picker_dojo.png
+ create mode 100644 docs/media/column_picker_xul.png
+ create mode 100644 docs/media/column_picker_xul_save.png
+
+commit 6b106f78729b14df6171cb1bc3afdd56be76b349
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Thu Mar 20 10:53:36 2014 -0400
+
+    Add missing screenshot files for new 2.5 Acq import feature
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+-	-	docs/media/marc_batch_import_acq_overlay.png
+-	-	docs/media/marc_batch_import_popup.png
+ create mode 100644 docs/media/marc_batch_import_acq_overlay.png
+ create mode 100644 docs/media/marc_batch_import_popup.png
+
+commit 028bde53833a7cca0e5dca483f03f4bb6d49495b
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Wed Mar 19 15:56:44 2014 -0400
+
+    Docs: Reformat numbered lists into AsciiDoc syntax
+    
+    This commit improves list formatting in the Batch Importing section by
+    converting various hard-coded numbered lists into AsciiDoc syntax. Where
+    images are included, those are forced to be inline by adding a '+' to the
+    preceeding line. And whitespace was removed from the end of two lines. No
+    other changes are included.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+48	52	docs/cataloging/batch_importing_MARC.txt
+
+commit b70e768abe78289675e5967032644751eb5ee15a
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Mon Jan 13 09:44:55 2014 -0500
+
+    Document new 2.5 feature in Acq docs
+    
+    This commit adds documentation in two places for the new Acq feature
+    "Opportunistic Acquisitions In-Process Copy Overlay". First, a short
+    note is added to the "Load MARC Order Records" doc. Second, the feature
+    is described more thoroughly in the "Batch Importing MARC Records" doc.
+    Also, this commit cleans up a hard-coded ordered list and a few small
+    wording and formatting problems.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+7	6	docs/acquisitions/vandelay_acquisitions_integration.txt
+36	30	docs/cataloging/batch_importing_MARC.txt
+
+commit ade704b8a9bb64132fea036bc80a8a0ea920ee55
+Author: Ben Shum <bshum@biblio.org>
+Date:   Wed Mar 19 10:13:06 2014 -0400
+
+    LP#1230557 Stamping upgrade script for perm_list_group_admin
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+18	0	Open-ILS/src/sql/Pg/upgrade/0876.data.perm_list_group_system_admin.sql
+0	18	Open-ILS/src/sql/Pg/upgrade/XXXX.data.perm_list_group_system_admin.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0876.data.perm_list_group_system_admin.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.perm_list_group_system_admin.sql
+
+commit a58a18d77fae346988ae46992622356a45d3d93b
+Author: Mark Cooper <markchristophercooper@gmail.com>
+Date:   Wed Sep 25 10:06:48 2013 -0700
+
+    LP#1230557 Adding more groups to perm_list
+    
+    By default some of the perm groups do not have their
+    application_perm in the perm_list. This adds them.
+    
+    Signed-off-by: Mark Cooper <markchristophercooper@gmail.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+    
+    Conflicts:
+    	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+
+11	1	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+18	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.perm_list_group_system_admin.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.perm_list_group_system_admin.sql
+
+commit 6f098024da7d79fd950c096a3f8eeecb6226d3fd
+Author: Jason Etheridge <jason@esilibrary.com>
+Date:   Fri Nov 8 14:12:43 2013 -0500
+
+    remove XUL @persist from list column definitions
+    
+    We moved away from @persist a long time ago, but some cruft remained.  This
+    would cause a local file, localstore.rdf, to balloon in size as columns were
+    adjusted in XUL-based lists.  Since this is an XML file, writing and parsing
+    it can get very expensive if the file grows too large, which it has done for
+    some people.
+    
+    This change keeps that file from growing further based on these list columns,
+    but it may be worth deleting the localstore.rdf file or creating a new staff
+    client profile (uninstalling and reinstalling the staff client DOES NOT
+    accomplish this).
+    
+    Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/xul/staff_client/server/cat/copy_summary.xul
+24	163	Open-ILS/xul/staff_client/server/circ/util.js
+76	76	Open-ILS/xul/staff_client/server/patron/util.js
+10	28	Open-ILS/xul/staff_client/server/serial/manage_items.js
+
+commit 4ffa6220773038b7c8956612479b074e3803b56d
+Author: Ben Shum <bshum@biblio.org>
+Date:   Tue Mar 18 22:44:56 2014 -0400
+
+    LP#1253163: stamping upgrade for authority.in-line-headings
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+56	0	Open-ILS/src/sql/Pg/upgrade/0875.schema.authority.in-line-headings.sql
+0	56	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.authority.in-line-headings.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0875.schema.authority.in-line-headings.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.authority.in-line-headings.sql
+
+commit fa417ff21862e05cbf12d98e45acc919c5755596
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Mon Mar 17 16:47:55 2014 -0400
+
+    LP#1253163: Replace dropped unique index, if we can
+    
+    Not sure if this is necessary, but since we drop this index, we might
+    want to make an effort to recreate it if we can (but don't die if we
+    cannot).
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+6	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.authority.in-line-headings.sql
+
+commit 3f0411f5968a17bfe87ad4203f6d8760e9cd68fd
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Mon Mar 17 13:03:49 2014 -0400
+
+    LP#1253163: Make authority functions more truthful
+    
+    One discovery we made on this bug was that PG can break if we
+    conveniently label functions as IMMUTABLE when they are now.  Let's
+    go ahead and reclass some authority functions as STABLE STRICT to
+    better fit reality.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+4	4	Open-ILS/src/sql/Pg/011.schema.authority.sql
+6	1	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.authority.in-line-headings.sql
+
+commit cccf8938f544d82a47b6df5c8c918a53e1aff728
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Fri Feb 28 16:45:40 2014 -0500
+
+    LP#1253163: Materialize authority headings
+    
+    There seems to be a bug in Postgres 9.3+ that does not like the
+    circuitous route we take to indexing authority headings.  So, we
+    get around this by storing the actual heading values instead of
+    indexing a function over the MARC.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+3	4	Open-ILS/src/perlmods/lib/OpenILS/Application/Search/Authority.pm
+1	0	Open-ILS/src/sql/Pg/000.english.pg93.fts-config.sql
+16	3	Open-ILS/src/sql/Pg/011.schema.authority.sql
+2	2	Open-ILS/src/sql/Pg/800.fkeys.sql
+45	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.authority.in-line-headings.sql
+ create mode 120000 Open-ILS/src/sql/Pg/000.english.pg93.fts-config.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.authority.in-line-headings.sql
+
+commit 7e488141a61b30f431a6cf551922aaa2863bc77d
+Author: Ben Shum <bshum@biblio.org>
+Date:   Tue Mar 18 21:39:10 2014 -0400
+
+    LP#1243023: Stamping upgrade script for oils_expath-tweaks
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+611	0	Open-ILS/src/sql/Pg/upgrade/0874.function.oils_xpath-tweaks-for-newer-pg.sql
+0	611	Open-ILS/src/sql/Pg/upgrade/XXXX.function.oils_xpath-tweaks-for-newer-pg.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0874.function.oils_xpath-tweaks-for-newer-pg.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.function.oils_xpath-tweaks-for-newer-pg.sql
+
+commit 8e5dc73ba37421898f3d5d8bfa0e35b74715d8de
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Tue Mar 18 21:15:25 2014 -0400
+
+    LP#1243023: Add optional quick reingest to upgrade script
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+8	0	Open-ILS/src/sql/Pg/upgrade/XXXX.function.oils_xpath-tweaks-for-newer-pg.sql
+
+commit 624e0dc7066033051b5715afe7dbf1e3fbb88749
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Mon Mar 10 17:02:33 2014 -0400
+
+    LP#1243023 Add upgrade script and pgTAP test
+    
+    For fixes to XPATH extraction encoding.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+10	0	Open-ILS/src/sql/Pg/t/regress/lp1243023_decoded_xpath_extracts.pg
+603	0	Open-ILS/src/sql/Pg/upgrade/XXXX.function.oils_xpath-tweaks-for-newer-pg.sql
+ create mode 100644 Open-ILS/src/sql/Pg/t/regress/lp1243023_decoded_xpath_extracts.pg
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.function.oils_xpath-tweaks-for-newer-pg.sql
+
+commit cdb49401755d803d51b863de06d1df08345342c4
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Mon Mar 3 14:34:30 2014 -0500
+
+    LP#1243023: Clean up string handling variable types
+    
+    Similar to the previous commit, this was really TEXT, no need to flip
+    back and forth between that and XML.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+6	21	Open-ILS/src/sql/Pg/030.schema.metabib.sql
+
+commit a3a81ab4f00db4207f559cf309a59d2b30cac3ec
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Mon Mar 3 14:28:13 2014 -0500
+
+    LP#1243023: Make sure URLs are not broken
+    
+    We need to make sure that the URLs we extract contain decoded Famous Five
+    characters, not entities.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+3	3	Open-ILS/src/sql/Pg/076.functions.url_verify.sql
+
+commit d3987e2030981ea8882a6d688f81e4eb7be3397b
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Mon Mar 3 14:26:46 2014 -0500
+
+    LP#1243023: Clean up string handling variable types
+    
+    It was already TEXT, no need to flip back and forth between that
+    and XML.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+2	2	Open-ILS/src/sql/Pg/011.schema.authority.sql
+
+commit 6d079ea592f5982225689ec6abce9e602eff7b10
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Mon Mar 3 14:07:42 2014 -0500
+
+    LP#1243023: Teach oils_xpath() to decode specific enties in text nodes
+    
+    Because of a behavioral change in Postgres' XML code (specifically, when
+    casting XML as TEXT, the Famous Five XML entities are not decoded), we
+    are seeing doubled encodings in XML and HTML output, as well as in indexed
+    data.  To combat this, we will now check the first character of each
+    array element returned by XPATH() and, if it is not '<', we will decode
+    the entities ourselves.
+    
+    Also included in this commit is some cleanup of the surrounding file
+    content, which was just confusing and useless in the modern era.
+    
+    The contents of his commit, followed by:
+    
+     =# drop function evergreen.oils_xpath(text,text,anyarray)
+    
+    are enough to address the OP's complaint about browse data.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+45	179	Open-ILS/src/sql/Pg/002.functions.config.sql
+
+commit d59d8f95af806bf218f3c45fc558a582a91393da
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Mon Mar 17 11:53:22 2014 -0400
+
+    LP#1294156 TPAC activate hold Submit on load w/ barcode
+    
+    Repairs an error introduced by b055fe4, where the Submit button was left
+    inactive on initial page load, even when a valid barcode was already
+    set.
+    
+    Overall, this change paritally rolls back b055fe4 to simplify the
+    implementation.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+9	9	Open-ILS/web/js/ui/default/opac/staff.js
+
+commit 7c3b2dae0b1fca098c4804f52cadf406c29fd458
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Thu Mar 13 10:27:13 2014 -0400
+
+    LP#1287967 upgrade notes re: removing reporter view
+    
+    ...and it's reinstallation requirements.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+9	0	docs/RELEASE_NOTES_NEXT/OPAC/Composite_Record_Attributes.txt
+
+commit 356b8262679babe942fcea96c9e628058fc48c9b
+Author: Ben Shum <bshum@biblio.org>
+Date:   Thu Mar 6 17:46:30 2014 -0500
+
+    LP1287967 - drop reporter.classic_current_circ view as part of 0864 upgrade
+    
+    As noted in the bug description, attempts to run 0864.MVF_CRA-upgrade.sql will
+    fail on a database where the reporter.classic_current_circ view is present.
+    
+    Add a DROP VIEW IF EXISTS and then include a note that administrators will need
+    to recreate the VIEW afterwards if desired.
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+4	0	Open-ILS/src/sql/Pg/upgrade/0864.MVF_CRA-upgrade.sql
+
+commit befdd0b7c9703ff94ee3f3f74aae4d1fd42e4469
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Sat Mar 15 08:54:39 2014 -0400
+
+    Fix XML comment breakage in opensrf.xml.example
+    
+    Per http://www.w3.org/TR/REC-xml/#sec-comments, 'For compatibility, the string
+    " -- " (double-hyphen) MUST NOT occur within comments.'
+    
+    XML parsers that cared about specs choked on our --localhost reference.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+1	1	Open-ILS/examples/opensrf.xml.example
+
+commit 5e4d60cacabafccb0c1c11ccb4565f8d5251df7e
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Fri Feb 28 10:06:40 2014 -0800
+
+    LP#1286248: remove references to osrf_ctl.sh
+    
+    This patch replaces references to osrf_ctl.sh, which is deprecated
+    as of OpenSRF 2.3.0, with opensrf_control.  It also names
+    2.3.0 as the minimum required version of OpenSRF.
+    
+    brick_ctl.sh gets the most changes as a consequence.  In particular:
+    
+    * the stop_{c,perl}/[re]start_{c,perl} actions are removed, as
+      osrf_control behaves exactly the same when stopping or starting
+      services.
+    * the -s option for working with a single service is now documented,
+      and is restricted to the stop_osrf/[re]start_osrf actions
+    
+    It should be noted that for brick-based setups (and other kinds of
+    multi-server setups) better control can be had by using opensrf_control
+    directly.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/examples/opensrf.xml.example
+24	28	Open-ILS/src/support-scripts/brick_ctl.sh
+2	2	build/tools/update.sh
+2	2	docs/installation/server_upgrade.txt
+2	8	docs/reports/reporter_add_data_source.txt
+
+commit 10e245f7f8170990977cc8de48d1955719c440ae
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Wed Mar 5 17:57:24 2014 -0500
+
+    LP1198983: Remove deprecated useragent.override variable
+    
+    To quote Dan Wells in bug comment #6:
+    
+    Back in the 2.2 days, Evergreen had code which set the
+    'general.useragent.override' to something like 'Mozilla/5.0 (Windows; U;
+    Windows NT 6.1; en-US; rv:1.9.2.25) Gecko/20111212 oils_xulrunner
+    /xul/rel_2_2_0/server/'. For anyone who once had a 2.2 client installed
+    and upgraded from it, this setting persists (this is the situation for
+    most stations in our library).
+    
+    Since this string does not match the new test for 'open_ils_staff_client'
+    in the useragent, these clients are not properly streaming requests. This
+    problem was most easily noticed in Vandelay progress bars (they always
+    jumped from 0% to 100%).
+    
+    This commit adds the code provided by Bill Erickson in the LP bug
+    comments. To test it, you can add the 'general.useragent.override'
+    setting to your staff client with any value (using the 'about:config'
+    interface), then run this code and check that your setting is gone.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+14	0	Open-ILS/xul/staff_client/chrome/content/OpenILS/data.js
+
+commit 291bce0dee74ae7f2dd70abe1af73a27c2b0d438
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Tue Feb 18 14:38:07 2014 -0500
+
+    LP#1281750 Ignore deleted users in usrgroup info APIs
+    
+    Ignore deleted users in these API calls:
+    
+    open-ils.actor.usergroup.members.balance_owed
+    open-ils.actor.usergroup.members.retrieve
+    open-ils.actor.usergroup.leaders.retrieve
+    open-ils.actor.address.members
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+10	5	Open-ILS/src/perlmods/lib/OpenILS/Application/Actor/UserGroups.pm
+
+commit 9ce26cc38dfcd10be1faccca6236da881e5ee7eb
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Tue Mar 11 15:04:39 2014 -0400
+
+    LP#1277731: pgTAP for action.hold_request_permit_test()
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+15	0	Open-ILS/src/sql/Pg/live_t/lp1277731_hold_permit_test.pg
+ create mode 100644 Open-ILS/src/sql/Pg/live_t/lp1277731_hold_permit_test.pg
+
+commit 906ba880fb73d2b477f94b7bda17f31d324403f1
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Tue Mar 11 14:33:58 2014 -0400
+
+    LP#1277731: Stamping upgrade for hold_test_params
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+387	0	Open-ILS/src/sql/Pg/upgrade/0873.function.hold_test_params.sql
+0	387	Open-ILS/src/sql/Pg/upgrade/XXXX.function.hold_test_params.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0873.function.hold_test_params.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.function.hold_test_params.sql
+
+commit 2542c713ea4a0d686d7b7ceae352929b60a80806
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Tue Mar 4 15:47:12 2014 -0500
+
+    LP#1277731: Disambiguate parameter/column names
+    
+    Due to slightly different and more strict disabiguation rules
+    for parameters and column names in PLPGSQL in modern versions
+    of Postgres, our hold matrix functions were failing in 9.3.
+    
+    This commit attempts to address that by declaring and using
+    aliases for parameters that share names with columns used in
+    in-line SQL.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+11	7	Open-ILS/src/sql/Pg/110.hold_matrix.sql
+387	0	Open-ILS/src/sql/Pg/upgrade/XXXX.function.hold_test_params.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.function.hold_test_params.sql
+
+commit fcd7de207a1c6f97f53f8fbade62ab9385c9e113
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Fri Mar 7 08:11:59 2014 -0800
+
+    LP#1289450: OpenSRF 2.3.0 is the minimum required version
+    
+    This patch updates the installation and upgrade documentation
+    to reflect the decision to make OpenSRF 2.3.0 be the minimum
+    required version.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+1	1	docs/installation/server_installation.txt
+1	1	docs/installation/server_upgrade.txt
+
+commit b9f8c5bcd24ccbda14210d9700d3404cb78ede16
+Author: Ben Shum <bshum@biblio.org>
+Date:   Mon Mar 10 12:55:04 2014 -0400
+
+    LP1284864 - stamping upgrade for deleted metarecord function fixing
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+355	0	Open-ILS/src/sql/Pg/upgrade/0872.functions.metarecord-deleted-constituents.sql
+0	355	Open-ILS/src/sql/Pg/upgrade/XXXX.functions.metarecord-deleted-constituents.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0872.functions.metarecord-deleted-constituents.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.functions.metarecord-deleted-constituents.sql
+
+commit f4d5813d7d5dfe22fef69871fb2d8c2685b43ceb
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Mon Mar 10 12:43:24 2014 -0400
+
+    LP#1284864: Forcibly update deleted MR masters
+    
+    Query derived from one by Ben Shum, altered to take deleted-record retention
+    configuration into account.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+12	0	Open-ILS/src/sql/Pg/upgrade/XXXX.functions.metarecord-deleted-constituents.sql
+
+commit 5f0306865e871aab3e072bfb1cdf191340efb680
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Fri Mar 7 15:48:35 2014 -0500
+
+    LP#1284864: Don't leak deleted constituent records
+    
+    There were times when deleted constituent records were leaking into
+    the display of metarecord results.  In particular, when a metarecord's
+    lead record was deleted, the lead was not recalculated.  We address
+    this situation directly now in the remapper.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+72	28	Open-ILS/src/sql/Pg/030.schema.metabib.sql
+1	1	Open-ILS/src/sql/Pg/990.schema.unapi.sql
+343	0	Open-ILS/src/sql/Pg/upgrade/XXXX.functions.metarecord-deleted-constituents.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.functions.metarecord-deleted-constituents.sql
+
+commit d470c2dcf5ffb4b1d28f783f8eb356fdc4f6ab06
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Mon Mar 10 12:31:51 2014 -0400
+
+    Stamping upgrade script for TPAC metarecord / formats repairs and usability additions
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+127	0	Open-ILS/src/sql/Pg/upgrade/0871.data.tpac-format-selector.sql
+0	125	Open-ILS/src/sql/Pg/upgrade/XXXX.data.tpac-format-selector.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0871.data.tpac-format-selector.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.tpac-format-selector.sql
+
+commit 03c8b3326e16cf0be42b9d8f2de8dae337970aaf
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Thu Mar 6 16:40:31 2014 -0500
+
+    LP#1284864 correct TPAC metarecord list pagination
+    
+    Set the template hit_count value for metarecord constituent records page
+    to show the correct counts and pagination.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	0	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Search.pm
+
+commit c6750416e373ab76b42ed593131c33bed21a8b0c
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Tue Mar 4 10:42:22 2014 -0500
+
+    LP#1284864 repair MR hold possibilty depth calculation
+    
+    Fixes a bug where the hold possibility checks for metarecords used the
+    depth of the selection OU instead of depth 0 when no depth was defined.
+    This prevented holds from being placed in some instances, particularly
+    when no hold boundaries were defined (or equaled zero).
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+3	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Holds.pm
+
+commit 097d661976213564d516cebba31b2b132ae8ab13
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Mon Mar 3 11:52:57 2014 -0500
+
+    LP#1284864 MR opac-visible constituent records
+    
+    The number of constituent records for a metarecord during searching is
+    now consitently based on the presence of an opac visible copy and not a
+    holdable copy.  This affects the constituent record counts in MR results
+    lists and the records displayed in the constituent records list.  (Icons
+    were already checking visibility instead of holdability).
+    
+    Holdable formats are still derived from records with holdable copies.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+5	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Holds.pm
+16	2	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Publisher/action.pm
+3	1	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Search.pm
+
+commit 3bd56efa634f801972a32879ca8910fc6c35e9e6
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Mon Mar 3 11:08:54 2014 -0500
+
+    LP#1284864 MR display avoid fetching master
+    
+    Remove unnecessary code to fetch the MR master when compiling MR
+    constituent records lists, since the master record was slipping into the
+    results set, where it should not have been.  This code is unneeded and
+    is a holdover from an earlier experiment.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+0	15	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Search.pm
+
+commit ccffb35178754772a0ef46405ced4da0ef563b95
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Fri Feb 28 10:07:11 2014 -0500
+
+    LP#1284864 MR holds w/o formats disallowed
+    
+    During MR hold placement, if the MR has zero holdable formats, disallow
+    the hold.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+13	0	Open-ILS/src/templates/opac/css/style.css.tt2
+36	3	Open-ILS/src/templates/opac/parts/place_hold.tt2
+
+commit 4788e06a66f01b27ead04beea1e9965393609945
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Thu Feb 27 17:22:52 2014 -0500
+
+    LP#1284864 MR holds display and edit repairs
+    
+    * Repair format icons for MR and non-MR holds
+    * Allow all filters to be cleared from a MR hold (w/o resulting in a
+      server error).
+    * during editing, if a hold has a selection_depth, use that to further
+      limit the available formats and languages in the edit selectors.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+6	2	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Account.pm
+1	1	Open-ILS/src/templates/opac/myopac/holds.tt2
+4	3	Open-ILS/src/templates/opac/parts/metarecord_hold_filters.tt2
+
+commit b52b7aa0cda76a74972c3332f85c0e2f86f32469
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Thu Feb 27 16:37:25 2014 -0500
+
+    LP#1284864 metarecord holds wording repairs
+    
+    Indicate to the patron that selecting no format means that any available
+    format may be used to fill the hold.  Ditto language.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/templates/opac/myopac/holds/edit.tt2
+3	1	Open-ILS/src/templates/opac/parts/metarecord_hold_filters.tt2
+
+commit 0f65347f3b4daa7bfe4235ce941b7e9844d665c4
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Thu Feb 27 16:27:55 2014 -0500
+
+    LP#1284864 metarecord filtered constituent record counts
+    
+    Ensure the count of constiuent records in the MR results lists is
+    derived from the filtered record set (search org, depth, holdable, etc.)
+    and not all records.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+23	27	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Search.pm
+
+commit 3ea360d2465b8ee37c459b5095fcff31f5b3bbd6
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Thu Feb 27 16:15:06 2014 -0500
+
+    LP#1284864 TPAC scoped constituent MR records list
+    
+    Limit bib records to those within the search scope in the MR constituent
+    records list page.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+6	6	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Search.pm
+
+commit bf7abdba7bac3c4affb7968a20be31fd2c17b9c9
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Wed Feb 26 10:35:25 2014 -0500
+
+    LP#1284864 TPAC format selector attribute / values
+    
+    Creates a new search_format record attribute, which is responsible for
+    driving the catalog search format selector.  The values are derived from
+    the icon_format attriute, with a few notable changes (for starters).
+    
+    1. The 'book' search_format contains large print and has the label "All
+    Books".
+    
+    2. The 'music' search_format contains all music, regardless of sound
+    record format (or other attributes) and has the label "All Music"
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+117	1	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+125	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.tpac-format-selector.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.tpac-format-selector.sql
+
+commit 227cd9c0df17e8e7ea96fd11b807b8ac7e3e37ae
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Tue Feb 25 16:47:03 2014 -0500
+
+    LP#1284864 TPAC metarecord display record count in results
+    
+    Next to each metarecord containing more than one record, display the
+    count of constituent records next to the record title in parentheses.
+    This allows the user to see at a glance if a record is really grouped or
+    simply a single-record "group".
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+19	4	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Search.pm
+10	3	Open-ILS/src/templates/opac/parts/result/table.tt2
+
+commit bb720c69ed4c082947ee8052ac6cc9f4a5f26491
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Tue Feb 25 15:33:32 2014 -0500
+
+    LP#1284864 display code value code in composite def builder
+    
+    When selected code values to add to a composite definition in the coded
+    value map composite def. editor, display both the label and the code, as
+    many people or more familiar w/ the codes than the labels.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+4	1	Open-ILS/web/js/ui/default/conify/global/config/composite_attr_entry_definition.js
+
+commit 168f5c9b535b33cc41d7b539a5254b20c71dddfd
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Tue Feb 25 15:27:58 2014 -0500
+
+    LP#1284864 coded value map cloning
+    
+    Added a "clone selected" option to the coded value map grid.  For CCVMs
+    which have composite definitions, clone the composite definition as
+    well.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+38	0	Open-ILS/src/templates/conify/global/config/coded_value_map.tt2
+
+commit b055fe4a99b58d2ac1634398a1bc85d8581a8316
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Tue Feb 25 14:58:06 2014 -0500
+
+    LP#1284864 propagate patron barcode to advanced hold options
+    
+    1. Staff searches the catalog within the staff client, not focused on a
+    patron.
+    
+    2. Staff types a barcode into the patron barcode input
+    
+    3. Staff clicks "Advanced Holds Options" and the typed barcode now
+    propagates to the metarecord hold page.
+    
+    --
+    
+    Minor HTML cleanup to avoid 350+-wide character columns.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+13	3	Open-ILS/src/templates/opac/parts/place_hold.tt2
+25	3	Open-ILS/web/js/ui/default/opac/staff.js
+
+commit 17287cf79206e1d6a61fd6ef796a442410cab722
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Tue Feb 25 13:59:34 2014 -0500
+
+    LP#1284864 show all formats in record details page
+    
+    For records which have multiple formats (e.g. DVD and BLU-RAY), show all
+    formats in the details page, similar to the search results pages.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+6	3	Open-ILS/src/templates/opac/parts/record/summary.tt2
+
+commit 630e14da165fa7aa399a1ced6a92e968b1d440fc
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Tue Feb 25 13:59:00 2014 -0500
+
+    LP#1284864 added missing stock blu-ray icon
+    
+    For now, it matches the DVD icon.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+-	-	Open-ILS/web/images/format_icons/icon_format/blu-ray.png
+ create mode 100644 Open-ILS/web/images/format_icons/icon_format/blu-ray.png
+
+commit f1024961703cce732ed6fd1e5cb11dd96795e67e
+Author: Elliot V <evoris@slcconline.edu>
+Date:   Thu Mar 6 23:43:00 2014 -0600
+
+    LP#1077811 Inconsistent INSTALL Instructions
+    
+    The preamble to the installation instructions, intended for
+    developers, is a bit unclear. The instructions describe actions
+    that should take place at two different points in the installation.
+    
+    This commit moves the instructions to download and install the Dojo
+    Toolkit until after the opensrf Linux user already owns the
+    /openils directory. It also adds the appropriate note for non-devs
+    to skip this section.
+    
+    Signed-off-by: Elliot V <evoris@slcconline.edu>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+21	13	docs/installation/server_installation.txt
+
+commit 19f438573115de734a21588071a65c329d621e81
+Author: Ben Shum <bshum@biblio.org>
+Date:   Fri Mar 7 08:49:16 2014 -0500
+
+    LP1288938 - final adjustments for 0870 upgrade script
+    
+    These were missed from the original and resulted in the fix not being complete.
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+3	3	Open-ILS/src/sql/Pg/upgrade/0870.function.located_uris_act_as_copies-fix.sql
+
+commit 5d62e7d5f1c9ed0e82e158bd4027e5b7599605c3
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Mar 6 18:17:56 2014 -0500
+
+    Forward-port 2.5.2-2.5.3 upgrade script
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+553	0	Open-ILS/src/sql/Pg/version-upgrade/2.5.2-2.5.3-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.5.2-2.5.3-upgrade-db.sql
+
+commit 19c624fb0be862a4a005bb74f8f86cc085942f08
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Wed Mar 5 12:24:19 2014 -0500
+
+    LP#1287510 Add missing column to upgrade script
+    
+    If you come via upgrade and not a fresh 2.5 DB, you are probably
+    missing the action.aged_hold_request.behind_desk column.  Add it in a
+    harmless way.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+4	0	Open-ILS/src/sql/Pg/upgrade/0868.schema.all_hold_behind_desk.sql
+
+commit 7063355b1e0a5e1b8dfcedbe3a5779c1b9f2423a
+Author: Ben Shum <bshum@biblio.org>
+Date:   Thu Mar 6 15:16:45 2014 -0500
+
+    LP1288938 - stamping upgrade script
+    
+    With minor fixing to remove the unneeded bits of the upgrade scripts.
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+57	0	Open-ILS/src/sql/Pg/upgrade/0870.function.located_uris_act_as_copies-fix.sql
+0	508	Open-ILS/src/sql/Pg/upgrade/XXXX.function.located_uris_act_as_copies-fix.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0870.function.located_uris_act_as_copies-fix.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.function.located_uris_act_as_copies-fix.sql
+
+commit 7b52df52c7259ec73e7719d04cb10fc4269cb9db
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Thu Mar 6 11:28:46 2014 -0500
+
+    LP#1288938: Leaking URIs ... don't do that
+    
+    Ben Shum spotted an issue where the old behavior
+    could leak hidden URIs.  Being more explicit in the
+    WHERE clause addresses this.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+2	2	Open-ILS/src/sql/Pg/990.schema.unapi.sql
+508	0	Open-ILS/src/sql/Pg/upgrade/XXXX.function.located_uris_act_as_copies-fix.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.function.located_uris_act_as_copies-fix.sql
+
+commit 51473ec010d210d82fc4fbbaf40cc846512b88fb
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Thu Mar 6 13:10:19 2014 -0500
+
+    LP#1287973 recover row breaks in TPAC advanced search
+    
+    Avoid long horizontal filter rows in the advanced search page by
+    recovering the original clear/both on each row of filters to force a new
+    line.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/templates/opac/css/style.css.tt2
+
+commit 0cbadccad019f5130e04e6d74cdd36b1c15c7c8e
+Author: Jason Etheridge <jason@esilibrary.com>
+Date:   Wed Feb 12 11:49:37 2014 -0500
+
+    LP#1279420 Add Test::Output prerequisite
+    
+    Build tests require Test::Output. Add packages for Test::Output to
+    the prerequite installer Makefiles.
+    
+    Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+    Signed-off-by: Jeff Godin <jgodin@tadl.org>
+
+1	0	Open-ILS/src/extras/install/Makefile.debian-squeeze
+1	0	Open-ILS/src/extras/install/Makefile.debian-wheezy
+1	0	Open-ILS/src/extras/install/Makefile.fedora
+1	0	Open-ILS/src/extras/install/Makefile.ubuntu-lucid
+1	0	Open-ILS/src/extras/install/Makefile.ubuntu-precise
+
+commit c1e03c02216ed8a5916e44714d621a55b0b95fc7
+Author: Ben Shum <bshum@biblio.org>
+Date:   Fri Feb 28 12:38:36 2014 -0500
+
+    LP1272316 - Stamping upgrade script for pre-calculate-prox-adjustment
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+18	0	Open-ILS/src/sql/Pg/upgrade/0869.schema.pre-calculate-prox-adjustment.sql
+0	16	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.pre-calculate-prox-adjustment.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0869.schema.pre-calculate-prox-adjustment.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.pre-calculate-prox-adjustment.sql
+
+commit af966c3f322b4ad9d5a046026f57da5ca5cc995d
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Fri Feb 14 12:01:37 2014 -0500
+
+    LP1272316 - Calculate proximity in the DB for speed
+    
+    We need to calculate and store a (potenially adjusted) proxmity for
+    each hold and copy for use in targetting and optimization of op
+    capture.  Before this commit, we do that within the hold target
+    code itself.  Now we'll do it when the hold-copy map is inserted,
+    because we have the same information available at that time as we
+    have in the targeter.  This will both speed up the apparent cost of
+    the calculation, because it avoids the cost of a network round-trip,
+    and the total number of SELECTs we must issue, because the proximity
+    value will now be cached for use by the proximity map function.
+    
+    Backward compatability is retained for the create_prox_map() function
+    in case any other code is depending on that.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+14	10	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Publisher/action.pm
+9	0	Open-ILS/src/sql/Pg/090.schema.action.sql
+16	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.pre-calculate-prox-adjustment.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.pre-calculate-prox-adjustment.sql
+
+commit 4cb16a9f07180d4ef99c960834994e32b82d5881
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Fri Jan 24 12:33:13 2014 -0500
+
+    LP1272316 - Followup to make ou_ancestor_setting() even faster
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+10	8	Open-ILS/src/perlmods/lib/OpenILS/Application/AppUtils.pm
+
+commit 181c784c8b075a1b3e1dfbd2a3471af2ee843797
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Fri Jan 24 12:24:06 2014 -0500
+
+    LP1272316 - Speed up these settings lookups in the hold targeter that get repeated a ...
+    
+    ... lot when there are lots of copies for a hold.
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+15	14	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Publisher/action.pm
+
+commit 1e3a50f758103b726bfede5f98e65e3b6799e831
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Thu Jun 6 11:13:35 2013 -0400
+
+    LP#1179660: remove call to undefined initialize func
+    
+    Remove call to nonexistant function Search::Z3950->initialize.  Prior to
+    now, this would have quietly failed, but with AUTOLOAD to be removed
+    from OpenSRF, it would fail with full shock and awe.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    
+    Conflicts:
+    	Open-ILS/src/perlmods/lib/OpenILS/Application/Search.pm
+
+0	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Search.pm
+
+commit ac3f30740999ea3e1c95e0031697bb7589c6ed83
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Mon Feb 24 16:31:16 2014 -0500
+
+    Translation updates - newpot
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+25	1	build/i18n/po/acq.js/acq.js.pot
+1554	1292	build/i18n/po/db.seed/db.seed.pot
+2554	2498	build/i18n/po/fm_IDL.dtd/fm_IDL.dtd.pot
+9	2	build/i18n/po/lang.dtd/lang.dtd.pot
+15	11	build/i18n/po/register.js/register.js.pot
+6	6	build/i18n/po/reports.dtd/reports.dtd.pot
+728	460	build/i18n/po/tpac/tpac.pot
+
+commit 8267e3af9a2787c9ea1f4b8dcdcea78394206e20
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Mon Feb 24 16:21:32 2014 -0500
+
+    Translation updates - po files
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+64	11	build/i18n/po/AutoFieldWidget.js/cs-CZ.po
+61	9	build/i18n/po/AutoFieldWidget.js/de-DE.po
+61	9	build/i18n/po/AutoFieldWidget.js/en-CA.po
+61	9	build/i18n/po/AutoFieldWidget.js/en-GB.po
+61	9	build/i18n/po/AutoFieldWidget.js/es-ES.po
+61	9	build/i18n/po/AutoFieldWidget.js/fr-CA.po
+65	10	build/i18n/po/AutoFieldWidget.js/hy-AM.po
+61	9	build/i18n/po/AutoFieldWidget.js/oc-FR.po
+61	9	build/i18n/po/AutoFieldWidget.js/pt-BR.po
+61	9	build/i18n/po/AutoFieldWidget.js/ru-RU.po
+61	9	build/i18n/po/AutoFieldWidget.js/tr-TR.po
+8	4	build/i18n/po/cat.properties/cs-CZ.po
+7	3	build/i18n/po/cat.properties/de-DE.po
+7	3	build/i18n/po/cat.properties/en-CA.po
+7	3	build/i18n/po/cat.properties/en-GB.po
+7	3	build/i18n/po/cat.properties/es-ES.po
+7	3	build/i18n/po/cat.properties/fr-CA.po
+8	4	build/i18n/po/cat.properties/hy-AM.po
+7	3	build/i18n/po/cat.properties/oc-FR.po
+7	3	build/i18n/po/cat.properties/pt-BR.po
+7	3	build/i18n/po/cat.properties/ru-RU.po
+7	3	build/i18n/po/cat.properties/tr-TR.po
+2365	2265	build/i18n/po/db.seed/cs-CZ.po
+2179	2174	build/i18n/po/db.seed/de-DE.po
+2202	2176	build/i18n/po/db.seed/en-CA.po
+2202	2176	build/i18n/po/db.seed/en-GB.po
+2198	2175	build/i18n/po/db.seed/es-ES.po
+2221	2195	build/i18n/po/db.seed/fr-CA.po
+2506	2361	build/i18n/po/db.seed/hy-AM.po
+2185	2174	build/i18n/po/db.seed/oc-FR.po
+2208	2182	build/i18n/po/db.seed/pt-BR.po
+2211	2185	build/i18n/po/db.seed/ru-RU.po
+2173	2171	build/i18n/po/db.seed/tr-TR.po
+268	261	build/i18n/po/ils_events.xml/cs-CZ.po
+263	257	build/i18n/po/ils_events.xml/de-DE.po
+266	260	build/i18n/po/ils_events.xml/en-CA.po
+266	260	build/i18n/po/ils_events.xml/en-GB.po
+265	259	build/i18n/po/ils_events.xml/es-ES.po
+267	261	build/i18n/po/ils_events.xml/fr-CA.po
+267	261	build/i18n/po/ils_events.xml/hy-AM.po
+265	259	build/i18n/po/ils_events.xml/pt-BR.po
+265	259	build/i18n/po/ils_events.xml/ru-RU.po
+
+commit e406e36122b07f97f1c6ec6d5397550b03949b1b
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Fri Feb 21 16:34:58 2014 -0500
+
+    Stamping 0868 - 'behind_desk' fixes
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+189	0	Open-ILS/src/sql/Pg/upgrade/0868.schema.all_hold_behind_desk.sql
+0	187	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.all_hold_behind_desk.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0868.schema.all_hold_behind_desk.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.all_hold_behind_desk.sql
+
+commit 81d720fefe89c2a9a38b9658a44a3b0bf69cee4a
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Fri Feb 21 15:58:50 2014 -0500
+
+    Stamping 0864-0867 for MVF, CRA, and TPAC MRs
+    
+    That is, Multi-valued Fields, Composite Record Attibutes, and TPAC
+    Metarecord support.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+900	0	Open-ILS/src/sql/Pg/upgrade/0864.MVF_CRA-upgrade.sql
+41	0	Open-ILS/src/sql/Pg/upgrade/0865.schema.convert-MR-holdable_formats.sql
+567	0	Open-ILS/src/sql/Pg/upgrade/0866.schema.unapi-mmr.sql
+161	0	Open-ILS/src/sql/Pg/upgrade/0867.data.mmr-holds-formats.sql
+0	898	Open-ILS/src/sql/Pg/upgrade/QQQQ.MVF_CRA-upgrade.sql
+0	39	Open-ILS/src/sql/Pg/upgrade/ZZZZ.schema.convert-MR-holdable_formats.sql
+0	565	Open-ILS/src/sql/Pg/upgrade/ZZZZ.schema.unapi-mmr.sql
+0	159	Open-ILS/src/sql/Pg/upgrade/ZZZZZ.data.mmr-holds-formats.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0864.MVF_CRA-upgrade.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0865.schema.convert-MR-holdable_formats.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0866.schema.unapi-mmr.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0867.data.mmr-holds-formats.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/QQQQ.MVF_CRA-upgrade.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/ZZZZ.schema.convert-MR-holdable_formats.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/ZZZZ.schema.unapi-mmr.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/ZZZZZ.data.mmr-holds-formats.sql
+
+commit c7503c77fab597029a53097fb8f414b72382a1c0
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Fri Feb 21 13:48:07 2014 -0500
+
+    LP#1053397 Prevent display non-opac-visible icons / hold formats
+    
+    Avoid showing coded value maps for icons, hold formats, and hold
+    languages where the coded value's opac_visible value is FALSE.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+3	2	Open-ILS/src/templates/opac/myopac/holds.tt2
+6	4	Open-ILS/src/templates/opac/parts/metarecord_hold_filters.tt2
+6	17	Open-ILS/src/templates/opac/parts/misc_util.tt2
+
+commit 00c36d702f909079294eba5d0ef591fb1a85a1f8
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Fri Feb 21 12:19:14 2014 -0500
+
+    LP#1053397 icon / metarcord format additions
+    
+     * Adds a new blu-ray format for icon and metarecord holds
+    
+     * Remove large-print items from the generic "book" attribute for icons
+       and holds.
+    
+       For icons, this means we will no longer see two icons displayed for a
+       single large-print book.
+    
+       For holds, this means that to receive a large-print book, one has to
+       select the large-print book format.  "book" alone will not result in
+       a large-print item being targted.
+    
+       Note that when building a data set for the format selector drop-down,
+       it might make sense to keep large-print items in the generic "book"
+       format.  That'll come later.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+22	2	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+1	1	Open-ILS/src/sql/Pg/upgrade/QQQQ.MVF_CRA-upgrade.sql
+17	0	Open-ILS/src/sql/Pg/upgrade/ZZZZZ.data.mmr-holds-formats.sql
+
+commit 0a6b913e0cbc025626bcf12d98e04f9d49448c9c
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Fri Feb 21 10:19:00 2014 -0500
+
+    LP#1053397 MR list return to grouped results
+    
+    Show a "Return to Grouped Search Results" link from the metarecord
+    constituent records page.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+8	0	Open-ILS/src/templates/opac/results.tt2
+
+commit 3fd258fda0af6cf5cc53c7a87974027d694d6add
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Thu Feb 20 15:05:11 2014 -0500
+
+    LP#1053397 staff client MR results paging repair
+    
+    When selecting a record from the list of metarecord constituents, the
+    paging controls (start/previous/next/end) within the staff client should
+    page through the constiuents, not the original search.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Search.pm
+
+commit 4c8fc7fbb8733e27d480b838df2e86f1f1cc7ce7
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Thu Feb 20 14:48:53 2014 -0500
+
+    LP#1053397 MR holds displays selected formats
+    
+    In a patron's holds list, only show formats in the format column
+    matching the patron's selected hold formats.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+16	4	Open-ILS/src/templates/opac/myopac/holds.tt2
+19	8	Open-ILS/src/templates/opac/parts/misc_util.tt2
+
+commit f5bc354c5d6dffd1a89514bd159b2051bfb90271
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Feb 19 17:11:29 2014 -0500
+
+    LP#1053397: Use the new data structures for looking up language indexing configuration
+    
+    Also, from Dan Wells:
+    
+    First, we don't want to fully exclude records which don't have a
+    metabib.record_attr_vector_list entry, so we do a LEFT JOIN instead
+    for that table.  Otherwise, some records error out when ingesting
+    (see placeholder record -1 in the stock data set).
+    
+    Second, let's add a check for 'active' which appears to have been
+    always missing.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+31	10	Open-ILS/src/sql/Pg/030.schema.metabib.sql
+111	0	Open-ILS/src/sql/Pg/upgrade/QQQQ.MVF_CRA-upgrade.sql
+
+commit 3dfd7055bb024a385165ceca9e88b49014a8e515
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Feb 19 13:06:32 2014 -0500
+
+    LP#1053397: Correct operator thinko on CRA sorters
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/sql/Pg/030.schema.metabib.sql
+1	1	Open-ILS/src/sql/Pg/upgrade/QQQQ.MVF_CRA-upgrade.sql
+
+commit f2e96e0ebf3f0f75e0d770ccc755406d5df84c09
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Tue Feb 18 16:53:53 2014 -0500
+
+    LP1053397: Don't leak memory; Cache compiled ccraed values
+    
+    We were leaking memory in a PLPGSQL function that compiles the
+    query_int from a ccraed value.  Stop doing that!
+    
+    Also, implement a self-invalidating (upon table update) cache
+    for compiled composite attr defs.  This brings concerto reingest
+    down from 50+ seconds to under 10.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+38	3	Open-ILS/src/sql/Pg/030.schema.metabib.sql
+38	3	Open-ILS/src/sql/Pg/upgrade/QQQQ.MVF_CRA-upgrade.sql
+
+commit c2c8b2796d14b8375ddca631a74d7ed75b882a20
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Mon Feb 17 15:08:11 2014 -0500
+
+    LP#1053397 catch-all 'music' icon_format attribute value
+    
+    Many records in the Evergreen sample data have item_type=j and no sound
+    recording format.  This seems likely to happen in the wild, as well.
+    The new coded value captures everying with item_type=j and no sr_format.
+    
+    Also included is a "music.png" icon, which looks like a pair of happy
+    eigth notes.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+12	0	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+11	0	Open-ILS/src/sql/Pg/upgrade/ZZZZZ.data.mmr-holds-formats.sql
+-	-	Open-ILS/web/images/format_icons/icon_format/music.png
+ create mode 100644 Open-ILS/web/images/format_icons/icon_format/music.png
+
+commit d8e33af69f190503798823e979e9ea80307c50dd
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Mon Feb 17 14:03:02 2014 -0500
+
+    LP#1269911: Cast bigint to int
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/sql/Pg/030.schema.metabib.sql
+1	1	Open-ILS/src/sql/Pg/upgrade/QQQQ.MVF_CRA-upgrade.sql
+
+commit 019f80a810c8d2e81e5602936b02d73b67a15d27
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Mon Feb 17 09:24:40 2014 -0500
+
+    LP#1053397 filter MR icons/formats repair
+    
+    Only limit the scope of the MR attributes in the presence of a hard hold
+    boundary when searching for which attributes to display in the hold
+    placement form.
+    
+    In other words, don't limit the attributes based on search parameters,
+    since searching at Branch 1 does not necesssarily meany you only want to
+    place holds on formats available at branch 1.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+9	4	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Holds.pm
+
+commit 6d328afcc86a28fdd9cf43294b4c630b02807a95
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Fri Feb 14 17:25:44 2014 -0500
+
+    LP#1053397 filter MR icons/formats by org scope
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+18	15	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Holds.pm
+3	2	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Account.pm
+
+commit 16e8e0e59e913c551a429d1fb3f2dc1b126e2099
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Fri Feb 14 16:06:59 2014 -0500
+
+    LP#1053397: Add optional org filter to "has holdable copies", and use that in open-ils.circ.holds.metarecord.filterd_records
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+11	2	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Holds.pm
+12	11	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Publisher/action.pm
+4	2	Open-ILS/src/sql/Pg/040.schema.asset.sql
+49	0	Open-ILS/src/sql/Pg/upgrade/ZZZZ.schema.unapi-mmr.sql
+
+commit b0ff3c9e3e839dd16b4260763817c4a9078c8339
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Fri Feb 14 14:34:02 2014 -0500
+
+    LP#1053397 apply org scope to metarecord attributes
+    
+    When loading record attributes (cra, ccvm, etc.) for constituent
+    records, limit the attributes to those contained by records which have
+    holdings within the provided (search) scope.
+    
+    With this, for example, a search at Branch 1 for metarecords will only
+    show format icons for constituent records that have holdings at BR1.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+19	4	Open-ILS/src/sql/Pg/990.schema.unapi.sql
+19	3	Open-ILS/src/sql/Pg/upgrade/ZZZZ.schema.unapi-mmr.sql
+
+commit c62821619ce2a00128aa9cc4a7b19d6e94f1b4fa
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Fri Feb 14 12:23:02 2014 -0500
+
+    LP#1053397 repair one-hit redirect logic for metarecords
+    
+    * Only perform the single-hit redirect if there is only one metarecord
+      search result and the MR only has a single constituent record.
+    
+    * Repair the record id logic so the redirect jumps to the correct
+      record.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+11	3	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Search.pm
+
+commit f77269997a72f188ca8a733f5125175bf2b83dc2
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Thu Feb 13 16:28:01 2014 -0500
+
+    LP#1269911 global flag for opac format selector attribute
+    
+    Adds a new config.global_flag for defining which record attribute the
+    OPAC will use to find formats for the format selector.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+14	0	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+15	0	Open-ILS/src/sql/Pg/upgrade/ZZZZZ.data.mmr-holds-formats.sql
+1	1	Open-ILS/src/templates/opac/parts/config.tt2
+
+commit 811325f638f9291752de1134f61fa073732ed3f7
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Thu Feb 13 15:28:39 2014 -0500
+
+    LP#1269911 seed data SQL repairs
+    
+    Products of merge conflict resolution with the mvf-cra branch.
+    
+    * repaired syntax error
+    * removed some duplicate global flag entries
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	26	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+
+commit d6f40df7f4f0b4d9210dc7aee5ab9771a63cbb5b
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Tue Feb 11 10:33:01 2014 -0500
+
+    LP#1269911 'large print book' is also a 'book'
+    
+    Remove the item_form != d component of the "book" composite definition.
+    I think this more closely matches how humans would interpret it.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    
+    Conflicts:
+    	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+1	1	Open-ILS/src/sql/Pg/upgrade/QQQQ.MVF_CRA-upgrade.sql
+
+commit b2e4783726756af658f0fee069c7780425955cd1
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Mon Feb 10 14:01:05 2014 -0500
+
+    LP#1053397 TPAC Metarecords release notes
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+38	0	docs/RELEASE_NOTES_NEXT/OPAC/TPAC_metarecords.txt
+ create mode 100644 docs/RELEASE_NOTES_NEXT/OPAC/TPAC_metarecords.txt
+
+commit fc99f4f2230061922f8bea0e061f04d240a1ddfa
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Mon Feb 10 14:01:47 2014 -0500
+
+    LP#1053397 TPAC metarecord search and holds UI
+    
+    API, TPAC backend, and UI bits for TPAC metarecord searching and holds.
+    
+    * Group Formats and Editions options in advanced search / searchbar
+    * MR holds placement form, allowing selected formats and languages
+    * MR holds targeting updated to work w/ new holdable formats composite
+      definitions
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+151	25	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Holds.pm
+56	60	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Publisher/action.pm
+132	6	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Account.pm
+43	10	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Search.pm
+46	12	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Util.pm
+4	1	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGWeb.pm
+1	0	Open-ILS/src/templates/opac/css/style.css.tt2
+4	2	Open-ILS/src/templates/opac/myopac/holds.tt2
+9	0	Open-ILS/src/templates/opac/myopac/holds/edit.tt2
+15	1	Open-ILS/src/templates/opac/parts/advanced/search.tt2
+7	0	Open-ILS/src/templates/opac/parts/config.tt2
+89	0	Open-ILS/src/templates/opac/parts/metarecord_hold_filters.tt2
+21	20	Open-ILS/src/templates/opac/parts/misc_util.tt2
+11	0	Open-ILS/src/templates/opac/parts/place_hold.tt2
+37	6	Open-ILS/src/templates/opac/parts/result/table.tt2
+22	2	Open-ILS/src/templates/opac/results.tt2
+3	2	Open-ILS/web/js/ui/default/opac/simple.js
+ create mode 100644 Open-ILS/src/templates/opac/parts/metarecord_hold_filters.tt2
+
+commit e6421bcacd6e7c8cd13e871e1961f14c939151c6
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Mon Feb 10 14:00:21 2014 -0500
+
+    LP#1053397 DB metarecord seed data
+    
+    Seed data for representing the holdable formats for metarecords.  This
+    is a subset of the "icon_format" collection, excluding the electronic
+    resources.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+226	110	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+116	0	Open-ILS/src/sql/Pg/upgrade/ZZZZZ.data.mmr-holds-formats.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/ZZZZZ.data.mmr-holds-formats.sql
+
+commit 36e3c0a8d4861eb8d877664623ef925331e45bb1
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Mon Feb 10 13:59:23 2014 -0500
+
+    LP#1053397 DB for metarecords unapi and holds
+    
+    Schema for unapi metarecord access (unap.mmr()) and associated
+    components.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+12	12	Open-ILS/src/sql/Pg/040.schema.asset.sql
+322	5	Open-ILS/src/sql/Pg/990.schema.unapi.sql
+39	0	Open-ILS/src/sql/Pg/upgrade/ZZZZ.schema.convert-MR-holdable_formats.sql
+500	0	Open-ILS/src/sql/Pg/upgrade/ZZZZ.schema.unapi-mmr.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/ZZZZ.schema.convert-MR-holdable_formats.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/ZZZZ.schema.unapi-mmr.sql
+
+commit 586acbd644362c823bd9865e61bf130fb0b4fc11
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Mon Feb 10 13:54:43 2014 -0500
+
+    LP#1053397 IDL class mraf for metabib::record_attr_flat
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+15	0	Open-ILS/examples/fm_IDL.xml
+
+commit 922a53a5b64f0d23eacba5eb1c834a6cd60e46fb
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Mon Feb 10 14:10:38 2014 -0500
+
+    LP#1269911: Release notes for Composite Record Attributes
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+31	0	docs/RELEASE_NOTES_NEXT/OPAC/Composite_Record_Attributes.txt
+ create mode 100644 docs/RELEASE_NOTES_NEXT/OPAC/Composite_Record_Attributes.txt
+
+commit 5a7add8fe93ac1228bf4791401d109df90c3d380
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Mon Feb 10 14:02:22 2014 -0500
+
+    LP#1269911: Release notes for Multi-valued Fields and Controlled Attributes
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+45	0	docs/RELEASE_NOTES_NEXT/OPAC/Multi_Valued_fields.txt
+ create mode 100644 docs/RELEASE_NOTES_NEXT/OPAC/Multi_Valued_fields.txt
+
+commit e4ca479407e3dd17b16a4e53868b9e09881e6ce5
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Mon Feb 10 14:12:15 2014 -0500
+
+    LP#1053397: removed extraneous MR formats global flag
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+0	11	Open-ILS/src/sql/Pg/upgrade/QQQQ.MVF_CRA-upgrade.sql
+
+commit 33961761022b2021b2428d1909f75b8aeb972af3
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Thu Feb 6 13:31:18 2014 -0500
+
+    LP#1269911: TPAC generates format selector from icon_format attr
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/templates/opac/parts/config.tt2
+
+commit 734d2302b72a0f7d55f23a2ed92e7313c10cee03
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Wed Feb 5 16:18:38 2014 -0500
+
+    LP#1269911: composite attributes: configurable "icons" attribute
+    
+    Honor the configurable icon attribute within the TPAC.
+    
+    Create a default set of icons, by copying from the existing icons,
+    which roughly map to the new "icon_format" record attribute
+    definition mappings.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+11	12	Open-ILS/src/templates/opac/parts/misc_util.tt2
+-	-	Open-ILS/web/images/format_icons/icon_format/book.png
+-	-	Open-ILS/web/images/format_icons/icon_format/braille.png
+-	-	Open-ILS/web/images/format_icons/icon_format/casaudiobook.png
+-	-	Open-ILS/web/images/format_icons/icon_format/casmusic.png
+-	-	Open-ILS/web/images/format_icons/icon_format/cdaudiobook.png
+-	-	Open-ILS/web/images/format_icons/icon_format/cdmusic.png
+-	-	Open-ILS/web/images/format_icons/icon_format/dvd.png
+-	-	Open-ILS/web/images/format_icons/icon_format/eaudio.png
+-	-	Open-ILS/web/images/format_icons/icon_format/ebook.png
+-	-	Open-ILS/web/images/format_icons/icon_format/equip.png
+-	-	Open-ILS/web/images/format_icons/icon_format/evideo.png
+-	-	Open-ILS/web/images/format_icons/icon_format/kit.png
+-	-	Open-ILS/web/images/format_icons/icon_format/lpbook.png
+-	-	Open-ILS/web/images/format_icons/icon_format/map.png
+-	-	Open-ILS/web/images/format_icons/icon_format/microform.png
+-	-	Open-ILS/web/images/format_icons/icon_format/phonomusic.png
+-	-	Open-ILS/web/images/format_icons/icon_format/phonospoken.png
+-	-	Open-ILS/web/images/format_icons/icon_format/picture.png
+-	-	Open-ILS/web/images/format_icons/icon_format/score.png
+-	-	Open-ILS/web/images/format_icons/icon_format/serial.png
+-	-	Open-ILS/web/images/format_icons/icon_format/software.png
+-	-	Open-ILS/web/images/format_icons/icon_format/vhs.png
+ create mode 100644 Open-ILS/web/images/format_icons/icon_format/book.png
+ create mode 100644 Open-ILS/web/images/format_icons/icon_format/braille.png
+ create mode 100644 Open-ILS/web/images/format_icons/icon_format/casaudiobook.png
+ create mode 100644 Open-ILS/web/images/format_icons/icon_format/casmusic.png
+ create mode 100644 Open-ILS/web/images/format_icons/icon_format/cdaudiobook.png
+ create mode 100644 Open-ILS/web/images/format_icons/icon_format/cdmusic.png
+ create mode 100644 Open-ILS/web/images/format_icons/icon_format/dvd.png
+ create mode 100644 Open-ILS/web/images/format_icons/icon_format/eaudio.png
+ create mode 100644 Open-ILS/web/images/format_icons/icon_format/ebook.png
+ create mode 100644 Open-ILS/web/images/format_icons/icon_format/equip.png
+ create mode 100644 Open-ILS/web/images/format_icons/icon_format/evideo.png
+ create mode 100644 Open-ILS/web/images/format_icons/icon_format/kit.png
+ create mode 100644 Open-ILS/web/images/format_icons/icon_format/lpbook.png
+ create mode 100644 Open-ILS/web/images/format_icons/icon_format/map.png
+ create mode 100644 Open-ILS/web/images/format_icons/icon_format/microform.png
+ create mode 100644 Open-ILS/web/images/format_icons/icon_format/phonomusic.png
+ create mode 100644 Open-ILS/web/images/format_icons/icon_format/phonospoken.png
+ create mode 100644 Open-ILS/web/images/format_icons/icon_format/picture.png
+ create mode 100644 Open-ILS/web/images/format_icons/icon_format/score.png
+ create mode 100644 Open-ILS/web/images/format_icons/icon_format/serial.png
+ create mode 100644 Open-ILS/web/images/format_icons/icon_format/software.png
+ create mode 100644 Open-ILS/web/images/format_icons/icon_format/vhs.png
+
+commit c33b7cf919db4eb087502322ad3b82572bb54f65
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Tue Jan 21 17:47:41 2014 -0500
+
+    LP#1269911 composite attributes admin UI
+    
+    New interface for managing composite record attribute definitions:
+    
+    /eg/conify/global/config/composite_attr_entry_definition/<id>
+    
+    The UI for a coded value map is accessed from an existing coded value
+    via a new "Manage" link column in the CCVM table.  The UI allows staff
+    to build tree-shaped boolean composite definitions for CCVMs in terms
+    of existing CCVMs.
+    
+    Additionally, the record attribute definition UI now has a link from
+    each definition to the coded value map page for the attribute.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+6	1	Open-ILS/src/templates/conify/global/config/coded_value_map.tt2
+100	0	Open-ILS/src/templates/conify/global/config/composite_attr_entry_definition.tt2
+24	1	Open-ILS/src/templates/conify/global/config/record_attr_definition.tt2
+385	0	Open-ILS/web/js/ui/default/conify/global/config/composite_attr_entry_definition.js
+ create mode 100644 Open-ILS/src/templates/conify/global/config/composite_attr_entry_definition.tt2
+ create mode 100644 Open-ILS/web/js/ui/default/conify/global/config/composite_attr_entry_definition.js
+
+commit 00ced69379ad8101beaf2cdfa410d72ece9bc6b0
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Jan 15 16:48:13 2014 -0500
+
+    LP#1269911: Upgrade script for MVF and CRA
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+2	2	Open-ILS/src/sql/Pg/002.schema.config.sql
+62	53	Open-ILS/src/sql/Pg/030.schema.metabib.sql
+39	27	Open-ILS/src/sql/Pg/990.schema.unapi.sql
+763	0	Open-ILS/src/sql/Pg/upgrade/QQQQ.MVF_CRA-upgrade.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/QQQQ.MVF_CRA-upgrade.sql
+
+commit abe6bdf09ea832296baf41daa5dadc378b2fef08
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Jan 15 16:00:52 2014 -0500
+
+    LP#1269911: Teach QueryParser new tricks
+    
+    QP Needs to be made aware of several new structures in the database.
+    
+    First, we have added a new sort-supporting table called metabib.record_sorter
+    which holds values extracted by crad.sorter=true attrs.  This is used instead
+    of the mrd.attrs->"something" hstore composite.
+    
+    Next, we teach QP how to convert from a list of user-supplied values across
+    many dynamic filters (based on crad) into an intarray query of ids extracted
+    from config.coded_value_map (in the case of controlled attributes) or
+    metabib.uncontrolled_record_attr_value (in the case of, you guessed it,
+    uncontrolled attributes).  This query is applied against the vlist column
+    of metabib.record_attr_vector_list, which is GIN indexed for speed.
+    
+    Finally, metabib.record_attr is now a view over metabib.record_attr_vector_list
+    and is consequently going to be slow for general use.  We restrict
+    its inclusion in the core query to only the case of a during() filter
+    which requires access to the value of a bib's Date2 field.  For the
+    other common case, requiring access to the Date1 field, we instead
+    use the pubdate sort value now stored in metabib.record_sorter.  We
+    might consider making the specific sorter attribute used configurable
+    so that we can change the definition of pubdate down the road, but it
+    starts out (and generally stays) defined as equivalent to Date1.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+97	23	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Driver/Pg/QueryParser.pm
+
+commit bcc5d4146b49b174be4b8511d791fcfdb6a448b9
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Jan 15 13:17:39 2014 -0500
+
+    LP#1269911: Teach the IDL about MVF- and CRA-related structures
+    
+    IDL link from ccvm => ccraed via composite_def field
+    
+    IDL selector attribute for ccvm class
+    
+    ccraed gets CUD actions
+    
+    In conify/global/config/coded_value_map, if the selected attr type is
+    composite=true, show a link from each coded value to manage the
+    composite definition.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+76	2	Open-ILS/examples/fm_IDL.xml
+40	2	Open-ILS/src/templates/conify/global/config/coded_value_map.tt2
+
+commit d2b047058e99da0ce2c944643a03b432beb4dda5
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Tue Jan 14 16:28:04 2014 -0500
+
+    LP#1269911: Database elements of MVF and CRA
+    
+    * Teach vandelay.marc21_physical_characteristics() to see all 007's
+    
+    We use vandelay.marc21_physical_characteristics() to extract fixed
+    field data that lives in the 007.  Before this change, it would
+    only look at the first 007 in the record.  Now it will look at
+    all of them in turn, supporting configurations such as DVD+BluRay.
+    
+    * Add intarray extension
+    
+    We need intarray for GIN index support of integer arrays, which is
+    how we'll be storing the in-use record attribute value identifiers.
+    
+    * Hidy hole in which to stick "uncontrolled" values
+    
+    In order to make use of the massive speed increases provided by
+    intarray indexing, we need to use (you guessed it) integers.  But
+    uncontrolled record attributes are not necessarily (or even very
+    often) numbers.  We will store them in a table of unique (per
+    attribute) values, and use the id from that table in our intarray
+    indexing.  That id comes from a DECREMENTING serial that starts
+    at -1 and counts downward.  This avoids collision with the other
+    set of integers (the id from config.coded_value_map) that we will
+    use for controlled record attribute values.
+    
+    * Add a multi flag for record attrs
+    
+    We pre-coordinate which record attrs are allowed to be multi-valued
+    with this new bool.  Most can be, we set the default to true and
+    adjust the seed data for those that should be false (sorters and
+    fields in the leader).
+    
+    * New intarray-focused attribute extraction
+    
+    We rewrite the record attribute extraction to capture all the
+    record-supplied values for each attribute (where multi is true)
+    and store that list in the new (fkey-corrected) metabib.record_attr_vector_list
+    table.  Only filters make it into this table.
+    
+    We also insert a parameter after the record id to accept a list of
+    record attributes we want to rewrite. This defaults to NULL to rewrite
+    all of them.
+    
+    Sorters are stored in a new, separate table built specifically for them.
+    
+    metabib.record_attr becomes a vew atop metabib.record_attr_vector_list
+    which expands the intarray stored therein into an hstore. For
+    multi=true attributes, only one will be returned through this view,
+    as is HSTORE's way, and which will be returned is undefined.  However
+    this view is only provided for the purpose of backward compat with
+    reports or other locally defined logic.
+    
+    And, finally, baseline seed data
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+7	0	Open-ILS/src/sql/Pg/002.schema.config.sql
+20	20	Open-ILS/src/sql/Pg/012.schema.vandelay.sql
+343	90	Open-ILS/src/sql/Pg/030.schema.metabib.sql
+189	8	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+1	0	Open-ILS/src/sql/Pg/create_database_extensions.sql
+
+commit 0bb4915e5129c21a2600eb28205a8f111cba1f2b
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Fri Feb 21 09:54:47 2014 -0500
+
+    Fix syntax error in seed data
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+
+commit 29304452c4e2096851bc77649d1f93fe6f71de53
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Feb 20 16:35:21 2014 -0500
+
+    Stamping 0863 - Stripe credit card payment options
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+51	0	Open-ILS/src/sql/Pg/upgrade/0863.data.stripe-payments.sql
+0	51	Open-ILS/src/sql/Pg/upgrade/XXXX.data.stripe-payments.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0863.data.stripe-payments.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.stripe-payments.sql
+
+commit 93eb1aedf289963d480f7c31a177782a5abd6d6a
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Fri Oct 11 01:13:44 2013 -0400
+
+    Release note for Stripe payment support
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+36	0	docs/RELEASE_NOTES_NEXT/OPAC/stripe_payments.txt
+ create mode 100644 docs/RELEASE_NOTES_NEXT/OPAC/stripe_payments.txt
+
+commit af47ebafaaca04aef6fe00d01bcd6278eb3e3c8a
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Thu Sep 19 11:00:00 2013 -0400
+
+    Support Stripe payments with some new code and some rearranged code ...
+    
+    ... behind the open-ils.circ.money.payment method.
+    
+    - Also add Business::Stripe as a CPAN module to the pre-reqs installers.
+    - If payment processor is Stripe, only show form if Javascript enabled.
+    
+    Our implementation of payments via Stripe doesn't work without Javascript.
+    That's part of the point. Using Stripe really limits a site's worries
+    about PCI compliance because users' credit card number and security
+    codes are never transmitted to the [Evergreen] server at all.  That data
+    goes to Stripe instead (using Javascript) and from that we get back a
+    one-time token from Stripe to give to our server instead.
+    
+    Thanks to Jason Boyer at the Indiana State Library for recognizing the
+    value of supporting approaches like that in Evergreen and for starting
+    the work.
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    
+    Conflicts:
+    	Open-ILS/src/templates/opac/myopac/main_payment_form.tt2
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	0	Open-ILS/src/extras/install/Makefile.debian-squeeze
+1	0	Open-ILS/src/extras/install/Makefile.debian-wheezy
+1	0	Open-ILS/src/extras/install/Makefile.fedora
+1	0	Open-ILS/src/extras/install/Makefile.ubuntu-lucid
+1	0	Open-ILS/src/extras/install/Makefile.ubuntu-precise
+1	37	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/CreditCard.pm
+149	33	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Money.pm
+1	1	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Account.pm
+2	1	Open-ILS/src/templates/opac/myopac/main_pay.tt2
+22	11	Open-ILS/src/templates/opac/myopac/main_payment_form.tt2
+2	2	Open-ILS/src/templates/opac/parts/base.tt2
+4	0	Open-ILS/src/templates/opac/parts/js.tt2
+3	6	Open-ILS/src/templates/opac/parts/stripe.tt2
+
+commit a153ad569a0ff9fda10f3c3769c37d6aea200100
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Thu Sep 19 09:51:47 2013 -0400
+
+    DB upgrade script for Stripe payments; seed data; minor template fixes
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    
+    Conflicts:
+    	Open-ILS/src/templates/opac/myopac/main_payment_form.tt2
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+4	4	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+51	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.stripe-payments.sql
+6	7	Open-ILS/src/templates/opac/myopac/main_payment_form.tt2
+3	1	Open-ILS/src/templates/opac/parts/stripe.tt2
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.stripe-payments.sql
+
+commit cdbcc32c5ae433b3c287079eaaa0773b547615bf
+Author: Jason Boyer <JBoyer1@library.in.gov>
+Date:   Thu Sep 19 09:45:25 2013 -0400
+
+    Separate stripe js into stripe.tt2, add seed data for ou settings
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+27	0	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+2	35	Open-ILS/src/templates/opac/parts/base.tt2
+36	0	Open-ILS/src/templates/opac/parts/stripe.tt2
+ create mode 100644 Open-ILS/src/templates/opac/parts/stripe.tt2
+
+commit 18ba41d6913e74de1ce86ca9fe30a16b18feb364
+Author: Jason Boyer <JBoyer1@library.in.gov>
+Date:   Thu Sep 19 09:16:30 2013 -0400
+
+    Rough draft of integrating Stripe support into the opac payment page.
+    
+    Conflicts:
+    	Open-ILS/src/templates/opac/myopac/main_payment_form.tt2
+    	Open-ILS/src/templates/opac/parts/base.tt2
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+38	22	Open-ILS/src/templates/opac/myopac/main_payment_form.tt2
+38	3	Open-ILS/src/templates/opac/parts/base.tt2
+
+commit bc33a3e8c8a4313849ea3a1775c3d30cabf946a3
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Feb 20 10:01:46 2014 -0500
+
+    Duplicate 0851 as 0862 for backport clarity
+    
+    Rather than backport 0851 after 0852 has already been backported,
+    let's give 0851 a second number.  It probably wouldn't have bitten
+    anyone, but there's no harm in running this upgrade again, and I
+    don't think it hurts to be extra clear.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+358	0	Open-ILS/src/sql/Pg/upgrade/0862.function.remove_extra_utf8_decodes.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0862.function.remove_extra_utf8_decodes.sql
+
+commit c0c10611404f55ef1d1146de053854b17e9b66ab
+Author: Ben Shum <bshum@biblio.org>
+Date:   Wed Feb 19 14:39:06 2014 -0500
+
+    LP1223903 - Also bump the schema config
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+
+commit c0a0fc6e1298bf8921e0cb15039763127b1b70fe
+Author: Ben Shum <bshum@biblio.org>
+Date:   Wed Feb 19 14:22:37 2014 -0500
+
+    LP1223903 - Stamping upgrade script for new authority_record_entry indexes
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+8	0	Open-ILS/src/sql/Pg/upgrade/0861.index.authority_record_entry.sql
+0	2	Open-ILS/src/sql/Pg/upgrade/XXXX.index.authority_record_entry.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0861.index.authority_record_entry.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.index.authority_record_entry.sql
+
+commit e495dbb7811b35dbae4e121ff5dbf3b33550d619
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Thu Feb 6 11:18:49 2014 -0500
+
+    LP1223903 - Add release notes for rewrite of marc_export.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+39	0	docs/RELEASE_NOTES_NEXT/Cataloging/marc_export_replacement.txt
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Cataloging/marc_export_replacement.txt
+
+commit 2c28f9b728425e46e00c3ff11583206b9f1ca14c
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Wed Feb 5 11:24:05 2014 -0500
+
+    LP1223903 - Rewrite marc_export.in in support-scripts.
+    
+    This commit rewrites marc_export.in in the support-scripts  src directory.
+    It will still be transformed into marc_export at build time.  This change
+    replaces the current marc_export scipt with a faster, DBI based alternative.
+    
+    The replacement support nearly all of the features of the original, except
+    for the progress output.  Much of this information is harder to gather
+    with the new design.
+    
+    This is a squashed, rebased commit of previous work.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+698	313	Open-ILS/src/support-scripts/marc_export.in
+
+commit 1108b8b634cf60cedf9bb7e722146a9ea08e1dd2
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Tue Dec 10 15:16:21 2013 -0500
+
+    LP1223903 - Add indexes to authority.record_entry.
+    
+    We want indexes on edit_date and create_date for authority.record_entry
+    so that date-based searching is faster for authority record export.  It
+    likely will prove useful for other features.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+2	0	Open-ILS/src/sql/Pg/011.schema.authority.sql
+2	0	Open-ILS/src/sql/Pg/upgrade/XXXX.index.authority_record_entry.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.index.authority_record_entry.sql
+
+commit b9edf30f9f2e5bcda86c4724496e6261b64148a0
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Thu Sep 26 01:53:35 2013 -0400
+
+    LP1223903 - Add from_bare_hash to Fieldmapper.pm.
+    
+    Teach the Perl Fieldmapper.pm to build objects from a hashref in a
+    similar manner to how the JS Fieldmapper already can.  You might use
+    it if you retrieved a database row as a hashref, like so:
+    
+    my $hashref = {};
+    my $class = Fieldmapper::class_for_hint('bre');
+    my $bre = $class->from_bare_hash($hashref);
+    
+    We also modify the Fieldmapper's properties method to sort the array of
+    field names it returns by position.  This makes the return value a lot
+    more useful for on the fly object construction and other fancy tricks.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+15	1	Open-ILS/src/perlmods/lib/OpenILS/Utils/Fieldmapper.pm
+
+commit 6c16a446894d47776ec336115c096b165ffe4b6a
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Wed Feb 19 10:22:37 2014 -0500
+
+    LP#1262722 Fix DB supersedes/deprecates pgtap test
+    
+    Sort multi-value arrays before passing them off to pgtap for test
+    comparison. Otherwise, pgtap tests may fail with:
+    
+    Failed test 5
+            have: {AAAC,AAAB}
+            want: {AAAB,AAAC}
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Jeff Godin <jgodin@tadl.org>
+
+8	1	Open-ILS/src/sql/Pg/t/db_patch_dep_checks.pg
+
+commit 4be795262dc199453a4e632f19d8a5f8aa94d01c
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Tue Feb 18 13:01:08 2014 -0500
+
+    Stamping upgrade script for supsersede/deprecate logic fixes
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+64	0	Open-ILS/src/sql/Pg/upgrade/0860.schema.deprecate-supersede-check-repairs.sql
+0	58	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.deprecate-supersede-check-repairs.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0860.schema.deprecate-supersede-check-repairs.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.deprecate-supersede-check-repairs.sql
+
+commit b7f0b1da24b626c92d84245298b228d37cb6ca60
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Thu Dec 19 10:27:26 2013 -0500
+
+    DB patch supersede/deprecate logic repairs; unit tests
+    
+    * Fix some thinkos in the various DB functions for calculating
+      supersedes/deprecation logic.
+    
+    * Added a pgtap test
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+5	5	Open-ILS/src/sql/Pg/002.schema.config.sql
+36	0	Open-ILS/src/sql/Pg/t/db_patch_dep_checks.pg
+58	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.deprecate-supersede-check-repairs.sql
+ create mode 100644 Open-ILS/src/sql/Pg/t/db_patch_dep_checks.pg
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.deprecate-supersede-check-repairs.sql
+
+commit 6d750a0023cc1197b460d2e254d1ba89c376f18a
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Tue Feb 18 12:47:42 2014 -0500
+
+    Stamping upgrade for Granular Staff Initials settings
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+94	0	Open-ILS/src/sql/Pg/upgrade/0859.data.staff-initials-settings.sql
+0	94	Open-ILS/src/sql/Pg/upgrade/XXXX.data.staff-initials-settings.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0859.data.staff-initials-settings.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.staff-initials-settings.sql
+
+commit 4583dd596b9fee642049ba4206bd44a5428f71b3
+Author: Ben Shum <bshum@biblio.org>
+Date:   Tue May 28 14:54:27 2013 -0400
+
+    Add granular settings for requiring staff initials for notes
+    
+    Up till now, there has only been one setting for making staff initials required
+    for all of the various note fields. Instead, let's break this up into separate
+    org unit settings for each type of note field, giving us more flexiblity in
+    making use of the append staff initials feature.
+    
+    These three types of notes will now have settings to add initials for each:
+    
+    - patron penalties/messages
+    - patron information notes
+    - copy (item) notes
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+23	5	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+94	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.staff-initials-settings.sql
+1	1	Open-ILS/xul/staff_client/server/cat/copy_notes.xul
+1	1	Open-ILS/xul/staff_client/server/patron/edit_standing_penalty.js
+1	1	Open-ILS/xul/staff_client/server/patron/info_notes.xul
+1	1	Open-ILS/xul/staff_client/server/patron/new_standing_penalty.js
+18	0	docs/RELEASE_NOTES_NEXT/Administration/staff-initials.txt
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.staff-initials-settings.sql
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Administration/staff-initials.txt
+
+commit 30096667a05670ba6c3a80eb3038be905c66f2d3
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Tue Feb 18 12:15:18 2014 -0500
+
+    LP#1272074 Physical Characteristics Wizard for the MARC Editor (Part II)
+    
+    These files should have been in the other commit with the above title,
+    but I lost them in a rebase effort.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+523	0	Open-ILS/web/js/dojo/openils/widget/PhysCharWizard.js
+15	0	Open-ILS/web/js/dojo/openils/widget/nls/PhysCharWizard.js
+ create mode 100644 Open-ILS/web/js/dojo/openils/widget/PhysCharWizard.js
+ create mode 100644 Open-ILS/web/js/dojo/openils/widget/nls/PhysCharWizard.js
+
+commit 3eee581dd7ba3f0c9acb5522cc7c8c32d262184d
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Tue Feb 18 12:01:29 2014 -0500
+
+    Stamping 0858: Fixed field enhancements
+    
+    Also, move test file to a possibly better location.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+0	65	Open-ILS/src/sql/Pg/live_t/XXXX.fixed_field_enhancements.pg
+65	0	Open-ILS/src/sql/Pg/t/regress/lp1272074_0858_fixed_field_enhancements.pg
+11	0	Open-ILS/src/sql/Pg/upgrade/0858.data.fixed_field_enhancements.sql
+0	11	Open-ILS/src/sql/Pg/upgrade/XXXX.data.fixed_field_enhancements.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/live_t/XXXX.fixed_field_enhancements.pg
+ create mode 100644 Open-ILS/src/sql/Pg/t/regress/lp1272074_0858_fixed_field_enhancements.pg
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0858.data.fixed_field_enhancements.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.fixed_field_enhancements.sql
+
+commit df26f9e2ecdabe8e76e318941e7c093ae8602318
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Thu Jan 23 16:02:02 2014 -0500
+
+    LP#1272074 Release notes (with pictures!) of fixed fields MARC editor enhancements
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+98	0	docs/RELEASE_NOTES_NEXT/Cataloging/fixed_fields_enhancements.txt
+-	-	docs/media/ffer-007-00.png
+-	-	docs/media/ffer-007-smd.png
+-	-	docs/media/ffer-open-wizard.png
+-	-	docs/media/ffer-record-type.png
+-	-	docs/media/ffer-right-click.png
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Cataloging/fixed_fields_enhancements.txt
+ create mode 100644 docs/media/ffer-007-00.png
+ create mode 100644 docs/media/ffer-007-smd.png
+ create mode 100644 docs/media/ffer-open-wizard.png
+ create mode 100644 docs/media/ffer-record-type.png
+ create mode 100644 docs/media/ffer-right-click.png
+
+commit 35cca918cedf4a6d07b0aa274677c37d84b053fc
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Mon Nov 18 12:31:47 2013 -0500
+
+    LP#1272074 Fix faulty physical characteristics seed data
+    
+    For 007 (00/a=f), "subfield" e (Level of contraction) starts at position
+    5, not 4.
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+65	0	Open-ILS/src/sql/Pg/live_t/XXXX.fixed_field_enhancements.pg
+11	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.fixed_field_enhancements.sql
+ create mode 100644 Open-ILS/src/sql/Pg/live_t/XXXX.fixed_field_enhancements.pg
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.fixed_field_enhancements.sql
+
+commit b11902269b05f5da847cbb51a23fdf2046dea1ca
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Tue Nov 12 17:51:57 2013 -0500
+
+    LP#1272074 Physical Characteristics Wizard for the MARC Editor
+    
+    Right-click in an 007 field to find a new entry in the context menu that
+    launches this wizard.  The prompts and suggested values come from data
+    already found in the database.
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+2	0	Open-ILS/web/opac/locale/en-US/lang.dtd
+2	1	Open-ILS/xul/staff_client/chrome/content/cat/opac.js
+1	0	Open-ILS/xul/staff_client/chrome/content/main/constants.js
+48	2	Open-ILS/xul/staff_client/server/cat/marcedit.js
+3	0	Open-ILS/xul/staff_client/server/cat/marcedit.xul
+
+commit 7e12a0c8d7eacdbd8ca454b55678ae256408bcde
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Mon Nov 11 17:52:03 2013 -0500
+
+    LP#1272074 Context menus suggesting values for marc fixed field editor
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+57	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Cat.pm
+111	0	Open-ILS/xul/staff_client/server/cat/marcedit.js
+
+commit 7e459294d1e49c0e3397b897fb4d4b733a23bb99
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Tue Feb 18 08:53:59 2014 -0500
+
+    LP#1187035 Remove OpenILS::Utils::Editor part 4.
+    
+    Make sure all CStoreEditors in ClosedDates run updates in transactions,
+    roll back transactions on error, and commit the transactions on success.
+    
+    Added a live test for closed data updating.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Jeff Godin <jgodin@tadl.org>
+
+15	13	Open-ILS/src/perlmods/lib/OpenILS/Application/Actor/ClosedDates.pm
+17	1	Open-ILS/src/perlmods/live_t/04-overdue_with_closed_dates.t
+
+commit 8eda1c2ab441ca2e26c6b8b18675860e890746e4
+Author: Jeff Godin <jgodin@tadl.org>
+Date:   Mon Feb 17 22:31:28 2014 -0500
+
+    LP#1187035 Remove OpenILS::Utils::Editor part 3.
+    
+    Remove obsolete lib/OpenILS/Utils/Editor.pm from MANIFEST.
+    
+    Signed-off-by: Jeff Godin <jgodin@tadl.org>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+0	1	Open-ILS/src/perlmods/MANIFEST
+
+commit bb222e7580187965e3e722a76505ee634beb5987
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Thu Jun 6 09:21:37 2013 -0400
+
+    LP#1187035 Remove OpenILS::Utils::Editor part 2.
+    
+    * Address 2 places where we were calling $e->request with a
+     CStoreEditor for a storage method.  Since CStoreEditor assumes all
+     calls go to open-ils.cstore, these would have failed.
+    
+    * While we're in a cleaning mood, remove some obsolete commented code.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Jeff Godin <jgodin@tadl.org>
+
+6	2	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ.pm
+6	2	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/NonCat.pm
+0	4	Open-ILS/src/perlmods/lib/OpenILS/Application/Search/Zips.pm
+
+commit 0199ecdf97d6651bfb423310e7f20e10b20e151b
+Author: Jeff Godin <jgodin@tadl.org>
+Date:   Sat Jun 1 00:35:37 2013 -0400
+
+    LP#1187035 Remove OpenILS::Utils::Editor
+    
+    OpenILS::Utils::Editor is obsolete, yet still referenced in a number
+    of places. Let's remove it.
+    
+    Signed-off-by: Jeff Godin <jgodin@tadl.org>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Actor/ClosedDates.pm
+3	4	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ.pm
+1	2	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/NonCat.pm
+0	4	Open-ILS/src/perlmods/lib/OpenILS/Application/Search/Biblio.pm
+1	2	Open-ILS/src/perlmods/lib/OpenILS/Application/Search/Zips.pm
+0	544	Open-ILS/src/perlmods/lib/OpenILS/Utils/Editor.pm
+1	2	Open-ILS/src/perlmods/t/14-OpenILS-Utils.t
+ delete mode 100644 Open-ILS/src/perlmods/lib/OpenILS/Utils/Editor.pm
+
+commit 1fefe2cecb464ea10ff4a2d0e673c2663bab086a
+Author: Jason Etheridge <jason@esilibrary.com>
+Date:   Fri Jan 24 17:51:45 2014 -0500
+
+    LP#1272575 Use getElementById over querySelector
+    
+    Favor document.getElementById over document.querySelector for simple
+    by-id element referencing.
+    
+    Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+    Signed-off-by: Jeff Godin <jgodin@tadl.org>
+
+4	4	Open-ILS/src/templates/opac/parts/result/table.tt2
+
+commit 796ed67e12b1aa5cb88a8519e2e8228fbfa2726c
+Author: Pasi Kallinen <pasi.kallinen@pttk.fi>
+Date:   Tue May 28 10:45:02 2013 +0300
+
+    LP#1184885 ACQ: i18n for search abbreviations
+    
+    Allow translating the Acq Search dropdown class name abbreviations.
+    
+    Signed-off-by: Pasi Kallinen <pasi.kallinen@pttk.fi>
+    Signed-off-by: Jeff Godin <jgodin@tadl.org>
+
+6	0	Open-ILS/web/js/dojo/openils/acq/nls/acq.js
+4	2	Open-ILS/web/js/ui/default/acq/search/unified.js
+
+commit a380379e291f1b0d42f15a1875c172fd2dc6892f
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Mon Feb 17 17:14:37 2014 -0500
+
+    LP#1187029 release notes typo repair for ingest cleanup
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+1	1	docs/RELEASE_NOTES_NEXT/removal_of_ingest.txt
+
+commit bc073517f19e89028feb5921d6c438beb5430d5c
+Author: Jeff Godin <jgodin@tadl.org>
+Date:   Tue May 7 15:58:51 2013 -0400
+
+    LP#1187029 Remove unused open-ils.ingest service
+    
+    Remove open-ils.ingest service and related scripts and code.
+    
+    In addition to removing OpenILS::Application::Ingest, this commit
+    removes code that was commented out at the time of open-ils.ingest's
+    replacement with in-db ingest, example configuration elements, a
+    use_ok test, and the following obsolete scripts which made use of or
+    were otherwise related to open-ils.ingest:
+    
+    * Open-ILS/src/extras/import/direct_ingest.pl
+    * Open-ILS/src/extras/import/generate-srfsh-indexer.pl
+    * Open-ILS/src/extras/import/importer.sh
+    
+    The included release notes recommend removal of the open-ils.ingest service
+    from configuration files when upgrading, and suggest removal of Ingest.pm from
+    its location in @INC.
+    
+    Signed-off-by: Jeff Godin <jgodin@tadl.org>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+0	28	Open-ILS/examples/opensrf.xml.example
+0	122	Open-ILS/src/extras/import/direct_ingest.pl
+0	30	Open-ILS/src/extras/import/generate-srfsh-indexer.pl
+0	36	Open-ILS/src/extras/import/importer.sh
+0	1	Open-ILS/src/perlmods/MANIFEST
+0	6	Open-ILS/src/perlmods/lib/OpenILS/Application/Cat.pm
+0	8	Open-ILS/src/perlmods/lib/OpenILS/Application/Cat/AuthCommon.pm
+0	1453	Open-ILS/src/perlmods/lib/OpenILS/Application/Ingest.pm
+1	2	Open-ILS/src/perlmods/t/01-OpenILS-Application.t
+21	0	docs/RELEASE_NOTES_NEXT/removal_of_ingest.txt
+ delete mode 100755 Open-ILS/src/extras/import/direct_ingest.pl
+ delete mode 100755 Open-ILS/src/extras/import/generate-srfsh-indexer.pl
+ delete mode 100755 Open-ILS/src/extras/import/importer.sh
+ delete mode 100644 Open-ILS/src/perlmods/lib/OpenILS/Application/Ingest.pm
+ create mode 100644 docs/RELEASE_NOTES_NEXT/removal_of_ingest.txt
+
+commit 60ee958d1ea29a2f5ad4fba40936ef022164c36c
+Author: Jeff Godin <jgodin@tadl.org>
+Date:   Fri May 31 22:47:49 2013 -0400
+
+    LP#1187034 Remove obsolete collections code
+    
+    Remove obsolete collections code
+    
+    Specifically:
+    
+    open-ils.collections.users_owing_money.retrieve
+    open-ils.storage.money.collections.users_owing_money
+    
+    Signed-off-by: Jeff Godin <jgodin@tadl.org>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+0	75	Open-ILS/src/perlmods/lib/OpenILS/Application/Collections.pm
+0	95	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Publisher/money.pm
+
+commit be5803f14b193e0f39b50731624c6206baa08bb1
+Author: Jeff Godin <jgodin@tadl.org>
+Date:   Mon Feb 17 17:12:33 2014 +0000
+
+    Stamping 0857 for located uri visibility changes
+    
+    Stamping 0857 for located uri visibility changes, also adjusting
+    upgrade script to use ARRAY_AGG over ARRAY_ACCUM (which recently
+    landed in master).
+    
+    LP 1271630 Allow Located URIs to supply copy-like visibility to bibs
+    https://bugs.launchpad.net/evergreen/+bug/1271630
+    
+    LP 874296  Replace ARRAY_ACCUM with ARRAY_AGG (and STRING_AGG)
+    https://bugs.launchpad.net/evergreen/+bug/874296
+    
+    Signed-off-by: Jeff Godin <jgodin@tadl.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+508	0	Open-ILS/src/sql/Pg/upgrade/0857.function.located_uris_act_as_copies.sql
+0	506	Open-ILS/src/sql/Pg/upgrade/XXXX.function.located_uris_act_as_copies.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0857.function.located_uris_act_as_copies.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.function.located_uris_act_as_copies.sql
+
+commit e4cbe67a9bd8788f8e750c8ca298489e05749cd2
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Thu Jan 23 10:40:16 2014 -0500
+
+    Release notes
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Jeff Godin <jgodin@tadl.org>
+
+21	0	docs/RELEASE_NOTES_NEXT/OPAC/Located_URI_visibility.txt
+ create mode 100644 docs/RELEASE_NOTES_NEXT/OPAC/Located_URI_visibility.txt
+
+commit 169805f66636b9eecf043b3d9e1bb5dc6094381f
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Fri Feb 7 10:27:11 2014 -0500
+
+    Teach evergreen.located_uris() about the new URI visiblity flag
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Jeff Godin <jgodin@tadl.org>
+
+17	8	Open-ILS/src/sql/Pg/990.schema.unapi.sql
+33	0	Open-ILS/src/sql/Pg/upgrade/XXXX.function.located_uris_act_as_copies.sql
+
+commit 3f6d29e7619e52642db0ab7d7a53b4eefcc9c418
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Jan 22 11:09:33 2014 -0500
+
+    Upgrade script
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Jeff Godin <jgodin@tadl.org>
+
+473	0	Open-ILS/src/sql/Pg/upgrade/XXXX.function.located_uris_act_as_copies.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.function.located_uris_act_as_copies.sql
+
+commit b11cd783e94c73b886229a574dc28c93ecb3b88b
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Jan 22 11:06:50 2014 -0500
+
+    Global flag for setting Located URI behavioral mode
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Jeff Godin <jgodin@tadl.org>
+
+12	0	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+
+commit 091d78ad18ba311457c82dab3579444a3f6ecc89
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Jan 22 11:00:24 2014 -0500
+
+    Check behavioral setting for Located URIs
+    
+    When the opac.located_uri.act_as_copy Global Flag is enabled, treat
+    Located URIs like copies for visibility testing purposes.  We use
+    actor.org_unit_full_path instead of actor.org_unit_descendants so
+    that we do not lose the desirable "licensed here" modeling that
+    Located URIs provide.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Jeff Godin <jgodin@tadl.org>
+
+21	3	Open-ILS/src/sql/Pg/300.schema.staged_search.sql
+
+commit 1f023b6b4ac489e296c18d222d9c1e1cdb490962
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Thu Dec 12 17:08:17 2013 -0500
+
+    evergreen.located_uris() returns a rank, and we should use it
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Jeff Godin <jgodin@tadl.org>
+
+1	1	Open-ILS/src/sql/Pg/990.schema.unapi.sql
+
+commit 0ec0ddcbf19384858460c57784d97768ffe050d3
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Tue Nov 26 12:00:42 2013 -0500
+
+    Change "Alias" to "Holds Alias" in Patron Search.
+    
+    This same field is referred to as "OPAC/Staff Client Holds Alias" in
+    the Register Patron interface.  This change is for consistency in labeling.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/web/opac/locale/en-US/lang.dtd
+
+commit c317a6ec9450119fc75c2510f6e01f6f30b184f5
+Author: Jeff Godin <jgodin@tadl.org>
+Date:   Wed Jan 22 23:40:50 2014 -0500
+
+    Release notes for "Update Expire Date" button
+    
+    Add release notes for "Update Expire Date" button in user editor.
+    
+    Signed-off-by: Jeff Godin <jgodin@tadl.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+17	0	docs/RELEASE_NOTES_NEXT/Circulation/user_editor_update_expire_date_button.txt
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Circulation/user_editor_update_expire_date_button.txt
+
+commit 6807a06a11d309e94dbc5e286e45a5fdd3eaecab
+Author: Jeff Godin <jgodin@tadl.org>
+Date:   Wed Oct 30 15:42:15 2013 -0400
+
+    Add button to update expire date field
+    
+    When updating/renewing a patron (expired or not), it would be
+    convenient to have a means of populating the expire date field with
+    a value of perm_interval + today. Currently, staff are required to
+    manually enter a date, or could toggle the profile from one profile
+    then back to the desired profile, but this is not ideal.
+    
+    This commit adds a new button next to the expire date, which when
+    activated will re-calculate the date based on the current profile's
+    perm_interval and today's date.
+    
+    This is similar to how the expire date is populated when creating a
+    new user, or when changing the profile group. A button is used here
+    so that the updating of the expire date is an intentional process,
+    not one that happens upon any edit.
+    
+    Signed-off-by: Jeff Godin <jgodin@tadl.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+6	1	Open-ILS/src/templates/actor/user/register_table.tt2
+2	1	Open-ILS/web/js/dojo/openils/actor/nls/register.js
+25	0	Open-ILS/web/js/ui/default/actor/user/register.js
+
+commit c49b4d90cd4be6b157db8658e5d6cbb04ecf6c70
+Author: Ben Shum <bshum@biblio.org>
+Date:   Thu Feb 13 00:05:38 2014 -0500
+
+    Stamping upgrade for STRING_AGG fix for metabib.staged_browse()
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+212	0	Open-ILS/src/sql/Pg/upgrade/0856.schema.metabib_staged_browse.sql
+0	207	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.metabib_staged_browse.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0856.schema.metabib_staged_browse.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.metabib_staged_browse.sql
+
+commit 497530956ab59cb627d1bde13d63103ac064468c
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Wed Feb 12 14:48:46 2014 -0500
+
+    STRING_AGG() fix for metabib.staged_browse()
+    
+    We need to supply TEXT values to STRING_AGG(), so cast the input INTEGER
+    accordingly.
+    
+    Also, I LIKE ALL-CAPS.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+3	3	Open-ILS/src/sql/Pg/030.schema.metabib.sql
+207	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.metabib_staged_browse.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.metabib_staged_browse.sql
+
+commit 598267dd0ad047f8b424a63e2bf2f44ed7e51bcd
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Tue Feb 11 10:50:38 2014 -0500
+
+    Release notes for WCAG compliance for the TPAC
+    
+    Super basic, but gives a pointer to the WCAG overview for
+    more information.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+8	0	docs/RELEASE_NOTES_NEXT/OPAC/WCAG.txt
+ create mode 100644 docs/RELEASE_NOTES_NEXT/OPAC/WCAG.txt
+
+commit 40a5441e8efe575fab1219b2702bf0b86be24999
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Tue Feb 11 09:16:09 2014 -0500
+
+    LP#1268636 add expressive facet link titles
+    
+    Let the user know exactly what clicking on a facet will do.
+    
+    Thanks to Dan Scott for the suggestion.
+    
+    * Note that accessibility validators may dislike the repetitive titles,
+      but clearly adding them provides more information (for everyone).
+      Plus, as facets pile up, there's no reasonable way to differentiate
+      between all titles, anyway, without title attributes becoming too
+      long and unreadable.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+11	3	Open-ILS/src/templates/opac/parts/result/facets.tt2
+
+commit 4cb854e866d373b276e47886b76a8668cdd2eef8
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Mon Feb 10 22:59:50 2014 -0500
+
+    Remove useless image-based fines border
+    
+    The images ended up looking like displaced blocks, but
+    aren't necessary anyway. If one really wants a border,
+    use CSS.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+0	24	Open-ILS/src/templates/opac/parts/myopac/main_base.tt2
+
+commit b1ce5b6650e0ee875a7919b84ea0543e0de2d2c6
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Mon Feb 10 22:54:17 2014 -0500
+
+    Remove extraneous ] in holds TPAC page
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+1	1	Open-ILS/src/templates/opac/myopac/holds.tt2
+
+commit de175930957778ea54e318502083b1c46d76eb96
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Fri Jan 17 09:03:58 2014 -0500
+
+    LP#1268636 Add helpful empty search term message
+    
+    When a search is submitted with no query value, instead of silently
+    redirecting the user the home page, direct the user to the results page
+    and show a helpful message (within the low-hits template).
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+1	4	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Search.pm
+5	1	Open-ILS/src/templates/opac/parts/result/lowhits.tt2
+
+commit d1ff8f87c6cbe6806b8f7e05f512553e7c5ac29c
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Fri Jan 17 09:01:38 2014 -0500
+
+    LP#1268636 improve fines warning color contrast
+    
+    Use the text_attention CSS color instead of the text_badnews for the my
+    account fines label, since the badnews color does not contrast highly
+    engouh with the dark green background for WCAG compliance.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+8	0	Open-ILS/src/templates/opac/css/style.css.tt2
+
+commit 5960428a33b6ac3dfbd9e9fb0bc3687b2de43c1e
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Fri Jan 17 09:00:24 2014 -0500
+
+    LP#1268636 remove a few invalid attrs / unused tags
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+2	7	Open-ILS/src/templates/opac/parts/result/table.tt2
+
+commit 37880c146fa45d17e9c38349990bd309d9581468
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Wed Jan 15 13:58:52 2014 -0500
+
+    LP#1268636 additional myopac nav headers
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+1	0	Open-ILS/src/templates/opac/myopac/circ_history.tt2
+1	0	Open-ILS/src/templates/opac/myopac/circs.tt2
+1	0	Open-ILS/src/templates/opac/myopac/hold_history.tt2
+1	0	Open-ILS/src/templates/opac/myopac/holds.tt2
+1	0	Open-ILS/src/templates/opac/myopac/holds/edit.tt2
+1	0	Open-ILS/src/templates/opac/myopac/lists.tt2
+1	0	Open-ILS/src/templates/opac/myopac/main.tt2
+1	0	Open-ILS/src/templates/opac/myopac/main_payment_form.tt2
+1	0	Open-ILS/src/templates/opac/myopac/main_payments.tt2
+1	0	Open-ILS/src/templates/opac/myopac/prefs.tt2
+1	0	Open-ILS/src/templates/opac/myopac/prefs_my_lists.tt2
+2	1	Open-ILS/src/templates/opac/myopac/prefs_notify.tt2
+1	0	Open-ILS/src/templates/opac/myopac/prefs_settings.tt2
+1	0	Open-ILS/src/templates/opac/myopac/update_email.tt2
+1	0	Open-ILS/src/templates/opac/myopac/update_password.tt2
+1	0	Open-ILS/src/templates/opac/myopac/update_username.tt2
+4	3	Open-ILS/src/templates/opac/parts/bookbag_actions.tt2
+1	0	Open-ILS/src/templates/opac/parts/myopac/base.tt2
+
+commit 77c252fb12f804e4ab57beb24ea74e3b87419982
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Wed Jan 15 11:46:28 2014 -0500
+
+    LP#1268636 TPAC avoid <b> tags in pref lib msg
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+1	1	Open-ILS/src/templates/opac/parts/pref_lib_display.tt2
+
+commit 62ba91a8c8ff2e356e0b3434e983191b4fbf475e
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Wed Jan 15 11:42:42 2014 -0500
+
+    LP#1268636 TPAC more nav headers for search results
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+3	0	Open-ILS/src/templates/opac/parts/result/table.tt2
+1	0	Open-ILS/src/templates/opac/results.tt2
+
+commit ffda9748ee7e38d5e049ade9a9d59f7cd49cb646
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Wed Jan 15 10:44:44 2014 -0500
+
+    LP#1268636 TPAC initial navigation headers
+    
+    Added a screen-reader only CSS class ("sr-only") for adding content
+    which should only be read by screen readers and is otherwise invisible.
+    
+    Added hidden generic <h1> and page-specific <h2> entries to improve
+    web accessibility navigation.
+    
+    Additional content-specific headers (h3 and down) are recommended for
+    content grouping, but not included in this commit.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+1	0	Open-ILS/src/templates/opac/advanced.tt2
+1	0	Open-ILS/src/templates/opac/browse.tt2
+1	0	Open-ILS/src/templates/opac/cnbrowse.tt2
+16	0	Open-ILS/src/templates/opac/css/style.css.tt2
+1	0	Open-ILS/src/templates/opac/home.tt2
+2	0	Open-ILS/src/templates/opac/login.tt2
+1	0	Open-ILS/src/templates/opac/mylist.tt2
+3	0	Open-ILS/src/templates/opac/parts/base.tt2
+1	0	Open-ILS/src/templates/opac/parts/searchbar.tt2
+1	0	Open-ILS/src/templates/opac/password_reset.tt2
+1	0	Open-ILS/src/templates/opac/place_hold.tt2
+1	0	Open-ILS/src/templates/opac/record.tt2
+1	0	Open-ILS/src/templates/opac/register.tt2
+1	0	Open-ILS/src/templates/opac/results.tt2
+1	0	Open-ILS/src/templates/opac/sms_cn.tt2
+1	0	Open-ILS/src/templates/opac/temp_warn.tt2
+
+commit 552928cee45238127b188c078bf309a20f8a8259
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Wed Jan 8 16:29:15 2014 -0500
+
+    LP#1268636 My account various repairs
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+1	0	Open-ILS/src/templates/opac/css/style.css.tt2
+7	4	Open-ILS/src/templates/opac/myopac/circ_history.tt2
+29	25	Open-ILS/src/templates/opac/myopac/circs.tt2
+19	18	Open-ILS/src/templates/opac/myopac/hold_history.tt2
+21	23	Open-ILS/src/templates/opac/myopac/holds.tt2
+14	12	Open-ILS/src/templates/opac/myopac/lists.tt2
+11	4	Open-ILS/src/templates/opac/myopac/main.tt2
+36	25	Open-ILS/src/templates/opac/myopac/main_payment_form.tt2
+2	1	Open-ILS/src/templates/opac/myopac/main_payments.tt2
+29	78	Open-ILS/src/templates/opac/myopac/prefs.tt2
+3	2	Open-ILS/src/templates/opac/myopac/prefs_my_lists.tt2
+22	14	Open-ILS/src/templates/opac/myopac/prefs_notify.tt2
+19	10	Open-ILS/src/templates/opac/myopac/prefs_settings.tt2
+4	1	Open-ILS/src/templates/opac/parts/bookbag_actions.tt2
+14	8	Open-ILS/src/templates/opac/parts/header.tt2
+22	17	Open-ILS/src/templates/opac/parts/myopac/base.tt2
+31	18	Open-ILS/src/templates/opac/parts/myopac/main_base.tt2
+4	1	Open-ILS/src/templates/opac/parts/myopac/prefs_base.tt2
+5	4	Open-ILS/src/templates/opac/parts/result/table.tt2
+
+commit 3bb0bfbdc91b3ba235cc72fa9c5173152062f085
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Mon Dec 30 16:14:19 2013 -0500
+
+    LP#1268636 avoid empty <ul>'s in browse
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+23	6	Open-ILS/src/templates/opac/browse.tt2
+4	1	Open-ILS/src/templates/opac/parts/advanced/expert.tt2
+0	1	Open-ILS/src/templates/opac/parts/advanced/numeric.tt2
+
+commit 161815ed45e1eb468ddf342af25cf64b1bd80a94
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Mon Dec 30 15:36:53 2013 -0500
+
+    LP#1268636 advanced search repairs
+    
+    * avoid dupe IDs
+    * removes extraneous <div>'s
+    * clean up attrs w/ preceding spaces
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+3	3	Open-ILS/src/templates/opac/css/style.css.tt2
+4	1	Open-ILS/src/templates/opac/parts/advanced/global_row.tt2
+6	6	Open-ILS/src/templates/opac/parts/advanced/search.tt2
+
+commit 14eb3d30a9b3ec118f1225c992e96a3ca93c6375
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Mon Dec 23 11:39:50 2013 -0500
+
+    LP#1268636 alt tags and cleanup continued
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+11	0	Open-ILS/src/templates/opac/parts/header.tt2
+1	1	Open-ILS/src/templates/opac/parts/homesearch.tt2
+11	12	Open-ILS/src/templates/opac/parts/record/awards.tt2
+6	5	Open-ILS/src/templates/opac/parts/record/cnbrowse.tt2
+2	2	Open-ILS/src/templates/opac/parts/record/copy_table.tt2
+1	1	Open-ILS/src/templates/opac/parts/record/extras.tt2
+4	3	Open-ILS/src/templates/opac/parts/record/summary.tt2
+3	3	Open-ILS/src/templates/opac/parts/result/table.tt2
+
+commit 3e1e2b918368d6b921b9aad2c45e0b0cc0878760
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Fri Dec 20 11:42:06 2013 -0500
+
+    LP#1268636 more expressive <a> titles in search results
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+16	8	Open-ILS/src/templates/opac/parts/result/table.tt2
+
+commit ba5effb8b480bae8ee201ca7afa5a4465136b7f8
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Fri Dec 20 11:13:48 2013 -0500
+
+    LP#1268636 HTML validation repairs
+    
+    remove invalid span@nowrap attribute
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+1	1	Open-ILS/src/templates/opac/parts/result/paginate.tt2
+
+commit 94a50c8f782fafa5fac404891f1955e7a6f57d08
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Fri Dec 20 11:13:32 2013 -0500
+
+    LP#1268636 additional label repairs
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+2	2	Open-ILS/src/templates/opac/results.tt2
+
+commit b114e4f963003e490530af1de94a7e15384d930a
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Fri Dec 20 11:12:30 2013 -0500
+
+    LP#1268636 HTML table attributes validation repairs
+    
+    Replace old-school inline cellpadding, cellspacing, border attributes
+    with CSS.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+14	0	Open-ILS/src/templates/opac/css/style.css.tt2
+1	1	Open-ILS/src/templates/opac/myopac/circs.tt2
+2	2	Open-ILS/src/templates/opac/myopac/holds.tt2
+2	2	Open-ILS/src/templates/opac/myopac/lists.tt2
+1	1	Open-ILS/src/templates/opac/myopac/main_payment_form.tt2
+1	1	Open-ILS/src/templates/opac/parts/anon_list.tt2
+1	1	Open-ILS/src/templates/opac/parts/record/copy_table.tt2
+3	4	Open-ILS/src/templates/opac/parts/result/table.tt2
+
+commit d818dbbee5d3536f811c999a79e4228990d752a0
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Fri Dec 20 11:07:01 2013 -0500
+
+    LP#1268636 facets get more specific more/less titles
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+9	2	Open-ILS/src/templates/opac/parts/result/facets.tt2
+
+commit be91b108928aad16866fbb32346d23da7db494f3
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Thu Dec 19 12:57:42 2013 -0500
+
+    LP#1268636 home page label / alt repairs
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+2	1	Open-ILS/src/templates/opac/parts/homesearch.tt2
+14	9	Open-ILS/src/templates/opac/parts/searchbar.tt2
+
+commit 462a352a44553f4815536c9de595570685bfcd83
+Author: Ben Shum <bshum@biblio.org>
+Date:   Sat Feb 8 11:14:23 2014 -0500
+
+    Fix copy_info variables one last time for library_name_link purposes
+    
+    In cd056eba75038c6a1fabd2a83ba97d81a444bc75, I fixed record by inadvertently
+    passing around the wrong variables. In fact, we do not need the value set
+    there, and we broke results view as a result of the swap around.
+    
+    Put things right what once went wrong.
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+1	3	Open-ILS/src/templates/opac/parts/record/copy_table.tt2
+1	1	Open-ILS/src/templates/opac/parts/result/table.tt2
+
+commit aa8ea3ca943785ea982d87ad2bf51419812786f2
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Tue Nov 26 12:44:51 2013 -0500
+
+    Address some remaining hardcoded install prefixes
+    
+    Ran a clean install of Evergreen on Ubuntu Precise and most things were
+    more or less working using simple "./configure; make; make install" with
+    the major exception of the TPAC. It turned out that there is a simple
+    variable that can be tweaked in the Apache config; a better way to
+    handle this might be to preprocess the source file at make time, but for
+    now at least we set the variable.
+    
+    In addition, clean up two remaining scripts that have hardcoded paths.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+2	1	Open-ILS/examples/apache/eg_vhost.conf.in
+2	1	Open-ILS/examples/apache_24/eg_vhost.conf.in
+12	5	Open-ILS/src/Makefile.am
+0	248	Open-ILS/src/support-scripts/action_trigger_runner.pl
+248	0	Open-ILS/src/support-scripts/action_trigger_runner.pl.in
+0	180	Open-ILS/src/support-scripts/offline-blocked-list.pl
+180	0	Open-ILS/src/support-scripts/offline-blocked-list.pl.in
+ delete mode 100755 Open-ILS/src/support-scripts/action_trigger_runner.pl
+ create mode 100755 Open-ILS/src/support-scripts/action_trigger_runner.pl.in
+ delete mode 100755 Open-ILS/src/support-scripts/offline-blocked-list.pl
+ create mode 100755 Open-ILS/src/support-scripts/offline-blocked-list.pl.in
+
+commit 66772286f65981bf7102a58b9e0990a77679986d
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Fri Feb 7 18:42:41 2014 -0500
+
+    Sign off on upgrade script for (STRING|ARRAY)_AGG
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+2003	0	Open-ILS/src/sql/Pg/upgrade/0855.change_to_array_agg.sql
+0	2003	Open-ILS/src/sql/Pg/upgrade/XXXX.change_to_array_agg.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0855.change_to_array_agg.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.change_to_array_agg.sql
+
+commit ecf5858253c0b5d834ed3fceeefd7cd82284caa8
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Fri Feb 7 18:12:10 2014 -0500
+
+    Tweak STRING_AGG() arguments (expects TEXT or BYTEA)
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+7	7	Open-ILS/examples/fm_IDL.xml
+
+commit 3e2a33a5222df66b6b81ec997d4bbd53ea287571
+Author: Ben Shum <bshum@biblio.org>
+Date:   Fri Feb 7 06:34:00 2014 -0500
+
+    Add upgrade script for changeover to array_agg() and string_agg()
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+2003	0	Open-ILS/src/sql/Pg/upgrade/XXXX.change_to_array_agg.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.change_to_array_agg.sql
+
+commit c546e887e445df8daaa0aa41e31b825195e41e2b
+Author: Ben Shum <bshum@biblio.org>
+Date:   Fri Feb 7 01:18:08 2014 -0500
+
+    Found a few last functions that need changing to native SQL
+    
+    These new uses probably went in more recently as authority fixes. Updated them to
+    use the native functions as well.
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+3	3	Open-ILS/src/sql/Pg/011.schema.authority.sql
+3	3	Open-ILS/src/sql/Pg/030.schema.metabib.sql
+
+commit e6eb17aa52e6dab2bbbb12674a717fcdf01023d4
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Thu Jan 16 20:59:13 2014 -0500
+
+    Keep dropping and creating array_accum()
+    
+    We want to keep array_accum() around for now to support any custom SQL that
+    sites might have generated. Plus, we don't want it to show up in our search
+    path ahead of the native array_agg()!
+    
+    We can always rebase this as a fix into the previous commit to squash history a
+    bit. "Nope, that never happened!"
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+2	2	Open-ILS/src/sql/Pg/002.functions.aggregate.sql
+
+commit d80e70c488b572fa197f15f43e2a818b032585f1
+Author: Ben Shum <bshum@biblio.org>
+Date:   Fri May 18 00:27:24 2012 -0400
+
+    More native SQL functions
+    
+    Found four more places that this needed to be changed.
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+7	7	Open-ILS/examples/fm_IDL.xml
+2	2	Open-ILS/src/sql/Pg/002.functions.aggregate.sql
+1	1	Open-ILS/src/sql/Pg/002.functions.config.sql
+1	1	Open-ILS/src/sql/Pg/300.schema.staged_search.sql
+
+commit fc5bd43ec0fda187efa34b001b84ca6919b10f43
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Tue Jan 3 11:53:49 2012 -0500
+
+    Prevent {NULL} values from blocking bib saving
+    
+    With both the old ARRAY_ACCUM and ARRAY_AGG, and with array_nulls on,
+    PostgreSQL 9.0 on Debian Squeeze was generating values of '{NULL}'
+    rather than actual nulls. This would in turn prevent bibs without ISBNs
+    or ISSNs from being saved successfully. A CASE statement protects
+    against that problem and returns a clean NULL.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+8	2	Open-ILS/src/sql/Pg/reporter-schema.sql
+
+commit 29b2929c394211f9a3ac5fe64b78b9698ae2a58e
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Sun Oct 16 10:26:00 2011 -0400
+
+    ARRAY_ACCUM() -> ARRAY_AGG() for new authority nfi functions
+    
+    Fix the new places where array_accum() has been able to sneak into the
+    schema.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+3	3	Open-ILS/src/sql/Pg/011.schema.authority.sql
+
+commit ac0024830fc8289c826a77bed396589ac7c2042e
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Thu Oct 13 18:56:26 2011 -0400
+
+    Teach asset.merge_record_assets about STRING_AGG()
+    
+    Now that asset.merge_record_assets() is working, cut over to
+    STRING_AGG() so it can iterate over those unnecessary nodes faster :)
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+8	10	Open-ILS/src/sql/Pg/999.functions.global.sql
+
+commit 1a042ec22d9150ca6a05a87ddeb371b9802d7262
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Thu Oct 13 10:45:25 2011 -0400
+
+    One more STRING_AGG() conversion
+    
+    Teach biblio.indexing_ingest_or_delete() to use STRING_AGG() where
+    appropriate.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/sql/Pg/030.schema.metabib.sql
+
+commit 616f47d742b6a773b1ce099d90dc073b6143bc2c
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Wed Oct 12 14:20:46 2011 -0400
+
+    Native SQL functions for Vandelay
+    
+    Use STRING_AGG() where appropriate instead of
+    ARRAY_TO_STRING(ARRAY_ACCUM()), and ARRAY_AGG() instead of
+    ARRAY_ACCUM().
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+9	9	Open-ILS/src/sql/Pg/012.schema.vandelay.sql
+
+commit bd50424f525f4a32ccc965b3835fee7256015254
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Tue Oct 11 23:53:33 2011 -0400
+
+    Replace ARRAY_ACCUM() custom function with ARRAY_AGG()
+    
+    Tested each replacement to ensure that the return of NULL instead of
+    '{}' empty array doesn't break anything - although some functions didn't
+    seem to work with either function (for example,
+    asset.merge_record_assets() doesn't seem to actually move an 856 from
+    the source to the target record).
+    
+    Also replace ARRAY_TO_STRING(ARRAY_AGG()) with STRING_AGG() in a couple
+    of places; see
+    http://www.depesz.com/index.php/2010/02/17/waiting-for-9-0-string_agg/
+    for one reason why (likely performance gain).
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/sql/Pg/000.functions.general.sql
+2	2	Open-ILS/src/sql/Pg/030.schema.metabib.sql
+3	3	Open-ILS/src/sql/Pg/100.circ_matrix.sql
+1	1	Open-ILS/src/sql/Pg/110.hold_matrix.sql
+6	6	Open-ILS/src/sql/Pg/300.schema.staged_search.sql
+1	1	Open-ILS/src/sql/Pg/990.schema.unapi.sql
+1	1	Open-ILS/src/sql/Pg/999.functions.global.sql
+3	3	Open-ILS/src/sql/Pg/example.reporter-extension.sql
+6	6	Open-ILS/src/sql/Pg/reporter-schema.sql
+
+commit 746bd28c045d38313e5b8c66eefd5adb6b3bec0f
+Author: Ben Shum <bshum@biblio.org>
+Date:   Thu Feb 6 00:33:33 2014 -0500
+
+    OpenSearch release note
+    
+    Add a short release note about the return of OpenSearch support.
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+5	0	docs/RELEASE_NOTES_NEXT/OPAC/OpenSearch.txt
+ create mode 100644 docs/RELEASE_NOTES_NEXT/OPAC/OpenSearch.txt
+
+commit a1cfeda380e2ddd1f2de12a73ef616fbdb6a108c
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Tue Jan 14 23:46:41 2014 -0500
+
+    Restore OpenSearch support and use TPAC search
+    
+    This enables users to easily add the Evergreen search engine to their browser's
+    built-in set of search engines, and most importantly directs searches to the
+    TPAC instead of the weird old Supercat interface.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+3	2	Open-ILS/src/perlmods/lib/OpenILS/WWW/SuperCat.pm
+1	0	Open-ILS/src/templates/opac/parts/base.tt2
+
+commit bd17b2fa124c5de44c593414442af696501fd640
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Mon Feb 3 15:50:51 2014 -0500
+
+    Bumping base schema version to match latest upgrade
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Jeff Godin <jgodin@tadl.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+
+commit cd056eba75038c6a1fabd2a83ba97d81a444bc75
+Author: Ben Shum <bshum@biblio.org>
+Date:   Fri Jan 24 23:56:45 2014 -0500
+
+    Fix copy_info variables for result and record view
+    
+    Because we yanked out the code that generates the link into a separate INCLUDE
+    file, the function was looking for something for copy_info. The one for result
+    was missing entirely and the one for record was backwards.
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+1	1	Open-ILS/src/templates/opac/parts/record/copy_table.tt2
+2	1	Open-ILS/src/templates/opac/parts/result/table.tt2
+
+commit 536e1cea766d9136e9d0f87fdf97fb6722926be1
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Thu Jan 23 13:51:30 2014 -0500
+
+    KPAC library page: give the kids some style
+    
+    Just the bare minimum: some padding around the body, and a font colour and size
+    that's reasonably consistent with the rest of the look of the KPAC for h2 and
+    h3 elements.
+    
+    Yes, I know there is text-transform:uppercase and h2 is sized at 48px but that
+    seems to be used for "You saved it!" and "Get it!" banner things. On the
+    library info page, we're using headings for headings.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+18	0	Open-ILS/web/css/skin/default/kpac/style.css
+
+commit 7831ed7153eb21a565f1827ac3331434de2341b7
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Thu Jan 23 12:10:50 2014 -0500
+
+    Clean up the breadcrumb trail in the KPAC
+    
+    Links to the library pages don't maintain GET context, so we can't feed search
+    or "Get It" links in the breadcrumb trail, currently. We can revisit this,
+    of course.
+    
+    Wasn't there some fairy tale about kids and a breadcrumb trail... once upon a
+    time?
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/templates/kpac/parts/breadcrumb.tt2
+
+commit fd015294eca4169d373eee8ecda798245e5ea24e
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Thu Jan 23 12:05:20 2014 -0500
+
+    KPAC root, OPAC root: we all live under one root
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+7	1	Open-ILS/src/templates/opac/parts/library/core_info.tt2
+6	1	Open-ILS/src/templates/opac/parts/library_name_link.tt2
+
+commit a49b91ff2afbffe4dc09dfd2df02893c4733d8ca
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Thu Jan 23 11:41:52 2014 -0500
+
+    Begin enabling KPAC-branded library info page
+    
+    This needs work and is going to get squashed like a bug when we're through.
+    
+    Yeesh.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	0	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGKPacLoader.pm
+6	0	Open-ILS/src/templates/kpac/library.tt2
+2	51	Open-ILS/src/templates/opac/library.tt2
+50	0	Open-ILS/src/templates/opac/parts/library/core_info.tt2
+ create mode 100644 Open-ILS/src/templates/kpac/library.tt2
+ create mode 100644 Open-ILS/src/templates/opac/parts/library/core_info.tt2
+
+commit c747313ae6b181b1a1eff01ca59b65380145b6a9
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Thu Jan 23 09:10:59 2014 -0500
+
+    KPAC: Won't somebody think of the children's record details?
+    
+    Factor out the library name link logic into a separate template that can be
+    included by TPAC search results, TPAC record details, and KPAC record details.
+    
+    Notice along the way that the KPAC is devoid of copy-level structured data,
+    but save that for later.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	7	Open-ILS/src/templates/kpac/parts/copy_table.tt2
+13	0	Open-ILS/src/templates/opac/parts/library_name_link.tt2
+2	11	Open-ILS/src/templates/opac/parts/record/copy_table.tt2
+1	12	Open-ILS/src/templates/opac/parts/result/table.tt2
+ create mode 100644 Open-ILS/src/templates/opac/parts/library_name_link.tt2
+
+commit df5cc7561eacee316fda5756756f1e50260c13af
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Wed Jan 22 10:12:37 2014 -0500
+
+    TPAC: Link library in results page to library page
+    
+    Dan Wells noticed that the links on results pages went to a different location
+    (potentially, depending on the "prefer external library uri" OUS) than the
+    links on record pages. Make things consistent.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+8	2	Open-ILS/src/templates/opac/parts/result/table.tt2
+
+commit 3f639a83df73a99a63210e3b8d353aff3c1bcbf6
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Wed Jan 22 16:40:36 2014 -0500
+
+    Translation updates - newpot
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+57	5	build/i18n/po/AutoFieldWidget.js/AutoFieldWidget.js.pot
+5	1	build/i18n/po/cat.properties/cat.properties.pot
+2179	2179	build/i18n/po/db.seed/db.seed.pot
+259	255	build/i18n/po/ils_events.xml/ils_events.xml.pot
+39	3	build/i18n/po/serial.js/serial.js.pot
+121	25	build/i18n/po/tpac/tpac.pot
+
+commit 02a40d11fc5dc91976593b2fc9c57b0d70a2f786
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Wed Jan 22 16:24:32 2014 -0500
+
+    Translation updates - po files
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+9	9	build/i18n/po/Searcher.js/es-ES.po
+4	4	build/i18n/po/admin.properties/es-ES.po
+21	21	build/i18n/po/authority.js/es-ES.po
+31	27	build/i18n/po/cat.properties/es-ES.po
+4	4	build/i18n/po/cat.properties/hy-AM.po
+3	3	build/i18n/po/circ.properties/cs-CZ.po
+11	11	build/i18n/po/circ.properties/es-ES.po
+9	9	build/i18n/po/circ.properties/hy-AM.po
+4	4	build/i18n/po/common.properties/es-ES.po
+5	5	build/i18n/po/common.properties/hy-AM.po
+6	6	build/i18n/po/conify.js/es-ES.po
+53	16	build/i18n/po/db.seed/cs-CZ.po
+24	21	build/i18n/po/db.seed/es-ES.po
+498	260	build/i18n/po/db.seed/hy-AM.po
+41	41	build/i18n/po/fm_IDL.dtd/hy-AM.po
+22	19	build/i18n/po/ils_events.xml/es-ES.po
+6	5	build/i18n/po/ils_events.xml/hy-AM.po
+12	12	build/i18n/po/lang.dtd/cs-CZ.po
+17	17	build/i18n/po/lang.dtd/es-ES.po
+210	202	build/i18n/po/lang.dtd/hy-AM.po
+52	41	build/i18n/po/offline.properties/es-ES.po
+4	4	build/i18n/po/offline.properties/hy-AM.po
+4	4	build/i18n/po/offline.properties/oc-FR.po
+4	4	build/i18n/po/opac.dtd/es-ES.po
+24	24	build/i18n/po/patron.properties/es-ES.po
+11	11	build/i18n/po/patron.properties/hy-AM.po
+21	20	build/i18n/po/pickup_and_return.js/es-ES.po
+6	6	build/i18n/po/pull_list.js/es-ES.po
+11	11	build/i18n/po/register.js/es-ES.po
+6	6	build/i18n/po/register.js/hy-AM.po
+20	8	build/i18n/po/reports.dtd/es-ES.po
+27	24	build/i18n/po/selfcheck.js/es-ES.po
+12	12	build/i18n/po/selfcheck.js/hy-AM.po
+8	4	build/i18n/po/serial.properties/cs-CZ.po
+7	3	build/i18n/po/serial.properties/de-DE.po
+7	3	build/i18n/po/serial.properties/en-CA.po
+7	3	build/i18n/po/serial.properties/en-GB.po
+11	7	build/i18n/po/serial.properties/es-ES.po
+7	3	build/i18n/po/serial.properties/fr-CA.po
+10	6	build/i18n/po/serial.properties/hy-AM.po
+7	3	build/i18n/po/serial.properties/oc-FR.po
+7	3	build/i18n/po/serial.properties/pt-BR.po
+7	3	build/i18n/po/serial.properties/tr-TR.po
+
+commit 9f00f0942e7959e8b3d822ae221aae1ba1537749
+Author: Jeff Godin <jgodin@tadl.org>
+Date:   Wed Jan 22 09:56:34 2014 -0500
+
+    Stamping 0854: data.min_max_prices
+    
+    Stamping 0854 and resolving permission ID conflicts due to drift.
+    
+    Signed-off-by: Jeff Godin <jgodin@tadl.org>
+
+2	2	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+55	0	Open-ILS/src/sql/Pg/upgrade/0854.data.min_max_prices.sql
+0	55	Open-ILS/src/sql/Pg/upgrade/XXXX.data.min_max_prices.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0854.data.min_max_prices.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.min_max_prices.sql
+
+commit e9c5319bc8d8535113cd1b4c28f132fe7d21a957
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Tue Sep 24 16:54:37 2013 -0400
+
+    Release notes for lp1207903: new lost billing min/max setting
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Jeff Godin <jgodin@tadl.org>
+
+24	0	docs/RELEASE_NOTES_NEXT/Circulation/lost_min_max_item_pricing.txt
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Circulation/lost_min_max_item_pricing.txt
+
+commit e42e9b047c91c21d34db19a0ff7afd7ebcddf367
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Fri Dec 14 14:02:22 2012 -0500
+
+    Add new option for max/min lost item pricing
+    
+    In addition to a 'default' price when price is missing or zero,
+    we can also accommodate a range of prices by saying it should be
+    at least 'X' and not more than 'Y'.  This also allows you to
+    effectively set a fixed price for all lost items by setting min
+    and max to an equal amount.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Jeff Godin <jgodin@tadl.org>
+
+21	10	Open-ILS/src/perlmods/lib/OpenILS/Application/AppUtils.pm
+2	0	Open-ILS/src/perlmods/lib/OpenILS/Const.pm
+23	1	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+55	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.min_max_prices.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.min_max_prices.sql
+
+commit 3699196475f8bf160232e1e9f2718afb3681e4d5
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Tue Jan 21 15:07:29 2014 -0500
+
+    Stamping 0853: 'Prefer external URL' OUS
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+18	0	Open-ILS/src/sql/Pg/upgrade/0853.data.prefer_external_url_OUS.sql
+0	18	Open-ILS/src/sql/Pg/upgrade/XXXX.data.prefer_external_url_OUS.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0853.data.prefer_external_url_OUS.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.prefer_external_url_OUS.sql
+
+commit 46f49173b6a08f4c7b755de728edbe6bafb9879a
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Tue Jan 14 22:12:16 2014 -0500
+
+    Release notes for the TPAC library web pages
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+33	0	docs/RELEASE_NOTES_NEXT/OPAC/TPAC_library_pages.txt
+ create mode 100644 docs/RELEASE_NOTES_NEXT/OPAC/TPAC_library_pages.txt
+
+commit 796eff67ab1768d629a46e96daf6a06c81a265e5
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Tue Jan 14 21:33:34 2014 -0500
+
+    Add upgrade script for lib.prefer_external_url OUS
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+18	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.prefer_external_url_OUS.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.prefer_external_url_OUS.sql
+
+commit 2a2fcf40455c7892fcb9e8f5e82af837a058f054
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Mon Jan 6 14:33:04 2014 -0500
+
+    Copy details link to Evergreen library page by default
+    
+    Add a new library setting, 'lib.prefer_external_url', to force library names in
+    copy details pages to link to their associated 'lib.info_url' setting rather
+    than the Evergreen-generated page. In the absence of a 'lib.info_url' setting,
+    the name will fall back to being linked to the Evergreen-generated page.
+    
+    Per discussion with Ben Shum and Kathy Lussier.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+10	1	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+2	1	Open-ILS/src/templates/opac/parts/record/copy_table.tt2
+
+commit ac5acbf9cb94831e5cc498d66a8a25b6b7952390
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Mon Jan 6 13:59:50 2014 -0500
+
+    Improve label for library's external web site
+    
+    Normal humans will find "Library web site" more meaningful than "External web
+    site"; thanks to Kathy Lussier for the suggestion!
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/templates/opac/library.tt2
+
+commit d38ef46d258cec3a467a28763fa23354598ce2ae
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Mon Jan 6 13:19:17 2014 -0500
+
+    %l instead of %H if we're using AM/PM for default time formats
+    
+    Thanks again to the indefatiguable Ben Shum for this catch!
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+2	2	Open-ILS/src/templates/opac/parts/library/hours.tt2
+
+commit f4e137ffde417e4b24e71304954a5da47a45b261
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Mon Jan 6 12:22:28 2014 -0500
+
+    Use the 'format.time' OUS to format library hours
+    
+    Sparked by a concern that Ben Shum had over the display of library hours in 24
+    hour format, I eventually figured out that we could use the Template::Toolkit
+    Date module to format the times according to library preferences. And given
+    that we already have a format.time OUS, let's use it.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+24	14	Open-ILS/src/templates/opac/parts/library/hours.tt2
+
+commit 8d4ab1b6c3ded757e1ce7558491e03c97323843a
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Mon Oct 28 11:26:55 2013 -0400
+
+    TPAC Library schema info - add some caching
+    
+    Rather than hitting the database every time, cache our requests for a
+    period of time. It's unlikely that hours of operation or addresses are
+    going to change very often...
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+26	13	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Library.pm
+
+commit 21b326f5ce113e95626f8912d76751c25f064155
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Tue Dec 17 16:29:35 2013 -0500
+
+    Link from copies to library info page
+    
+    In the absence of a specific lib.info_url org unit setting, link to the library
+    info page.
+    
+    If we _do_ have a lib.info_url org unit setting, link from the library info
+    page to to the external web site.
+    
+    Rather than wrapping everything in the table cell as the seller, focus
+    on the <a> and give it an explicit Library typeof attribute; then we can
+    offer up the name of the library as the name attribute, should the
+    crawler be too lazy to follow the link.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+7	3	Open-ILS/src/templates/opac/parts/record/copy_table.tt2
+
+commit 92c77d5ffe133198f612afcc8bcd16f74af69d19
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Sat Oct 26 17:32:22 2013 -0400
+
+    First inklings of schema.org support for library pages
+    
+    Adds a TPAC page where the information for a given library can be publicly
+    exposed; in addition, that information is marked up with schema.org structured
+    data so that, for example, a search engine can offer up the hours of operation
+    and contact information for a given branch right on the search results page.
+    
+    We give the content-wrapper a main-content for indentation, to be consistent
+    with other pages in the TPAC.
+    
+    We also add the cargo-cult common-full-pad div for a bottom margin.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+2	0	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader.pm
+62	0	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Library.pm
+57	0	Open-ILS/src/templates/opac/library.tt2
+57	0	Open-ILS/src/templates/opac/parts/library/hours.tt2
+ create mode 100644 Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Library.pm
+ create mode 100644 Open-ILS/src/templates/opac/library.tt2
+ create mode 100644 Open-ILS/src/templates/opac/parts/library/hours.tt2
+
+commit a8cb33092ae4e0424c904359e255ebdb7807881c
+Author: Pasi Kallinen <pasi.kallinen@pttk.fi>
+Date:   Tue May 28 20:18:06 2013 +0300
+
+    LP969312: No warning for Delete All from Catalog in Copy Buckets
+    
+    Add a confirmation dialog popup.
+    
+    Signed-off-by: Pasi Kallinen <pasi.kallinen@pttk.fi>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+4	0	Open-ILS/xul/staff_client/server/cat/copy_buckets.js
+1	0	Open-ILS/xul/staff_client/server/locale/en-US/cat.properties
+
+commit dc6e1e86cae4b223ce22031c94b3a756f280fe0b
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Thu Oct 10 16:05:57 2013 -0400
+
+    New live test for fetching and update bre/MARC data
+    
+    Fetch a record, test the title, add a new subfield, update the record,
+    and test that the new subfield survived the update.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+83	0	Open-ILS/src/perlmods/live_t/06-bib_rec_fetch_update.t
+ create mode 100644 Open-ILS/src/perlmods/live_t/06-bib_rec_fetch_update.t
+
+commit 8c7731fb8f3f2c5bc333d1f2e8d4057085598027
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Thu Jan 16 15:46:41 2014 -0500
+
+    And renaming the test
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+0	79	Open-ILS/src/sql/Pg/live_t/0852.fixed_field_enhancements.pg
+79	0	Open-ILS/src/sql/Pg/live_t/0852.prox_adjust.pg
+ delete mode 100644 Open-ILS/src/sql/Pg/live_t/0852.fixed_field_enhancements.pg
+ create mode 100644 Open-ILS/src/sql/Pg/live_t/0852.prox_adjust.pg
+
+commit aec65bd03b02d9ba26ae3e0819afbf7cfe522ed7
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Thu Jan 16 15:44:58 2014 -0500
+
+    Renumbering the test
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+79	0	Open-ILS/src/sql/Pg/live_t/0852.fixed_field_enhancements.pg
+0	79	Open-ILS/src/sql/Pg/live_t/XXXX.fixed_field_enhancements.pg
+0	95	Open-ILS/src/sql/Pg/upgrade/XXXX.function.prox_adjust.sql
+ create mode 100644 Open-ILS/src/sql/Pg/live_t/0852.fixed_field_enhancements.pg
+ delete mode 100644 Open-ILS/src/sql/Pg/live_t/XXXX.fixed_field_enhancements.pg
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.function.prox_adjust.sql
+
+commit 9c7b271e94b900d2e11aab35ad69a7ed88825e1e
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Thu Jan 16 15:44:48 2014 -0500
+
+    Renumbering the upgrade script
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+97	0	Open-ILS/src/sql/Pg/upgrade/0852.function.prox_adjust.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0852.function.prox_adjust.sql
+
+commit 9a010a19dc2bde9a78c60aa50a9c5b0b32a996c8
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Thu Jan 16 14:59:25 2014 -0500
+
+    Test for Mike's proximity adjustment fix two commits back
+    
+    Being placed in Open-ILS/src/sql/Pg/live_t, the test requires stock and
+    Concerto data be loaded.
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+79	0	Open-ILS/src/sql/Pg/live_t/XXXX.fixed_field_enhancements.pg
+ create mode 100644 Open-ILS/src/sql/Pg/live_t/XXXX.fixed_field_enhancements.pg
+
+commit ecbe401dccb9bd621b7b03be8d7e47df46f932b1
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Tue Jan 14 14:59:56 2014 -0500
+
+    Stamping 0851 - changes for Encode.pm 2.54+
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+356	0	Open-ILS/src/sql/Pg/upgrade/0851.function.remove_extra_utf8_decodes.sql
+0	356	Open-ILS/src/sql/Pg/upgrade/XXXX.function.remove_extra_utf8_decodes.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0851.function.remove_extra_utf8_decodes.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.function.remove_extra_utf8_decodes.sql
+
+commit 38fcad90924639560e8433de831a45bdb796df1c
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Thu Jan 9 12:19:38 2014 -0500
+
+    Fedora needs Locale::Maketext::Lexicon too
+    
+    Per commit 66c45b647, install Locale::Maketext::Lexicon on Fedora to satisfy
+    that dependency. How did _this_ one slip by so long! Thank heavens for
+    tests.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+1	0	Open-ILS/src/extras/install/Makefile.fedora
+
+commit 5bf117cbae57247a736043496c49bd6c920d131a
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Sat Oct 13 01:23:35 2012 -0400
+
+    Tests: Ensure TT2 templates parse cleanly
+    
+    File::Find and Test::Output make it easy to check for any stderr
+    returned from the TT2 extractor.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+28	0	Open-ILS/src/perlmods/t/22-template-toolkit-parse.t
+ create mode 100644 Open-ILS/src/perlmods/t/22-template-toolkit-parse.t
+
+commit 812a726341db6abb0ec0e95e2bf54b7e0d21311d
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Wed Jan 8 22:39:57 2014 -0500
+
+    Repair the live_t regression tests
+    
+    When we added more realistic hours of operation for some of the branches,
+    several of the live_t regression tests failed because they depended on the
+    default hours of operation for BR4. Rather than change the regression test,
+    just switch BR4 back to the default hours of operation and use BR1 as the
+    closed-on-weekends branch instead.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+4	4	Open-ILS/tests/datasets/sql/libraries.sql
+
+commit 24d254d578be8e36ba91fac95af9d3875fe6517f
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Mon Jan 6 11:44:56 2014 -0500
+
+    TPAC: Add Notes label to that row in small-screen My Account->Holds
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+1	0	Open-ILS/src/templates/opac/css/style.css.tt2
+
+commit f90cd00be05c706087f62e9c4173c6c43a48ddb1
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Mon Dec 30 01:47:19 2013 -0500
+
+    TPAC: Display public hold notes in user holds list
+    
+    If a given hold has a note marked as public, and not marked for staff, then
+    display the note in the My Account -> Holds list. This enhancement also
+    includes sample notes for each hold, to include data that ensures that the TPAC
+    does not display any hold notes that are not marked public, or which are marked
+    for staff.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+
+7	0	Open-ILS/src/templates/opac/css/style.css.tt2
+12	0	Open-ILS/src/templates/opac/myopac/holds.tt2
+16	0	Open-ILS/tests/datasets/sql/env_create.sql
+
+commit 10551250dca09a952986b7cc51bea8837db8f02a
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Mon Jan 6 11:27:57 2014 -0500
+
+    TPAC: Get rid of all unneccessary uppercase and some bold
+    
+    This gets rid of all places in the TPAC where CSS uses text-transform:
+    uppercase or capitalize.  The former is bad for readability, and the
+    latter can only confuse users when strings might appear to be
+    capitalized differently in one context than another (esp. users'
+    personal names).
+    
+    This mostly, but not exclusively, affects the My Account section.
+    Also, one wholly unused CSS class was removed altogether.
+    
+    It also gets rid of some bold style that was applied too liberally to
+    the whole contents of tables.
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+0	22	Open-ILS/src/templates/opac/css/style.css.tt2
+
+commit 15d3db176737390b141dcd09ad08aad31e14807d
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Mon Jan 6 11:07:17 2014 -0500
+
+    Make sample phone numbers "(xxx) xxx-xxxx" format
+    
+    The extra hyphen between the closing parenthesis and the 4th digit was just
+    plain weird. Thanks to Ben Shum for mentioning this in IRC!
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+4	4	Open-ILS/tests/datasets/sql/libraries.sql
+
+commit a1b07a3722012b3684965d2e698526be676f6042
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Tue Dec 17 13:05:43 2013 -0500
+
+    Sample library external URLs, phone numbers, and emails
+    
+    Supply reasonable URLs and contact information for the branches.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+13	0	Open-ILS/tests/datasets/sql/libraries.sql
+
+commit 4a6d1787208b1c0019083d03da04f39f7bb27e99
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Tue Dec 17 12:02:56 2013 -0500
+
+    Add sample library addresses and hours of operation
+    
+    Provide branch-level granularity of addresses and hours of operation, using
+    different addresses in some cases for mailing vs. billing vs. ILL vs. holds for
+    more realism.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+37	0	Open-ILS/tests/datasets/sql/env_create.sql
+1	0	Open-ILS/tests/datasets/sql/env_destroy.sql
+35	4	Open-ILS/tests/datasets/sql/libraries.sql
+
+commit bcb902397123ebf504eee654d9e5552c4e08cc89
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Tue Dec 17 10:16:32 2013 -0500
+
+    Move default actor.org_unit entries into sample data
+    
+    The only actor.org_unit entry we absolutely require in the sample data is the
+    consortium, as many things are owned by it. Otherwise, we should treat the
+    libraries and associated settings such as addresses as sample data.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	22	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+24	0	Open-ILS/tests/datasets/sql/libraries.sql
+3	0	Open-ILS/tests/datasets/sql/load_all.sql
+3	0	Open-ILS/tests/datasets/sql/load_concerto.sql
+ create mode 100644 Open-ILS/tests/datasets/sql/libraries.sql
+
+commit 3f2a30ddc19817ac4174e9188e173b11548db518
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Tue Dec 17 11:17:25 2013 -0500
+
+    Docs: bug fixes in new files
+    
+    This commit fixes a small bug in the new Action Triggers chapter and a
+    few small formatting bugs in the new subsection in the Holds Management
+    chapter. It also fixes a small wording typo in the Holds Management intro.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+1	1	docs/admin/actiontriggers.txt
+9	6	docs/circulation/holds.txt
+
+commit a22c60d395b9865f386a3d38aa6f6ed7aec05d22
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Mon Dec 16 14:10:05 2013 -0500
+
+    Update README to address Apache locking problem
+    
+    Because Apache is still running as the opensrf user, we need to change the
+    ownership of the lock directory to enable Apache to write to it.
+    
+    Also cut over to the osrf_config script instead of the osrf_ctl.sh script to
+    avoid deprecation warnings.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+10	2	docs/installation/server_installation.txt
+
+commit b88b6e6cee138082cb00d7c54c2072ede37d2ecd
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Wed Nov 20 09:40:10 2013 -0500
+
+    Revive and update Action Triggers docs for 2.5
+    
+    This commit revives the missing Action Triggers docs section, last seen
+    in the 2.0 version of the docs. Also, several small corrections and
+    wording edits were made, as well as a few actual feature changes since
+    version 2.0.  The most explicit of these feature changes is the addition
+    of a basic description for a new Event Definition field in 2.5: "Event
+    Repeatability Delay".
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+217	0	docs/admin/actiontriggers.txt
+2	0	docs/root.txt
+ create mode 100644 docs/admin/actiontriggers.txt
