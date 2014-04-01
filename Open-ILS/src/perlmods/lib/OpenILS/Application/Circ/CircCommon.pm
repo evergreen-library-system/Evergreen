@@ -142,35 +142,33 @@ sub void_lost {
 sub void_or_zero_bills_of_type {
     my ($class, $e, $circ, $copy, $btype, $for_note) = @_;
 
-    # Get a bill payment map.
-    my $bpmap = $class->bill_payment_map_for_xact($e, $circ);
-    if ($bpmap && @$bpmap) {
-        # Filter out the unvoided bills of the type we're looking for:
-        my @bills = map {$_->{bill}} grep { $_->{bill}->btype() == $btype && $_->{bill_amount} > $_->{void_amount} } @$bpmap;
-        if (@bills) {
-            # settings for lost come from copy circlib.
-            my $prohibit_neg_balance_lost = (
-                $U->ou_ancestor_setting_value($copy->circ_lib(), 'bill.prohibit_negative_balance_on_lost')
-                ||
-                $U->ou_ancestor_setting_value($copy->circ_lib(), 'bill.prohibit_negative_balance_default')
-            );
-            my $neg_balance_interval_lost = (
-                $U->ou_ancestor_setting_value($copy->circ_lib(), 'bill.negative_balance_interval_on_lost')
-                ||
-                $U->ou_ancestor_setting_value($copy->circ_lib(), 'bill.negative_balance_interval_default')
-            );
-            my $result;
-            if (
-                $U->is_true($prohibit_neg_balance_lost)
-                and !_has_refundable_payments($e, $circ->id, $neg_balance_interval_lost)
-            ) {
-                $result = $class->adjust_bills_to_zero($e, \@bills, "System: ADJUSTED $for_note");
-            } else {
-                $result = $class->void_bills($e, \@bills, "System: VOIDED $for_note");
-            }
-            if (ref($result)) {
-                return $result;
-            }
+    my $billids = $e->search_money_billing(
+        {xact => $circ->id(), btype => $btype},
+        {idlist=>1}
+    );
+    if ($billids && @$billids) {
+        # settings for lost come from copy circlib.
+        my $prohibit_neg_balance_lost = (
+            $U->ou_ancestor_setting_value($copy->circ_lib(), 'bill.prohibit_negative_balance_on_lost')
+            ||
+            $U->ou_ancestor_setting_value($copy->circ_lib(), 'bill.prohibit_negative_balance_default')
+        );
+        my $neg_balance_interval_lost = (
+            $U->ou_ancestor_setting_value($copy->circ_lib(), 'bill.negative_balance_interval_on_lost')
+            ||
+            $U->ou_ancestor_setting_value($copy->circ_lib(), 'bill.negative_balance_interval_default')
+        );
+        my $result;
+        if (
+            $U->is_true($prohibit_neg_balance_lost)
+            and !_has_refundable_payments($e, $circ->id, $neg_balance_interval_lost)
+        ) {
+            $result = $class->adjust_bills_to_zero($e, $billids, "System: ADJUSTED $for_note");
+        } else {
+            $result = $class->void_bills($e, $billids, "System: VOIDED $for_note");
+        }
+        if (ref($result)) {
+            return $result;
         }
     }
 
