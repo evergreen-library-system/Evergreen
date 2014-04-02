@@ -441,6 +441,7 @@ if (!dojo._hasResource["openils.widget.PhysCharWizard"]) {
                     var vbox = this.container_node.appendChild(
                         document.createElement("vbox")
                     );
+                    vbox.setAttribute( "style", "cursor: default;" );
 
                     var top_hbox =
                         vbox.appendChild(document.createElement("hbox"));
