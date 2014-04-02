@@ -76,6 +76,7 @@
 [%
                 CASE "pub_year"; %]
                             <select name='pubdate' 
+                                title="[% l('Publicatiion date search modifier') %]"
                                 onchange='if(this.selectedIndex == 3)
                                     unHideMe($("adv_global_pub_date_2_span"));
                                 else
@@ -90,9 +91,11 @@
                             </select>    
                             <br/>
                             <div id='adv_special_block'>
-                                <input name='date1' type='text' size='4' maxlength='4' value="[% CGI.param('date1') | html %]" />
+                                <input title="[% l('First date') %]" 
+                                  name='date1' type='text' size='4' maxlength='4' value="[% CGI.param('date1') | html %]" />
                                 <span id='adv_global_pub_date_2_span' class='[% CGI.param("pubdate") == "between" ? "" : "hide_me" %]'>
-                                   [% l("and") %] <input name='date2' type='text' size='4' maxlength='4' value="[% CGI.param('date2') | html %]" />
+                                   [% l("and") %] <input name='date2' 
+                                    title="[% l('Second date') %]" type='text' size='4' maxlength='4' value="[% CGI.param('date2') | html %]" />
                                 </span>
                             </div>
 [%
@@ -123,10 +126,14 @@
             END;
         ELSIF adv_chunk.adv_attr;
             INCLUDE "opac/parts/coded_value_selector.tt2"
-                attr=adv_chunk.adv_attr multiple="multiple" size=adv_chunk.adv_size || search.default_adv_select_height || "4";
+                attr=adv_chunk.adv_attr multiple="multiple" 
+                filter_label=l('Select [_1]', adv_chunk.adv_label)
+                size=adv_chunk.adv_size || search.default_adv_select_height || "4";
         ELSIF adv_chunk.adv_filter;
             INCLUDE "opac/parts/filter_group_selector.tt2"
-                filter_group=adv_chunk.adv_filter multiple="multiple" size=adv_chunk.adv_size || search.default_adv_select_height || "4";
+                filter_group=adv_chunk.adv_filter multiple="multiple" 
+                filter_label=l('Select [_1]', adv_chunk.adv_label)
+                size=adv_chunk.adv_size || search.default_adv_select_height || "4";
         END; %]
             </div>
         </div>
