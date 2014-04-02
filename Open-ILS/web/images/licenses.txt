@@ -1,3 +1,44 @@
 dimple.png derived from:
 http://mxr.mozilla.org/mozilla-central/source/toolkit/themes/pinstripe/global/splitter/dimple.png
 Mozilla Public License/GPL/GLPL
+
+
+braille.png derived from:
+https://www.iconfinder.com/icons/64010/braille_code_icon
+FatCow Web Hosting
+Creative Commons (Attribution 3.0 United States)
+
+
+serial.png comes from the Koha project and is used under the terms of the GPL3.
+The icon was originally provided by VOKAL (Vermont Organization of Koha
+Automated Libraries).
+
+
+Nuvola 1.0 (KDE 3.x icon set) (nuvola)
+link: http://www.icon-king.com/projects/nuvola/
+license: LGPL-2.1
+formats: png
+subdirectory: open_icon_library-devel/icons/nuvola
+
+Icons Used:
+input-tablet-3.png
+
+
+Oxygen Icons 4.3.1 (KDE) (oxygen)
+link: http://www.oxygen-icons.org/
+license: Dual: CC-BY-SA 3.0 or LGPL
+formats: svg, png
+subdirectory: open_icon_library-devel/icons/oxygen
+
+Icons Used:
+media-optical-blu-ray.png
+
+
+Wikimedia Commons
+link: http://commons.wikimedia.org/wiki/Main_Page
+license: CC BY-SA 3.0
+format: jpg
+
+Icons Used:
+Arrows1.jpg
+
