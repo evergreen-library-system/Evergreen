@@ -33,6 +33,6 @@ metarecord hold, users may modify the desired formats and languages.
 
 == Configuration ==
 
-Admins may disable this feature my un-commenting the "metarecord.disabled"
+Admins may disable this feature by un-commenting the "metarecord.disabled"
 attribute in config.tt2
 
