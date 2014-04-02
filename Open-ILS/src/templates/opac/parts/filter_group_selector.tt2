@@ -16,6 +16,7 @@
 
 <select id='[% id %]' class='[% class %]' name='[% name %]'[%
     multiple ? ' multiple="multiple"' : '';
+    title="[% filter_label || l('Search Filter') %]"
     size ? (' size="' _ size _ '"') : ''; %]>
 [% IF none_ok %]
     <option value=''>[% none_label ? none_label : l('-- Any --') %]</option>
