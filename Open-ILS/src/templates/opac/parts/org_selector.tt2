@@ -28,7 +28,8 @@ BLOCK build_org_selector;
     -%]
 
     <select [% IF id %] id='[% id %]' [% END -%]
-            [% IF arialabel %] aria-label='[% arialabel %]' [% END -%]
+            [% IF arialabel %] aria-label='[% arialabel %]' 
+            [% ELSE %] title='[% l("Select Library") %]' [% END -%]
             name='[% name %]'>
     [%- 
         WHILE node_stack.size > 0; 

@@ -7,7 +7,7 @@
     <div id='adv_search_rows'>
         <!-- Contains the user-addable(?) rows to define search class, containment and text -->
         <div valign='top' class='adv_global_input_container'>
-            <table id='adv_global_input_table'>
+            <table id='adv_global_input_table' role="presentation">
                 <thead>
                     <tr>
                         <td>
@@ -33,7 +33,7 @@
     <div id='adv_search_submit'>
         <input type="hidden" name="_adv" value="1" />
         <span>
-            <input id='search-submit-go' type="submit" value="[% l('Search') %]" alt="[% l('Search') %]" class="opac-button"
+            <input id='search-submit-go' type="submit" value="[% l('Search') %]" title="[% l('Search') %]" class="opac-button"
                 onclick='setTimeout(function(){$("search-submit-spinner").className=""; $("search-submit-go").className="hidden"}, 2000)'/>
             <img id='search-submit-spinner' src='/opac/images/progressbar_green.gif' 
                 class='hidden' alt="[% l('Search in progress icon') %]"/>
@@ -59,13 +59,14 @@
             <div valign='top'[% IF adv_chunk.js_only %]
                 id='adv_chunk_[% adv_chunk.adv_special %]'
                 class='hidden'[% END %]>
-                <strong>[% adv_chunk.adv_label %]</strong><br />
+                <strong><label for="[% adv_chunk.id %]">
+                  [% adv_chunk.adv_label %] </label></strong><br />
 [%
         IF adv_chunk.adv_special;
             SWITCH adv_chunk.adv_special;
                 CASE "lib_selector";
                     PROCESS "opac/parts/org_selector.tt2";
-                        INCLUDE build_org_selector show_loc_groups=1 id="adv_org_selector" %]
+                        INCLUDE build_org_selector show_loc_groups=1 id=adv_chunk.id %]
                             <div class="adv_search_available">
                                 <input type='checkbox' name="modifier"
                                     value="available"[% CGI.param('modifier').grep('available').size ? ' checked="checked"' : '' %]
@@ -76,7 +77,7 @@
 [%
                 CASE "pub_year"; %]
                             <select name='pubdate' 
-                                title="[% l('Publicatiion date search modifier') %]"
+                                id="[% adv_chunk.id %]"
                                 onchange='if(this.selectedIndex == 3)
                                     unHideMe($("adv_global_pub_date_2_span"));
                                 else
@@ -91,16 +92,17 @@
                             </select>    
                             <br/>
                             <div id='adv_special_block'>
-                                <input title="[% l('First date') %]" 
+                                <input title="[% l('Search date') %]" 
                                   name='date1' type='text' size='4' maxlength='4' value="[% CGI.param('date1') | html %]" />
                                 <span id='adv_global_pub_date_2_span' class='[% CGI.param("pubdate") == "between" ? "" : "hide_me" %]'>
                                    [% l("and") %] <input name='date2' 
-                                    title="[% l('Second date') %]" type='text' size='4' maxlength='4' value="[% CGI.param('date2') | html %]" />
+                                    title="[% l('Secondary search date') %]" type='text' size='4' maxlength='4' value="[% CGI.param('date2') | html %]" />
                                 </span>
                             </div>
 [%
                 CASE "sort_selector";
                     INCLUDE "opac/parts/filtersort.tt2"
+                        id=adv_chunk.id
                         value=CGI.param('sort') class='results_header_sel';
                     %]
 
@@ -126,13 +128,13 @@
             END;
         ELSIF adv_chunk.adv_attr;
             INCLUDE "opac/parts/coded_value_selector.tt2"
+                id=adv_chunk.id
                 attr=adv_chunk.adv_attr multiple="multiple" 
-                filter_label=l('Select [_1]', adv_chunk.adv_label)
                 size=adv_chunk.adv_size || search.default_adv_select_height || "4";
         ELSIF adv_chunk.adv_filter;
             INCLUDE "opac/parts/filter_group_selector.tt2"
+                id=adv_chunk.id
                 filter_group=adv_chunk.adv_filter multiple="multiple" 
-                filter_label=l('Select [_1]', adv_chunk.adv_label)
                 size=adv_chunk.adv_size || search.default_adv_select_height || "4";
         END; %]
             </div>
