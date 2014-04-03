@@ -58,3 +58,10 @@ if [ "_$files" != "_" ]; then
     done
 fi
 
+if [ -f _acknowledgments ]; then
+    echo >> $outfile
+    echo "Acknowledgments" >> $outfile
+    echo "---------------" >> $outfile
+    cat _acknowledgments >> $outfile
+    echo >> $outfile
+fi

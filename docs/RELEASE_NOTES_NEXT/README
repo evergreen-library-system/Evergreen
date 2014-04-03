@@ -8,3 +8,6 @@ functionality. The name of the file should match the feature. No numbering,
 etc. is required. With each release, the contents of this directory will be
 appended to the release notes and removed from this directory.
 
+The special file _acknowledgements is meant for acknowledging contributors
+to the upcoming version of Evergreen. The names should be cleared in the
+master branch at the beginning of each release cycle.
