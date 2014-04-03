@@ -45,10 +45,12 @@ export DEBS = \
 	libbz2-dev \
 	libpq5\
 	libpq-dev\
+	librose-uri-perl\
 	librpc-xml-perl\
 	libspreadsheet-writeexcel-perl\
 	libsru-perl\
 	libssh2-1-dev\
+	libtemplate-plugin-posix-perl\
 	libtext-aspell-perl\
 	libtext-csv-perl\
 	libuniversal-require-perl\
@@ -73,8 +75,7 @@ export DEB_APACHE_DISMODS = \
 export CPAN_MODULES = \
 	Business::CreditCard::Object \
 	Business::OnlinePayment::PayPal \
-	Template::Plugin::POSIX \
-	Rose::URI \
+	Business::Stripe \
 	Safe
 
 export CPAN_MODULES_FORCE = \
