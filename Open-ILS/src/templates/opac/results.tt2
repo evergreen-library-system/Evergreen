@@ -78,8 +78,9 @@
                         [% l('Limit to available items') %]
                     </label>
                     [% IF NOT metarecords.disabled %]
-                        <label class="results_header_lbl">
-                            <input type="checkbox" name="modifier" value="metabib"
+                        <label class="results_header_lbl" for="metabib_search_modifier">
+                            <input type="checkbox" id="metabib_search_modifier"
+                                name="modifier" value="metabib"
                                 onchange="search_modifier_onchange('metabib', this, true)"
                                 [% CGI.param('modifier').grep('metabib').size ? ' checked="checked"' : '' %] />
                             [% l('Group Formats and Editions') %]
