@@ -67,8 +67,8 @@ debian-wheezy:
 	@make -f $(DIR)/Makefile.debian-wheezy
 debian-squeeze: 
 	@make -f $(DIR)/Makefile.debian-squeeze
-ubuntu-lucid:
-	@make -f $(DIR)/Makefile.ubuntu-lucid
+ubuntu-trusty:
+	@make -f $(DIR)/Makefile.ubuntu-trusty
 ubuntu-precise:
 	@make -f $(DIR)/Makefile.ubuntu-precise
 fedora:
@@ -78,8 +78,8 @@ postgres-server-debian-wheezy:
 	@make -f $(DIR)/Makefile.debian-wheezy install_postgres_server
 postgres-server-debian-squeeze: 
 	@make -f $(DIR)/Makefile.debian-squeeze install_postgres_server
-postgres-server-ubuntu-lucid:
-	@make -f $(DIR)/Makefile.ubuntu-lucid install_postgres_server
+postgres-server-ubuntu-trusty:
+	@make -f $(DIR)/Makefile.ubuntu-trusty install_postgres_server
 postgres-server-ubuntu-precise:
 	@make -f $(DIR)/Makefile.ubuntu-precise install_postgres_server
 postgres-server-fedora:
