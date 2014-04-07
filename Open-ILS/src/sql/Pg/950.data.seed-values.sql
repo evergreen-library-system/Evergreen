@@ -9769,7 +9769,7 @@ INSERT INTO config.global_flag (name, label, value, enabled)
             'label'
         ),
         'opac_visible',
-        TRUE
+        FALSE
     );
 
 INSERT INTO config.global_flag (name, label)
