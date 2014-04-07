@@ -826,6 +826,8 @@ BEGIN
             -- expensive to add a comparison of index_vector to index_vector
             -- to the WHERE clause below.
 
+            CONTINUE WHEN ind_data.value IS NULL OR ind_data.sort_value IS NULL;
+
             value_prepped := metabib.browse_normalize(ind_data.value, ind_data.field);
             SELECT INTO mbe_row * FROM metabib.browse_entry
                 WHERE value = value_prepped AND sort_value = ind_data.sort_value;
