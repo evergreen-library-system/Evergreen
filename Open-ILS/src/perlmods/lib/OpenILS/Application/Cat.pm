@@ -1344,8 +1344,9 @@ sub fixed_field_values_by_rec_type {
     my $e = new_editor;
     my $values = $e->json_query({
         select => {
-            crad => ["fixed_field"],
-            ccvm => [qw/code value/],
+            crad  => ["fixed_field"],
+            ccvm  => [qw/code value/],
+            cmfpm => [qw/length default_val/],
         },
         distinct => 1,
         from => {
@@ -1374,7 +1375,7 @@ sub fixed_field_values_by_rec_type {
     my $result = {};
     for my $row (@$values) {
         $result->{$row->{fixed_field}} ||= [];
-        push @{$result->{$row->{fixed_field}}}, [@$row{qw/code value/}];
+        push @{$result->{$row->{fixed_field}}}, [@$row{qw/code value length default_val/}];
     }
 
     return $result;

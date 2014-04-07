@@ -991,9 +991,14 @@ function getFFContextMenu(type, name) {
                  * a function of the size of the dataset defined in the
                  * ccvm/cmfpm tables. */
                 var code = v[0];
+                var len = v[2];
+                var def = v[3];
                 var el = document.getElementById(name + "_tb");
                 window[funcname] = function() {
                     el.value = code;
+                    while (el.value.length < len) {
+                        el.value += def;
+                    }
                     updateFixedFields(el);
                     oils_lock_page();
                 };
