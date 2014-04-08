@@ -4,7 +4,23 @@ SELECT plan(1);
 
 SELECT lives_ok($DATA$
 INSERT INTO biblio.record_entry (id, last_xact_id, marc)
-VALUES (999999998, 'pgtap', '<record    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"    xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd"    xmlns="http://www.loc.gov/MARC21/slim"><leader>00531nam a2200157 a 4500</leader><controlfield tag="001">879841</controlfield><controlfield tag="003">MAnMC</controlfield><controlfield tag="005">20080729170300.0</controlfield><controlfield tag="008">      t19981999enka              0 eng  </controlfield><datafield tag="020" ind1=" " ind2=" "><subfield code="a">1859677126</subfield></datafield><datafield tag="040" ind1=" " ind2=" "><subfield code="d">UtOrBLW</subfield></datafield><datafield tag="100" ind1="1" ind2=" "><subfield code="a">:</subfield></datafield><datafield tag="245" ind1="1" ind2="4"><subfield code="a">The Illustrated hints, tips &amp; household skills :</subfield><subfield code="b">the practical, step-by-step home reference manual /</subfield><subfield code="c">publisher, Joanna Lorenz.</subfield></datafield><datafield tag="250" ind1=" " ind2=" "><subfield code="a">updated c2000.</subfield></datafield><datafield tag="260" ind1=" " ind2=" "><subfield code="a">London :Lorenz Books :</subfield><subfield code="b">an imprint of Anness Publishing Ltd.,</subfield><subfield code="c">c1998,1999.</subfield></datafield><datafield tag="300" ind1=" " ind2=" "><subfield code="a">256 p. :</subfield><subfield code="b">col. ill. ;</subfield><subfield code="c">30 cm.</subfield></datafield><datafield tag="901" ind1=" " ind2=" "><subfield code="a">879841</subfield><subfield code="b">AUTOGEN</subfield><subfield code="c">879841</subfield><subfield code="t">biblio</subfield></datafield></record>');
+VALUES (999999998, 'pgtap', '<record    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"    xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd"    xmlns="http://www.loc.gov/MARC21/slim">
+  <leader>00531nam a2200157 a 4500</leader>
+  <controlfield tag="001">879841</controlfield>
+  <controlfield tag="003">MAnMC</controlfield>
+  <controlfield tag="005">20080729170300.0</controlfield>
+  <controlfield tag="008">      t19981999enka              0 eng  </controlfield>
+  <datafield tag="020" ind1=" " ind2=" "><subfield code="a">1859677126</subfield></datafield>
+  <datafield tag="040" ind1=" " ind2=" "><subfield code="d">UtOrBLW</subfield></datafield>
+  <!-- the subfield $a here normalizes to a null value when using the stock
+       indexing definitions
+  -->
+  <datafield tag="100" ind1="1" ind2=" "><subfield code="a">:</subfield></datafield>
+  <datafield tag="245" ind1="1" ind2="4"><subfield code="a">The Illustrated hints, tips &amp; household skills :</subfield><subfield code="b">the practical, step-by-step home reference manual /</subfield><subfield code="c">publisher, Joanna Lorenz.</subfield></datafield>
+  <datafield tag="250" ind1=" " ind2=" "><subfield code="a">updated c2000.</subfield></datafield>
+  <datafield tag="260" ind1=" " ind2=" "><subfield code="a">London :Lorenz Books :</subfield><subfield code="b">an imprint of Anness Publishing Ltd.,</subfield><subfield code="c">c1998,1999.</subfield></datafield>
+  <datafield tag="300" ind1=" " ind2=" "><subfield code="a">256 p. :</subfield><subfield code="b">col. ill. ;</subfield><subfield code="c">30 cm.</subfield></datafield>
+  <datafield tag="901" ind1=" " ind2=" "><subfield code="a">879841</subfield><subfield code="b">AUTOGEN</subfield><subfield code="c">879841</subfield><subfield code="t">biblio</subfield></datafield></record>');
 $DATA$,
 'We should not get an error for NULL entry.');
 
