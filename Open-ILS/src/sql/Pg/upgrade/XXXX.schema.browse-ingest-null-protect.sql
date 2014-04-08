@@ -35,6 +35,10 @@ BEGIN
     END IF;
 
     FOR ind_data IN SELECT * FROM biblio.extract_metabib_field_entry( bib_id ) LOOP
+
+	-- don't store what has been normalized away
+        CONTINUE WHEN ind_data.value IS NULL;
+
         IF ind_data.field < 0 THEN
             ind_data.field = -1 * ind_data.field;
         END IF;
@@ -52,7 +56,7 @@ BEGIN
             -- expensive to add a comparison of index_vector to index_vector
             -- to the WHERE clause below.
 
-            CONTINUE WHEN ind_data.value IS NULL OR ind_data.sort_value IS NULL;
+            CONTINUE WHEN ind_data.sort_value IS NULL;
 
             value_prepped := metabib.browse_normalize(ind_data.value, ind_data.field);
             SELECT INTO mbe_row * FROM metabib.browse_entry
