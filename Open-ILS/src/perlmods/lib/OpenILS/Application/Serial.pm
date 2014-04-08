@@ -392,6 +392,7 @@ sub fleshed_issuance_alter {
     my $override = $self->api_name =~ /override/;
 
     my %found_ssub_ids;
+    my %regen_ssub_ids;
     for my $issuance (@$issuances) {
         my $ssub_id = ref $issuance->subscription ? $issuance->subscription->id : $issuance->subscription;
         if (!exists($found_ssub_ids{$ssub_id})) {
@@ -413,6 +414,7 @@ sub fleshed_issuance_alter {
 
         if( $issuance->isdeleted ) {
             $evt = _delete_siss( $editor, $override, $issuance);
+            $regen_ssub_ids{$ssub_id} = 1;
         } elsif( $issuance->isnew ) {
             _cleanse_dates($issuance, ['date_published']);
             $evt = _create_siss( $editor, $issuance );
@@ -424,11 +426,19 @@ sub fleshed_issuance_alter {
         last if $evt;
     }
 
-    if( $evt ) {
+    if (!$evt) {
+        # if we deleted any issuances, update the summaries
+        # for all dists in those ssubs
+        my @ssub_ids = keys %regen_ssub_ids;
+        $evt = _regenerate_summaries($editor, {'ssub_ids' => \@ssub_ids}) if @ssub_ids;
+    }
+
+    if ( $evt ) {
         $logger->info("fleshed issuance-alter failed with event: ".OpenSRF::Utils::JSON->perl2JSON($evt));
         $editor->rollback;
         return $evt;
     }
+
     $logger->debug("issuance-alter: done updating issuance batch");
     $editor->commit;
     $logger->info("fleshed issuance-alter successfully updated ".scalar(@$issuances)." issuances");

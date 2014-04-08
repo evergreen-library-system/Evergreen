@@ -98,3 +98,20 @@ function generate_predictions(fields) {
         progess_dialog.hide();
     }
 }
+
+function regenerate_summaries() {
+    var args = {"ssub_ids": [sub.id()]};
+    try {
+        fieldmapper.standardRequest(
+            ["open-ils.serial", "open-ils.serial.regenerate_summaries"], {
+                "params": [openils.User.authtoken, args],
+                "async": true,
+                "onresponse": function(r) {
+                    openils.Util.readResponse(r); /* tests for events */
+                }
+            }
+        );
+    } catch (E) {
+        alert(E);
+    }
+}

@@ -7,7 +7,7 @@
         <span dojoType="dijit.form.Button"
             onclick="iss_grid.showCreatePane();">[% l('New Issuance') %]</span>
         <span dojoType="dijit.form.Button"
-            onclick="iss_grid.deleteSelected();">[% l('Delete Selected') %]</span>
+            onclick="iss_grid.deleteSelected(); regenerate_summaries();">[% l('Delete Selected') %]</span>
     </div>
 </div>
 [%- IF CGI.param('context') != 'scv' -%]
