@@ -388,7 +388,7 @@ sub fleshed_issuance_alter {
     return 1 unless ref $issuances;
     my( $reqr, $evt ) = $U->checkses($auth);
     return $evt if $evt;
-    my $editor = new_editor(requestor => $reqr, xact => 1);
+    my $editor = new_editor(authtoken => $auth, requestor => $reqr, xact => 1);
     my $override = $self->api_name =~ /override/;
 
     my %found_ssub_ids;
@@ -420,6 +420,8 @@ sub fleshed_issuance_alter {
             _cleanse_dates($issuance, ['date_published']);
             $evt = _update_siss( $editor, $override, $issuance );
         }
+
+        last if $evt;
     }
 
     if( $evt ) {
@@ -1536,7 +1538,7 @@ sub _prepare_unit {
 sub _prepare_summaries {
     my ($e, $issuances, $sdist, $type) = @_;
 
-    my ($mfhd, $formatted_parts) = _summarize_contents($e, $issuances, $sdist);
+    my ($mfhd, $formatted_parts) = _summarize_contents($e, $issuances, $sdist, $type);
     return $mfhd if $U->event_code($mfhd);
 
     my $search_method = "search_serial_${type}_summary";
@@ -1553,7 +1555,13 @@ sub _prepare_summaries {
         $cu_method = "create";
     }
 
-    $summary->generated_coverage(OpenSRF::Utils::JSON->perl2JSON($formatted_parts));
+    if (@$formatted_parts) {
+        $summary->generated_coverage(OpenSRF::Utils::JSON->perl2JSON($formatted_parts));
+    } else {
+        # we had no issuances or MFHD data for this type, so clear any
+        # generated data which may have existed before
+        $summary->generated_coverage('');
+    }
     my $method = "${cu_method}_serial_${type}_summary";
     return $e->die_event unless $e->$method($summary);
 }
@@ -1827,6 +1835,7 @@ sub _summarize_contents {
     my $editor = shift;
     my $issuances = shift;
     my $sdist = shift;
+    my $type = shift;
 
     # create or lookup MFHD record
     my $mfhd;
@@ -1900,7 +1909,7 @@ sub _summarize_contents {
     }
 
     my @formatted_parts;
-    my @scap_fields_ordered = $mfhd->field('85[345]');
+    my @scap_fields_ordered = $mfhd->field($MFHD_TAGS_BY_NAME{$type});
 
     foreach my $scap_field (@scap_fields_ordered) { #TODO: use generic MFHD "summarize" method, once available
         my @updated_holdings;
