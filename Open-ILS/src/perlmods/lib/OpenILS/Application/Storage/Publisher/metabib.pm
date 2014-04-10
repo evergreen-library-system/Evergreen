@@ -556,12 +556,14 @@ sub biblio_multi_search_full_rec {
     my ($t_filter, $f_filter) = ('','');
     my ($a_filter, $l_filter, $lf_filter) = ('','','');
 
+    my $use_rd = 0;
     if (my $a = $args{audience}) {
         $a = [$a] if (!ref($a));
         my @aud = @$a;
             
         $a_filter = ' AND rd.audience IN ('.join(',',map{'?'}@aud).')';
         push @binds, @aud;
+        $use_rd = 1;
     }
 
     if (my $l = $args{language}) {
@@ -570,6 +572,7 @@ sub biblio_multi_search_full_rec {
 
         $l_filter = ' AND rd.item_lang IN ('.join(',',map{'?'}@lang).')';
         push @binds, @lang;
+        $use_rd = 1;
     }
 
     if (my $f = $args{lit_form}) {
@@ -578,6 +581,7 @@ sub biblio_multi_search_full_rec {
 
         $lf_filter = ' AND rd.lit_form IN ('.join(',',map{'?'}@lit_form).')';
         push @binds, @lit_form;
+        $use_rd = 1;
     }
 
     if (my $f = $args{item_form}) {
@@ -586,6 +590,7 @@ sub biblio_multi_search_full_rec {
 
         $f_filter = ' AND rd.item_form IN ('.join(',',map{'?'}@forms).')';
         push @binds, @forms;
+        $use_rd = 1;
     }
 
     if (my $t = $args{item_type}) {
@@ -594,6 +599,7 @@ sub biblio_multi_search_full_rec {
 
         $t_filter = ' AND rd.item_type IN ('.join(',',map{'?'}@types).')';
         push @binds, @types;
+        $use_rd = 1;
     }
 
 
@@ -603,10 +609,12 @@ sub biblio_multi_search_full_rec {
         my @forms = split '', $f;
         if (@types) {
             $t_filter = ' AND rd.item_type IN ('.join(',',map{'?'}@types).')';
+            $use_rd = 1;
         }
 
         if (@forms) {
             $f_filter .= ' AND rd.item_form IN ('.join(',',map{'?'}@forms).')';
+            $use_rd = 1;
         }
         push @binds, @types, @forms;
     }
@@ -661,6 +669,8 @@ sub biblio_multi_search_full_rec {
         $sort = undef;
     }
 
+    my $rd_join = $use_rd ? "$metabib_record_descriptor rd," : '';
+    my $rd_filter = $use_rd ? 'AND rd.record = f.record' : '';
 
     if ($copies_visible) {
         $select = <<"        SQL";
@@ -671,16 +681,16 @@ sub biblio_multi_search_full_rec {
                 $cs_table cs,
                 $cl_table cl,
                 $br_table br,
-                $metabib_record_descriptor rd,
+                $rd_join
                 $descendants d
             WHERE   br.id = f.record
                 AND cn.record = f.record
-                AND rd.record = f.record
                 AND cp.status = cs.id
                 AND cp.location = cl.id
                 AND br.deleted IS FALSE
                 AND cn.deleted IS FALSE
                 AND cp.deleted IS FALSE
+                $rd_filter
                 $has_vols
                 $has_copies
                 $copies_visible
@@ -696,11 +706,11 @@ sub biblio_multi_search_full_rec {
         $select = <<"        SQL";
             SELECT  f.record, 1, 1, $rank
             FROM    $search_table f,
-                $br_table br,
-                $metabib_record_descriptor rd
+                $rd_join
+                $br_table br
             WHERE   br.id = f.record
-                AND rd.record = f.record
                 AND br.deleted IS FALSE
+                $rd_filter
                 $t_filter
                 $f_filter
                 $a_filter
