@@ -67,7 +67,7 @@
                                                     result_count; result_count = result_count + 1
                                                 %].</td>
                                             <td class='result_table_pic_header'>
-                                                <a href="[% record_url %]"><img alt="[% l('Image of item') %]"
+                                                <a href="[% record_url %]"><img alt="[% l('Book cover') %]"
                                                         name='item_jacket' class='result_table_pic' width="55"
                                                         src='[% ctx.media_prefix %]/opac/extras/ac/jacket/small/r/[% rec.bre_id | uri %]' /></a><br />
                                             </td>
