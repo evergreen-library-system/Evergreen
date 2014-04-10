@@ -713,8 +713,8 @@ BEGIN
         jrow := jrow || ')) ' || my_alias || my_using || E'\n';
     ELSE    -- svf
         jrow := jrow || 'id AS record, ' || node.quality ||
-            ' AS quality FROM metabib.record_attr mra WHERE mra.attrs->''' ||
-            node.svf || ''' ' || op || ' $2->''' || node.svf || ''') ' ||
+            ' AS quality FROM metabib.record_attr_flat mraf WHERE mraf.attr = ''' ||
+            node.svf || ''' AND mraf.value ' || op || ' $2->''' || node.svf || ''') ' ||
             my_alias || my_using || E'\n';
     END IF;
     INSERT INTO _vandelay_tmp_jrows (j) VALUES (jrow);
