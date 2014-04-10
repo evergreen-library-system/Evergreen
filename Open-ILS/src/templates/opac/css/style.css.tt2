@@ -1048,6 +1048,13 @@ div#facet_sidebar {
     padding-left:12px;
 }
 
+/* in this context, where h4 is primarily for structure, 
+   avoid the normal large font and margin for h4's */
+.facet_box_temp h4 {
+    font-size : 100%; 
+    margin: 0px;
+}
+
 .facet_box_temp .header a.button {
     float:right;
     padding-top:6px;

@@ -78,7 +78,7 @@ FOR facet IN sorted_facets;
                       [% l("More") %]
                     </a>
                 [% END %]
-            <div class="title">[% facet.cmf.label %]</div>
+            <h4 class="title">[% facet.cmf.label %]</h4>
         </div>
         <div class="box_wrapper">
             <div class="box">
