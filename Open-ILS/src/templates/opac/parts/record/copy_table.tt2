@@ -117,7 +117,7 @@ END; # FOREACH bib
                 [% copy_info.age_protect ?
                     ctx.get_crahp(copy_info.age_protect).name : l('None') | html %]
             </td>
-            <td headers='copy_header_date_format'>[% date.format(
+            <td headers='copy_header_create_date'>[% date.format(
                 ctx.parse_datetime(copy_info.create_date),
                 DATE_FORMAT
             ) %]</td>
