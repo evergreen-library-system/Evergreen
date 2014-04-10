@@ -4,12 +4,14 @@
 #
 # Makefile to install prerequisites for OpenSRF and Evergreen
 #
-# Currently supports Debian (wheezy, squeeze), Ubuntu (12.04), Ubuntu (14.04) and
-# Fedora (16 and 17).
+# Currently supports Debian (jessie, wheezy, squeeze), Ubuntu (12.04), 
+# Ubuntu (14.04) and Fedora (16 and 17).
 #
 # Installs Perl prereqs, libjs with Perl wrapper, libdbi, libdbi-drivers, and libyaz
 #
 # usage:
+# 	make -f Makefile.install debian-jessie
+# 	- or -
 # 	make -f Makefile.install debian-wheezy
 # 	- or -
 # 	make -f Makefile.install debian-squeeze
@@ -63,6 +65,8 @@ DIR = $(dir $(lastword $(MAKEFILE_LIST)))/install
 
 all:
 	@echo "please specify an OS" && exit 0
+debian-jessie:
+	@make -f $(DIR)/Makefile.debian-jessie
 debian-wheezy:
 	@make -f $(DIR)/Makefile.debian-wheezy
 debian-squeeze: 
@@ -74,6 +78,8 @@ ubuntu-precise:
 fedora:
 	@make -f $(DIR)/Makefile.fedora
 
+postgres-server-debian-jessie:
+	@make -f $(DIR)/Makefile.debian-jessie install_postgres_server
 postgres-server-debian-wheezy:
 	@make -f $(DIR)/Makefile.debian-wheezy install_postgres_server
 postgres-server-debian-squeeze: 

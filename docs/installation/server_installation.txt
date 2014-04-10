@@ -83,8 +83,8 @@ deb http://backports.debian.org/debian-backports squeeze-backports main contrib
    retrieve the new packages from the backports repository.
 4. Issue the following commands as the *root* Linux account to install
    prerequisites using the `Makefile.install` prerequisite installer,
-   substituting `debian-squeeze`, `debian-wheezy`, `fedora`, `ubuntu-precise`, or
-   `ubuntu-trusty` for <osname> below:
+   substituting `debian-jessie`, `debian-wheezy`, `debian-squeeze`, `fedora`, 
+   `ubuntu-trusty`, or `ubuntu-precise` for <osname> below:
 +
 [source, bash]
 ------------------------------------------------------------------------------
