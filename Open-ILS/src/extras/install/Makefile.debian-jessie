@@ -71,11 +71,11 @@ export DEB_APACHE_DISMODS = \
 
 export CPAN_MODULES = \
 	Business::OnlinePayment::PayPal \
-	Business::Stripe \
 	Template::Plugin::POSIX \
 	Safe
 
 export CPAN_MODULES_FORCE = \
+	Business::Stripe \
 	Class::DBI::Frozen::301
 
 PGSQL_SERVER_DEBS_93 = \
