@@ -30,31 +30,31 @@ END;
     <thead>
         <tr>
             [% IF serial_holdings -%]
-            <th id='copy_header_holding_label'>[% l("Issue Label") %]</th>
+            <th scope='col'>[% l("Issue Label") %]</th>
             [%- ELSE -%]
-            <th id='copy_header_library'>[% l("Location") %]</th>
+            <th scope='col'>[% l("Location") %]</th>
             [%- END %]
-            <th id='copy_header_callnumber'>[% l("Call Number / Copy Notes") %]</th>
+            <th scope='col'>[% l("Call Number / Copy Notes") %]</th>
             [%- IF has_parts == 'true' %]
-            <th id='copy_header_part'>[% l("Part") %]</th>
+            <th scope='col'>[% l("Part") %]</th>
             [%- END %]
-            <th id='copy_header_barcode'>[% l("Barcode") %]</th>
-            <th id='copy_header_shelfloc'>[% l("Shelving Location") %]</th>
+            <th scope='col'>[% l("Barcode") %]</th>
+            <th scope='col'>[% l("Shelving Location") %]</th>
             [%- IF ctx.is_staff %]
-            <th id='copy_header_age_hold'>[% l("Age Hold Protection") %]</th>
-            <th id='copy_header_create_date'>[% l("Create Date") %]</th>
+            <th scope='col'>[% l("Age Hold Protection") %]</th>
+            <th scope='col'>[% l("Create Date") %]</th>
             [%- END %]
             [%- IF ctx.is_staff OR serial_holdings %]
-            <th id='copy_header_holdable'>[% l("Holdable?") %]</th>
+            <th scope='col'>[% l("Holdable?") %]</th>
             [%- END %]
-            <th id='copy_header_status'>[% l("Status") %]</th>
-            <th id='copy_header_due_date'>[% l("Due Date") %]</th>
+            <th scope='col'>[% l("Status") %]</th>
+            <th scope='col'>[% l("Due Date") %]</th>
         </tr>
     </thead>
     <tbody class="copy_details_table">
 [%- FOREACH peer IN ctx.foreign_copies;
         FOREACH bib IN peer.foreign_copy_maps; %]
-    <tr class="copy_details_row"><td headers='copy_header_shelfloc'>
+    <tr class="copy_details_row"><td>
     [%- bib_lib_name = ctx.get_aou(bib.target_copy.circ_lib).name | html;
         l("[_1] (foreign item)", bib_lib_name); -%]
         <ul><li>
@@ -65,11 +65,11 @@ END;
             </a>
         </li></ul>
     </td>
-    <td headers='copy_header_callnumber'>[% bib.target_copy.call_number.label | html %]</td>
-    <td headers='copy_header_barcode'>[% bib.target_copy.barcode | html %]</td>
-    <td headers='copy_header_shelfloc'>[% copy_info.copy_location | html %]</td>
-    <td headers='copy_header_status'>[% copy_info.copy_status | html %]</td>
-    <td headers='copy_header_due_date'>[% copy_info.due_date | html %]</td>
+    <td>[% bib.target_copy.call_number.label | html %]</td>
+    <td>[% bib.target_copy.barcode | html %]</td>
+    <td>[% copy_info.copy_location | html %]</td>
+    <td>[% copy_info.copy_status | html %]</td>
+    <td>[% copy_info.due_date | html %]</td>
 </tr>
    [%- END; # FOREACH peer
 END; # FOREACH bib
@@ -90,19 +90,19 @@ END; # FOREACH bib
             END;
         -%]
         <tr class="copy_details_offers_row" property="offers" typeof="Offer">
-            [%- IF serial_holdings %]<td headers='copy_header_holding_label' class='rdetail-issue-issue'>
+            [%- IF serial_holdings %]<td class='rdetail-issue-issue'>
                 [%- copy_info.holding_label | html; -%]
             </td>
-            [%- ELSE %]<td headers='copy_header_library'>
+            [%- ELSE %]<td>
             [%- INCLUDE "opac/parts/library_name_link.tt2"; -%]
                 <link property="businessFunction" href="http://purl.org/goodrelations/v1#LeaseOut">
                 <meta property="price" content="0.00">
             </td>[% END %]
-            <td headers='copy_header_callnumber'><span property="sku">[% callnum | html %]</span> [% IF ctx.get_org_setting(CGI.param('loc') OR ctx.aou_tree.id, 'sms.enable') == 1 %](<a href="[% mkurl(ctx.opac_root _ '/sms_cn', {copy_id => copy_info.id}) %]">Text</a>)[% END %]</td>
+            <td><span property="sku">[% callnum | html %]</span> [% IF ctx.get_org_setting(CGI.param('loc') OR ctx.aou_tree.id, 'sms.enable') == 1 %](<a href="[% mkurl(ctx.opac_root _ '/sms_cn', {copy_id => copy_info.id}) %]">Text</a>)[% END %]</td>
             [%- IF has_parts == 'true' %]
-            <td headers='copy_header_part'>[% copy_info.part_label | html %]</td>
+            <td>[% copy_info.part_label | html %]</td>
             [%- END %]
-            <td headers='copy_header_barcode' property="serialNumber">
+            <td property="serialNumber">
                 [% copy_info.barcode | html -%]
                 [% IF ctx.is_staff %]
                   [%- IF ctx.is_browser_staff %]
@@ -135,19 +135,19 @@ END; # FOREACH bib
                     '<meta property="gtin13" content="' _ attrs.gtin13 _ '" />';
                 END; -%]
             </td>
-            <td headers='copy_header_shelfloc' property="availableAtOrFrom">[% copy_info.copy_location | html %]</td>
+            <td property="availableAtOrFrom">[% copy_info.copy_location | html %]</td>
             [%- IF ctx.is_staff %]
-            <td headers='copy_header_age_hold'>
+            <td>
                 [% copy_info.age_protect ?
                     ctx.get_crahp(copy_info.age_protect).name : l('None') | html %]
             </td>
-            <td headers='copy_header_create_date'>[% date.format(
+            <td>[% date.format(
                 ctx.parse_datetime(copy_info.create_date),
                 DATE_FORMAT
             ) %]</td>
             [% END # is_staff %]
             [% IF ctx.is_staff OR serial_holdings %]
-            <td headers='copy_header_holdable'>[%  # Show copy/volume hold links to staff (without
+            <td>[%  # Show copy/volume hold links to staff (without
                 # checking whether they have permissions to do those).
                 overall_holdable = (
                     copy_info.holdable == 't' AND
@@ -195,11 +195,11 @@ END; # FOREACH bib
                     l("Not holdable");
                 END %]</td>
             [%- END %]
-            <td headers='copy_header_status'>[%-
+            <td>[%-
                 schema_copy_status.${copy_info.status_code};
                 copy_info.copy_status | html;
             -%]</td>
-            <td headers='copy_header_due_date'>[%
+            <td>[%
                 IF copy_info.due_date;
                     date.format(
                         ctx.parse_datetime(copy_info.due_date),
@@ -216,7 +216,7 @@ END; # FOREACH bib
             [% END %]
         [% END %]
 
-<tr><td headers='copy_header_shelfloc'>
+<tr><td>
 [%- IF copy_info.peer_bib_marc.size > 1;
 '<ul>';
     FOREACH bib IN copy_info.peer_bib_marc;
