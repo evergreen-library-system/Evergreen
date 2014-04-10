@@ -65,12 +65,12 @@ export CPAN_MODULES = \
 	Business::ISSN \
 	Net::Z3950::ZOOM \
 	Net::Z3950::Simple2ZOOM \
-	Business::Stripe \
 	Template::Plugin::POSIX \
 	SRU \
 	Rose::URI
 
 export CPAN_MODULES_FORCE = \
+	Business::Stripe \
 	Class::DBI::Frozen::301 \
 	Business::OnlinePayment \
 	Business::OnlinePayment::AuthorizeNet \

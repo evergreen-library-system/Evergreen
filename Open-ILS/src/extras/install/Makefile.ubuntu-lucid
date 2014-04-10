@@ -65,7 +65,6 @@ export DEB_APACHE_DISMODS = \
 export CPAN_MODULES = \
 	Business::ISSN \
 	Business::OnlinePayment::PayPal \
-	Business::Stripe \
 	Library::CallNumber::LC \
 	MARC::Record \
 	Net::Z3950::Simple2ZOOM \
@@ -76,6 +75,7 @@ export CPAN_MODULES = \
 	Safe
 
 export CPAN_MODULES_FORCE = \
+	Business::Stripe \
 	Class::DBI::Frozen::301
 
 PGSQL_SERVER_DEBS_91 = \
