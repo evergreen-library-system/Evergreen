@@ -121,7 +121,7 @@
 
                 [% CASE "copy_location" %]
                     <select id="adv_copy_location_selector" 
-                        aria-label="[% l('Select Shelving Location') %]"
+                        title="[% l('Select Shelving Location') %]"
                         name="fi:locations" size="3" multiple="multiple">
                     </select>
                 [% 

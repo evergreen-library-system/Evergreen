@@ -34,7 +34,6 @@
                <form name="acct_nav">
 
                  <select name="acct_url" 
-                    aria-label="[% l('Select an account page') %]" 
                     title="[% l('Select an account page') %]" 
                     onchange="window.location.href=document.acct_nav.acct_url.options[document.acct_nav.acct_url.selectedIndex].value">
                     <option value="" selected="selected">[% l('Go to...') %]</option>
