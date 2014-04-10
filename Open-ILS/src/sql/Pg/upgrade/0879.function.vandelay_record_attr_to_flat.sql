@@ -1,6 +1,6 @@
 BEGIN;
 
---SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0879', :eg_version);
 
 CREATE OR REPLACE FUNCTION vandelay._get_expr_push_jrow(
     node vandelay.match_set_point,
