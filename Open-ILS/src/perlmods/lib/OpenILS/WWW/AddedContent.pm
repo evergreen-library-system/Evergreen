@@ -224,7 +224,10 @@ sub get_rec_keys {
                     ]
                 }
             ]
-        }
+        },
+        order_by => [
+                { class => 'mfr', field => 'id' }
+            ]
     });
 }
 
