@@ -201,9 +201,6 @@
         END;
         args.pubdate = (args.pubdates.size) ? args.pubdates.0 : '';
 
-        # Full publisher info
-        args.pubinfo = "$args.pubplace $args.publisher $args.pubdate";
-
         # Get RDA Copyright Info.
         args.copyrights = [];
         FOR sub IN xml.findnodes('//*[@tag="264" and @ind2="4"]/*[@code="c"]');

@@ -168,12 +168,12 @@ END;
                                                         [% IF CGI.param('detail_record_view') %]
                                                         <!-- These fields are visible when viewing the results page in 'detailed' mode -->
 
-                                                        [% IF attrs.pubinfo %]
+                                                        [% IF attrs.publisher %]
                                                             <tr name="results_pub_tr">
                                                                 <td valign="top">
                                                                     <strong>[% l('Publisher:') %]</strong>
                                                                 </td>
-                                                                <td>[% attrs.pubinfo | html %]
+                                                                <td>[% attrs.pubplace | html; %] [% attrs.publisher | html; %] [% attrs.pubdate | html; %]
 [%-
 FOR entry IN attrs.graphic_pubinfos;
     FOR alt IN entry.graphic;
