@@ -1067,7 +1067,29 @@ function BatchReceiver() {
                 "oncomplete": function(r) {
                     try {
                         var streams_for_printing = [];
-                        while (item_id = openils.Util.readResponse(r)) {
+
+                        // first check for problems encountered during
+                        // receive and exit early if any are found.
+                        var item_ids = [];
+                        while (item_id = openils.Util.readResponse(r, true)) {
+                            if (typeof item_id == 'object') { // event
+                                if (item_id.textcode == 
+                                    'SERIAL_UNIT_BARCODE_COLLISION') {
+                                    alert(F(
+                                        'unit_barcode_collision', 
+                                        item_id.payload.barcode
+                                    ));
+                                } else {
+                                    // unexpected event, rely on toString()
+                                    alert(item_id); 
+                                }
+                                busy(false);
+                                return;
+                            }
+                            item_ids.push(item_id);
+                        }
+
+                        while (item_id = item_ids.shift()) { 
                             if (self._wants_print_routing[item_id]) {
                                 streams_for_printing.push(
                                     self.item_cache[item_id].stream()

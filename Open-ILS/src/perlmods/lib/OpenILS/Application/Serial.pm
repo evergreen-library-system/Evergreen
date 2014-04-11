@@ -765,8 +765,32 @@ sub _delete_sunit {
 sub _create_sunit {
     my ($editor, $sunit) = @_;
 
+    # The unique barcode constraint does not span asset.copy and serial.unit.
+    # ensure the barcode on the new unit does not collide with an existing
+    # asset.copy barcode.
+    my $existing = $editor->search_asset_copy(
+        {deleted => 'f', barcode => $sunit->barcode})->[0];
+
+    if (!$existing) {
+        # The DB will prevent duplicate serial.unit barcodes, but for 
+        # consistency (and a more specific error message for the
+        # user), prevent creation attempts on serial unit barcode
+        # collisions as well.
+        $existing = $editor->search_serial_unit(
+            {deleted => 'f', barcode => $sunit->barcode})->[0];
+    }
+
+    if ($existing) {
+        $editor->rollback;
+        return new OpenILS::Event(
+            'SERIAL_UNIT_BARCODE_COLLISION', note => 
+            'Serial unit barcode collides with existing unit/copy barcode',
+            payload => {barcode => $sunit->barcode}
+        );
+    }
+
     $logger->info("sunit-alter: new Unit ".OpenSRF::Utils::JSON->perl2JSON($sunit));
-    return $editor->event unless $editor->create_serial_unit($sunit);
+    return $editor->die_event unless $editor->create_serial_unit($sunit);
     return 0;
 }
 
@@ -1742,7 +1766,8 @@ sub receive_items_one_unit_per {
             $user_unit->editor($user_id);
             $user_unit->creator($user_id);
 
-            return $e->die_event unless $e->create_serial_unit($user_unit);
+            $evt = _create_sunit($e, $user_unit);
+            return $evt if $evt;
 
             # save reference to new unit
             $item->unit($e->data->id);
