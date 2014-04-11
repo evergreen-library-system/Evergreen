@@ -2148,7 +2148,7 @@ sub fetch_captured_holds {
     };
     if($self->api_name =~ /expired/) {
         $query->{'where'}->{'+alhr'}->{'-or'} = {
-                shelf_expire_time => { '<' => 'now'},
+                shelf_expire_time => { '<' => 'today'},
                 cancel_time => { '!=' => undef },
         };
     }
