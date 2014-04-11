@@ -148,6 +148,9 @@ END;
                                                             IF attrs.pubdate;
                                                                 pubdate_clean = attrs.pubdate | html;
                                                                 l(" ([_1])", pubdate_clean);
+                                                            ELSIF attrs.copyright;
+                                                                copyright_clean = attrs.copyright | html;
+                                                                l(" ([_1])", copyright_clean);                                                                
                                                             END;
                                                         END
                                                     -%]
@@ -190,6 +193,27 @@ FOR entry IN attrs.graphic_pubinfos;
 END;
 -%]
 </td>
+                                                            </tr>
+                                                        [% ELSIF attrs.producer %]
+                                                            <tr name="results_pub_tr">
+                                                                <td valign="top">
+                                                                    <strong>[% l('Producer:') %]</strong>
+                                                                </td>
+                                                                <td>[% attrs.prodplace | html; %] [% attrs.producer | html; %] [% attrs.proddate | html; %]</td>
+                                                            </tr>
+                                                        [% ELSIF attrs.distributor %]
+                                                            <tr name="results_pub_tr">
+                                                                <td valign="top">
+                                                                    <strong>[% l('Distributor:') %]</strong>
+                                                                </td>
+                                                                <td>[% attrs.distplace | html; %] [% attrs.distributor | html; %] [% attrs.distdate | html; %]</td>
+                                                            </tr>
+                                                        [% ELSIF attrs.manufacturer %]
+                                                            <tr name="results_pub_tr">
+                                                                <td valign="top">
+                                                                    <strong>[% l('Manufacturer:') %]</strong>
+                                                                </td>
+                                                                <td>[% attrs.manplace | html; %] [% attrs.manufacturer | html; %] [% attrs.mandate | html; %]</td>
                                                             </tr>
                                                         [% END %]
                                                         [% IF attrs.isbns.size > 0 %]
