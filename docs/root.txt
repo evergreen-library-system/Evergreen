@@ -386,6 +386,8 @@ include::opac/advanced_features.txt[]
 
 include::opac/linked_libraries.txt[]
 
+include::opac/opensearch.txt[]
+
 // Push titles down one level.
 :leveloffset: 1
 
