@@ -477,7 +477,7 @@ sub load_rresults {
     my ($facets, @data) = $self->get_records_and_facets(
         $fetch_recs, $results->{facet_key}, 
         {
-            flesh => '{holdings_xml,mra,acp,acnp,acns,bmp}',
+            flesh => '{holdings_xml,mra,acp,acnp,acns,bmp,cbs}',
             site => $site,
             metarecord => $is_meta,
             depth => $depth,
@@ -616,7 +616,7 @@ sub item_barcode_shortcut {
 
         $self->timelog("Calling get_records_and_facets() for item_barcode");
         my ($facets, @data) = $self->get_records_and_facets(
-            $rec_ids, undef, {flesh => "{holdings_xml,mra,acnp,acns,bmp}"}
+            $rec_ids, undef, {flesh => "{holdings_xml,mra,acnp,acns,bmp,cbs}"}
         );
         $self->timelog("Returned from calling get_records_and_facets() for item_barcode");
 
@@ -735,7 +735,7 @@ sub marc_expert_search {
     $self->timelog("Calling get_records_and_facets() for MARC expert");
     my ($facets, @data) = $self->get_records_and_facets(
         $self->ctx->{ids}, undef, {
-            flesh => "{holdings_xml,mra,acnp,acns}",
+            flesh => "{holdings_xml,mra,acnp,acns,cbs}",
             pref_lib => $self->ctx->{pref_ou},
         }
     );

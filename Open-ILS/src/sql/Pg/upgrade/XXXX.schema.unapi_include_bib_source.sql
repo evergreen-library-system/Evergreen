@@ -72,7 +72,7 @@ BEGIN
     SELECT * INTO me FROM biblio.record_entry WHERE id = obj_id;
 
     -- grab bib_source, if any
-    IF me.source IS NOT NULL THEN
+    IF ('cbs' = ANY (includes) AND me.source IS NOT NULL) THEN
         source := unapi.cbs(me.source,NULL,NULL,NULL,NULL);
     ELSE
         source := NULL::XML;
