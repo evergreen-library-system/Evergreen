@@ -27,6 +27,9 @@ BEGIN;
 -- load fiction bibs
 \i bibs_fic.sql
 
+-- load RDA bibs
+\i bibs_rda.sql
+
 -- insert all loaded bibs into the biblio.record_entry in insert order
 INSERT INTO biblio.record_entry (marc, last_xact_id) 
     SELECT marc, tag FROM marcxml_import ORDER BY id;
@@ -42,6 +45,9 @@ INSERT INTO biblio.record_entry (marc, last_xact_id)
 
 -- load fiction copies, etc.
 \i assets_fic.sql
+
+-- load RDA copies, etc.
+\i assets_rda.sql
 
 -- load sample patrons
 \i users_patrons_100.sql
