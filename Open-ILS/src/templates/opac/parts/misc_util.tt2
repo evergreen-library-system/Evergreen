@@ -91,9 +91,35 @@
         # Map item types to schema.org types; impedance mismatch :(
         args.schema.itemtype = {};
         schema_typemap = {};
-        schema_typemap.a = 'http://schema.org/Book';
-        schema_typemap.e = 'http://schema.org/Map';
-        schema_typemap.j = 'http://schema.org/MusicAlbum';
+
+        schema_typemap.bluray = 'Movie'; # Movie could also be TVSeries
+        schema_typemap.book = 'Book';
+        schema_typemap.braille = 'Book';
+        schema_typemap.casaudiobook = 'Book AudioObject';
+        schema_typemap.casmusic = 'MusicAlbum';
+        schema_typemap.cdaudiobook = 'Book AudioObject';
+        schema_typemap.cdmusic = 'MusicAlbum';
+        schema_typemap.dvd = 'Movie';
+        schema_typemap.eaudio = 'AudioObject';
+        schema_typemap.ebook = 'Book';
+        # schema_typemap.equip = '';
+        schema_typemap.evideo = 'Movie';
+        # schema_typemap.kit = '';
+        schema_typemap.lpbook = 'Book';
+        schema_typemap.map = 'Map';
+        # schema_typemap.microform = '';
+        schema_typemap.music = 'MusicAlbum';
+        schema_typemap.phonomusic = 'MusicAlbum';
+        # schema_typemap.phonospoken = '';
+        # schema_typemap.picture = ''; Painting or Photograph?
+        schema_typemap.score = 'Book'; # schema.org has no generic Music type
+        schema_typemap.serial = 'Periodical';
+        schema_typemap.software = 'SoftwareApplication';
+        schema_typemap.vhs = 'Movie';
+
+        schema_typemap.a = 'Book';
+        schema_typemap.e = 'Map';
+        schema_typemap.j = 'MusicAlbum';
 
         # Hard-coded to match defaults in config.copy_status for all OPAC-visible statuses
         schema_copy_status = {};
@@ -438,7 +464,7 @@
                 NEXT IF ccvm.opac_visible == 'f';
 
                 format = {};
-                type = node.textContent;
+                type = ccvm.code.remove('-'); # blu-ray to bluray
                 format.label = ccvm.search_label || ccvm.value;
                 format.icon = PROCESS get_ccvm_icon ccvm=ccvm;
                 format.itemtype = schema_typemap.$type || 'CreativeWork';
