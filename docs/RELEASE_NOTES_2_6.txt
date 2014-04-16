@@ -1,0 +1,557 @@
+Evergreen 2.6 Release Notes
+===========================
+:toc:
+:numbered:
+
+Upgrade notes
+-------------
+
+OPAC
+~~~~
+
+TPAC library pages
+^^^^^^^^^^^^^^^^^^
+Evergreen 2.5 introduced the `Library information URL` library setting to
+associate a web page with a library. If set, this value was used as the target
+of the library link in the copy table on the record details page. However, the
+new default behavior is to link to the automatically generated TPAC library
+page, which in turn links to the external web site.
+
+If you wish to maintain the previous behavior, you can set the `Use external
+library information URL` library setting to `True`.
+
+
+Disable Autosuggest by Default
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+As described in https://bugs.launchpad.net/evergreen/+bug/1187993, the 
+community is aware of ongoing accessibility issues caused through use of 
+the autosuggest feature of the Evergreen catalog. The decision has been 
+made to disable autosuggest by default for new installations. Existing sites
+are cautioned to take note of this change and decide for themselves whether
+to discontinue use.
+
+It is possible to disable the autosuggest feature via a global flag. Look in
+`Admin -> Server Administration -> Global Flags`, find the `OPAC: Show
+auto-completing suggestions dialog...` setting, then edit and uncheck the
+`Enabled` box.
+
+
+
+Miscellaneous
+~~~~~~~~~~~~~
+
+Removal of open-ils.ingest service
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The open-ils.ingest service is no longer required, and has been
+removed.
+
+You should update your opensrf.xml file to remove references to
+open-ils.ingest, and you may also wish to remove the
+OpenILS/Application/Ingest.pm file from your Perl @INC path.
+
+In opensrf.xml, remove the entire <open-ils.ingest> element from the
+<apps> element, and remove <appname>open-ils.ingest</appname> from
+any <activeapps> elements where it is present.
+
+If you have the perldoc command installed, you can use the following
+command to locate the path on disk of the Ingest.pm file, which is
+no longer required and can be removed:
+
+[source, bash]
+-----------------------------------------------------------------
+perldoc -l OpenILS::Application::Ingest
+-----------------------------------------------------------------
+
+
+Reporter view 'classic_current_circ' dropped
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+As part of the DB upgrade, the reporter view
+"reporter.classic_current_circ" was dropped.  If you previously
+installed this view from example.reporter-extension.sql, it will
+have to be re-installed by executing the "CREATE OR REPLACE
+VIEW reporter.classic_current_circ AS..." SQL once again from
+example.reporter-extension.sql.
+
+
+
+New Features
+------------
+
+Administration
+~~~~~~~~~~~~~~
+
+Add granular settings for requiring staff initials for notes
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+There are now three separate library settings for controlling whether staff 
+are required to input their initials when creating different types of notes.
+See new library settings below.
+
+Any pre-existing library setting for requiring staff initials are preserved 
+during the upgrade process. After upgrading, you may choose to change the set
+behavior for any of the three new settings.
+
+New Library Settings
++++++++++++++++++++++
+ * Require staff initials for entry/edit of patron standing penalties and messages. (ui.staff.require_initials.patron_standing_penalty)
+ * Require staff initials for entry/edit of patron notes. (ui.staff.require_initials.patron_info_notes)
+ * Require staff initials for entry/edit of copy notes. (ui.staff.require_initials.copy_notes)
+
+
+Cataloging
+~~~~~~~~~~
+
+Enhancements to Evergreen's MARC Editor Concerning Fixed Fields
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+This work is a combination of two features. One provides suggested
+values in a right-click context menus for fixed field values based on
+the 'type' of the record being edited. The other provides a wizard to
+help specifically with the Physical Characteristics of the record, i.e.
+the 007 field.
+
+Right-Click Context Menus
++++++++++++++++++++++++++
+Users will be able to right-click on the value control for fixed fields
+in the MARC Editor, and Evergreen will provide a menu from which the
+user can select a possible value. This will work for fixed fields where
+Evergreen already contains information from the Library of Congress's
+MARC 21 standard.
+
+Example:
+
+image::media/ffer-right-click.png["Right-clicking the BLvl field"]
+
+Evergreen already comes loaded with information from the Library of
+Congress's MARC 21 standard on possible values for some fixed fields.
+
+The following table shows which fixed fields for which 'Record Types'
+have values already loaded into Evergreen.
+
+---------------------------------------------------------
+
+ Fixed Field |          Record Types
+-------------+-----------------------------------
+ Audn        | {BKS,COM,REC,SCO,SER,VIS}
+ BLvl        | {BKS,COM,MAP,MIX,REC,SCO,SER,VIS}
+ Form        | {BKS,MAP,MIX,REC,SCO,SER,VIS}
+ Lang        | {BKS,COM,MAP,MIX,REC,SCO,SER,VIS}
+ LitF        | {BKS}
+ Type        | {BKS,COM,MAP,MIX,REC,SCO,SER,VIS}
+
+
+---------------------------------------------------------
+
+A 'Record Type' is itself a combination of the 'Type of Record' (fixed
+field name: Type) and 'Bibliographic Level' (fixed field name: BLvl)
+elements of the MARC leader (positions 06 and 07 respectively). You can
+see a record's Record Type in the MARC Editor as shown in
+this screenshot:
+
+'Record Type':
+
+image::media/ffer-record-type.png["This Record Type is REC"]
+
+A user may add values to these fixed fields as well as to other fixed
+fields through the MARC Coded Value Maps interface found under the Admin
+-> Server Administration menu in the staff client. These are grouped by
+Record Attribute Types (a superset of fixed fields) which have labels
+such as 'Alph', 'Biog', 'Videorecording format', and 'Language'.
+
+From LOC Fixed Fields documentation, 'Alph' is 'Original alphabet or
+script of title', 'Biog' is 'Biography', 'Videorecording format' is from
+the 007 field, 'Language' is positions 35-37 of the 008, and so on.
+Other Record Attribute Types such as 'Author' are, of course, not fixed
+fields at all.
+
+When users add new values here, the right-click context menus of the
+fixed fields in the MARC Editor will include those values.
+
+All values added for any fixed field in the Coded Value Map will display
+for any 'Record Type' that uses that fixed field.
+
+Users of the MARC Editor always retain the option of leaving a fixed
+field blank, entering the special values # or |, or entering a value not
+provided by the right-click context menu.
+
+Physical Characteristics Wizard
++++++++++++++++++++++++++++++++
+By right-clicking on an existing or new 007 field in the MARC Editor, users
+will be able to enter a wizard that leads them step-by-step through the
+positions in that 007 field, telling them the significance of the current
+position and providing a drop-down list of possible values.
+
+Launching the Physical Characteristics Wizard:
+
+image::media/ffer-open-wizard.png["Launching the Physical Characteristics Wizard"]
+
+Choosing the Category of Material:
+
+image::media/ffer-007-00.png["Choosing the Category of Material"]
+
+Choosing a value for a later position:
+
+image::media/ffer-007-smd.png["Choosing a value for a later position"]
+
+
+marc_export script replacement
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The `/openils/bin/marc_export` script is completely rewritten.  This
+new version accepts all of the same command line options as the old
+version as well as some new options.
+
+The rewritten `marc_export` talks directly to your Evergreen database
+and is a great deal faster than the previous version.  Because the new
+script talks directly to the database, it needs to know how to
+connect.  To facilitate this, a new option, `--store`, was added that
+allows the user to specify one of three Evergreen storage backends to
+use when exporting records.  The valid choices are `reporter`,
+`cstore`, or `storage`.  The default of `reporter` should work in most
+cases, but if you do have a separate reporter database and you know
+you want to talk directly to your main production database, then you
+will probably want to choose either `cstore` or `storage`.
+
+In addition to the `--store` option, a `--since` option is also added
+so that you can specify output of an update file of records changed,
+added, and/or deleted since the given date.  The `--since` option uses
+a fairly flexible date parser and can accept a wide range of date
+formats including ISO 8601, man common date formats such as M/D/Y
+(common in the US) or D/Mon/Y (with the first 3 characters or more of
+the month spelled out), as well as several less common date formats.
+Special date strings such as `yesterday`, `today`, `yesterday week`,
+and `today week` are also supported.  For more information see the
+VALID DATE FORMATS section of the `Date::Manip::Date` man page.
+Available online here:
+
+http://search.cpan.org/~sbeck/Date-Manip-6.42/lib/Date/Manip/Date.pod#VALID_DATE_FORMATS
+
+There is one final difference between the new script and the old
+`marc_export`.  The new script does not output progress as it
+executes.  Many of the statistics that the script reported are not
+readily available to the new script.  It was deemed better to just not
+output any progress rather than to output something different from the
+old program.  If your scripts parse the output from `marc_export`,
+they will need to modified not to expect any.
+
+
+Circulation
+~~~~~~~~~~~
+
+Lost Item Billing: New Min/Max Price Settings
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+When an item is marked lost, the user is typically billed for the item.
+In Evergreen, they can either be charged the amount recorded in the item
+object, or if that value is blank (or zero), charged a default price
+(controlled by settings).
+
+In addition to these existing settings, now we can accommodate a range of
+prices by saying the patron should be billed at least 'X' and not more
+than 'Y'. This also allows you to effectively set a fixed price for all
+lost items by setting min and max to the same amount.
+
+New Org Unit Settings
++++++++++++++++++++++
+ * Minimum Item Price: circ.min_item_price
+ * Maximum Item Price: circ.max_item_price
+
+New Permissions
++++++++++++++++
+ * UPDATE_ORG_UNIT_SETTING.circ.min_item_price
+ * UPDATE_ORG_UNIT_SETTING.circ.max_item_price
+
+
+User Editor: "Update Expire Date" button
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+A new button labeled "Update Expire Date" is added in the user
+editor next to expire date field. This button can be used to
+re-calculate the user's expire date based on the current profile's
+permission interval and today's date.
+
+This is similar to how the expire date is populated when creating a
+new user, or when changing the profile group.
+
+This button simplifies the process of "renewing" a user, by
+eliminating the requirement that staff manually enter a new expire
+date.
+
+A button is used here so that the updating of the expire date
+remains an  intentional process, not one that happens upon any edit.
+
+
+OPAC
+~~~~
+
+Composite Record Attributes
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+With this feature we create an abstraction on top of the Record Attribute
+infrastructure to allow the aggregation of multiple, cross-Attribute values
+under a single search filter value, accessible through new, dynamic filters.
+
+Each QueryParser filter will be created by the addition of a Composite Record
+Attribute Definition. For instance, one may wish to create a Composite Record
+Attribute Definition for an abstract "Item Type" interface component that
+uses information from the item_type, vr_format, bib_level and item_form
+Record Attribute Definitions, with each Composite Record Attribute Value
+having a different combination of Record Attribute Values from some or all of
+these Record Attribute Definitions. In this way, as single interface
+component might be presented as a dropdown with options such as "All Books",
+"All video recordings", "DVDs", "VHS Tapes", "E-Books", "Audio Books" and
+"Large Print Books". Of particular note are the "DVDs" and "VHS Tapes"
+entries, which include information from Record Attribute Definitions
+completely separate from the others. Additionally, the Composite Record
+Attribute Values defined by this Composite Record Attribute Definition
+can be used to drive behavioral logic, such as alternate icon display or
+link generation, in upgrade-friendly template adjustments.
+
+Included in this development is a replacement for the single-attribute
+Format filter supplied for basic search.  Instead, a Composite Attribute
+is used to combine the values from Item Type, Item Form and Videorecording
+Format in various ways that provide a more patron-friendly set of choices.
+
+This new Format filter can be adjusted, or even replaced with a completely
+local one, through configuration and without template adjustment.
+
+
+
+Located URI visibility options
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Before this, Evergreen restricted the visibility of bibliographic records
+that make use of Located URIs in a way that attempts to model licensing
+restrictions.
+
+There now exists a global flag to allow sites the option of changing the
+behaviour of Located URIs so that they act in a way analogous to copies
+for visibility testing.  When the opac.located_uri.act_as_copy global flag
+is enabled, Located URIs will cause their containing bib records to become
+visible in searches where the URI is in scope to either ancestors of the
+search library, as before, or descendents of the search library, as copies
+do.  As before, if a preferred library is supplied by the user, it is
+added to the list of visible org units to check.
+
+Additionally, while the underlying UnAPI and supporting code was capable
+of providing a reasonable and logical sort order for the Located URIs when
+embedded as XML holdings elements, the client-facing UnAPI method was not
+making use of that.  It now does, and uses the same sorting algorithm as
+is used for copies.
+
+
+Multi-valued Record Attributes and Controlled Record Attributes
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Having identified common use cases and reasonable restrictions that can be
+placed on the feature set, we have extended the Record Attribute
+infrastructure to support both the extraction and storage of all instances
+of a defined Attribute found within a bibliographic record, as well as
+provide new and more powerful indexing of existing data, in several ways.
+
+Record Attributes can now be defined by configuration as either single-valued
+or multi-valued. For any Attribute configured as single-valued, only the
+first value extracted from a record will be stored. This configuration
+parameter and restriction is in place to support potential query
+optimizations based on foreknowledge of whether a given Attribute is multi-
+valued or not.
+
+Record Attributes will be defined by configuration as either controlled or
+uncontrolled. A controlled Record Attribute is one that has entries in the
+Coded Value Map infrastructure specifying the valid values the record may
+carry for this attribute. If defined as a controlled Attribute, any unknown
+values extracted from a record will be ignored. Uncontrolled Attributes,
+however, may contain any value. This configuration parameter and restriction
+also supports potential query optimization.
+
+We store uncontrolled attribute values in a new table with a monotonically
+decreasing ID sequence, separating it from controlled values, reducing storage
+requirements by retaining only unique values, and making lookup faster.
+
+Restrictions
+++++++++++++
+ * A Record Attribute's values must match Coded Value Map entries if it is to be a Controlled Attribute. Coded Value Map control is indicated by a new "controlled" boolean on the config.record_attr_definition table.
+ * Record Attributes must "opt in" to multi-valued-ness. Record Attributes will opt in via a new "multi" boolean on config.record_attr_definition; this restriction enforces site config requirements by being explicit about the definition of "multi" fields.
+ * If controlled but not opt'd in to multi-mode, only the first value will be recorded but the new search mechanism will be used.
+ * Only single-valued Record Attributes will be available for use by the system as Sort Axes.
+ * Only controlled Record Attributes will be available for use by the TPAC as dynamically generated filter UI components, such as filter dropdowns or multi-selects.
+
+New External Dependency
++++++++++++++++++++++++
+This new feature requires the addition of the intarray extension to Postgres.
+This is a stock extension available on most linux distributions via the same
+package as the already-required plperl extension.
+
+
+Restore OpenSearch Support
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+Restore previously held functionality from JSPAC to support OpenSearch in TPAC. 
+This allows users to easily add the Evergreen search engine to their browser's 
+built-in set of search engines.
+
+
+Accepting payments with Stripe
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Stripe is a payment processing service that lets
+sites take credit card payments without payment card information ever
+touching the sites' own servers.
+
+NOTE: Using Stripe as a payment processor means that clients *must*
+have Javascript enabled in order to submit fine payments through your
+OPAC.
+
+Library Settings
+++++++++++++++++
+The following settings need to be set at the appropriate org level for
+sites wanting to use Stripe.
+
+ * "Allow Credit Card Payments" (should be 'true')
+
+   credit.payments.allow
+
+ * "Enable Stripe payments" (should be 'true')
+
+   credit.processor.stripe.enabled
+
+ * "Stripe publishable key" (value provided by Stripe)
+
+   credit.processor.stripe.pubkey
+
+ * "Stripe secret key" (value provided by Stripe)
+
+   credit.processor.stripe.secretkey
+
+ * "Name default credit processor" (should be 'Stripe')
+
+   credit.processor.default
+
+
+TPAC library pages
+^^^^^^^^^^^^^^^^^^
+This feature adds one web page per library in the system to the TPAC at
+http://hostname/eg/opac/library/<SHORTNAME> and
+http://hostname/eg/opac/library/<ID>. The pages publish the following
+information from Evergreen (if available):
+
+* Name of the library
+* Link to the lbrary web site (from `Library Information URL` library setting)
+* Opening hours
+* Email address
+* Phone number
+* Mailing address
+* Link to parent library (if applicable)
+
+Library pages are linked from the copy table on the record details page.
+
+Structured data
++++++++++++++++
+The library web pages publish schema.org structured data, which can enable
+search engines and other systems to better understand your libraries and their
+resources.
+
+
+TPAC Metarecord Search and Holds
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+This feature adds support for searching and placing holds against 
+metarecords.
+
+Metarecord Searching
+++++++++++++++++++++
+In the top search bar and in the advanced search page, there is a new
+search modifier labeled "Group Formats and Editions".  When selected,
+searches are performed against metarecords and metarecords are shown
+in the results list.
+
+For each metarecord, format icons for all constituent records are shown.
+When a use clicks on a metarecord, if the metarecord has multiple
+constituent records, the user is taken to the constituent records
+list.  Similarly, when a metarecord only has one constituent record,
+the user is directed to the record detail page for the constituent
+record.
+
+Metarecord Holds
+++++++++++++++++
+Clicking the place hold link from the metarecord results page shows
+the available formats and languages for the metarecord, allowing
+the user to limit the scope of the hold.  Non-metarecord holds now
+get a new "Advanced Holds Options" link which allows user to promote
+a title hold to a metarecord hold, thus providing access 
+to the formats / editions selector, before the hold is placed.
+
+In the My Account holds list, icons for all selected formats are 
+displayed in the Format columns for the hold.  When editing a 
+metarecord hold, users may modify the desired formats and languages.
+
+Configuration
++++++++++++++
+Admins may disable this feature by un-commenting the "metarecord.disabled"
+attribute in config.tt2
+
+
+Web Content Accessibility Guidelines (WCAG) Compliance
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+To make the catalog more accessible to users with a range of disabilities,
+including blindness and low vision, the catalog has been revised to better
+comply with the Web Content Accessibility Guidelines (WCAG) 2.0. These
+revisions target level "AA" of compliance.
+
+For more information on WCAG, see http://www.w3.org/WAI/intro/wcag
+
+
+Acknowledgments
+---------------
+The Evergreen project would like to acknowledge the following
+organizations who commissioned developments in this release of
+Evergreen:
+
+ * Butler Public Library, IN, USA
+ * British Columbia Libraries Cooperative
+ * Carnegie Public Library of Steuben County, IN, USA
+ * Centerville-Center Township Public Library, IN, USA
+ * Flora Public Library, IN, USA
+ * Hagerstown - Jefferson Township Library, IN, USA
+ * Howe Library, Hanover, NH, USA
+ * Massachusetts Library Network Cooperative
+ * Newton County Public Library, IN, USA
+ * Noble County Public Library, IN, USA
+ * Natural Resources Canada
+ * North of Boston Library Exchange
+ * Perry County Public Library, IN, USA
+ * Plainfield-Guilford Township Public Library, IN, USA
+ * Rodgers Memorial Library, Hudson, NH, USA
+ * Statistics Canada
+ * Union County Public Library, IN, USA
+ * Westfield Washington Public Library, IN, USA
+
+We would also like to thank the following individuals who contributed
+code and documentations patches to this release of Evergreen:
+
+ * Jason Boyer
+ * Galen Charlton
+ * Mark Cooper
+ * Bill Erickson
+ * Jason Etheridge
+ * Lebbeous Fogle-Weekley
+ * Jeff Godin
+ * Pasi Kallinen
+ * Mike Rylander
+ * Dan Scott
+ * Chris Sharp
+ * Ben Shum
+ * Remington Steed
+ * Jason Stephenson
+ * Yamil Suarez
+ * Elliot Voris
+ * Dan Wells
+
+We also thank the following organizations whose employees contributed
+patches:
+
+ * Berklee College of Music
+ * Bibliomation
+ * Calvin College
+ * Equinox Software, Inc.
+ * Georgia Public Library Service
+ * Indiana State Library
+ * Laurentian University
+ * Merrimack Valley Library Consortium
+ * Pohjois-Karjalan Tietotekniikkakeskus Oy
+ * Saint Louis Christian College
+ * Traverse Area District Library
+
+We regret any omissions.  If a contributor has been inadvertantly
+missed, please open a bug at http://bugs.launchpad.net/evergreen/
+with a correction.
+
