@@ -1,8 +1,0 @@
-= Web Content Accessibility Guidelines (WCAG) Compliance =
-
-To make the catalog more accessible to users with a range of disabilities,
-including blindness and low vision, the catalog has been revised to better
-comply with the Web Content Accessibility Guidelines (WCAG) 2.0. These
-revisions target level "AA" of compliance.
-
-For more information on WCAG, see http://www.w3.org/WAI/intro/wcag
