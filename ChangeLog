@@ -1,3 +1,471 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 7fe71b6aab1c7a6b4112d10cc70e6b39db695130
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Mon Feb 24 12:09:57 2014 -0500
+
+    Bump OpenILS.pm version
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit 3521740c2c439d4c337150c16f2a0cc0f1278e77
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Mar 6 18:17:56 2014 -0500
+
+    Forward-port 2.5.2-2.5.3 upgrade script
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+553	0	Open-ILS/src/sql/Pg/version-upgrade/2.5.2-2.5.3-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.5.2-2.5.3-upgrade-db.sql
+
+commit 11f6126604c802fd6d44d24d90bb20c0061e51d9
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Apr 17 13:00:25 2014 -0400
+
+    Tweak 0877 upgrade file for 2.5
+    
+    The 0877 upgrade file for 2.6 lacked in parsimony because it assumed
+    it would generally run as part of the 2.6.0 upgrade, and that required
+    a full reingest anyway.
+    
+    Credit for this "quick" version goes to Mike Rylander.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+41	6	Open-ILS/src/sql/Pg/upgrade/0877.data.re-add_800_t_search_and_facets.sql
+
+commit 3c7b20f2749a972b7890d106cb91170b29ee6a36
+Author: Ben Shum <bshum@biblio.org>
+Date:   Fri Mar 28 16:53:39 2014 -0400
+
+    LP#1259665 Stamping upgrade for 800t search and facets
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+25	0	Open-ILS/src/sql/Pg/upgrade/0877.data.re-add_800_t_search_and_facets.sql
+0	25	Open-ILS/src/sql/Pg/upgrade/XXXX.data.re-add_800_t_search_and_facets.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0877.data.re-add_800_t_search_and_facets.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.re-add_800_t_search_and_facets.sql
+
+commit 1351a3d4fee6616c1b2aca3f019452810889c05a
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Mar 27 14:19:34 2014 -0400
+
+    LP#1259665 Split series browse config from search
+    
+    When we added browse support in 2.5, we took extra care to ensure that
+    our series browse entries would sort and display reliably.
+    
+    800t does not specify non-filing characters, so it was excluded from
+    browse.  Unfortunately, since browse and search had a single root
+    config, this removed 800t from search as well.
+    
+    While we may want to reconsider expanding later on, this commit takes
+    a conservative approach, and uses all series values for search and
+    facets, but only entries with a usable filing indicator will be
+    extracted for browse.  It accomplishes this by splitting the series
+    config in two, one config for search/faceting, and a second config
+    dedicated to browse (similar to what was done for title).
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+4	2	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+25	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.re-add_800_t_search_and_facets.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.re-add_800_t_search_and_facets.sql
+
+commit bbcd9e5859d2d1c6dccccf93fccb3b30b5f32af5
+Author: Jeff Godin <jgodin@tadl.org>
+Date:   Wed Oct 30 13:17:25 2013 -0400
+
+    Add alert in user editor for method errors
+    
+    Add an alert() in the user editor so that method errors are not
+    silent.
+    
+    Without this, a method error (such as when saving a patron fails at
+    the db level) is silent. Better to at least inform the user that
+    something is amiss.
+    
+    Signed-off-by: Jeff Godin <jgodin@tadl.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+3	0	Open-ILS/web/js/ui/default/actor/user/register.js
+
+commit d49038c3cf415cc1f424fbd524f261c1aa4d9abe
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Fri Mar 21 21:05:14 2014 -0400
+
+    LP#1115599: Ignore canceled lineitems during batch cancel
+    
+    Continue ignoring already-canceled lineitems during batch cancel so that
+    a) no unnecessary calls are made and b) staff can be alerted when no
+    viable lineitems were selected for the requested action.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+7	2	Open-ILS/web/js/ui/default/acq/common/li_table.js
+
+commit 7a16423c653e289c149647c95f14af59f5fa1898
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Wed Jan 29 17:07:29 2014 -0500
+
+    LP#1115599: Allow cancelled lineitems to be received and invoiced
+    
+    Acquisitions staff need to be able to receive and invoice cancelled items,
+    particularly when those items are backordered. This branch restores the
+    ability to perform these actions on cancelled lineitems from the PO
+    screen.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+1	2	Open-ILS/web/js/ui/default/acq/common/li_table.js
+
+commit b9be5b319f5a4855b34ce3bb8f508dfa90d22ca0
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Thu Feb 20 12:21:57 2014 -0500
+
+    LP#1282704: Serials: in routing lists, avoid extra page breaks wasting paper at print time
+    
+    If you're using batch receive, and you have two copies (and therefore
+    two streams) that you're receiving with the Routing List? checkbox
+    checked, but only one of those streams actually has a routing list,
+    you'll note before this patch is applied that you get an extra page of
+    blank paper if you print the routing list that pops up.
+    
+    This fixes that.
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+4	1	Open-ILS/web/js/ui/default/serial/print_routing_list_users.js
+
+commit 7c8c96a8c95d0ed4717f5f012cab7986586beca3
+Author: Yamil Suarez <yamil@yamil.com>
+Date:   Fri Mar 28 11:45:11 2014 -0400
+
+    Documentation: Changed return type of staging_importer() SP
+    
+    Now it returns VOID, before it retunred NULL and gave an error
+    
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+1	1	docs/admin_initial_setup/migrating_your_data.txt
+
+commit 1a3f94752f1a78fd0557090ed698d9a62bcd5795
+Author: Jason Etheridge <jason@esilibrary.com>
+Date:   Fri Nov 8 14:12:43 2013 -0500
+
+    remove XUL @persist from list column definitions
+    
+    We moved away from @persist a long time ago, but some cruft remained.  This
+    would cause a local file, localstore.rdf, to balloon in size as columns were
+    adjusted in XUL-based lists.  Since this is an XML file, writing and parsing
+    it can get very expensive if the file grows too large, which it has done for
+    some people.
+    
+    This change keeps that file from growing further based on these list columns,
+    but it may be worth deleting the localstore.rdf file or creating a new staff
+    client profile (uninstalling and reinstalling the staff client DOES NOT
+    accomplish this).
+    
+    Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+1	1	Open-ILS/xul/staff_client/server/cat/copy_summary.xul
+24	163	Open-ILS/xul/staff_client/server/circ/util.js
+76	76	Open-ILS/xul/staff_client/server/patron/util.js
+10	28	Open-ILS/xul/staff_client/server/serial/manage_items.js
+
+commit fc676ebcab162267e22eeb1bb9c8a1dbf8b37748
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Tue Mar 25 09:30:38 2014 -0400
+
+    Change xref syntax to avoid docs processing bug
+    
+    The current Documentation processing script can't handle the newer xref
+    syntax for cross references. Let's use the older syntax for now, and
+    consider changing over in the future, after the processing bug is fixed.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+2	2	docs/admin/staff_client-button_bar_toolbar.txt
+
+commit 06df02d4421ad92a7c2b057980bfdbdfe59351df
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Thu Mar 20 15:52:30 2014 -0400
+
+    Docs: Revive/merge content into "Using the Staff Client"
+    
+    This commit brings in three old sections and merges with any similar
+    content.
+    
+    - Revive old section about sticky check box settings
+    - Merge old section about Font and Sound settings
+    
+      Adds a brief section about zooming in the OPAC, and otherwise only
+      reformats some lines to make them git-friendly.
+    
+    - Docs: Fix and copy Customize Toolbars section
+    
+      The old "Customizable Toolbar" docs section is already revived in the
+      Evergreen Book "System Configuration and Customization" chapter. Since
+      this feature seems to belong under "Using the Staff Client ->
+      Workstation Administration", this commit duplicates it into that
+      chapter. This also fixes a few asciidoc bugs in both places. And it
+      fixes one bug in root.txt which caused "phonelist.txt" to be mentioned
+      at the bottom of this section, but not actually included in the docs
+      structure.
+    
+      In addition, the section "Button Bar/Toolbar" that was also under
+      "Workstation Administration" has been moved up a level, since it
+      pertains more to staff client users rather than admins. And the
+      admin-specific content at the end of that section has been replaced
+      with a link to the newly duplicated "Customizable Toolbar" section.
+    
+      The result of this reorganization should be:
+    
+      - Using the Staff Client
+        - Button Bar/Toolbar (for staff client users)
+        - Workstation Administration
+          - Customizable Toolbar (for staff client admins)
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+15	14	docs/admin/customize_staff_client.txt
+36	0	docs/admin/staff_client-button_bar_toolbar.txt
+17	0	docs/admin/staff_client-sticky_settings.txt
+77	54	docs/admin/workstation_admin.txt
+-	-	docs/media/staff_client-3.png
+-	-	docs/media/staff_client-4.png
+11	1	docs/root.txt
+ create mode 100644 docs/admin/staff_client-button_bar_toolbar.txt
+ create mode 100644 docs/admin/staff_client-sticky_settings.txt
+ create mode 100644 docs/media/staff_client-3.png
+ create mode 100644 docs/media/staff_client-4.png
+
+commit 508d562743852214bdadbb71e0c401b115c7ad62
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Thu Mar 20 14:53:00 2014 -0400
+
+    Docs: Revive old section about Column Picker
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+29	0	docs/admin/staff_client-column_picker.txt
+-	-	docs/media/column_picker_dojo.png
+-	-	docs/media/column_picker_xul.png
+-	-	docs/media/column_picker_xul_save.png
+2	0	docs/root.txt
+ create mode 100644 docs/admin/staff_client-column_picker.txt
+ create mode 100644 docs/media/column_picker_dojo.png
+ create mode 100644 docs/media/column_picker_xul.png
+ create mode 100644 docs/media/column_picker_xul_save.png
+
+commit 8c8342d615171df66eea3ef02b7231b81ec35369
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Thu Mar 20 10:53:36 2014 -0400
+
+    Add missing screenshot files for new 2.5 Acq import feature
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+-	-	docs/media/marc_batch_import_acq_overlay.png
+-	-	docs/media/marc_batch_import_popup.png
+ create mode 100644 docs/media/marc_batch_import_acq_overlay.png
+ create mode 100644 docs/media/marc_batch_import_popup.png
+
+commit dd5ac72f5df3fd084a59a5979accb88036b85779
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Wed Mar 19 15:56:44 2014 -0400
+
+    Docs: Reformat numbered lists into AsciiDoc syntax
+    
+    This commit improves list formatting in the Batch Importing section by
+    converting various hard-coded numbered lists into AsciiDoc syntax. Where
+    images are included, those are forced to be inline by adding a '+' to the
+    preceeding line. And whitespace was removed from the end of two lines. No
+    other changes are included.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+48	52	docs/cataloging/batch_importing_MARC.txt
+
+commit 794a5db50d159788d7638417f21b2c13e6fa8114
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Mon Jan 13 09:44:55 2014 -0500
+
+    Document new 2.5 feature in Acq docs
+    
+    This commit adds documentation in two places for the new Acq feature
+    "Opportunistic Acquisitions In-Process Copy Overlay". First, a short
+    note is added to the "Load MARC Order Records" doc. Second, the feature
+    is described more thoroughly in the "Batch Importing MARC Records" doc.
+    Also, this commit cleans up a hard-coded ordered list and a few small
+    wording and formatting problems.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+7	6	docs/acquisitions/vandelay_acquisitions_integration.txt
+36	30	docs/cataloging/batch_importing_MARC.txt
+
+commit 67cf1354b31c11f8f3e7a46492785d47a45eadc2
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Wed Mar 5 17:57:24 2014 -0500
+
+    LP1198983: Remove deprecated useragent.override variable
+    
+    To quote Dan Wells in bug comment #6:
+    
+    Back in the 2.2 days, Evergreen had code which set the
+    'general.useragent.override' to something like 'Mozilla/5.0 (Windows; U;
+    Windows NT 6.1; en-US; rv:1.9.2.25) Gecko/20111212 oils_xulrunner
+    /xul/rel_2_2_0/server/'. For anyone who once had a 2.2 client installed
+    and upgraded from it, this setting persists (this is the situation for
+    most stations in our library).
+    
+    Since this string does not match the new test for 'open_ils_staff_client'
+    in the useragent, these clients are not properly streaming requests. This
+    problem was most easily noticed in Vandelay progress bars (they always
+    jumped from 0% to 100%).
+    
+    This commit adds the code provided by Bill Erickson in the LP bug
+    comments. To test it, you can add the 'general.useragent.override'
+    setting to your staff client with any value (using the 'about:config'
+    interface), then run this code and check that your setting is gone.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+14	0	Open-ILS/xul/staff_client/chrome/content/OpenILS/data.js
+
+commit df4eb6316c9d0a4a798bb73952b209efc0029942
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Tue Feb 18 14:38:07 2014 -0500
+
+    LP#1281750 Ignore deleted users in usrgroup info APIs
+    
+    Ignore deleted users in these API calls:
+    
+    open-ils.actor.usergroup.members.balance_owed
+    open-ils.actor.usergroup.members.retrieve
+    open-ils.actor.usergroup.leaders.retrieve
+    open-ils.actor.address.members
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+10	5	Open-ILS/src/perlmods/lib/OpenILS/Application/Actor/UserGroups.pm
+
+commit 650e70e337adf410535d274488ad352c486e752a
+Author: Elliot V <evoris@slcconline.edu>
+Date:   Thu Mar 6 23:43:00 2014 -0600
+
+    LP#1077811 Inconsistent INSTALL Instructions
+    
+    The preamble to the installation instructions, intended for
+    developers, is a bit unclear. The instructions describe actions
+    that should take place at two different points in the installation.
+    
+    This commit moves the instructions to download and install the Dojo
+    Toolkit until after the opensrf Linux user already owns the
+    /openils directory. It also adds the appropriate note for non-devs
+    to skip this section.
+    
+    Signed-off-by: Elliot V <evoris@slcconline.edu>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+21	13	docs/installation/server_installation.txt
+
+commit 33fe69e9336d70fed77c244aabf94ffc208a1553
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Wed Mar 5 12:24:19 2014 -0500
+
+    LP#1287510 Add missing column to upgrade script
+    
+    If you come via upgrade and not a fresh 2.5 DB, you are probably
+    missing the action.aged_hold_request.behind_desk column.  Add it in a
+    harmless way.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+4	0	Open-ILS/src/sql/Pg/upgrade/0868.schema.all_hold_behind_desk.sql
+
+commit ec44ea09dba5bb3ef0617db4ab83e4fbae6d225a
+Author: Ben Shum <bshum@biblio.org>
+Date:   Fri Feb 28 12:38:36 2014 -0500
+
+    LP1272316 - Stamping upgrade script for pre-calculate-prox-adjustment
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+18	0	Open-ILS/src/sql/Pg/upgrade/0869.schema.pre-calculate-prox-adjustment.sql
+0	16	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.pre-calculate-prox-adjustment.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0869.schema.pre-calculate-prox-adjustment.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.pre-calculate-prox-adjustment.sql
+
+commit 0967c3481880f97da400de7b1b9e37706eae7666
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Fri Feb 14 12:01:37 2014 -0500
+
+    LP1272316 - Calculate proximity in the DB for speed
+    
+    We need to calculate and store a (potenially adjusted) proxmity for
+    each hold and copy for use in targetting and optimization of op
+    capture.  Before this commit, we do that within the hold target
+    code itself.  Now we'll do it when the hold-copy map is inserted,
+    because we have the same information available at that time as we
+    have in the targeter.  This will both speed up the apparent cost of
+    the calculation, because it avoids the cost of a network round-trip,
+    and the total number of SELECTs we must issue, because the proximity
+    value will now be cached for use by the proximity map function.
+    
+    Backward compatability is retained for the create_prox_map() function
+    in case any other code is depending on that.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+14	10	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Publisher/action.pm
+9	0	Open-ILS/src/sql/Pg/090.schema.action.sql
+16	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.pre-calculate-prox-adjustment.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.pre-calculate-prox-adjustment.sql
+
+commit bb2d39d6a02ebbc0ad1f86d4038a330442aeadb4
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Fri Jan 24 12:33:13 2014 -0500
+
+    LP1272316 - Followup to make ou_ancestor_setting() even faster
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+10	8	Open-ILS/src/perlmods/lib/OpenILS/Application/AppUtils.pm
+
+commit 78b55527ea52c73fe1d33472c1b268e350c00444
+Author: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+Date:   Fri Jan 24 12:24:06 2014 -0500
+
+    LP1272316 - Speed up these settings lookups in the hold targeter that get repeated a ...
+    
+    ... lot when there are lots of copies for a hold.
+    
+    Signed-off-by: Lebbeous Fogle-Weekley <lebbeous@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+15	14	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Publisher/action.pm
