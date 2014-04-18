@@ -6083,6 +6083,13 @@ INSERT INTO config.marc21_ff_pos_map (fixed_field, tag, rec_type,start_pos, leng
 INSERT INTO config.marc21_ff_pos_map (fixed_field, tag, rec_type,start_pos, length, default_val) VALUES ('Subj', '008', 'AUT', 11, 1, '|');
 INSERT INTO config.marc21_ff_pos_map (fixed_field, tag, rec_type,start_pos, length, default_val) VALUES ('RecStat', 'ldr', 'AUT', 5, 1, 'n');
 
+INSERT INTO config.marc21_ff_pos_map (fixed_field, tag, rec_type,start_pos, length, default_val) VALUES ('File', '008', 'COM', 26, 1, 'u');
+INSERT INTO config.marc21_ff_pos_map (fixed_field, tag, rec_type,start_pos, length, default_val) VALUES ('File', '006', 'COM', 9, 1, 'u');
+INSERT INTO config.marc21_ff_pos_map (fixed_field, tag, rec_type,start_pos, length, default_val) VALUES ('Freq', '008', 'SER', 18, 1, ' ');
+INSERT INTO config.marc21_ff_pos_map (fixed_field, tag, rec_type,start_pos, length, default_val) VALUES ('Freq', '006', 'SER', 1, 1, ' ');
+INSERT INTO config.marc21_ff_pos_map (fixed_field, tag, rec_type,start_pos, length, default_val) VALUES ('Regl', '008', 'SER', 19, 1, ' ');
+INSERT INTO config.marc21_ff_pos_map (fixed_field, tag, rec_type,start_pos, length, default_val) VALUES ('Regl', '006', 'SER', 2, 1, ' ');
+
 -- record attributes
 INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('alph','Alph','Alph');
 INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('audience','Audn','Audn');
@@ -6110,6 +6117,9 @@ INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('ff_s
 INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('type_mat','TMat','TMat');
 INSERT INTO config.record_attr_definition (name,label,fixed_field,multi) values ('item_type','Type','Type',FALSE);
 INSERT INTO config.record_attr_definition (name,label,phys_char_sf) values ('vr_format','Videorecording format',72);
+INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('file','File','File');
+INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('freq','Freq','Freq');
+INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('regl','Regl','Regl');
 INSERT INTO config.record_attr_definition (name,label,sorter,filter,tag,multi) values ('titlesort','Title',TRUE,FALSE,'tnf',FALSE);
 INSERT INTO config.record_attr_definition (name,label,sorter,filter,tag,sf_list,multi) values ('authorsort','Author',TRUE,FALSE,'1%','abcdefgklmnopqrstvxyz',FALSE);
 INSERT INTO config.record_attr_definition (name, label, phys_char_sf)
