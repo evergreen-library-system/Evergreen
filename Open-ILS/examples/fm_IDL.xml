@@ -5423,7 +5423,8 @@ SELECT  usr,
 			ahr.capture_time IS NULL AND
 			ahr.cancel_time IS NULL AND
 			csp.id IS NULL AND
-			(ahr.expire_time is NULL OR ahr.expire_time > NOW())
+			(ahr.expire_time is NULL OR ahr.expire_time > NOW()) AND
+			acp.status IN (0,7)
 		]]></oils_persist:source_definition>
 		<fields oils_persist:primary="id">
 			<field reporter:label="Status" name="status" oils_persist:virtual="true" />
