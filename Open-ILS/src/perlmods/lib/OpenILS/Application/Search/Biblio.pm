@@ -1008,7 +1008,10 @@ sub cat_search_z_style_wrapper {
     $$searchhash{searches}{keyword}{term} .= join ' ', $$searchhash{searches}{keyword}{term}, $$args{search}{pubdate}   if $$args{search}{pubdate};
     $$searchhash{searches}{keyword}{term} .= join ' ', $$searchhash{searches}{keyword}{term}, $$args{search}{item_type} if $$args{search}{item_type};
 
-    my ($list) = $self->method_lookup('open-ils.search.biblio.multiclass.staged')->run( $searchhash );
+    my $method = 'open-ils.search.biblio.multiclass.staged';
+    $method .= '.staff' if $self->api_name =~ /staff$/;
+
+    my ($list) = $self->method_lookup($method)->run( $searchhash );
 
     if ($list->{count} > 0 and @{$list->{ids}}) {
         $result->{count} = $list->{count};
