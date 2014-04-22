@@ -1,0 +1,269 @@
+URI	code	Label (English)	Label (French)
+http://id.loc.gov/vocabulary/relators/abr	abr	Abridger	
+http://id.loc.gov/vocabulary/relators/acp	acp	Art copyist	
+http://id.loc.gov/vocabulary/relators/act	act	Actor	
+http://id.loc.gov/vocabulary/relators/adi	adi	Art director	
+http://id.loc.gov/vocabulary/relators/adp	adp	Adapter	
+http://id.loc.gov/vocabulary/relators/aft	aft	Author of afterword, colophon, etc.	
+http://id.loc.gov/vocabulary/relators/anl	anl	Analyst	
+http://id.loc.gov/vocabulary/relators/anm	anm	Animator	
+http://id.loc.gov/vocabulary/relators/ann	ann	Annotator	
+http://id.loc.gov/vocabulary/relators/ant	ant	Bibliographic antecedent	
+http://id.loc.gov/vocabulary/relators/ape	ape	Appellee	
+http://id.loc.gov/vocabulary/relators/apl	apl	Appellant	
+http://id.loc.gov/vocabulary/relators/app	app	Applicant	
+http://id.loc.gov/vocabulary/relators/aqt	aqt	Author in quotations or text abstracts	
+http://id.loc.gov/vocabulary/relators/arc	arc	Architect	
+http://id.loc.gov/vocabulary/relators/ard	ard	Artistic director	
+http://id.loc.gov/vocabulary/relators/arr	arr	Arranger	
+http://id.loc.gov/vocabulary/relators/art	art	Artist	
+http://id.loc.gov/vocabulary/relators/asg	asg	Assignee	
+http://id.loc.gov/vocabulary/relators/asn	asn	Associated name	
+http://id.loc.gov/vocabulary/relators/ato	ato	Autographer	
+http://id.loc.gov/vocabulary/relators/att	att	Attributed name	
+http://id.loc.gov/vocabulary/relators/auc	auc	Auctioneer	
+http://id.loc.gov/vocabulary/relators/aud	aud	Author of dialog	
+http://id.loc.gov/vocabulary/relators/aui	aui	Author of introduction, etc.	
+http://id.loc.gov/vocabulary/relators/aus	aus	Screenwriter	
+http://id.loc.gov/vocabulary/relators/aut	aut	Author	
+http://id.loc.gov/vocabulary/relators/bdd	bdd	Binding designer	
+http://id.loc.gov/vocabulary/relators/bjd	bjd	Bookjacket designer	
+http://id.loc.gov/vocabulary/relators/bkd	bkd	Book designer	
+http://id.loc.gov/vocabulary/relators/bkp	bkp	Book producer	
+http://id.loc.gov/vocabulary/relators/blw	blw	Blurb writer	
+http://id.loc.gov/vocabulary/relators/bnd	bnd	Binder	
+http://id.loc.gov/vocabulary/relators/bpd	bpd	Bookplate designer	
+http://id.loc.gov/vocabulary/relators/brd	brd	Broadcaster	
+http://id.loc.gov/vocabulary/relators/brl	brl	Braille embosser	
+http://id.loc.gov/vocabulary/relators/bsl	bsl	Bookseller	
+http://id.loc.gov/vocabulary/relators/cas	cas	Caster	
+http://id.loc.gov/vocabulary/relators/ccp	ccp	Conceptor	
+http://id.loc.gov/vocabulary/relators/chr	chr	Choreographer	
+http://id.loc.gov/vocabulary/relators/cli	cli	Client	
+http://id.loc.gov/vocabulary/relators/cll	cll	Calligrapher	
+http://id.loc.gov/vocabulary/relators/clr	clr	Colorist	
+http://id.loc.gov/vocabulary/relators/clt	clt	Collotyper	
+http://id.loc.gov/vocabulary/relators/cmm	cmm	Commentator	
+http://id.loc.gov/vocabulary/relators/cmp	cmp	Composer	
+http://id.loc.gov/vocabulary/relators/cmt	cmt	Compositor	
+http://id.loc.gov/vocabulary/relators/cnd	cnd	Conductor	
+http://id.loc.gov/vocabulary/relators/cng	cng	Cinematographer	
+http://id.loc.gov/vocabulary/relators/cns	cns	Censor	
+http://id.loc.gov/vocabulary/relators/coe	coe	Contestant-appellee	
+http://id.loc.gov/vocabulary/relators/col	col	Collector	
+http://id.loc.gov/vocabulary/relators/com	com	Compiler	
+http://id.loc.gov/vocabulary/relators/con	con	Conservator	
+http://id.loc.gov/vocabulary/relators/cor	cor	Collection registrar	
+http://id.loc.gov/vocabulary/relators/cos	cos	Contestant	
+http://id.loc.gov/vocabulary/relators/cot	cot	Contestant-appellant	
+http://id.loc.gov/vocabulary/relators/cou	cou	Court governed	
+http://id.loc.gov/vocabulary/relators/cov	cov	Cover designer	
+http://id.loc.gov/vocabulary/relators/cpc	cpc	Copyright claimant	
+http://id.loc.gov/vocabulary/relators/cpe	cpe	Complainant-appellee	
+http://id.loc.gov/vocabulary/relators/cph	cph	Copyright holder	
+http://id.loc.gov/vocabulary/relators/cpl	cpl	Complainant	
+http://id.loc.gov/vocabulary/relators/cpt	cpt	Complainant-appellant	
+http://id.loc.gov/vocabulary/relators/cre	cre	Creator	
+http://id.loc.gov/vocabulary/relators/crp	crp	Correspondent	
+http://id.loc.gov/vocabulary/relators/crr	crr	Corrector	
+http://id.loc.gov/vocabulary/relators/crt	crt	Court reporter	
+http://id.loc.gov/vocabulary/relators/csl	csl	Consultant	
+http://id.loc.gov/vocabulary/relators/csp	csp	Consultant to a project	
+http://id.loc.gov/vocabulary/relators/cst	cst	Costume designer	
+http://id.loc.gov/vocabulary/relators/ctb	ctb	Contributor	
+http://id.loc.gov/vocabulary/relators/cte	cte	Contestee-appellee	
+http://id.loc.gov/vocabulary/relators/ctg	ctg	Cartographer	
+http://id.loc.gov/vocabulary/relators/ctr	ctr	Contractor	
+http://id.loc.gov/vocabulary/relators/cts	cts	Contestee	
+http://id.loc.gov/vocabulary/relators/ctt	ctt	Contestee-appellant	
+http://id.loc.gov/vocabulary/relators/cur	cur	Curator	
+http://id.loc.gov/vocabulary/relators/cwt	cwt	Commentator for written text	
+http://id.loc.gov/vocabulary/relators/dbp	dbp	Distribution place	
+http://id.loc.gov/vocabulary/relators/dfd	dfd	Defendant	
+http://id.loc.gov/vocabulary/relators/dfe	dfe	Defendant-appellee	
+http://id.loc.gov/vocabulary/relators/dft	dft	Defendant-appellant	
+http://id.loc.gov/vocabulary/relators/dgg	dgg	Degree granting institution	
+http://id.loc.gov/vocabulary/relators/dgs	dgs	Degree supervisor	
+http://id.loc.gov/vocabulary/relators/dis	dis	Dissertant	
+http://id.loc.gov/vocabulary/relators/dln	dln	Delineator	
+http://id.loc.gov/vocabulary/relators/dnc	dnc	Dancer	
+http://id.loc.gov/vocabulary/relators/dnr	dnr	Donor	
+http://id.loc.gov/vocabulary/relators/dpc	dpc	Depicted	
+http://id.loc.gov/vocabulary/relators/dpt	dpt	Depositor	
+http://id.loc.gov/vocabulary/relators/drm	drm	Draftsman	
+http://id.loc.gov/vocabulary/relators/drt	drt	Director	
+http://id.loc.gov/vocabulary/relators/dsr	dsr	Designer	
+http://id.loc.gov/vocabulary/relators/dst	dst	Distributor	
+http://id.loc.gov/vocabulary/relators/dtc	dtc	Data contributor	
+http://id.loc.gov/vocabulary/relators/dte	dte	Dedicatee	
+http://id.loc.gov/vocabulary/relators/dtm	dtm	Data manager	
+http://id.loc.gov/vocabulary/relators/dto	dto	Dedicator	
+http://id.loc.gov/vocabulary/relators/dub	dub	Dubious author	
+http://id.loc.gov/vocabulary/relators/edc	edc	Editor of compilation	
+http://id.loc.gov/vocabulary/relators/edm	edm	Editor of moving image work	
+http://id.loc.gov/vocabulary/relators/edt	edt	Editor	
+http://id.loc.gov/vocabulary/relators/egr	egr	Engraver	
+http://id.loc.gov/vocabulary/relators/elg	elg	Electrician	
+http://id.loc.gov/vocabulary/relators/elt	elt	Electrotyper	
+http://id.loc.gov/vocabulary/relators/eng	eng	Engineer	
+http://id.loc.gov/vocabulary/relators/enj	enj	Enacting jurisdiction	
+http://id.loc.gov/vocabulary/relators/etr	etr	Etcher	
+http://id.loc.gov/vocabulary/relators/evp	evp	Event place	
+http://id.loc.gov/vocabulary/relators/exp	exp	Expert	
+http://id.loc.gov/vocabulary/relators/fac	fac	Facsimilist	
+http://id.loc.gov/vocabulary/relators/fds	fds	Film distributor	
+http://id.loc.gov/vocabulary/relators/fld	fld	Field director	
+http://id.loc.gov/vocabulary/relators/flm	flm	Film editor	
+http://id.loc.gov/vocabulary/relators/fmd	fmd	Film director	
+http://id.loc.gov/vocabulary/relators/fmk	fmk	Filmmaker	
+http://id.loc.gov/vocabulary/relators/fmo	fmo	Former owner	
+http://id.loc.gov/vocabulary/relators/fmp	fmp	Film producer	
+http://id.loc.gov/vocabulary/relators/fnd	fnd	Funder	
+http://id.loc.gov/vocabulary/relators/fpy	fpy	First party	
+http://id.loc.gov/vocabulary/relators/frg	frg	Forger	
+http://id.loc.gov/vocabulary/relators/gis	gis	Geographic information specialist	
+http://id.loc.gov/vocabulary/relators/his	his	Host institution	
+http://id.loc.gov/vocabulary/relators/hnr	hnr	Honoree	
+http://id.loc.gov/vocabulary/relators/hst	hst	Host	
+http://id.loc.gov/vocabulary/relators/ill	ill	Illustrator	
+http://id.loc.gov/vocabulary/relators/ilu	ilu	Illuminator	
+http://id.loc.gov/vocabulary/relators/ins	ins	Inscriber	
+http://id.loc.gov/vocabulary/relators/inv	inv	Inventor	
+http://id.loc.gov/vocabulary/relators/isb	isb	Issuing body	
+http://id.loc.gov/vocabulary/relators/itr	itr	Instrumentalist	
+http://id.loc.gov/vocabulary/relators/ive	ive	Interviewee	
+http://id.loc.gov/vocabulary/relators/ivr	ivr	Interviewer	
+http://id.loc.gov/vocabulary/relators/jud	jud	Judge	
+http://id.loc.gov/vocabulary/relators/jug	jug	Jurisdiction governed	
+http://id.loc.gov/vocabulary/relators/lbr	lbr	Laboratory	
+http://id.loc.gov/vocabulary/relators/lbt	lbt	Librettist	
+http://id.loc.gov/vocabulary/relators/ldr	ldr	Laboratory director	
+http://id.loc.gov/vocabulary/relators/led	led	Lead	
+http://id.loc.gov/vocabulary/relators/lee	lee	Libelee-appellee	
+http://id.loc.gov/vocabulary/relators/lel	lel	Libelee	
+http://id.loc.gov/vocabulary/relators/len	len	Lender	
+http://id.loc.gov/vocabulary/relators/let	let	Libelee-appellant	
+http://id.loc.gov/vocabulary/relators/lgd	lgd	Lighting designer	
+http://id.loc.gov/vocabulary/relators/lie	lie	Libelant-appellee	
+http://id.loc.gov/vocabulary/relators/lil	lil	Libelant	
+http://id.loc.gov/vocabulary/relators/lit	lit	Libelant-appellant	
+http://id.loc.gov/vocabulary/relators/lsa	lsa	Landscape architect	
+http://id.loc.gov/vocabulary/relators/lse	lse	Licensee	
+http://id.loc.gov/vocabulary/relators/lso	lso	Licensor	
+http://id.loc.gov/vocabulary/relators/ltg	ltg	Lithographer	
+http://id.loc.gov/vocabulary/relators/lyr	lyr	Lyricist	
+http://id.loc.gov/vocabulary/relators/mcp	mcp	Music copyist	
+http://id.loc.gov/vocabulary/relators/mdc	mdc	Metadata contact	
+http://id.loc.gov/vocabulary/relators/med	med	Medium	
+http://id.loc.gov/vocabulary/relators/mfp	mfp	Manufacture place	
+http://id.loc.gov/vocabulary/relators/mfr	mfr	Manufacturer	
+http://id.loc.gov/vocabulary/relators/mod	mod	Moderator	
+http://id.loc.gov/vocabulary/relators/mon	mon	Monitor	
+http://id.loc.gov/vocabulary/relators/mrb	mrb	Marbler	
+http://id.loc.gov/vocabulary/relators/mrk	mrk	Markup editor	
+http://id.loc.gov/vocabulary/relators/msd	msd	Musical director	
+http://id.loc.gov/vocabulary/relators/mte	mte	Metal-engraver	
+http://id.loc.gov/vocabulary/relators/mtk	mtk	Minute taker	
+http://id.loc.gov/vocabulary/relators/mus	mus	Musician	
+http://id.loc.gov/vocabulary/relators/nrt	nrt	Narrator	
+http://id.loc.gov/vocabulary/relators/opn	opn	Opponent	
+http://id.loc.gov/vocabulary/relators/org	org	Originator	
+http://id.loc.gov/vocabulary/relators/orm	orm	Organizer	
+http://id.loc.gov/vocabulary/relators/osp	osp	Onscreen presenter	
+http://id.loc.gov/vocabulary/relators/oth	oth	Other	
+http://id.loc.gov/vocabulary/relators/own	own	Owner	
+http://id.loc.gov/vocabulary/relators/pan	pan	Panelist	
+http://id.loc.gov/vocabulary/relators/pat	pat	Patron	
+http://id.loc.gov/vocabulary/relators/pbd	pbd	Publishing director	
+http://id.loc.gov/vocabulary/relators/pbl	pbl	Publisher	
+http://id.loc.gov/vocabulary/relators/pdr	pdr	Project director	
+http://id.loc.gov/vocabulary/relators/pfr	pfr	Proofreader	
+http://id.loc.gov/vocabulary/relators/pht	pht	Photographer	
+http://id.loc.gov/vocabulary/relators/plt	plt	Platemaker	
+http://id.loc.gov/vocabulary/relators/pma	pma	Permitting agency	
+http://id.loc.gov/vocabulary/relators/pmn	pmn	Production manager	
+http://id.loc.gov/vocabulary/relators/pop	pop	Printer of plates	
+http://id.loc.gov/vocabulary/relators/ppm	ppm	Papermaker	
+http://id.loc.gov/vocabulary/relators/ppt	ppt	Puppeteer	
+http://id.loc.gov/vocabulary/relators/pra	pra	Praeses	
+http://id.loc.gov/vocabulary/relators/prc	prc	Process contact	
+http://id.loc.gov/vocabulary/relators/prd	prd	Production personnel	
+http://id.loc.gov/vocabulary/relators/pre	pre	Presenter	
+http://id.loc.gov/vocabulary/relators/prf	prf	Performer	
+http://id.loc.gov/vocabulary/relators/prg	prg	Programmer	
+http://id.loc.gov/vocabulary/relators/prm	prm	Printmaker	
+http://id.loc.gov/vocabulary/relators/prn	prn	Production company	
+http://id.loc.gov/vocabulary/relators/pro	pro	Producer	
+http://id.loc.gov/vocabulary/relators/prp	prp	Production place	
+http://id.loc.gov/vocabulary/relators/prs	prs	Production designer	
+http://id.loc.gov/vocabulary/relators/prt	prt	Printer	
+http://id.loc.gov/vocabulary/relators/prv	prv	Provider	
+http://id.loc.gov/vocabulary/relators/pta	pta	Patent applicant	
+http://id.loc.gov/vocabulary/relators/pte	pte	Plaintiff-appellee	
+http://id.loc.gov/vocabulary/relators/ptf	ptf	Plaintiff	
+http://id.loc.gov/vocabulary/relators/pth	pth	Patent holder	
+http://id.loc.gov/vocabulary/relators/ptt	ptt	Plaintiff-appellant	
+http://id.loc.gov/vocabulary/relators/pup	pup	Publication place	
+http://id.loc.gov/vocabulary/relators/rbr	rbr	Rubricator	
+http://id.loc.gov/vocabulary/relators/rcd	rcd	Recordist	
+http://id.loc.gov/vocabulary/relators/rce	rce	Recording engineer	
+http://id.loc.gov/vocabulary/relators/rcp	rcp	Addressee	
+http://id.loc.gov/vocabulary/relators/rdd	rdd	Radio director	
+http://id.loc.gov/vocabulary/relators/red	red	Redaktor	
+http://id.loc.gov/vocabulary/relators/ren	ren	Renderer	
+http://id.loc.gov/vocabulary/relators/res	res	Researcher	
+http://id.loc.gov/vocabulary/relators/rev	rev	Reviewer	
+http://id.loc.gov/vocabulary/relators/rpc	rpc	Radio producer	
+http://id.loc.gov/vocabulary/relators/rps	rps	Repository	
+http://id.loc.gov/vocabulary/relators/rpt	rpt	Reporter	
+http://id.loc.gov/vocabulary/relators/rpy	rpy	Responsible party	
+http://id.loc.gov/vocabulary/relators/rse	rse	Respondent-appellee	
+http://id.loc.gov/vocabulary/relators/rsg	rsg	Restager	
+http://id.loc.gov/vocabulary/relators/rsp	rsp	Respondent	
+http://id.loc.gov/vocabulary/relators/rsr	rsr	Restorationist	
+http://id.loc.gov/vocabulary/relators/rst	rst	Respondent-appellant	
+http://id.loc.gov/vocabulary/relators/rth	rth	Research team head	
+http://id.loc.gov/vocabulary/relators/rtm	rtm	Research team member	
+http://id.loc.gov/vocabulary/relators/sad	sad	Scientific advisor	
+http://id.loc.gov/vocabulary/relators/sce	sce	Scenarist	
+http://id.loc.gov/vocabulary/relators/scl	scl	Sculptor	
+http://id.loc.gov/vocabulary/relators/scr	scr	Scribe	
+http://id.loc.gov/vocabulary/relators/sds	sds	Sound designer	
+http://id.loc.gov/vocabulary/relators/sec	sec	Secretary	
+http://id.loc.gov/vocabulary/relators/sgd	sgd	Stage director	
+http://id.loc.gov/vocabulary/relators/sgn	sgn	Signer	
+http://id.loc.gov/vocabulary/relators/sht	sht	Supporting host	
+http://id.loc.gov/vocabulary/relators/sll	sll	Seller	
+http://id.loc.gov/vocabulary/relators/sng	sng	Singer	
+http://id.loc.gov/vocabulary/relators/spk	spk	Speaker	
+http://id.loc.gov/vocabulary/relators/spn	spn	Sponsor	
+http://id.loc.gov/vocabulary/relators/spy	spy	Second party	
+http://id.loc.gov/vocabulary/relators/srv	srv	Surveyor	
+http://id.loc.gov/vocabulary/relators/std	std	Set designer	
+http://id.loc.gov/vocabulary/relators/stg	stg	Setting	
+http://id.loc.gov/vocabulary/relators/stl	stl	Storyteller	
+http://id.loc.gov/vocabulary/relators/stm	stm	Stage manager	
+http://id.loc.gov/vocabulary/relators/stn	stn	Standards body	
+http://id.loc.gov/vocabulary/relators/str	str	Stereotyper	
+http://id.loc.gov/vocabulary/relators/tcd	tcd	Technical director	
+http://id.loc.gov/vocabulary/relators/tch	tch	Teacher	
+http://id.loc.gov/vocabulary/relators/ths	ths	Thesis advisor	
+http://id.loc.gov/vocabulary/relators/tld	tld	Television director	
+http://id.loc.gov/vocabulary/relators/tlp	tlp	Television producer	
+http://id.loc.gov/vocabulary/relators/trc	trc	Transcriber	
+http://id.loc.gov/vocabulary/relators/trl	trl	Translator	
+http://id.loc.gov/vocabulary/relators/tyd	tyd	Type designer	
+http://id.loc.gov/vocabulary/relators/tyg	tyg	Typographer	
+http://id.loc.gov/vocabulary/relators/uvp	uvp	University place	
+http://id.loc.gov/vocabulary/relators/vac	vac	Voice actor	
+http://id.loc.gov/vocabulary/relators/vdg	vdg	Videographer	
+http://id.loc.gov/vocabulary/relators/wac	wac	Writer of added commentary	
+http://id.loc.gov/vocabulary/relators/wal	wal	Writer of added lyrics	
+http://id.loc.gov/vocabulary/relators/wam	wam	Writer of accompanying material	
+http://id.loc.gov/vocabulary/relators/wat	wat	Writer of added text	
+http://id.loc.gov/vocabulary/relators/wdc	wdc	Woodcutter	
+http://id.loc.gov/vocabulary/relators/wde	wde	Wood engraver	
+http://id.loc.gov/vocabulary/relators/win	win	Writer of introduction	
+http://id.loc.gov/vocabulary/relators/wit	wit	Witness	
+http://id.loc.gov/vocabulary/relators/wpr	wpr	Writer of preface	
+http://id.loc.gov/vocabulary/relators/wst	wst	Writer of supplementary textual content	
