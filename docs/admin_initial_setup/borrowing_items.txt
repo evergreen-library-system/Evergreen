@@ -226,6 +226,10 @@ this amount of time, an attempt to check out the item to the patron that it is
 already checked out to will simply renew the circulation. 
 * *Cap Max Fine at Item Price* - This prevents the system from charging more
 than the item price in overdue fines.
+* *Lost Item Billing: New Min/Max Price Settings* - Patrons will be billed
+at least the Min Price and at most the Max price, even if the item's price
+is outside that range. To set a fixed price for all lost items, set min and
+max to the same amount.
 * *Charge fines on overdue circulations when closed* - Normally, fines are not
 charged when a library is closed. When set to True, fines will be charged during
 scheduled closings and normal weekly closed days. 
