@@ -2656,14 +2656,23 @@ static char* searchFunctionPredicate( const char* class_alias, osrfHash* field,
 	if( !val )
 		return NULL;
 
+	const char* right_percent = "";
+	const char* real_op       = op;
+
+	if( !strcasecmp( op, "startwith") ) {
+		real_op = "like";
+		right_percent = "|| '%'";
+	}
+
 	growing_buffer* sql_buf = buffer_init( 32 );
 	buffer_fadd(
 		sql_buf,
-		"\"%s\".%s %s %s",
+		"\"%s\".%s %s %s%s",
 		class_alias,
 		osrfHashGet( field, "name" ),
-		op,
-		val
+		real_op,
+		val,
+		right_percent
 	);
 
 	free( val );
@@ -2899,8 +2908,16 @@ static char* searchSimplePredicate( const char* op, const char* class_alias,
 			op = "IS";
 	}
 
+	const char* right_percent = "";
+	const char* real_op       = op;
+
+	if( !strcasecmp( op, "startwith") ) {
+		real_op = "like";
+		right_percent = "|| '%'";
+	}
+
 	growing_buffer* sql_buf = buffer_init( 32 );
-	buffer_fadd( sql_buf, "\"%s\".%s %s %s", class_alias, osrfHashGet(field, "name"), op, val );
+	buffer_fadd( sql_buf, "\"%s\".%s %s %s%s", class_alias, osrfHashGet(field, "name"), real_op, val, right_percent );
 	char* pred = buffer_release( sql_buf );
 
 	free( val );
