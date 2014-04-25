@@ -4032,6 +4032,7 @@ sub change_hold_title {
     my $holds = $e->search_action_hold_request(
         [
             {
+	        capture_time     => undef,
                 cancel_time      => undef,
                 fulfillment_time => undef,
                 hold_type        => 'T',
@@ -4068,6 +4069,7 @@ sub change_hold_title_for_specific_holds {
     my $holds = $e->search_action_hold_request(
         [
             {
+	        capture_time     => undef,
                 cancel_time      => undef,
                 fulfillment_time => undef,
                 hold_type        => 'T',
