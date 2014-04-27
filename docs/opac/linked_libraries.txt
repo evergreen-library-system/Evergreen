@@ -1,23 +1,47 @@
-Library Links from Copy Details
--------------------------------
+Library Information Pages
+-------------------------
 
-An Evergreen site can configure the catalog to provide links to a library's web
-site from the copy details section of the search results page, the record
-summary page, and the kids catalog record summary page. These links allow a
-patron to quickly access branch information, such as the location, hours of
-operation, and/or contact information.
+The branch name displayed in the copy details section of the search results
+page, the record summary page, and the kids catalog record summary page will
+link to a library information page. This page is located at
+http://hostname/eg/opac/library/<SHORTNAME> and at
+http://hostname/eg/opac/library/<ID>.
 
-To configure the links:
+Evergreen automatically generates this page based on information entered in
+*Admin* -> *Server Administration* -> *Organizational Units* (actor.org_unit).
+The library information pages publish schema.org structured data, which can
+enable search engines and other systems to better understand your libraries and
+their resources.
 
-. Go to *Admin* -> *Local Administration* -> *Library Settings Editor*
+The library information page displays:
+
+* The name of the library
+* Opening hours
+* E-mail address
+* Phone number
+* Mailing address
+* The branch's parent library system
+
+An Evergreen site can also display a link to the library's web site on the
+information page.
+
+To display a link:
+
+. Go to *Admin* -> *Local Administration* -> *Library Settings Editor*.
 . Edit the *Library Information URL* setting for the branch.
 [NOTE]
 If you set the URL at the system level, that URL will be used as the link for
-all child branches.
-. Enter the URL in the following format: http://example.com/about.html
-[NOTE]
-If a branch or its parent does not have a Library Information URL set, the
-branch name will display as normal text.
+the system and for all child branches that do not have its own URL set.
+. Enter the URL in the following format: http://example.com/about.html.
 
+An Evergreen site may also opt to link directly from the copy details section
+of the catalog to the library web site, bypassing the automatically-generated
+library information page. To do so:
+
+. Add the library's URL to the *Library Information URL* setting as described
+above.
+. Go to *Admin* -> *Local Administration* -> *Library Settings Editor*.
+. Set the *Use external "library information URL" in copy table, if available*
+setting to true.
 
 
