@@ -384,6 +384,8 @@ include::opac/catalog_browse.txt[]
 
 include::opac/advanced_features.txt[]
 
+include::opac/linked_libraries.txt[]
+
 // Push titles down one level.
 :leveloffset: 1
 

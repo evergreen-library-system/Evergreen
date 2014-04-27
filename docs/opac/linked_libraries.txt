@@ -1,0 +1,23 @@
+Library Links from Copy Details
+-------------------------------
+
+An Evergreen site can configure the catalog to provide links to a library's web
+site from the copy details section of the search results page, the record
+summary page, and the kids catalog record summary page. These links allow a
+patron to quickly access branch information, such as the location, hours of
+operation, and/or contact information.
+
+To configure the links:
+
+. Go to *Admin* -> *Local Administration* -> *Library Settings Editor*
+. Edit the *Library Information URL* setting for the branch.
+[NOTE]
+If you set the URL at the system level, that URL will be used as the link for
+all child branches.
+. Enter the URL in the following format: http://example.com/about.html
+[NOTE]
+If a branch or its parent does not have a Library Information URL set, the
+branch name will display as normal text.
+
+
+
