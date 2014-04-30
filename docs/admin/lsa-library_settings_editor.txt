@@ -113,20 +113,11 @@ sites wanting to use Stripe. These settings can be found by clicking
 
  * "Allow Credit Card Payments" (should be 'true')
 
-   credit.payments.allow
-
  * "Enable Stripe payments" (should be 'true')
-
-   credit.processor.stripe.enabled
 
  * "Stripe publishable key" (value provided by Stripe)
 
-   credit.processor.stripe.pubkey
-
  * "Stripe secret key" (value provided by Stripe)
-
-   credit.processor.stripe.secretkey
 
  * "Name default credit processor" (should be 'Stripe')
 
-   credit.processor.default
