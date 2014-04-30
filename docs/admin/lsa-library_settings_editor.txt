@@ -11,7 +11,7 @@ during scheduled closings as well as during normal weekly closed dates.
 
 To enable this feature:
 
-. Click *Admin* -> *Local Administration* -> *Library Settings* -> *Charge fines
+. Click *Admin* -> *Local Administration* -> *Library Settings Editor* -> *Charge fines
 on overdue circulations when closed*
 . Click *Edit*.
 . Set the value to *True*.
