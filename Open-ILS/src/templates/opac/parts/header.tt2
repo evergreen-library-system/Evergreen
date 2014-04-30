@@ -90,10 +90,9 @@
         END;
     END;
 
-    # Whether we want Dojo or not may one day be a wholly distinct
-    # concern from whether we want autosuggest, so let's get used to
-    # defining that separately.
-    want_dojo = 0;
+    # Dojo is required to use the copy locations advanced search filter,
+    # therefore, it should always be enabled.
+    want_dojo = 1;
 
     use_autosuggest = ctx.get_cgf("opac.use_autosuggest");
 
