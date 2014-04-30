@@ -91,3 +91,42 @@ This feature enables you to hide specific org units from patron view in the OPAC
 2) Enter a value of 0, 1, or 2 as appropriate.  Values are described in the setting description.  To view the setting description, click the *Edit* link in the first column on the *Library Settings* interface.
 
 3) Click *Update Setting*.
+
+
+Accepting payments with Stripe
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Stripe (https://stripe.com) is a payment processing service that lets
+sites take credit card payments without payment card information ever
+touching the sites' own servers.
+
+NOTE: Using Stripe as a payment processor means that clients *must*
+have Javascript enabled in order to submit fine payments through your
+OPAC.
+
+Library Settings
+^^^^^^^^^^^^^^^^
+The following settings need to be set at the appropriate org level for
+sites wanting to use Stripe. These settings can be found by clicking 
+*Admin* -> *Local Administration* -> *Library Settings Editor*
+
+
+ * "Allow Credit Card Payments" (should be 'true')
+
+   credit.payments.allow
+
+ * "Enable Stripe payments" (should be 'true')
+
+   credit.processor.stripe.enabled
+
+ * "Stripe publishable key" (value provided by Stripe)
+
+   credit.processor.stripe.pubkey
+
+ * "Stripe secret key" (value provided by Stripe)
+
+   credit.processor.stripe.secretkey
+
+ * "Name default credit processor" (should be 'Stripe')
+
+   credit.processor.default
