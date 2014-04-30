@@ -566,93 +566,16 @@ circ.util.columns = function(modify,params) {
             'primary' : false,
             'hidden' : true,
             'sort_value' : function(my,scratch_data) {
-                var acn_id;
-                if (my.acn) {
-                    if (typeof my.acn == 'object') {
-                        acn_id = my.acn.id();
-                    } else {
-                        acn_id = my.acn;
-                    }
-                } else if (my.acp) {
-                    if (typeof my.acp.call_number() == 'object' && my.acp.call_number() != null) {
-                        acn_id = my.acp.call_number().id();
-                    } else {
-                        acn_id = my.acp.call_number();
-                    }
-                }
-                if (!acn_id && acn_id != 0) {
-                    return '';
-                } else if (acn_id == -1) {
-                    return document.getElementById('circStrings').getString('staff.circ.utils.not_cataloged');
-                } else if (acn_id == -2) {
-                    return document.getElementById('circStrings').getString('staff.circ.utils.retrieving');
-                } else {
-                    if (!my.acn) {
-                        if (typeof scratch_data == 'undefined' || scratch_data == null) {
-                            scratch_data = {};
-                        }
-                        if (typeof scratch_data['acn_map'] == 'undefined') {
-                            scratch_data['acn_map'] = {};
-                        }
-                        if (typeof scratch_data['acn_map'][ acn_id ] == 'undefined') {
-                            var x = network.simple_request("FM_ACN_RETRIEVE.authoritative",[ acn_id ]);
-                            if (x.ilsevent) {
-                                return document.getElementById('circStrings').getString('staff.circ.utils.not_cataloged');
-                            } else {
-                                my.acn = x;
-                                scratch_data['acn_map'][ acn_id ] = my.acn;
-                            }
-                        } else {
-                            my.acn = scratch_data['acn_map'][ acn_id ];
-                        }
-                    }
-                    return my.acn.label_sortkey();
-                }
-            },
+				var result_label = "label_sortkey";
+				return sort_call_numbers_by_label_sortkey(my, scratch_data, result_label);
+			},
+			
             'editable' : false, 'render' : function(my,scratch_data) {
-                var acn_id;
-                if (my.acn) {
-                    if (typeof my.acn == 'object') {
-                        acn_id = my.acn.id();
-                    } else {
-                        acn_id = my.acn;
-                    }
-                } else if (my.acp) {
-                    if (typeof my.acp.call_number() == 'object' && my.acp.call_number() != null) {
-                        acn_id = my.acp.call_number().id();
-                    } else {
-                        acn_id = my.acp.call_number();
-                    }
-                }
-                if (!acn_id && acn_id != 0) {
-                    return '';
-                } else if (acn_id == -1) {
-                    return document.getElementById('circStrings').getString('staff.circ.utils.not_cataloged');
-                } else if (acn_id == -2) {
-                    return document.getElementById('circStrings').getString('staff.circ.utils.retrieving');
-                } else {
-                    if (!my.acn) {
-                        if (typeof scratch_data == 'undefined' || scratch_data == null) {
-                            scratch_data = {};
-                        }
-                        if (typeof scratch_data['acn_map'] == 'undefined') {
-                            scratch_data['acn_map'] = {};
-                        }
-                        if (typeof scratch_data['acn_map'][ acn_id ] == 'undefined') {
-                            var x = network.simple_request("FM_ACN_RETRIEVE.authoritative",[ acn_id ]);
-                            if (x.ilsevent) {
-                                return document.getElementById('circStrings').getString('staff.circ.utils.not_cataloged');
-                            } else {
-                                my.acn = x;
-                                scratch_data['acn_map'][ acn_id ] = my.acn;
-                            }
-                        } else {
-                            my.acn = scratch_data['acn_map'][ acn_id ];
-                        }
-                    }
-                    return my.acn.label();
-                }
-            }
+				
+				var result_label = "render_label";
+				return sort_call_numbers_by_label_sortkey(my, scratch_data, result_label);
+			}  
+
         },
         {
             'id' : 'owning_lib',
@@ -2530,49 +2453,9 @@ circ.util.hold_columns = function(modify,params) {
             'primary' : false,
             'hidden' : true,
             'editable' : false, 'render' : function(my,scratch_data) {
-                var acn_id;
-                if (my.acn) {
-                    if (typeof my.acn == 'object') {
-                        acn_id = my.acn.id();
-                    } else {
-                        acn_id = my.acn;
-                    }
-                } else if (my.acp) {
-                    if (typeof my.acp.call_number() == 'object' && my.acp.call_number() != null) {
-                        acn_id = my.acp.call_number().id();
-                    } else {
-                        acn_id = my.acp.call_number();
-                    }
-                }
-                if (!acn_id && acn_id != 0) {
-                    return '';
-                } else if (acn_id == -1) {
-                    return document.getElementById('circStrings').getString('staff.circ.utils.not_cataloged');
-                } else if (acn_id == -2) {
-                    return document.getElementById('circStrings').getString('staff.circ.utils.retrieving');
-                } else {
-                    if (!my.acn) {
-                        if (typeof scratch_data == 'undefined' || scratch_data == null) {
-                            scratch_data = {};
-                        }
-                        if (typeof scratch_data['acn_map'] == 'undefined') {
-                            scratch_data['acn_map'] = {};
-                        }
-                        if (typeof scratch_data['acn_map'][ acn_id ] == 'undefined') {
-                            var x = network.simple_request("FM_ACN_RETRIEVE.authoritative",[ acn_id ]);
-                            if (x.ilsevent) {
-                                return document.getElementById('circStrings').getString('staff.circ.utils.not_cataloged');
-                            } else {
-                                my.acn = x;
-                                scratch_data['acn_map'][ acn_id ] = my.acn;
-                            }
-                        } else {
-                            my.acn = scratch_data['acn_map'][ acn_id ];
-                        }
-                    }
-                    return my.acn.label();
-                }
-            }
+				var result_label = "render_label";
+				return sort_call_numbers_by_label_sortkey(my, scratch_data, result_label);
+			   } 
         },
         {
             'id' : 'prefix',
@@ -3967,5 +3850,58 @@ circ.util.find_acq_po = function(session, copy_id) {
         }
     );
 };
+
+
+function  sort_call_numbers_by_label_sortkey(my, scratch_data, result_label){
+				var acn_id;
+                if (my.acn) {
+                    if (typeof my.acn == 'object') {
+                        acn_id = my.acn.id();
+                    } else {
+                        acn_id = my.acn;
+                    }
+                } else if (my.acp) {
+                    if (typeof my.acp.call_number() == 'object' && my.acp.call_number() != null) {
+                        acn_id = my.acp.call_number().id();
+                    } else {
+                        acn_id = my.acp.call_number();
+                    }
+                }
+                if (!acn_id && acn_id != 0) {
+                    return '';
+                } else if (acn_id == -1) {
+                    return document.getElementById('circStrings').getString('staff.circ.utils.not_cataloged');
+                } else if (acn_id == -2) {
+                    return document.getElementById('circStrings').getString('staff.circ.utils.retrieving');
+                } else {
+                    if (!my.acn) {
+                        if (typeof scratch_data == 'undefined' || scratch_data == null) {
+                            scratch_data = {};
+                        }
+                        if (typeof scratch_data['acn_map'] == 'undefined') {
+                            scratch_data['acn_map'] = {};
+                        }
+                        if (typeof scratch_data['acn_map'][ acn_id ] == 'undefined') {
+                            var x = network.simple_request("FM_ACN_RETRIEVE.authoritative",[ acn_id ]);
+                            if (x.ilsevent) {
+                                return document.getElementById('circStrings').getString('staff.circ.utils.not_cataloged');
+                            } else {
+                                my.acn = x;
+                                scratch_data['acn_map'][ acn_id ] = my.acn;
+                            }
+                        } else {
+                            my.acn = scratch_data['acn_map'][ acn_id ];
+                        }
+                    }
+                    
+                    if(result_label == "label_sortkey"){
+						return my.acn.label_sortkey();
+					}
+					else if(result_label == "render_label"){
+						return my.acn.label();
+					}
+                }
+            }; 
+
 
 dump('exiting circ/util.js\n');
