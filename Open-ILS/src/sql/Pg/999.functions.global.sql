@@ -1555,22 +1555,32 @@ BEGIN
             AND linking_subfield IS NOT NULL
             AND main_entry IS NOT NULL
     LOOP
-        link := SUBSTRING(
-            (XPATH('//*[@tag="' || acsaf.tag || '"]/*[@code="' ||
-                acsaf.linking_subfield || '"]/text()', rec_marc_xml))[1]::TEXT,
-            '\d+$'
-        );
+        -- Loop over the trailing-number contents of all linking subfields
+        FOR link IN
+            SELECT  SUBSTRING( x::TEXT, '\d+$' )
+              FROM  UNNEST(
+                        XPATH(
+                            '//*[@tag="'
+                                || acsaf.tag
+                                || '"]/*[@code="'
+                                || acsaf.linking_subfield
+                                || '"]/text()',
+                            rec_marc_xml
+                        )
+                    ) x
+        LOOP
 
-        -- Ignore links that are null, malformed, circular, or point to
-        -- non-existent authority records.
-        IF link IS NOT NULL AND link::BIGINT <> rec_id THEN
-            PERFORM * FROM authority.record_entry WHERE id = link::BIGINT;
-            IF FOUND THEN
-                aal.target := link::BIGINT;
-                aal.field := acsaf.id;
-                RETURN NEXT aal;
+            -- Ignore links that are null, malformed, circular, or point to
+            -- non-existent authority records.
+            IF link IS NOT NULL AND link::BIGINT <> rec_id THEN
+                PERFORM * FROM authority.record_entry WHERE id = link::BIGINT;
+                IF FOUND THEN
+                    aal.target := link::BIGINT;
+                    aal.field := acsaf.id;
+                    RETURN NEXT aal;
+                END IF;
             END IF;
-        END IF;
+        END LOOP;
     END LOOP;
 END;
 $func$ LANGUAGE PLPGSQL;
