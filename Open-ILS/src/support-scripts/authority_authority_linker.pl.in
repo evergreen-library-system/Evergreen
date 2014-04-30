@@ -71,9 +71,10 @@ sub marcxml_eg {
 }
 
 sub matchable_string {
-    my ($field, $sf_list) = @_;
+    my ($field, $sf_list, $joiner) = @_;
+    $joiner ||= ' ';
 
-    return join("", map { $field->subfield($_) } split "", $sf_list);
+    return join($joiner, map { $field->subfield($_) } split "", $sf_list);
 }
 
 # ########### main
@@ -148,19 +149,17 @@ my $problems = 0;
 while (my ($src, $links) = $sth->fetchrow_array) {
     print "src: $src\n" if $options{debug};
 
-    my $per_src_target_cache = {};
     try {
         my $src_rec = $e->retrieve_authority_record_entry($src) or
             die $e->die_event;
         my $src_marc = MARC::Record->new_from_xml($src_rec->marc);
 
-        LINK: for my $link (split ';', $links) {
+        for my $link (split ';', $links) {
             my ($target, $field_id) = split ',', $link;
 
             print "target: $target, field_id: $field_id\n" if $options{debug};
 
-            my $target_rec = ($per_src_target_cache->{$src} ||=
-                $e->retrieve_authority_record_entry($target)) or
+            my $target_rec = $e->retrieve_authority_record_entry($target) or
                     die $e->die_event;
             my $target_marc = MARC::Record->new_from_xml($target_rec->marc);
             my $cni = $target_marc->field('003')->data;
@@ -169,31 +168,31 @@ while (my ($src, $links) = $sth->fetchrow_array) {
 
             for my $field ($src_marc->field($acsaf->tag)) {
                 my $src_string = matchable_string(
-                    $field, $acsaf->main_entry->display_sf_list
+                    $field, $acsaf->main_entry->display_sf_list, $acsaf->main_entry->joiner
                 );
 
                 print("at field ", $acsaf->id, " (", $acsaf->tag,
                     "), trying to match '$src_string'...\n") if $options{debug};
 
-                for my $tfield ($target_marc->field($acsaf->main_entry->tag)) {
-                    my $target_string = matchable_string(
-                        $tfield, $acsaf->main_entry->display_sf_list
-                    );
+                my ($tfield) = $target_marc->field($acsaf->main_entry->tag);
+                my $target_string = matchable_string(
+                    $tfield, $acsaf->main_entry->display_sf_list, $acsaf->main_entry->joiner
+                );
 
-                    if ($target_string eq $src_string) {
-                        print "got a match ...\n" if $options{debug};
-                        $field->update('0' => "($cni)$target");
-                        $src_rec->marc(marcxml_eg($src_marc->as_xml_record));
-
-                        $e->xact_begin;
-                        $e->update_authority_record_entry($src_rec) or
-                            die $e->die_event;
-                        $e->xact_commit;
-                        next LINK;
-                    }
+                if ($target_string eq $src_string) {
+                    print "got a match ...\n" if $options{debug};
+                    $field->update('0' => "($cni)$target");
                 }
             }
         }
+
+        $src_rec->marc(marcxml_eg($src_marc->as_xml_record));
+
+        $e->xact_begin;
+        $e->update_authority_record_entry($src_rec) or
+            die $e->die_event;
+        $e->xact_commit;
+
     } otherwise {
         my $err = shift;
         print STDERR "\nRecord # $src : ",
