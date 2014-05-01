@@ -41,7 +41,7 @@
           <br/>
           [% END %]
         [% END %]
-        <div class="results_header_bar[%- IF ctx.metarecord %] hidden[% END -%]">
+        <div id="results_header_bar" [%- IF ctx.metarecord %]class="hidden"[% END -%]>
             <div id="results_header_inner">
                 <div class="results_header_btns">
                     <a href="[% mkurl(ctx.opac_root _ '/home', {$loc_name => loc_value}, 1) %]">[% l('Another Search') %]</a>
