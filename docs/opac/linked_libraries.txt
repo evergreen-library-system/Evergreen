@@ -4,8 +4,8 @@ Library Information Pages
 The branch name displayed in the copy details section of the search results
 page, the record summary page, and the kids catalog record summary page will
 link to a library information page. This page is located at
-http://hostname/eg/opac/library/<SHORTNAME> and at
-http://hostname/eg/opac/library/<ID>.
+`http://hostname/eg/opac/library/<SHORTNAME>` and at
+`http://hostname/eg/opac/library/<ID>`.
 
 Evergreen automatically generates this page based on information entered in
 *Admin* -> *Server Administration* -> *Organizational Units* (actor.org_unit).
