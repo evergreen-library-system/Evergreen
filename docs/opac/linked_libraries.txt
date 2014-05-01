@@ -11,10 +11,18 @@ To configure the links:
 
 . Go to *Admin* -> *Local Administration* -> *Library Settings Editor*
 . Edit the *Library Information URL* setting for the branch.
++
 [NOTE]
+=============
 If you set the URL at the system level, that URL will be used as the link for
 all child branches.
+=============
 . Enter the URL in the following format: http://example.com/about.html
++
 [NOTE]
+=============
 If a branch or its parent does not have a Library Information URL set, the
 branch name will display as normal text.
+=============
+
+
