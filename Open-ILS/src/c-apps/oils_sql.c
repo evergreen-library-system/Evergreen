@@ -1561,6 +1561,12 @@ static int verifyObjectPCRUD ( osrfMethodContext* ctx, osrfHash *class, const js
 	// for storing lists of integers, so we fake it with a list of strings.)
 	osrfStringArray* context_org_array = osrfNewStringArray( 1 );
 
+	const char* context_org = NULL;
+    const char* pkey = NULL;
+    jsonObject *param = NULL;
+	const char* perm = NULL;
+	int OK = 0;
+	int i = 0;
 	int err = 0;
 	const char* pkey_value = NULL;
 	if( str_is_true( osrfHashGet(pcrud, "global_required") ) ) {
@@ -1595,8 +1601,8 @@ static int verifyObjectPCRUD ( osrfMethodContext* ctx, osrfHash *class, const js
 
 	    osrfLogDebug( OSRF_LOG_MARK, "global-level permissions not required, "
 				"fetching context org ids" );
-	    const char* pkey = osrfHashGet( class, "primarykey" );
-		jsonObject *param = NULL;
+
+        pkey = osrfHashGet( class, "primarykey" );
 
 		if( !pkey ) {
 			// There is no primary key, so we can't do a fresh lookup.  Use the row
@@ -1627,6 +1633,8 @@ static int verifyObjectPCRUD ( osrfMethodContext* ctx, osrfHash *class, const js
 
 			param = jsonObjectExtractIndex( _list, 0 );
 			jsonObjectFree( _list );
+
+            fetch = 0;
 		}
 
 		if( !param ) {
@@ -1842,20 +1850,166 @@ static int verifyObjectPCRUD ( osrfMethodContext* ctx, osrfHash *class, const js
 				osrfHashIteratorFree( class_itr );
 			}
 		}
-
-		jsonObjectFree( param );
 	}
 
-	const char* context_org = NULL;
-	const char* perm = NULL;
-	int OK = 0;
+    // If there is an owning_user attached to the action, we allow that user and users with
+    // object perms on the object. CREATE can't use this. We only do this when there is no
+    // context org for this action, and when we're not ignoring object perms.
+    if (
+        *method_type != 'c' &&
+        !str_is_true( osrfHashGet(pcrud, "ignore_object_perms") ) && // Always honor
+        context_org_array->size == 0
+    ) {
+        char* owning_user_field = osrfHashGet( pcrud, "owning_user" );
+        if (owning_user_field) {
+
+            if (!param) { // We didn't get it during the context lookup
+			    pkey = osrfHashGet( class, "primarykey" );
+		
+				if( !pkey  ) {
+					// There is no primary key, so we can't do a fresh lookup.  Use the row
+					// image that we already have.  If it doesn't have everything we need, too bad.
+					fetch = 0;
+					param = jsonObjectClone( obj );
+					osrfLogDebug( OSRF_LOG_MARK, "No primary key; using clone of object" );
+				} else if( obj->classname ) {
+					pkey_value = oilsFMGetStringConst( obj, pkey );
+					if( !fetch )
+						param = jsonObjectClone( obj );
+					osrfLogDebug( OSRF_LOG_MARK, "Object supplied, using primary key value of %s",
+						pkey_value );
+				} else {
+					pkey_value = jsonObjectGetString( obj );
+					fetch = 1;
+					osrfLogDebug( OSRF_LOG_MARK, "Object not supplied, using primary key value "
+						"of %s and retrieving from the database", pkey_value );
+				}
+		
+				if( fetch ) {
+					// Fetch the row so that we can look at the foreign key(s)
+					osrfHashSet((osrfHash*) ctx->session->userData, "1", "inside_verify");
+					jsonObject* _tmp_params = single_hash( pkey, pkey_value );
+					jsonObject* _list = doFieldmapperSearch( ctx, class, _tmp_params, NULL, &err );
+					jsonObjectFree( _tmp_params );
+					osrfHashSet((osrfHash*) ctx->session->userData, "0", "inside_verify");
+		
+					param = jsonObjectExtractIndex( _list, 0 );
+					jsonObjectFree( _list );
+				}
+            }
+	
+			if( !param ) {
+				// The row doesn't exist.  Complain, and deny access.
+				osrfLogDebug( OSRF_LOG_MARK,
+						"Object not found in the database with primary key %s of %s",
+						pkey, pkey_value );
+	
+				growing_buffer* msg = buffer_init( 128 );
+				buffer_fadd(
+					msg,
+					"%s: no object found with primary key %s of %s",
+					modulename,
+					pkey,
+					pkey_value
+				);
+	
+				char* m = buffer_release( msg );
+				osrfAppSessionStatus(
+					ctx->session,
+					OSRF_STATUS_INTERNALSERVERERROR,
+					"osrfMethodException",
+					ctx->request,
+					m
+				);
+	
+				free( m );
+				return 0;
+			} else {
+
+    	        int ownerid = atoi( oilsFMGetStringConst( param, owning_user_field ) );
+
+                // Allow the owner to do whatever
+                if (ownerid == userid)
+                    OK = 1;
+
+                i = 0;
+	            while( !OK && (perm = osrfStringArrayGetString(permission, i++)) ) {
+            		dbi_result result;
+
+					osrfLogDebug(
+						OSRF_LOG_MARK,
+						"Checking object permission [%s] for user %d "
+								"on object %s (class %s)",
+						perm,
+						userid,
+						pkey_value,
+						osrfHashGet( class, "classname" )
+					);
+	
+					result = dbi_conn_queryf(
+						writehandle,
+						"SELECT permission.usr_has_object_perm(%d, '%s', '%s', '%s') AS has_perm;",
+						userid,
+						perm,
+						osrfHashGet( class, "classname" ),
+						pkey_value
+					);
+	
+					if( result ) {
+						osrfLogDebug(
+							OSRF_LOG_MARK,
+							"Received a result for object permission [%s] "
+									"for user %d on object %s (class %s)",
+							perm,
+							userid,
+							pkey_value,
+							osrfHashGet( class, "classname" )
+						);
+	
+						if( dbi_result_first_row( result )) {
+							jsonObject* return_val = oilsMakeJSONFromResult( result );
+							const char* has_perm = jsonObjectGetString(
+									jsonObjectGetKeyConst( return_val, "has_perm" ));
+	
+							osrfLogDebug(
+								OSRF_LOG_MARK,
+								"Status of object permission [%s] for user %d "
+										"on object %s (class %s) is %s",
+								perm,
+								userid,
+								pkey_value,
+								osrfHashGet(class, "classname"),
+								has_perm
+							);
+	
+							if( *has_perm == 't' )
+								OK = 1;
+							jsonObjectFree( return_val );
+						}
+	
+						dbi_result_free( result );
+						if( OK )
+                            break;
+					} else {
+						const char* msg;
+						int errnum = dbi_conn_error( writehandle, &msg );
+						osrfLogWarning( OSRF_LOG_MARK,
+							"Unable to call check object permissions: %d, %s",
+							errnum, msg ? msg : "(No description available)" );
+						if( !oilsIsDBConnected( writehandle ))
+							osrfAppSessionPanic( ctx->session );
+					}
+				}
+            }
+        }
+    }
 
 	// For every combination of permission and context org unit: call a stored procedure
 	// to determine if the user has this permission in the context of this org unit.
 	// If the answer is yes at any point, then we're done, and the user has permission.
 	// In other words permissions are additive.
-	int i = 0;
-	while( (perm = osrfStringArrayGetString(permission, i++)) ) {
+	i = 0;
+	while( !OK && (perm = osrfStringArrayGetString(permission, i++)) ) {
 		dbi_result result;
 
         osrfStringArray* pcache = NULL;
@@ -1905,7 +2059,14 @@ static int verifyObjectPCRUD ( osrfMethodContext* ctx, osrfHash *class, const js
                 }
             }
 
-			if( pkey_value ) {
+			if(
+                pkey_value &&
+                !str_is_true( osrfHashGet(pcrud, "ignore_object_perms") ) && // Always honor
+                (
+                    !str_is_true( osrfHashGet(pcrud, "global_required") ) ||
+                    osrfHashGet(pcrud, "owning_user") 
+                )
+            ) {
 				osrfLogDebug(
 					OSRF_LOG_MARK,
 					"Checking object permission [%s] for user %d "
@@ -4231,7 +4392,7 @@ char* SELECT (
 
 					// Look up the field in the IDL
 					const char* col_name = jsonObjectGetString( selfield );
-					osrfHash* field_def;
+					osrfHash* field_def = NULL;
 
 					if (!osrfStringArrayContains(
 							osrfHashGet(
@@ -4319,7 +4480,7 @@ char* SELECT (
 							jsonObjectGetKeyConst( selfield, "column" ) );
 
 					// Get the field definition from the IDL
-					osrfHash* field_def;
+					osrfHash* field_def = NULL;
 					if (!osrfStringArrayContains(
 							osrfHashGet(
 								osrfHashGet( class_field_set, col_name ),
@@ -5046,7 +5207,7 @@ static char* buildOrderByFromArray( osrfMethodContext* ctx, const jsonObject* or
 		const char* field =
 			jsonObjectGetString( jsonObjectGetKeyConst( order_spec, "field" ));
 
-		jsonObject* compare_to = jsonObjectGetKeyConst( order_spec, "compare" );
+		jsonObject* compare_to = jsonObjectGetKey( order_spec, "compare" );
 
 		if( !field || !class_alias ) {
 			osrfLogError( OSRF_LOG_MARK,

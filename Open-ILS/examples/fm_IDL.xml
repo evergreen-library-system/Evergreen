@@ -7677,7 +7677,7 @@ SELECT  usr,
             <link field="combined_balance" reltype="might_have" key="fund" map="" class="acqfcb"/>
             <link field="spent_balance" reltype="might_have" key="fund" map="" class="acqfsb"/>
 		</links>
-        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1" ignore_object_perms="true">
             <actions>
                 <create permission="ADMIN_ACQ_FUND" context_field="org"/>
                 <retrieve permission="ADMIN_ACQ_FUND VIEW_FUND MANAGE_FUND" context_field="org"/>
