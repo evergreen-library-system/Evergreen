@@ -327,7 +327,25 @@ BEGIN
                                 AND NOT cp.deleted
                           LIMIT 1;
 
-                        IF FOUND THEN
+                        IF NOT FOUND THEN
+                            -- Recheck Located URI visibility in the case of no "foreign" copies
+                            PERFORM 1
+                              FROM  asset.call_number cn
+                                    JOIN asset.uri_call_number_map map ON (map.call_number = cn.id)
+                                    JOIN asset.uri uri ON (map.uri = uri.id)
+                              WHERE NOT cn.deleted
+                                    AND cn.label = '##URI##'
+                                    AND uri.active
+                                    AND cn.record IN ( SELECT * FROM unnest( core_result.records ) )
+                                    AND cn.owning_lib NOT IN ( SELECT * FROM unnest( luri_org_list ) )
+                              LIMIT 1;
+
+                            IF FOUND THEN
+                                -- RAISE NOTICE ' % were excluded for foreign located URIs... ', core_result.records;
+                                excluded_count := excluded_count + 1;
+                                CONTINUE;
+                            END IF;
+                        ELSE
                             -- RAISE NOTICE ' % and multi-home linked records were all visibility-excluded ... ', core_result.records;
                             excluded_count := excluded_count + 1;
                             CONTINUE;
