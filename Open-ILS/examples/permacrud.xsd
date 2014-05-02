@@ -47,6 +47,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
   </xs:sequence>
   <xs:attribute name="permission" use="required"/>
   <xs:attribute name="context_field"/>
+  <xs:attribute name="owning_user"/>
   <xs:attribute name="global_required"/>
  </xs:complexType>
 </xs:element>
@@ -58,6 +59,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
   </xs:sequence>
   <xs:attribute name="permission"/>
   <xs:attribute name="context_field"/>
+  <xs:attribute name="owning_user"/>
   <xs:attribute name="global_required"/>
  </xs:complexType>
 </xs:element>
@@ -69,6 +71,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
   </xs:sequence>
   <xs:attribute name="permission" use="required"/>
   <xs:attribute name="context_field"/>
+  <xs:attribute name="owning_user"/>
   <xs:attribute name="global_required"/>
  </xs:complexType>
 </xs:element>
@@ -80,6 +83,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
   </xs:sequence>
   <xs:attribute name="permission" use="required"/>
   <xs:attribute name="context_field"/>
+  <xs:attribute name="owning_user"/>
   <xs:attribute name="global_required"/>
  </xs:complexType>
 </xs:element>
@@ -100,6 +104,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
   <xs:sequence>
    <xs:element ref="permacrud:actions" minOccurs="1" maxOccurs="1"/>
   </xs:sequence>
+  <xs:attribute name="ignore_object_perms"/>
  </xs:complexType>
 </xs:element>
 

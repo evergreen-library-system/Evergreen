@@ -282,6 +282,7 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 { create :
     { permission : [ x, y, z ],
       global_required : "true", -- anything else, or missing, is false
+      ignore_object_perms : "true", -- anything else, or missing, is false
       local_context : [ f1, f2 ],
       foreign_context : { class1 : { fkey : local_class_key, field : class1_field, context : [ a, b, c ] }, ...}
     },
@@ -298,6 +299,7 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 					osrfHash* pcrud = osrfNewHash();
 					osrfHashSet( class_def_hash, pcrud, "permacrud" );
 					xmlNodePtr _l = _cur->children;
+					char * ignore_object_perms = (char*) xmlGetProp(_cur, BAD_CAST "ignore_object_perms");
 
 					while(_l) {
 						if (strcmp( (char*)_l->name, "actions" )) {
@@ -325,6 +327,9 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 							osrfHash* action_def_hash = osrfNewHash();
 							osrfHashSet( pcrud, action_def_hash, action_name );
 
+							// Set the class-wide ignore_object_perms flag
+					    	osrfHashSet( action_def_hash, ignore_object_perms, "ignore_object_perms");
+
 							// Tokenize permission attribute into an osrfStringArray
 							prop_str = (char*) xmlGetProp(_a, BAD_CAST "permission");
 							if( prop_str )
@@ -333,6 +338,9 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 							osrfStringArray* map = osrfStringArrayTokenize( prop_str, ' ' );
 							osrfHashSet( action_def_hash, map, "permission");
 							xmlFree( prop_str );
+
+					    	osrfHashSet( action_def_hash,
+								(char*)xmlGetNoNsProp(_a, BAD_CAST "owning_user"), "owning_user");
 
 					    	osrfHashSet( action_def_hash,
 								(char*)xmlGetNoNsProp(_a, BAD_CAST "global_required"), "global_required");
