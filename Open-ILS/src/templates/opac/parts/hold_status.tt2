@@ -23,7 +23,7 @@
     %]
     </div>
     <div>
-        [% l('[_1] hold on [quant,_2,circulating copy,circulating copies]', 
+        [% l('[_1] hold on [quant,_2, copy, copies]', 
             hold.hold.queue_position, hold.hold.potential_copies) | html %]
     </div>
 [% END %]
