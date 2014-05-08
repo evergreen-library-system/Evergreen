@@ -100,7 +100,8 @@ DECLARE stage RECORD;
 BEGIN
 FOR stage IN SELECT * FROM staging_records_import ORDER BY id LOOP
       INSERT INTO biblio.record_entry (marc, last_xact_id) VALUES (stage.marc, 'IMPORT');
-      UPDATE staging_records_import SET dest = currval('biblio.record_entry_id_seq');
+      UPDATE staging_records_import SET dest = currval('biblio.record_entry_id_seq') 
+       WHERE id = stage.id;
    END LOOP;
   END;
   $$ LANGUAGE plpgsql;
