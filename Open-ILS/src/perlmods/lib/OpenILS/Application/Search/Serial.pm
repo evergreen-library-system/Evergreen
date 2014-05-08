@@ -128,7 +128,8 @@ sub bib_to_svr {
     # TODO: 'deleted' ssub support
     my $sdists = $e->search_serial_distribution([
         {
-            "+ssub" => {"record_entry" => $bib}
+            "+ssub" => {"record_entry" => $bib},
+            "holding_lib" => { "in" => @orgs }
         },
         {
             "flesh" => 1,
