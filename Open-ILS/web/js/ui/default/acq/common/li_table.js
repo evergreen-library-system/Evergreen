@@ -217,32 +217,53 @@ function AcqLiTable() {
             }
         );
 
+        function buildOneBatchWidget(field, args) {
+            (new openils.widget.AutoFieldWidget(args)).build(
+                function(w, aw) {
+                    if (field == "fund") {
+                        dojo.connect(
+                            w, "onChange", function(val) {
+                                self._updateFundSelectorStyle(aw, val);
+                            }
+                        );
+                        if (w.store)
+                            self._ensureCSSFundClasses(w.store);
+                    }
+
+                    dojo.style(w.domNode, {"width": "10em"});
+                    w.attr(
+                        "disabled",
+                        dojo.indexOf(disabled_fields, field) != -1
+                    );
+                    self.batchUpdateWidgets[field] = w;
+                }
+            );
+        }
+
         dojo.forEach(
             ["owning_lib","location","collection_code","circ_modifier","fund"],
             function(field) {
                 var args = self.afwCopyFieldArgs(field,"CREATE_PURCHASE_ORDER");
                 args.parentNode = dojo.byId("acq-bu-" + field);
 
-                (new openils.widget.AutoFieldWidget(args)).build(
-                    function(w, aw) {
-                        if (field == "fund") {
-                            dojo.connect(
-                                w, "onChange", function(val) {
-                                    self._updateFundSelectorStyle(aw, val);
-                                }
-                            );
-                            if (w.store)
-                                self._ensureCSSFundClasses(w.store);
-                        }
+                if (field == 'fund') {
+                    // The list of funds can be huge. Before fetching
+                    // funds for PO modification, see where the user has
+                    // perms and limit the retreived funds accordingly.
+                    // Note: this code only runs once per page load, so
+                    // no caching is required.
+                    new openils.User().getPermOrgList(
+                        ['CREATE_PURCHASE_ORDER', 'MANAGE_FUND'],
+                        function(orgs) { 
+                            args.searchFilter.org = orgs;
+                            buildOneBatchWidget(field, args);
+                        },
+                        true, true // descendants, id_list
+                    );
+                    return; 
+                }
 
-                        dojo.style(w.domNode, {"width": "10em"});
-                        w.attr(
-                            "disabled",
-                            dojo.indexOf(disabled_fields, field) != -1
-                        );
-                        self.batchUpdateWidgets[field] = w;
-                    }
-                );
+                buildOneBatchWidget(field, args);
             }
         );
 
