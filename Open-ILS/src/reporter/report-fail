@@ -8,6 +8,9 @@ has failed with the following error message:
 
  {ERROR_TEXT}
 
+External documentation for the template is available at the following URL:
+ {EXTERNAL_URL}
+
 The SQL command attempted was:
 
  {SQL}

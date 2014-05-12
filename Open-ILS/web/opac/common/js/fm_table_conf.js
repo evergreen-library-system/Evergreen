@@ -106,9 +106,23 @@ var FM_TABLE_DISPLAY = {
 		fields : [
 			'name',
 			'description',
+            'docs',
 			'create_time',
 			'owner',
 		],
+        calculate : {
+            docs : function (t) {
+                var d = JSON2js(t.data());
+                if (d.version >= 4 && d.doc_url) {
+                    return elem(
+                        'a',
+                        { href : d.doc_url, target : '_blank'},
+                        'External Documentation'
+                    );
+                }
+                return text('');
+            }
+        },
 		sortdata : [ 'name', 1 ]
 	},
 	'rs' : {

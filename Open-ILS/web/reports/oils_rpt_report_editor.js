@@ -16,6 +16,12 @@ function oilsRptReportEditor(rptObject, folderWindow) {
 	appendClear(DOM.oils_rpt_report_editor_template_name, tmpl.name());
 	appendClear(DOM.oils_rpt_report_editor_template_creator, tmpl.owner().usrname());
 	appendClear(DOM.oils_rpt_report_editor_template_description, tmpl.description());
+
+    if (rptObject.def.version >= 4) {
+	    DOM.oils_rpt_report_editor_template_doc_url.setAttribute( 'href', rptObject.def.doc_url );
+    } else {
+        hideMe(DOM.oils_rpt_report_editor_template_doc_url_row);
+    }
     
     appendClear(DOM.oils_rpt_report_editor_cols,'');
 	iterate(rptObject.def.select, 

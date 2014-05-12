@@ -151,6 +151,7 @@ FMObjectBuilder.prototype.setKeys = function(o) {
 		this.bold = this.display[o.classname].bold;
 		this.money = this.display[o.classname].money;
 		this.sortdata = this.display[o.classname].sortdata;
+		this.calculate = this.display[o.classname].calculate;
 	}
 
 	if(!this.keys && FM_TABLE_DISPLAY[o.classname])
@@ -164,6 +165,9 @@ FMObjectBuilder.prototype.setKeys = function(o) {
 
 	if(!this.sortdata && FM_TABLE_DISPLAY[o.classname])
 		this.sortdata = FM_TABLE_DISPLAY[o.classname].sortdata;
+
+	if(!this.calculate && FM_TABLE_DISPLAY[o.classname])
+		this.calculate = FM_TABLE_DISPLAY[o.classname].calculate;
 
 	if(!this.keys) {
 		this.keys = fmclasses[o.classname];
@@ -193,9 +197,15 @@ FMObjectBuilder.prototype.buildObjectRow = function(obj) {
 
 	for( var i = 0; i < this.keys.length; i++ ) {
 		var td = elem('td');	
-		var data = obj[this.keys[i]]();
-		data = this.munge(data);
-		this.fleshData(td, data, this.keys[i]);
+        var data = '';
+        if (this.caclulate[i]) { // fake data! pass the object
+            td.appendChild(this.calculate[i](obj);
+        } else {
+		    data = obj[this.keys[i]]();
+    		data = this.munge(data);
+	    	this.fleshData(td, data, this.keys[i]);
+        }
+
 		row.appendChild(td);
 	}
 	this.tbody.appendChild(row);

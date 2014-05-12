@@ -155,10 +155,12 @@
 			<vbox>
 				<label control="template-name" value="&reports.xul.template_builder.name.label;" style="height:2em"/>
 				<label control="template-description" value="&reports.xul.template_builder.description.label;"/>
+				<label control="template-doc-url" value="&reports.xul.template_builder.doc_url.label;"/>
 			</vbox>
 			<vbox flex="1">
 				<textbox id="template-name" flex="1"/>
 				<textbox id="template-description" multiline="true" flex="1" style="max-height:3em"/>
+				<textbox id="template-doc-url" flex="1"/>
 			</vbox>
 			<vbox pack="end">
 				<button onclick="save_template();" label="&reports.xul.template_builder.save.label;"/>
@@ -211,6 +213,7 @@
 											<treecol label="&reports.xul.template_builder.data_type.label;" flex="1"/>
 											<treecol label="&reports.xul.template_builder.field_transform.label;" flex="1"/>
 											<treecol label="&reports.xul.template_builder.field_transform_type.label;" hidden="true" flex="1"/>
+											<treecol label="&reports.xul.template_builder.field_doc.label;" hidden="true" flex="1"/>
 										</treecols>
 										<treechildren id="dis-col-treetop" alternatingbackground="true" />
 									</tree>
@@ -225,6 +228,8 @@
 									<button label="&reports.xul.template_builder.move_down.label;" oncommand="changeDisplayOrder('d')"/>
 									<spacer flex="1"/>
 									<button label="&reports.xul.template_builder.remove_selected_field.label;" oncommand="removeReportAtom()"/>
+									<spacer flex="1"/>
+									<button label="&reports.xul.template_builder.change_field_doc.label;" oncommand="changeFieldDoc()"/>
 								</hbox>
 							</vbox>
 						</tabpanel>
@@ -247,6 +252,7 @@
 											<treecol label="&reports.xul.template_builder.field_transform_type.label;" hidden="true" flex="1"/>
 											<treecol label="&reports.xul.template_builder.operator.label;" flex="1"/>
 											<treecol label="&reports.xul.template_builder.value.label;" flex="1"/>
+											<treecol label="&reports.xul.template_builder.field_doc.label;" hidden="true" flex="1"/>
 										</treecols>
 										<treechildren id="filter-col-treetop" alternatingbackground="true" />
 									</tree>
@@ -262,6 +268,8 @@
 									<button label="&reports.xul.template_builder.remove_value.label;" oncommand="removeTemplateFilterValue()"/>
 									<spacer flex="1"/>
 									<button label="&reports.xul.template_builder.remove_selected_fields.label;" oncommand="removeReportAtom()"/>
+									<spacer flex="1"/>
+									<button label="&reports.xul.template_builder.change_field_doc.label;" oncommand="changeFieldDoc()"/>
 								</hbox>
 							</vbox>
 						</tabpanel>
@@ -284,6 +292,7 @@
 											<treecol label="&reports.xul.template_builder.field_transform_type.label;" hidden="true" flex="1"/>
 											<treecol label="&reports.xul.template_builder.operator.label;" flex="1"/>
 											<treecol label="&reports.xul.template_builder.value.label;" flex="1"/>
+											<treecol label="&reports.xul.template_builder.field_doc.label;" hidden="true" flex="1"/>
 										</treecols>
 										<treechildren id="aggfilter-col-treetop" alternatingbackground="true" />
 									</tree>
@@ -299,6 +308,8 @@
 									<button label="&reports.xul.template_builder.remove_value.label;" oncommand="removeTemplateFilterValue()"/>
 									<spacer flex="1"/>
 									<button label="&reports.xul.template_builder.remove_selected_fields.label;" oncommand="removeReportAtom()"/>
+									<spacer flex="1"/>
+									<button label="&reports.xul.template_builder.change_field_doc.label;" oncommand="changeFieldDoc()"/>
 								</hbox>
 							</vbox>
 						</tabpanel>

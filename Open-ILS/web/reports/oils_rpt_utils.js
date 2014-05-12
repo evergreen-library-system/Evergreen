@@ -89,7 +89,7 @@ function oilsRptPathRel(path) {
 }
 
 /* creates a label "path" based on the column path */
-function oilsRptMakeLabel(path) {
+function oilsRptMakeLabel(path, hint) {
 	var parts = path.split(/-/);
 	var str = '';
 	for( var i = 0; i < parts.length; i++ ) {
@@ -103,6 +103,11 @@ function oilsRptMakeLabel(path) {
 			str += " -> "+f.label;
 		}
 	}
+
+    if (hint) {
+        str += '<br/><b><i>' + hint + '</i></b>'
+    }
+
 	return str;
 }
 

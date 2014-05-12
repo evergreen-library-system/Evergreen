@@ -8,3 +8,6 @@ time of {COMPLETE_TIME}.
 
 You can view the report at the following URL:
 {OUTPUT_URL}
+
+External documentation for the template is available at the following URL:
+{EXTERNAL_URL}

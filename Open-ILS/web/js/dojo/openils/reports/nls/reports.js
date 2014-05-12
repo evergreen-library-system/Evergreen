@@ -121,6 +121,7 @@
 	"TEMPLATE_CONF_EQUALS": "Equals",
 	"TEMPLATE_CONF_CONFIRM_RESET": "You have already added the [${0}] field\nfrom the [${1}] source. Click OK if you\nwould like to reset this field.",
 	"TEMPLATE_CONF_PROMPT_CHANGE": "Change the column header to: ${0}",
+	"TEMPLATE_FIELD_DOC_PROMPT_CHANGE": "Change the field hint to:",
 	"TEMPLATE_CONF_BOOLEAN_VALUE": "Boolean Value",
 	"TEMPLATE_CONF_SELECT_CANCEL": "Select the value, or cancel:",
 	"TEMPLATE_CONF_TRUE": "True",

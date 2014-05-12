@@ -80,6 +80,7 @@ function addReportAtoms () {
 		var colname = item.getAttribute('idlfield');
 		var jointype = item.getAttribute('join');
 		var field_label = item.firstChild.firstChild.getAttribute('label');
+		var field_doc = item.firstChild.lastChild.getAttribute('label');
 
 		var table_name = getSourceDefinition(field_class);
 
@@ -104,6 +105,7 @@ function addReportAtoms () {
 				  params    : transform && transform.getAttribute('params'),
 				  transform_label: (transform && transform.getAttribute('alias')) || rpt_strings.TEMPLATE_CONF_RAW_DATA,
 				  alias     : field_label,
+				  field_doc : field_doc,
 				  join      : jointype,
 				  datatype  : datatype,
 				  op        : (datatype == 'array') ? '= any' : '=',
@@ -125,6 +127,7 @@ function addReportAtoms () {
 				  params    : transform && transform.getAttribute('params'),
 				  transform_label: (transform && transform.getAttribute('alias')) || rpt_strings.TEMPLATE_CONF_RAW_DATA,
 				  alias     : field_label,
+				  field_doc : field_doc,
 				  join      : jointype,
 				  datatype  : datatype,
 				  op        : '=',
@@ -205,6 +208,39 @@ function alterColumnLabel () {
 
 	if (new_label) {
 		rpt_rel_cache[relation_alias].fields[tabname][colname].alias = new_label;
+		renderSources(true);
+		tree.view.selection.select( item_pos );
+		tree.focus();
+		tree.click();
+	}
+
+	return true;
+}
+
+function changeFieldDoc () {
+	var active_tab = filterByAttribute(
+		$('used-source-fields-tabbox').getElementsByTagName('tab'),
+		'selected',
+		'true'
+	)[0];
+
+	var tabname = active_tab.getAttribute('id');
+
+	var tabpanel = $( tabname + 'panel' );
+	var tree = tabpanel.getElementsByTagName('tree')[0];
+	var item_pos = tree.view.selection.currentIndex;
+
+	var item = getSelectedItems(tree)[0];
+	var relation_alias = item.getAttribute('relation');
+
+	var field = item.firstChild.lastChild;
+	var colname = item.firstChild.firstChild.nextSibling.getAttribute('label');
+
+	var old_label = field.getAttribute("label");
+	var new_label = prompt( rpt_strings.TEMPLATE_FIELD_DOC_PROMPT_CHANGE, old_label );
+
+	if (new_label) {
+		rpt_rel_cache[relation_alias].fields[tabname][colname].field_doc = new_label;
 		renderSources(true);
 		tree.view.selection.select( item_pos );
 		tree.focus();
@@ -695,7 +731,15 @@ function renderSources (selected) {
 						fieldtree.lastChild.firstChild.appendChild(
 							createTreeCell({ label : op_value.label })
 						);
-					}
+					} else {
+						fieldtree.lastChild.firstChild.appendChild(
+							createTreeCell({})
+						);
+                    }
+
+					fieldtree.lastChild.firstChild.appendChild(
+						createTreeCell({ label : field_doc })
+					);
 				}
 			}
 		}
@@ -726,20 +770,11 @@ function renderSources (selected) {
 						createTreeCell({ label : colname }),
 						createTreeCell({ label : datatype }),
 						createTreeCell({ label : transform_label }),
-						createTreeCell({ label : transform })
+						createTreeCell({ label : transform }),
+						createTreeCell({ label : field_doc })
 					)
 				)
 			);
-
-			fieldtree.lastChild.firstChild.appendChild(
-				createTreeCell({ op : op, label : op_label })
-			);
-
-			if (op_value.value != undefined) {
-				fieldtree.lastChild.firstChild.appendChild(
-					createTreeCell({ label : op_value.label })
-				);
-			}
 		}
 	}
 }
@@ -756,7 +791,8 @@ function save_template () {
 	param_count = 0;
 
 	var template = {
-		version    : 3,
+		version    : 4,
+		doc_url   : $('template-doc-url').value,
 		core_class : $('sources-treetop').getElementsByTagName('treeitem')[0].getAttribute('idlclass'),
 		select     : [],
 		from       : {},
@@ -942,6 +978,7 @@ function fleshTemplateField ( template, rel, tab_name, field ) {
 
 	var element = {
 		alias : tab[field].alias,
+		field_doc : tab[field].field_doc,
 		column :
 		  	{ colname : field,
 			  transform : tab[field].transform,

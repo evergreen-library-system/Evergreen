@@ -69,6 +69,7 @@
 
 <!ENTITY reports.oils_rpt_editor.template_name "Template Name:">
 <!ENTITY reports.oils_rpt_editor.template_creator "Template Creator:">
+<!ENTITY reports.oils_rpt_editor.doc_url "Template Documentation URL:">
 <!ENTITY reports.oils_rpt_editor.template_description "Template Description:">
 <!ENTITY reports.oils_rpt_editor.report_name "Report Name:">
 <!ENTITY reports.oils_rpt_editor.report_description "Report Description:">
@@ -197,6 +198,7 @@
 <!ENTITY reports.xul.template_builder.template_config_caption.label "Template Configuration">
 <!ENTITY reports.xul.template_builder.name.label "Name:">
 <!ENTITY reports.xul.template_builder.description.label "Description:">
+<!ENTITY reports.xul.template_builder.doc_url.label "Documentation URL:">
 <!ENTITY reports.xul.template_builder.save.label "Save">
 <!ENTITY reports.xul.template_builder.displayed_fields.label "Displayed Fields">
 <!ENTITY reports.xul.template_builder.base_filters.label "Base Filters">
@@ -213,6 +215,7 @@
 <!ENTITY reports.xul.template_builder.change_transform.label "Change Transform">
 <!ENTITY reports.xul.template_builder.change_operator.label "Change Operator">
 <!ENTITY reports.xul.template_builder.change_value.label "Change value">
+<!ENTITY reports.xul.template_builder.change_field_doc.label "Change Field Hint">
 <!ENTITY reports.xul.template_builder.remove_value.label "Remove value">
 <!ENTITY reports.xul.template_builder.remove_selected_fields.label "Remove Selected Fields">
 <!ENTITY reports.xul.template_builder.table_name.label "Table Name">

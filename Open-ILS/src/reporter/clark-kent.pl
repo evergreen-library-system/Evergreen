@@ -373,6 +373,11 @@ sub send_success {
 	$tmpl =~ s/{COMPLETE_TIME}/$r->{complete_time}/smog;
 	$tmpl =~ s/{OUTPUT_URL}/$url/smog;
 
+	my $tdata = OpenSRF::Utils::JSON->JSON2perl( $r->{report}->{template}->{data} );
+	if ($$tdata{version} >= 4) {
+		$tmpl =~ s/{EXTERNAL_URL}/$$tdata{doc_url}/smog;
+	}
+
 	my $sender = Email::Send->new({mailer => 'SMTP'});
 	$sender->mailer_args([Host => $email_server]);
 	$sender->send($tmpl);
@@ -393,6 +398,11 @@ sub send_fail {
 	$tmpl =~ s/{RUN_TIME}/$r->{run_time}/smog;
 	$tmpl =~ s/{ERROR_TEXT}/$r->{error_text}/smog;
 	$tmpl =~ s/{SQL}/$sql/smog;
+
+	my $tdata = OpenSRF::Utils::JSON->JSON2perl( $r->{report}->{template}->{data} );
+	if ($$tdata{version} >= 4) {
+		$tmpl =~ s/{EXTERNAL_URL}/$$tdata{doc_url}/smog;
+	}
 
 	my $sender = Email::Send->new({mailer => 'SMTP'});
 	$sender->mailer_args([Host => $email_server]);
@@ -438,6 +448,8 @@ sub build_html {
 	my $r = shift;
 
 	my $index = new FileHandle (">$file") or die "Cannot write to '$file'";
+
+	my $tdata = OpenSRF::Utils::JSON->JSON2perl( $r->{report}->{template}->{data} );
 	
 	# index header
 	print $index <<"	HEADER";
@@ -456,8 +468,14 @@ sub build_html {
 	<body>
 		<center>
 		<h2><u>$$r{report}{name}</u></h2>
-		$$r{report}{description}<br/><br/><br/>
+		$$r{report}{description}<br/>
 	HEADER
+
+	if ($$tdata{version} >= 4 and $$tdata{doc_url}) {
+		print $index "<a target='_blank' href='$$tdata{doc_url}'>External template documentation</a><br/>";
+	}
+
+	print $index "<br/><br/>";
 
 	my @links;
 
@@ -478,11 +496,15 @@ sub build_html {
 	print $debug "<html><head><meta charset='utf-8'><title>DEBUG: $$r{report}{name}</title></head><body>";
 
 	{	no warnings;
+		if ($$tdata{version} >= 4 and $$tdata{doc_url}) {
+			print $debug "<b><a target='_blank' href='$$tdata{doc_url}'>External template documentation</a></b><br/><a href='report-data.html'>Back to output index</a><hr/>";
+		}
+
 		print $debug '<h1>Generated SQL</h1><pre>' . $r->{resultset}->toSQL() . "</pre><a href='report-data.html'>Back to output index</a><hr/>";
 		print $debug '<h1>Template</h1><pre>' . Dumper( $r->{report}->{template} ) . "</pre><a href='report-data.html'>Back to output index</a><hr/>";
-		print $debug '<h1>Template Data</h1><pre>' . Dumper( OpenSRF::Utils::JSON->JSON2perl( $r->{report}->{template}->{data} ) ) . "</pre><a href='report-data.html'>Back to output index</a><hr/>";
+		print $debug '<h1>Template Data</h1><pre>' . Dumper( $tdata ) . "</pre><a href='report-data.html'>Back to output index</a><hr/>";
 		print $debug '<h1>Report Parameter</h1><pre>' . Dumper( $r->{report} ) . "</pre><a href='report-data.html'>Back to output index</a><hr/>";
-		print $debug '<h1>Report Parameter Data</h1><pre>' . Dumper( OpenSRF::Utils::JSON->JSON2perl( $r->{report}->{data} ) ) . "</pre><a href='report-data.html'>Back to output index</a><hr/>";
+		print $debug '<h1>Report Parameter Data</h1><pre>' . Dumper( $tdata ) . "</pre><a href='report-data.html'>Back to output index</a><hr/>";
 		print $debug '<h1>Report Run Time</h1><pre>' . $r->{resultset}->relative_time . "</pre><a href='report-data.html'>Back to output index</a><hr/>";
 		print $debug '<h1>OpenILS::Reporter::SQLBuilder::ResultSet Object</h1><pre>' . Dumper( $r->{resultset} ) . "</pre><a href='report-data.html'>Back to output index</a>";
 	}
