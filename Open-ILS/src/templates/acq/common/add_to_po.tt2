@@ -44,7 +44,9 @@
                 <tr>
                     <td><label>[% l('Enter the PO Name: ') %]</label></td>
                     <td>
-                        <input jsId="addToPoInput" dojoType="openils.widget.PCrudAutocompleteBox" fmclass="acqpo" searchAttr="name" name="target_po" />
+                        <input jsId="addToPoInput" dojoType="openils.widget.PCrudAutocompleteBox" 
+                          store_options="{base_filter:{state:['new','pending']}}"
+                          fmclass="acqpo" searchAttr="name" name="target_po" />
 
                         </td>
                 </tr>
