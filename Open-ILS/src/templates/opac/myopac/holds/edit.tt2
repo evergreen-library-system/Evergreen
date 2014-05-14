@@ -104,7 +104,7 @@
                      
                     <tr><td colspan='4'>
                     [% IF hold.metarecord_filters.formats.size OR
-                        hold.metarecord_filters.langs.size > 1;
+                        (hold.metarecord_filters.langs.size.defined && hold.metarecord_filters.langs.size > 1);
                             PROCESS metarecord_hold_filters_selector 
                                 hold_data=hold; END %]
                     </td></tr>
