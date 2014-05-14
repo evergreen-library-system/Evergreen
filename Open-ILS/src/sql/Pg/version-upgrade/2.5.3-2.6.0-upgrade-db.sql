@@ -1,5 +1,19 @@
 --Upgrade Script for 2.5.3 to 2.6.0
 \set eg_version '''2.6.0'''
+
+\qecho
+\qecho **** NOTICE ****
+\qecho 'We are disabling all triggers for authority.record_entry outside the '
+\qecho 'transaction.  If this upgrade fails, you may want to double-check that '
+\qecho 'triggers are reactivated, e.g.:'
+\qecho 'ALTER TABLE authority.record_entry ENABLE TRIGGER ALL;'
+\qecho
+ALTER TABLE authority.record_entry DISABLE TRIGGER a_marcxml_is_well_formed;
+ALTER TABLE authority.record_entry DISABLE TRIGGER aaa_auth_ingest_or_delete;
+ALTER TABLE authority.record_entry DISABLE TRIGGER b_maintain_901;
+ALTER TABLE authority.record_entry DISABLE TRIGGER c_maintain_control_numbers;
+ALTER TABLE authority.record_entry DISABLE TRIGGER map_thesaurus_to_control_set;
+
 BEGIN;
 INSERT INTO config.upgrade_log (version, applied_to) VALUES ('2.6.0', :eg_version);
 
@@ -5557,13 +5571,6 @@ END;
 $func$ LANGUAGE PLPGSQL;
 
 
-ALTER TABLE authority.record_entry DISABLE TRIGGER a_marcxml_is_well_formed;
-ALTER TABLE authority.record_entry DISABLE TRIGGER aaa_auth_ingest_or_delete;
-ALTER TABLE authority.record_entry DISABLE TRIGGER b_maintain_901;
-ALTER TABLE authority.record_entry DISABLE TRIGGER c_maintain_control_numbers;
-ALTER TABLE authority.record_entry DISABLE TRIGGER map_thesaurus_to_control_set;
-
-
 SELECT evergreen.upgrade_deps_block_check('0875', :eg_version);
 
 ALTER TABLE authority.record_entry ADD COLUMN heading TEXT, ADD COLUMN simple_heading TEXT;
@@ -5595,13 +5602,6 @@ ALTER FUNCTION authority.normalize_heading(TEXT, BOOL) STABLE STRICT;
 ALTER FUNCTION authority.normalize_heading(TEXT) STABLE STRICT;
 ALTER FUNCTION authority.simple_normalize_heading(TEXT) STABLE STRICT;
 ALTER FUNCTION authority.simple_heading_set(TEXT) STABLE STRICT;
-
-
-ALTER TABLE authority.record_entry ENABLE TRIGGER a_marcxml_is_well_formed;
-ALTER TABLE authority.record_entry ENABLE TRIGGER aaa_auth_ingest_or_delete;
-ALTER TABLE authority.record_entry ENABLE TRIGGER b_maintain_901;
-ALTER TABLE authority.record_entry ENABLE TRIGGER c_maintain_control_numbers;
-ALTER TABLE authority.record_entry ENABLE TRIGGER map_thesaurus_to_control_set;
 
 
 
@@ -5816,6 +5816,13 @@ $$ LANGUAGE PLPGSQL;
 
 
 COMMIT;
+
+-- re-enable the triggers we disabled before starting the transaction
+ALTER TABLE authority.record_entry ENABLE TRIGGER a_marcxml_is_well_formed;
+ALTER TABLE authority.record_entry ENABLE TRIGGER aaa_auth_ingest_or_delete;
+ALTER TABLE authority.record_entry ENABLE TRIGGER b_maintain_901;
+ALTER TABLE authority.record_entry ENABLE TRIGGER c_maintain_control_numbers;
+ALTER TABLE authority.record_entry ENABLE TRIGGER map_thesaurus_to_control_set;
 
 -- Not running changes from example.reporter-extension.sql since these are
 -- not installed by default, but including a helpful note.
