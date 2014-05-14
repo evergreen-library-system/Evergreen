@@ -87,7 +87,7 @@
                                                         [% html_text_attr('title', l('Display record details for "[_1]"', attrs.title)) %]>
                                                         [% attrs.title | html %]
                                                      </a>
-                                                     [% IF rec.mr_constituent_count > 1 %]
+                                                     [% IF rec.mr_constituent_count.defined && rec.mr_constituent_count > 1 %]
                                                      <span title="[% l('This group contains [_1] records', rec.mr_constituent_count) %]">
                                                       ([% rec.mr_constituent_count %])
                                                      </span>

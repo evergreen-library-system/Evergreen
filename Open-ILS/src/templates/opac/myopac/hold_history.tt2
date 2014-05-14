@@ -47,7 +47,7 @@
     <div class="clear-both"></div>
 
     <div id='holds_main'>
-        [% IF ctx.holds.size < 1 %]
+        [% IF ctx.holds.size && ctx.holds.size < 1 %]
         <div class="warning_box">
             <big><strong>[% l('No holds found.') %]</strong></big>
         </div>
