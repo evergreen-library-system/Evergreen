@@ -90,7 +90,8 @@ sub set_text_handler {
     $r->log->debug("egweb: messages locale = $locale");
 
     return sub {
-        my $lh = OpenILS::WWW::EGWeb::I18N->get_handle($locale);
+        my $lh = OpenILS::WWW::EGWeb::I18N->get_handle($locale) 
+            || OpenILS::WWW::EGWeb::I18N->new;
         return $lh->maketext(@_);
     };
 }
