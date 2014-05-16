@@ -1,3 +1,4 @@
+var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};
 var FETCH_CLOSED_DATES    = 'open-ils.actor:open-ils.actor.org_unit.closed.retrieve.all';
 var FETCH_CLOSED_DATE    = 'open-ils.actor:open-ils.actor.org_unit.closed.retrieve';
 var CREATE_CLOSED_DATE    = 'open-ils.actor:open-ils.actor.org_unit.closed.create';
@@ -22,6 +23,19 @@ var myPerms = [
     ];
 
 function cdEditorInit() {
+
+    try {
+        if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+        JSAN.errorLevel = "die"; // none, warn, or die
+        JSAN.addRepository('..');
+        JSAN.use('util.error'); g.error = new util.error();
+        JSAN.use('util.date');
+    } catch(E) {
+        var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
+            "system administrator or software developer the following:\nadmin/closed_dates.xhtml\n" + E + '\n';
+        try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
+        alert(err_msg);
+    }
 
     /* set the various template rows */
     cdTbody = $('cd_tbody');
@@ -162,32 +176,11 @@ function cdBuild(r) {
 }
 
 function cdDateToHours(date) {
-    var d = new Date.W3CDTF();
-    d.setW3CDTF(date.replace(/\.\d+/,'') + ":00");
-
-    var h = d.getHours() +'';
-    var m = d.getMinutes() +'';
-    var s = d.getSeconds() +'';
-
-    if(h.length == 1) h = '0'+h;
-    if(m.length == 1) m = '0'+m;
-    if(s.length == 1) s = '0'+s;
-
-    return  h + ':' + m + ':' + s;
+    return util.date.formatted_date(date, '%H:%M');
 }
 
 function cdDateToDate(date) {
-    var d = new Date.W3CDTF();
-    d.setW3CDTF(date.replace(/\.\d+/,'') + ":00");
-
-    var y = d.getFullYear()+'';
-    var m = (d.getMonth() + 1)+'';
-    var d = d.getDate()+'';
-
-    if(m.length == 1) m = '0'+m;
-    if(d.length == 1) d = '0'+d;
-
-    return  y + '-' + m + '-' + d;
+    return util.date.formatted_date(date, '%F');
 }
 
 
@@ -271,8 +264,6 @@ function cdDelete(row, date) {
     req.send();
 }
 
-
-/* getW3CDTF */
 
 function cdVerifyDate(d) {
     return d && d.match(/\d{4}-\d{2}-\d{2}/);
