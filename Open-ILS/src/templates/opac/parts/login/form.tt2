@@ -37,9 +37,13 @@
         </div>
         <div style="clear: both; padding-top: 15px;">
         [%
+            redirect = CGI.param('redirect_to');
+            # Don't use referer unless we got here from elsewhere within the TPAC
+            IF !redirect AND ctx.referer.match('^https?://' _ ctx.hostname _ ctx.opac_root);
+                redirect = ctx.referer;
+            END;
             # If no redirect is offered or it's leading us back to the
             # login form, redirect the user to My Account
-            redirect = CGI.param('redirect_to') || ctx.referer;
             IF !redirect OR redirect.match(ctx.path_info _ '$');
                 redirect = CGI.url('-full' => 1) _ '/opac/myopac/main';
             END;
