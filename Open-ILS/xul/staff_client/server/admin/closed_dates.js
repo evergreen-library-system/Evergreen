@@ -275,7 +275,7 @@ function cdVerifyTime(t) {
 
 function cdDateStrToDate( str ) {
 
-    var date = new Date.W3CDTF();
+    var date = new Date();
     var data = str.split(/ /);
 
     var year = data[0];
@@ -396,8 +396,8 @@ function cdGetOrgList(org) {
 function cdCreateOne( org, start, end, note, refresh ) {
     var date = new aoucd();
 
-    date.close_start(start.getW3CDTF());
-    date.close_end(end.getW3CDTF());
+    date.close_start(util.date.formatted_date(start, '%{iso8601}'));
+    date.close_end(util.date.formatted_date(end, '%{iso8601}'));
     date.org_unit(org);
     date.reason(note);
 
