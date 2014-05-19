@@ -2,7 +2,7 @@ Phonelist.pm Module
 ===================
 
 PhoneList.pm is a mod_perl module for Apache that works with Evergreen
-to generate callings lists for patron holds. It outputs a csv file
+to generate callings lists for patron holds or overdues. It outputs a csv file
 that can be fed into an auto-dialer script to call patrons with little
 or no staff intervention.  It is accessed and configured via a special
 URL and passing any parameters as a ``Query String'' on the URL.  The
