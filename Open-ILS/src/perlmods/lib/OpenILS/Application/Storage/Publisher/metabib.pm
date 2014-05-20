@@ -74,174 +74,61 @@ sub _initialize_parser {
     die("Cannot initialize $parser!") unless ($parser->initialization_complete);
 }
 
-sub ordered_records_from_metarecord {
+sub ordered_records_from_metarecord { # XXX Replace with QP-based search-within-MR
     my $self = shift;
     my $client = shift;
     my $mr = shift;
-    my $formats = shift;
-    my $org = shift || 1;
+    my $formats = shift; # dead
+    my $org = shift;
     my $depth = shift;
 
-    my (@types,@forms,@blvl);
-
-    if ($formats) {
-        my ($t, $f, $b) = split '-', $formats;
-        @types = split '', $t;
-        @forms = split '', $f;
-        @blvl = split '', $b;
-    }
-
-    my $descendants =
-        defined($depth) ?
-            "actor.org_unit_descendants($org, $depth)" :
-            "actor.org_unit_descendants($org)" ;
-
-
-    my $copies_visible = 'AND d.opac_visible IS TRUE AND cp.opac_visible IS TRUE AND cs.opac_visible IS TRUE AND cl.opac_visible IS TRUE';
+    my $copies_visible = 'LEFT JOIN asset.opac_visible_copies vc ON (br.id = vc.record)';
     $copies_visible = '' if ($self->api_name =~ /staff/o);
 
-    my $sm_table = metabib::metarecord_source_map->table;
-    my $rd_table = metabib::record_descriptor->table;
-    my $fr_table = metabib::full_rec->table;
-    my $cn_table = asset::call_number->table;
-    my $cl_table = asset::copy_location->table;
-    my $cp_table = asset::copy->table;
-    my $cs_table = config::copy_status->table;
-    my $src_table = config::bib_source->table;
-    my $out_table = actor::org_unit_type->table;
-    my $br_table = biblio::record_entry->table;
+    my $copies_visible_count = ',COUNT(vc.id)';
+    $copies_visible_count = '' if ($self->api_name =~ /staff/o);
+
+    my $descendants = '';
+    if ($org) {
+        $descendants = defined($depth) ?
+            ",actor.org_unit_descendants($org, $depth) d" :
+            ",actor.org_unit_descendants($org) d" ;
+    }
 
     my $sql = <<"    SQL";
-        SELECT  record,
-            item_type,
-            item_form,
-            quality,
-            FIRST(COALESCE(LTRIM(SUBSTR( value, COALESCE(SUBSTRING(ind2 FROM E'\\\\d+'),'0')::INT + 1 )),'zzzzzzzz')) AS title
-        FROM    (
-            SELECT  rd.record,
-                rd.item_type,
-                rd.item_form,
+        SELECT  br.id,
                 br.quality,
-                fr.tag,
-                fr.subfield,
-                fr.value,
-                fr.ind2
+                s.value
+                $copies_visible_count
+          FROM  metabib.metarecord_source_map sm
+                JOIN biblio.record_entry br ON (sm.source = br.id AND NOT br.deleted)
+                LEFT JOIN metabib.record_sorter s ON (s.source = br.id AND s.attr = 'titlesort')
+                LEFT JOIN config.bib_source bs ON (br.source = bs.id)
+                $copies_visible
+                $descendants
+          WHERE sm.metarecord = ?
     SQL
 
+    my $having = '';
     if ($copies_visible) {
-        $sql .= <<"        SQL";
-              FROM  $sm_table sm,
-                $br_table br,
-                $fr_table fr,
-                $rd_table rd
-              WHERE rd.record = sm.source
-                AND fr.record = sm.source
-                AND br.id = sm.source
-                AND sm.metarecord = ?
-                            AND (EXISTS ((SELECT    1
-                        FROM    $cp_table cp
-                            JOIN $cn_table cn ON (cp.call_number = cn.id)
-                                JOIN $cs_table cs ON (cp.status = cs.id)
-                                JOIN $cl_table cl ON (cp.location = cl.id)
-                            JOIN $descendants d ON (cp.circ_lib = d.id)
-                        WHERE   cn.record = sm.source
-                                            $copies_visible
-                        LIMIT 1))
-                    OR EXISTS ((
-                        SELECT  1
-                          FROM  $src_table src
-                          WHERE src.id = br.source
-                                AND src.transcendant IS TRUE))
-                )
-                      
-        SQL
-    } else {
-        $sql .= <<"        SQL";
-              FROM  $sm_table sm
-                JOIN $br_table br ON (sm.source = br.id)
-                JOIN $fr_table fr ON (fr.record = br.id)
-                JOIN $rd_table rd ON (rd.record = br.id)
-              WHERE sm.metarecord = ?
-                AND ((  EXISTS (
-                        SELECT  1
-                          FROM  $cp_table cp,
-                            $cn_table cn,
-                            $descendants d
-                          WHERE cn.record = br.id
-                            AND cn.deleted = FALSE
-                            AND cp.deleted = FALSE
-                            AND cp.circ_lib = d.id
-                            AND cn.id = cp.call_number
-                          LIMIT 1
-                    ) OR NOT EXISTS (
-                        SELECT  1
-                          FROM  $cp_table cp,
-                            $cn_table cn
-                          WHERE cn.record = br.id
-                            AND cn.deleted = FALSE
-                            AND cp.deleted = FALSE
-                            AND cn.id = cp.call_number
-                          LIMIT 1
-                    ))
-                    OR EXISTS ((
-                        SELECT  1
-                          FROM  $src_table src
-                          WHERE src.id = br.source
-                                AND src.transcendant IS TRUE))
-                )
-        SQL
+        $sql .= 'AND (bs.transcendant OR ';
+        if ($descendants) {
+                $sql .= 'vc.circ_lib = d.id)';
+        } else {
+            $sql .= 'vc.id IS NOT NULL)'
+        }
+        $having = 'HAVING COUNT(vc.id) > 0';
     }
-
-    if (@types) {
-        $sql .= '               AND rd.item_type IN ('.join(',',map{'?'}@types).')';
-    }
-
-    if (@forms) {
-        $sql .= '               AND rd.item_form IN ('.join(',',map{'?'}@forms).')';
-    }
-
-    if (@blvl) {
-        $sql .= '               AND rd.bib_level IN ('.join(',',map{'?'}@blvl).')';
-    }
-
-
 
     $sql .= <<"    SQL";
-              OFFSET 0
-            ) AS x
-      WHERE tag = '245'
-        AND subfield = 'a'
-      GROUP BY record, item_type, item_form, quality
+      GROUP BY 1, 2, 3
+      $having
       ORDER BY
-        CASE
-            WHEN item_type IS NULL -- default
-                THEN 0
-            WHEN item_type = '' -- default
-                THEN 0
-            WHEN item_type IN ('a','t') -- books
-                THEN 1
-            WHEN item_type = 'g' -- movies
-                THEN 2
-            WHEN item_type IN ('i','j') -- sound recordings
-                THEN 3
-            WHEN item_type = 'm' -- software
-                THEN 4
-            WHEN item_type = 'k' -- images
-                THEN 5
-            WHEN item_type IN ('e','f') -- maps
-                THEN 6
-            WHEN item_type IN ('o','p') -- mixed
-                THEN 7
-            WHEN item_type IN ('c','d') -- music
-                THEN 8
-            WHEN item_type = 'r' -- 3d
-                THEN 9
-        END,
-        title ASC,
-        quality DESC
+        br.quality DESC,
+        s.value ASC NULLS LAST
     SQL
 
-    my $ids = metabib::metarecord_source_map->db_Main->selectcol_arrayref($sql, {}, "$mr", @types, @forms, @blvl);
+    my $ids = metabib::metarecord_source_map->db_Main->selectcol_arrayref($sql, {}, "$mr");
     return $ids if ($self->api_name =~ /atomic$/o);
 
     $client->respond( $_ ) for ( @$ids );
