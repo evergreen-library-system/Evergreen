@@ -739,8 +739,15 @@ sub __circ_to_title {
         $e->retrieve_asset_copy($circ->target_copy) );
 }
 
-# force_bc -- return barcode data regardless of msg64_summary_datatype
 sub charged_items {
+    my ($self, $start, $end, $ids_only) = shift;
+    return $self->charged_items_impl($start, $end, undef, $ids_only);
+}
+
+# implementation method
+# force_bc -- return barcode data regardless of msg64_summary_datatype;
+#             this is used by the renew-all code
+sub charged_items_impl {
     my ($self, $start, $end, $force_bc, $ids_only) = shift;
 
     $self->__patron_items_info();
