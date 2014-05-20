@@ -126,6 +126,7 @@ sub process_stripe_or_bop_payment {
             unless $cc_args->{number};
 
         return OpenILS::Application::Circ::CreditCard::process_payment({
+            "processor" => $cc_args->{processor},
             "desc" => $cc_args->{note},
             "amount" => $total_paid,
             "patron_id" => $user_id,
