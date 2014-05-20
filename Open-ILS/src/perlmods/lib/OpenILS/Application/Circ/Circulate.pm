@@ -3032,7 +3032,7 @@ sub attempt_checkin_hold_capture {
             my $suppress_transit_pickup = $U->ou_ancestor_setting($hold->pickup_lib, 'circ.transit.suppress_hold');
             if($suppress_transit_pickup && $suppress_transit_circ->{value} eq $suppress_transit_pickup->{value}) {
                 $suppress_transit = 1;
-                $self->hold->pickup_lib($self->circ_lib);
+                $hold->pickup_lib($self->circ_lib);
             }
         }
     }
