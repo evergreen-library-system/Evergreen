@@ -1,0 +1,59 @@
+BEGIN;
+
+SELECT plan(1);
+
+INSERT INTO authority.record_entry (id, marc, last_xact_id)
+VALUES (999999100, $$<record    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"    xsi:schemaLocation="http://www.loc.gov/MARC21
+/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd"    xmlns="http://www.loc.gov/MARC21/slim">
+    <leader>01601cz  a2200289n  4500</leader>
+    <datafield tag="100" ind1="1" ind2=" ">
+        <subfield code="a">Doe, Jane</subfield>
+    </datafield>
+    <datafield tag="500" ind1="1" ind2=" ">
+        <subfield code="w">nnnc</subfield>
+        <subfield code="a">Alias, Annie</subfield>
+        <subfield code="0">999999101</subfield>
+    </datafield>
+    <datafield tag="500" ind1="1" ind2=" ">
+        <subfield code="w">nnnc</subfield>
+        <subfield code="a">Pen-name, Penny</subfield>
+        <subfield code="0">999999102</subfield>
+    </datafield>
+</record>$$, 'test'),
+(999999101, $$<record    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"    xsi:schemaLocation="http://www.loc.gov/MARC21
+/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd"    xmlns="http://www.loc.gov/MARC21/slim">
+    <leader>01601cz  a2200289n  4500</leader>
+    <datafield tag="100" ind1="1" ind2=" ">
+        <subfield code="a">Alias, Annie</subfield>
+    </datafield>
+    <datafield tag="500" ind1="1" ind2=" ">
+        <subfield code="w">nnnc</subfield>
+        <subfield code="a">Doe, Jane</subfield>
+        <subfield code="0">999999100</subfield>
+    </datafield>
+</record>$$, 'test'),
+(999999102, $$<record    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"    xsi:schemaLocation="http://www.loc.gov/MARC21
+/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd"    xmlns="http://www.loc.gov/MARC21/slim">
+    <leader>01601cz  a2200289n  4500</leader>
+    <datafield tag="100" ind1="1" ind2=" ">
+        <subfield code="a">Pen-name, Penny</subfield>
+    </datafield>
+    <datafield tag="500" ind1="1" ind2=" ">
+        <subfield code="w">nnnc</subfield>
+        <subfield code="a">Doe, Jane</subfield>
+        <subfield code="0">999999100</subfield>
+    </datafield>
+</record>$$, 'test');
+
+SELECT is(
+    ARRAY(
+        SELECT (authority.calculate_authority_linking(id, 1, marc::XML)).target
+        FROM authority.record_entry 
+        WHERE id = 999999100 
+        ORDER BY 1
+    ),
+    ARRAY[ 999999101::BIGINT, 999999102::BIGINT ],
+    'retrieve all of the links to other authority records'
+);
+
+ROLLBACK;
