@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0880', :eg_version);
 
 CREATE OR REPLACE FUNCTION authority.calculate_authority_linking(
     rec_id BIGINT, rec_control_set INT, rec_marc_xml XML
