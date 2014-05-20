@@ -1103,7 +1103,7 @@ sub set_hold_shelf_expire_time {
 
     $start_time = ($start_time) ?
         DateTime::Format::ISO8601->new->parse_datetime(cleanse_ISO8601($start_time)) :
-        DateTime->now;
+        DateTime->now(time_zone => 'local'); # without time_zone we get UTC ... yuck!
 
     my $seconds = OpenSRF::Utils->interval_to_seconds($shelf_expire);
     my $expire_time = $start_time->add(seconds => $seconds);
