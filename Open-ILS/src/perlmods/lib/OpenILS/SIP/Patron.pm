@@ -461,7 +461,7 @@ sub hold_items {
 
 
     # all of my open holds
-    my $holds = $self->{editor}->search_action_hold_request({ 
+    my $holds = $self->{editor}->search_action_hold_request({
         usr => $self->{user}->id, 
         fulfillment_time => undef, 
         cancel_time => undef 
@@ -741,7 +741,7 @@ sub __circ_to_title {
 
 # force_bc -- return barcode data regardless of msg64_summary_datatype
 sub charged_items {
-    my ($self, $start, $end, $ids_only, $force_bc) = shift;
+    my ($self, $start, $end, $force_bc, $ids_only) = shift;
 
     $self->__patron_items_info();
 
