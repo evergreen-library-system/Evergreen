@@ -31,7 +31,7 @@ sub do_renew_all {
     my $self = shift;
     my $sip = shift;
 
-    my $barcodes = $self->patron->charged_items(undef, undef, 1);
+    my $barcodes = $self->patron->charged_items_impl(undef, undef, 1);
 
     syslog('LOG_INFO', "OILS: RenewalAll for user ".
         $self->patron->{id} ." and items [@$barcodes]");
