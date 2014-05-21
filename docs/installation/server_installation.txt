@@ -96,7 +96,7 @@ add-apt-repository ppa:pitti/postgresql
    retrieve the new packages from the backports repository.
 4. Issue the following commands as the *root* Linux account to install
    prerequisites using the `Makefile.install` prerequisite installer,
-   substituting `debian-squeeze`, `fedora`, `ubuntu-lucid`, or
+   substituting `debian-squeeze`, `debian-wheezy`, `fedora`, `ubuntu-lucid`, or
    `ubuntu-precise` for <osname> below:
 +
 [source, bash]
