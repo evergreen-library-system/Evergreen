@@ -44,7 +44,7 @@ sub void_overdues {
         $duration =~ s/(\d{2}):(\d{2}):(\d{2})/$1 h $2 m $3 s/o;
         my $interval = OpenSRF::Utils->interval_to_seconds($duration);
 
-        my $date = DateTime::Format::ISO8601->parse_datetime($backdate);
+        my $date = DateTime::Format::ISO8601->parse_datetime(cleanse_ISO8601($backdate));
         my $due_date = DateTime::Format::ISO8601->parse_datetime(cleanse_ISO8601($circ->due_date))->epoch;
         my $grace_period = extend_grace_period( $class, $circ->circ_lib, $circ->due_date, OpenSRF::Utils->interval_to_seconds($circ->grace_period), $e);
         if($date->epoch <= $due_date + $grace_period) {
