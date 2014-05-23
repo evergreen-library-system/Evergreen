@@ -4081,15 +4081,15 @@ __PACKAGE__->register_method(
     }
 );
 
-# XXX Need to add type I (and, soon, type P) holds to these counts
+# XXX Need to add type I holds to these counts
 sub rec_hold_count {
     my($self, $conn, $target_id, $args) = @_;
     $args ||= {};
 
     my $mmr_join = {
         mmrsm => {
-            field => 'id',
-            fkey => 'source',
+            field => 'source',
+            fkey => 'id',
             filter => {metarecord => $target_id}
         }
     };
@@ -4147,6 +4147,17 @@ sub rec_hold_count {
                     },
                     {
                         '-and' => {
+                            hold_type => 'P',
+                            target => {
+                                in => {
+                                    select => {bmp => ['id']},
+                                    from => {bmp => $bre_join}
+                                }
+                            }
+                        }
+                    },
+                    {
+                        '-and' => {
                             hold_type => 'T',
                             target => $target_id
                         }
@@ -4157,7 +4168,7 @@ sub rec_hold_count {
     };
 
     if($self->api_name =~ /mmr/) {
-        $query->{where}->{'+ahr'}->{'-or'}->[2] = {
+        $query->{where}->{'+ahr'}->{'-or'}->[3] = {
             '-and' => {
                 hold_type => 'T',
                 target => {
@@ -4169,7 +4180,7 @@ sub rec_hold_count {
             }
         };
 
-        $query->{where}->{'+ahr'}->{'-or'}->[3] = {
+        $query->{where}->{'+ahr'}->{'-or'}->[4] = {
             '-and' => {
                 hold_type => 'M',
                 target => $target_id
