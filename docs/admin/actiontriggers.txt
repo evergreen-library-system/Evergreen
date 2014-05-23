@@ -49,7 +49,7 @@ Creating Action Triggers
 . Create a unique _Name_ for your new action trigger.
 . Select the _Hook_.
 . Check the _Enabled_ check box.
-. Set the _Processing Delay_ in the appropriate format. Eg. _7 days_ to run 7 days from the trigger event or _00:01:00_ to run 1 hour after the _Processing Delay Context Field_.
+. Set the _Processing Delay_ in the appropriate format. E.g. _7 days_ to run 7 days from the trigger event or _00:01:00_ to run 1 hour after the _Processing Delay Context Field_.
 . Set the _Processing Delay Context Field_ and _Processing Group Context Field_.
 . Select the _Reactor_, _Validator_, _Failure Cleanup_.
 . Select the _Granularity_.
