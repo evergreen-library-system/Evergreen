@@ -234,7 +234,7 @@ AC_ARG_WITH([libxml2],
 AC_SUBST([LIBXML2_HEADERS])
 
 AC_ARG_WITH([dbi],
-[  --with-dbi=path             location of the libdbi driver libraries (default is /usr/local/lib/dbd)],
+[  --with-dbi=path             location of the libdbi driver libraries (default is /usr/lib/x86_64-linux-gnu/dbd/)],
 [DBI_LIBS=${withval}],
 [DBI_LIBS=/usr/local/lib/dbd/])
 
