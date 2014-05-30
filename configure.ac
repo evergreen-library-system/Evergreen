@@ -236,7 +236,7 @@ AC_SUBST([LIBXML2_HEADERS])
 AC_ARG_WITH([dbi],
 [  --with-dbi=path             location of the libdbi driver libraries (default is /usr/lib/x86_64-linux-gnu/dbd/)],
 [DBI_LIBS=${withval}],
-[DBI_LIBS=/usr/local/lib/dbd/])
+[DBI_LIBS=/usr/lib/x86_64-linux-gnu/dbd/])
 
 # If the passed in value doesn't work, fall back to reasonable defaults
 # Distributions are starting to package a good version of libdbi / libdbd
