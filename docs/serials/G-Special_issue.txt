@@ -1,6 +1,6 @@
 Special Issues
 --------------
-Currently, Setting up the special issue can only be done through the Alternate Serials Control view.
+Currently, creating a special issue can only be done through the Alternate Serials Control View.
 
 . Create an issuance in the Serials Control View or the Alternate Serials Control View
 . In the Alternate Serials Control View, click on the name of your special issue in the list of issuances.
