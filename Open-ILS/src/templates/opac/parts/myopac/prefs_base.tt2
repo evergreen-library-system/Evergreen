@@ -40,8 +40,7 @@
     <div id="acct_prefs_select">
         <form name="acct_prefs_nav">
             <select name="acct_prefs_url" 
-              [% select_title = l('Select a preference page') %]
-              title="[% select_title %]" title="[% select_title %]"
+              title="[% l('Select a preference page') %]"
               onchange="window.location.href=document.acct_prefs_nav.acct_prefs_url.options[document.acct_prefs_nav.acct_prefs_url.selectedIndex].value">
         [% FOREACH page IN acct_prefs_pages;
             IF page.url != prefs_page; -%]

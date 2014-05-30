@@ -59,7 +59,6 @@
             <tr>
                 <td>
                     <select name="action" id="acct_holds_actions" 
-                      title="[% l('Select your action for the selected holds') %]"
                       title="[% l('Select your action for the selected holds') %]">
                         <option id='myopac_holds_actions_none' value=''>
                         -- [% l("Actions for selected holds") %] --
