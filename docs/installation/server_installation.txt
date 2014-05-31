@@ -108,10 +108,10 @@ make -f Open-ILS/src/extras/Makefile.install <osname>
    issuing the following commands as the *root* Linux account:
 +
 [NOTE]
-You should skip this step if installing on Ubuntu Precise. The ubuntu-precise
-target uses libdbd-pgsql from packages.
+You should skip this step if installing on Ubuntu Precise or Trusty. The ubuntu
+targets use libdbd-pgsql from packages.
 +
-.Debian / Ubuntu Lucid
+.Debian
 [source, bash]
 ------------------------------------------------------------------------------
 echo "/usr/local/lib/dbd" > /etc/ld.so.conf.d/eg.conf
@@ -211,7 +211,7 @@ versions 2.4 or greater) to configure your Web server for the Evergreen
 catalog, staff client, Web services, and administration interfaces. Issue the
 following commands as the *root* Linux account:
 +
-.Debian and Ubuntu
+.Debian and Ubuntu Precise
 [source,bash]
 ------------------------------------------------------------------------------
 cp Open-ILS/examples/apache/eg.conf       /etc/apache2/sites-available/
@@ -221,6 +221,17 @@ cp Open-ILS/examples/apache/eg_startup    /etc/apache2/
 mkdir /etc/apache2/ssl
 cd /etc/apache2/ssl
 ------------------------------------------------------------------------------
++
+.Ubuntu Trusty
+[source,bash]
+------------------------------------------------------------------------------------
+cp Open-ILS/examples/apache_24/eg_24.conf       /etc/apache2/sites-available/eg.conf
+cp Open-ILS/examples/apache_24/eg_vhost_24.conf /etc/apache2/eg_host.conf
+cp Open-ILS/examples/apache/eg_startup    	/etc/apache2/
+# Now set up SSL
+mkdir /etc/apache2/ssl
+cd /etc/apache2/ssl
+------------------------------------------------------------------------------------
 +
 .Fedora
 [source,bash]
@@ -267,8 +278,9 @@ place.
        a request timing out unexpectedly, but increase the risk of using up
        all available Apache child processes.
     b. 'Optional': Change `MaxKeepAliveRequests` to `100`
-    c. Update the prefork configuration section to suit your environment. The
-       following settings apply to a busy system:
+    c. (Debian, Ubuntu Precise, and Fedora) Update the prefork configuration 
+       section to suit your environment. The following settings apply to a busy 
+       system:
 +
 [source,bash]
 ------------------------------------------------------------------------------
@@ -279,6 +291,15 @@ place.
    MaxClients            150
    MaxRequestsPerChild 10000
 </IfModule>
+------------------------------------------------------------------------------
+    d. (Ubuntu Trusty) As the *root* user, edit 
+       /etc/apache2/mods-available/mpm_prefork.conf to match the above values.  
+       Then, also as the *root* user, enable the mpm_prefork module by doing:
++
+[source,bash]
+------------------------------------------------------------------------------
+a2dismod mpm_event
+a2enmod mpm_prefork
 ------------------------------------------------------------------------------
 +
 6. (Fedora): As the *root* Linux account, edit the `/etc/httpd/eg_vhost.conf`
@@ -351,8 +372,8 @@ command below based on your operating system.
 ------------------------------------------------------------------------------
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-wheezy
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-squeeze
-make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-lucid
 make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-precise
+make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-trusty
 make -f Open-ILS/src/extras/Makefile.install postgres-server-fedora
 ------------------------------------------------------------------------------
 
@@ -367,23 +388,28 @@ postgresql-setup initdb
 systemctl start postgresql
 ------------------------------------------------------------------------------
 
-For a standalone PostgreSQL server, install the following Perl modules as the
-*root* Linux account:
+For a standalone PostgreSQL server, install the following Perl modules for your
+distribution as the *root* Linux account:
 
-.(Debian / Ubuntu) Installing additional Perl modules on a standalone PostgreSQL 9 server
-[source, bash]
-------------------------------------------------------------------------------
-aptitude install gcc libxml-libxml-perl libxml-libxslt-perl
-cpan Business::ISBN
-cpan JSON::XS
-cpan Library::CallNumber::LC
-cpan MARC::Record
-cpan MARC::File::XML
-cpan UUID::Tiny
+.(Ubuntu Precise)
+[source,bash]
+---------------------------------------------------------------------------------
+apt-get install gcc libxml-libxml-perl libxml-libxslt-perl libbusiness-isbn-perl
+apt-get install libjson-xs-perl liblibrary-callnumber-lc-perl libmarc-record-perl
+apt-get install libmarc-xml-perl libuuid-tiny-perl
 cpan Rose::URI
-------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
 
-.(Fedora) Installing additional Perl modules on a standalone PostgreSQL 9 server
+.(Debian "wheezy" and Ubuntu Trusty) 
+standalone PostgreSQL 9 server
+[source,bash]
+---------------------------------------------------------------------------------
+apt-get install gcc libxml-libxml-perl libxml-libxslt-perl libbusiness-isbn-perl
+apt-get install libjson-xs-perl liblibrary-callnumber-lc-perl libmarc-record-perl
+apt-get install libmarc-xml-perl libuuid-tiny-perl librose-uri-perl
+---------------------------------------------------------------------------------
+
+.(Fedora)
 [source, bash]
 ------------------------------------------------------------------------------
 yum install gcc perl-XML-LibXML perl-XML-LibXSLT perl-Business-ISBN
