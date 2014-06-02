@@ -253,7 +253,7 @@ function performRollover(args) {
                     
                     // add the new year to the year selector if it's not already there
                     fundFilterYearSelect.store.fetch({
-                        query : {year : nextYear}, 
+                        query : {year : ''+nextYear}, 
                         onComplete:
                             function(list) {
                                 if(list && list.length > 0) return;
