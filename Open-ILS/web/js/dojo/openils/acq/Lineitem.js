@@ -181,7 +181,8 @@ openils.acq.Lineitem.fetchAndRender = function(liId, args, callback) {
                         liLink,
                         (po) ? 'foo' : '', // forces class='hiddenfoo' i.e. not hidden
                         (pl) ? 'foo' : '', // ditto
-                        encodeURIComponent(location.pathname + location.search)
+                        encodeURIComponent(location.pathname + location.search),
+                        lineitem.order_summary().delay_count() || '0'
                     ],
                     function(str) {
                         // prevent long titles from filling up the page
