@@ -10512,6 +10512,7 @@ SELECT  usr,
 			<field reporter:label="Item Count" name="item_count" reporter:datatype="int"/>
 			<field reporter:label="Receive Count" name="recv_count" reporter:datatype="int"/>
 			<field reporter:label="Cancel Count" name="cancel_count" reporter:datatype="int"/>
+			<field reporter:label="Delay Count" name="delay_count" reporter:datatype="int"/>
 			<field reporter:label="Invoice Count" name="invoice_count" reporter:datatype="int"/>
 			<field reporter:label="Claim Count" name="claim_count" reporter:datatype="int"/>
 			<field reporter:label="Estimated Amount" name="estimated_amount" reporter:datatype="money"/>
@@ -10532,6 +10533,7 @@ SELECT  usr,
 			<field reporter:label="Item Count" name="item_count" reporter:datatype="int"/>
 			<field reporter:label="Receive Count" name="recv_count" reporter:datatype="int"/>
 			<field reporter:label="Cancel Count" name="cancel_count" reporter:datatype="int"/>
+			<field reporter:label="Delay Count" name="delay_count" reporter:datatype="int"/>
 			<field reporter:label="Invoice Count" name="invoice_count" reporter:datatype="int"/>
 			<field reporter:label="Claim Count" name="claim_count" reporter:datatype="int"/>
 			<field reporter:label="Estimated Amount" name="estimated_amount" reporter:datatype="money"/>

@@ -2452,8 +2452,15 @@ CREATE OR REPLACE VIEW acq.lineitem_summary AS
         (
             SELECT COUNT(lid.id) 
             FROM acq.lineitem_detail lid
-            WHERE cancel_reason IS NOT NULL AND lineitem = li.id
+                JOIN acq.cancel_reason acqcr ON (acqcr.id = lid.cancel_reason)
+            WHERE acqcr.keep_debits IS FALSE AND lineitem = li.id
         ) AS cancel_count,
+        (
+            SELECT COUNT(lid.id) 
+            FROM acq.lineitem_detail lid
+                JOIN acq.cancel_reason acqcr ON (acqcr.id = lid.cancel_reason)
+            WHERE acqcr.keep_debits IS TRUE AND lineitem = li.id
+        ) AS delay_count,
         (
             SELECT COUNT(lid.id) 
             FROM acq.lineitem_detail lid
