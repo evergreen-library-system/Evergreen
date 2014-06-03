@@ -7242,6 +7242,7 @@ date <b>[% date.format(date.now, '%Y%m%d') %]</b>
       <th>Quantity</th>
       <th>Unit Price</th>
       <th>Line Total</th>
+      <th>Delayed / Canceled</th>
       <th>Notes</th>
     </tr>
   </thead>
@@ -7265,6 +7266,7 @@ date <b>[% date.format(date.now, '%Y%m%d') %]</b>
     <td>[% count %]</td>
     <td>[% price %]</td>
     <td>[% litotal %]</td>
+    <td>[% li.cancel_reason.label %]</td>
     <td>
         <ul>
         [% FOR note IN li.lineitem_notes %]
@@ -7297,6 +7299,7 @@ INSERT INTO action_trigger.environment (event_def, path) VALUES
     (4, 'ordering_agency.billing_address'),
     (4, 'provider.addresses'),
     (4, 'lineitems.attributes'),
+    (4, 'lineitems.cancel_reason'),
     (4, 'lineitems.lineitem_notes'),
     (4, 'notes');
 
@@ -8602,6 +8605,9 @@ $$
         <div class="count">Item Count: [% li.lineitem_details.size %]</div>
         <div class="lineid">Lineitem ID: [% li.id %]</div>
         <div>Open Holds: [% helpers.bre_open_hold_count(li.eg_bib_id) %]</div>
+        [% IF li.cancel_reason.label %]
+        <div>[% li.cancel_reason.label %]</div>
+        [% END %]
 
         [% IF li.distribution_formulas.size > 0 %]
             [% SET forms = [] %]
@@ -8638,6 +8644,7 @@ $$
                 <th>Shelving Location</th>
                 <th>Recd.</th>
                 <th>Notes</th>
+                <th>Delayed / Canceled</th>
             </tr>
         </thead>
         <tbody>
@@ -8665,6 +8672,7 @@ $$
                 <td style='padding:5px;'>[% copy.location.name %]</td>
                 <td style='padding:5px;'>[% IF detail.recv_time %]<span class="recv_time">[% detail.recv_time %]</span>[% END %]</td>
                 <td style='padding:5px;'>[% detail.note %]</td>
+                <td style='padding:5px;'>[% detail.cancel_reason.label %]</td>
             </tr>
         [% END %]
         </tbody>
@@ -8676,10 +8684,12 @@ $$
 
 INSERT INTO action_trigger.environment (event_def, path) VALUES
     ( 14, 'attributes' ),
+    ( 14, 'cancel_reason' ),
     ( 14, 'lineitem_notes' ),
     ( 14, 'lineitem_notes.alert_text' ),
     ( 14, 'distribution_formulas.formula' ),
     ( 14, 'lineitem_details' ),
+    ( 14, 'lineitem_details.cancel_reason' ),
     ( 14, 'lineitem_details.owning_lib' ),
     ( 14, 'lineitem_details.fund' ),
     ( 14, 'lineitem_details.location' ),
