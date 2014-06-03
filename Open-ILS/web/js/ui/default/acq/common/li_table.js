@@ -2944,11 +2944,20 @@ function AcqLiTable() {
 
     this._cancelLineitems = function(reason) {
 
-        // ignore canceled lineitems during batch lineitem cancel
-        var states = li_active_states.filter(
-            function(s) { return s != 'cancelled' });
+        var li_list = this.getSelected();
 
-        var id_list = this.getSelected(null, null, true, states);
+        // canceled lineitems may be canceled again if they were 
+        // previously delayed (keep_debits = true).
+        li_list = li_list.filter(
+            function(li) {
+                return (
+                    li.state() != 'cancelled' ||
+                    li.cancel_reason().keep_debits() == 't'
+                );
+            }
+        );
+
+        id_list = li_list.map(function(l) {return l.id()});
 
         if (!id_list.length) {
             alert(localeStrings.NO_LI_GENERAL);

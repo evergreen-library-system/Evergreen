@@ -3037,8 +3037,10 @@ sub cancel_lineitem_api {
 
 sub cancel_lineitem {
     my ($mgr, $li_id, $cancel_reason) = @_;
+
     my $li = $mgr->editor->retrieve_acq_lineitem([
-        $li_id, {flesh => 1, flesh_fields => {jub => ['purchase_order']}}
+        $li_id, {flesh => 1, 
+            flesh_fields => {jub => ['purchase_order','cancel_reason']}}
     ]) or return 0;
 
     return 0 unless $mgr->editor->allowed(
@@ -3046,14 +3048,16 @@ sub cancel_lineitem {
     );
 
     # Depending on context, this may not warrant an event.
-    return -1 if $li->state eq "cancelled";
+    return -1 if $li->state eq "cancelled" 
+        and $li->cancel_reason->keep_debits eq 'f';
 
     # But this always does.  Note that this used to be looser, but you can
     # no longer cancel lineitems that lack a PO or that are in "pending-order"
     # state (you could in the past).
     return new OpenILS::Event(
         "ACQ_NOT_CANCELABLE", "note" => "lineitem $li_id"
-    ) unless $li->purchase_order and $li->state eq "on-order";
+    ) unless $li->purchase_order and 
+        ($li->state eq "on-order" or $li->state eq "cancelled");
 
     $li->state("cancelled");
     $li->cancel_reason($cancel_reason->id);
@@ -3218,13 +3222,17 @@ sub cancel_lineitem_detail {
         $lid_id, {
             "flesh" => 2,
             "flesh_fields" => {
-                "acqlid" => ["lineitem"], "jub" => ["purchase_order"]
+                "acqlid" => ["lineitem","cancel_reason"], 
+                "jub" => ["purchase_order"]
             }
         }
     ]) or return 0;
 
+    # It's OK to cancel an already-canceled copy if the copy was
+    # previously "delayed" -- keep_debits == true
     # Depending on context, this may not warrant an event.
-    return -1 if $lid->cancel_reason;
+    return -1 if $lid->cancel_reason 
+        and $lid->cancel_reason->keep_debits eq 'f';
 
     # But this always does.
     return new OpenILS::Event(
@@ -3236,7 +3244,8 @@ sub cancel_lineitem_detail {
             $lid->lineitem and
             $lid->lineitem->purchase_order and (
                 $lid->lineitem->state eq "on-order" or
-                $lid->lineitem->state eq "pending-order"
+                $lid->lineitem->state eq "pending-order" or
+                $lid->lineitem->state eq "cancelled"
             )
         )
     );
