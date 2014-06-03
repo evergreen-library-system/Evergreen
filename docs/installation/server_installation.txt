@@ -226,7 +226,7 @@ cd /etc/apache2/ssl
 [source,bash]
 ------------------------------------------------------------------------------------
 cp Open-ILS/examples/apache_24/eg_24.conf       /etc/apache2/sites-available/eg.conf
-cp Open-ILS/examples/apache_24/eg_vhost_24.conf /etc/apache2/eg_host.conf
+cp Open-ILS/examples/apache_24/eg_vhost_24.conf /etc/apache2/eg_vhost.conf
 cp Open-ILS/examples/apache/eg_startup    	/etc/apache2/
 # Now set up SSL
 mkdir /etc/apache2/ssl
