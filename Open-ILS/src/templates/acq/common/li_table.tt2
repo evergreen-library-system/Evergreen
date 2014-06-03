@@ -208,7 +208,16 @@
                             <option name='action_view_history'>[% l('View History') %]</option>
                         </select>
                     </td>
-                    <td><span name='li_state'></span></td>
+                    <td>
+                      <span class="hidden" state-label name='li_state_new'>[% l('New') %]</span>
+                      <span class="hidden" state-label name='li_state_selector-ready'>[% l('Selector-Ready') %]</span>
+                      <span class="hidden" state-label name='li_state_order-ready'>[% l('Order-Ready') %]</span>
+                      <span class="hidden" state-label name='li_state_approved'>[% l('Approved') %]</span>
+                      <span class="hidden" state-label name='li_state_pending-order'>[% l('Pending-Order') %]</span>
+                      <span class="hidden" state-label name='li_state_on-order'>[% l('On-Order') %]</span>
+                      <span class="hidden" state-label name='li_state_received'>[% l('Received') %]</span>
+                      <span class="hidden" state-label name='li_state_cancelled'>[% l('Canceled') %]</span>
+                    </td>
                     <td><input type='text' size='8' name='price'/></td>
                 </tr>
                 <tr id='acq-inline-copies-row' class='acq-inline-copies-row'>

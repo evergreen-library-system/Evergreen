@@ -1207,41 +1207,45 @@ function AcqLiTable() {
                 self.generateMakeRecTab( li.eg_bib_id(), 'copy_browser', row );
         }
 
-        var state_cell = nodeByName("li_state", row);
+        var state_cell = nodeByName("li_state_" + li.state(), row);
 
-        switch(li.state()) {
+        // re-hide any state label nodes which may have been un-hidden
+        // through previous actions.
+        dojo.query('[state-label]', row).forEach(function(node) {
+            openils.Util.hide(node)
+        });
 
-            case 'cancelled':
-                if(typeof li.cancel_reason() == "object") {
-                    var holds_state = dojo.create(
-                        "span", {
-                            "style": "border-bottom: 1px dashed #000;",
-                            "innerHTML": li.state()
-                        }, state_cell, "only"
-                    );
-                    new dijit.Tooltip(
-                        {
-                            "label": "<em>" + li.cancel_reason().label() +
-                                "</em><br />" + li.cancel_reason().description(),
-                            "connectId": [holds_state]
-                        }, dojo.create("span", null, state_cell, "last")
-                    );
+        if (li.state() == 'cancelled') {
+            if(typeof li.cancel_reason() == "object") {
 
-                    if (li.cancel_reason().keep_debits() == 't') {
-                        openils.Util.removeCSSClass(row, /^oils-acq-li-state-/);
-                        openils.Util.addCSSClass(row, "oils-acq-li-state-delayed");
-                    }
+                // clear the stock "Canceled" label, since we have more
+                // information to replace it with.
+                state_cell.innerHTML = '';
+
+                var holds_state = dojo.create(
+                    "span", {
+                        "style": "border-bottom: 1px dashed #000;",
+                        "innerHTML": li.cancel_reason().label()
+                    }, state_cell, "only"
+                );
+                new dijit.Tooltip(
+                    {
+                        "label": "<em>" + li.cancel_reason().label() +
+                            "</em><br />" + li.cancel_reason().description(),
+                        "connectId": [holds_state]
+                    }, dojo.create("span", null, state_cell, "last")
+                );
+
+                if (li.cancel_reason().keep_debits() == 't') {
+                    openils.Util.removeCSSClass(row, /^oils-acq-li-state-/);
+                    openils.Util.addCSSClass(row, "oils-acq-li-state-delayed");
                 }
-                return; // all done
+            } else {
+                console.log('li cancel_reason is un-fleshed.  Please fix');
+            }
+        } 
 
-            case "on-order":
-                break;
-
-            case "received":
-                break;
-        }
-
-        state_cell.innerHTML = li.state(); // TODO i18n state labels
+        openils.Util.show(state_cell);
     };
 
 
@@ -2468,7 +2472,7 @@ function AcqLiTable() {
                 var holds_reason = dojo.create(
                     "span", {
                         "style": "border-bottom: 1px dashed #000;",
-                        "innerHTML": "Cancelled" /* XXX [sic] and i18n */
+                        "innerHTML": copy.cancel_reason().label()
                     }, cxl_reason_link, "only"
                 );
                 new dijit.Tooltip(
