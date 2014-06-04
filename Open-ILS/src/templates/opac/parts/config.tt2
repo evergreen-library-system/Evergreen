@@ -171,5 +171,17 @@ ctx.google_books_preview = 0;
 # metarecords.disabled = 1; # disable all metarecord access points
 ##############################################################################
 
+##############################################################################
+# Local date format (uses POSIX strftime() formatting)
+# See http://www.template-toolkit.org/docs/modules/Template/Plugin/Date.html
+# DATE_FORMAT = '%Y-%m-%d'; # for 2014-06-31 format
+##############################################################################
+
+##############################################################################
+# Local time format (uses POSIX strftime() formatting)
+# See http://www.template-toolkit.org/docs/modules/Template/Plugin/Date.html
+# TIME_FORMAT = '%H:%M:%S'; # for 16:32:32 (24 hour) format
+# TIME_FORMAT = '%H:%M'; # for 16:32 (24 hour) format
+##############################################################################
 
 %]
