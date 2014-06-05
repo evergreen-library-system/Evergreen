@@ -322,10 +322,11 @@ The rule of parental inheritance applies to this list.
 . The Last Activity updates automatically with any inbound or outbound
 communication.
 . Select a provider from the drop-down menu to whom this account belongs.
-. Enter a path. The path indicates the remote location on the server from which
-files are pulled in to the ILS.
-. Enter the incoming directory. This directory indicates the location on your
-local network to which the files download.
+. Enter a path. The path indicates a directory on the vendor’s server where 
+  Evergreen will deposit its outgoing order files.
+. Enter the incoming directory. This indicates the directory
+  on the vendor’s server where Evergreen will retrieve incoming order 
+  responses and invoices.
 . Enter the vendor account number supplied by your provider.
 . Enter the vendor account code supplied by your provider.
 . Click Save.
