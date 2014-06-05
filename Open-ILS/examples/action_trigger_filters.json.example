@@ -16,7 +16,8 @@
             "capture_time": {"!=": null},
             "current_copy": {"!=": null},
             "shelf_time": {"!=": null},
-            "cancel_time": null
+            "cancel_time": null,
+            "fulfillment_time": null
         }
     },
     "hold_request.long_wait" : {
