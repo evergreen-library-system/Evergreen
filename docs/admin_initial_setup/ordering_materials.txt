@@ -211,15 +211,16 @@ Administration > Acquisitions > EDI Accounts*. Give the account a name in the
 . *Host* is the vendor-assigned FTP/SFTP/SSH hostname.
 . *Username* is the vendor-assigned FTP/SFTP/SSH username.
 . *Password* is the vendor-assigned FTP/SFTP/SSH password.
-. *Account* is the vendor-assigned account number associated with your
-  organization.
+. *Account* This field enables you to add a supplemental password for
+  entry to a remote system after log in has been completed. This field is
+  optional for the ILS but may be required by your provider.
 . *Owner* is the organizational unit who owns the EDI account
 . *Last Activity* is the date of last activity for the account
 . *Provider* is a link to the codes for the Provider record.
-. *Path* is the path on the vendor’s server where Evergreen will send its
-  outgoing .epo files.
-. *Incoming Directory* is the path on the vendor’s server where incoming .epo
-  files are stored.
+. *Path* is the path on the vendor’s server where Evergreen will deposit its
+  outgoing order files.
+. *Incoming Directory* is the path on the vendor’s server where Evergreen
+  will retrieve incoming order responses and invoices.
 . *Vendor Account Number* is the Vendor assigned account number.
 . *Vendor Assigned Code* is usually a sub-account designation. It can be used
   with or without the Vendor Account Number.
