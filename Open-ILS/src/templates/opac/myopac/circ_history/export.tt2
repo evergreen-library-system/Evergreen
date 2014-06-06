@@ -1,1 +1,25 @@
-[%- ctx.csv.template_output.data -%]
+[%- USE CSVFilter 'csv';
+    USE date;
+    SET DATE_FORMAT = l('%m/%d/%Y'); -%]
+[%- l('Title') | csv -%]
+[%- l('Author') | csv -%]
+[%- l('Checkout Date') | csv -%]
+[%- l('Due Date') | csv -%]
+[%- l('Date Returned') | csv -%]
+[%- l('Barcode') | csv -%]
+[%- l('Call Number') | csv -%]
+[%- l('Format') | csv 'last' %]
+[%  FOREACH row IN ctx.csv.rows; -%]
+[%- row.title | csv -%]
+[%- row.author | csv -%]
+[%- date.format(ctx.parse_datetime(row.xact_start), DATE_FORMAT) | csv-%]
+[%- date.format(ctx.parse_datetime(row.due_date), DATE_FORMAT) | csv -%]
+[%- IF row.checkin_time;
+       date.format(ctx.parse_datetime(row.checkin_time), DATE_FORMAT) | csv;
+    ELSE; -%]
+,
+[%- END -%]
+[%- row.barcode | csv -%]
+[%- row.call_number | csv -%]
+[%- row.format | csv 'last' %]
+[%  END -%]
