@@ -2106,7 +2106,7 @@ sub checked_in_with_fines {
 
     my( @lost, @cr, @lo );
     for my $c (@$open) {
-        push( @lost, $c->id ) if $c->stop_fines eq 'LOST';
+        push( @lost, $c->id ) if ($c->stop_fines eq 'LOST');
         push( @cr, $c->id ) if $c->stop_fines eq 'CLAIMSRETURNED';
         push( @lo, $c->id ) if $c->stop_fines eq 'LONGOVERDUE';
     }

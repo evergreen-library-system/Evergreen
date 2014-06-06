@@ -226,7 +226,8 @@ sub __abort_transit {
     my $evt;
     my $hold;
 
-    if( ($transit->copy_status == OILS_COPY_STATUS_LOST and !$e->allowed('ABORT_TRANSIT_ON_LOST')) or
+    if( (($transit->copy_status == OILS_COPY_STATUS_LOST || $transit->copy_status == OILS_COPY_STATUS_LOST_AND_PAID)
+             and !$e->allowed('ABORT_TRANSIT_ON_LOST')) or
         ($transit->copy_status == OILS_COPY_STATUS_MISSING and !$e->allowed('ABORT_TRANSIT_ON_MISSING')) ) {
         $e->rollback;
         return OpenILS::Event->new('TRANSIT_ABORT_NOT_ALLOWED', copy_status => $transit->copy_status);

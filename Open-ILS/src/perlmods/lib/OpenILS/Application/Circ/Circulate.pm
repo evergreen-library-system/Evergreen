@@ -3420,7 +3420,7 @@ sub checkin_handle_circ {
         $self->copy->circ_lib->id : $self->copy->circ_lib;
     my $stat = $U->copy_status($self->copy->status)->id;
 
-    if ($stat == OILS_COPY_STATUS_LOST) {
+    if ($stat == OILS_COPY_STATUS_LOST || $stat == OILS_COPY_STATUS_LOST_AND_PAID) {
         # we will now handle lost fines, but the copy will retain its 'lost'
         # status if it needs to transit home unless lost_immediately_available
         # is true
@@ -3667,6 +3667,9 @@ sub check_checkin_copy_status {
 
    return OpenILS::Event->new('COPY_STATUS_LOST', payload => $copy )
       if( $status == OILS_COPY_STATUS_LOST );
+
+    return OpenILS::Event->new('COPY_STATUS_LOST_AND_PAID', payload => $copy)
+        if ($status == OILS_COPY_STATUS_LOST_AND_PAID);
 
    return OpenILS::Event->new('COPY_STATUS_LONG_OVERDUE', payload => $copy )
       if( $status == OILS_COPY_STATUS_LONG_OVERDUE );

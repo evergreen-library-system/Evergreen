@@ -43,6 +43,7 @@ econst OILS_COPY_STATUS_DISCARD       => 13;
 econst OILS_COPY_STATUS_DAMAGED       => 14;
 econst OILS_COPY_STATUS_ON_RESV_SHELF => 15;
 econst OILS_COPY_STATUS_LONG_OVERDUE  => 16;
+econst OILS_COPY_STATUS_LOST_AND_PAID => 17;
 
 
 # ---------------------------------------------------------------------

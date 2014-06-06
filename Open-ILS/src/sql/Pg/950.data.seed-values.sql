@@ -324,6 +324,9 @@ INSERT INTO config.copy_status (id,name,copy_active) VALUES (15,oils_i18n_gettex
 INSERT INTO config.copy_status
     (id, name, holdable, opac_visible, copy_active, restrict_copy_delete)
     VALUES (16, oils_i18n_gettext(16, 'Long Overdue', 'ccs', 'name'), 'f', 'f', 'f', 't');
+INSERT INTO config.copy_status
+(id, name, holdable, opac_visible, copy_active, restrict_copy_delete)
+VALUES (17, 'Lost and Paid', FALSE, FALSE, FALSE, TRUE);
 
 
 SELECT SETVAL('config.copy_status_id_seq'::TEXT, 100);
@@ -5004,6 +5007,15 @@ INSERT into config.org_unit_setting_type
         'coust',
         'description'),
     'integer', null)
+,('circ.use_lost_paid_copy_status',
+ 'circ',
+ oils_i18n_gettext('circ.use_lost_paid_copy_status',
+     'Use Lost and Paid copy status',
+     'coust', 'label'),
+ oils_i18n_gettext('circ.use_lost_paid_copy_status',
+     'Use Lost and Paid copy status when lost or long overdue billing is paid',
+     'coust', 'description'),
+ 'bool')
 ;
 
 UPDATE config.org_unit_setting_type

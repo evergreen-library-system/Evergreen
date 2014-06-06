@@ -356,7 +356,7 @@ sub sip_circulation_status {
     return '08' if $stat == OILS_COPY_STATUS_ON_HOLDS_SHELF;
     return '09' if $stat == OILS_COPY_STATUS_RESHELVING;
     return '10' if $stat == OILS_COPY_STATUS_IN_TRANSIT;
-    return '12' if $stat == OILS_COPY_STATUS_LOST;
+    return '12' if ($stat == OILS_COPY_STATUS_LOST || $stat == OILS_COPY_STATUS_LOST_AND_PAID);
     return '13' if $stat == OILS_COPY_STATUS_MISSING;
         
     return '01';

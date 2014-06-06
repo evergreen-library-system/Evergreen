@@ -918,6 +918,9 @@
 	<event code='7025' textcode='COPY_STATUS_LONG_OVERDUE'>
 		<desc xml:lang="en-US">Copy is marked as long-overdue</desc>
 	</event>
+	<event code='7026' textcode='COPY_STATUS_LOST_AND_PAID'>
+	        <desc xml:lang="en-US">Copy is marked as lost and paid</desc>
+	</event>
 
 
 	<!-- ================================================================ -->
