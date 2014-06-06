@@ -410,6 +410,8 @@ Introduction
 Developers can use this part to learn more about the programming languages,
 communication protocols and standards used in Evergreen.  
 
+include::development/support_scripts.txt[]
+
 // Push titles down one level.
 :leveloffset: 1
 
