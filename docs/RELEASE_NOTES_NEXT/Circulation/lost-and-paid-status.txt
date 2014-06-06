@@ -1,0 +1,13 @@
+Support for a Lost and Paid Status
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+This feature supports a new, optional, _Lost and Paid_ status that can be used
+by sites that want to distinguish between lost items with outstanding bills and
+those that have been fully paid. A site may want to make this distinction to
+set different OPAC visibility or holdability rules for these items.
+
+If enabled, when a lost item is fully paid, the copy's status will automatially
+change to _Lost and Paid_.
+
+New setting available via the Library Settings Editor
+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+- Use Lost and Paid copy status (circ.use_lost_paid_copy_status)
