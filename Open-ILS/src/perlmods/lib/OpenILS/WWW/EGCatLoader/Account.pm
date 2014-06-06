@@ -2718,10 +2718,8 @@ sub load_myopac_circ_history_export {
 
     my $circs = $self->fetch_user_circ_history;
 
-    $self->ctx->{csv} = $U->fire_object_event(
-        undef,
-        'circ.format.history.csv', $circs,
-        $self->editor->requestor->home_ou
+    $self->ctx->{csv}->{rows} = $self->_get_circ_history_csv(
+        [map {$_->{id}} @$ids]
     );
 
     return $self->set_file_download_headers($filename);
@@ -2795,5 +2793,183 @@ sub load_password_reset {
     $logger->info("patron password reset resulted in " . Dumper($ctx->{pwreset}));
     return Apache2::Const::OK;
 }
+
+# fetch_user_circs is too slow for our purposes.  (Yes, I tested it.)
+# It also does a lot more than we need in order to produce our CSV
+# output of a patron's circ history.  So, _get_circ_history_csv was
+# concocted to get only the information that we need in a more timely
+# manner, though it is still not as speedy as one would like.
+#
+# Given an array ref of circulation ids, the function returns an array
+# ref of hash ref objects with fields, xact_start, due_date,
+# checkin_time, title, author, call_number, barcode, and format.
+# There is one array entry for each circulation.  This is the
+# information presently required for the circ_history.csv file.
+sub _get_circ_history_csv {
+    my $self = shift;
+    my $ids = shift;
+    my $rows = [];
+    my $e = $self->editor;
+
+    if ($ids && @$ids) {
+        my $results = $e->json_query(
+            {
+                'select' => {
+                    'circ' => ['xact_start','due_date','checkin_time'],
+                    'acp' => ['barcode'],
+                    'acn' => ['label','record']
+                },
+                'from' => {'circ' => {'acp' => {'join' => 'acn'}}},
+                'where' => {'+circ' => {'id' => $ids}},
+                'order_by' => {'circ' => ['xact_start']}
+            }
+        );
+        foreach my $r (@$results) {
+            my $row = {};
+            my $record = $self->_get_record_data($r->{record});
+            $row->{title} = $record->{title};
+            $row->{author} = $record->{author};
+            $row->{format} = join('+', @{$record->{formats}});
+            $row->{xact_start} = $r->{xact_start};
+            $row->{due_date} = $r->{due_date};
+            $row->{checkin_time} = $r->{checkin_time};
+            $row->{barcode} = $r->{barcode};
+            $row->{call_number} = $r->{label};
+            push(@$rows, $row);
+        }
+    }
+
+    return $rows;
+}
+
+# Utility functions used by _get_circ_history_csv:
+
+# This funtion retrieves the information that we need from a bre for
+# our circ_history.csv output.  It gathers, the title, author, and
+# icon formats into a hashref using the _get_title_proper,
+# _get_author, and _get_icon_formats functions defined below.  Once
+# the data are retrieved, it is cached for 90 seconds in the
+# global cache.  Testing has shown that it takes about 82 seconds to
+# retrieve the information for a patron with 4,196 retained
+# circulations on a slow development system.  Using the cache with a
+# timeout of 90 seconds, dropped 4 seconds from the retrieval time,
+# and led to 371 cache hits.  The cached information is, of course,
+# used if available rather than doing a database lookup.
+sub _get_record_data {
+    my $self = shift;
+    my $record = shift;
+    my $e = $self->editor;
+    my $obj;
+    my $key = 'TPAC_csv_info_' . $record;
+
+    # First, we try the global cache.
+    my $cache = OpenSRF::Utils::Cache->new('global');
+    $obj = $cache->get_cache($key);
+
+    unless ($obj) {
+        $obj = {};
+
+        $obj->{author} = $self->_get_author($record);
+        $obj->{formats} = $self->_get_icon_formats($record);
+        $obj->{title} = $self->_get_title_proper($record);
+
+        $cache->put_cache($key, $obj, 90);
+    }
+
+    return $obj;
+}
+
+# This function looks up the text for the icon formats of a given
+# bre.id.  It does so using a JSON query and a cached hash map of
+# coded value map code => value.  The hash map is cached for 24 hours
+# because we have no idea how often people ask for their circ history
+# in a csv, nor how often they might want to retrieve their lists/book
+# bags in a csv.
+sub _get_icon_formats {
+    my $self = shift;
+    my $record = shift;
+    my $e = $self->editor;
+    my $formats = [];
+
+    # First, let's try using a cache:
+    my $cache = OpenSRF::Utils::Cache->new('global');
+    my $icon_formats = $cache->get_cache('CCVM_icon_format_code_map');
+    unless ($icon_formats) {
+        # Build a map of item_type coded value map:
+        my $ccvms = $e->search_config_coded_value_map({ctype => 'icon_format'});
+        if ($ccvms && @$ccvms) {
+            foreach my $ccvm (@$ccvms) {
+                $icon_formats->{$ccvm->code} = $ccvm->value;
+            }
+        }
+        $cache->put_cache('CCVM_icon_format_code_map', $icon_formats);
+    }
+
+
+    my $query = {
+        'select' => {'mraf' => ['value']},
+        'from' => 'mraf',
+        'where' => {'id' => $record, 'attr' => 'icon_format'},
+        'distinct' => 'true'
+    };
+
+    my $result = $e->json_query($query);
+    foreach (@$result) {
+        push(@$formats, $$icon_formats{$_->{value}});
+    }
+
+    return $formats;
+}
+
+# This function retrieves the "first" author for a bre using a JSON
+# query on metabib.author_field_entry.  It deterimines "first" by
+# ordering by "field" and then "id" and using a limit of 1 on the
+# result set.
+sub _get_author {
+    my $self = shift;
+    my $record = shift;
+    my $e = $self->editor;
+    my $author;
+
+    my $query = {
+        'select' => {'mafe' => ['value']},
+        'from' => 'mafe',
+        'where' => {'source' => $record},
+        'order_by' => {'mafe' => ['field','id']},
+        'limit' => 1
+    };
+
+    my $result = $e->json_query($query);
+    if ($result && @$result) {
+        $author = $result->[0]->{value};
+    }
+
+    return $author;
+}
+
+# This function looks up a "title proper" for a bre using a JSON query
+# on metabib.author_field_entry where the "field" is equal to 6, the
+# code for "title proper."
+sub _get_title_proper {
+    my $self = shift;
+    my $record = shift;
+    my $e = $self->editor;
+    my $title;
+
+    my $query = {
+        'select' => {'mtfe' => ['value']},
+        'from' => 'mtfe',
+        'where' => {'source' => $record, 'field' => 6},
+        'limit' => 1
+    };
+
+    my $result = $e->json_query($query);
+    if ($result && @$result) {
+        $title = $result->[0]->{value};
+    }
+
+    return $title;
+}
+
 
 1;

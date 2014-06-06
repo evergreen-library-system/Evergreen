@@ -172,4 +172,5 @@ lib/OpenILS/WWW/SuperCat/Feed.pm
 lib/OpenILS/WWW/TemplateBatchBibUpdate.pm
 lib/OpenILS/WWW/Vandelay.pm
 lib/OpenILS/WWW/XMLRPCGateway.pm
+lib/Template/Plugin/CSVFilter.pm
 MANIFEST			This list of files
