@@ -147,6 +147,7 @@
                     field='import_time'
                     styles='text-align: center;'
                     get='vlGetDateTimeField'>[% l('Import Time') %]</th>
+                <th field='imported_as'>[% l('Imported As') %]</th>
             </tr>
         </thead>
     </table>
@@ -188,6 +189,7 @@
                     field='import_time'
                     styles='text-align: center;'
                     get='vlGetDateTimeField'>[% l('Import Time') %]</th>
+                <th field='imported_as'>[% l('Imported As') %]</th>
             </tr>
         </thead>
     </table>
