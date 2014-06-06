@@ -150,10 +150,17 @@ IF num_uris > 0;
 
 <h2 id='rdetail_record_details'>[% l("Record details") %]</h2>
 <ul>
-    [%- IF attrs.isbns.0; FOR isbn IN attrs.isbns %]
+    [%- IF attrs.isbns.0;
+          FOR isbn IN attrs.isbns;
+            isbn_extra = '';
+            IF (matches = isbn.match('^(.+?)(\s.+)$'));
+              isbn = matches.0;
+              isbn_extra = matches.1;
+            END;
+    %]
     <li class='rdetail_isbns'>
         <strong class='rdetail_label'>[% l('ISBN:'); %]</strong>
-        <span class='rdetail_value' property='isbn'>[% isbn | html  %]</span>
+        <span class='rdetail_value' property='isbn'>[% isbn | html  %]</span>[% isbn_extra | html %]
     </li>
         [%- END %]
     [%- END %]
