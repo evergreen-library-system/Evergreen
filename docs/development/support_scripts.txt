@@ -1,0 +1,173 @@
+== Support Scripts
+
+Various scripts are included with Evergreen in the `/openils/bin/` directory
+(and in the source code in `Open-ILS/src/support-scripts` and
+`Open-ILS/src/extras`). Some of them are used during
+the installation process, such as `eg_db_config`, while others are usually
+run as cron jobs for routine maintenance, such as `fine_generator.pl` and
+`hold_targeter.pl`. Others are useful for less frequent needs, such as the
+scripts for importing/exporting MARC records. You may explore these scripts
+and adapt them for your local needs. You are also welcome to share your
+improvements or ask any questions on the
+http://evergreen-ils.org/communicate/[Evergreen IRC channel or email lists].
+
+Here is a summary of the most commonly used scripts. The script name links
+to more thorough documentation, if available.
+
+ * <<_processing_action_triggers,action_trigger_runner.pl>>
+   -- Useful for creating events for specified hooks and running pending events
+ * authority_authority_linker.pl
+   -- Links reference headings in authority records to main entry headings
+      in other authority records. Should be run at least once a day (only for
+	  changed records).
+ * authority_control_fields.pl
+   -- Links bibliographic records to the best matching authority record.
+      Should be run at least once a day (only for changed records).
+ * autogen.sh
+   -- Generates web files used by the OPAC, especially files related to
+      organization unit hierarchy, fieldmapper IDL, locales selection,
+      facet definitions, compressed JS files and related cache key
+ * clark-kent.pl
+   -- Used to start and stop the reporter (which runs scheduled reports)
+ * <<_creating_the_evergreen_database,eg_db_config>>
+   -- Creates database and schema, updates config files, sets Evergreen
+      administrator username and password
+ * fine_generator.pl
+ * hold_targeter.pl
+ * <<_importing_authority_records_from_command_line,marc2are.pl>>
+   -- Converts authority records from MARC format to Evergreen objects
+      suitable for importing via pg_loader.pl (or parallel_pg_loader.pl)
+ * marc2bre.pl
+   -- Converts bibliographic records from MARC format to Evergreen objects
+      suitable for importing via pg_loader.pl (or parallel_pg_loader.pl)
+ * marc2sre.pl
+   -- Converts serial records from MARC format to Evergreen objects
+      suitable for importing via pg_loader.pl (or parallel_pg_loader.pl)
+ * <<_marc_export,marc_export>>
+   -- Exports authority, bibliographic, and serial holdings records into
+      any of these formats: USMARC, UNIMARC, XML, BRE, ARE
+ * osrf_control
+   -- Used to start, stop and send signals to OpenSRF services
+ * parallel_pg_loader.pl
+   -- Uses the output of marc2bre.pl (or similar tools) to generate the SQL
+      for importing records into Evergreen in a parallel fashion
+
+
+anchor:_marc_export[]
+
+=== marc_export: Exporting Bibliographic Records into MARC files
+
+indexterm:[marc_export]
+
+The following procedure explains how to export Evergreen bibliographic
+records into MARC files using the *marc_export* support script. All steps
+should be performed by the `opensrf` user from your Evergreen server.
+
+[NOTE]
+Processing time for exporting records depends on several factors such as
+the number of records you are exporting. It is recommended that you divide
+the export ID files (records.txt) into a manageable number of records if
+you are exporting a large number of records.
+
+ . Create a text file list of the Bibliographic record IDs you would like
+to export from Evergreen. One way to do this is using SQL:
++
+[source,sql]
+----
+SELECT DISTINCT bre.id FROM biblio.record_entry AS bre
+    JOIN asset.call_number AS acn ON acn.record = bre.id 
+    WHERE bre.deleted='false' and owning_lib=101 \g /home/opensrf/records.txt;
+----
++
+This query creates a file called `records.txt` containing a column of
+distinct IDs of items owned by the organizational unit with the id 101.
+
+ . Navigate to the support-scripts folder
++
+----
+cd /home/opensrf/Evergreen-ILS*/Open-ILS/src/support-scripts/
+----
+
+ . Run *marc_export*, using the ID file you created in step 1 to define which
+   files to export. The following example exports the records into MARCXML format.
++
+----
+cat /home/opensrf/records.txt | ./marc_export --store -i -c /openils/conf/opensrf_core.xml \
+    -x /openils/conf/fm_IDL.xml -f XML --timeout 5 > exported_files.xml
+----
+
+[NOTE]
+====================
+`marc_export` was updated in Evergreen 2.6 and now does not output progress
+as it executes.
+====================
+
+[NOTE]
+====================
+You can use the `--since` option to export records modified after a
+certain date and time.
+====================
+
+[NOTE]
+====================
+By default, marc_export will use the reporter storage service, which should
+work in most cases. But if you have a separate reporter database and you
+know you want to talk directly to your main production database, then you
+can set the `--store` option to `cstore` or `storage`. 
+====================
+
+[NOTE]
+====================
+For more information, run marc_export with the -h option:
+
+ ./marc_export -h
+====================
+
+
+
+=== Importing Authority Records from Command Line
+
+indexterm:[marc2are.pl]
+indexterm:[pg_loader.pl]
+
+The major advantages of the command line approach are its speed and its
+convenience for system administrators who can perform bulk loads of
+authority records in a controlled environment. For alternate instructions,
+see <<_importing_authority_records_from_the_staff_client,Importing
+Authority Records from the Staff Client>>.
+
+ . Run *marc2are.pl* against the authority records, specifying the user
+name, password, MARC type (USMARC or XML). Use `STDOUT` redirection to
+either pipe the output directly into the next command or into an output
+file for inspection. For example, to process a file with authority records
+in MARCXML format named `auth_small.xml` using the default user name and
+password, and directing the output into a file named `auth.are`:
++
+----
+cd Open-ILS/src/extras/import/
+perl marc2are.pl --user admin --pass open-ils --marctype XML auth_small.xml > auth.are
+----
++
+[NOTE]
+The MARC type will default to USMARC if the `--marctype` option is not specified.
+
+ . Run *pg_loader.pl* to generate the SQL necessary for importing the
+authority records into your system. To save time for very large batches
+of records, you could simply pipe the output of *marc2are.pl* directly
+into *pg_loader.pl*.
++
+----
+cd Open-ILS/src/extras/import/
+perl pg_loader.pl --auto are --order are auth.are > auth_load.sql
+----
+
+ . Load the authority records from the SQL file that you generated in the
+last step into your Evergreen database using the psql tool. Assuming the
+default user name, host name, and database name for an Evergreen instance,
+that command looks like:
++
+----
+psql -U evergreen -h localhost -d evergreen -f auth_load.sql
+----
+
+

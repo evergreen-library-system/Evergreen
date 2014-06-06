@@ -2,13 +2,13 @@ Batch Importing MARC Records
 ----------------------------
 [[batchimport]]
 The cataloging module includes an enhanced MARC Batch Import interface for
-loading MARC records.  This interface allows you to specify match points
+loading MARC records. In general, it can handle batches up to 5,000 records
+without a problem. This interface allows you to specify match points
 between incoming and existing records, to specify MARC fields that should be
 overlaid or preserved, and to only overlay records if the incoming record is
 of higher quality than the existing record. Records are added to a queue where
 you can apply filters that enable you to generate any errors that may have
-occurred during import.  You can print your queue, email your queue, or export
-your queue as a CSV file. 
+occurred during import. You can print, email or export your queue as a CSV file.
 
 Permissions
 ~~~~~~~~~~~
@@ -308,4 +308,44 @@ The following *Library Settings* can be configured to apply these default values
 * *Vandelay: Default Copy Location* —Default copy location value for imported items
 
 * *Vandelay: Default Circulation Modifier* —Default circulation modifier value for imported items
+
+Importing Authority Records from the Staff Client
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+For an alternate method of importing authority records, read
+<<_importing_authority_records_from_command_line,Importing Authority
+Records from Command Line>>.
+
+To import a set of MARC authority records from the _MARC Batch
+Import/Export_ interface:
+
+ . From the Evergreen staff client, select *Cataloging -> MARC Batch
+Import/Export*. The _Evergreen MARC File Upload_ screen opens, with
+_Import Records_ as the highlighted tab.
+
+ . From the *Record Type* drop-down menu, select *Authority Records*.
+
+ . Enter a name for the queue (batch import job) in the *Create a New
+Upload Queue* field.
+
+ . Select the *Import Non-Matching Records* checkbox.
+
+ . Click the *Browse* button to select the file of MARC authorities to import.
+
+ . Click the *Upload* button to begin importing the records.
++
+The screen displays "Uploading... Processing..." to show that the records
+are being transferred to the server, then displays a progress bar to show
+the actual import progress. When the staff client displays the progress
+bar, you can disconnect your staff client safely. Very large batches of
+records might time out at this stage.
+
+ . Once the import is finished, the staff client displays the results of
+the import process. You can manually display the import progress by
+selecting the _Inspect Queue_ tab of the _MARC Batch Import/Export_
+interface and selecting the queue name. By default, the staff client does
+not display records that were imported successfully; it only shows records
+that conflicted with existing entries in the database. The screen shows
+the overall status of the import process in the top right-hand corner,
+with the Total and Imported number of records for the queue.
 
