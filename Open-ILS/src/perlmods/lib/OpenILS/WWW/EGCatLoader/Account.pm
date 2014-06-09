@@ -2722,7 +2722,7 @@ sub load_myopac_circ_history_export {
         [map {$_->{id}} @$ids]
     );
 
-    return $self->set_file_download_headers($filename);
+    return $self->set_file_download_headers($filename, 'text/csv; encoding=UTF-8');
 }
 
 sub load_password_reset {
