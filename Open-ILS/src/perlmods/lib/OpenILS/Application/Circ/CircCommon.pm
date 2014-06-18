@@ -708,7 +708,7 @@ sub bill_payment_map_for_xact {
 
     # find all bills in order
     my $bill_search = [
-        {xact => $xact->id()},
+        { xact => $xact->id(), voided => 'f' },
         { order_by => { mb => { billing_ts => { direction => 'asc' } } } },
     ];
 

@@ -3829,13 +3829,23 @@ sub checkin_handle_lost_or_lo_now_found_restore_od {
     if ($ods && @$ods) {
         my $void_amount = 0;
         my $void_max = $self->circ->max_fine();
+        # search for overdues voided the new way (aka "adjusted")
         my @billings = map {$_->id()} @$ods;
         my $voids = $self->editor->search_money_adjustment_payment(
             {
                 billing => \@billings
             }
         );
-        map {$void_amount += $_->amount()} @$voids;
+        if (@$voids) {
+            map {$void_amount += $_->amount()} @$voids;
+        } else {
+            # if no adjustments found, assume they were voided the old way (aka "voided")
+            for my $bill (@$ods) {
+                if( $U->is_true($bill->voided) ) {
+                    $void_amount += $bill->amount();
+                }
+            }
+        }
         $CC->create_bill(
             $self->editor,
             ($void_amount < $void_max ? $void_amount : $void_max),
