@@ -18,7 +18,16 @@ function oilsRptReportEditor(rptObject, folderWindow) {
 	appendClear(DOM.oils_rpt_report_editor_template_description, tmpl.description());
 
     if (rptObject.def.version >= 4) {
-	    DOM.oils_rpt_report_editor_template_doc_url.setAttribute( 'href', rptObject.def.doc_url );
+        if (URL = rptObject.def.doc_url) {
+            var link = DOM.oils_rpt_report_editor_template_doc_url;
+            link.innerHTML = URL;
+            if (typeof xulG == 'undefined') {
+                link.setAttribute('href', URL);
+                link.setAttribute('target', '_blank');
+            } else {
+                link.onclick = function() {xulG.new_tab(URL); return false}
+            }
+        }
     } else {
         hideMe(DOM.oils_rpt_report_editor_template_doc_url_row);
     }
@@ -28,6 +37,10 @@ function oilsRptReportEditor(rptObject, folderWindow) {
 		function(i) {
 			if(i)
 				DOM.oils_rpt_report_editor_cols.appendChild(text(i.alias));
+                if (i.field_doc) {
+				    DOM.oils_rpt_report_editor_cols.appendChild(
+                        elem('span', {'class':'oils_rpt_field_hint'}, i.field_doc));
+                }
 				DOM.oils_rpt_report_editor_cols.appendChild(document.createElement('br'));
 		}
 	);

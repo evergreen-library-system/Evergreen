@@ -37,7 +37,14 @@ oilsRptParamEditor.prototype.draw = function() {
 		var par = params[p];
 		var row = oilsRptParamEditor.row.cloneNode(true);
 		this.tbody.appendChild(row);
-		$n(row, 'column').appendChild(text(oilsRptMakeLabel(par.path, par.field_doc)));
+		$n(row, 'column').appendChild(text(oilsRptMakeLabel(par.path)));
+
+        if (par.field_doc) {
+		    $n(row, 'column').appendChild(
+                elem('div', {'class':'oils_rpt_field_hint'}, par.field_doc));
+        }
+            
+		//$n(row, 'column').appendChild(text(oilsRptMakeLabel(par.path, par.field_doc)));
 		$n(row, 'transform').appendChild(text(OILS_RPT_TRANSFORMS[par.column.transform].label));
 		$n(row, 'action').appendChild(text(OILS_RPT_FILTERS[par.op].label));
 		par.widget = this.buildWidget(par, $n(row, 'widget'));
@@ -52,7 +59,11 @@ oilsRptParamEditor.prototype.draw = function() {
 		var par = tparams[p];
 		var row = oilsRptParamEditor.row.cloneNode(true);
 		this.tbody.appendChild(row);
-		$n(row, 'column').appendChild(text(oilsRptMakeLabel(par.path, par.field_doc)));
+		$n(row, 'column').appendChild(text(oilsRptMakeLabel(par.path)));
+        if (par.field_doc) {
+		    $n(row, 'column').appendChild(
+                elem('div', {'class':'oils_rpt_field_hint'}, par.field_doc));
+        }
 		$n(row, 'transform').appendChild(text(OILS_RPT_TRANSFORMS[par.column.transform].label));
 		$n(row, 'action').appendChild(text(OILS_RPT_FILTERS[par.op].label));
 		par.widget = this.buildWidget(par, $n(row, 'widget'));

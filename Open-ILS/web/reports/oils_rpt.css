@@ -319,3 +319,9 @@ button:disabled {
 	border-left: 1px solid #808080;
 }
 
+.oils_rpt_field_hint {
+    font-weight: bold;
+    text-decoration:underline;
+    padding-left: 5px;
+}
+

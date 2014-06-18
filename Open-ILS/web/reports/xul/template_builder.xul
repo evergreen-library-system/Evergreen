@@ -154,7 +154,7 @@
 			<hbox>
 			<vbox>
 				<label control="template-name" value="&reports.xul.template_builder.name.label;" style="height:2em"/>
-				<label control="template-description" value="&reports.xul.template_builder.description.label;"/>
+				<label control="template-description" value="&reports.xul.template_builder.description.label;" style="height:3em"/>
 				<label control="template-doc-url" value="&reports.xul.template_builder.doc_url.label;"/>
 			</vbox>
 			<vbox flex="1">

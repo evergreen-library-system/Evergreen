@@ -80,7 +80,7 @@ function addReportAtoms () {
 		var colname = item.getAttribute('idlfield');
 		var jointype = item.getAttribute('join');
 		var field_label = item.firstChild.firstChild.getAttribute('label');
-		var field_doc = item.firstChild.lastChild.getAttribute('label');
+		var field_doc = '';
 
 		var table_name = getSourceDefinition(field_class);
 
@@ -708,6 +708,14 @@ function renderSources (selected) {
 			fieldtree = tabpanel.getElementsByTagName('treechildren')[0];
 
 			for (var colname in rpt_rel_cache[relation_alias].fields[tabname]) {
+
+                // TODO: code would be clearer if we could access the loaded template
+                // version from here.  Not sure how... it's not in rpt_rel_cache.
+                // Existing templates (e.g. from cloning) will not have a field_doc 
+                // attribute.  with() is not tolerant of  nonexistent attributes.
+                if (!rpt_rel_cache[relation_alias].fields[tabname][colname].field_doc)
+                    rpt_rel_cache[relation_alias].fields[tabname][colname].field_doc = '';
+
 				with (rpt_rel_cache[relation_alias].fields[tabname][colname]) {
 					fieldtree.appendChild(
 						createTreeItem(
@@ -737,9 +745,9 @@ function renderSources (selected) {
 						);
                     }
 
-					fieldtree.lastChild.firstChild.appendChild(
-						createTreeCell({ label : field_doc })
-					);
+				    fieldtree.lastChild.firstChild.appendChild(
+					    createTreeCell({ label : field_doc })
+				    );
 				}
 			}
 		}
@@ -759,6 +767,11 @@ function renderSources (selected) {
 				).length
 			) continue;
 		}
+
+        // Existing templates (e.g. from cloning) will not have a field_doc 
+        // attribute.  with() is not tolerant of  nonexistent attributes.
+        if (!rpt_rel_cache[order.relation].fields.dis_tab[order.field].field_doc)
+            rpt_rel_cache[order.relation].fields.dis_tab[order.field].field_doc = '';
 
 		with (rpt_rel_cache[order.relation].fields.dis_tab[order.field]) {
 			fieldtree.appendChild(

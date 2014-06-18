@@ -198,12 +198,13 @@ FMObjectBuilder.prototype.buildObjectRow = function(obj) {
 	for( var i = 0; i < this.keys.length; i++ ) {
 		var td = elem('td');	
         var data = '';
-        if (this.caclulate[i]) { // fake data! pass the object
-            td.appendChild(this.calculate[i](obj);
+        var key = this.keys[i];
+        if (this.calculate && this.calculate[key]) { // fake data! pass the object
+            td.appendChild(this.calculate[key](obj));
         } else {
-		    data = obj[this.keys[i]]();
+		    data = obj[key]();
     		data = this.munge(data);
-	    	this.fleshData(td, data, this.keys[i]);
+	    	this.fleshData(td, data, key);
         }
 
 		row.appendChild(td);

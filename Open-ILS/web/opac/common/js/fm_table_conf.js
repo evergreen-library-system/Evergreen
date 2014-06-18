@@ -114,11 +114,15 @@ var FM_TABLE_DISPLAY = {
             docs : function (t) {
                 var d = JSON2js(t.data());
                 if (d.version >= 4 && d.doc_url) {
-                    return elem(
-                        'a',
-                        { href : d.doc_url, target : '_blank'},
-                        'External Documentation'
-                    );
+                    var args = {};
+                    if (typeof xulG == 'undefined') {
+                        args.href = d.doc_url;
+                        args.target = '_blank';
+                    } else {
+                        args.href = '';
+                        args.onclick = "xulG.new_tab('" + d.doc_url + "'); return false"
+                    }
+                    return elem('a', args, 'External Documentation')
                 }
                 return text('');
             }

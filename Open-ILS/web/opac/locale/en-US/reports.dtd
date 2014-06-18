@@ -221,3 +221,4 @@
 <!ENTITY reports.xul.template_builder.table_name.label "Table Name">
 <!ENTITY reports.xul.template_builder.sql_alias.label "SQL Alias">
 <!ENTITY reports.xul.template_builder.relationship.label "Relationship">
+<!ENTITY reports.xul.template_builder.field_doc.label "Field Hint">

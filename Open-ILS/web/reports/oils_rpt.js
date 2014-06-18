@@ -135,7 +135,8 @@ oilsReport.prototype._gatherParams = function(params, arr, type, field) {
 			path		: obj.path,
 			type		: type, 
 			relation : obj.relation,
-			field		: field
+			field		: field,
+            field_doc : obj.field_doc
 		});
 	}
 }
