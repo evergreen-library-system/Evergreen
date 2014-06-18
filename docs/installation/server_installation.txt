@@ -305,13 +305,21 @@ a2enmod mpm_prefork
 6. (Fedora): As the *root* Linux account, edit the `/etc/httpd/eg_vhost.conf`
    file to change references from the non-existent `/etc/apache2/` directory
    to `/etc/httpd/`.
-7. (Debian and Ubuntu): As the *root* Linux account, enable the Evergreen site:
+7. (Debian and Ubuntu Precise): As the *root* Linux account, enable the Evergreen site:
 +
 [source,bash]
 ------------------------------------------------------------------------------
 a2dissite default  # OPTIONAL: disable the default site (the "It Works" page)
 a2ensite eg.conf
 ------------------------------------------------------------------------------
+(Ubuntu Trusty):
++
+[source,bash]
+------------------------------------------------------------------------------
+a2dissite 000-default  # OPTIONAL: disable the default site (the "It Works" page)
+a2ensite eg.conf
+------------------------------------------------------------------------------
+
 8. (Ubuntu): As the *root* Linux account, enable Apache to write
    to the lock directory; this is currently necessary because Apache
    is running as the `opensrf` user:
