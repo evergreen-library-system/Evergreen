@@ -1,7 +1,8 @@
 oilsRptSetSubClass('oilsRptParamEditor','oilsRptObject');
-function oilsRptParamEditor(report, tbody) {
+function oilsRptParamEditor(report, tbody, readonly) {
 	this.tbody = tbody;
 	this.report = report;
+    this.readonly = readonly;
 }
 
 
@@ -66,12 +67,12 @@ oilsRptParamEditor.prototype.draw = function() {
         }
 		$n(row, 'transform').appendChild(text(OILS_RPT_TRANSFORMS[par.column.transform].label));
 		$n(row, 'action').appendChild(text(OILS_RPT_FILTERS[par.op].label));
-		par.widget = this.buildWidget(par, $n(row, 'widget'));
+		par.widget = this.buildWidget(par, $n(row, 'widget'), true);
 		par.widget.draw();
 	}
 }
 
-oilsRptParamEditor.prototype.buildWidget = function(param, node) {
+oilsRptParamEditor.prototype.buildWidget = function(param, node, fromTemplate) {
 	var transform = param.column.transform;
 	var cls = oilsRptPathClass(param.path);
 	var field = oilsRptFindField(oilsIDL[cls], oilsRptPathCol(param.path));
@@ -86,6 +87,7 @@ oilsRptParamEditor.prototype.buildWidget = function(param, node) {
 	widgetArgs.inputSize = OILS_RPT_TRANSFORMS[transform].input_size;
 	widgetArgs.regex = OILS_RPT_TRANSFORMS[transform].regex;
     widgetArgs.value = param.value;
+    widgetArgs.readonly = this.readonly;
 
 	switch(transform) {
 		case 'date':
@@ -194,7 +196,8 @@ oilsRptParamEditor.prototype.buildWidget = function(param, node) {
             break;
 	}
 
-    if(widgetArgs.value != undefined) 
+    // oilsRptTemplateWidget's are pre-set read-only values
+    if(fromTemplate && widgetArgs.value != undefined) 
         return new oilsRptTemplateWidget(widgetArgs);
 
 

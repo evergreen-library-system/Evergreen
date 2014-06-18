@@ -5,14 +5,18 @@
 function oilsRptSetWidget(args) {
 	this.node = args.node;
 	this.inputWidget = new args.inputWidget(args);
+    this.readonly = Boolean(args.readonly);
 	this.dest = elem('select',
 		{multiple:'multiple','class':'oils_rpt_small_info_selector'});
+    this.dest.disabled = this.readonly;
 }
 
 oilsRptSetWidget.prototype.draw = function() {
 
 	this.addButton = elem('input',{type:'submit',value:"Add"})
 	this.delButton = elem('input',{type:'submit',value:"Del"})
+	this.addButton.disabled = this.readonly;
+	this.delButton.disabled = this.readonly;
 
 	var obj = this;
 	this.addButton.onclick = function() {
@@ -28,6 +32,10 @@ oilsRptSetWidget.prototype.draw = function() {
 	this.node.appendChild(this.delButton);
 	this.node.appendChild(elem('br'))
 	this.node.appendChild(this.dest);
+
+    // propagate the values from the input widget into the our display.
+    if (this.inputWidget.seedValue)
+	    this.addButton.onclick();
 }
 
 oilsRptSetWidget.prototype.addDisplayItems = function(list) {
@@ -120,11 +128,18 @@ oilsRptBetweenWidget.prototype.getValue = function() {
 	--------------------------------------------------------------------- */
 function oilsRptTextWidget(args) {
 	this.node = args.node;
+    this.seedValue = args.value;
 	this.dest = elem('input',{type:'text',size:12});
+    this.dest.disabled = Boolean(args.readonly);
 	oilsRptMonitorWidget(this.dest);
 }
 oilsRptTextWidget.prototype.draw = function() {
 	this.node.appendChild(this.dest);
+    // TODO: untested
+    if (this.seedValue) {
+        this.dest.value = this.seedValue;
+        this.dest.onchange(); // validation
+    }
 }
 
 /* returns the "real" value for the widget */
@@ -144,13 +159,17 @@ oilsRptTextWidget.prototype.getDisplayValue = function() {
 	--------------------------------------------------------------------- */
 function oilsRptBoolWidget(args) {
 	this.node = args.node;
+    this.seedValue = arg.value;
 	this.selector = elem('select');
 	insertSelectorVal(this.selector, -1,'True','t');
 	insertSelectorVal(this.selector, -1,'False','f');
+    this.selector.disabled = Boolean(args.readonly);
 }
 
 oilsRptBoolWidget.prototype.draw = function() {
 	this.node.appendChild(this.selector);
+    if (this.seedValue)  // TODO: untested
+        setSelector(this.selector, this.seedValue);
 }
 
 /* returns the "real" value for the widget */
@@ -204,6 +223,8 @@ function oilsRptCalWidget(args) {
 	this.node = args.node;
 	this.calFormat = args.calFormat;
 	this.input = elem('input',{type:'text',size:12});
+    this.seedValue = args.value;
+    this.input.disabled = Boolean(args.readonly);
 
 	oilsRptMonitorWidget(this.input, args.regex);
 
@@ -231,6 +252,11 @@ oilsRptCalWidget.prototype.draw = function() {
 		align			: "Tl",	
 		singleClick	: true
 	});
+
+    if (this.seedValue) {
+        this.input.value = this.seedValue;
+        this.input.onchange(); // validation
+    }
 }
 
 oilsRptCalWidget.prototype.getValue = function() {
@@ -247,8 +273,10 @@ oilsRptCalWidget.prototype.getDisplayValue = function() {
 	--------------------------------------------------------------------- */
 function oilsRptOrgSelector(args) {
 	this.node = args.node;
+    this.seedValue = args.value;
 	this.selector = elem('select',
 		{multiple:'multiple','class':'oils_rpt_small_info_selector'});
+    this.selector.disabled = Boolean(args.readonly);
 }
 
 oilsRptOrgSelector.prototype.draw = function(org) {
@@ -268,6 +296,18 @@ oilsRptOrgSelector.prototype.draw = function(org) {
 			this.draw(org.children()[c]);
 	}
 	this.node.appendChild(this.selector);
+
+    if (this.seedValue) {
+        if (dojo.isArray(this.seedValue)) {
+            for (var i = 0; i < this.selector.options.length; i++) {
+                var opt = this.selector.options[i];
+                if (this.seedValue.indexOf(opt.value) > -1)
+                    opt.selected = true;
+            }
+        } else {
+            setSelector(this.selector, this.seedValue);
+        }
+    }
 }
 
 oilsRptOrgSelector.prototype.getValue = function() {
@@ -298,8 +338,11 @@ oilsRptOrgSelector.prototype.getDisplayValue = function() {
 	--------------------------------------------------------------------- */
 function oilsRptAgeWidget(args) {
 	this.node = args.node;
+    this.seedValue = args.value;
 	this.count = elem('select');
 	this.type = elem('select');
+    this.count.disabled = Boolean(args.readonly);
+    this.type.disabled = Boolean(args.readonly);
 }
 
 oilsRptAgeWidget.prototype.draw = function() {
@@ -314,6 +357,12 @@ oilsRptAgeWidget.prototype.draw = function() {
 	insertSelectorVal(this.type, -1, rpt_strings.WIDGET_YEARS, 'years');
 	this.node.appendChild(this.count);
 	this.node.appendChild(this.type);
+
+    if (this.seedValue) { // TODO: test me
+        var parts = this.seedValue.split(/ /);
+        setSelector(this.count, parts[0]);
+        setSelector(this.type, parts[1]);
+    }
 }
 
 oilsRptAgeWidget.prototype.getValue = function() {
@@ -341,9 +390,12 @@ oilsRptAgeWidget.prototype.getDisplayValue = function() {
 	--------------------------------------------------------------------- */
 function oilsRptSubstrWidget(args) {
 	this.node = args.node
+    this.seedValue = args.value;
 	this.data = elem('input',{type:'text',size:12})
 	this.offset = elem('input',{type:'text',size:5})
 	this.length = elem('input',{type:'text',size:5})
+    this.offset.disabled = Boolean(args.readonly);
+    this.length.disabled = Boolean(args.readonly);
 }
 
 oilsRptSubstrWidget.prototype.draw = function() {
@@ -355,6 +407,13 @@ oilsRptSubstrWidget.prototype.draw = function() {
 	this.node.appendChild(elem('br'));
 	this.node.appendChild(text('length: '))
 	this.node.appendChild(this.length);
+
+    if (this.seedValue) { 
+        // TODO: unested; substring currently not supported.
+        this.data.value = this.seedValue[0];
+        this.offset.value = this.seedValue[1];
+        this.length.value = this.seedValue[2];
+    }
 }
 
 oilsRptSubstrWidget.prototype.getValue = function() {
@@ -377,9 +436,11 @@ oilsRptSubstrWidget.prototype.getDisplayValue = function() {
 	--------------------------------------------------------------------- */
 function oilsRptNumberWidget(args) {
 	this.node = args.node;
+    this.seedValue = args.value;
 	this.size = args.size || 32;
 	this.start = args.start;
 	this.selector = elem('select');
+    this.selector.disabled = Boolean(args.readonly);
 }
 oilsRptNumberWidget.prototype.draw = function() {
 	//insertSelectorVal(this.selector, -1, ' -- Select One -- ', '');
@@ -387,6 +448,9 @@ oilsRptNumberWidget.prototype.draw = function() {
 		insertSelectorVal(this.selector, -1, i, i);
 	this.node.appendChild(this.selector);
 	var obj = this;
+
+    if (this.seedValue) // TODO: test me
+        setSelector(this.selector, this.seedValue);
 }
 
 oilsRptNumberWidget.prototype.getValue = function() {
@@ -396,11 +460,6 @@ oilsRptNumberWidget.prototype.getValue = function() {
 oilsRptNumberWidget.prototype.getDisplayValue = function() {
 	return { label : this.getValue(), value : this.getValue() };
 }
-
-
-/* --------------------------------------------------------------------- 
-	Relative dates widget
-	-------------------------------------------------------------------- */
 
 function oilsRptNullWidget(args) {
     this.node = args.node;
@@ -425,6 +484,7 @@ oilsRptTemplateWidget.prototype.draw = function() {
 function oilsRptTruncPicker(args) {
 	this.node = args.node;
 	this.type = args.type;
+    this.seedValue = args.value; // TODO: FINISH
 	this.realSpan = elem('span');
 	this.relSpan = elem('span');
 	hideMe(this.relSpan);
@@ -435,9 +495,11 @@ function oilsRptTruncPicker(args) {
 	this.selector = elem('select');
 	insertSelectorVal(this.selector,-1,rpt_strings.WIDGET_REAL_DATE,1);
 	insertSelectorVal(this.selector,-1,rpt_strings.WIDGET_RELATIVE_DATE,2);
+    this.selector.disabled = Boolean(args.readonly);
 
 	this.numberPicker = 
-		new oilsRptNumberWidget({node:this.relSpan,size:90,start:1});
+		new oilsRptNumberWidget(
+            {node:this.relSpan,size:90,start:1,readonly:args.readonly});
 
 	this.label = 'Day(s)';
 	if(this.type == 'month') this.label = rpt_strings.WIDGET_MONTHS;
@@ -495,6 +557,7 @@ function oilsRptRemoteWidget(args) {
 	this.column = args.column;
 	this.source = elem('select',
 		{multiple:'multiple','class':'oils_rpt_small_info_selector'});
+    this.source.disabled = Boolean(args.readonly);
 }
 
 oilsRptRemoteWidget.prototype.draw = function() {

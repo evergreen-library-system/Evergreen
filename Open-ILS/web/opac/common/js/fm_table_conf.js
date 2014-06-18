@@ -98,8 +98,26 @@ var FM_TABLE_DISPLAY = {
 			'recur',
 			'recurrence',
 			'owner',
+            'edit',
 		],
-		sortdata : [ 'name', 1 ]
+		sortdata : [ 'name', 1 ],
+        calculate : {
+            'edit' : function(r) {
+                // DOM pulled from oils_rpt_folder_window.xhtml
+                var node = dojo.byId(
+                    'oils_rpt_view_edit_report_links').cloneNode(true);
+                dojo.removeClass(node, 'hide_me');
+                var view = dojo.query('[name=view]', node)[0];
+                var edit = dojo.query('[name=edit]', node)[0];
+                view.onclick = function() {oilsRptViewReport(r); return false};
+                if (PERMS.RUN_REPORTS == -1) {
+                    node.removeChild(edit);
+                } else {
+                    edit.onclick = function() {oilsRptEditReport(r); return false};
+                }
+                return node;
+            }
+        }
 	},
 	'rt' : {
 		name : 'name',

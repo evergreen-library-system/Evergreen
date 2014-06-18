@@ -96,6 +96,11 @@
 <!ENTITY reports.oils_rpt_editor.noon "Noon">
 <!ENTITY reports.oils_rpt_editor.storage_folder_for_output "Choose a folder to store this report's output:">
 <!ENTITY reports.oils_rpt_editor.save_report "Save Report">
+<!ENTITY reports.oils_rpt_editor.apply_changes "Apply Changes">
+<!ENTITY reports.oils_rpt_editor.save_report_new "Save As New">
+<!ENTITY reports.oils_rpt_editor.confirm_sched "Changes will be applied to pending reports that have not yet run. Do you want to continue with modifying those pending reports?">
+<!ENTITY reports.oils_rpt_editor.cancel "Cancel">
+<!ENTITY reports.oils_rpt_editor.exit_report "Return">
 <!ENTITY reports.oils_rpt_editor.empty_parameter "One or more of the user-defined parameters has been left empty. Please fill in all fields.">
 <!ENTITY reports.oils_rpt_editor.same_name "There is already a report in this folder with the given name.">
 
@@ -127,6 +132,8 @@
 <!ENTITY reports.oils_rpt_folder_window.delete_template "Delete selected template(s)">
 <!ENTITY reports.oils_rpt_folder_window.clone_report "Clone report">
 <!ENTITY reports.oils_rpt_folder_window.schedule_report "Schedule report">
+<!ENTITY reports.oils_rpt_folder_window.view_report "View">
+<!ENTITY reports.oils_rpt_folder_window.edit_report "Edit">
 <!ENTITY reports.oils_rpt_folder_window.delete_reports "Delete selected report(s)">
 <!ENTITY reports.oils_rpt_folder_window.view_report_output "View report output">
 <!ENTITY reports.oils_rpt_folder_window.delete_output "Delete selected output(s)">

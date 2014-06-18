@@ -5,13 +5,17 @@ var rpt_strings = dojo.i18n.getLocalization("openils.reports", "reports");
 oilsRptSetSubClass('oilsRptReportEditor', 'oilsRptObject');
 var oilsRptReportEditorFolderTree;
 
-function oilsRptReportEditor(rptObject, folderWindow) {
+function oilsRptReportEditor(rptObject, folderWindow, readonly) {
 	var tmpl = rptObject.templateObject;
 	var rpt = rptObject.reportObject;
 	this.folderWindow = folderWindow;
+    this.readonly = readonly;
 
 	this.template = tmpl;
 	this.report = rpt;
+
+    if (rpt && rpt.runs() && rpt.runs().length)
+        this.last_run = rpt.runs()[rpt.runs().length - 1];
 
 	appendClear(DOM.oils_rpt_report_editor_template_name, tmpl.name());
 	appendClear(DOM.oils_rpt_report_editor_template_creator, tmpl.owner().usrname());
@@ -83,12 +87,80 @@ oils_rpt_editor_pivot_data
  
 
 	if( rpt ) {
+        // populate the report edit form w/ report data
+
+        this.orig_rpt_name = rpt.name();
+
 		DOM.oils_rpt_report_editor_name.value = rpt.name();
-		DOM.oils_rpt_report_editor_description.value = rpt.description();
+		DOM.oils_rpt_report_editor_name.onchange(); // validation
+		DOM.oils_rpt_report_editor_desc.value = rpt.description();
+
+        if (rpt.recur() == 't') {
+            DOM.oils_rpt_recur.checked = true;
+            DOM.oils_rpt_recur.onclick(); // enable recurrance selector
+        }
+
+        if (rpt.recurrence()) {
+            var parts = rpt.recurrence().split(/ /);
+            setSelector(DOM.oils_rpt_recur_count, parts[0]);
+            setSelector(DOM.oils_rpt_recur_interval_type, parts[1]);
+        }
+
+        if (run = this.last_run) {
+		    DOM.oils_rpt_report_editor_name.disabled = true;
+		    DOM.oils_rpt_report_editor_desc.disabled = true;
+            DOM.oils_rpt_format_csv.checked = run.csv_format() == 't';
+            DOM.oils_rpt_format_excel.checked = run.excel_format() == 't';
+            DOM.oils_rpt_format_html.checked = run.html_format() == 't';
+            DOM.oils_rpt_format_chart_bar.checked = run.chart_bar() == 't';
+            DOM.oils_rpt_format_chart_line.checked = run.chart_line() == 't';
+        }
 	}
 
+    if (this.readonly) {
+        DOM.oils_rpt_report_editor_name.disabled = true;
+        DOM.oils_rpt_report_editor_desc.disabled = true;
+        DOM.oils_rpt_recur.disabled = true;
+        DOM.oils_rpt_recur_count.disabled = true;
+        DOM.oils_rpt_recur_interval_type.disabled = true;
+        DOM.oils_rpt_report_editor_run_now.disabled = true;
+        DOM.oils_rpt_format_csv.disabled = true;
+        DOM.oils_rpt_format_excel.disabled = true;
+        DOM.oils_rpt_format_html.disabled = true;
+        DOM.oils_rpt_format_chart_bar.disabled = true;
+        DOM.oils_rpt_format_chart_line.disabled = true;
+        DOM.oils_rpt_param_editor_sched_email.disabled = true;
+
+        hideMe(DOM.oils_rpt_report_editor_save);
+        hideMe(DOM.oils_rpt_report_editor_save_new);
+        hideMe(DOM.oils_rpt_report_editor_cancel);
+        unHideMe(DOM.oils_rpt_report_editor_exit);
+
+    } else {
+        // these DOM elements are shared across instances
+        // of the UI.  Re-enable everything.
+        DOM.oils_rpt_report_editor_name.disabled = false;
+        DOM.oils_rpt_report_editor_desc.disabled = false;
+        DOM.oils_rpt_recur.disabled = false;
+        DOM.oils_rpt_recur_count.disabled = false;
+        DOM.oils_rpt_recur_interval_type.disabled = false;
+        DOM.oils_rpt_report_editor_run_now.disabled = false;
+        DOM.oils_rpt_format_csv.disabled = false;
+        DOM.oils_rpt_format_excel.disabled = false;
+        DOM.oils_rpt_format_html.disabled = false;
+        DOM.oils_rpt_format_chart_bar.disabled = false;
+        DOM.oils_rpt_format_chart_line.disabled = false;
+        DOM.oils_rpt_param_editor_sched_email.disabled = false;
+        DOM.oils_rpt_report_editor_save.disabled = false;
+
+        unHideMe(DOM.oils_rpt_report_editor_save);
+        unHideMe(DOM.oils_rpt_report_editor_save_new);
+        unHideMe(DOM.oils_rpt_report_editor_cancel);
+        hideMe(DOM.oils_rpt_report_editor_exit);
+    }
+
 	this.paramEditor = new oilsRptParamEditor(
-		rptObject, DOM.oils_rpt_param_editor_tbody);
+		rptObject, DOM.oils_rpt_param_editor_tbody, this.readonly);
 	this.paramEditor.draw();
 
 	removeChildren(DOM.oils_rpt_report_editor_selected_folder);
@@ -102,8 +174,17 @@ oils_rpt_editor_pivot_data
 		rpt_strings.REPORT_EDITOR_REPORT_FOLDERS,
 		function(node) { 
 			appendClear(DOM.oils_rpt_report_editor_selected_folder, node.folder.name());
-			obj.selectedFolder = node; });
-
+			obj.selectedFolder = node; 
+        },
+        null,
+        function(node) {
+            // apply the previously selected report folder
+            if (rpt && rpt.folder() == node.folder.id()) {
+			    appendClear(DOM.oils_rpt_report_editor_selected_folder, node.folder.name());
+			    obj.selectedFolder = node; 
+            }
+        }
+    );
 
 	oilsRptBuildFolder(
 		'output',
@@ -112,20 +193,41 @@ oils_rpt_editor_pivot_data
 		rpt_strings.REPORT_EDITOR_OUTPUT_FOLDERS,
 		function(node) { 
 			appendClear(DOM.oils_rpt_output_selected_folder, node.folder.name());
-			obj.selectedOutputFolder = node; });
+			obj.selectedOutputFolder = node; 
+        },
+        null,
+        function(node) {
+            // apply the previously selected output folder
+            if (obj.last_run && obj.last_run.folder() == node.folder.id()) {
+			    appendClear(DOM.oils_rpt_output_selected_folder, node.folder.name());
+			    obj.selectedOutputFolder = node; 
+            }
+        }
+    );
 
 
 	var obj = this;
 	DOM.oils_rpt_report_editor_save.onclick = function(){obj.save();}
-	DOM.oils_rpt_param_editor_sched_email.value = USER.email();
+	DOM.oils_rpt_report_editor_save_new.onclick = function(){obj.save({save_new : true});}
+	DOM.oils_rpt_report_editor_exit.onclick = function(){obj.exit();}
+	DOM.oils_rpt_report_editor_cancel.onclick = function(){obj.exit();}
+
+	DOM.oils_rpt_param_editor_sched_email.value = 
+        this.last_run ? this.last_run.email() : USER.email();
+
 	DOM.oils_rpt_param_editor_sched_start_date.value = mkYearMonDay();
 
 	_debug("fleshing template:\n" + tmpl.name() + '\n' + formatJSON(tmpl.data()));
 }
 
 
-oilsRptReportEditor.prototype.save = function() {
-	var report = new rr();
+// options.save_new : save as a new report, even if we
+// were editing an exitingn report.
+//
+// options.modify_schedule : update the pending schedule
+// object instead of creating a new one.
+oilsRptReportEditor.prototype.save = function(options) {
+    if (!options) options = {};
 
 	if(!this.selectedFolder) 
 		return alert(rpt_strings.REPORT_EDITOR_PROVIDE_FOLDER_ALERT);
@@ -133,14 +235,32 @@ oilsRptReportEditor.prototype.save = function() {
 	if(!DOM.oils_rpt_report_editor_name.value)
 		return alert(rpt_strings.REPORT_EDITOR_ENTER_NAME_ALERT);
 
-	report.owner( USER.id() );
-	report.template( this.template.id() );
+	if(!this.selectedOutputFolder) 
+		return alert(rpt_strings.REPORT_EDITOR_PROVIDE_OUTPUT_ALERT);
+
+	var report = this.report;
+
+    if (report && options.save_new) {
+        // user is saving an existing report as a new report.
+        // The new report must have a different name.
+        if (DOM.oils_rpt_report_editor_name.value == this.orig_rpt_name) 
+            return alert(rpt_strings.REPORT_EDITOR_ENTER_NEW_NAME_ALERT);
+
+        report = null;
+    }
+
+    if (!report) {
+        report = new rr();
+        report.isnew(true);
+	    report.owner( USER.id() );
+	    report.template( this.template.id() );
+    }
+
 	report.folder( this.selectedFolder.folder.id() );
 	report.name( DOM.oils_rpt_report_editor_name.value );
 	report.description( DOM.oils_rpt_report_editor_desc.value );
 	report.recur(this.paramEditor.recur());
 	report.recurrence(this.paramEditor.recurInterval());
-
 
 	/* collect the param data */
 	var data = {};
@@ -194,10 +314,23 @@ oilsRptReportEditor.prototype.save = function() {
 		_debug("built run_time "+time);
 	}
 
-	if(!this.selectedOutputFolder) 
-		return alert(rpt_strings.REPORT_EDITOR_PROVIDE_OUTPUT_ALERT);
+    // if the last run has yet to actually start, then we update it
+    // instead of creating a new one.
+    var schedule = options.save_new ? null : this.last_run;
 
-	var schedule = new rs();
+    if (schedule && !schedule.start_time()) {
+        if (!options.modify_schedule) {
+            // warn the user that this action will modify an existing
+            // schedule object if they continue
+            return this.showPendingScheduleDialog();
+        }
+    } else {
+        // no schedules exist or the most recent one has already
+        // started.  Create a new one.
+	    schedule = new rs();
+        schedule.isnew(true);
+    }
+
 	schedule.folder(this.selectedOutputFolder.folder.id());
 	schedule.email(DOM.oils_rpt_param_editor_sched_email.value);
 	schedule.run_time(time);
@@ -210,12 +343,51 @@ oilsRptReportEditor.prototype.save = function() {
 	schedule.chart_bar((DOM.oils_rpt_format_chart_bar.checked) ? 't' : 'f');
 	schedule.chart_line((DOM.oils_rpt_format_chart_line.checked) ? 't' : 'f');
 
-
 	debugFMObject(report);
 	debugFMObject(schedule);
 
-	//return;
+    if (report.isnew()) {
+        this.createReport(report, schedule);
+    } else {
+        this.updateReport(report, schedule);
+    }
+}
 
+// Modify an existing report.
+// Modify or create the schedule depending on isnew()
+oilsRptReportEditor.prototype.updateReport = function(report, schedule) {
+
+    var this_ = this;
+    function success() {
+        oilsRptAlertSuccess();
+        this_.exit();
+    }
+
+    oilsRptUpdateReport(report, function(ok) {
+        if (!ok) return oilsRptAlertFailure();
+
+        if (schedule.isnew()) {
+
+            var req = new Request(OILS_RPT_CREATE_SCHEDULE, SESSION, schedule);
+            req.callback(function(res) {
+                if(checkILSEvent(res)) 
+                    return alertILSEvent(res);
+                success();
+            });
+            req.send()
+
+        } else {
+
+            oilsRptUpdateSchedule(schedule, function(ok2) {
+                if (ok2) return success();
+                _debug("schedule update failed " + js2JSON(schedule));
+                oilsRptAlertFailure();
+            });
+        }
+    });
+}
+
+oilsRptReportEditor.prototype.createReport = function(report, schedule) {
 	var obj = this;
     var folderReq = new Request(OILS_RPT_REPORT_EXISTS, SESSION, report);
     folderReq.callback(
@@ -233,8 +405,7 @@ oilsRptReportEditor.prototype.save = function() {
                         } else {
                             if( res && res != '0' ) {
                                 oilsRptAlertSuccess();
-                                oilsRptCurrentFolderManager.draw();
-                                obj.folderWindow.draw();
+                                obj.exit();
                             }
                         }
                     }
@@ -246,4 +417,50 @@ oilsRptReportEditor.prototype.save = function() {
     folderReq.send();
 }
 
+oilsRptReportEditor.prototype.showPendingScheduleDialog = function() {
+    hideMe(DOM.oils_rpt_editor_table);
+    unHideMe(DOM.oils_rpt_editor_sched_confirm);
 
+    function close() {
+        unHideMe(DOM.oils_rpt_editor_table);
+        hideMe(DOM.oils_rpt_editor_sched_confirm);
+    }
+
+    var this_ = this;
+    DOM.oils_rpt_report_editor_sched_apply.onclick = function() {
+        close();
+        this_.save({modify_schedule : true});
+    }
+
+    DOM.oils_rpt_report_editor_sched_asnew.onclick = function() {
+
+        if (DOM.oils_rpt_report_editor_name.value == this_.orig_rpt_name) {
+            // user is saving as new but has not yet modified the name
+            // Prompt for a new name, then udpate the name entry so save() 
+            // will see it.  Don't let them escape until they comply.
+            var new_name;
+            while (true) { 
+
+                new_name = prompt(
+                    rpt_strings.REPORT_EDITOR_ENTER_NEW_NAME_ALERT, 
+                    this_.orig_rpt_name
+                );
+                
+                if (new_name && new_name != this_.orig_rpt_name)
+                    break;
+            }
+
+            DOM.oils_rpt_report_editor_name.value = new_name;
+        } 
+
+        close();
+        this_.save({save_new : true})
+    }
+    DOM.oils_rpt_report_editor_sched_cancel.onclick = close;
+}
+
+
+oilsRptReportEditor.prototype.exit = function() {
+    oilsRptCurrentFolderManager.draw();
+    this.folderWindow.draw();
+}

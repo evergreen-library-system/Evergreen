@@ -678,9 +678,9 @@ function debugFMObject(obj) {
 		var key = keys[i];
 		while( key.length < 12 ) key += ' ';
 		var val = obj[keys[i]]();
-		if( typeof val == 'object' ) {
+		if( typeof val == 'object' && val !== null ) {
 			_debug(key+' :=\n');
-			_debugFMObject(val);
+			debugFMObject(val);
 		} else {
 			_debug(key+' = ' +val);
 		}

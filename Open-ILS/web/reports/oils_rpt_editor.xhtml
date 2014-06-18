@@ -243,12 +243,38 @@
 
 			<tr>
 				<td colspan='2'>
-					<input id='oils_rpt_report_editor_save' type='submit' value='&reports.oils_rpt_editor.save_report;'/>
+					<input id='oils_rpt_report_editor_save' style='margin-right:10px;'
+                        type='submit' value='&reports.oils_rpt_editor.save_report;'/>
+
+					<input id='oils_rpt_report_editor_save_new' style='margin-right:10px;'
+                        type='submit' value='&reports.oils_rpt_editor.save_report_new;'/>
+
+                    <!-- use input/submit instead of <button> for consistent styling -->
+					<input id='oils_rpt_report_editor_exit' style='margin-right:10px;'
+                        type='submit' value='&reports.oils_rpt_editor.exit_report;'/>
+
+					<input id='oils_rpt_report_editor_cancel' style='margin-right:10px;'
+                        type='submit' value='&reports.oils_rpt_editor.cancel;'/>
 				</td>
 			</tr>
 
 		</tbody>
 	</table>
+
+    <div id='oils_rpt_editor_sched_confirm' style='width:100%' class='hide_me'>
+        <div>&reports.oils_rpt_editor.confirm_sched;</div>
+        <div>
+            <!-- use input/submit instead of <button> for consistent styling -->
+            <input id='oils_rpt_report_editor_sched_apply' style='margin-right:10px;'
+                type='submit' value='&reports.oils_rpt_editor.apply_changes;'/>
+
+            <input id='oils_rpt_report_editor_sched_asnew' style='margin-right:10px;'
+                type='submit' value='&reports.oils_rpt_editor.save_report_new;'/>
+
+            <input id='oils_rpt_report_editor_sched_cancel' style='margin-right:10px;'
+                type='submit' value='&reports.oils_rpt_editor.cancel;'/>
+        </div>
+    </div>
 
 	<span id='oils_rpt_empty_param' class='hide_me'>
 		&reports.oils_rpt_editor.empty_parameter;

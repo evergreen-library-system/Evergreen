@@ -45,6 +45,7 @@
 	"REPORT_EDITOR_OUTPUT_FOLDERS": "Output Folders",
 	"REPORT_EDITOR_PROVIDE_FOLDER_ALERT": "Please provide a report folder",
 	"REPORT_EDITOR_ENTER_NAME_ALERT": "Please enter a report name",
+	"REPORT_EDITOR_ENTER_NEW_NAME_ALERT": "Please change the report name",
 	"REPORT_EDITOR_INVALID_DATE_ALERT": "invalid start date -  YYYY-MM-DD",
 	"REPORT_EDITOR_PROVIDE_OUTPUT_ALERT": "Please provide an output folder",
 	

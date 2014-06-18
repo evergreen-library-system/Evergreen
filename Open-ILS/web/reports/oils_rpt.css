@@ -325,3 +325,12 @@ button:disabled {
     padding-left: 5px;
 }
 
+#oils_rpt_editor_sched_confirm {
+    margin-top: 10px;
+}
+#oils_rpt_editor_sched_confirm > div {
+    padding: 10px;
+}
+#oils_rpt_editor_sched_confirm:first-child {
+    font-size: 110%;
+}

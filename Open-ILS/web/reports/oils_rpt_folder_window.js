@@ -13,8 +13,12 @@ function oilsRptFolderWindow(type, folderId) {
 	this.selector = DOM.oils_rpt_folder_contents_selector;
 	this.folderNode = node;
 	this.type = type;
+    this.folderId = folderId;
+    oilsRptFolderWindow.folderIdMap[folderId] = this;
 }
 
+// maps folder IDs to their containing oilsRptFolderWindow objects
+oilsRptFolderWindow.folderIdMap = {};
 
 oilsRptFolderWindow.prototype.draw = function() {
 
@@ -696,6 +700,39 @@ oilsRptFolderWindow.prototype.doFolderDelete = function() {
 			}
 		}
 	);
+}
+
+function oilsRptViewEditReport(report, readonly) {
+
+
+    var folderWindow = oilsRptFolderWindow.folderIdMap[report.folder()];
+
+    var req = new Request(
+        'open-ils.reporter:open-ils.reporter.report.fleshed.retrieve',
+        SESSION, report.id()
+    );
+
+    req.callback(function(r) {
+
+        hideMe(DOM.oils_rpt_folder_table_right_td);
+        unHideMe(DOM.oils_rpt_folder_table_alt_td);
+        unHideMe(DOM.oils_rpt_editor_div);
+
+        report = r.getResultObject();
+
+        new oilsRptReportEditor(
+            new oilsReport(report.template(), report), folderWindow, readonly);
+    });
+
+    req.send();
+}
+
+function oilsRptViewReport(report) {
+    oilsRptViewEditReport(report, true);
+}
+
+function oilsRptEditReport(report) {
+    oilsRptViewEditReport(report);
 }
 
 

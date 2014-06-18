@@ -321,9 +321,13 @@ oilsRptFolderManager.prototype.findNode = function(type, id) {
 
 /* this only works if the initial folder tree has been drawn 
 	if defined, "action" must be a function pointer that takes the
-	folder node as the param */
+	folder node as the param 
+
+    eachFolder - optional callback called with each folder
+    node after its added to the folder list.
+*/
 var __someid;
-function oilsRptBuildFolder(type, node, treeVar, rootName, action, shared) {
+function oilsRptBuildFolder(type, node, treeVar, rootName, action, shared, eachFolder) {
 	removeChildren(node);
 	var tree = new SlimTree(node, treeVar);
 	this.treeId = oilsNextId();
@@ -347,6 +351,8 @@ function oilsRptBuildFolder(type, node, treeVar, rootName, action, shared) {
 		}
 
 		tree.addNode(tid, pid, f.name(), __setFolderCB(tree, tid, action, cache[c]));
+
+        if (eachFolder) eachFolder(cache[c]);
 	}
 	eval(treeVar +' = tree;');
 }
