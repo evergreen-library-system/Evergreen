@@ -259,6 +259,43 @@ sub retrieve_report {
     return $r;
 }
 
+__PACKAGE__->register_method(
+    api_name => 'open-ils.reporter.report.fleshed.retrieve',
+    method => 'retrieve_fleshed_report',
+    signature => {
+        desc => q/Returns report, fleshed with template, template.owner
+        and schedules. Fleshes report.runs() as a single-item array 
+        containing the most recently created reporter.schedule./
+    }
+);
+sub retrieve_fleshed_report {
+    my( $self, $conn, $auth, $id, $options ) = @_;
+    $options ||= {};
+
+    my $e = new_rstore_editor(authtoken=>$auth);
+    return $e->event unless $e->checkauth;
+    return $e->event unless $e->allowed(['RUN_REPORTS','VIEW_REPORT_OUTPUT']);
+    my $r = $e->retrieve_reporter_report([
+        $id, {
+        flesh => 2,
+        flesh_fields => {
+            rr => ['template'],
+            rt => ['owner']
+        }
+    }]) or return $e->event;
+
+    my $output = $e->search_reporter_schedule([
+        {report => $id},
+        {limit => 1, order_by => {rs => 'run_time DESC'}}
+    ]);
+
+    $r->runs($output);
+
+    return $r;
+}
+
+
+
 
 __PACKAGE__->register_method(
     api_name => 'open-ils.reporter.template.update',
