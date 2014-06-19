@@ -72,6 +72,7 @@ core_scripts =   $(examples)/oils_ctl.sh \
 		 $(supportscr)/long-overdue-status-update.pl \
 		 $(supportscr)/purge_holds.srfsh \
 		 $(supportscr)/purge_circulations.srfsh \
+		 $(supportscr)/sitemap_generator \
 		 $(srcdir)/extras/eg_config \
 		 $(srcdir)/extras/openurl_map.pl \
 		 $(srcdir)/extras/import/marc_add_ids

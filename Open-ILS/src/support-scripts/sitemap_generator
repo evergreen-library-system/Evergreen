@@ -1,0 +1,232 @@
+#!/usr/bin/perl
+# Copyright (C) 2014 Laurentian University
+# Author: Dan Scott <dscott@laurentian.ca>
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+use strict; use warnings;
+use XML::LibXML;
+use File::Copy;
+use Getopt::Long;
+use File::Spec;
+use File::Basename;
+use DBI qw(:sql_types);
+
+my ($dbhost, $dbport, $dbname, $dbuser, $dbpw, $help);
+my $config_file = '';
+my $sysconfdir = '';
+
+=item create_sitemaps() - Write the sitemap files
+
+With a maximum of 50,000 URLs per sitemap, this method
+automatically increments the sitemap file numbers and
+generates a corresponding sitemap index that lists all
+of the individual sitemap files.
+
+See http://www.sitemaps.org/ for the specification
+
+=cut
+sub create_sitemaps {
+    my ($settings, $bibs, $aou_id) = @_;
+
+    my $f_cnt = 1;
+    my $r_cnt = 0;
+    my @sitemaps;
+    my $fn = $settings->{'prefix'} . "sitemap$f_cnt.xml";
+    push(@sitemaps, $fn);
+    open(FH, '>', $fn) or die "Could not write sitemap $f_cnt\n";
+    print FH '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
+    print FH '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
+
+    foreach my $bib (@$bibs) {
+        print FH "<url><loc>" . $settings->{'lib-hostname'} . "/eg/opac/record/" . $bib->[0];
+        if ($aou_id) {
+            print FH "?locg=$aou_id";
+        }
+        print FH "</loc><lastmod>" . $bib->[1] . "</lastmod></url>\n";
+        $r_cnt++;
+        if ($r_cnt % 50000 == 0) {
+            $f_cnt++;
+            print FH "</urlset>\n";
+            close(FH);
+            my $fn = $settings->{'prefix'} . "sitemap$f_cnt.xml";
+            push(@sitemaps, $fn);
+            open(FH, '>', $fn) or die "Could not write bibs\n";
+            print FH '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
+            print FH '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
+        }
+    }
+    print FH "</urlset>\n";
+    close(FH);
+
+    open(INDEXFH, '>', $settings->{'prefix'} . "sitemapindex.xml") or die "Could not write sitemap index\n";
+    print INDEXFH '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
+    print INDEXFH '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
+    foreach my $fn (@sitemaps) {
+        print INDEXFH "<sitemap><loc>" . $settings->{'lib-hostname'} . "/$fn</loc></sitemap>\n";
+    }
+    print INDEXFH "</sitemapindex>\n";
+    close(INDEXFH);
+    
+
+}
+
+=item get_settings() - Extracts database settings from opensrf.xml
+=cut
+sub get_settings {
+    my $settings = shift;
+
+    my $host = "/opensrf/default/apps/open-ils.reporter-store/app_settings/database/host/text()";
+    my $port = "/opensrf/default/apps/open-ils.reporter-store/app_settings/database/port/text()";
+    my $dbname = "/opensrf/default/apps/open-ils.reporter-store/app_settings/database/db/text()";
+    my $user = "/opensrf/default/apps/open-ils.reporter-store/app_settings/database/user/text()";
+    my $pw = "/opensrf/default/apps/open-ils.reporter-store/app_settings/database/pw/text()";
+
+    my $parser = XML::LibXML->new();
+    my $opensrf_config = $parser->parse_file($config_file);
+
+    # If the user passed in settings at the command line,
+    # we don't want to override them
+    $settings->{host} = $settings->{host} || $opensrf_config->findnodes($host);
+    $settings->{port} = $settings->{port} || $opensrf_config->findnodes($port);
+    $settings->{db} = $settings->{db} || $opensrf_config->findnodes($dbname);
+    $settings->{user} = $settings->{user} || $opensrf_config->findnodes($user);
+    $settings->{pw} = $settings->{pw} || $opensrf_config->findnodes($pw);
+}
+
+=item get_record_ids() - Gets a list of record IDs
+=cut
+sub get_record_ids {
+    my $settings = shift;
+    my $aou_id;
+
+    my $dbh = DBI->connect('dbi:Pg:dbname=' . $settings->{db} . 
+        ';host=' . $settings->{host} . ';port=' . $settings->{port} . ';',
+         $settings->{user} . "", $settings->{pw} . "", {AutoCommit => 1}
+    );
+    if ($dbh->err) {
+        print STDERR "Could not connect to database. ";
+        print STDERR "Error was " . $dbh->errstr . "\n";
+        return;
+    }
+
+    if ($settings->{'lib-shortname'}) {
+        my $stmt = $dbh->prepare("SELECT id FROM actor.org_unit WHERE shortname = ?");
+        $stmt->execute(($settings->{'lib-shortname'}));
+        my $rv = $stmt->bind_columns(\$aou_id);
+        $stmt->fetch();
+    }
+
+    my $q = "
+        SELECT DISTINCT bre.id, edit_date::date AS edit_date
+        FROM biblio.record_entry bre
+            INNER JOIN asset.opac_visible_copies aovc ON bre.id = aovc.record
+    ";
+    if ($aou_id) {
+        $q .= " WHERE circ_lib IN (SELECT id FROM actor.org_unit WHERE id = ? OR parent_ou = ?)";
+    }
+    $q .= " ORDER BY edit_date DESC";
+    my $stmt = $dbh->prepare($q);
+    if ($aou_id) {
+        $stmt->bind_param(1, $aou_id, { TYPE => SQL_INTEGER });
+        $stmt->bind_param(2, $aou_id, { TYPE => SQL_INTEGER });
+        $stmt->execute();
+    } else {
+        $stmt->execute();
+    }
+
+    my $bibs = $stmt->fetchall_arrayref([0, 1]);
+
+    if ($dbh->err) {
+        print STDERR "Error was " . $dbh->errstr . "\n";
+        return;
+    }
+    return ($bibs, $aou_id);
+}
+
+my $hostname;
+my $aou_shortname;
+my %settings = (
+    prefix => ''
+);
+
+GetOptions(
+        "lib-hostname=s" => \$settings{'lib-hostname'},
+        "lib-shortname=s" => \$settings{'lib-shortname'},
+        "prefix=s" => \$settings{'prefix'},
+        "config-file=s" => \$config_file,
+        "user=s" => \$settings{'user'},
+        "password=s" => \$settings{'pw'},
+        "database=s" => \$settings{'db'},
+        "hostname=s" => \$settings{'host'},
+        "port=i" => \$settings{'port'}, 
+        "help" => \$help
+);
+
+if (!$config_file) { 
+    my @temp = `eg_config --sysconfdir`;
+    chomp $temp[0];
+    $sysconfdir = $temp[0];
+    $config_file = File::Spec->catfile($sysconfdir, "opensrf.xml");
+}
+
+unless (-e $config_file) { die "Error: $config_file does not exist. \n"; }
+
+if ($settings{'lib-hostname'}) {
+    # Get additional settings from the config file
+    get_settings(\%settings);
+
+    my ($bibs, $aou_id) = get_record_ids(\%settings);
+    create_sitemaps(\%settings, $bibs, $aou_id);
+} else {
+    $help = 1;
+}
+
+if ($help) {
+    print <<HERE;
+
+SYNOPSIS
+    sitemap_generator [OPTION] ... [COMMAND] ... [CONFIG OPTIONS]
+
+DESCRIPTION
+    Creates a set of sitemaps for enabling web crawlers to crawl
+    freshly changed bibliographic records.
+
+OPTIONS
+    --config-file
+        specifies the opensrf.xml file
+
+    --lib-hostname
+        REQUIRED: hostname for the catalog (e.g "https://example.com")
+
+    --prefix
+        filename to add as a prefix to the generated set of sitemap files
+
+    --lib-shortname
+        include all records for the specified library and its children;
+        defaults to all records
+
+EXAMPLES
+   This script will normally be run as a cron job by the opensrf user from
+   the web root directory.
+
+   sitemap_generator --lib-hostname https://example.com --lib-shortname BR1 \
+      --prefix example_
+
+   This generates a set of sitemap files like so:
+     * example_sitemapindex.xml
+     * example_sitemap1.xml
+     * example_sitemap2.xml
+     * ...
+
+HERE
+}
+
