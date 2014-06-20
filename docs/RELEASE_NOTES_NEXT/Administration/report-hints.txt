@@ -1,0 +1,18 @@
+==== Reports Documentation Links and Hints ====
+
+ * Report templates support a new External URL field, which may
+   contain a link to template-specific, local documentation.
+
+  ** When set, a link to the external documentation will be
+     displayed in a new column in the template list and within
+     the report editor.
+
+  ** URL's are set in the 'Documentation URL' entry.
+
+ * Template display fields and filters support a new Field Hint
+   value.  When set, hints are displayed in the report editor.
+
+  ** Values are set via the 'Change Field Hint' option along
+     the bottom of the template editor.
+
+
