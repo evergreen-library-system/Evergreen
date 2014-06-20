@@ -209,11 +209,11 @@ CREATE TABLE vandelay.merge_profile (
 
 CREATE OR REPLACE FUNCTION vandelay.marc21_record_type( marc TEXT ) RETURNS config.marc21_rec_type_map AS $func$
 DECLARE
-    ldr         TEXT;
-    tval        TEXT;
-    tval_rec    RECORD;
-    bval        TEXT;
-    bval_rec    RECORD;
+        ldr         TEXT;
+        tval        TEXT;
+        tval_rec    RECORD;
+        bval        TEXT;
+        bval_rec    RECORD;
     retval      config.marc21_rec_type_map%ROWTYPE;
 BEGIN
     ldr := oils_xpath_string( '//*[local-name()="leader"]', marc );
@@ -243,29 +243,8 @@ BEGIN
 END;
 $func$ LANGUAGE PLPGSQL;
 
-CREATE OR REPLACE FUNCTION vandelay.marc21_extract_fixed_field( marc TEXT, ff TEXT ) RETURNS TEXT AS $func$
-DECLARE
-    rtype       TEXT;
-    ff_pos      RECORD;
-    tag_data    RECORD;
-    val         TEXT;
-BEGIN
-    rtype := (vandelay.marc21_record_type( marc )).code;
-    FOR ff_pos IN SELECT * FROM config.marc21_ff_pos_map WHERE fixed_field = ff AND rec_type = rtype ORDER BY tag DESC LOOP
-        FOR tag_data IN SELECT value FROM UNNEST( oils_xpath( '//*[@tag="' || UPPER(ff_pos.tag) || '"]/text()', marc ) ) x(value) LOOP
-            val := SUBSTRING( tag_data.value, ff_pos.start_pos + 1, ff_pos.length );
-            RETURN val;
-        END LOOP;
-        val := REPEAT( ff_pos.default_val, ff_pos.length );
-        RETURN val;
-    END LOOP;
-
-    RETURN NULL;
-END;
-$func$ LANGUAGE PLPGSQL;
-
 CREATE TYPE biblio.record_ff_map AS (record BIGINT, ff_name TEXT, ff_value TEXT);
-CREATE OR REPLACE FUNCTION vandelay.marc21_extract_all_fixed_fields( marc TEXT ) RETURNS SETOF biblio.record_ff_map AS $func$
+CREATE OR REPLACE FUNCTION vandelay.marc21_extract_all_fixed_fields( marc TEXT, use_default BOOL DEFAULT FALSE ) RETURNS SETOF biblio.record_ff_map AS $func$
 DECLARE
     tag_data    TEXT;
     rtype       TEXT;
@@ -278,16 +257,88 @@ BEGIN
         output.ff_name  := ff_pos.fixed_field;
         output.ff_value := NULL;
 
-        FOR tag_data IN SELECT value FROM UNNEST( oils_xpath( '//*[@tag="' || UPPER(tag) || '"]/text()', marc ) ) x(value) LOOP
-            output.ff_value := SUBSTRING( tag_data.value, ff_pos.start_pos + 1, ff_pos.length );
-            IF output.ff_value IS NULL THEN output.ff_value := REPEAT( ff_pos.default_val, ff_pos.length ); END IF;
-            RETURN NEXT output;
-            output.ff_value := NULL;
-        END LOOP;
+        IF ff_pos.tag = 'ldr' THEN
+            output.ff_value := oils_xpath_string('//*[local-name()="leader"]', marc);
+            IF output.ff_value IS NOT NULL THEN
+                output.ff_value := SUBSTRING( output.ff_value, ff_pos.start_pos + 1, ff_pos.length );
+                RETURN NEXT output;
+                output.ff_value := NULL;
+            END IF;
+        ELSE
+            FOR tag_data IN SELECT value FROM UNNEST( oils_xpath( '//*[@tag="' || UPPER(ff_pos.tag) || '"]/text()', marc ) ) x(value) LOOP
+                output.ff_value := SUBSTRING( tag_data, ff_pos.start_pos + 1, ff_pos.length );
+                CONTINUE WHEN output.ff_value IS NULL AND NOT use_default;
+                IF output.ff_value IS NULL THEN output.ff_value := REPEAT( ff_pos.default_val, ff_pos.length ); END IF;
+                RETURN NEXT output;
+                output.ff_value := NULL;
+            END LOOP;
+        END IF;
 
     END LOOP;
 
     RETURN;
+END;
+$func$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION vandelay.marc21_extract_fixed_field_list( marc TEXT, ff TEXT, use_default BOOL DEFAULT FALSE ) RETURNS TEXT[] AS $func$
+DECLARE
+    rtype       TEXT;
+    ff_pos      RECORD;
+    tag_data    RECORD;
+    val         TEXT;
+    collection  TEXT[] := '{}'::TEXT[];
+BEGIN
+    rtype := (vandelay.marc21_record_type( marc )).code;
+    FOR ff_pos IN SELECT * FROM config.marc21_ff_pos_map WHERE fixed_field = ff AND rec_type = rtype ORDER BY tag DESC LOOP
+        IF ff_pos.tag = 'ldr' THEN
+            val := oils_xpath_string('//*[local-name()="leader"]', marc);
+            IF val IS NOT NULL THEN
+                val := SUBSTRING( val, ff_pos.start_pos + 1, ff_pos.length );
+                collection := collection || val;
+            END IF;
+        ELSE
+            FOR tag_data IN SELECT value FROM UNNEST( oils_xpath( '//*[@tag="' || UPPER(ff_pos.tag) || '"]/text()', marc ) ) x(value) LOOP
+                val := SUBSTRING( tag_data.value, ff_pos.start_pos + 1, ff_pos.length );
+                collection := collection || val;
+            END LOOP;
+        END IF;
+        CONTINUE WHEN NOT use_default;
+        CONTINUE WHEN ARRAY_UPPER(collection, 1) > 0;
+        val := REPEAT( ff_pos.default_val, ff_pos.length );
+        collection := collection || val;
+    END LOOP;
+
+    RETURN collection;
+END;
+$func$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION vandelay.marc21_extract_fixed_field( marc TEXT, ff TEXT, use_default BOOL DEFAULT FALSE ) RETURNS TEXT AS $func$
+DECLARE
+    rtype       TEXT;
+    ff_pos      RECORD;
+    tag_data    RECORD;
+    val         TEXT;
+BEGIN
+    rtype := (vandelay.marc21_record_type( marc )).code;
+    FOR ff_pos IN SELECT * FROM config.marc21_ff_pos_map WHERE fixed_field = ff AND rec_type = rtype ORDER BY tag DESC LOOP
+        IF ff_pos.tag = 'ldr' THEN
+            val := oils_xpath_string('//*[local-name()="leader"]', marc);
+            IF val IS NOT NULL THEN
+                val := SUBSTRING( val, ff_pos.start_pos + 1, ff_pos.length );
+                RETURN val;
+            END IF;
+        ELSE
+            FOR tag_data IN SELECT value FROM UNNEST( oils_xpath( '//*[@tag="' || UPPER(ff_pos.tag) || '"]/text()', marc ) ) x(value) LOOP
+                val := SUBSTRING( tag_data.value, ff_pos.start_pos + 1, ff_pos.length );
+                RETURN val;
+            END LOOP;
+        END IF;
+        CONTINUE WHEN NOT use_default;
+        val := REPEAT( ff_pos.default_val, ff_pos.length );
+        RETURN val;
+    END LOOP;
+
+    RETURN NULL;
 END;
 $func$ LANGUAGE PLPGSQL;
 
