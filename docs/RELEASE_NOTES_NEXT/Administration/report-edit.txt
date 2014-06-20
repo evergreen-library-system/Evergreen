@@ -1,0 +1,14 @@
+==== Report Editing ====
+
+Users may now view and edit existing reports.
+
+With each report in the Reports folder view there are two new links,
+one for viewing (read-only) and one for editing.  After changing a 
+report, the user has the option to save the modified report
+or create a new report with the new values, in effect cloning
+the original report.
+
+When saving a changed report, if a pending report run exists, the user
+will be warned of this and asked if they would prefer to modify the
+scheduled report or to instead save the changed values as a new 
+report, leaving the original report intact.
