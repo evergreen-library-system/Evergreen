@@ -283,6 +283,8 @@ include::cataloging/monograph_parts.txt[]
 
 include::cataloging/conjoined_items.txt[]
 
+include::cataloging/cataloging_electronic_resources.txt[]
+
 include::cataloging/link_checker.txt[]
 
 

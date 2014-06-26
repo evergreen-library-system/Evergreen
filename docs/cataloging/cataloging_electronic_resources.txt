@@ -1,0 +1,75 @@
+Cataloging Electronic Resources -- Finding Them in Catalog Searches
+-------------------------------------------------------------------
+There are two ways to make electronic resources visible in the catalog without
+adding copies to the record:
+
+. Adding a Located URI to the record
+. Attaching the record to a bib source that is transcendent
+
+The Located URI approach is useful for Evergreen sites where libraries have
+access to different electronic resources. The transcendent bib source approach
+is useful if all of your libraries have access to the same electronic resources.
+
+Another difference between the two approaches is that electronic resources with
+Located URI's never appear in results where the search is limited to a specific
+copy location(s). In contrast, transcendent electronic resources will appear in
+results limited to any copy location.
+
+Adding a Located URI to the Record
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+A Located URI allows you to add the short name for the owning library to
+indicate which organizational units should be able to find the resource. The
+owning organizational unit can be a branch, system, or consortium. The resource
+will then appear in search results in the following situations:
+
+* When the user's search scope is set at the owning organizational unit or to
+a child of the owning organizational unit, the record will appear in search
+results.
+* When a logged-in user's preferred search library is set to the owning
+organizational unit or to a child of that owning organizational unit, the record
+will appear regardless of search scope.
+
+To add a located URI to the record:
+
+. Open the record in _MARC Edit_
+. Add a subfield 9 to the 856 field of the record and enter the short name of 
+the organizational unit for the value. Make sure there is a 4 entered as the
+first indicator and a 0 entered as the second indicator. 
+For example:
++
+'856 40 $u http://lwn.net $y Linux Weekly News $9 BR1'
++
+would make this item visible to people searching in a library scope of BR1 or to
+logged-in users who have set BR1 as their preferred search library.
++
+[NOTE]
+If multiple organizational units own the resource, you can enter more than one
+subfield 9 to the 856 field or you can enter multiple 856 fields with a subfield
+9 to the record 
++
+. Save the record
+
+Using Transcendent Bib Sources for Electronic Resources
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Connecting a bib record to a transcendent bib source will make the record
+visible in search results regardless of the user's search scope.
+
+To start, you need to create a transcendent bib source by adding it to
+'config.bib_source' in the Evergreen database and setting the _transcendant_ 
+field to true. For example:
+
++# INSERT INTO config.bib_source(quality, source, transcendant, can_have_copies)
+VALUES (50, `ebooks', TRUE, FALSE);+
+
+[NOTE]
+If you want to allow libraries to add copies to these records, set the
+_can_have_copies_ field to _TRUE_. If you want to prevent libraries from adding
+copies to these records, set the _can_have_copies_ field to _FALSE_.
+
+When adding or uploading bib records for electronic resources, set the
+bibliographic source for the record to this transcendent bibliographic source.
+Using the staff client, the bibliographic source can be selected in the _MARC
+Batch Import_ interface when importing new, non-matching records or in the
+_MARC Edit_ interface when editing existing records.
+
+
