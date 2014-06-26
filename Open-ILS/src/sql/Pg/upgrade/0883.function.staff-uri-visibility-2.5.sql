@@ -1,3 +1,6 @@
+BEGIN;
+
+SELECT evergreen.upgrade_deps_block_check('0883', :eg_version);
 
 CREATE OR REPLACE FUNCTION search.query_parser_fts (
 
@@ -346,3 +349,4 @@ BEGIN
 END;
 $func$ LANGUAGE PLPGSQL;
 
+COMMIT;
