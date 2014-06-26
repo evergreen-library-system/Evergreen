@@ -182,26 +182,6 @@ AM_CONDITIONAL([BUILDEGPYTHON], [test x$EG_PYTHON_INSTALL = xtrue])
 #-----------------------------------
 # Check for dependencies 
 #-----------------------------------
-AC_PATH_PROG([OSRF_CONFIG], [osrf_config])
-if test "x$OSRF_CONFIG" == "x"; then
-    AC_MSG_ERROR([Could not find osrf_config.
-    Ensure OpenSRF is installed and that the PATH environment variable includes
-    the OpenSRF executables. For example: PATH=\$PATH:/openils/bin ./configure])
-fi
-
-AC_ARG_WITH([opensrf-headers],
-[  --with-opensrf-headers=path location of the OpenSRF header files],
-[OPENSRF_HEADERS=${withval}],
-[OPENSRF_HEADERS=`$OSRF_CONFIG --includedir`])
-AC_SUBST([OPENSRF_HEADERS])
-
-# We need this for JavaScript
-AC_ARG_WITH([opensrf-libs],
-[  --with-opensrf-libs=path    location of the OpenSRF libraries],
-[OPENSRF_LIBS=${withval}],
-[OPENSRF_LIBS=`$OSRF_CONFIG --libdir`])
-AC_SUBST([OPENSRF_LIBS])
-
 AC_ARG_WITH([tmp],
 [  --with-tmp=path             location of the Evergreen temporary directory (default is /tmp) ],
 [TMP=${withval}],
@@ -251,6 +231,26 @@ fi
 AC_SUBST([DBI_LIBS])
 
 if test "x$openils_core" = "xtrue"; then
+
+    AC_PATH_PROG([OSRF_CONFIG], [osrf_config])
+    if test "x$OSRF_CONFIG" == "x"; then
+        AC_MSG_ERROR([Could not find osrf_config.
+        Ensure OpenSRF is installed and that the PATH environment variable includes
+        the OpenSRF executables. For example: PATH=\$PATH:/openils/bin ./configure])
+    fi
+
+    AC_ARG_WITH([opensrf-headers],
+    [  --with-opensrf-headers=path location of the OpenSRF header files],
+    [OPENSRF_HEADERS=${withval}],
+    [OPENSRF_HEADERS=`$OSRF_CONFIG --includedir`])
+    AC_SUBST([OPENSRF_HEADERS])
+
+    # We need this for JavaScript
+    AC_ARG_WITH([opensrf-libs],
+    [  --with-opensrf-libs=path    location of the OpenSRF libraries],
+    [OPENSRF_LIBS=${withval}],
+    [OPENSRF_LIBS=`$OSRF_CONFIG --libdir`])
+    AC_SUBST([OPENSRF_LIBS])
 
     AC_CHECK_PROG([MEMCACHED],memcached,yes,no)
     if test $MEMCACHED = "no"; then
