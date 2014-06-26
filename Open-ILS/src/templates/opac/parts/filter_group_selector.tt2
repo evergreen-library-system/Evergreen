@@ -14,9 +14,8 @@
     IF size AND size < 1; size = group.entries.size; END;
 -%]
 
-<select id='[% id %]' class='[% class %]' name='[% name %]'[%
+<select id='[% id %]' class='[% class %]' name='[% name %]' title="[% filter_label || l('Search Filter') %]"[%
     multiple ? ' multiple="multiple"' : '';
-    title="[% filter_label || l('Search Filter') %]"
     size ? (' size="' _ size _ '"') : ''; %]>
 [% IF none_ok %]
     <option value=''>[% none_label ? none_label : l('-- Any --') %]</option>
