@@ -351,7 +351,8 @@ sub load_rresults {
     # Special alternative searches here.  This could all stand to be cleaner.
     if ($cgi->param("_special")) {
         $self->timelog("Calling MARC expert search");
-        return $self->marc_expert_search(%args) if scalar($cgi->param("tag"));
+        return $self->marc_expert_search(%args) if (scalar($cgi->param("tag")) and
+            (!defined $cgi->param("query") or $cgi->param("query") =~ /^\s*$/));
         $self->timelog("Calling item barcode search");
         return $self->item_barcode_shortcut if (
             $cgi->param("qtype") and ($cgi->param("qtype") eq "item_barcode") and not $internal
@@ -686,10 +687,27 @@ sub marc_expert_search {
     $method .= '.staff' if $self->ctx->{is_staff};
     my $timeout = 120;
     my $ses = OpenSRF::AppSession->create('open-ils.search');
+
+    #when a sort variable is passed in we need to add its value to the arguments
+    my $arghash = {searches => $query, org_unit => $self->ctx->{search_ou}};
+    if (defined $self->cgi->param("sort")) {
+        my ($sort, $sort_dir) = split /\./, $self->cgi->param('sort');
+        $arghash = {%$arghash, sort => "$sort"};
+        if (!defined $sort_dir) {
+            $arghash = {%$arghash, sort_dir => "ASC"};
+        }
+    }
+
+    #add the offset and limit to the argash, so we can go past 100 results
+    #if offset and limit are not in the args then they default to 0 and 100
+    #respectively in biblio_multi_search_full_rec, which limits the results to 100
+    #records
+    $arghash = {%$arghash, offset => $offset, limit => $limit}; 
+
     my $req = $ses->request(
         $method,
-        {searches => $query, org_unit => $self->ctx->{search_ou}}, 
-        $limit, $offset, $timeout);
+        $arghash,
+        $timeout);
 
     my $resp = $req->recv($timeout);
     my $results = $resp ? $resp->content : undef;

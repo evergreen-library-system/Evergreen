@@ -2176,8 +2176,7 @@ __PACKAGE__->register_method(
                         'See perldoc ' . __PACKAGE__ . ' for more detail.',
                 type => 'object'
             },
-            {desc => 'limit (optional)',  type => 'number'},
-            {desc => 'offset (optional)', type => 'number'}
+            {desc => 'timeout (optional)',  type => 'number'}
         ],
         return => {
             desc => 'Results object like: { "count": $i, "ids": [...] }',
@@ -2187,7 +2186,7 @@ __PACKAGE__->register_method(
 );
 }
 
-=head3 open-ils.search.biblio.marc (arghash, limit, offset)
+=head3 open-ils.search.biblio.marc (arghash, timeout)
 
 As elsewhere the arghash is the required argument, and must be a hashref.  The keys are:
 
@@ -2244,16 +2243,17 @@ Presently, search uses the cache unconditionally.
 =cut
 
 # FIXME: that example above isn't actually tested.
+# FIXME: sort and limit added.  item_type not tested yet.
 # TODO: docache option?
 sub marc_search {
-    my( $self, $conn, $args, $limit, $offset, $timeout ) = @_;
+    my( $self, $conn, $args, $timeout ) = @_;
 
     my $method = 'open-ils.storage.biblio.full_rec.multi_search';
     $method .= ".staff" if $self->api_name =~ /staff/;
     $method .= ".atomic";
 
-    $limit  ||= 10;     # FIXME: what about $args->{limit} ?
-    $offset ||=  0;     # FIXME: what about $args->{offset} ?
+    my $limit = $args->{limit} || 10;
+    my $offset = $args->{offset} || 0;
 
     # allow caller to pass in a call timeout since MARC searches
     # can take longer than the default 60-second timeout.  
@@ -2274,7 +2274,6 @@ sub marc_search {
 
         if($resp and $recs = $resp->content) {
             put_cache($ckey, scalar(@$recs), $recs);
-            $recs = [ @$recs[$offset..($offset + ($limit - 1))] ];
         } else {
             $recs = [];
         }

@@ -509,11 +509,17 @@ sub biblio_multi_search_full_rec {
     my $relevance = 'sum(f.sum)';
     $relevance = 1 if (!$copies_visible);
 
+    my $string_default_sort = 'zzzz';
+    $string_default_sort = 'AAAA' if ($sort_dir =~ /^DESC$/i);
+
+    my $number_default_sort = '9999';
+    $number_default_sort = '0000' if ($sort_dir =~/^DESC$/i);
+
     my $rank = $relevance;
     if (lc($sort) eq 'pubdate') {
         $rank = <<"        RANK";
             ( FIRST ((
-                SELECT  COALESCE(SUBSTRING(frp.value FROM E'\\\\d+'),'9999')::INT
+                SELECT  COALESCE(SUBSTRING(MAX(frp.value) FROM E'\\\\d{4}'), '$number_default_sort')::INT
                   FROM  $metabib_full_rec frp
                   WHERE frp.record = f.record
                     AND frp.tag = '260'
@@ -529,10 +535,10 @@ sub biblio_multi_search_full_rec {
         $rank = <<"        RANK";
             ( FIRST (( SELECT edit_date FROM $br_table rbr WHERE rbr.id = f.record)) )
         RANK
-    } elsif (lc($sort) eq 'title') {
+    } elsif (lc($sort) =~ /^title/i) {
         $rank = <<"        RANK";
             ( FIRST ((
-                SELECT  COALESCE(LTRIM(SUBSTR( frt.value, COALESCE(SUBSTRING(frt.ind2 FROM E'\\\\d+'),'0')::INT + 1 )),'zzzzzzzz')
+                SELECT  COALESCE(LTRIM(SUBSTR(MAX(frt.value), COALESCE(SUBSTRING(MAX(frt.ind2) FROM E'\\\\d+'),'0')::INT + 1 )),'$string_default_sort')
                   FROM  $metabib_full_rec frt
                   WHERE frt.record = f.record
                     AND frt.tag = '245'
@@ -540,16 +546,19 @@ sub biblio_multi_search_full_rec {
                   LIMIT 1
             )) )
         RANK
-    } elsif (lc($sort) eq 'author') {
+    } elsif (lc($sort) =~ /^author/i) {
         $rank = <<"        RANK";
             ( FIRST((
-                SELECT  COALESCE(LTRIM(fra.value),'zzzzzzzz')
-                  FROM  $metabib_full_rec fra
-                  WHERE fra.record = f.record
-                    AND fra.tag LIKE '1%'
-                    AND fra.subfield = 'a'
-                  ORDER BY fra.tag::text::int
-                  LIMIT 1
+                SELECT  COALESCE(LTRIM(MAX(query.value)), '$string_default_sort')
+                  FROM  (
+                            SELECT fra.value
+                            FROM $metabib_full_rec fra
+                            WHERE fra.record = f.record
+                                AND fra.tag LIKE '1%'
+                                AND fra.subfield = 'a'
+                            ORDER BY fra.tag::text::int
+                            LIMIT 1
+                        ) query
             )) )
         RANK
     } else {
