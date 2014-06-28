@@ -80,6 +80,17 @@
         [% IF ctx.processed_search_query OR (NOT is_advanced AND NOT is_special) %]
         <input name='page' type='hidden' value="0" />
         [% END %]
+        [% IF is_special %]
+            <input type="hidden" name="_special" value="1" /> [%
+            number_of_expert_rows = CGI.param('tag').list.size;
+            index = 0;
+            WHILE index < number_of_expert_rows %]
+                <input type="hidden" name="tag" value="[% CGI.param('tag').list.$index %]" />
+                <input type="hidden" name="subfield" value="[% CGI.param('subfield').list.$index %]" />
+                <input type="hidden" name="term" value="[% CGI.param('term').list.$index %]" />
+                [% index = index + 1; %]
+            [% END %]
+        [% END %]
     </div>
     [%- END %]
     [% UNLESS took_care_of_form %]</form>[% END %]
