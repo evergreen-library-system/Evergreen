@@ -1,0 +1,499 @@
+Using the Public Access Catalog
+-------------------------------
+
+Basic Search
+~~~~~~~~~~~~
+
+indexterm:[OPAC]
+
+From the OPAC home, you can conduct a basic search of all materials owned by all libraries in your Evergreen system.
+
+This search can be as simple as typing keywords into the search box and clicking the _Search_ button. Or you can make your search more precise by limiting your search by fields to search, material type or library location.
+
+indexterm:[search box]
+
+The _Homepage_ contains a single search box for you to enter search terms. You can get to the _Homepage_ at any time by clicking the _Another Search_ link from the leftmost link on the bar above your search results in the catalogue, or you can enter a search anywhere you see a search box.
+
+You can select to search by:
+
+indexterm:[search, keyword]
+indexterm:[search, title]
+indexterm:[search, journal title]
+indexterm:[search, author]
+indexterm:[search, subject]
+indexterm:[search, series]
+indexterm:[search, bib call number]
+
+* *Keyword* —finds the terms you enter anywhere in the entire record for an item, including title, author, subject, and other information.
+
+* *Title* —finds the terms you enter in the title of an item.
+
+* *Journal Title* — finds the terms you enter in the title of a serial bib record.
+
+* *Author* —finds the terms you enter in the author of an item.
+
+* *Subject* —finds the terms you enter in the subject of an item. Subjects are categories assigned to items according to a system such as the Library of Congress Subject Headings.
+
+* *Series* —finds the terms you enter in the title of a multi-part series.
+
+* *Bib Call Number* —finds the terms you enter in the call number field of a bib record. 
+
+
+[TIP]
+=============
+To search an item copy call number, if different from _Bib Call Number_, use <<numeric_search, _Advanced Search: Numeric_>> 
+=============
+
+Formats
+^^^^^^^
+
+You can limit your search by formats based on MARC fixed field type:
+
+indexterm:[formats, books]
+indexterm:[formats, audiobooks]
+indexterm:[formats, video]
+indexterm:[formats, music]
+
+
+* *Cartographic material*
+* *Computer file*
+* *Kit*
+* *Language material* - More commonly referred to as books
+* *Manuscript cartographic material*
+* *Manuscript language material*
+* *Manuscript notated music*
+* *Mixed materials*
+* *Musical sound recording* - This includes music on CD or other media.
+* *Nonmusical sound recording* - This includes books read aloud on CDs or other media. 
+* *Notated music*
+* *Projected medium* - More commonly known as video formats like DVDs
+* *Three-dimensional artifact or naturally occurring object*
+* *Two-dimensional nonprojectable graphic*
+
+
+Libraries
++++++++++
+
+If you are using a catalogue in a library or accessing a library’s online catalogue from its homepage, the search will return items for your local library. If your library has multiple branches, the result will display items available at your branch and all branches of your library system separately.
+
+
+Advanced Search
+~~~~~~~~~~~~~~~
+
+Advanced searches allow users to perform more complex searches by providing more options. Many kinds of searches can be performed from the _Advance Search_ screen. You can access by clicking _Advanced Search_ on the catalogue _Homepage_ or search results screen.
+
+The available search options are the same as on the basic search. But you may use one or many of them simultaneously. If you want to combine more than three search options, use _Add Search Row_ button to add more search input rows. Clicking the _X_ button will close the search input row.
+
+
+Sort Results
+^^^^^^^^^^^^
+
+indexterm:[advanced search, sort results]
+
+By default, the search results are in order of greatest to least relevance, see <<order_of_results, Order of Results>>. In the sort results menu you may select to order the search results by relevance, title, author, or publication date.
+
+
+Search Library
+^^^^^^^^^^^^^^
+
+indexterm:[advanced search, search library]
+
+The current search library is displayed under _Search Library_ drop down menu. Be default it is your library. The search returns results for your local library only. If your library system has multiple branches, use the _Search Library_ box to select different branches or the whole library system.
+
+
+Limit to Available
+^^^^^^^^^^^^^^^^^^
+
+indexterm:[advanced search, limit to available]
+
+
+This checkbox is at the bottom line of _Search Library_. Select _Limit to Available_ to limit by item’s current circulation status. Titles without available items in the library will not be displayed.
+
+
+Search Filter
+^^^^^^^^^^^^^
+
+indexterm:[advanced search, search filters]
+
+You can filter your search by _Item Type_, _Item Form_, _Language_, _Audience_, _Video Format_, _Bib Level_, _Literary Form_, _Search Library_, and _Publication Year_. Publication year is inclusive. For example, if you set _Publication Year_ Between 2005 and 2007, your result items will be published in 2005, 2006 and 2007.
+
+For each filter type, you may select multiple criteria by holding down the _CTRL_ key as you click on the options. If nothing is selected for a filter, the search will return results as though all options are selected.
+
+
+anchor:numeric_search[]
+indexterm:[advanced search, numeric search]
+
+Numeric Search
+^^^^^^^^^^^^^^
+
+If you have details on the exact item you wish to search for, use the _Numeric Search_ tab on the advanced search page. Use the drop-down menu to select your search by _ISBN_, _ISSN_, _Bib Call Number_, _Call Number (Shelf Browse)_, _LCCN_, _TCN_, or _Item Barcode_. Enter the information and then click the _Search_ button.
+
+Expert Search
+^^^^^^^^^^^^^
+
+indexterm:[advanced search, expert search]
+
+If you are familiar with the MARC system, you may search by tag in the _Expert Search_ option on the left of the screen. Enter the three-digit tag number, the subfield if relevant, and the value or text that corresponds to the tag. For example, to search by publisher name, enter 260 b Random House. To search several tags simultaneously, use the _Add Row_ option. Click _Submit_ to run the search. 
+
+Search Tips
+~~~~~~~~~~~
+
+indexterm:[searchtips, AND operator]
+indexterm:[searchtips, boolean]
+
+
+You do not need to enter author's last name first, nor do you need an exact title or subject heading. Evergreen is also forgiving about plurals and alternate verb endings, so if you enter _dogs_, Evergreen will also find items with _dog_. 
+
+* Do not use an _AND_ operator to join search terms. 
+
+** An _AND_ operator is automatically used to join all search terms. So, a search for _golden compass_ will search for entries that contain both _golden_ *and* _compass_. 
+
+** Boolean operators such as _and_, _or_, _not_ are not considered special and are searched for like any other word. So, a search for _golden and compass_ will not return the title _golden compass_. Putting it another way, there are no _stop_ words that are automatically ignored by the search engine. So, a title search for the _and or not_ of (and in any order) yields a list of titles with those words. 
+
+* Don’t worry about white space, exact punctuation, or capitalization. 
+
+. White spaces before or after a word are ignored. So, search for _golden compass_ gives the same results as a search for _golden compass_. 
+
+. A double dash or a colon between words is reduced to a blank space. So, a title search for _golden:compass_ or _golden -- compass_ is equivalent to _golden compass_. 
+
+. Punctuation marks occurring within a word are removed; the exception is \_. So, a title search for _gol_den com_pass_ gives no result. 
+
+. Diacritical marks, &, or | located anywhere in the search term are removed. Words or letters linked together by .(dot) are joined together without the dot. So, a search for _go|l|den & comp.ass_ is equivalent to _golden compass_. 
+
+. Upper and lower case letters are equivalent. So, _Golden Compass_ is the same as _golden compass_. 
+
+* Enter your search words in any order. So, a search for _compass golden_ gives the same results as a search for _golden compass_. Adding more search words gives fewer and more specific results. 
+
+** This is also true for author searches. Both _David Suzuki_ and _Suzuki, David_ will return results for the same author. 
+
+* Use specific search terms. Evergreen will search for the words you specify, not the meanings, so choose search terms that are likely to appear in an item description. For example, the search _luxury hotels_ will produce more 
+relevant results than _nice places_ to stay. 
+
+* Search for an exact phrase using double-quotes. For example ``golden compass''. 
+
+** The order of words is important for an exact phrase search. _golden compass_ is different than _compass golden_. 
+
+** White space, punctuation and capitalization are removed from exact phrases as described above. So a phrase retains its search terms and its relative order, but not special characters and not case. 
+
+** Two phrases are joined by and, so a search for _"golden compass"_ _"dark materials"_ is equivalent to _golden compass_ *and* _dark materials_. 
+
+** To prevent <<stemming,stemming>>, use double quotes around a single word or a phrase. So, a search for parenting will also return results for _parental_ but a search for _parenting_ will not.
+
+* Truncation
+Words may be right-hand truncated using an asterisk. Use a single asterisk * to truncate any number of characters.
+(example: environment* agency)
+
+
+Search Methodology
+~~~~~~~~~~~~~~~~~~
+
+anchor:stemming[]
+
+Stemming 
+^^^^^^^^
+
+indexterm:[search methodology, stemming]
+
+A search for _dogs_ will also return hits with the word dog and a search for parenting will return results with the words parent and parental. This is because the search uses stemming to help return the most relevant results. That 
+is, words are reduced to their stem (or root word) before the search is performed. 
+
+The stemming algorithm relies on common English language patterns - like verbs ending in _ing_ - to find the stems. This is more efficient that looking up each search term in a dictionary and usually produces desirable results. However, it also means the search will sometimes reduce a word to an incorrect stem and cause unexpected results. To prevent a word or phrase from stemming, put it in double-quotes. 
+
+Understanding how stemming works can help you to create more relevant searches, but it is usually best not to anticipate how a search term will be stemmed. For example, searching for _gold compass_ does not return for _golden compass_ because the search does not recognize _gold_ as a stem of _golden_. 
+
+
+anchor:order_of_results[]
+
+Order of Results
+^^^^^^^^^^^^^^^^
+
+indexterm:[search methodology, order of results]
+
+By default, the results are listed in order of relevance, similar to a search engine like Google. The relevance is determined using a number of factors, including how often and where the search terms appear in the item description, 
+and whether the search terms are part of the title, subject, author, or series. The results which best match your search are returned first rather than results appearing in alphabetical or chronological order. 
+
+In the _Advanced Search_ screen, you may select to order the search results by relevance, title, author, or publication date before you start the search. You can also re-order your search results using the _Sort Results_ dropdown list on 
+the search result screen.
+
+
+Search URL
+~~~~~~~~~~
+
+indexterm:[search URL]
+
+////[SKIP FOR NOW, WAIT FOR YAMIL]////
+
+
+
+
+Search Results
+~~~~~~~~~~~~~~
+
+indexterm:[search results]
+
+The search results are a list of relevant works from the catalogue. If there are many results, they are divided into several pages. At the top of the list, you can see the total number of results and go back and forth between the pages 
+by clicking the links that say _Previous_ or _Next_ on top or bottom of the list. You can also click on the adjacent results page number listed. These page number links allow you to skip to that results page, if your search results needed multiple pages to display. Here is an example: 
+
+
+image::media/catalogue-3.png[catalogue-3]
+
+Brief information about the title, such as author, edition, publication date, etc. is displayed under each title. The icons beside the brief information indicate formats such as books, audio books, video recordings, and other formats. Have your mouse over the icon, text explanation will show up in a small pop-up box. 
+
+Clicking a title goes to the title details. Clicking an author searches all works by the author. If you want to place a hold on the title, click _Place Hold_ beside the format icons.
+
+On the top right, there is a _Limit to Available_ checkbox. Checking this box will filter out those titles with no available copies in the library or libraries at the moment. Usually you will see your search results are re-displayed with fewer titles. 
+
+The _Sort by_ dropdown list is found at the top of the search results, beside the _Show More Details_ link. Clicking an entry on the list will re-sort your search results accordingly.
+
+
+Facets: Subjects, Authors, and Series
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+indexterm:[search results, facets: subjects, authors, and series]
+
+At the left, you may see a list of _Facets of Subjects_, _Authors_, and _Series_. Selecting any one of these links filters your current search results using that subject, author, or series to narrow done your current results. The facet filters can be undone by clicking the link a second time, thus returning your original results before the facet was activated. 
+
+image::media/catalogue-5.png[catalogue-5]
+
+
+Availability
+^^^^^^^^^^^^
+
+indexterm:[search results, availability]
+
+The number of available copies and total copies are displayed under each search result's call number. If you are using a catalogue inside a library or accessing a library’s online catalogue from its homepage, you will see how many copies are available in the library under each title, too. If the library belongs to a multi-branch library system you will see an extra row under each title showing how many copies are available in all branches.
+
+
+image::media/catalogue-6.png[catalogue-6]
+
+image::media/catalogue-7.png[catalogue-7]
+
+You may also click the _Show More Details_ link at the top of the results page, next to the _Limit to available items_ check box, to view each search result's copies' individual call number, status, and shelving location. 
+
+
+Viewing a record
+^^^^^^^^^^^^^^^^
+
+indexterm:[search results, viewing a record]
+
+Click on a search result's title to view a detailed record of the title, including descriptive information, location and availability, current holds, and options for placing holds, add to my list, and print/email. 
+
+image::media/catalogue-8.png[catalogue-8]
+
+
+Details
+^^^^^^^
+
+indexterm:[search results, details]
+
+The record shows details such as the cover image, title, author, publication information, and an abstract or summary, if available. 
+
+Near the bottom of the record, the copy summary shows how many copies are at the library or libraries you have selected, and whether they are available or checked out. It also displays the _Call Number_ and _Shelving Location_ for locating the item on the shelves. You can click _Shelf Browser_ to view items appearing near the current item on the library shelves. Often this is a good way to browse for similar items. You can select _Table of Contents_ to see the book’s table of contents online (if available). You can select _MARC Record_ to display the record in MARC format. You can also select _Awards, Reviews, & Suggested Reads_ and _Additional Content_ to see more details (if available).   
+
+
+Placing Holds 
+^^^^^^^^^^^^^
+
+indexterm:[search results, placing holds]
+
+Holds can be placed on either title results or search results page. If the item is available, it will be pulled from the shelf and held for you. If all copies at your local library are checked out, you will be placed on a waiting list and 
+you will be notified when items become available. 
+
+On title details page, you can select the _Place Hold_ link in the upper right corner of the record to reserve the item. You will need your library account user name and password. You may choose to be notified by phone or email.
+
+In the example below, the phone number in your account will automatically show up. Once you select the Enable phone notifications for this hold checkbox, you can supply a different phone number for this hold only. The notification method will be selected automatically if you have set it up in your account references. But you still have a chance to re-select on this screen. You may also suspend the hold temporarily by checking the Suspend box. Click the _Help_ beside it for details. 
+
+You can view and cancel a hold at anytime. Before your hold is captured, which means an item has been held waiting for you to pick up, you can edit, suspend or activate it. You need log into your patron <<my_account,My Account>> to do it. From your account you can also set up an _Cancel if not filled by_ date for your hold. _Cancel if not filled by_ date means after this date, even though your hold has not been fulfilled you do not need the item anymore.
+
+
+image::media/catalogue-9.png[catalogue-9]
+
+Going back 
+^^^^^^^^^^
+
+indexterm:[search results, going back]
+
+When you are viewing a specific record, you can always go back to your title list by clicking the link _Search Results_ on the top right or left bottom of the page. 
+
+image::media/catalogue-10.png[catalogue-10]
+
+You can start a new search at any time by entering new search terms in the search box at the top of the page, or by selecting the _Another Search_ or _Advanced Search_ links in the left-hand sidebar.
+
+anchor:my_account[]
+
+
+My Account
+~~~~~~~~~~
+
+// ``First Login Password Update'' the following documentation comes from JSPAC
+// as of 2013-03-12 this feature did not exist in EG 2.4 TPAC,
+// so I am commenting it out for now because it will be added in the future
+// see bug report https://bugs.launchpad.net/evergreen/+bug/1013786
+// Yamil Suarez 2013-03-12
+
+////
+
+
+First Login Password Update 
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+indexterm:[my account, first login password update]
+
+Patrons are given temporary passwords when new accounts are created, or forgotten passwords are reset by staff. Patrons MUST change their password to something more secure when they login or for the first time. Once the password is updated, they will not have to repeat this process for subsequent logins. 
+
+. Open a web browser and go to your Evergreen OPAC 
+. Click My Account 
+. Enter your _Username_ and _Password_. 
+  * By default, your username is your library card number. 
+  * Your password is a 4 digit code provided when your account was created. If you have forgotten your password, contact your library to have it reset or use the online the section called ``<<password_reset,Password Reset>>'' tool. 
+////
+
+
+Logging In 
+^^^^^^^^^^
+
+indexterm:[my account, logging in]
+
+Logging into your account from the online catalog: 
+
+. Open a web browser and navigate to your Evergreen OPAC. 
+. Click _My Account_ .
+. Enter your _Username_ and _Password_. 
+** By default, your username is your library card number.
+** Your password is a 4 digit code provided when your account was created. If you have forgotten your password, contact your local library to have it reset or use the the section called <<password_reset, Password Reset>> tool. 
+. Click Login.
++
+** At the first login, you may be prompted to change your password. 
+** If you updated your password, you must enter your _Username_ and _Password_ again. 
++
+. Your _Account Summary_ page displays.
+
+
+To view your account details, click one of the _My Account_ tabs.
+
+To start a search, enter a term in the search box at the top of the page and click _Search_! 
+
+[CAUTION]
+=================
+If using a public computer be sure to log out! 
+=================
+
+anchor:password_reset[]
+
+Password Reset
+^^^^^^^^^^^^^^
+
+indexterm:[my account, password reset]
+
+
+To reset your password: 
+
+. click on the _Forgot your password?_ link located beside the login button. 
+
+. Fill in the _Barcode_ and _User name_ text boxes. 
+
+. A message should appear indicating that your request has been processed and that you will receive an email with further instructions. 
+
+. An email will be sent to the email addressed you have registered with your Evergreen library. You should click on the link included in the email to open the password reset page. Processing time may vary.
++
+[NOTE]
+=================
+You will need to have a valid email account set up in Evergreen for you to reset your password. Otherwise, you will need to contact your library to have your password reset by library staff. 
+=================
++
+
+. At the reset email page you should enter the new password in the _New password_ field and re-enter it in the _Re-enter new password_ field. 
+
+. Click _Submit_. 
+
+. A message should appear on the page indicating that your password has been reset. 
+
+. Login to your account with your new password. 
+
+
+Account Summary
+^^^^^^^^^^^^^^^
+
+indexterm:[my account, account summary]
+
+In the _My Account_, _Account Summary_ you can see your total number of items checked out, items on hold, and items ready for pickup. In addition item summary lists your current fines and payment history are listed there, too.
+
+
+Items Checked Out 
+^^^^^^^^^^^^^^^^^
+
+indexterm:[my account, items checked out]
+
+Users can manage items currently checked out, like renew specific items. Users can also view overdue items and see how many renewals they have remaining for specific item. 
+
+
+Holds
+^^^^^ 
+
+indexterm:[my account, holds]
+
+From _My Account_, patrons can see _Items on hold_ and _Holds History_ and manage items currently being requested. 
+
+Actions include: 
+
+* Suspend - set a period of time during which the hold will not become active, such as during a vacation 
+* Activate - manually remove the suspension 
+* Cancel - remove the hold request 
+
+Edit options include: 
+
+* Change pick up library 
+* Change the _Cancel unless filled by_ date, also known as the hold expiration date 
+* Change the status of the hold to either active or suspended. 
+* Change the _If suspended, activate on_ date, which reactivates a suspended hold at the specified date
+ 
+To edit items on hold: 
+
+. Login to _My Account_, click the _Holds_ tab.
+. Select the hold to modify. 
+. Click _Edit_ for selected holds. 
+. Select the change to make and follow the instructions.
+
+
+Account Preferences 
+^^^^^^^^^^^^^^^^^^^
+
+indexterm:[my account, account preferences]
+
+From here you can manage display preferences including your _Personal Information_, _Notification Preferences_, and _Search and History Preferences_. 
+
+For example: 
+
+* Personal Information
+
+** change password - allows patrons to change their password
+
+** change email address	- allows patrons to change their email address.
+
+
+
+*  Notification Preferences
+
+** _Notify by Email_ by default when a hold is ready for pickup?	
+
+** _Notify by Phone_ by default when a hold is ready for pickup?
+
+** _Default Phone Number_
+
+
+* Search and History Preferences
+
+** Search hits per page
+
+** Preferred pickup location
+
+** Keep history of checked out items?
+
+** Keep history of holds?
+
+
+After changing any of these settings, remember to click _Save_ button.
+ 
+
+
+indexterm:[holds, preferred pickup location ]
