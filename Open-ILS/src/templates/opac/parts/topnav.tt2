@@ -32,7 +32,7 @@
             </div>
             <div id="dashboard">
                 <span class="dash-align">
-                    <a class="dash-link" href="[% mkurl(ctx.opac_root _ '/myopac/circs')
+                    <a class="dash-link" href="[% mkurl(ctx.opac_root _ '/myopac/circs', {}, ['limit','offset'])
                         %]"><span id="dash_checked">[% ctx.user_stats.checkouts.total_out
                         %]</span> [% l("Checked Out") %]</a>
                 </span>
