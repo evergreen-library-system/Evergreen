@@ -1228,7 +1228,10 @@ function save_attempt(xml_string) {
             if (result.id) {
                 replace_on_complete = fastItemAdd_attempt(result.id);
             }
-            if (!replace_on_complete && typeof result.on_complete == 'function') {
+	// When fastItemAdd is not used, replace_on_complete is undefined
+	// When it is used, and successful, replace_on_complete will be set to true 
+	// then we need it to execute on_complete()
+            if ((replace_on_complete==undefined || replace_on_complete ) && typeof result.on_complete == 'function') {
                 result.on_complete();
             }
         }
