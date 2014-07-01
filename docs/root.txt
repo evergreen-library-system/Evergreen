@@ -374,7 +374,9 @@ Using the Public Access Catalog
 Introduction
 ------------
 
-Use this part for information about searching the Evergreen public access catalog.
+This part of the documentation explains how to use the Evergreen public OPAC. It covers the basic catalog and more advanced search topics. It also describes the ``My Account'' tools users have to find information and manage their personal library accounts through the OPAC. This section could be used by staff and patrons but would be more useful for staff as a generic reference when developing custom guides and tutorials for their users.
+
+include::opac/using_the_public_access_catalog.txt[]
 
 include::opac/my_lists.txt[]
 
