@@ -1,0 +1,51 @@
+Authentication Proxy
+--------------------
+
+indexterm:[authentication, proxy]
+
+indexterm:[authentication, LDAP]
+
+To support integration of Evergreen with organizational authentication systems, and to reduce the proliferation of user names and passwords, Evergreen offers a service called open-ils.auth_proxy. If you enable the service, open-ils.auth_proxy supports different authentication mechanisms that implement the authenticate method. You can define a chain of these authentication mechanisms to be tried in order within the *_<authenticators>_* element of the _opensrf.xml_ configuration file, with the option of falling back to the native mode that uses Evergreen’s internal method of password authentication.
+
+This service only provides authentication. There is no support for automatic provisioning of accounts. To authenticate using any authentication system, the user account must first be defined in the Evergreen database. The user will be authenticated based on the Evergreen username and must match the user's ID on the authentication system. 
+
+In order to activate Authentication Proxy, the Evergreen system administrator will need to complete the following steps:
+
+. Edit *_opensrf.xml_*.
+.. Set the *_open-ils.auth_proxy_* app settings *_enabled_* tag to *_true_*
+.. Add the *_authenticator_* to the list of authenticators or edit the existing example authenticator: 
++
+[source,xml]
+----
+     
+<authenticator>
+	<name>ldap</name>
+	<module>OpenILS::Application::AuthProxy::LDAP_Auth</module>
+	<hostname>name.domain.com</hostname>
+	<basedn>ou=people,dc=domain,dc=com</basedn>
+	<authid>cn=username,ou=specials,dc=domain,dc=com</authid>
+	<id_attr>uid</id_attr>
+	<password>my_ldap_password_for_authid_user</password>
+	<login_types>
+		<type>staff</type>
+		<type>opac</type>
+	</login_types>
+	<org_units>
+		<unit>103</unit>
+		<unit>104</unit>
+	</org_units>
+</authenticator>
+----
++
+* *_name_* : Used to identify each authenticator.  
+* *_module_* : References to the perl module used by Evergreen to process the request.  
+* *_hostname_* : Hostname of the authentication server.  
+* *_basedn_* :  Location of the data on your authentication server used to authenticate users.
+* *_authid_* : Adminstrator ID information used to connect to the Authentication server.
+* *_id_attr_* : Field name in the authenticator matching the username in the Evergreen database.
+* *_password_* : Adminstrator password used to connect to the authentication server. Password for the *_authid_*.
+* *_login_types_* : Specifies which types of logins will use this authenticator. This might be useful if staff use a different LDAP directory than general users.   
+* *_org_units_* : Specifies which org units will use the authenticator. This is useful in a consortium environment where libraries will use separate authentication systems.
++
+. Restart Evergreen and Apache to activate configuration changes. 
+   

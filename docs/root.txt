@@ -133,6 +133,8 @@ include::opac/new_skin_customizations.txt[]
 
 include::admin/auto_suggest_search.txt[]
 
+include::admin/authentication_proxy.txt[]
+
 include::admin/customize_staff_client.txt[]
 
 // Push titles down one level.
