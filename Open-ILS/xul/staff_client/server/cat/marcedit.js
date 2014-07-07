@@ -1223,7 +1223,6 @@ function fastItemAdd_attempt(doc_id) {
 
 function save_attempt(xml_string) {
     try {
-        var result = window.xulG.save.func( xml_string );
         var tabs = window.parent.parent.document.getElementById('main_tabs');
         var idx = tabs.selectedIndex;
         var tab = tabs.childNodes[idx];
