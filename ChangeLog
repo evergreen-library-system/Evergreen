@@ -1,3 +1,428 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 0480746c813996ed7597343924a926eb6df3d7dd
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Mon Feb 24 12:09:57 2014 -0500
+
+    Bump OpenILS.pm version
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit 6f3b2bfd280e1fd6c2ecebc1fb120d05f0273fe1
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Fri Jun 6 09:19:58 2014 -0400
+
+    Forward port 2.5.5 and 2.6.1 upgrade scripts
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+78	0	Open-ILS/src/sql/Pg/version-upgrade/2.5.4-2.5.5-upgrade-db.sql
+78	0	Open-ILS/src/sql/Pg/version-upgrade/2.6.0-2.6.1-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.5.4-2.5.5-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.6.0-2.6.1-upgrade-db.sql
+
+commit e8f60481129b13ea70259845c5b08058bfc26445
+Author: Robert Soulliere <robert.soulliere@mohawkcollege.ca>
+Date:   Thu Jul 3 11:18:15 2014 -0400
+
+    Documentation: Add the authentication proxy chapter
+    
+    - Some content taken from the 2.2 release notes.
+    - Added a few steps on how to set up authentication proxy in Evergreen.
+    
+    Signed-off-by: Robert Soulliere <robert.soulliere@mohawkcollege.ca>
+
+51	0	docs/admin/authentication_proxy.txt
+2	0	docs/root.txt
+ create mode 100644 docs/admin/authentication_proxy.txt
+
+commit 49478d11c3681c3049e8206ddb13853bfd963029
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Fri Jun 6 11:59:58 2014 -0400
+
+    LP#968514: Revive bib/auth importing docs from 2.1, add intro
+    
+    This commit revives the following sections from the 2.1 version of the docs
+    and updates them for 2.6:
+    
+      - marc_export: Exporting Bibliographic Records into MARC files
+        - includes new options for 2.6
+      - Importing Authority Records from Command Line
+      - Importing Authority Records from the Staff Client
+    
+    The first two are included in a new section called "Support Scripts"
+    within the "Developer Resources" section, with a new intro and summary
+    of other commonly used scripts provided with Evergreen. The third section
+    is moved inside the Cataloging chapter "Batch Importing MARC Records",
+    with slight modifications to the intro to that chapter.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+43	3	docs/cataloging/batch_importing_MARC.txt
+173	0	docs/development/support_scripts.txt
+2	0	docs/root.txt
+ create mode 100644 docs/development/support_scripts.txt
+
+commit 1d17d0382daf7cdd286559c3bdbf8cc1c6d1706a
+Author: Erica Rohlfs <erohlfs@esilibrary.com>
+Date:   Fri May 30 15:12:29 2014 -0400
+
+    Docs: Minor wording change
+    
+    Signed-off-by: Erica Rohlfs <erohlfs@esilibrary.com>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+1	1	docs/serials/G-Special_issue.txt
+
+commit 77ba7107837cee2cf9c28f099cc452847ccbb47e
+Author: Robert Soulliere <robert.soulliere@mohawkcollege.ca>
+Date:   Wed Jul 2 14:57:16 2014 -0400
+
+    Documentation: Update upgrade instruction for 2.6.1
+    
+    - Update location references for 2.6.1.
+    - Update database updates to include 2.6.1 update.
+    - Add a note regarding reingesting bib records after updates.
+    
+    Signed-off-by: Robert Soulliere <robert.soulliere@mohawkcollege.ca>
+
+19	15	docs/installation/server_upgrade.txt
+
+commit cf9cd6b795c1670f80310f3dd220f3648f3b92e5
+Author: Yamil Suarez <yamil@yamil.com>
+Date:   Tue Jul 1 14:58:33 2014 -0400
+
+    Documentation: added "search URL" text inside of "using OPAC" section
+    
+    Replaces temporary text that was accidentally added to the "using OPAC" section.
+    
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+41	1	docs/opac/using_the_public_access_catalog.txt
+
+commit f5ad76ba83c447319e23028186d969675ed921e2
+Author: Yamil Suarez <yamil@yamil.com>
+Date:   Mon Jun 30 18:05:40 2014 -0400
+
+    Documentation: Added 'Using the OPAC' documentation & OPAC WCAG support mention
+    
+    Older DocBook content that covered how to do searches on the OPAC was updated
+    to use Asciidoc. Also a simple mention of the 2.6 OPAC WCAG support was added.
+    
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+-	-	docs/media/catalogue-10.png
+-	-	docs/media/catalogue-3.png
+-	-	docs/media/catalogue-5.png
+-	-	docs/media/catalogue-6.png
+-	-	docs/media/catalogue-7.png
+-	-	docs/media/catalogue-8.png
+-	-	docs/media/catalogue-9.png
+499	0	docs/opac/using_the_public_access_catalog.txt
+3	1	docs/root.txt
+ create mode 100644 docs/opac/using_the_public_access_catalog.txt
+
+commit 0b3ccda000a135f178311fbe069f50f0e24d2b1a
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Fri Jun 27 15:31:56 2014 -0400
+
+    Documentation for Located URI Visibility
+    
+    Documentation for the new visibility options available for Located URI's
+    in 2.6.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+158	0	docs/cataloging/cataloging_electronic_resources.txt
+2	0	docs/root.txt
+ create mode 100644 docs/cataloging/cataloging_electronic_resources.txt
+
+commit 571a4ad33400e272a8f6db282a7762e0f7fe5011
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Jun 26 17:46:30 2014 -0400
+
+    Fix syntax in filter_group_selector.tt2
+    
+    Attempt to fix build breakage introduced by 7e4e9d669
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	2	Open-ILS/src/templates/opac/parts/filter_group_selector.tt2
+
+commit 9d05523f6230f2006d68cebfbcc245ed6bb6b59b
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Wed Jun 4 13:09:48 2014 -0400
+
+    LP#1326149 Use a TPAC-settable TIME_FORMAT for local time formats
+    
+    We had tried to use the format.time library setting, but that is meant
+    for Dojo which uses the Unicode formats, that are incompatible with
+    the POSIX strftime() formats required by Template::Plugin::Date.
+    
+    At the same time, we need to expose the raw machine-readable time
+    for schema.org consumers, so express that in a @content attribute.
+    
+    And we might as well use a more meaningful <time> element instead of
+    the meaningless <span>, just for good measure.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+12	0	Open-ILS/src/templates/opac/parts/config.tt2
+62	26	Open-ILS/src/templates/opac/parts/library/hours.tt2
+
+commit bd523b6656b9fa97e159c713b17e5e624b39ee3a
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Fri May 30 12:55:47 2014 -0400
+
+    LP#1301599 Remove duplicate title attributes
+    
+    Thanks to Ben Shum for spotting these!
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+0	1	Open-ILS/src/templates/opac/myopac/holds.tt2
+1	2	Open-ILS/src/templates/opac/parts/myopac/prefs_base.tt2
+
+commit 3fe380f4d04a3d721999a3415f420b31acc49e87
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Thu Apr 10 16:59:14 2014 -0400
+
+    LP#1301599 Additional TPAC facets structure markup
+    
+    Labeling facets with <h4> tags provides additional page structure for
+    screen readers in the TPAC results pages.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+7	0	Open-ILS/src/templates/opac/css/style.css.tt2
+1	1	Open-ILS/src/templates/opac/parts/result/facets.tt2
+
+commit dfa8abafeb1d1fef9bb62ca4f9d665c6bff1cdc2
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Thu Apr 10 16:49:36 2014 -0400
+
+    LP#1301599 TPAC replace aria-label with title
+    
+    As appropriate, replace aria-label attributes with traditional HTML
+    title attributes.
+    
+    For ref, from the LP entry:
+    
+    http://www.w3.org/TR/2013/WD-aria-in-html-20131003/#first-rule-of-aria-use
+    
+    "If you can use a native HTML element [HTML5] or attribute with the
+    semantics and behaviour you require already built in, instead of
+    re-purposing an element and adding an ARIA role, state or property to
+    make it accessible, then do so."
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/templates/opac/myopac/holds.tt2
+1	1	Open-ILS/src/templates/opac/parts/advanced/search.tt2
+1	1	Open-ILS/src/templates/opac/parts/coded_value_selector.tt2
+0	1	Open-ILS/src/templates/opac/parts/myopac/base.tt2
+1	1	Open-ILS/src/templates/opac/parts/myopac/prefs_base.tt2
+1	2	Open-ILS/src/templates/opac/parts/org_selector.tt2
+1	1	Open-ILS/src/templates/opac/parts/qtype_selector.tt2
+
+commit b48ffc96c7f171aa2c237a4e028bd4e62c25421a
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Thu Apr 3 14:53:36 2014 -0400
+
+    LP#1301599 TPAC add missing metabib filter label
+    
+    In the quick search bar along the top.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+3	2	Open-ILS/src/templates/opac/results.tt2
+
+commit 63eefc51fdd48fab8dace6f7e3456ddd5d3d89cf
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Thu Apr 3 13:31:29 2014 -0400
+
+    LP#1301599 TPAC advanced search from labels
+    
+    Instead of using titles / aria-labels directly on advanced search
+    selectors, provide selector IDs so the existing text labels can be
+    turned into <labels> and linked (by id) to their form control.
+    
+    This means we only need one label per form control, which improves
+    usability from an accessibility perspective.
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+11	9	Open-ILS/src/templates/opac/parts/advanced/search.tt2
+14	11	Open-ILS/src/templates/opac/parts/config.tt2
+2	1	Open-ILS/src/templates/opac/parts/org_selector.tt2
+
+commit ac298183bdbdcc5b77af15caeec20b14662213ac
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Wed Apr 2 16:46:25 2014 -0400
+
+    LP#1301599 TPAC advanced search additional labels
+    
+    Provides a number of labels, primarily for select widgets, in the TPAC
+    advanced search form for improved accessibility.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+6	3	Open-ILS/src/templates/opac/parts/advanced/global_row.tt2
+11	4	Open-ILS/src/templates/opac/parts/advanced/search.tt2
+1	1	Open-ILS/src/templates/opac/parts/coded_value_selector.tt2
+1	0	Open-ILS/src/templates/opac/parts/filter_group_selector.tt2
+3	1	Open-ILS/src/templates/opac/parts/filtersort.tt2
+
+commit e0123927d816b4aeb269f5088939724a5ca8b64c
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Wed Apr 2 16:43:49 2014 -0400
+
+    LP#1301599 TPAC result table accessibility improvements
+    
+    * Give the main result table a screenreader-only header to describe the
+      table columns.
+    * Set the role=presentation in one of the sub-tables used only for
+      layout.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+8	0	Open-ILS/src/templates/opac/parts/result/table.tt2
+
+commit b4714bcb59ffc1b2a867803576266326597368f7
+Author: Ben Shum <bshum@biblio.org>
+Date:   Thu Jun 26 15:33:30 2014 -0400
+
+    LP#925776 Add placeholder script for backport to 2.5 for function staff uri visibility
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+9	0	Open-ILS/src/sql/Pg/upgrade/0883.function.staff-uri-visibility-2.5.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0883.function.staff-uri-visibility-2.5.sql
+
+commit c38498a4c4984dadd91337d1f78fba6a6c1a4b78
+Author: Ben Shum <bshum@biblio.org>
+Date:   Thu Jun 26 15:30:26 2014 -0400
+
+    LP#925776 Stamping upgrade script for staff uri visibility
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+370	0	Open-ILS/src/sql/Pg/upgrade/0882.function.staff-uri-visibility.sql
+0	366	Open-ILS/src/sql/Pg/upgrade/XXXX.function.staff-uri-visibility.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0882.function.staff-uri-visibility.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.function.staff-uri-visibility.sql
+
+commit 0809b549e11ee157b46c08a114886c3049118deb
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Fri May 2 09:42:28 2014 -0400
+
+    LP#925776 Adding upgrade script
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+366	0	Open-ILS/src/sql/Pg/upgrade/XXXX.function.staff-uri-visibility.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.function.staff-uri-visibility.sql
+
+commit 3e7be71b4d143cd34b1efcd567076a0db5953744
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Fri May 2 09:10:09 2014 -0400
+
+    LP#925776: Recheck located uri visibility
+    
+    Previous to this commit, once we have determined that there are no
+    local Located URIs or foreign copies, we include the record in the
+    result set in the staff client.  However, the desire of library staff
+    is that foreign Located URIs be valid as a visibility limiter.  So
+    we now recheck at the end for that situation.  This honors the new
+    "Located URIs act like copies" global flag.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+19	1	Open-ILS/src/sql/Pg/300.schema.staged_search.sql
+
+commit 029ec0bb1703f55ad2885187fa4a2521f0f1c22a
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Thu Jun 5 20:27:39 2014 -0400
+
+    LP#1303544 Trim junk from the ISBN in record summary
+    
+    When asserting that we are publishing an ISBN, move the "(pbk.)"
+    and similar such matter outside of the schema.org <span property="isbn">
+    element.
+    
+    See "The walking dead" in the sample dataset for an example.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+9	2	Open-ILS/src/templates/opac/parts/record/summary.tt2
+
+commit e3b4c1f770e91d6c60fc0a0a8c22bbf2dabd5836
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Thu Jun 5 15:16:23 2014 -0700
+
+    LP#1326983: excluded fulfilled holds when adding hold_request.shelf_expires_soon events
+    
+    This patch adjusts the example A/T filter for the
+    hold_request.shelf_expires_soon hook to exclude hold requests that are
+    already marked as fulfilled.  This saves time creating events that
+    would immediately be marked as invalid per the HoldIsAvailable
+    validator.
+    
+    It also addresses an issue for large databases that have lots of
+    fulfilled holds wherein hold_request.shelf_expires_soon events can
+    fail to be added at all due to a cstore timeout.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+2	1	Open-ILS/examples/action_trigger_filters.json.example
+
+commit 8a387abf16656d138652e568ca9c0915fce677e8
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Thu Jun 5 09:47:36 2014 -0400
+
+    LP#1326806 Minor repairs to EDI admin documentation
+    
+    Updates to EDI account Path/Incoming/Account docs.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+5	4	docs/admin/acquisitions_admin.txt
+7	6	docs/admin_initial_setup/ordering_materials.txt
+
+commit b5431e947d280bc94723148f36e123b9f15d17b8
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Tue Feb 25 12:41:56 2014 -0800
+
+    LP#1284832: Add missing seed data: enable combined search for only the subject class by default
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+3	0	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+
+commit 29e5279baadce9726dba915206c93bc05dcc1529
+Author: Dan Pearl <dpearl@cwmars.org>
+Date:   Tue May 20 13:12:47 2014 -0400
+
+    LP#1321363: Suppress Hold Transit use elicits client error
+    
+    This change restores the behavior as designed.
+    
+    Signed-off-by: Dan Pearl <dpearl@cwmars.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Circulate.pm
