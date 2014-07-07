@@ -123,13 +123,13 @@ sub bib_to_svr {
     }
 
     # ou_depth can be undef in get_org_descendants
-    my @orgs = $U->get_org_descendants($ou, $ou_depth);
+    my $orgs = $U->get_org_descendants($ou, $ou_depth);
 
     # TODO: 'deleted' ssub support
     my $sdists = $e->search_serial_distribution([
         {
             "+ssub" => {"record_entry" => $bib},
-            "holding_lib" => { "in" => @orgs }
+            "holding_lib" => { "in" => $orgs }
         },
         {
             "flesh" => 1,
@@ -143,7 +143,7 @@ sub bib_to_svr {
         {
             record => $bib,
             deleted => 'f',
-            "owning_lib" => { "in" => @orgs },
+            "owning_lib" => { "in" => $orgs },
             "+sdist" => {"id" => undef}
         },
         {
