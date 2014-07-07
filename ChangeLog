@@ -1,3 +1,248 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit d2c2db29dbab45e94824b42b373106ef483d436c
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Mon Feb 24 12:09:57 2014 -0500
+
+    Bump OpenILS.pm version
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit 5df15d3d149912142a27fb999d2ab5abc5794f9e
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Mon Jul 7 13:49:15 2014 -0400
+
+    Forward port 2.5.5 upgrade script
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+78	0	Open-ILS/src/sql/Pg/version-upgrade/2.5.4-2.5.5-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.5.4-2.5.5-upgrade-db.sql
+
+commit 9ec2e0d9a239dcaba6f0c052c380534eccef2a2b
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Fri Jun 6 11:59:58 2014 -0400
+
+    LP#968514: Revive bib/auth importing docs from 2.1, add intro
+    
+    This commit revives the following sections from the 2.1 version of the docs
+    and updates them for 2.6:
+    
+      - marc_export: Exporting Bibliographic Records into MARC files
+        - includes new options for 2.6
+      - Importing Authority Records from Command Line
+      - Importing Authority Records from the Staff Client
+    
+    The first two are included in a new section called "Support Scripts"
+    within the "Developer Resources" section, with a new intro and summary
+    of other commonly used scripts provided with Evergreen. The third section
+    is moved inside the Cataloging chapter "Batch Importing MARC Records",
+    with slight modifications to the intro to that chapter.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+43	3	docs/cataloging/batch_importing_MARC.txt
+173	0	docs/development/support_scripts.txt
+2	0	docs/root.txt
+ create mode 100644 docs/development/support_scripts.txt
+
+commit 2d71bd8370895f44b6759608d51c0a0a631846bb
+Author: Erica Rohlfs <erohlfs@esilibrary.com>
+Date:   Fri May 30 15:12:29 2014 -0400
+
+    Docs: Minor wording change
+    
+    Signed-off-by: Erica Rohlfs <erohlfs@esilibrary.com>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+1	1	docs/serials/G-Special_issue.txt
+
+commit a2e12fee0622a8ef6a10e23a448ba76b7b5a5e11
+Author: Robert Soulliere <robert.soulliere@mohawkcollege.ca>
+Date:   Wed Jul 2 13:45:23 2014 -0400
+
+    Documentation: Updated 2.5 upgrade instructions.
+    
+    - Added db upgrades up to 2.5.5.
+    - Added a note about reingesting records after the upgrade has been completed.
+    
+    Signed-off-by: Robert Soulliere <robert.soulliere@mohawkcollege.ca>
+
+21	13	docs/installation/server_upgrade.txt
+
+commit 7483a3a8be4114c222f6f90af211603d3806ccd5
+Author: Yamil Suarez <yamil@yamil.com>
+Date:   Tue Jul 1 15:42:17 2014 -0400
+
+    Documentation: Added 'Using the OPAC' documentation
+    
+    Older DocBook content that covered how to do searches on the OPAC was updated
+    to use Asciidoc.
+    
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+-	-	docs/media/catalogue-10.png
+-	-	docs/media/catalogue-3.png
+-	-	docs/media/catalogue-5.png
+-	-	docs/media/catalogue-6.png
+-	-	docs/media/catalogue-7.png
+-	-	docs/media/catalogue-8.png
+-	-	docs/media/catalogue-9.png
+499	0	docs/opac/using_the_public_access_catalog.txt
+3	1	docs/root.txt
+ create mode 100644 docs/opac/using_the_public_access_catalog.txt
+
+commit 79b6d3e5e4be87d2afb70ece96af7c535246ed7e
+Author: Ben Shum <bshum@biblio.org>
+Date:   Thu Jun 26 15:42:51 2014 -0400
+
+    LP#925776 Stamping upgrade script for 2.5 for function staff uri visibility
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+352	0	Open-ILS/src/sql/Pg/upgrade/0883.function.staff-uri-visibility-2.5.sql
+0	348	Open-ILS/src/sql/Pg/upgrade/XXXX.function.staff-uri-visibility.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0883.function.staff-uri-visibility-2.5.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.function.staff-uri-visibility.sql
+
+commit e327e7c28cd788d2c79084f15cb1b35282e8f2f2
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Fri May 9 10:35:08 2014 -0400
+
+    LP#925776 Adding 2.5-ish upgrade script.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+348	0	Open-ILS/src/sql/Pg/upgrade/XXXX.function.staff-uri-visibility.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.function.staff-uri-visibility.sql
+
+commit 55904cedc636527b6153c813c77f369ee8da592d
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Fri May 2 09:10:09 2014 -0400
+
+    LP#925776: Recheck located uri visibility
+    
+    Previous to this commit, once we have determined that there are no
+    local Located URIs or foreign copies, we include the record in the
+    result set in the staff client.  However, the desire of library staff
+    is that foreign Located URIs be valid as a visibility limiter.  So
+    we now recheck at the end for that situation.  This honors the new
+    "Located URIs act like copies" global flag.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+19	1	Open-ILS/src/sql/Pg/300.schema.staged_search.sql
+
+commit 0c8dbe9d0523640d6abbd12f43e9ba806c027744
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Thu Jun 26 10:56:20 2014 -0400
+
+    Documentation for cataloging electronic resources
+    
+    Moving up and updating Located URI documentation from 1.6 and transcendent bib
+    source documentation from the wiki.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+75	0	docs/cataloging/cataloging_electronic_resources.txt
+2	0	docs/root.txt
+ create mode 100644 docs/cataloging/cataloging_electronic_resources.txt
+
+commit f32708477e76c5170a89c14b9cf131cca062ea51
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Thu Jun 6 11:13:35 2013 -0400
+
+    LP#1179660: remove call to undefined initialize func
+    
+    Remove call to nonexistant function Search::Z3950->initialize.  Prior to
+    now, this would have quietly failed, but with AUTOLOAD to be removed
+    from OpenSRF, it would fail with full shock and awe.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    
+    Conflicts:
+    	Open-ILS/src/perlmods/lib/OpenILS/Application/Search.pm
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+0	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Search.pm
+
+commit 4b040b7041c2660abdd9c26317baaa0fc051623a
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Thu Jun 5 20:27:39 2014 -0400
+
+    LP#1303544 Trim junk from the ISBN in record summary
+    
+    When asserting that we are publishing an ISBN, move the "(pbk.)"
+    and similar such matter outside of the schema.org <span property="isbn">
+    element.
+    
+    See "The walking dead" in the sample dataset for an example.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+9	2	Open-ILS/src/templates/opac/parts/record/summary.tt2
+
+commit f374da8f114864df06dfa142290e8d8cf7e30330
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Thu Jun 5 15:16:23 2014 -0700
+
+    LP#1326983: excluded fulfilled holds when adding hold_request.shelf_expires_soon events
+    
+    This patch adjusts the example A/T filter for the
+    hold_request.shelf_expires_soon hook to exclude hold requests that are
+    already marked as fulfilled.  This saves time creating events that
+    would immediately be marked as invalid per the HoldIsAvailable
+    validator.
+    
+    It also addresses an issue for large databases that have lots of
+    fulfilled holds wherein hold_request.shelf_expires_soon events can
+    fail to be added at all due to a cstore timeout.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+2	1	Open-ILS/examples/action_trigger_filters.json.example
+
+commit c05b7e1a2bfb1a024a21dab219355fcc1fdf3fb4
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Thu Jun 5 09:47:36 2014 -0400
+
+    LP#1326806 Minor repairs to EDI admin documentation
+    
+    Updates to EDI account Path/Incoming/Account docs.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+5	4	docs/admin/acquisitions_admin.txt
+7	6	docs/admin_initial_setup/ordering_materials.txt
+
+commit 50aff1086c1cad75e672a38bd60ceac608998a26
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Tue Feb 25 12:41:56 2014 -0800
+
+    LP#1284832: Add missing seed data: enable combined search for only the subject class by default
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+3	0	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+
+commit 430a0c854c48ceb13f1f8dbfc5fe9c0af955d208
+Author: Dan Pearl <dpearl@cwmars.org>
+Date:   Tue May 20 13:12:47 2014 -0400
+
+    LP#1321363: Suppress Hold Transit use elicits client error
+    
+    This change restores the behavior as designed.
+    
+    Signed-off-by: Dan Pearl <dpearl@cwmars.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Circulate.pm
