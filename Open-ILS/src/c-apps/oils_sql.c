@@ -1772,8 +1772,10 @@ static int verifyObjectPCRUD ( osrfMethodContext* ctx, osrfHash *class, const js
 							_tmp_params = single_hash( foreign_pkey, foreign_pkey_value );
 
 							// Do the lookup
+							osrfHashSet((osrfHash*) ctx->session->userData, "1", "inside_verify");
 							_list = doFieldmapperSearch( ctx, foreign_class_meta,
 									_tmp_params, NULL, &err );
+							osrfHashSet((osrfHash*) ctx->session->userData, "0", "inside_verify");
 
 							// Get the resulting row
 							jsonObjectFree( _fparam );
