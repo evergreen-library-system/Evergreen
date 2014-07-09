@@ -143,10 +143,19 @@ sub handler {
         my @upcs  = grep {$_->{tag} eq '024'} @$key_data;
 
         map {
-            my $isbn_obj = Business::ISBN->new($_->{value});
-            my $isbn_str;
-            $isbn_str = $isbn_obj->as_string([]) if defined($isbn_obj);
-            $_->{value} = $isbn_str;
+            # Attempt to validate the ISBN.
+            # strip out hyphens;
+            $_->{value} =~ s/-//g;
+            #pull out the first chunk that looks like an ISBN:
+            if ($_->{value} =~ /([0-9xX]{10}(?:[0-9xX]{3})?)/) {
+                $_->{value} = $1;
+                my $isbn_obj = Business::ISBN->new($_->{value});
+                my $isbn_str;
+                $isbn_str = $isbn_obj->as_string([]) if defined($isbn_obj);
+                $_->{value} = $isbn_str;
+            } else {
+                undef $_->{value};
+            }
             undef $_ if !defined($_->{value});
         } @isbns;
 
