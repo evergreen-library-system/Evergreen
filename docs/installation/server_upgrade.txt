@@ -176,24 +176,56 @@ stock upgrade script that require further tailoring of the upgrade script.
 The backup also enables you to cleanly restore your production data if
 anything goes wrong during the upgrade.
 
+[NOTE]
+=============
+Evergreen provides incremental upgrade scripts that allow you to upgrade
+from one minor version to the next until you have the current version of
+the schema. For example, if you want to upgrade from 2.5.1 to 2.6.1, you
+would run the following upgrade scripts:
+
+- 2.5.1-2.5.2-upgrade-db.sql
+- 2.5.2-2.5.3-upgrade-db.sql
+- 2.5.3-2.6.0-upgrade-db.sql (this is a major version upgrade)
+- 2.6.0-2.6.1-upgrade-db.sql
+
+Note that you do *not* want to run additional 2.5 scripts to upgrade to the
+newest version of 2.5, since currently there is no automated way to upgrade
+from 2.5.4+ to 2.6. Only upgrade as far as necessary to reach the major
+version upgrade script (in this example, as far as 2.5.3).
+
+To upgrade across multiple major versions (e.g. from 2.3.0 to 2.6.1), use
+the same logic to utilize the provided major version upgrade scripts. For
+example:
+
+- 2.3-2.4.0-upgrade-db.sql
+- 2.3-2.4-supplemental.sh
+- (run all incremental scripts from 2.4.0 to 2.4.3)
+- 2.4.3-2.5.0-upgrade-db.sql
+- (run all incremental scripts from 2.5.0 to 2.5.3)
+- 2.5.3-2.6.0-upgrade-db.sql
+- 2.6.0-2.6.1-upgrade-db.sql
+=============
+
 [CAUTION]
 Pay attention to error output as you run the upgrade scripts. If you encounter errors
 that you cannot resolve yourself through additional troubleshooting, please
 report the errors to the http://evergreen-ils.org/communicate/mailing-lists/[Evergreen
 Technical Discussion List].
 
-Run the following steps as a user with the ability to connect to the
-database server. 
+Run the following steps (including other upgrade scripts, as noted above)
+as a user with the ability to connect to the database server.
 
 [source, bash]
 ----------------------------------------------------------
 cd /home/opensrf/Evergreen-ILS-2.6.1/Open-ILS/src/sql/Pg
 psql -U evergreen -h localhost -f version-upgrade/2.5.3-2.6.0-upgrade-db.sql evergreen
-psql -U evergreen -h localhost -f version-upgrade/2.6.0-2.6.1-upgrade-db.sql evergreen
 ----------------------------------------------------------
 
-[NOTE]
-After the _2.5.3-2.6.0-upgrade-db.sql_script script finishes, you will see an note on how to reingest your bib records. You may run this after you have completed the entire upgrade and tested your system. Reingesting records will take a long time depending on the number of bib records in your system.
+[TIP]
+After the `2.5.3-2.6.0-upgrade-db.sql` script finishes, you will see a
+note on how to reingest your bib records. You may run this after you have
+completed the entire upgrade and tested your system. Reingesting records
+may take a long time depending on the number of bib records in your system.
 
 Restart Evergreen and Test
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
