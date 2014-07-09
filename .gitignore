@@ -350,5 +350,6 @@ Open-ILS/xul/staff_client/external/libmar/tool/mbsdiff
 Open-ILS/xul/staff_client/xulrunner*.bz2
 Open-ILS/xul/staff_client/xulrunner*.zip
 Open-ILS/xul/staff_client/xulrunner-stub.exe
+Thumbs.DB
 /js*
 /JavaScript*
