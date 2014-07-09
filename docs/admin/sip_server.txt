@@ -46,11 +46,12 @@ indexterm:[configuration files, oils_sip.xml]
 
 . Edit oils_sip.xml. Change the commented out <server-params> section to this: 
 
-   <server-params 
-   min_servers='1' 
-   min_spare_servers='0' 
-   max_servers='25' 
-   /> 
+   <server-params
+      min_spare_servers='1' 
+      max_spare_servers='2' 
+      min_servers='3'
+      max_servers='25' 
+		/>
 
 . max_servers will directly correspond to the number of allowed +SIP+ clients. Set the number accordingly, but 
 bear in mind that too many connections can exhaust memory. On a 4G RAM/4 CPU server (that is also running 
@@ -65,7 +66,6 @@ indexterm:[configuration files, oils_sip.xml]
 
   $ sudo su opensrf 
   $ cd /openils/conf
-  $ cp oils_sip.xml.example oils_sip.xml
 
 . In the +<accounts>+ section, add +SIP+ client login information. Make sure that all +<logins>+ use the same 
 institution attribute, and make sure the institution is listed in +<institutions>+. All attributes in the 
@@ -77,6 +77,7 @@ permissions:
 +
      COPY_CHECKIN 
      COPY_CHECKOUT 
+     CREATE_PAYMENT
      RENEW_CIRC 
      VIEW_CIRCULATIONS 
      VIEW_COPY_CHECKOUT_HISTORY 
@@ -140,7 +141,7 @@ To start the +SIP+ server type the following commands from the command prompt:
 
    $ sudo su opensrf 
 
-   $ oils_ctl.sh -d /openils/var/run -s /openils/conf/oils_sip.xml -a [start|stop|restart]_sip 
+   $ oils_ctl.sh -a [start|stop|restart]_sip 
 
 indexterm:[SIP]
 
@@ -287,16 +288,16 @@ preceeded with a 2-character field identifier) are used. The fields vary between
 | 01     | Block Patron        | Yes                   |<<01_block_patron, 01/Block_Patron>> - ACS responds with 24 Patron Status Response 
 | 09-10  | Checkin             | Yes (with extensions) |<<09-10_checkin, 09/10_Checkin>> 
 | 11-12  | Checkout            | Yes (no renewals)     |<<11-12_checkout, 11/12_Checkout>> 
-| 15-16  | Hold                | No                    |<<15-16_hold, 15/16_Hold>>  
+| 15-16  | Hold                | Partially supported   |<<15-16_hold, 15/16_Hold>>  
 | 17-18  | Item Information    | Yes (no extensions)   |<<17-18_item_information, 17/18_Item_Information>> 
 | 19-20  | Item Status Update  | No                    |<<19-20_item_status_update, 19/20_Item_Status_Update>> - Returns Patron Enable response, but doesn't make any changes in EG  
 | 23-24  | Patron Status       | Yes                   |<<23-24_patron_status, 23/24_Patron_Status>> - 63/64 ``Patron Information'' preferred 
 | 25-26  | Patron Enable       | No                    |<<25-26_patron_enable, 25/26_Patron_Enable>> - Used during system testing and validation 
-| 29-30  | Renew               | NO  (maybe?)          |<<29-30_renew, 29/30_Renew>> 
+| 29-30  | Renew               | Yes                   |<<29-30_renew, 29/30_Renew>> 
 | 35-36  | End Session         | Yes                   |<<35-36_end_session, 35/36_End_Session>>
-| 37-38  | Fee Paid            | No                    |<<37-38_fee_paid, 37/38_Fee_Paid>> 
+| 37-38  | Fee Paid            | Yes                   |<<37-38_fee_paid, 37/38_Fee_Paid>> 
 | 63-64  | Patron Information  | Yes (no extensions)   |<<63-64_patron_information, 63/64_Patron_Information>> 
-| 65-66  | Renew All           | No                    |<<65-66_renew_all, 65/66_Renew_All>> 
+| 65-66  | Renew All           | Yes                   |<<65-66_renew_all, 65/66_Renew_All>> 
 | 93-94  | Login               | Yes                   |<<93-94_login, 93/94_Login>> - Must be first command to Evergreen ACS (via socket) or +SIP+ will terminate 
 | 97-96  | Resend last message | Yes                   |<<97-96_resend, 97/96_Resend>> 
 | 99-98  | SC-ACS Status       | Yes                   |<<99-98_sc_and_acs_status, 99/98_SC_and_ACS_Status>> 
@@ -419,7 +420,8 @@ anchor:15-16_hold[]
 15/16 Hold
 ^^^^^^^^^^
 
-Not yet supported. 
+Evergreen supports the Hold message for the purpose of canceling
+holds.  It does not currently support creating hold requests via SIP2.
 
 
 anchor:17-18_item_information[]
@@ -510,7 +512,7 @@ anchor:29-30_renew[]
 29/30 Renew
 ^^^^^^^^^^^
 
-Evergreen ACS status message indicates _renew_ is supported. 
+Evergreen supports the Renew message.
 
 
 anchor:35-36_end_session[]
@@ -532,7 +534,7 @@ anchor:37-38_fee_paid[]
 37/38 Fee Paid 
 ^^^^^^^^^^^^^^
 
-Not implemented.
+Evergreen supports the Fee Paid message.
 
 
 anchor:63-64_patron_information[]
@@ -565,7 +567,7 @@ anchor:65-66_renew_all[]
 65/66 Renew All
 ^^^^^^^^^^^^^^^
 
-Not yet supported. 
+Evergreen supports the Renew All message.
 
 
 anchor:93-94_login[]
