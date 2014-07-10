@@ -154,9 +154,17 @@ oils_rpt_editor_pivot_data
         DOM.oils_rpt_report_editor_save.disabled = false;
 
         unHideMe(DOM.oils_rpt_report_editor_save);
-        unHideMe(DOM.oils_rpt_report_editor_save_new);
         unHideMe(DOM.oils_rpt_report_editor_cancel);
         hideMe(DOM.oils_rpt_report_editor_exit);
+
+    }
+
+    // avoid showing save-as-new for new reports, since the
+    // regular save button acts as save-as-new
+    if (rpt && !this.readonly) {
+        unHideMe(DOM.oils_rpt_report_editor_save_new);
+    } else {
+        hideMe(DOM.oils_rpt_report_editor_save_new);
     }
 
 	this.paramEditor = new oilsRptParamEditor(
@@ -461,6 +469,8 @@ oilsRptReportEditor.prototype.showPendingScheduleDialog = function() {
 
 
 oilsRptReportEditor.prototype.exit = function() {
-    oilsRptCurrentFolderManager.draw();
-    this.folderWindow.draw();
+    unHideMe(DOM.oils_rpt_folder_window_contents_table);                   
+    unHideMe(DOM.oils_rpt_folder_table_right_td);
+    hideMe(DOM.oils_rpt_folder_table_alt_td);
+    hideMe(DOM.oils_rpt_editor_div);
 }

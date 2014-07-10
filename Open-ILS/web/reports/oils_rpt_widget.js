@@ -135,7 +135,6 @@ function oilsRptTextWidget(args) {
 }
 oilsRptTextWidget.prototype.draw = function() {
 	this.node.appendChild(this.dest);
-    // TODO: untested
     if (this.seedValue) {
         this.dest.value = this.seedValue;
         this.dest.onchange(); // validation
@@ -159,7 +158,7 @@ oilsRptTextWidget.prototype.getDisplayValue = function() {
 	--------------------------------------------------------------------- */
 function oilsRptBoolWidget(args) {
 	this.node = args.node;
-    this.seedValue = arg.value;
+    this.seedValue = args.value;
 	this.selector = elem('select');
 	insertSelectorVal(this.selector, -1,'True','t');
 	insertSelectorVal(this.selector, -1,'False','f');
@@ -168,7 +167,7 @@ function oilsRptBoolWidget(args) {
 
 oilsRptBoolWidget.prototype.draw = function() {
 	this.node.appendChild(this.selector);
-    if (this.seedValue)  // TODO: untested
+    if (this.seedValue)  
         setSelector(this.selector, this.seedValue);
 }
 
@@ -283,7 +282,7 @@ oilsRptOrgSelector.prototype.draw = function(org) {
 	if(!org) org = globalOrgTree;
 	var opt = insertSelectorVal( this.selector, -1, 
 		org.shortname(), org.id(), null, findOrgDepth(org) );
-	if( org.id() == oilsRptCurrentOrg )
+	if( org.id() == oilsRptCurrentOrg && !this.seedValue)
 		opt.selected = true;
 	
 	/* sometimes we need these choices 
@@ -358,10 +357,12 @@ oilsRptAgeWidget.prototype.draw = function() {
 	this.node.appendChild(this.count);
 	this.node.appendChild(this.type);
 
-    if (this.seedValue) { // TODO: test me
-        var parts = this.seedValue.split(/ /);
-        setSelector(this.count, parts[0]);
-        setSelector(this.type, parts[1]);
+    if (this.seedValue) { 
+        // e.g. "2months"
+        var count = this.seedValue.match(/(\d+)([^\d]+)/)[1];
+        var type = this.seedValue.match(/(\d+)([^\d]+)/)[2];
+        setSelector(this.count, count);
+        setSelector(this.type, type);
     }
 }
 
@@ -449,7 +450,7 @@ oilsRptNumberWidget.prototype.draw = function() {
 	this.node.appendChild(this.selector);
 	var obj = this;
 
-    if (this.seedValue) // TODO: test me
+    if (this.seedValue)
         setSelector(this.selector, this.seedValue);
 }
 
@@ -484,7 +485,7 @@ oilsRptTemplateWidget.prototype.draw = function() {
 function oilsRptTruncPicker(args) {
 	this.node = args.node;
 	this.type = args.type;
-    this.seedValue = args.value; // TODO: FINISH
+    this.seedValue = args.value;
 	this.realSpan = elem('span');
 	this.relSpan = elem('span');
 	hideMe(this.relSpan);
@@ -526,6 +527,21 @@ oilsRptTruncPicker.prototype.draw = function() {
 			hideMe(obj.realSpan);
 		}
 	}
+
+    if (seed = this.seedValue) {
+        if (typeof seed == 'string') {
+            this.calWidget.value = seed;
+        } else {
+            // relative date transform
+            if (seed.transform.match(/relative/)) {
+                setSelector(this.selector, 2)
+                setSelector(this.numberPicker.selector, 
+                    Math.abs(seed.params[0]));
+			    unHideMe(this.relSpan);
+			    hideMe(this.realSpan);
+            }
+        }
+    }
 }
 
 oilsRptTruncPicker.prototype.getValue = function() {
