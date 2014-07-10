@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('0885', :eg_version);
+
 CREATE OR REPLACE FUNCTION evergreen.ranked_volumes(
     bibid BIGINT[],
     ouid INT,
