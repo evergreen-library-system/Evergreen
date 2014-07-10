@@ -1,6 +1,6 @@
 BEGIN;
 -- check whether patch can be applied
--- SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0884', :eg_version);
 
 UPDATE container.biblio_record_entry_bucket_type
 SET label = oils_i18n_gettext(
