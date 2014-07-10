@@ -4,7 +4,7 @@
 #
 # Makefile to install prerequisites for OpenSRF and Evergreen
 #
-# Currently supports Debian (wheezy, squeeze), Ubuntu (10.04), Ubuntu (12.04) and
+# Currently supports Debian (wheezy, squeeze), Ubuntu (12.04), Ubuntu (14.04) and
 # Fedora (16 and 17).
 #
 # Installs Perl prereqs, libjs with Perl wrapper, libdbi, libdbi-drivers, and libyaz
@@ -14,9 +14,9 @@
 # 	- or -
 # 	make -f Makefile.install debian-squeeze
 # 	- or -
-# 	make -f Makefile.install ubuntu-lucid
-# 	- or -
 # 	make -f Makefile.install ubuntu-precise
+# 	- or -
+# 	make -f Makefile.install ubuntu-trusty
 # 	- or -
 # 	make -f Makefile.install fedora
 #

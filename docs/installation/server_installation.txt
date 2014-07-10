@@ -76,28 +76,15 @@ before you can successfully configure, compile, and install Evergreen.
 deb http://backports.debian.org/debian-backports squeeze-backports main contrib
 ------------------------------------------------------------------------------
 +
-  * On Ubuntu Lucid, you can use a PPA (personal package archive), which are 
-    package sources hosted on Launchpad. The one most commonly used by Evergreen
-    Community members is maintained by Martin Pitt, who also maintains the
-    official PostgreSQL packages for Ubuntu. As the *root* Linux account, issue
-    the following commands to add the PPA source:
-+
-[source, bash]
-------------------------------------------------------------------------------
-apt-get install python-software-properties
-add-apt-repository ppa:pitti/postgresql
-------------------------------------------------------------------------------
-+
-  * Ubuntu Precise comes with PostgreSQL 9, so no additional steps are required.
-+
+  * Ubuntu Precise and Trusty comes with PostgreSQL 9+, so no additional steps are required.
   * Fedora comes with PostgreSQL 9, so no additional steps are required.
 +
 3. On Debian and Ubuntu, run `aptitude update` as the *root* Linux account to
    retrieve the new packages from the backports repository.
 4. Issue the following commands as the *root* Linux account to install
    prerequisites using the `Makefile.install` prerequisite installer,
-   substituting `debian-squeeze`, `debian-wheezy`, `fedora`, `ubuntu-lucid`, or
-   `ubuntu-precise` for <osname> below:
+   substituting `debian-squeeze`, `debian-wheezy`, `fedora`, `ubuntu-precise`, or
+   `ubuntu-trusty` for <osname> below:
 +
 [source, bash]
 ------------------------------------------------------------------------------
@@ -367,7 +354,7 @@ For production use, most libraries install the PostgreSQL database server on a
 dedicated machine. Therefore, by default, the `Makefile.install` prerequisite
 installer does *not* install the PostgreSQL 9 database server that is required
 by every Evergreen system. You can install the packages required by Debian or
-Ubuntu Lucid on the machine of your choice using the following commands as the
+Ubuntu on the machine of your choice using the following commands as the
 *root* Linux account:
 
 .(Debian / Ubuntu / Fedora) Installing PostgreSQL server packages
