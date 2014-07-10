@@ -312,6 +312,7 @@ a2enmod mpm_prefork
 a2dissite default  # OPTIONAL: disable the default site (the "It Works" page)
 a2ensite eg.conf
 ------------------------------------------------------------------------------
++
 (Ubuntu Trusty):
 +
 [source,bash]
@@ -319,7 +320,7 @@ a2ensite eg.conf
 a2dissite 000-default  # OPTIONAL: disable the default site (the "It Works" page)
 a2ensite eg.conf
 ------------------------------------------------------------------------------
-
++
 8. (Ubuntu): As the *root* Linux account, enable Apache to write
    to the lock directory; this is currently necessary because Apache
    is running as the `opensrf` user:
