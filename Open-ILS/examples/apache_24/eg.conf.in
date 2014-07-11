@@ -100,7 +100,6 @@ ExpiresByType text/css "access plus 50 minutes"
 # Set up our SSL virtual host
 # ----------------------------------------------------------------------------------
 #Listen 443
-NameVirtualHost *:443
 <VirtualHost *:443>
 	DocumentRoot "@localstatedir@/web"
 	ServerName localhost:443
@@ -135,8 +134,6 @@ NameVirtualHost *:443
 # errors, per http://wiki.apache.org/httpd/InternalDummyConnection
 # ----------------------------------------------------------------------------------
 
-# Commented to avoid warnings from duplicate "NameVirtualHost: *80" directives
-#NameVirtualHost *:80
 <VirtualHost *:80>
 	ServerName localhost:80
 	ServerAlias 127.0.0.1:80
