@@ -79,8 +79,10 @@
                 if (marceditRe.exec(window.document.location)) {
                     //We do not have to check for tab here because
                     //the MARC editor is explicitly in a tabbed window
-                    tab.marc_edit_changed = true;
-                    tab.marc_edit_allow_multiple_locks = false;
+                    if (tab) {
+                        tab.marc_edit_changed = true;
+                        tab.marc_edit_allow_multiple_locks = false;
+                    }
                 }
                 window.oils_lock++; // different window scope than the chrome of xulG.lock_tab
             } else {

@@ -567,8 +567,11 @@ function setFocusToNextTag (row, direction) {
 function set_lock_on_keypress(ev) {
     try {
         var tabs = window.parent.parent.document.getElementById('main_tabs');
-        var idx = tabs.selectedIndex;
-        var tab = tabs.childNodes[idx];
+
+        if (tabs) {
+            var idx = tabs.selectedIndex;
+            var tab = tabs.childNodes[idx];
+        }
         //dump('keypress: isChar = ' + ev.isChar + ' char = ' + ev.char + ' charCode = ' + ev.charCode + ' key = ' + ev.key + ' keyCode = ' + ev.keyCode + '\n');
         if (! /* NOT */(
                 ev.altKey
@@ -1224,15 +1227,20 @@ function fastItemAdd_attempt(doc_id) {
 function save_attempt(xml_string) {
     try {
         var tabs = window.parent.parent.document.getElementById('main_tabs');
-        var idx = tabs.selectedIndex;
-        var tab = tabs.childNodes[idx];
+
+        if (tabs) {
+            var idx = tabs.selectedIndex;
+            var tab = tabs.childNodes[idx];
+        }
         var result = window.xulG.save.func( xml_string );
         // I'd prefer to pass on_complete on through to fast_item_add,
         // but with the way these window scopes get destroyed with
         // tab replacement, maybe not a good idea
         var replace_on_complete = false;
         if (result) {
-            tab.marc_edit_changed = false;
+            if (tab) {
+                tab.marc_edit_changed = false;
+            }
             oils_unlock_page();
             if (result.id) {
                 replace_on_complete = fastItemAdd_attempt(result.id);
@@ -1360,10 +1368,13 @@ function marcSubfield (sf) {
 function loadRecord() {
     try {
             var tabs = window.parent.parent.document.getElementById('main_tabs');
-            var idx = tabs.selectedIndex;
-            var tab = tabs.childNodes[idx];
-            tab.marc_edit_changed = false;
-            tab.marc_edit_allow_multiple_locks = true;
+
+            if (tabs) {
+                var idx = tabs.selectedIndex;
+                var tab = tabs.childNodes[idx];
+                tab.marc_edit_changed = false;
+                tab.marc_edit_allow_multiple_locks = true;
+            }
 
             var grid_rows = document.getElementById('recGrid').lastChild;
 

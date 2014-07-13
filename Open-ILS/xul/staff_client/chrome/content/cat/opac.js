@@ -61,9 +61,11 @@ function default_focus() {
 function opac_wrapper_set_help_context() {
     try {
         var tabs = window.parent.document.getElementById('main_tabs');
-        var idx = tabs.selectedIndex;
-        var tab = tabs.childNodes[idx];
-        tab.in_marc_edit = false;
+        if (tabs) {
+            var idx = tabs.selectedIndex;
+            var tab = tabs.childNodes[idx];
+            tab.in_marc_edit = false;
+        }
         dump('Entering opac.js, opac_wrapper_set_help_context\n');
         var cw = bottom_pane.get_contentWindow();
         if (cw && typeof cw['location'] != 'undefined') {
@@ -84,7 +86,9 @@ function opac_wrapper_set_help_context() {
             }
             var marceditRe = /\/marcedit.xul$/;
             if (marceditRe.exec(cw.location)) {
-                tab.in_marc_edit = true;
+                if (tab) {
+                    tab.in_marc_edit = true;
+                }
             }
         } else {
             dump('opac.js: problem in opac_wrapper_set_help_context(): bottom_pane = ' + bottom_pane + ' cw = ' + cw + '\n');
@@ -1180,12 +1184,14 @@ function record_action(action_function) {
         var args = Array.prototype.slice.call(arguments, 1);
         if (action_function.name == 'set_marc_edit') {
             var tabs = window.parent.document.getElementById('main_tabs');
-            var idx = tabs.selectedIndex;
-            var tab = tabs.childNodes[idx];
+            if (tabs) {
+                var idx = tabs.selectedIndex;
+                var tab = tabs.childNodes[idx];
 
-            if (tab.marc_edit_changed) {
-                xulG.lock_tab();
-                tab.marc_edit_allow_multiple_locks = false;
+                if (tab.marc_edit_changed) {
+                    xulG.lock_tab();
+                    tab.marc_edit_allow_multiple_locks = false;
+                }
             }
         }
             
@@ -1203,32 +1209,35 @@ function safe_to_proceed() {
     var marc_edit_changed;
 
     var tabs = window.parent.document.getElementById('main_tabs');
-    var idx = tabs.selectedIndex;
-    var tab = tabs.childNodes[idx];
 
-    in_marc_edit = tab.in_marc_edit;
-    marc_edit_changed = tab.marc_edit_changed;
+    if (tabs) {
+        var idx = tabs.selectedIndex;
+        var tab = tabs.childNodes[idx];
 
-    if ((in_marc_edit != true) || (marc_edit_changed != true)) {
-        if (typeof xulG.is_tab_locked == 'undefined') { return true; }
-        if (! xulG.is_tab_locked()) { return true; }
-    }
-    var r = window.confirm(
-        document.getElementById('offlineStrings').getString(
-           'generic.unsaved_data_warning'
-        )
-    );
+        in_marc_edit = tab.in_marc_edit;
+        marc_edit_changed = tab.marc_edit_changed;
 
-    //If we are confirming from within MARC edit then
-    //drop the tab locks.  Otherwise the locks get dropped
-    //in cmd_search_tcn
-    if (r) {
-        if (typeof xulG.unlock_tab === 'function') {
-            while ( xulG.unlock_tab() > 0 ) {};
+        if ((in_marc_edit != true) || (marc_edit_changed != true)) {
+            if (typeof xulG.is_tab_locked == 'undefined') { return true; }
+            if (! xulG.is_tab_locked()) { return true; }
         }
+        var r = window.confirm(
+            document.getElementById('offlineStrings').getString(
+               'generic.unsaved_data_warning'
+            )
+        );
 
-        return true;
-    } else {
-        return false;
+        //If we are confirming from within MARC edit then
+        //drop the tab locks.  Otherwise the locks get dropped
+        //in cmd_search_tcn
+        if (r) {
+            if (typeof xulG.unlock_tab === 'function') {
+                while ( xulG.unlock_tab() > 0 ) {};
+            }
+
+            return true;
+        } else {
+            return false;
+        }
     }
 }
