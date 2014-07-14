@@ -64,6 +64,7 @@ export DEBS = \
 	yaz
 
 export DEB_APACHE_MODS = \
+    cgi\
     expires\
     include\
     proxy\
@@ -72,6 +73,9 @@ export DEB_APACHE_MODS = \
 
 export DEB_APACHE_DISMODS = \
     deflate
+
+export DEB_APACHE_DISCONF = \
+    serve-cgi-bin
 
 export CPAN_MODULES = \
 	Business::CreditCard::Object \
