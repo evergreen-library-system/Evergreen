@@ -277,6 +277,20 @@ sub get_url {
     return $res;
 }
 
+# returns an HTPP::Response object
+sub post_url {
+    my( $self, $url, $content ) = @_;
+
+    $logger->info("added content getting [timeout=$net_timeout, errors_remaining=$error_countdown] URL = $url");
+    my $agent = LWP::UserAgent->new(timeout => $net_timeout);
+
+    my $res = $agent->post($url, Content => $content);
+    $logger->info("added content request returned with code " . $res->code);
+    die "added content request failed: " . $res->status_line ."\n" unless $res->is_success;
+
+    return $res;
+}
+
 sub lookups_enabled {
     if( $cache->get_cache('ac.no_lookup') ) {
         $logger->info("added content lookup disabled");

@@ -1,0 +1,22 @@
+Content Cafe Added Content Update
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The OpenILS::WWW::AddedContent::ContentCafe provider has been updated to use the
+newer Content Cafe 2 API in full. With this update the ability to load content
+based on ISBN or UPC is now enabled.
+
+
+"No Image" Images
++++++++++++++++++
+With the updated code the option for displaying a "No Image" image or a 1x1
+pixel image is no longer available. Instead the Apache-level "blank image" rules
+will trigger when no image is available. The configuration option controlling
+this behavior can thus be removed from opensrf.xml entirely.
+
+
+Identifier Selection
+++++++++++++++++++++
+By default the module will prefer ISBNs over UPCs, but will request information
+for both. If you wish for UPCs to be preferred, or wish one of the two
+identifier types to not be considered at all, you can change the
+"identifier_order" option in opensrf.xml. When the option is present only the
+identifier(s) listed will be sent.

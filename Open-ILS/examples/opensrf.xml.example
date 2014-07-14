@@ -256,11 +256,12 @@ vim:et:ts=4:sw=4:
                 <password>MY_PASSWORD</password>
 
                 <!--
-                If no cover/jacket image exists for a given ISBN, then a value of T here will
-                return an 80x120 pixel image containing the text "No Image Available".  A
-                value of 1 will return a 1x1 pixel image.
+                Which order to put identifiers in.
+                Default is "isbn,upc", ignoring currently unsupported issn.
+                Should be all lowercase.
+                Remove an identifier from the list to skip it.
                 -->
-                <return_behavior_on_no_jacket_image>T</return_behavior_on_no_jacket_image>
+                <identifier_order>isbn,upc</identifier_order>
             </ContentCafe>
 
             <!--
