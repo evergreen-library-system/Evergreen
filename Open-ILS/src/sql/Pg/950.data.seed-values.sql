@@ -5015,7 +5015,7 @@ INSERT into config.org_unit_setting_type
  oils_i18n_gettext('circ.use_lost_paid_copy_status',
      'Use Lost and Paid copy status when lost or long overdue billing is paid',
      'coust', 'description'),
- 'bool')
+ 'bool', null)
 ;
 
 UPDATE config.org_unit_setting_type
