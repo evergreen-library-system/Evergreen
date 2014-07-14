@@ -266,7 +266,7 @@ sub template_overlay_container {
     my $responses = [];
     my $some_failed = 0;
 
-    $self->respond_complete(
+    $conn->respond_complete(
         $actor->request('open-ils.actor.anon_cache.set_value', $auth, res_list => $responses)->gather(1)
     ) if ($actor);
 
