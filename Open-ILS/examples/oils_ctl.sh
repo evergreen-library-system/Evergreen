@@ -36,7 +36,7 @@ function usage {
 # ---------------------------------------------------------------------------
 # Load the command line options and set the global vars
 # ---------------------------------------------------------------------------
-while getopts "a:d:s:l:" flag; do
+while getopts "a:d:s:l:y:z:" flag; do
 	case $flag in	
 		"a")		OPT_ACTION="$OPTARG";;
 		"s")		OPT_SIP_CONFIG="$OPTARG";;
