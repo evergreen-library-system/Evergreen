@@ -1,3 +1,7 @@
+BEGIN;
+
+SELECT evergreen.upgrade_deps_block_check('0886', :eg_version);
+
 INSERT INTO config.copy_status
 (id, name, holdable, opac_visible, copy_active, restrict_copy_delete)
 VALUES (17, 'Lost and Paid', FALSE, FALSE, FALSE, TRUE);
@@ -15,3 +19,4 @@ VALUES
      'coust', 'description'),
  'bool');
 
+COMMIT;
