@@ -103,10 +103,20 @@ END; # FOREACH bib
             <td headers='copy_header_part'>[% copy_info.part_label | html %]</td>
             [%- END %]
             <td headers='copy_header_barcode' property="serialNumber">
-                [%- IF ctx.is_staff -%]
-                    <a href="javascript:void(0)" onclick="xulG.new_tab(xulG.urls.XUL_COPY_STATUS, {}, {'from_item_details_new': true, 'barcodes': ['[%- copy_info.barcode | html | replace('\'', '\\\'') -%]']})">[% copy_info.barcode | html %]</a>
-                [%- ELSE -%][% copy_info.barcode | html %]
-                [%- END -%]
+                [% copy_info.barcode | html -%]
+                [% IF ctx.is_staff %]
+                    <a onclick="xulG.new_tab(xulG.urls.XUL_COPY_STATUS, {}, {'from_item_details_new': true, 'barcodes': ['[%- copy_info.barcode | html | replace('\'', '\\\'') -%]']})"
+                        href="javascript:;">[% l('view') %]</a>
+                    [%# if the user can edit copies, show the copy edit link %]
+                    [% IF ctx.has_perm('UPDATE_COPY', copy_info.circ_lib) 
+                        OR ctx.has_perm('UPDATE_COPY', copy_info.call_number_owning_lib) %]
+                        <span> | </span>
+                        <a href="javascript:;" 
+                            onclick="xulG.volume_item_creator({copy_id : [% copy_info.id %]})">
+                            [% l(' edit') %]
+                        </a>
+                    [% END %]
+                [% END %]
                 [%- IF attrs.gtin13;
                     '<meta property="gtin13" content="' _ attrs.gtin13 _ '" />';
                 END; -%]

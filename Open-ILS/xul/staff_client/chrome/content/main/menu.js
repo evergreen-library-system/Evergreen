@@ -2335,7 +2335,28 @@ commands:
         } else {
             url = obj.url_prefix('XUL_VOLUME_COPY_CREATOR_ORIGINAL');
         }
-        var w = obj.new_tab(
+
+
+        if (params && params.copy_id) {
+            // if accessing directly from the embedded catalog,
+            // load the copy/volume data here so the catalog
+            // doesn't have to.
+            try {
+                JSAN.use('util.network'); 
+                var net = new util.network();
+                var copies = net.simple_request(
+                    'FM_ACP_FLESHED_BATCH_RETRIEVE', [[params.copy_id]]);
+                var copy = copies[0];
+                var volume = net.simple_request(
+                    'FM_ACN_RETRIEVE.authoritative', [copy.call_number()]);
+                copy.call_number(volume);
+                params.existing_copies = [copy];
+            } catch (E) {
+                alert('cannot fetch copy ' + E);
+            }
+        }
+
+         var w = obj.new_tab(
             url,
             { 'tab_name' : document.getElementById('offlineStrings').getString('staff.cat.create_or_rebarcode_items') },
             params
