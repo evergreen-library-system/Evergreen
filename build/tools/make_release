@@ -18,7 +18,11 @@ BUILD_ONLY=NO # -b
 UPGRADE_PREVIEW=NO # -r
 SKIP_I18N=NO # -i
 
-while getopts ":hv:f:F:nptbri" opt; do
+# path to OpenSRF libraries
+[ "$(which osrf_config)" ] && OSRF_JS_PATH="$(osrf_config --libdir)/javascript";
+
+
+while getopts ":hv:f:F:nptbrij:" opt; do
     case $opt in
         v)
             VERSION=$OPTARG
@@ -47,6 +51,10 @@ while getopts ":hv:f:F:nptbri" opt; do
         b)
             BUILD_ONLY=YES
         ;;
+
+        j)
+            OSRF_JS_PATH="$OPTARG"
+        ;;
         \?)
             echo "Invalid Option: -$OPTARG"
             exit 1
@@ -66,11 +74,17 @@ while getopts ":hv:f:F:nptbri" opt; do
             echo "   -b turns on build only mode."
             echo "   -r prompt to preview upgrade SQL in editor before committing."
             echo "   -i skip i18n; primarily useful for (quickly) testing this script."
+            echo "   -j opensrf javascript library path.  If osrf_config is found, the value derived from osrf_config --libdir."
             echo "   NOTE: -t and -b override PREV_BRANCH/PREV_VERSION, but -b overrides -t."
             exit -1
         ;;
     esac
 done
+
+if [ -z "$OSRF_JS_PATH" ]; then
+    echo "Unable to find OpenSRF JavaScript library path.  Specify with -j";
+    exit 1;
+fi;
 
 if [ $TAG_ONLY = "YES" ]; then
     PREV_BRANCH="TAG"
@@ -326,7 +340,7 @@ wget http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/$XULRUNNER_VERSIO
 wget http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/$XULRUNNER_VERSION/runtimes/xulrunner-$XULRUNNER_VERSION.en-US.linux-x86_64.tar.bz2
 
 make rigrelease
-make STAFF_CLIENT_STAMP_ID=rel_$UNDER_VERSION build
+make STAFF_CLIENT_STAMP_ID=rel_$UNDER_VERSION OPENSRF_JSLIBS="$OSRF_JS_PATH" build
 make win-client
 mv evergreen_staff_client_setup.exe ../../../../evergreen-setup-$VERSION.exe
 make linux32-client
