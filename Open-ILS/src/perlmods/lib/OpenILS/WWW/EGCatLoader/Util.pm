@@ -806,6 +806,28 @@ sub setting_is_true_for_orgs {
     $test_org->($ctx->{aou_tree}->());
     return \@valid_orgs;
 }
+
+# Builds and links a perm checking function, testing permissions against
+# the currently logged in user.  
+# ctx->{has_perm}->(perm_code, org_id) => 1/undef
+# For security, perm checks are cached per page, not per process.
+sub load_perm_funcs {
+    my $self = shift;
+    my %perm_cache;
+    $self->ctx->{has_perm} = sub {
+        my ($perm_code, $org_id) = @_;
+        return 0 unless $self->editor->requestor;
+
+        if ($perm_cache{$org_id}) {
+            return $perm_cache{$org_id}{$perm_code} 
+                if exists $perm_cache{$org_id}{$perm_code};
+        } else {
+            $perm_cache{$org_id} = {};
+        }
+        return $perm_cache{$org_id}{$perm_code} =
+            $self->editor->allowed($perm_code, $org_id);
+    }
+}
     
 
 
