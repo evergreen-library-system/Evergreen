@@ -486,8 +486,6 @@ sub added_content_stage1 {
     my $rec_id = shift;
     my $ctx = $self->ctx;
     my $sel_type = $self->cgi->param('ac') || '';
-    my $key = $self->get_ac_key($rec_id);
-    ($key = $key->{value}) =~ s/^\s+//g if $key;
 
     # Connect to this machine's IP address, using the same 
     # Host with which our caller used to connect to us.
@@ -503,31 +501,29 @@ sub added_content_stage1 {
     for my $type (@$ac_types) {
         last if $ac_failed;
         $ctx->{added_content}->{$type} = {content => ''};
-        $ctx->{added_content}->{$type}->{status} = $key ? 3 : 2;
+        $ctx->{added_content}->{$type}->{status} = 3;
 
-        if ($key) {
-            $logger->debug("tpac: starting added content request for $key => $type");
+        $logger->debug("tpac: starting added content request for $rec_id => $type");
 
-            # Net::HTTP::NB is non-blocking /after/ the initial connect()
-            # Passing Timeout=>1 ensures we wait no longer than 1 second to 
-            # connect to the local Evergreen instance (i.e. ourself).  
-            # Connecting to oneself should either be very fast (normal) 
-            # or very slow (routing problems).
+        # Net::HTTP::NB is non-blocking /after/ the initial connect()
+        # Passing Timeout=>1 ensures we wait no longer than 1 second to 
+        # connect to the local Evergreen instance (i.e. ourself).  
+        # Connecting to oneself should either be very fast (normal) 
+        # or very slow (routing problems).
 
-            my $req = Net::HTTP::NB->new(Host => $ac_addr, Timeout => 1);
-            if (!$req) {
-                $logger->warn("Unable to connect to $ac_addr / $ac_host".
-                    " for added content lookup for $key: $@");
-                $ac_failed = 1;
-                next;
-            }
-
-            $req->host($self->apache->hostname);
-
-            my $http_type = ($type eq $sel_type) ? 'GET' : 'HEAD';
-            $req->write_request($http_type => "/opac/extras/ac/$type/html/" . uri_escape_utf8($key));
-            $ctx->{added_content}->{$type}->{request} = $req;
+        my $req = Net::HTTP::NB->new(Host => $ac_addr, Timeout => 1);
+        if (!$req) {
+            $logger->warn("Unable to connect to $ac_addr / $ac_host".
+                " for added content lookup for $rec_id: $@");
+            $ac_failed = 1;
+            next;
         }
+
+        $req->host($self->apache->hostname);
+
+        my $http_type = ($type eq $sel_type) ? 'GET' : 'HEAD';
+        $req->write_request($http_type => "/opac/extras/ac/$type/html/r/" . $rec_id);
+        $ctx->{added_content}->{$type}->{request} = $req;
     }
 }
 
@@ -570,42 +566,6 @@ sub added_content_stage2 {
         # To avoid a lot of hanging connections.
         $content->{request}->shutdown(2) if ($content->{request});
     }
-}
-
-# XXX this is copied directly from AddedContent.pm in 
-# working/user/jeff/ac_by_record_id_rebase.  When Jeff's
-# branch is merged and Evergreen gets added content 
-# lookup by ID, this can be removed.
-# returns [{tag => $tag, value => $value}, {tag => $tag2, value => $value2}]
-sub get_ac_key {
-    my $self = shift;
-    my $rec_id = shift;
-    my $key_data = $self->editor->json_query({
-        select => {mfr => ['tag', 'value']},
-        from => 'mfr',
-        where => {
-            record => $rec_id,
-            '-or' => [
-                {
-                    '-and' => [
-                        {tag => '020'},
-                        {subfield => 'a'}
-                    ]
-                }, {
-                    '-and' => [
-                        {tag => '024'},
-                        {subfield => 'a'},
-                        {ind1 => 1}
-                    ]
-                }
-            ]
-        }
-    });
-
-    return (
-        grep {$_->{tag} eq '020'} @$key_data,
-        grep {$_->{tag} eq '024'} @$key_data
-    )[0];
 }
 
 1;
