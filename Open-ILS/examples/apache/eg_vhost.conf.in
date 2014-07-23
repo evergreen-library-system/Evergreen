@@ -79,6 +79,24 @@ RewriteRule ^/opac/extras/ac/jacket/(small|medium|large)/$ \
         ErrorDocument 404 /opac/images/blank.png
 </Location>
 
+# Uncomment one or more of these to have a "no image" image other than the blank
+# image above.
+
+# Note: There are no default images provided for these, you will need to provide
+# your own "no image" image(s).
+
+#<Location /opac/extras/ac/jacket/small>
+#        ErrorDocument 404 /opac/images/noimage_small.png
+#</Location>
+
+#<Location /opac/extras/ac/jacket/medium>
+#        ErrorDocument 404 /opac/images/noimage_medium.png
+#</Location>
+
+#<Location /opac/extras/ac/jacket/large>
+#        ErrorDocument 404 /opac/images/noimage_large.png
+#</Location>
+
 # ----------------------------------------------------------------------------------
 # Add the row ID (RID) and date so we can make unAPI happy
 # ----------------------------------------------------------------------------------
