@@ -119,6 +119,7 @@ static ClassInfo* add_joined_class( const char* alias, const char* classname );
 static void clear_query_stack( void );
 
 static const jsonObject* verifyUserPCRUD( osrfMethodContext* );
+static const jsonObject* verifyUserPCRUDfull( osrfMethodContext*, int );
 static int verifyObjectPCRUD( osrfMethodContext*, osrfHash*, const jsonObject*, int );
 static const char* org_tree_root( osrfMethodContext* ctx );
 static jsonObject* single_hash( const char* key, const char* value );
@@ -1406,48 +1407,62 @@ static int verifyObjectClass ( osrfMethodContext* ctx, const jsonObject* param )
 	server; otherwise NULL.
 */
 static const jsonObject* verifyUserPCRUD( osrfMethodContext* ctx ) {
+	return verifyUserPCRUDfull( ctx, 0 );
+}
+
+static const jsonObject* verifyUserPCRUDfull( osrfMethodContext* ctx, int anon_ok ) {
 
 	// Get the authkey (the first method parameter)
 	const char* auth = jsonObjectGetString( jsonObjectGetIndex( ctx->params, 0 ) );
 
-	// See if we have the same authkey, and a user object,
-	// locally cached from a previous call
-	const char* cached_authkey = getAuthkey( ctx );
-	if( cached_authkey && !strcmp( cached_authkey, auth ) ) {
-		const jsonObject* cached_user = getUserLogin( ctx );
-		if( cached_user )
-			return cached_user;
-	}
+	jsonObject* user = NULL;
 
-	// We have no matching authentication data in the cache.  Authenticate from scratch.
-	jsonObject* auth_object = jsonNewObject( auth );
+	// If we are /not/ in anonymous mode
+	if( strcmp( "ANONYMOUS", auth ) ) {
+		// See if we have the same authkey, and a user object,
+		// locally cached from a previous call
+		const char* cached_authkey = getAuthkey( ctx );
+		if( cached_authkey && !strcmp( cached_authkey, auth ) ) {
+			const jsonObject* cached_user = getUserLogin( ctx );
+			if( cached_user )
+				return cached_user;
+		}
 
-	// Fetch the user object from the authentication server
-	jsonObject* user = oilsUtilsQuickReq( "open-ils.auth", "open-ils.auth.session.retrieve",
-			auth_object );
-	jsonObjectFree( auth_object );
+		// We have no matching authentication data in the cache.  Authenticate from scratch.
+		jsonObject* auth_object = jsonNewObject( auth );
+	
+		// Fetch the user object from the authentication server
+		user = oilsUtilsQuickReq( "open-ils.auth", "open-ils.auth.session.retrieve", auth_object );
+		jsonObjectFree( auth_object );
+	
+		if( !user->classname || strcmp(user->classname, "au" )) {
+	
+			growing_buffer* msg = buffer_init( 128 );
+			buffer_fadd(
+				msg,
+				"%s: permacrud received a bad auth token: %s",
+				modulename,
+				auth
+			);
+	
+			char* m = buffer_release( msg );
+			osrfAppSessionStatus( ctx->session, OSRF_STATUS_UNAUTHORIZED, "osrfMethodException",
+					ctx->request, m );
+	
+			free( m );
+			jsonObjectFree( user );
+			user = NULL;
+		} else if( writeAuditInfo( ctx, oilsFMGetStringConst( user, "id" ), oilsFMGetStringConst( user, "wsid" ) ) ) {
+			// Failed to set audit information - But note that write_audit_info already set error information.
+			jsonObjectFree( user );
+			user = NULL;
+		}
 
-	if( !user->classname || strcmp(user->classname, "au" )) {
 
-		growing_buffer* msg = buffer_init( 128 );
-		buffer_fadd(
-			msg,
-			"%s: permacrud received a bad auth token: %s",
-			modulename,
-			auth
-		);
-
-		char* m = buffer_release( msg );
-		osrfAppSessionStatus( ctx->session, OSRF_STATUS_UNAUTHORIZED, "osrfMethodException",
-				ctx->request, m );
-
-		free( m );
-		jsonObjectFree( user );
-		user = NULL;
-	} else if( writeAuditInfo( ctx, oilsFMGetStringConst( user, "id" ), oilsFMGetStringConst( user, "wsid" ) ) ) {
-		// Failed to set audit information - But note that write_audit_info already set error information.
-		jsonObjectFree( user );
-		user = NULL;
+	} else if ( anon_ok ) { // we /are/ (attempting to be) anonymous
+		user = jsonNewObjectType(JSON_ARRAY);
+		jsonObjectSetClass( user, "aou" );
+		oilsFMSetString(user, "id", "-1");
 	}
 
 	setUserLogin( ctx, user );
@@ -1503,6 +1518,12 @@ static int verifyObjectPCRUD ( osrfMethodContext* ctx, osrfHash *class, const js
 		fetch = 1; // MUST go to the db for the object for update and delete
 	}
 
+	// In retrieve or search ONLY we allow anon. Later perm checks will fail as they should,
+	// in the face of a fake user but required permissions.
+	int anon_ok = 0;
+	if( *method_type == 'r' )
+		anon_ok = 1;
+
 	// Get the appropriate permacrud entry from the IDL, depending on method type
 	osrfHash* pcrud = osrfHashGet( osrfHashGet( class, "permacrud" ), method_type );
 	if( !pcrud ) {
@@ -1527,9 +1548,9 @@ static int verifyObjectPCRUD ( osrfMethodContext* ctx, osrfHash *class, const js
 	}
 
 	// Get the user id, and make sure the user is logged in
-	const jsonObject* user = verifyUserPCRUD( ctx );
+	const jsonObject* user = verifyUserPCRUDfull( ctx, anon_ok );
 	if( !user )
-		return 0;    // Not logged in?  No access.
+		return 0;    // Not logged in or anon?  No access.
 
 	int userid = atoi( oilsFMGetStringConst( user, "id" ) );
 
@@ -1543,6 +1564,10 @@ static int verifyObjectPCRUD ( osrfMethodContext* ctx, osrfHash *class, const js
 		);
 		return 1;
 	}
+
+	// But, if there are perms and the user is anonymous ... FAIL
+	if ( -1 == userid )
+		return 0;
 
 	// Build a list of org units that own the row.  This is fairly convoluted because there
 	// are several different ways that an org unit may own the row, as defined by the

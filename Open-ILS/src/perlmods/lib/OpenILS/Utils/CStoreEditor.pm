@@ -48,6 +48,30 @@ use base qw/Exporter/;
 push @EXPORT_OK, ( 'new_editor', 'new_rstore_editor' );
 %EXPORT_TAGS = ( funcs => [ qw/ new_editor new_rstore_editor / ] );
 
+our $personality = 'open-ils.cstore';
+
+sub personality { 
+    my( $self, $app ) = @_;
+    $personality = $app if $app;
+    init() if $app; # rewrite if we changed personalities
+    return $personality;
+}
+
+sub import {
+    my $class = shift;
+
+    my @super_args = ();
+    while ( my $a = shift ) {
+        if ($a eq 'personality') {
+            $class->personality( shift );
+        } else {
+            push @super_args, $a;
+        }
+    }
+
+    return $class->SUPER::import( @super_args );
+}
+
 sub new_editor { return OpenILS::Utils::CStoreEditor->new(@_); }
 
 sub new_rstore_editor { 
@@ -90,7 +114,7 @@ sub DESTROY {
 sub app {
     my( $self, $app ) = @_;
     $self->{app} = $app if $app;
-    $self->{app} = 'open-ils.cstore' unless $self->{app};
+    $self->{app} = $self->personality unless $self->{app};
     return $self->{app};
 }
 
@@ -189,6 +213,7 @@ sub died {
 sub authtoken {
     my( $self, $auth ) = @_;
     $self->{authtoken} = $auth if $auth;
+    return 'ANONYMOUS' if ($self->personality eq 'open-ils.pcrud' and !defined($self->{authtoken}));
     return $self->{authtoken};
 }
 
@@ -418,7 +443,7 @@ sub request {
     if( ($self->{xact} or $always_xact) and 
             $self->session->state != OpenSRF::AppSession::CONNECTED() ) {
         #$logger->error("CStoreEditor lost it's connection!!");
-        throw OpenSRF::EX::ERROR ("CStore connection timed out - transaction cannot continue");
+        throw OpenSRF::EX::ERROR ($self->app." connection timed out - transaction cannot continue");
     }
 
 
@@ -735,7 +760,12 @@ sub runmethod {
     }
 
     my @arg = ( ref($arg) eq 'ARRAY' ) ? @$arg : ($arg);
-    my $method = $self->app.".direct.$type.$action";
+    my $method = '';
+    if ($self->personality eq 'open-ils.pcrud') {
+        $method = $self->app.".$action.$type";
+    } else {
+        $method = $self->app.".direct.$type.$action";
+    }
 
     if( $action eq 'search' ) {
         $method .= '.atomic';
@@ -784,7 +814,8 @@ sub runmethod {
         $self->log_activity($method, $type, $action, $arg);
     }
 
-    if($$options{checkperm}) {
+    # only check perms this way in non-pcrud mode
+    if($self->personality ne 'open-ils.pcrud' and $$options{checkperm}) {
         my $a = ($action eq 'search') ? 'retrieve' : $action;
         my $e = $self->_checkperm($type, $a, $$options{permorg});
         if($e) {
@@ -795,6 +826,9 @@ sub runmethod {
 
     my $obj; 
     my $err = '';
+
+    # In pcrud mode, sub authtoken returns 'ANONYMOUS' if one is not yet set
+    unshift(@$arg, $self->authtoken) if ($self->personality eq 'open-ils.pcrud');
 
     try {
         $obj = $self->request($method, @arg);
@@ -840,7 +874,7 @@ sub runmethod {
     }
 
     if( $action eq 'search' ) {
-        $self->log(I, "$type.$action : returned ".scalar(@$obj). " result(s)");
+        $self->log(I, "$method: returned ".scalar(@$obj). " result(s)");
         $self->event(_mk_not_found($type, $arg)) unless @$obj;
     }
 
@@ -884,7 +918,12 @@ sub init {
     my $map = $Fieldmapper::fieldmap;
     for my $object (keys %$map) {
         my $obj  = __fm2meth($object, '_');
-        my $type = __fm2meth($object, '.');
+        my $type;
+        if (__PACKAGE__->personality eq 'open-ils.pcrud') {
+            $type = $object->json_hint;
+        } else {
+            $type = __fm2meth($object, '.');
+        }
         foreach my $command (qw/ update retrieve search create delete batch_retrieve retrieve_all /) {
             eval "sub ${command}_$obj {return shift()->runmethod('$command', '$type', \@_);}\n";
         }
@@ -896,6 +935,18 @@ init();  # Add very many subs to this namespace
 
 sub json_query {
     my( $self, $arg, $options ) = @_;
+
+    if( $self->personality eq 'open-ils.pcrud' ) {
+        $self->event(
+            OpenILS::Event->new(
+                'JSON_QUERY_NOT_ALLOWED',
+                attempted_query => $arg,
+                debug => "json_query is not allowed when using the open-ils.pcrud personality of CStoreEditor" 
+            )
+        );
+        return undef;
+    }
+
     $options ||= {};
     my @arg = ( ref($arg) eq 'ARRAY' ) ? @$arg : ($arg);
     my $method = $self->app.'.json_query.atomic';
