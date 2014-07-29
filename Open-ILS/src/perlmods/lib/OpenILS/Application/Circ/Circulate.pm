@@ -1792,7 +1792,9 @@ sub find_related_user_hold {
     my($self, $copy, $patron) = @_;
     my $e = $self->editor;
 
-    return undef if $self->volume->id == OILS_PRECAT_CALL_NUMBER; 
+    # holds on precat copies are always copy-level, so this call will
+    # always return undef.  Exit early.
+    return undef if $self->is_precat;
 
     return undef unless $U->ou_ancestor_setting_value(        
         $self->circ_lib, 'circ.checkout_fills_related_hold', $e);
