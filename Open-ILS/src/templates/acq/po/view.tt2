@@ -16,8 +16,13 @@
                 </tr>
                 <tr>
                     <th>[% l('Name') %]</th>
-                    <td><a id="acq-po-view-name" href="javascript:void(0);"
-                        onclick="updatePoName()"></a></td>
+                    <td>
+                        <a id="acq-po-view-name" href="javascript:void(0);" onclick="updatePoName()"></a>
+                        <div class="hidden" id="acq-dupe-po-name">
+                            [% l('PO name already in use: ') %]
+                            <a href='javascript:;' id='acq-dupe-po-link'>[% l('View PO') %]</a>
+                        </div>
+                    </td>
                     <th>[% l('Activatable?') %]</th>
                     <td>
                         <span id="acq-po-activate-checking"></span>

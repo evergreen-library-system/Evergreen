@@ -668,6 +668,63 @@ function splitPo() {
 function updatePoName() {
     var value = prompt('Enter new purchase order name:', PO.name()); // TODO i18n
     if(!value || value == PO.name()) return;
+
+    var orgs = fieldmapper.aou.descendantNodeList(PO.ordering_agency(), true);
+    new openils.PermaCrud().search('acqpo', 
+        {
+            id : {'<>' : PO.id()},
+            name : value, 
+            ordering_agency : orgs
+        },
+        {async : true, oncomplete : function(r) {
+            var po = openils.Util.readResponse(r);
+            openils.Util.hide('acq-dupe-po-name');
+
+            if (po && (po = po[0])) {
+                var link = dojo.byId('acq-dupe-po-link');
+                openils.Util.show('acq-dupe-po-name');
+                var dupe_path = '/acq/po/view/' + po.id();
+
+                if (window.xulG) {
+
+                    if (window.IAMBROWSER) {
+                        // TODO: integration
+
+                    } else {
+                        // XUL client
+                        link.onclick = function() {
+
+                            var loc = xulG.url_prefix('XUL_BROWSER?url=') + 
+                                window.encodeURIComponent( 
+                                xulG.url_prefix('EG_WEB_BASE' + dupe_path)
+                            );
+
+                            xulG.new_tab(loc, 
+                                {tab_name: '', browser:false},
+                                {
+                                    no_xulG : false, 
+                                    show_nav_buttons : true, 
+                                    show_print_button : true, 
+                                }
+                            );
+                        }
+                    }
+
+                } else {
+                    link.onclick = function() {
+                        window.open(oilsBasePath + dupe_path, '_blank').focus();
+                    }
+                }
+
+            } else {
+                updatePoName2(value);
+            }
+       }} 
+    );
+ 
+}
+
+function updatePoName2(value) {
     PO.name(value);
     pcrud.update(PO, {
         oncomplete : function(r, cudResults) {
