@@ -174,7 +174,8 @@
                                 </tr>
                                 <tr>
                                     <td colspan='0'>
-                                        <span name="liid"># </span> 
+                                        <span name="liid"># </span> | 
+                                        <span name="li_existing_count">0</span> 
                                         <span name="catalog" class='hidden'> | <a title='[% l('Show In Catalog') %]' name="catalog_link" href="javascript:void(0);">[% l('&#x279F; catalog') %]</a></span> 
                                         <span name="link_to_catalog" class='hidden'> | <a title='[% l('Link To Catalog Record') %]' name="link_to_catalog_link" href="javascript:void(0);">[% l('&#x27BE; link to catalog') %]</a></span> 
                                         <span name="worksheet"> | <a title='[% l('Generate Worksheet') %]' name="worksheet_link" href="javascript:void(0);">[% l('&#x270D; worksheet') %]</a></span>

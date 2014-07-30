@@ -3958,6 +3958,73 @@ sub apply_new_li_ident_attr {
     return ($source_attr);
 }
 
+__PACKAGE__->register_method(
+    method => 'li_existing_copies',
+    api_name => 'open-ils.acq.lineitem.existing_copies.count',
+    authoritative => 1, 
+    signature => {
+        desc => q/
+            Returns the number of catalog copies (acp) which are children of
+            the same bib record linked to by the given lineitem and which 
+            are owned at or below the lineitem context org unit.
+            Copies with the following statuses are not counted:
+            Lost, Missing, Discard Weed, and Lost and Paid.
+        /,
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'Lineitem ID', type => 'number'}
+        ],
+        return => {desc => q/Count or event on error/}
+    }
+);
+
+sub li_existing_copies {
+    my ($self, $client, $auth, $li_id) = @_;
+    my $e = new_editor("authtoken" => $auth);
+    return $e->die_event unless $e->checkauth;
+
+    my ($li, $evt, $org) = fetch_and_check_li($e, $li_id);
+    return 0 if $evt;
+
+    # No fuzzy matching here (e.g. on ISBN).  Only exact matches are supported.
+    return 0 unless $li->eg_bib_id;
+
+    my $counts = $e->json_query({
+        select => {acp => [{
+            column => 'id', 
+            transform => 'count', 
+            aggregate => 1
+        }]},
+        from => {
+            acp => {
+                acqlid => {
+                    fkey => 'id',
+                    field => 'eg_copy_id',
+                    type => 'left'
+                },
+                acn => {join => {bre => {}}}
+            }
+        },
+        where => {
+            '+bre' => {id => $li->eg_bib_id},
+            # don't count copies linked to the lineitem in question
+            '+acqlid' => {
+                '-or' => [
+                    {lineitem => undef},
+                    {lineitem => {'<>' => $li_id}}
+                ]
+            },
+            '+acn' => {
+                owning_lib => $U->get_org_descendants($org)
+            },
+            # NOTE: should the excluded copy statuses be an AOUS?
+            '+acp' => {status => {'not in' => [3, 4, 13, 17]}}
+        }
+    });
+
+    return $counts->[0]->{id};
+}
+
 
 1;
 

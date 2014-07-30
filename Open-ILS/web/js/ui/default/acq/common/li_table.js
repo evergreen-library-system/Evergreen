@@ -713,6 +713,27 @@ function AcqLiTable() {
 
         nodeByName("liid", row).innerHTML += li.id();
 
+        var exist = nodeByName('li_existing_count', row);
+        fieldmapper.standardRequest(
+            ['open-ils.acq', 'open-ils.acq.lineitem.existing_copies.count'],
+            {
+                params: [this.authtoken, li.id()],
+                oncomplete : function(r) {
+                    var count = openils.Util.readResponse(r);
+                    exist.innerHTML = count;
+                    if (Number(count) > 0) {
+                        openils.Util.addCSSClass(
+                            exist, 'acq-existing-count-warn');
+                    }
+                    new dijit.Tooltip({
+                        connectId : [exist],
+                        label : dojo.string.substitute(
+                            localeStrings.LI_EXISTING_COPIES, [count])
+                    });
+                }
+            }
+        );
+
         if(li.eg_bib_id()) {
             openils.Util.show(nodeByName('catalog', row), 'inline');
             nodeByName("catalog_link", row).onclick = this.generateMakeRecTab(li.eg_bib_id());

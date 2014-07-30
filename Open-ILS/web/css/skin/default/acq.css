@@ -279,3 +279,8 @@ span[name="bib_origin"] img { vertical-align: middle; }
 }
 
 span[name="cancel_reason"] { text-decoration: underline; font-weight: bold; }
+
+.acq-existing-count-warn {
+    font-weight: bold;
+    color: red;
+}

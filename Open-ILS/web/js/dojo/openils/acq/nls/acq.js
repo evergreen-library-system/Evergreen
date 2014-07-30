@@ -102,5 +102,6 @@
     "NO_LI_GENERAL" : "You have not selected any (suitable) line items.",
     "DUPE_PO_NAME_MSG" : "This name is already in use by another PO",
     "DUPE_PO_NAME_LINK" : "View PO",
-    "PO_NAME_OPTIONAL" : "${0} (optional)"
+    "PO_NAME_OPTIONAL" : "${0} (optional)",
+    "LI_EXISTING_COPIES" : "There are ${0} existing copies for this bibliographic record at this location"
 }
