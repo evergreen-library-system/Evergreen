@@ -461,6 +461,14 @@
                     <td><div name='ordering_agency' id='acq-lit-po-agency'></div></td>
                 </tr>
                 <tr>
+                    <td>[% l('Name (optional)') %]</td>
+                    <td><div name='name' id='acq-lit-po-name'></div></td>
+                </tr>
+                <tr id='acq-dupe-po-name' class='hidden'>
+                    <td>[% l('This name is used by another PO') %]</td>
+                    <td><a href='javascript:;' id='acq-dupe-po-link'>[% l('View PO') %]</a>
+                </tr>
+                <tr>
                     <td>[% l('Provider') %]</td>
                     <td><div name='provider' id='acq-lit-po-provider'></div></td>
                 </tr>
@@ -481,8 +489,11 @@
                     <td><input name='create_assets' dojoType='dijit.form.CheckBox'/></td>
                 </tr>
                 <tr>
-                    <td colspan='2'>
+                    <td>
                         <div dojoType='dijit.form.Button' type='submit' jsId='acqLitCreatePoSubmit'>[% l('Submit') %]</div>
+                    </td>
+                    <td>
+                        <div dojoType='dijit.form.Button' jsId='acqLitCreatePoCancel'>[% l('Cancel') %]</div>
                     </td>
                 </tr>
             </table>

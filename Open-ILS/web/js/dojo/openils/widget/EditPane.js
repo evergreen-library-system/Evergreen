@@ -199,7 +199,7 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
 
                 if(this.hideSaveButton) return;
 
-                new dijit.form.Button({
+                this.saveButton = new dijit.form.Button({
                     label:this.nls.SAVE,
                     onClick: function() {self.performAutoEditAction();}
                 }, applySpan);

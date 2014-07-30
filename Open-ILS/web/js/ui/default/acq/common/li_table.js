@@ -122,6 +122,9 @@ function AcqLiTable() {
         this.selectedIndex = 0;
     };
 
+    acqLitCreatePoCancel.onClick = function() {
+        acqLitPoCreateDialog.hide();
+    }
     acqLitCreatePoSubmit.onClick = function() {
         if (!self.createPoProviderSelector.attr("value") ||
                 !self.createPoAgencySelector.attr("value")) {
@@ -3270,6 +3273,8 @@ function AcqLiTable() {
         po.provider(this.createPoProviderSelector.attr("value"));
         po.ordering_agency(this.createPoAgencySelector.attr("value"));
         po.prepayment_required(fields.prepayment_required[0] ? true : false);
+        var name = this.createPoNameInput.attr('value'); 
+        if (name) po.name(name); // avoid name=""
 
         // if we're creating assets, delay the asset creation 
         // until after the PO is created.  This will allow us to 
@@ -3522,6 +3527,67 @@ function AcqLiTable() {
             widget.build(function(w) { self.createPoProviderSelector = w; });
         }
 
+        this.createPoCheckDupes = function() {
+            var org = self.createPoAgencySelector.attr('value');
+            var name = self.createPoNameInput.attr('value');
+            openils.Util.hide('acq-dupe-po-name');
+
+            if (!name) {
+                acqLitCreatePoSubmit.attr('disabled', false);
+                return;
+            }
+
+            acqLitCreatePoSubmit.attr('disabled', true);
+            var orgs = fieldmapper.aou.descendantNodeList(org, true);
+            new openils.PermaCrud().search('acqpo', 
+                {name : name, ordering_agency : orgs},
+                {async : true, oncomplete : function(r) {
+                    var po = openils.Util.readResponse(r);
+
+                    if (po && (po = po[0])) {
+
+                        var link = dojo.byId('acq-dupe-po-link');
+                        openils.Util.show('acq-dupe-po-name', 'table-row');
+                        var dupe_path = '/acq/po/view/' + po.id();
+
+                        if (window.xulG) {
+
+                            if (window.IAMBROWSER) {
+                                // TODO: integration
+
+                            } else {
+                                // XUL client
+                                link.onclick = function() {
+
+                                    var loc = xulG.url_prefix('XUL_BROWSER?url=') + 
+                                        window.encodeURIComponent( 
+                                        xulG.url_prefix('EG_WEB_BASE' + dupe_path)
+                                    );
+
+                                    xulG.new_tab(loc, 
+                                        {tab_name: '', browser:false},
+                                        {
+                                            no_xulG : false, 
+                                            show_nav_buttons : true, 
+                                            show_print_button : true, 
+                                        }
+                                    );
+                                }
+                            }
+
+                        } else {
+                            link.onclick = function() {
+                                window.open(oilsBasePath + dupe_path, '_blank').focus();
+                            }
+                        }
+
+                    } else {
+                        acqLitCreatePoSubmit.attr('disabled', false);
+                    }
+                }}
+            );
+        }
+
         if (!this.createPoAgencySelector) {
             var widget = new openils.widget.AutoFieldWidget({
                 "fmField": "ordering_agency",
@@ -3529,7 +3595,23 @@ function AcqLiTable() {
                 "parentNode": dojo.byId("acq-lit-po-agency"),
                 "orgLimitPerms": ["CREATE_PURCHASE_ORDER"],
             });
-            widget.build(function(w) { self.createPoAgencySelector = w; });
+            widget.build(function(w) { 
+                self.createPoAgencySelector = w; 
+                dojo.connect(w, 'onChange', self.createPoCheckDupes);
+            });
+        }
+
+        if (!this.createPoNameInput) {
+            var widget = new openils.widget.AutoFieldWidget({
+                "fmField": "name",
+                "fmClass": "acqpo",
+                "parentNode": dojo.byId("acq-lit-po-name"),
+                "orgLimitPerms": ["CREATE_PURCHASE_ORDER"],
+            });
+            widget.build(function(w) { 
+                self.createPoNameInput = w; 
+                dojo.connect(w, 'onChange', self.createPoCheckDupes);
+            });
         }
     };
 

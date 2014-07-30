@@ -28,6 +28,12 @@ if(!dojo._hasResource["openils.widget.FilteringTreeSelect"]){
             disableQuery : null,
             tree : null,
 
+            construct : function(args) {
+                if (args && args.dijitArgs && args.dijitArgs.onChange) {
+                    dojo.connect(this, 'onChange', args.dijitArgs.onChange);
+                }
+            },
+
             startup : function() {
                 this.tree = (typeof this.tree == 'string') ? 
                         dojox.jsonPath.query(window, '$.' + this.tree, {evalType:"RESULT"}) : this.tree;

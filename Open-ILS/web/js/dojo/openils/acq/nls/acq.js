@@ -99,5 +99,8 @@
     "ACQ_SEARCH_CLASS_ABBR_acqinv": "I",
     "ACQ_SEARCH_CLASS_ABBR_acqlid": "LID",
     "ACQ_SEARCH_CLASS_ABBR_acqlia": "LIA",
-    "NO_LI_GENERAL" : "You have not selected any (suitable) line items."
+    "NO_LI_GENERAL" : "You have not selected any (suitable) line items.",
+    "DUPE_PO_NAME_MSG" : "This name is already in use by another PO",
+    "DUPE_PO_NAME_LINK" : "View PO",
+    "PO_NAME_OPTIONAL" : "${0} (optional)"
 }
