@@ -29,6 +29,7 @@ var fundLabelFormat = [
     '<span class="fund_${0}">${1} (${2})</span>', 'id', 'code', 'year'
 ];
 var fundSearchFormat = ['${0} (${1})', 'code', 'year'];
+var fundSearchFilter = {active : 't'};
 
 function nodeByName(name, context) {
     return dojo.query('[name='+name+']', context)[0];
@@ -160,13 +161,24 @@ function AcqLiTable() {
     dojo.byId('acq-lit-notes-back-button').onclick = function(){self.show('list')};
     dojo.byId('acq-lit-real-copies-back-button').onclick = function(){self.show('list')};
 
+    this.setFundSearchFilter = function(callback) {
+        new openils.User().getPermOrgList(
+            ['CREATE_PURCHASE_ORDER', 'MANAGE_FUND'],
+            function(orgs) { 
+                fundSearchFilter.org = orgs;
+                if (callback) callback();
+            },
+            true, true // descendants, id_list
+        );
+    }
+
     this.afwCopyFieldArgs = function(field, perms) {
         return {
                 "fmField" : field,
                 "fmClass": 'acqlid',
                 "labelFormat": (field == 'fund') ? fundLabelFormat : null,
                 "searchFormat": (field == 'fund') ? fundSearchFormat : null,
-                "searchFilter": (field == 'fund') ? {"active": "t"} : null,
+                "searchFilter": (field == 'fund') ? fundSearchFilter : null,
                 "orgLimitPerms": [perms],
                 "dijitArgs": {
                     "required": false,
@@ -250,16 +262,13 @@ function AcqLiTable() {
                     // The list of funds can be huge. Before fetching
                     // funds for PO modification, see where the user has
                     // perms and limit the retreived funds accordingly.
-                    // Note: this code only runs once per page load, so
-                    // no caching is required.
-                    new openils.User().getPermOrgList(
-                        ['CREATE_PURCHASE_ORDER', 'MANAGE_FUND'],
-                        function(orgs) { 
-                            args.searchFilter.org = orgs;
-                            buildOneBatchWidget(field, args);
-                        },
-                        true, true // descendants, id_list
-                    );
+                    // Note:  This is the first instance of fund list
+                    // retrieval.  All future fund list retrievals will
+                    // benefit directly from having applied the fund
+                    // search filter org units here.
+                    self.setFundSearchFilter(function() { 
+                        buildOneBatchWidget(field, args); 
+                    });
                     return; 
                 }
 
@@ -2319,6 +2328,7 @@ function AcqLiTable() {
                     searchFilter = (copy.fund() ?
                         {"-or": {"active": "t", "id": copy.fund()}} :
                         {"active" : "t"});
+                    searchFilter.org = fundSearchFilter.org;
                 } else {
                     searchFilter = null;
                 }
@@ -3291,7 +3301,7 @@ function AcqLiTable() {
                 selfReference : true,
                 labelFormat : fundLabelFormat,
                 searchFormat : fundSearchFormat,
-                searchFilter : {"active": "t"},
+                searchFilter : fundSearchFilter,
                 parentNode : dojo.byId('acq-lit-batch-fund-selector'),
                 orgLimitPerms : ['CREATE_PICKLIST', 'CREATE_PURCHASE_ORDER'],
                 dijitArgs : { "required": true, "labelType": "html" },

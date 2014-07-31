@@ -20,6 +20,7 @@ var localeStrings = dojo.i18n.getLocalization('openils.acq', 'acq');
 
 var fundLabelFormat = ['${0} (${1})', 'code', 'year'];
 var fundSearchFormat = ['${0} (${1})', 'code', 'year'];
+var fundSearchFilter = {}; 
 
 var cgi = new openils.CGI();
 var pcrud = new openils.PermaCrud();
@@ -48,6 +49,19 @@ function nodeByName(name, context) {
 }
 
 function init() {
+    // before rendering any fund selectors, limit the funds to 
+    // attempt to retrieve to those the user can actually use.
+    new openils.User().getPermOrgList(
+        ['ADMIN_INVOICE','CREATE_INVOICE','MANAGE_FUND'],
+        function(orgs) { 
+            fundSearchFilter.org = orgs;
+            init2();
+        },
+        true, true // descendants, id_list
+    );
+}
+
+function init2() {
 
     attachLi = cgi.param('attach_li') || [];
     if (!dojo.isArray(attachLi)) 
@@ -101,6 +115,7 @@ function init() {
         searchFilter : {active : 't'},
         labelFormat : fundLabelFormat,
         searchFormat : fundSearchFormat,
+        searchFilter : fundSearchFilter,
         dijitArgs : {required : true},
         parentNode : dojo.byId('acq-invoice-extra-copies-fund')
     });
@@ -613,6 +628,7 @@ function addInvoiceItem(item) {
         fmField : 'fund',
         labelFormat : fundLabelFormat,
         searchFormat : fundSearchFormat,
+        searchFilter : fundSearchFilter,
         readOnly : invoice && openils.Util.isTrue(invoice.complete()),
         dijitArgs : {required : true},
         parentNode : nodeByName('fund', row)
