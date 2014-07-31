@@ -26,6 +26,13 @@ function PoItemTable() {
             "noCache": true
         };
 
+        // limit funds fetched to those the user can use
+        new openils.User().getPermOrgList(
+            ['CREATE_PURCHASE_ORDER', 'MANAGE_FUND'],
+            function(orgs) { self.fundAWArgs.searchFilter.org = orgs },
+            true, true // descendants, id_list
+        );
+
         this.reset();
     };
 

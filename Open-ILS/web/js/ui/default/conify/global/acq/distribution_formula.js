@@ -14,6 +14,7 @@ var virtualId = -1;
 var pcrud;
 var _collection_code_textboxes = [];
 var _collection_code_kludge_active = false;
+var fundSearchFilter = {active : 't'};
 
 function gridDataLoader() {
     fListGrid.resetStore();
@@ -38,13 +39,24 @@ function gridDataLoader() {
     );
 }
 
+function setFundSearchFilter(callback) {
+    new openils.User().getPermOrgList(
+        ['ADMIN_ACQ_DISTRIB_FORMULA'],
+        function(orgs) { 
+            fundSearchFilter.org = orgs;
+            if (callback) callback();
+        },
+        true, true // descendants, id_list
+    );
+}
+
 function draw() {
 
     pcrud = new openils.PermaCrud();
 
     if(formulaId) {
         openils.Util.hide('formula-list-div');
-        drawFormulaSummary();
+        setFundSearchFilter(drawFormulaSummary);
     } else {
 
         openils.Util.hide('formula-entry-div');
@@ -153,6 +165,7 @@ function addEntry(entry) {
                 fmField : field, 
                 fmObject : entry,
                 fmClass : 'acqdfe',
+                searchFilter : (field == 'fund') ? fundSearchFilter : null,
                 parentNode : byName(row, field),
                 orgDefaultsToWs : true,
                 orgLimitPerms : ['ADMIN_ACQ_DISTRIB_FORMULA'],
