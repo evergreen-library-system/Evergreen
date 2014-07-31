@@ -376,7 +376,7 @@
                     <td><div name='barcode'></div></td>
                     <td><div name='note'></div></td>
                     <td><div name='receiver'></div></td>
-                    <td><a href="javascript:void(0);" name="receive">[% l('Mark&nbsp;Received') %]</a><a href="javascript:void(0);" name="unreceive">[% l('Un-Receive') %]</a>&nbsp;<a href="javascript:void(0);" name="cancel">[% l('Cancel') %]</a><span class="hidden" name="cancel_reason"></span>&nbsp;<a href="javascript:void(0);" name="claim">[% l('Claim') %]</a></td>
+                    <td><a href="javascript:void(0);" name="receive">[% l('Mark&nbsp;Received') %]</a><a href="javascript:void(0);" name="unreceive">[% l('Un-Receive') %]</a>&nbsp;<a href="javascript:void(0);" name="cancel">[% l('Cancel') %]</a>&nbsp;<span class="hidden" name="cancel_reason"></span>&nbsp;<a href="javascript:void(0);" name="claim">[% l('Claim') %]</a></td>
                     <td><div name='delete' dojoType='dijit.form.Button' style='color:red;' scrollOnFocus='false'>X</div></td>
                 </tr>
             </tbody>

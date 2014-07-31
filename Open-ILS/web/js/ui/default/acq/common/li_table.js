@@ -2484,6 +2484,13 @@ function AcqLiTable() {
                 );
                 openils.Util.show(cxl_reason_link, "inline");
 
+                if (copy.cancel_reason().keep_debits() == 't' ) {
+                    // allow further cancellation of "delayed" copies
+                    
+                    openils.Util.show(cxl_link, "inline");
+                    cxl_link.onclick = function() { self.cancelLid(copy.id()) };
+                }
+
             } else if (copy.recv_time()) { 
 
                 /* --------- received -------------------------- */
