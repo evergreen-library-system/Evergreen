@@ -2536,7 +2536,8 @@ function AcqLiTable() {
                 "fmClass": "acqlid",
                 "parentNode": dojo.byId("acq-lit-lid-cancel-reason"),
                 "orgLimitPerms": ["CREATE_PURCHASE_ORDER"],
-                "forceSync": true
+                "forceSync": true,
+                "searchOptions" : {order_by : {"acqcr":"label"}}
             });
             widget.build(
                 function(w, ww) {
@@ -2924,7 +2925,8 @@ function AcqLiTable() {
                 "fmClass": "jub",
                 "parentNode": dojo.byId("acq-lit-cancel-reason-selector"),
                 "orgLimitPerms": ["CREATE_PURCHASE_ORDER"],
-                "forceSync": true
+                "forceSync": true,
+                "searchOptions" : {order_by : {"acqcr":"label"}}
             });
             widget.build(
                 function(w, ww) {

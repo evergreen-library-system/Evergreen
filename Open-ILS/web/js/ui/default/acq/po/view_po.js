@@ -233,7 +233,8 @@ function makeCancelWidget(node, labelnode) {
                 "fmClass": "acqpo",
                 "parentNode": dojo.byId("acq-po-cancel-reason"),
                 "orgLimitPerms": ["CREATE_PURCHASE_ORDER"],
-                "forceSync": true
+                "forceSync": true,
+                "searchOptions" : {order_by : {"acqcr":"label"}}
             });
             widget.build(
                 function(w, ww) {
