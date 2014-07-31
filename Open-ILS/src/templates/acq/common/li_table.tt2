@@ -155,7 +155,6 @@
                                         <span attr='pubdate'></span>
                                         <span attr='publisher'></span>
                                         <span name='source_label'></span>
-                                        <span name='cancel_reason'></span>
                                     </td>
                                 </tr>
                                 <tr>

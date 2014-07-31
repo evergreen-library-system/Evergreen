@@ -685,11 +685,6 @@ function AcqLiTable() {
         dojo.forEach(tds, function(td) {self.setRowAttr(td, liWrapper, td.getAttribute('attr'), td.getAttribute('attr_type'));});
         dojo.query('[name=source_label]', row)[0].appendChild(document.createTextNode(li.source_label()));
 
-        if (li.cancel_reason() && typeof li.cancel_reason() == 'object') {
-            dojo.query('[name=cancel_reason]', row)[0].appendChild(
-                document.createTextNode(li.cancel_reason().label()));
-        }
-
         // so we can scroll to it later
         dojo.query('[name=bib-info-cell]', row)[0].id = 'li-title-ref-' + li.id();
 
