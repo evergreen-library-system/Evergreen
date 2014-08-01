@@ -69,7 +69,8 @@ sub import {
         }
     }
 
-    return $class->SUPER::import( @super_args );
+    # Exporter doesn't like you to call it's import() directly
+    return $class->export_to_level(1, $class, @super_args);
 }
 
 sub new_editor { return OpenILS::Utils::CStoreEditor->new(@_); }
@@ -213,7 +214,6 @@ sub died {
 sub authtoken {
     my( $self, $auth ) = @_;
     $self->{authtoken} = $auth if $auth;
-    return 'ANONYMOUS' if ($self->personality eq 'open-ils.pcrud' and !defined($self->{authtoken}));
     return $self->{authtoken};
 }
 
@@ -743,7 +743,7 @@ sub __arg_to_string {
 # return $e->event unless @$results; 
 # -----------------------------------------------------------------------------
 sub runmethod {
-    my( $self, $action, $type, $arg, $options ) = @_;
+    my( $self, $action, $type, $hint, $arg, $options ) = @_;
 
    $options ||= {};
 
@@ -762,7 +762,7 @@ sub runmethod {
     my @arg = ( ref($arg) eq 'ARRAY' ) ? @$arg : ($arg);
     my $method = '';
     if ($self->personality eq 'open-ils.pcrud') {
-        $method = $self->app.".$action.$type";
+        $method = $self->app.".$action.$hint";
     } else {
         $method = $self->app.".direct.$type.$action";
     }
@@ -827,8 +827,9 @@ sub runmethod {
     my $obj; 
     my $err = '';
 
-    # In pcrud mode, sub authtoken returns 'ANONYMOUS' if one is not yet set
-    unshift(@$arg, $self->authtoken) if ($self->personality eq 'open-ils.pcrud');
+    # in PCRUD mode, if no authtoken is set, fall back to anonymous.
+    unshift(@arg, ($self->authtoken || 'ANONYMOUS')) 
+        if ($self->personality eq 'open-ils.pcrud');
 
     try {
         $obj = $self->request($method, @arg);
@@ -918,14 +919,10 @@ sub init {
     my $map = $Fieldmapper::fieldmap;
     for my $object (keys %$map) {
         my $obj  = __fm2meth($object, '_');
-        my $type;
-        if (__PACKAGE__->personality eq 'open-ils.pcrud') {
-            $type = $object->json_hint;
-        } else {
-            $type = __fm2meth($object, '.');
-        }
+        my $type = __fm2meth($object, '.');
+        my $hint = $object->json_hint;
         foreach my $command (qw/ update retrieve search create delete batch_retrieve retrieve_all /) {
-            eval "sub ${command}_$obj {return shift()->runmethod('$command', '$type', \@_);}\n";
+            eval "sub ${command}_$obj {return shift()->runmethod('$command', '$type', '$hint', \@_);}\n";
         }
         # TODO: performance test against concatenating a big string of all the subs and eval'ing only ONCE.
     }
@@ -937,6 +934,9 @@ sub json_query {
     my( $self, $arg, $options ) = @_;
 
     if( $self->personality eq 'open-ils.pcrud' ) {
+        $self->log(E, "json_query is not allowed when using the ".
+            "open-ils.pcrud personality of CStoreEditor: " .Dumper($arg));
+
         $self->event(
             OpenILS::Event->new(
                 'JSON_QUERY_NOT_ALLOWED',
