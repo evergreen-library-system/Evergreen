@@ -47,7 +47,6 @@ FEDORA_RPMS = \
 	perl-OLE-Storage_Lite \
 	perl-RPC-XML \
 	perl-SOAP-Lite \
-	perl-Spreadsheet-WriteExcel \
 	perl-Test-Warn \
 	perl-Test-Output \
 	perl-Text-Aspell \
@@ -62,6 +61,7 @@ FEDORA_RPMS = \
 	yaz
 
 export CPAN_MODULES = \
+	Excel::Writer::XLSX \
 	Business::ISSN \
 	Net::Z3950::ZOOM \
 	Net::Z3950::Simple2ZOOM \

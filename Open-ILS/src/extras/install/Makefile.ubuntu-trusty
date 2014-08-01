@@ -47,7 +47,6 @@ export DEBS = \
 	libpq-dev\
 	librose-uri-perl\
 	librpc-xml-perl\
-	libspreadsheet-writeexcel-perl\
 	libsru-perl\
 	libssh2-1-dev\
 	libtemplate-plugin-posix-perl\
@@ -78,6 +77,7 @@ export DEB_APACHE_DISCONF = \
     serve-cgi-bin
 
 export CPAN_MODULES = \
+	Excel::Writer::XLSX \
 	Business::CreditCard::Object \
 	Business::OnlinePayment::PayPal \
 	Safe

@@ -43,7 +43,6 @@ export DEBS = \
 	libpq-dev\
 	librose-uri-perl\
 	librpc-xml-perl\
-	libspreadsheet-writeexcel-perl\
 	libsru-perl\
 	libssh2-1-dev\
 	libtest-warn-perl\
@@ -70,6 +69,7 @@ export DEB_APACHE_DISMODS = \
     deflate
 
 export CPAN_MODULES = \
+	Excel::Writer::XLSX \
 	Business::OnlinePayment::PayPal \
 	Template::Plugin::POSIX \
 	Safe

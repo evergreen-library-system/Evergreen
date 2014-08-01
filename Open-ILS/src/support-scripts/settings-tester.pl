@@ -457,7 +457,7 @@ Log::Log4perl
 Email::Send
 Text::CSV
 Text::CSV_XS
-Spreadsheet::WriteExcel::Big
+Excel::Writer::XLSX
 Tie::IxHash
 Parse::RecDescent
 SRU

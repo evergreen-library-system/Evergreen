@@ -10,7 +10,7 @@ use DateTime;
 use DateTime::Format::ISO8601;
 use Data::Dumper;
 use Text::CSV_XS;
-use Spreadsheet::WriteExcel::Big;
+use Excel::Writer::XLSX;
 use OpenSRF::EX qw/:try/;
 use OpenSRF::Utils qw/:daemon/;
 use OpenSRF::Utils::JSON;
@@ -251,7 +251,7 @@ for my $r ( @reports ) {
 		}
 
 		if ( $r->{excel_format} ) {
-			build_excel("$output_dir/report-data.xls", $r);
+			build_excel("$output_dir/report-data.xlsx", $r);
 		}
 
 		build_html("$output_dir/report-data.html", $r);
@@ -417,7 +417,7 @@ sub build_csv {
 sub build_excel {
 	my $file = shift;
 	my $r = shift;
-	my $xls = Spreadsheet::WriteExcel::Big->new($file);
+	my $xls = Excel::Writer::XLSX->new($file);
 
 	my $sheetname = substr($r->{report}->{name},0,30);
 	$sheetname =~ s/\W/_/gos;
@@ -466,7 +466,7 @@ sub build_html {
 	push @links, "<a href='report-data.html.raw.html'>Tabular Output</a>" if ($r->{html_format});
 
 	# add a link to the CSV output
-	push @links, "<a href='report-data.xls'>Excel Output</a>" if ($r->{excel_format});
+	push @links, "<a href='report-data.xlsx'>Excel Output</a>" if ($r->{excel_format});
 
 	# add a link to the CSV output
 	push @links, "<a href='report-data.csv'>CSV Output</a>" if ($r->{csv_format});

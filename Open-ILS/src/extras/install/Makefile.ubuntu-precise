@@ -46,7 +46,6 @@ export DEBS = \
 	libpq5\
 	libpq-dev\
 	librpc-xml-perl\
-	libspreadsheet-writeexcel-perl\
 	libsru-perl\
 	libssh2-1-dev\
 	libtext-aspell-perl\
@@ -72,6 +71,7 @@ export DEB_APACHE_DISMODS = \
     deflate
 
 export CPAN_MODULES = \
+	Excel::Writer::XLSX \
 	Business::CreditCard::Object \
 	Business::OnlinePayment::PayPal \
 	Template::Plugin::POSIX \
