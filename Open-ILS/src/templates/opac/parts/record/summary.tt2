@@ -264,11 +264,11 @@ IF num_uris > 0;
     [%- IF attrs.manufacturer %]
         <li id='rdetail_manufacturer'>
             <strong class='rdetail_label'>[% l("Manufacturer:") %]</strong>
-            <span class='rdetail_value'>
+            <span class='rdetail_value' property="manufacturer" typeof="Organization">
             [%- IF attrs.manplace; %]
-                <span>[% attrs.manplace | html; %]</span>
+                <span property="location">[% attrs.manplace | html; %]</span>
             [%- END; %]
-                <span>[% attrs.manufacturer | html; %]</span>
+                <span property="name">[% attrs.manufacturer | html; %]</span>
             [%- IF attrs.mandate; %]
                 <span>[% attrs.mandate | html; %]</span>
             [%- END; %]
@@ -278,7 +278,12 @@ IF num_uris > 0;
     [%- IF attrs.copyright %]
     <li id='rdetail_copyright'>
         <strong class='rdetail_label'>[% l("Copyright:") %]</strong>
-        <span class='rdetail_value'>[% attrs.copyright | html_entity; %]</span>
+        <span class='rdetail_value'>[% attrs.copyright | html_entity; %]
+        [%-# Provide the 4-digit year, cleansed of '@' and other junk %]
+        [%- IF attrs.copyrightYear -%]
+            <meta property='copyrightYear' content='[% attrs.copyrightYear | html; %]'>
+        [%- END -%]
+        </span>
     </li>
     [%- END %]
 </ul>

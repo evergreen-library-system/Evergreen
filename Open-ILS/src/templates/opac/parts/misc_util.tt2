@@ -211,6 +211,13 @@
         END;
         args.copyright = (args.copyrights.size) ? args.copyrights.0 : '';
 
+        IF args.copyright.length >= 4;
+            args.copyrightYear = args.copyright.match('(\d{4})');
+            IF args.copyrightYear;
+                args.copyrightYear = args.copyrightYear.0;
+            END;
+        END;
+
         # Get the RDA Production info.
         args.producers = [];
         FOR sub IN xml.findnodes('//*[@tag="264" and @ind2="0"]/*[@code="b"]');
