@@ -1,0 +1,17 @@
+Record Attributes Reingest Recommended
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+After this update, it is recommended that you reingest your
+bibliographic records to update the fixed field, record attribute
+indexes.  This is mainly necessary to make sure that fiction books do
+not also show up as non-fiction.
+
+You can accomplish this by running the following query in your database:
+
+[source,sql]
+--------------------------------------------------------------------
+select metabib.reingest_record_attributes(id)
+from biblio.record_entry;
+--------------------------------------------------------------------
+
+
