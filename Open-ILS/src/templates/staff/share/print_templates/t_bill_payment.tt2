@@ -1,0 +1,69 @@
+Welcome to {{current_location.name}}!<br/>
+A receipt of your  transaction:<hr/>
+
+<table style="width:100%"> 
+  <tr> 
+    <td>[% l('Original Balance:') %]</td> 
+    <td align="right">{{previous_balance | currency}}</td> 
+  </tr> 
+  <tr> 
+    <td>[% l('Payment Method:') %]</td> 
+    <td align="right">
+      <div ng-switch="payment_type">
+        <div ng-switch-when="cash_payment">[% l('Cash') %]</div>
+        <div ng-switch-when="check_payment">[% l('Check') %]</div>
+        <div ng-switch-when="credit_card_payment">[% l('Credit Card') %]</div>
+        <div ng-switch-when="credit_payment">[% l('Patron Credit') %]</div>
+        <div ng-switch-when="work_payment">[% l('Work') %]</div>
+        <div ng-switch-when="forgive_payment">[% l('Forgive') %]</div>
+        <div ng-switch-when="goods_payment">[% l('Goods') %]</div>
+      </div>
+    </td>
+  </tr> 
+  <tr> 
+    <td>[% l('Payment Received:') %]</td> 
+    <td align="right">{{payment_total | currency}}</td> 
+  </tr> 
+  <tr> 
+    <td>[% l('Payment Applied:') %]</td> 
+    <td align="right">{{payment_applied | currency}}</td> 
+  </tr> 
+  <tr> 
+    <td>[% l('Billings Voided:') %]</td> 
+    <td align="right">{{amount_voided | currency}}</td> 
+  </tr> 
+  <tr> 
+    <td>[% l('Change Given:') %]</td> 
+    <td align="right">{{change_given | currency}}</td> 
+  </tr> 
+  <tr> 
+    <td>[% l('New Balance:') %]</td> 
+    <td align="right">{{new_balance | currency}}</td> 
+  </tr> 
+</table> 
+
+<p>[% l('Note: [_1]', '{{payment_note}}') %]</p>
+
+<p>
+[% l('Specific Bills') %]
+  <blockquote>
+    <div ng-repeat="payment in payments">
+      <table style="width:100%">
+        <tr>
+          <td>[% l('Bill # [_1]', '{{payment.xact.id}}') %]</td>
+          <td>{{payment.xact.summary.last_billing_type}}</td>
+          <td>[% l('Received: [_1]', '{{payment.amount | currency}}') %]</td>
+        </tr>
+        <tr>
+          <td colspan="5">
+            {{payment.xact.copy_barcode}} {{payment.xact.title}}
+          </td>
+        </tr>
+      </table>
+      <br/>
+    </div>
+  </blockquote>
+</p> 
+<hr/>
+<br/><br/> 
+{{current_location.shortname}} {{today | date:'short'}}

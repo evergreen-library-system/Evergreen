@@ -1,0 +1,17 @@
+<div>
+  <div>[% l('Welcome to [_1]', '{{current_location.name}}') %]</div>
+  <div>[% l('You renewed the following items:') %]</div>
+  <hr/>
+  <ol>
+    <li ng-repeat="renewal in circulations">
+      <div>{{renewal.title}}</div>
+      <div>[% l('Barcode: [_1] Due: [_2]', 
+        '{{renewal.copy.barcode}}',
+        '{{renewal.circ.due_date | date:"short"}}') %]</div>
+    </li>
+  </ol>
+  <hr/>
+  <div>{{current_location.shortname}} {{today | date:'short'}}</div>
+  <div>[% l('You were helped by [_1]', '{{staff.first_given_name}}') %]</div>
+<br/>
+

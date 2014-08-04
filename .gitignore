@@ -353,3 +353,6 @@ Open-ILS/xul/staff_client/xulrunner-stub.exe
 Thumbs.db
 /js*
 /JavaScript*
+Open-ILS/web/js/ui/default/staff/build/
+Open-ILS/web/js/ui/default/staff/node_modules/
+Open-ILS/web/js/ui/default/staff/bower_components/

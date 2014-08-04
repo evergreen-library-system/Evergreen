@@ -1,0 +1,19 @@
+<div class="row pad-vert" ng-repeat="map in patron().stat_cat_entries()">
+  <div class="col-md-12 well" style="margin-left:12px">
+    <div class="row">
+      <div class="col-md-7">
+        <span class="strong-text">{{map.stat_cat().name()}}</span>
+        <span class="pad-horiz">{{map.stat_cat_entry()}}</span>
+      </div>
+      <div class="col-md-5">
+        <div class="pull-right">
+          <span class="pad-horiz alert alert-warning" 
+            ng-if="map.stat_cat().opac_visible() == 't'">[% l('Patron Visible') %]</span>
+          <span class="pad-horiz alert alert-info" 
+            ng-if="map.stat_cat().opac_visible() == 'f'">[% l('Staff Only') %]</span>
+          <span>[% l('@ [_1]', '{{map.stat_cat().owner().shortname()}}') %]</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

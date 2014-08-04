@@ -1,0 +1,30 @@
+<eg-grid
+  idl-class="au" id-field="id"
+  features="-sort,-display,-multisort"
+  main-label="[% l('Patron Search Results') %]"
+  grid-controls="gridControls"
+  items-provider="patronSearchGridProvider"
+  persist-key="circ.patron.search">
+  <eg-grid-field label="[% ('ID') %]" path='id' visible></eg-grid-field>
+  <eg-grid-field label="[% ('Card') %]" path='card.barcode' visible></eg-grid-field>
+  <eg-grid-field label="[% ('Last Name') %]" path='family_name' visible sortable multisortable></eg-grid-field>
+  <eg-grid-field label="[% ('First Name') %]" path='first_given_name' visible sortable multisortable></eg-grid-field>
+  <eg-grid-field label="[% ('Middle Name') %]" path='second_given_name' visible sortable multisortable></eg-grid-field>
+  <eg-grid-field label="[% ('DoB') %]" path='dob' visible sortable multisortable></eg-grid-field>
+  <eg-grid-field label="[% ('Home Library') %]" path='home_ou.shortname' visible></eg-grid-field>
+  <eg-grid-field label="[% ('Created On') %]" path='create_date' visible sortable multisortable></eg-grid-field>
+
+  <eg-grid-field label="[% ('Mailing:Street 1') %]" path='mailing_address.street1' visible></eg-grid-field>
+  <eg-grid-field label="[% ('Mailing:Street 2') %]" path='mailing_address.street2'></eg-grid-field>
+  <eg-grid-field label="[% ('Mailing:City') %]" path='mailing_address.city'></eg-grid-field>
+  <eg-grid-field label="[% ('Mailing:County') %]" path='mailing_address.county'></eg-grid-field>
+  <eg-grid-field label="[% ('Mailing:State') %]" path='mailing_address.state'></eg-grid-field>
+  <eg-grid-field label="[% ('Mailing:Zip') %]" path='mailing_address.post_code'></eg-grid-field>
+
+  <eg-grid-field label="[% ('Billing:Street 1') %]" path='billing_address.street1'></eg-grid-field>
+  <eg-grid-field label="[% ('Billing:Street 2') %]" path='billing_address.street2'></eg-grid-field>
+  <eg-grid-field label="[% ('Billing:City') %]" path='billing_address.city'></eg-grid-field>
+  <eg-grid-field label="[% ('Billing:County') %]" path='billing_address.county'></eg-grid-field>
+  <eg-grid-field label="[% ('Billing:State') %]" path='billing_address.state'></eg-grid-field>
+  <eg-grid-field label="[% ('Billing:Zip') %]" path='billing_address.post_code'></eg-grid-field>
+</eg-grid>

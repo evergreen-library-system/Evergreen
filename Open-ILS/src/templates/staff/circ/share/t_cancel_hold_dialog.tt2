@@ -1,0 +1,38 @@
+<form ng-submit="ok()" role="form" class="form-horizontal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" 
+        ng-click="cancel()" aria-hidden="true">&times;</button>
+      <h4 class="modal-title">
+        [% l('Cancel [_1] Hold(s)', '{{args.num_holds}}') %]
+      </h4>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label for="hold-cancel-reason" class="control-label col-md-4">
+          [% l('Cancel Reason:') %]
+        </label>
+        <div class="col-md-8">
+          <select class="form-control" id="hold-cancel-reason"
+            ng-model="args.cancel_reason"
+            ng-options="reason.label() for reason in args.cancel_reasons">
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="hold-cancel-note" class="control-label col-md-4">
+          [% l('Note:') %]
+        </label>
+        <div class="col-md-8">
+          <textarea rows="3" class="form-control" placeholder="[% l('Note...') %]"
+            id="hold-cancel-note" ng-model="args.note"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <input type="submit" class="btn btn-success" value="[% l('Cancel Hold') %]"/>
+      <button class="btn btn-warning" ng-click="cancel($event)">[% l('Exit') %]</button>
+    </div>
+  </div>
+</div>
+

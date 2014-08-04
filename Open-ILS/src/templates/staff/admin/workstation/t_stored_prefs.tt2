@@ -1,0 +1,65 @@
+<style>
+  /* TODO */
+  #stored-prefs-container .selected {
+    background-color: #F5F5F5;   
+  }
+  #stored-prefs-container .row {
+    padding-top: 10px;
+  }
+</style>
+<div class="container" id="stored-prefs-container">
+  <div class="row">
+    <div class="col-md-12">
+      <h2>[% l('Stored User Preferences') %]</h2>
+      <div class="well">
+[% |l %]
+Preference values are stored as JSON strings.  
+Click on a preference to view the stored value.
+Click on the delete (X) button to remove a preference's value.
+[% END %]
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4">
+
+      <ul class="nav nav-tabs">
+        <li ng-class="{active : context == 'local'}">
+          <a href='' ng-click="setContext('local')">[% l('Local Prefs') %]</a>
+        </li>
+        <li ng-class="{active : context == 'remote'}">
+          <a href='' ng-click="setContext('remote')">[% l('Remote Prefs') %]</a>
+        </li>
+      </ul>
+      <div class="tab-content">
+        <div class="tab-pane active">
+
+          <div class="row" ng-repeat="key in keys[context]">
+            <div class="col-md-1">{{$index + 1}}.</div>
+            <div class="col-md-8 stored-prefs-key" 
+              ng-class="{selected : currentKey == key}">
+              <a href='' ng-click="selectKey(key)">{{key}}</a>
+            </div>
+            <div class="col-md-1">
+              <!-- padding to give the buttom some overflow space -->
+            </div>
+            <div class="col-md-1" class="stored-prefs-remove-button">
+              <button class="btn btn-default btn-danger"
+                ng-class="{disabled : !userHasDeletePerm}"
+                ng-click="removeKey(key)" title="[% l('Remove Item') %]">
+                <span class="glyphicon glyphicon-remove"></span>
+              </button>
+            </div>
+          </div><!-- row -->
+
+        </div><!-- tab pane -->
+      </div><!-- tab content -->
+    </div><!-- col -->
+
+    <div class="col-md-8">
+      <pre>{{getCurrentKeyContent()}}</pre>
+    </div><!-- col -->
+
+  </div><!-- row -->
+</div><!-- container -->

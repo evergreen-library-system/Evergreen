@@ -1,0 +1,53 @@
+<div class="strong-text-2">[% l('Record Summary') %]</div>
+
+<div class="flex-container-striped flex-container-bordered">
+  <div class="flex-row">
+    <div class="flex-cell strong-text">[% l('Title:') %]</div>
+    <div class="flex-cell flex-2">
+      <a target="_self" 
+        href="[% ctx.base_path %]/staff/cat/catalog/record/{{record.id()}}">
+        {{record.simple_record().title()}}
+      </a>
+    </div>
+
+    <div class="flex-cell strong-text">[% l('Edition:') %]</div>
+    <div class="flex-cell"><!-- FIXME: no edition field on simple record --></div>
+
+    <div class="flex-cell strong-text">[% l('TCN:') %]</div>
+    <div class="flex-cell">{{record.tcn_value()}}</div>
+
+    <div class="flex-cell strong-text">[% l('Created By:') %]</div>
+    <div class="flex-cell">{{record.creator().usrname()}}</div>
+  </div><!-- flex-row -->
+
+  <div class="flex-row">
+    <div class="flex-cell strong-text">[% l('Author:') %]</div>
+    <div class="flex-cell flex-2">{{record.simple_record().author()}}</div>
+
+    <div class="flex-cell strong-text">[% l('Pub Date:') %]</div>
+    <div class="flex-cell">
+      {{record.simple_record().pubdate()}}
+    </div>
+
+    <div class="flex-cell strong-text">[% l('Databse ID:') %]</div>
+    <div class="flex-cell">{{record.id()}}</div>
+
+    <div class="flex-cell strong-text">[% l('Last Edited By:') %]</div>
+    <div class="flex-cell">{{record.editor().usrname()}}</div>
+  </div><!-- flex-row -->
+
+  <div class="flex-row">
+    <div class="flex-cell strong-text">[% l('Bib Call #:') %]</div>
+    <div class="flex-cell flex-2"><!-- FIXME: no bib call no on simple rec --></div>
+
+    <div class="flex-cell strong-text"></div>
+    <div class="flex-cell"></div>
+
+    <div class="flex-cell strong-text">[% l('Record Owner:') %]</div>
+    <div class="flex-cell">{{record.owner().shortname()}}</div>
+
+    <div class="flex-cell strong-text">[% l('Last Edited On:') %]</div>
+    <div class="flex-cell">{{record.edit_date() | date:'short'}}</div>
+  </div><!-- flex-row -->
+</div>
+

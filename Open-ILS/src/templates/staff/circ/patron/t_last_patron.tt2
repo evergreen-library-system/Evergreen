@@ -1,0 +1,9 @@
+<div class="col-md-6">
+  <div ng-if="no_last" class="alert alert-warning">
+    [% l('No patrons recently accessed.') %]
+    <span class="pad-horiz">
+      <a href='./circ/patron/search'>[% l('Try Patron Search') %]</a>
+    </span>
+  </div>
+  <br/>
+</div>

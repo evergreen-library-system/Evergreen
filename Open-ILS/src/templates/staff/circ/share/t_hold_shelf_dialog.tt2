@@ -1,0 +1,63 @@
+<div class="">
+  <div class="modal-header">
+    <button type="button" class="close" 
+      ng-click="ok()" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">[% l('Hold Slip') %]</h4>
+  </div>
+  <div class="modal-body">
+    <div ng-switch on="hold.behind_desk">
+      <div ng-switch-when="t">
+        [% l('This item should be routed to the [_1]Private Holds Shelf[_2]',
+          '<strong>','</strong>') %]
+      </div>
+      <div ng-switch-when="f">
+        [% l('This item should be routed to the [_1]Public Holds Shelf[_2]',
+          '<strong>','</strong>') %]
+      </div>
+    </div>
+    <br/>
+    <div>
+      <span>[% l('Item Barcode:') %]</span>
+      <span>{{copy.barcode}}</span>
+    </div>
+    <div>
+      <span>[% l('Title:') %]</span>
+      <span>{{title}}</span>
+    </div>
+    <div>
+      <span>[% l('Author:') %]</span>
+      <span>{{author}}</span>
+    </div>
+    <br/>
+    <div>
+    
+    <div ng-show="patron.alias">
+      [% l('Hold for patron {{patron.alias}}') %]
+    </div>
+    <div ng-hide="patron.alias">
+      [% |l %]
+      Hold for patron {{patron.family_name}}, 
+      {{patron.first_given_name}} {{patron.second_given_name}}
+      [% END %]
+    </div>
+    <div>
+      <span>[% l('Patron Barcode:') %]</span>
+      <span>{{patron.card.barcode}}</span>
+    </div>
+    <br/>
+    <div>
+      <span>[% l('Request Date:') %]</span>
+      <span>{{hold.request_time | date:'shortDate'}}</span>
+    </div>
+    <div>
+      <span>[% l('Slip Date:') %]</span>
+      <span>{{today | date:'shortDate'}}</span>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <input type="button" class="btn btn-primary"
+      ng-click="print()" value="[% l('Print') %]"/>
+    <input type="submit" class="btn btn-warning"
+      ng-click="ok()" value="[% l('Do Not Print') %]"/>
+  </div>
+</div>

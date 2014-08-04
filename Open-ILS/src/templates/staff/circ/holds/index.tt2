@@ -1,0 +1,30 @@
+[%
+  WRAPPER "staff/base.tt2";
+  ctx.page_title = l("Holds Shelf"); 
+  ctx.page_app = "egHoldsApp";
+%]
+
+[% BLOCK APP_JS %]
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/grid.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/ui.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/user.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/services/circ.js"></script>
+[% INCLUDE 'staff/circ/share/circ_strings.tt2' %]
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/services/holds.js"></script>
+[% INCLUDE 'staff/circ/share/hold_strings.tt2' %]
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/cat/services/record.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/holds/app.js"></script>
+<link rel="stylesheet" href="[% ctx.base_path %]/staff/css/circ.css" />
+<script>
+angular.module('egCoreMod').run(['egStrings', function(s) {
+  s.CLEAR_SHELF_ACTION_shelf = "[% l('Reshelve') %]";
+  s.CLEAR_SHELF_ACTION_hold = "[% l('Needed for Hold') %]";
+  s.CLEAR_SHELF_ACTION_transit = "[% l('Needs Transiting') %]";
+  s.CLEAR_SHELF_ACTION_pl_changed = "[% l('Wrong Shelf') %]";
+}])
+</script>
+[% END %]
+
+<div ng-view></div>
+
+[% END %]

@@ -1,0 +1,89 @@
+<!-- checkins list -->
+
+<eg-grid
+  id-field="index"
+  features="-sort,-multisort"
+  main-label="[% l('Items Checked In') %]"
+  items-provider="gridDataProvider"
+  grid-controls="gridControls"
+  persist-key="{{grid_persist_key}}">
+
+  <eg-grid-action 
+    handler="fetchLastCircPatron"
+    label="[% l('Retrieve Last Patron Who Circulated Item') %]">
+  </eg-grid-action>
+  <eg-grid-action 
+    handler="showBackdateDialog"
+    label="[% l('Backdate Post-Checkin') %]">
+  </eg-grid-action>
+  <eg-grid-action 
+    handler="showMarkDamaged"
+    label="[% l('Mark Items Damaged') %]">
+  </eg-grid-action>
+  <eg-grid-action 
+    handler="abortTransit"
+    label="[% l('Abort Transits') %]">
+  </eg-grid-action>
+
+  <eg-grid-field label="[% l('Alert Msg') %]"   
+    path="acp.alert_message"></eg-grid-field>
+
+  <eg-grid-field label="[% l('Balance Owed') %]"     
+    path='mbts.balance_owed'></eg-grid-field>
+
+  <eg-grid-field label="[% l('Barcode') %]" path="acp_barcode">
+    <!-- FIXME: ng-if / ng-disabled not working since the contents 
+        are $interpolate'd and not $compile'd.
+        I want to hide / disable the href when there is no acp ID 
+    -->
+    <a href="./cat/item/{{item.acp.id()}}/summary" target="_self">
+      {{item.copy_barcode}}
+    </a>
+  </eg-grid-field>
+
+  <eg-grid-field label="[% l('Bill #') %]"     
+    path='circ.id'></eg-grid-field>
+
+  <eg-grid-field label="[% l('Checkin Date') %]"    
+    path='circ.checkin_time' dateformat='short'></eg-grid-field>
+
+  <eg-grid-field label="[% l('Family Name') %]"    
+    path='au.family_name'></eg-grid-field>
+
+  <eg-grid-field label="[% l('Finish') %]"    
+    path='circ.stop_fines_time'></eg-grid-field>
+
+  <eg-grid-field label="[% l('Location') %]"    
+    path='acp.location.name'></eg-grid-field>
+
+  <eg-grid-field label="[% l('Route To') %]" path='route_to'>
+  </eg-grid-field>
+
+  <eg-grid-field label="[% l('Start') %]"    
+    path='circ.xact_start'></eg-grid-field>
+
+  <eg-grid-field label="[% l('Title') %]" path="title">
+    <a target="_self" href="[% ctx.base_path %]/staff/cat/catalog/record/{{record.doc_id()}}">
+      {{item.title}}
+    </a>
+  </eg-grid-field>
+
+  <eg-grid-field label="[% l('Due Date') %]"    
+    path='circ.due_date' dateformat='short' hidden></eg-grid-field>
+
+  <eg-grid-field label="[% l('Author') %]"      
+    path="author" hidden></eg-grid-field>
+
+  <eg-grid-field label="[% l('Call Number') %]" 
+    path="acn.label" hidden></eg-grid-field>
+
+  <eg-grid-field path="circ.*" parent-idl-class="circ" hidden></eg-grid-field>
+  <eg-grid-field path="acp.*" parent-idl-class="acp" hidden></eg-grid-field>
+  <eg-grid-field path="acn.*" parent-idl-class="acn" hidden></eg-grid-field>
+  <eg-grid-field path="record.*" parent-idl-class="mvr" hidden></eg-grid-field>
+  <eg-grid-field path="mbts.*" parent-idl-class="mbts" hidden></eg-grid-field>
+  <eg-grid-field path="au.*" parent-idl-class="au" hidden></eg-grid-field>
+  <eg-grid-field path="transit.*" parent-idl-class="atc" hidden></eg-grid-field>
+  <eg-grid-field path="hold.*" parent-idl-class="ahr" hidden></eg-grid-field>
+</eg-grid>
+

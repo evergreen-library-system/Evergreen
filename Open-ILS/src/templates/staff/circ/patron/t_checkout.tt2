@@ -1,0 +1,143 @@
+<!-- item checkout form / list -->
+
+<div class="row pad-vert">
+  <div class="col-md-6">
+    <form ng-submit="checkout(checkoutArgs)" role="form" class="form-inline">
+      <div class="input-group">
+
+        <div class="input-group-btn" dropdown>
+          <button type="button" class="btn btn-default dropdown-toggle"
+            ng-class="{disabled : disable_checkout()}">
+            {{selectedNcType() || "[% l('Barcode') %]"}}
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+            <li><a href dropdown-toggle
+              ng-click="checkoutArgs.noncat_type='barcode';focusMe=true">
+              [% l('Barcode') %]</a>
+            </li>
+            <li class="divider"></li>
+            <li>
+              <a href ng-repeat='type in nonCatTypes' dropdown-toggle
+               ng-click="checkoutArgs.noncat_type=type.id()">{{type.name()}}</a>
+            </li>
+          </ul>
+        </div>
+
+        <input focus-me="focusMe" class="form-control"
+          ng-model="checkoutArgs.copy_barcode" 
+          ng-disabled="checkoutArgs.noncat_type != 'barcode' || disable_checkout()"
+          id="patron-checkout-barcode" type="text"/> 
+
+        <input class="btn btn-default" type="submit" 
+          ng-class="{disabled : disable_checkout()}" value="[% l('Submit') %]"/>
+
+      </div>
+    </form>
+  </div>
+  <div class="col-md-6">
+    <div class="flex-row">
+      <div class="flex-cell"></div>
+      <div class="checkbox pad-horiz">
+        <label>
+          <input type="checkbox" ng-model="checkoutArgs.sticky_date"/>
+          [% l('Specific Due Date') %]
+        </label>
+      </div>
+      <!--
+      <div><input type="checkbox" class="checkbox" ng-model="checkoutArgs.sticky_date"/></div>
+      <div class="pad-horiz">[% l('Specific Due Date') %]</div>
+      -->
+      <!-- FIXME: This needs a time component as well, but type="datetime" 
+            is not yet supported by any browsers -->
+      <div><input eg-date-input class="form-control" 
+        ng-model="checkoutArgs.due_date"/>
+      </div>
+    </div>
+  </div>
+</div>
+<hr/>
+
+<eg-grid
+  id-field="index"
+  features="-sort,-multisort"
+  items-provider="gridDataProvider"
+  grid-controls="gridControls"
+  persist-key="circ.patron.checkout">
+
+  <eg-grid-field label="[% l('Alert Msg') %]"   
+    path="acp.alert_message"></eg-grid-field>
+
+  <eg-grid-field label="[% l('Balance Owed') %]"     
+    path='mbts.balance_owed'></eg-grid-field>
+
+  <eg-grid-field label="[% l('Barcode') %]" path="acp_barcode">
+    <!-- FIXME: ng-if / ng-disabled not working since the contents 
+        are $interpolate'd and not $compile'd.
+        I want to hide / disable the href when there is no acp ID 
+    -->
+    <a href="./cat/item/{{item.acp.id()}}/summary" target="_self">
+      {{item.copy_barcode}}
+    </a>
+  </eg-grid-field>
+
+  <eg-grid-field label="[% l('Bill #') %]"     
+    path='circ.id'></eg-grid-field>
+
+  <eg-grid-field label="[% l('Call Number') %]" 
+    path="acn.label"></eg-grid-field>
+
+  <eg-grid-field label="[% l('Due Date') %]"    
+    path='circ.due_date' dateformat='short'></eg-grid-field>
+
+  <eg-grid-field label="[% l('Family Name') %]"    
+    path='au.family_name'></eg-grid-field>
+
+  <eg-grid-field label="[% l('Location') %]" 
+    path='acp.location.name'> </eg-grid-field>
+
+  <eg-grid-field label="[% l('Remaining Renewals') %]" 
+    path='circ.renewal_remaining'></eg-grid-field>
+
+  <eg-grid-field label="[% l('Title') %]" path="title">
+    <a target="_self" href="[% ctx.base_path %]/opac/record/{{record.doc_id()}}">
+      {{item.title}}
+    </a>
+  </eg-grid-field>
+
+  <eg-grid-field label="[% l('Author') %]"      
+    path="author" hidden></eg-grid-field>
+
+  <eg-grid-field path="circ.*" parent-idl-class="circ" hidden></eg-grid-field>
+  <eg-grid-field path="acp.*" parent-idl-class="acp" hidden></eg-grid-field>
+  <eg-grid-field path="acn.*" parent-idl-class="acn" hidden></eg-grid-field>
+  <eg-grid-field path="record.*" parent-idl-class="mvr" hidden></eg-grid-field>
+  <eg-grid-field path="mbts.*" parent-idl-class="mbts" hidden></eg-grid-field>
+  <eg-grid-field path="au.*" parent-idl-class="au" hidden></eg-grid-field>
+</eg-grid>
+
+<div class="flex-row pad-vert">
+  <div class="flex-cell"></div>
+  <div class="checkbox">
+    <label>
+      <input ng-model="strict_barcode" type="checkbox"/>
+      [% l('Strict Barcode') %]
+    </label>
+  </div>
+  <div class="pad-horiz" ng-if="using_hatch"></div>
+  <div class="checkbox" ng-if="using_hatch">
+    <label>
+      <input ng-model="show_print_dialog" type="checkbox"/>
+      [% l('Show Print Dialog') %]
+    </label>
+  </div>
+  <div class="pad-horiz">
+    <button class="btn btn-default" 
+      ng-click="print_receipt()">[% l('Print Receipt') %]</button>
+  </div>
+  <div>
+    <button class="btn btn-default" 
+      ng-click="done()">[% l('Done') %]</button>
+  </div>
+</div>
+

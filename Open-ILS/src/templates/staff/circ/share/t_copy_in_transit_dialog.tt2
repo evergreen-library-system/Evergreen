@@ -1,0 +1,32 @@
+<div>
+  <div class="modal-header">
+    <button type="button" class="close" 
+      ng-click="cancel()" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">[% l('Copy In Transit') %]</h4>
+  </div>
+  <div class="modal-body">
+    <div class="strong-text">
+      [% l('There is an open transit on copy [_1]', 
+        '{{transit.target_copy().barcode()}}') %]
+    </div>
+    <div class="pad-vert"></div>
+    <div class="row">
+      <div class="col-md-4">[% l('Transit Date:') %]</div>
+      <div class="col-md-8">{{transit.source_send_time() | date:'short'}}</div>
+    </div>
+    <div class="row">
+      <div class="col-md-4">[% l('Transit Source:') %]</div>
+      <div class="col-md-8">{{transit.source().shortname()}}</div>
+    </div>
+    <div class="row">
+      <div class="col-md-4">[% l('Transit Destination:') %]</div>
+      <div class="col-md-8">{{transit.dest().shortname()}}</div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <input type="submit" class="btn btn-primary" ng-click="ok()"
+        value="[% l('Abort Transit then Checkout') %]"/>
+    <button class="btn btn-warning" 
+        ng-click="cancel()">[% l('Cancel') %]</button>
+  </div>
+</div>

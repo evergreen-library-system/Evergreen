@@ -1,0 +1,73 @@
+<!-- items out list -->
+
+<div ng-if="show_alt_circs">
+  <!-- only show the main vs. alt circ list tabs if the alt
+      circ list is meant to display -->
+  <ul class="nav nav-tabs">
+    <li ng-class="{active : items_out_display == 'main'}">
+      <a href ng-click="show_main_list()">
+        [% l('Items Checked Out') %] ({{main_list.length}})
+      </a>
+    </li>
+    <li ng-class="{active : items_out_display == 'alt'}">
+      <a href ng-click="show_alt_list()">
+        [% l('Other/Special Circulations') %] ({{alt_list.length}})
+      </a>
+    </li>
+  </ul>
+</div>
+<div ng-if="!show_alt_circs" class="strong-text-2">
+  [% l('Items Checked Out') %]
+</div>
+
+<div class="tab-content">
+  <div class="tab-pane active">
+<eg-grid
+  idl-class="circ"
+  id-field="id"
+  features="-sort,-multisort"
+  items-provider="gridDataProvider"
+  persist-key="circ.patron.items_out">
+
+  <eg-grid-action handler="print_receipt"
+    label="[% l('Print Item Receipt') %]"></eg-grid-action>
+  <eg-grid-action handler="edit_due_date"
+    label="[% l('Edit Due Date') %]"></eg-grid-action>
+  <eg-grid-action handler="mark_lost"
+    label="[% l('Mark Lost (By Patron)') %]"></eg-grid-action>
+  <eg-grid-action handler="mark_claims_returned"
+    label="[% l('Mark Claims Returned') %]"></eg-grid-action>
+  <eg-grid-action handler="mark_claims_never_checked_out"
+    label="[% l('Mark Claims Never Checked Out') %]"></eg-grid-action>
+  <eg-grid-action handler="renew" label="[% l('Renew') %]"></eg-grid-action>
+  <eg-grid-action handler="renew_all" label="[% l('Renew All') %]"></eg-grid-action>
+  <eg-grid-action handler="renew_with_date" 
+    label="[% l('Renew With Specific Due Date') %]"></eg-grid-action>
+  <eg-grid-action handler="checkin" 
+    label="[% l('Check In') %]"></eg-grid-action>
+  <eg-grid-action handler="add_billing" 
+    label="[% l('Add Billing') %]"></eg-grid-action>
+
+  <eg-grid-field label="[% l('Circ ID') %]" path='id'></eg-grid-field>
+  <eg-grid-field label="[% l('Barcode') %]" path='target_copy.barcode'>
+    <a href="./cat/item/{{item.target_copy().id()}}" target="_self">
+      {{item.target_copy().barcode()}}
+    </a>
+  </eg-grid-field>
+  <eg-grid-field label="[% l('Due Date') %]" path='due_date' dateformat='short'></eg-grid-field>
+  <eg-grid-field label="[% l('Checkout / Renewal Library') %]" path='circ_lib.shortname'></eg-grid-field>
+  <eg-grid-field label="[% l('Renewals Remaining') %]" path='renewal_remaining'></eg-grid-field>
+  <eg-grid-field label="[% l('Fines Stopped') %]" path='stop_fines'></eg-grid-field>
+  <eg-grid-field label="[% l('Title') %]" name="title">
+    <a href="[% ctx.base_path %]/opac/record/{{item.target_copy().call_number().record().id()}}">
+      {{item.target_copy().call_number().record().simple_record().title()}}
+    </a>
+  </eg-grid-field>
+  <eg-grid-field path="*" hidden></eg-grid-field>
+  <eg-grid-field path="target_copy.*" hidden></eg-grid-field>
+  <eg-grid-field path="target_copy.call_number.*" hidden></eg-grid-field>
+  <eg-grid-field path="target_copy.call_number.record.*" hidden></eg-grid-field>
+  <eg-grid-field path="target_copy.call_number.record.simple_record.*" hidden></eg-grid-field>
+</eg-grid>
+  </div>
+</div>

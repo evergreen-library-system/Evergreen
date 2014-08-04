@@ -1,0 +1,24 @@
+<form ng-submit="submitBarcode(args)" role="form" class="form-inline">
+  <div class="input-group">
+
+    <label class="input-group-addon" 
+      for="patron-lookup-barcode" >[% l('Patron Barcode') %]</label>
+
+    <input 
+      focus-me="selectMe" 
+      select-me="selectMe"
+      class="form-control barcode"
+      ng-model="args.barcode" 
+      placeholder="[% l('Patron Barcode') %]"
+      id="patron-lookup-barcode" type="text"/> 
+
+    <input class="btn btn-default" type="submit" value="[% l('Submit') %]"/>
+  </div>
+</form>
+
+<br/>
+<div class="alert alert-warning" ng-show="bcNotFound">
+  [% l('Barcode Not Found: [_1]', '{{bcNotFound}}') %]
+</div>
+
+

@@ -3549,6 +3549,9 @@
 <!ENTITY staff.patron.user_edit.depth.label "Depth">
 <!ENTITY staff.patron.user_edit.grantable.label "Grantable">
 <!ENTITY staff.patron.user_edit.save.label "Save">
+<!ENTITY staff.patron.user_edit.display_perm.select_one "-- Select One --">
+<!ENTITY staff.patron.user_edit.save_user.depth_required "Depth is required to set the permission.">
+<!ENTITY staff.patron.user_edit.save_user.user_modified_successfully "User successfully modified.">
 <!ENTITY staff.patron.ue.ev_user_editor.label "Evergreen User Editor">
 <!ENTITY staff.patron.ue.user_greeting.label "Welcome ">
 <!ENTITY staff.patron.ue.interface_note.label "Note: required or invalid fields are <span style='border-bottom: 2px solid red;'>marked with color</span>">

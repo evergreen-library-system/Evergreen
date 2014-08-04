@@ -1,0 +1,69 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 text-center">
+      <img src="/xul/server/skin/media/images/portal/logo.png"/>
+    </div>
+  </div>
+  <br/>
+  <div class="row" id="splash-nav">
+
+    <div class="col-md-4">
+      <div class="panel panel-success">
+        <div class="panel-heading">
+          <div class="panel-title text-center">[% l('Circulation and Patrons') %]</div>
+        </div>
+        <div class="panel-body">
+          <div>
+            <img src="/xul/server/skin/media/images/portal/forward.png"/>
+            <a target="_self" href="./circ/patron/bcsearch">[% l('Check Out Items') %]</a>
+          </div>
+          <div>
+            <img src="/xul/server/skin/media/images/portal/back.png"/>
+            <a target="_self" href="./circ/checkin/index">[% l('Check In Items') %]</a>
+          </div>
+          <div>
+            <img src="/xul/server/skin/media/images/portal/retreivepatron.png"/>
+            <a target="_self" href="./circ/patron/search">[% l('Search For Patron By Name') %]</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="panel panel-success">
+        <div class="panel-heading">
+          <div class="panel-title text-center">[% l('Item Search and Cataloging') %]</div>
+        </div>
+        <div class="panel-body">
+          <div>
+            <img src="/xul/server/skin/media/images/portal/bucket.png"/>
+            <a target="_self" href="./cat/bucket/record/">[% l('Record Buckets') %]</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="panel panel-success">
+        <div class="panel-heading">
+          <div class="panel-title text-center">[% l('Administration') %]</div>
+        </div>
+        <div class="panel-body">
+          <div>
+            <img src="/xul/server/skin/media/images/portal/helpdesk.png"/>
+            <a target="_top" href="http://docs.evergreen-ils.org/">
+              [% l('Evergreen Documentation') %]
+            </a>
+          </div>
+          <div>
+            <img src="/xul/server/skin/media/images/portal/helpdesk.png"/>
+            <a target="_top" href="./admin/workstation/index">
+              [% l('Workstation Administration') %]
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

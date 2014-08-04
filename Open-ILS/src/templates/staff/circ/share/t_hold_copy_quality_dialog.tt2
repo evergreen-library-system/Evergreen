@@ -1,0 +1,24 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <button type="button" class="close" 
+      ng-click="cancel()" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">
+      [% l('Accept only "Good Quality" copies?') %]
+    </h4>
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+      <div class="col-md-4">
+        <button class="btn btn-default" ng-click="good()">[% l('Good Condition') %]</button>
+      </div>
+      <div class="col-md-4">
+        <button class="btn btn-default" ng-click="any()">[% l('Any Condition') %]</button>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-warning" ng-click="cancel()">[% l('Cancel') %]</button>
+  </div>
+</div>
+
+

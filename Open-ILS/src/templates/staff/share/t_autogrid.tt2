@@ -1,0 +1,297 @@
+
+<!-- 
+  Actions row.
+  This sits above the grid and contains the column picker, etc.
+-->
+
+<div class="eg-grid-row eg-grid-action-row">
+
+  <div class="eg-grid-primary-label">{{mainLabel}}</div>
+
+  <div class="btn-group eg-grid-menuiitem" 
+    is-open="gridMenuIsOpen" ng-if="menuLabel" dropdown>
+    <button type="button" class="btn btn-default dropdown-toggle">
+      {{menuLabel}}<span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu">
+      <li ng-repeat="item in menuItems" ng-class="{divider: item.divider}">
+        <a ng-if="!item.divider" href ng-disabled="item.disabled"
+          ng-click="item.handler()">{{item.label}}</a>
+      </li>
+    </ul>
+  </div>
+
+  <!-- if no menu label is present, present menu-items as a 
+       horizontal row of buttons -->
+  <div class="btn-group" ng-if="!menuLabel">
+    <button ng-if="!item.hidden()"
+      class="btn btn-default eg-grid-menu-item"
+      ng-disabled="item.disabled()"
+      ng-repeat="item in menuItems"
+      ng-click="item.handler(item, item.handlerData)">
+      {{item.label}}
+    </button>
+  </div>
+
+  <!-- putting a flex div here forces the remaining content to float right -->
+  <div class="flex-cell"></div>
+
+  <!-- column picker, pager, etc. -->
+  <div class="btn-group column-picker">
+
+    <!-- first page -->
+    <button type="button" class="btn btn-default" 
+      ng-class="{disabled : onFirstPage()}" 
+      ng-click="offset(0);collect()"
+      title="[% l('Start') %]">
+        <span class="glyphicon glyphicon-fast-backward"></span>
+    </button>
+
+    <!-- previous page -->
+    <button type="button" class="btn btn-default" 
+      ng-class="{disabled : onFirstPage()}"
+      ng-click="decrementPage()"
+      title="[% l('Previous Page') %]">
+        <span class="glyphicon glyphicon-backward"></span>
+    </button>
+
+    <!-- next page -->
+    <!-- todo: paging needs a total count value to be fully functional -->
+    <button type="button" class="btn btn-default" 
+      ng-class="{disabled : !hasNextPage()}"
+      ng-click="incrementPage()"
+      title="[% l('Next Page') %]">
+        <span class="glyphicon glyphicon-forward"></span>
+    </button>
+
+    <!-- actions drop-down menu -->
+    <div class="btn-group" ng-if="actions.length" dropdown>                                                  
+      <button type="button" class="btn btn-default dropdown-toggle"
+        ng-class="{disabled : false}">
+        [% l('Actions') %] <span class="caret"></span>                       
+      </button>                                                              
+      <ul class="dropdown-menu pull-right">                                  
+        <li ng-repeat="action in actions" ng-class="{divider: action.divider}">
+          <a ng-if="!action.divider" href dropdown-toggle
+            ng-click="actionLauncher(action)">{{action.label}}</a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="btn-group" dropdown is-open="gridRowCountIsOpen">
+      <button type="button" title="[% ('Select Row Count') %]"
+        class="btn btn-default dropdown-toggle">
+        [% l('Rows [_1]', '{{limit()}}') %]
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu">
+        <li ng-repeat="t in [5,10,25,50,100]">
+          <a href ng-click='offset(0);limit(t);collect()'>
+            {{t}}
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="btn-group" dropdown is-open="gridPageSelectIsOpen">
+      <button type="button" title="[% ('Select Page') %]"
+        class="btn btn-default dropdown-toggle">
+        [% l('Page [_1]', '{{page()}}') %]
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu">
+        <li>
+          <div class="input-group">
+            <input type="text" class="form-control"
+              ng-model="pageFromUI"
+              ng-click="$event.stopPropagation()"/>
+            <span class="input-group-btn">
+              <button class="btn btn-default" type="button"
+                ng-click="goToPage(pageFromUI);pageFromUI='';">
+                [% l('Go To...') %]
+              </button>
+            </span>
+          </div>
+        </li>
+        <li role="presentation" class="divider"></li>
+        <li ng-repeat="t in [1,2,3,4,5,10,25,50,100]">
+          <a href ng-click='goToPage(t);gridPageSelectIsOpen=false;'>{{t}}</a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="btn-group" dropdown is-open="gridColumnPickerIsOpen">
+      <button type="button" 
+        class="btn btn-default dropdown-toggle">
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu pull-right eg-grid-column-picker">
+        <li><a href ng-click="toggleConfDisplay()">
+          <span class="glyphicon glyphicon-wrench"></span>
+          [% l('Configure Columns') %]
+        </a></li>
+        <li><a href ng-click="saveConfig()">
+          <span class="glyphicon glyphicon-floppy-save"></span>
+          [% l('Save Columns') %]
+        </a></li>
+        <li><a href ng-click="showAllColumns()">
+          <span class="glyphicon glyphicon-resize-full"></span>
+          [% l('Show All Columns') %]
+        </a></li>
+        <li><a href ng-click="hideAllColumns()">
+          <span class="glyphicon glyphicon-resize-small"></span>
+          [% l('Hide All Columns') %]
+        </a></li>
+        <li><a href ng-click="resetColumns()">
+          <span class="glyphicon glyphicon-refresh"></span>
+          [% l('Reset Columns') %]
+        </a></li>
+        <li><a ng-click="generateCSVExportURL()" 
+          download="{{csvExportFileName}}.csv" ng-href="{{csvExportURL}}">
+          <span class="glyphicon glyphicon-download"></span>
+          [% l('Download CSV') %]
+        </a></li>
+        <li><a href ng-click="printCSV()">
+          <span class="glyphicon glyphicon-print"></span>
+          [% l('Print CSV') %]
+        </a></li>
+        <li role="presentation" class="divider"></li>
+        <li ng-repeat="col in columns">
+          <a href ng-click="toggleColumnVisibility(col)">
+              <span ng-if="col.visible" 
+                class="label label-success">&#x2713;</span>
+              <span ng-if="!col.visible" 
+                class="label label-warning">&#x2717;</span>
+              <span>{{col.label}}</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- Grid -->
+<div class="eg-grid" ng-class="{'eg-grid-as-conf' : showGridConf}">
+
+  <!-- import our eg-grid-field defs -->
+  <div ng-transclude></div>
+
+  <div class="eg-grid-row eg-grid-header-row">
+    <div class="eg-grid-cell eg-grid-cell-stock">
+      <div title="[% l('Row Number Column') %]">[% l('#') %]</div>
+    </div>
+    <div class="eg-grid-cell eg-grid-cell-stock">
+      <div>
+        <input title="[% l('Row Selector Column') %]"
+          focus-me="gridControls.focusRowSelector"
+          type='checkbox' ng-model="selectAll"/> 
+      </div>
+    </div>
+    <div class="eg-grid-cell"
+        eg-grid-column-drag-dest
+        column="{{col.name}}"
+        eg-right-click="onContextMenu($event)"
+        ng-repeat="col in columns"
+        style="flex:{{col.flex}}"
+        ng-show="col.visible">
+
+        <div style="display:flex">
+          <div style="flex:1" class="eg-grid-column-move-handle">
+            <div ng-if="col.sortable">
+              <a column="{{col.name}}" href
+                eg-grid-column-drag-source
+                ng-click="quickSort(col.name)">{{col.label}}</a>
+            </div>
+            <div ng-if="!col.sortable">
+              <div column="{{col.name}}" eg-grid-column-drag-source>{{col.label}}</div>
+            </div>
+          </div>
+          <div eg-grid-column-drag-source 
+            drag-type="resize" column="{{col.name}}" 
+            class="eg-grid-column-resize-handle">&nbsp;</div>
+        </div>
+    </div>
+  </div>
+
+  <!-- Inline grid configuration row -->
+  <div class="eg-grid-row eg-grid-conf-row" ng-show="showGridConf">
+    <div class="eg-grid-cell eg-grid-cell-conf-header">
+      <div class="eg-grid-conf-cell-entry">[% l('Expand') %]</div>
+      <div class="eg-grid-conf-cell-entry">[% l('Shrink') %]</div>
+      <div class="eg-grid-conf-cell-entry" ng-if="!disableMultiSort">[% l('Sort') %]</div>
+    </div>
+    <div class="eg-grid-cell"
+      ng-repeat="col in columns"
+      style="flex:{{col.flex}}"
+      ng-show="col.visible">
+      <div class="eg-grid-conf-cell-entry">
+        <a href="" title="[% l('Make column wider') %]"
+          ng-click="modifyColumnFlex(col,1)">
+          <span class="glyphicon glyphicon-fast-forward"></span>
+        </a>
+      </div>
+      <div class="eg-grid-conf-cell-entry">
+        <a href="" title="[% l('Make column narrower') %]"
+          ng-click="modifyColumnFlex(col,-1)">
+          <span class="glyphicon glyphicon-fast-backward"></span>
+        </a>
+      </div>
+      <div class="eg-grid-conf-cell-entry" ng-if="!disableMultiSort">
+        <div ng-if="col.multisortable">
+          <input type='number' ng-model="col.sort"
+            title="[% l('Sort Priority / Direction') %]" style='width:2.3em'/>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="eg-grid-content-body">
+    <div ng-show="items.length == 0" 
+      class="alert alert-info">[% l('No Items To Display') %]</div>
+
+    <div class="eg-grid-row" 
+        id="eg-grid-row-{{$index + 1}}"
+        ng-repeat="item in items"
+        ng-show="items.length > 0"
+        ng-class="{'eg-grid-row-selected' : selected[indexValue(item)]}">
+      <div class="eg-grid-cell eg-grid-cell-stock"
+        ng-click="handleRowClick($event, item)" title="[% l('Row Index') %]">
+        <a href ng-show="gridControls.activateItem" 
+          ng-click="gridControls.activateItem(item)" style="font-weight:bold">
+          {{$index + offset() + 1}}
+        </a>
+        <div ng-hide="gridControls.activateItem">{{$index + offset() + 1}}</div>
+      </div>
+      <div class="eg-grid-cell eg-grid-cell-stock">
+        <!-- ng-click=handleRowClick here has unintended 
+             consequences and is unnecessary, avoid it -->
+        <div>
+          <input type='checkbox' title="[% l('Select Row') %]"
+            ng-model="selected[indexValue(item)]"/>
+        </div>
+      </div>
+      <div class="eg-grid-cell eg-grid-cell-content"
+          ng-click="handleRowClick($event, item)"
+          ng-dblclick="gridControls.activateItem(item)"
+          ng-repeat="col in columns"
+          style="flex:{{col.flex}}"
+          ng-show="col.visible">
+
+          <!-- if the cell comes with its own template,
+               translate that content into HTML and insert it here -->
+          <span ng-if="col.template" 
+            ng-bind-html="translateCellTemplate(col, item)">
+          </span>
+
+          <!-- otherwise, simply display the item value, which may 
+               pass through datatype-specific filtering. -->
+          <span ng-if="!col.template">
+            {{itemFieldValue(item, col) | egGridValueFilter:col}}
+          </span>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+

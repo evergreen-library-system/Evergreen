@@ -1,0 +1,11 @@
+<h3>[% l(
+  'Pertaining to [_1], [_2] [_3] : [_4]',
+  '{{note.usr.family_name}}',
+  '{{note.usr.first_given_name}}',
+  '{{note.usr.second_given_name}}',
+  '{{note.usr.card.barcode}}') %]</h3>
+
+<p>[% l('Created on [_1]', '{{note.create_date | date:"short"}}') %]</p>
+<b>{{note.title}}</b>
+<br/>
+<p>{{note.value}}</p>

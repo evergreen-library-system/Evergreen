@@ -1,0 +1,16 @@
+
+<div ng-show="bucket()">
+  <strong>[% l('Bucket: {{bucket().name()}}') %]</strong> 
+  <span>
+    <ng-pluralize count="bucketSvc.currentBucket.items().length"
+      when="{'one': '[% l("1 item") %]', 'other': '[% l("{} items") %]'}">
+    </ng-pluralize>
+  </span> 
+  <span> / [% l('Created {{bucket().create_time() | date}}') %]</span>
+  <span ng-show="bucket().description()"> / {{bucket().description()}}</span>
+</div>
+
+<div ng-show="!bucket()">
+  <strong>[% l('No Bucket Selected') %]</strong>
+</div>
+

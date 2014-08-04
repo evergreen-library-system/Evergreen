@@ -105,6 +105,19 @@ END; # FOREACH bib
             <td headers='copy_header_barcode' property="serialNumber">
                 [% copy_info.barcode | html -%]
                 [% IF ctx.is_staff %]
+                  [%- IF ctx.is_browser_staff %]
+                    <a target="_top" href="[% ctx.base_path %]/staff/cat/item/[% copy_info.id %]">[% l('view') %]</a>
+                    [% IF ctx.has_perm('UPDATE_COPY', copy_info.circ_lib) 
+                        OR ctx.has_perm('UPDATE_COPY', copy_info.call_number_owning_lib) %]
+                        <span> | </span>
+                        <!-- XXX: copy edit is not yet supported in browser client.
+                          Enable this link when available
+                        -->
+                        <!--
+                        <a href="[% ctx.base_path %]/staff/cat/item/[% copy_info.id %]/edit">[% l('edit') %]</a>
+                        -->
+                    [% END %]
+                  [% ELSE %]
                     <a onclick="xulG.new_tab(xulG.urls.XUL_COPY_STATUS, {}, {'from_item_details_new': true, 'barcodes': ['[%- copy_info.barcode | html | replace('\'', '\\\'') -%]']})"
                         href="javascript:;">[% l('view') %]</a>
                     [%# if the user can edit copies, show the copy edit link %]
@@ -116,6 +129,7 @@ END; # FOREACH bib
                             [% l(' edit') %]
                         </a>
                     [% END %]
+                  [% END %]
                 [% END %]
                 [%- IF attrs.gtin13;
                     '<meta property="gtin13" content="' _ attrs.gtin13 _ '" />';

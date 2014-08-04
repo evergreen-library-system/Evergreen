@@ -1,0 +1,34 @@
+<div class="container-fluid" style="text-align:center">
+  <div class="alert alert-info alert-less-pad strong-text-2">
+    <span>[% l('Pending Patrons') %]</span>
+  </div>
+</div>
+
+<span>[% l('Home Library: ' ) %]</span>
+<span><eg-org-selector selected="context_org"></eg-org-selector></span>
+<hr/>
+
+<eg-grid
+  id-field="id"
+  features="-sort,-multisort"
+  items-provider="grid_data_provider"
+  grid-controls="grid_controls"
+  persist-key="circ.pending_patrons.list">
+
+  <eg-grid-menu-item handler="load_patron" 
+    label="[% l('Load Patron') %]"></eg-grid-menu-item>
+
+  <eg-grid-field path='user.row_date' label="[% l('Create Date') %]"></eg-grid-field>
+  <eg-grid-field path='user.first_given_name' label="[% l('First Name') %]"></eg-grid-field>
+  <eg-grid-field path='user.second_given_name' label="[% l('Middle Name') %]"></eg-grid-field>
+  <eg-grid-field path='user.family_name' label="[% l('Last Name') %]"></eg-grid-field>
+  <eg-grid-field path='user.email' label="[% l('Email') %]"></eg-grid-field>
+  <eg-grid-field path='user.home_ou.shortname' label="[% l('Home Library') %]"></eg-grid-field>
+  <eg-grid-field path='mailing_address.street1' label="[% l('Street 1') %]"></eg-grid-field>
+  <eg-grid-field path='mailing_address.city' label="[% l('City') %]"></eg-grid-field>
+  <eg-grid-field path='mailing_address.post_code' label="[% l('Post Code') %]"></eg-grid-field>
+  <eg-grid-field path='user.usrname' label="[% l('Requested Username') %]"></eg-grid-field>
+  <eg-grid-field path='user.*' parent-idl-class="stgu" hidden></eg-grid-field>
+  <eg-grid-field path='mailing_address.*' parent-idl-class="stgma" hidden></eg-grid-field>
+</eg-grid>
+

@@ -1,0 +1,141 @@
+<!-- item renewal form / list -->
+
+<div class="container-fluid" style="text-align:center">
+  <div class="alert alert-info alert-less-pad strong-text-2">
+    [% l('Renew Items') %]
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-6">
+    <form ng-submit="renew(renewalArgs)" role="form" class="form-inline">
+      <div class="input-group">
+
+        <label class="input-group-addon" 
+          for="patron-renewal-barcode" >[% l('Barcode') %]</label>
+
+        <input focus-me="focusBarcode" class="form-control"
+          ng-model="renewalArgs.copy_barcode" 
+          id="patron-renewal-barcode" type="text"/> 
+
+        <input class="btn btn-default" type="submit" value="[% l('Submit') %]"/>
+      </div>
+    </form>
+  </div>
+  <div class="col-md-6">
+    <div class="flex-row">
+      <div class="flex-cell"></div>
+      <div class="checkbox pad-horiz">
+        <label>
+          <input type="checkbox" ng-model="renewalArgs.sticky_date"/>
+          [% l('Specific Due Date') %]
+        </label>
+      </div>
+      <!-- FIXME: This needs a time component as well, but type="datetime" 
+            is not yet supported by any browsers -->
+      <div><input eg-date-input class="form-control" ng-model="renewalArgs.due_date"/>
+      </div>
+    </div>
+  </div>
+</div>
+<hr/>
+
+<eg-grid
+  id-field="index"
+  features="-sort,-multisort"
+  items-provider="gridDataProvider"
+  grid-controls="gridControls"
+  persist-key="circ.renew">
+
+  <eg-grid-action 
+    handler="fetchLastCircPatron"
+    label="[% l('Retrieve Last Patron Who Circulated Item') %]">
+  </eg-grid-action>
+  <eg-grid-action 
+    handler="showLastFewCircs"
+    label="[% l('Show Last Few Circluations') %]">
+  </eg-grid-action>
+  <eg-grid-action divider="true"></eg-grid-action>
+  <eg-grid-action 
+    handler="showMarkDamaged"
+    label="[% l('Mark Items Damaged') %]">
+  </eg-grid-action>
+  <eg-grid-action divider="true"></eg-grid-action>
+  <eg-grid-action 
+    handler="abortTransit"
+    label="[% l('Abort Transits') %]">
+  </eg-grid-action>
+
+
+  <eg-grid-field label="[% l('Alert Msg') %]"   
+    path="acp.alert_message"></eg-grid-field>
+
+  <eg-grid-field label="[% l('Balance Owed') %]"     
+    path='mbts.balance_owed'></eg-grid-field>
+
+  <eg-grid-field label="[% l('Barcode') %]" path="acp_barcode">
+    <!-- FIXME: ng-if / ng-disabled not working since the contents 
+        are $interpolate'd and not $compile'd.
+        I want to hide / disable the href when there is no acp ID 
+    -->
+    <a href="./cat/item/{{item.acp.id()}}/summary" target="_self">
+      {{item.copy_barcode}}
+    </a>
+  </eg-grid-field>
+
+  <eg-grid-field label="[% l('Bill #') %]"     
+    path='circ.id'></eg-grid-field>
+
+  <eg-grid-field label="[% l('Call Number') %]" 
+    path="acn.label"></eg-grid-field>
+
+  <eg-grid-field label="[% l('Due Date') %]"    
+    path='circ.due_date' dateformat='short'></eg-grid-field>
+
+  <eg-grid-field label="[% l('Family Name') %]"    
+    path='au.family_name'></eg-grid-field>
+
+  <eg-grid-field label="[% l('Location') %]" 
+    path='acp.location.name'> </eg-grid-field>
+
+  <eg-grid-field label="[% l('Remaining Renewals') %]" 
+    path='circ.renewal_remaining'></eg-grid-field>
+
+  <eg-grid-field label="[% l('Title') %]" path="title">
+    <a target="_self" href="[% ctx.base_path %]/opac/record/{{record.doc_id()}}">
+      {{item.title}}
+    </a>
+  </eg-grid-field>
+
+  <eg-grid-field label="[% l('Author') %]"      
+    path="author" hidden></eg-grid-field>
+
+  <eg-grid-field path="circ.*" parent-idl-class="circ" hidden></eg-grid-field>
+  <eg-grid-field path="acp.*" parent-idl-class="acp" hidden></eg-grid-field>
+  <eg-grid-field path="acn.*" parent-idl-class="acn" hidden></eg-grid-field>
+  <eg-grid-field path="record.*" parent-idl-class="mvr" hidden></eg-grid-field>
+  <eg-grid-field path="mbts.*" parent-idl-class="mbts" hidden></eg-grid-field>
+  <eg-grid-field path="au.*" parent-idl-class="au" hidden></eg-grid-field>
+</eg-grid>
+
+<div class="flex-row pad-vert">
+  <div class="flex-cell"></div>
+  <div class="pad-horiz">
+    <button class="btn btn-default" 
+      ng-click="print_receipt()">[% l('Print Receipt') %]</button>
+  </div>
+  <div class="checkbox">
+    <label>
+      <input ng-model="trim_list" type="checkbox"/>
+      [% l('Trim List (20 Rows)') %]
+    </label>
+  </div>
+  <div class="pad-horiz"></div>
+  <div class="checkbox">
+    <label>
+      <input ng-model="strict_barcode" type="checkbox"/>
+      [% l('Strict Barcode') %]
+    </label>
+  </div>
+</div>
+

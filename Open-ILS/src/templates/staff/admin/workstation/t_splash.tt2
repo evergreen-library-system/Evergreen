@@ -1,0 +1,120 @@
+<br/>
+<style>
+  #admin-workstation-container .row {
+    margin-top: 5px;
+  }
+  #admin-workstation-container .new-entry {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 2px solid #F5F5F5;
+  }
+</style>
+
+<div class="container" id="admin-workstation-container">
+
+  <div class="row">
+    <div class="col-md-6">
+      <div class="checkbox">
+        <label>
+          <input type="checkbox" ng-class="{disabled : !userHasAdminPerm}"
+            ng-model="hatchRequired" ng-change="updateHatchRequired()">
+[% l('This workstation uses a remote print / storage service ("Hatch")?') %]
+        </label>
+      </div>
+    </div><!-- row -->
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <input type='text' class='form-control'  
+        ng-disabled="!hatchRequired || !userHasRegPerm"
+        title="[% l('Hatch URL') %]"
+        placeholder="[% l('Hatch URL') %]"
+        ng-change='updateHatchURL()' ng-model='hatchURL'/>
+    </div>
+  </div>
+
+  <div class="row new-entry">
+    <div class="col-md-6">
+      [% l('Workstations Registered With This Computer') %]
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <select class="form-control" ng-model="selectedWS">
+        <option ng-repeat="ws in workstations" value="{{ws}}"
+          ng-selected="ws == selectedWS">
+          {{getWSLabel(ws)}}
+        </option>
+      </select>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6">
+      <button class="btn btn-default" ng-click="useWS()">
+        [% l('Use Now') %]
+      </button>
+      <button class="btn btn-default" ng-click="setDefaultWS()">
+        [% l('Mark As Default') %]
+      </button>
+      <button class="btn btn-default btn-danger disabled">
+        [% l('Delete') %]
+      </button>
+    </div>
+  </div>
+
+  <div class="row new-entry">
+    <div class="col-md-6">
+      [% l('Register a New Workstation For This Computer') %]
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="input-group">
+        <div class="input-group-btn">
+          <eg-org-selector 
+            selected="contextOrg"
+            hidden-test="wsOrgHidden">
+          </eg-org-selector>
+        </div>
+        <input type='text' class='form-control'  
+          title="[% l('Workstation Name') %]"
+          placeholder="[% l('Workstation Name') %]"
+          ng-model='newWSName'/>
+        <div class="input-group-btn">
+          <button class="btn btn-default" ng-click="registerWS()">
+            [% l('Register') %]
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row new-entry">
+    <div class="col-md-6">
+      <span class="glyphicon glyphicon-print"></span>
+      <a target="_self" href="./admin/workstation/print/config">
+        [% l('Printer Settings') %]
+      </a>
+    </div>
+  </div>
+
+  <div class="row new-entry">
+    <div class="col-md-6">
+      <span class="glyphicon glyphicon-film"></span>
+      <a target="_self" href="./admin/workstation/print/templates">
+        [% l('Print Templates') %]
+      </a>
+    </div>
+  </div>
+
+  <div class="row new-entry">
+    <div class="col-md-6">
+      <span class="glyphicon glyphicon-info-sign"></span>
+      <a target="_self" href="./admin/workstation/stored_prefs">
+        [% l('Stored Preferences') %]
+      </a>
+    </div>
+  </div>
+
+</div>

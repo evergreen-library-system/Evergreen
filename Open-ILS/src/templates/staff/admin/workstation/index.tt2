@@ -1,0 +1,24 @@
+[%
+  WRAPPER "staff/base.tt2";
+  ctx.page_title = l("Workstation Administration"); 
+  ctx.page_app = "egWorkstationAdmin";
+%]
+
+[% BLOCK APP_JS %]
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/grid.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/ui.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/user.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/admin/workstation/app.js"></script>
+<script>
+angular.module('egCoreMod').run(['egStrings', function(s) {
+  s.PREFS_REMOVE_KEY_CONFIRM = 
+    '[% l('Delete content for key "[_1]"?', '{{deleteKey}}') %]';
+  s.DEFAULT_WS_LABEL = '[% l('[_1] (Default)', '{{ws}}') %]';
+  s.WS_EXISTS = '[% l("Workstation name already exists.  Use it anyway?") %]';
+}]);
+</script>
+[% END %]
+
+<div ng-view></div>
+
+[% END %]

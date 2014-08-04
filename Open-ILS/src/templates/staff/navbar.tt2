@@ -1,0 +1,244 @@
+<!-- 
+  main navigation bar
+    
+  note the use of target="_self" for navigation links.
+  this tells angular to treat the href as a new page 
+  and not an intra-app route.  This is necessary when
+  moving between applications.
+
+  For icons, see http://getbootstrap.com/components/#glyphicons
+-->
+
+<div id="top-navbar" role="navigation"
+  class="navbar navbar-default navbar-static-top" role="navigation">
+
+  <!-- navbar-header here needed for supporting angular-ui-bootstrap -->
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" 
+        ng-init="navCollapsed = true" ng-click="navCollapsed = !navCollapsed">
+      <span class="sr-only">[% l('Toggle navigation') %]</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+  </div>
+
+  <div class="navbar-collapse collapse" ng-class="!navCollapsed && 'in'">
+    <ul class="nav navbar-nav">
+      <li><a href='./' title="[% l('Home') %]" target="_self"
+        class="glyphicon glyphicon-home"></a><li>
+
+      <!-- search -->
+      <li class="dropdown">
+        <a href="javascript:;" class="dropdown-toggle"
+          data-toggle="dropdown">[% l('Search') %]
+          <b class="caret"></b>
+        </a>
+        <ul class="dropdown-menu">
+          <li>
+            <a href="./circ/patron/search" target="_self"
+              eg-accesskey="[% l('alt+s') %]" 
+              eg-accesskey-desc="[% l('Patron search by name, address, etc.') %]">
+              <span class="glyphicon glyphicon-user"></span>
+              <span eg-accesskey-label>[% l('Search for Patrons') %]</span>
+            </a>
+          </li>
+          <li>
+            <a href="./cat/item/search" target="_self">
+              <span class="glyphicon glyphicon-barcode"></span>
+              <span>[% l('Search for Copies by Barcode') %]</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+
+
+      <!-- circulation -->
+      <li class="dropdown">
+        <a href="javascript:;" class="dropdown-toggle"
+          data-toggle="dropdown">[% l('Circulation') %]
+          <b class="caret"></b>
+        </a>
+
+        <ul class="dropdown-menu">
+          <li>
+            <a href="./circ/patron/bcsearch" target="_self">
+              <span class="glyphicon glyphicon-export"></span>
+              [% l('Check Out') %]
+            </a>
+          </li>
+          <li>
+            <a href="./circ/checkin/checkin" target="_self">
+              <span class="glyphicon glyphicon-import"></span>
+              [% l('Check In') %]
+            </a>
+          </li>
+          <li>
+            <a href="./circ/checkin/capture" target="_self">
+              <span class="glyphicon glyphicon-pushpin"></span>
+              [% l('Capture Holds') %]
+            </a>
+          </li>
+          <li>
+            <a href="./circ/holds/pull" target="_self">
+              <span class="glyphicon glyphicon-th-list"></span>
+              [% l('Pull List for Hold Requests') %]
+            </a>
+          </li>
+          <li>
+            <a href="./circ/renew/renew" target="_self">
+              <span class="glyphicon glyphicon-refresh"></span>
+              [% l('Renew Items') %]
+            </a>
+          </li>
+          <li>
+            <a href="./circ/patron/register" target="_self">
+              <span class="glyphicon glyphicon-user"></span>
+              [% l('Register Patron') %]
+            </a>
+          </li>
+          <li>
+            <a href="./circ/patron/last" target="_self">
+              <span class="glyphicon glyphicon-share-alt"></span>
+              [% l('Retrieve Last Patron') %]
+            </a>
+          </li>
+          <li>
+            <a href="./circ/patron/pending/list" target="_self">
+              <span class="glyphicon glyphicon-thumbs-up"></span>
+              [% l('Pending Patrons') %]
+            </a>
+          </li>
+          <li class="divider"></li>
+          <li>
+            <a href="./circ/patron/credentials" target="_self">
+              <span class="glyphicon glyphicon-ok"></span>
+              <span>[% l('Verify Credentials') %]</span>
+            </a>
+          </li>
+          <li>
+            <a href="./circ/in_house_use/index" target="_self">
+              <span class="glyphicon glyphicon-pencil"></span>
+              <span>[% l('Record In-House Use') %]</span>
+            </a>
+          </li>
+          <li>
+            <a href="./circ/holds/shelf" target="_self">
+              <span class="glyphicon glyphicon-tasks"></span>
+              <span>[% l('Holds Shelf') %]</span>
+            </a>
+          </li>
+          <li class="divider"></li>
+          <li>
+            <a href="./cat/item/replace_barcode/index" target="_self">
+              <span class="glyphicon glyphicon-barcode"></span>
+              <span>[% l('Replace Barcode') %]</span>
+            </a>
+          </li>
+          <li>
+            <a href="./cat/item/missing_pieces" target="_self">
+              <span class="glyphicon glyphicon-th"></span>
+              <span>[% l('Scan Item as Missing Pieces') %]</span>
+            </a>
+          </li>
+        </ul>
+      </li><!-- circ -->
+
+      <!-- cataloging -->
+      <li class="dropdown">
+        <a href="javascript:;" class="dropdown-toggle" 
+          data-toggle="dropdown">[% l('Cataloging') %]
+            <b class="caret"></b>
+        </a>
+        <ul class="dropdown-menu">
+          <li>
+            <a href="./cat/catalog/index" target="_self">
+              <span class="glyphicon glyphicon-search"></span>
+              [% l('Search the Catalog') %]
+            </a>
+          </li>
+          <li>
+            <a href="./cat/bucket/record/view" target="_self">
+              <span class="glyphicon glyphicon-list-alt"></span>
+              [% l('Record Buckets') %]
+            </a>
+          </li>
+       </ul>
+      </li>
+
+      <!-- admin -->
+      <li class="dropdown">
+        <a href="javascript:;" class="dropdown-toggle" 
+          data-toggle="dropdown">[% l('Administration') %]
+            <b class="caret"></b>
+        </a>
+        <ul class="dropdown-menu">
+          <li>
+            <a href="./admin/workstation/index" target="_self">
+              <span class="glyphicon glyphicon-hdd"></span>
+              [% l('Workstation') %]
+            </a>
+          </li>
+          <li>
+            <a href="./admin/user_perms" target="_self">
+              <span class="glyphicon glyphicon-user"></span>
+              [% l('User Permission Editor') %]
+            </a>
+          </li>
+        </ul> <!-- admin dropdown -->
+      </li>
+    </ul> <!-- end left side entries -->
+
+    <!-- entries along the right side of the navbar -->
+    <ul class="nav navbar-nav navbar-right" style='margin-right: 6px;'>
+      <li>
+        <a ng-cloak ng-show="username" 
+          ng-init="workstation = '[% l('<no workstation>') %]'">
+            [% l('{{username}} @ {{workstation}}') %]
+        </a>
+      </li>
+
+      <!-- locale selector.  
+        only shown if multiple locales are registered -->
+      [% IF ctx.locales.keys.size > 1 %]
+      <li class="dropdown">
+        <a href='' class="dropdown-toggle" data-toggle="dropdown">
+            [% lcl = ctx.locale;  ctx.locales.$lcl %]
+            <span class="glyphicon glyphicon-flag"></span>
+        </a>
+        <ul class="dropdown-menu">
+        [% FOR locale IN ctx.locales.keys.sort %]
+          <!-- disable the selected locale -->
+          <li ng-class="{disabled : '[% ctx.locale %]'=='[% locale %]'}">
+            <a href="" ng-click="applyLocale('[% locale %]')">
+                [% ctx.locales.$locale %]
+            </a>
+          </li>
+        [% END %]
+        </ul>
+      </li>
+      [% END %]
+
+      <li class="dropdown" ng-show="username">
+        <a href='' class="dropdown-toggle glyphicon glyphicon-list" 
+          data-toggle="dropdown"></a>
+        <ul class="dropdown-menu">
+          <li class="disabled">
+            <a href="" ng-click="" target="_self">
+              <span class="glyphicon glyphicon-random"></span>
+              [% l('Change Operator') %]
+            </a>
+          </li>
+          <li>
+            <a href="./login" ng-click="logout()" target="_self">
+              <span class="glyphicon glyphicon-log-out"></span>
+              [% l('Log Out') %]
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</div>
+
+

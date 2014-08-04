@@ -1,0 +1,5 @@
+Location for globally shared template files.  These are generally used 
+by AngularJS directives.
+
+App-specific shared templates should live within the application's
+directory.

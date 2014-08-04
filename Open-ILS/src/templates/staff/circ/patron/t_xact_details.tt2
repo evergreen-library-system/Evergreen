@@ -1,0 +1,144 @@
+<h3>[% l('Transaction #[_1]', '{{xact.id()}}') %]</h3>
+
+<div class="row">
+  <div class="col-md-2 strong-text">[% l('Billing Location') %]</div>
+  <div class="col-md-2">{{xact.billing_location().shortname()}}</div>
+  <div class="col-md-2 strong-text">[% l('Total Billed') %]</div>
+  <div class="col-md-2">{{xact.summary().total_owed() | currency}}</div>
+  <div class="col-md-2 strong-text">[% l('Title') %]</div>
+  <div class="col-md-2">
+    <a ng-if="title_id" href="[% ctx.base_path %]/opac/record/{{title_id}}">{{title}}</a>
+    <span ng-if="!title_id">{{title}}</span>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-2 strong-text">[% l('Type') %]</div>
+  <div class="col-md-2">{{xact.summary().xact_type()}}</div>
+  <div class="col-md-2 strong-text">[% l('Total Paid') %]</div>
+  <div class="col-md-2">{{xact.summary().total_paid() | currency}}</div>
+  <div class="col-md-2 strong-text">[% l('Checked Out') %]</div>
+  <div class="col-md-2">{{xact.circulation().xact_start() | date:'short'}}</div>
+</div>
+<div class="row">
+  <div class="col-md-2 strong-text">[% l('Start') %]</div>
+  <div class="col-md-2">{{xact.xact_start() | date:'short'}}</div>
+  <div class="col-md-2 strong-text">[% l('Total Billed') %]</div>
+  <div class="col-md-2">{{xact.summary().balance_owed() | currency}}</div>
+  <div class="col-md-2 strong-text">[% l('Due Date') %]</div>
+  <div class="col-md-2">{{xact.circulation().due_date() | date:'short'}}</div>
+</div>
+<div class="row">
+  <div class="col-md-2 strong-text">[% l('Finish') %]</div>
+  <div class="col-md-2">{{xact.xact_finish() | date:'short'}}</div>
+  <div class="col-md-2 strong-text">[% l('Renewal?') %]</div>
+  <div class="col-md-2">
+    <span ng-if="xact.circulation.desk_renewal == 't'">[% l('Desk') %]</span>
+    <span ng-if="xact.circulation.phone_renewal == 't'">[% l('Phone') %]</span>
+    <span ng-if="xact.circulation.opac_renewal == 't'">[% l('OPAC') %]</span>
+  </div>
+  <div class="col-md-2 strong-text">[% l('Checked In') %]</div>
+  <div class="col-md-2">{{xact.circulation().checkin_time() | date:'short'}}</div>
+</div>
+
+<div ng-if="xact.circulation()">
+  <hr/>
+  <h3>[% l('Item Summary') %]</h3>
+  <div class="row">
+    <div class="col-md-2 strong-text">[% l('Barcode') %]</div>
+    <div class="col-md-2">
+      <a title="[% l('Item Details') %]" target="_self"
+        href='./cat/item/{{xact.circulation().target_copy().id()}}'>
+        {{xact.circulation().target_copy().barcode()}}
+      </a>
+    </div>
+    <div class="col-md-2 strong-text">[% l('Location') %]</div>
+    <div class="col-md-2">
+      {{xact.circulation().target_copy().location().name()}}
+    </div>
+    <div class="col-md-2 strong-text">[% l('Call Number') %]</div>
+    <div class="col-md-2">
+      {{xact.circulation().target_copy().call_number().label()}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-2 strong-text">[% l('Status') %]</div>
+    <div class="col-md-2">
+      {{xact.circulation().target_copy().status().name()}}
+    </div>
+    <div class="col-md-2 strong-text">[% l('Circulate') %]</div>
+    <div class="col-md-2">
+      {{xact.circulation().target_copy().circulate() == 't'}}
+    </div>
+    <div class="col-md-2 strong-text">[% l('Reference') %]</div>
+    <div class="col-md-2">
+      {{xact.circulation().target_copy().ref() == 't'}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-2 strong-text">[% l('Holdable') %]</div>
+    <div class="col-md-2">
+      {{xact.circulation().target_copy().holdable() == 't'}}
+    </div>
+    <div class="col-md-2 strong-text">[% l('OPAC Visible') %]</div>
+    <div class="col-md-2">
+      {{xact.circulation().target_copy().opac_visible() == 't'}}
+    </div>
+
+    <div class="col-md-2 strong-text">[% l('Created') %]</div>
+    <div class="col-md-2">
+      {{xact.circulation().target_copy().create_date() | date:'short'}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-2 strong-text">[% l('Edited') %]</div>
+    <div class="col-md-2">
+      {{xact.circulation().target_copy().edit_date() | date:'short'}}
+    </div>
+    <div class="col-md-2 strong-text">[% l('Age Protect') %]</div>
+    <div class="col-md-2">
+      {{xact.circulation().target_copy().age_protect().name()}}
+    </div>
+    <div class="col-md-2 strong-text">[% l('Total Circulations') %]</div>
+    <div class="col-md-2">
+      TODO
+    </div>
+  </div>
+</div>
+
+
+<!-- set a lower default page size (limit) to allow for more space -->
+<hr/>
+<eg-grid
+  main-label="[% l('Bills') %]"
+  idl-class="mb"
+  id-field="id"
+  grid-controls="xactGridControls"
+  auto-fields="true"
+  page-size="10">
+
+  <eg-grid-action 
+    label="[% l('Void Billings') %]" handler="voidBillings"></eg-grid-action>
+
+  <eg-grid-action 
+    label="[% l('Edit Note') %]" handler="editBillNotes"></eg-grid-action>
+
+</eg-grid>
+
+<!-- TODO: this grid may contain objects (payments) of different types.. 
+    apply manual columns, see xul -->
+<!-- NOTE: sorting disabled since payments are fetched via non-sortable API -->
+<br/>
+<eg-grid
+  main-label="[% l('Payments') %]"
+  idl-class="mp"
+  id-field="id"
+  auto-fields="true"
+  grid-controls="paymentGridControls"
+  page-size="10">
+  <eg-grid-action 
+    label="[% l('Edit Note') %]" handler="editPaymentNotes"></eg-grid-action>
+
+  <eg-grid-field path="cash_payment.cash_drawer.name" 
+    label="[% l('Cash Drawer') %]"></eg-grid-field>
+</eg-grid>
+

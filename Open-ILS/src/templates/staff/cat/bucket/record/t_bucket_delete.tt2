@@ -1,0 +1,16 @@
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" 
+        ng-click="cancel()" aria-hidden="true">&times;</button>
+      <h4 class="modal-title">[% l('Confirm Bucket Delete') %]</h4>
+    </div>
+    <div class="modal-body">
+      <p>[% l('Delete bucket {{bucket().name()}}?') %]</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" ng-click="ok()">[% l('Delete Bucket') %]</button>
+      <button class="btn btn-warning" ng-click="cancel()">[% l('Cancel') %]</button>
+    </div>
+  </div> <!-- modal-content -->
+</div> <!-- modal-dialog -->

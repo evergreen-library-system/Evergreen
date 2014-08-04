@@ -1,0 +1,75 @@
+<div>
+
+  <!-- FIXME: move image file -->
+  <img src='/xul/server/skin/media/images/stop_sign.png'>
+
+  <div class="alert alert-info" ng-if="patron_stats().holds.ready > 0">
+    [% l('Holds available: [_1]', '{{patron_stats().holds.ready}}') %]
+  </div>
+
+  <div class="alert alert-warning" ng-if="patronExpired">
+    [% l('Patron account is EXPIRED.') %]
+  </div>
+
+  <div class="alert alert-warning" ng-if="patronExpiresSoon">
+    [% l('Patron account will expire soon.  Please renew.') %]
+  </div>
+
+  <div class="alert alert-warning" ng-if="patron().barred() == 't'">
+    [% l('Patron account is BARRED') %]
+  </div>
+
+  <div class="alert alert-warning" ng-if="patron().active() == 'f'">
+    [% l('Patron account is INACTIVE') %]
+  </div>
+
+  <div class="alert alert-warning" ng-if="retrievedWithInactive">
+    [% l('Patron account retrieved with an INACTIVE card.') %]
+  </div>
+
+  <!-- alert message -->
+  <div class="row" ng-if="patron().alert_message()">
+    <div class="col-md-12">
+      <div class="panel panel-warning">
+        <div class="panel-heading">
+          <div class="panel-title text-center">[% l('Alert Message') %]</div>
+        </div>
+        <div class="panel-body">
+          {{patron().alert_message()}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- penalties -->
+  <div class="row" ng-if="alert_penalties().length">
+    <div class="col-md-12">
+      <div class="panel panel-warning">
+        <div class="panel-heading">
+          <div class="panel-title text-center">[% l('Penalties') %]</div>
+        </div>
+        <div class="panel-body">
+          <div class="row" 
+            ng-repeat="penalty in alert_penalties()">
+            <div class="col-md-2">
+              {{penalty.org_unit().shortname()}}
+            </div>
+            <div class="col-md-8"
+              title="{{penalty.standing_penalty().name()}}">
+              {{penalty.standing_penalty().label()}}
+              <div>{{penalty.note()}}</div><!-- force newline -->
+            </div>
+            <div class="col-md-2">
+              {{penalty.set_date() | date:'shortDate'}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <br/>
+  <div class="well">
+[% l('Press a navigation button above (for example, Check Out) to clear this alert.') %]
+  </div>
+</div>

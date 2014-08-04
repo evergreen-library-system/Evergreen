@@ -1,0 +1,178 @@
+<style>
+/* FIXME: move me */
+#item-status-alert-msg {
+  flex:7; /* fill the remaining horizontal space */
+}
+</style>
+
+<div class="">
+
+  <div class="flex-row">
+    <div class="flex-cell">[% l('Barcode') %]</div>
+    <div class="flex-cell well">{{copy.barcode()}}</div>
+
+    <div class="flex-cell">[% l('Circ Library') %]</div>
+    <div class="flex-cell well">{{copy.circ_lib().shortname()}}</div>
+
+    <div class="flex-cell">[% l('Call # Prefix') %]</div>
+    <div class="flex-cell well">
+      {{copy.call_number().prefix().label()}}
+    </div>
+
+    <div class="flex-cell">[% l('Status') %]</div>
+    <div class="flex-cell well">{{copy.status().name()}}</div>
+  </div>
+
+  <div class="flex-row">
+    <div class="flex-cell">[% l('Price') %]</div>
+    <div class="flex-cell well">{{copy.price()}}</div>
+
+    <div class="flex-cell">[% l('Owning Library') %]</div>
+    <div class="flex-cell well">{{copy.circ_lib().shortname()}}</div>
+
+    <div class="flex-cell">[% l('Call #') %]</div>
+    <div class="flex-cell well">{{copy.call_number().label()}}</div>
+
+    <div class="flex-cell">[% l('Due Date') %]</div>
+    <div class="flex-cell well">{{circ.due_date() | date:'short'}}</div>
+  </div>
+
+  <div class="flex-row">
+    <div class="flex-cell">[% l('ISBN') %]</div>
+    <div class="flex-cell well">
+      {{copy.call_number().record().simple_record().isbn()}}
+    </div>
+
+    <div class="flex-cell">[% l('Copy Location') %]</div>
+    <div class="flex-cell well">{{copy.location().name()}}</div>
+
+    <div class="flex-cell">[% l('Call # Suffix') %]</div>
+    <div class="flex-cell well">
+      {{copy.call_number().suffix().label()}}
+    </div>
+
+    <div class="flex-cell">[% l('Checkout Date') %]</div>
+    <div class="flex-cell well">{{circ.xact_start() | date:'short'}}</div>
+  </div>
+
+  <div class="flex-row">
+    <div class="flex-cell">[% l('Date Created') %]</div>
+    <div class="flex-cell well">{{copy.create_date() | date:'short'}}</div>
+
+    <div class="flex-cell">[% l('Loan Duration') %]</div>
+    <div class="flex-cell well">{{circ.duration()}}</div>
+
+    <div class="flex-cell">[% l('Renewal Type') %]</div>
+    <div class="flex-cell well">
+      <div ng-if="circ.opac_renewal() == 't'">[% l('OPAC') %]</div>
+      <div ng-if="circ.desk_renewal() == 't'">[% l('Desk') %]</div>
+      <div ng-if="circ.phone_renewal() == 't'">[% l('Phone') %]</div>
+    </div>
+
+    <div class="flex-cell">[% l('Checkout Workstation') %]</div>
+    <div class="flex-cell well">{{circ.workstation().name()}}</div>
+  </div>
+
+  <div class="flex-row">
+    <div class="flex-cell">[% l('Date Active') %]</div>
+    <div class="flex-cell well">{{copy.active_date() | date:'short'}}</div>
+
+    <div class="flex-cell">[% l('Fine Level') %]</div>
+    <div class="flex-cell well">{{circ.duration_rule().name()}}</div>
+
+    <div class="flex-cell">[% l('Total Circs') %]</div>
+    <div class="flex-cell well">{{total_circs}}</div>
+
+    <div class="flex-cell">[% l('Duration Rule') %]</div>
+    <div class="flex-cell well">{{circ.duration_rule().name()}}</div>
+  </div>
+
+  <div class="flex-row">
+    <div class="flex-cell">[% l('Status Changed') %]</div>
+    <div class="flex-cell well">{{copy.status_changed_time() | date:'short'}}</div>
+
+    <div class="flex-cell">[% l('Reference') %]</div>
+    <div class="flex-cell well">{{copy.ref()}}</div>
+
+    <div class="flex-cell">[% l('Total Circs - Current Year') %]</div>
+    <div class="flex-cell well">{{total_circs_this_year}}</div>
+
+    <div class="flex-cell">[% l('Recurring Fine Rule') %]</div>
+    <div class="flex-cell well">{{circ.recurring_fine_rule().name()}}</div>
+  </div>
+
+  <div class="flex-row">
+    <div class="flex-cell">[% l('Copy ID') %]</div>
+    <div class="flex-cell well">{{copy.id()}}</div>
+
+    <div class="flex-cell">[% l('OPAC Visible') %]</div>
+    <div class="flex-cell well">{{copy.opac_visible()}}</div>
+
+    <div class="flex-cell">[% l('Total Circs - Prev Year') %]</div>
+    <div class="flex-cell well">{{total_circs_prev_year}}</div>
+
+    <div class="flex-cell">[% l('Max Fine Rule') %]</div>
+    <div class="flex-cell well">{{circ.max_fine_rule().name()}}</div>
+  </div>
+
+  <div class="flex-row">
+    <div class="flex-cell">[% l('TCN') %]</div>
+    <div class="flex-cell well">{{copy.call_number().record().tcn_value()}}</div>
+
+    <div class="flex-cell">[% l('Holdable') %]</div>
+    <div class="flex-cell well">{{copy.opac_visible()}}</div>
+
+    <div class="flex-cell">[% l('Renewal Workstation') %]</div>
+    <div class="flex-cell well">{{circ_summary.last_renewal_workstation()}}</div>
+
+    <div class="flex-cell">[% l('Checkin Time') %]</div>
+    <div class="flex-cell well">
+      {{circ.checkin_time() || 
+        circ_summary.last_checkin_time() | date:'short'}}
+    </div>
+  </div>
+
+  <div class="flex-row">
+    <div class="flex-cell">[% l('Floating') %]</div>
+    <div class="flex-cell well">{{copy.floating()}}</div>
+
+    <div class="flex-cell">[% l('Circulate') %]</div>
+    <div class="flex-cell well">{{copy.circulate()}}</div>
+
+    <div class="flex-cell">[% l('Remaining Renewals') %]</div>
+    <div class="flex-cell well">{{circ.renewal_remaining()}}</div>
+
+    <div class="flex-cell">[% l('Checkin Scan Time') %]</div>
+    <div class="flex-cell well">
+      {{circ.checkin_scan_time() || 
+        circ_summary.last_checkin_scan_time() | date:'short'}}
+    </div>
+  </div>
+
+  <div class="flex-row">
+    <!-- empty -->
+    <div class="flex-cell"></div>
+    <div class="flex-cell"></div>
+
+    <div class="flex-cell">[% l('Circ Modifier') %]</div>
+    <div class="flex-cell well">{{copy.circ_modifier().name()}}</div>
+
+    <!-- empty -->
+    <div class="flex-cell"></div>
+    <div class="flex-cell"></div>
+
+    <div class="flex-cell">[% l('Checkin Workstation') %]</div>
+    <div class="flex-cell well">
+      {{circ.checkin_workstation().name() || 
+        circ_summary.last_checkin_workstation().name()}}
+    </div>
+  </div>
+
+  <div class="flex-row">
+    <div class="flex-cell">[% l('Alert Message') %]</div>
+    <div id="item-status-alert-msg" class="well">
+      {{copy.alert_message()}}
+    </div>
+  </div>
+
+</div>

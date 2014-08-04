@@ -1,0 +1,83 @@
+[%
+  WRAPPER "staff/base.tt2";
+  ctx.page_title = l("Item Status"); 
+  ctx.page_app = "egItemStatus";
+  ctx.page_ctrl = "SearchCtrl";
+%]
+
+[% BLOCK APP_JS %]
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/grid.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/ui.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/file.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/eframe.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/cat/item/app.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/cat/services/record.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/services/billing.js"></script>
+[% END %]
+
+<style>
+  /* FIXME: MOVE ME */
+  #item-status-barcode {width: 16em;}
+  #item-status-form { 
+    margin-bottom: 20px; 
+  }
+</style>
+
+<h1 class="sr-only">[% l('Item Status Display') %]</h1>
+
+<h2>[% l('Scan Item') %]</h2>
+
+<form id="item-status-form" ng-submit="context.search(args)" role="form">
+  <!-- the upload button drops down to the line below when it sits in the
+    same col-md-x as the text input and submit.  avoid by using a flex-row -->
+  <div class="flex-row">
+    <div class="input-group">
+      <input type="text" id="item-status-barcode" class="form-control"
+        select-me="context.selectBarcode" ng-model="args.barcode">
+      <input class="btn btn-default" 
+        type="submit" value="[% l('Submit') %]"/>
+    </div>
+    <!-- give the upload container div some padding to prevent force the
+        upload widget into the vertical middle of the row -->
+    <div class="btn-pad" style="padding:4px;">
+      <div class="flex-row">
+        <div class="strong-text">[% l('OR') %]</div>
+        <div class="btn-pad">
+          <input type="file" eg-file-reader 
+            container="barcodesFromFile" value="[% l('Upload from File') %]">
+        </div>
+      </div>
+    </div>
+    <div class="flex-cell"></div><!-- force the final divs to the right -->
+    <div>
+      <button class="btn btn-default" ng-click="toggleView($event)">
+        <span ng-show="context.page == 'list'">[% l('Detail View') %]</span>
+        <span ng-show="context.page == 'detail'">[% l('List View') %]</span>
+      </button>
+    </div>
+    <!--
+    <div class="btn-group btn-pad" dropdown>
+      <button type="button" class="btn btn-default dropdown-toggle">
+        [% l('Actions for Catalogers') %]<span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" role="menu">
+      </ul>
+    </div>
+    -->
+  </div><!-- flex row -->
+</form>
+
+
+<div class="row">
+  <div class="col-md-6">
+    <div ng-show="context.itemNotFound" class="alert alert-danger">
+      [% l('Item Not Found') %]
+    </div>
+  </div>
+</div>
+
+<div ng-view></div>
+
+[% END %]
+
+

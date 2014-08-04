@@ -1,0 +1,57 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-3"></div><!-- offset? -->
+      <div class="col-md-6">
+        <fieldset>
+          <legend>[% l('Sign In') %]</legend>
+          <!-- 
+            login() hangs off the page $scope.
+            Values entered by the user are put into 'args', 
+            which is is autovivicated if needed.
+            The input IDs are there to match the labels.  
+            They are not referenced in the Login controller.
+          -->
+          <form ng-submit="login(args)" name="login-form" class="form-horizontal" role="form">
+            <div class="form-group">
+              <label class="col-md-4 control-label" for="login-username">[% l('Username') %]</label>
+              <div class="col-md-8">
+                <input type="text" id="login-username" class="form-control" 
+                  focus-me="focusMe" select-me="focusMe"
+                  placeholder="Username" ng-model="args.username"/>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-md-4 control-label" for="login-password">[% l('Password') %]</label>
+              <div class="col-md-8">
+                <input type="password" id="login-password" class="form-control"
+                  placeholder="Password" ng-model="args.password"/>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-md-4 control-label" 
+                for="login-workstation">[% l('Workstation') %]</label>
+              <div class="col-md-8">
+                <select class="form-control" ng-model="args.workstation"
+                  ng-options="ws for ws in workstations">
+                  <option>[% l('Select Workstation') %]</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="col-md-offset-4 col-md-2">
+                <button type="submit" class="btn btn-default">[% l('Sign in') %]</button>
+              </div>
+              <div class="col-md-2">
+                <span ng-show="loginFailed" class="label label-warning">[% l('Login Failed') %]</span>
+              </div>
+            </div>
+
+          </form>
+        </fieldset>
+      </div>
+    <div class="col-md-3"></div><!-- offset? -->
+  </div>
+</div>

@@ -1,0 +1,2 @@
+[% USE CGI %]
+[% l('Print Template Not Found: [_1]', CGI.url("-path",1,"-relative",1)) %]

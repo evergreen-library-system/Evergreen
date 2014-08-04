@@ -1,0 +1,51 @@
+<form ng-submit="ok(args)" role="form">
+    <div class="modal-header">
+      <button type="button" class="close" ng-click="cancel()" 
+        aria-hidden="true">&times;</button>
+      <h4 class="modal-title">[% l('Create a new note') %]</h4>
+    </div>
+    <div class="modal-body">
+      <div class="form-group row">
+        <div class="col-md-3">
+          <label for="note-pub">[% l('Patron Visible?') %]</label>
+        </div>
+        <div class="col-md-9">
+          <input type="checkbox" class="checkbox" 
+            id="note-pub" ng-model="args.pub"/>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-md-3">
+          <label for="note-slip">[% l('Print on Slip?') %]</label>
+        </div>
+        <div class="col-md-9">
+          <input type="checkbox" class="checkbox" 
+            id="note-slip" ng-model="args.slip"/>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-md-3">
+          <label for="note-title">[% l('Title') %]</label>
+        </div>
+        <div class="col-md-9">
+          <input type="text" class="form-control" focus-me='focusNote' required
+            id="note-title" ng-model="args.title" placeholder="[% l('Title...') %]"/>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-md-3">
+          <label for="note-body">[% l('Note Body') %]</label>
+        </div>
+        <div class="col-md-9">
+          <textarea class="form-control" required
+            id="note-body" ng-model="args.body" placeholder="[% l('Note Body...') %]">
+          </textarea>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <input type="submit" class="btn btn-primary" value="[% l('OK') %]"/>
+      <button class="btn btn-warning" ng-click="cancel($event)">[% l('Cancel') %]</button>
+    </div>
+  </div> <!-- modal-content -->
+</form>

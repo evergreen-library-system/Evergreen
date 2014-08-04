@@ -1,0 +1,34 @@
+<eg-record-summary record="summaryRecord"></eg-record-summary>
+
+<!-- tabbed copy data view -->
+
+<div class="pad-vert"></div>
+
+<ul class="nav nav-tabs">
+  <li ng-class="{active : tab == 'summary'}">
+    <a href="./cat/item/{{copy.id()}}">[% l('Quick Summary') %]</a>
+  </li>
+  <li ng-class="{active : tab == 'circs'}">
+    <a href="./cat/item/{{copy.id()}}/circs">[% l('Recent Circ History') %]</a>
+  </li>
+  <li ng-class="{active : tab == 'circ_list'}">
+    <a href="./cat/item/{{copy.id()}}/circ_list">[% l('Circ History List') %]</a>
+  </li>
+  <li ng-class="{active : tab == 'holds'}">
+    <a href="./cat/item/{{copy.id()}}/holds">[% l('Holds / Transit') %]</a>
+  </li>
+  <li ng-class="{active : tab == 'cat'}">
+    <a href="./cat/item/{{copy.id()}}/cat">[% l('Cataloging Info') %]</a>
+  </li>
+  <li ng-class="{active : tab == 'triggered_events'}">
+    <a href="./cat/item/{{copy.id()}}/triggered_events">[% l('Triggered Events') %]</a>
+  </li>
+</ul>
+<div class="tab-content">
+  <div class="tab-pane active">
+    <div ng-if="tab.length">
+      <div ng-include="'[% ctx.base_path %]/staff/cat/item/t_'+tab+'_pane'"></div>
+    </div>
+  </div>
+</div>
+

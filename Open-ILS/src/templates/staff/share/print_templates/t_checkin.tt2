@@ -1,0 +1,17 @@
+<div>
+  <div>[% l('Welcome to [_1]', '{{current_location.name}}') %]</div>
+  <div>[% l('You checked in the following items:') %]</div>
+  <hr/>
+  <ol>
+    <li ng-repeat="checkin in checkins">
+      <div>{{checkin.title}}</div>
+      <span>[% l('Barcode: ') %]</span>
+      <span>{{checkin.copy_barcode}}</span>
+      <span>[% l('Call Number: ') %]</span>
+      <span>{{checkin.call_number.label || "[% l("Not Cataloged") %]"}}</span>
+    </li>
+  </ol>
+  <hr/>
+  <div>{{current_location.shortname}} {{today | date:'short'}}</div>
+  <br/>
+</div>
