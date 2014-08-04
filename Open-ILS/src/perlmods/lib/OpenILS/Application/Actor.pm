@@ -1317,9 +1317,30 @@ __PACKAGE__->register_method(
     method   => "patron_adv_search",
     api_name => "open-ils.actor.patron.search.advanced"
 );
+
+__PACKAGE__->register_method(
+    method   => "patron_adv_search",
+    api_name => "open-ils.actor.patron.search.advanced.fleshed",
+    stream => 1,
+    # TODO: change when opensrf 'bundling' is merged.
+    # set a relatively small bundle size so the caller can start
+    # seeing results fairly quickly
+    max_chunk_size => 4096, # bundling
+
+    # api_level => 2, 
+    # pending opensrf work -- also, not sure if needed since we're not
+    # actaully creating an alternate vesrion, only offering to return a
+    # different format.
+    #
+    signature => {
+        desc => q/Returns a stream of fleshed user objects instead of
+            a pile of identifiers/
+    }
+);
+
 sub patron_adv_search {
-    my( $self, $client, $auth, $search_hash, 
-        $search_limit, $search_sort, $include_inactive, $search_ou ) = @_;
+    my( $self, $client, $auth, $search_hash, $search_limit, 
+        $search_sort, $include_inactive, $search_ou, $flesh_fields, $offset) = @_;
 
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
@@ -1341,9 +1362,17 @@ sub patron_adv_search {
             );
         }
     }
-    return $U->storagereq(
+
+    my $ids = $U->storagereq(
         "open-ils.storage.actor.user.crazy_search", $search_hash, 
-            $search_limit, $search_sort, $include_inactive, $e->requestor->ws_ou, $search_ou, $opt_boundary);
+        $search_limit, $search_sort, $include_inactive, 
+        $e->requestor->ws_ou, $search_ou, $opt_boundary, $offset);
+
+    return $ids unless $self->api_name =~ /fleshed/;
+
+    $client->respond(new_flesh_user($_, $flesh_fields, $e)) for @$ids;
+
+    return;
 }
 
 
