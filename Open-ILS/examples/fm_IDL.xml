@@ -1383,7 +1383,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</permacrud>
 	</class>
 
-	<class id="aws" controller="open-ils.cstore" oils_obj:fieldmapper="actor::workstation" oils_persist:tablename="actor.workstation" reporter:label="Workstation">
+	<class id="aws" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::workstation" oils_persist:tablename="actor.workstation" reporter:label="Workstation">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.workstation_id_seq">
 			<field reporter:label="Workstation ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Workstation Name" name="name" reporter:datatype="text"/>
@@ -1396,6 +1396,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="toolbars" reltype="has_many" key="ws" map="" class="atb"/>
 			<link field="circulations" reltype="has_many" key="workstation" map="" class="circ"/>
 		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<retrieve permission="STAFF_LOGIN" context_field="owning_lib" />
+			</actions>
+		</permacrud>
 	</class>
 
 	<class id="ccm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::circ_modifier" oils_persist:tablename="config.circ_modifier" reporter:label="Circulation Modifier">
@@ -1963,7 +1968,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             </actions>
         </permacrud>
 	</class>
-	<class id="mbts" controller="open-ils.cstore" oils_obj:fieldmapper="money::billable_transaction_summary" oils_persist:tablename="money.materialized_billable_xact_summary" reporter:label="Billable Transaction Summary" oils_persist:readonly="true">
+	<class id="mbts" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="money::billable_transaction_summary" oils_persist:tablename="money.materialized_billable_xact_summary" reporter:label="Billable Transaction Summary" oils_persist:readonly="true">
 		<fields oils_persist:primary="id" oils_persist:sequence="">
 			<field reporter:label="Balance Owed" name="balance_owed" reporter:datatype="money"/>
 			<field reporter:label="Transaction ID" name="id" reporter:datatype="id"/>
@@ -1983,6 +1988,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<links>
 			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
 		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<retrieve permission="VIEW_USER_TRANSACTIONS">
+					<context link="usr" field="home_ou" />
+				</retrieve>
+			</actions>
+		</permacrud>
 	</class>
 	<class id="mbtslv" controller="open-ils.cstore" oils_obj:fieldmapper="money::billable_transaction_summary_location_view" oils_persist:tablename="money.billable_xact_summary_location_view" reporter:label="Billable Transaction Summary with Billing Location" oils_persist:readonly="true" reporter:core="true">
 		<fields oils_persist:primary="id" oils_persist:sequence="">
@@ -2007,7 +2019,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="billing_location" reltype="has_a" key="id" map="" class="aou"/>
 		</links>
 	</class>
-	<class id="aun" controller="open-ils.cstore" oils_obj:fieldmapper="actor::usr_note" oils_persist:tablename="actor.usr_note" reporter:label="User Note">
+	<class id="aun" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::usr_note" oils_persist:tablename="actor.usr_note" reporter:label="User Note">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.usr_note_id_seq">
 			<field reporter:label="Creation Date/Time" name="create_date" reporter:datatype="timestamp"/>
 			<field reporter:label="Creating Staff" name="creator" reporter:datatype="link"/>
@@ -2021,6 +2033,23 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
 			<link field="creator" reltype="has_a" key="id" map="" class="au"/>
 		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="UPDATE_USER" context_field="owner">
+                    <context link="usr" field="home_ou"/>
+                </create>
+				<!-- note: public notes are still accessible via API -->
+                <retrieve permission="UPDATE_USER">
+                    <context link="usr" field="home_ou"/>
+				</retrieve>
+                <update permission="UPDATE_USER">
+                    <context link="usr" field="home_ou"/>
+				</update>
+                <delete permission="UPDATE_USER">
+                    <context link="usr" field="home_ou"/>
+				</delete>
+            </actions>
+        </permacrud>
 	</class>
 	<class id="aupr" controller="open-ils.cstore" oils_obj:fieldmapper="actor::usr_password_reset" oils_persist:tablename="actor.usr_password_reset" reporter:label="User password reset requests">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.usr_password_reset_id_seq">
@@ -2427,7 +2456,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             </actions>
         </permacrud>
 	</class>
-	<class id="mccp" controller="open-ils.cstore" oils_obj:fieldmapper="money::credit_card_payment" oils_persist:tablename="money.credit_card_payment" reporter:label="Credit Card Payment">
+	<class id="mccp" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="money::credit_card_payment" oils_persist:tablename="money.credit_card_payment" reporter:label="Credit Card Payment">
 		<fields oils_persist:primary="id" oils_persist:sequence="money.payment_id_seq">
 			<field name="accepting_usr" />
 			<field name="amount" reporter:datatype="money" />
@@ -2455,6 +2484,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="cash_drawer" reltype="has_a" key="id" map="" class="aws"/>
 			<link field="xact" reltype="has_a" key="id" map="" class="mbt"/>
 		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <retrieve permission="VIEW_USER_TRANSACTIONS">
+                    <context link="xact" jump="usr" field="home_ou"/>
+                </retrieve>
+			</actions>
+		</permacrud>
 	</class>
 	<class id="cxt" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::xml_transform" oils_persist:tablename="config.xml_transform" reporter:label="XML/XSLT Transform Definition">
 		<fields oils_persist:primary="name">
@@ -3004,7 +3040,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</permacrud>
 	</class>
 
-	<class id="mobts" controller="open-ils.cstore" oils_obj:fieldmapper="money::open_billable_transaction_summary" oils_persist:tablename="money.open_billable_xact_summary" reporter:label="Open Billable Transaction Summary">
+	<class id="mobts" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="money::open_billable_transaction_summary" oils_persist:tablename="money.open_billable_xact_summary" reporter:label="Open Billable Transaction Summary">
 		<fields oils_persist:primary="id" oils_persist:sequence="">
 			<field name="balance_owed" reporter:datatype="money"/>
 			<field name="id" reporter:datatype="id" />
@@ -3034,6 +3070,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="reservation" reltype="might_have" key="id" map="" class="bresv"/>
 			<link field="billing_location" reltype="has_a" key="id" map="" class="aou"/>
 		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<retrieve permission="VIEW_USER_TRANSACTIONS">
+					<context link="usr" field="home_ou" />
+				</retrieve>
+			</actions>
+		</permacrud>
 	</class>
 	<class id="au" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::user" oils_persist:tablename="actor.usr" reporter:core="true" reporter:label="ILS User">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.usr_id_seq">
@@ -3473,7 +3516,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="field" reltype="has_a" key="id" map="" class="cmf"/>
 		</links>
 	</class>
-	<class id="mcp" controller="open-ils.cstore" oils_obj:fieldmapper="money::cash_payment" oils_persist:tablename="money.cash_payment" reporter:label="Cash Payment">
+	<class id="mcp" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="money::cash_payment" oils_persist:tablename="money.cash_payment" reporter:label="Cash Payment">
 		<fields oils_persist:primary="id" oils_persist:sequence="money.payment_id_seq">
 			<field name="accepting_usr" reporter:datatype="link"/>
 			<field name="amount" reporter:datatype="money" />
@@ -3492,8 +3535,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="cash_drawer" reltype="has_a" key="id" map="" class="aws"/>
 			<link field="xact" reltype="has_a" key="id" map="" class="mbt"/>
 		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <retrieve permission="VIEW_USER_TRANSACTIONS">
+                    <context link="xact" jump="usr" field="home_ou"/>
+                </retrieve>
+			</actions>
+		</permacrud>
 	</class>
-	<class id="mfp" controller="open-ils.cstore" oils_obj:fieldmapper="money::forgive_payment" oils_persist:tablename="money.forgive_payment" reporter:label="Forgive Payment">
+	<class id="mfp" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="money::forgive_payment" oils_persist:tablename="money.forgive_payment" reporter:label="Forgive Payment">
 		<fields oils_persist:primary="id" oils_persist:sequence="money.payment_id_seq">
 			<field name="accepting_usr" reporter:datatype="link"/>
 			<field name="amount" reporter:datatype="money" />
@@ -3510,6 +3560,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="accepting_usr" reltype="has_a" key="id" map="" class="au"/>
 			<link field="xact" reltype="has_a" key="id" map="" class="mbt"/>
 		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <retrieve permission="VIEW_USER_TRANSACTIONS">
+                    <context link="xact" jump="usr" field="home_ou"/>
+                </retrieve>
+			</actions>
+		</permacrud>
 	</class>
 	<class id="mrd" controller="open-ils.cstore" oils_obj:fieldmapper="metabib::record_descriptor" oils_persist:tablename="metabib.rec_descriptor" reporter:label="Basic Record Descriptor">
 		<fields oils_persist:primary="id" oils_persist:sequence="metabib.rec_descriptor_id_seq">
@@ -4338,7 +4395,7 @@ SELECT  usr,
 			<link field="target_copy" reltype="has_a" key="id" map="" class="acp"/>
 		</links>
 	</class>
-	<class id="ahn" controller="open-ils.cstore" oils_obj:fieldmapper="action::hold_notification" oils_persist:tablename="action.hold_notification" reporter:label="Hold Notification">
+	<class id="ahn" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action::hold_notification" oils_persist:tablename="action.hold_notification" reporter:label="Hold Notification">
 		<fields oils_persist:primary="id" oils_persist:sequence="action.hold_notification_id_seq">
 			<field reporter:label="Hold" name="hold" reporter:datatype="link"/>
 			<field reporter:label="Notification ID" name="id" reporter:datatype="id" />
@@ -4351,6 +4408,22 @@ SELECT  usr,
 			<link field="hold" reltype="has_a" key="id" map="" class="ahr"/>
 			<link field="notify_staff" reltype="has_a" key="id" map="" class="au"/>
 		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="CREATE_HOLD_NOTIFICATION">
+					<context link="hold" jump="usr" field="home_ou" />
+				</create>
+                <retrieve permission="VIEW_HOLD_NOTIFICATION">
+					<context link="hold" jump="usr" field="home_ou" />
+				</retrieve>
+                <update permission="CREATE_HOLD_NOTIFICATION">
+					<context link="hold" jump="usr" field="home_ou" />
+				</update>
+                <delete permission="CREATE_HOLD_NOTIFICATION">
+					<context link="hold" jump="usr" field="home_ou" />
+				</delete>
+            </actions>
+        </permacrud>
 	</class>
 	<class id="acpl" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::copy_location" oils_persist:tablename="asset.copy_location" reporter:label="Copy/Shelving Location"  oils_persist:field_safe="true">
 		<fields oils_persist:primary="id" oils_persist:sequence="asset.copy_location_id_seq">
@@ -5966,7 +6039,7 @@ SELECT  usr,
 			<link field="bucket" reltype="has_a" key="id" map="" class="cub"/>
 		</links>
 	</class>
-	<class id="mcrp" controller="open-ils.cstore" oils_obj:fieldmapper="money::credit_payment" oils_persist:tablename="money.credit_payment" reporter:label="House Credit Payment">
+	<class id="mcrp" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="money::credit_payment" oils_persist:tablename="money.credit_payment" reporter:label="House Credit Payment">
 		<fields oils_persist:primary="id" oils_persist:sequence="money.payment_id_seq">
 			<field reporter:label="Accepting Staff Member" name="accepting_usr" reporter:datatype="link"/>
 			<field reporter:label="Amount" name="amount" reporter:datatype="money" />
@@ -5983,6 +6056,13 @@ SELECT  usr,
 			<link field="accepting_usr" reltype="has_a" key="id" map="" class="au"/>
 			<link field="xact" reltype="has_a" key="id" map="" class="mbt"/>
 		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <retrieve permission="VIEW_USER_TRANSACTIONS">
+                    <context link="xact" jump="usr" field="home_ou"/>
+                </retrieve>
+			</actions>
+		</permacrud>
 	</class>
 	<class id="afr" controller="open-ils.cstore" oils_obj:fieldmapper="authority::full_rec" oils_persist:tablename="authority.full_rec" reporter:label="Full Authority Record">
 		<fields oils_persist:primary="id" oils_persist:sequence="authority.full_rec_id_seq">
@@ -6011,7 +6091,7 @@ SELECT  usr,
 			<link field="field" reltype="has_a" key="id" map="" class="acsaf"/>
 		</links>
 	</class>
-	<class id="cnct" controller="open-ils.cstore" oils_obj:fieldmapper="config::non_cataloged_type" oils_persist:tablename="config.non_cataloged_type" reporter:label="Non-cataloged Type">
+	<class id="cnct" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::non_cataloged_type" oils_persist:tablename="config.non_cataloged_type" reporter:label="Non-cataloged Type">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.non_cataloged_type_id_seq">
 			<field reporter:label="Circulation Duration" name="circ_duration" reporter:datatype="interval"/>
 			<field reporter:label="Non-cat Type ID" name="id" reporter:selector="name" reporter:datatype="id"/>
@@ -6022,6 +6102,15 @@ SELECT  usr,
 		<links>
 			<link field="owning_lib" reltype="has_a" key="id" map="" class="aou"/>
 		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="CREATE_NON_CAT_TYPE" context_field="owning_lib"/>
+                <retrieve/>
+                <update permission="CREATE_NON_CAT_TYPE" context_field="owning_lib"/>
+                <delete permission="CREATE_NON_CAT_TYPE" context_field="owning_lib"/>
+            </actions>
+        </permacrud>
+
 	</class>
 	<class id="aout" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::org_unit_type" oils_persist:tablename="actor.org_unit_type" reporter:label="Organizational Unit Type" oils_persist:field_safe="true">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.org_unit_type_id_seq">
@@ -6119,7 +6208,7 @@ SELECT  usr,
             </actions>
         </permacrud>
 	</class>
-	<class id="mbt" controller="open-ils.cstore" oils_obj:fieldmapper="money::billable_transaction" oils_persist:tablename="money.billable_xact" reporter:label="Billable Transaction">
+	<class id="mbt" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="money::billable_transaction" oils_persist:tablename="money.billable_xact" reporter:label="Billable Transaction">
 		<fields oils_persist:primary="id" oils_persist:sequence="money.billable_xact_id_seq">
 			<field reporter:label="Transaction ID" name="id" reporter:datatype="id" />
 			<field reporter:label="User" name="usr" reporter:datatype="link"/>
@@ -6144,6 +6233,13 @@ SELECT  usr,
 			<link field="payment_total" reltype="might_have" key="xact" map="" class="rxpt"/>
 			<link field="summary" reltype="might_have" key="id" map="" class="mbts"/>
 		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<retrieve permission="VIEW_USER_TRANSACTIONS">
+					<context link="usr" field="home_ou" />
+				</retrieve>
+			</actions>
+		</permacrud>
 	</class>
 	<class id="actsce" controller="open-ils.cstore" oils_obj:fieldmapper="actor::stat_cat_entry" oils_persist:tablename="actor.stat_cat_entry" reporter:label="User Stat Cat Entry">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.stat_cat_entry_id_seq">
@@ -6224,7 +6320,7 @@ SELECT  usr,
             </actions>
         </permacrud>
 	</class>
-	<class id="mwp" controller="open-ils.cstore" oils_obj:fieldmapper="money::work_payment" oils_persist:tablename="money.work_payment" reporter:label="Work Payment">
+	<class id="mwp" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="money::work_payment" oils_persist:tablename="money.work_payment" reporter:label="Work Payment">
 		<fields oils_persist:primary="id" oils_persist:sequence="money.payment_id_seq">
 			<field reporter:label="Accepting Staff Member" name="accepting_usr" reporter:datatype="link"/>
 			<field reporter:label="Amount" name="amount" reporter:datatype="money" />
@@ -6241,8 +6337,15 @@ SELECT  usr,
 			<link field="accepting_usr" reltype="has_a" key="id" map="" class="au"/>
 			<link field="xact" reltype="has_a" key="id" map="" class="mbt"/>
 		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <retrieve permission="VIEW_USER_TRANSACTIONS">
+                    <context link="xact" jump="usr" field="home_ou"/>
+                </retrieve>
+			</actions>
+		</permacrud>
 	</class>
-	<class id="mgp" controller="open-ils.cstore" oils_obj:fieldmapper="money::goods_payment" oils_persist:tablename="money.goods_payment" reporter:label="Goods Payment">
+	<class id="mgp" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="money::goods_payment" oils_persist:tablename="money.goods_payment" reporter:label="Goods Payment">
 		<fields oils_persist:primary="id" oils_persist:sequence="money.payment_id_seq">
 			<field reporter:label="Accepting Staff Member" name="accepting_usr" reporter:datatype="link"/>
 			<field reporter:label="Amount" name="amount" reporter:datatype="money" />
@@ -6259,6 +6362,13 @@ SELECT  usr,
 			<link field="accepting_usr" reltype="has_a" key="id" map="" class="au"/>
 			<link field="xact" reltype="has_a" key="id" map="" class="mbt"/>
 		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <retrieve permission="VIEW_USER_TRANSACTIONS">
+                    <context link="xact" jump="usr" field="home_ou"/>
+                </retrieve>
+			</actions>
+		</permacrud>
 	</class>
 	<class id="aoc" controller="open-ils.cstore" oils_obj:fieldmapper="action::open_circulation" oils_persist:tablename="action.open_circulation" reporter:label="Open Circulation">
 		<fields oils_persist:primary="id" oils_persist:sequence="">
@@ -6328,7 +6438,7 @@ SELECT  usr,
             </actions>
         </permacrud>
 	</class>
-	<class id="mckp" controller="open-ils.cstore" oils_obj:fieldmapper="money::check_payment" oils_persist:tablename="money.check_payment" reporter:label="Check Payment">
+	<class id="mckp" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="money::check_payment" oils_persist:tablename="money.check_payment" reporter:label="Check Payment">
 		<fields oils_persist:primary="id" oils_persist:sequence="money.payment_id_seq">
 			<field reporter:label="Accepting Staff Member" name="accepting_usr" reporter:datatype="link"/>
 			<field reporter:label="Amount" name="amount" reporter:datatype="money" />
@@ -6348,6 +6458,13 @@ SELECT  usr,
 			<link field="cash_drawer" reltype="has_a" key="id" map="" class="aws"/>
 			<link field="xact" reltype="has_a" key="id" map="" class="mbt"/>
 		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <retrieve permission="VIEW_USER_TRANSACTIONS">
+                    <context link="xact" jump="usr" field="home_ou"/>
+                </retrieve>
+			</actions>
+		</permacrud>
 	</class>
 	<class id="acp" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::copy" oils_persist:tablename="asset.copy" reporter:core="true" reporter:label="Item">
 		<fields oils_persist:primary="id" oils_persist:sequence="asset.copy_id_seq">
@@ -6730,7 +6847,7 @@ SELECT  usr,
 			<link field="perm" reltype="has_a" key="id" map="" class="ppl"/>
 		</links>
 	</class>
-	<class id="mp" controller="open-ils.cstore" oils_obj:fieldmapper="money::payment" oils_persist:tablename="money.payment_view" reporter:core="true" reporter:label="Payments: All">
+	<class id="mp" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="money::payment" oils_persist:tablename="money.payment_view" reporter:core="true" reporter:label="Payments: All">
 		<fields oils_persist:primary="id" oils_persist:sequence="">
 			<field reporter:label="Amount" name="amount" reporter:datatype="money" />
 			<field reporter:label="Payment ID" name="id" reporter:datatype="id" />
@@ -6757,6 +6874,13 @@ SELECT  usr,
 			<link field="goods_payment" reltype="might_have" key="id" map="" class="mgp"/>
 			<link field="xact" reltype="has_a" key="id" map="" class="mbt"/>
 		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <retrieve permission="VIEW_USER_TRANSACTIONS">
+                    <context link="xact" jump="usr" field="home_ou"/>
+                </retrieve>
+			</actions>
+		</permacrud>
 	</class>
 	<class id="mbp" controller="open-ils.cstore" oils_obj:fieldmapper="money::bnm_payment" oils_persist:tablename="money.bnm_payment_view" reporter:core="true" reporter:label="Payments: Brick-and-mortar">
 		<fields oils_persist:primary="id" oils_persist:sequence="">
@@ -6974,7 +7098,7 @@ SELECT  usr,
             </actions>
         </permacrud>
 	</class>
-	<class id="mb" controller="open-ils.cstore" oils_obj:fieldmapper="money::billing" oils_persist:tablename="money.billing" reporter:label="Billing Line Item">
+	<class id="mb" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="money::billing" oils_persist:tablename="money.billing" reporter:label="Billing Line Item">
 		<fields oils_persist:primary="id" oils_persist:sequence="money.billing_id_seq">
 			<field reporter:label="Amount" name="amount" reporter:datatype="money" />
 			<field reporter:label="Billing Timestamp" name="billing_ts" reporter:datatype="timestamp"/>
@@ -6992,6 +7116,13 @@ SELECT  usr,
 			<link field="voider" reltype="has_a" key="id" map="" class="au"/>
 			<link field="btype" reltype="has_a" key="id" map="" class="cbt"/>
 		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <retrieve permission="VIEW_USER_TRANSACTIONS">
+                    <context link="xact" jump="usr" field="home_ou"/>
+                </retrieve>
+			</actions>
+		</permacrud>
 	</class>
 	<class id="pugm" controller="open-ils.cstore" oils_obj:fieldmapper="permission::usr_grp_map" oils_persist:tablename="permission.usr_grp_map" reporter:label="User Group Map">
 		<fields oils_persist:primary="id" oils_persist:sequence="permission.usr_grp_map_id_seq">
