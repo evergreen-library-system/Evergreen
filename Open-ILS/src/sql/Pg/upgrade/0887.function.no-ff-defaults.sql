@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('0887', :eg_version);
+
 CREATE OR REPLACE FUNCTION vandelay.marc21_extract_fixed_field_list( marc TEXT, ff TEXT, use_default BOOL DEFAULT FALSE ) RETURNS TEXT[] AS $func$
 DECLARE
     rtype       TEXT;
