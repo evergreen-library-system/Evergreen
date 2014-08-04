@@ -239,11 +239,12 @@ sub find_template {
     my $page_args = [];
     my $as_xml = $r->dir_config('OILSWebForceValidXML');
     my $ext = $r->dir_config('OILSWebDefaultTemplateExtension');
+    my $at_index = $r->dir_config('OILSWebStopAtIndex');
 
     my @parts = split('/', $path);
     my $localpath = $path;
 
-    if ($localpath =~ m|opac/css|) {
+    if ($localpath =~ m|/css/|) {
         $r->content_type('text/css; encoding=utf8');
     } else {
         $r->content_type('text/html; encoding=utf8');
@@ -257,9 +258,31 @@ sub find_template {
             if(-r $fpath) {
                 $template = "$localpath.$ext";
                 last;
+            } 
+        }
+        last if $template;
+
+        if ($at_index) {
+            # no matching template was found in the current directory.
+            # stop-at-index requested; see if there is an index.ext 
+            # file in the same directory instead.
+            for my $tpath (@{$ctx->{template_paths}}) {
+                # replace the final path component with 'index'
+                if ($localpath =~ m|/$|) {
+                    $localpath .= 'index';
+                } else {
+                    $localpath =~ s|/[^/]+$|/index|;
+                }
+                my $fpath = "$tpath/$localpath.$ext";
+                $r->log->debug("egweb: looking at possible template $fpath");
+                if (-r $fpath) {
+                    $template = "$localpath.$ext";
+                    last;
+                }
             }
         }
         last if $template;
+
         push(@args, pop @parts);
         $localpath = join('/', @parts);
     } 
