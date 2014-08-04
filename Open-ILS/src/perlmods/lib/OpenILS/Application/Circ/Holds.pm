@@ -1555,6 +1555,25 @@ __PACKAGE__->register_method(
     }
 );
 
+__PACKAGE__->register_method(
+    method    => "hold_pull_list",
+    stream => 1,
+    # TODO: tag with api_level 2 once fully supported
+    api_name  => "open-ils.circ.hold_pull_list.fleshed.stream",
+    signature => {
+        desc   => q/Returns a stream of fleshed holds  that need to be 
+                    "pulled" by a given location.  The location is 
+                    determined by the login session.  
+                    This API calls always run in authoritative mode./,
+        params => [
+            { desc => 'Limit (optional)',  type => 'number'},
+            { desc => 'Offset (optional)', type => 'number'},
+        ],
+        return => {
+            desc => 'Stream of holds holds, or event on failure',
+        }
+    }
+);
 
 sub hold_pull_list {
     my( $self, $conn, $authtoken, $limit, $offset ) = @_;
@@ -1577,12 +1596,24 @@ sub hold_pull_list {
         return $count;
 
     } elsif( $self->api_name =~ /id_list/ ) {
-        return $U->storagereq(
+        $U->storagereq(
             'open-ils.storage.direct.action.hold_request.pull_list.id_list.current_copy_circ_lib.status_filtered.atomic',
             $org, $limit, $offset );
 
+    } elsif ($self->api_name =~ /fleshed/) {
+
+        my $ids = $U->storagereq(
+            'open-ils.storage.direct.action.hold_request.pull_list.id_list.current_copy_circ_lib.status_filtered.atomic',
+            $org, $limit, $offset );
+
+        my $e = new_editor(xact => 1, requestor => $reqr);
+        $conn->respond(uber_hold_impl($e, $_, {flesh_acpl => 1})) for @$ids;
+        $e->rollback;
+        $conn->respond_complete;
+        return;
+
     } else {
-        return $U->storagereq(
+        $U->storagereq(
             'open-ils.storage.direct.action.hold_request.pull_list.search.current_copy_circ_lib.status_filtered.atomic',
             $org, $limit, $offset );
     }
@@ -3383,6 +3414,10 @@ sub uber_hold_impl {
         ($args->{suppress_mvr} ?  () : (mvr => $mvr)),
         %$details
     };
+
+    $resp->{copy}->location(
+        $e->retrieve_asset_copy_location($resp->{copy}->location))
+        if $resp->{copy} and $args->{flesh_acpl};
 
     unless($args->{suppress_patron_details}) {
         my $card = $e->retrieve_actor_card($user->card) or return $e->event;
