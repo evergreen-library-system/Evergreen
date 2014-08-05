@@ -63,7 +63,7 @@ To register a new patron, select _Patron Registration_ from the toolbar,
 _Circulation -> Register Patron_ from the menu bar, or *shift + F1*. The Patron
 Registration form will display. 
 
-image::media/circulation_patron_records-4.png[circulation_patron_records 4]
+image::media/circulation_patron_records-4.png[Patron registration form]
 
 Mandatory fields display in yellow.
 
@@ -96,6 +96,8 @@ that is not in the default patron record.
 * These may be configured in the _Statistical Categories Editor_ (_Admin -> 
 Local Admin -> Statistical Categories Editor_).  
 * Staff accounts may also function as patron accounts.
+* You must select a _Main (Profile) Permission Group_ before the _Update Expire
+Date_ button will work, since the permission group determines the expiration date.
 ============================================================================
 
 
@@ -188,7 +190,7 @@ Retrieve the patron record as described in the section
 
 Select _Edit_ from the options that display at the top of the patron record. 
 
-image::media/circulation_patron_records-9.png[circulation_patron_records 9]
+image::media/circulation_patron_records-9.png[Patron edit with summary display]
 
 Edit information as required.  When finished, select _Save_.  If you attempt to
 close out of the patron account before the information is received, an alert
@@ -201,7 +203,14 @@ Select _OK_ to continue or _Cancel_ to return to the editing form.
 After selecting _Save_, the page will refresh.  The edited information will be
 reflected in the patron summary pane.
 
-NOTE: If collapsed, you will need to manually ``un-collapse'' this pane. 
+[TIP]
+=======
+* You can resize the patron summary pane, or collapse and expand it using
+the button on the right border of the pane.
+* To quickly renew an expired patron, click the _Update Expire Date_ button.
+You will need a _Main (Profile) Permission Group_ selected for this to work,
+since the permission group determines the expiration date.
+=======
 
 Renewing Library Cards 
 ~~~~~~~~~~~~~~~~~~~~~~
