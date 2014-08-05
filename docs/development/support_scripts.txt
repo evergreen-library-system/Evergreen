@@ -151,15 +151,20 @@ perl marc2are.pl --user admin --pass open-ils --marctype XML auth_small.xml > au
 [NOTE]
 The MARC type will default to USMARC if the `--marctype` option is not specified.
 
- . Run *pg_loader.pl* to generate the SQL necessary for importing the
-authority records into your system. To save time for very large batches
-of records, you could simply pipe the output of *marc2are.pl* directly
-into *pg_loader.pl*.
+ . Run *parallel_pg_loader.pl* to generate the SQL necessary for importing the
+authority records into your system. This script will create files in your
+current directory with filenames like `pg_loader-output.are.sql` and
+`pg_loader-output.sql` (which runs the previous SQL file). To continue with the
+previous example by processing our new `auth.are` file:
 +
 ----
 cd Open-ILS/src/extras/import/
-perl pg_loader.pl --auto are --order are auth.are > auth_load.sql
+perl parallel_pg_loader.pl --auto are --order are auth.are
 ----
++
+[TIP]
+To save time for very large batches of records, you could simply pipe the
+output of *marc2are.pl* directly into *parallel_pg_loader.pl*.
 
  . Load the authority records from the SQL file that you generated in the
 last step into your Evergreen database using the psql tool. Assuming the
@@ -167,7 +172,7 @@ default user name, host name, and database name for an Evergreen instance,
 that command looks like:
 +
 ----
-psql -U evergreen -h localhost -d evergreen -f auth_load.sql
+psql -U evergreen -h localhost -d evergreen -f pg_loader-output.sql
 ----
 
 
