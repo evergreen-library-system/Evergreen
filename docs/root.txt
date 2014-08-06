@@ -214,6 +214,8 @@ include::admin/floating_groups.txt[]
 
 include::admin/MARC_Import_Remove_Fields.txt[]
 
+include::admin/MARC_RAD_MVF_CRA.txt[]
+
 include::admin/Org_Unit_Proximity_Adjustments.txt[]
 
 include::admin/permissions.txt[]
