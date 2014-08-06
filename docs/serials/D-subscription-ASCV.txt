@@ -63,6 +63,31 @@ The "Create Many Streams button" allows you to create multiple streams at once, 
 . Enter the number of streams that you want to create in the How many. Field.
 . Click Create.
 
+Creating a Routing List
+^^^^^^^^^^^^^^^^^^^^^^^
+
+Within Alternate Serial Control View, you have the option to create routing lists for selected streams. Routing lists enable you to designate specific users and/or departments that serial items need to be routed to upon receiving. These routing lists can now display user addresses when you receive the items. This feature is particularly useful for working with homebound patrons.
+
+Create a Routing List in Alternate Serial Control View that will display the User’s Address:
+
+. 1 Select the checkbox for the stream that needs a routing list
+
+. 2 Click *Routing List for Selected Stream*
+
+. 3 Click the *Reader (barcode):* radio button and enter the user’s barcode into the field
+
+. 4 Click *Add*
+
+. 5 Click *Save Changes*
+
+image::media/Added_User_to_Routing_Slip.jpg[]
+
+When you receive the item in *Serials Batch Receive* or from within Alternate Serial Control’s *Batch Item Receive*, the routing list will print the user’s address. For more information, see the chapter on Batch Receiving.
+
+image::media/Address_on_Routing_Slip.jpg[]
+
+The default template can be configured to not include the user’s mailing or billing address on the routing list. Libraries already using customized templates will not be affected.
+
 Creating a Caption and Pattern
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
