@@ -1,0 +1,11 @@
+More RDA 264 tag support
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+The OPAC now displays RDA bib tag 264 information for Producer, Distributor, 
+Manufacturer, and Copyright within a full bib record’s summary. This is in 
+addition to the RDA bib tag 264 publisher information, indicator 2 equal 
+to 1, that was already being displayed in previous versions of Evergreen. 
+The OPAC full bib view also now contains the Schema.org copyrightYear value.
+
+Additionally, this information is now available in search results as well 
+when viewing more details.
