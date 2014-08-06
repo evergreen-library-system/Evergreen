@@ -96,7 +96,10 @@ oilsRptSetWidget.prototype.strToObj = function(str) {
 	--------------------------------------------------------------------- */
 function oilsRptBetweenWidget(args) {
 	this.node = args.node;
+	var seedValue = args.value;
+	if (seedValue) args.value = seedValue[0];
 	this.startWidget = new args.startWidget(args);
+	if (seedValue) args.value = seedValue[1];
 	this.endWidget = new args.endWidget(args);
 }
 oilsRptBetweenWidget.prototype.draw = function() {

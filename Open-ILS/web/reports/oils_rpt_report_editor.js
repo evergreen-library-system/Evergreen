@@ -106,6 +106,14 @@ oils_rpt_editor_pivot_data
             setSelector(DOM.oils_rpt_recur_interval_type, parts[1]);
         }
 
+        if (rpt.data()) { 
+            var rpt_data = JSON2js(rpt.data());
+            if (rpt_data.__pivot_label)
+                setSelector(DOM.oils_rpt_editor_pivot_label, rpt_data.__pivot_label);
+            if (rpt_data.__pivot_data)
+                setSelector(DOM.oils_rpt_editor_pivot_data, rpt_data.__pivot_data);
+        }
+
         if (run = this.last_run) {
 		    DOM.oils_rpt_report_editor_name.disabled = true;
 		    DOM.oils_rpt_report_editor_desc.disabled = true;
@@ -114,6 +122,25 @@ oils_rpt_editor_pivot_data
             DOM.oils_rpt_format_html.checked = run.html_format() == 't';
             DOM.oils_rpt_format_chart_bar.checked = run.chart_bar() == 't';
             DOM.oils_rpt_format_chart_line.checked = run.chart_line() == 't';
+            DOM.oils_rpt_param_editor_sched_email = run.email();
+
+            if (run.run_time()) {
+                DOM.oils_rpt_report_editor_schedule.checked = true;
+                if (new Date(Date.parse(run.run_time())) < new Date()) {
+                    // editing a report with a past-tense run time
+                    // clear the value so the user will have to edit
+                    DOM.oils_rpt_param_editor_sched_start_date.value = '';
+                } else {
+                    DOM.oils_rpt_param_editor_sched_start_date.value = 
+                        run.run_time().match(/(\d\d\d\d-\d\d-\d\d)/)[1]
+                    setSelector(
+                        DOM.oils_rpt_param_editor_sched_start_hour,
+                        run.run_time().match(/T(\d\d:\d\d)/)[1]
+                    );
+                }
+            } else {
+                DOM.oils_rpt_param_editor_sched_start_date.value = mkYearMonDay();
+            }
         }
 	}
 
@@ -222,8 +249,6 @@ oils_rpt_editor_pivot_data
 
 	DOM.oils_rpt_param_editor_sched_email.value = 
         this.last_run ? this.last_run.email() : USER.email();
-
-	DOM.oils_rpt_param_editor_sched_start_date.value = mkYearMonDay();
 
 	_debug("fleshing template:\n" + tmpl.name() + '\n' + formatJSON(tmpl.data()));
 }
