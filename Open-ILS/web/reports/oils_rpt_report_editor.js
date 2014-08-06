@@ -17,6 +17,7 @@ function oilsRptReportEditor(rptObject, folderWindow) {
 	appendClear(DOM.oils_rpt_report_editor_template_creator, tmpl.owner().usrname());
 	appendClear(DOM.oils_rpt_report_editor_template_description, tmpl.description());
 
+    hideMe(DOM.oils_rpt_report_editor_template_doc_url_row);
     if (rptObject.def.version >= 4) {
         if (URL = rptObject.def.doc_url) {
             var link = DOM.oils_rpt_report_editor_template_doc_url;
@@ -27,9 +28,8 @@ function oilsRptReportEditor(rptObject, folderWindow) {
             } else {
                 link.onclick = function() {xulG.new_tab(URL); return false}
             }
+            unHideMe(DOM.oils_rpt_report_editor_template_doc_url_row);
         }
-    } else {
-        hideMe(DOM.oils_rpt_report_editor_template_doc_url_row);
     }
     
     appendClear(DOM.oils_rpt_report_editor_cols,'');
