@@ -281,6 +281,8 @@ Introduction
 Cataloguers should use this part for understanding the cataloguing procedures
 used in Evergreen.
 
+include::cataloging/MARC_Fixed_Field.txt[]
+
 include::cataloging/physical_char_wizard.txt[]
 
 include::cataloging/batch_importing_MARC.txt[]
