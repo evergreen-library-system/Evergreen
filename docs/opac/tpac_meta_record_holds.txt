@@ -1,4 +1,4 @@
-﻿TPAC Metarecord Search and Metarecord Level Holds
+TPAC Metarecord Search and Metarecord Level Holds
 -------------------------------------------------
 
 Metarecords are compilations of individual bibliographic records that represent the same work. This compilation allows for several records to be represented on a single line on the TPAC search results page, which can help to reduce result duplications.

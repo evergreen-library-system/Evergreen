@@ -1,4 +1,4 @@
-﻿MARC Record Attributes
+MARC Record Attributes
 ----------------------
 
 The MARC Record Attribute Definitions support the ingesting, indexing, searching, filtering, and delivering of bibliographic record attributes.
@@ -19,11 +19,11 @@ image::media/radmvcolumn_1.jpg[]
 
 To edit an existing record attribute definition and set the *Multi-valued?* field to *True*:
 
-. 1 Click *Admin* on the menu bar
-. 2 Hover over *Server Administration* and click *MARC Record Attributes*
-. 3 Double-click on the row of the record attribute definition that needs to be edited
-. 4 Select the *Multi-valued?* checkbox
-. 5 Click *Save*
+.  Click *Admin* on the menu bar
+.  Hover over *Server Administration* and click *MARC Record Attributes*
+.  Double-click on the row of the record attribute definition that needs to be edited
+.  Select the *Multi-valued?* checkbox
+.  Click *Save*
 
 image::media/editrad_2.jpg[]
 
@@ -45,11 +45,11 @@ Within the Coded Value Maps screen, there is a column named *Composite Definitio
 
 To edit an existing record attribute definition and set the *Composite attribute?* field to True:
 
-. 1  Click *Admin* on the menu bar
-. 2  Hover over *Server Administration* and click *MARC Record Attributes*
-. 3  Double-click on the row of the record attribute definition that needs to be edited
-. 4  Select the *Composite attribute?* checkbox
-. 5  Click *Save*
+.   Click *Admin* on the menu bar
+.   Hover over *Server Administration* and click *MARC Record Attributes*
+.   Double-click on the row of the record attribute definition that needs to be edited
+.   Select the *Composite attribute?* checkbox
+.   Click *Save*
 
 image::media/radcatrue_5.jpg[]
 
@@ -68,13 +68,13 @@ To modify the *Composite Attribute Entry Definition*, any Boolean Operator can b
 
 To modify the *Composite Attribute Entry Definition*:
 
-. 1 Click *Add Child* for the specific Boolean Operator that needs to be modified, and a new window will open
-. 2 Select which *Record Attribute* needs to be represented in the structure under that particular Boolean Operator
-. 3 Select the *Attribute Type* from the dropdown options
-. 4 Select the *Value* of the Attribute Type from the dropdown options (dropdown options will be based on the Attribute Type selected)
-. 5 Click *Submit*
-. 6 The *Composite Data Expression* should now include the modification
-. 7 Once all modifications have been made, click *Save Changes* on the Composite Attribute Entry Definitions page
+.  Click *Add Child* for the specific Boolean Operator that needs to be modified, and a new window will open
+.  Select which *Record Attribute* needs to be represented in the structure under that particular Boolean Operator
+.  Select the *Attribute Type* from the dropdown options
+.  Select the *Value* of the Attribute Type from the dropdown options (dropdown options will be based on the Attribute Type selected)
+.  Click *Submit*
+.  The *Composite Data Expression* should now include the modification
+.  Once all modifications have been made, click *Save Changes* on the Composite Attribute Entry Definitions page
 
 image::media/modifycde_7.jpg[]
 
