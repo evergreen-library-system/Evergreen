@@ -178,6 +178,7 @@ oilsRptParamEditor.prototype.buildWidget = function(param, node, fromTemplate) {
 		widgetArgs.class = cls;
 		widgetArgs.field = field;
 		widgetArgs.column = param.column.colname;
+        widgetArgs.async = true;
 	}
 
 	switch(cls) {

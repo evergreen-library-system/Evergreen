@@ -122,7 +122,7 @@ oils_rpt_editor_pivot_data
             DOM.oils_rpt_format_html.checked = run.html_format() == 't';
             DOM.oils_rpt_format_chart_bar.checked = run.chart_bar() == 't';
             DOM.oils_rpt_format_chart_line.checked = run.chart_line() == 't';
-            DOM.oils_rpt_param_editor_sched_email = run.email();
+            DOM.oils_rpt_param_editor_sched_email.value = run.email();
 
             if (run.run_time()) {
                 DOM.oils_rpt_report_editor_schedule.checked = true;

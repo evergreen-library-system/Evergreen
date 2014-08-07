@@ -4,8 +4,10 @@
 	--------------------------------------------------------------------- */
 function oilsRptSetWidget(args) {
 	this.node = args.node;
+    this.seedValue = args.value;
 	this.inputWidget = new args.inputWidget(args);
     this.readonly = Boolean(args.readonly);
+    this.asyncInput = args.async;
 	this.dest = elem('select',
 		{multiple:'multiple','class':'oils_rpt_small_info_selector'});
     this.dest.disabled = this.readonly;
@@ -26,16 +28,23 @@ oilsRptSetWidget.prototype.draw = function() {
 	this.delButton.onclick = function(){obj.removeSelected()};
 
 	removeChildren(this.node);
-	this.inputWidget.draw();
+
+    var this_ = this;
+    var post_draw = function() {
+        // propagate the values from the input widget into the our display.
+        if (this_.inputWidget.seedValue)
+            this_.addButton.onclick();
+    }
+
+	this.inputWidget.draw(post_draw);
 	this.node.appendChild(elem('br'))
 	this.node.appendChild(this.addButton);
 	this.node.appendChild(this.delButton);
 	this.node.appendChild(elem('br'))
 	this.node.appendChild(this.dest);
 
-    // propagate the values from the input widget into the our display.
-    if (this.inputWidget.seedValue)
-	    this.addButton.onclick();
+    if (!this.asyncInput) post_draw();
+
 }
 
 oilsRptSetWidget.prototype.addDisplayItems = function(list) {
@@ -574,12 +583,13 @@ function oilsRptRemoteWidget(args) {
 	this.class	= args.class;
 	this.field	= args.field;
 	this.column = args.column;
+    this.seedValue = args.value;
 	this.source = elem('select',
 		{multiple:'multiple','class':'oils_rpt_small_info_selector'});
     this.source.disabled = Boolean(args.readonly);
 }
 
-oilsRptRemoteWidget.prototype.draw = function() {
+oilsRptRemoteWidget.prototype.draw = function(callback) {
 	var orgcol;
 	iterate(oilsIDL[this.class].fields,
 		function(i) {
@@ -600,7 +610,20 @@ oilsRptRemoteWidget.prototype.draw = function() {
 
 	var obj = this;
 	this.node.appendChild(this.source);
-	req.callback(function(r){obj.render(r.getResultObject())});
+	req.callback(function(r){
+        // render selects values from seed data if necessary
+        obj.render(r.getResultObject());
+        if (callback) {
+            // presence of a callback suggests there is a container widget
+            // (e.g. SetWidget) for tracking our values.  Callback lets 
+            // the container extract the selected values, then we deselect
+            // in the input widget (us) since it's redundant.
+            callback();
+            dojo.forEach(obj.source.options, function(o) {
+                o.selected = false;
+            });
+        }
+    });
 	req.send();
 }
 
@@ -618,7 +641,13 @@ oilsRptRemoteWidget.prototype.render = function(objs) {
 		var label = obj[this.field.selector]();
 		var value = obj[this.column]();
 		_debug("inserted remote object "+label + ' : ' + value);
-		insertSelectorVal(this.source, -1, label, value);
+		var opt = insertSelectorVal(this.source, -1, label, value);
+        if (this.seedValue && (
+                this.seedValue.indexOf(Number(value)) > -1 
+                || this.seedValue.indexOf(''+value) > -1
+            )) {
+            opt.selected = true;
+        }
 	}
 }
 
