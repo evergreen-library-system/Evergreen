@@ -1171,12 +1171,15 @@ that you should pass to `__PACKAGE__->register_method()`:
 == Evergreen-specific OpenSRF services ==
 
 Evergreen is currently the primary showcase for the use of OpenSRF as an
-application architecture. Evergreen 1.6.0 includes the following
+application architecture. Evergreen 2.6.0 includes the following
 set of OpenSRF services:
 
+  * `open-ils.acq` Supports tasks for managing the acquisitions process
   * `open-ils.actor`: Supports common tasks for working with user accounts
      and libraries.
   * `open-ils.auth`: Supports authentication of Evergreen users.
+  * `open-ils.auth_proxy`: Support using external services such as LDAP
+  directories to authenticate Evergreen users
   * `open-ils.cat`: Supports common cataloging tasks, such as creating,
      modifying, and merging bibliographic and authority records.
   * `open-ils.circ`: Supports circulation tasks such as checking out items and
@@ -1185,27 +1188,35 @@ set of OpenSRF services:
     contacting users with outstanding fines above a certain threshold.
   * `open-ils.cstore`: Supports unrestricted access to Evergreen fieldmapper
     objects. This is a private service.
-  * `open-ils.ingest`: Supports tasks for importing bibliographic and authority
-    records.
-  * `open-ils.pcrud`: Supports permission-based access to Evergreen fieldmapper
+  * `open-ils.fielder`
+  * `open-ils.justintime`: Support tasks for determining if an action/trigger
+  event is still valid
+  * `open-ils.pcrud`: Supports access to Evergreen fieldmapper objects,
+  restricted by staff user permissions. This is a private service.
     objects.
   * `open-ils.penalty`: Supports the calculation of penalties for users, such as
     being blocked from further borrowing, for conditions such as having too many
     items checked out or too many unpaid fines.
+  * `open-ils.permacrud`: Supports access to Evergreen fieldmapper objects,
+  restricted by staff user permissions. This is a private service.
   * `open-ils.reporter`: Supports the creation and scheduling of reports.
   * `open-ils.reporter-store`: Supports access to Evergreen fieldmapper objects
     for the reporting service. This is a private service.
+  * `open-ils.resolver` Support tasks for integrating with an OpenURL resolver.
   * `open-ils.search`: Supports searching across bibliographic records,
     authority records, serial records, Z39.50 sources, and ZIP codes.
+  * `open-ils.serial`: Support tasks for serials management
   * `open-ils.storage`: A deprecated method of providing access to Evergreen
     fieldmapper objects. Implemented in Perl, this service has largely been
     replaced by the much faster C-based `open-ils.cstore` service.
   * `open-ils.supercat`: Supports transforms of MARC records into other formats,
     such as MODS, as well as providing Atom and RSS feeds and SRU access.
-  * `open-ils.trigger`: Supports event-based triggers for actions such as overdue
-    and holds available notification emails.
+  * `open-ils.trigger`: Supports event-based triggers for actions such as
+  overdue and holds available notification emails.
+  * `open-ils.url_verify`: Support tasks for validating URLs
   * `open-ils.vandelay`: Supports the import and export of batches of
     bibliographic and authority records.
+  * `opensrf.settings`: Supports communicating opensrf.xml settings to other services.
 
 Of some interest is that the `open-ils.reporter-store` and `open-ils.cstore`
 services have identical implementations. Surfacing them as separate services
@@ -1214,8 +1225,8 @@ interfere with the performance-critical `open-ils.cstore` service. One can also
 direct the reporting service to a read-only database replica to, again, avoid
 interference with `open-ils.cstore` which must write to the master database.
 
-There are only a few significant services that are not built on OpenSRF in
-Evergreen 1.6.0, such as the SIP and Z39.50 servers. These services implement
+There are only a few significant services that are not built on OpenSRF, such
+as the SIP and Z39.50 servers. These services implement
 different protocols and build on existing daemon architectures (Simple2ZOOM
 for Z39.50), but still rely on the other OpenSRF services to provide access
 to the Evergreen data. The non-OpenSRF services are reasonably self-contained
