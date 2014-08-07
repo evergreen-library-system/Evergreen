@@ -1,5 +1,7 @@
-
 BEGIN;
+
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('0889', :eg_version);
 
 -- Update ACQ cancel reason names, but only those that 
 -- have not already been locally modified from stock values.

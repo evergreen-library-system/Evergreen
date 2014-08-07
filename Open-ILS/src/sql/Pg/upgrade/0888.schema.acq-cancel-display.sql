@@ -1,5 +1,7 @@
-
 BEGIN;
+
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('0888', :eg_version);
 
 DROP VIEW acq.lineitem_summary;
 
