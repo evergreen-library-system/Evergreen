@@ -19,7 +19,7 @@ image::media/ascv-sub.jpg[Creating a Subscription]
 . Add new subscriptions to a serials record that exists in the catalog.
 . Create a subscription
 . Click New Subscription.
-. Select an owning library. The owning library indicates the organizational unit(s) whose staff can use this subscription. This menu is populated with the shortnames that you created for your libraries in the organizational units tree in Admin . Server Administration . Organizational Units. The rule of parental inheritance applies to this list. For example, if a system is made the owner of a subscription, then users, with appropriate permissions, at the branches within the system could also use this subscription.
+. Select an owning library. The owning library indicates the organizational unit(s) whose staff can use this subscription. This menu is populated with the shortnames that you created for your libraries in the organizational units tree in Admin -> Server Administration -> Organizational Units. The rule of parental inheritance applies to this list. For example, if a system is made the owner of a subscription, then users, with appropriate permissions, at the branches within the system could also use this subscription.
 . Enter the date that the subscription begins in the start date. Recommended practice is that you select the date from the drop down calendar although you can manually enter a date. Owning library and start date are required fields in the new subscription pop up box.
 . Enter the date that the subscription ends in the end date. Recommended practice is to select a date from the drop down calendar, but you can manually enter a date, also.
 . Enter the difference between the nominal publishing date of an issue and the date that you expect to receive your copy in the Expected Date Offset. For example, if an issue is published the first day of each month, but you receive the copy two days prior to the publication date, then enter -2 days into this field.
@@ -68,25 +68,25 @@ Creating a Routing List
 
 Within Alternate Serial Control View, you have the option to create routing lists for selected streams. Routing lists enable you to designate specific users and/or departments that serial items need to be routed to upon receiving. These routing lists can now display user addresses when you receive the items. This feature is particularly useful for working with homebound patrons.
 
-Create a Routing List in Alternate Serial Control View that will display the User’s Address:
+Create a Routing List in Alternate Serial Control View that will display the User's Address:
 
-. 1 Select the checkbox for the stream that needs a routing list
+. Select the checkbox for the stream that needs a routing list
 
-. 2 Click *Routing List for Selected Stream*
+. Click *Routing List for Selected Stream*
 
-. 3 Click the *Reader (barcode):* radio button and enter the user’s barcode into the field
+. Click the *Reader (barcode):* radio button and enter the user's barcode into the field
 
-. 4 Click *Add*
+. Click *Add*
 
-. 5 Click *Save Changes*
+. Click *Save Changes*
 
 image::media/Added_User_to_Routing_Slip.jpg[]
 
-When you receive the item in *Serials Batch Receive* or from within Alternate Serial Control’s *Batch Item Receive*, the routing list will print the user’s address. For more information, see the chapter on Batch Receiving.
+When you receive the item in *Serials Batch Receive* or from within Alternate Serial Control's *Batch Item Receive*, the routing list will print the user's address. For more information, see the chapter on Batch Receiving.
 
 image::media/Address_on_Routing_Slip.jpg[]
 
-The default template can be configured to not include the user’s mailing or billing address on the routing list. Libraries already using customized templates will not be affected.
+The default template can be configured to not include the user's mailing or billing address on the routing list. Libraries already using customized templates will not be affected.
 
 Creating a Caption and Pattern
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -117,7 +117,7 @@ Page 1: Enumerations
 
 image::media/cap-wiz-num.jpg[Enumeration]
 
-. To add an enumeration, check the box adjacent to Use enumerations.. The enumerations conform to $a-$h of the 853,854, and 855 MARC tags.
+. To add an enumeration, check the box adjacent to Use enumerations. The enumerations conform to $a-$h of the 853,854, and 855 MARC tags.
 . A field for the First level will appear. Enter the enumeration for the first level. A common first level enumeration is volume, or "v."
 . Click Add Enumeration.
 . A field for the Second level will appear. Enter the enumeration for the second level. A common first level enumeration is number, or "no."
