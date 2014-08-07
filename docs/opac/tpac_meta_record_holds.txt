@@ -29,11 +29,11 @@ image::media/srchresultpg3_4.jpg[]
 
 To place a metarecord level hold:
 
-. 1	Click the *Place Hold* link.
-. 2	Users who are not logged into their accounts will be directed to the *Log in to Your Account* screen, where they will enter their username and password. Users who are already logged into their accounts will be directed to the *Place Hold* screen.
-. 3	Within the *Place Hold* screen, users can select the multiple formats and/or languages that are available.
-. 4	Continue to enter any additional hold information (such as Pickup Location), if needed.
-. 5	Click *Submit*.
+. Click the *Place Hold* link.
+. Users who are not logged into their accounts will be directed to the *Log in to Your Account* screen, where they will enter their username and password. Users who are already logged into their accounts will be directed to the *Place Hold* screen.
+. Within the *Place Hold* screen, users can select the multiple formats and/or languages that are available.
+. Continue to enter any additional hold information (such as Pickup Location), if needed.
+. Click *Submit*.
 
 image::media/placehold_5.jpg[]
 
@@ -61,7 +61,7 @@ Within the staff client, *Show Holds on Bib* for a metarecord level hold will ta
 
 *Global Flag: OPAC Metarecord Hold Formats Attribute*
 
-To utilize the metarecord level hold feature, the Global Flag: OPAC Metarecord Hold Formats Attribute must be enabled and its value set at mr_hold_format, which is the system’s default configuration.
+To utilize the metarecord level hold feature, the Global Flag: OPAC Metarecord Hold Formats Attribute must be enabled and its value set at mr_hold_format, which is the system's default configuration.
 
 image::media/mrholdgf_9.jpg[]
 
