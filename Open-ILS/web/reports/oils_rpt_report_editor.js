@@ -125,11 +125,15 @@ oils_rpt_editor_pivot_data
             DOM.oils_rpt_param_editor_sched_email.value = run.email();
 
             if (run.run_time()) {
+                DOM.oils_rpt_report_editor_run_now.checked = false;
                 DOM.oils_rpt_report_editor_schedule.checked = true;
+                DOM.oils_rpt_param_editor_sched_start_date.disabled = false;
+                DOM.oils_rpt_param_editor_sched_start_hour.disabled = false;
+
                 if (new Date(Date.parse(run.run_time())) < new Date()) {
                     // editing a report with a past-tense run time
                     // clear the value so the user will have to edit
-                    DOM.oils_rpt_param_editor_sched_start_date.value = '';
+                    DOM.oils_rpt_param_editor_sched_start_date.value = mkYearMonDay();
                 } else {
                     DOM.oils_rpt_param_editor_sched_start_date.value = 
                         run.run_time().match(/(\d\d\d\d-\d\d-\d\d)/)[1]
