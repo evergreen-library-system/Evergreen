@@ -1,0 +1,8 @@
+Acquisitions speed improvements
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Improvements to the rendering of the acquisitions fund selector will improve
+the speed at which the purchase order, copy grid, PO/invoice charge creator,
+and distribution formula editor load. These speed improvements will be most
+noticeable for sites that use a lot of funds.
+
+
