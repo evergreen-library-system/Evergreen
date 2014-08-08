@@ -84,7 +84,19 @@ oils_rpt_editor_pivot_data
         hideMe(DOM.oils_rpt_editor_pivot_label_row);
         hideMe(DOM.oils_rpt_editor_pivot_data_row);
     }
- 
+
+
+    // schedule defaults.
+    DOM.oils_rpt_param_editor_sched_start_date.value = mkYearMonDay();
+    setSelector(DOM.oils_rpt_param_editor_sched_start_hour, '12:00');
+    DOM.oils_rpt_report_editor_run_now.checked = true;
+    DOM.oils_rpt_report_editor_schedule.checked = false;
+    DOM.oils_rpt_param_editor_sched_start_date.disabled = true;
+    DOM.oils_rpt_param_editor_sched_start_hour.disabled = true;
+
+    // recur defaults
+    setSelector(DOM.oils_rpt_recur_interval_type, 'days');
+    setSelector(DOM.oils_rpt_recur_count, '1');
 
 	if( rpt ) {
         // populate the report edit form w/ report data
@@ -101,9 +113,26 @@ oils_rpt_editor_pivot_data
         }
 
         if (rpt.recurrence()) {
+            console.log('editing report with recurrence: ' + rpt.recurrence());
             var parts = rpt.recurrence().split(/ /);
-            setSelector(DOM.oils_rpt_recur_count, parts[0]);
-            setSelector(DOM.oils_rpt_recur_interval_type, parts[1]);
+            var type = parts[1];
+            var count = Number(parts[0]);
+
+            if (type.match(/^mon/)) {
+                // PG stores 'months' as 'mon(s)'
+                type = 'months'; 
+            } else if (type.match(/^day/)) {
+                // PG stores weeks as days.  Assuming a person would typically
+                // use weeks to represent sets of 7 days, translate back to
+                // weeks when we can.
+                if (count % 7 == 0) {
+                    type = 'weeks';
+                    count = count / 7;
+                }
+            }
+
+            setSelector(DOM.oils_rpt_recur_count, count);
+            setSelector(DOM.oils_rpt_recur_interval_type, type);
         }
 
         if (rpt.data()) { 
@@ -125,26 +154,26 @@ oils_rpt_editor_pivot_data
             DOM.oils_rpt_param_editor_sched_email.value = run.email();
 
             if (run.run_time()) {
-                DOM.oils_rpt_report_editor_run_now.checked = false;
-                DOM.oils_rpt_report_editor_schedule.checked = true;
-                DOM.oils_rpt_param_editor_sched_start_date.disabled = false;
-                DOM.oils_rpt_param_editor_sched_start_hour.disabled = false;
+                console.log('view/edit report with last run_time: ' + run.run_time());
+                if (new Date(Date.parse(run.run_time())) >= new Date() || this.readonly) {
+                    // Next run of the edited report is scheduled for some time in the future.
+                    // Propagate the value into the data selector and de-select run-now.
+                    // Ditto read-only mode, so the user can see info on the most recent run.
 
-                if (new Date(Date.parse(run.run_time())) < new Date()) {
-                    // editing a report with a past-tense run time
-                    // clear the value so the user will have to edit
-                    DOM.oils_rpt_param_editor_sched_start_date.value = mkYearMonDay();
-                } else {
                     DOM.oils_rpt_param_editor_sched_start_date.value = 
-                        run.run_time().match(/(\d\d\d\d-\d\d-\d\d)/)[1]
+                        run.run_time().match(/(\d{4}-\d{2}-\d{2})/)[1]
+
                     setSelector(
                         DOM.oils_rpt_param_editor_sched_start_hour,
-                        run.run_time().match(/T(\d\d:\d\d)/)[1]
+                        run.run_time().match(/T(\d{2})/)[1] + ':00'
                     );
+
+                    DOM.oils_rpt_report_editor_run_now.checked = false;
+                    DOM.oils_rpt_report_editor_schedule.checked = true;
+                    DOM.oils_rpt_param_editor_sched_start_date.disabled = false;
+                    DOM.oils_rpt_param_editor_sched_start_hour.disabled = false;
                 }
-            } else {
-                DOM.oils_rpt_param_editor_sched_start_date.value = mkYearMonDay();
-            }
+            } 
         }
 	}
 
@@ -335,7 +364,6 @@ oilsRptReportEditor.prototype.save = function(options) {
 
 	var time;
 	if( DOM.oils_rpt_report_editor_run_now.checked ) {
-		DOM.oils_rpt_report_editor_run_now.checked = false;
 		time = 'now';
 
 	} else {

@@ -36,7 +36,7 @@ oilsRptSetWidget.prototype.draw = function() {
             this_.addButton.onclick();
     }
 
-	this.inputWidget.draw(post_draw);
+	this.inputWidget.draw(null, post_draw);
 	this.node.appendChild(elem('br'))
 	this.node.appendChild(this.addButton);
 	this.node.appendChild(this.delButton);
@@ -589,7 +589,8 @@ function oilsRptRemoteWidget(args) {
     this.source.disabled = Boolean(args.readonly);
 }
 
-oilsRptRemoteWidget.prototype.draw = function(callback) {
+// selected is unused
+oilsRptRemoteWidget.prototype.draw = function(selected, callback) {
 	var orgcol;
 	iterate(oilsIDL[this.class].fields,
 		function(i) {
