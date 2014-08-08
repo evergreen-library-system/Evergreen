@@ -1,0 +1,11 @@
+Secondary Permission Groups
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Secondary permission groups, available through the patron editor, allow admins
+to add supplemental permission groups to staff accounts. The
+*CREATE_USER_GROUP_LINK* and *REMOVE_USER_GROUP_LINK* permissions are required
+to display and use this feature. 
+
+<<secondaryperms, View Documentation>>.
+
+
