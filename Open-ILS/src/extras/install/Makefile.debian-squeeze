@@ -53,6 +53,7 @@ export DEBS = \
 	libyaz-dev\
 	libsoap-lite-perl\
 	libbz2-dev\
+	libparse-recdescent-perl\
 	yaz
 
 export DEB_APACHE_MODS = \

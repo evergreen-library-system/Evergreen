@@ -45,6 +45,7 @@ FEDORA_RPMS = \
 	perl-Net-IP \
 	perl-Net-SSH2 \
 	perl-OLE-Storage_Lite \
+	perl-Parse-RecDescent \
 	perl-RPC-XML \
 	perl-SOAP-Lite \
 	perl-Test-Warn \

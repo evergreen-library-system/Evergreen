@@ -56,6 +56,7 @@ export DEBS = \
 	postgresql-client-9.1\
 	libsoap-lite-perl\
 	libbz2-dev\
+	libparse-recdescent-perl\
 	yaz
 
 export DEB_APACHE_MODS = \

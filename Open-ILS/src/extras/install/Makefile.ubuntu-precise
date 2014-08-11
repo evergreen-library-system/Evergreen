@@ -58,6 +58,7 @@ export DEBS = \
 	libsoap-lite-perl\
 	libtest-warn-perl\
 	libtest-output-perl\
+	libparse-recdescent-perl\
 	yaz
 
 export DEB_APACHE_MODS = \
