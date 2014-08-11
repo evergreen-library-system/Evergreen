@@ -23,6 +23,10 @@ oilsRptSetWidget.prototype.draw = function() {
 	var obj = this;
 	this.addButton.onclick = function() {
 		obj.addDisplayItems(obj.inputWidget.getDisplayValue());
+        if (obj.inputWidget instanceof oilsRptTextWidget) {
+            // clear the value
+            obj.inputWidget.dest.value = '';
+        }
 	}
 
 	this.delButton.onclick = function(){obj.removeSelected()};
@@ -31,9 +35,21 @@ oilsRptSetWidget.prototype.draw = function() {
 
     var this_ = this;
     var post_draw = function() {
-        // propagate the values from the input widget into the our display.
-        if (this_.inputWidget.seedValue)
-            this_.addButton.onclick();
+        if (this_.seedValue && this_.seedValue.length) {
+            if (this_.inputWidget instanceof oilsRptTextWidget) {
+                // add each seed value to the input widget, then 
+                // propagate the value into our multiselect.
+                // when done, clear the value from the text widget.
+                dojo.forEach(this_.seedValue, function(val) {
+                    this_.inputWidget.dest.value = val;
+                    this_.addButton.onclick();
+                });
+                this_.inputWidget.dest.value = '';
+
+            } else {
+                this_.addButton.onclick();
+            }
+        }
     }
 
 	this.inputWidget.draw(null, post_draw);
