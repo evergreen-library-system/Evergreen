@@ -1,6 +1,7 @@
 if(!dojo._hasResource['openils.widget.AutoGrid']) {
     dojo.provide('openils.widget.AutoGrid');
     dojo.require('dojox.grid.DataGrid');
+    dojo.require("dojox.encoding.base64");
     dojo.require('dijit.layout.ContentPane');
     dojo.require('openils.widget.AutoWidget');
     dojo.require('openils.widget.AutoFieldWidget');
@@ -9,6 +10,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
     dojo.require('openils.widget.GridColumnPicker');
     dojo.require('openils.widget._GridHelperColumns');
     dojo.require('openils.Util');
+    dojo.require('openils.CGI');
     dojo.requireLocalization('openils.widget', 'AutoFieldWidget');
 
     dojo.declare(
@@ -36,6 +38,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
             showLoadFilter : true,
             onItemReceived : null,
             suppressLinkedFields : null, // list of fields whose linked display data should not be fetched from the server
+            urlBasedFilterPaging : false,
 
             /* by default, don't show auto-generated (sequence) fields */
             showSequenceFields : false, 
@@ -83,6 +86,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                         }
                     });
 
+                    // TODO: support self.urlBasedFilterPaging
                     var forw = dojo.create('a', {
                         innerHTML : self.nls.NEXT,
                         style : 'padding-right:6px;',
@@ -111,13 +115,18 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                                             {fmClass:self.fmClass, suppressFilterFields:self.suppressFilterFields})
 
                                         self.filterDialog.onApply = function(filter) {
-                                            self.cachedQuerySearch = filter;
-                                            self.resetStore();
-                                            self.loadAll(
-                                                dojo.mixin( { offset : 0 }, self.cachedQueryOpts ),
-                                                self.cachedQuerySearch,
-                                                true
-                                            );
+                                            if (self.urlBasedFilterPaging) { // TODO: grid config
+                                                self.applyFilterByPage(0, filter);
+
+                                            } else {
+                                                self.cachedQuerySearch = filter;
+                                                self.resetStore();
+                                                self.loadAll(
+                                                    dojo.mixin( { offset : 0 }, self.cachedQueryOpts ),
+                                                    self.cachedQuerySearch,
+                                                    true
+                                                );
+                                            }
                                         };
 
                                         self.filterDialog.startup();
@@ -136,6 +145,38 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                     });
                     dojo.place(this.loadProgressIndicator, this.paginator.domNode);
                 }
+            },
+
+            applyFilterByPage : function(offset, filter) {
+                var ops = {
+                    filter : filter, // TODO: load from query cache on offset-only change
+                    offset : offset || 0
+                }
+
+                var encoded = dojox.encoding.base64.encode(
+                    js2JSON(ops)
+                    .split("")
+                    .map(function(c) { return c.charCodeAt(0); })
+                );
+
+                var cgi = new openils.CGI();
+                cgi.param('djgridops', encoded);
+                location.href = cgi.url();
+            },
+
+            extractFilterByPage : function() {
+                // these should only be extracted once per page
+                if (this.urlFiltersExtracted) return;
+                this.urlFiltersExtracted = true;
+
+                var ops = new openils.CGI().param('djgridops');
+                if (!ops) return;
+
+                return JSON2js(
+                    dojox.encoding.base64.decode(ops)
+                    .map(function(b) {return String.fromCharCode(b)})
+                    .join("")
+                );
             },
 
             hideLoadProgressIndicator : function() {
@@ -582,6 +623,16 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                 // retain the most recent external loadAll 
                 if (!filter_triggered || !this.preFilterSearch)
                     this.preFilterSearch = dojo.clone( this.cachedQuerySearch );
+
+                var url_ops = this.extractFilterByPage();
+                if (url_ops) {
+                    opts.offset = url_ops.offset;
+                    search = dojo.mixin(search || {}, url_ops.filter);
+                }
+
+                // TODO: remove these debug lines
+                console.log('search = ' + js2JSON(search));
+                console.log('opts = ' + js2JSON(opts));
 
                 if(search)
                     new openils.PermaCrud().search(this.fmClass, search, opts);
