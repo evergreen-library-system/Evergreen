@@ -37,6 +37,10 @@ var cachedFunds = [];
 function initPage() {
     contextOrg = openils.User.user.ws_ou();
 
+    // Propagate the context org from the URL data into our org selector.
+    if (lfGrid.urlUserData && lfGrid.urlUserData.contextOrg)
+        contextOrg = lfGrid.urlUserData.contextOrg;
+
     /* Reveal controls for rollover without money if org units say ok.
      * Actual ability to do the operation is controlled in the database, of
      * course. */
@@ -59,6 +63,9 @@ function initPage() {
                 dojo.byId('oils-acq-rollover-ctxt-org').innerHTML = 
                     fieldmapper.aou.findOrgUnit(contextOrg).shortname();
                 rolloverMode = false;
+                // tell the grid to pass the context org info along
+                // with the encoded URL data so we can re-propagate
+                lfGrid.displayOffset = 0; // new org means a new search
                 gridDataLoader();
             }
         );
@@ -82,7 +89,8 @@ function initPage() {
         function(list) {
             adminPermOrgs = list;
             loadFundGrid(
-                new openils.CGI().param('year') 
+                lfGrid.urlUserData.year
+                    || new openils.CGI().param('year') 
                     || new Date().getFullYear().toString());
         },
         true, true
@@ -128,6 +136,9 @@ function loadFundGrid(year) {
         });
     }
 
+    lfGrid.urlUserData.year = year;
+    lfGrid.urlUserData.contextOrg = contextOrg;
+
     lfGrid.loadAll(
         {   
             flesh : 1,  
@@ -157,13 +168,18 @@ function loadYearSelector() {
                 fundFilterYearSelect.store = new dojo.data.ItemFileWriteStore({data:yearStore});
 
                 // default to this year
-                fundFilterYearSelect.setValue(new Date().getFullYear().toString());
+                fundFilterYearSelect.setValue(
+                    // propagate year from URL if available
+                    lfGrid.urlUserData.year ||
+                        new Date().getFullYear().toString()
+                );
 
                 dojo.connect(
                     fundFilterYearSelect, 
                     'onChange', 
                     function() { 
                         rolloverMode = false;
+                        lfGrid.displayOffset = 0;
                         gridDataLoader();
                     }
                 );

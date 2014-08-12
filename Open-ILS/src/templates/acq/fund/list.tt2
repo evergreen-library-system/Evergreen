@@ -163,6 +163,7 @@
             fmClass='acqf'
             showLoadFilter='true'
             showPaginator='true'
+            urlNavigation='true'
             editOnEnter='true'>
         <thead>
             <tr>
