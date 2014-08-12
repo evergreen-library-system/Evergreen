@@ -20,7 +20,7 @@ BLOCK render_series;
                 NEXT UNLESS code.match('[a-z]');
                 # at this point, we actually have a partial term to use.
                 single_term = subfield.textContent | html;
-                all_terms.push(subfield.textContent.replace('[#"^$\+\-,\.:;&|\[\]()]', ''));
+                all_terms.push(subfield.textContent.replace('[#"^$\+\-,\.:;&|\[\]()]', ' '));
                 total_term = all_terms.join(" ").replace('\s+$', '');
 
                 url = mkurl(ctx.opac_root _ '/results',
