@@ -38,7 +38,12 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
             showLoadFilter : true,
             onItemReceived : null,
             suppressLinkedFields : null, // list of fields whose linked display data should not be fetched from the server
-            urlBasedFilterPaging : false,
+            urlNavigation : false,
+
+            // When using urlNavigation, this is a stash where the 
+            // caller can place arbitrary data to be passed around
+            // between pages.
+            urlUserData : {},
 
             /* by default, don't show auto-generated (sequence) fields */
             showSequenceFields : false, 
@@ -61,6 +66,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                 this.overrideEditWidgets = {};
                 this.overrideEditWidgetClass = {};
                 this.overrideWidgetArgs = {};
+                this.extractUrlOps(); 
 
 		this.nls = dojo.i18n.getLocalization('openils.widget', 'AutoFieldWidget');
 
@@ -86,14 +92,21 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                         }
                     });
 
-                    // TODO: support self.urlBasedFilterPaging
+                    // TODO: support self.urlNavigation
                     var forw = dojo.create('a', {
                         innerHTML : self.nls.NEXT,
                         style : 'padding-right:6px;',
                         href : 'javascript:void(0);', 
                         onclick : function() { 
                             self.cachedQueryOpts.offset = self.displayOffset += self.displayLimit;
-                            self.refresh();
+                            if (self.urlNavigation) {
+                                self.applyAndExecuteUrlOps(
+                                    self.cachedQueryOpts.offset, 
+                                    self.cachedQuerySearch
+                                );
+                            } else {
+                                self.refresh();
+                            }
                         }
                     });
 
@@ -115,8 +128,8 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                                             {fmClass:self.fmClass, suppressFilterFields:self.suppressFilterFields})
 
                                         self.filterDialog.onApply = function(filter) {
-                                            if (self.urlBasedFilterPaging) { // TODO: grid config
-                                                self.applyFilterByPage(0, filter);
+                                            if (self.urlNavigation) { 
+                                                self.applyAndExecuteUrlOps(0, filter);
 
                                             } else {
                                                 self.cachedQuerySearch = filter;
@@ -147,10 +160,12 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                 }
             },
 
-            applyFilterByPage : function(offset, filter) {
+            // set URL options then jump to the new URL
+            applyAndExecuteUrlOps : function(offset, filter) {
                 var ops = {
                     filter : filter, // TODO: load from query cache on offset-only change
-                    offset : offset || 0
+                    offset : offset || 0,
+                    userData : this.urlUserData
                 }
 
                 var encoded = dojox.encoding.base64.encode(
@@ -164,19 +179,19 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                 location.href = cgi.url();
             },
 
-            extractFilterByPage : function() {
-                // these should only be extracted once per page
-                if (this.urlFiltersExtracted) return;
-                this.urlFiltersExtracted = true;
-
+            // extract options encoded in the URL
+            extractUrlOps : function() {
                 var ops = new openils.CGI().param('djgridops');
                 if (!ops) return;
 
-                return JSON2js(
+                ops = JSON2js(
                     dojox.encoding.base64.decode(ops)
                     .map(function(b) {return String.fromCharCode(b)})
                     .join("")
                 );
+
+                this.urlOps = ops;
+                this.urlUserData = ops.userData;
             },
 
             hideLoadProgressIndicator : function() {
@@ -624,15 +639,25 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                 if (!filter_triggered || !this.preFilterSearch)
                     this.preFilterSearch = dojo.clone( this.cachedQuerySearch );
 
-                var url_ops = this.extractFilterByPage();
-                if (url_ops) {
-                    opts.offset = url_ops.offset;
-                    search = dojo.mixin(search || {}, url_ops.filter);
+                if (this.urlNavigation) {
+                    if (!this.urlOpsApplied) {
+                        this.urlOpsApplied = true;
+                        // on the first page load, apply the ops from the URL
+                        if (this.urlOps) {
+                            console.log('applying url ops: ' + js2JSON(this.urlOps));
+                            opts.offset = self.displayOffset = this.urlOps.offset;
+                            search = dojo.mixin(search || {}, this.urlOps.filter);
+                        }
+                    } else {
+                        // subsequent calls to loadAll() suggest changing
+                        // filters / paging / etc, propagate new values
+                        // to the new URL
+                        return this.applyAndExecuteUrlOps(
+                            this.displayOffset,
+                            this.cachedQuerySearch
+                        );
+                    }
                 }
-
-                // TODO: remove these debug lines
-                console.log('search = ' + js2JSON(search));
-                console.log('opts = ' + js2JSON(opts));
 
                 if(search)
                     new openils.PermaCrud().search(this.fmClass, search, opts);
