@@ -19,6 +19,7 @@ module.exports = function(grunt) {
             'bower_components/angular/angular.min.js.map',
             'bower_components/angular-route/angular-route.min.js',
             'bower_components/angular-route/angular-route.min.js.map',
+            'bower_components/angular-bootstrap/ui-bootstrap.min.js',
             'bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js',
             'bower_components/angular-hotkeys/build/hotkeys.min.js',
           ]
@@ -78,6 +79,7 @@ module.exports = function(grunt) {
             // The order is important.
             'build/js/angular.min.js',
             'build/js/angular-route.min.js',
+            'build/js/ui-bootstrap.min.js',
             'build/js/ui-bootstrap-tpls.min.js',
             'build/js/hotkeys.min.js',
             // NOTE: OpenSRF must be installed
