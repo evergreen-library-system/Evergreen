@@ -1,6 +1,0 @@
-Change to Holds Shelf Expire Report
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-When limiting to Clearable Holds in the Browse Holds Shelf interface, the
-system will no longer display and clear holds expiring today. Instead, it will
-look for holds that expired before today.

@@ -1,7 +1,0 @@
-Switch to XLSX format for Excel report output
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-With previous versions of Evergreen, reports generated in the Excel output
-were limited to a maximum of 64,000 rows.  This was a limitation due to the 
-Excel format ".xls". Now, new report outputs for Excel will use format ".xlsx"
-which allows for much larger report output rows.
-

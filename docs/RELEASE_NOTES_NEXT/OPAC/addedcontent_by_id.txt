@@ -1,6 +1,0 @@
-Added Content by Record ID
-^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The Template Toolkit OPAC will now load all Added Content by the Record ID, not
-just jacket images. This will allow added content providers that support it to
-load additional content by other identifiers.

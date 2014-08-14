@@ -1,0 +1,408 @@
+Evergreen 2.7 Release Notes
+===========================
+:toc:
+:numbered:
+
+Upgrade notes
+-------------
+
+Record Attributes Reingest Recommended
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+After this update, it is recommended that you reingest your
+bibliographic records to update the fixed field, record attribute
+indexes.  This is mainly necessary to make sure that fiction books do
+not also show up as non-fiction.
+
+You can accomplish this by running the following query in your database:
+
+[source,sql]
+--------------------------------------------------------------------
+select metabib.reingest_record_attributes(id)
+from biblio.record_entry;
+--------------------------------------------------------------------
+
+
+
+New features
+------------
+
+
+
+Acquisitions
+~~~~~~~~~~~~
+
+
+
+Acquisitions speed improvements
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Improvements to the rendering of the acquisitions fund selector will improve
+the speed at which the purchase order, copy grid, PO/invoice charge creator,
+and distribution formula editor load. These speed improvements will be most
+noticeable for sites that use a lot of funds.
+
+
+
+
+
+
+Differentiate Delayed vs Canceled Items
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Background
+++++++++++
+Canceled and delayed lineitems and copies in acquisitions are marked as
+canceled in the database.  The determining factor of whether an item is
+delayed or canceled is the keep_debits flag on the cancel reason.  
+
+The changes below help to differentiate between these two closely related 
+states by improving labels in the interface and providing separate counts
+for delayed vs. canceled.
+
+Changes
++++++++
+
+ * Show number canceled and number delayed in lineitem summary displays
+  ** Includes summary displays in invoices and copy grids
+ * Update stock cancel cause labels to include "Canceled:.." and 
+   "Delayed:..." prefixes.
+ * When a lineitem or copy is marked as canceled, show the cancel cause
+   label in the interface instead of the bare (and misleading and non-I18N 
+   friendly) string "cancelled".
+   ** Related, for non-canceled states, show a translatable string 
+     representing the name of the state instead of the bare state code.
+ * Add cancel cause labels to the print PO and lineitem worksheet templates.
+
+Support Cancellation of Delayed Lineitems
++++++++++++++++++++++++++++++++++++++++++
+
+When a lineitem is marked as delayed (canceled with keep_debits == true), 
+allow staff to cancel the lineitem again in the ACQ PO/Picklist interface.
+Once a lineitem is marked as truly canceled, it cannot be canceled again.
+
+
+
+
+Administration
+~~~~~~~~~~~~~~
+
+
+
+Switch to XLSX format for Excel report output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+With previous versions of Evergreen, reports generated in the Excel output
+were limited to a maximum of 64,000 rows.  This was a limitation due to the 
+Excel format ".xls". Now, new report outputs for Excel will use format ".xlsx"
+which allows for much larger report output rows.
+
+
+
+
+
+Report Editing
+^^^^^^^^^^^^^^
+Users may now view and edit existing reports.
+
+With each report in the Reports folder view there are two new links,
+one for viewing (read-only) and one for editing.  After changing a 
+report, the user has the option to save the modified report
+or create a new report with the new values, in effect cloning
+the original report.
+
+When saving a changed report, if a pending report run exists, the user
+will be warned of this and asked if they would prefer to modify the
+scheduled report or to instead save the changed values as a new 
+report, leaving the original report intact.
+
+
+
+
+Reports Documentation Links and Hints
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ * Report templates support a new External URL field, which may
+   contain a link to template-specific, local documentation.
+
+  ** When set, a link to the external documentation will be
+     displayed in a new column in the template list and within
+     the report editor.
+
+  ** URL's are set in the 'Documentation URL' entry.
+
+ * Template display fields and filters support a new Field Hint
+   value.  When set, hints are displayed in the report editor.
+
+  ** Values are set via the 'Change Field Hint' option along
+     the bottom of the template editor.
+
+
+
+
+
+
+Secondary Permission Groups
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Secondary permission groups, available through the patron editor, allow admins
+to add supplemental permission groups to staff accounts. The
+*CREATE_USER_GROUP_LINK* and *REMOVE_USER_GROUP_LINK* permissions are required
+to display and use this feature. 
+
+<<secondaryperms, View Documentation>>.
+
+
+
+
+
+
+Cataloging
+~~~~~~~~~~
+
+
+
+TPAC Copy View/Edit Links
+^^^^^^^^^^^^^^^^^^^^^^^^^
+Adds 'view' and 'edit' links next to each copy in the TPAC record
+details copy grid when viewed from within the staff client.  The 'edit'
+link only appears when the authenticated user has permission to edit the
+specified copy.
+
+Both links open new tabs.  When the 'edit' link used, the 'Unified
+Volume/Item Creator/Editor' org unit setting is inspected to determine
+which style of copy edit interface to display.
+
+
+
+
+Display "Imported As" in Vandelay Queue
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+This simple new feature appears within the Cataloging *MARC Batch 
+Import/Export* screens. When viewing the contents of a Vandelay queue, 
+for example when inspecting a queue or right after bib imports, there is 
+a new column displayed called _Imported As_. This new column displays the 
+record ID, also known as the bib number, of the bib records currently 
+listed in the queue. If the bib records listed in the queue have not been 
+imported yet, this column is blank until the queued records are imported. 
+After import the queued records will display the assigned record ID for 
+the listed bib(s).
+
+
+
+
+MARC Stream Importer
+^^^^^^^^^^^^^^^^^^^^
+
+New command line options were added to marc_stream_importer.pl for
+passing additional Vandelay import flags.  Prior to this change, only
+auto-overlay-exact was supported.  
+
+New options:
+
+  * --auto-overlay-exact
+    ** Overlay/merge on exact 901c matches
+  * --auto-overlay-1match
+    ** Overlay/merge when exactly one match is found
+  * --auto-overlay-best-match
+    ** Overlay/merge on best match
+  * --import-no-match
+    ** Import when no match is found
+
+Like Vandelay, these options can be combined.
+
+
+
+
+Monograph Part Merging
+^^^^^^^^^^^^^^^^^^^^^^
+
+The monograph part list for a bibliographic record may, over time, diverge from the
+proscribed format, resulting in multiple labels for what are essentially the same
+item.  For instance, ``++Vol.{nbsp}1++'' may have variants like ``++V.1++'', ``++Vol{nbsp}1++'', or ``++{nbsp}Vol.{nbsp}1++'' (leading space).
+This feature will allow catalog staff to collapse the variants into one value.
+
+In the Monograph Parts display:
+
+. Click the checkbox for all items you wish to merge including the one you wish to prevail when done.
+. Click on the ``Merge Selected'' button. A pop-up window will list the selected items in
+a monospaced font, with blanks represented by a middle-dot character for more visibility.
+. Click on the item you wish to prevail.
+
+The undesired part labels will be deleted, and any copies that previously used those labels will 
+now use the prevailing label.
+
+
+
+
+Circulation
+~~~~~~~~~~~
+
+
+
+Change to Holds Shelf Expire Report
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+When limiting to Clearable Holds in the Browse Holds Shelf interface, the
+system will no longer display and clear holds expiring today. Instead, it will
+look for holds that expired before today.
+
+
+
+
+Support holds targeting and fullfillment of precats for ILL
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Adds support for holds targeting and fullfillment of copy-level holds on
+pre-cat records. This feature makes integration with FulfILLment, NCIP and
+other ILL mediators easier because pre-cat copies can sucessfully be used for
+the ILL records.
+
+
+
+
+
+Support for a Lost and Paid Status
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+This feature supports a new, optional, _Lost and Paid_ status that can be used
+by sites that want to distinguish between lost items with outstanding bills and
+those that have been fully paid. A site may want to make this distinction to
+set different OPAC visibility or holdability rules for these items.
+
+If enabled, when a lost item is fully paid, the copy's status will automatially
+change to _Lost and Paid_.
+
+New setting available via the Library Settings Editor
+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+- Use Lost and Paid copy status (circ.use_lost_paid_copy_status)
+
+
+
+
+OPAC
+~~~~
+
+
+
+Added Content by Record ID
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Template Toolkit OPAC will now load all Added Content by the Record ID, not
+just jacket images. This will allow added content providers that support it to
+load additional content by other identifiers.
+
+
+
+
+Content Cafe Added Content Update
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The OpenILS::WWW::AddedContent::ContentCafe provider has been updated to use the
+newer Content Cafe 2 API in full. With this update the ability to load content
+based on ISBN or UPC is now enabled.
+
+
+"No Image" Images
++++++++++++++++++
+With the updated code the option for displaying a "No Image" image or a 1x1
+pixel image is no longer available. Instead the Apache-level "blank image" rules
+will trigger when no image is available. The configuration option controlling
+this behavior can thus be removed from opensrf.xml entirely.
+
+
+Identifier Selection
+++++++++++++++++++++
+By default the module will prefer ISBNs over UPCs, but will request information
+for both. If you wish for UPCs to be preferred, or wish one of the two
+identifier types to not be considered at all, you can change the
+"identifier_order" option in opensrf.xml. When the option is present only the
+identifier(s) listed will be sent.
+
+
+
+
+More RDA 264 tag support
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+The OPAC now displays RDA bib tag 264 information for Producer, Distributor, 
+Manufacturer, and Copyright within a full bib record’s summary. This is in 
+addition to the RDA bib tag 264 publisher information, indicator 2 equal 
+to 1, that was already being displayed in previous versions of Evergreen. 
+The OPAC full bib view also now contains the Schema.org copyrightYear value.
+
+Additionally, this information is now available in search results as well 
+when viewing more details.
+
+
+
+
+Sitemap generator
+^^^^^^^^^^^^^^^^^
+A http://www.sitemaps.org[sitemap] directs search engines to the pages of
+interest in a web site so that the search engines can intelligently crawl
+your site. In the case of Evergreen, the primary pages of interest are the
+bibliographic record detail pages.
+
+The sitemap generator script creates sitemaps that adhere to the
+http://sitemaps.org specification, including:
+
+* limiting the number of URLs per sitemap file to no more than 50,000 URLs;
+* providing the date that the bibliographic record was last edited, so
+  that once a search engine has crawled all of your sites' record detail pages,
+  it only has to reindex those pages that are new or have changed since the last
+  crawl;
+* generating a sitemap index file that points to each of the sitemap files.
+
+Running the sitemap generator
++++++++++++++++++++++++++++++
+The `sitemap_generator` script must be invoked with the following argument:
+
+* `--lib-hostname`: specifies the hostname for the catalog (for example,
+  `--lib-hostname https://catalog.example.com`); all URLs will be generated
+  appended to this hostname
+
+Therefore, the following arguments are useful for generating multiple sitemaps
+per Evergreen instance:
+
+* `--lib-shortname`: limit the list of record URLs to those which have copies
+  owned by the designated library or any of its children;
+* `--prefix`: provides a prefix for the sitemap index file names
+
+Other options enable you to override the OpenSRF configuration file and the
+database connection credentials, but the default settings are generally fine.
+
+Note that on very large Evergreen instances, sitemaps can consume hundreds of
+megabytes of disk space, so ensure that your Evergreen instance has enough room
+before running the script.
+
+Scheduling
+++++++++++
+To enable search engines to maintain a fresh index of your bibliographic
+records, you may want to include the script in your cron jobs on a nightly or
+weekly basis.
+
+Sitemap files are generated in the same directory from which the script is
+invoked, so a cron entry will look something like:
+
+------------------------------------------------------------------------
+12 2 * * * cd /openils/var/web && /openils/bin/sitemap_generator
+------------------------------------------------------------------------
+
+
+
+Acknowledgments
+---------------
+The Evergreen project would like to acknowledge the following
+organizations who commissioned developments in this release of
+Evergreen:
+
+ * **TODO**
+
+We would also like to thank the following individuals who contributed
+code and documentations patches to this release of Evergreen:
+
+ * **TODO**
+
+We also thank the following organizations whose employees contributed
+patches:
+
+ * **TODO**
+
+We regret any omissions.  If a contributor has been inadvertantly
+missed, please open a bug at http://bugs.launchpad.net/evergreen/
+with a correction.
+

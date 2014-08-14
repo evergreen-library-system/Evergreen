@@ -1,7 +1,0 @@
-Support holds targeting and fullfillment of precats for ILL
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Adds support for holds targeting and fullfillment of copy-level holds on
-pre-cat records. This feature makes integration with FulfILLment, NCIP and
-other ILL mediators easier because pre-cat copies can sucessfully be used for
-the ILL records.
-
