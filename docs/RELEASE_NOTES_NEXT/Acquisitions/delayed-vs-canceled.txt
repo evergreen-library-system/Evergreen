@@ -1,7 +1,8 @@
-=== Differentiate Delayed vs Canceled Items ===
+Differentiate Delayed vs Canceled Items
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-==== Background ====
-
+Background
+++++++++++
 Canceled and delayed lineitems and copies in acquisitions are marked as
 canceled in the database.  The determining factor of whether an item is
 delayed or canceled is the keep_debits flag on the cancel reason.  
@@ -10,7 +11,8 @@ The changes below help to differentiate between these two closely related
 states by improving labels in the interface and providing separate counts
 for delayed vs. canceled.
 
-==== Changes ====
+Changes
++++++++
 
  * Show number canceled and number delayed in lineitem summary displays
   ** Includes summary displays in invoices and copy grids
@@ -23,7 +25,8 @@ for delayed vs. canceled.
      representing the name of the state instead of the bare state code.
  * Add cancel cause labels to the print PO and lineitem worksheet templates.
 
-=== Support Cancellation of Delayed Lineitems ===
+Support Cancellation of Delayed Lineitems
++++++++++++++++++++++++++++++++++++++++++
 
 When a lineitem is marked as delayed (canceled with keep_debits == true), 
 allow staff to cancel the lineitem again in the ACQ PO/Picklist interface.

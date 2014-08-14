@@ -1,9 +1,7 @@
-Upgrade Notes
--------------
-
 Record Attributes Reingest Recommended
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Upgrade Notes
++++++++++++++
 After this update, it is recommended that you reingest your
 bibliographic records to update the fixed field, record attribute
 indexes.  This is mainly necessary to make sure that fiction books do

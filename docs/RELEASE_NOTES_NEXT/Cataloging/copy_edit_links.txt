@@ -1,5 +1,5 @@
-==== TPAC Copy View/Edit Links ====
-
+TPAC Copy View/Edit Links
+^^^^^^^^^^^^^^^^^^^^^^^^^
 Adds 'view' and 'edit' links next to each copy in the TPAC record
 details copy grid when viewed from within the staff client.  The 'edit'
 link only appears when the authenticated user has permission to edit the

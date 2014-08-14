@@ -1,5 +1,5 @@
-==== Reports Documentation Links and Hints ====
-
+Reports Documentation Links and Hints
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
  * Report templates support a new External URL field, which may
    contain a link to template-specific, local documentation.
 

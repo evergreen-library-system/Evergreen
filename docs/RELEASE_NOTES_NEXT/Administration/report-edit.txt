@@ -1,5 +1,5 @@
-==== Report Editing ====
-
+Report Editing
+^^^^^^^^^^^^^^
 Users may now view and edit existing reports.
 
 With each report in the Reports folder view there are two new links,

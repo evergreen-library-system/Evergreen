@@ -1,5 +1,5 @@
-New Feature: Monograph Part Merging
-===================================
+Monograph Part Merging
+^^^^^^^^^^^^^^^^^^^^^^
 
 The monograph part list for a bibliographic record may, over time, diverge from the
 proscribed format, resulting in multiple labels for what are essentially the same
