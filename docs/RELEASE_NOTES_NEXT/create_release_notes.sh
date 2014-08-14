@@ -26,6 +26,9 @@ echo Upgrade notes >> $outfile
 echo ------------- >> $outfile
 echo >> $outfile
 
+echo New Features >> $outfile
+echo ------------ >> $outfile
+echo >> $outfile
 
 for i in `ls -l|grep ^d|awk '{print $9}'`; do
     files=$(ls $i/*txt 2>/dev/null)
@@ -47,7 +50,7 @@ for i in `ls -l|grep ^d|awk '{print $9}'`; do
     fi
 done
 
-files=$(ls *txt 2>/dev/null)
+files=$(ls *txt 2>/dev/null | grep -v 'RELEASE_NOTE_TEMPLATE.txt')
 if [ "_$files" != "_" ]; then
     echo >> $outfile
     echo Miscellaneous >> $outfile
