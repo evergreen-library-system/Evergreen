@@ -471,7 +471,7 @@ It also creates the configuration files required by the Evergreen `cgi-bin`
 administration scripts, and sets the user name and password for the *egadmin*
 Evergreen administrator account to your requested values.
 
-You can get a complete set of options for `eg_db_config.pl` by passing the
+You can get a complete set of options for `eg_db_config` by passing the
 `--help` parameter.
 
 Loading sample data
