@@ -2452,10 +2452,14 @@ circ.util.hold_columns = function(modify,params) {
             'flex' : 1,
             'primary' : false,
             'hidden' : true,
+	    'sort_value' : function(my,scratch_data) {
+	                        var result_label = "label_sortkey";
+				return sort_call_numbers_by_label_sortkey(my,scratch_data, result_label);
+		       },
             'editable' : false, 'render' : function(my,scratch_data) {
 				var result_label = "render_label";
 				return sort_call_numbers_by_label_sortkey(my, scratch_data, result_label);
-			   } 
+			} 
         },
         {
             'id' : 'prefix',
