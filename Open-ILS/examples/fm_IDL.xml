@@ -5658,7 +5658,7 @@ SELECT  usr,
 			<field reporter:label="Status" name="status" oils_persist:virtual="true" />
 			<field reporter:label="Transit" name="transit" oils_persist:virtual="true" />
 			<field reporter:label="Capture Date/Time" name="capture_time" reporter:datatype="timestamp"/>
-			<field reporter:label="Currently Targeted Copy" name="current_copy" />
+			<field reporter:label="Currently Targeted Copy" name="current_copy" reporter:datatype="link"/>
 			<field reporter:label="Notify by Email?" name="email_notify" reporter:datatype="bool"/>
 			<field reporter:label="Hold Expire Date/Time" name="expire_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Fulfilling Library" name="fulfillment_lib" reporter:datatype="org_unit"/>
@@ -5806,7 +5806,7 @@ SELECT  usr,
 			<field reporter:label="Status" name="status" oils_persist:virtual="true" />
 			<field reporter:label="Transit" name="transit" oils_persist:virtual="true" />
 			<field reporter:label="Capture Date/Time" name="capture_time" reporter:datatype="timestamp"/>
-			<field reporter:label="Currently Targeted Copy" name="current_copy" />
+			<field reporter:label="Currently Targeted Copy" name="current_copy" reporter:datatype="link"/>
 			<field reporter:label="Notify by Email?" name="email_notify" reporter:datatype="bool"/>
 			<field reporter:label="Hold Expire Date/Time" name="expire_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Fulfilling Library" name="fulfillment_lib" reporter:datatype="org_unit"/>
@@ -5891,7 +5891,7 @@ SELECT  usr,
 			<field reporter:label="Status" name="status" oils_persist:virtual="true" />
 			<field reporter:label="Transit" name="transit" oils_persist:virtual="true" />
 			<field reporter:label="Capture Date/Time" name="capture_time" reporter:datatype="timestamp"/>
-			<field reporter:label="Currently Targeted Copy" name="current_copy" />
+			<field reporter:label="Currently Targeted Copy" name="current_copy" reporter:datatype="link"/>
 			<field reporter:label="Notify by Email?" name="email_notify" reporter:datatype="bool"/>
 			<field reporter:label="Hold Expire Date/Time" name="expire_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Fulfilling Library" name="fulfillment_lib" reporter:datatype="org_unit"/>
@@ -5973,7 +5973,7 @@ SELECT  usr,
 		<fields oils_persist:primary="id" oils_persist:sequence="action.hold_request_id_seq">
 			<field reporter:label="Status" name="status" oils_persist:virtual="true" />
 			<field reporter:label="Capture Date/Time" name="capture_time" reporter:datatype="timestamp"/>
-			<field reporter:label="Currently Targeted Copy" name="current_copy" />
+			<field reporter:label="Currently Targeted Copy" name="current_copy" reporter:datatype="link"/>
 			<field reporter:label="Notify by Email?" name="email_notify" reporter:datatype="bool"/>
 			<field reporter:label="Hold Expire Date/Time" name="expire_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Fulfilling Library" name="fulfillment_lib" reporter:datatype="org_unit"/>
@@ -6032,7 +6032,7 @@ SELECT  usr,
 		<fields oils_persist:primary="id" oils_persist:sequence="action.hold_request_id_seq">
 			<field reporter:label="Status" name="status" oils_persist:virtual="true" />
 			<field reporter:label="Capture Date/Time" name="capture_time" reporter:datatype="timestamp"/>
-			<field reporter:label="Currently Targeted Copy" name="current_copy" />
+			<field reporter:label="Currently Targeted Copy" name="current_copy" reporter:datatype="link"/>
 			<field reporter:label="Notify by Email?" name="email_notify" reporter:datatype="bool"/>
 			<field reporter:label="Hold Expire Date/Time" name="expire_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Fulfilling Library" name="fulfillment_lib" reporter:datatype="org_unit"/>

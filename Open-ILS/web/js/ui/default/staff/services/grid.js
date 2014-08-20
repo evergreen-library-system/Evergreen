@@ -1420,15 +1420,16 @@ angular.module('egGridMod',
                 idl_parent = idl_field;
                 idl_field = class_obj.field_map[part];
 
-                if (idl_field && idl_field['class'] && (
-                    idl_field.datatype == 'link' || 
-                    idl_field.datatype == 'org_unit')) {
-                    class_obj = egCore.idl.classes[idl_field['class']];
+                if (idl_field) {
+                    if (idl_field['class'] && (
+                        idl_field.datatype == 'link' || 
+                        idl_field.datatype == 'org_unit')) {
+                        class_obj = egCore.idl.classes[idl_field['class']];
+                    }
+                } else {
+                    return null;
                 }
-                // else, path is not in the IDL, which is fine
             }
-
-            if (!idl_field) return null;
 
             return {
                 idl_parent: idl_parent,

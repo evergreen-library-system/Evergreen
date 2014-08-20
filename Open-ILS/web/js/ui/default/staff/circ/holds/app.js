@@ -35,11 +35,6 @@ angular.module('egHoldsApp',
     $routeProvider.otherwise({redirectTo : '/circ/holds/shelf'});
 })
 
-.factory('holdUiSvc', function() {
-    return {
-        holds : [] // cache
-    }
-})
 
 .controller('HoldsShelfCtrl',
        ['$scope','$q','$routeParams','$window','$location','egCore','egHolds','egHoldGridActions','egCirc','egGridDataProvider',
@@ -249,43 +244,77 @@ function($scope , $q , $routeParams , $window , $location , egCore , egHolds , e
 }])
 
 .controller('HoldsPullListCtrl',
-       ['$scope','$q','$routeParams','$window','$location','egCore','egHolds','egCirc','egGridDataProvider','egHoldGridActions','holdUiSvc',
-function($scope , $q , $routeParams , $window , $location , egCore , egHolds , egCirc , egGridDataProvider , egHoldGridActions , holdUiSvc)  {
+       ['$scope','$q','$routeParams','$window','$location','egCore',
+        'egHolds','egCirc','egHoldGridActions',
+function($scope , $q , $routeParams , $window , $location , egCore , 
+         egHolds , egCirc , egHoldGridActions) {
+
     $scope.detail_hold_id = $routeParams.hold_id;
 
-    var provider = egGridDataProvider.instance({});
-    $scope.gridDataProvider = provider;
+    var cached_details = {};
+    var details_needed = {};
+
+    $scope.gridControls = {
+        setQuery : function() {
+            return {'copy_circ_lib_id' : egCore.auth.user().ws_ou()}
+        },
+        setSort : function() {
+            return ['copy_location_order_position','call_number_sort_key']
+        },
+        itemRetrieved : function(item) {
+            if (!cached_details[item.id]) {
+                details_needed[item.id] = item;
+            }
+        },
+        allItemsRetrieved : flesh_holds
+    }
+
+
+    // Fetches hold detail data for each hold in the grid and links
+    // the detail data to the related grid item so egHoldGridActions 
+    // and friends have access to holds data they understand.
+    // Only fetch not-yet-cached data.
+    function flesh_holds() {
+
+        // Start by fleshing hold details from our cached data.
+        var items = $scope.gridControls.allItems();
+        angular.forEach(items, function(item) {
+            if (!cached_details[item.id]) return;
+            angular.forEach(cached_details[item.id], 
+                function(val, key) { item[key] = val })
+        });
+
+        // Exit if all needed details were already cached
+        if (Object.keys(details_needed).length == 0) return;
+
+        $scope.print_list_loading = true;
+        $scope.print_list_progress = 0;
+
+        egCore.net.request(
+            'open-ils.circ',
+            'open-ils.circ.hold.details.batch.retrieve.authoritative',
+            egCore.auth.token(), Object.keys(details_needed)
+        ).then(
+            function() {
+                $scope.print_list_loading = false;
+                $scope.print_list_progress = null;
+            }, null,
+            function(hold_info) {
+                var hold_id = hold_info.hold.id();
+                cached_details[hold_id] = hold_info;
+                var item = details_needed[hold_id];
+                delete details_needed[hold_id];
+                angular.forEach(hold_info, 
+                    function(val, key) { item[key] = val });
+                $scope.print_list_progress++;
+            }
+        );
+    }
 
     $scope.grid_actions = egHoldGridActions;
     $scope.grid_actions.refresh = function() {
-        holdUiSvc.holds = [];
-        provider.refresh();
-    }
-
-    provider.get = function(offset, count) {
-
-        if (holdUiSvc.holds[offset]) {
-            return provider.arrayNotifier(holdUiSvc.holds, offset, count);
-        }
-
-        var deferred = $q.defer();
-        var recv_index = 0;
-
-        // fetch the IDs
-        egCore.net.request(
-            'open-ils.circ',
-            'open-ils.circ.hold_pull_list.fleshed.stream',
-            egCore.auth.token(), count, offset
-        ).then(
-            deferred.resolve, null, 
-            function(hold_data) {
-                egHolds.local_flesh(hold_data);
-                holdUiSvc.holds[offset + recv_index++] = hold_data;
-                deferred.notify(hold_data);
-            }
-        );
-
-        return deferred.promise;
+        cached_details = {}; // un-cache details after edit actions.
+        $scope.gridControls.refresh();
     }
 
     $scope.detail_view = function(action, user_data, items) {
