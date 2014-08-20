@@ -14,6 +14,18 @@
     <div class="mobile_hide">
     [% INCLUDE "opac/parts/searchbar.tt2" %]
     </div>
+
+     <!-- Added so search available from my account pages -->
+    <div class="mobile_view">
+      <span class="adv_search_catalog_lbl mobile_search_lbl_clr"><strong>Search:</strong></span>
+      <span class="adv_search_catalog_lbl"><a href="[% mkurl(ctx.opac_root _ '/home', {locg => CGI.param('locg')}, 1) %]"
+                    id="home_adv_search_link" class="mobile_search_lbl_clr">[%l('Basic')%]</a> &nbsp;</span>
+		<span class="adv_search_catalog_lbl"><a href="[% mkurl(ctx.opac_root _ '/advanced', {$loc_name => loc_value}, 1) %]"
+            id="home_adv_search_link" class="mobile_search_lbl_clr">[% l('Advanced') %]</a> &nbsp;</span>
+       <span class="browse_the_catalog_lbl"><a href="[% mkurl(ctx.opac_root _ '/browse', {}, ['fi:has_browse_entry']) %]" 
+            class="mobile_search_lbl_clr">[% l('Browse') %]</a>&nbsp;</span>
+    </div><!-- End Mobile search view -->
+
     <div id="content-wrapper">
         <div id="myopac_tabs">
             <div id="acct_tabs">

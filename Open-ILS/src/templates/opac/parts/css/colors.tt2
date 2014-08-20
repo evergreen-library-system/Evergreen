@@ -31,6 +31,7 @@
         button_text = "#fbf9f9", # off-white 
         button_text_shadow = "#555555", # medium grey
         table_heading = "#d8d8d8", # grey-blue
+        mobile_header_text = "#fff", # white
     };
     
 %]
