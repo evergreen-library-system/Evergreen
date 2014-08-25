@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('0890', :eg_version);
+
 CREATE OR REPLACE FUNCTION acq.transfer_fund(
 	old_fund   IN INT,
 	old_amount IN NUMERIC,     -- in currency of old fund
