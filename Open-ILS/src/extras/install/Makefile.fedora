@@ -7,7 +7,18 @@ FEDORA=$(shell uname -r | grep "\.fc[0-9][0-9]\.")
 # Fedora 64-bit?
 FEDORA_64=$(shell uname -r | grep "\.fc[0-9][0-9]\.x86_64")
 
+PGSQL_COMMON_RPMS = \
+	gcc \
+	perl-Business-ISBN \
+	perl-Library-CallNumber-LC \
+	perl-MARC-Record \
+	perl-MARC-XML \
+	perl-UUID-Tiny \
+	perl-XML-LibXML \
+	perl-XML-LibXSLT
+
 FEDORA_RPMS = \
+	$(PGSQL_COMMON_RPMS) \
 	aspell \
 	aspell-en \
 	bzip2-devel \
@@ -25,7 +36,6 @@ FEDORA_RPMS = \
 	ncurses-libs \
 	perl-parent \
 	perl-Business-CreditCard \
-	perl-Business-ISBN \
 	perl-Business-ISBN-Data \
 	perl-CPAN \
 	perl-Crypt-SSLeay \
@@ -35,12 +45,9 @@ FEDORA_RPMS = \
 	perl-GDGraph3d \
 	perl-JSON-XS \
 	perl-LDAP \
-	perl-Library-CallNumber-LC \
 	perl-Locale-Codes \
 	perl-Locale-Maketext-Lexicon \
 	perl-MARC-Charset \
-	perl-MARC-Record \
-	perl-MARC-XML \
 	perl-Module-Pluggable \
 	perl-Net-IP \
 	perl-Net-SSH2 \
@@ -53,7 +60,6 @@ FEDORA_RPMS = \
 	perl-Text-Aspell \
 	perl-Text-CSV \
 	perl-Text-CSV_XS \
-	perl-UUID-Tiny \
 	perl-XML-Writer \
 	postgresql-devel \
 	readline-devel \
@@ -78,6 +84,7 @@ export CPAN_MODULES_FORCE = \
 	Business::OnlinePayment::PayPal
 
 PGSQL_FEDORA_RPMS = \
+	$(PGSQL_COMMON_RPMS) \
 	postgresql \
 	postgresql-contrib \
 	postgresql-libs \

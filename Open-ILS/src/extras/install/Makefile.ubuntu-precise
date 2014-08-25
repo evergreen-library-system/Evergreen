@@ -2,14 +2,25 @@
 
 DIR = $(dir $(lastword $(MAKEFILE_LIST)))
 
+export DEB_PGSQL_COMMON_MODS = \
+	gcc \
+	libbusiness-isbn-perl \
+	libjson-xs-perl \
+	liblibrary-callnumber-lc-perl \
+	libmarc-record-perl \
+	libmarc-xml-perl \
+	libuuid-tiny-perl \
+	libxml-libxml-perl \
+	libxml-libxslt-perl
+
 export DEBS = \
+	$(DEB_PGSQL_COMMON_MODS) \
 	apache2-prefork-dev\
 	aspell\
 	aspell-en\
 	libbusiness-creditcard-perl\
 	libbusiness-edi-perl \
 	libbusiness-isbn-data-perl\
-	libbusiness-isbn-perl\
 	libbusiness-issn-perl\
 	libbusiness-onlinepayment-authorizenet-perl\
 	libbusiness-onlinepayment-perl\
@@ -25,12 +36,9 @@ export DEBS = \
 	libemail-send-perl\
 	libemail-simple-perl\
 	libgd-graph3d-perl\
-	liblibrary-callnumber-lc-perl \
 	liblocale-maketext-lexicon-perl\
 	liblog-log4perl-perl\
 	libmarc-charset-perl \
-	libmarc-record-perl\
-	libmarc-xml-perl \
 	libncurses5-dev\
 	libnet-https-any-perl \
 	libnet-ip-perl\
@@ -52,7 +60,6 @@ export DEBS = \
 	libtext-csv-perl\
 	libuniversal-require-perl\
 	libunix-syslog-perl\
-	libuuid-tiny-perl\
 	libyaz-dev\
 	postgresql-client-9.1\
 	libsoap-lite-perl\
@@ -84,6 +91,7 @@ export CPAN_MODULES_FORCE = \
 	Class::DBI::Frozen::301
 
 PGSQL_SERVER_DEBS_91 = \
+	$(DEB_PGSQL_COMMON_MODS) \
 	postgresql-9.1 \
 	postgresql-contrib-9.1 \
 	postgresql-plperl-9.1 \

@@ -390,27 +390,16 @@ distribution as the *root* Linux account:
 .(Ubuntu Precise)
 [source,bash]
 ---------------------------------------------------------------------------------
-apt-get install gcc libxml-libxml-perl libxml-libxslt-perl libbusiness-isbn-perl
-apt-get install libjson-xs-perl liblibrary-callnumber-lc-perl libmarc-record-perl
-apt-get install libmarc-xml-perl libuuid-tiny-perl
 cpan Rose::URI
 ---------------------------------------------------------------------------------
 
 .(Debian "wheezy" and Ubuntu Trusty) 
-standalone PostgreSQL 9 server
-[source,bash]
----------------------------------------------------------------------------------
-apt-get install gcc libxml-libxml-perl libxml-libxslt-perl libbusiness-isbn-perl
-apt-get install libjson-xs-perl liblibrary-callnumber-lc-perl libmarc-record-perl
-apt-get install libmarc-xml-perl libuuid-tiny-perl librose-uri-perl
----------------------------------------------------------------------------------
+No extra modules required for these distributions.
 
 .(Fedora)
 [source, bash]
 ------------------------------------------------------------------------------
-yum install gcc perl-XML-LibXML perl-XML-LibXSLT perl-Business-ISBN
-yum install perl-Library-CallNumber-LC perl-MARC-Record perl-MARC-Charset
-yum install perl-MARC-File-XML perl-UUID-Tiny
+cpan Rose::URI
 ------------------------------------------------------------------------------
 
 You need to create a PostgreSQL superuser to create and access the database.
