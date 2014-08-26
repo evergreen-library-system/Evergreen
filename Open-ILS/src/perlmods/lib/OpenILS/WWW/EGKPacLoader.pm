@@ -92,6 +92,20 @@ sub load_getit {
         ]);
     }
 
+    # If user is logged in, get default hold pickup and notification info 
+    if ($ctx->{user}) {
+        my $set_map = $self->ctx->{user_setting_map};
+        if ($$set_map{'opac.default_pickup_location'}) {
+            $ctx->{default_pickup_lib} = $$set_map{'opac.default_pickup_location'};
+        }
+        if ($$set_map{'opac.default_phone'}) {
+            $ctx->{default_phone} = $$set_map{'opac.default_phone'};
+        }
+        if ($$set_map{'opac.hold_notify'}) {
+            $ctx->{notify_method} = $$set_map{'opac.hold_notify'};
+        }
+    }
+
     $self->ctx->{page} = 'getit'; # repair the page
     return Apache2::Const::OK;
 }
@@ -106,6 +120,11 @@ sub login_and_place_hold {
 
     return Apache2::Const::HTTP_BAD_REQUEST 
         unless $pickup_lib =~ /^\d+$/;
+
+    #If a pickup library hasn't been selected, reload page
+    if ($pickup_lib == '0') {
+        return $self->load_login;
+    }
 
     my $new_uri = $self->apache->unparsed_uri;
     my $sep = ($new_uri =~ /\?/) ? '&' : '?';

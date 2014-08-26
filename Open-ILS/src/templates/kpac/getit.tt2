@@ -62,17 +62,45 @@
                                         onclick="helpPopup('password_help', this, event);"><img 
                                         src="[% ctx.media_prefix %]/images/kpac/question_mark.png" alt="[% l('password help') %]" /></a>
 
+                                    <input type="hidden" name='pickup_lib' value='0' id='pickup_lib'>
+                                    
                                     <div class="clear">&nbsp;</div>
                                     <div class="hr">&nbsp;</div>
-                                [% END %]
+
+                                [% ELSE %]
 
                                 <p>[% l('Choose a Pickup Library:') %]</p>
                                 <div class="pickup_lib">
                                     [%  def_lib = ctx.default_pickup_lib || ctx.physical_loc;
                                         PROCESS "opac/parts/org_selector.tt2";
                                         INCLUDE build_org_selector name='pickup_lib' 
-                                        value=def_lib id='pickup_lib' can_have_vols_only=1 %]
+                                        value=def_lib id='pickup_lib' can_have_vols_only=1 hold_pickup_lib=0 %]
+
+                                 <!-- HIDDEN FIELDS FOR DEFAULT NOTIFICATION PREFERENCES -->
+                                 [%- IF ctx.notify_method -%]
+                                     [%- IF ctx.notify_method == '' OR ctx.notify_method == 'phone:email' -%]
+                                         [%- SET ctx.notify_method = 'email|phone' -%]
+                                     [%- END -%]
+                                 [%- ELSE -%]
+                                     [%- SET ctx.notify_method = 'email|phone' -%]
+                                 [%- END -%]
+                                 
+                                 [%- IF ctx.user.email -%]
+                                      [%- IF ctx.notify_method == 'email' OR ctx.notify_method == 'email|phone' -%]
+                                           <input type="hidden" id="email_notify" name="email_notify" value="t"/>
+                                      [%- END -%]
+			            [%- END -%]
+
+			            [%- IF allow_phone_notifications == 'true' -%]
+                                      [%- IF ctx.notify_method == 'phone' OR ctx.notify_method == 'email|phone' -%]
+			                      <input type="hidden" id="phone_notify_checkbox" name="phone_notify_checkbox" value="t"/>
+			                      <input type="hidden" name="phone_notify" 
+                                                value='[% IF ctx.default_phone %][%- ctx.default_phone -%][% ELSE %][%- ctx.user.day_phone -%][% END %]'/>
+                                      [%- END -%]
+			            [%- END -%]
+
                                 </div>
+                                [% END %]
                             </div>
                         </div>
                         <div class="submit_btn">
