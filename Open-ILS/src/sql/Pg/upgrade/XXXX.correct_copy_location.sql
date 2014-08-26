@@ -19,6 +19,8 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+DROP TRIGGER IF EXISTS acp_location_fixer_trig ON asset.copy;
+
 CREATE TRIGGER acp_location_fixer_trig
     BEFORE INSERT OR UPDATE OF location, call_number, circ_lib ON asset.copy
     FOR EACH ROW EXECUTE PROCEDURE asset.acp_location_fixer();
