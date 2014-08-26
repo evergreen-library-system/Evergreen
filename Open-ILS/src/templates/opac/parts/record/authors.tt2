@@ -91,7 +91,7 @@ BLOCK build_author_links;
                 supp_term = supp_term _ ' ' _ sf;
             END;
         END;
-        url = mkurl(ctx.opac_root _ '/results', {query => qterm.replace('^\s*(.*?)\s*$', '$1'), qtype => 'author'}, stop_parms.merge(expert_search_parms, general_search_parms));
+        url = mkurl(ctx.opac_root _ '/results', {query => qterm.replace('^\s*(.*?)\s*$', '$1'), qtype => 'author'}, stop_parms.merge(expert_search_parms, general_search_parms, browse_search_parms, facet_search_parms));
         author_type = (tlabel || label) | html;
         
         # schema.org changes

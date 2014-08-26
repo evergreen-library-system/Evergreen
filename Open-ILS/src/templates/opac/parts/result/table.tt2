@@ -114,7 +114,7 @@ END;
                                                                 class="record_author"
                                                                 href="[%- 
                                                                     authorquery = attrs.author | replace('[#"^$\+\-,\.:;&|\[\]()]', ' ');
-                                                                    mkurl(ctx.opac_root _ '/results', {qtype => 'author', query => authorquery}, ['page'])
+                                                                    mkurl(ctx.opac_root _ '/results', {qtype => 'author', query => authorquery}, general_search_parms.merge(expert_search_parms, browse_search_parms, facet_search_parms))
                                                                     -%]">[% attrs.author | html %]</a>
 [%-
 FOR entry IN attrs.graphic_authors;
