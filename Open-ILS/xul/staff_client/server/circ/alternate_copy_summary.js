@@ -46,6 +46,19 @@ function my_init() {
         var columns = circ.util.transit_columns({});
         transit_list = new util.list('transit');
         transit_list.init( { 'columns' : columns });
+        
+        var columns = circ.util.hold_columns(
+        
+                { 
+                    'request_time' : { 'hidden' : true },
+                    'pickup_lib_shortname' : { 'hidden' : false },
+                    'hold_type' : { 'hidden' : false },
+                    'current_copy' : { 'hidden' : true },
+                    'capture_time' : { 'hidden' : true },
+                    'email_notify' : { 'hidden' : false },
+                    'phone_notify' : { 'hidden' : false },
+                } 
+            );
 
         hold_list = new util.list('hold');
         hold_list.init( { 'columns' : columns });
@@ -608,17 +621,6 @@ function load_item() {
             var better_fleshed_hold_blob = network.simple_request('FM_AHR_BLOB_RETRIEVE.authoritative',[ ses(), details.hold.id() ]);
             var status_robj = better_fleshed_hold_blob.status;
             JSAN.use('circ.util');
-            var columns = circ.util.hold_columns( 
-                { 
-                    'request_time' : { 'hidden' : false },
-                    'pickup_lib_shortname' : { 'hidden' : false },
-                    'hold_type' : { 'hidden' : true },
-                    'current_copy' : { 'hidden' : true },
-                    'capture_time' : { 'hidden' : true },
-                    'email_notify' : { 'hidden' : false },
-                    'phone_notify' : { 'hidden' : false },
-                } 
-            );
 
             hold_list.clear();
             hold_list.append( { 'row' : { 'my' : { 'ahr' : better_fleshed_hold_blob.hold, 'acp' : details.copy, 'status' : status_robj, } } });
