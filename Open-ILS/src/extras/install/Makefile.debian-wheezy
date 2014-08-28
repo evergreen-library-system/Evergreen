@@ -4,13 +4,13 @@ DIR = $(dir $(lastword $(MAKEFILE_LIST)))
 
 export DEB_PGSQL_COMMON_MODS = \
 	gcc \
-	libbusiness-isbn-perl
+	libbusiness-isbn-perl \
 	libjson-xs-perl \
 	liblibrary-callnumber-lc-perl \
 	libmarc-record-perl \
 	libmarc-xml-perl \
 	librose-uri-perl \
-	libuuid-tiny-perl
+	libuuid-tiny-perl \
 	libxml-libxml-perl \
 	libxml-libxslt-perl
 
