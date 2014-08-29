@@ -238,6 +238,8 @@ client.
 
 // Follow structure from staff client local admin menu.
 
+include::admin/lsa-address_alert.txt[]
+
 // Push titles down one level.
 :leveloffset: 1
 
