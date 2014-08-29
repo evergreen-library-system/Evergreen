@@ -1,0 +1,32 @@
+Address Alert
+-------------
+
+indexterm:[address alert]
+
+The Address Alert module gives administrators the ability to notify staff with a custom message when 
+addresses with certain patterns are entered in patron records. 
+
+This feature only serves to provide pertinent information to your library system's circulation staff during the registration process. An alert will not prevent the new patron account from being registered and the information will not be permanently associated with the patron account.
+
+To access the Address Alert module, select *Admin* -> *Local Administration* -> *Address Alert*.
+
+[NOTE]
+==========
+You must have Local Administrator permissions to access the Address Alert module.
+==========
+
+General Usage Examples
+~~~~~~~~~~~~~~~~~~~~~~
+
+. Alert staff when an address for a large apartment is entered to prompt them to ask for unit number.
+. Alert staff when the address of a hotel or other temporary housing is entered.
+. Alert staff when an address for a different country is entered.
+. Alert staff when a specific city or zip code is entered if that city or zip code needs to be handled in a special way.  If you have a neighboring city that you don't have a reciprocal relationship with, you could notify staff that a fee card is required for this customer.
+
+Access Control and Scoping
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Each address alert is tied to an Org Unit and will only be matched against that Org Unit and its children.
+
+When viewing the address alerts you will only see the alerts associated with the specific org unit selected in the "Contex Org Unit" selection box.  You won't see alerts associated with parent org units, so the list of alerts isn't a list of all alerts that may effect your org unit, only of the ones that you can edit.
+
