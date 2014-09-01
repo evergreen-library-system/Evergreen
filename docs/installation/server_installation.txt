@@ -519,8 +519,8 @@ export PATH=$PATH:/openils/bin
 +
 3. As the *opensrf* Linux account, generate the Web files needed by the staff
    client and catalogue and update the organization unit proximity (you need to do
-   this the first time you start Evergreen, and after that each time you change
-   the library hierarchy in `config.cgi`):
+   this the first time you start Evergreen, and after that each time you change the library org unit configuration.
+):
 +
 [source, bash]
 ------------------------------------------------------------------------------
