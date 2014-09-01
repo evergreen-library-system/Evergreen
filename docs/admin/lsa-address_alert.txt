@@ -40,14 +40,13 @@ How to add an address to the alert list:
 . Click on Admin > Local Administration > Address Alerts.
 . Click "New Address Alert."
 . A form will open with the following fields to fill out:
-
 Table 1: New Address Alert Fields
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 |==============================================
 |*Field*               |*Description*
 | Owner                |Which Org Unit owns this alert.  Set this to your system or branch.
-| Active               |Checkbox that controls if the alert is active or not.  Inactive alerts are not processed.
-| Match All Fields     |Checkbox that controls if all the fields need to match to trigger the alert(checked), or only at least one field needs to match(unchecked). 
+| Active               |Check-box that controls if the alert is active or not.  Inactive alerts are not processed.
+| Match All Fields     |Check-box that controls if all the fields need to match to trigger the alert(checked), or only at least one field needs to match(unchecked). 
 | Alert Message        |Message that will be displayed to staff when this alert is triggered.
 | Street (1)           |Street 1 field regular expression.
 | Street (2)           |Street 2 field regular expression.
@@ -57,10 +56,10 @@ Table 1: New Address Alert Fields
 | Country              |County regular expression.
 | Postal Code          |Postal Code regular expression.
 | Address Alert ID     |Displays the internal database id for alert after the alert has been saved.
-| Billing Address      |Checkbox that specifies that the alert will only match a billing address if checked.
-| Mailing Address      |Checkbox that specifies that the alert will only match a mailing address if checked. 
+| Billing Address      |Check-box that specifies that the alert will only match a billing address if checked.
+| Mailing Address      |Check-box that specifies that the alert will only match a mailing address if checked. 
 |===============================================
-. Click save once you have finished.
+5 Click save once you have finished.
 
 Editing an Address Alert
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -70,16 +69,16 @@ To make changes to an existing alert, double click on the alert in the list.  Th
 Deleting an Address Alert
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-To delete an alert or many alerts, click the selection checkbox for all alerts you would like to delete.  Then click the "Delete Selected" button at the top of the screen.
+To delete an alert or many alerts, click the selection check-box for all alerts you would like to delete.  Then click the "Delete Selected" button at the top of the screen.
 
 Regular Expressions / Wildcards
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-All of the patterns entered to match the various address fields are evaluated as case-insensitive regular expressions by default.  
+All of the patterns entered to match the various address fields are evaluated as case-insensitive regular expressions by default.
 
 [NOTE]
 ==========
-Address Alerts use POSIX Regular Expressions included in the Postgresql database engine.  See the Postgresql documentation for full details. 
+Address Alerts use POSIX Regular Expressions included in the PostgreSQL database engine.  See the PostgreSQL documentation for full details. 
 ==========
 
 If you want to do a case-sensitive match you need to prepend the pattern with "(?c)"
@@ -87,7 +86,20 @@ If you want to do a case-sensitive match you need to prepend the pattern with "(
 The simplest regular expression that acts as a wildcard is ".*", that matches any type of character zero or more times.
 
 Examples
+~~~~~~~~
 
+Match an apartment address to prompt for unit number.
+- Match All Fields = Checked
+- Alert Message = "This is a large apartment building, Please ask customer for unit number."
+- Street (1) = "1212 Evergreen Lane.*"
+- City = "mytown"
 
+Match all addresses on a certain street.  Matches ave and avenue because of ending wildcard.
+- Match All Fields = Checked
+- Alert Message = "This street is in a different county, please setup reciprocal card."
+- Street (1) = ".* Evergreen Ave.*"
+- City = "mytown"
+
+Match state
 
  
