@@ -524,7 +524,7 @@ export PATH=$PATH:/openils/bin
 +
 [source, bash]
 ------------------------------------------------------------------------------
-autogen.sh -u
+autogen.sh
 ------------------------------------------------------------------------------
 +
 4. As the *root* Linux account, restart the Apache Web server:
