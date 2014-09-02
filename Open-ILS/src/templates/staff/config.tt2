@@ -1,0 +1,13 @@
+[%- 
+
+# FIXME: update via build process
+EVERGREEN_VERSION='0.0.1' 
+
+# create script / css refs to individual files instead of using
+# compressed build files.  Use this for development and debugging.
+EXPAND_WEB_IMPORTS = 1; 
+
+# path to build files (js, css, fonts)
+WEB_BUILD_PATH = ctx.media_prefix _ '/js/ui/default/staff/build/';
+
+%]

@@ -1,0 +1,20 @@
+<eg-grid
+  ng-hide="forbidden"
+  features="-sort,-multisort"
+  id-field="id"
+  idl-class="rmsr"
+  auto-fields="true"
+  items-provider="gridDataProvider"
+  menu-label="[% l('Buckets') %]"
+  persist-key="cat.bucket.record.pending">
+
+  [% INCLUDE 'staff/cat/bucket/record/t_grid_menu.tt2' %]
+
+  <!-- actions drop-down -->
+  <eg-grid-action label="[% l('Add To Bucket') %]" 
+    handler="addToBucket"></eg-grid-action>
+
+  <eg-grid-action label="[% l('Clear List') %]" 
+    handler="clearPendingList"></eg-grid-action>
+
+</eg-grid>

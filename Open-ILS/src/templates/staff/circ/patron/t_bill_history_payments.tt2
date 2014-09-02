@@ -1,0 +1,79 @@
+
+<div ng-if="bill_tab == 'payments'" ng-controller="BillPaymentHistoryCtrl">
+
+  <eg-grid
+    idl-class="mp"
+    id-field="id"
+    grid-controls="gridControls">
+
+    <eg-grid-action 
+      label="[% l('Full Details') %]" handler="showFullDetails"></eg-grid-action>
+
+    <eg-grid-field path="amount" label="[% l('Amount') %]"></eg-grid-field>
+    <eg-grid-field path="id" label="[% l('Payment ID') %]"></eg-grid-field>
+    <eg-grid-field path="payment_ts" label="[% l('Payment Time') %]"></eg-grid-field>
+    <eg-grid-field path="note" label="[% l('Note') %]"></eg-grid-field>
+    <eg-grid-field path="voided" label="[% l('Voided') %]"></eg-grid-field>
+    <eg-grid-field path="xact.summary.xact_type" label="[% l('Transaction Type') %]"></eg-grid-field>
+    <eg-grid-field path="xact.summary.last_billing_type" label="[% l('Last Billing Type') %]"></eg-grid-field>
+
+    <eg-grid-field label="[% l('Title') %]" name="title" 
+      path="xact.circulation.target_copy.call_number.record.simple_record.title">
+      <a target="_self" href="[% ctx.base_path %]/staff/cat/catalog/record/{{item.record_id}}">{{item.title}}</a>
+    </eg-grid-field>
+
+    <!-- needed for bib link -->
+    <eg-grid-field name="record_id" 
+      path="xact.circulation.target_copy.call_number.record.id" 
+      required hidden></eg-grid-field>
+
+    <eg-grid-field label="[% l('Barcode') %]" name="copy_barcode" 
+      path="xact.circulation.target_copy.barcode">
+      <a target="_self" href="./cat/item/{{item.copy_id}}">{{item.copy_barcode}}</a>
+    </eg-grid-field>
+
+    <!-- needed for item link -->
+    <eg-grid-field name="copy_id" 
+      path="xact.circulation.target_copy.id" required hidden></eg-grid-field>
+
+    <!-- ... -->
+
+    <eg-grid-field path="xact.id" required hidden></eg-grid-field>
+    <eg-grid-field path="xact.usr" required hidden></eg-grid-field>
+    <eg-grid-field path="xact.*" hidden></eg-grid-field>
+    <eg-grid-field path="xact.summary.*" hidden></eg-grid-field>
+
+    <!--
+    <eg-grid-field path="xact.summary.balance_owed"></eg-grid-field>
+    <eg-grid-field path="xact.xact_finish" label="[% l('Finish') %]"></eg-grid-field>
+    <eg-grid-field path="xact.xact_start" label="[% l('Start') %]"></eg-grid-field>
+    <eg-grid-field path="xact.summary.total_owed" label="[% l('Total Billed') %]"></eg-grid-field>
+    <eg-grid-field path="xact.summary.total_paid" label="[% l('Total Paid') %]"></eg-grid-field>
+    <eg-grid-field path="xact.summary.xact_type" label="[% l('Type') %]"></eg-grid-field>
+
+    <eg-grid-field label="[% l('Title') %]" name="title" 
+      path="circulation.target_copy.call_number.record.simple_record.title">
+      <a href="[% ctx.base_path %]/opac/record/{{item.record_id}}">{{item.title}}</a>
+    </eg-grid-field>
+
+    <eg-grid-field name="record_id" 
+      path="circulation.target_copy.call_number.record.id" 
+      required hidden></eg-grid-field>
+
+    <eg-grid-field label="[% l('Barcode') %]" name="copy_barcode" 
+      path="circulation.target_copy.barcode">
+      <a target="_self" href="./cat/item/{{item.copy_id}}">{{item.copy_barcode}}</a>
+    </eg-grid-field>
+
+    <eg-grid-field name="copy_id" 
+      path="circulation.target_copy.id" required hidden></eg-grid-field>
+
+    <eg-grid-field path="summary.last_payment_ts" required hidden></eg-grid-field>
+
+    <eg-grid-field path="summary.*" hidden></eg-grid-field>
+    <eg-grid-field path="circulation.target_copy.*" hidden></eg-grid-field>
+    <eg-grid-field path="circulation.target_copy.call_number.*" hidden></eg-grid-field>
+    -->
+  </eg-grid>
+</div>
+

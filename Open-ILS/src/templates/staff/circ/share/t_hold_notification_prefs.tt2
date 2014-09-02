@@ -1,0 +1,78 @@
+<div class="modal-content" id='hold-notify-settings'>
+  <div class="modal-header">
+    <button type="button" class="close" 
+      ng-click="cancel()" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">
+      [% l('Edit Notification Settings for [_1] Hold(s)', '{{num_holds}}') %]
+    </h4>
+  </div>
+  <div class="modal-body">
+    <div class="row header-row">
+      <div class="col-md-12">
+        [% l('Check the checkbox next to each field you wish to modify.') %]
+      </div>
+    </div>
+    <hr/>
+    <div class="row">
+      <div class="col-md-1">
+        <label for="activate-use-email" class="sr-only">[% l('Update Activate Email') %]</label>
+        <input id='activate-use-email' ng-model="args.update_email_notify" type="checkbox"/>
+      </div>
+      <div class="col-md-4">
+        <label for='use-email'>[% l("Send Emails") %]</label>
+      </div>
+      <div class="col-md-7">
+        <input id='use-email' ng-model="args.email_notify" 
+          type="checkbox" ng-disabled="!args.update_email_notify"/>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-1">
+        <label for="activate-phone-number" class="sr-only">[% l('Update Phone Number') %]</label>
+        <input id='activate-phone-number' ng-model="args.update_phone_notify" type="checkbox"/>
+      </div>
+      <div class="col-md-4">
+        <label for='phone-number'>[% l("Phone #") %]</label>
+      </div>
+      <div class="col-md-7">
+        <input id="phone-number" type='tel' 
+          ng-model="args.phone_notify" ng-disabled="!args.update_phone_notify"/>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-1">
+        <label for="activate-sms-number" class="sr-only">[% l('Update SMS Number') %]</label>
+        <input id='activate-sms-number' ng-model="args.update_sms_notify" type="checkbox"/>
+      </div>
+      <div class="col-md-4">
+        <label for='sms-number'>[% l("Text/SMS #") %]</label>
+      </div>
+      <div class="col-md-7">
+        <input id="sms-number" type='tel' 
+          ng-model="args.sms_notify" ng-disabled="!args.update_sms_notify"/>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-1">
+        <label for="activate-sms-carrier" class="sr-only">[% l('Update SMS Carrier') %]</label>
+        <input id='activate-sms-carrier' ng-model="args.update_sms_carrier" type="checkbox"/>
+      </div>
+      <div class="col-md-4">
+        <label for='sms-carrier'>[% l("SMS Carrier") %]</label>
+      </div>
+      <div class="col-md-7">
+        <select id='sms-carrier'
+          ng-model="args.sms_carrier" 
+          ng-disabled="!args.update_sms_carrier"
+          ng-options="carrier.name() for carrier in sms_carriers">
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-default" ng-click="ok()">[% l('Submit') %]</button>
+    <button class="btn btn-warning" ng-click="cancel()">[% l('Cancel') %]</button>
+  </div>
+</div>
+
+

@@ -1,0 +1,9 @@
+<div class="eg-embed-frame">
+  <!-- height is calculated at render time -->
+  <iframe 
+    src="{{url}}" 
+    style="height:{{height}}px"
+    onload="egEmbedFrameLoader(this)">
+  </iframe>
+</div>
+

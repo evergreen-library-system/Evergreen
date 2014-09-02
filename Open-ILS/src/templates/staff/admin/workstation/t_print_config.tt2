@@ -1,0 +1,176 @@
+<div class="container" id="admin-workstation-printing">
+
+  <style>
+    /* TODO: more context and move me */
+    textarea {
+      height: 400px;
+      width: 100%;
+    }
+    .tab-pane .row {
+      padding-top: 20px;
+    }
+    h2 { margin-bottom: 15px }
+      
+  </style>
+
+  <div class="row"> 
+    <div class="col-md-12">
+      <h2>[% l('Printer Settings for Remote Printing') %]</h2>
+    </div>
+  </div>
+
+  <div class="row"> 
+    <div class="col-md-12">
+      <ul class="nav nav-tabs">
+        <li ng-class="{active : context == 'default'}">
+          <a href='' ng-click="setContext('default')">[% l('Default') %]</a>
+        </li>
+        <li ng-class="{active : context == 'receipt'}">
+          <a href='' ng-click="setContext('receipt')">[% l('Receipt') %]</a>
+        </li>
+        <li ng-class="{active : context == 'label'}">
+          <a href='' ng-click="setContext('label')">[% l('Label') %]</a>
+        </li>
+        <li ng-class="{active : context == 'mail'}">
+          <a href='' ng-click="setContext('mail')">[% l('Mail') %]</a>
+        </li>
+        <li ng-class="{active : context == 'offline'}">
+          <a href='' ng-click="setContext('offline')">[% l('Offline') %]</a>
+        </li>
+        <li ng-class="{active : isTestView}" class="pull-right">
+          <a href='' ng-click="isTestView=true">[% l('Test Printing') %]</a>
+        </li>
+      </ul>
+      <div class="tab-content">
+        <div class="tab-pane active">
+
+          <!-- printer config UI -->
+          <div class="row" ng-hide="isTestView">
+            <div class="col-md-6">
+              <div class="input-group">
+                <div class="input-group-btn" dropdown>
+                  <button type="button" class="btn btn-default dropdown-toggle">
+                    [% l('Select Printer') %]
+                    <span class="caret"></span></button>
+                  <ul class="dropdown-menu">
+                    <li ng-repeat="printer in printers">
+                      <a href='' ng-click="setPrinter(printer.name)">
+                        {{printer.name}}
+                      </a>
+                    </li>
+                  </ul>
+                </div><!-- /btn-group -->
+                <input ng-if="!printers[0]" type="text" 
+                  class="form-control" disabled="disabled"
+                  value="[% l('No Printers Found') %]">
+                <input ng-if="printers[0] && !printConfig[context]" type="text" 
+                  class="form-control" disabled="disabled"
+                  value="[% l('No Printer Selected') %]">
+                <input ng-if="printConfig[context].printer" type="text" 
+                  class="form-control" disabled="disabled"
+                  value="{{printConfig[context].printer}}">
+              </div><!-- /input-group -->
+            </div><!-- col -->
+            <div class="col-md-6">
+              <div class="input-group">
+                <div class="input-group-btn">
+                  <button type="button" 
+                    ng-click="configurePrinter()"
+                    ng-class="{disabled : actionPending || !printers[0]}"
+                    class="btn btn-default btn-success">
+                      [% l('Configure Printer') %]
+                  </button>
+                  <button type="button" 
+                    ng-click="resetConfig()"
+                    ng-class="{disabled : actionPending}"
+                    class="btn btn-default btn-warning">
+                      [% l('Reset Configuration') %]
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div><!-- row -->
+          <div class="row" ng-hide="isTestView"> 
+            <div class="col-md-12">
+              <h2>[% l('Compiled Printer Settings') %]</h2>
+              <pre>{{printerConfString()}}</pre>
+            </div><!-- col -->
+          </div><!-- row -->
+
+          <!-- printer test UI -->
+          <div class="row" ng-show="isTestView"> 
+            <div class="col-md-10">
+              <div class="btn-group">
+                <button type="button" 
+                  class="btn btn-default btn-lg" 
+                  ng-class="{active : contentType=='text/plain'}"
+                  ng-click="setContentType('text/plain')">[% l('Plain Text') %]</button>
+                <button type="button" 
+                  class="btn btn-default btn-lg" 
+                  ng-class="{active : contentType=='text/html'}"
+                  ng-click="setContentType('text/html')">[% l('HTML') %]</button>
+              </div>
+            </div>
+            <div class="col-md-2">
+              <div class="input-group pull-right">
+                <div class="input-group-btn">
+                  <button type="button" 
+                    ng-click="testPrint()"
+                    class="btn btn-default btn-success">
+                      [% l('Print') %]</button>
+                  <button type="button" 
+                    ng-click="testPrint(true)"
+                    class="btn btn-default btn-info">
+                      [% l('Print with Dialog') %]</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row" ng-show="isTestView"> 
+            <div class="col-md-12">
+              <div ng-show="contentType=='text/plain'"
+ng-init="textPrintContent='
+[% l('Test Print') %]
+
+1234567890
+
+12345678901234567890
+
+123456789012345678901234567890
+
+1234567890123456789012345678901234567890
+
+12345678901234567890123456789012345678901234567890
+
+12345678901234567890123456789012345678901234567890123456790
+
+[% l('Test Print') %]
+'">
+        <pre><textarea>{{textPrintContent}}</textarea></pre>
+      </div>
+
+      <div ng-show="contentType=='text/html'">
+        <textarea ng-model="htmlPrintContent" 
+ng-init="htmlPrintContent='
+<div>
+  <style>p { color: blue }</style>
+  <h2>[% l('Test HTML Print') %]</h2>
+  <br/>
+  <img src=\'https://[% ctx.hostname %]/opac/images/main_logo.png\' width=\'140\' height=\'24\'/>
+  <p>[% l('Welcome, Stranger!') %]</p>
+  <p>{{value1}}</p>
+  <p>{{value2}}</p>
+  <p>{{date_value | date}}</p>
+</div>
+'">
+                </textarea>
+              </div><!-- html content -->
+            </div><!-- col -->
+          </div><!-- row -->
+        </div><!-- tab pane -->
+      </div><!-- tab content -->
+    </div><!-- col -->
+  </div><!-- row -->
+</div><!-- container -->
+

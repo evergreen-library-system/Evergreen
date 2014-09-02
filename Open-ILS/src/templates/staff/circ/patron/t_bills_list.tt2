@@ -1,0 +1,87 @@
+
+<eg-grid
+  idl-class="mbt"
+  query="gridQuery"
+  sort="gridSort"
+  grid-controls="gridControls"
+  revision="gridRevision"
+  persist-key="circ.patron.bills">
+
+  <eg-grid-menu-item label="[% l('Bill Patron') %]" 
+    handler="showBillDialog"></eg-grid-menu-item>
+
+  <eg-grid-menu-item label="[% l('History') %]" 
+    handler="showHistory"></eg-grid-menu-item>
+
+  <eg-grid-menu-item label="[% l('Check All Refunds') %]" 
+    handler="selectRefunds"></eg-grid-menu-item>
+
+  <eg-grid-action label="[% l('Print Bills') %]" 
+    handler="printBills"></eg-grid-action>
+
+  <!--
+  need to decide if these are necessary here w/ inline links
+  to record and copy details (though they could be hidden).
+  it's misleading to allow the user to select multiple bills
+  but only open the link to one
+
+  <eg-grid-action label="[% l('Show in Catalog') %]" 
+    handler=""></eg-grid-action>
+
+  <eg-grid-action label="[% l('Show Item Details') %]" 
+    handler=""></eg-grid-action>
+  -->
+
+  <eg-grid-action label="[% l('Void All Billings') %]" 
+    handler="voidAllBillings"></eg-grid-action>
+
+  <eg-grid-action label="[% l('Refund') %]" 
+    handler="refundXact"></eg-grid-action>
+
+  <eg-grid-action label="[% l('Add Billing') %]" 
+    handler="addBilling"></eg-grid-action>
+
+  <eg-grid-action label="[% l('Full Details') %]" 
+    handler="showFullDetails"></eg-grid-action>
+
+  <eg-grid-field label="[% ('Balance Owed') %]" path='summary.balance_owed'></eg-grid-field>
+  <eg-grid-field label="[% ('Bill #') %]" path='id'></eg-grid-field>
+  <eg-grid-field label="[% ('Start') %]" path='xact_start'></eg-grid-field>
+  <eg-grid-field label="[% ('Total Billed') %]" path='summary.total_owed'></eg-grid-field>
+  <eg-grid-field label="[% ('Total Paid') %]" path='summary.total_paid'></eg-grid-field>
+  <eg-grid-field label="[% ('Type') %]" path='xact_type'></eg-grid-field>
+
+  <!-- receipt data -->
+  <eg-grid-field path='summary.last_billing_type' required></eg-grid-field>
+
+  <eg-grid-field label="[% l('Title') %]" name="title"
+    path='circulation.target_copy.call_number.record.simple_record.title'>
+    <a target="_self" href="[% ctx.base_path %]/staff/cat/catalog/record/{{item.record_id}}">{{item.title}}</a>
+  </eg-grid-field>
+  <!-- fetch the record ID so we can link to it.  hide it by default -->
+  <eg-grid-field path="circulation.target_copy.call_number.record.id" 
+    label="[% l('Record ID') %]" name="record_id" required hidden>
+  </eg-grid-field>
+
+  <eg-grid-field label="[% l('Barcode') %]" required
+    path='circulation.target_copy.barcode' name="copy_barcode">
+    <a href="./cat/item/{{item.copy_id}}" target="_self">
+      {{item.copy_barcode}}
+    </a>
+  </eg-grid-field>
+  <!-- fetch the copy ID so we can link to it.  hide it by default -->
+  <eg-grid-field path="circulation.target_copy.id" 
+    label="[% l('Copy ID') %]" name="copy_id" required hidden>
+  </eg-grid-field>
+
+  <!-- virtual field -->
+  <eg-grid-field datatype="money" label="[% ('Payment Pending') %]" 
+    name="payment_pending"></eg-grid-field>
+
+  <!-- import all circ fields, hidden by default -->
+  <eg-grid-field path='circulation.*' hidden> </eg-grid-field>
+
+  <eg-grid-field path='circulation.target_copy.*' hidden> </eg-grid-field>
+  
+</eg-grid>
+ 

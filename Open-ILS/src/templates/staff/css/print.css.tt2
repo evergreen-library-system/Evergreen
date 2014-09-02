@@ -1,0 +1,13 @@
+
+/* hide everything but the print div */
+head { display: none; } /* just to be safe */
+body div:not([id="print-div"]) { display:none }
+
+div { display: none }
+#print-div { display: block }
+#print-div div { display: block }
+#print-div pre { border: none }
+
+[%# 
+vim: ft=css 
+%]

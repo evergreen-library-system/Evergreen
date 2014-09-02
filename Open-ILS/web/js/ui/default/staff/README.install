@@ -1,0 +1,93 @@
+= Building, Testing, Packaging the Browser Client =
+:Author:    Bill Erickson
+:Email:     berick@esilibrary.com
+:Date:      2014-05-07
+
+== Prerequisites ==
+
+ * http://bower.io/[Bower] 
+  ** Dependency retrieval
+ * http://jasmine.github.io/[Jasmine] 
+  ** Headless unit tests runner
+ * http://gruntjs.com/[Grunt]
+  ** Coordinating the build
+  ** Concatenation + minification of JS and CSS
+
+These are all Node.js plugins, so start by installing Node.js
+
+=== Install Node.js ===
+
+Node.js does not have have Debian Wheezy build target.  For now, I've opted
+to install from source.  For more, see also 
+https://github.com/joyent/node/wiki/installation[Node.js Installation]
+
+[source,sh]
+------------------------------------------------------------------------------
+% git clone https://github.com/joyent/node.git
+% cd node
+% git checkout -b v0.10.28 v0.10.28
+
+# set -j to number of CPU cores + 1
+% ./configure && make -j5 && sudo make install
+
+# update packages
+% sudo npm update
+------------------------------------------------------------------------------
+
+=== Install Grunt CLI ===
+
+[source,sh]
+------------------------------------------------------------------------------
+% sudo npm install -g grunt-cli
+------------------------------------------------------------------------------
+
+=== Install Bower ===
+
+[source,sh]
+------------------------------------------------------------------------------
+% sudo npm install -g bower
+------------------------------------------------------------------------------
+
+== Building, Testing, Minification == 
+
+The remaining steps all take place within the staff JS web root:
+
+[source,sh]
+------------------------------------------------------------------------------
+% cd $EVERGREEN_ROOT/Open-ILS/web/js/ui/default/staff/
+------------------------------------------------------------------------------
+
+=== Install Project-local Dependencies ===
+
+npm inspects the 'package.json' file for dependencies and fetches them
+from the Node package network.
+
+[source,sh]
+------------------------------------------------------------------------------
+% npm install   # fetch Grunt dependencies
+% bower install # fetch JS dependencies
+------------------------------------------------------------------------------
+
+=== Running the Build Scripts ===
+
+[source,sh]
+------------------------------------------------------------------------------
+
+# build, run tests
+% grunt test
+
+# build, concat+minify
+% grunt uglify
+
+# build, run tests, concat+minify 
+% grunt all
+------------------------------------------------------------------------------
+
+== TODO ==
+
+ * Minification of app-specific JS files
+ * Integrate this into the Evergreen Makefile test and install targets
+   ** Avoid installing test, node_modules, etc. into the web dir.
+ * Support fetching JS deps (angularjs, etc.) via direct retrieval for 
+   installation without test + concat + minify (i.e. w/o requiring Node.js)?
+

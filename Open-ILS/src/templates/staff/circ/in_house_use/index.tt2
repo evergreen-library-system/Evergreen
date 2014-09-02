@@ -1,0 +1,81 @@
+[%
+  WRAPPER "staff/base.tt2";
+  ctx.page_title = l("In-House Use"); 
+  ctx.page_app = "egInHouseUseApp";
+  ctx.page_ctrl = "InHouseUseCtrl";
+%]
+
+[% BLOCK APP_JS %]
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/grid.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/ui.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/in_house_use/app.js"></script>
+[% END %]
+
+<style>
+  /* FIXME: MOVE ME */
+  #in-house-use-barcode {width: 16em;}
+  #in-house-use-form { margin-bottom: 20px }
+</style>
+
+<form id="in-house-use-form" ng-submit="checkout(args)" role="form">
+  <div class="row">
+
+    <div class="col-md-2">
+      <div class="input-group">
+        <label class="input-group-addon" for="in-house-num-uses">
+          [% l('# of Uses:') %]
+        </label>
+        <input type="number" min="1" max="{{countMax}}"
+          class="form-control" focus-me="useFocus"
+           id="in-house-num-uses" ng-model="args.num_uses"/>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="input-group">
+        <div class="input-group-btn" dropdown>
+          <button type="button" class="btn btn-default dropdown-toggle">
+            {{selectedNcType() || "[% l('Barcode') %]"}}
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+            <li><a href dropdown-toggle
+              ng-click="args.noncat_type='barcode';bcFocus=true">
+              [% l('Barcode') %]</a>
+            </li>
+            <li class="divider"></li>
+            <li><a href dropdown-toggle
+              ng-repeat='type in nonCatTypes'
+              ng-click="args.noncat_type=type.id()">{{type.name()}}</a>
+            </li>
+          </ul>
+        </div>
+
+        <input type="text" id="in-house-use-barcode" focus-me="bcFocus"
+          class="form-control" ng-model="args.barcode"
+          ng-disabled="args.noncat_type != 'barcode'"/>
+        <input class="btn btn-default" type="submit" value="[% l('Submit') %]"/>
+      </div><!-- input group -->
+    </div><!-- col -->
+  </div><!-- row -->
+</form>
+
+<div clas="row" ng-if="copyNotFound">
+  <div class="col-md-6 alert alert-danger">[% l('Copy Not Found') %]</div>
+</div>
+
+<eg-grid
+  id-field="index"
+  features="-display,-sort,-multisort"
+  main-label="[% l('In-House Use') %]"
+  items-provider="gridDataProvider"
+  persist-key="circ.in_house_use">
+  <eg-grid-field label="[% l('# of Uses') %]"   path='num_uses' visible></eg-grid-field>
+  <eg-grid-field label="[% l('Barcode') %]"     path='copy.barcode' visible></eg-grid-field>
+  <eg-grid-field label="[% l('Call Number') %]" path="copy.call_number.label" visible></eg-grid-field>
+  <eg-grid-field label="[% l('Location') %]"    path="copy.location.name" visible></eg-grid-field>
+  <eg-grid-field label="[% l('Title') %]"       path="title" visible></eg-grid-field>
+</eg-grid>
+ 
+
+[% END %]

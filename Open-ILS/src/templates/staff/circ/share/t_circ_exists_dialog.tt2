@@ -1,0 +1,31 @@
+<form class="form-validated" novalidate ng-submit="ok()" name="form">
+  <div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" 
+          ng-click="cancel()" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">[% l('Open Circulation') %]</h4>
+      </div>
+      <div class="modal-body">
+        <div ng-if="sameUser">
+          [% |l("{{circDate | date:'shortDate'}}") %]
+          There is an open circulation on the requested item.  
+          This item was already checked out to this user on [_1].
+          [% END %]
+        </div>
+        <div ng-if="!sameUser">
+          [% |l("{{circDate | date:'shortDate'}}") %]
+          There is an open circulation on the requested item.  
+          This copy was checked out by another patron on [_1].
+          [% END %]
+        </div>
+      </div>
+      <div class="modal-footer">
+        <input type="submit" class="btn btn-primary" 
+            value="[% l('Normal Checkin then Checkout') %]"/>
+        <button class="btn btn-warning" 
+            ng-click="cancel($event)">[% l('Cancel') %]</button>
+      </div>
+    </div> <!-- modal-content -->
+  </div> <!-- modal-dialog -->
+</form>

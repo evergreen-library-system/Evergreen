@@ -1,0 +1,21 @@
+<div>
+  <div>[% l('This item needs to be routed to [_1]', '<b>{{dest_location.shortname}}</b>') %]</div>
+  <div>{{dest_location.name}}</div>
+  <div>{{dest_address.street1}}
+  <div>{{dest_address.street2}}</div>
+  <div>{{dest_address.city}},
+       {{dest_address.state}}
+       {{dest_address.post_code}}</div>
+  <br/>
+
+  [% l('Barcode: [_1]', '{{copy.barcode}}') %]</div>
+  [% l('Title: [_1]', '{{title}}') %]</div>
+  [% l('Author: [_1]', '{{author}}') %]</div>
+
+  <br/>
+
+  <div>[% l('Slip Date: [_1]', '{{today | date:"short"}}') %]</div>
+  <div>[% l('Printed by [_1] at [_2]', 
+    '{{staff.first_given_name}}', '{{current_location.shortname}}') %]</div>
+
+</div>

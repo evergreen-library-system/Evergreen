@@ -1,0 +1,65 @@
+[%
+  WRAPPER "staff/base.tt2";
+  ctx.page_title = l("Record Buckets"); 
+  ctx.page_app = "egCatRecordBuckets";
+  ctx.page_ctrl = "RecordBucketCtrl";
+%]
+
+[% BLOCK APP_JS %]
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/grid.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/ui.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/cat/bucket/record/app.js"></script>
+[% END %]
+
+<!-- using native Bootstrap taps because of limitations
+with angular-ui tabsets. it always defaults to making the
+first tab active, so it can't be driven from the route
+https://github.com/angular-ui/bootstrap/issues/910 
+No JS is needed to drive the native tabs, since we're
+changing routes with each tab selection anyway.
+-->
+
+<ul class="nav nav-tabs">
+  <li ng-class="{active : tab == 'search'}">
+    <a href="./cat/bucket/record/search/{{bucketSvc.currentBucket.id()}}">
+        [% l('Record Query') %]
+        <span ng-cloak>({{bucketSvc.queryRecords.length}})</span>
+    </a>
+  </li>
+  <li ng-class="{active : tab == 'pending'}">
+    <a href="./cat/bucket/record/pending/{{bucketSvc.currentBucket.id()}}">
+        [% l('Pending Records') %]
+        <span ng-cloak>({{bucketSvc.pendingList.length}})</span>
+    </a>
+  </li>
+  <li ng-class="{active : tab == 'view'}">
+    <a href="./cat/bucket/record/view/{{bucketSvc.currentBucket.id()}}">
+        [% l('Bucket View') %]
+        <span ng-cloak>({{bucketSvc.currentBucket.items().length}})</span>
+    </a>
+  </li>
+</ul>
+<div class="tab-content">
+  <div class="tab-pane active">
+
+    <!-- bucket info header -->
+    <div class="row">
+      <div class="col-md-6">
+        [% INCLUDE 'staff/cat/bucket/record/t_bucket_info.tt2' %]
+      </div>
+    </div>
+
+    <!-- bucket not accessible warning -->
+    <div class="col-md-10 col-md-offset-1" ng-show="forbidden">
+      <div class="alert alert-warning">
+        [% l('The selected bucket "{{bucketId}}" is not visible to this login.') %]
+      </div>
+    </div>
+
+    <div ng-view></div>
+  </div>
+</div>
+
+[% END %]
+
+

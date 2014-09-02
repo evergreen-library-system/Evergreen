@@ -1,0 +1,4 @@
+<!-- holds are created within the catalog -->
+
+<eg-embed-frame url="catalog_url" 
+  handlers="handlers" onchange="handle_page"></eg-embed-frame>

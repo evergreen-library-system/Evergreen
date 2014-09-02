@@ -1,0 +1,48 @@
+
+<div class="row pad-vert">
+  <div class="col-md-9">
+    <div class="alert alert-info alert-less-pad strong-text-2">
+      <span ng-if="record_tab == 'catalog'">[% l('Catalog') %]</span>
+      <span ng-if="record_tab == 'marc_html'">[% l('MARC HTML') %]</span>
+      <span ng-if="record_tab == 'holds'">[% l('Holds for Record') %]</span>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <!-- actions for this record menu -->
+    <div class="btn-group pull-right" dropdown>
+      <button type="button" 
+          class="btn btn-default dropdown-toggle" ng-disabled="!record_id">
+        [% l('Actions for This Record') %] 
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-right" role="menu">
+        <li><a href dropdown-toggle ng-click="set_record_tab('catalog')">
+            [% l('OPAC View') %]</a></li>
+        <li><a href dropdown-toggle ng-click="set_record_tab('marc_html')">
+            [% l('MARC View') %]</a></li>
+        <li class="divider"></li>
+        <li><a href dropdown-toggle ng-click="set_record_tab('holds')">
+            [% l('View Holds') %]</a></li>
+        <li><a href dropdown-toggle ng-click="mark_hold_transfer_dest()">
+            [% l('Mark as Title Hold Transfer Destination') %]</a></li>
+        <li><a href dropdown-toggle ng-click="transfer_holds_to_marked()">
+            [% l('Transfer All Title Holds') %]</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div>
+  <!-- ng-show allows the catalog iframe to stay loaded (unlike ng-if) -->
+  <div ng-show="record_tab == 'catalog'">
+    <eg-embed-frame url="catalog_url" handlers="handlers" onchange="handle_page"></eg-embed-frame>
+  </div>
+  <!-- ng-if the remaining tabs so they can be instantiated on demand -->
+  <div ng-if="record_tab == 'marc_html'">
+    <eg-record-html record-id="record_id"></eg-record-html>
+  </div>
+  <div ng-if="record_tab == 'holds'">
+    [% INCLUDE 'staff/cat/catalog/t_holds.tt2' %]
+  </div>
+</div>
+

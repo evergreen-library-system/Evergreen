@@ -1,0 +1,93 @@
+<!-- edit bucket dialog -->
+<form ng-submit="ok(billArgs)" role="form" class="form-horizontal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" 
+        ng-click="cancel()" aria-hidden="true">&times;</button>
+      <h4 class="modal-title">
+        [% l('Bill Patron: [_1], [_2] [_3] : [_4]',
+            '{{patron.family_name()}}',
+            '{{patron.first_given_name()}}',
+            '{{patron.second_given_name()}}',
+            '{{patron.card().barcode()}}') %]
+      </h4>
+
+      <div ng-if="xact">
+        <hr/>
+        <div class="row">
+          <div class="col-md-3">[% l('Bill #') %]</div>
+          <div class="col-md-3">{{xact.id}}</div>
+          <div class="col-md-3">[% l('Total Billed') %]</div>
+          <div class="col-md-3">{{xact.summary.total_owed | currency}}</div>
+        </div>
+        <div class="row">
+          <div class="col-md-3">[% l('Type') %]</div>
+          <div class="col-md-3">{{xact.summary.xact_type}}</div>
+          <div class="col-md-3">[% l('Total Paid') %]</div>
+          <div class="col-md-3">{{xact.summary.total_paid | currency}}</div>
+        </div>
+        <div class="row">
+          <div class="col-md-3">[% l('Start') %]</div>
+          <div class="col-md-3">{{xact.xact_start | date:'short'}}</div>
+          <div class="col-md-3">[% l('Total Billed') %]</div>
+          <div class="col-md-3">{{xact.summary.balance_owed | currency}}</div>
+        </div>
+        <div class="row">
+          <div class="col-md-3">[% l('Finish') %]</div>
+          <div class="col-md-3">{{xact.xact_finish | date:'short'}}</div>
+          <div class="col-md-3">[% l('Renewal?') %]</div>
+          <div class="col-md-3">
+            <span ng-if="xact.circulation.desk_renewal == 't'">[% l('Desk') %]</span>
+            <span ng-if="xact.circulation.phone_renewal == 't'">[% l('Phone') %]</span>
+            <span ng-if="xact.circulation.opac_renewal == 't'">[% l('OPAC') %]</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label for="bill-dialog-location" class="control-label col-md-4">
+          [% l('Location:') %]
+        </label>
+        <div class="col-md-8">
+          <p class="form-control-static">{{location.shortname()}}</p>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="bill-dialog-type" class="control-label col-md-4">
+          [% l('Billing Type:') %]
+        </label>
+        <div class="col-md-8">
+          <select ng-model="billArgs.billingType" class="form-control"
+            ng-change="updateDefaultPrice()">
+            <option ng-repeat="type in billingTypes" value="{{type.id()}}">
+              {{type.name()}}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="bill-dialog-amount" class="control-label col-md-4">[% l('Amount:') %]</label>
+        <div class="col-md-8">
+          <input type="number" min="0" step="any" class="form-control" 
+            focus-me='focus' required id="bill-dialog-amount" 
+            ng-model="billArgs.amount"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="bill-dialog-note" class="control-label col-md-4">[% l('Note:') %]</label>
+        <div class="col-md-8">
+          <textarea rows="3" class="form-control" placeholder="[% l('Note...') %]"
+            id="bill-dialog-note" ng-model="billArgs.note"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <input type="submit" class="btn btn-success" value="[% l('Submit Bill') %]"/>
+      <button class="btn btn-warning" ng-click="cancel($event)">[% l('Cancel') %]</button>
+    </div>
+  </div>
+</form>
+
+

@@ -1,0 +1,412 @@
+/* --------------------------------------------------------------------------
+ * Simple default navbar style adjustements to apply the Evergreen color.
+ * TODO: style other components to match EG color scheme
+ */
+#top-navbar.navbar-default {
+    background: -webkit-linear-gradient(#00593d, #007a54);
+    background-color: #007a54;
+    color: #fff;
+}
+#top-navbar.navbar-default .navbar-nav>li>a {
+    color: #fff;
+}
+#top-navbar.navbar-default .navbar-nav>li>a:hover {
+    color: #ddd;
+}
+#top-navbar.navbar-default .navbar-nav>.dropdown>a .caret {
+    border-top-color: #fff;
+    border-bottom-color: #fff;
+}
+#top-navbar.navbar-default .navbar-nav>.dropdown>a:hover .caret {
+    border-top-color: #ddd;
+    border-bottom-color: #ddd;
+}
+
+/* status bar along the bottom of the page ------------------------ */
+/* decrease padding to decrease overall height */
+
+/** TODO:move status bar items into navbar config entry (top-right)
+ * to avoid body padding weirdness.  Or if we want a permenently
+ * visible status bar, maybe put it just below the navbar.. */
+
+/* bottom padding ensures no body content is hidden behind the status
+ * bar.  When content reaches the status bar a scroll bar appears */
+/*body { padding-bottom: 26px; }*/
+
+#status-bar {
+  min-height:1.8em !important;
+}
+#status-bar > ul {
+  margin-right:6px; 
+}
+#status-bar li {
+  padding-left: 10px;
+}
+#status-bar > li > a {
+  padding-top:5px !important; 
+  padding-bottom:5px !important;
+}
+.status-bar-connected {
+  color: rgb(92, 184, 92); /* success */
+}
+
+/* --------------------------------------------------------------------------
+ * Structural modifications
+ */
+
+#top-content-container {
+    /* allow the primary container to occupy most of the page,
+     * but leave some narrow gutters along the side, much 
+     * narrower than the default Bootstrapp container gutters.
+     */
+    width: 95%;
+}
+
+
+/* --------------------------------------------------------------------------
+ * Temporaray local CSS required to make angular-ui-bootstrap
+ * version 0.6.0 look right with Bootstrap CSS 3.0
+ */
+.nav, .pagination, .carousel a { cursor: pointer; }
+/*
+.modal {
+    display: block;
+    height: 0;
+    overflow: visible;
+}
+.modal-body:before,
+.modal-body:after {
+    display: table;
+    content: " ";
+}
+.modal-header:before,
+.modal-header:after {
+    display: table;
+    content: " ";
+}
+*/
+
+/* --------------------------------------------------------------------------
+/* Form Validation CSS - http://docs.angularjs.org/guide/forms
+ * TODO: these colors are harsh and don't fit the EG color scheme
+ */
+.form-validated input.ng-invalid.ng-dirty {
+  background-color: #FA787E;
+}
+.form-validated input.ng-valid.ng-dirty {
+  background-color: #78FA89;
+}
+
+/* --------------------------------------------------------------------------
+ * Local style
+ */
+
+#splash-nav .panel-body div {
+    padding-bottom: 10px;
+}
+
+table.list tr.selected td { /* deprecated? */
+    color: #2a6496;
+    background-color: #F5F5F5;
+}
+
+.pad-horiz {padding : 0px 10px 0px 10px; }
+.pad-vert {padding : 20px 0px 10px 0px;}
+.pad-left {padding-left: 10px;}
+.pad-right {padding-right: 10px;}
+.pad-all-min {padding : 5px; }
+.pad-all {padding : 10px; }
+
+#print-div { display: none; }
+
+/* by default, give all tab panes some top padding */
+.tab-pane { padding-top: 20px; }
+
+.nav-pills-like-tabs {
+    border-bottom:1px solid #CCC;
+}
+
+.btn-pad {
+  /* sometimes you don't want buttons scrunched together -- add some margin */
+  margin-left: 10px;
+}
+
+.strong-text {
+  font-weight: bold;
+}
+.strong-text-1 {
+  font-size: 110%;
+  font-weight: bold;
+}
+.strong-text-2 {
+  font-size: 120%;
+  font-weight: bold;
+}
+.strong-text-3 {
+  font-size: 130%;
+  font-weight: bold;
+}
+.strong-text-4 {
+  font-size: 140%;
+  font-weight: bold;
+}
+
+.currency-input {
+  width: 8em;
+}
+
+/* barcode inputs are everywhere.  Let's have a consistent style. */
+.barcode { width: 16em !important; }
+
+/* bootstrap alerts are heavily padded.  use this to reduce */
+.alert-less-pad {padding: 5px;}
+
+/* text displayed inside a <progressbar>, typically the max/progress values */
+.progressbar-text {
+  color:black;
+  white-space:nowrap;
+}
+
+/* embedded UI iframe */
+.eg-embed-frame {
+  width: 100%;
+}
+.eg-embed-frame iframe {
+  width: 100%;
+  border: none;
+  margin: 0px;
+  padding: 0px;
+}
+
+/* ----------------------------------------------------------------------
+ * Grid
+ * ---------------------------------------------------------------------- */
+
+.eg-grid-primary-label {
+  font-weight: bold;
+  font-size: 120%;
+}
+
+/* odd/even row styling */
+.eg-grid-content-body > div:nth-child(odd):not(.eg-grid-row-selected) {
+  background-color: rgb(248, 248, 248);
+}
+
+.eg-grid-row {
+  width: 100%;
+  display: flex;
+  border: 1px solid #ccc;
+}
+
+.eg-grid-row:not(.eg-grid-header-row):not(.eg-grid-conf-row) {
+  /* TODO: remove, pretty sure this is no longer needed w/ nowrap */
+  /*height: 1.8em;*/
+}
+
+.eg-grid-action-row {
+  border: none;
+  /* margin should not have to be this large; something's up */
+  margin-bottom: 12px;
+}
+
+.eg-grid-header-row { 
+  font-weight: bold; 
+}
+
+.eg-grid-header-row > .eg-grid-cell {
+  border-right: 1px solid #CCC;
+  text-align: center;
+
+  /* vertically align header cell text by treating 
+     each header cell as a vertical flex container */
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+}
+
+.eg-grid-cell {
+  /* avoid text flowing into adjacent cells */
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+/* in config display, make cells more obvious */
+.eg-grid-as-conf .eg-grid-row {
+  border: 1px solid #777;
+}
+.eg-grid-as-conf .eg-grid-cell {
+  border-right: 1px solid #777;
+}
+
+/* stock columns need fixed-width controls */
+.eg-grid-cell-stock {
+  width: 2.2em;
+  text-align: center;
+}
+
+/* the conf header must be twice the stock flex */
+.eg-grid-cell-conf-header {
+  width: 4.4em;
+  font-weight: bold;
+}
+
+.eg-grid-row-selected {
+  color: rgb(51, 51, 51);
+  background-color: rgb(201, 221, 225);
+  border-bottom: 1px solid #888;
+}
+
+/* Improve ::selection styling by only allowing selection on text
+ * content cells within the main body of the grid.  Otherwise, the browser 
+ * styles row background and text (all dark blue?) when shift-click or 
+ * click-drag is used.
+ */
+.eg-grid-content-body .eg-grid-row {
+  user-select:none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+}
+.eg-grid-content-body .eg-grid-cell-content {
+  user-select:text;
+  -moz-user-select: text;
+  -webkit-user-select: text;
+}
+.eg-grid-cell-content::-moz-selection {
+  color: rgb(51, 51, 51);
+  background: rgb(201, 221, 225);
+  border-bottom: 1px solid #888;
+}
+.eg-grid-cell-content::selection {
+  color: rgb(51, 51, 51);
+  background: rgb(201, 221, 225);
+  border-bottom: 1px solid #888;
+}
+
+.eg-grid-conf-cell-entry {
+  width:98%;
+  text-align:center;
+  padding: 3px;
+}
+
+.eg-grid-conf-cell-entry:not(:first-child) {
+  border-top:1px solid #ccc;
+}
+
+.eg-grid-conf-row {
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
+}
+
+.eg-grid-conf-row:first-child {
+  /* alignment fix; account for one missing border */
+  padding-right: 1px;
+}
+
+.eg-grid-column-move-handle:hover {
+  cursor: move;
+}
+
+.eg-grid-column-move-handle-active,
+.eg-grid-column-move-handle-active:active {
+  /* similar to label-primary, sans padding */
+  background-color: rgb(66, 139, 202);
+  color: #fff;
+}
+
+.eg-grid-col-hover {
+  /* similar to label-success, sans padding */
+  background-color: rgb(92, 184, 92);
+  color: #fff;
+}
+
+.eg-grid-column-resize-handle {
+  height: 100%;
+}
+.eg-grid-column-resize-handle:hover {
+  cursor: col-resize;
+}
+
+/* for these to be useful, they would have to be applied 
+ * to the dragover targets.  not yet done */
+.eg-grid-column-resize-handle-west {
+  cursor: w-resize;
+}
+.eg-grid-column-resize-handle-east {
+  cursor: e-resize;
+}
+
+.eg-grid-menu-item {
+  margin-right: 10px;
+}
+
+
+/* hack to make the header columns line up with the content columns
+   when the scroll bar is visible along the right side of the content
+   columns. TODO: if this varies enough by browser, we'll need to
+   calculate the width instead. */
+/*
+.eg-grid-scroll > .eg-grid-header-row, 
+.eg-grid-scroll > .eg-grid-conf-row { 
+  padding-right: 15px;
+}
+.eg-grid-scroll > .eg-grid-content-body {
+  overflow-y:scroll; 
+  height: 600px; 
+}
+*/
+.eg-grid-column-picker {
+  height: auto;
+  max-height: 400px;
+  overflow: auto;
+  box-shadow: none;
+}
+
+
+/* ----------------------------------------------------------------------
+ * /Grid
+ * ---------------------------------------------------------------------- */
+
+
+/* simple flex container for consistent-width cell-based structures */
+.flex-container-striped > .flex-row:nth-child(odd) {
+  background-color: #f5f5f5;
+}
+.flex-container-bordered .flex-cell {
+  border-bottom: 1px solid #ddd;
+}
+.flex-row {
+  display: flex;
+}
+.flex-row.padded div {
+  padding: 5px;
+}
+.flex-row.left-anchored > div {
+  margin-right: 10px;
+}
+.flex-cell {
+  flex: 1;
+  padding: 4px; /* bootstrap default is much bigger */
+}
+.flex-cell.well {
+  min-height: 2.5em; /* don't let empty wells scrunch down */
+  margin-bottom: 5px; /* bootstrap default is 20px */
+}
+.flex-2 { /* meh, convience */
+  flex: 2;
+}
+
+/* TODO: match media size to Bootstrap "md" col resizing */
+@media all and (max-width: 800px) {
+  .flex-row {
+    flex-direction: column;
+  }
+  .eg-grid-row {
+    flex-direction: column;
+  }
+}
+
+
+[%# 
+vim: ft=css 
+%]

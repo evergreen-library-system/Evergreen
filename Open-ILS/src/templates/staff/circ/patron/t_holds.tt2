@@ -1,0 +1,38 @@
+<!-- patron holds list -->
+
+<ul class="nav nav-tabs" ng-if="!detail_hold_id">
+  <li ng-class="{active : holds_display == 'main', disabled : detail_hold_id}">
+    <a href ng-click="show_main_list()">[% l('Open Hold Requests') %]</a>
+  </li>
+  <li ng-class="{active : holds_display == 'alt', disabled : detail_hold_id}">
+    <a href ng-click="show_alt_list()">[% l('Recently Canceled Holds') %]</a>
+  </li>
+</ul>
+
+<div class="pad-vert"></div>
+
+<div ng-if="!detail_hold_id">
+[% INCLUDE 'staff/circ/patron/t_holds_list.tt2' %]
+</div>
+
+<!-- hold details -->
+<div ng-if="detail_hold_id">
+  <div class="row">
+    <div class="col-md-2">
+      <button class="btn btn-default" ng-click="list_view()">
+        [% l('List View') %]
+      </button>
+    </div>
+  </div>
+  <div class="pad-vert"></div>
+  <eg-record-summary record='detail_hold_record' 
+    record-id="detail_hold_record_id"></eg-record-summary>
+  <eg-hold-details hold-retrieved="set_hold" hold-id="detail_hold_id"></eg-hold-details>
+</div>
+
+<!-- catalog view for holds placement -->
+
+<div ng-if="placing_hold">
+  <eg-embed-frame url="catalog_url" handlers="handlers" 
+    onchange="handle_page"></eg-embed-frame>
+</div>

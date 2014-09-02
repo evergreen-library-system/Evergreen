@@ -1,0 +1,28 @@
+<div>
+  <div class="modal-header">
+    <button type="button" class="close" ng-click="cancel()" 
+      aria-hidden="true">&times;</button>
+    <h4 ng-if="!outbound" class="modal-title">
+      [% l('Move user into this group?') %]
+    </h4>
+    <h4 ng-if="outbound" class="modal-title">
+      [% l("Move selected users to the following user's group?") %]
+    </h4>
+  </div>
+  <div class="modal-body">
+    <a href="./circ/patron/{{user.id()}}/checkout" target="_self">
+      [% 
+        l('[_1], [_2] [_3] : [_4]', 
+          '{{user.family_name()}}',
+          '{{user.first_given_name()}}',
+          '{{user.second_given_name()}}',
+          '{{user.card().barcode()}}') 
+      %]
+    </a>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary" ng-click="ok()">[% l('Move User') %]</button>
+    <button class="btn btn-warning" ng-click="cancel()">[% l('Cancel') %]</button>
+  </div>
+</div>
+ 

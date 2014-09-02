@@ -1,0 +1,44 @@
+<div class="row">
+  <div class="col-md-12">
+    <button class="btn btn-default" ng-click="newNote()">
+      [% l('Add New Note') %]
+    </button>
+  </div>
+</div>
+
+<div class="row pad-vert" ng-repeat="note in notes">
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-6 strong-text">{{note.title()}}</div>
+      <div class="col-md-6">
+        <div class="pull-right">
+          <span class="pad-horiz alert alert-warning" ng-if="note.pub() == 't'">[% l('Patron Visible') %]</span>
+          <span class="pad-horiz alert alert-info" ng-if="note.pub() == 'f'">[% l('Staff Only') %]</span>
+          <span class="pad-horiz">{{note.create_date() | date:'short'}}</span>
+          <span>[% l('Created by [_1]', '{{note.creator().usrname()}}') %]</span>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <!-- hmm, not sure why the margin-left is needed.. the well? -->
+      <div class="col-md-12 well" style="margin-left:12px">
+        <div class="row">
+          <div class="col-md-8">
+            <div class="">{{note.value()}}</div>
+          </div>
+          <div class="col-md-4">
+            <div class="pull-right">
+              <button ng-click="printNote(note)" class="btn btn-default">
+                [% l('Print') %]
+              </button>
+              <button ng-click="deleteNote(note)" class="btn btn-warning">
+                [% l('Delete') %]
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr/>
+</div>

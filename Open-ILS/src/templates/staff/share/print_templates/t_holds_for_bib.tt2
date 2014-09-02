@@ -1,0 +1,29 @@
+<div>
+  <div>[% l('Holds for record: [_1]', '{{holds[0].title}}') %]</div>
+  <hr/>
+  <style>#holds-for-bib-table td { padding: 5px; }</style>
+  <table id="holds-for-bib-table">
+    <thead>
+      <tr>
+        <th>[% l('Request Date') %]</th>
+        <th>[% l('Patron Barcode') %]</th>
+        <th>[% l('Patron Last') %]</th>
+        <th>[% l('Patron Alias') %]</th>
+        <th>[% l('Current Copy') %]</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="hold in holds">
+        <td>{{hold.hold.request_time | date:'short'}}</td>
+        <td>{{hold.patron_barcode}}</td>
+        <td>{{hold.patron_last}}</td>
+        <td>{{hold.patron_alias}}</td>
+        <td>{{hold.copy.barcode}}</td>
+      </tr>
+    </tbody>
+  </table>
+  <hr/>
+  <div>{{current_location.shortname}} {{today | date:'short'}}</div>
+  <div>[% l('Printed by [_1]', '{{staff.first_given_name}}') %]</div>
+<br/>
+

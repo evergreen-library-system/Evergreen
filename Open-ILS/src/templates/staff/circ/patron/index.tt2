@@ -1,0 +1,175 @@
+[%
+  WRAPPER "staff/base.tt2";
+  ctx.page_title = l("Patron"); 
+  ctx.page_app = "egPatronApp";
+  ctx.page_ctrl = "PatronCtrl";
+%]
+
+[% BLOCK APP_JS %]
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/grid.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/ui.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/user.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/eframe.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/services/billing.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/services/circ.js"></script>
+[% INCLUDE 'staff/circ/share/circ_strings.tt2' %]
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/services/holds.js"></script>
+[% INCLUDE 'staff/circ/share/hold_strings.tt2' %]
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/cat/services/record.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/patron/app.js"></script>
+
+<!-- load the rest on demand? -->
+
+<!-- required for credentials verify API -->
+<script src="[% ctx.media_prefix %]/js/dojo/opensrf/md5.js"></script>
+
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/patron/checkout.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/patron/items_out.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/patron/holds.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/patron/bills.js"></script>
+
+<!-- TODO: APP_JS should really be called APP_ADDONS or some such.
+    It just means "load these things, too, and load them last" -->
+<link rel="stylesheet" href="[% ctx.base_path %]/staff/css/circ.css" />
+
+<script>
+angular.module('egCoreMod').run(['egStrings', function(s) {
+  s.ANNOTATE_PAYMENT_MSG = "[% l('Please annotate this payment') %]";
+  s.CONFIRM_REFUND_PAYMENT = 
+    "[% |l('{{xactIds}}') -%]Are you sure you would like to refund excess payment on bills [_1]?  This action will simply put the amount in the Payment Pending column as a negative value.  You must still select Apply Payment!  Certain types of payments may not be refunded.  The refund may be applied to checked transactions that follow the refunded transaction.[% END %]";
+  s.EDIT_BILL_PAY_NOTE = "[% l('Enter new note for #[_1]:','{{ids}}') %]";
+  s.GROUP_ADD_USER = "[% l('Enter the patron barcode') %]";
+  s.RENEW_ITEMS = "[% l('Renew Items?') %]";
+  s.RENEW_ALL_ITEMS = "[% l('Renew All Items?') %]";
+  s.CHECK_IN_CONFIRM = "[% l('Check In Items?') %]";
+}]);
+</script>
+
+[% END %]
+
+<div class="row">
+  <div class="col-md-3">
+    <div ng-show="patron()">
+      <h4 title="{{patron().id()}}">
+        <div class="flex-row">
+          <div class="flex-cell">
+            [% l('[_1], [_2] [_3]', 
+                '{{patron().family_name()}}',
+                '{{patron().first_given_name()}}',
+                '{{patron().second_given_name()}}') %]
+          </div>
+          <div ng-show="tab != 'search'">
+            <a href ng-click="toggle_expand_summary()"
+              title="[% l('Collapse Patron Summary Display') %]"
+              ng-hide="collapse_summary()">
+              <span class="glyphicon glyphicon-resize-small"></span>
+            </a>
+            <a href ng-click="toggle_expand_summary()"
+              title="[% l('Expand Patron Summary Display') %]"
+              ng-show="collapse_summary()">
+              <span class="glyphicon glyphicon-resize-full"></span>
+            </a>
+          </div>
+        </div><!-- row -->
+      </h4>
+    </div><!-- if patron -->
+  </div><!-- col -->
+  <div class="col-md-9">
+    <ul class="nav nav-pills nav-pills-like-tabs">
+      <li ng-class="{active : tab == 'checkout', disabled : !patron()}">
+        <a href="./circ/patron/{{patron().id()}}/checkout">[% l('Check Out') %]</a>
+      </li>
+      <li ng-class="{active : tab == 'items_out', disabled : !patron()}">
+        <a href="./circ/patron/{{patron().id()}}/items_out">
+          [% l('Items Out') %] 
+          <span ng-if="patron()"><!-- lack of space / newline below intentional -->
+          (<span ng-class="{'patron-summary-alert-small' : patron_stats().checkouts.overdue}">{{patron_stats().checkouts.total_out}}</span>)
+          </span>
+        </a>
+      </li>
+      <li ng-class="{active : tab == 'holds', disabled : !patron()}">
+        <a href="./circ/patron/{{patron().id()}}/holds">
+          [% l('Holds') %]
+          <span ng-if="patron()">
+            (<span>{{patron_stats().holds.total}} / {{patron_stats().holds.ready}}</span>)
+          </span>
+        </a>
+      </li>
+      <li ng-class="{active : tab == 'bills', disabled : !patron()}">
+        <a href="./circ/patron/{{patron().id()}}/bills">
+          [% l('Bills') %]
+          <span ng-if="patron()">
+            (<span ng-class="{'patron-summary-alert-small' : patron_stats().fines.balance_owed}">{{patron_stats().fines.balance_owed | currency}}</span>)
+          </span>
+        </a>
+      </li>
+      <li ng-class="{active : tab == 'messages', disabled : !patron()}">
+        <a href="./circ/patron/{{patron().id()}}/messages">[% l('Messages') %]</a>
+      </li>
+      <li ng-class="{active : tab == 'edit', disabled : !patron()}">
+        <a href="./circ/patron/{{patron().id()}}/edit">[% l('Edit') %]</a>
+      </li>
+      <li class="dropdown" ng-class="{active : tab == 'other', disabled : !patron()}">
+        <a href class="dropdown-toggle" data-toggle="dropdown">
+            [% l('Other') %]
+            <b class="caret"></b>
+        </a>
+        <ul class="dropdown-menu">
+          <li>
+            <a href="./circ/patron/{{patron().id()}}/alerts">
+              [% l('Display Alert and Messages') %]
+            </a>
+          </li>
+          <li>
+            <a href="./circ/patron/{{patron().id()}}/notes">
+              [% l('Notes') %]
+            </a>
+          </li>
+          <li>
+            <a href="./circ/patron/{{patron().id()}}/triggered_events">
+              [% l('Triggered Events / Notifications') %]
+            </a>
+          </li>
+          <li>
+            <a href="./circ/patron/{{patron().id()}}/stat_cats">
+              [% l('Statistical Categories') %]
+            </a>
+          </li>
+          <li>
+            <a href="./circ/patron/{{patron().id()}}/group">
+              [% l('Group Member Details') %]
+            </a>
+          </li>
+          <li>
+            <a href="./circ/patron/{{patron().id()}}/edit_perms">
+              [% l('User Permission Editor') %]
+            </a>
+          </li>
+          <li>
+            <a href="./circ/patron/{{patron().id()}}/credentials">
+              [% l('Test Password') %]
+            </a>
+          </li>
+       </ul>
+      </li>
+      <li ng-class="{active : tab == 'search'}" class="pull-right">
+        <a href="./circ/patron/search">[% l('Patron Search') %]</a>
+      </li>
+    </ul>
+  </div><!-- col -->
+</div><!-- row -->
+
+<div class="row">
+  <div class="col-md-3" ng-hide="collapse_summary()">
+    [% INCLUDE 'staff/circ/patron/t_summary.tt2' %]
+  </div>
+  <div ng-class="{'col-md-12' : collapse_summary(),'col-md-9' : !collapse_summary()}">
+    <div class="tab-content">
+      <div class="tab-pane active">
+        <div ng-view></div>
+      </div>
+    </div>
+  </div><!-- col -->
+</div><!-- row -->
+
+[% END %]

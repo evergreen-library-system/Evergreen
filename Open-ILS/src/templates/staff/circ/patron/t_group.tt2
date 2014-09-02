@@ -1,0 +1,55 @@
+
+<div class="strong-text-2">[% l('Group Member Details') %]</div>
+<div class="pad-vert flex-row">
+  <div>[% l('Total Owed: ') %]</div>
+  <div class="pad-horiz">{{totals.owed | currency}}</div>
+  <div>[% l('Total Out: ') %]</div>
+  <div class="pad-horiz">{{totals.total_out}}</div>
+  <div>[% l('Total Overdue: ') %]</div>
+  <div class="pad-horiz">{{totals.overdue}}</div>
+</div>
+<div class="pad-vert"></div>
+<eg-grid
+  idl-class="au"
+  sort="gridSort"
+  grid-controls="gridControls"
+  menu-label="[% l('Group Actions') %]">
+
+  <eg-grid-menu-item handler="moveToGroup"
+    label="[% l('Move Another Patron To This Group') %]"></eg-grid-menu-item>
+
+  <eg-grid-action 
+    label="[% l('Register a New Group Member by Cloning Selected Patron') %]" 
+    handler="cloneUser"></eg-grid-action>
+
+  <eg-grid-action label="[% l('Remove Selected From Group') %]" 
+    handler="removeFromGroup"></eg-grid-action>
+
+  <eg-grid-action label="[% l("Move Selected Patrons to Another Patron's Group") %]" 
+    handler="moveToAnotherGroup"></eg-grid-action>
+
+  <eg-grid-action label="[% l("Retrieve Selected Patron") %]" 
+    handler="retrieveSelected"></eg-grid-action>
+
+  <eg-grid-field path="active"></eg-grid-field>
+  <eg-grid-field path="barred"></eg-grid-field>
+  <eg-grid-field path="dob"></eg-grid-field>
+  <eg-grid-field path="family_name"></eg-grid-field>
+  <eg-grid-field path="first_given_name"></eg-grid-field>
+  <eg-grid-field path="master_account"></eg-grid-field>
+  <eg-grid-field path="second_given_name"></eg-grid-field>
+  <eg-grid-field path="stats.fines.balance_owed" nonsortable label="[% l('Balance Owed') %]"></eg-grid-field>
+  <eg-grid-field path="stats.checkouts.out" nonsortable label="[% l('Items Out') %]"></eg-grid-field>
+  <eg-grid-field path="stats.checkouts.overdue" nonsortable label="[% l('Items Overdue') %]"></eg-grid-field>
+
+  <!-- needed for query, sorting -->
+  <eg-grid-field path="id" hidden required></eg-grid-field>
+  <eg-grid-field path="usrgroup" hidden required></eg-grid-field>
+  <eg-grid-field path="deleted" hidden required></eg-grid-field>
+  <eg-grid-field path="create_date" hidden required></eg-grid-field>
+
+  <!--
+  <eg-grid-field path=".*"></eg-grid-field>
+  -->
+
+</eg-grid>

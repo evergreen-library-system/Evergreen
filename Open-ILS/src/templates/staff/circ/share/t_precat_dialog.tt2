@@ -1,0 +1,44 @@
+<!-- edit bucket dialog -->
+<form ng-submit="ok(precatArgs)" role="form">
+  <div class="">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" 
+          ng-click="cancel()" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">
+          [% l('Barcode "{{precatArgs.copy_barcode}}" was mis-scanned or is a non-cataloged item.') %]
+        </h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="precat-title">[% l('Title') %]</label>
+          <input type="text" class="form-control" focus-me='focusMe' required
+            id="precat-title" ng-model="precatArgs.dummy_title" placeholder="[% l('Title...') %]"/>
+        </div>
+        <div class="form-group">
+          <label for="precat-author">[% l('Author') %]</label>
+          <input type="text" class="form-control" id="precat-author"
+            ng-model="precatArgs.dummy_author" placeholder="[% l('Author...') %]"/>
+        </div>
+        <div class="form-group">
+          <label for="precat-isbn">[% l('ISBN') %]</label>
+          <input type="text" class="form-control" id="precat-isbn"
+            ng-model="precatArgs.dummy_isbn" placeholder="[% l('ISBN...') %]"/>
+        </div>
+        <div class="form-group">
+          <label for="precat-circmod">[% l('Circulation Modifier') %]</label>
+          <select class="form-control" id="precat-circmod" 
+            ng-model="precatArgs.circ_modifier">
+            <option ng-repeat="mod in circModifiers" 
+              value="{{mod.code()}}">{{mod.name()}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <input type="submit" class="btn btn-primary" value="[% l('Precat Checkout') %]"/>
+        <button class="btn btn-warning" ng-click="cancel()"
+            ng-class="{disabled : actionPending}">[% l('Cancel') %]</button>
+      </div>
+    </div> <!-- modal-content -->
+  </div> <!-- modal-dialog -->
+</form>

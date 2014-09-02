@@ -1,0 +1,21 @@
+<eg-grid
+  id-field="index"
+  idl-class="acp"
+  features="-display,-sort,-multisort"
+  main-label="[% l('Item Status') %]"
+  items-provider="gridDataProvider"
+  grid-controls="gridControls"
+  persist-key="cat.items">
+
+  <eg-grid-field label="[% l('Barcode') %]"     path='barcode' visible></eg-grid-field>
+  <eg-grid-field label="[% l('Call Number') %]" path="call_number.label" visible></eg-grid-field>
+  <eg-grid-field label="[% l('Location') %]"    path="location.name" visible></eg-grid-field>
+
+  <eg-grid-field label="[% l('Title') %]"       
+    path="call_number.record.simple_record.title" visible>
+    <a target="_self" href="[% ctx.base_path %]/staff/cat/catalog/record/{{item['call_number.record.id']}}">
+      {{item['call_number.record.simple_record.title']}}
+    </a>
+  </eg-grid-field>
+</eg-grid>
+

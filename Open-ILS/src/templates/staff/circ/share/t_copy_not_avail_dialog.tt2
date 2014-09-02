@@ -1,0 +1,20 @@
+<div>
+  <div class="modal-header">
+    <button type="button" class="close" 
+      ng-click="cancel()" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">
+      [% l('Copy Not Available.') %]
+    </h4>
+  </div>
+  <div class="modal-body">
+    <div class="alert alert-warning">
+      [% l('Copy Status: [_1]', '{{copyStatus.name()}}') %]
+    </div>
+  </div>
+  <div class="modal-footer">
+    <input type="submit" class="btn btn-primary" ng-click="ok()"
+        value="[% l('Force this action?') %]"/>
+    <button class="btn btn-warning" 
+      ng-click="cancel()">[% l('Cancel') %]</button>
+  </div>
+</div>

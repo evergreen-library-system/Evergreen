@@ -642,6 +642,7 @@ sub patron_search {
     my $ws_ou = shift;
     my $search_org = shift || $ws_ou;
     my $opt_boundary = shift || 0;
+    my $offset = shift || 0;
 
     my $penalty_sort = 0;
 
@@ -796,6 +797,7 @@ sub patron_search {
           GROUP BY $group_list
           ORDER BY $order_by
           LIMIT $limit
+          OFFSET $offset
     SQL
 
     return actor::user->db_Main->selectcol_arrayref($select, {Columns=>[scalar(@$sort)]}, map {lc($_)} (@usrv,@phonev,@identv,@namev,@addrv));

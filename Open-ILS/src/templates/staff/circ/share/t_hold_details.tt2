@@ -1,0 +1,149 @@
+<!-- hold info -->
+<h4 class="pad-vert">[% l('Hold Details') %]</h4>
+<div class="flex-row">
+  <div class="flex-cell">[% l('Request Date') %]</div>
+  <div class="flex-cell well">{{hold.request_time() | date:'short'}}</div>
+  <div class="flex-cell">[% l('Capture Date') %]</div>
+  <div class="flex-cell well">{{hold.capture_time() | date:'short'}}</div>
+  <div class="flex-cell">[% l('Available On') %]</div>
+  <div class="flex-cell well">{{hold.shelf_time() | date:'short'}}</div>
+ </div>
+<div class="flex-row">
+  <div class="flex-cell">[% l('Hold Type') %]</div>
+  <div class="flex-cell well">{{hold.hold_type()}}</div>
+  <div class="flex-cell">[% l('Current Copy') %]</div>
+  <div class="flex-cell well">
+    <a href="./cat/item/{{hold.current_copy().id()}}" target="_self">
+      {{hold.current_copy().barcode()}}
+    </a>
+  </div>
+  <div class="flex-cell">[% l('Call Number') %]</div>
+  <div class="flex-cell well">{{volume.label()}}</div>
+</div>
+<div class="flex-row">
+  <div class="flex-cell">[% l('Pickup Lib') %]</div>
+  <div class="flex-cell well">{{hold.pickup_lib().shortname()}}</div>
+  <div class="flex-cell">[% l('Status') %]</div>
+  <div class="flex-cell well">{{status_string}}</div>
+  <div class="flex-cell">[% l('Behind Desk') %]</div>
+  <div class="flex-cell well">{{hold.behind_desk() == 't'}}</div>
+</div>
+<div class="flex-row">
+  <div class="flex-cell">[% l('Current Shelf Lib') %]</div>
+  <div class="flex-cell well">{{hold.current_shelf_lib().shortname()}}</div>
+  <div class="flex-cell">[% l('Current Copy Location') %]</div>
+  <div class="flex-cell well">{{copy.location().name()}}</div>
+  <div class="flex-cell">[% l('Force Copy Quality') %]</div>
+  <div class="flex-cell well">{{hold.mint_condition() == 't'}}</div>
+</div>
+<div class="flex-row">
+  <div class="flex-cell">[% l('Email Notify') %]</div>
+  <div class="flex-cell well">{{hold.email_notify() == 't'}}</div>
+  <div class="flex-cell">[% l('Phone Notify') %]</div>
+  <div class="flex-cell well">{{hold.phone_notify()}}</div>
+  <div class="flex-cell">[% l('SMS Notify') %]</div>
+  <div class="flex-cell well">{{hold.sms_notify()}}</div>
+</div>
+<div class="flex-row">
+  <div class="flex-cell">[% l('Cancel Cause') %]</div>
+  <div class="flex-cell well">{{hold.cancel_cause().label()}}</div>
+  <div class="flex-cell">[% l('Cancel Time') %]</div>
+  <div class="flex-cell well">{{hold.cancel_time() | date:'short'}}</div>
+  <div class="flex-cell">[% l('Cancel Note') %]</div>
+  <div class="flex-cell well">{{hold.cancel_note()}}</div>
+</div>
+
+<ul class="nav nav-tabs pad-vert" ng-init="detail_tab='notes'">
+  <li ng-class="{active : detail_tab == 'notes'}">
+    <a href ng-click="detail_tab = 'notes'">[% l('Notes') %]</a>
+  </li>
+  <li ng-class="{active : detail_tab == 'notify'}">
+    <a href ng-click="show_notify_tab()">
+      [% l('Staff Notifications') %]
+    </a>
+  </li>
+</ul>
+<div class="tab-content">
+  <div class="tab-pane active">
+
+    <div ng-if="detail_tab == 'notes'">
+      
+      <button class="btn btn-default" ng-click="new_note()">
+        [% l('New Note') %]
+      </button>
+
+      <div class="row pad-vert" ng-repeat="note in hold.notes()">
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-md-6 strong-text">{{note.title()}}</div>
+            <div class="col-md-6">
+              <div class="pull-right">
+                <span class="pad-horiz alert alert-info" 
+                  ng-if="note.slip() == 't'">[% l('Print on Slip') %]</span>
+                <span class="pad-horiz alert alert-warning" 
+                  ng-if="note.pub() == 't'">[% l('Patron Visible') %]</span>
+                <span class="pad-horiz alert alert-info" 
+                  ng-if="note.pub() == 'f'">[% l('Staff Only') %]</span>
+                <span class="pad-horiz alert alert-info" 
+                  ng-if="note.staff() == 't'">[% l('Staff Created') %]</span>
+                <span class="pad-horiz alert alert-info" 
+                  ng-if="note.staff() == 'f'">[% l('Patron Created') %]</span>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <!-- hmm, not sure why the margin-left is needed.. the well? -->
+            <div class="col-md-12 well" style="margin-left:12px">
+              <div class="row">
+                <div class="col-md-8">
+                  <div class="">{{note.body()}}</div>
+                </div>
+                <div class="col-md-4">
+                  <div class="pull-right">
+                    <button ng-click="delete_note(note)" class="btn btn-warning">
+                      [% l('Delete') %]
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!-- notes tab content -->
+
+    <div ng-if="detail_tab == 'notify'">
+      
+      <button class="btn btn-default" ng-click="new_notification()">
+        [% l('Add Record of Notification') %]
+      </button>
+
+      <div class="row pad-vert" 
+          ng-repeat="notify in hold.notifications()">
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-md-6 strong-text">{{notify.method()}}</div>
+            <div class="col-md-6">
+              <div class="pull-right">
+                <span class="pad-horiz">{{notify.notify_time() | date:'short'}}</span>
+                <span>[% l('Created by [_1]', '{{notify.notify_staff().usrname()}}') %]</span>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <!-- hmm, not sure why the margin-left is needed.. the well? -->
+            <div class="col-md-12 well" style="margin-left:12px">
+              <div class="row">
+                <div class="col-md-8">
+                  <div class="">{{notify.note()}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!-- notes tab content -->
+
+  </div><!-- tab pane -->
+</div><!-- tab-content -->
+

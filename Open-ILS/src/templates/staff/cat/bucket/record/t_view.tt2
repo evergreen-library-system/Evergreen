@@ -1,0 +1,28 @@
+<eg-grid
+  ng-hide="forbidden"
+  id-field="id"
+  idl-class="rmsr"
+  auto-fields="true"
+  grid-controls="gridControls"
+  menu-label="[% l('Buckets') %]"
+  persist-key="cat.bucket.record.view">
+
+  [% INCLUDE 'staff/cat/bucket/record/t_grid_menu.tt2' %]
+
+  <!-- actions drop-down -->
+  <eg-grid-action label="[% l('Remove Selected Records') %]" 
+    handler="detachRecords"></eg-grid-action>
+
+  <eg-grid-action label="[% l('Export Records') %]" 
+    handler="openExportBucketDialog"></eg-grid-action>
+
+  <eg-grid-field path="id" required hidden></eg-grid-field>
+
+  <eg-grid-field label="[% l('Title') %]" path="title">
+    <a target="_self" href="[% ctx.base_path %]/staff/cat/catalog/record/{{item.id}}">
+      {{item.title}}
+    </a>
+  </eg-grid-field>
+
+
+</eg-grid>

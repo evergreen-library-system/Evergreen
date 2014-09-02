@@ -1,0 +1,189 @@
+<div class="col-md-6" ng-show="!prev_circ_summary">
+  <div class="alert alert-info">
+    [% l('No Previous Circ Group') %]
+  </div>
+</div>
+<div class="col-md-6" ng-show="prev_circ_summary">
+  <div class="flex-row">
+    <div class="flex-cell flex-2 strong-text-2">
+      [% l('Previous Circ Group') %]
+    </div>
+  </div>
+
+  <div class="flex-row">
+    <div class="flex-cell">[% l('Patron') %]</div>
+    <div class="flex-cell well">
+      <a href="./circ/patron/{{prev_circ_usr.id()}}/checkout" 
+        ng-if="prev_circ_summary" target="_self">
+        [% l('[_1], [_2] [_3] : [_4]', 
+          '{{prev_circ_usr.family_name()}}'
+          '{{prev_circ_usr.first_given_name()}}'
+          '{{prev_circ_usr.second_given_name()}}'
+          '{{prev_circ_usr.card().barcode()}}') %]
+      </a>
+    </div>
+  </div>
+
+  <div class="flex-row">
+    <div class="flex-cell">[% l('Total Circs') %]</div>
+    <div class="flex-cell well">
+      {{prev_circ_summary.num_circs()}}
+    </div>
+  </div>
+
+  <div class="flex-row">
+    <div class="flex-cell">[% l('Checkout Date') %]</div>
+    <div class="flex-cell well">
+      {{prev_circ_summary.start_time() | date:'short'}}
+    </div>
+  </div>
+
+  <div class="flex-row">
+    <div class="flex-cell">[% l('Checkout Workstation') %]</div>
+    <div class="flex-cell well">
+      {{prev_circ_summary.checkout_workstation()}}
+    </div>
+  </div>
+
+  <div class="flex-row">
+    <div class="flex-cell">[% l('Last Renewed On') %]</div>
+    <div class="flex-cell well">
+      {{prev_circ_summary.last_renewal_time() | date:'short'}}
+    </div>
+  </div>
+
+  <div class="flex-row">
+    <div class="flex-cell">[% l('Renewal Workstation') %]</div>
+    <div class="flex-cell well">
+      {{prev_circ_summary.last_renewal_workstation()}}
+    </div>
+  </div>
+
+  <div class="flex-row">
+    <div class="flex-cell">[% l('Stop Fines Reason') %]</div>
+    <div class="flex-cell well">
+      {{prev_circ_summary.last_stop_fines()}}
+    </div>
+  </div>
+  <div class="flex-row">
+    <div class="flex-cell">[% l('Stop Fines Time') %]</div>
+    <div class="flex-cell well">
+      {{prev_circ_summary.last_stop_fines_time() | date:'short'}}
+    </div>
+  </div>
+  <div class="flex-row">
+    <div class="flex-cell">[% l('Checkin Time') %]</div>
+    <div class="flex-cell well">
+      {{prev_circ_summary.last_checkin_time() | date:'short'}}
+    </div>
+  </div>
+  <div class="flex-row">
+    <div class="flex-cell">[% l('Checkin Scan Time') %]</div>
+    <div class="flex-cell well">
+      {{prev_circ_summary.last_checkin_scan_time() | date:'short'}}
+    </div>
+  </div>
+  <div class="flex-row">
+    <div class="flex-cell">[% l('Checkin Workstation') %]</div>
+    <div class="flex-cell well">
+      {{prev_circ_summary.last_checkin_workstation()}}
+    </div>
+  </div>
+</div>
+
+<div class="col-md-6" ng-show="!circ">
+  <div class="alert alert-info">
+    [% l('No Recent Circ Group') %]
+  </div>
+</div>
+<div class="col-md-6" ng-show="circ">
+  <div class="flex-row">
+    <div class="flex-cell flex-2 strong-text-2">
+      [% l('Most Recent Circ Group') %]
+    </div>
+  </div>
+  <div class="flex-row">
+    <div class="flex-cell">[% l('Patron') %]</div>
+    <div class="flex-cell well">
+      <a href="./circ/patron/{{circ.usr().id()}}/checkout" 
+        ng-if="circ" target="_self">
+        [% l('[_1], [_2] [_3] : [_4]', 
+          '{{circ.usr().family_name()}}'
+          '{{circ.usr().first_given_name()}}'
+          '{{circ.usr().second_given_name()}}'
+          '{{circ.usr().card().barcode()}}') %]
+      </a>
+    </div>
+  </div>
+
+  <div class="flex-row">
+    <div class="flex-cell">[% l('Total Circs') %]</div>
+    <div class="flex-cell well">
+      {{circ_summary.num_circs()}}
+    </div>
+  </div>
+
+  <div class="flex-row">
+    <div class="flex-cell">[% l('Checkout Date') %]</div>
+    <div class="flex-cell well">
+      {{circ.xact_start() | date:'short'}}
+    </div>
+  </div>
+
+  <div class="flex-row">
+    <div class="flex-cell">[% l('Checkout Workstation') %]</div>
+    <div class="flex-cell well">
+      {{circ.workstation().name()}}
+    </div>
+  </div>
+
+  <div class="flex-row">
+    <div class="flex-cell">[% l('Last Renewed On') %]</div>
+    <div class="flex-cell well">
+      {{circ_summary.last_renewal_time() | date:'short'}}
+    </div>
+  </div>
+
+  <div class="flex-row">
+    <div class="flex-cell">[% l('Renewal Workstation') %]</div>
+    <div class="flex-cell well">
+      {{circ_summary.last_renewal_workstation()}}
+    </div>
+  </div>
+
+  <div class="flex-row">
+    <div class="flex-cell">[% l('Stop Fines Reason') %]</div>
+    <div class="flex-cell well">
+      {{circ.stop_fines()}}
+    </div>
+  </div>
+
+  <div class="flex-row">
+    <div class="flex-cell">[% l('Stop Fines Time') %]</div>
+    <div class="flex-cell well">
+      {{circ.stop_fines_time() | date:'short'}}
+    </div>
+  </div>
+
+  <div class="flex-row">
+    <div class="flex-cell">[% l('Checkin Time') %]</div>
+    <div class="flex-cell well">
+      {{circ.checkin_time() | date:'short'}}
+    </div>
+  </div>
+
+  <div class="flex-row">
+    <div class="flex-cell">[% l('Checkin Scan Time') %]</div>
+    <div class="flex-cell well">
+      {{circ.checkin_scan_time() | date:'short'}}
+    </div>
+  </div>
+
+  <div class="flex-row">
+    <div class="flex-cell">[% l('Checkin Workstation') %]</div>
+    <div class="flex-cell well">
+      {{circ.checkin_workstation.name()}}
+    </div>
+  </div>
+</div>
+

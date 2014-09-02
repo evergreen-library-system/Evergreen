@@ -1,0 +1,49 @@
+Welcome to {{current_location.name}}!<br/>
+You have the following bills:
+<hr/>
+<dl>
+  <div ng-repeat="xact in transactions">
+    <dt><b>Bill #{{xact.id}}</b></dt>
+    <dd>
+    <table> 
+      <tr valign="top">
+        <td>[% l('Date:') %]</td>
+        <td>{{xact.xact_start | date:'short'}}</td>
+      </tr> 
+      <tr valign="top">
+        <td>[% l('Type') %]:</td>
+        <td>{{xact.summary.xact_type}}</td>
+      </tr> 
+      <tr valign="top">
+        <td>[% l('Last Billing') %]:</td>
+        <td>{{xact.summary.last_billing_type}}<br/>
+            {{xact.summary.last_billing_note}}
+        </td>
+      </tr> 
+      <tr valign="top">
+        <td>[% l('Total Billed') %]:</td>
+        <td>{{xact.summary.total_owed | currency}}</td>
+      </tr> 
+      <tr valign="top">
+        <td>[% l('Last Payment') %]:</td>
+        <td>{{xact.summary.last_payment_type}}<br/>
+            {{xact.summary.last_payment_note}}
+        </td>
+      </tr> 
+      <tr valign="top">
+        <td>[% l('Total Paid') %]:</td>
+        <td>{{xact.summary.total_paid | currency}}</td>
+      </tr> 
+      <tr valign="top">
+        <td><b>[% l('Balance') %]:</b></td>
+        <td><b>{{xact.summary.balance_owed | currency}}</b></td>
+      </tr> 
+    </table>
+    </dd>
+    <br/>
+  </div><!-- ng-repeat -->
+</dl>
+<hr/>
+{{current_location.shortname}} {{today | date:'short'}}
+<br/><br/>
+

@@ -1,0 +1,109 @@
+
+<div class="row">
+  <div class="col-md-7">
+
+    <div class="row">
+      <div class="col-md-4">[% l('Total Owed:') %]</div>
+      <div class="col-md-2 strong-text">{{summary.balance_owed() | currency}}</div>
+      <div class="col-md-4">[% l('Refunds Available:') %]</div>
+      <div class="col-md-2">{{refunds_available() | currency}}</div>
+    </div>
+    <div class="row">
+      <div class="col-md-4">[% l('Total Billed:') %]</div>
+      <div class="col-md-2">{{summary.total_owed() | currency}}</div>
+      <div class="col-md-4">[% l('Credit Available:') %]</div>
+      <div class="col-md-2">{{patron().credit_forward_balance() | currency}}</div>
+    </div>
+    <div class="row">
+      <div class="col-md-4">[% l('Total Paid:') %]</div>
+      <div class="col-md-2">{{summary.total_paid() | currency}}</div>
+      <div class="col-md-4">[% l('Session Voided:') %]</div>
+      <div class="col-md-2">{{session_voided | currency}}</div>
+    </div>
+    <div class="row"><hr/></div>
+    <div class="row">
+      <div class="col-md-4">[% l('Owed for Selected:') %]</div>
+      <div class="col-md-2">{{owed_selected() | currency}}</div>
+      <div class="col-md-4">[% l('Pending Payment:') %]</div>
+      <div class="col-md-2 strong-text">{{pending_payment() | currency}}</div>
+    </div>
+    <div class="row">
+      <div class="col-md-4">[% l('Billed for Selected:') %]</div>
+      <div class="col-md-2">{{billed_selected() | currency}}</div>
+      <div class="col-md-4">[% l('Pending Change:') %]</div>
+      <div class="col-md-2 strong-text">{{pending_change() | currency}}</div>
+    </div>
+    <div class="row">
+      <div class="col-md-4">[% l('Paid for Selected:') %]</div>
+      <div class="col-md-2">{{paid_selected() | currency}}</div>
+    </div>
+  </div><!-- col -->
+
+  <div class="col-md-5">
+    <form role="form" class="form-horizontal" ng-submit="applyPayment()">
+      <fieldset>
+        <legend>[% l('Pay Bill') %]</legend>
+
+        <div class="form-group">
+          <label for="type-input" class="col-md-6 control-label">[% l('Payment Type') %]</label>
+          <div class="col-md-6">
+            <select ng-model="payment_type" class="form-control">
+              <option value="cash_payment" selected="selected">[% l('Cash') %]</option>
+              <option value="check_payment">[% l('Check') %]</option>
+              <option value="credit_card_payment">[% l('Credit Card') %]</option>
+              <option value="credit_payment">[% l('Patron Credit') %]</option>
+              <option value="work_payment">[% l('Work') %]</option>
+              <option value="forgive_payment">[% l('Forgive') %]</option>
+              <option value="goods_payment">[% l('Goods') %]</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="amount-input" class="col-md-6 control-label">
+            [% l('Payment Received') %]
+          </label>
+          <div class="col-md-6">
+            <input type="number" min="0" step="any" id="amount-input" 
+              ng-model="payment_amount" focus-me="focus_payment" 
+              value="" class="form-control col-md-6 "/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="annotate-payment" class="control-label col-md-5">[% l('Annotate') %]</label>
+          <div class="col-md-1">
+            <input id="annotate-payment" type="checkbox" ng-model="annotate_payment"/>
+          </div>
+          <div class="col-md-6">
+            <button type="submit" class="btn btn-default">[% l('Apply Payment') %]</button>
+          </div>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</div>
+
+<div class="pad-vert">
+[% INCLUDE 'staff/circ/patron/t_bills_list.tt2' %]
+</div>
+
+<!-- pull-right is causing the content to flow several pixels 
+off to the right.  flex-row is honoring the boundaries better. 
+not sure what's up, there. -->
+<div class="flex-row">
+  <div class="flex-cell"></div>
+  <form class="form-inline" role="form">
+   <div class="checkbox">
+      <label>
+        <input type="checkbox" ng-model="receipt_on_pay"/> 
+        [% l('Receipt On Payment') %]
+      </label>
+    </div>
+    <div class="form-group" style="margin-left:10px">
+      <label for="bill-receipt-copies">[% l('# Copies') %]</label>
+      <input type="number" min="1" style="width:5em"
+        ng-model="receipt_count"
+        class="form-control" id="bill-receipt-copies"/>
+    </div>
+  </form>
+</div>
+

@@ -1,0 +1,59 @@
+<style>
+  /* TODO: move me */
+  .print-template-text {
+    height: 36em;
+    width: 100%;
+  }
+</style>
+
+<h2>[% l('Print Templates') %]</h2>
+
+<div class="row">
+  <div class="col-md-2">[% l('Template Name') %]</div>
+  <div class="col-md-3">
+    <select class="form-control" ng-model="print.template_name" ng-change="template_changed()">
+      <option value="bills_current">[% l('Bills, Current') %]</option>
+      <option value="bills_historical">[% l('Bills, Historical') %]</option>
+      <option value="bill_payment">[% l('Bills, Payment') %]</option>
+      <option value="checkout">[% l('Checkout') %]</option>
+      <option value="hold_transit_slip">[% l('Hold Transit Slip') %]</option>
+      <option value="hold_shelf_slip">[% l('Hold Shelf Slip') %]</option>
+      <option value="holds_for_bibs">[% l('Holds for Bib Record') %]</option>
+      <option value="holds_for_patron">[% l('Holds for Patron') %]</option>
+      <option value="patron_address">[% l('Patron Address') %]</option>
+      <option value="patron_note">[% l('Patron Note') %]</option>
+      <option value="transit_slip">[% l('Transit Slip') %]</option>
+    </select>
+  </div>
+  <div class="col-md-7">
+    <div class="pull-right">
+      <button class="btn btn-default" ng-click="save_locally()">[% l('Save Locally') %]</button>
+    </div>
+  </div>
+  <!-- other stuff -->
+</div>
+
+<hr/>
+
+<div class="row">
+  <div class="col-md-5">
+    <h3>[% l('Preview') %]</h3>
+    <div eg-print-template-output 
+      content="print.template_content" 
+      context="preview_scope"></div>
+  </div>
+  <div class="col-md-7">
+    <h3>[% l('Template') %]</h3>
+    <div ng-if="print.load_failed" class="alert alert-danger">
+      [% l(
+        "Unable to load template '[_1]'.  The web server returned an error.", 
+        '{{print.template_name}}') 
+      %]
+    </div>
+    <div>
+      <textarea ng-model="print.template_content" class="print-template-text">
+      </textarea>
+    </div>
+  </div> <!-- col -->
+</div>
+ 

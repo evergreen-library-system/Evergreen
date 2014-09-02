@@ -1,0 +1,60 @@
+/** style to make a grid look like a striped table */
+#patron-summary-grid div.row {padding: 3px; border-right: 2px solid rgb(248, 248, 248);}
+#patron-summary-grid div.row:nth-child(odd) {background-color: rgb(248, 248, 248);}
+
+/* there are bootstrap tyles for error, warning, etc., 
+but the ones I'm finding aren't quite cutting it..*/
+.patron-summary-alert {color: red; font-weight:bold}
+.patron-summary-alert-small {color: red}
+.patron-summary-divider { border-top: 1px solid #CCC}
+.patron-summary-act-link {font-size: .8em;}
+
+/* FIXME: use .barcode instead */
+#patron-checkout-barcode,
+#patron-renewal-barcode,
+#patron-checkin-barcode { width: 16em; }
+
+#patron-search-form div.form-group {
+  margin-bottom: 5px;
+}
+
+/* let search form elements fill their containers w/ slight padding */
+#patron-search-form-row {margin-left: 0px;}
+#patron-search-form div.col-md-2 { padding: 2px; }
+#patron-search-form input:not([type="checkbox"]) { width: 100%; }
+#patron-search-form .eg-org-selector,
+#patron-search-form .eg-org-selector button,
+#patron-search-form .patron-search-selector,
+  #patron-search-form .patron-search-selector button { 
+  width: 100%; 
+  text-align: left
+}
+
+
+#patron-payments-spreadsheet {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #aaa;
+}
+
+#patron-payments-spreadsheet .flex-cell {
+  margin: 2px;
+}
+
+#patron-payments-spreadsheet .flex-cell.well {
+  min-height: 1.5em;
+  margin-bottom: 0px; /* bootstrap default is 20px */
+}
+
+#hold-notify-settings div.row { margin-top: 12px; }
+#hold-notify-settings div.row:not(.header-row):nth-child(odd) {
+  background-color: rgb(248, 248, 248);
+}
+#hold-notify-settings div.row:not(.header-row) {
+  border-bottom: 1px solid #CCC;
+}
+
+
+[%# 
+vim: ft=css 
+%]

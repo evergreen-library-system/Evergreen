@@ -1,0 +1,37 @@
+<div>
+  <div ng-switch on="hold.behind_desk">
+    <div ng-switch-when="t">
+      [% l('This item needs to be routed to the [_1]Private Holds Shelf[_2].',
+        '<strong>','</strong>') %]
+    </div>
+    <div ng-switch-when="f">
+      [% l('This item needs to be routed to the [_1]Public Holds Shelf[_2].',
+        '<strong>','</strong>') %]
+    </div>
+  </div>
+  <br/>
+
+  [% l('Barcode: [_1]', '{{copy.barcode}}') %]</div>
+  [% l('Title: [_1]', '{{title}}') %]</div>
+
+  <br/>
+  <br/>
+
+  <div>[% l('Hold for patron [_1], [_2] [_3]',
+    '{{patron.family_given_name}}',
+    '{{patron.first_given_name}}',
+    '{{patron.second_given_name}}') %]</div>
+  <div>[% l('Barcode: [_1]', '{{patron.card.barcode}}') %]</div>
+  <div ng-if="hold.phone_notify">[% l('Notify by phone: [_1]', '{{hold.phone_notify}}') %]</div>
+  <div ng-if="hold.sms_notify">[% l('Notify by text: [_1]', '{{hold.sms_notify}}') %]</div>
+  <div ng-if="hold.email_notify == 't'">[% l('Notify by email: [_1]', '{{patron.email}}') %]</div>
+
+  <br/>
+
+  <div>[% l('Request Date: [_1]', 
+    '{{hold.request_time | date:"short"}}') %]</div>
+  <div>[% l('Slip Date: [_1]', '{{today | date:"short"}}') %]</div>
+  <div>[% l('Printed by [_1] at [_2]', 
+    '{{staff.first_given_name}}', '{{current_location.shortname}}') %]</div>
+
+</div>

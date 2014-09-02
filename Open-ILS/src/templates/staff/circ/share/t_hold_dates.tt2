@@ -1,0 +1,75 @@
+<div class="modal-content" id='hold-notify-settings'>
+  <div class="modal-header">
+    <button type="button" class="close" 
+      ng-click="cancel()" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">
+      [% l('Modify Dates for [_1] Hold(s)', '{{num_holds}}') %]
+    </h4>
+  </div>
+  <div class="modal-body">
+    <div class="row header-row">
+      <div class="col-md-12">
+        [% l('Check the checkbox next to each field you wish to modify.') %]
+      </div>
+    </div>
+    <hr/>
+    <div class="row">
+      <div class="col-md-1">
+        <label for="modify_thaw_date" class="sr-only">[% l('Update Activate Email') %]</label>
+        <input id='modify_thaw_date' ng-model="args.modify_thaw_date" type="checkbox"/>
+      </div>
+      <div class="col-md-4">
+        <label for='thaw_date'>[% l("Hold Activate Date") %]</label>
+      </div>
+      <div class="col-md-7">
+        <input id='thaw_date' eg-date-input 
+          ng-disabled="!args.modify_thaw_date" ng-model="args.thaw_date"/>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-1">
+        <label for="modify_request_time" class="sr-only">[% l('Update Phone Number') %]</label>
+        <input id='modify_request_time' ng-model="args.modify_request_time" type="checkbox"/>
+      </div>
+      <div class="col-md-4">
+        <label for='request_time'>[% l("Hold Request Date") %]</label>
+      </div>
+      <div class="col-md-7">
+        <input id='request_time' eg-date-input 
+          ng-disabled="!args.modify_request_time" ng-model="args.request_time"/>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-1">
+        <label for="modify_expire_time" class="sr-only">[% l('Update Expire Time') %]</label>
+        <input id='modify_expire_time' ng-model="args.modify_expire_time" type="checkbox"/>
+      </div>
+      <div class="col-md-4">
+        <label for='expire_time'>[% l("Hold Expire Date") %]</label>
+      </div>
+      <div class="col-md-7">
+        <input id='expire_time' eg-date-input 
+          ng-disabled="!args.modify_expire_time" ng-model="args.expire_time"/>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-1">
+        <label for="modify_shelf_expire_time" class="sr-only">[% l('Update SMS Carrier') %]</label>
+        <input id='modify_shelf_expire_time' ng-model="args.modify_shelf_expire_time" type="checkbox"/>
+      </div>
+      <div class="col-md-4">
+        <label for='shelf_expire_time'>[% l("Shelf Expire Date") %]</label>
+      </div>
+      <div class="col-md-7">
+        <input id='shelf_expire_time' eg-date-input 
+          ng-disabled="!args.modify_shelf_expire_time" ng-model="args.shelf_expire_time"/>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-default" ng-click="ok()">[% l('Submit') %]</button>
+    <button class="btn btn-warning" ng-click="cancel()">[% l('Cancel') %]</button>
+  </div>
+</div>
+
+

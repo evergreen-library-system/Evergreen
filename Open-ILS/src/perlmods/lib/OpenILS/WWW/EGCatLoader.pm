@@ -260,10 +260,17 @@ sub load_common {
     $ctx->{full_path} = $ctx->{base_path} . $self->cgi->path_info;
     $ctx->{unparsed_uri} = $self->apache->unparsed_uri;
     $ctx->{opac_root} = $ctx->{base_path} . "/opac"; # absolute base url
-    my $oils_wrapper = $self->apache->headers_in->get('OILS-Wrapper') || '';
-    $ctx->{is_staff} = ($oils_wrapper =~ /true/);
-    $ctx->{proto} = 'oils' if $ctx->{is_staff};
-    $ctx->{hostname} = 'remote' if $ctx->{is_staff};
+
+    my $xul_wrapper = 
+        ($self->apache->headers_in->get('OILS-Wrapper') || '') =~ /true/;
+
+    if ($xul_wrapper) {
+        # XUL client
+        $ctx->{is_staff} = 1;
+        $ctx->{proto} = 'oils';
+        $ctx->{hostname} = 'remote';
+    }
+
     $ctx->{physical_loc} = $self->get_physical_loc;
 
     # capture some commonly accessed pages
@@ -278,6 +285,17 @@ sub load_common {
             $ctx->{authtime} = $e->authtime;
             $ctx->{user} = $e->requestor;
             $ctx->{place_unfillable} = 1 if $e->requestor->wsid && $e->allowed('PLACE_UNFILLABLE_HOLD', $e->requestor->ws_ou);
+
+            # The browser client does not set an OILS-Wrapper header (above).
+            # The presence of a workstation and no header indicates staff mode.
+            # FIXME: this approach leaves un-wrapped TPAC's within the same
+            # browser (and hence same ses cookie) in an unnatural is_staff
+            # state.  Consider alternatives for determining is_staff / 
+            # is_browser_staff when $xul_wrapper is false.
+            if (!$xul_wrapper and $e->requestor->wsid) {
+                $ctx->{is_staff} = 1;
+                $ctx->{is_browser_staff} = 1;
+            }
 
             $ctx->{user_stats} = $U->simplereq(
                 'open-ils.actor', 

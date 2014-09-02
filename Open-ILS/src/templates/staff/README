@@ -1,0 +1,6 @@
+AnguarJS/Web Staff Client
+=========================
+
+ * TT templates loaded via JS routes must be preceded with t_* (or similar), 
+   otherwise apache will serve the template at that path instead of the 
+   index file since the path maps to a real template.

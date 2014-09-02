@@ -28,7 +28,9 @@ JSDOJOSRF = $(OPENSRF_LIBS)/javascript/md5.js \
 	     $(OPENSRF_LIBS)/javascript/JSON_v1.js \
 	     $(OPENSRF_LIBS)/javascript/opensrf.js \
 	     $(OPENSRF_LIBS)/javascript/opensrf_xhr.js \
-	     $(OPENSRF_LIBS)/javascript/opensrf_xmpp.js
+	     $(OPENSRF_LIBS)/javascript/opensrf_xmpp.js \
+	     $(OPENSRF_LIBS)/javascript/opensrf_ws.js \
+	     $(OPENSRF_LIBS)/javascript/opensrf_ws_shared.js
 endif
 
 install-exec-local: webcore-install offline-install

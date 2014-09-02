@@ -1,0 +1,47 @@
+<script src="/IDL2js"></script>
+
+[% IF EXPAND_WEB_IMPORTS %]
+
+<!-- angular -->
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/angular.min.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/angular-route.min.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/ui-bootstrap-tpls.min.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/hotkeys.min.js"></script>
+
+<!-- IDL / opensrf (network) -->
+<script src="[% ctx.media_prefix %]/js/dojo/opensrf/JSON_v1.js"></script>
+<script src="[% ctx.media_prefix %]/js/dojo/opensrf/opensrf.js"></script>
+<script src="[% ctx.media_prefix %]/js/dojo/opensrf/opensrf_ws.js"></script>
+
+<!-- evergreen core services -->
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/core.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/strings.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/idl.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/event.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/net.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/auth.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/pcrud.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/env.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/org.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/startup.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/hatch.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/print.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/coresvc.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/navbar.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/statusbar.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/ui.js"></script>
+
+[% ELSE %]
+
+<!-- concatenated, minified version of all of the above -->
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/evergreen-staff-client.[% EVERGREEN_VERSION %].min.js"></script>
+
+[% END %]
+
+<script>
+  // Configure OpenSRF
+  // pending api_level thunking in C
+  // OpenSRF.api_level = 2;
+  OpenSRF.Session.transport = OSRF_TRANSPORT_TYPE_WS;
+</script>
+

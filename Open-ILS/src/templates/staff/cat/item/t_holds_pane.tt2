@@ -1,0 +1,125 @@
+<div class="col-md-6" ng-show="!hold">
+  <div class="alert alert-info">
+    [% l('Item is not captured for a hold') %]
+  </div>
+</div>
+<div class="col-md-6" ng-show="hold">
+  <div class="flex-row">
+    <div class="flex-cell flex-2 strong-text-2">
+      [% l('Captured Hold Info') %]
+    </div>
+  </div>
+  <div class="flex-row">
+    <div class="flex-cell">[% l('Patron') %]</div>
+    <div class="flex-cell well">
+      <a href="./circ/patron/{{hold.usr().id()}}/checkout" 
+        ng-if="hold" target="_self">
+        [% l('[_1], [_2] [_3] : [_4]', 
+          '{{hold.usr().family_name()}}'
+          '{{hold.usr().first_given_name()}}'
+          '{{hold.usr().second_given_name()}}'
+          '{{hold.usr().card().barcode()}}') %]
+      </a>
+    </div>
+  </div>
+  <div class="flex-row">
+    <div class="flex-cell">[% l('Requestor') %]</div>
+    <div class="flex-cell well">
+      <a href="./circ/patron/{{hold.requestor().id()}}/checkout" 
+        ng-if="hold" target="_self">
+        [% l('[_1], [_2] [_3] : [_4]', 
+          '{{hold.requestor().family_name()}}'
+          '{{hold.requestor().first_given_name()}}'
+          '{{hold.requestor().second_given_name()}}'
+          '{{hold.requestor().card().barcode()}}') %]
+      </a>
+    </div>
+  </div>
+  <div class="flex-row">
+    <div class="flex-cell">[% l('Pickup Lib') %]</div>
+    <div class="flex-cell well">
+      {{hold.pickup_lib().shortname()}}
+    </div>
+  </div>
+  <div class="flex-row">
+    <div class="flex-cell">[% l('Current Shelf Lib') %]</div>
+    <div class="flex-cell well">
+      {{hold.current_shelf_lib().shortname()}}
+    </div>
+  </div>
+  <div class="flex-row">
+    <div class="flex-cell">[% l('Request Date') %]</div>
+    <div class="flex-cell well">
+      {{hold.request_time() | date:'short'}}
+    </div>
+  </div>
+  <div class="flex-row">
+    <div class="flex-cell">[% l('Capture Date') %]</div>
+    <div class="flex-cell well">
+      {{hold.capture_time() | date:'short'}}
+    </div>
+  </div>
+  <div class="flex-row">
+    <div class="flex-cell">[% l('Shelf Time') %]</div>
+    <div class="flex-cell well">
+      {{hold.shelf_time() | date:'short'}}
+    </div>
+  </div>
+  <div class="flex-row">
+    <div class="flex-cell">[% l('Shelf Expire Time') %]</div>
+    <div class="flex-cell well">
+      {{hold.shelf_expire_time() | date:'short'}}
+    </div>
+  </div>
+  <div class="flex-row">
+    <div class="flex-cell">[% l('Hold Expire Time') %]</div>
+    <div class="flex-cell well">
+      {{hold.expire_time() | date:'short'}}
+    </div>
+  </div>
+  <div class="flex-row">
+    <div class="flex-cell">[% l('Behind Desk') %]</div>
+    <div class="flex-cell well">
+      {{hold.behind_desk()}}
+    </div>
+  </div>
+</div>
+
+<div class="col-md-6" ng-show="!transit">
+  <div class="alert alert-info">
+    [% l('Item has not transited') %]
+  </div>
+</div>
+
+<div class="col-md-6" ng-show="transit">
+  <div class="flex-row">
+    <div class="flex-cell flex-2 strong-text-2">
+      [% l('Most Recent Transit') %]
+    </div>
+  </div>
+  <div class="flex-row">
+    <div class="flex-cell">[% l('Transit Source') %]</div>
+    <div class="flex-cell well">
+      {{transit.source().shortname()}}
+    </div>
+  </div>
+  <div class="flex-row">
+    <div class="flex-cell">[% l('Transit Destination') %]</div>
+    <div class="flex-cell well">
+      {{transit.dest().shortname()}}
+    </div>
+  </div>
+  <div class="flex-row">
+    <div class="flex-cell">[% l('Transit Send Time') %]</div>
+    <div class="flex-cell well">
+      {{transit.source_send_time() | date:'short'}}
+    </div>
+  </div>
+  <div class="flex-row">
+    <div class="flex-cell">[% l('Transit Receive Time') %]</div>
+    <div class="flex-cell well">
+      {{transit.source_recv_time() | date:'short'}}
+    </div>
+  </div>
+</div>
+

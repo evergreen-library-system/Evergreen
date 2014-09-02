@@ -1,7 +1,7 @@
 Address Alert
 -------------
 
-indexterm:[address alerts, address alert]
+indexterm:[address alerts]
 
 The Address Alert module gives administrators the ability to notify staff with a custom message when 
 addresses with certain patterns are entered in patron records. 
@@ -26,6 +26,7 @@ General Usage Examples
 Access Control and Scoping
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+<<<<<<< HEAD
 Each address alert is tied to an Org Unit and will only be matched against staff client instances of that Org Unit and its children.
 
 When viewing the address alerts you will only see the alerts associated with the specific org unit selected in the *"Context Org Unit"* selection box.  You won't see alerts associated with parent org units, so the list of alerts isn't a list of all alerts that may effect your org unit, only of the ones that you can edit.
@@ -114,4 +115,3 @@ Match all addresses on a certain street.  Matches ave and avenue because of endi
 
 Match state
 
- 

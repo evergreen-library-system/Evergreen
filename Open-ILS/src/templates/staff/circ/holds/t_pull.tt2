@@ -1,0 +1,26 @@
+<div class="container-fluid" style="text-align:center">
+  <div class="alert alert-info alert-less-pad strong-text-2">
+    <span>[% l('Holds Pull List') %]</span>
+  </div>
+</div>
+
+<div class="pad-vert"></div>
+
+<div ng-if="!detail_hold_id">
+[% INCLUDE 'staff/circ/holds/t_pull_list.tt2' %]
+</div>
+
+<!-- hold details -->
+<div ng-if="detail_hold_id">
+  <div class="row">
+    <div class="col-md-2">
+      <button class="btn btn-default" ng-click="list_view()">
+        [% l('List View') %]
+      </button>
+    </div>
+  </div>
+  <div class="pad-vert"></div>
+  <eg-record-summary record='detail_hold_record' 
+    record-id="detail_hold_record_id"></eg-record-summary>
+  <eg-hold-details hold-retrieved="set_hold" hold-id="detail_hold_id"></eg-hold-details>
+</div>

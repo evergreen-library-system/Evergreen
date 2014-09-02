@@ -1,0 +1,19 @@
+[%
+  WRAPPER "staff/base.tt2";
+  ctx.page_title = l("Check In"); 
+  ctx.page_app = "egCheckinApp";
+%]
+
+[% BLOCK APP_JS %]
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/grid.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/ui.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/user.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/services/circ.js"></script>
+[% INCLUDE 'staff/circ/share/circ_strings.tt2' %]
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/checkin/app.js"></script>
+<link rel="stylesheet" href="[% ctx.base_path %]/staff/css/circ.css" />
+[% END %]
+
+<div ng-view></div>
+
+[% END %]

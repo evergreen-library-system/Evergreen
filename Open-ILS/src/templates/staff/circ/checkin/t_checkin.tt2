@@ -1,0 +1,225 @@
+<div class="container-fluid" style="text-align:center">
+  <div class="alert alert-info alert-less-pad strong-text-2">
+    <span ng-if="!is_capture">[% l('Checkin Items') %]</span>
+    <span ng-if="is_capture">[% l('Capture Holds') %]</span>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="flex-row left-anchored">
+      <div ng-if="is_backdate()" class="alert-danger pad-all-min">
+        [% l('Backdated Check In [_1]', 
+          '{{checkinArgs.backdate | date:"shortDate"}}') %]
+      </div>
+      <div ng-if="modifiers.no_precat_alert" class="alert-danger pad-all-min">
+        [% l('Ignore Pre-Cataloged Items') %]
+      </div>
+      <div ng-if="modifiers.noop" class="alert-danger pad-all-min">
+        [% l('Suppress Holds and Transits') %]
+      </div>
+      <div ng-if="modifiers.void_overdues" class="alert-danger pad-all-min">
+        [% l('Amnesty Mode') %]
+      </div>
+      <div ng-if="modifiers.auto_print_holds_transits" 
+        class="alert-danger pad-all-min">
+        [% l('Auto-Print Hold and Transit Slips') %]
+      </div>
+      <div ng-if="modifiers.clear_expired" class="alert-danger pad-all-min">
+        [% l('Clear Holds Shelf') %]
+      </div>
+      <div ng-if="modifiers.retarget_holds" class="alert-danger pad-all-min">
+        <div ng-if="modifiers.retarget_holds_all">
+          [% l('Always Retarget Local Holds') %]
+        </div>
+        <div ng-if="!modifiers.retarget_holds_all">
+          [% l('Retarget Local Holds') %]
+        </div>
+      </div>
+      <div ng-if="modifiers.hold_as_transit" class="alert-danger pad-all-min">
+        [% l('Capture Local Holds As Transits') %]
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- checkin form -->
+<div class="row pad-vert">
+  <div class="col-md-4">
+    <form ng-submit="checkin(checkinArgs)" role="form" class="form-inline">
+      <div class="input-group">
+
+        <label class="input-group-addon" 
+          for="patron-checkin-barcode" >[% l('Barcode') %]</label>
+
+        <input focus-me="focusMe" blur-me="blurMe" 
+          class="form-control"
+          ng-model="checkinArgs.copy_barcode" 
+          placeholder="[% l('Barcode') %]"
+          id="patron-checkin-barcode" type="text"/> 
+
+        <input type="submit" class="btn btn-default" value="[% l('Submit') %]"/>
+      </div>
+    </form>
+  </div>
+
+  <div class="col-md-4">
+    <div ng-if="alert" class="col-md-12 alert-danger pad-all-min">
+      <span ng-if="alert.already_checked_in">
+        [% l('[_1] was already checked in.', '{{alert.already_checked_in}}') %]
+      </span>
+      <span ng-if="alert.item_never_circed">
+        [% l('Item [_1] has never circulated.', '{{alert.item_never_circed}}') %]
+      </span>
+    </div>
+  </div>
+
+  <div class="col-md-4" ng-if="!is_capture">
+    <div class="flex-row">
+      <div class="flex-cell"></div>
+      <div class="pad-horiz">[% l('Effective Date') %]</div>
+      <!-- date max= not yet supported -->
+      <div><input eg-date-input
+        class="form-control" ng-model="checkinArgs.backdate"/>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row" ng-if="fine_total">
+  <div class="col-md-12">
+    <span>[% l('Fine Tally:') %]</span>
+    <span class="pad-horiz alert alert-danger">{{fine_total | currency}}</span>
+    <span ng-if="billable_barcode">
+      <span>[% l('Transaction for [_1] billed:', '{{billable_barcode}}') %]</span>
+      <span class="pad-horiz alert alert-danger">{{billable_amount | currency}}</span>
+    </span>
+  </div>
+</div>
+
+<hr/>
+
+[% INCLUDE 'staff/circ/checkin/t_checkin_table.tt2' %]
+
+<div class="row pad-vert">
+  <div class="col-md-10">
+    <div class="flex-row">
+      <div class="flex-cell"></div>
+      <div class="pad-horiz">
+        <button class="btn btn-default" 
+          ng-click="print_receipt()">[% l('Print Receipt') %]</button>
+      </div>
+      <div class="checkbox" ng-if="using_hatch">
+        <label>
+          <input ng-model="show_print_dialog" type="checkbox"/>
+          [% l('Show Print Dialog') %]
+        </label>
+      </div>
+      <div class="pad-horiz" ng-if="using_hatch"></div>
+      <div class="checkbox">
+        <label>
+          <input ng-model="trim_list" type="checkbox"/>
+          [% l('Trim List (20 Rows)') %]
+        </label>
+      </div>
+      <div class="pad-horiz"></div>
+      <div class="checkbox">
+        <label>
+          <input ng-model="strict_barcode" type="checkbox"/>
+          [% l('Strict Barcode') %]
+        </label>
+      </div>
+    </div><!-- flex row -->
+  </div><!-- col -->
+  <div class="col-md-2">
+    <div class="input-group-btn" dropdown>
+      <button type="button" class="btn btn-default dropdown-toggle">
+        [% l('Checkin Modifiers') %]
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu pull-right">
+        <li>
+          <a href dropdown-toggle 
+            ng-click="toggle_mod('no_precat_alert')">
+            <span ng-if="modifiers.no_precat_alert" 
+              class="label label-success">&#x2713;</span>
+            <span ng-if="!modifiers.no_precat_alert"
+              class="label label-warning">&#x2717;</span>
+            <span>[% l('Ignore Pre-cataloged Items') %]</span>
+          </a>
+        </li>
+        <li ng-if="!is_capture"><!-- nonsensical for hold capture -->
+          <a href dropdown-toggle 
+            ng-click="toggle_mod('noop')">
+            <span ng-if="modifiers.noop" 
+              class="label label-success">&#x2713;</span>
+            <span ng-if="!modifiers.noop"
+              class="label label-warning">&#x2717;</span>
+            <span>[% l('Suppress Holds and Transits') %]</span>
+          </a>
+        </li>
+        <li>
+          <a href dropdown-toggle 
+            ng-click="toggle_mod('void_overdues')">
+            <span ng-if="modifiers.void_overdues" 
+              class="label label-success">&#x2713;</span>
+            <span ng-if="!modifiers.void_overdues"
+              class="label label-warning">&#x2717;</span>
+            <span>[% l('Amnesty Mode') %]</span>
+          </a>
+        </li>
+        <li>
+          <a href dropdown-toggle 
+            ng-click="toggle_mod('auto_print_holds_transits')">
+            <span ng-if="modifiers.auto_print_holds_transits" 
+              class="label label-success">&#x2713;</span>
+            <span ng-if="!modifiers.auto_print_holds_transits"
+              class="label label-warning">&#x2717;</span>
+            <span>[% l('Auto-Print Hold and Transit Slips') %]</span>
+          </a>
+        </li>
+        <li>
+          <a href dropdown-toggle 
+            ng-click="toggle_mod('clear_expired')">
+            <span ng-if="modifiers.clear_expired" 
+              class="label label-success">&#x2713;</span>
+            <span ng-if="!modifiers.clear_expired"
+              class="label label-warning">&#x2717;</span>
+            <span>[% l('Clear Holds Shelf') %]</span>
+          </a>
+        </li>
+        <li>
+          <a href dropdown-toggle 
+            ng-click="toggle_mod('retarget_holds')">
+            <span ng-if="modifiers.retarget_holds" 
+              class="label label-success">&#x2713;</span>
+            <span ng-if="!modifiers.retarget_holds"
+              class="label label-warning">&#x2717;</span>
+            <span>[% l('Retarget Local Holds') %]</span>
+          </a>
+        </li>
+        <li>
+          <a href dropdown-toggle 
+            ng-click="toggle_mod('retarget_holds_all')">
+            <span ng-if="modifiers.retarget_holds_all" 
+              class="label label-success">&#x2713;</span>
+            <span ng-if="!modifiers.retarget_holds_all"
+              class="label label-warning">&#x2717;</span>
+            <span>[% l('Retarget All Statuses') %]</span>
+          </a>
+        </li>
+        <li>
+          <a href dropdown-toggle 
+            ng-click="toggle_mod('hold_as_transit')">
+            <span ng-if="modifiers.hold_as_transit" 
+              class="label label-success">&#x2713;</span>
+            <span ng-if="!modifiers.hold_as_transit"
+              class="label label-warning">&#x2717;</span>
+            <span>[% l('Capture Local Holds As Transits') %]</span>
+          </a>
+        </li>
+      </ul>
+    </div><!-- btn grp -->
+  </div><!-- col -->
+</div><!-- row -->
+

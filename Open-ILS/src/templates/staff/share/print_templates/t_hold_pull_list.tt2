@@ -1,0 +1,29 @@
+<table id='pull-list-template-table'>
+  <style>
+    #pull-list-template-table td,
+    #pull-list-template-table th {
+      padding: 5px;
+      border: 1px solid #000;
+    }
+  </style>
+  <thead>
+    <tr>
+      <th>[% l('Type') %]</th>
+      <th>[% l('Title') %]</th>
+      <th>[% l('Author') %]</th>
+      <th>[% l('Shelf Location') %]</th>
+      <th>[% l('Call Number') %]</th>
+      <th>[% l('Barcode/Part') %]</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="hold_data in holds">
+      <td>{{hold_data.hold.hold_type}}</td>
+      <td>{{hold_data.title}}</td>
+      <td>{{hold_data.author}}</td>
+      <td>{{hold_data.copy.location.name}}</td>
+      <td>{{hold_data.volume.label}}</td>
+      <td>{{hold_data.copy.barcode}} {{hold_data.part.label}}</td>
+    </tr>
+  </tbody>
+</table>

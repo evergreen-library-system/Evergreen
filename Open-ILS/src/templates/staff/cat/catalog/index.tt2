@@ -1,0 +1,21 @@
+[%
+  WRAPPER "staff/base.tt2";
+  ctx.page_title = l("Catalog"); 
+  ctx.page_app = "egCatalogApp";
+%]
+
+[% BLOCK APP_JS %]
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/grid.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/eframe.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/cat/services/record.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/services/circ.js"></script>
+[% INCLUDE 'staff/circ/share/circ_strings.tt2' %]
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/services/holds.js"></script>
+[% INCLUDE 'staff/circ/share/hold_strings.tt2' %]
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/cat/catalog/app.js"></script>
+[% END %]
+
+<div ng-view></div>
+
+[% END %]
+

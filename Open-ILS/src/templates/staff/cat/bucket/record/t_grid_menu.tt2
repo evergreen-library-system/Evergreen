@@ -1,0 +1,20 @@
+
+<!-- global grid menu displayed on every Bucket page -->
+<eg-grid-menu-item label="[% l('New Bucket') %]" 
+  handler="openCreateBucketDialog"></eg-grid-menu-item>
+
+<eg-grid-menu-item label="[% l('Edit Bucket') %]" 
+  handler="openEditBucketDialog"></eg-grid-menu-item>
+
+<eg-grid-menu-item label="[% l('Delete Bucket') %]" 
+  handler="openDeleteBucketDialog"></eg-grid-menu-item>
+
+<eg-grid-menu-item label="[% l('Shared Bucket') %]" 
+  handler="openSharedBucketDialog"></eg-grid-menu-item>
+
+<eg-grid-menu-item divider="true"></eg-grid-menu-item>
+
+<eg-grid-menu-item ng-repeat="bkt in bucketSvc.allBuckets" 
+  label="{{bkt.name()}}" handler-data="bkt" 
+  handler="loadBucketFromMenu"></eg-grid-menu-item>
+

@@ -1,0 +1,46 @@
+<br/>
+
+<!-- search bar -->
+<div class="row">
+  <div class="col-md-6">
+    <form ng-submit="search()">
+      <div class="input-group">
+        <span class="input-group-addon">[% l('Record Query') %]</span>
+        <input type="text" class="form-control" focus-me="focusMe"
+        ng-model="bucketSvc.queryString" placeholder="[% l('Query...') %]">
+      </div>
+    </form>
+  </div>
+</div>
+<br/>
+<div class="row" ng-show="searchInProgress">
+  <div class="col-md-6">
+    <div class="progress progress-striped active">
+        <div class="progress-bar"  role="progressbar" aria-valuenow="100" 
+              aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+            <span class="sr-only">[% l('Searching...') %]</span>
+        </div>
+    </div>
+  </div>
+</div>
+
+
+<eg-grid
+  ng-hide="forbidden"
+  id-field="id"
+  idl-class="rmsr"
+  auto-fields="true"
+  grid-controls="gridControls"
+  menu-label="[% l('Buckets') %]"
+  persist-key="cat.bucket.record.search">
+
+  [% INCLUDE 'staff/cat/bucket/record/t_grid_menu.tt2' %]
+
+  <!-- actions drop-down -->
+  <eg-grid-action label="[% l('Add To Pending') %]"
+    handler="addToPending"></eg-grid-action>
+
+  <eg-grid-action label="[% l('Add To Bucket') %]" 
+    handler="addToBucket"></eg-grid-action>
+
+</eg-grid>

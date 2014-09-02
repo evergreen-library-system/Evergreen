@@ -17,12 +17,13 @@ TAG_ONLY=NO # -t
 BUILD_ONLY=NO # -b
 UPGRADE_PREVIEW=NO # -r
 SKIP_I18N=NO # -i
+BUILD_BROWSER_CLIENT=NO # -c
 
 # path to OpenSRF libraries
 [ "$(which osrf_config)" ] && OSRF_JS_PATH="$(osrf_config --libdir)/javascript";
 
 
-while getopts ":hv:f:F:nptbrij:" opt; do
+while getopts ":hv:f:F:nptbrij:c" opt; do
     case $opt in
         v)
             VERSION=$OPTARG
@@ -55,6 +56,9 @@ while getopts ":hv:f:F:nptbrij:" opt; do
         j)
             OSRF_JS_PATH="$OPTARG"
         ;;
+        c)
+            BUILD_BROWSER_CLIENT=YES
+        ;;
         \?)
             echo "Invalid Option: -$OPTARG"
             exit 1
@@ -75,6 +79,7 @@ while getopts ":hv:f:F:nptbrij:" opt; do
             echo "   -r prompt to preview upgrade SQL in editor before committing."
             echo "   -i skip i18n; primarily useful for (quickly) testing this script."
             echo "   -j opensrf javascript library path.  If osrf_config is found, the value derived from osrf_config --libdir."
+            echo "   -c build the experimental browser client;  requires nodejs/grunt-cli/bower"
             echo "   NOTE: -t and -b override PREV_BRANCH/PREV_VERSION, but -b overrides -t."
             exit -1
         ;;
@@ -320,7 +325,22 @@ XULRUNNER_VERSION=`grep '^XULRUNNER_VERSION' Makefile.am`
 XULRUNNER_VERSION=${XULRUNNER_VERSION##XULRUNNER_VERSION=}
 
 echo "Prepping server download files"
-cd ../../../../
+
+if [ "$BUILD_BROWSER_CLIENT" == "YES" ]; then
+    cd ../../../
+    echo "Building browser staff client"
+    cd Open-ILS/web/js/ui/default/staff/
+    npm install   # fetch build dependencies
+    bower install # fetch JS dependencies
+    grunt build # copy to build dir and minify JS files
+    # bower / node cache is big and unnecessary in the final build.  remove them.
+    rm -r bower_components node_modules 
+    cd ../../../../../../../ # release dir
+else
+    echo "Skipping browser client build"
+    cd ../../../../
+fi
+
 tar czf Evergreen-ILS-$VERSION.tar.gz Evergreen-ILS-$VERSION/
 md5sum Evergreen-ILS-$VERSION.tar.gz > Evergreen-ILS-$VERSION.tar.gz.md5
 if [ $PREV_BRANCH != "PACKAGE" ]; then # We need to have tagged to do this ;)

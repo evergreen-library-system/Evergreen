@@ -1,0 +1,48 @@
+<!doctype html>
+[%- PROCESS 'staff/config.tt2' %]
+<html lang="[% ctx.locale %]"
+    [%- IF ctx.page_app %] ng-app="[% ctx.page_app %]"[% END -%]
+    [%- IF ctx.page_ctrl %] ng-controller="[% ctx.page_ctrl %]"[% END %]>
+  <head>
+    <title>[% l('Evergreen Staff [_1]', ctx.page_title) %]</title>
+    <base href="/eg/staff/">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    [% IF EXPAND_WEB_IMPORTS %]
+    <link rel="stylesheet" href="[% WEB_BUILD_PATH %]/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="[% WEB_BUILD_PATH %]/css/hotkeys.min.css" />
+    [% ELSE %]
+    <link rel="stylesheet" href="[% WEB_BUILD_PATH %]/css/evergreen-staff-client-deps.[% EVERGREEN_VERSION %].min.css" />
+    [% END %]
+    <link rel="stylesheet" href="[% ctx.base_path %]/staff/css/style.css" />
+    <link rel="stylesheet" href="[% ctx.base_path %]/staff/css/print.css" type="text/css" media="print" />
+  </head>
+  <body>
+
+    <!-- load the navbar template inline since it's used on every page -->
+    <script type="text/ng-template" id="eg-navbar-template">
+      [% INCLUDE "staff/navbar.tt2" %]
+    </script>
+
+    <!-- instantiate the navbar by invoking it's name -->
+    <eg-navbar></eg-navbar>
+
+    <!-- main page content goes here -->
+    <div id="top-content-container" class="container">[% content %]</div>
+
+    [% 
+      # status bar along bottom of page
+      INCLUDE "staff/statusbar.tt2";
+
+      # script imports
+      INCLUDE "staff/base_js.tt2";
+
+      # App-specific JS load commands go into an APP_JS block.
+      PROCESS APP_JS;
+    %]
+
+    <!-- content printed via the browser is inserted here for 
+         DOM-ification prior to delivery to the printer -->
+    <div id="print-div" eg-print-container></div>
+  </body>
+</html>

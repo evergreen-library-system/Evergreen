@@ -1,0 +1,143 @@
+
+<div ng-cloak>
+  <div ng-show="patron()" id="patron-summary-grid">
+    <div class="row" 
+      ng-class="{'patron-summary-divider' : !$index}"
+      ng-repeat="penalty in alert_penalties()">
+      <div 
+        class="col-md-9 patron-summary-alert"
+        title="{{penalty.standing_penalty().name()}}">
+        {{penalty.note() || penalty.standing_penalty().label()}}
+      </div>
+      <div class="col-md-3">
+        {{penalty.set_date() | date:'shortDate'}}
+      </div>
+    </div>
+    <div class="row" 
+      ng-class="{'patron-summary-divider' : alert_penalties().length}">
+      <div class="col-md-5">[% l('Profile') %]</div>
+      <div class="col-md-7">{{patron().profile().name()}}</div>
+    </div>
+    <div class="row">
+      <div class="col-md-5">[% l('Home Library') %]</div>
+      <div class="col-md-7">{{patron().home_ou().shortname()}}</div>
+    </div>
+    <div class="row">
+      <div class="col-md-5">[% l('Net Access') %]</div>
+      <div class="col-md-7">{{patron().net_access_level().name()}}</div>
+    </div>
+    <div class="row">
+      <div class="col-md-5">[% l('Last Activity') %]</div>
+      <div class="col-md-7">{{patron().usr_activity()[0].event_time() | date:'shortDate'}}</div>
+    </div>
+    <div class="row">
+      <div class="col-md-5">[% l('Last Updated') %]</div>
+      <div class="col-md-7">{{patron().last_update_time() | date:'shortDate'}}</div>
+    </div>
+    <div class="row">
+      <div class="col-md-5">[% l('Create Date') %]</div>
+      <div class="col-md-7">{{patron().create_date() | date:'shortDate'}}</div>
+    </div>
+    <div class="row">
+      <div class="col-md-5">[% l('Expire Date') %]</div>
+      <div class="col-md-7">{{patron().expire_date() | date:'shortDate'}}</div>
+    </div>
+    <div class="row patron-summary-divider" 
+      ng-class="{'patron-summary-alert' : patron_stats().fines.balance_owed}">
+      <div class="col-md-5">[% l('Fines Owed') %]</div>
+      <div class="col-md-7">
+        {{patron_stats().fines.balance_owed | currency}}
+      </div>
+    </div>
+    <div class="row"
+      ng-show="patron_stats().fines.group_balance_owed > patron_stats().fines.balance_owed"
+      ng-class="{'patron-summary-alert' : patron_stats().fines.group_balance_owed}">
+      <div class="col-md-5">[% l('Group Fines') %]</div>
+      <div class="col-md-7">
+        {{patron_stats().fines.group_balance_owed | currency}}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-5">[% l('Items Out') %]</div>
+      <div class="col-md-7">{{patron_stats().checkouts.out}}</div>
+    </div>
+    <div class="row" 
+      ng-class="{'patron-summary-alert' : patron_stats().checkouts.overdue}">
+      <div class="col-md-5">[% l('Overdue') %]</div>
+      <div class="col-md-7">{{patron_stats().checkouts.overdue}}</div>
+    </div>
+    <div class="row" 
+      ng-class="{'patron-summary-alert' : patron_stats().checkouts.long_overdue}">
+      <div class="col-md-5">[% l('Long Overdue') %]</div>
+      <div class="col-md-7">{{patron_stats().checkouts.long_overdue}}</div>
+    </div>
+    <div class="row" 
+      ng-class="{'patron-summary-alert' : patron_stats().checkouts.claims_returned}">
+      <div class="col-md-5">[% l('Claimed Returned') %]</div>
+      <div class="col-md-7">{{patron_stats().checkouts.claims_returned}}</div>
+    </div>
+    <div class="row" 
+      ng-class="{'patron-summary-alert' : patron_stats().checkouts.lost}">
+      <div class="col-md-5">[% l('Lost') %]</div>
+      <div class="col-md-7">{{patron_stats().checkouts.lost}}</div>
+    </div>
+    <div class="row">
+      <div class="col-md-5">[% l('Holds') %]</div>
+      <div class="col-md-7">
+        {{patron_stats().holds.total}} / {{patron_stats().holds.ready}}
+      </div>
+    </div>
+    <div class="row patron-summary-divider">
+      <div class="col-md-5">[% l('Card') %]</div>
+      <div class="col-md-7">{{patron().card().barcode()}}</div>
+    </div>
+    <div class="row">
+      <div class="col-md-5">[% l('Username') %]</div>
+      <div class="col-md-7">{{patron().usrname()}}</div>
+    </div>
+    <div class="row">
+      <div class="col-md-5">[% l('Day Phone') %]</div>
+      <div class="col-md-7">{{patron().day_phone()}}</div>
+    </div>
+    <div class="row">
+      <div class="col-md-5">[% l('Evening Phone') %]</div>
+      <div class="col-md-7">{{patron().evening_phone()}}</div>
+    </div>
+    <div class="row">
+      <div class="col-md-5">[% l('Other Phone') %]</div>
+      <div class="col-md-7">{{patron().other_phone()}}</div>
+    </div>
+    <div class="row">
+      <div class="col-md-5">[% l('ID1') %]</div>
+      <div class="col-md-7">{{patron().ident_type().name()}}</div>
+    </div>
+    <div class="row">
+      <div class="col-md-5">[% l('ID2') %]</div>
+      <div class="col-md-7">{{patron().ident_type2().name()}}</div>
+    </div>
+    <div class="row">
+      <div class="col-md-5">[% l('Email') %]</div>
+      <div class="col-md-7">{{patron().email()}}</div>
+    </div>
+    <div class="row" ng-repeat="map in summary_stat_cats()">
+      <div class="col-md-5">{{map.stat_cat().name()}}</div>
+      <div class="col-md-7">{{map.stat_cat_entry()}}</div>
+    </div>
+  </div>
+
+  <div class="row" ng-repeat="addr in patron().addresses()">
+    <div class="panel">
+      <div class="panel-body">
+        <fieldset>
+          <legend>
+            {{addr.address_type()}} 
+            <a href class="pad-horiz patron-summary-act-link" 
+              ng-click="print_address(addr)">[% l('(print)') %]</a>
+          </legend>
+          <div>{{addr.street1()}} {{addr.street2()}}</div>
+          <div>{{addr.city()}}, {{addr.state()}} {{addr.post_code()}}</div>
+        </fieldset>
+      </div>
+    </div>
+  </div>
+</div>

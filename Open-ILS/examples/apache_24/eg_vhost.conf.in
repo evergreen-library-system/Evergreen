@@ -806,6 +806,34 @@ RewriteRule ^/openurl$ ${openurl:%1} [NE,PT]
     </IfModule>
 </Location>
 
+<LocationMatch /eg/staff/>
+    Options -MultiViews
+    PerlSetVar OILSWebStopAtIndex "true"
+
+    # sample staff-specific translation files
+    #PerlAddVar OILSWebLocale "en_ca"                                           
+    #PerlAddVar OILSWebLocale "/openils/var/data/locale/staff/en-CA.po"         
+    #PerlAddVar OILSWebLocale "fr_ca"                                           
+    #PerlAddVar OILSWebLocale "/openils/var/data/locale/staff/fr-CA.po"   
+</LocationMatch>
+
+<Location /js/>
+    <IfModule mod_headers.c>
+        Header append Cache-Control "public"
+    </IFModule>
+    <IfModule mod_deflate.c>
+        SetOutputFilter DEFLATE
+        BrowserMatch ^Mozilla/4 gzip-only-text/html
+        BrowserMatch ^Mozilla/4\.0[678] no-gzip
+        BrowserMatch \bMSI[E] !no-gzip !gzip-only-text/html
+        SetEnvIfNoCase Request_URI \.(?:gif|jpe?g|png)$ no-gzip dont-vary
+        <IfModule mod_headers.c>
+            Header append Vary User-Agent env=!dont-vary
+        </IfModule>
+    </IfModule>
+</Location>
+
+
 # Uncomment the following to force SSL for everything. Note that this defeats caching
 # and you will suffer a performance hit.
 #RewriteCond %{HTTPS} off

@@ -1,0 +1,25 @@
+<!-- edit bucket dialog -->
+<form ng-submit="ok(count)" role="form">
+  <div class="modal-header">
+    <button type="button" class="close" 
+      ng-click="cancel()" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">
+      [% l('Enter the number of {{type.name()}} circulating') %]
+    </h4>
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+      <label for="noncat-count" class="sr-only">[% l('Count') %]</label>
+      <input type="number" class="form-control" focus-me='focusMe' 
+        required id="noncat-title" ng-model="count" 
+        min="1" max="{{noncatMax}}"
+        placeholder="[% l('Count...') %]"/>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <input type="submit" class="btn btn-primary" 
+        ng-disabled="form.$invalid" value="[% l('OK') %]"/>
+    <button class="btn btn-warning" 
+      ng-click="cancel($event)">[% l('Cancel') %]</button>
+  </div>
+</form>

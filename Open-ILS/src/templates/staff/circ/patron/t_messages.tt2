@@ -1,0 +1,52 @@
+
+<div class="strong-text-2">[% l('Staff-Generated Penalties / Messages') %]</div>
+<div class="pad-vert"></div>
+<eg-grid
+  idl-class="ausp"
+  grid-controls="activeGridControls">
+
+  <eg-grid-menu-item handler="createPenalty"
+    label="[% l('Apply Penalty / Message') %]"></eg-grid-menu-item>
+
+  <eg-grid-action label="[% l('Remove Penalty / Message') %]" 
+    handler="removePenalty"></eg-grid-action>
+  <eg-grid-action label="[% l('Modify Penalty / Message') %]" 
+    handler="editPenalty"></eg-grid-action>
+  <eg-grid-action label="[% l('Archive Penalty / Message') %]" 
+    handler="archivePenalty"></eg-grid-action>
+
+  <eg-grid-field path="set_date" label="[% l('Applied On') %]"></eg-grid-field>
+  <eg-grid-field path="standing_penalty.label"></eg-grid-field>
+  <eg-grid-field path="org_unit.shortname" label="[% l('Library') %]"></eg-grid-field>
+  <eg-grid-field path="note"></eg-grid-field>
+  <eg-grid-field path="id" required hidden></eg-grid-field>
+  <eg-grid-field path="standing_penalty.block_list" required hidden></eg-grid-field>
+  <eg-grid-field path="standing_penalty.*" hidden></eg-grid-field>
+
+</eg-grid>
+
+<div class="pad-vert"><hr/></div>
+
+<div class="pad-vert flex-row padded">
+  <div class="strong-text-2">[% l('Archived Penalties / Messages') %]</div>
+  <div class="flex-cell"></div>
+  <div>[% l('Set Date Start:') %]</div>
+  <div><input eg-date-input class="form-control" ng-model="dates.start_date"/></div>
+  <div>[% l('Set Date End:') %]</div>
+  <div><input eg-date-input class="form-control" ng-model="dates.end_date"/></div>
+</div>
+<eg-grid
+  idl-class="ausp"
+  grid-controls="archiveGridControls">
+
+  <eg-grid-field path="set_date" label="[% l('Applied On') %]"></eg-grid-field>
+  <eg-grid-field path="standing_penalty.label"></eg-grid-field>
+  <eg-grid-field path="org_unit.shortname" label="[% l('Library') %]"></eg-grid-field>
+  <eg-grid-field path="note"></eg-grid-field>
+  <eg-grid-field path="id" required hidden></eg-grid-field>
+  <eg-grid-field path="standing_penalty.block_list" required hidden></eg-grid-field>
+  <eg-grid-field path="standing_penalty.*" hidden></eg-grid-field>
+
+</eg-grid>
+
+

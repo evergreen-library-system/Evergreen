@@ -1,0 +1,34 @@
+<div>
+  <div>[% l('This item needs to be routed to [_1]', '<b>{{dest_location.shortname}}</b>') %]</div>
+  <div>{{dest_location.name}}</div>
+  <div>{{dest_address.street1}}
+  <div>{{dest_address.street2}}</div>
+  <div>{{dest_address.city}},
+       {{dest_address.state}}
+       {{dest_address.post_code}}</div>
+  <br/>
+
+  [% l('Barcode: [_1]', '{{copy.barcode}}') %]</div>
+  [% l('Title: [_1]', '{{title}}') %]</div>
+  [% l('Author: [_1]', '{{author}}') %]</div>
+
+  <br/>
+
+  <div>[% l('Hold for patron [_1], [_2] [_3]',
+    '{{patron.family_given_name}}',
+    '{{patron.first_given_name}}',
+    '{{patron.second_given_name}}') %]</div>
+  <div>[% l('Barcode: [_1]', '{{patron.card.barcode}}') %]</div>
+  <div ng-if="hold.phone_notify">[% l('Notify by phone: [_1]', '{{hold.phone_notify}}') %]</div>
+  <div ng-if="hold.sms_notify">[% l('Notify by text: [_1]', '{{hold.sms_notify}}') %]</div>
+  <div ng-if="hold.email_notify == 't'">[% l('Notify by email: [_1]', '{{patron.email}}') %]</div>
+
+  <br/>
+
+  <div>[% l('Request Date: [_1]', 
+    '{{hold.request_time | date:"short"}}') %]</div>
+  <div>[% l('Slip Date: [_1]', '{{today | date:"short"}}') %]</div>
+  <div>[% l('Printed by [_1] at [_2]', 
+    '{{staff.first_given_name}}', '{{current_location.shortname}}') %]</div>
+
+</div>

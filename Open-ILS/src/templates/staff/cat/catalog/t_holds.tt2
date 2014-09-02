@@ -1,0 +1,108 @@
+
+<div ng-if="!detail_hold_id">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="input-group">
+        <span class="input-group-addon">[% l('Pickup Library') %]</span>
+        <eg-org-selector selected="pickup_ou" onchange="pickup_ou_changed"></eg-org-selector>
+      </div>
+    </div>
+  </div>
+  <div class="pad-vert"></div>
+
+  <eg-grid
+    id-field="id"
+    features="-sort,-multisort"
+    items-provider="hold_grid_data_provider"
+    grid-controls="hold_grid_controls"
+    persist-key="cat.catalog.holds">
+
+    <eg-grid-menu-item handler="detail_view" 
+      label="[% l('Detail View') %]"></eg-grid-menu-item>
+
+    <eg-grid-action handler="grid_actions.show_recent_circs"
+      label="[% l('Show Last Few Circulations') %]"></eg-grid-action>
+    <eg-grid-action divider="true"></eg-grid-action>
+    <eg-grid-action handler="grid_actions.set_copy_quality"
+      label="[% l('Set Desired Copy Quality') %]"></eg-grid-action>
+    <eg-grid-action handler="grid_actions.edit_pickup_lib"
+      label="[% l('Edit Pickup Library') %]"></eg-grid-action>
+    <eg-grid-action handler="grid_actions.edit_notify_prefs"
+      label="[% l('Edit Notification Settings') %]"></eg-grid-action>
+    <eg-grid-action handler="grid_actions.edit_dates"
+      label="[% l('Edit Hold Dates') %]"></eg-grid-action>
+    <eg-grid-action handler="grid_actions.activate"
+      label="[% l('Activate') %]"></eg-grid-action>
+    <eg-grid-action handler="grid_actions.suspend"
+      label="[% l('Suspend') %]"></eg-grid-action>
+    <eg-grid-action handler="grid_actions.set_top_of_queue"
+      label="[% l('Set Top of Queue') %]"></eg-grid-action>
+    <eg-grid-action handler="grid_actions.clear_top_of_queue"
+      label="[% l('Un-Set Top of Queue') %]"></eg-grid-action>
+    <eg-grid-action handler="grid_actions.transfer_to_marked_title"
+      label="[% l('Transfer To Marked Title') %]"></eg-grid-action>
+    <eg-grid-action handler="grid_actions.mark_damaged"
+      label="[% l('Mark Item Damaged') %]"></eg-grid-action>
+    <eg-grid-action handler="grid_actions.mark_missing"
+      label="[% l('Mark Item Missing') %]"></eg-grid-action>
+    <eg-grid-action divider="true"></eg-grid-action>
+    <eg-grid-action handler="grid_actions.retarget"
+      label="[% l('Find Another Target') %]"></eg-grid-action>
+    <eg-grid-action handler="grid_actions.cancel_hold"
+      label="[% l('Cancel Hold') %]"></eg-grid-action>
+
+    <eg-grid-field label="[% l('Hold ID') %]" path='hold.id'></eg-grid-field>
+    <eg-grid-field label="[% l('Current Copy') %]" 
+      path='hold.current_copy.barcode'>
+      <a href="./cat/item/{{item.hold.current_copy().id()}}/summary" target="_self">
+        {{item.hold.current_copy().barcode()}}
+      </a>
+    </eg-grid-field>
+
+    <eg-grid-field label="[% l('Request Date') %]" path='hold.request_time'></eg-grid-field>
+    <eg-grid-field label="[% l('Capture Date') %]" path='hold.capture_time'></eg-grid-field>
+    <eg-grid-field label="[% l('Available Date') %]" path='hold.shelf_time'></eg-grid-field>
+    <eg-grid-field label="[% l('Hold Type') %]" path='hold.hold_type'></eg-grid-field>
+    <eg-grid-field label="[% l('Pickup Library') %]" path='hold.pickup_lib.shortname'></eg-grid-field>
+
+    <eg-grid-field label="[% l('Title') %]" path='mvr.title'>
+      <a target="_self" href="[% ctx.base_path %]/staff/cat/catalog/record/{{item.mvr.doc_id()}}">
+        {{item.mvr.title()}}
+      </a>
+    </eg-grid-field>
+
+    <eg-grid-field label="[% l('Author') %]" path='mvr.author'></eg-grid-field>
+    <eg-grid-field label="[% l('Potential Copies') %]" path='potential_copies'></eg-grid-field>
+    <eg-grid-field label="[% l('Status') %]" path='status_string'></eg-grid-field>
+
+    <eg-grid-field label="[% l('Queue Position') %]" path='queue_position' hidden></eg-grid-field>
+    <eg-grid-field path='hold.*' parent-idl-class="ahr" hidden></eg-grid-field>
+    <eg-grid-field path='copy.*' parent-idl-class="acp" hidden></eg-grid-field>
+    <eg-grid-field path='volume.*' parent-idl-class="acn" hidden></eg-grid-field>
+    <eg-grid-field path='mvr.*' parent-idl-class="mvr" hidden></eg-grid-field>
+  </eg-grid>
+
+  <div class="flex-row pad-vert">
+    <div class="flex-cell"></div>
+    <div>
+      <button class="btn btn-default" ng-click="print_holds()">
+        [% l('Print') %]
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- hold details -->
+<div ng-if="detail_hold_id">
+  <div class="row">
+    <div class="col-md-2">
+      <button class="btn btn-default" ng-click="list_view()">
+        [% l('List View') %]
+      </button>
+    </div>
+  </div>
+  <div class="pad-vert"></div>
+  <eg-record-summary record='detail_hold_record' 
+    record-id="detail_hold_record_id"></eg-record-summary>
+  <eg-hold-details hold-retrieved="set_hold" hold-id="detail_hold_id"></eg-hold-details>
+</div>
