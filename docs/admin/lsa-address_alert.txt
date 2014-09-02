@@ -41,9 +41,8 @@ How to add an address to the alert list:
 . Click "New Address Alert."
 . A form will open with the following fields to fill out:
 +
-New Address Alert Fields
-^^^^^^^^^^^^^^^^^^^^^^^^
-|==============================================
+.New Address Alert Fields 
+|===
 |*Field*               |*Description*
 | Owner                |Which Org Unit owns this alert.  Set this to your system or branch.
 | Active               |Check-box that controls if the alert is active or not.  Inactive alerts are not processed.
@@ -59,7 +58,7 @@ New Address Alert Fields
 | Address Alert ID     |Displays the internal database id for alert after the alert has been saved.
 | Billing Address      |Check-box that specifies that the alert will only match a billing address if checked.
 | Mailing Address      |Check-box that specifies that the alert will only match a mailing address if checked. 
-|===============================================
+|===
 +
 . Click save once you have finished.
 
@@ -100,17 +99,29 @@ The simplest regular expression that acts as a wildcard is ".*", that matches an
 Examples
 ~~~~~~~~
 
+.Apartment address
 Match an apartment address to prompt for unit number.
 - Match All Fields = Checked
 - Alert Message = "This is a large apartment building, Please ask customer for unit number."
 - Street (1) = "1212 Evergreen Lane.*"
 - City = "mytown"
 
+.All addresses on street
 Match all addresses on a certain street.  Matches ave and avenue because of ending wildcard.
 - Match All Fields = Checked
 - Alert Message = "This street is in a different county, please setup reciprocal card."
 - Street (1) = ".* Evergreen Ave.*"
 - City = "mytown"
 
-Match state
+.Match list of cities
+Match several different cities with one alert.  Could be used if certain cities don't have reciprocal agreements.  Note the use of parentheses and the | character to separate the different options. 
+- Match All Fields = Checked
+- Alert Message = "Customer must purchase a Fee card."
+- City = "(Emeryville|San Jose|San Francisco)"
 
+Development
+~~~~~~~~~~~
+
+Links to resources with more information on how and why this feature was developed and where the various source files are located.
+
+- Launchpad ticket for the feature request and development of address alerts - https://bugs.launchpad.net/evergreen/+bug/898248  
