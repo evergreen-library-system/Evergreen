@@ -28,18 +28,19 @@ Access Control and Scoping
 
 Each address alert is tied to an Org Unit and will only be matched against staff client instances of that Org Unit and its children.
 
-When viewing the address alerts you will only see the alerts associated with the specific org unit selected in the "Context Org Unit" selection box.  You won't see alerts associated with parent org units, so the list of alerts isn't a list of all alerts that may effect your org unit, only of the ones that you can edit.
+When viewing the address alerts you will only see the alerts associated with the specific org unit selected in the *"Context Org Unit"* selection box.  You won't see alerts associated with parent org units, so the list of alerts isn't a list of all alerts that may effect your org unit, only of the ones that you can edit.
 
-The specific permission that controls access to configuring this feature is ADMIN_ADDRESS_ALERT.
+The specific permission that controls access to configuring this feature is ADMIN_ADDRESS_ALERT.  Local Administrator level users will already have this permission.  It is possible for the Local Administrator to grant this permission to other staff.
 
 Adding a new Address Alert
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 How to add an address to the alert list:
 . Log into the Evergreen Staff Client using a Local Administrator account or another account that has been granted the proper permission.
-. Click on Admin > Local Administration > Address Alerts.
+. Click on Admin -> Local Administration -> Address Alerts.
 . Click "New Address Alert."
 . A form will open with the following fields to fill out:
++
 Table 1: New Address Alert Fields
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 |==============================================
@@ -59,17 +60,28 @@ Table 1: New Address Alert Fields
 | Billing Address      |Check-box that specifies that the alert will only match a billing address if checked.
 | Mailing Address      |Check-box that specifies that the alert will only match a mailing address if checked. 
 |===============================================
-5 Click save once you have finished.
++
+. Click save once you have finished.
 
 Editing an Address Alert
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
 To make changes to an existing alert, double click on the alert in the list.  The editing form will appear, make your changes and click save or cancel when you are done.
 
+If you don't see your alerts, make sure the *"Context Org Unit"* selection box has the correct Org Unit selected.
+
 Deleting an Address Alert
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To delete an alert or many alerts, click the selection check-box for all alerts you would like to delete.  Then click the "Delete Selected" button at the top of the screen.
+
+Staff View of Address Alerts
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+When an Address Alert is triggered by a matching address the staff will see the address block highlighted with a red dashed line, along with an *"Address Alert"* block which contains the alert message.
+
+Here is an example of what staff would see.
+image::media/lsa-address_alert_staff_view.png[Address Alert Staff View] 
 
 Regular Expressions / Wildcards
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
