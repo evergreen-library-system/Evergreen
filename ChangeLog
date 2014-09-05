@@ -1,3 +1,462 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 3a76dd1b859c3cc42795147db152ed21619bf37a
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Mon Feb 24 12:09:57 2014 -0500
+
+    Bump OpenILS.pm version
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit bf55f41229389249c6479590474adb6ba972f7bf
+Author: Michele Morgan <mmorgan@noblenet.org>
+Date:   Wed Aug 27 15:25:24 2014 -0400
+
+    lp949101 Hold Columns for Item Status
+    
+    Fixes display of hold columns in Item Status Holds/Transit tab.
+    
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+13	11	Open-ILS/xul/staff_client/server/circ/alternate_copy_summary.js
+
+commit 3f85d1c7f6781c0f5cded16206d27d3868781846
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Thu May 15 11:22:16 2014 -0400
+
+    LP#1306675 TPAC maketext default handler
+    
+    Fall back to an unitialized maketext handler, which defaults to the
+    template language, when OpenILS::WWW::EGWeb::I18N->get_handle fails to
+    return a response.
+    
+    Note that why get_handle() returns undef is not yet known.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+2	1	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGWeb.pm
+
+commit 82200311fdf3a55f16da6f7e7851b60250d36540
+Author: Jason Etheridge <jason@esilibrary.com>
+Date:   Mon Oct 1 16:49:04 2012 -0400
+
+    LP#1010027: tweak patron columns in patron search interface
+    
+    specifically, remove the Mailing Address and Billing Address columns that come
+    off the actor table, since they are redundant with the Mailing Addr: Address ID
+    and Billing Addr: Address ID columns that come off the address table.
+    
+    Also, alphabetize the columns coming directly off of the user table. The columns
+    coming off the library card and address tables remain unsorted; I believe their
+    order is as listed in the fm_IDL.xml file for their corresponding fieldmapper
+    definitions.
+    
+    Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+    Signed-off-by: Jennifer Pringle <jpringle@sitka.bclibraries.ca>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+3	1	Open-ILS/xul/staff_client/server/patron/search_result.js
+
+commit d615384836858f4871375eae41ad19b3ece7469a
+Author: Jason Etheridge <jason@esilibrary.com>
+Date:   Mon Oct 1 16:46:56 2012 -0400
+
+    LP#1010027: more internal options for xul lists
+    
+    specifically, give fm_columns a sort_headers flag for alphabetizing the columns
+    returned by label; and delete_me flag for omitting a column definition entirely
+    
+    Not all xul lists are using fm_columns yet
+    
+    Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+    Signed-off-by: Jennifer Pringle <jpringle@sitka.bclibraries.ca>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+17	0	Open-ILS/xul/staff_client/chrome/content/util/list.js
+
+commit 576acf5adeddfce6d23a481f59bbe33c6dfef195
+Author: Ben Shum <bshum@biblio.org>
+Date:   Wed Aug 27 00:49:48 2014 -0400
+
+    LP#1189556: stamping upgrade script for URL_VERIFY description typo fix
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+9	0	Open-ILS/src/sql/Pg/upgrade/0891.data.url-verify-permission-typo.sql
+0	9	Open-ILS/src/sql/Pg/upgrade/XXXX.data.url-verify-permission-typo.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0891.data.url-verify-permission-typo.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.url-verify-permission-typo.sql
+
+commit b3d1d38dfa036905ca83d1bc69a5c6adba9d99d1
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Tue Jun 11 10:09:20 2013 -0400
+
+    LP#1189556: Fix typo in URL_VERIFY permission description
+    
+    The description for the URL_VERIFY permission contained a typo,
+    fixed here.
+    
+    Added an upgrade sql to update the text.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Pasi Kallinen <pasi.kallinen@pttk.fi>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+9	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.url-verify-permission-typo.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.url-verify-permission-typo.sql
+
+commit acc44e01a2e556f1db50f429780645461976d0a7
+Author: Thomas Berezansky <tsbere@mvlc.org>
+Date:   Fri May 23 15:40:23 2014 -0400
+
+    LP#1322341: Count part holds on records
+    
+    Also fix a small mistake in metarecord matching
+    
+    Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+16	5	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Holds.pm
+
+commit 5fb2b23a3934e6a009c0c88dabcd1e05e7e063af
+Author: Thomas Berezansky <tsbere@mvlc.org>
+Date:   Fri Apr 18 09:46:13 2014 -0400
+
+    LP#1277551: Limit simplified pull list to available copies
+    
+    Copies that are targeted by a hold but are not in available or reshelving
+    statuses should not show up on a pull list.
+    
+    Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+2	1	Open-ILS/examples/fm_IDL.xml
+
+commit 6297e1441f8b8f9082e7040fe122393c1b2801dd
+Author: Blake Henderson <blake@mobiusconsortium.org>
+Date:   Tue Jul 1 17:06:30 2014 -0500
+
+    LP1277556 Fast Item Add no longer opens record after copy is created
+    
+    Altered save_attempt to handle undefined and true cases for replace_on_complete
+    When fastItemAdd is not used, replace_on_complete is undefined
+    When it is used, and successful, replace_on_complete will be set to true
+    then we need it to execute result.on_complete()
+    
+    Signed-off-by: Blake Henderson <blake@mobiusconsortium.org>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+4	1	Open-ILS/xul/staff_client/server/cat/marcedit.js
+
+commit d25029ef179856810b79fd4bafc971ae27f1376d
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Tue Aug 19 14:29:56 2014 -0400
+
+    lp1182605 Add sort value for holds interfaces
+    
+    Holds interfaces were still sorting incorrectly, so let's add a sort value
+    there.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+5	1	Open-ILS/xul/staff_client/server/circ/util.js
+
+commit 0dadd7a8436bd4ad961535529c5f14c116496ffa
+Author: Victoria Lewis <vcamklewis@gmail.com>
+Date:   Wed Apr 30 15:09:07 2014 -0700
+
+    lp1182605 Abstracting out common functionality from code that sorts call numbers by label_sortkey
+    
+    Code had been added to insure that LC call numbers are sorting as they should by asset.call_number.label_sortkey.
+    Code was duplicated in the 'call_number column' in the 'columns' group and in the 'hold_columns'group.
+    
+    I abstracted the logic out of 'sort_value' and 'render' in the 'call_number' column in the 'columns' group and from
+    'render' in the 'call_number' column in the 'hold_columns' group to a utility function  called
+    'sort_call_numbers_by_label_sortkey'.
+    
+    Signed-off-by: Victoria Lewis <vcamklewis@gmail.com>
+    
+    modified:   xul/staff_client/server/circ/util.js
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+65	129	Open-ILS/xul/staff_client/server/circ/util.js
+
+commit f0f6fb38b898f41a80e3e3356091f1764a71f8c9
+Author: Kyle Tomita <tomitakyle@gmail.com>
+Date:   Mon Dec 2 15:50:17 2013 -0800
+
+    LP1182605 : LC call numbers sort improperly in tabular displays
+    
+    The issue was that the column was sorting on the label (call number)
+    and not label_sortkey.  An attribute 'sort_value' was added that used
+    label_sortkey.
+    
+    Signed-off-by: Kyle Tomita <tomitakyle@gmail.com>
+    
+    modified:   Open-ILS/xul/staff_client/server/circ/util.js
+    (cherry picked from commit 696ce9e6c36bffd1d8c884baab2f5d36687e741b)
+    
+    Signed-off-by: Victoria Lewis <vcamklewis@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+44	0	Open-ILS/xul/staff_client/server/circ/util.js
+
+commit 14ba95775bd15bc3b10fff2b0d590c2c9880f995
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Mon Jul 7 13:16:58 2014 -0400
+
+    Fix currently harmless but still confusing sigil error
+    
+    get_org_descendants() returns an array ref, not a list, so it doesn't
+    make sense to assign it to an '@orgs' variable.  Lucky for us, our
+    where-parser treats this single element list containing the ref in the
+    same manner as the proper ref itself, but at best, it is still very
+    confusing to see.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+3	3	Open-ILS/src/perlmods/lib/OpenILS/Application/Search/Serial.pm
+
+commit a8bc7be4ccb053e9ea836fba17e54651937db6d9
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu May 8 16:18:11 2014 -0400
+
+    LP#1078787 Fix serial scoping in TPAC
+    
+    If you have generated holdings, but are not using the "compressed"
+    display, your holdings show up regardless of scope.  This change
+    limits the display to only sdists with a holding_lib in your current
+    search scope.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+2	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Search/Serial.pm
+
+commit 12e420843f7c52a4d11be772c95174e80aa8cca5
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Mon Aug 25 13:44:55 2014 -0400
+
+    LP#800478: Stamping upgrade script for fund transfer fix
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+363	0	Open-ILS/src/sql/Pg/upgrade/0890.schema.acq_fund_transfer.sql
+0	361	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.acq_fund_transfer.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0890.schema.acq_fund_transfer.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.acq_fund_transfer.sql
+
+commit eb66602cd6290b5a7c17b3c238debc126ffb16b7
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Tue Feb 25 12:23:13 2014 -0500
+
+    LP#800478 repair logic error in acq fund transfer
+    
+    The source data for the amount applied to each allocation and transfer
+    (in certain circumstances) was incorrect.
+    
+    The transfer amount should not be the total amount allocated from the
+    source to the fund, but instead the amount of the funding source credit
+    in cases where we have to pull money from multiple funding source
+    credits.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Liam Whalen <liam.whalen@bc.libraries.coop>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2	2	Open-ILS/src/sql/Pg/200.schema.acq.sql
+361	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.acq_fund_transfer.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.acq_fund_transfer.sql
+
+commit 25a31736936beb3801caafbc2f4d99b104d2c870
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Oct 9 11:36:52 2013 -0400
+
+    LP#1339190: Have Evergreen save authtoken state to support IO::Multiplex mode
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+14	3	Open-ILS/src/perlmods/lib/OpenILS/SIP.pm
+
+commit 3e108117b63504447c4a6a0a213fcf95a1f744a5
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Sep 11 16:02:24 2013 -0400
+
+    LP#1339190: support disconnection for SIP multiplex purposes
+    
+    This patch adds a disconnect method to close the OpenSRF
+    connect; this method is invoked only when the Net::Server::Multiplex
+    personality is in use.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+4	0	Open-ILS/src/perlmods/lib/OpenILS/SIP.pm
+
+commit 52bee260093062a9816952cda1b7000e1fd10b18
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Tue Aug 5 11:23:20 2014 -0400
+
+    Docs: Update commands for authority importing script
+    
+    The tools used for importing authority records from the command line have
+    been modified since the original docs were written. Testing revealed these
+    changes, which are reflected in this commit.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+11	6	docs/development/support_scripts.txt
+
+commit db79a887ab6537acc77abd3800997dd62979a131
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Tue Oct 8 15:58:56 2013 -0400
+
+    LP#1348731: have SIP gateway use a login nonce
+    
+    Since multiple SIP clients may use the same credentials, avoid the
+    same-username race condition to authentication by applying a login nonce
+    value.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+3	1	Open-ILS/src/perlmods/lib/OpenILS/SIP.pm
+
+commit 07d40243492b31638d33018a0a687aa1f137ce4d
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Tue Oct 8 15:52:12 2013 -0400
+
+    LP#1348731: Optional Auth login nonce to differentiate same-username logins
+    
+    If multiple login attempts are made using the same username within a
+    very short period of time, a race condition exists where, upon
+    completion of the first login, the auth init cache data for any pending
+    logins are removed, since there can only be one instance of cached init
+    data per username.
+    
+    This adds support for allowing the caller to pass in a random string
+    which is added to the cache key as a way to differentiate between logins
+    using the same username.
+    
+    The seed is passed into auth init as an optional secondary parameter
+    and passed again (via the "nonce" argument) to auth complete to ensure
+    consistent cache keys across both interactions.
+    
+    Example:
+    
+    my $nonce = rand($$);
+    
+    my $seed = request(
+        'open-ils.auth',
+        'open-ils.auth.authenticate.init', $username, $nonce );
+    
+    my $response = request(
+        'open-ils.auth',
+        'open-ils.auth.authenticate.complete',
+        {
+            username => $username,
+            password => md5_hex($seed . md5_hex($password)),
+            type     => 'opac',
+            nonce    => $nonce
+        }
+    );
+    
+    The race condition has been observed with the SIP2 gateway when
+    multiple devices have been configured to use the same account.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+18	7	Open-ILS/src/c-apps/oils_auth.c
+
+commit c717ca7bccea45c13966be268f47c73c5bd3a889
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Mon Jul 14 14:57:38 2014 -0400
+
+    LP#1341703 Thinko in Batch Edit (hidden by older OpenSRFs)
+    
+    There's a bug on line 272 of O::A::Cat.pm where we called a non-existent
+    method named respond_complete on the invocant object. Instead, we need to
+    call that on the client object (spelled $conn in this method). Batch bib
+    edit won't work on new OpenSRF's until this is fixed.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Cat.pm
+
+commit 9c294260e05ab72f57a11e3e69363361a18d1120
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Mon Jul 14 17:18:20 2014 -0400
+
+    Forward-port 2.5.6 upgrade script
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+355	0	Open-ILS/src/sql/Pg/version-upgrade/2.5.5-2.5.6-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.5.5-2.5.6-upgrade-db.sql
+
+commit b5b53b5d450e0af2901486405ffe7d3e53d016e8
+Author: Yamil Suarez <yamil@yamil.com>
+Date:   Wed Jul 9 17:23:49 2014 -0400
+
+    Documentation: updated some SIP content
+    
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+17	15	docs/admin/sip_server.txt
+
+commit 6c1fb4a316041534bfc8014b8e0d7b9056b3a41c
+Author: Yamil Suarez <yamil@yamil.com>
+Date:   Tue Jul 8 21:13:07 2014 -0400
+
+    Documentation: added AsciiDoc version of old SIP docs from EG 1.6/2.0 docs
+    
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+643	0	docs/admin/sip_server.txt
+2	0	docs/root.txt
+ create mode 100644 docs/admin/sip_server.txt
+
+commit 2c0a7120499b476744c0fc86bf6a50a96080a8ce
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Wed Jul 9 09:07:32 2014 -0700
+
+    LP#1339767: follow-up: Thumbs.db, not Thumbs.DB
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	.gitignore
+
+commit 683a91865d63f0bdb74acf1a06af39caaf89c1eb
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Wed Jul 9 08:47:09 2014 -0700
+
+    LP#1339767: add Thumbs.DB to .gitignore
+    
+    Removes a minor annoyance for documenters who use recent
+    versions of Windows
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	0	.gitignore
