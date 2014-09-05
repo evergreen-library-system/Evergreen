@@ -358,6 +358,10 @@ for now until a better color is picked - if needed.
      display: none;
 }
 
+#mobile_acct_search_links {
+      background: [% css_colors.primary_fade %];
+}
+
 .rdetail_header {
     padding: 5px 7px 6px 0px;
     margin-left: 1em;
