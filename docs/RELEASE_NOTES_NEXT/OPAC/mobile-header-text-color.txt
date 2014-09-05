@@ -1,0 +1,9 @@
+New Color in colors.tt2
+^^^^^^^^^^^^^^^^^^^^^^^
+Upgrade Notes
++++++++++++++
+A new color called _mobile_header_text_ has been added to colors.tt2. Evergreen
+sites will need to customize this color so that it fits with their catalog's
+color scheme. The color is used to define new search links that will appear in
+ _My Account_ screens when viewed on screens smaller than 600px wide. It will
+ also be used on any future text that appears in the header area of the catalog.
