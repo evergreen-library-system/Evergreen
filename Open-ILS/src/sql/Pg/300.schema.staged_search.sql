@@ -961,6 +961,7 @@ DECLARE
     c_tests                 TEXT := '';
     b_tests                 TEXT := '';
     c_orgs                  INT[];
+    unauthorized_entry      RECORD;
 BEGIN
     IF count_up_from_zero THEN
         row_number := 0;
@@ -1009,21 +1010,44 @@ BEGIN
             RETURN;
         END IF;
 
-        -- Gather aggregate data based on the MBE row we're looking at now, authority axis
-        SELECT INTO all_arecords, result_row.sees, afields
-                ARRAY_AGG(DISTINCT abl.bib), -- bibs to check for visibility
-                STRING_AGG(DISTINCT aal.source::TEXT, $$,$$), -- authority record ids
-                ARRAY_AGG(DISTINCT map.metabib_field) -- authority-tag-linked CMF rows
+        --Is unauthorized?
+        SELECT INTO unauthorized_entry *
+        FROM metabib.browse_entry_simple_heading_map mbeshm
+        INNER JOIN authority.simple_heading ash ON ( mbeshm.simple_heading = ash.id )
+        INNER JOIN authority.control_set_authority_field acsaf ON ( acsaf.id = ash.atag AND acsaf.tag like '4__')
+        WHERE mbeshm.entry = rec.id;
 
-          FROM  metabib.browse_entry_simple_heading_map mbeshm
-                JOIN authority.simple_heading ash ON ( mbeshm.simple_heading = ash.id )
-                JOIN authority.authority_linking aal ON ( ash.record = aal.source )
-                JOIN authority.bib_linking abl ON ( aal.target = abl.authority )
-                JOIN authority.control_set_auth_field_metabib_field_map_refs map ON (
-                    ash.atag = map.authority_field
+        -- Gather aggregate data based on the MBE row we're looking at now, authority axis
+        IF (unauthorized_entry.record IS NOT NULL) THEN
+            --unauthorized term belongs to an auth linked to a bib?
+            SELECT INTO all_arecords, result_row.sees, afields
+                    ARRAY_AGG(DISTINCT abl.bib),
+                    STRING_AGG(DISTINCT abl.authority::TEXT, $$,$$),
+                    ARRAY_AGG(DISTINCT map.metabib_field)
+            FROM authority.bib_linking abl
+            INNER JOIN authority.control_set_auth_field_metabib_field_map_refs map ON (
+                    map.authority_field = unauthorized_entry.atag
                     AND map.metabib_field = ANY(fields)
-                )
-          WHERE mbeshm.entry = rec.id;
+            )
+            WHERE abl.authority = unauthorized_entry.record;
+        ELSE
+            --do usual procedure
+            SELECT INTO all_arecords, result_row.sees, afields
+                    ARRAY_AGG(DISTINCT abl.bib), -- bibs to check for visibility
+                    STRING_AGG(DISTINCT aal.source::TEXT, $$,$$), -- authority record ids
+                    ARRAY_AGG(DISTINCT map.metabib_field) -- authority-tag-linked CMF rows
+
+            FROM  metabib.browse_entry_simple_heading_map mbeshm
+                    JOIN authority.simple_heading ash ON ( mbeshm.simple_heading = ash.id )
+                    JOIN authority.authority_linking aal ON ( ash.record = aal.source )
+                    JOIN authority.bib_linking abl ON ( aal.target = abl.authority )
+                    JOIN authority.control_set_auth_field_metabib_field_map_refs map ON (
+                        ash.atag = map.authority_field
+                        AND map.metabib_field = ANY(fields)
+                    )
+            WHERE mbeshm.entry = rec.id;
+
+        END IF;
 
         -- Gather aggregate data based on the MBE row we're looking at now, bib axis
         SELECT INTO all_brecords, result_row.authorities, bfields
