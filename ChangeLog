@@ -1,3 +1,1021 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit a135cd1c0e1b10286551b294507b2351bd1c0f59
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Mon Feb 24 12:09:57 2014 -0500
+
+    Bump OpenILS.pm version
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit 9c96410715c779ac70d7c76ea9af1ddf6f96e5c7
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Thu Sep 4 15:21:06 2014 -0400
+
+    Docs: Fix filenames to match references in the docs
+    
+    These image files were not displaying in the docs because the filenames
+    and the references used different capitalization. Web URLs are
+    case-sensitive, so this commit changes the image filenames to be all
+    lowercase.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+-	-	docs/media/caed_6.JPG
+-	-	docs/media/caed_6.jpg
+-	-	docs/media/cvmpage_4.JPG
+-	-	docs/media/cvmpage_4.jpg
+-	-	docs/media/editrad_2.JPG
+-	-	docs/media/editrad_2.jpg
+-	-	docs/media/modifycde_7.JPG
+-	-	docs/media/modifycde_7.jpg
+-	-	docs/media/radcatrue_5.JPG
+-	-	docs/media/radcatrue_5.jpg
+-	-	docs/media/radcvmcacolumns_3.JPG
+-	-	docs/media/radcvmcacolumns_3.jpg
+-	-	docs/media/radmvcolumn_1.JPG
+-	-	docs/media/radmvcolumn_1.jpg
+ delete mode 100644 docs/media/caed_6.JPG
+ create mode 100644 docs/media/caed_6.jpg
+ delete mode 100644 docs/media/cvmpage_4.JPG
+ create mode 100644 docs/media/cvmpage_4.jpg
+ delete mode 100644 docs/media/editrad_2.JPG
+ create mode 100644 docs/media/editrad_2.jpg
+ delete mode 100644 docs/media/modifycde_7.JPG
+ create mode 100644 docs/media/modifycde_7.jpg
+ delete mode 100644 docs/media/radcatrue_5.JPG
+ create mode 100644 docs/media/radcatrue_5.jpg
+ delete mode 100644 docs/media/radcvmcacolumns_3.JPG
+ create mode 100644 docs/media/radcvmcacolumns_3.jpg
+ delete mode 100644 docs/media/radmvcolumn_1.JPG
+ create mode 100644 docs/media/radmvcolumn_1.jpg
+
+commit ae25d0794464f43b6bcd2e4ad12bf2eef04802bb
+Author: Josh Stompro <github@stompro.org>
+Date:   Fri Aug 29 13:43:22 2014 -0400
+
+    Docs: added Address Alert documentation for local admin menu feature
+    
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+32	0	docs/admin/lsa-address_alert.txt
+2	0	docs/root.txt
+ create mode 100644 docs/admin/lsa-address_alert.txt
+
+commit 811a85da9571288b87bb42a3d969a0b8af6410cc
+Author: Michele Morgan <mmorgan@noblenet.org>
+Date:   Wed Aug 27 15:25:24 2014 -0400
+
+    lp949101 Hold Columns for Item Status
+    
+    Fixes display of hold columns in Item Status Holds/Transit tab.
+    
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+13	11	Open-ILS/xul/staff_client/server/circ/alternate_copy_summary.js
+
+commit 2c5a3ed9a677b01216213585fa3a387c00898eff
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Thu May 15 11:22:16 2014 -0400
+
+    LP#1306675 TPAC maketext default handler
+    
+    Fall back to an unitialized maketext handler, which defaults to the
+    template language, when OpenILS::WWW::EGWeb::I18N->get_handle fails to
+    return a response.
+    
+    Note that why get_handle() returns undef is not yet known.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+2	1	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGWeb.pm
+
+commit 012fa80fd85a81a9eb731660b222b7bb5d77974c
+Author: Jason Etheridge <jason@esilibrary.com>
+Date:   Mon Oct 1 16:49:04 2012 -0400
+
+    LP#1010027: tweak patron columns in patron search interface
+    
+    specifically, remove the Mailing Address and Billing Address columns that come
+    off the actor table, since they are redundant with the Mailing Addr: Address ID
+    and Billing Addr: Address ID columns that come off the address table.
+    
+    Also, alphabetize the columns coming directly off of the user table. The columns
+    coming off the library card and address tables remain unsorted; I believe their
+    order is as listed in the fm_IDL.xml file for their corresponding fieldmapper
+    definitions.
+    
+    Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+    Signed-off-by: Jennifer Pringle <jpringle@sitka.bclibraries.ca>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+3	1	Open-ILS/xul/staff_client/server/patron/search_result.js
+
+commit add79b1df07042b71af05b41a97a3886a144ab59
+Author: Jason Etheridge <jason@esilibrary.com>
+Date:   Mon Oct 1 16:46:56 2012 -0400
+
+    LP#1010027: more internal options for xul lists
+    
+    specifically, give fm_columns a sort_headers flag for alphabetizing the columns
+    returned by label; and delete_me flag for omitting a column definition entirely
+    
+    Not all xul lists are using fm_columns yet
+    
+    Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+    Signed-off-by: Jennifer Pringle <jpringle@sitka.bclibraries.ca>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+17	0	Open-ILS/xul/staff_client/chrome/content/util/list.js
+
+commit c938e932e37668b5d6dce8bfee73be9875bbdb2b
+Author: Ben Shum <bshum@biblio.org>
+Date:   Wed Aug 27 00:49:48 2014 -0400
+
+    LP#1189556: stamping upgrade script for URL_VERIFY description typo fix
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+9	0	Open-ILS/src/sql/Pg/upgrade/0891.data.url-verify-permission-typo.sql
+0	9	Open-ILS/src/sql/Pg/upgrade/XXXX.data.url-verify-permission-typo.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0891.data.url-verify-permission-typo.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.url-verify-permission-typo.sql
+
+commit ef81e67e7b1ee0c9d547521aa7b9d87945d4bbc0
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Tue Jun 11 10:09:20 2013 -0400
+
+    LP#1189556: Fix typo in URL_VERIFY permission description
+    
+    The description for the URL_VERIFY permission contained a typo,
+    fixed here.
+    
+    Added an upgrade sql to update the text.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Pasi Kallinen <pasi.kallinen@pttk.fi>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+9	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.url-verify-permission-typo.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.url-verify-permission-typo.sql
+
+commit ab995a481abaf6a00b79c230d5a31998dfd3dca7
+Author: Thomas Berezansky <tsbere@mvlc.org>
+Date:   Fri May 23 15:40:23 2014 -0400
+
+    LP#1322341: Count part holds on records
+    
+    Also fix a small mistake in metarecord matching
+    
+    Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+16	5	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Holds.pm
+
+commit 6f859eb34b33d3e1457fc80e2e0691c64c8563b7
+Author: Thomas Berezansky <tsbere@mvlc.org>
+Date:   Fri Apr 18 09:46:13 2014 -0400
+
+    LP#1277551: Limit simplified pull list to available copies
+    
+    Copies that are targeted by a hold but are not in available or reshelving
+    statuses should not show up on a pull list.
+    
+    Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+2	1	Open-ILS/examples/fm_IDL.xml
+
+commit 753da91461d922ae217a042bd418d5b4da277858
+Author: Ben Shum <bshum@biblio.org>
+Date:   Wed Apr 30 02:02:49 2014 -0400
+
+    LP#1314370: Enable dojo all the time in the catalog
+    
+    Because we rely on the dojo framework for the shelving location filter in the
+    advanced search, we should choose to use dojo everywhere and not just when
+    autosuggest, google books, or novelist are enabled.
+    
+    This is a quick change to toggle the flag for want_dojo to be set all the time.
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+    Signed-off-by: Liam Whalen <liam.whalen@bc.libraries.coop>
+
+3	4	Open-ILS/src/templates/opac/parts/header.tt2
+
+commit f354a0dad47f71d7450d90d8a69da883a33b7fce
+Author: Blake Henderson <blake@mobiusconsortium.org>
+Date:   Tue Jul 1 17:06:30 2014 -0500
+
+    LP1277556 Fast Item Add no longer opens record after copy is created
+    
+    Altered save_attempt to handle undefined and true cases for replace_on_complete
+    When fastItemAdd is not used, replace_on_complete is undefined
+    When it is used, and successful, replace_on_complete will be set to true
+    then we need it to execute result.on_complete()
+    
+    Signed-off-by: Blake Henderson <blake@mobiusconsortium.org>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+4	1	Open-ILS/xul/staff_client/server/cat/marcedit.js
+
+commit 15ef5e43ccb925593cf37974800d48419568ca30
+Author: Liam Whalen <liam.whalen@bc.libraries.coop>
+Date:   Sat Jun 28 15:37:28 2014 -0700
+
+    LP1084269, LP1050043 Expert Search Fixes
+    
+    Sorting Expert Search corrected
+    
+    LP1050043 was issued because attempting to sort the MARC expert search
+    results, in the staff client, caused the staff client to return to the
+    basic search page rather than sort the results.
+    
+    To fix the sorting I had to modify two perl files.
+    
+    metabib.pm had to be changed in a number of ways.
+    
+    1. The way the sort works currently assumes the user is doing a full
+    text search.  So, it passes in the values of titlesort and authorsort as
+    the sort variable in the URL.  However, in the expert search, it is
+    looking for the values 'title' and 'author'.  This resulted in the title
+    sort and author sort never being executed and returning the relevance
+    sort instead. I modified the search to use a regex instead of eq.
+    
+    2. If a record has no value associated with it e.g. no 260 c for
+    pubdate, no 245 $a for title, no 1xx $a for author, then the SQL is
+    supposed to replace those values with either 'AAAA' or 'zzzz' depending
+    on the order of the sort.  This should cause records without the
+    relevant sort values to be pushed to the bottom of the sort results.
+    
+    But, the PgSQL function COALESCE, which is supposed to do the
+    replacing, does not do anything if no rows are returned for a record's
+    relevant value.  To work around this, I surrounded the relevant values
+    with the MAX() function call, which returns NULL if no row is returned.
+    
+    Because author sort works on any 1xx value, it sorts those values in
+    numerical order when there is more than one 1xx in a record.  This
+    requires the use of an ORDER BY statement, which seems to nullify
+    the effect of MAX().  So, I had to move the MAX() into a second SELECT
+    statement in the case of author sort.
+    
+    3. I added the variables number_default_sort and string_default_sort
+    to the metabib code because the current code hard codes values of
+    '9999' and 'zzzzzzzz' into the sort.
+    
+    Search.pm had to be changed to pass the sort values from the TPAC
+    into the relevant sort subroutines.  This was done with the addition of
+    an $arghash variable that checks the cgi parameters for the sort
+    variable.
+    
+    As well, Expert search puts the tag and _special params in the
+    search form.  This causes all other searches to perform Expert searches
+    afterwords.  To fix this, Search.pm is modified to look for an empty
+    query value before it conducts an Expert search.  If it is empty and
+    the Expert search variables are present, then the Expert search is
+    performed.  Otherwise, a normal search is done.
+    
+    Finally, to fix the problem reported by LP1050043, I had to modify
+    searchbar.tt2.  Currently, searchbar.tt2 does not have the values from
+    the Expert search entered into the <form> where the sort functionality
+    is located.  This means, when a sort option is chosen, the TPAC no
+    longer knows which values were used for the Expert search.
+    
+    This is not obvious at first because after choosing to sort, the
+    user is returned to a page where the URL has the Expert search values
+    in it.  This happens because the sort is submitting a form without a
+    query value, so the TPAC redirects the user to the referring page,
+    which is the initial Expert search.
+    
+    To fix this, I added the Expert search values as hidden variables
+    into the <form> where the sort functionality is located.  I also
+    removed the use of the "_adv" hidden variable from the <form> when
+    not in the advanced search.
+    
+    [LP1094269] Retrive past 100 records in Expert Search
+    
+    Currently, when paging through the results of the Expert search, the
+    system will not return more than 100 records.  Going past page 10
+    causes a no results screen.
+    
+    This is due to the offset and limit values not being passed into the
+    argument hash used to create the SQL for the search.  Once the SQL
+    returns, it returns record ids within the range of the offset and
+    the limit. So, if the offset is 100 and the limit is 10, the record
+    ids for search results 100 to 109 are returned.
+    
+    But, because offset and limit are not being passed into the arghash,
+    they default to 0 and 100 respectively.  This means the first 100
+    records are always returned regardless of where in the search pages
+    you are viewing.  These 100 results were then pruned to the relevant
+    10 results in Biblio.pm.  However, if the offset starts beyond 100
+    then no results are returned because the results passed 100 are not
+    returned by metabib.pm.
+    
+    This commit passes the offset and limit as arguments in the search
+    hash.  It also removes offset and limit as parameters of the
+    search.biblio.marc call. Because offset and limit are needed in the
+    arghash to limit the number of records returned, it is better to
+    pass them only via the arghash to ensure that no more than the
+    necessary number of records are returned.
+    
+    Offset and limit could be kept as parameters, but it would require
+    modifying metabib as well to look for those parameters, so I think
+    forcing the Expert search to pass them as argument parameters is the
+    better option.
+    
+    As well, this commit removes the pruning in Biblio.pm that was based
+    on the offset and limit because that is handled in metabib.pm now
+    that offset and limit are being supplied in the argument hash.
+    
+    I have checked the source code and the marc_search function in
+    Biblio.pm is only called via the Expert search in
+    WWW/EGCatLoader/Search.pm, so modifying Biblio.pm in this manner
+    will only affect the Expert search and nothing else.
+    
+    Signed-off-by: Liam Whalen <liam.whalen@bc.libraries.coop>
+    Signed-off-by: Sarah Childs <sarahc@zionsvillelibrary.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+6	7	Open-ILS/src/perlmods/lib/OpenILS/Application/Search/Biblio.pm
+20	11	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Publisher/metabib.pm
+21	3	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Search.pm
+1	1	Open-ILS/src/templates/opac/parts/result/table.tt2
+11	0	Open-ILS/src/templates/opac/parts/searchbar.tt2
+
+commit 826e03402ff4c2eba1fb0aa3872f0dd9cb3d18cd
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Tue Aug 19 14:29:56 2014 -0400
+
+    lp1182605 Add sort value for holds interfaces
+    
+    Holds interfaces were still sorting incorrectly, so let's add a sort value
+    there.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+5	1	Open-ILS/xul/staff_client/server/circ/util.js
+
+commit fd6d16f96bf9f19f8b7a0dd34718b2ab5fa847f2
+Author: Victoria Lewis <vcamklewis@gmail.com>
+Date:   Wed Apr 30 15:09:07 2014 -0700
+
+    lp1182605 Abstracting out common functionality from code that sorts call numbers by label_sortkey
+    
+    Code had been added to insure that LC call numbers are sorting as they should by asset.call_number.label_sortkey.
+    Code was duplicated in the 'call_number column' in the 'columns' group and in the 'hold_columns'group.
+    
+    I abstracted the logic out of 'sort_value' and 'render' in the 'call_number' column in the 'columns' group and from
+    'render' in the 'call_number' column in the 'hold_columns' group to a utility function  called
+    'sort_call_numbers_by_label_sortkey'.
+    
+    Signed-off-by: Victoria Lewis <vcamklewis@gmail.com>
+    
+    modified:   xul/staff_client/server/circ/util.js
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+65	129	Open-ILS/xul/staff_client/server/circ/util.js
+
+commit 8e733c82e8ba13f47ec86d04d8e5e7802ea11d7b
+Author: Kyle Tomita <tomitakyle@gmail.com>
+Date:   Mon Dec 2 15:50:17 2013 -0800
+
+    LP1182605 : LC call numbers sort improperly in tabular displays
+    
+    The issue was that the column was sorting on the label (call number)
+    and not label_sortkey.  An attribute 'sort_value' was added that used
+    label_sortkey.
+    
+    Signed-off-by: Kyle Tomita <tomitakyle@gmail.com>
+    
+    modified:   Open-ILS/xul/staff_client/server/circ/util.js
+    (cherry picked from commit 696ce9e6c36bffd1d8c884baab2f5d36687e741b)
+    
+    Signed-off-by: Victoria Lewis <vcamklewis@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+44	0	Open-ILS/xul/staff_client/server/circ/util.js
+
+commit da1a8a21af791bbef15516ece2daf3dca2848d3c
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Mon Jul 7 13:16:58 2014 -0400
+
+    Fix currently harmless but still confusing sigil error
+    
+    get_org_descendants() returns an array ref, not a list, so it doesn't
+    make sense to assign it to an '@orgs' variable.  Lucky for us, our
+    where-parser treats this single element list containing the ref in the
+    same manner as the proper ref itself, but at best, it is still very
+    confusing to see.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+3	3	Open-ILS/src/perlmods/lib/OpenILS/Application/Search/Serial.pm
+
+commit 32baf3a92321a7eaa00a37556293f013e2e19300
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu May 8 16:18:11 2014 -0400
+
+    LP#1078787 Fix serial scoping in TPAC
+    
+    If you have generated holdings, but are not using the "compressed"
+    display, your holdings show up regardless of scope.  This change
+    limits the display to only sdists with a holding_lib in your current
+    search scope.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+2	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Search/Serial.pm
+
+commit 49f6c103a4dc32fa875bf472288dad71035857d7
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Mon Aug 25 13:44:55 2014 -0400
+
+    LP#800478: Stamping upgrade script for fund transfer fix
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+363	0	Open-ILS/src/sql/Pg/upgrade/0890.schema.acq_fund_transfer.sql
+0	361	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.acq_fund_transfer.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0890.schema.acq_fund_transfer.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.acq_fund_transfer.sql
+
+commit b3364839decd5b6177dbea2663d742cc2dc4b178
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Tue Feb 25 12:23:13 2014 -0500
+
+    LP#800478 repair logic error in acq fund transfer
+    
+    The source data for the amount applied to each allocation and transfer
+    (in certain circumstances) was incorrect.
+    
+    The transfer amount should not be the total amount allocated from the
+    source to the fund, but instead the amount of the funding source credit
+    in cases where we have to pull money from multiple funding source
+    credits.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Liam Whalen <liam.whalen@bc.libraries.coop>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2	2	Open-ILS/src/sql/Pg/200.schema.acq.sql
+361	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.acq_fund_transfer.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.acq_fund_transfer.sql
+
+commit 598a58a6dbed6ca5c442c90460eaac0e5cbc108d
+Author: Yamil Suarez <yamil@yamil.com>
+Date:   Tue Aug 19 17:13:08 2014 -0400
+
+    Docs: Removed use of deprecated file suffix for eg_db_config in install docs
+    
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+1	1	docs/installation/server_installation.txt
+
+commit 266848f0e506d12b22defd2928129dc1f4f9fc13
+Author: Yamil Suarez <yamil@yamil.com>
+Date:   Thu Aug 7 17:51:22 2014 -0400
+
+    Docs: various AsciiDoc formatting fixes for docs
+    
+    Fixed the 'bad first character' error, the bad apostrophe error. Removed various UTF-8 chars.
+    Fixed some numbered list formatting, to take out redundant manual numerals…
+    
+    for example:
+    
+    . 1 item
+    . 2 item
+    . 3 item
+    
+    became:
+    
+    . item
+    . item
+    . item
+    
+    also added "+" to wrap around breaks in numbered lists
+    
+    for example:
+    
+    . Right-click on the value control for the fixed field that needs to be edited.
+    
+     image::media/ffrc1.jpg[]
+    
+     . Select the appropriate value for the fixed field from the menu options.
+    
+     became:
+    
+      . Right-click on the value control for the fixed field that needs to be edited.
+      +
+      image::media/ffrc1.jpg[]
+      +
+      . Select the appropriate value for the fixed field from the menu options.
+    
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+18	18	docs/admin/MARC_RAD_MVF_CRA.txt
+16	13	docs/cataloging/MARC_Fixed_Field.txt
+27	25	docs/cataloging/physical_char_wizard.txt
+1	1	docs/opac/tpac_meta_record_holds.txt
+10	10	docs/serials/D-subscription-ASCV.txt
+
+commit 06411d45ddf472c1cfc10dae82a08c6e82ba24d8
+Author: Yamil Suarez <yamil@yamil.com>
+Date:   Thu Aug 7 13:36:20 2014 -0400
+
+    Docs: Improved AsciiDoc formating for tpac_meta_record_holds.txt
+    
+    Replaced curly apostrophe with a straight one. Removed manual numbered list.
+    
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+6	6	docs/opac/tpac_meta_record_holds.txt
+
+commit d56e15069722e6a6c47ad88d12313fad14b44db7
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Thu Aug 7 13:40:03 2014 -0400
+
+    OpenSRF Services Update
+    
+    Updating list of Evergreen-specific OpenSRF services as of 2.6. Many
+    thanks to Galen Charlton for providing me with an updated list.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+19	8	docs/development/intro_opensrf.txt
+
+commit 1a52aa90376f5e88179dfe4df65ad47c6d371e50
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Oct 9 11:36:52 2013 -0400
+
+    LP#1339190: Have Evergreen save authtoken state to support IO::Multiplex mode
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+14	3	Open-ILS/src/perlmods/lib/OpenILS/SIP.pm
+
+commit fd7a88620a812aac96e900725a26ba96b98f0203
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Sep 11 16:02:24 2013 -0400
+
+    LP#1339190: support disconnection for SIP multiplex purposes
+    
+    This patch adds a disconnect method to close the OpenSRF
+    connect; this method is invoked only when the Net::Server::Multiplex
+    personality is in use.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+4	0	Open-ILS/src/perlmods/lib/OpenILS/SIP.pm
+
+commit 5b391779a8bf412218aaf739df44f602100d45e0
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Wed Jul 9 16:34:26 2014 -0400
+
+    LP#1302207 - Attempt to validate ISBNs in AddedContent.pm.
+    
+    When getting ISBNs from the database, they often contain extra stuff
+    after the ISBN that sometimes causes problems for Business::ISBN.
+    
+    This commit attempts to resolve some of that by looking only for the
+    part of the ISBN data that resembles an ISBN and using just that part.
+    If the ISBN data doesn't look like an ISBN, then it is discarded.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+13	4	Open-ILS/src/perlmods/lib/OpenILS/WWW/AddedContent.pm
+
+commit 7ee76a847de48469da23a381b4f8d1aedbdbcc5e
+Author: Thomas Berezansky <tsbere@mvlc.org>
+Date:   Fri Apr 11 16:05:07 2014 -0400
+
+    LP#1302207 - Order AddedContent identifiers
+    
+    When multiple exist coming out in a consistent order is preferred.
+    
+    In this case, use ID order.
+    
+    Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+4	1	Open-ILS/src/perlmods/lib/OpenILS/WWW/AddedContent.pm
+
+commit 91c8bfc19f18aac4531b10d1cd87458e00b7dcec
+Author: Erica Rohlfs <erohlfs@esilibrary.com>
+Date:   Wed Aug 6 16:22:24 2014 -0400
+
+    Docs: How to create routing list and shows address on routing list
+    
+    Signed-off-by: Erica Rohlfs <erohlfs@esilibrary.com>
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+-	-	docs/media/Added_User_to_Routing_Slip.JPG
+-	-	docs/media/Address_on_Routing_Slip.JPG
+25	0	docs/serials/D-subscription-ASCV.txt
+ create mode 100644 docs/media/Added_User_to_Routing_Slip.JPG
+ create mode 100644 docs/media/Address_on_Routing_Slip.JPG
+
+commit 4b02f5adc5c482b2dd156a6b72166a8119e71d0d
+Author: Erica Rohlfs <erohlfs@esilibrary.com>
+Date:   Wed Aug 6 16:21:16 2014 -0400
+
+    Docs: How to use MARC Fixed Field Editor
+    
+    Signed-off-by: Erica Rohlfs <erohlfs@esilibrary.com>
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+40	0	docs/cataloging/MARC_Fixed_Field.txt
+-	-	docs/media/ffrc1.JPG
+-	-	docs/media/ffrc2.JPG
+-	-	docs/media/ffrc3.JPG
+2	0	docs/root.txt
+ create mode 100644 docs/cataloging/MARC_Fixed_Field.txt
+ create mode 100644 docs/media/ffrc1.JPG
+ create mode 100644 docs/media/ffrc2.JPG
+ create mode 100644 docs/media/ffrc3.JPG
+
+commit 12c899718ebcbf7953c85d7337019439474dd3d9
+Author: Erica Rohlfs <erohlfs@esilibrary.com>
+Date:   Wed Aug 6 16:20:42 2014 -0400
+
+    Docs: How to perform metarecord search and hold
+    
+    Signed-off-by: Erica Rohlfs <erohlfs@esilibrary.com>
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+-	-	docs/media/advholdoption_6.JPG
+-	-	docs/media/advsrchpg_1.JPG
+-	-	docs/media/mrholdgf_9.JPG
+-	-	docs/media/placehold_5.JPG
+-	-	docs/media/recorddetailpg_8.JPG
+-	-	docs/media/srchresultpg2_3.JPG
+-	-	docs/media/srchresultpg3_4.JPG
+-	-	docs/media/srchresultpg4_7.JPG
+-	-	docs/media/srchresultpg_2.JPG
+68	0	docs/opac/tpac_meta_record_holds.txt
+2	0	docs/root.txt
+ create mode 100644 docs/media/advholdoption_6.JPG
+ create mode 100644 docs/media/advsrchpg_1.JPG
+ create mode 100644 docs/media/mrholdgf_9.JPG
+ create mode 100644 docs/media/placehold_5.JPG
+ create mode 100644 docs/media/recorddetailpg_8.JPG
+ create mode 100644 docs/media/srchresultpg2_3.JPG
+ create mode 100644 docs/media/srchresultpg3_4.JPG
+ create mode 100644 docs/media/srchresultpg4_7.JPG
+ create mode 100644 docs/media/srchresultpg_2.JPG
+ create mode 100644 docs/opac/tpac_meta_record_holds.txt
+
+commit fde025ab9d6ae534c4ad233b4dbd3ab7183d984e
+Author: Erica Rohlfs <erohlfs@esilibrary.com>
+Date:   Wed Aug 6 16:19:25 2014 -0400
+
+    Docs: MARC Record Attribute Definitions, Multi Valued Fields, Composite Record Attributes
+    
+    Defines RADS, MVF, and CRA and explains how to modify
+    
+    Signed-off-by: Erica Rohlfs <erohlfs@esilibrary.com>
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+80	0	docs/admin/MARC_RAD_MVF_CRA.txt
+-	-	docs/media/caed_6.JPG
+-	-	docs/media/cvmpage_4.JPG
+-	-	docs/media/editrad_2.JPG
+-	-	docs/media/modifycde_7.JPG
+-	-	docs/media/radcatrue_5.JPG
+-	-	docs/media/radcvmcacolumns_3.JPG
+-	-	docs/media/radmvcolumn_1.JPG
+2	0	docs/root.txt
+ create mode 100644 docs/admin/MARC_RAD_MVF_CRA.txt
+ create mode 100644 docs/media/caed_6.JPG
+ create mode 100644 docs/media/cvmpage_4.JPG
+ create mode 100644 docs/media/editrad_2.JPG
+ create mode 100644 docs/media/modifycde_7.JPG
+ create mode 100644 docs/media/radcatrue_5.JPG
+ create mode 100644 docs/media/radcvmcacolumns_3.JPG
+ create mode 100644 docs/media/radmvcolumn_1.JPG
+
+commit edd10251c393723abd906d994a75af3af87b8aa8
+Author: Erica Rohlfs <erohlfs@esilibrary.com>
+Date:   Wed Aug 6 16:17:11 2014 -0400
+
+    Docs: How to use the MARC 007 Physical Characteristics Wizard
+    
+    Signed-off-by: Erica Rohlfs <erohlfs@esilibrary.com>
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+84	0	docs/cataloging/physical_char_wizard.txt
+-	-	docs/media/pcw1.JPG
+-	-	docs/media/pcw10.JPG
+-	-	docs/media/pcw11.JPG
+-	-	docs/media/pcw2.JPG
+-	-	docs/media/pcw3.JPG
+-	-	docs/media/pcw4.JPG
+-	-	docs/media/pcw5.jpg
+-	-	docs/media/pcw6.JPG
+-	-	docs/media/pcw7.JPG
+-	-	docs/media/pcw8.JPG
+-	-	docs/media/pcw9.JPG
+2	0	docs/root.txt
+ create mode 100644 docs/cataloging/physical_char_wizard.txt
+ create mode 100644 docs/media/pcw1.JPG
+ create mode 100644 docs/media/pcw10.JPG
+ create mode 100644 docs/media/pcw11.JPG
+ create mode 100644 docs/media/pcw2.JPG
+ create mode 100644 docs/media/pcw3.JPG
+ create mode 100644 docs/media/pcw4.JPG
+ create mode 100644 docs/media/pcw5.jpg
+ create mode 100644 docs/media/pcw6.JPG
+ create mode 100644 docs/media/pcw7.JPG
+ create mode 100644 docs/media/pcw8.JPG
+ create mode 100644 docs/media/pcw9.JPG
+
+commit 9ac242793371058e5ba6256d38b557785fc51737
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Wed Aug 6 08:47:40 2014 -0400
+
+    Docs: Fix patron registration screenshot
+    
+    The previously committed screenshot contains site-specific information
+    which is not broadly beneficial. This commit replaces it with a more
+    generic screenshot.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+-	-	docs/media/circulation_patron_records-4.png
+
+commit f0328b00f32602d8dfed160c19dd2ba1d01cb770
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Tue Aug 5 11:23:20 2014 -0400
+
+    Docs: Update commands for authority importing script
+    
+    The tools used for importing authority records from the command line have
+    been modified since the original docs were written. Testing revealed these
+    changes, which are reflected in this commit.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+11	6	docs/development/support_scripts.txt
+
+commit f5f330e684fa00a8bd1449c79d97ec2b74bd48fb
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Tue Aug 5 09:29:40 2014 -0400
+
+    Docs 2.6: Update screens for register/edit patron
+    
+    Update screenshots and wording to reflect new "Update Expire Date" button.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+12	3	docs/circulation/circulation_patron_records.txt
+-	-	docs/media/circulation_patron_records-4.png
+-	-	docs/media/circulation_patron_records-9.png
+
+commit 1ffb7d0848390c10e31ca34b52101c27963186fb
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Wed Aug 6 09:18:37 2014 -0400
+
+    Fix 030.schema.metabib.sql breakage.
+    
+    The fix for LP 1322285 introduced a change to 030.schema.metabib.sql
+    that was not only not needed, but breaks building a fresh schema.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+
+1	1	Open-ILS/src/sql/Pg/030.schema.metabib.sql
+
+commit a33d13f18073423a9735f48fc72058211cf4483b
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Mon Aug 4 13:05:10 2014 -0400
+
+    Stamping upgrade script for LP 1322285.
+    
+    Conflicts:
+    	Open-ILS/src/sql/Pg/002.schema.config.sql
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+120	0	Open-ILS/src/sql/Pg/upgrade/0887.function.no-ff-defaults.sql
+0	118	Open-ILS/src/sql/Pg/upgrade/XXXX.function.no-ff-defaults.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0887.function.no-ff-defaults.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.function.no-ff-defaults.sql
+
+commit 54a97acdb4edbfd613c6a00ca6bd222f9791f689
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Mon Aug 4 12:57:52 2014 -0400
+
+    Add release notes for the no fixed field default upgrade.
+    
+    A reingest is recommened after running the database script.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+17	0	docs/RELEASE_NOTES_NEXT/Cataloging/no-fixed-field-defaults-for-ingest.txt
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Cataloging/no-fixed-field-defaults-for-ingest.txt
+
+commit f06d279c1e41865388f2cdebab8af3122a40e277
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Fri Jun 20 09:29:56 2014 -0400
+
+    LP#1322285: Exclude default values for fixed fields when ingesting
+    
+    Default values for fixed fields that can exist in either 008 or 006
+    will cause search to be over-broad.  So, we avoid including those now.
+    
+    I also took the time to move the baseline schema around a bit in order
+    to keep related code in more appropriate files and avoid continuously
+    redefining functions.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+80	29	Open-ILS/src/sql/Pg/012.schema.vandelay.sql
+4	139	Open-ILS/src/sql/Pg/030.schema.metabib.sql
+118	0	Open-ILS/src/sql/Pg/upgrade/XXXX.function.no-ff-defaults.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.function.no-ff-defaults.sql
+
+commit 70a94a9bbb3f7f36276eb0d21f9e5facfae86dea
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Tue Oct 8 15:58:56 2013 -0400
+
+    LP#1348731: have SIP gateway use a login nonce
+    
+    Since multiple SIP clients may use the same credentials, avoid the
+    same-username race condition to authentication by applying a login nonce
+    value.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+3	1	Open-ILS/src/perlmods/lib/OpenILS/SIP.pm
+
+commit 9323c534730c4dfb2bfc752d914cbc0453a1f154
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Tue Oct 8 15:52:12 2013 -0400
+
+    LP#1348731: Optional Auth login nonce to differentiate same-username logins
+    
+    If multiple login attempts are made using the same username within a
+    very short period of time, a race condition exists where, upon
+    completion of the first login, the auth init cache data for any pending
+    logins are removed, since there can only be one instance of cached init
+    data per username.
+    
+    This adds support for allowing the caller to pass in a random string
+    which is added to the cache key as a way to differentiate between logins
+    using the same username.
+    
+    The seed is passed into auth init as an optional secondary parameter
+    and passed again (via the "nonce" argument) to auth complete to ensure
+    consistent cache keys across both interactions.
+    
+    Example:
+    
+    my $nonce = rand($$);
+    
+    my $seed = request(
+        'open-ils.auth',
+        'open-ils.auth.authenticate.init', $username, $nonce );
+    
+    my $response = request(
+        'open-ils.auth',
+        'open-ils.auth.authenticate.complete',
+        {
+            username => $username,
+            password => md5_hex($seed . md5_hex($password)),
+            type     => 'opac',
+            nonce    => $nonce
+        }
+    );
+    
+    The race condition has been observed with the SIP2 gateway when
+    multiple devices have been configured to use the same account.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+18	7	Open-ILS/src/c-apps/oils_auth.c
+
+commit 90a9320784ae33cafe1e93fd2d14f14e36f01cd1
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Mon Jul 14 14:57:38 2014 -0400
+
+    LP#1341703 Thinko in Batch Edit (hidden by older OpenSRFs)
+    
+    There's a bug on line 272 of O::A::Cat.pm where we called a non-existent
+    method named respond_complete on the invocant object. Instead, we need to
+    call that on the client object (spelled $conn in this method). Batch bib
+    edit won't work on new OpenSRF's until this is fixed.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Cat.pm
+
+commit c10be23574c84c49359d0adbeeee9c86554accb6
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Mon Jul 14 17:21:48 2014 -0400
+
+    Forward-port 2.6.2 upgrade script
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+380	0	Open-ILS/src/sql/Pg/version-upgrade/2.6.1-2.6.2-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.6.1-2.6.2-upgrade-db.sql
+
+commit 6bddede2c9e64ed480a81a10a333a60498a4c997
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Mon Jul 14 17:18:20 2014 -0400
+
+    Forward-port 2.5.6 upgrade script
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+355	0	Open-ILS/src/sql/Pg/version-upgrade/2.5.5-2.5.6-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.5.5-2.5.6-upgrade-db.sql
+
+commit 3fbb8c24f498440a34d47809b797a02397684ddb
+Author: Yamil Suarez <yamil@yamil.com>
+Date:   Wed Jul 9 17:23:49 2014 -0400
+
+    Documentation: updated some SIP content
+    
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+17	15	docs/admin/sip_server.txt
+
+commit dffe1463d1b1fb89a38338ab2bb2c6a07e7b75ef
+Author: Yamil Suarez <yamil@yamil.com>
+Date:   Tue Jul 8 21:13:07 2014 -0400
+
+    Documentation: added AsciiDoc version of old SIP docs from EG 1.6/2.0 docs
+    
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+643	0	docs/admin/sip_server.txt
+2	0	docs/root.txt
+ create mode 100644 docs/admin/sip_server.txt
+
+commit 118473337f45d5465f56ffc53af742fae4d9e3be
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Wed Jul 9 15:40:00 2014 -0400
+
+    Documentation: Upgrade instructions examples
+    
+    This commit adds a note (with examples) about upgrading the database schema
+    across major versions. It also reformats a long line into multiple lines,
+    changes a NOTE to a TIP, makes a small correction, and replaces a repetitive
+    command with a short explanation.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+37	5	docs/installation/server_upgrade.txt
+
+commit 961a62cada6c7f872754744381f49302922957f6
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Wed Jul 9 09:07:32 2014 -0700
+
+    LP#1339767: follow-up: Thumbs.db, not Thumbs.DB
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	.gitignore
+
+commit 4fc3407d50d821fb495f9e9f0c2fc837af1e36bc
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Wed Jul 9 08:47:09 2014 -0700
+
+    LP#1339767: add Thumbs.DB to .gitignore
+    
+    Removes a minor annoyance for documenters who use recent
+    versions of Windows
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	0	.gitignore
