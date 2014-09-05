@@ -6,7 +6,7 @@ Monograph Parts
 Four new permissions are used by this functionality: CREATE_MONOGRAPH_PART, UPDATE_MONOGRAPH_PART, DELETE_MONOGRAPH_PART and MAP_MONOGRAPH_PART.  These permissions should be assigned at the consortial level to those groups or users that will make use of the features described below.
 
 
-Add a monograph part to an existing record
+Add a Monograph Part to an Existing Record
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To add a monograph part to an existing record in the catalog:  
@@ -54,3 +54,24 @@ image::media/monograph_parts4.jpg[monograph_parts4]
 
 image::media/monograph_parts5.jpg[monograph_parts5]
 
+Monograph Part Merging
+~~~~~~~~~~~~~~~~~~~~~~
+
+The monograph part list for a bibliographic record may, over time, diverge from
+the proscribed format, resulting in multiple labels for what are essentially the
+same item.  For instance, ``++Vol.{nbsp}1++'' may have variants like
+``++V.1++'', ``++Vol{nbsp}1++'', or ``++{nbsp}Vol.{nbsp}1++'' (leading space).
+Merging parts will allow cataloging staff to collapse the variants into one
+value.
+
+In the Monograph Parts display:
+
+. Click the checkbox for all items you wish to merge including the one you wish
+to prevail when done.
+. Click on the ``Merge Selected'' button. A pop-up window will list the selected
+items in a monospaced font, with blanks represented by a middle-dot character
+for more visibility.
+. Click on the item you wish to prevail.
+
+The undesired part labels will be deleted, and any copies that previously used
+those labels will now use the prevailing label

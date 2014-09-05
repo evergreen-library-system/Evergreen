@@ -38,14 +38,14 @@ Acquisitions speed improvements
 Improvements to the rendering of the acquisitions fund selector will improve
 the speed at which the purchase order, copy grid, PO/invoice charge creator,
 and distribution formula editor load. These speed improvements will be most
-noticeable for sites that use a lot of funds.
+noticeable for sites that use many funds.
 
 
 
 
 
 
-Differentiate Delayed vs Canceled Items
+Differentiate Delayed vs. Canceled Items
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Background
@@ -54,7 +54,7 @@ Canceled and delayed lineitems and copies in acquisitions are marked as
 canceled in the database.  The determining factor of whether an item is
 delayed or canceled is the keep_debits flag on the cancel reason.  
 
-The changes below help to differentiate between these two closely related 
+The changes below help to differentiate between these two closely-related 
 states by improving labels in the interface and providing separate counts
 for delayed vs. canceled.
 
@@ -76,7 +76,7 @@ Support Cancellation of Delayed Lineitems
 +++++++++++++++++++++++++++++++++++++++++
 
 When a lineitem is marked as delayed (canceled with keep_debits == true), 
-allow staff to cancel the lineitem again in the ACQ PO/Picklist interface.
+allow staff to cancel the lineitem again in the ACQ PO/Selection List interface.
 Once a lineitem is marked as truly canceled, it cannot be canceled again.
 
 
@@ -108,7 +108,7 @@ report, the user has the option to save the modified report
 or create a new report with the new values, in effect cloning
 the original report.
 
-When saving a changed report, if a pending report run exists, the user
+When saving a changed report that has a pending run, the user
 will be warned of this and asked if they would prefer to modify the
 scheduled report or to instead save the changed values as a new 
 report, leaving the original report intact.
@@ -141,12 +141,19 @@ Reports Documentation Links and Hints
 Secondary Permission Groups
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Secondary permission groups, available through the patron editor, allow admins
-to add supplemental permission groups to staff accounts. The
-*CREATE_USER_GROUP_LINK* and *REMOVE_USER_GROUP_LINK* permissions are required
-to display and use this feature. 
+The patron registration/edit screen now has an interface for adding
+secondary permission groups (profiles) to a user account.  This gives
+library staff the ability to assign sets of permissions from multiple
+permission groups to a single user.  For example, if you have a
+cataloger who also does acquisitions, and you have separate permission
+groups for Catalogers and Acquisitions, the new UI allows you to add
+acquisitions as a secondary perm group on the cataloger's account, thus
+granting all Acquisitions permissions to that user without changing the
+user's primary profile group.
 
-<<secondaryperms, View Documentation>>.
+Library staff require the *CREATE_USER_GROUP_LINK* and
+*REMOVE_USER_GROUP_LINK* permissions (which already exist in Evergreen) in order
+to add or remove a user's secondary permission groups.
 
 
 
@@ -165,9 +172,10 @@ details copy grid when viewed from within the staff client.  The 'edit'
 link only appears when the authenticated user has permission to edit the
 specified copy.
 
-Both links open new tabs.  When the 'edit' link used, the 'Unified
+Both links open new tabs.  When the 'edit' link is used, the 'Unified
 Volume/Item Creator/Editor' org unit setting is inspected to determine
-which style of copy edit interface to display.
+which style of copy edit interface to display. When the 'view' link is used,
+the copy details display in the Item Status screen.
 
 
 
@@ -177,7 +185,7 @@ Display "Imported As" in Vandelay Queue
 This simple new feature appears within the Cataloging *MARC Batch 
 Import/Export* screens. When viewing the contents of a Vandelay queue, 
 for example when inspecting a queue or right after bib imports, there is 
-a new column displayed called _Imported As_. This new column displays the 
+a new column called _Imported As_. This new column displays the 
 record ID, also known as the bib number, of the bib records currently 
 listed in the queue. If the bib records listed in the queue have not been 
 imported yet, this column is blank until the queued records are imported. 
@@ -213,21 +221,12 @@ Like Vandelay, these options can be combined.
 Monograph Part Merging
 ^^^^^^^^^^^^^^^^^^^^^^
 
-The monograph part list for a bibliographic record may, over time, diverge from the
-proscribed format, resulting in multiple labels for what are essentially the same
-item.  For instance, ``++Vol.{nbsp}1++'' may have variants like ``++V.1++'', ``++Vol{nbsp}1++'', or ``++{nbsp}Vol.{nbsp}1++'' (leading space).
-This feature will allow catalog staff to collapse the variants into one value.
-
-In the Monograph Parts display:
-
-. Click the checkbox for all items you wish to merge including the one you wish to prevail when done.
-. Click on the ``Merge Selected'' button. A pop-up window will list the selected items in
-a monospaced font, with blanks represented by a middle-dot character for more visibility.
-. Click on the item you wish to prevail.
-
-The undesired part labels will be deleted, and any copies that previously used those labels will 
-now use the prevailing label.
-
+The monograph part list for a bibliographic record may, over time, diverge from
+the proscribed format, resulting in multiple labels for what are essentially the
+same item.  For instance, ``++Vol.{nbsp}1++'' may have variants like
+``++V.1++'', ``++Vol{nbsp}1++'', or ``++{nbsp}Vol.{nbsp}1++'' (leading space).
+This feature will allow cataloging staff to collapse the variants into one
+value.
 
 
 
@@ -246,11 +245,11 @@ look for holds that expired before today.
 
 
 
-Support holds targeting and fullfillment of precats for ILL
+Support holds targeting and fulfillment of precats for ILL
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Adds support for holds targeting and fullfillment of copy-level holds on
+Adds support for holds targeting and fulfillment of copy-level holds on
 pre-cat records. This feature makes integration with FulfILLment, NCIP and
-other ILL mediators easier because pre-cat copies can sucessfully be used for
+other ILL mediators easier because pre-cat copies can successfully be used for
 the ILL records.
 
 
@@ -264,7 +263,7 @@ by sites that want to distinguish between lost items with outstanding bills and
 those that have been fully paid. A site may want to make this distinction to
 set different OPAC visibility or holdability rules for these items.
 
-If enabled, when a lost item is fully paid, the copy's status will automatially
+If enabled, when a lost item is fully paid, the copy's status will automatically
 change to _Lost and Paid_.
 
 New setting available via the Library Settings Editor
@@ -347,41 +346,6 @@ http://sitemaps.org specification, including:
   crawl;
 * generating a sitemap index file that points to each of the sitemap files.
 
-Running the sitemap generator
-+++++++++++++++++++++++++++++
-The `sitemap_generator` script must be invoked with the following argument:
-
-* `--lib-hostname`: specifies the hostname for the catalog (for example,
-  `--lib-hostname https://catalog.example.com`); all URLs will be generated
-  appended to this hostname
-
-Therefore, the following arguments are useful for generating multiple sitemaps
-per Evergreen instance:
-
-* `--lib-shortname`: limit the list of record URLs to those which have copies
-  owned by the designated library or any of its children;
-* `--prefix`: provides a prefix for the sitemap index file names
-
-Other options enable you to override the OpenSRF configuration file and the
-database connection credentials, but the default settings are generally fine.
-
-Note that on very large Evergreen instances, sitemaps can consume hundreds of
-megabytes of disk space, so ensure that your Evergreen instance has enough room
-before running the script.
-
-Scheduling
-++++++++++
-To enable search engines to maintain a fresh index of your bibliographic
-records, you may want to include the script in your cron jobs on a nightly or
-weekly basis.
-
-Sitemap files are generated in the same directory from which the script is
-invoked, so a cron entry will look something like:
-
-------------------------------------------------------------------------
-12 2 * * * cd /openils/var/web && /openils/bin/sitemap_generator
-------------------------------------------------------------------------
-
 
 
 Acknowledgments
@@ -390,19 +354,65 @@ The Evergreen project would like to acknowledge the following
 organizations who commissioned developments in this release of
 Evergreen:
 
- * **TODO**
+ * Central/Western Massachusetts Automated Resource Sharing
+ * Massachusetts Library Network Cooperative
+ * North of Boston Library Exchange
 
 We would also like to thank the following individuals who contributed
 code and documentations patches to this release of Evergreen:
 
- * **TODO**
+ * Thomas Berezansky
+ * Galen Charlton
+ * Jeff Davis
+ * Bill Erickson
+ * Jason Etheridge
+ * James Fournie
+ * Jeff Godin
+ * Blake Henderson
+ * Victoria Lewis
+ * Kathy Lussier
+ * Terran McCanna
+ * Michele Morgan
+ * Dan Pearl
+ * Jennifer Pringle
+ * Erica Rohlfs
+ * Mike Rylander
+ * Dan Scott
+ * Srey Seng
+ * Chris Sharp
+ * Ben Shum
+ * Robert Soulliere
+ * Remington Steed
+ * Jason Stephenson
+ * Josh Stompro
+ * Kyle Tomita
+ * Elliot Voris
+ * Dan Wells
+ * Liam Whalen
+ * Yamil Suarez
 
 We also thank the following organizations whose employees contributed
 patches:
 
- * **TODO**
+ * Berklee College of Music
+ * Bibliomation
+ * British Columbia Libraries Cooperative
+ * Calvin College
+ * Catalyst IT Services
+ * Central/Western Massachusetts Automated Resource Sharing
+ * Equinox Software, Inc.
+ * Georgia Public Library Service
+ * Lake Agassiz Regional Library
+ * Laurentian University
+ * Massachusetts Library Network Cooperative
+ * Merrimack Valley Library Consortium
+ * MOBIUS
+ * Mohawk College
+ * North of Boston Library Exchange
+ * St. Louis Christian College
+ * Traverse Area District Library
 
-We regret any omissions.  If a contributor has been inadvertantly
+We regret any omissions.  If a contributor has been inadvertently
 missed, please open a bug at http://bugs.launchpad.net/evergreen/
 with a correction.
 
