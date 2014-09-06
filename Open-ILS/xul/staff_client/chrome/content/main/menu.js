@@ -1094,7 +1094,8 @@ main.menu.prototype = {
             ],
             'cmd_local_admin_address_alert' : [
                 ['oncommand'],
-                function(event) { open_eg_web_page('conify/global/actor/address_alert', null, event); }
+                function(event) { open_eg_web_page('conify/global/actor/address_alert', 
+                  'menu.local_admin.address_alert.tab', event); }
             ],
             'cmd_local_admin_copy_location_group' : [
                 ['oncommand'],

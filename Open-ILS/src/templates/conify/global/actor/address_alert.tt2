@@ -1,8 +1,8 @@
 [% WRAPPER base.tt2 %]
-[% ctx.page_title = l('Address Alert') %]
+[% ctx.page_title = l('Address Alerts') %]
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
     <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
-        <div>[% l('Address Alert') %]</div>
+        <div>[% l('Address Alerts') %]</div>
         <div>
             <button dojoType='dijit.form.Button' onClick='addrAlertGrid.showCreateDialog()'>[% l('New Address Alert') %]</button>
             <button dojoType='dijit.form.Button' onClick='addrAlertGrid.deleteSelected()'>[% l('Delete Selected') %]</button>
