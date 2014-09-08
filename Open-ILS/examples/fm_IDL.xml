@@ -294,6 +294,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Private Note" name="priv_note" reporter:datatype="text"/>
 			<field reporter:label="OPAC Visible" name="opac_visible" reporter:datatype="bool"/>
 			<field reporter:label="Overlay Match ID" name="internal_id" reporter:datatype="int"/>
+			<field reporter:label="Stat Cat Data" name="stat_cat_data" reporter:datatype="text"/>
 		</fields>
 		<links>
 			<link field="import_error" reltype="has_a" key="code" map="" class="vie"/>
@@ -346,6 +347,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="OPAC Visible" name="opac_visible" reporter:datatype="text"/>
 			<field reporter:label="Copy Number" name="copy_number" reporter:datatype="text"/>
 			<field reporter:label="Overlay Match ID" name="internal_id" reporter:datatype="text"/>
+			<field reporter:label="Stat Cat Data" name="stat_cat_data" reporter:datatype="text"/>
 		</fields>
 		<links>
 			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
