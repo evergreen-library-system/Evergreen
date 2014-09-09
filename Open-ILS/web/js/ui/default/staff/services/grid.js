@@ -263,11 +263,15 @@ angular.module('egGridMod',
             }
 
             $scope.showAllColumns = function() {
+                $scope.gridColumnPickerIsOpen = false;
                 grid.columnsProvider.showAllColumns();
+                if (grid.selfManagedData) grid.collect();
             }
 
             $scope.hideAllColumns = function() {
+                $scope.gridColumnPickerIsOpen = false;
                 grid.columnsProvider.hideAllColumns();
+                // note: no need to fetch new data if no columns are visible
             }
 
             $scope.toggleColumnVisibility = function(col) {
@@ -705,8 +709,11 @@ angular.module('egGridMod',
 
             $scope.printCSV = function() {
                 $scope.gridColumnPickerIsOpen = false;
-                egCore.hatch.print('default', 'text/plain', grid.generateCSV())
-                .then(function() { console.debug('print complete') });
+                egCore.print.print({
+                    context : 'default', 
+                    content : grid.generateCSV(),
+                    content_type : 'text/plain'
+                });
             }
 
             // generates CSV for the currently visible grid contents
@@ -925,19 +932,15 @@ angular.module('egGridMod',
         }
 
         cols.showAllColumns = function() {
-            $scope.gridColumnPickerIsOpen = false;
             angular.forEach(cols.columns, function(column) {
                 column.visible = true;
             });
-            if (grid.selfManagedData) grid.collect();
         }
 
         cols.hideAllColumns = function() {
-            $scope.gridColumnPickerIsOpen = false;
             angular.forEach(cols.columns, function(col) {
                 delete col.visible;
             });
-            // note: no need to fetch new data if no columns are visible
         }
 
         cols.indexOf = function(name) {
