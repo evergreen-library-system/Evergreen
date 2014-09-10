@@ -37,6 +37,7 @@ use OpenSRF::Utils::Logger qw($logger);
 use OpenILS::Utils::Fieldmapper;
 
 use OpenILS::Utils::CStoreEditor q/:funcs/;
+use OpenILS::Utils::TagURI;
 
 
 our (
@@ -728,6 +729,60 @@ Returns the XML representation of the requested bibliographic record's holdings
           'return' =>
             { desc => 'Record IDs',
               type => 'array' }
+        }
+);
+
+sub u2 {
+    my $self = shift;
+    my $client = shift;
+
+    my $u2 = shift;
+    my $format = shift || 'xml';
+
+    $u2 = OpenILS::Utils::TagURI->new($u2);
+    return '' unless $u2;
+
+    # Use pathinfo on acp as a lookup type specifier.
+    if ($u2->classname eq 'acp' and $u2->pathinfo =~ /\bbarcode\b/) {
+        my( $copy, $evt ) = $U->fetch_copy_by_barcode( $u2->id );
+        $u2->id( $copy->id );
+    }
+
+    return OpenSRF::AppSession->create('open-ils.cstore')->request(
+        "open-ils.cstore.json_query.atomic",
+        { from =>
+            [   'unapi.' . $u2->classname,
+                $u2->id,
+                $format,
+                $u2->classname,
+                '{' . ( $u2->includes ? join( ',', keys %{ $u2->includes } ) : '' ) . '}',
+                $u2->location || undef,
+                $u2->depth || undef
+            ]
+        }
+    )->gather(1)->[0]{'unapi.'. $u2->classname};
+}
+__PACKAGE__->register_method(
+    method    => 'u2',
+    api_name  => 'open-ils.supercat.u2',
+    api_level => 1,
+    argc      => 2,
+    signature =>
+        { desc     => <<"          DESC",
+Returns the XML representation of the requested object
+          DESC
+          params   =>
+            [
+                { name => 'u2',
+                  desc => 'The U2 Tag URI (OpenILS::Utils::TagURI)',
+                  type => 'object' },
+                { name => 'format',
+                  desc => 'For bre and bre feeds, the xml transform format',
+                  type => 'string' }
+            ],
+          'return' =>
+            { desc => 'XML (or transformed) object data',
+              type => 'string' }
         }
 );
 

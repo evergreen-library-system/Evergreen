@@ -26,6 +26,7 @@ use OpenILS::Utils::Fieldmapper;
 use OpenILS::WWW::SuperCat::Feed;
 use OpenSRF::Utils::Logger qw/$logger/;
 use OpenILS::Application::AppUtils;
+use OpenILS::Utils::TagURI;
 
 use MARC::Record;
 use MARC::File::XML ( BinaryEncoding => 'UTF-8' );
@@ -444,6 +445,26 @@ sub oisbn {
     return Apache2::Const::OK;
 }
 
+sub unapi2 {
+    my $apache = shift;
+    my $u2 = shift;
+    my $format = shift;
+
+    my $ctype = 'application/xml';
+    # Only bre and biblio_record_entry_feed have tranforms, but we'll ignore that for now
+    if ($u2->classname =~ /^(?:bre|biblio_record_entry_feed)$/ and $format ne 'xml') {
+        # XXX set $ctype to something else
+    }
+
+    print "Content-type: $ctype; charset=utf-8\n\n";
+    print "<?xml version='1.0' encoding='UTF-8' ?>\n";
+    print $supercat
+        ->request("open-ils.supercat.u2", $u2->toURI, $format)
+        ->gather(1);
+
+    return Apache2::Const::OK;
+}
+
 sub unapi {
 
     my $apache = shift;
@@ -465,6 +486,14 @@ sub unapi {
 
 
     my $uri = $cgi->param('id') || '';
+
+    my $format = $cgi->param('format') || '';
+    (my $base_format = $format) =~ s/(-full|-uris)$//o;
+    my $u2uri = OpenILS::Utils::TagURI->new($uri);
+    if ($format and $u2uri->version > 1) {
+        return unapi2($apache, $u2uri, $format);
+    }
+
     my $host = $cgi->virtual_host || $cgi->server_name;
 
     my $skin = $cgi->param('skin') || 'default';
@@ -473,7 +502,6 @@ sub unapi {
     # Enable localized results of copy status, etc
     $supercat->session_locale($locale);
 
-    my $format = $cgi->param('format') || '';
     my $flesh_feed = parse_feed_type($format);
     (my $base_format = $format) =~ s/(-full|-uris)$//o;
     my ($id,$type,$command,$lib,$depth,$paging) = ('','record','');
