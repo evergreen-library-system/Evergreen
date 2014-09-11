@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2011-04-18 21:45:31-0400\n"
+"POT-Creation-Date: 2014-09-11 02:13:44-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -56,6 +56,10 @@ msgstr ""
 
 #: reports.js:LINK_NULLABLE_RIGHT
 msgid "Parent"
+msgstr ""
+
+#: reports.js:TRANSFORMS_MONTH_NAME
+msgid "Month Name"
 msgstr ""
 
 #: reports.js:TEMPLATE_CONF_BETWEEN
@@ -241,6 +245,10 @@ msgstr ""
 msgid "All Available Sources"
 msgstr ""
 
+#: reports.js:FOLDERS_OUTPUT
+msgid "Output"
+msgstr ""
+
 #: reports.js:OPERATORS_LIKE reports.js:FILTERS_LABEL_LIKE
 msgid "Contains Matching substring"
 msgstr ""
@@ -286,6 +294,10 @@ msgstr ""
 msgid "Round"
 msgstr ""
 
+#: reports.js:TEMPLATE_FIELD_DOC_PROMPT_CHANGE
+msgid "Change the field hint to:"
+msgstr ""
+
 #: reports.js:FILTERS_LABEL_NULL_BLANK reports.js:OPERATORS_NULL_BLANK
 msgid "Is NULL or Blank"
 msgstr ""
@@ -316,10 +328,6 @@ msgstr ""
 
 #: reports.js:FILTERS_LABEL_NOT_NULL_BLANK reports.js:OPERATORS_NOT_NULL_BLANK
 msgid "Is not NULL or Blank"
-msgstr ""
-
-#: reports.js:WIDGET_DAYS
-msgid "Day(s)"
 msgstr ""
 
 #: reports.js:FOLDER_WINDOW_REPORT_OUTPUT
@@ -358,8 +366,8 @@ msgstr ""
 msgid "Please provide a report folder"
 msgstr ""
 
-#: reports.js:TRANSFORMS_MONTH_NAME
-msgid "Month Name"
+#: reports.js:WIDGET_DAYS
+msgid "Day(s)"
 msgstr ""
 
 #: reports.js:TFORMS_LABEL_FIRST5 reports.js:TRANSFORMS_FIRST5
@@ -382,8 +390,8 @@ msgstr ""
 msgid "Quarters ago"
 msgstr ""
 
-#: reports.js:FOLDERS_OUTPUT
-msgid "Output"
+#: reports.js:REPORT_EDITOR_ENTER_NEW_NAME_ALERT
+msgid "Please change the report name"
 msgstr ""
 
 #: reports.js:TEMPLATE_CONF_SELECT_CANCEL

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2013-09-26 18:17:43-0400\n"
+"POT-Creation-Date: 2014-09-11 02:13:45-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -32,7 +32,8 @@ msgid "You cannot delete the root node of a tree (but you can replace it)."
 msgstr ""
 
 #: match_set.js:EXACTLY_ONE
-msgid "First select exactly one node from the tree on the right side of the screen."
+msgid ""
+"First select exactly one node from the tree on the right side of the screen."
 msgstr ""
 
 #: match_set.js:CANCEL
@@ -44,7 +45,9 @@ msgid "Use buttons above and to the right to add new quality metrics."
 msgstr ""
 
 #: match_set.js:DEFINE_MP
-msgid "Define this match point using the above fields, then drag me to the tree on the right."
+msgid ""
+"Define this match point using the above fields, then drag me to the tree on "
+"the right."
 msgstr ""
 
 #: match_set.js:NO_CAN_DO
@@ -60,7 +63,9 @@ msgid "You have not entered valid data"
 msgstr ""
 
 #: match_set.js:FAULTY_MARC
-msgid "A MARC tag must be identified by three digits, and the subfield must be one non-whitespace, non-control character."
+msgid ""
+"A MARC tag must be identified by three digits, and the subfield must be one "
+"non-whitespace, non-control character."
 msgstr ""
 
 #: match_set.js:MATCH_SCORE

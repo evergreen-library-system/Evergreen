@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2014-02-24 16:24:07-0400\n"
+"POT-Creation-Date: 2014-09-11 02:13:44-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,8 +19,8 @@ msgstr ""
 msgid "Apply Changes"
 msgstr ""
 
-#: register.js:DUPE_PATRON_EMAIL
-msgid "Found ${0} patron(s) with the same email address"
+#: register.js:REPLACE_BARCODE
+msgid "Replace Barcode"
 msgstr ""
 
 #: register.js:ADDRESS_BILLING
@@ -37,6 +37,14 @@ msgstr ""
 
 #: register.js:ALL_CARDS_BARCODE
 msgid "Barcode"
+msgstr ""
+
+#: register.js:ADD
+msgid "Add"
+msgstr ""
+
+#: register.js:SECONDARY_GROUP_IS_PROFILE
+msgid "That is already the primary profile group for this patron."
 msgstr ""
 
 #: register.js:SAVE
@@ -59,8 +67,8 @@ msgstr ""
 msgid "Mailing"
 msgstr ""
 
-#: register.js:REPLACE_BARCODE
-msgid "Replace Barcode"
+#: register.js:DUPE_PATRON_EMAIL
+msgid "Found ${0} patron(s) with the same email address"
 msgstr ""
 
 #: register.js:NEED_ADDRESS
@@ -99,6 +107,10 @@ msgstr ""
 msgid "Update Expire Date"
 msgstr ""
 
+#: register.js:SECONDARY_GROUP_ERROR
+msgid "Error saving secondary groups."
+msgstr ""
+
 #: register.js:RESET_PASSWORD
 msgid "Generate Password"
 msgstr ""
@@ -135,6 +147,10 @@ msgstr ""
 msgid "Account requested by ${0} ${1}"
 msgstr ""
 
+#: register.js:DELETE
+msgid "Delete"
+msgstr ""
+
 #: register.js:HOLD_NOTIFY_SMS
 msgid "SMS: "
 msgstr ""
@@ -145,6 +161,10 @@ msgstr ""
 
 #: register.js:SHOW_ALL
 msgid "Show All Fields"
+msgstr ""
+
+#: register.js:SECONDARY_GROUP_EXISTS
+msgid "This group is on the list already."
 msgstr ""
 
 #: register.js:ADDRESS_APPROVE
@@ -169,6 +189,10 @@ msgstr ""
 
 #: register.js:HOLD_NOTIFY_EMAIL
 msgid "Email: "
+msgstr ""
+
+#: register.js:SECONDARY_GROUP_NOT_ALLOWED
+msgid "You do not have permission to add this group."
 msgstr ""
 
 #: register.js:SEE_ALL
