@@ -381,6 +381,7 @@ code and documentations patches to this release of Evergreen:
  * Kathy Lussier
  * Terran McCanna
  * Michele Morgan
+ * Suzanne Paterno
  * Dan Pearl
  * Jennifer Pringle
  * Erica Rohlfs
