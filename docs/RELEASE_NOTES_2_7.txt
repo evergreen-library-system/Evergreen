@@ -279,7 +279,26 @@ New setting available via the Library Settings Editor
 - Use Lost and Paid copy status (circ.use_lost_paid_copy_status)
 
 
+Client
+~~~~~~
 
+Web client preview
+^^^^^^^^^^^^^^^^^^
+
+The 2.7 release will contain a preview of web client circulation features.
+Circulation is the first step in moving all staff functions from the existing
+XULRunner-based client to a web application that will be based on AngularJS. 
+
+Evergreen is moving away from the existing client because XULRunner no longer 
+supports features critical to the Evergreen software, including remote XUL,
+multi-part streaming, and XML JavaScript. The new web client is expected to
+show some speed improvements, to provide comprehensive support for
+internationalization/localization, to provide good support for assistive
+technologies, to be easier to customize locally, and to be more mobile friendly.
+
+The intent of the preview is to make it easier for end users at Evergreen sites
+to try the new client, become familiar with its features, and to
+discover/report bugs that are found. To implement the client preview...
 
 OPAC
 ~~~~
@@ -362,14 +381,24 @@ The Evergreen project would like to acknowledge the following
 organizations who commissioned developments in this release of
 Evergreen:
 
+ * Bibliomation
+ * British Columbia Libraries Cooperative
  * Central/Western Massachusetts Automated Resource Sharing
+ * Georgia Public Library Service
+ * Howe Library, Hanover, NH
  * Massachusetts Library Network Cooperative
+ * NC Cardinal
  * North of Boston Library Exchange
+ * Pennsylvania Integrated Library System
+ * Pioneer Library System
+ * South Carolina Library Evergreen Network Delivery System
 
 We would also like to thank the following individuals who contributed
 code and documentations patches to this release of Evergreen:
 
  * Thomas Berezansky
+ * Jason Boyer
+ * Steven Chan
  * Galen Charlton
  * Jeff Davis
  * Bill Erickson
@@ -377,6 +406,7 @@ code and documentations patches to this release of Evergreen:
  * James Fournie
  * Jeff Godin
  * Blake Henderson
+ * Pasi Kallinen
  * Victoria Lewis
  * Kathy Lussier
  * Terran McCanna
@@ -411,6 +441,7 @@ patches:
  * Central/Western Massachusetts Automated Resource Sharing
  * Equinox Software, Inc.
  * Georgia Public Library Service
+ * Indiana State Library
  * Lake Agassiz Regional Library
  * Laurentian University
  * Massachusetts Library Network Cooperative
@@ -418,6 +449,7 @@ patches:
  * MOBIUS
  * Mohawk College
  * North of Boston Library Exchange
+ * Pohjois-Karjalan Tietotekniikkakeskus Oy
  * St. Louis Christian College
  * Traverse Area District Library
 
