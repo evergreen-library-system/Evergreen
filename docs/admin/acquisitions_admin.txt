@@ -284,7 +284,7 @@ EDI
 Many libraries use Electronic Data Interchange (EDI) accounts to order new
 acquisitions. Users can set up EDI accounts and manage EDI messages in the admin
  module. EDI messages and notes can be viewed in the acquisitions module.  See
-also the link:../installation/edi_setup.txt[EDI Installation Instructions]
+also the http://docs.evergreen-ils.org/2.4/_installation.html[EDI Installation Instructions]
 because this is required for use of EDI.
 
 The following fields are required to create an EDI account: 
