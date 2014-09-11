@@ -4,7 +4,7 @@ use XML::LibXML;
 use XML::LibXSLT;
 my $out_file = 'IDL2js.js';
 my $idl_file = '../../../../../../../examples/fm_IDL.xml';
-my $xsl_file = '/openils/var/xsl/fm_IDL2js.xsl'; # FIXME: hard-coded path
+my $xsl_file = '../../../../../../../xsl/fm_IDL2js.xsl'; 
 
 my $xslt = XML::LibXSLT->new();
 my $style_doc = XML::LibXML->load_xml(location => $xsl_file, no_cdata=>1);
