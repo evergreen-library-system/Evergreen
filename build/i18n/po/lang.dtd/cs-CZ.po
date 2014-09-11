@@ -3,14 +3,14 @@ msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-02-24 16:23-0400\n"
-"PO-Revision-Date: 2014-03-31 13:18+0000\n"
+"PO-Revision-Date: 2014-08-28 09:17+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2014-04-01 05:44+0000\n"
-"X-Generator: Launchpad (build 16967)\n"
+"X-Launchpad-Export-Date: 2014-08-29 06:10+0000\n"
+"X-Generator: Launchpad (build 17176)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: Czech\n"
@@ -6073,7 +6073,7 @@ msgctxt ""
 "staff.patron_display.apply_penalty_dialog.apply_btn.label "
 "staff.patron_display.apply_penalty_dialog.apply_btn.accesskey"
 msgid "&Apply"
-msgstr "Ulo&užit"
+msgstr "Ulo&žit"
 
 #: staff.patron_display.apply_penalty_dialog.initials_entry.label
 #: staff.patron_display.apply_penalty_dialog.initials_entry.accesskey
@@ -8815,7 +8815,7 @@ msgstr ""
 
 #: staff.server.admin.org_settings.circ.hold_stalling.soft
 msgid "Holds: Soft stalling interval"
-msgstr "a"
+msgstr ""
 
 #: staff.server.admin.org_settings.circ.hold_stalling.soft.desc
 msgid ""
@@ -8843,7 +8843,7 @@ msgstr "Regulární výraz definující formát čárového kódů čtenářů"
 
 #: staff.server.admin.org_settings.circ.item_checkout_history.max
 msgid "Maximum previous checkouts displayed"
-msgstr "Zobrazení maximálního počtu předchozích výpůjček"
+msgstr "Maximální počet pro zobrazení předchozích výpůjček"
 
 #: staff.server.admin.org_settings.circ.item_checkout_history.max.desc
 msgid ""
@@ -14849,7 +14849,7 @@ msgstr "Otevřít v novém panelu"
 #: staff.client.portal.search.button
 msgctxt "staff.client.portal.search.button"
 msgid "Search"
-msgstr "Vyhedávat"
+msgstr "Hledat"
 
 #: staff.client.portal.address_map.tab_name
 msgid "Locate Address In Map"

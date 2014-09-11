@@ -4,14 +4,14 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
 "POT-Creation-Date: 2014-02-24 16:23-0400\n"
-"PO-Revision-Date: 2014-03-09 19:17+0000\n"
+"PO-Revision-Date: 2014-08-17 04:43+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2014-03-10 05:48+0000\n"
-"X-Generator: Launchpad (build 16948)\n"
+"X-Launchpad-Export-Date: 2014-08-18 06:05+0000\n"
+"X-Generator: Launchpad (build 17156)\n"
 "X-Accelerator-Marker: &\n"
 
 #: field.bre.source.label:2804
@@ -1161,7 +1161,7 @@ msgstr "Začátek fronty"
 
 #: field.czs.auth.label:1017
 msgid "Auth"
-msgstr "Autority"
+msgstr "Autentizace"
 
 #: field.auact.event_time.label:3165
 msgid "Event Time"
@@ -6675,7 +6675,7 @@ msgstr "Název pravidla"
 
 #: field.crad.composite.label:790
 msgid "Composite attribute?"
-msgstr ""
+msgstr "Složený atribut?"
 
 #: field.rlcd.last_delete_date.label:10104
 msgid "Delete Date/Time"
@@ -7888,7 +7888,7 @@ msgstr "Datum narození"
 #: field.acqpa.country.label:7377 field.acqpca.country.label:7442
 #: field.stgma.country.label:9127 field.stgba.country.label:9143
 msgid "Country"
-msgstr "Kraj"
+msgstr "Země"
 
 #: field.bre.creator.label:2795
 msgid "Record Creator"
@@ -8001,7 +8001,7 @@ msgstr "Kontrolní číslo"
 
 #: field.au.ident_value.label:3069
 msgid "Primary Identification"
-msgstr "Primární identifikační doklad"
+msgstr "Číslo identifikačního dokladu"
 
 #: field.aur.cancel_reason.label:7123 class.acqcr.label:7999
 #: field.acqpo.cancel_reason.label:8033 field.acqpoh.cancel_reason.label:8080

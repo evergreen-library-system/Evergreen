@@ -3,14 +3,14 @@ msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
 "POT-Creation-Date: 2014-03-31 13:35-0400\n"
-"PO-Revision-Date: 2014-03-31 15:47+0000\n"
+"PO-Revision-Date: 2014-07-01 08:06+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2014-04-01 05:41+0000\n"
-"X-Generator: Launchpad (build 16967)\n"
+"X-Launchpad-Export-Date: 2014-07-02 05:58+0000\n"
+"X-Generator: Launchpad (build 17082)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Poedit-Language: Czech\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -416,6 +416,10 @@ msgid ""
 "the item, the system will attempt to find a hold for the patron that could "
 "be fulfilled by the checked out item and fulfills it"
 msgstr ""
+"Pokud se čtenář pokouší půjčit knihovní jednotku  a neexistují rezervace, "
+"které jsou přímo cílené na tuto knihovní jednotku, systém se pokusí pro "
+"čtenáře najít rezervací, která by mohla být splněna vypůjčenou knihovní "
+"jednotkou a splní ji."
 
 #: 950.data.seed-values.sql:4510
 msgid ""
@@ -1197,7 +1201,7 @@ msgstr "Maithilština"
 
 #: 950.data.seed-values.sql:1624
 msgid "Circulators"
-msgstr "Díla určená k půjčování"
+msgstr "Personál u výpůjčního pultu (\"circulators\")"
 
 #: 950.data.seed-values.sql:143
 msgid "Topic Subject"
@@ -1633,7 +1637,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:182
 msgid "Series Title (Browse)"
-msgstr ""
+msgstr "Název edice (prohlížení)"
 
 #: 950.data.seed-values.sql:11708
 msgid "Hawaiian Telcom Wireless"
@@ -2508,7 +2512,8 @@ msgstr "Akkadština"
 
 #: 950.data.seed-values.sql:1214
 msgid "Allow a user to create, update, and delete trigger hooks"
-msgstr "Povolit uživateli vytvořit , změnit a smazat vazbu spouštěče"
+msgstr ""
+"Povolit uživateli vytvořit, změnit a smazat vazby spouštěče (triggeru)"
 
 # id::clm.value__snd
 #: 950.data.seed-values.sql:6512
@@ -3295,7 +3300,7 @@ msgstr "Katalogizace"
 
 #: 950.data.seed-values.sql:1220
 msgid "Allow a user to update trigger hooks"
-msgstr "Povolit uživateli změnit vazbu spouštěče"
+msgstr "Povolit uživateli změnit vazby spouštěče (triggeru)"
 
 #: 950.data.seed-values.sql:1392
 msgid "DELETE_MERGE_PROFILE"
@@ -3655,8 +3660,8 @@ msgid ""
 "Circ: Use original circulation library on opac renewal instead of user home "
 "library"
 msgstr ""
-"Výpůjčky: Při prodlužování v OPACu použít knihovn, kde byla výpůjčka původně "
-"uskutečněna,  namísto domovské knihovny uživatele."
+"Výpůjčky: Při prodlužování v OPACu použít knihovnu, kde byla výpůjčka "
+"původně uskutečněna,  namísto domovské knihovny uživatele."
 
 #: 950.data.seed-values.sql:1374
 msgid "CREATE_USER_BTYPE"
@@ -3765,7 +3770,7 @@ msgstr "Ganda"
 
 #: 950.data.seed-values.sql:13179
 msgid "Upload Default Merge Profile"
-msgstr ""
+msgstr "Výchozí profil slučení pri nahrávání"
 
 # id::clm.value__hit
 #: 950.data.seed-values.sql:6296
@@ -3990,7 +3995,7 @@ msgstr "Hodnota kontrolního čísla záznamu (TCN)"
 
 #: 950.data.seed-values.sql:13196
 msgid "Upload Import Non Matching by Default"
-msgstr ""
+msgstr "Jako výchozí při nahrání importovat neshodující se"
 
 #: 950.data.seed-values.sql:1164
 msgid "UPDATE_ORG_UNIT_SETTING.circ.reshelving_complete.interval"
@@ -4444,6 +4449,8 @@ msgstr ""
 msgid ""
 "Allow a user to add/remove users to/from the \"System Administrator\" group"
 msgstr ""
+"Povolit uživateli přidat/odstranite uživatele do/ze skupiny \"Systémový "
+"administrátor\""
 
 #: 950.data.seed-values.sql:684
 msgid "Allow a user to execute an offline script batch"
@@ -5328,7 +5335,7 @@ msgstr "Povolit uživateli vytvořit nový ne-katalogizovaný typ"
 
 #: 950.data.seed-values.sql:1218
 msgid "Allow a user to delete trigger hooks"
-msgstr "Povolit uživateli smazat hák spouštěče"
+msgstr "Povolit uživateli smazat vazby spouštěče (triggeru)"
 
 #: 950.data.seed-values.sql:1522
 msgid "Allows a user to create report templates"
@@ -5350,7 +5357,7 @@ msgstr "Fond"
 
 #: 950.data.seed-values.sql:13230
 msgid "Upload Merge on Best Match by Default"
-msgstr ""
+msgstr "Jako výchozí  při nahrádní  sloučit při nejlepší shodě"
 
 #: 950.data.seed-values.sql:11014
 msgid "Heading -- Genre/Form Term"
@@ -5383,10 +5390,11 @@ msgstr "Doba pro expireace varování"
 #: 950.data.seed-values.sql:1609
 msgid "Allow a user to add/remove users to/from the \"Volunteers\" group"
 msgstr ""
+"Povolit uživateli přidat/odebrat uživatele do/ze skupiny \"dobrovolníci\""
 
 #: 950.data.seed-values.sql:1216
 msgid "Allow a user to create trigger hooks"
-msgstr "Povolit uživateli vytvořit hák spouštěče"
+msgstr "Povolit uživateli vytvořit vazby spouštěče (triggeru)"
 
 #: 950.data.seed-values.sql:770
 msgid "Allow staff to force checkout of Missing/Lost type items"
@@ -6558,6 +6566,7 @@ msgstr "CREATE_BIB_BTYPE"
 #: 950.data.seed-values.sql:1607
 msgid "Allow a user to add/remove users to/from the \"Data Review\" group"
 msgstr ""
+"Povolit uživateli přidat/odebrat uživatele ze skupiny \"Kontrola dat\""
 
 #: 950.data.seed-values.sql:1048
 msgid "UPDATE_VR_FORMAT"
@@ -6718,7 +6727,7 @@ msgstr "Serer"
 
 #: 950.data.seed-values.sql:3331
 msgid "Void lost max interval"
-msgstr ""
+msgstr "Maximální interval pro anulování ztracených"
 
 #: 950.data.seed-values.sql:3898
 msgid "Format Dates with this pattern."
@@ -6731,6 +6740,8 @@ msgstr "Kru"
 #: 950.data.seed-values.sql:13287
 msgid "Default low-quality fall through profile used during ACQ file upload"
 msgstr ""
+"Výchozí profil pro propad při nízké kvalitě při použití nahrání souboru v "
+"akvizici"
 
 #: 950.data.seed-values.sql:1534
 msgid "Allows a user to create new authority records"
@@ -6882,7 +6893,7 @@ msgstr "CREATE_METABIB_SEARCH_ALIAS"
 
 #: 950.data.seed-values.sql:13298
 msgid "Upload Load Items for Imported Records by Default"
-msgstr ""
+msgstr "Jako výchozí importovat exempláře pro nahrané záznamy"
 
 # id::pgt.name__1
 #: 950.data.seed-values.sql:1616
@@ -8029,6 +8040,9 @@ msgid ""
 "\"items\" variable into the TT environment, sorted as dictated according to "
 "user params"
 msgstr ""
+"Umožní vytvoření souboru CSV, který rezprezentuje seznam knih tím, že zavede "
+"proměnnou \"jednotka\" do prostředí template toolkit řazené tak, jak je "
+"požadováno podle parametrů uživatele."
 
 # id::clm.value__hin
 #: 950.data.seed-values.sql:6295
@@ -8479,7 +8493,7 @@ msgstr "UPDATE_XML_TRANSFORM"
 
 #: 950.data.seed-values.sql:6924 950.data.seed-values.sql:6925
 msgid "All Music"
-msgstr ""
+msgstr "Všechna hudba"
 
 #: 950.data.seed-values.sql:6636
 msgid "Dramas"
@@ -8709,7 +8723,7 @@ msgstr "DELETE_ORG_UNIT"
 
 #: 950.data.seed-values.sql:6858 950.data.seed-values.sql:6859
 msgid "All Books"
-msgstr ""
+msgstr "Všechny knihy"
 
 #: 950.data.seed-values.sql:9004
 msgid "An email has been requested for a circ history."
@@ -8798,6 +8812,7 @@ msgstr "E-mailová adresa pro zasílání upozornění čtenáři"
 msgid ""
 "Allows a user to indicate that a patron is exempt from collections processing"
 msgstr ""
+"Povolit uživateli označit, že čtenář je vyjmut ze pracování inkasní agenturou"
 
 #: 950.data.seed-values.sql:6294
 msgid "Himachali"
@@ -8984,7 +8999,7 @@ msgstr "ADMIN_MERGE_PROFILE"
 
 #: 950.data.seed-values.sql:6110
 msgid "Search Formats"
-msgstr ""
+msgstr "Formáty pro vyhledávání"
 
 #: 950.data.seed-values.sql:1352
 msgid "CREATE_BIBLIO_FINGERPRINT"
@@ -9146,7 +9161,7 @@ msgstr "Viz také z dohledávání  -- název korporace"
 
 #: 950.data.seed-values.sql:13884
 msgid "Vandelay Generate Default Call Numbers"
-msgstr ""
+msgstr "Vandelay generuje výchozí signatury"
 
 # id::clfm.value__i
 # nutný kontext
@@ -9202,6 +9217,11 @@ msgid ""
 "at the character level, but only the first character will serve as the basis "
 "of the search."
 msgstr ""
+"Znaky v tomto řetězci, podle pořadí, budou použity jako zkrácený  odkaz na "
+"rychlé stránkování rozhraní OPACu pro prohlížení. Jakákoliv sekvence "
+"obklopená hvězdičkami bude chápána jako celé označení nerozdělené na "
+"idividuální označení na úrovni znaků, ale pouze první znak bude sloužit jako "
+"základ pro hledání."
 
 #: 950.data.seed-values.sql:6500
 msgid "Sino-Tibetan (Other)"
@@ -9284,7 +9304,7 @@ msgstr "Pašto (pachto, paštština)"
 
 #: 950.data.seed-values.sql:3511
 msgid "Selfcheck override events list"
-msgstr ""
+msgstr "Seznam událostí pro \"obejití\" při samoobslužném půjčování"
 
 # id::cifm.value__b
 #: 950.data.seed-values.sql:6650
@@ -9441,6 +9461,7 @@ msgstr "Výchozí čas čekání"
 #: 950.data.seed-values.sql:1578
 msgid "Allows a user to configure URL verification org unit settings"
 msgstr ""
+"Povolit uživateli konfigurovat verifikaci URL nastavení organizační jednotky"
 
 #: 950.data.seed-values.sql:2817
 msgid "When charging for lost items, limit the charge to this as a maximum."
@@ -9731,6 +9752,8 @@ msgstr ""
 #: 950.data.seed-values.sql:838
 msgid "Allow a user to create/view/update/delete a currency_type"
 msgstr ""
+"Povolit uživateli vytvořit, zobrazit, upravit, smazat typ měny "
+"(currency_type)"
 
 #: 950.data.seed-values.sql:13264
 msgid "Upload Default Min. Quality Ratio"
@@ -9743,11 +9766,11 @@ msgstr ""
 
 #: 950.data.seed-values.sql:4922
 msgid "Enable features that send SMS text messages."
-msgstr ""
+msgstr "Aktivovat funkce, které posílají SMS zprávy"
 
 #: 950.data.seed-values.sql:11062
 msgid "See From Tracing -- Form Subdivision"
-msgstr ""
+msgstr "Viz z dohledávání -- Podrozdělení formy"
 
 # id::cit.name__3
 #: 950.data.seed-values.sql:248 950.data.seed-values.sql:6686
@@ -9757,7 +9780,7 @@ msgstr "Ostatní"
 
 #: 950.data.seed-values.sql:13804
 msgid "Allow Patron Self-Registration"
-msgstr ""
+msgstr "Povolit uživateli samoobslužnou registraci"
 
 #: 950.data.seed-values.sql:6620
 msgid "Two-dimensional nonprojectable graphic"
@@ -9769,11 +9792,11 @@ msgstr "Viz také z dohledávání -- všeobecné podrozdělení"
 
 #: 950.data.seed-values.sql:1320
 msgid "ADMIN_INVOICE_METHOD"
-msgstr ""
+msgstr "ADMIN_INVOICE_METHOD"
 
 #: 950.data.seed-values.sql:11299
 msgid "User Event Log"
-msgstr ""
+msgstr "Log uživatelských události"
 
 #: 950.data.seed-values.sql:6569
 msgid "Tuvinian"
@@ -9785,23 +9808,24 @@ msgstr "Zpracování kreditní karty"
 
 #: 950.data.seed-values.sql:1260
 msgid "UPDATE_RECORD"
-msgstr ""
+msgstr "UPDATE_RECORD"
 
 #: 950.data.seed-values.sql:3934
 msgid "Password format"
-msgstr ""
+msgstr "Formát hesla"
 
 #: 950.data.seed-values.sql:870
 msgid "Allows a user to view a purchase order"
-msgstr ""
+msgstr "Povolit uživateli zobrazit objednávku"
 
 #: 950.data.seed-values.sql:864
 msgid "Allow a user to mark an item status as 'inter-library loan'"
 msgstr ""
+"Povolit uživateli označit status exempláře jako \"meziknihovní výpůjčku\""
 
 #: 950.data.seed-values.sql:1278
 msgid "ADMIN_ACQ_DISTRIB_FORMULA"
-msgstr ""
+msgstr "ADMIN_ACQ_DISTRIB_FORMULA"
 
 #: 950.data.seed-values.sql:149
 msgid "All Subjects"
@@ -9813,11 +9837,11 @@ msgstr "zpoždění_vybavení_střední"
 
 #: 950.data.seed-values.sql:1450
 msgid "VIEW_STANDING_PENALTY"
-msgstr ""
+msgstr "VIEW_STANDING_PENALTY"
 
 #: 950.data.seed-values.sql:1252
 msgid "Enables the user to create/update/delete booking reservations"
-msgstr ""
+msgstr "Umožní uživateli vytvořit/upravit/smazat rezervované zdroje"
 
 #: 950.data.seed-values.sql:284
 msgid "overdue_equip_min"
@@ -9825,25 +9849,28 @@ msgstr "zpoždění_vybavení_minimální"
 
 #: 950.data.seed-values.sql:9015
 msgid "A circ history needs to be formatted for printing."
-msgstr ""
+msgstr "Historie výpůjček musí být zformátována pro tisk"
 
 #: 950.data.seed-values.sql:2760
 msgid "Retain empty bib records"
-msgstr ""
+msgstr "Zachovat prázdné bibliografické záznamy"
 
 #: 950.data.seed-values.sql:4895
 msgid ""
 "When a search yields only 1 result, jump directly to the record details "
 "page.  This setting only affects the OPAC within the staff client"
 msgstr ""
+"Pokud je výsledkem vyhledávání  pouze jeden záznam, skočit přímo na stránku "
+"s detaily záznamu. Tímto nastavením je ovlivněn pouze OPAC ve služebním "
+"klientu."
 
 #: 950.data.seed-values.sql:1400
 msgid "MANAGE_CLAIM"
-msgstr ""
+msgstr "MANAGE_CLAIM"
 
 #: 950.data.seed-values.sql:4156
 msgid "Record In-House Use: Maximum # of uses allowed per entry."
-msgstr ""
+msgstr "Zaznamenat prezenční výpůjčku: maximální počet užití pro vstup"
 
 #: 950.data.seed-values.sql:6601
 msgid "Zande"
@@ -9851,7 +9878,7 @@ msgstr "Zandština"
 
 #: 950.data.seed-values.sql:1424
 msgid "UPDATE_USER_BTYPE"
-msgstr ""
+msgstr "UPDATE_USER_BTYPE"
 
 #: 950.data.seed-values.sql:4696
 msgid "Suggest second_given_name field on patron registration"
@@ -9865,15 +9892,15 @@ msgstr "Kanadská angličtina"
 
 #: 950.data.seed-values.sql:11343
 msgid "Test Carrier"
-msgstr ""
+msgstr "Testovat operátora"
 
 #: 950.data.seed-values.sql:2862
 msgid "Set the default maximum number of lines for spine labels."
-msgstr ""
+msgstr "Nastavit výchozí hodnotu  počtu řádků pro hřbetní štítky"
 
 #: 950.data.seed-values.sql:648
 msgid "Allow a user to perform Z39.50 queries against remote servers"
-msgstr ""
+msgstr "Povolit uživateli zadávat Z39.50 dotazy na vzdálené servery"
 
 # id::clm.value__din
 #: 950.data.seed-values.sql:6223
@@ -9882,17 +9909,19 @@ msgstr "Dinkština"
 
 #: 950.data.seed-values.sql:1192
 msgid "Allow a user to merge authority records together"
-msgstr ""
+msgstr "Povolit uživateli sloučit spolu autoritní záznamy"
 
 #: 950.data.seed-values.sql:13981
 msgid ""
 "Number of seconds to wait before reloading the patron self-registration "
 "interface to clear sensitive data"
 msgstr ""
+"Počet sekund, po které se má čekat, než bude znovu obnoveno rozhraní pro "
+"samoobslužnou registraci, abys se vyčistily citlivé údaje."
 
 #: 950.data.seed-values.sql:1168
 msgid "UPDATE_ORG_UNIT_SETTING.circ.selfcheck.alert_on_checkout_event"
-msgstr ""
+msgstr "UPDATE_ORG_UNIT_SETTING.circ.selfcheck.alert_on_checkout_event"
 
 #: 950.data.seed-values.sql:465
 msgid "Long Overdue Collection Fee"
@@ -9905,21 +9934,23 @@ msgstr "Bengálština"
 
 #: 950.data.seed-values.sql:3925
 msgid "Juvenile Age Threshold"
-msgstr ""
+msgstr "Hranice zletilosti"
 
 #: 950.data.seed-values.sql:694
 msgid ""
 "Allow a user to check in or check out an item that has a status of 'claims "
 "returned'"
 msgstr ""
+"Povolit uživateli vrátit nebo pujčit exemplář, který más status \"údajně "
+"vráceno\""
 
 #: 950.data.seed-values.sql:2516 950.data.seed-values.sql:2517
 msgid "OPAC Search Location"
-msgstr ""
+msgstr "Lokace pro vyhledávání v OPACu"
 
 #: 950.data.seed-values.sql:84
 msgid "Patron had an invalid other phone number"
-msgstr ""
+msgstr "Čtenář má neplatné nebo jiné telefonní číslo"
 
 #: 950.data.seed-values.sql:5153
 msgid "List Published Book Bags"
@@ -9937,7 +9968,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:1210
 msgid "Allow a user to update trigger event definitions"
-msgstr ""
+msgstr "Povolit uživateli upravit definici události spouštěče (triggeru)"
 
 #: 950.data.seed-values.sql:6382
 msgid "Magahi"
@@ -9958,28 +9989,34 @@ msgstr ""
 #: 950.data.seed-values.sql:2808
 msgid "When charging for lost items, charge this amount as a minimum."
 msgstr ""
+"Při naúčtování poplatku za ztracené knihy naúčtovat miminálně tuto částku"
 
 #: 950.data.seed-values.sql:11674
 msgid "Golden State Cellular"
-msgstr ""
+msgstr "Golden State Cellular"
 
 #: 950.data.seed-values.sql:3226
 msgid ""
 "Org Units can be organized into hold target groups based on a weight.  "
 "Potential copies from org units with the same weight are chosen at random."
 msgstr ""
+"Organizační jednotky mohou být sekupeny do skupin pro cílení rezervací "
+"založených na \"váze\". Potenciální exempláře z organizačních jednotek se "
+"stejnou \"váhou\" jsou vybírány náhodně."
 
 #: 950.data.seed-values.sql:1342
 msgid "ADMIN_USER_REQUEST_TYPE"
-msgstr ""
+msgstr "ADMIN_USER_REQUEST_TYPE"
 
 #: 950.data.seed-values.sql:610
 msgid "User may link another user to an entry in a statistical category"
 msgstr ""
+"Uživatel smí propojit jiného uživatele s údajem ve statistické kategorii"
 
 #: 950.data.seed-values.sql:10222
 msgid "An overdue circulation should be aged to a Lost status."
 msgstr ""
+"Výpůjčky s uplynulou lhůtou  mají po čase změnit status na \"ztraceno\""
 
 #: 950.data.seed-values.sql:6406
 msgid "Manobo languages"
@@ -9991,11 +10028,11 @@ msgstr "Tereno"
 
 #: 950.data.seed-values.sql:13351
 msgid "Best-hold selection sort order"
-msgstr ""
+msgstr "Pořadí pro třídění výběru nejlepší rezervace"
 
 #: 950.data.seed-values.sql:952
 msgid "DELETE_CIRC_DURATION"
-msgstr ""
+msgstr "DELETE_CIRC_DURATION"
 
 #: 950.data.seed-values.sql:11190
 msgid "Library of Congress Subject Headings"
@@ -10003,11 +10040,11 @@ msgstr "Věcné třídění kongresové knihovny"
 
 #: 950.data.seed-values.sql:602
 msgid "User may update a patron statistical category"
-msgstr ""
+msgstr "Uživatel smí upravit statistickou kategorii čtenáře"
 
 #: 950.data.seed-values.sql:2859
 msgid "Spine label maximum lines"
-msgstr ""
+msgstr "Maximální počet řádků na hřbetních štítcích"
 
 #: 950.data.seed-values.sql:6278
 msgid "Gorontalo"
@@ -10016,10 +10053,11 @@ msgstr "Gorontalo"
 #: 950.data.seed-values.sql:1234
 msgid "Allow a user to create, update, and delete trigger validators"
 msgstr ""
+"Povolit uživateli vytvořit, upravit a smazat validátory spouštěčů (triggerů)"
 
 #: 950.data.seed-values.sql:3286
 msgid "FIFO"
-msgstr ""
+msgstr "FIFO (podle pořadí)"
 
 #: 950.data.seed-values.sql:3973
 msgid ""
@@ -10027,6 +10065,10 @@ msgid ""
 "the URL associated with the \"Library information URL\" library setting "
 "rather than the library information page generated by Evergreen."
 msgstr ""
+"Pokud je hodnota nastavena jako \"pravda\", jméno knihovny v sekci detailů "
+"exempláře bude odkazovat na  URL přiřazené jako \"URL informací o knihovně\" "
+"v nastavení knihovny  spíše než na informační stránku knihovny generovanou "
+"Evergreenem."
 
 #: 950.data.seed-values.sql:29
 msgid "Patron exceeds pre-collections warning fine threshold"
@@ -10051,7 +10093,7 @@ msgstr "Otrok"
 
 #: 950.data.seed-values.sql:620
 msgid "User may delete an entry from a copy statistical category"
-msgstr ""
+msgstr "Uživatel smí smazat údaj ze statistické kategorie exemplářů"
 
 # id::clm.value__mac
 #: 950.data.seed-values.sql:6380
@@ -10060,15 +10102,15 @@ msgstr "Makedonština"
 
 #: 950.data.seed-values.sql:13923
 msgid "Vandelay Default Circulation Modifier"
-msgstr ""
+msgstr "Výchozí modifikátor výpůjčky pro Vandelay"
 
 #: 950.data.seed-values.sql:692
 msgid "Allow a user to void a bill"
-msgstr ""
+msgstr "Povolit uživateli zrušit poplatek"
 
 #: 950.data.seed-values.sql:1118
 msgid "CREATE_IMPORT_TRASH_FIELD"
-msgstr ""
+msgstr "CREATE_IMPORT_TRASH_FIELD"
 
 #: 950.data.seed-values.sql:4669
 msgid "Show prefix field on patron registration"
@@ -10080,7 +10122,7 @@ msgstr "Textový dokument"
 
 #: 950.data.seed-values.sql:548
 msgid "Allow a user to view another user's Patron Record"
-msgstr ""
+msgstr "Povolit uživateli zobrazit čtenářské údaje jiného uživatele"
 
 #: 950.data.seed-values.sql:6571
 msgid "Ugaritic"
@@ -10092,7 +10134,7 @@ msgstr "Zobrazit pole \"další telefon\" na kartě registračních údajů čte
 
 #: 950.data.seed-values.sql:1416
 msgid "UPDATE_INVOICE_METHOD"
-msgstr ""
+msgstr "UPDATE_INVOICE_METHOD"
 
 #: 950.data.seed-values.sql:6131
 msgid "Aleut"
@@ -10117,15 +10159,15 @@ msgstr "Systém: Pronájem"
 
 #: 950.data.seed-values.sql:2473
 msgid "Staff forced"
-msgstr ""
+msgstr "Vynuceno personálem"
 
 #: 950.data.seed-values.sql:1406
 msgid "UPDATE_BIB_SOURCE"
-msgstr ""
+msgstr "UPDATE_BIB_SOURCE"
 
 #: 950.data.seed-values.sql:4909
 msgid "Tag Circulated Items in Results"
-msgstr ""
+msgstr "Ve výsledcích označit vypůjčené jednotky"
 
 # id::clm.value__lui
 #: 950.data.seed-values.sql:6376
@@ -10134,11 +10176,11 @@ msgstr "Luiseño"
 
 #: 950.data.seed-values.sql:9614
 msgid "Number of pieces actually received at the final destination."
-msgstr ""
+msgstr "Počet kusů skutečně přijatých v cílové destinaci"
 
 #: 950.data.seed-values.sql:1022
 msgid "UPDATE_LASSO"
-msgstr ""
+msgstr "UPDATE_LASSO"
 
 #: 950.data.seed-values.sql:9810
 msgid ""
@@ -10148,7 +10190,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:884
 msgid "Allow a user to create/view/update/delete a fund"
-msgstr ""
+msgstr "Povolit uživateli vytvořit/upravit/smazat fond"
 
 #: 950.data.seed-values.sql:11031
 msgid "See Also From Tracing -- Geographic Name"
@@ -10172,11 +10214,11 @@ msgstr "Upozornění s blokací výpůjček, rezervací a prodloužení"
 
 #: 950.data.seed-values.sql:9718
 msgid "Historical Hold Retention Age - Canceled (Staff forced)"
-msgstr ""
+msgstr "Doba pro uchování historie rezervací - zrušeno (vynuceno personálem)"
 
 #: 950.data.seed-values.sql:2623
 msgid "Music"
-msgstr ""
+msgstr "Hudba"
 
 #: 950.data.seed-values.sql:3982
 msgid ""
@@ -10186,6 +10228,11 @@ msgid ""
 "        (e.g. Asterisk 1.4).\n"
 "        "
 msgstr ""
+"\n"
+"        Toto potlačí řádky z opensrf.xml.\n"
+"        Řádek/řádky musí být validní pro server a platformu\n"
+"        (např.  Asterisk 1.4).\n"
+"        "
 
 #: 950.data.seed-values.sql:6598
 msgid "Zapotec"
@@ -10217,7 +10264,7 @@ msgstr "Kongr. kn."
 #: 950.data.seed-values.sql:12365 950.data.seed-values.sql:12382
 #: 950.data.seed-values.sql:12399 950.data.seed-values.sql:12416
 msgid "USA"
-msgstr ""
+msgstr "USA"
 
 #: 950.data.seed-values.sql:123
 msgid "Uniform Title"
@@ -10234,11 +10281,11 @@ msgstr "Litevština"
 
 #: 950.data.seed-values.sql:862
 msgid "Allow a user to mark an item status as 'on order'"
-msgstr ""
+msgstr "Povolit uživateli označit status exmpláře jako \"objednáno\""
 
 #: 950.data.seed-values.sql:524
 msgid "Allow a user to create new MARC records"
-msgstr ""
+msgstr "Povolit uživateli vytvořit nový záznam MARC"
 
 #: 950.data.seed-values.sql:6603
 msgid "Zuni"
@@ -10254,17 +10301,17 @@ msgstr "Záhlaví -- chronologický termín"
 
 #: 950.data.seed-values.sql:1498
 msgid "Allows update/re-use of an acquisitions pick/selection list."
-msgstr ""
+msgstr "Povolit upravit/znovu použít akviziční seznam"
 
 #: 950.data.seed-values.sql:608
 msgid "User may update an entry in a copy statistical category"
-msgstr ""
+msgstr "Uživatel smí upravit údaj statistické kategorie exempláře"
 
 #: 950.data.seed-values.sql:6755 950.data.seed-values.sql:6756
 #: 950.data.seed-values.sql:6821 950.data.seed-values.sql:6822
 #: 950.data.seed-values.sql:6912 950.data.seed-values.sql:6913
 msgid "Audiocassette music recording"
-msgstr ""
+msgstr "Hudební záznam na audiokazetě"
 
 # id::czs.label__oclc
 #: 950.data.seed-values.sql:370
@@ -10273,26 +10320,28 @@ msgstr "OCLC"
 
 #: 950.data.seed-values.sql:3295
 msgid "Maximum previous checkouts displayed"
-msgstr ""
+msgstr "Maximální počet pro zobrazení předchozích výpůjček"
 
 #: 950.data.seed-values.sql:574
 msgid "Allow a user to create a new container for another user"
-msgstr ""
+msgstr "Povolit uživateli vytvořit nový kontejner pro jiného uživatele"
 
 #: 950.data.seed-values.sql:2769
 msgid "Default Classification Scheme"
-msgstr ""
+msgstr "Výchozí klasifikační schéma"
 
 #: 950.data.seed-values.sql:1588
 msgid ""
 "Allows the user to check-in long-overdue items, prompting long-overdue check-"
 "in processing"
 msgstr ""
+"Povolí uživateli vrátit dlouhodobě nevrácené exempláře s uplynulo lhůtou a "
+"spustit tak proces vrácení dlouhodobě nevrácených"
 
 #: 950.data.seed-values.sql:483 950.data.seed-values.sql:13586
 #: 950.data.seed-values.sql:13592
 msgid "Long-Overdue Materials Processing Fee"
-msgstr ""
+msgstr "Poplatek za zpracování dlouhodobě nevrácených materiálů"
 
 #: 950.data.seed-values.sql:6198
 msgid "Choctaw"
@@ -10300,7 +10349,7 @@ msgstr "Choctawština"
 
 #: 950.data.seed-values.sql:3682 950.data.seed-values.sql:3685
 msgid "Void lost item billing when returned"
-msgstr ""
+msgstr "Zrušit poplatek za ztracený exemplář pokud je exemplář vrácen"
 
 # id::clm.value__aym
 #: 950.data.seed-values.sql:6151
@@ -10317,6 +10366,9 @@ msgid ""
 "tracking, turning on this setting will cause previous (or currently) "
 "circulated items to be highlighted in search results"
 msgstr ""
+"Když je uživatel přihlášený a zároveň má aktivováno sledování historie "
+"výpůjček, zapnutí tohoto nastavení způsobí, že nyní  nebo dříve vypůjčené "
+"exempláře budou zvýrazněny ve výsledcích vyhledávání."
 
 #: 950.data.seed-values.sql:170 950.data.seed-values.sql:375
 #: 950.data.seed-values.sql:396 950.data.seed-values.sql:415
@@ -10325,7 +10377,7 @@ msgstr "Kontrolní číslo záznamu (TCN)"
 
 #: 950.data.seed-values.sql:3826 950.data.seed-values.sql:3829
 msgid "Enable PayPal payments"
-msgstr ""
+msgstr "Povolit platby  PayPal"
 
 # id::clm.value__-sho id::clm.value__sna
 #: 950.data.seed-values.sql:6496 950.data.seed-values.sql:6511
@@ -10342,6 +10394,9 @@ msgid ""
 "Uncheck bills by default in the patron billing interface, and focus on the "
 "Uncheck All button instead of the Payment Received field."
 msgstr ""
+"V rozhraní pro platby čtenářů jako výchozí nastavení použit \"odznačit "
+"poplatky\" a nastavit kurzor na tlačítko \"Odznačit všechny\" namísto pole "
+"\"Přijato\""
 
 #: 950.data.seed-values.sql:10291
 msgid "Import failed due to invalid copy location"
@@ -10353,11 +10408,11 @@ msgstr "Záznam odkazující na podrozdělení  -- podrozdělení podle formy"
 
 #: 950.data.seed-values.sql:902
 msgid "CREATE_AUDIENCE"
-msgstr ""
+msgstr "CREATE_AUDIENCE"
 
 #: 950.data.seed-values.sql:672
 msgid "Allow a user to create a container for themselves"
-msgstr ""
+msgstr "Povolit uživateli vytvořit kontejner pro něj samotného"
 
 # id::cblvl.value__a
 #: 950.data.seed-values.sql:6659
@@ -10386,7 +10441,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:578
 msgid "Allow a user to see what another user has checked out"
-msgstr ""
+msgstr "Povolit uživateli zobrazit výpůjčky jiného uživatele"
 
 #: 950.data.seed-values.sql:3559
 msgid "All selfcheck stations must use a workstation"
@@ -10420,6 +10475,9 @@ msgid ""
 "Out navigation button.  This setting will include Lost circulations as "
 "counting toward these tallies."
 msgstr ""
+"V zobrazení čtenářského konta se v postranní liště a pod navigačním "
+"tlačítkem  \"Výpůjčky\" zobrazí celkový počet aktivních výpůjček. Toto "
+"nastavení bude zahrnovat také ztracené výpůjčky."
 
 #: 950.data.seed-values.sql:6515
 msgid "Sogdian"
@@ -10427,7 +10485,7 @@ msgstr "Soghdština"
 
 #: 950.data.seed-values.sql:1292
 msgid "ADMIN_BOOKING_RESERVATION_ATTR_MAP"
-msgstr ""
+msgstr "ADMIN_BOOKING_RESERVATION_ATTR_MAP"
 
 #: 950.data.seed-values.sql:6353
 msgid "Kuanyama"
@@ -10451,7 +10509,7 @@ msgstr "Záhlaví -- geografické podrozdělení"
 
 #: 950.data.seed-values.sql:930
 msgid "CREATE_ORG_ADDRESS"
-msgstr ""
+msgstr "CREATE_ORG_ADDRESS"
 
 #: 950.data.seed-values.sql:176
 msgid "System Control Number"
@@ -10459,13 +10517,15 @@ msgstr "Systémové kontrolní číslo"
 
 #: 950.data.seed-values.sql:11055
 msgid "See From Tracing -- Meeting Name"
-msgstr ""
+msgstr "Viz z dohledávání -- Datum setkání"
 
 #: 950.data.seed-values.sql:13717
 msgid ""
 "Marks a circulating item as long-overdue and applies configured penalties.  "
 "Also creates events for the longoverdue.auto hook"
 msgstr ""
+"Označí vypůjčené jednotky jako dlouhodobě nevrácené a aplikuje nastavené "
+"pokuty. Také vytvoří událost pro vazbu spouštěče longoverdue.auto."
 
 #: 950.data.seed-values.sql:6492
 msgid "Semitic (Other)"
@@ -10473,17 +10533,20 @@ msgstr "Semitské jazyky (ostatní)"
 
 #: 950.data.seed-values.sql:1122
 msgid "DELETE_IMPORT_ITEM_ATTR_DEF"
-msgstr ""
+msgstr "DELETE_IMPORT_ITEM_ATTR_DEF"
 
 #: 950.data.seed-values.sql:4040
 msgid ""
 "The OPAC should not display payments by patrons that are older than any "
 "interval defined here."
 msgstr ""
+"OPAC by neměl zobrazovat platby čtenáře, které jsou starší než interval, "
+"který je zde definován."
 
 #: 950.data.seed-values.sql:866
 msgid "Allows a user to add/remove/edit users in the \"ACQ\" group"
 msgstr ""
+"Povolit uživateli přidat/odebrat/upravit uživatele ve skupině \"Akvizicie\""
 
 #: 950.data.seed-values.sql:4480
 msgid "Show email field on patron registration"
@@ -10493,10 +10556,11 @@ msgstr "Zobrazit pole \"e-mail\" na kartě registračních údajů čtenáře"
 msgid ""
 "This might be \"AuthorizeNet\", \"PayPal\", \"PayflowPro\", or \"Stripe\"."
 msgstr ""
+"Může to být  \"AuthorizeNet\", \"PayPal\", \"PayflowPro\" nebo \"Stripe\"."
 
 #: 950.data.seed-values.sql:1408
 msgid "UPDATE_BILLING_TYPE"
-msgstr ""
+msgstr "UPDATE_BILLING_TYPE"
 
 #: 950.data.seed-values.sql:13040
 msgid "All Link Checker filter dialogs"
@@ -10504,19 +10568,19 @@ msgstr ""
 
 #: 950.data.seed-values.sql:2552
 msgid "Default Hold Pickup Location"
-msgstr ""
+msgstr "Výchozí knihovna pro vyzvednutí rezervací"
 
 #: 950.data.seed-values.sql:1258
 msgid "Allows a user to capture booking reservations"
-msgstr ""
+msgstr "Povolí uživateli zachytiti rezervace zdrojů"
 
 #: 950.data.seed-values.sql:1242
 msgid "Enables the user to create/update/delete booking resources"
-msgstr ""
+msgstr "Povolí uživateli vytvořit/upravit/smazat rezervované zdroje"
 
 #: 950.data.seed-values.sql:11322
 msgid "Circulation Policy Configuration Column Settings"
-msgstr ""
+msgstr "Nastavení sloupců pro konfiguraci výpůjčních pravidel (politik)"
 
 #: 950.data.seed-values.sql:174
 msgid "Authority Record ID"
@@ -10528,7 +10592,7 @@ msgstr "Obecný kontejner ve služebním klientovi"
 
 #: 950.data.seed-values.sql:632
 msgid "Allow a user to check out a copy"
-msgstr ""
+msgstr "Povolit uživateli půjčení exempláře"
 
 #: 950.data.seed-values.sql:13001
 msgid "Maximum redirect lookups"
@@ -10551,11 +10615,11 @@ msgstr "Seznam literatury"
 
 #: 950.data.seed-values.sql:818
 msgid "Allow a user to update a provider"
-msgstr ""
+msgstr "Povolit uživateli upravit dodavatele"
 
 #: 950.data.seed-values.sql:7508
 msgid "A patron has made an acquisitions request."
-msgstr ""
+msgstr "Čtenář vytvořil akviziční požadavek"
 
 #: 950.data.seed-values.sql:2907
 msgid ""
@@ -10576,7 +10640,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:3808
 msgid "PayflowPro test mode"
-msgstr ""
+msgstr "Testovací mód pro PayflowPro"
 
 #: 950.data.seed-values.sql:6413
 msgid "Creek"
@@ -10592,21 +10656,23 @@ msgstr "Neplatná hodnot \"owning_lib\" (vlastnická knihovna)"
 
 #: 950.data.seed-values.sql:31
 msgid "Patron exceeds max lost item threshold"
-msgstr ""
+msgstr "Čtenář překročil maximální počet ztracených exemplářů"
 
 #: 950.data.seed-values.sql:544
 msgid "Allow a user to edit a user's record"
-msgstr ""
+msgstr "Povolit uživateli editovat záznam uživatele"
 
 #: 950.data.seed-values.sql:1603
 msgid ""
 "Allow a user to add/remove users to/from the \"Cataloging Administrator\" "
 "group"
 msgstr ""
+"Povolit uživateli přidat/odebrat uživatele do/ze skupiny \"Katalogizátor "
+"administrátor\""
 
 #: 950.data.seed-values.sql:1176
 msgid "UPDATE_ORG_UNIT_SETTING.cat.bib.alert_on_empty"
-msgstr ""
+msgstr "UPDATE_ORG_UNIT_SETTING.cat.bib.alert_on_empty"
 
 # id::clm.value__pol
 #: 950.data.seed-values.sql:6462
@@ -10616,14 +10682,16 @@ msgstr "Polština"
 #: 950.data.seed-values.sql:10369
 msgid "CSV output has been requested for records in an Importer Bib Queue."
 msgstr ""
+"Pro záznamy ve frontě pro import bibliografických záznamů je vyžadován CSV "
+"výstup"
 
 #: 950.data.seed-values.sql:504
 msgid "Allow a user to place a hold on a specific copy"
-msgstr ""
+msgstr "Povolit uživateli zadat rezervaci na konkrétní exemplář"
 
 #: 950.data.seed-values.sql:1166
 msgid "UPDATE_ORG_UNIT_SETTING.circ.selfcheck.patron_login_timeout"
-msgstr ""
+msgstr "UPDATE_ORG_UNIT_SETTING.circ.selfcheck.patron_login_timeout"
 
 # id::cam.description__f
 #: 950.data.seed-values.sql:6612
@@ -10636,7 +10704,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:11827
 msgid "Boost Mobile"
-msgstr ""
+msgstr "Boost Mobile"
 
 #: 950.data.seed-values.sql:3361
 msgid ""
@@ -10644,10 +10712,13 @@ msgid ""
 "having Missing Pieces.  In the absence of this setting, the Damaged status "
 "is used."
 msgstr ""
+"Toto je status který se používá pro jednotky, které byly označeny nebo "
+"načteny jak \"mají chybějící kusy\".  Pokud toto nastavení chybí, bude "
+"použit status \"Poškozené\""
 
 #: 950.data.seed-values.sql:846
 msgid "Allow a user to mark an item status as 'checked out'"
-msgstr ""
+msgstr "Povolit uživateli označit status exempláře jako \"vypůjčeno\""
 
 #: 950.data.seed-values.sql:36
 msgid "Alerting block on Circ and Hold"
@@ -10655,7 +10726,7 @@ msgstr "Upozornění s blokací výpůjček a rezervaqcí"
 
 #: 950.data.seed-values.sql:1066
 msgid "CREATE_BIB_IMPORT_QUEUE"
-msgstr ""
+msgstr "CREATE_BIB_IMPORT_QUEUE"
 
 # id::clm.value__pam
 #: 950.data.seed-values.sql:6453
@@ -10677,23 +10748,25 @@ msgstr "Pahlaví (střední perština)"
 
 #: 950.data.seed-values.sql:1528
 msgid "Allows a user to add/create/delete SMS Carrier entries."
-msgstr ""
+msgstr "Povolit uživateli přidat/vytvořit/smazat záznamy SMS operátorů"
 
 #: 950.data.seed-values.sql:9706
 msgid "Historical Hold Retention Age - Canceled (Hold Shelf expiration)"
 msgstr ""
+"Doba uchování historie rezervací - zrušené rezervace (expirace na regále s "
+"rezervacemi)"
 
 #: 950.data.seed-values.sql:2472
 msgid "Patron in person"
-msgstr ""
+msgstr "Čtenář osobně"
 
 #: 950.data.seed-values.sql:3772
 msgid "Enable PayflowPro payments"
-msgstr ""
+msgstr "Povolit platby PayflowPro"
 
 #: 950.data.seed-values.sql:844
 msgid "Allow a user to mark an item status as 'available'"
-msgstr ""
+msgstr "Povolit uživateli označit status exempláře jako \"volné\""
 
 #: 950.data.seed-values.sql:4723
 msgid "Require county field on patron registration"
@@ -10723,6 +10796,8 @@ msgid ""
 "Authority Automation: Disable automatic authority updating (requires link "
 "tracking)"
 msgstr ""
+"Automatizace autorit: Zrušit automatické aktualizace autorit (vyžaduje "
+"sledování odkazů)"
 
 # id::clm.value__crh
 #: 950.data.seed-values.sql:6212
@@ -10731,7 +10806,7 @@ msgstr "Krymská tatarština"
 
 #: 950.data.seed-values.sql:1170
 msgid "UPDATE_ORG_UNIT_SETTING.circ.selfcheck.require_patron_password"
-msgstr ""
+msgstr "UPDATE_ORG_UNIT_SETTING.circ.selfcheck.require_patron_password"
 
 #: 950.data.seed-values.sql:6558
 msgid "Tsimshian"
@@ -10739,7 +10814,7 @@ msgstr "Tsimshijské jazyky"
 
 #: 950.data.seed-values.sql:920
 msgid "CREATE_LASSO"
-msgstr ""
+msgstr "CREATE_LASSO"
 
 # id::clm.value__nog
 #: 950.data.seed-values.sql:6432
@@ -10751,10 +10826,12 @@ msgid ""
 "When using the patron registration page, the duplicate patron check will use "
 "the configured depth to scope the search for duplicate patrons."
 msgstr ""
+"Při použití rozhraní pro registraci čtenáře, duplkovaná kotnrola čtenáře "
+"použije nastavenou hloubku pro rozsah hledání duplicitních čtenářů."
 
 #: 950.data.seed-values.sql:1060
 msgid "CREATE_AUTHORITY_IMPORT_QUEUE"
-msgstr ""
+msgstr "CREATE_AUTHORITY_IMPORT_QUEUE"
 
 #: 950.data.seed-values.sql:6237
 msgid "English, Middle (1100-1500)"
@@ -10772,7 +10849,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:3250
 msgid "Circulation duration that triggers a recall."
-msgstr ""
+msgstr "Doba trvání výpůjčky která spustí znovuvyvolání"
 
 #: 950.data.seed-values.sql:4627
 msgid ""
@@ -10793,6 +10870,8 @@ msgstr "Twi"
 #: 950.data.seed-values.sql:2895
 msgid "Toggle off the patron summary sidebar after first view."
 msgstr ""
+"Po prvním načtení vypnout zobrazení postranní lišty se souhrnnými  údaji o "
+"čtenáři"
 
 #: 950.data.seed-values.sql:6285
 msgid "Gujarati"
@@ -10817,23 +10896,23 @@ msgstr "Filtrováno"
 
 #: 950.data.seed-values.sql:1332
 msgid "ADMIN_ORG_UNIT_SETTING_TYPE"
-msgstr ""
+msgstr "ADMIN_ORG_UNIT_SETTING_TYPE"
 
 #: 950.data.seed-values.sql:2787
 msgid "Default copy status (normal)"
-msgstr ""
+msgstr "Výchozí status exempláře (běžný)"
 
 #: 950.data.seed-values.sql:6837 950.data.seed-values.sql:6838
 msgid "Musical Sound Recording (Unknown Format)"
-msgstr ""
+msgstr "Hudební zvukový záznam (neznámý formát)"
 
 #: 950.data.seed-values.sql:498
 msgid "Allow a user to create a metarecord holds"
-msgstr ""
+msgstr "Povolit uživateli vytvořit rezervaci na úrovni metazáznamu"
 
 #: 950.data.seed-values.sql:11895
 msgid "AT&T Mobility/Wireless"
-msgstr ""
+msgstr "AT&T Mobility/Wireless"
 
 #: 950.data.seed-values.sql:1644
 msgid "Can do anything at the Consortium level"
@@ -10872,6 +10951,8 @@ msgid ""
 "Allow a user to add/remove users to/from the \"Circulation Administrator\" "
 "group"
 msgstr ""
+"Povolit uživateli přidat/odebrat uživatele do/ze skupiny \"personál u "
+"výpůjčního pultu - administrátor\" (circulation administrator)"
 
 #: 950.data.seed-values.sql:1628
 msgid "Acquisitions Administrator"
@@ -10879,11 +10960,11 @@ msgstr "Administrátor akvizice"
 
 #: 950.data.seed-values.sql:6101
 msgid "Sound recording format"
-msgstr ""
+msgstr "Formát zvukového záznamu"
 
 #: 950.data.seed-values.sql:700
 msgid "Allow a user to remove the lost status from a copy"
-msgstr ""
+msgstr "Povolit uživateli zrušit u exempláře status \"ztraceno\""
 
 # id::vqbrad.description__3
 #: 950.data.seed-values.sql:5073
@@ -10900,7 +10981,7 @@ msgstr "Afar"
 
 #: 950.data.seed-values.sql:1274
 msgid "ADMIN_ACQ_CLAIM_EVENT_TYPE"
-msgstr ""
+msgstr "ADMIN_ACQ_CLAIM_EVENT_TYPE"
 
 #: 950.data.seed-values.sql:11200
 msgid "No attempt to code"
@@ -10914,11 +10995,11 @@ msgstr "Offline: Povolení uživatelských jmen čtenářů"
 msgid ""
 "Require staff initials for entry/edit of patron standing penalties and "
 "messages."
-msgstr ""
+msgstr "Požadovat iniciály personálu pro vytvoření/editaci pokut a zpráv"
 
 #: 950.data.seed-values.sql:1338
 msgid "ADMIN_STANDING_PENALTY"
-msgstr ""
+msgstr "ADMIN_STANDING_PENALTY"
 
 #: 950.data.seed-values.sql:139
 msgid "Name Subject"
@@ -10926,7 +11007,7 @@ msgstr "Jmenné téma"
 
 #: 950.data.seed-values.sql:1090
 msgid "DELETE_TRANSLATION"
-msgstr ""
+msgstr "DELETE_TRANSLATION"
 
 #: 950.data.seed-values.sql:6505
 msgid "Northern Sami"
@@ -10945,7 +11026,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:588
 msgid "Allow a user to view other users' permission groups"
-msgstr ""
+msgstr "Povolit uživteli zobrazit skupinu oprávnění u jiných uživatelů"
 
 #: 950.data.seed-values.sql:4474
 msgid "The email field will be required on the patron registration screen."
@@ -10955,15 +11036,15 @@ msgstr ""
 
 #: 950.data.seed-values.sql:3592
 msgid "Content of event_text include"
-msgstr ""
+msgstr "Obsah inkludu event_text"
 
 #: 950.data.seed-values.sql:1442
 msgid "VIEW_HOLD_MATRIX_MATCHPOINT"
-msgstr ""
+msgstr "VIEW_HOLD_MATRIX_MATCHPOINT"
 
 #: 950.data.seed-values.sql:698
 msgid "Allow a user to check in/out an item that has an alert message"
-msgstr ""
+msgstr "Povolit uživateli vracení/půjčování jednotek, které mají upozornění."
 
 #: 950.data.seed-values.sql:13497
 msgid "During fiscal rollover, update distribution formalae to use new funds"
@@ -10971,7 +11052,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:9601
 msgid "Not accepted"
-msgstr ""
+msgstr "Nepřijato"
 
 #: 950.data.seed-values.sql:3520
 msgid "Block copy checkout status"
@@ -10979,7 +11060,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:2470
 msgid "Hold Shelf expiration"
-msgstr ""
+msgstr "Expirace rezervací na regále"
 
 #: 950.data.seed-values.sql:2661
 msgid "Fund Spending Limit for Block"
@@ -10987,7 +11068,7 @@ msgstr "Limit pro blokaci při čerpání z fondu"
 
 #: 950.data.seed-values.sql:854
 msgid "Allow a user to mark an item status as 'in process'"
-msgstr ""
+msgstr "Povolit uživateli označit status jednotky jako \"zpracovává se\""
 
 # id::clm.value__sus
 #: 950.data.seed-values.sql:6527
@@ -10996,7 +11077,7 @@ msgstr "Susu"
 
 #: 950.data.seed-values.sql:1312
 msgid "ADMIN_IDENT_TYPE"
-msgstr ""
+msgstr "ADMIN_IDENT_TYPE"
 
 #: 950.data.seed-values.sql:12614
 msgid "Login via xmlrpc"
@@ -11008,7 +11089,7 @@ msgstr "Ztraceno"
 
 #: 950.data.seed-values.sql:614
 msgid "User may delete a patron statistical category"
-msgstr ""
+msgstr "Uživatel smí smazat statistickou kategorii uživatele"
 
 #: 950.data.seed-values.sql:6519
 msgid "Spanish"
@@ -11045,7 +11126,7 @@ msgstr "Povolit uživateli smazat kontejner (skupinu) jiného uživatele"
 #: 950.data.seed-values.sql:6827 950.data.seed-values.sql:6828
 #: 950.data.seed-values.sql:6918 950.data.seed-values.sql:6919
 msgid "Phonograph music recording"
-msgstr ""
+msgstr "gramofonový zvukový záznam"
 
 #: 950.data.seed-values.sql:264
 msgid "7_days_2_renew"
