@@ -25,7 +25,7 @@ image::media/booking-create-3.png[]
 
 For catalogued items, the title and the item will display in the box.
 
-5) Select the date and time for the reservation in I need this resource... area. Click the date field. A calendar widget will be displayed for you to choose a date. Click the time field to choose time from the dropdown list.
+5) Select the date and time for the reservation in *I need this resource...* area. Click the date field. A calendar widget will be displayed for you to choose a date. Click the time field to choose time from the dropdown list.
 
 image::media/booking-create-4.png[]
 
@@ -74,7 +74,7 @@ For catalogued resources, the title and item will appear.
 
 image::media/booking-create-module-4.png[]
 
-5) Select the date and time for the reservation in I need this resource... area. Click the date field. A calendar widget will be displayed for you to choose a date. Click the time field to choose time from the dropdown list.
+5) Select the date and time for the reservation in *I need this resource...* area. Click the date field. A calendar widget will be displayed for you to choose a date. Click the time field to choose time from the dropdown list.
 
 image::media/booking-create-4.png[]
 
@@ -116,7 +116,7 @@ If you would like to reserve a catalogued item but do not know the item barcode,
 
 5) Enter the user’s barcode in the Reserve to patron barcode box. The user’s existing reservations, if any, will appear at the bottom of the screen.
 
-6) Select the date and time in I need this resource... section. If the date and time set is incorrect the boxes appear in red. For example, if the time for which the reservation is set has already passed, the boxes will appear in red.
+6) Select the date and time in *I need this resource...* section. If the date and time set is incorrect the boxes appear in red. For example, if the time for which the reservation is set has already passed, the boxes will appear in red.
 
 7) Select pickup location. If there are multiple copies and any of the listed items is acceptable, click Reserve Any. To choose a specific item, select it and then click Reserve Selected.
 
