@@ -420,7 +420,7 @@ When enabled, the alternate pick up location will appear in several places in th
 image::media/custom_hold_pickup_location1.JPG[Custom Hold Pickup Location]
 
 
-If configured, patrons will see the option to opt-in to the alternate location in the Account Preferences section of their OPAC Account.
+If configured, patrons will see the option to opt-in to the alternate location in the _Account Preferences_ section of their OPAC Account.
 
 image::media/custom_hold_pickup_location2.JPG[OPAC Account]
 

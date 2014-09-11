@@ -157,7 +157,7 @@ In the Evergreen staff client:
   privileges.
 . Select *Admin (-) -> Offline Transaction Management* from the menu. The
   *Offline Transactions* screen opens. Previously created sessions are listed
-  in the Offline Sessions section.
+  in the *Offline Sessions* section.
 . In the upper *Offline Sessions* section, click *Create* to create a new
   session.
 . Enter a name for the session, like `Internet Down 2012-12-02`.  Click *OK*.
@@ -204,7 +204,7 @@ and make them live on the Evergreen server:
   privileges.
 . Select *Admin (-) -> Offline Transaction Management* from the menu. The
   *Offline Transactions* screen opens. Previously created sessions are listed
-  in the Offline Sessions section.
+  in the *Offline Sessions* section.
 . Highlight the correct session and, if necessary, click *Refresh* to verify
   all the participating workstations have uploaded their transactions to your
   session.
