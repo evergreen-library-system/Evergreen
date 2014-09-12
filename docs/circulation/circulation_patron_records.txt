@@ -462,6 +462,11 @@ image::media/circulation_patron_records-24.png[circulation_patron_records 24]
 
 Select the _Add New Note_ button. An _Add Note_ window displays.  
 
+[TIP] 
+================================================ 
+To add a box in the _Add Note_ window for staff initials and require their entry, see the section <<settings_for_staff_initials,Granular Settings for Staff Initials>>.
+================================================ 
+
 Enter note information. 
 
 Select the check box for _Patron Visible_ to display the note in the OPAC. 
