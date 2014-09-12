@@ -34,7 +34,7 @@ will also appear.
 image::media/view-output-4.png[view-output-4]
 +
 . If you want to manipulate, filter or graph this data, Excel output would be 
-more useful. Excel output looks like this in Excel:
+more useful. Excel output will generate a ".xlsx" file.  Excel output looks like this in Excel:
 +
 image::media/view-output-5.png[view-output-5]
 
