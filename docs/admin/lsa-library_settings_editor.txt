@@ -121,3 +121,14 @@ sites wanting to use Stripe. These settings can be found by clicking
 
  * "Name default credit processor" (should be 'Stripe')
 
+[[settings_for_staff_initials]]
+Add granular settings for requiring staff initials for notes
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+There are now three separate library settings for controlling whether staff are required to input their initials when creating different types of notes. These settings can be found by clicking *Admin* -> *Local Administration* -> *Library Settings Editor*
+ 
+Library Settings
+^^^^^^^^^^^^^^^^
+ * Require staff initials for entry/edit of patron standing penalties and messages. 
+ * Require staff initials for entry/edit of patron notes.
+ * Require staff initials for entry/edit of copy notes. 
