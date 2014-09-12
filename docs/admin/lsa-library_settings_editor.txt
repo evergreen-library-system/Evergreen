@@ -121,6 +121,7 @@ sites wanting to use Stripe. These settings can be found by clicking
 
  * "Name default credit processor" (should be 'Stripe')
 
+=======
 [[settings_for_staff_initials]]
 Add granular settings for requiring staff initials for notes
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
