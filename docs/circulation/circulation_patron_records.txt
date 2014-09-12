@@ -379,9 +379,25 @@ Some examples:
 A notice appears when a staff person tries to checkout an item to blocked
 patrons, but staff may be given permissions to override blocks.
 
+
+Staff-Generated Messages
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+[[staff_generated_messages]]
+indexterm:[patrons, messages]
+
+There are several types of messages available for staff to leave notes on patron records.
+
+*Patron Notes*: These notes are added via _Other_ -> _Notes_ in the patron record, and create a clickable (See Notes) message beneath the patron name on the patron record screen. These notes can be viewable by staff only or shared with the patron. Staff initials can be required. (See the section <<circulation_patron_notes,Patron Notes>> for more.)
+
+*Patron Alerts*: This type of alert is added via _Edit_ button in the patron record. It creates a non-blocking alert message which displays when the patron is retrieved. It also creates a clickable (Alert) message beneath the patron name on the patron record screen. There is currently no way to require staff initials for this type of alert. (See the section <<circulation_patron_alerts,Patron Alerts>> for more.)
+
+*Staff-Generated Penalties/Messages*: These messages are added via the _Messages_ button in the patron record. They can be a note, alert or block. Staff initials can be required. (See the section <<staff_generated_penalties,Staff-Generated Penalties/Messages>> for more.)
+
 Patron Alerts 
 ~~~~~~~~~~~~~~
 
+[[circulation_patron_alerts]]
 indexterm:[patrons, Alerts]
     
 When an account has an alert on it, a Stop sign is displayed when the record is
@@ -437,6 +453,7 @@ the account.
 Patron Notes 
 ~~~~~~~~~~~~
 
+[[circulation_patron_notes]]
 indexterm:[patrons, notes]
 
 When a patron account contains a note, a _See Notes_ message appears beneath the
@@ -482,6 +499,73 @@ image::media/circulation_patron_records-26.png[circulation_patron_records 26]
 
 An alert will display.  Click _Yes_ to delete the note or No to retain the note.
 A confirmation box will display; click _OK_.
+
+
+Staff-Generated Penalties/Messages
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+[[staff_generated_penalties]]
+To access this feature, use the _Messages_ button in the patron record.
+
+image::media/staff-penalties-1.jpg[Messages screen]
+
+Add a Message
+^^^^^^^^^^^^^
+
+Click *Apply Standing Penalty/Message* to begin the process of adding a message to the patron.
+
+image::media/staff-penalties-2.jpg[Apply Penalty Dialog Box]
+
+There are three options: Notes, Alerts, Blocks
+
+* *Note*: This will create a non-blocking, non-alerting note visible to staff. Staff will be alerted to the message by the light-blue framing around the patron name, and can view the message by clicking the _Messages_ button on the patron record.  (Notes created in this fashion will not display via _Other_ -> _Notes_, and cannot be shared with the patron. See the <<circulation_patron_notes,Patron Notes>> section for notes which can be shared with the patron.)
+
+* *Alert*: This will create a non-blocking alert which appears when the patron record is first retrieved.  The alert will generate a dark-blue frame around the patron name. Alerts may be viewed by clicking the _Messages_ button on the patron record or by selecting _Other_ -> _Display Alerts and Messages_.
+
+* *Block*: This will create a blocking alert which appears when the patron record is first retrieved, and which behaves much as the non-blocking alert described previously. The patron will be also blocked from circulation, holds and renewals until the block is cleared by staff.
+
+After selecting the type of message to create, enter the message body into the box. If Staff Initials are required, they must be entered into the _Initials_ box before the message can be added.  Otherwise, fill in the optional _Initials_ box and click *Apply*
+
+The message should now be visible in the _Staff-Generated Penalties/Messages_ list. If a blocking or non-blocking alert, the message will also display immediately when the patron record is retrieved.
+
+image::media/staff-penalties-3.jpg[Messages on a record]
+
+Modify a Message
+^^^^^^^^^^^^^^^^
+
+Messages can be edited by staff after they are created. 
+
+image::media/staff-penalties-4.jpg[Actions menu]
+
+Click to select the message to be modified, then click _Actions for these Penalties/Messages_ -> _Modify Penalty/Message_. This menu can also be accessed by right-clicking in the message area.
+
+image::media/staff-penalties-5.jpg[Modify penalty dialog box]
+
+To change the type of message, click on *Note*, *Alert*, *Block* to select the new type. Edit or add new text in the message body.  Enter Staff Initials into the _Initials_ box (may be required.) and click *Modify* to submit the alterations.
+
+image::media/staff-penalties-6.jpg[Modified message in the list]
+
+Archive a Message
+^^^^^^^^^^^^^^^^^
+
+Messages which are no longer current can be archived by staff. This action will remove any alerts or blocks associated with the message, but retains the information contained there for future reference.
+
+image::media/staff-penalties-4.jpg[Actions menu]
+
+Click to select the message to be archived, then click _Actions for these Penalties/Messages_ -> _Archive Penalty/Message_. This menu can also be accessed by right-clicking in the message area.
+
+image::media/staff-penalties-7.jpg[Archived messages]
+
+Archived messages will be shown in the section labelled _Archived Penalties/Messages_. To view messages, click *Retrieve Archived Penalties*. By default, messages archived within the past year will be retrieved. To retrieve messages from earlier dates, change the start date to the desired date before clicking *Retrieve Archived Penalties*.
+
+Remove a Message
+^^^^^^^^^^^^^^^^
+
+Messages which are no longer current can be removed by staff.  This action removes any alerts or blocks associated with the message and deletes the information from the system.
+
+image::media/staff-penalties-4.jpg[Actions menu]
+
+Click to select the message to be removed, then click _Actions for these Penalties/Messages_ -> _Remove Penalty/Message_. This menu can also be accessed by right-clicking in the message area.
 
 Merging Patron Records 
 ~~~~~~~~~~~~~~~~~~~~~~
