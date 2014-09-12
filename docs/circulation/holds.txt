@@ -363,7 +363,9 @@ image::media/holds-clearing-2.png[holds-clearing-2]
 +
 image::media/holds-clearing-3.png[holds-clearing-3]
 +
-. Check the _View Shelf-Expired Holds_ checkbox to list expired holds only. Click the _Print_ button if you need a printed list.
+. Check the _View Clearable Holds_ checkbox to list expired holds, wrong-shelf holds and canceled holds only. Expired holds are holds that expired before today's date.
+
+. Click the _Print_ button if you need a printed list. To format the printout customize the *Holds_shelf* receipt template. This can be done in _Admin_ -> _Workstation Administration_ -> _Receipt Template Editor_.
 
 . The _Clear These Holds_ button is lit up. Click it and the expired holds will be canceled.
 +
