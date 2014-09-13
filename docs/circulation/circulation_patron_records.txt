@@ -652,15 +652,16 @@ image::media/circulation_patron_bills-2.png[circulation_patron_bills 2]
 *Circulation bills*: system-generated (overdue fines, lost
 item cost, processing fees, etc.).
 
-* Overdue fines are added daily once an item is overdue.  When an item is marked
-* as lost, bills may be automatically generated to cover the item's cost and a
-* processing fee, according to library policy.
+* Overdue fines are added daily once an item is overdue.
+* When an item is marked as lost, bills may be automatically generated to cover
+the item's cost and a processing fee, according to library policy.
 
 *Grocery bills*: staff-applied to patron accounts.
 
 * One default grocery bill, Misc, exists in an unmodified Evergreen
-* installation.  Additional grocery bills may be configured through the Admin
-* settings.  Admin -> Server Administration -> Billing Types.
+installation.
+* Additional grocery bills may be configured through the Admin settings. *Admin*
+ -> *Server Administration* -> *Billing Types*.
 
 To view more information about a bill, highlight the bill and right-click or use
 the _Actions for Selected Transactions_ menu to select _Full Details_.
@@ -692,8 +693,13 @@ appropriate amount.
 
 image::media/circulation_patron_bills-6.png[circulation_patron_bills 6]
 
-NOTE: the presence of the _Uncheck All_ and _Check All_ options below the list
-of bills.
+[TIP]
+By default, Evergreen checks all bills when the bills screen loads. 
+Evergreen sites can change this default by enabling the _Uncheck bills by
+default in the patron billing interface_ setting in the Library Settings
+Editor (*Admin* -> *Local Administration* -> *Library Settings Editor*). Note
+the presence of the _Uncheck All_ and _Check All_ options below the list of
+bills.
 
 image::media/circulation_patron_bills-7.png[circulation_patron_bills 7]
 
@@ -726,10 +732,17 @@ image::media/circulation_patron_bills-9.png[circulation_patron_bills 9]
 
 [TIP] 
 ================================================ 
-* Items marked with red are still checked out. It is possible for a patron to
-* pay a bill while the item is still out and accruing fines.  When Check is
-* selected as the payment type, it is not necessary to select _Annotate
-* Payment_, as a box for the check number and a note displays automatically.
+* Items marked with red are still checked out. Items marked with dark red are
+lost. Items marked with orange are still checked out and long overdue.
+* It is possible for a patron to pay a bill while the item is still out and
+accruing fines. 
+* When Check is selected as the payment type, it is not necessary to select
+_Annotate Payment_, as a box for the check number and a note displays
+automatically.
+* If a patron pays the entire bill for a lost item and the library has enabled
+the _Use Lost and Paid copy status_ setting in the Library Settings Editor
+(*Admin* -> *Local Administration* -> *Library Settings Editor*), the copy's 
+status will automatically change from _Lost_ to _Lost and Paid_.
 ================================================
 
 Void vs. Forgive 

@@ -198,11 +198,13 @@ include::admin/authorities.txt[]
 
 include::admin/Best_Hold_Selection_Sort_Order.txt[]
 
+include::admin/booking-admin.txt[]
+
 include::admin/cn_prefixes_and_suffixes.txt[]
 
 include::admin/circulation_limit_groups.txt[]
 
-include::admin/booking-admin.txt[]
+include::admin/copy_statuses.txt[]
 
 // Push titles down one level.
 :leveloffset: 1
