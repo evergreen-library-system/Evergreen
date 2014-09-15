@@ -204,7 +204,7 @@ image::media/holds-managing-17.png[holds-managing-17]
 +
 image::media/holds-managing-18.png[holds-managing-18]
 +
-. Highlight the hold you want to edit. Choose an action from the _Actions for Selected Holds_ menu. For more information see the link:_managing_holds.html#_actions_for_selected_holds[Actions for Selected Holds] section.
+. Highlight the hold you want to edit. Choose an action from the _Actions for Selected Holds_ menu. For more information see the <<_actions_for_selected_holds,Actions for Selected Holds>> section.
 +
 image::media/holds-managing-19.png[holds-managing-19]
 +
