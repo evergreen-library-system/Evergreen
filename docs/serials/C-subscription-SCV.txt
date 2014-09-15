@@ -52,7 +52,7 @@ image::media/scv-combined-dist.png[Distribution]
 Label, Holding Library, and Receive Unit Template are required fields when creating a distribution.
 
 [NOTE]
-Streams are created automatically in the Serial Control View. For information on using Streams in the combination Serial Control View, see link:_creating_a_stream.html[Creating a Stream].
+Streams are created automatically in the Serial Control View. For information on using Streams in the combination Serial Control View, see <<_creating_a_stream,Creating a Stream>>.
 
 From the original Serial Control View
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
