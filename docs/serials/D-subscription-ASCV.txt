@@ -182,7 +182,7 @@ Generate Item Predictions
 After you manually create the first issue, Evergreen will predict future issuances. Use the Generate Predictions functionality to predict future issues.
 
 . Click *Subscription Details* -> *Issuances* -> *Generate Predictions*.
-. Choose the length of time for which you want to predict issues. If you select the radio button to predict until end of subscription, then Evergreen will predict issues until the end date that you created when you created the subscription. See link:_alternate_serial_control_view.html#_creating_a_subscription[] for more information. If you do not have an end date, select the radio button to predict a certain number of issuances, and enter a number in the field.
+. Choose the length of time for which you want to predict issues. If you select the radio button to predict until end of subscription, then Evergreen will predict issues until the end date that you created when you created the subscription. See <<_creating_a_subscription,creating a subscription>> for more information. If you do not have an end date, select the radio button to predict a certain number of issuances, and enter a number in the field.
 . Click Generate.
 . Evergreen will predict a run of issuances and copies. The prediction will appear in a list.
 . You can delete the first, manual issuance by clicking the check box adjacent to the issuance and clicking Delete Selected.
