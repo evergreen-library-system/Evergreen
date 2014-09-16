@@ -231,8 +231,8 @@ Monograph Part Merging
 
 The monograph part list for a bibliographic record may, over time, diverge from
 the proscribed format, resulting in multiple labels for what are essentially the
-same item.  For instance, ``++Vol.{nbsp}1++'' may have variants
-like ``++V.1++'', ``++Vol{nbsp}1++'', or ``++{nbsp}Vol.{nbsp}1++'' (leading
+same item.  For instance, ++Vol.{nbsp}1++ may have variants
+like ++V.1++, ++Vol{nbsp}1++, or ++{nbsp}Vol.{nbsp}1++ (leading
 space).This feature will allow cataloging staff to collapse the variants into
 one value.
 
