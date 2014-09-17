@@ -301,6 +301,8 @@ include::cataloging/conjoined_items.txt[]
 
 include::cataloging/cataloging_electronic_resources.txt[]
 
+include::cataloging/tpac_copy_edit_links.txt[]
+
 include::cataloging/link_checker.txt[]
 
 
@@ -381,6 +383,8 @@ include::reports/reporter_add_data_source.txt[]
 include::reports/reporter_running_recurring_reports.txt[]
 
 include::reports/reporter_template_terminology.txt[]
+
+include::reports/reporter_template_enhancements.txt[]
 
 include::reports/reporter_export_usingpgAdmin.txt[]
 
