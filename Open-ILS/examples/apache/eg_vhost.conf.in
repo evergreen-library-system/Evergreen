@@ -743,15 +743,16 @@ RewriteRule ^/openurl$ ${openurl:%1} [NE,PT]
 </LocationMatch>
 
 # ----------------------------------------------------------------------------------
-# Some mod_deflate logging setup
+# Some mod_deflate setup
 # ----------------------------------------------------------------------------------
 <IfModule mod_deflate.c>
-    DeflateFilterNote Input instream
-    DeflateFilterNote Output outstream
-    DeflateFilterNote Ratio ratio
-
-    LogFormat '"%r" %{outstream}n/%{instream}n (%{ratio}n%%)' deflate
-    CustomLog /var/log/apache2/deflate_log deflate
+    ## optional logging for mod_deflate debugging
+    ##DeflateFilterNote Input instream
+    ##DeflateFilterNote Output outstream
+    ##DeflateFilterNote Ratio ratio
+    ##
+    ##LogFormat '"%r" %{outstream}n/%{instream}n (%{ratio}n%%)' deflate
+    ##CustomLog /var/log/apache2/deflate_log deflate
 
     # There are problems with XMLENT and mod_deflate - so lets disable it
     # This is where we don't have a pre-existing LocationMatch directive earlier
