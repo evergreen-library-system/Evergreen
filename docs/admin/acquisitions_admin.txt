@@ -440,9 +440,9 @@ selection list or purchase order from a Z39.50 source.
 . Click _Acquisitions -> MARC Federated Search_.
 . Check the boxes of Z39.50 services that you want to search. Your local 
 Evergreen Catalog is checked by default. Click Submit.
-+
+
 image::media/acq_marc_search.png[search form]
-+
+
 . A list of results will appear. Click the _Copies_ link to add copy information
 to the line item. See <<line_item_features, Line Item Features>> for more 
 information.
