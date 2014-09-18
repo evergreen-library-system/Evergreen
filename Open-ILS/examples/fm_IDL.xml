@@ -2886,6 +2886,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
                 <create permission="CREATE_MARC IMPORT_MARC" global_required="true"/>
                 <retrieve/>
                 <update permission="UPDATE_MARC" global_required="true"/>
+		<!-- WARNING: Deleting records via PCRUD does NOT check that any prerequisite conditions have been handled first. It is your responsibility to check for those conditions before deleting bib records. -->
+                <delete permission="DELETE_RECORD" global_required="true"/>
             </actions>
         </permacrud>
 	</class>
