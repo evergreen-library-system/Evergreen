@@ -55,20 +55,30 @@ indexterm:[formats, video]
 indexterm:[formats, music]
 
 
-* *Cartographic material*
-* *Computer file*
+* *All Books*
+* *All Music*
+* *Audiocassette music recording*
+* *Blue-ray* 
+* *Braille*
+* *Cassette audiobook*
+* *CD Audiobook*
+* *CD Music recording*
+* *DVD* 
+* *E-audio* 
+* *E-book*
+* *E-video* 
+* *Equipment, games, toys*
 * *Kit*
-* *Language material* - More commonly referred to as books
-* *Manuscript cartographic material*
-* *Manuscript language material*
-* *Manuscript notated music*
-* *Mixed materials*
-* *Musical sound recording* - This includes music on CD or other media.
-* *Nonmusical sound recording* - This includes books read aloud on CDs or other media. 
-* *Notated music*
-* *Projected medium* - More commonly known as video formats like DVDs
-* *Three-dimensional artifact or naturally occurring object*
-* *Two-dimensional nonprojectable graphic*
+* *Large Print Book*
+* *Map*
+* *Microform*
+* *Music Score*
+* *Phonograph music recording*
+* *Phonograph spoken recording*
+* *Picture*
+* *Serials and magazines*
+* *Software and video games*
+* *VHS*
 
 
 Libraries
