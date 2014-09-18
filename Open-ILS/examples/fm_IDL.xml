@@ -10851,6 +10851,7 @@ SELECT  usr,
         </fields>
         <links>
             <link field="owning_lib" reltype="has_a" key="id" map="" class="aou"/>
+            <link field="id" reltype="has_a" key="id" map="" class="acp"/>
             <link field="circ_lib" reltype="has_a" key="id" map="" class="aou"/>
             <link field="creator" reltype="has_a" key="id" map="" class="au"/>
             <link field="age_protect" reltype="has_a" key="id" map="" class="crahp"/>
