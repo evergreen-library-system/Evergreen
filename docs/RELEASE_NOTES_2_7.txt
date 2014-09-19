@@ -298,7 +298,9 @@ technologies, to be easier to customize locally, and to be more mobile friendly.
 
 The intent of the preview is to make it easier for end users at Evergreen sites
 to try the new client, become familiar with its features, and to
-discover/report bugs that are found. To implement the client preview...
+discover/report bugs that are found. Instructions to implement the web client
+can be found in the code in Open-ILS/web/js/ui/default/staff/README.install.
+These will be revised and moved to the full README for 2.7.1.
 
 OPAC
 ~~~~
@@ -398,6 +400,7 @@ code and documentations patches to this release of Evergreen:
 
  * Thomas Berezansky
  * Jason Boyer
+ * Steven Callender
  * Steven Chan
  * Galen Charlton
  * Jeff Davis
@@ -424,11 +427,11 @@ code and documentations patches to this release of Evergreen:
  * Remington Steed
  * Jason Stephenson
  * Josh Stompro
+ * Yamil Suarez
  * Kyle Tomita
  * Elliot Voris
  * Dan Wells
  * Liam Whalen
- * Yamil Suarez
 
 We also thank the following organizations whose employees contributed
 patches:
