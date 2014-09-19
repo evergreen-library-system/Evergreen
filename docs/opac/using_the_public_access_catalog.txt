@@ -58,7 +58,7 @@ indexterm:[formats, music]
 * *All Books*
 * *All Music*
 * *Audiocassette music recording*
-* *Blue-ray* 
+* *Blu-ray* 
 * *Braille*
 * *Cassette audiobook*
 * *CD Audiobook*
