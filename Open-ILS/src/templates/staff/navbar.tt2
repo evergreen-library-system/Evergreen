@@ -49,6 +49,12 @@
               <span>[% l('Search for Copies by Barcode') %]</span>
             </a>
           </li>
+          <li>
+            <a href="./cat/catalog/index" target="_self">
+              <span class="glyphicon glyphicon-search"></span>
+              <span>[% l('Search the Catalog') %]</span>
+            </a>
+          </li>
         </ul>
       </li>
 
