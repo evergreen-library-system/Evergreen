@@ -1039,6 +1039,15 @@ angular.module('egGridMod',
                         {idl_field : field, idl_class : class_obj});
                 });
 
+                cols.columns = cols.columns.sort(
+                    function(a, b) {
+                        if (a.explicit) return -1;
+                        if (b.explicit) return 1;
+                        return a.label < b.label ? -1 : 1;
+                    }
+                );
+
+
             } else {
                 console.error(
                     "egGrid: wildcard path does not resolve to an object: "
@@ -1089,6 +1098,8 @@ angular.module('egGridMod',
 
             if (column.path && column.path.match(/\*$/)) 
                 return cols.expandPath(colSpec);
+
+            if (!fromExpand) column.explicit = true;
 
             if (!column.name) column.name = column.path;
             if (!column.path) column.path = column.name;
