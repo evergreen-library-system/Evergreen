@@ -81,7 +81,7 @@ function($scope,  $q,  $routeParams,  egCore , egUser,  patronSvc ,
         return egCore.pcrud.search('circ', {id : id_list},
             {   flesh : 4,
                 flesh_fields : {
-                    circ : ['target_copy'],
+                    circ : ['target_copy', 'workstation', 'checkin_workstation'],
                     acp : ['call_number'],
                     acn : ['record'],
                     bre : ['simple_record']
