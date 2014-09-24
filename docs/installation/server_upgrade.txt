@@ -51,7 +51,7 @@ tar xzf Evergreen-ILS-2.6.1.tar.gz
 -----------------------------------------------
 +
 [NOTE]
-For the latest edition of Evergreen, check the http://evergreen-ils.org/downloads.php[Evergreen download page] and adjust upgrading instructions accordingly.
+For the latest edition of Evergreen, check the http://evergreen-ils.org/egdownloads/[Evergreen download page] and adjust upgrading instructions accordingly.
 
 . As the root user, install the prerequisites:
 +
