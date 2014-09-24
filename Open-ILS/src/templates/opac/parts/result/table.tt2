@@ -87,7 +87,7 @@
                                                         [% html_text_attr('title', l('Display record details for "[_1]"', attrs.title)) %]>
                                                         [% attrs.title | html %]
                                                      </a>
-                                                     [% IF rec.mr_constituent_count > 1 %]
+                                                     [% IF rec.mr_constituent_count.defined && rec.mr_constituent_count > 1 %]
                                                      <span title="[% l('This group contains [_1] records', rec.mr_constituent_count) %]">
                                                       ([% rec.mr_constituent_count %])
                                                      </span>
@@ -114,7 +114,7 @@ END;
                                                                 class="record_author"
                                                                 href="[%- 
                                                                     authorquery = attrs.author | replace('[#"^$\+\-,\.:;&|\[\]()]', ' ');
-                                                                    mkurl(ctx.opac_root _ '/results', {qtype => 'author', query => authorquery}, ['page'])
+                                                                    mkurl(ctx.opac_root _ '/results', {qtype => 'author', query => authorquery}, general_search_parms.merge(expert_search_parms, browse_search_parms, facet_search_parms))
                                                                     -%]">[% attrs.author | html %]</a>
 [%-
 FOR entry IN attrs.graphic_authors;

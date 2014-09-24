@@ -3,9 +3,9 @@
     PROCESS "opac/parts/hold_status.tt2";
     WRAPPER "opac/parts/myopac/base.tt2";
     myopac_page = "holds";
-    limit = ctx.holds_limit;
-    offset = ctx.holds_offset;
-    count = ctx.holds_ids.size;
+    limit = (ctx.holds_limit.defined) ? ctx.holds_limit : 0;
+    offset = (ctx.holds_offset.defined) ? ctx.holds_offset : 0;
+    count = (ctx.holds_ids.size.defined) ? ctx.holds_ids.size : 0;
 %]
 <h3 class="sr-only">[% l('My Holds') %]</h3>
 <div id='myopac_holds_div'>
@@ -96,7 +96,7 @@
                 </td>
             </tr>
         </table>
-        [% IF ctx.holds.size < 1 %]
+        [% IF ctx.holds.size && ctx.holds.size < 1 %]
         <div class="warning_box">[% l('No holds found.') %]</div>
         [% ELSE %]
         <table id="acct_holds_main_header" title="[% l('Items on Hold') %]"

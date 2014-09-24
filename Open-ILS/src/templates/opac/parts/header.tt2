@@ -14,7 +14,10 @@
 
     #variables to use to remove parameters via mkurk
     expert_search_parms = ['tag','subfield','term','_special'];
-    general_search_parms = ['page','sort','query'];
+    general_search_parms = ['page','sort','query','bool','contains','pubdate'];
+    browse_search_parms = ['fi:has_browse_entry','bterm','blimit','bpivot'];
+    facet_search_parms = ['facet'];
+
 
     # -----------------------------------------------------------------------------
     # mkurl( destination_page, params_to_set, params_to_clear )

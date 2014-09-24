@@ -28,6 +28,7 @@
         fmClass="siss"
         query="{id: '*'}"
         editOnEnter="true"
+        requiredFields="['date_published','holding_code']"
         showPaginator="true">
         <thead>
             <tr>

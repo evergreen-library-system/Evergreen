@@ -1,0 +1,17 @@
+TPAC Copy Edit Links
+--------------------
+
+The bibliographic record detail page displays library holdings, including the call number, shelving location, and copy barcode. Within the staff client, the holdings list now displays a new column next to the copy barcode(s). This new column contains two links, *view* and *edit*.
+ 
+image::media/copy_edit_link_1.JPG[Copy Edit Link]
+ 
+Clicking on the *view* link opens the *Item Status* screen for that specific copy.
+
+Clicking on the *edit* link opens the *Volume and Copy Creator* screen for that specific copy.
+
+The *edit* link will only be exposed next to copies when the user has the *UPDATE_COPY* permission at the copy owning or circulating library. 
+
+For libraries where the *Library Setting: Unified Volume/Item Creator/Editor* value is set to *True*, the unified *Volume and Copy Creator* screen will open.
+
+For libraries where the *Library Setting: Unified Volume/Item Creator/Editor* value is set to *False*, the standard *Volume and Copy Creator* screen will open.
+

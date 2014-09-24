@@ -4,6 +4,7 @@ use strict; use warnings;
 use XML::LibXML;
 use OpenSRF::Utils::SettingsClient;
 use OpenSRF::Utils::Logger;
+use OpenSRF::AppSession;
 my $logger = "OpenSRF::Utils::Logger";
 
 
@@ -37,7 +38,8 @@ sub new {
     $fff ||= "";
     $lll ||= "";
 
-    my $lang = 'en-US'; # assume english for now
+    my $lang = OpenSRF::AppSession->default_locale;
+	$lang = 'en-US' if (!exists($$descs{$lang})); # just in case...
 
     my $t = CORE::localtime();
 

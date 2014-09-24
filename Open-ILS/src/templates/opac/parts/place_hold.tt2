@@ -96,7 +96,7 @@
                                 [% l('Advanced Hold Options') %]</a>
                         [% END %]
                         [% IF hdata.metarecord_filters.formats.size OR # should this be size > 1
-                            hdata.metarecord_filters.langs.size > 1;
+                            (hdata.metarecord_filters.langs.size && hdata.metarecord_filters.langs.size > 1);
                             PROCESS metarecord_hold_filters_selector hold_data=hdata;
                         END;
                     END %]

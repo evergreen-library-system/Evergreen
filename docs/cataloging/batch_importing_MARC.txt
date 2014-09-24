@@ -281,11 +281,11 @@ image::media/marc_batch_import_popup.png[Batch Importing MARC Records Popup]
 
 . The screen will refresh.  The *Queue Summary* indicates that the record was
 imported.  The *Import Time* column records the date that the record was
-imported.
+imported. Also, the *Imported As* column should now display the database ID (also known as the bib record number) for the imported record.
 +
 image::media/Batch_Importing_MARC_Records12.jpg[Batch_Importing_MARC_Records12] 
 
-. Search the catalog to confirm that the record was imported.
+. You can confirm that the record was imported by using the value of the *Imported As* column by selecting the menu *Cataloging* -> *Retrieve title by database ID* and using the supplied *Imported As* number. Alternatively, you can search the catalog to confirm that the record was imported.
 +
 image::media/Batch_Importing_MARC_Records14.jpg[Batch_Importing_MARC_Records14] 
 

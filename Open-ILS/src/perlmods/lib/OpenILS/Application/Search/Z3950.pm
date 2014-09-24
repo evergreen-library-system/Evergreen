@@ -462,7 +462,13 @@ sub process_results {
             my $rec = $results->record($_);
 
             if ($tformat eq 'usmarc') {
-                $marc = MARC::Record->new_from_usmarc($rec->raw());
+                my $raw = $rec->raw();
+                if (length($raw) <= 99999) {
+                    $marc = MARC::Record->new_from_usmarc($raw);
+                } else {
+                    $marcs = '';
+                    die "ISO2709 record is too large to process";
+                }
             } elsif ($tformat eq 'xml') {
                 $marc = MARC::Record->new_from_xml($rec->raw());
             } else {

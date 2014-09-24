@@ -24,19 +24,19 @@ indexterm:[search, subject]
 indexterm:[search, series]
 indexterm:[search, bib call number]
 
-* *Keyword* —finds the terms you enter anywhere in the entire record for an item, including title, author, subject, and other information.
+* *Keyword* — finds the terms you enter anywhere in the entire record for an item, including title, author, subject, and other information.
 
-* *Title* —finds the terms you enter in the title of an item.
+* *Title* — finds the terms you enter in the title of an item.
 
 * *Journal Title* — finds the terms you enter in the title of a serial bib record.
 
-* *Author* —finds the terms you enter in the author of an item.
+* *Author* — finds the terms you enter in the author of an item.
 
-* *Subject* —finds the terms you enter in the subject of an item. Subjects are categories assigned to items according to a system such as the Library of Congress Subject Headings.
+* *Subject* — finds the terms you enter in the subject of an item. Subjects are categories assigned to items according to a system such as the Library of Congress Subject Headings.
 
-* *Series* —finds the terms you enter in the title of a multi-part series.
+* *Series* — finds the terms you enter in the title of a multi-part series.
 
-* *Bib Call Number* —finds the terms you enter in the call number field of a bib record. 
+* *Bib Call Number* — finds the terms you enter in the call number field of a bib record.
 
 
 [TIP]
@@ -55,20 +55,30 @@ indexterm:[formats, video]
 indexterm:[formats, music]
 
 
-* *Cartographic material*
-* *Computer file*
+* *All Books*
+* *All Music*
+* *Audiocassette music recording*
+* *Blu-ray* 
+* *Braille*
+* *Cassette audiobook*
+* *CD Audiobook*
+* *CD Music recording*
+* *DVD* 
+* *E-audio* 
+* *E-book*
+* *E-video* 
+* *Equipment, games, toys*
 * *Kit*
-* *Language material* - More commonly referred to as books
-* *Manuscript cartographic material*
-* *Manuscript language material*
-* *Manuscript notated music*
-* *Mixed materials*
-* *Musical sound recording* - This includes music on CD or other media.
-* *Nonmusical sound recording* - This includes books read aloud on CDs or other media. 
-* *Notated music*
-* *Projected medium* - More commonly known as video formats like DVDs
-* *Three-dimensional artifact or naturally occurring object*
-* *Two-dimensional nonprojectable graphic*
+* *Large Print Book*
+* *Map*
+* *Microform*
+* *Music Score*
+* *Phonograph music recording*
+* *Phonograph spoken recording*
+* *Picture*
+* *Serials and magazines*
+* *Software and video games*
+* *VHS*
 
 
 Libraries
@@ -80,7 +90,7 @@ If you are using a catalogue in a library or accessing a library’s online cata
 Advanced Search
 ~~~~~~~~~~~~~~~
 
-Advanced searches allow users to perform more complex searches by providing more options. Many kinds of searches can be performed from the _Advance Search_ screen. You can access by clicking _Advanced Search_ on the catalogue _Homepage_ or search results screen.
+Advanced searches allow users to perform more complex searches by providing more options. Many kinds of searches can be performed from the _Advanced Search_ screen. You can access by clicking _Advanced Search_ on the catalogue _Homepage_ or search results screen.
 
 The available search options are the same as on the basic search. But you may use one or many of them simultaneously. If you want to combine more than three search options, use _Add Search Row_ button to add more search input rows. Clicking the _X_ button will close the search input row.
 
@@ -98,7 +108,7 @@ Search Library
 
 indexterm:[advanced search, search library]
 
-The current search library is displayed under _Search Library_ drop down menu. Be default it is your library. The search returns results for your local library only. If your library system has multiple branches, use the _Search Library_ box to select different branches or the whole library system.
+The current search library is displayed under _Search Library_ drop down menu. By default it is your library. The search returns results for your local library only. If your library system has multiple branches, use the _Search Library_ box to select different branches or the whole library system.
 
 
 Limit to Available
@@ -107,7 +117,7 @@ Limit to Available
 indexterm:[advanced search, limit to available]
 
 
-This checkbox is at the bottom line of _Search Library_. Select _Limit to Available_ to limit by item’s current circulation status. Titles without available items in the library will not be displayed.
+This checkbox is at the bottom line of _Search Library_. Select _Limit to Available_ to limit results to those titles that have items with a circulation status of "available" (by default, either _Available_ or _Reshelving_).
 
 
 Search Filter
@@ -115,7 +125,7 @@ Search Filter
 
 indexterm:[advanced search, search filters]
 
-You can filter your search by _Item Type_, _Item Form_, _Language_, _Audience_, _Video Format_, _Bib Level_, _Literary Form_, _Search Library_, and _Publication Year_. Publication year is inclusive. For example, if you set _Publication Year_ Between 2005 and 2007, your result items will be published in 2005, 2006 and 2007.
+You can filter your search by _Item Type_, _Item Form_, _Language_, _Audience_, _Video Format_, _Bib Level_, _Literary Form_, _Search Library_, and _Publication Year_. Publication year is inclusive. For example, if you set _Publication Year_ Between 2005 and 2007, your results can include items published in 2005, 2006 and 2007.
 
 For each filter type, you may select multiple criteria by holding down the _CTRL_ key as you click on the options. If nothing is selected for a filter, the search will return results as though all options are selected.
 
@@ -133,41 +143,66 @@ Expert Search
 
 indexterm:[advanced search, expert search]
 
-If you are familiar with the MARC system, you may search by tag in the _Expert Search_ option on the left of the screen. Enter the three-digit tag number, the subfield if relevant, and the value or text that corresponds to the tag. For example, to search by publisher name, enter 260 b Random House. To search several tags simultaneously, use the _Add Row_ option. Click _Submit_ to run the search. 
+If you are familiar with MARC cataloging, you may search by MARC tag in the _Expert Search_ option on the left of the screen. Enter the three-digit tag number, the subfield if relevant, and the value or text that corresponds to the tag. For example, to search by publisher name, enter `260 b Random House`. To search several tags simultaneously, use the _Add Row_ option. Click _Submit_ to run the search. 
+
+[TIP]
+=============
+Use the MARC Expert Search only as a last resort, as it can take much longer to retrieve results than by using indexed fields. For example, rather than running an expert search for "245 a Gone with the wind", simply do a regular title search for "Gone with the wind".
+=============
+
+Boolean operators
+~~~~~~~~~~~~~~~~~
+
+indexterm:[search, AND operator]
+indexterm:[search, OR operator]
+indexterm:[search, NOT operator]
+indexterm:[search, boolean]
+
+Classic search interfaces (that is, those used primarily by librarians) forced users to learn the art of crafting search phrases with Boolean operators. To a large extent this was due to the inability of those systems to provide relevancy ranking beyond a "last in, first out" approach. Thankfully, Evergreen, like most modern search systems, supports a rather sophisticated relevancy ranking system that removes the need for Boolean operators in most cases.
+
+By default, all terms that have been entered in a search query are joined with an implicit `AND` operator. Those terms are required to appear in the designated fields to produce a matching record: a search for _golden compass_ will search for entries that contain both _golden_ *and* _compass_. 
+
+Words that are often considered Boolean operators, such as _AND_, _OR_, AND _NOT_, are not special in Evergreen: they are treated as just another search term. For example, a title search for `golden and compass` will not return the title _Golden Compass_. 
+
+However, Evergreen does support Boolean searching for those rare cases where you might require it, using symbolic operators as follows:
+
+.Boolean symbolic operators
+[width="50%",options="header"]
+|=================================
+| Operator | Symbol    | Example
+| AND      | `&&`      | `a && b`
+| OR       | `\|\|`      | `a \|\| b`
+| NOT      | `-`_term_ | `a -b`
+|=================================
 
 Search Tips
 ~~~~~~~~~~~
 
-indexterm:[searchtips, AND operator]
-indexterm:[searchtips, boolean]
+indexterm:[search, stop words]
+indexterm:[search, truncation]
 
+Evergreen tries to approach search from the perspective of a major search engine: the user should simply be able to enter the terms they are looking for as a general keyword search, and Evergreen should return results that are most relevant given those terms. For example, you do not need to enter author's last name first, nor do you need to enter an exact title or subject heading. Evergreen is also forgiving about plurals and alternate verb endings, so if you enter _dogs_, Evergreen will also find items with _dog_. 
 
-You do not need to enter author's last name first, nor do you need an exact title or subject heading. Evergreen is also forgiving about plurals and alternate verb endings, so if you enter _dogs_, Evergreen will also find items with _dog_. 
-
-* Do not use an _AND_ operator to join search terms. 
-
-** An _AND_ operator is automatically used to join all search terms. So, a search for _golden compass_ will search for entries that contain both _golden_ *and* _compass_. 
-
-** Boolean operators such as _and_, _or_, _not_ are not considered special and are searched for like any other word. So, a search for _golden and compass_ will not return the title _golden compass_. Putting it another way, there are no _stop_ words that are automatically ignored by the search engine. So, a title search for the _and or not_ of (and in any order) yields a list of titles with those words. 
+The search engine has no _stop words_ (terms are ignored by the search engine): a title search for `to be or not to be` (in any order) yields a list of titles with those words. 
 
 * Don’t worry about white space, exact punctuation, or capitalization. 
 
-. White spaces before or after a word are ignored. So, search for _golden compass_ gives the same results as a search for _golden compass_. 
+. White spaces before or after a word are ignored. So, a search for `[ golden compass ]` gives the same results as a search for `[golden compass]`.
 
 . A double dash or a colon between words is reduced to a blank space. So, a title search for _golden:compass_ or _golden -- compass_ is equivalent to _golden compass_. 
 
 . Punctuation marks occurring within a word are removed; the exception is \_. So, a title search for _gol_den com_pass_ gives no result. 
 
-. Diacritical marks, &, or | located anywhere in the search term are removed. Words or letters linked together by .(dot) are joined together without the dot. So, a search for _go|l|den & comp.ass_ is equivalent to _golden compass_. 
+. Diacritical marks and solitary `&` or `|` characters located anywhere in the search term are removed. Words or letters linked together by `.` (dot) are joined together without the dot. So, a search for _go|l|den & comp.ass_ is equivalent to _golden compass_. 
 
 . Upper and lower case letters are equivalent. So, _Golden Compass_ is the same as _golden compass_. 
 
-* Enter your search words in any order. So, a search for _compass golden_ gives the same results as a search for _golden compass_. Adding more search words gives fewer and more specific results. 
+* Enter your search words in any order. So, a search for _compass golden_ gives the same results as a search for _golden compass_. Adding more search words gives fewer but more specific results. 
 
 ** This is also true for author searches. Both _David Suzuki_ and _Suzuki, David_ will return results for the same author. 
 
 * Use specific search terms. Evergreen will search for the words you specify, not the meanings, so choose search terms that are likely to appear in an item description. For example, the search _luxury hotels_ will produce more 
-relevant results than _nice places_ to stay. 
+relevant results than _nice places to stay_.
 
 * Search for an exact phrase using double-quotes. For example ``golden compass''. 
 
@@ -177,11 +212,10 @@ relevant results than _nice places_ to stay.
 
 ** Two phrases are joined by and, so a search for _"golden compass"_ _"dark materials"_ is equivalent to _golden compass_ *and* _dark materials_. 
 
-** To prevent <<stemming,stemming>>, use double quotes around a single word or a phrase. So, a search for parenting will also return results for _parental_ but a search for _parenting_ will not.
 
-* Truncation
+* **Truncation**
 Words may be right-hand truncated using an asterisk. Use a single asterisk * to truncate any number of characters.
-(example: environment* agency)
+(example: _environment* agency_)
 
 
 Search Methodology
@@ -192,14 +226,14 @@ anchor:stemming[]
 Stemming 
 ^^^^^^^^
 
-indexterm:[search methodology, stemming]
+indexterm:[search, stemming]
 
 A search for _dogs_ will also return hits with the word dog and a search for parenting will return results with the words parent and parental. This is because the search uses stemming to help return the most relevant results. That 
 is, words are reduced to their stem (or root word) before the search is performed. 
 
-The stemming algorithm relies on common English language patterns - like verbs ending in _ing_ - to find the stems. This is more efficient that looking up each search term in a dictionary and usually produces desirable results. However, it also means the search will sometimes reduce a word to an incorrect stem and cause unexpected results. To prevent a word or phrase from stemming, put it in double-quotes. 
+The stemming algorithm relies on common English language patterns - like verbs ending in _ing_ - to find the stems. This is more efficient than looking up each search term in a dictionary and usually produces desirable results. However, it also means the search will sometimes reduce a word to an incorrect stem and cause unexpected results. To prevent a word or phrase from stemming, put it in double-quotes to force an exact search. For example, a search for `parenting` will also return results for `parental`, but a search for `"parenting"` will not.
 
-Understanding how stemming works can help you to create more relevant searches, but it is usually best not to anticipate how a search term will be stemmed. For example, searching for _gold compass_ does not return for _golden compass_ because the search does not recognize _gold_ as a stem of _golden_. 
+Understanding how stemming works can help you to create more relevant searches, but it is usually best not to anticipate how a search term will be stemmed. For example, searching for `gold compass` does not return the same results as `golden compass`, because `-en` is not a regular suffix in English, and therefore the stemming algorithm does not recognize _gold_ as a stem of _golden_. 
 
 
 anchor:order_of_results[]
@@ -207,7 +241,7 @@ anchor:order_of_results[]
 Order of Results
 ^^^^^^^^^^^^^^^^
 
-indexterm:[search methodology, order of results]
+indexterm:[search, order of results]
 
 By default, the results are listed in order of relevance, similar to a search engine like Google. The relevance is determined using a number of factors, including how often and where the search terms appear in the item description, 
 and whether the search terms are part of the title, subject, author, or series. The results which best match your search are returned first rather than results appearing in alphabetical or chronological order. 
@@ -219,7 +253,7 @@ the search result screen.
 Search URL
 ~~~~~~~~~~
 
-indexterm:[search URL]
+indexterm:[search, URL]
 
 When performing a search or clicking on the details links, Evergreen constructs a GET request url with the parameters of the search. The url for searches and details in Evergreen are persistent links in that they can be saved, shared and used later.
 
@@ -237,7 +271,6 @@ qtype Parameter
 
 The _qtype_ parameter in the URL represents the search type values and represent one of the following search or request types:
 
-
 * Keyword 
 * Title
 * Journal Title
@@ -246,22 +279,22 @@ The _qtype_ parameter in the URL represents the search type values and represent
 * Series
 * Bib Call Number
 
-
 These match the options in the search type drop-down box.
 
 Sorting
 ^^^^^^^
 
 The _sort_ parameter sorts the results on one of these criteria.
-• sort=pubdate (publication date) - chronological order
-• sort=titlesort - Alphabetical order
-• sort=authorsort - Alphabetical order on family name first
 
-To change the sort direction of the resutls, the _sort_ paremeter value has the ".descending" suffix added to it.
+* `sort=pubdate` (publication date) - chronological order
+* `sort=titlesort` - Alphabetical order
+* `sort=authorsort` - Alphabetical order on family name first
 
-* sort=titlesort.descending
-* sort=authorsort.descending
-* sort=pubdate.descending
+To change the sort direction of the results, the _sort_ parameter value has the ".descending" suffix added to it.
+
+* `sort=titlesort.descending`
+* `sort=authorsort.descending`
+* `sort=pubdate.descending`
 
 In the absence of the _sort_ parameter, the search results default to sorting by relevance.
 
@@ -277,7 +310,7 @@ by clicking the links that say _Previous_ or _Next_ on top or bottom of the list
 
 image::media/catalogue-3.png[catalogue-3]
 
-Brief information about the title, such as author, edition, publication date, etc. is displayed under each title. The icons beside the brief information indicate formats such as books, audio books, video recordings, and other formats. Have your mouse over the icon, text explanation will show up in a small pop-up box. 
+Brief information about the title, such as author, edition, publication date, etc. is displayed under each title. The icons beside the brief information indicate formats such as books, audio books, video recordings, and other formats. If you hover your mouse over the icon, a text explanation will show up in a small pop-up box. 
 
 Clicking a title goes to the title details. Clicking an author searches all works by the author. If you want to place a hold on the title, click _Place Hold_ beside the format icons.
 
@@ -532,7 +565,7 @@ For example:
 ** Keep history of holds?
 
 
-After changing any of these settings, remember to click _Save_ button.
+After changing any of these settings, you must click _Save_ to store your preferences.
  
 
 

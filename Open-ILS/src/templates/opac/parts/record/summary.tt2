@@ -42,8 +42,8 @@
         <div id="rdetail_actions_div">
             [%- search_ou = ctx.search_ou;
                 IF ctx.place_unfillable ||
-                    ( attrs.marc_xml.findnodes('//*[local-name()="holdings" and @has_holdable="true"]').size > 0
-                        && (ctx.holds_block.enabled != 'true' || attrs.org_copy_counts.$search_ou.available == 0)
+                    ( attrs.marc_xml.findnodes('//*[local-name()="holdings" and @has_holdable="true"]').size
+                        && (ctx.holds_block.enabled != 'true' || !attrs.org_copy_counts.$search_ou.available)
                     )
              %]
             <div class="rdetail_aux_utils place_hold">

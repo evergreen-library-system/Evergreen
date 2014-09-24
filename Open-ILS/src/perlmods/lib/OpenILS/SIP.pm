@@ -206,7 +206,7 @@ sub format_date {
     # Due dates need hyphen separators and time of day as well
     if ($type eq 'due') {
 
-        my $use_sdf = $class->get_option_value('use_sip_date_format') | '';
+        my $use_sdf = $class->get_option_value('use_sip_date_format') || '';
 
         if ($use_sdf =~ /true/i) {
             $date = $dt->strftime(SIP_DATETIME);

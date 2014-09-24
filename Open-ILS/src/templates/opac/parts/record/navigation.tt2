@@ -1,4 +1,4 @@
-[% IF ctx.search_result_index >= 0 %]
+[% IF ctx.search_result_index.defined && ctx.search_result_index >= 0 %]
 <div class="rdetail_header">
     <span class="rdetail_results">
         <a href='[% mkurl(ctx.opac_root _ '/results', {}, stop_parms); %]'>[% l('&#9668; Search Results') %]</a>

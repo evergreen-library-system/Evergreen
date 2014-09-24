@@ -2834,7 +2834,7 @@ WHERE name = 'credit.processor.default' AND description = 'This might be "Author
 
 SELECT evergreen.upgrade_deps_block_check('0864', :eg_version);
 
-CREATE EXTENSION intarray;
+CREATE EXTENSION IF NOT EXISTS intarray WITH SCHEMA public;
 
 -- while we have this opportunity, and before we start collecting 
 -- CCVM IDs (below) carve out a nice space for stock ccvm values

@@ -509,10 +509,24 @@ sub next {
             }
         }
         if ($Marque::config->option_value('format') eq 'XML') {
-            $output = $marc->as_xml_record;
-            $output =~ s/^<\?.+?\?>$//mo;
+            eval {
+                $output = $marc->as_xml_record;
+                $output =~ s/^<\?.+?\?>$//mo;
+            };
+            if ($@) {
+                print STDERR "Error in bibliograpic record " . $r->id() . "\n";
+                print STDERR "$@\n";
+                return $self->next();
+            }
         } else {
-            $output = $marc->as_usmarc;
+            eval {
+                $output = $marc->as_usmarc;
+            };
+            if ($@) {
+                print STDERR "Error in bibliograpic record " . $r->id() . "\n";
+                print STDERR "$@\n";
+                return $self->next();
+            }
         }
     }
     return $output;
@@ -755,10 +769,24 @@ sub next {
                 }
             }
             if ($Marque::config->option_value('format') eq 'XML') {
-                $output = $r->as_xml_record;
-                $output =~ s/^<\?.+?\?>$//mo;
+                eval {
+                    $output = $r->as_xml_record;
+                    $output =~ s/^<\?.+?\?>$//mo;
+                };
+                if ($@) {
+                    print STDERR "Error in authority record " . $r->id() . "\n";
+                    print STDERR "$@\n";
+                    return $self->next();
+                }
             } else {
-                $output = $r->as_usmarc;
+                eval {
+                    $output = $r->as_usmarc;
+                };
+                if ($@) {
+                    print STDERR "Error in authority record " . $r->id() . "\n";
+                    print STDERR "$@\n";
+                    return $self->next();
+                }
             }
         }
     }

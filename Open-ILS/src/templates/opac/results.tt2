@@ -11,7 +11,7 @@
     page = CGI.param('page');
     page = page.match('^\d+$') ? page : 0; # verify page is a sane value
 
-    page_count = ctx.page_size == 0 ? 1 : POSIX.ceil(ctx.hit_count / ctx.page_size);
+    page_count = (!ctx.page_size.defined || !ctx.hit_count.defined || ctx.page_size == 0) ? 1 : POSIX.ceil(ctx.hit_count / ctx.page_size);
 
     PROCESS "opac/parts/misc_util.tt2";
     PROCESS get_library;
@@ -47,7 +47,7 @@
                     <a href="[% mkurl(ctx.opac_root _ '/home', {$loc_name => loc_value}, 1) %]">[% l('Another Search') %]</a>
                 </div>
                 <div class="results_header_btns">
-                    <a href="[% mkurl(ctx.opac_root _ '/advanced',{}, general_search_parms.merge(expert_search_parms)) %]">[% l('Advanced Search') %]</a>
+                    <a href="[% mkurl(ctx.opac_root _ '/advanced',{}, expert_search_parms.merge(browse_search_parms, facet_search_parms)) %]">[% l('Advanced Search') %]</a>
                 </div>
                 <div id="refine_hits" class="results_header_btns result_block_visible"><a onclick="getFacety();">[% l('Refine these results') %]</a></div>
                 <div id="return_to_hits" class="results_header_btns"><a onclick="getResulty();">[% l('Back to results') %]</a></div>

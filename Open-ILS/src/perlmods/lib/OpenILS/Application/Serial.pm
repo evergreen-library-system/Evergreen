@@ -1497,8 +1497,14 @@ sub _issuances_received {
         }
     }) or return $e->die_event;
 
-    my $uniq = +{map { $_->{"issuance"} => 1 } @$results};
-    return [ map { $e->retrieve_serial_issuance($_) } keys %$uniq ];
+    my %seen;
+    my $issuances = [];
+    for my $iss_id (map { $_->{"issuance"} } @$results) {
+        next if $seen{$iss_id};
+        $seen{$iss_id} = 1;
+        push(@$issuances, $e->retrieve_serial_issuance($iss_id));
+    }
+    return $issuances;
 }
 
 # _prepare_unit populates the detailed_contents, summary_contents, and

@@ -2886,6 +2886,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
                 <create permission="CREATE_MARC IMPORT_MARC" global_required="true"/>
                 <retrieve/>
                 <update permission="UPDATE_MARC" global_required="true"/>
+		<!-- WARNING: Deleting records via PCRUD does NOT check that any prerequisite conditions have been handled first. It is your responsibility to check for those conditions before deleting bib records. -->
+                <delete permission="DELETE_RECORD" global_required="true"/>
             </actions>
         </permacrud>
 	</class>
@@ -6504,6 +6506,8 @@ SELECT  usr,
 			<field reporter:label="Copy Notes" name="notes" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Stat-Cat entry maps" name="stat_cat_entry_copy_maps" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Circulations" name="circulations" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Aged (patronless) Circulations" name="aged_circulations" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Combined Aged and Active Circulations" name="all_circulations" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Total Circulations" name="total_circ_count" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Last Circulation Date" name="last_circ" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Holds" name="holds" oils_persist:virtual="true" reporter:datatype="link"/>
@@ -6526,6 +6530,8 @@ SELECT  usr,
 			<link field="notes" reltype="has_many" key="owning_copy" map="" class="acpn"/>
 			<link field="stat_cat_entries" reltype="has_many" key="owning_copy" map="stat_cat_entry" class="ascecm"/>
 			<link field="circulations" reltype="has_many" key="target_copy" map="" class="circ"/>
+			<link field="aged_circulations" reltype="has_many" key="target_copy" map="" class="acirc"/>
+			<link field="all_circulations" reltype="has_many" key="target_copy" map="" class="combcirc"/>
 			<link field="total_circ_count" reltype="might_have" key="id" map="" class="erfcc"/>
 			<link field="last_circ" reltype="might_have" key="id" map="" class="rlc"/>
 			<link field="circ_modifier" reltype="has_a" key="code" map="" class="ccm"/>
@@ -10278,7 +10284,7 @@ SELECT  usr,
                         SELECT 
                             (SELECT id
                                 FROM biblio.record_entry 
-                                WHERE id = (SELECT record FROM asset.call_number WHERE id = call_number)
+                                WHERE id = (SELECT record FROM asset.call_number WHERE id = call_number and deleted is false)
                             ) AS "bre", 
                             COUNT(*) AS "copy_count"
                         FROM asset.copy
@@ -10849,6 +10855,7 @@ SELECT  usr,
         </fields>
         <links>
             <link field="owning_lib" reltype="has_a" key="id" map="" class="aou"/>
+            <link field="id" reltype="has_a" key="id" map="" class="acp"/>
             <link field="circ_lib" reltype="has_a" key="id" map="" class="aou"/>
             <link field="creator" reltype="has_a" key="id" map="" class="au"/>
             <link field="age_protect" reltype="has_a" key="id" map="" class="crahp"/>
