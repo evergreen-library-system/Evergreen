@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2014-01-22 16:26-0400\n"
+"POT-Creation-Date: 2014-09-11 02:13-0400\n"
 "PO-Revision-Date: 2010-05-11 08:59+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2014-01-23 05:24+0000\n"
-"X-Generator: Launchpad (build 16901)\n"
+"X-Launchpad-Export-Date: 2014-09-12 06:16+0000\n"
+"X-Generator: Launchpad (build 17196)\n"
 
 #: 1208.TITLE_LAST_COPY:71
 msgid "The last copy attached to a title is being removed or deleted"
@@ -57,7 +57,7 @@ msgstr ""
 msgid "The requested metabib_series_field_entry was not found"
 msgstr "Запрашиваемый metabib_series_field_entry не найден"
 
-#: 11105.PATRON_CREDIT_DISABLED:1028
+#: 11105.PATRON_CREDIT_DISABLED:1031
 msgid ""
 "Payments by patron credit are not allowed for the selected transaction"
 msgstr ""
@@ -169,8 +169,8 @@ msgstr "Запрашиваемый metabib_keyword_field_entry не найден
 msgid "The requested config_audience_map was not found"
 msgstr "Запрашиваемый config_audience_map не найден"
 
-#: 8004.OFFLINE_CONFIG_ERROR:939 8005.OFFLINE_CHECKSUM_FAILED:942
-#: 8006.OFFLINE_SESSION_NOT_FOUND:945
+#: 8004.OFFLINE_CONFIG_ERROR:942 8005.OFFLINE_CHECKSUM_FAILED:945
+#: 8006.OFFLINE_SESSION_NOT_FOUND:948
 msgid "Offline server is not configured properly"
 msgstr ""
 
@@ -251,7 +251,7 @@ msgstr ""
 msgid "This account is marked as inactive"
 msgstr "Этот абонентский счет отмечен как неактивный"
 
-#: 8003.OFFLINE_PARAM_ERROR:936
+#: 8003.OFFLINE_PARAM_ERROR:939
 msgid "Missing params in offline upload"
 msgstr ""
 
@@ -263,7 +263,7 @@ msgstr "Запрашиваемый reporter_report_folder не найден"
 msgid "The requested perm_ex was not found"
 msgstr "Запрашиваемый perm_ex не найден"
 
-#: 10101.ACQ_ALREADY_CANCELED:991
+#: 10101.ACQ_ALREADY_CANCELED:994
 msgid "The object is already canceled."
 msgstr ""
 
@@ -301,7 +301,7 @@ msgstr "Запрашиваемый money_collections_tracker не найден"
 msgid "An authority record already exists with the requested ARN"
 msgstr ""
 
-#: 11001.SERIAL_CAPTION_AND_PATTERN_HAS_ISSUANCES:1004
+#: 11001.SERIAL_CAPTION_AND_PATTERN_HAS_ISSUANCES:1007
 msgid "The caption/pattern still has dependent issuances"
 msgstr ""
 
@@ -317,7 +317,7 @@ msgstr "Запрашиваемое действие приведет к нега
 msgid "The requested actor_user_standing_penalty was not found"
 msgstr "Запрашиваемый actor_user_standing_penalty не найден"
 
-#: 8000.OFFLINE_SESSION_ACTIVE:927
+#: 8000.OFFLINE_SESSION_ACTIVE:930
 msgid "An offline session for this location is currently processing"
 msgstr ""
 
@@ -343,7 +343,7 @@ msgstr ""
 msgid "Requested billing note does not exist"
 msgstr ""
 
-#: 11102.SERIAL_DISTRIBUTION_HAS_NO_CALL_NUMBER:1012
+#: 11102.SERIAL_DISTRIBUTION_HAS_NO_CALL_NUMBER:1015
 msgid ""
 "Units cannot be created for the given item because its associated "
 "distribution does not have a call number."
@@ -367,7 +367,7 @@ msgid ""
 "more than one lineitem"
 msgstr ""
 
-#: 10004.ACQ_LINEITEM_NO_PRICE:984
+#: 10004.ACQ_LINEITEM_NO_PRICE:987
 msgid "The lineitem has no price"
 msgstr "Строка не имеет цены"
 
@@ -425,7 +425,7 @@ msgstr "Запрашиваемый config_metabib_field не найден"
 msgid "The requested actor_org_address was not found"
 msgstr "Запрашиваемый actor_org_address не найден"
 
-#: 11103.TRANSIT_CHECKIN_INTERVAL_BLOCK:1016
+#: 11103.TRANSIT_CHECKIN_INTERVAL_BLOCK:1019
 msgid "Checkin attempted on item during minimum transit checkin interval."
 msgstr ""
 
@@ -441,7 +441,7 @@ msgstr "Запрашиваемый acq.fund_spent_total не был найден
 msgid "The requested permission_grp_tree was not found"
 msgstr "Запрашиваемый permission_grp_tree не найден"
 
-#: 10001.ACQ_LINEITEM_NO_COPIES:975
+#: 10001.ACQ_LINEITEM_NO_COPIES:978
 msgid "The lineitem has no attached copies"
 msgstr "К строке(lineitem)  не прилагаются копии"
 
@@ -488,7 +488,7 @@ msgid ""
 "not within the copy's circulation range"
 msgstr ""
 
-#: 10005.ACQ_LINEITEM_NO_PROVIDER:987
+#: 10005.ACQ_LINEITEM_NO_PROVIDER:990
 msgid "The lineitem has no provider"
 msgstr ""
 
@@ -552,7 +552,7 @@ msgstr ""
 msgid "The requested acq.fund_spent_balance was not found"
 msgstr "Запрашиваемый acq.fund_spent_balance не был найден"
 
-#: 11000.SERIAL_SUBSCRIPTION_NOT_EMPTY:1000
+#: 11000.SERIAL_SUBSCRIPTION_NOT_EMPTY:1003
 msgid "The subscription still has dependent objects"
 msgstr ""
 
@@ -568,7 +568,7 @@ msgstr "Запрашиваемый config_lit_form_map не найден"
 msgid "The requested metabib_record_descriptor was not found"
 msgstr "Запрашиваемый metabib_record_descriptor не найден"
 
-#: 10102.ACQ_NOT_CANCELABLE:994
+#: 10102.ACQ_NOT_CANCELABLE:997
 msgid "The object is not in a cancelable state."
 msgstr ""
 
@@ -614,7 +614,7 @@ msgstr ""
 msgid "The requested acq.funding_source_balance was not found"
 msgstr "Запрашиваемый  acq.funding_source_balance не был найден"
 
-#: 10000.ACQ_LINEITEM_APPROVED:972
+#: 10000.ACQ_LINEITEM_APPROVED:975
 msgid "The lineitem cannot be altered because it has already been approved"
 msgstr ""
 "Содержимое строки не может быть изменено, так как оно уже было утвержденно"
@@ -687,6 +687,10 @@ msgstr "Запрашиваемый money_open_user_summary не найден"
 msgid "No change occurred"
 msgstr "Нету изменений"
 
+#: 7026.COPY_STATUS_LOST_AND_PAID:922
+msgid "Copy is marked as lost and paid"
+msgstr ""
+
 #: 1201.CIRC_PERMIT_BAD_KEY:47
 msgid "A checkout was attempted without a valid checkout permit key"
 msgstr "Попытка выдачи без разрешенного ключа выдачи"
@@ -749,7 +753,7 @@ msgstr "Установленный пароль не правильный"
 msgid "The requested config_item_type_map was not found"
 msgstr "Запрашиваемый config_item_type_map не найден"
 
-#: 8007.OFFLINE_SESSION_EXISTS:948
+#: 8007.OFFLINE_SESSION_EXISTS:951
 msgid "A session with the given name already exists"
 msgstr ""
 
@@ -757,7 +761,7 @@ msgstr ""
 msgid "The requested config_circ_matrix_ruleset_not_found was not found"
 msgstr "Запрашиваемый config_circ_matrix_ruleset_not_found не найден"
 
-#: 10002.ACQ_LINEITEM_DETAIL_NO_FUND:978
+#: 10002.ACQ_LINEITEM_DETAIL_NO_FUND:981
 msgid "The lineitem detail has no associated fund"
 msgstr "Детали строки(lineitem) не имеют ассоциированного фонда"
 
@@ -853,7 +857,7 @@ msgstr "Выбранная библ запись имеет прикреплен
 msgid "The requested action_hold_request was not found"
 msgstr "Запрашиваемый action_hold_request не найден"
 
-#: 8011.SKIP_ASSET_CHANGED:960
+#: 8011.SKIP_ASSET_CHANGED:963
 msgid "Asset status was changed since the offline transaction was recorded"
 msgstr ""
 
@@ -915,7 +919,7 @@ msgstr "Запршенный ex не найден"
 msgid "Hold capture was delayed for this item"
 msgstr "Захват хранения для этой единицы отложен"
 
-#: 9000.REPORT_TEMPLATE_EXISTS:964
+#: 9000.REPORT_TEMPLATE_EXISTS:967
 msgid "A report template with the given name and folder already exists"
 msgstr ""
 
@@ -951,7 +955,7 @@ msgstr "Запрашиваемый actor_stat_cat не найден"
 msgid "The user attempted to set their password to a weak value."
 msgstr ""
 
-#: 9001.REPORT_REPORT_EXISTS:968
+#: 9001.REPORT_REPORT_EXISTS:971
 msgid "A report with the given name and folder already exists"
 msgstr ""
 
@@ -959,7 +963,7 @@ msgstr ""
 msgid "A volume with the same label, title and owning library exists"
 msgstr "Том с тем же ярлыком, заглавием и библиотекой собственником уже есть"
 
-#: 8008.OFFLINE_INVALID_SESSION:951
+#: 8008.OFFLINE_INVALID_SESSION:954
 msgid "The session name is invalid"
 msgstr ""
 
@@ -1033,7 +1037,7 @@ msgstr "Запрашиваемый  acq.currency_type не был найден"
 msgid "The requested money_grocery was not found"
 msgstr "Запрашиваемый money_grocery не найден"
 
-#: 8009.OFFLINE_NO_ORG:954 8010.OFFLINE_SESSION_COMPLETE:957
+#: 8009.OFFLINE_NO_ORG:957 8010.OFFLINE_SESSION_COMPLETE:960
 msgid "No org id was provided"
 msgstr ""
 
@@ -1041,7 +1045,7 @@ msgstr ""
 msgid "The patron has too many lost items."
 msgstr ""
 
-#: 8001.OFFLINE_SESSION_FILE_EXISTS:930
+#: 8001.OFFLINE_SESSION_FILE_EXISTS:933
 msgid "An offline file for this workstation exists within this session"
 msgstr ""
 
@@ -1057,7 +1061,7 @@ msgstr "Процессор кредитных карт отклонил сдел
 msgid "The requested vandelay_queued_authority_record was not found"
 msgstr "Запрашиваемый vandelay_queued_authority_record не найден"
 
-#: 8002.OFFLINE_FILE_ERROR:933
+#: 8002.OFFLINE_FILE_ERROR:936
 msgid "An offline file or directory could not be created or accessed"
 msgstr ""
 
@@ -1185,11 +1189,11 @@ msgstr "Запрашиваемый actor_org_unit не найден"
 msgid "The requested container_call_number_bucket_item was not found"
 msgstr "Запрашиваемый container_call_number_bucket_item не найден"
 
-#: 10003.ACQ_LINEITEM_DETAIL_NO_ORG:981
+#: 10003.ACQ_LINEITEM_DETAIL_NO_ORG:984
 msgid "The lineitem detail has no owning_lib"
 msgstr "Детали строки(lineitem) не имеют owning_lib"
 
-#: 11101.SERIAL_DISTRIBUTION_HAS_NO_COPY_TEMPLATE:1008
+#: 11101.SERIAL_DISTRIBUTION_HAS_NO_COPY_TEMPLATE:1011
 msgid ""
 "Units cannot be created for the given item because its associated "
 "distribution does not have a copy template."
@@ -1231,7 +1235,7 @@ msgstr "Запрашиваемый container_user_bucket_item не найден"
 msgid "The requested action_non_cataloged_circulation was not found"
 msgstr "Запрашиваемый action_non_cataloged_circulation не найден"
 
-#: 11104.SERIAL_CORRUPT_PATTERN_CODE:1021
+#: 11104.SERIAL_CORRUPT_PATTERN_CODE:1024
 msgid ""
 "A serial pattern code has been configured that fails to conform to MFHD "
 "standards for fields 853-855."

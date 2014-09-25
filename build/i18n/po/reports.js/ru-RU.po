@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2011-04-18 21:45-0400\n"
+"POT-Creation-Date: 2014-09-11 02:13-0400\n"
 "PO-Revision-Date: 2010-02-20 14:24+0000\n"
 "Last-Translator: Nkolay Parukhin <parukhin@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-05-18 04:48+0000\n"
-"X-Generator: Launchpad (build 12959)\n"
+"X-Launchpad-Export-Date: 2014-09-12 06:24+0000\n"
+"X-Generator: Launchpad (build 17196)\n"
 
 #: reports.js:OPERATORS_IN_LIST reports.js:FILTERS_LABEL_IN
 msgid "In list"
@@ -61,6 +61,10 @@ msgstr "Измените главный столбик на  ${0}"
 #: reports.js:LINK_NULLABLE_RIGHT
 msgid "Parent"
 msgstr "Родитель"
+
+#: reports.js:TRANSFORMS_MONTH_NAME
+msgid "Month Name"
+msgstr "Имя Месяца"
 
 #: reports.js:TEMPLATE_CONF_BETWEEN
 msgid "Field value is between (comma separated):"
@@ -249,6 +253,10 @@ msgstr "Необработанные данные"
 msgid "All Available Sources"
 msgstr "Все доступные источники"
 
+#: reports.js:FOLDERS_OUTPUT
+msgid "Output"
+msgstr "Выход"
+
 #: reports.js:OPERATORS_LIKE reports.js:FILTERS_LABEL_LIKE
 msgid "Contains Matching substring"
 msgstr "Включает совпадающие подстроку"
@@ -294,6 +302,10 @@ msgstr "Месяцы тому назад"
 msgid "Round"
 msgstr "Круглый"
 
+#: reports.js:TEMPLATE_FIELD_DOC_PROMPT_CHANGE
+msgid "Change the field hint to:"
+msgstr ""
+
 #: reports.js:FILTERS_LABEL_NULL_BLANK reports.js:OPERATORS_NULL_BLANK
 msgid "Is NULL or Blank"
 msgstr "NULL или Пустой"
@@ -325,10 +337,6 @@ msgstr "Минимум"
 #: reports.js:FILTERS_LABEL_NOT_NULL_BLANK reports.js:OPERATORS_NOT_NULL_BLANK
 msgid "Is not NULL or Blank"
 msgstr "НеNULL или пустой"
-
-#: reports.js:WIDGET_DAYS
-msgid "Day(s)"
-msgstr "День (дни)"
 
 #: reports.js:FOLDER_WINDOW_REPORT_OUTPUT
 msgid "Report Output: ${0}"
@@ -366,9 +374,9 @@ msgstr "Пожалуйста укажите выходную папку"
 msgid "Please provide a report folder"
 msgstr "Пожалуйста укажите папку отчета"
 
-#: reports.js:TRANSFORMS_MONTH_NAME
-msgid "Month Name"
-msgstr "Имя Месяца"
+#: reports.js:WIDGET_DAYS
+msgid "Day(s)"
+msgstr "День (дни)"
 
 #: reports.js:TFORMS_LABEL_FIRST5 reports.js:TRANSFORMS_FIRST5
 msgid "First 5 characters (for US ZIP code)"
@@ -390,9 +398,9 @@ msgstr "Отчеты"
 msgid "Quarters ago"
 msgstr "Квартал  тому назад"
 
-#: reports.js:FOLDERS_OUTPUT
-msgid "Output"
-msgstr "Выход"
+#: reports.js:REPORT_EDITOR_ENTER_NEW_NAME_ALERT
+msgid "Please change the report name"
+msgstr ""
 
 #: reports.js:TEMPLATE_CONF_SELECT_CANCEL
 msgid "Select the value, or cancel:"

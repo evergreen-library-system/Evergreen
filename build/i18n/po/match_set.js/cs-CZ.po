@@ -1,0 +1,84 @@
+# Czech translation for evergreen
+# Copyright (c) 2013 Rosetta Contributors and Canonical Ltd 2013
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2013.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: evergreen\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2014-09-11 02:13-0400\n"
+"PO-Revision-Date: 2013-06-25 13:36+0000\n"
+"Last-Translator: Eva Cerninakova <Unknown>\n"
+"Language-Team: Czech <cs@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2014-09-12 06:27+0000\n"
+"X-Generator: Launchpad (build 17196)\n"
+
+#: match_set.js:WORKING_MP_HERE
+msgid "Choose from among the three buttons above to add a new match point."
+msgstr "Pro přidání nové shody vyberte jedno ze tří tlačítek nahoře"
+
+#: match_set.js:OK
+msgid "Ok"
+msgstr "OK"
+
+#: match_set.js:EXIT_REPLACE_MODE
+msgid "Exit Replace Mode"
+msgstr "Ukončit režim nahrazování"
+
+#: match_set.js:ENTER_REPLACE_MODE
+msgid "Enter Replace Mode"
+msgstr "Zapnout režim nahrazování"
+
+#: match_set.js:LEAVE_ROOT_ALONE
+msgid "You cannot delete the root node of a tree (but you can replace it)."
+msgstr "Nemůžete smazat kořenový uzel stromu  (ale můžete ho nahradit)."
+
+#: match_set.js:EXACTLY_ONE
+msgid ""
+"First select exactly one node from the tree on the right side of the screen."
+msgstr ""
+"Nejdříve vyberte právě jeden uzel ze stromu na pravé straně obrazovky"
+
+#: match_set.js:CANCEL
+msgid "Cancel"
+msgstr "Storno"
+
+#: match_set.js:WORKING_QM_HERE
+msgid "Use buttons above and to the right to add new quality metrics."
+msgstr "Pro přidání nové metriky kvality použijte tlačítka nahoře a vpravo."
+
+#: match_set.js:DEFINE_MP
+msgid ""
+"Define this match point using the above fields, then drag me to the tree on "
+"the right."
+msgstr ""
+"Pro definování této  shody použijte pole nahoře, poté mě přetáhněte do "
+"stromu napravo."
+
+#: match_set.js:NO_CAN_DO
+msgid "An error has occurred. Close this interface and try again."
+msgstr "Došlo k chybě. Zavřete toto rozhraní a zkuste to znovu."
+
+#: match_set.js:SVF
+msgid "Record Attribute"
+msgstr "Atribut záznamu"
+
+#: match_set.js:POINT_NEEDS_ONE
+msgid "You have not entered valid data"
+msgstr "Nebyla vložena validní data."
+
+#: match_set.js:FAULTY_MARC
+msgid ""
+"A MARC tag must be identified by three digits, and the subfield must be one "
+"non-whitespace, non-control character."
+msgstr ""
+"Označení pole MARCu musí být definováno třemi číslicemi;  podpole musí být "
+"definování znakem, který není mezerou ani kontrolním znakem."
+
+#: match_set.js:MATCH_SCORE
+msgid "Match score ${0}"
+msgstr "Počet shod ${0}"

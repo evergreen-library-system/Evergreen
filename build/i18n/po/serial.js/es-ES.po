@@ -1,0 +1,80 @@
+# Spanish translation for evergreen
+# Copyright (c) 2013 Rosetta Contributors and Canonical Ltd 2013
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2013.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: evergreen\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2014-01-22 16:26-0400\n"
+"PO-Revision-Date: 2013-11-05 20:14+0000\n"
+"Last-Translator: Gerson Vazquez <gerson.v.h@gmail.com>\n"
+"Language-Team: Spanish <es@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2014-01-23 05:25+0000\n"
+"X-Generator: Launchpad (build 16901)\n"
+
+#: serial.js:SAVE_SUCCESSFUL
+msgid "Save Successful"
+msgstr "Guardado exitosamente"
+
+#: serial.js:SEASON_SUMMER
+msgid "Summer"
+msgstr ""
+
+#: serial.js:SELECT_VALID_CAP
+msgid "Have you selected a valid caption and pattern?"
+msgstr ""
+
+#: serial.js:SEASON_WINTER
+msgid "Winter"
+msgstr ""
+
+#: serial.js:CREATE_ISSUANCE
+msgid "Create Issuance"
+msgstr "Crear periodicidad"
+
+#: serial.js:NOTES_SSUB
+msgid "Subscription Notes (ID: ${0})"
+msgstr "Notas de suscripción (id.: ${0})"
+
+#: serial.js:REQUIRE_ONE_ROW
+msgid "Use the checkboxes to select exactly one row for this operation."
+msgstr ""
+"Use las casillas de verificación para elegir una sola fila para esta "
+"operación."
+
+#: serial.js:SEASON_SPRING
+msgid "Spring"
+msgstr ""
+
+#: serial.js:WIZARD
+msgid "Wizard"
+msgstr ""
+
+#: serial.js:MODIFY_ISSUANCE
+msgid "Modify Issuance"
+msgstr "Modificar periodicidad"
+
+#: serial.js:NO_CAP_SUBFIELDS
+msgid "No caption subfields in selected caption and pattern"
+msgstr ""
+
+#: serial.js:NOTES_SDIST
+msgid "Distribution Notes (ID: ${0})"
+msgstr "Notas de distribución (id.: ${0})"
+
+#: serial.js:ERROR_BLANK_FIELDS
+msgid "A valid holding code cannot be produced with any blank fields."
+msgstr ""
+
+#: serial.js:COMPILE
+msgid "Create Holding Code"
+msgstr ""
+
+#: serial.js:SEASON_FALL
+msgid "Fall"
+msgstr ""

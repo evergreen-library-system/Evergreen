@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2014-02-24 16:23-0400\n"
+"POT-Creation-Date: 2014-09-11 02:13-0400\n"
 "PO-Revision-Date: 2010-02-22 22:03+0000\n"
 "Last-Translator: Job Diógenes Ribeiro Borges <jobdrb@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <pt_BR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2014-02-26 06:25+0000\n"
-"X-Generator: Launchpad (build 16935)\n"
+"X-Launchpad-Export-Date: 2014-09-12 06:24+0000\n"
+"X-Generator: Launchpad (build 17196)\n"
 "X-Poedit-Country: BRAZIL\n"
 "X-Poedit-Language: Portuguese\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -273,6 +273,10 @@ msgstr "Nome do modelo:"
 msgid "Template Creator:"
 msgstr "Criador de modelos:"
 
+#: reports.oils_rpt_editor.doc_url
+msgid "Template Documentation URL:"
+msgstr ""
+
 #: reports.oils_rpt_editor.template_description
 msgid "Template Description:"
 msgstr "Descrição do modelo:"
@@ -379,6 +383,29 @@ msgstr "Escolha uma pasta para gravar a saída deste relatório:"
 #: reports.oils_rpt_editor.save_report
 msgid "Save Report"
 msgstr "Salvar relatório"
+
+#: reports.oils_rpt_editor.apply_changes
+msgid "Apply Changes"
+msgstr ""
+
+#: reports.oils_rpt_editor.save_report_new
+msgid "Save As New"
+msgstr ""
+
+#: reports.oils_rpt_editor.confirm_sched
+msgid ""
+"Changes will be applied to pending reports that have not yet run. Do you "
+"want to continue with modifying those pending reports?"
+msgstr ""
+
+#: reports.oils_rpt_editor.cancel
+msgctxt "reports.oils_rpt_editor.cancel"
+msgid "Cancel"
+msgstr ""
+
+#: reports.oils_rpt_editor.exit_report
+msgid "Return"
+msgstr ""
 
 #: reports.oils_rpt_editor.empty_parameter
 msgid ""
@@ -499,6 +526,14 @@ msgstr "Clonar relatório"
 msgid "Schedule report"
 msgstr "Agendar relatório"
 
+#: reports.oils_rpt_folder_window.view_report
+msgid "View"
+msgstr ""
+
+#: reports.oils_rpt_folder_window.edit_report
+msgid "Edit"
+msgstr ""
+
 #: reports.oils_rpt_folder_window.delete_reports
 msgid "Delete selected report(s)"
 msgstr "Excluir relatório(s) selecionado(s)"
@@ -562,8 +597,9 @@ msgid "Select Folder"
 msgstr "Selecionar pasta"
 
 #: reports.oils_rpt_folder_window.cancel
+msgctxt "reports.oils_rpt_folder_window.cancel"
 msgid "Cancel"
-msgstr "Cancelar"
+msgstr ""
 
 #: reports.oils_rpt_folder_window.confirm_delete
 msgid "Are you sure you wish to delete the selected item(s)?"
@@ -731,6 +767,10 @@ msgstr "Nome:"
 msgid "Description:"
 msgstr "Descrição:"
 
+#: reports.xul.template_builder.doc_url.label
+msgid "Documentation URL:"
+msgstr ""
+
 #: reports.xul.template_builder.save.label
 msgid "Save"
 msgstr "Salvar"
@@ -798,6 +838,10 @@ msgstr "Alterar operador"
 msgid "Change value"
 msgstr "Alterar valor"
 
+#: reports.xul.template_builder.change_field_doc.label
+msgid "Change Field Hint"
+msgstr ""
+
 #: reports.xul.template_builder.remove_value.label
 msgid "Remove value"
 msgstr "Remover valor"
@@ -817,6 +861,13 @@ msgstr "Alias de SQL"
 #: reports.xul.template_builder.relationship.label
 msgid "Relationship"
 msgstr "Relacionamento"
+
+#: reports.xul.template_builder.field_doc.label
+msgid "Field Hint"
+msgstr ""
+
+#~ msgid "Cancel"
+#~ msgstr "Cancelar"
 
 #~ msgid ""
 #~ "One or more of the selected templates could not be deleted because there are "

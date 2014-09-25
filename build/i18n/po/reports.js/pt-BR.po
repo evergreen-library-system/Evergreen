@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2011-04-18 21:45-0400\n"
+"POT-Creation-Date: 2014-09-11 02:13-0400\n"
 "PO-Revision-Date: 2010-02-22 22:13+0000\n"
-"Last-Translator: jobdrb <jobdrb@gmail.com>\n"
+"Last-Translator: Job Diógenes Ribeiro Borges <jobdrb@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <pt_BR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-05-18 04:48+0000\n"
-"X-Generator: Launchpad (build 12959)\n"
+"X-Launchpad-Export-Date: 2014-09-12 06:24+0000\n"
+"X-Generator: Launchpad (build 17196)\n"
 "X-Poedit-Country: BRAZIL\n"
 "X-Poedit-Language: Portuguese\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -69,6 +69,10 @@ msgstr "Alterar o cabeçalho da coluna para: $(0)"
 #: reports.js:LINK_NULLABLE_RIGHT
 msgid "Parent"
 msgstr "Pai"
+
+#: reports.js:TRANSFORMS_MONTH_NAME
+msgid "Month Name"
+msgstr "Nome do Mês"
 
 #: reports.js:TEMPLATE_CONF_BETWEEN
 msgid "Field value is between (comma separated):"
@@ -257,6 +261,10 @@ msgstr "Dados puros"
 msgid "All Available Sources"
 msgstr "Todas Fontes Disponíveis"
 
+#: reports.js:FOLDERS_OUTPUT
+msgid "Output"
+msgstr "Gravar em"
+
 #: reports.js:OPERATORS_LIKE reports.js:FILTERS_LABEL_LIKE
 msgid "Contains Matching substring"
 msgstr "contém os subtextos iguais ao fornecido"
@@ -302,6 +310,10 @@ msgstr "Meses atrás"
 msgid "Round"
 msgstr "Arredondamento"
 
+#: reports.js:TEMPLATE_FIELD_DOC_PROMPT_CHANGE
+msgid "Change the field hint to:"
+msgstr ""
+
 #: reports.js:FILTERS_LABEL_NULL_BLANK reports.js:OPERATORS_NULL_BLANK
 msgid "Is NULL or Blank"
 msgstr "É NULO ou Branco"
@@ -333,10 +345,6 @@ msgstr "Min"
 #: reports.js:FILTERS_LABEL_NOT_NULL_BLANK reports.js:OPERATORS_NOT_NULL_BLANK
 msgid "Is not NULL or Blank"
 msgstr "Não é NULO ou Branco"
-
-#: reports.js:WIDGET_DAYS
-msgid "Day(s)"
-msgstr "Dia(s)"
 
 #: reports.js:FOLDER_WINDOW_REPORT_OUTPUT
 msgid "Report Output: ${0}"
@@ -374,9 +382,9 @@ msgstr "Por favor informa uma pasa para gravação"
 msgid "Please provide a report folder"
 msgstr "Por favor informe a pasta para o relatório"
 
-#: reports.js:TRANSFORMS_MONTH_NAME
-msgid "Month Name"
-msgstr "Nome do Mês"
+#: reports.js:WIDGET_DAYS
+msgid "Day(s)"
+msgstr "Dia(s)"
 
 #: reports.js:TFORMS_LABEL_FIRST5 reports.js:TRANSFORMS_FIRST5
 msgid "First 5 characters (for US ZIP code)"
@@ -398,9 +406,9 @@ msgstr "Relatórios"
 msgid "Quarters ago"
 msgstr "Quadrimestres atrás"
 
-#: reports.js:FOLDERS_OUTPUT
-msgid "Output"
-msgstr "Gravar em"
+#: reports.js:REPORT_EDITOR_ENTER_NEW_NAME_ALERT
+msgid "Please change the report name"
+msgstr ""
 
 #: reports.js:TEMPLATE_CONF_SELECT_CANCEL
 msgid "Select the value, or cancel:"

@@ -1,0 +1,80 @@
+# Armenian translation for evergreen
+# Copyright (c) 2013 Rosetta Contributors and Canonical Ltd 2013
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2013.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: evergreen\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2014-01-22 16:26-0400\n"
+"PO-Revision-Date: 2014-02-02 18:03+0000\n"
+"Last-Translator: TZ <tigran@flib.sci.am>\n"
+"Language-Team: Armenian <hy@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2014-02-03 05:20+0000\n"
+"X-Generator: Launchpad (build 16916)\n"
+
+#: serial.js:SAVE_SUCCESSFUL
+msgid "Save Successful"
+msgstr "Հիշվեց հաջողությամբ"
+
+#: serial.js:SEASON_SUMMER
+msgid "Summer"
+msgstr "Ամառ"
+
+#: serial.js:SELECT_VALID_CAP
+msgid "Have you selected a valid caption and pattern?"
+msgstr "Ընտրե՞լ ես թույլատրված որսիչ և ձևանմուշ"
+
+#: serial.js:SEASON_WINTER
+msgid "Winter"
+msgstr "Ձմեռ"
+
+#: serial.js:CREATE_ISSUANCE
+msgid "Create Issuance"
+msgstr "Ստեղծիր տրում"
+
+#: serial.js:NOTES_SSUB
+msgid "Subscription Notes (ID: ${0})"
+msgstr "Բաժանորդագրության նշումներ (հմր: ${0})"
+
+#: serial.js:REQUIRE_ONE_ROW
+msgid "Use the checkboxes to select exactly one row for this operation."
+msgstr ""
+"Օգտագործի ընտրելու վանդակը այս գործողության համար ճշգրտորեն մեկ տող ընտրելու "
+"համար։"
+
+#: serial.js:SEASON_SPRING
+msgid "Spring"
+msgstr "Գարուն"
+
+#: serial.js:WIZARD
+msgid "Wizard"
+msgstr "Գործիքներ"
+
+#: serial.js:MODIFY_ISSUANCE
+msgid "Modify Issuance"
+msgstr "Թարմացրու տրումը"
+
+#: serial.js:NO_CAP_SUBFIELDS
+msgid "No caption subfields in selected caption and pattern"
+msgstr "Ընտրված որսիչում և ձևանմուշում չկան որսման ենթադաշտեր"
+
+#: serial.js:NOTES_SDIST
+msgid "Distribution Notes (ID: ${0})"
+msgstr "Տարածման  նշումներ (հմր: ${0})"
+
+#: serial.js:ERROR_BLANK_FIELDS
+msgid "A valid holding code cannot be produced with any blank fields."
+msgstr "Թույլատրված պահման կոդը չի կարող թողարկվել ցանկացած դատարկ դաշտերով։"
+
+#: serial.js:COMPILE
+msgid "Create Holding Code"
+msgstr "Ստեղծիր պահման կոդ"
+
+#: serial.js:SEASON_FALL
+msgid "Fall"
+msgstr "Աշուն"
