@@ -250,7 +250,7 @@ have just imagined developing with OpenSRF – it is truly that simple. Under th
 covers, of course, the OpenSRF language bindings do an incredible amount of
 work on behalf of the developer. An OpenSRF application consists of one or more
 OpenSRF services that expose methods: for example, the `opensrf.simple-text`
-http://svn.open-ils.org/trac/OpenSRF/browser/trunk/src/perl/lib/OpenSRF/Application/Demo/SimpleText.pm[demonstration
+http://git.evergreen-ils.org/?p=OpenSRF.git;a=blob_plain;f=src/perl/lib/OpenSRF/Application/Demo/SimpleText.pm[demonstration
 service] exposes the `opensrf.simple-text.split()` and
 `opensrf.simple-text.reverse()` methods. Each method accepts zero or more
 arguments and returns zero or one results. The data types supported by OpenSRF
@@ -1303,7 +1303,7 @@ significant, non-obvious patch to OpenSRF, they need to manually run through
 various (undocumented, again) use cases to try and ensure that the patch
 introduced no unanticipated side effects. The same problems hold for Evergreen
 itself, although the
-http://svn.open-ils.org/ILS-Contrib/constrictor[Constrictor] stress-testing
+http://git.evergreen-ils.org/?p=working/random.git;a=shortlog;h=refs/heads/collab/berick/constrictor[Constrictor] stress-testing
 framework offers a way of performing some automated system testing and
 performance testing.
 
