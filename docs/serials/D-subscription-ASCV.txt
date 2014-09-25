@@ -134,7 +134,7 @@ image::media/cap-wiz-freq.jpg[Compress or Expand]
 
 . Select the appropriate option for compressing or expanding your captions in the catalog from the compressibility and expandability drop down menu. The entries in the drop down menu correspond to the indicator codes and the subfield $w in the 853 tag. Compressibility and expandability correspond to the first indicator in the 853 tag.
 . Choose the appropriate caption evaluation from the drop down menu.
-. Choose the frequency of your publication from the drop down menu. For irregular frequencies, you may wish to select use number of issues per year, and enter the total number of issues that you receive each year. However, in the . 0 release, recommended practice is that you use only regular frequencies. Planned development will create an additional step to aid in the creation of irregular frequencies.
+. Choose the frequency of your publication from the drop down menu. For irregular frequencies, you may wish to select use number of issues per year, and enter the total number of issues that you receive each year. However, recommended practice is that you use only regular frequencies. Planned development will create an additional step to aid in the creation of irregular frequencies.
 . Click Next.
 
 Page 5: Regularity Information 
