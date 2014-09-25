@@ -55,7 +55,7 @@ my %locs = (
 );
 
 my @pofiles = qw/
-    Acq.js
+    acq.js
     admin.properties
     authority.js
     auth.properties
@@ -67,14 +67,17 @@ my @pofiles = qw/
     conify.dtd
     conify.js
     db.seed
+    FlattenerGrid.js
     fm_IDL.dtd
     ils_events.xml
     lang.dtd
+    match_set.js
     multiclass_search_help.html
     offline.properties
     opac.dtd
     opac.js
     patron.properties
+    PCrudFilterPane.js
     pickup_and_return.js
     pull_list.js
     register.js
@@ -83,10 +86,14 @@ my @pofiles = qw/
     reservation.js
     Searcher.js
     selfcheck.js
+    serial.js
     serial.properties
+    tpac
     TranslatorPopup.js
+    URLVerify.js
     User.js
     vandelay.dtd
+    vandelay.js
     XULTermLoader.js
 /;
 
