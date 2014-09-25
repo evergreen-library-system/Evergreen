@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2013-11-07 11:34-0400\n"
+"POT-Creation-Date: 2014-09-11 02:13-0400\n"
 "PO-Revision-Date: 2014-02-25 14:52+0000\n"
 "Last-Translator: Andi Chandler <Unknown>\n"
 "Language-Team: English (United Kingdom) <en_GB@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2014-02-26 06:25+0000\n"
-"X-Generator: Launchpad (build 16935)\n"
+"X-Launchpad-Export-Date: 2014-09-12 06:25+0000\n"
+"X-Generator: Launchpad (build 17196)\n"
 
 #: staff.serial.editor_base.handle_update.error
 msgid "serial update error:"
@@ -523,6 +523,10 @@ msgstr ""
 #: batch_receive.print_routing_list_users
 msgid "Print Routing List"
 msgstr "Print Routing List"
+
+#: batch_receive.unit_barcode_collision
+msgid "Serial unit barcode '%1$s' collides with an existing barcode."
+msgstr ""
 
 #: pattern_wizard.enumeration.a
 msgctxt "pattern_wizard.enumeration.a"

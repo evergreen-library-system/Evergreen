@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2011-04-18 21:45-0400\n"
+"POT-Creation-Date: 2014-09-11 02:13-0400\n"
 "PO-Revision-Date: 2009-12-24 11:34+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-05-18 04:48+0000\n"
-"X-Generator: Launchpad (build 12959)\n"
+"X-Launchpad-Export-Date: 2014-09-12 06:24+0000\n"
+"X-Generator: Launchpad (build 17196)\n"
 
 #: reports.js:OPERATORS_IN_LIST reports.js:FILTERS_LABEL_IN
 msgid "In list"
@@ -61,6 +61,10 @@ msgstr "Փոխել սյունակ առաջատարը սրան ${0}"
 #: reports.js:LINK_NULLABLE_RIGHT
 msgid "Parent"
 msgstr "Ծնող"
+
+#: reports.js:TRANSFORMS_MONTH_NAME
+msgid "Month Name"
+msgstr "Ամսվա անուն"
 
 #: reports.js:TEMPLATE_CONF_BETWEEN
 msgid "Field value is between (comma separated):"
@@ -249,6 +253,10 @@ msgstr "Հում տվյալներ"
 msgid "All Available Sources"
 msgstr "Մատչելի բոլոր աղբյուրները"
 
+#: reports.js:FOLDERS_OUTPUT
+msgid "Output"
+msgstr "Ելք"
+
 #: reports.js:OPERATORS_LIKE reports.js:FILTERS_LABEL_LIKE
 msgid "Contains Matching substring"
 msgstr "Պարունակում է համընկնող ենթատող"
@@ -294,6 +302,10 @@ msgstr "Ամիսներ առաջ"
 msgid "Round"
 msgstr "Կլոր"
 
+#: reports.js:TEMPLATE_FIELD_DOC_PROMPT_CHANGE
+msgid "Change the field hint to:"
+msgstr ""
+
 #: reports.js:FILTERS_LABEL_NULL_BLANK reports.js:OPERATORS_NULL_BLANK
 msgid "Is NULL or Blank"
 msgstr "NULL կամ Դատարկ"
@@ -325,10 +337,6 @@ msgstr "Մին"
 #: reports.js:FILTERS_LABEL_NOT_NULL_BLANK reports.js:OPERATORS_NOT_NULL_BLANK
 msgid "Is not NULL or Blank"
 msgstr "NULL չէ կամ դատարկ չէ"
-
-#: reports.js:WIDGET_DAYS
-msgid "Day(s)"
-msgstr "Օր(եր)"
 
 #: reports.js:FOLDER_WINDOW_REPORT_OUTPUT
 msgid "Report Output: ${0}"
@@ -366,9 +374,9 @@ msgstr "Նշիր ելքային թղթապանակը"
 msgid "Please provide a report folder"
 msgstr "Նշիր հաշվետվության թղթապանակը"
 
-#: reports.js:TRANSFORMS_MONTH_NAME
-msgid "Month Name"
-msgstr "Ամսվա անուն"
+#: reports.js:WIDGET_DAYS
+msgid "Day(s)"
+msgstr "Օր(եր)"
 
 #: reports.js:TFORMS_LABEL_FIRST5 reports.js:TRANSFORMS_FIRST5
 msgid "First 5 characters (for US ZIP code)"
@@ -390,9 +398,9 @@ msgstr "Հաշվետվություններ"
 msgid "Quarters ago"
 msgstr "Քառորդներ առաջ"
 
-#: reports.js:FOLDERS_OUTPUT
-msgid "Output"
-msgstr "Ելք"
+#: reports.js:REPORT_EDITOR_ENTER_NEW_NAME_ALERT
+msgid "Please change the report name"
+msgstr ""
 
 #: reports.js:TEMPLATE_CONF_SELECT_CANCEL
 msgid "Select the value, or cancel:"

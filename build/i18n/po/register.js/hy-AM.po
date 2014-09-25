@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2014-02-24 16:24-0400\n"
+"POT-Creation-Date: 2014-09-11 02:13-0400\n"
 "PO-Revision-Date: 2013-12-27 09:40+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: Armenian <hy@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2014-02-26 06:26+0000\n"
-"X-Generator: Launchpad (build 16935)\n"
+"X-Launchpad-Export-Date: 2014-09-12 06:25+0000\n"
+"X-Generator: Launchpad (build 17196)\n"
 
 #: register.js:USER_SETTINGS
 msgid "User Settings"
@@ -25,9 +25,9 @@ msgstr "Օգտվողի կարգաբերումներ"
 msgid "Apply Changes"
 msgstr "Կիրառել փոփոխությունները"
 
-#: register.js:DUPE_PATRON_EMAIL
-msgid "Found ${0} patron(s) with the same email address"
-msgstr "Գտնվել է ${0} ընթերցող միևնույն էլ փոստի հասցեով"
+#: register.js:REPLACE_BARCODE
+msgid "Replace Barcode"
+msgstr "Փոխարինիր շտրիխ կոդը"
 
 #: register.js:ADDRESS_BILLING
 msgid "Billing"
@@ -44,6 +44,14 @@ msgstr "Սկզբնական"
 #: register.js:ALL_CARDS_BARCODE
 msgid "Barcode"
 msgstr "Շտրիխ կոդ"
+
+#: register.js:ADD
+msgid "Add"
+msgstr ""
+
+#: register.js:SECONDARY_GROUP_IS_PROFILE
+msgid "That is already the primary profile group for this patron."
+msgstr ""
 
 #: register.js:SAVE
 msgid "Save"
@@ -65,9 +73,9 @@ msgstr "Գտնվել է ${0} ընթերցող միևնույն բնութագր�
 msgid "Mailing"
 msgstr "Փոստային"
 
-#: register.js:REPLACE_BARCODE
-msgid "Replace Barcode"
-msgstr "Փոխարինիր շտրիխ կոդը"
+#: register.js:DUPE_PATRON_EMAIL
+msgid "Found ${0} patron(s) with the same email address"
+msgstr "Գտնվել է ${0} ընթերցող միևնույն էլ փոստի հասցեով"
 
 #: register.js:NEED_ADDRESS
 msgid "An address is required during registration."
@@ -103,6 +111,10 @@ msgstr "Շտրիխ կոդը արդեն օգտագործման մեջ է"
 
 #: register.js:UPDATE_EXPIRE_DATE
 msgid "Update Expire Date"
+msgstr ""
+
+#: register.js:SECONDARY_GROUP_ERROR
+msgid "Error saving secondary groups."
 msgstr ""
 
 #: register.js:RESET_PASSWORD
@@ -141,6 +153,10 @@ msgstr "ԱՌԱՔՈՒՄ"
 msgid "Account requested by ${0} ${1}"
 msgstr "հաշիվը պահանջված է ${0} ${1}"
 
+#: register.js:DELETE
+msgid "Delete"
+msgstr ""
+
 #: register.js:HOLD_NOTIFY_SMS
 msgid "SMS: "
 msgstr "SMS: "
@@ -152,6 +168,10 @@ msgstr "Անվավեր դարձնել"
 #: register.js:SHOW_ALL
 msgid "Show All Fields"
 msgstr "Ցույց տուր բոլոր դաշտերը"
+
+#: register.js:SECONDARY_GROUP_EXISTS
+msgid "This group is on the list already."
+msgstr ""
 
 #: register.js:ADDRESS_APPROVE
 msgid "Approve Address"
@@ -176,6 +196,10 @@ msgstr "Նոր հասցե"
 #: register.js:HOLD_NOTIFY_EMAIL
 msgid "Email: "
 msgstr "էլ։ . փոստ "
+
+#: register.js:SECONDARY_GROUP_NOT_ALLOWED
+msgid "You do not have permission to add this group."
+msgstr ""
 
 #: register.js:SEE_ALL
 msgid "See All"

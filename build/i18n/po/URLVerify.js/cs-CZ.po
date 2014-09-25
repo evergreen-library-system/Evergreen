@@ -1,0 +1,119 @@
+# Czech translation for evergreen
+# Copyright (c) 2013 Rosetta Contributors and Canonical Ltd 2013
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2013.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: evergreen\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2013-06-06 12:12-0400\n"
+"PO-Revision-Date: 2013-06-25 13:52+0000\n"
+"Last-Translator: Eva Cerninakova <Unknown>\n"
+"Language-Team: Czech <cs@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2013-06-26 05:14+0000\n"
+"X-Generator: Launchpad (build 16681)\n"
+
+#: URLVerify.js:XPATH
+msgid "XPath"
+msgstr "XPath"
+
+#: URLVerify.js:NOTHING_SELECTED
+msgid "No rows are selected, so no action will be taken."
+msgstr "Nebyly vybrány žádné řádky, takže neproběhne žádná akce."
+
+#: URLVerify.js:REVIEW_ATTEMPT
+msgid "Review this verification attempt"
+msgstr "Zkontrolujte pokus o ověření"
+
+#: URLVerify.js:CREATING
+msgid "Creating session ..."
+msgstr "Probíhá vytvoření relace ..."
+
+#: URLVerify.js:MARC_EDITOR_TITLE
+msgid "Record ID #${0}"
+msgstr "ID záznamu #${0}"
+
+#: URLVerify.js:SESSION_NAME
+msgid "Session '${0}'"
+msgstr "Relace '${0}'"
+
+#: URLVerify.js:CLONING
+msgid "Cloning existing session ..."
+msgstr "Probíhá kopírování existující relace ..."
+
+#: URLVerify.js:INTERFACE_SETUP
+msgid "Setting up interface ..."
+msgstr "Probíhá nastavení rozhraní ..."
+
+#: URLVerify.js:VERIFY_ALL
+msgid ""
+"Click 'OK' to verify ALL the URLs that belong to this session and match all "
+"your search terms.  Click 'Cancel' if the selected, visible URLs are the "
+"only ones you want verified."
+msgstr ""
+"Pro ověření VŠECH URL, které patří k této relaci a odpovídají vašim "
+"vyhledávacím termínům, klikněte na tlačítko \"OK\". Pokud vybraná,  "
+"viditelná URL  jsou jediná, která chcete ověřit, klikněte na  tlačítko "
+"\"Storno\""
+
+#: URLVerify.js:VERIFICATION_ATTEMPT_ID
+msgid "Verification attempt ID: ${0}"
+msgstr "Pokus o ověření  ID: ${0}"
+
+#: URLVerify.js:VERIFICATION_DIALOG
+msgid "Verifying URLs ..."
+msgstr "Probíhá ověření URL ..."
+
+#: URLVerify.js:NEED_UVUS
+msgid "You must add some tag and subfield combinations."
+msgstr "Musíte zadat kombinaci označení pole a podpole."
+
+#: URLVerify.js:CLONE_SESSION
+msgid "Clone"
+msgstr "Kopírovat"
+
+#: URLVerify.js:MARC_EDITOR_LINK
+msgid "Click to open MARC Editor for this record"
+msgstr "Kliknutím otevřete Editor MARC pro tento záznam"
+
+#: URLVerify.js:SELECT_MORE
+msgid ""
+"Click here to review all session URLs and/or select other URLs to verify"
+msgstr ""
+"Pro kontrolu všech relací klikněte zde (a) nebo vyberte pro ověření jiné URL"
+
+#: URLVerify.js:PERFORMING_SEARCH
+msgid "Performing search ..."
+msgstr "Probíhá hledání ..."
+
+#: URLVerify.js:MARC_EDITOR_SAVE_RECORD
+msgid "Save Record"
+msgstr "Uložit záznam"
+
+#: URLVerify.js:EDIT
+msgid "Edit"
+msgstr "Upravit"
+
+#: URLVerify.js:SAVING_TAGS
+msgid "Saving tag/subfield selectors ..."
+msgstr "Probíhá k ukládání selektorů polí a podpolí"
+
+#: URLVerify.js:CLONE_SESSION_NAME
+msgid "Copy of ${0}"
+msgstr "Kopie ${0}"
+
+#: URLVerify.js:EXTRACTING_URLS
+msgid "Extracting URLs ..."
+msgstr "Probíhá získávání URL ..."
+
+#: URLVerify.js:REDIRECTING
+msgid "Loading next interface ..."
+msgstr "Nahrává se další rozhraní ..."
+
+#: URLVerify.js:REREVIEW
+msgid "Open"
+msgstr "Otevřít"

@@ -2,50 +2,347 @@
 # Copyright (c) 2011 Rosetta Contributors and Canonical Ltd 2011
 # This file is distributed under the same license as the evergreen package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2011.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
-"Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2011-04-18 21:45:31-0400\n"
-"PO-Revision-Date: 2011-08-15 11:09+0000\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2014-09-11 02:13-0400\n"
+"PO-Revision-Date: 2014-03-09 17:57+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Launchpad (build 13687)\n"
-"X-Launchpad-Export-Date: 2011-08-16 04:39+0000\n"
+"X-Launchpad-Export-Date: 2014-09-12 06:25+0000\n"
+"X-Generator: Launchpad (build 17196)\n"
+
+#: acq.js:ACQ_SEARCH_CLASS_ABBR_acqlid
+msgid "LID"
+msgstr "PD"
+
+#: acq.js:ADD_LI_TO_PO_BAD_LI_STATE
+msgid ""
+"The selected lineitem is not in a state that can be added to a purchase order"
+msgstr ""
+"Vybraná položka není v takovém stavu, aby mohla být přidána na objednávku"
+
+#: acq.js:NO_LI_TO_CLAIM
+msgid "You have not selected any line items to claim."
+msgstr "Nebyly vybrány žádné položky k reklamaci."
+
+#: acq.js:CONFIRM_FUNDS_AT_WARNING
+msgid ""
+"One or more of the selected funds has a balance below its warning level.\n"
+"Continue?"
+msgstr ""
+"Zůstatek jednoho nebo nebo více vybraných fondů se klesl pod limit pro "
+"varování.\n"
+"Pokračovat?"
+
+#: acq.js:ONE_LI_ATTR_SEARCH_AT_A_TIME
+msgid ""
+"You cannot both type in an attribute value search and search for an uploaded "
+"file of terms at the same time."
+msgstr ""
+"Nemůžete naráz zadávat hledání hodnoty atributu a zároveň hledat nahraný "
+"soubor termínů."
+
+#: acq.js:PREPAYMENT_REQUIRED_REMINDER
+msgid ""
+"This PO requires prepayment.  Are you certain you're ready to activate it?"
+msgstr ""
+"Tato objednávka vyžaduje platbu předem. Opravdu ji chcete  aktivovat?"
+
+#: acq.js:DFA_NOT_ALL
+msgid "Could not record all of your applications of distribution formulas."
+msgstr "Nepodařilo se nahrát všechna použití distribučních formulí."
+
+#: acq.js:INVOICE_EXTRA_COPIES
+msgid ""
+"You are attempting to invoice <b>${0}</b> more copies than originally "
+"ordered.  <br/><br/>To add these items to the original order, select a fund "
+"and choose 'Add New Items' below.  <br/>After saving the invoice, you may "
+"finish editing and importing the new copies from the lineitem details page."
+msgstr ""
+"Pokoušíte se fakturovat <b>${0}</b> více exemplářů, než bylo původně "
+"objednáno.  <br/><br/>Chcete-li přidat tyto exempláře na původní objednávku, "
+"vyberte fond a následně 'Přidat nové exempláře' níže.  <br/>Po uložení "
+"faktury můžete ukončit editaci a import nových exemplářů ze stránky s "
+"detaily o položkách na faktuře."
+
+#: acq.js:ACQ_SEARCH_CLASS_ABBR_acqlia
+msgid "LIA"
+msgstr "PAtr"
+
+#: acq.js:LI_ATTR_SEARCH_CHOOSE_FILE
+msgid "Select file with search terms"
+msgstr "Vyberte soubor s termíny k vyhledání"
+
+#: acq.js:ALERT_UNSELECTED
+msgid "You must choose an alert code."
+msgstr "Musíte vybrat kód upozorněnía."
 
 #: acq.js:LINEITEM_SUMMARY
 msgid ""
-"<div class='acq-lineitem-summary'><a href='${19}'>${0}</a>, by ${1} (${2})</div>\n"
+"<div class='acq-lineitem-summary'><a "
+"href='${19}?focus_li=${10}&source=${22}'>${0}</a>, by ${1} (${2})</div>\n"
 "<div class='acq-lineitem-summary-extra'>\n"
-"${3} Ordered, ${4} Received, ${7} Invoiced, ${8} Claimed, ${9} Cancelled</div>\n"
-"<div class='acq-lineitem-summary-extra'>Estimated $${6}, Encumbered $${16}, Paid $${17}</div>\n"
-"<div class='acq-lineitem-summary-extra'>\n"
-"# ${10} <a style='padding-right: 10px;' class='hidden${20}'  href='${11}/acq/po/view/${12}'>&#x2318; ${13} ${18}</a>\n"
-"<a style='padding-right: 10px;' class='hidden${21}' href='${11}/acq/picklist/view/${14}'>&#x2756; ${15}</a></div>"
-msgstr ""
-"<div class='acq-lineitem-summary'><a href='${19}'>${0}</a>, by ${1} "
-"(${2})</div>\n"
-"<div class='acq-lineitem-summary-extra'>\n"
-"${3} Objednáno, ${4} Obdrženo, ${7} Fakturováno, ${8} Reklamováno, ${9} "
-"Zrušeno</div>\n"
-"<div class='acq-lineitem-summary-extra'>Odhadováno ${6} Kč, Dluh ${16} Kč, "
-"Zaplaceno ${17} Kč</div>\n"
+"${3} Ordered, ${4} Received, ${7} Invoiced, ${8} Claimed, ${9} Cancelled, "
+"${23} Delayed</div>\n"
+"<div class='acq-lineitem-summary-extra'>Estimated $${6}, Encumbered $${16}, "
+"Paid $${17}</div>\n"
 "<div class='acq-lineitem-summary-extra'>\n"
 "# ${10} <a style='padding-right: 10px;' class='hidden${20}'  "
-"href='${11}/acq/po/view/${12}'>&#x2318; ${13} ${18}</a>\n"
+"href='${11}/acq/po/view/${12}?focus_li=${10}&source=${22}'>&#x2318; ${13} "
+"${18}</a>\n"
 "<a style='padding-right: 10px;' class='hidden${21}' "
-"href='${11}/acq/picklist/view/${14}'>&#x2756; ${15}</a></div>"
+"href='${11}/acq/picklist/view/${14}?focus_li=${10}&source=${22}'>&#x2756; "
+"${15}</a></div>"
+msgstr ""
 
-#: acq.js:CHANGE_CLAIM_POLICY
-msgid "Change claim policy"
-msgstr "Změnit pravidla pro reklamace"
+#: acq.js:INVOICE_CONFIRM_PRORATE
+msgid ""
+"Prorate charges?\n"
+"\n"
+"Any subsequent changes to the invoice that would affect prorated amounts "
+"should be resolved manually."
+msgstr ""
+"Rozpočítat poplatky?\n"
+"\n"
+"Jakékoliv další změny na faktuře, které by mohly ovlivnit  výši "
+"rozpočítáných částek,  by měly být vyřešeny manuálně."
 
-#: acq.js:PO_ACTIVATED_ON
-msgid "Activated ${0}"
-msgstr "Aktivováno ${0}"
+#: acq.js:FUND_LIST_ROLLOVER_SUMMARY
+msgid "Fund Propagation &amp; Rollover Summary for Fiscal Year ${0}"
+msgstr ""
+"Rozdělení fondů &amp; Přehled převedených prostředků pro účetní rok ${0}"
+
+#: acq.js:CONFIRM_FUNDS_AT_STOP
+msgid ""
+"One or more of the selected funds has a balance below its stop level.\n"
+"You may not be able to activate purchase orders incorporating these copies.\n"
+"Continue?"
+msgstr ""
+"Zůstatek jednoho nebo více vybraných fondů klesl pod limit povoleného "
+"čerpání.\n"
+"Nemusí se vám podařit aktivovat objednávky zahrnující tyto exempláře.\n"
+"Pokračovat?"
+
+#: acq.js:INVOICE_ITEM_DETAILS
+msgid ""
+"${0} <br/> ${1} <br/> ${2}. <br/> Estimated Price: $${3}. <br/> Lineitem ID: "
+"${4} <br/> PO: ${5} <br/> Order Date: ${6}"
+msgstr ""
+"${0} <br/> ${1} <br/> ${2}. <br/> Odhadovaná cena: ${3} Kč. <br/> ID položky "
+"na faktuře: ${4} <br/> Objednávka: ${5} <br/> Datum objednání: ${6}"
+
+#: acq.js:XUL_RECORD_DETAIL_PAGE
+msgid "Record Details"
+msgstr "Detaily záznamu"
+
+#: acq.js:INVOICE_IDENT_COLLIDE
+msgid ""
+"There is already an invoice in the system with the given combination of "
+"'Vendor Invoice ID' and 'Provider,' which is not allowed."
+msgstr ""
+"Faktura obsahující  použitou kombinaci  názvu \"dodavatele\" a \"ID  faktury "
+"dodavatele\"  již v systému existuje. Není povoleno použít stejnou kombinaci "
+"opakovaně."
+
+#: acq.js:CONFIRM_DELETE_MAPPING
+msgid "Are you sure you want to remove this tag from this fund?"
+msgstr "Opravdu chcete z uvedeného  fondu odstranit toto označení?"
+
+#: acq.js:VENDOR_SAYS_PREPAY_NOT_NEEDED
+msgid ""
+"The selected vendor does not necessarily require prepayment, according\n"
+"to records. Require prepayment on this PO anyway?"
+msgstr ""
+"Podle záznamů nepožaduje vybraný dodavatel platby předem. \n"
+"Chcete přesto pro tuto objednávku požadovat platbu předem?"
+
+#: acq.js:INVOICE_CONFIRM_ITEM_DELETE
+msgid "Remove this $${0} '${1}' charge from the invoice?"
+msgstr "Odstranit tento $${0} '${1}' poplatek z faktury?"
+
+#: acq.js:PO_WARNING_NO_BLOCK_ACTIVATION
+msgid "Yes; fund ${0} (${1}) would be encumbered beyond its warning level."
+msgstr "Ano; fond ${0} (${1}) bude zatížen nad rámec limitu pro varování."
+
+#: acq.js:FUND_XFER_SAME_SOURCE_AND_DEST
+msgid "Cannot transfer. The source and destination funds are the same."
+msgstr "Přesun nelze uskutečnit. Zdrojový fond je totožný s cílovým fondem."
+
+#: acq.js:ROLLBACK_LI_RECEIVE_CONFIRM
+msgid ""
+"This will rollback receipt of selected line items from this purchase order.\n"
+"\n"
+"Continue?"
+msgstr ""
+"Tato akce sníží cenu na dokladu o vybrané položky z této objednávky.\n"
+"\n"
+"Pokračovat?"
+
+#: acq.js:LOAD_TERMS_FIRST
+msgid ""
+"You can't retrieve records until you've loaded a CSV file\n"
+"with bibliographic IDs in the first column."
+msgstr ""
+"Před načtením souboru CSV s ID záznamů v prvním sloupci\n"
+"nelze zobrazit záznamy."
+
+#: acq.js:LI_FORMAT_ERROR
+msgid "Unexpected error retrieving formatted lineitem information."
+msgstr ""
+"Při načítání formátované informace o položce na faktuře se objevila nečekaná "
+"chyba."
+
+#: acq.js:PO_STOP_BLOCKS_ACTIVATION
+msgid "No; fund ${0} (${1}) would be encumbered beyond its stop level."
+msgstr "Ne; fond ${0} (${1}) bude zatížen nad rámec zadané úrovně."
+
+#: acq.js:NO_FIND_INVOICE
+msgid ""
+"Could not find that invoice.\n"
+"Note that the Invoice # field is case-sensitive."
+msgstr ""
+"Tuto fakturu nebylo možné nalézt.\n"
+"Poznámka: V poli s číslem faktury záleží na velikosti písmen."
+
+#: acq.js:ROLLBACK_PO_RECEIVE_CONFIRM
+msgid ""
+"This will rollback receipt of all copies for this purchase order.\n"
+"\n"
+"Continue?"
+msgstr ""
+"Bude zrušen doklad pro všechny exempláře v této objednávce.\n"
+"\n"
+"Pokračovat?"
+
+#: acq.js:PO_CANCEL_CONFIRM
+msgid "Are you SURE you want to cancel this purchase order?"
+msgstr "OPRAVDU chcete zrušit tuto objednávku?"
+
+#: acq.js:PRINT
+msgid "Print"
+msgstr "Vytisknout"
+
+#: acq.js:INVOICE_ITEM_PO_DETAILS
+msgid ""
+"<b>${0}</b><br/><a href='${1}/acq/po/view/${2}'>PO #${3} ${4}</a><br/>Total "
+"Estimated Cost: $${5}"
+msgstr ""
+"<b>${0}</b><br/><a href='${1}/acq/po/view/${2}'>Objednávka #${3} "
+"${4}</a><br/>Odhad celkových nákladů: ${5} Kč"
+
+#: acq.js:LI_CANCEL_CONFIRM
+msgid "Are you SURE you want to cancel this line item?"
+msgstr "OPRAVDU chcete zrušit tuto položku?"
+
+#: acq.js:SELECT_AN_LI_ATTRIBUTE
+msgid "You must select an LI attribute."
+msgstr "Musíte si vybrat vlastnost položky."
+
+#: acq.js:EXPLAIN_DFA_MGMT
+msgid "Remove record of this distribution formula usage?"
+msgstr "Odstranit záznam o využití tohoto distribučního vzorce?"
+
+#: acq.js:UNNAMED
+msgid "Unnamed"
+msgstr "Bez názvu"
+
+#: acq.js:ACQ_SEARCH_CLASS_ABBR_acqpo
+msgid "PO"
+msgstr "Obj"
+
+#: acq.js:DEL_LI_FROM_PO
+msgid ""
+"That item has already been ordered!  Deleting it now will not revoke or "
+"modify any order that has been placed with a vendor.  Deleting the item may "
+"put the system's idea of your purchase order in a state that is inconsistent "
+"with reality.  Are you sure you mean to do this?"
+msgstr ""
+"Tato položka již byla objednána. Pokud položku nyní smažete nebude zrušena "
+"ani modifikována objednávka u dodavatele. Tím že smažete položku, objednávka "
+"v systému nebude odpovídat realitě. Opravdu si přejete pokračovat v této "
+"akci ?"
+
+#: acq.js:CREATE_PO_ASSETS_CONFIRM
+msgid ""
+"This will create bibliographic, call number, and copy records for this "
+"purchase order in the ILS.\n"
+"\n"
+"Continue?"
+msgstr ""
+"V systému bude vytvořen bibliografický záznam, signatury a záznamy exemplářů "
+"pro tuto objednávku.\n"
+"\n"
+"Pokračovat?"
+
+#: acq.js:LID_CANCEL_CONFIRM
+msgid "Are you SURE you want to cancel this copy?"
+msgstr "Opravdu chcete zrušit tento exemplář?"
+
+#: acq.js:INVOICE_CONFIRM_ENTRY_DETACH
+msgid "Remove $${0} charge for item '${1}, ${2} [${3}] from the invoice?"
+msgstr "Odstranit $${0} náklady na položku '${1}, ${2} [${3}] z faktury?"
+
+#: acq.js:SELECT_SEARCH_FIELD
+msgid "Select Search Field"
+msgstr "Vyberte vyhledávací pole"
+
+#: acq.js:VENDOR_PUBLIC
+msgid "VENDOR PUBLIC"
+msgstr "Veřejný dodavatel"
+
+#: acq.js:VENDOR_SAYS_PREPAY_NEEDED
+msgid ""
+"The selected vendor requires prepayment, according to records.\n"
+"Proceed anyway without required prepayment on this PO?"
+msgstr ""
+"Vybraný dodavatel podle záznamů vyžaduje platby předem.\n"
+"Chcete s touto objednávkou přesto pokračovat bez vyžadované platby?"
+
+#: acq.js:INVOICES
+msgid "Invoices"
+msgstr "Faktury"
+
+#: acq.js:PO_ALREADY_ACTIVATED
+msgid "Activated"
+msgstr "Aktivováno"
+
+#: acq.js:INVOICE_NUMBER
+msgid "Invoice #${0}"
+msgstr "Faktura #${0}"
+
+#: acq.js:CANCELED
+msgid "Canceled"
+msgstr "Zrušeno"
+
+#: acq.js:COULD_NOT_DELETE_MAPPING
+msgid "Error removing tag from fund."
+msgstr "Chyba při odstraňování označení z fondu."
+
+#: acq.js:NEW_INVOICE
+msgid "New Invoice"
+msgstr "Nová faktura"
+
+#: acq.js:YES
+msgid "Yes"
+msgstr "Ano"
+
+#: acq.js:COPIES_TO_RECEIVE
+msgid "Number of copies to receive: "
+msgstr "Počet exemplářů k vyzvednutní: "
+
+#: acq.js:PO_CHECKING
+msgid "[One moment...]"
+msgstr "[Počkejte chvilku...]"
+
+#: acq.js:PO_COULD_ACTIVATE
+msgid "Yes."
+msgstr "Ano."
 
 #: acq.js:CONFIRM_LI_ALERT
 msgid ""
@@ -57,19 +354,14 @@ msgid ""
 "${3}\n"
 "Choose OK if you wish to acknowledge this alert."
 msgstr ""
-"Varování u položky na faktuře nazvané,\n"
+"Upozornění k položce na faktuře nazvané\n"
+"\n"
 "\"${0}\":\n"
 "\n"
 "${1}\n"
 "${2}\n"
 "${3}\n"
 "Vyberte OK, pokud varování berete na vědomí."
-
-#: acq.js:LI_FORMAT_ERROR
-msgid "Unexpected error retrieving formatted lineitem information."
-msgstr ""
-"Při načítání formátované informace o položce na faktuře se objevila nečekaná "
-"chyba."
 
 #: acq.js:NO
 msgid "No"
@@ -79,335 +371,85 @@ msgstr "Ne"
 msgid "No results."
 msgstr "Žádné výsledky."
 
-#: acq.js:NO_FIND_INVOICE
-msgid ""
-"Could not find that invoice.\n"
-"Note that the Invoice # field is case-sensitive."
-msgstr ""
-"Tuto fakturu nebylo možné nalézt.\n"
-"Poznámka: V poli s číslem faktury záleží na velikosti písmen."
-
 #: acq.js:NO_LID_TO_CLAIM
-msgid "You have not selected any lineitem details to claim."
-msgstr "Pro reklamaci jste nevybrali jste žádnou položku na faktuře."
+msgid "You have not selected any line item details to claim."
+msgstr "Nebyly vybrány žádné detaily položky k reklamaci"
+
+#: acq.js:RECVD
+msgid "Recv'd"
+msgstr "Přijato"
 
 #: acq.js:FUND_LIST_ROLLOVER_SUMMARY_FUNDS
-msgid "<b>${1}</b> funds propagated for fiscal year ${0} for the selected locations"
-msgstr "<b>${1}</b> fondů rozděleno pro účetní rok ${0} pro vybraná umístění"
-
-#: acq.js:DFA_TIP
-msgid "<strong>Applied by</strong>: ${0}<br /><strong>When</strong>: ${1}"
-msgstr "<strong>Aplikováno</strong>: ${0}<br /><strong>Datum:</strong>: ${1}"
-
-#: acq.js:PO_CANCEL_CONFIRM
-msgid "Are you SURE you want to cancel this purchase order?"
-msgstr "Jste si JISTI, že chcete zrušit tuto objednávku?"
-
-#: acq.js:DELETE_LI_COPIES_CONFIRM
-msgid "This will delete the last ${0} copies in the table.  Proceed?"
-msgstr "Bude smazáno posledních ${0} exemplářů v tabulce. Pokračovat?"
-
-#: acq.js:ONE_LI_ATTR_SEARCH_AT_A_TIME
-msgid "You cannot both type in an attribute value search and search for an uploaded file of terms at the same time."
+msgid "${1} funds propagated for fiscal year ${0} for the selected locations"
 msgstr ""
-"Nemůžete zároveň zadávat vyhledávání hodnoty vlastnosti a vyhledávat nahraný "
-"(uploadovaný) soubor termínů."
+"${1} fondů bylo převedeno do fiskálního roku  ${0} pro zvolenou knihovnu"
 
-#: acq.js:PREPAYMENT_REQUIRED_REMINDER
-msgid "This PO requires prepayment.  Are you certain you're ready to activate it?"
-msgstr "Tato objednávka vyžaduje zálohu. Jste si jisti, že ji chcete aktivovat?"
-
-#: acq.js:NOT_RECVD
-msgid "Not recv'd"
-msgstr "Neobdrženo"
+#: acq.js:NUM_CLAIMS_EXISTING
+msgid "Claims (${0} existing)"
+msgstr "Reklamace (${0} existujících)"
 
 #: acq.js:FUND_LIST_ROLLOVER_SUMMARY_ROLLOVER_AMOUNT
-msgid "<b>$${1}</b> unspent money rolled over to fiscal year ${0} for the selected locations"
+msgid ""
+"<b>$${1}</b> unspent money rolled over to fiscal year ${0} for the selected "
+"locations"
 msgstr ""
 "<b>$${1}</b> neutracených peněz přeneseno do účetního roku ${0} pro vybraná "
 "umístění"
 
-#: acq.js:PRINT
-msgid "Print"
-msgstr "Tisk"
-
-#: acq.js:CREATE_PO_ASSETS_CONFIRM
-msgid ""
-"This will create bibliographic, call number, and copy records for this purchase order in the ILS.\n"
-"\n"
-"Continue?"
-msgstr ""
-"V systému bude vytvořen bibliografický záznam, signaturu a záznamy exemplářů "
-"pro tuto objednávku.\n"
-"\n"
-"Pokračovat?"
-
-#: acq.js:ITS_YOU
-msgid "You"
-msgstr "Vy"
-
-#: acq.js:EXPLAIN_DFA_MGMT
-msgid "Remove record of this distribution formula usage?"
-msgstr "Odstranit záznam využití tohoto typu distribučního vzorce?"
-
-#: acq.js:PO_COULD_ACTIVATE
-msgid "Yes."
-msgstr "Ano."
-
-#: acq.js:INVOICE_EXTRA_COPIES
-msgid "You are attempting to invoice <b>${0}</b> more copies than originally ordered.  <br/><br/>To add these items to the original order, select a fund and choose 'Add New Items' below.  <br/>After saving the invoice, you may finish editing and importing the new copies from the lineitem details page."
-msgstr ""
-"Pokoušíte se fakturovat <b>${0}</b> více exemplářů, než bylo původně "
-"objednáno.  <br/><br/>Chcete-li přidat tyto exempláře na původní objednávku, "
-"vyberte fond a následně 'Přidat nové exempláře' níže.  <br/>Po uložení "
-"faktury můžete ukončit editaci a import nových exemplářů ze stránky s "
-"detaily o položkách na faktuře."
+#: acq.js:DFA_TIP
+msgid "<strong>Applied by</strong>: ${0}<br /><strong>When</strong>: ${1}"
+msgstr "<strong>Aplikováno</strong>: ${0}<br /><strong>Kdy</strong>: ${1}"
 
 #: acq.js:OUT_OF_COPIES
 msgid "You have applied distribution formulas to every copy."
 msgstr "Aplikovali jste distribuční vzorce na každý exemplář."
 
-#: acq.js:SELECT_SEARCH_FIELD
-msgid "Select Search Field"
-msgstr "Vyberte vyhledávací pole"
+#: acq.js:NO_LI_TO_UPDATE
+msgid "You have not selected any line items to update."
+msgstr "Nebyly vybrány žádné položky k aktualizaci."
 
-#: acq.js:LI_ATTR_SEARCH_CHOOSE_FILE
-msgid "Select file with search terms"
-msgstr "Vyberte soubor s termíny k vyhledání"
-
-#: acq.js:ALERT_UNSELECTED
-msgid "You must choose an alert code."
-msgstr "Musíte si vybrat varovný kód."
-
-#: acq.js:PO_STOP_BLOCKS_ACTIVATION
-msgid "No; fund ${0} (${1}) would be encumbered beyond its stop level."
-msgstr "Ne; fond ${0} (${1}) bude zatížen nad rámec zadané úrovně."
-
-#: acq.js:INVOICE_ITEM_PO_DETAILS
-msgid "<b>${0}</b><br/><a href='${1}/acq/po/view/${2}'>PO #${3} ${4}</a><br/>Total Estimated Cost: $${5}"
-msgstr ""
-"<b>${0}</b><br/><a href='${1}/acq/po/view/${2}'>Objednávka #${3} "
-"${4}</a><br/>Odhad celkových nákladů: ${5} Kč"
-
-#: acq.js:CONFIRM_FUNDS_AT_STOP
-msgid ""
-"One or more of the selected funds has a balance below its stop level.\n"
-"You may not be able to activate purchase orders incorporating these copies.\n"
-"Continue?"
-msgstr ""
-"Jeden nebo více vybraných fondů má rozvahu pod zadanou úrovní.\n"
-"Nemusí se vám podařit aktivovat objednávky zahrnující tyto exempláře.\n"
-"Pokračovat?"
-
-#: acq.js:RESET_FORMULAE
-msgid "Reset Formulas"
-msgstr "Nastavit nově vzorce"
-
-#: acq.js:LI_CANCEL_CONFIRM
-msgid "Are you SURE you want to cancel this line item?"
-msgstr "Jste si JISTI, že chcete zrušit tuto položku na faktuře?"
+#: acq.js:CREATE_PO_INVALID
+msgid "A purchase order must have an ordering agency and a provider."
+msgstr "V objednávce musí být uvedena objednávající knihovna a dodavatel"
 
 #: acq.js:LI_ATTR_SEARCH_TOO_LARGE
 msgid "That file is too large for this operation."
 msgstr "Tento soubor je pro uvedenou operaci příliš velký."
-
-#: acq.js:UNRECEIVE_LI
-msgid "Are you sure you want to mark this lineitem as UN-received?"
-msgstr ""
-"Jste si jisti, že chcete tuto položku na faktuře označit jako NEobdrženou?"
-
-#: acq.js:SELECT_AN_LI_ATTRIBUTE
-msgid "You must select an LI attribute."
-msgstr "Musíte si vybrat vlastnost položky na faktuře."
-
-#: acq.js:INVOICE_CONFIRM_PRORATE
-msgid ""
-"Prorate charges?\n"
-"\n"
-"Any subsequent changes to the invoice that would affect prorated amounts should be resolved manually."
-msgstr ""
-"Rozpočítat náklady?\n"
-"\n"
-"Jakékoliv další změny na faktuře, které budou mít vliv na rozpočítání "
-"částek, by měly být vyřešeny ručně."
-
-#: acq.js:FUND_LIST_ROLLOVER_SUMMARY
-msgid "Fund Propagation &amp; Rollover Summary for Fiscal Year ${0}"
-msgstr "Rozdělení fondů &amp; Přehled pro účetní rok ${0}"
-
-#: acq.js:COULD_NOT_CREATE_MAPPING
-msgid "Error tagging fund."
-msgstr "Chyba při označování fondu."
-
-#: acq.js:INVOICE_ITEM_DETAILS
-msgid "${0} <br/> ${1} <br/> ${2}. <br/> Estimated Price: $${3}. <br/> Lineitem ID: ${4} <br/> PO: ${5} <br/> Order Date: ${6}"
-msgstr ""
-"${0} <br/> ${1} <br/> ${2}. <br/> Odhad ceny: ${3} Kč. <br/> ID položky na "
-"faktuře: ${4} <br/> Objednávka: ${5} <br/> Datum objednávky: ${6}"
-
-#: acq.js:PO_WARNING_NO_BLOCK_ACTIVATION
-msgid "Yes; fund ${0} (${1}) would be encumbered beyond its warning level."
-msgstr "Ano; fond ${0} (${1}) bude zatížen nad rámec úrovně s varováním."
 
 #: acq.js:PO_HEADING_ERROR
 msgid "Unexpected problem building virtual combined PO"
 msgstr ""
 "Při tvorbě virtuální kombinované objednávky se vyskytl nečekaný problém."
 
-#: acq.js:UNRECEIVE_LID
-msgid "Are you sure you want to mark this copy as UN-received?"
-msgstr "Jste si jisti, že chcete tento exemplář označit jako NEobdržený?"
-
-#: acq.js:UR_CANCEL_CONFIRM
-msgid "Are you SURE you want to cancel this user request?"
-msgstr "Jste si JISTI, že chcete zrušit tento požadavek uživatele?"
-
-#: acq.js:UNNAMED
-msgid "Unnamed"
-msgstr "Bez názvu"
-
-#: acq.js:DFA_NOT_ALL
-msgid "Could not record all of your applications of distribution forumulas."
-msgstr "Nebylo možné zaznamenat všechny vaše aplikace vzorců distribuce."
-
-#: acq.js:CANCEL_REASON
-msgid "Cancel reason"
-msgstr "Zrušit důvod"
+#: acq.js:DELETE_LI_COPIES_CONFIRM
+msgid "This will delete the last ${0} copies in the table.  Proceed?"
+msgstr "Tímto smažete posledních ${0} kopií v tabulce. Chcete pokračovat?"
 
 #: acq.js:FUND_XFER_CONFIRM
 msgid "Are you sure you're ready to commit this transfer?"
-msgstr "Jste si jisti, že jste připraveni potvrdit tento transfer?"
-
-#: acq.js:NO_PO_RESULTS
-msgid "No results"
-msgstr "Žádné výsledky"
-
-#: acq.js:CONFIRM_FUNDS_AT_WARNING
-msgid ""
-"One or more of the selected funds has a balance below its warning level.\n"
-"Continue?"
-msgstr ""
-"Jeden nebo více vybraných fondů má rozvahu pod úrovní s varováním.\n"
-"Pokračovat?"
+msgstr "Opravdu jste připraveni potvrdit tento přesun?"
 
 #: acq.js:PO_FUND_WARNING_CONFIRM
 msgid "Are you sure? Did you see the warning about over-encumbering a fund?"
 msgstr ""
 "Jste si jisti? Viděli jste varování týkající se přílišného zatížení fondu?"
 
-#: acq.js:EXPORT_SAVE_DIALOG_TITLE
-msgid "Save field values to a file"
-msgstr "Uložit hodnoty polí do souboru"
-
-#: acq.js:NO_LI_TO_CLAIM
-msgid "You have not selected any lineitems to claim."
-msgstr "Nevybrali jste žádné položky pro reklamaci."
-
-#: acq.js:LID_CANCEL_CONFIRM
-msgid "Are you SURE you want to cancel this copy?"
-msgstr "Jste si JISTI, že chcete zrušit tento exemplář?"
-
-#: acq.js:RECVD
-msgid "Recv'd"
-msgstr "Obdrženo"
-
-#: acq.js:INVOICE_CONFIRM_ENTRY_DETACH
-msgid "Remove $${0} charge for item '${1}, ${2} [${3}] from the invoice?"
-msgstr "Odstranit $${0} náklady na položku '${1}, ${2} [${3}] z faktury?"
-
-#: acq.js:LIBRARY_INITIATED
-msgid "Library Initiated"
-msgstr "Iniciováno knihovnou"
-
-#: acq.js:VENDOR_PUBLIC
-msgid "VENDOR PUBLIC"
-msgstr "Veřejný dodavatel"
-
-#: acq.js:EXPORT_SHORT_LIST
-msgid ""
-"Not all of the selected items had the attribute '${0}'.\n"
-"Choose OK to save those values that could be found."
+#: acq.js:UR_FILTER_USER
+msgid "Enter barcode for user (or leave blank to unset the filter):"
 msgstr ""
-"Všechny vybrané položky nemají vlastnost '${0}'.\n"
-"Pro uložení hodnot, které byly nalazeny, zvolte OK."
+"Zadejte čárový kód uživatele (nebo nechte prázdné pro zrušení filtru):"
 
-#: acq.js:APPLY
-msgid "Apply"
-msgstr "Použít"
-
-#: acq.js:VENDOR_SAYS_PREPAY_NEEDED
-msgid ""
-"The selected vendor requires prepayment, according to records.\n"
-"Proceed anyway without required prepayment on this PO?"
-msgstr ""
-"Vybraný dodavatel podle záznamů vyžaduje zálohové platby.\n"
-"Chcete s touto objednávkou přesto pokračovat bez vyžadované zálohy?"
-
-#: acq.js:CONFIRM_DELETE_MAPPING
-msgid "Are you sure you want to remove this tag from this fund?"
-msgstr "Jste si jisti, že chcete z tohoto fondu odstranit toto označení?"
-
-#: acq.js:VENDOR_SAYS_PREPAY_NOT_NEEDED
-msgid ""
-"The selected vendor does not necessarily require prepayment, according\n"
-"to records. Require prepayment on this PO anyway?"
-msgstr ""
-"Podle záznamů nepožaduje vybraný dodavatel zálohové\n"
-"platby. Přejete si přesto na této objednávce vyžadovat zálohu?"
-
-#: acq.js:FUND_NOT_YET_LOADED
-msgid "Fund not yet loaded. Try coming back to this display later."
-msgstr "Fond nebyl ještě načten. Zkuste se na tuto obrazovku vrátit později."
-
-#: acq.js:INVOICE_CONFIRM_ITEM_DELETE
-msgid "Remove this $${0} '${1}' charge from the invoice?"
-msgstr "Odstranit tento $${0} '${1}' náklad z faktury?"
-
-#: acq.js:ROLLBACK_PO_RECEIVE_CONFIRM
-msgid ""
-"This will rollback receipt of all copies for this purchase order.\n"
-"\n"
-"Continue?"
-msgstr ""
-"Bude zrušena stvrzenka pro všechny exempláře v této objednávce.\n"
-"\n"
-"Pokračovat?"
-
-#: acq.js:INVOICES
-msgid "Invoices"
-msgstr "Faktury"
-
-#: acq.js:EXPORT_EMPTY_LIST
-msgid "No values for attribute '${0}' found."
-msgstr "Nebyly nalezeny žádné hodnoty pro vlastnost '${0}'."
-
-#: acq.js:XUL_RECORD_DETAIL_PAGE
-msgid "Record Details"
-msgstr "Detaily záznamu"
+#: acq.js:UR_FILTER_LINEITEM
+msgid "Enter id for lineitem (or leave blank to unset the filter):"
+msgstr "Zadejte ID položky (nebo nechte prázdné pro zrušení filtru):"
 
 #: acq.js:JUST_NOW
 msgid "Just now"
 msgstr "Právě nyní"
 
-#: acq.js:CANCELED
-msgid "Canceled"
-msgstr "Zrušeno"
-
-#: acq.js:NUM_CLAIMS_EXISTING
-msgid "Claims (${0} existing)"
-msgstr "Reklamace (${0} existujících)"
-
-#: acq.js:COULD_NOT_DELETE_MAPPING
-msgid "Error removing tag from fund."
-msgstr "Chyba při odstraňování označení z fondu."
-
-#: acq.js:LOAD_TERMS_FIRST
-msgid ""
-"You can't retrieve records until you've loaded a CSV file\n"
-"with bibliographic IDs in the first column."
-msgstr ""
-"Před načtením souboru CSV s ID záznamů v prvním sloupci\n"
-"nelze načíst záznamy."
+#: acq.js:ACQ_SEARCH_CLASS_ABBR_acqpl
+msgid "SL"
+msgstr "ASez"
 
 #: acq.js:CANCEL
 msgid "Cancel"
@@ -418,17 +460,141 @@ msgid ""
 "Are you sure you want to split this purchase order into\n"
 "one purchase order for every constituent line item?"
 msgstr ""
-"Jste si jisti, že chcete tuto objednávku rozdělit a vystavit\n"
+"Opravdu chcete tuto objednávku rozdělit a vystavit\n"
 "samostatnou objednávku pro každou položku na faktuře?"
 
-#: acq.js:YES
-msgid "Yes"
-msgstr "Ano"
+#: acq.js:CHANGE_CLAIM_POLICY
+msgid "Change claim policy"
+msgstr "Změni reklamační postupy"
 
-#: acq.js:PO_CHECKING
-msgid "[One moment...]"
-msgstr "[Počkejte chvilku...]"
+#: acq.js:PO_ACTIVATED_ON
+msgid "Activated ${0}"
+msgstr "Aktivováno ${0}"
 
-#: acq.js:FUND_XFER_SAME_SOURCE_AND_DEST
-msgid "Cannot transfer. The source and destination funds are the same."
-msgstr "Transfer nelze uskutečnit. Zdrojový fond je totožný s cílovým fondem."
+#: acq.js:ADD_LI_TO_PO_BAD_PO_STATE
+msgid "The selected PO has already been activated"
+msgstr "Vybraná objednávka již byla aktivována"
+
+#: acq.js:EXPORT_SAVE_DIALOG_TITLE
+msgid "Save field values to a file"
+msgstr "Uložit hodnoty polí do souboru"
+
+#: acq.js:NOT_RECVD
+msgid "Not recv'd"
+msgstr "Nepřijato"
+
+#: acq.js:ITS_YOU
+msgid "You"
+msgstr "Vy"
+
+#: acq.js:UR_CANCEL_CONFIRM
+msgid "Are you SURE you want to cancel this user request?"
+msgstr "OPRAVDU chcete zrušit tento požadavek uživatele?"
+
+#: acq.js:NO_LI_GENERAL
+msgid "You have not selected any (suitable) line items."
+msgstr "Nevybrali jste žádné (vhodné) položky"
+
+#: acq.js:RESET_FORMULAE
+msgid "Reset Formulas"
+msgstr "Nastavit vzorce na výchozí hodnotu"
+
+#: acq.js:UNRECEIVE_LI
+msgid "Are you sure you want to mark this lineitem as UN-received?"
+msgstr "Opravud chcete tuto položku označit jako NEdodanou?"
+
+#: acq.js:ACQ_SEARCH_CLASS_ABBR_jub
+msgid "LI"
+msgstr "P"
+
+#: acq.js:COULD_NOT_CREATE_MAPPING
+msgid "Error tagging fund."
+msgstr "Chyba při označování fondu."
+
+#: acq.js:UNRECEIVE_LID
+msgid "Are you sure you want to mark this copy as UN-received?"
+msgstr "Opravdu chcete tento exemplář označit jako NEdodaný?"
+
+#: acq.js:CANCEL_REASON
+msgid "Cancel reason"
+msgstr "Důvod zrušení"
+
+#: acq.js:NO_PO_RESULTS
+msgid "No results"
+msgstr "Žádné výsledky"
+
+#: acq.js:ACQ_SEARCH_CLASS_ABBR_acqinv
+msgid "I"
+msgstr "Fa"
+
+#: acq.js:FUND_NOT_YET_LOADED
+msgid "Fund not yet loaded. Try coming back to this display later."
+msgstr "Fond nebyl ještě načten. Zkuste se na tuto obrazovku vrátit později."
+
+#: acq.js:LI_BATCH_UPDATE
+msgid "Line item batch update"
+msgstr "Dávková aktualizace položek"
+
+#: acq.js:LIBRARY_INITIATED
+msgid "Library Initiated"
+msgstr "Iniciováno knihovnou"
+
+#: acq.js:EXPORT_SHORT_LIST
+msgid ""
+"Not all of the selected items had the attribute '${0}'.\n"
+"Choose OK to save those values that could be found."
+msgstr ""
+"Všechny vybrané položky nemají vlastnost '${0}'.\n"
+"Pro uložení hodnot, které byly nalazeny, zvolte OK."
+
+#: acq.js:INVOICE_COPY_COUNT_INFO
+msgid "Copies received on this invoice: ${0} out of ${1}."
+msgstr "Exempláře přijaté z této faktury: ${0} z ${1}."
+
+#: acq.js:EXPORT_EMPTY_LIST
+msgid "No values for attribute '${0}' found."
+msgstr "Nebyly nalezeny žádné hodnoty pro vlastnost '${0}'."
+
+#: acq.js:APPLY
+msgid "Apply"
+msgstr "Použít"
+
+#~ msgid "You have not selected any lineitem details to claim."
+#~ msgstr "Pro reklamaci jste nevybrali jste žádnou položku na faktuře."
+
+#~ msgid ""
+#~ "<b>${1}</b> funds propagated for fiscal year ${0} for the selected locations"
+#~ msgstr "<b>${1}</b> fondů rozděleno pro účetní rok ${0} pro vybraná umístění"
+
+#~ msgid ""
+#~ "<div class='acq-lineitem-summary'><a href='${19}'>${0}</a>, by ${1} "
+#~ "(${2})</div>\n"
+#~ "<div class='acq-lineitem-summary-extra'>\n"
+#~ "${3} Ordered, ${4} Received, ${7} Invoiced, ${8} Claimed, ${9} "
+#~ "Cancelled</div>\n"
+#~ "<div class='acq-lineitem-summary-extra'>Estimated $${6}, Encumbered $${16}, "
+#~ "Paid $${17}</div>\n"
+#~ "<div class='acq-lineitem-summary-extra'>\n"
+#~ "# ${10} <a style='padding-right: 10px;' class='hidden${20}'  "
+#~ "href='${11}/acq/po/view/${12}'>&#x2318; ${13} ${18}</a>\n"
+#~ "<a style='padding-right: 10px;' class='hidden${21}' "
+#~ "href='${11}/acq/picklist/view/${14}'>&#x2756; ${15}</a></div>"
+#~ msgstr ""
+#~ "<div class='acq-lineitem-summary'><a href='${19}'>${0}</a>, by ${1} "
+#~ "(${2})</div>\n"
+#~ "<div class='acq-lineitem-summary-extra'>\n"
+#~ "${3} Objednáno, ${4} Obdrženo, ${7} Fakturováno, ${8} Reklamováno, ${9} "
+#~ "Zrušeno</div>\n"
+#~ "<div class='acq-lineitem-summary-extra'>Odhadováno ${6} Kč, Dluh ${16} Kč, "
+#~ "Zaplaceno ${17} Kč</div>\n"
+#~ "<div class='acq-lineitem-summary-extra'>\n"
+#~ "# ${10} <a style='padding-right: 10px;' class='hidden${20}'  "
+#~ "href='${11}/acq/po/view/${12}'>&#x2318; ${13} ${18}</a>\n"
+#~ "<a style='padding-right: 10px;' class='hidden${21}' "
+#~ "href='${11}/acq/picklist/view/${14}'>&#x2756; ${15}</a></div>"
+
+#~ msgid "You have not selected any lineitems to claim."
+#~ msgstr "Nevybrali jste žádné položky pro reklamaci."
+
+#~ msgid "Could not record all of your applications of distribution forumulas."
+#~ msgstr "Nebylo možné zaznamenat všechny vaše aplikace distribučních vzorců."
