@@ -335,7 +335,7 @@ sub _label_sortkey_from_label {
     my $closest_cn = $_storage->request(
             "open-ils.cstore.direct.asset.call_number.search.atomic",
             { label      => { ">=" => { transform => "oils_text_as_bytea", value => ["oils_text_as_bytea", $label] } },
-              owning_lib => $ou_ids,
+              (scalar(@$ou_ids) ? (owning_lib => $ou_ids) : ()),
               deleted    => 'f',
               @$cp_filter
             },
@@ -375,22 +375,33 @@ sub cn_browse {
 
     my $_storage = OpenSRF::AppSession->create( 'open-ils.cstore' );
 
-    my $o_search = { shortname => $ou };
-    if (!$ou || $ou eq '-') {
-        $o_search = { parent_ou => undef };
-    }
+    my @ou_ids;
+    # if OU is not specified, or if '-' is specified, do not enter the block
+    unless (!$ou || $ou eq '-') {
+        # check if the shortname of the top org_unit is specified
+	    my $top_org = $_storage->request(
+            "open-ils.cstore.direct.actor.org_unit.search",
+             { parent_ou => undef }
+	    )->gather(1);
 
-    my $orgs = $_storage->request(
-        "open-ils.cstore.direct.actor.org_unit.search",
-        $o_search,
-        { flesh     => 100,
-          flesh_fields  => { aou    => [qw/children/] }
+        if ($ou eq $top_org->shortname) {
+	        $logger->debug("Searching for CNs at top org $ou");
+	    } else {
+            my $o_search = { shortname => $ou };
+
+            my $orgs = $_storage->request(
+                "open-ils.cstore.direct.actor.org_unit.search",
+                $o_search,
+                { flesh     => 100,
+                flesh_fields  => { aou    => [qw/children/] }
+                }
+            )->gather(1);
+
+            @ou_ids = tree_walker($orgs, 'children', sub {shift->id}) if $orgs;
+
+            $logger->debug("Searching for CNs at orgs [".join(',',@ou_ids)."], based on $ou");
         }
-    )->gather(1);
-
-    my @ou_ids = tree_walker($orgs, 'children', sub {shift->id}) if $orgs;
-
-    $logger->debug("Searching for CNs at orgs [".join(',',@ou_ids)."], based on $ou");
+    }
 
     my @list = ();
 
@@ -416,7 +427,7 @@ sub cn_browse {
         my $before = $_storage->request(
             "open-ils.cstore.direct.asset.call_number.search.atomic",
             { label_sortkey => { "<" => { transform => "oils_text_as_bytea", value => ["oils_text_as_bytea", $label_sortkey] } },
-              owning_lib    => \@ou_ids,
+              (scalar(@ou_ids) ? (owning_lib => \@ou_ids) : ()),
               deleted => 'f',
               @cp_filter
             },
@@ -434,7 +445,7 @@ sub cn_browse {
         my $after = $_storage->request(
             "open-ils.cstore.direct.asset.call_number.search.atomic",
             { label_sortkey => { ">=" => { transform => "oils_text_as_bytea", value => ["oils_text_as_bytea", $label_sortkey] } },
-              owning_lib    => \@ou_ids,
+              (scalar(@ou_ids) ? (owning_lib => \@ou_ids) : ()),
               deleted => 'f',
               @cp_filter
             },
