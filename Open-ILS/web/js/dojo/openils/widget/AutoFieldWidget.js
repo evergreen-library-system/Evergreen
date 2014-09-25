@@ -705,7 +705,7 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             orgs = orgs.concat(fieldmapper.aou.descendantNodeList(ws_ou).map(function (i) { return i.id() }));
 
             var self = this;
-            var search = {owning_lib : orgs};
+            var search = {owning_lib : orgs, deleted : 'f'};
 
             if(this.cache.copyLocStore) {
                 var store = this.cache.copyLocStore;
@@ -744,7 +744,7 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                 } else {
                     // cached IDs plus id of this.widgetValue;
                     locIds.push(this.widgetValue);
-                    search = {id : locIds};
+                    search = {id : locIds, deleted: 'f'};
                 }
             } 
 

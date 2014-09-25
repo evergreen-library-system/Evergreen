@@ -40,7 +40,8 @@ sub cl_retrieve_all {
     }
 
     return new_editor()->search_asset_copy_location([{
-        owning_lib => $U->get_org_full_path($org_id)
+        owning_lib => $U->get_org_full_path($org_id),
+	deleted => "f"
     }, $second_cstore_arg]);
 }
 
@@ -60,7 +61,8 @@ sub cl_retrieve_distinct {
         "select" => {
             "acpl" => [{"transform" => "distinct", "column" => "name"}]
         },
-        "from" => {"acpl" => {}}
+        "from" => {"acpl" => {}},
+	"where" => {"deleted" => "f"}
     }) or return $e->die_event;
     $e->disconnect;
 
@@ -91,7 +93,7 @@ sub cl_create {
 
     # make sure there is no copy_location with the same name in the same place
     my $existing = $e->search_asset_copy_location(
-        {owning_lib => $location->owning_lib, name => $location->name}, {idlist=>1});
+        {owning_lib => $location->owning_lib, name => $location->name, deleted => "f"}, {idlist=>1});
     return OpenILS::Event->new('COPY_LOCATION_EXISTS') if @$existing;
 
     $e->create_asset_copy_location($location) or return $e->die_event;
@@ -119,6 +121,9 @@ sub cl_delete {
 
     my $e = new_editor(authtoken=>$auth, xact=>1);
     return $e->die_event unless $e->checkauth;
+
+    my $cps = $e->search_asset_copy({location=>$id, deleted=>'f'});
+    return OpenILS::Event->new('COPY_LOCATION_NOT_EMPTY', payload=>$id) if @$cps;
 
     my $cloc = $e->retrieve_asset_copy_location($id) 
         or return $e->die_event;

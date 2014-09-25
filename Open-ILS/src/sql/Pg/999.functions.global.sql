@@ -1229,6 +1229,7 @@ CREATE OR REPLACE FUNCTION asset.refresh_opac_visible_copies_mat_view () RETURNS
         JOIN config.copy_status cs ON (cp.status = cs.id)
         JOIN biblio.record_entry b ON (cn.record = b.id)
     WHERE NOT cp.deleted
+        AND NOT cl.deleted
         AND NOT cn.deleted
         AND NOT b.deleted
         AND cs.opac_visible
@@ -1243,6 +1244,7 @@ CREATE OR REPLACE FUNCTION asset.refresh_opac_visible_copies_mat_view () RETURNS
         JOIN asset.copy_location cl ON (cp.location = cl.id)
         JOIN config.copy_status cs ON (cp.status = cs.id)
     WHERE NOT cp.deleted
+        AND NOT cl.deleted
         AND cs.opac_visible
         AND cl.opac_visible
         AND cp.opac_visible
@@ -1272,6 +1274,7 @@ BEGIN
                 JOIN config.copy_status cs ON (cp.status = cs.id)
                 JOIN biblio.record_entry b ON (cn.record = b.id)
           WHERE NOT cp.deleted
+                AND NOT cl.deleted
                 AND NOT cn.deleted
                 AND NOT b.deleted
                 AND cs.opac_visible
@@ -1287,6 +1290,7 @@ BEGIN
                 JOIN asset.copy_location cl ON (cp.location = cl.id)
                 JOIN config.copy_status cs ON (cp.status = cs.id)
           WHERE NOT cp.deleted
+                AND NOT cl.deleted
                 AND cs.opac_visible
                 AND cl.opac_visible
                 AND cp.opac_visible
@@ -1372,7 +1376,7 @@ BEGIN
 
     END IF;
 
-    IF TG_TABLE_NAME IN ('call_number', 'record_entry') THEN -- these have a 'deleted' column
+    IF TG_TABLE_NAME IN ('call_number', 'copy_location', 'record_entry') THEN -- these have a 'deleted' column
  
         IF OLD.deleted AND NEW.deleted THEN -- do nothing
 
@@ -1382,6 +1386,8 @@ BEGIN
  
             IF TG_TABLE_NAME = 'call_number' THEN
                 DELETE FROM asset.opac_visible_copies WHERE copy_id IN (SELECT id FROM asset.copy WHERE call_number = NEW.id);
+            ELSIF TG_TABLE_NAME = 'copy_location' THEN
+                DELETE FROM asset.opac_visible_copies WHERE copy_id IN (SELECT id FROM asset.copy WHERE location = NEW.id);
             ELSIF TG_TABLE_NAME = 'record_entry' THEN
                 DELETE FROM asset.opac_visible_copies WHERE record = NEW.id;
             END IF;
@@ -1392,6 +1398,9 @@ BEGIN
  
             IF TG_TABLE_NAME = 'call_number' THEN
                 add_base_query := add_base_query || ' AND cn.id = ' || NEW.id;
+                EXECUTE add_front || add_base_query || add_back;
+            ELSIF TG_TABLE_NAME = 'copy_location' THEN
+                add_base_query := add_base_query || 'AND cl.id = ' || NEW.id;
                 EXECUTE add_front || add_base_query || add_back;
             ELSIF TG_TABLE_NAME = 'record_entry' THEN
                 add_base_query := add_base_query || ' AND cn.record = ' || NEW.id;
@@ -2017,7 +2026,8 @@ BEGIN
                     );
 
                 -- make sure the value from the org setting is still valid
-                PERFORM 1 FROM asset.copy_location WHERE id = attr_set.location;
+                PERFORM 1 FROM asset.copy_location 
+                    WHERE id = attr_set.location AND NOT deleted;
                 IF NOT FOUND THEN
                     attr_set.import_error := 'import.item.invalid.location';
                     attr_set.error_detail := tmp_attr_set.cs;
@@ -2043,7 +2053,8 @@ BEGIN
                 ) SELECT  cpl.id INTO attr_set.location
                     FROM  anscestor_depth a
                         JOIN asset.copy_location cpl ON (cpl.owning_lib = a.id)
-                    WHERE LOWER(cpl.name) = LOWER(tmp_attr_set.cl)
+                    WHERE LOWER(cpl.name) = LOWER(tmp_attr_set.cl) 
+                        AND NOT cpl.deleted
                     ORDER BY a.depth DESC
                     LIMIT 1; 
 

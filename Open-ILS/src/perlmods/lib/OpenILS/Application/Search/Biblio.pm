@@ -2719,7 +2719,7 @@ sub rec_to_mr_rec_descriptors {
                 deleted  => 'f'
             },
             "+ccs" => { holdable => 't' },
-            "+acpl" => { holdable => 't' }
+            "+acpl" => { holdable => 't', deleted => 'f' }
         }
     };
 

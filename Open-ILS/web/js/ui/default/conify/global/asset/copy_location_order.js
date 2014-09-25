@@ -38,7 +38,7 @@ function filterGrid(org) {
         var pcrud = new openils.PermaCrud({authtoken : user.authtoken});
         orders = pcrud.search('acplo', {org : org}, {order_by : {acplo : 'position'}});
         locations = pcrud.search('acpl', 
-            {owning_lib : fieldmapper.aou.orgNodeTrail(fieldmapper.aou.findOrgUnit(org), true)}, 
+            {owning_lib : fieldmapper.aou.orgNodeTrail(fieldmapper.aou.findOrgUnit(org), true), deleted : 'f'}, 
             {order_by : {acpl : 'name'}}
         ); 
     }

@@ -1700,7 +1700,7 @@ sub extract_lineitem_detail_data {
             my $org = $cp_base_org;
             while ($org) {
                 $loc = $mgr->editor->search_asset_copy_location(
-                    {owning_lib => $org, name => $name}, {idlist => 1})->[0];
+                    {owning_lib => $org, name => $name, deleted => 'f'}, {idlist => 1})->[0];
                 last if $loc;
                 $org = $mgr->editor->retrieve_actor_org_unit($org)->parent_ou;
             }

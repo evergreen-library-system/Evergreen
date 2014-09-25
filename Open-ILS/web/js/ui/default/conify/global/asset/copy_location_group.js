@@ -64,7 +64,7 @@ function fetchCopyLocations() {
 
             var pcrud = new openils.PermaCrud({authtoken : user.authtoken});
             pcrud.search('acpl', // this can take some time...
-                {owning_lib : ownerOrgList},
+                {owning_lib : ownerOrgList, deleted: 'f'},
                 {   
                     async : true,
                     join : 'aou',

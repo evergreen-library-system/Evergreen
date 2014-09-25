@@ -32,8 +32,9 @@ CREATE TABLE asset.copy_location (
 	label_prefix	TEXT,
 	label_suffix	TEXT,
 	checkin_alert	BOOL	NOT NULL DEFAULT FALSE,
-	CONSTRAINT acl_name_once_per_lib UNIQUE (name, owning_lib)
+	deleted		BOOL	NOT NULL DEFAULT FALSE
 );
+CREATE UNIQUE INDEX acl_name_once_per_lib ON asset.copy_location (name, owning_lib) WHERE deleted = FALSE OR deleted IS FALSE;
 
 CREATE TABLE asset.copy_location_order
 (
@@ -66,7 +67,6 @@ CREATE TABLE asset.copy_location_group_map (
     lgroup      INT     NOT NULL REFERENCES asset.copy_location_group (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
     CONSTRAINT  lgroup_once_per_group UNIQUE (lgroup,location)
 );
-
 
 CREATE TABLE asset.copy (
 	id		BIGSERIAL			PRIMARY KEY,
@@ -179,9 +179,9 @@ BEGIN
             RETURN NEW;
         END IF;
     END IF;
-    SELECT INTO new_copy_location acpl.id FROM asset.copy_location acpl JOIN actor.org_unit_ancestors_distance((SELECT owning_lib FROM asset.call_number WHERE id = NEW.call_number)) aouad ON acpl.owning_lib = aouad.id WHERE name = (SELECT name FROM asset.copy_location WHERE id = NEW.location) ORDER BY distance LIMIT 1;
+    SELECT INTO new_copy_location acpl.id FROM asset.copy_location acpl JOIN actor.org_unit_ancestors_distance((SELECT owning_lib FROM asset.call_number WHERE id = NEW.call_number)) aouad ON acpl.owning_lib = aouad.id WHERE deleted IS FALSE AND name = (SELECT name FROM asset.copy_location WHERE id = NEW.location) ORDER BY distance LIMIT 1;
     IF new_copy_location IS NULL THEN
-        SELECT INTO new_copy_location acpl.id FROM asset.copy_location acpl JOIN actor.org_unit_ancestors_distance(NEW.circ_lib) aouad ON acpl.owning_lib = aouad.id WHERE name = (SELECT name FROM asset.copy_location WHERE id = NEW.location) ORDER BY distance LIMIT 1;
+        SELECT INTO new_copy_location acpl.id FROM asset.copy_location acpl JOIN actor.org_unit_ancestors_distance(NEW.circ_lib) aouad ON acpl.owning_lib = aouad.id WHERE deleted IS FALSE AND name = (SELECT name FROM asset.copy_location WHERE id = NEW.location) ORDER BY distance LIMIT 1;
     END IF;
     IF new_copy_location IS NOT NULL THEN
         NEW.location = new_copy_location;
@@ -615,7 +615,7 @@ BEGIN
           FROM
                 actor.org_unit_descendants(ans.id) d
                 JOIN asset.copy cp ON (cp.circ_lib = d.id AND NOT cp.deleted)
-                JOIN asset.copy_location cl ON (cp.location = cl.id)
+                JOIN asset.copy_location cl ON (cp.location = cl.id AND NOT cl.deleted)
                 JOIN asset.call_number cn ON (cn.record = rid AND cn.id = cp.call_number AND NOT cn.deleted)
           GROUP BY 1,2,6;
 
@@ -647,7 +647,7 @@ BEGIN
           FROM
                 actor.org_unit_descendants(ans.id) d
                 JOIN asset.copy cp ON (cp.circ_lib = d.id AND NOT cp.deleted)
-                JOIN asset.copy_location cl ON (cp.location = cl.id)
+                JOIN asset.copy_location cl ON (cp.location = cl.id AND NOT cl.deleted)
                 JOIN asset.call_number cn ON (cn.record = rid AND cn.id = cp.call_number AND NOT cn.deleted)
           GROUP BY 1,2,6;
 
@@ -695,6 +695,7 @@ BEGIN
             AND acpl.holdable = true
             AND ccs.holdable = true
             AND acp.deleted = false
+            AND acpl.deleted = false
             AND acp.circ_lib IN (SELECT id FROM actor.org_unit_descendants(COALESCE($2,(SELECT id FROM evergreen.org_top()))))
         LIMIT 1;
     IF FOUND THEN
@@ -867,6 +868,7 @@ BEGIN
             AND acpl.holdable = true
             AND ccs.holdable = true
             AND acp.deleted = false
+            AND acpl.deleted = false
             AND acp.circ_lib IN (SELECT id FROM actor.org_unit_descendants(COALESCE($2,(SELECT id FROM evergreen.org_top()))))
         LIMIT 1;
     IF FOUND THEN

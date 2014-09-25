@@ -34,7 +34,7 @@ function load(){
     new openils.User().getPermOrgList(
         'ADMIN_CIRC_MATRIX_MATCHPOINT',
         function (orgList) {
-            temp = pcrud.search('acpl', {owning_lib : orgList});
+            temp = pcrud.search('acpl', {owning_lib : orgList, deleted: 'f'});
             dojo.forEach(temp, function(g) { copyLocCache[g.id()] = g; } );
         }, 
         true, true 

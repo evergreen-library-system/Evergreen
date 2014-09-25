@@ -44,7 +44,7 @@ function fetch_adv_copy_locations(org_ids) {
     var params = [{
         cache : 1, 
         fields : ['name', 'id', 'owning_lib'],
-        query : {owning_lib : org_ids, opac_visible : 't'}
+        query : {owning_lib : org_ids, opac_visible : 't', deleted : 'f'}
     }];
 
     new OpenSRF.ClientSession('open-ils.fielder').request({

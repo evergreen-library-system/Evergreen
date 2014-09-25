@@ -409,6 +409,7 @@ sub asset_copy_location_all {
     my $client = shift;
 
     for my $rec ( asset::copy_location->retrieve_all ) {
+        next if $rec->deleted eq "t";
         $client->respond( $rec->to_fieldmapper );
     }
 
@@ -439,6 +440,7 @@ sub ranged_asset_copy_location {
                   FROM  $ctable c
                         JOIN $descendants d
                                 ON (d.id = c.owning_lib)
+                  WHERE deleted IS FALSE
                  ORDER BY name
     SQL
         

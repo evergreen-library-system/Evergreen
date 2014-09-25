@@ -48,7 +48,8 @@ sub record_copy_count {
                   WHERE cn.record = ?
                     $visible
                     AND cn.deleted IS FALSE
-                    AND cp.deleted IS FALSE)
+                    AND cp.deleted IS FALSE
+                    AND loc.deleted IS FALSE)
             ) AS count,
             sum(
                 (SELECT count(cp.id)
@@ -61,6 +62,7 @@ sub record_copy_count {
                     $visible
                     AND cn.deleted IS FALSE
                     AND cp.deleted IS FALSE
+                    AND loc.deleted IS FALSE
                     AND cp.status IN (0,7,12))
             ) AS available,
             sum(
@@ -74,7 +76,8 @@ sub record_copy_count {
                     AND loc.opac_visible = TRUE
                     AND cp.opac_visible = TRUE
                     AND cn.deleted IS FALSE
-                    AND cp.deleted IS FALSE)
+                    AND cp.deleted IS FALSE
+                    AND loc.deleted IS FALSE)
             ) AS unshadow,
                         sum(    
                                 (SELECT sum(1)
@@ -411,6 +414,7 @@ sub record_copy_status_count {
             AND cl.opac_visible IS TRUE
             AND cp.opac_visible IS TRUE
             AND cp.deleted IS FALSE
+            AND cl.deleted IS FALSE
             AND cs.opac_visible IS TRUE
           GROUP BY 1,2,3,4,5;
     SQL
@@ -490,6 +494,7 @@ sub record_copy_status_location_count {
             AND cl.opac_visible IS TRUE
             AND cp.opac_visible IS TRUE
             AND cp.deleted IS FALSE
+            AND cl.deleted IS FALSE
             AND cs.opac_visible IS TRUE
           GROUP BY 1,2,3,4,5,6;
     SQL

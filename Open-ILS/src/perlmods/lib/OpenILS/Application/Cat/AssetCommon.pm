@@ -55,6 +55,11 @@ sub create_copy {
     
     return OpenILS::Event->new('ITEM_BARCODE_EXISTS') if @$existing;
 
+    my $copy_loc = $editor->search_asset_copy_location(
+        { id => $copy->location, deleted => 'f' } );
+        
+    return OpenILS::Event->new('COPY_LOCATION_NOT_FOUND') unless @$copy_loc;
+    
    # see if the volume this copy references is marked as deleted
     return OpenILS::Event->new('VOLUME_DELETED', vol => $vol->id) 
         if $U->is_true($vol->deleted);
@@ -198,6 +203,12 @@ sub update_copy {
     $override = { all => 1 } if($override && !ref $override);
     $override = { all => 0 } if(!ref $override);
 
+    # Duplicated check from create_copy in case a copy template with a deleted location is applied later
+    my $copy_loc = $editor->search_asset_copy_location(
+        { id => $copy->location, deleted => 'f' } );
+        
+    return OpenILS::Event->new('COPY_LOCATION_NOT_FOUND') unless @$copy_loc;
+    
     my $evt;
     my $org = (ref $copy->circ_lib) ? $copy->circ_lib->id : $copy->circ_lib;
     return $evt if ( $evt = $class->org_cannot_have_vols($editor, $org) );

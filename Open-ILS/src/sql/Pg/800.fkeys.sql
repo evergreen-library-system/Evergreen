@@ -26,6 +26,15 @@ CREATE RULE protect_bib_rec_delete AS
             WHERE OLD.id = biblio.record_entry.id
     );
 
+CREATE RULE protect_copy_location_delete AS
+    ON DELETE TO asset.copy_location DO INSTEAD (
+        UPDATE asset.copy_location SET deleted = TRUE WHERE OLD.id = asset.copy_location.id;
+        UPDATE acq.lineitem_detail SET location = NULL WHERE location = OLD.id;
+        DELETE FROM asset.copy_location_order WHERE location = OLD.id;
+        DELETE FROM asset.copy_location_group_map WHERE location = OLD.id;
+        DELETE FROM config.circ_limit_set_copy_loc_map WHERE copy_loc = OLD.id;
+    );
+    
 ALTER TABLE actor.usr ADD CONSTRAINT actor_usr_mailing_address_fkey FOREIGN KEY (mailing_address) REFERENCES actor.usr_address (id) DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE actor.usr ADD CONSTRAINT actor_usr_billing_address_fkey FOREIGN KEY (billing_address) REFERENCES actor.usr_address (id) DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE actor.usr ADD CONSTRAINT actor_usr_home_ou_fkey FOREIGN KEY (home_ou) REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED;

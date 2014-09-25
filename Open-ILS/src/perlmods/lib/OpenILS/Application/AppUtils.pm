@@ -640,7 +640,7 @@ sub fetch_copy_locations {
     my $self = shift; 
     return $self->simplereq(
         'open-ils.cstore', 
-        'open-ils.cstore.direct.asset.copy_location.search.atomic', { id => { '!=' => undef } });
+        'open-ils.cstore.direct.asset.copy_location.search.atomic', { id => { '!=' => undef }, deleted => 'f' });
 }
 
 sub fetch_copy_location_by_name {
@@ -648,7 +648,7 @@ sub fetch_copy_location_by_name {
     my $evt;
     my $cl = $self->cstorereq(
         'open-ils.cstore.direct.asset.copy_location.search',
-            { name => $name, owning_lib => $org } );
+            { name => $name, owning_lib => $org, deleted => 'f' } );
     $evt = OpenILS::Event->new('ASSET_COPY_LOCATION_NOT_FOUND') unless $cl;
     return ($cl, $evt);
 }

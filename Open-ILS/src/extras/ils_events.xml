@@ -712,6 +712,12 @@
 	<event code='1701' textcode='COPY_LOCATION_EXISTS'>
 		<desc xml:lang="en-US"> The copy location object already exists </desc>
 	</event>
+	<event code='1716' textcode='COPY_LOCATION_NOT_EMPTY'>
+		<desc xml:lang="en-US"> The copy location is not empty </desc>
+	</event>
+	<event code='1717' textcode='COPY_LOCATION_NOT_FOUND'>
+		<desc xml:lang="en-US"> The copy location does not exist </desc>
+	</event>
 	<event code='1702' textcode='OPEN_CIRCULATION_EXISTS'>
 		<desc xml:lang="en-US"> There is an open circulation on the requested item </desc>
 	</event>
