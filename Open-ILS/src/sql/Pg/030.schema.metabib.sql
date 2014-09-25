@@ -409,10 +409,16 @@ CREATE TYPE metabib.record_attr_type AS (
 -- Back-compat view ... we're moving to an INTARRAY world
 CREATE VIEW metabib.record_attr_flat AS
     SELECT  v.source AS id,
-            m.attr,
-            m.value
-      FROM  metabib.full_attr_id_map m
-            JOIN  metabib.record_attr_vector_list v ON ( m.id = ANY( v.vlist ) );
+            m.attr AS attr,
+            m.value AS value
+      FROM  metabib.record_attr_vector_list v
+            LEFT JOIN metabib.uncontrolled_record_attr_value m ON ( m.id = ANY( v.vlist ) )
+        UNION
+    SELECT  v.source AS id,
+            c.ctype AS attr,
+            c.code AS value
+      FROM  metabib.record_attr_vector_list v
+            LEFT JOIN config.coded_value_map c ON ( c.id = ANY( v.vlist ) );
 
 CREATE VIEW metabib.record_attr AS
     SELECT id, HSTORE( ARRAY_AGG( attr ), ARRAY_AGG( value ) ) AS attrs FROM metabib.record_attr_flat GROUP BY 1;
