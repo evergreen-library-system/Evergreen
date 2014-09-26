@@ -62,6 +62,7 @@ CREATE TABLE money.billing (
 );
 CREATE INDEX m_b_xact_idx ON money.billing (xact);
 CREATE INDEX m_b_time_idx ON money.billing (billing_ts);
+CREATE INDEX m_b_voider_idx ON money.billing (voider); -- helps user merge function speed
 
 CREATE TABLE money.payment (
 	id		BIGSERIAL			PRIMARY KEY,
