@@ -14,6 +14,9 @@ dojo.require('openils.widget.OrgUnitFilteringSelect');
 dojo.requireLocalization('openils.circ', 'selfcheck');
 var localeStrings = dojo.i18n.getLocalization('openils.circ', 'selfcheck');
 
+// set patron timeout default
+var patronTimeout = 180000; /* 3 minutes */
+var timerId = null;
 
 const SET_BARCODE_REGEX = 'opac.barcode_regex';
 const SET_PATRON_TIMEOUT = 'circ.selfcheck.patron_login_timeout';
@@ -29,6 +32,22 @@ const SET_BLOCK_CHECKOUT_ON_COPY_STATUS = 'circ.selfcheck.block_checkout_on_copy
 
 // set before the login dialog is rendered
 openils.User.default_login_agent = 'selfcheck';
+
+// start the logout timer
+function selfckStartTimer() {
+    timerId = setTimeout(
+        function() {
+            SelfCheckManager.prototype.logoutPatron();
+        },
+        patronTimeout
+    );
+}
+
+// reset the logout timer
+function selfckResetTimer() {
+    clearTimeout(timerId);
+    selfckStartTimer();
+}
 
 function SelfCheckManager() {
 
@@ -275,6 +294,9 @@ SelfCheckManager.prototype.loadOrgSettings = function() {
 
     if(settings[SET_BARCODE_REGEX]) 
         this.patronBarcodeRegex = new RegExp(settings[SET_BARCODE_REGEX].value);
+
+    if(settings[SET_PATRON_TIMEOUT])
+        patronTimeout = parseInt(settings[SET_PATRON_TIMEOUT].value) * 1000;
 }
 
 SelfCheckManager.prototype.drawLoginPage = function() {
@@ -308,6 +330,9 @@ SelfCheckManager.prototype.drawLoginPage = function() {
  * Login the patron.  
  */
 SelfCheckManager.prototype.loginPatron = function(barcode_or_usrname, passwd) {
+
+    // reset timeout
+    selfckResetTimer();
 
     this.setupStaffLogin(true); // verify still valid
 
@@ -583,6 +608,9 @@ SelfCheckManager.prototype.goToTab = function(name) {
     openils.Util.hide('oils-selfck-holds-page');
     openils.Util.hide('oils-selfck-circ-page');
     openils.Util.hide('oils-selfck-pay-fines-link');
+
+    // reset timeout
+    selfckResetTimer()
     
     switch(name) {
         case 'checkout':
@@ -605,6 +633,9 @@ SelfCheckManager.prototype.goToTab = function(name) {
 
 
 SelfCheckManager.prototype.printList = function() {
+    // reset timeout
+    selfckResetTimer()
+
     switch(this.tabName) {
         case 'checkout':
             this.printSessionReceipt();
