@@ -1237,41 +1237,70 @@ CREATE OR REPLACE FUNCTION unapi.mmr_mra (
         ),
         (SELECT XMLAGG(foo.y)
           FROM (
-            SELECT  DISTINCT ON (COALESCE(cvm.id,uvm.id))
-                    COALESCE(cvm.id,uvm.id),
+            WITH sourcelist AS ( 
+                WITH aou AS (SELECT COALESCE(id, (evergreen.org_top()).id) AS id  
+                    FROM actor.org_unit WHERE shortname = $5 LIMIT 1)
+                SELECT source 
+                FROM metabib.metarecord_source_map, aou 
+                WHERE metarecord = $1 AND (
+                    EXISTS (
+                        SELECT 1 FROM asset.opac_visible_copies 
+                        WHERE record = source AND circ_lib IN (
+                            SELECT id FROM actor.org_unit_descendants(aou.id, $6))
+                        LIMIT 1
+                    )   
+                    OR EXISTS (SELECT 1 FROM located_uris(source, aou.id, $10) LIMIT 1)
+                )   
+            )
+            SELECT  cmra.aid,
                     XMLELEMENT(
                         name field,
                         XMLATTRIBUTES(
-                            mra.attr AS name,
-                            cvm.value AS "coded-value",
-                            cvm.id AS "cvmid",
+                            cmra.attr AS name,
+                            cmra.value AS "coded-value",
+                            cmra.aid AS "cvmid",
                             rad.composite,
                             rad.multi,
                             rad.filter,
                             rad.sorter
                         ),
-                        mra.value
+                        cmra.value
                     )
-              FROM  metabib.record_attr_flat mra
-                    JOIN config.record_attr_definition rad ON (mra.attr = rad.name)
-                    LEFT JOIN config.coded_value_map cvm ON (cvm.ctype = mra.attr AND code = mra.value)
-                    LEFT JOIN metabib.uncontrolled_record_attr_value uvm ON (uvm.attr = mra.attr AND uvm.value = mra.value)
-              WHERE mra.id IN (
-                    WITH aou AS (SELECT COALESCE(id, (evergreen.org_top()).id) AS id 
-                        FROM actor.org_unit WHERE shortname = $5 LIMIT 1)
-                    SELECT source 
-                    FROM metabib.metarecord_source_map, aou
-                    WHERE metarecord = $1 AND (
-                        EXISTS (
-                            SELECT 1 FROM asset.opac_visible_copies 
-                            WHERE record = source AND circ_lib IN (
-                                SELECT id FROM actor.org_unit_descendants(aou.id, $6)) 
-                            LIMIT 1
-                        )
-                        OR EXISTS (SELECT 1 FROM located_uris(source, aou.id, $10) LIMIT 1)
+              FROM  (
+                SELECT  v.source AS id,
+                        c.id AS aid,
+                        c.ctype AS attr,
+                        c.code AS value
+                  FROM  metabib.record_attr_vector_list v
+                        JOIN config.coded_value_map c ON ( c.id = ANY( v.vlist ) )
+                ) AS cmra
+                    JOIN config.record_attr_definition rad ON (cmra.attr = rad.name)
+                    JOIN sourcelist ON (cmra.id = sourcelist.source)
+                UNION ALL
+            SELECT  umra.aid,
+                    XMLELEMENT(
+                        name field,
+                        XMLATTRIBUTES(
+                            umra.attr AS name,
+                            rad.composite,
+                            rad.multi,
+                            rad.filter,
+                            rad.sorter
+                        ),
+                        umra.value
                     )
-                )
-              ORDER BY 1
+              FROM  (
+                SELECT  v.source AS id,
+                        m.id AS aid,
+                        m.attr AS attr,
+                        m.value AS value
+                  FROM  metabib.record_attr_vector_list v
+                        JOIN metabib.uncontrolled_record_attr_value m ON ( m.id = ANY( v.vlist ) )
+                ) AS umra
+                    JOIN config.record_attr_definition rad ON (umra.attr = rad.name)
+                    JOIN sourcelist ON (umra.id = sourcelist.source)
+                ORDER BY 1
+
             )foo(id,y)
         )
     )
