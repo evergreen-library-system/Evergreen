@@ -3936,6 +3936,7 @@ SELECT  usr,
 			<field reporter:label="Transaction Billings" name="billings" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Transaction Payments" name="payments" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Base Transaction" name="billable_transaction" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Workstation" name="workstation" reporter:datatype="link"/>
 			<field reporter:label="Circulation Type" name="circ_type" oils_persist:virtual="true" reporter:datatype="text"/>
 			<field reporter:label="Billing Totals" name="billing_total" oils_persist:virtual="true" reporter:datatype="money"/>
 			<field reporter:label="Payment Totals" name="payment_total" oils_persist:virtual="true" reporter:datatype="money"/>
@@ -3969,6 +3970,7 @@ SELECT  usr,
 			<link field="copy_location" reltype="has_a" key="id" map="" class="acpl"/>
 			<link field="copy_owning_lib" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="copy_circ_lib" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="workstation" reltype="has_a" key="id" map="" class="aws"/>
 			<link field="copy_bib_record" reltype="has_a" key="id" map="" class="bre"/>
 			<link field="aaactsc_entries" reltype="has_many" key="xact" map="" class="aaactsc"/>
 			<link field="aaasc_entries" reltype="has_many" key="xact" map="" class="aaasc"/>
