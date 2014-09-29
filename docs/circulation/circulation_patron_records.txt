@@ -115,7 +115,7 @@ Patron Self-Registration allows patrons to initiate registration for a library a
 
 . Patrons will see a confirmation message: “Registration successful!  Please see library staff to complete your registration.”
 
-image::media/patron_self_registration2.JPG[Patron Self-Registration form]
+image::media/patron_self_registration2.jpg[Patron Self-Registration form]
 
 *Managing Pending Patrons*
 
@@ -894,7 +894,7 @@ By default, Lost circulations will appear in dark red. The default indicator rea
 
 When the 6 Month Overdue Mark Long-Overdue trigger event definition is enabled, Long Overdue circulations will appear in orange, by default. The default indicator reads, “Orange Items are Long Overdue.”  
  
-image::media/Billed_Transaction_Color.JPG[Billed Transaction Color]
+image::media/Billed_Transaction_Color.jpg[Billed Transaction Color]
  
 Both the color distinctions and indicators are customizable. To customize, a change to circ.css (for the color) and lang.dtd (for the indicator) are required.   
 

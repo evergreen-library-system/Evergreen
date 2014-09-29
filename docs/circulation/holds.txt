@@ -419,12 +419,12 @@ Libraries can also choose to give patrons the ability to opt-in to pick up holds
 
 When enabled, the alternate pick up location will appear in several places in the staff client.  The alternate pick up location and the number of items that are ready for pick up at that location will be displayed in the Patron Account Summary and under the Holds button in the patron account.  Staff will also see the general number of holds available and holds placed by the patron.
 
-image::media/custom_hold_pickup_location1.JPG[Custom Hold Pickup Location]
+image::media/custom_hold_pickup_location1.jpg[Custom Hold Pickup Location]
 
 
 If configured, patrons will see the option to opt-in to the alternate location in the _Account Preferences_ section of their OPAC Account.
 
-image::media/custom_hold_pickup_location2.JPG[OPAC Account]
+image::media/custom_hold_pickup_location2.jpg[OPAC Account]
 
 
 Display Hold Types on Pull Lists

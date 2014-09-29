@@ -26,7 +26,7 @@ To create a MARC Import Remove Fields profile, go to *Admin -> Server Administra
 . Click *Return to Groups* to go back to the list of Remove Field profiles.
 
 
-image::media/marc_import_remove_fields3.JPG[MARC Remove Fields Profile]
+image::media/marc_import_remove_fields3.jpg[MARC Remove Fields Profile]
 
 
 Import Options
@@ -35,17 +35,17 @@ The Label for each of the MARC Import Remove Fields profiles will appear on the 
 
 *Cataloging -> Import Record from Z39.50*
 
-image::media/marc_import_remove_fields1.JPG[Import Record from Z39.50]
+image::media/marc_import_remove_fields1.jpg[Import Record from Z39.50]
 {nbsp}
 
 *Cataloging -> MARC Batch Import/Export*
 
-image::media/marc_import_remove_fields2.JPG[MARC Batch Import/Export]
+image::media/marc_import_remove_fields2.jpg[MARC Batch Import/Export]
 {nbsp}
 
 *Acquisitions -> Load MARC Order Records*
 
-image::media/marc_import_remove_fields5.JPG[Load MARC Order Records]
+image::media/marc_import_remove_fields5.jpg[Load MARC Order Records]
 
 
 Permissions to use this Feature

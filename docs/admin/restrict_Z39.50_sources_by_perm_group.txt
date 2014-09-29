@@ -68,4 +68,4 @@ To set up stored credentials for a Z39.50 server:
 
 4) Enter the *Username* and *Password*, and click *Apply Credentials*.  
 
-image::media/storing_z3950_credentials.JPG[Storing Z39.50 Credentials]
+image::media/storing_z3950_credentials.jpg[Storing Z39.50 Credentials]
