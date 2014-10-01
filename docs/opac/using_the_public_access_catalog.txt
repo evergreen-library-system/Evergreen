@@ -24,20 +24,19 @@ indexterm:[search, subject]
 indexterm:[search, series]
 indexterm:[search, bib call number]
 
-* *Keyword* — finds the terms you enter anywhere in the entire record for an item, including title, author, subject, and other information.
+* *Keyword*: finds the terms you enter anywhere in the entire record for an item, including title, author, subject, and other information.
 
-* *Title* — finds the terms you enter in the title of an item.
+* *Title*: finds the terms you enter in the title of an item.
 
-* *Journal Title* — finds the terms you enter in the title of a serial bib record.
+* *Journal Title*: finds the terms you enter in the title of a serial bib record.
 
-* *Author* — finds the terms you enter in the author of an item.
+* *Author*: finds the terms you enter in the author of an item.
 
-* *Subject* — finds the terms you enter in the subject of an item. Subjects are categories assigned to items according to a system such as the Library of Congress Subject Headings.
+* *Subject*: finds the terms you enter in the subject of an item. Subjects are categories assigned to items according to a system such as the Library of Congress Subject Headings.
 
-* *Series* — finds the terms you enter in the title of a multi-part series.
+* *Series*: finds the terms you enter in the title of a multi-part series.
 
-* *Bib Call Number* — finds the terms you enter in the call number field of a bib record.
-
+* *Bib Call Number*: finds the terms you enter in the call number field of a bib record.
 
 [TIP]
 =============
@@ -162,7 +161,7 @@ Classic search interfaces (that is, those used primarily by librarians) forced u
 
 By default, all terms that have been entered in a search query are joined with an implicit `AND` operator. Those terms are required to appear in the designated fields to produce a matching record: a search for _golden compass_ will search for entries that contain both _golden_ *and* _compass_. 
 
-Words that are often considered Boolean operators, such as _AND_, _OR_, AND _NOT_, are not special in Evergreen: they are treated as just another search term. For example, a title search for `golden and compass` will not return the title _Golden Compass_. 
+Words that are often considered Boolean operators, such as _AND_, _OR_, and _NOT_, are not special in Evergreen: they are treated as just another search term. For example, a title search for `golden and compass` will not return the title _Golden Compass_. 
 
 However, Evergreen does support Boolean searching for those rare cases where you might require it, using symbolic operators as follows:
 
@@ -519,7 +518,7 @@ Edit options include:
 * Change the _Cancel unless filled by_ date, also known as the hold expiration date 
 * Change the status of the hold to either active or suspended. 
 * Change the _If suspended, activate on_ date, which reactivates a suspended hold at the specified date
- 
+
 To edit items on hold: 
 
 . Login to _My Account_, click the _Holds_ tab.
@@ -566,7 +565,6 @@ For example:
 
 
 After changing any of these settings, you must click _Save_ to store your preferences.
- 
 
 
-indexterm:[holds, preferred pickup location ]
+indexterm:[holds, preferred pickup location]
