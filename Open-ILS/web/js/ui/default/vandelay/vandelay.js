@@ -1350,6 +1350,8 @@ function vlHandleQueueItemsAction(action) {
             vlUploadQueueAutoOverlayBestMatch.attr('value',  vlUploadQueueAutoOverlayBestMatch2.attr('value'));
             vlUploadQueueAutoOverlayBestMatchRatio.attr('value',  vlUploadQueueAutoOverlayBestMatchRatio2.attr('value'));
             vlUploadQueueAutoOverlayInprocessAcqCopies.attr('value',  vlUploadQueueAutoOverlayInprocessAcqCopies2.attr('value'));
+            vlUploadQueueAutoOverlayOnorderCatCopies.attr('value',  vlUploadQueueAutoOverlayOnorderCatCopies2.attr('value'));
+            vlUploadQueueAutoOverlayOrgUnitCopies.attr('value',  vlUploadQueueAutoOverlayOrgUnitCopies2.attr('value'));
 
             // attr('value') and various other incantations won't let me set 
             // the value on the checkedmultiselect, so we temporarily swap 
@@ -1382,6 +1384,10 @@ function vlHandleQueueItemsAction(action) {
             vlUploadQueueAutoOverlayBestMatchRatio2.attr('value', '0.0');
             vlUploadQueueAutoOverlayInprocessAcqCopies.attr('value', false);
             vlUploadQueueAutoOverlayInprocessAcqCopies2.attr('value', false);
+            vlUploadQueueAutoOverlayOnorderCatCopies.attr('value', false);
+            vlUploadQueueAutoOverlayOnorderCatCopies2.attr('value', false);
+            vlUploadQueueAutoOverlayOrgUnitCopies.attr('value', false);
+            vlUploadQueueAutoOverlayOrgUnitCopies2.attr('value', false);
 
             // and... swap them back
             vlUploadTrashGroups2 = vlUploadTrashGroups;
@@ -1471,6 +1477,17 @@ function vlImportRecordQueue(type, queueId, recList, onload, sessionKey) {
         vlUploadQueueAutoOverlayInprocessAcqCopies.checked = false;
     }
 
+    if(vlUploadQueueAutoOverlayOnorderCatCopies.checked) {
+        options.opp_oo_cat_copy_overlay = true; //"opp" for opportunistic "oo" for on order
+        vlUploadQueueAutoOverlayOnorderCatCopies.checked = false;
+    }
+
+    if(vlUploadQueueAutoOverlayOrgUnitCopies.checked) {
+        options.auto_overlay_org_unit_copies = true;
+        vlUploadQueueAutoOverlayOrgUnitCopies.checked = false;
+        options.match_quality_ratio = vlUploadQueueAutoOverlayBestMatchRatio.attr('value');
+    }
+
     var profile = vlUploadMergeProfile.attr('value');
     if(profile != null && profile != '') {
         options.merge_profile = profile;
@@ -1542,7 +1559,8 @@ function batchUpload() {
             vlUploadQueueImportNoMatch.checked || 
             vlUploadQueueAutoOverlayExact.checked || 
             vlUploadQueueAutoOverlay1Match.checked ||
-            vlUploadQueueAutoOverlayBestMatch.checked ) {
+            vlUploadQueueAutoOverlayBestMatch.checked ||
+            vlUploadQueueAutoOverlayOrgUnitCopies.checked ) {
 
                 vlImportRecordQueue(
                     currentType, 

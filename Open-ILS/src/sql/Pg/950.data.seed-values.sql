@@ -1925,7 +1925,11 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 614, 'REFRESH_CAROUSEL', oils_i18n_gettext(614,
     'Allow a user to refresh carousels', 'ppl', 'description')),
  ( 615, 'ADMIN_REMOTEAUTH', oils_i18n_gettext( 615,
-    'Administer remote patron authentication', 'ppl', 'description' ))
+    'Administer remote patron authentication', 'ppl', 'description' )),
+ ( 616, 'IMPORT_USE_ORG_UNIT_COPIES', oils_i18n_gettext( 616,
+    'Allows users to import records based on the number of org unit copies attached to a record', 'ppl', 'description' )),
+ ( 617, 'IMPORT_ON_ORDER_CAT_COPY', oils_i18n_gettext( 617,
+    'Allows users to import copies based on the on-order items attached to a record', 'ppl', 'description' ))
 ;
 
 

@@ -29,6 +29,8 @@ const TEMPLATE_ATTRS = [
     'mergeOnBestMatch',
     'mergeOnSingleMatch',
     'autoOverlayAcqCopies',
+    'autoOverlayOnOrderCopies',
+    'autoOverlayOrgUnitCopies',
     'selectedHoldingsProfile',
     'selectedMergeProfile',
     'selectedFallThruMergeProfile',
@@ -44,6 +46,8 @@ interface ImportOptions {
     auto_overlay_best_match?: boolean;
     auto_overlay_1match?: boolean;
     opp_acq_copy_overlay?: boolean;
+    opp_oo_cat_copy_overlay?: boolean;
+    auto_overlay_org_unit_copies?: boolean;
     merge_profile?: any;
     fall_through_merge_profile?: any;
     strip_field_groups?: number[];
@@ -83,6 +87,8 @@ export class ImportComponent implements OnInit, AfterViewInit, OnDestroy {
     mergeOnBestMatch: boolean;
     minQualityRatio: number;
     autoOverlayAcqCopies: boolean;
+    autoOverlayOnOrderCopies: boolean;
+    autoOverlayOrgUnitCopies: boolean;
 
     // True after the first upload, then remains true.
     showProgress: boolean;
@@ -558,6 +564,8 @@ export class ImportComponent implements OnInit, AfterViewInit, OnDestroy {
             auto_overlay_best_match: this.mergeOnBestMatch,
             auto_overlay_1match: this.mergeOnSingleMatch,
             opp_acq_copy_overlay: this.autoOverlayAcqCopies,
+            opp_oo_cat_copy_overlay: this.autoOverlayOnOrderCopies,
+            auto_overlay_org_unit_copies: this.autoOverlayOrgUnitCopies,
             merge_profile: this.selectedMergeProfile,
             fall_through_merge_profile: this.selectedFallThruMergeProfile,
             strip_field_groups: this.selectedTrashGroups,

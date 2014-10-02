@@ -217,6 +217,19 @@
         name="session-name" i18n-placeholder placeholder="Session Name..."/>
     </div>
     <div class="col-lg-3">
+      <label for="auto-overlay-on-order-copies" i18n>
+        Auto-overlay On-order Cataloging Items
+      </label>
+    </div>
+    <div class="col-lg-3">
+      <input class="form-check-input" type="checkbox" 
+        id="auto-overlay-on-order-copies"
+        [disabled]="recordType == 'authority'"
+        [(ngModel)]="autoOverlayOnOrderCopies">
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-3">
       <label for="marc-remove-groups" i18n>Remove MARC Field Groups</label>
     </div>
     <ng-container *ngIf="recordType != 'authority'">
@@ -231,6 +244,17 @@
         </select>
       </div>
     </ng-container>
+    <div class="col-lg-3">
+      <label for="auto-overlay-org-unit-copies" i18n>
+        Use Org Unit Matching in Copy to Determine Best Match
+      </label>
+    </div>
+    <div class="col-lg-3">
+      <input class="form-check-input" type="checkbox" 
+        id="auto-overlay-org-unit-copies"
+        [disabled]="recordType == 'authority'"
+        [(ngModel)]="autoOverlayOrgUnitCopies">
+    </div>
   </div>
   <div class="row" *ngIf="!importSelection()">
     <div class="col-lg-3">

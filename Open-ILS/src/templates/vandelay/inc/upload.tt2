@@ -110,6 +110,16 @@
             <td>[% l('Auto-overlay In-process Acquisitions Copies') %]</td>
             <td colspan='4'><input jsId='vlUploadQueueAutoOverlayInprocessAcqCopies' dojoType='dijit.form.CheckBox'/></td>
         </tr>
+        <tr>
+            <td>[% l('Auto-overlay On-order Cataloguing  Copies') %]</td>
+            <td colspan='4'><input jsId='vlUploadQueueAutoOverlayOnorderCatCopies' dojoType='dijit.form.CheckBox'/></td>
+        </tr>
+        <tr>
+            <td>[% l('Use Org Unit Matching in Copy to Determine Best Match') %]</td>
+            <td colspan='4'>
+                <input jsId='vlUploadQueueAutoOverlayOrgUnitCopies' dojoType='dijit.form.CheckBox'/>
+            </td>
+        </tr>
 
         <tr><td colspan='2' style='border-bottom:2px solid #888;'></td></tr>
         <tr><td colspan='2' style='padding-bottom: 10px;'></td></tr>

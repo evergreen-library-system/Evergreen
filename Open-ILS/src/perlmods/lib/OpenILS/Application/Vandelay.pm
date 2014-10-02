@@ -998,6 +998,7 @@ sub import_record_list_impl {
     my $auto_overlay_exact = $$args{auto_overlay_exact};
     my $auto_overlay_1match = $$args{auto_overlay_1match};
     my $auto_overlay_best = $$args{auto_overlay_best_match};
+    my $auto_overlay_org_unit_copies = $$args{auto_overlay_org_unit_copies};
     my $match_quality_ratio = $$args{match_quality_ratio};
     my $merge_profile = $$args{merge_profile};
     my $ft_merge_profile = $$args{fall_through_merge_profile};
@@ -1008,6 +1009,7 @@ sub import_record_list_impl {
     my $overlay_func = 'vandelay.overlay_bib_record';
     my $auto_overlay_func = 'vandelay.auto_overlay_bib_record';
     my $auto_overlay_best_func = 'vandelay.auto_overlay_bib_record_with_best';
+    my $auto_overlay_org_unit_copies_func = 'vandelay.auto_overlay_org_unit_copies';
     my $retrieve_func = 'retrieve_vandelay_queued_bib_record';
     my $update_func = 'update_vandelay_queued_bib_record';
     my $search_func = 'search_vandelay_queued_bib_record';
@@ -1101,6 +1103,7 @@ sub import_record_list_impl {
 
         my $record;
         my $imported = 0;
+
 
         if ($type eq 'bib') {
             # strip configured / selected MARC tags from inbound records
@@ -1212,6 +1215,30 @@ sub import_record_list_impl {
                     $e, $type,
                     $report_args, 
                     $auto_overlay_best_func,
+                    $retrieve_func,
+                    $rec_class,
+                    $rec_id, 
+                    $match_quality_ratio, 
+                    $merge_profile, 
+                    $ft_merge_profile
+                );
+            }
+
+            if(!$imported and !$error and $auto_overlay_org_unit_copies and scalar(@{$rec->matches}) > 0 ) {
+                # caller says to overlay depending on the number of copies attached to a record, whose OU
+                # matches the OU of the import record's Holding's Import Profile.
+                
+                my $perm = 'IMPORT_USE_ORG_UNIT_COPIES';
+                my $rec_ou = $e->requestor->ws_ou;
+
+                if (!$e->allowed($perm, $rec_ou)) {
+                    return $e->die_event;
+                }
+
+                ($imported, $error, $rec) = try_auto_overlay(
+                    $e, $type,
+                    $report_args, 
+                    $auto_overlay_org_unit_copies_func,
                     $retrieve_func,
                     $rec_class,
                     $rec_id, 
@@ -1784,6 +1811,7 @@ sub import_record_asset_list_impl {
         my $auto_callnumber = {};
 
         my $opp_acq_copy_overlay = $args->{opp_acq_copy_overlay};
+        my $opp_oo_cat_copy_overlay = $args->{opp_oo_cat_copy_overlay};
         my @overlaid_copy_ids;
         for my $item_id (@$item_ids) {
             my $e = new_editor(requestor => $requestor, xact => 1);
@@ -1873,6 +1901,58 @@ sub import_record_asset_list_impl {
                     $copy = $acqlid->eg_copy_id;
                     push(@overlaid_copy_ids, $copy->id);
                 }
+            } elsif ($opp_oo_cat_copy_overlay) { # we are going to "opportunistically" overlay received, On-order catalogue copies
+                
+                my $perm = 'IMPORT_ON_ORDER_CAT_COPY';
+                my $rec_ou = $e->requestor->ws_ou;
+
+                if (!$e->allowed($perm, $rec_ou)) {
+                    return $e->die_event;
+                }
+
+                my $query; 
+                if ($item->copy_number) {
+                    $query = [
+                        {
+                            "status" => OILS_COPY_STATUS_ON_ORDER,
+                            "copy_number" => $item->copy_number,
+                            "+acn" => [{"owning_lib" => $item->owning_lib}, 
+                                {"record" => $rec->imported_as}]
+                        },
+                        {
+                            "join" => "acn",
+                            "flesh" => 1,
+                            "flesh_fields" => {
+                                "acp" => ["call_number"]
+                            }
+                        }
+                    ];
+                } else {
+                    #see if we have copies in vandelay.import_item that
+                    #belong to the current record, but do not have $item->copy_number defined
+                    #in their on-order records.  Retrieve them by create date from oldest to
+                    #newest ORDER BY acp.create_date ASC
+                    $query = [
+                        {
+                            "status" => OILS_COPY_STATUS_ON_ORDER,
+                            "+acn" => [{"record" => $rec->imported_as}, 
+                                {"owning_lib" => $item->owning_lib}]
+                        },
+                        {
+                            "join" => "acn",
+                            "flesh" => 1,
+                            "flesh_fields" => {
+                                "acp" => ["call_number"]
+                            },
+                            "order_by" => { "acp" => "create_date" }
+                        }
+                    ];
+                }
+                # don't overlay the same copy twice
+                $query->[0]{"+acp"}{"id"} = {"not in" => \@overlaid_copy_ids} if @overlaid_copy_ids;
+                if ($copy = $e->search_asset_copy($query)->[0]) {
+                    push(@overlaid_copy_ids, $copy->id);
+                } 
             }
 
             if ($copy) { # we found a copy to overlay
