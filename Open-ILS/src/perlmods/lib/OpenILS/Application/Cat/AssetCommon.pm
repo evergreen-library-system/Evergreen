@@ -80,11 +80,17 @@ sub create_copy {
 }
 
 
-# if 'delete_stats' is true, the copy->stat_cat_entries data is 
-# treated as the authoritative list for the copy. existing entries
-# that are not in said list will be deleted from the DB
+# 'delete_stats' is somewhat of a misnomer.  With no flags set, this method
+# still deletes any existing maps not represented in $copy->stat_cat_entries,
+# but aborts when $copy->stat_cat_entries is empty or undefined.  If
+# 'delete_stats' is true, this method will delete all the maps when
+# $copy->stat_cat_entries is empty or undefined.
+#
+# The 'add_or_update_only' flag is more straightforward.  It adds missing
+# maps, updates present maps with any new values, and leaves the rest
+# alone.
 sub update_copy_stat_entries {
-    my($class, $editor, $copy, $delete_stats) = @_;
+    my($class, $editor, $copy, $delete_stats, $add_or_update_only) = @_;
 
     return undef if $copy->isdeleted;
     return undef unless $copy->ischanged or $copy->isnew;
@@ -104,13 +110,24 @@ sub update_copy_stat_entries {
         # if there is no stat cat entry on the copy who's id matches the
         # current map's id, remove the map from the database
         for my $map (@$maps) {
-            if(! grep { $_->id == $map->stat_cat_entry } @$entries ) {
+            if (!$add_or_update_only) {
+                if(! grep { $_->id == $map->stat_cat_entry } @$entries ) {
 
-                $logger->info("copy update found stale ".
-                    "stat cat entry map ".$map->id. " on copy ".$copy->id);
+                    $logger->info("copy update found stale ".
+                        "stat cat entry map ".$map->id. " on copy ".$copy->id);
 
-                $editor->delete_asset_stat_cat_entry_copy_map($map)
-                    or return $editor->event;
+                    $editor->delete_asset_stat_cat_entry_copy_map($map)
+                        or return $editor->event;
+                }
+            } else {
+                if( grep { $_->stat_cat == $map->stat_cat and $_->id != $map->stat_cat_entry } @$entries ) {
+
+                    $logger->info("copy update found ".
+                        "stat cat entry map ".$map->id. " needing update on copy ".$copy->id);
+
+                    $editor->delete_asset_stat_cat_entry_copy_map($map)
+                        or return $editor->event;
+                }
             }
         }
     }
