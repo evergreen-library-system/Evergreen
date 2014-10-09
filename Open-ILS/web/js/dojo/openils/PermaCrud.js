@@ -60,13 +60,11 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
         },
 
         disconnect : function ( onerror ) {
+            // session.disconnect() does not return any indication of success,
+            // so we must simply assume it worked
+            this.session.disconnect();
             this.connected = false;
             return true;
-            // disconnect returns nothing, which is null, which is not true, cause the following to always run ... arg.
-            if (!this.session.disconnect()) {
-                if (onerror) onerror(this.session);
-                return false;
-            }
         },
 
         _session_request : function ( args /* hash */, commitOnComplete /* set to true, else no */ ) {
@@ -82,7 +80,6 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
                 if (args.timeout && !args.oncomplete && !args.onresponse) { // pure sync call
                     args.oncomplete = function (r) {
                         me.session.request('open-ils.pcrud.transaction.' + endstyle, me.auth());
-                        me.session.disconnect();
                         me.disconnect();
                     };
                 } else if (args.oncomplete) { // there's an oncomplete, fire that, and then end the transaction
@@ -93,7 +90,6 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
                             ret = orig_oncomplete(r);
                         } finally {
                             me.session.request('open-ils.pcrud.transaction.' + endstyle, me.auth());
-                            me.session.disconnect();
                             me.disconnect();
                         }
                         return ret;
