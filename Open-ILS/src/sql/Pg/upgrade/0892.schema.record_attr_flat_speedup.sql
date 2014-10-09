@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0892', :eg_version);
 
 CREATE OR REPLACE VIEW metabib.record_attr_flat AS
     SELECT  v.source AS id,
