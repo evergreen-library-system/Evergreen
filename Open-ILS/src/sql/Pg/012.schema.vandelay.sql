@@ -1415,19 +1415,16 @@ $$ LANGUAGE SQL;
 
 CREATE OR REPLACE FUNCTION vandelay.overlay_bib_record ( import_id BIGINT, eg_id BIGINT, merge_profile_id INT ) RETURNS BOOL AS $$
 DECLARE
-    merge_profile   vandelay.merge_profile%ROWTYPE;
-    dyn_profile     vandelay.compile_profile%ROWTYPE;
     editor_string   TEXT;
     editor_id       INT;
-    source_marc     TEXT;
-    target_marc     TEXT;
-    eg_marc         TEXT;
     v_marc          TEXT;
-    replace_rule    TEXT;
+    v_bib_source    INT;
+    update_fields   TEXT[];
+    update_query    TEXT;
 BEGIN
 
-    SELECT  q.marc INTO v_marc
-      FROM  vandelay.queued_record q
+    SELECT  q.marc, q.bib_source INTO v_marc, v_bib_source
+      FROM  vandelay.queued_bib_record q
             JOIN vandelay.bib_match m ON (m.queued_record = q.id AND q.id = import_id)
       LIMIT 1;
 
@@ -1452,8 +1449,19 @@ BEGIN
             END IF;
 
             IF editor_id IS NOT NULL THEN
-                UPDATE biblio.record_entry SET editor = editor_id WHERE id = eg_id;
+                --only update the edit date if we have a valid editor
+                update_fields := ARRAY_APPEND(update_fields, 'editor = ' || editor_id || ', edit_date = NOW()');
             END IF;
+        END IF;
+
+        IF v_bib_source IS NOT NULL THEN
+            update_fields := ARRAY_APPEND(update_fields, 'source = ' || v_bib_source);
+        END IF;
+
+        IF ARRAY_LENGTH(update_fields, 1) > 0 THEN
+            update_query := 'UPDATE biblio.record_entry SET ' || ARRAY_TO_STRING(update_fields, ',') || ' WHERE id = ' || eg_id || ';';
+            --RAISE NOTICE 'query: %', update_query;
+            EXECUTE update_query;
         END IF;
 
         RETURN TRUE;
