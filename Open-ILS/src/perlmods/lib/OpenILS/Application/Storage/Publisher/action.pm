@@ -226,6 +226,7 @@ sub complete_reshelving {
             WHERE cp.status = 7
                 AND cp.status_changed_time < NOW() - CAST( COALESCE( BTRIM( (SELECT value FROM actor.org_unit_ancestor_setting('circ.reshelving_complete.interval', cp.circ_lib)),'"' ), ? )  AS INTERVAL)
           )
+          AND status = 7
     SQL
     my $sth = action::circulation->db_Main->prepare_cached($sql);
     $sth->execute($window);
