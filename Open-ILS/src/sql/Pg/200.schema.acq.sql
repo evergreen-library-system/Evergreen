@@ -852,6 +852,11 @@ CREATE INDEX ie_inv_idx on acq.invoice_entry (invoice);
 CREATE INDEX ie_po_idx on acq.invoice_entry (purchase_order);
 CREATE INDEX ie_li_idx on acq.invoice_entry (lineitem);
 
+ALTER TABLE acq.fund_debit 
+    ADD COLUMN invoice_entry INTEGER 
+        REFERENCES acq.invoice_entry (id)
+        ON DELETE SET NULL;
+
 CREATE TABLE acq.invoice_item_type (
     code    TEXT    PRIMARY KEY,
     name    TEXT    NOT NULL,  -- i18n-ize

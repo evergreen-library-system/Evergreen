@@ -7935,10 +7935,12 @@ SELECT  usr,
 			<field reporter:label="Encumbrance" name="encumbrance" reporter:datatype="bool" />
 			<field reporter:label="Debit Type" name="debit_type" reporter:datatype="text" />
 			<field reporter:label="Create Time" name="create_time" reporter:datatype="timestamp" />
+			<field reporter:label="Invoice Entry" name="invoice_entry" reporter:datatype="link" />
 		</fields>
 		<links>
 			<link field="fund" reltype="has_a" key="id" map="" class="acqf"/>
 			<link field="origin_currency_type" reltype="has_a" key="code" map="" class="acqct"/>
+			<link field="invoice_entry" reltype="has_a" key="id" map="" class="acqie"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>

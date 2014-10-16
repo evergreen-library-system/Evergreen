@@ -287,6 +287,10 @@ sub rollback_entry_debits {
         # revert to the original estimated amount re-encumber
         $debit->encumbrance('t');
         $debit->amount($lineitem->estimated_unit_price());
+
+        # debit is no longer "invoiced"; detach it from the entry;
+        $debit->clear_invoice_entry;
+
         $e->update_acq_fund_debit($debit) or return $e->die_event;
         update_copy_cost($e, $debit) or return $e->die_event; # clear the cost
     }
@@ -312,6 +316,11 @@ sub update_entry_debits {
         my $amount = entry_amount_per_item($entry);
         $debit->amount($amount);
         $debit->encumbrance('f');
+
+        # debit always reports the invoice_entry responsible
+        # for its most recent modification.
+        $debit->invoice_entry($entry->id);
+
         $e->update_acq_fund_debit($debit) or return $e->die_event;
 
         # TODO: this does not reflect ancillary charges, like taxes, etc.
@@ -473,14 +482,30 @@ sub amounts_spent_per_fund {
     return \@totals;
 }
 
-# there is no direct link between invoice_entry and fund debits.
-# when we need to retrieve the related debits, we have to do some searching
+# find fund debits related to an invoice entry.
 sub find_entry_debits {
-    my($e, $entry, $encumbrance, $amount) = @_;
+    my($e, $entry, $encumbrance, $amount, $fallback) = @_;
 
     my $query = {
         select => {acqfdeb => ['id']},
-        from => {
+        # sort received items to the front
+        order_by => {'acqlid' => ['recv_time']}
+    };
+
+    if ($encumbrance eq 'f' and !$fallback) { # previously invoiced
+
+        # Debits which have been invoiced (encumbrance = f) will have a 
+        # link to the last entry which affected them
+
+        $query->{from} = {acqfdeb => 'acqlid'};
+        $query->{where} = {'+acqfdeb' => {invoice_entry => $entry->id}};
+
+    } else {
+
+        # For un-invoiced (or $fallback) debits, search for those 
+        # that are linked to the entry via the lineitem.
+
+        $query->{from} = {
             acqfdeb => {
                 acqlid => {
                     join => {
@@ -494,17 +519,34 @@ sub find_entry_debits {
                     }
                 }
             }
-        },
-        where => {'+acqfdeb' => {encumbrance => $encumbrance}},
-        order_by => {'acqlid' => ['recv_time']}, # un-received items will sort to the end
-        limit => $entry->phys_item_count
-    };
+        };
+
+        $query->{limit} = $entry->phys_item_count;
+        $query->{where} = {'+acqfdeb' => {encumbrance => $encumbrance}};
+    }
 
     $query->{where}->{'+acqfdeb'}->{amount} = $amount if $amount;
 
     my $debits = $e->json_query($query);
     my $debit_ids = [map { $_->{id} } @$debits];
-    return (@$debit_ids) ? $e->search_acq_fund_debit({id => $debit_ids}) : [];
+
+    if (!@$debit_ids) { # no debits found
+
+        # if a lookup for previously invoiced debits (encumbrance=f) 
+        # returns zero results, it may be becuase the debits were
+        # created before the presence of the acq.fund_debit.invoice_entry
+        # column.  Attempt to use the old-style lookup for these debits
+        # using the "$fallback" flag.
+        if (!$fallback and $encumbrance eq 'f') {
+            $logger->info(
+                "invoice: using debit fallback lookup for entry ".$entry->id);
+            return find_entry_debits($e, $entry, $encumbrance, $amount, 1);
+        }
+
+        return [];
+    }
+
+    return $e->search_acq_fund_debit({id => $debit_ids});
 }
 
 
