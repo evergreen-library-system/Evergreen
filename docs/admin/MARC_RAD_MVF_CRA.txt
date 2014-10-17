@@ -78,3 +78,119 @@ To modify the *Composite Attribute Entry Definition*:
 
 image::media/modifycde_7.jpg[]
 
+Search and Icon Formats
+^^^^^^^^^^^^^^^^^^^^^^^
+
+Search and Icon Formats
++++++++++++++++++++++++
+
+The table below shows all the search and icon formats. In some cases they vary slightly, with the icon format being more restrictive. This is so that things such as a search for "All Books" will include Large Print books yet Large Print books will not show both a "Book" and "Large Print Book" icon.
+In the table below "Icon Format Only" portions of the definition are italicized and in square brackets: [Icon format only data] 
+The definitions use the <<anchor-1,fixed field types>> at the end of this document. 
+
+[width="60%", cols="<,<,<"]
+|====
+|*Icon* |*Search Label/Icon Label* |*Definition*
+|image:http://catalog.mvlc.org/images/format_icons/icon_format/blu-ray.png[] | Blu ray | VR Format:s
+|image:http://catalog.mvlc.org/images/format_icons/icon_format/book.png[] | All books/Book | Item Type: a,t
+
+Bib Level: a,c,d,m
+
+NOT: Item Form: a,b,c,f,o,q,r,s[,d] 
+|image:http://catalog.mvlc.org/images/format_icons/icon_format/braille.png[] | Braille |  Item Type: a
+
+Item Form: f 
+|image:http://catalog.mvlc.org/images/format_icons/icon_format/casaudiobook.png[] | Cassette audiobook |  Item Type: i
+
+SR Format: l 
+|image:http://catalog.mvlc.org/images/format_icons/icon_format/casmusic.png[] | Audiocassette music recording | Item Type: j
+
+SR Format: l 
+|image:http://catalog.mvlc.org/images/format_icons/icon_format/cdaudiobook.png[] | CD audiobook | Item Type: i
+
+SR Format: f 
+|image:http://catalog.mvlc.org/images/format_icons/icon_format/cdmusic.png[] | CD music recording | Item Type: j
+
+SR Format: f 
+|image:http://catalog.mvlc.org/images/format_icons/icon_format/dvd.png[] | DVD |  VR Format: v 
+|image:http://catalog.mvlc.org/images/format_icons/icon_format/eaudio.png[] | E-audio | Item Type: i
+
+Item Form: o,q,s 
+|image:http://catalog.mvlc.org/images/format_icons/icon_format/ebook.png[]| E-book | Item Type: a,t
+
+Bib Level: a,c,d,m
+
+Item Form: o,q,s 
+|image:http://catalog.mvlc.org/images/format_icons/icon_format/equip.png[] | Equipment, games, toys |  Item Type: r 
+|image:http://catalog.mvlc.org/images/format_icons/icon_format/evideo.png[] | E-video | Item Type: g
+
+Item Form: o,q,s 
+|image:http://catalog.mvlc.org/images/format_icons/icon_format/kit.png[] | Kit |  Item Type: o,p 
+|image:http://catalog.mvlc.org/images/format_icons/icon_format/lpbook.png[] | Large print book | Item Type: a,t
+
+Bib Level: a,c,d,m
+
+Item Form: d 
+|image:http://catalog.mvlc.org/images/format_icons/icon_format/map.png[] | Map |  Item Type: e,f 
+|image:http://catalog.mvlc.org/images/format_icons/icon_format/microform.png[] | Microform |  Item Form: a,b,c 
+|image:http://catalog.mvlc.org/images/format_icons/icon_format/music.png[] | All music/Music sound recording (unknown format) | Item Type: j
+
+[NOT: SR Format: a,b,c,d,e,f,l] 
+|image:http://catalog.mvlc.org/images/format_icons/icon_format/phonomusic.png[] | Phonograph music recording | Item Type: j
+
+SR Format: a,b,c,d,e 
+|image:http://catalog.mvlc.org/images/format_icons/icon_format/phonospoken.png[] | Phonograph spoken recording | Item Type: i
+
+SR Format: a,b,c,d,e 
+|image:http://catalog.mvlc.org/images/format_icons/icon_format/picture.png[] | Picture | Item type: k
+|image:http://catalog.mvlc.org/images/format_icons/icon_format/score.png[] | Music score | Item type: c,d
+|image:http://catalog.mvlc.org/images/format_icons/icon_format/serial.png[] | Serials and magazines |  Bib Level: b,s 
+|image:http://catalog.mvlc.org/images/format_icons/icon_format/software.png[] | Software and video games |  Item Type: m 
+|image:http://catalog.mvlc.org/images/format_icons/icon_format/vhs.png[] | VHS | VR Format: b
+|====
+
+[[anchor-1]]
+Fixed Field Types
++++++++++++++++++
+This table details the fixed field types currently used for determining search and icon formats. See the <<anchor-2,record types>> section above for how the system determines them. 
+
+[width="40%", cols="<,<,<,<"]
+|====
+| *Label* | *Record Type* | *Tag* | *Position*
+|Item Type | ANY | LDR | 06 
+|Bib Level | ANY | LDR | 07 
+.14+^.^| Item Format  .2+^.^| BKS | 006 | 06
+| 008 | 23
+.2+^.^| MAP | 006 | 12
+|008 | 29
+.2+^.^| MIX | 006 | 06
+| 008 | 23
+.2+^.^| REC | 006 | 06
+| 008 | 23
+.2+^.^| SCO | 006 |06
+| 008 | 23 
+.2+^.^| SER | 006 | 06
+| 008 | 23
+.2+^.^| VIS | 006 | 12
+| 008 | 29
+| SR Format | ANY | 007s | 03 
+| VR Format | ANY | 007v | 04 
+|====
+
+[[anchor-2]]
+Record Types
+++++++++++++
+
+This table shows the record types currently used in determining elements of search and icon formats. They are based on a combination of the MARC Record Type (LDR 06) and Bibliographic Level (LDR 07) fixed fields. 
+
+[width="30%", cols="<,<,<"]
+|====
+| *Record Type* | *LDR 06* | *LDR 07*
+| BKS | a,t | a,c,d,m
+| MAP | e,f | a,b,c,d,i,m,s
+| MIX | p | c,d,i
+| REC |	i,j | a,b,c,d,i,m,s
+| SCO |	c,d | a,b,c,d,i,m,s
+| SER |	a | b,i,s
+| VIS |	g,k,r,o | a,b,c,d,i,m,s
+|====
