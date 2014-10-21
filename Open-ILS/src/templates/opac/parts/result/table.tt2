@@ -175,7 +175,13 @@ END;
                                                                 <strong><a href="[% res.target_url %]">
                                                                 [% res.public_name | html %]</a></strong>
                                                             </td>
-                                                            <td>[% res.target_coverage | html %]</td>
+                                                            <td>[% res.target_coverage | html %]
+                                                            [%- IF res.target_embargo != '';
+                                                                    ' - ';
+                                                                    res.target_embargo | html;
+                                                                END;
+                                                            -%]
+                                                            </td>
                                                         </tr>
                                                                 [% END %]
                                                             [% END %]
