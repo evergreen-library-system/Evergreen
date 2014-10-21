@@ -95,8 +95,14 @@
         FOREACH res IN openurls;
 %]
         <tr>
-            <td class='rdetail_openurl_entry'><a href="[% res.target_url %]">[% res.public_name %]</a></td>
-            <td>[% res.target_coverage %]</td>
+            <td class='rdetail_openurl_entry'><a href="[% res.target_url %]">[% res.public_name | html %]</a></td>
+            <td>[% res.target_coverage | html %]
+            [%- IF res.target_embargo != '';
+                    ' - ';
+                    res.target_embargo | html;
+                END;
+            -%]
+            </td>
         </tr>
     [%- END %]
     </tbody></table>
