@@ -78,3 +78,122 @@ To modify the *Composite Attribute Entry Definition*:
 
 image::media/modifycde_7.jpg[]
 
+Search and Icon Formats
+^^^^^^^^^^^^^^^^^^^^^^^
+
+Search and Icon Formats
++++++++++++++++++++++++
+
+The table below shows all the search and icon formats. In some cases they vary slightly, with the icon format being more restrictive. This is so that things such as a search for "All Books" will include Large Print books yet Large Print books will not show both a "Book" and "Large Print Book" icon.
+
+In the table below "Icon Format Only" portions of the definition are italicized and in square brackets: [_Icon format only data_] 
+
+The definitions use the <<anchor-1,fixed field types>> at the end of this document. 
+
+[width="60%", cols="<,<,<"]
+|====
+|*Icon* |*Search Label/Icon Label* |*Definition*
+|image::media/blu-ray.png[] | Blu ray | VR Format:s
+|image::media/book.png[] | All books/Book | Item Type: a,t
+
+Bib Level: a,c,d,m
+
+NOT: Item Form: a,b,c,f,o,q,r,s _[,d]_ 
+|image::media/braille.png[] | Braille |  Item Type: a
+
+Item Form: f 
+|image::media/casaudiobook.png[] | Cassette audiobook |  Item Type: i
+
+SR Format: l 
+|image::media/casmusic.png[] | Audiocassette music recording | Item Type: j
+
+SR Format: l 
+|image::media/cdaudiobook.png[] | CD audiobook | Item Type: i
+
+SR Format: f 
+|image::media/cdmusic.png[] | CD music recording | Item Type: j
+
+SR Format: f 
+|image::media/dvd.png[] | DVD |  VR Format: v 
+|image::media/eaudio.png[] | E-audio | Item Type: i
+
+Item Form: o,q,s 
+|image::media/ebook.png[]| E-book | Item Type: a,t
+
+Bib Level: a,c,d,m
+
+Item Form: o,q,s 
+|image::media/equip.png[] | Equipment, games, toys |  Item Type: r 
+|image::media/evideo.png[] | E-video | Item Type: g
+
+Item Form: o,q,s 
+|image::media/kit.png[] | Kit |  Item Type: o,p 
+|image::media/lpbook.png[] | Large print book | Item Type: a,t
+
+Bib Level: a,c,d,m
+
+Item Form: d 
+|image::media/map.png[] | Map |  Item Type: e,f 
+|image::media/microform.png[] | Microform |  Item Form: a,b,c 
+|image::media/music.png[] | All music/Music sound recording (unknown format) | Item Type: j
+
+_[NOT: SR Format: a,b,c,d,e,f,l]_ 
+|image::media/phonomusic.png[] | Phonograph music recording | Item Type: j
+
+SR Format: a,b,c,d,e 
+|image::media/phonospoken.png[] | Phonograph spoken recording | Item Type: i
+
+SR Format: a,b,c,d,e 
+|image::media/picture.png[] | Picture | Item type: k
+|image::media/score.png[] | Music score | Item type: c,d
+|image::media/serial.png[] | Serials and magazines |  Bib Level: b,s 
+|image::media/software.png[] | Software and video games |  Item Type: m 
+|image::media/vhs.png[] | VHS | VR Format: b
+|====
+
+[[anchor-2]]
+Record Types
+++++++++++++
+
+This table shows the record types currently used in determining elements of search and icon formats. They are based on a combination of the MARC Record Type (LDR 06) and Bibliographic Level (LDR 07) fixed fields. 
+
+[width="30%", cols="<,<,<"]
+|====
+| *Record Type* | *LDR 06* | *LDR 07*
+| BKS | a,t | a,c,d,m
+| MAP | e,f | a,b,c,d,i,m,s
+| MIX | p | c,d,i
+| REC |	i,j | a,b,c,d,i,m,s
+| SCO |	c,d | a,b,c,d,i,m,s
+| SER |	a | b,i,s
+| VIS |	g,k,r,o | a,b,c,d,i,m,s
+|====
+
+[[anchor-1]]
+Fixed Field Types
++++++++++++++++++
+This table details the fixed field types currently used for determining search and icon formats. See the <<anchor-2,record types>> section above for how the system determines them. 
+
+[width="40%", cols="<,<,<,<"]
+|====
+| *Label* | *Record Type* | *Tag* | *Position*
+|Item Type | ANY | LDR | 06 
+|Bib Level | ANY | LDR | 07 
+.14+^.^| Item Format  .2+^.^| BKS | 006 | 06
+| 008 | 23
+.2+^.^| MAP | 006 | 12
+|008 | 29
+.2+^.^| MIX | 006 | 06
+| 008 | 23
+.2+^.^| REC | 006 | 06
+| 008 | 23
+.2+^.^| SCO | 006 |06
+| 008 | 23 
+.2+^.^| SER | 006 | 06
+| 008 | 23
+.2+^.^| VIS | 006 | 12
+| 008 | 29
+| SR Format | ANY | 007s | 03 
+| VR Format | ANY | 007v | 04 
+|====
+
