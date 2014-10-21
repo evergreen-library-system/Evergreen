@@ -272,8 +272,12 @@ int oilsIsDBConnected( dbi_conn handle ) {
 			"ignored until end of transaction block\n";
 		const char* msg;
 		dbi_conn_error( handle, &msg );
-		if( strcmp( msg, ok_msg )) {
-			osrfLogError( OSRF_LOG_MARK, "Database connection isn't working" );
+		// Newer versions of dbi_conn_error return codes within the error msg.
+		// E.g. 3624914: ERROR:  current transaction is aborted, commands ignored until end of transaction block
+		// Substring test should work regardless.
+		const char* substr = strstr(msg, ok_msg);
+		if( substr == NULL ) {
+			osrfLogError( OSRF_LOG_MARK, "Database connection isn't working : %s", msg );
 			return 0;
 		} else
 			return 1;   // ignoring SELECT due to previous error; that's okay
