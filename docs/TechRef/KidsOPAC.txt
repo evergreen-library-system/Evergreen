@@ -7,7 +7,10 @@ Configuration
 Apache
 ~~~~~~
 
-[source, bash]
+The KPAC is already included and ready to be used with new Evergreen installs.  So you only need to change the apache config
+if you need to change template locations or if you want to use a different *kpac.xml* config file.  The defaults for the KPAC are set
+in */etc/apache2/eg_vhosts.conf*.
+
 ------------------------------------------------------------------------------
 <Location /eg/kpac>
     PerlSetVar OILSWebContextLoader "OpenILS::WWW::EGKPacLoader"
@@ -77,14 +80,19 @@ XML Configuration File
 Skin Configuration
 ~~~~~~~~~~~~~~~~~~
 
-The following example enables you to configure the alternate skin for the Kids
+The following example enables you to configure the alternate skin (Monster Skin, kpac2) for the Kids
 Catalog.
 
-[source, xml]
+You should be familiar with how the <<_how_to_override_templates|Evergreen TPAC handles template folders>> 
+before you make these changes.
+
+If you already have a custom template directory setup you can copy the *Open-ILS/examples/web/templates/kpac* 
+files to that directory instead, and then skip any Apache config changes. 
+
+[source, bash]
 ------------------------------------------------------------------------------
 % cp -r Open-ILS/examples/web/css/skin/kpac2 /openils/var/web/css/skin/
-% cp -r Open-ILS/examples/web/images/kpac/* /openils/var/web/images/kpac/ #
-does not clobber
+% cp -r Open-ILS/examples/web/images/kpac/* /openils/var/web/images/kpac/ #does not clobber
 % mkdir /openils/var/templates_kpac2
 % cp -r Open-ILS/examples/web/templates/kpac /openils/var/templates_kpac2/
 -------------------------------------------------------------------------------
@@ -92,7 +100,6 @@ does not clobber
 Then set up 443/80 vhosts for serving the alternate skin in eg.conf, something
 along the lines of:
 
-[source, xml]
 ------------------------------------------------------------------------------
 <VirtualHost *:80>
     ServerName xyz.dev198.esilibrary.com:80
@@ -100,9 +107,8 @@ along the lines of:
     DirectoryIndex index.xml index.html index.xhtml
     Include eg_vhost.conf
     <Location /eg/kpac>
-        PerlSetVar OILSWebContextLoader "OpenILS::WWW::EGKPacLoader"
-        PerlSetVar KPacConfigFile "/openils/conf/kpac.xml.example"
-        PerlAddVar OILSWebTemplatePath "/openils/var/templates"
+	#Point to a different kpac.xml config file if needed
+        #PerlSetVar KPacConfigFile "/openils/conf/kpac.xml.example"
         PerlAddVar OILSWebTemplatePath "/openils/var/templates_kpac2"
     </Location>
 </VirtualHost>
