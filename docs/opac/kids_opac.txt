@@ -17,19 +17,7 @@ Two skins, or design interfaces, have been created for the KPAC.  The KPAC was
 designed to run multiple skins on a single web server.  A consortium, then, could 
 allow each library system to choose a skin for their patrons.
 
-
-*Monster Skin:*
-
-
-In this skin, the search bar shares the top panel with a playful monster.  The 
-search grid appears beneath the search bar.  Help and Login links appear in bold 
-colors at the top right of the interface although you can customize these with CSS.  
-After you login, the Login button disappears.
-
-image::media/Kids_OPAC2.jpg[Kids_OPAC2]
-
-
-*Alternate Skin:*
+*Default Skin:*
 
 In this skin, the search bar is the focal point of the top panel and is centered 
 on the screen.  The search grid appears beneath the search bar.  Help and Login 
@@ -38,6 +26,15 @@ and position of these links with CSS.  After you login, the user name is display
 in the top right corner, and the Login link becomes an option to Logout.
 
 image::media/Kids_OPAC1.jpg[Kids_OPAC1]
+
+*Alternate Monster Skin:*
+
+In this skin, the search bar shares the top panel with a playful monster.  The
+search grid appears beneath the search bar.  Help and Login links appear in bold
+colors at the top right of the interface although you can customize these with CSS.
+After you login, the Login button disappears.
+
+image::media/Kids_OPAC2.jpg[Kids_OPAC2]
 
 
 Search the Catalog
