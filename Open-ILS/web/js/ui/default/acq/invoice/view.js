@@ -20,7 +20,7 @@ var localeStrings = dojo.i18n.getLocalization('openils.acq', 'acq');
 
 var fundLabelFormat = ['${0} (${1})', 'code', 'year'];
 var fundSearchFormat = ['${0} (${1})', 'code', 'year'];
-var fundSearchFilter = {}; 
+var fundSearchFilter = {active : 't'};
 
 var cgi = new openils.CGI();
 var pcrud = new openils.PermaCrud();
@@ -112,7 +112,6 @@ function init2() {
     extraCopiesFund = new openils.widget.AutoFieldWidget({
         fmField : 'fund',
         fmClass : 'acqlid',
-        searchFilter : {active : 't'},
         labelFormat : fundLabelFormat,
         searchFormat : fundSearchFormat,
         searchFilter : fundSearchFilter,
@@ -635,9 +634,8 @@ function addInvoiceItem(item) {
     }
 
     if(item.fund_debit()) {
-        fundArgs.searchFilter = {'-or' : [{active : 't'}, {id : item.fund()}]};
+        fundArgs.searchFilter = {'-or' : [{ "-and": fundSearchFilter }, {id : item.fund()}]};
     } else {
-        fundArgs.searchFilter = {active : 't'}
         if(itemType && openils.Util.isTrue(itemType.prorate()))
             fundArgs.dijitArgs = {disabled : true};
     }
