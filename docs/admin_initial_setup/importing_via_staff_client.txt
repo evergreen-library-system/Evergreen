@@ -35,9 +35,9 @@ When to use the MARC Batch Importer
   and overlay or add fields to the existing record.
 * When you need to add copies to existing records in the system.
 
-The MARC Batch Importer should only be used for importing copies that already
-have barcodes and call numbers. Use *Acquisitions > Load MARC Order Records* to
-add on-order copies that do not yet have barcodes and call numbers.
+WARNING: If you are importing copies that do not have barcodes or call numbers, you 
+must enable the _Vandelay Generate Default Barcodes_ and _Vandelay Default 
+Barcode Prefix (vandelay.item.barcode.prefix)_ settings.
 
 Record Match Sets
 ~~~~~~~~~~~~~~~~~
