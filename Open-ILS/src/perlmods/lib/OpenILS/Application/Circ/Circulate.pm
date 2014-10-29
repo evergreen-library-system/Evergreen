@@ -1768,7 +1768,6 @@ sub handle_checkout_holds {
     return $self->bail_on_events($e->event)
         unless $e->update_action_hold_request($hold);
 
-    $holdcode->delete_hold_copy_maps($e, $hold->id);
     return $self->fulfilled_holds([$hold->id]);
 }
 

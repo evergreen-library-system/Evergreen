@@ -826,8 +826,6 @@ sub cancel_hold {
     $e->update_action_hold_request($hold)
         or return $e->die_event;
 
-    delete_hold_copy_maps($self, $e, $hold->id);
-
     $e->commit;
 
     # re-fetch the hold to pick up the real cancel_time (not "now") for A/T
@@ -843,20 +841,6 @@ sub cancel_hold {
 
     return 1;
 }
-
-sub delete_hold_copy_maps {
-    my $class  = shift;
-    my $editor = shift;
-    my $holdid = shift;
-
-    my $maps = $editor->search_action_hold_copy_map({hold=>$holdid});
-    for(@$maps) {
-        $editor->delete_action_hold_copy_map($_)
-            or return $editor->event;
-    }
-    return undef;
-}
-
 
 my $update_hold_desc = 'The login session is the requestor. '       .
    'If the requestor is different from the usr field on the hold, ' .
@@ -3639,7 +3623,6 @@ sub clear_shelf_process {
             $hold->cancel_time('now');
             $hold->cancel_cause(2); # Hold Shelf expiration
             $e->update_action_hold_request($hold) or return $e->die_event;
-            delete_hold_copy_maps($self, $e, $hold->id) and return $e->die_event;
             push(@canceled_holds, $hold_id);
         }
 
