@@ -404,13 +404,6 @@ sub cancel_hold_list {
         $hold->cancel_cause(1); # un-targeted expiration.  Do we need an alternate "target deleted" cause?
         $editor->update_action_hold_request($hold) or return $editor->die_event;
 
-        # delete the copy maps.  
-        my $maps = $editor->search_action_hold_copy_map({hold => $hold->id});
-        for(@$maps) {
-            $editor->delete_action_hold_copy_map($_) 
-                or return $editor->die_event;
-        }
-
         # tell A/T the hold was cancelled.  Don't wait for a response..
         my $at_ses = OpenSRF::AppSession->create('open-ils.trigger');
         $at_ses->request(

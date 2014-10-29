@@ -365,12 +365,6 @@ sub delete_rec {
         $hold->cancel_cause(1); # un-targeted expiration.
         $editor->update_action_hold_request($hold) or return $editor->die_event;
 
-        my $maps = $editor->search_action_hold_copy_map({hold => $hold->id});
-        for(@$maps) {
-            $editor->delete_action_hold_copy_map($_) 
-                or return $editor->die_event;
-        }
-
         my $at_ses = OpenSRF::AppSession->create('open-ils.trigger');
         $at_ses->request(
             'open-ils.trigger.event.autocreate',
