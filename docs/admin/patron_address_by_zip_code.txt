@@ -1,0 +1,169 @@
+Patron Address City/State/County Pre-Populate by ZIP Code
+---------------------------------------------------------
+
+indexterm:[zips.txt, Populate Address by ZIP Code, ZIP code]
+
+This feature saves staff time and increases accuracy when entering patron address information by
+automatically filling in the City, State and County information based on the
+ZIP code entered by the staff member.
+
+*Released:* Evergreen 0.1, available in all versions.
+
+Please be aware of the following when using this feature.
+
+* ZIP codes do not always match 1 to 1 with City, State and County.  ZIP codes were designed for postal delivery and represent postal delivery zones that may cover more than one city, state or county.
+** It is currently only possible to have one match per ZIP code, but you can add an alert to those entries to prompt staff to double check the entered data.
+* Only the first 5 digits of the ZIP are used.  ZIP+4 is not currently supported.
+* The zips.txt data is loaded once at service startup and stored in memory, so changes to the zips.txt data file require that Evergreen be restarted.  Specifically, you need to restart the "open-ils.search" OpenSRF service.
+
+
+Scoping and Permissions
+~~~~~~~~~~~~~~~~~~~~~~~
+
+There are no staff client permissions associated with this feature since there is no staff client interface.
+
+This feature affects all users of the system; there is no way to have separate settings per Org Unit.
+
+Setup Steps
+~~~~~~~~~~~
+
+Step 1 - Setup Data File
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+The default location and name of the data file is /openils/var/data/zips.txt on your Evergreen server.  You can choose a different location if needed.
+
+The file format of your zips.txt will look like this (delimited by the .):
+
+ID|*StateAbb*|*City*|*ZIP*|*IsDefault*|StateID|*County*|AreaCode|*AlertMesg*
+
+The only fields that are used are *StateAbb*, *City*, *ZIP*, *IsDefault*, *County* and *AlertMesg*.
+
+Most fields can be left blank if the information is not available and that data will not be entered.
+
+.Data Field Descriptions
+. ID - ID field to uniquely identify this row.  Not required, can be left blank.
+. *StateAbb* - State abbreviation like "MN" or "ND".
+. *City* - Name of city.
+. *ZIP* - ZIP code, only first 5 digits used.
+. *IsDefault* - Must be set to 1 for the row to be used.  Easy way to disable/enable a row.
+. StateID - Unknown and unused.
+. *County* - County name.
+. AreaCode - Phone number area code, unused.
+. *AlertMesg* - Message to display to staff to alert them of any special circumstances.
+
+TIP: The <<_address_alert,Address Alerts>> feature can also be used to alert staff about certain addresses.
+
+Here is an example of what the data file should look like.
+
+.Example zips.txt
+----
+|MN|Moorhead|56561|1||Clay||
+|MN|Moorhead|56562|1||Clay||
+|MN|Moorhead|56563|1||Clay||
+|MN|Sabin|56580|1||Clay||
+|MN|Ulen|56585|1||Clay||
+|MN|Lake Itasca|56460|1||Clearwater County||
+|MN|Bagley|56621|1||Clearwater||
+|MN|Clearbrook|56634|1||Clearwater||
+|MN|Gonvick|56644|1||Clearwater||
+----
+
+Step 2 - Enable Feature
+^^^^^^^^^^^^^^^^^^^^^^^
+
+The next step is to tell the system to use the zips.txt file that you created. This is done by editing /openils/conf/opensrf.xml. Look about halfway into the file and you may very well see a commented section in the file that looks similar to this:
+
+----
+          <!-- zip code database file -->
+          <!--<zips_file>/openils/var/data/zips.txt</zips_file>-->
+     </app_settings>
+</open-ils.search>
+----
+
+Uncomment the area by . ..  Change the file path if you placed your file in a different location.  The file should look like this after you are done.
+
+----
+          <!-- zip code database file -->
+          <zips_file>/openils/var/data/zips.txt</zips_file>
+     </app_settings>
+</open-ils.search>
+----
+
+.Save and Restart
+Save your changes to the opensrf.xml file, restart Evergreen and restart Apache.
+
+NOTE: The specific opensrf services you need to restart are "opensrf.setting" and "open-ils.search".
+
+Step 3 - Test
+^^^^^^^^^^^^^
+
+Open up the staff client and try to register a new patron.  When you get to the address section, enter a ZIP code that you know is in your zips.txt file.  The data from the file that matches your ZIP will auto fill the city, state and county fields.
+
+ZIP Code Data
+~~~~~~~~~~~~~
+
+There are several methods you can use to populate your zips.txt with data.
+
+Manual Entry
+^^^^^^^^^^^^
+
+If you only have a few communities that you serve, entering data manually may be the simplest approach.
+
+Geonames.org Data
+^^^^^^^^^^^^^^^^^
+
+Geonames.org provides free ZIP code to city, state and county information licensed under the Creative Commons Attribution 3.0 License, which means you need to put a link to them on your website.  Their data includes primary city, state and county information only.  It doesn't include info about which other cities are included in a ZIP code.  Visit http://www.geonames.org for more info.
+
+The following code example shows you how to download and reformat the data into the zips.txt format.  You have the option to filter the data to only include certain states also.
+
+[source,bash]
+----
+## How to get a generic Evergreen zips.txt for free
+wget http://download.geonames.org/export/zip/US.zip
+unzip US.zip
+cut -f2,3,5,6 US.txt \
+| perl -ne 'chomp; @f=split(/\t/); print "|" . join("|", (@f[2,1,0], "1", "", $f[3], "")), "|\n";' \
+> zips.txt
+
+##Optionally filter the data to only include certain states
+egrep "^\|(ND|MN|WI|SD)\|" zips.txt  > zips-mn.txt
+----
+
+Commercial Data
+^^^^^^^^^^^^^^^
+
+There are many vendors that sell databases that include ZIP code to city, state and county information.  A web search will easily find them.  Many of the commercial vendors will include more information on which ZIP codes cover multiple cities, counties and states, which you could use to populate the alert field.
+
+Existing Patron Database
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+Another possibility is to use your current patron database to build your zips.txt.  Pull out the current ZIP, city, state, county unique rows and use them to form your zips.txt.
+
+.Small Sites
+
+For sites that serve a small geographic area (less than 30 ZIP codes), an sql query like the following will create a zips.txt for you.  It outputs the number of matches as the first field and sorts by ZIP code and number of matches.  You would need to go through the resulting file and deal with duplicates manually.
+
+[source,bash]
+----
+psql egdb26 -A -t -F $'|' \
+ -c "SELECT count(substring(post_code from 1 for 5)) as zipcount, state, \
+ city, substring(post_code from 1 for 5) as pc, \
+ '1', '', county, '', '' FROM actor.usr_address \
+ group by pc, city, state, county \
+ order by pc, zipcount DESC" > zips.txt
+----
+
+.Larger Sites
+For larger sites Ben Ostrowsky at ESI created a pair of scripts that handles deduping the results and adding in county information.  Instructions for use are included in the files.
+
+* http://git.esilibrary.com/?p=migration-tools.git;a=blob;f=elect_ZIPs
+* http://git.esilibrary.com/?p=migration-tools.git;a=blob;f=enrich_ZIPs
+
+
+Development
+~~~~~~~~~~~
+
+If you need to make changes to how this feature works, such as to add support for other postal code formats, here is a list of the files that you need to look at.
+
+. *Zips.pm* - contains code for loading the zips.txt file into memory and replying to search queries.  Open-ILS / src / perlmods / lib / OpenILS / Application / Search / Zips.pm
+. *register.js* - This is where patron registration logic is located.  The code that queries the ZIP search service and fills the address is located here.  Open-ILS / web / js / ui / default / actor / user / register.js
