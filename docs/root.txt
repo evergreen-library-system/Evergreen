@@ -145,6 +145,8 @@ include::TechRef/KidsOPAC.txt[]
 
 include::admin/customize_staff_client.txt[]
 
+include::admin/patron_address_by_zip_code.txt[]
+
 // Push titles down one level.
 :leveloffset: 1
 
