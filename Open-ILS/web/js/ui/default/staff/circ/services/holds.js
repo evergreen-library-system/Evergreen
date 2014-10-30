@@ -6,8 +6,8 @@ angular.module('egCoreMod')
 
 .factory('egHolds',
 
-       ['$modal','$q','egCore','egAlertDialog','egConfirmDialog','egAlertDialog',
-function($modal , $q , egCore , egAlertDialog , egConfirmDialog , egAlertDialog) {
+       ['$modal','$q','egCore','egUser','egConfirmDialog','egAlertDialog',
+function($modal , $q , egCore , egUser , egConfirmDialog , egAlertDialog) {
 
     var service = {};
 
@@ -365,6 +365,12 @@ function($modal , $q , egCore , egAlertDialog , egConfirmDialog , egAlertDialog)
         hold.pickup_lib(egCore.org.get(hold.pickup_lib()));
         hold.current_shelf_lib(egCore.org.get(hold.current_shelf_lib()));
         hold_data.id = hold.id();
+
+        if (hold.requestor() && typeof hold.requestor() != 'object')
+            hold.requestor(egUser.get(hold.requestor()));
+
+        if (hold.usr() && typeof hold.usr() != 'object')
+            hold.usr(egUser.get(hold.usr()));
 
         // current_copy is not always fleshed in the API
         if (hold.current_copy() && typeof hold.current_copy() != 'object')

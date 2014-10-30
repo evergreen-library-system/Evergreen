@@ -59,6 +59,8 @@
       </a>
     </eg-grid-field>
 
+    <eg-grid-field label="[% l('Patron Barcode') %]">{{item.patron_barcode}}</eg-grid-field>
+    <eg-grid-field label="[% l('Patron alias') %]">{{item.patron_alias}}</eg-grid-field>
     <eg-grid-field label="[% l('Request Date') %]" path='hold.request_time'></eg-grid-field>
     <eg-grid-field label="[% l('Capture Date') %]" path='hold.capture_time'></eg-grid-field>
     <eg-grid-field label="[% l('Available Date') %]" path='hold.shelf_time'></eg-grid-field>
@@ -78,6 +80,7 @@
     <eg-grid-field label="[% l('Queue Position') %]" path='queue_position' hidden></eg-grid-field>
     <eg-grid-field path='hold.*' parent-idl-class="ahr" hidden></eg-grid-field>
     <eg-grid-field path='copy.*' parent-idl-class="acp" hidden></eg-grid-field>
+    <eg-grid-field path='hold.usr.*' parent-idl-class="acp" hidden></eg-grid-field>
     <eg-grid-field path='volume.*' parent-idl-class="acn" hidden></eg-grid-field>
     <eg-grid-field path='mvr.*' parent-idl-class="mvr" hidden></eg-grid-field>
   </eg-grid>
