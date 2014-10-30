@@ -134,6 +134,7 @@
           <span class="glyphicon glyphicon-floppy-save"></span>
           [% l('Save Columns') %]
         </a></li>
+<!--
         <li><a href ng-click="showAllColumns()">
           <span class="glyphicon glyphicon-resize-full"></span>
           [% l('Show All Columns') %]
@@ -142,6 +143,7 @@
           <span class="glyphicon glyphicon-resize-small"></span>
           [% l('Hide All Columns') %]
         </a></li>
+-->
         <li><a href ng-click="resetColumns()">
           <span class="glyphicon glyphicon-refresh"></span>
           [% l('Reset Columns') %]
