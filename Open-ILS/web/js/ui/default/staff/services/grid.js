@@ -825,6 +825,7 @@ angular.module('egGridMod',
         scope : {
             name  : '@', // required; unique name
             path  : '@', // optional; flesh path
+            ignore: '@', // optional; fields to ignore when path is a wildcard
             label : '@', // optional; display label
             flex  : '@',  // optional; default flex width
             dateformat : '@', // optional: passed down to egGridValueFilter
@@ -986,6 +987,10 @@ angular.module('egGridMod',
         // position in the path.
         cols.expandPath = function(colSpec) {
 
+            var ignoreList = [];
+            if (colSpec.ignore)
+                ignoreList = colSpec.ignore.split(' ');
+
             var dotpath = colSpec.path.replace(/\.?\*$/,'');
             var class_obj;
 
@@ -1029,8 +1034,10 @@ angular.module('egGridMod',
 
                     // Only show wildcard fields where we have data to show
                     // Virtual and un-fleshed links will not have any data.
-                    if (field.virtual || (
-                        field.datatype == 'link' || field.datatype == 'org_unit'))
+                    if (field.virtual ||
+                        (field.datatype == 'link' || field.datatype == 'org_unit') ||
+                        ignoreList.indexOf(field.name) > -1
+                    )
                         return;
 
                     var col = cols.cloneFromScope(colSpec);
