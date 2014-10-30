@@ -462,6 +462,12 @@ sub load_logout {
     # while logged in, go ahead and clear it out.
     $self->clear_anon_cache;
 
+    $U->simplereq(
+        'open-ils.auth',
+        'open-ils.auth.session.delete',
+        $self->cgi->cookie(COOKIE_SES)
+    );
+
     return $self->generic_redirect(
         $redirect_to || $self->ctx->{home_page},
         [
