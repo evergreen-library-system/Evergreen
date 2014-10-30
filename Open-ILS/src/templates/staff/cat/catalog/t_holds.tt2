@@ -50,6 +50,8 @@
       label="[% l('Find Another Target') %]"></eg-grid-action>
     <eg-grid-action handler="grid_actions.cancel_hold"
       label="[% l('Cancel Hold') %]"></eg-grid-action>
+    <eg-grid-action handler="grid_actions.uncancel_hold"
+      label="[% l('Uncancel Hold') %]"></eg-grid-action>
 
     <eg-grid-field label="[% l('Hold ID') %]" path='hold.id'></eg-grid-field>
     <eg-grid-field label="[% l('Current Copy') %]" 

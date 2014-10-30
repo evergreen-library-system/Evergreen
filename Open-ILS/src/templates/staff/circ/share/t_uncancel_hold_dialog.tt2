@@ -1,0 +1,17 @@
+<form ng-submit="ok()" role="form" class="form-horizontal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" 
+        ng-click="cancel()" aria-hidden="true">&times;</button>
+      <h4 class="modal-title">
+        [% l('Uncancel [_1] Hold(s)', '{{args.num_holds}}') %]
+      </h4>
+    </div>
+    <div class="modal-body"></div>
+    <div class="modal-footer">
+      <input type="submit" class="btn btn-success" value="[% l('Uncancel Hold') %]"/>
+      <button class="btn btn-warning" ng-click="cancel($event)">[% l('Exit') %]</button>
+    </div>
+  </div>
+</div>
+

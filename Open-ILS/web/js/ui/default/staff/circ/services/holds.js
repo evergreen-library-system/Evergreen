@@ -107,6 +107,49 @@ function($modal , $q , egCore , egUser , egConfirmDialog , egAlertDialog) {
         }).result;
     }
 
+    service.uncancel_holds = function(hold_ids) {
+       
+        return $modal.open({
+            templateUrl : './circ/share/t_uncancel_hold_dialog',
+            controller : 
+                ['$scope', '$modalInstance',
+                function($scope, $modalInstance) {
+                    $scope.args = {
+                        num_holds : hold_ids.length
+                    };
+                    
+                    $scope.cancel = function($event) {
+                        $modalInstance.dismiss();
+                        $event.preventDefault();
+                    }
+
+                    $scope.ok = function() {
+
+                        function uncancel_one() {
+                            var hold_id = hold_ids.pop();
+                            if (!hold_id) {
+                                $modalInstance.close();
+                                return;
+                            }
+                            egCore.net.request(
+                                'open-ils.circ', 'open-ils.circ.hold.uncancel',
+                                egCore.auth.token(), hold_id
+                            ).then(function(resp) {
+                                if (evt = egCore.evt.parse(resp)) {
+                                    console.error('unable to uncancel hold: ' 
+                                        + evt.toString());
+                                }
+                                uncancel_one();
+                            });
+                        }
+
+                        uncancel_one();
+                    }
+                }
+            ]
+        }).result;
+    }
+
     service.get_cancel_reasons = function() {
         if (egCore.env.ahrcc) return $q.when(egCore.env.ahrcc.list);
         return egCore.pcrud.retrieveAll('ahrcc', {}, {atomic : true})
