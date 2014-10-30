@@ -3917,7 +3917,7 @@ SELECT  usr,
 			<field reporter:label="Circulating Item" name="target_copy" reporter:datatype="link"/>
 			<field reporter:label="Patron" name="usr" reporter:datatype="link"/>
 			<field reporter:label="Transaction Finish Date/Time" name="xact_finish" reporter:datatype="timestamp" />
-			<field reporter:label="Check Out Date/Time" name="xact_start" reporter:datatype="timestamp" />
+			<field reporter:label="Checkout Date/Time" name="xact_start" reporter:datatype="timestamp" />
 			<field reporter:label="Record Creation Date/Time" name="create_time" reporter:datatype="timestamp" />
 			<field reporter:label="Workstation" name="workstation" reporter:datatype="link"/>
 			<field reporter:label="Checkin Workstation" name="checkin_workstation" reporter:datatype="link"/>
@@ -3990,7 +3990,7 @@ SELECT  usr,
 			<field reporter:label="Circulating Item" name="target_copy" reporter:datatype="link"/>
 			<field reporter:label="Patron ZIP" name="usr_post_code" reporter:datatype="text"/>
 			<field reporter:label="Transaction Finish Date/Time" name="xact_finish" reporter:datatype="timestamp" />
-			<field reporter:label="Check Out Date/Time" name="xact_start" reporter:datatype="timestamp" />
+			<field reporter:label="Checkout Date/Time" name="xact_start" reporter:datatype="timestamp" />
 			<field reporter:label="Record Creation Date/Time" name="create_time" reporter:datatype="timestamp" />
 			<field reporter:label="Transaction Billings" name="billings" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Transaction Payments" name="payments" oils_persist:virtual="true" reporter:datatype="link"/>
@@ -4061,7 +4061,7 @@ SELECT  usr,
 			<field reporter:label="Circulating Item" name="target_copy" reporter:datatype="link"/>
 			<field reporter:label="Patron ZIP" name="usr_post_code" reporter:datatype="text"/>
 			<field reporter:label="Transaction Finish Date/Time" name="xact_finish" reporter:datatype="timestamp" />
-			<field reporter:label="Check Out Date/Time" name="xact_start" reporter:datatype="timestamp" />
+			<field reporter:label="Checkout Date/Time" name="xact_start" reporter:datatype="timestamp" />
 			<field reporter:label="Record Creation Date/Time" name="create_time" reporter:datatype="timestamp" />
 			<field reporter:label="Workstation" name="workstation" reporter:datatype="link"/>
 			<field reporter:label="Checkin Workstation" name="checkin_workstation" reporter:datatype="link"/>
@@ -10791,7 +10791,7 @@ SELECT  usr,
 			<field reporter:label="Circulating Item" name="target_copy" reporter:datatype="link"/>
 			<field reporter:label="Patron" name="usr" reporter:datatype="link"/>
 			<field reporter:label="Transaction Finish Date/Time" name="xact_finish" reporter:datatype="timestamp" />
-			<field reporter:label="Check Out Date/Time" name="xact_start" reporter:datatype="timestamp" />
+			<field reporter:label="Checkout Date/Time" name="xact_start" reporter:datatype="timestamp" />
 			<field reporter:label="Transaction Billings" name="billings" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Transaction Payments" name="payments" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Base Transaction" name="billable_transaction" oils_persist:virtual="true" reporter:datatype="link"/>
