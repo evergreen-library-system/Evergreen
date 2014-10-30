@@ -239,6 +239,7 @@ function($q , $timeout , $location , egCore,  egUser , $locale) {
         service.patronExpired = false;
         service.patronExpiresSoon = false;
         service.retrievedWithInactive = false;
+        service.invalidAddresses = false;
     }
     service.resetPatronLists();  // initialize
 
@@ -383,6 +384,22 @@ function($q , $timeout , $location , egCore,  egUser , $locale) {
         return $q.when(false);
     }
 
+    // resolves to true if the patron account has any invalid addresses.
+    service.testInvalidAddrs = function() {
+
+        if (service.invalidAddresses)
+            return $q.when(true);
+
+        var fail = false;
+
+        angular.forEach(
+            service.current.addresses(), 
+            function(addr) { if (!addr.valid()) fail = true }
+        );
+
+        return $q.when(fail);
+    }
+
     // resolves to true if there is any aspect of the patron account
     // which should produce a message in the alerts panel
     service.checkAlerts = function() {
@@ -418,6 +435,11 @@ function($q , $timeout , $location , egCore,  egUser , $locale) {
         service.testExpire().then(function(bool) {
             if (bool) service.hasAlerts = true;
             deferred.resolve(service.hasAlerts);
+        });
+
+        service.testInvalidAddrs().then(function(bool) {
+            if (bool) service.invalidAddresses = true;
+            deferred.resolve(service.invalidAddresses);
         });
 
         return deferred.promise;
@@ -1184,6 +1206,7 @@ function($scope,  $routeParams , $location , egCore , patronSvc) {
         $scope.patronExpired = patronSvc.patronExpired;
         $scope.patronExpiresSoon = patronSvc.patronExpiresSoon;
         $scope.retrievedWithInactive = patronSvc.retrievedWithInactive;
+        $scope.invalidAddresses = patronSvc.invalidAddresses;
     });
 
 }])

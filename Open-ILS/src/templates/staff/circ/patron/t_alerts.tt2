@@ -27,6 +27,10 @@
     [% l('Patron account retrieved with an INACTIVE card.') %]
   </div>
 
+  <div class="alert alert-warning" ng-if="invalidAddresses">
+    [% l('Patron account has invalid addresses.') %]
+  </div>
+
   <!-- alert message -->
   <div class="row" ng-if="patron().alert_message()">
     <div class="col-md-12">
