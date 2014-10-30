@@ -59,6 +59,15 @@
           </div>
         </div>
         <div class="form-group">
+          <label for="check-input" class="col-md-6 control-label">
+            [% l('Check Number') %]
+          </label>
+          <div class="col-md-6">
+            <input type="number" min="1" step="any" id="check-input" 
+              ng-model="check_number" focus-me="focus_check" 
+              value="" class="form-control col-md-6 "/>
+          </div>
+        <div class="form-group">
           <label for="amount-input" class="col-md-6 control-label">
             [% l('Payment Received') %]
           </label>

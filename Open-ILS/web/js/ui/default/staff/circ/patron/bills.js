@@ -24,7 +24,7 @@ function($q , egCore , patronSvc) {
         .then(function(summary) {return service.summary = summary})
     }
 
-    service.applyPayment = function(type, payments, note) {
+    service.applyPayment = function(type, payments, note, check) {
         return egCore.net.request(
             'open-ils.circ',
             'open-ils.circ.money.payment',
@@ -32,6 +32,7 @@ function($q , egCore , patronSvc) {
                 userid : service.userId,
                 note : note || '', 
                 payment_type : type,
+                check_number : check,
                 payments : payments,
                 patron_credit : 0
             },
@@ -121,6 +122,7 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
     billSvc.userId = $routeParams.id;
 
     // set up some defaults
+    $scope.check_number = 0;
     $scope.payment_amount = 0;
     $scope.session_voided = 0;
     $scope.payment_type = 'cash_payment';
@@ -274,7 +276,7 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
     function sendPayment(note) {
         var make_payments = generatePayments();
         billSvc.applyPayment(
-            $scope.payment_type, make_payments, note)
+            $scope.payment_type, make_payments, note, $scope.check_number)
         .then(function(payment_ids) {
 
             if ($scope.receipt_on_pay) {
