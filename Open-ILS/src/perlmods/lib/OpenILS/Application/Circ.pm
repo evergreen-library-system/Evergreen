@@ -742,15 +742,27 @@ __PACKAGE__->register_method(
     /);
 
 sub circ_count {
-    my( $self, $client, $copyid, $range ) = @_; 
+    my( $self, $client, $copyid ) = @_; 
 
-    return $U->simplereq(
-        'open-ils.storage',
-        'open-ils.storage.asset.copy.circ_count',
-        $copyid, $range
-    );
+    my $count = new_editor()->json_query({
+        select => {
+            circbyyr => [{
+                column => 'count',
+                transform => 'sum',
+                aggregate => 1
+            }]
+        },
+        from => 'circbyyr',
+        where => {'+circbyyr' => {copy => $copyid}}
+    })->[0]->{count};
+
+    return {
+        total => {
+            when => 'total',
+            count => $count
+        }
+    };
 }
-
 
 
 __PACKAGE__->register_method(
