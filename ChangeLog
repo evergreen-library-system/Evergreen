@@ -1,3 +1,1156 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 200ee5c4847e90a76a13aadd7a6cc907f7621050
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Mon Feb 24 12:09:57 2014 -0500
+
+    Bump OpenILS.pm version
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit f6b6b6b9f97e1355b2189d28133970a029efea13
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Thu Oct 30 11:52:13 2014 -0400
+
+    LP#1248636: Clear session at OPAC logout
+    
+    When the user explicitly logs out, clear the session on the server side.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+6	0	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader.pm
+
+commit 3697615954a56cf5999edf266ee809e655e2768e
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Wed Nov 5 14:22:26 2014 -0500
+
+    Forward-port 2.6.3 upgrade script
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+491	0	Open-ILS/src/sql/Pg/version-upgrade/2.6.2-2.6.3-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.6.2-2.6.3-upgrade-db.sql
+
+commit 040e9a61a2a35f017378998209c100a90ad8961c
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Tue Oct 21 11:02:12 2014 -0400
+
+    lp1383763 - Display OpenURL embargo statement
+    
+    The ResolverResolver service fetches the embargo statement (such as
+    "Last year not available") from OpenURL resolvers and stores it in a
+    target_embargo field. In JSPAC we used to display this along with the
+    coverage statement, because it is very important that people know that a
+    resource may be available from 1999 but the last year isn't available
+    online.
+    
+    Restore the display of this information to the TPAC.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+8	2	Open-ILS/src/templates/opac/parts/record/summary.tt2
+7	1	Open-ILS/src/templates/opac/parts/result/table.tt2
+
+commit 27afbd43087fda9ea0e6e07c4572837dbb591f6f
+Author: Dananji Liyanage <dananji.9131@gmail.com>
+Date:   Mon Oct 27 17:25:30 2014 -0400
+
+    Docs: Changed 'Importing materials' in the staff client section LP#1371615
+    
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+3	3	docs/admin_initial_setup/importing_via_staff_client.txt
+
+commit dc1dc75cc0766e09ffeb2618d6560619ca891d3b
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Thu Oct 23 12:17:58 2014 -0700
+
+    LP#1384868: limit fund drop-downs on the invoice page to only active funds
+    
+    This patch fixes the fund selectors for adding extra copies
+    and charges to invoices to only active funds (in addition
+    to the existing restriction to funds visible to the user).
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+2	4	Open-ILS/web/js/ui/default/acq/invoice/view.js
+
+commit 985b6d8e1c4872f017b08e64e22b2f3cbf2583ef
+Author: Dananji Liyanage <dananji.9131@gmail.com>
+Date:   Fri Oct 24 15:23:44 2014 -0400
+
+    Docs: add default icon definitions LP#1371598
+    
+    Documents the default icon definitions that are included with a stock Evergreen install.
+    
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+119	0	docs/admin/MARC_RAD_MVF_CRA.txt
+-	-	docs/media/blu-ray.png
+-	-	docs/media/book.png
+-	-	docs/media/braille.png
+-	-	docs/media/casaudiobook.png
+-	-	docs/media/casmusic.png
+-	-	docs/media/cdaudiobook.png
+-	-	docs/media/cdmusic.png
+-	-	docs/media/dvd.png
+-	-	docs/media/eaudio.png
+-	-	docs/media/ebook.png
+-	-	docs/media/equip.png
+-	-	docs/media/evideo.png
+-	-	docs/media/kit.png
+-	-	docs/media/lpbook.png
+-	-	docs/media/map.png
+-	-	docs/media/microform.png
+-	-	docs/media/music.png
+-	-	docs/media/phonomusic.png
+-	-	docs/media/phonospoken.png
+-	-	docs/media/picture.png
+-	-	docs/media/score.png
+-	-	docs/media/serial.png
+-	-	docs/media/software.png
+-	-	docs/media/vhs.png
+ create mode 100644 docs/media/blu-ray.png
+ create mode 100644 docs/media/book.png
+ create mode 100644 docs/media/braille.png
+ create mode 100644 docs/media/casaudiobook.png
+ create mode 100644 docs/media/casmusic.png
+ create mode 100644 docs/media/cdaudiobook.png
+ create mode 100644 docs/media/cdmusic.png
+ create mode 100644 docs/media/dvd.png
+ create mode 100644 docs/media/eaudio.png
+ create mode 100644 docs/media/ebook.png
+ create mode 100644 docs/media/equip.png
+ create mode 100644 docs/media/evideo.png
+ create mode 100644 docs/media/kit.png
+ create mode 100644 docs/media/lpbook.png
+ create mode 100644 docs/media/map.png
+ create mode 100644 docs/media/microform.png
+ create mode 100644 docs/media/music.png
+ create mode 100644 docs/media/phonomusic.png
+ create mode 100644 docs/media/phonospoken.png
+ create mode 100644 docs/media/picture.png
+ create mode 100644 docs/media/score.png
+ create mode 100644 docs/media/serial.png
+ create mode 100644 docs/media/software.png
+ create mode 100644 docs/media/vhs.png
+
+commit 6720c5763d2a624f96ffe3a080efab9012c84c69
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Wed Dec 11 12:58:49 2013 -0500
+
+    LP#1261486 Action/trigger aggregator script repairs
+    
+    * If both date filters are selected, apply both instead of replacing the
+      first with the second
+    
+    * Select distinct event output to prevent dupes
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+16	2	Open-ILS/src/support-scripts/action_trigger_aggregator.pl
+
+commit 93b4672be68e19489f2a0f197324637c1a22af8c
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Oct 9 17:32:42 2014 -0400
+
+    LP#1379824 Make PermaCrud.js disconnect() actually disconnect
+    
+    The disconnect() method in PermaCrud.js was meant to wrap the
+    underlying session disconnect, but it never actually disconnected
+    the session.  This could lead to problems in long-living PermaCrud
+    objects, as they may think they are still connected when they are not
+    (the session remote_id is never cleared).
+    
+    Also, remove a couple (now redundant) manual session.disconnect() calls.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+3	7	Open-ILS/web/js/dojo/openils/PermaCrud.js
+
+commit 26cf720e8c90223ca4b7b45cf0255b5cd42e7a3c
+Author: Ben Shum <bshum@biblio.org>
+Date:   Fri Oct 10 13:18:03 2014 -0400
+
+    LP#1309664: Stamping upgrade script for new seed data for COM and SER
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+16	0	Open-ILS/src/sql/Pg/upgrade/0895.data.ff_COM_SER_seed_data.sql
+0	11	Open-ILS/src/sql/Pg/upgrade/XXXX.data.ff_COM_SER_seed_data.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0895.data.ff_COM_SER_seed_data.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.ff_COM_SER_seed_data.sql
+
+commit f6d31269ee457eb23f55bfbf1fc64bd0b2c8c111
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Fri Apr 18 13:45:59 2014 -0400
+
+    LP#1309664: Add some fixed field seed data for COM and SER
+    
+    There are a few useful fixed fields we're missing mapping data for,
+    so this branch adds three: Freq, Regl, and File. There are certainly
+    more, but here's a bit that's of use to folks in the wild using the
+    fixed field editor improvements.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+10	0	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+11	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.ff_COM_SER_seed_data.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.ff_COM_SER_seed_data.sql
+
+commit a121d18bb45896568c255bde74f570f2c1626980
+Author: Ben Shum <bshum@biblio.org>
+Date:   Fri Oct 10 11:35:25 2014 -0400
+
+    LP#1374551: Stamping upgrade script for new index on money.billing.voider
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+7	0	Open-ILS/src/sql/Pg/upgrade/0894.index.money_billing.voider.sql
+0	7	Open-ILS/src/sql/Pg/upgrade/XXXX.index.money_billing.voider.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0894.index.money_billing.voider.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.index.money_billing.voider.sql
+
+commit 5878986d7cdec5c891f2f50a0881a8c37b187f45
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Fri Sep 26 14:19:22 2014 -0400
+
+    LP#1374551: Create index on money.billing.voider to speed user merge.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	0	Open-ILS/src/sql/Pg/080.schema.money.sql
+7	0	Open-ILS/src/sql/Pg/upgrade/XXXX.index.money_billing.voider.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.index.money_billing.voider.sql
+
+commit d5e3e6417fccb8ee2104340648ae728d2fc4bae9
+Author: Ben Shum <bshum@biblio.org>
+Date:   Fri Oct 10 11:21:34 2014 -0400
+
+    LP#1368314: Stamping upgrade script for RDA support to reporter.simple_record
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+42	0	Open-ILS/src/sql/Pg/upgrade/0893.schema.reporter.simple_record.sql
+0	42	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.reporter.simple_record.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0893.schema.reporter.simple_record.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.reporter.simple_record.sql
+
+commit 4f23451d0f08872e92b309a0418643fe9880db27
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Sat Sep 27 20:06:22 2014 -0400
+
+    LP#1368314: Add RDA support to reporter.simple_record.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+2	2	Open-ILS/src/sql/Pg/reporter-schema.sql
+42	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.reporter.simple_record.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.reporter.simple_record.sql
+
+commit 805c91a7b33ed168edaabadf2d70f6f990adf6f3
+Author: Ben Shum <bshum@biblio.org>
+Date:   Fri Sep 26 17:05:39 2014 -0400
+
+    LP#1306814: Make use of patron timeout setting for selfcheck
+    
+    As described in the bug, the library setting "Self Check: Patron Login Timeout
+    (in seconds)" does not appear to work with the newer selfcheck interface.
+    
+    It looks like some of it was already being pulled in, like the variable, but
+    the interface was not utilizing it.
+    
+    This commit borrows from the old JS selfcheck and implements a default of
+    three minutes for selfcheck timeout otherwise handled by the library setting.
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+
+31	0	Open-ILS/web/js/ui/default/circ/selfcheck/selfcheck.js
+
+commit 4de724d1425035a563a63cdf968b1c8616c0f3c9
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Sun Sep 28 20:30:22 2014 -0400
+
+    LP#1252786: Add Workstation link to Aged and Active Circulations reports source.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+2	0	Open-ILS/examples/fm_IDL.xml
+
+commit 174622df47d7071ce0e146ef70773745c7155cba
+Author: Ben Shum <bshum@biblio.org>
+Date:   Thu Oct 9 11:59:17 2014 -0400
+
+    LP#1374091: stamping upgrade script for speedier record_attr views
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+108	0	Open-ILS/src/sql/Pg/upgrade/0892.schema.record_attr_flat_speedup.sql
+0	108	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.record_attr_flat_speedup.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0892.schema.record_attr_flat_speedup.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.record_attr_flat_speedup.sql
+
+commit 583588fd9731df8a94fd0f91e2cd66d39d67eb4b
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Mon Sep 29 12:40:32 2014 -0400
+
+    LP#1374091: Speed up metarecord version of unAPI mra call
+    
+    The change to metabib.record_attr_flat in the previous commit caused
+    a regression in the plan used in unapi.mmr_mra.  This commit addresses
+    that by unrolling the mra view when used in context with metarecords,
+    which are shaped differently and require slightly different access
+    patterns.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+54	25	Open-ILS/src/sql/Pg/990.schema.unapi.sql
+89	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.record_attr_flat_speedup.sql
+
+commit a6a8393879f8f39319661f765dbc31e8d83f042e
+Author: Mike Rylander <miker@esilibrary.com>
+Date:   Thu Sep 25 14:34:20 2014 -0400
+
+    LP#1374091: Redefine view to help PG make better plans
+    
+    The metabib.record_attr_flat view previously pulled its data
+    through several other intermediate views.  While this improves
+    maintenance overhead, it ends up being an optimization fence
+    for certain data sets.  So, we pull the logic from the leaf
+    views up into the main view.  And, poof, 2 orders of magnitude
+    speedup on large data sets.
+    
+    Signed-off-by: Mike Rylander <miker@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+10	4	Open-ILS/src/sql/Pg/030.schema.metabib.sql
+19	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.record_attr_flat_speedup.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.record_attr_flat_speedup.sql
+
+commit bd5fa9fcade4de73a4a504d407ca6899066f21bf
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Tue Oct 7 16:42:18 2014 -0700
+
+    LP#1378575: teach action::hold_request about behind_desk
+    
+    This patch teaches the CDBI class for the action.hold_request
+    table about the newish behind_desk column, preventing errors
+    like this from being thrown if a recent OpenSRF version is in
+    use:
+    
+    Processing of hold failed:  Can't locate object method "behind_desk"
+    via package "action::hold_request" at /usr/local/share/perl/5.14.2/OpenILS/Application/Storage/CDBI.pm line 181.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/CDBI/action.pm
+
+commit 1254c412e633796281915c71d290a204e25551cb
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Thu Jul 31 16:50:17 2014 -0400
+
+    LP#1351317 ACQ fund selector filters cont.
+    
+    To improve load times, limit the funds we attempt to retrieve for
+    various fund selectors to those the user has permission to use.
+    
+    Interfaces affected include the following:
+    
+    * Purchase order copy grid
+    * Purchase order "New Charge" interface
+    * Invoice "Add charge..." interface
+    * Distribution formula configuration interface.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+22	12	Open-ILS/web/js/ui/default/acq/common/li_table.js
+16	0	Open-ILS/web/js/ui/default/acq/invoice/view.js
+7	0	Open-ILS/web/js/ui/default/acq/po/item_table.js
+14	1	Open-ILS/web/js/ui/default/conify/global/acq/distribution_formula.js
+
+commit 4e74b7e763e93b5f54e9fb71f899a77fcd3a2384
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Fri May 9 14:32:14 2014 -0400
+
+    LP#1254918 limit ACQ batch update fund retrieval by perms
+    
+    In the ACQ batch update bar along the top of the PO page, limit the
+    number of funds which require permission checks on the server by
+    limiting the fund search to those at org units where the requesting user
+    has the CREATE_PURCHSE_ORDER or MANAGE_FUND permissions.
+    
+    In other words, if a user only has create-po perms at Branch 1, we can
+    specifically request funds at that branch (or below) for display so that
+    the server (PCRUD) does not have to inspect unrelated funds for
+    permissibility.  This speeds up fund retrieval.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+40	19	Open-ILS/web/js/ui/default/acq/common/li_table.js
+
+commit 200ece2d520ae007f6d7352f1e61021df0f146c2
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Fri May 2 17:00:43 2014 -0400
+
+    LP#1254918: Allow skiping of user-object perms
+    
+    Previous to this commit, permissions in Evergreen check a cominbation
+    of:
+     * user-object permissions (does the user have a direct permission
+       mapping to the object in question)
+     * user-context permissions (does the user have the permission at the
+       object's context location, whose field is defined in the IDL)
+     * user-global permission (lacking a context location, does the user
+       have the permission globally (at the top of the org tree) and therefore
+       can apply the action to all objects of this typ)
+    
+    In practice, there are almost no user-object permissions.  When retrieving
+    just on object from the database, the cost of this check is negligable to
+    the point that we can completely ignore it.  However, when retrieving a
+    large set of objects, such as the list of all funds in a large, consortial
+    environment, the cost to check the user-object permission adds up to a
+    noticable amount of time.
+    
+    To address this, we add a new construct to the IDL instructing the PCRUD
+    infrastructure to skip user-object permission checking in those cases where
+    the design and use of the system makes user-specific object permissions
+    needless or superfluous.  This is embodied in a new XML attribute on the
+    <pcrud> element: ignore_object_perms.  When set to "true", pcrud will skip
+    all user-object permission checks, resulting in faster time-to-first-result.
+    
+    Additionally, we add a new "owning_user" attribute on the <action> element
+    of the <pcrud> section. This new attribute specifies the field containing
+    the actor.usr.id of the user that "owns" the object.  This allows PCRUD to
+    test ownership of an object directly, and if the requesting user and owning
+    user are the same, the action is allowed.
+    
+    Finaly, when "global_required" is "true" for the permission check, and there
+    is no "owning_user" attribute defined for the class in the IDL, we skip the
+    above-mentioned user-object permission check.  When "global_required" is
+    "false" or there is an "owning_user" attribute, we check for user permissions.
+    
+    In all cases, the "ignore_object_perms" attribute is honored, and in its
+    presence we skip non-owner user-object permissions.
+    
+    The net result is an immediate increase in speed for retrieval of objects
+    in the presence of the "global_required" attribute, and a mechanism to
+    increase the speed of specific cases of context-aware retrival by the use
+    of "ignore_object_perms".
+    
+    We use this new mechanism to speed the retrieval of fund objects in the
+    ACQ interfaces that draw available-fund dropdowns.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+1	1	Open-ILS/examples/fm_IDL.xml
+5	0	Open-ILS/examples/permacrud.xsd
+8	0	Open-ILS/src/c-apps/oils_idl-core.c
+174	13	Open-ILS/src/c-apps/oils_sql.c
+
+commit 6483600cb1d445a6971b0de55b34b1f0a55459b7
+Author: Snigdha Dagar <snigdha.dagar@gmail.com>
+Date:   Wed Sep 24 22:42:35 2014 -0400
+
+    Docs: Updated 2 links that pointed to the old subversion repository
+    
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+2	2	docs/development/intro_opensrf.txt
+
+commit 4a41020034041af23cabfd56adfc3ee5696c6385
+Author: Snigdha Dagar <snigdha.dagar@gmail.com>
+Date:   Wed Sep 24 23:02:54 2014 -0400
+
+    Docs: Removed redundant phrase as mentioned in bug #1294299
+    
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+1	1	docs/serials/C-subscription-SCV.txt
+
+commit 688816abde40335311804cb80b945480d33e703b
+Author: Snigdha Dagar <snigdha.dagar@gmail.com>
+Date:   Wed Sep 24 22:26:55 2014 -0400
+
+    Docs: Removed a redundant phrase as mentioned in bug #1294299
+    
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+1	1	docs/serials/D-subscription-ASCV.txt
+
+commit c6d474d27ead75a1365e44dea4144cd701c28e02
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Fri May 16 15:14:43 2014 -0700
+
+    LP#1314827: On login, don't allow referer-based redirect to external site
+    
+    On /eg/opac/login, if no redirect_to param is provided, the TPAC will
+    attempt to use the referer (if any) as the redirect destination. This
+    leads to undesirable behavior if the referring URL is from an external
+    site.
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+5	1	Open-ILS/src/templates/opac/parts/login/form.tt2
+
+commit 81dd489c33e70bfe5b04f1f5cfaab9f4de5e6e32
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Wed Oct 1 15:37:08 2014 -0400
+
+    Whitespace and non-weird emdash in docs
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+10	12	docs/opac/using_the_public_access_catalog.txt
+
+commit e2bba3b80f5999ba1ec5e6ca19548f9568f22519
+Author: Josh Stompro <github@stompro.org>
+Date:   Sun Sep 14 20:08:40 2014 -0500
+
+    Docs: Change all internal links to correct format
+    
+    Resolves LP#1294347
+    
+    I just deleted one link since I couldn't find any trace of where it was intended to go.
+    
+    acquisitions/selection_lists_po.txt:
+    "or use the link:federated.txt[View/Place Orders] menu item in the catalog."
+    
+    If anyone ever finds where that is supposed to go, let me know and I'll fix it.
+    
+    Signed-off-by: Josh Stompro <github@stompro.org>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+2	2	docs/acquisitions/introduction.txt
+5	5	docs/acquisitions/selection_lists_po.txt
+3	3	docs/admin/acquisitions_admin.txt
+1	1	docs/circulation/holds.txt
+1	1	docs/serials/A-intro.txt
+1	1	docs/serials/B-copy_template.txt
+1	1	docs/serials/C-subscription-SCV.txt
+1	1	docs/serials/D-subscription-ASCV.txt
+
+commit 00c223fdbd1c300a11595dada9fe2c3bd861765e
+Author: Jennifer Pringle <jpringle@sitka.bclibraries.ca>
+Date:   Fri Sep 12 23:41:57 2014 -0400
+
+    Docs: EDI admin section updated with new screenshots and SANs info
+    
+    EDI admin section updated to include screenshots and information
+    regarding entering the SANs required for EDI to work.
+    
+    Signed-off-by: Jennifer Pringle <jpringle@sitka.bclibraries.ca>
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+88	41	docs/admin/acquisitions_admin.txt
+-	-	docs/media/create-edi-accounts-2.png
+-	-	docs/media/create-edi-accounts-3.png
+-	-	docs/media/create-edi-accounts-4.png
+-	-	docs/media/create-edi-accounts-5.png
+-	-	docs/media/enter-library-san-2.png
+-	-	docs/media/enter-provider-san-1.png
+-	-	docs/media/enter-provider-san-2.png
+ create mode 100644 docs/media/create-edi-accounts-2.png
+ create mode 100644 docs/media/create-edi-accounts-3.png
+ create mode 100644 docs/media/create-edi-accounts-4.png
+ create mode 100644 docs/media/create-edi-accounts-5.png
+ create mode 100644 docs/media/enter-library-san-2.png
+ create mode 100644 docs/media/enter-provider-san-1.png
+ create mode 100644 docs/media/enter-provider-san-2.png
+
+commit 829f90358d0d947708fc43fcaf06f2ea0dc0444b
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Thu Sep 25 11:45:44 2014 -0400
+
+    LP#1373693: Speed up call number browse search at top level org.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+28	17	Open-ILS/src/perlmods/lib/OpenILS/Application/SuperCat.pm
+
+commit 3622afc5fd59ee2fb6bb9624e39757eef77dd2ce
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Tue Sep 23 23:29:42 2014 -0400
+
+    Tidy search section of Using the OPAC
+    
+    Primarily focused on restructuring the information around Boolean
+    searching, particularly as I find librarians want to know what the
+    Boolean operators are that they should use. However, cleaned up some
+    typos and formatting along the way.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+65	42	docs/opac/using_the_public_access_catalog.txt
+
+commit cb9c9feec7a5f6970454bbde2362a8177227f5aa
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Fri Sep 19 12:07:11 2014 -0400
+
+    Small typo fix for Blu-Ray spelling
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	1	docs/opac/using_the_public_access_catalog.txt
+
+commit ad110ae2476cf6fd1d76889e004de5d5fc554630
+Author: Snigdha Dagar <snigdha.dagar@gmail.com>
+Date:   Thu Sep 18 21:57:13 2014 +0530
+
+    Updated formats
+    
+    Updated the formats under basic search according to version 2.6
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+23	13	docs/opac/using_the_public_access_catalog.txt
+
+commit 5d60eb1f68c9ec5686f81603a1564a8547d5e205
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Mon May 19 09:19:49 2014 -0400
+
+    LP 1319560: Another fix for summary.tt2.
+    
+    Argument "" isn't numeric in numeric gt (>) at
+    /openils/var/templates/opac/parts/record/summary.tt2 line 56.
+    
+    It was apparently coming from the .size and not where I thought.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/templates/opac/parts/record/summary.tt2
+
+commit 590ff38a94853f3737a2e758d1742b067f03b333
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Thu May 15 11:31:56 2014 -0400
+
+    LP 1319560: Fix the disappearing hold button.
+    
+    Staff discovered an issue with the tt2 changes that caused the
+    place hold button to disappear when it shouldn't. Changing an &&
+    back to || seems to fix this.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/templates/opac/parts/record/summary.tt2
+
+commit 21d20d0639c259f948726467a5110d56d7db1ec3
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Wed May 14 15:46:29 2014 -0400
+
+    LP 1319560: Silence template error messages in Apache error log.
+    
+    We get a number of messages like the following in our Apache error
+    logs on a constant basis:
+    
+    Argument "" isn't numeric in addition (+) at
+    /openils/var/templates/opac/parts/record/navigation.tt2 line 6.
+    Argument "" isn't numeric in division (/) at
+    /openils/var/templates/opac/results.tt2 line 1.
+    Argument "" isn't numeric in numeric ge (>=) at
+    /openils/var/templates/opac/parts/record/navigation.tt2 line 38.
+    Argument "" isn't numeric in numeric gt (>) at
+    /openils/var/templates/opac/myopac/holds/edit.tt2 line 106.
+    Argument "" isn't numeric in numeric gt (>) at
+    /openils/var/templates/opac/myopac/holds.tt2 line 42.
+    Argument "" isn't numeric in numeric gt (>) at
+    /openils/var/templates/opac/parts/place_hold.tt2 line 98.
+    Argument "" isn't numeric in numeric gt (>) at
+    /openils/var/templates/opac/parts/record/summary.tt2 line 56.
+    Argument "" isn't numeric in numeric gt (>) at
+    /openils/var/templates/opac/parts/result/table.tt2 line 87.
+    Argument "" isn't numeric in numeric lt (<) at
+    /openils/var/templates/opac/myopac/hold_history.tt2 line 122.
+    Argument "" isn't numeric in numeric lt (<) at
+    /openils/var/templates/opac/myopa/result/table.tt2 line 87.
+    Argument "" isn't numeric in numeric lt (<) at
+    /openils/var/templates/opac/myopac/hold_history.tt2 line 122.
+    Argument "" isn't numeric in numeric lt (<) at
+    /openils/var/templates/opac/myopac/holds.tt2 line 215.
+    
+    This commit adds some sanity checking to make those messages go
+    away.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/templates/opac/myopac/hold_history.tt2
+4	4	Open-ILS/src/templates/opac/myopac/holds.tt2
+1	1	Open-ILS/src/templates/opac/myopac/holds/edit.tt2
+1	1	Open-ILS/src/templates/opac/parts/place_hold.tt2
+1	1	Open-ILS/src/templates/opac/parts/record/navigation.tt2
+1	1	Open-ILS/src/templates/opac/parts/record/summary.tt2
+1	1	Open-ILS/src/templates/opac/parts/result/table.tt2
+1	1	Open-ILS/src/templates/opac/results.tt2
+
+commit a5160f64b59cd1d9103454820c8aece6d2e703e1
+Author: Steven Chan <schan@sitka.bclibraries.ca>
+Date:   Mon Jul 29 16:27:13 2013 -0700
+
+    Fix LP904860, Cannot print a patron address label
+    
+    The sequence of events for printing an address label is as follows.
+    Staff client Code in the util/print.js file builds an HTML page of the
+    address label.  The page includes two vital components, 1) a source tag
+    to pull 'print_win.js' file from the server, and 2) an onload event
+    handler bound to the body tag to execute a 'print_init()' function that
+    is defined in the source tag.
+    
+    However, print_init() is undefined because the source tag contains a
+    badly formed URL. It needs to be prefixed by 'oils://remote' so that the
+    new 'oils:' protocol can be used to pull the file remotely from the
+    server.
+    
+    Signed-off-by: Steven Chan <schan@sitka.bclibraries.ca>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/xul/staff_client/chrome/content/util/print.js
+
+commit ea86881b1ea567377c2c3156d7fc6c4d43a15003
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Tue Jun 17 15:14:12 2014 -0400
+
+    LP#1331127 Repair sort logic of previous issuances
+    
+    Ensure that the list of previous issuances is sorted correctly (on
+    date_published) when looking for the previous serial.unit to update its
+    copy location (when serial.prev_issuance_copy_location is enabled).
+    
+    The data comes sorted from the DB, but the sorting was lost during the
+    process of unique-ifying the list.  Ultimately, it was relying on the
+    order of hash keys, which is undefined.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+8	2	Open-ILS/src/perlmods/lib/OpenILS/Application/Serial.pm
+
+commit 80b9bc27ecd3be475562567fa73d72c2f451a184
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Wed Sep 17 10:22:15 2014 -0700
+
+    LP#1370630: don't log mod_deflate actions by default
+    
+    This patch comments out logging of mod_deflate actions,
+    as this is needed only for debugging.  Otherwise,
+    deflate_log will grow without bound, as it isn't dealt
+    with by typical default logrotate configs.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+8	7	Open-ILS/examples/apache/eg_vhost.conf.in
+8	6	Open-ILS/examples/apache_24/eg_vhost.conf.in
+
+commit aa02cc614b6c5f4e7ab3c72d6df9c47a28bc6170
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Fri Aug 29 14:45:50 2014 -0400
+
+    LP#1361801: Add required fields to serial issuance form
+    
+    This commit prevents issuances from being created without a date_published
+    or holding_code. This has two benefits:
+    
+      1. Prevents uncaught exceptions related to submitting null values for
+         either of those fields.
+      2. Requiring date_published prevents an ugly error when trying to
+         predict new issuances from an issuance without a date_published.
+    
+    This commit does NOT provide any feedback to the user about which fields
+    are required. That would require further investigation into the Dojo/Dijit
+    objects being used for the edit form fields.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Jennifer Pringle <jpringle@sitka.bclibraries.ca>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	0	Open-ILS/src/templates/serial/subscription/issuance.tt2
+
+commit 2c2d8a2d81cb1e6008d1ce983af0a400ee28599a
+Author: Jeff Godin <jgodin@tadl.org>
+Date:   Wed Oct 30 16:41:06 2013 -0400
+
+    LP#1246859: Improve username flow for staged users
+    
+    Staged users in most cases have a username that consists of a UUID.
+    
+    Rather than leave the UUID as their username or require staff to
+    clear the field and replace it with a barcode or other value, it
+    would be better to remove this username when loading the staged user
+    in the user editor.
+    
+    This commit clears the username when loading a stage user if the
+    username looks like a UUID.
+    
+    If a barcode has been staged for the loaded staged user, the
+    username will be populated with that value.
+    
+    If there is no staged barcode, the username will remain blank and
+    will be populated using the standard method after staff enters a
+    value in the barcode field.
+    
+    Signed-off-by: Jeff Godin <jgodin@tadl.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+9	0	Open-ILS/web/js/ui/default/actor/user/register.js
+
+commit fbf3adf7243f957ea6fef912d6f55e1b4a397d1e
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Wed Aug 13 16:44:50 2014 -0400
+
+    LP#1356576 repair sip date_format config typo
+    
+    Avoids "Use of uninitialized value in bitwise or (|)" error.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/SIP.pm
+
+commit 98665c3529ee6ee2bc2c35a85f966d5a159e8e58
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Tue Aug 12 17:33:16 2014 -0400
+
+    LP1309131 - Fix series link
+    
+    Clicking on a series link with a hyphen failed because the hyphen was
+    stripped and the two words are joined together. This branch changes
+    series.tts to replace special characters with a space, which is similar to
+    the links we build for authors.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/templates/opac/parts/record/series.tt2
+
+commit 79ec433b97cbe9239a9cb9948b77e9e05d3ea9d0
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Mon Jun 2 16:14:38 2014 -0400
+
+    LP#1325720 Repair fund rollover year selector query
+    
+    Dojo dojo stores track values as strings, so values used in data store
+    queries must be coerced into strings before performing the query.
+    
+    This fixes the year query in the fund rollover UI so that the page is
+    able to render the results of a rollover without dying from an JS error
+    before completing.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/web/js/ui/default/acq/financial/list_funds.js
+
+commit 40a043e37a87f4cd77cbe7bddcb1fbfc52574a89
+Author: Steven Callender <stevecallender@esilibrary.com>
+Date:   Thu Mar 13 13:34:23 2014 -0400
+
+    LP#1292129: Removed deleted call numbers from the search results to properly show copy count.
+    
+    The SQL in fm_IDL.xml for setting up the reporter source "Hold/Copy
+    Ratio per Bib" includes deleted call numbers which in turn can give
+    an incorrect copy count. The ratio appears to still be correct because
+    deleted copies are considered in the ratio calculation, but not the
+    copy count that is displayed.
+    
+    Signed-off-by: Steven Callender <stevecallender@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/examples/fm_IDL.xml
+
+commit 885c98e1c38b8c3fb09d7ce7ab3dbafa0cfb0b21
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Wed Jul 30 09:26:38 2014 -0400
+
+    LP 1350345: marc_export blows up on bad records.
+    
+    Add some eval blocks around calls to MARC::Record->as_usmarc and
+    MARC::Record->as_xml_record to trap errors in bibliograpic and
+    authority records.
+    
+    If MARC::Record reports an error, print the record id and the
+    error message and continue the export.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+34	6	Open-ILS/src/support-scripts/marc_export.in
+
+commit 57164aaab9ad6d44bc3c8ab4caa740e2c4571f05
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Tue Aug 19 13:19:20 2014 -0700
+
+    LP#1358916: refuse to retrieve over-large MARC records via Z39.50
+    
+    At least one malformed record discovered in the wild can
+    cause open-ils.search backends to balloon to over 3G of memory
+    consumption.  This patch works around that by refusing
+    to process any (MARC) Z39.50 results that are larger than the
+    MARC record maximum of 99,999 octets.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+7	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Search/Z3950.pm
+
+commit 8bd94f9050fd12a1cbc6167d593f9b874407e2a3
+Author: Jason Boyer <jboyer1@library.in.gov>
+Date:   Mon Jul 14 08:35:39 2014 -0400
+
+    LP#1340947: Finish support in oils_ctl.sh for -y and -z options
+    
+    Signed-off-by: Jason Boyer <jboyer1@library.in.gov>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/examples/oils_ctl.sh
+
+commit e314da5c08b399f7b3bce824681539ec1c802ff8
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Fri Aug 15 08:58:04 2014 -0400
+
+    LP#1357364: Explictly create the extension in the "public" schema.
+    
+    Thanks to Thomas Berezansky for the suggestion!
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/sql/Pg/version-upgrade/2.5.3-2.6.0-upgrade-db.sql
+
+commit a3c2eb069b7145765952a1450e201576b86a30a2
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Fri Aug 15 08:51:44 2014 -0400
+
+    LP#1357364: Allow for sites that may have the intarray extension already installed.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/sql/Pg/version-upgrade/2.5.3-2.6.0-upgrade-db.sql
+
+commit 9830e87f63f80f15170a5b78bb98272d61d167e2
+Author: Josh Stompro <github@stompro.org>
+Date:   Fri Sep 12 22:57:54 2014 -0400
+
+    Docs: Fix filenames to match references in the docs - second time
+    
+    This is just like the fix that Remington Steed sent in on Sept 4th.
+    
+    These images were creating errors for me when I try to create
+    an epub version of the docs because they are all referenced as .jpg
+    but the filenames were .JPG.
+    
+    Signed-off-by: Josh Stompro <github@stompro.org>
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+-	-	docs/media/Added_User_to_Routing_Slip.jpg
+-	-	docs/media/Address_on_Routing_Slip.jpg
+-	-	docs/media/advholdoption_6.jpg
+-	-	docs/media/advsrchpg_1.jpg
+-	-	docs/media/ffrc1.jpg
+-	-	docs/media/ffrc2.jpg
+-	-	docs/media/ffrc3.jpg
+-	-	docs/media/mrholdgf_9.jpg
+-	-	docs/media/pcw1.jpg
+-	-	docs/media/pcw10.jpg
+-	-	docs/media/pcw11.jpg
+-	-	docs/media/pcw2.jpg
+-	-	docs/media/pcw3.jpg
+-	-	docs/media/pcw4.jpg
+-	-	docs/media/pcw6.jpg
+-	-	docs/media/pcw7.jpg
+-	-	docs/media/pcw8.jpg
+-	-	docs/media/pcw9.jpg
+-	-	docs/media/placehold_5.jpg
+-	-	docs/media/recorddetailpg_8.jpg
+-	-	docs/media/srchresultpg2_3.jpg
+-	-	docs/media/srchresultpg3_4.jpg
+-	-	docs/media/srchresultpg4_7.jpg
+-	-	docs/media/srchresultpg_2.jpg
+ create mode 100644 docs/media/Added_User_to_Routing_Slip.jpg
+ create mode 100644 docs/media/Address_on_Routing_Slip.jpg
+ create mode 100644 docs/media/advholdoption_6.jpg
+ create mode 100644 docs/media/advsrchpg_1.jpg
+ create mode 100644 docs/media/ffrc1.jpg
+ create mode 100644 docs/media/ffrc2.jpg
+ create mode 100644 docs/media/ffrc3.jpg
+ create mode 100644 docs/media/mrholdgf_9.jpg
+ create mode 100644 docs/media/pcw1.jpg
+ create mode 100644 docs/media/pcw10.jpg
+ create mode 100644 docs/media/pcw11.jpg
+ create mode 100644 docs/media/pcw2.jpg
+ create mode 100644 docs/media/pcw3.jpg
+ create mode 100644 docs/media/pcw4.jpg
+ create mode 100644 docs/media/pcw6.jpg
+ create mode 100644 docs/media/pcw7.jpg
+ create mode 100644 docs/media/pcw8.jpg
+ create mode 100644 docs/media/pcw9.jpg
+ create mode 100644 docs/media/placehold_5.jpg
+ create mode 100644 docs/media/recorddetailpg_8.jpg
+ create mode 100644 docs/media/srchresultpg2_3.jpg
+ create mode 100644 docs/media/srchresultpg3_4.jpg
+ create mode 100644 docs/media/srchresultpg4_7.jpg
+ create mode 100644 docs/media/srchresultpg_2.jpg
+
+commit 2f06a4e9c7ae7b5ad92331d5fd4577aa86319573
+Author: Kate Butler <katebutler@rodgerslibrary.org>
+Date:   Fri Sep 12 17:55:08 2014 -0400
+
+    Docs: Staff generated penalties documentation
+    
+    Signed-off-by: Kate Butler <katebutler@rodgerslibrary.org>
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+84	0	docs/circulation/circulation_patron_records.txt
+-	-	docs/media/staff-penalties-1.jpg
+-	-	docs/media/staff-penalties-2.jpg
+-	-	docs/media/staff-penalties-3.jpg
+-	-	docs/media/staff-penalties-4.jpg
+-	-	docs/media/staff-penalties-5.jpg
+-	-	docs/media/staff-penalties-6.jpg
+-	-	docs/media/staff-penalties-7.jpg
+ create mode 100644 docs/media/staff-penalties-1.jpg
+ create mode 100644 docs/media/staff-penalties-2.jpg
+ create mode 100644 docs/media/staff-penalties-3.jpg
+ create mode 100644 docs/media/staff-penalties-4.jpg
+ create mode 100644 docs/media/staff-penalties-5.jpg
+ create mode 100644 docs/media/staff-penalties-6.jpg
+ create mode 100644 docs/media/staff-penalties-7.jpg
+
+commit 31cf83014de7defbeaa02af24853a8f078353ffd
+Author: Kate Butler <katebutler@rodgerslibrary.org>
+Date:   Fri Sep 12 17:52:51 2014 -0400
+
+    Docs: Staff initials settings for patron notes
+    
+    Signed-off-by: Kate Butler <katebutler@rodgerslibrary.org>
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+11	0	docs/admin/lsa-library_settings_editor.txt
+5	0	docs/circulation/circulation_patron_records.txt
+
+commit fd69c0f08cb42376247ea873ffbe7e3963044568
+Author: SnigdhaD <snigdha.dagar@gmail.com>
+Date:   Thu Sep 11 17:13:11 2014 -0400
+
+    LP#1294269 Docs: Fixed small documentation formatting bugs
+    
+    Signed-off-by: SnigdhaD <snigdha.dagar@gmail.com>
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+3	3	docs/circulation/booking.txt
+1	1	docs/circulation/holds.txt
+2	2	docs/circulation/offline_mode.txt
+2	0	docs/opac/my_lists.txt
+
+commit 93f4f5a524c53b56522bf58762045d321cff9031
+Author: Jason Boyer <jboyer1@library.in.gov>
+Date:   Fri Oct 18 10:26:26 2013 -0400
+
+    LP#1241644: Remove xact_finish IS NULL checks from CLAIMSRETURNED and LONGOVERDUE
+    
+    Makes open-ils.actor.user.checked_out(.count) results agree with
+    open-ils.storage.actor.user.checked_out(.count) results.
+    
+    Signed-off-by: Jason Boyer <jboyer1@library.in.gov>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+4	4	Open-ILS/examples/fm_IDL.xml
+
+commit 600a30c2dd33c8e7c77fa18b497742e5da17cd78
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Mon Jun 30 14:57:29 2014 -0400
+
+    lp1335958 Remove parameters from current checkouts link
+    
+    The limit and offset parameters can cause patrons to be stuck in a small
+    section of their current checkout lists. Let's remove those two parameters
+    when linking to that list from the patron dashboard.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Jim Keenan <jkeenan@cwmars.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/templates/opac/parts/topnav.tt2
+
+commit 1f9ac604002e6a6f3fac4556850c73dd6611030a
+Author: Josh Stompro <github@stompro.org>
+Date:   Tue Sep 9 15:44:50 2014 -0400
+
+    Docs: Fixed small typo in docs/reports/reporter_daemon.txt
+    
+    Signed-off-by: Josh Stompro <github@stompro.org>
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+1	1	docs/reports/reporter_daemon.txt
+
+commit c004683401b5a54709a5b613f436195467948f31
+Author: Josh Stompro <github@stompro.org>
+Date:   Tue Sep 9 15:42:51 2014 -0400
+
+    Docs: Updated usage of autogen.sh to not use param 'u'
+    
+    Signed-off-by: Josh Stompro <github@stompro.org>
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+14	0	docs/admin_initial_setup/describing_your_organization.txt
+3	3	docs/installation/server_installation.txt
+
+commit 5a21c176bf2bc1977cd1d453b0ead226f558c771
+Author: Josh Stompro <github@stompro.org>
+Date:   Tue Sep 9 15:21:38 2014 -0400
+
+    Docs: update to 'Address Alerts' feature content
+    
+    Signed-off-by: Josh Stompro <github@stompro.org>
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+115	9	docs/admin/lsa-address_alert.txt
+-	-	docs/media/lsa-address_alert_staff_view.png
+ create mode 100644 docs/media/lsa-address_alert_staff_view.png
+
+commit c01db9bae8fbd89d377317e690734eea4f2f759e
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Tue Sep 9 10:38:40 2014 -0700
+
+    LP#1359934: prevent error opening patron search form
+    
+    As a result of the patch for OpenSRF bug 1316245, JSON2js
+    in the OpenSRF library is now stricter -- in particular, passing
+    an undefined value to it results in an exception being thrown.
+    
+    This patch runs with the increased strictness and fixes an
+    issue where the patron search form was passing an undefined value
+    to JSON2js.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+3	1	Open-ILS/xul/staff_client/server/patron/search_form.js
