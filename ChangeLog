@@ -1,3 +1,847 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 7a4e684b9ba125c22a91a9f98e3b3fc4439505dc
+Author: Ben Shum <bshum@biblio.org>
+Date:   Thu Sep 11 01:50:47 2014 -0400
+
+    Bump OpenILS.pm version
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit 64a6bc1a9f6fb55dc5f51aef3f8778fb2222d01f
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Thu Oct 30 11:52:13 2014 -0400
+
+    LP#1248636: Clear session at OPAC logout
+    
+    When the user explicitly logs out, clear the session on the server side.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+6	0	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader.pm
+
+commit d34845faae1ff8368aebc89efedbca06f542a8a7
+Author: Ben Shum <bshum@biblio.org>
+Date:   Wed Nov 5 14:19:10 2014 -0500
+
+    Forward port 2.6-2.7 upgrade script
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+765	0	Open-ILS/src/sql/Pg/version-upgrade/2.6-2.7.0-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.6-2.7.0-upgrade-db.sql
+
+commit de94a7f54a89b4c06a66cfd5ed6ab27060979fe6
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Oct 20 22:55:20 2014 -0400
+
+    LP#1366964 Update libdbi connection test error parsing
+    
+    Modern version of libdbi return a slightly different error message for
+    queries which fail mid-transaction, causing an C-based DB backends to
+    exit abruptly unnecessarily.  Update the error message test to include
+    the new format.
+    
+    Includes Perl live test for confirming functionality.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+6	2	Open-ILS/src/c-apps/oils_sql.c
+39	0	Open-ILS/src/perlmods/live_t/08-lp1366964-libdbi-error.t
+ create mode 100644 Open-ILS/src/perlmods/live_t/08-lp1366964-libdbi-error.t
+
+commit ff1bf76459802e1f8c4795449bba463a0b662e85
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Tue Oct 21 09:33:37 2014 -0400
+
+    LP1383697: Long Overdue needs to be a "magical status" for the copy editor
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+2	1	Open-ILS/xul/staff_client/chrome/content/main/constants.js
+
+commit 14df3b9ad7c29957e6d21ea59b65a1bcada9cec6
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Tue Oct 21 11:02:12 2014 -0400
+
+    lp1383763 - Display OpenURL embargo statement
+    
+    The ResolverResolver service fetches the embargo statement (such as
+    "Last year not available") from OpenURL resolvers and stores it in a
+    target_embargo field. In JSPAC we used to display this along with the
+    coverage statement, because it is very important that people know that a
+    resource may be available from 1999 but the last year isn't available
+    online.
+    
+    Restore the display of this information to the TPAC.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+8	2	Open-ILS/src/templates/opac/parts/record/summary.tt2
+7	1	Open-ILS/src/templates/opac/parts/result/table.tt2
+
+commit 903aa53554115c6bc9cf42e8c99d3ad814d04f6d
+Author: Dananji Liyanage <dananji.9131@gmail.com>
+Date:   Mon Oct 27 17:24:31 2014 -0400
+
+    Docs: Changed 'Importing materials' in the staff client section LP#1371615
+    
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+3	3	docs/admin_initial_setup/importing_via_staff_client.txt
+
+commit ad208b2f2cd88bcd60b5dd79d31f2d49560f9927
+Author: Dananji Liyanage <dananji.9131@gmail.com>
+Date:   Mon Oct 27 17:08:42 2014 -0400
+
+    Docs: add default icon definitions LP#1371598
+    
+    Documents the default icon definitions that are included with a stock Evergreen install.
+    
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+119	0	docs/admin/MARC_RAD_MVF_CRA.txt
+-	-	docs/media/blu-ray.png
+-	-	docs/media/book.png
+-	-	docs/media/braille.png
+-	-	docs/media/casaudiobook.png
+-	-	docs/media/casmusic.png
+-	-	docs/media/cdaudiobook.png
+-	-	docs/media/cdmusic.png
+-	-	docs/media/dvd.png
+-	-	docs/media/eaudio.png
+-	-	docs/media/ebook.png
+-	-	docs/media/equip.png
+-	-	docs/media/evideo.png
+-	-	docs/media/kit.png
+-	-	docs/media/lpbook.png
+-	-	docs/media/map.png
+-	-	docs/media/microform.png
+-	-	docs/media/music.png
+-	-	docs/media/phonomusic.png
+-	-	docs/media/phonospoken.png
+-	-	docs/media/picture.png
+-	-	docs/media/score.png
+-	-	docs/media/serial.png
+-	-	docs/media/software.png
+-	-	docs/media/vhs.png
+ create mode 100644 docs/media/blu-ray.png
+ create mode 100644 docs/media/book.png
+ create mode 100644 docs/media/braille.png
+ create mode 100644 docs/media/casaudiobook.png
+ create mode 100644 docs/media/casmusic.png
+ create mode 100644 docs/media/cdaudiobook.png
+ create mode 100644 docs/media/cdmusic.png
+ create mode 100644 docs/media/dvd.png
+ create mode 100644 docs/media/eaudio.png
+ create mode 100644 docs/media/ebook.png
+ create mode 100644 docs/media/equip.png
+ create mode 100644 docs/media/evideo.png
+ create mode 100644 docs/media/kit.png
+ create mode 100644 docs/media/lpbook.png
+ create mode 100644 docs/media/map.png
+ create mode 100644 docs/media/microform.png
+ create mode 100644 docs/media/music.png
+ create mode 100644 docs/media/phonomusic.png
+ create mode 100644 docs/media/phonospoken.png
+ create mode 100644 docs/media/picture.png
+ create mode 100644 docs/media/score.png
+ create mode 100644 docs/media/serial.png
+ create mode 100644 docs/media/software.png
+ create mode 100644 docs/media/vhs.png
+
+commit 102c78dc275b1cfe53793ac21e577ae89ad601ae
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Thu Oct 23 12:17:58 2014 -0700
+
+    LP#1384868: limit fund drop-downs on the invoice page to only active funds
+    
+    This patch fixes the fund selectors for adding extra copies
+    and charges to invoices to only active funds (in addition
+    to the existing restriction to funds visible to the user).
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+2	4	Open-ILS/web/js/ui/default/acq/invoice/view.js
+
+commit 727d5cc91f50f7965773f367e950adf1c3be926e
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Wed Dec 11 12:58:49 2013 -0500
+
+    LP#1261486 Action/trigger aggregator script repairs
+    
+    * If both date filters are selected, apply both instead of replacing the
+      first with the second
+    
+    * Select distinct event output to prevent dupes
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+16	2	Open-ILS/src/support-scripts/action_trigger_aggregator.pl
+
+commit 3d9b6a1ebabf3f557bdcf645c96fa0e53e19407f
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Oct 9 17:32:42 2014 -0400
+
+    LP#1379824 Make PermaCrud.js disconnect() actually disconnect
+    
+    The disconnect() method in PermaCrud.js was meant to wrap the
+    underlying session disconnect, but it never actually disconnected
+    the session.  This could lead to problems in long-living PermaCrud
+    objects, as they may think they are still connected when they are not
+    (the session remote_id is never cleared).
+    
+    Also, remove a couple (now redundant) manual session.disconnect() calls.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+3	7	Open-ILS/web/js/dojo/openils/PermaCrud.js
+
+commit c5880895d159557120c3717d05b7390b7e677137
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Thu Apr 10 10:59:49 2014 -0400
+
+    LP#1305958 Change copy table header atts to scope attributes
+    
+    Per http://webaim.org/techniques/tables/data, the current best practice for
+    marking up tables for accessibility is to use the "scope" attribute for
+    headers, rather than the error-prone and markup-heavy "headers" attribute on
+    table cells.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+29	29	Open-ILS/src/templates/opac/parts/record/copy_table.tt2
+
+commit 1549a68290ade6acd039d37881a8b2e480a76b66
+Author: Ben Shum <bshum@biblio.org>
+Date:   Fri Oct 10 13:18:03 2014 -0400
+
+    LP#1309664: Stamping upgrade script for new seed data for COM and SER
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+16	0	Open-ILS/src/sql/Pg/upgrade/0895.data.ff_COM_SER_seed_data.sql
+0	11	Open-ILS/src/sql/Pg/upgrade/XXXX.data.ff_COM_SER_seed_data.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0895.data.ff_COM_SER_seed_data.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.ff_COM_SER_seed_data.sql
+
+commit d78b6054dc5c4a5ef8d17d7b2306a99b763b128a
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Fri Apr 18 13:45:59 2014 -0400
+
+    LP#1309664: Add some fixed field seed data for COM and SER
+    
+    There are a few useful fixed fields we're missing mapping data for,
+    so this branch adds three: Freq, Regl, and File. There are certainly
+    more, but here's a bit that's of use to folks in the wild using the
+    fixed field editor improvements.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+10	0	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+11	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.ff_COM_SER_seed_data.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.ff_COM_SER_seed_data.sql
+
+commit 4f97e83fc7f0c3e0cf1b500b232f089903374cd3
+Author: Ben Shum <bshum@biblio.org>
+Date:   Fri Oct 10 11:35:25 2014 -0400
+
+    LP#1374551: Stamping upgrade script for new index on money.billing.voider
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+7	0	Open-ILS/src/sql/Pg/upgrade/0894.index.money_billing.voider.sql
+0	7	Open-ILS/src/sql/Pg/upgrade/XXXX.index.money_billing.voider.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0894.index.money_billing.voider.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.index.money_billing.voider.sql
+
+commit 11015ad0b724383d0de65bc6347e3af3e33f42cf
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Fri Sep 26 14:19:22 2014 -0400
+
+    LP#1374551: Create index on money.billing.voider to speed user merge.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	0	Open-ILS/src/sql/Pg/080.schema.money.sql
+7	0	Open-ILS/src/sql/Pg/upgrade/XXXX.index.money_billing.voider.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.index.money_billing.voider.sql
+
+commit ba25b1628368897dec9f19e47c549830bb67cc66
+Author: Ben Shum <bshum@biblio.org>
+Date:   Fri Oct 10 11:21:34 2014 -0400
+
+    LP#1368314: Stamping upgrade script for RDA support to reporter.simple_record
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+42	0	Open-ILS/src/sql/Pg/upgrade/0893.schema.reporter.simple_record.sql
+0	42	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.reporter.simple_record.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0893.schema.reporter.simple_record.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.reporter.simple_record.sql
+
+commit 71ca73b357907882e8033518f795e83877c071be
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Sat Sep 27 20:06:22 2014 -0400
+
+    LP#1368314: Add RDA support to reporter.simple_record.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+2	2	Open-ILS/src/sql/Pg/reporter-schema.sql
+42	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.reporter.simple_record.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.reporter.simple_record.sql
+
+commit ec26da1df51ee02dfbf312ec286cfea7091205a2
+Author: Ben Shum <bshum@biblio.org>
+Date:   Fri Sep 26 17:05:39 2014 -0400
+
+    LP#1306814: Make use of patron timeout setting for selfcheck
+    
+    As described in the bug, the library setting "Self Check: Patron Login Timeout
+    (in seconds)" does not appear to work with the newer selfcheck interface.
+    
+    It looks like some of it was already being pulled in, like the variable, but
+    the interface was not utilizing it.
+    
+    This commit borrows from the old JS selfcheck and implements a default of
+    three minutes for selfcheck timeout otherwise handled by the library setting.
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+
+31	0	Open-ILS/web/js/ui/default/circ/selfcheck/selfcheck.js
+
+commit 1f3d8687cfdcc0c798f6f52191fae440e27aa016
+Author: Ben Shum <bshum@biblio.org>
+Date:   Thu Sep 25 02:30:54 2014 -0400
+
+    Translation updates - newpot
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+3	2	build/i18n/po/auth.properties/auth.properties.pot
+3	2	build/i18n/po/circ.properties/circ.properties.pot
+2056	2052	build/i18n/po/fm_IDL.dtd/fm_IDL.dtd.pot
+3	2	build/i18n/po/patron.properties/patron.properties.pot
+1	1	build/i18n/po/tpac/tpac.pot
+
+commit eebb8daf591c168307f00b132134183679afdd37
+Author: Ben Shum <bshum@biblio.org>
+Date:   Thu Sep 25 02:12:50 2014 -0400
+
+    Translation updates - po files
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+119	0	build/i18n/po/URLVerify.js/cs-CZ.po
+114	0	build/i18n/po/URLVerify.js/es-ES.po
+119	0	build/i18n/po/URLVerify.js/hy-AM.po
+3	3	build/i18n/po/XULTermLoader.js/cs-CZ.po
+3	3	build/i18n/po/XULTermLoader.js/de-DE.po
+3	3	build/i18n/po/XULTermLoader.js/en-CA.po
+3	3	build/i18n/po/XULTermLoader.js/en-GB.po
+3	3	build/i18n/po/XULTermLoader.js/es-ES.po
+3	3	build/i18n/po/XULTermLoader.js/fr-CA.po
+3	3	build/i18n/po/XULTermLoader.js/hy-AM.po
+3	3	build/i18n/po/XULTermLoader.js/oc-FR.po
+3	3	build/i18n/po/XULTermLoader.js/pt-BR.po
+3	3	build/i18n/po/XULTermLoader.js/ru-RU.po
+3	3	build/i18n/po/XULTermLoader.js/tr-TR.po
+460	294	build/i18n/po/acq.js/cs-CZ.po
+322	184	build/i18n/po/acq.js/de-DE.po
+444	288	build/i18n/po/acq.js/en-CA.po
+452	292	build/i18n/po/acq.js/en-GB.po
+447	293	build/i18n/po/acq.js/es-ES.po
+453	303	build/i18n/po/acq.js/fr-CA.po
+456	288	build/i18n/po/acq.js/hy-AM.po
+324	186	build/i18n/po/acq.js/oc-FR.po
+461	227	build/i18n/po/acq.js/pt-BR.po
+305	184	build/i18n/po/acq.js/ru-RU.po
+320	182	build/i18n/po/acq.js/tr-TR.po
+3	3	build/i18n/po/admin.properties/cs-CZ.po
+3	3	build/i18n/po/admin.properties/de-DE.po
+3	3	build/i18n/po/admin.properties/en-CA.po
+3	3	build/i18n/po/admin.properties/en-GB.po
+3	3	build/i18n/po/admin.properties/es-ES.po
+3	3	build/i18n/po/admin.properties/fr-CA.po
+3	3	build/i18n/po/admin.properties/hy-AM.po
+3	3	build/i18n/po/admin.properties/oc-FR.po
+3	3	build/i18n/po/admin.properties/pt-BR.po
+4	4	build/i18n/po/admin.properties/ru-RU.po
+3	3	build/i18n/po/admin.properties/tr-TR.po
+3	3	build/i18n/po/capture.js/cs-CZ.po
+3	3	build/i18n/po/capture.js/de-DE.po
+3	3	build/i18n/po/capture.js/en-CA.po
+3	3	build/i18n/po/capture.js/en-GB.po
+3	3	build/i18n/po/capture.js/es-ES.po
+3	3	build/i18n/po/capture.js/fr-CA.po
+3	3	build/i18n/po/capture.js/hy-AM.po
+3	3	build/i18n/po/capture.js/oc-FR.po
+3	3	build/i18n/po/capture.js/pt-BR.po
+3	3	build/i18n/po/capture.js/ru-RU.po
+3	3	build/i18n/po/cat.properties/cs-CZ.po
+3	3	build/i18n/po/cat.properties/de-DE.po
+3	3	build/i18n/po/cat.properties/en-CA.po
+3	3	build/i18n/po/cat.properties/en-GB.po
+3	3	build/i18n/po/cat.properties/es-ES.po
+3	3	build/i18n/po/cat.properties/fr-CA.po
+3	3	build/i18n/po/cat.properties/hy-AM.po
+3	3	build/i18n/po/cat.properties/oc-FR.po
+3	3	build/i18n/po/cat.properties/pt-BR.po
+3	3	build/i18n/po/cat.properties/ru-RU.po
+3	3	build/i18n/po/cat.properties/tr-TR.po
+3	3	build/i18n/po/common.properties/cs-CZ.po
+3	3	build/i18n/po/common.properties/de-DE.po
+3	3	build/i18n/po/common.properties/en-CA.po
+3	3	build/i18n/po/common.properties/en-GB.po
+8	8	build/i18n/po/common.properties/es-ES.po
+3	3	build/i18n/po/common.properties/fr-CA.po
+3	3	build/i18n/po/common.properties/hy-AM.po
+3	3	build/i18n/po/common.properties/oc-FR.po
+3	3	build/i18n/po/common.properties/pt-BR.po
+3	3	build/i18n/po/common.properties/ru-RU.po
+3	3	build/i18n/po/conify.js/cs-CZ.po
+3	3	build/i18n/po/conify.js/de-DE.po
+3	3	build/i18n/po/conify.js/en-CA.po
+3	3	build/i18n/po/conify.js/en-GB.po
+3	3	build/i18n/po/conify.js/es-ES.po
+3	3	build/i18n/po/conify.js/fr-CA.po
+3	3	build/i18n/po/conify.js/hy-AM.po
+3	3	build/i18n/po/conify.js/oc-FR.po
+3	3	build/i18n/po/conify.js/pt-BR.po
+3	3	build/i18n/po/conify.js/ru-RU.po
+3	3	build/i18n/po/conify.js/tr-TR.po
+2462	2460	build/i18n/po/db.seed/cs-CZ.po
+2441	2432	build/i18n/po/db.seed/de-DE.po
+2451	2433	build/i18n/po/db.seed/en-CA.po
+2451	2433	build/i18n/po/db.seed/en-GB.po
+2437	2428	build/i18n/po/db.seed/es-ES.po
+2452	2434	build/i18n/po/db.seed/fr-CA.po
+2457	2450	build/i18n/po/db.seed/hy-AM.po
+2441	2432	build/i18n/po/db.seed/oc-FR.po
+2452	2434	build/i18n/po/db.seed/pt-BR.po
+2452	2434	build/i18n/po/db.seed/ru-RU.po
+2437	2428	build/i18n/po/db.seed/tr-TR.po
+2364	2359	build/i18n/po/fm_IDL.dtd/cs-CZ.po
+2364	2359	build/i18n/po/fm_IDL.dtd/de-DE.po
+2364	2359	build/i18n/po/fm_IDL.dtd/en-CA.po
+2364	2359	build/i18n/po/fm_IDL.dtd/en-GB.po
+2373	2368	build/i18n/po/fm_IDL.dtd/es-ES.po
+2364	2359	build/i18n/po/fm_IDL.dtd/fr-CA.po
+2364	2359	build/i18n/po/fm_IDL.dtd/hy-AM.po
+2364	2359	build/i18n/po/fm_IDL.dtd/oc-FR.po
+2364	2359	build/i18n/po/fm_IDL.dtd/pt-BR.po
+2364	2359	build/i18n/po/fm_IDL.dtd/ru-RU.po
+2364	2359	build/i18n/po/fm_IDL.dtd/tr-TR.po
+35	31	build/i18n/po/ils_events.xml/cs-CZ.po
+34	30	build/i18n/po/ils_events.xml/de-DE.po
+34	30	build/i18n/po/ils_events.xml/en-CA.po
+34	30	build/i18n/po/ils_events.xml/en-GB.po
+34	30	build/i18n/po/ils_events.xml/es-ES.po
+34	30	build/i18n/po/ils_events.xml/fr-CA.po
+34	30	build/i18n/po/ils_events.xml/hy-AM.po
+34	30	build/i18n/po/ils_events.xml/pt-BR.po
+34	30	build/i18n/po/ils_events.xml/ru-RU.po
+37	26	build/i18n/po/lang.dtd/ar-AR.po
+65	50	build/i18n/po/lang.dtd/cs-CZ.po
+37	26	build/i18n/po/lang.dtd/de-DE.po
+66	51	build/i18n/po/lang.dtd/en-CA.po
+66	38	build/i18n/po/lang.dtd/en-GB.po
+43	32	build/i18n/po/lang.dtd/es-ES.po
+37	26	build/i18n/po/lang.dtd/fr-CA.po
+63	47	build/i18n/po/lang.dtd/hy-AM.po
+37	26	build/i18n/po/lang.dtd/oc-FR.po
+37	26	build/i18n/po/lang.dtd/pt-BR.po
+37	26	build/i18n/po/lang.dtd/ru-RU.po
+37	26	build/i18n/po/lang.dtd/tr-TR.po
+84	0	build/i18n/po/match_set.js/cs-CZ.po
+84	0	build/i18n/po/match_set.js/en-GB.po
+79	0	build/i18n/po/match_set.js/es-ES.po
+79	0	build/i18n/po/match_set.js/fr-CA.po
+84	0	build/i18n/po/match_set.js/hy-AM.po
+3	3	build/i18n/po/offline.properties/cs-CZ.po
+3	3	build/i18n/po/offline.properties/de-DE.po
+3	3	build/i18n/po/offline.properties/en-CA.po
+3	3	build/i18n/po/offline.properties/en-GB.po
+3	3	build/i18n/po/offline.properties/es-ES.po
+3	3	build/i18n/po/offline.properties/fr-CA.po
+3	3	build/i18n/po/offline.properties/hy-AM.po
+3	3	build/i18n/po/offline.properties/oc-FR.po
+3	3	build/i18n/po/offline.properties/pt-BR.po
+3	3	build/i18n/po/offline.properties/ru-RU.po
+3	3	build/i18n/po/offline.properties/tr-TR.po
+3	3	build/i18n/po/opac.js/cs-CZ.po
+3	3	build/i18n/po/opac.js/de-DE.po
+3	3	build/i18n/po/opac.js/en-CA.po
+3	3	build/i18n/po/opac.js/en-GB.po
+3	3	build/i18n/po/opac.js/es-ES.po
+3	3	build/i18n/po/opac.js/fr-CA.po
+3	3	build/i18n/po/opac.js/hy-AM.po
+3	3	build/i18n/po/opac.js/oc-FR.po
+3	3	build/i18n/po/opac.js/pt-BR.po
+3	3	build/i18n/po/opac.js/ru-RU.po
+3	3	build/i18n/po/opac.js/sv-SE.po
+3	3	build/i18n/po/opac.js/tr-TR.po
+33	9	build/i18n/po/register.js/cs-CZ.po
+33	9	build/i18n/po/register.js/de-DE.po
+33	9	build/i18n/po/register.js/en-CA.po
+33	9	build/i18n/po/register.js/en-GB.po
+34	10	build/i18n/po/register.js/es-ES.po
+33	9	build/i18n/po/register.js/fr-CA.po
+33	9	build/i18n/po/register.js/hy-AM.po
+33	9	build/i18n/po/register.js/oc-FR.po
+33	9	build/i18n/po/register.js/pt-BR.po
+33	9	build/i18n/po/register.js/ru-RU.po
+33	9	build/i18n/po/register.js/tr-TR.po
+55	4	build/i18n/po/reports.dtd/cs-CZ.po
+55	4	build/i18n/po/reports.dtd/de-DE.po
+55	4	build/i18n/po/reports.dtd/en-CA.po
+55	4	build/i18n/po/reports.dtd/en-GB.po
+55	4	build/i18n/po/reports.dtd/es-ES.po
+55	4	build/i18n/po/reports.dtd/fr-CA.po
+57	6	build/i18n/po/reports.dtd/hy-AM.po
+55	4	build/i18n/po/reports.dtd/pt-BR.po
+55	4	build/i18n/po/reports.dtd/ru-RU.po
+51	3	build/i18n/po/reports.dtd/tr-TR.po
+22	14	build/i18n/po/reports.js/cs-CZ.po
+21	13	build/i18n/po/reports.js/de-DE.po
+21	13	build/i18n/po/reports.js/en-CA.po
+21	13	build/i18n/po/reports.js/en-GB.po
+21	13	build/i18n/po/reports.js/es-ES.po
+21	13	build/i18n/po/reports.js/fr-CA.po
+19	11	build/i18n/po/reports.js/hu-HU.po
+21	13	build/i18n/po/reports.js/hy-AM.po
+21	13	build/i18n/po/reports.js/oc-FR.po
+22	14	build/i18n/po/reports.js/pt-BR.po
+21	13	build/i18n/po/reports.js/ru-RU.po
+21	13	build/i18n/po/reports.js/tr-TR.po
+3	3	build/i18n/po/reservation.js/cs-CZ.po
+3	3	build/i18n/po/reservation.js/de-DE.po
+3	3	build/i18n/po/reservation.js/en-CA.po
+3	3	build/i18n/po/reservation.js/en-GB.po
+3	3	build/i18n/po/reservation.js/es-ES.po
+4	4	build/i18n/po/reservation.js/fr-CA.po
+3	3	build/i18n/po/reservation.js/hy-AM.po
+3	3	build/i18n/po/reservation.js/oc-FR.po
+3	3	build/i18n/po/reservation.js/pt-BR.po
+3	3	build/i18n/po/reservation.js/ru-RU.po
+3	3	build/i18n/po/selfcheck.js/cs-CZ.po
+3	3	build/i18n/po/selfcheck.js/de-DE.po
+3	3	build/i18n/po/selfcheck.js/en-CA.po
+3	3	build/i18n/po/selfcheck.js/en-GB.po
+3	3	build/i18n/po/selfcheck.js/es-ES.po
+3	3	build/i18n/po/selfcheck.js/fr-CA.po
+3	3	build/i18n/po/selfcheck.js/hy-AM.po
+3	3	build/i18n/po/selfcheck.js/oc-FR.po
+3	3	build/i18n/po/selfcheck.js/pt-BR.po
+3	3	build/i18n/po/selfcheck.js/ru-RU.po
+81	0	build/i18n/po/serial.js/cs-CZ.po
+80	0	build/i18n/po/serial.js/es-ES.po
+80	0	build/i18n/po/serial.js/hy-AM.po
+9	4	build/i18n/po/serial.properties/cs-CZ.po
+7	3	build/i18n/po/serial.properties/de-DE.po
+7	3	build/i18n/po/serial.properties/en-CA.po
+7	3	build/i18n/po/serial.properties/en-GB.po
+7	3	build/i18n/po/serial.properties/es-ES.po
+7	3	build/i18n/po/serial.properties/fr-CA.po
+7	3	build/i18n/po/serial.properties/hy-AM.po
+7	3	build/i18n/po/serial.properties/oc-FR.po
+7	3	build/i18n/po/serial.properties/pt-BR.po
+7	3	build/i18n/po/serial.properties/tr-TR.po
+2760	745	build/i18n/po/tpac/cs-CZ.po
+2830	832	build/i18n/po/tpac/de-DE.po
+2693	732	build/i18n/po/tpac/en-CA.po
+2692	743	build/i18n/po/tpac/en-GB.po
+3043	961	build/i18n/po/tpac/es-ES.po
+2712	755	build/i18n/po/tpac/fr-CA.po
+3166	1067	build/i18n/po/tpac/hy-AM.po
+2912	893	build/i18n/po/tpac/oc-FR.po
+2697	757	build/i18n/po/tpac/pt-BR.po
+2827	810	build/i18n/po/tpac/tr-TR.po
+35	0	build/i18n/po/vandelay.js/cs-CZ.po
+34	0	build/i18n/po/vandelay.js/en-GB.po
+34	0	build/i18n/po/vandelay.js/es-ES.po
+34	0	build/i18n/po/vandelay.js/hy-AM.po
+ create mode 100644 build/i18n/po/URLVerify.js/cs-CZ.po
+ create mode 100644 build/i18n/po/URLVerify.js/es-ES.po
+ create mode 100644 build/i18n/po/URLVerify.js/hy-AM.po
+ create mode 100644 build/i18n/po/match_set.js/cs-CZ.po
+ create mode 100644 build/i18n/po/match_set.js/en-GB.po
+ create mode 100644 build/i18n/po/match_set.js/es-ES.po
+ create mode 100644 build/i18n/po/match_set.js/fr-CA.po
+ create mode 100644 build/i18n/po/match_set.js/hy-AM.po
+ create mode 100644 build/i18n/po/serial.js/cs-CZ.po
+ create mode 100644 build/i18n/po/serial.js/es-ES.po
+ create mode 100644 build/i18n/po/serial.js/hy-AM.po
+ create mode 100644 build/i18n/po/vandelay.js/cs-CZ.po
+ create mode 100644 build/i18n/po/vandelay.js/en-GB.po
+ create mode 100644 build/i18n/po/vandelay.js/es-ES.po
+ create mode 100644 build/i18n/po/vandelay.js/hy-AM.po
+
+commit 2c00e328a7d5dadebbedc37b8ccf9bc1eb3fad95
+Author: Ben Shum <bshum@biblio.org>
+Date:   Thu Sep 25 01:58:56 2014 -0400
+
+    Update script for update_pofiles
+    
+    We were missing a few of the folders used for i18n purposes from
+    the update_pofiles script. Added the following entries:
+    
+    FlattenerGrid.js
+    match_set.js
+    PCrudFilterPane.js
+    serial.js
+    tpac
+    URLVerify.js
+    vandelay.js
+    
+    Also, change from Acq.js to acq.js.
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+8	1	build/i18n/scripts/update_pofiles
+
+commit 74c8ba4c0165d59cd9b8cdd80b81c1b8855df0e2
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Sun Sep 28 20:30:22 2014 -0400
+
+    LP#1252786: Add Workstation link to Aged and Active Circulations reports source.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+2	0	Open-ILS/examples/fm_IDL.xml
+
+commit 9dc7f6085ae2c31126a26486678376b598841665
+Author: Ben Shum <bshum@biblio.org>
+Date:   Thu Oct 9 11:59:17 2014 -0400
+
+    LP#1374091: stamping upgrade script for speedier record_attr views
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+108	0	Open-ILS/src/sql/Pg/upgrade/0892.schema.record_attr_flat_speedup.sql
+0	108	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.record_attr_flat_speedup.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0892.schema.record_attr_flat_speedup.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.record_attr_flat_speedup.sql
+
+commit f24f275ff258ce140e389c46245ff285c208520b
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Mon Sep 29 12:40:32 2014 -0400
+
+    LP#1374091: Speed up metarecord version of unAPI mra call
+    
+    The change to metabib.record_attr_flat in the previous commit caused
+    a regression in the plan used in unapi.mmr_mra.  This commit addresses
+    that by unrolling the mra view when used in context with metarecords,
+    which are shaped differently and require slightly different access
+    patterns.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+54	25	Open-ILS/src/sql/Pg/990.schema.unapi.sql
+89	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.record_attr_flat_speedup.sql
+
+commit 6d5a70a4a2f625ee51bc55db35ebeca5d8039147
+Author: Mike Rylander <miker@esilibrary.com>
+Date:   Thu Sep 25 14:34:20 2014 -0400
+
+    LP#1374091: Redefine view to help PG make better plans
+    
+    The metabib.record_attr_flat view previously pulled its data
+    through several other intermediate views.  While this improves
+    maintenance overhead, it ends up being an optimization fence
+    for certain data sets.  So, we pull the logic from the leaf
+    views up into the main view.  And, poof, 2 orders of magnitude
+    speedup on large data sets.
+    
+    Signed-off-by: Mike Rylander <miker@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+10	4	Open-ILS/src/sql/Pg/030.schema.metabib.sql
+19	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.record_attr_flat_speedup.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.record_attr_flat_speedup.sql
+
+commit 9c7b16588cbad34b58c904ce38ff34eb5d7653de
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Tue Oct 7 16:42:18 2014 -0700
+
+    LP#1378575: teach action::hold_request about behind_desk
+    
+    This patch teaches the CDBI class for the action.hold_request
+    table about the newish behind_desk column, preventing errors
+    like this from being thrown if a recent OpenSRF version is in
+    use:
+    
+    Processing of hold failed:  Can't locate object method "behind_desk"
+    via package "action::hold_request" at /usr/local/share/perl/5.14.2/OpenILS/Application/Storage/CDBI.pm line 181.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/CDBI/action.pm
+
+commit c314369ee643e6d7baa7cda28fdba367eec4c296
+Author: Snigdha Dagar <snigdha.dagar@gmail.com>
+Date:   Wed Sep 24 22:42:35 2014 -0400
+
+    Docs: Updated 2 links that pointed to the old subversion repository
+    
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+2	2	docs/development/intro_opensrf.txt
+
+commit 3629b3c077c911efdc007426be909ca92c558b71
+Author: Snigdha Dagar <snigdha.dagar@gmail.com>
+Date:   Wed Sep 24 23:02:54 2014 -0400
+
+    Docs: Removed redundant phrase as mentioned in bug #1294299
+    
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+1	1	docs/serials/C-subscription-SCV.txt
+
+commit b4db53798cf4347283173bc76ad392550b78758c
+Author: Snigdha Dagar <snigdha.dagar@gmail.com>
+Date:   Wed Sep 24 22:26:55 2014 -0400
+
+    Docs: Removed a redundant phrase as mentioned in bug #1294299
+    
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+1	1	docs/serials/D-subscription-ASCV.txt
+
+commit 8943e1c8f2201a477af1f8089b95d781056fd2d6
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Fri May 16 15:14:43 2014 -0700
+
+    LP#1314827: On login, don't allow referer-based redirect to external site
+    
+    On /eg/opac/login, if no redirect_to param is provided, the TPAC will
+    attempt to use the referer (if any) as the redirect destination. This
+    leads to undesirable behavior if the referring URL is from an external
+    site.
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+5	1	Open-ILS/src/templates/opac/parts/login/form.tt2
+
+commit 832a3dc2bdde68b18b84b19bc80585242a69015f
+Author: Angela Kilsdonk <akilsdonk@esilibrary.com>
+Date:   Thu Oct 2 10:41:35 2014 -0500
+
+    Documentation bug: corrected image file
+    
+    Signed-off-by: Angela Kilsdonk <akilsdonk@esilibrary.com>
+
+-	-	docs/media/2.7_Enhancements_to_Reports5.jpg
+-	-	docs/media/2.7_Enhancements_to_Reports5.png
+ create mode 100644 docs/media/2.7_Enhancements_to_Reports5.jpg
+ delete mode 100644 docs/media/2.7_Enhancements_to_Reports5.png
+
+commit 60c30683e10376f92901f707abdd2fdfaaa4b941
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Wed Oct 1 15:37:08 2014 -0400
+
+    Whitespace and non-weird emdash in docs
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+10	12	docs/opac/using_the_public_access_catalog.txt
+
+commit 68d9c316e6765c79206df7157d3cc4eef78896c4
+Author: Josh Stompro <github@stompro.org>
+Date:   Sun Sep 14 20:08:40 2014 -0500
+
+    Docs: Change all internal links to correct format
+    
+    Resolves LP#1294347
+    
+    I just deleted one link since I couldn't find any trace of where it was intended to go.
+    
+    acquisitions/selection_lists_po.txt:
+    "or use the link:federated.txt[View/Place Orders] menu item in the catalog."
+    
+    If anyone ever finds where that is supposed to go, let me know and I'll fix it.
+    
+    Signed-off-by: Josh Stompro <github@stompro.org>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+2	2	docs/acquisitions/introduction.txt
+5	5	docs/acquisitions/selection_lists_po.txt
+3	3	docs/admin/acquisitions_admin.txt
+1	1	docs/circulation/holds.txt
+1	1	docs/serials/A-intro.txt
+1	1	docs/serials/B-copy_template.txt
+1	1	docs/serials/C-subscription-SCV.txt
+1	1	docs/serials/D-subscription-ASCV.txt
+
+commit a75bfdfa66a26896f7d5782abccaa5370ce5bdbc
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Thu Sep 25 11:45:44 2014 -0400
+
+    LP#1373693: Speed up call number browse search at top level org.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+28	17	Open-ILS/src/perlmods/lib/OpenILS/Application/SuperCat.pm
+
+commit da75e3787f8bb186763e63db62caf820d5cb4e10
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Tue Sep 23 23:29:42 2014 -0400
+
+    Tidy search section of Using the OPAC
+    
+    Primarily focused on restructuring the information around Boolean
+    searching, particularly as I find librarians want to know what the
+    Boolean operators are that they should use. However, cleaned up some
+    typos and formatting along the way.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+65	42	docs/opac/using_the_public_access_catalog.txt
+
+commit 23818a68f329063353b63b18f1172b9764446830
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Fri Sep 19 12:07:11 2014 -0400
+
+    Small typo fix for Blu-Ray spelling
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	1	docs/opac/using_the_public_access_catalog.txt
+
+commit 650f9b8c1523be3fb625d133c7aedf7a584aef40
+Author: Snigdha Dagar <snigdha.dagar@gmail.com>
+Date:   Thu Sep 18 21:57:13 2014 +0530
+
+    Updated formats
+    
+    Updated the formats under basic search according to version 2.6
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+23	13	docs/opac/using_the_public_access_catalog.txt
