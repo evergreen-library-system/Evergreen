@@ -462,6 +462,14 @@ sub load_logout {
     # while logged in, go ahead and clear it out.
     $self->clear_anon_cache;
 
+    try { # a missing auth token will cause an ugly explosion
+        $U->simplereq(
+            'open-ils.auth',
+            'open-ils.auth.session.delete',
+            $self->cgi->cookie(COOKIE_SES)
+        );
+    } catch Error with {};
+
     return $self->generic_redirect(
         $redirect_to || $self->ctx->{home_page},
         [
