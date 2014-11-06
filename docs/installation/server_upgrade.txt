@@ -111,7 +111,7 @@ chown -R opensrf:opensrf /openils
 -----------------------------------------------------------
 cd /openils/var/web/xul/
 rm server
-ln -sf rel_2_6_1/server server
+ln -sf rel_2_7_1/server server
 ----------------------------------------------------------
 +
 . As the opensrf user, update opensrf_core.xml and opensrf.xml by copying the
