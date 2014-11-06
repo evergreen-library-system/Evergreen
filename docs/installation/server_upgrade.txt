@@ -8,12 +8,12 @@ Software Prerequisites
 
   * **PostgreSQL**: Version 9.1 is recommended. The minimum supported version
     is 9.1.
-  * **Linux**: Evergreen 2.6 has been tested on Debian Wheezy (7.0), Debian Squeeze (6.0),
-    Ubuntu Precise Pangolin (12.04) and Ubuntu Lucid Lynx (10.04). If you are
+  * **Linux**: Evergreen 2.7 has been tested on Debian Jessie (8.0), Debian Wheezy (7.0), Debian Squeeze (6.0),
+    Ubuntu Trusty Tahr (14.04), Ubuntu Precise Pangolin (12.04) and Ubuntu Lucid Lynx (10.04). If you are
     running an older version of these distributions, you may want to upgrade
     before upgrading Evergreen. For instructions on upgrading these
     distributions, visit the Debian or Ubuntu websites.
-  * **OpenSRF**: The minimum supported version of OpenSRF is 2.3.0.
+  * **OpenSRF**: The minimum supported version of OpenSRF is 2.4.0.
 
 In the following instructions, you are asked to perform certain steps as either the root or opensrf user.
 
@@ -42,12 +42,12 @@ osrf_control --localhost --stop-all
  .. Back up the /openils directory.
 . Upgrade OpenSRF. Download and install the latest version of OpenSRF from
 the http://evergreen-ils.org/opensrf-downloads/[OpenSRF download page].
-. As the opensrf user, download and extract Evergreen 2.6:
+. As the opensrf user, download and extract Evergreen 2.7:
 +
 [source, bash]
 -----------------------------------------------
-wget http://evergreen-ils.org/downloads/Evergreen-ILS-2.6.1.tar.gz
-tar xzf Evergreen-ILS-2.6.1.tar.gz
+wget http://evergreen-ils.org/downloads/Evergreen-ILS-2.7.1.tar.gz
+tar xzf Evergreen-ILS-2.7.1.tar.gz
 -----------------------------------------------
 +
 [NOTE]
@@ -57,7 +57,7 @@ For the latest edition of Evergreen, check the http://evergreen-ils.org/egdownlo
 +
 [source, bash]
 ---------------------------------------------
-cd /home/opensrf/Evergreen-ILS-2.6.1
+cd /home/opensrf/Evergreen-ILS-2.7.1
 ---------------------------------------------
 +
 On the next command, replace `[distribution]` with one of these values for your
@@ -66,10 +66,13 @@ distribution of Debian or Ubuntu:
 indexterm:[Linux, Debian]
 indexterm:[Linux, Ubuntu]
 +
+  * `debian-jessie` for Debian Jessie (8.0) (See https://bugs.launchpad.net/evergreen/+bug/1342227[Bug 134222] if you want to use EDI)
   * `debian-wheezy` for Debian Wheezy (7.0)
   * `debian-squeeze` for Debian Squeeze (6.0)
+  * `ubuntu-trusty` for Ubuntu Trusty Tahr (14.04) (See https://bugs.launchpad.net/evergreen/+bug/1342227[Bug 134222] if you want to use EDI)
   * `ubuntu-precise` for Ubuntu Precise Pangolin (12.04)
   * `ubuntu-lucid` for Ubuntu Lucid Lynx (10.04)
+
 +
 [source, bash]
 ------------------------------------------------------------
@@ -80,7 +83,7 @@ make -f Open-ILS/src/extras/Makefile.install [distribution]
 +
 [source, bash]
 ------------------------------------------------------------
-cd /home/opensrf/Evergreen-ILS-2.6.1
+cd /home/opensrf/Evergreen-ILS-2.7.1
 PATH=/openils/bin:$PATH ./configure --prefix=/openils --sysconfdir=/openils/conf
 make
 ------------------------------------------------------------
@@ -91,8 +94,8 @@ These instructions assume that you have also installed OpenSRF under /openils/. 
 +
 [source, bash]
 ------------------------------------------------------------
-cd /home/opensrf/Evergreen-ILS-2.6.1
-make STAFF_CLIENT_STAMP_ID=rel_2_6_1 install
+cd /home/opensrf/Evergreen-ILS-2.7.1
+make STAFF_CLIENT_STAMP_ID=rel_2_7_1 install
 ------------------------------------------------------------
 +
 . As the root user, change all files to be owned by the opensrf user and group:
@@ -128,7 +131,7 @@ Copying these configuration files will remove any customizations you have made t
 +
 [source, bash]
 -------------------------------------------------------------------------
-cd /home/opensrf/Evergreen-ILS-2.6.1
+cd /home/opensrf/Evergreen-ILS-2.7.1
 perl Open-ILS/src/support-scripts/eg_db_config --update-config --service all \
 --create-offline --database evergreen --host localhost --user evergreen --password evergreen
 -------------------------------------------------------------------------
@@ -145,21 +148,21 @@ For example, if you purchased an SSL certificate, you will need to edit eg.conf 
 +
 [source, bash]
 ----------------------------------------------------------
-cp /home/opensrf/Evergreen-ILS-2.6.1/Open-ILS/examples/apache/eg_startup /etc/apache2/eg_startup 
+cp /home/opensrf/Evergreen-ILS-2.7.1/Open-ILS/examples/apache/eg_startup /etc/apache2/eg_startup 
 ----------------------------------------------------------
 +
 .. Update /etc/apache2/eg_vhost.conf by copying the example from Open-ILS/examples/apache/eg_vhost.conf.
 +
 [source, bash]
 ----------------------------------------------------------
-cp /home/opensrf/Evergreen-ILS-2.6.1/Open-ILS/examples/apache/eg_vhost.conf /etc/apache2/eg_vhost.conf 
+cp /home/opensrf/Evergreen-ILS-2.7.1/Open-ILS/examples/apache/eg_vhost.conf /etc/apache2/eg_vhost.conf 
 ----------------------------------------------------------
 +
 .. Update /etc/apache2/sites-available/eg.conf by copying the example from Open-ILS/examples/apache/eg.conf.
 +
 [source, bash]
 ----------------------------------------------------------
-cp /home/opensrf/Evergreen-ILS-2.6.1/Open-ILS/examples/apache/eg.conf /etc/apache2/sites-available/eg.conf 
+cp /home/opensrf/Evergreen-ILS-2.7.1/Open-ILS/examples/apache/eg.conf /etc/apache2/sites-available/eg.conf 
 ----------------------------------------------------------
 
 Upgrade the Evergreen database schema
@@ -182,20 +185,21 @@ anything goes wrong during the upgrade.
 =============
 Evergreen provides incremental upgrade scripts that allow you to upgrade
 from one minor version to the next until you have the current version of
-the schema. For example, if you want to upgrade from 2.5.1 to 2.6.1, you
+the schema. For example, if you want to upgrade from 2.5.1 to 2.7.1, you
 would run the following upgrade scripts:
 
 - 2.5.1-2.5.2-upgrade-db.sql
 - 2.5.2-2.5.3-upgrade-db.sql
 - 2.5.3-2.6.0-upgrade-db.sql (this is a major version upgrade)
-- 2.6.0-2.6.1-upgrade-db.sql
+- 2.6-2.7.0-upgrade-db.sql (this is a major version upgrade)
+- 2.7.0-2.7.1-upgrade-db.sql
 
 Note that you do *not* want to run additional 2.5 scripts to upgrade to the
 newest version of 2.5, since currently there is no automated way to upgrade
 from 2.5.4+ to 2.6. Only upgrade as far as necessary to reach the major
 version upgrade script (in this example, as far as 2.5.3).
 
-To upgrade across multiple major versions (e.g. from 2.3.0 to 2.6.1), use
+To upgrade across multiple major versions (e.g. from 2.3.0 to 2.7.1), use
 the same logic to utilize the provided major version upgrade scripts. For
 example:
 
@@ -205,7 +209,8 @@ example:
 - 2.4.3-2.5.0-upgrade-db.sql
 - (run all incremental scripts from 2.5.0 to 2.5.3)
 - 2.5.3-2.6.0-upgrade-db.sql
-- 2.6.0-2.6.1-upgrade-db.sql
+- 2.6-2.7.0-upgrade-db.sql
+- 2.7.0-2.7.1-upgrade-db.sql
 =============
 
 [CAUTION]
@@ -219,8 +224,8 @@ as a user with the ability to connect to the database server.
 
 [source, bash]
 ----------------------------------------------------------
-cd /home/opensrf/Evergreen-ILS-2.6.1/Open-ILS/src/sql/Pg
-psql -U evergreen -h localhost -f version-upgrade/2.5.3-2.6.0-upgrade-db.sql evergreen
+cd /home/opensrf/Evergreen-ILS-2.7.1/Open-ILS/src/sql/Pg
+psql -U evergreen -h localhost -f version-upgrade/2.6-2.7.0-upgrade-db.sql evergreen
 ----------------------------------------------------------
 
 [TIP]
@@ -231,6 +236,13 @@ may take a long time depending on the number of bib records in your system.
 
 Restart Evergreen and Test
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
+. As the root user, restart memcached to clear out all old user sessions.
++
+[source, bash]
+--------------------------------------------------------------
+service memcached restart
+--------------------------------------------------------------
++
 . As the opensrf user, start all Evergreen and OpenSRF services:
 +
 [source, bash]
@@ -289,3 +301,10 @@ If this does not work, it's time to do some troubleshooting.
 +
 If you encounter errors, refer to the troubleshooting section of this documentation for tips on finding solutions and seeking further assistance
 from the Evergreen community.
+
+Review Release Notes
+~~~~~~~~~~~~~~~~~~~~
+
+Review the <<_evergreen_2_7_release_notes,2.7 release notes>> for other tasks 
+that need to be done after upgrading.  If you have upgraded over several 
+major versions, you will need to review the release notes for each version also.
