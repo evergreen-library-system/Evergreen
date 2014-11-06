@@ -6,7 +6,7 @@
         [% IF ctx.refresh %]
         <meta http-equiv="refresh" content="[% ctx.refresh %]">
         [% ELSIF ctx.authtime AND !ctx.is_staff %]
-        <meta http-equiv="refresh" content="[% ctx.authtime %]; url=[% ctx.logout_page %]">
+        <meta http-equiv="refresh" content="[% ctx.authtime %]; url=[% ctx.home_page %]" />
         [% END %]
         <meta name = "viewport" content = "initial-scale = 1.0">
         <link rel="stylesheet" type="text/css" href="[% ctx.media_prefix %]/css/skin/default/opac/semiauto.css" />
