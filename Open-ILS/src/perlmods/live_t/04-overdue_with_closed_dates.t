@@ -21,22 +21,14 @@ use OpenSRF::Utils qw/cleanse_ISO8601/;
 our $apputils   = "OpenILS::Application::AppUtils";
 
 sub create_closed_date {
-    my $ten_days = OpenSRF::Utils->interval_to_seconds('240 h 0 m 0 s');
-    my $almost_twenty_four_hours = OpenSRF::Utils->interval_to_seconds('23 h 59 m 59 s');
-    #$circ->due_date( $apputils->epoch2ISO8601($due_date - $twenty_days) );
-
     my $aoucd = Fieldmapper::actor::org_unit::closed_date->new;
     $aoucd->org_unit(WORKSTATION_LIB);
     $aoucd->reason('04-overdue_with_closed_dates.t');
     $aoucd->close_start(
-        $apputils->epoch2ISO8601(
-            DateTime->today()->epoch() - $ten_days
-        )
+        DateTime->today()->subtract( days => 10 )->iso8601()
     );
     $aoucd->close_end(
-        $apputils->epoch2ISO8601(
-            DateTime->today()->epoch() - $ten_days + $almost_twenty_four_hours
-        )
+        DateTime->today()->subtract( days => 9 )->subtract( seconds => 1 )->iso8601()
     );
     my $resp = $apputils->simplereq(
         'open-ils.actor',
@@ -202,13 +194,12 @@ if (my $bill_resp = $bill_req->recv) {
     }
 }
 
-my $xact_start = DateTime::Format::ISO8601->parse_datetime(cleanse_ISO8601($circ->xact_start))->epoch;
-my $due_date = DateTime::Format::ISO8601->parse_datetime(cleanse_ISO8601($circ->due_date))->epoch;
-my $twenty_days = OpenSRF::Utils->interval_to_seconds('480 h 0 m 0 s');
+my $xact_start = DateTime::Format::ISO8601->parse_datetime(cleanse_ISO8601($circ->xact_start));
+my $due_date = DateTime::Format::ISO8601->parse_datetime(cleanse_ISO8601($circ->due_date));
 
 # Rewrite history; technically we should rewrite status_changed_item on the copy as well, but, meh...
-$circ->xact_start( $apputils->epoch2ISO8601($xact_start - $twenty_days) );
-$circ->due_date( $apputils->epoch2ISO8601($due_date - $twenty_days) );
+$circ->xact_start( $xact_start->subtract( days => 20 )->iso8601() );
+$circ->due_date( $due_date->subtract( days => 20 )->iso8601() );
 
 $cstore_ses->connect; # need stateful connection
 my $xact = $cstore_ses->request('open-ils.cstore.transaction.begin')->gather(1);
