@@ -61,6 +61,7 @@ cd  /path/to/Evergreen/Open-ILS/xul/staff_client
 [source, bash]
 --------
 make rigrelease rebuild linux32-updates-client linux64-updates-client
+make install
 --------
 +
 This builds and copies two staff client tarballs for Linux to the `updates`
