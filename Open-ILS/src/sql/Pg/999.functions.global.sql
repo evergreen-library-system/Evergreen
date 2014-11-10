@@ -1613,9 +1613,13 @@ BEGIN
             RETURN NEW;
         END IF;
 
-        -- Propagate these updates to any linked bib records
-        PERFORM authority.propagate_changes(NEW.id) FROM authority.record_entry WHERE id = NEW.id;
+        -- Unless there's a setting stopping us, propagate these updates to any linked bib records
+        PERFORM * FROM config.internal_flag WHERE name = 'ingest.disable_authority_auto_update' AND enabled;
 
+        IF NOT FOUND THEN
+            PERFORM authority.propagate_changes(NEW.id);
+        END IF;
+	
         DELETE FROM authority.simple_heading WHERE record = NEW.id;
         DELETE FROM authority.authority_linking WHERE source = NEW.id;
     END IF;
