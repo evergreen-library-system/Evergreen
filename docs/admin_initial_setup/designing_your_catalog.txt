@@ -363,7 +363,7 @@ You may also change the default number of facets appearing under each category
 by editing the _facet.default_display_count_ value in _config.tt2_. The default 
 value is 5.
 
-Including external content in your public interface
+Including External Content in Your Public Interface
 ---------------------------------------------------
 
 The public interface allows you to include external services and content in your
@@ -506,7 +506,7 @@ the _config.tt2_ file located in your template directory. You will need to set
 the _ctx.refworks.enabled_ value to _true_. You may also set the RefWorks URL by
 changing the _ctx.refworks.url_ setting on the same file. 
 
-SFX OpenURL resolver
+SFX OpenURL Resolver
 ~~~~~~~~~~~~~~~~~~~~
 
 An OpenURL resolver allows you to find electronic resources and pull them into
@@ -541,6 +541,74 @@ points to the Syndetic service:
 
 For changes to be activated for your public interface you will need to restart
 Evergreen and Apache.
+
+Including Locally Hosted Content in Your Public Interface
+---------------------------------------------------------
+
+It is also possible to show added content that has been generated locally 
+by placing the content in a specific spot on the web server.  It is 
+possible to have local book jackets, reviews, TOC, excerpts or annotations.
+
+File Location and Format
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+By default the files will need to be placed in directories under 
+*/openils/var/web/opac/extras/ac/* on the server(s) that run Apache.
+
+The files need to be in specific folders depending on the format of the 
+added content.  Local Content can only be looked up based on the 
+record ID at this time.
+
+.URL Format:
+\http://catalog/opac/extras/ac/*\{type}/\{format}/r/\{recordid}*
+
+ * *type* is one of *jacket*, *reviews*, *toc*, *excerpt* or *anotes*.
+  * *format* is type dependent:
+    - for jacket, one of small, medium or large
+    - others, one of html, xml or json ... html is the default for non-image added content
+  * *recordid* is the bibliographic record id (bre.id).
+
+Example
+~~~~~~~
+
+If you have some equipment that you are circulating such as a 
+laptop or eBook reader and you want to add an image of the equipment 
+that will show up in the catalog.
+
+[NOTE]
+=============
+If you are adding jacket art for a traditional type of media 
+(book, CD, DVD) consider adding the jacket art to the http://openlibrary.org 
+project instead of hosting it locally.  This would allow other 
+libraries to benefit from your work.
+=============
+
+Make note of the Record ID of the bib record.  You can find this by 
+looking at the URL of the bib in the catalog.  
+http://catalog/eg/opac/record/*123*, 123 is the record ID.  
+These images will only show up for one specific record.
+
+Create 3 different sized versions of the image in png or jpg format.
+
+ * *Small* - 80px x 80px - named _123-s.jpg_ or _123-s.png_ - This is displayed in the browse display.
+ * *Medium* - 240px x 240px - named _123-m.jpg_ or _123-m.png_ - This is displayed on the summary page.
+ * *Large* - 400px x 399px - named _123-l.jpg_ or _123-l.png_ - This is displayed if the summary page image is clicked on.
+
+[NOTE] 
+The image dimensions are up to you, use what looks good in your catalog.
+ 
+Next, upload the images to the evergreen server(s) that run apache, 
+and move/rename the files to the following locations/name.  
+You will need to create directories that are missing.
+ 
+ * Small - Move the file *123-s.jpg* to */openils/var/web/opac/extras/ac/jacket/small/r/123*
+ * Medium - Move the file *123-m.jpg* to */openils/var/web/opac/extras/ac/jacket/medum/r/123*.
+ * Large - Move the file *123-l.jpg* to */openils/var/web/opac/extras/ac/jacket/large/r/123*.
+
+[NOTE]
+The system doesn't need the file extension to know what kind of file it is.
+ 
+Reload the bib record summary in the web catalog and your new image will display.
 
 Sitemap generator
 -----------------
