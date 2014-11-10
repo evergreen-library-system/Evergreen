@@ -135,7 +135,7 @@ $0 : Create and process action/trigger events
         perl $0 --osrf-config @sysconfdir@/opensrf_core.xml --run-pending
 
         # To batch create all "checkout.due" events
-        perl $0 --osrf-config @sysconfdir@/opensrf_core.xml --hooks checkout.due
+        perl $0 --osrf-config @sysconfdir@/opensrf_core.xml --hooks=checkout.due --process-hooks
 
 HELP
 }
