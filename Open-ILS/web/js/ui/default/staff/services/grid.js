@@ -1050,6 +1050,15 @@ angular.module('egGridMod',
                     function(a, b) {
                         if (a.explicit) return -1;
                         if (b.explicit) return 1;
+                        if (a.idlclass && b.idlclass) {
+                            return a.idlclass < b.idlclass ? -1 : 1;
+                            return a.idlclass > b.idlclass ? 1 : -1;
+                        }
+                        if (a.path && b.path) {
+                            return a.path < b.path ? -1 : 1;
+                            return a.path > b.path ? 1 : -1;
+                        }
+
                         return a.label < b.label ? -1 : 1;
                     }
                 );
@@ -1144,19 +1153,10 @@ angular.module('egGridMod',
             
             if (!column.label) {
                 column.label = idl_info.idl_field.label || column.name;
-                /*
-                // append class label to column label to better differentiate
-                // columns in the selector.
-                // Disabled for now, since it results in columns w/ really
-                // long names, making the grid unappealing when any of
-                // these colmns are selected.
-                // TODO: consider nesting the colum picker by class?
-                if (fromExpand) {
-                    var label = 
-                        idl_info.idl_class.label || idl_info.idl_class.name;
-                    column.label = label + '::' + column.label;
-                }
-                */
+            }
+
+            if (fromExpand && idl_info.idl_class) {
+                column.idlclass = idl_info.idl_class.label || idl_info.idl_class.name;
             }
         },
 

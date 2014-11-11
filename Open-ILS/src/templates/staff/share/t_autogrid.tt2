@@ -159,7 +159,7 @@
         </a></li>
         <li role="presentation" class="divider"></li>
         <li ng-repeat="col in columns">
-          <a href ng-click="toggleColumnVisibility(col)">
+          <a href title="{{col.idlclass}}" ng-click="toggleColumnVisibility(col)">
               <span ng-if="col.visible" 
                 class="label label-success">&#x2713;</span>
               <span ng-if="!col.visible" 
