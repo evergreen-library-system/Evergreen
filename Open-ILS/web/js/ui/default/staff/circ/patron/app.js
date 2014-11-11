@@ -394,7 +394,7 @@ function($q , $timeout , $location , egCore,  egUser , $locale) {
 
         angular.forEach(
             service.current.addresses(), 
-            function(addr) { if (!addr.valid()) fail = true }
+            function(addr) { if (addr.valid() == 'f') fail = true }
         );
 
         return $q.when(fail);
