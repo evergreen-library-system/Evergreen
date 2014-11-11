@@ -1,3 +1,7 @@
+BEGIN;
+
+SELECT evergreen.upgrade_deps_block_check('0896', :eg_version);
+
 CREATE OR REPLACE FUNCTION asset.acp_location_fixer()
 RETURNS TRIGGER AS $$
 DECLARE
@@ -25,3 +29,4 @@ CREATE TRIGGER acp_location_fixer_trig
     BEFORE INSERT OR UPDATE OF location, call_number, circ_lib ON asset.copy
     FOR EACH ROW EXECUTE PROCEDURE asset.acp_location_fixer();
 
+COMMIT;
