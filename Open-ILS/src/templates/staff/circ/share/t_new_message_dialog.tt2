@@ -24,9 +24,9 @@
         </div>
         <div class="col-md-4 pull-right">
           <select class="form-control" ng-model="args.penalty">
-            <option value="">[% l('Optional Penalty Type') %]</option>
-            <option ng-selected="args.penalty < 100"></option>
+            <option ng-selected="args.penalty = ''" value="">[% l('Penalty Type') %]</option>
             <option ng-repeat="penalty in penalties" 
+              ng-selected="args.penalty = penalty.id"
               value="{{penalty.id()}}">{{penalty.label()}}</option>
           </select>
         </div>
