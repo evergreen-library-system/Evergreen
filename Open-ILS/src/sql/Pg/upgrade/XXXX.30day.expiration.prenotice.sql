@@ -2,27 +2,27 @@ BEGIN;
 
 --create hook for actor.usr.expire_date
 INSERT INTO action_trigger.hook (key, core_type, description, passive)
-    VALUES ('expire', 'au', 'Card is expired', 't');
+    VALUES ('expire', 'au', 'Account is expired', 't');
 	
-	--SQL to create event definition for 30 day card pre-expiration notice
+--SQL to create event definition for 30 day account pre-expiration notice
 --Inactive, owned by top of org tree by default.  Modify to suit needs.
 --Can set reactor to 'ProcessTemplate' for testing.  Will generate emails in DB, but not actually send.
 
-INSERT INTO action_trigger.event_definition (active, owner, name, hook, validator, reactor, delay, delay_field, group_field, max_delay, template)
-    VALUES ('t', '1', '30 Day Card Expiration Courtesy Notice', 'expire', 'NOOP_True', 'SendEmail', '-30 days', 'expire_date', 'usr', '-29 days',
-	$$
+INSERT INTO action_trigger.event_definition (active, owner, name, hook, validator, reactor, delay, delay_field, max_delay, repeat_delay, template)
+    VALUES ('f', '1', '30 Day Account Expiration Courtesy Notice', 'expire', 'NOOP_True', 'SendEmail', '-30 days', 'expire_date', '-29 days', '30 days',
+$$
 [%- USE date -%]
 [%- user = target -%]
 [%- lib = target.home_ou -%]
 To: [%- params.recipient_email || user.email %]
 From: [%- helpers.get_org_setting(target.home_ou.id, 'org.bounced_emails') || lib.email || params.sender_email || default_sender %]
 Reply-To: [%- helpers.get_org_setting(target.home_ou.id, 'org.bounced_emails') || lib.email || params.sender_email || default_sender %]
-Errors-To: [%- helpers.get_org_setting(target.home_ou.id, 'org.bounced_emails') || lib.email || params.sender_email || default_sender %]
-Subject: Courtesy Notice - Library Card Expiration in 30 days
+Subject: Courtesy Notice - Library Account Expiration in 30 days
+Auto-Submitted: auto-generated
 
 Dear [% user.first_given_name %] [% user.family_name %],
 
-Our records indicate your library card is due to expire in 30 days.  Please visit your local library at your convenience to renew your card in order to avoid a disruption in access to library service.
+Our records indicate your library account is due to expire in 30 days.  Please visit your local library at your convenience to renew your account in order to avoid a disruption in access to library service.
 
 Sincerely,
 [% lib.name %]
@@ -32,9 +32,9 @@ Contact your library for more information:
 [% lib.name %]
 [%- SET addr = lib.mailing_address -%]
 [%- IF !addr -%] [%- SET addr = lib.billing_address -%] [%- END %]
-[% lib.mailing_address.street1 %] [% lib.mailing_address.street2 %]
-[% lib.mailing_address.city %], [% lib.mailing_address.state %]
-[% lib.mailing_address.post_code %]
+[% addr.street1 %] [% addr.street2 %]
+[% addr.city %], [% addr.state %]
+[% addr.post_code %]
 [% lib.phone %]
 
 $$);
@@ -43,8 +43,8 @@ $$);
 SELECT currval('action_trigger.event_definition_id_seq');
 
 --send from email address parameter
-INSERT INTO action_trigger.event_params (event_def, param, value)
-	VALUES (CURRVAL('action_trigger.event_definition_id_seq'), 'sender_email', 'evergreen@example.org');
+--INSERT INTO action_trigger.event_params (event_def, param, value)
+--	VALUES (CURRVAL('action_trigger.event_definition_id_seq'), 'sender_email', 'evergreen@example.org');
 	
 --insert environment values
 INSERT INTO action_trigger.environment (event_def, path)
