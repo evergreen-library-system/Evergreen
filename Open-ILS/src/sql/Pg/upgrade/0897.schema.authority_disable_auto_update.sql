@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0897', :eg_version);
 
 CREATE OR REPLACE FUNCTION authority.indexing_ingest_or_delete() RETURNS TRIGGER AS $BODY$
 DECLARE
