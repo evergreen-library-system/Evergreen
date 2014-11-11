@@ -1,3 +1,57 @@
+commit 15c5ceae47fc526959d6e27cb4a3c9bc3cf43864
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Thu Nov 6 16:03:36 2014 -0500
+
+    LP#1390225: Fail to care about errors from auth.session.delete
+    
+    We're just tossing this call over the wall and moving on.  We don't
+    care if the session wasn't there to delete or even if we didn't pass
+    a session to the server.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+7	5	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader.pm
+
+commit 0b439c7bbf4aec75e3896417d109410bf238911d
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Thu Nov 6 15:36:16 2014 -0500
+
+    LP#1390225: redirect to ctx.home_page instead of through ctx.logout_page
+    
+    This way, we skip the auth.session.delete call that will error out because
+    we no longer have the authtoken cookie.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    
+    Conflicts:
+    	Open-ILS/src/templates/opac/parts/base.tt2
+
+2	2	Open-ILS/src/templates/opac/parts/base.tt2
+
+commit ef7916e2106e4991a5fef40218fd7bada2e8a4c0
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Wed Nov 5 15:25:06 2014 -0500
+
+    Bumping version numbers, adding Upgrade Script and Changelog
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+558	3	ChangeLog
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application.pm
+1	0	Open-ILS/src/sql/Pg/002.schema.config.sql
+50	0	Open-ILS/src/sql/Pg/version-upgrade/2.5.7-2.5.8-upgrade-db.sql
+1	1	Open-ILS/xul/staff_client/chrome/content/main/about.html
+1	1	Open-ILS/xul/staff_client/defaults/preferences/prefs.js
+1	1	Open-ILS/xul/staff_client/windowssetup.nsi
+589	1	README
+2	2	configure.ac
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.5.7-2.5.8-upgrade-db.sql
+ mode change 120000 => 100644 README
+
 commit ee01a99acb5f2fce7fe7aa865d0da4186da00e80
 Author: Dan Wells <dbw2@calvin.edu>
 Date:   Mon Feb 24 12:09:57 2014 -0500
