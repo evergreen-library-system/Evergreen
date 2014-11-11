@@ -449,6 +449,14 @@ function($window , $location , egCore , egHolds , egCirc) {
         return egHolds.cancel_holds(hold_ids).then(service.refresh);
     }
 
+    service.uncancel_hold = function(items) {
+        var hold_ids = items.filter(function(item) {
+            return item.hold.cancel_time();
+        }).map(function(item) {return item.hold.id()});
+
+        return egHolds.uncancel_holds(hold_ids).then(service.refresh);
+    }
+
     // jump to circ list for either 1) the targeted copy or
     // 2) the hold target copy for copy-level holds
     service.show_recent_circs = function(items) {
