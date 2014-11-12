@@ -37,7 +37,7 @@ Preamble: developer instructions
 
 [NOTE]
 Skip this section if you are using an official release tarball downloaded
-from http://evergreen-ils.org/downloads
+from http://evergreen-ils.org/egdownloads
 
 Developers working directly with the source code from the Git repository,
 rather than an official release tarball, must perform one step before they 
@@ -54,12 +54,23 @@ autoreconf -i
 Installing prerequisites
 ------------------------
 
+  * **PostgreSQL**: Version 9.3 is recommended. The minimum supported version
+    is 9.1.
+  * **Linux**: Evergreen 2.7 has been tested on Debian Jessie (8.0), 
+    Debian Wheezy (7.0), Debian Squeeze(6.0), Ubuntu Trusty Tahr (14.04), 
+    Ubuntu Precise Pangolin (12.04), Ubuntu Lucid Lynx (10.04) and Fedora. 
+    If you are running an older version of these distributions, you may want 
+    to upgrade before upgrading Evergreen. For instructions on upgrading these
+    distributions, visit the Debian, Ubuntu or Fedora websites.
+  * **OpenSRF**: The minimum supported version of OpenSRF is 2.4.0.
+
+
 Evergreen has a number of prerequisite packages that must be installed
 before you can successfully configure, compile, and install Evergreen.
 
-1. Begin by installing the most recent version of OpenSRF (2.3.0 or later).
+1. Begin by installing the most recent version of OpenSRF (2.4.0 or later).
    You can download OpenSRF releases from http://evergreen-ils.org/opensrf-downloads/
-2. On many distributions, it is necessary to install PostgreSQL 9 from external
+2. On many distributions, it is necessary to install PostgreSQL 9.1+ from external
    repositories.
 +
   * On Debian Squeeze, open `/etc/apt/sources.list` in a text editor as the
@@ -70,8 +81,8 @@ before you can successfully configure, compile, and install Evergreen.
 deb http://backports.debian.org/debian-backports squeeze-backports main contrib
 ------------------------------------------------------------------------------
 +
-  * Ubuntu Precise and Trusty comes with PostgreSQL 9+, so no additional steps are required.
-  * Fedora comes with PostgreSQL 9, so no additional steps are required.
+  * Ubuntu Precise and Trusty comes with PostgreSQL 9.1+, so no additional steps are required.
+  * Fedora 19 and 20 come with PostgreSQL 9.2+, so no additional steps are required.
 +
 3. On Debian and Ubuntu, run `aptitude update` as the *root* Linux account to
    retrieve the new packages from the backports repository.
@@ -190,7 +201,7 @@ Additional Instructions for Developers
 
 [NOTE]
 Skip this section if you are using an official release tarball downloaded
-from http://evergreen-ils.org/downloads
+from http://evergreen-ils.org/egdownloads
 
 Developers working directly with the source code from the Git repository,
 rather than an official release tarball, need to install the Dojo Toolkit
@@ -595,7 +606,7 @@ You should see a result like:
     Request Completed Successfully
     Request Time in seconds: 1.336568
     ------------------------------------
-
+[[install-troubleshooting-1]]
 If this does not work, it's time to do some troubleshooting.
 
   * As the *opensrf* Linux account, run the `settings-tester.pl` script to see

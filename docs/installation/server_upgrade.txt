@@ -6,23 +6,25 @@ All of the steps in this chapter are to be completed from the command line.
 Software Prerequisites
 ~~~~~~~~~~~~~~~~~~~~~~
 
-  * **PostgreSQL**: Version 9.1 is recommended. The minimum supported version
+ * **PostgreSQL**: Version 9.3 is recommended. The minimum supported version
     is 9.1.
-  * **Linux**: Evergreen 2.7 has been tested on Debian Jessie (8.0), Debian Wheezy (7.0), Debian Squeeze (6.0),
-    Ubuntu Trusty Tahr (14.04), Ubuntu Precise Pangolin (12.04) and Ubuntu Lucid Lynx (10.04). If you are
-    running an older version of these distributions, you may want to upgrade
-    before upgrading Evergreen. For instructions on upgrading these
-    distributions, visit the Debian or Ubuntu websites.
+  * **Linux**: Evergreen 2.7 has been tested on Debian Jessie (8.0),
+    Debian Wheezy (7.0), Debian Squeeze(6.0), Ubuntu Trusty Tahr (14.04),
+    Ubuntu Precise Pangolin (12.04), Ubuntu Lucid Lynx (10.04) and Fedora.
+    If you are running an older version of these distributions, you may want
+    to upgrade before upgrading Evergreen. For instructions on upgrading these
+    distributions, visit the Debian, Ubuntu or Fedora websites.
   * **OpenSRF**: The minimum supported version of OpenSRF is 2.4.0.
 
-In the following instructions, you are asked to perform certain steps as either the root or opensrf user.
 
-  * **Debian**: To become the root user, issue the `su` command and enter the password of the root user.
-  * **Ubuntu**: To become the root user, issue the `sudo su` command and enter the password of your current user.
+In the following instructions, you are asked to perform certain steps as either the *root* or *opensrf* user.
 
-To switch from the root user to a different user, issue the `su - [user]`
+  * **Debian**: To become the *root* user, issue the `su` command and enter the password of the root user.
+  * **Ubuntu**: To become the *root* user, issue the `sudo su` command and enter the password of your current user.
+
+To switch from the *root* user to a different user, issue the `su - [user]`
 command; for example, `su - opensrf`. Once you have become a non-root user, to
-become the root user again simply issue the `exit` command.
+become the *root* user again simply issue the `exit` command.
 
 Upgrade the Evergreen code
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -31,8 +33,8 @@ server. You must adjust these steps to accommodate your customizations such
 as catalogue skins.
 
 . Stop Evergreen and back up your data:
- .. As root, stop the Apache web server.
- .. As the opensrf user, stop all Evergreen and OpenSRF services:
+ .. As *root*, stop the Apache web server.
+ .. As the *opensrf* user, stop all Evergreen and OpenSRF services:
 +
 [source, bash]
 -----------------------------
@@ -42,7 +44,7 @@ osrf_control --localhost --stop-all
  .. Back up the /openils directory.
 . Upgrade OpenSRF. Download and install the latest version of OpenSRF from
 the http://evergreen-ils.org/opensrf-downloads/[OpenSRF download page].
-. As the opensrf user, download and extract Evergreen 2.7:
+. As the *opensrf* user, download and extract Evergreen 2.7:
 +
 [source, bash]
 -----------------------------------------------
@@ -53,7 +55,7 @@ tar xzf Evergreen-ILS-2.7.1.tar.gz
 [NOTE]
 For the latest edition of Evergreen, check the http://evergreen-ils.org/egdownloads/[Evergreen download page] and adjust upgrading instructions accordingly.
 
-. As the root user, install the prerequisites:
+. As the *root* user, install the prerequisites:
 +
 [source, bash]
 ---------------------------------------------
@@ -72,6 +74,7 @@ indexterm:[Linux, Ubuntu]
   * `ubuntu-trusty` for Ubuntu Trusty Tahr (14.04) (See https://bugs.launchpad.net/evergreen/+bug/1342227[Bug 134222] if you want to use EDI)
   * `ubuntu-precise` for Ubuntu Precise Pangolin (12.04)
   * `ubuntu-lucid` for Ubuntu Lucid Lynx (10.04)
+  * `fedora` for Fedora
 
 +
 [source, bash]
@@ -79,7 +82,7 @@ indexterm:[Linux, Ubuntu]
 make -f Open-ILS/src/extras/Makefile.install [distribution]
 ------------------------------------------------------------
 +
-. As the opensrf user, configure and compile Evergreen:
+. As the *opensrf* user, configure and compile Evergreen:
 +
 [source, bash]
 ------------------------------------------------------------
@@ -90,7 +93,7 @@ make
 +
 These instructions assume that you have also installed OpenSRF under /openils/. If not, please adjust PATH as needed so that the Evergreen configure script can find osrf_config.
 +
-. As the root user, install Evergreen:
+. As the *root* user, install Evergreen:
 +
 [source, bash]
 ------------------------------------------------------------
@@ -98,14 +101,14 @@ cd /home/opensrf/Evergreen-ILS-2.7.1
 make STAFF_CLIENT_STAMP_ID=rel_2_7_1 install
 ------------------------------------------------------------
 +
-. As the root user, change all files to be owned by the opensrf user and group:
+. As the *root* user, change all files to be owned by the opensrf user and group:
 +
 [source, bash]
 ------------------------------------------------------------
 chown -R opensrf:opensrf /openils
 ------------------------------------------------------------
 +
-. As the opensrf user, update the server symlink in /openils/var/web/xul/:
+. As the *opensrf* user, update the server symlink in /openils/var/web/xul/:
 +
 [source, bash]
 -----------------------------------------------------------
@@ -114,7 +117,7 @@ rm server
 ln -sf rel_2_7_1/server server
 ----------------------------------------------------------
 +
-. As the opensrf user, update opensrf_core.xml and opensrf.xml by copying the
+. As the *opensrf* user, update opensrf_core.xml and opensrf.xml by copying the
   new example files (/openils/conf/opensrf_core.xml.example and
   /openils/conf/opensrf.xml). The _-b_ option creates a backup copy of the old file.
 +
@@ -127,7 +130,7 @@ cp -b /openils/conf/opensrf.xml.example /openils/conf/opensrf.xml
 [CAUTION]
 Copying these configuration files will remove any customizations you have made to them. Remember to redo your customizations after copying them.
 +
-. As the opensrf user, update the configuration files:
+. As the *opensrf* user, update the configuration files:
 +
 [source, bash]
 -------------------------------------------------------------------------
@@ -136,33 +139,40 @@ perl Open-ILS/src/support-scripts/eg_db_config --update-config --service all \
 --create-offline --database evergreen --host localhost --user evergreen --password evergreen
 -------------------------------------------------------------------------
 +
-. As the _root_ user, update the Apache files:
+. As the *root* user, update the Apache files:
 +
 indexterm:[Apache]
++
+Use the example configuration files in `Open-ILS/examples/apache/` (for
+Apache versions below 2.4) or `Open-ILS/examples/apache_24/` (for Apache
+versions 2.4 or greater) to configure your Web server for the Evergreen
+catalog, staff client, Web services, and administration interfaces. Issue the
+following commands as the *root* Linux account:
 +
 [CAUTION]
 Copying these Apache configuration files will remove any customizations you have made to them. Remember to redo your customizations after copying them.
 For example, if you purchased an SSL certificate, you will need to edit eg.conf to point to the appropriate SSL certificate files.
+The diff command can be used to show the differences between the distribution version and your customized version. `diff <customized file> <dist file>`
 +
 .. Update _/etc/apache2/eg_startup_ by copying the example from _Open-ILS/examples/apache/eg_startup_.
 +
 [source, bash]
 ----------------------------------------------------------
-cp /home/opensrf/Evergreen-ILS-2.7.1/Open-ILS/examples/apache/eg_startup /etc/apache2/eg_startup 
+cp /home/opensrf/Evergreen-ILS-2.7.1/Open-ILS/examples/apache/eg_startup /etc/apache2/eg_startup
 ----------------------------------------------------------
 +
 .. Update /etc/apache2/eg_vhost.conf by copying the example from Open-ILS/examples/apache/eg_vhost.conf.
 +
 [source, bash]
 ----------------------------------------------------------
-cp /home/opensrf/Evergreen-ILS-2.7.1/Open-ILS/examples/apache/eg_vhost.conf /etc/apache2/eg_vhost.conf 
+cp /home/opensrf/Evergreen-ILS-2.7.1/Open-ILS/examples/apache/eg_vhost.conf /etc/apache2/eg_vhost.conf
 ----------------------------------------------------------
 +
 .. Update /etc/apache2/sites-available/eg.conf by copying the example from Open-ILS/examples/apache/eg.conf.
 +
 [source, bash]
 ----------------------------------------------------------
-cp /home/opensrf/Evergreen-ILS-2.7.1/Open-ILS/examples/apache/eg.conf /etc/apache2/sites-available/eg.conf 
+cp /home/opensrf/Evergreen-ILS-2.7.1/Open-ILS/examples/apache/eg.conf /etc/apache2/sites-available/eg.conf
 ----------------------------------------------------------
 
 Upgrade the Evergreen database schema
@@ -236,21 +246,21 @@ may take a long time depending on the number of bib records in your system.
 
 Restart Evergreen and Test
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
-. As the root user, restart memcached to clear out all old user sessions.
+. As the *root* user, restart memcached to clear out all old user sessions.
 +
 [source, bash]
 --------------------------------------------------------------
 service memcached restart
 --------------------------------------------------------------
 +
-. As the opensrf user, start all Evergreen and OpenSRF services:
+. As the *opensrf* user, start all Evergreen and OpenSRF services:
 +
 [source, bash]
 --------------------------------------------------------------
 osrf_control --localhost --start-all
 --------------------------------------------------------------
 +
-. As the opensrf user, run autogen to refresh the static organizational data files:
+. As the *opensrf* user, run autogen to refresh the static organizational data files:
 +
 [source, bash]
 --------------------------------------------------------------
@@ -295,11 +305,12 @@ Received Data: "250bf1518c7527a03249858687714376"
     ------------------------------------
 ----------------------------------------------------------
 +
-If this does not work, it's time to do some troubleshooting.
+If this does not work, it's time to do some <<install-troubleshooting-1,troubleshooting>>.
 +
-. As the root user, start the Apache web server.
+. As the *root* user, start the Apache web server.
 +
-If you encounter errors, refer to the troubleshooting section of this documentation for tips on finding solutions and seeking further assistance
+If you encounter errors, refer to the <<install-troubleshooting-1,troubleshooting>> section 
+of this documentation for tips on finding solutions and seeking further assistance
 from the Evergreen community.
 
 Review Release Notes
