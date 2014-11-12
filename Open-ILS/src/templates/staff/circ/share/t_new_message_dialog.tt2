@@ -23,10 +23,10 @@
           </ul>
         </div>
         <div class="col-md-4 pull-right">
-          <select class="form-control" ng-model="args.penalty">
-            <option ng-selected="args.penalty = ''" value="">[% l('Penalty Type') %]</option>
+          <select class="form-control" ng-model="args.custom_penalty">
+            <option disabled="disabled" ng-selected="args.custom_penalty = ''" value="">[% l('Penalty Type') %]</option>
             <option ng-repeat="penalty in penalties" 
-              ng-selected="args.penalty = penalty.id"
+              ng-selected="args.custom_penalty = penalty.id"
               value="{{penalty.id()}}">{{penalty.label()}}</option>
           </select>
         </div>

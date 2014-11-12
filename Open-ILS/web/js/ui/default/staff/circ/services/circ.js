@@ -1440,7 +1440,11 @@ function($modal , $q , egCore , egAlertDialog , egConfirmDialog) {
                 pen.usr(user_id);
                 pen.org_unit(egCore.auth.user().ws_ou());
                 pen.note(args.note);
-                pen.standing_penalty(args.penalty);
+                if (args.custom_penalty) {
+                    pen.standing_penalty(args.custom_penalty);
+                } else {
+                    pen.standing_penalty(args.penalty);
+                }
                 pen.staff(egCore.auth.user().id());
                 pen.set_date('now');
                 return egCore.pcrud.create(pen);
