@@ -90,7 +90,7 @@ function initPage() {
             adminPermOrgs = list;
             loadFundGrid(
                 lfGrid.urlUserData.year
-                    || new openils.CGI().param('year') 
+                    || new openils.CGI().param('year')
                     || new Date().getFullYear().toString());
         },
         true, true
