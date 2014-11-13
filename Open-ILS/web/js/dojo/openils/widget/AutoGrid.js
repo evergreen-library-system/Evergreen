@@ -40,7 +40,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
             suppressLinkedFields : null, // list of fields whose linked display data should not be fetched from the server
             urlNavigation : false,
 
-            // When using urlNavigation, this is a stash where the 
+            // When using urlNavigation, this is a stash where the
             // caller can place arbitrary data to be passed around
             // between pages.
             urlUserData : {},
@@ -66,7 +66,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                 this.overrideEditWidgets = {};
                 this.overrideEditWidgetClass = {};
                 this.overrideWidgetArgs = {};
-                this.extractUrlOps(); 
+                this.extractUrlOps();
 
 		this.nls = dojo.i18n.getLocalization('openils.widget', 'AutoFieldWidget');
 
@@ -101,7 +101,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                             self.cachedQueryOpts.offset = self.displayOffset += self.displayLimit;
                             if (self.urlNavigation) {
                                 self.applyAndExecuteUrlOps(
-                                    self.cachedQueryOpts.offset, 
+                                    self.cachedQueryOpts.offset,
                                     self.cachedQuerySearch
                                 );
                             } else {
@@ -128,7 +128,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                                             {fmClass:self.fmClass, suppressFilterFields:self.suppressFilterFields})
 
                                         self.filterDialog.onApply = function(filter) {
-                                            if (self.urlNavigation) { 
+                                            if (self.urlNavigation) {
                                                 self.applyAndExecuteUrlOps(0, filter);
 
                                             } else {
@@ -644,7 +644,6 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                         this.urlOpsApplied = true;
                         // on the first page load, apply the ops from the URL
                         if (this.urlOps) {
-                            console.log('applying url ops: ' + js2JSON(this.urlOps));
                             opts.offset = self.displayOffset = this.urlOps.offset;
                             search = dojo.mixin(search || {}, this.urlOps.filter);
                         }
