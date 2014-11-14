@@ -626,8 +626,12 @@ function vlLoadMatchUI(recId) {
     var retrieve = ['open-ils.search', 'open-ils.search.biblio.record_entry.slim.retrieve'];
     var params = [records];
     if(currentType == 'auth') {
-        retrieve = ['open-ils.cat', 'open-ils.cat.authority.record.retrieve'];
-        params = [authtoken, records, {clear_marc:1}];
+        retrieve = ['open-ils.pcrud', 'open-ils.pcrud.search.are.atomic'];
+        // retrieve all authority record fields except 'marc' for lightness
+        var fields = fieldmapper.IDL.fmclasses.are.fields
+            .filter(function(f) {return (!f.virtual && f.name != 'marc')})
+            .map(function(f) {return f.name});
+        params = [authtoken, {id : records}, {select : {are : fields}}]
     }
 
     fieldmapper.standardRequest(
@@ -641,7 +645,7 @@ function vlLoadMatchUI(recId) {
 
                 /* ui mangling */
                 displayGlobalDiv('vl-match-div');
-                resetVlMatchGridLayout();
+                resetVlMatchGridLayout(currentType);
                 currentMatchedRecords = recs;
                 vlMatchGrid.setStructure(vlMatchGridLayout);
 
@@ -1148,6 +1152,12 @@ function vlToggleQueueGridSelect() {
 
 var handleRetrieveRecords = function() {
     buildRecordGrid(currentType);
+
+    if (currentType.match(/auth/)) {
+        openils.Util.hide('vl-queue-summary-import-item-summary');
+    } else {
+        openils.Util.show('vl-queue-summary-import-item-summary', 'table-body');
+    }
     vlFetchQueueSummary(currentQueueId, currentType, 
         function(summary) {
             dojo.byId('vl-queue-summary-name').innerHTML = summary.queue.name();

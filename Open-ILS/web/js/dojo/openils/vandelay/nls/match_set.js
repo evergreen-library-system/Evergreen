@@ -12,5 +12,6 @@
     "WORKING_MP_HERE": "Choose from among the three buttons above to add a new match point.",
     "WORKING_QM_HERE": "Use buttons above and to the right to add new quality metrics.",
     "SVF": "Record Attribute",
-    "MATCH_SCORE": "Match score ${0}"
+    "MATCH_SCORE": "Match score ${0}",
+    "HEADING_MATCH": "Normalized Heading"
 }

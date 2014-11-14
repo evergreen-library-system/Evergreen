@@ -1,6 +1,6 @@
 <script type="text/javascript">
     var vlMatchGridLayout;
-    function resetVlMatchGridLayout() {
+    function resetVlMatchGridLayout(recordType) {
         vlMatchGridLayout = [{
             defaultCell: {styles: 'text-align: center;'},
             cells : [[
@@ -21,10 +21,19 @@
                 {name: '[% l('Create Date') %]', field:'create_date', get: vlGetDateTimeField},
                 {name: '[% l('Last Edit Date') %]', field:'edit_date', get: vlGetDateTimeField},
                 {name: '[% l('Source') %]', field:'source'},
-                {name: '[% l('TCN Source') %]', field:'tcn_source'},
-                {name: '[% l('TCN Value') %]', field:'tcn_value'}
             ]]
         }];
+
+        if (recordType == 'auth') {
+            vlMatchGridLayout[0].cells[0].push(
+                {name: '[% l("Heading") %]', field:'heading'}
+            );
+        } else {
+            vlMatchGridLayout[0].cells[0].push(
+                {name: '[% l('TCN Source') %]', field:'tcn_source'},
+                {name: '[% l('TCN Value') %]', field:'tcn_value'}
+            );
+        }
     }
 </script>
 <h1>[% l('Import Matches') %]</h1><br/>

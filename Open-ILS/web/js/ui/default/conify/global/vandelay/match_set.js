@@ -120,6 +120,27 @@ var NodeEditorAbstract = {
             );
             return rows;
         },
+        "heading" : function() {
+            var tr = dojo.create("tr");
+            dojo.create(
+                "label", {
+                    "for": "heading-input", 
+                    "innerHTML": localeStrings.HEADING_MATCH
+                }, dojo.create("td", null, tr)
+            );
+
+            dojo.create(
+                "input", {
+                    "id": "heading-input",
+                    "type": "checkbox",
+                    "checked": true,
+                    "disabled": true, // if you don't want it, don't use it.
+                    "fmfield": "heading"
+                }, dojo.create("td", null, tr)
+            );
+
+            return [tr];
+        },
         "bool_op": function() {
             var tr = dojo.create("tr");
             dojo.create(
@@ -246,13 +267,21 @@ function QualityNodeEditor() {
 
 function NodeEditor() {
     var self = this;
-    this.foi = ["tag", "svf", "bool_op"]; /* Fields of Interest - starting points for UI */
+    this.foi = ["tag", "svf", "heading", "bool_op"]; /* Fields of Interest - starting points for UI */
 
     this._init = function(dnd_source, node_editor_container) {
         this._consistent_controls_query =
             "[consistent-controls], [point-controls]";
         this.dnd_source = dnd_source;
         this.node_editor_container = dojo.byId(node_editor_container);
+
+        // hide match point types which are not relevent to
+        // the current record type
+        if (match_set.mtype() == 'authority') {
+            openils.Util.hide('record-attr-btn');
+        } else {
+            openils.Util.hide('heading-match-btn');
+        }
     };
 
     this.clear = function() {
@@ -353,6 +382,10 @@ function render_vmsp_label(point, minimal) {
                     localeStrings.MATCH_SCORE, [point.quality()]
                 )
         );
+    } else if (point.heading() === true || point.heading() == 't') {
+        return localeStrings.HEADING_MATCH +
+            " | " + dojo.string.substitute(
+                localeStrings.MATCH_SCORE, [point.quality()]);
     } else {
         return (openils.Util.isTrue(point.negate()) ? "NOT " : "") +
             point.tag() + " \u2021" + point.subfield() + (minimal ? "" : " | " +
@@ -545,7 +578,8 @@ function my_init() {
 
     /* No-one should have hundreds of these or anything, but theoretically
      * this could be problematic with a big enough list of crad objects. */
-    _crads = pcrud.retrieveAll("crad", {"order_by": {"crad": "label"}});
+    _crads = match_set.mtype() == 'authority' ? [] :
+        pcrud.retrieveAll("crad", {"order_by": {"crad": "label"}});
 
     var match_set_tree = fieldmapper.standardRequest(
         ["open-ils.vandelay", "open-ils.vandelay.match_set.get_tree"],

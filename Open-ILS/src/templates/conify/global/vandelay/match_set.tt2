@@ -38,7 +38,7 @@
         [%# for the origin of these hard coded options, see the definition
         of vandelay.match_set.mtype in 012.schema.vandelay.sql %]
         <option value="biblio">[% l('biblio') %]</option>
-        <!-- XXX: nah <option value="authority">[% l('authority') %]</option> -->
+        <option value="authority">[% l('authority') %]</option>
         <!-- XXX: nah <option value="mfhd">[% l('mfhd') %]</option> -->
     </select>
 </div>

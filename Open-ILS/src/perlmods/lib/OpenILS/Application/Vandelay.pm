@@ -123,6 +123,7 @@ sub create_auth_queue {
     $queue->name( $name );
     $queue->owner( $owner );
     $queue->queue_type( $type ) if ($type);
+    $queue->match_set($match_set) if $match_set;
 
     my $new_q = $e->create_vandelay_authority_queue( $queue );
     $e->die_event unless ($new_q);
@@ -914,7 +915,7 @@ sub import_record_list_impl {
 
     my $overlay_func = 'vandelay.overlay_bib_record';
     my $auto_overlay_func = 'vandelay.auto_overlay_bib_record';
-    my $auto_overlay_best_func = 'vandelay.auto_overlay_bib_record_with_best'; # XXX bib-only
+    my $auto_overlay_best_func = 'vandelay.auto_overlay_bib_record_with_best';
     my $retrieve_func = 'retrieve_vandelay_queued_bib_record';
     my $update_func = 'update_vandelay_queued_bib_record';
     my $search_func = 'search_vandelay_queued_bib_record';
@@ -932,6 +933,7 @@ sub import_record_list_impl {
     if($type eq 'auth') {
         $overlay_func =~ s/bib/authority/o; 
         $auto_overlay_func =~ s/bib/authority/o; 
+        $auto_overlay_best_func =~ s/bib/authority/o;
         $retrieve_func =~ s/bib/authority/o;
         $retrieve_queue_func =~ s/bib/authority/o;
         $update_queue_func =~ s/bib/authority/o;
@@ -2085,7 +2087,8 @@ sub _walk_new_vmsp {
     my $point = new Fieldmapper::vandelay::match_set_point;
     $point->parent($parent_id);
     $point->match_set($match_set_id);
-    $point->$_($node->$_) for (qw/bool_op svf tag subfield negate quality/);
+    $point->$_($node->$_) 
+        for (qw/bool_op svf tag subfield negate quality heading/);
 
     $e->create_vandelay_match_set_point($point) or return $e->die_event;
 

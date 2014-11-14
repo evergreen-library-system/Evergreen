@@ -31,6 +31,8 @@
                                 <tr><td>[% l('Records in Queue:') %]</td><td> <span style='font-weight:bold;' id='vl-queue-summary-total-count'></span></td></tr>
                                 <tr><td>[% l('Records Imported:') %]</td><td> <span style='font-weight:bold;' id='vl-queue-summary-import-count'></span></td></tr>
                                 <tr><td>[% l('Record Import Failures') %]</td><td> <span style='font-weight:bold;' id='vl-queue-summary-rec-error-count'></span></td></tr>
+                            </tbody>
+                            <tbody id='vl-queue-summary-import-item-summary'>
                                 <tr><td>[% l('Items in Queue') %]</td><td> <span style='font-weight:bold;' id='vl-queue-summary-import-item-count'></span></td></tr>
                                 <tr><td>[% l('Items Imported') %]</td><td> <span style='font-weight:bold;' id='vl-queue-summary-import-item-imported-count'></span></td></tr>
                                 <tr><td>[% l('Item Import Failures') %]</td><td> <span style='font-weight:bold;' id='vl-queue-summary-item-error-count'></span></td></tr>

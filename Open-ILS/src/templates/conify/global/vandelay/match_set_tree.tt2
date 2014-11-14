@@ -84,9 +84,10 @@
         <span id="expr-preview"></span>
     </div>
     <div id="vmsp-buttons">
-        Add new
-        <button onclick="node_editor.add('svf');">[% l('Record Attribute') %]</button>
+        [% l('Add new') %]
+        <button id='record-attr-btn' onclick="node_editor.add('svf');">[% l('Record Attribute') %]</button>
         <button onclick="node_editor.add('tag');">[% l('MARC Tag and Subfield') %]</button>
+        <button id='heading-match-btn' onclick="node_editor.add('heading');">[% l('Normalized Authority Heading') %]</button>
         <button onclick="node_editor.add('bool_op');">[% l('Boolean Operator') %]</button>
     </div>
 </div>
