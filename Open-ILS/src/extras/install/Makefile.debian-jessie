@@ -94,6 +94,24 @@ PGSQL_SERVER_DEBS_93 = \
 	postgresql-plperl-9.3 \
 	postgresql-server-dev-9.3
 
+# nodejs-legacy creates a symlink for /usr/bin/node -> /usr/bin/nodejs
+# which is needed by our npm-installed packages
+DEVELOPER_DEBS = \
+	nodejs-legacy \
+	npm
+
+PACKAGER_DEBS = \
+	translate-toolkit \
+	python-dev \
+	python-levenshtein \
+	python-polib \
+	python-setuptools \
+	python-simplejson \
+	python-lxml \
+	zip \
+	unzip \
+	nsis
+
 all:
 	make -f $(DIR)/Makefile.debian install_debs
 	make -f $(DIR)/Makefile.debian test_for_libdbi_pkg
@@ -105,6 +123,17 @@ all:
 
 install_postgres_server:
 	make -f $(DIR)/Makefile.debian DEBS="$(PGSQL_SERVER_DEBS_93)"
+
+# note: if/when grunt-cli and bower are available as 
+# packages, use the packaged versions instead.
+install_developer:
+	make -f $(DIR)/Makefile.debian DEBS="$(DEVELOPER_DEBS)"
+	npm update
+	npm install -g grunt-cli
+	npm install -g bower
+
+install_packager:
+	make -f $(DIR)/Makefile.debian DEBS="$(PACKAGER_DEBS)"
 
 clean:
 	make -f $(DIR)/Makefile.common clean

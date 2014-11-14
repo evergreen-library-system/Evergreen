@@ -27,6 +27,16 @@ install_libdbi:
 	cd $(LIBDBI_DRIVERS) && ./configure  \
 		--disable-docs --with-pgsql --enable-libdbi && make all install  
 
+# NOTE: Deprecate me with wheezy / precise
+install_nodejs_from_source:
+	git clone https://github.com/joyent/node.git
+	cd node; \
+	git checkout -b $(NODEJS_SOURCE_VERSION) $(NODEJS_SOURCE_VERSION); \
+	./configure && make && make install
+	npm update
+	npm install -g grunt-cli
+	npm install -g bower
+
 clean:
 	make -C $(LIBDBI) clean
 	make -C $(LIBDBI_DRIVERS) clean

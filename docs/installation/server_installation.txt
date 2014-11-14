@@ -40,14 +40,8 @@ Skip this section if you are using an official release tarball downloaded
 from http://evergreen-ils.org/downloads
 
 Developers working directly with the source code from the Git repository,
-rather than an official release tarball, must install some extra packages
-and perform one step before they can proceed with the `./configure` step.
-
-As the *root* Linux account, install the following packages:
-
-  * autoconf
-  * automake
-  * libtool
+rather than an official release tarball, must perform one step before they 
+can proceed with the `./configure` step.
 
 As the *user* Linux account, issue the following command in the Evergreen
 source directory to generate the configure script and Makefiles:
@@ -110,6 +104,29 @@ ldconfig
 ------------------------------------------------------------------------------
 echo "/usr/lib64/dbd" > /etc/ld.so.conf.d/eg.conf
 ldconfig
+------------------------------------------------------------------------------
+
+6. OPTIONAL: Developer additions
++
+To perform certain developer tasks from a Git source code checkout, 
+additional packages may be required.  As the *root* Linux account:
++
+ * To install packages needed for retriving and managing web dependencies,
+   use the <osname>-developer Makefile.install target.  Currently, 
+   this is only needed for building and installing the (preview) browser 
+   staff client.
++
+[source, bash]
+------------------------------------------------------------------------------
+make -f Open-ILS/src/extras/Makefile.install <osname>-developer
+------------------------------------------------------------------------------
++
+ * To install packages required for building Evergreen release bundles, use
+   the <osname>-packager Makefile.install target.
++
+[source, bash]
+------------------------------------------------------------------------------
+make -f Open-ILS/src/extras/Makefile.install <osname>-packager
 ------------------------------------------------------------------------------
 
 Configuration and compilation instructions

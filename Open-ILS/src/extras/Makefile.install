@@ -46,6 +46,10 @@ export LIBDBI=libdbi-0.8.3
 export LIBDBI_DRIVERS=libdbi-drivers-0.8.3
 export LIBDBI_HOST=http://open-ils.org/~denials/evergreen
 
+# some OSes require a source install of NodeJS.
+# NOTE: Deprecate me with wheezy / precise
+export NODEJS_SOURCE_VERSION=v0.10.28
+
 # As this Makefile is designed to be used by a make process running as
 # root, this will avoid problems on some systems when tar extracts
 # files and tries to give them the same UID/GID as they have in their
@@ -90,5 +94,23 @@ postgres-server-ubuntu-precise:
 	@make -f $(DIR)/Makefile.ubuntu-precise install_postgres_server
 postgres-server-fedora:
 	@make -f $(DIR)/Makefile.fedora install_postgres_server
+
+ubuntu-trusty-developer:
+	@make -f $(DIR)/Makefile.ubuntu-trusty install_developer
+debian-jessie-developer:
+	@make -f $(DIR)/Makefile.debian-jessie install_developer
+ubuntu-precise-developer:
+	@make -f $(DIR)/Makefile.ubuntu-precise install_developer
+debian-wheezy-developer:
+	@make -f $(DIR)/Makefile.debian-wheezy install_developer
+
+ubuntu-trusty-packager:
+	@make -f $(DIR)/Makefile.ubuntu-trusty install_packager
+debian-jessie-packager:
+	@make -f $(DIR)/Makefile.debian-jessie install_packager
+ubuntu-precise-packager:
+	@make -f $(DIR)/Makefile.ubuntu-precise install_packager
+debian-wheezy-packager:
+	@make -f $(DIR)/Makefile.debian-wheezy install_packager
 
 # vim:noet:sw=4:ts=4:
