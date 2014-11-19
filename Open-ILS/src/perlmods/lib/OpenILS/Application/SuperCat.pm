@@ -356,7 +356,7 @@ sub _label_sortkey_from_label {
                 "open-ils.cstore.direct.asset.call_number.search.atomic",
                 { label_sortkey
                              => { ">=" => [$closest_cn->[0]->label_class->normalizer, $label] },
-                  owning_lib => $ou_ids,
+                  (scalar(@$ou_ids) ? (owning_lib => $ou_ids) : ()),
                   deleted    => 'f',
                   @$cp_filter
                 },
