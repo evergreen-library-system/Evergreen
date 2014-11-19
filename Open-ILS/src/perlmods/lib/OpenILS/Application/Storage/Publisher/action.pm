@@ -1042,14 +1042,14 @@ sub generate_fines {
     my $self = shift;
     my $client = shift;
     my $circ = shift;
-    my $stop_fines_reasons = shift;
+    my $overbill = shift;
 
     local $OpenILS::Application::Storage::WRITE = 1;
 
     my @circs;
     if ($circ) {
         push @circs,
-            action::circulation->search_where( { id => $circ, stop_fines => $stop_fines_reasons } ),
+            action::circulation->search_where( { id => $circ, stop_fines => undef } ),
             booking::reservation->search_where( { id => $circ, return_time => undef, cancel_time => undef } );
     } else {
         push @circs, overdue_circs();
@@ -1132,6 +1132,10 @@ sub generate_fines {
 
             my $f_idx = 0;
             my $fine = $fines[$f_idx] if (@fines);
+            if ($overbill) {
+                $fine = $fines[++$f_idx] while ($fine and $fine->voided);
+            }
+
             my $current_fine_total = 0;
             $current_fine_total += int($_->amount * 100) for (grep { $_ and !$_->voided } @fines);
     
