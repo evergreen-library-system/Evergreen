@@ -347,6 +347,14 @@ sub run_method {
     } else {
 
         $circulator->editor->commit;
+
+        if ($circulator->generate_lost_overdue) {
+            # Generating additional overdue billings has to happen after the 
+            # main commit and before the final respond() so the caller can
+            # receive the latest transaction summary.
+            my $evt = $circulator->generate_lost_overdue_fines;
+            $circulator->bail_on_events($evt) if $evt;
+        }
     }
     
     $conn->respond_complete(circ_events($circulator));
@@ -528,6 +536,7 @@ my @AUTOLOAD_FIELDS = qw/
     skip_deposit_fee
     skip_rental_fee
     use_booking
+    generate_lost_overdue
     clear_expired
     retarget_mode
     hold_as_transit
@@ -2507,26 +2516,8 @@ sub do_checkin {
             " open circs for copy " .$self->copy->id."!!") if @$circs > 1;
     }
 
-    my $ignore_stop_fines = undef;
-    if ($self->circ) {
-
-        # if this circ is LOST and we are configured to generate overdue 
-        # fines for lost items on checkin (to fill the gap between mark 
-        # lost time and when the fines would have naturally stopped), tell 
-        # the fine generator to ignore the stop-fines value on this circ.
-        my $stat = $U->copy_status($self->copy->status)->id;
-        if ($stat == OILS_COPY_STATUS_LOST) {
-            $ignore_stop_fines = $self->circ->stop_fines if
-                $U->ou_ancestor_setting_value(
-                    $self->circ_lib, 
-                    OILS_SETTING_GENERATE_OVERDUE_ON_LOST_RETURN, 
-                    $self->editor
-                );
-        }
-
-        # run the fine generator against this circ
-        $self->generate_fines_start(undef, $ignore_stop_fines);
-    }
+    # run the fine generator against this circ, if this circ is there
+    $self->generate_fines_start if $self->circ;
 
     if( $self->checkin_check_holds_shelf() ) {
         $self->bail_on_events(OpenILS::Event->new('NO_CHANGE'));
@@ -3352,7 +3343,6 @@ sub generate_fines {
 sub generate_fines_start {
    my $self = shift;
    my $reservation = shift;
-   my $ignore_stop_fines = shift;
    my $dt_parser = DateTime::Format::ISO8601->new;
 
    my $obj = $reservation ? $self->reservation : $self->circ;
@@ -3371,7 +3361,7 @@ sub generate_fines_start {
       $self->{_gen_fines_req} = OpenSRF::AppSession->create('open-ils.storage') 
           ->request(
              'open-ils.storage.action.circulation.overdue.generate_fines',
-             $obj->id, $ignore_stop_fines
+             $obj->id
           );
    }
 
@@ -3592,6 +3582,16 @@ sub checkin_handle_lost_or_longoverdue {
             $circ_lib, $args{ous_void_proc_fee}, $self->editor) || 0;
         my $restore_od = $U->ou_ancestor_setting_value(
             $circ_lib, $args{ous_restore_overdue}, $self->editor) || 0;
+
+        # for reference: generate-overdues-on-long-overdue-checkin is not 
+        # supported because it doesn't make any sense that a circ would be 
+        # marked as long-overdue before it was done being regular-overdue
+        if (!$args{is_longoverdue}) {
+            $self->generate_lost_overdue(1) if 
+                $U->ou_ancestor_setting_value($circ_lib, 
+                    OILS_SETTING_GENERATE_OVERDUE_ON_LOST_RETURN, 
+                    $self->editor);
+        }
 
         $self->checkin_handle_lost_or_lo_now_found(
             $args{void_cost_btype}, $args{is_longoverdue}) if $void_cost;
@@ -4045,6 +4045,60 @@ sub checkin_handle_lost_or_lo_now_found_restore_od {
                         unless $self->editor->update_money_billing($bill);
         }
     }
+}
+
+# ------------------------------------------------------------------
+# Lost-then-found item checked in.  This sub generates new overdue
+# fines, beyond the point of any existing and possibly voided 
+# overdue fines, up to the point of final checkin time (or max fine
+# amount).  
+# ------------------------------------------------------------------
+sub generate_lost_overdue_fines {
+    my $self = shift;
+    my $circ = $self->circ;
+    my $e = $self->editor;
+
+    # Re-open the transaction so the fine generator can see it
+    if($circ->xact_finish or $circ->stop_fines) {
+        $e->xact_begin;
+        $circ->clear_xact_finish;
+        $circ->clear_stop_fines;
+        $circ->clear_stop_fines_time;
+        $e->update_action_circulation($circ) or return $e->die_event;
+        $e->xact_commit;
+    }
+
+    $e->xact_begin; # generate_fines expects an in-xact editor
+    $self->generate_fines;
+    $circ = $self->circ; # generate fines re-fetches the circ
+    
+    my $update = 0;
+
+    # Re-close the transaction if no money is owed
+    my ($obt) = $U->fetch_mbts($circ->id, $e);
+    if ($obt and $obt->balance_owed == 0) {
+        $circ->xact_finish('now');
+        $update = 1;
+    }
+
+    # Set stop fines if the fine generator didn't have to
+    unless($circ->stop_fines) {
+        $circ->stop_fines(OILS_STOP_FINES_CHECKIN);
+        $circ->stop_fines_time('now');
+        $update = 1;
+    }
+
+    # update the event data sent to the caller within the transaction
+    $self->checkin_flesh_events;
+
+    if ($update) {
+        $e->update_action_circulation($circ) or return $e->die_event;
+        $e->commit;
+    } else {
+        $e->rollback;
+    }
+
+    return undef;
 }
 
 1;
