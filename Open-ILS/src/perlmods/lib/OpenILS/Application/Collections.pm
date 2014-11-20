@@ -295,7 +295,7 @@ sub process_users_of_interest_results {
             id            => $u->id,
             dob        => $u->dob,
             profile    => $u->profile->name,
-            barcode    => $u->card->barcode,
+            barcode    => $u->card ? $u->card->barcode : undef ,
             groups    => [ map { $_->name } @{$u->groups} ],
         };
 
