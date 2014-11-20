@@ -1,6 +1,7 @@
 #!/usr/bin/perl
-# Copyright (C) 2008-2010 Equinox Software, Inc.
-# Author: Bill Erickson <erickson@esilibrary.com>
+# Copyright (C) 2008-2014 Equinox Software, Inc.
+# Copyright (C) 2014 King County Library System
+# Author: Bill Erickson <berickxx@gmail.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -11,286 +12,332 @@
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-
-
-use strict; use warnings;
+#
+# ---------------------------------------------------------------
+# Sends MARC records, either from a file or from data delivered
+# via the network, to open-ils.vandelay to be imported.
+# ---------------------------------------------------------------
+use strict; 
+use warnings;
 use Net::Server::PreFork;
 use base qw/Net::Server::PreFork/;
+
+require 'oils_header.pl';
+use vars qw/$apputils $authtoken/;
+
+use Getopt::Long;
 use MARC::Record;
 use MARC::Batch;
-use MARC::File::XML ( BinaryEncoding => 'UTF-8' );
+use MARC::File::XML (BinaryEncoding => 'UTF-8');
 use MARC::File::USMARC;
-
-use Data::Dumper;
 use File::Basename qw/fileparse/;
 use File::Temp qw/tempfile/;
-use Getopt::Long qw(:DEFAULT GetOptionsFromArray);
-use Pod::Usage;
-use Socket;
-
-use OpenSRF::Utils::Logger qw/$logger/;
 use OpenSRF::AppSession;
-use OpenSRF::EX qw/:try/;
-use OpenILS::Utils::Cronscript;
+use OpenSRF::Utils::Logger qw/$logger/;
 use OpenSRF::Transport::PeerHandle;
-require 'oils_header.pl';
-use vars qw/$apputils/;
+use OpenSRF::Utils::SettingsClient;
 
-my $vl_ses;
+use Data::Dumper;
+$Data::Dumper::Indent=0; # for logging
 
-my $debug = 0;
+# This script will always be an entry point for opensrf, 
+# so go ahead and force log client.
+$ENV{OSRF_LOG_CLIENT} = 1;
 
-my %defaults = (
-    'buffsize=i'    => 4096,
-    'merge-profile=i' => 0,
-    'source=i'      => 1,
-#    'osrf-config=s' => '/openils/conf/opensrf_core.xml',
-    'user=s'        => 'admin',
-    'password=s'    => '',
-    'tempdir=s'     => '',
-    'spoolfile=s'   => '',
-    'nolockfile'    => 1,
-    'queue=i'       => 1,
-    'noqueue'       => 0,
-    'nodaemon'      => 0,
-    'wait=i'        => 5,
-    'import-by-queue' => 0,
-    'import-no-match' => 0,
-    'auto-overlay-exact' => 0,
-    'auto-overlay-1match' => 0,
-    'auto-overlay-best-match' => 0
+# these are updated with each new batch of records
+my $cur_rec_type;
+my $cur_rec_source;
+my $cur_queue;
+
+# cache these
+my $cur_merge_profile; # this is an object
+my $bib_merge_profile_obj;
+my $auth_merge_profile_obj;
+
+# options
+my $help        = 0;
+my $osrf_config = '/openils/conf/opensrf_core.xml';
+my $username    = '';
+my $password    = '';
+my $tempdir     = '';
+my $spoolfile   = '';
+my $wait_time   = 5;
+my $verbose     = 0;
+my $bib_merge_profile;
+my $auth_merge_profile;
+my $bib_queue;
+my $auth_queue;
+my $bib_source;
+my $auth_source;
+my $port;
+my $bib_import_no_match;
+my $bib_auto_overlay_exact;
+my $bib_auto_overlay_1match;
+my $bib_auto_overlay_best_match;
+my $auth_import_no_match;
+my $auth_auto_overlay_exact;
+my $auth_auto_overlay_1match;
+my $auth_auto_overlay_best_match;
+
+# deprecated options;  these map to their bib_* equivalents
+my $import_no_match;
+my $auto_overlay_exact;
+my $auto_overlay_1match;
+my $auto_overlay_best_match;
+
+
+
+my $net_server_conf = fileparse($0, '.pl').'.conf';
+
+GetOptions(
+    'osrf-config=s'         => \$osrf_config,
+    'verbose'               => \$verbose,
+    'username=s'            => \$username,
+    'password=s'            => \$password,
+    'tempdir=s'             => \$tempdir,
+    'spoolfile=s'           => \$spoolfile,
+    'wait=i'                => \$wait_time,
+    'merge-profile=i'       => \$bib_merge_profile,
+    'queue=i'               => \$bib_queue,
+    'source=i'              => \$bib_source,
+    'auth-merge-profile=i'  => \$auth_merge_profile,
+    'auth-queue=i'          => \$auth_queue,
+    'auth-source=i'         => \$auth_source,
+
+    # -- deprecated
+    'import-no-match'          => \$import_no_match,
+    'auto-overlay-exact'       => \$auto_overlay_exact,
+    'auto-overlay-1match'      => \$auto_overlay_1match,
+    'auto-overlay-best-match'  => \$auto_overlay_best_match,
+    # --
+
+    'bib-import-no-match'          => \$bib_import_no_match,
+    'bib-auto-overlay-exact'       => \$bib_auto_overlay_exact,
+    'bib-auto-overlay-1match'      => \$bib_auto_overlay_1match,
+    'bib-auto-overlay-best-match'  => \$bib_auto_overlay_best_match,
+    'auth-import-no-match'         => \$auth_import_no_match,
+    'auth-auto-overlay-exact'      => \$auth_auto_overlay_exact,
+    'auth-auto-overlay-1match'     => \$auth_auto_overlay_1match,
+    'auth-auto-overlay-best-match' => \$auth_auto_overlay_best_match,
+    'help'                  => \$help,
+    'net-server-config=s'   => \$net_server_conf,
+    'port=i'                => \$port
 );
 
-$OpenILS::Utils::Cronscript::debug=1 if $debug;
-$Getopt::Long::debug=1 if $debug > 1;
-my $o = OpenILS::Utils::Cronscript->new(\%defaults);
+sub usage {
+    print <<USAGE;
+    --osrf-config
+        Path to OpenSRF configuration file. 
 
-my @script_args = ();
+    --net-server-conf
+        Path to Net::Server configuration file.  Defaults to $net_server_conf.
+        Only required if --spoolfile is not set.
 
-if (grep {$_ eq '--'} @ARGV) {
-    print "Splitting options into groups\n" if $debug;
-    while (@ARGV) {
-        $_ = shift @ARGV;
-        $_ eq '--' and last;    # stop at the first --
-        push @script_args, $_;
-    }
-} else {
-    @script_args = @ARGV;
-    @ARGV = ();
+    --verbose               
+        Log additional details
+
+    --username
+        Evergreen user account which performs the import actions.
+
+    --password
+        Evergreen user account password
+
+    --tempdir
+        MARC data received via the network is stored in a temporary
+        file so Vandelay can access it.  This must be a directory
+        the open-ils.vandelay service can access.  If you want the
+        file deleted after completion, be sure open-ils.vandelay
+        has write access to the directory and the file.
+        This value defaults to the Vandelay data directory, however
+        this configuratoin value is only accessible when run from 
+        the private opensrf domain, which you may not want to do.
+
+    --spoolfile
+        Path to a MARC file to load.  When a --spoolfile is specified,
+        this script will send the file to vandelay for processing,
+        then exit when complete.  In other words, it does not stay
+        alive to accept requests from the network.
+
+    --wait
+        Amount of time in seconds this script will wait after receiving
+        a connection on the socket and before recieving a complete
+        MARC record.  This prevents unintentional denial of service by 
+        clients connecting and never sending anything.
+
+    --merge-profile
+        ID of the vandelay bib record merge profile
+
+    --queue
+        ID of the vandelay bib record queue
+
+    --source
+        ID of the bib source
+
+    --auth-merge-profile
+        ID of the vandelay authority record merge profile
+
+    --auth-queue
+        ID of the vandelay authority record queue
+
+    --auth-source
+        ID of the bib source for authority records
+
+    --bib-import-no-match
+    --bib-auto-overlay-exact
+    --bib-auto-overlay-1match
+    --bib-auto-overlay-best-match
+    --auth-import-no-match
+    --auth-auto-overlay-exact
+    --auth-auto-overlay-1match
+    --auth-auto-overlay-best-match
+
+        Bib and auth import options which map directly to Vandelay import 
+        options.  
+
+        For example: 
+            Apply import-no-match to bibs and auto-overlay-exact to auths.
+
+            $0 --bib-import-no-match --auth-auto-overlay-exact
+
+    --help                  
+        Show this help message
+USAGE
+    exit;
 }
 
-print "Calling MyGetOptions ",
-    (@script_args ? "with options: " . join(' ', @script_args) : 'without options from command line'),
-    "\n" if $debug;
+usage() if $help;
 
-my $real_opts = $o->MyGetOptions(\@script_args);
-$o->bootstrap;
-# GetOptionsFromArray(\@script_args, \%defaults, %defaults); # similar to
-
-$real_opts->{tempdir} ||= tempdir_setting();    # This doesn't go in defaults because it reads config, must come after bootstrap
-
-my $bufsize       = $real_opts->{buffsize};
-my $bib_source    = $real_opts->{source};
-my $osrf_config   = $real_opts->{'osrf-config'};
-my $oils_username = $real_opts->{user};
-my $oils_password = $real_opts->{password};
-my $help          = $real_opts->{help};
-my $merge_profile = $real_opts->{'merge-profile'};
-my $queue_id      = $real_opts->{queue};
-my $tempdir       = $real_opts->{tempdir};
-my $import_by_queue  = $real_opts->{'import-by-queue'};
-   $debug        += $real_opts->{debug};
-
-foreach (keys %$real_opts) {
-    print("real_opt->{$_} = ", $real_opts->{$_}, "\n") if $real_opts->{debug} or $debug;
+if ($import_no_match) {
+    warn "\nimport-no-match is deprecated; use bib-import-no-match\n";
+    $bib_import_no_match = $import_no_match;
 }
-my $wait_time     = $real_opts->{wait};
-my $authtoken     = '';
-
-# DEFAULTS for Net::Server
-my $filename   = fileparse($0, '.pl');
-my $conf_file  = (-r "$filename.conf") ? "$filename.conf" : undef;
-# $conf_file is the Net::Server config for THIS script (not EG), if it exists and is readable
-
-
-# FEEDBACK
-
-pod2usage(1) if $help;
-unless ($oils_password) {
-    print STDERR "\nERROR: password option required for session login\n\n";
-    # pod2usage(1);
+if ($auto_overlay_exact) {
+    warn "\nauto-overlay-exact is deprecated; use bib-auto-overlay-exact\n";
+    $bib_auto_overlay_exact = $auto_overlay_exact;
+}
+if ($auto_overlay_1match) {
+    warn "\nauto-overlay-1match is deprecated; use bib-auto-overlay-1match\n";
+    $bib_auto_overlay_1match = $auto_overlay_1match;
+}
+if ($auto_overlay_best_match) {
+    warn "\nauto-overlay-best-match is deprecated; use bib-auto-overlay-best-match\n";
+    $bib_auto_overlay_best_match = $auto_overlay_best_match;
 }
 
-print Dumper($o) if $debug;
+die "--username AND --password required.  --help for more info.\n" 
+    unless $username and $password;
+die "--bib-queue OR --auth-queue required.  --help for more info.\n" 
+    unless $bib_queue or $auth_queue;
 
-if ($debug) {
-    foreach my $ref (qw/bufsize bib_source osrf_config oils_username oils_password help conf_file debug/) {
-        no strict 'refs';
-        printf "%16s => %s\n", $ref, (eval("\$$ref") || '');
-    }
+sub set_tempdir {
+    return if $tempdir; # already read or user provided
+    $tempdir = OpenSRF::Utils::SettingsClient->new->config_value(
+        qw/apps open-ils.vandelay app_settings databases importer/
+    ) || '/tmp';
 }
 
-print warning();
-print Dumper($real_opts);
+# Sets cur_rec_type to 'auth' if leader/06 of the first 
+# parseable record is 'z', otherwise 'bib'.
+sub set_record_type {
+    my $file_name = shift;
 
-# SUBS
+    my $marctype = 'USMARC';
+    open(F, $file_name) or
+        die "Unable to open MARC file $file_name : $!\n";
+    $marctype = 'XML' if (getc(F) =~ /^\D/o);
+    close F;
 
-sub tempdir_setting {
-    my $ret = $apputils->simplereq( qw# opensrf.settings opensrf.settings.xpath.get
-        /opensrf/default/apps/open-ils.vandelay/app_settings/databases/importer # );
-    return $ret->[0] || '/tmp';
-}
-
-sub warning {
-    return <<WARNING;
-
-WARNING:  This script provides no security layer.  Any client that has 
-access to the server+port can inject MARC records into the system.  
-
-WARNING
-}
-
-sub xml_import {
-    return $apputils->simplereq(
-        'open-ils.cat', 
-        'open-ils.cat.biblio.record.xml.import',
-        @_
-    );
-}
-
-sub old_process_batch_data {
-    my $data = shift or $logger->error("process_batch_data called without any data");
-    my $isfile = shift;
-    $data or return;
-
-    my $handle;
-    if ($isfile) {
-        $handle = $data;
-    } else {
-        open $handle, '<', \$data; 
-    }
-
-    my $batch = MARC::Batch->new('USMARC', $handle);
+    my $batch = new MARC::Batch ($marctype, $file_name);
     $batch->strict_off;
 
-    my $index = 0;
-    my $imported = 0;
-    my $failed = 0;
-
+    my $rec;
+    my $ldr_06 = '';
     while (1) {
-        my $rec;
-        $index++;
-
-        eval { $rec = $batch->next; };
-
-        if ($@) {
-            $logger->error("Failed parsing MARC record $index");
-            $failed++;
-            next;
-        }
-        last unless $rec;   # The only way out
-
-        my $resp = xml_import($authtoken, $rec->as_xml_record, $bib_source);
-
-        # has the session timed out?
-        if (oils_event_equals($resp, 'NO_SESSION')) {
-            new_auth_token();
-            $resp = xml_import($authtoken, $rec->as_xml_record, $bib_source);   # try again w/ new token
-        }
-        oils_event_die($resp);
-        $imported++;
+        eval {$rec = $batch->next};
+        next if $@; # record parse failure
+        last unless $rec;
+        $ldr_06 = substr($rec->leader(), 6, 1) || '';
+        last;
     }
 
-    return ($imported, $failed);
+    $cur_rec_type = $ldr_06 eq 'z' ? 'auth' : 'bib';
+
+    $cur_queue = $cur_rec_type eq 'auth' ? $auth_queue : $bib_queue;
+    $cur_rec_source = $cur_rec_type eq 'auth' ?  $auth_source : $bib_source;
+    set_merge_profile();
 }
 
-sub process_spool { # filename
+# set vandelay options based on command line ops and the type of record
+# currently in process.
+sub compile_vandelay_ops {
 
-    my $marcfile = shift;
-    my @rec_ids;
+    my $vl_ops = {
+        report_all => 1,
+        merge_profile => $cur_merge_profile ? $cur_merge_profile->id : undef
+    };
 
-    if($import_by_queue) {
-
-        # don't collect the record IDs, just spool the queue
-
-        $apputils->simplereq(
-            'open-ils.vandelay', 
-            'open-ils.vandelay.bib.process_spool', 
-            $authtoken, 
-            undef, 
-            $queue_id, 
-            'import', 
-            $marcfile,
-            $bib_source 
-        );
-
+    if ($cur_rec_type eq 'auth') {
+        $vl_ops->{import_no_match} = $auth_import_no_match;
+        $vl_ops->{auto_overlay_exact} = $auth_auto_overlay_exact;
+        $vl_ops->{auto_overlay_1match} = $auth_auto_overlay_1match;
+        $vl_ops->{auto_overlay_best_match} = $auth_auto_overlay_best_match;
     } else {
+        $vl_ops->{import_no_match} = $bib_import_no_match;
+        $vl_ops->{auto_overlay_exact} = $bib_auto_overlay_exact;
+        $vl_ops->{auto_overlay_1match} = $bib_auto_overlay_1match;
+        $vl_ops->{auto_overlay_best_match} = $bib_auto_overlay_best_match;
+    }
 
-        # collect the newly queued record IDs for processing
-
-        my $req = $vl_ses->request(
-            'open-ils.vandelay.bib.process_spool.stream_results',
-            $authtoken, 
-            undef, # cache key not needed
-            $queue_id, 
-            'import', 
-            $marcfile, 
-            $bib_source 
+    # Default to exact match only if not other strategy is selected.
+    $vl_ops->{auto_overlay_exact} = 1
+        if not (
+            $vl_ops->{auto_overlay_1match} or 
+            $vl_ops->{auto_overlay_best_match}
         );
-    
-        while(my $resp = $req->recv) {
 
-            if($req->failed) {
-                $logger->error("Error spooling MARC data: $resp");
+    $logger->info("VL options: ".Dumper($vl_ops)) if $verbose;
+    return $vl_ops;
+}
 
-            } elsif($resp->content) {
-                push(@rec_ids, $resp->content);
-            }
+sub process_spool { 
+    my $file_name = shift; # filename
+
+    set_record_type($file_name);
+
+    my $ses = OpenSRF::AppSession->create('open-ils.vandelay');
+    my $req = $ses->request(
+        "open-ils.vandelay.$cur_rec_type.process_spool.stream_results",
+        $authtoken, undef, # cache key not needed
+        $cur_queue, 'import', $file_name, $cur_rec_source 
+    );
+
+    my @rec_ids;
+    while(my $resp = $req->recv) {
+
+        if($req->failed) {
+            $logger->error("Error spooling MARC data: $resp");
+
+        } elsif($resp->content) {
+            push(@rec_ids, $resp->content);
         }
     }
 
     return \@rec_ids;
 }
 
-sub bib_queue_import {
+sub import_queued_records {
     my $rec_ids = shift;
-    my $extra = {report_all => 1};
-    $extra->{merge_profile} = $merge_profile if $merge_profile;
-    $extra->{import_no_match} = 1 if $real_opts->{'import-no-match'};
-    $extra->{auto_overlay_1match} = 1 if $real_opts->{'auto-overlay-1match'};
-    $extra->{auto_overlay_best_match} = 1 if $real_opts->{'auto-overlay-best-match'};
+    my $vl_ops = compile_vandelay_ops();
 
-    # default to exact match if no strategy is chosen
-    $extra->{auto_overlay_exact} = 1 
-        if $real_opts->{'auto-overlay-exact'} or
-        not ($extra->{auto_overlay_1match} or $extra->{auto_overlay_best_match});
-
-    my $req;
-    my @cleanup_recs;
-
-    if($import_by_queue) {
-        # import by queue
-
-        $req = $vl_ses->request(
-            'open-ils.vandelay.bib_queue.import', 
-            $authtoken, 
-            $queue_id, 
-            $extra 
-        );
-
-    } else {
-        # import explicit record IDs
-
-        $req = $vl_ses->request(
-            'open-ils.vandelay.bib_record.list.import', 
-            $authtoken, 
-            $rec_ids, 
-            $extra 
-        );
-    }
+    my $ses = OpenSRF::AppSession->create('open-ils.vandelay');
+    my $req = $ses->request(
+        "open-ils.vandelay.${cur_rec_type}_record.list.import",
+        $authtoken, $rec_ids, $vl_ops 
+    );
 
     # collect the successfully imported vandelay records
     my $failed = 0;
+    my @cleanup_recs;
     while(my $resp = $req->recv) {
          if($req->failed) {
             $logger->error("Error importing MARC data: $resp");
@@ -315,15 +362,15 @@ sub bib_queue_import {
     my $err;
 
     foreach (@cleanup_recs) {
-
-        try { 
-
-            $pcrud->request('open-ils.pcrud.delete.vqbr', $authtoken, $_)->recv;
-
-        } catch Error with {
-            $err = shift;
-            $logger->error("Error deleteing queued bib record $_: $err");
+        eval {
+            $pcrud->request(
+                'open-ils.pcrud.delete.vqbr', $authtoken, $_)->recv;
         };
+
+        if ($@) {
+            $logger->error("Error deleteing queued bib record $_: $@");
+            last;
+        }
     }
 
     $pcrud->request('open-ils.pcrud.transaction.commit', $authtoken)->recv unless $err;
@@ -333,54 +380,29 @@ sub bib_queue_import {
     return (scalar(@cleanup_recs), $failed);
 }
 
-sub process_batch_data {
-    my $data = shift or $logger->error("process_batch_data called without any data");
-    my $isfile = shift;
-    $data or return;
 
-    $vl_ses = OpenSRF::AppSession->create('open-ils.vandelay');
 
-    my ($handle, $tempfile);
-    if (!$isfile) {
-        ($handle, $tempfile) = tempfile("$0_XXXX", DIR => $tempdir) or die "Cannot write tempfile in $tempdir";
-        print $handle $data;
-        close $handle;
-    } else {
-        $tempfile = $data;
-    }
-       
-    $logger->info("Calling process_spool on tempfile $tempfile (queue: $queue_id; source: $bib_source)");
-    my $rec_ids = process_spool($tempfile);
-
-    if (oils_event_equals($rec_ids, 'NO_SESSION')) {  # has the session timed out?
-        new_auth_token();
-        $rec_ids = process_spool($tempfile);                # try again w/ new token
-    }
-
-    my ($imported, $failed) = bib_queue_import($rec_ids);
-
-    if (oils_event_equals($imported, 'NO_SESSION')) {  # has the session timed out?
-        new_auth_token();
-        ($imported, $failed) = bib_queue_import();                # try again w/ new token
-    }
-
-    oils_event_die($imported);
-
-    return ($imported, $failed);
+# Each child needs its own opensrf connection.
+sub child_init_hook {
+    OpenSRF::System->bootstrap_client(config_file => $osrf_config);
+    Fieldmapper->import(IDL => 
+        OpenSRF::Utils::SettingsClient->new->config_value("IDL"));
 }
 
-sub process_request {   # The core Net::Server method
-    my $self = shift;
-    my $client = $self->{server}->{client};
 
-    my $sockname = getpeername($client);
-    my ($port, $ip_addr) = unpack_sockaddr_in($sockname);
-    $logger->info("stream parser received contact from ".inet_ntoa($ip_addr));
+# The core Net::Server method
+# Reads streams of MARC data from the network, saves the data as a file,
+# then processes the file via vandelay.
+sub process_request { 
+    my $self = shift;
+    my $client = $self->{server}->{peeraddr}.':'.$self->{server}->{peerport};
+
+    $logger->info("$client opened a new connection");
 
     my $ph = OpenSRF::Transport::PeerHandle->retrieve;
     if(!$ph->flush_socket()) {
-        $logger->error("We received a request, bu we are no longer connected to opensrf.  ".
-            "Exiting and dropping request from $client");
+        $logger->error("We received a request, but we are no longer connected".
+            " to opensrf.  Exiting and dropping request from $client");
         exit;
     }
 
@@ -400,77 +422,77 @@ sub process_request {   # The core Net::Server method
 
     $logger->info("stream parser read " . length($data) . " bytes");
 
-    my ($imported, $failed) = (0, 0);
+    set_tempdir();
 
-    new_auth_token(); # login
+    # copy data to a temporary file so vandelay can scoop it up
+    my ($handle, $tempfile) = tempfile("$0_XXXX", DIR => $tempdir) 
+        or die "Cannot create tempfile in $tempdir : $!";
 
-    if ($real_opts->{noqueue}) {
-        ($imported, $failed) = old_process_batch_data($data);
-    } else {
-        ($imported, $failed) = process_batch_data($data);
-    }
+    print $handle $data or die "Error writing to tempfile $tempfile : $!\n";
+    close $handle;
 
-    my $profile = (!$merge_profile) ? '' :
-        $apputils->simplereq(
-            'open-ils.pcrud', 
-            'open-ils.pcrud.retrieve.vmp', 
-            $authtoken, 
-            $merge_profile)->name;
-
-    my $msg = '';
-    $msg .= "Successfully imported $imported records using merge profile '$profile'\n" if $imported;
-    $msg .= "Failed to import $failed records\n" if $failed;
-    $msg .= "\x00";
-    print $client $msg;
-
-    clear_auth_token(); # logout
+    process_file($tempfile);
 }
 
-sub standalone_process_request {   # The command line version
-    my $file = shift;
+sub set_merge_profile {
+
+    # serve from cache
+
+    return $cur_merge_profile = $bib_merge_profile_obj
+        if $bib_merge_profile_obj and $cur_rec_type eq 'bib';
+
+    return $cur_merge_profile = $auth_merge_profile_obj
+        if $auth_merge_profile_obj and $cur_rec_type eq 'auth';
+
+    # fetch un-cached profile
     
-    $logger->info("stream parser received file processing request for $file");
+    my $profile_id = $cur_rec_type eq 'bib' ?
+        $bib_merge_profile : $auth_merge_profile;
 
-    my $ph = OpenSRF::Transport::PeerHandle->retrieve;
-    if(!$ph->flush_socket()) {
-        $logger->error("We received a request, bu we are no longer connected to opensrf.  ".
-            "Exiting and dropping request for $file");
-        exit;
-    }
+    return $cur_merge_profile = undef unless $profile_id;
 
-    my ($imported, $failed) = (0, 0);
+    $cur_merge_profile = $apputils->simplereq(
+        'open-ils.pcrud', 
+        'open-ils.pcrud.retrieve.vmp', 
+        $authtoken, $profile_id);
+
+    # cache profile for later
+   
+    $auth_merge_profile_obj = $cur_merge_profile if $cur_rec_type eq 'auth';
+    $bib_merge_profile_obj = $cur_merge_profile if $cur_rec_type eq 'bib';
+}
+
+sub process_file {
+    my $file = shift;
 
     new_auth_token(); # login
+    my $rec_ids = process_spool($file);
+    my ($imported, $failed) = import_queued_records($rec_ids);
 
-    if ($real_opts->{noqueue}) {
-        ($imported, $failed) = old_process_batch_data($file, 1);
-    } else {
-        ($imported, $failed) = process_batch_data($file, 1);
+    if (oils_event_equals($imported, 'NO_SESSION')) {  
+        # did the session expire while spooling?
+        new_auth_token(); # retry with new authtoken
+        ($imported, $failed) = import_queued_records($rec_ids);
     }
 
-    my $profile = (!$merge_profile) ? '' :
-        $apputils->simplereq(
-            'open-ils.pcrud', 
-            'open-ils.pcrud.retrieve.vmp', 
-            $authtoken, 
-            $merge_profile)->name;
+    oils_event_die($imported);
 
+    my $profile = $cur_merge_profile ? $cur_merge_profile->name : '';
     my $msg = '';
-    $msg .= "Successfully imported $imported records using merge profile '$profile'\n" if $imported;
-    $msg .= "Failed to import $failed records\n" if $failed;
+    $msg .= "Successfully imported $imported $cur_rec_type records ".
+        "using merge profile '$profile'\n" if $imported;
+    $msg .= "Failed to import $failed $cur_rec_type records\n" if $failed;
     $msg .= "\x00";
     print $msg;
 
     clear_auth_token(); # logout
 }
 
-
 # the authtoken will timeout after the configured inactivity period.
 # When that happens, get a new one.
 sub new_auth_token {
-    $authtoken = oils_login($oils_username, $oils_password, 'staff') 
-        or die "Unable to login to Evergreen as user $oils_username";
-    return $authtoken;
+    oils_login($username, $password, 'staff') 
+        or die "Unable to login to Evergreen as user $username";
 }
 
 sub clear_auth_token {
@@ -479,120 +501,33 @@ sub clear_auth_token {
         'open-ils.auth.session.delete',
         $authtoken
     );
+    $authtoken = undef;
 }
 
-##### MAIN ######
+# -- execution starts here
 
-osrf_connect($osrf_config);
-if ($real_opts->{nodaemon}) {
-    if (!$real_opts->{spoolfile}) {
-        print " --nodaemon mode requested, but no --spoolfile supplied!\n";
-        exit;
-    }
-    standalone_process_request($real_opts->{spoolfile});
-} else {
-    print "Calling Net::Server run ", (@ARGV ? "with command-line options: " . join(' ', @ARGV) : ''), "\n";
-    __PACKAGE__->run(conf_file => $conf_file);
+if ($spoolfile) {
+    # individual files are processed in standalone mode.
+    # No Net::Server innards are necessary.
+
+    child_init_hook(); # force an opensrf connection
+    process_file($spoolfile);
+    exit;
 }
 
-__END__
+# No spoolfile, run in Net::Server mode
 
-=head1 NAME
+warn <<WARNING;
 
-marc_stream_importer.pl - Import MARC records via bare socket connection.
-
-=head1 SYNOPSIS
-
-./marc_stream_importer.pl [common opts ...] [script opts ...] -- [Net::Server opts ...] &
-
-This script uses the EG common options from B<Cronscript>.  See --help output for those.
-
-Run C<perldoc marc_stream_importer.pl> for full documentation.
-
-Note the extra C<--> to separate options for the script wrapper from options for the
-underlying L<Net::Server> options.  
-
-Note: this script has to be run in the same directory as B<oils_header.pl>.
-
-Typical server-style execution will include a trailing C<&> to run in the background.
-
-=head1 DESCRIPTION
-
-This script is a L<Net::Server::PreFork> instance for shoving records into Evergreen from a remote system.
-
-=head1 OPTIONS
-
-The only required option is --password
-
- --password         =<eg_password>
- --user             =<eg_username>  default: admin
- --source           =<bib_source>   default: 1         Integer
- --merge-profile    =<i>            default: 0
- --tempdir          =</temp/dir/>   default: from L<opensrf.conf> <open-ils.vandelay/app_settings/databases/importer>
- --source           =<i>            default: 1
- --import-by-queue  =<i>            default: 0
- --spoolfile        =<import_file>  default: NONE      File to import in --nodaemon mode
- --nodaemon                         default: OFF       When used with --spoolfile, turns off Net::Server mode and runs this utility in the foreground
-
-
-=head2 Old style: --noqueue and associated options
-
-To bypass vandelay queue processing and push directly into the database (as the old style)
-
- --noqueue         default: OFF
- --buffsize =<i>   default: 4096    Buffer size.  Only used by --noqueue
- --wait     =<i>   default: 5       Seconds to read socket before processing.  Only used by --noqueue
-
-=head2 Net::Server Options
-
-By default, the script will use the Net::Server configuration file B<marc_stream_importer.conf>.  You can 
-override this by passing a filepath with the --conf_file option.
-
-Other Net::Server options include: --port=<port> --min_servers=<X> --max_servers=<Y> and --log_file=[path/to/file]
-
-See L<Net::Server> for a complete list.
-
-=head2 Configuration
-
-=head3 OCLC Connexion
-
-To use this script with OCLC Connexion, configure the client as follows:
-
-Under Tools -> Options -> Export (tab)
-   Create -> Choose Connection -> OK -> Leave translation at "None" 
-       -> Create -> Create -> choose TCP/IP (internet) 
-       -> Enter hostname and Port, leave 'Use Telnet Protocol' checked 
-       -> Create/OK your way out of the dialogs
-   Record Characteristics (button) -> Choose 'UTF-8 Unicode' for the Character Set
-   
-
-OCLC and Connexion are trademark/service marks of OCLC Online Computer Library Center, Inc.
-
-=head1 CAVEATS
-
-WARNING: This script provides no inherent security layer.  Any client that has 
+WARNING:  This script provides no security layer.  Any client that has 
 access to the server+port can inject MARC records into the system.  
-Use the available options (like allow/deny) in the Net::Server config file 
-or via the command line to restrict access as necessary.
 
-=head1 EXAMPLES
+WARNING
 
-./marc_stream_importer.pl  \
-    admin open-ils connexion --port 5555 --min_servers 2 \
-    --max_servers=20 --log_file=/openils/var/log/marc_net_importer.log &
+my %args;
+$args{conf_file} = $net_server_conf if -r $net_server_conf;
+$args{port} = $port if $port;
 
-./marc_stream_importer.pl  \
-    admin open-ils connexion --port 5555 --min_servers 2 \
-    --max_servers=20 --log_file=/openils/var/log/marc_net_importer.log &
+__PACKAGE__->run(%args);
 
-=head1 SEE ALSO
 
-L<Net::Server::PreFork>, L<marc_stream_importer.conf>
-
-=head1 AUTHORS
-
-    Bill Erickson <erickson@esilibrary.com>
-    Joe Atzberger <jatzberger@esilibrary.com>
-    Mike Rylander <miker@esilibrary.com> (nodaemon+spoolfile mode)
-
-=cut
