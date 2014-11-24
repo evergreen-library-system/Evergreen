@@ -434,6 +434,7 @@ use OpenILS::Utils::Penalty;
 use OpenILS::Application::Circ::CircCommon;
 use Time::Local;
 
+my $CC = "OpenILS::Application::Circ::CircCommon";
 my $holdcode    = "OpenILS::Application::Circ::Holds";
 my $transcode   = "OpenILS::Application::Circ::Transit";
 my %user_groups;
@@ -2105,7 +2106,7 @@ sub do_reservation_return {
         $self->reservation($reservation);
     }
 
-    $self->generate_fines(1);
+    $self->handle_fines(1);
     $self->reservation->return_time('now');
     $self->update_reservation();
     $self->reshelve_copy if $self->copy;
@@ -2524,7 +2525,7 @@ sub do_checkin {
         }
 
         # run the fine generator against this circ
-        $self->generate_fines(undef, $ignore_stop_fines);
+        $self->handle_fines(undef, $ignore_stop_fines);
     }
 
     if( $self->checkin_check_holds_shelf() ) {
@@ -3334,13 +3335,15 @@ sub put_hold_on_shelf {
 
 
 
-sub generate_fines {
+sub handle_fines {
    my $self = shift;
    my $reservation = shift;
    my $ignore_stop_fines = shift;
    my $dt_parser = DateTime::Format::ISO8601->new;
 
    my $obj = $reservation ? $self->reservation : $self->circ;
+
+   return undef if (!$ignore_stop_fines and $obj->stop_fines);
 
    # If we have a grace period
    if($obj->can('grace_period')) {
@@ -3352,19 +3355,7 @@ sub generate_fines {
       return undef if ($due_date > DateTime->now);
    }
 
-   if (!exists($self->{_gen_fines_req})) {
-      $self->{_gen_fines_req} = OpenSRF::AppSession->create('open-ils.storage') 
-          ->request(
-             'open-ils.storage.action.circulation.overdue.generate_fines',
-             $obj->id, $ignore_stop_fines
-          );
-   }
-   $self->{_gen_fines_req}->wait_complete;
-   delete($self->{_gen_fines_req});
-
-   # refresh the circ in case the fine generator set the stop_fines field
-   $self->reservation($self->editor->retrieve_booking_reservation($id)) if $reservation;
-   $self->circ($self->editor->retrieve_action_circulation($id)) if !$reservation;
+   $CC->generate_fines({circs => [$obj], editor => $self->editor});
 
    return undef;
 }
@@ -3814,7 +3805,9 @@ sub do_renew {
     }
 
     # Run the fine generator against the old circ
-    $self->generate_fines;
+    # XXX This seems unnecessary, given that handle_fines runs in do_checkin
+    # a few lines down.  Commenting out, for now.
+    #$self->handle_fines;
 
     $self->run_renew_permit;
 

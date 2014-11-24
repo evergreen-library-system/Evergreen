@@ -8,8 +8,10 @@ use OpenILS::Event;
 use OpenSRF::Utils::Logger qw(:logger);
 use OpenILS::Utils::CStoreEditor q/:funcs/;
 use OpenILS::Const qw/:const/;
+use POSIX qw(ceil);
 
 my $U = "OpenILS::Application::AppUtils";
+my $parser = DateTime::Format::ISO8601->new;
 
 # -----------------------------------------------------------------
 # Do not publish methods here.  This code is shared across apps.
@@ -282,6 +284,311 @@ sub can_close_circ {
     }
 
     return $can_close;
+}
+
+sub seconds_to_interval_hash {
+        my $interval = shift;
+        my $limit = shift || 's';
+        $limit =~ s/^(.)/$1/o;
+
+        my %output;
+
+        my ($y,$ym,$M,$Mm,$w,$wm,$d,$dm,$h,$hm,$m,$mm,$s);
+        my ($year, $month, $week, $day, $hour, $minute, $second) =
+                ('years','months','weeks','days', 'hours', 'minutes', 'seconds');
+
+        if ($y = int($interval / (60 * 60 * 24 * 365))) {
+                $output{$year} = $y;
+                $ym = $interval % (60 * 60 * 24 * 365);
+        } else {
+                $ym = $interval;
+        }
+        return %output if ($limit eq 'y');
+
+        if ($M = int($ym / ((60 * 60 * 24 * 365)/12))) {
+                $output{$month} = $M;
+                $Mm = $ym % ((60 * 60 * 24 * 365)/12);
+        } else {
+                $Mm = $ym;
+        }
+        return %output if ($limit eq 'M');
+
+        if ($w = int($Mm / 604800)) {
+                $output{$week} = $w;
+                $wm = $Mm % 604800;
+        } else {
+                $wm = $Mm;
+        }
+        return %output if ($limit eq 'w');
+
+        if ($d = int($wm / 86400)) {
+                $output{$day} = $d;
+                $dm = $wm % 86400;
+        } else {
+                $dm = $wm;
+        }
+        return %output if ($limit eq 'd');
+
+        if ($h = int($dm / 3600)) {
+                $output{$hour} = $h;
+                $hm = $dm % 3600;
+        } else {
+                $hm = $dm;
+        }
+        return %output if ($limit eq 'h');
+
+        if ($m = int($hm / 60)) {
+                $output{$minute} = $m;
+                $mm = $hm % 60;
+        } else {
+                $mm = $hm;
+        }
+        return %output if ($limit eq 'm');
+
+        if ($s = int($mm)) {
+                $output{$second} = $s;
+        } else {
+                $output{$second} = 0 unless (keys %output);
+        }
+        return %output;
+}
+
+sub generate_fines {
+    my ($class, $args) = @_;
+    my $circs = $args->{circs};
+      return unless $circs and @$circs;
+    my $e = $args->{editor};
+    # if a client connection is passed in, this will be chatty like
+    # the old storage version
+    my $conn = $args->{conn};
+
+    my $commit = 0;
+    unless ($e) {
+        $e = new_editor(xact => 1);
+        $commit = 1;
+    }
+
+    my %hoo = map { ( $_->id => $_ ) } @{ $e->retrieve_all_actor_org_unit_hours_of_operation };
+
+    my $penalty = OpenSRF::AppSession->create('open-ils.penalty');
+    my $handling_resvs = 0;
+    for my $c (@$circs) {
+
+        my $ctype = ref($c);
+
+        if (!$ctype) { # we received only an idlist, not objects
+            if ($handling_resvs) {
+                $c = $e->retrieve_booking_reservation($c);
+            } elsif (not defined $c) {
+                # an undef value is the indicator that we are moving
+                # from processing circulations to reservations.
+                $handling_resvs = 1;
+                next;
+            } else {
+                $c = $e->retrieve_action_circulation($c);
+            }
+            $ctype = ref($c);
+        }
+
+        $ctype =~ s/^.+::(\w+)$/$1/;
+    
+        my $due_date_method = 'due_date';
+        my $target_copy_method = 'target_copy';
+        my $circ_lib_method = 'circ_lib';
+        my $recurring_fine_method = 'recurring_fine';
+        my $is_reservation = 0;
+        if ($ctype eq 'reservation') {
+            $is_reservation = 1;
+            $due_date_method = 'end_time';
+            $target_copy_method = 'current_resource';
+            $circ_lib_method = 'pickup_lib';
+            $recurring_fine_method = 'fine_amount';
+            next unless ($c->fine_interval);
+        }
+        #TODO: reservation grace periods
+        my $grace_period = ($is_reservation ? 0 : interval_to_seconds($c->grace_period));
+
+        eval {
+#            if ($self->method_lookup('open-ils.storage.transaction.current')->run) {
+#                $logger->debug("Cleaning up after previous transaction\n");
+#                $self->method_lookup('open-ils.storage.transaction.rollback')->run;
+#            }
+#            $self->method_lookup('open-ils.storage.transaction.begin')->run( $client );
+            $logger->info(
+                sprintf("Processing %s %d...",
+                    ($is_reservation ? "reservation" : "circ"), $c->id
+                )
+            );
+
+
+            my $due_dt = $parser->parse_datetime( cleanse_ISO8601( $c->$due_date_method ) );
+    
+            my $due = $due_dt->epoch;
+            my $now = time;
+
+            my $fine_interval = $c->fine_interval;
+            $fine_interval =~ s/(\d{2}):(\d{2}):(\d{2})/$1 h $2 m $3 s/o;
+            $fine_interval = interval_to_seconds( $fine_interval );
+    
+            if ( $fine_interval == 0 || int($c->$recurring_fine_method * 100) == 0 || int($c->max_fine * 100) == 0 ) {
+                $conn->respond( "Fine Generator skipping circ due to 0 fine interval, 0 fine rate, or 0 max fine.\n" ) if $conn;
+                $logger->info( "Fine Generator skipping circ " . $c->id . " due to 0 fine interval, 0 fine rate, or 0 max fine." );
+                return;
+            }
+
+            if ( $is_reservation and $fine_interval >= interval_to_seconds('1d') ) {    
+                my $tz_offset_s = 0;
+                if ($due_dt->strftime('%z') =~ /(-|\+)(\d{2}):?(\d{2})/) {
+                    $tz_offset_s = $1 . interval_to_seconds( "${2}h ${3}m"); 
+                }
+    
+                $due -= ($due % $fine_interval) + $tz_offset_s;
+                $now -= ($now % $fine_interval) + $tz_offset_s;
+            }
+    
+            $conn->respond(
+                "ARG! Overdue $ctype ".$c->id.
+                " for item ".$c->$target_copy_method.
+                " (user ".$c->usr.").\n".
+                "\tItem was due on or before: ".localtime($due)."\n") if $conn;
+    
+            my @fines = @{$e->search_money_billing(
+                { xact => $c->id,
+                  btype => 1,
+                  billing_ts => { '>' => $c->$due_date_method } },
+                { order_by => 'billing_ts DESC'}
+            )};
+
+            my $f_idx = 0;
+            my $fine = $fines[$f_idx] if (@fines);
+            my $current_fine_total = 0;
+            $current_fine_total += int($_->amount * 100) for (grep { $_ and !$U->is_true($_->voided) } @fines);
+    
+            my $last_fine;
+            if ($fine) {
+                $conn->respond( "Last billing time: ".$fine->billing_ts." (clensed format: ".cleanse_ISO8601( $fine->billing_ts ).")") if $conn;
+                $last_fine = $parser->parse_datetime( cleanse_ISO8601( $fine->billing_ts ) )->epoch;
+            } else {
+                $logger->info( "Potential first billing for circ ".$c->id );
+                $last_fine = $due;
+
+                $grace_period = extend_grace_period($class, $c->$circ_lib_method,$c->$due_date_method,$grace_period,undef,$hoo{$c->$circ_lib_method});
+            }
+
+            return if ($last_fine > $now);
+            # Generate fines for each past interval, including the one we are inside
+            my $pending_fine_count = ceil( ($now - $last_fine) / $fine_interval );
+
+            if ( $last_fine == $due                         # we have no fines yet
+                 && $grace_period                           # and we have a grace period
+                 && $now < $due + $grace_period             # and some date math says were are within the grace period
+            ) {
+                $conn->respond( "Still inside grace period of: ". seconds_to_interval( $grace_period )."\n" ) if $conn;
+                $logger->info( "Circ ".$c->id." is still inside grace period of: $grace_period [". seconds_to_interval( $grace_period ).']' );
+                return;
+            }
+
+            $conn->respond( "\t$pending_fine_count pending fine(s)\n" ) if $conn;
+            return unless ($pending_fine_count);
+
+            my $recurring_fine = int($c->$recurring_fine_method * 100);
+            my $max_fine = int($c->max_fine * 100);
+
+            my $skip_closed_check = $U->ou_ancestor_setting_value(
+                $c->$circ_lib_method, 'circ.fines.charge_when_closed');
+            $skip_closed_check = $U->is_true($skip_closed_check);
+
+            my $truncate_to_max_fine = $U->ou_ancestor_setting_value(
+                $c->$circ_lib_method, 'circ.fines.truncate_to_max_fine');
+            $truncate_to_max_fine = $U->is_true($truncate_to_max_fine);
+
+            my ($latest_billing_ts, $latest_amount) = ('',0);
+            for (my $bill = 1; $bill <= $pending_fine_count; $bill++) {
+    
+                if ($current_fine_total >= $max_fine) {
+                    if ($ctype eq 'circulation') {
+                        $c->stop_fines('MAXFINES');
+                        $c->stop_fines_time('now');
+                        $e->update_action_circulation($c);
+                    }
+                    $conn->respond(
+                        "\tMaximum fine level of ".$c->max_fine.
+                        " reached for this $ctype.\n".
+                        "\tNo more fines will be generated.\n" ) if $conn;
+                    last;
+                }
+                
+                # XXX Use org time zone (or default to 'local') once we have the ou setting built for that
+                my $billing_ts = DateTime->from_epoch( epoch => $last_fine, time_zone => 'local' );
+                my $current_bill_count = $bill;
+                while ( $current_bill_count ) {
+                    $billing_ts->add( seconds_to_interval_hash( $fine_interval ) );
+                    $current_bill_count--;
+                }
+
+                my $timestamptz = $billing_ts->strftime('%FT%T%z');
+                if (!$skip_closed_check) {
+                    my $dow = $billing_ts->day_of_week_0();
+                    my $dow_open = "dow_${dow}_open";
+                    my $dow_close = "dow_${dow}_close";
+
+                    if (my $h = $hoo{$c->$circ_lib_method}) {
+                        next if ( $h->$dow_open eq '00:00:00' and $h->$dow_close eq '00:00:00');
+                    }
+    
+                    my @cl = @{$e->search_actor_org_unit_closed_date(
+                            { close_start   => { '<=' => $timestamptz },
+                              close_end => { '>=' => $timestamptz },
+                              org_unit  => $c->$circ_lib_method }
+                    )};
+                    next if (@cl);
+                }
+
+                # The billing amount for this billing normally ought to be the recurring fine amount.
+                # However, if the recurring fine amount would cause total fines to exceed the max fine amount,
+                # we may wish to reduce the amount for this billing (if circ.fines.truncate_to_max_fine is true).
+                my $this_billing_amount = $recurring_fine;
+                if ( $truncate_to_max_fine && ($current_fine_total + $this_billing_amount) > $max_fine ) {
+                    $this_billing_amount = ($max_fine - $current_fine_total);
+                }
+                $current_fine_total += $this_billing_amount;
+                $latest_amount += $this_billing_amount;
+                $latest_billing_ts = $timestamptz;
+
+                my $bill = Fieldmapper::money::billing->new;
+                $bill->xact($c->id);
+                $bill->note("System Generated Overdue Fine");
+                $bill->billing_type("Overdue materials");
+                $bill->btype(1);
+                $bill->amount(sprintf('%0.2f', $this_billing_amount/100));
+                $bill->billing_ts($timestamptz);
+                $e->create_money_billing($bill);
+
+            }
+
+            $conn->respond( "\t\tAdding fines totaling $latest_amount for overdue up to $latest_billing_ts\n" )
+                if ($conn and $latest_billing_ts and $latest_amount);
+
+#            $self->method_lookup('open-ils.storage.transaction.commit')->run;
+
+            # Calculate penalties inline
+            OpenILS::Utils::Penalty->calculate_penalties(
+                $e, $c->usr, $c->$circ_lib_method);
+
+        };
+
+        if ($@) {
+            my $e = $@;
+            $conn->respond( "Error processing overdue $ctype [".$c->id."]:\n\n$e\n" ) if $conn;
+            $logger->error("Error processing overdue $ctype [".$c->id."]:\n$e\n");
+#            $self->method_lookup('open-ils.storage.transaction.rollback')->run;
+            last if ($e =~ /IS NOT CONNECTED TO THE NETWORK/o);
+        }
+    }
+
+    $e->commit if ($commit);
+
+    return undef;
 }
 
 1;
