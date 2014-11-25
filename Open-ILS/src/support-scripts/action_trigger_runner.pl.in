@@ -100,7 +100,8 @@ $0 : Create and process action/trigger events
             @sysconfdir@/action_trigger_filters.json
 
     --run-pending
-        Run pending events
+        Run pending events to send emails or take other actions as specified
+        by the reactor in the event definition.
 
     --process-hooks
         Create hook events
@@ -112,12 +113,11 @@ $0 : Create and process action/trigger events
     --hooks=hook1[,hook2,hook3,...]
         Define which hooks to create events for.  If none are defined,
         it defaults to the list of hooks defined in the --custom-filters option.
+        Requires --process-hooks
 
     --granularity=<label>
-        Run events with {label} granularity setting, or no granularity setting
-
-    --granularity-only
-        Used in combination with --granularity, prevents the running of events with no granularity setting
+        Limit creating events and running pending events to those only
+        with <label> granularity setting.
 
     --debug-stdout
         Print server responses to stdout (as JSON) for debugging
@@ -125,17 +125,24 @@ $0 : Create and process action/trigger events
     --lock-file=<file_name>
         Lock file
 
+    --verbose
+        Show details of script processing.
+
     --help
         Show this help
 
     Examples:
 
-        # To run all pending events.  This is what you tell CRON to run at
-        # regular intervals
+        # To run all pending events that have no granularity set.  This is what 
+        # you tell CRON to run at regular intervals
         perl $0 --osrf-config @sysconfdir@/opensrf_core.xml --run-pending
 
         # To batch create all "checkout.due" events
         perl $0 --osrf-config @sysconfdir@/opensrf_core.xml --hooks=checkout.due --process-hooks
+
+        # To batch create all events for a specific granularity and to send notices for all pending
+        # events with that same granularity.
+        perl $0 --osrf-config @sysconfdir@/opensrf_core.xml --run-pending --granularity=Hourly --process-hooks
 
 HELP
 }
