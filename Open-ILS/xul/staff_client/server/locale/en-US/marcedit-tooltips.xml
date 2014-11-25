@@ -2641,6 +2641,52 @@
       <description>Field link and sequence number</description>
     </subfield>
   </field>
+  <field tag="264" repeatable="true">
+    <name>Production, Publication, Distribution, Manufacture, and Copyright Notice</name>
+    <description>Statement relating to the publication, printing, distribution, issue, release, or production of a work.</description>
+    <indicator position="1" value="#">
+      <description>Not applicable/No information provided/Earliest</description>
+    </indicator>
+    <indicator position="1" value="2">
+      <description>Intervening</description>
+    </indicator>
+    <indicator position="1" value="3">
+      <description>Current/latest</description>
+    </indicator>
+    <indicator position="2" value="0">
+      <description>Production</description>
+    </indicator>
+    <indicator position="2" value="1">
+      <description>Publication</description>
+    </indicator>
+    <indicator position="2" value="2">
+      <description>Distribution</description>
+    </indicator>
+    <indicator position="2" value="3">
+      <description>Manufacture</description>
+    </indicator>
+    <indicator position="2" value="4">
+      <description>Copyright notice date</description>
+    </indicator>
+    <subfield code="a" repeatable="true">
+      <description>Place of production, publication, distribution, manufacture</description>
+    </subfield>
+    <subfield code="b" repeatable="true">
+      <description>Name of producer, publisher, distributor, manufacturer</description>
+    </subfield>
+    <subfield code="c" repeatable="true">
+      <description>Date of production, publication, distribution, manufacture, or copyright notice</description>
+    </subfield>
+    <subfield code="3" repeatable="false">
+      <description>Materials specified</description>
+    </subfield>
+    <subfield code="6" repeatable="false">
+      <description>Linkage</description>
+    </subfield>
+    <subfield code="8" repeatable="true">
+      <description>Field link and sequence number</description>
+    </subfield>
+  </field>
   <field tag="270" repeatable="true">
     <name>Address</name>
     <description>An address (as well as electronic access information such as email, telephone, fax, TTY, etc. numbers) for contacts related to the content of the bibliographic item. Multiple addresses, such as mailing addresses and addresses corresponding to the physical location of an item or facilities, are recorded in separate occurrences of field 270.</description>
@@ -3128,6 +3174,98 @@
     </subfield>
     <subfield code="i" repeatable="false">
       <description>Bearing reference meridian</description>
+    </subfield>
+    <subfield code="6" repeatable="false">
+      <description>Linkage</description>
+    </subfield>
+    <subfield code="8" repeatable="true">
+      <description>Field link and sequence number</description>
+    </subfield>
+  </field>
+  <field tag="344" repeatable="true">
+    <name>Sound Characteristics</name>
+    <description>Technical specifications relating to the encoding of sound in a resource.</description>
+    <indicator position="1" value="#">
+      <description>Undefined</description>
+    </indicator>
+    <indicator position="2" value="#">
+      <description>Undefined</description>
+    </indicator>
+    <subfield code="a" repeatable="true">
+      <description>Type of recording</description>
+    </subfield>
+    <subfield code="b" repeatable="true">
+      <description>Recording medium</description>
+    </subfield>
+    <subfield code="c" repeatable="true">
+      <description>Playing speed</description>
+    </subfield>
+    <subfield code="d" repeatable="true">
+      <description>Groove characteristic</description>
+    </subfield>
+    <subfield code="e" repeatable="true">
+      <description>Track configuration</description>
+    </subfield>
+    <subfield code="f" repeatable="true">
+      <description>Tape configuration</description>
+    </subfield>
+    <subfield code="g" repeatable="true">
+      <description>Configuration of playback channels</description>
+    </subfield>
+    <subfield code="h" repeatable="true">
+      <description>Special playback characteristics</description>
+    </subfield>
+    <subfield code="0" repeatable="true">
+      <description>Authority record control number or standard number</description>
+    </subfield>
+    <subfield code="2" repeatable="false">
+      <description>Source</description>
+    </subfield>
+    <subfield code="3" repeatable="false">
+      <description>Materials specified</description>
+    </subfield>
+    <subfield code="6" repeatable="false">
+      <description>Linkage</description>
+    </subfield>
+    <subfield code="8" repeatable="true">
+      <description>Field link and sequence number</description>
+    </subfield>
+  </field>
+  <field tag="347" repeatable="true">
+    <name>Digital File Characteristics</name>
+    <description>Technical specification relating to the digital encoding of text, image, audio, video, and other types of data in a resource.</description>
+    <indicator position="1" value="#">
+      <description>Undefined</description>
+    </indicator>
+    <indicator position="2" value="#">
+      <description>Undefined</description>
+    </indicator>
+    <subfield code="a" repeatable="true">
+      <description>File type</description>
+    </subfield>
+    <subfield code="b" repeatable="true">
+      <description>Encoding format</description>
+    </subfield>
+    <subfield code="c" repeatable="true">
+      <description>File size</description>
+    </subfield>
+    <subfield code="d" repeatable="true">
+      <description>Resolution</description>
+    </subfield>
+    <subfield code="e" repeatable="true">
+      <description>Regional encoding</description>
+    </subfield>
+    <subfield code="f" repeatable="true">
+      <description>Encoded bitrate</description>
+    </subfield>
+    <subfield code="0" repeatable="true">
+      <description>Authority record control number or standard number</description>
+    </subfield>
+    <subfield code="2" repeatable="false">
+      <description>Source</description>
+    </subfield>
+    <subfield code="3" repeatable="false">
+      <description>Materials specified</description>
     </subfield>
     <subfield code="6" repeatable="false">
       <description>Linkage</description>
