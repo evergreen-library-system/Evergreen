@@ -386,7 +386,7 @@ On your institution's utility server, change to the opensrf user and issue the f
 NOTE: For a busy institution that might have lots of overdue circulations (> 1000) you should take care to do this at some point in the day that won't disrupt other important processes on the utility box.  This could take a while (hours, potentially).
 
 -------------------------------------------------------
-/openils/bin/action_trigger_runner.pl --run-pending --process-hooks --granularity Telephony --granularity-only
+/openils/bin/action_trigger_runner.pl --run-pending --process-hooks --granularity Telephony
 -------------------------------------------------------
 
 When that command finishes, you should have some rows in your *action_trigger.event* table where the "event_def" column matches the ID of the telephony event definition you just set up and the "state" column is "complete".
@@ -575,7 +575,7 @@ On the other hand, if you're eventually going to run telephony notices for holds
 
 -------------------------------------------------------
 # Runs all pending telephony A/T events every half hour (offset by 10 min)
-10,40 * * * * . ~/.bashrc && /openils/bin/action_trigger_runner.pl --osrf-config /openils/conf/opensrf_core.xml --run-pending --process-hooks --granularity Telephony --granularity-only
+10,40 * * * * . ~/.bashrc && /openils/bin/action_trigger_runner.pl --osrf-config /openils/conf/opensrf_core.xml --run-pending --process-hooks --granularity Telephony
 -------------------------------------------------------
 
 Holidays
