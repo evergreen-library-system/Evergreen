@@ -12,8 +12,6 @@
         <select class="form-control" ng-model="args.format" id="export-bucket-format">
           <option value="XML">[% l('MARC XML') %]</option>
           <option value="USMARC">[% l('USMARC') %]</option>
-          <option value="UNIMARC">[% l('UNIMARC') %]</option>
-          <option value="BRE">[% l('Evergreen Record Entry') %]</option>
         </select>
       </div>
       <div class="form-group">
