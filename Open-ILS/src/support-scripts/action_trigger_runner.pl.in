@@ -135,14 +135,14 @@ $0 : Create and process action/trigger events
 
         # To run all pending events that have no granularity set.  This is what 
         # you tell CRON to run at regular intervals
-        perl $0 --osrf-config @sysconfdir@/opensrf_core.xml --run-pending
+        perl $0 --run-pending
 
         # To batch create all "checkout.due" events
-        perl $0 --osrf-config @sysconfdir@/opensrf_core.xml --hooks=checkout.due --process-hooks
+        perl $0 --hooks=checkout.due --process-hooks
 
         # To batch create all events for a specific granularity and to send notices for all pending
         # events with that same granularity.
-        perl $0 --osrf-config @sysconfdir@/opensrf_core.xml --run-pending --granularity=Hourly --process-hooks
+        perl $0 --run-pending --granularity=Hourly --process-hooks
 
 HELP
 }
