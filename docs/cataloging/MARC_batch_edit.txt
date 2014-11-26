@@ -1,0 +1,48 @@
+MARC Batch Edit
+---------------
+This function is used to batch edit MARC records either adding a field, removing a field or changing the contents of a field. 
+
+Record Source::
+This includes options to batch edit identifying MARC records in a record bucket, CSV file or by record id.
+
+Go! (button)::
+This button runs the action defined by the rule template(s).
+
+Action (Rule Type)
+~~~~~~~~~~~~~~~~~~
+Replace::
+Replaces the value in a MARC field for a batch of records.
+Delete::
+Removes a MARC field and its contents from the batch of records.
+Add::
+Use this to add a field and its contents to a batch of records.
+
+Other Template Fields
+~~~~~~~~~~~~~~~~~~~~~
+MARC Tag::
+This is used to identify the field for adding, replacing, or deleting.
+Subfield (optional)::
+Indicates which subfield is being edited.
+MARC Data::
+Use this to indicate the data to add or used in replacing the existing data.
+
+Advanced Matching Restrictions (Optional)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Subfield
+Regular Expression::
+Using PERL syntax for a regular expression to identify the data to be removed or replaced.
+
+.Running a Template to Add, Delete, or Replace MARC data
+. Click Cataloging->MARC Batch Edit
+. Select *Record source*
+. Select the appropriate bucket, load the CSV file or enter record id depending on *Record source* selected
+. Select the *Action Rule*
+. Enter the *MARC Tag* with no indicators (eg. 245)
+. Enter the *subfields* with no spaces.  Subfields are optional. Multiple subfield can be entered such as _auz_.
+. Enter the *MARC Data* which is the value in the fields
+. Enter optional *Advanced Matching Restrictions*
+.. Subfield
+.. Regular Expression (using PERL syntax)
+. Click *Go!*
+. Results page will display indicating the number of records successfully edited
+

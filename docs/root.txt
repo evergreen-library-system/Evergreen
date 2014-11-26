@@ -287,6 +287,8 @@ include::cataloging/conjoined_items.txt[]
 
 include::cataloging/cataloging_electronic_resources.txt[]
 
+include::cataloging/MARC_batch_edit.txt[]
+
 include::cataloging/link_checker.txt[]
 
 
