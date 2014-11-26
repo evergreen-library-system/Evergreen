@@ -15,6 +15,7 @@ var eventDef = null;
 
 function loadEventDef() { 
     eventDefGranularity.attr('value', null);
+    eventDefGranularity.ignoreCase = false;
     edGrid.overrideEditWidgets.granularity = eventDefGranularity;
     edGrid.overrideEditWidgets.granularity.shove = {"create": ""};
     edGrid.loadAll({order_by:{atevdef : 'name, owner, hook, reactor, delay'}});
