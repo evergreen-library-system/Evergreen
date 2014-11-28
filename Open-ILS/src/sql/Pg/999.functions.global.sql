@@ -379,13 +379,6 @@ BEGIN
 		dest_usr := specified_dest_usr;
 	END IF;
 
-	UPDATE actor.usr SET
-		active = FALSE,
-		card = NULL,
-		mailing_address = NULL,
-		billing_address = NULL
-	WHERE id = src_usr;
-
 	-- acq.*
 	UPDATE acq.fund_allocation SET allocator = dest_usr WHERE allocator = src_usr;
 	UPDATE acq.lineitem SET creator = dest_usr WHERE creator = src_usr;
@@ -683,6 +676,15 @@ BEGIN
 			EXIT;
 		END LOOP;
 	END LOOP;
+
+    -- NULL-ify addresses last so other cleanup (e.g. circ anonymization)
+    -- can access the information before deletion.
+	UPDATE actor.usr SET
+		active = FALSE,
+		card = NULL,
+		mailing_address = NULL,
+		billing_address = NULL
+	WHERE id = src_usr;
 
 END;
 $$ LANGUAGE plpgsql;
