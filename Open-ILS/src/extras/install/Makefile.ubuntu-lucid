@@ -17,6 +17,7 @@ export DEBS = \
 	libbusiness-isbn-perl\
 	libbusiness-onlinepayment-authorizenet-perl\
 	libbusiness-onlinepayment-perl\
+	libdate-manip-perl\
 	libdatetime-format-builder-perl\
 	libdatetime-format-iso8601-perl\
 	libdatetime-format-mail-perl\
