@@ -39,6 +39,7 @@ FEDORA_RPMS = \
 	perl-Business-ISBN-Data \
 	perl-CPAN \
 	perl-Crypt-SSLeay \
+	perl-Date-Manip \
 	perl-DBD-Pg \
 	perl-Email-Send \
 	perl-Email-Simple \
