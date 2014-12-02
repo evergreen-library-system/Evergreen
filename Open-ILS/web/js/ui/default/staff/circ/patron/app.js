@@ -249,6 +249,15 @@ function($q , $timeout , $location , egCore,  egUser , $locale) {
         return service.setPrimary(service.current.id(), null, true);
     }
 
+    // clear the currently focused user
+    service.clearPrimary = function() {
+        // reset with no patron
+        service.resetPatronLists();
+        service.current = null;
+        service.patron_stats = null;
+        return $q.when();
+    }
+
     // sets the primary display user, fetching data as necessary.
     service.setPrimary = function(id, user, force) {
         var user_id = id ? id : (user ? user.id() : null);
@@ -328,11 +337,10 @@ function($q , $timeout , $location , egCore,  egUser , $locale) {
             );
         } else {
 
-            // reset with no patron
-            service.resetPatronLists();
-            service.current = null;
-            service.patron_stats = null;
-            return $q.when();
+            // fetching a null user clears the primary user.
+            // NOTE: this should probably reject() and log an error, 
+            // but calling clear for backwards compat for now.
+            return service.clearPrimary();
         }
     }
 
@@ -617,7 +625,7 @@ function($scope,  $q,  $location , $filter,  egCore,  egUser,  patronSvc) {
        ['$scope','$location','egCore','egConfirmDialog','egUser','patronSvc',
 function($scope , $location , egCore , egConfirmDialog , egUser , patronSvc) {
     $scope.selectMe = true; // focus text input
-    patronSvc.setPrimary(); // clear the default user
+    patronSvc.clearPrimary(); // clear the default user
 
     // jump to the patron checkout UI
     function loadPatron(user_id) {
