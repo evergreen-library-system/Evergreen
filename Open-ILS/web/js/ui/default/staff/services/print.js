@@ -66,7 +66,7 @@ function($q , $window , $timeout , $http , egHatch , egAuth , egIDL , egOrg) {
 
         } else {
             // text content does not require compilation for remote printing
-            promise = $q.when();
+            promise = $q.when(args.content);
         }
 
         // TODO: link print context to template type
