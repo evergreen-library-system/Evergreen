@@ -993,37 +993,38 @@ angular.module('egGridMod',
 
             var dotpath = colSpec.path.replace(/\.?\*$/,'');
             var class_obj;
+            var idl_field;
 
             if (colSpec.parentIdlClass) {
                 class_obj = egCore.idl.classes[colSpec.parentIdlClass];
-
             } else {
-
                 class_obj = egCore.idl.classes[cols.idlClass];
-                if (!class_obj) return;
+            }
 
-                var path_parts = dotpath.split(/\./);
+            if (!class_obj) return;
 
-                // find the IDL class definition for the last element in the
-                // path before the .*
-                // an empty path_parts means expand the root class
-                if (path_parts) {
-                    for (var path_idx in path_parts) {
-                        var part = path_parts[path_idx];
-                        var idl_field = class_obj.field_map[part];
+            console.debug('egGrid: auto dotpath is: ' + dotpath);
+            var path_parts = dotpath.split(/\./);
 
-                        // unless we're at the end of the list, this field should
-                        // link to another class.
-                        if (idl_field && idl_field['class'] && (
-                            idl_field.datatype == 'link' || 
-                            idl_field.datatype == 'org_unit')) {
-                            class_obj = egCore.idl.classes[idl_field['class']];
-                        } else {
-                            if (path_idx < (path_parts.length - 1)) {
-                                // we ran out of classes to hop through before
-                                // we ran out of path components
-                                console.error("egGrid: invalid IDL path: " + dotpath);
-                            }
+            // find the IDL class definition for the last element in the
+            // path before the .*
+            // an empty path_parts means expand the root class
+            if (path_parts) {
+                for (var path_idx in path_parts) {
+                    var part = path_parts[path_idx];
+                    idl_field = class_obj.field_map[part];
+
+                    // unless we're at the end of the list, this field should
+                    // link to another class.
+                    if (idl_field && idl_field['class'] && (
+                        idl_field.datatype == 'link' || 
+                        idl_field.datatype == 'org_unit')) {
+                        class_obj = egCore.idl.classes[idl_field['class']];
+                    } else {
+                        if (path_idx < (path_parts.length - 1)) {
+                            // we ran out of classes to hop through before
+                            // we ran out of path components
+                            console.error("egGrid: invalid IDL path: " + dotpath);
                         }
                     }
                 }
@@ -1042,8 +1043,9 @@ angular.module('egGridMod',
 
                     var col = cols.cloneFromScope(colSpec);
                     col.path = dotpath + '.' + field.name;
+                    console.debug('egGrid: field: ' +field.name + '; parent field: ' + js2JSON(idl_field));
                     cols.add(col, false, true, 
-                        {idl_field : field, idl_class : class_obj});
+                        {idl_parent : idl_field, idl_field : field, idl_class : class_obj});
                 });
 
                 cols.columns = cols.columns.sort(
@@ -1106,7 +1108,7 @@ angular.module('egGridMod',
             // definitions.  If a match is found, back out.
             if (cols.columns.filter(function(c) {
                 return (c.path == colSpec.path) })[0]) {
-                //console.debug('skipping column ' + colSpec.path);
+                console.debug('skipping pre-existing column ' + colSpec.path);
                 return;
             }
 
@@ -1156,7 +1158,12 @@ angular.module('egGridMod',
             }
 
             if (fromExpand && idl_info.idl_class) {
-                column.idlclass = idl_info.idl_class.label || idl_info.idl_class.name;
+                column.idlclass = '';
+                if (idl_info.idl_parent) {
+                    column.idlclass = idl_info.idl_parent.label || idl_info.idl_parent.name;
+                } else {
+                    column.idlclass += idl_info.idl_class.label || idl_info.idl_class.name;
+                }
             }
         },
 
@@ -1166,9 +1173,11 @@ angular.module('egGridMod',
             var class_obj = egCore.idl.classes[cols.idlClass];
             var path_parts = dotpath.split(/\./);
 
+            var idl_parent;
             var idl_field;
             for (var path_idx in path_parts) {
                 var part = path_parts[path_idx];
+                idl_parent = idl_field;
                 idl_field = class_obj.field_map[part];
 
                 if (idl_field && idl_field['class'] && (
@@ -1182,7 +1191,8 @@ angular.module('egGridMod',
             if (!idl_field) return null;
 
             return {
-                idl_field :idl_field,
+                idl_parent: idl_parent,
+                idl_field : idl_field,
                 idl_class : class_obj
             };
         }
