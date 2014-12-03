@@ -7,15 +7,25 @@ var el = {};
 dojo.addOnLoad(
     function(){
         dojo.query('.plain').forEach(function(node,index,arr){
-            node.addEventListener("keypress", function(event) { 
-                if (event.charCode == 115 && event.ctrlKey){
-                        setNod(node);
-                        $('symbol-panel').openPopup(node, 'after_pointer' );
-                    }
-                 }, true);
+            addSymbolTrigger(node);
         });
     }
 );
+
+function addSymbolTrigger(node) {
+    if (!node.getAttribute('eg_has_symbol_trigger')) {
+        node.addEventListener(
+            "keypress",
+            function(event) { 
+                if (event.charCode == 115 && event.ctrlKey){
+                    setNod(node);
+                    $('symbol-panel').openPopup(node, 'after_pointer' );
+                }
+            },
+            true);
+        node.setAttribute('eg_has_symbol_trigger', 1);
+    }
+}
 
 function setNod(elm){
     el = elm;
