@@ -611,6 +611,9 @@ function createMARCTextbox (element,attrs) {
         set_lock_on_keypress,
         false
     );
+    if ($('symbol-panel')) {
+        addSymbolTrigger(box);
+    }
     box.onkeypress = function (event) {
         var root_node;
         var node = element;
