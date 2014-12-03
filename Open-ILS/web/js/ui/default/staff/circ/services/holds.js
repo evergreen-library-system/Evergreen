@@ -6,8 +6,8 @@ angular.module('egCoreMod')
 
 .factory('egHolds',
 
-       ['$modal','$q','egCore','egUser','egConfirmDialog','egAlertDialog',
-function($modal , $q , egCore , egUser , egConfirmDialog , egAlertDialog) {
+       ['$modal','$q','egCore','egConfirmDialog','egAlertDialog',
+function($modal , $q , egCore , egConfirmDialog , egAlertDialog) {
 
     var service = {};
 
@@ -410,10 +410,10 @@ function($modal , $q , egCore , egUser , egConfirmDialog , egAlertDialog) {
         hold_data.id = hold.id();
 
         if (hold.requestor() && typeof hold.requestor() != 'object')
-            hold.requestor(egUser.get(hold.requestor()));
+            egCore.pcrud.retrieve('au',hold.requestor()).then(function(u) { hold.requestor(u) });
 
         if (hold.usr() && typeof hold.usr() != 'object')
-            hold.usr(egUser.get(hold.usr()));
+            egCore.pcrud.retrieve('au',hold.usr()).then(function(u) { hold.usr(u) });
 
         // current_copy is not always fleshed in the API
         if (hold.current_copy() && typeof hold.current_copy() != 'object')

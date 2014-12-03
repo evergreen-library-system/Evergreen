@@ -79,6 +79,8 @@
   <eg-grid-field label="[% l('Status') %]" path='status_string'></eg-grid-field>
 
   <eg-grid-field label="[% l('Queue Position') %]" path='queue_position' hidden></eg-grid-field>
+  <eg-grid-field path='hold.usr.*' parent-idl-class="ahr" hidden></eg-grid-field>
+  <eg-grid-field path='hold.requestor.*' parent-idl-class="ahr" hidden></eg-grid-field>
   <eg-grid-field path='hold.*' parent-idl-class="ahr" hidden></eg-grid-field>
   <eg-grid-field path='copy.*' parent-idl-class="acp" hidden></eg-grid-field>
   <eg-grid-field path='volume.*' parent-idl-class="acn" hidden></eg-grid-field>
