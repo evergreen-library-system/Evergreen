@@ -35,19 +35,7 @@ angular.module('egPatronApp', ['ngRoute', 'ui.bootstrap',
             });
         }
 
-        // local stat cats are displayed in the summary bar on each page.
-        egCore.env.classLoaders.actsc = function() {
-            return egCore.pcrud.search('actsc', 
-                {owner : egCore.org.ancestors(
-                    egCore.auth.user().ws_ou(), true)},
-                {}, {atomic : true}
-            ).then(function(cats) {
-                egCore.env.absorbList(cats, 'actsc');
-            });
-        }
-
         egCore.env.loadClasses.push('aous');
-        egCore.env.loadClasses.push('actsc');
 
         // app-globally modify the default flesh fields for 
         // fleshed user retrieval.
@@ -61,7 +49,18 @@ angular.module('egPatronApp', ['ngRoute', 'ui.bootstrap',
             ]);
         }
 
-        return egCore.startup.go()
+        return egCore.startup.go().then(function() {
+
+            // This call requires orgs to be loaded, because it
+            // calls egCore.org.ancestors(), so call it after startup
+            return egCore.pcrud.search('actsc', 
+                {owner : egCore.org.ancestors(
+                    egCore.auth.user().ws_ou(), true)},
+                {}, {atomic : true}
+            ).then(function(cats) {
+                egCore.env.absorbList(cats, 'actsc');
+            });
+        });
     }]};
 
     $routeProvider.when('/circ/patron/search', {
