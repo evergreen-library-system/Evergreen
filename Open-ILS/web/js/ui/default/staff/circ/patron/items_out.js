@@ -223,7 +223,13 @@ function($scope,  $q,  $routeParams,  egCore , egUser,  patronSvc ,
                     // Fire off the due-date updater for each circ.
                     // When all is done, close the dialog
                     $scope.ok = function(args) {
-                        var due = args.due_date.toISOString().replace(/T.*/,'');
+                        // toISOString gives us Zulu time, so
+                        // adjust for that before truncating to date
+                        var adjust_date = new Date( $scope.args.date );
+                        adjust_date.setMinutes(
+                            $scope.args.date.getMinutes() - adjust_date.getTimezoneOffset()
+                        );
+                        var due = adjust_date.toISOString().replace(/T.*/,'');
                         console.debug("applying due date of " + due);
 
                         var promises = [];
