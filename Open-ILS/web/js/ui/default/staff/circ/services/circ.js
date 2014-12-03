@@ -803,6 +803,27 @@ function($modal , $q , egCore , egAlertDialog , egConfirmDialog) {
 
     service.circ_exists_dialog = function(evt, params, options) {
 
+        if (!evt.payload.old_circ) {
+            return egCore.net.request(
+                'open-ils.search',
+                'open-ils.search.asset.copy.fleshed2.find_by_barcode',
+                params.copy_barcode
+            ).then(function(resp){
+                console.log(resp);
+                if (egCore.evt.parse(resp)) {
+                    console.error(egCore.evt.parse(resp));
+                } else {
+                   evt.payload.old_circ = resp.circulations()[0];
+                   return service.circ_exists_dialog_impl( evt, params, options );
+                }
+            });
+        } else {
+            return service.circ_exists_dialog_impl( evt, params, options );
+        }
+    },
+
+    service.circ_exists_dialog_impl = function (evt, params, options) {
+
         var openCirc = evt.payload.old_circ;
         var sameUser = openCirc.usr() == params.patron_id;
         
