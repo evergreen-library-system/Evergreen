@@ -42,7 +42,7 @@ register_fields = [
 # The dojo date widget in the patron edit UI only accepts default 
 # values in ISO8601 format.  It will not accept locale-shaped dates.
 IF !ctx.register.settings.stgu.dob.example;
-    ctx.register.settings.stgu.dob.example = l('YYYY-MM-DD');
+    ctx.register.settings.stgu.dob.example = l('YYYY-MM-DD or YYYY/MM/DD');
 END;
 
 %]
@@ -96,7 +96,7 @@ END;
                 ) | html %]</h4>
         [% END %]
 
-        <form method='POST'>
+        <form method='POST' onSubmit="return dobValidate(document.getElementById('stgu.dob'))">
             <table>
                 <tr>
                     <td>
@@ -141,7 +141,8 @@ FOR field_def IN register_fields;
     </td>
     <td>
         <input 
-            type='text' 
+            type='text'
+            id='[% field_path %]'
             name='[% field_path %]'
             value='[% value || CGI.param(field_path) | html %]'/>
         [% IF require %]
