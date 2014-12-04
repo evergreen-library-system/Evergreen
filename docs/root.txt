@@ -409,6 +409,27 @@ include::reports/reporter_template_enhancements.txt[]
 
 include::reports/reporter_export_usingpgAdmin.txt[]
 
+Web Client Preview
+==================
+
+Introduction
+------------
+
+Using the Web Client
+--------------------
+
+Introduction
+~~~~~~~~~~~~
+This part of the documentation deals with general client usage including
+logging in, navigation and shortcuts.
+
+Circulation
+~~~~~~~~~~~
+Use this section for understanding the circulation procedures in the Evergreen system.
+
+Circulation
+-----------
+
 Using the Public Access Catalog
 ===============================
 
