@@ -139,7 +139,7 @@
       </button>
       <ul class="dropdown-menu pull-right">
         <li>
-          <a href dropdown-toggle 
+          <a href
             ng-click="toggle_mod('no_precat_alert')">
             <span ng-if="modifiers.no_precat_alert" 
               class="label label-success">&#x2713;</span>
@@ -149,7 +149,7 @@
           </a>
         </li>
         <li ng-if="!is_capture"><!-- nonsensical for hold capture -->
-          <a href dropdown-toggle 
+          <a href
             ng-click="toggle_mod('noop')">
             <span ng-if="modifiers.noop" 
               class="label label-success">&#x2713;</span>
@@ -159,7 +159,7 @@
           </a>
         </li>
         <li>
-          <a href dropdown-toggle 
+          <a href
             ng-click="toggle_mod('void_overdues')">
             <span ng-if="modifiers.void_overdues" 
               class="label label-success">&#x2713;</span>
@@ -169,7 +169,7 @@
           </a>
         </li>
         <li>
-          <a href dropdown-toggle 
+          <a href
             ng-click="toggle_mod('auto_print_holds_transits')">
             <span ng-if="modifiers.auto_print_holds_transits" 
               class="label label-success">&#x2713;</span>
@@ -179,7 +179,7 @@
           </a>
         </li>
         <li>
-          <a href dropdown-toggle 
+          <a href
             ng-click="toggle_mod('clear_expired')">
             <span ng-if="modifiers.clear_expired" 
               class="label label-success">&#x2713;</span>
@@ -189,7 +189,7 @@
           </a>
         </li>
         <li>
-          <a href dropdown-toggle 
+          <a href
             ng-click="toggle_mod('retarget_holds')">
             <span ng-if="modifiers.retarget_holds" 
               class="label label-success">&#x2713;</span>
@@ -199,7 +199,7 @@
           </a>
         </li>
         <li>
-          <a href dropdown-toggle 
+          <a href
             ng-click="toggle_mod('retarget_holds_all')">
             <span ng-if="modifiers.retarget_holds_all" 
               class="label label-success">&#x2713;</span>
@@ -209,7 +209,7 @@
           </a>
         </li>
         <li>
-          <a href dropdown-toggle 
+          <a href
             ng-click="toggle_mod('hold_as_transit')">
             <span ng-if="modifiers.hold_as_transit" 
               class="label label-success">&#x2713;</span>

@@ -66,13 +66,12 @@
 
     <!-- actions drop-down menu -->
     <div class="btn-group" ng-if="actions.length" dropdown>                                                  
-      <button type="button" class="btn btn-default dropdown-toggle"
-        ng-class="{disabled : false}">
+      <button type="button" class="btn btn-default dropdown-toggle">
         [% l('Actions') %] <span class="caret"></span>                       
       </button>                                                              
       <ul class="dropdown-menu pull-right">                                  
         <li ng-repeat="action in actions" ng-class="{divider: action.divider}">
-          <a ng-if="!action.divider" href dropdown-toggle
+          <a ng-if="!action.divider" href
             ng-click="actionLauncher(action)">{{action.label}}</a>
         </li>
       </ul>

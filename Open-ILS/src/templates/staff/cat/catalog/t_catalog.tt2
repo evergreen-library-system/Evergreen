@@ -16,16 +16,16 @@
         <span class="caret"></span>
       </button>
       <ul class="dropdown-menu dropdown-menu-right" role="menu">
-        <li><a href dropdown-toggle ng-click="set_record_tab('catalog')">
+        <li><a href ng-click="set_record_tab('catalog')">
             [% l('OPAC View') %]</a></li>
-        <li><a href dropdown-toggle ng-click="set_record_tab('marc_html')">
+        <li><a href ng-click="set_record_tab('marc_html')">
             [% l('MARC View') %]</a></li>
         <li class="divider"></li>
-        <li><a href dropdown-toggle ng-click="set_record_tab('holds')">
+        <li><a href ng-click="set_record_tab('holds')">
             [% l('View Holds') %]</a></li>
-        <li><a href dropdown-toggle ng-click="mark_hold_transfer_dest()">
+        <li><a href ng-click="mark_hold_transfer_dest()">
             [% l('Mark as Title Hold Transfer Destination') %]</a></li>
-        <li><a href dropdown-toggle ng-click="transfer_holds_to_marked()">
+        <li><a href ng-click="transfer_holds_to_marked()">
             [% l('Transfer All Title Holds') %]</a></li>
       </ul>
     </div>

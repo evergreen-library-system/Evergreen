@@ -39,12 +39,12 @@
             <span class="caret"></span>
           </button>
           <ul class="dropdown-menu">
-            <li><a href dropdown-toggle
+            <li><a href
               ng-click="args.noncat_type='barcode';bcFocus=true">
               [% l('Barcode') %]</a>
             </li>
             <li class="divider"></li>
-            <li><a href dropdown-toggle
+            <li><a href
               ng-repeat='type in nonCatTypes'
               ng-click="args.noncat_type=type.id()">{{type.name()}}</a>
             </li>
