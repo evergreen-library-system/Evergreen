@@ -3231,6 +3231,68 @@
       <description>Field link and sequence number</description>
     </subfield>
   </field>
+  <field tag="345" repeatable="true">
+    <name>Projection Characteristics of Moving Image</name>
+    <description>Technical specifications relating to the projection of a moving image resource.</description>
+    <indicator position="1" value="#">
+      <description>Undefined</description>
+    </indicator>
+    <indicator position="2" value="#">
+      <description>Undefined</description>
+    </indicator>
+    <subfield code="a" repeatable="true">
+      <description>Presentation format</description>
+    </subfield>
+    <subfield code="b" repeatable="true">
+      <description>Projection speed</description>
+    </subfield>
+    <subfield code="0" repeatable="true">
+      <description>Authority record control number or standard number</description>
+    </subfield>
+    <subfield code="2" repeatable="false">
+      <description>Source</description>
+    </subfield>
+    <subfield code="3" repeatable="false">
+      <description>Materials specified</description>
+    </subfield>
+    <subfield code="6" repeatable="false">
+      <description>Linkage</description>
+    </subfield>
+    <subfield code="8" repeatable="true">
+      <description>Field link and sequence number</description>
+    </subfield>
+  </field>
+  <field tag="346" repeatable="true">
+    <name>Video Characteristics</name>
+    <description>Technical specifications relating to the encoding of video images in a resource.</description>
+    <indicator position="1" value="#">
+      <description>Undefined</description>
+    </indicator>
+    <indicator position="2" value="#">
+      <description>Undefined</description>
+    </indicator>
+    <subfield code="a" repeatable="true">
+      <description>Video format</description>
+    </subfield>
+    <subfield code="b" repeatable="true">
+      <description>Broadcast standard</description>
+    </subfield>
+    <subfield code="0" repeatable="true">
+      <description>Authority record control number or standard number</description>
+    </subfield>
+    <subfield code="2" repeatable="false">
+      <description>Source</description>
+    </subfield>
+    <subfield code="3" repeatable="false">
+      <description>Materials specified</description>
+    </subfield>
+    <subfield code="6" repeatable="false">
+      <description>Linkage</description>
+    </subfield>
+    <subfield code="8" repeatable="true">
+      <description>Field link and sequence number</description>
+    </subfield>
+  </field>
   <field tag="347" repeatable="true">
     <name>Digital File Characteristics</name>
     <description>Technical specification relating to the digital encoding of text, image, audio, video, and other types of data in a resource.</description>
