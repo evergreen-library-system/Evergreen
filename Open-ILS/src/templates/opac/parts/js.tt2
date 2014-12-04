@@ -1,6 +1,20 @@
 <!-- JS imports, etc.  -->
 <script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/opac/simple.js"></script>
 
+<!-- DOB validation for Patron Registration in OPAC -->
+<script type="text/javascript">
+    function dobValidate(input) {
+        var validformat = /^(19|20)\d\d([- /.])(0[1-9]|1[012])\2(0[1-9]|[12][0-9]|3[01])$/
+        var returnval = false
+        if (!validformat.test(input.value))
+            alert("You have entered an invalid date, or an improperly formatted date.  Please enter Date of Birth in YYYY-MM-DD or YYYY/MM/DD format and try again.")
+        else
+            returnval = true
+        if (returnval == false) input.select()
+        return returnval
+}
+</script>
+
 [%- IF ctx.use_stripe %]
 <script type="text/javascript">unHideMe($("pay_fines_now"));[%# the DOM is loaded now, right? %]</script>
 [% END -%]
