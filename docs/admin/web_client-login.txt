@@ -1,0 +1,53 @@
+Logging into Evergreen
+-----------------------
+
+indexterm:[staff client, logging in]
+indexterm:[SSL certificate]
+
+. The default URL to log into the client is _https://localhost/eg/staff/login_
+. Enter your _Username_ and _Password_.
+. Verify that the correct workstation is selected and click *Sign In*.
+[NOTE]
+Although workstation registration is not required in the web client, it is
+highly recommended that you register the workstation for all web client features
+to work correctly. If you have not yet registered a workstation, you need to log
+in with the workstation field unset and then follow instructions to
+<<register_workstation,register your workstation>>. 
+
+[[browser_defaults]]
+Setting Browser Defaults for Web Client
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To ensure that staff can easily get to the web client portal page on login 
+without additional steps, you can set the browser's home page to default to the
+web client. 
+
+Setting the Web Client as the Home Page in Chrome
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+. In the top-right corner of your browser, click the Chrome menu.
+. Select *Settings*.
+. In the _On startup_ section, select _Open a specific page or set of pages._
+. Click the *Set Pages* link.
+. Add _https://localhost/eg/staff/_ to the _Enter URL_ box and click *OK*.
+
+Setting the Web Client as the Home Page in Firefox
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+. In the top-right corner of your browser, click the menu button.
+. Click *Options*.
+. In the _When Firefox starts:_ dropdown menu, select _Show my home page_.
+. In the _Home Page_ box, add _https://localhost/eg/staff/_ and click *OK*.
+
+Logging Out
+~~~~~~~~~~~
+
+indexterm:[staff client, logging out]
+
+To log out of the client:
+
+. Click the menu button to the right of your user name in the top-right corner
+of the window.
+. Select *Log Out*
+
+[CAUTION]
+Exiting the browser will not log you out of the web client. 
+
