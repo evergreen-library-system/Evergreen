@@ -424,11 +424,9 @@ This part of the documentation deals with general client usage including
 logging in, navigation and shortcuts.
 
 Circulation
-~~~~~~~~~~~
+-----------
 Use this section for understanding the circulation procedures in the Evergreen system.
 
-Circulation
------------
 
 Using the Public Access Catalog
 ===============================
