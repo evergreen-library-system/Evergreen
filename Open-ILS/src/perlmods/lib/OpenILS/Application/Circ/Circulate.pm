@@ -2524,7 +2524,7 @@ sub do_checkin {
         }
 
         # run the fine generator against this circ
-        $self->generate_fines_start(undef, $ignore_stop_fines);
+        $self->generate_fines(undef, $ignore_stop_fines);
     }
 
     if( $self->checkin_check_holds_shelf() ) {
@@ -2565,7 +2565,6 @@ sub do_checkin {
     }
 
     if( $self->circ ) {
-        $self->generate_fines_finish;
         $self->checkin_handle_circ;
         return if $self->bail_out;
         $self->checkin_changed(1);
@@ -2789,9 +2788,6 @@ sub do_checkin {
 sub finish_fines_and_voiding {
     my $self = shift;
     return unless $self->circ;
-
-    # gather any updates to the circ after fine generation, if there was a circ
-    $self->generate_fines_finish;
 
     return unless $self->backdate or $self->void_overdues;
 
@@ -3341,16 +3337,6 @@ sub put_hold_on_shelf {
 sub generate_fines {
    my $self = shift;
    my $reservation = shift;
-
-   $self->generate_fines_start($reservation);
-   $self->generate_fines_finish($reservation);
-
-   return undef;
-}
-
-sub generate_fines_start {
-   my $self = shift;
-   my $reservation = shift;
    my $ignore_stop_fines = shift;
    my $dt_parser = DateTime::Format::ISO8601->new;
 
@@ -3373,18 +3359,6 @@ sub generate_fines_start {
              $obj->id, $ignore_stop_fines
           );
    }
-
-   return undef;
-}
-
-sub generate_fines_finish {
-   my $self = shift;
-   my $reservation = shift;
-
-   return undef unless $self->{_gen_fines_req};
-
-   my $id = $reservation ? $self->reservation->id : $self->circ->id;
-
    $self->{_gen_fines_req}->wait_complete;
    delete($self->{_gen_fines_req});
 
@@ -3840,7 +3814,7 @@ sub do_renew {
     }
 
     # Run the fine generator against the old circ
-    $self->generate_fines_start;
+    $self->generate_fines;
 
     $self->run_renew_permit;
 
