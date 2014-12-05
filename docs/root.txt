@@ -415,6 +415,54 @@ Web Client Preview
 Introduction
 ------------
 
+The Evergreen Web Staff Client is in the early stages of development and is
+being provided as a "preview" version beginning in Evergreen version 2.7.  If
+you are an early adopter, thank you!  Please keep in mind:
+
+  . *We want your feedback!* Please report any errors, bugs, strange behavior,
+etc. using https://bugs.launchpad.net/evergreen/[Launchpad]. And please send
+requested features or design improvements to the
+mailto:open-ils-dev@list.georgialibraries.org[Evergreen Developers email list].
+
+  . *It is changing rapidly.* Features are being added in "sprints" grouped by
+workflow. Read the
+http://evergreen-ils.org/dokuwiki/doku.php?id=dev:browser_staff:dev_sprints[development
+wiki page] and watch the
+http://libmail.georgialibraries.org/mailman/listinfo/open-ils-general[general
+email list] for updates. (However, these changes will only appear on your client
+when your version of Evergreen is upgraded. Ask your server administrator for
+details.)
+
+  . *The design may change significantly.* Initially, it will follow the design
+of the current XUL-based staff client. But the browser framework provides more
+flexibility for design choices. Also, Evergreen has accepted an
+http://wiki.evergreen-ils.org/doku.php?id=opw:ui_suggest:julialima[intern] to
+focus on a User Interface Style Guide from December 2014 through March 2015.
+Watch http://evergreen-ils.org/communicate/irc/[IRC] and the
+http://libmail.georgialibraries.org/mailman/listinfo/open-ils-general[general
+email list] to follow the progress.
+
+The following rationale was published in the Release Notes for Evergreen 2.7:
+====
+The 2.7 release will contain a preview of web client circulation features.
+Circulation is the first step in moving all staff functions from the existing
+XULRunner-based client to a web application that will be based on AngularJS.
+
+Evergreen is moving away from the existing client because XULRunner no longer
+supports features critical to the Evergreen software, including remote XUL,
+multi-part streaming, and XML JavaScript. The new web client is expected to show
+some speed improvements, to provide comprehensive support for
+internationalization/localization, to provide good support for assistive
+technologies, to be easier to customize locally, and to be more mobile friendly.
+
+The intent of the preview is to make it easier for end users at Evergreen sites
+to try the new client, become familiar with its features, and to discover/report
+bugs that are found. Instructions to implement the web client can be found in
+the code in Open-ILS/web/js/ui/default/staff/README.install. These will be
+revised and moved to the full README for 2.7.1.
+====
+
+
 Using the Web Client
 --------------------
 
