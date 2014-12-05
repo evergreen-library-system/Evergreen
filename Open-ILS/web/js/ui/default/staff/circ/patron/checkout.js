@@ -10,8 +10,9 @@ angular.module('egPatronApp').controller('PatronCheckoutCtrl',
 function($scope , $q , $modal , $routeParams , egCore , egUser , patronSvc , 
          egGridDataProvider , $location , $timeout , egCirc) {
 
-    $scope.initTab('checkout', $routeParams.id);
-    $scope.focusMe = true;
+    $scope.initTab('checkout', $routeParams.id).finally(function(){
+        $scope.focusMe = true;
+    });
     $scope.checkouts = patronSvc.checkouts;
     $scope.checkoutArgs = {
         noncat_type : 'barcode',
