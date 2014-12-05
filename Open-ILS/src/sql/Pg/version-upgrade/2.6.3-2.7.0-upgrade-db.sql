@@ -1,4 +1,4 @@
---Upgrade Script for 2.6 to 2.7.0
+--Upgrade Script for 2.6.3 to 2.7.0
 \set eg_version '''2.7.0'''
 BEGIN;
 INSERT INTO config.upgrade_log (version, applied_to) VALUES ('2.7.0', :eg_version);
