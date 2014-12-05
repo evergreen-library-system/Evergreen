@@ -5,6 +5,8 @@ INSERT INTO config.upgrade_log (version, applied_to) VALUES ('2.6.3', :eg_versio
 
 SELECT evergreen.upgrade_deps_block_check('0887', :eg_version);
 
+DROP FUNCTION IF EXISTS vandelay.marc21_extract_fixed_field_list( text, text );
+
 CREATE OR REPLACE FUNCTION vandelay.marc21_extract_fixed_field_list( marc TEXT, ff TEXT, use_default BOOL DEFAULT FALSE ) RETURNS TEXT[] AS $func$
 DECLARE
     rtype       TEXT;
@@ -37,6 +39,8 @@ BEGIN
 END;
 $func$ LANGUAGE PLPGSQL;
 
+DROP FUNCTION IF EXISTS vandelay.marc21_extract_fixed_field( text, text );
+
 CREATE OR REPLACE FUNCTION vandelay.marc21_extract_fixed_field( marc TEXT, ff TEXT, use_default BOOL DEFAULT FALSE ) RETURNS TEXT AS $func$
 DECLARE
     rtype       TEXT;
@@ -66,6 +70,8 @@ BEGIN
     RETURN NULL;
 END;
 $func$ LANGUAGE PLPGSQL;
+
+DROP FUNCTION IF EXISTS vandelay.marc21_extract_all_fixed_fields( text );
 
 CREATE OR REPLACE FUNCTION vandelay.marc21_extract_all_fixed_fields( marc TEXT, use_default BOOL DEFAULT FALSE ) RETURNS SETOF biblio.record_ff_map AS $func$
 DECLARE
@@ -114,11 +120,6 @@ $func$ LANGUAGE SQL;
 CREATE OR REPLACE FUNCTION biblio.marc21_extract_all_fixed_fields( rid BIGINT ) RETURNS SETOF biblio.record_ff_map AS $func$
     SELECT $1 AS record, ff_name, ff_value FROM vandelay.marc21_extract_all_fixed_fields( (SELECT marc FROM biblio.record_entry WHERE id = $1), TRUE );
 $func$ LANGUAGE SQL;
-
-DROP FUNCTION IF EXISTS vandelay.marc21_extract_fixed_field_list( text, text );
-DROP FUNCTION IF EXISTS vandelay.marc21_extract_fixed_field( text, text );
-DROP FUNCTION IF EXISTS vandelay.marc21_extract_all_fixed_fields( text );
-
 
 
 SELECT evergreen.upgrade_deps_block_check('0890', :eg_version);
