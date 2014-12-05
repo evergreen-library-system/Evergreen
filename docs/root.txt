@@ -471,6 +471,16 @@ Introduction
 This part of the documentation deals with general client usage including
 logging in, navigation and shortcuts.
 
+// Push titles down one level.
+:leveloffset: 1
+
+include::admin/web_client-login.txt[]
+
+include::admin/web_client-browser-tab-shortcuts.txt[]
+
+// Return to normal title levels.
+:leveloffset: 0
+
 Circulation
 -----------
 Use this section for understanding the circulation procedures in the Evergreen system.

@@ -1,0 +1,23 @@
+Tab Browser-Based Tab Buttons and Keyboard Shortcuts
+----------------------------------------------------
+Now that the client will be loaded in a web browser, users can use browser-based
+tab controls and keyboard shortcuts to help with navigation. Below are some 
+tips for browser navigation that can be used in Chrome and Firefox on Windows
+PCs.
+
+- Use CTRL-T or click the browser's new tab button to open a new tab. 
+- Use CTRL-W or click the x in the tab to close the tab.
+- Undo closing a tab by hitting CTRL-Shift-Tab.
+- To open a link from the web client in a new tab, CTRL-click the link or 
+right-click the link and select *Open Link in New Tab*. Using this method, you
+can also open options from the web client's dropdown menus in a new tab
+- Navigate from one tab to another using CTRL-Tab on the keyboard.
+
+Setting New Tab Behavior
+~~~~~~~~~~~~~~~~~~~~~~~~
+Some users may want to automatically open the web client's portal page in a new
+tab. Neither Chrome nor Firefox will open your home page by default when you
+open a new tab. However, both browsers have optional add-ons that will allow you
+to set the browsers to automatically open the home page whenever open opening a
+new tab. These add-ons may be useful for those libraries that want the new tab
+to open to the web client portal page.
