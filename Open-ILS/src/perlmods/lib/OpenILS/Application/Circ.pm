@@ -483,7 +483,10 @@ sub set_circ_claims_returned {
             $circ,
             3
         );
-        return $result if ($result);
+        if ($result) {
+            $e->rollback;
+            return $result;
+        }
     }
 
     # Check if the copy circ lib wants lost processing fees voided on
@@ -494,7 +497,38 @@ sub set_circ_claims_returned {
             $circ,
             4
         );
-        return $result if ($result);
+        if ($result) {
+            $e->rollback;
+            return $result;
+        }
+    }
+
+    # Check if the copy circ lib wants longoverdue fees voided on claims
+    # returned.
+    if ($U->is_true($U->ou_ancestor_setting_value($copy->circ_lib, 'circ.void_longoverdue_on_claimsreturned', $e))) {
+        my $result = OpenILS::Application::Circ::CircCommon->void_lost(
+            $e,
+            $circ,
+            10
+        );
+        if ($result) {
+            $e->rollback;
+            return $result;
+        }
+    }
+
+    # Check if the copy circ lib wants longoverdue processing fees voided on
+    # claims returned.
+    if ($U->is_true($U->ou_ancestor_setting_value($copy->circ_lib, 'circ.void_longoverdue_proc_fee_on_claimsreturned', $e))) {
+        my $result = OpenILS::Application::Circ::CircCommon->void_lost(
+            $e,
+            $circ,
+            11
+        );
+        if ($result) {
+            $e->rollback;
+            return $result;
+        }
     }
 
     $e->commit;

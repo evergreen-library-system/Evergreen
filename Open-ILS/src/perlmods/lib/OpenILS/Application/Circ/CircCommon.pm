@@ -81,7 +81,8 @@ sub void_lost {
     my $bills = $e->search_money_billing(
         {
             xact => $circ->id,
-            btype => $btype
+            btype => $btype,
+            voided => 'f'
         }
     );
 
