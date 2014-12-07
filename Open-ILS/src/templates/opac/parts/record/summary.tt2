@@ -106,8 +106,8 @@
         </tr>
     [%- END %]
     </tbody></table>
-[%- END %]
     </div>    
+[%- END %]
 [%- END %]
 [%- merged_uris = args.uris.merge(args.online_res);
 num_uris = merged_uris.size;
