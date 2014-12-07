@@ -364,7 +364,7 @@ sub load_login {
 
     $ctx->{page} = 'login';
 
-    my $username = $cgi->param('username');
+    my $username = $cgi->param('username') || '';
     $username =~ s/\s//g;  # Remove blanks
     my $password = $cgi->param('password');
     my $org_unit = $ctx->{physical_loc} || $ctx->{aou_tree}->()->id;
