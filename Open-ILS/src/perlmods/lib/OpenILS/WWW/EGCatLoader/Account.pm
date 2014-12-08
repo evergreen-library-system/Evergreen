@@ -1102,7 +1102,10 @@ sub attempt_hold_placement {
                         $hdata->{hold_failed_event} = $result->{last_event};
 
                         if ($result->{age_protected_copy}) {
-                            $hdata->{could_override} = 1;
+                            my %temp = %{$hdata->{hold_failed_event}};
+                            my $theTextcode = $temp{"textcode"};
+                            $theTextcode.=".override";
+                            $hdata->{could_override} = $self->editor->allowed( $theTextcode );
                             $hdata->{age_protect} = 1;
                         } else {
                             $hdata->{could_override} = $result->{place_unfillable} || 
@@ -1112,7 +1115,10 @@ sub attempt_hold_placement {
                         $hdata->{hold_failed_event} = $result->[0];
 
                         if ($result->[3]) { # age_protect_only
-                            $hdata->{could_override} = 1;
+                            my %temp = %{$hdata->{hold_failed_event}};
+                            my $theTextcode = $temp{"textcode"};
+                            $theTextcode.=".override";
+                            $hdata->{could_override} = $self->editor->allowed( $theTextcode );
                             $hdata->{age_protect} = 1;
                         } else {
                             $hdata->{could_override} = $result->[4] || # place_unfillable
