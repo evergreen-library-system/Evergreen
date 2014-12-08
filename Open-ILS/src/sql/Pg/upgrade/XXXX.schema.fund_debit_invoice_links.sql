@@ -7,4 +7,6 @@ ALTER TABLE acq.fund_debit
         REFERENCES acq.invoice_entry (id)
         ON DELETE SET NULL;
 
+CREATE INDEX fund_debit_invoice_entry_idx ON acq.fund_debit (invoice_entry);
+
 COMMIT;
