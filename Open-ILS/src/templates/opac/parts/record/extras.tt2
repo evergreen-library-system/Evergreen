@@ -54,7 +54,7 @@
         END;
 
         extras = [
-            {name => 'summaryplus',  label => l('Summaries &amp; More'), hide => hide_summary}, 
+            {name => 'summaryplus',  label => l('Summaries & More'), hide => hide_summary},
             {name => 'annotation', label => l('Annotation'), hide => 1}, 
             {name => 'awards',  label => l('Awards, Reviews, & Suggested Reads')}, 
             {name => 'excerpt',  label => l('Excerpt'), hide => 1},
