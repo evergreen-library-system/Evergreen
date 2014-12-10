@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0898', :eg_version);
 
 CREATE OR REPLACE FUNCTION unapi.mmr_mra (
     obj_id BIGINT,
