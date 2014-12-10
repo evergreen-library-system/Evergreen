@@ -433,6 +433,11 @@
                     res.href = uri.getAttribute('href');
                     res.link = uri.getAttribute('label');
                     res.note = uri.getAttribute('use_restriction');
+                    # Avoid displaying the href as the link text if we can display the note instead
+                    IF res.link == res.href AND res.note;
+                        res.link = res.note;
+                        res.note = '';
+                    END;
                     args.uris.push(res);
                 END;
                 NEXT;
