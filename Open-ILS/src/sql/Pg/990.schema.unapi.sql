@@ -1237,20 +1237,20 @@ CREATE OR REPLACE FUNCTION unapi.mmr_mra (
         ),
         (SELECT XMLAGG(foo.y)
           FROM (
-            WITH sourcelist AS ( 
-                WITH aou AS (SELECT COALESCE(id, (evergreen.org_top()).id) AS id  
+            WITH sourcelist AS (
+                WITH aou AS (SELECT COALESCE(id, (evergreen.org_top()).id) AS id
                     FROM actor.org_unit WHERE shortname = $5 LIMIT 1)
-                SELECT source 
-                FROM metabib.metarecord_source_map, aou 
+                SELECT source
+                FROM metabib.metarecord_source_map, aou
                 WHERE metarecord = $1 AND (
                     EXISTS (
-                        SELECT 1 FROM asset.opac_visible_copies 
+                        SELECT 1 FROM asset.opac_visible_copies
                         WHERE record = source AND circ_lib IN (
                             SELECT id FROM actor.org_unit_descendants(aou.id, $6))
                         LIMIT 1
-                    )   
+                    )
                     OR EXISTS (SELECT 1 FROM located_uris(source, aou.id, $10) LIMIT 1)
-                )   
+                )
             )
             SELECT  cmra.aid,
                     XMLELEMENT(
@@ -1267,15 +1267,18 @@ CREATE OR REPLACE FUNCTION unapi.mmr_mra (
                         cmra.value
                     )
               FROM  (
-                SELECT  v.source AS id,
-                        c.id AS aid,
-                        c.ctype AS attr,
-                        c.code AS value
-                  FROM  metabib.record_attr_vector_list v
-                        JOIN config.coded_value_map c ON ( c.id = ANY( v.vlist ) )
+                SELECT DISTINCT aid, attr, value
+                  FROM (
+                    SELECT  v.source AS id,
+                            c.id AS aid,
+                            c.ctype AS attr,
+                            c.code AS value
+                      FROM  metabib.record_attr_vector_list v
+                            JOIN config.coded_value_map c ON ( c.id = ANY( v.vlist ) )
+                    ) AS x
+                    JOIN sourcelist ON (x.id = sourcelist.source)
                 ) AS cmra
-                    JOIN config.record_attr_definition rad ON (cmra.attr = rad.name)
-                    JOIN sourcelist ON (cmra.id = sourcelist.source)
+                JOIN config.record_attr_definition rad ON (cmra.attr = rad.name)
                 UNION ALL
             SELECT  umra.aid,
                     XMLELEMENT(
@@ -1290,15 +1293,18 @@ CREATE OR REPLACE FUNCTION unapi.mmr_mra (
                         umra.value
                     )
               FROM  (
-                SELECT  v.source AS id,
-                        m.id AS aid,
-                        m.attr AS attr,
-                        m.value AS value
-                  FROM  metabib.record_attr_vector_list v
-                        JOIN metabib.uncontrolled_record_attr_value m ON ( m.id = ANY( v.vlist ) )
+                SELECT DISTINCT aid, attr, value
+                  FROM (
+                    SELECT  v.source AS id,
+                            m.id AS aid,
+                            m.attr AS attr,
+                            m.value AS value
+                      FROM  metabib.record_attr_vector_list v
+                            JOIN metabib.uncontrolled_record_attr_value m ON ( m.id = ANY( v.vlist ) )
+                    ) AS x
+                    JOIN sourcelist ON (x.id = sourcelist.source)
                 ) AS umra
-                    JOIN config.record_attr_definition rad ON (umra.attr = rad.name)
-                    JOIN sourcelist ON (umra.id = sourcelist.source)
+                JOIN config.record_attr_definition rad ON (umra.attr = rad.name)
                 ORDER BY 1
 
             )foo(id,y)
