@@ -8,5 +8,6 @@ ALTER TABLE acq.fund_debit
         ON DELETE SET NULL;
 
 CREATE INDEX fund_debit_invoice_entry_idx ON acq.fund_debit (invoice_entry);
+CREATE INDEX lineitem_detail_fund_debit_idx ON acq.lineitem_detail (fund_debit);
 
 COMMIT;

@@ -541,6 +541,7 @@ CREATE TABLE acq.lineitem_detail (
 );
 
 CREATE INDEX li_detail_li_idx ON acq.lineitem_detail (lineitem);
+CREATE INDEX lineitem_detail_fund_debit_idx ON acq.lineitem_detail (fund_debit);
 
 CREATE TABLE acq.lineitem_attr_definition (
 	id		BIGSERIAL	PRIMARY KEY,
