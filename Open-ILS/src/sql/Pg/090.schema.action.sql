@@ -416,7 +416,7 @@ CREATE TRIGGER hold_request_clear_map_tgr
     FOR EACH ROW
     WHEN (
         (NEW.cancel_time IS NOT NULL AND OLD.cancel_time IS NULL)
-        OR (NEW.capture_time IS NOT NULL AND OLD.capture_time IS NULL)
+        OR (NEW.fulfillment_time IS NOT NULL AND OLD.fulfillment_time IS NULL)
     )
     EXECUTE PROCEDURE action.hold_request_clear_map();
 
