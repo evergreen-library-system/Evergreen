@@ -485,6 +485,8 @@ Circulation
 -----------
 Use this section for understanding the circulation procedures in the Evergreen system.
 
+include::circulation/circulation_patron_records_web_client.txt[]
+
 
 Using the Public Access Catalog
 ===============================
