@@ -162,6 +162,7 @@ function($scope , $q , $window , $location , egCore , checkinSvc , egGridDataPro
         delete $scope.alert;
         delete $scope.billable_amount;
         delete $scope.billable_barcode;
+        delete $scope.billable_user_id;
 
         var params = compiled.params;
         var options = compiled.options;
@@ -191,6 +192,7 @@ function($scope , $q , $window , $location , egCore , checkinSvc , egGridDataPro
                 if (amt != 0) {
                     $scope.billable_barcode = row_item.copy_barcode;
                     $scope.billable_amount = amt;
+                    $scope.billable_user_id = row_item.circ.usr();
                     $scope.fine_total = 
                         ($scope.fine_total * 100 + amt * 100) / 100;
                 }
