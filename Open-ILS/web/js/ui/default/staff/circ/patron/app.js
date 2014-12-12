@@ -884,6 +884,11 @@ function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore,
         return d;
     }
 
+    $scope.clearForm = function () {
+        $scope.searchArgs={};
+        window.prevElement.focus();
+    }
+
     $scope.applyShowExtras = function($event, bool) {
         if (bool) {
             $scope.showExtras = true;
@@ -892,6 +897,7 @@ function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore,
             $scope.showExtras = false;
             egCore.hatch.removeItem('eg.circ.patron.search.show_extras');
         }
+        window.prevElement.focus();
         $event.preventDefault();
     }
 
