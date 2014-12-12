@@ -965,6 +965,7 @@ function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore,
     $scope.search = function(args) { // args === $scope.searchArgs
         if (args && Object.keys(args).length) 
             $scope.gridControls.refresh();
+        window.prevElement.focus();
     }
 
     // TODO: move this into the (forthcoming) grid row activate action
