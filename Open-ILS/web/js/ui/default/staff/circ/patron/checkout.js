@@ -91,7 +91,7 @@ function($scope , $q , $modal , $routeParams , egCore , egUser , patronSvc ,
             });
         }
 
-        $scope.focusMe; // return focus to barcode input
+        $scope.focusMe = true; // return focus to barcode input
     }
 
     function send_checkout(params) {
@@ -146,6 +146,8 @@ function($scope , $q , $modal , $routeParams , egCore , egUser , patronSvc ,
             // barcode from the pending list.
             if (params.copy_barcode)
                 delete pending_barcodes[params.copy_barcode];
+
+            $scope.focusMe = true; // return focus to barcode input
         });
     }
 
