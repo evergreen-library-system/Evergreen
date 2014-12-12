@@ -140,7 +140,7 @@ function($scope , $q , $modal , $routeParams , egCore , egUser , patronSvc ,
                 $scope.gridDataProvider.refresh();
             }
 
-        )['finally'](function() {
+        ).finally(function() {
 
             // regardless of the outcome of the circ, remove the 
             // barcode from the pending list.
