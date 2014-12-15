@@ -101,7 +101,7 @@ function($scope , $routeParams , $location , $q , egCore , egHolds,
             'open-ils.circ',
             'open-ils.circ.holds.retrieve_all_from_title',
             egCore.auth.token(), $scope.record_id, 
-            {pickup_lib : $scope.pickup_ou.id()}
+            {pickup_lib : egCore.org.descendants($scope.pickup_ou.id(), true)}
         ).then(
             function(hold_data) {
                 angular.forEach(hold_data, function(list, type) {
