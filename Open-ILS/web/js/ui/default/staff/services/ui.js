@@ -215,7 +215,7 @@ function($modal, $interpolate) {
            + '</button>'
            + '<ul class="dropdown-menu">'
              + '<li ng-repeat="org in orgList" ng-hide="hiddenTest(org.id)">'
-               + '<a href dropdown-toggle ng-click="orgChanged(org)"'
+               + '<a href ng-click="orgChanged(org)"'
                  + 'style="padding-left: {{org.depth * 10 + 5}}px">'
                  + '{{org.shortname}}'
                + '</a>'
