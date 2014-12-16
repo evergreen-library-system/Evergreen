@@ -421,7 +421,10 @@ CREATE VIEW metabib.record_attr_flat AS
             LEFT JOIN config.coded_value_map c ON ( c.id = ANY( v.vlist ) );
 
 CREATE VIEW metabib.record_attr AS
-    SELECT id, HSTORE( ARRAY_AGG( attr ), ARRAY_AGG( value ) ) AS attrs FROM metabib.record_attr_flat GROUP BY 1;
+    SELECT  id, HSTORE( ARRAY_AGG( attr ), ARRAY_AGG( value ) ) AS attrs
+      FROM  metabib.record_attr_flat
+      WHERE attr IS NOT NULL
+      GROUP BY 1;
 
 -- Back-back-compat view ... we use to live in an HSTORE world
 CREATE TYPE metabib.rec_desc_type AS (
