@@ -137,9 +137,16 @@
             args.isbns.push(isbn.textContent);
         END;
 
+        # UPCs can be identified either by ind1="1" or subfield 2 of "upc"
         args.upcs = [];
-        FOR upc IN xml.findnodes('//*[@tag="024"]/*[@code="a"]');
+        FOR upc IN xml.findnodes('//*[@tag="024" and @ind="1"]/*[@code="a"]');
             args.upcs.push(upc.textContent);
+        END;
+        FOR upcfield IN xml.findnodes('//*[@tag="024"]/*[@code="2" and text()="upc"]');
+            my_parent = upcfield.parentNode();
+            FOR upc IN my_parent.findnodes('./*[@code="a"]');
+                args.upcs.push(upc.textContent);
+            END;
         END;
         args.upc = args.upcs.0; # use first UPC as the default
 
