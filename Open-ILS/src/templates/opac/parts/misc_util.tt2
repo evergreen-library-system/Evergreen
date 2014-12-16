@@ -150,6 +150,42 @@
         END;
         args.upc = args.upcs.0; # use first UPC as the default
 
+        # These are URIs that link out to related works for linked data purposes,
+        # such as OCLC Work Entities like http://worldcat.org/entity/work/id/415491
+
+        # We differentiate between http://schema.org/sameAs relations, which
+        # are roughly the same as the work we're describing here, and
+        # http://schema.org/exampleOfWork which point to a broader work, of which
+        # this is a more specific edition or manifestation.
+        args.links.sameAs = [];
+        args.links.exampleOfWork = [];
+        FOR link_node IN xml.findnodes('//*[@tag="024"]/*[@code="2" and text()="uri"]');
+            my_parent = link_node.parentNode();
+            FOR link IN my_parent.findnodes('./*[@code="a"]');
+                link_uri = link.textContent | trim;
+                IF link_uri.search('worldcat.org/entity/work');
+                    args.links.exampleOfWork.push(link_uri);
+                ELSE;
+                    args.links.sameAs.push(link_uri);
+                END;
+            END;
+        END;
+        FOR lccn IN xml.findnodes('//*[@tag="010"]/*[@code="a"]');
+            lccn_num = lccn.textContent | trim;
+            args.links.sameAs.push('http://lccn.loc.gov/' _ lccn_num);
+        END;
+        FOR oclcnum IN xml.findnodes('//*[@tag="035"]/*[@code="a"]');
+            oclcnum = oclcnum.textContent | trim;
+            NEXT UNLESS oclcnum.search('^\(OCoLC\)');
+            oclcnum = oclcnum | remove('\(OCoLC\)');
+            # These prefixes are often included in the 035, even though they should not be
+            oclcnum = oclcnum | remove('ocm');
+            oclcnum = oclcnum | remove('ocn');
+            oclcnum = oclcnum | remove('on') | trim;
+            args.links.sameAs.push('http://www.worldcat.org/oclc/' _ oclcnum);
+        END;
+        args.links.sameAs = args.links.sameAs.unique;
+
         args.issns = [];
         FOR sub IN xml.findnodes('//*[@tag="022"]/*[@code="a"]');
             args.issns.push(sub.textContent);
