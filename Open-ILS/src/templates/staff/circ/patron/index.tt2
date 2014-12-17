@@ -77,10 +77,10 @@ angular.module('egCoreMod').run(['egStrings', function(s) {
   <div class="col-md-9">
     <ul class="nav nav-pills nav-pills-like-tabs">
       <li ng-class="{active : tab == 'checkout', disabled : !patron()}">
-        <a href="./circ/patron/{{patron().id()}}/checkout">[% l('Check Out') %]</a>
+        <a a-disabled="!patron()" href="./circ/patron/{{patron().id()}}/checkout">[% l('Check Out') %]</a>
       </li>
       <li ng-class="{active : tab == 'items_out', disabled : !patron()}">
-        <a href="./circ/patron/{{patron().id()}}/items_out">
+        <a a-disabled="!patron()" href="./circ/patron/{{patron().id()}}/items_out">
           [% l('Items Out') %] 
           <span ng-if="patron()"><!-- lack of space / newline below intentional -->
           (<span ng-class="{'patron-summary-alert-small' : patron_stats().checkouts.overdue}">{{patron_stats().checkouts.total_out}}</span>)
@@ -88,7 +88,7 @@ angular.module('egCoreMod').run(['egStrings', function(s) {
         </a>
       </li>
       <li ng-class="{active : tab == 'holds', disabled : !patron()}">
-        <a href="./circ/patron/{{patron().id()}}/holds">
+        <a a-disabled="!patron()" href="./circ/patron/{{patron().id()}}/holds">
           [% l('Holds') %]
           <span ng-if="patron()">
             (<span>{{patron_stats().holds.total}} / {{patron_stats().holds.ready}}</span>)
@@ -96,7 +96,7 @@ angular.module('egCoreMod').run(['egStrings', function(s) {
         </a>
       </li>
       <li ng-class="{active : tab == 'bills', disabled : !patron()}">
-        <a href="./circ/patron/{{patron().id()}}/bills">
+        <a a-disabled="!patron()" href="./circ/patron/{{patron().id()}}/bills">
           [% l('Bills') %]
           <span ng-if="patron()">
             (<span ng-class="{'patron-summary-alert-small' : patron_stats().fines.balance_owed}">{{patron_stats().fines.balance_owed | currency}}</span>)
@@ -104,13 +104,13 @@ angular.module('egCoreMod').run(['egStrings', function(s) {
         </a>
       </li>
       <li ng-class="{active : tab == 'messages', disabled : !patron()}">
-        <a href="./circ/patron/{{patron().id()}}/messages">[% l('Messages') %]</a>
+        <a a-disabled="!patron()" href="./circ/patron/{{patron().id()}}/messages">[% l('Messages') %]</a>
       </li>
       <li ng-class="{active : tab == 'edit', disabled : !patron()}">
         <a href="./circ/patron/{{patron().id()}}/edit">[% l('Edit') %]</a>
       </li>
       <li class="dropdown" ng-class="{active : tab == 'other', disabled : !patron()}">
-        <a href class="dropdown-toggle" data-toggle="dropdown">
+        <a a-disabled="!patron()" href class="dropdown-toggle" data-toggle="dropdown">
             [% l('Other') %]
             <b class="caret"></b>
         </a>
