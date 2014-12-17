@@ -235,3 +235,10 @@ CREATE OR REPLACE VIEW metabib.record_attr AS
 
 
 COMMIT;
+
+-- Include helpful note to run 2.6.2-2.6.3 if missed during 2.6-2.7 upgrade
+\qecho **** NOTICE ****
+\qecho 'There was a missed upgrade script on the path from 2.6 series'
+\qecho 'to 2.7 series. If you are upgrading from 2.7.1 and have not'
+\qecho 'already run 2.6.2-2.6.3-upgrade-db.sql script, please go back'
+\qecho 'and run now to receive those missed fixes.'
