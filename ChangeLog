@@ -1,3 +1,685 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 673c87ef2dc273b5a55fe2edb63ad26ad4ce545d
+Author: Ben Shum <bshum@biblio.org>
+Date:   Wed Dec 17 12:00:29 2014 -0500
+
+    Bump OpenILS.pm version to 2.7.2
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit 66e56a7cb7c005382cdc512b7fa3b3fe0ee57b95
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Mon Dec 15 23:23:49 2014 -0500
+
+    LP#1402905 Use stricter matching for UPC values
+    
+    Per http://www.loc.gov/marc/bibliographic/bd024.html we
+    should be checking to see if either the ind1 is "1" or
+    if there's a subfield 2 with a value of "upc" before
+    assuming that any "Other standard identifier" 024 field
+    is a UPC value.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+8	1	Open-ILS/src/templates/opac/parts/misc_util.tt2
+
+commit f33b4737878ab0fdf77c23b4d090808406c8ff08
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Fri May 18 08:30:08 2012 -0400
+
+    LP#921142: Bring back automatic padding of short fixed fields in the GUI MARC editor
+    
+    Bring back automatic padding of short fixed fields in the GUI MARC
+    editor. Also, use onblur instead of oninput, so that we've already lost
+    focus and don't care if that happens again.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+12	0	Open-ILS/web/js/dojo/MARC/FixedFields.js
+0	5	Open-ILS/xul/staff_client/server/cat/marcedit.js
+65	65	Open-ILS/xul/staff_client/server/cat/marcedit.xul
+
+commit 402b5d0da5495aff8d6f267a60dc3707a21050f8
+Author: Ben Shum <bshum@biblio.org>
+Date:   Tue Dec 16 15:15:57 2014 -0500
+
+    LP#1394356: Stamping upgrade script for patron purge post code fix
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+0	332	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.patron_purge_post_code.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.patron_purge_post_code.sql
+
+commit 94218868866bea115b4a93503daabf4c81c2432c
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Nov 28 16:29:57 2014 -0500
+
+    LP#1394356 Patron purge circs retain post code
+    
+    When purging a patron, clear the address data after circulation
+    anonymization to ensure the usr_post_code is retained.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+9	7	Open-ILS/src/sql/Pg/999.functions.global.sql
+332	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.patron_purge_post_code.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.patron_purge_post_code.sql
+
+commit fce2916d590f766b5bc6df60f0d12375712d0a61
+Author: Ben Shum <bshum@biblio.org>
+Date:   Tue Dec 16 15:01:53 2014 -0500
+
+    LP#1400376: Stamping upgrade script for fix to metabib.record_attr
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+12	0	Open-ILS/src/sql/Pg/upgrade/0900.schema.no-null-record_attrs.sql
+0	10	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.no-null-record_attrs.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0900.schema.no-null-record_attrs.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.no-null-record_attrs.sql
+
+commit 080f90f9b2d710d869b731a0276ee7c34a83a5fe
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Mon Dec 15 20:32:51 2014 -0500
+
+    LP#1400376: Don't allow NULL attrs to polute an HSTORE as a key
+    
+    That causes the HSTORE to blow up, which is bad for circs that
+    want to succeed.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+4	1	Open-ILS/src/sql/Pg/030.schema.metabib.sql
+10	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.no-null-record_attrs.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.no-null-record_attrs.sql
+
+commit da51ee3b8fd0fbff6a3a7b2eff0d212332eead0c
+Author: Ben Shum <bshum@biblio.org>
+Date:   Tue Dec 16 14:54:28 2014 -0500
+
+    LP#1389403: Stamping upgrade script for normalizer detection to call number browse
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+9	0	Open-ILS/src/sql/Pg/upgrade/0899.function.cn_normalizers_immutable.sql
+0	9	Open-ILS/src/sql/Pg/upgrade/XXXX.function.cn_normalizers_immutable.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0899.function.cn_normalizers_immutable.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.function.cn_normalizers_immutable.sql
+
+commit 181b400843f7a56c0fea6e0e57739282a7b93bc6
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Fri Oct 4 10:02:39 2013 -0400
+
+    LP#1389403 Add normalizer detection to call number browse
+    
+    When finding the pivot for call number browse, we currently rely on
+    simple label matching (rather than normalized label matching), since
+    we do not know at the time of the search which normalizer we should
+    use.
+    
+    Rather than blindly using the label, let's select the pivot in two
+    phases.  First, we will do what we do know, getting as close as
+    possible by label alone.  If we find an exact match, we are done (same
+    as the current code).  If we don't find an exact match, we take the
+    normalizer setting from the closest label match, normalize our input,
+    then search again.
+    
+    This method *greatly* improves the overall accuracy of call number
+    searching whenever the call number being browsed for does not exist,
+    while causing no harm to accuracy when it does exist (since it will
+    either match the label or normalize to the same call number anyway).
+    
+    Eventually, we may want to add interface elements for selecting the
+    call number type, probably defaulting to the default call number type
+    for the org unit being searched, but even with that in place, this
+    "auto-detection" logic should still be valuable.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+27	4	Open-ILS/src/perlmods/lib/OpenILS/Application/SuperCat.pm
+3	3	Open-ILS/src/sql/Pg/040.schema.asset.sql
+9	0	Open-ILS/src/sql/Pg/upgrade/XXXX.function.cn_normalizers_immutable.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.function.cn_normalizers_immutable.sql
+
+commit 5d39669aa4d79e2228b1d9de698cb6cda69ed39d
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Wed Dec 10 17:05:38 2014 -0500
+
+    LP#1401286: Cleaner display of URIs in search results
+    
+    Right now a record with an 856 like:
+    
+    856 40 $zAvailable online $uhttp://publications.gc.ca $9LUSYS
+    
+    shows up in search results with an HTML display like:
+    
+    <a href="http://publications.gc.ca">http://publications.gc.ca</a> - Available online
+    
+    rather than the much cleaner:
+    
+    <a href="http://publications.gc.ca">Available online</a>
+    
+    My simplistic approach is to check to see if the link text == the href,
+    and if so, and we have a note to display, to use the note as the text of
+    the link instead.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+5	0	Open-ILS/src/templates/opac/parts/misc_util.tt2
+
+commit 19833e4462769c98d2ce37a10975f0bc634f02c0
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Sun Dec 7 08:51:33 2014 -0500
+
+    LP#1400082 - avoid uninitialized var warning at TPAC login
+    
+    Give username a default value of '', which makes the regex happy (avoiding an
+    uninit warning in Apache logs if no value was entered) and still counts as de
+    nada for the purposes of the actual login dance.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader.pm
+
+commit d24a74851de436340ab89e64ab25f6271f374f99
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Sat Nov 29 10:34:53 2014 -0500
+
+    LP#1401271: Add missing dependency for Date::Manip perl module
+    
+    This commit adds lines to distro-specific Makefiles to install
+    Perl Date::Manip packages so that Date::Manip::Date is
+    avaliable for marc_export. Somehow, this got missed or removed.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	0	Open-ILS/src/extras/install/Makefile.debian-jessie
+1	0	Open-ILS/src/extras/install/Makefile.debian-squeeze
+1	0	Open-ILS/src/extras/install/Makefile.debian-wheezy
+1	0	Open-ILS/src/extras/install/Makefile.fedora
+1	0	Open-ILS/src/extras/install/Makefile.ubuntu-precise
+1	0	Open-ILS/src/extras/install/Makefile.ubuntu-trusty
+
+commit d75c738ca6722bd395362f0f2bfab807e3d8442e
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Sun Dec 7 10:17:42 2014 -0500
+
+    LP#1400100 - Avoid extra </div> when OpenURL is enabled
+    
+    When the OpenURL resolver is enabled, the record summary.tt2 page always
+    inserts a </div>, whether or not there actually are any OpenURL results to
+    point at (which is the condition that triggers the opening <div>).
+    
+    This has the effect of resulting in the generated RDFa not including anything
+    below the OpenURL section, effectvely preventing the schema.org/Offer types
+    from being associated with the record. Which is not good for the semantic web
+    of library data.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/templates/opac/parts/record/summary.tt2
+
+commit cbd5f865322db3fdd2043d9189fbf3e79d0b3dae
+Author: Ben Shum <bshum@biblio.org>
+Date:   Fri Dec 5 16:02:04 2014 -0500
+
+    Update 2.6-2.7.0-upgrade-db.sql to reflect that it actually starts from 2.6.3 and up.
+    
+    So, actually, the 2.7 upgrade path needs to include everything up to 2.6.3 to get all
+    the fixes.
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+0	765	Open-ILS/src/sql/Pg/version-upgrade/2.6-2.7.0-upgrade-db.sql
+765	0	Open-ILS/src/sql/Pg/version-upgrade/2.6.3-2.7.0-upgrade-db.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.6-2.7.0-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.6.3-2.7.0-upgrade-db.sql
+
+commit 90ac89223330438a7fa55fcb97352d5dfa7131cb
+Author: Ben Shum <bshum@biblio.org>
+Date:   Fri Dec 5 15:59:40 2014 -0500
+
+    Re-order parts of 0887 upgrade script
+    
+    Based on feedback from dbs, in PostgreSQL 9.1, the order to which we
+    fix up these functions matters.  So drop if exists first, then create
+    new.
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+6	4	Open-ILS/src/sql/Pg/upgrade/0887.function.no-ff-defaults.sql
+6	5	Open-ILS/src/sql/Pg/version-upgrade/2.6.2-2.6.3-upgrade-db.sql
+
+commit f9d015ee21d05756be428a0d1c3265b59c730bcb
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Wed Nov 5 14:22:26 2014 -0500
+
+    Forward-port 2.6.3 upgrade script
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+491	0	Open-ILS/src/sql/Pg/version-upgrade/2.6.2-2.6.3-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.6.2-2.6.3-upgrade-db.sql
+
+commit 51077f2e20f3b9a374f13cdf3019f109fcd420ca
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Wed Dec 10 16:03:11 2014 -0500
+
+    LP#1401177: Stamping upgrade script of unique_mr_attrs.sql.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+101	0	Open-ILS/src/sql/Pg/upgrade/0898.unique_mr_attrs.sql
+0	101	Open-ILS/src/sql/Pg/upgrade/XXXX.unique_mr_attrs.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0898.unique_mr_attrs.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.unique_mr_attrs.sql
+
+commit 4caa655cce982018d37982e2a8d2340ff7749bde
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Dec 10 13:51:51 2014 -0500
+
+    LP#1401177: uniquify attrs across a metarecord
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+29	23	Open-ILS/src/sql/Pg/990.schema.unapi.sql
+101	0	Open-ILS/src/sql/Pg/upgrade/XXXX.unique_mr_attrs.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.unique_mr_attrs.sql
+
+commit 8ac9362720d14c8f7c8998ab8e4e156aca8d4709
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Fri Dec 5 09:03:20 2014 -0500
+
+    Minor fix to web client section headers in root.txt
+    
+    I accidentally added the circulation header twice when adding the new
+    sections for web client docs. This commit removes one of the headers.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	3	docs/root.txt
+
+commit 2ad43738d694d947f1f29340e2d00db6f16d8d39
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Thu Dec 4 16:36:08 2014 -0500
+
+    Web client section headings
+    
+    Adding section headings for web client documentation, which will be coming
+    shortly.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+21	0	docs/root.txt
+
+commit 9dffbd34bdb62f7c1032367ca61d0b1b56cd9286
+Author: Lynn Floyd <alynn2671@gmail.com>
+Date:   Wed Nov 26 16:37:29 2014 -0500
+
+    Docs: Update to template receipt docs
+    
+    Thanks to Lynn Floyd. When adding the new content I ended up splitting new and old content into three files.
+    
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+0	220	docs/admin/workstation_admin.txt
+60	0	docs/admin/workstation_admin_customizable_toolbar.txt
+633	0	docs/admin/workstation_admin_receipt_template_editor.txt
+10	0	docs/root.txt
+ create mode 100644 docs/admin/workstation_admin_customizable_toolbar.txt
+ create mode 100644 docs/admin/workstation_admin_receipt_template_editor.txt
+
+commit 959be2602438832f6ba9cfd9ca8042c170744c39
+Author: alzr <aleksey.lazar@gmail.com>
+Date:   Mon Aug 5 16:50:09 2013 -0500
+
+    LP#1207529: Add /openils assumption note
+    
+    Signed-off-by: alzr <aleksey.lazar@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2	0	docs/installation/server_upgrade.txt
+
+commit 80300c54b26b3b49bb8b3143260465500cf799a2
+Author: alzr <aleksey.lazar@gmail.com>
+Date:   Mon Aug 5 14:33:07 2013 -0500
+
+    LP#1207529: Make sure $PATH includes /openils/bin when configuring
+    
+    https://bugs.launchpad.net/evergreen/+bug/1207529
+    
+    Signed-off-by: alzr <aleksey.lazar@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    
+    Conflicts:
+    	docs/installation/server_upgrade.txt
+
+1	1	docs/installation/server_upgrade.txt
+
+commit a933ce6baeb64560d087b25d16d5764ea24bc616
+Author: Josh Stompro <stomproj@larl.org>
+Date:   Wed Oct 29 16:12:08 2014 -0500
+
+    LP#1384932: document the zips.txt ZIP code database feature
+    
+    Patron Address City/State/County Pre-Populate by ZIP Code.
+    
+    Documented the zips.txt feature that auto fills patron address
+    (City, State, County) information.
+    
+    Signed-off-by: Josh Stompro <stomproj@larl.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+169	0	docs/admin/patron_address_by_zip_code.txt
+2	0	docs/root.txt
+ create mode 100644 docs/admin/patron_address_by_zip_code.txt
+
+commit d52c7a0c85964329b4b9f8104d67ce7165e4a844
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Wed Oct 30 11:05:45 2013 -0400
+
+    LP#1246371: Allow BibCommon::title_is_empty to accept a bre id or bre object.
+    
+    I was trying to delete copies with the record fleshed in the call number
+    object and got the following error:
+    
+    Can't use an undefined value as an ARRAY reference at
+    /usr/local/share/perl/5.14.2/OpenILS/Application/Cat/BibCommon.pm line 399
+    
+    Having title_is_empty check for a bre object and use its id solved this
+    problem for me.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+4	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Cat/BibCommon.pm
+
+commit 58b0239f3a7851a7cbaf1b29386bd2895eba081b
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Thu Nov 13 10:45:14 2014 -0800
+
+    LP#1083639: use "cp -r" instead of "cp -R"
+    
+    This change is purely for the sake of consistency; there's
+    no functional difference.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+1	1	docs/TechRef/KidsOPAC.txt
+
+commit abaeb3b72d4ca5788eea3159efddd236cd5661d0
+Author: Josh Stompro <stomproj@larl.org>
+Date:   Thu Oct 23 14:30:05 2014 -0500
+
+    LP#1083639 - Added command to copy fonts into the KPAC2 / Alternate monster skin dir
+    
+    Signed-off-by: Josh Stompro <stomproj@larl.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+1	0	docs/TechRef/KidsOPAC.txt
+
+commit 3bfb2206640585c1557f1b511e92b28d018fed4f
+Author: Josh Stompro <stomproj@larl.org>
+Date:   Thu Oct 23 13:21:16 2014 -0500
+
+    LP#1116387 - adding kpac setup notes.
+    
+    Revised instructions based on my testing.  Swapped around the Monster
+    and Default skin discriptions since the listed Alternate Skin is the default skin.
+    
+    Signed-off-by: Josh Stompro <stomproj@larl.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+15	9	docs/TechRef/KidsOPAC.txt
+10	13	docs/opac/kids_opac.txt
+
+commit 04e032d474f2fbd2e6294e4fc9ba4f29952acf8c
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Tue Feb 5 10:24:17 2013 -0500
+
+    Add KPAC configuration info to the community docs
+    
+    Adds the KPAC TechRef docs to root.txt so that this information can be
+    available via the community docs. Also adds a section to the docs on
+    configuring the alternate skin and removes a reference to configuration
+    from the end-user KPAC docs.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+36	2	docs/TechRef/KidsOPAC.txt
+0	1	docs/opac/kids_opac.txt
+8	1	docs/root.txt
+
+commit cfaebc9f93eac7e1ebd0cefe9ad71e209a614a26
+Author: Fredric T Parks <fparks@catalystitservices.com>
+Date:   Wed Nov 6 15:36:32 2013 -0800
+
+    LP#1246839: marc_stream_importer.pl no longer crashes with vs 0.23 of File::Temp
+    
+    updated marc_stream_importer.pl to use the 0.23 API
+    
+    Signed-off-by: Fredric T Parks <fparks@catalystitservices.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2	2	Open-ILS/src/support-scripts/marc_stream_importer.pl
+
+commit 6d68a5bccf4a27ce74e626705f7b3c6067e3998b
+Author: Josh Stompro <stomproj@larl.org>
+Date:   Mon Nov 10 09:29:38 2014 -0600
+
+    LP#1133158 - Fix typos in action_trigger_runner.pl
+    
+    Added equals sign to --hooks and added --process-hooks to command so
+    --hooks=x is actually used.
+    
+    Signed-off-by: Josh Stompro <stomproj@larl.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/support-scripts/action_trigger_runner.pl.in
+
+commit bbed3b24e73f27458dddecea077569115bec823a
+Author: Ben Shum <bshum@biblio.org>
+Date:   Mon Nov 10 21:00:42 2014 -0500
+
+    LP#1391290: Stamping upgrade script for authority reingest setting
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+88	0	Open-ILS/src/sql/Pg/upgrade/0897.schema.authority_disable_auto_update.sql
+0	88	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.authority_disable_auto_update.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0897.schema.authority_disable_auto_update.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.authority_disable_auto_update.sql
+
+commit 131119996616867d08653dbc66a689cbbf4f5870
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Mon Nov 10 14:43:22 2014 -0500
+
+    LP#1391290: Respect setting to disable authority propagation on reingest
+    
+    In commit a1612cfd6 we lost the ability to disable authority propagation on
+    record update.  Here, we put it back.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+6	2	Open-ILS/src/sql/Pg/999.functions.global.sql
+88	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.authority_disable_auto_update.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.authority_disable_auto_update.sql
+
+commit af733e3d617f5d083d2b6010645fcdd8ac646e90
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Nov 3 17:55:00 2014 -0500
+
+    LP#1203734 copy circ counts include anon. circs
+    
+    Circ counts displayed on "Show Last Few Circulations" (XUL) includes
+    active, anonymized, and legacy circulations (via cstore)
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+19	7	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ.pm
+0	40	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Publisher/asset.pm
+
+commit b19d1c07c4ea17f9c747713f08afc451d6e8db35
+Author: Ben Shum <bshum@biblio.org>
+Date:   Mon Nov 10 20:27:11 2014 -0500
+
+    LP#778989: Stamping upgrade script for copy location trigger
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+32	0	Open-ILS/src/sql/Pg/upgrade/0896.correct_copy_location.sql
+0	27	Open-ILS/src/sql/Pg/upgrade/XXXX.correct_copy_location.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0896.correct_copy_location.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.correct_copy_location.sql
+
+commit 11ab00b1890c3d61b22d100424d41ae0060a35f3
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Tue Aug 26 15:39:00 2014 -0400
+
+    LP#778989: Adding DROP TRIGGER IF EXISTS to allow for smooth upgrades.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+2	0	Open-ILS/src/sql/Pg/upgrade/XXXX.correct_copy_location.sql
+
+commit 194a1c0c212fe00413fb65116f5369816489fae1
+Author: Thomas Berezansky <tsbere@mvlc.org>
+Date:   Tue Aug 26 12:14:11 2014 -0400
+
+    LP#778989: Add circ lib to location fixer
+    
+    Because the circ lib is valid for picking locations.
+    
+    Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+5	2	Open-ILS/src/sql/Pg/040.schema.asset.sql
+5	2	Open-ILS/src/sql/Pg/upgrade/XXXX.correct_copy_location.sql
+
+commit c3a9893c1109b9779fee362db84119a07a0576fa
+Author: Thomas Berezansky <tsbere@mvlc.org>
+Date:   Wed Feb 1 16:07:05 2012 -0500
+
+    LP#778989: Attempt to find "Correct" copy location
+    
+    This adds a trigger to asset.copy that on insert or change of the location
+    and/or call number tries to find an identically named copy location that
+    is scoped to the owning library of the copy.
+    
+    If it does not find one it uses the location provided.
+    
+    Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+22	0	Open-ILS/src/sql/Pg/040.schema.asset.sql
+22	0	Open-ILS/src/sql/Pg/upgrade/XXXX.correct_copy_location.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.correct_copy_location.sql
+
+commit d9840749df9da9e1e76a8ec3cbe1db4df6ad7254
+Author: Timothy Spindler <tspindler@cwmars.org>
+Date:   Mon Nov 10 16:25:00 2014 -0500
+
+    Docs: remove extra '\r' in cataloging/MARC_batch_edit.txt
+    
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+48	48	docs/cataloging/MARC_batch_edit.txt
+
+commit f65a5324be8b843b474e82440c75b3ff1a436e95
+Author: Timothy Spindler <tspindler@cwmars.org>
+Date:   Mon Nov 10 16:24:26 2014 -0500
+
+    Docs: Documentation for MARC Batch Edit
+    
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+48	0	docs/cataloging/MARC_batch_edit.txt
+2	0	docs/root.txt
+ create mode 100644 docs/cataloging/MARC_batch_edit.txt
+
+commit 917e470e2a8156afe031f0afacffda6679d248b6
+Author: Josh Stompro <stomproj@larl.org>
+Date:   Mon Nov 10 14:06:07 2014 -0500
+
+    Documentation: LP#1386854 - Locally Hosted Added Content.
+    
+    Adds documentation that describes how to use the local content bypass
+    feature of the AddedContent modules.  This allows for local added content like
+    cover art, reviews, TOC, exerpts or annotations to be shown in bib records.
+    
+    I also changed the headers in the External Added Content section to use title case.
+    
+    Signed-off-by: Josh Stompro <stomproj@larl.org>
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+70	2	docs/admin_initial_setup/designing_your_catalog.txt
+
+commit 2d83e10b5ab37d995c8503e8e2b631ac43cad5c7
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Thu Nov 6 16:03:36 2014 -0500
+
+    LP#1390225: Fail to care about errors from auth.session.delete
+    
+    We're just tossing this call over the wall and moving on.  We don't
+    care if the session wasn't there to delete or even if we didn't pass
+    a session to the server.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+7	5	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader.pm
+
+commit 0fa2055705b17b0ac8959e57aec2ead91e939718
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Thu Nov 6 15:36:16 2014 -0500
+
+    LP#1390225: redirect to ctx.home_page instead of through ctx.logout_page
+    
+    This way, we skip the auth.session.delete call that will error out because
+    we no longer have the authtoken cookie.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+1	1	Open-ILS/src/templates/opac/parts/base.tt2
+
+commit a946eb97e45c6fde2898fb5390bce21e47d41688
+Author: Ben Shum <bshum@biblio.org>
+Date:   Wed Nov 5 15:55:09 2014 -0500
+
+    Forward port 2.7.0-2.7.1 upgrade script
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+170	0	Open-ILS/src/sql/Pg/version-upgrade/2.7.0-2.7.1-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.7.0-2.7.1-upgrade-db.sql
