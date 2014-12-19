@@ -148,14 +148,22 @@ __PACKAGE__->register_method(
 );
 
 
+# partition -- if set, an 'undef' will be inserted into the result list
+# between the last circulation and the first reservation.  This is
+# useful in conjunction with 'idlist' so the caller can tell what type 
+# of transaction the ID refers to without having to query the DB.
 sub overdue_circs {
     my $upper_interval = shift || '1 millennium';
     my $idlist = shift;
+    my $partition = shift;
+
+    # Only retrieve ID's in the initial query if that's all the caller needs.
+    my $contents = $idlist ? 'id' : '*';
 
     my $c_t = action::circulation->table;
 
     my $sql = <<"    SQL";
-        SELECT  *
+        SELECT  $contents
           FROM  $c_t
           WHERE stop_fines IS NULL
             AND due_date < ( CURRENT_TIMESTAMP - grace_period )
@@ -167,9 +175,11 @@ sub overdue_circs {
 
     my @circs = map { $idlist ? $_->{id} : action::circulation->construct($_) } $sth->fetchall_hash;
 
+    push (@circs, undef) if $partition;
+
     $c_t = booking::reservation->table;
     $sql = <<"    SQL";
-        SELECT  *
+        SELECT  $contents
           FROM  $c_t
           WHERE return_time IS NULL
             AND end_time < ( CURRENT_TIMESTAMP )
@@ -1052,15 +1062,31 @@ sub generate_fines {
             action::circulation->search_where( { id => $circ, stop_fines => undef } ),
             booking::reservation->search_where( { id => $circ, return_time => undef, cancel_time => undef } );
     } else {
-        push @circs, overdue_circs();
+        push @circs, overdue_circs(undef, 1, 1);
     }
 
     my %hoo = map { ( $_->id => $_ ) } actor::org_unit::hours_of_operation->retrieve_all;
 
     my $penalty = OpenSRF::AppSession->create('open-ils.penalty');
+    my $handling_resvs = 0;
     for my $c (@circs) {
 
         my $ctype = ref($c);
+
+        if (!$ctype) { # fetched via idlist
+            if ($handling_resvs) {
+                $c = booking::reservation->retrieve($c);
+            } elsif (not defined $c) {
+                # an undef value is the indicator that we are moving
+                # from processing circulations to reservations.
+                $handling_resvs = 1;
+                next;
+            } else {
+                $c = action::circulation->retrieve($c);
+            }
+            $ctype = ref($c);
+        }
+
         $ctype =~ s/^.+::(\w+)$/$1/;
     
         my $due_date_method = 'due_date';
