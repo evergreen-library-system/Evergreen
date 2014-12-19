@@ -1782,6 +1782,10 @@ function onAttrEditorOpen() {
 	dijit.byId('attr-editor-dialog').reset();
 	create_bar.style.display='table-row';
 	update_bar.style.display='none';
+
+        // clear the currently-editing attribute ID, 
+        // since we're creating a new attribute.
+        ATTR_EDIT_ID = null;
     }
 }
 
