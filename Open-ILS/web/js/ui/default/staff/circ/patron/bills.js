@@ -123,7 +123,7 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
 
     // set up some defaults
     $scope.check_number = 0;
-    $scope.payment_amount = 0;
+    $scope.payment_amount = null;
     $scope.session_voided = 0;
     $scope.payment_type = 'cash_payment';
     $scope.focus_payment = true;
@@ -267,7 +267,7 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
     function refreshDisplay() {
         patronSvc.fetchUserStats();
         billSvc.fetchSummary().then(function(s) {$scope.summary = s});
-        $scope.payment_amount = 0;
+        $scope.payment_amount = null;
         $scope.gridControls.refresh();
     }
 
