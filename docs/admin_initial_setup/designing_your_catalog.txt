@@ -542,7 +542,6 @@ points to the Syndetic service:
 For changes to be activated for your public interface you will need to restart
 Evergreen and Apache.
 
-=======
 Including Locally Hosted Content in Your Public Interface
 ---------------------------------------------------------
 
