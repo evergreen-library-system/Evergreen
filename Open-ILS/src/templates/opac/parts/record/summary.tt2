@@ -122,7 +122,15 @@ IF num_uris > 0;
         [%- ELSE -%]
             <li class="rdetail_uri" property="offers" vocab="http://schema.org/" typeof="Offer">
         [%- END -%]
-        <a href="[% uri.href %]">[% uri.link %]</a>[% ' - ' _ uri.note IF uri.note %]
+        <a href="[% uri.href %]" property="url">
+        [%- IF uri.href != uri.link;
+                '<span property="description">' _ uri.link _ '</span>';
+            ELSE;
+                uri.link;
+            END;
+        -%]
+        </a>
+        [%- ' - <span property="description">' _ uri.note _ '</span>' IF uri.note %]
         <link property="availability" href="http://schema.org/OnlineOnly" />
         [%- IF attrs.gtin13; '<meta property="gtin13" content="' _ attrs.gtin13 _ '" />'; END; %]
         [%- IF num_uris == 1 %]</p>[% ELSE %]</li>[% END %]
