@@ -5,7 +5,7 @@ use XML::Simple;
 use XML::LibXML;
 use File::stat;
 use Encode;
-use Apache2::Const -compile => qw(OK DECLINED HTTP_INTERNAL_SERVER_ERROR);
+use Apache2::Const -compile => qw(OK DECLINED HTTP_INTERNAL_SERVER_ERROR HTTP_NOT_FOUND HTTP_GONE);
 use Apache2::Log;
 use OpenSRF::EX qw(:try);
 use OpenSRF::AppSession;
@@ -41,6 +41,15 @@ sub handler_guts {
 
     my $stat = run_context_loader($r, $ctx);
 
+    # Handle deleted or never existing records a little more gracefully.
+    # For these two special cases, we set the status so that the request
+    # header will contain the appropriate HTTP status code, but reset the
+    # status so that Apache will continue to process the request and provide
+    # more than just the raw HTTP error page.
+    if ($stat == Apache2::Const::HTTP_GONE || $stat == Apache2::Const::HTTP_NOT_FOUND) {
+        $r->status($stat);
+        $stat = Apache2::Const::OK;
+    }   
     return $stat unless $stat == Apache2::Const::OK;
     return Apache2::Const::DECLINED unless $template;
 
