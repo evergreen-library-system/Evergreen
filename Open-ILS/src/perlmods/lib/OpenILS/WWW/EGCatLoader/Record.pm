@@ -1,6 +1,6 @@
 package OpenILS::WWW::EGCatLoader;
 use strict; use warnings;
-use Apache2::Const -compile => qw(OK DECLINED FORBIDDEN HTTP_INTERNAL_SERVER_ERROR REDIRECT HTTP_BAD_REQUEST);
+use Apache2::Const -compile => qw(OK DECLINED FORBIDDEN HTTP_GONE HTTP_INTERNAL_SERVER_ERROR REDIRECT HTTP_BAD_REQUEST HTTP_NOT_FOUND);
 use OpenSRF::Utils::Logger qw/$logger/;
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use OpenILS::Utils::Fieldmapper;
@@ -139,6 +139,16 @@ sub load_record {
     );
 
     $cstore->kill_me;
+
+    # Shortcut and help the machines with a 410 Gone status code
+    if ($self->ctx->{bib_is_dead}) {
+        return Apache2::Const::HTTP_GONE;
+    }
+
+    # Shortcut and help the machines with a 404 Not Found status code
+    if (!$ctx->{bre_id}) {
+        return Apache2::Const::HTTP_NOT_FOUND;
+    }
 
     if (
         $ctx->{get_org_setting}->
