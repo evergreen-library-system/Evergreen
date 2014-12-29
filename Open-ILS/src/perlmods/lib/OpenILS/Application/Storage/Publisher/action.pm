@@ -152,13 +152,19 @@ __PACKAGE__->register_method(
 # between the last circulation and the first reservation.  This is
 # useful in conjunction with 'idlist' so the caller can tell what type 
 # of transaction the ID refers to without having to query the DB.
+# skip_no_fines - filter out transactions which will never be billed, 
+# e.g. circs with a $0 max fine or $0 recurring fine.
 sub overdue_circs {
     my $upper_interval = shift || '1 millennium';
     my $idlist = shift;
     my $partition = shift;
+    my $skip_no_fines = shift;
 
     # Only retrieve ID's in the initial query if that's all the caller needs.
     my $contents = $idlist ? 'id' : '*';
+
+    my $fines_filter = $skip_no_fines ? 
+        'AND recurring_fine <> 0 AND max_fine <> 0' : '';
 
     my $c_t = action::circulation->table;
 
@@ -166,6 +172,7 @@ sub overdue_circs {
         SELECT  $contents
           FROM  $c_t
           WHERE stop_fines IS NULL
+            $fines_filter
             AND due_date < ( CURRENT_TIMESTAMP - grace_period )
             AND fine_interval < ?::INTERVAL
     SQL
@@ -177,11 +184,15 @@ sub overdue_circs {
 
     push (@circs, undef) if $partition;
 
+    $fines_filter = $skip_no_fines ? 
+        'AND fine_amount <> 0 AND max_fine <> 0' : '';
+
     $c_t = booking::reservation->table;
     $sql = <<"    SQL";
         SELECT  $contents
           FROM  $c_t
           WHERE return_time IS NULL
+            $fines_filter
             AND end_time < ( CURRENT_TIMESTAMP )
             AND fine_interval IS NOT NULL
             AND cancel_time IS NULL
@@ -1062,8 +1073,10 @@ sub generate_fines {
             action::circulation->search_where( { id => $circ, stop_fines => undef } ),
             booking::reservation->search_where( { id => $circ, return_time => undef, cancel_time => undef } );
     } else {
-        push @circs, overdue_circs(undef, 1, 1);
+        push @circs, overdue_circs(undef, 1, 1, 1);
     }
+
+    $logger->info("fine generator processing ".scalar(@circs)." transactions");
 
     my %hoo = map { ( $_->id => $_ ) } actor::org_unit::hours_of_operation->retrieve_all;
 
