@@ -311,7 +311,8 @@ sub grab_overdue {
 
     my $idlist = $self->api_name =~/id_list/o ? 1 : 0;
     
-    $client->respond( $idlist ? $_ : $_->to_fieldmapper ) for ( overdue_circs('', $idlist) );
+    $client->respond( $idlist ? $_ : $_->to_fieldmapper ) 
+        for ( overdue_circs('', $idlist, undef, 1) );
 
     return undef;
 
@@ -324,7 +325,8 @@ __PACKAGE__->register_method(
     signature       => q/
         Return list of overdue circulations and reservations to be used for fine generation.
         Despite the name, this is not a generic method for retrieving all overdue loans,
-        as it excludes loans that have already hit the maximum fine limit.
+        as it excludes loans that have already hit the maximum fine limit
+        and transactions which do not accrue fines.
 /,
 );
 __PACKAGE__->register_method(
