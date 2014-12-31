@@ -9,7 +9,16 @@ angular.module('egPatronApp')
         'egGridDataProvider','$modal','egCirc','egConfirmDialog','egBilling',
 function($scope,  $q,  $routeParams,  egCore , egUser,  patronSvc , 
          egGridDataProvider , $modal , egCirc , egConfirmDialog , egBilling) {
-    $scope.initTab('items_out', $routeParams.id);
+
+    // list of noncatatloged circulations. Define before initTab to 
+    // avoid any possibility of race condition, since they are loaded
+    // during init, but may be referenced before init completes.
+    $scope.noncat_list = [];
+
+    $scope.initTab('items_out', $routeParams.id).then(function() {
+        // sort inline to support paging
+        $scope.noncat_list = patronSvc.noncat_ids.sort();
+    });
 
     // cache of circ objects for grid display
     patronSvc.items_out = [];
@@ -56,6 +65,13 @@ function($scope,  $q,  $routeParams,  egCore , egUser,  patronSvc ,
     $scope.show_alt_list = function() {
         // don't need a full reset_page() to swap tabs
         $scope.items_out_display = 'alt';
+        patronSvc.items_out = [];
+        provider.refresh();
+    }
+
+    $scope.show_noncat_list = function() {
+        // don't need a full reset_page() to swap tabs
+        $scope.items_out_display = 'noncat';
         patronSvc.items_out = [];
         provider.refresh();
     }
@@ -112,6 +128,35 @@ function($scope,  $q,  $routeParams,  egCore , egUser,  patronSvc ,
         });
     }
 
+    function fetch_noncat_circs(id_list, offset, count) {
+        if (!id_list.length) return $q.when();
+
+        return egCore.pcrud.search('ancc', {id : id_list},
+            {   flesh : 1,
+                flesh_fields : {ancc : ['item_type','staff']},
+                limit  : count,
+                offset : offset,
+                // we need an order-by to support paging
+                order_by : {circ : ['circ_time']} 
+
+        }).then(null, null, function(noncat_circ) {
+
+            // calculate the virtual due date from the item type duration
+            var seconds = egCore.date.intervalToSeconds(
+                noncat_circ.item_type().circ_duration());
+            var d = new Date(Date.parse(noncat_circ.circ_time()));
+            d.setSeconds(d.getSeconds() + seconds);
+            noncat_circ.duedate(d.toISOString());
+
+            // local flesh org unit
+            noncat_circ.circ_lib(egCore.org.get(noncat_circ.circ_lib()));
+
+            patronSvc.items_out.push(noncat_circ); // cache it
+            return noncat_circ;
+        });
+    }
+
+
     // decide which list each circ belongs to
     function promote_circs(list, display_code, open) {
         if (open) {                                                    
@@ -165,6 +210,11 @@ function($scope,  $q,  $routeParams,  egCore , egUser,  patronSvc ,
         if (patronSvc.items_out[offset]) {
             return provider.arrayNotifier(
                 patronSvc.items_out, offset, count);
+        }
+
+        if ($scope.items_out_display == 'noncat') {
+            // if there are any noncat circ IDs, we already have them
+            return fetch_noncat_circs(id_list, offset, count);
         }
 
         // See if we have the circ IDs for this range already loaded.

@@ -1,6 +1,6 @@
 <!-- items out list -->
 
-<div ng-if="show_alt_circs">
+<div>
   <!-- only show the main vs. alt circ list tabs if the alt
       circ list is meant to display -->
   <ul class="nav nav-tabs">
@@ -9,20 +9,40 @@
         [% l('Items Checked Out') %] ({{main_list.length}})
       </a>
     </li>
-    <li ng-class="{active : items_out_display == 'alt'}">
+    <li ng-if="show_alt_circs" ng-class="{active : items_out_display == 'alt'}">
       <a href ng-click="show_alt_list()">
         [% l('Other/Special Circulations') %] ({{alt_list.length}})
       </a>
     </li>
+    <li ng-class="{active : items_out_display == 'noncat'}">
+      <a href ng-click="show_noncat_list()">
+        [% l('Non-Cataloged Circulations') %] ({{noncat_list.length}})
+      </a>
+    </li>
   </ul>
-</div>
-<div ng-if="!show_alt_circs" class="strong-text-2">
-  [% l('Items Checked Out') %]
 </div>
 
 <div class="tab-content">
   <div class="tab-pane active">
+
 <eg-grid
+  ng-if="items_out_display == 'noncat'"
+  idl-class="ancc"
+  id-field="id"
+  features="-sort,-multisort"
+  items-provider="gridDataProvider"
+  persist-key="circ.patron.items_out.noncat">
+
+  <eg-grid-field label="[% l('Circ ID') %]" path='id'></eg-grid-field>
+  <eg-grid-field label="[% l('Item Type') %]" path='item_type.name'></eg-grid-field>
+  <eg-grid-field label="[% l('Checkout Library') %]" path='circ_lib.shortname'></eg-grid-field>
+  <eg-grid-field label="[% l('Checkout Date') %]" path='circ_time' dateformat='short'></eg-grid-field>
+  <eg-grid-field label="[% l('Due Date') %]" path='duedate' dateformat='short'></eg-grid-field>
+  <eg-grid-field label="[% l('Checkout Staff') %]" path='staff.usrname'></eg-grid-field>
+</eg-grid>
+
+<eg-grid
+  ng-if="items_out_display != 'noncat'"
   idl-class="circ"
   id-field="id"
   features="-sort,-multisort"
@@ -71,5 +91,7 @@
   <eg-grid-field path="target_copy.call_number.record.*" hidden></eg-grid-field>
   <eg-grid-field path="target_copy.call_number.record.simple_record.*" hidden></eg-grid-field>
 </eg-grid>
+</div>
+
   </div>
 </div>
