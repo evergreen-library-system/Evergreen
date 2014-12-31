@@ -102,6 +102,7 @@ module.exports = function(grunt) {
             'services/navbar.js',
             'services/statusbar.js',
             'services/ui.js',
+            'services/date.js',
         ],
         dest: 'build/js/<%= pkg.name %>.<%= pkg.version %>.min.js'
       }

@@ -9,9 +9,9 @@ angular.module('egCoreMod')
 
 .factory('egCore', 
        ['egIDL','egNet','egEnv','egOrg','egPCRUD','egEvent','egAuth',
-        'egPerm','egHatch','egPrint','egStartup','egStrings',
+        'egPerm','egHatch','egPrint','egStartup','egStrings','egDate',
 function(egIDL , egNet , egEnv , egOrg , egPCRUD , egEvent , egAuth , 
-         egPerm , egHatch , egPrint , egStartup , egStrings) {
+         egPerm , egHatch , egPrint , egStartup , egStrings , egDate) {
 
     return {
         idl     : egIDL,
@@ -25,7 +25,8 @@ function(egIDL , egNet , egEnv , egOrg , egPCRUD , egEvent , egAuth ,
         hatch   : egHatch,
         print   : egPrint,
         startup : egStartup,
-        strings : egStrings
+        strings : egStrings,
+        date    : egDate
     };
 
 }]);

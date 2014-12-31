@@ -30,6 +30,7 @@
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/services/navbar.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/services/statusbar.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/services/ui.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/date.js"></script>
 
 [% ELSE %]
 
