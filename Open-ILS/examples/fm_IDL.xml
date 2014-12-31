@@ -6692,7 +6692,7 @@ SELECT  usr,
             </actions>
         </permacrud>
 	</class>
-	<class id="ancc" controller="open-ils.cstore" oils_obj:fieldmapper="action::non_cataloged_circulation" oils_persist:tablename="action.non_cataloged_circulation" reporter:core="true" reporter:label="Non-cataloged Circulation">
+	<class id="ancc" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action::non_cataloged_circulation" oils_persist:tablename="action.non_cataloged_circulation" reporter:core="true" reporter:label="Non-cataloged Circulation">
 		<fields oils_persist:primary="id" oils_persist:sequence="action.non_cataloged_circulation_id_seq">
 			<field reporter:label="Circulating Library" name="circ_lib"  reporter:datatype="org_unit"/>
 			<field reporter:label="Circulation Date/Time" name="circ_time" reporter:datatype="timestamp"/>
@@ -6708,6 +6708,11 @@ SELECT  usr,
 			<link field="patron" reltype="has_a" key="id" map="" class="au"/>
 			<link field="circ_lib" reltype="has_a" key="id" map="" class="aou"/>
 		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<retrieve permission="VIEW_CIRCULATIONS" context_field="circ_lib" />
+			</actions>
+		</permacrud>
 	</class>
 	<class id="moucs" controller="open-ils.cstore" oils_obj:fieldmapper="money::open_user_circulation_summary" oils_persist:tablename="money.open_usr_circulation_summary" reporter:label="Open User Circulation Summary">
 		<fields oils_persist:primary="usr" oils_persist:sequence="">
