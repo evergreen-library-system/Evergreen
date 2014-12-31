@@ -233,6 +233,7 @@ function($q , $timeout , $location , egCore,  egUser , $locale) {
         service.hold_ids = [];
         service.checkout_overrides = {};
         service.patron_stats = null;
+        service.noncat_ids = [];
         service.hasAlerts = false;
         service.alertsShown = false;
         service.patronExpired = false;
@@ -487,6 +488,18 @@ function($q , $timeout , $location , egCore,  egUser , $locale) {
         );
     }
 
+    // Fetches the IDs of any active non-cat checkouts for the current
+    // user.  Also sets the patron_stats non_cat count value to match.
+    service.getUserNonCats = function(id) {
+        return egCore.net.request(
+            'open-ils.circ',
+            'open-ils.circ.open_non_cataloged_circulation.user.authoritative',
+            egCore.auth.token(), id
+        ).then(function(noncat_ids) {
+            service.noncat_ids = noncat_ids;
+            service.patron_stats.checkouts.noncat = noncat_ids.length;
+        });
+    }
 
     // grab additional circ info
     service.fetchUserStats = function() {
@@ -508,7 +521,10 @@ function($q , $timeout , $location , egCore,  egUser , $locale) {
                 }
             );
 
-            return service.fetchGroupFines();
+            // run these two in parallel
+            var p1 = service.getUserNonCats(service.current.id());
+            var p2 = service.fetchGroupFines();
+            return $q.all([p1, p2]);
         });
     }
 
