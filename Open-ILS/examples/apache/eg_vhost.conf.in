@@ -549,6 +549,7 @@ RewriteRule . - [E=locale:%1]
     IDLChunkStripDoctype "yes"
     IDLChunkContentType "application/xml; charset=utf-8"
     AddOutputFilter INCLUDES;IDLCHUNK .xml
+    SetEnv no-gzip
 </LocationMatch>
 
 # ----------------------------------------------------------------------------------
