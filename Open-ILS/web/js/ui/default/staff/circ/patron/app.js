@@ -716,9 +716,9 @@ function($scope , $location , egCore , egConfirmDialog , egUser , patronSvc) {
  */
 .controller('PatronSearchCtrl',
        ['$scope','$q','$routeParams','$timeout','$window','$location','egCore',
-       '$filter','egUser', 'patronSvc','egGridDataProvider',
+       '$filter','egUser', 'patronSvc','egGridDataProvider','$document',
 function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore,
-        $filter,  egUser,  patronSvc , egGridDataProvider) {
+        $filter,  egUser,  patronSvc , egGridDataProvider , $document) {
 
     $scope.initTab('search');
     $scope.focusMe = true;
@@ -726,6 +726,9 @@ function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore,
         // default to searching globally
         home_ou : egCore.org.tree()
     };
+
+    // last used patron search form element
+    var lastFormElement;
 
     $scope.gridControls = {
         activateItem : function(item) {
@@ -886,7 +889,7 @@ function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore,
 
     $scope.clearForm = function () {
         $scope.searchArgs={};
-        window.prevElement.focus();
+        if (lastFormElement) lastFormElement.focus();
     }
 
     $scope.applyShowExtras = function($event, bool) {
@@ -897,7 +900,7 @@ function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore,
             $scope.showExtras = false;
             egCore.hatch.removeItem('eg.circ.patron.search.show_extras');
         }
-        window.prevElement.focus();
+        if (lastFormElement) lastFormElement.focus();
         $event.preventDefault();
     }
 
@@ -960,12 +963,16 @@ function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore,
         return sort;
     }
 
+    $scope.setLastFormElement = function() {
+        lastFormElement = $document[0].activeElement;
+    }
+
     // search form submit action; tells the results grid to
     // refresh itself.
     $scope.search = function(args) { // args === $scope.searchArgs
         if (args && Object.keys(args).length) 
             $scope.gridControls.refresh();
-        window.prevElement.focus();
+        if (lastFormElement) lastFormElement.focus();
     }
 
     // TODO: move this into the (forthcoming) grid row activate action
