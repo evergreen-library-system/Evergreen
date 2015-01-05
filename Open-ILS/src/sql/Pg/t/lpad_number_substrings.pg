@@ -1,0 +1,41 @@
+
+-- Turn off echo and keep things quiet.
+\set ECHO
+\set QUIET 1
+
+-- Format the output for nice TAP.
+\pset format unaligned
+\pset tuples_only true
+\pset pager
+
+-- Revert all changes on failure.
+\set ON_ERROR_ROLLBACK 1
+\set ON_ERROR_STOP true
+\set QUIET 1
+
+-- Load the TAP functions.
+BEGIN;
+
+-- Plan the tests.
+SELECT plan(5);
+
+-- Run the tests.
+SELECT is(evergreen.lpad_number_substrings(
+	'Appendix','0',5), 'Appendix','Non-numeric string');
+
+SELECT is(evergreen.lpad_number_substrings(
+	'DISC 11','0',5), 'DISC 00011','Prefix, 1 number');
+
+SELECT is(evergreen.lpad_number_substrings(
+	'DISC 14.1','0',5), 'DISC 00014.00001','Prefix, 2 numbers');
+
+SELECT is(evergreen.lpad_number_substrings(
+	'DISC 12.12.13','0',5), 'DISC 00012.00012.00013','Prefix, 3 numbers');
+
+SELECT is(evergreen.lpad_number_substrings(
+	'Vol 5a-15','0',5), 'DISC 00005a-00015','Mixed format');
+
+
+-- Finish the tests and clean up.
+SELECT * FROM finish();
+ROLLBACK;
