@@ -486,8 +486,29 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                 return this._buildPermGrpSelector();
             if(linkClass == 'aou')
                 return this._buildOrgSelector();
-            if(linkClass == 'acpl')
-                return this._buildCopyLocSelector();
+            if(linkClass == 'acpl'){
+                var self2 = this;
+                var orgs = [];
+                /* -----------------------------------------------------
+                When the copy location dropdown is in a link context
+                we need to expand the list to the provided permission 
+                branches
+                ------------------------------------------------------*/
+                if(this.orgLimitPerms){	
+                var buildCopyLocSelector = this._buildCopyLocSelector;
+                new openils.User().getPermOrgList(
+                    self2.orgLimitPerms,
+                    function(orgsi) {			
+                        orgs = orgs.concat(orgsi);	
+                        buildCopyLocSelector(orgs,self2);
+                    },
+                    true, true // descendants, id_list
+                );
+                return true;
+                }
+            else				
+                return this._buildCopyLocSelector(orgs,self);
+            }
             if(linkClass == 'acqpro')
                 return this._buildAutoCompleteSelector(linkClass, vfield.selector);
 
@@ -693,22 +714,21 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             return true;
         },
 
-        _buildCopyLocSelector : function() {
+        _buildCopyLocSelector : function(orgs,self) {
             dojo.require('dijit.form.FilteringSelect');
-            this.widget = new dijit.form.FilteringSelect(this.dijitArgs, this.parentNode);
-            this.widget.searchAttr = this.widget.labalAttr = 'name';
-            this.widget.valueAttr = 'id';
+            self.widget = new dijit.form.FilteringSelect(self.dijitArgs, self.parentNode);
+            self.widget.searchAttr = self.widget.labalAttr = 'name';
+            self.widget.valueAttr = 'id';
             
             // my orgs
             var ws_ou = openils.User.user.ws_ou();
-            var orgs = fieldmapper.aou.findOrgUnit(ws_ou).orgNodeTrail().map(function (i) { return i.id() });
+            orgs = orgs.concat(fieldmapper.aou.findOrgUnit(ws_ou).orgNodeTrail().map(function (i) { return i.id() }));
             orgs = orgs.concat(fieldmapper.aou.descendantNodeList(ws_ou).map(function (i) { return i.id() }));
 
-            var self = this;
             var search = {owning_lib : orgs, deleted : 'f'};
 
-            if(this.cache.copyLocStore) {
-                var store = this.cache.copyLocStore;
+            if(self.cache.copyLocStore) {
+                var store = self.cache.copyLocStore;
                 var allGood = false;
                 var locIds = [];
 
@@ -718,7 +738,7 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                 // the set of locations to fetch.
 
                 var allGood = false;
-                if (this.widgetValue) {
+                if (self.widgetValue) {
                 
                     store.fetch({
                         onComplete : function(list) {
@@ -736,21 +756,21 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                 }
 
                 if (allGood) {
-                    this.widget.store = this.cache.copyLocStore;
-                    this.widget.startup();
-                    this.async = false;
+                    self.widget.store = self.cache.copyLocStore;
+                    self.widget.startup();
+                    self.async = false;
                     return true;
 
                 } else {
-                    // cached IDs plus id of this.widgetValue;
-                    locIds.push(this.widgetValue);
+                    // cached IDs plus id of self.widgetValue;
+                    locIds.push(self.widgetValue);
                     search = {id : locIds, deleted: 'f'};
                 }
             } 
 
 
-            new openils.PermaCrud().search('acpl', search, {
-                async : !this.forceSync,
+            new openils.PermaCrud().search('acpl', search, {			
+                async : !self.forceSync,
                 order_by : {"acpl": "name"},
                 oncomplete : function(r) {
                     var list = openils.Util.readResponse(r, false, true);
@@ -759,8 +779,8 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                     // if we are including any copy locations outside our org
                     // unit scope, tag them with a context org unit to prevent
                     // confusion caused by having multiple like-named entries
-                    dojo.forEach(list, function(loc) {
-                        if (orgs.indexOf(loc.owning_lib()) < 0) {
+                    dojo.forEach(list, function(loc) {					
+                        if (orgs.length>1) {
                             loc.name(loc.name() + ' (' + 
                                 fieldmapper.aou.findOrgUnit(loc.owning_lib()).shortname() + ')');
                         }

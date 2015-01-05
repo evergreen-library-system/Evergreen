@@ -183,7 +183,7 @@ function AcqLiTable() {
                 "labelFormat": (field == 'fund') ? fundLabelFormat : null,
                 "searchFormat": (field == 'fund') ? fundSearchFormat : null,
                 "searchFilter": (field == 'fund') ? fundSearchFilter : null,
-                "orgLimitPerms": [perms],
+                "orgLimitPerms": (field == 'location') ? ['CREATE_PICKLIST', 'CREATE_PURCHASE_ORDER'] : [perms],
                 "dijitArgs": {
                     "required": false,
                     "labelType": (field == "fund") ? "html" : null
