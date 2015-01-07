@@ -71,9 +71,11 @@ $_TT_helpers = {
     },
 
     # encode email headers in UTF-8, per RFC2231
+    # now a no-op as we automatically encode the headers in the SendEmail
+    # reactor, but we need to leave this here to avoid breaking templates
+    # that might have once used it
     escape_email_header => sub {
         my $str = shift;
-        $str = encode("MIME-Header", $str);
         return $str;
     },
 
