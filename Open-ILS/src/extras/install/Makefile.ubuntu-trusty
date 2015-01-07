@@ -102,13 +102,25 @@ PGSQL_SERVER_DEBS_93 = \
 	postgresql-plperl-9.3 \
 	postgresql-server-dev-9.3
 
+# note: some prereqs are repeated in the developer/packager 
+# sections to support building Evergreen packages on servers
+# where Evergreen and its prereqs are not installed.
+
 # nodejs-legacy creates a symlink for /usr/bin/node -> /usr/bin/nodejs
 # which is needed by our npm-installed packages
 DEVELOPER_DEBS = \
+	make \
+	automake \
+	autoconf \
+	libtool \
 	nodejs-legacy \
 	npm
 
 PACKAGER_DEBS = \
+	libtemplate-perl \
+	liblocale-maketext-lexicon-perl \
+	asciidoc \
+	source-highlight \
 	translate-toolkit \
 	python-dev \
 	python-levenshtein \
@@ -139,7 +151,7 @@ install_developer:
 	npm install -g grunt-cli
 	npm install -g bower
 
-install_packager:
+install_packager: install_developer
 	make -f $(DIR)/Makefile.debian DEBS="$(PACKAGER_DEBS)"
 
 clean:
