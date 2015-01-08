@@ -447,6 +447,7 @@ vim:et:ts=4:sw=4:
                             <login_types>
                                 <type>staff</type>
                                 <type>opac</type>
+                                <type>persist</type>
                             </login_types>
                             <org_units>
                                 <unit>103</unit>
