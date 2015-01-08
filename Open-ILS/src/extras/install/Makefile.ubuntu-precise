@@ -103,7 +103,6 @@ PGSQL_SERVER_DEBS_91 = \
 # where Evergreen and its prereqs are not installed.
 
 DEVELOPER_DEBS = \
-	make \
 	automake \
 	autoconf \
 	libtool 

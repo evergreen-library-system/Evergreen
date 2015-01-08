@@ -101,7 +101,6 @@ PGSQL_SERVER_DEBS_93 = \
 # nodejs-legacy creates a symlink for /usr/bin/node -> /usr/bin/nodejs
 # which is needed by our npm-installed packages
 DEVELOPER_DEBS = \
-	make \
 	automake \
 	autoconf \
 	libtool \

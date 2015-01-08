@@ -99,16 +99,11 @@ PGSQL_SERVER_DEBS_91 = \
 # where Evergreen and its prereqs are not installed.
 
 DEVELOPER_DEBS = \
-	make \
 	automake \
 	autoconf \
 	libtool 
 
 PACKAGER_DEBS = \
-	make \
-	automake \
-	autoconf \
-	libtool \
 	libtemplate-perl \
 	liblocale-maketext-lexicon-perl \
 	asciidoc \
