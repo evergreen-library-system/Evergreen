@@ -1932,6 +1932,27 @@ BEGIN
 END;
 $$ LANGUAGE 'plpgsql';
 
+CREATE OR REPLACE FUNCTION acq.copy_fund_tags(
+        old_fund_id INTEGER,
+        new_fund_id INTEGER
+) RETURNS VOID AS $$
+DECLARE
+fund_tag_rec	RECORD;
+BEGIN
+       
+	FOR fund_tag_rec IN SELECT * FROM acq.fund_tag_map WHERE fund=old_fund_id LOOP
+                BEGIN
+		     INSERT INTO acq.fund_tag_map(fund, tag) VALUES(new_fund_id, fund_tag_rec.tag);
+                EXCEPTION
+			WHEN unique_violation THEN
+			--    RAISE NOTICE 'Fund tag already propagated', old_fund.id;
+			CONTINUE;
+		END;
+	END LOOP;
+	RETURN;
+END;
+$$ LANGUAGE plpgsql;
+
 CREATE OR REPLACE FUNCTION acq.propagate_funds_by_org_tree(
 	old_year INTEGER,
 	user_id INTEGER,
@@ -2008,6 +2029,9 @@ BEGIN
 				--RAISE NOTICE 'Fund % already propagated', old_fund.id;
 				CONTINUE;
 		END;
+
+		PERFORM acq.copy_fund_tags(old_fund.id,new_id);
+
 		--RAISE NOTICE 'Propagating fund % to fund %',
 		--	old_fund.code, new_id;
 	END LOOP;
@@ -2126,6 +2150,9 @@ BEGIN
 				roll_fund.balance_stop_percent
 			)
 			RETURNING id INTO new_fund;
+
+		        PERFORM acq.copy_fund_tags(roll_fund.id,new_fund);
+
 		ELSE
 			new_fund = roll_fund.new_fund_id;
 		END IF;
@@ -2220,6 +2247,7 @@ BEGIN
 	END LOOP;
 END;
 $$ LANGUAGE plpgsql;
+
 
 
 

@@ -1,0 +1,4 @@
+Fund Tag Preservation
+^^^^^^^^^^^^^^^^^^^^^
+For convenience when propagating or rolling over a fund for a new fiscal year, fund tags will be copied from the current fund to
+the new year's fund.
