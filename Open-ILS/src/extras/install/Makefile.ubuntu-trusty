@@ -129,6 +129,7 @@ PACKAGER_DEBS = \
 	python-lxml \
 	zip \
 	unzip \
+	bzr \
 	nsis
 
 all:
