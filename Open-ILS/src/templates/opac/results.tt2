@@ -13,6 +13,9 @@
 
     page_count = (!ctx.page_size.defined || !ctx.hit_count.defined || ctx.page_size == 0) ? 1 : POSIX.ceil(ctx.hit_count / ctx.page_size);
 
+    # We don't want search engines indexing search results
+    metalinks = '<meta name="robots" content="noindex">';
+
     PROCESS "opac/parts/misc_util.tt2";
     PROCESS get_library;
 -%]
