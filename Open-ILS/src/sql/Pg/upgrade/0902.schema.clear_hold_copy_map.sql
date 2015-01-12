@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('0902', :eg_version);
+
 CREATE OR REPLACE FUNCTION action.hold_request_clear_map () RETURNS TRIGGER AS $$
 BEGIN
   DELETE FROM action.hold_copy_map WHERE hold = NEW.id;
