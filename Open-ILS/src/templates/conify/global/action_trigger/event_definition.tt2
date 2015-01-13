@@ -9,6 +9,7 @@
              un-translated since they are codes, not labels.  -->
         <option>hourly</option>
         <option>daily</option>
+        <option>weekdays</option>
         <option>weekly</option>
         <option>monthly</option>
         <option>yearly</option>

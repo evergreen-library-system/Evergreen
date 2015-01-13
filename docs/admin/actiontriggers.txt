@@ -37,7 +37,7 @@ Table 1: Action Trigger Event Definitions
 | <<reactors, Reactor>>          |Links the action trigger to the Reactor.
 | <<validators, Validator>>      |The subroutines receive the trigger environment as an argument (see the linked Name for the environment definition) and returns either _1_ if the validator is _true_ or _0_ if the validator returns _false_.
 | Event Repeatability Delay      |Allows events to be repeated after this delay interval.
-| Granularity                    |Used to group events by how often they should be run. Options are Hourly, Daily, Weekly, Monthly, Yearly, but you may also create new values.
+| Granularity                    |Used to group events by how often they should be run. Options are hourly, daily, weekdays, weekly, monthly, yearly, but you may also create new values.
 |===============================================
 
 
@@ -241,5 +241,5 @@ perl action_trigger_runner.pl --hooks=checkout.due --process-hooks
 pending events with that same granularity.
 +
 ----
-perl action_trigger_runner.pl --run-pending --granularity=Hourly --process-hooks
+perl action_trigger_runner.pl --run-pending --granularity=hourly --process-hooks
 ----
