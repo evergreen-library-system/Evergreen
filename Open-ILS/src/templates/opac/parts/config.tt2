@@ -81,6 +81,13 @@ allow_phone_notifications = 'true';
 # Options are "small", "medium", and "large"
 record.summary.jacket_size = 'medium';
 
+##############################################################################
+# Option for full details as a default, esp. impt. for e-content
+# that uses resolver plumbing. Valid values are 'true', 'false' and 'hide'.
+# Setting this to 'true' shows full details by default but allows the link
+# to appear for 'Show Fewer Details'. The 'hide' option shows full details
+# and also suppresses the link from displaying at all.
+show_more_details.default = 'false';
 
 ##############################################################################
 # Define the order in which facets are displayed.  Only facets listed here 
