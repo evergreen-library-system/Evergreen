@@ -142,7 +142,7 @@ $0 : Create and process action/trigger events
 
         # To batch create all events for a specific granularity and to send notices for all pending
         # events with that same granularity.
-        perl $0 --run-pending --granularity=Hourly --process-hooks
+        perl $0 --run-pending --granularity=hourly --process-hooks
 
 HELP
 }
