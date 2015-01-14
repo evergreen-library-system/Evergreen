@@ -48,9 +48,8 @@ angular.module('egCoreMod')
                 $scope.retrieveLastRecord = function() {
                     var last_record = egCore.hatch.getLocalItem("eg.cat.last_record_retrieved");
                     if (last_record) {
-                        var reg = new RegExp($location.path());
                         $window.location.href =
-                            $window.location.href + 'cat/catalog/record/' + last_record;
+                            egCore.env.basePath + 'cat/catalog/record/' + last_record;
                     }
                 }
 
