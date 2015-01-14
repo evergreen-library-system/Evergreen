@@ -51,6 +51,10 @@ function($scope , $routeParams , $location , $q , egCore , egHolds,
     // set record ID on page load if available...
     $scope.record_id = $routeParams.record_id;
 
+    // Set the "last bib" cookie, if we have that
+    if ($scope.record_id)
+        egCore.hatch.setLocalItem("eg.cat.last_record_retrieved", $scope.record_id);
+
     // also set it when the iframe changes to a new record
     $scope.handle_page = function(url) {
 
@@ -62,6 +66,7 @@ function($scope , $routeParams , $location , $q , egCore , egHolds,
         var match = url.match(/\/+opac\/+record\/+(\d+)/);
         if (match) {
             $scope.record_id = match[1];
+            egCore.hatch.setLocalItem("eg.cat.last_record_retrieved", $scope.record_id);
 
             // force the record_id to show up in the page.  
             // not sure why a $digest isn't occuring here.
