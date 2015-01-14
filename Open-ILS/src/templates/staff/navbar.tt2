@@ -169,6 +169,12 @@
               [% l('Record Buckets') %]
             </a>
           </li>
+          <li>
+            <a href="" ng-click="retrieveLastRecord()" target="_self">
+              <span class="glyphicon glyphicon-share-alt"></span>
+              [% l('Retrieve Last Bib Record') %]
+            </a>
+          </li>
        </ul>
       </li>
 

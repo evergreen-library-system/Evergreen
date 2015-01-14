@@ -45,6 +45,15 @@ angular.module('egCoreMod')
                     hotkeys.add(key, desc, function() { navTo(path) });
                 };
 
+                $scope.retrieveLastRecord = function() {
+                    var last_record = egCore.hatch.getLocalItem("eg.cat.last_record_retrieved");
+                    if (last_record) {
+                        var reg = new RegExp($location.path());
+                        $window.location.href =
+                            $window.location.href + 'cat/catalog/record/' + last_record;
+                    }
+                }
+
                 $scope.applyLocale = function(locale) {
                     // EGWeb.pm can change the locale for us w/ the right param
                     // Note: avoid using $location.search() to derive a new
