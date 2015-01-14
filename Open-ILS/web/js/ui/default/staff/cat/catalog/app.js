@@ -22,6 +22,18 @@ angular.module('egCatalogApp', ['ui.bootstrap','ngRoute','egCoreMod','egGridMod'
         resolve : resolver
     });
 
+    $routeProvider.when('/cat/catalog/retrieve_by_id', {
+        templateUrl: './cat/catalog/t_retrieve_by_id',
+        controller: 'CatalogRecordRetrieve',
+        resolve : resolver
+    });
+
+    $routeProvider.when('/cat/catalog/retrieve_by_tcn', {
+        templateUrl: './cat/catalog/t_retrieve_by_tcn',
+        controller: 'CatalogRecordRetrieve',
+        resolve : resolver
+    });
+
     // create some catalog page-specific mappings
     $routeProvider.when('/cat/catalog/record/:record_id', {
         templateUrl: './cat/catalog/t_catalog',
@@ -42,6 +54,68 @@ angular.module('egCatalogApp', ['ui.bootstrap','ngRoute','egCoreMod','egGridMod'
 
 /**
  * */
+.controller('CatalogRecordRetrieve',
+       ['$scope','$routeParams','$location','$q','egCore',
+function($scope , $routeParams , $location , $q , egCore ) {
+
+    $scope.focusMe = true;
+
+    // jump to the patron checkout UI
+    function loadRecord(record_id) {
+        $location
+        .path('/cat/catalog/record/' + record_id);
+    }
+
+    $scope.submitId = function(args) {
+        $scope.recordNotFound = null;
+        if (!args.record_id) return;
+
+        // blur so next time it's set to true it will re-apply select()
+        $scope.selectMe = false;
+
+        return loadRecord(args.record_id);
+    }
+
+    $scope.submitTCN = function(args) {
+        $scope.recordNotFound = null;
+        $scope.moreRecordsFound = null;
+        if (!args.record_tcn) return;
+
+        // blur so next time it's set to true it will re-apply select()
+        $scope.selectMe = false;
+
+        // lookup TCN
+        egCore.net.request(
+            'open-ils.search',
+            'open-ils.search.biblio.tcn',
+            args.record_tcn)
+
+        .then(function(resp) { // get_barcodes
+
+            if (evt = egCore.evt.parse(resp)) {
+                alert(evt); // FIXME
+                return;
+            }
+
+            if (!resp.count) {
+                $scope.recordNotFound = args.record_tcn;
+                $scope.selectMe = true;
+                return;
+            }
+
+            if (resp.count > 1) {
+                $scope.moreRecordsFound = args.record_tcn;
+                $scope.selectMe = true;
+                return;
+            }
+
+            var record_id = resp.ids[0];
+            return loadRecord(record_id);
+        });
+    }
+
+}])
+
 .controller('CatalogCtrl',
        ['$scope','$routeParams','$location','$q','egCore','egHolds',
         'egGridDataProvider','egHoldGridActions',

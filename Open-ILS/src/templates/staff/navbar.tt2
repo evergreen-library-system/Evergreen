@@ -169,6 +169,19 @@
               [% l('Record Buckets') %]
             </a>
           </li>
+          <li class="divider"></li>
+          <li>
+            <a href="./cat/catalog/retrieve_by_id" target="_self">
+              <span class="glyphicon glyphicon-file"></span>
+              [% l('Retrieve Bib Record by ID') %]
+            </a>
+          </li>
+          <li>
+            <a href="./cat/catalog/retrieve_by_tcn" target="_self">
+              <span class="glyphicon glyphicon-tag"></span>
+              [% l('Retrieve Bib Record by TCN') %]
+            </a>
+          </li>
           <li>
             <a href="" ng-click="retrieveLastRecord()" target="_self">
               <span class="glyphicon glyphicon-share-alt"></span>
