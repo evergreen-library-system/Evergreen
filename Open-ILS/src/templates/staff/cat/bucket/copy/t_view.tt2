@@ -1,0 +1,33 @@
+<eg-grid
+  ng-hide="forbidden"
+  features="-display"
+  id-field="id"
+  idl-class="acp"
+  auto-fields="true"
+  grid-controls="gridControls"
+  menu-label="[% l('Buckets') %]"
+  persist-key="cat.bucket.copy.view">
+
+  [% INCLUDE 'staff/cat/bucket/copy/t_grid_menu.tt2' %]
+
+  <eg-grid-action label="[% l('Remove Selected Copies') %]" 
+    handler="detachCopies"></eg-grid-action>
+
+  <eg-grid-field path="id" required hidden></eg-grid-field>
+  <eg-grid-field path="call_number.record.id" required hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Barcode') %]"     path='barcode' visible>
+    <a target="_self" href="[% ctx.base_path %]/staff/cat/item/{{item['id']}}">
+      {{item['barcode']}}
+    </a>
+  </eg-grid-field>
+  <eg-grid-field label="[% l('Call Number') %]" path="call_number.label" visible></eg-grid-field>
+  <eg-grid-field label="[% l('Location') %]"    path="location.name" visible></eg-grid-field>
+
+  <eg-grid-field label="[% l('Title') %]"
+    path="call_number.record.simple_record.title" visible>
+    <a target="_self" href="[% ctx.base_path %]/staff/cat/catalog/record/{{item['call_number.record.id']}}">
+      {{item['call_number.record.simple_record.title']}}
+    </a>
+  </eg-grid-field>
+
+</eg-grid>

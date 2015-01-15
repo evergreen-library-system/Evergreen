@@ -169,6 +169,12 @@
               [% l('Record Buckets') %]
             </a>
           </li>
+          <li>
+            <a href="./cat/bucket/copy/view" target="_self">
+              <span class="glyphicon glyphicon-list-alt"></span>
+              [% l('Copy Buckets') %]
+            </a>
+          </li>
           <li class="divider"></li>
           <li>
             <a href="./cat/catalog/retrieve_by_id" target="_self">

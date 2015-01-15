@@ -39,6 +39,10 @@
             <img src="/xul/server/skin/media/images/portal/bucket.png"/>
             <a target="_self" href="./cat/bucket/record/">[% l('Record Buckets') %]</a>
           </div>
+          <div>
+            <img src="/xul/server/skin/media/images/portal/bucket.png"/>
+            <a target="_self" href="./cat/bucket/copy/">[% l('Copy Buckets') %]</a>
+          </div>
         </div>
       </div>
     </div>

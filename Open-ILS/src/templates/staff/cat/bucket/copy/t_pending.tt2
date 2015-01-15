@@ -1,0 +1,52 @@
+<div class="row">
+  <div class="col-md-6">
+    <form ng-submit="search()">
+      <div class="input-group">
+        <span class="input-group-addon">[% l('Scan Item') %]</span>
+        <input type="text" class="form-control" focus-me="focusMe"
+        ng-model="bucketSvc.barcodeString" placeholder="[% l('Barcode...') %]">
+      </div>
+    </form>
+  </div>
+</div>
+
+<br/>
+
+<eg-grid
+  ng-hide="forbidden"
+  features="-sort,-multisort,-display"
+  id-field="id"
+  idl-class="acp"
+  auto-fields="true"
+  grid-controls="gridControls"
+  items-provider="gridDataProvider"
+  menu-label="[% l('Buckets') %]"
+  persist-key="cat.bucket.copy.pending">
+
+  [% INCLUDE 'staff/cat/bucket/copy/t_grid_menu.tt2' %]
+
+  <!-- actions drop-down -->
+  <eg-grid-action label="[% l('Add To Bucket') %]" 
+    handler="addToBucket"></eg-grid-action>
+
+  <eg-grid-action label="[% l('Clear List') %]" 
+    handler="resetPendingList"></eg-grid-action>
+
+  <eg-grid-field path="id" required hidden></eg-grid-field>
+  <eg-grid-field path="call_number.record.id" required hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Barcode') %]"     path='barcode' visible>
+    <a target="_self" href="[% ctx.base_path %]/staff/cat/item/{{item['id']}}">
+      {{item['barcode']}}
+    </a>
+  </eg-grid-field>
+  <eg-grid-field label="[% l('Call Number') %]" path="call_number.label" visible></eg-grid-field>
+  <eg-grid-field label="[% l('Location') %]"    path="location.name" visible></eg-grid-field>
+
+  <eg-grid-field label="[% l('Title') %]"
+    path="call_number.record.simple_record.title" visible>
+    <a target="_self" href="[% ctx.base_path %]/staff/cat/catalog/record/{{item['call_number.record.id']}}">
+      {{item['call_number.record.simple_record.title']}}
+    </a>
+  </eg-grid-field>
+
+</eg-grid>
