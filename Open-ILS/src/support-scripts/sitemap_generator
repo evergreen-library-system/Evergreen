@@ -19,6 +19,7 @@ use Getopt::Long;
 use File::Spec;
 use File::Basename;
 use DBI qw(:sql_types);
+use DBD::Pg qw(:pg_types);
 
 my ($dbhost, $dbport, $dbname, $dbuser, $dbpw, $help);
 my $config_file = '';
@@ -126,22 +127,67 @@ sub get_record_ids {
     }
 
     my $q = "
-        SELECT DISTINCT bre.id, edit_date::date AS edit_date
-        FROM biblio.record_entry bre
-            INNER JOIN asset.opac_visible_copies aovc ON bre.id = aovc.record
+        WITH date_floor AS (
+            SELECT ?::date AS val
+        )
     ";
     if ($aou_id) {
-        $q .= " WHERE circ_lib IN (SELECT id FROM actor.org_unit WHERE id = ? OR parent_ou = ?)";
+        $q .= "
+        , copy_orgs AS (
+            SELECT id
+            FROM actor.org_unit
+            WHERE id IN (SELECT id FROM actor.org_unit_descendants(?))
+        ),
+        uri_orgs AS (
+            SELECT id
+            FROM actor.org_unit
+            WHERE id IN (SELECT id FROM actor.org_unit_ancestors(?))
+                AND id NOT IN (SELECT id FROM org_top())
+        )
+        ";
     }
-    $q .= " ORDER BY edit_date DESC";
+    $q .= "
+        SELECT DISTINCT id, edit_date FROM (
+            SELECT bre.id,
+                CASE
+                    WHEN bre.edit_date::date < (SELECT val FROM date_floor LIMIT 1) THEN (SELECT val FROM date_floor LIMIT 1)
+                    ELSE bre.edit_date::date
+                END AS edit_date
+            FROM biblio.record_entry bre
+                INNER JOIN asset.opac_visible_copies aovc ON bre.id = aovc.record
+    ";
+    if ($aou_id) {
+        $q .= " WHERE circ_lib IN (SELECT id FROM copy_orgs)";
+    }
+    $q .= "
+            UNION 
+            SELECT bre.id,
+                CASE
+                    WHEN bre.edit_date::date < (SELECT val FROM date_floor LIMIT 1) THEN (SELECT val FROM date_floor LIMIT 1)
+                    ELSE bre.edit_date::date
+                END AS edit_date
+            FROM biblio.record_entry bre
+                INNER JOIN asset.call_number acn ON bre.id = acn.record
+            WHERE bre.deleted IS FALSE AND acn.deleted IS FALSE 
+    ";
+    if ($aou_id) {
+        $q .= "
+            AND owning_lib IN (SELECT id FROM uri_orgs) AND label = '##URI##'
+        ";
+    }
+    $q .= "
+        ) x
+        ORDER BY edit_date DESC, id DESC
+    ";
     my $stmt = $dbh->prepare($q);
     if ($aou_id) {
-        $stmt->bind_param(1, $aou_id, { TYPE => SQL_INTEGER });
-        $stmt->bind_param(2, $aou_id, { TYPE => SQL_INTEGER });
-        $stmt->execute();
+        $stmt->bind_param(1, $settings->{'date'}, { pg_type => PG_DATE });
+        $stmt->bind_param(2, $aou_id, SQL_INTEGER);
+        $stmt->bind_param(3, $aou_id, SQL_INTEGER);
     } else {
-        $stmt->execute();
+        $stmt->bind_param(1, $settings->{'date'}, { pg_type => PG_DATE });
     }
+    $stmt->execute();
 
     my $bibs = $stmt->fetchall_arrayref([0, 1]);
 
@@ -155,13 +201,15 @@ sub get_record_ids {
 my $hostname;
 my $aou_shortname;
 my %settings = (
-    prefix => ''
+    prefix => '',
+    date => '2010-01-01'
 );
 
 GetOptions(
         "lib-hostname=s" => \$settings{'lib-hostname'},
         "lib-shortname=s" => \$settings{'lib-shortname'},
         "prefix=s" => \$settings{'prefix'},
+        "date-floor=s" => \$settings{'date'},
         "config-file=s" => \$config_file,
         "user=s" => \$settings{'user'},
         "password=s" => \$settings{'pw'},
@@ -209,6 +257,12 @@ OPTIONS
 
     --prefix
         filename to add as a prefix to the generated set of sitemap files
+
+    --date-floor
+        a date in YYYY-MM-DD format that specifies the minimum date that
+        should be reflected for when a record was last updated; useful if
+        you enrich or change the HTML without changing records. Defaults
+        to 2010-01-01
 
     --lib-shortname
         include all records for the specified library and its children;
