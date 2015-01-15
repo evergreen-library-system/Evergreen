@@ -10,6 +10,9 @@
   [% INCLUDE 'staff/cat/bucket/record/t_grid_menu.tt2' %]
 
   <!-- actions drop-down -->
+  <eg-grid-action label="[% l('Show All in Catalog') %]"
+    handler="showAllRecords"></eg-grid-action>
+
   <eg-grid-action label="[% l('Remove Selected Records') %]" 
     handler="detachRecords"></eg-grid-action>
 

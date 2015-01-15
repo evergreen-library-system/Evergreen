@@ -484,8 +484,10 @@ function($scope,  $routeParams,  bucketSvc , egGridDataProvider) {
 }])
 
 .controller('ViewCtrl',
-       ['$scope','$q','$routeParams','bucketSvc',
-function($scope,  $q , $routeParams,  bucketSvc) {
+       ['$scope','$q','$routeParams','bucketSvc', 'egCore', '$window',
+        '$timeout',
+function($scope,  $q , $routeParams,  bucketSvc, egCore, $window,
+        $timeout) {
 
     $scope.setTab('view');
     $scope.bucketId = $routeParams.id;
@@ -511,6 +513,18 @@ function($scope,  $q , $routeParams,  bucketSvc) {
                 }
             }
         );
+    }
+
+    $scope.showAllRecords = function() {
+        // TODO: maybe show selected would be better?
+        // TODO: probably want to set a limit on the number of
+        //       new tabs one could choose to open at once
+        angular.forEach(bucketSvc.currentBucket.items(), function(rec) {
+            var url = egCore.env.basePath +
+                      'cat/catalog/record/' +
+                      rec.target_biblio_record_entry();
+            $timeout(function() { $window.open(url, '_blank') });
+        });
     }
 
     $scope.detachRecords = function(records) {
