@@ -469,6 +469,7 @@ function($scope,  $routeParams,  bucketSvc , egGridDataProvider) {
 
     $scope.resetPendingList = function() {
         bucketSvc.pendingList = [];
+        $scope.gridDataProvider.refresh();
     }
     
 
