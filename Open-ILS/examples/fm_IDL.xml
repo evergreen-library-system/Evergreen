@@ -1180,7 +1180,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 
 	<class id="atenv" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action_trigger::environment" oils_persist:tablename="action_trigger.environment" reporter:label="Trigger Event Environment Entry">
 		<fields oils_persist:primary="id" oils_persist:sequence="action_trigger.environment_id_seq">
-			<field reporter:label="Definition ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Environment ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Event Definition" name="event_def" reporter:datatype="link"/>
 			<field reporter:label="Field Path" name="path" reporter:datatype="text"/>
 			<field reporter:label="Collector" name="collector" reporter:datatype="link"/>
@@ -1279,7 +1279,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 
 	<class id="atevparam" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action_trigger::event_param" oils_persist:tablename="action_trigger.event_params" reporter:label="Trigger Event Parameter">
 		<fields oils_persist:primary="id" oils_persist:sequence="action_trigger.event_params_id_seq">
-			<field reporter:label="Event ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Parameter ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Event Definition" name="event_def" reporter:datatype="link"/>
 			<field reporter:label="Parameter Name" name="param" reporter:datatype="text"/>
 			<field reporter:label="Parameter Value" name="value" reporter:datatype="text"/>
