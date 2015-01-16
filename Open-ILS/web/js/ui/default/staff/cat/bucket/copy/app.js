@@ -402,8 +402,10 @@ function($scope,  $routeParams,  bucketSvc , egGridDataProvider,   egCore) {
 }])
 
 .controller('ViewCtrl',
-       ['$scope','$q','$routeParams','bucketSvc',
-function($scope,  $q , $routeParams,  bucketSvc) {
+       ['$scope','$q','$routeParams','bucketSvc', 'egCore',
+        'egConfirmDialog',
+function($scope,  $q , $routeParams,  bucketSvc, egCore,
+         egConfirmDialog) {
 
     $scope.setTab('view');
     $scope.bucketId = $routeParams.id;
@@ -445,6 +447,40 @@ function($scope,  $q , $routeParams,  bucketSvc) {
 
         bucketSvc.bucketNeedsRefresh = true;
         return $q.all(promises).then(drawBucket);
+    }
+
+    $scope.deleteCopiesFromCatalog = function() {
+        egConfirmDialog.open(
+            egCore.strings.CONFIRM_DELETE_COPY_BUCKET_ITEMS_FROM_CATALOG,
+            '', {}
+        ).result.then(function() {
+            var fleshed_copies = [];
+            var promises = [];
+            angular.forEach(bucketSvc.currentBucket.items(), function(i) {
+                promises.push(
+                    egCore.net.request(
+                        'open-ils.search',
+                        'open-ils.search.asset.copy.fleshed2.retrieve',
+                        i.target_copy()
+                    ).then(function(copy) {
+                        copy.ischanged(1);
+                        copy.isdeleted(1);
+                        fleshed_copies.push(copy);
+                    })
+                );
+            });
+            $q.all(promises).then(function() {
+                egCore.net.request(
+                    'open-ils.cat',
+                    'open-ils.cat.asset.copy.fleshed.batch.update',
+                    egCore.auth.token(), fleshed_copies, true
+                ).then(function(resp) {
+                    // TODO deal with events that this method could return
+                    bucketSvc.bucketNeedsRefresh = true;
+                    drawBucket();
+                });
+            });
+        });
     }
 
     // fetch the bucket;  on error show the not-allowed message

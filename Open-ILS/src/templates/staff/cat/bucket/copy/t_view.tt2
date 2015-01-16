@@ -12,6 +12,8 @@
 
   <eg-grid-action label="[% l('Remove Selected Copies') %]" 
     handler="detachCopies"></eg-grid-action>
+  <eg-grid-action label="[% l('Delete All from Catalog') %]" 
+    handler="deleteCopiesFromCatalog"></eg-grid-action>
 
   <eg-grid-field path="id" required hidden></eg-grid-field>
   <eg-grid-field path="call_number.record.id" required hidden></eg-grid-field>
