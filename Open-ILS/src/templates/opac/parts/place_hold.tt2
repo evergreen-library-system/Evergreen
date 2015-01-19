@@ -16,7 +16,18 @@
             redirect = redirect.replace('^http:', 'https:') 
         %]
         <input type="hidden" name="redirect_to" value="[% redirect | html %]" />
-        <input type="hidden" name="hold_source_page" value="[% CGI.param('hold_source_page') | html %]" />
+        [%
+            usr_barcode = CGI.param('usr_barcode') | html;
+            is_requestor = CGI.param('is_requestor');
+
+           IF is_requestor == '';
+               is_requestor = '0';
+           END;
+
+           IF is_requestor == '0' && usr_barcode == ctx.staff_recipient.card.barcode;
+               usr_barcode = '';
+           END;
+        %]
 
         [% IF ctx.is_staff %]
         <p class="staff-hold">
@@ -28,7 +39,7 @@
                 [% l("Place hold for patron by barcode:") %]
             </label>
             <input type="text" name="hold_usr" id="hold_usr_input" 
-              value="[% CGI.param('usr_barcode') | html %]"
+              value="[% usr_barcode | html %]" 
               onchange="staff_hold_usr_barcode_changed();" 
               onpaste="setTimeout(staff_hold_usr_barcode_changed,1);" 
               onkeypress="return no_hold_submit(event)" autofocus /> 
