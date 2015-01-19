@@ -1,12 +1,16 @@
 
-<div class="row pad-vert">
-  <div class="col-md-9">
-    <div class="alert alert-info alert-less-pad strong-text-2">
-      <span ng-if="record_tab == 'catalog'">[% l('Catalog') %]</span>
-      <span ng-if="record_tab == 'marc_html'">[% l('MARC HTML') %]</span>
-      <span ng-if="record_tab == 'holds'">[% l('Holds for Record') %]</span>
-    </div>
-  </div>
+<div class="row pad-vert col-md-12 alert alert-info alert-less-pad strong-text-2">
+  <span ng-if="record_tab == 'catalog'">[% l('Catalog') %]</span>
+  <span ng-if="record_tab == 'marc_html'">[% l('MARC HTML') %]</span>
+  <span ng-if="record_tab == 'holds'">[% l('Holds for Record') %]</span>
+</div>
+
+<div ng-show="record_id" class="row col-md-12">
+    <eg-record-summary record-id="record_id" record="summary_pane_record"></eg-record-summary>
+</div>
+
+<div ng-show="record_id" class="row col-md-12 pad-vert">
+  <div class="col-md-9"></div> <!-- padding -->
   <div class="col-md-3">
     <!-- actions for this record menu -->
     <div class="btn-group pull-right" dropdown>
@@ -32,7 +36,7 @@
   </div>
 </div>
 
-<div>
+<div class="row col-md-12">
   <!-- ng-show allows the catalog iframe to stay loaded (unlike ng-if) -->
   <div ng-show="record_tab == 'catalog'">
     <eg-embed-frame url="catalog_url" handlers="handlers" onchange="handle_page"></eg-embed-frame>
