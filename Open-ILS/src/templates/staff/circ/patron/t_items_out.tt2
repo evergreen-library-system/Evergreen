@@ -81,7 +81,7 @@
   <eg-grid-field label="[% l('Renewals Remaining') %]" path='renewal_remaining'></eg-grid-field>
   <eg-grid-field label="[% l('Fines Stopped') %]" path='stop_fines'></eg-grid-field>
   <eg-grid-field label="[% l('Title') %]" name="title">
-    <a href="[% ctx.base_path %]/opac/record/{{item.target_copy().call_number().record().id()}}">
+    <a href="[% ctx.base_path %]/staff/cat/catalog/record/{{item.target_copy().call_number().record().id()}}">
       {{item.target_copy().call_number().record().simple_record().title()}}
     </a>
   </eg-grid-field>
