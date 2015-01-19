@@ -90,7 +90,6 @@ angular.module('egGridMod',
 
             grid.init = function() {
                 grid.offset = 0;
-                grid.limit = Number($scope.pageSize) || 25;
                 $scope.items = [];
                 $scope.showGridConf = false;
                 grid.totalCount = -1;
@@ -105,6 +104,14 @@ angular.module('egGridMod',
 
                 grid.persistKey = $scope.persistKey;
                 delete $scope.persistKey;
+
+                var stored_limit = 0;
+                if (grid.persistKey) {
+                    var stored_limit = Number(
+                        egCore.hatch.getLocalItem('eg.grid.' + grid.persistKey + '.limit')
+                    );
+                }
+                grid.limit = Number(stored_limit) || Number($scope.pageSize) || 25;
 
                 grid.indexField = $scope.idField;
                 delete $scope.idField;
@@ -217,6 +224,8 @@ angular.module('egGridMod',
                 }
 
                 controls.setLimit = function(limit) {
+                    if (grid.persistKey)
+                        egCore.hatch.setLocalItem('eg.grid.' + grid.persistKey + '.limit', limit);
                     grid.limit = limit;
                 }
                 controls.getLimit = function() {
@@ -389,8 +398,11 @@ angular.module('egGridMod',
             }
 
             $scope.limit = function(l) { 
-                if (angular.isNumber(l))
+                if (angular.isNumber(l)) {
+                    if (grid.persistKey)
+                        egCore.hatch.setLocalItem('eg.grid.' + grid.persistKey + '.limit', l);
                     grid.limit = l;
+                }
                 return grid.limit 
             }
 
