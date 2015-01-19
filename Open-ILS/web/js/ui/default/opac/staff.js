@@ -42,6 +42,13 @@ function staff_hold_usr_barcode_changed(isload) {
     }
 
     if (!window.xulG) return;
+ 
+    var adv_link = document.getElementById('advanced_hold_link');
+    if (adv_link) {
+        adv_link.setAttribute('href', adv_link.getAttribute('href').replace(/&?is_requestor=[01]/,''));
+        var is_requestor = document.getElementById('hold_usr_is_requestor').checked ? 1 : 0;
+        adv_link.setAttribute('href', adv_link.getAttribute('href') + '&is_requestor=' + is_requestor.toString());
+    }
 
     var cur_hold_barcode = undefined;
     var barcode = isload;
@@ -156,6 +163,21 @@ window.onload = function() {
     // record details page events
 
     setTimeout(function() {
+
+        if (location.href.match(/is_requestor=[01]/)) {
+            var loc = location.href;
+            var is_req_match = new RegExp("is_requestor=[01]");
+            var is_req = is_req_match.exec(loc).toString();
+            is_req = is_req.replace(/is_requestor=/, '');
+            if (is_req == "1") {
+                document.getElementById('hold_usr_is_requestor').checked = 'checked';
+                document.getElementById('hold_usr_input').disabled = true;
+            } else {
+                document.getElementById('hold_usr_is_requestor_not').checked = 'checked';
+                document.getElementById('hold_usr_input').disabled = false;
+            }
+        }
+
         var rec = location.href.match(/\/opac\/record\/(\d+)/);
         if(rec && rec[1]) { 
             runEvt('rdetail', 'recordRetrieved', rec[1]); 
