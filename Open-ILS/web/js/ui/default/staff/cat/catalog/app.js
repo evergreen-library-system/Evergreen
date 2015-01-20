@@ -148,6 +148,14 @@ function($scope , $routeParams , $location , $q , egCore , egHolds,
         } else {
             delete $scope.record_id;
         }
+
+        if ($scope.record_id) {
+            var default_tab = egCore.hatch.getLocalItem( 'eg.cat.default_record_tab' );
+            tab = $routeParams.record_tab || default_tab || 'catalog';
+        } else {
+            tab = $routeParams.record_tab || 'catalog';
+        }
+        $scope.set_record_tab(tab);
     }
 
     // xulG catalog handlers
@@ -281,7 +289,18 @@ function($scope , $routeParams , $location , $q , egCore , egHolds,
         }
     }
 
-    var tab = $routeParams.record_tab || 'catalog';
+    $scope.set_default_record_tab = function() {
+        egCore.hatch.setLocalItem(
+            'eg.cat.default_record_tab', $scope.record_tab);
+    }
+
+    var tab;
+    if ($scope.record_id) {
+        var default_tab = egCore.hatch.getLocalItem( 'eg.cat.default_record_tab' );
+        tab = $routeParams.record_tab || default_tab || 'catalog';
+    } else {
+        tab = $routeParams.record_tab || 'catalog';
+    }
     $scope.set_record_tab(tab);
 
 }])

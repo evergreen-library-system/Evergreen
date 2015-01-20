@@ -31,6 +31,8 @@
             [% l('Mark as Title Hold Transfer Destination') %]</a></li>
         <li><a href ng-click="transfer_holds_to_marked()">
             [% l('Transfer All Title Holds') %]</a></li>
+        <li><a href ng-click="set_default_record_tab()">
+            [% l('Set bottom view as default') %]</a></li>
       </ul>
     </div>
   </div>
