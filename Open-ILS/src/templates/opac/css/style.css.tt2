@@ -1196,8 +1196,10 @@ a.dash-link:hover { text-decoration: underline !important; }
 .expert-search-row { padding-top: 10px; }
 #adv_expert_row label { font-weight: bold; }
 
-.bookshelf thead tr td {
+.bookshelf tr.browse_border td {
     border-bottom: 1px dashed [% css_colors.accent_dark %];
+    font-size: 1px;
+    height: 1px;
     padding-bottom: 1ex;
 }
 .cn_browse_item { padding: 2ex; }
