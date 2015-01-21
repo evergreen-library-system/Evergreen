@@ -497,7 +497,7 @@ sub make_payments {
                 # check org_unit_settings for the copy owning library
                 # and adjust and possibly adjust copy status to lost
                 # and paid.
-                if ($circ) {
+                if ($circ && ($circ->stop_fines eq 'LOST' || $circ->stop_fines eq 'LONGOVERDUE')) {
                     # We need the copy to check settings and to possibly
                     # change its status.
                     my $copy = $circ->target_copy();
