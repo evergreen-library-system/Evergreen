@@ -157,6 +157,8 @@ include::admin/phonelist.txt[]
 
 include::admin/sip_server.txt[]
 
+include::admin/apache_rewrite_tricks.txt[]
+
 Using the Staff Client
 ======================
 
