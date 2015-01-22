@@ -85,6 +85,7 @@
                     
                     <form id='searchform' onSubmit='return doSearch()'>
                             <input type='text' dojoType='dijit.form.TextBox' id='searchBox' onkeypress='osSearchChange();' />
+                            <input type='hidden' dojoType='dijit.form.TextBox' id='isFiltered' value='false' />
                             <button type='submit' dojoType='dijit.form.Button'>&staff.server.admin.org_unit_settings.filter;</button>
                             <button dojoType='dijit.form.Button' onClick='clearSearch();'>&staff.server.admin.org_unit_settings.clear_filter;</button>
                     </form>

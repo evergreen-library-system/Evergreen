@@ -133,7 +133,11 @@ function osDraw(specific_setting) {
             names.push(key);
     }
     
-    osDrawNames(names);
+    if(dojo.byId('isFiltered') == 'true') {
+        osLimitSeen(dojo.byId('searchBox').value);
+    } else {
+        osDrawNames(names);
+    }
 }
 
 /**
@@ -143,7 +147,8 @@ var osCurrentSearchTimeout;
 function osSearchChange() {
     if(osCurrentSearchTimeout != null)
         clearTimeout(osCurrentSearchTimeout);
-        
+
+    dojo.byId('isFiltered').value = 'true';
     osCurrentSearchTimeout = setTimeout("doSearch()", 500);
 }
 
@@ -193,6 +198,7 @@ function doSearch() {
 }
 
 function clearSearch() {
+    dojo.byId('isFiltered').value = 'false';
     if(dojo.byId('searchBox').value != '') { // Don't refresh on blank.
         dojo.byId('searchBox').value = '';
         doSearch();
