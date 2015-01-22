@@ -1050,7 +1050,7 @@ ALTER TABLE config.best_hold_order ADD CHECK ((
 CREATE OR REPLACE FUNCTION 
     evergreen.z3950_attr_name_is_valid(TEXT) RETURNS BOOLEAN AS $func$
     SELECT EXISTS (SELECT 1 FROM config.z3950_attr WHERE name = $1);
-$func$ LANGUAGE SQL STRICT IMMUTABLE;
+$func$ LANGUAGE SQL STRICT STABLE;
 
 COMMENT ON FUNCTION evergreen.z3950_attr_name_is_valid(TEXT) IS $$
 Results in TRUE if there exists at least one config.z3950_attr
