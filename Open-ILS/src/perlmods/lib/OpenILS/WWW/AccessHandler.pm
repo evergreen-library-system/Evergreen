@@ -70,7 +70,7 @@ sub handler {
     my $failed = 0;
 
     if ($userperm) {
-        my @permissions = split(/\s*,\s*/, $userperm);
+        my @permissions = split(/\s*[ ,]\s*/, $userperm);
         $failed++ unless _verify_permission($auth_ses, $user, $checkou, \@permissions);
     }
     if (!$failed && $userstanding) {
@@ -135,7 +135,7 @@ sub _get_org_id {
                 ->create('open-ils.actor')
                 ->request('open-ils.actor.org_unit.retrieve_by_shortname', $org_identifier)
                 ->gather(1);
-            if ($org_unit && ref($org_unit) != 'HASH') {
+            if ($org_unit && ref($org_unit) ne 'HASH') {
                 # We appear to have an org unit! So return the ID.
                 return $org_unit->id;
             }
@@ -166,7 +166,7 @@ sub _verify_home_ou {
             }
         } while ($org_tree);
 
-        my @home_ous = split(/\s*,\s*/,$home_ou);
+        my @home_ous = split(/\s*[ ,]\s*/,$home_ou);
         for my $cur_ou (@home_ous) {
             $cur_ou = _get_org_id($cur_ou);
             if ($user_orgs{$cur_ou}) {
