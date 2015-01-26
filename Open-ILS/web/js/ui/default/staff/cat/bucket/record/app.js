@@ -195,6 +195,24 @@ angular.module('egCatRecordBuckets',
         return deferred.promise;
     }
 
+    service.deleteRecordFromCatalog = function(recordId) {
+        var deferred = $q.defer();
+
+        egCore.net.request(
+            'open-ils.cat',
+            'open-ils.cat.biblio.record_entry.delete',
+            egCore.auth.token(), recordId
+        ).then(function(resp) { 
+            // rather than rejecting the promise in the
+            // case of a failure, we'll let the caller
+            // look for errors -- doing this because AngularJS
+            // does not have a native $q.allSettled() yet.
+            deferred.resolve(resp);
+        });
+        
+        return deferred.promise;
+    }
+
     // delete bucket by ID.
     // resolved w/ response on successful delete,
     // rejected otherwise.
@@ -486,9 +504,9 @@ function($scope,  $routeParams,  bucketSvc , egGridDataProvider) {
 
 .controller('ViewCtrl',
        ['$scope','$q','$routeParams','bucketSvc', 'egCore', '$window',
-        '$timeout',
+        '$timeout', 'egConfirmDialog', '$modal',
 function($scope,  $q , $routeParams,  bucketSvc, egCore, $window,
-        $timeout) {
+        $timeout, egConfirmDialog, $modal) {
 
     $scope.setTab('view');
     $scope.bucketId = $routeParams.id;
@@ -542,6 +560,42 @@ function($scope,  $q , $routeParams,  bucketSvc, egCore, $window,
 
         bucketSvc.bucketNeedsRefresh = true;
         return $q.all(promises).then(drawBucket);
+    }
+
+    $scope.deleteRecordsFromCatalog = function(records) {
+        egConfirmDialog.open(
+            egCore.strings.CONFIRM_DELETE_RECORD_BUCKET_ITEMS_FROM_CATALOG,
+            '',
+            {}
+        ).result.then(function() {
+            var promises = [];
+            angular.forEach(records, function(rec) {
+                promises.push(bucketSvc.deleteRecordFromCatalog(rec.id));
+            });
+            bucketSvc.bucketNeedsRefresh = true;
+            return $q.all(promises).then(function(results) {
+                var failures = results.filter(function(result) {
+                    return egCore.evt.parse(result);
+                }).map(function(result) {
+                    var evt = egCore.evt.parse(result);
+                    if (evt) {
+                        return { recordId: evt.payload, desc: evt.desc };
+                    }
+                });
+                if (failures.length) {
+                    $modal.open({
+                        templateUrl: './cat/bucket/record/t_records_not_deleted',
+                        controller :
+                            ['$scope', '$modalInstance', function($scope, $modalInstance) {
+                            $scope.failures = failures;
+                            $scope.ok = function() { $modalInstance.close() }
+                            $scope.cancel = function() { $modalInstance.dismiss() }
+                            }]
+                    });
+                }
+                drawBucket();
+            });
+        });
     }
 
     // fetch the bucket;  on error show the not-allowed message

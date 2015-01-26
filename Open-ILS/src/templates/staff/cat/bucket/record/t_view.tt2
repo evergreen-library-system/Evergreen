@@ -16,6 +16,9 @@
   <eg-grid-action label="[% l('Remove Selected Records') %]" 
     handler="detachRecords"></eg-grid-action>
 
+  <eg-grid-action label="[% l('Delete Selected Records from Catalog') %]" 
+    handler="deleteRecordsFromCatalog"></eg-grid-action>
+
   <eg-grid-action label="[% l('Export Records') %]" 
     handler="openExportBucketDialog"></eg-grid-action>
 

@@ -9,6 +9,12 @@
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/services/grid.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/services/ui.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/cat/bucket/record/app.js"></script>
+<script>
+  angular.module('egCoreMod').run(['egStrings', function(s) {
+    s.CONFIRM_DELETE_RECORD_BUCKET_ITEMS_FROM_CATALOG =
+      "[% l('Delete these records?') %]";
+  }]);
+</script>
 [% END %]
 
 <!-- using native Bootstrap taps because of limitations
