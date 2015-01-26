@@ -8,6 +8,31 @@ BEGIN;
 -- check whether patch can be applied
 SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
 
+-- The code for "uncoded" audience is a space, but upgraded DBs may have a blank.
+UPDATE  config.coded_value_map
+  SET   code = ' '
+  WHERE ctype = 'audience'
+        AND code = ''
+        AND (
+          SELECT  COUNT(*)
+            FROM  config.coded_value_map
+            WHERE ctype = 'audience'
+            AND code = ' ') = 0;
+
+WITH ccvm AS (
+    SELECT  id
+      FROM  config.coded_value_map
+      WHERE ctype = 'audience'
+            AND code = ' '
+) UPDATE  metabib.record_attr_vector_list
+    SET   vlist = vlist + intset(ccvm.id)
+    WHERE source IN (
+            SELECT  record
+              FROM  metabib.real_full_rec
+              WHERE tag = '008'
+                    AND substring(value,23,1) = ' '
+          );
+
 CREATE OR REPLACE FUNCTION metabib.reingest_record_attributes (rid BIGINT, pattr_list TEXT[] DEFAULT NULL, prmarc TEXT DEFAULT NULL, rdeleted BOOL DEFAULT TRUE) RETURNS VOID AS $func$
 DECLARE
     transformed_xml TEXT;
