@@ -1451,7 +1451,9 @@ BEGIN
                     ')' INTO tmp_val;
 
             END LOOP;
-            IF tmp_val IS NOT NULL AND BTRIM(tmp_val) <> '' THEN
+            IF tmp_val IS NOT NULL AND tmp_val <> '' THEN
+                -- note that a string that contains only blanks
+                -- is a valid value for some attributes
                 norm_attr_value := norm_attr_value || tmp_val;
             END IF;
         END LOOP;
