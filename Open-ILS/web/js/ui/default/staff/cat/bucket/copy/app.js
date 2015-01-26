@@ -449,19 +449,19 @@ function($scope,  $q , $routeParams,  bucketSvc, egCore,
         return $q.all(promises).then(drawBucket);
     }
 
-    $scope.deleteCopiesFromCatalog = function() {
+    $scope.deleteCopiesFromCatalog = function(copies) {
         egConfirmDialog.open(
             egCore.strings.CONFIRM_DELETE_COPY_BUCKET_ITEMS_FROM_CATALOG,
             '', {}
         ).result.then(function() {
             var fleshed_copies = [];
             var promises = [];
-            angular.forEach(bucketSvc.currentBucket.items(), function(i) {
+            angular.forEach(copies, function(i) {
                 promises.push(
                     egCore.net.request(
                         'open-ils.search',
                         'open-ils.search.asset.copy.fleshed2.retrieve',
-                        i.target_copy()
+                        i.id
                     ).then(function(copy) {
                         copy.ischanged(1);
                         copy.isdeleted(1);

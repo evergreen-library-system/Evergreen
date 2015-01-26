@@ -12,7 +12,7 @@
 <script>
   angular.module('egCoreMod').run(['egStrings', function(s) {
     s.CONFIRM_DELETE_COPY_BUCKET_ITEMS_FROM_CATALOG =
-      "[% l('Are you sure you want to delete all items in bucket from catalog?') %]";
+      "[% l('Are you sure you want to delete selected items in bucket from catalog?') %]";
   }])
 </script>
 [% END %]
