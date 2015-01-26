@@ -13,6 +13,10 @@
   angular.module('egCoreMod').run(['egStrings', function(s) {
     s.CONFIRM_DELETE_COPY_BUCKET_ITEMS_FROM_CATALOG =
       "[% l('Are you sure you want to delete selected items in bucket from catalog?') %]";
+    s.OVERRIDE_DELETE_COPY_BUCKET_ITEMS_FROM_CATALOG_TITLE =
+      "[% l('One or more items could not be deleted. Override?') %]";
+    s.OVERRIDE_DELETE_COPY_BUCKET_ITEMS_FROM_CATALOG_BODY =
+      "[% l('Reason(s) include: [_1]', '{{evt_desc}}') %]";
   }])
 </script>
 [% END %]

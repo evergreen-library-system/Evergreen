@@ -475,7 +475,24 @@ function($scope,  $q , $routeParams,  bucketSvc, egCore,
                     'open-ils.cat.asset.copy.fleshed.batch.update',
                     egCore.auth.token(), fleshed_copies, true
                 ).then(function(resp) {
-                    // TODO deal with events that this method could return
+                    var evt = egCore.evt.parse(resp);
+                    if (evt) {
+                        egConfirmDialog.open(
+                            egCore.strings.OVERRIDE_DELETE_COPY_BUCKET_ITEMS_FROM_CATALOG_TITLE,
+                            egCore.strings.OVERRIDE_DELETE_COPY_BUCKET_ITEMS_FROM_CATALOG_BODY,
+                            {'evt_desc': evt.desc}
+                        ).result.then(function() {
+                            egCore.net.request(
+                                'open-ils.cat',
+                                'open-ils.cat.asset.copy.fleshed.batch.update.override',
+                                egCore.auth.token(), fleshed_copies, true,
+                                { events: ['TITLE_LAST_COPY', 'COPY_DELETE_WARNING'] }
+                            ).then(function(resp) {
+                                bucketSvc.bucketNeedsRefresh = true;
+                                drawBucket();
+                            });
+                        });
+                    }
                     bucketSvc.bucketNeedsRefresh = true;
                     drawBucket();
                 });
