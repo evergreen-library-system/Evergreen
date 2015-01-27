@@ -1460,7 +1460,7 @@ function($modal , $q , egCore , egAlertDialog , egConfirmDialog) {
                 var pen = new egCore.idl.ausp();
                 pen.usr(user_id);
                 pen.org_unit(egCore.auth.user().ws_ou());
-                pen.note(args.note);
+                pen.note(args.note + ' [' + args.initials + ']');
                 if (args.custom_penalty) {
                     pen.standing_penalty(args.custom_penalty);
                 } else {

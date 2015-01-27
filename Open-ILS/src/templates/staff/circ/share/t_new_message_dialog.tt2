@@ -40,7 +40,15 @@
       </div>
     </div>
     <div class="modal-footer">
-      <input type="submit" class="btn btn-primary" value="[% l('OK') %]"/>
-      <button class="btn btn-warning" ng-click="cancel($event)">[% l('Cancel') %]</button>
+      <div class="row">
+        <div class="col-md-2">
+          <input type="text" class="form-control" 
+            ng-model="args.initials" placeholder="[% l('Initials') %]" required/>
+        </div>
+        <div class="col-md-10 pull-right">
+          <input type="submit" class="btn btn-primary" value="[% l('OK') %]"/>
+          <button class="btn btn-warning" ng-click="cancel($event)">[% l('Cancel') %]</button>
+        </div>
+      </div>
     </div>
 </form>
