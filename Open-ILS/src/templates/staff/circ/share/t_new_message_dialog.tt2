@@ -42,8 +42,8 @@
     <div class="modal-footer">
       <div class="row">
         <div class="col-md-2">
-          <input type="text" class="form-control" 
-            ng-model="args.initials" placeholder="[% l('Initials') %]" required/>
+          <input type="text" class="form-control" ng-hide="!require_initials" 
+            ng-model="args.initials" placeholder="[% l('Initials') %]" ng-required="require_initials"/>
         </div>
         <div class="col-md-10 pull-right">
           <input type="submit" class="btn btn-primary" value="[% l('OK') %]"/>

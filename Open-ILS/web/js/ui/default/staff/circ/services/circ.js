@@ -12,7 +12,16 @@ function($modal , $q , egCore , egAlertDialog , egConfirmDialog) {
     var service = {
         // auto-override these events after the first override
         auto_override_checkout_events : {},
+        require_initials : false
     };
+
+    egCore.startup.go().finally(function() {
+        egCore.org.settings([
+            'ui.staff.require_initials.patron_standing_penalty'
+        ]).then(function(set) {
+            service.require_initials = Boolean(set['ui.staff.require_initials.patron_standing_penalty']);
+        });
+    });
 
     service.reset = function() {
         service.auto_override_checkout_events = {};
@@ -1444,6 +1453,7 @@ function($modal , $q , egCore , egAlertDialog , egConfirmDialog) {
             function($scope , $modalInstance , staffPenalties) {
                 $scope.focusNote = true;
                 $scope.penalties = staffPenalties;
+                $scope.require_initials = service.require_initials;
                 $scope.args = {penalty : 21}; // default to Note
                 $scope.setPenalty = function(id) {
                     args.penalty = id;
@@ -1460,7 +1470,8 @@ function($modal , $q , egCore , egAlertDialog , egConfirmDialog) {
                 var pen = new egCore.idl.ausp();
                 pen.usr(user_id);
                 pen.org_unit(egCore.auth.user().ws_ou());
-                pen.note(args.note + ' [' + args.initials + ']');
+                pen.note(args.note);
+                if (args.initials) pen.note(args.note + ' [' + args.initials + ']');
                 if (args.custom_penalty) {
                     pen.standing_penalty(args.custom_penalty);
                 } else {
@@ -1482,6 +1493,7 @@ function($modal , $q , egCore , egAlertDialog , egConfirmDialog) {
             function($scope , $modalInstance , staffPenalties) {
                 $scope.focusNote = true;
                 $scope.penalties = staffPenalties;
+                $scope.require_initials = service.require_initials;
                 $scope.args = {
                     penalty : usr_penalty.standing_penalty().id(),
                     note : usr_penalty.note()
@@ -1497,6 +1509,7 @@ function($modal , $q , egCore , egAlertDialog , egConfirmDialog) {
         }).result.then(
             function(args) {
                 usr_penalty.note(args.note);
+                if (args.initials) usr_penalty.note(args.note + ' [' + args.initials + ']');
                 usr_penalty.standing_penalty(args.penalty);
                 return egCore.pcrud.update(usr_penalty);
             }
