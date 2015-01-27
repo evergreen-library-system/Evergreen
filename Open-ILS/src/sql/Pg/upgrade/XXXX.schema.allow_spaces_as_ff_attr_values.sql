@@ -26,6 +26,7 @@ WITH ccvm AS (
             AND code = ' '
 ) UPDATE  metabib.record_attr_vector_list
     SET   vlist = vlist + intset(ccvm.id)
+    FROM ccvm
     WHERE source IN (
             SELECT  record
               FROM  metabib.real_full_rec
