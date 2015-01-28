@@ -3467,6 +3467,7 @@ sub checkin_handle_lost {
     return $self->checkin_handle_lost_or_longoverdue(
         circ_lib => $circ_lib,
         max_return => $max_return,
+        ous_dont_change_on_zero => 'circ.checkin.lost_zero_balance.do_not_change',
         ous_void_item_cost => OILS_SETTING_VOID_LOST_ON_CHECKIN,
         ous_void_proc_fee => OILS_SETTING_VOID_LOST_PROCESS_FEE_ON_CHECKIN,
         ous_restore_overdue => OILS_SETTING_RESTORE_OVERDUE_ON_LOST_RETURN,
@@ -3496,6 +3497,7 @@ sub checkin_handle_long_overdue {
         circ_lib => $circ_lib,
         max_return => $max_return,
         is_longoverdue => 1,
+        ous_dont_change_on_zero => 'circ.checkin.lost_zero_balance.do_not_change',
         ous_void_item_cost => 'circ.void_longoverdue_on_checkin',
         ous_void_proc_fee => 'circ.void_longoverdue_proc_fee_on_checkin',
         ous_restore_overdue => 'circ.restore_overdue_on_longoverdue_return',
@@ -3575,6 +3577,17 @@ sub checkin_handle_lost_or_longoverdue {
             "max return interval (or no interval is defined).  Proceeding ".
             "with fine/fee voiding, etc.");
 
+        my $dont_change = $U->ou_ancestor_setting_value(
+            $circ_lib, $args{ous_dont_change_on_zero}, $self->editor) || 0;
+
+        if ($dont_change) {
+            my ($obt) = $U->fetch_mbts($circ->id, $self->editor);
+            $dont_change = 0 if( $obt and $obt->balance_owed != 0 );
+        }
+
+        $logger->info("circulator: check-in of lost/lo item having a balance ".
+            "of zero, skipping fine/fee voiding and reinstatement.") if ($dont_change);
+
         my $void_cost = $U->ou_ancestor_setting_value(
             $circ_lib, $args{ous_void_item_cost}, $self->editor) || 0;
         my $void_proc_fee = $U->ou_ancestor_setting_value(
@@ -3593,11 +3606,11 @@ sub checkin_handle_lost_or_longoverdue {
         }
 
         $self->checkin_handle_lost_or_lo_now_found(
-            $args{void_cost_btype}, $args{is_longoverdue}) if $void_cost;
+            $args{void_cost_btype}, $args{is_longoverdue}) if ($void_cost and !$dont_change);
         $self->checkin_handle_lost_or_lo_now_found(
-            $args{void_fee_btype}, $args{is_longoverdue}) if $void_proc_fee;
+            $args{void_fee_btype}, $args{is_longoverdue}) if ($void_proc_fee and !$dont_change);
         $self->checkin_handle_lost_or_lo_now_found_restore_od($circ_lib) 
-            if $restore_od && ! $self->void_overdues;
+            if ! $dont_change && $restore_od && ! $self->void_overdues;
     }
 
     if ($circ_lib != $self->circ_lib) {

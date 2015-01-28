@@ -5016,6 +5016,16 @@ INSERT into config.org_unit_setting_type
      'Use Lost and Paid copy status when lost or long overdue billing is paid',
      'coust', 'description'),
  'bool', null)
+
+,( 'circ.checkin.lost_zero_balance.do_not_change', 'circ',
+    oils_i18n_gettext('circ.checkin.lost_zero_balance.do_not_change',
+        'Do not change fines/fees on zero-balance LOST transaction',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.checkin.lost_zero_balance.do_not_change',
+        'When an item has been marked lost and all fines/fees have been completely paid on the transaction, do not void or reinstate any fines/fees EVEN IF circ.void_lost_on_checkin and/or circ.void_lost_proc_fee_on_checkin are enabled',
+        'coust', 'description'),
+    'bool', null)
+
 ;
 
 UPDATE config.org_unit_setting_type
