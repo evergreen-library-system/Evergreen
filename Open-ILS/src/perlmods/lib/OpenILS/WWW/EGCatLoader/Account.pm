@@ -1247,7 +1247,7 @@ sub fetch_user_circs {
                 undef  # pre-cat copy, use the dummy title/author instead
         });
     }
-    $e->xact_rollback;
+    $e->rollback;
 
     # make sure the final list is in the correct order
     my @sorted_circs;
