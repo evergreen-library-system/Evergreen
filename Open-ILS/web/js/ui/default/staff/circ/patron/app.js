@@ -1167,10 +1167,14 @@ function($scope,  $routeParams , $location , egCore) {
     // called with a patron, pre-populate the form args
     $scope.initTab('other', $routeParams.id).then(
         function() {
-            if ($scope.patron()) {
+            if ($routeParams.id && $scope.patron()) {
                 $scope.prepop = true;
                 $scope.username = $scope.patron().usrname();
                 $scope.barcode = $scope.patron().card().barcode();
+            } else {
+                $scope.username = '';
+                $scope.barcode = '';
+                $scope.password = '';
             }
         }
     );
