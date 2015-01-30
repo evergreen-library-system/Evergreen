@@ -3,7 +3,7 @@
 <div id="status-bar" 
   class="navbar navbar-default navbar-fixed-bottom" 
   ng-model="statusbar_hidden"
-  ng-hide="statusbar_hidden"
+  ng-hide="true"
   role="navigation">
 
   <!-- 
