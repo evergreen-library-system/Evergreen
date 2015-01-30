@@ -7,11 +7,13 @@
     </h4>
   </div>
   <div class="modal-body">
-    <div class="panel panel-danger">
-      <div class="panel-heading">{{evt.textcode}}</div>
-      <div class="panel-body">
-        <div ng-if="copy_barcode" class="strong-text-2">{{copy_barcode}}</div>
-        {{evt.desc}}
+    <div ng-repeat="evt in events">
+      <div class="panel panel-danger">
+        <div class="panel-heading">{{evt.textcode}}</div>
+        <div class="panel-body">
+          <div ng-if="copy_barcode" class="strong-text-2">{{copy_barcode}}</div>
+          {{evt.desc}}
+        </div>
       </div>
     </div>
   </div>
