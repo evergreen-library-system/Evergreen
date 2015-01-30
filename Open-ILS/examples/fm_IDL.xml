@@ -5439,7 +5439,7 @@ SELECT  usr,
 			<field reporter:label="Bib Record link" name="bib_rec" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Eligible Copies" name="eligible_copies" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Currently Frozen" name="frozen" reporter:datatype="bool"/>
-			<field reporter:label="Thaw Date (if frozen)" name="thaw_date" reporter:datatype="timestamp"/>
+			<field reporter:label="Activation Date" name="thaw_date" reporter:datatype="timestamp"/>
 			<field reporter:label="Shelf Time" name="shelf_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Cancelation cause" name="cancel_cause" reporter:datatype="link" />
 			<field reporter:label="Cancelation note" name="cancel_note" reporter:datatype="text" />
@@ -5587,7 +5587,7 @@ SELECT  usr,
 			<field reporter:label="Bib Record link" name="bib_rec" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Eligible Copies" name="eligible_copies" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Currently Frozen" name="frozen" reporter:datatype="bool"/>
-			<field reporter:label="Thaw Date (if frozen)" name="thaw_date" reporter:datatype="timestamp"/>
+			<field reporter:label="Activation Date" name="thaw_date" reporter:datatype="timestamp"/>
 			<field reporter:label="Shelf Time" name="shelf_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Cancelation cause" name="cancel_cause" reporter:datatype="link" />
 			<field reporter:label="Cancelation note" name="cancel_note" reporter:datatype="text" />
@@ -5670,7 +5670,7 @@ SELECT  usr,
 			<field reporter:label="Bib Record link" name="bib_rec" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Eligible Copies" name="eligible_copies" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Currently Frozen" name="frozen" reporter:datatype="bool"/>
-			<field reporter:label="Thaw Date (if frozen)" name="thaw_date" reporter:datatype="timestamp"/>
+			<field reporter:label="Activation Date" name="thaw_date" reporter:datatype="timestamp"/>
 			<field reporter:label="Shelf Time" name="shelf_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Cancelation cause" name="cancel_cause" reporter:datatype="link" />
 			<field reporter:label="Cancelation note" name="cancel_note" reporter:datatype="text" />
@@ -5752,7 +5752,7 @@ SELECT  usr,
 			<field reporter:label="Hold Cancel Date/Time" name="cancel_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Bib Record link" name="bib_rec" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Currently Frozen" name="frozen" reporter:datatype="bool"/>
-			<field reporter:label="Thaw Date (if frozen)" name="thaw_date" reporter:datatype="timestamp"/>
+			<field reporter:label="Activation Date" name="thaw_date" reporter:datatype="timestamp"/>
 			<field reporter:label="Shelf Time" name="shelf_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Cancelation cause" name="cancel_cause" reporter:datatype="link" />
 			<field reporter:label="Cancelation note" name="cancel_note" reporter:datatype="text" />
@@ -5811,7 +5811,7 @@ SELECT  usr,
 			<field reporter:label="Hold Cancel Date/Time" name="cancel_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Bib Record link" name="bib_rec" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Currently Frozen" name="frozen" reporter:datatype="bool"/>
-			<field reporter:label="Thaw Date (if frozen)" name="thaw_date" reporter:datatype="timestamp"/>
+			<field reporter:label="Activation Date" name="thaw_date" reporter:datatype="timestamp"/>
 			<field reporter:label="Shelf Time" name="shelf_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Cancelation cause" name="cancel_cause" reporter:datatype="link" />
 			<field reporter:label="Cancelation note" name="cancel_note" reporter:datatype="text" />
