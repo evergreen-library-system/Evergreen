@@ -851,7 +851,11 @@ function($modal , $q , egCore , egAlertDialog , egConfirmDialog) {
             }]
         }).result.then(
             function() {
-                
+                if (sameUser) {
+                    options.override = true;
+                    return service.renew(params, options);
+                }
+
                 return service.checkin(
                     {barcode : params.copy_barcode, noop : true}
                 ).then(function(checkin_resp) {
