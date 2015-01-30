@@ -221,7 +221,7 @@ function($modal , $q , egCore , egAlertDialog , egConfirmDialog) {
         data.hold = payload.hold;
         data.record = payload.record;
         data.acp = payload.copy;
-        data.acn = payload.volume ?  payload.volume : payload.copy.call_number();
+        data.acn = payload.volume ?  payload.volume : payload.copy ? payload.copy.call_number() : null;
         data.au = payload.patron;
         data.transit = payload.transit;
         data.status = payload.status;
