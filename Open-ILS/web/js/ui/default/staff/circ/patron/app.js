@@ -1411,7 +1411,7 @@ function($scope,  $routeParams , $q , $window , $location , egCore ,
         $q.all(promises).then(function() {grid.refresh()});
     }
 
-    function showMoveToGroupConfirm(barcode, selected) {
+    function showMoveToGroupConfirm(barcode, selected, outbound) {
 
         // find the user
         egCore.pcrud.search('ac', {barcode : barcode})
@@ -1430,7 +1430,8 @@ function($scope,  $routeParams , $q , $window , $location , egCore ,
                                 '$scope','$modalInstance',
                         function($scope , $modalInstance) {
                             $scope.user = user;
-                            $scope.outbound = Boolean(selected);
+                            $scope.selected = selected;
+                            $scope.outbound = outbound;
                             $scope.ok = 
                                 function(count) { $modalInstance.close() }
                             $scope.cancel = 
@@ -1438,7 +1439,7 @@ function($scope,  $routeParams , $q , $window , $location , egCore ,
                         }
                     ]
                 }).result.then(function() {
-                    if (selected) {
+                    if (outbound) {
                         moveUsersToGroup(user, selected);
                     } else {
                         addUserToGroup(user);
@@ -1450,18 +1451,18 @@ function($scope,  $routeParams , $q , $window , $location , egCore ,
 
     // selected == move selected patrons to another patron's group
     // !selected == patron from a different group moves into our group
-    function moveToGroup(selected) {
+    function moveToGroup(selected, outbound) {
         egPromptDialog.open(
             egCore.strings.GROUP_ADD_USER, '',
             {ok : function(value) {
                 if (value) 
-                    showMoveToGroupConfirm(value, selected);
+                    showMoveToGroupConfirm(value, selected, outbound);
             }}
         );
     }
 
-    $scope.moveToGroup = function() { moveToGroup() };
-    $scope.moveToAnotherGroup = function(selected) { moveToGroup(selected) };
+    $scope.moveToGroup = function() { moveToGroup([], false) };
+    $scope.moveToAnotherGroup = function(selected) { moveToGroup(selected, true) };
 
     $scope.cloneUser = function(selected) {
         if (!selected.length) return;

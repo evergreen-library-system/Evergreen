@@ -6,7 +6,8 @@
       [% l('Move user into this group?') %]
     </h4>
     <h4 ng-if="outbound" class="modal-title">
-      [% l("Move selected users to the following user's group?") %]
+      <span ng-show="selected.length">[% l("Move selected users to the following user's group?") %]</span>
+      <span ng-hide="selected.length">[% l("No users selected for move.") %]</span>
     </h4>
   </div>
   <div class="modal-body">
@@ -21,7 +22,7 @@
     </a>
   </div>
   <div class="modal-footer">
-    <button class="btn btn-primary" ng-click="ok()">[% l('Move User') %]</button>
+    <button ng-disabled="outbound && !selected.length" class="btn btn-primary" ng-click="ok()">[% l('Move User') %]</button>
     <button class="btn btn-warning" ng-click="cancel()">[% l('Cancel') %]</button>
   </div>
 </div>
