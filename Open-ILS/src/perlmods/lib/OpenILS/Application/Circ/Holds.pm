@@ -1687,6 +1687,7 @@ sub print_hold_pull_list_stream {
     delete($$params{chunk_size}) unless (int($$params{chunk_size}));
     delete($$params{chunk_size}) if  ($$params{chunk_size} && $$params{chunk_size} > 50); # keep the size reasonable
     $$params{chunk_size} ||= 10;
+    $client->max_chunk_size($$params{chunk_size});
 
     $$params{org_id} = (defined $$params{org_id}) ? $$params{org_id}: $e->requestor->ws_ou;
     return $e->die_event unless $e->allowed('VIEW_HOLD', $$params{org_id });
@@ -2225,6 +2226,7 @@ sub print_expired_holds_stream {
     delete($$params{chunk_size}) unless (int($$params{chunk_size}));
     delete($$params{chunk_size}) if  ($$params{chunk_size} && $$params{chunk_size} > 50); # keep the size reasonable
     $$params{chunk_size} ||= 10;
+    $client->max_chunk_size($$params{chunk_size});
 
     $$params{org_id} = (defined $$params{org_id}) ? $$params{org_id}: $e->requestor->ws_ou;
 
@@ -3514,6 +3516,8 @@ sub clear_shelf_cache {
     return $e->die_event unless $e->checkauth and $e->allowed('VIEW_HOLD');
 
     $chunk_size ||= 25;
+    $client->max_chunk_size($chunk_size);
+
     my $hold_data = OpenSRF::Utils::Cache->new('global')->get_cache($cache_key);
 
     if (!$hold_data) {
@@ -3603,7 +3607,7 @@ __PACKAGE__->register_method(
 );
 
 sub clear_shelf_process {
-    my($self, $client, $auth, $org_id, $match_copy) = @_;
+    my($self, $client, $auth, $org_id, $match_copy, $chunk_size) = @_;
 
     my $e = new_editor(authtoken=>$auth);
     $e->checkauth or return $e->die_event;
@@ -3622,7 +3626,9 @@ sub clear_shelf_process {
 
     my @holds;
     my @canceled_holds; # newly canceled holds
-    my $chunk_size = 25; # chunked status updates
+    $chunk_size ||= 25; # chunked status updates
+    $client->max_chunk_size($chunk_size);
+
     my $counter = 0;
     for my $hold_id (@hold_ids) {
 

@@ -77,7 +77,7 @@ function($scope , $q , $routeParams , $window , $location , egCore , egHolds , e
 
         // see if we have the requested range cached
         if (holds[offset]) {
-            return provider.arrayNotifier(patronSvc.holds, offset, count);
+            return provider.arrayNotifier(holds, offset, count);
         }
 
         // see if we have the holds IDs for this range already loaded
@@ -173,7 +173,8 @@ function($scope , $q , $routeParams , $window , $location , egCore , egHolds , e
         egCore.net.request(
             'open-ils.circ',
             'open-ils.circ.hold.clear_shelf.process',
-            egCore.auth.token(), $scope.pickup_ou.id()
+            egCore.auth.token(), $scope.pickup_ou.id(),
+            null, 1
 
         // request responses from the clear shelf cache
         ).then(
@@ -184,7 +185,7 @@ function($scope , $q , $routeParams , $window , $location , egCore , egHolds , e
                 egCore.net.request(
                     'open-ils.circ',
                     'open-ils.circ.hold.clear_shelf.get_cache',
-                    egCore.auth.token(), resp.cache_key
+                    egCore.auth.token(), resp.cache_key, 1
                 ).then(null, null, handle_clear_cache_resp);
             }, 
 
