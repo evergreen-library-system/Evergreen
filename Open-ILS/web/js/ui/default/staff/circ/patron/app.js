@@ -920,7 +920,7 @@ function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore,
         $event.preventDefault();
     }
 
-    egCore.hatch.getItem('eg.prefs.circ.patron.search.showExtras')
+    egCore.hatch.getItem('eg.circ.patron.search.show_extras')
     .then(function(val) {$scope.showExtras = val});
 
     // map form arguments into search params
