@@ -7,45 +7,43 @@
 
 <div class="row">
   <div class="col-md-12">
-    <div class="flex-row left-anchored">
-      <div ng-if="is_backdate()" class="alert-danger pad-all-min">
-        [% l('Backdated Check In [_1]', 
-          '{{checkinArgs.backdate | date:"shortDate"}}') %]
+    <div ng-if="is_backdate()" class="alert-danger pad-all-min">
+      [% l('Backdated Check In [_1]', 
+        '{{checkinArgs.backdate | date:"shortDate"}}') %]
+    </div>
+    <div ng-if="modifiers.no_precat_alert" class="alert-danger pad-all-min">
+      [% l('Ignore Pre-Cataloged Items') %]
+    </div>
+    <div ng-if="modifiers.noop" class="alert-danger pad-all-min">
+      [% l('Suppress Holds and Transits') %]
+    </div>
+    <div ng-if="modifiers.void_overdues" class="alert-danger pad-all-min">
+      [% l('Amnesty Mode') %]
+    </div>
+    <div ng-if="modifiers.auto_print_holds_transits" 
+      class="alert-danger pad-all-min">
+      [% l('Auto-Print Hold and Transit Slips') %]
+    </div>
+    <div ng-if="modifiers.clear_expired" class="alert-danger pad-all-min">
+      [% l('Clear Holds Shelf') %]
+    </div>
+    <div ng-if="modifiers.retarget_holds" class="alert-danger pad-all-min">
+      <div ng-if="modifiers.retarget_holds_all">
+        [% l('Always Retarget Local Holds') %]
       </div>
-      <div ng-if="modifiers.no_precat_alert" class="alert-danger pad-all-min">
-        [% l('Ignore Pre-Cataloged Items') %]
+      <div ng-if="!modifiers.retarget_holds_all">
+        [% l('Retarget Local Holds') %]
       </div>
-      <div ng-if="modifiers.noop" class="alert-danger pad-all-min">
-        [% l('Suppress Holds and Transits') %]
-      </div>
-      <div ng-if="modifiers.void_overdues" class="alert-danger pad-all-min">
-        [% l('Amnesty Mode') %]
-      </div>
-      <div ng-if="modifiers.auto_print_holds_transits" 
-        class="alert-danger pad-all-min">
-        [% l('Auto-Print Hold and Transit Slips') %]
-      </div>
-      <div ng-if="modifiers.clear_expired" class="alert-danger pad-all-min">
-        [% l('Clear Holds Shelf') %]
-      </div>
-      <div ng-if="modifiers.retarget_holds" class="alert-danger pad-all-min">
-        <div ng-if="modifiers.retarget_holds_all">
-          [% l('Always Retarget Local Holds') %]
-        </div>
-        <div ng-if="!modifiers.retarget_holds_all">
-          [% l('Retarget Local Holds') %]
-        </div>
-      </div>
-      <div ng-if="modifiers.hold_as_transit" class="alert-danger pad-all-min">
-        [% l('Capture Local Holds As Transits') %]
-      </div>
+    </div>
+    <div ng-if="modifiers.hold_as_transit" class="alert-danger pad-all-min">
+      [% l('Capture Local Holds As Transits') %]
     </div>
   </div>
 </div>
 
 <!-- checkin form -->
 <div class="row pad-vert">
-  <div class="col-md-4">
+  <div class="col-md-5">
     <form ng-submit="checkin(checkinArgs)" role="form" class="form-inline">
       <div class="input-group">
 
@@ -63,7 +61,7 @@
     </form>
   </div>
 
-  <div class="col-md-4">
+  <div class="col-md-3">
     <div ng-if="alert" class="col-md-12 alert-danger pad-all-min">
       <span ng-if="alert.already_checked_in">
         [% l('[_1] was already checked in.', '{{alert.already_checked_in}}') %]
