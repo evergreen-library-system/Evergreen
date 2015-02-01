@@ -32,6 +32,8 @@ angular.module('egRenewApp',
        ['$scope','$window','$location','egCore','egGridDataProvider','egCirc',
 function($scope , $window , $location , egCore , egGridDataProvider , egCirc) {
 
+    egCore.hatch.getItem('circ.renew.strict_barcode')
+        .then(function(sb){ $scope.strict_barcode = sb });
     $scope.focusBarcode = true;
     $scope.renewals = [];
 
@@ -90,6 +92,7 @@ function($scope , $window , $location , egCore , egGridDataProvider , egCirc) {
         $scope.renewals.unshift(row_item);
         $scope.gridDataProvider.refresh();
 
+        egCore.hatch.setItem('circ.renew.strict_barcode', $scope.strict_barcode);
         var options = {check_barcode : $scope.strict_barcode};
 
         egCirc.renew(params, options).then(

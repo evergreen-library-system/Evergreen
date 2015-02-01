@@ -49,6 +49,9 @@ function($scope , $q , $window , $location , egCore , checkinSvc , egGridDataPro
     $scope.grid_persist_key = $scope.is_capture ? 
         'circ.checkin.capture' : 'circ.checkin.checkin';
 
+    egCore.hatch.getItem('circ.checkin.strict_barcode')
+        .then(function(sb){ $scope.strict_barcode = sb });
+
     egCore.org.settings([
         'ui.circ.suppress_checkin_popups' // add other settings as needed
     ]).then(function(set) {
@@ -143,6 +146,7 @@ function($scope , $q , $window , $location , egCore , checkinSvc , egGridDataPro
             }
         }
 
+        egCore.hatch.setItem('circ.checkin.strict_barcode', $scope.strict_barcode);
         var options = {
             check_barcode : $scope.strict_barcode,
             no_precat_alert : $scope.modifiers.no_precat_alert,
