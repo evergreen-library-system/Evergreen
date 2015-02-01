@@ -573,6 +573,7 @@ function($scope,  $q,  $location , $filter,  egCore,  egUser,  patronSvc) {
             && egCore.env.aous['ui.circ.show_billing_tab_on_bills']
             && !$location.path().match(/bills$/)) {
 
+            $scope.tab = 'bills';
             $location
                 .path('/circ/patron/' + patronSvc.current.id() + '/bills')
                 .search('card', null);
