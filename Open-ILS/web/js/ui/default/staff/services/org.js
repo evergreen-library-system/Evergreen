@@ -41,6 +41,22 @@ function($q,  egEnv,  egAuth,  egNet) {
         return nodes;
     };
 
+    // tests that a node can have users
+    service.CanHaveUsers = function(node_or_id) {
+        return Boolean(service
+            .get(node_or_id)
+            .ou_type()
+            .can_have_users());
+    }
+
+    // tests that a node can have volumes
+    service.CanHaveVolumes = function(node_or_id) {
+        return Boolean(service
+            .get(node_or_id)
+            .ou_type()
+            .can_have_vols());
+    }
+
     // list of org_unit objects  or IDs for me + descendants
     service.descendants = function(node_or_id, as_id) {
         var node = service.get(node_or_id);
