@@ -69,6 +69,7 @@
   <eg-grid-field label="[% l('Status') %]" path='status_string'></eg-grid-field>
 
   <eg-grid-field label="[% l('Queue Position') %]" path='queue_position' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Cancel Cause') %]"path='hold.cancel_cause.label' hidden></eg-grid-field>
   <eg-grid-field path='hold.*' parent-idl-class="ahr" ignore="current_copy" hidden></eg-grid-field>
   <eg-grid-field path='copy.*' parent-idl-class="acp" hidden></eg-grid-field>
   <eg-grid-field path='hold.usr.*' parent-idl-class="au" hidden></eg-grid-field>

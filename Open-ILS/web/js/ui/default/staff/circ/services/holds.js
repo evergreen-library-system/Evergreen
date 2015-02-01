@@ -413,6 +413,9 @@ function($modal , $q , egCore , egConfirmDialog , egAlertDialog) {
         if (hold.requestor() && typeof hold.requestor() != 'object')
             egCore.pcrud.retrieve('au',hold.requestor()).then(function(u) { hold.requestor(u) });
 
+        if (hold.cancel_cause() && typeof hold.cancel_cause() != 'object')
+            egCore.pcrud.retrieve('ahrcc',hold.cancel_cause()).then(function(c) { hold.cancel_cause(c) });
+
         if (hold.usr() && typeof hold.usr() != 'object')
             egCore.pcrud.retrieve('au',hold.usr()).then(function(u) { hold.usr(u) });
 
