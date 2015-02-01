@@ -64,6 +64,7 @@ function($modal , $q , egCore , egConfirmDialog , egAlertDialog) {
                 ['$scope', '$modalInstance', 'cancel_reasons',
                 function($scope, $modalInstance, cancel_reasons) {
                     $scope.args = {
+                        cancel_reason : 5,
                         cancel_reasons : cancel_reasons,
                         num_holds : hold_ids.length
                     };
