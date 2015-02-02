@@ -3,6 +3,7 @@
 [% IF EXPAND_WEB_IMPORTS %]
 
 <!-- angular -->
+<script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/angular.min.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/angular-route.min.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/ui-bootstrap-tpls.min.js"></script>
