@@ -26,9 +26,9 @@
       <div class="col-md-5">[% l('Net Access') %]</div>
       <div class="col-md-7">{{patron().net_access_level().name()}}</div>
     </div>
-    <div class="row">
+    <div class="row" ng-class="{'patron-summary-alert' : new Date(patron().dob()) > new Date()}">
       <div class="col-md-5">[% l('Date of Birth') %]</div>
-      <div class="col-md-7" ng-class="{patron-summary-alert : new Date(patron().dob()) > new Date()}">{{patron().dob() | date:'shortDate'}}</div>
+      <div class="col-md-7">{{patron().dob() | date:'shortDate'}}</div>
     </div>
     <div class="row">
       <div class="col-md-5">[% l('Last Activity') %]</div>
@@ -138,7 +138,7 @@
     <div class="panel">
       <div class="panel-body">
         <fieldset>
-          <legend>
+          <legend ng-class="{'patron-summary-alert': !new Boolean(addr.valid())}">
             {{addr.address_type()}} 
             <a href class="pad-horiz patron-summary-act-link" 
               ng-click="print_address(addr)">[% l('(print)') %]</a>
