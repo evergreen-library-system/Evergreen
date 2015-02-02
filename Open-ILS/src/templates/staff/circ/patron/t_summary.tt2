@@ -27,6 +27,10 @@
       <div class="col-md-7">{{patron().net_access_level().name()}}</div>
     </div>
     <div class="row">
+      <div class="col-md-5">[% l('Date of Birth') %]</div>
+      <div class="col-md-7" ng-class="{patron-summary-alert : new Date(patron().dob()) > new Date()}">{{patron().dob() | date:'shortDate'}}</div>
+    </div>
+    <div class="row">
       <div class="col-md-5">[% l('Last Activity') %]</div>
       <div class="col-md-7">{{patron().usr_activity()[0].event_time() | date:'shortDate'}}</div>
     </div>
