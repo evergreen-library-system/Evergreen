@@ -142,6 +142,12 @@
             </a>
           </li>
           <li>
+            <a href="./cat/item/search" target="_self">
+              <span class="glyphicon glyphicon-saved"></span>
+              <span>[% l('Item Status') %]</span>
+            </a>
+          </li>
+          <li>
             <a href="./cat/item/missing_pieces" target="_self">
               <span class="glyphicon glyphicon-th"></span>
               <span>[% l('Scan Item as Missing Pieces') %]</span>
