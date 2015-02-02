@@ -167,12 +167,12 @@ var MARC = {
 
         this.toXmlDocument = function () {
 
-            var doc = DOMParser('<record xmlns="http://www.loc.gov/MARC21/slim"/>');
+            var doc = $.parseXML('<record xmlns="http://www.loc.gov/MARC21/slim"/>');
             var rec_node = $('record', doc)[0];
 
             var ldr = doc.createElementNS('http://www.loc.gov/MARC21/slim', 'leader');
             ldr.textContent = this.leader;
-            rec_node.append( ldr );
+            rec_node.appendChild( ldr );
 
             this.fields.forEach(function (f) {
                 var element = f.isControlfield() ? 'controlfield' : 'datafield';
@@ -192,7 +192,7 @@ var MARC = {
                     });
                 }
 
-                rec_node.append(f_node);
+                rec_node.appendChild(f_node);
             });
 
             return doc;
