@@ -771,9 +771,26 @@ function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore,
         propagate = patronSvc.urlSearch.search;
     }
 
+    if (egCore.env.pgt) {
+        $scope.profiles = egCore.env.pgt.list;
+    } else {
+        egCore.pcrud.search('pgt', {parent : null}, 
+            {flesh : -1, flesh_fields : {pgt : ['children']}}
+        ).then(
+            function(tree) {
+                egCore.env.absorbTree(tree, 'pgt')
+                $scope.profiles = egCore.env.pgt.list;
+            }
+        );
+    }
+
     if (propagate) {
         // populate the search form with our cached / preexisting search info
         angular.forEach(propagate, function(val, key) {
+            if (key == 'profile')
+                val.value = $scope.profiles.filter(function(p) { p.id() == val.value })[0];
+            if (key == 'home_ou')
+                val.value = egCore.org.get(val.value);
             $scope.searchArgs[key] = val.value;
         });
     }
@@ -883,19 +900,6 @@ function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore,
     };
 
     $scope.patronSearchGridProvider = provider;
-
-    if (egCore.env.pgt) {
-        $scope.profiles = egCore.env.pgt.list;
-    } else {
-        egCore.pcrud.search('pgt', {parent : null}, 
-            {flesh : -1, flesh_fields : {pgt : ['children']}}
-        ).then(
-            function(tree) {
-                egCore.env.absorbTree(tree, 'pgt')
-                $scope.profiles = egCore.env.pgt.list;
-            }
-        );
-    }
 
     // determine the tree depth of the profile group
     $scope.pgt_depth = function(grp) {
