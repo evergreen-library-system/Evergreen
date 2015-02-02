@@ -223,8 +223,8 @@ angular.module('egGridMod',
                     grid.collect();
                 }
 
-                controls.setLimit = function(limit) {
-                    if (grid.persistKey)
+                controls.setLimit = function(limit,forget) {
+                    if (!forget && grid.persistKey)
                         egCore.hatch.setLocalItem('eg.grid.' + grid.persistKey + '.limit', limit);
                     grid.limit = limit;
                 }

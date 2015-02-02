@@ -167,7 +167,7 @@ function($scope , $q , $routeParams , $window , $location , egCore , egHolds , e
 
         // we want to see all processed holds, so (effectively) remove
         // the grid limit.
-        $scope.gridControls.setLimit(1000); 
+        $scope.gridControls.setLimit(1000, true); 
 
         // initiate clear shelf and grab cache key
         egCore.net.request(
