@@ -1,4 +1,4 @@
--- Evergreen DB patch XXXX.schema.use_current_normalize_heading.sql
+-- Evergreen DB patch 0905.schema.use_current_normalize_heading.sql
 --
 -- LP#1415572: ensure current version of authority.normalize_heading() is in place
 --
@@ -6,7 +6,7 @@ BEGIN;
 
 
 -- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0905', :eg_version);
 
 CREATE OR REPLACE FUNCTION authority.normalize_heading( marcxml TEXT, no_thesaurus BOOL ) RETURNS TEXT AS $func$
 DECLARE
