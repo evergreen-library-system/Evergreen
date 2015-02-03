@@ -1,4 +1,4 @@
--- Evergreen DB patch XXXX.schema.allow_spaces_as_ff_attr_values.sql
+-- Evergreen DB patch 0904.schema.allow_spaces_as_ff_attr_values.sql
 --
 -- LP#1414112 - don't over-normalize record attribute values to
 --              exclude all values that contain only blanks
@@ -6,7 +6,7 @@
 BEGIN;
 
 -- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0904', :eg_version);
 
 -- The code for "uncoded" audience is a space, but upgraded DBs may have a blank.
 UPDATE  config.coded_value_map
