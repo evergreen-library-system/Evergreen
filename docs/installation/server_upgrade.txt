@@ -200,8 +200,8 @@ would run the following upgrade scripts:
 - 2.5.1-2.5.2-upgrade-db.sql
 - 2.5.2-2.5.3-upgrade-db.sql
 - 2.5.3-2.6.0-upgrade-db.sql (this is a major version upgrade)
-- 2.6.2-2.6.3-upgrade-db.sql (there was one update missed in the 2.6-2.7.0 script, this is needed)
-- 2.6-2.7.0-upgrade-db.sql (this is a major version upgrade)
+- 2.6.2-2.6.3-upgrade-db.sql
+- 2.6.3-2.7.0-upgrade-db.sql (this is a major version upgrade)
 - 2.7.0-2.7.1-upgrade-db.sql
 - 2.7.1-2.7.2-upgrade-db.sql
 - 2.7.2-2.7.3-upgrade-db.sql
@@ -221,11 +221,9 @@ example:
 - 2.4.3-2.5.0-upgrade-db.sql
 - (run all incremental scripts from 2.5.0 to 2.5.3)
 - 2.5.3-2.6.0-upgrade-db.sql
-- 2.6.2-2.6.3-upgrade-db.sql (This is an exception to the pattern that needs to be run before 2.6-2.7.0)
-- 2.6-2.7.0-upgrade-db.sql
-- 2.7.0-2.7.1-upgrade-db.sql
-- 2.7.1-2.7.2-upgrade-db.sql
-- 2.7.2-2.7.3-upgrade-db.sql
+- (run all incremental scripts from 2.6.0 to 2.6.3)
+- 2.6.3-2.7.0-upgrade-db.sql
+- (run all incremental scripts from 2.7.0 to 2.7.3)
 =============
 
 [CAUTION]
@@ -240,11 +238,11 @@ as a user with the ability to connect to the database server.
 [source, bash]
 ----------------------------------------------------------
 cd /home/opensrf/Evergreen-ILS-2.7.3/Open-ILS/src/sql/Pg
-psql -U evergreen -h localhost -f version-upgrade/2.6-2.7.0-upgrade-db.sql evergreen
+psql -U evergreen -h localhost -f version-upgrade/2.6.3-2.7.0-upgrade-db.sql evergreen
 ----------------------------------------------------------
 
 [TIP]
-After the `2.5.3-2.6.0-upgrade-db.sql` script finishes, you will see a
+After the some database upgrade scripts finish, you may see a
 note on how to reingest your bib records. You may run this after you have
 completed the entire upgrade and tested your system. Reingesting records
 may take a long time depending on the number of bib records in your system.
