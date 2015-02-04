@@ -690,6 +690,13 @@ ALTER TABLE authority.record_entry DISABLE TRIGGER map_thesaurus_to_control_set;
 UPDATE authority.record_entry SET id = id WHERE heading LIKE 'NOHEADING%';
 
 
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('0906', :eg_version);
+
+ALTER FUNCTION evergreen.z3950_attr_name_is_valid (TEXT) STABLE;
+
+COMMIT;
+
 -- These need to happen outside of the transaction to avoid this:
 -- ERROR: cannot ALTER TABLE "record_entry" because it has pending trigger
 -- events
@@ -699,9 +706,27 @@ ALTER TABLE authority.record_entry ENABLE TRIGGER b_maintain_901;
 ALTER TABLE authority.record_entry ENABLE TRIGGER c_maintain_control_numbers;
 ALTER TABLE authority.record_entry ENABLE TRIGGER map_thesaurus_to_control_set;
 
--- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('0906', :eg_version);
-
-ALTER FUNCTION evergreen.z3950_attr_name_is_valid (TEXT) STABLE;
-
-COMMIT;
+\qecho
+\qecho
+\qecho **** Certain improvements in this upgrade series require a partial reingest of
+\qecho **** your bib records.  In order to allow this to continue without locking
+\qecho **** your entire bibliographic data set, consider generating an SQL script
+\qecho **** with the following queries:
+\qecho
+\qecho
+\qecho '\\t'
+\qecho '\\o /tmp/partial_reingest_bib_recs.sql'
+\qecho 'SELECT ''select metabib.reingest_record_attributes('' || id || '');'' FROM biblio.record_entry WHERE NOT DELETED AND id > 0;'
+\qecho '\\o'
+\qecho '\\t'
+\qecho
+\qecho
+\qecho **** then running it via psql:
+\qecho
+\qecho
+\qecho '\\i /tmp/partial_reingest_bib_recs.sql'
+\qecho
+\qecho
+\qecho **** If you require a more responsive catalog/database while reingesting,
+\qecho **** consider adding 'pg_sleep()' calls between each reingest select or
+\qecho **** update.
