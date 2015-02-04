@@ -108,10 +108,13 @@ ALTER TABLE authority.record_entry DISABLE TRIGGER map_thesaurus_to_control_set;
 
 UPDATE authority.record_entry SET id = id WHERE heading LIKE 'NOHEADING%';
 
+COMMIT;
+
+-- These need to happen outside of the transaction to avoid this:
+-- ERROR: cannot ALTER TABLE "record_entry" because it has pending trigger
+-- events
 ALTER TABLE authority.record_entry ENABLE TRIGGER a_marcxml_is_well_formed;
 ALTER TABLE authority.record_entry ENABLE TRIGGER aaa_auth_ingest_or_delete;
 ALTER TABLE authority.record_entry ENABLE TRIGGER b_maintain_901;
 ALTER TABLE authority.record_entry ENABLE TRIGGER c_maintain_control_numbers;
 ALTER TABLE authority.record_entry ENABLE TRIGGER map_thesaurus_to_control_set;
-
-COMMIT;
