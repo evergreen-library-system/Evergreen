@@ -58,7 +58,7 @@ Installing prerequisites
     is 9.1.
   * **Linux**: Evergreen 2.7 has been tested on Debian Jessie (8.0), 
     Debian Wheezy (7.0), Debian Squeeze(6.0), Ubuntu Trusty Tahr (14.04), 
-    Ubuntu Precise Pangolin (12.04), Ubuntu Lucid Lynx (10.04) and Fedora. 
+    Ubuntu Precise Pangolin (12.04), and Fedora. 
     If you are running an older version of these distributions, you may want 
     to upgrade before upgrading Evergreen. For instructions on upgrading these
     distributions, visit the Debian, Ubuntu or Fedora websites.
