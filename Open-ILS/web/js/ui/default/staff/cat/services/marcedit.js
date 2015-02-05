@@ -4,12 +4,12 @@
 
 angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
 
-.directive("egContextMenuItem", function () {
+.directive("egContextMenuItem", ['$timeout',function ($timeout) {
     return {
         restrict: 'E',
-        replace: false,
-        template: '<li ng-click="setContent(item.value,item.action)">{{label}}</li>',
-        scope: { item: '=' },
+        replace: true,
+        template: '<li><a ng-click="setContent(item.value,item.action)">{{item.label}}</a></li>',
+        scope: { item: '=', content: '=' },
         controller: ['$scope','$element',
             function ($scope , $element) {
                 if (!$scope.item.label) $scope.item.label = $scope.item.value;
@@ -18,64 +18,104 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                 }
 
                 $scope.setContent = function (v, a) {
-                    if (a) { v = a($scope,v); }
-                    $scope.$apply("item.value=v");
-                    $( $($scope.element).parent() ).parent().empty().remove();
-                    $scope.$parent.$destroy();
+                    var replace_with = v;
+                    if (a) replace_with = a($scope,$element,$scope.item.value,$scope.$parent.$parent.content);
+                    $timeout(function(){
+                        $scope.$parent.$parent.$apply(function(){
+                            $scope.$parent.$parent.content = replace_with
+                        })
+                    }, 0);
+                    console.log('well, replaced it');
+                    $($element).parent().css({display: 'none'});
                 }
             }
         ]
     }
-})
+}])
 
-.directive("egMarcEditEditable", ['$document', function ($document) {
-    function showContext(event) {
-        event.preventDefault();
-        var con = event.data.scope.contextitems;
-
-        if (angular.isArray(con)) { // we have a list of values or transforms
-            var tmpl = 
-            '<div class="dropdown" dropdown is-open="true">'+
-                '<ul class="dropdown-menu" role="menu">'+
-                    '<eg-context-menu-item ng-repeat="item in contextitems" item="item"/>'+
-                '</ul>'+
-            '</div>';
-
-            var el = $compile(tmpl)(event.data);
-            el.css({
-                postion: 'absolute',
-                top: event.pageY,
-                left: event.pageX
-            });
-
-            $document.append(el);
-        }
-    }
-
+.directive("egMarcEditEditable", ['$timeout', '$compile', '$document', function ($timeout, $compile, $document) {
     return {
         restrict: 'E',
         replace: false,
-        template: '<input style="font-family: \'Lucida Console\', Monaco, monospace;" ng-model="content" size="{{content.length * 1.1}}" maxlength="{{max}}" class="" type="text"/>',
         transclude: true,
+        template: '<input style="font-family: \'Lucida Console\', Monaco, monospace;" ng-model="content" size="{{content.length * 1.1}}" maxlength="{{max}}" class="" type="text"/>',
         scope: {
+            field: '=',
+            subfield: '=',
             content: '=',
-            //contextitems: '=',
+            contextItemContainer: '@',
             max: '@',
             type: '@'
         },
-//        controller : ['$scope',
-//            function ( $scope ) {
-//                $scope.minsize = $scope.max || $scope.content.length;
-//                if (!$scope.contextitems) $scope.contextitems = {};
-//            }
-//        ],
+        controller : ['$scope',
+            function ( $scope ) {
+
+/* XXX Example, for testing.  We'll get this from the tag-table services for realz
+ *
+                if (!$scope.contextItemContainer) {
+                    $scope.contextItemContainer = "default_context";
+                    $scope[$scope.contextItemContainer] = [
+                        { value: 'a' },
+                        { value: 'b' },
+                        { value: 'c' },
+                    ];
+                }
+
+ *
+ */
+
+                if ($scope.contextItemContainer)
+                    $scope.item_container = $scope[$scope.contextItemContainer];
+
+                $scope.showContext = function (event) {
+                    if ($scope.context_menu_element) {
+                        console.log('Reshowing context menu...');
+                        $($scope.context_menu_element).css({ display: 'block', top: event.pageY, left: event.pageX });
+                        return false;
+                    }
+
+                    if (angular.isArray($scope.item_container)) { // we have a list of values or transforms
+                        console.log('Showing context menu...');
+
+                        var tmpl = 
+                            '<ul class="dropdown-menu" role="menu">'+
+                                '<eg-context-menu-item ng-repeat="item in item_container" item="item" content="content"/>'+
+                            '</ul>';
+            
+                        var tnode = angular.element(tmpl);
+                        console.log('... got element ...');
+
+                        $document.find('body').append(tnode);
+                        console.log('... attached to DOM ...');
+
+                        $(tnode).css({
+                            display: 'block',
+                            top: event.pageY,
+                            left: event.pageX
+                        });
+                        console.log('... displayed ...');
+
+                        $scope.context_menu_element = tnode;
+                        console.log('... captured for later ...');
+
+                        $timeout(function() {
+                            var e = $compile(tnode)($scope);
+                            console.log('... compiled: ' + e);
+                        }, 0);
+
+                        return false;
+                    }
+            
+                    return true;
+                }
+
+            }
+        ],
         link: function (scope, element, attrs) {
 
-            element.bind('change', {}, function (e) { element.size = scope.max || scope.content.length * 1.1});
-
-            if (scope.contextitems && angular.isArray(scope.contextitems)) {
-                element.bind('context', { scope : scope, element : element }, showContext);
-            }
+            element.bind('change', function (e) { element.size = scope.max || parseInt(scope.content.length * 1.1) });
+            if (scope.contextItemContainer && angular.isArray(scope[scope.contextItemContainer]))
+                element.bind('contextmenu', scope.showContext);
         }
     }
 }])
@@ -84,8 +124,8 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
     return {
         restrict: 'E',
         template: '<span>'+
-                    '<span><eg-marc-edit-editable type="sfc" class="marcsfcode" content="subfield[0]" max="1"/></span>'+
-                    '<span><eg-marc-edit-editable type="sfv" class="marcsfvalue" content="subfield[1]"/></span>'+
+                    '<span><eg-marc-edit-editable type="sfc" class="marcsfcode" field="field" subfield="subfield" content="subfield[0]" max="1"/></span>'+
+                    '<span><eg-marc-edit-editable type="sfv" class="marcsfvalue" field="field" subfield="subfield" content="subfield[1]"/></span>'+
                   '</span>',
         scope: { field: "=", subfield: "=" },
         replace: false
@@ -95,8 +135,8 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
 .directive("egMarcEditInd", function () {
     return {
         restrict: 'E',
-        template: '<span><eg-marc-edit-editable type="ind" content="ind" max="1"/></span>',
-        scope: { ind : '=' },
+        template: '<span><eg-marc-edit-editable type="ind" field="field" content="ind" max="1"/></span>',
+        scope: { ind : '=', field: '=' },
         replace: false,
     }
 })
@@ -104,8 +144,8 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
 .directive("egMarcEditTag", function () {
     return {
         restrict: 'E',
-        template: '<span><eg-marc-edit-editable type="tag" content="tag" max="3"/></span>',
-        scope: { tag : '=' },
+        template: '<span><eg-marc-edit-editable type="tag" field="field" content="tag" max="3"/></span>',
+        scope: { tag : '=', field: '=' },
         replace: false
     }
 })
@@ -114,9 +154,9 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
     return {
         restrict: 'E',
         template: '<div>'+
-                    '<span><eg-marc-edit-tag class="marctag" tag="field.tag"/></span>'+
-                    '<span><eg-marc-edit-ind class="marcind" ind="field.ind1"/></span>'+
-                    '<span><eg-marc-edit-ind class="marcind" ind="field.ind2"/></span>'+
+                    '<span><eg-marc-edit-tag class="marctag" field="field" tag="field.tag"/></span>'+
+                    '<span><eg-marc-edit-ind class="marcind" field="field" ind="field.ind1"/></span>'+
+                    '<span><eg-marc-edit-ind class="marcind" field="field" ind="field.ind2"/></span>'+
                     '<span><eg-marc-edit-subfield ng-repeat="subfield in field.subfields" subfield="subfield" field="field"/></span>'+
                   '</div>',
         scope: { field: "=" }
@@ -127,8 +167,8 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
     return {
         restrict: 'E',
         template: '<div>'+
-                    '<span><eg-marc-edit-tag class="marctag" tag="field.tag"/></span>'+
-                    '<span><eg-marc-edit-editable type="cfld" class="marcdata" content="field.data"/></span>'+
+                    '<span><eg-marc-edit-tag class="marctag" field="field" tag="field.tag"/></span>'+
+                    '<span><eg-marc-edit-editable type="cfld" field="field" class="marcdata" content="field.data"/></span>'+
                   '</div>',
         scope: { field: "=" }
     }
@@ -139,7 +179,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
         restrict: 'E',
         template: '<div>'+
                     '<span><eg-marc-edit-editable class="marctag" content="tag"/></span>'+
-                    '<span><eg-marc-edit-editable class="marcdata" max="{{record.leader.length}}" content="record.leader"/></span>'+
+                    '<span><eg-marc-edit-editable class="marcdata" type="ldr" max="{{record.leader.length}}" content="record.leader"/></span>'+
                   '</div>',
         controller : ['$scope',
             function ( $scope ) {
