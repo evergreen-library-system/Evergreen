@@ -118,7 +118,7 @@ var MARC = {
         this.fromXmlURL = function (url) {
             this.ready   = false;
             var me = this;
-            $.get(
+            return $.get( // This is a Promise
                 url,
                 function (mxml) {
                     me.fromXmlDocument($('record', mxml)[0]);
@@ -128,7 +128,7 @@ var MARC = {
         },
 
         this.fromXmlString = function (mxml) {
-                this.fromXmlDocument( $.parseXML( mxml ).find('record')[0] );
+                this.fromXmlDocument( $( $.parseXML( mxml ) ).find('record')[0] );
         },
 
         this.fromXmlDocument = function (mxml) {

@@ -2,6 +2,7 @@
 <div class="row pad-vert col-md-12 alert alert-info alert-less-pad strong-text-2">
   <span ng-if="record_tab == 'catalog'">[% l('Catalog') %]</span>
   <span ng-if="record_tab == 'marc_html'">[% l('MARC HTML') %]</span>
+  <span ng-if="record_tab == 'marc_edit'">[% l('Edit MARC') %]</span>
   <span ng-if="record_tab == 'holds'">[% l('Holds for Record') %]</span>
 </div>
 
@@ -22,6 +23,8 @@
       <ul class="dropdown-menu dropdown-menu-right" role="menu">
         <li><a href ng-click="set_record_tab('catalog')">
             [% l('OPAC View') %]</a></li>
+        <li><a href ng-click="set_record_tab('marc_edit')">
+            [% l('MARC Edit') %]</a></li>
         <li><a href ng-click="set_record_tab('marc_html')">
             [% l('MARC View') %]</a></li>
         <li class="divider"></li>
@@ -44,6 +47,9 @@
     <eg-embed-frame url="catalog_url" handlers="handlers" onchange="handle_page"></eg-embed-frame>
   </div>
   <!-- ng-if the remaining tabs so they can be instantiated on demand -->
+  <div ng-if="record_tab == 'marc_edit'">
+    <eg-marc-edit-record record-id="record_id"></eg-marc-edit-record>
+  </div>
   <div ng-if="record_tab == 'marc_html'">
     <eg-record-html record-id="record_id"></eg-record-html>
   </div>

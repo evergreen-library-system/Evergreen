@@ -7,7 +7,7 @@
  *
  */
 
-angular.module('egCatalogApp', ['ui.bootstrap','ngRoute','egCoreMod','egGridMod'])
+angular.module('egCatalogApp', ['ui.bootstrap','ngRoute','egCoreMod','egGridMod', 'egMarcMod'])
 
 .config(function($routeProvider, $locationProvider, $compileProvider) {
     $locationProvider.html5Mode(true);
