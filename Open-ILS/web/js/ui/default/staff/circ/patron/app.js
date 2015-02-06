@@ -1322,9 +1322,9 @@ function($scope,  $routeParams , $location , egCore , patronSvc , $modal) {
 }])
 
 .controller('PatronGroupCtrl',
-       ['$scope','$routeParams','$q','$window','$location','egCore',
+       ['$scope','$routeParams','$q','$window','$timeout','$location','egCore',
         'patronSvc','$modal','egPromptDialog','egConfirmDialog',
-function($scope,  $routeParams , $q , $window , $location , egCore ,
+function($scope,  $routeParams , $q , $window , $timeout,  $location , egCore ,
          patronSvc , $modal , egPromptDialog , egConfirmDialog) {
 
     var usr_id = $routeParams.id;
@@ -1483,10 +1483,14 @@ function($scope,  $routeParams , $q , $window , $location , egCore ,
 
     $scope.retrieveSelected = function(selected) {
         if (!selected.length) return;
-        var url = $location.absUrl().replace(
-            /\/patron\/.*/, 
-            '/patron/' + selected[0].id + '/checkout');
-        $window.open(url, '_blank').focus();
+        angular.forEach(selected, function(usr) {
+            $timeout(function() {
+                var url = $location.absUrl().replace(
+                    /\/patron\/.*/,
+                    '/patron/' + usr.id + '/checkout');
+                $window.open(url, '_blank')
+            });
+        });
     }
 
 }])

@@ -28,7 +28,7 @@
   <eg-grid-action label="[% l("Move Selected Patrons to Another Patron's Group") %]" 
     handler="moveToAnotherGroup"></eg-grid-action>
 
-  <eg-grid-action label="[% l("Retrieve Selected Patron") %]" 
+  <eg-grid-action label="[% l("Retrieve Selected Patrons") %]"
     handler="retrieveSelected"></eg-grid-action>
 
   <eg-grid-field path="active"></eg-grid-field>
