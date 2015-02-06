@@ -12,11 +12,10 @@
 <eg-grid
   idl-class="au"
   sort="gridSort"
-  grid-controls="gridControls"
-  menu-label="[% l('Group Actions') %]">
+  grid-controls="gridControls">
 
-  <eg-grid-menu-item handler="moveToGroup"
-    label="[% l('Move Another Patron To This Group') %]"></eg-grid-menu-item>
+  <eg-grid-action handler="moveToGroup"
+    label="[% l('Move Another Patron To This Group') %]"></eg-grid-action>
 
   <eg-grid-action 
     label="[% l('Register a New Group Member by Cloning Selected Patron') %]" 
