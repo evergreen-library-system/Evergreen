@@ -68,13 +68,13 @@ FOR facet IN sorted_facets;
                     END;
                 %]
                     <a class="button" href="[% expand_url %]"
-                      title="[% l('Show Fewer [_1] Entries', facet.cmf.label) %]">
+                      title="[% l('Show Fewer [_1] Entries', facet.cmf.label) %]" rel="nofollow" vocab="">
                       [% l("Fewer") %]
                     </a>
                 [% ELSIF facet.data.size > DEFAULT_DISPLAY_COUNT %]
                     <a class="button" 
                       title="[% l('Show More [_1] Entries', facet.cmf.label) %]"
-                      href="[% mkurl('', {long_facet => long_facets.merge([long_key])}) %]">
+                      href="[% mkurl('', {long_facet => long_facets.merge([long_key])}) %]" rel="nofollow" vocab="">
                       [% l("More") %]
                     </a>
                 [% END %]
@@ -113,11 +113,11 @@ FOR facet IN sorted_facets;
                             [% IF new_facets.size == 0 %]
                             <a
                               title="[% l('Show all results, not just those matching this term') %]"
-                              href="[% mkurl('', {}, ['facet']) %]">[% display_value %]</a>
+                              href="[% mkurl('', {}, ['facet']) %]" rel="nofollow" vocab="">[% display_value %]</a>
                             [% ELSE %]
                             <a
                               title="[% l('Expand to also show results not matching this term') %]"
-                              href="[% mkurl('', {facet => new_facets}) %]">[% display_value %]</a>
+                              href="[% mkurl('', {facet => new_facets}) %]" rel="nofollow" vocab="">[% display_value %]</a>
                             [% END %]
                         </div>
                         <div class="count">([% facet_data.count %])</div>
@@ -131,7 +131,7 @@ FOR facet IN sorted_facets;
                         <div class="facet">
                             <a
                               title="[% l('Limit to results matching this term') %]"
-                              href='[% mkurl('', {facet => selected_facets.merge([param_string])}, ['page']) %]'>
+                              href='[% mkurl('', {facet => selected_facets.merge([param_string])}, ['page']) %]' rel="nofollow" vocab="">
                               [% display_value %]
                             </a>
                         </div>

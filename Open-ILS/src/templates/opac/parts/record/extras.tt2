@@ -85,7 +85,7 @@
                         arrow = arrow_right;
                     END;
                 %]
-                <a name='[% name %]' href='[% href %]' class="rdetail_extras_lbl">[% arrow %] [% extra.label | html %]</a>
+                <a name='[% name %]' href='[% href %]' class="rdetail_extras_lbl" rel="nofollow" vocab="">[% arrow %] [% extra.label | html %]</a>
             </div>
         </div>
         <div class='rdetail_extras_div'>

@@ -24,7 +24,7 @@
                             href = mkurl('', {page => page - 1});
                     -%]
                     <a class='[% class %]' href='[% href %]' 
-                        title='[% l("Previous page") %]'><span class="nav_arrow_fix">&#9668;</span> [% l('Previous') %] </a>
+                        title='[% l("Previous page") %]' rel="nofollow" vocab=""><span class="nav_arrow_fix">&#9668;</span> [% l('Previous') %] </a>
                     [%- END;
 
                         # show links to 4 previous pages, the current page, and 3 more pages.
@@ -39,7 +39,7 @@
                                     IF pageitr == page; %]
                                         <span class='results-paginator-selected'>[% pageitr + 1%]</span>
                                     [% ELSE %]
-                                        <a href="[% mkurl('', {page => pageitr}) %]">[% pageitr + 1%]</a>
+                                        <a href="[% mkurl('', {page => pageitr}) %]" rel="nofollow" vocab="">[% pageitr + 1%]</a>
                                 [%  END;
                                     added = added + 1;
                                     IF added == 8; LAST; END;
@@ -54,7 +54,7 @@
                             href = mkurl('', {page => page + 1});
                     -%]
                     <a class='[% class %]' href='[% href %]' 
-                        title='[% l("Next page") %]'> [% l('Next') %] <span class="nav_arrow_fix">&#9658;</span></a>
+                        title='[% l("Next page") %]' rel="nofollow" vocab=""> [% l('Next') %] <span class="nav_arrow_fix">&#9658;</span></a>
                     [%- END; -%]
                 </span>
     </span>

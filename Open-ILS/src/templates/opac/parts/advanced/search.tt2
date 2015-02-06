@@ -40,7 +40,7 @@
         </span>
 
         <a href="[% mkurl(ctx.opac_root _ '/advanced', {$loc_name => loc_value}, 1) %]"
-            class="opac-button">[% l('Clear Form') %]</a>
+            class="opac-button" rel="nofollow" vocab="">[% l('Clear Form') %]</a>
     </div>
 
     <div id='adv_search_filters'>

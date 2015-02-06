@@ -16,5 +16,5 @@
         ctx.bre_id;
 %]
 <div class="rdetail_aux_utils rdetail_refworks">
-    <a href="[% rw_uri %]"><img src="/images/starz.png" alt="" />[% l('Export to RefWorks') %]</a>
+    <a href="[% rw_uri %]" rel="nofollow" vocab=""><img src="/images/starz.png" alt="" />[% l('Export to RefWorks') %]</a>
 </div>

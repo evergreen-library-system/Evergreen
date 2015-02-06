@@ -48,7 +48,7 @@
                 all_terms.push(subfield.textContent.replace('\-', ' ').replace('[#"^$\+,\.:;&|\[\]()]', ''));
                 total_term = all_terms.join(" ").replace('\s+$', '');
             %]
-<a href="[% mkurl(ctx.opac_root _ '/results', {qtype=>'subject', query=>total_term}, stop_parms.merge(expert_search_parms, general_search_parms, browse_search_parms, facet_search_parms)) %]">[% single_term %]</a>
+<a href="[% mkurl(ctx.opac_root _ '/results', {qtype=>'subject', query=>total_term}, stop_parms.merge(expert_search_parms, general_search_parms, browse_search_parms, facet_search_parms)) %]" rel="nofollow" vocab="">[% single_term %]</a>
             [%- END;
             IF all_terms.size; "<br/>"; END;
             FOREACH link880 IN graphics;

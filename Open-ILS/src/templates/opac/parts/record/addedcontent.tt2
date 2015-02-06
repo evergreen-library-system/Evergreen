@@ -29,7 +29,7 @@
                     tab_class = tab_class _ ' hidden';
                 END %]
             <div class="[% tab_class %]" id="ac:[% type %]">
-                <a href="[% mkurl('', {ac => type}) _ '#addedcontent' %]">[% ac_types.$type %]</a>
+                <a href="[% mkurl('', {ac => type}) _ '#addedcontent' %]" rel="nofollow" vocab="">[% ac_types.$type %]</a>
             </div>
             [% END;
         END;

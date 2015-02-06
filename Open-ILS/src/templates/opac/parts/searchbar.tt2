@@ -7,8 +7,8 @@
     <div id="search-box">
         <span class="search_catalog_lbl mobile_hide">[% l('Search the Catalog') %]</span>
         <span class="adv_search_catalog_lbl"><a href="[% mkurl(ctx.opac_root _ '/advanced', {},  expert_search_parms.merge(browse_search_parms, facet_search_parms)) %]"
-            id="home_adv_search_link">[% l('Advanced Search') %]</a></span>
-        <span class="browse_the_catalog_lbl"><a href="[% mkurl(ctx.opac_root _ '/browse', {}, expert_search_parms.merge(general_search_parms, facet_search_parms, ['fi:has_browse_entry'])) %]">[% l('Browse the Catalog') %]</a></span>
+            id="home_adv_search_link" rel="nofollow" vocab="">[% l('Advanced Search') %]</a></span>
+        <span class="browse_the_catalog_lbl"><a href="[% mkurl(ctx.opac_root _ '/browse', {}, expert_search_parms.merge(general_search_parms, facet_search_parms, ['fi:has_browse_entry'])) %]" rel="nofollow" vocab="">[% l('Browse the Catalog') %]</a></span>
     </div>
     <div class="searchbar">
         <span class='search_box_wrapper'>
@@ -96,7 +96,7 @@
     [% UNLESS took_care_of_form %]</form>[% END %]
     [% IF (is_advanced AND NOT is_special) AND CGI.param('qtype') %]
     <div class="opac-auto-102">
-        [ <a href="[% mkurl(ctx.opac_root _ '/advanced') %]">[%
+        [ <a href="[% mkurl(ctx.opac_root _ '/advanced') %]" rel="nofollow" vocab="">[%
             l('Refine My Original Search')
         %]</a> ]
     </div>
