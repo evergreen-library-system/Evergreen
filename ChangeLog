@@ -1,3 +1,517 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 37c406e72e6b65f7fafcdc488c17409e411280e1
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Mon Feb 24 12:09:57 2014 -0500
+
+    Bump OpenILS.pm version
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit 2e5640cdf2f4924a094b7d8abcd0d1268d929031
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Wed Feb 4 13:38:45 2015 -0500
+
+    LP#1418164: Fix 0905.schema.user_currnet_normalize_heading.sql.
+    
+    We can't alter a table, enabling triggers in this case, while a
+    table has trigger events pending.  We move the trigger enabling
+    to outside the transaction to resolve this.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+5	2	Open-ILS/src/sql/Pg/upgrade/0905.schema.use_current_normalize_heading.sql
+
+commit 3bcbed17c093af2fd31376c0c83c4e8cc9e54f40
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Tue Dec 17 09:57:08 2013 -0500
+
+    LP#1261777 repair cloned addr owner link
+    
+    Repair reference to undefined variable (offline) in spawn_editor()
+    function, which is responsible for opening the tab for the linked
+    patron.  Variable should be "offlineStrings".
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/xul/staff_client/chrome/content/main/menu.js
+
+commit 2d25f8ff540f343bfb26920671f2f57e98351057
+Author: Ben Shum <bshum@biblio.org>
+Date:   Tue Feb 3 16:12:14 2015 -0500
+
+    LP#1413660: Stamping upgrade script to change z3950 function
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+8	0	Open-ILS/src/sql/Pg/upgrade/0906.schema.z39_func_stable.sql
+0	5	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.z39_func_stable.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0906.schema.z39_func_stable.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.z39_func_stable.sql
+
+commit b2ca430ca9d61ee3875a90d00453cdd893603c13
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Jan 22 11:57:43 2015 -0500
+
+    LP#1413660 Mark 39.50 config function STABLE
+    
+    Mark SQL function evergreen.z3950_attr_name_is_valid(text) as STABLE
+    instead of IMMUTABLE, since the output may vary with a single input over
+    time.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+5	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.z39_func_stable.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.z39_func_stable.sql
+
+commit c0c7a52ff695b4ba5c998b85e4abe7c535213659
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Tue Apr 8 16:22:33 2014 -0400
+
+    LP#1078593 Regenerate summaries when deleting issuances
+    
+    Both interfaces currently allow you to delete issuances even if they
+    have items attached and have the delete cascade.  While this might be
+    a dangerous allowance, we should still make sure to keep our summaries
+    updated when this happens.
+    
+    This commit adds automatic summary regeneration when deleting issuances
+    in either serials interface.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+11	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Serial.pm
+1	1	Open-ILS/src/templates/serial/subscription/issuance.tt2
+17	0	Open-ILS/web/js/ui/default/serial/subscription/issuance.js
+
+commit 9f8fc12700445cbbb325e0724ef09592fcdfc77b
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Wed Apr 10 18:42:11 2013 -0400
+
+    LP#1078593 Add method for regenerating serial summaries
+    
+    Right now, serial summaries only update when receiving or
+    resetting items. They need to update more often, so lets start
+    by adding a method just for doing that.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+142	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Serial.pm
+
+commit c8e3b92844a60aca531340de8093115b1016f599
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Tue Apr 8 16:11:31 2014 -0400
+
+    LP#1078593 Assorted small Serial.pm fixes
+    
+    1) fleshed_issuance_alter() changes
+      - First, if one of the inner updates returns an event, abort early.
+        Otherwise, we might overwrite the event while looping and lose
+        the error.
+      - Second, add authtoken to the created editor.  This editor gets
+        passed around, and other functions might look for it there.
+    
+    2) pass $type down into _summarize_contents()
+      - Right now, we have a bug where supplement/index contents in a
+        merged MFHD record will get added to the basic contents (and
+        vice-(vice-)versa).  By passing in $type, we can assure that
+        we only return the type of contents we are looking for.
+    
+    3) _prepare_summaries() should acknowledge empty summaries
+      - Under normal use, summaries will generally grow, and never shrink
+        to nothing.  However, we must still handle cases where we have
+        discarded/deleted our last issuance, and in those cases, make sure
+        we "empty" the generated_coverage field in our summary.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+13	4	Open-ILS/src/perlmods/lib/OpenILS/Application/Serial.pm
+
+commit b10651444d56eb23e8c74fdf4803a5325c580a05
+Author: Ben Shum <bshum@biblio.org>
+Date:   Tue Feb 3 16:01:17 2015 -0500
+
+    LP#1415572: Stamping upgrade script for ensuring correct version of authority.normalize_heading
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+117	0	Open-ILS/src/sql/Pg/upgrade/0905.schema.use_current_normalize_heading.sql
+0	117	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.use_current_normalize_heading.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0905.schema.use_current_normalize_heading.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.use_current_normalize_heading.sql
+
+commit e99fa24c328671f45f8a5050a57d46dc54bff483
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Wed Jan 28 17:24:02 2015 +0000
+
+    LP#1415572: ensure correct version of authority.normalize_heading() is in place
+    
+    Some upgraded Evergreen databases can have the wrong version
+    of the authority.normalize_heading() function in place because
+    of a mixup in the 0848 schema upgrade script.  The problem can
+    manifest itself by there being rows in authority.record_entry
+    where the heading and simple_heading columns have "NOHEADING"
+    values regardless of the control set:
+    
+    -[ RECORD 1 ]--+---------------------------------------------
+    heading | NOHEADING_a ff0ed9fcd13e8944d9a718650840787a
+    simple_heading | NOHEADING_a ff0ed9fcd13e8944d9a718650840787a
+    
+    This patch ensures that the correct version is in place and
+    updates authority.record_entry to fix up affected rows without
+    requiring a full authority ingest.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+117	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.use_current_normalize_heading.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.use_current_normalize_heading.sql
+
+commit 0ea16a6aa8ab09919071de9cbbda0a2073e92507
+Author: Ben Shum <bshum@biblio.org>
+Date:   Tue Feb 3 15:54:05 2015 -0500
+
+    LP#1414112: Stamping upgrade script for spaces in record attr values
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+    
+    Conflicts:
+    	Open-ILS/src/sql/Pg/002.schema.config.sql
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+250	0	Open-ILS/src/sql/Pg/upgrade/0904.schema.allow_spaces_as_ff_attr_values.sql
+0	250	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.allow_spaces_as_ff_attr_values.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0904.schema.allow_spaces_as_ff_attr_values.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.allow_spaces_as_ff_attr_values.sql
+
+commit efe646fff1c7e2389eb0550d73483ee395875c82
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Tue Jan 27 13:33:39 2015 -0500
+
+    LP#1414112: Correct usage of WITH clause for UPDATE.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.allow_spaces_as_ff_attr_values.sql
+
+commit 6adeb0a9f26c1eefcd185daf63c3505c79d80a3c
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Mon Jan 26 11:44:45 2015 -0500
+
+    LP#1414112: Seed data and avoid reingest
+    
+    Update search metadata without a reingest by identifying records that
+    use a space in the audience field, and be sure that the coded value map
+    has a space for "uncoded" audience.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+25	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.allow_spaces_as_ff_attr_values.sql
+
+commit de9f5d08537297e236326fa5c7d7d2850d400d3b
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Mon Jan 26 16:05:10 2015 +0000
+
+    LP#1414112: avoid excluding record attribute values that contain only blanks
+    
+    Certain record attributes, chiefly the ones whose values comes
+    from MARC fixed fields and which have a coded value map associated
+    with them, can have a string consisting of one or more blanks as a
+    valid value.  Consequently, this patch ensures that
+    reingest_record_attributes() no longer excludes all attributes that
+    have blank values from the final attribute list.
+    
+    This fixes a problem where MARC records with the target audience (008/22)
+    coded as a blank (unknown or not specified) could no longer be retrieved
+    using an "audience( )" search filter.
+    
+    After applying this patch, a reingest of record attributes should be
+    performed, e.g., by doing
+    
+      select metabib.reingest_record_attributes(id)
+      from biblio.record_entry
+      where not deleted;
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+3	1	Open-ILS/src/sql/Pg/030.schema.metabib.sql
+17	0	Open-ILS/src/sql/Pg/t/regress/lp1414112_allow_spaces_as_ff_attr_values.pg
+224	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.allow_spaces_as_ff_attr_values.sql
+ create mode 100644 Open-ILS/src/sql/Pg/t/regress/lp1414112_allow_spaces_as_ff_attr_values.pg
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.allow_spaces_as_ff_attr_values.sql
+
+commit f23109bbfd0dfabc571c840296179cac95b72431
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Wed Nov 19 12:16:03 2014 -0500
+
+    LP#1389403 Normalizer detection compatibility with LP#1373693
+    
+    In LP#1373693, $ou_ids become an optional argument when at the top of
+    the tree.  We need to account for that.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/SuperCat.pm
+
+commit a286ce1362124ce317518f08c7dc12dfc51e1b5d
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Thu Jan 29 08:02:03 2015 -0500
+
+    LP#1415898 Fix Potential Cstore Starvation in the OPAC
+    
+    When a user views their current circulations and/or renews them via
+    the OPAC, a connection is made to a cstore drone so that the user's
+    circulations can be retrieved from the database, bypassing the cache.
+    This connection is not closed, and thus a cstore drone is left unable
+    to respond to new requests for several seconds.  On a busy server,
+    this has actually caused the number of cstore drones to hit the limit
+    configured in opensrf.xml.  If that situation continues for too long,
+    it leads to the load on the server spiking to the point where services
+    must be restarted.
+    
+    This commit changes from xact_rollback to rollback so that the connection
+    will be closed.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Account.pm
+
+commit 11f0b20ac084bfe31ad18ba5a750c68f93458593
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Thu Jan 29 07:59:07 2015 -0500
+
+    LP#1415898 Fix Potential Cstore Starvation in KPAC
+    
+    The getit_results function in EGKPacLoader.pm does xact_begin, which
+    opens a connected session to a cstore drone.  It later does xact_rollback,
+    which does not disconnect the session.  This leaves a drone hanging for
+    several seconds unable to responde to new requests.  This commit switches
+    to a rollback call that does disconnect the session.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGKPacLoader.pm
+
+commit 04014a714f5c92e3a3f2ef5f118bc5ae14c5da68
+Author: Thomas Berezansky <tsbere@mvlc.org>
+Date:   Wed Dec 3 13:18:27 2014 -0500
+
+    LP#1398926: Allow symbol popup to trigger on new marc fields
+    
+    Or rather, new MARC text entry boxes in general.
+    
+    Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+16	6	Open-ILS/xul/staff_client/server/OpenILS/symbol_overlay.js
+3	0	Open-ILS/xul/staff_client/server/cat/marcedit.js
+
+commit 308e6cf7c296438289642da807003b28d1d4ea5f
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Wed Nov 26 09:21:52 2014 -0500
+
+    LP#1396161: Improve public docs and change osrf-config default from script help
+    
+    The public docs have an "Action Triggers" chapter, so this commit
+    applies the same improvements there to match the help docs in the
+    script. Also in the public docs, in two places a filename was split
+    across lines, causing a gap to appear in the HTML version of the docs.
+    That is corrected here.  This commit also removes the 'osrf-config'
+    option from the examples in the script help docs, since they are using
+    the default value.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+3	3	Open-ILS/src/support-scripts/action_trigger_runner.pl.in
+33	5	docs/admin/actiontriggers.txt
+
+commit 55e3b7c8828ea1e327c7efea5b64c15be569989a
+Author: Josh Stompro <stomproj@larl.org>
+Date:   Tue Nov 25 15:56:50 2014 -0600
+
+    LP#1396161: action_trigger_runner.pl documentation update
+    
+     - Removed --granularity-only help docs.  Ever since the script was changed to
+       support parallel execution of different granularity levels the granularity-only
+       setting has always been set when using --granularity.
+    
+     - Added --verbose help docs.  This option wasn't included in the help docs.
+    
+     - Clarification - added some clarification to a few of the help descriptions.
+    
+     - Added an additional example for processing hooks and running pending events
+       with a granularity set.
+    
+     - Removed two references to the --granularity-only flag in the Telephony docs.
+    
+    I believe this change is valid for 2.7, 2.6 and 2.5 since the change to the script
+     was made in 2010.
+    
+    Signed-off-by: Josh Stompro <stomproj@larl.org>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+14	7	Open-ILS/src/support-scripts/action_trigger_runner.pl.in
+2	2	docs/TechRef/Telephony/telephony-setup-guide.txt
+
+commit 9d9692a1ca153ebfd40a4facb58d3e1c164b0593
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Thu Jan 22 01:48:19 2015 -0500
+
+    LP#1413490 Fix <table><table> markup
+    
+    Doesn't really have an effect on the display, as XULRunner automatically
+    repairs it dynamically, but might as well be correct.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/templates/acq/common/li_table.tt2
+
+commit 3d950e1ba17e55c51e954332e435838b090c1d16
+Author: Ben Shum <bshum@biblio.org>
+Date:   Tue Dec 16 14:34:12 2014 -0500
+
+    LP#1373594: Also ignore subfield 7 in get_graphics_880s
+    
+    In the Czech Republic the subfield 7 of MARC fields 1XX and 7XX are used for
+    the National authority control number.
+    
+    The problem is, that in current Evergreen versions, the subfield 7 is displayed
+    as a part of the link to author seach in search result or record details, but
+    when using the linkt to search rcords of the same author, no results are
+    returned, no matter whether the records exist or not.
+    
+    That is why we nedd to add the subfield 7 into get_graphic_880s.
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	1	Open-ILS/src/templates/opac/parts/misc_util.tt2
+
+commit d2ce20f3d9e5088631e8b1b3ca2aeb4a45d1cd52
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Jan 2 17:50:26 2015 -0500
+
+    LP#1407171 Avoid DEFLATEing fm_IDL.xml
+    
+    Prevent fm_IDL.xml from going through the Apache DEFLATE filter before
+    it's passed off to IDLCHUNK, which is unable to process deflated files.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	0	Open-ILS/examples/apache/eg_vhost.conf.in
+1	0	Open-ILS/examples/apache_24/eg_vhost.conf.in
+
+commit a814efcc1885bb3d7dbcea0fc08205f3bc52c346
+Author: Josh Stompro <github@stompro.org>
+Date:   Wed Sep 24 15:39:30 2014 -0500
+
+    LP 1372197: Fixed another link to evergreen-ils.org that changed.
+    
+    Server upgrade section had a link to http://evergreen-ils.org/downloads.php that is now
+    http://evergreen-ils.org/egdownloads/
+    
+    Signed-off-by: Josh Stompro <github@stompro.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	docs/installation/server_upgrade.txt
+
+commit 2a91e2797cd422fbf7811e5ea08d2cf254f985aa
+Author: Josh Stompro <github@stompro.org>
+Date:   Wed Sep 24 14:48:16 2014 -0500
+
+    LP 1373197: fixed default "Get Help With Evergreen" link.
+    
+    The "Get Help" link was pointing to a 404 page, fixed it so it points at the correct page.
+    
+    Signed-off-by: Josh Stompro <github@stompro.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/xul/staff_client/server/index.xhtml
+
+commit facf107fc21073d31b13d79cbce04a5a4dc40634
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Tue May 6 13:20:20 2014 -0400
+
+    LP#1310619: Changing relationship between rcil and legacy stat cats to "might_have".
+    
+    After discussion with Mike Rylander, I've changed "has_a" to "might_have"
+    to make left joining rcil and legacy stat cat sources the default behavior.
+    
+    For reference, see: http://irc.evergreen-ils.org/evergreen/2014-05-06#i_95055
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+2	2	Open-ILS/examples/fm_IDL.xml
+
+commit 4060f093708e95efc4c210a5fb5d14cd1840f14f
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Mon Apr 21 09:10:28 2014 -0400
+
+    LP#1310619: Add links in reporter.classic_item_list to legacy_cat1 and legacy_cat2 views.
+    
+    Currently, the reporter.classic_item_list view has the Legacy Cat 1 and 2
+    fields defined as "text", not "link", so all it will report out is the ID
+    number of the stat cat.  We want nullability control over stat cat entries,
+    so these need to be "link".
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+4	2	Open-ILS/examples/fm_IDL.xml
+
+commit 4807af4794d44cb0744d60ba491b37bea5575a11
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Jan 8 16:30:59 2015 -0500
+
+    LP#1408803 Add 'persist' login type to auth_proxy sample config
+    
+    A recent version of EG added the option to "stay logged in", and this
+    was implemented as a new login type. Since basically everyone will use
+    this option via the OPAC, it makes sense that this should be part of the
+    sample config for auth_proxy.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+1	0	Open-ILS/examples/opensrf.xml.example
+
+commit 9cd56c8d4d2d380ebde6a762a79c74a620be4dd4
+Author: Ben Shum <bshum@biblio.org>
+Date:   Mon Jan 12 11:52:22 2015 -0500
+
+    LP#1395456: (Fixing) Add back missing 0901 upgrade script
+    
+    I apparently fumbled the upgrade script and it was lost in the action.
+    LP#1395456 is now closed with adding back this script to the repositories.
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+332	0	Open-ILS/src/sql/Pg/upgrade/0901.schema.patron_purge_post_code.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0901.schema.patron_purge_post_code.sql
