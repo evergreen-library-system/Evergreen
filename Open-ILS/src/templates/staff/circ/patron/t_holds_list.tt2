@@ -37,9 +37,9 @@
   <eg-grid-action divider="true"></eg-grid-action>
   <eg-grid-action handler="grid_actions.retarget"
     label="[% l('Find Another Target') %]"></eg-grid-action>
-  <eg-grid-action handler="grid_actions.cancel_hold"
+  <eg-grid-action handler="grid_actions.cancel_hold" hide="hide_cancel_hold"
     label="[% l('Cancel Hold') %]"></eg-grid-action>
-  <eg-grid-action handler="grid_actions.uncancel_hold"
+  <eg-grid-action handler="grid_actions.uncancel_hold" hide="hide_uncancel_hold"
     label="[% l('Uncancel Hold') %]"></eg-grid-action>
 
   <eg-grid-field label="[% l('Hold ID') %]" path='hold.id'></eg-grid-field>

@@ -38,6 +38,14 @@ function($scope,  $q,  $routeParams,  egCore,  egUser,  patronSvc,
         provider.refresh();
     }
 
+    $scope.hide_cancel_hold = function(action) { 
+        return $scope.holds_display == 'alt';
+    }
+
+    $scope.hide_uncancel_hold = function(action) {
+        return !$scope.hide_cancel_hold();
+    }
+
     var provider = egGridDataProvider.instance({});
     $scope.gridDataProvider = provider;
 
