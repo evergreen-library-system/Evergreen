@@ -210,8 +210,8 @@ function($scope , $q , $location , $timeout , egCore , egGridDataProvider , item
  * Detail view -- shows one copy
  */
 .controller('ViewCtrl', 
-       ['$scope','$q','$location','$routeParams','egCore','itemSvc','egBilling',
-function($scope , $q , $location , $routeParams , egCore , itemSvc , egBilling) {
+       ['$scope','$q','$location','$routeParams','$timeout','$window','egCore','itemSvc','egBilling',
+function($scope , $q , $location , $routeParams , $timeout , $window , egCore , itemSvc , egBilling) {
     var copyId = $routeParams.id;
     $scope.tab = $routeParams.tab || 'summary';
     $scope.context.page = 'detail';
@@ -363,6 +363,21 @@ function($scope , $q , $location , $routeParams , egCore , itemSvc , egBilling) 
         egBilling.showBillDialog({
             xact_id : circ.id(),
             patron : circ.usr()
+        });
+    }
+
+    $scope.retrieveAllPatrons = function() {
+        var users = new Set();
+        angular.forEach($scope.circ_list.map(function(circ) { return circ.usr(); }),function(usr) {
+            users.add(usr);
+        });
+        users.forEach(function(usr) {
+            $timeout(function() {
+                var url = $location.absUrl().replace(
+                    /\/cat\/.*/,
+                    '/circ/patron/' + usr.id() + '/checkout');
+                $window.open(url, '_blank')
+            });
         });
     }
 

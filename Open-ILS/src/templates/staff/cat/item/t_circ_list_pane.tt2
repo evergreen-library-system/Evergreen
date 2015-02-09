@@ -3,6 +3,16 @@
     [% l('Item has not circulated.') %]
   </div>
 </div>
+<div class="row" ng-show="circ_list.length">
+  <div class="flex-row">
+      <div class="flex-cell well">
+          <button class="btn btn-default" ng-click="retrieveAllPatrons()">
+            [% l('Retrieve All These Patrons') %]
+          </button>
+      </div>
+  </div>
+</div>
+
 
 <div class="row" ng-repeat="circ in circ_list">
   <div class="flex-row">
