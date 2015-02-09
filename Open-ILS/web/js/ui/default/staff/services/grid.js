@@ -457,6 +457,14 @@ angular.module('egGridMod',
                 return ''+item; 
             }
 
+            // fires the hide handler function for a context action
+            $scope.actionHide = function(action) {
+                if (!action.hide) {
+                    return false;
+                }
+                return action.hide(action);
+            }
+
             // fires the action handler function for a context action
             $scope.actionLauncher = function(action) {
                 if (!action.handler) {
@@ -896,10 +904,12 @@ angular.module('egGridMod',
         scope : {
             label   : '@', // Action label
             handler : '=',  // Action function handler
+            hide    : '=',
             divider : '='
         },
         link : function(scope, element, attrs, egGridCtrl) {
             egGridCtrl.addAction({
+                hide  : scope.hide,
                 label : scope.label,
                 divider : scope.divider,
                 handler : scope.handler
