@@ -1701,7 +1701,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="marc_form" reltype="has_a" key="code" map="" class="cifm"/>
 			<link field="marc_bib_level" reltype="has_a" key="code" map="" class="cblvl"/>
 			<link field="marc_vr_format" reltype="has_a" key="code" map="" class="cvrfm"/>
-			<link field="age_hold_protect_rule" reltype="has_a" key="id" map="" class="crahp"/>
+			<link field="age_hold_protect_rule" reltype="might_have" key="id" map="" class="crahp"/>
             <link field="transit_range" reltype="has_a" key="id" map="" class="aout"/>
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
@@ -4814,7 +4814,7 @@ SELECT  usr,
 			<field reporter:label="Statistical Category Entries" name="stat_cat_entries" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
-			<link field="age_protect" reltype="has_a" key="id" map="" class="crahp"/>
+			<link field="age_protect" reltype="might_have" key="id" map="" class="crahp"/>
 			<link field="call_number" reltype="has_a" key="id" map="" class="acn"/>
 			<link field="location" reltype="has_a" key="id" map="" class="acpl"/>
 			<link field="editor" reltype="has_a" key="id" map="" class="au"/>
@@ -6399,7 +6399,7 @@ SELECT  usr,
 			<field reporter:label="Last Captured Hold" name="last_captured_hold" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
-			<link field="age_protect" reltype="has_a" key="id" map="" class="crahp"/>
+			<link field="age_protect" reltype="might_have" key="id" map="" class="crahp"/>
 			<link field="call_number" reltype="has_a" key="id" map="" class="acn"/>
 			<link field="location" reltype="has_a" key="id" map="" class="acpl"/>
 			<link field="editor" reltype="has_a" key="id" map="" class="au"/>
@@ -10720,7 +10720,7 @@ SELECT  usr,
             <link field="owning_lib" reltype="has_a" key="id" map="" class="aou"/>
             <link field="circ_lib" reltype="has_a" key="id" map="" class="aou"/>
             <link field="creator" reltype="has_a" key="id" map="" class="au"/>
-            <link field="age_protect" reltype="has_a" key="id" map="" class="crahp"/>
+            <link field="age_protect" reltype="might_have" key="id" map="" class="crahp"/>
             <link field="status" reltype="has_a" key="id" map="" class="ccs"/>
             <link field="stat_cat_1" reltype="might_have" key="id" map="" class="rsce1"/>
 	    <link field="stat_cat_2" reltype="might_have" key="id" map="" class="rsce2"/>
