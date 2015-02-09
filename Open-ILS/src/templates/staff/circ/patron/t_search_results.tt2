@@ -27,4 +27,5 @@
   <eg-grid-field label="[% ('Billing:County') %]" path='billing_address.county'></eg-grid-field>
   <eg-grid-field label="[% ('Billing:State') %]" path='billing_address.state'></eg-grid-field>
   <eg-grid-field label="[% ('Billing:Zip') %]" path='billing_address.post_code'></eg-grid-field>
+  <eg-grid-field path='*' ignore="id family_name first_given_name second_given_name dob create_date"></eg-grid-field>
 </eg-grid>
