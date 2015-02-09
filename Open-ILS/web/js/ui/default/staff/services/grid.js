@@ -491,7 +491,7 @@ angular.module('egGridMod',
             }
 
             $scope.hideActionContextMenu = function () {
-                var menu_dom = $($scope.grid_element).find('.grid-action-dropdown')[0];
+                var menu_dom = $('body').find('.grid-action-dropdown')[0];
                 $(menu_dom).css({
                     display: '',
                     width: $scope.action_context_width,
@@ -510,7 +510,7 @@ angular.module('egGridMod',
                 $scope.action_context_x = $(menu_dom).css('left');
                 $scope.action_context_parent = $(menu_dom).parent();
 
-                $($scope.grid_element).append($(menu_dom));
+                $('body').append($(menu_dom));
                 $('body').bind('click.remove_context_menu', $scope.hideActionContextMenu);
 
                 $(menu_dom).css({
