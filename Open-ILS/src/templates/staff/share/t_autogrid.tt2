@@ -69,7 +69,7 @@
       <button type="button" class="btn btn-default dropdown-toggle">
         [% l('Actions') %] <span class="caret"></span>                       
       </button>                                                              
-      <ul class="dropdown-menu pull-right">                                  
+      <ul class="dropdown-menu pull-right grid-action-dropdown">                                  
         <li ng-repeat="action in actions" ng-class="{divider: action.divider}" ng-hide="actionHide(action)">
           <a ng-if="!action.divider" href
             ng-click="actionLauncher(action)">{{action.label}}</a>

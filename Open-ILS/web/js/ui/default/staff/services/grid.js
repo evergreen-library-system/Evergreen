@@ -78,6 +78,11 @@ angular.module('egGridMod',
             // load auto fields after eg-grid-field's so they are not clobbered
             scope.handleAutoFields();
             scope.collect();
+
+            scope.grid_element = element;
+            $(element)
+                .find('.eg-grid-content-body')
+                .bind('contextmenu', scope.showActionContextMenu);
         },
 
         controller : [
@@ -470,15 +475,52 @@ angular.module('egGridMod',
                 if (!action.handler) {
                     console.error(
                         'No handler specified for "' + action.label + '"');
-                    return;
+                } else {
+
+                    try {
+                        action.handler(grid.getSelectedItems());
+                    } catch(E) {
+                        console.error('Error executing handler for "' 
+                            + action.label + '" => ' + E + "\n" + E.stack);
+                    }
+
+                    if ($scope.action_context_y || $scope.action_context_x)
+                        $scope.hideActionContextMenu();
                 }
 
-                try {
-                    action.handler(grid.getSelectedItems());
-                } catch(E) {
-                    console.error('Error executing handler for "' 
-                        + action.label + '" => ' + E + "\n" + E.stack);
-                }
+            }
+
+            $scope.hideActionContextMenu = function () {
+                var menu_dom = $($scope.grid_element).find('.grid-action-dropdown')[0];
+                $(menu_dom).css({
+                    display: '',
+                    width: $scope.action_context_width,
+                    top: $scope.action_context_y,
+                    left: $scope.action_context_x
+                });
+                $($scope.action_context_parent).append(menu_dom);
+                $scope.action_context_oldy = $scope.action_context_oldx = 0;
+                $('body').unbind('click.remove_context_menu');
+            }
+
+            $scope.showActionContextMenu = function ($event) {
+                var menu_dom = $($scope.grid_element).find('.grid-action-dropdown')[0];
+                $scope.action_context_width = $(menu_dom).css('width');
+                $scope.action_context_y = $(menu_dom).css('top');
+                $scope.action_context_x = $(menu_dom).css('left');
+                $scope.action_context_parent = $(menu_dom).parent();
+
+                $($scope.grid_element).append($(menu_dom));
+                $('body').bind('click.remove_context_menu', $scope.hideActionContextMenu);
+
+                $(menu_dom).css({
+                    display: 'block',
+                    width: $scope.action_context_width,
+                    top: $event.pageY,
+                    left: $event.pageX
+                });
+
+                return false;
             }
 
             // returns the list of selected item objects
