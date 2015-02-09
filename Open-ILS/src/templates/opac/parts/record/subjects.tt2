@@ -30,6 +30,7 @@
     BLOCK render_subject;
         xpath = xpath || '//*[starts-with(@tag,"6")]';
         FOR node IN ctx.marc_xml.findnodes(xpath);
+            '<span property="about">';
             all_terms = [];
             graphics = [];
             FOR subfield IN node.childNodes;
@@ -55,6 +56,7 @@
                 link880.value | html;
                 '</div>';
             END;
+            '</span>';
         END;
     END 
 %]
@@ -68,7 +70,7 @@
             <tbody>
                 <tr>
                     <td class='rdetail_subject_type'>[% subj.label %]</td>
-                    <td class='rdetail_subject_value' property='keywords'>[% content %]</td>
+                    <td class='rdetail_subject_value'>[% content %]</td>
                 </tr>
             </tbody>
         </table>
