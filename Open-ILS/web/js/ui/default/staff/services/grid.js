@@ -506,6 +506,9 @@ angular.module('egGridMod',
 
             $scope.action_context_showing = false;
             $scope.showActionContextMenu = function ($event) {
+                if (!grid.getSelectedItems().length) // Nothing selected, fire the click event
+                    $event.target.click();
+
                 var current_parent = $scope.grid_element;
                 if ($scope.action_context_showing) {
                     current_parent = $('body');
