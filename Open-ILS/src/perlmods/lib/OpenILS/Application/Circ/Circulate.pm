@@ -3600,6 +3600,7 @@ sub checkin_handle_lost_or_longoverdue {
         # marked as long-overdue before it was done being regular-overdue
         if (!$args{is_longoverdue}) {
             $self->generate_lost_overdue(1) if 
+                !$dont_change and
                 $U->ou_ancestor_setting_value($circ_lib, 
                     OILS_SETTING_GENERATE_OVERDUE_ON_LOST_RETURN, 
                     $self->editor);
