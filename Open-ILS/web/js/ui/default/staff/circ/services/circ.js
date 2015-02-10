@@ -850,24 +850,28 @@ function($modal , $q , egCore , egAlertDialog , egConfirmDialog) {
             controller: 
                        ['$scope','$modalInstance',
                 function($scope , $modalInstance) {
+                $scope.args = {forgive_fines : false};
                 $scope.circDate = openCirc.xact_start();
                 $scope.sameUser = sameUser;
-                $scope.ok = function() { $modalInstance.close() }
+                $scope.ok = function() { $modalInstance.close($scope.args) }
                 $scope.cancel = function($event) { 
                     $modalInstance.dismiss();
                     $event.preventDefault(); // form, avoid calling ok();
                 }
             }]
         }).result.then(
-            function() {
+            function(args) {
                 if (sameUser) {
+                    params.void_overdues = args.forgive_fines;
                     options.override = true;
                     return service.renew(params, options);
                 }
 
-                return service.checkin(
-                    {barcode : params.copy_barcode, noop : true}
-                ).then(function(checkin_resp) {
+                return service.checkin({
+                    barcode : params.copy_barcode,
+                    noop : true,
+                    void_overdues : args.forgive_fines
+                }).then(function(checkin_resp) {
                     if (checkin_resp.evt.textcode == 'SUCCESS') {
                         return service.checkout(params, options);
                     } else {
