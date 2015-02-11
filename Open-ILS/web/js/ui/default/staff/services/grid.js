@@ -53,6 +53,13 @@ angular.module('egGridMod',
             //  itemRetrieved     : function(item) {}
             //  allItemsRetrieved : function() {}
             //
+            //  ---
+            //  If defined, the grid will watch the return value from
+            //  the function defined at watchQuery on each digest and 
+            //  re-draw the grid when query changes occur.
+            //
+            //  watchQuery : function() { /* return grid query */ }
+            //
             //  ---------------
             //  These functions are defined by the grid and thus
             //  replace any values defined for these attributes from the
@@ -212,6 +219,17 @@ angular.module('egGridMod',
                 controls.setQuery = function(query) {
                     grid.dataProvider.query = query;
                     controls.refresh();
+                }
+
+                if (controls.watchQuery) {
+                    // capture the initial query value
+                    grid.dataProvider.query = controls.watchQuery();
+
+                    // watch for changes
+                    $scope.gridWatchQuery = controls.watchQuery;
+                    $scope.$watch('gridWatchQuery()', function(newv) {
+                        controls.setQuery(newv);
+                    }, true);
                 }
 
                 // if the caller provided a functional setSort
