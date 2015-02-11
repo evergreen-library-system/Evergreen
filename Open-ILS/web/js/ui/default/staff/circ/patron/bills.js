@@ -612,6 +612,9 @@ function($scope,  $q , $routeParams , egCore , patronSvc , billSvc , egPromptDia
     $scope.bill_tab = $routeParams.history_tab;
     $scope.totals = {};
 
+    // link page controller actions defined by sub-controllers here
+    $scope.actions = {};
+
     var start = new Date(); // now - 1 year
     start.setFullYear(start.getFullYear() - 1),
     $scope.dates = {
@@ -633,24 +636,31 @@ function($scope,  $q , $routeParams , egCore , patronSvc , billSvc , egPromptDia
        ['$scope','$q','egCore','patronSvc','billSvc','egPromptDialog','$location','egBilling',
 function($scope,  $q , egCore , patronSvc , billSvc , egPromptDialog , $location , egBilling) {
 
+    // generate a grid query with the current date widget values.
+    function current_grid_query() {
+        return {
+            '-or' : [
+                {'summary.balance_owed' : {'<>' : 0}},
+                {'summary.last_payment_ts' : {'<>' : null}}
+            ],
+            xact_start : {between : $scope.date_range()},
+            usr : billSvc.userId
+        }
+    }
+
     $scope.gridControls = {
         selectedItems : function(){return []},
         activateItem : function(item) {
             $scope.showFullDetails([item]);
         },
-        setQuery : function() {
-            // open-ils.actor.user.transactions.history.have_bill_or_payment
-            return {
-                '-or' : [
-                    {'summary.balance_owed' : {'<>' : 0}},
-                    {'summary.last_payment_ts' : {'<>' : null}}
-                ],
-                xact_start : {between : $scope.date_range()},
-                usr : billSvc.userId
-            }
-        }
+        // this sets the query on page load
+        setQuery : current_grid_query
     }
 
+    $scope.actions.apply_date_range = function() {
+        // tells the grid to re-draw itself with the new query
+        $scope.gridControls.setQuery(current_grid_query());
+    }
 
     // TODO; move me to service
     function selected_payment_info() {

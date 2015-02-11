@@ -21,6 +21,7 @@
       <div>[% l('Selected Paid:') %]</div>
       <div>{{totals.selected_paid() | currency}}</div>
       <div class="flex-cell"></div>
+      <div><button class="btn btn-default" ng-click="actions.apply_date_range()">[% l('Apply') %]</button></div>
       <div>[% l('Start Date:') %]</div>
       <div><input eg-date-input class="form-control" ng-model="dates.xact_start"/></div>
       <div>[% l('End Date:') %]</div>
