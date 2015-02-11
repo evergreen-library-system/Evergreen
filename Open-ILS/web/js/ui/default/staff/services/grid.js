@@ -484,50 +484,46 @@ angular.module('egGridMod',
                             + action.label + '" => ' + E + "\n" + E.stack);
                     }
 
-                    if ($scope.action_context_y || $scope.action_context_x)
-                        $scope.hideActionContextMenu();
+                    if ($scope.action_context_showing) $scope.hideActionContextMenu();
                 }
 
             }
 
             $scope.hideActionContextMenu = function () {
-                var menu_dom = $('body').find('.grid-action-dropdown')[0];
-                $(menu_dom).css({
+                $($scope.menu_dom).css({
                     display: '',
                     width: $scope.action_context_width,
                     top: $scope.action_context_y,
                     left: $scope.action_context_x
                 });
-                $($scope.action_context_parent).append(menu_dom);
+                $($scope.action_context_parent).append($scope.menu_dom);
                 $scope.action_context_oldy = $scope.action_context_oldx = 0;
-                $('body').unbind('click.remove_context_menu');
+                $('body').unbind('click.remove_context_menu_'+$scope.action_context_index);
                 $scope.action_context_showing = false;
             }
 
             $scope.action_context_showing = false;
             $scope.showActionContextMenu = function ($event) {
+
+                // Have to gather these here, instead of inside link()
+                if (!$scope.menu_dom) $scope.menu_dom = $($scope.grid_element).find('.grid-action-dropdown')[0];
+                if (!$scope.action_context_parent) $scope.action_context_parent = $($scope.menu_dom).parent();
+
                 if (!grid.getSelectedItems().length) // Nothing selected, fire the click event
                     $event.target.click();
 
-                var current_parent = $scope.grid_element;
-                if ($scope.action_context_showing) {
-                    current_parent = $('body');
-                }
-
-                var menu_dom = $(current_parent).find('.grid-action-dropdown')[0];
-
                 if (!$scope.action_context_showing) {
-                    $scope.action_context_width = $(menu_dom).css('width');
-                    $scope.action_context_y = $(menu_dom).css('top');
-                    $scope.action_context_x = $(menu_dom).css('left');
-                    $scope.action_context_parent = $(menu_dom).parent();
+                    $scope.action_context_width = $($scope.menu_dom).css('width');
+                    $scope.action_context_y = $($scope.menu_dom).css('top');
+                    $scope.action_context_x = $($scope.menu_dom).css('left');
                     $scope.action_context_showing = true;
+                    $scope.action_context_index = Math.floor((Math.random() * 1000) + 1);
 
-                    $('body').append($(menu_dom));
-                    $('body').bind('click.remove_context_menu', $scope.hideActionContextMenu);
+                    $('body').append($($scope.menu_dom));
+                    $('body').bind('click.remove_context_menu_'+$scope.action_context_index, $scope.hideActionContextMenu);
                 }
 
-                $(menu_dom).css({
+                $($scope.menu_dom).css({
                     display: 'block',
                     width: $scope.action_context_width,
                     top: $event.pageY,
