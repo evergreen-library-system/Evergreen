@@ -244,6 +244,9 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                 $scope.in_undo = false;
                 $scope.in_redo = false;
                 $scope.record = new MARC.Record();
+                $scope.save_stack_depth = 0;
+                $scope.controlfields = [];
+                $scope.datafields = [];
 
                 $scope.onKeydown = function (event) {
                     var event_return = true;
@@ -286,6 +289,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                         $scope.record = new MARC.Record({ marcxml : $scope.bre.marc() });
                         $scope.controlfields = $scope.record.fields.filter(function(f){ return f.isControlfield() });
                         $scope.datafields = $scope.record.fields.filter(function(f){ return !f.isControlfield() });
+                        $scope.save_stack_depth = $scope.record_undo_stack.length;
                     }).then(setCaret);
                 }
 
@@ -296,6 +300,15 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                             target: $scope.current_event_target,
                             pos: $scope.current_event_target_cursor_pos
                         });
+
+                        if ($scope.record_undo_stack.length != $scope.save_stack_depth) {
+                            console.log('should get a listener... does not');
+                            $('body').on('beforeunload', function(){
+                                return 'There is unsaved data in this record.'
+                            });
+                        } else {
+                            $('body').off('beforeunload');
+                        }
                     }
 
                     if ($scope.record_undo_stack.length > $scope.max_undo)
@@ -368,10 +381,6 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                         }
                     }
                 );
-
-
-                $scope.controlfields = [];
-                $scope.datafields = [];
 
                 if ($scope.recordId)
                     loadRecord();
