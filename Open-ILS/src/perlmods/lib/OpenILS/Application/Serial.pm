@@ -2061,7 +2061,18 @@ sub _summarize_contents {
     }
 
     my @formatted_parts;
-    my @scap_fields_ordered = $mfhd->field($MFHD_TAGS_BY_NAME{$type});
+    my @scap_fields_ordered;
+    if ($type) {
+        @scap_fields_ordered = $mfhd->field($MFHD_TAGS_BY_NAME{$type});
+    } else {
+        # if they didn't give a type, send back whatever holdings we have.
+        # this is really only sensible right now for summarizing one type,
+        # and is used by the unitize code for this purpose
+        #
+        # TODO: possible future support for binding (unitizing) of multiple
+        # types into a sensible summary string
+        @scap_fields_ordered = $mfhd->field('85[345]');
+    }
 
     foreach my $scap_field (@scap_fields_ordered) { #TODO: use generic MFHD "summarize" method, once available
         my @updated_holdings;
