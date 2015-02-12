@@ -116,13 +116,11 @@ var MARC = {
         // this.clone = function () { return dojo.clone(this) } // maybe implement later...
 
         this.fromXmlURL = function (url) {
-            this.ready   = false;
             var me = this;
             return $.get( // This is a Promise
                 url,
                 function (mxml) {
                     me.fromXmlDocument($('record', mxml)[0]);
-                    me.ready = true;
                     if (me.onLoad) me.onLoad();
             });
         },
@@ -135,18 +133,21 @@ var MARC = {
             var me = this;
             me.leader = $($('leader',mxml)[0]).text() || '00000cam a2200205Ka 4500';
 
-            $('controlfield', mxml).each(function () {
+            $('controlfield', mxml).each(function (ind) {
                 var cf=$(this);
                 me.fields.push(
                     new MARC.Field({
                           record : me,
                           tag    : cf.attr('tag'),
-                          data   : cf.text()
+                          data   : cf.text(),
+                          position: ind
                     })
                 )
             });
 
-            $('datafield', mxml).each(function () {
+            var cfield_count = me.fields.length + 1;
+
+            $('datafield', mxml).each(function (ind) {
                 var df=$(this);
                 me.fields.push(
                     new MARC.Field({
@@ -154,14 +155,16 @@ var MARC = {
                         tag       : df.attr('tag'),
                         ind1      : df.attr('ind1'),
                         ind2      : df.attr('ind2'),
+                        position  : ind + cfield_count,
                         subfields : $('subfield', df).map(
                             function (i, sf) {
-                                return [[ $(sf).attr('code'), $(sf).text() ]];
+                                return [[ $(sf).attr('code'), $(sf).text(), i ]];
                             }
                         ).get()
                     })
                 )
             });
+            me.ready = true;
 
         },
 
@@ -216,7 +219,7 @@ var MARC = {
             }
             
             var lines = marctxt.replace(/^=/gm,'').split('\n');
-            lines.forEach(function (current_line) {
+            lines.forEach(function (current_line, ind) {
 
                 if (current_line.match(/^#/)) {
                     // skip comment lines
@@ -228,7 +231,8 @@ var MARC = {
                             new MARC.Field({
                                 record : me,
                                 tag    : line_tag(current_line),
-                                data   : cf_line_data(current_line).replace('\\',' ','g')
+                                data   : cf_line_data(current_line).replace('\\',' ','g'),
+                                position: ind
                             })
                         );
                     }
@@ -248,16 +252,18 @@ var MARC = {
                                 tag       : line_tag(current_line),
                                 ind1      : df_ind1(current_line),
                                 ind2      : df_ind2(current_line),
-                                subfields : sf_list.map( function (sf) {
+                                position  : ind,
+                                subfields : sf_list.map( function (sf, i) {
                                                 var sf_data = sf.substring(1);
                                                 if (me.delimiter == '$') sf_data = sf_data.replace(/\{dollar\}/g, '$');
-                                                return [ sf.substring(0,1), sf_data ];
+                                                return [ sf.substring(0,1), sf_data, i ];
                                             })
                         })
                     );
                 }
             });
 
+            me.ready = true;
             return this;
         },
 
@@ -446,6 +452,7 @@ var MARC = {
             return val;
         }
 
+        this.ready = false;
         this.fields = [];
         this.delimiter = '\u2021';
         this.leader = '00000cam a2200205Ka 4500';
@@ -571,6 +578,7 @@ var MARC = {
         this.data = ''; // MARC data for a controlfield element
         this.subfields = []; // list of MARC subfields for a datafield element
 
+        this.position = kwargs.position;
         this.record = kwargs.record;
         this.tag = kwargs.tag;
         this.ind1 = kwargs.ind1 || ' ';
