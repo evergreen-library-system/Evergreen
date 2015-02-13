@@ -2132,6 +2132,30 @@ sub strip_marc_fields {
     return $class->entityize($marcdoc->documentElement->toString);
 }
 
+# marcdoc is an XML::LibXML document
+# updates the document and returns the entityized MARC string.
+sub set_marc_905u {
+    my ($class, $marcdoc, $username) = @_;
+
+    # Look for existing 905$u subfields. If any exist, do nothing.
+    my @nodes = $marcdoc->findnodes('//field[@tag="905"]/subfield[@code="u"]');
+    unless (@nodes) {
+        # We create a new 905 and the subfield u to that.
+        my $parentNode = $marcdoc->createElement('field');
+        $parentNode->setAttribute('tag', '905');
+        $parentNode->setAttribute('ind1', '');
+        $parentNode->setAttribute('ind2', '');
+        $marcdoc->documentElement->addChild($parentNode);
+        my $node = $marcdoc->createElement('subfield');
+        $node->setAttribute('code', 'u');
+        $node->appendTextNode($username);
+        $parentNode->addChild($node);
+
+    }
+
+    return $class->entityize($marcdoc->documentElement->toString);
+}
+
 # Given a list of PostgreSQL arrays of numbers,
 # unnest the numbers and return a unique set, skipping any list elements
 # that are just '{NULL}'.

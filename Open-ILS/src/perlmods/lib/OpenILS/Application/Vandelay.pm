@@ -989,6 +989,11 @@ sub import_record_list_impl {
             my $marcdoc = XML::LibXML->new->parse_string($rec->marc);
             $rec->marc($U->strip_marc_fields($e, $marcdoc, $strip_grps));
 
+            # Set the imported record's 905$u, so
+            # editor/creator/edit_date are set correctly.
+            $marcdoc = XML::LibXML->new->parse_string($rec->marc);
+            $rec->marc($U->set_marc_905u($marcdoc, $requestor->usrname));
+
             unless ($e->$update_func($rec)) {
                 $$report_args{evt} = $e->die_event;
                 finish_rec_import_attempt($report_args);
