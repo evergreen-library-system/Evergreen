@@ -36,14 +36,20 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
     return {
         restrict: 'E',
         replace: true,
-        template: '<input style="font-family: \'Lucida Console\', Monaco, monospace;" ng-model="content" size="{{content.length * 1.1}}" maxlength="{{max}}" class="" type="text"/>',
+        template: '<input '+
+                      'style="font-family: \'Lucida Console\', Monaco, monospace;" '+
+                      'ng-model="content" '+
+                      'size="{{content.length * 1.1}}" '+
+                      'maxlength="{{max}}" '+
+                      'class="" '+
+                      'type="text" '+
+                  '/>',
         scope: {
             field: '=',
             onKeydown: '=',
             subfield: '=',
             content: '=',
             contextItemContainer: '@',
-            idPath: '=',
             max: '@',
             itype: '@'
         },
@@ -161,7 +167,14 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
     return {
         transclude: true,
         restrict: 'E',
-        template: '<span><eg-marc-edit-editable itype="ind" field="field" content="ind" max="1" on-keydown="onKeydown" id="r{{field.record.subfield(\'901\',\'c\')[1]}}f{{field.position}}i{{indNumber}}"/></span>',
+        template: '<span><eg-marc-edit-editable '+
+                      'itype="ind" '+
+                      'field="field" '+
+                      'content="ind" '+
+                      'max="1" '+
+                      'on-keydown="onKeydown" '+
+                      'id="r{{field.record.subfield(\'901\',\'c\')[1]}}f{{field.position}}i{{indNumber}}"'+
+                      '/></span>',
         scope: { ind : '=', field: '=', onKeydown: '=', indNumber: '@' },
         replace: false,
     }
@@ -171,7 +184,14 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
     return {
         transclude: true,
         restrict: 'E',
-        template: '<span><eg-marc-edit-editable itype="tag" field="field" content="tag" max="3" on-keydown="onKeydown" id="r{{field.record.subfield(\'901\',\'c\')[1]}}f{{field.position}}tag"/></span>',
+        template: '<span><eg-marc-edit-editable '+
+                      'itype="tag" '+
+                      'field="field" '+
+                      'content="tag" '+
+                      'max="3" '+
+                      'on-keydown="onKeydown" '+
+                      'id="r{{field.record.subfield(\'901\',\'c\')[1]}}f{{field.position}}tag"'+
+                      '/></span>',
         scope: { tag : '=', field: '=', onKeydown: '=' },
         replace: false
     }
@@ -197,7 +217,14 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
         restrict: 'E',
         template: '<div>'+
                     '<span><eg-marc-edit-tag class="marctag" field="field" tag="field.tag" on-keydown="onKeydown"/></span>'+
-                    '<span><eg-marc-edit-editable itype="cfld" field="field" class="marcdata" content="field.data" on-keydown="onKeydown" id="r{{field.record.subfield(\'901\',\'c\')[1]}}f{{field.position}}data"/></span>'+
+                    '<span><eg-marc-edit-editable '+
+                      'itype="cfld" '+
+                      'field="field" '+
+                      'class="marcdata" '+
+                      'content="field.data" '+
+                      'on-keydown="onKeydown" '+
+                      'id="r{{field.record.subfield(\'901\',\'c\')[1]}}f{{field.position}}data"'+
+                      '/></span>'+
                   '</div>',
         scope: { field: "=", onKeydown: '=' }
     }
@@ -208,8 +235,21 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
         transclude: true,
         restrict: 'E',
         template: '<div>'+
-                    '<span><eg-marc-edit-editable class="marctag" content="tag" on-keydown="onKeydown" id="leadertag" disabled="disabled"/></span>'+
-                    '<span><eg-marc-edit-editable class="marcdata" itype="ldr" max="{{record.leader.length}}" content="record.leader" id="r{{record.subfield(\'901\',\'c\')[1]}}leaderdata" on-keydown="onKeydown"/></span>'+
+                    '<span><eg-marc-edit-editable '+
+                      'class="marctag" '+
+                      'content="tag" '+
+                      'on-keydown="onKeydown" '+
+                      'id="leadertag" '+
+                      'disabled="disabled"'+
+                      '/></span>'+
+                    '<span><eg-marc-edit-editable '+
+                      'class="marcdata" '+
+                      'itype="ldr" '+
+                      'max="{{record.leader.length}}" '+
+                      'content="record.leader" '+
+                      'id="r{{record.subfield(\'901\',\'c\')[1]}}leaderdata" '+
+                      'on-keydown="onKeydown"'+
+                      '/></span>'+
                   '</div>',
         controller : ['$scope',
             function ( $scope ) {
