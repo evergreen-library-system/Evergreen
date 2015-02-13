@@ -138,9 +138,11 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
         transclude: true,
         restrict: 'E',
         template: '<span>'+
-                    '<span><eg-marc-edit-editable '+
+                    '<span class="marcsfcode"><label class="marcedit"'+
+                        'for="r{{field.record.subfield(\'901\',\'c\')[1]}}f{{field.position}}s{{subfield[2]}}code" '+
+                        '>‡</label><eg-marc-edit-editable '+
                         'itype="sfc" '+
-                        'class="marcsfcode" '+
+                        'class="marcedit" '+
                         'field="field" '+
                         'subfield="subfield" '+
                         'content="subfield[0]" '+
@@ -150,7 +152,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                     '/></span>'+
                     '<span><eg-marc-edit-editable '+
                         'itype="sfv" '+
-                        'class="marcsfvalue" '+
+                        'class="marcedit marcsfvalue" '+
                         'field="field" '+
                         'subfield="subfield" '+
                         'content="subfield[1]" '+
@@ -169,6 +171,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
         restrict: 'E',
         template: '<span><eg-marc-edit-editable '+
                       'itype="ind" '+
+                      'class="marcedit marcind" '+
                       'field="field" '+
                       'content="ind" '+
                       'max="1" '+
@@ -186,6 +189,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
         restrict: 'E',
         template: '<span><eg-marc-edit-editable '+
                       'itype="tag" '+
+                      'class="marcedit marctag" '+
                       'field="field" '+
                       'content="tag" '+
                       'max="3" '+
@@ -202,9 +206,9 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
         transclude: true,
         restrict: 'E',
         template: '<div>'+
-                    '<span><eg-marc-edit-tag class="marctag" field="field" tag="field.tag" on-keydown="onKeydown"/></span>'+
-                    '<span><eg-marc-edit-ind class="marcind" field="field" ind="field.ind1" on-keydown="onKeydown" ind-number="1"/></span>'+
-                    '<span><eg-marc-edit-ind class="marcind" field="field" ind="field.ind2" on-keydown="onKeydown" ind-number="2"/></span>'+
+                    '<span><eg-marc-edit-tag field="field" tag="field.tag" on-keydown="onKeydown"/></span>'+
+                    '<span><eg-marc-edit-ind field="field" ind="field.ind1" on-keydown="onKeydown" ind-number="1"/></span>'+
+                    '<span><eg-marc-edit-ind field="field" ind="field.ind2" on-keydown="onKeydown" ind-number="2"/></span>'+
                     '<span><eg-marc-edit-subfield ng-repeat="subfield in field.subfields" subfield="subfield" field="field" on-keydown="onKeydown"/></span>'+
                   '</div>',
         scope: { field: "=", onKeydown: '=' }
@@ -216,11 +220,11 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
         transclude: true,
         restrict: 'E',
         template: '<div>'+
-                    '<span><eg-marc-edit-tag class="marctag" field="field" tag="field.tag" on-keydown="onKeydown"/></span>'+
+                    '<span><eg-marc-edit-tag field="field" tag="field.tag" on-keydown="onKeydown"/></span>'+
                     '<span><eg-marc-edit-editable '+
                       'itype="cfld" '+
                       'field="field" '+
-                      'class="marcdata" '+
+                      'class="marcedit marcdata" '+
                       'content="field.data" '+
                       'on-keydown="onKeydown" '+
                       'id="r{{field.record.subfield(\'901\',\'c\')[1]}}f{{field.position}}data"'+
@@ -236,14 +240,14 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
         restrict: 'E',
         template: '<div>'+
                     '<span><eg-marc-edit-editable '+
-                      'class="marctag" '+
+                      'class="marcedit marctag" '+
                       'content="tag" '+
                       'on-keydown="onKeydown" '+
                       'id="leadertag" '+
                       'disabled="disabled"'+
                       '/></span>'+
                     '<span><eg-marc-edit-editable '+
-                      'class="marcdata" '+
+                      'class="marcedit marcdata" '+
                       'itype="ldr" '+
                       'max="{{record.leader.length}}" '+
                       'content="record.leader" '+
