@@ -2133,6 +2133,49 @@ sub strip_marc_fields {
     return $class->entityize($marcdoc->documentElement->toString);
 }
 
+# marcdoc is an XML::LibXML document
+# updates the document and returns the entityized MARC string.
+sub set_marc_905u {
+    my ($class, $marcdoc, $username) = @_;
+
+    # We add to the $parentNode, if set.
+    my $parentNode;
+    # Look for existing 905$u subfields and remove them:
+    for my $node ($marcdoc->findnodes('//field[@tag="905"]/subfield[@code="u"]')) {
+        $parentNode = $node->parentNode();
+        $parentNode->removeChild($node);
+        # If the 905 has no subfield nodes, remove it, too:
+        unless ($parentNode->findnodes('child::subfield')) {
+            $parentNode->parentNode->removeChild($parentNode);
+            undef($parentNode);
+        }
+    }
+
+    # Check if we deleted any existing 905s or don't have any.
+    unless ($parentNode) {
+        # Look for the last one, if any.
+        my @nodes = $marcdoc->findnodes('(//field[@tag="905"])[last()]');
+        if (@nodes) {
+            $parentNode = $nodes[0];
+        } else {
+            # We have to create a new one.
+            $parentNode = $marcdoc->createElement('field');
+            $parentNode->setAttribute('tag', '905');
+            $parentNode->setAttribute('ind1', '');
+            $parentNode->setAttribute('ind2', '');
+            $marcdoc->documentElement->addChild($parentNode);
+        }
+    }
+
+    # Now we add the subfield u to parentNode.
+    my $node = $marcdoc->createElement('subfield');
+    $node->setAttribute('code', 'u');
+    $node->appendTextNode($username);
+    $parentNode->addChild($node);
+
+    return $class->entityize($marcdoc->documentElement->toString);
+}
+
 # Given a list of PostgreSQL arrays of numbers,
 # unnest the numbers and return a unique set, skipping any list elements
 # that are just '{NULL}'.
