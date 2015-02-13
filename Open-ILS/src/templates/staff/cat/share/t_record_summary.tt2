@@ -29,7 +29,7 @@
       {{record.simple_record().pubdate()}}
     </div>
 
-    <div class="flex-cell strong-text">[% l('Databse ID:') %]</div>
+    <div class="flex-cell strong-text">[% l('Database ID:') %]</div>
     <div class="flex-cell">{{record.id()}}</div>
 
     <div class="flex-cell strong-text">[% l('Last Edited By:') %]</div>
