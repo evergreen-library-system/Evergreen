@@ -604,7 +604,9 @@ function set_lock_on_keypress(ev) {
                 || ev.keyCode == ev.DOM_VK_F24
         )) {
             var params = {};
-            params.allow_multiple_locks = tab.marc_edit_allow_multiple_locks;
+            if (tab) {
+                params.allow_multiple_locks = tab.marc_edit_allow_multiple_locks;
+            }
             oils_lock_page(params);
         }
     } catch(E) {
@@ -1370,8 +1372,10 @@ function loadRecord() {
             if (tabs) {
                 var idx = tabs.selectedIndex;
                 var tab = tabs.childNodes[idx];
-                tab.marc_edit_changed = false;
-                tab.marc_edit_allow_multiple_locks = true;
+                if (tab) {
+                    tab.marc_edit_changed = false;
+                    tab.marc_edit_allow_multiple_locks = true;
+                }
             }
 
             var grid_rows = document.getElementById('recGrid').lastChild;
