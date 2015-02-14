@@ -122,4 +122,28 @@ var aou_hash = {
 };
 </script>
 
+<!-- Require radio parts selection for browsers that don't support required form field element -->
+[% IF ctx.page == 'place_hold' %]
+  <script type="text/javascript">
+    function validateRadioSelection (radios) {
+       for (i = 0; i < radios.length; ++ i)
+       {
+         if (radios[i].checked) return true;
+       }
+       return false;
+    }
+    function validateHoldForm() {
+      if (validateRadioSelection (document.forms["PlaceHold"]["part"]))
+      {
+        return true;
+       }
+       else
+       {
+          alert ("Please select a part");
+          return false;
+        }
+     }
+  </script>
+[% END %]
+
 [%- END; # want_dojo -%]

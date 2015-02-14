@@ -1221,10 +1221,23 @@ a.dash-link:hover { text-decoration: underline !important; }
 .unread-patron-message { font-weight: bold; }
 
 #hold-items-list td { padding: 5px; margin-bottom: 20px; }
-.hold-items-list-title { font-size: [% css_fonts.size_bigger %]; }
+.hold-items-list-title { 
+  font-size: [% css_fonts.size_bigger %];
+  margin-bottom: 20px;
+}
 .hold-items-list-problem { color: [% css_colors.text_alert %]; }
 
 .hold_success_links > span { margin: 0 2em; }
+
+.radio-parts-selection { 
+   width: 75%;
+   margin-bottom: 20px;
+}
+
+.parts-radio-option { 
+  display: inline-block;
+  width:15em;
+}
 
 .mr_holds_no_formats { 
   padding: 5px;
@@ -1753,9 +1766,10 @@ a.preflib_change {
     #acct_select, #acct_prefs_select {
         display: inline-block;
     }
-#acct_tabs, #acct_prefs_tabs {
+    #acct_tabs, #acct_prefs_tabs {
          display:none;
      }
+    .radio-parts-selection { width: 90%; }
 }
 
 @media only screen and (max-width: 600px) {

@@ -7,8 +7,23 @@
     <h1>[% l('Place Hold') %]</h1>
 
     [% some_holds_allowed = -1 %]
+
+    <!-- loop through the holds and display status of request where appropriate -->
+        [% FOR hdata IN ctx.hold_data;
+            attrs = {marc_xml => hdata.marc_xml};
+            PROCESS get_marc_attrs args=attrs;
+            this_hold_disallowed = 0;
+
+            IF CGI.param('hold_type') == 'M';
+              IF hdata.metarecord_filters.formats.size == 0;
+                this_hold_disallowed = 1;
+                # if this is the first hold and it's disallowed,
+                # assume all holds are, until we proven otherwise
+                SET some_holds_allowed = 0 IF some_holds_allowed == -1;
+              ELSE; some_holds_allowed = 1; END;
+            END %]
       
-    <form method="post">
+    <form method="post" name="PlaceHold" [% IF hdata.parts.size > 0 AND enable.radio.parts == 'true' %] onsubmit="return validateHoldForm()" [% END %] >
         <input type="hidden" name="hold_type" value="[% CGI.param('hold_type') | html %]" />
         [%  
             redirect = CGI.param('hold_source_page') || CGI.param('redirect_to') || CGI.referer;
@@ -60,22 +75,7 @@
         </p>
         [% END %]
 
-        <!-- loop through the holds and display status of request where appropriate -->
         <table id='hold-items-list'>
-        [% FOR hdata IN ctx.hold_data;
-            attrs = {marc_xml => hdata.marc_xml};
-            PROCESS get_marc_attrs args=attrs;
-            this_hold_disallowed = 0;
-
-            IF CGI.param('hold_type') == 'M';
-              IF hdata.metarecord_filters.formats.size == 0;
-                this_hold_disallowed = 1;
-                # if this is the first hold and it's disallowed, 
-                # assume all holds are, until we proven otherwise
-                SET some_holds_allowed = 0 IF some_holds_allowed == -1;
-              ELSE; some_holds_allowed = 1; END;
-            END %]
-
             <tr>
                 <td>
                     [% IF !this_hold_disallowed %]
@@ -84,8 +84,23 @@
                     <div class='hold-items-list-title'>[% attrs.title_extended | html %]</div>
                     [% IF hdata.parts AND !this_hold_disallowed %]
                         [% IF hdata.parts.size > 0 %]
-                        <div style='padding-left: 10px'>
-                            <span><label for='select_hold_part'>[%
+                        <div style='padding-left: 10px; padding-bottom: 15px;'>
+                            [% IF enable.radio.parts == 'true' %]
+                                <span style='font-weight: bold;'><label for='select_hold_part'>[%
+                               l('Select a Part:')
+                               %]</label></span>
+                             <div class='radio-parts-selection'>
+                             [% IF !hdata.part_required %]
+                                <span class='parts-radio-option'>
+                                 <input type='radio' name='part' value='' required>[% l('All Parts') %]</span>
+                              [% END %]
+                               [% FOR part IN hdata.parts %]
+                                 <span class='parts-radio-option'><input type='radio' name='part' id=[% part.id %] value=[% part.id %] required>
+                                  <label for=[% part.id %]>[% part.label | html %]</label></span>
+                              [% END %]
+                              </div>
+                          [% ELSE %]
+                            <span style='font-weight: bold;'><label for='select_hold_part'>[%
                                 hdata.part_required ? l('Select a Part:') : l('Select a Part (optional):')
                             %]</label></span>
                             <select id='select_hold_part' name='part'>
@@ -96,6 +111,7 @@
                                 <option value='[% part.id %]'>[% part.label | html %]</option>
                                 [% END %]
                             </select>
+                          [% END %]
                         </div>
                         [% ELSE %]
                         <input type='hidden' name='part' value=''/>

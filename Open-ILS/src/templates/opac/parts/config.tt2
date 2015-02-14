@@ -72,6 +72,13 @@ disable_email_change = 'false';
 allow_phone_notifications = 'true';
 
 ##############################################################################
+# Format of parts selection on Place Holds screen
+# Set to true to use radio buttons for parts selection on the Place Holds
+# screen. The default behavior is to to display them in a select menu.
+#############################################################################
+enable.radio.parts = 'false';
+
+##############################################################################
 # Misc. UI Settings
 ##############################################################################
 # Option for full details as a default, esp. impt. for e-content
