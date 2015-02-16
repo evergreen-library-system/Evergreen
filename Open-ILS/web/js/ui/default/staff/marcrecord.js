@@ -23,30 +23,85 @@ var MARC = {
     Record : function(kwargs) {
         if (!kwargs) kwargs = {};
 
+        this.generate008 = function () {
+            var f;
+            var s;
+            var orig008 = '                                        ';
+            var now = new Date();
+            var y = now.getUTCFullYear().toString().substr(2,2);
+            var m = now.getUTCMonth() + 1;
+            if (m < 10) m = '0' + m;
+            var d = now.getUTCDate();
+            if (d < 10) d = '0' + d;
+
+
+            if (f = this.field('008',true)[0]) {
+                orig008 = f.data;
+            }
+        
+            /* lang code from 041a */
+            var lang = orig008.substr(35, 3);
+            
+            if (f = this.field('041',true)[0]) {
+                if (s = f.subfield('a',true)[0]) {
+                    if(s[1]) lang = s[1];
+                }
+            }
+        
+            /* country code from 044a */
+            var country = orig008.substr(15, 3);
+            if (f = this.field('044',true)[0]) {
+                if (s = f.subfield('a',true)[0]) {
+                    if(s[1]) country = s[1];
+                }
+            }
+            while (country.length < 3) country = country + ' ';
+            if (country.length > 3) country = country.substr(0,3);
+        
+            /* date1 from 260c */
+            var date1 = now.getUTCFullYear().toString();
+            if (f = this.field('260',true)[0]) {
+                if (s = f.subfield('c',true)[0]) {
+                    if (s[1]) {
+                        var tmpd = s[1];
+                        tmpd = tmpd.replace(/[^0-9]/g, '');
+                        if (tmpd.match(/^\d\d\d\d/)) {
+                            date1 = tmpd.substr(0, 4);
+                        }
+                    }
+                }
+            }
+        
+            var date2 = orig008.substr(11, 4);
+            var datetype = orig008.substr(6, 1);
+            var modded = orig008.substr(38, 1);
+            var catsrc = orig008.substr(39, 1);
+        
+            return '' + y + m + d + datetype + date1 + date2 + country + '                 ' + lang + modded + catsrc;
+        
+        }
+
         this.title = function () { return this.subfield('245','a')[1] }
 
-        this.field = function (spec) {
+        this.field = function (spec, wantarray) {
             var list = this.fields.filter(function (f) {
                 if (f.tag.match(spec)) return true;
                 return false;
             });
 
-            if (list.length == 1) return list[0];
+            if (!wantarray && list.length == 1) return list[0];
             return list;
         }
 
         this.subfield = function (spec, code) {
-            var f = this.field(spec);
-            if (Array.isArray(f)) {
-                if (!f.length) return f;
-                f = f[0];
-            }
-            return f.subfield(code)
+            var f = this.field(spec, true)[0];
+            if (f) return f.subfield(code)
+            return null;
         }
 
         this.appendFields = function () {
             var me = this;
-            Array.prototype.slice.call(arguments).forEach( function (f) { me.fields.push( f ) } );
+            Array.prototype.slice.call(arguments).forEach( function (f) { f.position = me.fields.length; me.fields.push( f ) } );
         }
 
         this.deleteField = function (f) { return this.deleteFields(f) },
@@ -71,18 +126,17 @@ var MARC = {
             var args = Array.prototype.slice.call(arguments);
             args.splice(0,1);
             var me = this;
-            var done = false;
             for (var j = 0; j < this.fields.length; j++) {
-                if (!done && target === this.fields[j]) {
+                if (target === this.fields[j]) {
                     args.forEach( function (f) {
                         f.record = me;
-                        f.position = j++;
-                        me.fields.splice(j,0,f);
+                        me.fields.splice(j++,0,f);
                     });
-                    j++;
-                    done = true;
+                    break;
                 }
-                if (done && this.fields[j]) this.fields[j].position += args.length - 1;
+            }
+            for (var j = 0; j < this.fields.length; j++) {
+                this.fields[j].position = j;
             }
         }
 
@@ -90,25 +144,23 @@ var MARC = {
             var args = Array.prototype.slice.call(arguments);
             args.splice(0,1);
             var me = this;
-            var done = false;
             for (var j = 0; j < this.fields.length; j++) {
-                if (!done && target === this.fields[j]) {
+                if (target === this.fields[j]) {
                     args.forEach( function (f) {
                         f.record = me;
-                        f.position = ++j;
-                        me.fields.splice(j,0,f);
+                        me.fields.splice(++j,0,f);
                     });
-                    j++;
-                    done = true;
+                    break;
                 }
-                if (done && this.fields[j]) this.fields[j].position += args.length - 1;
+            }
+            for (var j = 0; j < this.fields.length; j++) {
+                this.fields[j].position = j;
             }
         }
 
         this.deleteFields = function () {
             var me = this;
             var counter = 0;
-            var done = false;
             for ( var i in arguments ) {
                 var f = arguments[i];
                 for (var j = 0; j < me.fields.length; j++) {
@@ -116,11 +168,12 @@ var MARC = {
                         me.fields[j].record = null;
                         me.fields.splice(j,1);
                         counter++
-                        j++;
-                        done = true;
+                        break;
                     }
-                    if (done) this.fields[j].position -= 1;
                 }
+            }
+            for (var j = 0; j < this.fields.length; j++) {
+                this.fields[j].position = j;
             }
             return counter;
         }
@@ -494,11 +547,11 @@ var MARC = {
     Field : function (kwargs) {
         if (!kwargs) kwargs = {};
 
-        this.subfield = function (code) {
+        this.subfield = function (code, wantarray) {
             var list = this.subfields.filter( function (s) {
                 if (s[0] == code) return true; return false;
             });
-            if (list.length == 1) return list[0];
+            if (!wantarray && list.length == 1) return list[0];
             return list;
         }
 

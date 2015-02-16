@@ -317,6 +317,14 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                 $scope.onKeydown = function (event) {
                     var event_return = true;
 
+                    console.log(
+                        'keydown: which='+event.which+
+                        ', ctrlKey='+event.ctrlKey+
+                        ', shiftKey='+event.shiftKey+
+                        ', altKey='+event.altKey+
+                        ', metaKey='+event.altKey
+                    );
+
                     if (event.which == 89 && event.ctrlKey) { // ctrl+y, redo
                         event_return = $scope.processRedo();
                     } else if (event.which == 90 && event.ctrlKey) { // ctrl+z, undo
@@ -366,6 +374,56 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
 
                         event_return = false;
 
+                    } else if (event.which == 117 && event.shiftKey) { // shift + F6, insert 006
+                        event.data.scope.field.record.insertOrderedFields(
+                            new MARC.Field({
+                                tag : '006',
+                                data : '                                        '
+                            })
+                        );
+
+                        $scope.force_render = true;
+                        $timeout(function(){$scope.$digest()}).then(setCaret);
+
+                        event_return = false;
+
+                    } else if (event.which == 118 && event.shiftKey) { // shift + F7, insert 007
+                        event.data.scope.field.record.insertOrderedFields(
+                            new MARC.Field({
+                                tag : '007',
+                                data : '                                        '
+                            })
+                        );
+
+                        $scope.force_render = true;
+                        $timeout(function(){$scope.$digest()}).then(setCaret);
+
+                        event_return = false;
+
+                    } else if (event.which == 119 && event.shiftKey) { // shift + F8, insert/replace 008
+                        var new_008_data = event.data.scope.field.record.generate008();
+
+
+                        var old_008s = event.data.scope.field.record.field('008',true);
+                        old_008s.forEach(function(o) {
+                            var domnode = $('#r'+o.record.subfield('901','c')[1] + 'f' + o.position);
+                            domnode.scope().$destroy();
+                            domnode.remove();
+                            event.data.scope.field.record.deleteFields(o);
+                        });
+
+                        event.data.scope.field.record.insertOrderedFields(
+                            new MARC.Field({
+                                tag : '008',
+                                data : new_008_data
+                            })
+                        );
+
+                        $scope.force_render = true;
+                        $timeout(function(){$scope.$digest()}).then(setCaret);
+
+                        event_return = false;
+
                     } else if (event.which == 13 && event.ctrlKey) { // ctrl+enter, insert datafield
 
                         var element = $(event.target);
@@ -376,10 +434,8 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                         event.data.scope.field.record.insertFieldsAfter(
                             event.data.scope.field,
                             new MARC.Field({
-                                record : event.data.scope.field.record,
                                 tag : '999',
-                                subfields : [[' ','',0]],
-                                position : new_field
+                                subfields : [[' ','',0]]
                             })
                         );
 
