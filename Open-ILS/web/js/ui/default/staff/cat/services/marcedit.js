@@ -123,7 +123,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
         ],
         link: function (scope, element, attrs) {
 
-            if (scope.onKeydown) element.bind('keydown', scope.onKeydown);
+            if (scope.onKeydown) element.bind('keydown', {scope : scope}, scope.onKeydown);
 
             element.bind('change', function (e) { element.size = scope.max || parseInt(scope.content.length * 1.1) });
 
@@ -138,11 +138,11 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
         transclude: true,
         restrict: 'E',
         template: '<span>'+
-                    '<span class="marcsfcode"><label class="marcedit"'+
+                    '<span><label class="marcedit marcsfcodedelimiter"'+
                         'for="r{{field.record.subfield(\'901\',\'c\')[1]}}f{{field.position}}s{{subfield[2]}}code" '+
                         '>‡</label><eg-marc-edit-editable '+
                         'itype="sfc" '+
-                        'class="marcedit" '+
+                        'class="marcedit marcsf marcsfcode" '+
                         'field="field" '+
                         'subfield="subfield" '+
                         'content="subfield[0]" '+
@@ -152,7 +152,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                     '/></span>'+
                     '<span><eg-marc-edit-editable '+
                         'itype="sfv" '+
-                        'class="marcedit marcsfvalue" '+
+                        'class="marcedit marcsf marcsfvalue" '+
                         'field="field" '+
                         'subfield="subfield" '+
                         'content="subfield[1]" '+
@@ -270,8 +270,16 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
         template: '<form ng-submit="saveRecord()">'+
                   '<div class="marcrecord">'+
                     '<div><eg-marc-edit-leader record="record" on-keydown="onKeydown"/></div>'+
-                    '<div><eg-marc-edit-controlfield ng-repeat="field in controlfields" field="field" on-keydown="onKeydown"/></div>'+
-                    '<div><eg-marc-edit-datafield ng-repeat="field in datafields" field="field" on-keydown="onKeydown"/></div>'+
+                    '<div><eg-marc-edit-controlfield '+
+                        'ng-repeat="field in controlfields" '+
+                        'field="field" on-keydown="onKeydown"'+
+                        'id="r{{field.record.subfield(\'901\',\'c\')[1]}}f{{field.position}}"'+
+                        '/></div>'+
+                    '<div><eg-marc-edit-datafield '+
+                        'ng-repeat="field in datafields" '+
+                        'field="field" on-keydown="onKeydown" '+
+                        'id="r{{field.record.subfield(\'901\',\'c\')[1]}}f{{field.position}}"'+
+                        '/></div>'+
                   '</div>'+
                   '<button class="btn btn-default" type="submit">Save</button>'+
                   '</form>'+
@@ -279,6 +287,20 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
         restrict: 'E',
         replace: false,
         scope: { recordId : '=', maxUndo : '@' },
+        link: function (scope, element, attrs) {
+
+            element.bind('click', function(e) {;
+                scope.current_event_target = $(e.target).attr('id');
+                if (scope.current_event_target) {
+                    console.log('Recording click event on ' + scope.current_event_target);
+                    scope.current_event_target_cursor_pos =
+                        e.target.selectionDirection=='backward' ?
+                            e.target.selectionStart :
+                            e.target.selectionEnd;
+                }
+            });
+
+        },
         controller : ['$timeout','$scope','egCore',
             function ( $timeout , $scope , egCore ) {
 
@@ -299,6 +321,130 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                         event_return = $scope.processRedo();
                     } else if (event.which == 90 && event.ctrlKey) { // ctrl+z, undo
                         event_return = $scope.processUndo();
+                    } else if ((event.which == 68 || event.which == 73) && event.ctrlKey) { // ctrl+d or ctrl+i, insert subfield
+
+                        var element = $(event.target);
+                        var new_sf, index_sf, move_data;
+
+                        if (element.hasClass('marcsfvalue')) {
+                            index_sf = event.data.scope.subfield[2];
+                            new_sf = index_sf + 1;
+
+                            var start = event.target.selectionStart;
+                            var end = event.target.selectionEnd - event.target.selectionStart ?
+                                    event.target.selectionEnd :
+                                    event.target.value.length;
+
+                            move_data = event.target.value.substring(start,end);
+
+                        } else if (element.hasClass('marcsfcode')) {
+                            index_sf = event.data.scope.subfield[2];
+                            new_sf = index_sf + 1;
+                        } else if (element.hasClass('marctag') || element.hasClass('marcind')) {
+                            index_sf = 0;
+                            new_sf = index_sf;
+                        }
+
+                        $scope.current_event_target = 'r' + $scope.recordId +
+                                                      'f' + event.data.scope.field.position + 
+                                                      's' + new_sf + 'code';
+
+                        event.data.scope.field.subfields.forEach(function(sf) {
+                            if (sf[2] >= new_sf) sf[2]++;
+                            if (sf[2] == index_sf) sf[1] = event.target.value.substring(0,start) + event.target.value.substring(end);
+                        });
+                        event.data.scope.field.subfields.splice(
+                            new_sf,
+                            0,
+                            [' ', move_data, new_sf ]
+                        );
+
+                        $scope.current_event_target_cursor_pos = 0;
+                        $scope.current_event_target_cursor_pos_end = 1;
+
+                        $timeout(function(){$scope.$digest()}).then(setCaret);
+
+                        event_return = false;
+
+                    } else if (event.which == 13 && event.ctrlKey) { // ctrl+enter, insert datafield
+
+                        var element = $(event.target);
+
+                        var index_field = event.data.scope.field.position;
+                        var new_field = index_field + 1;
+
+                        event.data.scope.field.record.insertFieldsAfter(
+                            event.data.scope.field,
+                            new MARC.Field({
+                                record : event.data.scope.field.record,
+                                tag : '999',
+                                subfields : [[' ','',0]],
+                                position : new_field
+                            })
+                        );
+
+                        $scope.current_event_target = 'r' + $scope.recordId +
+                                                      'f' + new_field + 'tag';
+
+                        $scope.current_event_target_cursor_pos = 0;
+                        $scope.current_event_target_cursor_pos_end = 3;
+                        $scope.force_render = true;
+
+                        $timeout(function(){$scope.$digest()}).then(setCaret);
+
+                        event_return = false;
+
+                    } else if (event.which == 46 && event.ctrlKey) { // ctrl+del, remove field
+
+                        var del_field = event.data.scope.field.position;
+
+                        var domnode = $('#r'+event.data.scope.field.record.subfield('901','c')[1] + 'f' + del_field);
+
+                        event.data.scope.field.record.deleteFields(
+                            event.data.scope.field
+                        );
+
+                        domnode.scope().$destroy();
+                        domnode.remove();
+
+                        $scope.current_event_target = 'r' + $scope.recordId +
+                                                      'f' + del_field + 'tag';
+
+                        $scope.current_event_target_cursor_pos = 0;
+                        $scope.current_event_target_cursor_pos_end = 0
+                        $scope.force_render = true;
+
+                        $timeout(function(){$scope.$digest()}).then(setCaret);
+
+                        event_return = false;
+
+                    } else if (event.which == 46 && event.shiftKey && $(event.target).hasClass('marcsf')) { // shift+del, remove subfield
+
+                        var sf = event.data.scope.subfield[2] - 1;
+                        if (sf == -1) sf = 0;
+
+                        event.data.scope.field.deleteExactSubfields(
+                            event.data.scope.subfield
+                        );
+
+                        if (!event.data.scope.field.subfields[sf]) {
+                            $scope.current_event_target = 'r' + $scope.recordId +
+                                                          'f' + event.data.scope.field.position + 
+                                                          'tag';
+                        } else {
+                            $scope.current_event_target = 'r' + $scope.recordId +
+                                                          'f' + event.data.scope.field.position + 
+                                                          's' + sf + 'value';
+                        }
+
+                        $scope.current_event_target_cursor_pos = 0;
+                        $scope.current_event_target_cursor_pos_end = 0;
+                        $scope.force_render = true;
+
+                        $timeout(function(){$scope.$digest()}).then(setCaret);
+
+                        event_return = false;
+
                     } else { // Assumes only marc editor elements have IDs that can trigger this event handler.
                         $scope.current_event_target = $(event.target).attr('id');
                         if ($scope.current_event_target) {
@@ -314,13 +460,18 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
 
                 function setCaret() {
                     if ($scope.current_event_target) {
+                        if (!$scope.current_event_target_cursor_pos_end)
+                            $scope.current_event_target_cursor_pos_end = $scope.current_event_target_cursor_pos
+
                         var element = $('#'+$scope.current_event_target).get(0);
-                        element.focus();
-                        element.setSelectionRange(
-                            $scope.current_event_target_cursor_pos,
-                            $scope.current_event_target_cursor_pos
-                        );
-                        $scope.current_event_target = null;
+                        if (element) {
+                            element.focus();
+                            element.setSelectionRange(
+                                $scope.current_event_target_cursor_pos,
+                                $scope.current_event_target_cursor_pos_end
+                            );
+                            $scope.current_event_target = null;
+                        }
                     }
                 }
 
@@ -344,6 +495,12 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                             target: $scope.current_event_target,
                             pos: $scope.current_event_target_cursor_pos
                         });
+
+                        if ($scope.force_render) {
+                            $scope.controlfields = $scope.record.fields.filter(function(f){ return f.isControlfield() });
+                            $scope.datafields = $scope.record.fields.filter(function(f){ return !f.isControlfield() });
+                            $scope.force_render = false;
+                        }
 
                         if ($scope.record_undo_stack.length != $scope.save_stack_depth) {
                             console.log('should get a listener... does not');

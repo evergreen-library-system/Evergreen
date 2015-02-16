@@ -71,14 +71,18 @@ var MARC = {
             var args = Array.prototype.slice.call(arguments);
             args.splice(0,1);
             var me = this;
+            var done = false;
             for (var j = 0; j < this.fields.length; j++) {
-                if (target === this.fields[j]) {
-                    j--;
+                if (!done && target === this.fields[j]) {
                     args.forEach( function (f) {
-                        me.fields.splice(j++,0,f);
+                        f.record = me;
+                        f.position = j++;
+                        me.fields.splice(j,0,f);
                     });
-                    break;
+                    j++;
+                    done = true;
                 }
+                if (done && this.fields[j]) this.fields[j].position += args.length - 1;
             }
         }
 
@@ -86,28 +90,36 @@ var MARC = {
             var args = Array.prototype.slice.call(arguments);
             args.splice(0,1);
             var me = this;
+            var done = false;
             for (var j = 0; j < this.fields.length; j++) {
-                if (target === this.fields[j]) {
+                if (!done && target === this.fields[j]) {
                     args.forEach( function (f) {
-                        me.fields.splice(j++,0,f);
+                        f.record = me;
+                        f.position = ++j;
+                        me.fields.splice(j,0,f);
                     });
-                    break;
+                    j++;
+                    done = true;
                 }
+                if (done && this.fields[j]) this.fields[j].position += args.length - 1;
             }
         }
 
         this.deleteFields = function () {
             var me = this;
             var counter = 0;
+            var done = false;
             for ( var i in arguments ) {
                 var f = arguments[i];
                 for (var j = 0; j < me.fields.length; j++) {
                     if (f === me.fields[j]) {
                         me.fields[j].record = null;
-                        me.fields.splice(j,0);
+                        me.fields.splice(j,1);
                         counter++
-                        break;
+                        j++;
+                        done = true;
                     }
+                    if (done) this.fields[j].position -= 1;
                 }
             }
             return counter;
@@ -497,6 +509,27 @@ var MARC = {
                 this.subfields.push( [ code, value ] );
             }
         }
+
+        this.deleteExactSubfields = function () {
+            var me = this;
+            var counter = 0;
+            var done = false;
+            for ( var i in arguments ) {
+                var f = arguments[i];
+                for (var j = 0; j < me.subfields.length; j++) {
+                    if (f === me.subfields[j]) {
+                        me.subfields.splice(j,1);
+                        counter++
+                        j++;
+                        done = true;
+                    }
+                    if (done && me.subfields[j])
+                        me.subfields[j][2] -= 1;
+                }
+            }
+            return counter;
+        }
+
 
         this.deleteSubfields = function (c) {
             return this.deleteSubfield( { code : c } );

@@ -7,16 +7,32 @@
     border-collapse: collapse;
     border: solid thin gray;
     padding: 0px 5px 0px 5px;
+    margin: 0px;
 }
 
 input.marcedit:focus {
     background-color: lightcyan;
 }
 
+.marcsfvalue {
+    border-left: 0px !important;
+}
+
 .marcsfcode {
     color: blue;
     font-weight: normal;
     text-align: center;
+    padding-left: 0px !important;
+    border-left: 0px !important;
+    border-right: 0px !important;
+}
+
+.marcsfcodedelimiter {
+    color: blue;
+    font-weight: normal;
+    text-align: center;
+    padding-right: 0px !important;
+    border-right: 0px !important;
 }
 
 .marctag, .marcind {
