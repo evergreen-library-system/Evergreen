@@ -286,7 +286,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                   '<button class="btn btn-default" ng-click="seeBreaker()">Breaker</button>',
         restrict: 'E',
         replace: false,
-        scope: { recordId : '=', maxUndo : '@' },
+        scope: { recordId : '=', recordType : '@', maxUndo : '@' },
         link: function (scope, element, attrs) {
 
             element.bind('click', function(e) {;
@@ -304,6 +304,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
         controller : ['$timeout','$scope','egCore',
             function ( $timeout , $scope , egCore ) {
 
+                $scope.record_type = $scope.recordType || 'bre';
                 $scope.max_undo = $scope.maxUndo || 100;
                 $scope.record_undo_stack = [];
                 $scope.record_redo_stack = [];
@@ -642,11 +643,11 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
 
                 function loadRecord() {
                     return egCore.pcrud.retrieve(
-                        'bre', $scope.recordId
+                        $scope.record_type, $scope.recordId
                     ).then(function(rec) {
                         $scope.in_redo = true;
-                        $scope.bre = rec;
-                        $scope.record = new MARC.Record({ marcxml : $scope.bre.marc() });
+                        $scope[$scope.record_type] = rec;
+                        $scope.record = new MARC.Record({ marcxml : $scope[$scope.record_type].marc() });
                         $scope.controlfields = $scope.record.fields.filter(function(f){ return f.isControlfield() });
                         $scope.datafields = $scope.record.fields.filter(function(f){ return !f.isControlfield() });
                         $scope.save_stack_depth = $scope.record_undo_stack.length;
@@ -730,9 +731,10 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                 };
 
                 $scope.saveRecord = function () {
-                    $scope.bre.marc($scope.record.toXmlString());
+                    $scope.mangle_005();
+                    $scope[$scope.record_type].marc($scope.record.toXmlString());
                     return egCore.pcrud.update(
-                        $scope.bre
+                        $scope[$scope.record_type]
                     ).then(loadRecord);
                 };
 
@@ -750,6 +752,40 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
 
                 if ($scope.recordId)
                     loadRecord();
+
+                $scope.mangle_005 = function () {
+                    var now = new Date();
+                    var y = now.getUTCFullYear();
+                
+                    var m = now.getUTCMonth() + 1;
+                    if (m < 10) m = '0' + m;
+                
+                    var d = now.getUTCDate();
+                    if (d < 10) d = '0' + d;
+                
+                    var H = now.getUTCHours();
+                    if (H < 10) H = '0' + H;
+                
+                    var M = now.getUTCMinutes();
+                    if (M < 10) M = '0' + M;
+                
+                    var S = now.getUTCSeconds();
+                    if (S < 10) S = '0' + S;
+                
+                    var stamp = '' + y + m + d + H + M + S + '.0';
+                    var f = $scope.record.field('005',true)[0];
+                    if (f) {
+                        f.data = stamp;
+                    } else {
+                        $scope.record.insertOrderedFields(
+                            new MARC.Field({
+                                tag : '005',
+                                data: stamp
+                            })
+                        );
+                    }
+                
+                }
 
             }
         ]          
