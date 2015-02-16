@@ -205,12 +205,9 @@ var MARC = {
                           record : me,
                           tag    : cf.attr('tag'),
                           data   : cf.text(),
-                          position: ind
                     })
                 )
             });
-
-            var cfield_count = me.fields.length + 1;
 
             $('datafield', mxml).each(function (ind) {
                 var df=$(this);
@@ -220,7 +217,6 @@ var MARC = {
                         tag       : df.attr('tag'),
                         ind1      : df.attr('ind1'),
                         ind2      : df.attr('ind2'),
-                        position  : ind + cfield_count,
                         subfields : $('subfield', df).map(
                             function (i, sf) {
                                 return [[ $(sf).attr('code'), $(sf).text(), i ]];
@@ -229,6 +225,11 @@ var MARC = {
                     })
                 )
             });
+
+            for (var j = 0; j < this.fields.length; j++) {
+                this.fields[j].position = j;
+            }
+
             me.ready = true;
 
         },
@@ -297,7 +298,6 @@ var MARC = {
                                 record : me,
                                 tag    : line_tag(current_line),
                                 data   : cf_line_data(current_line).replace('\\',' ','g'),
-                                position: ind
                             })
                         );
                     }
@@ -317,7 +317,6 @@ var MARC = {
                                 tag       : line_tag(current_line),
                                 ind1      : df_ind1(current_line),
                                 ind2      : df_ind2(current_line),
-                                position  : ind,
                                 subfields : sf_list.map( function (sf, i) {
                                                 var sf_data = sf.substring(1);
                                                 if (me.delimiter == '$') sf_data = sf_data.replace(/\{dollar\}/g, '$');
@@ -327,6 +326,10 @@ var MARC = {
                     );
                 }
             });
+
+            for (var j = 0; j < this.fields.length; j++) {
+                this.fields[j].position = j;
+            }
 
             me.ready = true;
             return this;
