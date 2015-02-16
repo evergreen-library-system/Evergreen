@@ -1,0 +1,12 @@
+New TPAC config option: Show more details
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+There is a new option for TPAC to show more details by default.
+
+The Option for full details as a default, which may be especially important
+for e-content.  Valid values are 'true', 'false' and 'hide'.
+
+Setting this to 'true' shows full details by default but allows the link
+to appear for 'Show Fewer Details'. The 'hide' option shows full details
+and also suppresses the link from displaying at all.
+
+Look for "show_more_details.default" in config.tt2.
