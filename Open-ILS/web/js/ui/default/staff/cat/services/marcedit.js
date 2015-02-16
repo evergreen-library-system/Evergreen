@@ -501,6 +501,111 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
 
                         event_return = false;
 
+                    } else if (event.keyCode == 38) {
+                        if (event.ctrlKey) { // copy the field up
+                            var index_field = event.data.scope.field.position;
+
+                            var field_obj;
+                            if (event.data.scope.field.isControlfield()) {
+                                field_obj = new MARC.Field({
+                                    tag : event.data.scope.field.tag,
+                                    data : event.data.scope.field.data
+                                });
+                            } else {
+                                var sf_clone = [];
+                                for (var i in event.data.scope.field.subfields) {
+                                    sf_clone.push(event.data.scope.field.subfields[i].slice());
+                                }
+                                field_obj = new MARC.Field({
+                                    tag : event.data.scope.field.tag,
+                                    ind1 : event.data.scope.field.ind1,
+                                    ind2 : event.data.scope.field.ind2,
+                                    subfields : sf_clone
+                                });
+                            }
+
+
+                            event.data.scope.field.record.insertFieldsBefore(
+                                event.data.scope.field,
+                                field_obj
+                            );
+
+                            $scope.current_event_target = 'r' + $scope.recordId +
+                                                          'f' + index_field + 'tag';
+
+                            $scope.current_event_target_cursor_pos = 0;
+                            $scope.current_event_target_cursor_pos_end = 3;
+                            $scope.force_render = true;
+
+                            $timeout(function(){$scope.$digest()}).then(setCaret);
+
+                        } else { // jump to prev field
+                            if (event.data.scope.field.position > 0) {
+                                $timeout(function(){
+                                    $scope.current_event_target_cursor_pos = 0;
+                                    $scope.current_event_target_cursor_pos_end = 0;
+                                    $scope.current_event_target = 'r' + $scope.recordId +
+                                                                  'f' + (event.data.scope.field.position - 1) +
+                                                                  'tag';
+                                }).then(setCaret);
+                            }
+                        }
+
+                        event_return = false;
+
+                    } else if (event.keyCode == 40) { // down arrow...
+                        if (event.ctrlKey) { // copy the field down
+
+                            var index_field = event.data.scope.field.position;
+                            var new_field = index_field + 1;
+
+                            var field_obj;
+                            if (event.data.scope.field.isControlfield()) {
+                                field_obj = new MARC.Field({
+                                    tag : event.data.scope.field.tag,
+                                    data : event.data.scope.field.data
+                                });
+                            } else {
+                                var sf_clone = [];
+                                for (var i in event.data.scope.field.subfields) {
+                                    sf_clone.push(event.data.scope.field.subfields[i].slice());
+                                }
+                                field_obj = new MARC.Field({
+                                    tag : event.data.scope.field.tag,
+                                    ind1 : event.data.scope.field.ind1,
+                                    ind2 : event.data.scope.field.ind2,
+                                    subfields : sf_clone
+                                });
+                            }
+
+                            event.data.scope.field.record.insertFieldsAfter(
+                                event.data.scope.field,
+                                field_obj
+                            );
+
+                            $scope.current_event_target = 'r' + $scope.recordId +
+                                                          'f' + new_field + 'tag';
+
+                            $scope.current_event_target_cursor_pos = 0;
+                            $scope.current_event_target_cursor_pos_end = 3;
+                            $scope.force_render = true;
+
+                            $timeout(function(){$scope.$digest()}).then(setCaret);
+
+                        } else { // jump to next field
+                            if (event.data.scope.field.record.fields[event.data.scope.field.position + 1]) {
+                                $timeout(function(){
+                                    $scope.current_event_target_cursor_pos = 0;
+                                    $scope.current_event_target_cursor_pos_end = 0;
+                                    $scope.current_event_target = 'r' + $scope.recordId +
+                                                                  'f' + (event.data.scope.field.position + 1) +
+                                                                  'tag';
+                                }).then(setCaret);
+                            }
+                        }
+
+                        event_return = false;
+
                     } else { // Assumes only marc editor elements have IDs that can trigger this event handler.
                         $scope.current_event_target = $(event.target).attr('id');
                         if ($scope.current_event_target) {
@@ -516,16 +621,20 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
 
                 function setCaret() {
                     if ($scope.current_event_target) {
+                        console.log("Putting caret in " + $scope.current_event_target);
                         if (!$scope.current_event_target_cursor_pos_end)
                             $scope.current_event_target_cursor_pos_end = $scope.current_event_target_cursor_pos
 
                         var element = $('#'+$scope.current_event_target).get(0);
                         if (element) {
                             element.focus();
-                            element.setSelectionRange(
-                                $scope.current_event_target_cursor_pos,
-                                $scope.current_event_target_cursor_pos_end
-                            );
+                            if (element.setSelectionRange) {
+                                element.setSelectionRange(
+                                    $scope.current_event_target_cursor_pos,
+                                    $scope.current_event_target_cursor_pos_end
+                                );
+                            }
+                            $scope.current_event_cursor_pos_end = null;
                             $scope.current_event_target = null;
                         }
                     }
