@@ -1,0 +1,5 @@
+Add new link to My Lists in My Account
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+There is now a direct link to "My Lists" from the "My Account" area in the 
+top upper-right part of the screen.  This gives users the ability to quickly
+access their lists while logged into the catalog.
