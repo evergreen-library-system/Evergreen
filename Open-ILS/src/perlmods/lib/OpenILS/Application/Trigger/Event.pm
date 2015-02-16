@@ -171,12 +171,34 @@ sub react {
         } else {
             $self->update_state( 'reacting') || die 'Unable to update event state';
             try {
-                $self->reacted(
-                    OpenILS::Application::Trigger::ModRunner::Reactor
-                        ->new( $self->event->event_def->reactor, $env )
-                        ->run
-                        ->final_result
+                my $reactor = OpenILS::Application::Trigger::ModRunner::Reactor->new(
+                    $self->event->event_def->reactor,
+                    $env
                 );
+
+                $self->reacted( $reactor->run->final_result);
+
+                if ($env->{usr_message}{usr} && $env->{usr_message}{template}) {
+                    my $message_template_output =
+                        $reactor->pass('ProcessMessage')->run->final_result;
+
+                    if ($message_template_output) {
+                        my $usr_message = Fieldmapper::actor::usr_message->new;
+                        $usr_message->title( $self->event->event_def->message_title || $self->event->event_def->name );
+                        $usr_message->message( $message_template_output );
+                        $usr_message->usr( $env->{usr_message}{usr}->id );
+                        $usr_message->sending_lib( $env->{usr_message}{sending_lib}->id );
+
+                        if ($self->editor->xact_begin) {
+                            if ($self->editor->create_actor_usr_message( $usr_message )) {
+                                $self->editor->xact_commit;
+                            } else {
+                                $self->editor->xact_rollback;
+                            }
+                        }
+                    }
+                }
+
             } otherwise {
                 $log->error("Event reacting failed with ". shift() );
                 $self->update_state( 'error' ) || die 'Unable to update event state';
@@ -444,6 +466,8 @@ sub build_environment {
         $self->environment->{target} = $self->target;
         $self->environment->{event} = $self->event;
         $self->environment->{template} = $self->event->event_def->template;
+        $self->environment->{usr_message}{template} = $self->event->event_def->message_template;
+        $self->environment->{usr_message}{title} = $self->event->event_def->message_title;
         $self->environment->{user_data} = $self->user_data;
 
         $current_environment = $self->environment;
@@ -462,6 +486,18 @@ sub build_environment {
             my @group_path = split(/\./, $self->event->event_def->group_field);
             pop(@group_path); # the last part is a field, should not get fleshed
             my $group_object = $self->_object_by_path( $self->target, undef, [], \@group_path ) if (@group_path);
+        }
+
+        if ($self->event->event_def->message_usr_path and $self->environment->{usr_message}{template}) {
+            my @usr_path = split(/\./, $self->event->event_def->message_usr_path);
+            $self->_object_by_path( $self->target, undef, [qw/usr_message usr/], \@usr_path );
+
+            if ($self->event->event_def->message_library_path) {
+                my @library_path = split(/\./, $self->event->event_def->message_library_path);
+                $self->_object_by_path( $self->target, undef, [qw/usr_message sending_lib/], \@library_path );
+            } else {
+                $self->_object_by_path( $self->event->event_def, undef, [qw/usr_message sending_lib/], ['owner'] );
+            }
         }
     
         $self->environment->{complete} = 1;

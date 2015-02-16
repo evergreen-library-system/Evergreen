@@ -463,5 +463,26 @@ sub run_TT {
     return $output;
 }
 
+# processes message templates.  Returns template output on success, undef on error
+sub run_message_TT {
+    my $self = shift;
+    my $env = shift;
+    return undef unless $env->{usr_message}{template};
+
+    my $error;
+    my $output = '';
+    my $tt = Template->new;
+    # my $tt = Template->new(ENCODING => 'utf8');   # ??
+    $env->{helpers} = $_TT_helpers;
+
+    unless( $tt->process(\$env->{usr_message}{template}, $env, \$output) ) {
+        $output = undef;
+        ($error = $tt->error) =~ s/\n/ /og;
+        $logger->error("Error processing Trigger message template: $error");
+    }
+    
+    return $output;
+}
+
 
 1;
