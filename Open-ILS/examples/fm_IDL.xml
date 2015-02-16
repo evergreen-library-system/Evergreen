@@ -1230,6 +1230,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Opt-In User Field" name="usr_field"  reporter:datatype="text"/>
 			<field reporter:label="Opt-In Setting Type" name="opt_in_setting"  reporter:datatype="link"/>
 			<field reporter:label="Event Repeatability Delay" name="repeat_delay"  reporter:datatype="interval"/>
+			<field reporter:label="Message Template" name="message_template" reporter:datatype="text"/>
+			<field reporter:label="Message Title" name="message_title" reporter:datatype="text"/>
+			<field reporter:label="Message User Path" name="message_usr_path" reporter:datatype="text"/>
+			<field reporter:label="Message Library Path" name="message_library_path" reporter:datatype="text"/>
 			<field reporter:label="Environment Entries" name="env" oils_persist:virtual="true"  reporter:datatype="link"/>
 			<field reporter:label="Parameters" name="params" oils_persist:virtual="true"  reporter:datatype="link"/>
 		</fields>
@@ -2020,6 +2024,29 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
 			<link field="billing_location" reltype="has_a" key="id" map="" class="aou"/>
 		</links>
+	</class>
+	<class id="aum" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::usr_message" oils_persist:tablename="actor.usr_message" reporter:label="User Message">
+		<fields oils_persist:primary="id" oils_persist:sequence="actor.usr_note_id_seq">
+			<field reporter:label="Creation Date/Time" name="create_date" reporter:datatype="timestamp"/>
+			<field reporter:label="Read Date/Time" name="read_date" reporter:datatype="timestamp"/>
+			<field reporter:label="Creating Library" name="sending_lib" reporter:datatype="link"/>
+			<field reporter:label="Message ID" name="id" reporter:datatype="id" />
+			<field reporter:label="Deleted?" name="deleted" reporter:datatype="bool"/>
+			<field reporter:label="Title" name="title" reporter:datatype="text"/>
+			<field reporter:label="User" name="usr" reporter:datatype="link" />
+			<field reporter:label="Message" name="message" reporter:datatype="text"/>
+		</fields>
+		<links>
+			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
+			<link field="sending_lib" reltype="has_a" key="id" map="" class="aou"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions> <!-- created magically, so no create action -->
+				<retrieve permission="VIEW_USER" context_field="sending_lib" owning_user="usr"/>
+				<update permission="UPDATE_USER" context_field="sending_lib" owning_user="usr"/>
+				<delete permission="UPDATE_USER" context_field="sending_lib" owning_user="usr"/>
+			</actions>
+		</permacrud>
 	</class>
 	<class id="aun" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::usr_note" oils_persist:tablename="actor.usr_note" reporter:label="User Note">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.usr_note_id_seq">

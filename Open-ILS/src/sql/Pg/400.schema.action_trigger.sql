@@ -190,6 +190,12 @@ CREATE TABLE action_trigger.event_definition (
     group_field     TEXT,                 -- field from this.hook.core_type to batch event targets together on, fed into reactor a group at a time.
     template        TEXT,                 -- the TT block.  will have an 'environment' hash (or array of hashes, grouped events) built up by validator and collector(s), which can be modified.
     granularity     TEXT,   -- could specify a batch which is the only time these events should actually run
+
+    message_template        TEXT,
+    message_usr_path        TEXT,
+    message_library_path    TEXT,
+    message_title           TEXT,
+
     CONSTRAINT ev_def_owner_hook_val_react_clean_delay_once UNIQUE (owner, hook, validator, reactor, delay, delay_field),
     CONSTRAINT ev_def_name_owner_once UNIQUE (owner, name)
 );
