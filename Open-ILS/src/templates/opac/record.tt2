@@ -2,6 +2,8 @@
     WRAPPER "opac/parts/base.tt2";
     INCLUDE "opac/parts/topnav.tt2";
     ctx.page_title = l("Record Detail");
+    canon = ctx.proto _ '://' _ ctx.hostname _ mkurl('', {}, 1);
+    metalinks = '<link rel="canonical" href="' _ canon  _ '" />';
     IF CGI.param("expand"); basic_search = "f"; END;    
 -%]
     <h2 class="sr-only">[% l('Record Details') %]</h2>

@@ -2,6 +2,8 @@
     WRAPPER "opac/parts/base.tt2";
     INCLUDE "opac/parts/topnav.tt2";
     ctx.page_title = l("Library details: [_1]", ctx.library.name);
+    canon = ctx.proto _ '://' _ ctx.hostname _ mkurl('', {}, 1);
+    metalinks = '<link rel="canonical" href="' _ canon  _ '" />';
 -%]
     [%- INCLUDE "opac/parts/searchbar.tt2" %]
     [%- INCLUDE "opac/parts/library/core_info.tt2"; %]
