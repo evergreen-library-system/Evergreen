@@ -181,6 +181,31 @@ function($modal, $interpolate) {
     return service;
 }])
 
+.directive('aDisabled', function() {
+    return {
+        restrict : 'A',
+        compile: function(tElement, tAttrs, transclude) {
+            //Disable ngClick
+            tAttrs["ngClick"] = ("ng-click", "!("+tAttrs["aDisabled"]+") && ("+tAttrs["ngClick"]+")");
+
+            //Toggle "disabled" to class when aDisabled becomes true
+            return function (scope, iElement, iAttrs) {
+                scope.$watch(iAttrs["aDisabled"], function(newValue) {
+                    if (newValue !== undefined) {
+                        iElement.toggleClass("disabled", newValue);
+                    }
+                });
+
+                //Disable href on click
+                iElement.on("click", function(e) {
+                    if (scope.$eval(iAttrs["aDisabled"])) {
+                        e.preventDefault();
+                    }
+                });
+            };
+        }
+    };
+})
 
 /**
  * Nested org unit selector modeled as a Bootstrap dropdown button.
@@ -196,12 +221,12 @@ function($modal, $interpolate) {
             // Each org unit is passed into this function and, for
             // any org units where the response value is true, the
             // org unit will not be added to the selector.
-            hiddenTest : '&',
+            hiddenTest : '=',
 
             // Each org unit is passed into this function and, for
             // any org units where the response value is true, the
             // org unit will not be available for selection.
-            disableTest : '&',
+            disableTest : '=',
 
             // Caller can either $watch(selected, ..) or register an
             // onchange handler.
@@ -220,7 +245,7 @@ function($modal, $interpolate) {
            + '</button>'
            + '<ul class="dropdown-menu">'
              + '<li ng-repeat="org in orgList" ng-hide="hiddenTest(org.id)">'
-               + '<a href ng-click="orgChanged(org)" ng-disabled="disableTest(org.id)" '
+               + '<a href ng-click="orgChanged(org)" a-disabled="disableTest(org.id)" '
                  + 'style="padding-left: {{org.depth * 10 + 5}}px">'
                  + '{{org.shortname}}'
                + '</a>'
