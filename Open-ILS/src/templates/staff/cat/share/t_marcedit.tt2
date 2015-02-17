@@ -1,0 +1,37 @@
+<div>
+  <div ng-if="bre">
+    <div class="row col-md-12 pad-vert marcfastitemadd">
+        <input id="mfiacn" type="text" placeholder="[% l('Call Number:') %]" ng-model="fast_item_callnumber"/>
+        <input id="mfiabc" type="text" placeholder="[% l('Barcode') %]" ng-model="fast_item_barcode"/>
+        <button class="btn btn-default" ng-click="saveFastItem()">Add Item</button>
+      </div>
+    </div>
+  </div>
+  <div class="marcffeditor">
+    <div class="row col-md-12 pad-vert marctypesource">
+      <div class="col-md-2"><label>Record Type:</label> {{calculated_record_type}}</div>
+      <div ng-if="bre" class="col-md-2"><eg-marc-edit-bibsource/></div>
+    </div>
+  </div>
+  <div class="marcrecord pad-vert">
+    <div>
+      <eg-marc-edit-leader record="record" on-keydown="onKeydown"/>
+    </div>
+    <div>
+      <eg-marc-edit-controlfield 
+        ng-repeat="field in controlfields" 
+        field="field" on-keydown="onKeydown"
+        id="r{{field.record.subfield('901','c')[1]}}f{{field.position}}"
+      />
+    </div>
+    <div>
+      <eg-marc-edit-datafield 
+        ng-repeat="field in datafields" 
+        field="field" on-keydown="onKeydown" 
+        id="r{{field.record.subfield('901','c')[1]}}f{{field.position}}"
+      />
+    </div>
+  </div>
+  <button class="btn btn-default" ng-click="saveRecord()">Save</button>
+  <button class="btn btn-default" ng-click="seeBreaker()">Breaker</button>
+</div>

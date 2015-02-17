@@ -1,5 +1,9 @@
 .marcrecord {
-    background-color: lightgrey;
+    //background-color: lightgrey;
+}
+
+.marcfastitemadd, .marctypesource {
+    border-bottom: solid thin gray;
 }
 
 .marcedit {

@@ -267,23 +267,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
 /// TODO: fixed field editor and such
 .directive("egMarcEditRecord", function () {
     return {
-        template: '<form ng-submit="saveRecord()">'+
-                  '<div class="marcrecord">'+
-                    '<div><eg-marc-edit-leader record="record" on-keydown="onKeydown"/></div>'+
-                    '<div><eg-marc-edit-controlfield '+
-                        'ng-repeat="field in controlfields" '+
-                        'field="field" on-keydown="onKeydown"'+
-                        'id="r{{field.record.subfield(\'901\',\'c\')[1]}}f{{field.position}}"'+
-                        '/></div>'+
-                    '<div><eg-marc-edit-datafield '+
-                        'ng-repeat="field in datafields" '+
-                        'field="field" on-keydown="onKeydown" '+
-                        'id="r{{field.record.subfield(\'901\',\'c\')[1]}}f{{field.position}}"'+
-                        '/></div>'+
-                  '</div>'+
-                  '<button class="btn btn-default" type="submit">Save</button>'+
-                  '</form>'+
-                  '<button class="btn btn-default" ng-click="seeBreaker()">Breaker</button>',
+        templateUrl : './cat/share/t_marcedit',
         restrict: 'E',
         replace: false,
         scope: { recordId : '=', recordType : '@', maxUndo : '@' },
@@ -304,6 +288,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
         controller : ['$timeout','$scope','egCore',
             function ( $timeout , $scope , egCore ) {
 
+                $scope.bib_source = null;
                 $scope.record_type = $scope.recordType || 'bre';
                 $scope.max_undo = $scope.maxUndo || 100;
                 $scope.record_undo_stack = [];
@@ -648,9 +633,15 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                         $scope.in_redo = true;
                         $scope[$scope.record_type] = rec;
                         $scope.record = new MARC.Record({ marcxml : $scope[$scope.record_type].marc() });
+                        $scope.calculated_record_type = $scope.record.recordType();
                         $scope.controlfields = $scope.record.fields.filter(function(f){ return f.isControlfield() });
                         $scope.datafields = $scope.record.fields.filter(function(f){ return !f.isControlfield() });
                         $scope.save_stack_depth = $scope.record_undo_stack.length;
+
+                        if ($scope.record_type == 'bre') {
+                            $scope.bib_source = $scope[$scope.record_type].source();
+                        }
+
                     }).then(setCaret);
                 }
 
@@ -791,5 +782,33 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
         ]          
     }
 })
+
+.directive("egMarcEditBibsource", ['$timeout',function ($timeout) {
+    return {
+        restrict: 'E',
+        replace: false,
+        template: '<span class="nullable">'+
+                    '<select class="form-control" ng-model="bib_source" ng-options="s.id() as s.source() for s in bib_sources">'+
+                      '<option value="">Select a Source</option>'+
+                    '</select>'+
+                  '</span>',
+        controller: ['$scope','egCore',
+            function ($scope , egCore) {
+
+                egCore.pcrud.retrieveAll('cbs', {}, {atomic : true})
+                    .then(function(list) { $scope.bib_sources = list; });
+
+                $scope.$watch('bib_source',
+                    function(newVal, oldVal) {
+                        if (newVal !== oldVal) {
+                            $scope.bre.source(newVal);
+                        }
+                    }
+                );
+
+            }
+        ]
+    }
+}])
 
 ;
