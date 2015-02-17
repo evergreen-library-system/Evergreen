@@ -10,7 +10,7 @@
     <div class="form-group">
       <div class="col-md-4">[% l('Select Library:') %]</div>
       <div class="col-md-8">
-        <eg-org-selector disable-test="can_be_pickup" selected="args.org_unit"></eg-org-selector>
+        <eg-org-selector disable-test="cant_be_pickup" selected="args.org_unit"></eg-org-selector>
       </div>
     </div>
   </div>

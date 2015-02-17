@@ -198,7 +198,7 @@ function($modal , $q , egCore , egConfirmDialog , egAlertDialog) {
             controller : 
                 ['$scope', '$modalInstance',
                 function($scope, $modalInstance) {
-                    $scope.can_be_pickup = egCore.org.CanHaveUsers;
+                    $scope.cant_be_pickup = function (id) { return !egCore.org.CanHaveUsers(id); };
                     $scope.args = {};
                     $scope.ok = function() { 
                         var vals = hold_ids.map(function(hold_id) {

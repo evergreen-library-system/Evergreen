@@ -43,18 +43,18 @@ function($q,  egEnv,  egAuth,  egNet) {
 
     // tests that a node can have users
     service.CanHaveUsers = function(node_or_id) {
-        return Boolean(service
+	return service
             .get(node_or_id)
             .ou_type()
-            .can_have_users());
+            .can_have_users() == 't';
     }
 
     // tests that a node can have volumes
     service.CanHaveVolumes = function(node_or_id) {
-        return Boolean(service
+        return service
             .get(node_or_id)
             .ou_type()
-            .can_have_vols());
+            .can_have_vols() == 't';
     }
 
     // list of org_unit objects  or IDs for me + descendants
