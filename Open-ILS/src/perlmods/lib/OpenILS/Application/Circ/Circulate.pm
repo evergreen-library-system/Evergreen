@@ -537,6 +537,7 @@ my @AUTOLOAD_FIELDS = qw/
     override_args
     checkout_is_for_hold
     manual_float
+    dont_change_lost_zero
 /;
 
 
@@ -2507,14 +2508,41 @@ sub do_checkin {
             " open circs for copy " .$self->copy->id."!!") if @$circs > 1;
     }
 
+    my $stat = $U->copy_status($self->copy->status)->id;
+
+    # LOST (and to some extent, LONGOVERDUE) may optionally be handled
+    # differently if they are already paid for.  We need to check for this
+    # early since overdue generation is potentially affected.
+    my $dont_change_lost_zero = 0;
+    if ($stat == OILS_COPY_STATUS_LOST
+        || $stat == OILS_COPY_STATUS_LOST_AND_PAID
+        || $stat == OILS_COPY_STATUS_LONG_OVERDUE) {
+
+        # LOST fine settings are controlled by the copy's circ lib, not the the
+        # circulation's
+        my $copy_circ_lib = (ref $self->copy->circ_lib) ?
+                $self->copy->circ_lib->id : $self->copy->circ_lib;
+        $dont_change_lost_zero = $U->ou_ancestor_setting_value(
+            $copy_circ_lib, 'circ.checkin.lost_zero_balance.do_not_change',
+            $self->editor) || 0;
+
+        if ($dont_change_lost_zero) {
+            my ($obt) = $U->fetch_mbts($self->circ->id, $self->editor);
+            $dont_change_lost_zero = 0 if( $obt and $obt->balance_owed != 0 );
+        }
+
+        $self->dont_change_lost_zero($dont_change_lost_zero);
+    }
+
     my $ignore_stop_fines = undef;
-    if ($self->circ) {
+    if ($self->circ and !$dont_change_lost_zero) {
 
         # if this circ is LOST and we are configured to generate overdue 
         # fines for lost items on checkin (to fill the gap between mark 
         # lost time and when the fines would have naturally stopped), tell 
         # the fine generator to ignore the stop-fines value on this circ.
-        my $stat = $U->copy_status($self->copy->status)->id;
+        # XXX should this setting come from the copy circ lib (like other
+        # LOST settings), instead of the circulation circ lib?
         if ($stat == OILS_COPY_STATUS_LOST) {
             $ignore_stop_fines = $self->circ->stop_fines if
                 $U->ou_ancestor_setting_value(
@@ -3442,7 +3470,6 @@ sub checkin_handle_lost {
     return $self->checkin_handle_lost_or_longoverdue(
         circ_lib => $circ_lib,
         max_return => $max_return,
-        ous_dont_change_on_zero => 'circ.checkin.lost_zero_balance.do_not_change',
         ous_void_item_cost => OILS_SETTING_VOID_LOST_ON_CHECKIN,
         ous_void_proc_fee => OILS_SETTING_VOID_LOST_PROCESS_FEE_ON_CHECKIN,
         ous_restore_overdue => OILS_SETTING_RESTORE_OVERDUE_ON_LOST_RETURN,
@@ -3472,7 +3499,6 @@ sub checkin_handle_long_overdue {
         circ_lib => $circ_lib,
         max_return => $max_return,
         is_longoverdue => 1,
-        ous_dont_change_on_zero => 'circ.checkin.lost_zero_balance.do_not_change',
         ous_void_item_cost => 'circ.void_longoverdue_on_checkin',
         ous_void_proc_fee => 'circ.void_longoverdue_proc_fee_on_checkin',
         ous_restore_overdue => 'circ.restore_overdue_on_longoverdue_return',
@@ -3546,22 +3572,16 @@ sub checkin_handle_lost_or_longoverdue {
         $logger->info("circulator: check-in of lost/lo item exceeds max ". 
             "return interval.  skipping fine/fee voiding, etc.");
 
+    } elsif ($self->dont_change_lost_zero) { # we leave lost zero balance alone
+
+        $logger->info("circulator: check-in of lost/lo item having a balance ".
+            "of zero, skipping fine/fee voiding and reinstatement.");
+
     } else { # within max-return interval or no interval defined
 
         $logger->info("circulator: check-in of lost/lo item is within the ".
             "max return interval (or no interval is defined).  Proceeding ".
             "with fine/fee voiding, etc.");
-
-        my $dont_change = $U->ou_ancestor_setting_value(
-            $circ_lib, $args{ous_dont_change_on_zero}, $self->editor) || 0;
-
-        if ($dont_change) {
-            my ($obt) = $U->fetch_mbts($circ->id, $self->editor);
-            $dont_change = 0 if( $obt and $obt->balance_owed != 0 );
-        }
-
-        $logger->info("circulator: check-in of lost/lo item having a balance ".
-            "of zero, skipping fine/fee voiding and reinstatement.") if ($dont_change);
 
         my $void_cost = $U->ou_ancestor_setting_value(
             $circ_lib, $args{ous_void_item_cost}, $self->editor) || 0;
@@ -3571,11 +3591,11 @@ sub checkin_handle_lost_or_longoverdue {
             $circ_lib, $args{ous_restore_overdue}, $self->editor) || 0;
 
         $self->checkin_handle_lost_or_lo_now_found(
-            $args{void_cost_btype}, $args{is_longoverdue}) if ($void_cost and !$dont_change);
+            $args{void_cost_btype}, $args{is_longoverdue}) if ($void_cost);
         $self->checkin_handle_lost_or_lo_now_found(
-            $args{void_fee_btype}, $args{is_longoverdue}) if ($void_proc_fee and !$dont_change);
+            $args{void_fee_btype}, $args{is_longoverdue}) if ($void_proc_fee);
         $self->checkin_handle_lost_or_lo_now_found_restore_od($circ_lib) 
-            if ! $dont_change && $restore_od && ! $self->void_overdues;
+            if $restore_od && ! $self->void_overdues;
     }
 
     if ($circ_lib != $self->circ_lib) {
