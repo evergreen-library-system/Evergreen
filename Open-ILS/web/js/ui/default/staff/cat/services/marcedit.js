@@ -161,7 +161,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                     '/></span>'+
                   '</span>',
         scope: { field: "=", subfield: "=", onKeydown: '=' },
-        replace: false
+        replace: true
     }
 })
 
@@ -179,7 +179,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                       'id="r{{field.record.subfield(\'901\',\'c\')[1]}}f{{field.position}}i{{indNumber}}"'+
                       '/></span>',
         scope: { ind : '=', field: '=', onKeydown: '=', indNumber: '@' },
-        replace: false,
+        replace: true
     }
 })
 
@@ -197,7 +197,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                       'id="r{{field.record.subfield(\'901\',\'c\')[1]}}f{{field.position}}tag"'+
                       '/></span>',
         scope: { tag : '=', field: '=', onKeydown: '=' },
-        replace: false
+        replace: true
     }
 })
 
@@ -211,7 +211,8 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                     '<span><eg-marc-edit-ind field="field" ind="field.ind2" on-keydown="onKeydown" ind-number="2"/></span>'+
                     '<span><eg-marc-edit-subfield ng-repeat="subfield in field.subfields" subfield="subfield" field="field" on-keydown="onKeydown"/></span>'+
                   '</div>',
-        scope: { field: "=", onKeydown: '=' }
+        scope: { field: "=", onKeydown: '=' },
+        replace: true
     }
 })
 
@@ -269,7 +270,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
     return {
         templateUrl : './cat/share/t_marcedit',
         restrict: 'E',
-        replace: false,
+        replace: true,
         scope: { recordId : '=', recordType : '@', maxUndo : '@' },
         link: function (scope, element, attrs) {
 
@@ -786,7 +787,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
 .directive("egMarcEditBibsource", ['$timeout',function ($timeout) {
     return {
         restrict: 'E',
-        replace: false,
+        replace: true,
         template: '<span class="nullable">'+
                     '<select class="form-control" ng-model="bib_source" ng-options="s.id() as s.source() for s in bib_sources">'+
                       '<option value="">Select a Source</option>'+

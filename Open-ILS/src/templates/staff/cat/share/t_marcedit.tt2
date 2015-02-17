@@ -1,17 +1,12 @@
 <div>
-  <div ng-if="bre">
-    <div class="row col-md-12 pad-vert marcfastitemadd">
-        <input id="mfiacn" type="text" placeholder="[% l('Call Number:') %]" ng-model="fast_item_callnumber"/>
-        <input id="mfiabc" type="text" placeholder="[% l('Barcode') %]" ng-model="fast_item_barcode"/>
-        <button class="btn btn-default" ng-click="saveFastItem()">Add Item</button>
-      </div>
-    </div>
+  <div ng-if="bre" class="row col-md-12 pad-vert marcfastitemadd">
+    <input id="mfiacn" type="text" placeholder="[% l('Call Number:') %]" ng-model="fast_item_callnumber"/>
+    <input id="mfiabc" type="text" placeholder="[% l('Barcode') %]" ng-model="fast_item_barcode"/>
+    <button class="btn btn-default" ng-click="saveFastItem()">Add Item</button>
   </div>
-  <div class="marcffeditor">
-    <div class="row col-md-12 pad-vert marctypesource">
-      <div class="col-md-2"><label>Record Type:</label> {{calculated_record_type}}</div>
-      <div ng-if="bre" class="col-md-2"><eg-marc-edit-bibsource/></div>
-    </div>
+  <div class="marcffeditor pad-vert row col-md-12 marctypesource">
+    <div class="col-md-2"><label>Record Type:</label> {{calculated_record_type}}</div>
+    <div ng-if="bre" class="col-md-2"><eg-marc-edit-bibsource/></div>
   </div>
   <div class="marcrecord pad-vert">
     <div>
