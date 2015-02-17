@@ -100,10 +100,11 @@ function displayAuthorities(data) {
             '<div class="authEntry" id="auth' + auth.id + '">' +
             '<div class="text" id="authLabel' + auth.id + '">' +
             '<span class="text">' + auth.text + '</span></div>' +
-            '<div class="authority-control-set">Control Set: <span class="acs-name">' +
+            '<div class="authority-control-set-thesaurus"><span class="authority-control-set">Control Set: <span class="acs-name">' +
             fetch_control_set(auth.thesaurus).name() +
             '</span> <span class="acs-id">(#' +
-            fetch_control_set(auth.thesaurus).id() + ')</span></div></div>',
+            fetch_control_set(auth.thesaurus).id() + ')</span>' +
+            '</span> <span class="authority-thesaurus">Thes: ' + auth.thesaurus + '</span></div></div>',
             "authlist-div", "last"
         );
 

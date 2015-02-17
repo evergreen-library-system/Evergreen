@@ -6,9 +6,11 @@
     .authEntry { clear: both; height: 1.5em; }
     .authEntry > *:first-child { float: left; width: 20%; }
     .authEntry > .text { float: left; width: 46%; }
-    .authEntry > .authority-control-set { float: right; width: 33%; ; font-style: italic; }
+    .authEntry > .authority-control-set-thesaurus { float: right; width: 33%; }
+    .authority-control-set { font-style: italic; }
     .authority-control-set .acs-name { font-weight: bold; }
     .authority-control-set .acs-id { }
+    .authority-control-set-thesaurus .authority-thesaurus { margin-left: 15px; }
     .authEntry:nth-child(even) { background-color:#D3D3D3;}
 </style>
 <div dojoType="dijit.form.Form" id="myForm" jsId="myForm" encType="multipart/form-data" action="" method="">
