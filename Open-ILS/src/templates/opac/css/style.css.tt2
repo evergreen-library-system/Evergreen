@@ -453,6 +453,11 @@ div.place_hold {
 
 div.toggle_list { padding-top: 6px; }
 
+div.share_record {
+    padding-top: 6px;
+    border-top: 1px dotted [% css_colors.accent_light %];
+}
+
 div.format_icon {
     float: right;
     margin-right: 17px;

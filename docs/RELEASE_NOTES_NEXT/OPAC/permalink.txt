@@ -1,0 +1,8 @@
+Permalinks
+^^^^^^^^^^
+The record summary page will now offer a link to a shorter permalink that
+can be used for sharing the record with others. All URL parameters are stripped
+from the link with the exception of the locg and copy_depth parameters. Those
+parameters are maintained so that people can share a link that displays just
+the holdings from one library/system or displays holdings from all libraries
+with a specific library's holdings floating to the top.

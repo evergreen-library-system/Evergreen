@@ -3,16 +3,18 @@ http://mxr.mozilla.org/mozilla-central/source/toolkit/themes/pinstripe/global/sp
 Mozilla Public License/GPL/GLPL
 
 
-braille.png derived from:
-https://www.iconfinder.com/icons/64010/braille_code_icon
-FatCow Web Hosting
+Farm-fresh icon set from FatCow Web Hosting
+link: https://www.iconfinder.com/iconsets/fatcow
 Creative Commons (Attribution 3.0 United States)
+
+Icons used:
+braille.png https://www.iconfinder.com/icons/64010/braille_code_icon 
+link.png https://www.iconfinder.com/icons/36158/link_url_icon
 
 
 serial.png comes from the Koha project and is used under the terms of the GPL3.
 The icon was originally provided by VOKAL (Vermont Organization of Koha
 Automated Libraries).
-
 
 Nuvola 1.0 (KDE 3.x icon set) (nuvola)
 link: http://www.icon-king.com/projects/nuvola/
