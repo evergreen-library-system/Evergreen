@@ -2141,40 +2141,21 @@ sub strip_marc_fields {
 sub set_marc_905u {
     my ($class, $marcdoc, $username) = @_;
 
-    # We add to the $parentNode, if set.
-    my $parentNode;
-    # Look for existing 905$u subfields and remove them:
-    for my $node ($marcdoc->findnodes('//field[@tag="905"]/subfield[@code="u"]')) {
-        $parentNode = $node->parentNode();
-        $parentNode->removeChild($node);
-        # If the 905 has no subfield nodes, remove it, too:
-        unless ($parentNode->findnodes('child::subfield')) {
-            $parentNode->parentNode->removeChild($parentNode);
-            undef($parentNode);
-        }
-    }
+    # Look for existing 905$u subfields. If any exist, do nothing.
+    my @nodes = $marcdoc->findnodes('//field[@tag="905"]/subfield[@code="u"]');
+    unless (@nodes) {
+        # We create a new 905 and the subfield u to that.
+        my $parentNode = $marcdoc->createElement('field');
+        $parentNode->setAttribute('tag', '905');
+        $parentNode->setAttribute('ind1', '');
+        $parentNode->setAttribute('ind2', '');
+        $marcdoc->documentElement->addChild($parentNode);
+        my $node = $marcdoc->createElement('subfield');
+        $node->setAttribute('code', 'u');
+        $node->appendTextNode($username);
+        $parentNode->addChild($node);
 
-    # Check if we deleted any existing 905s or don't have any.
-    unless ($parentNode) {
-        # Look for the last one, if any.
-        my @nodes = $marcdoc->findnodes('(//field[@tag="905"])[last()]');
-        if (@nodes) {
-            $parentNode = $nodes[0];
-        } else {
-            # We have to create a new one.
-            $parentNode = $marcdoc->createElement('field');
-            $parentNode->setAttribute('tag', '905');
-            $parentNode->setAttribute('ind1', '');
-            $parentNode->setAttribute('ind2', '');
-            $marcdoc->documentElement->addChild($parentNode);
-        }
     }
-
-    # Now we add the subfield u to parentNode.
-    my $node = $marcdoc->createElement('subfield');
-    $node->setAttribute('code', 'u');
-    $node->appendTextNode($username);
-    $parentNode->addChild($node);
 
     return $class->entityize($marcdoc->documentElement->toString);
 }
