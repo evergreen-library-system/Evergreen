@@ -21,6 +21,7 @@ function loadEventDef() {
     openils.widget.Textarea.width = '600px';
     openils.widget.Textarea.height = '600px';
     edGrid.overrideEditWidgetClass.template = 'openils.widget.Textarea';
+    edGrid.overrideEditWidgetClass.message_template = 'openils.widget.Textarea';
     dojo.connect(eventDefTabs,'selectChild', tabLoader);
 }
 

@@ -30,7 +30,7 @@
                     autoHeight='true'
                     dojoType="openils.widget.AutoGrid" 
                     fieldOrder="['owner', 'name', 'hook', 'active', 'delay', 'delay_field', 'group_field', 'reactor', 'validator', 'repeat_delay']"
-                    suppressFields="['usr_field', 'opt_in_setting', 'max_delay', 'template', 'cleanup_failure', 'cleanup_success']"
+                    suppressFields="['usr_field', 'opt_in_setting', 'max_delay', 'template','cleanup_failure', 'cleanup_success', 'message_title', 'message_template', 'message_library_path', 'message_usr_path']"
                     query="{id: '*'}" 
                     fmClass='atevdef'
                     editStyle='pane'
