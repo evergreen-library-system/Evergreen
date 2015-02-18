@@ -269,8 +269,9 @@ __PACKAGE__->register_method(
     method    => 'ou_ancestor_setting',
     signature => {
         desc => 'Get the org unit setting value associated with the setting name as seen from the specified org unit.  ' .
-                'IF AND ONLY IF an authentication token is provided, this method will make sure that the given '         .
-                'user has permission to view that setting, if there is a permission associated with the setting.'        ,
+                'This method will make sure that the given user has permission to view that setting, if there is a '     .
+                'permission associated with the setting.  If a permission is required and no authtoken is given, or '     .
+                'the user lacks the permisssion, undef will be returned.'       ,
         params => [
             { desc => 'Org unit ID',          type => 'number' },
             { desc => 'setting name',         type => 'string' },
@@ -289,6 +290,8 @@ __PACKAGE__->register_method(
 # ------------------------------------------------------------------
 sub ou_ancestor_setting {
     my( $self, $client, $orgid, $name, $auth ) = @_;
+    # Make sure $auth is set to something if not given.
+    $auth ||= -1;
     return $U->ou_ancestor_setting($orgid, $name, undef, $auth);
 }
 
@@ -297,8 +300,9 @@ __PACKAGE__->register_method(
     method    => 'ou_ancestor_setting_batch',
     signature => {
         desc => 'Get org unit setting name => value pairs for a list of names, as seen from the specified org unit.  ' .
-                'IF AND ONLY IF an authentication token is provided, this method will make sure that the given '       .
-                'user has permission to view that setting, if there is a permission associated with the setting.'      ,
+                'This method will make sure that the given user has permission to view that setting, if there is a '     .
+                'permission associated with the setting.  If a permission is required and no authtoken is given, or '     .
+                'the user lacks the permisssion, undef will be returned.'       ,
         params => [
             { desc => 'Org unit ID',          type => 'number' },
             { desc => 'setting name list',    type => 'array'  },
@@ -309,6 +313,8 @@ __PACKAGE__->register_method(
 );
 sub ou_ancestor_setting_batch {
     my( $self, $client, $orgid, $name_list, $auth ) = @_;
+    # Make sure $auth is set to something if not given.
+    $auth ||= -1;
     my %values;
     $values{$_} = $U->ou_ancestor_setting($orgid, $_, undef, $auth) for @$name_list;
     return \%values;
