@@ -1744,6 +1744,11 @@ sub user_opac_vitals {
 
     $out->{"total_out"} = reduce { $a + $out->{$b} } 0, qw/out overdue long_overdue/;
 
+    my $unread_msgs = $e->search_actor_usr_message([
+        {usr => $user_id, read_date => undef, deleted => 'f'},
+        {idlist => 1}
+    ]);
+
     return {
         user => {
             first_given_name  => $user->first_given_name,
@@ -1754,7 +1759,8 @@ sub user_opac_vitals {
         },
         fines => $fines->to_bare_hash,
         checkouts => $out,
-        holds => $holds
+        holds => $holds,
+        messages => { unread => scalar(@$unread_msgs) }
     };
 }
 

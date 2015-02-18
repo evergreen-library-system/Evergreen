@@ -55,6 +55,12 @@
                         %]"><span id="dash_fines">[% money(ctx.user_stats.fines.balance_owed)
                         %]</span> [% l("Fines") %]</a>
                 </span>
+                <span class="dash_divider">|</span>
+                <span class="dash-align">
+                    <a class="dash-link" href="[% mkurl(ctx.opac_root _ '/myopac/messages')
+                        %]"><span id="dash_messages">[% ctx.user_stats.messages.unread
+                        %]</span> [% l("Unread Messages") %]</a>
+                </span>
             </div>
         </div>
         [% END %]

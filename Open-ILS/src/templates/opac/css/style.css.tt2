@@ -136,6 +136,7 @@ is too low for WCAG compliance.  Use "text_attention"
 for now until a better color is picked - if needed.
 */
 #dash_fines { color: [% css_colors.text_attention %]; }
+#dash_messages { color: [% css_colors.text_attention %]; }
 
 #header-wrap {
     background: linear-gradient([% css_colors.primary %], [% css_colors.primary_fade %]);
