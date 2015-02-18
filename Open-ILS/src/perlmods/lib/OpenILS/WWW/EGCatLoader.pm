@@ -298,10 +298,7 @@ sub load_common {
                 $ctx->{is_browser_staff} = 1;
             }
 
-            $ctx->{user_stats} = $U->simplereq(
-                'open-ils.actor', 
-                'open-ils.actor.user.opac.vital_stats', 
-                $e->authtoken, $e->requestor->id);
+            $self->update_dashboard_stats();
 
         } else {
 
@@ -323,6 +320,18 @@ sub load_common {
     $self->load_perm_funcs;
 
     return Apache2::Const::OK;
+}
+
+sub update_dashboard_stats {
+    my $self = shift;
+
+    my $e = $self->editor;
+    my $ctx = $self->ctx;
+
+    $ctx->{user_stats} = $U->simplereq(
+        'open-ils.actor', 
+        'open-ils.actor.user.opac.vital_stats', 
+        $e->authtoken, $e->requestor->id);
 }
 
 sub staff_saved_searches_set_expansion_state {

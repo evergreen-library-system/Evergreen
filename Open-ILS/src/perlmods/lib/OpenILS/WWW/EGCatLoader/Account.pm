@@ -283,6 +283,7 @@ sub load_myopac_messages {
             $ctx->{message_update_action} = $action;
             $ctx->{message_update_changed} = $changed;
             $ctx->{message_update_failed} = $failed;
+            $self->update_dashboard_stats();
         }
     }
 
@@ -354,6 +355,8 @@ sub _fetch_and_mark_read_single_message {
         )->gather(1);
     }
     $pcrud->request('open-ils.pcrud.transaction.commit', $self->editor->authtoken)->gather(1);
+
+    $self->update_dashboard_stats();
 
     return $messages;
 }
