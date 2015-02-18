@@ -2656,6 +2656,39 @@ sub update_user_note {
     return 1;
 }
 
+__PACKAGE__->register_method(
+    method        => 'fetch_patron_messages',
+    api_name      => 'open-ils.actor.message.retrieve',
+    authoritative => 1,
+    signature     => q/
+        Returns a list of notes for a given user, not
+        including ones marked deleted
+        @param authtoken The login session key
+        @param patronid patron ID
+        @param options hash containing optional limit and offset
+    /
+);
+
+sub fetch_patron_messages {
+    my( $self, $conn, $auth, $patronid, $options ) = @_;
+
+    $options ||= {};
+
+    my $e = new_editor(authtoken => $auth);
+    return $e->die_event unless $e->checkauth;
+
+    if ($e->requestor->id ne $patronid) {
+        return $e->die_event unless $e->allowed('VIEW_USER');
+    }
+
+    my $select_clause = { usr => $patronid };
+    my $options_clause = { order_by => { aum => 'create_date DESC' } };
+    $options_clause->{'limit'} = $options->{'limit'} if $options->{'limit'};
+    $options_clause->{'offset'} = $options->{'offset'} if $options->{'offset'};
+
+    my $aum = $e->search_actor_usr_message([ $select_clause, $options_clause ]);
+    return $aum;
+}
 
 
 __PACKAGE__->register_method(
