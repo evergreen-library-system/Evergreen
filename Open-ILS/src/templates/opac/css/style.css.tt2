@@ -886,7 +886,7 @@ div.result_table_utils_cont {
     /*padding-left:10px;*/
 }
 
-#acct_checked_main_header, #acct_holds_main_header, #acct_checked_hist_header, #acct_list_header, #acct_list_header_anon, #temp_list_holds {
+#acct_checked_main_header, #acct_holds_main_header, #acct_checked_hist_header, #acct_list_header, #acct_list_header_anon, #temp_list_holds, #acct_messages_main_header {
     border-collapse: collapse;
 }
 
@@ -897,12 +897,12 @@ div.result_table_utils_cont {
 
 .hold_note_title { font-weight: bold; }
 
-#acct_checked_main_header td, #acct_holds_main_header td, #acct_checked_hist_header td, #acct_list_header td, #acct_list_header_anon td, #temp_list_holds td {
+#acct_checked_main_header td, #acct_holds_main_header td, #acct_checked_hist_header td, #acct_list_header td, #acct_list_header_anon td, #temp_list_holds td, #acct_messages_main_header td {
     background: [% css_colors.accent_lighter2 %];
     padding: 10px;
 }
 
-#acct_checked_main_header th, #acct_holds_main_header th, #acct_checked_hist_header th, #acct_list_header th, #acct_list_header_anon th, #temp_list_holds th {
+#acct_checked_main_header th, #acct_holds_main_header th, #acct_checked_hist_header th, #acct_list_header th, #acct_list_header_anon th, #temp_list_holds th, #acct_messages_main_header th {
     text-align: left;
     padding: 0px 10px 0px 10px;
 }
@@ -1134,7 +1134,7 @@ div#facet_sidebar {
     padding-left: 1em;
 }
 #opac.result.sort { width: 160px; }
-.renew-summary { font-size: [% css_fonts.size_bigger %]; font-style: italic; margin: 0.5ex 0; }
+.renew-summary, .message-update-summary { font-size: [% css_fonts.size_bigger %]; font-style: italic; margin: 0.5ex 0; }
 .failure-text { margin-left: 4em; font-style: italic; color: [% css_colors.text_alert %]; }
 .refine-controls { font-size: [% css_fonts.size_bigger %]; padding: 0.5ex 0; }
 #adv_search_refine input[type=text] { border: 1px inset [% css_colors.accent_light %] !important; }
@@ -1199,6 +1199,7 @@ a.dash-link:hover { text-decoration: underline !important; }
 .results-paginator-list { padding-left: 1em; }
 .results-paginator-selected { color: [% css_colors.text_alert %]; }
 .inactive-hold { background: [% css_colors.accent_lightest %]; }
+.unread-patron-message { font-weight: bold; }
 
 #hold-items-list td { padding: 5px; margin-bottom: 20px; }
 .hold-items-list-title { font-size: [% css_fonts.size_bigger %]; }

@@ -1,0 +1,51 @@
+<div id="myopac_messages_div">
+    <div class="header_middle">
+        <span id="acct_messages_header" style="float:left;">[% l("Message") %]</div>
+    </div>
+    <div class="clear-both"></div>
+    <div id="single_message_main">
+        <form method="post" id="messages-form" action="[% ctx.opac_root %]/myopac/messages">
+            <input type="hidden" name="message_id" value="[% ctx.patron_message_id %]" />
+            <input type="hidden" name="offset" value="[% offset %]" />
+            <input type="hidden" name="limit" value="[% limit %]" />
+            <span style="padding-left:9px;">
+                <a href="[% mkurl('messages', {}, ['single', 'message_id']) %]" class="opac-button">
+                [% l('Return to Message List') %]
+                </a>
+                <button type="submit" name="action" value="mark_deleted" class="opac-button"
+                    onclick="return confirm('[% l("Are you sure you wish to permanently delete this messsage?") %]')">
+                    [% l('Delete') %]
+                </button>
+                <button type="submit" name="action" value="mark_unread" class="opac-button">
+                    [% l('Mark Unread') %]
+                </button>
+            </span>
+        </form>
+
+        <table title="[% l('Message') %]"
+            class='light_border data_grid'>
+            <tbody id='myopac_message_tbody'>
+            </tbody>
+            <tr>
+                <td width='30%'
+                    class='color_4 light_border'>[% l("Date") %]</td>
+                <td>[% date.format(ctx.parse_datetime(ctx.patron_messages.0.create_date), DATE_FORMAT); %]</td>
+            </tr>
+            <tr>
+                <td width='30%'
+                    class='color_4 light_border'>[% l("Library") %]</td>
+                <td>[% ctx.patron_messages.0.library | html %]</td>
+            </tr>
+            <tr>
+                <td width='30%'
+                    class='color_4 light_border'>[% l("Subject") %]</td>
+                <td>[% ctx.patron_messages.0.title | html %]</td>
+            </tr>
+            <tr>
+                <td width='30%'
+                    class='color_4 light_border'>[% l("Message") %]</td>
+                <td>[% ctx.patron_messages.0.message | html %]</td>
+            </tr>
+        </table>
+    </div>
+</div>

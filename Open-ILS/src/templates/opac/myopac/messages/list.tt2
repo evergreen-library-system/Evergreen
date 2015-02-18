@@ -1,0 +1,113 @@
+<div id="myopac_messages_div">
+    <div class="header_middle">
+        <span id="acct_messages_header" style="float:left;">[% l("Messages") %]</div>
+        <span class='float-left' style='padding-left: 10px;'>
+            <a href='[% mkurl('messages', { limit => limit, offset => (offset - limit)} ) %]'
+                [% IF offset <= 0 %] class='invisible' [% END %]><span class="nav_arrow_fix">&#9668;</span>[% l('Previous') %]</a>
+            [% IF offset > 0 || count > limit;
+                curpage = 0;
+                WHILE curpage * limit < count;
+                    IF curpage * limit == offset;
+            %]
+            [% curpage + 1 %]
+                    [%- ELSE %]
+            <a href='[% mkurl('messages', {limit => limit, offset => (curpage * limit)}) %]'>[% curpage + 1 %]</a>
+                    [%- END;
+                    curpage = curpage + 1;
+                END;
+            END %]
+            <a href='[% mkurl('messages', {limit => limit, offset => (offset + limit)}) %]'
+               [% IF count <= limit + offset %] class='invisible' [% END %] >[% l('Next') %]<span class="nav_arrow_fix">&#9658;</span></a>
+        </span>
+    </div>
+    <div class="clear-both"></div>
+    [% IF ctx.message_update_action.defined %]
+        [% IF ctx.message_update_changed > 0 %]
+        <div class="message-update-summary">
+            [% IF ctx.message_update_action == 'mark_read';
+                l('Marked [_1] message(s) as read.', ctx.message_update_changed);
+               ELSIF ctx.message_update_action == 'mark_unread';
+                l('Marked [_1]  message(s) as unread.', ctx.message_update_changed);
+               ELSIF ctx.message_update_action == 'mark_unread';
+                l('Deleted [_1] message(s).', ctx.message_update_changed);
+               END
+            %]
+        </div>
+        [% END %]
+        [% IF ctx.message_update_failed > 0 %]
+        <div class="message-update-summary alert">
+            [% IF ctx.message_update_action == 'mark_read';
+                l('Failed to mark [_1] message(s) as read.', ctx.message_update_failed);
+               ELSIF ctx.message_update_action == 'mark_unread';
+                l('Failed to mark [_1]  message(s) as unread.', ctx.message_update_failed);
+               ELSIF ctx.message_update_action == 'mark_unread';
+                l('Failed to delete [_1] message(s).', ctx.message_update_failed);
+               END
+            %]
+        </div>
+        [% END %]
+    [% END %]
+    <div class="clear-both"></div>
+    <div id="messages_main">
+        <form method="post" id="messages-form"
+         onsubmit="if (document.getElementById('acct_messages_actions').value == 'mark_deleted') { return confirm('[% l("Are you sure you wish to permanently delete the selected messsage(s)?") %]') } else { return true; }">
+            <div>
+                <span>
+                    <select name="action" id="acct_messages_actions"
+                        title="[% l('Select your action for the selected messages') %]">
+                        <option id="acct_messages_actions_none" value="">
+                            -- [% l('Actions for selected messages') %] --
+                        </option>
+                        <option value="mark_read">[% l('Mark As Read') %]</option>
+                        <option value="mark_unread">[% l('Mark As Unread') %]</option>
+                        <option value="mark_deleted">[% l('Delete') %]</option>
+                    </select>
+                </span>
+                <span style="padding-left:9px;">
+                    <input type="submit"
+                        value="[% l('Go') %]"
+                        title="[% l('Go') %]"
+                        class="opac-button" />
+                </span>
+                <span style="padding-left:5px;">
+                    <a href="#"><img
+                        alt="[% l('Messages Help') %]"
+                        title="[% l('Actions for messages') %]"
+                        src="[% ctx.media_prefix %]/images/question-mark.png" /></a>
+                </span>
+            </div>
+            [% IF count < 1 %]
+            <div class="warning_box">[% l('No messages found.') %]</div>
+            [% ELSE %]
+            <table id="acct_messages_main_header" title="[% l('Messages') %]"
+                class="table_no_border_space table_no_cell_pad">
+                <thead>
+                <tr>
+                    <th align="center">
+                        <input type="checkbox" title="[% l('Select All Messages') %]"
+                        onclick="var inputs=document.getElementsByTagName('input'); for (i = 0; i < inputs.length; i++) { if (inputs[i].name == 'message_id' &amp;&amp; !inputs[i].disabled) inputs[i].checked = this.checked;}"/>
+                    </th>
+                    <th>[% l('Date') %]</th>
+                    <th>[% l('Library') %]</th>
+                    <th>[% l('Subject') %]</th>
+                </tr>
+                </thead>
+                <tbody>
+                [% FOR message IN ctx.patron_messages; %]
+                    <tr name="acct_message_row"
+                        [% IF !message.is_read %]class="unread-patron-message"[% END %]>
+                        <td align="center" style="text-align:center;">
+                        <input type="checkbox" name="message_id" value="[% message.id %]"
+                            [% html_text_attr('title', l('Select message [_1]', message.title)) %]/>
+                        </td>
+                        <td>[% date.format(ctx.parse_datetime(message.create_date), DATE_FORMAT); %]</td>
+                        <td>[% message.library | html %]</td>
+                        <td><a href="[% mkurl('messages', { single => 1, message_id => message.id } ) %]">[% message.title | html %]</a></td>
+                    </tr>
+                [% END %]
+                </tbody>
+            </table>
+            [% END %]
+        </form>
+    </div>
+</div>

@@ -2,6 +2,7 @@
 
 [% myopac_pages = [
         {url => "main", name => l("Account Summary")},
+        {url => "messages", name => l("Messages")},
         {url => "circs", name => l("Items Checked Out")},
         {url => "holds", name => l("Holds")},
         {url => "prefs", name => l("Account Preferences")},

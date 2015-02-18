@@ -264,6 +264,176 @@ sub fetch_optin_prefs {
     return [map { {cust => $_, value => $user_set->{$_->name} } } @$opt_ins];
 }
 
+sub load_myopac_messages {
+    my $self = shift;
+    my $e = $self->editor;
+    my $ctx = $self->ctx;
+    my $cgi = $self->cgi;
+
+    my $limit  = $cgi->param('limit') || 20;
+    my $offset = $cgi->param('offset') || 0;
+
+    my $pcrud = OpenSRF::AppSession->create('open-ils.pcrud');
+    $pcrud->connect();
+
+    my $action = $cgi->param('action') || '';
+    if ($action) {
+        my ($changed, $failed) = $self->_handle_message_action($pcrud, $action);
+        if ($changed > 0 || $failed > 0) {
+            $ctx->{message_update_action} = $action;
+            $ctx->{message_update_changed} = $changed;
+            $ctx->{message_update_failed} = $failed;
+        }
+    }
+
+    my $single = $cgi->param('single') || 0;
+    my $id = $cgi->param('message_id');
+
+    my $messages;
+    my $fetch_all = 1;
+    if (!$action && $single && $id) {
+        $messages = $self->_fetch_and_mark_read_single_message($pcrud, $id);
+        if (scalar(@$messages) == 1) {
+            $ctx->{display_single_message} = 1;
+            $ctx->{patron_message_id} = $id;
+            $fetch_all = 0;
+        }
+    }
+
+    if ($fetch_all) {
+        # fetch all the messages
+        ($ctx->{patron_messages_count}, $messages) =
+            $self->_fetch_user_messages($pcrud, $offset, $limit);    
+    }
+
+    $pcrud->kill_me;
+
+    foreach my $aum (@$messages) {
+
+        push @{ $ctx->{patron_messages} }, {
+            id          => $aum->id,
+            title       => $aum->title,
+            message     => $aum->message,
+            create_date => $aum->create_date,
+            is_read     => defined($aum->read_date) ? 1 : 0,
+            library     => $aum->sending_lib->name, 
+        };
+    }
+
+    $ctx->{patron_messages_limit} = $limit;
+    $ctx->{patron_messages_offset} = $offset;
+
+    return Apache2::Const::OK;
+}
+
+sub _fetch_and_mark_read_single_message {
+    my $self = shift;
+    my $pcrud = shift;
+    my $id = shift;
+
+    $pcrud->request('open-ils.pcrud.transaction.begin', $self->editor->authtoken)->gather(1);
+    my $messages = $pcrud->request(
+        'open-ils.pcrud.search.aum.atomic',
+        $self->editor->authtoken,
+        {
+            usr     => $self->editor->requestor->id,
+            deleted => 'f',
+            id      => $id,
+        },
+        {
+            flesh => 1,
+            flesh_fields => { aum => ['sending_lib'] },
+        }
+    )->gather(1);
+    if (@$messages) {
+        $messages->[0]->read_date('now');
+        $pcrud->request(
+            'open-ils.pcrud.update.aum',
+            $self->editor->authtoken,
+            $messages->[0]
+        )->gather(1);
+    }
+    $pcrud->request('open-ils.pcrud.transaction.commit', $self->editor->authtoken)->gather(1);
+
+    return $messages;
+}
+
+sub _fetch_user_messages {
+    my $self = shift;
+    my $pcrud = shift;
+    my $offset = shift;
+    my $limit = shift;
+
+    my %paging = ($limit or $offset) ? (limit => $limit, offset => $offset) : ();
+
+    my $all_messages = $pcrud->request(
+        'open-ils.pcrud.id_list.aum.atomic',
+        $self->editor->authtoken,
+        {
+            usr     => $self->editor->requestor->id,
+            deleted => 'f'
+        },
+        {}
+    )->gather(1);
+
+    my $messages = $pcrud->request(
+        'open-ils.pcrud.search.aum.atomic',
+        $self->editor->authtoken,
+        {
+            usr     => $self->editor->requestor->id,
+            deleted => 'f'
+        },
+        {
+            flesh => 1,
+            flesh_fields => { aum => ['sending_lib'] },
+            order_by => { aum => 'create_date DESC' },
+            %paging
+        }
+    )->gather(1);
+
+    return scalar(@$all_messages), $messages;
+}
+
+sub _handle_message_action {
+    my $self = shift;
+    my $pcrud = shift;
+    my $action = shift;
+    my $cgi = $self->cgi;
+
+    my @ids = $cgi->param('message_id');
+    return (0, 0) unless @ids;
+
+    my $changed = 0;
+    my $failed = 0;
+    $pcrud->request('open-ils.pcrud.transaction.begin', $self->editor->authtoken)->gather(1);
+    for my $id (@ids) {
+        my $aum = $pcrud->request(
+            'open-ils.pcrud.retrieve.aum',
+            $self->editor->authtoken,
+            $id
+        )->gather(1);
+        next unless $aum;
+        if      ($action eq 'mark_read') {
+            $aum->read_date('now');
+        } elsif ($action eq 'mark_unread') {
+            $aum->clear_read_date();
+        } elsif ($action eq 'mark_deleted') {
+            $aum->deleted('t');
+        }
+        $pcrud->request('open-ils.pcrud.update.aum', $self->editor->authtoken, $aum)->gather(1) ?
+            $changed++ :
+            $failed++;
+    }
+    if ($failed) {
+        $pcrud->request('open-ils.pcrud.transaction.rollback', $self->editor->authtoken)->gather(1);
+        $changed = 0;
+        $failed = scalar(@ids);
+    } else {
+        $pcrud->request('open-ils.pcrud.transaction.commit', $self->editor->authtoken)->gather(1);
+    }
+    return ($changed, $failed);
+}
+
 sub _load_lists_and_settings {
     my $self = shift;
     my $e = $self->editor;
