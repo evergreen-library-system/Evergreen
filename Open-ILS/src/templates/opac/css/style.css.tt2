@@ -867,20 +867,6 @@ div.result_table_utils_cont {
     font-weight: normal;
 }
 
-table.acct_notes {
-    border-collapse: collapse;
-    margin: -1em 0 0.5em 0;
-}
-
-table.acct_notes * {
-    border: solid thin;
-    padding: 0.5em; 
-}
-
-table.acct_notes th {
-    font-weight: bold;
-}
-
 #myopac_sum_fines {
     float:right;
     padding: 15px 0px 0px 23px;
