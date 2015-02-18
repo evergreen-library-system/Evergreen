@@ -32,7 +32,7 @@ to better support search engines:
    listed in the `asset.opac_visible_copies` materialized view, and checks
    the children or ancestors of the requested libraries for holdings as well.
  * Links that robots should not crawl, such as search result links, are now
-   marked with the http://www.postgresql.org/docs/9.4/static/release-9-4-1.html[@rel="nofollow"]
+   marked with the https://support.google.com/webmasters/answer/96569?hl=en[@rel="nofollow"]
    property.
  * Catalog pages for record details and for library descriptions now express
    a https://support.google.com/webmasters/answer/139066?hl=en[@rel="canonical"]
