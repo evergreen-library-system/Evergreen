@@ -1,0 +1,44 @@
+TPAC Discoverability Enhancements
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+A number of discoverability enhancements have been made to the catalog
+to better support search engines:
+
+ * Titles of catalog pages now follow a "Page title - Library name" pattern
+   to provide more specific titles in search results, bookmarks, and browser
+   tabs.
+ * The OpenSearch title now specifies the library name instead of the generic
+   "Evergreen OpenSearch" at every scope.
+ * Subject headings are now exposed as http://schema.org/about[schema:about]
+   properties instead of http://schema.org/keyword[schema:keyword].
+ * Electronic resources are now assigned a http://schema.org/url[schema:url]
+   property, and any notes or link text are assigned a
+   http://schema.org/description[schema:description] property.
+ * Given a Library of Congress relator code for 1xx and 7xx fields, we now
+   surface the URL for that relator code along with
+   the http://schema.org/contributor[schema:contributor] property to give
+   machines a better chance of understanding how the person or organization
+   actually contributed to this work.
+ * Linking out to related records:
+   ** Given an LCCN (010 field), we link to the corresponding Library of Congress
+      record using http://schema.org/sameAs[schema:sameAs].
+   ** Given an OCLC number (035 field, subfield `a` beginning with `(OCoLC)`), we
+      link to the corresponding WorldCat record using
+      http://schema.org/sameAs[schema:sameAs].
+   ** Given a URI (024 field, subfield 2 = `'uri'`), we link to the
+      corresponding OCLC Work Entity record using
+      http://schema.org/exampleOfWork[schema:exampleOfWork].
+ * The sitemap generator script now includes located URIs as well as copies
+   listed in the `asset.opac_visible_copies` materialized view, and checks
+   the children or ancestors of the requested libraries for holdings as well.
+ * Links that robots should not crawl, such as search result links, are now
+   marked with the http://www.postgresql.org/docs/9.4/static/release-9-4-1.html[@rel="nofollow"]
+   property.
+ * Catalog pages for record details and for library descriptions now express
+   a https://support.google.com/webmasters/answer/139066?hl=en[@rel="canonical"]
+   link to simplify the number of variations of page URLs that could otherwise
+   have been derived from different search parameters.
+ * Catalog pages that do not exist now return a proper 404 "HTTP_NOT_FOUND"
+   HTTP status code, and record detail pages for records that have been deleted
+   now return a proper 410 "HTTP_GONE" HTTP status code, instead of returning a
+   misleading 200 "OK" HTTP status code.
