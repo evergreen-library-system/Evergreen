@@ -1697,6 +1697,20 @@ a.preflib_change {
     font-size: [% css_fonts.size_bigger %];
 }
 
+/* styling for sms text call number */
+.sms_text pre {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: [% css_fonts.size_medium %];
+    background: [% css_colors.accent_lightest %];
+    padding: .5%;
+    /* Allow text to wrap */
+    white-space: pre-wrap;       /* css-3 */
+    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+    white-space: -pre-wrap;      /* Opera 4-6 */
+    white-space: -o-pre-wrap;    /* Opera 7 */
+    word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}
+
 .mobile_view {
    display:none;
 }

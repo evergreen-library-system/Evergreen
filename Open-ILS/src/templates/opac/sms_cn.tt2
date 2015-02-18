@@ -16,14 +16,12 @@
                     [% IF ctx.sms_notify %]
                     <h1>[% l('Your message has been sent!') %]</h1>
                     <a href="[% ctx.origin %]">[% l('Return to record') %]</a>
-                    <pre>[% ctx.event.template_output.data %]</pre>
+                    <div class="sms_text"><pre>[% ctx.event.template_output.data %]</pre></div>
                     [% ELSE %]
                     <h1>[% l('Text call number') %]</h1>
                     <a href="[% ctx.origin %]">[% l('Return to record') %]</a>
-                    <pre>[% ctx.event.template_output.data %]</pre>
-                    <blockquote>
+                    <div class="sms_text"><pre>[% ctx.event.template_output.data %]</pre></div>
                         <form method="post">
-                            <blockquote>
                                 <input type="hidden" name="copy_id" value="[% ctx.copy_id %]"/>
                                 <input type="hidden" name="origin" value="[% ctx.origin %]"/>
                                 [% INCLUDE "opac/parts/sms_carrier_selector.tt2" sms_carrier_hide_warning="true" %]<br/>
@@ -35,9 +33,7 @@
                                     alt="[% l('Submit') %]"
                                     class="opac-button" />
                                 <br/>[% l('Note: carrier charges may apply'); %]
-                            </blockquote>
                         </form>
-                    </blockquote>
                     [% END %]
                     [% ELSE %]
                     <span>[% l('SMS not enabled for this site.') %]</span>

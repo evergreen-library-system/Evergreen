@@ -4,6 +4,7 @@
         size_small = "92%",
         size_smaller = "83%",
         size_smallest = "75%",
+        size_medium = "95%",
         size_big = "110%",
         size_bigger = "125%",
         size_biggest = "150%"
