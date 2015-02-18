@@ -346,6 +346,20 @@ patron.display.prototype = {
                             );
                         }
                     ],
+                    'cmd_patron_message_center' : [
+                        ['command'],
+                        function(ev) {
+                            obj.right_deck.set_iframe(
+                                xulG.url_prefix(urls.XUL_REMOTE_BROWSER),
+                                {},
+                                {
+                                    'url': urls.EG_PATRON_MESSAGE_CENTER + "/" + obj.patron.id(),
+                                    'show_print_button': false,
+                                    'show_nav_buttons': false
+                                }
+                            );
+                        }
+                    ],
                     'cmd_patron_info_stats' : [
                         ['command'],
                         function(ev) {

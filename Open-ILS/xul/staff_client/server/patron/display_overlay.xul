@@ -96,6 +96,7 @@
                                     <menuitem label="&staff.patron_navbar.alert;" accesskey="&staff.patron_navbar.alert.accesskey;" command="cmd_patron_alert"/>
                                     <menuitem label="&staff.patron.info.notes.label;" accesskey="&staff.patron.info.notes.accesskey;" command="cmd_patron_info_notes"/>
                                     <menuitem label="&staff.patron.info.triggered_events.label;" accesskey="&staff.patron.info.triggered_events.accesskey;" command="cmd_patron_info_triggered_events"/>
+                                    <menuitem label="&staff.patron.message_center.label;" accesskey="&staff.patron.message_center.accesskey;" command="cmd_patron_message_center"/>
                                     <menuitem label="&staff.patron.info.stat_cats.label;" accesskey="&staff.patron.info.stat_cats.accesskey;" command="cmd_patron_info_stats"/>
                                     <menu id="PatronNavBar_other_booking" label="&staff.main.menu.booking.label;" accesskey="&staff.main.menu.booking.accesskey;">
                                         <menupopup id="PatronNavBar_other_booking_popup">

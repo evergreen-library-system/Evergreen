@@ -3507,6 +3507,8 @@
 <!ENTITY staff.patron.info.notes.accesskey "N">
 <!ENTITY staff.patron.info.triggered_events.label "Triggered Events">
 <!ENTITY staff.patron.info.triggered_events.accesskey "v">
+<!ENTITY staff.patron.message_center.label "Message Center">
+<!ENTITY staff.patron.message_center.accesskey "r">
 <!ENTITY staff.patron.info.stat_cats.label "Statistical Categories">
 <!ENTITY staff.patron.info.stat_cats.accesskey "S">
 <!ENTITY staff.patron.info.surveys.label "Surveys">

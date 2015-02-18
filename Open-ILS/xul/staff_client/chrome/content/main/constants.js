@@ -520,6 +520,7 @@ var urls = {
     'SERIAL_PRINT_ROUTING_LIST_USERS' : 'oils://remote/eg/serial/print_routing_list_users',
     'XUL_SERIAL_BATCH_RECEIVE': 'oils://remote/xul/server/serial/batch_receive.xul',
     'EG_TRIGGER_EVENTS' : 'oils://remote/eg/actor/user/event_log',
+    'EG_PATRON_MESSAGE_CENTER' : 'oils://remote/eg/actor/user/message',
     'XUL_SEARCH_PREFS' : 'chrome://open_ils_staff_client/content/main/search_prefs.xul',
     'XUL_SERVER_ADDONS' : 'oils://remote/xul/server/addon/addons.xul'
 }
