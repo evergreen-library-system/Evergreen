@@ -1,0 +1,116 @@
+[% WRAPPER base.tt2 %]
+[% ctx.page_title = l('Patron Messages') %]
+[% usr_id = ctx.page_args.0 %]
+<script type="text/javascript">
+    dojo.require('dojox.grid.DataGrid');
+    dojo.require('openils.widget.AutoGrid');
+    dojo.require('dojox.grid.cells.dijit');
+    dojo.require('dojo.data.ItemFileWriteStore');
+    dojo.require('dijit.form.CurrencyTextBox');
+    dojo.require('dijit.Dialog');
+    dojo.require('dojox.widget.PlaceholderMenuItem');
+    dojo.require('fieldmapper.OrgUtils');
+    dojo.require('dijit.form.FilteringSelect');
+    dojo.require('openils.PermaCrud');
+    dojo.require('openils.widget.OrgUnitFilteringSelect');
+
+    var thingContextOrg;
+    var thingList;
+
+    /** really need to put this in a shared location... */
+    function getOrgInfo(rowIndex, item) {
+        if(!item) return '';
+        var orgId = this.grid.store.getValue(item, this.field);
+        return fieldmapper.aou.findOrgUnit(orgId).shortname();
+    }
+
+    function thingInit() {
+
+        thingGrid.disableSelectorForRow = function(rowIdx) {
+            var item = thingGrid.getItem(rowIdx);
+            return (thingGrid.store.getValue(item, 'id') < 0);
+        }
+
+        buildGrid();
+        var connect = function() {
+            dojo.connect(thingContextOrgSelect, 'onChange',
+                        function() {
+                            thingContextOrg = this.getValue();
+                            thingGrid.resetStore();
+                            buildGrid();
+                        }
+                        );
+        };
+        // go ahead and let staff see everything
+        new openils.User().buildPermOrgSelector('STAFF_LOGIN', thingContextOrgSelect, null, connect);
+    }
+
+    function buildGrid() {
+
+        thingGrid.overrideWidgetArgs.title = {readOnly : true};
+        thingGrid.overrideWidgetArgs.create_date = {readOnly : true};
+        thingGrid.overrideWidgetArgs.message = {readOnly : true};
+        thingGrid.overrideWidgetArgs.read_date = {readOnly : true};
+        thingGrid.overrideWidgetArgs.sending_lib = {readOnly : true};
+
+        if(thingContextOrg == null)
+            thingContextOrg = openils.User.user.ws_ou();
+
+        fieldmapper.standardRequest(
+            ['open-ils.pcrud', 'open-ils.pcrud.search.aum.atomic'],
+            {   async: true,
+                params: [
+                    openils.User.authtoken,
+                    {
+                        "sending_lib":fieldmapper.aou.descendantNodeList(thingContextOrg,true),
+                        "usr":[% usr_id %]
+                    },
+                    {"order_by":{"aum":"create_date DESC"}}
+                ],
+                oncomplete: function(r) {
+                    if(thingList = openils.Util.readResponse(r)) {
+                        thingList = openils.Util.objectSort(thingList);
+                        dojo.forEach(thingList,
+                                    function(e) {
+                                        thingGrid.store.newItem(aum.toStoreItem(e));
+                                    }
+                                    );
+                    }
+                }
+            }
+        );
+    }
+
+    openils.Util.addOnLoad(thingInit);
+</script>
+
+<!-- grid -->
+
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+            <div>[% l('Patron Messages') %]</div>
+            <div>
+                <button dojoType='dijit.form.Button' onClick='thingGrid.deleteSelected()'>[% l('Delete Selected') %]</button>
+            </div>
+        </div>
+        <div>
+            <span>[% l('Context Org Unit') %]</span>
+            <select dojoType="openils.widget.OrgUnitFilteringSelect" jsId='thingContextOrgSelect'
+                searchAttr='shortname' labelAttr='shortname'> </select>
+        </div>
+        <table  jsId="thingGrid"
+                dojoType="openils.widget.AutoGrid"
+                query="{usr: [% usr_id %]}"
+                fieldOrder="['id', 'create_date', 'title', 'sending_lib', 'read_date', 'deleted']"
+                suppressFields="['usr', 'message']"
+                suppressEditFields="['id','usr']"
+                fmClass='aum'
+                defaultCellWidth='10'
+                editOnEnter='true'>
+            <thead>
+                <tr><th field='sending_lib' get='getOrgInfo'/></tr>
+            </thead>
+        </table>
+    </div>
+</div>
+[% END %]
