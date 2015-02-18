@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('0909', :eg_version);
+
 ALTER TABLE vandelay.authority_match
     ADD COLUMN match_score INT NOT NULL DEFAULT 0;
 
