@@ -42,14 +42,14 @@ OILSAccessHandlerCheckOU::
   shortname or an ID.
 OILSAccessHandlerPermission::
   Default: <unset> +
-  Permission, or comma delimited set of permissions, the user must have to
+  Permission, or comma- or space-delimited set of permissions, the user must have to
   access the protected area.
 OILSAccessHandlerGoodStanding::
   Default: 0 +
   If set to a true value the user must be both Active and not Barred.
 OILSAccessHandlerHomeOU::
   Default: <unset> +
-  An Org Unit, or comma delimited set of Org Units, that the user's Home OU must
+  An Org Unit, or comma- or space-delimited set of Org Units, that the user's Home OU must
   be equal to or a descendant of to access this resource. Can be set to
   shortnames or IDs.
 OILSAccessHandlerReferrerSetting::
