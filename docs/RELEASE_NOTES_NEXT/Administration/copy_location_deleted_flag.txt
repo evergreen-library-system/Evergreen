@@ -1,0 +1,10 @@
+Deleted flag for copy locations
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+A deleted flag is now available for copy locations, allowing them to be
+"deleted" without losing statistical information for circulations in a given
+copy location. It also allows copy locations that are only used by deleted
+items to be deleted.
+
+When a copy location is deleted, it will remain in the database, but will be
+removed from display in the staff client and the catalog.
+
