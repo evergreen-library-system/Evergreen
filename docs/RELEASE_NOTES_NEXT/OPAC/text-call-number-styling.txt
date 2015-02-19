@@ -1,0 +1,6 @@
+Improved styling on Text call number screen
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+New styling on the _Text call number_ screen has added highlighting to the
+displayed message, makes the font consistent with other text on the screen, and
+displays better on mobile devices.
+
