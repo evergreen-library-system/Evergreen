@@ -1884,15 +1884,15 @@ static int verifyObjectPCRUD ( osrfMethodContext* ctx, osrfHash *class, const js
 	}
 
     // If there is an owning_user attached to the action, we allow that user and users with
-    // object perms on the object. CREATE can't use this. We only do this when there is no
-    // context org for this action, and when we're not ignoring object perms.
+    // object perms on the object. CREATE can't use this. We only do this when we're not
+    // ignoring object perms.
+    char* owning_user_field = osrfHashGet( pcrud, "owning_user" );
     if (
         *method_type != 'c' &&
-        !str_is_true( osrfHashGet(pcrud, "ignore_object_perms") ) && // Always honor
-        context_org_array->size == 0
+        (!str_is_true( osrfHashGet(pcrud, "ignore_object_perms") ) || // Always honor
+        owning_user_field)
     ) {
-        char* owning_user_field = osrfHashGet( pcrud, "owning_user" );
-        if (owning_user_field) {
+        if (owning_user_field) { // see if we can short-cut by comparing the owner to the requestor
 
             if (!param) { // We didn't get it during the context lookup
 			    pkey = osrfHashGet( class, "primarykey" );
@@ -1962,76 +1962,79 @@ static int verifyObjectPCRUD ( osrfMethodContext* ctx, osrfHash *class, const js
                 // Allow the owner to do whatever
                 if (ownerid == userid)
                     OK = 1;
+			}
+		}
 
-                i = 0;
-	            while( !OK && (perm = osrfStringArrayGetString(permission, i++)) ) {
-            		dbi_result result;
+        i = 0;
+        while(	!OK &&
+				(perm = osrfStringArrayGetString(permission, i++)) &&
+				!str_is_true( osrfHashGet(pcrud, "ignore_object_perms"))
+		) {
+    		dbi_result result;
+
+			osrfLogDebug(
+				OSRF_LOG_MARK,
+				"Checking object permission [%s] for user %d "
+						"on object %s (class %s)",
+				perm,
+				userid,
+				pkey_value,
+				osrfHashGet( class, "classname" )
+			);
+
+			result = dbi_conn_queryf(
+				writehandle,
+				"SELECT permission.usr_has_object_perm(%d, '%s', '%s', '%s') AS has_perm;",
+				userid,
+				perm,
+				osrfHashGet( class, "classname" ),
+				pkey_value
+			);
+
+			if( result ) {
+				osrfLogDebug(
+					OSRF_LOG_MARK,
+					"Received a result for object permission [%s] "
+							"for user %d on object %s (class %s)",
+					perm,
+					userid,
+					pkey_value,
+					osrfHashGet( class, "classname" )
+				);
+
+				if( dbi_result_first_row( result )) {
+					jsonObject* return_val = oilsMakeJSONFromResult( result );
+					const char* has_perm = jsonObjectGetString(
+							jsonObjectGetKeyConst( return_val, "has_perm" ));
 
 					osrfLogDebug(
 						OSRF_LOG_MARK,
-						"Checking object permission [%s] for user %d "
-								"on object %s (class %s)",
+						"Status of object permission [%s] for user %d "
+								"on object %s (class %s) is %s",
 						perm,
 						userid,
 						pkey_value,
-						osrfHashGet( class, "classname" )
+						osrfHashGet(class, "classname"),
+						has_perm
 					);
-	
-					result = dbi_conn_queryf(
-						writehandle,
-						"SELECT permission.usr_has_object_perm(%d, '%s', '%s', '%s') AS has_perm;",
-						userid,
-						perm,
-						osrfHashGet( class, "classname" ),
-						pkey_value
-					);
-	
-					if( result ) {
-						osrfLogDebug(
-							OSRF_LOG_MARK,
-							"Received a result for object permission [%s] "
-									"for user %d on object %s (class %s)",
-							perm,
-							userid,
-							pkey_value,
-							osrfHashGet( class, "classname" )
-						);
-	
-						if( dbi_result_first_row( result )) {
-							jsonObject* return_val = oilsMakeJSONFromResult( result );
-							const char* has_perm = jsonObjectGetString(
-									jsonObjectGetKeyConst( return_val, "has_perm" ));
-	
-							osrfLogDebug(
-								OSRF_LOG_MARK,
-								"Status of object permission [%s] for user %d "
-										"on object %s (class %s) is %s",
-								perm,
-								userid,
-								pkey_value,
-								osrfHashGet(class, "classname"),
-								has_perm
-							);
-	
-							if( *has_perm == 't' )
-								OK = 1;
-							jsonObjectFree( return_val );
-						}
-	
-						dbi_result_free( result );
-						if( OK )
-                            break;
-					} else {
-						const char* msg;
-						int errnum = dbi_conn_error( writehandle, &msg );
-						osrfLogWarning( OSRF_LOG_MARK,
-							"Unable to call check object permissions: %d, %s",
-							errnum, msg ? msg : "(No description available)" );
-						if( !oilsIsDBConnected( writehandle ))
-							osrfAppSessionPanic( ctx->session );
-					}
+
+					if( *has_perm == 't' )
+						OK = 1;
+					jsonObjectFree( return_val );
 				}
-            }
+
+				dbi_result_free( result );
+				if( OK )
+                    break;
+			} else {
+				const char* msg;
+				int errnum = dbi_conn_error( writehandle, &msg );
+				osrfLogWarning( OSRF_LOG_MARK,
+					"Unable to call check object permissions: %d, %s",
+					errnum, msg ? msg : "(No description available)" );
+				if( !oilsIsDBConnected( writehandle ))
+					osrfAppSessionPanic( ctx->session );
+			}
         }
     }
 
