@@ -77,8 +77,10 @@
                 [%- INCLUDE 'opac/parts/record/refworks.tt2' %]
             [%- END %]
             <div class="rdetail_aux_utils share_record">
-              <img src="[% ctx.media_prefix %]/images/link.png" alt="[% l('Permalink') %]" />
-             <a href="[% mkurl('', {locg =>CGI.param('locg'), copy_depth =>CGI.param('copy_depth')}, 1) %]" class="no-dec">[% l('Permalink') %]</a>
+                <a href="[% mkurl('', {locg =>CGI.param('locg'), copy_depth =>CGI.param('copy_depth')}, 1) %]" class="no-dec">
+                     <img src="[% ctx.media_prefix %]/images/link.png" alt="[% l('Permalink') %]" />
+                     [% l('Permalink') %]
+                </a>
             </div>
         </div>
     </div>
