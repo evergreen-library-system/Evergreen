@@ -1,0 +1,7 @@
+Active date display in OPAC 
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+If a library uses the copy's active date to calculate holds age protection,
+the active date will display with the copy details instead of the create date
+in the staff client view of the catalog. Libraries that do not enable the 
+_Use Active Date for Age Protection_ library setting will continue to display
+the create date.
