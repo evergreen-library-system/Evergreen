@@ -48,6 +48,26 @@ CREATE TRIGGER convert_usr_note_to_message_tgr
     AFTER INSERT OR UPDATE ON actor.usr_note
     FOR EACH ROW EXECUTE PROCEDURE actor.convert_usr_note_to_message();
 
+CREATE VIEW actor.usr_message_limited
+AS SELECT * FROM actor.usr_message;
+
+CREATE FUNCTION actor.restrict_usr_message_limited () RETURNS TRIGGER AS $$
+BEGIN
+    IF TG_OP = 'UPDATE' THEN
+        UPDATE actor.usr_message
+        SET    read_date = NEW.read_date,
+               deleted   = NEW.deleted
+        WHERE  id = NEW.id;
+        RETURN NEW;
+    END IF;
+    RETURN NULL;
+END;
+$$ LANGUAGE PLPGSQL;
+
+CREATE TRIGGER restrict_usr_message_limited_tgr
+    INSTEAD OF UPDATE OR INSERT OR DELETE ON actor.usr_message_limited
+    FOR EACH ROW EXECUTE PROCEDURE actor.restrict_usr_message_limited();
+
 -- and copy over existing public user notes as (read) patron messages
 INSERT INTO actor.usr_message (usr, title, message, sending_lib, create_date, read_date)
 SELECT aun.usr, title, value, home_ou, aun.create_date, NOW()

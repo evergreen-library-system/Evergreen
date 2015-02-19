@@ -2026,7 +2026,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</links>
 	</class>
 	<class id="aum" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::usr_message" oils_persist:tablename="actor.usr_message" reporter:label="User Message">
-		<fields oils_persist:primary="id" oils_persist:sequence="actor.usr_note_id_seq">
+		<fields oils_persist:primary="id" oils_persist:sequence="actor.usr_message_id_seq">
 			<field reporter:label="Creation Date/Time" name="create_date" reporter:datatype="timestamp"/>
 			<field reporter:label="Read Date/Time" name="read_date" reporter:datatype="timestamp"/>
 			<field reporter:label="Creating Library" name="sending_lib" reporter:datatype="link"/>
@@ -2042,9 +2042,31 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions> <!-- created magically, so no create action -->
-				<retrieve permission="VIEW_USER" context_field="sending_lib" owning_user="usr"/>
-				<update permission="UPDATE_USER" context_field="sending_lib" owning_user="usr"/>
-				<delete permission="UPDATE_USER" context_field="sending_lib" owning_user="usr"/>
+				<retrieve permission="VIEW_USER" context_field="sending_lib" />
+				<update permission="UPDATE_USER" context_field="sending_lib" />
+				<delete permission="UPDATE_USER" context_field="sending_lib" />
+			</actions>
+		</permacrud>
+	</class>
+	<class id="auml" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::usr_message" oils_persist:tablename="actor.usr_message_limited" reporter:label="User Message (Limited Access)">
+		<fields oils_persist:primary="id" oils_persist:sequence="actor.usr_message_id_seq">
+			<field reporter:label="Creation Date/Time" name="create_date" reporter:datatype="timestamp"/>
+			<field reporter:label="Read Date/Time" name="read_date" reporter:datatype="timestamp"/>
+			<field reporter:label="Creating Library" name="sending_lib" reporter:datatype="link"/>
+			<field reporter:label="Message ID" name="id" reporter:datatype="id" />
+			<field reporter:label="Deleted?" name="deleted" reporter:datatype="bool"/>
+			<field reporter:label="Title" name="title" reporter:datatype="text"/>
+			<field reporter:label="User" name="usr" reporter:datatype="link" />
+			<field reporter:label="Message" name="message" reporter:datatype="text"/>
+		</fields>
+		<links>
+			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
+			<link field="sending_lib" reltype="has_a" key="id" map="" class="aou"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions> <!-- created magically, so no create action -->
+				<retrieve permission="UPDATE_USER" context_field="sending_lib" owning_user="usr"/>
+				<update   permission="UPDATE_USER" context_field="sending_lib" owning_user="usr"/>
 			</actions>
 		</permacrud>
 	</class>

@@ -334,7 +334,7 @@ sub _fetch_and_mark_read_single_message {
 
     $pcrud->request('open-ils.pcrud.transaction.begin', $self->editor->authtoken)->gather(1);
     my $messages = $pcrud->request(
-        'open-ils.pcrud.search.aum.atomic',
+        'open-ils.pcrud.search.auml.atomic',
         $self->editor->authtoken,
         {
             usr     => $self->editor->requestor->id,
@@ -343,13 +343,13 @@ sub _fetch_and_mark_read_single_message {
         },
         {
             flesh => 1,
-            flesh_fields => { aum => ['sending_lib'] },
+            flesh_fields => { auml => ['sending_lib'] },
         }
     )->gather(1);
     if (@$messages) {
         $messages->[0]->read_date('now');
         $pcrud->request(
-            'open-ils.pcrud.update.aum',
+            'open-ils.pcrud.update.auml',
             $self->editor->authtoken,
             $messages->[0]
         )->gather(1);
@@ -370,7 +370,7 @@ sub _fetch_user_messages {
     my %paging = ($limit or $offset) ? (limit => $limit, offset => $offset) : ();
 
     my $all_messages = $pcrud->request(
-        'open-ils.pcrud.id_list.aum.atomic',
+        'open-ils.pcrud.id_list.auml.atomic',
         $self->editor->authtoken,
         {
             usr     => $self->editor->requestor->id,
@@ -380,7 +380,7 @@ sub _fetch_user_messages {
     )->gather(1);
 
     my $messages = $pcrud->request(
-        'open-ils.pcrud.search.aum.atomic',
+        'open-ils.pcrud.search.auml.atomic',
         $self->editor->authtoken,
         {
             usr     => $self->editor->requestor->id,
@@ -388,8 +388,8 @@ sub _fetch_user_messages {
         },
         {
             flesh => 1,
-            flesh_fields => { aum => ['sending_lib'] },
-            order_by => { aum => 'create_date DESC' },
+            flesh_fields => { auml => ['sending_lib'] },
+            order_by => { auml => 'create_date DESC' },
             %paging
         }
     )->gather(1);
@@ -411,7 +411,7 @@ sub _handle_message_action {
     $pcrud->request('open-ils.pcrud.transaction.begin', $self->editor->authtoken)->gather(1);
     for my $id (@ids) {
         my $aum = $pcrud->request(
-            'open-ils.pcrud.retrieve.aum',
+            'open-ils.pcrud.retrieve.auml',
             $self->editor->authtoken,
             $id
         )->gather(1);
@@ -423,7 +423,7 @@ sub _handle_message_action {
         } elsif ($action eq 'mark_deleted') {
             $aum->deleted('t');
         }
-        $pcrud->request('open-ils.pcrud.update.aum', $self->editor->authtoken, $aum)->gather(1) ?
+        $pcrud->request('open-ils.pcrud.update.auml', $self->editor->authtoken, $aum)->gather(1) ?
             $changed++ :
             $failed++;
     }
