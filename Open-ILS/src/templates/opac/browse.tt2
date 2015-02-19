@@ -10,7 +10,7 @@
     blimit = CGI.param('blimit') || ctx.opac_hits_per_page || 10;
 
     depart_list = ['blimit', 'bterm', 'bpivot'];
-    metalinks = '<meta name="robots" content="noindex">';
+    ctx.metalinks.push('<meta name="robots" content="noindex">');
 %]
 
     <h2 class="sr-only">[% l('Catalog Browse') %]</h2>

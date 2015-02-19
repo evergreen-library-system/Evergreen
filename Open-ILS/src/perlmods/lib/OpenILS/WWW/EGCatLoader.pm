@@ -309,6 +309,9 @@ sub load_common {
         }
     }
 
+    # List of <meta> and <link> elements to populate
+    $ctx->{metalinks} = [];
+
     $self->extract_copy_location_group_info;
     $ctx->{search_ou} = $self->_get_search_lib();
     $self->staff_saved_searches_set_expansion_state if $ctx->{is_staff};
