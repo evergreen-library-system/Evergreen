@@ -75,6 +75,7 @@
           <eg-org-selector 
             selected="contextOrg"
             hidden-test="wsOrgHidden">
+            disable-test="cant_have_users">
           </eg-org-selector>
         </div>
         <input type='text' class='form-control'  
