@@ -128,7 +128,20 @@
         [% IF any_failures OR ctx.general_hold_error %]
         <a href="[% CGI.param('redirect_to') || CGI.referer | html %]">[% l('Cancel') %]</a>
         [% ELSE %]
-        <a href="[% CGI.param('redirect_to') || CGI.referer | html %]">[% l('Continue') %]</a>
+        <div class='hold_success_links'>
+          <span><a href="[% CGI.param('redirect_to') || CGI.referer | html %]">[% l('Continue') %]</a></span>
+           [% IF ctx.is_staff %]
+             [% IF CGI.param('hold_type') == 'C';
+                  hold_type_label = 'copy';
+                ELSIF CGI.param('hold_type') == 'V';
+                  hold_type_label = 'volume';
+                ELSE;
+                  hold_type_label = 'title';
+              END %]
+               <span><a href="[% mkurl(ctx.opac_root _ '/place_hold', {hold_source_page => CGI.param('hold_source_page')}) %]">
+               [% l('Place another hold for this ') %] [% hold_type_label %]</a>
+               </span>
+          [% END %]
         [% END %]
         </span>
     </form>

@@ -1206,6 +1206,8 @@ a.dash-link:hover { text-decoration: underline !important; }
 .hold-items-list-title { font-size: [% css_fonts.size_bigger %]; }
 .hold-items-list-problem { color: [% css_colors.text_alert %]; }
 
+.hold_success_links > span { margin: 0 2em; }
+
 .mr_holds_no_formats { 
   padding: 5px;
   margin-left: 25px;

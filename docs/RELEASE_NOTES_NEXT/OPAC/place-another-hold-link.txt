@@ -1,0 +1,7 @@
+Staff option to place another hold on same title
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+When a hold is successful in the client, staff will now see a link
+to place another hold on the same title. This link provides some workflow 
+improvement for times when staff are placing holds for multiple patrons on a
+newly-added title or when they are placing holds for book clubs.
+
