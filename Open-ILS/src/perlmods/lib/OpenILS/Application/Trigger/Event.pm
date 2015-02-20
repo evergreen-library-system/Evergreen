@@ -664,7 +664,7 @@ sub _object_by_path {
 
         if ($label && @$label) {
             my $node = $self->environment;
-            my $i = 0; my $max = scalar(@$label);
+            my $i = 0; my $max = scalar(@$label) - 1;
             for (; $i < $max; $i++) {
                 my $part = $$label[$i];
                 $$node{$part} ||= {};
