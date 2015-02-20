@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('0911', :eg_version);
+
 -- Auto-cancelled, no target
 INSERT INTO action_trigger.event_definition (
     id, active, owner, name, hook,
