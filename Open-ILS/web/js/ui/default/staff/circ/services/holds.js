@@ -85,7 +85,7 @@ function($modal , $q , egCore , egConfirmDialog , egAlertDialog) {
                             egCore.net.request(
                                 'open-ils.circ', 'open-ils.circ.hold.cancel',
                                 egCore.auth.token(), hold_id,
-                                $scope.args.cancel_reason.id(), 
+                                $scope.args.cancel_reason,
                                 $scope.args.note
                             ).then(function(resp) {
                                 if (evt = egCore.evt.parse(resp)) {

@@ -15,7 +15,7 @@
         <div class="col-md-8">
           <select class="form-control" id="hold-cancel-reason"
             ng-model="args.cancel_reason"
-            ng-options="reason.label() for reason in args.cancel_reasons">
+            ng-options="reason.id() as reason.label() for reason in args.cancel_reasons">
           </select>
         </div>
       </div>
