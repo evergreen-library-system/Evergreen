@@ -3594,12 +3594,12 @@ sub checkin_handle_lost_or_longoverdue {
         my $restore_od = $U->ou_ancestor_setting_value(
             $circ_lib, $args{ous_restore_overdue}, $self->editor) || 0;
 
+        $self->checkin_handle_lost_or_lo_now_found_restore_od($circ_lib) 
+            if $restore_od && ! $self->void_overdues;
         $self->checkin_handle_lost_or_lo_now_found(
             $args{void_cost_btype}, $args{is_longoverdue}) if ($void_cost);
         $self->checkin_handle_lost_or_lo_now_found(
             $args{void_fee_btype}, $args{is_longoverdue}) if ($void_proc_fee);
-        $self->checkin_handle_lost_or_lo_now_found_restore_od($circ_lib) 
-            if $restore_od && ! $self->void_overdues;
     }
 
     if ($circ_lib != $self->circ_lib) {
