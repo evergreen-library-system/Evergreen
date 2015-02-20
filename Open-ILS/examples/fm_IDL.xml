@@ -2048,7 +2048,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			</actions>
 		</permacrud>
 	</class>
-	<class id="auml" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::usr_message" oils_persist:tablename="actor.usr_message_limited" reporter:label="User Message (Limited Access)">
+	<class id="auml" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::usr_message_limited" oils_persist:tablename="actor.usr_message_limited" reporter:label="User Message (Limited Access)">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.usr_message_id_seq">
 			<field reporter:label="Creation Date/Time" name="create_date" reporter:datatype="timestamp"/>
 			<field reporter:label="Read Date/Time" name="read_date" reporter:datatype="timestamp"/>
