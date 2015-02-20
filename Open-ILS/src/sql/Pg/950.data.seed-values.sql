@@ -5007,6 +5007,66 @@ INSERT into config.org_unit_setting_type
         'coust', 'description'),
     'bool', null)
 
+,(  'bill.prohibit_negative_balance_default', 'finance',
+    oils_i18n_gettext(
+        'bill.prohibit_negative_balance_default',
+        'Prohibit negative balance on bills (DEFAULT)',
+        'coust', 'label'),
+    oils_i18n_gettext(
+        'bill.prohibit_negative_balance_default',
+        'Default setting to prevent credits on circulation related bills',
+        'coust', 'description'),
+    'bool', null)
+,(  'bill.prohibit_negative_balance_on_overdues', 'finance',
+    oils_i18n_gettext(
+        'bill.prohibit_negative_balance_on_overdues',
+        'Prohibit negative balance on bills for overdue materials',
+        'coust', 'label'),
+    oils_i18n_gettext(
+        'bill.prohibit_negative_balance_on_overdues',
+        'Prevent credits on bills for overdue materials',
+        'coust', 'description'),
+    'bool', null)
+,(  'bill.prohibit_negative_balance_on_lost', 'finance',
+    oils_i18n_gettext(
+        'bill.prohibit_negative_balance_on_lost',
+        'Prohibit negative balance on bills for lost materials',
+        'coust', 'label'),
+    oils_i18n_gettext(
+        'bill.prohibit_negative_balance_on_lost',
+        'Prevent credits on bills for lost/long overdue materials',
+        'coust', 'description'),
+    'bool', null)
+,(  'bill.negative_balance_interval_default', 'finance',
+    oils_i18n_gettext(
+        'bill.negative_balance_interval_default',
+        'Negative Balance Interval (DEFAULT)',
+        'coust', 'label'),
+    oils_i18n_gettext(
+        'bill.negative_balance_interval_default',
+        'Amount of time after which no negative balances or credits are allowed on circulation bills',
+        'coust', 'description'),
+    'interval', null)
+,(  'bill.negative_balance_interval_on_overdues', 'finance',
+    oils_i18n_gettext(
+        'bill.negative_balance_interval_on_overdues',
+        'Negative Balance Interval for Overdues',
+        'coust', 'label'),
+    oils_i18n_gettext(
+        'bill.negative_balance_interval_on_overdues',
+        'Amount of time after which no negative balances or credits are allowed on bills for overdue materials',
+        'coust', 'description'),
+    'interval', null)
+,(  'bill.negative_balance_interval_on_lost', 'finance',
+    oils_i18n_gettext(
+        'bill.negative_balance_interval_on_lost',
+        'Negative Balance Interval for Lost',
+        'coust', 'label'),
+    oils_i18n_gettext(
+        'bill.negative_balance_interval_on_lost',
+        'Amount of time after which no negative balances or credits are allowed on bills for lost/long overdue materials',
+        'coust', 'description'),
+    'interval', null)
 ;
 
 UPDATE config.org_unit_setting_type

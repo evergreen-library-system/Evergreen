@@ -2219,5 +2219,26 @@ sub check_open_xact {
     return undef;
 }
 
+# Because floating point math has rounding issues, and Dyrcona gets
+# tired of typing out the code to multiply floating point numbers
+# before adding and subtracting them and then dividing the result by
+# 100 each time, he wrote this little subroutine for subtracting
+# floating point values.  It can serve as a model for the other
+# operations if you like.
+#
+# It takes a list of floating point values as arguments.  The rest are
+# all subtracted from the first and the result is returned.  The
+# values are all multiplied by 100 before being used, and the result
+# is divided by 100 in order to avoid decimal rounding errors inherent
+# in floating point math.
+sub fpdiff {
+    my ($class, @args) = @_;
+    my $result = shift(@args) * 100;
+    while (my $arg = shift(@args)) {
+        $result -= $arg * 100;
+    }
+    return $result / 100;
+}
+
 1;
 

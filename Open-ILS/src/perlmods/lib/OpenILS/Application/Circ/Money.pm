@@ -17,8 +17,10 @@ package OpenILS::Application::Circ::Money;
 use base qw/OpenILS::Application/;
 use strict; use warnings;
 use OpenILS::Application::AppUtils;
+use OpenILS::Application::Circ::CircCommon;
 my $apputils = "OpenILS::Application::AppUtils";
 my $U = "OpenILS::Application::AppUtils";
+my $CC = "OpenILS::Application::Circ::CircCommon";
 
 use OpenSRF::EX qw(:try);
 use OpenILS::Perm;
@@ -482,7 +484,7 @@ sub make_payments {
             # close if no circulation transaction is present,
             # otherwise we check if the circulation is in a state that
             # allows itself to be closed.
-            if (!$circ || OpenILS::Application::Circ::CircCommon->can_close_circ($e, $circ)) {
+            if (!$circ || $CC->can_close_circ($e, $circ)) {
                 $trans = $e->retrieve_money_billable_transaction($transid);
                 $trans->xact_finish("now");
                 if (!$e->update_money_billable_transaction($trans)) {
@@ -904,46 +906,16 @@ __PACKAGE__->register_method(
 );
 sub void_bill {
     my( $s, $c, $authtoken, @billids ) = @_;
-
-    my $e = new_editor( authtoken => $authtoken, xact => 1 );
-    return $e->die_event unless $e->checkauth;
-    return $e->die_event unless $e->allowed('VOID_BILLING');
-
-    my %users;
-    for my $billid (@billids) {
-
-        my $bill = $e->retrieve_money_billing($billid)
-            or return $e->die_event;
-
-        my $xact = $e->retrieve_money_billable_transaction($bill->xact)
-            or return $e->die_event;
-
-        if($U->is_true($bill->voided)) {
-            $e->rollback;
-            return OpenILS::Event->new('BILL_ALREADY_VOIDED', payload => $bill);
-        }
-
-        my $org = $U->xact_org($bill->xact, $e);
-        $users{$xact->usr} = {} unless $users{$xact->usr};
-        $users{$xact->usr}->{$org} = 1;
-
-        $bill->voided('t');
-        $bill->voider($e->requestor->id);
-        $bill->void_time('now');
-    
-        $e->update_money_billing($bill) or return $e->die_event;
-        my $evt = $U->check_open_xact($e, $bill->xact, $xact);
-        return $evt if $evt;
+    my $editor = new_editor(authtoken=>$authtoken, xact=>1);
+    my $rv = $CC->real_void_bills($editor, \@billids);
+    if (ref($rv) eq 'HASH') {
+        # We got an event.
+        $editor->rollback();
+    } else {
+        # We should have gotten 1.
+        $editor->commit();
     }
-
-    # calculate penalties for all user/org combinations
-    for my $user_id (keys %users) {
-        for my $org_id (keys %{$users{$user_id}}) {
-            OpenILS::Utils::Penalty->calculate_penalties($e, $user_id, $org_id);
-        }
-    }
-    $e->commit;
-    return 1;
+    return $rv;
 }
 
 
