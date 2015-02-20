@@ -538,6 +538,8 @@ my @AUTOLOAD_FIELDS = qw/
     checkout_is_for_hold
     manual_float
     dont_change_lost_zero
+    lost_bill_options
+    needs_lost_bill_handling
 /;
 
 
@@ -2538,28 +2540,6 @@ sub do_checkin {
         $self->dont_change_lost_zero($dont_change_lost_zero);
     }
 
-    my $ignore_stop_fines = undef;
-    if ($self->circ and !$dont_change_lost_zero) {
-
-        # if this circ is LOST and we are configured to generate overdue 
-        # fines for lost items on checkin (to fill the gap between mark 
-        # lost time and when the fines would have naturally stopped), tell 
-        # the fine generator to ignore the stop-fines value on this circ.
-        # XXX should this setting come from the copy circ lib (like other
-        # LOST settings), instead of the circulation circ lib?
-        if ($stat == OILS_COPY_STATUS_LOST) {
-            $ignore_stop_fines = $self->circ->stop_fines if
-                $U->ou_ancestor_setting_value(
-                    $self->circ_lib, 
-                    OILS_SETTING_GENERATE_OVERDUE_ON_LOST_RETURN, 
-                    $self->editor
-                );
-        }
-
-        # run the fine generator against this circ
-        $self->handle_fines(undef, $ignore_stop_fines);
-    }
-
     if( $self->checkin_check_holds_shelf() ) {
         $self->bail_on_events(OpenILS::Event->new('NO_CHANGE'));
         $self->hold($U->fetch_open_hold_by_copy($self->copy->id));
@@ -2602,6 +2582,27 @@ sub do_checkin {
         return if $self->bail_out;
         $self->checkin_changed(1);
 
+        if (!$dont_change_lost_zero) {
+            # if this circ is LOST and we are configured to generate overdue
+            # fines for lost items on checkin (to fill the gap between mark
+            # lost time and when the fines would have naturally stopped), then
+            # stop_fines is no longer valid and should be cleared.
+            #
+            # stop_fines will be set again during the handle_fines() stage.
+            # XXX should this setting come from the copy circ lib (like other
+            # LOST settings), instead of the circulation circ lib?
+            if ($stat == OILS_COPY_STATUS_LOST) {
+                $self->circ->clear_stop_fines if
+                    $U->ou_ancestor_setting_value(
+                        $self->circ_lib,
+                        OILS_SETTING_GENERATE_OVERDUE_ON_LOST_RETURN,
+                        $self->editor
+                    );
+            }
+
+            # handle fines for this circ, including overdue gen if needed
+            $self->handle_fines;
+        }
     } elsif( $self->transit ) {
         my $hold_transit = $self->process_received_transit;
         $self->checkin_changed(1);
@@ -3365,29 +3366,71 @@ sub put_hold_on_shelf {
     return undef;
 }
 
-
-
 sub handle_fines {
    my $self = shift;
    my $reservation = shift;
-   my $ignore_stop_fines = shift;
    my $dt_parser = DateTime::Format::ISO8601->new;
 
    my $obj = $reservation ? $self->reservation : $self->circ;
 
-   return undef if (!$ignore_stop_fines and $obj->stop_fines);
+    my $lost_bill_opts = $self->lost_bill_options;
+    my $circ_lib = $lost_bill_opts->{circ_lib} if $lost_bill_opts;
+    # first, restore any voided overdues for lost, if needed
+    if ($self->needs_lost_bill_handling and !$self->void_overdues) {
+        my $restore_od = $U->ou_ancestor_setting_value(
+            $circ_lib, $lost_bill_opts->{ous_restore_overdue},
+            $self->editor) || 0;
+        $self->checkin_handle_lost_or_lo_now_found_restore_od($circ_lib)
+            if $restore_od;
+    }
 
-   # If we have a grace period
-   if($obj->can('grace_period')) {
-      # Parse out the due date
-      my $due_date = $dt_parser->parse_datetime( cleanse_ISO8601($obj->due_date) );
-      # Add the grace period to the due date
-      $due_date->add(seconds => OpenSRF::Utils->interval_to_seconds($obj->grace_period));
-      # Don't generate fines on circs still in grace period
-      return undef if ($due_date > DateTime->now);
-   }
+    # next, handle normal overdue generation and apply stop_fines
+    # XXX reservations don't have stop_fines
+    # TODO revisit booking_reservation re: stop_fines support
+    if ($reservation or !$obj->stop_fines) {
+        my $skip_for_grace;
 
-   $CC->generate_fines({circs => [$obj], editor => $self->editor});
+        # This is a crude check for whether we are in a grace period. The code
+        # in generate_fines() does a more thorough job, so this exists solely
+        # as a small optimization, and might be better off removed.
+
+        # If we have a grace period
+        if($obj->can('grace_period')) {
+            # Parse out the due date
+            my $due_date = $dt_parser->parse_datetime( cleanse_ISO8601($obj->due_date) );
+            # Add the grace period to the due date
+            $due_date->add(seconds => OpenSRF::Utils->interval_to_seconds($obj->grace_period));
+            # Don't generate fines on circs still in grace period
+            $skip_for_grace = $due_date > DateTime->now;
+        }
+        $CC->generate_fines({circs => [$obj], editor => $self->editor})
+            unless $skip_for_grace;
+
+        if (!$reservation and !$obj->stop_fines) {
+            $obj->stop_fines(OILS_STOP_FINES_CHECKIN);
+            $obj->stop_fines(OILS_STOP_FINES_RENEW) if $self->is_renewal;
+            $obj->stop_fines(OILS_STOP_FINES_CLAIMS_NEVERCHECKEDOUT) if $self->claims_never_checked_out;
+            $obj->stop_fines_time('now');
+            $obj->stop_fines_time($self->backdate) if $self->backdate;
+            $self->editor->update_action_circulation($obj);
+        }
+    }
+
+    # finally, handle voiding of lost item and processing fees
+    if ($self->needs_lost_bill_handling) {
+        my $void_cost = $U->ou_ancestor_setting_value(
+            $circ_lib, $lost_bill_opts->{ous_void_item_cost},
+            $self->editor) || 0;
+        my $void_proc_fee = $U->ou_ancestor_setting_value(
+            $circ_lib, $lost_bill_opts->{ous_void_proc_fee},
+            $self->editor) || 0;
+        $self->checkin_handle_lost_or_lo_now_found(
+            $lost_bill_opts->{void_cost_btype},
+            $lost_bill_opts->{is_longoverdue}) if $void_cost;
+        $self->checkin_handle_lost_or_lo_now_found(
+            $lost_bill_opts->{void_fee_btype},
+            $lost_bill_opts->{is_longoverdue}) if $void_proc_fee;
+    }
 
    return undef;
 }
@@ -3405,14 +3448,6 @@ sub checkin_handle_circ {
    if($self->backdate) {
         my $evt = $self->checkin_handle_backdate;
         return $self->bail_on_events($evt) if $evt;
-   }
-
-   if(!$circ->stop_fines) {
-      $circ->stop_fines(OILS_STOP_FINES_CHECKIN);
-      $circ->stop_fines(OILS_STOP_FINES_RENEW) if $self->is_renewal;
-      $circ->stop_fines(OILS_STOP_FINES_CLAIMS_NEVERCHECKEDOUT) if $self->claims_never_checked_out;
-      $circ->stop_fines_time('now');
-      $circ->stop_fines_time($self->backdate) if $self->backdate;
    }
 
     # Set the checkin vars since we have the item
@@ -3471,16 +3506,20 @@ sub checkin_handle_lost {
     my $max_return = $U->ou_ancestor_setting_value($circ_lib, 
         OILS_SETTING_MAX_ACCEPT_RETURN_OF_LOST, $self->editor) || 0;
 
-    return $self->checkin_handle_lost_or_longoverdue(
+    $self->lost_bill_options({
         circ_lib => $circ_lib,
-        max_return => $max_return,
         ous_void_item_cost => OILS_SETTING_VOID_LOST_ON_CHECKIN,
         ous_void_proc_fee => OILS_SETTING_VOID_LOST_PROCESS_FEE_ON_CHECKIN,
         ous_restore_overdue => OILS_SETTING_RESTORE_OVERDUE_ON_LOST_RETURN,
-        ous_immediately_available => OILS_SETTING_LOST_IMMEDIATELY_AVAILABLE,
-        ous_use_last_activity => undef, # not supported for LOST checkin
         void_cost_btype => 3, 
         void_fee_btype => 4 
+    });
+
+    return $self->checkin_handle_lost_or_longoverdue(
+        circ_lib => $circ_lib,
+        max_return => $max_return,
+        ous_immediately_available => OILS_SETTING_LOST_IMMEDIATELY_AVAILABLE,
+        ous_use_last_activity => undef # not supported for LOST checkin
     );
 }
 
@@ -3499,18 +3538,22 @@ sub checkin_handle_long_overdue {
     my $max_return = $U->ou_ancestor_setting_value($circ_lib, 
         'circ.max_accept_return_of_longoverdue', $self->editor) || 0;
 
+    $self->lost_bill_options({
+        circ_lib => $circ_lib,
+        ous_void_item_cost => 'circ.void_longoverdue_on_checkin',
+        ous_void_proc_fee => 'circ.void_longoverdue_proc_fee_on_checkin',
+        is_longoverdue => 1,
+        ous_restore_overdue => 'circ.restore_overdue_on_longoverdue_return',
+        void_cost_btype => 10,
+        void_fee_btype => 11
+    });
+
     return $self->checkin_handle_lost_or_longoverdue(
         circ_lib => $circ_lib,
         max_return => $max_return,
-        is_longoverdue => 1,
-        ous_void_item_cost => 'circ.void_longoverdue_on_checkin',
-        ous_void_proc_fee => 'circ.void_longoverdue_proc_fee_on_checkin',
-        ous_restore_overdue => 'circ.restore_overdue_on_longoverdue_return',
         ous_immediately_available => 'circ.longoverdue_immediately_available',
         ous_use_last_activity => 
-            'circ.longoverdue.use_last_activity_date_on_return',
-        void_cost_btype => 10,
-        void_fee_btype => 11
+            'circ.longoverdue.use_last_activity_date_on_return'
     )
 }
 
@@ -3587,19 +3630,7 @@ sub checkin_handle_lost_or_longoverdue {
             "max return interval (or no interval is defined).  Proceeding ".
             "with fine/fee voiding, etc.");
 
-        my $void_cost = $U->ou_ancestor_setting_value(
-            $circ_lib, $args{ous_void_item_cost}, $self->editor) || 0;
-        my $void_proc_fee = $U->ou_ancestor_setting_value(
-            $circ_lib, $args{ous_void_proc_fee}, $self->editor) || 0;
-        my $restore_od = $U->ou_ancestor_setting_value(
-            $circ_lib, $args{ous_restore_overdue}, $self->editor) || 0;
-
-        $self->checkin_handle_lost_or_lo_now_found_restore_od($circ_lib) 
-            if $restore_od && ! $self->void_overdues;
-        $self->checkin_handle_lost_or_lo_now_found(
-            $args{void_cost_btype}, $args{is_longoverdue}) if ($void_cost);
-        $self->checkin_handle_lost_or_lo_now_found(
-            $args{void_fee_btype}, $args{is_longoverdue}) if ($void_proc_fee);
+        $self->needs_lost_bill_handling(1);
     }
 
     if ($circ_lib != $self->circ_lib) {
