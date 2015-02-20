@@ -106,7 +106,7 @@ END; # FOREACH bib
                 [% copy_info.barcode | html -%]
                 [% IF ctx.is_staff %]
                   [%- IF ctx.is_browser_staff %]
-                    <a target="_top" href="[% ctx.base_path %]/staff/cat/item/[% copy_info.id %]">[% l('view') %]</a>
+                    <a target="_blank" href="[% ctx.base_path %]/staff/cat/item/[% copy_info.id %]">[% l('view') %]</a>
                     [% IF ctx.has_perm('UPDATE_COPY', copy_info.circ_lib) 
                         OR ctx.has_perm('UPDATE_COPY', copy_info.call_number_owning_lib) %]
                         <span> | </span>
