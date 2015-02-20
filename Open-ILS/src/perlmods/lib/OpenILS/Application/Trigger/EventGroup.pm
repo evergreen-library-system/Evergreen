@@ -65,12 +65,35 @@ sub react {
         $self->build_environment;
 
         try {
-            $self->reacted(
-                OpenILS::Application::Trigger::ModRunner::Reactor
-                    ->new( $self->event->event_def->reactor, $self->environment )
-                    ->run
-                    ->final_result
+            my $env = $self->environment;
+            my $reactor = OpenILS::Application::Trigger::ModRunner::Reactor->new(
+                $self->event->event_def->reactor,
+                $env
             );
+
+            $self->reacted( $reactor->run->final_result);
+
+            if ($env->{usr_message}{usr} && $env->{usr_message}{template}) {
+                my $message_template_output =
+                    $reactor->pass('ProcessMessage')->run->final_result;
+
+                if ($message_template_output) {
+                    my $usr_message = Fieldmapper::actor::usr_message->new;
+                    $usr_message->title( $self->event->event_def->message_title || $self->event->event_def->name );
+                    $usr_message->message( $message_template_output );
+                    $usr_message->usr( $env->{usr_message}{usr}->id );
+                    $usr_message->sending_lib( $env->{usr_message}{sending_lib}->id );
+
+                    if ($self->editor->xact_begin) {
+                        if ($self->editor->create_actor_usr_message( $usr_message )) {
+                            $self->editor->xact_commit;
+                        } else {
+                            $self->editor->xact_rollback;
+                        }
+                    }
+                }
+            }
+
         } otherwise {
             $log->error("Event reacting failed with ". shift() );
             $self->update_state( 'error' ) || die 'Unable to update event group state';
