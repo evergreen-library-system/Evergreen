@@ -1,0 +1,19 @@
+Importing Statistical Categories
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+You can now retrieve statistical categories (stat cats) from the MARC
+record and apply them to the items in Evergreen. When importing or
+overlaying items through the Vandelay MARC batch import process, edit
+your Holdings Import Profile to tell Evergreen which subfield contains
+your stat cat data. That subfield in your MARC records should be
+formatted like the following:
+
+----
+CATEGORY 1|VALUE 1||CATEGORY 2|VALUE 2
+----
+
+Notice that the pipe character '|' is used to separate each category
+from its value, and two pipes separate each pair of category values.
+
+If you are overlaying existing copies which already have stat cats
+attached to them, the overlay process will keep those values unless the
+incoming copies contain updated values for matching categories.
