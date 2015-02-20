@@ -79,7 +79,7 @@ sub react {
 
                 if ($message_template_output) {
                     my $usr_message = Fieldmapper::actor::usr_message->new;
-                    $usr_message->title( $self->event->event_def->message_title || $self->event->event_def->name );
+                    $usr_message->title( $env->{usr_message}{title} || $self->event->event_def->name );
                     $usr_message->message( $message_template_output );
                     $usr_message->usr( $env->{usr_message}{usr}->id );
                     $usr_message->sending_lib( $env->{usr_message}{sending_lib}->id );
