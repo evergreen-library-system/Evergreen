@@ -1,0 +1,52 @@
+BEGIN;
+
+SELECT plan(1);
+
+-------------------------
+-- Setup test environment
+--   Circ modifier
+--   Vandelay settings (queue, import_item_attr_definition)
+--   Bib record added to Vandelay queue
+--     including items with stat cat data
+-------------------------
+
+INSERT INTO config.circ_modifier (code, name, description, sip2_media_type)
+    VALUES ('TEST', 'TEST', 'TEST', 'TEST');
+
+INSERT INTO vandelay.import_item_attr_definition (
+    owner, name, tag, owning_lib, circ_lib,
+    call_number, internal_id, status, location,
+    barcode, circ_modifier, stat_cat_data)
+VALUES (
+    1, 'TEST', '999', 'b', 'b',
+    'j', 'e', 'z', 'c',
+    'p', 'a', 'd');
+
+INSERT INTO vandelay.bib_queue (owner, name, item_attr_def)
+    VALUES (1, 'TEST', CURRVAL('vandelay.import_item_attr_definition_id_seq'));
+
+----------------------
+-- Add record to queue
+--   This triggers ingest_bib_items()
+--   which calls ingest_items()
+----------------------
+INSERT INTO vandelay.queued_bib_record (queue, bib_source, marc)
+    VALUES ( CURRVAL('vandelay.queue_id_seq'), 2,
+            '<record xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/MARC21/slim" xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd"><leader>01532nam a22003138a 4500</leader><controlfield tag="001">996</controlfield><controlfield tag="003">CONS</controlfield><controlfield tag="005">20140910210953.0</controlfield><controlfield tag="008">070119s2009    nyua   j      000 1 eng  </controlfield><datafield tag="010" ind1=" " ind2=" "><subfield code="a">  2006100441</subfield></datafield><datafield tag="019" ind1=" " ind2=" "><subfield code="a">232977713</subfield></datafield><datafield tag="020" ind1=" " ind2=" "><subfield code="a">97800608089 (trade bdg.)</subfield></datafield><datafield tag="035" ind1=" " ind2=" "><subfield code="a">test</subfield></datafield><datafield tag="100" ind1="1" ind2=" "><subfield code="a">Gaiman, Neil.</subfield></datafield><datafield tag="245" ind1="1" ind2="0"><subfield code="a">Blueberry girl 2 /</subfield><subfield code="c">written by Neil Gaiman.</subfield></datafield><datafield tag="250" ind1=" " ind2=" "><subfield code="a">1st ed.</subfield></datafield><datafield tag="260" ind1=" " ind2=" "><subfield code="a">New York :</subfield><subfield code="b">HarperCollinsPublishers,</subfield><subfield code="c">2009.</subfield></datafield><datafield tag="999" ind1="4" ind2=" "><subfield code="a">TEST</subfield><subfield code="b">BR1</subfield><subfield code="c">Stacks</subfield><subfield code="d">Item Category 1|EBOOK</subfield><subfield code="e">4674</subfield><subfield code="j">HV 1431 .S76 1990</subfield><subfield code="p">SC1001</subfield><subfield code="x">nonreference</subfield><subfield code="x">holdable</subfield><subfield code="x">circulating</subfield><subfield code="x">visible</subfield><subfield code="z">Available</subfield></datafield><datafield tag="999" ind1="4" ind2=" "><subfield code="a">TEST</subfield><subfield code="b">BR1</subfield><subfield code="c">Stacks</subfield><subfield code="e">4675</subfield><subfield code="j">HV 1431 .S76 1990</subfield><subfield code="g">TEST</subfield><subfield code="p">SC1002</subfield><subfield code="x">nonreference</subfield><subfield code="x">holdable</subfield><subfield code="x">circulating</subfield><subfield code="x">visible</subfield><subfield code="z">Available</subfield></datafield><datafield tag="999" ind1="4" ind2=" "><subfield code="a">TEST</subfield><subfield code="b">BR1</subfield><subfield code="c">Stacks</subfield><subfield code="d">Item Category 1|EBOOK||Item Category 2|E-PROJECT MUSE</subfield><subfield code="j">HV 1431 .S76 1990</subfield><subfield code="p">SC3003</subfield><subfield code="x">nonreference</subfield><subfield code="x">holdable</subfield><subfield code="x">circulating</subfield><subfield code="x">visible</subfield><subfield code="z">Available</subfield></datafield><datafield tag="999" ind1="4" ind2=" "><subfield code="a">TEST</subfield><subfield code="b">BR1</subfield><subfield code="c">Stacks</subfield><subfield code="j">HV 1431 .S76 1990</subfield><subfield code="p">SC3004</subfield><subfield code="x">nonreference</subfield><subfield code="x">holdable</subfield><subfield code="x">circulating</subfield><subfield code="x">visible</subfield><subfield code="z">Available</subfield></datafield></record>'
+    );
+
+-------------------
+-- Test the results
+-------------------
+SELECT is(
+    (
+        SELECT count(*)
+            FROM vandelay.import_item
+            WHERE record = CURRVAL('vandelay.queued_record_id_seq')
+            AND stat_cat_data IS NOT NULL
+    ),
+    2::bigint,
+    'Stat cat data?'
+);
+
+ROLLBACK;
