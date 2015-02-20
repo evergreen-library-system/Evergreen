@@ -356,7 +356,7 @@ sub seconds_to_interval_hash {
 sub generate_fines {
     my ($class, $args) = @_;
     my $circs = $args->{circs};
-      return unless $circs and @$circs;
+    return unless $circs and @$circs;
     my $e = $args->{editor};
     # if a client connection is passed in, this will be chatty like
     # the old storage version
@@ -364,13 +364,14 @@ sub generate_fines {
 
     my $commit = 0;
     unless ($e) {
-        $e = new_editor(xact => 1);
+        # Transactions are opened/closed with each circ, reservation, etc.
+        # The first $e->xact_begin (below) will cause a connect.
+        $e = new_editor();
         $commit = 1;
     }
 
     my %hoo = map { ( $_->id => $_ ) } @{ $e->retrieve_all_actor_org_unit_hours_of_operation };
 
-    my $penalty = OpenSRF::AppSession->create('open-ils.penalty');
     my $handling_resvs = 0;
     for my $c (@$circs) {
 
@@ -409,17 +410,15 @@ sub generate_fines {
         my $grace_period = ($is_reservation ? 0 : interval_to_seconds($c->grace_period));
 
         eval {
-#            if ($self->method_lookup('open-ils.storage.transaction.current')->run) {
-#                $logger->debug("Cleaning up after previous transaction\n");
-#                $self->method_lookup('open-ils.storage.transaction.rollback')->run;
-#            }
-#            $self->method_lookup('open-ils.storage.transaction.begin')->run( $client );
-            $logger->info(
-                sprintf("Processing %s %d...",
-                    ($is_reservation ? "reservation" : "circ"), $c->id
-                )
-            );
 
+            # Clean up after previous transaction.  
+            # This is a no-op if there is no open transaction.
+            $e->xact_rollback if $commit;
+
+            $logger->info(sprintf("Processing $ctype %d...", $c->id));
+
+            # each (ils) transaction is processed in its own (db) transaction
+            $e->xact_begin if $commit;
 
             my $due_dt = $parser->parse_datetime( cleanse_ISO8601( $c->$due_date_method ) );
     
@@ -452,12 +451,12 @@ sub generate_fines {
                 " (user ".$c->usr.").\n".
                 "\tItem was due on or before: ".localtime($due)."\n") if $conn;
     
-            my @fines = @{$e->search_money_billing(
+            my @fines = @{$e->search_money_billing([
                 { xact => $c->id,
                   btype => 1,
                   billing_ts => { '>' => $c->$due_date_method } },
-                { order_by => 'billing_ts DESC'}
-            )};
+                { order_by => {mb => 'billing_ts DESC'}}
+            ])};
 
             my $f_idx = 0;
             my $fine = $fines[$f_idx] if (@fines);
@@ -569,11 +568,12 @@ sub generate_fines {
             $conn->respond( "\t\tAdding fines totaling $latest_amount for overdue up to $latest_billing_ts\n" )
                 if ($conn and $latest_billing_ts and $latest_amount);
 
-#            $self->method_lookup('open-ils.storage.transaction.commit')->run;
 
             # Calculate penalties inline
             OpenILS::Utils::Penalty->calculate_penalties(
                 $e, $c->usr, $c->$circ_lib_method);
+
+            $e->xact_commit if $commit;
 
         };
 
@@ -581,12 +581,12 @@ sub generate_fines {
             my $e = $@;
             $conn->respond( "Error processing overdue $ctype [".$c->id."]:\n\n$e\n" ) if $conn;
             $logger->error("Error processing overdue $ctype [".$c->id."]:\n$e\n");
-#            $self->method_lookup('open-ils.storage.transaction.rollback')->run;
             last if ($e =~ /IS NOT CONNECTED TO THE NETWORK/o);
         }
     }
 
-    $e->commit if ($commit);
+    # roll back any (potentially) orphaned transaction and disconnect.
+    $e->rollback if $commit;
 
     return undef;
 }

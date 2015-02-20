@@ -1012,7 +1012,7 @@ sub generate_fines {
             $circs = $editor->search_booking_reservation->search_where( { id => $circ_id, return_time => undef, cancel_time => undef } );
         }
     } else {
-        $circs = [map { $_->to_fieldmapper } overdue_circs(undef, 1, 1, 1)];
+        $circs = [overdue_circs(undef, 1, 1, 1)];
     }
 
     return OpenILS::Application::Circ::CircCommon->generate_fines({circs => $circs, conn => $client})
