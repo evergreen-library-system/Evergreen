@@ -20,12 +20,12 @@ my $parser = DateTime::Format::ISO8601->new;
 
 
 # -----------------------------------------------------------------
-# Voids overdue fines on the given circ.  if a backdate is 
+# Voids (or zeros) overdue fines on the given circ.  if a backdate is 
 # provided, then we only void back to the backdate, unless the
 # backdate is to within the grace period, in which case we void all
 # overdue fines.
 # -----------------------------------------------------------------
-sub void_overdues {
+sub void_or_zero_overdues {
     my($class, $e, $circ, $backdate, $note) = @_;
 
     my $bill_search = { 
@@ -102,14 +102,14 @@ sub void_lost {
 }
 
 # ------------------------------------------------------------------
-# Void all bills of a given type on a circulation.
+# Void (or zero) all bills of a given type on a circulation.
 #
 # Takes an editor, a circ object, the btype number for the bills you
 # want to void, and an optional note.
 #
 # Returns undef on success or the result from real_void_bills.
 # ------------------------------------------------------------------
-sub void_bills_of_type {
+sub void_or_zero_bills_of_type {
     my ($class, $e, $circ, $btype, $note) = @_;
 
     # Get a bill payment map.
