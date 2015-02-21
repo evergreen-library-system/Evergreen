@@ -42,3 +42,5 @@ to better support search engines:
    HTTP status code, and record detail pages for records that have been deleted
    now return a proper 410 "HTTP_GONE" HTTP status code, instead of returning a
    misleading 200 "OK" HTTP status code.
+ * Record detail and library pages now include http://ogp.me/[Open Graph Protocol]
+   markup.
