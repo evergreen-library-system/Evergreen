@@ -138,7 +138,7 @@
                 ELSE;
                   hold_type_label = 'title';
               END %]
-               <span><a href="[% mkurl(ctx.opac_root _ '/place_hold', {hold_source_page => CGI.param('hold_source_page')}) %]">
+               <span><a href="[% mkurl(ctx.opac_root _ '/place_hold', {hold_source_page => CGI.param('hold_source_page'), bre_id => CGI.param('bre_id')}) %]">
                [% l('Place another hold for this ') %] [% hold_type_label %]</a>
                </span>
           [% END %]
