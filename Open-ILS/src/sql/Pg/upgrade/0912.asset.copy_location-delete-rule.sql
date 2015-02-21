@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0912', :eg_version);
 
 ALTER TABLE asset.copy_location ADD COLUMN deleted BOOLEAN NOT NULL DEFAULT FALSE;
 
