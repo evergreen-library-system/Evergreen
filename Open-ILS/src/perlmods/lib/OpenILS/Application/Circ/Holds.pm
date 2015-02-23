@@ -2577,7 +2577,11 @@ sub _check_title_hold_is_possible {
                         fkey   => 'call_number',
                         filter => { record => $titleid }
                     },
-                    acpl => { field => 'id', filter => { holdable => 't'}, fkey => 'location' },
+                    acpl => {
+                                field => 'id',
+                                filter => { holdable => 't', deleted => 'f' },
+                                fkey => 'location'
+                            },
                     ccs  => { field => 'id', filter => { holdable => 't'}, fkey => 'status'   },
                     acpm => { field => 'target_copy', type => 'left' } # ignore part-linked copies
                 }
@@ -2698,7 +2702,11 @@ sub _check_issuance_hold_is_possible {
                         fkey   => 'id',
                         filter => { issuance => $issuanceid }
                     },
-                    acpl => { field => 'id', filter => { holdable => 't'}, fkey => 'location' },
+                    acpl => {
+                        field => 'id',
+                        filter => { holdable => 't', deleted => 'f' },
+                        fkey => 'location'
+                    },
                     ccs  => { field => 'id', filter => { holdable => 't'}, fkey => 'status'   }
                 }
             },
@@ -2835,7 +2843,11 @@ sub _check_monopart_hold_is_possible {
                         fkey   => 'id',
                         filter => { part => $partid }
                     },
-                    acpl => { field => 'id', filter => { holdable => 't'}, fkey => 'location' },
+                    acpl => {
+                        field => 'id',
+                        filter => { holdable => 't', deleted => 'f' },
+                        fkey => 'location'
+                    },
                     ccs  => { field => 'id', filter => { holdable => 't'}, fkey => 'status'   }
                 }
             },
@@ -3806,7 +3818,11 @@ sub hold_has_copy_at {
         select => {acp => ['id'], acpl => ['name']},
         from   => {
             acp => {
-                acpl => {field => 'id', filter => { holdable => 't'}, fkey => 'location'},
+                acpl => {
+                    field => 'id',
+                    filter => { holdable => 't', deleted => 'f' },
+                    fkey => 'location'
+                },
                 ccs  => {field => 'id', filter => { holdable => 't'}, fkey => 'status'  }
             }
         },

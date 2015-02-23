@@ -2021,7 +2021,10 @@ sub basic_opac_copy_query {
                     filter => {checkin_time => undef}
                 },
                 acpl => {
-                    ($staff ? () : (filter => { opac_visible => 't' }))
+                    filter => {
+                        deleted => 'f',
+                        ($staff ? () : ( opac_visible => 't' )),
+                    },
                 },
                 ccs => {
                     ($staff ? () : (filter => { opac_visible => 't' }))
