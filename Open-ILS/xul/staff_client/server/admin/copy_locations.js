@@ -288,7 +288,10 @@ function clDelete( cl, tbody, row ) {
     var req = new Request( DELETE_CL, SESSION, cl.id() );
     req.send(true);
     var res = req.result();
-    if(checkILSEvent(res)) throw res;
+    if (checkILSEvent(res)) {
+        alertILSEvent(res);
+        return;
+    }
     alertId('cl_update_success');
     clGo();
 }
