@@ -2138,10 +2138,10 @@ sub set_marc_905u {
     my ($class, $marcdoc, $username) = @_;
 
     # Look for existing 905$u subfields. If any exist, do nothing.
-    my @nodes = $marcdoc->findnodes('//field[@tag="905"]/subfield[@code="u"]');
+    my @nodes = $marcdoc->findnodes('//*[@tag="905"]/*[@code="u"]');
     unless (@nodes) {
         # We create a new 905 and the subfield u to that.
-        my $parentNode = $marcdoc->createElement('field');
+        my $parentNode = $marcdoc->createElement('datafield');
         $parentNode->setAttribute('tag', '905');
         $parentNode->setAttribute('ind1', '');
         $parentNode->setAttribute('ind2', '');
