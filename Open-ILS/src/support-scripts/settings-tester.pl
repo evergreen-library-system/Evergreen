@@ -463,5 +463,5 @@ Parse::RecDescent
 SRU
 JSON::XS
 UUID::Tiny
-Business::CreditCard::Object
+Business::CreditCard
 Net::Z3950::Simple2ZOOM
