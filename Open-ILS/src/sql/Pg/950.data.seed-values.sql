@@ -12646,6 +12646,8 @@ INSERT INTO vandelay.merge_profile (id, owner, name, replace_spec)
 INSERT INTO vandelay.merge_profile (id, owner, name, preserve_spec) 
     VALUES (2, 1, oils_i18n_gettext(2, 'Full Overlay', 'vmp', 'name'), '901c');
 
+SELECT SETVAL('vandelay.merge_profile'::TEXT, 100);
+
 -- user activity seed data --
 
 INSERT INTO config.usr_activity_type (id, ewho, ewhat, ehow, egroup, label) VALUES
