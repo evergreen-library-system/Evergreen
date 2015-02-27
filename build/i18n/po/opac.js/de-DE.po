@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2014-09-11 02:13-0400\n"
-"PO-Revision-Date: 2012-05-09 13:31+0000\n"
-"Last-Translator: Dennis Baudys <Unknown>\n"
+"PO-Revision-Date: 2015-01-07 14:47+0000\n"
+"Last-Translator: Tobias Bannert <Unknown>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2014-09-12 06:24+0000\n"
-"X-Generator: Launchpad (build 17196)\n"
+"X-Launchpad-Export-Date: 2015-01-08 06:38+0000\n"
+"X-Generator: Launchpad (build 17298)\n"
 
 #: opac.js:PWD_RESET_SUBMIT_PROMPT
 msgid ""
@@ -48,7 +48,7 @@ msgstr "Barcode: "
 
 #: opac.js:PWD_RESET_FORGOT_PROMPT
 msgid "Forgot your password?"
-msgstr "Dein Passwort vergessen?"
+msgstr "Passwort vergessen?"
 
 #: opac.js:SUPPLEMENT_HOLDINGS_ADD
 msgid "Additional Supplement Information"

@@ -3,14 +3,14 @@ msgstr ""
 "Project-Id-Version: Evergreen ILS > db.seed.po\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
 "POT-Creation-Date: 2014-09-11 02:13-0400\n"
-"PO-Revision-Date: 2012-03-06 15:47+0000\n"
-"Last-Translator: LEROY Jean-Christophe <Unknown>\n"
+"PO-Revision-Date: 2014-12-23 16:56+0000\n"
+"Last-Translator: Dahlal <dahlal.mohrelzeki@gmail.com>\n"
 "Language-Team: NRCan Library\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2014-09-12 06:08+0000\n"
-"X-Generator: Launchpad (build 17196)\n"
+"X-Launchpad-Export-Date: 2014-12-24 06:30+0000\n"
+"X-Generator: Launchpad (build 17286)\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
 #: 950.data.seed-values.sql:117
@@ -156,8 +156,7 @@ msgstr "Nahuatl"
 
 #: 950.data.seed-values.sql:9892 950.data.seed-values.sql:9893
 msgid "Historical Hold Retention Start Date"
-msgstr ""
-"Date de début historique de la conservation des articles mis en réserve"
+msgstr "Date de début historique de la conservation des documents réservés"
 
 # id::aout.name__5
 # id::5
@@ -428,7 +427,7 @@ msgstr ""
 #: 950.data.seed-values.sql:6866 950.data.seed-values.sql:6867
 #: 950.data.seed-values.sql:6942 950.data.seed-values.sql:6943
 msgid "Blu-ray"
-msgstr ""
+msgstr "Disque Blu-ray"
 
 #: 950.data.seed-values.sql:874
 msgid "Allows a user to create a purchase order"
@@ -497,10 +496,9 @@ msgid ""
 "fields are shown. If the field is shown or required this setting is ignored."
 msgstr ""
 
-# id::clfm.description__p
 #: 950.data.seed-values.sql:6658
 msgid "The item is a poem or collection of poems."
-msgstr "L'article est un poème ou une collection de poèmes."
+msgstr "Le document est un poème ou une collection de poèmes."
 
 # id::clm.value__kau
 # id::kau
@@ -1019,7 +1017,7 @@ msgstr "Swahili"
 
 #: 950.data.seed-values.sql:9603
 msgid "Non-library Item"
-msgstr "Pas un article de bibliothèque"
+msgstr "Pas un document de bibliothèque"
 
 #: 950.data.seed-values.sql:722
 msgid "Allow a user to update a closed date interval for a given location"
@@ -1394,7 +1392,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:5174
 msgid "Cancel Holds"
-msgstr "Annuler les articles mis en réserve"
+msgstr "Annuler les réservations"
 
 # id::clfm.value__s
 # id::s
@@ -1463,7 +1461,7 @@ msgstr "Amharic"
 
 #: 950.data.seed-values.sql:469
 msgid "Overdue Materials"
-msgstr "Articles en retard"
+msgstr "Documents en retard"
 
 # id::clm.value__rap
 # id::rap
@@ -1760,8 +1758,8 @@ msgid ""
 "This prevents the system from charging more than the item price in overdue "
 "fines"
 msgstr ""
-"Cela empêche le système de facturer un prix supérieur à la valeur de "
-"l’article dans les amendes imposées pour les retards"
+"Cela empêche le système de facturer un prix supérieur à la valeur du "
+"document dans les amendes imposées pour les retards"
 
 # id::clm.value__ceb
 # id::ceb
@@ -2150,7 +2148,7 @@ msgstr "Période historique de la conservation pour mise en réserve"
 #: 950.data.seed-values.sql:6812 950.data.seed-values.sql:6813
 #: 950.data.seed-values.sql:6900 950.data.seed-values.sql:6901
 msgid "Music Score"
-msgstr ""
+msgstr "Partitions"
 
 # id::clm.value__tig
 # id::tig
@@ -2296,7 +2294,7 @@ msgstr ""
 #: 950.data.seed-values.sql:6833 950.data.seed-values.sql:6834
 #: 950.data.seed-values.sql:6924 950.data.seed-values.sql:6925
 msgid "Cassette audiobook"
-msgstr ""
+msgstr "Livres sur cassette"
 
 # id::aout.name__2
 # id::2
@@ -2691,7 +2689,7 @@ msgstr ""
 #: 950.data.seed-values.sql:6797 950.data.seed-values.sql:6798
 #: 950.data.seed-values.sql:6879 950.data.seed-values.sql:6880
 msgid "Software and video games"
-msgstr ""
+msgstr "Logiciels et jeux vidéo"
 
 # id::clm.value__wal
 # id::wal
@@ -2767,7 +2765,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:5172
 msgid "Checkout Items"
-msgstr "Articles empruntés"
+msgstr "Documents empruntés"
 
 # id::clm.value__ath
 # id::ath
@@ -2878,10 +2876,9 @@ msgstr "Masai"
 msgid "Bambara"
 msgstr "Bambara"
 
-# id::cam.description__b
 #: 950.data.seed-values.sql:6623
 msgid "The item is intended for children, approximate ages 6-8 years."
-msgstr "L'article est destiné aux enfants âgés de 6 à 8 ans."
+msgstr "Le document est destiné aux enfants âgés de 6 à 8 ans."
 
 # id::clm.value__sat
 # id::sat
@@ -3182,7 +3179,7 @@ msgid ""
 "The item is not a work of fiction and no further identification of the "
 "literary form is desired"
 msgstr ""
-"L’article n’est pas un ouvrage de fiction et aucune autre désignation de "
+"Le document n’est pas un ouvrage de fiction et aucune autre désignation de "
 "forme littéraire n’est souhaitée"
 
 #: 950.data.seed-values.sql:956
@@ -3280,7 +3277,7 @@ msgstr ""
 #: 950.data.seed-values.sql:6728 950.data.seed-values.sql:6729
 #: 950.data.seed-values.sql:6885 950.data.seed-values.sql:6886
 msgid "E-book"
-msgstr ""
+msgstr "Livres électroniques"
 
 #: 950.data.seed-values.sql:3601
 msgid ""
@@ -3387,7 +3384,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:5173
 msgid "View Holds"
-msgstr "Afficher les articles mis en réserve"
+msgstr "Afficher les réservations"
 
 #: 950.data.seed-values.sql:4198 950.data.seed-values.sql:4201
 msgid "Suppress popup-dialogs during check-in."
@@ -3500,7 +3497,7 @@ msgstr "2_mois_2_renouvellements"
 #: 950.data.seed-values.sql:6827 950.data.seed-values.sql:6828
 #: 950.data.seed-values.sql:6918 950.data.seed-values.sql:6919
 msgid "CD Audiobook"
-msgstr ""
+msgstr "Livres sur CD"
 
 #: 950.data.seed-values.sql:43
 msgid "Patron has been referred to a collections agency"
@@ -3765,14 +3762,12 @@ msgstr ""
 msgid "Lost items usable on checkin"
 msgstr ""
 
-# id::cifm.value__f
-# id::f
 #: 950.data.seed-values.sql:6668 950.data.seed-values.sql:6719
 #: 950.data.seed-values.sql:6720 950.data.seed-values.sql:6794
 #: 950.data.seed-values.sql:6795 950.data.seed-values.sql:6876
 #: 950.data.seed-values.sql:6877
 msgid "Braille"
-msgstr "Braille"
+msgstr ""
 
 #: 950.data.seed-values.sql:892
 msgid ""
@@ -3798,11 +3793,9 @@ msgstr ""
 msgid "Security"
 msgstr ""
 
-# id::ccs.name__8
-# id::8
 #: 950.data.seed-values.sql:316
 msgid "On holds shelf"
-msgstr "Étagère des articles mis en réserve"
+msgstr "Sur l'étagère des réservations"
 
 #: 950.data.seed-values.sql:3436
 msgid "Maximum concurrently active self-serve password reset requests"
@@ -4436,10 +4429,9 @@ msgstr ""
 msgid "Delete volume with last copy"
 msgstr ""
 
-# id::clfm.description__u
 #: 950.data.seed-values.sql:6660
 msgid "The literary form of the item is unknown."
-msgstr "La forme littéraire de l'article est inconnue."
+msgstr "La forme littéraire du document est inconnue."
 
 # id::clm.value__awa
 # id::awa
@@ -4709,7 +4701,7 @@ msgstr "Espagnol mexicain"
 #: 950.data.seed-values.sql:6731 950.data.seed-values.sql:6732
 #: 950.data.seed-values.sql:6888 950.data.seed-values.sql:6889
 msgid "E-audio"
-msgstr ""
+msgstr "Enregistrements sonores électroniques"
 
 # id::clm.value__cos
 # id::cos
@@ -4835,7 +4827,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:2630
 msgid "DVDs"
-msgstr ""
+msgstr "DVD"
 
 #: 950.data.seed-values.sql:165
 msgid "EAN"
@@ -4906,10 +4898,9 @@ msgid ""
 "returned.  E.g. '6 months'"
 msgstr ""
 
-# id::vqbrad.description__15
 #: 950.data.seed-values.sql:5100
 msgid "Item Barcode"
-msgstr "Code à barres de l'article"
+msgstr "Code à barres du document"
 
 #: 950.data.seed-values.sql:1004
 msgid "TRANSIT_COPY"
@@ -5022,11 +5013,9 @@ msgstr ""
 msgid "Mon-Khmer (Other)"
 msgstr "Mon-Khmer (Autre)"
 
-# id::cifm.value__d
-# id::d
 #: 950.data.seed-values.sql:6667
 msgid "Large print"
-msgstr "Gros caractères"
+msgstr ""
 
 #: 950.data.seed-values.sql:1100
 msgid "UPDATE_AUTHORITY_IMPORT_IMPORT_FIELD_DEF"
@@ -5195,7 +5184,7 @@ msgid ""
 "The item is a work of fiction and no further identification of the literary "
 "form is desired"
 msgstr ""
-"L’article est un ouvrage de fiction et aucune autre désignation de forme "
+"Le document est un ouvrage de fiction et aucune autre désignation de forme "
 "littéraire n’est souhaitée"
 
 #: 950.data.seed-values.sql:12649
@@ -5228,11 +5217,11 @@ msgstr ""
 msgid "Buriat"
 msgstr "Buriat"
 
-# id::cam.description__d
 #: 950.data.seed-values.sql:6625
 msgid "The item is intended for young people, approximate ages 14-17 years."
 msgstr ""
-"L'article est destiné au jeunes entre les âges approximatifs de 14 à 17 ans."
+"Le document est destiné au jeunes entre les âges approximatifs de 14 à 17 "
+"ans."
 
 #: 950.data.seed-values.sql:4471
 msgid ""
@@ -5397,7 +5386,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:6622
 msgid "The item is intended for children, approximate ages 0-5 years."
-msgstr "L’article est destiné aux enfants d’environ 0 à 5 ans"
+msgstr "Le document est destiné aux enfants d’environ 0 à 5 ans"
 
 #: 950.data.seed-values.sql:4234
 msgid "Default Country for New Addresses in Patron Editor"
@@ -5570,7 +5559,7 @@ msgstr "Période historique de la conservation pour prêts"
 #: 950.data.seed-values.sql:6815 950.data.seed-values.sql:6816
 #: 950.data.seed-values.sql:6903 950.data.seed-values.sql:6904
 msgid "Picture"
-msgstr ""
+msgstr "Images"
 
 # id::clm.value__mga
 # id::mga
@@ -5582,7 +5571,7 @@ msgstr "Moyen irlandais (aux environs de 1100-1550)"
 #: 950.data.seed-values.sql:6809 950.data.seed-values.sql:6810
 #: 950.data.seed-values.sql:6897 950.data.seed-values.sql:6898
 msgid "Microform"
-msgstr ""
+msgstr "Microformes"
 
 #: 950.data.seed-values.sql:40
 msgid "Alerting block on Hold"
@@ -6058,7 +6047,7 @@ msgstr ""
 #: 950.data.seed-values.sql:6845 950.data.seed-values.sql:6846
 #: 950.data.seed-values.sql:6936 950.data.seed-values.sql:6937
 msgid "Large Print Book"
-msgstr ""
+msgstr "Livre en gros caractères"
 
 #: 950.data.seed-values.sql:12056
 msgid "Cellular South"
@@ -6070,10 +6059,9 @@ msgstr ""
 msgid "Humor, satires, etc."
 msgstr "Humeur, satires, etc."
 
-# id::clfm.description__i
 #: 950.data.seed-values.sql:6655
 msgid "The item is a single letter or collection of correspondence."
-msgstr "L'article est une lettre ou une collection de correspondance."
+msgstr "Le document est une lettre ou une collection de correspondance."
 
 # id::clm.value__phi
 # id::phi
@@ -6363,10 +6351,9 @@ msgstr ""
 msgid "Apply this prefix to any auto-generated item call numbers"
 msgstr ""
 
-# id::clfm.description__s
 #: 950.data.seed-values.sql:6659
 msgid "The item is a speech or collection of speeches."
-msgstr "L'article est un discours ou une collection de discours."
+msgstr "Le document est un discours ou une collection de discours."
 
 # id::clm.value__tam
 # id::tam
@@ -6535,14 +6522,13 @@ msgstr ""
 msgid "Allows a user to view vandelay match sets"
 msgstr ""
 
-# id::cam.description__j
 #: 950.data.seed-values.sql:6629
 msgid ""
 "The item is intended for children and young people, approximate ages 0-15 "
 "years."
 msgstr ""
-"L'article est destiné aux enfants et aux jeunes entre les âges approximatifs "
-"de 0 à 15 ans."
+"Le document est destiné aux enfants et aux jeunes entre les âges "
+"approximatifs de 0 à 15 ans."
 
 #: 950.data.seed-values.sql:13725
 msgid ""
@@ -6586,11 +6572,10 @@ msgstr ""
 msgid "Beja"
 msgstr "Beja"
 
-# id::cza.label__9 id::cza.label__18 id::cza.label__27
 #: 950.data.seed-values.sql:397 950.data.seed-values.sql:418
 #: 950.data.seed-values.sql:437 950.data.seed-values.sql:13543
 msgid "Item Type"
-msgstr "Type d'article"
+msgstr "Type de document"
 
 # id::crcd.name__10
 # id::10
@@ -6842,14 +6827,12 @@ msgstr ""
 msgid "Cap Max Fine at Item Price"
 msgstr ""
 
-# id::citm.value__o
-# id::o
 #: 950.data.seed-values.sql:6637 950.data.seed-values.sql:6734
 #: 950.data.seed-values.sql:6735 950.data.seed-values.sql:6803
 #: 950.data.seed-values.sql:6804 950.data.seed-values.sql:6891
 #: 950.data.seed-values.sql:6892
 msgid "Kit"
-msgstr "Trousse"
+msgstr "Trousses"
 
 #: 950.data.seed-values.sql:11727
 msgid "Hawaii, USA"
@@ -7059,7 +7042,7 @@ msgstr ""
 #: 950.data.seed-values.sql:6830 950.data.seed-values.sql:6831
 #: 950.data.seed-values.sql:6921 950.data.seed-values.sql:6922
 msgid "CD Music recording"
-msgstr ""
+msgstr "CD audio"
 
 # id::clm.value__chb
 # id::chb
@@ -7135,7 +7118,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:483
 msgid "Damaged Item Processing Fee"
-msgstr "Frais de traitement d’un article endommagé"
+msgstr "Frais de traitement d’un document endommagé"
 
 #: 950.data.seed-values.sql:12640
 msgid "Login via remoteauth"
@@ -7221,7 +7204,7 @@ msgstr "Pagination"
 
 #: 950.data.seed-values.sql:481
 msgid "Damaged Item"
-msgstr "Article endommagé"
+msgstr "Document endommagé"
 
 # id::clm.value__uzb
 # id::uzb
@@ -7465,7 +7448,7 @@ msgstr "Iloko"
 #: 950.data.seed-values.sql:6818 950.data.seed-values.sql:6819
 #: 950.data.seed-values.sql:6906 950.data.seed-values.sql:6907
 msgid "Equipment, games, toys"
-msgstr ""
+msgstr "Matériels, jeux, jouets"
 
 #: 950.data.seed-values.sql:822
 msgid "Allow a user to view a provider"
@@ -7665,10 +7648,9 @@ msgstr ""
 msgid "DELETE_BIB_IMPORT_IMPORT_FIELD_DEF"
 msgstr ""
 
-# id::cam.description__
 #: 950.data.seed-values.sql:6621
 msgid "The target audience for the item not known or not specified."
-msgstr "Le public cible de l'article n'est pas connu ou n'est pas spécifié."
+msgstr "Le public cible du document n'est pas connu ou n'est pas spécifié."
 
 # id::clm.value__jrb
 # id::jrb
@@ -7676,10 +7658,9 @@ msgstr "Le public cible de l'article n'est pas connu ou n'est pas spécifié."
 msgid "Judeo-Arabic"
 msgstr "Judéo-arabe"
 
-# id::clfm.description__j
 #: 950.data.seed-values.sql:6656
 msgid "The item is a short story or collection of short stories."
-msgstr "L'article est une nouvelle ou une collection de nouvelles."
+msgstr "Le document est une nouvelle ou une collection de nouvelles."
 
 #: 950.data.seed-values.sql:880
 msgid ""
@@ -7779,8 +7760,8 @@ msgid ""
 "The item is of general interest and not aimed at an audience of a particular "
 "intellectual level."
 msgstr ""
-"L’article est d’intérêt général et n’est pas destiné à un public d’un niveau "
-"intellectuel particulier"
+"Le document est d’intérêt général et n’est pas destiné à un public d’un "
+"niveau intellectuel particulier"
 
 #: 950.data.seed-values.sql:4052
 msgid "Allow multiple username changes"
@@ -7830,7 +7811,7 @@ msgstr ""
 #: 950.data.seed-values.sql:6654
 msgid "The item is a humorous work, satire or of similar literary form."
 msgstr ""
-"L’article est un ouvrage humoristique, satirique ou une forme littéraire "
+"Le document est un ouvrage humoristique, satirique ou une forme littéraire "
 "semblable"
 
 #: 950.data.seed-values.sql:11222
@@ -7939,10 +7920,10 @@ msgstr ""
 msgid "Hindi"
 msgstr "Hindi"
 
-# id::cam.description__c
 #: 950.data.seed-values.sql:6624
 msgid "The item is intended for young people, approximate ages 9-13 years."
-msgstr "L'article est destiné aux jeunes d'âges approximatifs de 9 à 13 ans."
+msgstr ""
+"Le document est destiné aux jeunes d'âges approximatifs de 9 à 13 ans."
 
 # id::clm.value__yid
 # id::yid
@@ -8167,10 +8148,9 @@ msgstr ""
 msgid "Max Patron Claims Returned Count"
 msgstr ""
 
-# id::cam.description__e
 #: 950.data.seed-values.sql:6626
 msgid "The item is intended for adults."
-msgstr "Cet article est destiné aux adultes."
+msgstr "Ce document est destiné aux adultes."
 
 # id::clm.value__nya
 # id::nya
@@ -8320,7 +8300,7 @@ msgstr ""
 #: 950.data.seed-values.sql:6825 950.data.seed-values.sql:6912
 #: 950.data.seed-values.sql:6913
 msgid "VHS"
-msgstr ""
+msgstr "VHS"
 
 #: 950.data.seed-values.sql:4106
 msgid "Printing: Custom Javascript File"
@@ -8330,7 +8310,7 @@ msgstr ""
 #: 950.data.seed-values.sql:6806 950.data.seed-values.sql:6807
 #: 950.data.seed-values.sql:6894 950.data.seed-values.sql:6895
 msgid "Map"
-msgstr ""
+msgstr "Cartes"
 
 #: 950.data.seed-values.sql:746
 msgid "Allow a user to add/remove users to/from the \"Cataloger\" group"
@@ -8398,7 +8378,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:6939 950.data.seed-values.sql:6940
 msgid "All Music"
-msgstr ""
+msgstr "Musique (tous les formats)"
 
 # id::clfm.value__d
 # id::d
@@ -8508,7 +8488,7 @@ msgstr ""
 #: 950.data.seed-values.sql:6821 950.data.seed-values.sql:6822
 #: 950.data.seed-values.sql:6909 950.data.seed-values.sql:6910
 msgid "Serials and magazines"
-msgstr ""
+msgstr "Périodiques et magazines"
 
 # id::clm.value__umb
 # id::umb
@@ -8635,7 +8615,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:6873 950.data.seed-values.sql:6874
 msgid "All Books"
-msgstr ""
+msgstr "Livres (tous les formats)"
 
 #: 950.data.seed-values.sql:9029
 msgid "An email has been requested for a circ history."
@@ -8836,7 +8816,7 @@ msgstr ""
 #: 950.data.seed-values.sql:6758 950.data.seed-values.sql:6759
 #: 950.data.seed-values.sql:6915 950.data.seed-values.sql:6916
 msgid "E-video"
-msgstr ""
+msgstr "vidéos électroniques"
 
 #: 950.data.seed-values.sql:1158
 msgid "UPDATE_ORG_UNIT_SETTING.circ.hold_stalling.soft"
@@ -8996,7 +8976,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:6698
 msgid "Blu-ray disc"
-msgstr ""
+msgstr "Disque Blu-ray"
 
 # id::citm.value__t
 # id::t
@@ -9006,7 +8986,7 @@ msgstr "Texte manuscrit"
 
 #: 950.data.seed-values.sql:9898 950.data.seed-values.sql:9899
 msgid "Historical Hold Retention Count"
-msgstr "Nombre historique de conservation d’articles mis en réserve"
+msgstr "Nombre historique de conservation de documents réservés"
 
 # id::clm.value__kos id::clm.value__-kus
 # id::kos
@@ -9201,11 +9181,9 @@ msgstr ""
 msgid "CREATE_AUTHORITY_IMPORT_IMPORT_FIELD_DEF"
 msgstr ""
 
-# id::cblvl.value__m
-# id::m
 #: 950.data.seed-values.sql:6679
 msgid "Monograph/Item"
-msgstr "Monographie ou article"
+msgstr "Monographie ou document"
 
 # id::clm.value__pus
 # id::pus
@@ -9353,7 +9331,7 @@ msgstr "Lahnda"
 #: 950.data.seed-values.sql:6839 950.data.seed-values.sql:6840
 #: 950.data.seed-values.sql:6930 950.data.seed-values.sql:6931
 msgid "Phonograph spoken recording"
-msgstr ""
+msgstr "enregistrements sonores phonographiques (parole)"
 
 # id::clm.value__suk
 # id::suk
@@ -10087,12 +10065,11 @@ msgid ""
 "respectively."
 msgstr ""
 
-# id::clfm.description__m
 #: 950.data.seed-values.sql:6657
 msgid ""
 "The item is a variety of literary forms (e.g., poetry and short stories)."
 msgstr ""
-"L'article contient plusieurs formes littéraires (par exemple, poésie et "
+"Le document contient plusieurs formes littéraires (par exemple, poésie et "
 "nouvelles)."
 
 #: 950.data.seed-values.sql:479
@@ -10144,7 +10121,7 @@ msgstr ""
 #: 950.data.seed-values.sql:6801 950.data.seed-values.sql:6882
 #: 950.data.seed-values.sql:6883
 msgid "DVD"
-msgstr ""
+msgstr "DVD"
 
 # id::clm.value__-sao id::clm.value__smo
 # id::-sao
@@ -10257,7 +10234,7 @@ msgstr ""
 #: 950.data.seed-values.sql:6836 950.data.seed-values.sql:6837
 #: 950.data.seed-values.sql:6927 950.data.seed-values.sql:6928
 msgid "Audiocassette music recording"
-msgstr ""
+msgstr "Cassettes audio"
 
 # id::czs.label__oclc
 #: 950.data.seed-values.sql:376
@@ -10571,8 +10548,8 @@ msgstr ""
 msgid ""
 "When an item could fulfill a hold, do not allow the current patron to renew"
 msgstr ""
-"Lorsqu’un article pourrait satisfaire à une mise en réserve, ne pas "
-"permettre au client en cours de renouveler"
+"Lorsqu’un document pourrait satisfaire à une réservation, ne pas permettre "
+"au client en cours de renouveler"
 
 #: 950.data.seed-values.sql:4678 950.data.seed-values.sql:4687
 msgid ""
@@ -10637,13 +10614,12 @@ msgstr ""
 msgid "UPDATE_ORG_UNIT_SETTING.circ.selfcheck.patron_login_timeout"
 msgstr ""
 
-# id::cam.description__f
 #: 950.data.seed-values.sql:6627
 msgid ""
 "The item is aimed at a particular audience and the nature of the "
 "presentation makes the item of little interest to another audience."
 msgstr ""
-"L'article est destiné à une audience particulier et la nature de sa "
+"Le document est destiné à une audience particulier et la nature de sa "
 "présentation fait qu'il n'intéresserait pas une autre audience."
 
 #: 950.data.seed-values.sql:11852
@@ -11084,7 +11060,7 @@ msgstr ""
 #: 950.data.seed-values.sql:6842 950.data.seed-values.sql:6843
 #: 950.data.seed-values.sql:6933 950.data.seed-values.sql:6934
 msgid "Phonograph music recording"
-msgstr ""
+msgstr "enregistrements sonores phonographiques (musique)"
 
 # id::crcd.name__7
 # id::7

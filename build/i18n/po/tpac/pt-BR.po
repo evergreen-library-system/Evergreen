@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2014-09-11 10:59+0000\n"
+"POT-Creation-Date: 2014-10-09 18:56+0000\n"
 "PO-Revision-Date: 2012-06-12 13:59+0000\n"
 "Last-Translator: Job Diógenes Ribeiro Borges <jobdrb@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <pt_BR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2014-09-12 06:27+0000\n"
+"X-Launchpad-Export-Date: 2014-10-10 04:51+0000\n"
 "X-Generator: Launchpad (build 17196)\n"
 
 #: ../../Open-ILS/src/templates/opac/register.tt2:63
@@ -59,8 +59,8 @@ msgid "%1 %2"
 msgstr "%1 %2"
 
 #. (copy.label, copy_org.name)
-#. (title, hold.hold.part.label)
 #. (title, part.label)
+#. (title, hold.hold.part.label)
 #: ../../Open-ILS/src/templates/opac/myopac/holds.tt2:134 ../../Open-ILS/src/templates/opac/myopac/holds/edit.tt2:27 ../../Open-ILS/src/templates/opac/myopac/lists.tt2:354 ../../Open-ILS/src/templates/opac/parts/anon_list.tt2:65 ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:37
 msgid "%1 (%2)"
 msgstr "%1 (%2)"

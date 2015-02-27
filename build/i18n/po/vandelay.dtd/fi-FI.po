@@ -19,15 +19,15 @@ msgstr ""
 
 #: vandelay.add.existing.queue
 msgid "or Add to an Existing Queue"
-msgstr "tai lisää olemassaolevaan jonoon"
+msgstr ""
 
 #: vandelay.auth.attrs
 msgid "Authority attributes"
-msgstr "auktoriteettimääritykset"
+msgstr ""
 
 #: vandelay.auth.records
 msgid "Authority Records"
-msgstr "auktoriteettitietueet"
+msgstr ""
 
 #: vandelay.auto.import.noncolliding
 msgid "Auto-Import Non-Colliding Records"
@@ -35,15 +35,15 @@ msgstr ""
 
 #: vandelay.auto.import.auto_overlay_exact
 msgid "Auto Merge/Overlay Exact Matches"
-msgstr "Yhdistä täysin vastaavat tietueet automaattisesti"
+msgstr ""
 
 #: vandelay.auto.import.auto_overlay_1match
 msgid "Auto Merge/Overlay When Exactly 1 Match is Found"
-msgstr "Yhdistä tietueet automaattisesti jos yksi vastaavuus löytyy"
+msgstr ""
 
 #: vandelay.auto.import.merge_profile
 msgid "Merge/Overlay Profile"
-msgstr "Yhdistämisprofiili"
+msgstr ""
 
 #. Do not translate this.  Only change the numeric values if you need this dialogue box to appear bigger
 #: vandelay.auto.width
@@ -52,7 +52,7 @@ msgstr ""
 
 #: vandelay.back.to.import.queue
 msgid "Back To Import Queue"
-msgstr "Palaa tuontijonoon"
+msgstr ""
 
 #: vandelay.bib.attrs
 msgid "Bibliographic attributes"
@@ -64,19 +64,19 @@ msgstr ""
 
 #: vandelay.cancel
 msgid "Cancel"
-msgstr "Peruuta"
+msgstr ""
 
 #: vandelay.edit
 msgid "Edit"
-msgstr "Muokkaa"
+msgstr ""
 
 #: vandelay.code
 msgid "Code"
-msgstr "Koodi"
+msgstr ""
 
 #: vandelay.column
 msgid "Column"
-msgstr "Rivi"
+msgstr ""
 
 #: vandelay.create.attr.def
 msgid "Create Attribute Definition"
@@ -84,31 +84,31 @@ msgstr ""
 
 #: vandelay.create
 msgid "Create"
-msgstr "Luo"
+msgstr ""
 
 #: vandelay.create.date
 msgid "Create Date"
-msgstr "Luontipäivämäärä"
+msgstr ""
 
 #: vandelay.create.upload.queue
 msgid "Create a New Upload Queue"
-msgstr "Luo uusi tuontijono"
+msgstr ""
 
 #: vandelay.creator
 msgid "Creator"
-msgstr "Luoja"
+msgstr ""
 
 #: vandelay.delete.queue
 msgid "Delete Queue"
-msgstr "Poista jono"
+msgstr ""
 
 #: vandelay.delete.record
 msgid "Delete record"
-msgstr "Poista tietue"
+msgstr ""
 
 #: vandelay.descrip
 msgid "Description"
-msgstr "Kuvaus"
+msgstr ""
 
 #: vandelay.dest.match.point
 msgid "Destination Match Point"
@@ -116,49 +116,49 @@ msgstr ""
 
 #: vandelay.display
 msgid "Display"
-msgstr "Näytä"
+msgstr ""
 
 #: vandelay.done
 msgid "Done"
-msgstr "Valmis"
+msgstr ""
 
 #: vandelay.edit.attributes
 msgctxt "vandelay.edit.attributes"
 msgid "Edit Attributes"
-msgstr "Muokkaa määritteitä"
+msgstr ""
 
 #: vandelay.edit.attrs
 msgctxt "vandelay.edit.attrs"
 msgid "Edit Attributes"
-msgstr "Muokkaa määritteitä"
+msgstr ""
 
 #: vandelay.edit.profiles
 msgid "Edit Merge / Overlay Profiles"
-msgstr "Muokkaa yhdistämisprofiileja"
+msgstr ""
 
 #: vandelay.edit.import_item_attrs
 msgid "Edit Import Item Attributes"
-msgstr "Muokkaa tuotavan niteen määritteitä"
+msgstr ""
 
 #: vandelay.false
 msgid "False"
-msgstr "Epätosi"
+msgstr ""
 
 #: vandelay.file.to.upload
 msgid "File to Upload:"
-msgstr "Tuotava tiedosto:"
+msgstr ""
 
 #: vandelay.for.example
 msgid "Example"
-msgstr "Esimerkiksi"
+msgstr ""
 
 #: vandelay.identifier
 msgid "Identifier"
-msgstr "Tunniste"
+msgstr ""
 
 #: vandelay.id.field
 msgid "Identifier Field?"
-msgstr "Tunnistekenttä?"
+msgstr ""
 
 #: vandelay.id
 msgid "ID"
@@ -166,31 +166,31 @@ msgstr ""
 
 #: vandelay.import.matches
 msgid "Import Matches"
-msgstr "Tuo osumat"
+msgstr ""
 
 #: vandelay.import.records
 msgid "Import Records"
-msgstr "Tuo tietueet"
+msgstr ""
 
 #: vandelay.import.selected
 msgid "Import Selected"
-msgstr "Tuo valitut"
+msgstr ""
 
 #: vandelay.import.all
 msgid "Import All"
-msgstr "Tuo kaikki"
+msgstr ""
 
 #: vandelay.import.time
 msgid "Import Time"
-msgstr "Tuontiaika"
+msgstr ""
 
 #: vandelay.inspect.queue
 msgid "Inspect Queue"
-msgstr "Tutki jonoa"
+msgstr ""
 
 #: vandelay.last.edit.date
 msgid "Last Edit Date"
-msgstr "Viimeisin muokkauspvm"
+msgstr ""
 
 #: vandelay.limit.to.collision.matches
 msgid "Limit to Collision Matches"
@@ -206,7 +206,7 @@ msgstr ""
 
 #: vandelay.marc.record
 msgid "MARC Record"
-msgstr "MARC-tietue"
+msgstr ""
 
 #: vandelay.matches
 msgid "Matches"
@@ -214,19 +214,19 @@ msgstr ""
 
 #: vandelay.next.page
 msgid "Next Page &#187;"
-msgstr "Seuraava sivu &#187;"
+msgstr ""
 
 #: vandelay.overlay.selected.record
 msgid "Overlay selected record with imported record"
-msgstr "Korvaa valittu tietue tuodulla tietueella"
+msgstr ""
 
 #: vandelay.overlay.target
 msgid "Overlay Target"
-msgstr "Korvauksen kohde"
+msgstr ""
 
 #: vandelay.page
 msgid "Page"
-msgstr "Sivu"
+msgstr ""
 
 #: vandelay.powered.by.evergreen
 msgid "Powered by Evergreen!"
@@ -234,59 +234,59 @@ msgstr ""
 
 #: vandelay.prev.page
 msgid "&#171; Previous Page"
-msgstr "&#171; Edellinen sivu"
+msgstr ""
 
 #: vandelay.processing
 msgid "Processing... "
-msgstr "Valmistellaan..."
+msgstr ""
 
 #: vandelay.queue
 msgid "Queue"
-msgstr "Jono"
+msgstr ""
 
 #: vandelay.queue.type
 msgid "Queue Type"
-msgstr "Jonon tyyppi"
+msgstr ""
 
 #: vandelay.record.queue
 msgid "Record Queue"
-msgstr "Tietuejono"
+msgstr ""
 
 #: vandelay.record.type
 msgid "Record Type"
-msgstr "Tietueen tyyppi"
+msgstr ""
 
 #: vandelay.refresh
 msgid "Refresh"
-msgstr "Päivitä"
+msgstr ""
 
 #: vandelay.remove.advanced
 msgid "Remove (advanced)"
-msgstr "Poista (tarkennettu)"
+msgstr ""
 
 #: vandelay.remove
 msgid "Remove"
-msgstr "Poista"
+msgstr ""
 
 #: vandelay.results.per.page
 msgid "Results Per Page"
-msgstr "Tuloksia sivulla"
+msgstr ""
 
 #: vandelay.retrieve.queue
 msgid "Retrieve Queue"
-msgstr "Hae jono"
+msgstr ""
 
 #: vandelay.return
 msgid "Return"
-msgstr "Palaa"
+msgstr ""
 
 #: vandelay.select.cols
 msgid "Select Columns"
-msgstr "Valitse sarakkeet"
+msgstr ""
 
 #: vandelay.select.queue
 msgid "Select a Queue to Inspect"
-msgstr "Valitse tutkittava jono"
+msgstr ""
 
 #: vandelay.source.match.point
 msgid "Source Match Point"
@@ -294,67 +294,67 @@ msgstr ""
 
 #: vandelay.source
 msgid "Source"
-msgstr "Lähde"
+msgstr ""
 
 #: vandelay.subfields
 msgid "Subfield(s)"
-msgstr "Alakentät"
+msgstr ""
 
 #: vandelay.subfield
 msgid "Subfield"
-msgstr "Alakenttä"
+msgstr ""
 
 #: vandelay.sure.to.delete
 msgid "Are you sure you want to delete this record?"
-msgstr "Haluatko varmasti tuhota tämän tietueen?"
+msgstr ""
 
 #: vandelay.sure.to.delete.queue
 msgid "Are you sure you want to delete this queue?"
-msgstr "Haluatko varmasti tuhota tämän jonon?"
+msgstr ""
 
 #: vandelay.tags
 msgid "Tag(s)"
-msgstr "Kentät"
+msgstr ""
 
 #: vandelay.tag
 msgid "Tag"
-msgstr "Kenttä"
+msgstr ""
 
 #: vandelay.tcn.source
 msgid "TCN Source"
-msgstr "Tietuenumeron lähde"
+msgstr ""
 
 #: vandelay.tcn.value
 msgid "TCN Value"
-msgstr "Tietuenumeron arvo"
+msgstr ""
 
 #: vandelay.tooltip.subfields
 msgid "You can enter multiple subfields, separated by spaces and/or commas."
-msgstr "Voit syöttää useampia alakenttiä, eroteltuna välilyönneillä ja/tai pilkuilla."
+msgstr ""
 
 #: vandelay.tooltip.tags
 msgid "You can enter multiple tags, separated by spaces and/or commas."
-msgstr "Voit syöttää useampia kenttiä, eroteltuna välilyönneillä ja/tai pilkuilla."
+msgstr ""
 
 #: vandelay.true
 msgid "True"
-msgstr "Tosi"
+msgstr ""
 
 #: vandelay.update
 msgid "Update"
-msgstr "Päivitä"
+msgstr ""
 
 #: vandelay.uploading
 msgid "Uploading..."
-msgstr "Tuodaan..."
+msgstr ""
 
 #: vandelay.upload.status
 msgid "Upload Status"
-msgstr "Tuonnin tila"
+msgstr ""
 
 #: vandelay.upload
 msgid "Upload"
-msgstr "Tuonti"
+msgstr ""
 
 #: vandelay.vandelay
 msgid "Vandelay"
@@ -362,7 +362,7 @@ msgstr ""
 
 #: vandelay.view.marc
 msgid "View MARC"
-msgstr "Katso MARC"
+msgstr ""
 
 #: vandelay.xpath.advanced
 msgid "XPath (advanced)"
@@ -374,35 +374,35 @@ msgstr ""
 
 #: vandelay.save
 msgid "Save Changes"
-msgstr "Tallenna muutokset"
+msgstr ""
 
 #: vandelay.record_saved
 msgid "Record Saved"
-msgstr "Tietue tallennettu"
+msgstr ""
 
 #: vandelay.export.records
 msgid "Export Records"
-msgstr "Vie tietueet"
+msgstr ""
 
 #: vandelay.export.use_field_no
 msgid "Use Field Number"
-msgstr "Käytän kentän numeroa"
+msgstr ""
 
 #: vandelay.export.from_csv
 msgid "From CSV File"
-msgstr "Tuo CVS-tiedostosta"
+msgstr ""
 
 #: vandelay.export.record_id
 msgid "Record ID"
-msgstr "Tietueen ID"
+msgstr ""
 
 #: vandelay.export.or
 msgid "Or"
-msgstr "TAI"
+msgstr ""
 
 #: vandelay.export.format
 msgid "Record Format"
-msgstr "Tietuemuoto"
+msgstr ""
 
 #: vandelay.export.format.marc21
 msgid "MARC21"
@@ -422,7 +422,7 @@ msgstr ""
 
 #: vandelay.export.encoding
 msgid "Record Encoding"
-msgstr "Tietueen muoto"
+msgstr ""
 
 #: vandelay.export.utf8
 msgid "UTF-8"
@@ -434,36 +434,36 @@ msgstr ""
 
 #: vandelay.export.holdings
 msgid "Include holdings in Bibliographic Records"
-msgstr "Sisällytä nidetiedot luettelotietueeseen"
+msgstr ""
 
 #: vandelay.export.retrieve
 msgid "Retrieve Records"
-msgstr "Hae tietueet"
+msgstr ""
 
 #: vandelay.export.field_no_hint
 msgid "(starting from 0)"
-msgstr "(alkaa nollasta)"
+msgstr ""
 
 #: vandelay.export.bucket
 msgid "Record Bucket ID"
-msgstr "Tietuesiilon tunnus"
+msgstr ""
 
 #: vandelay.select_actions
 msgid "-- Actions --"
-msgstr "-- Toiminnot --"
+msgstr ""
 
 #: vandelay.queue.total
 msgid "Total:"
-msgstr "Yhteensä:"
+msgstr ""
 
 #: vandelay.queue.imported
 msgid "Imported:"
-msgstr "Tuotuja:"
+msgstr ""
 
 #: vandelay.queue.column_picker.title
 msgid "Column Picker"
-msgstr "Sarakevalinta"
+msgstr ""
 
 #: vandelay.import.bib_sources
 msgid "Select a Record Source"
-msgstr "Valitse tietuelähde"
+msgstr ""

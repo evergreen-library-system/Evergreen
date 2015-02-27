@@ -3,14 +3,14 @@ msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
 "POT-Creation-Date: 2014-09-11 02:13-0400\n"
-"PO-Revision-Date: 2014-09-16 05:42+0000\n"
+"PO-Revision-Date: 2015-02-17 14:17+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2014-09-17 06:11+0000\n"
-"X-Generator: Launchpad (build 17196)\n"
+"X-Launchpad-Export-Date: 2015-02-19 05:13+0000\n"
+"X-Generator: Launchpad (build 17341)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Poedit-Language: Czech\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -929,7 +929,7 @@ msgstr "Přenastavit čas poždavku u zrušených a následně obnovených"
 
 #: 950.data.seed-values.sql:11362
 msgid "Local"
-msgstr ""
+msgstr "Lokální"
 
 #: 950.data.seed-values.sql:1102
 msgid "UPDATE_AUTHORITY_IMPORT_QUEUE"
@@ -1014,7 +1014,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:11078
 msgid "See From Tracing -- Personal Name"
-msgstr "Viz z dohledávání -- Osobní jméno"
+msgstr "Směrování odkazu viz - osobní jméno"
 
 #: 950.data.seed-values.sql:12039
 msgid "Cellular One (Dobson) / O2 / Orange"
@@ -1433,7 +1433,7 @@ msgstr "Projevy"
 
 #: 950.data.seed-values.sql:11054
 msgid "See Also From Tracing -- Meeting Name"
-msgstr "Viz také z dohledávání -- název akce"
+msgstr "Směrování odkazu viz též - název akce"
 
 #: 950.data.seed-values.sql:4819
 msgid "Cap results in Patron Search at this number."
@@ -3618,7 +3618,7 @@ msgstr "Čtenář překročil nastavený limit pokut"
 
 #: 950.data.seed-values.sql:11079
 msgid "See From Tracing -- Corporate Name"
-msgstr "Viz z dohledávání -- Název korporace"
+msgstr "Směrování odkazu viz - název korporace"
 
 #: 950.data.seed-values.sql:13170
 msgid "Upload Default Provider"
@@ -3725,6 +3725,17 @@ msgid ""
 "depth of 0 will effectively make every org visible.  The embedded OPAC in "
 "the staff client ignores this setting."
 msgstr ""
+"Tím to budou skryty některé organizační jednotky v OPACu pokud fyzická "
+"lokace (parametr url \"physical_loc) pro OPAC zdědí toto nastavení. Toto "
+"nastavení specifikuje hloubku, která spolu s fyzickou lokací OPACu určuje, "
+"které části organizační hierarchie mají být viditelné v OPACu. Například "
+"instalace Evergreenu bude mít  třístupňovou hierarchii "
+"'(Konsocium/Systém/Knihovna), kde systém má hloubku \"1\" a knihovna má "
+"hloubku \"2\". Pokud  zde  v takovéto instalaci bude nastavení  obsahovat "
+"hloubku \"1\", pak každá knihovna v systému, ke které daná fyzická lokace "
+"patří, bude viditelná, a všechno ostatní bude skryto. Hloubka \"0\" způsobí, "
+"že každá organizační jednotka bude viditelná. OPAC ve služebním klientovi "
+"toto nastavení ignoruje."
 
 #: 950.data.seed-values.sql:1040
 msgid "UPDATE_ORG_TYPE"
@@ -3854,7 +3865,7 @@ msgstr "DELETE_TRANSIT"
 
 #: 950.data.seed-values.sql:11023
 msgid "See From Tracing -- Uniform Title"
-msgstr "Viz z dohledávání - Unifikovaný název"
+msgstr "Smerování odkazu viz - unifikovaný název"
 
 # id::aout.name__4
 #: 950.data.seed-values.sql:456
@@ -6003,6 +6014,9 @@ msgid ""
 "\"items\" variable into the TT environment, sorted as dictated according to "
 "user params"
 msgstr ""
+"Usnadňuje vytvoření CSV souboru, který reprezentuje seznam knih tím, že "
+"zavede proměnnou \"jednotka\" do prostředí TT, setříděnou podle parametrů "
+"zadaných uživatelem."
 
 #: 950.data.seed-values.sql:6702
 msgid "Unspecified"
@@ -6223,6 +6237,8 @@ msgid ""
 "Present a warning dialog to the patron when a patron adds a book to a "
 "temporary book list."
 msgstr ""
+"Když čtenář přidávám knihu do dočasného seznamu, zobrazí čtenáři varovný "
+"dialog."
 
 #: 950.data.seed-values.sql:4549
 msgid "Show ident_value field on patron registration"
@@ -6657,7 +6673,7 @@ msgstr "Povolit uživateli zobrazení nákupu od dodavatele"
 
 #: 950.data.seed-values.sql:9638
 msgid "Delayed: Pieces Delivered"
-msgstr ""
+msgstr "Zdrženo: doručeny kusy"
 
 #: 950.data.seed-values.sql:3265
 msgid "Use weight-based hold targeting"
@@ -7214,7 +7230,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:11088
 msgid "See From Tracing -- Chronological Term"
-msgstr "Viz z dohledávání -- chronologický termín"
+msgstr ""
 
 #: 950.data.seed-values.sql:3382
 msgid "Skip offline checkin if newer item Status Changed Time."
@@ -7830,7 +7846,7 @@ msgstr "Afrihili (umělý jazyk)"
 
 #: 950.data.seed-values.sql:9640
 msgid "Delayed: Backorder"
-msgstr ""
+msgstr "Zdrženo: Dlouhodobý požadavek na objednání"
 
 #: 950.data.seed-values.sql:10322
 msgid "Malformed record cause Overlay failure"
@@ -7959,7 +7975,7 @@ msgstr "Povolí uživateli překrýt exmemplářová data během importu MARC"
 
 #: 950.data.seed-values.sql:11052
 msgid "See Also From Tracing -- Personal Name"
-msgstr "Viz také z dohledávání -- osobní jméno"
+msgstr "Směrování odkazu viz  též - osobní jméno"
 
 # id::clm.value__pap
 #: 950.data.seed-values.sql:6470
@@ -8061,7 +8077,7 @@ msgstr "PC Telecom"
 
 #: 950.data.seed-values.sql:11082
 msgid "See From Tracing -- Geographic Name"
-msgstr "Viz z dohledávání -- Geografické jméno"
+msgstr "Směrování odkazu viz - geografické jméno"
 
 # id::clm.value__-gag id::clm.value__glg
 #: 950.data.seed-values.sql:6277 950.data.seed-values.sql:6288
@@ -8293,7 +8309,7 @@ msgstr "Občanský průkaz"
 
 #: 950.data.seed-values.sql:9634
 msgid "Delayed: Split Quantity"
-msgstr ""
+msgstr "Zdrženo: Rozdělený počet"
 
 #: 950.data.seed-values.sql:9627
 msgid "This line item is not accepted by the seller."
@@ -8992,7 +9008,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:1484
 msgid "Create/Update/Delete SVF Record Attribute Coded Value Map"
-msgstr ""
+msgstr "Vytvořit/Změnit/Smazat mapu atributů kódovaných údajů  SVF záznamu"
 
 #: 950.data.seed-values.sql:12840 950.data.seed-values.sql:12846
 msgid "Opt out of warning when adding a book to a temporary book list"
@@ -9124,7 +9140,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:11053
 msgid "See Also From Tracing -- Corporate Name"
-msgstr "Viz také z dohledávání  -- název korporace"
+msgstr "Směrování odkazu viz též - název korporace"
 
 #: 950.data.seed-values.sql:13909
 msgid "Vandelay Generate Default Call Numbers"
@@ -9536,6 +9552,8 @@ msgid ""
 "Map of search classes to regular expressions to warn user about leading "
 "articles."
 msgstr ""
+"Mapa vyhledávacích tříd k regulárním výrazům pro varování uživatele o tom, "
+"že na prvním místě je člen."
 
 #: 950.data.seed-values.sql:2612
 msgid "Program"
@@ -9551,7 +9569,7 @@ msgstr "UPDATE_ORG_UNIT_SETTING.circ.min_item_price"
 
 #: 950.data.seed-values.sql:11021
 msgid "See Also From Tracing -- Uniform Title"
-msgstr "Viz také z dohledávání -- unifikovaný název"
+msgstr "Směrování odkazu viz též - unifikovaný název"
 
 #: 950.data.seed-values.sql:6403
 msgid "Maori"
@@ -10172,6 +10190,8 @@ msgid ""
 "Don't look for more than this number of records with holdings when "
 "displaying browse headings with visible record counts."
 msgstr ""
+"Při zobrazení záhlaví pro prohlížení s viditelným počtem záznamů nehledat "
+"více než tento počet záznamů s exempláři."
 
 #: 950.data.seed-values.sql:890
 msgid "Allow a user to create/view/update/delete a fund"
@@ -10179,7 +10199,7 @@ msgstr "Povolit uživateli vytvořit/upravit/smazat fond"
 
 #: 950.data.seed-values.sql:11056
 msgid "See Also From Tracing -- Geographic Name"
-msgstr "Viz také z dohledávání -- geografické jméno"
+msgstr "Směrování odkazu viz též - geografické jméno"
 
 #: 950.data.seed-values.sql:6700 950.data.seed-values.sql:6725
 #: 950.data.seed-values.sql:6726 950.data.seed-values.sql:6800
@@ -10502,7 +10522,7 @@ msgstr "Systémové kontrolní číslo"
 
 #: 950.data.seed-values.sql:11080
 msgid "See From Tracing -- Meeting Name"
-msgstr "Viz z dohledávání -- Datum setkání"
+msgstr "Směrování odkazu viz - název akce"
 
 #: 950.data.seed-values.sql:13742
 msgid ""
@@ -10553,7 +10573,7 @@ msgstr "UPDATE_BILLING_TYPE"
 
 #: 950.data.seed-values.sql:13065
 msgid "All Link Checker filter dialogs"
-msgstr ""
+msgstr "Dialogy  filtrů všech \"link checkerů\""
 
 #: 950.data.seed-values.sql:2558
 msgid "Default Hold Pickup Location"
@@ -10585,7 +10605,7 @@ msgstr "Povolit uživateli půjčení exempláře"
 
 #: 950.data.seed-values.sql:13026
 msgid "Maximum redirect lookups"
-msgstr ""
+msgstr "Maximum přesměrovaných hledání"
 
 #: 950.data.seed-values.sql:4498
 msgid ""
@@ -10962,7 +10982,7 @@ msgstr "Jazyk díla"
 
 #: 950.data.seed-values.sql:13077 950.data.seed-values.sql:13083
 msgid "Link Checker's URL Selection interface's saved columns"
-msgstr ""
+msgstr "Uložené sloupce rozhraní pro výběr URL \"Link checkeru\""
 
 #: 950.data.seed-values.sql:6133
 msgid "Afar"
