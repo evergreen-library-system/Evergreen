@@ -3,13 +3,13 @@ msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-09-11 02:13-0400\n"
-"PO-Revision-Date: 2014-08-28 09:17+0000\n"
+"PO-Revision-Date: 2014-09-24 13:07+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2014-09-12 06:18+0000\n"
+"X-Launchpad-Export-Date: 2014-09-25 05:47+0000\n"
 "X-Generator: Launchpad (build 17196)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Accelerator-Marker: &\n"
@@ -3489,7 +3489,7 @@ msgstr "about:config"
 
 #: staff.main.menu.admin.about_about.label
 msgid "about:about (XULRunner diagnostics)"
-msgstr ""
+msgstr "about:about (diagnostika XULRunneru)"
 
 #: staff.main.menu.admin.stat_cat_edit.label
 #: staff.main.menu.admin.stat_cat_edit.accesskey
@@ -8815,7 +8815,7 @@ msgstr ""
 
 #: staff.server.admin.org_settings.circ.hold_stalling.soft
 msgid "Holds: Soft stalling interval"
-msgstr ""
+msgstr "Rezervace: Měkký interval pro pozdržení"
 
 #: staff.server.admin.org_settings.circ.hold_stalling.soft.desc
 msgid ""
@@ -13478,15 +13478,15 @@ msgstr "Uložit"
 
 #: staff.patron.user_edit.display_perm.select_one
 msgid "-- Select One --"
-msgstr ""
+msgstr "--Vyberte jeden --"
 
 #: staff.patron.user_edit.save_user.depth_required
 msgid "Depth is required to set the permission."
-msgstr ""
+msgstr "Pro nastavení  tohoto oprávnění je požadována hloubka."
 
 #: staff.patron.user_edit.save_user.user_modified_successfully
 msgid "User successfully modified."
-msgstr ""
+msgstr "Úprava uživatele proběhla úspěšně."
 
 #: staff.patron.ue.ev_user_editor.label
 msgctxt "staff.patron.ue.ev_user_editor.label"
@@ -14599,6 +14599,14 @@ msgid ""
 "here for legacy purposes, and the Custom/External Print strategy is more "
 "flexible."
 msgstr ""
+"Tato tisková strategie bude ignorovat nastavení tiskárny v \"Normálním "
+"natavení\". Ve Windows musíte namapovat tiskárnu na port LPT1 v menu  Start -"
+"&gt; Tiskárny a fax -&gt;  Vaše tiskárna -&gt; kliknutí pravým tlačítkem, "
+"Vlastnosti -&gt; Porty.  Také dojde ke  ztrátě   HTML stylů jako je např. "
+"řez nebo velikost písma a nebudou fungovat některé složité šablony které "
+"využívají Javascript. Data budou poslána na tiskárnu jako prostý text.  Tato "
+"možnost je zde kvůli zděděným systémům; strategie volitelného/externího "
+"tisku je flexibilnější."
 
 #: staff.printing.advanced.custom_print.warning.header
 msgid "Note on Custom/External Print"
@@ -14610,6 +14618,9 @@ msgid ""
 "Settings\" section. Advanced templates using Javascript may not work, even "
 "if the external tool can take the receipt.html file."
 msgstr ""
+"Tato tisková strategie bude ignorovat nastavení tiskárny v \"normálním "
+"nastavení\". Pokročilé  šablony, které využívají Javascript nemusí pracovat "
+"správně, i když externí nástroj může přijmout soubor receipt.html"
 
 #: staff.printing.advanced.html_templates.warning.header
 msgid "Also..."

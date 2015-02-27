@@ -1,18 +1,18 @@
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2013-10-01 20:32:49-0400\n"
+"POT-Creation-Date: 2014-09-11 02:13-0400\n"
 "PO-Revision-Date: 2012-12-20 15:22+0000\n"
-"Last-Translator: Finnish <evergreen@jns.fi>\n"
+"Last-Translator: Finnish <Unknown>\n"
 "Language-Team: Finnish <evergreen@jns.fi>\n"
-"Language: fi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Launchpad (build 16378)\n"
-"X-Launchpad-Export-Date: 2012-12-21 05:01+0000\n"
+"X-Launchpad-Export-Date: 2014-09-12 06:24+0000\n"
+"X-Generator: Launchpad (build 17196)\n"
+"Language: fi\n"
 
 #: reports.js:OPERATORS_IN_LIST reports.js:FILTERS_LABEL_IN
 msgid "In list"
@@ -64,6 +64,10 @@ msgstr "Muuta sarakkeen otsikoksi: ${0}"
 msgid "Parent"
 msgstr "Emoelementti"
 
+#: reports.js:TRANSFORMS_MONTH_NAME
+msgid "Month Name"
+msgstr "Kuukauden nimi"
+
 #: reports.js:TEMPLATE_CONF_BETWEEN
 msgid "Field value is between (comma separated):"
 msgstr "Kentän arvo on välillä (pilkuilla erotettu):"
@@ -75,7 +79,8 @@ msgstr "Päivän nimi"
 #: reports.js:SOURCE_SETUP_CONFIRM_EXIT
 msgid ""
 "You have started building a template!\n"
-" Selecting a new starting source will destroy the current template and start over.  Is this OK?"
+" Selecting a new starting source will destroy the current template and start "
+"over.  Is this OK?"
 msgstr ""
 "Olet aloittanut raporttipohjan luomisen!\n"
 "Uudet aloituslähteen valinta tuhoaa nykyisen raporttipohjan ja aloittaa "
@@ -250,6 +255,10 @@ msgstr "Raakadata"
 msgid "All Available Sources"
 msgstr "Kaikki lainattavissa olevat lähteet"
 
+#: reports.js:FOLDERS_OUTPUT
+msgid "Output"
+msgstr "Tuloste"
+
 #: reports.js:OPERATORS_LIKE reports.js:FILTERS_LABEL_LIKE
 msgid "Contains Matching substring"
 msgstr "Sisältää osuvan alijonon"
@@ -295,6 +304,10 @@ msgstr "Kuukautta sitten"
 msgid "Round"
 msgstr "Pyöristä"
 
+#: reports.js:TEMPLATE_FIELD_DOC_PROMPT_CHANGE
+msgid "Change the field hint to:"
+msgstr ""
+
 #: reports.js:FILTERS_LABEL_NULL_BLANK reports.js:OPERATORS_NULL_BLANK
 msgid "Is NULL or Blank"
 msgstr "On NULL tai tyhjä"
@@ -326,10 +339,6 @@ msgstr "Väh."
 #: reports.js:FILTERS_LABEL_NOT_NULL_BLANK reports.js:OPERATORS_NOT_NULL_BLANK
 msgid "Is not NULL or Blank"
 msgstr "Ei ole NULL tai tyhjä"
-
-#: reports.js:WIDGET_DAYS
-msgid "Day(s)"
-msgstr "Päivä(ä)"
 
 #: reports.js:FOLDER_WINDOW_REPORT_OUTPUT
 msgid "Report Output: ${0}"
@@ -367,9 +376,9 @@ msgstr "Syötä tulostekansio"
 msgid "Please provide a report folder"
 msgstr "Syötä raporttikansio"
 
-#: reports.js:TRANSFORMS_MONTH_NAME
-msgid "Month Name"
-msgstr "Kuukauden nimi"
+#: reports.js:WIDGET_DAYS
+msgid "Day(s)"
+msgstr "Päivä(ä)"
 
 #: reports.js:TFORMS_LABEL_FIRST5 reports.js:TRANSFORMS_FIRST5
 msgid "First 5 characters (for US ZIP code)"
@@ -391,9 +400,9 @@ msgstr "Raportit"
 msgid "Quarters ago"
 msgstr "Neljännestä sitten"
 
-#: reports.js:FOLDERS_OUTPUT
-msgid "Output"
-msgstr "Tuloste"
+#: reports.js:REPORT_EDITOR_ENTER_NEW_NAME_ALERT
+msgid "Please change the report name"
+msgstr ""
 
 #: reports.js:TEMPLATE_CONF_SELECT_CANCEL
 msgid "Select the value, or cancel:"
