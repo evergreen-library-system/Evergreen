@@ -166,6 +166,7 @@ function($scope , $routeParams , $location , $q , egCore , egHolds,
     var provider = egGridDataProvider.instance({});
     $scope.hold_grid_data_provider = provider;
     $scope.grid_actions = egHoldGridActions;
+    $scope.grid_actions.refresh = function () { provider.refresh() };
     $scope.hold_grid_controls = {};
 
     var hold_ids = []; // current list of holds
