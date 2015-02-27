@@ -1,6 +1,6 @@
 BEGIN;
 
---SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0913', :eg_version);
 
 --stock evergreen comes with 2 merge profiles; move any custom profiles
 UPDATE vandelay.merge_profile SET id = id + 100 WHERE id > 2;
