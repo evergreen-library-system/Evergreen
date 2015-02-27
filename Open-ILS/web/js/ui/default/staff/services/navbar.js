@@ -42,7 +42,7 @@ angular.module('egCoreMod')
                 // adds a keyboard shortcut
                 // http://chieffancypants.github.io/angular-hotkeys/
                 $scope.addHotkey = function(key, path, desc) {                 
-                    hotkeys.add(key, desc, function() { navTo(path) });
+                    hotkeys.add(key, desc, function(e) { e.preventDefault();  navTo(path); });
                 };
 
                 $scope.retrieveLastRecord = function() {
