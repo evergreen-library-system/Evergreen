@@ -22,6 +22,7 @@ module.exports = function(grunt) {
             'bower_components/angular-bootstrap/ui-bootstrap.min.js',
             'bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js',
             'bower_components/angular-hotkeys/build/hotkeys.min.js',
+            'bower_components/jquery/dist/jquery.min.js',
           ]
         }]
       },
@@ -77,6 +78,7 @@ module.exports = function(grunt) {
         src: [
             // These are concatenated in order in the final build file.
             // The order is important.
+            'build/js/jquery.min.js',
             'build/js/angular.min.js',
             'build/js/angular-route.min.js',
             'build/js/ui-bootstrap.min.js',
