@@ -68,7 +68,9 @@
 
         <ul class="dropdown-menu">
           <li>
-            <a href="./circ/patron/bcsearch" target="_self">
+            <a href="./circ/patron/bcsearch" target="_self"
+              eg-accesskey="[% l('f1') %]" 
+              eg-accesskey-desc="[% l('Check Out') %]">
               <span class="glyphicon glyphicon-export"></span>
               [% l('Check Out') %]
             </a>
