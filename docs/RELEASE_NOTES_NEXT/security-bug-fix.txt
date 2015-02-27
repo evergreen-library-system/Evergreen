@@ -1,9 +1,0 @@
-IMPORTANT SECURITY INFORMATION
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-A serious security flaw that allows unauthorized remote access to
-organizational unit settings is fixed in the following releases of
-Evergreen: 2.5.9, 2.6.7, and 2.7.4.  All prior releases of Evergreen
-are vulnerable to exploitation of this flaw to reveal sensitive system
-information.  If you are running a vulnerable release of Evergreen you
-are *strongly* encouraged to upgrade to a non-vulnerable release as
-soon as possible.

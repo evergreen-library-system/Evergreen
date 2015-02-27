@@ -1,9 +1,0 @@
-Removal of Bib Call Number Search
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The Bib Call Number Search has been removed as a default numeric search in
-the catalog. Evergreen sites that wish to restore this search to the catalog
-can add the following to the numeric_qtype menu in the numeric.tt2 file.
-
-----
- <option value="identifier|bibcn">[% l('Bib Call Number') %]</option>
-----

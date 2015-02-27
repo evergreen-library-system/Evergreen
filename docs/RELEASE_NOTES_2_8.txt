@@ -1,0 +1,491 @@
+Evergreen 2_8 Release Notes
+===========================
+:toc:
+:numbered:
+
+Upgrade notes
+-------------
+
+New Features
+------------
+
+
+
+Acquisitions
+~~~~~~~~~~~~
+
+
+
+==== Duplicate Order Detection Improvements ====
+
+Provides tools to make it more clear to staff when a purchase order or
+items on an order have been ordered before.
+
+===== Prevent Duplicate PO Names =====
+
+Staff now have the option to specify a PO name during PO creation.
+If the selected name is already in use by another PO at or below
+the ordering agency for the PO, the user is warned, the save/submit
+operations are disabled, and a link to the existing PO is display.  The
+link opens the related PO in a new tab when clicked.
+
+Selecting a name which is not yet used or clearing the name field
+(which defaults upon creation to the PO ID) will clear the warning and
+re-enable the submit/save operation.
+
+Similarly, when editing a PO, if the user attempts to use a name already
+used, the user will be warned and a link to the offending PO will be
+displayed.
+
+===== Show Existing Copies =====
+
+In the select list and PO view interfaces, beside the lineitem ID #, we
+now also display the number of catalog copies already owned at or below
+the ordering agency for the bib record in question.
+
+The count does not include copies linked to the lineitem in question
+nor does it include copies that are in some form of lost, missing, or
+discard status.
+
+
+
+
+
+Administration
+~~~~~~~~~~~~~~
+
+
+
+Apache Access Handler: OpenILS::WWW::AccessHandler
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+This Perl module is intended for limiting patron access to configured locations
+in Apache. These locations could be folder trees, static files, non-Evergreen
+dynamic content, or other Apache features/modules. It is intended as a more
+patron-oriented and transparent version of the OpenILS::WWW::Proxy and
+OpenILS::WWW:Proxy::Authen modules.
+
+Instead of using Basic Authentication the AccessHandler module instead redirects
+to the OPAC for login. Once logged in additional checks can be performed, based
+on configured variables:
+
+ * Permission Checks (at Home OU or specified location)
+ * Home OU Checks (Org Unit or Descendant)
+ * "Good standing" Checks (Not Inactive or Barred)
+
+Use of the module is a simple addition to a Location block in Apache:
+
+[source,conf]
+<Location /path/to/be/protected>
+    PerlAccessHandler OpenILS::WWW::AccessHandler
+    # For each option you wish to set:
+    PerlSetVar OPTION "VALUE"
+</Location>
+
+The available options are:
+
+OILSAccessHandlerLoginURL::
+  Default: /eg/opac/login +
+  The page to redirect to when Login is needed
+OILSAccessHandlerLoginURLRedirectVar::
+  Default: redirect_to +
+  The variable the login page wants the "destination" URL stored in
+OILSAccessHandlerFailURL::
+  Default: <unset> +
+  URL to go to if Permission, Good Standing, or Home OU checks fail. If not set
+  a 403 error is generated instead. To customize the 403 you could use an
+  ErrorDocument statement.
+OILSAccessHandlerCheckOU::
+  Default: <User Home OU> +
+  Org Unit to check Permissions at and/or to load Referrer from. Can be a
+  shortname or an ID.
+OILSAccessHandlerPermission::
+  Default: <unset> +
+  Permission, or comma- or space-delimited set of permissions, the user must have to
+  access the protected area.
+OILSAccessHandlerGoodStanding::
+  Default: 0 +
+  If set to a true value the user must be both Active and not Barred.
+OILSAccessHandlerHomeOU::
+  Default: <unset> +
+  An Org Unit, or comma- or space-delimited set of Org Units, that the user's Home OU must
+  be equal to or a descendant of to access this resource. Can be set to
+  shortnames or IDs.
+OILSAccessHandlerReferrerSetting::
+  Default: <unset> +
+  Library Setting to pull a forced referrer string out of, if set.
+
+As the AccessHandler module does not actually serve the content it is
+protecting, but instead merely hands control back to Apache when it is done
+authenticating, you can protect almost anything else you can serve with Apache.
+
+Use Cases
++++++++++
+The general use of this module is "protect access to something else" - what that
+something else is will vary. Some possibilities:
+
+ * Apache features
+ ** Automatic Directory Indexes
+ ** Proxies (see below)
+ *** Electronic Databases
+ *** Software on other servers/ports
+ * Non-Evergreen software
+ ** Timekeeping software for staff
+ ** Specialized patron request packages
+ * Static files and folders
+ ** Semi-public Patron resources
+ ** Staff-only downloads
+
+Proxying Websites
++++++++++++++++++
+One potentially interesting use of the AccessHandler module is to protect an
+Apache Proxy configuration. For example, after installing and enabling
+mod_proxy, mod_proxy_http, and mod_proxy_html you could proxy websites like so:
+
+[source,conf]
+----
+<Location /proxy/>
+    # Base "Rewrite URLs" configuration
+    ProxyHTMLLinks  a       href
+    ProxyHTMLLinks  area        href
+    ProxyHTMLLinks  link        href
+    ProxyHTMLLinks  img     src longdesc usemap
+    ProxyHTMLLinks  object      classid codebase data usemap
+    ProxyHTMLLinks  q       cite
+    ProxyHTMLLinks  blockquote  cite
+    ProxyHTMLLinks  ins     cite
+    ProxyHTMLLinks  del     cite
+    ProxyHTMLLinks  form        action
+    ProxyHTMLLinks  input       src usemap
+    ProxyHTMLLinks  head        profile
+    ProxyHTMLLinks  base        href
+    ProxyHTMLLinks  script      src for
+
+    # To support scripting events (with ProxyHTMLExtended On)
+    ProxyHTMLEvents onclick ondblclick onmousedown onmouseup \
+            onmouseover onmousemove onmouseout onkeypress \
+            onkeydown onkeyup onfocus onblur onload \
+            onunload onsubmit onreset onselect onchange
+
+    # Limit all Proxy connections to authenticated sessions by default
+    PerlAccessHandler OpenILS::WWW::AccessHandler
+
+    # Strip out Evergreen cookies before sending to remote server
+    RequestHeader edit Cookie "^(.*?)ses=.*?(?:$|;)(.*)$" $1$2
+    RequestHeader edit Cookie "^(.*?)eg_loggedin=.*?(?:$|;)(.*)$" $1$2
+</Location>
+
+<Location /proxy/example/>
+    # Proxy example.net
+    ProxyPass http://www.example.net/
+    ProxyPassReverse http://www.example.net/
+    ProxyPassReverseCookieDomain example.net example.com
+    ProxyPassReverseCookiePath / /proxy/example/
+
+    ProxyHTMLEnable On
+    ProxyHTMLURLMap http://www.example.net/ /proxy/example/
+    ProxyHTMLURLMap / /proxy/mail/
+    ProxyHTMLCharsetOut *
+
+    # Limit to BR1 and BR3 users
+    PerlSetVar OILSAccessHandlerHomeOU "BR1,BR3"
+</Location>
+----
+
+As mentioned above, this can be used for multiple reasons. In addition to
+websites such as online databases for patron use you may wish to proxy software
+for staff or patron use to make it appear on your catalog domain, or perhaps to
+keep from needing to open extra ports in a firewall.
+
+
+
+
+Deleted flag for copy locations
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+A deleted flag is now available for copy locations, allowing them to be
+"deleted" without losing statistical information for circulations in a given
+copy location. It also allows copy locations that are only used by deleted
+items to be deleted.
+
+When a copy location is deleted, it will remain in the database, but will be
+removed from display in the staff client and the catalog.
+
+
+
+
+
+New TPAC config option: Show more details
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+There is a new option for TPAC to show more details by default.
+
+The Option for full details as a default, which may be especially important
+for e-content.  Valid values are 'true', 'false' and 'hide'.
+
+Setting this to 'true' shows full details by default but allows the link
+to appear for 'Show Fewer Details'. The 'hide' option shows full details
+and also suppresses the link from displaying at all.
+
+Look for "show_more_details.default" in config.tt2.
+
+
+
+
+Cataloging
+~~~~~~~~~~
+
+
+
+==== Vandelay Authority Record Match Sets ====
+
+Vandelay MARC Batch Import/Export now supports match sets for authority
+record import matching.  Matches can be made against MARC tag/subfield
+entries and against a record's normalized heading + thesaurus.  Internal
+identifier (901c) matches are also supported.
+
+===== UI Modifications =====
+
+ * Authority matches display the normalized heading/thesuarus for each 
+   match.
+ * Item import summary is not displayed for authority queues, since
+   items cannot be imported with authority records.
+
+
+
+
+
+Circulation
+~~~~~~~~~~~
+
+
+
+Active date display in OPAC 
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+If a library uses the copy's active date to calculate holds age protection,
+the active date will display with the copy details instead of the create date
+in the staff client view of the catalog. Libraries that do not enable the 
+_Use Active Date for Age Protection_ library setting will continue to display
+the create date.
+
+
+
+
+Option to stop billing activity on zero-balance billed  transactions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+A new setting is available via the Library Settings Editor to stop any billing
+activity on fully-paid lost or longoverdue transactions. When the _Do not
+change fines/fees on zero-balance LOST transaction_ setting is enabled, once a
+lost of long overdue transaction
+has been fully paid, no more lost fees will be voided or overdue fines restored
+or generated if the item is returned. The setting will reduce, though not
+eliminate, negative balances in the system.
+
+New Library Setting
++++++++++++++++++++
+ * Do not change fines/fees on zero-balance LOST transaction (circ.checkin.lost_zero_balance.do_not_change') - When an item has been marked lost and all
+fines/fees have been completely paid on the transaction, do not void or
+reinstate any fines/fees EVEN IF circ.void_lost_on_checkin and/or
+circ.void_lost_proc_fee_on_checkin are enabled.  
+
+
+
+
+Patron Message Center
+^^^^^^^^^^^^^^^^^^^^^
+There is now a new mechanism via which messages can be sent to
+patrons for them to read while logged into the public catalog.
+
+Patron messages can be generated in two ways: when a new public
+note is added to the patron's record, and when an A/T event
+that is configured to generate messages is processed.  Three
+new default A/T event definitions are added to generate
+patron messages when a hold is canceled due to lack of a target,
+staff action, or the item expiring on the shelf.
+
+In the public catalog, patrons can read their messages, mark
+one or more messages as read or unread, or delete messages that
+they do not want to see again.  The XUL staff client has a new
+menu option on the patron display, "Message Center", that allows
+staff to view messages.  Messages are intentionally not meant
+to be editable by patrons or library staff.
+
+During upgrade, existing public patron notes that are marked
+public are copied over as new patron messages that are marked
+as read.
+
+There are four new fields available in the A/T event definition:
+
+ * Message Title
+ * Message Template
+ * Message Library Path
+ * Message User Path
+
+If these four fields are set, when the A/T event is processed,
+a message is generated in addition to whatever reactor is
+specified by the event definition.  This means that, for example,
+an email overdue notice can also generate a message that the
+patron can view in the public catalog.
+
+
+
+
+Void Lost and Long Overdue Bills on Claims Returned
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Four new settings have been added to allow sites to void lost item and long
+overdue billings and processing fees when an item is marked as Claims Returned.
+
+New Library Settings
+++++++++++++++++++++
+ * Void lost item billing when claims returned (circ.void_lost_on_claimsreturned)
+ * Void lost item processing fee when claims returned (circ.void_lost_proc_fee_on_claimsreturned)
+ * Void long overdue item billing when claims returned (circ.void_longoverdue_on_claimsreturned)
+ * Void long overdue item processing fee when claims returned (circ.void_longoverdue_proc_fee_on_claimsreturned)
+
+
+
+
+
+
+
+OPAC
+~~~~
+
+
+
+TPAC Discoverability Enhancements
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+A number of discoverability enhancements have been made to the catalog
+to better support search engines:
+
+ * Titles of catalog pages now follow a "Page title - Library name" pattern
+   to provide more specific titles in search results, bookmarks, and browser
+   tabs.
+ * The OpenSearch title now specifies the library name instead of the generic
+   "Evergreen OpenSearch" at every scope.
+ * Subject headings are now exposed as http://schema.org/about[schema:about]
+   properties instead of http://schema.org/keyword[schema:keyword].
+ * Electronic resources are now assigned a http://schema.org/url[schema:url]
+   property, and any notes or link text are assigned a
+   http://schema.org/description[schema:description] property.
+ * Given a Library of Congress relator code for 1xx and 7xx fields, we now
+   surface the URL for that relator code along with
+   the http://schema.org/contributor[schema:contributor] property to give
+   machines a better chance of understanding how the person or organization
+   actually contributed to this work.
+ * Linking out to related records:
+   ** Given an LCCN (010 field), we link to the corresponding Library of Congress
+      record using http://schema.org/sameAs[schema:sameAs].
+   ** Given an OCLC number (035 field, subfield `a` beginning with `(OCoLC)`), we
+      link to the corresponding WorldCat record using
+      http://schema.org/sameAs[schema:sameAs].
+   ** Given a URI (024 field, subfield 2 = `'uri'`), we link to the
+      corresponding OCLC Work Entity record using
+      http://schema.org/exampleOfWork[schema:exampleOfWork].
+ * The sitemap generator script now includes located URIs as well as copies
+   listed in the `asset.opac_visible_copies` materialized view, and checks
+   the children or ancestors of the requested libraries for holdings as well.
+ * Links that robots should not crawl, such as search result links, are now
+   marked with the https://support.google.com/webmasters/answer/96569?hl=en[@rel="nofollow"]
+   property.
+ * Catalog pages for record details and for library descriptions now express
+   a https://support.google.com/webmasters/answer/139066?hl=en[@rel="canonical"]
+   link to simplify the number of variations of page URLs that could otherwise
+   have been derived from different search parameters.
+ * Catalog pages that do not exist now return a proper 404 "HTTP_NOT_FOUND"
+   HTTP status code, and record detail pages for records that have been deleted
+   now return a proper 410 "HTTP_GONE" HTTP status code, instead of returning a
+   misleading 200 "OK" HTTP status code.
+ * Record detail and library pages now include http://ogp.me/[Open Graph Protocol]
+   markup.
+
+
+
+
+Add new link to My Lists in My Account
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+There is now a direct link to "My Lists" from the "My Account" area in the 
+top upper-right part of the screen.  This gives users the ability to quickly
+access their lists while logged into the catalog.
+
+
+
+
+Permalinks
+^^^^^^^^^^
+The record summary page will now offer a link to a shorter permalink that
+can be used for sharing the record with others. All URL parameters are stripped
+from the link with the exception of the locg and copy_depth parameters. Those
+parameters are maintained so that people can share a link that displays just
+the holdings from one library/system or displays holdings from all libraries
+with a specific library's holdings floating to the top.
+
+
+
+
+Staff option to place another hold on same title
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+When a hold is successful in the client, staff will now see a link
+to place another hold on the same title. This link provides some workflow 
+improvement for times when staff are placing holds for multiple patrons on a
+newly-added title or when they are placing holds for book clubs.
+
+
+
+
+
+Removal of Bib Call Number Search
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The Bib Call Number Search has been removed as a default numeric search in
+the catalog. Evergreen sites that wish to restore this search to the catalog
+can add the following to the numeric_qtype menu in the numeric.tt2 file.
+
+----
+ <option value="identifier|bibcn">[% l('Bib Call Number') %]</option>
+----
+
+
+
+
+Improved styling on Text call number screen
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+New styling on the _Text call number_ screen has added highlighting to the
+displayed message, makes the font consistent with other text on the screen, and
+displays better on mobile devices.
+
+
+
+
+Miscellaneous
+-------------
+
+IMPORTANT SECURITY INFORMATION
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+A serious security flaw that allows unauthorized remote access to
+organizational unit settings is fixed in the following releases of
+Evergreen: 2.5.9, 2.6.7, and 2.7.4.  All prior releases of Evergreen
+are vulnerable to exploitation of this flaw to reveal sensitive system
+information.  If you are running a vulnerable release of Evergreen you
+are *strongly* encouraged to upgrade to a non-vulnerable release as
+soon as possible.
+
+Acknowledgments
+---------------
+The Evergreen project would like to acknowledge the following
+organizations who commissioned developments in this release of
+Evergreen:
+
+ * **TODO**
+
+We would also like to thank the following individuals who contributed
+code and documentations patches to this release of Evergreen:
+
+ * **TODO**
+
+We also thank the following organizations whose employees contributed
+patches:
+
+ * **TODO**
+
+We regret any omissions.  If a contributor has been inadvertantly
+missed, please open a bug at http://bugs.launchpad.net/evergreen/
+with a correction.
+
