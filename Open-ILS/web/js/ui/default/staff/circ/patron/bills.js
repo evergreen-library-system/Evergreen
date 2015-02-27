@@ -708,6 +708,14 @@ function($scope,  $q , egCore , patronSvc , billSvc , egPromptDialog , $location
        ['$scope','$q','egCore','patronSvc','billSvc','$location',
 function($scope,  $q , egCore , patronSvc , billSvc , $location) {
 
+    // generate a grid query with the current date widget values.
+    function current_grid_query() {
+        return {
+            'payment_ts' : {between : $scope.date_range()},
+            'xact.usr' : billSvc.userId
+        }
+    }
+
     $scope.gridControls = {
         selectedItems : function(){return []},
         activateItem : function(item) {
@@ -716,12 +724,12 @@ function($scope,  $q , egCore , patronSvc , billSvc , $location) {
         setSort : function() {
             return [{'payment_ts' : 'DESC'}, 'id'];
         },
-        setQuery : function() {
-            return {
-                'payment_ts' : {between : $scope.date_range()},
-                'xact.usr' : billSvc.userId
-            }
-        }
+        setQuery : current_grid_query
+    }
+
+    $scope.actions.apply_date_range = function() {
+        // tells the grid to re-draw itself with the new query
+        $scope.gridControls.setQuery(current_grid_query());
     }
 
     $scope.showFullDetails = function(all) {
