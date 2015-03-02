@@ -55,6 +55,8 @@ FTS_CONFIG_FILE
 954.data.MODS33-xsl.sql
 954.data.marc21expand880.sql
 
+960.data.marc21-tag-tables.sql
+
 990.schema.unapi.sql
 
 reporter-schema.sql
