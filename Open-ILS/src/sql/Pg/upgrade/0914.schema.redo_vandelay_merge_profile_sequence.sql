@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('0914', :eg_version);
+
 CREATE OR REPLACE FUNCTION evergreen.lpad_number_substrings( TEXT, TEXT, INT ) RETURNS TEXT AS $$
     my $string = shift;            # Source string
     my $pad = shift;               # string to fill.  Typically '0'. This should be a single character.
