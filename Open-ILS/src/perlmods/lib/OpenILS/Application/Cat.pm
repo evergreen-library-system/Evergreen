@@ -1381,6 +1381,137 @@ sub fixed_field_values_by_rec_type {
     return $result;
 }
 
+__PACKAGE__->register_method(
+    method    => "retrieve_tag_table",
+    api_name  => "open-ils.cat.tag_table.all.retrieve.local",
+    stream    => 1,
+    argc      => 3,
+    signature => {
+        desc   => "Retrieve set of MARC tags, subfields, and indicator values for the user's OU",
+        params => [
+            {desc => 'Authtoken', type => 'string'},
+            {desc => 'MARC Format', type => 'string'},
+            {desc => 'MARC Record Type', type => 'string'},
+        ]
+    },
+    return => {desc => 'Structure representing the tag table available to that user', type => 'object' }
+);
+__PACKAGE__->register_method(
+    method    => "retrieve_tag_table",
+    api_name  => "open-ils.cat.tag_table.all.retrieve.stock",
+    stream    => 1,
+    argc      => 3,
+    signature => {
+        desc   => 'Retrieve set of MARC tags, subfields, and indicator values for stock MARC standard',
+        params => [
+            {desc => 'Authtoken', type => 'string'},
+            {desc => 'MARC Format', type => 'string'},
+            {desc => 'MARC Record Type', type => 'string'},
+        ]
+    },
+    return => {desc => 'Structure representing the stock tag table', type => 'object' }
+);
+__PACKAGE__->register_method(
+    method    => "retrieve_tag_table",
+    api_name  => "open-ils.cat.tag_table.field_list.retrieve.local",
+    stream    => 1,
+    argc      => 3,
+    signature => {
+        desc   => "Retrieve set of MARC tags for available to the user's OU",
+        params => [
+            {desc => 'Authtoken', type => 'string'},
+            {desc => 'MARC Format', type => 'string'},
+            {desc => 'MARC Record Type', type => 'string'},
+        ]
+    },
+    return => {desc => 'Structure representing the tags available to that user', type => 'object' }
+);
+__PACKAGE__->register_method(
+    method    => "retrieve_tag_table",
+    api_name  => "open-ils.cat.tag_table.field_list.retrieve.stock",
+    stream    => 1,
+    argc      => 3,
+    signature => {
+        desc   => 'Retrieve set of MARC tags for stock MARC standard',
+        params => [
+            {desc => 'Authtoken', type => 'string'},
+            {desc => 'MARC Format', type => 'string'},
+            {desc => 'MARC Record Type', type => 'string'},
+        ]
+    },
+    return => {desc => 'Structure representing the stock MARC tags', type => 'object' }
+);
+
+sub retrieve_tag_table {
+    my( $self, $conn, $auth, $marc_format, $marc_record_type ) = @_;
+    my $e = new_editor( authtoken=>$auth, xact=>1 );
+    return $e->die_event unless $e->checkauth;
+    return $e->die_event unless $e->allowed('UPDATE_MARC', $e->requestor->ws_ou);
+
+    my $field_list_only = ($self->api_name =~ /\.field_list\./) ? 1 : 0;
+    my $context_ou;
+    if ($self->api_name =~ /\.local$/) {
+        $context_ou = $e->requestor->ws_ou;
+    }
+
+    my %sf_by_tag;
+    unless ($field_list_only) {
+        my $subfields = $e->json_query(
+            { from => [ 'config.ou_marc_subfields', 1, $marc_record_type, $context_ou ] }
+        );
+        foreach my $sf (@$subfields) {
+            my $sf_data = {
+                code        => $sf->{code},
+                description => $sf->{description},
+                mandatory   => $sf->{mandatory},
+                repeatable   => $sf->{repeatable},
+            };
+            if ($sf->{value_ctype}) {
+                $sf_data->{value_list} = $e->json_query({
+                    select => { ccvm => [
+                                            'code',
+                                            { column => 'value', alias => 'description' }
+                                        ]
+                              },
+                    from   => 'ccvm',
+                    where  => { ctype => $sf->{value_ctype} },
+                    order_by => { ccvm => { code => {} } },
+                });
+            }
+            push @{ $sf_by_tag{$sf->{tag}} }, $sf_data;
+        }
+    }
+
+    my $fields = $e->json_query(
+        { from => [ 'config.ou_marc_fields', 1, $marc_record_type, $context_ou ] }
+    );
+
+    foreach my $field (@$fields) {
+        next if $field->{hidden} eq 't';
+        unless ($field_list_only) {
+            my $tag = $field->{tag};
+            if ($tag ge '010') {
+                for my $pos (1..2) {
+                    my $ind_ccvm_key = "${marc_format}_${marc_record_type}_${tag}_ind_${pos}";
+                    my $indvals = $e->json_query({
+                        select => { ccvm => [
+                                                'code',
+                                                { column => 'value', alias => 'description' }
+                                            ]
+                                  },
+                        from   => 'ccvm',
+                        where  => { ctype => $ind_ccvm_key }
+                    });
+                    next unless defined($indvals);
+                    $field->{"ind$pos"} = $indvals;
+                }
+                $field->{subfields} = exists($sf_by_tag{$tag}) ? $sf_by_tag{$tag} : [];
+            }
+        }
+        $conn->respond($field);
+    }
+}
+
 1;
 
 # vi:et:ts=4:sw=4
