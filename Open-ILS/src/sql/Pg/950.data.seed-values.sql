@@ -1594,7 +1594,9 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  (  560, 'TOTAL_HOLD_COPY_RATIO_EXCEEDED.override', oils_i18n_gettext( 560,
     'Override the TOTAL_HOLD_COPY_RATIO_EXCEEDED event', 'ppl', 'description')),
  (  561, 'AVAIL_HOLD_COPY_RATIO_EXCEEDED.override', oils_i18n_gettext( 561,
-    'Override the AVAIL_HOLD_COPY_RATIO_EXCEEDED event', 'ppl', 'description'))
+    'Override the AVAIL_HOLD_COPY_RATIO_EXCEEDED event', 'ppl', 'description')),
+ ( 562, 'ADMIN_TAG_TABLE', oils_i18n_gettext( 562, 
+    'Allow administration of MARC tag tables', 'ppl', 'description' ))
 ;
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);

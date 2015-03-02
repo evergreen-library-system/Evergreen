@@ -784,6 +784,77 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         </permacrud>
 	</class>
 
+	<class id="cmrcfmt" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::marc_format" oils_persist:tablename="config.marc_format" reporter:label="MARC Formats" oils_persist:field_safe="true">
+		<fields oils_persist:primary="id">
+			<field reporter:label="ID"   name="id" reporter:datatype="id"/>
+			<field reporter:label="Code" name="code" reporter:datatype="text"/>
+			<field reporter:label="Name" name="name" reporter:datatype="text" oils_persist:i18n="true"/>
+        </fields>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="ADMIN_TAG_TABLE" global_required="true"/>
+                <retrieve/>
+                <update permission="ADMIN_TAG_TABLE" global_required="true"/>
+                <delete permission="ADMIN_TAG_TABLE" global_required="true"/>
+            </actions>
+        </permacrud>
+	</class>
+
+	<class id="cmrcfld" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::marc_field" oils_persist:tablename="config.marc_field" reporter:label="MARC Fields" oils_persist:field_safe="true">
+		<fields oils_persist:primary="id">
+			<field reporter:label="ID"   name="id" reporter:datatype="id"/>
+			<field reporter:label="MARC Format" name="marc_format" reporter:datatype="link" />
+			<field reporter:label="MARC Record Type" name="marc_record_type" reporter:datatype="text" />
+			<field reporter:label="MARC Tag" name="tag" reporter:datatype="text" />
+			<field reporter:label="Name" name="name" reporter:datatype="text" oils_persist:i18n="true"/>
+			<field reporter:label="Description" name="description" reporter:datatype="text" oils_persist:i18n="true"/>
+			<field reporter:label="Fixed Field?" name="fixed_field" reporter:datatype="bool"/>
+			<field reporter:label="Repeatabl?" name="repeatable" reporter:datatype="bool"/>
+			<field reporter:label="Mandatory?" name="mandatory" reporter:datatype="bool"/>
+			<field reporter:label="Hidden?" name="hidden" reporter:datatype="bool"/>
+			<field reporter:label="Owner" name="owner" reporter:datatype="link"/>
+        </fields>
+		<links>
+			<link field="marc_format" reltype="has_a" key="id" map="" class="cmrcfmt"/>
+			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
+        </links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="ADMIN_TAG_TABLE" context_field="owner"/>
+                <retrieve/>
+                <update permission="ADMIN_TAG_TABLE" context_field="owner"/>
+                <delete permission="ADMIN_TAG_TABLE" context_field="owner"/>
+            </actions>
+        </permacrud>
+	</class>
+
+	<class id="cmrcsubfld" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::marc_subfield" oils_persist:tablename="config.marc_subfield" reporter:label="MARC Subfields" oils_persist:subfield_safe="true">
+		<fields oils_persist:primary="id">
+			<field reporter:label="ID"   name="id" reporter:datatype="id"/>
+			<field reporter:label="MARC Format" name="marc_format" reporter:datatype="link" />
+			<field reporter:label="MARC Record Type" name="marc_record_type" reporter:datatype="text" />
+			<field reporter:label="MARC Tag" name="tag" reporter:datatype="text" />
+			<field reporter:label="MARC Subfield" name="code" reporter:datatype="text" />
+			<field reporter:label="Description" name="description" reporter:datatype="text" oils_persist:i18n="true"/>
+			<field reporter:label="Repeatable?" name="repeatable" reporter:datatype="bool"/>
+			<field reporter:label="Mandatory?" name="mandatory" reporter:datatype="bool"/>
+			<field reporter:label="Hidden?" name="hidden" reporter:datatype="bool"/>
+			<field reporter:label="Owner" name="owner" reporter:datatype="link"/>
+        </fields>
+		<links>
+			<link field="marc_format" reltype="has_a" key="id" map="" class="cmrcfmt"/>
+			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
+        </links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="ADMIN_TAG_TABLE" context_field="owner"/>
+                <retrieve/>
+                <update permission="ADMIN_TAG_TABLE" context_field="owner"/>
+                <delete permission="ADMIN_TAG_TABLE" context_field="owner"/>
+            </actions>
+        </permacrud>
+	</class>
+
 	<class id="crad" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::record_attr_definition" oils_persist:tablename="config.record_attr_definition" reporter:label="SVF Record Attribute Defintion" oils_persist:field_safe="true">
 		<fields oils_persist:primary="name">
 			<field reporter:label="Name" name="name" reporter:datatype="id" reporter:selector="label"  oils_obj:required="true"/>
