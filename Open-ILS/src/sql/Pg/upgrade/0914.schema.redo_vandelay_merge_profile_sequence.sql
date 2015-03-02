@@ -19,3 +19,7 @@ $$ LANGUAGE PLPERLU;
 
 COMMIT;
 
+-- recompute the various normalized label fields that use lpad_number_substrings()
+UPDATE biblio.monograph_part SET id = id;
+UPDATE asset.call_number_prefix SET id = id;
+UPDATE asset.call_number_suffix SET id = id;
