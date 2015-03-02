@@ -7,7 +7,7 @@
         FOR node IN xml.findnodes('//*[@tag="' _ target_field _ '"]');
             raw_vals = [];
             core_val = '';
-            FOR subnode IN node.findnodes('./*[not(contains("w 0 4 5 6 7 8 9", @code))]');
+            FOR subnode IN node.findnodes('./*[not(contains("e w 0 4 5 6 7 8 9", @code))]');
                 raw_vals.push(subnode.textContent());
             END;
             core_val = raw_vals.join(" ");
