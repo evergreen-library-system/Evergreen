@@ -4,8 +4,10 @@ The 'granularity' field in the staff client Action Trigger Event
 Definition configuration interface (Admin -> Local Administration ->
 Notifications / Action Triggers) is now case sensitive.  Previously,
 entering, for example, 'hourly' would be automatically modified to
-'Hourly'.  Now, 'hourly' and 'Hourly' are each valid, distinct values.
+'Hourly'.  Now, 'hourly' and 'Hourly' are each valid, distinct values,
+and the form field now always provides the lowercase value.
 
-This is important because the granularitiy values configured on the
+This is important because the granularity values configured on the
 server for processing action/trigger events are case sensitive as
-well.  
+well. When upgrading, please check that your saved values match the
+values used in your crontab.
