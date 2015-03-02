@@ -1,0 +1,180 @@
+#!/usr/bin/perl
+
+# Copyright (C) 2015 Equinox Software, Inc.
+#
+# Initial author: Galen Charlton <gmc@esilibrary.com>
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+
+# Utility to convert a MARC tooltips XML file to an SQL script
+# containing inserts into config.marc_field, config.marc_subfield,
+# and, for indicator value lists, config.record_attr_definition
+# and config.coded_value_map.
+
+use strict;
+use warnings;
+
+use Error qw/:try/;
+use Getopt::Long;
+use XML::LibXML;
+
+my ($infile, $outfile);
+my $marctype = 'biblio';
+
+GetOptions(
+    'input:s'   => \$infile,
+    'output:s'  => \$outfile,
+    'type:s'    => \$marctype,
+);
+
+unless(defined($infile) && defined($outfile)) {
+    print "Must specify an input file and an output file.\n\n";
+    print_usage();
+    exit 1;
+}
+
+unless($marctype eq 'biblio' or $marctype eq 'authority' or $marctype eq 'serial') {
+    print "Must specify a MARC type of 'biblio', 'authority', or 'serial'.\n\n";
+    print_usage();
+    exit 1;
+}
+
+open my $OUT, '>', $outfile or die "Cannot open output file $outfile: $!\n";
+binmode $OUT, ':utf8';
+
+open my $IN, '<', $infile or die "Cannot open input file $infile: $!\n";
+binmode $IN; # per XML::LibXML doc, drop all PerlIO layers
+my $xml;
+try {
+    $xml = XML::LibXML->load_xml(IO => $IN);
+    close $IN;
+} catch Error with {
+    my $e = shift;
+    print "Failed to parse MARC tooltips file $infile: $e\n";
+    exit 1;
+};
+
+emit_sql($xml, $OUT, $marctype);
+
+close $OUT;
+
+exit 0;
+
+sub print_usage {
+    print <<_USAGE_;
+Usage: $0 \\
+          --input /path/to/marcedit-tooltips.xml \\
+          --outfile output.sql \\
+          [--type {biblio,authority,serial}]
+_USAGE_
+}
+
+sub emit_sql {
+    my ($xml, $OUT, $marctype) = @_;
+
+    my $seen = {};
+    my @fields = $xml->findnodes('//field');
+    foreach my $field (@fields) {
+        emit_field_sql($field, $OUT, $marctype, $seen);
+    }
+    
+}
+
+sub emit_field_sql {
+    my ($field, $OUT, $marctype, $seen) = @_;
+
+    my $name = $field->find('name/text()');
+    my $description = $field->find('description/text()');
+    my $tag = $field->getAttribute('tag');
+    if ($tag !~ /^\d\d\d$/) {
+        print STDERR "Warning: tag $tag is not as expected; skipping.\n";
+        return;
+    }
+    my $ff = $tag lt '010' ? 'TRUE' : 'FALSE';
+    my $repeatable = uc($field->getAttribute('repeatable'));
+    print $OUT <<_FIELD_;
+INSERT INTO config.marc_field(marc_format, marc_record_type, tag, name, description,
+                              fixed_field, repeatable, mandatory, hidden)
+VALUES (1, '$marctype', '$tag', \$\$$name\$\$, \$\$$description\$\$,
+$ff, $repeatable, FALSE, FALSE);
+_FIELD_
+
+    if (exists $seen->{$tag}) {
+        print STDERR "Warning: we've already seen $tag; skipping.\n";
+        return;
+    } else {
+        $seen->{$tag}++;
+    }
+    if ($ff eq 'FALSE') {
+        emit_indicator_sql($tag, $field, $OUT, $marctype, $seen);
+        emit_subfield_sql($tag, $field, $OUT, $marctype, $seen);
+    }
+}
+
+sub emit_indicator_sql {
+    my ($tag, $field, $OUT, $marctype, $seen) = @_;
+
+    my %indvalues = ();
+    my @inds = $field->findnodes('indicator');
+    foreach my $ind (@inds) {
+        my $position = $ind->getAttribute('position');
+        my $value    = $ind->getAttribute('value');
+        my $description = $ind->find('description/text()');
+        if ($position ne '1' and $position ne '2') {
+            print STDERR "Warning: indicator position $position for tag $tag is not expected. Skipping.\n";
+            next;
+        }
+        if (length($value) != 1) {
+            print STDERR "Warning: value $value for indicator $tag.$position is not expected. Skipping.\n";
+            next;
+        }
+        $indvalues{$position}->{$value} = $description;
+    }
+
+    foreach my $pos (sort keys %indvalues) {
+        my $ctype = "marc21_${marctype}_${tag}_ind_${pos}";
+        print $OUT <<_ATTR_;
+INSERT INTO config.record_attr_definition(name, label)
+VALUES ('$ctype', 'MARC 21 $marctype field $tag indicator position $pos');
+_ATTR_
+        foreach my $code (sort keys %{ $indvalues{$pos} }) {
+            my $value = $indvalues{$pos}->{$code};
+            print $OUT <<_IND_;
+INSERT INTO config.coded_value_map(ctype, code, value, opac_visible, is_simple)
+VALUES ('$ctype', '$code', \$\$$value\$\$, FALSE, TRUE);
+_IND_
+        }
+    }
+}
+
+sub emit_subfield_sql {
+    my ($tag, $field, $OUT, $marctype, $seen) = @_;
+    
+    my @subfields = $field->findnodes('subfield');
+    foreach my $subfield (@subfields) {
+        my $code = $subfield->getAttribute('code');
+        if (exists $seen->{"$tag-$code"}) {
+            print STDERR "Warning: we've already seen $tag\$$code; skipping.\n";
+            return;
+        } else {
+            $seen->{"$tag-$code"}++;
+        }
+        my $description = $subfield->find('description/text()');
+        my $repeatable = uc($subfield->getAttribute('repeatable'));
+        print $OUT <<_SUBFIELD_;
+INSERT INTO config.marc_subfield(marc_format, marc_record_type, tag, code, description,
+                                 repeatable, mandatory, hidden)
+VALUES (1, '$marctype', '$tag', '$code', \$\$$description\$\$,
+$repeatable, FALSE, FALSE);
+_SUBFIELD_
+    }
+}
