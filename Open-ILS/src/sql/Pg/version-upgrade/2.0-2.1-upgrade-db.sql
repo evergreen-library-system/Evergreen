@@ -310,6 +310,8 @@ INSERT INTO config.hold_matrix_weights(name, user_home_ou, request_ou, pickup_ou
 INSERT INTO config.weight_assoc(active, org_unit, circ_weights, hold_weights) VALUES
     (true, 1, 1, 1);
 
+-- LP1125270
+DROP FUNCTION IF EXISTS actor.usr_purge_data(INT, INT);
 -- 0480
 CREATE OR REPLACE FUNCTION actor.usr_purge_data(
 	src_usr  IN INTEGER,
