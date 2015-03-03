@@ -1,3 +1,183 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit ddd1cfeece1f17249da1c1903bcea0d00fb99438
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Tue Mar 3 16:33:15 2015 -0500
+
+    Generate empty upgrade script if needed
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+8	0	build/tools/make_release
+
+commit c9302e22bacefbb5a3b7c0d8000e3731ad620db7
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Mon Feb 24 12:09:57 2014 -0500
+
+    Bump OpenILS.pm version
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit 82fd58e1d2ee1a1a104a856f961ffd4d1d83b34b
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Tue Mar 3 16:05:25 2015 -0500
+
+    Move security notice to release notes
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+14	0	docs/RELEASE_NOTES_2_5.txt
+0	9	docs/RELEASE_NOTES_NEXT/security-bug-fix.txt
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/security-bug-fix.txt
+
+commit e77ab8d82cbd928a8d0bca6b97e7ab30fa8e6ec4
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Thu Feb 19 11:17:08 2015 -0500
+
+    LP#1424755: Add IMPORTANT SECURITY INFORMATION release note.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+9	0	docs/RELEASE_NOTES_NEXT/security-bug-fix.txt
+ create mode 100644 docs/RELEASE_NOTES_NEXT/security-bug-fix.txt
+
+commit f38b24c26908b6c45d83eace6b79c1503257b290
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Wed Feb 18 16:28:31 2015 -0500
+
+    LP#1424755: Org Unit Setting view permissions can be bypassed
+    
+    Fix private org. unit setting leakage by forcing the $auth argument
+    to true if not passed in when open-ils.actor.ou_setting.ancestor_default
+    or open-ils.actor.ou_setting.ancestor_default.batch are called.
+    
+    Other than a change to the desc of the public methods to reflect that
+    they now check permissions if permissions are required, there are no
+    required api changes to the back or the front ends.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+10	4	Open-ILS/src/perlmods/lib/OpenILS/Application/Actor.pm
+
+commit 9d06962f9eadf9256fc484cf2f68b5eb9c221316
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Tue Feb 24 14:05:16 2015 -0500
+
+    LP#1206589: Temporary Fix for Org. Unit Settings History Bug
+    
+    This commit makes two changes to the coustl IDL entry.
+    
+    1. It adds a retrieve permission of STAFF_LOGIN.  This at least
+    requires someone with staff permission to be able to view settings
+    history.
+    
+    2. It fixed the primary key field from date_applied to id.  The
+    prior setting was just an outright error.
+    
+    NOTE: This is intended as a short term fix for the Library Settings
+    Editor history feature.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+2	2	Open-ILS/examples/fm_IDL.xml
+
+commit c787b591d83be8880247966d4604478b04d6cb5a
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Tue Mar 3 16:19:02 2015 -0500
+
+    Forward port 2.5.7 upgrade script
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+50	0	Open-ILS/src/sql/Pg/version-upgrade/2.5.7-2.5.8-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.5.7-2.5.8-upgrade-db.sql
+
+commit 325d2c44b069bcd6d8b439982b59cd82b84fbca1
+Author: Ben Shum <bshum@biblio.org>
+Date:   Fri Dec 26 15:27:47 2014 -0500
+
+    Docs: fix asciidoc errors
+    
+    When https://bugs.launchpad.net/evergreen/+bug/1386854 was merged to add a new
+    docs section for "Locally hosted content", it looks like there was a bad git
+    conflict resolution and an extra block of ======= was left behind.
+    
+    Remove this to fix headings and table of contents for the documentation site.
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+0	1	docs/admin_initial_setup/designing_your_catalog.txt
+
+commit ce7710c86028a1c11086d16a102fc128dd020276
+Author: Timothy Spindler <tspindler@cwmars.org>
+Date:   Wed Nov 26 16:24:42 2014 -0500
+
+    Docs: Documentation for MARC Batch Edit
+    
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+48	0	docs/cataloging/MARC_batch_edit.txt
+2	0	docs/root.txt
+ create mode 100644 docs/cataloging/MARC_batch_edit.txt
+
+commit c0e0e39d49f1188575f609cb1c30f3626da678ad
+Author: Josh Stompro <stomproj@larl.org>
+Date:   Mon Nov 10 14:35:46 2014 -0500
+
+    Documentation: LP#1386854 - Locally Hosted Added Content.
+    
+    Adds documentation that describes how to use the local content bypass
+    feature of the AddedContent modules.  This allows for local added content like
+    cover art, reviews, TOC, exerpts or annotations to be shown in bib records.
+    
+    I also changed the headers in the External Added Content section to use title case.
+    
+    Signed-off-by: Josh Stompro <stomproj@larl.org>
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+    
+    Conflicts:
+    	docs/admin_initial_setup/designing_your_catalog.txt
+
+71	2	docs/admin_initial_setup/designing_your_catalog.txt
+
+commit 3ea579e4f4ea4704d15e877d03ef94a25dd6f753
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Thu Nov 6 16:03:36 2014 -0500
+
+    LP#1390225: Fail to care about errors from auth.session.delete
+    
+    We're just tossing this call over the wall and moving on.  We don't
+    care if the session wasn't there to delete or even if we didn't pass
+    a session to the server.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    
+    Conflicts:
+    	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader.pm
+
+8	0	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader.pm
+
+commit b759d7572369f1e5abaa7497293441d611bde519
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Thu Nov 6 15:36:16 2014 -0500
+
+    LP#1390225: redirect to ctx.home_page instead of through ctx.logout_page
+    
+    This way, we skip the auth.session.delete call that will error out because
+    we no longer have the authtoken cookie.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    
+    Conflicts:
+    	Open-ILS/src/templates/opac/parts/base.tt2
+
+1	1	Open-ILS/src/templates/opac/parts/base.tt2
