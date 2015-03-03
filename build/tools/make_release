@@ -252,6 +252,14 @@ if [ $PREV_BRANCH != "PACKAGE" ]; then
                 ${EDITOR:-vi} $UPGRADE_FILE
             fi;
             git add $UPGRADE_FILE
+        else
+            echo "Building Placeholder Upgrade Script."
+            echo "--Upgrade Script for $PREV_VERSION to $VERSION" > $UPGRADE_FILE
+            echo "\set eg_version '''$VERSION'''" >> $UPGRADE_FILE
+            echo "BEGIN;" >> $UPGRADE_FILE
+            grep "config.upgrade_log.*$VERSION" Open-ILS/src/sql/Pg/002.schema.config.sql >> $UPGRADE_FILE
+            echo "COMMIT;" >> $UPGRADE_FILE
+            git add $UPGRADE_FILE
         fi
     fi
 
