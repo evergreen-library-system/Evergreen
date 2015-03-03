@@ -188,11 +188,11 @@ var MARC = {
                     me.fromXmlDocument($('record', mxml)[0]);
                     if (me.onLoad) me.onLoad();
             });
-        },
+        }
 
         this.fromXmlString = function (mxml) {
                 this.fromXmlDocument( $( $.parseXML( mxml ) ).find('record')[0] );
-        },
+        }
 
         this.fromXmlDocument = function (mxml) {
             var me = this;
@@ -232,7 +232,7 @@ var MARC = {
 
             me.ready = true;
 
-        },
+        }
 
         this.toXmlDocument = function () {
 
@@ -265,11 +265,11 @@ var MARC = {
             });
 
             return doc;
-        },
+        }
 
         this.toXmlString = function () {
             return (new XMLSerializer()).serializeToString( this.toXmlDocument() );
-        },
+        }
 
         this.fromBreaker = function (marctxt) {
             var me = this;
@@ -333,7 +333,7 @@ var MARC = {
 
             me.ready = true;
             return this;
-        },
+        }
 
         this.toBreaker = function () {
 
@@ -726,6 +726,316 @@ var MARC = {
 
         if (this.ready) this.parse();
 
+    },
+
+    AuthorityControlSet : function (kwargs) {
+    
+        kwargs = kwargs || {};
+    
+        if (!MARC.AuthorityControlSet._remote_loaded) {
+    
+            // TODO -- push the raw tree into the oils cache for later reuse
+    
+            // fetch everything up front...
+            this._preFetchWithFielder({
+                "acs": "_control_set_list",
+                "at": "_thesaurus_list",
+                "acsaf": "_authority_field_list",
+                "acsbf": "_bib_field_list",
+                "aba": "_browse_axis_list",
+                "abaafm": "_browse_field_map_list"
+            });
+    
+            MARC.AuthorityControlSet._remote_loaded = true;
+        }
+    
+        if (MARC.AuthorityControlSet._remote_loaded && !MARC.AuthorityControlSet._remote_parsed) {
+    
+            MARC.AuthorityControlSet._browse_axis_by_code = {};
+            MARC.AuthorityControlSet._browse_axis_list.forEach(function (ba) {
+                ba.maps(
+                    MARC.AuthorityControlSet._browse_field_map_list.filter(
+                        function (m) { return m.axis() == ba.code() }
+                    )
+                );
+                MARC.AuthorityControlSet._browse_axis_by_code[ba.code()] = ba;
+            });
+    
+            // loop over each acs
+            MARC.AuthorityControlSet._control_set_list.forEach(function (cs) {
+                MARC.AuthorityControlSet._controlsets[''+cs.id()] = {
+                    id : cs.id(),
+                    name : cs.name(),
+                    description : cs.description(),
+                    authority_tag_map : {},
+                    control_map : {},
+                    bib_fields : [],
+                    raw : cs
+                };
+    
+                // grab the authority fields
+                var acsaf_list = MARC.AuthorityControlSet._authority_field_list.filter(
+                    function (af) { return af.control_set() == cs.id() }
+                );
+    
+                var at_list = MARC.AuthorityControlSet._thesaurus_list.filter(
+                    function (at) { return at.control_set() == cs.id() }
+                );
+    
+                MARC.AuthorityControlSet._controlsets[''+cs.id()].raw.authority_fields( acsaf_list );
+                MARC.AuthorityControlSet._controlsets[''+cs.id()].raw.thesauri( at_list );
+    
+                // and loop over each
+                acsaf_list.forEach(function (csaf) {
+                    csaf.axis_maps([]);
+    
+                    // link the main entry if we're subordinate
+                    if (csaf.main_entry()) {
+                        csaf.main_entry(
+                            acsaf_list.filter(function (x) {
+                                return x.id() == csaf.main_entry();
+                            })[0]
+                        );
+                    }
+    
+                    // link the sub entries if we're main
+                    csaf.sub_entries(
+                        acsaf_list.filter(function (x) {
+                            return x.main_entry() == csaf.id();
+                        })
+                    );
+    
+                    // now, bib fields
+                    var acsbf_list = MARC.AuthorityControlSet._bib_field_list.filter(
+                        function (b) { return b.authority_field() == csaf.id() }
+                    );
+                    csaf.bib_fields( acsbf_list );
+    
+                    MARC.AuthorityControlSet._controlsets[''+cs.id()].bib_fields = [].concat(
+                        MARC.AuthorityControlSet._controlsets[''+cs.id()].bib_fields,
+                        acsbf_list
+                    );
+    
+                    acsbf_list.forEach(function (csbf) {
+                        // link the authority field to the bib field
+                        if (csbf.authority_field()) {
+                            csbf.authority_field(
+                                acsaf_list.filter(function (x) {
+                                    return x.id() == csbf.authority_field();
+                                })[0]
+                            );
+                        }
+    
+                    });
+    
+                    MARC.AuthorityControlSet._browse_axis_list.forEach(
+                        function (ba) {
+                            ba.maps().filter(
+                                function (m) { return m.field() == csaf.id() }
+                            ).forEach(
+                                function (fm) { fm.field( csaf ); csaf.axis_maps().push( fm ) } // and set the field
+                            )
+                        }
+                    );
+    
+                });
+    
+                // build the authority_tag_map
+                MARC.AuthorityControlSet._controlsets[''+cs.id()].bib_fields.forEach(function (bf) {
+    
+                    if (!MARC.AuthorityControlSet._controlsets[''+cs.id()].control_map[bf.tag()])
+                        MARC.AuthorityControlSet._controlsets[''+cs.id()].control_map[bf.tag()] = {};
+    
+                    bf.authority_field().sf_list().split('').forEach(function (sf_code) {
+    
+                        if (!MARC.AuthorityControlSet._controlsets[''+cs.id()].control_map[bf.tag()][sf_code])
+                            MARC.AuthorityControlSet._controlsets[''+cs.id()].control_map[bf.tag()][sf_code] = {};
+    
+                        MARC.AuthorityControlSet._controlsets[''+cs.id()].control_map[bf.tag()][sf_code][bf.authority_field().tag()] = sf_code;
+                    });
+                });
+    
+            });
+    
+            if (this.controlSetList().length > 0)
+                delete MARC.AuthorityControlSet._controlsets['-1'];
+    
+            MARC.AuthorityControlSet._remote_parsed = true;
+        }
+    
+        this._preFetchWithFielder = function(cmap) {
+            for (var hint in cmap) {
+                var cache_key = cmap[hint];
+                var method = "open-ils.fielder." + hint + ".atomic";
+                var pkey = fieldmapper.IDL.fmclasses[hint].pkey;
+    
+                var query = {};
+                query[pkey] = {"!=": null};
+    
+                MARC.AuthorityControlSet[cache_key] = dojo.map(
+                    fieldmapper.standardRequest(
+                        ["open-ils.fielder", method],
+                        [{"cache": 1, "query" : query}]
+                    ),
+                    function(h) { return new fieldmapper[hint]().fromHash(h); }
+                );
+            }
+        }
+    
+        this.controlSetId = function (x) {
+            if (x) this._controlset = ''+x;
+            return this._controlset;
+        }
+    
+        this.controlSet = function (x) {
+            return MARC.AuthorityControlSet._controlsets[''+this.controlSetId(x)];
+        }
+    
+        this.controlSetByThesaurusCode = function (x) {
+            var thes = MARC.AuthorityControlSet._thesaurus_list.filter(
+                function (at) { return at.code() == x }
+            )[0];
+    
+            return this.controlSet(thes.control_set());
+        }
+    
+        this.browseAxisByCode = function(code) {
+            return MARC.AuthorityControlSet._browse_axis_by_code[code];
+        }
+    
+        this.bibFieldByTag = function (x) {
+            var me = this;
+            return me.controlSet().bib_fields.filter(
+                function (bf) { if (bf.tag() == x) return true }
+            )[0];
+        }
+    
+        this.bibFields = function (x) {
+            return this.controlSet(x).bib_fields;
+        }
+    
+        this.bibFieldBrowseAxes = function (t) {
+            var blist = [];
+            for (var bcode in MARC.AuthorityControlSet._browse_axis_by_code) {
+                MARC.AuthorityControlSet._browse_axis_by_code[bcode].maps().forEach(
+                    function (m) {
+                        if (m.field().bib_fields().filter(
+                                function (b) { return b.tag() == t }
+                            ).length > 0
+                        ) blist.push(bcode);
+                    }
+                );
+            }
+            return blist;
+        }
+    
+        this.authorityFields = function (x) {
+            return this.controlSet(x).raw.authority_fields();
+        }
+    
+        this.thesauri = function (x) {
+            return this.controlSet(x).raw.thesauri();
+        }
+    
+        this.controlSetList = function () {
+            var l = [];
+            for (var i in MARC.AuthorityControlSet._controlsets) {
+                l.push(i);
+            }
+            return l;
+        }
+    
+        this.findControlSetsForTag = function (tag) {
+            var me = this;
+            var old_acs = this.controlSetId();
+            var acs_list = me.controlSetList().filter(
+                function(acs_id) { return (me.controlSet(acs_id).control_map[tag]) }
+            );
+            this.controlSetId(old_acs);
+            return acs_list;
+        }
+    
+        this.findControlSetsForAuthorityTag = function (tag) {
+            var me = this;
+            var old_acs = this.controlSetId();
+    
+            var acs_list = me.controlSetList().filter(
+                function(acs_id) {
+                    var a = me.controlSet(acs_id);
+                    for (var btag in a.control_map) {
+                        for (var sf in a.control_map[btag]) {
+                            if (a.control_map[btag][sf][tag]) return true;
+                        }
+                    }
+                    return false;
+                }
+            );
+            this.controlSetId(old_acs);
+            return acs_list;
+        }
+    
+        this.bibToAuthority = function (field) {
+            var b_field = this.bibFieldByTag(field.tag);
+    
+            if (b_field) { // construct an marc authority record
+                var af = b_field.authority_field();
+    
+                var sflist = [];                
+                for (var i = 0; i < field.subfields.length; i++) {
+                    if (af.sf_list().indexOf(field.subfields[i][0]) > -1) {
+                        sflist.push(field.subfields[i]);
+                    }
+                }
+    
+                var m = new MARC.Record ({rtype:'AUT'});
+                m.appendFields(
+                    new MARC.Field ({
+                        tag : af.tag(),
+                        ind1: field.ind1,
+                        ind2: field.ind2,
+                        subfields: sflist
+                    })
+                );
+    
+                return m.toXmlString();
+            }
+    
+            return null;
+        }
+    
+        this.bibToAuthorities = function (field) {
+            var auth_list = [];
+            var me = this;
+    
+            var old_acs = this.controlSetId();
+            me.controlSetList().forEach(
+                function (acs_id) {
+                    var acs = me.controlSet(acs_id);
+                    var x = me.bibToAuthority(field);
+                    if (x) { var foo = {}; foo[acs_id] = x; auth_list.push(foo); }
+                }
+            );
+            this.controlSetId(old_acs);
+    
+            return auth_list;
+        }
+    
+        // This should not be used in an angular world.  Instead, the call
+        // to open-ils.search.authority.simple_heading.from_xml.batch.atomic should
+        // be performed by the code that wants to find matching authorities.
+        this.findMatchingAuthorities = function (field) {
+            return fieldmapper.standardRequest(
+                [ 'open-ils.search', 'open-ils.search.authority.simple_heading.from_xml.batch.atomic' ],
+                this.bibToAuthorities(field)
+            );
+        }
+    
+        if (kwargs.controlSet) {
+            this.controlSetId( kwargs.controlSet );
+        } else {
+            this.controlSetId( this.controlSetList().sort(function(a,b){return (a - b)}) );
+        }
+    
     }
 };
 
@@ -2359,6 +2669,275 @@ MARC.Record._physical_characteristics = {
                         s : "Stereophonic",
                         u : "Unknown",
                         z : "Other"
+                }
+            }
+        }
+    }
+};
+
+MARC.AuthorityControlSet._remote_loaded = false;
+MARC.AuthorityControlSet._remote_parsed = false;
+
+MARC.AuthorityControlSet._controlsets = {
+    // static sorta-LoC setup ... to be overwritten with server data 
+    '-1' : {
+        id : -1,
+        name : 'Static LoC legacy mapping',
+        description : 'Legacy mapping provided as a default',
+        control_map : {
+            100 : {
+                'a' : { 100 : 'a' },
+                'd' : { 100 : 'd' },
+                'e' : { 100 : 'e' },
+                'q' : { 100 : 'q' }
+            },
+            110 : {
+                'a' : { 110 : 'a' },
+                'd' : { 110 : 'd' }
+            },
+            111 : {
+                'a' : { 111 : 'a' },
+                'd' : { 111 : 'd' }
+            },
+            130 : {
+                'a' : { 130 : 'a' },
+                'd' : { 130 : 'd' }
+            },
+            240 : {
+                'a' : { 130 : 'a' },
+                'd' : { 130 : 'd' }
+            },
+            400 : {
+                'a' : { 100 : 'a' },
+                'd' : { 100 : 'd' }
+            },
+            410 : {
+                'a' : { 110 : 'a' },
+                'd' : { 110 : 'd' }
+            },
+            411 : {
+                'a' : { 111 : 'a' },
+                'd' : { 111 : 'd' }
+            },
+            440 : {
+                'a' : { 130 : 'a' },
+                'n' : { 130 : 'n' },
+                'p' : { 130 : 'p' }
+            },
+            700 : {
+                'a' : { 100 : 'a' },
+                'd' : { 100 : 'd' },
+                'q' : { 100 : 'q' },
+                't' : { 100 : 't' }
+            },
+            710 : {
+                'a' : { 110 : 'a' },
+                'd' : { 110 : 'd' }
+            },
+            711 : {
+                'a' : { 111 : 'a' },
+                'c' : { 111 : 'c' },
+                'd' : { 111 : 'd' }
+            },
+            730 : {
+                'a' : { 130 : 'a' },
+                'd' : { 130 : 'd' }
+            },
+            800 : {
+                'a' : { 100 : 'a' },
+                'd' : { 100 : 'd' }
+            },
+            810 : {
+                'a' : { 110 : 'a' },
+                'd' : { 110 : 'd' }
+            },
+            811 : {
+                'a' : { 111 : 'a' },
+                'd' : { 111 : 'd' }
+            },
+            830 : {
+                'a' : { 130 : 'a' },
+                'd' : { 130 : 'd' }
+            },
+            600 : {
+                'a' : { 100 : 'a' },
+                'd' : { 100 : 'd' },
+                'q' : { 100 : 'q' },
+                't' : { 100 : 't' },
+                'v' : { 180 : 'v',
+                    100 : 'v',
+                    181 : 'v',
+                    182 : 'v',
+                    185 : 'v'
+                },
+                'x' : { 180 : 'x',
+                    100 : 'x',
+                    181 : 'x',
+                    182 : 'x',
+                    185 : 'x'
+                },
+                'y' : { 180 : 'y',
+                    100 : 'y',
+                    181 : 'y',
+                    182 : 'y',
+                    185 : 'y'
+                },
+                'z' : { 180 : 'z',
+                    100 : 'z',
+                    181 : 'z',
+                    182 : 'z',
+                    185 : 'z'
+                }
+            },
+            610 : {
+                'a' : { 110 : 'a' },
+                'd' : { 110 : 'd' },
+                't' : { 110 : 't' },
+                'v' : { 180 : 'v',
+                    110 : 'v',
+                    181 : 'v',
+                    182 : 'v',
+                    185 : 'v'
+                },
+                'x' : { 180 : 'x',
+                    110 : 'x',
+                    181 : 'x',
+                    182 : 'x',
+                    185 : 'x'
+                },
+                'y' : { 180 : 'y',
+                    110 : 'y',
+                    181 : 'y',
+                    182 : 'y',
+                    185 : 'y'
+                },
+                'z' : { 180 : 'z',
+                    110 : 'z',
+                    181 : 'z',
+                    182 : 'z',
+                    185 : 'z'
+                }
+            },
+            611 : {
+                'a' : { 111 : 'a' },
+                'd' : { 111 : 'd' },
+                't' : { 111 : 't' },
+                'v' : { 180 : 'v',
+                    111 : 'v',
+                    181 : 'v',
+                    182 : 'v',
+                    185 : 'v'
+                },
+                'x' : { 180 : 'x',
+                    111 : 'x',
+                    181 : 'x',
+                    182 : 'x',
+                    185 : 'x'
+                },
+                'y' : { 180 : 'y',
+                    111 : 'y',
+                    181 : 'y',
+                    182 : 'y',
+                    185 : 'y'
+                },
+                'z' : { 180 : 'z',
+                    111 : 'z',
+                    181 : 'z',
+                    182 : 'z',
+                    185 : 'z'
+                }
+            },
+            630 : {
+                'a' : { 130 : 'a' },
+                'd' : { 130 : 'd' }
+            },
+            648 : {
+                'a' : { 148 : 'a' },
+                'v' : { 148 : 'v' },
+                'x' : { 148 : 'x' },
+                'y' : { 148 : 'y' },
+                'z' : { 148 : 'z' }
+            },
+            650 : {
+                'a' : { 150 : 'a' },
+                'b' : { 150 : 'b' },
+                'v' : { 180 : 'v',
+                    150 : 'v',
+                    181 : 'v',
+                    182 : 'v',
+                    185 : 'v'
+                },
+                'x' : { 180 : 'x',
+                    150 : 'x',
+                    181 : 'x',
+                    182 : 'x',
+                    185 : 'x'
+                },
+                'y' : { 180 : 'y',
+                    150 : 'y',
+                    181 : 'y',
+                    182 : 'y',
+                    185 : 'y'
+                },
+                'z' : { 180 : 'z',
+                    150 : 'z',
+                    181 : 'z',
+                    182 : 'z',
+                    185 : 'z'
+                }
+            },
+            651 : {
+                'a' : { 151 : 'a' },
+                'v' : { 180 : 'v',
+                    151 : 'v',
+                    181 : 'v',
+                    182 : 'v',
+                    185 : 'v'
+                },
+                'x' : { 180 : 'x',
+                    151 : 'x',
+                    181 : 'x',
+                    182 : 'x',
+                    185 : 'x'
+                },
+                'y' : { 180 : 'y',
+                    151 : 'y',
+                    181 : 'y',
+                    182 : 'y',
+                    185 : 'y'
+                },
+                'z' : { 180 : 'z',
+                    151 : 'z',
+                    181 : 'z',
+                    182 : 'z',
+                    185 : 'z'
+                }
+            },
+            655 : {
+                'a' : { 155 : 'a' },
+                'v' : { 180 : 'v',
+                    155 : 'v',
+                    181 : 'v',
+                    182 : 'v',
+                    185 : 'v'
+                },
+                'x' : { 180 : 'x',
+                    155 : 'x',
+                    181 : 'x',
+                    182 : 'x',
+                    185 : 'x'
+                },
+                'y' : { 180 : 'y',
+                    155 : 'y',
+                    181 : 'y',
+                    182 : 'y',
+                    185 : 'y'
+                },
+                'z' : { 180 : 'z',
+                    155 : 'z',
+                    181 : 'z',
+                    182 : 'z',
+                    185 : 'z'
                 }
             }
         }
