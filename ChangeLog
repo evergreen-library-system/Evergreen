@@ -1,3 +1,665 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 59a3478b091d2b88f27ae5160d60e052a1e493ba
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Mon Feb 24 12:09:57 2014 -0500
+
+    Bump OpenILS.pm version
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit e7a71e3f44562d1f630af2daa3cb6cd5bb74c69b
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Thu Feb 19 11:17:08 2015 -0500
+
+    LP#1424755: Add IMPORTANT SECURITY INFORMATION release note.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+9	0	docs/RELEASE_NOTES_NEXT/security-bug-fix.txt
+ create mode 100644 docs/RELEASE_NOTES_NEXT/security-bug-fix.txt
+
+commit a18f1a430fc9de5096290ecff81ede15672edd12
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Wed Feb 18 16:28:31 2015 -0500
+
+    LP#1424755: Org Unit Setting view permissions can be bypassed
+    
+    Fix private org. unit setting leakage by forcing the $auth argument
+    to true if not passed in when open-ils.actor.ou_setting.ancestor_default
+    or open-ils.actor.ou_setting.ancestor_default.batch are called.
+    
+    Other than a change to the desc of the public methods to reflect that
+    they now check permissions if permissions are required, there are no
+    required api changes to the back or the front ends.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+10	4	Open-ILS/src/perlmods/lib/OpenILS/Application/Actor.pm
+
+commit a3e8d068781a3e1b4b638861797e3a06fb455a45
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Tue Feb 24 14:05:16 2015 -0500
+
+    LP#1206589: Temporary Fix for Org. Unit Settings History Bug
+    
+    This commit makes two changes to the coustl IDL entry.
+    
+    1. It adds a retrieve permission of STAFF_LOGIN.  This at least
+    requires someone with staff permission to be able to view settings
+    history.
+    
+    2. It fixed the primary key field from date_applied to id.  The
+    prior setting was just an outright error.
+    
+    NOTE: This is intended as a short term fix for the Library Settings
+    Editor history feature.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+2	2	Open-ILS/examples/fm_IDL.xml
+
+commit 9fac38cc9cb52faf4038b04ebbe2389c60e64b22
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Tue Mar 3 15:15:43 2015 -0500
+
+    Forward port 2.6.5 and 2.6.6 upgrade scripts
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+237	0	Open-ILS/src/sql/Pg/version-upgrade/2.6.4-2.6.5-upgrade-db.sql
+733	0	Open-ILS/src/sql/Pg/version-upgrade/2.6.5-2.6.6-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.6.4-2.6.5-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.6.5-2.6.6-upgrade-db.sql
+
+commit 7f2a49387141b5c98cd9e84aee54d9d902d81442
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Mon Mar 2 15:06:03 2015 -0500
+
+    lp1427331: Remove relator information from author links
+    
+    Removes the display and linking of relator information from the author field
+    on the search results page. The display of subfield e was limiting the number
+    or results retrieved when clicking these links.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+1	1	Open-ILS/src/templates/opac/parts/misc_util.tt2
+
+commit 81ce6b4a3ca2826d6c7305f8525fe63cd919a779
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Tue Mar 3 12:11:35 2015 -0500
+
+    Revert LP#1205072
+    
+    It was decided that these changes caused too much potential for
+    confusion, and would be better served by a simultaneous change to
+    making 'granularity' case insensitive.  Pulling back for now.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/support-scripts/action_trigger_runner.pl.in
+5	8	Open-ILS/src/templates/conify/global/action_trigger/event_definition.tt2
+0	1	Open-ILS/web/js/ui/default/conify/global/action_trigger/event_definition.js
+0	13	docs/RELEASE_NOTES_NEXT/Administration/action-trigger-granularity.txt
+2	2	docs/admin/actiontriggers.txt
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/Administration/action-trigger-granularity.txt
+
+commit de221c982d60210bd96b860c6ccb39d7d1d9c55a
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Thu Nov 13 09:42:45 2014 -0800
+
+    LP#1287370: minor textual cleanup
+    
+    - remove trailing spaces
+    - remove debug logging
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Erica Rohlfs <erohlfs@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+4	5	Open-ILS/web/js/dojo/openils/widget/AutoGrid.js
+1	1	Open-ILS/web/js/ui/default/acq/financial/list_funds.js
+
+commit 9d211e172b2695a055be446a5d51ca9bb4c9ae92
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Tue Aug 12 12:03:05 2014 -0400
+
+    LP#1287370: apply filter/offset persistence to the fund search page
+    
+    This patch completes the AutoGrid work and applies the
+    filter & offset persistence to the fund search page.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Erica Rohlfs <erohlfs@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	0	Open-ILS/src/templates/acq/fund/list.tt2
+46	21	Open-ILS/web/js/dojo/openils/widget/AutoGrid.js
+18	2	Open-ILS/web/js/ui/default/acq/financial/list_funds.js
+
+commit e3f0ee293677af324193de63978aecaab4e2f0a1
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Mon Aug 11 16:45:21 2014 -0400
+
+    LP#1287370: allow AutoGrid to persist filter state and page offset
+    
+    By turning on a new AutoGrid option called urlNavigation,
+    the current filter and offset is stored in a URL parameter
+    called djgridops. This permits using the back button
+    to return to an AutoGrid page at the place in the search
+    results where the user left it.
+    
+    Signed-off-by: Bill Erickson <berick@esilibrary.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Erica Rohlfs <erohlfs@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+58	7	Open-ILS/web/js/dojo/openils/widget/AutoGrid.js
+
+commit 052243f109b9005e310ba262b7c5c4d15f3900e8
+Author: Adam Bowling <abowling@emeralddata.net>
+Date:   Tue Jan 20 16:54:11 2015 -0500
+
+    LP #1406350 Mobile Device Navigation Issue Fix for Shelf Browser
+    
+    Currently, when a browser window is narrowed too much, whether
+    in a mobile browser, or on a desktop or laptop machine, the
+    "Previous Page" and "Next Page" navigation links disappear. The
+    only solution that seems to solve this is by removing the
+    "THEAD" element from the shelf browser table.
+    
+    This patch removes that tag, adds a new row to imitate a new
+    border as existed before, and modifies the CSS in .../opac/
+    css/style.css.tt2 to address that difference.
+    
+    Signed-off-by: Adam Bowling <abowling@emeralddata.net>
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+3	1	Open-ILS/src/templates/opac/css/style.css.tt2
+3	2	Open-ILS/src/templates/opac/parts/record/cnbrowse.tt2
+
+commit 49fbb02e6d3dc8acab94307c87cc0c9149c0e857
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Mon Mar 2 16:54:56 2015 -0500
+
+    LP#1205072: Correct and clarify the upgrade notes
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+5	3	docs/RELEASE_NOTES_NEXT/Administration/action-trigger-granularity.txt
+
+commit d8635e5fd1e2aca43372fdd67341ea0039c05582
+Author: Josh Stompro <stomproj@larl.org>
+Date:   Tue Jan 13 13:36:40 2015 -0600
+
+    LP#1205072 - Assorted fixes for action trigger granularity settings
+    
+    - Added "weekdays" option to match up with example crontab file
+    - Change granularity example back to lowercase
+    - Change granularity labels to lowercase in the docs
+    
+    Signed-off-by: Josh Stompro <stomproj@larl.org>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/support-scripts/action_trigger_runner.pl.in
+1	0	Open-ILS/src/templates/conify/global/action_trigger/event_definition.tt2
+2	2	docs/admin/actiontriggers.txt
+
+commit 133d896417cbfa18b47460fae26819802f08aa53
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Dec 2 15:00:22 2014 -0500
+
+    LP#1205072 A/T granularity upgrade notes
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+11	0	docs/RELEASE_NOTES_NEXT/Administration/action-trigger-granularity.txt
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Administration/action-trigger-granularity.txt
+
+commit 3fa57743903ca60106418197fbd1bad1208c5d7d
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Nov 26 14:31:41 2014 -0500
+
+    LP#1205072 A/T granularity UI sane default, honors case
+    
+    Present A/T granularity options as untranslated, lower-case strings to
+    match the crontab examples.  Also, honor alternate case variations for
+    granularity values so that "Daily" and "daily" are both seprate, valid
+    options.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+7	5	Open-ILS/src/templates/conify/global/action_trigger/event_definition.tt2
+1	0	Open-ILS/web/js/ui/default/conify/global/action_trigger/event_definition.js
+
+commit c3f01cbe10d8fba01a061e4f1c2ec2b240f787c6
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Tue Mar 4 11:31:13 2014 -0500
+
+    LP#1287791: Restrict authority browse to controlled subfields
+    
+    Back in bug 1175308 I added some logic that improves the behavior
+    of the MARC editor's right-click authority popup. Now we need to
+    go a little farther and adjust that logic to be more careful about
+    which subfields it uses to browse for authority records. Specifically,
+    it should only use controlled subfields.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+19	1	Open-ILS/xul/staff_client/server/cat/marcedit.js
+
+commit c0903852267a70414ecdc69a56caf20cf076df56
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Mon Mar 2 14:56:34 2015 +0000
+
+    LP#1155313: fix mangling of schema upgrade script name
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+25	0	Open-ILS/src/sql/Pg/upgrade/0914.schema.lpad-number-repair.sql
+0	25	Open-ILS/src/sql/Pg/upgrade/0914.schema.redo_vandelay_merge_profile_sequence.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0914.schema.lpad-number-repair.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/0914.schema.redo_vandelay_merge_profile_sequence.sql
+
+commit e600f9f1d8324a804adab0cc96de6d610d97db0d
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Mon Mar 2 14:20:55 2015 +0000
+
+    LP#1155313: recalculate normalized labels during upgrade
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+4	0	Open-ILS/src/sql/Pg/upgrade/0914.schema.redo_vandelay_merge_profile_sequence.sql
+
+commit 6d4a4b1f3dbc977b7bfe30aa18fa0d7c7af0a607
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Mon Mar 2 14:05:52 2015 +0000
+
+    LP#1155313: pin upgrade script to 0914
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+21	0	Open-ILS/src/sql/Pg/upgrade/0914.schema.redo_vandelay_merge_profile_sequence.sql
+0	19	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.lpad-number-repair.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0914.schema.redo_vandelay_merge_profile_sequence.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.lpad-number-repair.sql
+
+commit 8d363f3abcb0ed70095b019e1798fc52f40e574d
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Mon Mar 2 14:02:23 2015 +0000
+
+    LP#1155313: fix copy-and-paste-o in test case
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+1	1	Open-ILS/src/sql/Pg/t/lpad_number_substrings.pg
+
+commit 408a6c05951465cb976943597b35196fe81fae93
+Author: Dan Pearl <dpearl@cwmars.org>
+Date:   Mon Jan 5 13:28:13 2015 -0500
+
+    LP#1155313: upgrade script and pgTAP tests for monograph_part label normalization fix
+    
+    Signed-off-by: Daniel Pearl <dpearl@cwmars.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+41	0	Open-ILS/src/sql/Pg/t/lpad_number_substrings.pg
+19	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.lpad-number-repair.sql
+ create mode 100644 Open-ILS/src/sql/Pg/t/lpad_number_substrings.pg
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.lpad-number-repair.sql
+
+commit b5ad7edb1efe254495e39cf028202b9cc279ad79
+Author: Dan Pearl <dpearl@cwmars.org>
+Date:   Fri Mar 15 15:04:37 2013 -0400
+
+    LP#1155313: Repair generation of label_sortkey for monograph_part entries
+    
+    The evergreen.lpad_number_substrings function attempts to codify numeric
+    fields within labels.  It does this by finding the strings, padding them
+    to a given size, and replacing them in the source string.  For instance:
+           3 => 0000000003
+        15.4 => 00000000150000000004
+    
+    The algorithm was fooled by repeated characters, like in 15.1:
+        15.1 => 00000000000000000150000000001  INCORRECT
+    
+    This change will result in the correct value.
+    
+    Signed-off-by: Dan Pearl <dpearl@cwmars.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+6	6	Open-ILS/src/sql/Pg/002.functions.config.sql
+
+commit 411ccdf421424415a6f82bcbe064ae0a884bac3c
+Author: Josh Stompro <stomproj@larl.org>
+Date:   Thu Jan 15 20:03:55 2015 -0600
+
+    LP#1395842: fix labels for A/T environment and parameter ID fields
+    
+    Signed-off-by: Josh Stompro <stomproj@larl.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2	2	Open-ILS/examples/fm_IDL.xml
+
+commit 81fe9936fab06fa5259f713c02a71b75212fba72
+Author: Ben Shum <bshum@biblio.org>
+Date:   Sat Feb 28 12:24:31 2015 -0500
+
+    LP#1426133: followup fix seed data sequence
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+
+commit 7f33a27de0fd6362e5cb63252f9f95c511336126
+Author: Jason Etheridge <jason@esilibrary.com>
+Date:   Thu Feb 26 09:26:47 2015 -0500
+
+    LP#1425967: look for Business::CreditCard in settings-tester.pl
+    
+    and not Business::CreditCard::Object
+    
+    Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/support-scripts/settings-tester.pl
+
+commit 26cffa596d4a340f2a1cc801bde9423ed85cc5c6
+Author: Ben Shum <bshum@biblio.org>
+Date:   Fri Feb 27 10:25:48 2015 -0500
+
+    LP#1426133: Stamping upgrade script for set merge_profile_id_seq
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+    
+    Conflicts:
+    	Open-ILS/src/sql/Pg/002.schema.config.sql
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+24	0	Open-ILS/src/sql/Pg/upgrade/0913.schema.redo_vandelay_merge_profile_sequence.sql
+0	24	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.redo_vandelay_merge_profile_sequence.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0913.schema.redo_vandelay_merge_profile_sequence.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.redo_vandelay_merge_profile_sequence.sql
+
+commit c86a5ade5cef4b3789c5108b0f56d17d846d7224
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Thu Feb 26 16:21:48 2015 -0500
+
+    LP#1426133: Set merge_profile_id_seq explicitly
+    
+    Many database tables need to explicitly set the id sequence (often to
+    100) to provide room for stock data with static ids. This commit does so
+    for vandelay.merge_profile, and also updates the ids of any non-stock
+    profiles (both in the merge_profile table and in related settings).
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+2	0	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+24	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.redo_vandelay_merge_profile_sequence.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.redo_vandelay_merge_profile_sequence.sql
+
+commit c66b5864ba730eb018d766e5efe9eabb97756cf5
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Feb 12 13:08:52 2015 -0500
+
+    LP#1425191 Restore summarization of serial units
+    
+    In a previous commit, code was added for force summaries to be limited
+    to a certain type (to prevent cross type contamination of summaries).
+    This had the negative side-effect of preventing summaries on units, as
+    the units were not requesting a 'type' for their summary.
+    
+    While we could force the unit code to send a type, it seemed generally
+    more flexible to restore the removed support for returning all summary
+    information in the absense of a requested type.  This could lead to
+    cross-type summaries for units, but that is a larger issue altogether
+    (i.e. how we can properly support cross-type units at all).
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+12	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Serial.pm
+
+commit 8101fbb7374f93d88626104d91efbe048d8e6b1f
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Wed Feb 25 15:20:51 2015 -0500
+
+    lp1373203: Allow users to escape metarecord holds (backport version)
+    
+    Provides a means for users to escape a metarecord hold if they accidentally
+    clicked the Advanced Hold Options link. A "Go Back" link will be
+    provided to allow the user to return to a title hold. If the hold starts as a
+    metarecord hold, this link won't display since we don't know which bib the
+    patron wants.
+    
+    Also fixes an issue where the hold cancel button always returned the user to
+    the previous screen.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+10	3	Open-ILS/src/templates/opac/parts/place_hold.tt2
+
+commit bd7fdad52897c6288406a95b0f78a76def9c221c
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Tue Feb 24 13:25:16 2015 -0500
+
+    LP#957466: Fix invalid MARCXML syntax
+    
+    This commit fixes some invalid MARCXML syntax, and also makes the XPath
+    query more general to allow for namespaces on the tags.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+2	2	Open-ILS/src/perlmods/lib/OpenILS/Application/AppUtils.pm
+
+commit 301b0040a200b122e47d05463c79c6117f681ff1
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Thu Feb 19 10:03:18 2015 -0500
+
+    LP#957466: Added pgTAP test for db function change
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+80	0	Open-ILS/src/sql/Pg/t/regress/lp957466_update_date_and_source.pg
+ create mode 100644 Open-ILS/src/sql/Pg/t/regress/lp957466_update_date_and_source.pg
+
+commit 3270e416c780e706cb54adf43e770ba04b23b2ea
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Wed Feb 18 10:13:56 2015 -0500
+
+    LP#957466: Stamping Upgrade Script
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    
+    Conflicts:
+    	Open-ILS/src/sql/Pg/002.schema.config.sql
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+66	0	Open-ILS/src/sql/Pg/upgrade/0908.function.vandelay-overlay_bib_record.sql
+0	66	Open-ILS/src/sql/Pg/upgrade/XXXX.function.vandelay-overlay_bib_record.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0908.function.vandelay-overlay_bib_record.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.function.vandelay-overlay_bib_record.sql
+
+commit a3b416b1e4e633053dd776ff2bf8d59862c52a14
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Fri Feb 13 12:22:19 2015 -0500
+
+    LP#957466 Vandelay set the 905$u to current user if not defined
+    
+    This version only adds a 905$u if none already exist in the document. It
+    does so by creating a new 905 tag with subfield u. It does not add on
+    to any possibly existing 905 tag that does not have a subfield u.
+    
+    This will cause the code in the previous commit to trigger and update the
+    appropriate fields in biblio.record_entry.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+24	0	Open-ILS/src/perlmods/lib/OpenILS/Application/AppUtils.pm
+5	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Vandelay.pm
+
+commit cf2aeda73ea429c26ff6a224320104d01816ac46
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Mon Oct 13 12:22:32 2014 -0400
+
+    LP#957466: Update editor/edit_date/source on overlay
+    
+    This commit does three things.
+    
+    1. It removes some declared variables that are never used in this
+    function.
+    
+    2. It updates the bib record edit_date field (along with the editor) if
+    an editor is found in the MARC. If an editor is not found (or doesn't
+    match an Evergreen user), it seems best to leave the edit_date
+    unchanged so as not to imply that the previous editor is responsible for
+    the newest edit.
+    
+    3. If a bib source is chosen in the vandelay importer UI, it updates the
+    bib record with the source. To access this field, the reference to table
+    "queued_record" is replaced by its child table "queued_bib_record".
+    Since the new table is a child of the other, all of the other needed
+    values are still available.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    Signed-off-by: Martha Driscoll <driscoll@noblenet.org>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+17	9	Open-ILS/src/sql/Pg/012.schema.vandelay.sql
+66	0	Open-ILS/src/sql/Pg/upgrade/XXXX.function.vandelay-overlay_bib_record.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.function.vandelay-overlay_bib_record.sql
+
+commit cd41e5ca11f39894196bc5021e4aad3225b99898
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Mon Feb 23 20:25:02 2015 +0000
+
+    LP#1154579: explicitly alert if copy location failed to be deleted
+    
+    This patch adds an alert if the act of deleting a copy
+    location in the staff interface fails -- which would
+    most commonly happen if there are still active items
+    attached to the location to be deleted.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+4	1	Open-ILS/xul/staff_client/server/admin/copy_locations.js
+
+commit 9a3d9d67f98907527f8c6f45b1660124d94f74b8
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Thu Feb 5 16:52:36 2015 +0000
+
+    LP#904581: when calculating hold status, be more careful about fetching transits
+    
+    This patch fixes a problem where if a hold meets the following
+    criteria, an "Invalid date format: at /usr/share/perl5/Error.pm"
+    error can be thrown when fetching its details:
+    
+    - the hold has a captured item
+    - the captured item has status 8 (on hold shelf)
+    - there is another item that is currently in transit to fill the hold
+    - the pickup library (or one of its ancestors) has the
+      circ.hold_shelf_status_delay library setting set.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+5	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Holds.pm
+
+commit 48d3d82303d05c72110c83cdd92aa657222b2eab
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Mon Feb 23 19:12:30 2015 +0000
+
+    Revert "LP#1419813 Fix default joins for config.rule_age_hold_protection."
+    
+    This reverts commit 8d8068f391b1bb6e363c410d8fe9af09cc5898f9.
+
+4	4	Open-ILS/examples/fm_IDL.xml
+
+commit 7b95863d9ad82224eb08ad4d64361adaaf351202
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Thu Feb 19 15:59:33 2015 +0000
+
+    LP#1418772: (follow-up) tweak undef-edness check
+    
+    Use the Perl defined() function rather than "eq undef"
+    to avoid logging warnings about undefined values.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Util.pm
+
+commit e0f739cf93d84badbd6a572feb06d77d964c35e0
+Author: Steven Chan <schan@sitka.bclibraries.ca>
+Date:   Mon Jul 22 12:39:48 2013 -0700
+
+    LP#1418772: Avoid internal server error on viewing full record when copy create_date is null
+    
+    In the TPAC client, when it tries to show record details containing a copy
+    record with no create date, it shows an Internal Server Error instead.
+    
+    1. The error is caused by trying to execute the parse_datetime() method
+    in the parse_date() function in the WWW/EGCatLoader/util.pm module with
+    an empty date string. The function will normally translate a datetime
+    string from the database to a datetime string that is formatted for TPAC
+    templates.  The fix is to not execute parse_datetime() and just return
+    an empty string.
+    
+    2. In the record/copy_table.tt2 template, if an empty datetime string is
+    the value for copy_info.create_date, the format() method of the Date
+    plugin will show the current datetime by default. The fix is to show '-'
+    in its place, replicating the same template logic as for
+    copy_info.due_date.
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    
+    Conflicts:
+    	Open-ILS/src/templates/opac/parts/record/copy_table.tt2
+
+3	0	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Util.pm
+10	4	Open-ILS/src/templates/opac/parts/record/copy_table.tt2
+
+commit 8d8068f391b1bb6e363c410d8fe9af09cc5898f9
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Mon Feb 9 09:24:11 2015 -0500
+
+    LP#1419813 Fix default joins for config.rule_age_hold_protection.
+    
+    config.rule_age_hold_protection had a "has_a" relationship
+    to several copy and copy-like sources when age protection
+    is optional.  Changing those to "might_have" to allow left
+    joins by default.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+4	4	Open-ILS/examples/fm_IDL.xml
