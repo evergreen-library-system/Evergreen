@@ -5,14 +5,11 @@
 
 <div class='hidden'>
     <select dojoType='dijit.form.ComboBox' jsId='eventDefGranularity'>
-        <!-- Option strings are intentionally 
-             un-translated since they are codes, not labels.  -->
-        <option>hourly</option>
-        <option>daily</option>
-        <option>weekdays</option>
-        <option>weekly</option>
-        <option>monthly</option>
-        <option>yearly</option>
+        <option value='hourly'>[% l('Hourly') %]</option>
+        <option value='daily'>[% l('Daily') %]</option>
+        <option value='weekly'>[% l('Weekly') %]</option>
+        <option value='monthly'>[% l('Monthly') %]</option>
+        <option value='yearly'>[% l('Yearly') %]</option>
     </select>
 </div>
 
