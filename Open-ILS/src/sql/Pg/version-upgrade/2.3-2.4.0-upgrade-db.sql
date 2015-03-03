@@ -72,12 +72,12 @@ DROP VIEW IF EXISTS reporter.classic_item_list;
 DROP VIEW IF EXISTS metabib.full_rec;
 
 -- These indexes have to go. BEFORE we alter the tables, otherwise things take extra time when we alter the tables.
-DROP INDEX metabib.metabib_author_field_entry_value_idx;
-DROP INDEX metabib.metabib_identifier_field_entry_value_idx;
-DROP INDEX metabib.metabib_keyword_field_entry_value_idx;
-DROP INDEX metabib.metabib_series_field_entry_value_idx;
-DROP INDEX metabib.metabib_subject_field_entry_value_idx;
-DROP INDEX metabib.metabib_title_field_entry_value_idx;
+DROP INDEX IF EXISTS metabib.metabib_author_field_entry_value_idx;
+DROP INDEX IF EXISTS metabib.metabib_identifier_field_entry_value_idx;
+DROP INDEX IF EXISTS metabib.metabib_keyword_field_entry_value_idx;
+DROP INDEX IF EXISTS metabib.metabib_series_field_entry_value_idx;
+DROP INDEX IF EXISTS metabib.metabib_subject_field_entry_value_idx;
+DROP INDEX IF EXISTS metabib.metabib_title_field_entry_value_idx;
 
 -- Now grab all of the tsvector-enabled columns and switch them to the non-wrapper version of the type.
 ALTER TABLE authority.full_rec ALTER COLUMN index_vector TYPE pg_catalog.tsvector;
@@ -1925,7 +1925,7 @@ SELECT evergreen.upgrade_deps_block_check('0772', :eg_version);
 
 INSERT INTO config.internal_flag (name) VALUES ('ingest.metarecord_mapping.preserve_on_delete');  -- defaults to false/off
 
-DROP RULE protect_bib_rec_delete ON biblio.record_entry;
+DROP RULE IF EXISTS protect_bib_rec_delete ON biblio.record_entry;
 CREATE RULE protect_bib_rec_delete AS
     ON DELETE TO biblio.record_entry DO INSTEAD (
         UPDATE biblio.record_entry
@@ -2180,7 +2180,7 @@ $$ LANGUAGE PLPGSQL;
 SELECT evergreen.upgrade_deps_block_check('0775', :eg_version);
 
 ALTER TABLE config.z3950_attr
-    DROP CONSTRAINT z3950_attr_source_fkey,
+    DROP CONSTRAINT IF EXISTS z3950_attr_source_fkey,
     ADD CONSTRAINT z3950_attr_source_fkey 
         FOREIGN KEY (source) 
         REFERENCES config.z3950_source(name) 
@@ -2726,7 +2726,7 @@ ALTER TABLE vandelay.import_bib_trash_fields
     -- now that have values, we can make this non-null
     ALTER COLUMN grp SET NOT NULL,
     -- drop outdated constraint
-    DROP CONSTRAINT vand_import_bib_trash_fields_idx,
+    DROP CONSTRAINT IF EXISTS vand_import_bib_trash_fields_idx,
     -- owner is implied by the grp
     DROP COLUMN owner, 
     -- make grp+field unique
@@ -3022,7 +3022,7 @@ SELECT evergreen.upgrade_deps_block_check('0782', :eg_version);
 
 SELECT evergreen.upgrade_deps_block_check('0785', :eg_version);
 
-DROP INDEX actor.prox_adj_once_idx;
+DROP INDEX IF EXISTS actor.prox_adj_once_idx;
 
 CREATE UNIQUE INDEX prox_adj_once_idx ON actor.org_unit_proximity_adjustment (
     COALESCE(item_circ_lib, -1),
