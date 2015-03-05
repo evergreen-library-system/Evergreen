@@ -1,6 +1,54 @@
-<div class="strong-text-2">[% l('Record Summary') %]</div>
+<div class="strong-text-2 container">
+  <div class="row">
+    <div class="col-md-2">[% l('Record Summary') %]</div>
+    <div class="col-md-1">
+      <a target="_self" 
+        href="[% ctx.base_path %]/staff/cat/catalog/record/{{record.id()}}/marc_html">
+        (MARC)
+      </a>
+    </div>
+    <div class="col-md-8">
+      <!-- padding -->
+    </div>
+    <div class="col-md-1">
+      <a href ng-click="toggle_expand_summary()"
+        title="[% l('Collapse Record Summary Display') %]"
+        ng-hide="collapse_summary()">
+        <span class="glyphicon glyphicon-resize-small"></span>
+      </a>
+      <a href ng-click="toggle_expand_summary()"
+        title="[% l('Expand Record Summary Display') %]"
+        ng-show="collapse_summary()">
+        <span class="glyphicon glyphicon-resize-full"></span>
+      </a>
+    </div>
+  </div>
+</div>
 
-<div class="flex-container-striped flex-container-bordered">
+<div class="flex-container-striped flex-container-bordered" ng-show="collapse_summary()">
+  <div class="flex-row">
+    <div class="flex-cell strong-text">[% l('Title:') %]</div>
+    <div class="flex-cell flex-2">
+      <a target="_self" 
+        href="[% ctx.base_path %]/staff/cat/catalog/record/{{record.id()}}">
+        {{record.simple_record().title()}}
+      </a>
+    </div>
+
+    <div class="flex-cell strong-text">[% l('Author:') %]</div>
+    <div class="flex-cell flex-2">{{record.simple_record().author()}}</div>
+
+    <div class="flex-cell strong-text">[% l('Pub Date:') %]</div>
+    <div class="flex-cell">
+      {{record.simple_record().pubdate()}}
+    </div>
+
+    <div class="flex-cell strong-text">[% l('Database ID:') %]</div>
+    <div class="flex-cell">{{record.id()}}</div>
+  </div><!-- flex-row -->
+</div>
+
+<div class="flex-container-striped flex-container-bordered" ng-hide="collapse_summary()">
   <div class="flex-row">
     <div class="flex-cell strong-text">[% l('Title:') %]</div>
     <div class="flex-cell flex-2">

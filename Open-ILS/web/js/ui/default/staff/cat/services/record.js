@@ -100,6 +100,24 @@ angular.module('egCoreMod')
 
                 if ($scope.recordId) 
                     loadRecord();
+
+                $scope.toggle_expand_summary = function() {
+                    if ($scope.collapseRecordSummary) {
+                        $scope.collapseRecordSummary = false;
+                        egCore.hatch.removeItem('eg.cat.record.summary.collapse');
+                    } else {
+                        $scope.collapseRecordSummary = true;
+                        egCore.hatch.setItem('eg.cat.record.summary.collapse', true);
+                    }
+                }
+            
+                $scope.collapse_summary = function() {
+                    return $scope.collapseRecordSummary;
+                }
+            
+                egCore.hatch.getItem('eg.cat.record.summary.collapse')
+                .then(function(val) {$scope.collapseRecordSummary = Boolean(val)});
+
             }
         ]
     }
