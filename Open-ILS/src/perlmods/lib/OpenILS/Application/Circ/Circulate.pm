@@ -1083,6 +1083,10 @@ my $LEGACY_CIRC_EVENT_MAP = {
     'config.circ_matrix_test.max_overdue' =>  'PATRON_EXCEEDS_OVERDUE_COUNT',
     'config.circ_matrix_test.max_fines' => 'PATRON_EXCEEDS_FINES',
     'config.circ_matrix_circ_mod_test' => 'PATRON_EXCEEDS_CHECKOUT_COUNT',
+    'config.circ_matrix_test.total_copy_hold_ratio' => 
+        'TOTAL_HOLD_COPY_RATIO_EXCEEDED',
+    'config.circ_matrix_test.available_copy_hold_ratio' => 
+        'AVAIL_HOLD_COPY_RATIO_EXCEEDED'
 };
 
 

@@ -121,7 +121,19 @@
                     <tr>
                         <td colspan="6">[%# XXX colspan="0" does not work in IE %]
                             <span class="failure-text" title="[% circ.renewal_response.textcode | html %] / [% circ.renewal_response.payload.fail_part | html %]">
-                                [% (circ.renewal_response.desc || circ.renewal_response.payload.fail_part || circ.renewal_response.textcode) | html %]
+                                [%
+                                    renew_fail_msg = '';
+                                    IF circ.renewal_response.textcode == 'TOTAL_HOLD_COPY_RATIO_EXCEEDED' OR
+                                        circ.renewal_response.textcode == 'AVAIL_HOLD_COPY_RATIO_EXCEEDED';
+                                        # the stock hold ratio message may not be patron friendly
+                                        renew_fail_msg = l('Item is needed for a hold');
+                                    ELSE;
+                                        renew_fail_msg = circ.renewal_response.desc || 
+                                            circ.renewal_response.payload.fail_part || 
+                                            circ.renewal_response.textcode;
+                                    END;
+                                    renew_fail_msg | html;
+                                %]
                             </span>
                         </td>
                     </tr>
