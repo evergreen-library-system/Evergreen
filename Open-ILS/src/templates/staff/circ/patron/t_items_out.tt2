@@ -67,6 +67,10 @@
     label="[% l('Check In') %]"></eg-grid-action>
   <eg-grid-action handler="add_billing" 
     label="[% l('Add Billing') %]"></eg-grid-action>
+  <eg-grid-action handler="show_recent_circs" 
+    label="[% l('Show Last Few Circulations') %]"></eg-grid-action>
+  <eg-grid-action handler="show_triggered_events" 
+    label="[% l('Show Triggered Events') %]"></eg-grid-action>
 
   <eg-grid-field label="[% l('Circ ID') %]" path='id'></eg-grid-field>
   <eg-grid-field label="[% l('Barcode') %]" path='target_copy.barcode'>

@@ -5,10 +5,10 @@
 angular.module('egPatronApp')
 
 .controller('PatronItemsOutCtrl',
-       ['$scope','$q','$routeParams','egCore','egUser','patronSvc',
-        'egGridDataProvider','$modal','egCirc','egConfirmDialog','egBilling',
-function($scope,  $q,  $routeParams,  egCore , egUser,  patronSvc , 
-         egGridDataProvider , $modal , egCirc , egConfirmDialog , egBilling) {
+       ['$scope','$q','$routeParams','$timeout','egCore','egUser','patronSvc','$location',
+        'egGridDataProvider','$modal','egCirc','egConfirmDialog','egBilling','$window',
+function($scope,  $q,  $routeParams,  $timeout,  egCore , egUser,  patronSvc , $location, 
+         egGridDataProvider , $modal , egCirc , egConfirmDialog , egBilling , $window) {
 
     // list of noncatatloged circulations. Define before initTab to 
     // avoid any possibility of race condition, since they are loaded
@@ -347,6 +347,28 @@ function($scope,  $q,  $routeParams,  egCore , egUser,  patronSvc ,
     }
     $scope.mark_claims_never_checked_out = function(items) {
         batch_action_with_barcodes(items, egCirc.mark_claims_never_checked_out);
+    }
+
+    $scope.show_recent_circs = function(items) {
+        var focus = items.length == 1;
+        angular.forEach(items, function(item) {
+            var url = egCore.env.basePath +
+                      '/cat/item/' +
+                      item.target_copy().id() +
+                      '/circ_list';
+            $timeout(function() { var x = $window.open(url, '_blank'); if (focus) x.focus() });
+        });
+    }
+
+    $scope.show_triggered_events = function(items) {
+        var focus = items.length == 1;
+        angular.forEach(items, function(item) {
+            var url = egCore.env.basePath +
+                      '/cat/item/' +
+                      item.target_copy().id() +
+                      '/triggered_events';
+            $timeout(function() { var x = $window.open(url, '_blank'); if (focus) x.focus() });
+        });
     }
 
     $scope.renew = function(items, msg) {

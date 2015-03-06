@@ -437,8 +437,8 @@ function($modal , $q , egCore , egConfirmDialog , egAlertDialog) {
  * most actionis are performed.
  */
 .factory('egHoldGridActions', 
-       ['$window','$location','egCore','egHolds','egCirc',
-function($window , $location , egCore , egHolds , egCirc) {
+       ['$window','$location','$timeout','egCore','egHolds','egCirc',
+function($window , $location , $timeout , egCore , egHolds , egCirc) {
     
     var service = {};
 
@@ -465,12 +465,40 @@ function($window , $location , egCore , egHolds , egCirc) {
     // jump to circ list for either 1) the targeted copy or
     // 2) the hold target copy for copy-level holds
     service.show_recent_circs = function(items) {
-        if (items.length && (copy = items[0].copy)) {
-            var url = $location.path(
-                '/cat/item/' + copy.id() + '/circ_list').absUrl();
-            $window.open(url, '_blank').focus();
-        }
+        var focus = items.length == 1;
+        angular.forEach(items, function(item) {
+            if (item.copy) {
+                var url = egCore.env.basePath +
+                          '/cat/item/' +
+                          item.copy.id() +
+                          '/circ_list';
+                $timeout(function() { var x = $window.open(url, '_blank'); if (focus) x.focus() });
+            }
+        });
     }
+
+    service.show_patrons = function(items) {
+        var focus = items.length == 1;
+        angular.forEach(items, function(item) {
+            var url = egCore.env.basePath +
+                      'circ/patron/' +
+                      item.hold.usr().id() +
+                      '/holds';
+            $timeout(function() { var x = $window.open(url, '_blank'); if (focus) x.focus() });
+        });
+    }
+
+    service.show_holds_for_title = function(items) {
+        var focus = items.length == 1;
+        angular.forEach(items, function(item) {
+            var url = egCore.env.basePath +
+                      'cat/catalog/record/' +
+                      item.mvr.doc_id() +
+                      '/holds';
+            $timeout(function() { var x = $window.open(url, '_blank'); if (focus) x.focus() });
+        });
+    }
+
 
     function generic_update(items, action) {
         if (!items.length) return $q.when();

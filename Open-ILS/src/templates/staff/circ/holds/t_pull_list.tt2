@@ -25,6 +25,8 @@
 
   <eg-grid-action handler="grid_actions.show_recent_circs"
     label="[% l('Show Last Few Circulations') %]"></eg-grid-action>
+  <eg-grid-action handler="grid_actions.show_patrons"
+    label="[% l('Retrieve Patron') %]"></eg-grid-action>
   <eg-grid-action divider="true"></eg-grid-action>
   <eg-grid-action handler="grid_actions.set_copy_quality"
     label="[% l('Set Desired Copy Quality') %]"></eg-grid-action>
