@@ -1031,6 +1031,13 @@
             for the selected transaction</desc>
     </event>
 
+    <event code='11106' textcode='TOTAL_HOLD_COPY_RATIO_EXCEEDED'>
+        <desc xml:lang="en-US">Renewal attempt failed because the "hold / total copies" ratio exceeds the configured limit</desc>
+    </event>
+
+    <event code='11107' textcode='AVAIL_HOLD_COPY_RATIO_EXCEEDED'>
+        <desc xml:lang="en-US">Renewal attempt failed because the "hold / available copies" ratio exceeds the configured limit</desc>
+    </event>
 
 </ils_events>
 

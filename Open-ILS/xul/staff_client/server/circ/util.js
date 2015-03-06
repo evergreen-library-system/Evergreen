@@ -3657,6 +3657,8 @@ circ.util.renew_via_barcode = function ( params, async ) {
                         case 7009 /* CIRC_CLAIMS_RETURNED */ : break;
                         case 7010 /* COPY_ALERT_MESSAGE */ : break;
                         case 7013 /* PATRON_EXCEEDS_FINES */ : break;
+                        case 11106 /* TOTAL_HOLD_COPY_RATIO_EXCEEDED */ : break;
+                        case 11107 /* AVAIL_HOLD_COPY_RATIO_EXCEEDED */ : break;
                         default:
                             throw(renew);
                         break;
@@ -3736,6 +3738,8 @@ circ.util.renew_via_barcode = function ( params, async ) {
                     7009 /* CIRC_CLAIMS_RETURNED */,
                     7010 /* COPY_ALERT_MESSAGE */,
                     7013 /* PATRON_EXCEEDS_FINES */,
+                    11106 /* TOTAL_HOLD_COPY_RATIO_EXCEEDED */,
+                    11107 /* AVAIL_HOLD_COPY_RATIO_EXCEEDED */
                 ],
                 'text' : {
                     '1212' : function(r) { return document.getElementById('circStrings').getFormattedString('staff.circ.renew.barcode', [params.barcode]); },
