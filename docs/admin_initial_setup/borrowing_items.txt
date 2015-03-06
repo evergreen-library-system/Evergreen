@@ -37,7 +37,7 @@ Copy Locations
 * To get to the Copy Locations Editor, navigate to *Admin > Local Administration
   > Copy Locations Editor*. 
 * Set _OPAC Visible_ to "No" to hide all copies in a copy location from the
-public catalog. (This can also be managed at the _Shelving Location_ level.)
+public catalog. (You can also hide individual copies using the Copy Editor.)
 * Set _Hold Verify_ to "Yes" if when a copy checks in you want to always ask for
 staff confirmation before capturing a hold.
 * Set _Checkin Alert_ to "Yes" to allow routing alerts to display when copies
