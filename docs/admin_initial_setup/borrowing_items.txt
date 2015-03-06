@@ -36,10 +36,22 @@ Copy Locations
 
 * To get to the Copy Locations Editor, navigate to *Admin > Local Administration
   > Copy Locations Editor*. 
-* When setting up copy locations for your library you can set an entire copy
-location to allow or disallow circulation.
+* Set _OPAC Visible_ to "No" to hide all copies in a copy location from the
+public catalog. (This can also be managed at the _Shelving Location_ level.)
+* Set _Hold Verify_ to "Yes" if when a copy checks in you want to always ask for
+staff confirmation before capturing a hold.
+* Set _Checkin Alert_ to "Yes" to allow routing alerts to display when copies
+are checked in.
+* Set _Holdable_ to "No" to prevent copies in an entire copy location from
+being placed on hold.
+* Set _Circulate_ to "No" to disallow circulating copies in an entire copy
+location.
+* If you delete a copy location, it will be removed from display in the staff
+client and the catalog, but it will remain in the database. This allows you to
+treat a copy location as deleted without losing statistical information for
+circulations related to that copy location.
 
-image::media/copy_locations_circulate.png[]
+image::media/copy_locations_editor.png[screenshot of Copy Location Editor]
 
 * Copy locations can also be used as a data element in circulation policies. 
 
