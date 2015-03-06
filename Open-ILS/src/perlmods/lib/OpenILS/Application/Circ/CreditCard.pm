@@ -119,7 +119,8 @@ sub process_payment {
             $argshash->{patron_id},
             {
                 flesh        => 1,
-                flesh_fields => { au => ["mailing_address", "card"] }
+                flesh_fields => { au => 
+                    ["mailing_address", "billing_address", "card"] }
             }
         ]
     ) or return $e->event;
@@ -165,19 +166,38 @@ sub prepare_bop_content {
     my $bc = ($patron->card) ? $patron->card->barcode : '';
     $content{description}  = "$bc " . ($content{description} || '');
 
+    my $addr = $patron->mailing_address || $patron->billing_address;
+
+    if (!$addr) {
+        # patron has no linked addresses.  See if we have enough data
+        # provided and/or from settings to complete the transaction
+
+        return () unless $content{address} and 
+            $content{city} and $content{state} and $content{zip};
+
+        if (!$content{country}) {
+            # Assume if all other fields are set, that the patron's
+            # country is the same as their home org unit.
+
+            $content{country} = $U->ou_ancestor_setting_value(
+               $patron->home_ou, 'ui.patron.default_country'); 
+
+            return () unless $content{country}; # time to renew passport
+        }
+    }
+
     # Especially for the following fields, do we need to support different
     # mapping of fields for different payment processors, particularly ones
     # in other countries?
     if(!$content{address}) {
-        $content{address}  = $patron->mailing_address->street1;
-        $content{address} .= ", " . $patron->mailing_address->street2
-            if $patron->mailing_address->street2;
+        $content{address}  = $addr->street1;
+        $content{address} .= ", " . $addr->street2 if $addr->street2;
     }
 
-    $content{city}       ||= $patron->mailing_address->city;
-    $content{state}      ||= $patron->mailing_address->state;
-    $content{zip}        ||= $patron->mailing_address->post_code;
-    $content{country}    ||= $patron->mailing_address->country;
+    $content{city}      ||= $addr->city;
+    $content{state}     ||= $addr->state;
+    $content{zip}       ||= $addr->post_code;
+    $content{country}   ||= $addr->country;
 
     # Yet another fantastic kludge. country2code() comes from Locale::Country.
     # PayPal must have 2 letter country field (ISO 3166) that's uppercase.
@@ -233,6 +253,11 @@ sub dispatch {
     );
 
     my %content = prepare_bop_content($argshash, $patron, $cardtype);
+
+    return OpenILS::Event->new(
+        'CREDIT_PROCESSOR_BAD_PARAMS', note => "Missing address fields")
+        if keys(%content) == 0;
+
     $transaction->content(%content);
 
     # submit() does not return a value, although crashing is possible here
