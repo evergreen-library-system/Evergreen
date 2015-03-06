@@ -1,0 +1,42 @@
+Manage Authorities
+------------------
+
+In Evergreen to view, edit, merge, and delete authority records you would use the *Manage Authorities* interface 
+through the *Cataloging* menu.
+
+[TIP]
+=================
+Currently in Evergreen to create a new authority record, as opposed to importing an authority record, you 
+need to have a bib record open in the bib MARC editor. 
+
+* For example, if you want to create a new author 
+authority you need to have a bib record that has a bib 1xx or 7xx tag with the main entry filled out. 
+* Then you need to right click on that 1xx or 7xx tag. In the context menu that shows up, select _Create 
+New Authority from this field_, then select either _Create Immediately_ or _Create and Edit..._. 
+* If you 
+choose _Create and Edit..._, after the authority MARC editor opens you need to click on the _Save_ button
+to finally add the new authority record to your system.
+=================
+
+
+Searching for authorities
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To search for authorities in your system, first select the *Cataloging* menu and then select *Manage Authorities*. 
+Then proceed to fill out the search form. 
+
+. Type in your _Search Term_
+. Select an _Authority type_, types currently include: Author, Subject, Title, Topic 
+. Click on the _Submit_ button
+
+
+The authority search results will include the following elements from left to right:
+
+* _Actions_ menu, which can be used to select actions that affect the corresponding authority record. Actions include: 
+_Edit_, _Mark for Merge_, _Delete_
+* Count of how many bibs are linked to the corresponding authority
+* Main entry of the authority, i.e the authority tag 1xx value
+* _Control set_ value, with LoC being the default, but others can be added
+* Authority Subject heading system/thesaurus, for example a value of "a" means authority originated from the Library of Congress 
+ (http://www.loc.gov/marc/authority/ad008.html)
+
