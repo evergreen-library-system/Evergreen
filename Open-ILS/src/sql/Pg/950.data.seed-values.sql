@@ -1613,7 +1613,11 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 558, 'group_application.user.staff.data_review', oils_i18n_gettext( 558, 
     'Allow a user to add/remove users to/from the "Data Review" group', 'ppl', 'description' )),
  ( 559, 'group_application.user.staff.volunteers', oils_i18n_gettext( 559, 
-    'Allow a user to add/remove users to/from the "Volunteers" group', 'ppl', 'description' ))
+    'Allow a user to add/remove users to/from the "Volunteers" group', 'ppl', 'description' )),
+ (  560, 'TOTAL_HOLD_COPY_RATIO_EXCEEDED.override', oils_i18n_gettext( 560,
+    'Override the TOTAL_HOLD_COPY_RATIO_EXCEEDED event', 'ppl', 'description')),
+ (  561, 'AVAIL_HOLD_COPY_RATIO_EXCEEDED.override', oils_i18n_gettext( 561,
+    'Override the AVAIL_HOLD_COPY_RATIO_EXCEEDED event', 'ppl', 'description'))
 ;
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
