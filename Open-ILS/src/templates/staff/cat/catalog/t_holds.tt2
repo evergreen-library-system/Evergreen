@@ -20,37 +20,35 @@
     <eg-grid-menu-item handler="detail_view" 
       label="[% l('Detail View') %]"></eg-grid-menu-item>
 
-    <eg-grid-action handler="grid_actions.show_recent_circs"
+    <eg-grid-action handler="grid_actions.show_recent_circs" group="[% l('Copy') %]"
       label="[% l('Show Last Few Circulations') %]"></eg-grid-action>
-  <eg-grid-action handler="grid_actions.show_patrons"
-    label="[% l('Retrieve Patron') %]"></eg-grid-action>
-    <eg-grid-action divider="true"></eg-grid-action>
-    <eg-grid-action handler="grid_actions.set_copy_quality"
+    <eg-grid-action handler="grid_actions.show_patrons" group="[% l('Patron') %]"
+      label="[% l('Retrieve Patron') %]"></eg-grid-action>
+    <eg-grid-action group="[% l('Hold') %]" handler="grid_actions.set_copy_quality"
       label="[% l('Set Desired Copy Quality') %]"></eg-grid-action>
-    <eg-grid-action handler="grid_actions.edit_pickup_lib"
+    <eg-grid-action group="[% l('Hold') %]" handler="grid_actions.edit_pickup_lib"
       label="[% l('Edit Pickup Library') %]"></eg-grid-action>
-    <eg-grid-action handler="grid_actions.edit_notify_prefs"
+    <eg-grid-action group="[% l('Hold') %]" handler="grid_actions.edit_notify_prefs"
       label="[% l('Edit Notification Settings') %]"></eg-grid-action>
-    <eg-grid-action handler="grid_actions.edit_dates"
+    <eg-grid-action group="[% l('Hold') %]" handler="grid_actions.edit_dates"
       label="[% l('Edit Hold Dates') %]"></eg-grid-action>
-    <eg-grid-action handler="grid_actions.activate"
+    <eg-grid-action handler="grid_actions.activate" group="[% l('Hold') %]"
       label="[% l('Activate') %]"></eg-grid-action>
-    <eg-grid-action handler="grid_actions.suspend"
+    <eg-grid-action handler="grid_actions.suspend" group="[% l('Hold') %]"
       label="[% l('Suspend') %]"></eg-grid-action>
-    <eg-grid-action handler="grid_actions.set_top_of_queue"
+    <eg-grid-action handler="grid_actions.set_top_of_queue" group="[% l('Hold') %]"
       label="[% l('Set Top of Queue') %]"></eg-grid-action>
-    <eg-grid-action handler="grid_actions.clear_top_of_queue"
+    <eg-grid-action handler="grid_actions.clear_top_of_queue" group="[% l('Hold') %]"
       label="[% l('Un-Set Top of Queue') %]"></eg-grid-action>
-    <eg-grid-action handler="grid_actions.transfer_to_marked_title"
+    <eg-grid-action handler="grid_actions.transfer_to_marked_title" group="[% l('Hold') %]"
       label="[% l('Transfer To Marked Title') %]"></eg-grid-action>
-    <eg-grid-action handler="grid_actions.mark_damaged"
+    <eg-grid-action handler="grid_actions.mark_damaged" group="[% l('Copy') %]"
       label="[% l('Mark Item Damaged') %]"></eg-grid-action>
-    <eg-grid-action handler="grid_actions.mark_missing"
+    <eg-grid-action handler="grid_actions.mark_missing" group="[% l('Copy') %]"
       label="[% l('Mark Item Missing') %]"></eg-grid-action>
-    <eg-grid-action divider="true"></eg-grid-action>
-    <eg-grid-action handler="grid_actions.retarget"
+    <eg-grid-action handler="grid_actions.retarget" group="[% l('Hold') %]"
       label="[% l('Find Another Target') %]"></eg-grid-action>
-    <eg-grid-action handler="grid_actions.cancel_hold"
+    <eg-grid-action handler="grid_actions.cancel_hold" group="[% l('Hold') %]"
       label="[% l('Cancel Hold') %]"></eg-grid-action>
 
     <eg-grid-field label="[% l('Hold ID') %]" path='hold.id'></eg-grid-field>
