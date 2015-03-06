@@ -533,8 +533,7 @@ indexterm:[receipt template editor, includes]
 Additional Macros for various slip types
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Holds
-+++++
+*Holds*
 
 [horizontal]
 %ROUTE_TO%:: It should say Hold Shelf if it is a hold being fulfilled
@@ -548,8 +547,7 @@ Holds
 %formatted_note%:: Hold Notes (new to 2.1)
 %notify_by_text%:: SMS contact number (new to 2.2)
 
-Check out
-+++++++++
+*Check out*
 
 [horizontal]
 %title%:: Title
@@ -557,8 +555,7 @@ Check out
 %barcode%:: Item Barcode
 %due_date%:: Due Date: formated by the date field in the library settings editor
 
-Payment
-+++++++
+*Payment*
 
 [horizontal]
 %original_balance%:: The original balance the patron owes
@@ -581,8 +578,7 @@ Payment
 %barcode%:: Item barcode
 %title%:: title of item
 
-Bills
-+++++
+*Bills*
 
 [horizontal]
 %mbts_id%:: The id for the bill in the bill database
@@ -597,8 +593,7 @@ Bills
 %xact_type%:: Type of Biil
 %title%:: title of item
 
-Transit
-+++++++
+*Transit*
 
 Transit receipts come into two types, general Transit receipts and Transit slips.  Transit receipts are listings of item that are in transits.  Transit slips are Slips telling the staff that this item is in transit to another location.  
 
