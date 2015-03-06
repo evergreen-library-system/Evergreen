@@ -106,7 +106,7 @@ angular.module('egGridMod',
                 $scope.showGridConf = false;
                 grid.totalCount = -1;
                 $scope.selected = {};
-                $scope.actions = []; // actions for selected items
+                $scope.actionGroups = [{actions:[]}]; // Grouped actions for selected items
                 $scope.menuItems = []; // global actions
 
                 // remove some unneeded values from the scope to reduce bloat
@@ -280,7 +280,19 @@ angular.module('egGridMod',
 
             // add a selected-items action
             grid.addAction = function(act) {
-                $scope.actions.push(act);
+                var done = false;
+                $scope.actionGroups.forEach(function(g){
+                    if (g.label === act.group) {
+                        g.actions.push(act);
+                        done = true;
+                    }
+                });
+                if (!done) {
+                    $scope.actionGroups.push({
+                        label : act.group,
+                        actions : [ act ]
+                    });
+                }
             }
 
             // remove the stored column configuration preferenc, then recover 
@@ -972,6 +984,7 @@ angular.module('egGridMod',
         restrict : 'AE',
         transclude : true,
         scope : {
+            group   : '@', // Action group, ungrouped if not set
             label   : '@', // Action label
             handler : '=',  // Action function handler
             hide    : '=',
@@ -980,6 +993,7 @@ angular.module('egGridMod',
         link : function(scope, element, attrs, egGridCtrl) {
             egGridCtrl.addAction({
                 hide  : scope.hide,
+                group : scope.group,
                 label : scope.label,
                 divider : scope.divider,
                 handler : scope.handler
