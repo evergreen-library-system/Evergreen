@@ -159,6 +159,9 @@ include::admin/sip_server.txt[]
 
 include::admin/apache_rewrite_tricks.txt[]
 
+include::admin/apache_access_handler.txt[]
+
+
 Using the Staff Client
 ======================
 
