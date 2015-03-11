@@ -18,7 +18,7 @@
 // This module requires a /real/ jQuery be used with your
 // angularjs, so as to avoid using hand-rolled AJAX.
 
-var MARC = {
+var MARC21 = {
 
     Record : function(kwargs) {
         if (!kwargs) kwargs = {};
@@ -201,7 +201,7 @@ var MARC = {
             $('controlfield', mxml).each(function (ind) {
                 var cf=$(this);
                 me.fields.push(
-                    new MARC.Field({
+                    new MARC21.Field({
                           record : me,
                           tag    : cf.attr('tag'),
                           data   : cf.text(),
@@ -212,7 +212,7 @@ var MARC = {
             $('datafield', mxml).each(function (ind) {
                 var df=$(this);
                 me.fields.push(
-                    new MARC.Field({
+                    new MARC21.Field({
                         record    : me,
                         tag       : df.attr('tag'),
                         ind1      : df.attr('ind1'),
@@ -294,7 +294,7 @@ var MARC = {
                         me.leader = cf_line_data(current_line) || '00000cam a2200205Ka 4500';
                     } else {
                         me.fields.push(
-                            new MARC.Field({
+                            new MARC21.Field({
                                 record : me,
                                 tag    : line_tag(current_line),
                                 data   : cf_line_data(current_line).replace('\\',' ','g'),
@@ -312,7 +312,7 @@ var MARC = {
                     sf_list.shift();
 
                     me.fields.push(
-                        new MARC.Field({
+                        new MARC21.Field({
                                 record    : me,
                                 tag       : line_tag(current_line),
                                 ind1      : df_ind1(current_line),
@@ -361,11 +361,11 @@ var MARC = {
 
         this.recordType = function () {
         
-            var _t = this.leader.substr(MARC.Record._ff_pos.Type.ldr.BKS.start, MARC.Record._ff_pos.Type.ldr.BKS.len);
-            var _b = this.leader.substr(MARC.Record._ff_pos.BLvl.ldr.BKS.start, MARC.Record._ff_pos.BLvl.ldr.BKS.len);
+            var _t = this.leader.substr(MARC21.Record._ff_pos.Type.ldr.BKS.start, MARC21.Record._ff_pos.Type.ldr.BKS.len);
+            var _b = this.leader.substr(MARC21.Record._ff_pos.BLvl.ldr.BKS.start, MARC21.Record._ff_pos.BLvl.ldr.BKS.len);
         
-            for (var t in MARC.Record._recType) {
-                if (_t.match(MARC.Record._recType[t].Type) && _b.match(MARC.Record._recType[t].BLvl)) {
+            for (var t in MARC21.Record._recType) {
+                if (_t.match(MARC21.Record._recType[t].Type) && _b.match(MARC21.Record._recType[t].BLvl)) {
                     return t;
                 }
             }
@@ -377,11 +377,11 @@ var MARC = {
         
             if (_7 && _7.match(/^v/)) {
                 var _v_e = _7.substr(
-                    MARC.Record._physical_characteristics.v.subfields.e.start,
-                    MARC.Record._physical_characteristics.v.subfields.e.len
+                    MARC21.Record._physical_characteristics.v.subfields.e.start,
+                    MARC21.Record._physical_characteristics.v.subfields.e.len
                 );
         
-                return MARC.Record._physical_characteristics.v.subfields.e.values[ _v_e ];
+                return MARC21.Record._physical_characteristics.v.subfields.e.values[ _v_e ];
             }
         
             return null;
@@ -392,8 +392,8 @@ var MARC = {
         
             if (_7 && _7.match(/^v/)) {
                 return _7.substr(
-                    MARC.Record._physical_characteristics.v.subfields.e.start,
-                    MARC.Record._physical_characteristics.v.subfields.e.len
+                    MARC21.Record._physical_characteristics.v.subfields.e.start,
+                    MARC21.Record._physical_characteristics.v.subfields.e.len
                 );
             }
         
@@ -401,7 +401,7 @@ var MARC = {
         }
         
         this.extractFixedField = function (field, dflt) {
-        if (!MARC.Record._ff_pos[field]) return null;
+        if (!MARC21.Record._ff_pos[field]) return null;
         
             var _l = this.leader;
             var _8 = this.field('008').data;
@@ -411,27 +411,27 @@ var MARC = {
         
             var val;
         
-            if (MARC.Record._ff_pos[field].ldr && _l) {
-                if (MARC.Record._ff_pos[field].ldr[rtype]) {
+            if (MARC21.Record._ff_pos[field].ldr && _l) {
+                if (MARC21.Record._ff_pos[field].ldr[rtype]) {
                     val = _l.substr(
-                        MARC.Record._ff_pos[field].ldr[rtype].start,
-                        MARC.Record._ff_pos[field].ldr[rtype].len
+                        MARC21.Record._ff_pos[field].ldr[rtype].start,
+                        MARC21.Record._ff_pos[field].ldr[rtype].len
                     );
                 }
-            } else if (MARC.Record._ff_pos[field]._8 && _8) {
-                if (MARC.Record._ff_pos[field]._8[rtype]) {
+            } else if (MARC21.Record._ff_pos[field]._8 && _8) {
+                if (MARC21.Record._ff_pos[field]._8[rtype]) {
                     val = _8.substr(
-                        MARC.Record._ff_pos[field]._8[rtype].start,
-                        MARC.Record._ff_pos[field]._8[rtype].len
+                        MARC21.Record._ff_pos[field]._8[rtype].start,
+                        MARC21.Record._ff_pos[field]._8[rtype].len
                     );
                 }
             }
         
-            if (!val && MARC.Record._ff_pos[field]._6 && _6) {
-                if (MARC.Record._ff_pos[field]._6[rtype]) {
+            if (!val && MARC21.Record._ff_pos[field]._6 && _6) {
+                if (MARC21.Record._ff_pos[field]._6[rtype]) {
                     val = _6.substr(
-                        MARC.Record._ff_pos[field]._6[rtype].start,
-                        MARC.Record._ff_pos[field]._6[rtype].len
+                        MARC21.Record._ff_pos[field]._6[rtype].start,
+                        MARC21.Record._ff_pos[field]._6[rtype].len
                     );
                 }
             }
@@ -440,23 +440,23 @@ var MARC = {
                 val = '';
                 var d;
                 var p;
-                if (MARC.Record._ff_pos[field].ldr && MARC.Record._ff_pos[field].ldr[rtype]) {
-                    d = MARC.Record._ff_pos[field].ldr[rtype].def;
+                if (MARC21.Record._ff_pos[field].ldr && MARC21.Record._ff_pos[field].ldr[rtype]) {
+                    d = MARC21.Record._ff_pos[field].ldr[rtype].def;
                     p = 'ldr';
                 }
     
-                if (MARC.Record._ff_pos[field]._8 && MARC.Record._ff_pos[field]._8[rtype]) {
-                    d = MARC.Record._ff_pos[field]._8[rtype].def;
+                if (MARC21.Record._ff_pos[field]._8 && MARC21.Record._ff_pos[field]._8[rtype]) {
+                    d = MARC21.Record._ff_pos[field]._8[rtype].def;
                     p = '_8';
                 }
     
-                if (!val && MARC.Record._ff_pos[field]._6 && MARC.Record._ff_pos[field]._6[rtype]) {
-                    d = MARC.Record._ff_pos[field]._6[rtype].def;
+                if (!val && MARC21.Record._ff_pos[field]._6 && MARC21.Record._ff_pos[field]._6[rtype]) {
+                    d = MARC21.Record._ff_pos[field]._6[rtype].def;
                     p = '_6';
                 }
     
                 if (p) {
-                    for (var j = 0; j < MARC.Record._ff_pos[field][p][rtype].len; j++) {
+                    for (var j = 0; j < MARC21.Record._ff_pos[field][p][rtype].len; j++) {
                         val += d;
                     }
                 } else {
@@ -468,7 +468,7 @@ var MARC = {
         }
     
         this.setFixedField = function (field, value) {
-            if (!MARC.Record._ff_pos[field]) return null;
+            if (!MARC21.Record._ff_pos[field]) return null;
         
             var _l = this.leader;
             var _8 = this.field('008').data;
@@ -478,40 +478,40 @@ var MARC = {
         
             var val;
         
-            if (MARC.Record._ff_pos[field].ldr && _l) {
-                if (MARC.Record._ff_pos[field].ldr[rtype]) { // It's in the leader
-                    val = value.substr(0, MARC.Record._ff_pos[field].ldr[rtype].len);
+            if (MARC21.Record._ff_pos[field].ldr && _l) {
+                if (MARC21.Record._ff_pos[field].ldr[rtype]) { // It's in the leader
+                    val = value.substr(0, MARC21.Record._ff_pos[field].ldr[rtype].len);
                     this.leader =
-                        _l.substring(0, MARC.Record._ff_pos[field].ldr[rtype].start) +
+                        _l.substring(0, MARC21.Record._ff_pos[field].ldr[rtype].start) +
                         val +
                         _l.substring(
-                            MARC.Record._ff_pos[field].ldr[rtype].start
-                            + MARC.Record._ff_pos[field].ldr[rtype].len
+                            MARC21.Record._ff_pos[field].ldr[rtype].start
+                            + MARC21.Record._ff_pos[field].ldr[rtype].len
                         );
                 }
-            } else if (MARC.Record._ff_pos[field]._8 && _8) {
-                if (MARC.Record._ff_pos[field]._8[rtype]) { // Nope, it's in the 008
-                    val = value.substr(0, MARC.Record._ff_pos[field]._8[rtype].len);
+            } else if (MARC21.Record._ff_pos[field]._8 && _8) {
+                if (MARC21.Record._ff_pos[field]._8[rtype]) { // Nope, it's in the 008
+                    val = value.substr(0, MARC21.Record._ff_pos[field]._8[rtype].len);
                     this.field('008').update(
-                        _8.substring(0, MARC.Record._ff_pos[field]._8[rtype].start) +
+                        _8.substring(0, MARC21.Record._ff_pos[field]._8[rtype].start) +
                         val +
                         _8.substring(
-                            MARC.Record._ff_pos[field]._8[rtype].start
-                            + MARC.Record._ff_pos[field]._8[rtype].len
+                            MARC21.Record._ff_pos[field]._8[rtype].start
+                            + MARC21.Record._ff_pos[field]._8[rtype].len
                         )
                     );
                 }
             }
         
-            if (!val && MARC.Record._ff_pos[field]._6 && _6) {
-                if (MARC.Record._ff_pos[field]._6[rtype]) { // ok, maybe the 006?
-                    val = value.substr(0, MARC.Record._ff_pos[field]._6[rtype].len);
+            if (!val && MARC21.Record._ff_pos[field]._6 && _6) {
+                if (MARC21.Record._ff_pos[field]._6[rtype]) { // ok, maybe the 006?
+                    val = value.substr(0, MARC21.Record._ff_pos[field]._6[rtype].len);
                     this.field('006').update(
-                        _6.substring(0, MARC.Record._ff_pos[field]._6[rtype].start) +
+                        _6.substring(0, MARC21.Record._ff_pos[field]._6[rtype].start) +
                         val +
                         _6.substring(
-                            MARC.Record._ff_pos[field]._6[rtype].start
-                            + MARC.Record._ff_pos[field]._6[rtype].len
+                            MARC21.Record._ff_pos[field]._6[rtype].start
+                            + MARC21.Record._ff_pos[field]._6[rtype].len
                         )
                     );
                 }
@@ -709,7 +709,7 @@ var MARC = {
                 var args = {};
                 args[this.type] = chunk;
                 if (this.delimiter) args.delimiter = this.delimiter;
-                return new MARC.Record(args);
+                return new MARC21.Record(args);
             }
 
             return null;
@@ -732,7 +732,7 @@ var MARC = {
     
         kwargs = kwargs || {};
     
-        if (!MARC.AuthorityControlSet._remote_loaded) {
+        if (!MARC21.AuthorityControlSet._remote_loaded) {
     
             // TODO -- push the raw tree into the oils cache for later reuse
     
@@ -746,24 +746,24 @@ var MARC = {
                 "abaafm": "_browse_field_map_list"
             });
     
-            MARC.AuthorityControlSet._remote_loaded = true;
+            MARC21.AuthorityControlSet._remote_loaded = true;
         }
     
-        if (MARC.AuthorityControlSet._remote_loaded && !MARC.AuthorityControlSet._remote_parsed) {
+        if (MARC21.AuthorityControlSet._remote_loaded && !MARC21.AuthorityControlSet._remote_parsed) {
     
-            MARC.AuthorityControlSet._browse_axis_by_code = {};
-            MARC.AuthorityControlSet._browse_axis_list.forEach(function (ba) {
+            MARC21.AuthorityControlSet._browse_axis_by_code = {};
+            MARC21.AuthorityControlSet._browse_axis_list.forEach(function (ba) {
                 ba.maps(
-                    MARC.AuthorityControlSet._browse_field_map_list.filter(
+                    MARC21.AuthorityControlSet._browse_field_map_list.filter(
                         function (m) { return m.axis() == ba.code() }
                     )
                 );
-                MARC.AuthorityControlSet._browse_axis_by_code[ba.code()] = ba;
+                MARC21.AuthorityControlSet._browse_axis_by_code[ba.code()] = ba;
             });
     
             // loop over each acs
-            MARC.AuthorityControlSet._control_set_list.forEach(function (cs) {
-                MARC.AuthorityControlSet._controlsets[''+cs.id()] = {
+            MARC21.AuthorityControlSet._control_set_list.forEach(function (cs) {
+                MARC21.AuthorityControlSet._controlsets[''+cs.id()] = {
                     id : cs.id(),
                     name : cs.name(),
                     description : cs.description(),
@@ -774,16 +774,16 @@ var MARC = {
                 };
     
                 // grab the authority fields
-                var acsaf_list = MARC.AuthorityControlSet._authority_field_list.filter(
+                var acsaf_list = MARC21.AuthorityControlSet._authority_field_list.filter(
                     function (af) { return af.control_set() == cs.id() }
                 );
     
-                var at_list = MARC.AuthorityControlSet._thesaurus_list.filter(
+                var at_list = MARC21.AuthorityControlSet._thesaurus_list.filter(
                     function (at) { return at.control_set() == cs.id() }
                 );
     
-                MARC.AuthorityControlSet._controlsets[''+cs.id()].raw.authority_fields( acsaf_list );
-                MARC.AuthorityControlSet._controlsets[''+cs.id()].raw.thesauri( at_list );
+                MARC21.AuthorityControlSet._controlsets[''+cs.id()].raw.authority_fields( acsaf_list );
+                MARC21.AuthorityControlSet._controlsets[''+cs.id()].raw.thesauri( at_list );
     
                 // and loop over each
                 acsaf_list.forEach(function (csaf) {
@@ -806,13 +806,13 @@ var MARC = {
                     );
     
                     // now, bib fields
-                    var acsbf_list = MARC.AuthorityControlSet._bib_field_list.filter(
+                    var acsbf_list = MARC21.AuthorityControlSet._bib_field_list.filter(
                         function (b) { return b.authority_field() == csaf.id() }
                     );
                     csaf.bib_fields( acsbf_list );
     
-                    MARC.AuthorityControlSet._controlsets[''+cs.id()].bib_fields = [].concat(
-                        MARC.AuthorityControlSet._controlsets[''+cs.id()].bib_fields,
+                    MARC21.AuthorityControlSet._controlsets[''+cs.id()].bib_fields = [].concat(
+                        MARC21.AuthorityControlSet._controlsets[''+cs.id()].bib_fields,
                         acsbf_list
                     );
     
@@ -828,7 +828,7 @@ var MARC = {
     
                     });
     
-                    MARC.AuthorityControlSet._browse_axis_list.forEach(
+                    MARC21.AuthorityControlSet._browse_axis_list.forEach(
                         function (ba) {
                             ba.maps().filter(
                                 function (m) { return m.field() == csaf.id() }
@@ -841,26 +841,26 @@ var MARC = {
                 });
     
                 // build the authority_tag_map
-                MARC.AuthorityControlSet._controlsets[''+cs.id()].bib_fields.forEach(function (bf) {
+                MARC21.AuthorityControlSet._controlsets[''+cs.id()].bib_fields.forEach(function (bf) {
     
-                    if (!MARC.AuthorityControlSet._controlsets[''+cs.id()].control_map[bf.tag()])
-                        MARC.AuthorityControlSet._controlsets[''+cs.id()].control_map[bf.tag()] = {};
+                    if (!MARC21.AuthorityControlSet._controlsets[''+cs.id()].control_map[bf.tag()])
+                        MARC21.AuthorityControlSet._controlsets[''+cs.id()].control_map[bf.tag()] = {};
     
                     bf.authority_field().sf_list().split('').forEach(function (sf_code) {
     
-                        if (!MARC.AuthorityControlSet._controlsets[''+cs.id()].control_map[bf.tag()][sf_code])
-                            MARC.AuthorityControlSet._controlsets[''+cs.id()].control_map[bf.tag()][sf_code] = {};
+                        if (!MARC21.AuthorityControlSet._controlsets[''+cs.id()].control_map[bf.tag()][sf_code])
+                            MARC21.AuthorityControlSet._controlsets[''+cs.id()].control_map[bf.tag()][sf_code] = {};
     
-                        MARC.AuthorityControlSet._controlsets[''+cs.id()].control_map[bf.tag()][sf_code][bf.authority_field().tag()] = sf_code;
+                        MARC21.AuthorityControlSet._controlsets[''+cs.id()].control_map[bf.tag()][sf_code][bf.authority_field().tag()] = sf_code;
                     });
                 });
     
             });
     
             if (this.controlSetList().length > 0)
-                delete MARC.AuthorityControlSet._controlsets['-1'];
+                delete MARC21.AuthorityControlSet._controlsets['-1'];
     
-            MARC.AuthorityControlSet._remote_parsed = true;
+            MARC21.AuthorityControlSet._remote_parsed = true;
         }
     
         this._preFetchWithFielder = function(cmap) {
@@ -872,7 +872,7 @@ var MARC = {
                 var query = {};
                 query[pkey] = {"!=": null};
     
-                MARC.AuthorityControlSet[cache_key] = dojo.map(
+                MARC21.AuthorityControlSet[cache_key] = dojo.map(
                     fieldmapper.standardRequest(
                         ["open-ils.fielder", method],
                         [{"cache": 1, "query" : query}]
@@ -888,11 +888,11 @@ var MARC = {
         }
     
         this.controlSet = function (x) {
-            return MARC.AuthorityControlSet._controlsets[''+this.controlSetId(x)];
+            return MARC21.AuthorityControlSet._controlsets[''+this.controlSetId(x)];
         }
     
         this.controlSetByThesaurusCode = function (x) {
-            var thes = MARC.AuthorityControlSet._thesaurus_list.filter(
+            var thes = MARC21.AuthorityControlSet._thesaurus_list.filter(
                 function (at) { return at.code() == x }
             )[0];
     
@@ -900,7 +900,7 @@ var MARC = {
         }
     
         this.browseAxisByCode = function(code) {
-            return MARC.AuthorityControlSet._browse_axis_by_code[code];
+            return MARC21.AuthorityControlSet._browse_axis_by_code[code];
         }
     
         this.bibFieldByTag = function (x) {
@@ -916,8 +916,8 @@ var MARC = {
     
         this.bibFieldBrowseAxes = function (t) {
             var blist = [];
-            for (var bcode in MARC.AuthorityControlSet._browse_axis_by_code) {
-                MARC.AuthorityControlSet._browse_axis_by_code[bcode].maps().forEach(
+            for (var bcode in MARC21.AuthorityControlSet._browse_axis_by_code) {
+                MARC21.AuthorityControlSet._browse_axis_by_code[bcode].maps().forEach(
                     function (m) {
                         if (m.field().bib_fields().filter(
                                 function (b) { return b.tag() == t }
@@ -939,7 +939,7 @@ var MARC = {
     
         this.controlSetList = function () {
             var l = [];
-            for (var i in MARC.AuthorityControlSet._controlsets) {
+            for (var i in MARC21.AuthorityControlSet._controlsets) {
                 l.push(i);
             }
             return l;
@@ -987,9 +987,9 @@ var MARC = {
                     }
                 }
     
-                var m = new MARC.Record ({rtype:'AUT'});
+                var m = new MARC21.Record ({rtype:'AUT'});
                 m.appendFields(
-                    new MARC.Field ({
+                    new MARC21.Field ({
                         tag : af.tag(),
                         ind1: field.ind1,
                         ind2: field.ind2,
@@ -1039,7 +1039,7 @@ var MARC = {
     }
 };
 
-MARC.Record._recType = {
+MARC21.Record._recType = {
     BKS : { Type : /[at]{1}/,    BLvl : /[acdm]{1}/ },
     SER : { Type : /[a]{1}/,    BLvl : /[bsi]{1}/ },
     VIS : { Type : /[gkro]{1}/,    BLvl : /[abcdmsi]{1}/ },
@@ -1052,7 +1052,7 @@ MARC.Record._recType = {
     MFHD : { Type : /[uvxy]{1}/,  BLvl : /.{1}/ }
 };
 
-MARC.Record._ff_pos = {
+MARC21.Record._ff_pos = {
     AccM : {
         _8 : {
             SCO : {start: 24, len : 6, def : ' ' },
@@ -1613,7 +1613,7 @@ MARC.Record._ff_pos = {
      }
 };
 
-MARC.Record._physical_characteristics = {
+MARC21.Record._physical_characteristics = {
     c : {
         label     : "Electronic Resource",
         subfields : {
@@ -2675,10 +2675,10 @@ MARC.Record._physical_characteristics = {
     }
 };
 
-MARC.AuthorityControlSet._remote_loaded = false;
-MARC.AuthorityControlSet._remote_parsed = false;
+MARC21.AuthorityControlSet._remote_loaded = false;
+MARC21.AuthorityControlSet._remote_parsed = false;
 
-MARC.AuthorityControlSet._controlsets = {
+MARC21.AuthorityControlSet._controlsets = {
     // static sorta-LoC setup ... to be overwritten with server data 
     '-1' : {
         id : -1,
