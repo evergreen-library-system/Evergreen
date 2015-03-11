@@ -11,7 +11,23 @@
 </div>
 
 <div ng-show="record_id" class="row col-md-12 pad-vert">
-  <div class="col-md-9"></div> <!-- padding -->
+  <div class="col-md-9">
+    <button type="button" ng-disabled="from_route" class="btn btn-default" ng-click="opac_call('rdetailStart')">
+       [% l('Start') %]
+    </button>
+    <button type="button" ng-disabled="from_route" class="btn btn-default" ng-click="opac_call('rdetailPrev')">
+       [% l('Previous') %]
+    </button>
+    <button type="button" ng-disabled="from_route" class="btn btn-default" ng-click="opac_call('rdetailNext')">
+       [% l('Next') %]
+    </button>
+    <button type="button" ng-disabled="from_route" class="btn btn-default" ng-click="opac_call('rdetailEnd')">
+       [% l('End') %]
+    </button>
+    <button type="button" ng-disabled="from_route" class="btn btn-default" ng-click="opac_call('rdetailBackToResults')">
+       [% l('Back To Results') %]
+    </button>
+  </div> <!-- padding -->
   <div class="col-md-3">
     <!-- actions for this record menu -->
     <div class="btn-group pull-right" dropdown>
@@ -44,7 +60,7 @@
 <div class="row col-md-12">
   <!-- ng-show allows the catalog iframe to stay loaded (unlike ng-if) -->
   <div ng-show="record_tab == 'catalog'">
-    <eg-embed-frame url="catalog_url" handlers="handlers" onchange="handle_page"></eg-embed-frame>
+    <eg-embed-frame frame="opac_iframe" url="catalog_url" handlers="handlers" onchange="handle_page"></eg-embed-frame>
   </div>
   <!-- ng-if the remaining tabs so they can be instantiated on demand -->
   <div ng-if="record_tab == 'marc_edit'">
