@@ -20,6 +20,8 @@
       <option value="hold_shelf_slip">[% l('Hold Shelf Slip') %]</option>
       <option value="holds_for_bibs">[% l('Holds for Bib Record') %]</option>
       <option value="holds_for_patron">[% l('Holds for Patron') %]</option>
+      <option value="hold_pull_list">[% l('Hold Pull List') %]</option>
+      <option value="hold_shelf_list">[% l('Hold Shelf List') %]</option>
       <option value="patron_address">[% l('Patron Address') %]</option>
       <option value="patron_note">[% l('Patron Note') %]</option>
       <option value="transit_slip">[% l('Transit Slip') %]</option>

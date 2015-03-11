@@ -1,3 +1,6 @@
+<div ng-if="print_list_progress !== null" class="strong-text-2">
+  [% l('Loading... [_1]', '{{print_list_progress}}') %]
+</div>
 
 <eg-grid
   id-field="id"
@@ -19,6 +22,9 @@
 
   <eg-grid-menu-item handler="clear_holds" disabled="disable_clear"
     label="[% l('Clear These Holds') %]"></eg-grid-menu-item>
+
+  <eg-grid-menu-item handler="print_shelf_list"
+    label="[% l('Print Full List') %]"></eg-grid-menu-item>
 
   <eg-grid-action handler="grid_actions.show_recent_circs"
     label="[% l('Show Last Few Circulations') %]"></eg-grid-action>
