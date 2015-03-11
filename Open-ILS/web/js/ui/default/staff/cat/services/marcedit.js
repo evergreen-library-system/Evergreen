@@ -50,6 +50,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
             subfield: '=',
             content: '=',
             contextItemContainer: '@',
+            contextItemGenerator: '=',
             max: '@',
             itype: '@'
         },
@@ -60,7 +61,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
  *
                 if (!$scope.contextItemContainer) {
                     $scope.contextItemContainer = "default_context";
-                    $scope[$scope.contextItemContainer] = [
+                    $scope.$parent[$scope.contextItemContainer] = [
                         { value: 'a' },
                         { value: 'b' },
                         { value: 'c' },
@@ -70,8 +71,10 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
  *
  */
 
-                if ($scope.contextItemContainer)
-                    $scope.item_container = $scope[$scope.contextItemContainer];
+                if ($scope.contextItemContainer && angular.isArray($scope.$parent[$scope.contextItemContainer]))
+                    $scope.item_container = $scope.$parent[$scope.contextItemContainer];
+                else if ($scope.contextItemGenerator)
+                    $scope.item_container = $scope.contextItemGenerator();
 
                 $scope.showContext = function (event) {
                     if ($scope.context_menu_element) {
@@ -127,7 +130,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
 
             element.bind('change', function (e) { element.size = scope.max || parseInt(scope.content.length * 1.1) });
 
-            if (scope.contextItemContainer && angular.isArray(scope[scope.contextItemContainer]))
+            if (scope.item_container)
                 element.bind('contextmenu', scope.showContext);
         }
     }
@@ -296,7 +299,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                 $scope.record_redo_stack = [];
                 $scope.in_undo = false;
                 $scope.in_redo = false;
-                $scope.record = new MARC.Record();
+                $scope.record = new MARC21.Record();
                 $scope.save_stack_depth = 0;
                 $scope.controlfields = [];
                 $scope.datafields = [];
@@ -363,7 +366,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
 
                     } else if (event.which == 117 && event.shiftKey) { // shift + F6, insert 006
                         event.data.scope.field.record.insertOrderedFields(
-                            new MARC.Field({
+                            new MARC21.Field({
                                 tag : '006',
                                 data : '                                        '
                             })
@@ -376,7 +379,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
 
                     } else if (event.which == 118 && event.shiftKey) { // shift + F7, insert 007
                         event.data.scope.field.record.insertOrderedFields(
-                            new MARC.Field({
+                            new MARC21.Field({
                                 tag : '007',
                                 data : '                                        '
                             })
@@ -400,7 +403,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                         });
 
                         event.data.scope.field.record.insertOrderedFields(
-                            new MARC.Field({
+                            new MARC21.Field({
                                 tag : '008',
                                 data : new_008_data
                             })
@@ -420,7 +423,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
 
                         event.data.scope.field.record.insertFieldsAfter(
                             event.data.scope.field,
-                            new MARC.Field({
+                            new MARC21.Field({
                                 tag : '999',
                                 subfields : [[' ','',0]]
                             })
@@ -494,7 +497,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
 
                             var field_obj;
                             if (event.data.scope.field.isControlfield()) {
-                                field_obj = new MARC.Field({
+                                field_obj = new MARC21.Field({
                                     tag : event.data.scope.field.tag,
                                     data : event.data.scope.field.data
                                 });
@@ -503,7 +506,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                                 for (var i in event.data.scope.field.subfields) {
                                     sf_clone.push(event.data.scope.field.subfields[i].slice());
                                 }
-                                field_obj = new MARC.Field({
+                                field_obj = new MARC21.Field({
                                     tag : event.data.scope.field.tag,
                                     ind1 : event.data.scope.field.ind1,
                                     ind2 : event.data.scope.field.ind2,
@@ -548,7 +551,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
 
                             var field_obj;
                             if (event.data.scope.field.isControlfield()) {
-                                field_obj = new MARC.Field({
+                                field_obj = new MARC21.Field({
                                     tag : event.data.scope.field.tag,
                                     data : event.data.scope.field.data
                                 });
@@ -557,7 +560,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                                 for (var i in event.data.scope.field.subfields) {
                                     sf_clone.push(event.data.scope.field.subfields[i].slice());
                                 }
-                                field_obj = new MARC.Field({
+                                field_obj = new MARC21.Field({
                                     tag : event.data.scope.field.tag,
                                     ind1 : event.data.scope.field.ind1,
                                     ind2 : event.data.scope.field.ind2,
@@ -633,7 +636,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                     ).then(function(rec) {
                         $scope.in_redo = true;
                         $scope[$scope.record_type] = rec;
-                        $scope.record = new MARC.Record({ marcxml : $scope[$scope.record_type].marc() });
+                        $scope.record = new MARC21.Record({ marcxml : $scope[$scope.record_type].marc() });
                         $scope.calculated_record_type = $scope.record.recordType();
                         $scope.controlfields = $scope.record.fields.filter(function(f){ return f.isControlfield() });
                         $scope.datafields = $scope.record.fields.filter(function(f){ return !f.isControlfield() });
@@ -685,7 +688,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                         var undo_item = $scope.record_undo_stack.pop();
                         $scope.record_redo_stack.push(undo_item);
 
-                        $scope.record = new MARC.Record({ marcbreaker : undo_item.breaker });
+                        $scope.record = new MARC21.Record({ marcbreaker : undo_item.breaker });
                         $scope.controlfields = $scope.record.fields.filter(function(f){ return f.isControlfield() });
                         $scope.datafields = $scope.record.fields.filter(function(f){ return !f.isControlfield() });
 
@@ -707,7 +710,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                         var redo_item = $scope.record_redo_stack.pop();
                         $scope.record_undo_stack.push(redo_item);
 
-                        $scope.record = new MARC.Record({ marcbreaker : redo_item.breaker });
+                        $scope.record = new MARC21.Record({ marcbreaker : redo_item.breaker });
                         $scope.controlfields = $scope.record.fields.filter(function(f){ return f.isControlfield() });
                         $scope.datafields = $scope.record.fields.filter(function(f){ return !f.isControlfield() });
 
@@ -770,7 +773,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                         f.data = stamp;
                     } else {
                         $scope.record.insertOrderedFields(
-                            new MARC.Field({
+                            new MARC21.Field({
                                 tag : '005',
                                 data: stamp
                             })
