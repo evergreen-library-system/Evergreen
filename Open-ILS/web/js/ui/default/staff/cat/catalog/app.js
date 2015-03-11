@@ -125,6 +125,15 @@ function($scope , $routeParams , $location , $q , egCore , egHolds,
     // set record ID on page load if available...
     $scope.record_id = $routeParams.record_id;
 
+    if ($routeParams.record_id) $scope.from_route = true;
+    else $scope.from_route = false;
+
+    // will hold a ref to the opac iframe
+    $scope.opac_iframe = null;
+    $scope.opac_call = function (thing) {
+        if ($scope.opac_iframe) $scope.opac_iframe.contentWindow[thing]()
+    }
+
     // Set the "last bib" cookie, if we have that
     if ($scope.record_id)
         egCore.hatch.setLocalItem("eg.cat.last_record_retrieved", $scope.record_id);
