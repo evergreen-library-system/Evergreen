@@ -14,6 +14,7 @@ angular.module('egCoreMod')
             // optional hash of functions which augment or override 
             // the stock xulG functions defined below.
             handlers : '=',
+            frame : '=',
 
             // called after onload of each new iframe page
             onchange : '=',
@@ -63,6 +64,8 @@ angular.module('egCoreMod')
             // eventually go away.
             // NOTE: catalog integration is not a stop-gap
             $window.egEmbedFrameLoader = function(iframe) {
+
+                $scope.frame = iframe;
 
                 var page = iframe.contentWindow.location.href;
                 console.debug('egEmbedFrameLoader(): ' + page);
