@@ -130,9 +130,25 @@ function($scope , $routeParams , $location , $q , egCore , egHolds,
 
     // will hold a ref to the opac iframe
     $scope.opac_iframe = null;
-    $scope.opac_call = function (thing) {
-        if ($scope.opac_iframe) $scope.opac_iframe.contentWindow[thing]()
+    $scope.opac_call = function (opac_frame_function, force_opac_tab) {
+        if ($scope.opac_iframe) {
+            if (force_opac_tab) $scope.record_tab = 'catalog';
+            $scope.opac_iframe.contentWindow[opac_frame_function]();
+        }
     }
+
+    $scope.stop_unload = false;
+    $scope.$watch('stop_unload',
+        function(newVal, oldVal) {
+            if (newVal && newVal != oldVal && $scope.opac_iframe) {
+                $($scope.opac_iframe.contentWindow).on('beforeunload', function(){
+                    return 'There is unsaved data in this record.'
+                });
+            } else {
+                $($scope.opac_iframe.contentWindow).off('beforeunload');
+            }
+        }
+    );
 
     // Set the "last bib" cookie, if we have that
     if ($scope.record_id)

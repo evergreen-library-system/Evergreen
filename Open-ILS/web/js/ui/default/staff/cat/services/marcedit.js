@@ -274,7 +274,12 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
         templateUrl : './cat/share/t_marcedit',
         restrict: 'E',
         replace: true,
-        scope: { recordId : '=', recordType : '@', maxUndo : '@' },
+        scope: {
+            dirtyFlag : '=',
+            recordId : '=',
+            recordType : '@',
+            maxUndo : '@'
+        },
         link: function (scope, element, attrs) {
 
             element.bind('click', function(e) {;
@@ -663,14 +668,13 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                             $scope.force_render = false;
                         }
 
-                        if ($scope.record_undo_stack.length != $scope.save_stack_depth) {
-                            console.log('should get a listener... does not');
-                            $('body').on('beforeunload', function(){
-                                return 'There is unsaved data in this record.'
-                            });
-                        } else {
-                            $('body').off('beforeunload');
-                        }
+                    }
+
+                    if ($scope.record_undo_stack.length != $scope.save_stack_depth) {
+                        console.log('should get a listener... does not');
+                        $scope.dirtyFlag = true;
+                    } else {
+                        $scope.dirtyFlag = false;
                     }
 
                     if ($scope.record_undo_stack.length > $scope.max_undo)

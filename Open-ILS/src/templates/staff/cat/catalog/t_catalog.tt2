@@ -24,7 +24,7 @@
     <button type="button" ng-disabled="from_route" class="btn btn-default" ng-click="opac_call('rdetailEnd')">
        [% l('End') %]
     </button>
-    <button type="button" ng-disabled="from_route" class="btn btn-default" ng-click="opac_call('rdetailBackToResults')">
+    <button type="button" ng-disabled="from_route" class="btn btn-default" ng-click="opac_call('rdetailBackToResults', true)">
        [% l('Back To Results') %]
     </button>
   </div> <!-- padding -->
@@ -64,7 +64,7 @@
   </div>
   <!-- ng-if the remaining tabs so they can be instantiated on demand -->
   <div ng-if="record_tab == 'marc_edit'">
-    <eg-marc-edit-record record-id="record_id"></eg-marc-edit-record>
+    <eg-marc-edit-record dirty-flag="stop_unload" record-id="record_id"></eg-marc-edit-record>
   </div>
   <div ng-if="record_tab == 'marc_html'">
     <eg-record-html record-id="record_id"></eg-record-html>
