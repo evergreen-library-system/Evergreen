@@ -344,6 +344,10 @@ a2ensite eg.conf
 ------------------------------------------------------------------------------
 chown opensrf /var/lock/apache2
 ------------------------------------------------------------------------------
++
+9. Learn more about additional Apache options in the following sections:
+  * <<_apache_rewrite_tricks,Apache Rewrite Tricks>>
+  * <<_apache_access_handler_perl_module,Apache Access Handler Perl Module>>
 
 Configure OpenSRF for the Evergreen application
 -----------------------------------------------
