@@ -1969,8 +1969,7 @@ sub sru_search {
                     }
                 }
 
-                # Ensure the data is encoded as UTF8 before we hand it off
-                $marcxml = encode_utf8($marc->as_xml_record());
+                $marcxml = $marc->as_xml_record();
                 $marcxml =~ s/^<\?xml version="1.0" encoding="UTF-8"\?>//o;
 
             }
@@ -1999,7 +1998,7 @@ sub sru_search {
         );
     }
 
-    print $cgi->header( -type => 'application/xml' );
+    print $cgi->header( -type => 'application/xml', -charset => 'UTF-8' );
     print $U->entityize($resp->asXML) . "\n";
     return Apache2::Const::OK;
 }
@@ -2116,7 +2115,7 @@ sub sru_auth_search {
         );
     }
 
-    print $cgi->header( -type => 'application/xml' );
+    print $cgi->header( -type => 'application/xml', -charset => 'UTF-8' );
     print $U->entityize($resp->asXML) . "\n";
     return Apache2::Const::OK;
 }
