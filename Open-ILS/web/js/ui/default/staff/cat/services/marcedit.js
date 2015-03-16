@@ -54,22 +54,25 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
             max: '@',
             itype: '@'
         },
-        controller : ['$scope',
-            function ( $scope ) {
+        controller : ['$scope', 'egTagTable',
+            function ( $scope ,  egTagTable) {
 
-/* XXX Example, for testing.  We'll get this from the tag-table services for realz
- *
                 if (!$scope.contextItemContainer) {
-                    $scope.contextItemContainer = "default_context";
-                    $scope.$parent[$scope.contextItemContainer] = [
-                        { value: 'a' },
-                        { value: 'b' },
-                        { value: 'c' },
-                    ];
+                    if ($scope.itype === 'tag') {
+                        $scope.contextItemContainer = "default_context";
+                        // FIXME use contextItemGenerator
+                        $scope.$parent[$scope.contextItemContainer] = egTagTable.getFieldTags();
+                    } else if ($scope.itype === 'sfc') {
+                        $scope.contextItemContainer = "default_context";
+                        $scope.$parent[$scope.contextItemContainer] = 
+                            egTagTable.getSubfieldCodes($scope.$parent.field.tag);
+                    } else if ($scope.itype === 'ind') {
+                        $scope.contextItemContainer = "default_context";
+                        $scope.$parent[$scope.contextItemContainer] = 
+                            egTagTable.getIndicatorValues($scope.$parent.field.tag, $scope.$parent.indNumber);
+                    }
                 }
 
- *
- */
 
                 if ($scope.contextItemContainer && angular.isArray($scope.$parent[$scope.contextItemContainer]))
                     $scope.item_container = $scope.$parent[$scope.contextItemContainer];
@@ -294,8 +297,8 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
             });
 
         },
-        controller : ['$timeout','$scope','egCore',
-            function ( $timeout , $scope , egCore ) {
+        controller : ['$timeout','$scope','egCore', 'egTagTable',
+            function ( $timeout , $scope , egCore ,  egTagTable ) {
 
                 $scope.bib_source = null;
                 $scope.record_type = $scope.recordType || 'bre';
@@ -308,6 +311,8 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                 $scope.save_stack_depth = 0;
                 $scope.controlfields = [];
                 $scope.datafields = [];
+
+                egTagTable.loadTagTable();
 
                 $scope.onKeydown = function (event) {
                     var event_return = true;
