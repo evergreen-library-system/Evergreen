@@ -54,25 +54,8 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
             max: '@',
             itype: '@'
         },
-        controller : ['$scope', 'egTagTable',
-            function ( $scope ,  egTagTable) {
-
-                if (!$scope.contextItemContainer) {
-                    if ($scope.itype === 'tag') {
-                        $scope.contextItemContainer = "default_context";
-                        // FIXME use contextItemGenerator
-                        $scope.$parent[$scope.contextItemContainer] = egTagTable.getFieldTags();
-                    } else if ($scope.itype === 'sfc') {
-                        $scope.contextItemContainer = "default_context";
-                        $scope.$parent[$scope.contextItemContainer] = 
-                            egTagTable.getSubfieldCodes($scope.$parent.field.tag);
-                    } else if ($scope.itype === 'ind') {
-                        $scope.contextItemContainer = "default_context";
-                        $scope.$parent[$scope.contextItemContainer] = 
-                            egTagTable.getIndicatorValues($scope.$parent.field.tag, $scope.$parent.indNumber);
-                    }
-                }
-
+        controller : ['$scope',
+            function ( $scope ) {
 
                 if ($scope.contextItemContainer && angular.isArray($scope.$parent[$scope.contextItemContainer]))
                     $scope.item_container = $scope.$parent[$scope.contextItemContainer];
@@ -133,7 +116,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
 
             element.bind('change', function (e) { element.size = scope.max || parseInt(scope.content.length * 1.1) });
 
-            if (scope.item_container)
+            if (scope.item_container && scope.item_container.length)
                 element.bind('contextmenu', scope.showContext);
         }
     }
@@ -154,6 +137,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                         'content="subfield[0]" '+
                         'max="1" '+
                         'on-keydown="onKeydown" '+
+                        'context-item-generator="sf_code_options" '+
                         'id="r{{field.record.subfield(\'901\',\'c\')[1]}}f{{field.position}}s{{subfield[2]}}code" '+
                     '/></span>'+
                     '<span><eg-marc-edit-editable '+
@@ -167,7 +151,15 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                     '/></span>'+
                   '</span>',
         scope: { field: "=", subfield: "=", onKeydown: '=' },
-        replace: true
+        replace: true,
+        controller : ['$scope', 'egTagTable',
+            function ( $scope ,  egTagTable) {
+
+                $scope.sf_code_options = function () {
+                    return egTagTable.getSubfieldCodes($scope.field.tag);
+                }
+            }
+        ]
     }
 })
 
@@ -182,10 +174,19 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                       'content="ind" '+
                       'max="1" '+
                       'on-keydown="onKeydown" '+
+                      'context-item-generator="ind_val_options" '+
                       'id="r{{field.record.subfield(\'901\',\'c\')[1]}}f{{field.position}}i{{indNumber}}"'+
                       '/></span>',
         scope: { ind : '=', field: '=', onKeydown: '=', indNumber: '@' },
-        replace: true
+        replace: true,
+        controller : ['$scope', 'egTagTable',
+            function ( $scope ,  egTagTable) {
+
+                $scope.ind_val_options = function () {
+                    return egTagTable.getIndicatorValues($scope.field.tag, $scope.indNumber);
+                }
+            }
+        ]
     }
 })
 
@@ -200,10 +201,19 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                       'content="tag" '+
                       'max="3" '+
                       'on-keydown="onKeydown" '+
+                      'context-item-generator="tag_options" '+
                       'id="r{{field.record.subfield(\'901\',\'c\')[1]}}f{{field.position}}tag"'+
                       '/></span>',
         scope: { tag : '=', field: '=', onKeydown: '=' },
-        replace: true
+        replace: true,
+        controller : ['$scope', 'egTagTable',
+            function ( $scope ,  egTagTable) {
+
+                $scope.tag_options = function () {
+                    return egTagTable.getFieldTags();
+                }
+            }
+        ]
     }
 })
 
