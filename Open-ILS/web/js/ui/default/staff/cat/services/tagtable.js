@@ -97,7 +97,7 @@ function($q,   egCore,   egAuth) {
         angular.forEach(service.fields[tag]["ind" + pos], function(value) {
             this.push({
                 value: value.code,
-                label: value.code + ': ' + value.value
+                label: value.code + ': ' + value.description
             });
         }, list);
         return list;
