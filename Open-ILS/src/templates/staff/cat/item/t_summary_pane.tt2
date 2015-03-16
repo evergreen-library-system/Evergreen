@@ -20,7 +20,10 @@
     </div>
 
     <div class="flex-cell">[% l('Status') %]</div>
-    <div class="flex-cell well">{{copy.status().name()}}</div>
+    <div
+      class="flex-cell well"
+      title="[% l('Holdable') %]: {{copy.status().holdable() | boolText}} / [% l('OPAC Visible') %]: {{copy.status().opac_visible() | boolText}}"
+    >{{copy.status().name()}}</div>
   </div>
 
   <div class="flex-row">
@@ -44,7 +47,10 @@
     </div>
 
     <div class="flex-cell">[% l('Copy Location') %]</div>
-    <div class="flex-cell well">{{copy.location().name()}}</div>
+    <div
+      class="flex-cell well"
+      title="[% l('Holdable') %]: {{copy.location().holdable() | boolText}} / [% l('OPAC Visible') %]: {{copy.location().opac_visible() | boolText}}"
+    >{{copy.location().name()}}</div>
 
     <div class="flex-cell">[% l('Call # Suffix') %]</div>
     <div class="flex-cell well">

@@ -5,6 +5,12 @@
 angular.module('egItemStatus', 
     ['ngRoute', 'ui.bootstrap', 'egCoreMod', 'egUiMod', 'egGridMod'])
 
+.filter('boolText', function(){
+    return function (v) {
+        return v == 't';
+    }
+})
+
 .config(function($routeProvider, $locationProvider, $compileProvider) {
     $locationProvider.html5Mode(true);
     $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|blob):/); // grid export
