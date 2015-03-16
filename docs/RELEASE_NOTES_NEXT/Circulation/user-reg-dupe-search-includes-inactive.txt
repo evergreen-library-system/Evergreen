@@ -1,0 +1,3 @@
+User Registration Includes Inactive Accounts in Dupe Search
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+When registering a user the system checks to see if there are already exiting users with the same name, address, email, etc. Now this duplicate user search includes inactive users so that matches can be re-activated if desired, rather than creating duplicate accounts.

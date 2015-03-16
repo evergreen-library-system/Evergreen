@@ -1846,7 +1846,7 @@ function uEditDupeSearch(type, value) {
     fieldmapper.standardRequest(
         ['open-ils.actor', 'open-ils.actor.patron.search.advanced'],
         {   async: true,
-            params: [openils.User.authtoken, search],
+            params: [openils.User.authtoken, search, null, null, 1],
             oncomplete : function(r) {
                 var resp = openils.Util.readResponse(r);
                 resp = resp.filter(function(id) { return (id != patron.id()); });
