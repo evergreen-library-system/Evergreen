@@ -136,7 +136,7 @@ IF num_uris > 0;
         [%- ELSE -%]
             <li class="rdetail_uri" property="offers" vocab="http://schema.org/" typeof="Offer">
         [%- END -%]
-        <a href="[% uri.href %]" property="url">
+        <a href="[% uri.href %]" class="uri_link" property="url">
         [%- IF uri.href != uri.link;
                 '<span property="description">' _ uri.link _ '</span>';
             ELSE;
