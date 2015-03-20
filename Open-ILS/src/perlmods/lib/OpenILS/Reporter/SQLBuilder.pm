@@ -38,6 +38,13 @@ sub relative_time {
     return $self->builder->{_relative_time};
 }
 
+sub resultset_limit {
+    my $self = shift;
+    my $limit = shift;
+    $self->builder->{_resultset_limit} = $limit if (defined $limit);
+    return $self->builder->{_resultset_limit};
+}
+
 sub resolve_param {
     my $self = shift;
     my $val = shift;
@@ -237,6 +244,8 @@ sub toSQL {
 
     if ($self->is_subquery) {
         $sql = '(';
+    } elsif ($self->resultset_limit) {
+        $sql = 'SELECT * FROM (';
     }
 
     $sql .= "SELECT\t" . join(",\n\t", map { $_->toSQL } @{ $self->{_select} }) . "\n" if (@{ $self->{_select} });
@@ -251,6 +260,9 @@ sub toSQL {
 
     if ($self->is_subquery) {
         $sql .= ') '. $self->{_alias} . "\n";
+    } elsif ($self->resultset_limit) {
+        $sql .= ') limited_to_' . $self->resultset_limit .
+                '_hits LIMIT ' . $self->resultset_limit . "\n";
     }
 
     return $self->{_sql} = $sql;
