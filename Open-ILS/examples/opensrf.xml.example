@@ -174,6 +174,32 @@ vim:et:ts=4:sw=4:
                     <success_template>LOCALSTATEDIR/data/report-success</success_template>
                     <fail_template>LOCALSTATEDIR/data/report-fail</fail_template>
                 </files>
+                <!-- Number of reports that can be processed simultaneously.  This
+                     value can overriden by the -c/-concurrency command-line switch
+                     of clark-kent.pl.
+                -->
+                <parallel>1</parallel>
+                <!-- Maximum number of rows in the query results allowed before
+                     Clark will refuse to draw a pie, bar, or line chart.  This
+                     value can be overriden by the -max-rows-for-charts command-line
+                     switch of clark-kent.pl.
+                -->
+                <max_rows_for_charts>1000</max_rows_for_charts>
+                <!-- Maximum amount of time (in minutes) that an SQL query initiated
+                     by Clark Kent will be allowed to run before it is terminated.
+                     This value can be overriden by the -statement-timeout
+                     command-line switch of clark-kent.pl.
+                -->
+                <statement_timeout>60</statement_timeout>
+                <!-- Maximum number of results permitted.  If set to a numeric value,
+                     Clark will limit the number of rows returned by report queries
+                     to this value.  Note that it will not be apparent to a user
+                     running a report from the staff interface that their report
+                     has been limited in this fashion.  This setting can be
+                     overriden by the -resultset-limit command-line switch of
+                     clark-kent.pl.
+                -->
+                <resultset_limit></resultset_limit>
             </setup>
         </reporter>
 
