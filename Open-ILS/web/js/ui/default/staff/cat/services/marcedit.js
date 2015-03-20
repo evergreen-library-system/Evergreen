@@ -65,6 +65,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                 $scope.showContext = function (event) {
                     if ($scope.context_menu_element) {
                         console.log('Reshowing context menu...');
+                        $('body').trigger('click');
                         $($scope.context_menu_element).css({ display: 'block', top: event.pageY, left: event.pageX });
                         $('body').on('click.context_menu',function() {
                             $($scope.context_menu_element).css('display','none');
@@ -75,6 +76,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
 
                     if (angular.isArray($scope.item_container)) { // we have a list of values or transforms
                         console.log('Showing context menu...');
+                        $('body').trigger('click');
 
                         var tmpl = 
                             '<ul class="dropdown-menu" role="menu">'+
