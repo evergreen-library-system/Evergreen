@@ -29,12 +29,20 @@ use Email::Send;
 use open ':utf8';
 
 
-my ($count, $config, $sleep_interval, $lockfile, $daemon) = (1, 'SYSCONFDIR/opensrf_core.xml', 10, '/tmp/reporter-LOCK');
+my ($config, $sleep_interval, $lockfile, $daemon) = ('SYSCONFDIR/opensrf_core.xml', 10, '/tmp/reporter-LOCK');
+
+my $opt_count;
+my $opt_max_rows_for_charts;
+my $opt_statement_timeout;
+my $opt_resultset_limit;
 
 GetOptions(
 	"daemon"	=> \$daemon,
 	"sleep=i"	=> \$sleep_interval,
-	"concurrency=i"	=> \$count,
+	"concurrency=i"	=> \$opt_count,
+	"max-rows-for-charts=i" => \$opt_max_rows_for_charts,
+	"resultset-limit=i" => \$opt_resultset_limit,
+	"statement-timeout=i" => \$opt_statement_timeout,
 	"bootstrap|boostrap=s"	=> \$config,
 	"lockfile=s"	=> \$lockfile,
 );
@@ -87,6 +95,21 @@ my $base_uri         = $sc->config_value( reporter => setup => 'base_uri' );
 
 my $state_dsn = "dbi:" . $state_db{db_driver} . ":dbname=" . $state_db{db_name} .';host=' . $state_db{db_host} . ';port=' . $state_db{db_port};
 my $data_dsn  = "dbi:" .  $data_db{db_driver} . ":dbname=" .  $data_db{db_name} .';host=' .  $data_db{db_host} . ';port=' .  $data_db{db_port};
+
+my $count               = $opt_count //
+                          $sc->config_value( reporter => setup => 'parallel' ) //
+                          1;
+$count = 1 unless $count =~ /^\d+$/ && $count > 0;
+my $statement_timeout   = $opt_statement_timeout //
+                          $sc->config_value( reporter => setup => 'statement_timeout' ) //
+                          60;
+$statement_timeout = 60 unless $statement_timeout =~ /^\d+$/;
+my $max_rows_for_charts = $opt_max_rows_for_charts //
+                          $sc->config_value( reporter => setup => 'max_rows_for_charts' ) //
+                          1000;
+$max_rows_for_charts = 1000 unless $max_rows_for_charts =~ /^\d+$/;
+my $resultset_limit     = $opt_resultset_limit //
+                          $sc->config_value( reporter => setup => 'resultset_limit' );
 
 my ($dbh,$running,$sth,@reports,$run, $current_time);
 
@@ -167,6 +190,7 @@ while (my $r = $sth->fetchrow_hashref) {
 	$r->{resultset}->set_pivot_label($report_data->{__pivot_label}) if $report_data->{__pivot_label};
 	$r->{resultset}->set_pivot_default($report_data->{__pivot_default}) if $report_data->{__pivot_default};
 	$r->{resultset}->relative_time($r->{run_time});
+	$r->{resultset}->resultset_limit($resultset_limit) if $resultset_limit;
 	push @reports, $r;
 }
 
@@ -203,6 +227,7 @@ for my $r ( @reports ) {
 		  RaiseError => 1
 		}
 	);
+	$data_dbh->do('SET statement_timeout = ?', {}, ($statement_timeout * 60 * 1000));
 
 	try {
 		$state_dbh->do(<<'		SQL',{}, $r->{id});
@@ -544,28 +569,40 @@ sub build_html {
 
 	# Time for a pie chart
 	if ($r->{chart_pie}) {
-		my $pics = draw_pie($r, $file);
-		for my $pic (@$pics) {
-			print $index "<img src='report-data.html.$pic->{file}' alt='$pic->{name}'/>$br4";
+		if (scalar(@{$r->{data}}) > $max_rows_for_charts) {
+			print $index "<strong>Report output has too many rows to make a pie chart</strong>$br4";
+		} else {
+			my $pics = draw_pie($r, $file);
+			for my $pic (@$pics) {
+				print $index "<img src='report-data.html.$pic->{file}' alt='$pic->{name}'/>$br4";
+			}
 		}
 	}
 
 	print $index $br4;
 	# Time for a bar chart
 	if ($r->{chart_bar}) {
-		my $pics = draw_bars($r, $file);
-		for my $pic (@$pics) {
-			print $index "<img src='report-data.html.$pic->{file}' alt='$pic->{name}'/>$br4";
+		if (scalar(@{$r->{data}}) > $max_rows_for_charts) {
+			print $index "<strong>Report output has too many rows to make a bar chart</strong>$br4";
+		} else {
+			my $pics = draw_bars($r, $file);
+			for my $pic (@$pics) {
+				print $index "<img src='report-data.html.$pic->{file}' alt='$pic->{name}'/>$br4";
+			}
 		}
 	}
 
 	print $index $br4;
 	# Time for a bar chart
 	if ($r->{chart_line}) {
-		my $pics = draw_lines($r, $file);
-		for my $pic (@$pics) {
-			print $index "<img src='report-data.html.$pic->{file}' alt='$pic->{name}'/>$br4";
-		}
+		if (scalar(@{$r->{data}}) > $max_rows_for_charts) {
+			print $index "<strong>Report output has too many rows to make a line chart</strong>$br4";
+		} else {
+			my $pics = draw_lines($r, $file);
+			for my $pic (@$pics) {
+				print $index "<img src='report-data.html.$pic->{file}' alt='$pic->{name}'/>$br4";
+			}
+	    }
 	}
 
 	# and that's it!
