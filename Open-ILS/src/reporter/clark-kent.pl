@@ -91,10 +91,10 @@ my $data_dsn  = "dbi:" .  $data_db{db_driver} . ":dbname=" .  $data_db{db_name} 
 my ($dbh,$running,$sth,@reports,$run, $current_time);
 
 if ($daemon) {
+	daemonize("Clark Kent, waiting for trouble");
 	open(F, ">$lockfile") or die "Cannot write lockfile '$lockfile'";
 	print F $$;
 	close F;
-	daemonize("Clark Kent, waiting for trouble");
 }
 
 
