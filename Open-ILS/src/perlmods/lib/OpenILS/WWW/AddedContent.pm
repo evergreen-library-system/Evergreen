@@ -45,6 +45,15 @@ my $error_countdown; # current consecutive errors countdown
 # is attempted after lookups have been disabled
 my $error_retry_timeout;
 
+# Cache Types/Formats for clearing purposes
+my %cachetypes = (
+    jacket => ['small','medium','large'],
+    toc => ['html','json','xml'],
+    anotes => ['html','json','xml'],
+    excerpt => ['html','json','xml'],
+    reviews => ['html','json','xml'],
+    summary => ['html','json','xml'],
+);
 
 sub child_init {
 
@@ -123,6 +132,10 @@ sub handler {
     child_init() unless $handler;
 
     return Apache2::Const::NOT_FOUND unless $handler and $type and $format and $cachekey;
+
+    if ($type eq "clearcache") {
+        return $AC->clear_cache($format, $cachekey);
+    }
 
     my $err;
     my $data;
@@ -330,6 +343,36 @@ sub serve_from_cache {
     return $class->print_content($data, 1);
 }
 
+sub delete_from_cache {
+    my($class, $type, $format, $key) = @_;
+    my $data = $cache->get_cache("ac.$type.$format.$key");
+    if ($data) {
+        $logger->debug("deleting $type/$format/$key from cache");
+        $cache->delete_cache("ac.$type.$format.$key");
+        return 1;
+    }
+    return 0;
+}
 
+sub clear_cache {
+    my($class, $category, $key) = @_;
+    my $data = {
+        content_type => 'text/plain',
+        content => "Checking/Clearing Cache Entries for $key\n"
+    };
+    my @cleartypes = ($category);
+    if ($category eq 'all') {
+        @cleartypes = keys(%cachetypes);
+    }
+    for my $type (@cleartypes) {
+        for my $format (@{$cachetypes{$type}}) {
+            if ($class->delete_from_cache($type, $format, $key)) {
+                $data->{content} .= "Cleared $type/$format\n";
+            }
+        }
+    }
+    $data->{content} .= "Done Checking $key\n";
+    return $class->print_content($data, 0);
+}
 
 1;
