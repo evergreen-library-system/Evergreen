@@ -52,6 +52,12 @@ OSRFTranslatorConfig @sysconfdir@/opensrf_core.xml
     Require all granted 
 </Location>
 
+# Lock clearing cache down to STAFF_LOGIN
+<Location /opac/extras/ac/clearcache/>
+    PerlAccessHandler OpenILS::WWW::AccessHandler
+    PerlSetVar OILSAccessHandlerPermission "STAFF_LOGIN"
+</Location>
+
 # Autosuggest for searches
 <Location /opac/extras/autosuggest>
     SetHandler perl-script
