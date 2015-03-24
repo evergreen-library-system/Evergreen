@@ -83,6 +83,13 @@
                      [% l('Permalink') %]
                 </a>
             </div>
+            [%- IF ctx.is_staff %]
+            <div class="rdetail_aux_utils clear_addedcontent_cache">
+                <a href="[% ctx.media_prefix %]/opac/extras/ac/clearcache/all/r/[% ctx.bre_id | uri %]" class="no-dec" target="_blank">
+                     [% l('Clear AddedContent Cache') %]
+                </a>
+            </div>
+            [%- END %]
         </div>
     </div>
 </div>
