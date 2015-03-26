@@ -7,6 +7,7 @@
   persist-key="circ.patron.search">
   <eg-grid-field label="[% ('ID') %]" path='id' visible></eg-grid-field>
   <eg-grid-field label="[% ('Card') %]" path='card.barcode' visible></eg-grid-field>
+  <eg-grid-field label="[% ('Profile') %]" path='profile.name' visible></eg-grid-field>
   <eg-grid-field label="[% ('Last Name') %]" path='family_name' visible sortable multisortable></eg-grid-field>
   <eg-grid-field label="[% ('First Name') %]" path='first_given_name' visible sortable multisortable></eg-grid-field>
   <eg-grid-field label="[% ('Middle Name') %]" path='second_given_name' visible sortable multisortable></eg-grid-field>
