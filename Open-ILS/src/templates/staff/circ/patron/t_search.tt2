@@ -122,7 +122,7 @@
               </button>
               <ul class="dropdown-menu">
                 <li ng-repeat="grp in profiles">
-                  <a href dropdown-toggle
+                  <a href
                     style="padding-left: {{pgt_depth(grp) * 10 + 5}}px"
                     ng-click="searchArgs.profile = grp">{{grp.name()}}</a>
                 </li>
