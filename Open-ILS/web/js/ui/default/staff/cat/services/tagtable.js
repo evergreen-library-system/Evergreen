@@ -11,7 +11,9 @@ function($q,   egCore,   egAuth) {
             marcFormat     : 'marc21',
             marcRecordType : 'biblio',
         },
-        fields : { }
+        fields : { },
+        ff_pos_map : { },
+        ff_value_map : { }
     };
 
     // allow 'bre' and 'biblio' to be synonyms, etc.
@@ -46,6 +48,34 @@ function($q,   egCore,   egAuth) {
                 service.loadRemoteTagTable(fields, tt_key);
             }
         });
+    };
+
+    service.fetchFFPosTable = function(rtype) {
+        var deferred = $q.defer();
+
+        if (service.ff_pos_map[rtype]) {
+            deferred.resolve(service.ff_pos_map[rtype]);
+            return deferred.promise;
+        }
+
+        egCore.net.request( // First, get the list of FFs (minus 006)
+            'open-ils.fielder',
+            'open-ils.fielder.cmfpm.atomic',
+            { query : { tag : { '!=' : '006' } } }
+        ).then(function (data)  {
+            service.ff_pos_map[rtype] = data;
+        }).then(function() { // Then, get the value maps
+            return egCore.net.request(
+                'open-ils.cat',
+                'open-ils.cat.biblio.fixed_field_values.by_rec_type',
+                rtype
+            );
+        }).then(function (data)  {
+            service.ff_value_map[rtype] = data;
+            deferred.resolve(service.ff_pos_map[rtype]);
+        });
+
+        return deferred.promise;
     };
 
     service.loadRemoteTagTable = function(fields, tt_key) {
