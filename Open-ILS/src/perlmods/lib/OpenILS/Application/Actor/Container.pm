@@ -61,7 +61,7 @@ sub bucket_retrieve_all {
     my %buckets;
     for my $type (keys %ctypes) {
         my $meth = "search_" . $ctypes{$type};
-        $buckets{$type} = $e->$meth({owner => $user_id});
+        $buckets{$type} = _sort_buckets($e->$meth({owner => $user_id}));
     }
 
     return \%buckets;
