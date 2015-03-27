@@ -124,6 +124,47 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
     }
 }])
 
+.directive("egMarcEditFixedField", function () {
+    return {
+        transclude: true,
+        restrict: 'E',
+        template: '<div class="cols-md-2 text-right">'+
+                    '<label name="{{fixedField}}" for="{{fixedField}}_ff_input">{{fixedField}}</label>'+
+                    '<input type="text" size="4" id="{{fixedField}}_ff_input"/>'+
+                  '</div>,
+        scope: { record: "=", fixedField: "@" },
+        replace: true,
+        controller : ['$scope', '$element', 'egTagTable',
+            function ( $scope ,  $element ,  egTagTable) {
+                $($element).children().css({ display : 'none' });
+                $scope.rtype = $scope.record.recordType();
+                $scope.me = null;
+
+                egTagTable.fetchFFPosTable( $scope.rtype ).then(function (ff_list) {
+                    ff_list.forEach( function (ff) {
+                        if (!$scope.me && ff.tag != '006') { // we're going to ignore 006 for now...
+                            if (ff.fixed_field == $scope.fixedField && ff.rec_type == $scope.rtype) {
+                                $($element).children().css({ display : 'block' });
+                                $scope.me = ff;
+                            }
+                        }
+                    });
+                }).then(function () {
+                    if ($scope.me) {
+                        var input = $('#' + $scope.fixedField + '_ff_input');
+                        input.attr('maxlength', $scope.me.length)
+                        input.val($scope.record.getFixedField($scope.me.fixed_field);
+                        input.on('keypress', function(e) {
+                            $scope.record.setFixedField($scope.me.fixed_field, input.val());
+                        });
+                    }
+                });
+
+            }
+        ]
+    }
+})
+
 .directive("egMarcEditSubfield", function () {
     return {
         transclude: true,
@@ -668,6 +709,8 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                             $scope.bib_source = $scope[$scope.record_type].source();
                         }
 
+                    }).then(function(){
+                        return egTagTable.fetchFFPosTable($scope.calculated_record_type)
                     }).then(setCaret);
                 }
 
