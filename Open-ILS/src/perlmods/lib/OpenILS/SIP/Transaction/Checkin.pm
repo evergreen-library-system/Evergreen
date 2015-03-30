@@ -168,6 +168,20 @@ sub do_checkin {
         $copy = $resp->{payload}->{copy} || '';
     }
 
+    if ($copy) {
+        # Checkin of floating copies changes the circ lib.
+        # Update our SIP "item" to reflect the change.
+
+        if ($copy->circ_lib != $self->item->{copy}->circ_lib->id) {
+            syslog('LOG_INFO', "OILS: updating copy circ lib after checkin");
+
+            $self->item->{copy}->circ_lib(
+                OpenILS::SIP->editor()
+                    ->retrieve_actor_org_unit($copy->circ_lib)
+            );
+        }
+    }
+
     if ($self->item->hold) {
         my ($pickup_lib_id, $pickup_lib_sn);
 
