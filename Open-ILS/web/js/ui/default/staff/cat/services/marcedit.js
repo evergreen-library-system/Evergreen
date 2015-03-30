@@ -128,38 +128,40 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
     return {
         transclude: true,
         restrict: 'E',
-        template: '<div class="cols-md-2 text-right">'+
-                    '<label name="{{fixedField}}" for="{{fixedField}}_ff_input">{{fixedField}}</label>'+
-                    '<input type="text" size="4" id="{{fixedField}}_ff_input"/>'+
-                  '</div>,
+        template: '<div class="col-md-2">'+
+                    '<div class="col-md-1"><label name="{{fixedField}}" for="{{fixedField}}_ff_input">{{fixedField}}</label></div>'+
+                    '<div class="col-md-1"><input type="text" style="padding-left: 5px; margin-left: 1em" size="4" id="{{fixedField}}_ff_input"/></div>'+
+                  '</div>',
         scope: { record: "=", fixedField: "@" },
         replace: true,
         controller : ['$scope', '$element', 'egTagTable',
             function ( $scope ,  $element ,  egTagTable) {
                 $($element).children().css({ display : 'none' });
-                $scope.rtype = $scope.record.recordType();
                 $scope.me = null;
 
-                egTagTable.fetchFFPosTable( $scope.rtype ).then(function (ff_list) {
-                    ff_list.forEach( function (ff) {
-                        if (!$scope.me && ff.tag != '006') { // we're going to ignore 006 for now...
-                            if (ff.fixed_field == $scope.fixedField && ff.rec_type == $scope.rtype) {
-                                $($element).children().css({ display : 'block' });
-                                $scope.me = ff;
-                            }
-                        }
-                    });
-                }).then(function () {
-                    if ($scope.me) {
-                        var input = $('#' + $scope.fixedField + '_ff_input');
-                        input.attr('maxlength', $scope.me.length)
-                        input.val($scope.record.getFixedField($scope.me.fixed_field);
-                        input.on('keypress', function(e) {
-                            $scope.record.setFixedField($scope.me.fixed_field, input.val());
+                $scope.$watch('record.ready', function (newVal, oldVal) {
+                    if (newVal && newVal != oldVal) {
+                        $scope.rtype = $scope.record.recordType();
+                        egTagTable.fetchFFPosTable( $scope.rtype ).then(function (ff_list) { // This does not work when fetching from hatch...
+                            angular.forEach(ff_list, function (ff) {
+                                if (!$scope.me) {
+                                    if (ff.fixed_field == $scope.fixedField && ff.rec_type == $scope.rtype) {
+                                        $scope.me = ff;
+                                        $($element).children().css({ display : 'inline' });
+
+                                        var input = $($element).find('input');
+                                        input.attr('maxlength', $scope.me.length);
+                                        input.val($scope.record.extractFixedField($scope.me.fixed_field));
+                                        input.on('keyup', function(e) {
+                                            $scope.record.setFixedField($scope.me.fixed_field, input.val());
+                                            $scope.$parent.$digest();
+                                        });
+                                    }
+                                }
+                            });
                         });
                     }
                 });
-
             }
         ]
     }
@@ -711,6 +713,8 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
 
                     }).then(function(){
                         return egTagTable.fetchFFPosTable($scope.calculated_record_type)
+                    }).then(function(){
+                        return egTagTable.fetchFFValueTable($scope.calculated_record_type)
                     }).then(setCaret);
                 }
 
@@ -731,7 +735,6 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                     }
 
                     if ($scope.record_undo_stack.length != $scope.save_stack_depth) {
-                        console.log('should get a listener... does not');
                         $scope.dirtyFlag = true;
                     } else {
                         $scope.dirtyFlag = false;

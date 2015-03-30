@@ -4,9 +4,100 @@
     <input id="mfiabc" type="text" placeholder="[% l('Barcode') %]" ng-model="fast_item_barcode"/>
     <button class="btn btn-default" ng-click="saveFastItem()">Add Item</button>
   </div>
-  <div class="marcffeditor pad-vert row col-md-12 marctypesource">
+  <div class="pad-vert row col-md-12 marctypesource">
     <div class="col-md-2"><label>Record Type:</label> {{calculated_record_type}}</div>
     <div ng-if="bre" class="col-md-2"><eg-marc-edit-bibsource/></div>
+  </div>
+  <div class="marcffeditor pad-vert">
+    <div class="row col-md-12">
+        <eg-marc-edit-fixed-field fixed-field="Type" record="record"></eg-marc-edit-fixed-field>
+        <eg-marc-edit-fixed-field fixed-field="ELvl" record="record"></eg-marc-edit-fixed-field>
+        <eg-marc-edit-fixed-field fixed-field="Srce" record="record"></eg-marc-edit-fixed-field>
+        <eg-marc-edit-fixed-field fixed-field="Audn" record="record"></eg-marc-edit-fixed-field>
+        <eg-marc-edit-fixed-field fixed-field="Ctrl" record="record"></eg-marc-edit-fixed-field>
+        <eg-marc-edit-fixed-field fixed-field="Lang" record="record"></eg-marc-edit-fixed-field>
+    </div>
+    <div class="row col-md-12">
+        <eg-marc-edit-fixed-field fixed-field="BLvl" record="record"></eg-marc-edit-fixed-field>
+        <eg-marc-edit-fixed-field fixed-field="Form" record="record"></eg-marc-edit-fixed-field>
+        <eg-marc-edit-fixed-field fixed-field="Conf" record="record"></eg-marc-edit-fixed-field>
+        <eg-marc-edit-fixed-field fixed-field="Biog" record="record"></eg-marc-edit-fixed-field>
+        <eg-marc-edit-fixed-field fixed-field="MRec" record="record"></eg-marc-edit-fixed-field>
+        <eg-marc-edit-fixed-field fixed-field="Ctry" record="record"></eg-marc-edit-fixed-field>
+    </div>
+    <div class="row col-md-12">
+        <eg-marc-edit-fixed-field fixed-field="s_l" record="record"></eg-marc-edit-fixed-field>
+        <eg-marc-edit-fixed-field fixed-field="Cont" record="record"></eg-marc-edit-fixed-field>
+        <eg-marc-edit-fixed-field fixed-field="GPub" record="record"></eg-marc-edit-fixed-field>
+        <eg-marc-edit-fixed-field fixed-field="LitF" record="record"></eg-marc-edit-fixed-field>
+        <eg-marc-edit-fixed-field fixed-field="Indx" record="record"></eg-marc-edit-fixed-field>
+        <eg-marc-edit-fixed-field fixed-field="Alph" record="record"></eg-marc-edit-fixed-field>
+    </div>
+    <div class="row col-md-12">
+        <eg-marc-edit-fixed-field fixed-field="Desc" record="record"></eg-marc-edit-fixed-field>
+        <eg-marc-edit-fixed-field fixed-field="Ills" record="record"></eg-marc-edit-fixed-field>
+        <eg-marc-edit-fixed-field fixed-field="Fest" record="record"></eg-marc-edit-fixed-field>
+        <eg-marc-edit-fixed-field fixed-field="DtSt" record="record"></eg-marc-edit-fixed-field>
+        <eg-marc-edit-fixed-field fixed-field="Date1" record="record"></eg-marc-edit-fixed-field>
+        <eg-marc-edit-fixed-field fixed-field="Date2" record="record"></eg-marc-edit-fixed-field>
+    </div>
+    <div class="row col-md-12">
+        <eg-marc-edit-fixed-field fixed-field="SrTp" record="record"></eg-marc-edit-fixed-field>
+        <eg-marc-edit-fixed-field fixed-field="Regl" record="record"></eg-marc-edit-fixed-field>
+        <eg-marc-edit-fixed-field fixed-field="Orig" record="record"></eg-marc-edit-fixed-field>
+        <eg-marc-edit-fixed-field fixed-field="Freq" record="record"></eg-marc-edit-fixed-field>
+        <eg-marc-edit-fixed-field fixed-field="EntW" record="record"></eg-marc-edit-fixed-field>
+    </div>
+    <div class="row col-md-12">
+        <eg-marc-edit-fixed-field fixed-field="TrAr" record="record"></eg-marc-edit-fixed-field>
+        <eg-marc-edit-fixed-field fixed-field="Part" record="record"></eg-marc-edit-fixed-field>
+        <eg-marc-edit-fixed-field fixed-field="LTxt" record="record"></eg-marc-edit-fixed-field>
+        <eg-marc-edit-fixed-field fixed-field="FMus" record="record"></eg-marc-edit-fixed-field>
+        <eg-marc-edit-fixed-field fixed-field="AccM" record="record"></eg-marc-edit-fixed-field>
+        <eg-marc-edit-fixed-field fixed-field="Comp" record="record"></eg-marc-edit-fixed-field>
+    </div>
+    <div class="row col-md-12">
+        <eg-marc-edit-fixed-field fixed-field="SpFm" record="record"></eg-marc-edit-fixed-field>
+        <eg-marc-edit-fixed-field fixed-field="Relf" record="record"></eg-marc-edit-fixed-field>
+        <eg-marc-edit-fixed-field fixed-field="Proj" record="record"></eg-marc-edit-fixed-field>
+        <eg-marc-edit-fixed-field fixed-field="CrTp" record="record"></eg-marc-edit-fixed-field>
+    </div>
+    <div class="row col-md-12">
+        <eg-marc-edit-fixed-field fixed-field="TMat" record="record"></eg-marc-edit-fixed-field>
+        <eg-marc-edit-fixed-field fixed-field="Time" record="record"></eg-marc-edit-fixed-field>
+        <eg-marc-edit-fixed-field fixed-field="Tech" record="record"></eg-marc-edit-fixed-field>
+        <eg-marc-edit-fixed-field fixed-field="File" record="record"></eg-marc-edit-fixed-field>
+    </div>
+    <div class="row col-md-12">
+        <eg-marc-edit-fixed-field fixed-field="Type_tbmfhd" record="record"></eg-marc-edit-fixed-field>
+        <eg-marc-edit-fixed-field fixed-field="ELvl_tbmfhd" record="record"></eg-marc-edit-fixed-field>
+        <eg-marc-edit-fixed-field fixed-field="Item_tbmfhd" record="record"></eg-marc-edit-fixed-field>
+        <eg-marc-edit-fixed-field fixed-field="GeoDiv" record="record"></eg-marc-edit-fixed-field>
+        <eg-marc-edit-fixed-field fixed-field="Roman" record="record"></eg-marc-edit-fixed-field>
+        <eg-marc-edit-fixed-field fixed-field="CatLang" record="record"></eg-marc-edit-fixed-field>
+    </div>
+    <div class="row col-md-12">
+        <eg-marc-edit-fixed-field fixed-field="Kind" record="record"></eg-marc-edit-fixed-field>
+        <eg-marc-edit-fixed-field fixed-field="Rules" record="record"></eg-marc-edit-fixed-field>
+        <eg-marc-edit-fixed-field fixed-field="Subj" record="record"></eg-marc-edit-fixed-field>
+        <eg-marc-edit-fixed-field fixed-field="Series" record="record"></eg-marc-edit-fixed-field>
+        <eg-marc-edit-fixed-field fixed-field="SerNum" record="record"></eg-marc-edit-fixed-field>
+        <eg-marc-edit-fixed-field fixed-field="NameUse" record="record"></eg-marc-edit-fixed-field>
+    </div>
+    <div class="row col-md-12">
+        <eg-marc-edit-fixed-field fixed-field="SubjUse" record="record"></eg-marc-edit-fixed-field>
+        <eg-marc-edit-fixed-field fixed-field="SerUse" record="record"></eg-marc-edit-fixed-field>
+        <eg-marc-edit-fixed-field fixed-field="TypeSubd" record="record"></eg-marc-edit-fixed-field>
+        <eg-marc-edit-fixed-field fixed-field="GovAgn" record="record"></eg-marc-edit-fixed-field>
+        <eg-marc-edit-fixed-field fixed-field="RefStatus" record="record"></eg-marc-edit-fixed-field>
+        <eg-marc-edit-fixed-field fixed-field="UpdStatus" record="record"></eg-marc-edit-fixed-field>
+    </div>
+    <div class="row col-md-12">
+        <eg-marc-edit-fixed-field fixed-field="Name" record="record"></eg-marc-edit-fixed-field>
+        <eg-marc-edit-fixed-field fixed-field="Status" record="record"></eg-marc-edit-fixed-field>
+        <eg-marc-edit-fixed-field fixed-field="ModRec" record="record"></eg-marc-edit-fixed-field>
+        <eg-marc-edit-fixed-field fixed-field="Source" record="record"></eg-marc-edit-fixed-field>
+    </div>
   </div>
   <div class="marcrecord pad-vert">
     <div>

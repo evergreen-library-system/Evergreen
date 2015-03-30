@@ -476,39 +476,49 @@ var MARC21 = {
         
             var rtype = this.recordType();
         
-            var val;
-        
+            var done = false;
             if (MARC21.Record._ff_pos[field].ldr && _l) {
                 if (MARC21.Record._ff_pos[field].ldr[rtype]) { // It's in the leader
-                    val = value.substr(0, MARC21.Record._ff_pos[field].ldr[rtype].len);
+                    if (value.length > MARC21.Record._ff_pos[field].ldr[rtype].len)
+                        value = value.substr(0, MARC21.Record._ff_pos[field].ldr[rtype].len);
+                    while (value.length < MARC21.Record._ff_pos[field].ldr[rtype].len)
+                        value += MARC21.Record._ff_pos[field].ldr[rtype].def;
                     this.leader =
                         _l.substring(0, MARC21.Record._ff_pos[field].ldr[rtype].start) +
-                        val +
+                        value +
                         _l.substring(
                             MARC21.Record._ff_pos[field].ldr[rtype].start
                             + MARC21.Record._ff_pos[field].ldr[rtype].len
                         );
+                    done = true;
                 }
             } else if (MARC21.Record._ff_pos[field]._8 && _8) {
                 if (MARC21.Record._ff_pos[field]._8[rtype]) { // Nope, it's in the 008
-                    val = value.substr(0, MARC21.Record._ff_pos[field]._8[rtype].len);
+                    if (value.length > MARC21.Record._ff_pos[field]._8[rtype].len)
+                        value = value.substr(0, MARC21.Record._ff_pos[field]._8[rtype].len);
+                    while (value.length < MARC21.Record._ff_pos[field]._8[rtype].len)
+                        value += MARC21.Record._ff_pos[field]._8[rtype].def;
                     this.field('008').update(
                         _8.substring(0, MARC21.Record._ff_pos[field]._8[rtype].start) +
-                        val +
+                        value +
                         _8.substring(
                             MARC21.Record._ff_pos[field]._8[rtype].start
                             + MARC21.Record._ff_pos[field]._8[rtype].len
                         )
                     );
+                    done = true;
                 }
             }
         
-            if (!val && MARC21.Record._ff_pos[field]._6 && _6) {
+            if (!done && MARC21.Record._ff_pos[field]._6 && _6) {
                 if (MARC21.Record._ff_pos[field]._6[rtype]) { // ok, maybe the 006?
-                    val = value.substr(0, MARC21.Record._ff_pos[field]._6[rtype].len);
+                    if (value.length > MARC21.Record._ff_pos[field]._6[rtype].len)
+                        value = value.substr(0, MARC21.Record._ff_pos[field]._6[rtype].len);
+                    while (value.length < MARC21.Record._ff_pos[field]._6[rtype].len)
+                        value += MARC21.Record._ff_pos[field]._6[rtype].def;
                     this.field('006').update(
                         _6.substring(0, MARC21.Record._ff_pos[field]._6[rtype].start) +
-                        val +
+                        value +
                         _6.substring(
                             MARC21.Record._ff_pos[field]._6[rtype].start
                             + MARC21.Record._ff_pos[field]._6[rtype].len
@@ -517,7 +527,7 @@ var MARC21 = {
                 }
             }
     
-            return val;
+            return value;
         }
 
         this.ready = false;

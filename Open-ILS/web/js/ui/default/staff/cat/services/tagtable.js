@@ -53,26 +53,52 @@ function($q,   egCore,   egAuth) {
     service.fetchFFPosTable = function(rtype) {
         var deferred = $q.defer();
 
-        if (service.ff_pos_map[rtype]) {
-            deferred.resolve(service.ff_pos_map[rtype]);
-            return deferred.promise;
-        }
+        var hatch_pos_key = 'FFPosTable_'+rtype;
 
-        egCore.net.request( // First, get the list of FFs (minus 006)
-            'open-ils.fielder',
-            'open-ils.fielder.cmfpm.atomic',
-            { query : { tag : { '!=' : '006' } } }
-        ).then(function (data)  {
-            service.ff_pos_map[rtype] = data;
-        }).then(function() { // Then, get the value maps
-            return egCore.net.request(
-                'open-ils.cat',
-                'open-ils.cat.biblio.fixed_field_values.by_rec_type',
-                rtype
-            );
-        }).then(function (data)  {
-            service.ff_value_map[rtype] = data;
-            deferred.resolve(service.ff_pos_map[rtype]);
+        egCore.hatch.getItem(hatch_pos_key).then(function(cached_table) {
+            if (cached_table) {
+                service.ff_pos_map[rtype] = cached_table;
+                deferred.resolve(cached_table);
+
+            } else {
+
+                egCore.net.request( // First, get the list of FFs (minus 006)
+                    'open-ils.fielder',
+                    'open-ils.fielder.cmfpm.atomic',
+                    { query : { tag : { '!=' : '006' } } }
+                ).then(function (data)  {
+                    service.ff_pos_map[rtype] = data;
+                    egCore.hatch.setItem(hatch_pos_key, data);
+                    deferred.resolve(data);
+                });
+            }
+        });
+
+        return deferred.promise;
+    };
+
+    service.fetchFFValueTable = function(rtype) {
+        var deferred = $q.defer();
+
+        var hatch_value_key = 'FFValueTable_'+rtype;
+
+        egCore.hatch.getItem(hatch_value_key).then(function(cached_table) {
+            if (cached_table) {
+                service.ff_value_map[rtype] = cached_table;
+                deferred.resolve(cached_table);
+
+            } else {
+
+                egCore.net.request(
+                        'open-ils.cat',
+                        'open-ils.cat.biblio.fixed_field_values.by_rec_type',
+                        rtype
+                ).then(function (data)  {
+                    service.ff_value_map[rtype] = data;
+                    deferred.resolve(data);
+                    egCore.hatch.setItem(hatch_value_key, data);
+                });
+            }
         });
 
         return deferred.promise;
