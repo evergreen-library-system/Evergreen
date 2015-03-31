@@ -611,6 +611,17 @@ function($scope,  $q,  $location , $filter,  egCore,  egUser,  patronSvc) {
         return $q.when();
     }
 
+    $scope._show_dob = {};
+    $scope.show_dob = function (val) {
+        if ($scope.patron()) {
+            if (typeof val != 'undefined') $scope._show_dob[$scope.patron().id()] = val;
+            return $scope._show_dob[$scope.patron().id()];
+        }
+        return !egCore.env.aous['circ.obscure_dob'];
+    }
+        
+    $scope.obscure_dob = function() { return egCore.env.aous['circ.obscure_dob']; }
+    $scope.now_show_dob = function() { return egCore.env.aous['circ.obscure_dob'] ? $scope.show_dob() : true; }
     $scope.patron = function() { return patronSvc.current }
     $scope.patron_stats = function() { return patronSvc.patron_stats }
     $scope.summary_stat_cats = function() { return patronSvc.summary_stat_cats }

@@ -28,8 +28,9 @@
     </div>
     <div class="row"
       ng-class="{'patron-summary-alert' : !patron().dob()}">
-      <div class="col-md-5">[% l('Date of Birth') %]</div>
-      <div class="col-md-7">{{patron().dob() | date:'shortDate'}}</div>
+      <a class="col-md-5" ng-if="obscure_dob()" ng-click="show_dob(true)">[% l('Date of Birth') %]</a>
+      <div class="col-md-5" ng-if="!obscure_dob()">[% l('Date of Birth') %]</div>
+      <div class="col-md-7" ng-show="now_show_dob()">{{patron().dob() | date:'shortDate'}}</div>
     </div>
     <div class="row">
       <div class="col-md-5">[% l('Last Activity') %]</div>
