@@ -25,27 +25,27 @@
         <table title="[% l('Message') %]"
             class='light_border data_grid'>
             <tbody id='myopac_message_tbody'>
-            </tbody>
             <tr>
                 <td width='30%'
                     class='color_4 light_border'>[% l("Date") %]</td>
-                <td>[% date.format(ctx.parse_datetime(ctx.patron_messages.0.create_date), DATE_FORMAT); %]</td>
+                <td class='myopac_message_date'>[% date.format(ctx.parse_datetime(ctx.patron_messages.0.create_date), DATE_FORMAT); %]</td>
             </tr>
             <tr>
                 <td width='30%'
                     class='color_4 light_border'>[% l("Library") %]</td>
-                <td>[% ctx.patron_messages.0.library | html %]</td>
+                <td class='myopac_message_library'>[% ctx.patron_messages.0.library | html %]</td>
             </tr>
             <tr>
                 <td width='30%'
                     class='color_4 light_border'>[% l("Subject") %]</td>
-                <td>[% ctx.patron_messages.0.title | html %]</td>
+                <td class='myopac_message_subject'>[% ctx.patron_messages.0.title | html %]</td>
             </tr>
             <tr>
                 <td width='30%'
                     class='color_4 light_border'>[% l("Message") %]</td>
-                <td>[% ctx.patron_messages.0.message | html %]</td>
+                <td class='myopac_message_message'>[% ctx.patron_messages.0.message | html %]</td>
             </tr>
+            </tbody>
         </table>
     </div>
 </div>
