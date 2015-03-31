@@ -124,7 +124,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
     }
 }])
 
-.directive("egMarcEditFixedField", function () {
+.directive("egMarcEditFixedField", ['$timeout', '$compile', '$document', function ($timeout, $compile, $document) {
     return {
         transclude: true,
         restrict: 'E',
@@ -138,11 +138,19 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
             function ( $scope ,  $element ,  egTagTable) {
                 $($element).children().css({ display : 'none' });
                 $scope.me = null;
+                $scope.content = null; // this is where context menus dump their values
+                $scope.item_container = [];
 
-                $scope.$watch('record.ready', function (newVal, oldVal) {
-                    if (newVal && newVal != oldVal) {
+                $scope.$watch('content', function (newVal, oldVal) {
+                    var input = $($element).find('input');
+                    input.val(newVal);
+                    input.trigger('keyup'); // cascade the update
+                });
+
+                $scope.$watch('record.ready', function (newVal, oldVal) { // wait for the record to be loaded
+                    if (newVal) {
                         $scope.rtype = $scope.record.recordType();
-                        egTagTable.fetchFFPosTable( $scope.rtype ).then(function (ff_list) { // This does not work when fetching from hatch...
+                        egTagTable.fetchFFPosTable( $scope.rtype ).then(function (ff_list) {
                             angular.forEach(ff_list, function (ff) {
                                 if (!$scope.me) {
                                     if (ff.fixed_field == $scope.fixedField && ff.rec_type == $scope.rtype) {
@@ -154,18 +162,81 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                                         input.val($scope.record.extractFixedField($scope.me.fixed_field));
                                         input.on('keyup', function(e) {
                                             $scope.record.setFixedField($scope.me.fixed_field, input.val());
-                                            $scope.$parent.$digest();
+                                            try { $scope.$parent.$digest(); } catch(e) {};
                                         });
                                     }
                                 }
                             });
+                        }).then(function () {
+                            return egTagTable.fetchFFValueTable( $scope.rtype );
+                        }).then(function (vlist) {
+                            if (vlist[$scope.fixedField]) {
+                                vlist[$scope.fixedField].forEach(function (v) {
+                                    if (v[0].length <= v[2]) {
+                                        $scope.item_container.push({ value : v[0], label : v[0] + ': ' + v[1] });
+                                    }
+                                });
+                            }
+                        }).then(function () {
+                            if ($scope.item_container && $scope.item_container.length)
+                                $($element).bind('contextmenu', $scope.showContext);
                         });
+
                     }
                 });
+
+                $scope.showContext = function (event) {
+                    if ($scope.context_menu_element) {
+                        console.log('Reshowing context menu...');
+                        $('body').trigger('click');
+                        $($scope.context_menu_element).css({ display: 'block', top: event.pageY, left: event.pageX });
+                        $('body').on('click.context_menu',function() {
+                            $($scope.context_menu_element).css('display','none');
+                            $('body').off('click.context_menu');
+                        });
+                        return false;
+                    }
+
+                    if (angular.isArray($scope.item_container)) { // we have a list of values or transforms
+                        console.log('Showing context menu...');
+                        $('body').trigger('click');
+
+                        var tmpl = 
+                            '<ul class="dropdown-menu" role="menu">'+
+                                '<eg-context-menu-item ng-repeat="item in item_container" item="item" content="content"/>'+
+                            '</ul>';
+            
+                        var tnode = angular.element(tmpl);
+                        $document.find('body').append(tnode);
+
+                        $(tnode).css({
+                            display: 'block',
+                            top: event.pageY,
+                            left: event.pageX
+                        });
+
+                        $scope.context_menu_element = tnode;
+
+                        $timeout(function() {
+                            var e = $compile(tnode)($scope);
+                        }, 0);
+
+
+                        $('body').on('click.context_menu',function() {
+                            $(tnode).css('display','none');
+                            $('body').off('click.context_menu');
+                        });
+
+                        return false;
+                    }
+            
+                    return true;
+                }
+
             }
         ]
     }
-})
+}])
 
 .directive("egMarcEditSubfield", function () {
     return {
