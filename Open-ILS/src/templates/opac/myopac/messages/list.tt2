@@ -28,7 +28,7 @@
                 l('Marked [_1] message(s) as read.', ctx.message_update_changed);
                ELSIF ctx.message_update_action == 'mark_unread';
                 l('Marked [_1]  message(s) as unread.', ctx.message_update_changed);
-               ELSIF ctx.message_update_action == 'mark_unread';
+               ELSIF ctx.message_update_action == 'mark_deleted';
                 l('Deleted [_1] message(s).', ctx.message_update_changed);
                END
             %]
