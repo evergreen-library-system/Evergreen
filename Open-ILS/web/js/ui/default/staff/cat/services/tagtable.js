@@ -95,8 +95,8 @@ function($q,   egCore,   egAuth) {
                         rtype
                 ).then(function (data)  {
                     service.ff_value_map[rtype] = data;
-                    deferred.resolve(data);
                     egCore.hatch.setItem(hatch_value_key, data);
+                    deferred.resolve(data);
                 });
             }
         });
