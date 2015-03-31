@@ -14,7 +14,11 @@
         [%- libname = ctx.get_aou(ctx.search_ou).name;
             libname = libname | html;
             libsname = ctx.get_aou(ctx.search_ou).shortname; %]
-        <title>[% l('[_1] - [_2]', ctx.page_title, libname) %]</title>
+        <title>[%- IF ctx.user_stats.messages.unread;
+                      l('([_1])', ctx.user_stats.messages.unread);
+                   END;
+               -%]
+               [% l('[_1] - [_2]', ctx.page_title, libname) %]</title>
         <link rel="unapi-server" type="application/xml" title="unAPI" href="/opac/extras/unapi" />
         <link type="application/opensearchdescription+xml" rel='search' title="[% l('[_1] OpenSearch', libname) %]" href="/opac/extras/opensearch/1.1/[% libsname | uri %]/-/osd.xml" />
         [%-# Hook for page-specific metadata such as <meta name="robots" content="noindex"> %]
