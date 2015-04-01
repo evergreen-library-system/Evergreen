@@ -140,6 +140,8 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                 $scope.me = null;
                 $scope.content = null; // this is where context menus dump their values
                 $scope.item_container = [];
+                $scope.in_handler = false;
+                $scope.ready = false;
 
                 $scope.$watch('content', function (newVal, oldVal) {
                     var input = $($element).find('input');
@@ -148,25 +150,44 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                 });
 
                 $scope.$watch('record.ready', function (newVal, oldVal) { // wait for the record to be loaded
-                    if (newVal) {
+                    if (newVal && !$scope.ready) {
                         $scope.rtype = $scope.record.recordType();
+
                         egTagTable.fetchFFPosTable( $scope.rtype ).then(function (ff_list) {
                             angular.forEach(ff_list, function (ff) {
                                 if (!$scope.me) {
                                     if (ff.fixed_field == $scope.fixedField && ff.rec_type == $scope.rtype) {
                                         $scope.me = ff;
+                                        $scope.ready = true;
                                         $($element).children().css({ display : 'inline' });
 
                                         var input = $($element).find('input');
                                         input.attr('maxlength', $scope.me.length);
                                         input.val($scope.record.extractFixedField($scope.me.fixed_field));
                                         input.on('keyup', function(e) {
+                                            $scope.in_handler = true;
                                             $scope.record.setFixedField($scope.me.fixed_field, input.val());
                                             try { $scope.$parent.$digest(); } catch(e) {};
                                         });
                                     }
                                 }
                             });
+                            return $scope.me;
+                        }).then(function (me) {
+                            if (me) {
+                                $scope.$watch(
+                                    function() {
+                                        return $scope.record.extractFixedField($scope.fixedField);
+                                    },
+                                    function (newVal, oldVal) {
+                                        if ($scope.in_handler) {
+                                            $scope.in_handler = false;
+                                        } else if (oldVal != newVal) {
+                                            $($element).find('input').val(newVal);
+                                        }
+                                    }
+                                );
+                            }
                         }).then(function () {
                             return egTagTable.fetchFFValueTable( $scope.rtype );
                         }).then(function (vlist) {
