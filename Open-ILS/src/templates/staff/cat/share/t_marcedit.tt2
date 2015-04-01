@@ -8,7 +8,8 @@
     <div class="col-md-2"><label>Record Type:</label> {{calculated_record_type}}</div>
     <div ng-if="bre" class="col-md-2"><eg-marc-edit-bibsource/></div>
   </div>
-  <div class="marcffeditor pad-vert">
+  <div class="row pad-vert">
+  <div class="marcffeditor">
     <div class="row col-md-12">
         <eg-marc-edit-fixed-field fixed-field="Type" record="record"></eg-marc-edit-fixed-field>
         <eg-marc-edit-fixed-field fixed-field="ELvl" record="record"></eg-marc-edit-fixed-field>
@@ -98,6 +99,7 @@
         <eg-marc-edit-fixed-field fixed-field="ModRec" record="record"></eg-marc-edit-fixed-field>
         <eg-marc-edit-fixed-field fixed-field="Source" record="record"></eg-marc-edit-fixed-field>
     </div>
+  </div>
   </div>
   <div class="marcrecord pad-vert">
     <div>

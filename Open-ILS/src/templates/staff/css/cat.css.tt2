@@ -1,5 +1,5 @@
 .marcrecord {
-    //background-color: lightgrey;
+    //background-color: #f5f5f5;
 }
 
 .marcfastitemadd, .marctypesource {
@@ -7,7 +7,7 @@
 }
 
 .marcedit {
-    background-color: lightgrey;
+    background-color: #f5f5f5;
     border-collapse: collapse;
     border: solid thin gray;
     padding: 0px 5px 0px 5px;
@@ -16,6 +16,10 @@
 
 input.marcedit:focus {
     background-color: lightcyan;
+}
+
+.marcffeditor {
+    max-width: 800px;
 }
 
 .marcsfvalue {
@@ -78,7 +82,7 @@ grid row, grid column {
 }
 
 grid column {
-    background-color: lightgray; 
+    background-color: #f5f5f5; 
     padding: 2px;
 }
 
