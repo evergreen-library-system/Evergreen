@@ -501,6 +501,7 @@ patches:
  * Emerald Data Networks, Inc.
  * Equinox Software, Inc.
  * Indiana State Library
+ * King County Library System
  * Laurentian University
  * Lake Agassiz Regional Library
  * Massachusetts Library Network Cooperative
