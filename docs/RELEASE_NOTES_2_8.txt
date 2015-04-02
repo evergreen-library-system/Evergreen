@@ -3,9 +3,6 @@ Evergreen 2_8 Release Notes
 :toc:
 :numbered:
 
-Upgrade notes
--------------
-
 New Features
 ------------
 
@@ -47,14 +44,15 @@ The count does not include copies linked to the lineitem in question
 nor does it include copies that are in some form of lost, missing, or
 discard status.
 
+==== Sticky Org Unit Selector ====
 
-
+The Context Org Unit Selector on the Funds screen will now remember and default
+to the most-recently selected org unit. On first use, the selector will 
+continue to default to the workstation org unit.
 
 
 Administration
 ~~~~~~~~~~~~~~
-
-
 
 Apache Access Handler: OpenILS::WWW::AccessHandler
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -217,8 +215,8 @@ New TPAC config option: Show more details
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 There is a new option for TPAC to show more details by default.
 
-The Option for full details as a default, which may be especially important
-for e-content.  Valid values are 'true', 'false' and 'hide'.
+The option to show full details as a default may be especially
+important for e-content.  Valid values are 'true', 'false' and 'hide'.
 
 Setting this to 'true' shows full details by default but allows the link
 to appear for 'Show Fewer Details'. The 'hide' option shows full details
@@ -341,7 +339,12 @@ New Library Settings
 
 
 
-
+Staff option to place another hold on same title
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+When a hold is successful in the client, staff will now see a link
+to place another hold on the same title. This link provides some workflow
+improvement for times when staff are placing holds for multiple patrons on a
+newly-added title or when they are placing holds for book clubs.
 
 
 
@@ -407,8 +410,6 @@ top upper-right part of the screen.  This gives users the ability to quickly
 access their lists while logged into the catalog.
 
 
-
-
 Permalinks
 ^^^^^^^^^^
 The record summary page will now offer a link to a shorter permalink that
@@ -417,18 +418,6 @@ from the link with the exception of the locg and copy_depth parameters. Those
 parameters are maintained so that people can share a link that displays just
 the holdings from one library/system or displays holdings from all libraries
 with a specific library's holdings floating to the top.
-
-
-
-
-Staff option to place another hold on same title
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-When a hold is successful in the client, staff will now see a link
-to place another hold on the same title. This link provides some workflow 
-improvement for times when staff are placing holds for multiple patrons on a
-newly-added title or when they are placing holds for book clubs.
-
-
 
 
 
@@ -473,17 +462,53 @@ The Evergreen project would like to acknowledge the following
 organizations who commissioned developments in this release of
 Evergreen:
 
- * **TODO**
+ * Central/Western Massachusetts Automated Resource Sharing
+ * Georgia Public Library Service
+ * Massachusetts Library Network Cooperative
+ * NC Cardinal
 
 We would also like to thank the following individuals who contributed
 code and documentations patches to this release of Evergreen:
-
- * **TODO**
+ 
+ * Thomas Berezansky
+ * Adam Bowling
+ * Jason Boyer
+ * Steven Chan
+ * Galen Charlton
+ * Bill Erickson
+ * Jason Etheridge
+ * Pasi Kallinen
+ * Kathy Lussier
+ * Christine Morgan
+ * Art Rhyno
+ * Mike Rylander
+ * Dan Scott
+ * Ben Shum
+ * Remington Steed
+ * Jason Stephenson
+ * Josh Stompro
+ * Yamil Suarez
+ * Dan Wells
+ * Liam Whalen
 
 We also thank the following organizations whose employees contributed
 patches:
 
- * **TODO**
+ * Berkless College of Music
+ * Bibliomation
+ * British Columbia Libraries Cooperative
+ * Calvin College
+ * Emerald Data Networks, Inc.
+ * Equinox Software, Inc.
+ * Indiana State Library
+ * Laurentian University
+ * Lake Agassiz Regional Library
+ * Massachusetts Library Network Cooperative
+ * Merrimack Valley Library Consortium
+ * North of Boston Library Exchange
+ * Pohjois-Karjalan Tietotekniikkakeskus Oy
+ * Sigio
+ * University of Windsor
 
 We regret any omissions.  If a contributor has been inadvertantly
 missed, please open a bug at http://bugs.launchpad.net/evergreen/
