@@ -93,6 +93,7 @@ function PoItemTable() {
 
                     virtIds.forEach(function(k) { self.deleteRow(k); });
                     objs.forEach(function(o) { self.addItem(o); });
+                    refreshPOSummaryAmounts();
                 }
             }
         );
@@ -118,6 +119,7 @@ function PoItemTable() {
                         progressDialog.hide();
                         r = openils.Util.readResponse(r); /* may not use */
                         if (r == '1') {
+                            refreshPOSummaryAmounts();
                             self._deleteRow(id);
                         } 
                     }
