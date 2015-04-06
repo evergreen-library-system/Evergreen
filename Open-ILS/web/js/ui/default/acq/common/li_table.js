@@ -1489,6 +1489,7 @@ function AcqLiTable() {
                         var allSet = true;
                         dojo.forEach(priceNodes, function(node) { if (node.value == '') allSet = false});
                         if (allSet) checkCouldActivatePo();
+                        refreshPOSummaryAmounts();
                     }
                 }
             }
@@ -2737,6 +2738,7 @@ function AcqLiTable() {
                     oncomplete: function() {
                         self.drawCopies(liId, true /* force_fetch */);
                         openils.Util.hide("acq-lit-update-copies-progress");
+                        refreshPOSummaryAmounts();
                     }
                 }
             );
