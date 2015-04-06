@@ -532,7 +532,7 @@ var MARC21 = {
 
         this.ready = false;
         this.fields = [];
-        this.delimiter = '\u2021';
+        this.delimiter = MARC21.Record.delimiter ? MARC21.Record.delimiter : '\u2021';
         this.leader = '00000cam a2200205Ka 4500';
 
         if (kwargs.delimiter) this.delimiter = kwargs.delimiter;
