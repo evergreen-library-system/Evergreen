@@ -110,13 +110,16 @@ function PoItemTable() {
     this.deleteRow = function(id) {
         if (id > 0) {
             progressDialog.show(true);
-            pcrud.eliminate(
-                this.realItems[id], {
-                    "oncomplete": function(r) {
+            fieldmapper.standardRequest(
+                ['open-ils.acq', 'open-ils.acq.po_item.delete'],
+                {   async : true,
+                    params: [openils.User.authtoken, id],
+                    oncomplete : function(r) {
                         progressDialog.hide();
                         r = openils.Util.readResponse(r); /* may not use */
-
-                        self._deleteRow(id);
+                        if (r == '1') {
+                            self._deleteRow(id);
+                        } 
                     }
                 }
             );
