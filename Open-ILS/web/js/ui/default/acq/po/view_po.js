@@ -300,6 +300,33 @@ function prepareInvoiceFeatures() {
     openils.Util.show("acq-po-invoice-stuff", "table-cell");
 }
 
+function setSummaryAmounts() {
+    dojo.byId("acq-po-view-total-enc").innerHTML = PO.amount_encumbered().toFixed(2);
+    dojo.byId("acq-po-view-total-spent").innerHTML = PO.amount_spent().toFixed(2);
+    dojo.byId("acq-po-view-total-estimated").innerHTML = PO.amount_estimated().toFixed(2);
+}
+
+function refreshPOSummaryAmounts() {
+    fieldmapper.standardRequest(
+        ['open-ils.acq', 
+            'open-ils.acq.purchase_order.retrieve.authoritative'],
+        {   async: true,
+            params: [openils.User.authtoken, poId, {
+                "flesh_price_summary": true
+            }],
+            oncomplete: function(r) {
+                // update the global PO instead of replacing it, since other 
+                // code outside our control may be referencing it.
+                var po = openils.Util.readResponse(r);
+                PO.amount_encumbered(po.amount_encumbered());
+                PO.amount_spent(po.amount_spent());
+                PO.amount_estimated(po.amount_estimated());
+                setSummaryAmounts();
+            }
+        }
+    );
+}
+
 /* renderPo() is the best place to add tests that depend on PO-state
  * (or simple ordered-or-not? checks) to enable/disable UI elements
  * across the whole interface. */
@@ -311,10 +338,9 @@ function renderPo() {
         dojo.byId("acq-po-view-provider"),
         PO.provider()
     );
+
+    setSummaryAmounts();
     dojo.byId("acq-po-view-total-li").innerHTML = PO.lineitem_count();
-    dojo.byId("acq-po-view-total-enc").innerHTML = PO.amount_encumbered().toFixed(2);
-    dojo.byId("acq-po-view-total-spent").innerHTML = PO.amount_spent().toFixed(2);
-    dojo.byId("acq-po-view-total-estimated").innerHTML = PO.amount_estimated().toFixed(2);
     dojo.byId("acq-po-view-state").innerHTML = po_state; // TODO i18n
 
     if(PO.order_date()) {
