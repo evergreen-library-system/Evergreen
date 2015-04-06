@@ -18,6 +18,7 @@ angular.module('egCoreMod')
 
             // called after onload of each new iframe page
             onchange : '=',
+            saveSpace : '@',
         },
 
         templateUrl : './share/t_eframe',
@@ -26,9 +27,10 @@ angular.module('egCoreMod')
                    ['$scope','$window','$location','$q','$timeout','egCore',
             function($scope , $window , $location , $q , $timeout , egCore) {
 
+            $scope.save_space = $scope.saveSpace ? $scope.saveSpace : 300;
             // Set the iframe height to just under the window height.
             // leave room for the navbar, padding, margins, etc.
-            $scope.height = $window.outerHeight - 300;
+            $scope.height = $window.outerHeight - $scope.save_space;
 
             // browser client doesn't use cookies, so we don't load the
             // (at the time of writing, quite limited) angular.cookies
