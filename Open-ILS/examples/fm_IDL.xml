@@ -8179,6 +8179,7 @@ SELECT  usr,
 			<field reporter:label="Line Item Count" name="lineitem_count" oils_persist:virtual="true" reporter:datatype="int" />
 			<field reporter:label="Amount Encumbered" name="amount_encumbered" oils_persist:virtual="true" reporter:datatype="float" />
 			<field reporter:label="Amount Spent" name="amount_spent" oils_persist:virtual="true" reporter:datatype="float" />
+			<field reporter:label="Amount Estimated" name="amount_estimated" oils_persist:virtual="true" reporter:datatype="float" />
 			<field reporter:label="PO Items" name="po_items" oils_persist:virtual="true" reporter:datatype="link" />
 		</fields>
 		<links>

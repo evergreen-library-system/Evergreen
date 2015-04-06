@@ -870,46 +870,95 @@ sub po_perm_failure {
 sub build_price_summary {
     my ($e, $po_id) = @_;
 
-    # TODO: Add summary value for estimated amount (pre-encumber)
-
-    # fetch the fund debits for this purchase order
-    my $debits = $e->json_query({
-        "select" => {"acqfdeb" => [qw/encumbrance amount/]},
-        "from" => {
-            "acqlid" => {
-                "jub" => {
-                    "fkey" => "lineitem",
-                    "field" => "id",
-                    "join" => {
-                        "acqpo" => {
-                            "fkey" => "purchase_order", "field" => "id"
+    # amounts for lineitems / lineitem_details
+    my $li_data = $e->json_query({
+        select => {
+            jub => [
+                'estimated_unit_price', 
+                {column => 'id', alias => 'li_id'}
+            ],
+            acqlid => [
+                # lineitem_detail.id is needed to ensure we have one 
+                # "row" of data for every copy, regardless of whether
+                # a fund_debit exists for each copy.
+                {column => 'id', alias => 'lid_id'}
+            ],
+            acqfdeb => [
+                'encumbrance', 
+                {column => 'amount', alias => 'debit_amount'}
+            ]
+        }, 
+        from => {
+            jub => {
+                acqlid => {
+                    fkey => 'id',
+                    field => 'lineitem',
+                    join => {
+                        acqfdeb => {
+                            type => 'left',
+                            fkey => 'fund_debit',
+                            field => 'id'
                         }
                     }
-                },
-                "acqfdeb" => {"fkey" => "fund_debit", "field" => "id"}
+                }
             }
         },
-        "where" => {"+acqpo" => {"id" => $po_id}}
+        where => {'+jub' => {purchase_order => $po_id}}
     });
 
-    # add any debits for non-bib po_items
-    push(@$debits, @{
-        $e->json_query({
-            "select" => {"acqfdeb" => [qw/encumbrance amount/]},
-            "from" => {acqpoi => 'acqfdeb'},
-            "where" => {"+acqpoi" => {"purchase_order" => $po_id}}
-        })
+    # amounts for po_item's
+    my $item_data = $e->json_query({
+        select => {
+            acqpoi => ['estimated_cost'],
+            acqfdeb => [
+                'encumbrance', 
+                {column => 'amount', alias => 'debit_amount'}
+            ]
+        },
+        from => {
+            acqpoi => {
+                acqfdeb => {
+                    type => 'left',
+                    fkey => 'fund_debit',
+                    field => 'id'
+                }
+            }
+        },
+        where => {'+acqpoi' => {purchase_order => $po_id}}
     });
+                   
+    # sum amounts debited (for activated PO's) and amounts estimated 
+    # (for pending PO's) for all lineitem_details and po_items.
 
-    my ($enc, $spent) = (0, 0);
-    for my $deb (@$debits) {
-        if($U->is_true($deb->{encumbrance})) {
-            $enc += $deb->{amount};
+    my ($enc, $spent, $estimated) = (0, 0, 0);
+
+    for my $deb (@$li_data, @$item_data) {
+
+        if (defined $deb->{debit_amount}) { # could be $0
+            # we have a debit, treat it as authoritative.
+
+            # estimated amount includes all amounts encumbered or spent
+            $estimated += $deb->{debit_amount};
+
+            if($U->is_true($deb->{encumbrance})) {
+                $enc += $deb->{debit_amount};
+            } else {
+                $spent += $deb->{debit_amount};
+            }
+
         } else {
-            $spent += $deb->{amount};
+            # PO is not activated, so sum estimated costs.
+            # There will be one $deb object for every lineitem_detail 
+            # and po_item.  Adding the estimated costs for all gives 
+            # us the total esimated amount.
+
+            $estimated += (
+                $deb->{estimated_unit_price} || $deb->{estimated_cost} || 0
+            );
         }
     }
-    ($enc, $spent);
+
+    return ($enc, $spent, $estimated);
 }
 
 
@@ -971,9 +1020,10 @@ sub retrieve_purchase_order_impl {
     }
 
     if($$options{flesh_price_summary}) {
-        my ($enc, $spent) = build_price_summary($e, $po_id);
+        my ($enc, $spent, $estimated) = build_price_summary($e, $po_id);
         $po->amount_encumbered($enc);
         $po->amount_spent($spent);
+        $po->amount_estimated($estimated);
     }
 
     return $po;
