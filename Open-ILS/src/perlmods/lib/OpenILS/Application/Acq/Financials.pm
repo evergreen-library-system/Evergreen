@@ -821,6 +821,7 @@ __PACKAGE__->register_method(
         method    => 'retrieve_purchase_order',
         api_name  => 'open-ils.acq.purchase_order.retrieve',
         stream    => 1,
+        authoritative => 1,
         signature => {
                       desc      => 'Retrieves a purchase order',
                       params    => [
