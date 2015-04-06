@@ -313,6 +313,7 @@ function renderPo() {
     dojo.byId("acq-po-view-total-li").innerHTML = PO.lineitem_count();
     dojo.byId("acq-po-view-total-enc").innerHTML = PO.amount_encumbered().toFixed(2);
     dojo.byId("acq-po-view-total-spent").innerHTML = PO.amount_spent().toFixed(2);
+    dojo.byId("acq-po-view-total-estimated").innerHTML = PO.amount_estimated().toFixed(2);
     dojo.byId("acq-po-view-state").innerHTML = po_state; // TODO i18n
 
     if(PO.order_date()) {
@@ -448,7 +449,6 @@ function init() {
 
 function init2() {
 
-    var totalEstimated = 0;
     var zeroLi = true;
     fieldmapper.standardRequest(
         ['open-ils.acq', 'open-ils.acq.lineitem.search'],
@@ -462,13 +462,10 @@ function init2() {
                 zeroLi = false;
                 liTable.show('list');
                 var li = openils.Util.readResponse(r);
-                // TODO: Add po_item's to total estimated amount
-                totalEstimated += (Number(li.item_count() || 0) * Number(li.estimated_unit_price() || 0));
                 liTable.addLineitem(li);
             },
 
             oncomplete : function() {
-                dojo.byId("acq-po-view-total-estimated").innerHTML = totalEstimated.toFixed(2);
                 if (liFocus) liTable.drawCopies(liFocus);
                 if(zeroLi) openils.Util.show('acq-po-no-lineitems');
             }

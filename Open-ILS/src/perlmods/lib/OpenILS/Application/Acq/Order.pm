@@ -569,7 +569,7 @@ sub check_import_li_marc_perms {
 sub describe_affected_po {
     my ($e, $po) = @_;
 
-    my ($enc, $spent) =
+    my ($enc, $spent, $estimated) =
         OpenILS::Application::Acq::Financials::build_price_summary(
             $e, $po->id
         );
@@ -577,7 +577,8 @@ sub describe_affected_po {
     +{$po->id => {
             "state" => $po->state,
             "amount_encumbered" => $enc,
-            "amount_spent" => $spent
+            "amount_spent" => $spent,
+            "amount_estimated" => $estimated
         }
     };
 }
