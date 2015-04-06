@@ -2925,6 +2925,26 @@ sub cancel_purchase_order {
         }
     }
 
+    my $po_item_ids = $mgr->editor
+        ->search_acq_po_item({purchase_order => $po_id}, {idlist => 1});
+
+    for my $po_item_id (@$po_item_ids) {
+
+        my $po_item = $mgr->editor->retrieve_acq_po_item([
+            $po_item_id, {
+                flesh => 1,
+                flesh_fields => {acqpoi => ['purchase_order', 'fund_debit']}
+            }
+        ]) or return -1; # results in rollback
+
+        # returns undef on success
+        my $result = clear_po_item($mgr->editor, $po_item);
+
+        return $result if not_cancelable($result);
+        return -1 if $result; # other failure events, results in rollback
+    }
+
+
     # TODO who/what/where/how do we indicate this change for electronic orders?
     # TODO return changes to encumbered/spent
     # TODO maybe cascade up from smaller object to container object if last
@@ -3269,6 +3289,78 @@ sub cancel_lineitem_detail {
     $mgr->editor->update_acq_lineitem_detail($lid) or return 0;
 
     return {"lid" => {$lid_id => {"cancel_reason" => $cancel_reason}}};
+}
+
+__PACKAGE__->register_method(
+    method => "delete_po_item_api",
+    api_name    => "open-ils.acq.po_item.delete",
+    signature => {
+        desc => q/Deletes a po_item and removes its debit/,
+        params => [
+            {desc => "Authentication token", type => "string"},
+            {desc => "po_item ID to delete", type => "number"},
+        ],
+        return => {desc => q/1 on success, Event on error/}
+    }
+);
+
+sub delete_po_item_api {
+    my($self, $client, $auth, $po_item_id) = @_;
+    my $e = new_editor(authtoken => $auth, xact => 1);
+    return $e->die_event unless $e->checkauth;
+
+    my $po_item = $e->retrieve_acq_po_item([
+        $po_item_id, {
+            flesh => 1,
+            flesh_fields => {acqpoi => ['purchase_order', 'fund_debit']}
+        }
+    ]) or return $e->die_event;
+
+    return $e->die_event unless 
+        $e->allowed('CREATE_PURCHASE_ORDER', 
+            $po_item->purchase_order->ordering_agency);
+
+    # remove debit, delete item
+    my $result = clear_po_item($e, $po_item, 1);
+
+    if ($result) {
+        $e->rollback;
+        return $result;
+    }
+
+    $e->commit;
+    return 1;
+}
+
+
+# 1. Removes linked fund debit from a PO item if present and still encumbered.
+# 2. Optionally also deletes the po_item object
+# po_item is fleshed with purchase_order and fund_debit
+sub clear_po_item {
+    my ($e, $po_item, $delete_item) = @_;
+
+    if ($po_item->fund_debit) {
+
+        if (!$U->is_true($po_item->fund_debit->encumbrance)) {
+            # debit has been paid.  We cannot delete it.
+            return OpenILS::Event->new('ACQ_NOT_CANCELABLE', 
+               note => "Debit is marked as paid: ".$po_item->fund_debit->id);
+        }
+
+        # fund_debit is OK to delete.
+        $e->delete_acq_fund_debit($po_item->fund_debit)
+            or return $e->die_event;
+    }
+
+    if ($delete_item) {
+        $e->delete_acq_po_item($po_item) or return $e->die_event;
+    } else {
+        # remove our link to the now-deleted fund_debit.
+        $po_item->clear_fund_debit;
+        $e->update_acq_po_item($po_item) or return $e->die_event;
+    }
+
+    return undef;
 }
 
 
