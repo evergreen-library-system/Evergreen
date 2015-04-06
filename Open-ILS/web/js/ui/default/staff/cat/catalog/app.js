@@ -48,6 +48,12 @@ angular.module('egCatalogApp', ['ui.bootstrap','ngRoute','egCoreMod','egGridMod'
         resolve : resolver
     });
 
+    $routeProvider.when('/cat/catalog/vandelay', {
+        templateUrl: './cat/catalog/t_vandelay',
+        controller: 'VandelayCtrl',
+        resolve : resolver
+    });
+
     $routeProvider.otherwise({redirectTo : '/cat/catalog/index'});
 })
 
@@ -335,4 +341,11 @@ function($scope , $routeParams , $location , $q , egCore , egHolds,
     $scope.set_record_tab(tab);
 
 }])
+
+.controller('VandelayCtrl',
+       ['$scope','$location',
+function($scope , $location) {
+    $scope.vandelay_url = $location.absUrl().replace(/\/staff.*/, '/vandelay/vandelay');
+}])
+
  
