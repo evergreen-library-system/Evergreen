@@ -447,6 +447,9 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
         controller : ['$timeout','$scope','egCore', 'egTagTable',
             function ( $timeout , $scope , egCore ,  egTagTable ) {
 
+                MARC21.Record.delimiter = '$';
+
+                $scope.flatEditor = false;
                 $scope.bib_source = null;
                 $scope.record_type = $scope.recordType || 'bre';
                 $scope.max_undo = $scope.maxUndo || 100;
@@ -460,6 +463,17 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                 $scope.datafields = [];
 
                 egTagTable.loadTagTable();
+
+                $scope.saveFlatTextMARC = function () {
+                    $scope.record = new MARC21.Record({ marcbreaker : $scope.flat_text_marc });
+                };
+
+                $scope.refreshVisual = function () {
+                    if (!$scope.flatEditor) {
+                        $scope.controlfields = $scope.record.fields.filter(function(f){ return f.isControlfield() });
+                        $scope.datafields = $scope.record.fields.filter(function(f){ return !f.isControlfield() });
+                    }
+                };
 
                 $scope.onKeydown = function (event) {
                     var event_return = true;
@@ -798,6 +812,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                         $scope.controlfields = $scope.record.fields.filter(function(f){ return f.isControlfield() });
                         $scope.datafields = $scope.record.fields.filter(function(f){ return !f.isControlfield() });
                         $scope.save_stack_depth = $scope.record_undo_stack.length;
+                        $scope.flat_text_marc = $scope.record.toBreaker();
 
                         if ($scope.record_type == 'bre') {
                             $scope.bib_source = $scope[$scope.record_type].source();
@@ -824,6 +839,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                             $scope.force_render = false;
                         }
 
+                        $scope.flat_text_marc = newVal;
                     }
 
                     if ($scope.record_undo_stack.length != $scope.save_stack_depth) {
