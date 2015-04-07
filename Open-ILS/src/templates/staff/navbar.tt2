@@ -222,6 +222,13 @@
               [% l('Link Checker') %]
             </a>
           </li>
+          <li class="divider"></li>
+          <li>
+            <a href="./cat/catalog/manageAuthorities" target="_self">
+              <span class="glyphicon glyphicon-lock"></span>
+              [% l('Manage Authorities') %]
+            </a>
+          </li>
        </ul>
       </li>
 

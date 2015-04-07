@@ -72,6 +72,12 @@ angular.module('egCatalogApp', ['ui.bootstrap','ngRoute','egCoreMod','egGridMod'
         resolve : resolver
     });
 
+    $routeProvider.when('/cat/catalog/manageAuthorities', {
+        templateUrl: './cat/catalog/t_manageauthorities',
+        controller: 'ManageAuthoritiesCtrl',
+        resolve : resolver
+    });
+
     $routeProvider.otherwise({redirectTo : '/cat/catalog/index'});
 })
 
@@ -370,6 +376,12 @@ function($scope , $location) {
        ['$scope','$location',
 function($scope , $location) {
     $scope.vandelay_url = $location.absUrl().replace(/\/staff.*/, '/vandelay/vandelay');
+}])
+
+.controller('ManageAuthoritiesCtrl',
+       ['$scope','$location',
+function($scope , $location) {
+    $scope.manageauthorities_url = $location.absUrl().replace(/\/staff.*/, '/cat/authority/list');
 }])
 
 .controller('BatchEditCtrl',
