@@ -850,7 +850,10 @@ CREATE INDEX ie_li_idx on acq.invoice_entry (lineitem);
 CREATE TABLE acq.invoice_item_type (
     code    TEXT    PRIMARY KEY,
     name    TEXT    NOT NULL,  -- i18n-ize
-	prorate BOOL    NOT NULL DEFAULT FALSE
+	prorate BOOL    NOT NULL DEFAULT FALSE,
+    blanket BOOL    NOT NULL DEFAULT FALSE,
+    CONSTRAINT aiit_not_blanket_and_prorate
+        CHECK (blanket IS FALSE OR prorate IS FALSE)
 );
 
 CREATE TABLE acq.po_item (

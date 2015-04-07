@@ -9663,6 +9663,9 @@ INSERT INTO acq.invoice_item_type (code,name) VALUES ('SHP',oils_i18n_gettext('S
 INSERT INTO acq.invoice_item_type (code,name) VALUES ('HND',oils_i18n_gettext('HND', 'Handling Charge', 'aiit', 'name'));
 INSERT INTO acq.invoice_item_type (code,name) VALUES ('ITM',oils_i18n_gettext('ITM', 'Non-library Item', 'aiit', 'name'));
 INSERT INTO acq.invoice_item_type (code,name) VALUES ('SUB',oils_i18n_gettext('SUB', 'Serial Subscription', 'aiit', 'name'));
+INSERT INTO acq.invoice_item_type (code, blanket, name) VALUES (
+    'BLA', TRUE, oils_i18n_gettext('BLA', 'Blanket Order', 'aiit', 'name'));
+
 
 INSERT INTO acq.invoice_method (code,name) VALUES ('EDI',oils_i18n_gettext('EDI', 'EDI', 'acqim', 'name'));
 INSERT INTO acq.invoice_method (code,name) VALUES ('PPR',oils_i18n_gettext('PPR', 'Paper', 'acqit', 'name'));

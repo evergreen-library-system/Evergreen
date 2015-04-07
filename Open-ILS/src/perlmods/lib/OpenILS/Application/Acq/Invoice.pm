@@ -96,13 +96,14 @@ sub build_invoice_impl {
     if ($items) {
         for my $item (@$items) {
             $item->invoice($invoice->id);
+                
+            # future: cache item types
+            my $item_type = $e->retrieve_acq_invoice_item_type(
+                $item->inv_item_type) or return $e->die_event;
 
             if ($item->isnew) {
                 $e->create_acq_invoice_item($item) or return $e->die_event;
 
-                # future: cache item types
-                my $item_type = $e->retrieve_acq_invoice_item_type(
-                    $item->inv_item_type) or return $e->die_event;
 
                 # This following complex conditional statement effecively means:
                 #   1) Items with item_types that are prorate are handled
@@ -124,7 +125,20 @@ sub build_invoice_impl {
                             or return $e->die_event;
                         $debit = $e->retrieve_acq_fund_debit($po_item->fund_debit)
                             or return $e->die_event;
-                    } else {
+
+                        if ($U->is_true($item_type->blanket)) {
+                            # Each payment toward a blanket charge results
+                            # in a new debit to track the payment and 
+                            # decreasing the (encumbered) amount on the 
+                            # origin po-item debit by the amount paid.
+
+                            $debit->amount($debit->amount - $item->amount_paid);
+                            $e->update_acq_fund_debit($debit) or return $e->die_event;
+                            $debit = undef;
+                        }
+                    }
+
+                    if (!$debit) {
                         $debit = Fieldmapper::acq::fund_debit->new;
                         $debit->isnew(1);
                     }
@@ -159,10 +173,26 @@ sub build_invoice_impl {
                     my $debit = $e->retrieve_acq_fund_debit($item->fund_debit);
                     $debit->encumbrance('t');
                     $e->update_acq_fund_debit($debit) or return $e->die_event;
+
                 } elsif ($item->fund_debit) {
-                    $e->delete_acq_fund_debit($e->retrieve_acq_fund_debit($item->fund_debit))
-                        or return $e->die_event;
+
+                    my $inv_debit = $e->retrieve_acq_fund_debit($item->fund_debit);
+
+                    if ($U->is_true($item_type->blanket)) {
+                        # deleting a payment against a blanket charge means
+                        # we have to re-encumber the paid amount by adding
+                        # it back to the debit linked to the source po_item.
+
+                        my $po_debit = $e->retrieve_acq_fund_debit($item->po_item->fund_debit);
+                        $po_debit->amount($po_debit->amount + $inv_debit->amount);
+
+                        $e->update_acq_fund_debit($po_debit) 
+                            or return $e->die_event;
+                    }
+
+                    $e->delete_acq_fund_debit($inv_debit) or return $e->die_event;
                 }
+
             } elsif ($item->ischanged) {
                 my $debit;
 
@@ -177,6 +207,21 @@ sub build_invoice_impl {
                     $debit = $e->retrieve_acq_fund_debit($item->fund_debit) or
                         return $e->die_event;
                 }
+
+                if ($U->is_true($item_type->blanket)) {
+                    # modifying a payment against a blanket charge means
+                    # also modifying the amount encumbered on the source
+                    # debit from the blanket po_item to keep things balanced.
+
+                    my $po_debit = $e->retrieve_acq_fund_debit(
+                        $item->po_item->fund_debit);
+                    my $delta = $debit->amount - $item->amount_paid;
+                    $po_debit->amount($po_debit->amount + $delta);
+
+                    $e->update_acq_fund_debit($po_debit) 
+                        or return $e->die_event;
+                }
+
 
                 $debit->amount($item->amount_paid);
                 $debit->fund($item->fund);

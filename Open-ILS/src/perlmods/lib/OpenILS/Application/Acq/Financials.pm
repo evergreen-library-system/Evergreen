@@ -927,13 +927,45 @@ sub build_price_summary {
         },
         where => {'+acqpoi' => {purchase_order => $po_id}}
     });
+
+    # debits for invoice items linked to "blanket" po_items are 
+    # considered part of the PO.  We are not duplicating debits
+    # here with po_item debits, because blanket po_item debits
+    # plus related invoice_item debits are cumulitive.
+    my $inv_data = $e->json_query({
+        select => {
+            acqii => [
+                'amount_paid',
+                {column => 'id', alias => 'item_id'}
+            ],
+            aiit => ['blanket'],
+            acqfdeb => [
+                'encumbrance', 
+                {column => 'amount', alias => 'debit_amount'}
+            ]
+        },
+        from => {
+            acqii => {
+                acqfdeb => {
+                    type => 'left',
+                    fkey => 'fund_debit',
+                    field => 'id'
+                }, 
+                aiit => {}
+            }
+        },
+        where => {
+            '+acqii' => {purchase_order => $po_id},
+            '+aiit' => {blanket => 't'}
+        }
+    });
                    
     # sum amounts debited (for activated PO's) and amounts estimated 
     # (for pending PO's) for all lineitem_details and po_items.
 
     my ($enc, $spent, $estimated) = (0, 0, 0);
 
-    for my $deb (@$li_data, @$item_data) {
+    for my $deb (@$li_data, @$item_data, @$inv_data) {
 
         if (defined $deb->{debit_amount}) { # could be $0
             # we have a debit, treat it as authoritative.
@@ -954,7 +986,9 @@ sub build_price_summary {
             # us the total esimated amount.
 
             $estimated += (
-                $deb->{estimated_unit_price} || $deb->{estimated_cost} || 0
+                $deb->{estimated_unit_price} || 
+                $deb->{estimated_cost} || 
+                $deb->{amount_paid} || 0
             );
         }
     }
