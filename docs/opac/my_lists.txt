@@ -72,4 +72,4 @@ The call number that is displayed will be the most relevant call number to the s
 
 The local call number and associated library location will appear in the list:
 
-image::media/my_list_call_numbers.JPG[Local Call Number in List]
+image::media/my_list_call_numbers.jpg[Local Call Number in List]
