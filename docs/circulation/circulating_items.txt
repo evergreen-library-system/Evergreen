@@ -342,14 +342,14 @@ Once an item has been overdue for a configurable amount of time, Evergreen will 
 
 Optionally the patron can be billed for the item price, a long overdue processing fee, and any overdue fines can be voided from the account.  Patrons can also be sent a notification that the item was marked long overdue.
  
-image::media/long_overdue1.JPG[Patron Account-Long Overdue]
+image::media/long_overdue1.jpg[Patron Account-Long Overdue]
 
 
 *Checking in a Long Overdue item*
 
 If an item that has been marked long overdue is checked in, an alert will appear on the screen informing the staff member that the item was long overdue.  Once checked in, the item will go into the status of “In process”.  Optionally, the item price and long overdue processing fee can be voided and overdue fines can be reinstated on the patron’s account.  If the item is checked in at a library other than its home library, a library setting controls whether the item can immediately fill a hold or circulate, or if it needs to be sent to its home library for processing.
  
-image::media/long_overdue2.JPG[Long Overdue Checkin]
+image::media/long_overdue2.jpg[Long Overdue Checkin]
  
 *Notification/Action Triggers*
 
