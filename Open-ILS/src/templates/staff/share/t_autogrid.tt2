@@ -8,17 +8,22 @@
 
   <div class="eg-grid-primary-label">{{mainLabel}}</div>
 
-  <div class="btn-group eg-grid-menuiitem" 
+  <div class="btn-group" 
     is-open="gridMenuIsOpen" ng-if="menuLabel" dropdown>
-    <button type="button" class="btn btn-default dropdown-toggle">
+    <button type="button" class="btn btn-default dropdown-toggle eg-grid-menui-item">
       {{menuLabel}}<span class="caret"></span>
     </button>
     <ul class="dropdown-menu">
-      <li ng-repeat="item in menuItems" ng-class="{divider: item.divider}">
+      <li ng-repeat="item in menuItems | filter : { standalone : 'false' }" ng-class="{divider: item.divider}">
         <a ng-if="!item.divider" href ng-disabled="item.disabled"
           ng-click="item.handler()">{{item.label}}</a>
       </li>
     </ul>
+    <button ng-if="!item.hidden()"
+      class="btn btn-default eg-grid-menui-item"
+      ng-disabled="item.disabled()"
+      ng-repeat="item in menuItems | filter : { standalone : 'true' }"
+      ng-click="item.handler()">{{item.label}}</button>
   </div>
 
   <!-- if no menu label is present, present menu-items as a 

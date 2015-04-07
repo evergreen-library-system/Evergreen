@@ -1598,6 +1598,7 @@ angular.module('egGridMod',
         require : '^egGrid',
         scope : {
             label : '@',  
+            standalone : '=',  
             handler : '=', // onclick handler function
             divider : '=', // if true, show a divider only
             handlerData : '=', // if set, passed as second argument to handler
@@ -1607,6 +1608,7 @@ angular.module('egGridMod',
         link : function(scope, element, attrs, egGridCtrl) {
             egGridCtrl.addMenuItem({
                 label : scope.label,
+                standalone : scope.standalone ? true : false,
                 handler : scope.handler,
                 divider : scope.divider,
                 disabled : scope.disabled,
