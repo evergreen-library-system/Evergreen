@@ -1,4 +1,4 @@
-Evergreen 2_8 Release Notes
+Evergreen 2.8 Release Notes
 ===========================
 :toc:
 :numbered:
@@ -494,7 +494,7 @@ code and documentations patches to this release of Evergreen:
 We also thank the following organizations whose employees contributed
 patches:
 
- * Berkless College of Music
+ * Berklee College of Music
  * Bibliomation
  * British Columbia Libraries Cooperative
  * Calvin College
