@@ -66,6 +66,12 @@ angular.module('egCatalogApp', ['ui.bootstrap','ngRoute','egCoreMod','egGridMod'
         resolve : resolver
     });
 
+    $routeProvider.when('/cat/catalog/verifyURLs', {
+        templateUrl: './cat/catalog/t_verifyurls',
+        controller: 'URLVerifyCtrl',
+        resolve : resolver
+    });
+
     $routeProvider.otherwise({redirectTo : '/cat/catalog/index'});
 })
 
@@ -352,6 +358,12 @@ function($scope , $routeParams , $location , $q , egCore , egHolds,
     }
     $scope.set_record_tab(tab);
 
+}])
+
+.controller('URLVerifyCtrl',
+       ['$scope','$location',
+function($scope , $location) {
+    $scope.verifyurls_url = $location.absUrl().replace(/\/staff.*/, '/url_verify/sessions');
 }])
 
 .controller('VandelayCtrl',

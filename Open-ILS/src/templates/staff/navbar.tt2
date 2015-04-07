@@ -215,6 +215,13 @@
               [% l('MARC Batch Edit') %]
             </a>
           </li>
+          <li class="divider"></li>
+          <li>
+            <a href="./cat/catalog/verifyURLs" target="_self">
+              <span class="glyphicon glyphicon-link"></span>
+              [% l('Link Checker') %]
+            </a>
+          </li>
        </ul>
       </li>
 
