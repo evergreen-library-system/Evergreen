@@ -18,3 +18,7 @@
   label="{{bkt.name()}}" handler-data="bkt" 
   handler="loadBucketFromMenu"></eg-grid-menu-item>
 
+<eg-grid-menu-item label="[% l('Batch Edit') %]"
+  standalone="true" handler="batchEdit"></eg-grid-menu-item>
+
+

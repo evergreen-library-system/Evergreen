@@ -546,6 +546,12 @@ function($scope,  $q , $routeParams,  bucketSvc, egCore, $window,
         });
     }
 
+    $scope.batchEdit = function() {
+        var url = egCore.env.basePath +
+                  'cat/catalog/batchEdit/bucket/' + $scope.bucketId;
+        $timeout(function() { $window.open(url, '_blank') });
+    }
+
     $scope.detachRecords = function(records) {
         var promises = [];
         angular.forEach(records, function(rec) {

@@ -48,6 +48,18 @@ angular.module('egCatalogApp', ['ui.bootstrap','ngRoute','egCoreMod','egGridMod'
         resolve : resolver
     });
 
+    $routeProvider.when('/cat/catalog/batchEdit', {
+        templateUrl: './cat/catalog/t_batchedit',
+        controller: 'BatchEditCtrl',
+        resolve : resolver
+    });
+
+    $routeProvider.when('/cat/catalog/batchEdit/:container_type/:container_id', {
+        templateUrl: './cat/catalog/t_batchedit',
+        controller: 'BatchEditCtrl',
+        resolve : resolver
+    });
+
     $routeProvider.when('/cat/catalog/vandelay', {
         templateUrl: './cat/catalog/t_vandelay',
         controller: 'VandelayCtrl',
@@ -346,6 +358,22 @@ function($scope , $routeParams , $location , $q , egCore , egHolds,
        ['$scope','$location',
 function($scope , $location) {
     $scope.vandelay_url = $location.absUrl().replace(/\/staff.*/, '/vandelay/vandelay');
+}])
+
+.controller('BatchEditCtrl',
+       ['$scope','$location','$routeParams',
+function($scope , $location , $routeParams) {
+    $scope.batchedit_url = $location.absUrl().replace(/\/eg.*/, '/opac/extras/merge_template');
+    if ($routeParams.container_type) {
+        switch ($routeParams.container_type) {
+            case 'bucket':
+                $scope.batchedit_url += '?recordSource=b&containerid=' + $routeParams.container_id;
+                break;
+            case 'record':
+                $scope.batchedit_url += '?recordSource=r&recid=' + $routeParams.container_id;
+                break;
+        };
+    }
 }])
 
  

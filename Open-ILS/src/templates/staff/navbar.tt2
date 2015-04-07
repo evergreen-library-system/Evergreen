@@ -209,14 +209,12 @@
               [% l('MARC Batch Import/Export') %]
             </a>
           </li>
-<!--
           <li>
             <a href="./cat/catalog/batchEdit" target="_self">
               <span class="glyphicon glyphicon-edit"></span>
               [% l('MARC Batch Edit') %]
             </a>
           </li>
--->
        </ul>
       </li>
 
