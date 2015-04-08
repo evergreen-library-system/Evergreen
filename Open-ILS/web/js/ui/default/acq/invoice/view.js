@@ -702,11 +702,23 @@ function addInvoiceItem(item) {
 
     nodeByName('delete', row).onclick = function() {
         var cost = widgetRegistry.acqii[item.id()].cost_billed.getFormattedValue();
+
+        var iTypeName = '';
+        if (widgetRegistry.acqii[item.id()].inv_item_type) {
+            iTypeName = widgetRegistry.acqii[item.id()]
+                .inv_item_type.getFormattedValue()
+        } else {
+            // if the invoice_item came from a po_item, the type is
+            // read-only, hence no widget in the registry.  Look up
+            // the name in the cached types list.
+            var itype = itemTypes.filter(
+                function(t) { return (t.code() == item.inv_item_type()) })[0];
+            iTypeName = itype.name();
+        }
+
         var msg = dojo.string.substitute(
-            localeStrings.INVOICE_CONFIRM_ITEM_DELETE, [
-                cost || 0,
-                widgetRegistry.acqii[item.id()].inv_item_type.getFormattedValue() || ''
-            ]
+            localeStrings.INVOICE_CONFIRM_ITEM_DELETE, 
+            [cost || 0, iTypeName || '']
         );
         if(!confirm(msg)) return;
         itemTbody.removeChild(row);
