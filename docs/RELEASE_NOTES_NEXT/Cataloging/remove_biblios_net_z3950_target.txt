@@ -1,0 +1,10 @@
+Remove the ‡biblios.net Z39.50 target from seed data
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The Z39.50 target at z3950.biblios.net/bibliographic has not worked
+for years, so its service definition is no longer provided in the
+seed data for new installations of Evergreen.
+
+Users of existing Evergreen systems should consider removing
+the Z39.50 definition for ‡biblios.net. This can be done from
+Admin | Server Administration | Z39.50 Servers in the staff
+client.
