@@ -374,8 +374,6 @@ INSERT INTO config.z3950_source (name, label, host, port, db, auth)
 	VALUES ('loc', oils_i18n_gettext('loc', 'Library of Congress', 'czs', 'label'), 'lx2.loc.gov', 210, 'LCDB', FALSE);
 INSERT INTO config.z3950_source (name, label, host, port, db, auth)
 	VALUES ('oclc', oils_i18n_gettext('oclc', 'OCLC', 'czs', 'label'), 'zcat.oclc.org', 210, 'OLUCWorldCat', TRUE);
-INSERT INTO config.z3950_source (name, label, host, port, db, auth)
-	VALUES ('biblios', oils_i18n_gettext('biblios','‡biblios.net', 'czs', 'label'), 'z3950.biblios.net', 210, 'bibliographic', FALSE);
 
 INSERT INTO config.z3950_attr (id, source, name, label, code, format)
 	VALUES (1, 'loc','tcn', oils_i18n_gettext(1, 'Title Control Number', 'cza', 'label'), 12, 1);
@@ -416,27 +414,6 @@ INSERT INTO config.z3950_attr (id, source, name, label, code, format)
 	VALUES (17, 'oclc', 'pubdate', oils_i18n_gettext(17, 'Publication Date', 'cza', 'label'), 31, 1);
 INSERT INTO config.z3950_attr (id, source, name, label, code, format)
 	VALUES (18, 'oclc', 'item_type', oils_i18n_gettext(18, 'Item Type', 'cza', 'label'), 1001, 1);
-
-INSERT INTO config.z3950_attr (id, source, name, label, code, format)
-	VALUES (19, 'biblios','tcn', oils_i18n_gettext(19, 'Title Control Number', 'cza', 'label'), 12, 1);
-INSERT INTO config.z3950_attr (id, source, name, label, code, format)
-	VALUES (20, 'biblios', 'isbn', oils_i18n_gettext(20, 'ISBN', 'cza', 'label'), 7, 6);
-INSERT INTO config.z3950_attr (id, source, name, label, code, format)
-	VALUES (21, 'biblios', 'lccn', oils_i18n_gettext(21, 'LCCN', 'cza', 'label'), 9, 1);
-INSERT INTO config.z3950_attr (id, source, name, label, code, format)
-	VALUES (22, 'biblios', 'author', oils_i18n_gettext(22, 'Author', 'cza', 'label'), 1003, 6);
-INSERT INTO config.z3950_attr (id, source, name, label, code, format)
-	VALUES (23, 'biblios', 'title', oils_i18n_gettext(23, 'Title', 'cza', 'label'), 4, 6);
-INSERT INTO config.z3950_attr (id, source, name, label, code, format)
-	VALUES (24, 'biblios', 'issn', oils_i18n_gettext(24, 'ISSN', 'cza', 'label'), 8, 1);
-INSERT INTO config.z3950_attr (id, source, name, label, code, format)
-	VALUES (25, 'biblios', 'publisher', oils_i18n_gettext(25, 'Publisher', 'cza', 'label'), 1018, 6);
-INSERT INTO config.z3950_attr (id, source, name, label, code, format)
-	VALUES (26, 'biblios', 'pubdate', oils_i18n_gettext(26, 'Publication Date', 'cza', 'label'), 31, 1);
-INSERT INTO config.z3950_attr (id, source, name, label, code, format)
-	VALUES (27, 'biblios', 'item_type', oils_i18n_gettext(27, 'Item Type', 'cza', 'label'), 1001, 1);
-
-UPDATE config.z3950_attr SET truncation = 1 WHERE source = 'biblios';
 
 SELECT SETVAL('config.z3950_attr_id_seq'::TEXT, 100);
 
