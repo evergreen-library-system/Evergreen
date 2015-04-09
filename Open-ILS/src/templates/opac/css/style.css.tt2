@@ -1740,7 +1740,7 @@ a.preflib_change {
     vertical-align: top;
 }
 .myopac_message_message {
-    white-space: pre;
+    white-space: pre-wrap;
 }
 
 @media only screen and (max-width: 800px) {
