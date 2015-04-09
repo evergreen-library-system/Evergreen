@@ -109,7 +109,9 @@ my $max_rows_for_charts = $opt_max_rows_for_charts //
                           1000;
 $max_rows_for_charts = 1000 unless $max_rows_for_charts =~ /^\d+$/;
 my $resultset_limit     = $opt_resultset_limit //
-                          $sc->config_value( reporter => setup => 'resultset_limit' );
+                          $sc->config_value( reporter => setup => 'resultset_limit' ) //
+                          0;
+$resultset_limit = 0 unless $resultset_limit =~ /^\d+$/; # 0 means no limit
 
 my ($dbh,$running,$sth,@reports,$run, $current_time);
 

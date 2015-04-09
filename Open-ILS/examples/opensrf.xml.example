@@ -198,8 +198,10 @@ vim:et:ts=4:sw=4:
                      has been limited in this fashion.  This setting can be
                      overriden by the -resultset-limit command-line switch of
                      clark-kent.pl.
+
+                     A value of 0 means that no limit should be set.
                 -->
-                <resultset_limit></resultset_limit>
+                <resultset_limit>0</resultset_limit>
             </setup>
         </reporter>
 
