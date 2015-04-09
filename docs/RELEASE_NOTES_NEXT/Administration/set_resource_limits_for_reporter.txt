@@ -1,0 +1,32 @@
+Set resource limits for Clark Kent
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Several parameters are now available for the reporter daemon process
+(`clark-kent.pl`) to control resource usage.  These can be used to
+reduce the chances that a malformed report can cause indigestion
+on a database or reports server.  The new parameters, which can be
+set in `opensrf.xml` or as command-line switches for `clark-kent.pl` are
+
+* `//reporter/setup/statement_timeout` / `--statement-timeout`
+
+Number of minutes to allow a report's underlying SQL query
+to run before it gets cancelled.  Default value is
+60 minutes.  If a report's query gets cancelled, the
+error_text value will be set to a valid that indicates that
+the allowed time was exceeded.
+
+* `//reporter/setup/max_rows_for_charts` / `--max-rows-for-charts`
+
+Number of rows permitted in the query's output before
+Clark Kent refuses to attempt to draw a graph. Default
+value is 1,000 rows.
+
+* `//reporter/setup/resultset_limit` / `--resultset-limit`
+
+If set, truncates the report's output to the specified
+number of hits.  Note that it will not be apparent
+to a staff user if the report's output has been
+truncated.  Default value is unlimited.
+
+The report concurrency (i.e., the number of reports that Clark
+Kent will run in parallel) can now also be controlled via
+the `opensrf.xml` setting `//reporter/setup/parallel`.
