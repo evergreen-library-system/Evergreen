@@ -201,7 +201,7 @@ vim:et:ts=4:sw=4:
 
                      A value of 0 means that no limit should be set.
                 -->
-                <resultset_limit>0</resultset_limit>
+                <resultset_limit>1048575</resultset_limit>
             </setup>
         </reporter>
 
