@@ -21154,4 +21154,12 @@ INSERT INTO config.marc_subfield(marc_format, marc_record_type, tag, code, descr
 VALUES (1, 'serial', '880', '6', $$Linkage$$,
 FALSE, FALSE, FALSE);
 
+-- link RDA 33x record attributes to tag table
+UPDATE config.marc_subfield set value_ctype = 'content_type'
+WHERE  tag = '336' AND code = 'a' AND marc_record_type = 'biblio';
+UPDATE config.marc_subfield set value_ctype = 'media_type'
+WHERE  tag = '337' AND code = 'a' AND marc_record_type = 'biblio';
+UPDATE config.marc_subfield set value_ctype = 'carrier_type'
+WHERE  tag = '338' AND code = 'a' AND marc_record_type = 'biblio';
+
 COMMIT;
