@@ -1748,7 +1748,7 @@ sub user_opac_vitals {
         ->run($auth => $user_id);
     return $out if (defined($U->event_code($out)));
 
-    $out->{"total_out"} = reduce { $a + $out->{$b} } 0, qw/out overdue long_overdue/;
+    $out->{"total_out"} = reduce { $a + $out->{$b} } 0, qw/out overdue/;
 
     my $unread_msgs = $e->search_actor_usr_message([
         {usr => $user_id, read_date => undef, deleted => 'f'},
