@@ -1405,7 +1405,7 @@ BEGIN
                 prev_xfrm := xfrm.name;
             END IF;
 
-            FOR tmp_xml IN SELECT oils_xpath(attr_def.xpath, transformed_xml, ARRAY[ARRAY[xfrm.prefix, xfrm.namespace_uri]]) LOOP
+            FOR tmp_xml IN SELECT UNNEST(oils_xpath(attr_def.xpath, transformed_xml, ARRAY[ARRAY[xfrm.prefix, xfrm.namespace_uri]])) LOOP
                 tmp_val := oils_xpath_string(
                                 '//*',
                                 tmp_xml,

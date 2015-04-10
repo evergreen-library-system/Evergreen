@@ -1,0 +1,31 @@
+BEGIN;
+
+SELECT plan(2);
+
+INSERT INTO config.record_attr_definition (name, label, format, xpath) VALUES (
+    'lp1442796', 'LP#1442796', 'marcxml',
+    $$//marc:datafield[@tag='245']/marc:subfield[@code='a']$$
+);
+
+SELECT lives_ok($DATA$
+INSERT INTO biblio.record_entry (id, last_xact_id, marc)
+VALUES (999999998, 'pgtap', '<record    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"    xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd"    xmlns="http://www.loc.gov/MARC21/slim">
+  <leader>00531nam a2200157 a 4500</leader>
+  <controlfield tag="005">20080729170300.0</controlfield>
+  <controlfield tag="008">      t19981999enka              0 eng  </controlfield>
+  <datafield tag="245" ind1="1" ind2="4">
+    <subfield code="a">test-value</subfield>
+  </datafield>
+</record>')
+$DATA$,
+'LP#1442796: ingest record when xpath-based record attr definition is in use');
+
+SELECT is(
+    attrs->'lp1442796',
+    'test-value',
+    'LP#1442796: get expected attribute value back'
+)
+FROM metabib.record_attr
+WHERE id = 999999998;
+
+ROLLBACK;
