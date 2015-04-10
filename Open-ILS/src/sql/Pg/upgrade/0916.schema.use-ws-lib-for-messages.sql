@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('0916', :eg_version);
+
 CREATE OR REPLACE FUNCTION actor.convert_usr_note_to_message () RETURNS TRIGGER AS $$
 DECLARE
 	sending_ou INTEGER;
