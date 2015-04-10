@@ -17,7 +17,8 @@ angular.module('egCoreMod')
                     scope.addHotkey(
                         elm.attr('eg-accesskey'),
                         elm.attr('href'),
-                        elm.attr('eg-accesskey-desc')
+                        elm.attr('eg-accesskey-desc'),
+                        elm
                     );
                 }
                 angular.forEach(elm.children(), inspect);
@@ -25,8 +26,8 @@ angular.module('egCoreMod')
             inspect(element);
         },
 
-        controller:['$scope','$window','$location','hotkeys','egCore',
-            function($scope , $window , $location , hotkeys , egCore) {
+        controller:['$scope','$window','$location','$timeout','hotkeys','egCore',
+            function($scope , $window , $location , $timeout , hotkeys , egCore) {
 
                 function navTo(path) {                                           
                     // $location.path() does not want a leading ".",
@@ -41,12 +42,16 @@ angular.module('egCoreMod')
 
                 // adds a keyboard shortcut
                 // http://chieffancypants.github.io/angular-hotkeys/
-                $scope.addHotkey = function(key, path, desc) {                 
+                $scope.addHotkey = function(key, path, desc, elm) {                 
                     hotkeys.add({
                         combo: key,
                         allowIn: ['INPUT','SELECT','TEXTAREA'],
                         description: desc,
-                        callback: function(e) { e.preventDefault();  navTo(path); }
+                        callback: function(e) {
+                            e.preventDefault();
+                            if (path) return navTo(path);
+                            return $timeout(function(){$(elm).trigger('click')});
+                        }
                     });
                 };
 
