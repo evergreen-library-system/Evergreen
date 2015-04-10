@@ -68,6 +68,7 @@
     "INVOICE_CONFIRM_PRORATE" : "Prorate charges?\n\nAny subsequent changes to the invoice that would affect prorated amounts should be resolved manually.",
     "INVOICE_EXTRA_COPIES" : "You are attempting to invoice <b>${0}</b> more copies than originally ordered.  <br/><br/>To add these items to the original order, select a fund and choose 'Add New Items' below.  <br/>After saving the invoice, you may finish editing and importing the new copies from the lineitem details page.",
     "INVOICE_ITEM_PO_DETAILS" : "<b>${0}</b><br/><a href='${1}/acq/po/view/${2}'>PO #${3} ${4}</a><br/>Total Estimated Cost: $${5}",
+    "INVOICE_ITEM_PO_LABEL" : "<a href='${0}/acq/po/view/${1}'>PO #${2} ${3}</a><br/>Total Estimated Cost: $${4}",
     "UNNAMED" : "Unnamed",
     "NO_FIND_INVOICE" : "Could not find that invoice.\nNote that the Invoice # field is case-sensitive.",
     "LI_BATCH_UPDATE": "Line item batch update",

@@ -43,6 +43,7 @@ var focusLineitem;
 var searchInitDone = false;
 var termManager;
 var resultManager;
+var finalizePos = [];
 
 function nodeByName(name, context) {
     return dojo.query('[name='+name+']', context)[0];
@@ -573,6 +574,37 @@ function registerWidget(obj, field, widget, callback) {
     return widget;
 }
 
+var finalInvTbody, finalInvRow;
+var finalInvPoSeen = {};
+function addMarkFinalPO(item, po_item, po_label) {
+
+    if (finalInvPoSeen[po_item.purchase_order()]) return;
+    finalInvPoSeen[po_item.purchase_order()] = true;
+
+    openils.Util.show(dojo.byId('oils-acq-final-invoice-pane'));
+
+    if (!finalInvTbody) {
+        finalInvTbody = dojo.byId('acq-final-invoice-tbody');
+        finalInvRow = finalInvTbody.removeChild(
+            dojo.byId('acq-final-invoice-row'));
+    }
+
+    var row = finalInvRow.cloneNode(true);
+    nodeByName('po-label', row).innerHTML = po_label;
+    var cbox = new dijit.form.CheckBox({}, nodeByName('checkbox', row));
+
+    dojo.connect(cbox, 'onChange', function(set) {
+        if (set) { // add to finalize list
+            finalizePos.push(Number(po_item.purchase_order()));
+        } else { // remove from finalize list
+            finalizePos = finalizePos.filter(
+                function(id) {return id != po_item.purchase_order()});
+        }
+    });
+
+    finalInvTbody.appendChild(row);
+}
+
 function addInvoiceItem(item) {
     itemTbody = dojo.byId('acq-invoice-item-tbody');
     if(itemTemplate == null) {
@@ -666,6 +698,34 @@ function addInvoiceItem(item) {
                 po_item.estimated_cost() 
             ]
         );
+
+        if (openils.Util.isTrue(itemType.blanket()) 
+                && po.state() != 'received') {
+
+            fieldmapper.standardRequest(
+                ['open-ils.acq', 
+                    'open-ils.acq.purchase_order.retrieve.authoritative'],
+                {   async: true,
+                    params: [openils.User.authtoken, po.id(), {
+                        "flesh_price_summary": true
+                    }],
+                    oncomplete: function(r) {
+                        // update the global PO instead of replacing it, since other 
+                        // code outside our control may be referencing it.
+                        var po2 = openils.Util.readResponse(r);
+
+                        var po_label = dojo.string.substitute(
+                            localeStrings.INVOICE_ITEM_PO_LABEL,
+                            [ oilsBasePath, po2.id(), po2.name(), 
+                              orderDate, po2.amount_estimated().toFixed(2)
+                            ]
+                        );
+
+                        addMarkFinalPO(item, po_item, po_label);
+                    }
+                }
+            );
+        }
 
     } else {
 
@@ -1059,7 +1119,8 @@ function saveChangesPartTwo(args) {
     fieldmapper.standardRequest(
         ['open-ils.acq', 'open-ils.acq.invoice.update'],
         {
-            params : [openils.User.authtoken, invoice, updateEntries, updateItems],
+            params : [openils.User.authtoken,
+                invoice, updateEntries, updateItems, finalizePos],
             oncomplete : function(r) {
                 progressDialog.hide();
                 var invoice = openils.Util.readResponse(r);

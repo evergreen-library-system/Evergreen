@@ -38,6 +38,7 @@ __PACKAGE__->register_method(
             {desc => q/Invoice/, type => 'number'},
             {desc => q/Entries.  Array of 'acqie' objects/, type => 'array'},
             {desc => q/Items.  Array of 'acqii' objects/, type => 'array'},
+            {desc => q/Finalize PO's.  Array of 'acqpo' ID's/, type => 'array'},
         ],
         return => {desc => 'The invoice w/ entries and items attached', type => 'object', class => 'acqinv'}
     }
@@ -45,7 +46,9 @@ __PACKAGE__->register_method(
 
 
 sub build_invoice_impl {
-    my ($e, $invoice, $entries, $items, $do_commit) = @_;
+    my ($e, $invoice, $entries, $items, $do_commit, $finalize_pos) = @_;
+
+    $finalize_pos ||= [];
 
     if ($invoice->isnew) {
         $invoice->recv_method('PPR') unless $invoice->recv_method;
@@ -128,13 +131,12 @@ sub build_invoice_impl {
 
                         if ($U->is_true($item_type->blanket)) {
                             # Each payment toward a blanket charge results
-                            # in a new debit to track the payment and 
-                            # decreasing the (encumbered) amount on the 
-                            # origin po-item debit by the amount paid.
-
+                            # in a new debit to track the payment and a 
+                            # decrease in the original encumbrance by 
+                            # the amount paid on this invoice item
                             $debit->amount($debit->amount - $item->amount_paid);
                             $e->update_acq_fund_debit($debit) or return $e->die_event;
-                            $debit = undef;
+                            $debit = undef; # new debit created below
                         }
                     }
 
@@ -210,16 +212,15 @@ sub build_invoice_impl {
 
                 if ($U->is_true($item_type->blanket)) {
                     # modifying a payment against a blanket charge means
-                    # also modifying the amount encumbered on the source
-                    # debit from the blanket po_item to keep things balanced.
+                    # modifying the amount encumbered on the source debit
+                    # by the same (but opposite) amount.
 
                     my $po_debit = $e->retrieve_acq_fund_debit(
                         $item->po_item->fund_debit);
+
                     my $delta = $debit->amount - $item->amount_paid;
                     $po_debit->amount($po_debit->amount + $delta);
-
-                    $e->update_acq_fund_debit($po_debit) 
-                        or return $e->die_event;
+                    $e->update_acq_fund_debit($po_debit) or return $e->die_event;
                 }
 
 
@@ -239,6 +240,14 @@ sub build_invoice_impl {
         }
     }
 
+    for my $po_id (@$finalize_pos) {
+        my $po = $e->retrieve_acq_purchase_order($po_id) 
+            or return $e->die_event;
+        
+        my $evt = finalize_blanket_po($e, $po);
+        return $evt if $evt;
+    }
+
     $invoice = fetch_invoice_impl($e, $invoice->id);
     if ($do_commit) {
         $e->commit or return $e->die_event;
@@ -248,7 +257,7 @@ sub build_invoice_impl {
 }
 
 sub build_invoice_api {
-    my($self, $conn, $auth, $invoice, $entries, $items) = @_;
+    my($self, $conn, $auth, $invoice, $entries, $items, $finalize_pos) = @_;
 
     my $e = new_editor(xact => 1, authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
@@ -265,7 +274,7 @@ sub build_invoice_api {
     return $e->die_event unless
         $e->allowed('CREATE_INVOICE', $invoice->receiver);
 
-    return build_invoice_impl($e, $invoice, $entries, $items, 1);
+    return build_invoice_impl($e, $invoice, $entries, $items, 1, $finalize_pos);
 }
 
 
@@ -746,6 +755,105 @@ sub print_html_invoice {
 
     $e->disconnect;
     undef;
+}
+
+__PACKAGE__->register_method(
+    method => 'finalize_blanket_po_api',
+    api_name    => 'open-ils.acq.purchase_order.blanket.finalize',
+    signature => {
+        desc => q/
+            1. Set encumbered amount to zero for all blanket po_item's
+            2. If the PO does not have any outstanding lineitems, mark
+               the PO as 'received'.
+        /,
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => q/PO ID/, type => 'number'}
+        ],
+        return => {desc => '1 on success, event on error'}
+    }
+);
+
+sub finalize_blanket_po_api {
+    my ($self, $client, $auth, $po_id) = @_;
+
+    my $e = new_editor(xact => 1, authtoken=>$auth);
+    return $e->die_event unless $e->checkauth;
+
+    my $po = $e->retrieve_acq_purchase_order($po_id) or return $e->die_event;
+
+    return $e->die_event unless
+        $e->allowed('CREATE_PURCHASE_ORDER', $po->ordering_agency);
+
+    my $evt = finalize_blanket_po($e, $po);
+    return $evt if $evt;
+
+    $e->commit;
+    return 1;
+}
+
+
+# 1. set any remaining blanket encumbrances to $0.
+# 2. mark the PO as received if there are no pending lineitems.
+sub finalize_blanket_po {
+    my ($e, $po) = @_;
+
+    my $po_id = $po->id;
+
+    # blanket po_items on this PO
+    my $blanket_items = $e->json_query({
+        select => {acqpoi => ['id']},
+        from => {acqpoi => {aiit => {}}},
+        where => {
+            '+aiit' => {blanket => 't'},
+            '+acqpoi' => {purchase_order => $po_id}
+        }
+    });
+
+    for my $item_id (map { $_->{id} } @$blanket_items) {
+
+        my $item = $e->retrieve_acq_po_item([
+            $item_id, {
+                flesh => 1,
+                flesh_fields => {acqpoi => ['fund_debit']}
+            }
+        ]); 
+
+        my $debit = $item->fund_debit or next;
+
+        next unless $U->is_true($debit->encumbrance);
+
+        $debit->amount(0);
+        $debit->encumbrance('f');
+        $e->update_acq_fund_debit($debit) or return $e->die_event;
+    }
+
+    # Number of pending lineitems on this PO. 
+    # If there are any, we don't mark 'received'
+    my $li_count = $e->json_query({
+        select => {jub => [{column => 'id', transform => 'count'}]},
+        from => 'jub',
+        where => {
+            '+jub' => {
+                purchase_order => $po_id,
+                state => 'on-order'
+            }
+        }
+    })->[0];
+    
+    if ($li_count->{count} > 0) {
+        $logger->info("skipping 'received' state change for po $po_id ".
+            "during finalization, because PO has pending lineitems");
+        return undef;
+    }
+
+    $po->state('received');
+    $po->edit_time('now');
+    $po->editor($e->requestor->id);
+
+    $e->update_acq_purchase_order($po) or return $e->die_event;
+
+    return undef;
 }
 
 1;

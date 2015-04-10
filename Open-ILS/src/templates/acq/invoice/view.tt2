@@ -45,6 +45,20 @@
         </div>
     </div>
 
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+        <div class='hidden' id='oils-acq-final-invoice-pane'>
+            <table>
+                <tbody id='acq-final-invoice-tbody'>
+                    <tr id='acq-final-invoice-row'>
+                        <td>[% l('Final invoice for Blanket order?') %]</td>
+                        <td><div name='po-label'></td>
+                        <td><div name='checkbox'></div></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
     <!--
     <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
     -->
