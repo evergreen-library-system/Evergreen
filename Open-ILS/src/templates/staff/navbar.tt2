@@ -44,13 +44,17 @@
             </a>
           </li>
           <li>
-            <a href="./cat/item/search" target="_self">
+            <a href="./cat/item/search" target="_self"
+              eg-accesskey="[% l('f5') %]" 
+              eg-accesskey-desc="[% l('Item Status') %]">
               <span class="glyphicon glyphicon-barcode"></span>
               <span>[% l('Search for Copies by Barcode') %]</span>
             </a>
           </li>
           <li>
-            <a href="./cat/catalog/index" target="_self">
+            <a href="./cat/catalog/index" target="_self"
+              eg-accesskey="[% l('f3') %]" 
+              eg-accesskey-desc="[% l('OPAC') %]">
               <span class="glyphicon glyphicon-search"></span>
               <span>[% l('Search the Catalog') %]</span>
             </a>
@@ -76,13 +80,17 @@
             </a>
           </li>
           <li>
-            <a href="./circ/checkin/checkin" target="_self">
+            <a href="./circ/checkin/checkin" target="_self"
+              eg-accesskey="[% l('f2') %]" 
+              eg-accesskey-desc="[% l('Check In') %]">
               <span class="glyphicon glyphicon-import"></span>
               [% l('Check In') %]
             </a>
           </li>
           <li>
-            <a href="./circ/checkin/capture" target="_self">
+            <a href="./circ/checkin/capture" target="_self"
+              eg-accesskey="[% l('shift+f2') %]" 
+              eg-accesskey-desc="[% l('Capture Holds') %]">
               <span class="glyphicon glyphicon-pushpin"></span>
               [% l('Capture Holds') %]
             </a>
@@ -100,13 +108,17 @@
             </a>
           </li>
           <li>
-            <a href="./circ/patron/register" target="_self">
+            <a href="./circ/patron/register" target="_self"
+              eg-accesskey="[% l('shift+f1') %]" 
+              eg-accesskey-desc="[% l('Register Patron') %]">
               <span class="glyphicon glyphicon-user"></span>
               [% l('Register Patron') %]
             </a>
           </li>
           <li>
-            <a href="./circ/patron/last" target="_self">
+            <a href="./circ/patron/last" target="_self"
+              eg-accesskey="[% l('f8') %]" 
+              eg-accesskey-desc="[% l('Retrieve Last Patron') %]">
               <span class="glyphicon glyphicon-share-alt"></span>
               [% l('Retrieve Last Patron') %]
             </a>
@@ -125,7 +137,9 @@
             </a>
           </li>
           <li>
-            <a href="./circ/in_house_use/index" target="_self">
+            <a href="./circ/in_house_use/index" target="_self"
+              eg-accesskey="[% l('f6') %]" 
+              eg-accesskey-desc="[% l('Record In-House Use') %]">
               <span class="glyphicon glyphicon-pencil"></span>
               <span>[% l('Record In-House Use') %]</span>
             </a>
@@ -191,13 +205,17 @@
             </a>
           </li>
           <li>
-            <a href="./cat/catalog/retrieve_by_tcn" target="_self">
+            <a href="./cat/catalog/retrieve_by_tcn" target="_self"
+              eg-accesskey="[% l('shift+f3') %]" 
+              eg-accesskey-desc="[% l('Retrieve Last Bib Record') %]">
               <span class="glyphicon glyphicon-tag"></span>
               [% l('Retrieve Bib Record by TCN') %]
             </a>
           </li>
           <li>
-            <a href="" ng-click="retrieveLastRecord()" target="_self">
+            <a href="" ng-click="retrieveLastRecord()" target="_self"
+              eg-accesskey="[% l('shift+f8') %]" 
+              eg-accesskey-desc="[% l('Retrieve Last Bib Record') %]">
               <span class="glyphicon glyphicon-share-alt"></span>
               [% l('Retrieve Last Bib Record') %]
             </a>
