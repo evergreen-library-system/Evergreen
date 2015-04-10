@@ -792,7 +792,11 @@ CREATE TABLE config.record_attr_definition (
     fixed_field TEXT, -- should exist in config.marc21_ff_pos_map.fixed_field
 
 -- For phys-char fields
-    phys_char_sf    INT REFERENCES config.marc21_physical_characteristic_subfield_map (id)
+    phys_char_sf    INT REFERENCES config.marc21_physical_characteristic_subfield_map (id),
+
+-- Source of vocabulary terms for this record attribute;
+-- typically will be a URI referring to a SKOS vocabulary
+    vocabulary  TEXT
 );
 
 CREATE TABLE config.record_attr_index_norm_map (
@@ -811,7 +815,9 @@ CREATE TABLE config.coded_value_map (
     description     TEXT,
     opac_visible    BOOL    NOT NULL DEFAULT TRUE, -- For TPac selectors
     search_label    TEXT,
-    is_simple       BOOL    NOT NULL DEFAULT FALSE
+    is_simple       BOOL    NOT NULL DEFAULT FALSE,
+    concept_uri     TEXT    -- URI expressing the SKOS concept that the
+                            -- coded value represents
 );
 
 CREATE VIEW config.language_map AS SELECT code, value FROM config.coded_value_map WHERE ctype = 'item_lang';

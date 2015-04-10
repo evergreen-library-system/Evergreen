@@ -873,6 +873,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="String Length" name="string_len" reporter:datatype="int"/>
 			<field reporter:label="Fixed Field" name="fixed_field" reporter:datatype="text"/>
 			<field reporter:label="Physical Characteristic" name="phys_char_sf" reporter:datatype="text"/>
+			<field reporter:label="Vocabulary URI" name="vocabulary" reporter:datatype="text"/>
 			<field reporter:label="Normalizers" name="normalizers" reporter:datatype="link" oils_persist:virtual="true"/>
 		</fields>
 		<links>
@@ -1040,6 +1041,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="OPAC Visible" name="opac_visible" reporter:datatype="bool"/>
 			<field reporter:label="Search Label" name="search_label" reporter:datatype="text" oils_persist:i18n="true"/>
             <field reporter:label="Is Simple Selector" name="is_simple" reporter:datatype="bool"/>
+            <field reporter:label="Concept URI" name="concept_uri" reporter:datatype="text"/>
             <field reporter:label="Composite Definition" name="composite_def" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
