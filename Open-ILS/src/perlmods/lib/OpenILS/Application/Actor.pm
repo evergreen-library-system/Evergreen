@@ -1748,7 +1748,7 @@ sub user_opac_vitals {
         ->run($auth => $user_id);
     return $out if (defined($U->event_code($out)));
 
-    $out->{"total_out"} = reduce { $a + $out->{$b} } 0, qw/out overdue long_overdue/;
+    $out->{"total_out"} = reduce { $a + $out->{$b} } 0, qw/out overdue/;
 
     return {
         user => {
