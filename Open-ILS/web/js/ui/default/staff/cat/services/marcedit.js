@@ -284,6 +284,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                         'subfield="subfield" '+
                         'content="subfield[1]" '+
                         'on-keydown="onKeydown" '+
+                        'context-item-generator="sf_val_options" '+
                         'id="r{{field.record.subfield(\'901\',\'c\')[1]}}f{{field.position}}s{{subfield[2]}}value" '+
                     '/></span>'+
                   '</span>',
@@ -294,6 +295,9 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
 
                 $scope.sf_code_options = function () {
                     return egTagTable.getSubfieldCodes($scope.field.tag);
+                }
+                $scope.sf_val_options = function () {
+                    return egTagTable.getSubfieldValues($scope.field.tag, $scope.subfield[0]);
                 }
             }
         ]

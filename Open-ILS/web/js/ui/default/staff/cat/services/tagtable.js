@@ -145,6 +145,27 @@ function($q,   egCore,   egAuth) {
         return list;
     }
 
+    service.getSubfieldValues = function(tag, sf_code) {
+        var list = [];
+        if (!tag) return list;
+        if (!service.fields[tag]) return;
+        if (!service.fields[tag]) return;
+        angular.forEach(service.fields[tag].subfields, function(sf) {
+            if (sf.code == sf_code && sf.hasOwnProperty('value_list')) {
+                angular.forEach(sf.value_list, function(value) {
+                    var label = (value.code == value.description) ?
+                                value.code :
+                                value.code + ': ' + value.description;
+                    this.push({
+                        value: value.code,
+                        label: label
+                    });
+                }, this);
+            }
+        }, list);
+        return list;
+    }
+
     service.getIndicatorValues = function(tag, pos) {
         var list = [];
         if (!tag) return list;
