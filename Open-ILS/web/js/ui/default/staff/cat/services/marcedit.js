@@ -60,27 +60,27 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                 if ($scope.contextItemContainer && angular.isArray($scope.$parent[$scope.contextItemContainer]))
                     $scope.item_container = $scope.$parent[$scope.contextItemContainer];
                 else if ($scope.contextItemGenerator)
-                    $scope.item_container = $scope.contextItemGenerator();
+                    $scope.item_generator = $scope.contextItemGenerator;
 
                 $scope.showContext = function (event) {
-                    if ($scope.context_menu_element) {
-                        console.log('Reshowing context menu...');
-                        $('body').trigger('click');
-                        $($scope.context_menu_element).css({ display: 'block', top: event.pageY, left: event.pageX });
-                        $('body').on('click.context_menu',function() {
-                            $($scope.context_menu_element).css('display','none');
-                            $('body').off('click.context_menu');
-                        });
-                        return false;
+                    $scope.item_list = [];
+                    if ($scope.item_container) {
+                        $scope.item_list = $scope.item_container;
+                    } else if ($scope.item_generator) {
+                        // always recalculate; tag and/or subfield
+                        // codes may have changed
+                        $scope.item_list = $scope.item_generator();
+                    } else {
+                        return true;
                     }
 
-                    if (angular.isArray($scope.item_container)) { // we have a list of values or transforms
+                    if (angular.isArray($scope.item_list) && $scope.item_list.length > 0) { // we have a list of values or transforms
                         console.log('Showing context menu...');
                         $('body').trigger('click');
 
                         var tmpl = 
                             '<ul class="dropdown-menu" role="menu">'+
-                                '<eg-context-menu-item ng-repeat="item in item_container" item="item" content="content"/>'+
+                                '<eg-context-menu-item ng-repeat="item in item_list" item="item" content="content"/>'+
                             '</ul>';
             
                         var tnode = angular.element(tmpl);
@@ -91,8 +91,6 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                             top: event.pageY,
                             left: event.pageX
                         });
-
-                        $scope.context_menu_element = tnode;
 
                         $timeout(function() {
                             var e = $compile(tnode)($scope);
@@ -118,8 +116,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
 
             element.bind('change', function (e) { element.size = scope.max || parseInt(scope.content.length * 1.1) });
 
-            if (scope.item_container && scope.item_container.length)
-                element.bind('contextmenu', scope.showContext);
+            element.bind('contextmenu', scope.showContext);
         }
     }
 }])
