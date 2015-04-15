@@ -85,7 +85,6 @@ export CPAN_MODULES = \
 	Business::OnlinePayment::PayPal \
 	Template::Plugin::POSIX \
 	Rose::URI \
-	Safe
 
 export CPAN_MODULES_FORCE = \
 	Business::Stripe \

@@ -81,7 +81,6 @@ export CPAN_MODULES = \
 	Excel::Writer::XLSX \
 	Business::OnlinePayment::PayPal \
 	Template::Plugin::POSIX \
-	Safe
 
 export CPAN_MODULES_FORCE = \
 	Business::Stripe \
