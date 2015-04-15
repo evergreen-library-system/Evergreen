@@ -84,7 +84,6 @@ export DEB_APACHE_DISMODS = \
 
 export CPAN_MODULES = \
 	Business::OnlinePayment::PayPal \
-	Safe \
 	Email::Send
 
 export CPAN_MODULES_FORCE = \
