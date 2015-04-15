@@ -89,7 +89,6 @@ export DEB_APACHE_DISCONF = \
 export CPAN_MODULES = \
 	Business::CreditCard::Object \
 	Business::OnlinePayment::PayPal \
-	Safe
 
 export CPAN_MODULES_FORCE = \
 	Business::Stripe \
