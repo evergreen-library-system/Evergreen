@@ -104,6 +104,7 @@
     "DUPE_PO_NAME_MSG" : "This name is already in use by another PO",
     "DUPE_PO_NAME_LINK" : "View PO",
     "PO_NAME_OPTIONAL" : "${0} (optional)",
+    "FINALIZE_PO" : "Finalize this blanket PO?\nThis will disencumber all blanket charges and mark the PO as received",
     "LI_EXISTING_COPIES" : "There are ${0} existing copies for this bibliographic record at this location",
     "LI_CREATING_ASSETS" : "Creating bib, call number, and copy records...",
     "PO_ACTIVATING" : "Activating purchase order...",

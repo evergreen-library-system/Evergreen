@@ -396,6 +396,7 @@ function renderPo() {
     } else {
         if (PO.order_date()) {
             dojo.byId("acq-po-activate-checking").innerHTML = localeStrings.PO_ALREADY_ACTIVATED;
+            checkCouldBlanketFinalize();
         } else {
             dojo.byId("acq-po-activate-checking").innerHTML = localeStrings.NO;
         }
@@ -519,6 +520,30 @@ function init2() {
     );
 }
 
+function checkCouldBlanketFinalize() {
+
+    if (PO.state() == 'received') return;
+
+    var inv_types = [];
+
+    // get the unique set of invoice item type IDs
+    PO.po_items().forEach(function(item) { 
+        if (inv_types.indexOf(item.inv_item_type()) == -1)
+            inv_types.push(item.inv_item_type());
+    });
+
+    if (inv_types.length == 0) return;
+
+    pcrud.search('aiit', 
+        {code : inv_types, blanket : 't'}, {
+        oncomplete : function(r) {
+            r = openils.Util.readResponse(r);
+            if (r.length == 0) return;
+            openils.Util.show(dojo.byId('acq-po-finalize-links'), 'inline');
+        }
+    });
+}
+
 function checkCouldActivatePo() {
     var d = dojo.byId("acq-po-activate-checking");
     var a = dojo.byId("acq-po-activate-links");  /* <span> not <a> now, but no diff */
@@ -602,6 +627,24 @@ function checkCouldActivatePo() {
                         activatePoButton.attr("disabled", false);
                     }
                 }
+            }
+        }
+    );
+}
+
+function finalizePo() {
+
+    if (!confirm(localeStrings.FINALIZE_PO)) return;
+
+    finalizePoButton.attr('disabled', true);
+
+    fieldmapper.standardRequest(
+        ['open-ils.acq', 'open-ils.acq.purchase_order.blanket.finalize'],
+        {   async : true,
+            params : [openils.User.authtoken, PO.id()],
+            oncomplete : function(r) {
+                if (openils.Util.readResponse(r) == 1) 
+                    location.href = location.href;
             }
         }
     );

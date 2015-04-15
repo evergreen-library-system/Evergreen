@@ -35,6 +35,11 @@
                                 [% l('Activate Without Loading Items') %]
                             </span>
                         </span>
+                        <span class="hidden" id="acq-po-finalize-links" style='padding: 5px'>
+                            <span dojoType="dijit.form.Button" onClick="finalizePo()" jsId="finalizePoButton">
+                                [% l('Finalize Blanket Order') %]
+                            </span>
+                        </span>
                     </td>
                 </tr>
                 <tr>
