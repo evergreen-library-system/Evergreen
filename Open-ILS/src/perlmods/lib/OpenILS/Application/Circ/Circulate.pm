@@ -2618,7 +2618,7 @@ sub finish_fines_and_voiding {
     my $note = 'System: Amnesty Checkin' if $self->void_overdues;
 
     my $evt = $CC->void_or_zero_overdues(
-        $self->editor, $self->circ, {backdate => $self->backdate, note => $note});
+        $self->editor, $self->circ, {backdate => $self->void_overdues ? undef : $self->backdate, note => $note});
 
     return $self->bail_on_events($evt) if $evt;
 
