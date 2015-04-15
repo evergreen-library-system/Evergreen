@@ -1,13 +1,6 @@
 
-<div class="row pad-vert col-md-12 alert alert-info alert-less-pad strong-text-2">
-  <span ng-if="record_tab == 'catalog'">[% l('Catalog') %]</span>
-  <span ng-if="record_tab == 'marc_html'">[% l('MARC HTML') %]</span>
-  <span ng-if="record_tab == 'marc_edit'">[% l('Edit MARC') %]</span>
-  <span ng-if="record_tab == 'holds'">[% l('Holds for Record') %]</span>
-</div>
-
 <div ng-show="record_id" class="row col-md-12">
-    <eg-record-summary record-id="record_id" record="summary_pane_record"></eg-record-summary>
+    <eg-record-summary record-id="record_id" no-marc-link="true" record="summary_pane_record"></eg-record-summary>
 </div>
 
 <div ng-show="record_id" class="row col-md-12 pad-vert">
@@ -30,37 +23,42 @@
   </div> <!-- padding -->
   <div class="col-md-3">
     <!-- actions for this record menu -->
-    <div class="btn-group pull-right" dropdown>
-      <button type="button" 
-          class="btn btn-default dropdown-toggle" ng-disabled="!record_id">
-        [% l('Actions for This Record') %] 
-        <span class="caret"></span>
-      </button>
-      <ul class="dropdown-menu dropdown-menu-right" role="menu">
-        <li><a href ng-click="set_record_tab('catalog')">
-            [% l('OPAC View') %]</a></li>
-        <li><a href ng-click="set_record_tab('marc_edit')">
-            [% l('MARC Edit') %]</a></li>
-        <li><a href ng-click="set_record_tab('marc_html')">
-            [% l('MARC View') %]</a></li>
-        <li class="divider"></li>
-        <li><a href ng-click="set_record_tab('holds')">
-            [% l('View Holds') %]</a></li>
-        <li><a href ng-click="mark_hold_transfer_dest()">
-            [% l('Mark as Title Hold Transfer Destination') %]</a></li>
-        <li><a href ng-click="transfer_holds_to_marked()">
-            [% l('Transfer All Title Holds') %]</a></li>
-        <li><a href ng-click="set_default_record_tab()">
-            [% l('Set bottom view as default') %]</a></li>
-      </ul>
+    <div class="btn btn-default pull-right" ng-click="set_default_record_tab()">
+      [% l('Set bottom view as default') %]
     </div>
   </div>
 </div>
 
+<ul class="nav nav-tabs">
+  <li ng-class="{active : record_tab == 'catalog'}">
+    <a ng-click="set_record_tab('catalog')" >
+        [% l('OPAC View') %]
+    </a>
+  </li>
+  <li ng-class="{disabled : !record_id, active : record_tab == 'marc_edit'}">
+    <a ng-click="set_record_tab('marc_edit')" >
+        [% l('MARC Edit') %]
+    </a>
+  </li>
+  <li ng-class="{disabled : !record_id, active : record_tab == 'marc_html'}">
+    <a ng-click="set_record_tab('marc_html')" >
+        [% l('MARC View') %]
+    </a>
+  </li>
+  <li ng-class="{disabled : !record_id, active : record_tab == 'holds'}">
+    <a ng-click="set_record_tab('holds')" >
+        [% l('View Holds') %]
+    </a>
+  </li>
+</ul>
+
+<div class="tab-content">
+  <div class="tab-pane active">
+
 <div class="row col-md-12">
   <!-- ng-show allows the catalog iframe to stay loaded (unlike ng-if) -->
   <div ng-show="record_tab == 'catalog'">
-    <eg-embed-frame frame="opac_iframe" url="catalog_url" handlers="handlers" onchange="handle_page"></eg-embed-frame>
+    <eg-embed-frame save-space="300" frame="opac_iframe" url="catalog_url" handlers="handlers" onchange="handle_page"></eg-embed-frame>
   </div>
   <div ng-show="record_tab == 'marc_edit'">
     <eg-marc-edit-record dirty-flag="stop_unload" record-id="record_id"/>
@@ -74,3 +72,5 @@
   </div>
 </div>
 
+  </div>
+</div>

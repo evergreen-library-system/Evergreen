@@ -19,6 +19,10 @@
 
     <eg-grid-menu-item handler="detail_view" 
       label="[% l('Detail View') %]"></eg-grid-menu-item>
+    <eg-grid-menu-item handler="mark_hold_transfer_dest" 
+      label="[% l('Mark as Title Hold Transfer Destination') %]"></eg-grid-menu-item>
+    <eg-grid-menu-item handler="transfer_holds_to_marked" 
+      label="[% l('Transfer All Title Holds') %]"></eg-grid-menu-item>
 
     <eg-grid-action handler="grid_actions.show_recent_circs" group="[% l('Copy') %]"
       label="[% l('Show Last Few Circulations') %]"></eg-grid-action>

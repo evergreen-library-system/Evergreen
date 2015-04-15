@@ -395,6 +395,12 @@ table.list tr.selected td { /* deprecated? */
 .flex-2 { /* meh, convience */
   flex: 2;
 }
+.flex-3 { /* meh, convience */
+  flex: 3;
+}
+.flex-4 { /* meh, convience */
+  flex: 4;
+}
 
 /* TODO: match media size to Bootstrap "md" col resizing */
 @media all and (max-width: 800px) {

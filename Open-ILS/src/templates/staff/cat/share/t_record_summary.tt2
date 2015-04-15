@@ -1,22 +1,22 @@
-<div class="strong-text-2 container">
-  <div class="row">
-    <div class="col-md-2">[% l('Record Summary') %]</div>
-    <div class="col-md-1">
+<div class="strong-text-2">
+  <div class="flex-row" style="justify-content: space-between">
+    <div class="flex-cell">[% l('Record Summary') %]</div>
+    <div ng-if="!noMarcLink" class="flex-cell">
       <a target="_self" 
         href="[% ctx.base_path %]/staff/cat/catalog/record/{{record.id()}}/marc_html">
         (MARC)
       </a>
     </div>
-    <div class="col-md-8">
+    <div class="flex-3">
       <!-- padding -->
     </div>
-    <div class="col-md-1">
-      <a href ng-click="toggle_expand_summary()"
+    <div class="flex-cell">
+      <a class="pull-right" href ng-click="toggle_expand_summary()"
         title="[% l('Collapse Record Summary Display') %]"
         ng-hide="collapse_summary()">
         <span class="glyphicon glyphicon-resize-small"></span>
       </a>
-      <a href ng-click="toggle_expand_summary()"
+      <a class="pull-right" href ng-click="toggle_expand_summary()"
         title="[% l('Expand Record Summary Display') %]"
         ng-show="collapse_summary()">
         <span class="glyphicon glyphicon-resize-full"></span>

@@ -70,7 +70,8 @@ angular.module('egCoreMod')
         restrict : 'AE',
         scope : {
             recordId : '=',
-            record : '='
+            record : '=',
+            noMarcLink : '@'
         },
         templateUrl : './cat/share/t_record_summary',
         controller : 
