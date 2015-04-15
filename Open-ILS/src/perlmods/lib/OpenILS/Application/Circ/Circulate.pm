@@ -2829,7 +2829,7 @@ sub finish_fines_and_voiding {
     my $note = 'System: Amnesty Checkin' if $self->void_overdues;
 
     my $evt = OpenILS::Application::Circ::CircCommon->void_overdues(
-        $self->editor, $self->circ, $self->backdate, $note);
+        $self->editor, $self->circ, $self->void_overdues ? undef : $self->backdate, $note);
 
     return $self->bail_on_events($evt) if $evt;
 
