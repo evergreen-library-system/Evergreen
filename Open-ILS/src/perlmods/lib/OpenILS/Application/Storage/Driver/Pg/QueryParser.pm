@@ -696,12 +696,20 @@ use OpenILS::Application::AppUtils;
 my $apputils = "OpenILS::Application::AppUtils";
 
 our %_dfilter_controlled_cache = ();
+our %_dfilter_stats_cache = ();
 
 sub dynamic_filter_compile {
     my ($self, $filter, $params, $negate) = @_;
     my $e = OpenILS::Utils::CStoreEditor->new;
 
     $negate = $negate ? '!' : '';
+
+    if (!scalar keys %_dfilter_stats_cache) {
+        my $data = $e->json_query({from => ['evergreen.pg_statistics', 'record_attr_vector_list', 'vlist']});
+        %_dfilter_stats_cache = map {
+            ( $_->{element}, $_->{frequency} )
+        } grep { $_->{frequency} > 5 } @$data; # Pin floor to 5% of the table
+    }
 
     if (!exists($_dfilter_controlled_cache{$filter})) {
         my $crad = $e->retrieve_config_record_attr_definition($filter);
@@ -718,16 +726,15 @@ sub dynamic_filter_compile {
     my $value_field = $_dfilter_controlled_cache{$filter}{controlled} ?
         'code' : 'value';
 
-    return sprintf('%s(%s)', $negate,
+    my $attr_objects = $e->$method({ $attr_field => $filter, $value_field => $params });
+    my $common = scalar(grep { exists($_dfilter_stats_cache{$_->id}) } @$attr_objects);
+    
+    return (sprintf('%s(%s)', $negate,
         join(
             '|', 
-            map {
-                $_->id
-            } @{
-                $e->$method({ $attr_field => $filter, $value_field => $params })
-            }
+            map { $_->id } @$attr_objects
         )
-    );
+    ), $common);
 }
 
 sub toSQL {
@@ -1059,6 +1066,7 @@ sub flatten {
     my $joiner = "\n" . ${spc} x ( $self->plan_level + 5 ) . ($self->joiner eq '&' ? 'AND ' : 'OR ');
 
     my @dlist = ();
+    my $common = 0;
     # for each dynamic filter, build more of the WHERE clause
     for my $filter (@{$self->filters}) {
         my $NOT = $filter->negate ? 'NOT ' : '';
@@ -1070,7 +1078,8 @@ sub flatten {
             warn "flatten(): processing dynamic filter ". $filter->name ."\n"
                 if $self->QueryParser->debug;
 
-            my $vlist_query = $self->dynamic_filter_compile( $fname, $filter->args, $filter->negate );
+            my $vlist_query;
+            ($vlist_query, $common) = $self->dynamic_filter_compile( $fname, $filter->args, $filter->negate );
 
             # bool joiner for intra-plan nodes/filters
             push(@dlist, $self->joiner) if @dlist;
@@ -1230,10 +1239,17 @@ sub flatten {
     if (@dlist) {
 
         $where .= $joiner if $where ne '';
-        $where .= sprintf(
-            'mrv.vlist @@ \'%s\'',
-            join('', @dlist)
-        );
+        if ($common) { # Use a function wrapper to inform PG of the non-rareness of one or more filter elements
+            $where .= sprintf(
+                'evergreen.query_int_wrapper(mrv.vlist, \'%s\')',
+                join('', @dlist)
+            );
+        } else {
+            $where .= sprintf(
+                'mrv.vlist @@ \'%s\'',
+                join('', @dlist)
+            );
+        }
     }
 
     warn "flatten(): full filter where => $where\n" if $self->QueryParser->debug;
