@@ -62,7 +62,7 @@ export DEBS = \
 	libuniversal-require-perl\
 	libunix-syslog-perl\
 	libyaz-dev\
-	postgresql-client-9.3\
+	postgresql-client-9.4\
 	libsoap-lite-perl\
 	libbz2-dev\
 	libparse-recdescent-perl\
@@ -87,12 +87,12 @@ export CPAN_MODULES_FORCE = \
 	Business::Stripe \
 	Class::DBI::Frozen::301
 
-PGSQL_SERVER_DEBS_93 = \
+PGSQL_SERVER_DEBS_94 = \
 	$(DEB_PGSQL_COMMON_MODS) \
-	postgresql-9.3 \
-	postgresql-contrib-9.3 \
-	postgresql-plperl-9.3 \
-	postgresql-server-dev-9.3
+	postgresql-9.4 \
+	postgresql-contrib-9.4 \
+	postgresql-plperl-9.4 \
+	postgresql-server-dev-9.4
 
 all:
 	make -f $(DIR)/Makefile.debian install_debs
@@ -104,7 +104,7 @@ all:
 	make -f $(DIR)/Makefile.debian debian_sys_config
 
 install_postgres_server:
-	make -f $(DIR)/Makefile.debian DEBS="$(PGSQL_SERVER_DEBS_93)"
+	make -f $(DIR)/Makefile.debian DEBS="$(PGSQL_SERVER_DEBS_94)"
 
 clean:
 	make -f $(DIR)/Makefile.common clean
