@@ -21,6 +21,36 @@ BEGIN;
 
 CREATE SCHEMA search;
 
+CREATE OR REPLACE FUNCTION evergreen.pg_statistics (tab TEXT, col TEXT) RETURNS TABLE(element TEXT, frequency INT) AS $$
+BEGIN
+    RETURN QUERY
+        SELECT  e,
+                f
+          FROM  (SELECT ROW_NUMBER() OVER (),
+                        (f * 100)::INT AS f
+                  FROM  (SELECT UNNEST(most_common_elem_freqs) AS f
+                          FROM  pg_stats
+                          WHERE tablename = tab
+                                AND attname = col
+                        )x
+                ) AS f
+                JOIN (SELECT ROW_NUMBER() OVER (),
+                             e
+                       FROM (SELECT UNNEST(most_common_elems::text::text[]) AS e
+                              FROM  pg_stats
+                              WHERE tablename = tab
+                                    AND attname = col
+                            )y
+                ) AS elems USING (row_number);
+END;
+$$ LANGUAGE PLPGSQL;
+
+CREATE FUNCTION evergreen.query_int_wrapper (INT[],TEXT) RETURNS BOOL AS $$
+BEGIN
+    RETURN $1 @@ $2::query_int;
+END;
+$$ LANGUAGE PLPGSQL STABLE;
+
 CREATE TABLE search.relevance_adjustment (
     id          SERIAL  PRIMARY KEY,
     active      BOOL    NOT NULL DEFAULT TRUE,
