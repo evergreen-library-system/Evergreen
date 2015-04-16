@@ -4,8 +4,7 @@
     {value => "jtitle", label => l("Journal Title")},
     {value => "author", label => l("Author"), plural_label => l("Authors"), browse => 1},
     {value => "subject", label => l("Subject"), plural_label => l("Subjects"), browse => 1},
-    {value => "series", label => l("Series"), plural_label => l("Series"), browse => 1},
-    {value => "id|bibcn", label => l("Bib Call Number")}
+    {value => "series", label => l("Series"), plural_label => l("Series"), browse => 1}
 ] %]
 <select name="[% name || 'qtype' %]"[% IF id; ' id="'; id ; '"' ; END -%]
     title="[% l('Select query type:') %]">
