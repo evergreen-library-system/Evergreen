@@ -45,7 +45,7 @@ debian_sys_config:
 	# link the apache modules in
 	for m in $(DEB_APACHE_MODS); do a2enmod $$m; done;
 	# keep the bad apache modules away
-	for m in $(DEB_APACHE_DISMODS); do a2dismod $$m; done;
+	for m in $(DEB_APACHE_DISMODS); do a2dismod -f $$m; done;
 	# keep the bad apache configs away
 	for m in $(DEB_APACHE_DISCONF); do a2disconf $$m; done;
 	# refresh the dynamic library cache
