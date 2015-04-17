@@ -697,6 +697,7 @@ my $apputils = "OpenILS::Application::AppUtils";
 
 our %_dfilter_controlled_cache = ();
 our %_dfilter_stats_cache = ();
+our $_pg_version = 0;
 
 sub dynamic_filter_compile {
     my ($self, $filter, $params, $negate) = @_;
@@ -704,11 +705,20 @@ sub dynamic_filter_compile {
 
     $negate = $negate ? '!' : '';
 
-    if (!scalar keys %_dfilter_stats_cache) {
-        my $data = $e->json_query({from => ['evergreen.pg_statistics', 'record_attr_vector_list', 'vlist']});
-        %_dfilter_stats_cache = map {
-            ( $_->{element}, $_->{frequency} )
-        } grep { $_->{frequency} > 5 } @$data; # Pin floor to 5% of the table
+    if (!$_pg_version) {
+        ($_pg_version = $e->json_query({from => ['version']})->[0]->{version}) =~ s/^.+?(\d\.\d).+$/$1/;
+    }
+
+    my $common = 0;
+    if ($_pg_version >= 9.2) {
+        if (!scalar keys %_dfilter_stats_cache) {
+            my $data = $e->json_query({from => ['evergreen.pg_statistics', 'record_attr_vector_list', 'vlist']});
+            %_dfilter_stats_cache = map {
+                ( $_->{element}, $_->{frequency} )
+            } grep { $_->{frequency} > 5 } @$data; # Pin floor to 5% of the table
+        }
+    } else {
+        $common = 1; # Assume it's expensive
     }
 
     if (!exists($_dfilter_controlled_cache{$filter})) {
@@ -727,7 +737,7 @@ sub dynamic_filter_compile {
         'code' : 'value';
 
     my $attr_objects = $e->$method({ $attr_field => $filter, $value_field => $params });
-    my $common = scalar(grep { exists($_dfilter_stats_cache{$_->id}) } @$attr_objects);
+    $common = scalar(grep { exists($_dfilter_stats_cache{$_->id}) } @$attr_objects) unless $common;
     
     return (sprintf('%s(%s)', $negate,
         join(
