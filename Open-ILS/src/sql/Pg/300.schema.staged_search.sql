@@ -23,6 +23,7 @@ CREATE SCHEMA search;
 
 CREATE OR REPLACE FUNCTION evergreen.pg_statistics (tab TEXT, col TEXT) RETURNS TABLE(element TEXT, frequency INT) AS $$
 BEGIN
+    -- This query will die on PG < 9.2, but the function can be created. We just won't use it where we can't.
     RETURN QUERY
         SELECT  e,
                 f
