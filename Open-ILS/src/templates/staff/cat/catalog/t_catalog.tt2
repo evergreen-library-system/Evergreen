@@ -20,12 +20,6 @@
     <button type="button" ng-disabled="from_route" class="btn btn-default" ng-click="opac_call('rdetailBackToResults', true)">
        [% l('Back To Results') %]
     </button>
-  </div> <!-- padding -->
-  <div class="col-md-3">
-    <!-- actions for this record menu -->
-    <div class="btn btn-default pull-right" ng-click="set_default_record_tab()">
-      [% l('Set bottom view as default') %]
-    </div>
   </div>
 </div>
 
@@ -53,24 +47,23 @@
 </ul>
 
 <div class="tab-content">
+  <div ng-disabled="record_tab == default_tab" class="btn btn-default btn-xs pull-right" ng-click="set_default_record_tab()">
+    [% l('Set default view') %]
+  </div>
   <div class="tab-pane active">
-
-<div class="row col-md-12">
-  <!-- ng-show allows the catalog iframe to stay loaded (unlike ng-if) -->
-  <div ng-show="record_tab == 'catalog'">
-    <eg-embed-frame save-space="300" frame="opac_iframe" url="catalog_url" handlers="handlers" onchange="handle_page"></eg-embed-frame>
-  </div>
-  <div ng-show="record_tab == 'marc_edit'">
-    <eg-marc-edit-record dirty-flag="stop_unload" record-id="record_id"/>
-  </div>
-  <!-- ng-if the remaining tabs so they can be instantiated on demand -->
-  <div ng-if="record_tab == 'marc_html'">
-    <eg-record-html record-id="record_id"></eg-record-html>
-  </div>
-  <div ng-if="record_tab == 'holds'">
-    [% INCLUDE 'staff/cat/catalog/t_holds.tt2' %]
-  </div>
-</div>
-
+    <!-- ng-show allows the catalog iframe to stay loaded (unlike ng-if) -->
+    <div ng-show="record_tab == 'catalog'">
+      <eg-embed-frame save-space="300" frame="opac_iframe" url="catalog_url" handlers="handlers" onchange="handle_page"></eg-embed-frame>
+    </div>
+    <div ng-show="record_tab == 'marc_edit'">
+      <eg-marc-edit-record dirty-flag="stop_unload" record-id="record_id"/>
+    </div>
+    <!-- ng-if the remaining tabs so they can be instantiated on demand -->
+    <div ng-if="record_tab == 'marc_html'">
+      <eg-record-html record-id="record_id"></eg-record-html>
+    </div>
+    <div ng-if="record_tab == 'holds'">
+      [% INCLUDE 'staff/cat/catalog/t_holds.tt2' %]
+    </div>
   </div>
 </div>

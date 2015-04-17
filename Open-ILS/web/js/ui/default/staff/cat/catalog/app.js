@@ -148,9 +148,9 @@ function($scope , $routeParams , $location , $q , egCore ) {
 
 .controller('CatalogCtrl',
        ['$scope','$routeParams','$location','$q','egCore','egHolds',
-        'egGridDataProvider','egHoldGridActions',
+        'egGridDataProvider','egHoldGridActions','$timeout',
 function($scope , $routeParams , $location , $q , egCore , egHolds, 
-         egGridDataProvider , egHoldGridActions) {
+         egGridDataProvider , egHoldGridActions , $timeout) {
 
     // set record ID on page load if available...
     $scope.record_id = $routeParams.record_id;
@@ -207,8 +207,8 @@ function($scope , $routeParams , $location , $q , egCore , egHolds,
 
         if (!$scope.in_opac_call) {
             if ($scope.record_id) {
-                var default_tab = egCore.hatch.getLocalItem( 'eg.cat.default_record_tab' );
-                tab = $routeParams.record_tab || default_tab || 'catalog';
+                $scope.default_tab = egCore.hatch.getLocalItem( 'eg.cat.default_record_tab' );
+                tab = $routeParams.record_tab || $scope.default_tab || 'catalog';
             } else {
                 tab = $routeParams.record_tab || 'catalog';
             }
@@ -353,12 +353,13 @@ function($scope , $routeParams , $location , $q , egCore , egHolds,
     $scope.set_default_record_tab = function() {
         egCore.hatch.setLocalItem(
             'eg.cat.default_record_tab', $scope.record_tab);
+        $timeout(function(){$scope.default_tab = $scope.record_tab});
     }
 
     var tab;
     if ($scope.record_id) {
-        var default_tab = egCore.hatch.getLocalItem( 'eg.cat.default_record_tab' );
-        tab = $routeParams.record_tab || default_tab || 'catalog';
+        $scope.default_tab = egCore.hatch.getLocalItem( 'eg.cat.default_record_tab' );
+        tab = $routeParams.record_tab || $scope.default_tab || 'catalog';
     } else {
         tab = $routeParams.record_tab || 'catalog';
     }
