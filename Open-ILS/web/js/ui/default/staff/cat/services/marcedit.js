@@ -808,7 +808,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                     ).then(function(rec) {
                         $scope.in_redo = true;
                         $scope[$scope.record_type] = rec;
-                        $scope.record = new MARC21.Record({ marcxml : $scope[$scope.record_type].marc() });
+                        $scope.record = new MARC21.Record({ marcxml : $scope.Record().marc() });
                         $scope.calculated_record_type = $scope.record.recordType();
                         $scope.controlfields = $scope.record.fields.filter(function(f){ return f.isControlfield() });
                         $scope.datafields = $scope.record.fields.filter(function(f){ return !f.isControlfield() });
@@ -816,7 +816,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                         $scope.flat_text_marc = $scope.record.toBreaker();
 
                         if ($scope.record_type == 'bre') {
-                            $scope.bib_source = $scope[$scope.record_type].source();
+                            $scope.bib_source = $scope.Record().source();
                         }
 
                     }).then(function(){
@@ -901,11 +901,28 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                     return true;
                 };
 
+                $scope.Record = function () {
+                    return $scope[$scope.record_type];
+                    return $scope.saveRecord();
+                };
+
+                $scope.deleteRecord = function () {
+                    $scope.Record().deleted(true);
+                    return $scope.saveRecord();
+                };
+
+                $scope.undeleteRecord = function () {
+                    $scope.Record().deleted(false);
+                    return $scope.saveRecord();
+                };
+
                 $scope.saveRecord = function () {
                     $scope.mangle_005();
-                    $scope[$scope.record_type].marc($scope.record.toXmlString());
+                    $scope.Record().editor(egCore.auth.user().id());
+                    $scope.Record().edit_date('now');
+                    $scope.Record().marc($scope.record.toXmlString());
                     return egCore.pcrud.update(
-                        $scope[$scope.record_type]
+                        $scope.Record()
                     ).then(loadRecord);
                 };
 

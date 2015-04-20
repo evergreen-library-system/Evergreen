@@ -128,4 +128,6 @@
   </div>
   <button class="btn btn-default" ng-click="saveRecord()">Save</button>
   <button class="btn btn-default" ng-click="seeBreaker()">Breaker</button>
+  <button ng-hide="Record().deleted()" class="btn btn-default" ng-click="deleteRecord()">Delete</button>
+  <button ng-show="Record().deleted()" class="btn btn-default" ng-click="undeleteRecord()">Undelete</button>
 </div>
