@@ -160,12 +160,14 @@ function($scope , $routeParams , $location , $q , egCore , egHolds,
 
     // will hold a ref to the opac iframe
     $scope.opac_iframe = null;
+    $scope.parts_iframe = null;
+
     $scope.in_opac_call = false;
     $scope.opac_call = function (opac_frame_function, force_opac_tab) {
         if ($scope.opac_iframe) {
             if (force_opac_tab) $scope.record_tab = 'catalog';
             $scope.in_opac_call = true;
-            $scope.opac_iframe.contentWindow[opac_frame_function]();
+            $scope.opac_iframe.dom.contentWindow[opac_frame_function]();
         }
     }
 
@@ -173,11 +175,12 @@ function($scope , $routeParams , $location , $q , egCore , egHolds,
     $scope.$watch('stop_unload',
         function(newVal, oldVal) {
             if (newVal && newVal != oldVal && $scope.opac_iframe) {
-                $($scope.opac_iframe.contentWindow).on('beforeunload', function(){
+                $($scope.opac_iframe.dom.contentWindow).on('beforeunload', function(){
                     return 'There is unsaved data in this record.'
                 });
             } else {
-                $($scope.opac_iframe.contentWindow).off('beforeunload');
+                if ($scope.opac_iframe)
+                    $($scope.opac_iframe.dom.contentWindow).off('beforeunload');
             }
         }
     );
@@ -198,6 +201,7 @@ function($scope , $routeParams , $location , $q , egCore , egHolds,
         if (match) {
             $scope.record_id = match[1];
             egCore.hatch.setLocalItem("eg.cat.last_record_retrieved", $scope.record_id);
+            init_parts_url();
         } else {
             delete $scope.record_id;
             $scope.from_route = false;
@@ -334,10 +338,23 @@ function($scope , $routeParams , $location , $q , egCore , egHolds,
         $scope.catalog_url = url;
     }
 
+    function init_parts_url() {
+        $scope.parts_url = $location
+            .absUrl()
+            .replace(
+                /\/staff.*/,
+                '/conify/global/biblio/monograph_part?r='+$scope.record_id
+            );
+    }
+
     $scope.set_record_tab = function(tab) {
         $scope.record_tab = tab;
 
         switch(tab) {
+
+            case 'monoparts':
+                init_parts_url();
+                break;
 
             case 'catalog':
                 init_cat_url();
