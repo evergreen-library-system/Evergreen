@@ -62,7 +62,7 @@ Installing prerequisites
 
   * **PostgreSQL**: Version 9.3 is recommended. The minimum supported version
     is 9.1.
-  * **Linux**: Evergreen 2.7 has been tested on Debian Jessie (8.0), 
+  * **Linux**: Evergreen 2.8 has been tested on Debian Jessie (8.0), 
     Debian Wheezy (7.0), Debian Squeeze(6.0), Ubuntu Trusty Tahr (14.04), 
     Ubuntu Precise Pangolin (12.04), and Fedora. 
     If you are running an older version of these distributions, you may want 
@@ -209,7 +209,7 @@ versions 2.4 or greater) to configure your Web server for the Evergreen
 catalog, staff client, Web services, and administration interfaces. Issue the
 following commands as the *root* Linux account:
 +
-.Debian and Ubuntu Precise
+.Debian Wheezy and Ubuntu Precise
 [source,bash]
 ------------------------------------------------------------------------------
 cp Open-ILS/examples/apache/eg.conf       /etc/apache2/sites-available/
@@ -220,7 +220,7 @@ mkdir /etc/apache2/ssl
 cd /etc/apache2/ssl
 ------------------------------------------------------------------------------
 +
-.Ubuntu Trusty
+.Ubuntu Trusty and Debian Jessie
 [source,bash]
 ------------------------------------------------------------------------------------
 cp Open-ILS/examples/apache_24/eg_24.conf       /etc/apache2/sites-available/eg.conf
@@ -276,7 +276,7 @@ place.
        a request timing out unexpectedly, but increase the risk of using up
        all available Apache child processes.
     b. 'Optional': Change `MaxKeepAliveRequests` to `100`
-    c. (Debian, Ubuntu Precise, and Fedora) Update the prefork configuration 
+    c. (Debian Wheezy, Ubuntu Precise, and Fedora) Update the prefork configuration 
        section to suit your environment. The following settings apply to a busy 
        system:
 +
@@ -290,7 +290,7 @@ place.
    MaxRequestsPerChild 10000
 </IfModule>
 ------------------------------------------------------------------------------
-    d. (Ubuntu Trusty) As the *root* user, edit 
+    d. (Ubuntu Trusty, Debian Jessie) As the *root* user, edit 
        /etc/apache2/mods-available/mpm_prefork.conf to match the above values.  
        Then, also as the *root* user, enable the mpm_prefork module by doing:
 +
@@ -303,7 +303,7 @@ a2enmod mpm_prefork
 6. (Fedora): As the *root* Linux account, edit the `/etc/httpd/eg_vhost.conf`
    file to change references from the non-existent `/etc/apache2/` directory
    to `/etc/httpd/`.
-7. (Debian and Ubuntu Precise): As the *root* Linux account, enable the Evergreen site:
+7. (Debian Wheezy and Ubuntu Precise): As the *root* Linux account, enable the Evergreen site:
 +
 [source,bash]
 ------------------------------------------------------------------------------
@@ -311,7 +311,7 @@ a2dissite default  # OPTIONAL: disable the default site (the "It Works" page)
 a2ensite eg.conf
 ------------------------------------------------------------------------------
 +
-(Ubuntu Trusty):
+(Ubuntu Trusty, Debian Jessie):
 +
 [source,bash]
 ------------------------------------------------------------------------------
@@ -377,6 +377,7 @@ command below based on your operating system.
 
 [source, bash]
 ------------------------------------------------------------------------------
+make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-jessie
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-wheezy
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-squeeze
 make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-precise
