@@ -200,6 +200,7 @@ function($scope , $routeParams , $location , $q , egCore , egHolds,
             egCore.hatch.setLocalItem("eg.cat.last_record_retrieved", $scope.record_id);
         } else {
             delete $scope.record_id;
+            $scope.from_route = false;
         }
 
         // child scope is executing this function, so our digest doesn't fire ... thus,
