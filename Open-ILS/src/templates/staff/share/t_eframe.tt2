@@ -2,8 +2,7 @@
   <!-- height is calculated at render time -->
   <iframe 
     src="{{url}}" 
-    style="height:{{height}}px"
-    onload="egEmbedFrameLoader(this)">
+    style="height:{{height}}px">
   </iframe>
 </div>
 

@@ -23,6 +23,13 @@ angular.module('egCoreMod')
 
         templateUrl : './share/t_eframe',
 
+        link: function (scope, element, attrs) {
+            element.find('iframe').on(
+                'load',
+                function() {scope.egEmbedFrameLoader(this)}
+            );
+        },
+
         controller : 
                    ['$scope','$window','$location','$q','$timeout','egCore',
             function($scope , $window , $location , $q , $timeout , egCore) {
@@ -65,9 +72,10 @@ angular.module('egCoreMod')
             // for porting dojo, etc. apps to angular apps and should
             // eventually go away.
             // NOTE: catalog integration is not a stop-gap
-            $window.egEmbedFrameLoader = function(iframe) {
 
-                $scope.frame = iframe;
+            $scope.egEmbedFrameLoader = function(iframe) {
+
+                $scope.frame = {dom:iframe};
 
                 var page = iframe.contentWindow.location.href;
                 console.debug('egEmbedFrameLoader(): ' + page);
