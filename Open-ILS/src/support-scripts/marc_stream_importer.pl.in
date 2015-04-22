@@ -21,8 +21,9 @@ use strict;
 use warnings;
 use Net::Server::PreFork;
 use base qw/Net::Server::PreFork/;
+use FindBin;
+require "$FindBin::Bin/oils_header.pl";
 
-require 'oils_header.pl';
 use vars qw/$apputils $authtoken/;
 
 use Getopt::Long;
@@ -56,7 +57,7 @@ my $auth_merge_profile_obj;
 
 # options
 my $help        = 0;
-my $osrf_config = '/openils/conf/opensrf_core.xml';
+my $osrf_config = '@sysconfdir@/opensrf_core.xml';
 my $username    = '';
 my $password    = '';
 my $workstation = '';
@@ -88,7 +89,7 @@ my $deprecated_queue;
 
 
 
-my $net_server_conf = fileparse($0, '.pl').'.conf';
+my $net_server_conf = (-r "@sysconfdir@/marc_stream_importer.conf") ? "@sysconfdir@/marc_stream_importer.conf" : undef;
 
 GetOptions(
     'osrf-config=s'         => \$osrf_config,

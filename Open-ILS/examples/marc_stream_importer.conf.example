@@ -5,9 +5,9 @@ user        opensrf
 group       opensrf
 
 ### logging ?
-log_file    /openils/var/log/marc_stream_importer.log
+log_file    LOCALSTATEDIR/log/marc_stream_importer.log
 log_level   3
-pid_file    /openils/var/run/marc_stream_importer.pid
+pid_file    LOCALSTATEDIR/run/marc_stream_importer.pid
 
 ### access control
 # allow       .+\.(net|com)

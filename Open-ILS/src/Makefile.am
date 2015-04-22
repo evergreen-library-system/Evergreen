@@ -41,7 +41,8 @@ sysconf_DATA = $(examples)/action_trigger_filters.json.example \
 	       $(examples)/lib_ips.txt.example \
 	       $(examples)/oils_yaz.xml.example \
 	       $(examples)/kpac.xml.example \
-	       $(examples)/oils_z3950.xml.example 
+	       $(examples)/oils_z3950.xml.example \
+	       $(examples)/marc_stream_importer.conf.example
 
 #----------------------------
 # Build ILS CORE
@@ -67,6 +68,7 @@ core_scripts =   $(examples)/oils_ctl.sh \
 		 $(supportscr)/juv_to_adult.srfsh \
 		 $(supportscr)/thaw_expired_frozen_holds.srfsh \
 		 $(supportscr)/long-overdue-status-update.pl \
+		 $(supportscr)/oils_header.pl \
 		 $(supportscr)/purge_at_events.srfsh \
 		 $(supportscr)/purge_holds.srfsh \
 		 $(supportscr)/purge_circulations.srfsh \
@@ -132,6 +134,7 @@ gen_scripts = \
 	$(supportscr)/authority_authority_linker.pl \
 	$(supportscr)/eg_db_config \
 	$(supportscr)/marc_export \
+	$(supportscr)/marc_stream_importer.pl \
 	$(supportscr)/offline-blocked-list.pl
 
 # config files that are generated from *.in files and can
@@ -228,6 +231,10 @@ $(supportscr)/marc_export: Makefile $(supportscr)/marc_export.in
 	$(do_subst) $(supportscr)/marc_export.in > "$@"
 	chmod 755 "$@"
 
+$(supportscr)/marc_stream_importer.pl: Makefile $(supportscr)/marc_stream_importer.pl.in
+	$(do_subst) $(supportscr)/marc_stream_importer.pl.in > "$@"
+	chmod 755 "$@"
+
 $(supportscr)/offline-blocked-list.pl: Makefile $(supportscr)/offline-blocked-list.pl.in
 	$(do_subst) $(supportscr)/offline-blocked-list.pl.in > "$@"
 	chmod 755 "$@"
@@ -261,6 +268,8 @@ ilscore-install:
 	sed -i 's|LOCALSTATEDIR|@localstatedir@|g' '$(DESTDIR)@sysconfdir@/opensrf.xml.example'
 	sed -i 's|SYSCONFDIR|@sysconfdir@|g' '$(DESTDIR)@sysconfdir@/opensrf.xml.example'
 	sed -i 's|LIBDIR|@libdir@|g' '$(DESTDIR)@sysconfdir@/opensrf.xml.example'
+	sed -i 's|LOCALSTATEDIR|@localstatedir@|g' '$(DESTDIR)@sysconfdir@/marc_stream_importer.conf.example'
+	sed -i 's|SYSCONFDIR|@sysconfdir@|g' '$(DESTDIR)@sysconfdir@/marc_stream_importer.conf.example'
 	sed -i 's|BINDIR|@bindir@|g' '$(DESTDIR)@bindir@/autogen.sh'
 	sed -i 's|LOCALSTATEDIR|@localstatedir@|g' '$(DESTDIR)@bindir@/autogen.sh'
 	sed -i 's|SYSCONFDIR|@sysconfdir@|g' '$(DESTDIR)@bindir@/autogen.sh'
