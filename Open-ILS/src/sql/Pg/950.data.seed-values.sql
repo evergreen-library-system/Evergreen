@@ -7529,6 +7529,7 @@ $$
 To: [%- params.recipient_email || user.email %]
 From: [%- params.sender_email || default_sender %]
 Subject: Overdue Notification
+Auto-Submitted: auto-generated
 
 Dear [% user.family_name %], [% user.first_given_name %]
 Our records indicate the following items are overdue.
@@ -7573,6 +7574,7 @@ $$
 To: [%- params.recipient_email || user.email %]
 From: [%- params.sender_email || default_sender %]
 Subject: Overdue Items Marked Lost
+Auto-Submitted: auto-generated
 
 Dear [% user.family_name %], [% user.first_given_name %]
 The following items are 90 days overdue and have been marked LOST.
@@ -7757,6 +7759,7 @@ $$
 To: [%- params.recipient_email || user.email %]
 From: [%- params.sender_email || default_sender %]
 Subject: Hold Available Notification
+Auto-Submitted: auto-generated
 
 Dear [% user.family_name %], [% user.first_given_name %]
 The item(s) you requested are available for pickup from the Library.
@@ -7822,6 +7825,7 @@ $$
 To: [%- params.recipient_email || user.email %]
 From: [%- params.sender_email || default_sender %]
 Subject: Hold Available Notification
+Auto-Submitted: auto-generated
 
 Dear [% user.family_name %], [% user.first_given_name %]
 You requested holds on the following item(s), which are available for
@@ -7899,6 +7903,7 @@ $$
 To: [%- params.recipient_email || user.email %]
 From: [%- params.sender_email || default_sender %]
 Subject: Long Wait Hold Notification
+Auto-Submitted: auto-generated
 
 Dear [% user.family_name %], [% user.first_given_name %]
 
@@ -8037,6 +8042,7 @@ $$
 To: [%- params.recipient_email || user.email %]
 From: [%- params.sender_email || default_sender %]
 Subject: Acquisition Request Notification
+Auto-Submitted: auto-generated
 
 Dear [% user.family_name %], [% user.first_given_name %]
 Our records indicate the following acquisition request has been placed on order.
@@ -8071,6 +8077,7 @@ $$
 To: [%- params.recipient_email || user.email %]
 From: [%- params.sender_email || default_sender %]
 Subject: Acquisition Request Notification
+Auto-Submitted: auto-generated
 
 Dear [% user.family_name %], [% user.first_given_name %]
 Our records indicate the materials for the following acquisition request have been received.
@@ -8105,6 +8112,7 @@ $$
 To: [%- params.recipient_email || user.email %]
 From: [%- params.sender_email || default_sender %]
 Subject: Acquisition Request Notification
+Auto-Submitted: auto-generated
 
 Dear [% user.family_name %], [% user.first_given_name %]
 Our records indicate the following acquisition request has been cancelled.
@@ -8137,6 +8145,7 @@ $$
 To: [%- params.recipient_email || user.email %]
 From: [%- params.sender_email || default_sender %]
 Subject: Acquisition Request Notification
+Auto-Submitted: auto-generated
 
 Dear [% user.family_name %], [% user.first_given_name %]
 Our records indicate that you have made the following acquisition request:
@@ -8169,6 +8178,7 @@ $$
 To: [%- params.recipient_email || user.email %]
 From: [%- params.sender_email || default_sender %]
 Subject: Acquisition Request Notification
+Auto-Submitted: auto-generated
 
 Dear [% user.family_name %], [% user.first_given_name %]
 Our records indicate the following acquisition request has been rejected for this reason: [% cancel_reason %]
@@ -8213,6 +8223,7 @@ $$
 To: [%- params.recipient_email || user.email %]
 From: [%- params.sender_email || user.home_ou.email || default_sender %]
 Subject: [% user.home_ou.name %]: library account password reset request
+Auto-Submitted: auto-generated
 
 You have received this message because you, or somebody else, requested a reset
 of your library system password. If you did not request a reset of your library
@@ -8725,6 +8736,7 @@ $$
 To: [%- params.recipient_email || user.email %]
 From: [%- params.sender_email || default_sender %]
 Subject: Courtesy Notice
+Auto-Submitted: auto-generated
 
 Dear [% user.family_name %], [% user.first_given_name %]
 As a reminder, the following items are due in 3 days.
@@ -9554,6 +9566,7 @@ $$
 To: [%- params.recipient_email || user.email %]
 From: [%- params.sender_email || default_sender %]
 Subject: Circulation History
+Auto-Submitted: auto-generated
 
     [% FOR circ IN target %]
             [% helpers.get_copy_bib_basics(circ.target_copy.id).title %]
@@ -9620,6 +9633,7 @@ $$
 To: [%- params.recipient_email || user.email %]
 From: [%- params.sender_email || default_sender %]
 Subject: Hold Request History
+Auto-Submitted: auto-generated
 
     [% FOR hold IN target %]
             [% helpers.get_copy_bib_basics(hold.current_copy.id).title %]
@@ -9729,6 +9743,7 @@ $$
 To: [%- params.recipient_email || user.email %]
 From: [%- params.sender_email || default_sender %]
 Subject: Payment Receipt
+Auto-Submitted: auto-generated
 
 [% date.format -%]
 [%- SET xact_mp_hash = {} -%]
@@ -9956,6 +9971,7 @@ $$
 To: [%- params.recipient_email || user.email %]
 From: [%- params.sender_email || default_sender %]
 Subject: Bibliographic Records
+Auto-Submitted: auto-generated
 
 [% FOR cbreb IN target %][% title = '' %]
 [% FOR item IN cbreb.items;
@@ -10745,7 +10761,8 @@ $$
 [%- user = target.0.usr -%]
 To: [%- params.recipient_email || user.email %]
 From: [%- params.sender_email || default_sender %]
-Subject: Item Recall Notification 
+Subject: Item Recall Notification
+Auto-Submitted: auto-generated 
 
 Dear [% user.family_name %], [% user.first_given_name %]
 
@@ -10816,6 +10833,7 @@ $$
 To: [%- params.recipient_email || user.email %]
 From: [%- params.sender_email || default_sender %]
 Subject: Hold Request Cancelled
+Auto-Submitted: auto-generated
 
 Dear [% user.family_name %], [% user.first_given_name %]
 The following holds were cancelled because no items were found to fulfill the hold.
@@ -11067,6 +11085,7 @@ $$
 To: [%- params.recipient_email || user.email || 'root@localhost' %]
 From: [%- params.sender_email || default_sender %]
 Subject: Bibs from Import Queue
+Auto-Submitted: auto-generated
 
 Queue ID: [% target.0.queue.id %]
 Queue Name: [% target.0.queue.name %]
@@ -11209,6 +11228,7 @@ $$
 To: [%- params.recipient_email || user.email || 'root@localhost' %]
 From: [%- params.sender_email || default_sender %]
 Subject: Authorities from Import Queue
+Auto-Submitted: auto-generated
 
 Queue ID: [% target.0.queue.id %]
 Queue Name: [% target.0.queue.name %]
@@ -11365,6 +11385,7 @@ $$
 To: [%- params.recipient_email || user.email || 'root@localhost' %]
 From: [%- params.sender_email || default_sender %]
 Subject: Import Items from Import Queue
+Auto-Submitted: auto-generated
 
 Queue ID: [% target.0.record.queue.id %]
 Queue Name: [% target.0.record.queue.name %]
@@ -12986,6 +13007,7 @@ INSERT INTO action_trigger.event_definition (
 From: [%- params.sender_email || default_sender %]
 To: [%- params.recipient_email || helpers.get_sms_gateway_email(target.0.sms_carrier,target.0.sms_notify) %]
 Subject: [% target.size %] hold(s) ready
+Auto-Submitted: auto-generated
 
 [% FOR hold IN target %][%-
   bibxml = helpers.xml_doc( hold.current_copy.call_number.record.marc );
@@ -13052,6 +13074,7 @@ INSERT INTO action_trigger.event_definition (
 From: [%- params.sender_email || default_sender %]
 To: [%- params.recipient_email || helpers.get_sms_gateway_email(user_data.sms_carrier,user_data.sms_notify) %]
 Subject: Call Number
+Auto-Submitted: auto-generated
 
 [%-
   bibxml = helpers.xml_doc( target.record.marc );
@@ -14258,6 +14281,7 @@ $$
 To: [%- params.recipient_email || user.email %]
 From: [%- params.sender_email || default_sender %]
 Subject: Overdue Items Marked Long Overdue
+Auto-Submitted: auto-generated
 
 Dear [% user.family_name %], [% user.first_given_name %]
 The following items are 6 months overdue and have been marked Long Overdue.
