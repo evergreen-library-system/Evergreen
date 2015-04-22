@@ -316,6 +316,7 @@ CREATE TRIGGER authority_simple_heading_fti_trigger
 CREATE INDEX authority_simple_heading_index_vector_idx ON authority.simple_heading USING GIST (index_vector);
 CREATE INDEX authority_simple_heading_value_idx ON authority.simple_heading (value);
 CREATE INDEX authority_simple_heading_sort_value_idx ON authority.simple_heading (sort_value);
+CREATE INDEX authority_simple_heading_record_idx ON authority.simple_heading (record);
 
 CREATE OR REPLACE FUNCTION authority.simple_heading_set( marcxml TEXT ) RETURNS SETOF authority.simple_heading AS $func$
 DECLARE
