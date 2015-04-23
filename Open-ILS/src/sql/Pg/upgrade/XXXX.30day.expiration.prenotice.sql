@@ -8,8 +8,14 @@ INSERT INTO action_trigger.hook (key, core_type, description, passive)
 --Inactive, owned by top of org tree by default.  Modify to suit needs.
 --Can set reactor to 'ProcessTemplate' for testing.  Will generate emails in DB, but not actually send.
 
-INSERT INTO action_trigger.event_definition (active, owner, name, hook, validator, reactor, delay, delay_field, max_delay, repeat_delay, template)
-    VALUES ('f', '1', '30 Day Account Expiration Courtesy Notice', 'expire', 'NOOP_True', 'SendEmail', '-30 days', 'expire_date', '-29 days', '30 days',
+INSERT INTO action_trigger.event_definition (
+    active, owner, name, hook, 
+    validator, reactor, delay, delay_field,
+    max_delay, repeat_delay, template
+)  VALUES (
+    'f', '1', '30 Day Account Expiration Courtesy Notice', 'expire',
+    'NOOP_True', 'SendEmail', '-30 days', 'expire_date',
+    '-29 days', '30 days',
 $$
 [%- USE date -%]
 [%- user = target -%]
@@ -38,19 +44,10 @@ Contact your library for more information:
 [% lib.phone %]
 
 $$);
-
---get current value in sequence
-SELECT currval('action_trigger.event_definition_id_seq');
-
---send from email address parameter
---INSERT INTO action_trigger.event_params (event_def, param, value)
---	VALUES (CURRVAL('action_trigger.event_definition_id_seq'), 'sender_email', 'evergreen@example.org');
 	
 --insert environment values
-INSERT INTO action_trigger.environment (event_def, path)
-    VALUES (CURRVAL('action_trigger.event_definition_id_seq'), 'home_ou.mailing_address');
-	
-INSERT INTO action_trigger.environment (event_def, path)
-    VALUES (CURRVAL('action_trigger.event_definition_id_seq'), 'home_ou.billing_address');	
+INSERT INTO action_trigger.environment (event_def, path) VALUES
+    (CURRVAL('action_trigger.event_definition_id_seq'), 'home_ou.mailing_address'),
+    (CURRVAL('action_trigger.event_definition_id_seq'), 'home_ou.billing_address');
 	
 COMMIT;
