@@ -35,7 +35,7 @@ angular.module('egCoreMod')
             function($scope , $window , $location , $q , $timeout , egCore) {
 
             $scope.save_space = $scope.saveSpace ? $scope.saveSpace : 300;
-            // Set the iframe height to just under the window height.
+            // Set the initial iframe height to just under the window height.
             // leave room for the navbar, padding, margins, etc.
             $scope.height = $window.outerHeight - $scope.save_space;
 
@@ -76,6 +76,9 @@ angular.module('egCoreMod')
             $scope.egEmbedFrameLoader = function(iframe) {
 
                 $scope.frame = {dom:iframe};
+
+                // Reset the iframe height to the final content height.
+                $scope.height = $scope.frame.dom.contentWindow.document.body.scrollHeight;
 
                 var page = iframe.contentWindow.location.href;
                 console.debug('egEmbedFrameLoader(): ' + page);
