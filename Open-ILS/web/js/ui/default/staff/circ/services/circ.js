@@ -870,12 +870,13 @@ function($modal , $q , egCore , egAlertDialog , egConfirmDialog) {
                 return service.checkin({
                     barcode : params.copy_barcode,
                     noop : true,
+                    override : true,
                     void_overdues : args.forgive_fines
                 }).then(function(checkin_resp) {
-                    if (checkin_resp.evt.textcode == 'SUCCESS') {
+                    if (checkin_resp.evt[0].textcode == 'SUCCESS') {
                         return service.checkout(params, options);
                     } else {
-                        alert(egCore.evt.parse(evt));
+                        alert(egCore.evt.parse(checkin_resp.evt[0]));
                         return $q.reject();
                     }
                 });
