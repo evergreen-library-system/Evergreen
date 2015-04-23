@@ -30,14 +30,10 @@ angular.module('egCoreMod')
             function($scope , $window , $location , $timeout , hotkeys , egCore) {
 
                 function navTo(path) {                                           
-                    // $location.path() does not want a leading ".",
-                    // which <a>'s will have.  
-                    // Note: avoid using $location.path() to derive the new
-                    // URL, since it creates an intermediate path change.
-                    path = path.replace(/^\./,'');
+                    // Strip the leading "./" if any.
+                    path = path.replace(/^\.\//,'');
                     var reg = new RegExp($location.path());
-                    $window.location.href = 
-                        $window.location.href.replace(reg, path);
+                    $window.location.href = egCore.env.basePath + path;
                 }       
 
                 // adds a keyboard shortcut
