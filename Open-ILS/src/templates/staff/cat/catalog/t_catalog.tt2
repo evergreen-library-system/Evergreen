@@ -71,7 +71,7 @@
       [% INCLUDE 'staff/cat/catalog/t_holds.tt2' %]
     </div>
     <div ng-if="record_tab == 'monoparts'">
-      <eg-embed-frame frame="parts_iframe" save-space="350" url="parts_url"></eg-embed-frame>
+      <eg-embed-frame save-space="350" url="parts_url"></eg-embed-frame>
     </div>
   </div>
 </div>
