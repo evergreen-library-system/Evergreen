@@ -46,7 +46,7 @@ BEGIN
 END;
 $$ LANGUAGE PLPGSQL;
 
-CREATE FUNCTION evergreen.query_int_wrapper (INT[],TEXT) RETURNS BOOL AS $$
+CREATE OR REPLACE FUNCTION evergreen.query_int_wrapper (INT[],TEXT) RETURNS BOOL AS $$
 BEGIN
     RETURN $1 @@ $2::query_int;
 END;
