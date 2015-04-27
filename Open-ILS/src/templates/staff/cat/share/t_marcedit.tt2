@@ -4,11 +4,31 @@
     <input id="mfiabc" type="text" placeholder="[% l('Barcode') %]" ng-model="fast_item_barcode"/>
     <button class="btn btn-default" ng-click="saveFastItem()">Add Item</button>
   </div>
+
   <div class="pad-vert row col-md-12 marctypesource">
-    <div class="col-md-2"><label>Flat Text Editor:</label> <input type="checkbox" ng-model="flatEditor" ng-change="refreshVisual()"/></div>
-    <div class="col-md-2"><label>Record Type:</label> {{calculated_record_type}}</div>
-    <div ng-if="bre" class="col-md-2"><eg-marc-edit-bibsource/></div>
+    <div class="col-md-2">
+      <label>Flat Text Editor:</label>
+      <input type="checkbox" ng-model="flatEditor" ng-change="refreshVisual()"/>
+    </div>
+    <div class="col-md-2">
+      <label>Record Type:</label>
+      {{calculated_record_type}}
+    </div>
+    <div ng-if="bre" class="col-md-2">
+      <eg-marc-edit-bibsource/>
+    </div>
+    <div class="col-md-1">
+      <button class="btn btn-default" ng-click="saveRecord()">Save</button>
+    </div>
+    <div class="col-md-1">
+      <button class="btn btn-default" ng-click="seeBreaker()">Breaker</button>
+    </div>
+    <div class="col-md-1">
+      <button ng-hide="Record().deleted()" class="btn btn-default" ng-click="deleteRecord()">Delete</button>
+      <button ng-show="Record().deleted()" class="btn btn-default" ng-click="undeleteRecord()">Undelete</button>
+    </div>
   </div>
+
   <div ng-show="flatEditor">
     <textarea cols="120" rows="40" ng-model="flat_text_marc" ng-change="saveFlatTextMARC()"></textarea>
   </div>
@@ -126,8 +146,4 @@
       </div>
     </div>
   </div>
-  <button class="btn btn-default" ng-click="saveRecord()">Save</button>
-  <button class="btn btn-default" ng-click="seeBreaker()">Breaker</button>
-  <button ng-hide="Record().deleted()" class="btn btn-default" ng-click="deleteRecord()">Delete</button>
-  <button ng-show="Record().deleted()" class="btn btn-default" ng-click="undeleteRecord()">Undelete</button>
 </div>
