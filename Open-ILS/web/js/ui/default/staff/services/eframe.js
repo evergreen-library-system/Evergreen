@@ -79,7 +79,8 @@ angular.module('egCoreMod')
                 $scope.iframe = iframe;
 
                 // Reset the iframe height to the final content height.
-                $scope.height = $scope.iframe.contentWindow.document.body.scrollHeight;
+                if ($scope.height < $scope.iframe.contentWindow.document.body.scrollHeight)
+                    $scope.height = $scope.iframe.contentWindow.document.body.scrollHeight;
 
                 var page = $scope.iframe.contentWindow.location.href;
                 console.debug('egEmbedFrameLoader(): ' + page);
@@ -122,11 +123,13 @@ angular.module('egCoreMod')
                             extra = 0;
                         }
 
-                        $scope.iframe.contentWindow.openils.Util.addOnLoad( function() {
-                            var old_height = $scope.height;
-                            $scope.height = e.scrollHeight + extra;
-                            $scope.$apply();
-                        });
+                        if ($scope.height < e.scrollHeight + extra) {
+                            $scope.iframe.contentWindow.openils.Util.addOnLoad( function() {
+                                var old_height = $scope.height;
+                                $scope.height = e.scrollHeight + extra;
+                                $scope.$apply();
+                            });
+                        }
                     }
                 });
 
