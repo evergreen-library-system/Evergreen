@@ -644,7 +644,12 @@ RewriteRule ^/openurl$ ${openurl:%1} [NE,PT]
     PerlSetVar OILSWebDefaultTemplateExtension "tt2"
 
     # Enable Template-Toolkit error debugging messages (apache error log)
-    PerlSetVar OILSWebDebugTemplate "true"
+    PerlSetVar OILSWebDebugTemplate "false"
+    # local cache of compiled Template Toolkit templates
+    PerlSetVar OILSWebCompiledTemplateCache "/tmp/eg_template_cache"
+    # template TTL - how long, in seconds, that Template Toolkit
+    # waits to check for updated template files
+    #PerlSetVar OILSWebTemplateStatTTL 60
 
     # -------------------------------------------------------
     # Media Prefix.  In the 3rd example, the protocol (http) is enforced

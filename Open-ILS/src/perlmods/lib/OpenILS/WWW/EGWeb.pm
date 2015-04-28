@@ -66,13 +66,22 @@ sub handler_guts {
     $processor_key .= $r->dir_config('OILSWebContextLoader').':';   # ... and context loader
     $processor_key .= $ctx->{locale};                               # ... and locale
     # NOTE: context loader and vhost together imply template path and debug template values
-    # TODO: maybe add STAT_TTL and cache dir from LP#1449709?
 
     my $tt = $vhost_processor_cache{$processor_key} || Template->new({
         ENCODING => 'utf-8',
         OUTPUT => ($as_xml) ?  sub { parse_as_xml($r, $ctx, @_); } : $r,
         INCLUDE_PATH => $ctx->{template_paths},
         DEBUG => $ctx->{debug_template},
+        (
+            $r->dir_config('OILSWebCompiledTemplateCache') ?
+                (COMPILE_DIR => $r->dir_config('OILSWebCompiledTemplateCache')) :
+                ()
+        ),
+        (
+            ($r->dir_config('OILSWebTemplateStatTTL') =~ /^\d+$/) ?
+                (STAT_TTL => $r->dir_config('OILSWebTemplateStatTTL')) :
+                ()
+        ),
         PLUGINS => {
             EGI18N => 'OpenILS::WWW::EGWeb::I18NFilter',
             CGI_utf8 => 'OpenILS::WWW::EGWeb::CGI_utf8'
@@ -174,7 +183,7 @@ sub load_context {
 
     $ctx->{base_path} = $r->dir_config('OILSWebBasePath');
     $ctx->{web_dir} = $r->dir_config('OILSWebWebDir');
-    $ctx->{debug_template} = ($r->dir_config('OILSWebDebugTemplate') =~ /true/io);
+    $ctx->{debug_template} = ($r->dir_config('OILSWebDebugTemplate') =~ /true/io) ? 1 : 0;
     $ctx->{media_prefix} = $r->dir_config('OILSWebMediaPrefix');
     $ctx->{hostname} = $r->hostname;
     $ctx->{base_url} = $cgi->url(-base => 1);
