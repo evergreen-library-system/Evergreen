@@ -1,7 +1,7 @@
-Action Triggers
----------------
+Notifications / Action Triggers
+-------------------------------
 
-indexterm:[action triggers, event definitions]
+indexterm:[action triggers, event definitions, notifications]
 
 Action Triggers give administrators the ability to set up actions for
 specific events. They are useful for notification events such as hold notifications.
@@ -37,7 +37,13 @@ Table 1: Action Trigger Event Definitions
 | <<reactors, Reactor>>          |Links the action trigger to the Reactor.
 | <<validators, Validator>>      |The subroutines receive the trigger environment as an argument (see the linked Name for the environment definition) and returns either _1_ if the validator is _true_ or _0_ if the validator returns _false_.
 | Event Repeatability Delay      |Allows events to be repeated after this delay interval.
+| Failure Cleanup                |After an event is reacted to and if there is a failure a cleanup module can be run to clean up after the event.
 | Granularity                    |Used to group events by how often they should be run. Options are Hourly, Daily, Weekly, Monthly, Yearly, but you may also create new values.
+| Max Event Validity Delay       |Allows events to have a range of time that they are valid.  This value works with the *Processing Delay* to define a time range.
+| Opt-In Settings Type           |Choose which User Setting Type will decide if this event will be valid for a certain user.  Use this to allow users to Opt-In or Opt-Out of certain events.
+| Opt-In User Field              |Set to the name of the field in the selected hook's core type that will link the core type to the actor.usr table. 
+| Success Cleanup                |After an event is reacted to successfully a cleanup module can be run to clean up after the event.
+| Template                       |A Template Toolkit template that can be used to generate output.  The output may or may not be used by the reactor or another external process.
 |===============================================
 
 
@@ -68,8 +74,9 @@ Creating Action Triggers
   [%- USE date -%]
   [%- user = target.0.usr -%]
   To: [%- params.recipient_email || user.email %]
-  From: [%- params.sender_email || default_sender %]
+  From: [%- helpers.get_org_setting(target.home_ou.id, 'org.bounced_emails') || lib.email || params.sender_email || default_sender %]
   Subject: Overdue Items Marked Lost
+  Auto-Submitted: auto-generated
 
   Dear [% user.family_name %], [% user.first_given_name %]
   The following items are 90 days overdue and have been marked LOST.
