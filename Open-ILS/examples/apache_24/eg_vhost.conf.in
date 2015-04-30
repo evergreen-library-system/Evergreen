@@ -441,11 +441,10 @@ RewriteRule .? - [E=locale:%{HTTP:Accept-Language}]
     PerlOptions +GlobalRequest
     PerlSetVar OILSProxyPermissions "STAFF_LOGIN"
     PerlAuthenHandler OpenILS::WWW::Proxy::Authen
-    require valid-user
+    Require valid-user
     PerlHandler OpenILS::WWW::Exporter
     Options +ExecCGI
     PerlSendHeader On
-    Require all granted 
 </Location>
 
 <Location /opac/extras/merge_template>
@@ -455,11 +454,10 @@ RewriteRule .? - [E=locale:%{HTTP:Accept-Language}]
     PerlOptions +GlobalRequest
     PerlSetVar OILSProxyPermissions "STAFF_LOGIN"
     PerlAuthenHandler OpenILS::WWW::Proxy::Authen
-    require valid-user
+    Require valid-user
     PerlHandler OpenILS::WWW::TemplateBatchBibUpdate
     PerlSendHeader On
     Options +ExecCGI
-    Require all granted 
 </Location>
 
 <Location /opac/extras/circ>
@@ -468,10 +466,9 @@ RewriteRule .? - [E=locale:%{HTTP:Accept-Language}]
     PerlOptions +GlobalRequest
     PerlSetVar OILSProxyPermissions "STAFF_LOGIN"
     PerlAuthenHandler OpenILS::WWW::Proxy::Authen
-    require valid-user
+    Require valid-user
     Options +ExecCGI
     PerlSendHeader On
-    Require all granted 
 </Location>
 
 <Location /collections>
@@ -481,10 +478,9 @@ RewriteRule .? - [E=locale:%{HTTP:Accept-Language}]
     PerlOptions +GlobalRequest
     PerlSetVar OILSProxyPermissions "money.collections_tracker.create"
     PerlAuthenHandler OpenILS::WWW::Proxy::Authen
-    require valid-user
+    Require valid-user
     Options +ExecCGI
     PerlSendHeader On
-    Require all granted 
 </Location>
 
 # ----------------------------------------------------------------------------------
@@ -496,7 +492,7 @@ RewriteRule .? - [E=locale:%{HTTP:Accept-Language}]
     PerlOptions +GlobalRequest
     PerlSetVar OILSProxyPermissions "STAFF_LOGIN"
     PerlAuthenHandler OpenILS::WWW::Proxy::Authen
-    require valid-user
+    Require valid-user
     PerlSendHeader On
     allow from all
     SSLRequireSSL
@@ -511,10 +507,9 @@ RewriteRule .? - [E=locale:%{HTTP:Accept-Language}]
     PerlOptions +GlobalRequest
     PerlSetVar OILSProxyPermissions "VIEW_REPORT_OUTPUT"
     PerlAuthenHandler OpenILS::WWW::Proxy::Authen
-    require valid-user
+    Require valid-user
     Options +ExecCGI
     PerlSendHeader On
-    Require all granted 
 </Location>
 
 # ----------------------------------------------------------------------------------
@@ -526,10 +521,9 @@ RewriteRule .? - [E=locale:%{HTTP:Accept-Language}]
     PerlOptions +GlobalRequest
     PerlSetVar OILSProxyPermissions "STAFF_LOGIN"
     PerlAuthenHandler OpenILS::WWW::Proxy::Authen
-    require valid-user
+    Require valid-user
     Options +ExecCGI
     PerlSendHeader On
-    Require all granted 
 </LocationMatch>
 
 
@@ -600,10 +594,9 @@ RewriteRule ^/conify/([a-z]{2}-[A-Z]{2})/global/(.*)$ /conify/global/$2 [E=local
     PerlOptions +GlobalRequest
     PerlSetVar OILSProxyPermissions "STAFF_LOGIN"
     PerlAuthenHandler OpenILS::WWW::Proxy::Authen
-    require valid-user
+    Require valid-user
     Options +ExecCGI
     PerlSendHeader On
-    Require all granted 
 </Location>
 
 # ----------------------------------------------------------------------------------
@@ -613,14 +606,13 @@ RewriteRule ^/conify/([a-z]{2}-[A-Z]{2})/global/(.*)$ /conify/global/$2 [E=local
     SetHandler perl-script
     AuthType Basic
     AuthName "PhoneList Login"
-    require valid-user
+    Require valid-user
     PerlOptions +GlobalRequest
     PerlSetVar OILSProxyPermissions "STAFF_LOGIN"
     PerlHandler OpenILS::WWW::PhoneList
     PerlAuthenHandler OpenILS::WWW::Proxy::Authen
     Options +ExecCGI
     PerlSendHeader On
-    allow from all
     <IfModule mod_headers.c>
         Header onsuccess set Cache-Control no-cache
     </IfModule>
