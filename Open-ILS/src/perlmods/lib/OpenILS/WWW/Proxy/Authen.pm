@@ -102,6 +102,10 @@ sub handler {
                         -expires=>'-1h'
                 );
             } else {
+                # it appears that as of Apache 2.4, authentication
+                # handlers are expected to ensure that the request
+                # object has ->user set.
+                $apache->user($user->usrname);
                 $bad_auth = 0;
             }
         }
