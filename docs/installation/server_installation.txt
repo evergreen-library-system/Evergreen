@@ -106,10 +106,10 @@ make -f Open-ILS/src/extras/Makefile.install <osname>
    issuing the following commands as the *root* Linux account:
 +
 [NOTE]
-You should skip this step if installing on Ubuntu Precise or Trusty. The ubuntu
-targets use libdbd-pgsql from packages.
+You should skip this step if installing on Ubuntu Precise, Trusty or Debian Jessie. The ubuntu
+and Debian Jessie targets use libdbd-pgsql from packages.
 +
-.Debian
+.Debian Wheezy
 [source, bash]
 ------------------------------------------------------------------------------
 echo "/usr/local/lib/dbd" > /etc/ld.so.conf.d/eg.conf
