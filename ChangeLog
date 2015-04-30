@@ -1,3 +1,777 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 36b0f4a5dbb325a2e5b121c955d01c07909cd0c5
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Apr 30 16:06:49 2015 -0400
+
+    2.8.1 release notes for Apache/security flaw
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+54	0	docs/RELEASE_NOTES_2_8.txt
+
+commit 04defe7d179e8fdfe93265b5b490c4eb11bf567c
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Thu Apr 30 11:07:14 2015 -0700
+
+    LP#1449283: fix auth when running under Apache 2.4
+    
+    When running under Apache 2.4 using the stock configuration
+    derived from apache_24/eg_vhost.conf.in, protected
+    URLs such as https://eghost/reporter/ that are meant to
+    require valid EG staff credentials were not in fact
+    requiring authentication.
+    
+    This patch does the following to fix this:
+    
+    [1] Removes several uses of "Require all granted" that
+        was causing authentication to be ignored.
+    [2] Changes OpenILS::WWW::Proxy::Authen so that it always
+        sets the username in the Apache request object if
+        authentication was successful; it appears that starting
+        with Apache 2.4, authentication handlers must ensure
+        that a user name is set for a "Require valid-user"
+        directive to work.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+9	17	Open-ILS/examples/apache_24/eg_vhost.conf.in
+4	0	Open-ILS/src/perlmods/lib/OpenILS/WWW/Proxy/Authen.pm
+
+commit 3fac3c9710f1c7cf9961ef5408ee1156fb870433
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Apr 30 16:44:32 2015 -0400
+
+    Bump Perl version for 2.8.1
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit 4c9c9f71cbd3584d73f54c536b1ba8fbff82a136
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Tue Apr 28 23:09:57 2015 -0400
+
+    Add 2.8.1 release notes to the 2.8 release note file.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+100	33	docs/RELEASE_NOTES_2_8.txt
+
+commit 63fe0220e9a263139b0010591a1eb92f7290c312
+Author: Jason Boyer <jboyer1@library.in.gov>
+Date:   Mon Mar 2 15:06:33 2015 -0500
+
+    LP#1427309 Fix Crash in Collections User Balance Summary
+    
+    Previously a patron in collections that paid off all
+    transactions would cause a crash and stop processing
+    any balance summary file that they are supposed to
+    appear in. Now user balance summaries can be created
+    in full even if some users have a 0 balance.
+    
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+13	10	Open-ILS/src/perlmods/lib/OpenILS/Application/Collections.pm
+
+commit 4903c6ece24717269d8c37c44b48732fcde3db69
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Tue Apr 14 10:43:49 2015 -0400
+
+    LP 1444130: Add max_chunk_size guards to Holds.pm.
+    
+    Web staff client fixes introduced a bug in using the Clear
+    Holds Shelf checkin modifier.  Commit 4ccbf980 added calls
+    to max_chunk_size on the client to use chunked responses for
+    better feedback during long operations.  Thise works just
+    fine when a regular OpenSRF AppRequest is used, but leads to
+    a network error when AppSubrequest is used, as apparently the
+    xul client does with the Clear Holds Shelf checkin modifier.
+    
+    This commit adds code to check if the client object can do
+    the max_chunk_size call when the max_chunk_size call is
+    made.  This will prevent the network errors in cases where
+    the client is an AppSubrequest object and will still use
+    chunked responses when the client is capable of doing it.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+3	3	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Holds.pm
+
+commit 20f6442dea10e0df0ce4c5bd67f1fe0128176da2
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Fri Feb 20 17:36:25 2015 -0500
+
+    LP#1443952 Lost fine handling refactor
+    
+    This commit moves the lost fine logic out of the lost processing
+    portion of Circulate.pm and into the new handle_fines() method.
+    This is accomplished through setting a new flag and lost
+    options hash on the main Circulator object.
+    
+    This change improves the overall process flow, and in doing so
+    addresses a bug where overdue fines could be doubled if both
+    restore-overdue-on-lost-return and generate-new-overdues-on-lost-return
+    are enabled.  Before this change, the new fines would generate before
+    the old fines were unvoided, which effectively circumvented the max
+    fines setting.
+    
+    A secondary change made here is that stop_fines is also now being set
+    during the handle_fines() stage. This improves any case where overdues
+    are being set on checkin, particularly lost returns, as the stop_fines
+    will end up as the proper value of MAX_FINES or CHECKIN.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+99	68	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Circulate.pm
+
+commit 42e536475e4c086d6a39722ffb1f7c3c62185f3e
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Fri Feb 20 17:28:44 2015 -0500
+
+    LP#1443952 Move overdue restore above lost void/adjustment
+    
+    If a person loses something and has their overdues voided/zeroed,
+    then pays for part of it, then returns the item, the part they
+    actually paid should apply to the overdues.  In order for this to
+    happen, the overdues must exist *before* the lost fines are adjusted.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+2	2	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Circulate.pm
+
+commit 39b160efb2ffbe92cf401af4bdd949b490e48d21
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Fri Apr 10 15:47:29 2015 +0000
+
+    LP#1442695: install purge_pending_users.srfsh to /openils/bin by default
+    
+    Since purge_pending_users.srfsh is in the example crontab, it should
+    be installed to the Evergreen binaries directory (typically /openils/bin)
+    by default.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	0	Open-ILS/src/Makefile.am
+
+commit 4bfa6c45b5b3553b86947b6e786a622ce4f842c8
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Fri Apr 10 16:09:26 2015 +0000
+
+    LP#1442701: prune 'message_id' and 'single' CGI params from TPAC dashboard links
+    
+    This patch fixes a bug where if one goes to the single patron
+    message view in TPAC, clicking on the 'Message' button in the
+    dashboard button bar does not return one to the list of messages, but
+    instead takes the user back to the single message the user was
+    viewing.  This patch also prunes the CGI parameter from other
+    links in the patron dashboard.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+7	7	Open-ILS/src/templates/opac/parts/topnav.tt2
+
+commit 192dc57619a1810cfa5096318dc0b1df856bf511
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Apr 6 17:33:26 2015 -0400
+
+    LP#1380803 Update PO summary amounts
+    
+    Refresh the PO summary amounts (spent, encumbered, estimated) each time
+    an amount-changing event occurs.  These include changing the lineitem
+    price, adding/removing a direct charge, and adding/removing copies via
+    the copy grid.
+    
+    Note that adding/removing copies via the batch-updater alread causes a
+    page refresh, which updates the summary amounts.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Acq/Financials.pm
+2	0	Open-ILS/web/js/ui/default/acq/common/li_table.js
+2	0	Open-ILS/web/js/ui/default/acq/po/item_table.js
+29	3	Open-ILS/web/js/ui/default/acq/po/view_po.js
+
+commit 6bbb096121de908ef7dcc9b6d7ac500395361dfe
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Apr 6 14:54:55 2015 -0400
+
+    LP#1380803 Include direct charges in PO esimated price
+    
+    Move the estimated PO price calculation into the middle layer, along
+    with the total encumbered and spent calculation.  Add a new
+    PO.amount_estimated field for carrying the data.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	0	Open-ILS/examples/fm_IDL.xml
+80	30	Open-ILS/src/perlmods/lib/OpenILS/Application/Acq/Financials.pm
+3	2	Open-ILS/src/perlmods/lib/OpenILS/Application/Acq/Order.pm
+1	4	Open-ILS/web/js/ui/default/acq/po/view_po.js
+
+commit 122df457f2b6a0f8c163bdbbe18e9dca3c41958c
+Author: Ben Shum <bshum@biblio.org>
+Date:   Fri Apr 10 10:53:59 2015 -0400
+
+    Docs: Update 2.6 RELEASE NOTES to include new section on Bug Fixes
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+46	0	docs/RELEASE_NOTES_2_6.txt
+
+commit 352426b9e316ebd6c26a80acc9e87685a65ab616
+Author: Ben Shum <bshum@biblio.org>
+Date:   Fri Apr 10 10:48:43 2015 -0400
+
+    Docs: Update 2.8 RELEASE NOTES to include new Bug Fixes section
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+36	2	docs/RELEASE_NOTES_2_8.txt
+
+commit 365cf81d53182d0a8b7ff5911e91f7c3d6cab409
+Author: Ben Shum <bshum@biblio.org>
+Date:   Fri Apr 10 10:43:31 2015 -0400
+
+    Docs: Move security bug fix note into the Bug Fixes area of 2.7 RELEASE NOTES
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+10	0	docs/RELEASE_NOTES_2_7.txt
+
+commit 74a1a910fb5ce02429c4803f9187bab6e39795a1
+Author: Ben Shum <bshum@biblio.org>
+Date:   Fri Apr 10 10:38:45 2015 -0400
+
+    Docs: Start a new section for bug fixes for 2.7 series
+    
+    And pull in the reporter changes here.
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+36	0	docs/RELEASE_NOTES_2_7.txt
+0	32	docs/RELEASE_NOTES_NEXT/Administration/set_resource_limits_for_reporter.txt
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/Administration/set_resource_limits_for_reporter.txt
+
+commit f3308cf8f3c25c3c867930ab90b42582e6391ba8
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Thu Apr 9 20:50:24 2015 +0000
+
+    LP#1435494: add release notes entry
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+32	0	docs/RELEASE_NOTES_NEXT/Administration/set_resource_limits_for_reporter.txt
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Administration/set_resource_limits_for_reporter.txt
+
+commit b28848edca31ec6c32950dd46a8ff1746f028f7f
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Thu Apr 9 20:09:59 2015 +0000
+
+    LP#1435494: suggest 1048575 as a default resultset_limit
+    
+    Per a suggestion by Thomas Berezansky; this magic number
+    represents the number of rows supported by XSLX, less one
+    for a header row.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/examples/opensrf.xml.example
+
+commit a17ce46af486ac06b9c0fd512858918557dbd6b0
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Thu Apr 9 20:06:25 2015 +0000
+
+    LP#1435494: do not encourage <resultset_limit></resultset_limit>
+    
+    An empty node in opensrf.xml gets parsed as an empty hashref,
+    not an empty scalar, so we'll use <resultset_limit>0</resultlet_limit>
+    in the suggested opensrf.xml config.  This fixes an issue
+    noticed by Ben Shum during testing where reports could fail with
+    the following message:
+    
+      DBD::Pg::st execute failed: ERROR: syntax error at or near "0"
+      LINE 43: ) limited_to_HASH(0x2a974f8)_hits LIMIT HASH(0x2a974f8)
+                                 ^ at /openils/bin/clark-kent.pl line 243.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+3	1	Open-ILS/examples/opensrf.xml.example
+3	1	Open-ILS/src/reporter/clark-kent.pl
+
+commit f2364cec30474ca36bdb8a7153e42981a71924c0
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Fri Mar 20 20:33:39 2015 +0000
+
+    LP#1435494: set limits on Clark Kent's resource usage
+    
+    Clark Kent can sometimes consume more RAM, swap space, or CPU
+    than is reasonable or productive. For example:
+    
+    - a badly constructed query with multiple Cartesian joins may
+      never terminate, potentially tying up a Clark child process,
+      pegging a CPU on the database server, and/or causing significant
+      scratch disk usage on the database server keeping a snapshot alive.
+    - a query that returns a very large number of rows can cause a Clark
+      child to bloat, and in extreme cases cause a OOM on the server
+      running Clark.
+    - a report that asks for a chart of an unreasonably large number of
+      rows can peg a CPU on the Clark server as GD::Graph attempts to
+      compute sub-pixel graph elements.
+    
+    In each of these cases, a requested report may never finish.
+    
+    This patch adds the ability set set some limits on Clark.  These
+    limits can be set either in opensrf.xml for the settings service
+    to distribute or via command-line switches to clark-kent.pl:
+    
+    //reporter/setup/statement_timeout / --statement-timeout
+    
+      Number of minutes to allow a report's underlying SQL query
+      to run before it gets cancelled.  Default value is
+      60 minutes.  If a report's query gets cancelled, the
+      error_text value will be set to a valid that indicates that
+      the allowed time was exceeded.
+    
+    //reporter/setup/max_rows_for_charts / --max-rows-for-charts
+    
+      Number of rows permitted in the query's output before
+      Clark Kent refuses to attempt to draw a graph. Default
+      value is 1,000 rows.
+    
+    //reporter/setup/resultset_limit / --resultset-limit
+    
+      If set, truncates the report's output to the specified
+      number of hits.  Note that it will not be apparent
+      to a staff user if the report's output has been
+      truncated.  Default value is unlimited.
+    
+    This patch also adds the ability for the concurrency
+    to be set via an opensrf.xml setting (//reporter/setup/parallel).
+    
+    If both a command-line switch and an opensrf.xml setting
+    are supplied, the value set in the command line takes
+    precedence.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+26	0	Open-ILS/examples/opensrf.xml.example
+12	0	Open-ILS/src/perlmods/lib/OpenILS/Reporter/SQLBuilder.pm
+49	12	Open-ILS/src/reporter/clark-kent.pl
+
+commit d7ce7d552bb812a51699f8238868b6cd40cf6056
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Tue Apr 7 09:35:19 2015 -0400
+
+    DOCS: Simplify release notes entry for AccessHandler
+    
+    This commit trims down the AccessHandler docs to provide a simpler
+    introduction to the feature for use in the release notes. Also, a few
+    minor wording edits were made.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+4	109	docs/RELEASE_NOTES_2_8.txt
+
+commit 6f869ff1052c41c600079d56679578895ac33acc
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Apr 6 11:24:33 2015 -0400
+
+    LP#1436906 clean up PO direct charges on delete/cancel
+    
+    1. Deleting a "direct charge" from a PO removes the linked fund_debit if
+    the fund_debit has not been paid (i.e. it's still encumbered).
+    
+    If the debit has been paid, the charge cannot be removed, unless/until
+    the debit is re-encumbered by un-invoicing the charge.
+    
+    2. When a PO is canceled, fund_debits linked to PO items are removed.
+    As above, if the debit has been paid (invoiced), the PO cannot be
+    canceled, unless/until direct charge debits are un-invoiced.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+92	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Acq/Order.pm
+8	5	Open-ILS/web/js/ui/default/acq/po/item_table.js
+
+commit be29679952f3a79c9baacd7951fad78a34098295
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Thu Apr 9 20:52:48 2015 +0000
+
+    LP#1442246: (follow-up) use pre-wrap rather than pre
+    
+    This allows long messages to wrap; such messages can easily
+    be produced by manual creation of user notes.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/templates/opac/css/style.css.tt2
+
+commit 11a681dbd23f58a7858e1294c33390e85b7b0cac
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Tue Mar 31 20:34:42 2015 +0000
+
+    LP#1442246: improve styling of patron messages
+    
+    This patch adds new CSS classes for pieces of the
+    patron message display, uses a preformatted display
+    for the message body, and fixes an HTML nesting error.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+8	0	Open-ILS/src/templates/opac/css/style.css.tt2
+5	5	Open-ILS/src/templates/opac/myopac/messages/single_message.tt2
+
+commit 159fb15e791eabd3bb2234595d248994ef0501a1
+Author: Ben Shum <bshum@biblio.org>
+Date:   Thu Apr 9 21:58:07 2015 -0400
+
+    LP#1442254: Stamping upgrade script for use-ws-lib-for-messages
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+32	0	Open-ILS/src/sql/Pg/upgrade/0916.schema.use-ws-lib-for-messages.sql
+0	30	Open-ILS/src/sql/Pg/upgrade/ZZZZ.schema.use-ws-lib-for-messages.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0916.schema.use-ws-lib-for-messages.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/ZZZZ.schema.use-ws-lib-for-messages.sql
+
+commit 9cf2ae440aa05130c85c5f975da24f30cc797050
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Tue Mar 31 21:23:22 2015 +0000
+
+    LP#1442254: adjust how sending library set for messages created from notes
+    
+    When creating a new user message from a public note, the library
+    of the workstation of the staff member who created the original
+    note is used if available from get_audit_info().  If it's not
+    available (e.g., if notes are added using direct SQL, the
+    home library of the note creator is used instead).
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+11	1	Open-ILS/src/sql/Pg/005.schema.actors.sql
+30	0	Open-ILS/src/sql/Pg/upgrade/ZZZZ.schema.use-ws-lib-for-messages.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/ZZZZ.schema.use-ws-lib-for-messages.sql
+
+commit 0a3f5945665eed723ab3b956f7853388b386a575
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Wed Apr 8 22:42:26 2015 +0000
+
+    LP#1442262: move patron messages link to dashboard button bar
+    
+    Also implement a Facebook-style display of the unread
+    messages count.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+17	1	Open-ILS/src/templates/opac/css/style.css.tt2
+11	6	Open-ILS/src/templates/opac/parts/topnav.tt2
+
+commit 7f420e6ee27e9b1fcd7dc20a2c1f7242567c89e2
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Tue Mar 31 21:03:14 2015 +0000
+
+    LP#1442260: include unread message count in page title
+    
+    If a patron is logged in and has at least one unread message,
+    the count of unread messages is prepended to the page title
+    for all TPAC pages.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+5	1	Open-ILS/src/templates/opac/parts/base.tt2
+
+commit 390e3e073317c7fa9ecfe626e626f109479a5a92
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Tue Mar 31 20:38:16 2015 +0000
+
+    LP#1442250: fix thinko preventing message deletion acknowledgment from being displayed
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/templates/opac/myopac/messages/list.tt2
+
+commit eee45c3dc20e54a5c760929181bb8d1516249971
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Wed Apr 8 16:30:19 2015 +0000
+
+    LP#1441634: add release notes for removal of biblios.net Z39.50 target
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+10	0	docs/RELEASE_NOTES_NEXT/Cataloging/remove_biblios_net_z3950_target.txt
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Cataloging/remove_biblios_net_z3950_target.txt
+
+commit 10c4dd8284980cf0f5de7b033c4e74f1f1f946f8
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Wed Apr 8 09:53:14 2015 -0400
+
+    LP#1441634 Remove biblios.net from Z39.50 sources
+    
+    The biblios.net Z39.50 server has not been functional for years.
+    Remove it from the list of Z39.50 servers that we populate in a
+    default install of Evergreen.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+0	23	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+
+commit eb90213cd0cae57a475ab6afe958d8501117cf1e
+Author: Ben Shum <bshum@biblio.org>
+Date:   Tue Apr 7 17:22:10 2015 -0400
+
+    Docs: Change all .PNG to .png
+    
+    There were files with uppercase .PNG and referneces to .PNG in the docs.
+    
+    Change all to lowercase .png for consistency.
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+2	2	docs/admin/Org_Unit_Proximity_Adjustments.txt
+-	-	docs/media/Org_Unit_Prox_Adj1.PNG
+-	-	docs/media/Org_Unit_Prox_Adj1.png
+-	-	docs/media/Org_Unit_Prox_Adj2.PNG
+-	-	docs/media/Org_Unit_Prox_Adj2.png
+ delete mode 100644 docs/media/Org_Unit_Prox_Adj1.PNG
+ create mode 100644 docs/media/Org_Unit_Prox_Adj1.png
+ delete mode 100644 docs/media/Org_Unit_Prox_Adj2.PNG
+ create mode 100644 docs/media/Org_Unit_Prox_Adj2.png
+
+commit 93ce1ea2145bd0ee0db568f83e0aa7905f204660
+Author: Ben Shum <bshum@biblio.org>
+Date:   Tue Apr 7 16:04:47 2015 -0400
+
+    Docs: Delete remnant .JPG files that had already been converted to .jpg
+    
+    In a previous commit, these files were already re-added as lowercase .jpg,
+    so let's go ahead and remove the .JPG versions of those files.
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+-	-	docs/media/Added_User_to_Routing_Slip.JPG
+-	-	docs/media/Address_on_Routing_Slip.JPG
+-	-	docs/media/advholdoption_6.JPG
+-	-	docs/media/advsrchpg_1.JPG
+-	-	docs/media/ffrc1.JPG
+-	-	docs/media/ffrc2.JPG
+-	-	docs/media/ffrc3.JPG
+-	-	docs/media/mrholdgf_9.JPG
+-	-	docs/media/pcw1.JPG
+-	-	docs/media/pcw10.JPG
+-	-	docs/media/pcw11.JPG
+-	-	docs/media/pcw2.JPG
+-	-	docs/media/pcw3.JPG
+-	-	docs/media/pcw4.JPG
+-	-	docs/media/pcw6.JPG
+-	-	docs/media/pcw7.JPG
+-	-	docs/media/pcw8.JPG
+-	-	docs/media/pcw9.JPG
+-	-	docs/media/placehold_5.JPG
+-	-	docs/media/recorddetailpg_8.JPG
+-	-	docs/media/srchresultpg2_3.JPG
+-	-	docs/media/srchresultpg3_4.JPG
+-	-	docs/media/srchresultpg4_7.JPG
+-	-	docs/media/srchresultpg_2.JPG
+ delete mode 100644 docs/media/Added_User_to_Routing_Slip.JPG
+ delete mode 100644 docs/media/Address_on_Routing_Slip.JPG
+ delete mode 100644 docs/media/advholdoption_6.JPG
+ delete mode 100644 docs/media/advsrchpg_1.JPG
+ delete mode 100644 docs/media/ffrc1.JPG
+ delete mode 100644 docs/media/ffrc2.JPG
+ delete mode 100644 docs/media/ffrc3.JPG
+ delete mode 100644 docs/media/mrholdgf_9.JPG
+ delete mode 100644 docs/media/pcw1.JPG
+ delete mode 100644 docs/media/pcw10.JPG
+ delete mode 100644 docs/media/pcw11.JPG
+ delete mode 100644 docs/media/pcw2.JPG
+ delete mode 100644 docs/media/pcw3.JPG
+ delete mode 100644 docs/media/pcw4.JPG
+ delete mode 100644 docs/media/pcw6.JPG
+ delete mode 100644 docs/media/pcw7.JPG
+ delete mode 100644 docs/media/pcw8.JPG
+ delete mode 100644 docs/media/pcw9.JPG
+ delete mode 100644 docs/media/placehold_5.JPG
+ delete mode 100644 docs/media/recorddetailpg_8.JPG
+ delete mode 100644 docs/media/srchresultpg2_3.JPG
+ delete mode 100644 docs/media/srchresultpg3_4.JPG
+ delete mode 100644 docs/media/srchresultpg4_7.JPG
+ delete mode 100644 docs/media/srchresultpg_2.JPG
+
+commit c771fd698d3dbb2374f9176292f4483fb5e983db
+Author: Ben Shum <bshum@biblio.org>
+Date:   Tue Apr 7 16:03:39 2015 -0400
+
+    Docs: Change all .JPG to .jpg
+    
+    There were files with uppercase .JPG and references to .JPG in the docs.
+    
+    Change all to lowercase .jpg for consistency.
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+4	4	docs/admin/MARC_Import_Remove_Fields.txt
+1	1	docs/admin/restrict_Z39.50_sources_by_perm_group.txt
+1	1	docs/cataloging/tpac_copy_edit_links.txt
+2	2	docs/circulation/circulating_items.txt
+2	2	docs/circulation/circulation_patron_records.txt
+1	1	docs/circulation/circulation_patron_records_web_client.txt
+2	2	docs/circulation/holds.txt
+-	-	docs/media/Billed_Transaction_Color.JPG
+-	-	docs/media/Billed_Transaction_Color.jpg
+-	-	docs/media/copy_edit_link_1.JPG
+-	-	docs/media/copy_edit_link_1.jpg
+-	-	docs/media/custom_hold_pickup_location1.JPG
+-	-	docs/media/custom_hold_pickup_location1.jpg
+-	-	docs/media/custom_hold_pickup_location2.JPG
+-	-	docs/media/custom_hold_pickup_location2.jpg
+-	-	docs/media/long_overdue1.JPG
+-	-	docs/media/long_overdue1.jpg
+-	-	docs/media/long_overdue2.JPG
+-	-	docs/media/long_overdue2.jpg
+-	-	docs/media/marc_import_remove_fields1.JPG
+-	-	docs/media/marc_import_remove_fields1.jpg
+-	-	docs/media/marc_import_remove_fields2.JPG
+-	-	docs/media/marc_import_remove_fields2.jpg
+-	-	docs/media/marc_import_remove_fields3.JPG
+-	-	docs/media/marc_import_remove_fields3.jpg
+-	-	docs/media/marc_import_remove_fields5.JPG
+-	-	docs/media/marc_import_remove_fields5.jpg
+-	-	docs/media/my_list_call_numbers.JPG
+-	-	docs/media/my_list_call_numbers.jpg
+-	-	docs/media/patron_self_registration2.JPG
+-	-	docs/media/patron_self_registration2.jpg
+-	-	docs/media/storing_z3950_credentials.JPG
+-	-	docs/media/storing_z3950_credentials.jpg
+1	1	docs/opac/my_lists.txt
+ delete mode 100644 docs/media/Billed_Transaction_Color.JPG
+ create mode 100644 docs/media/Billed_Transaction_Color.jpg
+ delete mode 100644 docs/media/copy_edit_link_1.JPG
+ create mode 100644 docs/media/copy_edit_link_1.jpg
+ delete mode 100644 docs/media/custom_hold_pickup_location1.JPG
+ create mode 100644 docs/media/custom_hold_pickup_location1.jpg
+ delete mode 100644 docs/media/custom_hold_pickup_location2.JPG
+ create mode 100644 docs/media/custom_hold_pickup_location2.jpg
+ delete mode 100644 docs/media/long_overdue1.JPG
+ create mode 100644 docs/media/long_overdue1.jpg
+ delete mode 100644 docs/media/long_overdue2.JPG
+ create mode 100644 docs/media/long_overdue2.jpg
+ delete mode 100644 docs/media/marc_import_remove_fields1.JPG
+ create mode 100644 docs/media/marc_import_remove_fields1.jpg
+ delete mode 100644 docs/media/marc_import_remove_fields2.JPG
+ create mode 100644 docs/media/marc_import_remove_fields2.jpg
+ delete mode 100644 docs/media/marc_import_remove_fields3.JPG
+ create mode 100644 docs/media/marc_import_remove_fields3.jpg
+ delete mode 100644 docs/media/marc_import_remove_fields5.JPG
+ create mode 100644 docs/media/marc_import_remove_fields5.jpg
+ delete mode 100644 docs/media/my_list_call_numbers.JPG
+ create mode 100644 docs/media/my_list_call_numbers.jpg
+ delete mode 100644 docs/media/patron_self_registration2.JPG
+ create mode 100644 docs/media/patron_self_registration2.jpg
+ delete mode 100644 docs/media/storing_z3950_credentials.JPG
+ create mode 100644 docs/media/storing_z3950_credentials.jpg
+
+commit ce24a390bf24983b1790d9fe649e997690050ae6
+Author: Ben Shum <bshum@biblio.org>
+Date:   Tue Apr 7 11:39:22 2015 -0400
+
+    Docs: Minor edits to 2.8 release notes
+    
+    Fix spelling mistake for "Berkless" to "Berklee" in the acknowledgements.
+    
+    Also, change from "2_8" to "2.8" for consistency in reading.
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+2	2	docs/RELEASE_NOTES_2_8.txt
+
+commit b4c0cdfa083072146b6e70398a612e5cc73d1369
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Thu Apr 2 19:36:21 2015 -0400
+
+    Release Notes acknowledgements addition
+    
+    Adding KCLS to the acknowledgements.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	0	docs/RELEASE_NOTES_2_8.txt
+
+commit f13a5a86a6420b043cc9ba12d50d8b9879e86def
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Thu Apr 2 16:11:19 2015 -0400
+
+    Release Note Acknowledgements
+    
+    Added acknowledgements to the Release Notes. Also added a missing feature and
+    did some minor cleanup.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+52	27	docs/RELEASE_NOTES_2_8.txt
+
+commit b851482acc734e40430504a7f754ee7848b12d92
+Author: Robert Soulliere <robert.soulliere@mohawkcollege.ca>
+Date:   Thu Apr 2 07:49:17 2015 -0400
+
+    Docs: include the 2.8 release notes.
+    
+    Signed-off-by: Robert Soulliere <robert.soulliere@mohawkcollege.ca>
+
+1	1	docs/root.txt
+
+commit fdea5470c7389f5a0b03e36d01ffa4e10d322bbd
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Mar 31 10:48:43 2015 -0400
+
+    Forward-porting 2.7.4-2.8.0 DB upgrade
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1464	0	Open-ILS/src/sql/Pg/version-upgrade/2.7.4-2.8.0-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.7.4-2.8.0-upgrade-db.sql
+
+commit 004b9d806dad2a9c8593ca92867eb57b908e23bd
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Tue Mar 24 12:49:39 2015 -0400
+
+    LP 1435966: Clark Kent should write lock file after it forks.
+    
+    Rearrange the code in clark-kent.pl so that the lock/pid file is
+    opened and written to after the reporter daemonizes itself.  This
+    way, the pid in the file can actually be used to stop the running
+    reporter daemon.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+1	1	Open-ILS/src/reporter/clark-kent.pl
