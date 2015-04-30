@@ -6,6 +6,60 @@ This release contains several bugfixes improving on Evergreen 2.8.0.
 Changes
 -------
 
+IMPORTANT SECURITY INFORMATION
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+For users of Apache version 2.4, a serious security flaw that allows
+unauthorized remote access to reporter output and potentially other
+sensitive data is fixed in the following releases of Evergreen: 2.6.8,
+2.7.5, and 2.8.1.  All prior releases of Evergreen are vulnerable to
+exploitation of this flaw to reveal sensitive system information.  If
+you are running a vulnerable release of Evergreen you are *strongly*
+encouraged to upgrade to a non-vulnerable release as soon as possible.
+
+Apache version 2.2 is not affected.
+
+In addition to upgrading Evergreen, a configuration change is required
+for users of Apache version 2.4.  Any <Location> or <Directory>, etc.
+configuration section in the /etc/apache2/eg_vhost.conf (debian/ubuntu)
+file which contains "PerlAuthenHandler OpenILS::WWW::Proxy::Authen"
+should be edited.  For each, remove the line reading "Require all
+granted".
+
+For example, this section:
+
+[source,conf]
+----------------------------------------------------------------------------
+<Location /collections>
+    SetHandler perl-script
+    AuthType Basic
+    AuthName "Collections Login"
+    PerlOptions +GlobalRequest
+    PerlSetVar OILSProxyPermissions "money.collections_tracker.create"
+    PerlAuthenHandler OpenILS::WWW::Proxy::Authen
+    Require valid-user
+    Options +ExecCGI
+    PerlSendHeader On
+    Require all granted
+</Location>
+----------------------------------------------------------------------------
+
+Should have its final line removed and be changed to:
+
+[source,conf]
+----------------------------------------------------------------------------
+<Location /collections>
+    SetHandler perl-script
+    AuthType Basic
+    AuthName "Collections Login"
+    PerlOptions +GlobalRequest
+    PerlSetVar OILSProxyPermissions "money.collections_tracker.create"
+    PerlAuthenHandler OpenILS::WWW::Proxy::Authen
+    Require valid-user
+    Options +ExecCGI
+    PerlSendHeader On
+</Location>
+----------------------------------------------------------------------------
+
 Acquisitions
 ~~~~~~~~~~~~
 
