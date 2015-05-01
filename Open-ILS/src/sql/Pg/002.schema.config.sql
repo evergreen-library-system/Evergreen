@@ -960,11 +960,11 @@ in actor.org_unit_setting, allowing for mistakes to be undone.
 This is NOT meant to be an auditor, but rather an undo/redo.
 $$;
 
-CREATE OR REPLACE FUNCTION limit_oustl() RETURNS TRIGGER AS $oustl_limit$
+CREATE OR REPLACE FUNCTION evergreen.limit_oustl() RETURNS TRIGGER AS $oustl_limit$
     BEGIN
         -- Only keeps the most recent five settings changes.
-        DELETE FROM config.org_unit_setting_type_log WHERE field_name = NEW.field_name AND date_applied NOT IN 
-        (SELECT date_applied FROM config.org_unit_setting_type_log WHERE field_name = NEW.field_name ORDER BY date_applied DESC LIMIT 4);
+        DELETE FROM config.org_unit_setting_type_log WHERE field_name = NEW.field_name AND org = NEW.org AND date_applied NOT IN 
+        (SELECT date_applied FROM config.org_unit_setting_type_log WHERE field_name = NEW.field_name AND org = NEW.org ORDER BY date_applied DESC LIMIT 4);
         
         IF (TG_OP = 'UPDATE') THEN
             RETURN NEW;

@@ -1,0 +1,12 @@
+BEGIN;
+
+SELECT plan(2);
+
+SELECT can('evergreen', ARRAY['limit_oustl'], 'evergreen.limit_oustl function exists');
+
+SELECT has_trigger('config', 'org_unit_setting_type_log', 'limit_logs_oust',
+       'config.org_unit_setting_type_log limit_logs_oust trigger exists');
+
+SELECT * FROM finish();
+
+ROLLBACK;
