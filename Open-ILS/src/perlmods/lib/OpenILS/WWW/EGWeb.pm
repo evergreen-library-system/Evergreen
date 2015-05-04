@@ -19,6 +19,12 @@ use constant OILS_HTTP_COOKIE_LOCALE => 'eg_locale';
 # cache string bundles
 my %registered_locales;
 
+# cache template path -r tests
+my %vhost_path_cache;
+
+# cache template processors by vhost
+my %vhost_processor_cache;
+
 sub handler {
     my $r = shift;
     my $stat = handler_guts($r);
@@ -55,7 +61,14 @@ sub handler_guts {
 
     my $text_handler = set_text_handler($ctx, $r);
 
-    my $tt = Template->new({
+    my $processor_key = $as_xml ? 'xml:' : 'text:';                 # separate by XML strictness
+    $processor_key .= $ctx->{hostname}.':';                         # ... and vhost
+    $processor_key .= $r->dir_config('OILSWebContextLoader').':';   # ... and context loader
+    $processor_key .= $ctx->{locale};                               # ... and locale
+    # NOTE: context loader and vhost together imply template path and debug template values
+    # TODO: maybe add STAT_TTL and cache dir from LP#1449709?
+
+    my $tt = $vhost_processor_cache{$processor_key} || Template->new({
         ENCODING => 'utf-8',
         OUTPUT => ($as_xml) ?  sub { parse_as_xml($r, $ctx, @_); } : $r,
         INCLUDE_PATH => $ctx->{template_paths},
@@ -80,9 +93,10 @@ sub handler_guts {
         return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
     }   
 
+    $vhost_processor_cache{$processor_key} = $tt;
     $ctx->{encode_utf8} = sub {return encode_utf8(shift())};
 
-    unless($tt->process($template, {ctx => $ctx, ENV => \%ENV, l => $text_handler})) {
+    unless($tt->process($template, {ctx => $ctx, ENV => \%ENV, l => $text_handler}, $r)) {
         $r->log->warn('egweb: template error: ' . $tt->error);
         return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
     }
@@ -250,6 +264,9 @@ sub find_template {
     my $ext = $r->dir_config('OILSWebDefaultTemplateExtension');
     my $at_index = $r->dir_config('OILSWebStopAtIndex');
 
+    $vhost_path_cache{$ctx->{hostname}} ||= {};
+    my $path_cache = $vhost_path_cache{$ctx->{hostname}};
+
     my @parts = split('/', $path);
     my $localpath = $path;
 
@@ -258,18 +275,24 @@ sub find_template {
     } else {
         $r->content_type('text/html; encoding=utf8');
     }
+
     my @args;
     while(@parts) {
         last unless $localpath;
         for my $tpath (@{$ctx->{template_paths}}) {
             my $fpath = "$tpath/$localpath.$ext";
             $r->log->debug("egweb: looking at possible template $fpath");
-            if(-r $fpath) {
-                $template = "$localpath.$ext";
+            if ($template = $path_cache->{$fpath}) { # we've checked with -r before...
+                next if ($template eq '0E0'); # ... and found nothing
                 last;
-            } 
+            } elsif (-r $fpath) { # or, we haven't checked, and if we find a file...
+                $path_cache->{$fpath} = $template = "$localpath.$ext"; # ... note it
+                last;
+            } else { # Nothing there...
+                $path_cache->{$fpath} = '0E0'; # ... note that fact
+            }
         }
-        last if $template;
+        last if $template and $template ne '0E0';
 
         if ($at_index) {
             # no matching template was found in the current directory.
@@ -284,13 +307,18 @@ sub find_template {
                 }
                 my $fpath = "$tpath/$localpath.$ext";
                 $r->log->debug("egweb: looking at possible template $fpath");
-                if (-r $fpath) {
-                    $template = "$localpath.$ext";
+                if ($template = $path_cache->{$fpath}) { # See above block
+                    next if ($template eq '0E0');
                     last;
-                }
+                } elsif (-r $fpath) {
+                    $path_cache->{$fpath} = $template = "$localpath.$ext";
+                    last;
+                } else {
+                    $path_cache->{$fpath} = '0E0';
+                } 
             }
         }
-        last if $template;
+        last if $template and $template ne '0E0';
 
         push(@args, pop @parts);
         $localpath = join('/', @parts);
@@ -299,7 +327,7 @@ sub find_template {
     $page_args = [@args];
 
     # no template configured or found
-    unless($template) {
+    if(!$template or $template eq '0E0') {
         $r->log->debug("egweb: No template configured for path $path");
         return ();
     }
