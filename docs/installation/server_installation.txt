@@ -140,6 +140,79 @@ make -f Open-ILS/src/extras/Makefile.install <osname>-developer
 make -f Open-ILS/src/extras/Makefile.install <osname>-packager
 ------------------------------------------------------------------------------
 
+Optional: Extra steps for browser-based staff client
+----------------------------------------------------
+
+[NOTE]
+Skip this section if you are using an official release tarball downloaded
+from http://evergreen-ils.org/downloads
+
+Install dependencies for browser-based staff client
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+1. Install Node.js.  For more information see also:
+   https://github.com/joyent/node/wiki/installation[Node.js Installation]
++
+[source,sh]
+------------------------------------------------------------------------------
+# Go to a temporary directory
+cd /tmp
+
+# Clone the code and checkout the necessary version
+git clone https://github.com/joyent/node.git
+cd node
+git checkout -b v0.10.28 v0.10.28
+
+# set -j to the number of CPU cores on the server + 1
+./configure && make -j2 && sudo make install
+
+# update packages
+% sudo npm update
+------------------------------------------------------------------------------
++
+2. Install Grunt CLI
++
+[source,sh]
+------------------------------------------------------------------------------
+% sudo npm install -g grunt-cli
+------------------------------------------------------------------------------
++
+3. Install Bower
++
+[source,sh]
+------------------------------------------------------------------------------
+% sudo npm install -g bower
+------------------------------------------------------------------------------
+
+Install files for browser-based staff client
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+1. Building, Testing, Minification: The remaining steps all take place within
+   the staff JS web root:
++
+[source,sh]
+------------------------------------------------------------------------------
+cd $EVERGREEN_ROOT/Open-ILS/web/js/ui/default/staff/
+------------------------------------------------------------------------------
++
+2. Install Project-local Dependencies. npm inspects the 'package.json' file
+   for dependencies and fetches them from the Node package network.
++
+[source,sh]
+------------------------------------------------------------------------------
+npm install   # fetch Grunt dependencies
+bower install # fetch JS dependencies
+------------------------------------------------------------------------------
++
+3. Run the build script.
++
+[source,sh]
+------------------------------------------------------------------------------
+# build, run tests, concat+minify
+grunt all
+------------------------------------------------------------------------------
+
+
 Configuration and compilation instructions
 ------------------------------------------
 
