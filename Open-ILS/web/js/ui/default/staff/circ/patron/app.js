@@ -159,7 +159,7 @@ angular.module('egPatronApp', ['ngRoute', 'ui.bootstrap',
 
     $routeProvider.when('/circ/patron/:id/edit', {
         templateUrl: './circ/patron/t_edit',
-        controller: 'PatronEditCtrl',
+        controller: 'PatronRegCtrl',
         resolve : resolver
     });
 
@@ -1165,26 +1165,6 @@ function($scope , $q , $routeParams,  egCore , $modal , patronSvc , egCirc) {
     }
 }])
 
-
-/**
- * Link to patron edit UI
- */
-.controller('PatronEditCtrl',
-       ['$scope','$routeParams','$location','egCore','patronSvc',
-function($scope,  $routeParams,  $location , egCore , patronSvc) {
-    $scope.initTab('edit', $routeParams.id);
-
-    var url = $location.absUrl().replace(/\/staff.*/, '/actor/user/register');
-    url += '?usr=' + encodeURIComponent($routeParams.id);
-
-    $scope.funcs = {
-        on_save : function() {
-            patronSvc.refreshPrimary();
-        }
-    }
-
-    $scope.patron_edit_url = url;
-}])
 
 /**
  * Credentials tester

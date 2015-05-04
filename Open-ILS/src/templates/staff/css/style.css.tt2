@@ -116,6 +116,7 @@ table.list tr.selected td { /* deprecated? */
 .pad-left {padding-left: 10px;}
 .pad-right {padding-right: 10px;}
 .pad-all-min {padding : 5px; }
+.pad-all-min2 {padding : 2px; }
 .pad-all {padding : 10px; }
 
 #print-div { display: none; }

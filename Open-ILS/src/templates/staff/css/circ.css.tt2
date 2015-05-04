@@ -54,6 +54,54 @@ but the ones I'm finding aren't quite cutting it..*/
   border-bottom: 1px solid #CCC;
 }
 
+/* -- patron registration -- */
+
+/* make all input widgets the same width, i.e. fill their column */
+
+.reg-field-input input:not([type="checkbox"]) { width: 100%; }
+
+/* selector contents float left to allow depth-based left-padding */
+.reg-field-input .eg-org-selector,
+.reg-field-input .btn-group {
+  width: 100%; 
+  text-align: left;
+}
+
+/* selector button labels float right */
+.reg-field-input .eg-org-selector button,
+.reg-field-input .btn-group > button {
+  width: 100%; 
+  text-align: right;
+}
+
+
+/* floating div along top-right with field documentation */
+#reg-control-actions {
+    position: fixed;
+    top:160px;
+    right:30px;
+    width:300px;
+    border:2px dashed #d9e8f9;
+    -moz-border-radius: 10px;
+    font-weight: bold;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+#reg-field-doc {
+    border:2px dashed #d9e8f9;
+    -moz-border-radius: 10px;
+    font-weight: bold;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+#reg-field-doc legend {
+    /* otherwise the font size is quite large */
+    font-size: 100%;
+}
+
+/* -- end patron registration -- */
 
 [%# 
 vim: ft=css 

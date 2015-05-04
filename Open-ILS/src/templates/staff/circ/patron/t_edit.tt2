@@ -1,2 +1,423 @@
-<eg-embed-frame url="patron_edit_url" handlers="funcs"></eg-embed-frame>
+[% DOC_IMG = '/images/question-mark.png' %]
+
+<div class="strong-text-2">[% l('Patron Edit') %]</div>
+
+<!-- IDL field documentation window -->
+<div id="reg-control-actions">
+  <div class="pad-all-min">
+    <button type="button" class="btn btn-default">[% l('Save') %]</button>
+    <button type="button" class="btn btn-default">[% l('Save & Clone') %]</button>
+  </div>
+  <div class="pad-all-min" ng-show="!display_required_fields">
+    <a href>[% l('Show Only Required Fields') %]</a>
+  </div>
+  <div class="pad-all-min" ng-show="!display_suggested_fields">
+    <a href>[% l('Show Suggested Fields') %]</a>
+  </div>
+  <div class="pad-all-min" ng-show="!display_all_fields">
+    <a href>[% l('Show All Fields') %]</a>
+  </div>
+  <fieldset id="reg-field-doc" ng-show="selected_field_doc">
+    <legend>
+    {{idl_fields[selected_field_doc.fm_class()][selected_field_doc.field()].label}}
+    </legend>
+    <div>{{selected_field_doc.string()}}</div>
+  </fieldset>
+</div>
+
+[% MACRO formfield(cls, field, path, input_type) BLOCK;
+
+  # input field generator for common text/number/checkbox fields
+
+  IF NOT input_type; input_type = 'text'; END %] 
+
+<div class="row pad-all-min2 form-group">
+
+  <div class="col-md-3 reg-field-label"> <!-- field label -->
+
+  <label>{{idl_fields.[% cls %].[% field %].label}}</label>
+
+  <!-- field documentation img/link -->
+  <img ng-show="field_doc.[% cls %].[% field %]" 
+    ng-click="selected_field_doc=field_doc.[% cls %].[% field %]"
+    src='[% DOC_IMG %]'></img>
+  </div>
+
+  <div class="col-md-3 reg-field-input"> <!-- field form input -->
+
+  [%
+    model = path ? 'patron.' _ path _ '.' _ field : 'patron.' _ field;
+      IF input_type == 'checkbox' %]
+
+    <div class='checkbox'>
+      <input type='checkbox' ng-model='[% model %]'/>
+    </div>
+
+  [% ELSE %]
+    <!-- text / number input -->
+
+    <input type="[% input_type %]" 
+      class="form-control" ng-model="[% model %]"/>
+  [% END %]
+  </div>
+
+  <div class="col-md-3 patron-reg-example">
+
+    [% IF field == 'barcode' %]
+
+      <button class="btn btn-default">[% l('Replace Barcode') %]</button>
+      <button class="btn btn-default">[% l('See All') %]</button>
+
+    [% ELSIF field == 'password' %]
+
+      <button class="btn btn-default">[% l('Generate Password') %]</button>
+
+    [% ELSE %]
+
+      <!-- example strings -->
+
+      [% set_str = "org_settings['ui.patron.edit." _ 
+          cls _ "." _ field _ ".example']"; %]
+
+      <span ng-if="[% set_str %]">
+        [% l('Example: [_1]', "{{" _ set_str _ "}}") %]
+      </span>
+
+      [% IF field.match('phone') %]
+        <!-- phones have a fall-through example option -->
+        <span ng-if="![% set_str %]">
+          [% l('Example: [_1]', 
+           "{{org_settings['ui.patron.edit.phone.example']}}") %]
+        </span>
+      [% END %]
+    [% END %]
+
+  </div>
+</div>
+[% END %]
+
+[% formfield('ac', 'barcode', 'card') %]
+[% formfield('au', 'usrname') %]
+[% formfield('au', 'passwd') %]
+[% formfield('au', 'prefix') %]
+[% formfield('au', 'first_given_name') %]
+[% formfield('au', 'second_given_name') %]
+[% formfield('au', 'family_name') %]
+[% formfield('au', 'suffix') %]
+[% formfield('au', 'alias') %]
+
+<div class="row pad-all-min form-group">
+  <div class="col-md-3 reg-field-label">
+    <label>{{idl_fields.au.dob.label}}</label>
+    <img ng-show="field_doc.au.dob" 
+      ng-click="selected_field_doc=field_doc.au.dob"
+      src='[% DOC_IMG %]'></img>
+  </div>
+  <div class="col-md-3 reg-field-input">
+    <input eg-date-input 
+      class="form-control" ng-model="patron.dob"/>
+  </div>
+</div>
+
+[% formfield('au', 'juvenile', '', 'checkbox') %]
+
+<!-- ident_type -->
+
+<div class="row pad-all-min form-group">
+  <div class="col-md-3 reg-field-label">
+    <label>{{idl_fields.au.ident_type.label}}</label>
+    <img ng-show="field_doc.au.ident_type" 
+      ng-click="selected_field_doc=field_doc.au.ident_type"
+      src='[% DOC_IMG %]'></img>
+  </div>
+  <div class="col-md-3 reg-field-input">
+    <div class="btn-group" dropdown>
+      <button type="button" class="btn btn-default dropdown-toggle">
+        <span style="padding-right: 5px;">
+          {{patron.ident_type.name() || "[% l('Primary Ident Type') %]"}}
+        </span>
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu">
+        <li ng-repeat="type in ident_types">
+          <a href ng-click="patron.ident_type = type">{{type.name()}}</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+[% formfield('au', 'ident_value') %]
+[% formfield('au', 'ident_value2') %]
+[% formfield('au', 'email', '', 'email') %]
+[% formfield('au', 'day_phone') %]
+[% formfield('au', 'evening_phone') %]
+[% formfield('au', 'other_phone') %]
+
+<!-- home org unit selector -->
+
+<div class="row pad-all-min form-group">
+  <div class="col-md-3 reg-field-label">
+    <label>{{idl_fields.au.home_ou.label}}</label>
+    <img ng-show="field_doc.au.home_ou" 
+      ng-click="selected_field_doc=field_doc.au.home_ou"
+      src='[% DOC_IMG %]'></img>
+    </div>
+    <div class="col-md-3 reg-field-input">
+      <eg-org-selector selected="patron.home_ou" onchange="">
+      </eg-org-selector>
+  </div>
+</div>
+
+<!-- profile selector -->
+
+<div class="row pad-all-min form-group">
+  <div class="col-md-3 reg-field-label">
+    <label>{{idl_fields.au.profile.label}}</label>
+    <img ng-show="field_doc.au.profile" 
+      ng-click="selected_field_doc=field_doc.au.profile"
+      src='[% DOC_IMG %]'></img>
+  </div>
+  <div class="col-md-3 reg-field-input">
+    <div class="btn-group" dropdown>
+      <button type="button" class="btn btn-default dropdown-toggle">
+        <span style="padding-right: 5px;">
+          {{patron.profile.name() || "[% l('Profile Group') %]"}}
+        </span>
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu">
+        <li ng-repeat="grp in profiles">
+          <a href 
+            style="padding-left: {{pgt_depth(grp) * 10 + 5}}px"
+            ng-click="patron.profile = grp">{{grp.name()}}</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="row pad-all-min form-group">
+  <div class="col-md-3 reg-field-label">
+  <label>{{idl_fields.au.expire_date.label}}</label>
+    <img ng-show="field_doc.au.expire_date" 
+    ng-click="selected_field_doc=field_doc.au.expire_date"
+    src='[% DOC_IMG %]'></img>
+  </div>
+  <div class="col-md-3 reg-field-input">
+    <input eg-date-input 
+      class="form-control" ng-model="patron.expire_date"/>
+  </div>
+  <div class="col-md-3">
+    <button class="btn btn-default">[% l('Update Expire Date') %]</button>
+  </div>
+</div>
+
+<!-- net_access_level -->
+
+<div class="row pad-all-min form-group">
+  <div class="col-md-3 reg-field-label">
+    <label>{{idl_fields.au.net_access_level.label}}</label>
+    <img ng-show="field_doc.au.net_access_level" 
+      ng-click="selected_field_doc=field_doc.au.net_access_level"
+      src='[% DOC_IMG %]'></img>
+  </div>
+  <div class="col-md-3 reg-field-input">
+    <div class="btn-group" dropdown>
+      <button type="button" class="btn btn-default dropdown-toggle">
+        <span style="padding-right: 5px;">
+          {{patron.net_access_level.name() || "[% l('Net Access Level') %]"}}
+        </span>
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu">
+        <li ng-repeat="level in net_access_levels">
+          <a href 
+            ng-click="patron.net_access_level = level">{{level.name()}}</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+[% formfield('au', 'active', '', 'checkbox') %]
+[% formfield('au', 'barred', '', 'checkbox') %]
+[% formfield('au', 'master_account', '', 'checkbox') %]
+[% formfield('au', 'claims_returned_count', '', 'number') %]
+[% formfield('au', 'claims_never_checked_out_count', '', 'number') %]
+[% formfield('au', 'alert_message') %]
+
+<div class="alert alert-success row" role="alert">
+  <div class="col-md-6">[% l('User Settings') %]</div>
+</div>
+
+<div class="row pad-all-min form-group">
+  <div class="col-md-3 reg-field-label">
+    <label>{{user_setting_types['opac.default_phone'].label()}}</label>
+  </div>
+  <div class="col-md-3 reg-field-input">
+    <input type='text' ng-model="user_settings['opac.default_phone']"/>
+  </div>
+</div>
+
+<div class="row pad-all-min form-group">
+  <div class="col-md-3 reg-field-label">
+    <label>{{user_setting_types['opac.default_pickup_location'].label()}}</label>
+  </div>
+  <div class="col-md-3 reg-field-input">
+    <eg-org-selector selected="patron.home_ou" onchange=""></eg-org-selector>
+  </div>
+</div>
+
+<div class="row pad-all-min form-group">
+  <div class="col-md-3 reg-field-label">
+    <label>{{user_setting_types['circ.holds_behind_desk'].label()}}</label>
+  </div>
+  <div class="col-md-3 reg-field-input">
+    <div class='checkbox'>
+      <input type='checkbox' ng-model="user_settings['circ.holds_behind_desk']"/>
+    </div>
+  </div>
+</div>
+
+<div class="row pad-all-min form-group">
+  <div class="col-md-3 reg-field-label">
+    <label>[% l('Holds Notices') %]</label>
+  </div>
+  <div class="col-md-3 reg-field-input flex-row">
+    <div class='flex-cell'>
+      <input type='checkbox' ng-model="hold_notify_phone"/>
+      [% l('Phone') %]
+    </div>
+    <div class='flex-cell'>
+      <input type='checkbox' ng-model="hold_notify_email"/>
+      [% l('Email') %]
+    </div>
+    <div class='flex-cell'>
+      <input type='checkbox' ng-model="hold_notify_sms"/>
+      [% l('SMS') %]
+    </div>
+  </div>
+</div>
+
+<div class="row pad-all-min form-group" ng-if="org_settings['sms.enable']">
+  <div class="col-md-3 reg-field-label">
+    <label>[% l('Default SMS/Text Number') %]</label>
+  </div>
+  <div class="col-md-3 reg-field-input">
+    <input type='text'/>
+  </div>
+</div>
+
+<div class="row pad-all-min form-group" ng-if="org_settings['sms.enable']">
+  <div class="col-md-3 reg-field-label">
+    <label>[% l('Default SMS Carrier') %]</label>
+  </div>
+  <div class="col-md-3 reg-field-input">
+    <div class="btn-group" dropdown>
+      <button type="button" class="btn btn-default dropdown-toggle">
+        <span style="padding-right: 5px;"></span>
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu">
+        <li ng-repeat="carrier in sms_carriers">
+          <a href 
+            ng-click="user_settings['opac.default_sms_carrier'] = carrier">
+                {{carrier.name()}}
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="alert alert-success row" role="alert">
+    <div class="col-md-3">[% l('Address') %]</div>
+    <div class="col-md-3">
+        <span class='pad-all-min'>
+          [% l('Mailing') %] <input type='checkbox'/>
+        </span>
+        <span class='pad-all-min'>
+          [% l('Billing') %] <input type='checkbox'/>
+        </span>
+        <span class='pad-all-min'>
+          <button type="button" class="btn btn-danger">[% l('X') %]</button>
+        </span>
+    </div>
+</div>
+
+<!-- addresses -->
+
+[% formfield('aua', 'address_type', 'mailing_address') %]
+[% formfield('aua', 'post_code', 'mailing_address') %]
+[% formfield('aua', 'street1', 'mailing_address') %]
+[% formfield('aua', 'street2', 'mailing_address') %]
+[% formfield('aua', 'city', 'mailing_address') %]
+[% formfield('aua', 'county', 'mailing_address') %]
+[% formfield('aua', 'state', 'mailing_address') %]
+[% formfield('aua', 'country', 'mailing_address') %]
+[% formfield('aua', 'valid', 'mailing_address', 'checkbox') %]
+[% formfield('aua', 'within_city_limits', 'mailing_address', 'checkbox') %]
+
+<div class="row">
+  <button type="button" class="btn btn-success">[% l('New Address') %]</button>
+</div>
+
+<!-- pending address -->
+
+<div class="alert alert-success row" role="alert" ng-if="stat_cats.length > 0">
+    <div class="col-md-6">[% l('Statistical Categories') %]</div>
+</div>
+
+<div class="row pad-all-min form-group" ng-repeat="cat in stat_cats">
+  <div class="col-md-3 reg-field-label">
+    <label>{{cat.name()}}</label>
+  </div>
+  <div class="col-md-3 reg-field-input">
+    <div ng-if="cat.entries().length == 0">
+      <input type="text" class="form-control"/>
+    </div>
+    <div ng-if="cat.entries().length != 0">
+      <div class="btn-group" dropdown>
+        <button type="button" class="btn btn-default dropdown-toggle">
+          <span style="padding-right: 5px;"></span>
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+          <li ng-repeat="entry in cat.entries()">
+            <a href ng-click=""> {{entry.value()}} </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- surveys -->
+
+<div class="alert alert-success row" role="alert" ng-if="surveys.length > 0">
+    <div class="col-md-6">[% l('Surveys') %]</div>
+</div>
+
+<div class="row pad-all-min form-group" ng-repeat="survey in surveys">
+  <div class="col-md-3 reg-field-label">
+    <label>{{survey.name()}}</label>
+  </div>
+  <div class="col-md-3 reg-field-input">
+    <div class="btn-group" dropdown>
+      <button type="button" class="btn btn-default dropdown-toggle">
+        <span style="padding-right: 5px;"></span>
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu">
+        <li ng-repeat="question in survey.questions()">
+          <a href ng-click=""> {{question.question()}} </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
 
