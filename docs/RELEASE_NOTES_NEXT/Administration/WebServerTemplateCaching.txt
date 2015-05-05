@@ -1,0 +1,20 @@
+Improved caching of web server templates
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Template Toolkit processors used by Apache are now cached for
+better performance (by virtue of thereby being able to take advantage
+of Template Toolkit's internal caching mechanism). In addition, the
+*compiled* versions of the templates themselves can be cached to
+provide an additional performance boost.
+
+Two Apache virtualhost configuration variables are added to
+control caching of compiled templates:
+
+ * `OILSWebCompiledTemplateCache` - specifies location on the
+   web server filesystem to store compiled templates.
+ * `OILSWebTemplateStatTTL` - specifies number of seconds before
+   checking to see if a newer version of a cached template is
+   available.
+
+As a result of the caching changes, it is now necessary for
+Evergreen administrators to reload Apache to ensure that a change
+to (say) TPAC templates becomes visible.
