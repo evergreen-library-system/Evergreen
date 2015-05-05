@@ -10,7 +10,7 @@ use OpenILS::WWW::AddedContent qw( @sysconfdir@/opensrf_core.xml );
 use OpenILS::WWW::Proxy ('@sysconfdir@/opensrf_core.xml');
 use OpenILS::WWW::Vandelay qw( @sysconfdir@/opensrf_core.xml );
 use OpenILS::WWW::TemplateBatchBibUpdate qw( @sysconfdir@/opensrf_core.xml );
-use OpenILS::WWW::EGWeb;
+use OpenILS::WWW::EGWeb ('@sysconfdir@/opensrf_core.xml', 'OpenILS::WWW::EGCatLoader', 'en_us');;
 use OpenILS::WWW::IDL2js ('@sysconfdir@/opensrf_core.xml');
 use OpenILS::WWW::FlatFielder;
 use OpenILS::WWW::PhoneList ('@sysconfdir@/opensrf_core.xml');

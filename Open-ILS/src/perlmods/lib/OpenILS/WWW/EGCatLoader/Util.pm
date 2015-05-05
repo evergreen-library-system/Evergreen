@@ -25,6 +25,31 @@ our %cache = ( # cached data
     authority_fields => {en_us => {}}
 );
 
+sub child_init {
+    my $class = shift;
+    my %locales = @_;
+
+    # create a stub object with just enough in place
+    # to call init_ro_object_cache()
+    my $stub = bless({}, ref($class) || $class);
+    my $ctx = {};
+    $stub->ctx($ctx);
+
+    foreach my $locale (sort keys %locales) {
+        OpenSRF::AppSession->default_locale($locales{$locale});
+        $ctx->{locale} = $locale;
+        $stub->init_ro_object_cache();
+
+        # pre-cache various sets of objects
+        # known to be time-consuming to retrieve
+        # the first go around
+        $ro_object_subs->{$locale}->{aou_tree}();
+        $ro_object_subs->{$locale}->{aouct_tree}();
+        $ro_object_subs->{$locale}->{ccvm_list}();
+        $ro_object_subs->{$locale}->{get_authority_fields}(1);
+    }
+}
+
 sub init_ro_object_cache {
     my $self = shift;
     my $ctx = $self->ctx;

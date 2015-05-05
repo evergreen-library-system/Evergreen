@@ -25,6 +25,30 @@ my %vhost_path_cache;
 # cache template processors by vhost
 my %vhost_processor_cache;
 
+my $bootstrap_config;
+my @context_loaders_to_preinit = ();
+my %locales_to_preinit = ();
+
+sub import {
+    my ($self, $bootstrap_config, $loaders, $locales) = @_;
+    @context_loaders_to_preinit = split /\s+/, $loaders, -1 if defined($loaders);
+    %locales_to_preinit = map { $_ => parse_eg_locale($_) }
+                          split /\s+/, $locales, -1 if defined($locales);
+}
+
+sub child_init {
+    OpenSRF::System->bootstrap_client(config_file => $bootstrap_config);
+    my $idl = OpenSRF::Utils::SettingsClient->new->config_value("IDL");
+    Fieldmapper->import(IDL => $idl);
+    foreach my $loader (@context_loaders_to_preinit) {
+        eval {
+            $loader->use;
+            $loader->child_init(%locales_to_preinit);
+        };
+    }
+    return Apache2::Const::OK;
+}
+
 sub handler {
     my $r = shift;
     my $stat = handler_guts($r);

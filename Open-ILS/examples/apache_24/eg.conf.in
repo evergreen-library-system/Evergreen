@@ -20,6 +20,7 @@ PerlChildInitHandler OpenILS::WWW::SuperCat::child_init
 PerlChildInitHandler OpenILS::WWW::AddedContent::child_init
 PerlChildInitHandler OpenILS::WWW::AutoSuggest::child_init
 PerlChildInitHandler OpenILS::WWW::PhoneList::child_init
+PerlChildInitHandler OpenILS::WWW::EGWeb::child_init
 
 # ----------------------------------------------------------------------------------
 # Set some defaults for our working directories
