@@ -41,6 +41,7 @@ sub init_ro_object_cache {
     }
 
     my $locale_subs = {};
+    my $locale = $ctx->{locale};
 
     # make all "field_safe" classes accesible by default in the template context
     my @classes = grep {
@@ -63,17 +64,17 @@ sub init_ro_object_cache {
         # Retrieve the full set of objects with class $hint
         $locale_subs->{$list_key} = sub {
             my $method = "retrieve_all_$eclass";
-            $cache{list}{$ctx->{locale}}{$hint} = $e->$method() unless $cache{list}{$ctx->{locale}}{$hint};
-            return $cache{list}{$ctx->{locale}}{$hint};
+            $cache{list}{$locale}{$hint} = $e->$method() unless $cache{list}{$locale}{$hint};
+            return $cache{list}{$locale}{$hint};
         };
 
         # locate object of class $hint with Ident field $id
         $cache{map}{$hint} = {};
         $locale_subs->{$get_key} = sub {
             my $id = shift;
-            return $cache{map}{$ctx->{locale}}{$hint}{$id} if $cache{map}{$ctx->{locale}}{$hint}{$id};
-            ($cache{map}{$ctx->{locale}}{$hint}{$id}) = grep { $_->$ident_field eq $id } @{$locale_subs->{$list_key}->()};
-            return $cache{map}{$ctx->{locale}}{$hint}{$id};
+            return $cache{map}{$locale}{$hint}{$id} if $cache{map}{$locale}{$hint}{$id};
+            ($cache{map}{$locale}{$hint}{$id}) = grep { $_->$ident_field eq $id } @{$locale_subs->{$list_key}->()};
+            return $cache{map}{$locale}{$hint}{$id};
         };
 
         # search for objects of class $hint where field=value
@@ -92,17 +93,17 @@ sub init_ro_object_cache {
                 $search_obj->{$filterfield} = $filterval;
                 $cacheval .= ':' . $filterfield . ':' . $filterval;
             }
-            #$cache{search}{$ctx->{locale}}{$hint}{$field} = {} unless $cache{search}{$ctx->{locale}}{$hint}{$field};
-            $cache{search}{$ctx->{locale}}{$hint}{$field}{$cacheval} = $e->$method($search_obj)
-                unless $cache{search}{$ctx->{locale}}{$hint}{$field}{$cacheval};
-            return $cache{search}{$ctx->{locale}}{$hint}{$field}{$cacheval};
+            #$cache{search}{$locale}{$hint}{$field} = {} unless $cache{search}{$locale}{$hint}{$field};
+            $cache{search}{$locale}{$hint}{$field}{$cacheval} = $e->$method($search_obj)
+                unless $cache{search}{$locale}{$hint}{$field}{$cacheval};
+            return $cache{search}{$locale}{$hint}{$field}{$cacheval};
         };
     }
 
     $locale_subs->{aou_tree} = sub {
 
         # fetch the org unit tree
-        unless($cache{aou_tree}{$ctx->{locale}}) {
+        unless($cache{aou_tree}{$locale}) {
             my $tree = $e->search_actor_org_unit([
                 {   parent_ou => undef},
                 {   flesh            => -1,
@@ -116,17 +117,17 @@ sub init_ro_object_cache {
             sub flesh_aout {
                 my $node = shift;
                 my $locale_subs = shift;
-                my $ctx = shift;
+                my $locale = shift;
                 $node->ou_type( $locale_subs->{get_aout}->($node->ou_type) );
-                $cache{map}{$ctx->{locale}}{aou}{$node->id} = $node;
-                flesh_aout($_, $locale_subs, $ctx) foreach @{$node->children};
+                $cache{map}{$locale}{aou}{$node->id} = $node;
+                flesh_aout($_, $locale_subs, $locale) foreach @{$node->children};
             };
-            flesh_aout($tree, $locale_subs, $ctx);
+            flesh_aout($tree, $locale_subs, $locale);
 
-            $cache{aou_tree}{$ctx->{locale}} = $tree;
+            $cache{aou_tree}{$locale} = $tree;
         }
 
-        return $cache{aou_tree}{$ctx->{locale}};
+        return $cache{aou_tree}{$locale};
     };
 
     # Add a special handler for the tree-shaped org unit cache
@@ -134,13 +135,13 @@ sub init_ro_object_cache {
         my $org_id = shift;
         return undef unless defined $org_id;
         $locale_subs->{aou_tree}->(); # force the org tree to load
-        return $cache{map}{$ctx->{locale}}{aou}{$org_id};
+        return $cache{map}{$locale}{aou}{$org_id};
     };
 
     # Returns a flat list of aou objects.  often easier to manage than a tree.
     $locale_subs->{aou_list} = sub {
         $locale_subs->{aou_tree}->(); # force the org tree to load
-        return [ values %{$cache{map}{$ctx->{locale}}{aou}} ];
+        return [ values %{$cache{map}{$locale}{aou}} ];
     };
 
     # returns the org unit object by shortname
@@ -153,8 +154,8 @@ sub init_ro_object_cache {
     $locale_subs->{aouct_tree} = sub {
 
         # fetch the org unit tree
-        unless(exists $cache{aouct_tree}{$ctx->{locale}}) {
-            $cache{aouct_tree}{$ctx->{locale}} = undef;
+        unless(exists $cache{aouct_tree}{$locale}) {
+            $cache{aouct_tree}{$locale} = undef;
 
             my $tree_id = $e->search_actor_org_unit_custom_tree(
                 {purpose => 'opac', active => 't'},
@@ -185,12 +186,12 @@ sub init_ro_object_cache {
                     }
                 }
 
-                $cache{aouct_tree}{$ctx->{locale}} = 
+                $cache{aouct_tree}{$locale} = 
                     $node_tree->org_unit if $node_tree;
             }
         }
 
-        return $cache{aouct_tree}{$ctx->{locale}};
+        return $cache{aouct_tree}{$locale};
     };
 
     # turns an ISO date into something TT can understand
@@ -230,30 +231,30 @@ sub init_ro_object_cache {
     $locale_subs->{get_org_setting} = sub {
         my($org_id, $setting) = @_;
 
-        $cache{org_settings}{$ctx->{locale}}{$org_id}{$setting} =
+        $cache{org_settings}{$locale}{$org_id}{$setting} =
             $U->ou_ancestor_setting_value($org_id, $setting)
-                unless exists $cache{org_settings}{$ctx->{locale}}{$org_id}{$setting};
+                unless exists $cache{org_settings}{$locale}{$org_id}{$setting};
 
-        return $cache{org_settings}{$ctx->{locale}}{$org_id}{$setting};
+        return $cache{org_settings}{$locale}{$org_id}{$setting};
     };
 
     # retrieve and cache acsaf values
     $locale_subs->{get_authority_fields} = sub {
         my ($control_set) = @_;
 
-        if (not exists $cache{authority_fields}{$ctx->{locale}}{$control_set}) {
+        if (not exists $cache{authority_fields}{$locale}{$control_set}) {
             my $acs = $e->search_authority_control_set_authority_field(
                 {control_set => $control_set}
             ) or return;
-            $cache{authority_fields}{$ctx->{locale}}{$control_set} =
+            $cache{authority_fields}{$locale}{$control_set} =
                 +{ map { $_->id => $_ } @$acs };
         }
 
-        return $cache{authority_fields}{$ctx->{locale}}{$control_set};
+        return $cache{authority_fields}{$locale}{$control_set};
     };
 
     $ctx->{$_} = $locale_subs->{$_} for keys %$locale_subs;
-    $ro_object_subs->{$ctx->{locale}} = $locale_subs;
+    $ro_object_subs->{$locale} = $locale_subs;
 }
 
 sub generic_redirect {
