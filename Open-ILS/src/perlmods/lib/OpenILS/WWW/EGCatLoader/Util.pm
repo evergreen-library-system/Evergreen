@@ -27,7 +27,6 @@ our %cache = ( # cached data
 
 sub init_ro_object_cache {
     my $self = shift;
-    my $e = $self->editor;
     my $ctx = $self->ctx;
 
     # reset org unit setting cache on each page load to avoid the
@@ -64,7 +63,9 @@ sub init_ro_object_cache {
         # Retrieve the full set of objects with class $hint
         $locale_subs->{$list_key} = sub {
             my $method = "retrieve_all_$eclass";
+            my $e = new_editor();
             $cache{list}{$locale}{$hint} = $e->$method() unless $cache{list}{$locale}{$hint};
+            undef $e;
             return $cache{list}{$locale}{$hint};
         };
 
@@ -94,8 +95,10 @@ sub init_ro_object_cache {
                 $cacheval .= ':' . $filterfield . ':' . $filterval;
             }
             #$cache{search}{$locale}{$hint}{$field} = {} unless $cache{search}{$locale}{$hint}{$field};
+            my $e = new_editor();
             $cache{search}{$locale}{$hint}{$field}{$cacheval} = $e->$method($search_obj)
                 unless $cache{search}{$locale}{$hint}{$field}{$cacheval};
+            undef $e;
             return $cache{search}{$locale}{$hint}{$field}{$cacheval};
         };
     }
@@ -104,6 +107,7 @@ sub init_ro_object_cache {
 
         # fetch the org unit tree
         unless($cache{aou_tree}{$locale}) {
+            my $e = new_editor();
             my $tree = $e->search_actor_org_unit([
                 {   parent_ou => undef},
                 {   flesh            => -1,
@@ -123,7 +127,7 @@ sub init_ro_object_cache {
                 flesh_aout($_, $locale_subs, $locale) foreach @{$node->children};
             };
             flesh_aout($tree, $locale_subs, $locale);
-
+            undef $e;
             $cache{aou_tree}{$locale} = $tree;
         }
 
@@ -157,6 +161,7 @@ sub init_ro_object_cache {
         unless(exists $cache{aouct_tree}{$locale}) {
             $cache{aouct_tree}{$locale} = undef;
 
+            my $e = new_editor();
             my $tree_id = $e->search_actor_org_unit_custom_tree(
                 {purpose => 'opac', active => 't'},
                 {idlist => 1}
@@ -189,6 +194,7 @@ sub init_ro_object_cache {
                 $cache{aouct_tree}{$locale} = 
                     $node_tree->org_unit if $node_tree;
             }
+            undef $e;
         }
 
         return $cache{aouct_tree}{$locale};
@@ -243,11 +249,18 @@ sub init_ro_object_cache {
         my ($control_set) = @_;
 
         if (not exists $cache{authority_fields}{$locale}{$control_set}) {
-            my $acs = $e->search_authority_control_set_authority_field(
-                {control_set => $control_set}
-            ) or return;
-            $cache{authority_fields}{$locale}{$control_set} =
-                +{ map { $_->id => $_ } @$acs };
+            my $e = new_editor();
+            if (my $acs = $e->search_authority_control_set_authority_field(
+                                    {control_set => $control_set}
+                                )
+            ) {
+                $cache{authority_fields}{$locale}{$control_set} =
+                 +{ map { $_->id => $_ } @$acs };
+                undef $e;
+            } else {
+                undef $e;
+                return;
+            }
         }
 
         return $cache{authority_fields}{$locale}{$control_set};
