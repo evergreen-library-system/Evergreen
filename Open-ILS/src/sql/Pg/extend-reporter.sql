@@ -26,12 +26,11 @@ CREATE TABLE extend_reporter.legacy_circ_count (
 );
 
 CREATE OR REPLACE VIEW extend_reporter.full_circ_count AS
- SELECT cp.id, COALESCE(c.circ_count, 0::bigint) + COALESCE(count(DISTINCT circ.id), 0::bigint) + COALESCE(count(DISTINCT acirc.id), 0::bigint) AS circ_count
-   FROM asset."copy" cp
-   LEFT JOIN extend_reporter.legacy_circ_count c USING (id)
-   LEFT JOIN "action".circulation circ ON circ.target_copy = cp.id
-   LEFT JOIN "action".aged_circulation acirc ON acirc.target_copy = cp.id
-  GROUP BY cp.id, c.circ_count;
+   SELECT cp.id,
+   COALESCE((SELECT circ_count FROM extend_reporter.legacy_circ_count WHERE id = cp.id), 0)
+   + (SELECT COUNT(*) FROM action.circulation WHERE target_copy = cp.id)
+   + (SELECT COUNT(*) FROM action.aged_circulation WHERE target_copy = cp.id) AS circ_count
+   FROM asset.copy cp;
 
 CREATE OR REPLACE VIEW extend_reporter.global_bibs_by_holding_update AS
   SELECT DISTINCT ON (id) id, holding_update, update_type
