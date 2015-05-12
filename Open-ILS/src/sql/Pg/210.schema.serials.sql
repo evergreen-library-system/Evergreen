@@ -20,6 +20,7 @@ CREATE TABLE serial.record_entry (
 	marc		TEXT,
 	last_xact_id	TEXT		NOT NULL
 );
+CREATE INDEX serial_record_entry_record_idx ON serial.record_entry ( record );
 CREATE INDEX serial_record_entry_creator_idx ON serial.record_entry ( creator );
 CREATE INDEX serial_record_entry_editor_idx ON serial.record_entry ( editor );
 CREATE INDEX serial_record_entry_owning_lib_idx ON serial.record_entry ( owning_lib, deleted );
