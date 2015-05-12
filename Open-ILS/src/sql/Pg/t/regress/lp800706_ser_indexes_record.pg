@@ -1,0 +1,7 @@
+BEGIN;
+
+SELECT plan(1);
+
+SELECT has_index('serial', 'record_entry', 'serial_record_entry_record_idx', ARRAY['record']);
+
+ROLLBACK;
