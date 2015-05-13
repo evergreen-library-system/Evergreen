@@ -50,6 +50,7 @@ NOTE: All paths are relative to `/openils/var/templates/opac`
   ** controlling the size of cover art on the record details page
   ** defining which facets to display, and in which order
   ** controlling basic and advanced search options
+  ** controlling if the "Show More Details" button is visible or activated by default in OPAC search results
 * `parts/footer.tt2` and `parts/topnav_links.tt2`: contains customizable
   links. Defaults like 'Link 1' will not mean much to your users!
 * `parts/homesearch.tt2`: holds the large Evergreen logo on the home page
