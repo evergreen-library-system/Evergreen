@@ -224,6 +224,8 @@ staff client.
 
 include::admin/acquisitions_admin.txt[]
 
+include::admin/age_hold_protection.txt[]
+
 include::admin/authorities.txt[]
 
 include::admin/Best_Hold_Selection_Sort_Order.txt[]
