@@ -538,22 +538,6 @@ RewriteRule .? - [E=locale:%{HTTP:Accept-Language}]
 </Location>
 
 # ----------------------------------------------------------------------------------
-# Selfcheck interface
-# ----------------------------------------------------------------------------------
-<LocationMatch .*/selfcheck.xml>
-    AuthType Basic
-    AuthName "Self-check Login"
-    PerlOptions +GlobalRequest
-    PerlSetVar OILSProxyPermissions "STAFF_LOGIN"
-    PerlAuthenHandler OpenILS::WWW::Proxy::Authen
-    require valid-user
-    Options +ExecCGI
-    PerlSendHeader On
-    allow from all
-</LocationMatch>
-
-
-# ----------------------------------------------------------------------------------
 # Reports GUI
 # ----------------------------------------------------------------------------------
 <LocationMatch /reports>
