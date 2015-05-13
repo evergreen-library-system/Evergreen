@@ -9,9 +9,6 @@ link to a library information page. This page is located at
 
 Evergreen automatically generates this page based on information entered in
 *Admin* -> *Server Administration* -> *Organizational Units* (actor.org_unit).
-The library information pages publish schema.org structured data, which can
-enable search engines and other systems to better understand your libraries and
-their resources.
 
 The library information page displays:
 
@@ -44,4 +41,4 @@ above.
 . Set the *Use external "library information URL" in copy table, if available*
 setting to true.
 
-
+The library information pages publish schema.org structured data, as do parts of the OPAC  bibliographic record views, which can enable search engines and other systems to better understand your libraries and their resources.
