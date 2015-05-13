@@ -36,11 +36,9 @@ indexterm:[search, bib call number]
 
 * *Series*: finds the terms you enter in the title of a multi-part series.
 
-* *Bib Call Number*: finds the terms you enter in the call number field of a bib record.
-
 [TIP]
 =============
-To search an item copy call number, if different from _Bib Call Number_, use <<numeric_search, _Advanced Search: Numeric_>> 
+To search an item copy call number, use <<numeric_search, _Advanced Search: Numeric_>> 
 =============
 
 Formats
