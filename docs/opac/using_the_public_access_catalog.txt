@@ -349,7 +349,23 @@ indexterm:[search results, viewing a record]
 Click on a search result's title to view a detailed record of the title, including descriptive information, location and availability, current holds, and options for placing holds, add to my list, and print/email. 
 
 image::media/catalogue-8.png[catalogue-8]
+image::media/catalogue-8a.png[catalogue-8a]
 
+
+
+SMS Call Number
+^^^^^^^^^^^^^^^
+
+If configured by the library system adminsitrator, you may send yourself the call number via SMS message by clicking on the *Text* link, which appears beside the call number. 
+
+image::media/textcn1.png[]
+
+See the *<<Sending_Copy_Details_via_Text_Message, Sending Copy Details via Text Message>>* section of the documentation for more information on how to use this feature.
+
+[WARNING]
+==========
+Carrier charges may apply when using the SMS call number feature.
+==========
 
 Details
 ^^^^^^^

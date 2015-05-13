@@ -85,35 +85,40 @@ image::media/SMS_Text_Messaging12.jpg[SMS_Text_Messaging12]
 
 image::media/SMS_Text_Messaging13.jpg[SMS_Text_Messaging13]
 
-Sending Copy Locations via Text Message
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[[Sending_Copy_Details_via_Text_Message]]
+Sending Copy Details via Text Message
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+You can search the catalog for an item, and, after retrieving results
+for the item, click a hyperlink to send the copy information in a text
+message.
 
-You can search the catalog for an item, and, after retrieving results for the item, click a hyperlink to send the copy location in a text message.
-
-. Login to your account in the OPAC.  NOTE: If you have disabled the setting that requires patron login, then you do not have to login to their accounts to send text messages.  
-See *Administrative Setup* for more information.
+. Login to your account in the OPAC.  NOTE: If you have disabled the
+setting that requires patron login, then you do not have to login to
+their accounts to send text messages. See
+<<_administrative_setup,Administrative Setup>> for more information.
 +
 image::media/SMS_Text_Messaging7.jpg[SMS_Text_Messaging7]
 +
 . Search the catalog, and retrieve a title with copies.
-. Click the *Text* link adjacent to the call number.
+. Click the *Text* link next to the call number.
 +
-image::media/SMS_Text_Messaging8.jpg[SMS_Text_Messaging8]
+image::media/SMS_Text_Messaging8.png[Screenshot: Link to text copy details via SMS]
 +
 . The text of the SMS Text Message appears.
 +
-image::media/SMS_Text_Messaging9.jpg[SMS_Text_Messaging9]
+image::media/SMS_Text_Messaging9.png[Screenshot: Text message preview with submit form]
 +
-. Choose an SMS Carrier from the drop down menu.  NOTE: You can enter your SMS carrier and phone number into your *Account Preferences* to skip steps five and six. 
+. Choose an SMS Carrier from the drop down menu.  NOTE: You can enter
+your SMS carrier and phone number into your *Account Preferences* to
+skip steps five and six.
 . Enter a phone number. 
+. Click *Submit*.  NOTE: Message and data rates may apply.
+. The number and carrier are converted to an email address, and the text
+message is sent to your mobile phone. The following confirmation message
+will appear.
 +
-image::media/SMS_Text_Messaging10.jpg[SMS_Text_Messaging10]
-+
-. Click *Submit*.
-. The number and carrier are converted to an email address, and the text message is sent to your mobile phone.
-
-image::media/SMS_Text_Messaging11.jpg[SMS_Text_Messaging11]
+image::media/SMS_Text_Messaging11.png[Screenshot: Confirmation page that SMS message was sent]
 
 *Permissions to use this Feature*
 
