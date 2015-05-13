@@ -7,7 +7,7 @@
 # Currently supports Debian (jessie, wheezy, squeeze), Ubuntu (12.04), 
 # Ubuntu (14.04) and Fedora (16 and 17).
 #
-# Installs Perl prereqs, libjs with Perl wrapper, libdbi, libdbi-drivers, and libyaz
+# Installs Perl prereqs, libdbi, libdbi-drivers, and libyaz
 #
 # usage:
 # 	make -f Makefile.install debian-jessie
@@ -28,14 +28,6 @@
 
 # Make any assumptions about the shell being used explicit
 export SHELL=/bin/bash 
-
-export LIBJS=js-1.7.0
-export LIBJS_PERL=JavaScript-SpiderMonkey-0.21
-export LIBJS_URL=http://ftp.mozilla.org/pub/mozilla.org/js/$(LIBJS).tar.gz
-export LIBJS_PERL_URL=http://mirror.datapipe.net/pub/CPAN/authors/id/T/TB/TBUSCH/$(LIBJS_PERL).tar.gz
-
-# used for installing libjs lib and header files
-export JS_INSTALL_PREFIX=/usr/
 
 export LIBNET_Z3950_SIMPLESERVER=Net-Z3950-SimpleServer-1.15
 export LIBNET_Z3950_SIMPLESERVER_URL=http://ftp.indexdata.dk/pub/simpleserver/$(LIBNET_Z3950_SIMPLESERVER)

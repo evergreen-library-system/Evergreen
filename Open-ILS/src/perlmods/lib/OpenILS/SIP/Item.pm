@@ -7,7 +7,6 @@ use Carp;
 use OpenILS::SIP;
 use OpenILS::SIP::Transaction;
 use OpenILS::Application::AppUtils;
-use OpenILS::Application::Circ::ScriptBuilder;
 # use Data::Dumper;
 use OpenILS::Const qw/:const/;
 use OpenSRF::Utils qw/:datetime/;
@@ -157,20 +156,6 @@ sub new {
     syslog("LOG_DEBUG", "OILS: Item('$item_id'): found with title '%s'", $self->title_id);
 
     my $config = OpenILS::SIP->config();    # FIXME : will not always match!
-    my $legacy = $config->{implementation_config}->{legacy_script_support} || undef;
-
-    if( defined $legacy ) {
-        $self->{legacy_script_support} = ($legacy =~ /t(rue)?/io) ? 1 : 0;
-        syslog("LOG_DEBUG", "legacy_script_support is set in SIP config: " . $self->{legacy_script_support});
-
-    } else {
-        my $lss = OpenSRF::Utils::SettingsClient->new->config_value(
-            apps         => 'open-ils.circ',
-            app_settings => 'legacy_script_support'
-        );
-        $self->{legacy_script_support} = ($lss =~ /t(rue)?/io) ? 1 : 0;
-        syslog("LOG_DEBUG", "legacy_script_support is set in SRF config: " . $self->{legacy_script_support});
-    }
 
     return $self;
 }
@@ -245,51 +230,19 @@ sub run_attr_script {
     return 1 if $self->{ran_script};
     $self->{ran_script} = 1;
 
-    if($self->{legacy_script_support}){
+    # use the in-db circ modifier configuration 
+    my $config = {magneticMedia => 'f', SIPMediaType => '001'};     # defaults
+    my $mod = $self->{copy}->circ_modifier;
 
-        syslog('LOG_DEBUG', "Legacy script support is ON");
-        my $config = OpenILS::SIP->config();
-        my $path               = $config->{implementation_config}->{scripts}->{path};
-        my $item_config_script = $config->{implementation_config}->{scripts}->{item_config};
-
-        $path = ref($path) eq 'ARRAY' ? $path : [$path];
-        my $path_str = join(", ", @$path);
-
-        syslog('LOG_DEBUG', "OILS: Script path = [$path_str], Item config script = $item_config_script");
-
-        my $runner = OpenILS::Application::Circ::ScriptBuilder->build({
-            copy   => $self->{copy},
-            editor => OpenILS::SIP->editor(),
-        });
-
-        $runner->add_path($_) for @$path;
-        $runner->load($item_config_script);
-
-        unless( $self->{item_config_result} = $runner->run ) {      # assignment, not comparison
-            $runner->cleanup;
-            warn "Item config script [$path_str : $item_config_script] failed to run: $@\n";
-            syslog('LOG_ERR', "OILS: Item config script [$path_str : $item_config_script] failed to run: $@");
-            return undef;
+    if($mod) {
+        my $mod_obj = OpenILS::SIP->editor()->retrieve_config_circ_modifier($mod);
+        if($mod_obj) {
+            $config->{magneticMedia} = $mod_obj->magnetic_media;
+            $config->{SIPMediaType}  = $mod_obj->sip2_media_type;
         }
-
-        $runner->cleanup;
-
-    } else {
-
-        # use the in-db circ modifier configuration 
-        my $config = {magneticMedia => 'f', SIPMediaType => '001'};     # defaults
-        my $mod = $self->{copy}->circ_modifier;
-
-        if($mod) {
-            my $mod_obj = OpenILS::SIP->editor()->retrieve_config_circ_modifier($mod);
-            if($mod_obj) {
-                $config->{magneticMedia} = $mod_obj->magnetic_media;
-                $config->{SIPMediaType}  = $mod_obj->sip2_media_type;
-            }
-        }
-
-        $self->{item_config_result} = { item_config => $config };
     }
+
+    $self->{item_config_result} = { item_config => $config };
 
     return 1;
 }

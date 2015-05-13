@@ -5,27 +5,6 @@ APT_TOOL=apt-get -yq
 install_debs:
 	$(APT_TOOL) install $(DEBS)
 
-# Install the custom spidermonkey libs and JavaScript-SpiderMonkey Perl modules
-install_js_sm: install_libjs install_spidermonkey
-
-install_libjs: 
-	if [ ! -f $(LIBJS).tar.gz ]; then wget $(LIBJS_URL); fi;
-	tar -zxf $(LIBJS).tar.gz
-	cd js/src/ && JS_DIST=/usr make -f Makefile.ref
-	mkdir -p $(JS_INSTALL_PREFIX)/include/js/
-	cp js/src/*.h $(JS_INSTALL_PREFIX)/include/js/
-	cp js/src/*.tbl $(JS_INSTALL_PREFIX)/include/js/
-	cp js/src/Linux_All_DBG.OBJ/*.so $(JS_INSTALL_PREFIX)/lib/
-	cp js/src/Linux_All_DBG.OBJ/*.a $(JS_INSTALL_PREFIX)/lib/
-	ldconfig
-
-
-install_spidermonkey:
-	if [ ! -f $(LIBJS_PERL).tar.gz ]; then wget $(LIBJS_PERL_URL); fi
-	tar -zxf $(LIBJS_PERL).tar.gz
-	cd $(LIBJS_PERL) && perl Makefile.PL -E4X \
-		&& make && make test && make install
-
 # On Ubuntu and possibly Debian, the libdbi0 package prevents the 
 # compiled-from-source version from being used and breaks the install.
 # This package might get installed depending on the install-time choices
@@ -52,7 +31,6 @@ debian_sys_config:
 	ldconfig
 
 clean:
-	make -f Makefile.ref -C js/src/ clean
-
+	echo "cleaning"
 
 # vim:noet:sw=4:ts=4:

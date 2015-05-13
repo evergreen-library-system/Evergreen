@@ -35,7 +35,6 @@ lib/OpenILS/Application/Circ/HoldNotify.pm
 lib/OpenILS/Application/Circ/Holds.pm
 lib/OpenILS/Application/Circ/Money.pm
 lib/OpenILS/Application/Circ/NonCat.pm
-lib/OpenILS/Application/Circ/ScriptBuilder.pm
 lib/OpenILS/Application/Circ/StatCat.pm
 lib/OpenILS/Application/Circ/Survey.pm
 lib/OpenILS/Application/Circ/Transit.pm
@@ -150,8 +149,6 @@ lib/OpenILS/Utils/OfflineStore.pm
 lib/OpenILS/Utils/Penalty.pm
 lib/OpenILS/Utils/PermitHold.pm
 lib/OpenILS/Utils/RemoteAccount.pm
-lib/OpenILS/Utils/ScriptRunner.pm
-lib/OpenILS/Utils/SpiderMonkey.pm
 lib/OpenILS/Utils/ZClient.pm
 lib/OpenILS/WWW/AddedContent.pm
 lib/OpenILS/WWW/AddedContent/Amazon.pm

@@ -42,7 +42,6 @@ my $build = Module::Build->new(
         'File::Temp' => '0',
         'Getopt::Long' => '0',
         'IO::Scalar' => '0',
-        'JavaScript::SpiderMonkey' => '0',
         'List::Util' => '0',
         'Locale::Country' => '0',
         'LWP::UserAgent' => '0',

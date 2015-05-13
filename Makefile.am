@@ -18,9 +18,6 @@ export TEMPLATEDIR=@localstatedir@/templates
 export UPDATESDIR=@localstatedir@/updates
 
 export datadir=@localstatedir@/data
-export circrulesdir=@localstatedir@/circ
-export catalogscriptdir=@localstatedir@/catalog
-export penaltyrulesdir=@localstatedir@/penalty
 export XSLDIR=@localstatedir@/xsl
 export REPORTERDIR=@localstatedir@/reporter
 export SOCK=@localstatedir@/lock

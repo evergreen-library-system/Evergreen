@@ -40,6 +40,5 @@ install_nodejs_from_source:
 clean:
 	make -C $(LIBDBI) clean
 	make -C $(LIBDBI_DRIVERS) clean
-	make -C $(LIBJS_PERL) clean
 
 # vim:noet:sw=4:ts=4:

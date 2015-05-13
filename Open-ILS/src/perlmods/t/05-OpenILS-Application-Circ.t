@@ -1,6 +1,6 @@
 #!perl -T
 
-use Test::More tests => 13;
+use Test::More tests => 12;
 
 BEGIN {
 	use_ok( 'OpenILS::Application::Circ' );
@@ -14,7 +14,6 @@ use_ok( 'OpenILS::Application::Circ::HoldNotify' );
 use_ok( 'OpenILS::Application::Circ::Holds' );
 use_ok( 'OpenILS::Application::Circ::Money' );
 use_ok( 'OpenILS::Application::Circ::NonCat' );
-use_ok( 'OpenILS::Application::Circ::ScriptBuilder' );
 use_ok( 'OpenILS::Application::Circ::StatCat' );
 use_ok( 'OpenILS::Application::Circ::Survey' );
 use_ok( 'OpenILS::Application::Circ::Transit' );

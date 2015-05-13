@@ -452,7 +452,6 @@ DateTime::Format::ISO8601
 DateTime::Format::Mail
 Unix::Syslog
 GD::Graph3d
-JavaScript::SpiderMonkey
 Log::Log4perl
 Email::Send
 Text::CSV

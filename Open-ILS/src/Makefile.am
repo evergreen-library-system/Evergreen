@@ -24,11 +24,7 @@ export DEF_LDLIBS = -lopensrf
 prefix=@prefix@
 exec_prefix=@exec_prefix@
 datadir=@localstatedir@/data
-circrulesdir=@localstatedir@/circ
-catalogscriptdir=@localstatedir@/catalog
-penaltyrulesdir=@localstatedir@/penalty
 examples = @top_srcdir@/Open-ILS/examples
-jsbackend = @srcdir@/javascript/backend
 supportscr = @srcdir@/support-scripts
 
 # Collect files to be used by multiple targets
@@ -79,22 +75,6 @@ core_scripts =   $(examples)/oils_ctl.sh \
 		 $(srcdir)/extras/import/marc_add_ids
 
 installautojs = $(autojsbinscripts)
-
-#circ-rules-install
-circrules_SCRIPTS = $(jsbackend)/circ/circ_duration.js \
-		    $(jsbackend)/circ/circ_groups.js \
-		    $(jsbackend)/circ/circ_item_config.js \
-		    $(jsbackend)/circ/circ_lib.js \
-		    $(jsbackend)/circ/circ_permit_copy.js \
-		    $(jsbackend)/circ/circ_permit_hold.js \
-		    $(jsbackend)/circ/circ_permit_patron.js \
-		    $(jsbackend)/circ/circ_permit_renew.js 
-penaltyrules_SCRIPTS = $(jsbackend)/penalty/patron_penalty.js
-catalogscript_SCRIPTS = $(jsbackend)/catalog/biblio_descriptor.js \
-		        $(jsbackend)/catalog/biblio_fingerprint.js \
-			$(jsbackend)/catalog/fixed_fields.js \
-		        $(jsbackend)/catalog/phys_char.js \
-	                $(jsbackend)/catalog/record_type.js
 
 endif
 

@@ -849,22 +849,6 @@ vim:et:ts=4:sw=4:
                     <notify_hold>
                         <email>false</email> <!-- set to false to disable hold notice emails -->
                     </notify_hold>
-
-                    <!-- circulation policy scripts -->
-                    <script_path>LIBDIR/javascript</script_path>
-                    <script_path>LOCALSTATEDIR</script_path>
-                    <script_path>LOCALSTATEDIR/catalog</script_path>
-                    <legacy_script_support>false</legacy_script_support>
-                    <scripts> 
-                        <circ_permit_patron>circ/circ_permit_patron.js</circ_permit_patron>
-                        <circ_permit_copy>circ/circ_permit_copy.js</circ_permit_copy>
-                        <circ_duration>circ/circ_duration.js</circ_duration>
-                        <circ_recurring_fines>circ/circ_recurring_fines.js</circ_recurring_fines>
-                        <circ_max_fines>circ/circ_max_fines.js</circ_max_fines>
-                        <circ_permit_renew>circ/circ_permit_renew.js</circ_permit_renew>
-                        <circ_permit_hold>circ/circ_permit_hold.js</circ_permit_hold>
-                    </scripts>               
-
                 </app_settings>
             </open-ils.circ>
 
