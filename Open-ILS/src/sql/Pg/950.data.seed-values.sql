@@ -1155,8 +1155,6 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
     'UPDATE_ORG_UNIT_SETTING.circ.selfcheck.patron_login_timeout', 'ppl', 'description' )),
  ( 338, 'UPDATE_ORG_UNIT_SETTING.circ.selfcheck.alert_on_checkout_event', oils_i18n_gettext( 338, 
     'UPDATE_ORG_UNIT_SETTING.circ.selfcheck.alert_on_checkout_event', 'ppl', 'description' )),
- ( 339, 'UPDATE_ORG_UNIT_SETTING.circ.selfcheck.require_patron_password', oils_i18n_gettext( 339, 
-    'UPDATE_ORG_UNIT_SETTING.circ.selfcheck.require_patron_password', 'ppl', 'description' )),
  ( 340, 'UPDATE_ORG_UNIT_SETTING.global.juvenile_age_threshold', oils_i18n_gettext( 340, 
     'UPDATE_ORG_UNIT_SETTING.global.juvenile_age_threshold', 'ppl', 'description' )),
  ( 341, 'UPDATE_ORG_UNIT_SETTING.cat.bib.keep_on_empty', oils_i18n_gettext( 341, 
@@ -3549,15 +3547,6 @@ INSERT into config.org_unit_setting_type
         'coust', 'label'),
     oils_i18n_gettext('circ.selfcheck.patron_password_required',
         'Patron must log in with barcode and password at selfcheck station',
-        'coust', 'description'),
-    'bool', null)
-
-,( 'circ.selfcheck.require_patron_password', 'self',
-    oils_i18n_gettext('circ.selfcheck.require_patron_password',
-        'Require patron password',
-        'coust', 'label'),
-    oils_i18n_gettext('circ.selfcheck.require_patron_password',
-        'If true, patrons will be required to enter their password in addition to their username/barcode to log into the selfcheck interface',
         'coust', 'description'),
     'bool', null)
 
