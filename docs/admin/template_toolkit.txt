@@ -187,7 +187,7 @@ we only show the configuration for port 80.
 <VirtualHost *:80>
     ServerName br1.concat.ca
     DocumentRoot /openils/var/web/
-    DirectoryIndex index.xml index.html index.xhtml
+    DirectoryIndex index.html index.xhtml
     Include eg_vhost.conf
     <Location /eg>
         PerlAddVar OILSWebTemplatePath "/openils/var/templates_BR1"
@@ -197,7 +197,7 @@ we only show the configuration for port 80.
 <VirtualHost *:80>
     ServerName br2.concat.ca
     DocumentRoot /openils/var/web/
-    DirectoryIndex index.xml index.html index.xhtml
+    DirectoryIndex index.html index.xhtml
     Include eg_vhost.conf
     <Location /eg>
         PerlAddVar OILSWebTemplatePath "/openils/var/templates_BR2"

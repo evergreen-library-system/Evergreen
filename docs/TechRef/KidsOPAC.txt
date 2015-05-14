@@ -105,7 +105,7 @@ along the lines of:
 <VirtualHost *:80>
     ServerName xyz.dev198.esilibrary.com:80
     DocumentRoot /openils/var/web/
-    DirectoryIndex index.xml index.html index.xhtml
+    DirectoryIndex index.html index.xhtml
     Include eg_vhost.conf
     <Location /eg/kpac>
 	#Point to a different kpac.xml config file if needed

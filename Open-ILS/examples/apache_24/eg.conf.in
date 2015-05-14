@@ -139,7 +139,7 @@ ExpiresByType text/css "access plus 50 minutes"
 	ServerName localhost:80
 	ServerAlias 127.0.0.1:80
  	DocumentRoot @localstatedir@/web/
-	DirectoryIndex index.xml index.html index.xhtml
+	DirectoryIndex index.html index.xhtml
     # - absorb the shared virtual host settings
     Include eg_vhost.conf
 </VirtualHost>
