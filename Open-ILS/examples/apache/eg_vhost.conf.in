@@ -278,14 +278,6 @@ Options -Indexes
     SSLRequireSSL
 </LocationMatch>
 
-<LocationMatch /opac/extras/>
-    # Force to en-US for now to satisfy bbags.xml
-    SetEnv locale en-US
-    Options +Includes
-    AddOutputFilter INCLUDES .xml
-    AddType application/xhtml+xml .xml
-</LocationMatch>
-
 RewriteCond %{QUERY_STRING} locale=([^&]*)
 RewriteRule ^/opac/[a-z]{2}-[A-Z]{2}/extras/slimpac/(.*)$ /opac/%1/extras/slimpac/$1? [redirect]
 <LocationMatch /opac/[a-z]{2}-[A-Z]{2}/extras/slimpac/>
