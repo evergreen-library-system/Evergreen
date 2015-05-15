@@ -119,7 +119,7 @@
                                 [% END %]
                             </span>
 
-                            [% auth_headings_ul_added = 0 %];
+                            [% auth_headings_ul_added = 0; %]
                                 [% seenit = {}; # for headings we've rendered
                                    FOR a IN result.sees;
                                     PROCESS authority_notes authority=a;
