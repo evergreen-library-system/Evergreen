@@ -39,6 +39,12 @@
             </div>
             <table class="acct_sum_table" title="[% l('Account Summary') %]">
                 <tr>
+                    <td>[% l("Account Expiration Date") %]</td>
+                    <td align="right">
+                        [% date.format(ctx.parse_datetime(ctx.user.expire_date), DATE_FORMAT) %]
+                    </td>
+                </tr>
+                <tr>
                     <td>[% l("Items Currently Checked out ([_1])", ctx.user_stats.checkouts.total_out) %]</td>
                     <td align="right">
                         <a href="[% mkurl(ctx.opac_root _ '/myopac/circs') %]"

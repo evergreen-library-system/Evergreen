@@ -106,6 +106,18 @@
                 <td class='light_border'>[% date.format(ctx.parse_datetime(ctx.user.create_date), DATE_FORMAT) %]</td>
                 <td></td>
             </tr>
+            <tr>
+                <td class='color_4 light_border'>[% l("Account Expiration Date") %]</td>
+                <td class='light_border'>
+                    [%- IF date.format(ctx.parse_datetime(ctx.user.expire_date), '%s') < date.format(date.now , '%s'); -%]
+                        <span class="alert" style="font-weight:bold;">[% date.format(ctx.parse_datetime(ctx.user.expire_date), DATE_FORMAT) %]</span>
+                        </td>
+                    [% ELSE %]
+                        [% date.format(ctx.parse_datetime(ctx.user.expire_date), DATE_FORMAT) %]
+                    [% END %]
+                </td>
+                <td></td>
+            </tr>
         </tbody>
     </table><br />
     <hr class='opac-auto-013' color="#DCDBDB" />
