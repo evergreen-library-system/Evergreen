@@ -284,7 +284,6 @@ Open-ILS/xul/staff_client/chrome/content/OpenILS/util/JSON_v1.js
 Open-ILS/xul/staff_client/chrome/content/OpenILS/util/RemoteRequest.js
 Open-ILS/xul/staff_client/chrome/content/OpenILS/util/added_content.js
 Open-ILS/xul/staff_client/chrome/content/OpenILS/util/config.js
-Open-ILS/xul/staff_client/chrome/content/OpenILS/util/dtree.js
 Open-ILS/xul/staff_client/chrome/content/OpenILS/util/fm_table.js
 Open-ILS/xul/staff_client/chrome/content/OpenILS/util/fm_table_conf.js
 Open-ILS/xul/staff_client/chrome/content/OpenILS/util/fmgen.js
