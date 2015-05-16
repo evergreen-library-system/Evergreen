@@ -109,54 +109,11 @@ perl -MOpenILS::Utils::Configure -e "print OpenILS::Utils::Configure::locale_htm
 echo " -> $OUTFILE"
 OUTFILES="$OUTFILES $OUTFILE"
 
-OUTFILE="$JSDIR/OrgLasso.js"
-echo "Updating Search Groups";
-perl -MOpenILS::Utils::Configure -e "print OpenILS::Utils::Configure::org_lasso();" > "$OUTFILE";
-cp "$OUTFILE" "$FMDOJODIR/"
-echo " -> $OUTFILE"
-OUTFILES="$OUTFILES $OUTFILE"
-
-OUTFILE="$JSDIR/*/FacetDefs.js"
-echo "Updating Facet Definitions";
-perl -MOpenILS::Utils::Configure -e "OpenILS::Utils::Configure::facet_types('$JSDIR', 'FacetDefs.js');"
-cp "$JSDIR/en-US/FacetDefs.js" "$FMDOJODIR/"
-echo " -> $OUTFILE"
-OUTFILES="$OUTFILES $OUTFILE"
-
 if [ ! -z "$PROXIMITY" ]
 then
 	echo "Refreshing proximity of org units";
 	perl -MOpenILS::Utils::Configure -e "OpenILS::Utils::Configure::org_tree_proximity();"
 fi
-
-echo "Creating combined JS..."
-cd $JSDIR;
-
-for skin in $(ls $SKINDIR); do
-
-    [ ! -f $SKINDIR/$skin/xml/common/js_common.xml ] && continue;
-
-    files=$(sed -n -e "/<\!--START COMPRESSION-->/,/<\!--END COMPRESSION-->/  s/.*\?\/\([^']*\.js\)'.*/\1/p" $SKINDIR/$skin/xml/common/js_common.xml);
-
-    if [ -n "$files" ]; then
-
-        # add the selected files to one combined file
-        COMPRESS_FILE="$SKINDIR/$skin/js/combined.js"
-        cat $files > $COMPRESS_FILE
-
-        # if a compressor is configured, compress and report the size savings
-        if [ -n "$COMPRESSOR" ]; then
-
-            echo -n "before: "; du -h $COMPRESS_FILE;
-
-            $COMPRESSOR $COMPRESS_FILE > $COMPRESS_FILE.t;
-            mv $COMPRESS_FILE.t $COMPRESS_FILE;
-
-            echo -n "after:  "; du -h $COMPRESS_FILE;
-            echo " -> $COMPRESS_FILE";
-        fi;
-    fi;
-done;
 
 # Generate a hash of the generated files
 (
