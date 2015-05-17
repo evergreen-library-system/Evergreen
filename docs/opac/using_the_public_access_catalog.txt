@@ -351,6 +351,34 @@ Click on a search result's title to view a detailed record of the title, includi
 image::media/catalogue-8.png[catalogue-8]
 image::media/catalogue-8a.png[catalogue-8a]
 
+Placing Holds 
+^^^^^^^^^^^^^
+
+indexterm:[search results, placing holds]
+
+Holds can be placed on either title results or search results page. If the item is available, it will be pulled from the shelf and held for you. If all copies at your local library are checked out, you will be placed on a waiting list and 
+you will be notified when items become available. 
+
+On title details page, you can select the _Place Hold_ link in the upper right corner of the record to reserve the item. You will need your library account user name and password. You may choose to be notified by phone or email.
+
+In the example below, the phone number in your account will automatically show up. Once you select the Enable phone notifications for this hold checkbox, you can supply a different phone number for this hold only. The notification method will be selected automatically if you have set it up in your account references. But you still have a chance to re-select on this screen. You may also suspend the hold temporarily by checking the Suspend box. Click the _Help_ beside it for details. 
+
+You can view and cancel a hold at anytime. Before your hold is captured, which means an item has been held waiting for you to pick up, you can edit, suspend or activate it. You need log into your patron <<my_account,My Account>> to do it. From your account you can also set up an _Cancel if not filled by_ date for your hold. _Cancel if not filled by_ date means after this date, even though your hold has not been fulfilled you do not need the item anymore.
+
+
+image::media/catalogue-9.png[catalogue-9]
+
+Permalink 
+^^^^^^^^^
+
+The record summary page offers a link to a shorter permalink that
+can be used for sharing the record with others. All URL parameters are stripped
+from the link with the exception of the locg and copy_depth parameters. Those
+parameters are maintained so that people can share a link that displays just
+the holdings from one library/system or displays holdings from all libraries
+with a specific library's holdings floating to the top.
+
+image::media/using-opac-view-permalink.png[Permalink]
 
 
 SMS Call Number
@@ -376,23 +404,6 @@ The record shows details such as the cover image, title, author, publication inf
 
 Near the bottom of the record, the copy summary shows how many copies are at the library or libraries you have selected, and whether they are available or checked out. It also displays the _Call Number_ and _Shelving Location_ for locating the item on the shelves. You can click _Shelf Browser_ to view items appearing near the current item on the library shelves. Often this is a good way to browse for similar items. You can select _Table of Contents_ to see the book’s table of contents online (if available). You can select _MARC Record_ to display the record in MARC format. You can also select _Awards, Reviews, & Suggested Reads_ and _Additional Content_ to see more details (if available).   
 
-
-Placing Holds 
-^^^^^^^^^^^^^
-
-indexterm:[search results, placing holds]
-
-Holds can be placed on either title results or search results page. If the item is available, it will be pulled from the shelf and held for you. If all copies at your local library are checked out, you will be placed on a waiting list and 
-you will be notified when items become available. 
-
-On title details page, you can select the _Place Hold_ link in the upper right corner of the record to reserve the item. You will need your library account user name and password. You may choose to be notified by phone or email.
-
-In the example below, the phone number in your account will automatically show up. Once you select the Enable phone notifications for this hold checkbox, you can supply a different phone number for this hold only. The notification method will be selected automatically if you have set it up in your account references. But you still have a chance to re-select on this screen. You may also suspend the hold temporarily by checking the Suspend box. Click the _Help_ beside it for details. 
-
-You can view and cancel a hold at anytime. Before your hold is captured, which means an item has been held waiting for you to pick up, you can edit, suspend or activate it. You need log into your patron <<my_account,My Account>> to do it. From your account you can also set up an _Cancel if not filled by_ date for your hold. _Cancel if not filled by_ date means after this date, even though your hold has not been fulfilled you do not need the item anymore.
-
-
-image::media/catalogue-9.png[catalogue-9]
 
 Going back 
 ^^^^^^^^^^
