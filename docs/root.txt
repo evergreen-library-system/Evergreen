@@ -127,6 +127,10 @@ include::admin_initial_setup/borrowing_items.txt[]
 // Return to normal title levels.
 :leveloffset: 0
 
+include::admin_initial_setup/hard_due_dates.txt[]
+
+
+
 include::admin/template_toolkit.txt[]
 
 // Push titles down one level.
