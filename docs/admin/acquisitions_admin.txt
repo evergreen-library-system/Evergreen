@@ -353,7 +353,8 @@ image::media/create-edi-accounts-2.png[Create EDI Account]
 
 . Fill in the following fields:
 * In the _Label_ field, enter a name for the EDI account.
-* In the _Host_ field, enter the requisite FTP or SCP information supplied by your provider.
+* In the _Host_ field, enter the requisite FTP or SCP information supplied by
+your provider. Be sure to include the protocol (e.g. `ftp://ftp.vendorname.com`)
 * In the _Username_ field, enter the username supplied by your provider.
 * In the _Password_ field, enter the password supplied by your provider.
 * Select your library as the _Owner_ from the drop down menu. Multi-branch libraries should select their top level organizational
@@ -362,9 +363,24 @@ image::media/create-edi-accounts-2.png[Create EDI Account]
 * In the _Provider_ field, enter the code used in Evergreen for your provider.
 * In the _Path_ field, enter the path supplied by your provider. The path indicates a directory on 
 the provider's server where Evergreen will deposit its outgoing order files.
++
+[TIP]
+If your vendor requests a specific file extension for EDI purchase orders,
+such as `.ord`, enter the name of the directory, followed by a slash,
+followed by an asterisk, followed by a period, followed by the extension.
+For example, if the vendor requests that EDI purchase orders be sent to
+a directory called `in` with the file extension `.ord`, your path would
+be `in/*.ord`.
++
 * In the _Incoming Directory_ field, enter the incoming directory supplied by your provider. This indicates 
 the directory on the vendor’s server where Evergreen will retrieve incoming order responses and invoices.
-
++
+[NOTE]
+Don't worry if your incoming directory is named `out` or `outgoing`.
+From your vendor's perspective, this directory is outgoing, because
+it contains files that the vendor is sending to Evergreen.  However,
+from Evergreen's perspective, these files are incoming.
++
 image::media/create-edi-accounts-3.png[Create EDI Account]
  
 . Click _Save_.
@@ -378,15 +394,19 @@ image::media/create-edi-accounts-5.png[Create EDI Account]
 
 . Click _Save_.
 
-EDI messages
+EDI Messages
 ^^^^^^^^^^^^
 
 indexterm:[EDI,messages]
 indexterm:[acquisitions,EDI,messages]
 
 
-The EDI messages screen displays all incoming and outgoing messages between the 
-library and the vendor.
+The EDI Messages screen displays all incoming and outgoing messages between the
+library and its providers.  To see details of a particular EDI message,
+including the raw EDIFACT message, double click on a message entry. To find a
+specific EDI message, the Filter options can be useful. Outside the Admin
+interface, EDI messages that pertain to a specific purchase order can be
+viewed from the purchase order interface (See _Acquisitions -> Purchase Orders_).
 
 Exchange Rates
 ~~~~~~~~~~~~~~
