@@ -136,7 +136,7 @@ sub still_valid {
     print STDERR (Dumper($event_ids), "\n") if $self->{config}->{t};
 
     my $valid_list = $self->{client}->simple_request(
-        "open-ils.justintime.events.revalidate", $event_ids
+        "open__ils.justintime.events.revalidate", $event_ids
     );
 
     # NOTE: we require all events to be valid
