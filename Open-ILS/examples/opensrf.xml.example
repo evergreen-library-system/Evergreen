@@ -785,30 +785,6 @@ vim:et:ts=4:sw=4:
                 </unix_config>
             </opensrf.dbmath>
 
-            <open-ils.penalty>
-                <keepalive>3</keepalive>
-                <stateless>1</stateless>
-                <language>perl</language>
-                <implementation>OpenILS::Application::Penalty</implementation>
-                <max_requests>99</max_requests>
-                <unix_config>
-                    <max_requests>1000</max_requests>
-                    <unix_log>open-ils.penalty_unix.log</unix_log>
-                    <unix_sock>open-ils.penalty_unix.sock</unix_sock>
-                    <unix_pid>open-ils.penalty_unix.pid</unix_pid>
-                    <min_children>1</min_children>
-                    <max_children>15</max_children>
-                    <min_spare_children>1</min_spare_children>
-                    <max_spare_children>5</max_spare_children>
-                </unix_config>
-                <app_settings>
-                    <patron_penalty>penalty/patron_penalty.js</patron_penalty>
-                    <script_path>LIBDIR/javascript</script_path>
-                    <script_path>LOCALSTATEDIR</script_path>
-                    <script_path>LOCALSTATEDIR/catalog</script_path>
-                </app_settings>
-            </open-ils.penalty>
-
             <open-ils.justintime>
                 <keepalive>5</keepalive>
                 <stateless>1</stateless>
@@ -1203,7 +1179,6 @@ vim:et:ts=4:sw=4:
                 <appname>open-ils.auth</appname> 
                 <appname>open-ils.auth_proxy</appname> 
                 <appname>open-ils.storage</appname>  
-                <appname>open-ils.penalty</appname>  
                 <appname>open-ils.justintime</appname>  
                 <appname>open-ils.cstore</appname>  
                 <appname>open-ils.collections</appname>  

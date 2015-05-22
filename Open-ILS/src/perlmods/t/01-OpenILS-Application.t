@@ -1,7 +1,7 @@
 #!perl -T
 
 use utf8;
-use Test::More tests => 13;
+use Test::More tests => 12;
 
 BEGIN {
 	use_ok( 'OpenILS::Application' );
@@ -11,7 +11,6 @@ use_ok( 'OpenILS::Application::AppUtils' );
 use_ok( 'OpenILS::Application::Booking' );
 use_ok( 'OpenILS::Application::Collections' );
 use_ok( 'OpenILS::Application::Fielder' );
-use_ok( 'OpenILS::Application::Penalty' );
 use_ok( 'OpenILS::Application::PermaCrud' );
 use_ok( 'OpenILS::Application::Reporter' );
 use_ok( 'OpenILS::Application::ResolverResolver' );

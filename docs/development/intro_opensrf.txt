@@ -1194,9 +1194,6 @@ set of OpenSRF services:
   * `open-ils.pcrud`: Supports access to Evergreen fieldmapper objects,
   restricted by staff user permissions. This is a private service.
     objects.
-  * `open-ils.penalty`: Supports the calculation of penalties for users, such as
-    being blocked from further borrowing, for conditions such as having too many
-    items checked out or too many unpaid fines.
   * `open-ils.permacrud`: Supports access to Evergreen fieldmapper objects,
   restricted by staff user permissions. This is a private service.
   * `open-ils.reporter`: Supports the creation and scheduling of reports.
