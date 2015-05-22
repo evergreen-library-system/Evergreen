@@ -86,7 +86,7 @@ sub handler_guts {
     my $text_handler = set_text_handler($ctx, $r);
 
     my $processor_key = $as_xml ? 'xml:' : 'text:';                 # separate by XML strictness
-    $processor_key .= $ctx->{hostname}.':';                         # ... and vhost
+    $processor_key .= $r->hostname.':';                         # ... and vhost
     $processor_key .= $r->dir_config('OILSWebContextLoader').':';   # ... and context loader
     $processor_key .= $ctx->{locale};                               # ... and locale
     # NOTE: context loader and vhost together imply template path and debug template values
@@ -297,8 +297,8 @@ sub find_template {
     my $ext = $r->dir_config('OILSWebDefaultTemplateExtension');
     my $at_index = $r->dir_config('OILSWebStopAtIndex');
 
-    $vhost_path_cache{$ctx->{hostname}} ||= {};
-    my $path_cache = $vhost_path_cache{$ctx->{hostname}};
+    $vhost_path_cache{$r->hostname} ||= {};
+    my $path_cache = $vhost_path_cache{$r->hostname};
 
     my @parts = split('/', $path);
     my $localpath = $path;
