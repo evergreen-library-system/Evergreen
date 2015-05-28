@@ -680,12 +680,12 @@ sub generate_fines {
 # following fields:
 #
 # bill => the adjusted bill object
-# voids => an arrayref of void payments that apply directly to the
-#          bill
+# adjustments => an arrayref of adjustment payments that apply directly
+#                to the bill
 # payments => an arrayref of payment objects applied to the bill
 # bill_amount => original amount from the billing object
-# void_amount => total of the void payments that apply directly to the
-#                bill
+# adjustment_amount => total of the adjustment payments that apply
+#                      directly to the bill
 #
 # Each bill is only mapped to payments one time.  However, a single
 # payment may be mapped to more than one bill if the payment amount is
@@ -736,13 +736,13 @@ sub bill_payment_map_for_xact {
             bill => $_,
             bill_amount => $_->amount(),
             payments => [],
-            voids => [],
-            void_amount => 0
+            adjustments => [],
+            adjustment_amount => 0
         }
     } @$bills;
 
-    # Find all unvoided payments in order.  Flesh voids so that we
-    # don't have to retrieve them later.
+    # Find all unvoided payments in order.  Flesh adjustment payments
+    # so that we don't have to retrieve them later.
     my $payments = $e->search_money_payment(
         [
             { xact => $xact->id, voided=>'f' },
@@ -760,39 +760,39 @@ sub bill_payment_map_for_xact {
     # Now, we go through the rigmarole of mapping payments to bills
     # and adjusting the bill balances.
 
-    # Apply the voids before "paying" other bills.
+    # Apply the adjustments before "paying" other bills.
     foreach my $entry (@entries) {
         my $bill = $entry->{bill};
-        # Find only the voids that apply to individual bills.
-        my @voids = map {$_->adjustment_payment()} grep {$_->payment_type() eq 'adjustment_payment' && $_->adjustment_payment()->billing() == $bill->id()} @$payments;
-        if (@voids) {
-            foreach my $void (@voids) {
-                my $new_amount = $U->fpdiff($bill->amount(),$void->amount());
+        # Find only the adjustments that apply to individual bills.
+        my @adjustments = map {$_->adjustment_payment()} grep {$_->payment_type() eq 'adjustment_payment' && $_->adjustment_payment()->billing() == $bill->id()} @$payments;
+        if (@adjustments) {
+            foreach my $adjustment (@adjustments) {
+                my $new_amount = $U->fpdiff($bill->amount(),$adjustment->amount());
                 if ($new_amount >= 0) {
-                    push @{$entry->{voids}}, $void;
-                    $entry->{void_amount} += $void->amount();
+                    push @{$entry->{adjustments}}, $adjustment;
+                    $entry->{adjustment_amount} += $adjustment->amount();
                     $bill->amount($new_amount);
-                    # Remove the used up void from list of payments:
-                    my @p = grep {$_->id() != $void->id()} @$payments;
+                    # Remove the used up adjustment from list of payments:
+                    my @p = grep {$_->id() != $adjustment->id()} @$payments;
                     $payments = \@p;
                 } else {
-                    # It should never happen that we have more void
+                    # It should never happen that we have more adjustment
                     # payments on a single bill than the amount of the
                     # bill.  However, experience shows that the things
                     # that should never happen actually do happen with
                     # surprising regularity in a library setting.
 
-                    # Clone the void to say how much of it actually
+                    # Clone the adjustment to say how much of it actually
                     # applied to this bill.
-                    my $new_void = $void->clone();
-                    $new_void->amount($bill->amount());
-                    $new_void->amount_collected($bill->amount());
-                    push (@{$entry->{voids}}, $new_void);
-                    $entry->{void_amount} += $new_void->amount();
+                    my $new_adjustment = $adjustment->clone();
+                    $new_adjustment->amount($bill->amount());
+                    $new_adjustment->amount_collected($bill->amount());
+                    push (@{$entry->{adjustments}}, $new_adjustment);
+                    $entry->{adjustment_amount} += $new_adjustment->amount();
                     $bill->amount(0);
-                    $void->amount(-$new_amount);
+                    $adjustment->amount(-$new_amount);
                     # Could be a candidate for YAOUS about what to do
-                    # with excess void amounts on a bill.
+                    # with excess adjustment amounts on a bill.
                 }
                 last if ($bill->amount() == 0);
             }
@@ -952,7 +952,7 @@ sub adjust_bills_to_zero {
         # Handle each bill in turn.
         foreach my $bill (@xact_bills) {
             # As the total open amount on the transaction will change
-            # as each bill is voided, we'll just recalculate it for
+            # as each bill is adjusted, we'll just recalculate it for
             # each bill.
             my $xact_total = 0;
             map {$xact_total += $_->{bill}->amount()} @$bpmap;
@@ -965,27 +965,27 @@ sub adjust_bills_to_zero {
             # payment map entry.
             $bill = $bpentry->{bill};
 
-            # The amount to void is the non-voided balance on the
+            # The amount to adjust is the non-adjusted balance on the
             # bill. It should never be less than zero.
-            my $amount_to_void = $U->fpdiff($bpentry->{bill_amount},$bpentry->{void_amount});
+            my $amount_to_adjust = $U->fpdiff($bpentry->{bill_amount},$bpentry->{adjustment_amount});
 
-            # Check if this bill is already voided.  We don't allow
-            # "double" voids regardless of settings.
-            if ($amount_to_void <= 0) {
+            # Check if this bill is already adjusted.  We don't allow
+            # "double" adjustments regardless of settings.
+            if ($amount_to_adjust <= 0) {
                 #my $event = OpenILS::Event->new('BILL_ALREADY_VOIDED', payload => $bill);
                 #$e->event($event);
                 #return $event;
                 next;
             }
 
-            if ($amount_to_void > $xact_total) {
-                $amount_to_void = $xact_total;
+            if ($amount_to_adjust > $xact_total) {
+                $amount_to_adjust = $xact_total;
             }
 
             # Create the adjustment payment
             my $payobj = Fieldmapper::money::adjustment_payment->new;
-            $payobj->amount($amount_to_void);
-            $payobj->amount_collected($amount_to_void);
+            $payobj->amount($amount_to_adjust);
+            $payobj->amount_collected($amount_to_adjust);
             $payobj->xact($xactid);
             $payobj->accepting_usr($e->requestor->id);
             $payobj->payment_ts('now');
@@ -993,10 +993,10 @@ sub adjust_bills_to_zero {
             $payobj->note($note) if ($note);
             $e->create_money_adjustment_payment($payobj) or return $e->die_event;
             # Adjust our bill_payment_map
-            $bpentry->{void_amount} += $amount_to_void;
-            push @{$bpentry->{voids}}, $payobj;
+            $bpentry->{adjustment_amount} += $amount_to_adjust;
+            push @{$bpentry->{adjustments}}, $payobj;
             # Should come to zero:
-            my $new_bill_amount = $U->fpdiff($bill->amount(),$amount_to_void);
+            my $new_bill_amount = $U->fpdiff($bill->amount(),$amount_to_adjust);
             $bill->amount($new_bill_amount);
         }
 
