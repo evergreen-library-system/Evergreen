@@ -161,13 +161,15 @@ END;
                                                        role="presentation"
                                                        title="[% l('Record Holdings Summary') %]"
                                                        class="table_no_border_space table_no_cell_pad table_no_border results_info_table">
-                                                        [% IF args.holdings.size > 0 %]
+                                                        [% UNLESS rec.mmr_id %]
+                                                           [% IF args.holdings.size > 0 %]
                                                         <tr name='bib_cn_list' class='result_table_title_cell'>
                                                             <td valign='top'>
                                                                 <strong>[% l('Call number:') %]</strong>
                                                             </td>
                                                             <td>[% args.holdings.0.label | html %]</td>
                                                         </tr>
+                                                           [% END %]
                                                         [% END %]
 
                                                         [%- IF CGI.param('detail_record_view')
@@ -175,7 +177,8 @@ END;
                                                             OR show_more_details.default == 'hide');
                                                         -%]
                                                         <!-- These fields are visible when viewing the results page in 'detailed' mode -->
-
+                                                        [% UNLESS rec.mmr_id %]
+                                                        <!-- Do not show publication-specific information on a metarecord search results page -->
                                                         [% IF attrs.publisher %]
                                                             <tr name="results_pub_tr">
                                                                 <td valign="top">
@@ -302,6 +305,7 @@ END;
                                                                 <td><a href="[% uri.href %]">[% uri.link | html %]</a>[% ' - ' _ uri.note | html IF uri.note %]</td>
                                                             </tr>
                                                             [% END %]
+                                                         [% END %]
                                                             [%- IF args.holdings.size > 0;
                                                                 FOREACH copy IN args.holdings;
                                                                     IF copy.part_label != '';
