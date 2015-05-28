@@ -198,7 +198,7 @@ sub reopen_xact {
 
 
 sub create_bill {
-    my($class, $e, $amount, $btype, $type, $xactid, $note) = @_;
+    my($class, $e, $amount, $btype, $type, $xactid, $note, $billing_ts) = @_;
 
     $logger->info("The system is charging $amount [$type] on xact $xactid");
     $note ||= 'SYSTEM GENERATED';
@@ -208,6 +208,7 @@ sub create_bill {
     my $bill = Fieldmapper::money::billing->new;
     $bill->xact($xactid);
     $bill->amount($amount);
+    $bill->billing_ts($billing_ts);
     $bill->billing_type($type); 
     $bill->btype($btype); 
     $bill->note($note);

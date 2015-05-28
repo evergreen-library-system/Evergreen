@@ -3813,12 +3813,15 @@ sub checkin_handle_lost_or_lo_now_found_restore_od {
     # restore those overdue charges voided when item was set to lost
     # ------------------------------------------------------------------
 
-    my $ods = $self->editor->search_money_billing(
+    my $ods = $self->editor->search_money_billing([
         {
             xact => $self->circ->id,
             btype => 1
+        },
+        {
+            order_by => {mb => 'billing_ts desc'}
         }
-    );
+    ]);
 
     $logger->debug("returning ".scalar(@$ods)." overdue charges pre-$tag");
     # Because actual users get up to all kinds of unexpectedness, we
@@ -3852,7 +3855,8 @@ sub checkin_handle_lost_or_lo_now_found_restore_od {
             $ods->[0]->btype(),
             $ods->[0]->billing_type(),
             $self->circ->id(),
-            "System: $tag RETURNED - OVERDUES REINSTATED"
+            "System: $tag RETURNED - OVERDUES REINSTATED",
+            $ods->[0]->billing_ts() # date this restoration the same as the last overdue (for possible subsequent fine generation)
         );
     }
 }
