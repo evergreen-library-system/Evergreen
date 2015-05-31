@@ -57,6 +57,7 @@ export DEBS = \
 	libspreadsheet-writeexcel-perl\
 	libsru-perl\
 	libssh2-1-dev\
+	libtemplate-plugin-posix-perl\
 	libtest-warn-perl\
 	libtest-output-perl\
 	libtext-aspell-perl\
@@ -82,7 +83,6 @@ export DEB_APACHE_DISMODS = \
 
 export CPAN_MODULES = \
 	Business::OnlinePayment::PayPal \
-	Template::Plugin::POSIX \
 	Safe \
 	Email::Send
 
