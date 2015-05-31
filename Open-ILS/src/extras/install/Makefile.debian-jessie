@@ -76,7 +76,8 @@ export DEB_APACHE_MODS = \
     include\
     proxy\
     proxy_http\
-    rewrite
+    rewrite\
+    cgi
 
 export DEB_APACHE_DISMODS = \
     deflate
