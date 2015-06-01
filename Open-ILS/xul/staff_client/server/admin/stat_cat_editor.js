@@ -211,7 +211,7 @@ function scInsertCat( tbody, cat, type ) {
     else 
         unHideMe($n(row, 'sc_opac_invisible'));
 
-    if(cat.sip_field().length != 2)
+    if(cat.sip_field() !== null && cat.sip_field().length != 2)
         unHideMe($n(row, 'sc_sip_field_none'));
     else {
         $n(row, 'sc_sip_field_value').appendChild( text( cat.sip_field() ) );
