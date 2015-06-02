@@ -9,7 +9,8 @@ The following example illustrates how to add an OpenSearch source to the list
 of search sources in a Firefox browser:
 
 . Navigate to any catalog page in your Firefox browser and click on the top
-   right box's dropdown and select the option for *Add "Evergreen OpenSearch"*.
+   right box's dropdown and select the option for *Add "Example Consortium OpenSearch"*.
+   The label will match the current scope.
 +
 image::media/opensearch1.png[opensearch1]
 
