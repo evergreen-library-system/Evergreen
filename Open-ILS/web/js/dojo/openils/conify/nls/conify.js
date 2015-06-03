@@ -7,6 +7,7 @@
 	"CONFIRM_EXIT_PPL": "There are unsaved modified permissions. Click OK to save these changes, or Cancel to abandon them.",
 	"CONFIRM_UNSAVED_CHANGES": "There are unsaved changes to one or more organization types. Click OK to save these changes, or Cancel to abandon them.",
 	"COPY_ACTIVE": "Sets copy active",
+	"CHECKOUT_OK": "Checkout OK",
 	"ERROR_CALLING_METHOD_AOUT": "Problem calling method to create child organization type",
 	"ERROR_CALLING_METHOD_CAM": "Problem calling method to create new ${0}",
 	"ERROR_CALLING_METHOD_CCS": "Problem calling method to create new copy status",
