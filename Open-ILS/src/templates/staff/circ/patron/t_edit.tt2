@@ -6,16 +6,18 @@
 <div id="reg-control-actions">
   <div class="pad-all-min">
     <button type="button" class="btn btn-default">[% l('Save') %]</button>
+  </div>
+  <div class="pad-all-min">
     <button type="button" class="btn btn-default">[% l('Save & Clone') %]</button>
   </div>
   <div class="pad-all-min" ng-show="!display_required_fields">
-    <a href>[% l('Show Only Required Fields') %]</a>
+    <a href>[% l('Required Fields') %]</a>
   </div>
   <div class="pad-all-min" ng-show="!display_suggested_fields">
-    <a href>[% l('Show Suggested Fields') %]</a>
+    <a href>[% l('Suggested Fields') %]</a>
   </div>
   <div class="pad-all-min" ng-show="!display_all_fields">
-    <a href>[% l('Show All Fields') %]</a>
+    <a href>[% l('All Fields') %]</a>
   </div>
   <fieldset id="reg-field-doc" ng-show="selected_field_doc">
     <legend>
@@ -31,7 +33,7 @@
 
   IF NOT input_type; input_type = 'text'; END %] 
 
-<div class="row pad-all-min2 form-group">
+<div class="row form-group">
 
   <div class="col-md-3 reg-field-label"> <!-- field label -->
 
@@ -45,9 +47,9 @@
 
   <div class="col-md-3 reg-field-input"> <!-- field form input -->
 
-  [%
-    model = path ? 'patron.' _ path _ '.' _ field : 'patron.' _ field;
-      IF input_type == 'checkbox' %]
+  [% model = path ? 'patron.' _ path _ '.' _ field : 'patron.' _ field %]
+
+  [% IF input_type == 'checkbox' %]
 
     <div class='checkbox'>
       <input type='checkbox' ng-model='[% model %]'/>
@@ -56,11 +58,17 @@
   [% ELSE %]
     <!-- text / number input -->
 
-    <input type="[% input_type %]" 
-      class="form-control" ng-model="[% model %]"/>
+    [% IF field == 'alert_message' %]
+      <textarea class="form-control" ng-model="[% model %]"/>
+    [% ELSE %]
+      <input type="[% input_type %]" 
+        class="form-control" ng-model="[% model %]"/>
+    [% END %]
   [% END %]
+
   </div>
 
+  <!-- supplemental actions and example text -->
   <div class="col-md-3 patron-reg-example">
 
     [% IF field == 'barcode' %]
@@ -85,7 +93,7 @@
 
       [% IF field.match('phone') %]
         <!-- phones have a fall-through example option -->
-        <span ng-if="![% set_str %]">
+        <span ng-if="![% set_str %] && org_settings['ui.patron.edit.phone.example']">
           [% l('Example: [_1]', 
            "{{org_settings['ui.patron.edit.phone.example']}}") %]
         </span>

@@ -79,13 +79,13 @@ but the ones I'm finding aren't quite cutting it..*/
 #reg-control-actions {
     position: fixed;
     top:160px;
-    right:30px;
-    width:300px;
+    right:10px;
+    /*width:200px;*/
     border:2px dashed #d9e8f9;
     -moz-border-radius: 10px;
     font-weight: bold;
-    padding: 20px;
-    margin-top: 20px;
+    padding: 10px;
+    margin-top: 10px;
 }
 
 #reg-field-doc {
