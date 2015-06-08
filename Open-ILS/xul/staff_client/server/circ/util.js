@@ -2666,7 +2666,7 @@ circ.util.checkin_via_barcode = function(session,params,backdate,auto_print,asyn
             JSAN.use('util.error'); var error = new util.error();
             try {
                 var check = req.getResultObject();
-                var r = circ.util.checkin_via_barcode2(session,params,backdate,auto_print,check);
+                var r = circ.util.checkin_via_barcode2(session,params,backdate,auto_print,check,async);
                 try {
                     error.work_log(
                         document.getElementById('circStrings').getFormattedString(
@@ -2772,7 +2772,7 @@ circ.util.checkin_via_barcode = function(session,params,backdate,auto_print,asyn
     }
 };
 
-circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,check) {
+circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,check,async) {
     try {
         JSAN.use('util.error'); var error = new util.error();
         JSAN.use('util.network'); var network = new util.network();
@@ -3606,6 +3606,10 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
             check.what_happened = 'error';
             sound.special('checkin.error');
             error.standard_network_error_alert(document.getElementById('circStrings').getString('staff.circ.checkin.suggest_offline'));
+        } else /* UPDATE failed, and async */ if (check.ilsevent == 2001 && async) {
+            check.what_happened = 'error';
+            sound.special('checkin.error');
+            error.standard_network_error_alert(document.getElementById('circStrings').getString('staff.circ.checkin.possible_dupe_scan'));
         } else {
 
             if (check.ilsevent == null) { return null; /* handled */ }
