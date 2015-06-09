@@ -276,6 +276,8 @@ client.
 
 // Follow structure from staff client local admin menu.
 
+include::admin/librarysettings.adoc[]
+
 include::admin/lsa-address_alert.txt[]
 
 // Push titles down one level.
@@ -289,8 +291,6 @@ include::admin/hold_driven_recalls.txt[]
 include::admin/actiontriggers.txt[]
 
 include::admin/recent_staff_searches.txt[]
-
-include::admin/lsa-library_settings_editor.txt[]
 
 include::admin/lsa-standing_penalties.txt[]
 
