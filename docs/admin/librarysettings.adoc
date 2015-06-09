@@ -74,7 +74,7 @@ values.
 |Setting|Description|Data type|Notes
 |Allow funds to be rolled over without bringing money along|Allow funds to be rolled over without bringing the money along. This makes money left in the old fund disappear, modeling its return to some outside entity.|True/False|
 |Allows patrons to create automatic holds from purchase requests.|Allows patrons to create automatic holds from purchase requests.|True/False|
-|Default circulation modifer|Sets the default circulation modifer for use in acquisitions.|Text|
+|Default circulation modifier|Sets the default circulation modifier for use in acquisitions.|Text|
 |Default copy location|Sets the default copy location(shelving location) for use in acquisitions.|Selection list|
 |Fund Spending Limit for Block|When the amount remaining in the fund, including spent money and encumbrances, goes below this percentage, attempts to spend from the fund will be blocked.|Number|
 |Fund Spending Limit for Warning|When the amount remaining in the fund, including spent money and encumbrances, goes below this percentage, attempts to spend from the fund will result in a warning to the staff.|Number|
@@ -133,7 +133,7 @@ values.
 |Block hold request if hold recipient privileges have expired||True/False|
 |Cap max fine at item price|This prevents the system from charging more than the item price in overdue fines|True/False|
 |Charge fines on overdue circulations when closed|When set to True, fines will be charged during scheduled closings and normal weekly closed days.|True/False|
-|Checkout fills related hold|When a patron checks out an item and they have no holds that directly target the item, the system will attempt to find a hold for the patron that could be fulfilled by the checked out item and fulfils it. On the Staff Client you may notice that when a patron checks out an item under a title on which he/she has a hold, the hold will be treated as filled though the item has not been assigned to the patron's hold.|True/false|
+|Checkout fills related hold|When a patron checks out an item and they have no holds that directly target the item, the system will attempt to find a hold for the patron that could be fulfilled by the checked out item and fulfills it. On the Staff Client you may notice that when a patron checks out an item under a title on which he/she has a hold, the hold will be treated as filled though the item has not been assigned to the patron's hold.|True/false|
 |Checkout fills related hold on valid copy only|When filling related holds on checkout only match on items that are valid for opportunistic capture for the hold. Without this set a Title or Volume hold could match when the item is not holdable. With this set only holdable items will match.|True/False|
 |Checkout auto renew age|When an item has been checked out for at least this amount of time, an attempt to check out the item to the patron that it is already checked out to will simply renew the circulation. If the checkout attempt is done within this time frame, Evergreen will prompt for choosing Renewing or Check-in then Checkout the item.|Duration|
 |Do not change fines/fees on zero-balance LOST transaction|When an item has been marked lost and all fines/fees have been completely paid on the transaction, do not void or reinstate any fines/fees EVEN IF "Void lost item billing when returned" and/or "Void processing fee on lost item return" are enabled|True/False|
@@ -309,7 +309,7 @@ values.
 |Setting|Description|Data type|Notes
 |Behind desk pickup supported|If a branch supports both a public holds shelf and behind-the-desk pickups, set this value to true. This gives the patron the option to enable behind-the-desk pickups for their holds by selecting Hold is behind Circ Desk flag in patron record.|True/False|
 |Best-hold selection sort order|Defines the sort order of holds when selecting a hold to fill using a given copy at capture time|Selection list|
-|Block renewal of items needed for holds|When an item could fulfil a hold, do not allow the current patron to renew|True/False|
+|Block renewal of items needed for holds|When an item could fulfill a hold, do not allow the current patron to renew|True/False|
 |Cancelled holds display age|Show all cancelled holds that were cancelled within this amount of time|Duration|
 |Cancelled holds display count|How many cancelled holds to show in patron holds interfaces|Number|
 |Clear shelf copy status|Any copies that have not been put into reshelving, in-transit, or on-holds-shelf (for a new hold) during the clear shelf process will be put into this status. This is basically a purgatory status for copies waiting to be pulled from the shelf and processed by hand|Selection list|
@@ -320,8 +320,8 @@ values.
 |FIFO|Force holds to a more strict First-In, First-Out capture. Default is SAVE-GAS, which gives priority to holds with pickup location the same as checkin library.|True/False|Applies only to multi-branch libraries. Default is SAVE-GAS.
 |Hard boundary||Number|
 |Hard stalling interval||Duration|
-|Has local copy alert|If there is an available copy at the requesting library that could fulfil a hold during hold placement time, alert the patron.|True/False|
-|Has local copy block|If there is an available copy at the requesting library that could fulfil a hold during hold placement time, do not allow the hold to be placed.|True/False|
+|Has local copy alert|If there is an available copy at the requesting library that could fulfill a hold during hold placement time, alert the patron.|True/False|
+|Has local copy block|If there is an available copy at the requesting library that could fulfill a hold during hold placement time, do not allow the hold to be placed.|True/False|
 |Max foreign-circulation time|Time a copy can spend circulating away from its circ lib before returning there to fill a hold|Duration|For multi-branch libraries.
 |Maximum library target attempts|When this value is set and greater than 0, the system will only attempt to find a copy at each possible branch the configured number of times|Number|For multi-branch libraries.
 |Minimum estimated wait|When predicting the amount of time a patron will be waiting for a hold to be fulfilled, this is the minimum estimated length of time to assume an item will be checked out.|Duration |
@@ -415,7 +415,7 @@ The default is at midnight each night for items with "Reshelving" status for ove
 [options="header"]
 |========
 |Setting|Description|Data type|Notes
-|Default level of patrons' internet access|Enter numbers 1 (Filtered), 2 (Unfiltered), or 3 (No Acess)|Number|
+|Default level of patrons' internet access|Enter numbers 1 (Filtered), 2 (Unfiltered), or 3 (No Access)|Number|
 |Maximum concurrently active self-serve password reset requests|Prevent the creation of new self-serve password reset requests until the number of active requests drops back below this number.|Number|
 |Maximum concurrently active self-serve password reset requests per user|When a user has more than this number of concurrently active self-serve password reset requests for their account, prevent the user from creating any new self-serve password reset requests until the number of active requests for the user drops back below this number.|Number|
 |OPAC Inactivity Timeout (in seconds)|Number of seconds of inactivity before OPAC accounts are automatically logged out.|Number|
