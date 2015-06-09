@@ -9073,7 +9073,7 @@ SELECT  usr,
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
 				<create permission="ADMIN_ACQ_DISTRIB_FORMULA" context_field="owner"/>
-				<retrieve permission="ADMIN_ACQ_DISTRIB_FORMULA" context_field="owner"/>
+				<retrieve permission="CREATE_PURCHASE_ORDER ADMIN_ACQ_DISTRIB_FORMULA" context_field="owner"/>
 				<update permission="ADMIN_ACQ_DISTRIB_FORMULA" context_field="owner"/>
 				<delete permission="ADMIN_ACQ_DISTRIB_FORMULA" context_field="owner"/>
 			</actions>
