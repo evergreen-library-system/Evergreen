@@ -26,18 +26,33 @@ function addSearchRow() {
         _search_row_template.cloneNode(true),
         $("adv_global_addrow")
     );
+
+    $("adv_global_input_table").rows[$("adv_global_input_table").rows.length - 2].getElementsByTagName("input")[0].value = "";
+}
+
+(function($){
+var _search_row_template, _expert_row_template, t;
+var _el_adv_global_row = $("adv_global_row"), _el_adv_expert_row = $("adv_expert_row");
+if (_el_adv_global_row) {
+    t = _el_adv_global_row.cloneNode(true);
+    t.id = null;
+    _search_row_template = t;
+}
+
+if (_el_adv_expert_row) {
+    t = _el_adv_expert_row.cloneNode(true);
+    t.id = null;
+    _expert_row_template = t;
 }
 function addExpertRow() {
-    if (!_expert_row_template) {
-        t = $("adv_expert_row").cloneNode(true);
-        t.id = null;
-        _expert_row_template = t;
-    }
-
     $("adv_expert_rows_here").appendChild(
         _expert_row_template.cloneNode(true)
     );
 }
+
+window.addSearchRow = addSearchRow;
+window.addExpertRow = addExpertRow;
+})($);
 function killRowIfAtLeast(min, link) {
     var row = link.parentNode.parentNode;
     if (row.parentNode.getElementsByTagName("tr").length > min)
