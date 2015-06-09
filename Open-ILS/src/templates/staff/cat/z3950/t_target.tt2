@@ -1,0 +1,19 @@
+<div ng-repeat="target in targets" class="z3950-target-list">
+    <div class="checkbox">
+        <input ng-model="target.selected" type="checkbox">
+    <div>
+    <div ng-if="target.code == 'native-evergreen-catalog'">[% l('Local Catalog') %]</div>
+    <div ng-if="target.code != 'native-evergreen-catalog'">{{target.settings.label}}</div>
+    <div ng-if="target.settings.auth == 't'" class="form-inline row">
+        <div class="form-group col-xs-6">
+            <label for="username-for-z3950-{{target.code}}">[% l('Username') %]</label>
+            <input type="text" class="form-control" id="username-for-z3950-{{target.code}}" ng-model="target.username">
+        </div>
+        <div class="form-group col-xs-6">
+            <label for="password-for-z3950-{{target.code}}">[% l('Password') %]</label>
+            <input type="text" class="form-control" id="password-for-z3950-{{target.code}}" ng-model="target.password">
+        </div>
+    </div>
+</div>
+    </div>
+</div>

@@ -222,6 +222,12 @@
           </li>
           <li class="divider"></li>
           <li>
+            <a href="./cat/z3950/index" target="_self">
+              <span class="glyphicon glyphicon-cloud-download"></span>
+              [% l('Import Record from Z39.50') %]
+            </a>
+          </li>
+          <li>
             <a href="./cat/catalog/vandelay" target="_self">
               <span class="glyphicon glyphicon-transfer"></span>
               [% l('MARC Batch Import/Export') %]

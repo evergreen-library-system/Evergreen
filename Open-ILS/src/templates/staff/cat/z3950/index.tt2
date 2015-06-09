@@ -1,0 +1,17 @@
+[%
+  WRAPPER "staff/base.tt2";
+  ctx.page_title = l("Z39.50");
+  ctx.page_app = "egCatZ3950Search";
+  ctx.page_ctrl = "Z3950SearchCtrl";
+%]
+
+[% BLOCK APP_JS %]
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/grid.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/ui.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/cat/z3950/app.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/cat/services/z3950.js"></script>
+[% END %]
+
+<div ng-view></div>
+
+[% END %]

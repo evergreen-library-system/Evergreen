@@ -1,0 +1,8 @@
+<div class="form-horizontal">
+    <div ng-repeat="(code, search_field) in fields" class="z3950-search-field-list form-group">
+        <label for="z3950-field-{{code}}" class="col-xs-6 control-label">{{search_field.label}}</label>
+        <div class="col-xs-6">
+            <input type="text" class="form=control" id="z3950-field-{{code}}" ng-model="search_field.query">
+        </div>
+    </div>
+</div>

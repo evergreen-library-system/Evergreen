@@ -1,0 +1,56 @@
+<div class="row">
+    <div class="col-xs-6">
+        <strong>[% l('Query') %]</strong>
+        <form ng-keyup="$event.keyCode == 13 && search()">
+        <eg-z3950-search-field-list></eg-z3950-search-field-list>
+        </form>
+    </div>
+    <div class="col-xs-6">
+        <strong>[% l('Service and Credentials') %]</strong>
+        <eg-z3950-target-list>
+    </div>
+</div>
+
+<div class="row" id="z3950-search-form-row">
+    <form ng-submit="search()" id="z3950-search-form"
+        role="form" class="form-inline">
+        <div class="button-group">
+                <input type="submit" class="btn btn-primary" value="[% l('Search') %]"/>
+
+                <input type="reset" class="btn btn-primary" ng-click="clearForm()"
+                value="[% l('Clear Form') %]"/>
+        </div>
+    </form>
+</div>
+
+<eg-grid
+  id-field="index"
+  idl-class="mvr"
+  features="-display,-sort,-multisort"
+  main-label="[% l('Results') %]"
+  items-provider="z3950SearchGridProvider"
+  grid-controls="gridControls"
+  persist-key="cat.z3950_results">
+
+  <eg-grid-menu-item handler="showInCatalog" disabled="cant_showInCatalog"
+    label="[% l('Show in Catalog') %]"></eg-grid-menu>
+  <eg-grid-menu-item handler="import" disabled="cant_import"
+    label="[% l('Import') %]"></eg-grid-menu>
+
+    <!-- 
+      FIXME: it would be nice to make this column link
+      to record display page when the service is
+      'native-evergreen-catalog', but can't do ng-if
+      inside of column value templates at the moment
+    -->
+    <eg-grid-field label="[% l('Title') %]" path="title" visible></eg-grid-field>
+    <eg-grid-field label="[% l('Author') %]" path="author" visible></eg-grid-field>
+    <eg-grid-field label="[% l('Edition') %]" path="edition" visible></eg-grid-field>
+    <eg-grid-field label="[% l('ISBN') %]" path="isbn" visible></eg-grid-field>
+    <eg-grid-field label="[% l('Publication Date') %]" path="pubdate" visible></eg-grid-field>
+    <eg-grid-field label="[% l('Publisher') %]" path="publisher" visible></eg-grid-field>
+    <eg-grid-field label="[% l('Service') %]" path="service" visible></eg-grid-field>
+    <eg-grid-field label="[% l('TCN') %]" path="tcn" visible></eg-grid-field>
+    <eg-grid-field label
+    <eg-grid-field path="*" hidden></eg-grid-field>
+</eg-grid>
