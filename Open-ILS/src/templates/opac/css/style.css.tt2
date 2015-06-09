@@ -2101,4 +2101,10 @@ See also http://webaim.org/techniques/css/invisiblecontent/
     overflow: hidden;                                                            
     clip: rect(0, 0, 0, 0);                                                      
     border: 0;                                                                   
-} 
+}
+
+/* Make added rows in Expert Search have bold labels like the initial row */
+label[for*=expert_]
+{
+    font-weight: bold;
+}  
