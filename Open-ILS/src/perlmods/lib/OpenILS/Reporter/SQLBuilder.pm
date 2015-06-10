@@ -318,9 +318,9 @@ sub toSQL {
     my @params;
     @params = @{ $self->{params} } if ($self->{params});
 
-    my $sql = $func . '(\'';
-    $sql .= join("','", @params) if (@params);
-    $sql .= '\')';
+    my $sql = $func . "(\$_$$\$";
+    $sql .= join("\$_$$\$,\$_$$\$", @params) if (@params);
+    $sql .= "\$_$$\$)";
 
     return $sql;
 }
@@ -343,10 +343,7 @@ sub toSQL {
     my $val = $self->{params};
     $val = $$val[0] if (ref($val));
     
-    $val =~ s/\\/\\\\/go;
-    $val =~ s/'/\\'/go;
-
-    return "'$val'";
+    return "\$_$$\$$val\$_$$\$";
 }
 
 
@@ -359,10 +356,7 @@ sub toSQL {
     my $val = $self->{params};
     $val = $$val[0] if (ref($val));
 
-    $val =~ s/\\/\\\\/go;
-    $val =~ s/'/\\'/go;
-
-    return "AGE(NOW(),'" . $val . "'::TIMESTAMPTZ)";
+    return "AGE(NOW(),\$_$$\$$val\$_$$\$::TIMESTAMPTZ)";
 }
 
 sub is_aggregate { return 0 }
@@ -375,17 +369,10 @@ sub toSQL {
     my $self = shift;
 
     my $rtime = $self->relative_time || 'now';
-
-    $rtime =~ s/\\/\\\\/go;
-    $rtime =~ s/'/\\'/go;
-
     my $val = $self->{params};
     $val = $$val[0] if (ref($val));
 
-    $val =~ s/\\/\\\\/go;
-    $val =~ s/'/\\'/go;
-
-    return "EXTRACT(YEAR FROM '$rtime'::TIMESTAMPTZ + '$val years')";
+    return "EXTRACT(YEAR FROM \$_$$\$$rtime\$_$$\$::TIMESTAMPTZ + \$_$$\$$val years\$_$$\$)";
 }
 
 
@@ -396,18 +383,11 @@ sub toSQL {
     my $self = shift;
 
     my $rtime = $self->relative_time || 'now';
-
-    $rtime =~ s/\\/\\\\/go;
-    $rtime =~ s/'/\\'/go;
-
     my $val = $self->{params};
     $val = $$val[0] if (ref($val));
 
-    $val =~ s/\\/\\\\/go;
-    $val =~ s/'/\\'/go;
-
-    return "EXTRACT(YEAR FROM '$rtime'::TIMESTAMPTZ + '$val months')" .
-        " || '-' || LPAD(EXTRACT(MONTH FROM '$rtime'::TIMESTAMPTZ + '$val months')::text,2,'0')";
+    return "EXTRACT(YEAR FROM \$_$$\$$rtime\$_$$\$::TIMESTAMPTZ + \$_$$\$$val months\$_$$\$)" .
+        " || \$_$$\$-\$_$$\$ || LPAD(EXTRACT(MONTH FROM \$_$$\$$rtime\$_$$\$::TIMESTAMPTZ + \$_$$\$$val months\$_$$\$)::text,2,\$_$$\$0\$_$$\$)";
 }
 
 
@@ -418,17 +398,10 @@ sub toSQL {
     my $self = shift;
 
     my $rtime = $self->relative_time || 'now';
-
-    $rtime =~ s/\\/\\\\/go;
-    $rtime =~ s/'/\\'/go;
-
     my $val = $self->{params};
     $val = $$val[0] if (ref($val));
 
-    $val =~ s/\\/\\\\/go;
-    $val =~ s/'/\\'/go;
-
-    return "DATE('$rtime'::TIMESTAMPTZ + '$val days')";
+    return "DATE(\$_$$\$$rtime\$_$$\$::TIMESTAMPTZ + \$_$$\$$val days\$_$$\$)";
 }
 
 
@@ -439,17 +412,10 @@ sub toSQL {
     my $self = shift;
 
     my $rtime = $self->relative_time || 'now';
-
-    $rtime =~ s/\\/\\\\/go;
-    $rtime =~ s/'/\\'/go;
-
     my $val = $self->{params};
     $val = $$val[0] if (ref($val));
 
-    $val =~ s/\\/\\\\/go;
-    $val =~ s/'/\\'/go;
-
-    return "EXTRACT(WEEK FROM '$rtime'::TIMESTAMPTZ + '$val weeks')";
+    return "EXTRACT(WEEK FROM \$_$$\$rtime\$_$$\$::TIMESTAMPTZ + \$_$$\$val weeks\$_$$\$)";
 }
 
 
@@ -568,7 +534,7 @@ sub toSQL {
     @params = @{ $self->resolve_param( $self->{_column}->{params} ) } if ($self->{_column}->{params});
 
     my $sql = $func . '("' . $self->{_relation} . '"."' . $self->name . '"';
-    $sql .= ",'" . join("','", @params) . "'" if (@params);
+    $sql .= ",\$_$$\$" . join("\$_$$\$,\$_$$\$", @params) . "\$_$$\$" if (@params);
     $sql .= ')';
 
     return $sql;
@@ -592,8 +558,6 @@ package OpenILS::Reporter::SQLBuilder::Column::Transform::upper;
 sub toSQL {
     my $self = shift;
     my $params = $self->resolve_param( $self->{_column}->{params} );
-    my $start = $$params[0];
-    my $len = $$params[1];
     return 'UPPER("' . $self->{_relation} . '"."' . $self->name . '")';
 }
 
@@ -606,8 +570,6 @@ package OpenILS::Reporter::SQLBuilder::Column::Transform::lower;
 sub toSQL {
     my $self = shift;
     my $params = $self->resolve_param( $self->{_column}->{params} );
-    my $start = $$params[0];
-    my $len = $$params[1];
     return 'evergreen.lowercase("' . $self->{_relation} . '"."' . $self->name . '")';
 }
 
@@ -1000,18 +962,18 @@ sub toSQL {
     } elsif (lc($op) eq 'like') {
         $val = $$val[0] if (ref($val) eq 'ARRAY');
         $val = $val->toSQL;
-        $val =~ s/^'(.*)'$/$1/o;
-        $val =~ s/%/\\\\%/o;
-        $val =~ s/_/\\\\_/o;
-        $sql .= " LIKE '\%$val\%'";
+        $val =~ s/\$_$$\$//g;
+        $val =~ s/%/\\%/o;
+        $val =~ s/_/\\_/o;
+        $sql .= " LIKE \$_$$\$\%$val\%\$_$$\$";
 
     } elsif (lc($op) eq 'ilike') {
         $val = $$val[0] if (ref($val) eq 'ARRAY');
         $val = $val->toSQL;
-        $val =~ s/^'(.*)'$/$1/o;
-        $val =~ s/%/\\\\%/o;
-        $val =~ s/_/\\\\_/o;
-        $sql .= " ILIKE '\%$val\%'";
+        $val =~ s/\$_$$\$//g;
+        $val =~ s/%/\\%/o;
+        $val =~ s/_/\\_/o;
+        $sql .= " ILIKE \$_$$\$\%$val\%\$_$$\$";
 
     } else {
         $val = $$val[0] if (ref($val) eq 'ARRAY');
