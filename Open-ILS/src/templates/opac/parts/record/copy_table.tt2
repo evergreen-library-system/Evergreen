@@ -98,7 +98,9 @@ END; # FOREACH bib
                 <link property="businessFunction" href="http://purl.org/goodrelations/v1#LeaseOut">
                 <meta property="price" content="0.00">
             </td>[% END %]
-            <td><span property="sku">[% callnum | html %]</span> [% IF ctx.get_org_setting(CGI.param('loc') OR ctx.aou_tree.id, 'sms.enable') == 1 %](<a href="[% mkurl(ctx.opac_root _ '/sms_cn', {copy_id => copy_info.id}) %]" rel="nofollow" vocab="">Text</a>)[% END %]</td>
+            <td><span property="sku">[% callnum | html %]</span> [% IF ctx.get_org_setting(CGI.param('loc') 
+                OR ctx.aou_tree.id, 'sms.enable') == 1 %](<a href="[% mkurl(ctx.opac_root _ '/sms_cn', 
+               {copy_id => copy_info.id}) %];rec=[%- ctx.bre_id -%]" rel="nofollow" vocab="">Text</a>)[% END %]</td>
             [%- IF has_parts == 'true' %]
             <td>[% copy_info.part_label | html %]</td>
             [%- END %]
