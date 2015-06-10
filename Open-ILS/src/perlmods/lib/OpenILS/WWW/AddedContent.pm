@@ -134,6 +134,7 @@ sub handler {
     return Apache2::Const::NOT_FOUND unless $handler and $type and $format and $cachekey;
 
     if ($type eq "clearcache") {
+        $r->no_cache(1); # Don't cache the clear cache info
         return $AC->clear_cache($format, $cachekey);
     }
 
