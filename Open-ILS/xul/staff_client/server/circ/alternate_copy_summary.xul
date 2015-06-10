@@ -36,7 +36,7 @@
     <messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties"/>
     <messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale'-->/cat.properties"/>
 
-    <groupbox flex="1">
+    <groupbox flex="1" style="overflow:auto">
 
         <caption label="&staff.circ.alternate_copy_summary.Alternate_View.label;" />
 
