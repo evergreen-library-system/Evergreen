@@ -32,7 +32,7 @@ Creating a Distribution
 
 Distributions indicate the branches that should receive copies of a serial. Distributions work together with streams to indicate the number of copies that should be sent to each branch.
 
-image::media/ascv-distr.jpg[Creating a Distribution]
+image::media/ascv-dist1.png[Creating a Distribution]
 
 . Click the Distributions tab.
 . Click New Distribution.
@@ -44,6 +44,9 @@ image::media/ascv-distr.jpg[Creating a Distribution]
 Label, Holding Library, and Receive Unit Template are required fields in the new distribution pop up box.
 +
 . Ignore the fields, Unit Label Prefix and Unit Label Suffix. These fields are not functional in Alternate Serial Control View.
++
+image::media/ascv-dist2.png[New Distribution Form]
++
 . Click Save. The distribution will appear in a list in the Distributions tab in the Subscription Details.
 
 Creating a Stream
