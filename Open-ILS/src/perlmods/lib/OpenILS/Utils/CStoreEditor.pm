@@ -847,13 +847,13 @@ sub runmethod {
             my $evt = OpenILS::Event->new(
                 'DATABASE_UPDATE_FAILED', payload => $arg, debug => "$err" );
             $self->event($evt);
+            return undef;
         }
 
         if( $err ) {
             $self->event( 
                 OpenILS::Event->new( 'DATABASE_QUERY_FAILED', 
                     payload => $arg, debug => "$err" ));
-            return undef;
         }
 
         return undef;
