@@ -86,18 +86,30 @@
                                  [%- END -%]
                                  
                                  [%- IF ctx.user.email -%]
-                                      [%- IF ctx.notify_method == 'email' OR ctx.notify_method == 'email|phone' -%]
-                                           <input type="hidden" id="email_notify" name="email_notify" value="t"/>
-                                      [%- END -%]
-			            [%- END -%]
+                                      [% ctx.notify_method.search('email') ? 
+                                     '<input type="hidden" id="email_notify" name="email_notify" value="t"/>' : '' %]
+			                     [%- END -%]
 
-			            [%- IF allow_phone_notifications == 'true' -%]
-                                      [%- IF ctx.notify_method == 'phone' OR ctx.notify_method == 'email|phone' -%]
-			                      <input type="hidden" id="phone_notify_checkbox" name="phone_notify_checkbox" value="t"/>
-			                      <input type="hidden" name="phone_notify" 
-                                                value='[% IF ctx.default_phone %][%- ctx.default_phone -%][% ELSE %][%- ctx.user.day_phone -%][% END %]'/>
-                                      [%- END -%]
-			            [%- END -%]
+			                     [%- IF allow_phone_notifications == 'true' -%]
+								     [% IF ctx.default_phone %]
+                                            [% phone_value = ctx.default_phone %]
+                                     [% ELSE %]
+                                            [% phone_value= ctx.user.day_phone %]
+                                     [% END %]
+									 
+									 [% ctx.notify_method.search('phone') ? 
+                                         '<input type="hidden" id="phone_notify_checkbox" name="phone_notify_checkbox" value="t"/>
+		                                 <input type="hidden" name="phone_notify" value="' _ phone_value _ '"/>' : '' %]
+                                 [%- END -%]
+
+                                [% IF ctx.get_org_setting(ctx.search_ou, 'sms.enable') == 1 %]
+                                       [% setting_notify = 'opac.default_sms_notify';
+                                          setting_carrier = 'opac.default_sms_carrier'; %]
+                                       [% ctx.notify_method.search('sms') ?
+                                            '<input type="hidden" id="sms_notify_checkbox" name="sms_notify_checkbox" value="t" />
+                                             <input type="hidden" id="sms_carrier" name="sms_carrier" value="' _ ctx.user_setting_map.$setting_carrier _ '" />
+                                             <input type="hidden" id="sms_notify" name="sms_notify" value="' _ ctx.user_setting_map.$setting_notify _ '" />' : '' %]
+                                 [% END %]								 
 
                                 </div>
                                 [% END %]
