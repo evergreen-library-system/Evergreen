@@ -3572,7 +3572,13 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
         } else /* UPDATE failed, and async */ if (check.ilsevent == 2001 && async) {
             check.what_happened = 'error';
             sound.special('checkin.error');
-            error.standard_network_error_alert(document.getElementById('circStrings').getString('staff.circ.checkin.possible_dupe_scan'));
+            error.yns_alert(
+                document.getElementById('circStrings').getString('staff.circ.checkin.possible_dupe_scan'),
+                document.getElementById('circStrings').getString('staff.circ.alert'),
+                document.getElementById('circStrings').getString('staff.circ.utils.msg.ok'),
+                null, null,
+                document.getElementById('circStrings').getString('staff.circ.confirm.msg')
+            );
         } else {
 
             if (check.ilsevent == null) { return null; /* handled */ }
