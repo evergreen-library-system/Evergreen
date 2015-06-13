@@ -352,14 +352,14 @@ OPTIONS
 COMMANDS
     --update-config
         Configures Evergreen database settings in the file specified by
-        --build-db-file.  
+        --config-file.
 
     --create-offline
         Creates the database setting file required by the offline data uploader
 
     --create-schema
         Creates the Evergreen database schema according to the settings in
-        the file specified by --config-file.  
+        the file specified by --build-db-file.  
 
     --create-database
         Creates the database itself, provided the user and password options
