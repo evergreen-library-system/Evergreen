@@ -1,0 +1,29 @@
+\set ECHO none
+\set QUIET 1
+-- Turn off echo and keep things quiet.
+
+-- Format the output for nice TAP.
+\pset format unaligned
+\pset tuples_only true
+\pset pager
+
+-- Revert all changes on failure.
+\set ON_ERROR_ROLLBACK 1
+\set ON_ERROR_STOP true
+\set QUIET 1
+
+-- Load the TAP functions.
+BEGIN;
+
+-- Plan the tests.
+SELECT plan(1);
+
+-- ensures the column exists and seed data has been updated.
+SELECT cmp_ok(
+    COUNT(*)::int, '>=', 3, 
+    'At least 3 copy status should be configured as "checkout_ok"') 
+    FROM config.copy_status WHERE checkout_ok;
+
+-- Finish the tests and clean up.
+SELECT * FROM finish();
+ROLLBACK;
