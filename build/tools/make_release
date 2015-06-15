@@ -91,15 +91,15 @@ if [ -z "$OSRF_JS_PATH" ]; then
     exit 1;
 fi;
 
-if [ $TAG_ONLY = "YES" ]; then
+if [ "$TAG_ONLY" == "YES" ]; then
     PREV_BRANCH="TAG"
 fi
 
-if [ $BUILD_ONLY = "YES" ]; then
+if [ "$BUILD_ONLY" == "YES" ]; then
     PREV_BRANCH="PACKAGE"
 fi
 
-if [ $VERSION = "AUTO" ]; then
+if [ "$VERSION" == "AUTO" ]; then
     # Auto-pick version based on branch name
     echo AUTO VERSION
     VERSION=`echo $GIT_BRANCH | sed 's/^rel_\([0-9]\+\)_\([0-9]\+\)_\([0-9]\+\)_\(.\+\)$/\1.\2.\3-\4/'`
@@ -148,8 +148,8 @@ PREAMBLE
 # This defines what the preamble comes before
 RELEASE_PREAMBLE_BEFORE="Preamble: Developer instructions"
 
-if [ $PREV_BRANCH != "TAG" -a $PREV_BRANCH != "PACKAGE" ]; then
-    if [ $PREV_BRANCH = "AUTO" ]; then
+if [ "$PREV_BRANCH" != "TAG" -a "$PREV_BRANCH" != "PACKAGE" ]; then
+    if [ "$PREV_BRANCH" == "AUTO" ]; then
         echo "AUTO PREVIOUS BRANCH"
         PREV_BRANCH=`echo ${UNDER_VERSION%_*}`
         PREV_BRANCH=`git branch -r | grep "rel_${PREV_BRANCH}_[^_]\+$" | sort -rV | head -n1`
@@ -165,14 +165,14 @@ if [ $PREV_BRANCH != "TAG" -a $PREV_BRANCH != "PACKAGE" ]; then
         echo "PREVIOUS VERSION COMMIT NOT FOUND";
         exit 1
     fi
-    if [ $PREV_VERSION = "AUTO" ]; then
+    if [ "$PREV_VERSION" == "AUTO" ]; then
         echo "AUTO PREVIOUS VERSION"
         PREV_BRANCH_END=`echo $PREV_BRANCH | sed 's|.*/||'`
         PREV_VERSION=`echo $PREV_BRANCH_END | sed 's/^rel_\([0-9]\+\)_\([0-9]\+\)_\([0-9]\+\)_\(.\+\)$/\1.\2.\3-\4/'`
         PREV_VERSION=`echo $PREV_VERSION | sed 's/^rel_\([0-9]\+\)_\([0-9]\+\)_\([0-9]\+\)$/\1.\2.\3/'`
         PREV_VERSION=`echo $PREV_VERSION | sed 's/^rel_\([0-9]\+\)_\([0-9]\+\)_\(.\+\)$/\1.\2-\3/'`
         PREV_VERSION=`echo $PREV_VERSION | sed 's/^rel_\([0-9]\+\)_\([0-9]\+\)$/\1.\2/'`
-        if [ "$PREV_VERSION" = "$PREV_BRANCH_END" ]; then
+        if [ "$PREV_VERSION" == "$PREV_BRANCH_END" ]; then
             echo "AUTO PREVIOUS VERSION FAILED."
             exit 1
         fi
@@ -182,7 +182,7 @@ else
     echo "Tagging or packaging, no need for previous version"
 fi
 
-if [ $PREV_BRANCH != "PACKAGE" ]; then
+if [ "$PREV_BRANCH" != "PACKAGE" ]; then
 
     echo "Applying to Application.pm - HEAD -> $DASH_VERSION"
     echo "Alt: $SHORT_DASH_VERSION -> $DASH_VERSION"
@@ -197,7 +197,7 @@ if [ $PREV_BRANCH != "PACKAGE" ]; then
     echo "STAMP_ID with $UNDER_VERSION"
     sed -i -e "s/STAMP_ID=rel_[^ ]*/STAMP_ID=rel_$UNDER_VERSION/" $GIT_ABS/README
 
-    if [ $PREV_BRANCH != "TAG" ]; then
+    if [ "$PREV_BRANCH" != "TAG" ]; then
         if [ "$(grep "$RELEASE_PREAMBLE_HEAD" $GIT_ABS/README )" ]; then
             echo "Updating old download links"
             sed -i -e "s|\(previews/\)\?Evergreen-ILS-.*\.tar\.gz|${PREVIEW_TEXT}Evergreen-ILS-$VERSION.tar.gz|" $GIT_ABS/README
@@ -237,7 +237,7 @@ if [ $PREV_BRANCH != "PACKAGE" ]; then
     echo "config.upgrade_log entry for $VERSION"
     sed -i -e "s/\(INSERT INTO config.upgrade_log (version[^)]*) VALUES ('\)[0-9]*\('.*;\).*/&\n\1$VERSION\2/" $GIT_ABS/Open-ILS/src/sql/Pg/002.schema.config.sql;
 
-    if [ "$NO_UPGRADE" = "AUTO" ]; then
+    if [ "$NO_UPGRADE" == "AUTO" ]; then
         echo "Checking for DB upgrade potential...."
         git ls-tree --name-only $PREV_BRANCH -- Open-ILS/src/sql/Pg/upgrade/ | cut -d/ -f6 | cut -d. -f1 | sort > old_upgrades.txt
         git ls-tree --name-only HEAD -- Open-ILS/src/sql/Pg/upgrade/ | cut -d/ -f6 | cut -d. -f1 | sort > new_upgrades.txt
@@ -303,7 +303,7 @@ else
     autoreconf -i
 fi
 
-if [ "$SKIP_I18N" = "NO" ]; then
+if [ "$SKIP_I18N" == "NO" ]; then
     cd build/i18n
     echo "Building i18n"
     make install_all_locales
@@ -379,7 +379,7 @@ rm -rf Evergreen-ILS-$VERSION/
 echo ""
 echo "FOR YOU TODO:"
 echo "* TEST the release"
-if [ $PREV_BRANCH != "PACKAGE" ]; then
+if [ "$PREV_BRANCH" != "PACKAGE" ]; then
     echo "* Push release branch"
 fi
 echo "* Upload files"
