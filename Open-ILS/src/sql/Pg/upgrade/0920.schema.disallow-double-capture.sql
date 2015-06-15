@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0920', :eg_version);
 
 CREATE UNIQUE INDEX CONCURRENTLY
     hold_request_capture_protect_idx ON action.hold_request (current_copy)
