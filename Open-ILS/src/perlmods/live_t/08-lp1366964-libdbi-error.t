@@ -26,11 +26,11 @@ my $evt = $e->die_event; # this part takes the longest
 my $duration = time - $start;
 
 cmp_ok($duration, '<', '10', 
-    'Confirm cstore reports standard query error in a timely fashion');
+    'Confirm cstore reports standard update query error in a timely fashion');
 
 if ($evt) {
-    is($evt->{textcode}, 'DATABASE_QUERY_FAILED',
-        'CStoreEditor returns standard query error');
+    is($evt->{textcode}, 'DATABASE_UPDATE_FAILED',
+        'CStoreEditor returns standard update query error');
 } else {
     fail('CStoreEditor returned no event');
 }
