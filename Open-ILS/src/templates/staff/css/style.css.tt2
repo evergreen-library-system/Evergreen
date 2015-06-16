@@ -420,6 +420,15 @@ table.list tr.selected td { /* deprecated? */
   }
 }
 
+@media all and (min-width: 800px) {
+    /* scrollable menus for full-size screens */
+    .scrollable-menu {
+        height: auto;
+        max-height: 200px;
+        overflow-x: hidden;
+    }
+}
+
 [%# 
 vim: ft=css 
 %]

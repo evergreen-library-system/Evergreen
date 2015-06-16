@@ -299,7 +299,7 @@ function($modal, $interpolate) {
              + '<span style="padding-right: 5px;">{{getSelectedName()}}</span>'
              + '<span class="caret"></span>'
            + '</button>'
-           + '<ul class="dropdown-menu">'
+           + '<ul class="dropdown-menu scrollable-menu">'
              + '<li ng-repeat="org in orgList" ng-hide="hiddenTest(org.id)">'
                + '<a href ng-click="orgChanged(org)" a-disabled="disableTest(org.id)" '
                  + 'style="padding-left: {{org.depth * 10 + 5}}px">'
