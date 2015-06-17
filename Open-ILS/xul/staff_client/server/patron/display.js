@@ -960,7 +960,7 @@ patron.display.prototype = {
                 obj._already_defaulted_once = true;
                 var msg = ''; obj.stop_checkouts = false;
                 if (patron.alert_message())
-                    msg += $("patronStrings").getFormattedString('staff.patron.display.init.network_request.alert_message', [patron.alert_message()]) + '<br/><br/>';
+                    msg += $("patronStrings").getFormattedString('staff.patron.display.init.network_request.alert_message', [(patron.alert_message()).replace(/</g,'&lt;').replace(/>/g,'&gt;')]) + '<br/><br/>';
                 //alert('obj.barcode = ' + obj.barcode);
                 if (obj.barcode) {
                     if (patron.cards()) for (var i = 0; i < patron.cards().length; i++) {
@@ -1020,9 +1020,9 @@ patron.display.prototype = {
                             dl_flag_opened = true;
                         }
                         msg += '<dt>';
-                        msg += obj.OpenILS.data.hash.aou[ penalties[i].org_unit() ].shortname() + ' : ' + penalties[i].standing_penalty().label() + '<br/>';
+                        msg += (obj.OpenILS.data.hash.aou[ penalties[i].org_unit() ].shortname() + ' : ' + penalties[i].standing_penalty().label()).replace(/</g,'&lt;').replace(/>/g,'&gt;') + '<br/>';
                         msg += '</dt><dd>';
-                        msg += (penalties[i].note())?penalties[i].note():'';
+                        msg += ((penalties[i].note())?penalties[i].note():'').replace(/</g,'&lt;').replace(/>/g,'&gt;');
                         msg += '</dd>';
                     }
                 }
