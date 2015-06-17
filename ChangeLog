@@ -1,3 +1,1062 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 955a7d84a07039332c4d18aa037ad34ac70c4502
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Jun 17 15:39:47 2015 -0400
+
+    Bumping Perl version string for 2.8.2 release
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit dc282ded917bcd350a61f848795007ade50159e3
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Wed Jun 17 16:19:58 2015 -0400
+
+    Release notes for 2.8.2
+    
+    Adding a section for 2.8.2 bug fixes in the 2.8 Release Notes.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+60	6	docs/RELEASE_NOTES_2_8.txt
+
+commit 98ca4c7f6011c67a15739cf001c7e5246ddc34da
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Jun 17 13:27:05 2015 -0400
+
+    LP#1446816 HTML-escape notes in XUL patron alert page
+    
+    Avoid rendering HTML contained in patron messages, etc. in the XUL
+    patron stop-sign page.
+    
+    Thanks to Jason Etheridge, ESI for noting this problem and contributing
+    the original patch fix.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+3	3	Open-ILS/xul/staff_client/server/patron/display.js
+
+commit 63ccc805812f2fe47b2a83813e070c2f824ccce5
+Author: Ben Shum <bshum@biblio.org>
+Date:   Mon Mar 2 21:40:47 2015 -0500
+
+    Remove alpha and RC scripts for 2.3-2.4
+    
+    These were in the repository from the testing phase of 2.3-2.4 during the
+    2.4 alpha/RC period. These script are not required and may be confusing if
+    run. Remove as unnecessary.
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+0	3997	Open-ILS/src/sql/Pg/version-upgrade/2.3-2.4.0RC-upgrade-db.sql
+0	1677	Open-ILS/src/sql/Pg/version-upgrade/2.3-2.4.alpha1-upgrade-db.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.3-2.4.0RC-upgrade-db.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.3-2.4.alpha1-upgrade-db.sql
+
+commit b995d39cb654b619c9c1ecee5acd404bca10f879
+Author: Ben Shum <bshum@biblio.org>
+Date:   Mon Mar 2 21:34:53 2015 -0500
+
+    LP#1205061: Add IF EXISTS to some DROP statements in 2.3-2.4 upgrade script
+    
+    To prevent potential issues, add IF EXISTS clauses to DROP statements in this
+    version upgrade script.
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+10	10	Open-ILS/src/sql/Pg/version-upgrade/2.3-2.4.0-upgrade-db.sql
+
+commit 8a3c9b8845130f6594b5f0d328ab2d23669e7d04
+Author: Josh Stompro <stomproj@larl.org>
+Date:   Wed Jun 3 14:17:19 2015 -0500
+
+    Docs: LP#1387639 - Barcode Completion Documentation
+    
+    Signed-off-by: Josh Stompro <stomproj@larl.org>
+    
+    Conflicts:
+    	docs/root.txt
+    
+    Signed-off-by: Josh Stompro <stomproj@larl.org>
+
+254	0	docs/admin/lsa-barcode_completion.txt
+-	-	docs/media/lsa-barcode_completion_accesspoints.png
+-	-	docs/media/lsa-barcode_completion_admin.png
+-	-	docs/media/lsa-barcode_completion_fields.png
+-	-	docs/media/lsa-barcode_completion_multiple.png
+4	0	docs/root.txt
+ create mode 100644 docs/admin/lsa-barcode_completion.txt
+ create mode 100644 docs/media/lsa-barcode_completion_accesspoints.png
+ create mode 100644 docs/media/lsa-barcode_completion_admin.png
+ create mode 100644 docs/media/lsa-barcode_completion_fields.png
+ create mode 100644 docs/media/lsa-barcode_completion_multiple.png
+
+commit 5ff5e425cb35ef0607d498d268bf366e8b92759f
+Author: Josh Stompro <stomproj@larl.org>
+Date:   Tue Jun 2 13:09:10 2015 -0500
+
+    Docs: Updated opensearch example with new label format
+    
+    The OpenSearch title now specifies the library name instead of the generic
+    "Evergreen OpenSearch" at every scope.
+    
+    This is one of many TPAC Discoverability Enhancements included in
+    Evergreen 2.8.
+    
+    Signed-off-by: Josh Stompro <stomproj@larl.org>
+
+-	-	docs/media/opensearch1.png
+2	1	docs/opac/opensearch.txt
+
+commit fd7e9cf0714f4caddba098fbedccd273bf1374e6
+Author: Josh Stompro <stomproj@larl.org>
+Date:   Fri Jan 9 16:03:49 2015 -0600
+
+    Documentation LP1369203 - Removed formatting around image link to
+    re-enable the image.
+    
+    Signed-off-by: Josh Stompro <stomproj@larl.org>
+
+0	2	docs/acquisitions/selection_lists_po.txt
+
+commit 14dfc96b590ff8926b2825a3be8b6d6a5c0df7f0
+Author: Jason Etheridge <jason@esilibrary.com>
+Date:   Tue Jun 16 12:30:38 2015 -0400
+
+    fix live_t/08-lp1366964-libdbi-error.t
+    
+    from this:
+    
+    opensrf@dev141:~/git/Evergreen/Open-ILS/src/perlmods/live_t (lp902255test)$ prove 08-lp1366964-libdbi-error.t
+    08-lp1366964-libdbi-error.t .. # Tests libdbi transaction error reporting
+    08-lp1366964-libdbi-error.t .. 1/2
+     #   Failed test 'CStoreEditor returns standard query error'
+     #   at 08-lp1366964-libdbi-error.t line 31.
+     #          got: 'DATABASE_UPDATE_FAILED'
+     #     expected: 'DATABASE_QUERY_FAILED'
+     # Looks like you failed 1 test of 2.
+    08-lp1366964-libdbi-error.t .. Dubious, test returned 1 (wstat 256, 0x100)
+    Failed 1/2 subtests
+    
+    Test Summary Report
+    -------------------
+    08-lp1366964-libdbi-error.t (Wstat: 256 Tests: 2 Failed: 1)
+      Failed test:  2
+      Non-zero exit status: 1
+    Files=1, Tests=2,  1 wallclock secs ( 0.02 usr  0.01 sys +  0.82 cusr  0.11 csys =  0.96 CPU)
+    Result: FAIL
+    
+    to this:
+    
+    opensrf@dev141:~/git/Evergreen/Open-ILS/src/perlmods/live_t (lp902255test)$ prove 08-lp1366964-libdbi-error.t
+    08-lp1366964-libdbi-error.t .. # Tests libdbi transaction error reporting
+    08-lp1366964-libdbi-error.t .. ok
+    All tests successful.
+    Files=1, Tests=2,  2 wallclock secs ( 0.02 usr  0.02 sys +  0.85 cusr  0.08 csys =  0.97 CPU)
+    Result: PASS
+    
+    Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+3	3	Open-ILS/src/perlmods/live_t/08-lp1366964-libdbi-error.t
+
+commit 6d9dc97e0b1810d9f065306d129c91be727a03f2
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Mon Jun 15 16:29:02 2015 -0400
+
+    LP 902255: Fix upgrade script.
+    
+    Run as-is, the upgrade script produces an error:
+    
+    ERROR:  CREATE INDEX CONCURRENTLY cannot run inside a transaction block
+    
+    Following this conversation in IRC, it was decided to remove the keyword
+    CONCURRENTLY from the create index statement.
+    
+    http://irc.evergreen-ils.org/evergreen/2015-06-15#i_182857
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+1	1	Open-ILS/src/sql/Pg/upgrade/0920.schema.disallow-double-capture.sql
+
+commit fbcf2be3e500d7311ce7a9a380d431fbddfcc1ed
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Mon Jun 15 15:22:09 2015 -0400
+
+    LP 902255: Stamping upgrade script
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+13	0	Open-ILS/src/sql/Pg/upgrade/0920.schema.disallow-double-capture.sql
+0	13	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.disallow-double-capture.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0920.schema.disallow-double-capture.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.disallow-double-capture.sql
+
+commit edc882f39620576173a98392ff70ad120ffe46f8
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Fri Jun 12 14:29:02 2015 -0400
+
+    LP#902255: Use simple alert box
+    
+    Instead of the generic communication error dialog, we'll use
+    the simple yns_alert box instead.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+7	1	Open-ILS/xul/staff_client/server/circ/util.js
+
+commit ee2f83b1add627a46d80be6790037f3608ea5288
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Thu Jun 11 08:49:21 2015 -0400
+
+    LP#902255: Correct "ILS Event at check in" logic
+    
+    In a classic case of "fix a bug to reveal another" it turn out that
+    there was a small logic bug hiding in the check in hold-capture code.
+    The result of this bug was that the wrong ILS Event object was being
+    returned when we ran into the double-scan hold-capture situation by
+    overwriting the correct one immediately after we construct it, which
+    in turn prevented the previous commit from working as designed.
+    
+    We now return the correct ILS Event immediately so that we can
+    properly detect the situation.  Two birds with one branch.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Utils/CStoreEditor.pm
+
+commit c258851aa11f67eac7e3b0c8422bacb42f20c63a
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Mon Jun 8 11:11:04 2015 -0400
+
+    LP#902255: Protect against hold double-capture
+    
+    When the staff client is in Fast Scan (async) mode, it is possible
+    to double-scan at checkin and cause two holds to be captured by the
+    same item.  By creating a specially crafted unique index we ensure
+    that the database rejects this situation.
+    
+    This protection would cause unhandled errors in the staff client, so
+    we also register a new string to be displayed when this particular
+    situation occurs, alerting staff to the possible double-scan of a
+    barcode at checkin IFF they are using async mode.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+1	0	Open-ILS/src/sql/Pg/090.schema.action.sql
+13	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.disallow-double-capture.sql
+6	2	Open-ILS/xul/staff_client/server/circ/util.js
+1	0	Open-ILS/xul/staff_client/server/locale/en-US/circ.properties
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.disallow-double-capture.sql
+
+commit ca7e68298e823f77e50fcb141249cc16a63bf5b9
+Author: Ben Shum <bshum@biblio.org>
+Date:   Wed Jun 10 20:57:29 2015 -0400
+
+    LP#1463145 - Debian Jessie needs libexcel-writer-xlsx-perl
+    
+    Without this package, attempts to run clark-kent.pl will fail on Debian Jessie.
+    
+    Also remove old libspreadsheet-writeexcel-perl package from pre-reqs as it is
+    no longer required.
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+    Signed-off-by: Josh Stompro <stomproj@larl.org>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+1	1	Open-ILS/src/extras/install/Makefile.debian-jessie
+
+commit 36b2cd4704e02651875c653a185c1960ac5d1939
+Author: Adam Bowling <abowling@emeralddata.net>
+Date:   Fri Jan 16 17:18:24 2015 -0500
+
+    LP#1365661 Found patrons with same name not opening
+    
+    This patch fixes the error, while registering a new patron
+    and clicking the link "Found {$0} patron(s) with the same
+    name" did not previously work in the staff client.
+    
+    To reproduce the bug, register a new patron with the name of an
+    existing patron.  The little widget with the message described
+    above will appear.  The message is a hyperlink, but nothing
+    appears to happen if you click it.  The JavaScript console will
+    contain an error ReferenceError:js2JSON is not defined.
+    
+    After applying this patch, clicking the hyperlink does a search
+    for matching patrons as intended.  The ReferenceError also
+    disappears.
+    
+    Signed-off-by: Adam Bowling <abowling@emeralddata.net>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+2	0	Open-ILS/xul/staff_client/server/index.xhtml
+
+commit 95cb130677ba997998e39a2afea4b3eea31ac49a
+Author: Michael Peters <mpeters@emeralddata.net>
+Date:   Tue Jun 9 10:10:04 2015 -0400
+
+    LP#1154656 MARC Expert Search "Add Rows" adds duplicate row
+    
+    This patch changes the behavior of the "Add Search Row" link
+    (JavaScript function from simple.js "addExpertRow()") so that
+    we are always cloning the initial "empty" row instead of
+    potentially cloning a row -- by way of cloneNode() -- with user
+    input in place, and causing duplicate search rows.
+    
+    To reproduce the bug, go to Advanced Search, fill in all three
+    search fields with some text, click on Add Search Row.  You wil
+    see that the Title search row along with the data in the text
+    box is duplicated and added to the search.
+    
+    After this patch, the new row should be added with an empty
+    text box.
+    
+    Signed-off-by: Michael Peters <mpeters@emeralddata.net>
+    Signed-off-by: Rashma Kumaran <rkumaran@kcls.org>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+7	1	Open-ILS/src/templates/opac/css/style.css.tt2
+21	6	Open-ILS/web/js/ui/default/opac/simple.js
+
+commit 7b3eae1fe7935238097583437f0fb7dddacfb855
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Mon Apr 6 20:17:30 2015 -0400
+
+    LP#1342227 - Allow EDI Ruby dependency installation on Ubuntu 14.04
+    
+    Create a script for Ubuntu 14.04 ruby installation and installation
+    for EDI dependencies.  Remove 'rcov', which has been deprecated for
+    Ruby 1.9.1 and install Bill Erickson's GIR improvements.
+    
+    In the future we will need to remove this dependency altogether (see
+    bug 1373690), but for now, at least get it working on Ubuntu 14.04.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+16	0	Open-ILS/src/edi_translator/install-ubuntu-trusty.sh
+ create mode 100755 Open-ILS/src/edi_translator/install-ubuntu-trusty.sh
+
+commit 4a868dbc4c53752793ac62c6a49d4eb99bb6e2c5
+Author: blake <blake@mobiusconsortium.org>
+Date:   Fri Apr 10 14:29:08 2015 -0500
+
+    LP1424646 Paid-For Long Overdue Items Still Appear in "Other/Special Circulations" Window
+    
+    Edited the query inside the fm_IDL.xml file
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+2	2	Open-ILS/examples/fm_IDL.xml
+
+commit 7a82bb51c3daeeb77971053e563f7424e3ef553a
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Wed Jun 10 17:07:43 2015 -0400
+
+    Docs LP#1371646: Add better screenshots
+    
+    This commit borrows two screenshots from the Sitka Evergreen Training
+    Manual to replace one in the Alternate Serial Control View section.
+    Thanks Sitka!
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+-	-	docs/media/ascv-dist1.png
+-	-	docs/media/ascv-dist2.png
+4	1	docs/serials/D-subscription-ASCV.txt
+ create mode 100644 docs/media/ascv-dist1.png
+ create mode 100644 docs/media/ascv-dist2.png
+
+commit 3699016c2f546f653da47f8376c70142887cdfbe
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Wed Apr 15 14:05:23 2015 -0400
+
+    LP1444623: Remove "Safe" CPAN dependency from Debian/Ubuntu Makefile.install files
+    
+    Following up on IRC discussion at http://irc.evergreen-ils.org/evergreen/2015-04-15#i_170386
+    it was agreed that it is no longer necessary to install Safe from CPAN
+    since it is included in the standard Perl package.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+    
+    Conflicts:
+    	Open-ILS/src/extras/install/Makefile.debian-jessie
+
+0	1	Open-ILS/src/extras/install/Makefile.debian-jessie
+0	1	Open-ILS/src/extras/install/Makefile.debian-wheezy
+0	1	Open-ILS/src/extras/install/Makefile.ubuntu-precise
+0	1	Open-ILS/src/extras/install/Makefile.ubuntu-trusty
+
+commit e217df7fdd8b5680191006d5c9b6d91b77f5adbc
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Sat Feb 15 12:56:58 2014 -0500
+
+    LP#638509: Handle COPY_STATUS_LOST and COPY_STATUS_LONG_OVERDUE in renewal.
+    
+    Modify Open-ILS/xul/staff_client/server/circ/util.js so that the
+    above events are available for override.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+11	1	Open-ILS/xul/staff_client/server/circ/util.js
+
+commit e7615246c09e1b9735e9d3fdda32569b5866577f
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Sun Feb 2 15:59:34 2014 -0500
+
+    LP#638509: Remove the stop_fines checks from do_renew's circulation search.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+2	7	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Circulate.pm
+
+commit f9a21985471f306ef9542a09994b79429541abd7
+Author: Terran McCanna <tmccanna@georgialibraries.org>
+Date:   Wed Jun 10 15:44:46 2015 -0400
+
+    LP#1396263: Fix for 'Return to Record' link breaks after texting
+    
+    If user is already logged into OPAC when texting a call number from
+    the record screen, the 'Return to Record' link works properly. However,
+    if user is not logged in and is prompted to log in first, the 'Return to
+    Record' link actually returns the user to 'My Account.' This patch
+    corrects that problem and returns the user to the record regardless of
+    whether they were initially logged in or not.
+    
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+3	1	Open-ILS/src/templates/opac/parts/record/copy_table.tt2
+6	0	Open-ILS/src/templates/opac/sms_cn.tt2
+
+commit f6cc9984d0070d46131edccb3eb6821c7c77e5e2
+Author: Blake Henderson <blake@mobiusconsortium.org>
+Date:   Fri Apr 10 15:43:54 2015 -0500
+
+    LP1440148 Long overdue Items out TPAC OPAC display My Account
+    
+    Removed Long overdue circs from the total_out count
+    
+    Signed-off-by: Blake Henderson <blake@mobiusconsortium.org>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Actor.pm
+
+commit 6c23f78065ec32cf5849a4bd2c6313806a833c44
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Jun 10 14:17:37 2015 -0400
+
+    LP#1463973: Use dollar-quoting for report literals
+    
+    When inserting string literal into SQL for Clark, we quote
+    apostrophes with a backslash.  That worked fine until Postgres
+    changed its default for the standard_conforming_strings GUC to "on"
+    after which it no longer worked fine.
+    
+    So, we will now use "dollar quoting" for string literals instead
+    in much the same way we do for our search queries.
+    
+    Test plan
+    ---------
+    
+    Pre-patch: Try to run a report where a string value is required as
+    a filter parameter, and include an apostrophe in that string.  The
+    report will fail with an SQL error.
+    
+    Post-patch: Do the same, it will not fail.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Angela Kilsdonk <akilsdonk@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+19	57	Open-ILS/src/perlmods/lib/OpenILS/Reporter/SQLBuilder.pm
+
+commit b67ad6939c6572c55f700adc2069096701f17d7c
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Wed Apr 22 09:54:11 2015 -0400
+
+    LP#1446860 - Correct mistaken logic in previous fix.
+    
+    See https://bugs.launchpad.net/evergreen/+bug/1446860/comments/2
+    for reference.  The logic was not enforcing the "if the editing
+    staff member doesn't have permission to edit a user in this
+    permission group" check.  This corrects that.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/web/js/ui/default/actor/user/register.js
+
+commit 4228371901571937ca6100d44c49cb4e8291fcfc
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Tue Apr 21 17:10:49 2015 -0400
+
+    LP#1446860 Staff were able to edit their own accounts.
+    
+    This change reverses what appears to be a thinko in the
+    original programming.  If the editing user is the same
+    as the user being edited, disable the Save button.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/web/js/ui/default/actor/user/register.js
+
+commit 1e313293eda8cc8ff538c057b78475783f4d10af
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Thu Apr 16 08:58:17 2015 -0700
+
+    LP#1074096: Remove Bib Call Number from query type selector
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Michael Peters <mpeters@emeralddata.net>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	2	Open-ILS/src/templates/opac/parts/qtype_selector.tt2
+
+commit c8fba5e8f284b654b27c6cb2cc82aba574861d6e
+Author: Jason Etheridge <jason@esilibrary.com>
+Date:   Thu May 7 16:02:00 2015 -0400
+
+    LP#1452883: prevent staff client warnings w/ Google Analytics
+    
+    In particular, the Security Warning that goes "You have requested an encrypted
+    page that contains some unencrypted information..."
+    
+    Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+    Signed-off-by: Josh Stompro <stomproj@larl.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/templates/opac/parts/goog_analytics.tt2
+
+commit 2a256aed64ba2310926361f92e67b880dd6cf956
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Wed May 27 22:11:49 2015 -0400
+
+    LP#1403966: Remove publication-specific information from metarecord results page
+    
+    The records that make up a matarecord search result typically contain different
+    publication information. Therefore, we should remove the master record's
+    specific publication information from that search results page.
+    
+    Test plan
+    Prior to loading the patch, conduct a search on the Concerto dataset
+    for "brahms piano concerto no. 1" with "Group Formats and Editions" turned on.
+    In the brief view, you will see a call number and, in the more details view, you
+    will see publisher and physical description information. Run the same search
+    after loading the patch, and you will no longer see that information.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Andrea Neiman <aneiman@kent.lib.md.us>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+6	2	Open-ILS/src/templates/opac/parts/result/table.tt2
+
+commit b69c2b09d3bae790ecb80cf62e33de44eba24f0a
+Author: Blake Henderson <blake@mobiusconsortium.org>
+Date:   Mon Dec 8 15:52:15 2014 -0600
+
+    LP#1194860: You have permission to override some of the failed holds. appearing when it should not for patrons in the OPAC Edit
+    
+    A quick value check before assigning the override variable.
+    This should eliminate the OPAC showing the override option
+    for those who do not have the permission.
+    
+    Signed-off-by: Blake Henderson <blake@mobiusconsortium.org>
+    Signed-off-by: Liam Whalen <liam.whalen@bc.libraries.coop>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+8	2	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Account.pm
+
+commit 2b0ab0cf80633687f6e623276c16f30c9971b1ca
+Author: Josh Stompro <stomproj@larl.org>
+Date:   Sun May 31 17:49:34 2015 -0500
+
+    LP#1456021 Enable apache modcgi during install for Debian Jessie
+    
+    Apache mod cgi isn't enabled when installing apache2.4 on Debian Jessie,
+    this causes the /updates/manualupdate.html to not be processed and
+    to just return the raw code of that script since it uses mod cgi.
+    
+    This adds 'cgi' to the list of apache modules to enable during the
+    dependency install.
+    
+    Signed-off-by: Josh Stompro <stomproj@larl.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+2	1	Open-ILS/src/extras/install/Makefile.debian-jessie
+
+commit 12e8a28b911163400e1a1e542ca36d783bf6fd96
+Author: Josh Stompro <stomproj@larl.org>
+Date:   Sun May 31 17:19:58 2015 -0500
+
+    LP#1457094 Switch to package libtemplate-plugin-posix-perl for Debian Jessie
+    
+    Debian Jessie includes a package for Template::Plugin::Posix that was
+    being installed via CPAN.  This patch removes the CPAN install and adds
+    the Debian package.
+    
+    Signed-off-by: Josh Stompro <stomproj@larl.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/extras/install/Makefile.debian-jessie
+
+commit 637b7317b6a571434f02ecb5520b800ff71dc747
+Author: Bradley Bonner <bbonner@kcls.org>
+Date:   Wed Jun 10 14:26:57 2015 -0700
+
+    LP#757533: adds scrollbars (when necessary) to the item status alternate view tab box.
+    
+    Signed-off-by: Bradley Bonner <bbonner@kcls.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/xul/staff_client/server/circ/alternate_copy_summary.xul
+
+commit 162981e0ad2670499a9260e240b343bb78f6fc31
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Wed Jun 10 15:05:13 2015 -0400
+
+    LP#1289486 Stamping upgrade for dropping acq audit fkey
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+7	0	Open-ILS/src/sql/Pg/upgrade/0919.schema.drop-acq-audit-fkey.sql
+0	7	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.drop-acq-audit-fkey.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0919.schema.drop-acq-audit-fkey.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.drop-acq-audit-fkey.sql
+
+commit 3144f4a5a3dd6e5bbd4b3a5e4d92058cf1890a95
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Mon Jun 8 17:30:52 2015 -0400
+
+    LP#1289486: Remove blocking constraint from audit table
+    
+    The ACQ lineitem audit table was augmented with an fkey pointing
+    to the queued record that was related to the line item.  That's
+    bad because there are also triggers which attempt to manage that
+    table.  Hilarity ensues.  We should not have an fkey on an audit
+    table, so, we now remove that.
+    
+    In order to test this, first attempt to delete an ACQ queue and
+    have that fail.  Apply the DB change, attempt again, and have it
+    succeed.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+7	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.drop-acq-audit-fkey.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.drop-acq-audit-fkey.sql
+
+commit f2f651de27a5433a8d1e5e6d127dabc2de4f40e9
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Wed Jun 10 14:29:27 2015 -0400
+
+    LP#1447168 Stamping upgrade script for index on ash record
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+9	0	Open-ILS/src/sql/Pg/upgrade/0918.schema.index_ash_record.sql
+0	9	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.index_ash_record.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0918.schema.index_ash_record.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.index_ash_record.sql
+
+commit a95199bb5f49ed11dfc27bbeefbd8a23c4f9e46d
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Wed Apr 22 13:43:19 2015 +0000
+
+    LP#1447168: add an index on authority.simple_heading.record
+    
+    This index is needed so that full table scans on ash aren't
+    needed during authority record reingest.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	0	Open-ILS/src/sql/Pg/011.schema.authority.sql
+9	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.index_ash_record.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.index_ash_record.sql
+
+commit d0cc30b5c64ffd7752bd92ea7c7d732fc001902c
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Wed Jun 10 12:05:04 2015 -0400
+
+    Docs: Replace broken link, go to new LSE section
+    
+    This commit fixes a newly broken link, caused by removing the old
+    Library Settings Editor docs section. The new link goes to the new LSE
+    section.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+3	1	docs/circulation/circulation_patron_records.txt
+
+commit 0484b5e80c21d84418386701e13f9cedf1a2d683
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Tue Jun 9 16:12:36 2015 -0400
+
+    Docs: Fix spelling errors in Library Settings docs
+    
+    This commit fixes some spelling errors only in the docs, not in the text
+    of the actual settings.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+6	6	docs/admin/librarysettings.adoc
+
+commit 91057cc606a6f4d86546c533217b69024d0644f4
+Author: Lynn Floyd <alynn2671@gmail.com>
+Date:   Tue Jun 9 11:44:16 2015 -0400
+
+    Docs: New chapter for Library Settings Editor
+    
+    This commit removes the old piecemeal documentation and adds a more
+    complete chapter on using the Library Settings Editor, including
+    categorized tables of the various library settings.
+    
+    Thanks to Lynn Floyd for the documentation and screenshots.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+486	0	docs/admin/librarysettings.adoc
+0	134	docs/admin/lsa-library_settings_editor.txt
+-	-	docs/media/lse-1.png
+-	-	docs/media/lse-2.png
+-	-	docs/media/lse-3.png
+-	-	docs/media/lse-4.png
+-	-	docs/media/lse-5.png
+2	2	docs/root.txt
+ create mode 100644 docs/admin/librarysettings.adoc
+ delete mode 100644 docs/admin/lsa-library_settings_editor.txt
+ create mode 100644 docs/media/lse-1.png
+ create mode 100644 docs/media/lse-2.png
+ create mode 100644 docs/media/lse-3.png
+ create mode 100644 docs/media/lse-4.png
+ create mode 100644 docs/media/lse-5.png
+
+commit 65d77d0acf9d83a7d617d7d0fc23927e8791ac6b
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Tue May 19 17:13:05 2015 -0400
+
+    Docs: General improvements to EDI docs
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+25	5	docs/admin/acquisitions_admin.txt
+
+commit 8d8628b9260ec521c14bb3d8fcca76a72721555c
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Sun May 17 12:32:21 2015 -0400
+
+    Docs: Added hard due dates docs
+    
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+31	0	docs/admin_initial_setup/hard_due_dates.txt
+4	0	docs/root.txt
+ create mode 100644 docs/admin_initial_setup/hard_due_dates.txt
+
+commit d9672aea69d97c06c8d3551299a043fdedd829ae
+Author: Josh Stompro <stomproj@larl.org>
+Date:   Sat May 16 21:20:50 2015 -0400
+
+    Docs: Added sub-section for permalink to 'using the catalog' section
+    
+    Signed Off Josh Stompro (github@stompro.org)
+    Signed Off Amy Terlaga (terlaga@biblio.org)
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+-	-	docs/media/using-opac-view-permalink.png
+28	17	docs/opac/using_the_public_access_catalog.txt
+ create mode 100644 docs/media/using-opac-view-permalink.png
+
+commit 2fead14ee0292e86f73a03856780579f82f9ea06
+Author: Christine Burns <christine.burns@bc.libraries.coop>
+Date:   Wed May 13 19:36:34 2015 -0400
+
+    Docs 2.8: SMS Call Number new screenshots, improve wording
+    
+    This commit includes updated screenshots and some minor wording edits to
+    the SMS Call Number / Copy Details feature.
+    
+    New screenshots and edits provided by
+    * Christine Burns <christine.burns@bc.libraries.coop>
+    * Carol Yarrison
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+23	18	docs/admin/SMS_messaging.txt
+-	-	docs/media/SMS_Text_Messaging11.png
+-	-	docs/media/SMS_Text_Messaging8.png
+-	-	docs/media/SMS_Text_Messaging9.png
+-	-	docs/media/catalogue-8.png
+-	-	docs/media/catalogue-8a.png
+-	-	docs/media/textcn1.png
+16	0	docs/opac/using_the_public_access_catalog.txt
+ create mode 100644 docs/media/SMS_Text_Messaging11.png
+ create mode 100644 docs/media/SMS_Text_Messaging8.png
+ create mode 100644 docs/media/SMS_Text_Messaging9.png
+ create mode 100644 docs/media/catalogue-8a.png
+ create mode 100755 docs/media/textcn1.png
+
+commit 215e80adf9bbca8b7f7410b8694a368a84187ebb
+Author: Ben Shum <bshum@biblio.org>
+Date:   Mon Mar 2 21:49:55 2015 -0500
+
+    LP#1125270: Add a DROP FUNCTION for actor.usr_purge_data
+    
+    Apparently this caused problems on upgrading from 2.0 to 2.1 back in the day,
+    and adding a DROP FUNCTION ahead of the CREATE dealt with the situation.
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2	0	Open-ILS/src/sql/Pg/version-upgrade/2.0-2.1-upgrade-db.sql
+
+commit 3739b344246d86d210b6a35f889340e6147b7743
+Author: Terran McCanna <tmccanna@georgialibraries.org>
+Date:   Fri May 15 10:02:17 2015 -0700
+
+    LP1406317: Stray Semicolons in OPAC Browse
+    
+    Fixed display issue where semicolons were appearing at the end of
+    each result in browse title screen. Semicolon had been placed outside
+    of a bracket rather than inside a bracket. Moved semicolon to inside
+    bracket to correct.
+    
+    URL of page showing error:
+    https://my-library/eg/opac/browse?blimit=10&qtype=title&bterm=m&locg=1
+    
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+1	1	Open-ILS/src/templates/opac/browse.tt2
+
+commit 44431931451601b24927fdb6ae6c3efca33a810b
+Author: Lynn Floyd <alynn2671@gmail.com>
+Date:   Wed May 13 19:01:05 2015 -0400
+
+    Docs: Active date display in OPAC
+    
+    Additional thanks to Debbie Luchenbill <debbie@mobiusconsortium.org>
+    
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+23	0	docs/admin/age_hold_protection.txt
+2	0	docs/root.txt
+ create mode 100644 docs/admin/age_hold_protection.txt
+
+commit 046243f2b61b7a5a34487854f952d588f64dc167
+Author: Debbie Luchenbill <debbie@mobiusconsortium.org>
+Date:   Wed May 13 18:41:16 2015 -0400
+
+    Docs: Update mention of Schema.org use to include OPAC bib record views
+    
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+1	4	docs/opac/linked_libraries.txt
+
+commit ec09e2bf90efeb8823d07dbdd4f1eccc6338b555
+Author: Yamil Suarez <github@yamil.com>
+Date:   Tue May 12 20:48:13 2015 -0400
+
+    Docs: config.tt2 option for "Show more details"
+    
+    Signed-off-by: Yamil Suarez <github@yamil.com>
+
+1	0	docs/opac/new_skin_customizations.txt
+
+commit 95dde4dacfc80fb6da1e3c7a5bc089ce762dd244
+Author: Yamil Suarez <github@yamil.com>
+Date:   Tue May 12 21:27:28 2015 -0400
+
+    Docs: Removal of Bib Call Number Search
+    
+    Signed-off-by: Yamil Suarez <github@yamil.com>
+
+9	0	docs/opac/new_skin_customizations.txt
+1	3	docs/opac/using_the_public_access_catalog.txt
+
+commit d83ae636fbc66b07f0518af32c250057d2cc0065
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Wed May 13 13:51:35 2015 -0400
+
+    LP#800706: Stamping upgrade script
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+9	0	Open-ILS/src/sql/Pg/upgrade/0917.schema.index-record-in-sre.sql
+0	9	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.index-record-in-sre.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0917.schema.index-record-in-sre.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.index-record-in-sre.sql
+
+commit 655b97025d045ef50ba9522cfd5d67b435f5f4a1
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Tue May 12 16:02:09 2015 -0400
+
+    LP#800706: add regression test
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+7	0	Open-ILS/src/sql/Pg/t/regress/lp800706_ser_indexes_record.pg
+ create mode 100644 Open-ILS/src/sql/Pg/t/regress/lp800706_ser_indexes_record.pg
+
+commit 0632d1f137058a813baec118320cc85f6a51c101
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Tue May 12 15:27:07 2015 -0400
+
+    LP#800706: add index to serial.record_entry.record
+    
+    This patch adds index on the record column of serial.record_entry,
+    which can improve performance when displaying record details pages
+    in databases that have a large number MFHDs.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+1	0	Open-ILS/src/sql/Pg/210.schema.serials.sql
+9	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.index-record-in-sre.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.index-record-in-sre.sql
+
+commit b9c0c4962b222397a650aada2856aa40dff75031
+Author: Ben Shum <bshum@biblio.org>
+Date:   Fri May 8 22:10:19 2015 -0400
+
+    LP#1445150: Symlink for 000.english.pg94.fts-config.sql
+    
+    We need this so that the eg_db_config script can make the Evergreen
+    database with PostgreSQL 9.4 systems.
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	0	Open-ILS/src/sql/Pg/000.english.pg94.fts-config.sql
+ create mode 120000 Open-ILS/src/sql/Pg/000.english.pg94.fts-config.sql
+
+commit 077eaa7107348cf65146355700e525325a4b96f2
+Author: Robert Soulliere <robert.soulliere@mohawkcollege.ca>
+Date:   Thu May 7 14:36:29 2015 -0400
+
+    Docs: Add a leveloffset before the release notes include.
+    
+    A leveloffset is required or the PDF file will not be built.
+
+6	0	docs/root.txt
+
+commit a7c4061dab0dfdd0590276e517b0a404d2bf6369
+Author: Josh Stompro <stomproj@larl.org>
+Date:   Thu Apr 30 09:37:50 2015 -0500
+
+    LP#1445182 Changed Debian Jessie dependency install to use packages for dbi dbd-pgsql.
+    
+    Signed-off-by: Josh Stompro <stomproj@larl.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+    
+    Conflicts:
+    	Open-ILS/src/extras/install/Makefile.debian-jessie
+
+3	2	Open-ILS/src/extras/install/Makefile.debian-jessie
+3	3	docs/installation/server_installation.txt
+
+commit 790a64fd56c061a1f84b3b413982c566918d2db9
+Author: Josh Stompro <stomproj@larl.org>
+Date:   Thu Apr 16 11:21:13 2015 -0500
+
+    LP#1362260 - Email::Sender/libemail-send-perl change in Jessie
+    
+    libemail-send-perl no longer exists in Debian Jessie.  Change
+    Makefile.debian-jessie to install cpan version instead of
+    debian package.
+    
+    Signed-off-by: Josh Stompro <stomproj@larl.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+2	2	Open-ILS/src/extras/install/Makefile.debian-jessie
+
+commit 4df9393e2d2bd8cdb04a4ec1e19fe3c6d492aa47
+Author: Josh Stompro <stomproj@larl.org>
+Date:   Thu Apr 16 14:55:25 2015 -0500
+
+    LP#1445187 - Force disable of deflate
+    
+    Add the -f (force) flag to a2dismod to remove the chance of getting
+    a confirmation prompt when removing deflate.
+    
+    Signed-off-by: Josh Stompro <stomproj@larl.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/extras/install/Makefile.debian
+
+commit 792e3017f9f99c1a18ee3724d44b575226f07a21
+Author: Josh Stompro <stomproj@larl.org>
+Date:   Mon Apr 20 14:45:59 2015 -0500
+
+    LP#1447195 Updates for Debian Jessie in README
+    
+    - Adding in a few missed references to Debian Jessie
+    - Noted instances where Jessie uses the same instructions as Trusty
+    - Debian Jessie includes Apache2.4 so needs to use those steps.
+    - Added Jessie to postgres server install
+    
+    Signed-off-by: Josh Stompro <stomproj@larl.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+8	7	docs/installation/server_installation.txt
+
+commit b829b44144d895e7ee904293777b022698780d80
+Author: Josh Stompro <stomproj@larl.org>
+Date:   Thu Apr 16 13:13:17 2015 -0500
+
+    LP#1445150 Update Debian Jessie depend make to PG9.4
+    
+    Signed-off-by: Josh Stompro <stomproj@larl.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+7	7	Open-ILS/src/extras/install/Makefile.debian-jessie
+
+commit 11aefdb9829eacc732d6b9f69f0ab86d289df89c
+Author: Ben Shum <bshum@biblio.org>
+Date:   Mon May 4 12:58:22 2015 -0400
+
+    Docs: Change references to release 2.8.1 for server upgrade
+    
+    Since 2.8.1 is released, change references in upgrade docs to this newest
+    release.
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+24	19	docs/installation/server_upgrade.txt
+
+commit a826c711450da39db1ec414ad3a8b9cdee733f28
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri May 1 16:06:14 2015 -0400
+
+    Forward-port 2.8.0 to 2.8.1 SQL upgrade
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+35	0	Open-ILS/src/sql/Pg/version-upgrade/2.8.0-2.8.1-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.8.0-2.8.1-upgrade-db.sql
