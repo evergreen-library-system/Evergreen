@@ -1,10 +1,64 @@
-Evergreen 2.8.1 Release Notes
+Evergreen 2.8 Release Notes
 =============================
 
-This release contains several bugfixes improving on Evergreen 2.8.0.
+Evergreen 2.8.2
+---------------
 
-Changes
--------
+This release contains several bugfixes improving on Evergreen 2.8.1
+
+Circulation
+~~~~~~~~~~~
+
+* Fixes an issue where a double-scan at checkin causes two holds to capture for
+the same item.
+* In patron registration, fixes a broken link in the alert informing staff that
+a patron with the same name already exists.
+* Fixes an issue where fully-paid long overdue items still appeared in the
+Other/Special Circulations window.
+* Fixes an error that appeared when staff tried to renew lost, claims returned
+or long overdue item.
+* Fixes a "Return to Record" link on the call number texting confirmation
+screen. The link previously broke in cases when the user was prompted to
+authenticate before texting.
+* Removes long overdue circs from the total items out count in My Account. 
+
+Public Catalog
+~~~~~~~~~~~~~~
+
+* Changes the behavior of the "Add Rows" link on the advanced search screen
+so that it no longer opens duplicate rows.
+* Removes the Bib Call Number from the query type selector.
+* Removes publication-specific information from a metarecord search results
+page
+* Prevents the "you have permission to override some of the failed holds" 
+message from appearing when the user does not have permission to override holds.* Removes a stray semicolon that was appearing in browse search entries.
+
+Client
+~~~~~~
+
+* Prevents security warnings in the staff client when Google Analytics is 
+enabled in the catalog.
+* Adds scrollbars when necessary to the item status alternate view tab.
+
+Reports
+~~~~~~~
+
+* Fixes an issue where strings with apostrophes could no longer be used to
+filter reports.
+
+Administration
+~~~~~~~~~~~~~~
+
+* Creates a script allowing EDI Ruby dependency installation on Ubuntu 14.04.
+* Fixes compatibility issues with Debian Jessie.
+* Removes "Safe" CPAN dependency from Debian/Ubuntu Makefile.install files.
+* Removes the ability for staff to edit their own user accounts.
+* Adds an index on authority.simple_heading.record so that full table scans
+aren't needed during authority record reingest.
+
+Evergreen 2.8.1
+----------------
+This release contains several bugfixes improving on Evergreen 2.8.0.
 
 Acquisitions
 ~~~~~~~~~~~~
@@ -98,8 +152,8 @@ be installed to the Evergreen binaries directory (typically /openils/bin)
 by default.
 
 
-Evergreen 2.8 Release Notes
-===========================
+Evergreen 2.8.0 Release Notes
+=============================
 :toc:
 :numbered:
 
