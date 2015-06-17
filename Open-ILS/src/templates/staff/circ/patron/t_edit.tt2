@@ -347,7 +347,7 @@
           [% l('Mailing') %] <input type='checkbox'/>
         </span>
         <span class='pad-all-min'>
-          [% l('Billing') %] <input type='checkbox'/>
+          [% l('Physical') %] <input type='checkbox'/>
         </span>
         <span class='pad-all-min'>
           <button type="button" class="btn btn-danger">[% l('X') %]</button>
