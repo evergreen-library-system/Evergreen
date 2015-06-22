@@ -1348,6 +1348,19 @@ sub patron_adv_search {
     my( $self, $client, $auth, $search_hash, $search_limit, 
         $search_sort, $include_inactive, $search_ou, $flesh_fields, $offset) = @_;
 
+    # API params sanity checks.
+    # Exit early with empty result if no filter exists.
+    # .fleshed call is streaming.  Non-fleshed is effectively atomic.
+    my $fleshed = ($self->api_name =~ /fleshed/);
+    return ($fleshed ? undef : []) unless (ref $search_hash ||'') eq 'HASH';
+    my $search_ok = 0;
+    for my $key (keys %$search_hash) {
+        next if $search_hash->{$key}{value} =~ /^\s*$/; # empty filter
+        $search_ok = 1;
+        last;
+    }
+    return ($fleshed ? undef : []) unless $search_ok;
+
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
     return $e->event unless $e->allowed('VIEW_USER');
