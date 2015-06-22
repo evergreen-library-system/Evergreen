@@ -265,6 +265,16 @@ angular.module('egGridMod',
                 grid.controls = controls;
             }
 
+            // If a menu item provides its own HTML template, translate it,
+            // using the menu item for the template scope.
+            // note: $sce is required to avoid security restrictions and
+            // is OK here, since the template comes directly from a
+            // local HTML template (not user input).
+            $scope.translateMenuItemTemplate = function(item) {
+                var html = egCore.strings.$replace(item.template, {item : item});
+                return $sce.trustAsHtml(html);
+            }
+
             // add a new (global) grid menu item
             grid.addMenuItem = function(item) {
                 $scope.menuItems.push(item);
@@ -1603,6 +1613,8 @@ angular.module('egGridMod',
         require : '^egGrid',
         scope : {
             label : '@',  
+            checkbox : '@',  
+            checked : '=',  
             standalone : '=',  
             handler : '=', // onclick handler function
             divider : '=', // if true, show a divider only
@@ -1612,6 +1624,8 @@ angular.module('egGridMod',
         },
         link : function(scope, element, attrs, egGridCtrl) {
             egGridCtrl.addMenuItem({
+                checkbox : scope.checkbox,
+                checked : scope.checked ? true : false,
                 label : scope.label,
                 standalone : scope.standalone ? true : false,
                 handler : scope.handler,

@@ -10,7 +10,7 @@
 
   <div class="btn-group" 
     is-open="gridMenuIsOpen" ng-if="menuLabel" dropdown>
-    <button type="button" class="btn btn-default dropdown-toggle eg-grid-menui-item">
+    <button type="button" class="btn btn-default dropdown-toggle eg-grid-menu-item">
       {{menuLabel}}<span class="caret"></span>
     </button>
     <ul class="dropdown-menu">
@@ -19,8 +19,8 @@
           ng-click="item.handler()">{{item.label}}</a>
       </li>
     </ul>
-    <button ng-if="!item.hidden()"
-      class="btn btn-default eg-grid-menui-item"
+    <button ng-if="!item.checkbox && !item.hidden()"
+      class="btn btn-default eg-grid-menu-item"
       ng-disabled="item.disabled()"
       ng-repeat="item in menuItems | filter : { standalone : 'true' }"
       ng-click="item.handler()">{{item.label}}</button>
@@ -29,12 +29,23 @@
   <!-- if no menu label is present, present menu-items as a 
        horizontal row of buttons -->
   <div class="btn-group" ng-if="!menuLabel">
-    <button ng-if="!item.hidden()"
+    <button ng-if="!item.checkbox && !item.hidden()"
       class="btn btn-default eg-grid-menu-item"
-      ng-disabled="item.disabled()"
       ng-repeat="item in menuItems"
+      ng-disabled="item.disabled()"
       ng-click="item.handler(item, item.handlerData)">
-      {{item.label}}
+        {{item.label}}
+    </button>
+    <button ng-if="item.checkbox"
+      class="btn btn-default eg-grid-menu-item"
+      ng-repeat="item in menuItems">
+        {{item.label}}
+        <input style="padding-left: 5px"
+               type="checkbox"
+               ng-disabled="item.disabled()"
+               ng-model="item.checked"
+               ng-checked="item.checked"
+               ng-change="item.handler(item)"/>
     </button>
   </div>
 
