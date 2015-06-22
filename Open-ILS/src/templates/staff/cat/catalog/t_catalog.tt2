@@ -49,6 +49,11 @@
         [% l('Monograph Parts') %]
     </a>
   </li>
+  <li ng-class="{disabled : !record_id, active : record_tab == 'holdings'}">
+    <a ng-click="set_record_tab('holdings')" >
+        [% l('Holdings View') %]
+    </a>
+  </li>
 </ul>
 
 <div class="tab-content">
@@ -72,6 +77,9 @@
     </div>
     <div ng-if="record_tab == 'monoparts'">
       <eg-embed-frame save-space="350" url="parts_url"></eg-embed-frame>
+    </div>
+    <div ng-if="record_tab == 'holdings'">
+      [% INCLUDE 'staff/cat/catalog/t_holdings.tt2' %]
     </div>
   </div>
 </div>

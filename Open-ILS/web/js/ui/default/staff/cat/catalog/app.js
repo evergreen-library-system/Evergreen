@@ -148,9 +148,9 @@ function($scope , $routeParams , $location , $q , egCore ) {
 
 .controller('CatalogCtrl',
        ['$scope','$routeParams','$location','$q','egCore','egHolds',
-        'egGridDataProvider','egHoldGridActions','$timeout',
+        'egGridDataProvider','egHoldGridActions','$timeout','holdingsSvc',
 function($scope , $routeParams , $location , $q , egCore , egHolds, 
-         egGridDataProvider , egHoldGridActions , $timeout) {
+         egGridDataProvider , egHoldGridActions , $timeout , holdingsSvc) {
 
     // set record ID on page load if available...
     $scope.record_id = $routeParams.record_id;
@@ -225,6 +225,26 @@ function($scope , $routeParams , $location , $q , egCore , egHolds,
 
     // xulG catalog handlers
     $scope.handlers = { }
+
+    // ------------------------------------------------------------------
+    // Holdings
+
+    $scope.holdingsGridControls = {};
+    $scope.holdingsGridDataProvider = egGridDataProvider.instance({
+        get : function(offset, count) {
+            return this.arrayNotifier(holdingsSvc.copies, offset, count);
+        }
+    });
+
+    // refresh the list of holdings when the filter lib is changed.
+    $scope.holdings_ou = egCore.org.get(egCore.auth.user().ws_ou());
+    $scope.holdings_ou_changed = function(org) {
+        $scope.holdings_ou = org;
+        holdingsSvc.fetch($scope.record_id, $scope.holdings_ou).then(function() {
+            $scope.holdingsGridDataProvider.refresh();
+        });
+    }
+
 
     // ------------------------------------------------------------------
     // Holds 
@@ -378,6 +398,11 @@ function($scope , $routeParams , $location , $q , egCore , egHolds,
     if ($scope.record_id) {
         $scope.default_tab = egCore.hatch.getLocalItem( 'eg.cat.default_record_tab' );
         tab = $routeParams.record_tab || $scope.default_tab || 'catalog';
+
+        holdingsSvc.fetch($scope.record_id, $scope.holdings_ou).then(function() {
+            $scope.holdingsGridDataProvider.refresh();
+        });
+
     } else {
         tab = $routeParams.record_tab || 'catalog';
     }
@@ -420,3 +445,142 @@ function($scope , $location , $routeParams) {
 }])
 
  
+.filter('boolText', function(){
+    return function (v) {
+        return v == 't';
+    }
+})
+
+.factory('holdingsSvc', 
+       ['egCore','$q',
+function(egCore , $q) {
+
+    var service = {
+        copies : [], // record search results
+        index : 0, // search grid index
+        org : null,
+        rid : null
+    };
+
+    service.flesh = {   
+        flesh : 2, 
+        flesh_fields : {
+            acp : ['status','location'],
+            acn : ['prefix','suffix','copies']
+        }
+    }
+
+    // resolved with the last received copy
+    service.fetch = function(rid, org) {
+
+        if (!rid) return $q.when();
+        if (!org) return $q.when();
+        if (service.rid && service.org && service.rid == rid && service.org == org) return $q.when();
+
+        service.rid = rid;
+        service.org = org;
+        service.copies = [];
+        service.index = 0;
+
+        var org_list = egCore.org.descendants(org.id(), true);
+
+        return egCore.pcrud.search(
+            'acn',
+            {record : rid, owning_lib : org_list, deleted : 'f'},
+            service.flesh
+        ).then(
+            function() { // finished
+                service.copies = service.copies.sort(
+                    function (a, b) {
+                        function compare_array (x, y, i) {
+                            if (x[i] && y[i]) { // both have values
+                                if (x[i] == y[i]) { // need to look deeper
+                                    return compare_array(x, y, ++i);
+                                }
+
+                                if (x[i] < y[i]) { // x is first
+                                    return -1;
+                                } else if (x[i] > y[i]) { // y is first
+                                    return 1;
+                                }
+
+                            } else { // no orgs to compare ...
+                                if (x[i]) return -1;
+                                if (y[i]) return 1;
+                            }
+                            return 0;
+                        }
+
+                        var owner_order = compare_array(a.owner_list, b.owner_list, 0);
+                        if (!owner_order) {
+                            // now compare on CN label
+                            if (a.call_number.label < b.call_number.label) return -1;
+                            if (a.call_number.label > b.call_number.label) return 1;
+
+                            // try copy number
+                            if (a.copy_number < b.copy_number) return -1;
+                            if (a.copy_number > b.copy_number) return 1;
+
+                            // finally, barcode
+                            if (a.barcode < b.barcode) return -1;
+                            if (a.barcode > b.barcode) return 1;
+                        }
+                        return owner_order;
+                    }
+                );
+
+                // create a label using just the unique part of the owner list
+                var index = 0;
+                var prev_owner_list;
+                angular.forEach(service.copies, function (cp) {
+                    if (!prev_owner_list) {
+                        cp.owner_label = cp.owner_list.join(' ... ');
+                    } else {
+                        var current_owner_list = cp.owner_list.slice();
+                        while (current_owner_list[1] && prev_owner_list[1] && current_owner_list[0] == prev_owner_list[0]) {
+                            current_owner_list.shift();
+                            prev_owner_list.shift();
+                        }
+                        cp.owner_label = current_owner_list.join(' ... ');
+                    }
+
+                    cp.index = index++;
+                    prev_owner_list = cp.owner_list.slice();
+                });
+            },
+
+            null, // error
+
+            // notify reads the stream of copies, one at a time.
+            function(cn) {
+
+                var copies = cn.copies();
+                cn.copies([]);
+
+                angular.forEach(copies, function (cp) {
+                    cp.call_number(cn);
+                });
+
+                var flat = egCore.idl.toHash(copies);
+                var owner = egCore.org.get(flat[0].call_number.owning_lib);
+
+                var owner_name_list = [];
+                while (owner.parent_ou()) { // we're going to skip the top of the tree...
+                    owner_name_list.unshift(owner.name());
+                    owner = egCore.org.get(owner.parent_ou());
+                }
+
+                angular.forEach(flat, function (cp) {
+                    cp.owner_list = owner_name_list;
+                });
+
+                service.copies = service.copies.concat(flat);
+                return cn;
+            }
+        );
+    }
+
+    return service;
+}])
+
+
