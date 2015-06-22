@@ -1,6 +1,6 @@
 
 <div>
-  <div class="row pad-vert">
+  <div class="row">
     <div class="col-md-3">
       <div class="input-group">
         <span class="input-group-addon">[% l('Show holdings at or below') %]</span>
@@ -8,6 +8,8 @@
       </div>
     </div>
   </div>
+
+  <div class="pad-vert"></div>
 
   <eg-grid
     id-field="index"
