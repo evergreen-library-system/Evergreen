@@ -171,6 +171,72 @@ function($scope , $routeParams , $location , $q , egCore , egHolds,
         }
     }
 
+    $scope.holdings_ou = null;
+    $scope.$watch('holdings_show_copies',
+        function(newVal, oldVal) {
+            if (newVal != oldVal) {
+                egCore.hatch.setItem('cat.holdings.show_copies', newVal);
+                holdingsSvc.fetch({
+                    rid : $scope.record_id,
+                    org : $scope.holdings_ou,
+                    copy: newVal,
+                    vol : $scope.holdings_show_vols,
+                    empty: $scope.holdings_show_empty
+                }).then(function() {
+                    $scope.holdingsGridDataProvider.refresh();
+                });
+            }
+        }
+    );
+
+    $scope.$watch('holdings_show_vols',
+        function(newVal, oldVal) {
+            if (newVal != oldVal) {
+                egCore.hatch.setItem('cat.holdings.show_vols', newVal);
+                holdingsSvc.fetch({
+                    rid : $scope.record_id,
+                    org : $scope.holdings_ou,
+                    copy: $scope.holdings_show_copies,
+                    vol : newVal,
+                    empty: $scope.holdings_show_empty
+                }).then(function() {
+                    $scope.holdingsGridDataProvider.refresh();
+                });
+            }
+        }
+    );
+
+    $scope.$watch('holdings_show_empty',
+        function(newVal, oldVal) {
+            if (newVal != oldVal) {
+                egCore.hatch.setItem('cat.holdings.show_empty', newVal);
+                holdingsSvc.fetch({
+                    rid : $scope.record_id,
+                    org : $scope.holdings_ou,
+                    copy: $scope.holdings_show_copies,
+                    vol : $scope.holdings_show_vols,
+                    empty: newVal
+                }).then(function() {
+                    $scope.holdingsGridDataProvider.refresh();
+                });
+            }
+        }
+    );
+
+    egCore.hatch.getItem('cat.holdings.show_copies').then(function(x){
+        $scope.holdings_show_copies = x
+    });
+
+    egCore.hatch.getItem('cat.holdings.show_vols').then(function(x){
+        $scope.holdings_show_vols = x;
+    });
+
+    egCore.hatch.getItem('cat.holdings.show_emtpy').then(function(x){
+        $scope.holdings_show_empty = x;
+    });
+
+    $scope.holdings_checkbox_handler = function (item) { $scope[item.checkbox] = item.checked; }
+
     $scope.stop_unload = false;
     $scope.$watch('stop_unload',
         function(newVal, oldVal) {
@@ -240,7 +306,13 @@ function($scope , $routeParams , $location , $q , egCore , egHolds,
     $scope.holdings_ou = egCore.org.get(egCore.auth.user().ws_ou());
     $scope.holdings_ou_changed = function(org) {
         $scope.holdings_ou = org;
-        holdingsSvc.fetch($scope.record_id, $scope.holdings_ou).then(function() {
+        holdingsSvc.fetch({
+            rid : $scope.record_id,
+            org : $scope.holdings_ou,
+            copy: $scope.holdings_show_copies,
+            vol : $scope.holdings_show_vols,
+            empty: $scope.holdings_show_empty
+        }).then(function() {
             $scope.holdingsGridDataProvider.refresh();
         });
     }
@@ -399,8 +471,17 @@ function($scope , $routeParams , $location , $q , egCore , egHolds,
         $scope.default_tab = egCore.hatch.getLocalItem( 'eg.cat.default_record_tab' );
         tab = $routeParams.record_tab || $scope.default_tab || 'catalog';
 
-        holdingsSvc.fetch($scope.record_id, $scope.holdings_ou).then(function() {
-            $scope.holdingsGridDataProvider.refresh();
+
+        $timeout(function(){
+            holdingsSvc.fetch({
+                rid : $scope.record_id,
+                org : $scope.holdings_ou,
+                copy: $scope.holdings_show_copies,
+                vol : $scope.holdings_show_vols,
+                empty: $scope.holdings_show_empty
+            }).then(function() {
+                $scope.holdingsGridDataProvider.refresh();
+            });
         });
 
     } else {
@@ -471,11 +552,16 @@ function(egCore , $q) {
     }
 
     // resolved with the last received copy
-    service.fetch = function(rid, org) {
+    service.fetch = function(opts) {
+
+        var rid = opts.rid;
+        var org = opts.org;
+        var copy = opts.copy;
+        var vol = opts.vol;
+        var empty = opts.empty;
 
         if (!rid) return $q.when();
         if (!org) return $q.when();
-        if (service.rid && service.org && service.rid == rid && service.org == org) return $q.when();
 
         service.rid = rid;
         service.org = org;
@@ -547,6 +633,82 @@ function(egCore , $q) {
                     cp.index = index++;
                     prev_owner_list = cp.owner_list.slice();
                 });
+
+                var new_list = service.copies;
+                if (!copy || !vol) { // collapse copy rows, supply a count instead
+
+                    index = 0;
+                    var cp_list = [];
+                    var prev_key;
+                    var current_blob = {};
+                    angular.forEach(new_list, function (cp) {
+                        if (!prev_key) {
+                            prev_key = cp.owner_list.join('') + cp.call_number.label;
+                            if (cp.barcode) current_blob.copy_count = 1;
+                            current_blob.index = ++index;
+                            current_blob.call_number = cp.call_number;
+                            current_blob.owner_list = cp.owner_list;
+                            current_blob.owner_label = cp.owner_label;
+                        } else {
+                            var current_key = cp.owner_list.join('') + cp.call_number.label;
+                            if (prev_key == current_key) { // collapse into current_blob
+                                current_blob.copy_count++;
+                            } else {
+                                cp_list.push(current_blob);
+                                prev_key = current_key;
+                                current_blob = {};
+                                if (cp.barcode) current_blob.copy_count = 1;
+                                current_blob.index = ++index;
+                                current_blob.owner_label = cp.owner_label;
+                                current_blob.call_number = cp.call_number;
+                                current_blob.owner_list = cp.owner_list;
+                            }
+                        }
+                    });
+
+                    cp_list.push(current_blob);
+                    new_list = cp_list;
+
+                    if (!vol) {
+
+                        index = 0;
+                        var cn_list = [];
+                        prev_key = '';
+                        var current_blob = {};
+                        angular.forEach(cp_list, function (cp) {
+                            if (!prev_key) {
+                                prev_key = cp.owner_list.join('');
+                                current_blob.index = ++index;
+                                current_blob.cn_count = 1;
+                                current_blob.copy_count = cp.copy_count;
+                                current_blob.owner_list = cp.owner_list;
+                                current_blob.owner_label = cp.owner_label;
+                            } else {
+                                var current_key = cp.owner_list.join('');
+                                if (prev_key == current_key) { // collapse into current_blob
+                                    current_blob.cn_count++;
+                                    current_blob.copy_count += cp.copy_count;
+                                } else {
+                                    cn_list.push(current_blob);
+                                    prev_key = current_key;
+                                    current_blob = {};
+                                    current_blob.index = ++index;
+                                    current_blob.owner_label = cp.owner_label;
+                                    current_blob.cn_count = 1;
+                                    current_blob.copy_count = cp.copy_count;
+                                    current_blob.owner_list = cp.owner_list;
+                                }
+                            }
+                        });
+    
+                        cn_list.push(current_blob);
+                        new_list = cn_list;
+    
+                    }
+                }
+
+                service.copies = new_list;
+
             },
 
             null, // error
@@ -575,6 +737,14 @@ function(egCore , $q) {
                 });
 
                 service.copies = service.copies.concat(flat);
+
+                if (empty && flat.length == 0) {
+                    service.copies.push({
+                        owner_list : owner_name_list,
+                        call_number: egCore.idl.toHash(cn)
+                    });
+                }
+
                 return cn;
             }
         );
