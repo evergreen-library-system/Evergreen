@@ -284,7 +284,7 @@
           ng-click="handleRowClick($event, item)"
           ng-dblclick="gridControls.activateItem(item)"
           ng-repeat="col in columns"
-          style="flex:{{col.flex}}"
+          style="text-align:{{col.align}}; padding-left:5px; padding-right:5px; flex:{{col.flex}}"
           ng-show="col.visible">
 
           <!-- if the cell comes with its own template,

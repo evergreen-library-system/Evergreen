@@ -348,6 +348,7 @@ angular.module('egGridMod',
                     var c = {name : col.name}
                     // Apart from the name, only store non-default values.
                     // No need to store col.visible, since that's implicit
+                    if (col.align != 'left') c.align = col.align;
                     if (col.flex != 2) c.flex = col.flex;
                     if (Number(col.sort)) c.sort = Number(c.sort);
                     return c;
@@ -385,6 +386,7 @@ angular.module('egGridMod',
                             return;
                         }
 
+                        grid_col.align = col.align || 'left';
                         grid_col.flex = col.flex || 2;
                         grid_col.sort = col.sort || 0;
                         // all saved columns are assumed to be true
@@ -930,6 +932,7 @@ angular.module('egGridMod',
             ignore: '@', // optional; fields to ignore when path is a wildcard
             label : '@', // optional; display label
             flex  : '@',  // optional; default flex width
+            align  : '@',  // optional; default alignment, left/center/right
             dateformat : '@', // optional: passed down to egGridValueFilter
 
             // if a field is part of an IDL object, but we are unable to
@@ -1019,6 +1022,7 @@ angular.module('egGridMod',
         // template (i.e. the original egGridField values).
         cols.reset = function() {
             angular.forEach(cols.columns, function(col) {
+                col.align = 'left';
                 col.flex = 2;
                 col.sort = 0;
                 if (cols.stockVisible.indexOf(col.name) > -1) {
@@ -1186,6 +1190,7 @@ angular.module('egGridMod',
                 name  : colSpec.name,
                 label : colSpec.label,
                 path  : colSpec.path,
+                align  : colSpec.align || 'left',
                 flex  : Number(colSpec.flex) || 2,
                 sort  : Number(colSpec.sort) || 0,
                 required : colSpec.required,
