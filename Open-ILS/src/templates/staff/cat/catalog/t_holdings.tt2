@@ -3,7 +3,7 @@
   <div class="row pad-vert">
     <div class="col-md-3">
       <div class="input-group">
-        <span class="input-group-addon">[% l('Show holding at or below') %]</span>
+        <span class="input-group-addon">[% l('Show holdings at or below') %]</span>
         <eg-org-selector selected="holdings_ou" onchange="holdings_ou_changed"></eg-org-selector>
       </div>
     </div>
@@ -35,9 +35,7 @@
     <eg-grid-field label="[% l('Owning Library') %]"  path="owner_label" flex="4" align="right" visible></eg-grid-field>
     <eg-grid-field label="[% l('Location') %]"        path="location.name" visible></eg-grid-field>
     <eg-grid-field label="[% l('Call Number') %]"     path="call_number.label" visible></eg-grid-field>
-    <eg-grid-field label="[% l('CN Count') %]"        path="cn_count" visible></eg-grid-field>
     <eg-grid-field label="[% l('Copy #') %]"          path="copy_number" flex="1" visible></eg-grid-field>
-    <eg-grid-field label="[% l('Copy Count') %]"      path="copy_count" flex="1" visible></eg-grid-field>
     <eg-grid-field label="[% l('Barcode') %]"         path="barcode" visible></eg-grid-field>
     <eg-grid-field label="[% l('Status') %]"          path="status.name" flex="1" visible></eg-grid-field>
   
