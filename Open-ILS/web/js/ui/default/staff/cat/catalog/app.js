@@ -224,14 +224,17 @@ function($scope , $routeParams , $location , $q , egCore , egHolds,
     );
 
     egCore.hatch.getItem('cat.holdings.show_copies').then(function(x){
-        $scope.holdings_show_copies = x
+        if (x === null) x = true;
+        $scope.holdings_show_copies = x;
     });
 
     egCore.hatch.getItem('cat.holdings.show_vols').then(function(x){
+        if (x === null) x = true;
         $scope.holdings_show_vols = x;
     });
 
     egCore.hatch.getItem('cat.holdings.show_emtpy').then(function(x){
+        if (x === null) x = false;
         $scope.holdings_show_empty = x;
     });
 
