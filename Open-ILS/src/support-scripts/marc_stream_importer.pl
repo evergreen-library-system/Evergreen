@@ -84,6 +84,7 @@ my $import_no_match;
 my $auto_overlay_exact;
 my $auto_overlay_1match;
 my $auto_overlay_best_match;
+my $deprecated_queue;
 
 
 
@@ -98,7 +99,8 @@ GetOptions(
     'spoolfile=s'           => \$spoolfile,
     'wait=i'                => \$wait_time,
     'merge-profile=i'       => \$bib_merge_profile,
-    'queue=i'               => \$bib_queue,
+    'queue=i'               => \$deprecated_queue,
+    'bib-queue=i'           => \$bib_queue,
     'source=i'              => \$bib_source,
     'auth-merge-profile=i'  => \$auth_merge_profile,
     'auth-queue=i'          => \$auth_queue,
@@ -223,6 +225,11 @@ if ($auto_overlay_best_match) {
     warn "\nauto-overlay-best-match is deprecated; use bib-auto-overlay-best-match\n";
     $bib_auto_overlay_best_match = $auto_overlay_best_match;
 }
+if ($deprecated_queue) {
+    warn "\n--queue is deprecated; use --bib-queue\n";
+    $bib_queue = $deprecated_queue;
+}
+
 
 die "--username AND --password required.  --help for more info.\n" 
     unless $username and $password;
@@ -348,6 +355,14 @@ sub import_queued_records {
 
                 $logger->error(Dumper($data->{err_event}));
                 $failed++;
+
+            } elsif ($data->{no_import}) {
+                # no errors, just didn't import, because of rules.
+
+                $failed++;
+                $logger->info(
+                    "record failed to satisfy Vandelay merge/quality/etc. ".
+                    "requirements: " . ($data->{imported} || ''));
 
             } else {
                 push(@cleanup_recs, $data->{imported}) if $data->{imported};
