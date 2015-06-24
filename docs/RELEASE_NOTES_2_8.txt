@@ -31,7 +31,8 @@ so that it no longer opens duplicate rows.
 * Removes publication-specific information from a metarecord search results
 page
 * Prevents the "you have permission to override some of the failed holds" 
-message from appearing when the user does not have permission to override holds.* Removes a stray semicolon that was appearing in browse search entries.
+message from appearing when the user does not have permission to override holds.
+* Removes a stray semicolon that was appearing in browse search entries.
 
 Client
 ~~~~~~
@@ -529,10 +530,13 @@ code and documentations patches to this release of Evergreen:
  * Jason Etheridge
  * Pasi Kallinen
  * Kathy Lussier
+ * Terran McCanna
  * Christine Morgan
+ * Michael Peters
  * Art Rhyno
  * Mike Rylander
  * Dan Scott
+ * Chris Sharp
  * Ben Shum
  * Remington Steed
  * Jason Stephenson
@@ -550,6 +554,7 @@ patches:
  * Calvin College
  * Emerald Data Networks, Inc.
  * Equinox Software, Inc.
+ * Georgia Public Library Service
  * Indiana State Library
  * King County Library System
  * Laurentian University
