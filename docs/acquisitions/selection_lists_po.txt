@@ -93,6 +93,46 @@ Use the Actions menu to convert a selection list to a purchase order.
 Purchase Orders
 ~~~~~~~~~~~~~~~
 
+Duplicate Purchase Order Name Warning Dialog
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+When creating a purchase order or editing an existing purchase order, the purchase order name must be unique for the ordering agency.  Evergreen will display a warning dialog to users, if they attempt to create or edit purchase order names that match the names of already existing purchase orders at the same ordering agency. The *Duplicate Purchase Order Name Warning Dialog* includes a link that will open the matching purchase order in a new tab.
+
+Purchase Order Names are case sensitive.
+
+*Duplicate PO Name Detection When Creating a New Purchase Order*
+
+image::media/po_name_detection_1.JPG[PO Name Detection 1]
+
+When a duplicate purchase order name is detected during the creation of a new purchase order, the user may:
+* Click *View PO* to view the purchase order with the matching name. The purchase order will open in a new tab.
+* Click *Cancel* to cancel the creation of the new purchase order.
+* Within the _Name (optional)_ field, enter a different, unique name for the new purchase order.
+
+If the purchase order name is unique for the ordering agency, the user will continue filling in the remaining fields and click *Save*.
+
+If the purchase order name is not unique for the ordering agency, the Save button will remain grayed out to the user until the purchase order is given a unique name.
+
+*Duplicate PO Name Detection When Editing the Name of an Existing Purchase Order*
+
+To change the name of an existing purchase order:
+. Within the purchase order, the _Name_ of the purchase order is a link (located at the top left-hand side of the purchase order). Click the PO Name.
+. A new window will open, where users can rename the purchase order.
+. Enter the new purchase order name.
+. Click *OK*.
+
+image::media/po_name_detection_2.JPG[PO Name Detection 2]
+
+If the new purchase order name is unique for the ordering agency, the purchase order will be updated to reflect the new name.
+If the purchase order name is not unique for the ordering agency, the purchase order will not be updated with the new name. Instead, the user will see the *Duplicate Purchase Order Name Warning Dialog* within the purchase order.
+
+image::media/po_name_detection_3.JPG[PO Name Detection 3]
+
+When a duplicate purchase order name is detected during the renaming of an existing purchase order, the user may:
+
+* Click *View PO* to view the purchase order with the matching name. The purchase order will open in a new tab.
+* Repeat the steps to change the name of an existing purchase order and make the name unique.
+
 Activate Purchase Order with Zero Copies
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -208,5 +248,26 @@ available:
 * Title
 * Selection List
 * Purchase Order
+
+Display a Count of Existing Copies on Selection List and Purchase Order Lineitems
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+When displaying Acquisitions lineitems within the Selection List and Purchase Order interfaces, Evergreen displays a count of existing catalog copies on the lineitem. The count of existing catalog copies refers to the number of copies owned at the ordering agency and / or the ordering agency's child organization units.
+
+The counts display for lineitems that have a direct link to a catalog record. Generally, this includes lineitems created as "on order" based on an existing catalog record and lineitems where "Load Bibs and Items" has been applied.
+
+The count of existing copies does not include copies that are in either a Lost or a Missing status.
+
+The existing copy count displays in the link "bar" located below the Order Identifier within the lineitem.
+
+If no existing copies are found, a "0" (zero) will display in plain text.
+
+If the existing copy count is greater than zero, then the count will display in bold and red on the lineitem.
+
+image::media/display_copy_count_1.JPG[Display Copy Count 1]
+
+The user may also hover over the existing copy count to view the accompanying tooltip.
+
+image::media/display_copy_count_2.JPG[Display Copy Count 2]
 
 
