@@ -147,9 +147,9 @@ function($scope , $routeParams , $location , $q , egCore ) {
 }])
 
 .controller('CatalogCtrl',
-       ['$scope','$routeParams','$location','$window','$q','egCore','egHolds',
+       ['$scope','$routeParams','$location','$window','$q','egCore','egHolds','egCirc',
         'egGridDataProvider','egHoldGridActions','$timeout','holdingsSvc',
-function($scope , $routeParams , $location , $window , $q , egCore , egHolds, 
+function($scope , $routeParams , $location , $window , $q , egCore , egHolds , egCirc, 
          egGridDataProvider , egHoldGridActions , $timeout , holdingsSvc) {
 
     // set record ID on page load if available...
@@ -313,48 +313,79 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds,
         $scope[item.checkbox + '_changed'](item.checked);
     }
 
-    $scope.selectedHoldingsItemStatus = function (){
+    function gatherSelectedHoldingsIds () {
         var cp_id_list = [];
         angular.forEach(
             $scope.holdingsGridControls.selectedItems(),
             function (item) { cp_id_list = cp_id_list.concat(item.id_list) }
         );
-        var url = egCore.env.basePath + 'cat/item/search/' + cp_id_list.join(',')
+        return cp_id_list;
+    }
+
+    $scope.selectedHoldingsItemStatus = function (){
+        var url = egCore.env.basePath + 'cat/item/search/' + gatherSelectedHoldingsIds().join(',')
         $timeout(function() { $window.open(url, '_blank') });
     }
 
     $scope.selectedHoldingsItemStatusDetail = function (){
-        var cp_id_list = [];
         angular.forEach(
-            $scope.holdingsGridControls.selectedItems(),
-            function (item) {
-                angular.forEach(
-                    item.id_list,
-                    function (cid) {
-                        var url = egCore.env.basePath +
-                                  'cat/item/' + cid;
-                        $timeout(function() { $window.open(url, '_blank') });
-                    }
-                )
+            gatherSelectedHoldingsIds(),
+            function (cid) {
+                var url = egCore.env.basePath +
+                          'cat/item/' + cid;
+                $timeout(function() { $window.open(url, '_blank') });
             }
         );
     }
 
     $scope.selectedHoldingsItemStatusTgrEvt = function (){
-        var cp_id_list = [];
         angular.forEach(
-            $scope.holdingsGridControls.selectedItems(),
-            function (item) {
-                angular.forEach(
-                    item.id_list,
-                    function (cid) {
-                        var url = egCore.env.basePath +
-                                  'cat/item/' + cid + '/triggered_events';
-                        $timeout(function() { $window.open(url, '_blank') });
-                    }
-                )
+            gatherSelectedHoldingsIds(),
+            function (cid) {
+                var url = egCore.env.basePath +
+                          'cat/item/' + cid + '/triggered_events';
+                $timeout(function() { $window.open(url, '_blank') });
             }
         );
+    }
+
+    $scope.selectedHoldingsItemStatusHolds = function (){
+        angular.forEach(
+            gatherSelectedHoldingsIds(),
+            function (cid) {
+                var url = egCore.env.basePath +
+                          'cat/item/' + cid + '/holds';
+                $timeout(function() { $window.open(url, '_blank') });
+            }
+        );
+    }
+
+    $scope.selectedHoldingsDamaged = function () {
+        egCirc.mark_damaged(gatherSelectedHoldingsIds()).then(function() {
+            holdingsSvc.fetch({
+                rid : $scope.record_id,
+                org : $scope.holdings_ou,
+                copy: $scope.holdings_show_copies,
+                vol : $scope.holdings_show_vols,
+                empty: $scope.holdings_show_empty
+            }).then(function() {
+                $scope.holdingsGridDataProvider.refresh();
+            });
+        });
+    }
+
+    $scope.selectedHoldingsMissing = function () {
+        egCirc.mark_missing(gatherSelectedHoldingsIds()).then(function() {
+            holdingsSvc.fetch({
+                rid : $scope.record_id,
+                org : $scope.holdings_ou,
+                copy: $scope.holdings_show_copies,
+                vol : $scope.holdings_show_vols,
+                empty: $scope.holdings_show_empty
+            }).then(function() {
+                $scope.holdingsGridDataProvider.refresh();
+            });
+        });
     }
 
 
