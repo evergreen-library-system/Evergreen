@@ -1,4 +1,4 @@
-Circulation - Patron Record 
+﻿Circulation - Patron Record
 ---------------------------
 
 [[circulation_searching_patrons]] 
@@ -826,6 +826,33 @@ Confirm this action.
 . Follow steps 4 through 6 above.  There is no confirmation message 
 after clicking _Submit this Bill_.  
 . The _Money Summary_ will adjust accordingly.
+
+Negative Balances on Patron Accounts
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Negative balances are sometimes automatically applied to patron accounts due to certain circulation workflows and settings.  For example:
+
+. A patron loses an item and pays the lost fees in full.
+. The item is later found and returned to the library.
+. Evergreen is set up to void lost fines and reinstate overdue fines to the patron account if the lost item is returned.
+. As a result, a negative balance is applied to the patron's account.
+
+A new Library Setting called _Do not change fines/fees on zero-balance LOST transaction_ has been added to help eliminate the generation of negative balances on patron accounts.  If this new Library Setting is enabled, it will prevent Evergreen from voiding lost fines and reinstating overdue fines to a patron account in the scenario described above.  It will also prevent negative balances due to paid, long overdue materials being returned.
+
+*Removing negative balances from a patron account*
+
+If a negative balance is added to a patron account, the following workflow can be used to remove it:
+
+. Retrieve the patron account and go to the *Bills* screen.
+. Select the bill with the negative balance, click on *Actions for Selected Transactions* or right-click on it, and select *Add Billing*.
+. A window will pop up that asks "Are you sure you would like to add a billing to bill 1234?"  Click *Yes*.
+. A new window with the _Bill Patron Wizard_ will appear.  Select a _Billing Type_ and enter in a positive bill amount for the same amount as the negative balance.  For example, if the negative balance is -$35.00, enter $35.00 for the bill.  Click *Submit this Bill*.
+. The negative balance will now be cancelled out and cleared from the patron account.
+
+image::media/negative_balance1.jpg[Negative Balance-Add Billing]
+
+
+image::media/negative_balance2.jpg[Negative Balance-Add Bill]
 
 Bill History 
 ^^^^^^^^^^^^
