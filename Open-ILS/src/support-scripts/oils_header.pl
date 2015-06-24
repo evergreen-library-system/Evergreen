@@ -155,15 +155,16 @@ sub oils_login {
 
 	$type |= "staff";
 
+	my $nonce = rand($$);
 	my $seed = $apputils->simplereq( $AUTH, 
-		'open-ils.auth.authenticate.init', $username );
+		'open-ils.auth.authenticate.init', $username, $nonce);
 	err("No auth seed") unless $seed;
 
 	my $response = $apputils->simplereq( $AUTH, 
 		'open-ils.auth.authenticate.complete', 
 		{	username => $username, 
 			password => md5_hex($seed . md5_hex($password)), 
-			type => $type });
+			type => $type, nonce => $nonce });
 
 	err("No auth response returned on login") unless $response;
 
