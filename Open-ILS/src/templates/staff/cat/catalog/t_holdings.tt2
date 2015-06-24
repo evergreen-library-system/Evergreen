@@ -33,6 +33,12 @@
       checkbox="holdings_show_vols"
       checked="holdings_show_vols"/>
 
+    <eg-grid-action handler="selectedHoldingsItemStatus" group="[% l('Show') %]"
+      label="[% l('Item Status (list)') %]"></eg-grid-action>
+    <eg-grid-action handler="selectedHoldingsItemStatusDetail" group="[% l('Show') %]"
+      label="[% l('Item Status (detail)') %]"></eg-grid-action>
+    <eg-grid-action handler="selectedHoldingsItemStatusTgrEvt" group="[% l('Show') %]"
+      label="[% l('Triggered Events') %]"></eg-grid-action>
 
     <eg-grid-field label="[% l('Owning Library') %]"  path="owner_label" flex="4" align="right" visible></eg-grid-field>
     <eg-grid-field label="[% l('Call Number') %]"     path="call_number.label" visible></eg-grid-field>

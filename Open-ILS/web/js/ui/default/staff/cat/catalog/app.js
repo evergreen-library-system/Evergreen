@@ -147,9 +147,9 @@ function($scope , $routeParams , $location , $q , egCore ) {
 }])
 
 .controller('CatalogCtrl',
-       ['$scope','$routeParams','$location','$q','egCore','egHolds',
+       ['$scope','$routeParams','$location','$window','$q','egCore','egHolds',
         'egGridDataProvider','egHoldGridActions','$timeout','holdingsSvc',
-function($scope , $routeParams , $location , $q , egCore , egHolds, 
+function($scope , $routeParams , $location , $window , $q , egCore , egHolds, 
          egGridDataProvider , egHoldGridActions , $timeout , holdingsSvc) {
 
     // set record ID on page load if available...
@@ -311,6 +311,50 @@ function($scope , $routeParams , $location , $q , egCore , egHolds,
     $scope.holdings_checkbox_handler = function (item) {
         $scope[item.checkbox] = item.checked;
         $scope[item.checkbox + '_changed'](item.checked);
+    }
+
+    $scope.selectedHoldingsItemStatus = function (){
+        var cp_id_list = [];
+        angular.forEach(
+            $scope.holdingsGridControls.selectedItems(),
+            function (item) { cp_id_list = cp_id_list.concat(item.id_list) }
+        );
+        var url = egCore.env.basePath + 'cat/item/search/' + cp_id_list.join(',')
+        $timeout(function() { $window.open(url, '_blank') });
+    }
+
+    $scope.selectedHoldingsItemStatusDetail = function (){
+        var cp_id_list = [];
+        angular.forEach(
+            $scope.holdingsGridControls.selectedItems(),
+            function (item) {
+                angular.forEach(
+                    item.id_list,
+                    function (cid) {
+                        var url = egCore.env.basePath +
+                                  'cat/item/' + cid;
+                        $timeout(function() { $window.open(url, '_blank') });
+                    }
+                )
+            }
+        );
+    }
+
+    $scope.selectedHoldingsItemStatusTgrEvt = function (){
+        var cp_id_list = [];
+        angular.forEach(
+            $scope.holdingsGridControls.selectedItems(),
+            function (item) {
+                angular.forEach(
+                    item.id_list,
+                    function (cid) {
+                        var url = egCore.env.basePath +
+                                  'cat/item/' + cid + '/triggered_events';
+                        $timeout(function() { $window.open(url, '_blank') });
+                    }
+                )
+            }
+        );
     }
 
 
@@ -645,7 +689,8 @@ function(egCore , $q) {
                         if (!prev_key) {
                             prev_key = cp.owner_list.join('') + cp.call_number.label;
                             if (cp.barcode) current_blob.copy_count = 1;
-                            current_blob.index = ++index;
+                            current_blob.index = index++;
+                            current_blob.id_list = cp.id_list;
                             current_blob.call_number = cp.call_number;
                             current_blob.owner_list = cp.owner_list;
                             current_blob.owner_label = cp.owner_label;
@@ -653,13 +698,15 @@ function(egCore , $q) {
                             var current_key = cp.owner_list.join('') + cp.call_number.label;
                             if (prev_key == current_key) { // collapse into current_blob
                                 current_blob.copy_count++;
+                                current_blob.id_list = current_blob.id_list.concat(cp.id_list);
                             } else {
                                 current_blob.barcode = current_blob.copy_count;
                                 cp_list.push(current_blob);
                                 prev_key = current_key;
                                 current_blob = {};
                                 if (cp.barcode) current_blob.copy_count = 1;
-                                current_blob.index = ++index;
+                                current_blob.index = index++;
+                                current_blob.id_list = cp.id_list;
                                 current_blob.owner_label = cp.owner_label;
                                 current_blob.call_number = cp.call_number;
                                 current_blob.owner_list = cp.owner_list;
@@ -680,7 +727,8 @@ function(egCore , $q) {
                         angular.forEach(cp_list, function (cp) {
                             if (!prev_key) {
                                 prev_key = cp.owner_list.join('');
-                                current_blob.index = ++index;
+                                current_blob.index = index++;
+                                current_blob.id_list = cp.id_list;
                                 current_blob.cn_count = 1;
                                 current_blob.copy_count = cp.copy_count;
                                 current_blob.owner_list = cp.owner_list;
@@ -690,13 +738,15 @@ function(egCore , $q) {
                                 if (prev_key == current_key) { // collapse into current_blob
                                     current_blob.cn_count++;
                                     current_blob.copy_count += cp.copy_count;
+                                    current_blob.id_list = current_blob.id_list.concat(cp.id_list);
                                 } else {
                                     current_blob.barcode = current_blob.copy_count;
                                     current_blob.call_number = { label : current_blob.cn_count };
                                     cn_list.push(current_blob);
                                     prev_key = current_key;
                                     current_blob = {};
-                                    current_blob.index = ++index;
+                                    current_blob.index = index++;
+                                    current_blob.id_list = cp.id_list;
                                     current_blob.owner_label = cp.owner_label;
                                     current_blob.cn_count = 1;
                                     current_blob.copy_count = cp.copy_count;
@@ -740,6 +790,7 @@ function(egCore , $q) {
 
                 angular.forEach(flat, function (cp) {
                     cp.owner_list = owner_name_list;
+                    cp.id_list = [cp.id];
                 });
 
                 service.copies = service.copies.concat(flat);
