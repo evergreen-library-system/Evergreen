@@ -394,6 +394,8 @@ There are several types of messages available for staff to leave notes on patron
 
 *Staff-Generated Penalties/Messages*: These messages are added via the _Messages_ button in the patron record. They can be a note, alert or block. Staff initials can be required. (See the section <<staff_generated_penalties,Staff-Generated Penalties/Messages>> for more.)
 
+*Patron Message Center*: The Patron Message Center provides a way for libraries to communicate with patrons through messages that can be accessed through the patron's OPAC account.  Library staff can create messages manually by adding an OPAC visible Patron Note to an account.  Messages can also be automatically generated through an Action Trigger event.  Patrons can access and manage messages within their OPAC account.  (See the section <<patron_message_center>> for more.)
+
 Patron Alerts 
 ~~~~~~~~~~~~~~
 
@@ -568,6 +570,76 @@ Messages which are no longer current can be removed by staff.  This action remov
 image::media/staff-penalties-4.jpg[Actions menu]
 
 Click to select the message to be removed, then click _Actions for these Penalties/Messages_ -> _Remove Penalty/Message_. This menu can also be accessed by right-clicking in the message area.
+
+Patron Message Center
+~~~~~~~~~~~~~~~~~~~~~
+
+[[patron_message_center]]
+
+Creating a Patron Message in the Patron Account
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+1. Retrieve a patron account in the staff client.
+2. Within the account, go to *Other -> Notes*.
+3. In the Notes interface, click on *Add New Note*.  A new window will pop up that allows you to create a note on the patron account.
+
+image::media/message_center1.PNG[Message Center 1]
+
+4. Check the box next to *Patron Visible?*  This will make the message appear in the patron's OPAC account.
+5. Enter a subject for the message in the *Title* field.
+6. Enter the body of the message in the *Note* field.
+7. Enter *Initials* if staff are required to add initials to notes.
+8. Click, *Add Note*.  The note will now appear as a Patron Visible note in the staff client and as a Message in the patron's OPAC Account.
+
+image::media/message_center2.PNG[Message Center 2]
+
+9.The patron visible note will also create a message in the patron account in the staff client in *Other -> Message Center*.  See *Managing Patron Messages in the Staff Client* below.
+
+Creating a Patron Message using Action Triggers
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Messages can be automatically added to a patron's OPAC account by an Action Trigger event.  For example, when a hold is cancelled by a library staff member, a message can be added to the patron's OPAC account to inform them of the cancellation.
+
+Action Trigger Messages are set up in *Admin -> Local Administration -> Notifications/Action Triggers*.  There are several new fields in the Trigger Event Definition that allow the configuration of Patron Messages:
+
+* Message Library Path: identifies the sending library for the message.  This is the patron's home library (usr.home_ou) in the stock Hold Cancellation message.
+* Message Template: contains the content of the message.
+* Message Title: appears as the subject line in the OPAC message.
+* Message User Path: determines how to identify the user the message is sent to.
+
+NOTE: If you want to send patrons a notification email and an OPAC message when their hold is cancelled, use two separate Action Triggers: one for the email notification and one for the message.
+
+Managing Patron Messages in the Staff Client
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Patron messages can be viewed and managed in the staff client within the patron account.
+
+. Retrieve a patron account in the staff client.
+. Within the account, go to *Other -> Message Center*.
+. Double click on a message to view the full title and content as well as the date and time the message was created and the date and time that the message was read.  Staff can also see if a patron has deleted the message from their OPAC account (Deleted?) and can manually delete a message by marking it as Deleted.
+
+NOTE: When a message is marked deleted, the message will remain in Other -> Message Center as a record that the patron received it.
+
+NOTE: Deleting a patron visible note in Other -> Notes will not delete the patron message from the Other -> Message Center.
+
+image::media/message_center9.PNG[Message Center 9]
+
+Viewing Patron Messages in the OPAC
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Patrons will see a new tab for *Messages* in their OPAC account, as well as a notification of *Unread Messages* in the account summary.
+
+image::media/message_center11.PNG[Message Center 11]
+
+Patrons will see a list of the messages from the library by clicking on the *Messages* tab.
+
+image::media/message_center10.PNG[Message Center 10]
+
+Patrons can click on a message *Subject* to view the message.  After viewing the message, it will automatically be marked as read.  Patrons have the options to mark the message as unread and to delete the message.
+
+image::media/message_center12.PNG[Message Center 12]
+
+NOTE: Patron deleted messages will still appear in the patron's account in the staff client under Other -> Message Center.
 
 Merging Patron Records 
 ~~~~~~~~~~~~~~~~~~~~~~

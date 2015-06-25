@@ -593,3 +593,24 @@ After changing any of these settings, you must click _Save_ to store your prefer
 
 
 indexterm:[holds, preferred pickup location]
+
+Patron Messages
+^^^^^^^^^^^^^^^
+
+The Patron Message Center provides a way for libraries to communicate with patrons through messages that can be accessed through the patron's OPAC account.  Library staff can create messages manually by adding an OPAC visible Patron Note to an account.  Messages can also be automatically generated through an Action Trigger event.  Patrons can access and manage messages within their OPAC account.  See Circulation - Patron Record - Patron Message Center for more information on adding messages to patron accounts.
+
+*Viewing Patron Messages in the OPAC*
+
+Patrons will see a new tab for *Messages* in their OPAC account, as well as a notification of *Unread Messages* in the account summary.
+
+image::media/message_center11.PNG[Message Center 11]
+
+Patrons will see a list of the messages from the library by clicking on the *Messages* tab.
+
+image::media/message_center10.PNG[Message Center 10]
+
+Patrons can click on a message *Subject* to view the message.  After viewing the message, it will automatically be marked as read.  Patrons have the options to mark the message as unread and to delete the message.
+
+image::media/message_center12.PNG[Message Center 12]
+
+NOTE: Patron deleted messages will still appear in the patron's account in the staff client under Other -> Message Center.
