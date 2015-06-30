@@ -1,23 +1,6 @@
-
--- Turn off echo and keep things quiet.
-\set ECHO
-\set QUIET 1
-
--- Format the output for nice TAP.
-\pset format unaligned
-\pset tuples_only true
-\pset pager
-
--- Revert all changes on failure.
-\set ON_ERROR_ROLLBACK 1
-\set ON_ERROR_STOP true
-\set QUIET 1
-
--- Load the TAP functions.
+-- Start transaction and plan the tests.
 BEGIN;
-
--- Plan the tests.
-SELECT plan(5);
+SELECT plan(11);
 
 -- Run the tests.
 SELECT is(evergreen.lpad_number_substrings(
@@ -34,8 +17,26 @@ SELECT is(evergreen.lpad_number_substrings(
 
 SELECT is(evergreen.lpad_number_substrings(
 	'Vol 5a-15','0',5), 'Vol 00005a-00015','Mixed format');
+	
+SELECT isnt(evergreen.lpad_number_substrings(
+	'2015 01 Jan','0',5),'02000015 00001 Jan','Matching Substring Error 1');
 
+SELECT isnt(evergreen.lpad_number_substrings(
+	'2015 02 Feb','0',5),'00002015 00002 Feb','Matching Substring Error 2');
+
+SELECT is(evergreen.lpad_number_substrings(
+	'2015 01 Jan','0',5),'02015 00001 Jan','Matching Substrings 1');
+
+SELECT is(evergreen.lpad_number_substrings(
+	'2015 02 Feb','0',5),'02015 00002 Feb','Matching Substrings 2');
+
+SELECT is(evergreen.lpad_number_substrings(
+	'0001 001 1 01','0',5),'00001 00001 00001 00001','Matching Substrings 3');
+
+SELECT is(evergreen.lpad_number_substrings(
+	'123456','0',5),'123456','Longer than Padding Length');
 
 -- Finish the tests and clean up.
 SELECT * FROM finish();
 ROLLBACK;
+
