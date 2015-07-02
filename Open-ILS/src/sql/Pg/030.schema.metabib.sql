@@ -1478,9 +1478,11 @@ BEGIN
             attr_vector := attr_vector || attr_vector_tmp;
         END IF;
 
-        IF attr_def.sorter AND norm_attr_value[1] IS NOT NULL THEN
+        IF attr_def.sorter THEN
             DELETE FROM metabib.record_sorter WHERE source = rid AND attr = attr_def.name;
-            INSERT INTO metabib.record_sorter (source, attr, value) VALUES (rid, attr_def.name, norm_attr_value[1]);
+            IF norm_attr_value[1] IS NOT NULL THEN
+                INSERT INTO metabib.record_sorter (source, attr, value) VALUES (rid, attr_def.name, norm_attr_value[1]);
+            END IF;
         END IF;
 
     END LOOP;

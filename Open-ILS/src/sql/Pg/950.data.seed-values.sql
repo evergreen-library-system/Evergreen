@@ -8609,6 +8609,27 @@ INSERT INTO config.index_normalizer (name, description, func, param_count) VALUE
 	0
 );
 
+INSERT INTO config.index_normalizer (name, description, func, param_count) VALUES (
+	'Number or NULL Normalize',
+	'Normalize the value to NULL if it is not a number',
+	'integer_or_null',
+	0
+);
+
+INSERT INTO config.index_normalizer (name, description, func, param_count) VALUES (
+	'Approximate Low Date Normalize',
+	'Normalize the value to the nearest date-ish value, rounding down',
+	'approximate_low_date',
+	0
+);
+
+INSERT INTO config.index_normalizer (name, description, func, param_count) VALUES (
+	'Approximate High Date Normalize',
+	'Normalize the value to the nearest date-ish value, rounding up',
+	'approximate_high_date',
+	0
+);
+
 -- make use of the index normalizers
 
 INSERT INTO config.metabib_field_index_norm_map (field,norm)
@@ -8678,14 +8699,14 @@ INSERT INTO config.record_attr_index_norm_map (attr,norm,pos)
       FROM  config.record_attr_definition m,
             config.index_normalizer i
       WHERE i.func IN ('integer_or_null')
-            AND m.name IN ('date1', 'date2', 'pubdate');
+            AND m.name IN ('pubdate');
 
 INSERT INTO config.record_attr_index_norm_map (attr,norm,pos)
     SELECT  m.name, i.id, 0
       FROM  config.record_attr_definition m,
             config.index_normalizer i
       WHERE i.func IN ('approximate_low_date')
-            AND m.name IN ('date1', 'pubdate');
+            AND m.name IN ('date1');
 
 INSERT INTO config.record_attr_index_norm_map (attr,norm,pos)
     SELECT  m.name, i.id, 0
