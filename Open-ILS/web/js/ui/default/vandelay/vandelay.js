@@ -649,8 +649,26 @@ function vlLoadMatchUI(recId) {
                 currentMatchedRecords = recs;
                 vlMatchGrid.setStructure(vlMatchGridLayout);
 
+                var cls = 'bre';
+                if (currentType == 'auth') {
+                    cls = 'are';
+
+                    // When fetching authority records from matches, we 
+                    // only fetch one instance of each record, even though
+                    // it may be used by multiple matches.  Modify the
+                    // array of records so that each match has a 
+                    // corresponding authority record in the list.
+                    var new_recs = [];
+                    dojo.forEach(matches, function(match) {
+                        var rec = recs.filter(function(r) { 
+                            return r.id() == match.eg_record() })[0];
+                        new_recs.push(rec);
+                    });
+                    recs = new_recs;
+                }
+
                 // build the data store of records with match information
-                var dataStore = bre.toStoreData(recs, null, 
+                var dataStore = fieldmapper[cls].toStoreData(recs, null,
                     {virtualFields:['_id', 'match_score', 'match_quality', 'rec_quality']});
                 dataStore.identifier = '_id';
 
