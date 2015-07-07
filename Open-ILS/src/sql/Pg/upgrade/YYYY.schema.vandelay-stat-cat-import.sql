@@ -2,6 +2,11 @@ BEGIN;
 
 --SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
 
+INSERT INTO vandelay.import_error ( code, description ) VALUES (
+    'import.item.invalid.stat_cat_format', oils_i18n_gettext('import.item.invalid.stat_cat_format', 'Bad format for stat cat data, should be like: CAT 1|VALUE 1', 'vie', 'description') );
+INSERT INTO vandelay.import_error ( code, description ) VALUES (
+    'import.item.invalid.stat_cat_data', oils_i18n_gettext('import.item.invalid.stat_cat_data', 'Invalid stat cat data', 'vie', 'description') );
+
 ALTER TABLE vandelay.import_item_attr_definition
     ADD COLUMN stat_cat_data TEXT;
 

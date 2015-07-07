@@ -10399,6 +10399,10 @@ INSERT INTO vandelay.import_error ( code, description ) VALUES (
     'import.item.invalid.circ_as_type', oils_i18n_gettext('import.item.invalid.circ_as_type', 'Invalid value for "circ_as_type"', 'vie', 'description') );
 INSERT INTO vandelay.import_error ( code, description ) VALUES ( 
     'import.record.perm_failure', oils_i18n_gettext('import.record.perm_failure', 'Perm failure creating a record', 'vie', 'description') );
+INSERT INTO vandelay.import_error ( code, description ) VALUES (
+    'import.item.invalid.stat_cat_format', oils_i18n_gettext('import.item.invalid.stat_cat_format', 'Bad format for stat cat data, should be like: CAT 1|VALUE 1', 'vie', 'description') );
+INSERT INTO vandelay.import_error ( code, description ) VALUES (
+    'import.item.invalid.stat_cat_data', oils_i18n_gettext('import.item.invalid.stat_cat_data', 'Invalid stat cat data', 'vie', 'description') );
 
 -- Event def for email notice for hold cancelled due to lack of target -----
 

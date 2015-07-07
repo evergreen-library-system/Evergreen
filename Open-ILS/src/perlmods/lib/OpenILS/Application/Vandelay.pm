@@ -1931,16 +1931,28 @@ sub import_record_asset_list_impl {
                             push (@$stat_cat_entries, $stat_cat_entry) if $stat_cat_entry;
                         }
                     } else {
-                        $logger->warn("Bad format for stat cat data ($stat_cat_pair), should be like: CAT 1|VALUE 1");
+                        $$report_args{import_error} = "import.item.invalid.stat_cat_format";
+                        last;
                     }
 
                     if (!$stat_cat or !$stat_cat_entry) {
-                        $logger->warn("Invalid stat cat data ($stat_cat_pair): " . $e->die_event);
+                        $$report_args{import_error} = "import.item.invalid.stat_cat_data";
+                        last;
                     }
+                }
+                if ($$report_args{import_error}) {
+                    $logger->error("vl: invalid stat cat data: " . $item->stat_cat_data);
+                    respond_with_status($report_args);
+                    next;
                 }
                 $copy->stat_cat_entries( $stat_cat_entries );
                 $copy->ischanged(1);
                 $evt = OpenILS::Application::Cat::AssetCommon->update_copy_stat_entries($e, $copy, 0, 1); #delete_stats=0, add_or_update_only=1
+                if($evt) {
+                    $$report_args{evt} = $evt;
+                    respond_with_status($report_args);
+                    next;
+                }
             }
 
             # set the import data on the import item
