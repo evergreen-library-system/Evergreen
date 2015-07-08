@@ -1162,7 +1162,7 @@ angular.module('egGridMod',
                         return;
 
                     var col = cols.cloneFromScope(colSpec);
-                    col.path = dotpath + '.' + field.name;
+                    col.path = (dotpath ? dotpath + '.' + field.name : field.name);
                     console.debug('egGrid: field: ' +field.name + '; parent field: ' + js2JSON(idl_field));
                     cols.add(col, false, true, 
                         {idl_parent : idl_field, idl_field : field, idl_class : class_obj});
