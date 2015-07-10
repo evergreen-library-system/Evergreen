@@ -31,7 +31,9 @@
         </style>
         [% END %]
 
-        [% INCLUDE 'opac/parts/goog_analytics.tt2' %]
+        [% IF !ctx.is_staff %]
+            [% INCLUDE 'opac/parts/goog_analytics.tt2' %]
+        [% END %]
         [% PROCESS 'opac/parts/stripe.tt2' %]
     </head>
     <body[% IF want_dojo; ' class="tundra"'; END %]>
