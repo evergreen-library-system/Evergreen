@@ -1,0 +1,66 @@
+UPGRADE NOTES - Credit Card Receipts and Privacy
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+To improve privacy and security, Evergreen now stores less data 
+about credit card transactions.  The following fields are no 
+longer stored:
+
+ * cc_type
+ * cc_first_name
+ * cc_last_name
+ * expire_month
+ * expire_year
+
+NOTE: All existing data within these fields will be deleted during
+the upgrade.  Reports using this data will no longer function.
+
+Additionally, a tool has been added to Evergreen for clearing the 
+last 4 digits of the credit payment from the database after payments
+reach a certain age.
+
+Print/Email Templates
++++++++++++++++++++++
+
+The stock print and email payment templates have been modified to no 
+longer use these fields, but only when the existing templates matched
+the stock templates.  If local changes have been applied, it will
+be necessary to modify local templates to avoid referencing these
+fields which no longer exist.
+
+Any templates whose hook is "money.format.payment_receipt.print" or 
+"money.format.payment_receipt.email" may need modification.  In stock
+Evergreen, these are templates:
+
+1. "money.payment_receipt.email" (stock id 29)
+2. "money.payment_receipt.print" (stock id 30)
+
+Example diff:
+
+[source,diff]
+---------------------------------------------
+-  [% CASE "credit_card_payment" %]credit card (
+-      [%- SET cc_chunks = mp.credit_card_payment.cc_number.replace(' ','').chunk(4); -%]
+-      [%- cc_chunks.slice(0, -1+cc_chunks.max).join.replace('\S','X') -%] 
+-      [% cc_chunks.last -%]
+-      exp [% mp.credit_card_payment.expire_month %]/[% mp.credit_card_payment.expire_year -%]
+-  )
++  [% CASE "credit_card_payment" %]credit card
++  [%- IF mp.credit_card_payment.cc_number %] ([% mp.credit_card_payment.cc_number %])[% END %]
+---------------------------------------------
+
+Clearing the Last 4 of the CC Number
+++++++++++++++++++++++++++++++++++++
+
+To active automatic CC number clearing, add the following to opensrf's
+crontab.  Change timing to suit.
+
+[source,sh]
+---------------------------------------------
+5  4  * * *   . ~/.bashrc && $EG_BIN_DIR/clear_cc_number.srfsh
+---------------------------------------------
+
+The default retention age is 1 year, but this can be changed by modifying
+clear_cc_number.srfsh (typically found in /openils/bin/).  Replace "1 year"
+with the age of your choice.
+
+
