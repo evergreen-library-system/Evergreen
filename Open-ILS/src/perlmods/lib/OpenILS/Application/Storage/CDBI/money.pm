@@ -116,9 +116,8 @@ use base qw/money/;
 __PACKAGE__->table('money_credit_card_payment');
 __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->columns(Essential => qw/xact amount payment_ts cash_drawer
-                     accepting_usr amount_collected cc_type
-                     cc_number expire_month expire_year
-                     approval_code note/);
+                     accepting_usr amount_collected cc_processor
+                     approval_code note voided cc_number/);
 #-------------------------------------------------------------------------------
 
 package money::forgive_payment;

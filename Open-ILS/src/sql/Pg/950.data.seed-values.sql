@@ -9726,12 +9726,8 @@ Transaction ID: [% xact_id %]
                 Paid [% mp.amount %] via [% SWITCH mp.payment_type -%]
                     [% CASE "cash_payment" %]cash
                     [% CASE "check_payment" %]check
-                    [% CASE "credit_card_payment" %]credit card (
-                        [%- SET cc_chunks = mp.credit_card_payment.cc_number.replace(' ','').chunk(4); -%]
-                        [%- cc_chunks.slice(0, -1+cc_chunks.max).join.replace('\S','X') -%] 
-                        [% cc_chunks.last -%]
-                        exp [% mp.credit_card_payment.expire_month %]/[% mp.credit_card_payment.expire_year -%]
-                    )
+                    [% CASE "credit_card_payment" %]credit card
+                    [%- IF mp.credit_card_payment.cc_number %] ([% mp.credit_card_payment.cc_number %])[% END %]
                     [% CASE "credit_payment" %]credit
                     [% CASE "forgive_payment" %]forgiveness
                     [% CASE "goods_payment" %]goods
@@ -9797,12 +9793,8 @@ $$
                         Paid [% mp.amount %] via [% SWITCH mp.payment_type -%]
                             [% CASE "cash_payment" %]cash
                             [% CASE "check_payment" %]check
-                            [% CASE "credit_card_payment" %]credit card (
-                                [%- SET cc_chunks = mp.credit_card_payment.cc_number.replace(' ','').chunk(4); -%]
-                                [%- cc_chunks.slice(0, -1+cc_chunks.max).join.replace('\S','X') -%] 
-                                [% cc_chunks.last -%]
-                                exp [% mp.credit_card_payment.expire_month %]/[% mp.credit_card_payment.expire_year -%]
-                            )
+                            [% CASE "credit_card_payment" %]credit card
+                            [%- IF mp.credit_card_payment.cc_number %] ([% mp.credit_card_payment.cc_number %])[% END %]
                             [% CASE "credit_payment" %]credit
                             [% CASE "forgive_payment" %]forgiveness
                             [% CASE "goods_payment" %]goods

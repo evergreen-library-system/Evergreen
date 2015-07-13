@@ -269,7 +269,7 @@ sub make_payments {
 
 
     # unless/until determined by payment processor API
-    my ($approval_code, $cc_processor, $cc_type, $cc_order_number) = (undef,undef,undef, undef);
+    my ($approval_code, $cc_processor, $cc_order_number) = (undef,undef,undef, undef);
 
     my $patron = $e->retrieve_actor_user($user_id) or return $e->die_event;
 
@@ -382,16 +382,13 @@ sub make_payments {
 
         if ($payobj->has_field('accepting_usr')) { $payobj->accepting_usr($e->requestor->id); }
         if ($payobj->has_field('cash_drawer')) { $payobj->cash_drawer($drawer); }
-        if ($payobj->has_field('cc_type')) { $payobj->cc_type($cc_args->{type}); }
         if ($payobj->has_field('check_number')) { $payobj->check_number($check_number); }
 
         # Store the last 4 digits of the CC number
         if ($payobj->has_field('cc_number')) {
             $payobj->cc_number(substr($cc_args->{number}, -4));
         }
-        if ($payobj->has_field('expire_month')) { $payobj->expire_month($cc_args->{expire_month}); $logger->info("LFW XXX expire_month is $cc_args->{expire_month}"); }
-        if ($payobj->has_field('expire_year')) { $payobj->expire_year($cc_args->{expire_year}); }
-        
+
         # Note: It is important not to set approval_code
         # on the fieldmapper object yet.
 
@@ -434,7 +431,6 @@ sub make_payments {
 
                 {
                     no warnings 'uninitialized';
-                    $cc_type = $cc_payload->{card_type};
                     $approval_code = $cc_payload->{authorization} ||
                         $cc_payload->{id};
                     $cc_processor = $cc_payload->{processor} ||
@@ -523,17 +519,12 @@ sub make_payments {
 
         # Urgh, clean up this mega-function one day.
         if ($cc_processor eq 'Stripe' and $approval_code and $cc_payload) {
-            $payment->expire_month($cc_payload->{card}{exp_month});
-            $payment->expire_year($cc_payload->{card}{exp_year});
             $payment->cc_number($cc_payload->{card}{last4});
         }
 
         $payment->approval_code($approval_code) if $approval_code;
         $payment->cc_order_number($cc_order_number) if $cc_order_number;
-        $payment->cc_type($cc_type) if $cc_type;
         $payment->cc_processor($cc_processor) if $cc_processor;
-        $payment->cc_first_name($cc_args->{'billing_first'}) if $cc_args->{'billing_first'};
-        $payment->cc_last_name($cc_args->{'billing_last'}) if $cc_args->{'billing_last'};
         if (!$e->$create_money_method($payment)) {
             return _recording_failure(
                 $e, "$create_money_method failed", $payment, $cc_payload

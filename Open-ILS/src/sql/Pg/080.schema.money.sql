@@ -640,14 +640,9 @@ CREATE TRIGGER mat_summary_del_tgr BEFORE DELETE ON money.check_payment FOR EACH
 
 
 CREATE TABLE money.credit_card_payment (
-	cc_type		TEXT,
-	cc_number	TEXT,
+    cc_number     TEXT,
     cc_processor TEXT,
-    cc_first_name TEXT,
-    cc_last_name TEXT,
     cc_order_number TEXT,
-	expire_month	INT,
-	expire_year	INT,
 	approval_code	TEXT
 ) INHERITS (money.bnm_desk_payment);
 ALTER TABLE money.credit_card_payment ADD PRIMARY KEY (id);
