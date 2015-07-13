@@ -1,0 +1,26 @@
+-- Load the TAP functions.
+BEGIN;
+
+-- Plan the tests.
+SELECT plan(6);
+
+-- Run the tests.
+
+SELECT hasnt_column('money', 'credit_card_payment', 'cc_type', 
+    'Column "cc_type" on money.credit_card_payment should not exist');
+SELECT hasnt_column('money', 'credit_card_payment', 'expire_month', 
+    'Column "expire_month" on money.credit_card_payment should not exist');
+SELECT hasnt_column('money', 'credit_card_payment', 'expire_year', 
+    'Column "expire_year" on money.credit_card_payment should not exist');
+SELECT hasnt_column('money', 'credit_card_payment', 'cc_first_name', 
+    'Column "cc_first_name" on money.credit_card_payment should not exist');
+SELECT hasnt_column('money', 'credit_card_payment', 'cc_last_name', 
+    'Column "cc_last_name" on money.credit_card_payment should not exist');
+
+-- make sure at least one column does exist
+SELECT has_column('money', 'credit_card_payment', 'approval_code', 
+    'Column "approval_code" on money.credit_card_payment should exist');
+
+-- Finish the tests and clean up.
+SELECT * FROM finish();
+ROLLBACK;
