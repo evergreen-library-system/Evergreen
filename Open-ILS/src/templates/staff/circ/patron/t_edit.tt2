@@ -1,6 +1,10 @@
 [% DOC_IMG = '/images/question-mark.png' %]
 
-<div class="strong-text-2">[% l('Patron Edit') %]</div>
+<div class="container-fluid" style="text-align:center">
+  <div class="alert alert-info alert-less-pad strong-text-2">
+    <span ng-if="!is_capture">[% l('Patron Edit') %]</span>
+  </div>
+</div>
 
 <!-- IDL field documentation window -->
 <div id="reg-control-actions">
@@ -33,7 +37,7 @@
 
   IF NOT input_type; input_type = 'text'; END %] 
 
-<div class="row form-group">
+<div class="row reg-field-row">
 
   <div class="col-md-3 reg-field-label"> <!-- field label -->
 
@@ -114,7 +118,7 @@
 [% formfield('au', 'suffix') %]
 [% formfield('au', 'alias') %]
 
-<div class="row pad-all-min form-group">
+<div class="row reg-field-row">
   <div class="col-md-3 reg-field-label">
     <label>{{idl_fields.au.dob.label}}</label>
     <img ng-show="field_doc.au.dob" 
@@ -131,7 +135,7 @@
 
 <!-- ident_type -->
 
-<div class="row pad-all-min form-group">
+<div class="row reg-field-row">
   <div class="col-md-3 reg-field-label">
     <label>{{idl_fields.au.ident_type.label}}</label>
     <img ng-show="field_doc.au.ident_type" 
@@ -165,7 +169,7 @@
 
 <!-- home org unit selector -->
 
-<div class="row pad-all-min form-group">
+<div class="row reg-field-row">
   <div class="col-md-3 reg-field-label">
     <label>{{idl_fields.au.home_ou.label}}</label>
     <img ng-show="field_doc.au.home_ou" 
@@ -180,7 +184,7 @@
 
 <!-- profile selector -->
 
-<div class="row pad-all-min form-group">
+<div class="row reg-field-row">
   <div class="col-md-3 reg-field-label">
     <label>{{idl_fields.au.profile.label}}</label>
     <img ng-show="field_doc.au.profile" 
@@ -206,7 +210,7 @@
   </div>
 </div>
 
-<div class="row pad-all-min form-group">
+<div class="row reg-field-row">
   <div class="col-md-3 reg-field-label">
   <label>{{idl_fields.au.expire_date.label}}</label>
     <img ng-show="field_doc.au.expire_date" 
@@ -224,7 +228,7 @@
 
 <!-- net_access_level -->
 
-<div class="row pad-all-min form-group">
+<div class="row reg-field-row">
   <div class="col-md-3 reg-field-label">
     <label>{{idl_fields.au.net_access_level.label}}</label>
     <img ng-show="field_doc.au.net_access_level" 
@@ -260,7 +264,7 @@
   <div class="col-md-6">[% l('User Settings') %]</div>
 </div>
 
-<div class="row pad-all-min form-group">
+<div class="row reg-field-row">
   <div class="col-md-3 reg-field-label">
     <label>{{user_setting_types['opac.default_phone'].label()}}</label>
   </div>
@@ -269,7 +273,7 @@
   </div>
 </div>
 
-<div class="row pad-all-min form-group">
+<div class="row reg-field-row">
   <div class="col-md-3 reg-field-label">
     <label>{{user_setting_types['opac.default_pickup_location'].label()}}</label>
   </div>
@@ -278,7 +282,7 @@
   </div>
 </div>
 
-<div class="row pad-all-min form-group">
+<div class="row reg-field-row">
   <div class="col-md-3 reg-field-label">
     <label>{{user_setting_types['circ.holds_behind_desk'].label()}}</label>
   </div>
@@ -289,7 +293,7 @@
   </div>
 </div>
 
-<div class="row pad-all-min form-group">
+<div class="row reg-field-row">
   <div class="col-md-3 reg-field-label">
     <label>[% l('Holds Notices') %]</label>
   </div>
@@ -309,7 +313,7 @@
   </div>
 </div>
 
-<div class="row pad-all-min form-group" ng-if="org_settings['sms.enable']">
+<div class="row reg-field-row" ng-if="org_settings['sms.enable']">
   <div class="col-md-3 reg-field-label">
     <label>[% l('Default SMS/Text Number') %]</label>
   </div>
@@ -318,7 +322,7 @@
   </div>
 </div>
 
-<div class="row pad-all-min form-group" ng-if="org_settings['sms.enable']">
+<div class="row reg-field-row" ng-if="org_settings['sms.enable']">
   <div class="col-md-3 reg-field-label">
     <label>[% l('Default SMS Carrier') %]</label>
   </div>
@@ -378,7 +382,7 @@
     <div class="col-md-6">[% l('Statistical Categories') %]</div>
 </div>
 
-<div class="row pad-all-min form-group" ng-repeat="cat in stat_cats">
+<div class="row reg-field-row" ng-repeat="cat in stat_cats">
   <div class="col-md-3 reg-field-label">
     <label>{{cat.name()}}</label>
   </div>
@@ -408,7 +412,7 @@
     <div class="col-md-6">[% l('Surveys') %]</div>
 </div>
 
-<div class="row pad-all-min form-group" ng-repeat="survey in surveys">
+<div class="row reg-field-row" ng-repeat="survey in surveys">
   <div class="col-md-3 reg-field-label">
     <label>{{survey.name()}}</label>
   </div>

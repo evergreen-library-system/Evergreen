@@ -58,6 +58,7 @@ but the ones I'm finding aren't quite cutting it..*/
 
 /* make all input widgets the same width, i.e. fill their column */
 
+.reg-field-input {font-weight: 700; }
 .reg-field-input input:not([type="checkbox"]) { width: 100%; }
 
 /* selector contents float left to allow depth-based left-padding */
@@ -99,6 +100,14 @@ but the ones I'm finding aren't quite cutting it..*/
 #reg-field-doc legend {
     /* otherwise the font size is quite large */
     font-size: 100%;
+}
+
+.reg-field-row {
+    padding-bottom: 3px; 
+}
+
+.reg-field-row label {
+    font-weight: normal;
 }
 
 /* -- end patron registration -- */
