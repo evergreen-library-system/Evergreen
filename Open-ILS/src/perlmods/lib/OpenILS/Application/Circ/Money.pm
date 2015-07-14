@@ -321,7 +321,8 @@ sub make_payments {
         $amount =~ s/\$//og; # just to be safe
         my $trans = $xacts{$transid};
 
-        $total_paid += $amount;
+        # add amounts as integers
+        $total_paid += (100 * $amount);
 
         my $org_id = $U->xact_org($transid, $e);
 
@@ -398,6 +399,9 @@ sub make_payments {
         push(@payment_objs, $payobj);
 
     } # all payment objects have been created and inserted. 
+
+    # return to decimal format, forcing X.YY format for consistency.
+    $total_paid = sprintf("%.2f", $total_paid / 100);
 
     #### NO WRITES TO THE DB ABOVE THIS LINE -- THEY'LL ONLY BE DISCARDED  ###
     $e->rollback;
