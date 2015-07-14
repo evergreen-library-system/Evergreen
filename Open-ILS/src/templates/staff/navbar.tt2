@@ -10,7 +10,7 @@
 -->
 
 <div id="top-navbar" role="navigation"
-  class="navbar navbar-default navbar-static-top" role="navigation">
+  class="navbar navbar-default navbar-fixed-top" role="navigation">
 
   <!-- navbar-header here needed for supporting angular-ui-bootstrap -->
   <div class="navbar-header">

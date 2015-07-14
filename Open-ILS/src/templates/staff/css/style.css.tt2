@@ -60,6 +60,7 @@
      * narrower than the default Bootstrapp container gutters.
      */
     width: 95%;
+    padding-top: 70px;
 }
 
 
