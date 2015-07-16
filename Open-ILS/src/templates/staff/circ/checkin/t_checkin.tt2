@@ -38,6 +38,9 @@
     <div ng-if="modifiers.hold_as_transit" class="alert-danger pad-all-min">
       [% l('Capture Local Holds As Transits') %]
     </div>
+    <div ng-if="modifiers.manual_float" class="alert-danger pad-all-min">
+      [% l('Manual Floating Active') %]
+    </div>
   </div>
 </div>
 
@@ -217,6 +220,16 @@
             <span ng-if="!modifiers.hold_as_transit"
               class="label label-warning">&#x2717;</span>
             <span>[% l('Capture Local Holds As Transits') %]</span>
+          </a>
+        </li>
+        <li>
+          <a href
+            ng-click="toggle_mod('manual_float')">
+            <span ng-if="modifiers.manual_float"
+              class="label label-success">&#x2713;</span>
+            <span ng-if="!modifiers.manual_float"
+              class="label label-warning">&#x2717;</span>
+            <span>[% l('Manual Floating Active') %]</span>
           </a>
         </li>
       </ul>
