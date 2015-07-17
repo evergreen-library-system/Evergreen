@@ -251,10 +251,10 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         });
     }
 
-    $scope.holdings_show_copies_changed = function(newVal) {
-        $scope.holdings_show_copies = newVal;
-        egCore.hatch.setItem('cat.holdings.show_copies', newVal);
-        holdingsSvc.fetch({
+    $scope.holdings_cb_changed = function(cb,newVal,norefresh) {
+        $scope[cb] = newVal;
+        egCore.hatch.setItem('cat.' + cb, newVal);
+        if (!norefresh) holdingsSvc.fetch({
             rid : $scope.record_id,
             org : $scope.holdings_ou,
             copy: $scope.holdings_show_copies,
@@ -265,52 +265,26 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         });
     }
 
-    $scope.holdings_show_vols_changed = function(newVal) {
-        $scope.holdings_show_vols = newVal;
-        egCore.hatch.setItem('cat.holdings.show_vols', newVal);
-        holdingsSvc.fetch({
-            rid : $scope.record_id,
-            org : $scope.holdings_ou,
-            copy: $scope.holdings_show_copies,
-            vol : $scope.holdings_show_vols,
-            empty: $scope.holdings_show_empty
-        }).then(function() {
-            $scope.holdingsGridDataProvider.refresh();
-        });
-    }
-
-    $scope.holdings_show_empty_changed = function(newVal) {
-        $scope.holdings_show_empty = newVal;
-        egCore.hatch.setItem('cat.holdings.show_empty', newVal);
-        holdingsSvc.fetch({
-            rid : $scope.record_id,
-            org : $scope.holdings_ou,
-            copy: $scope.holdings_show_copies,
-            vol : $scope.holdings_show_vols,
-            empty: $scope.holdings_show_empty
-        }).then(function() {
-            $scope.holdingsGridDataProvider.refresh();
-        });
-    }
-
-    egCore.hatch.getItem('cat.holdings.show_copies').then(function(x){
+    egCore.hatch.getItem('cat.holdings_show_vols').then(function(x){
         if (typeof x ==  'undefined') x = true;
-        $scope.holdings_show_copies = x;
-    });
-
-    egCore.hatch.getItem('cat.holdings.show_vols').then(function(x){
-        if (typeof x ==  'undefined') x = true;
-        $scope.holdings_show_vols = x;
-    });
-
-    egCore.hatch.getItem('cat.holdings.show_emtpy').then(function(x){
-        if (typeof x ==  'undefined') x = false;
-        $scope.holdings_show_empty = x;
+        $scope.holdings_cb_changed('holdings_show_vols',x,true);
+        $('#holdings_show_vols').prop('checked', x);
+    }).then(function(){
+        egCore.hatch.getItem('cat.holdings_show_copies').then(function(x){
+            if (typeof x ==  'undefined') x = true;
+            $scope.holdings_cb_changed('holdings_show_copies',x,true);
+            $('#holdings_show_copies').prop('checked', x);
+        }).then(function(){
+            egCore.hatch.getItem('cat.holdings_show_empty').then(function(x){
+                if (typeof x ==  'undefined') x = true;
+                $scope.holdings_cb_changed('holdings_show_empty',x);
+                $('#holdings_show_empty').prop('checked', x);
+            })
+        })
     });
 
     $scope.holdings_checkbox_handler = function (item) {
-        $scope[item.checkbox] = item.checked;
-        $scope[item.checkbox + '_changed'](item.checked);
+        $scope.holdings_cb_changed(item.checkbox,item.checked);
     }
 
     function gatherSelectedHoldingsIds () {
@@ -542,19 +516,6 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         $scope.default_tab = egCore.hatch.getLocalItem( 'eg.cat.default_record_tab' );
         tab = $routeParams.record_tab || $scope.default_tab || 'catalog';
 
-
-        $timeout(function(){
-            holdingsSvc.fetch({
-                rid : $scope.record_id,
-                org : $scope.holdings_ou,
-                copy: $scope.holdings_show_copies,
-                vol : $scope.holdings_show_vols,
-                empty: $scope.holdings_show_empty
-            }).then(function() {
-                $scope.holdingsGridDataProvider.refresh();
-            });
-        });
-
     } else {
         tab = $routeParams.record_tab || 'catalog';
     }
@@ -625,7 +586,10 @@ function(egCore , $q) {
 
     // resolved with the last received copy
     service.fetch = function(opts) {
-        if (service.ongoing) return $q.when();
+        if (service.ongoing) {
+            console.log('Skipping fetch, ongoing = true');
+            return $q.when();
+        }
 
         var rid = opts.rid;
         var org = opts.org;
@@ -644,6 +608,7 @@ function(egCore , $q) {
         service.index = 0;
 
         var org_list = egCore.org.descendants(org.id(), true);
+        console.log('Holdings fetch with: rid='+rid+' org='+org_list+' copy='+copy+' vol='+vol+' empty='+empty);
 
         return egCore.pcrud.search(
             'acn',

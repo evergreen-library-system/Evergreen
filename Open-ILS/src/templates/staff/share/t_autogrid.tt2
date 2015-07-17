@@ -36,17 +36,18 @@
       ng-click="item.handler(item, item.handlerData)">
         {{item.label}}
     </button>
-    <button ng-if="item.checkbox"
+    <div ng-if="item.checkbox"
       class="btn btn-default eg-grid-menu-item"
       ng-repeat="item in menuItems">
-        {{item.label}}
+        <label for="{{item.checkbox}}">{{item.label}}</label>
         <input style="padding-left: 5px"
                type="checkbox"
+               id="{{item.checkbox}}"
                ng-disabled="item.disabled()"
                ng-model="item.checked"
                ng-checked="item.checked"
                ng-change="item.handler(item)"/>
-    </button>
+    </div>
   </div>
 
   <!-- putting a flex div here forces the remaining content to float right -->
