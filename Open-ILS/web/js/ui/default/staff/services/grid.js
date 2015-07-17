@@ -34,6 +34,9 @@ angular.module('egGridMod',
             //  -display : columns are hidden by default
             //  -sort    : columns are unsortable by default 
             //  -multisort : sort priorities config disabled by default
+            //  -multiselect : only one row at a time can be selected;
+            //                 choosing this also disables the checkbox
+            //                 column
             features : '@',
 
             // optional primary grid label
@@ -143,6 +146,7 @@ angular.module('egGridMod',
                     defaultToNoSort : (features.indexOf('-sort') > -1),
                     defaultToNoMultiSort : (features.indexOf('-multisort') > -1)
                 });
+                $scope.canMultiSelect = (features.indexOf('-multiselect') == -1);
 
                 $scope.handleAutoFields = function() {
                     if ($scope.autoFields) {
@@ -665,6 +669,12 @@ angular.module('egGridMod',
                 var index = grid.indexValue(item);
 
                 var origSelected = Object.keys($scope.selected);
+
+                if (!$scope.canMultiSelect) {
+                    grid.selectOneItem(index);
+                    grid.lastSelectedItemIndex = index;
+                    return;
+                }
 
                 if ($event.ctrlKey || $event.metaKey /* mac command */) {
                     // control-click
