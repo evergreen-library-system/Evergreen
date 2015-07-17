@@ -142,3 +142,7 @@ grid[name="-none-"] * label { color: black; }
 
 .marcValidated { color: black; }
 .marcUnvalidated { color: red; }
+
+#z3950-search-form-row {
+    margin-bottom: 20px;
+}

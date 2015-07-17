@@ -3,7 +3,7 @@
  */
 
 angular.module('egCatZ3950Search',
-    ['ngRoute', 'ui.bootstrap', 'egCoreMod', 'egUiMod', 'egGridMod', 'egZ3950Mod'])
+    ['ngRoute', 'ui.bootstrap', 'egCoreMod', 'egUiMod', 'egGridMod', 'egZ3950Mod', 'egMarcMod'])
 
 .config(function($routeProvider, $locationProvider, $compileProvider) {
     $locationProvider.html5Mode(true);
@@ -26,8 +26,8 @@ angular.module('egCatZ3950Search',
  * List view - grid stuff
  */
 .controller('Z3950SearchCtrl',
-       ['$scope','$q','$location','$timeout','$window','egCore','egGridDataProvider','egZ3950TargetSvc',
-function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvider,  egZ3950TargetSvc ) {
+       ['$scope','$q','$location','$timeout','$window','egCore','egGridDataProvider','egZ3950TargetSvc','$modal',
+function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvider,  egZ3950TargetSvc,  $modal) {
 
     // get list of targets
     egZ3950TargetSvc.loadTargets();
@@ -78,6 +78,14 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
         egZ3950TargetSvc.clearSearchFields();
     };
 
+    var display_form = true;
+    $scope.show_search_form = function() {
+        return display_form;
+    }
+    $scope.toggle_search_form = function() {
+        display_form = !display_form;
+    }
+
     $scope.showInCatalog = function() {
         var items = $scope.gridControls.selectedItems();
         // relying on cant_showInCatalog to protect us
@@ -116,4 +124,24 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
         if (items.length == 1) return false;
         return true;
     };
+
+    $scope.spawn_editor = function() {
+        var items = $scope.gridControls.selectedItems();
+        $modal.open({
+            templateUrl: './cat/z3950/t_marc_edit',
+            size: 'lg',
+            controller:
+                ['$scope', '$modalInstance', function($scope, $modalInstance) {
+console.debug('calling modal controller');
+                $scope.focusMe = true;
+                $scope.record_id = 0;
+                $scope.dirty_flag = false;
+                $scope.marc_xml = items[0]['marcxml'];
+                $scope.ok = function(args) { $modalInstance.close(args) }
+                $scope.cancel = function () { $modalInstance.dismiss() }
+            }]
+        }).result.then(function (args) {
+            if (!args || !args.name) return;
+        });
+    }
 }])

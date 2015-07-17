@@ -1,17 +1,30 @@
 <div class="row">
+  <a class="pull-right" href ng-click="toggle_search_form()"
+    title="[% l('Hide Search Form') %]"
+    ng-show="show_search_form()">
+    <span class="glyphicon glyphicon-resize-small"></span>
+  </a>
+  <a class="pull-right" href ng-click="toggle_search_form()"
+    title="[% l('Show Search Form') %]"
+    ng-hide="show_search_form()">
+    <span class="glyphicon glyphicon-resize-full"></span>
+  </a>
+</div>
+
+<div class="row">
     <div class="col-xs-6">
         <strong>[% l('Query') %]</strong>
         <form ng-keyup="$event.keyCode == 13 && search()">
-        <eg-z3950-search-field-list></eg-z3950-search-field-list>
+        <eg-z3950-search-field-list ng-show="show_search_form()"></eg-z3950-search-field-list>
         </form>
     </div>
     <div class="col-xs-6">
         <strong>[% l('Service and Credentials') %]</strong>
-        <eg-z3950-target-list>
+        <eg-z3950-target-list ng-show="show_search_form()">
     </div>
 </div>
 
-<div class="row" id="z3950-search-form-row">
+<div class="row" id="z3950-search-form-row" ng-show="show_search_form()">
     <form ng-submit="search()" id="z3950-search-form"
         role="form" class="form-inline">
         <div class="button-group">
@@ -26,8 +39,7 @@
 <eg-grid
   id-field="index"
   idl-class="mvr"
-  features="-display,-sort,-multisort"
-  main-label="[% l('Results') %]"
+  features="-display,-sort,-multisort,-multiselect"
   items-provider="z3950SearchGridProvider"
   grid-controls="gridControls"
   persist-key="cat.z3950_results">
@@ -36,6 +48,8 @@
     label="[% l('Show in Catalog') %]"></eg-grid-menu>
   <eg-grid-menu-item handler="import" disabled="cant_import"
     label="[% l('Import') %]"></eg-grid-menu>
+  <eg-grid-menu-item handler="spawn_editor" disabled="cant_import"
+    label="[% l('Edit then Import') %]"></eg-grid-menu>
 
     <!-- 
       FIXME: it would be nice to make this column link
