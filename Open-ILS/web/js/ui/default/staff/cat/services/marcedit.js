@@ -428,6 +428,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
         scope: {
             dirtyFlag : '=',
             recordId : '=',
+            marcXml : '@',
             recordType : '@',
             maxUndo : '@'
         },
@@ -445,12 +446,13 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
             });
 
         },
-        controller : ['$timeout','$scope','egCore', 'egTagTable',
-            function ( $timeout , $scope , egCore ,  egTagTable ) {
+        controller : ['$timeout','$scope','$q','egCore', 'egTagTable',
+            function ( $timeout , $scope , $q,  egCore ,  egTagTable ) {
 
                 MARC21.Record.delimiter = '$';
 
                 $scope.flatEditor = false;
+                $scope.brandNewRecord = false;
                 $scope.bib_source = null;
                 $scope.record_type = $scope.recordType || 'bre';
                 $scope.max_undo = $scope.maxUndo || 100;
@@ -803,9 +805,22 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                 }
 
                 function loadRecord() {
-                    return egCore.pcrud.retrieve(
-                        $scope.record_type, $scope.recordId
-                    ).then(function(rec) {
+                    return (function() {
+                        var deferred = $q.defer();
+                        if ($scope.recordId) {
+                            egCore.pcrud.retrieve(
+                                $scope.record_type, $scope.recordId
+                            ).then(function(rec) {
+                                deferred.resolve(rec);
+                            });
+                        } else {
+                            var bre = new egCore.idl.bre();
+                            bre.marc($scope.marcXml);
+                            deferred.resolve(bre);
+                            $scope.brandNewRecord = true;
+                        }
+                        return deferred.promise;
+                    })().then(function(rec) {
                         $scope.in_redo = true;
                         $scope[$scope.record_type] = rec;
                         $scope.record = new MARC21.Record({ marcxml : $scope.Record().marc() });
@@ -903,7 +918,6 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
 
                 $scope.Record = function () {
                     return $scope[$scope.record_type];
-                    return $scope.saveRecord();
                 };
 
                 $scope.deleteRecord = function () {
@@ -921,9 +935,19 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                     $scope.Record().editor(egCore.auth.user().id());
                     $scope.Record().edit_date('now');
                     $scope.Record().marc($scope.record.toXmlString());
-                    return egCore.pcrud.update(
-                        $scope.Record()
-                    ).then(loadRecord);
+                    if ($scope.recordId) {
+                        return egCore.pcrud.update(
+                            $scope.Record()
+                        ).then(loadRecord);
+                    } else {
+                        $scope.Record().creator(egCore.auth.user().id());
+                        $scope.Record().create_date('now');
+                        return egCore.pcrud.create(
+                            $scope.Record()
+                        ).then(function(bre) {
+                            $scope.recordId = bre.id(); 
+                        }).then(loadRecord);
+                    }
                 };
 
                 $scope.seeBreaker = function () {
@@ -938,8 +962,9 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                     }
                 );
 
-                if ($scope.recordId)
+                if ($scope.recordId || $scope.marcXml) {
                     loadRecord();
+                }
 
                 $scope.mangle_005 = function () {
                     var now = new Date();

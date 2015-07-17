@@ -1,5 +1,5 @@
 <div>
-  <div ng-if="bre" class="row col-md-12 pad-vert marcfastitemadd">
+  <div ng-if="bre" class="row col-md-12 pad-vert marcfastitemadd" ng-hide="brandNewRecord">
     <input id="mfiacn" type="text" placeholder="[% l('Call Number') %]" ng-model="fast_item_callnumber"/>
     <input id="mfiabc" type="text" placeholder="[% l('Barcode') %]" ng-model="fast_item_barcode"/>
     <button class="btn btn-default" ng-click="saveFastItem()">Add Item</button>
@@ -23,7 +23,7 @@
     <div class="col-md-1">
       <button class="btn btn-default" ng-click="seeBreaker()">Breaker</button>
     </div>
-    <div class="col-md-1">
+    <div class="col-md-1" ng-hide="brandNewRecord">
       <button ng-hide="Record().deleted()" class="btn btn-default" ng-click="deleteRecord()">Delete</button>
       <button ng-show="Record().deleted()" class="btn btn-default" ng-click="undeleteRecord()">Undelete</button>
     </div>
