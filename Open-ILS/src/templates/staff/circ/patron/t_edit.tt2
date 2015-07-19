@@ -1,10 +1,16 @@
 [% DOC_IMG = '/images/question-mark.png' %]
 
-<div class="container-fluid" style="text-align:center">
+<!-- register banner -->
+<div ng-if="!patron_id" 
+  class="container-fluid" style="text-align:center">
   <div class="alert alert-info alert-less-pad strong-text-2">
-    <span ng-if="!is_capture">[% l('Patron Edit') %]</span>
+    <span >[% l('Register Patron') %]</span>
   </div>
 </div>
+
+<!-- edit banner -->
+<div ng-if="patron_id" 
+    class="strong-text-2">[% l('Patron Edit') %]</div>
 
 <!-- IDL field documentation window -->
 <div id="reg-control-actions">
