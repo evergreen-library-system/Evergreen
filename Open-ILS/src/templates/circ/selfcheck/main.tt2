@@ -4,6 +4,7 @@
 <script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/circ/selfcheck/payment.js"></script>
 <link rel='stylesheet' type='text/css' href='[% ctx.media_prefix %]/css/skin/[% ctx.skin %]/selfcheck.css'/>
 [% INCLUDE 'circ/selfcheck/audio_config.tt2' %]
+[% INCLUDE 'circ/selfcheck/logout_dialog.tt2' %]
 
 <div id='oils-selfck-top-div'>
     [% INCLUDE 'circ/selfcheck/banner.tt2' %]
@@ -55,6 +56,27 @@
         </table>
     </form>
 </div>
+<div dojoType="dijit.Dialog" jsId='oilsSelfckWsDialog' class='oils-logout-dialog' style='display:none;'>
+    <form>
+        <table>
+            <tr>
+                <td>[% l('Choose a location') %]</td>
+                <td><div dojoType='openils.widget.OrgUnitFilteringSelect' jsId='oilsSelfckWsLocSelector' 
+                    searchAttr='shortname' labelAttr='shortname'></div></td>
+            </tr>
+            <tr>
+                <td>[% l('Enter a workstation name') %]</td>
+                <td><input dojoType='dijit.form.TextBox' jsId='oilsSelfckWsName'/></td>
+            </tr>
+            <tr>
+                <td colspan='2' align='center'>
+                    <button jsId='oilsSelfckWsSubmit' dojoType='dijit.form.Button'>[% l('Submit') %]</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+
 [% END %]
 
 

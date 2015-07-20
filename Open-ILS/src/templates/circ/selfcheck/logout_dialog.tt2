@@ -1,0 +1,14 @@
+<div dojoType="dijit.Dialog" jsId='oilsSelfckLogoutDialog' style='display:none;'>
+  <p>[% l('Your login session will soon timeout due to inactivity.') %]</p>
+  <table><tr>
+    <td>
+      <button jsId='oilsSelfckLogout' 
+        dojoType='dijit.form.Button'>[% l('Logout') %]</button>
+    </td>
+    <td>
+      <button jsId='oilsSelfckContinue' 
+        dojoType='dijit.form.Button'>[% l('Continue Session') %]</button>
+    </td>
+  </tr></table>
+</div>
+

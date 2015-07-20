@@ -15,8 +15,12 @@ dojo.requireLocalization('openils.circ', 'selfcheck');
 var localeStrings = dojo.i18n.getLocalization('openils.circ', 'selfcheck');
 
 // set patron timeout default
-var patronTimeout = 180000; /* 3 minutes */
+var patronTimeout = 160000; /* 2 minutes, 40 seconds */
 var timerId = null;
+// 20 second inactivity warning; total default timeout is 3 minutes.
+var patronTimeoutWarning = 20000; 
+var selfckWarningSetup = false;
+var selfckWarningTimer;
 
 const SET_BARCODE_REGEX = 'opac.barcode_regex';
 const SET_PATRON_TIMEOUT = 'circ.selfcheck.patron_login_timeout';
@@ -37,7 +41,7 @@ openils.User.default_login_agent = 'selfcheck';
 function selfckStartTimer() {
     timerId = setTimeout(
         function() {
-            SelfCheckManager.prototype.logoutPatron();
+            selfckLogoutWarning();
         },
         patronTimeout
     );
@@ -47,6 +51,41 @@ function selfckStartTimer() {
 function selfckResetTimer() {
     clearTimeout(timerId);
     selfckStartTimer();
+}
+
+function selfckLogoutWarning() {
+
+    // connect the logout warning dialog button handlers if needed
+    if (!selfckWarningSetup) {
+        selfckWarningSetup = true;
+
+        dojo.connect(oilsSelfckLogout, 'onClick', 
+            function() {
+                clearTimeout(selfckWarningTimer);
+                oilsSelfckLogoutDialog.hide();
+                SelfCheckManager.prototype.logoutPatron();
+            }
+        );
+
+        dojo.connect(oilsSelfckContinue, 'onClick', 
+            function() {
+                clearTimeout(selfckWarningTimer);
+                oilsSelfckLogoutDialog.hide();
+                selfckResetTimer();
+            }
+        );
+    }
+
+    // warn the patron of imminent logout
+    oilsSelfckLogoutDialog.show();
+    selfckWarningTimer = setTimeout(
+        function() {
+            // no action was taken, force a logout.
+            oilsSelfckLogoutDialog.hide();
+            SelfCheckManager.prototype.logoutPatron();
+        },
+        patronTimeoutWarning
+    );
 }
 
 function SelfCheckManager() {
@@ -295,8 +334,13 @@ SelfCheckManager.prototype.loadOrgSettings = function() {
     if(settings[SET_BARCODE_REGEX]) 
         this.patronBarcodeRegex = new RegExp(settings[SET_BARCODE_REGEX].value);
 
-    if(settings[SET_PATRON_TIMEOUT])
-        patronTimeout = parseInt(settings[SET_PATRON_TIMEOUT].value) * 1000;
+    // Subtract the timeout warning interval from the configured timeout 
+    // so that when taken together they add up to the configured amount.
+    if(settings[SET_PATRON_TIMEOUT]) {
+        patronTimeout = 
+            (parseInt(settings[SET_PATRON_TIMEOUT].value) * 1000) 
+            - patronTimeoutWarning;
+    }
 }
 
 SelfCheckManager.prototype.drawLoginPage = function() {
@@ -940,6 +984,9 @@ SelfCheckManager.prototype.checkin = function(barcode, abortTransit) {
  * out to the patron, redirect to renew()
  */
 SelfCheckManager.prototype.checkout = function(barcode, override) {
+
+    // reset timeout
+    selfckResetTimer();
 
     this.prevCirc = null;
 
