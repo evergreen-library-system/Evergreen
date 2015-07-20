@@ -1,0 +1,12 @@
+
+#age-to-lost-container {
+  margin-top: 20px;
+}
+
+#age-to-lost-container .row {
+  margin-top: 20px;
+}
+
+#age-to-lost-container .form-group {
+  padding-right: 10px;
+}
