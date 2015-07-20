@@ -4410,4 +4410,40 @@ sub mr_hold_filter_attrs {
     return;
 }
 
+__PACKAGE__->register_method(
+    method        => "copy_has_holds_count",
+    api_name      => "open-ils.circ.copy.has_holds_count",
+    authoritative => 1,
+    signature     => {
+        desc => q/
+            Returns the number of holds a paticular copy has
+        /,
+        params => [
+            { desc => 'Authentication Token', type => 'string'},
+            { desc => 'Copy ID', type => 'number'}
+        ],
+        return => {
+            desc => q/
+                Simple count value
+            /,
+            type => 'number'
+        }
+    }
+);
+
+sub copy_has_holds_count {
+    my( $self, $conn, $auth, $copyid ) = @_;
+    my $e = new_editor(authtoken=>$auth);
+    return $e->event unless $e->checkauth;
+
+    if( $copyid && $copyid > 0 ) {
+        my $meth = 'retrieve_action_has_holds_count';
+        my $data = $e->$meth($copyid);
+        if($data){
+                return $data->count();
+        }
+    }
+    return 0;
+}
+
 1;

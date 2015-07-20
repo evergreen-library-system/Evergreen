@@ -592,6 +592,17 @@ circ.util.columns = function(modify,params) {
                 }
             }
         },
+	{
+            'id' : 'ahhc',
+            'fm_class' : 'hasholdscount',
+            'label' : 'Holds Count',
+            'flex' : 1,
+            'primary' : false,
+            'hidden' : false,
+            'editable' : false, 'render' : function(my) {
+		return network.simple_request("FM_CIRC_HAS_HOLDS_COUNT_RETRIEVE_VIA_COPY",[ ses(), my.acp.id() ] );
+		}
+        },
         {
             'id' : 'prefix',
             'fm_class' : 'acn',

@@ -243,6 +243,7 @@ var api = {
     'FM_CIRC_RETRIEVE_VIA_USER.authoritative' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.checked_out.authoritative' },
     'FM_CIRC_RETRIEVE_VIA_COPY' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.copy_checkout_history.retrieve' },
     /*'FM_CIRC_COUNT_RETRIEVE_VIA_USER' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.checked_out.count' },*/
+    'FM_CIRC_HAS_HOLDS_COUNT_RETRIEVE_VIA_COPY' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.copy.has_holds_count', 'secure' : true },
     'FM_CIRC_COUNT_RETRIEVE_VIA_USER' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.checked_out.count', 'cacheable' : true, 'ttl' : 60000 },
     'FM_CIRC_COUNT_RETRIEVE_VIA_USER.authoritative' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.checked_out.count.authoritative', 'cacheable' : true, 'ttl' : 60000 },
     'FM_CIRC_COUNT_RETRIEVE_VIA_COPY' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.circulation.count' },

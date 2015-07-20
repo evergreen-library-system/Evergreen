@@ -90,6 +90,7 @@
     </a>
   </eg-grid-field>
   <eg-grid-field path="*" hidden></eg-grid-field>
+  <eg-grid-field path="target_copy.holds_count.count" hidden></eg-grid-field>
   <eg-grid-field path="target_copy.circ_modifier" hidden></eg-grid-field>
   <eg-grid-field path="target_copy.*" hidden></eg-grid-field>
   <eg-grid-field path="target_copy.call_number.*" hidden></eg-grid-field>

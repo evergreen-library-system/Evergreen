@@ -6674,6 +6674,7 @@ SELECT  usr,
 			<field reporter:label="Peer Record Maps" name="peer_record_maps" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Peer Records" name="peer_records" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Last Captured Hold" name="last_captured_hold" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Has Holds" name="holds_count" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="age_protect" reltype="has_a" key="id" map="" class="crahp"/>
@@ -6698,6 +6699,7 @@ SELECT  usr,
 			<link field="peer_records" reltype="has_many" key="target_copy" map="peer_record" class="bpbcm"/>
 			<link field="last_captured_hold" reltype="has_a" key="current_copy" map="" class="alhr"/>
 			<link field="floating" reltype="has_a" key="id" map="" class="cfg"/>
+			<link field="holds_count" reltype="might_have" key="id" map="" class="hasholdscount"/>
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
@@ -11346,6 +11348,29 @@ SELECT  usr,
 			</actions>
 		</permacrud>
 	</class>
+	<class id="hasholdscount" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action::has_holds_count" reporter:label="Copy Has Holds Count" oils_persist:readonly="true">
+        <oils_persist:source_definition>
+	SELECT ahcm.target_copy AS "id",count(*) AS "count"
+	 FROM
+	 action.hold_request ahr,
+	 action.hold_copy_map ahcm
+	 WHERE
+	 ahr.cancel_time IS NULL AND
+	 ahr.fulfillment_time IS NULL AND
+	 ahr.capture_time IS NULL AND
+	 ahr.id = ahcm.hold
+	 GROUP BY ahcm.target_copy
+        </oils_persist:source_definition>
+        <fields oils_persist:primary="id">
+            <field reporter:label="Copy ID" name="id" reporter:datatype="id"/>
+            <field reporter:label="Holds Count" name="count" reporter:datatype="text"/>
+        </fields>
+	<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+               <retrieve/>
+            </actions>
+	</permacrud>
+        </class>
 
 	<!-- ********************************************************************************************************************* -->
 
