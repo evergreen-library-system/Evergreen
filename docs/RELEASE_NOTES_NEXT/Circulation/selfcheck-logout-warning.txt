@@ -1,0 +1,8 @@
+Selfcheck Inactivity Warning
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Selfcheck interface now warns patrons when they are about to be
+logged out due to inactivity 20 seconds prior to logging them out.
+
+The inactivity timeout is also reset with each checkout to avoid timeouts 
+while checking out lots of items.
