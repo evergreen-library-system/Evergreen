@@ -6,6 +6,7 @@
 #include "openils/oils_utils.h"
 #include "openils/oils_constants.h"
 #include "openils/oils_event.h"
+#include <pcre.h>
 
 #define OILS_AUTH_CACHE_PRFX "oils_auth_"
 #define OILS_AUTH_COUNT_SFFX "_count"
@@ -49,6 +50,20 @@ int osrfAppInitialize() {
 		"oilsAuthInit",
 		"Start the authentication process and returns the intermediate authentication seed"
 		" PARAMS( username )", 1, 0 );
+
+    osrfAppRegisterMethod(
+        MODULENAME,
+        "open-ils.auth.authenticate.init.barcode",
+        "oilsAuthInitBarcode",
+        "Start the authentication process using a patron barcode and return "
+        "the intermediate authentication seed. PARAMS(barcode)", 1, 0);
+
+    osrfAppRegisterMethod(
+        MODULENAME,
+        "open-ils.auth.authenticate.init.username",
+        "oilsAuthInitUsername",
+        "Start the authentication process using a patron username and return "
+        "the intermediate authentication seed. PARAMS(username)", 1, 0);
 
 	osrfAppRegisterMethod(
 		MODULENAME,
@@ -144,6 +159,231 @@ int osrfAppChildInit() {
 	return 0;
 }
 
+// free() response
+static char* oilsAuthGetSalt(int user_id) {
+    char* salt_str = NULL;
+
+    jsonObject* params = jsonParseFmt( // free
+        "{\"from\":[\"actor.get_salt\",%d,\"%s\"]}", user_id, "main");
+
+    jsonObject* salt_obj = // free
+        oilsUtilsCStoreReq("open-ils.cstore.json_query", params);
+
+    jsonObjectFree(params);
+
+    if (salt_obj) {
+
+        if (salt_obj->type != JSON_NULL) {
+
+            const char* salt_val = jsonObjectGetString(
+                jsonObjectGetKeyConst(salt_obj, "actor.get_salt"));
+
+            // caller expects a free-able string, could be NULL.
+            if (salt_val) { salt_str = strdup(salt_val); } 
+        }
+
+        jsonObjectFree(salt_obj);
+    }
+
+    return salt_str;
+}
+
+// ident is either a username or barcode
+// Returns the init seed -> requires free();
+static char* oilsAuthBuildInitCache(
+    int user_id, const char* ident, const char* ident_type, const char* nonce) {
+
+    char* cache_key  = va_list_to_string(
+        "%s%s%s", OILS_AUTH_CACHE_PRFX, ident, nonce);
+
+    char* count_key = va_list_to_string(
+        "%s%s%s", OILS_AUTH_CACHE_PRFX, ident, OILS_AUTH_COUNT_SFFX);
+
+    char* auth_seed = oilsAuthGetSalt(user_id);
+
+    jsonObject* seed_object = jsonParseFmt(
+        "{\"%s\":\"%s\",\"user_id\":%d,\"seed\":\"%s\"}",
+        ident_type, ident, user_id, auth_seed);
+
+    jsonObject* count_object = osrfCacheGetObject(count_key);
+    if(!count_object) {
+        count_object = jsonNewNumberObject((double) 0);
+    }
+
+    osrfCachePutObject(cache_key, seed_object, _oilsAuthSeedTimeout);
+    osrfCachePutObject(count_key, count_object, _oilsAuthBlockTimeout);
+
+    osrfLogDebug(OSRF_LOG_MARK, 
+        "oilsAuthInit(): has seed %s and key %s", auth_seed, cache_key);
+
+    free(cache_key);
+    free(count_key);
+    jsonObjectFree(count_object);
+    jsonObjectFree(seed_object);
+
+    return auth_seed;
+}
+
+static int oilsAuthInitUsernameHandler(
+    osrfMethodContext* ctx, const char* username, const char* nonce) {
+
+    osrfLogInfo(OSRF_LOG_MARK, 
+        "User logging in with username %s", username);
+
+    jsonObject* resp = NULL; // free
+    jsonObject* user_obj = oilsUtilsFetchUserByUsername(username); // free
+
+    if (user_obj) {
+
+        if (JSON_NULL == user_obj->type) { // user not found
+            resp = jsonNewObject("x");
+
+        } else {
+            char* seed = oilsAuthBuildInitCache(
+                oilsFMGetObjectId(user_obj), username, "username", nonce);
+            resp = jsonNewObject(seed);
+            free(seed);
+        }
+
+        jsonObjectFree(user_obj);
+
+    } else {
+        resp = jsonNewObject("x");
+    }
+
+    osrfAppRespondComplete(ctx, resp);
+    jsonObjectFree(resp);
+    return 0;
+}
+
+// open-ils.auth.authenticate.init.username
+int oilsAuthInitUsername(osrfMethodContext* ctx) {
+    OSRF_METHOD_VERIFY_CONTEXT(ctx);
+
+    char* username =  // free
+        jsonObjectToSimpleString(jsonObjectGetIndex(ctx->params, 0));
+    const char* nonce = 
+        jsonObjectGetString(jsonObjectGetIndex(ctx->params, 1));
+
+    if (!nonce) nonce = "";
+    if (!username) return -1;
+
+    int resp = oilsAuthInitUsernameHandler(ctx, username, nonce);
+
+    free(username);
+    return resp;
+}
+
+static int oilsAuthInitBarcodeHandler(
+    osrfMethodContext* ctx, const char* barcode, const char* nonce) {
+
+    osrfLogInfo(OSRF_LOG_MARK, 
+        "User logging in with barcode %s", barcode);
+
+    jsonObject* resp = NULL; // free
+    jsonObject* user_obj = oilsUtilsFetchUserByBarcode(barcode); // free
+
+    if (user_obj) {
+        if (JSON_NULL == user_obj->type) { // not found
+            resp = jsonNewObject("x");
+        } else {
+            char* seed = oilsAuthBuildInitCache(
+                oilsFMGetObjectId(user_obj), barcode, "barcode", nonce);
+            resp = jsonNewObject(seed);
+            free(seed);
+        }
+
+        jsonObjectFree(user_obj);
+    } else {
+        resp = jsonNewObject("x");
+    }
+
+    osrfAppRespondComplete(ctx, resp);
+    jsonObjectFree(resp);
+    return 0;
+}
+
+
+// open-ils.auth.authenticate.init.barcode
+int oilsAuthInitBarcode(osrfMethodContext* ctx) {
+    OSRF_METHOD_VERIFY_CONTEXT(ctx);
+
+    char* barcode = // free
+        jsonObjectToSimpleString(jsonObjectGetIndex(ctx->params, 0));
+    const char* nonce = 
+        jsonObjectGetString(jsonObjectGetIndex(ctx->params, 1));
+
+    if (!nonce) nonce = "";
+    if (!barcode) return -1;
+
+    int resp = oilsAuthInitBarcodeHandler(ctx, barcode, nonce);
+
+    free(barcode);
+    return resp;
+}
+
+// returns true if the provided identifier matches the barcode regex.
+static int oilsAuthIdentIsBarcode(const char* identifier) {
+
+    // before we can fetch the barcode regex unit setting,
+    // first determine what the root org unit ID is.
+    // TODO: add an org_unit param to the .init API for future use?
+    
+    jsonObject *params = jsonParse("{\"parent_ou\":null}");
+    jsonObject *org_unit_id = oilsUtilsCStoreReq(
+        "open-ils.cstore.direct.actor.org_unit.id_list", params);
+    jsonObjectFree(params);
+
+    char* bc_regex = oilsUtilsFetchOrgSetting(
+        (int) jsonObjectGetNumber(org_unit_id), "opac.barcode_regex");
+    jsonObjectFree(org_unit_id);
+
+    if (!bc_regex) {
+        // if no regex is set, assume any identifier starting
+        // with a number is a barcode.
+        bc_regex = strdup("^\\d"); // dupe for later free'ing
+    }
+
+    const char *err_str;
+    int err_offset, match_ret;
+
+    pcre *compiled = pcre_compile(
+        bc_regex, 0, &err_str, &err_offset, NULL);
+
+    if (compiled == NULL) {
+        osrfLogError(OSRF_LOG_MARK,
+            "Could not compile '%s': %s", bc_regex, err_str);
+        free(bc_regex);
+        pcre_free(compiled);
+        return 0;
+    }
+
+    pcre_extra *extra = pcre_study(compiled, 0, &err_str);
+
+    if(err_str != NULL) {
+        osrfLogError(OSRF_LOG_MARK,
+            "Could not study regex '%s': %s", bc_regex, err_str);
+        free(bc_regex);
+        pcre_free(compiled);
+        return 0;
+    } 
+
+    match_ret = pcre_exec(
+        compiled, extra, identifier, strlen(identifier), 0, 0, NULL, 0);       
+
+    free(bc_regex);
+    pcre_free(compiled);
+    if (extra) pcre_free(extra);
+
+    if (match_ret >= 0) return 1; // regex matched
+
+    if (match_ret != PCRE_ERROR_NOMATCH) 
+        osrfLogError(OSRF_LOG_MARK, "Unknown error processing barcode regex");
+
+    return 0; // regex did not match
+}
+
+
 /**
 	@brief Implement the "init" method.
 	@param ctx The method context.
@@ -157,65 +397,27 @@ int osrfAppChildInit() {
 		near-simultaneous logins.
 
 	Return to client: Intermediate authentication seed.
-
-	Combine the username with a timestamp and process ID, and take an md5 hash of the result.
-	Store the hash in memcache, with a key based on the username.  Then return the hash to
-	the client.
-
-	However: if the username includes one or more embedded blank spaces, return a dummy
-	hash without storing anything in memcache.  The dummy will never match a stored hash, so
-	any attempt to authenticate with it will fail.
 */
-int oilsAuthInit( osrfMethodContext* ctx ) {
-	OSRF_METHOD_VERIFY_CONTEXT(ctx);
+int oilsAuthInit(osrfMethodContext* ctx) {
+    OSRF_METHOD_VERIFY_CONTEXT(ctx);
+    int resp = 0;
 
-	char* username  = jsonObjectToSimpleString( jsonObjectGetIndex(ctx->params, 0) );
-	const char* nonce = jsonObjectGetString(jsonObjectGetIndex(ctx->params, 1));
-	if (!nonce) nonce = "";
+    char* identifier = // free
+        jsonObjectToSimpleString(jsonObjectGetIndex(ctx->params, 0));
+    const char* nonce = 
+        jsonObjectGetString(jsonObjectGetIndex(ctx->params, 1));
 
-	if( username ) {
+    if (!nonce) nonce = "";
+    if (!identifier) return -1;  // we need an identifier
 
-		jsonObject* resp;
+    if (oilsAuthIdentIsBarcode(identifier)) {
+        resp = oilsAuthInitBarcodeHandler(ctx, identifier, nonce);
+    } else {
+        resp = oilsAuthInitUsernameHandler(ctx, identifier, nonce);
+    }
 
-		if( strchr( username, ' ' ) ) {
-
-			// Embedded spaces are not allowed in a username.  Use "x" as a dummy
-			// seed.  It will never be a valid seed because 'x' is not a hex digit.
-			resp = jsonNewObject( "x" );
-
-		} else {
-
-			// Build a key and a seed; store them in memcache.
-			char* key  = va_list_to_string( "%s%s%s", OILS_AUTH_CACHE_PRFX, username, nonce );
-			char* countkey = va_list_to_string( "%s%s%s", OILS_AUTH_CACHE_PRFX, username, OILS_AUTH_COUNT_SFFX );
-			char* seed = md5sum( "%d.%ld.%s.%s", (int) time(NULL), (long) getpid(), username, nonce );
-			jsonObject* countobject = osrfCacheGetObject( countkey );
-			if(!countobject) {
-				countobject = jsonNewNumberObject( (double) 0 );
-			}
-			osrfCachePutString( key, seed, _oilsAuthSeedTimeout );
-			osrfCachePutObject( countkey, countobject, _oilsAuthBlockTimeout );
-
-			osrfLogDebug( OSRF_LOG_MARK, "oilsAuthInit(): has seed %s and key %s", seed, key );
-
-			// Build a returnable object containing the seed.
-			resp = jsonNewObject( seed );
-
-			free( seed );
-			free( key );
-			free( countkey );
-			jsonObjectFree( countobject );
-		}
-
-		// Return the seed to the client.
-		osrfAppRespondComplete( ctx, resp );
-
-		jsonObjectFree(resp);
-		free(username);
-		return 0;
-	}
-
-	return -1;  // Error: no username parameter
+    free(identifier);
+    return resp;
 }
 
 /**
@@ -281,68 +483,56 @@ static int oilsAuthCheckLoginPerm(
 	means that the client process needs either to be the same process that called the init
 	method or to receive the seed from the process that did so.
 */
-static int oilsAuthVerifyPassword( const osrfMethodContext* ctx,
-		const jsonObject* userObj, const char* uname,
-		const char* password, const char* nonce ) {
+static int oilsAuthVerifyPassword( const osrfMethodContext* ctx, int user_id, 
+        const char* identifier, const char* password, const char* nonce) {
 
-	// Get the username seed, as stored previously in memcache by the init method
-	char* seed = osrfCacheGetString( "%s%s%s", OILS_AUTH_CACHE_PRFX, uname, nonce );
-	if(!seed) {
-		return osrfAppRequestRespondException( ctx->session,
-			ctx->request, "No authentication seed found. "
-			"open-ils.auth.authenticate.init must be called first "
-			" (check that memcached is running and can be connected to) "
-		);
-	}
-    
-	// We won't be needing the seed again, remove it
-	osrfCacheRemove( "%s%s%s", OILS_AUTH_CACHE_PRFX, uname, nonce );
+    int verified = 0;
 
-	// Get the hashed password from the user object
-	char* realPassword = oilsFMGetString( userObj, "passwd" );
+    // We won't be needing the seed again, remove it
+    osrfCacheRemove("%s%s%s", OILS_AUTH_CACHE_PRFX, identifier, nonce);
 
-	osrfLogInternal(OSRF_LOG_MARK, "oilsAuth retrieved real password: [%s]", realPassword);
-	osrfLogDebug(OSRF_LOG_MARK, "oilsAuth retrieved seed from cache: %s", seed );
+    // Ask the DB to verify the user's password.
+    // Here, the password is md5(md5(password) + salt)
 
-	// Concatenate them and take an MD5 hash of the result
-	char* maskedPw = md5sum( "%s%s", seed, realPassword );
+    jsonObject* params = jsonParseFmt( // free
+        "{\"from\":[\"actor.verify_passwd\",%d,\"main\",\"%s\"]}", 
+        user_id, password);
 
-	free(realPassword);
-	free(seed);
+    jsonObject* verify_obj = // free 
+        oilsUtilsCStoreReq("open-ils.cstore.json_query", params);
 
-	if( !maskedPw ) {
-		// This happens only if md5sum() runs out of memory
-		free( maskedPw );
-		return -1;  // md5sum() ran out of memory
-	}
+    jsonObjectFree(params);
 
-	osrfLogDebug(OSRF_LOG_MARK,  "oilsAuth generated masked password %s. "
-			"Testing against provided password %s", maskedPw, password );
+    if (verify_obj) {
+        verified = oilsUtilsIsDBTrue(
+            jsonObjectGetString(
+                jsonObjectGetKeyConst(
+                    verify_obj, "actor.verify_passwd")));
 
-	int ret = 0;
-	if( !strcmp( maskedPw, password ) )
-		ret = 1;
+        jsonObjectFree(verify_obj);
+    }
 
-	free(maskedPw);
+    char* countkey = va_list_to_string("%s%s%s", 
+        OILS_AUTH_CACHE_PRFX, identifier, OILS_AUTH_COUNT_SFFX );
+    jsonObject* countobject = osrfCacheGetObject( countkey );
+    if(countobject) {
+        long failcount = (long) jsonObjectGetNumber( countobject );
+        if(failcount >= _oilsAuthBlockCount) {
+            verified = 0;
+            osrfLogInfo(OSRF_LOG_MARK, 
+                "oilsAuth found too many recent failures for '%s' : %i, "
+                "forcing failure state.", identifier, failcount);
+        }
+        if(verified == 0) {
+            failcount += 1;
+        }
+        jsonObjectSetNumber( countobject, failcount );
+        osrfCachePutObject( countkey, countobject, _oilsAuthBlockTimeout );
+        jsonObjectFree(countobject);
+    }
+    free(countkey);
 
-	char* countkey = va_list_to_string( "%s%s%s", OILS_AUTH_CACHE_PRFX, uname, OILS_AUTH_COUNT_SFFX );
-	jsonObject* countobject = osrfCacheGetObject( countkey );
-	if(countobject) {
-		long failcount = (long) jsonObjectGetNumber( countobject );
-		if(failcount >= _oilsAuthBlockCount) {
-			ret = 0;
-		    osrfLogInfo(OSRF_LOG_MARK, "oilsAuth found too many recent failures for '%s' : %i, forcing failure state.", uname, failcount);
-		}
-		if(ret == 0) {
-			failcount += 1;
-		}
-		jsonObjectSetNumber( countobject, failcount );
-		osrfCachePutObject( countkey, countobject, _oilsAuthBlockTimeout );
-		jsonObjectFree(countobject);
-	}
-	free(countkey);
-
-	return ret;
+    return verified;
 }
 
 /**
@@ -584,92 +774,107 @@ static oilsEvent* oilsAuthVerifyWorkstation(
 	Upon deciding whether to allow the logon, return a corresponding event to the client.
 */
 int oilsAuthComplete( osrfMethodContext* ctx ) {
-	OSRF_METHOD_VERIFY_CONTEXT(ctx);
+    OSRF_METHOD_VERIFY_CONTEXT(ctx);
 
-	const jsonObject* args  = jsonObjectGetIndex(ctx->params, 0);
+    const jsonObject* args  = jsonObjectGetIndex(ctx->params, 0);
 
-	const char* uname       = jsonObjectGetString(jsonObjectGetKeyConst(args, "username"));
-	const char* password    = jsonObjectGetString(jsonObjectGetKeyConst(args, "password"));
-	const char* type        = jsonObjectGetString(jsonObjectGetKeyConst(args, "type"));
-	int orgloc        = (int) jsonObjectGetNumber(jsonObjectGetKeyConst(args, "org"));
-	const char* workstation = jsonObjectGetString(jsonObjectGetKeyConst(args, "workstation"));
-	const char* barcode     = jsonObjectGetString(jsonObjectGetKeyConst(args, "barcode"));
-	const char* ewho        = jsonObjectGetString(jsonObjectGetKeyConst(args, "agent"));
-	const char* nonce       = jsonObjectGetString(jsonObjectGetKeyConst(args, "nonce"));
+    const char* uname       = jsonObjectGetString(jsonObjectGetKeyConst(args, "username"));
+    const char* identifier  = jsonObjectGetString(jsonObjectGetKeyConst(args, "identifier"));
+    const char* password    = jsonObjectGetString(jsonObjectGetKeyConst(args, "password"));
+    const char* type        = jsonObjectGetString(jsonObjectGetKeyConst(args, "type"));
+    int orgloc        = (int) jsonObjectGetNumber(jsonObjectGetKeyConst(args, "org"));
+    const char* workstation = jsonObjectGetString(jsonObjectGetKeyConst(args, "workstation"));
+    const char* barcode     = jsonObjectGetString(jsonObjectGetKeyConst(args, "barcode"));
+    const char* ewho        = jsonObjectGetString(jsonObjectGetKeyConst(args, "agent"));
+    const char* nonce       = jsonObjectGetString(jsonObjectGetKeyConst(args, "nonce"));
 
-	const char* ws = (workstation) ? workstation : "";
-	if (!nonce) nonce = "";
+    const char* ws = (workstation) ? workstation : "";
+    if (!nonce) nonce = "";
 
-	/* Use __FILE__, harmless_line_number for creating
-	 * OILS_EVENT_AUTH_FAILED events (instead of OSRF_LOG_MARK) to avoid
-	 * giving away information about why an authentication attempt failed.
-	 */
-	int harmless_line_number = __LINE__;
+    // we no longer care how the identifier reaches us, 
+    // as long as we have one.
+    if (!identifier) {
+        if (uname) {
+            identifier = uname;
+        } else if (barcode) {
+            identifier = barcode;
+        }
+    }
 
-	if( !type )
-		 type = OILS_AUTH_STAFF;
+    if (!identifier) {
+        return osrfAppRequestRespondException(ctx->session, ctx->request,
+            "username/barcode and password required for method: %s", 
+            ctx->method->name);
+    }
 
-	if( !( (uname || barcode) && password) ) {
-		return osrfAppRequestRespondException( ctx->session, ctx->request,
-			"username/barcode and password required for method: %s", ctx->method->name );
-	}
+    osrfLogInfo(OSRF_LOG_MARK, 
+        "Patron completing authentication with identifer %s", identifier);
 
-	oilsEvent* response = NULL;
-	jsonObject* userObj = NULL;
-	int card_active     = 1;      // boolean; assume active until proven otherwise
+    /* Use __FILE__, harmless_line_number for creating
+     * OILS_EVENT_AUTH_FAILED events (instead of OSRF_LOG_MARK) to avoid
+     * giving away information about why an authentication attempt failed.
+     */
+    int harmless_line_number = __LINE__;
 
-	// Fetch a row from the actor.usr table, by username if available,
-	// or by barcode if not.
-	if(uname) {
-		userObj = oilsUtilsFetchUserByUsername( uname );
-		if( userObj && JSON_NULL == userObj->type ) {
-			jsonObjectFree( userObj );
-			userObj = NULL;         // username not found
-		}
-	}
-	else if(barcode) {
-		// Read from actor.card by barcode
+    if( !type )
+         type = OILS_AUTH_STAFF;
 
-		osrfLogInfo( OSRF_LOG_MARK, "Fetching user by barcode %s", barcode );
+    oilsEvent* response = NULL; // free
+    jsonObject* userObj = NULL; // free
+    int card_active = 1; // boolean; assume active until proven otherwise
+    int using_card  = 0; // true if this is a barcode login
 
-		jsonObject* params = jsonParseFmt("{\"barcode\":\"%s\"}", barcode);
-		jsonObject* card = oilsUtilsQuickReq(
-			"open-ils.cstore", "open-ils.cstore.direct.actor.card.search", params );
-		jsonObjectFree( params );
+    char* cache_key = va_list_to_string(
+        "%s%s%s", OILS_AUTH_CACHE_PRFX, identifier, nonce);
+    jsonObject* cacheObj = osrfCacheGetObject(cache_key); // free
 
-		if( card && card->type != JSON_NULL ) {
-			// Determine whether the card is active
-			char* card_active_str = oilsFMGetString( card, "active" );
-			card_active = oilsUtilsIsDBTrue( card_active_str );
-			free( card_active_str );
+    if (!cacheObj) {
+        return osrfAppRequestRespondException(ctx->session,
+            ctx->request, "No authentication seed found. "
+            "open-ils.auth.authenticate.init must be called first "
+            " (check that memcached is running and can be connected to) "
+        );
+    }
 
-			// Look up the user who owns the card
-			char* userid = oilsFMGetString( card, "usr" );
-			jsonObjectFree( card );
-			params = jsonParseFmt( "[%s]", userid );
-			free( userid );
-			userObj = oilsUtilsQuickReq(
-					"open-ils.cstore", "open-ils.cstore.direct.actor.user.retrieve", params );
-			jsonObjectFree( params );
-			if( userObj && JSON_NULL == userObj->type ) {
-				// user not found (shouldn't happen, due to foreign key)
-				jsonObjectFree( userObj );
-				userObj = NULL;
+    int user_id = jsonObjectGetNumber(
+        jsonObjectGetKeyConst(cacheObj, "user_id"));
+
+    jsonObject* param = jsonNewNumberObject(user_id); // free
+    userObj = oilsUtilsCStoreReq(
+        "open-ils.cstore.direct.actor.user.retrieve", param);
+    jsonObjectFree(param);
+
+    using_card = (jsonObjectGetKeyConst(cacheObj, "barcode") != NULL);
+
+    if (using_card) {
+        // see if the card is inactive
+
+		jsonObject* params = jsonParseFmt("{\"barcode\":\"%s\"}", identifier);
+		jsonObject* card = oilsUtilsCStoreReq(
+			"open-ils.cstore.direct.actor.card.search", params);
+		jsonObjectFree(params);
+
+        if (card) {
+            if (card->type != JSON_NULL) {
+			    char* card_active_str = oilsFMGetString(card, "active");
+			    card_active = oilsUtilsIsDBTrue(card_active_str);
+			    free(card_active_str);
 			}
+            jsonObjectFree(card);
 		}
 	}
 
 	int     barred = 0, deleted = 0;
 	char   *barred_str, *deleted_str;
 
-	if(userObj) {
-		barred_str = oilsFMGetString( userObj, "barred" );
-		barred = oilsUtilsIsDBTrue( barred_str );
-		free( barred_str );
+	if (userObj) {
+		barred_str = oilsFMGetString(userObj, "barred");
+		barred = oilsUtilsIsDBTrue(barred_str);
+		free(barred_str);
 
-		deleted_str = oilsFMGetString( userObj, "deleted" );
-		deleted = oilsUtilsIsDBTrue( deleted_str );
-		free( deleted_str );
+		deleted_str = oilsFMGetString(userObj, "deleted");
+		deleted = oilsUtilsIsDBTrue(deleted_str);
+		free(deleted_str);
 	}
 
 	if(!userObj || barred || deleted) {
@@ -683,11 +888,8 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 
 	// Such a user exists and isn't barred or deleted.
 	// Now see if he or she has the right credentials.
-	int passOK = -1;
-	if(uname)
-		passOK = oilsAuthVerifyPassword( ctx, userObj, uname, password, nonce );
-	else if (barcode)
-		passOK = oilsAuthVerifyPassword( ctx, userObj, barcode, password, nonce );
+	int passOK = oilsAuthVerifyPassword(
+        ctx, user_id, identifier, password, nonce);
 
 	if( passOK < 0 ) {
 		jsonObjectFree(userObj);
@@ -709,8 +911,6 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 		return 0;
 	}
 	free(active);
-
-	osrfLogInfo( OSRF_LOG_MARK, "Fetching card by barcode %s", barcode );
 
 	if( !card_active ) {
 		osrfLogInfo( OSRF_LOG_MARK, "barcode %s is not active, returning event", barcode );
@@ -815,7 +1015,7 @@ static int _oilsAuthReloadUser(jsonObject* cacheObj) {
     int reqid, userId;
     osrfAppSession* session;
 	osrfMessage* omsg;
-    jsonObject *param, *userObj, *newUserObj;
+    jsonObject *param, *userObj, *newUserObj = NULL;
 
     userObj = jsonObjectGetKey( cacheObj, "userobj" );
     userId = oilsFMGetObjectId( userObj );
