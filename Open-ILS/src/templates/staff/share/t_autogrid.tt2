@@ -90,9 +90,9 @@
         <li ng-repeat-start="group in actionGroups">
           <span style="padding-left: 1em;" ng-if="group.label"><strong><u>{{group.label}}</u></strong></span>
         </li>
-        <li ng-repeat="action in group.actions" ng-class="{divider: action.divider}" ng-hide="actionHide(action)">
+        <li ng-repeat="action in group.actions" ng-class="{divider: action.divider, disabled: actionDisable(action)}" ng-hide="actionHide(action)">
           <a ng-if="!action.divider" href
-            ng-click="actionLauncher(action)">{{action.label}}</a>
+            ng-click="!actionDisable(action) && actionLauncher(action)">{{action.label}}</a>
         </li>
         <span ng-repeat-end/>
       </ul>

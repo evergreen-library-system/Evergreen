@@ -516,6 +516,14 @@ angular.module('egGridMod',
                 return action.hide(action);
             }
 
+            // fires the disable handler function for a context action
+            $scope.actionDisable = function(action) {
+                if (!action.disabled) {
+                    return false;
+                }
+                return action.disabled(action);
+            }
+
             // fires the action handler function for a context action
             $scope.actionLauncher = function(action) {
                 if (!action.handler) {
@@ -1011,6 +1019,7 @@ angular.module('egGridMod',
             label   : '@', // Action label
             handler : '=',  // Action function handler
             hide    : '=',
+            disabled : '=', // function
             divider : '='
         },
         link : function(scope, element, attrs, egGridCtrl) {
@@ -1019,7 +1028,8 @@ angular.module('egGridMod',
                 group : scope.group,
                 label : scope.label,
                 divider : scope.divider,
-                handler : scope.handler
+                handler : scope.handler,
+                disabled : scope.disabled,
             });
             scope.$destroy();
         }
