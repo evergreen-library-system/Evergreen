@@ -32,9 +32,21 @@
 
                 <input type="reset" class="btn btn-primary" ng-click="clearForm()"
                 value="[% l('Clear Form') %]"/>
+                <button class="btn btn-default" ng-click="showRawSearchForm()"
+                        ng-disabled="raw_search_impossible()">
+                    [% l('Raw Search') %]
+                </button>
         </div>
     </form>
 </div>
+
+<div class="text-right" ng-if="local_overlay_target">
+[% l('Record with TCN [_1] marked for overlay.', '{{local_overlay_target}}') %]"
+</div>
+<div class="text-right" ng-if="!local_overlay_target">
+[% l('No record marked for overlay.') %]
+</div>
+
 
 <eg-grid
   id-field="index"
@@ -45,11 +57,30 @@
   persist-key="cat.z3950_results">
 
   <eg-grid-menu-item handler="showInCatalog" disabled="cant_showInCatalog"
-    label="[% l('Show in Catalog') %]"></eg-grid-menu>
-  <eg-grid-menu-item handler="import" disabled="cant_import"
-    label="[% l('Import') %]"></eg-grid-menu>
-  <eg-grid-menu-item handler="spawn_editor" disabled="cant_import"
-    label="[% l('Edit then Import') %]"></eg-grid-menu>
+    label="[% l('Show in Catalog') %]"></eg-grid-menu-item>
+  <eg-grid-menu-item handler="import" disabled="need_one_selected"
+    label="[% l('Import') %]"></eg-grid-menu-item>
+  <eg-grid-menu-item handler="spawn_editor" disabled="need_one_selected"
+    label="[% l('Edit then Import') %]"></eg-grid-menu-item>
+  <eg-grid-menu-item handler="view_marc" disabled="need_one_selected"
+    label="[% l('View MARC') %]"></eg-grid-menu-item>
+  <eg-grid-menu-item handler="mark_as_overlay_target" disabled="cant_showInCatalog"
+    label="[% l('Mark Local Result As Overlay Target') %]"></eg-grid-menu-item>
+  <eg-grid-menu-item handler="overlay_record" disabled="cant_overlay"
+    label="[% l('Overlay') %]"></eg-grid-menu-item>
+
+  <eg-grid-action handler="showInCatalog" disabled="cant_showInCatalog"
+    label="[% l('Show in Catalog') %]"></eg-grid-action>
+  <eg-grid-action handler="import" disabled="need_one_selected"
+    label="[% l('Import') %]"></eg-grid-action>
+  <eg-grid-action handler="spawn_editor" disabled="need_one_selected"
+    label="[% l('Edit then Import') %]"></eg-grid-action>
+  <eg-grid-action handler="view_marc" disabled="need_one_selected"
+    label="[% l('View MARC') %]"></eg-grid-action>
+  <eg-grid-action handler="mark_as_overlay_target" disabled="cant_showInCatalog"
+    label="[% l('Mark Local Result As Overlay Target') %]"></eg-grid-action>
+  <eg-grid-action handler="overlay_record" disabled="cant_overlay"
+    label="[% l('Overlay') %]"></eg-grid-action>
 
     <!-- 
       FIXME: it would be nice to make this column link

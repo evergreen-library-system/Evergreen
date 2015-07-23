@@ -39,8 +39,21 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
         var deferred = $q.defer();
 
         var query = egZ3950TargetSvc.currentQuery();
-        if (Object.keys(query.search).length == 0) {
+        if (!query.raw_search && Object.keys(query.search).length == 0) {
             return $q.when();
+        }
+
+        var method = query.raw_search ?
+                       'open-ils.search.z3950.search_service' :
+                       'open-ils.search.z3950.search_class';
+
+        if (query.raw_search) {
+            query.query = query.raw_search;
+            delete query['search'];
+            delete query['raw_search'];
+            query.service = query.service[0];
+            query.username = query.username[0];
+            query.password = query.password[0];
         }
 
         query['limit'] = count;
@@ -49,7 +62,7 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
         var resultIndex = offset;
         egCore.net.request(
             'open-ils.search',
-            'open-ils.search.z3950.search_class',
+            method,
             egCore.auth.token(),
             query
         ).then(
@@ -86,6 +99,28 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
         display_form = !display_form;
     }
 
+    $scope.raw_search_impossible = function() {
+        return egZ3950TargetSvc.rawSearchImpossible();
+    }
+    $scope.showRawSearchForm = function() {
+        $modal.open({
+            templateUrl: './cat/z3950/t_raw_search',
+            size: 'md',
+            controller:
+                ['$scope', '$modalInstance', function($scope, $modalInstance) {
+                egZ3950TargetSvc.setRawSearch('');
+                $scope.focusMe = true;
+                $scope.ok = function(args) { $modalInstance.close(args) }
+                $scope.cancel = function () { $modalInstance.dismiss() }
+            }]
+        }).result.then(function (args) {
+            if (!args || !args.raw_search) return;
+            $scope.clearForm();
+            egZ3950TargetSvc.setRawSearch(args.raw_search);
+            $scope.z3950SearchGridProvider.refresh();
+        });
+    }
+
     $scope.showInCatalog = function() {
         var items = $scope.gridControls.selectedItems();
         // relying on cant_showInCatalog to protect us
@@ -99,6 +134,26 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
         if (items[0]['service'] == 'native-evergreen-catalog') return false;
         return true;
     };
+
+    $scope.local_overlay_target = 0;
+    $scope.mark_as_overlay_target = function() {
+        var items = $scope.gridControls.selectedItems();
+        if ($scope.local_overlay_target == items[0].tcn()) {
+            $scope.local_overlay_target = 0;
+        } else {
+            $scope.local_overlay_target = items[0].tcn();
+        }
+    }
+    $scope.cant_overlay = function() {
+        if (!$scope.local_overlay_target) return true;
+        var items = $scope.gridControls.selectedItems();
+        if (items.length != 1) return true;
+        if (
+                items[0]['service'] == 'native-evergreen-catalog' &&
+                items[0].tcn() == $scope.local_overlay_target
+           ) return true;
+        return false;
+    }
 
     $scope.import = function() {
         var deferred = $q.defer();
@@ -119,7 +174,7 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
 
         return deferred.promise;
     };
-    $scope.cant_import = function() {
+    $scope.need_one_selected = function() {
         var items = $scope.gridControls.selectedItems();
         if (items.length == 1) return false;
         return true;
@@ -132,7 +187,6 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
             size: 'lg',
             controller:
                 ['$scope', '$modalInstance', function($scope, $modalInstance) {
-console.debug('calling modal controller');
                 $scope.focusMe = true;
                 $scope.record_id = 0;
                 $scope.dirty_flag = false;
@@ -142,6 +196,54 @@ console.debug('calling modal controller');
             }]
         }).result.then(function (args) {
             if (!args || !args.name) return;
+        });
+    }
+
+    $scope.view_marc = function() {
+        var items = $scope.gridControls.selectedItems();
+        $modal.open({
+            templateUrl: './cat/z3950/t_marc_html',
+            size: 'lg',
+            controller:
+                ['$scope', '$modalInstance', function($scope, $modalInstance) {
+                $scope.focusMe = true;
+                $scope.marc_xml = items[0]['marcxml'];
+                $scope.isbn = (items[0].isbn() || '').replace(/ .*/, '');
+                $scope.ok = function(args) { $modalInstance.close(args) }
+                $scope.cancel = function () { $modalInstance.dismiss() }
+            }]
+        }).result.then(function (args) {
+            if (!args || !args.name) return;
+        });
+    }
+
+    $scope.overlay_record = function() {
+        var items = $scope.gridControls.selectedItems();
+        var overlay_target = $scope.local_overlay_target;
+        $modal.open({
+            templateUrl: './cat/z3950/t_overlay',
+            size: 'lg',
+            controller:
+                ['$scope', '$modalInstance', function($scope, $modalInstance) {
+                $scope.focusMe = true;
+                $scope.overlay_target = overlay_target;
+                $scope.marc_xml = items[0]['marcxml'];
+                $scope.ok = function(args) { $modalInstance.close(args) }
+                $scope.cancel = function () { $modalInstance.dismiss() }
+            }]
+        }).result.then(function (args) {
+            egCore.net.request(
+                'open-ils.cat',
+                'open-ils.cat.biblio.record.marc.replace',
+                egCore.auth.token(),
+                overlay_target,
+                items[0]['marcxml']
+                // FIXME and more
+            ).then(
+                function(result) {
+                    console.debug('overlay complete');
+                }
+            );            
         });
     }
 }])

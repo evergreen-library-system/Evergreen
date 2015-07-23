@@ -5,7 +5,8 @@ function($q,   egCore,   egAuth) {
     
     var service = {
         targets : [ ],
-        searchFields : { }
+        searchFields : { },
+        raw_search : ''
     };
     
     service.loadTargets = function() {
@@ -88,13 +89,34 @@ function($q,   egCore,   egAuth) {
                 query.password.push(target.password);
             }
         });
-        angular.forEach(service.searchFields, function(value, key) {
-            if (value.query && value.query.trim()) {
-                query.search[key] = value.query.trim();
-            }
-        });
-
+        if (service.raw_search) {
+            query.raw_search = service.raw_search;
+        } else {
+            angular.forEach(service.searchFields, function(value, key) {
+                if (value.query && value.query.trim()) {
+                    query.search[key] = value.query.trim();
+                }
+            });
+        }
         return query;
+    }
+
+    // raw search can be done only if exactly one
+    // (real) Z39.50 target is selected
+    service.rawSearchImpossible = function() {
+        var z_selected = 0;
+        for (var i in service.targets) {
+            if (service.targets[i].code == 'native-evergreen-catalog') {
+                if (service.targets[i].selected) return true;
+            } else {
+                if (service.targets[i].selected) z_selected++;
+            }
+        }
+        return !(z_selected == 1);
+    }
+
+    service.setRawSearch = function(raw_search) {
+        service.raw_search = raw_search;
     }
 
     return service;

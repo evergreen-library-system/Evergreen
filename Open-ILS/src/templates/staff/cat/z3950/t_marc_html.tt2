@@ -1,0 +1,14 @@
+<div>
+  <div class="modal-header">
+    <button type="button" class="close"
+      ng-click="cancel()" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">[% l('View MARC') %]</h4>
+  </div>
+  <div class="modal-body">
+    <img ng-src="/opac/extras/ac/jacket/large/{{isbn}}"></img>
+    <eg-record-html marc-xml="{{marc_xml}}" />
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-warning" ng-click="cancel()">[% l('Cancel') %]</button>
+  </div>
+</div>

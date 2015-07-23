@@ -1,0 +1,22 @@
+<form class="form-validated" novalidate name="form" ng-submit="ok(args)">
+  <div>
+    <div class="modal-header">
+      <button type="button" class="close"
+        ng-click="cancel()" aria-hidden="true">&times;</button>
+      <h4 class="modal-title">[% l('Raw Z39.50 Search') %]</h4>
+    </div>
+    <div class="modal-body">
+      <div class="alert alert-warning">[% l('This is not a simple keyword search.') %]</div>
+      <div class="form-group">
+        <label for="raw-search-string">[% l('Raw Z39.50 PQN search string') %]</label>
+        <input type="text" class="form-control" focus-me='focusMe' required
+          id="raw-seasrch-string" ng-model="args.raw_search" />
+      </div>
+    </div>
+    <div class="modal-footer">
+      <input type="submit" ng-disabled="form.$invalid"
+          class="btn btn-primary" value="[% l('Search') %]"/>
+      <button class="btn btn-warning" ng-click="cancel()">[% l('Cancel') %]</button>
+    </div>
+  </div>
+</form>
