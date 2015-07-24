@@ -281,6 +281,12 @@
               [% l('User Permission Editor') %]
             </a>
           </li>
+          <li>
+            <a href="./admin/local_admin" target="_self">
+              <span class="glyphicon glyphicon-picture"></span>
+              [% l('Local Administration') %]
+            </a>
+          </li>
         </ul> <!-- admin dropdown -->
       </li>
     </ul> <!-- end left side entries -->

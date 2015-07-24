@@ -1,0 +1,43 @@
+[%
+  WRAPPER "staff/base.tt2";
+  ctx.page_title = l("Local Administration"); 
+  ctx.page_app = "egLocalAdmin";
+%]
+
+[% BLOCK APP_JS %]
+<script>
+  /* just enough JS for the the navbar to display */
+  angular.module('egLocalAdmin', ['ngRoute', 'ui.bootstrap', 'egCoreMod']);
+</script>
+<link rel="stylesheet" href="[% ctx.base_path %]/staff/css/admin.css" />
+[% END %]
+
+<div class="container-fluid" style="text-align:center">
+  <div class="alert alert-info alert-less-pad strong-text-2">
+    <span>[% l('Local Administration') %]</span>
+  </div>
+</div>
+
+<div class="container admin-splash-container">
+
+  <div class="row new-entry">
+    <div class="col-md-3">
+      <span class="glyphicon glyphicon-pencil"></span>
+      <a target="_self" href="./admin/actor/address_alert">
+        [% l('Address Alerts') %]
+      </a>
+    </div>
+  </div>
+  <div class="row new-entry">
+    <div class="col-md-3">
+      <span class="glyphicon glyphicon-pencil"></span>
+      <a target="_self" href="./admin/circ/age_to_lost">
+        [% l('Age Overdue Circs to Lost') %]
+      </a>
+    </div>
+  </div>
+
+</div>
+
+
+[% END %]
