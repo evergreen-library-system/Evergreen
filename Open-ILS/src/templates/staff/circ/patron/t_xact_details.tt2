@@ -100,7 +100,7 @@
     </div>
     <div class="col-md-2 strong-text">[% l('Total Circulations') %]</div>
     <div class="col-md-2">
-      TODO
+      {{total_circs}}
     </div>
   </div>
 </div>

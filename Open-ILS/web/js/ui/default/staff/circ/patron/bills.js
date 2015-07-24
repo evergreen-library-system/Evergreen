@@ -587,6 +587,16 @@ function($scope,  $q , $routeParams , egCore , egGridDataProvider , patronSvc , 
     egBilling.fetchXact(xact_id).then(function(xact) {
         $scope.xact = xact;
 
+        var copyId = xact.circulation().target_copy().id();
+        var circ_count = 0;
+        egCore.pcrud.search('circbyyr',
+            {copy : copyId}, null, {atomic : true})
+        .then(function(counts) {
+            angular.forEach(counts, function(count) {
+                circ_count += Number(count.count());
+            });
+            $scope.total_circs = circ_count;
+        });
         // set the title.  only needs to be done on initial page load
         if (xact.circulation()) {
             if (xact.circulation().target_copy().call_number().id() == -1) {
