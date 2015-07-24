@@ -540,19 +540,19 @@ CREATE TRIGGER mat_summary_add_tgr AFTER INSERT ON money.forgive_payment FOR EAC
 CREATE TRIGGER mat_summary_upd_tgr AFTER UPDATE ON money.forgive_payment FOR EACH ROW EXECUTE PROCEDURE money.materialized_summary_payment_update ('forgive_payment');
 CREATE TRIGGER mat_summary_del_tgr BEFORE DELETE ON money.forgive_payment FOR EACH ROW EXECUTE PROCEDURE money.materialized_summary_payment_del ('forgive_payment');
 
-CREATE TABLE money.adjustment_payment (
+CREATE TABLE money.account_adjustment (
     billing BIGINT REFERENCES money.billing (id) ON DELETE SET NULL
 ) INHERITS (money.bnm_payment);
-ALTER TABLE money.adjustment_payment ADD PRIMARY KEY (id);
-CREATE INDEX money_adjustment_id_idx ON money.adjustment_payment (id);
-CREATE INDEX money_adjustment_payment_xact_idx ON money.adjustment_payment (xact);
-CREATE INDEX money_adjustment_payment_bill_idx ON money.adjustment_payment (billing);
-CREATE INDEX money_adjustment_payment_payment_ts_idx ON money.adjustment_payment (payment_ts);
-CREATE INDEX money_adjustment_payment_accepting_usr_idx ON money.adjustment_payment (accepting_usr);
+ALTER TABLE money.account_adjustment ADD PRIMARY KEY (id);
+CREATE INDEX money_adjustment_id_idx ON money.account_adjustment (id);
+CREATE INDEX money_account_adjustment_xact_idx ON money.account_adjustment (xact);
+CREATE INDEX money_account_adjustment_bill_idx ON money.account_adjustment (billing);
+CREATE INDEX money_account_adjustment_payment_ts_idx ON money.account_adjustment (payment_ts);
+CREATE INDEX money_account_adjustment_accepting_usr_idx ON money.account_adjustment (accepting_usr);
 
-CREATE TRIGGER mat_summary_add_tgr AFTER INSERT ON money.adjustment_payment FOR EACH ROW EXECUTE PROCEDURE money.materialized_summary_payment_add ('adjustment_payment');
-CREATE TRIGGER mat_summary_upd_tgr AFTER UPDATE ON money.adjustment_payment FOR EACH ROW EXECUTE PROCEDURE money.materialized_summary_payment_update ('adjustment_payment');
-CREATE TRIGGER mat_summary_del_tgr BEFORE DELETE ON money.adjustment_payment FOR EACH ROW EXECUTE PROCEDURE money.materialized_summary_payment_del ('adjustment_payment');
+CREATE TRIGGER mat_summary_add_tgr AFTER INSERT ON money.account_adjustment FOR EACH ROW EXECUTE PROCEDURE money.materialized_summary_payment_add ('account_adjustment');
+CREATE TRIGGER mat_summary_upd_tgr AFTER UPDATE ON money.account_adjustment FOR EACH ROW EXECUTE PROCEDURE money.materialized_summary_payment_update ('account_adjustment');
+CREATE TRIGGER mat_summary_del_tgr BEFORE DELETE ON money.account_adjustment FOR EACH ROW EXECUTE PROCEDURE money.materialized_summary_payment_del ('account_adjustment');
 
 
 CREATE TABLE money.work_payment () INHERITS (money.bnm_payment);

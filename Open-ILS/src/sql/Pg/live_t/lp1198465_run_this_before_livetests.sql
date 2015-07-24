@@ -155,7 +155,7 @@ INSERT INTO money.billing (id, xact, billing_ts, voided, voider, void_time, amou
     (DEFAULT, 16, '2014-05-26 23:59:59-04', false, NULL, NULL, 0.10, 'Overdue materials', 1, 'System Generated Overdue Fine'),
     (DEFAULT, 16, '2014-05-27 23:59:59-04', false, NULL, NULL, 0.10, 'Overdue materials', 1, 'System Generated Overdue Fine'),
     (DEFAULT, 16, '2014-05-28 23:59:59-04', false, NULL, NULL, 0.10, 'Overdue materials', 1, 'System Generated Overdue Fine'),
-    -- XACT 10 must be last, because we use CURRVAL() to put their IDs in the adjustment payments
+    -- XACT 10 must be last, because we use CURRVAL() to put their IDs in the account adjustments
     (DEFAULT, 10, (DATE(NOW() - '9 days'::interval) || ' 23:59:59')::TIMESTAMP, false, NULL, NULL, 0.10, 'Overdue materials', 1, 'System Generated Overdue Fine'),
     (DEFAULT, 10, (DATE(NOW() - '8 days'::interval) || ' 23:59:59')::TIMESTAMP, false, NULL, NULL, 0.10, 'Overdue materials', 1, 'System Generated Overdue Fine'),
     (DEFAULT, 10, (DATE(NOW() - '7 days'::interval) || ' 23:59:59')::TIMESTAMP, false, NULL, NULL, 0.10, 'Overdue materials', 1, 'System Generated Overdue Fine'),
@@ -166,7 +166,7 @@ INSERT INTO money.billing (id, xact, billing_ts, voided, voider, void_time, amou
     (DEFAULT, 10, NOW() - '3 days'::interval, false, NULL, NULL, 50.00, 'Lost Materials', 3, 'SYSTEM GENERATED');
 
 
-INSERT INTO money.adjustment_payment (id, xact, payment_ts, voided, amount, note, amount_collected, accepting_usr, billing) VALUES
+INSERT INTO money.account_adjustment (id, xact, payment_ts, voided, amount, note, amount_collected, accepting_usr, billing) VALUES
     (DEFAULT, 10, NOW() - '3 days'::interval, false, 0.10, '', 0.10, 1, CURRVAL('money.billing_id_seq') - 7),
     (DEFAULT, 10, NOW() - '3 days'::interval, false, 0.10, '', 0.10, 1, CURRVAL('money.billing_id_seq') - 6),
     (DEFAULT, 10, NOW() - '3 days'::interval, false, 0.10, '', 0.10, 1, CURRVAL('money.billing_id_seq') - 5),

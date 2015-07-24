@@ -3834,7 +3834,7 @@ sub checkin_handle_lost_or_lo_now_found_restore_od {
         my $void_max = $self->circ->max_fine();
         # search for overdues voided the new way (aka "adjusted")
         my @billings = map {$_->id()} @$ods;
-        my $voids = $self->editor->search_money_adjustment_payment(
+        my $voids = $self->editor->search_money_account_adjustment(
             {
                 billing => \@billings
             }

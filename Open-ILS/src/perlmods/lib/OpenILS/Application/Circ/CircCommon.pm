@@ -680,11 +680,11 @@ sub generate_fines {
 # following fields:
 #
 # bill => the adjusted bill object
-# adjustments => an arrayref of adjustment payments that apply directly
+# adjustments => an arrayref of account adjustments that apply directly
 #                to the bill
 # payments => an arrayref of payment objects applied to the bill
 # bill_amount => original amount from the billing object
-# adjustment_amount => total of the adjustment payments that apply
+# adjustment_amount => total of the account adjustments that apply
 #                      directly to the bill
 #
 # Each bill is only mapped to payments one time.  However, a single
@@ -720,7 +720,7 @@ sub bill_payment_map_for_xact {
     # the fieldmapper, only the mp object, based on the money.payment
     # view, does.  However, I want to leave that complication for
     # later.  I wonder if I'm not slowing things down too much with
-    # the current adjustment_payment logic.  It would probably be faster if
+    # the current account_adjustment logic.  It would probably be faster if
     # we had direct Pg access at this layer.  I can probably wrangle
     # something via the drivers or store interfaces, but I haven't
     # really figured those out, yet.
@@ -741,7 +741,7 @@ sub bill_payment_map_for_xact {
         }
     } @$bills;
 
-    # Find all unvoided payments in order.  Flesh adjustment payments
+    # Find all unvoided payments in order.  Flesh account adjustments
     # so that we don't have to retrieve them later.
     my $payments = $e->search_money_payment(
         [
@@ -749,7 +749,7 @@ sub bill_payment_map_for_xact {
             {
                 order_by => { mp => { payment_ts => { direction => 'asc' } } },
                 flesh => 1,
-                flesh_fields => { mp => ['adjustment_payment'] }
+                flesh_fields => { mp => ['account_adjustment'] }
             }
         ]
     );
@@ -764,7 +764,7 @@ sub bill_payment_map_for_xact {
     foreach my $entry (@entries) {
         my $bill = $entry->{bill};
         # Find only the adjustments that apply to individual bills.
-        my @adjustments = map {$_->adjustment_payment()} grep {$_->payment_type() eq 'adjustment_payment' && $_->adjustment_payment()->billing() == $bill->id()} @$payments;
+        my @adjustments = map {$_->account_adjustment()} grep {$_->payment_type() eq 'account_adjustment' && $_->account_adjustment()->billing() == $bill->id()} @$payments;
         if (@adjustments) {
             foreach my $adjustment (@adjustments) {
                 my $new_amount = $U->fpdiff($bill->amount(),$adjustment->amount());
@@ -982,8 +982,8 @@ sub adjust_bills_to_zero {
                 $amount_to_adjust = $xact_total;
             }
 
-            # Create the adjustment payment
-            my $payobj = Fieldmapper::money::adjustment_payment->new;
+            # Create the account adjustment
+            my $payobj = Fieldmapper::money::account_adjustment->new;
             $payobj->amount($amount_to_adjust);
             $payobj->amount_collected($amount_to_adjust);
             $payobj->xact($xactid);
@@ -991,7 +991,7 @@ sub adjust_bills_to_zero {
             $payobj->payment_ts('now');
             $payobj->billing($bill->id());
             $payobj->note($note) if ($note);
-            $e->create_money_adjustment_payment($payobj) or return $e->die_event;
+            $e->create_money_account_adjustment($payobj) or return $e->die_event;
             # Adjust our bill_payment_map
             $bpentry->{adjustment_amount} += $amount_to_adjust;
             push @{$bpentry->{adjustments}}, $payobj;
@@ -1031,7 +1031,7 @@ sub _has_refundable_payments {
     my $last_payment = $e->search_money_payment(
         {
             xact => $xactid,
-            payment_type => {"!=" => 'adjustment_payment'}
+            payment_type => {"!=" => 'account_adjustment'}
         },{
             limit => 1,
             order_by => { mp => "payment_ts DESC" }

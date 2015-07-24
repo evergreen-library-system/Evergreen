@@ -81,7 +81,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field name="work_payment" oils_persist:virtual="true" />
 			<field name="credit_payment" oils_persist:virtual="true" />
 			<field name="goods_payment" oils_persist:virtual="true" />
-			<field name="adjustment_payment" oils_persist:virtual="true" />
+			<field name="account_adjustment" oils_persist:virtual="true" />
 		</fields>
 		<links>
 			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
@@ -3622,7 +3622,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			</actions>
 		</permacrud>
 	</class>
-	<class id="map" controller="open-ils.cstore" oils_obj:fieldmapper="money::adjustment_payment" oils_persist:tablename="money.adjustment_payment" reporter:label="Adjustment Payment">
+	<class id="map" controller="open-ils.cstore" oils_obj:fieldmapper="money::account_adjustment" oils_persist:tablename="money.account_adjustment" reporter:label="Account Adjustment">
 		<fields oils_persist:primary="id" oils_persist:sequence="money.payment_id_seq">
 			<field name="accepting_usr" reporter:datatype="link"/>
 			<field name="amount" reporter:datatype="money" />
@@ -6949,7 +6949,7 @@ SELECT  usr,
 			<field reporter:label="Work Payment Detail" name="work_payment" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Forgive Payment Detail" name="forgive_payment" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Goods Payment Detail" name="goods_payment" oils_persist:virtual="true" reporter:datatype="link"/>
-			<field reporter:label="Adjustment Payment Detail" name="adjustment_payment" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Account Adjustment Detail" name="account_adjustment" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="cash_payment" reltype="might_have" key="id" map="" class="mcp"/>
@@ -6959,7 +6959,7 @@ SELECT  usr,
 			<link field="work_payment" reltype="might_have" key="id" map="" class="mwp"/>
 			<link field="forgive_payment" reltype="might_have" key="id" map="" class="mfp"/>
 			<link field="goods_payment" reltype="might_have" key="id" map="" class="mgp"/>
-			<link field="adjustment_payment" reltype="might_have" key="id" map="" class="map"/>
+			<link field="account_adjustment" reltype="might_have" key="id" map="" class="map"/>
 			<link field="xact" reltype="has_a" key="id" map="" class="mbt"/>
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
@@ -6987,7 +6987,7 @@ SELECT  usr,
 			<field reporter:label="Work Payment Detail" name="work_payment" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Forgive Payment Detail" name="forgive_payment" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Goods Payment Detail" name="goods_payment" oils_persist:virtual="true" reporter:datatype="link"/>
-			<field reporter:label="Adjustment Payment Detail" name="adjustment_payment" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Account Adjustment Detail" name="account_adjustment" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="cash_payment" reltype="might_have" key="id" map="" class="mcp"/>
@@ -6997,7 +6997,7 @@ SELECT  usr,
 			<link field="work_payment" reltype="might_have" key="id" map="" class="mwp"/>
 			<link field="forgive_payment" reltype="might_have" key="id" map="" class="mfp"/>
 			<link field="goods_payment" reltype="might_have" key="id" map="" class="mgp"/>
-			<link field="adjustment_payment" reltype="might_have" key="id" map="" class="mvp"/>
+			<link field="account_adjustment" reltype="might_have" key="id" map="" class="mvp"/>
 			<link field="xact" reltype="has_a" key="id" map="" class="mbt"/>
 			<link field="accepting_usr" reltype="has_a" key="id" map="" class="au"/>
 		</links>
@@ -7015,14 +7015,14 @@ SELECT  usr,
 			<field reporter:label="Forgive Payment Detail" name="forgive_payment" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Goods Payment Detail" name="goods_payment" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Credit Payment Detail" name="credit_payment" oils_persist:virtual="true" reporter:datatype="link"/>
-			<field reporter:label="Adjustment Payment Detail" name="adjustment_payment" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Account Adjustment Detail" name="account_adjustment" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="work_payment" reltype="might_have" key="id" map="" class="mwp"/>
 			<link field="forgive_payment" reltype="might_have" key="id" map="" class="mfp"/>
 			<link field="goods_payment" reltype="might_have" key="id" map="" class="mgp"/>
 			<link field="credit_payment" reltype="might_have" key="id" map="" class="mcrp"/>
-			<link field="adjustment_payment" reltype="might_have" key="id" map="" class="mvp"/>
+			<link field="account_adjustment" reltype="might_have" key="id" map="" class="mvp"/>
 			<link field="xact" reltype="has_a" key="id" map="" class="mbt"/>
 		</links>
 	</class>
