@@ -58,7 +58,7 @@ oils_pcrud_la_LDFLAGS = $(AM_LDFLAGS) -ldbi -ldbdpgsql -loils_utils -module -ver
 oils_pcrud_la_DEPENDENCIES = liboils_utils.la
 
 oils_auth_la_SOURCES = oils_auth.c
-oils_auth_la_LDFLAGS = -module -loils_utils -version-info 2:0:0
+oils_auth_la_LDFLAGS = -module -loils_utils -lpcre -version-info 2:0:0
 oils_auth_la_DEPENDENCIES = liboils_utils.la
 
 

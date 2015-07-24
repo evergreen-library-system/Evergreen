@@ -311,6 +311,8 @@ if test "x$openils_core" = "xtrue"; then
     AC_CHECK_LIB([xml2], [main], [], AC_MSG_ERROR(*** OpenILS requires libxml2))
     AC_CHECK_LIB([xslt], [main], [], AC_MSG_ERROR(*** OpenILS requires libxslt))
     AC_CHECK_LIB([pq], [main], [], AC_MSG_ERROR(*** OpenILS requires libpq))
+    PKG_CHECK_MODULES(pcre, libpcre >= 3.0.0)
+
 
     #------------------------------------
     # Checks for header files.
