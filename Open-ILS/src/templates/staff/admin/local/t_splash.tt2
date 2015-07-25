@@ -1,0 +1,60 @@
+
+<div class="container-fluid" style="text-align:center">
+  <div class="alert alert-info alert-less-pad strong-text-2">
+    <span>[% l('Local Administration') %]</span>
+  </div>
+</div>
+
+<div class="container admin-splash-container">
+
+  <div class="row new-entry">
+    <div class="col-md-3">
+      <span class="glyphicon glyphicon-pencil"></span>
+      <a target="_self" href="./admin/local/actor/address_alert">
+        [% l('Address Alerts') %]
+      </a>
+    </div>
+  </div>
+  <div class="row new-entry">
+    <div class="col-md-3">
+      <span class="glyphicon glyphicon-pencil"></span>
+      <a target="_self" href="./admin/local/circ/age_to_lost">
+        [% l('Age Overdue Circs to Lost') %]
+      </a>
+    </div>
+  </div>
+  <div class="row new-entry">
+    <div class="col-md-3">
+      <span class="glyphicon glyphicon-pencil"></span>
+      <a target="_self" href="./admin/local/config/barcode_completion">
+        [% l('Barcode Completion') %]
+      </a>
+    </div>
+  </div>
+  <div class="row new-entry">
+    <div class="col-md-3">
+      <span class="glyphicon glyphicon-pencil"></span>
+      <a target="_self" href="./admin/local/money/cash_reports">
+        [% l('Cash Reports') %]
+      </a>
+    </div>
+  </div>
+  <div class="row new-entry">
+    <div class="col-md-3">
+      <span class="glyphicon glyphicon-pencil"></span>
+      <a target="_self" href="./admin/local/config/circ_limit_set">
+        [% l('Circ Limit Sets') %]
+      </a>
+    </div>
+  </div>
+  <div class="row new-entry">
+    <div class="col-md-3">
+      <span class="glyphicon glyphicon-pencil"></span>
+      <a target="_self" href="./admin/local/config/circ_matrix_matchpoint">
+        [% l('Circulation Policies') %]
+      </a>
+    </div>
+  </div>
+
+</div>
+
