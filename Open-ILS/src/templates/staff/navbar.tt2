@@ -282,7 +282,7 @@
             </a>
           </li>
           <li>
-            <a href="./admin/local_admin" target="_self">
+            <a href="./admin/local/index" target="_self">
               <span class="glyphicon glyphicon-picture"></span>
               [% l('Local Administration') %]
             </a>

@@ -314,8 +314,8 @@ function($modal, $interpolate) {
            + '</ul>'
           + '</div>',
 
-        controller : ['$scope','$timeout','egOrg','egAuth','egCore',
-              function($scope , $timeout , egOrg , egAuth , egCore) {
+        controller : ['$scope','$timeout','egOrg','egAuth','egCore','egStartup',
+              function($scope , $timeout , egOrg , egAuth , egCore , egStartup) {
 
             if ($scope.alldisabled) {
                 $scope.disable_button = $scope.alldisabled == 'true' ? true : false;
@@ -329,12 +329,22 @@ function($modal, $interpolate) {
 
             // avoid linking the full fleshed tree to the scope by 
             // tossing in a flattened list.
-            $scope.orgList = egOrg.list().map(function(org) {
-                return {
-                    id : org.id(),
-                    shortname : org.shortname(), 
-                    depth : org.ou_type().depth()
-                }
+            // --
+            // Run-time code referencing post-start data should be run
+            // from within a startup block, otherwise accessing this
+            // module before startup completes will lead to failure.
+            egStartup.go().then(function() {
+
+                $scope.orgList = egOrg.list().map(function(org) {
+                    return {
+                        id : org.id(),
+                        shortname : org.shortname(), 
+                        depth : org.ou_type().depth()
+                    }
+                });
+
+                if (!$scope.selected)
+                    $scope.selected = egOrg.get(egAuth.user().ws_ou());
             });
 
             $scope.getSelectedName = function() {

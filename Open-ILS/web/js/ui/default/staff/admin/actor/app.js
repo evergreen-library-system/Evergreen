@@ -34,8 +34,6 @@ angular.module('egAdminActor',
        ['$scope','$routeParams','$window','$location','egCore',
 function($scope , $routeParams , $window , $location , egCore) {
 
-    console.log('addr alert');
-    
     $scope.funcs = {
         ses : egCore.auth.token(),
     }
