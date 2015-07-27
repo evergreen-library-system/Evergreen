@@ -1,7 +1,9 @@
 /**
- * Simple directive for rending the HTML view of a bib record.
+ * Simple directive for rending the HTML view of a MARC record.
  *
  * <eg-record-html record-id="myRecordIdScopeVariable"></eg-record-id>
+ * OR
+ * <eg-record-html marc-xml="myMarcXmlVariable"></eg-record-html>
  *
  * The value of myRecordIdScopeVariable is watched internally and the 
  * record is updated to match.
@@ -11,7 +13,10 @@ angular.module('egCoreMod')
 .directive('egRecordHtml', function() {
     return {
         restrict : 'AE',
-        scope : {recordId : '='},
+        scope : {
+            recordId : '=',
+            marcXml  : '@',
+        },
         link : function(scope, element, attrs) {
             scope.element = angular.element(element);
 
@@ -28,7 +33,9 @@ angular.module('egCoreMod')
                     egCore.net.request(
                         'open-ils.search',
                         'open-ils.search.biblio.record.html',
-                        $scope.recordId
+                        $scope.recordId,
+                        false,
+                        $scope.marcXml
                     ).then(function(html) {
                         if (!html) return;
 
@@ -54,7 +61,7 @@ angular.module('egCoreMod')
                     }
                 );
 
-                if ($scope.recordId) 
+                if ($scope.recordId || $scope.marcXml) 
                     loadRecordHtml();
             }
         ]
