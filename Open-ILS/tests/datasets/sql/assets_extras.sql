@@ -157,3 +157,4 @@ BEGIN
     END LOOP;
 END $$;
 
+UPDATE asset.copy SET location = 1 WHERE id = 2905;
