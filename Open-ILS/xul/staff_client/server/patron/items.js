@@ -958,8 +958,8 @@ patron.items.prototype = {
                 return;
             }
 
-            obj.checkouts = obj.checkouts.concat(robj.out);
             obj.checkouts = obj.checkouts.concat(robj.overdue);
+            obj.checkouts = obj.checkouts.concat(robj.out);
 
             // open circs are added to list one or two based on config.
             // closed circs added to list 2 only if configured, otherwise
