@@ -1,0 +1,6 @@
+Examples in Apache configuration for "No Image"
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+There are now commented out examples for custom images to be used when
+"no image" is present in the catalog for cover art. The included examples
+are for small/medium/large jacket image art in the event they are not
+found by the configured Added Content module.
