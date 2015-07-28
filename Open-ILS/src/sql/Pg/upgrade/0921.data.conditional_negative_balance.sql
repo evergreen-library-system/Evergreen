@@ -1,6 +1,6 @@
 BEGIN;
 
--- SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0921', :eg_version);
 
 CREATE TABLE money.account_adjustment (
     billing BIGINT REFERENCES money.billing (id) ON DELETE SET NULL
