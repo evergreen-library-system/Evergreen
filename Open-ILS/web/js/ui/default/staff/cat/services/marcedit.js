@@ -428,7 +428,11 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
         scope: {
             dirtyFlag : '=',
             recordId : '=',
-            marcXml : '@',
+            marcXml : '=',
+            // in-place mode means that the editor is being
+            // used just to munge some MARCXML client-side, rather
+            // than to (immediately) update the database
+            inPlaceMode : '@',
             recordType : '@',
             maxUndo : '@'
         },
@@ -931,6 +935,10 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                 };
 
                 $scope.saveRecord = function () {
+                    if ($scope.inPlaceMode) {
+                        $scope.marcXml = $scope.record.toXmlString();
+                        return;
+                    }
                     $scope.mangle_005();
                     $scope.Record().editor(egCore.auth.user().id());
                     $scope.Record().edit_date('now');
