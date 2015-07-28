@@ -1,26 +1,28 @@
-<form class="form-validated" novalidate name="form" ng-submit="ok(args)">
-  <div>
-    <div class="modal-header">
-      <button type="button" class="close"
-        ng-click="cancel()" aria-hidden="true">&times;</button>
-      <h4 class="modal-title">[% l('Overlay record?') %]</h4>
-    </div>
-    <div class="modal-body">
-        <div class="row">
-            <div class="col-xs-6">
-                <div>[% l('Replace TCN [_1] ...', '{{overlay_target}}') %]</div>
-                <eg-record-html record-id="overlay_target" />
-            </div>
-            <div class="col-xs-6">
-                <div>[% l('With this?') %]</div>
-                <eg-record-html marc-xml="{{marc_xml}}" />
-            </div>
-        </div>
-    </div>
-    <div class="modal-footer">
-      <input type="submit" ng-disabled="form.$invalid"
-          class="btn btn-primary" value="[% l('Overlay') %]"/>
-      <button class="btn btn-warning" ng-click="cancel()">[% l('Cancel') %]</button>
-    </div>
+<div>
+  <div class="modal-header">
+    <button type="button" class="close"
+      ng-click="cancel()" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">[% l('Overlay record?') %]</h4>
   </div>
-</form>
+  <div class="modal-body">
+      <div class="row">
+          <div class="col-xs-6">
+              <div>[% l('Replace TCN [_1] ...', '{{overlay_target}}') %]</div>
+              <eg-record-html record-id="overlay_target" />
+          </div>
+          <div class="col-xs-6">
+              <div>[% l('With this?') %]
+                  <button class="btn btn-default" ng-click="editOverlayRecord()">
+                      [% l('Edit') %]
+                  </button>
+              </div>
+              <eg-record-html marc-xml="{{args.marc_xml}}" />
+          </div>
+      </div>
+  </div>
+  <div class="modal-footer">
+    <input type="submit" ng-click="ok(args)"
+        class="btn btn-primary" value="[% l('Overlay') %]"/>
+    <button class="btn btn-warning" ng-click="cancel()">[% l('Cancel') %]</button>
+  </div>
+</div>

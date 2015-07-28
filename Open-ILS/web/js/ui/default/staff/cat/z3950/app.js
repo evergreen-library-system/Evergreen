@@ -33,6 +33,39 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
     egZ3950TargetSvc.loadTargets();
     egZ3950TargetSvc.loadActiveSearchFields();
 
+    $scope.field_strip_groups = [];
+    egCore.startup.go().then(function() {
+        // and list of field strip groups; need to ensure
+        // that enough of the startup has happened so that
+        // we have the user WS
+        egCore.pcrud.search('vibtg',
+            {
+                always_apply : 'f',
+                owner : {
+                    'in' : {
+                        select : {
+                            aou : [{
+                                column : 'id',
+                                transform : 'actor.org_unit_ancestors',
+                                result_field : 'id'
+                            }]
+                        },
+                        from : 'aou',
+                        where : {
+                            id : egCore.auth.user().ws_ou()
+                        }
+                    }
+                }
+            },
+            { order_by : { vibtq : ['label'] } }
+        ).then(null, null, function(strip_group) {
+            strip_group.selected = false;
+            $scope.field_strip_groups.push(strip_group);
+        });
+    });
+
+    $scope.total_hits = 0;
+
     var provider = egGridDataProvider.instance({});
 
     provider.get = function(offset, count) {
@@ -60,15 +93,22 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
         query['offset'] = offset;
 
         var resultIndex = offset;
+        $scope.total_hits = 0;
+        $scope.searchInProgress = true;
         egCore.net.request(
             'open-ils.search',
             method,
             egCore.auth.token(),
             query
         ).then(
-            function() { deferred.resolve() },
+            function() { $scope.searchInProgress = false; deferred.resolve() },
             null, // onerror
             function(result) {
+                // FIXME when the search offset is > 0, the
+                // total hits count can be wrong if one of the
+                // Z39.50 targets has fewer than $offset hits; in that
+                // case, result.count is not supplied.
+                $scope.total_hits += (result.count || 0);
                 for (var i in result.records) {
                     result.records[i].mvr['service'] = result.service;
                     result.records[i].mvr['index'] = resultIndex++;
@@ -155,6 +195,15 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
         return false;
     }
 
+    $scope.selectFieldStripGroups = function() {
+        var groups = [];
+        angular.forEach($scope.field_strip_groups, function(grp, idx) {
+            if (grp.selected) {
+                groups.push(grp.id());
+            }
+        });
+        return groups;
+    };
     $scope.import = function() {
         var deferred = $q.defer();
         var items = $scope.gridControls.selectedItems();
@@ -162,8 +211,11 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
             'open-ils.cat',
             'open-ils.cat.biblio.record.xml.import',
             egCore.auth.token(),
-            items[0]['marcxml']
-            // FIXME and more
+            items[0]['marcxml'],
+            null, // FIXME bib source
+            null,
+            null,
+            $scope.selectFieldStripGroups()
         ).then(
             function() { deferred.resolve() },
             null, // onerror
@@ -220,6 +272,9 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
     $scope.overlay_record = function() {
         var items = $scope.gridControls.selectedItems();
         var overlay_target = $scope.local_overlay_target;
+        var args = {
+            'marc_xml' : items[0]['marcxml']
+        };
         $modal.open({
             templateUrl: './cat/z3950/t_overlay',
             size: 'lg',
@@ -227,9 +282,26 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
                 ['$scope', '$modalInstance', function($scope, $modalInstance) {
                 $scope.focusMe = true;
                 $scope.overlay_target = overlay_target;
-                $scope.marc_xml = items[0]['marcxml'];
-                $scope.ok = function(args) { $modalInstance.close(args) }
-                $scope.cancel = function () { $modalInstance.dismiss() }
+                $scope.args = args;
+                $scope.ok = function(args) { $modalInstance.close(args) };
+                $scope.cancel = function () { $modalInstance.dismiss() };
+                $scope.editOverlayRecord = function() {
+                    $modal.open({
+                        templateUrl: './cat/z3950/t_edit_overlay_record',
+                        size: 'lg',
+                        controller:
+                            ['$scope', '$modalInstance', function($scope, $modalInstance) {
+                            $scope.focusMe = true;
+                            $scope.record_id = 0;
+                            $scope.dirty_flag = false;
+                            $scope.args = args;
+                            $scope.ok = function(args) { $modalInstance.close(args) }
+                            $scope.cancel = function () { $modalInstance.dismiss() }
+                        }]
+                    }).result.then(function (args) {
+                        if (!args || !args.name) return;
+                    });
+                };
             }]
         }).result.then(function (args) {
             egCore.net.request(
@@ -237,8 +309,10 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
                 'open-ils.cat.biblio.record.marc.replace',
                 egCore.auth.token(),
                 overlay_target,
-                items[0]['marcxml']
-                // FIXME and more
+                args.marc_xml,
+                null, // FIXME bib source
+                null,
+                $scope.selectFieldStripGroups()
             ).then(
                 function(result) {
                     console.debug('overlay complete');
