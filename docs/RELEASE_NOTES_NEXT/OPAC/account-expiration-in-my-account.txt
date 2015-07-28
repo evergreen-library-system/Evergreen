@@ -1,0 +1,7 @@
+Account Expiration Date in My Account
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The Account Expiration Date has been added to the catalog's My Account display
+on the main Account Summary page and the Account Preferences page.  This should
+help patrons with figuring out when their accounts are due to expire before
+they actually expire.
+
