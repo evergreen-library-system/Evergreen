@@ -60,6 +60,13 @@ angular.module('egCoreMod')
                         }
                     }
                 );
+                $scope.$watch('marcXml', 
+                    function(newVal, oldVal) {
+                        if (newVal && newVal !== oldVal) {
+                            loadRecordHtml();
+                        }
+                    }
+                );
 
                 if ($scope.recordId || $scope.marcXml) 
                     loadRecordHtml();
