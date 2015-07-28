@@ -186,6 +186,8 @@ select
           group by 1,2
         ) full_list
         left join money.payment p on (full_list.id = p.xact)
+        left join actor.usr au on (au.id = usr)
+        where au.deleted is false
   group by 1
   having SUM(total_billing) - SUM(COALESCE(p.amount,0)) > ?
 ;
