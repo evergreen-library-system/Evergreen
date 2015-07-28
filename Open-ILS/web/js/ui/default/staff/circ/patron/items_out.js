@@ -182,7 +182,7 @@ function($scope,  $q,  $routeParams,  egCore , egUser,  patronSvc ,
             'open-ils.actor.user.checked_out.authoritative',
             egCore.auth.token(), $scope.patron_id
         ).then(function(outs) {
-            $scope.main_list = outs.out.concat(outs.overdue);
+            $scope.main_list = outs.overdue.concat(outs.out);
             promote_circs(outs.lost, display_lost, true);                            
             promote_circs(outs.long_overdue, display_lo, true);             
             promote_circs(outs.claims_returned, display_cr, true);
