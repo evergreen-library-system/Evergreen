@@ -60,6 +60,7 @@ INSERT INTO biblio.record_entry (marc, last_xact_id)
 
 -- circs, etc.
 \i transactions.sql
+\i neg_bal_custom_transactions.sql
 
 -- clean up the env
 \i env_destroy.sql

@@ -1,5 +1,3 @@
-BEGIN;
-
 -- DATA FOR LIVE TESTING LP#1198465:
 --   Support for Conditional Negative Balances
 --
@@ -8,19 +6,6 @@ BEGIN;
 -- Dates are relative when necessary; otherwise they may be hardcoded.
 -- NOTE: Org unit settings will be handled in the perl code
 
-
--- clear bills and payments for our test circs
-DELETE FROM money.billing WHERE xact <= 16;
-DELETE FROM money.payment WHERE xact <= 16;
-
--- clear any non-stock settings
--- XXX This will need adjusting if new stock settings are added, so
--- TODO: Pad out org_unit_settings with a SETVAL like we do for other
--- settings
-DELETE FROM actor.org_unit_setting WHERE id >= 14;
-
--- clear out the test workstation (just in case)
-DELETE FROM actor.workstation WHERE name = 'BR1-test-09-lp1198465_neg_balances.t';
 
 -- Setup some LOST circs, and change copy status to LOST
 UPDATE action.circulation SET
@@ -191,4 +176,3 @@ UPDATE money.materialized_billable_xact_summary SET balance_owed = 40.00
     WHERE id = 10;
 UPDATE money.materialized_billable_xact_summary SET balance_owed = 0.70
     WHERE id = 11;
-COMMIT;
