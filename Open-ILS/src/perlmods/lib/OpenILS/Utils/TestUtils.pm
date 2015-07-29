@@ -33,4 +33,12 @@ sub do_checkin {
     return $resp;
 }
 
+sub do_checkin_override {
+    my ($self,$args) = (shift,shift);
+    my $resp = $apputils->simplereq(
+        'open-ils.circ',
+        'open-ils.circ.checkin.override', $self->authtoken, $args );
+    return $resp;
+}
+
 1;
