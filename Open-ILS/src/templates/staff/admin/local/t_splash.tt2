@@ -55,6 +55,14 @@
       </a>
     </div>
   </div>
+  <div class="row new-entry">
+    <div class="col-md-3">
+      <span class="glyphicon glyphicon-pencil"></span>
+      <a target="_self" href="./admin/local/actor/closed_dates">
+        [% l('Closed Dates Editor') %]
+      </a>
+    </div>
+  </div>
 
 </div>
 

@@ -14,7 +14,14 @@ angular.module('egLocalAdmin',
     // non-conify routes come first
     $routeProvider.when('/admin/local/money/cash_reports', {
         template: eframe_template,
-        controller: 'CashReportsCtl', // non-conify
+        controller: 'EmbedXHTMLCtl', // non-conify
+        resolve : resolver
+    });
+   
+    // non-conify routes come first
+    $routeProvider.when('/admin/local/actor/closed_dates', {
+        template: eframe_template,
+        controller: 'EmbedXHTMLCtl', // non-conify
         resolve : resolver
     });
 
@@ -52,15 +59,21 @@ function($scope , $routeParams , $location , egCore) {
 
 }])
 
-.controller('CashReportsCtl', 
-       ['$scope','$location','egCore',
-function($scope , $location , egCore) {
-    $scope.local_admin_url = $location.absUrl().replace(
-        /\/.*/, '/xul/server/admin/cash_reports.xhtml');
+.controller('EmbedXHTMLCtl', 
+       ['$scope','$location','egCore','$timeout',
+function($scope , $location , egCore , $timeout) {
+
+    $scope.funcs = {};
+
+    var xul_base = '/xul/server/admin/';
+    var page_parts = $location.path().split(/\//);
+    var url = xul_base + page_parts[page_parts.length - 1] + '.xhtml';
 
     // old-school XUL admin UI's only want CGI ses values.
-    $scope.local_admin_url += '?ses=' + egCore.auth.token();
-
+    url += '?ses=' + egCore.auth.token();
+    
     console.log('Loading local admin URL: ' + $scope.local_admin_url);
+
+    $scope.local_admin_url = $location.absUrl().replace(/\/.*/, url);
 }])
 
