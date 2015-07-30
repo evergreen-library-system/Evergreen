@@ -103,5 +103,6 @@ CREATE INDEX acq_po_hist_id_idx            ON acq.acq_purchase_order_history( id
 
 SELECT acq.create_acq_auditor ( 'acq', 'lineitem' );
 CREATE INDEX acq_lineitem_hist_id_idx            ON acq.acq_lineitem_history( id );
+CREATE INDEX acq_lineitem_history_queued_record  ON acq.acq_lineitem_history (queued_record);
 
 COMMIT;

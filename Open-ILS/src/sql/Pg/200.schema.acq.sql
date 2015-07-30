@@ -489,6 +489,7 @@ CREATE INDEX li_pl_idx ON acq.lineitem (picklist);
 CREATE INDEX li_creator_idx   ON acq.lineitem ( creator );
 CREATE INDEX li_editor_idx    ON acq.lineitem ( editor );
 CREATE INDEX li_selector_idx  ON acq.lineitem ( selector );
+CREATE INDEX li_queued_record ON acq.lineitem ( queued_record );
 
 CREATE TABLE acq.lineitem_alert_text (
     id               SERIAL         PRIMARY KEY,
