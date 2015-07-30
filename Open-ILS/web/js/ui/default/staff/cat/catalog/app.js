@@ -201,6 +201,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         if (match) {
             $scope.record_id = match[1];
             egCore.hatch.setLocalItem("eg.cat.last_record_retrieved", $scope.record_id);
+            $scope.holdings_record_id_changed($scope.record_id);
             init_parts_url();
         } else {
             delete $scope.record_id;
@@ -235,6 +236,21 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
             return this.arrayNotifier(holdingsSvc.copies, offset, count);
         }
     });
+
+    // refresh the list of holdings when the record_id is changed.
+    $scope.holdings_record_id_changed = function(id) {
+        if ($scope.record_id != id) $scope.record_id = id;
+        console.log('record id changed to ' + id + ', loading new holdings');
+        holdingsSvc.fetch({
+            rid : $scope.record_id,
+            org : $scope.holdings_ou,
+            copy: $scope.holdings_show_copies,
+            vol : $scope.holdings_show_vols,
+            empty: $scope.holdings_show_empty
+        }).then(function() {
+            $scope.holdingsGridDataProvider.refresh();
+        });
+    }
 
     // refresh the list of holdings when the filter lib is changed.
     $scope.holdings_ou = egCore.org.get(egCore.auth.user().ws_ou());
@@ -776,26 +792,28 @@ function(egCore , $q) {
                 });
 
                 var flat = egCore.idl.toHash(copies);
-                var owner = egCore.org.get(flat[0].call_number.owning_lib);
+                if (flat[0]) {
+                    var owner = egCore.org.get(flat[0].call_number.owning_lib);
 
-                var owner_name_list = [];
-                while (owner.parent_ou()) { // we're going to skip the top of the tree...
-                    owner_name_list.unshift(owner.name());
-                    owner = egCore.org.get(owner.parent_ou());
-                }
+                    var owner_name_list = [];
+                    while (owner.parent_ou()) { // we're going to skip the top of the tree...
+                        owner_name_list.unshift(owner.name());
+                        owner = egCore.org.get(owner.parent_ou());
+                    }
 
-                angular.forEach(flat, function (cp) {
-                    cp.owner_list = owner_name_list;
-                    cp.id_list = [cp.id];
-                });
-
-                service.copies = service.copies.concat(flat);
-
-                if (empty && flat.length == 0) {
-                    service.copies.push({
-                        owner_list : owner_name_list,
-                        call_number: egCore.idl.toHash(cn)
+                    angular.forEach(flat, function (cp) {
+                        cp.owner_list = owner_name_list;
+                        cp.id_list = [cp.id];
                     });
+
+                    service.copies = service.copies.concat(flat);
+
+                    if (empty && flat.length == 0) {
+                        service.copies.push({
+                            owner_list : owner_name_list,
+                            call_number: egCore.idl.toHash(cn)
+                        });
+                    }
                 }
 
                 return cn;
