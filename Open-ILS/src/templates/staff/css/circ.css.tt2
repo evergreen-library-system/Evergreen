@@ -1,3 +1,10 @@
+
+/* push the patron summary up to compensate for the extra
+ * padding required to support the fixed navigation */
+.patron-summary-grid-wrapper {
+  margin-top: -60px;
+}
+
 /** style to make a grid look like a striped table */
 #patron-summary-grid div.row {padding: 3px; border-right: 2px solid rgb(248, 248, 248);}
 #patron-summary-grid div.row:nth-child(odd) {background-color: rgb(248, 248, 248);}
@@ -16,6 +23,16 @@ but the ones I'm finding aren't quite cutting it..*/
 
 #patron-search-form div.form-group {
   margin-bottom: 5px;
+}
+
+#patron-fixed-tabs {
+    position: fixed;
+    top: 50px;
+    right: 15px;
+    padding-top: 20px;
+    padding-top: 10px;
+    z-index: 1;
+    background-color: rgba(255,255,255,1);
 }
 
 /* let search form elements fill their containers w/ slight padding */
@@ -77,19 +94,10 @@ but the ones I'm finding aren't quite cutting it..*/
 
 
 /* floating div along top-right with field documentation */
-#reg-control-actions {
+#reg-field-doc {
     position: fixed;
     top:160px;
-    right:10px;
-    /*width:200px;*/
-    border:2px dashed #d9e8f9;
-    -moz-border-radius: 10px;
-    font-weight: bold;
-    padding: 10px;
-    margin-top: 10px;
-}
-
-#reg-field-doc {
+    right:20px;
     border:2px dashed #d9e8f9;
     -moz-border-radius: 10px;
     font-weight: bold;
@@ -109,6 +117,25 @@ but the ones I'm finding aren't quite cutting it..*/
 .reg-field-row label {
     font-weight: normal;
 }
+
+.patron-reg-fixed-bar {
+    position: fixed;
+    top:50px;
+    right: 20px;
+    left: 20px;
+    padding-top: 20px;
+    padding-bottom: 10px;
+    z-index: 1;
+    background-color: rgba(255,255,255,1);
+}
+
+.patron-reg-actions-bar {
+  padding: 5px;
+}
+.patron-reg-actions-bar span {
+  font-weight: bold;
+}
+
 
 /* -- end patron registration -- */
 

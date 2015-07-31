@@ -1,41 +1,52 @@
 [% DOC_IMG = '/images/question-mark.png' %]
 
 <!-- register banner -->
-<div ng-if="!patron_id" 
-  class="container-fluid" style="text-align:center">
-  <div class="alert alert-info alert-less-pad strong-text-2">
-    <span >[% l('Register Patron') %]</span>
+<div ng-if="!patron_id" class='patron-reg-fixed-bar'>
+
+  <div class="container-fluid" style="text-align:center">
+    <div class="alert alert-info alert-less-pad strong-text-2">
+      <span >[% l('Register Patron') %]</span>
+    </div>
+  </div>
+
+  <div class="flex-row" class='patron-reg-actions-bar'>
+    <div>
+      <span>
+        [% l('Show:') %]
+        <span class="pad-all-min" ng-show="!display_required_fields">
+          <a href>[% l('Required Fields') %]</a>
+        </span>
+        <span class="pad-all-min" ng-show="!display_suggested_fields">
+          <a href>[% l('Suggested Fields') %]</a>
+        </span>
+        <span class="pad-all-min" ng-show="!display_all_fields">
+          <a href>[% l('All Fields') %]</a>
+        </span>
+      </span>
+    </div>
+    <div class="flex-cell"></div>
+    <div>
+      <span class="pad-all-min">
+        <button type="button" class="btn btn-default">[% l('Save') %]</button>
+      </span>
+      <span class="pad-all-min">
+        <button type="button" class="btn btn-default">[% l('Save & Clone') %]</button>
+      </span>
+    </div>
   </div>
 </div>
 
 <!-- edit banner -->
-<div ng-if="patron_id" 
+<div ng-if="patron_id"
     class="strong-text-2">[% l('Patron Edit') %]</div>
 
 <!-- IDL field documentation window -->
-<div id="reg-control-actions">
-  <div class="pad-all-min">
-    <button type="button" class="btn btn-default">[% l('Save') %]</button>
-  </div>
-  <div class="pad-all-min">
-    <button type="button" class="btn btn-default">[% l('Save & Clone') %]</button>
-  </div>
-  <div class="pad-all-min" ng-show="!display_required_fields">
-    <a href>[% l('Required Fields') %]</a>
-  </div>
-  <div class="pad-all-min" ng-show="!display_suggested_fields">
-    <a href>[% l('Suggested Fields') %]</a>
-  </div>
-  <div class="pad-all-min" ng-show="!display_all_fields">
-    <a href>[% l('All Fields') %]</a>
-  </div>
-  <fieldset id="reg-field-doc" ng-show="selected_field_doc">
-    <legend>
-    {{idl_fields[selected_field_doc.fm_class()][selected_field_doc.field()].label}}
-    </legend>
-    <div>{{selected_field_doc.string()}}</div>
-  </fieldset>
-</div>
+<fieldset id="reg-field-doc" ng-show="selected_field_doc">
+  <legend>
+  {{idl_fields[selected_field_doc.fm_class()][selected_field_doc.field()].label}}
+  </legend>
+  <div>{{selected_field_doc.string()}}</div>
+</fieldset>
 
 [% MACRO formfield(cls, field, path, input_type) BLOCK;
 

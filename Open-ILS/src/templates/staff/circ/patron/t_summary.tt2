@@ -1,5 +1,31 @@
 
-<div ng-cloak>
+<div ng-cloak class="patron-summary-grid-wrapper">
+  <div class="row">
+    <div class="col-md-12">
+      <h4 title="{{patron().id()}}">
+        <div class="flex-row">
+          <div class="flex-cell">
+            [% l('[_1], [_2] [_3]', 
+                '{{patron().family_name()}}',
+                '{{patron().first_given_name()}}',
+                '{{patron().second_given_name()}}') %]
+          </div>
+          <div ng-show="tab != 'search'">
+            <a href ng-click="toggle_expand_summary()"
+              title="[% l('Collapse Patron Summary Display') %]"
+              ng-hide="collapse_summary()">
+              <span class="glyphicon glyphicon-resize-small"></span>
+            </a>
+            <a href ng-click="toggle_expand_summary()"
+              title="[% l('Expand Patron Summary Display') %]"
+              ng-show="collapse_summary()">
+              <span class="glyphicon glyphicon-resize-full"></span>
+            </a>
+          </div>
+        </div>
+      </h4>
+    </div>
+  </div>
   <div ng-show="patron()" id="patron-summary-grid">
     <div class="row" 
       ng-class="{'patron-summary-divider' : !$index}"

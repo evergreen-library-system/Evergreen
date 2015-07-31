@@ -9,6 +9,10 @@
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/patron/register.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/patron/regctl.js"></script>
 <link rel="stylesheet" href="[% ctx.base_path %]/staff/css/circ.css" />
+<style>
+  <!-- add room for the fixed navigation elements -->
+  #top-content-container { padding-top: 170px; }
+</style>
 [% END %]
 
 <div ng-view></div>

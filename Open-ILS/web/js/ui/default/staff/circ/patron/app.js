@@ -557,6 +557,10 @@ function($q , $timeout , $location , egCore,  egUser , $locale) {
        ['$scope','$q','$location','$filter','egCore','egUser','patronSvc',
 function($scope,  $q,  $location , $filter,  egCore,  egUser,  patronSvc) {
 
+    $scope.is_patron_edit = function() {
+        return Boolean($location.path().match(/patron\/\d+\/edit$/));
+    }
+
     // returns true if a redirect occurs
     function redirectToAlertPanel() {
 

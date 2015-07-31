@@ -46,36 +46,23 @@ angular.module('egCoreMod').run(['egStrings', function(s) {
 }]);
 </script>
 
+<!-- add room for the fixed navigation elements -->
+<style ng-if="is_patron_edit">
+  #top-content-container { padding-top: 120px; }
+</style>
+<style ng-if="!is_patron_edit">
+  #top-content-container { padding-top: 80px; }
+</style>
+
+
 [% END %]
 
 <div class="row">
   <div class="col-md-3">
-    <div ng-show="patron()">
-      <h4 title="{{patron().id()}}">
-        <div class="flex-row">
-          <div class="flex-cell">
-            [% l('[_1], [_2] [_3]', 
-                '{{patron().family_name()}}',
-                '{{patron().first_given_name()}}',
-                '{{patron().second_given_name()}}') %]
-          </div>
-          <div ng-show="tab != 'search'">
-            <a href ng-click="toggle_expand_summary()"
-              title="[% l('Collapse Patron Summary Display') %]"
-              ng-hide="collapse_summary()">
-              <span class="glyphicon glyphicon-resize-small"></span>
-            </a>
-            <a href ng-click="toggle_expand_summary()"
-              title="[% l('Expand Patron Summary Display') %]"
-              ng-show="collapse_summary()">
-              <span class="glyphicon glyphicon-resize-full"></span>
-            </a>
-          </div>
-        </div><!-- row -->
-      </h4>
-    </div><!-- if patron -->
-  </div><!-- col -->
-  <div class="col-md-9">
+    <!-- just here to keep this slot open for the patron summary column -->
+  </div>
+
+  <div class="col-md-9" id="patron-fixed-tabs">
     <ul class="nav nav-pills nav-pills-like-tabs">
       <li ng-class="{active : tab == 'checkout', disabled : !patron()}">
         <a a-disabled="!patron()" href="./circ/patron/{{patron().id()}}/checkout">[% l('Check Out') %]</a>
@@ -157,6 +144,32 @@ angular.module('egCoreMod').run(['egStrings', function(s) {
         <a href="./circ/patron/search">[% l('Patron Search') %]</a>
       </li>
     </ul>
+    <div class="flex-row patron-reg-actions-bar" ng-if="is_patron_edit()">
+      <div>
+        <span>
+          [% l('Show:') %]
+          <span class="pad-all-min" ng-show="!display_required_fields">
+            <a href>[% l('Required Fields') %]</a>
+          </span>
+          <span class="pad-all-min" ng-show="!display_suggested_fields">
+            <a href>[% l('Suggested Fields') %]</a>
+          </span>
+          <span class="pad-all-min" ng-show="!display_all_fields">
+            <a href>[% l('All Fields') %]</a>
+          </span>
+        </span>
+      </div>
+      <div class="flex-cell"></div>
+      <div>
+        <span class="pad-all-min">
+          <button type="button" class="btn btn-default">[% l('Save') %]</button>
+        </span>
+        <span class="pad-all-min">
+          <button type="button" class="btn btn-default">[% l('Save & Clone') %]</button>
+        </span>
+      </div>
+    </div>
+
   </div><!-- col -->
 </div><!-- row -->
 
