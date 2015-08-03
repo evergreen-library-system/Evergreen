@@ -3674,12 +3674,14 @@ sub checkin_handle_backdate {
     $new_date->set_minute($original_date->minute());
     if ($new_date >= DateTime->now) {
         # We can't say that the item will be checked in later...so assume someone's clock is wrong instead.
-        $bd = undef;
+        # $self->backdate() autoload handler ignores undef values.  
+        # Clear the backdate manually.
+        $logger->info("circulator: ignoring future backdate: $new_date");
+        delete $self->{backdate};
     } else {
-        $bd = cleanse_ISO8601($new_date->datetime());
+        $self->backdate(cleanse_ISO8601($new_date->datetime()));
     }
 
-    $self->backdate($bd);
     return undef;
 }
 
