@@ -60,29 +60,41 @@
             throw $e;
         };
 
+        if ($ENV{TZ}) {
+            try {
+                $dbh->do('SET LOCAL timezone TO ?;',{},$ENV{TZ});
 
-        my $death_cb = $client->session->register_callback(
-            death => sub {
-                __PACKAGE__->pg_rollback_xaction;
-            }
-        );
+            } catch Error with {
+                my $e = shift;
+                $log->debug("Failed to set timezone: $ENV{TZ}", WARN);
+            };
+        }
 
-        $log->debug("Registered 'death' callback [$death_cb] for new transaction with Open-ILS XACT-ID [$xact_id]", DEBUG);
 
-        $client->session->session_data( death_cb => $death_cb );
-
-        if ($self->api_name =~ /autocommit$/o) {
-            $pg->current_xact_is_auto(1);
-            my $dc_cb = $client->session->register_callback(
-                disconnect => sub {
-                    my $ses = shift;
-                    $ses->unregister_callback(death => $death_cb);
-                    __PACKAGE__->pg_commit_xaction;
+        if ($client->session) { # not a subrequest
+            my $death_cb = $client->session->register_callback(
+                death => sub {
+                    __PACKAGE__->pg_rollback_xaction;
                 }
             );
-            $log->debug("Registered 'disconnect' callback [$dc_cb] for new transaction with Open-ILS XACT-ID [$xact_id]", DEBUG);
-            if ($client and $client->session) {
-                $client->session->session_data( disconnect_cb => $dc_cb );
+    
+            $log->debug("Registered 'death' callback [$death_cb] for new transaction with Open-ILS XACT-ID [$xact_id]", DEBUG);
+    
+            $client->session->session_data( death_cb => $death_cb );
+    
+            if ($self->api_name =~ /autocommit$/o) {
+                $pg->current_xact_is_auto(1);
+                my $dc_cb = $client->session->register_callback(
+                    disconnect => sub {
+                        my $ses = shift;
+                        $ses->unregister_callback(death => $death_cb);
+                        __PACKAGE__->pg_commit_xaction;
+                    }
+                );
+                $log->debug("Registered 'disconnect' callback [$dc_cb] for new transaction with Open-ILS XACT-ID [$xact_id]", DEBUG);
+                if ($client and $client->session) {
+                    $client->session->session_data( disconnect_cb => $dc_cb );
+                }
             }
         }
 
@@ -121,14 +133,16 @@
             $success = 0;
         };
         
-        $pg->current_xact_session->unregister_callback( death => 
-            $pg->current_xact_session->session_data( 'death_cb' )
-        ) if ($pg->current_xact_session);
-
-        if ($pg->current_xact_is_auto) {
-            $pg->current_xact_session->unregister_callback( disconnect => 
-                $pg->current_xact_session->session_data( 'disconnect_cb' )
-            );
+        if ($pg->current_xact_session) { # not a subrequest
+            $pg->current_xact_session->unregister_callback( death => 
+                $pg->current_xact_session->session_data( 'death_cb' )
+            ) if ($pg->current_xact_session);
+    
+            if ($pg->current_xact_is_auto) {
+                $pg->current_xact_session->unregister_callback( disconnect => 
+                    $pg->current_xact_session->session_data( 'disconnect_cb' )
+                );
+            }
         }
 
         $pg->unset_xact_session;
@@ -162,14 +176,16 @@
             $success = 0;
         };
     
-        $pg->current_xact_session->unregister_callback( death =>
-            $pg->current_xact_session->session_data( 'death_cb' )
-        ) if ($pg->current_xact_session);
-
-        if ($pg->current_xact_is_auto) {
-            $pg->current_xact_session->unregister_callback( disconnect =>
-                $pg->current_xact_session->session_data( 'disconnect_cb' )
-            );
+        if ($pg->current_xact_session) { # not a subrequest
+            $pg->current_xact_session->unregister_callback( death =>
+                $pg->current_xact_session->session_data( 'death_cb' )
+            ) if ($pg->current_xact_session);
+    
+            if ($pg->current_xact_is_auto) {
+                $pg->current_xact_session->unregister_callback( disconnect =>
+                    $pg->current_xact_session->session_data( 'disconnect_cb' )
+                );
+            }
         }
 
         $pg->unset_xact_session;
@@ -260,15 +276,17 @@
 
         $pg->set_audit_session( $client->session );
 
-        my $death_cb = $client->session->register_callback(
-            death => sub {
-                __PACKAGE__->pg_clear_audit_info;
-            }
-        );
-
-        $log->debug("Registered 'death' callback [$death_cb] for clearing audit information", DEBUG);
-
-        $client->session->session_data( death_cb_ai => $death_cb );
+        if ($client->session) { # not a subrequest
+            my $death_cb = $client->session->register_callback(
+                death => sub {
+                    __PACKAGE__->pg_clear_audit_info;
+                }
+            );
+    
+            $log->debug("Registered 'death' callback [$death_cb] for clearing audit information", DEBUG);
+    
+            $client->session->session_data( death_cb_ai => $death_cb );
+        }
 
         return 1;
 
@@ -292,9 +310,11 @@
             $log->debug("Failed to clear audit information: ".$e, INFO);
         };
 
-        $pg->current_audit_session->unregister_callback( death => 
-            $pg->current_audit_session->session_data( 'death_cb_ai' )
-        ) if ($pg->current_audit_session);
+        if ($pg->current_audit_session) { # not a subrequest
+            $pg->current_audit_session->unregister_callback( death => 
+                $pg->current_audit_session->session_data( 'death_cb_ai' )
+            ) if ($pg->current_audit_session);
+        }
 
         $pg->unset_audit_session;
     }

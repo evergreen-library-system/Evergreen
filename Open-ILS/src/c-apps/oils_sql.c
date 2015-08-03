@@ -146,6 +146,7 @@ static char* modulename = NULL;
 
 int writeAuditInfo( osrfMethodContext* ctx, const char* user_id, const char* ws_id);
 
+static char* _sanitize_tz_name( const char* tz );
 static char* _sanitize_savepoint_name( const char* sp );
 
 /**
@@ -827,6 +828,8 @@ int beginTransaction( osrfMethodContext* ctx ) {
 		return -1;
 	}
 
+	const char* tz = _sanitize_tz_name(ctx->session->session_tz);
+
 	if( enforce_pcrud ) {
 		timeout_needs_resetting = 1;
 		const jsonObject* user = verifyUserPCRUD( ctx );
@@ -851,8 +854,36 @@ int beginTransaction( osrfMethodContext* ctx ) {
 		jsonObject* ret = jsonNewObject( getXactId( ctx ) );
 		osrfAppRespondComplete( ctx, ret );
 		jsonObjectFree( ret );
-		return 0;
+
 	}
+
+	if (tz) {
+		setenv("TZ",tz,1);
+		dbi_result tz_res = dbi_conn_queryf( writehandle, "SET LOCAL timezone TO '%s'; -- cstore", tz );
+		if( !tz_res ) {
+			osrfLogError( OSRF_LOG_MARK, "%s: Error setting timezone %s", modulename, tz);
+			if( !oilsIsDBConnected( writehandle )) {
+				osrfAppSessionPanic( ctx->session );
+				return -1;
+			}
+		} else {
+			dbi_result_free( tz_res );
+		}
+	} else {
+		unsetenv("TZ");
+		dbi_result res = dbi_conn_queryf( writehandle, "SET timezone TO DEFAULT; -- no tz" );
+		if( !res ) {
+			osrfLogError( OSRF_LOG_MARK, "%s: Error resetting timezone", modulename);
+			if( !oilsIsDBConnected( writehandle )) {
+				osrfAppSessionPanic( ctx->session );
+				return -1;
+			}
+		} else {
+			dbi_result_free( res );
+		}
+	}
+
+	return 0;
 }
 
 /**
@@ -5826,6 +5857,8 @@ int doJSONSearch ( osrfMethodContext* ctx ) {
 static jsonObject* doFieldmapperSearch( osrfMethodContext* ctx, osrfHash* class_meta,
 		jsonObject* where_hash, jsonObject* query_hash, int* err ) {
 
+	const char* tz = _sanitize_tz_name(ctx->session->session_tz);
+
 	// XXX for now...
 	dbhandle = writehandle;
 
@@ -5853,7 +5886,40 @@ static jsonObject* doFieldmapperSearch( osrfMethodContext* ctx, osrfHash* class_
 
 	osrfLogDebug( OSRF_LOG_MARK, "%s SQL =  %s", modulename, sql );
 
+	// Setting the timezone if requested and not in a transaction
+	if (!getXactId(ctx)) {
+		if (tz) {
+			setenv("TZ",tz,1);
+			dbi_result tz_res = dbi_conn_queryf( writehandle, "SET timezone TO '%s'; -- cstore", tz );
+			if( !tz_res ) {
+				osrfLogError( OSRF_LOG_MARK, "%s: Error setting timezone %s", modulename, tz);
+				osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR,
+					"osrfMethodException", ctx->request, "Error setting timezone" );
+				if( !oilsIsDBConnected( writehandle )) {
+					osrfAppSessionPanic( ctx->session );
+					return -1;
+				}
+			} else {
+				dbi_result_free( tz_res );
+			}
+		} else {
+			unsetenv("TZ");
+			dbi_result res = dbi_conn_queryf( writehandle, "SET timezone TO DEFAULT; -- cstore" );
+			if( !res ) {
+				osrfLogError( OSRF_LOG_MARK, "%s: Error resetting timezone", modulename);
+				if( !oilsIsDBConnected( writehandle )) {
+					osrfAppSessionPanic( ctx->session );
+					return -1;
+				}
+			} else {
+				dbi_result_free( res );
+			}
+		}
+	}
+
+
 	dbi_result result = dbi_conn_query( dbhandle, sql );
+
 	if( NULL == result ) {
 		const char* msg;
 		int errnum = dbi_conn_error( dbhandle, &msg );
@@ -5875,6 +5941,7 @@ static jsonObject* doFieldmapperSearch( osrfMethodContext* ctx, osrfHash* class_
 
 	} else {
 		osrfLogDebug( OSRF_LOG_MARK, "Query returned with no errors" );
+
 	}
 
 	jsonObject* res_list = jsonNewObjectType( JSON_ARRAY );
@@ -7526,6 +7593,48 @@ static char* _sanitize_savepoint_name( const char* sp ) {
 	char* found;
 	for (j = 0; j < len; j++) {
 	found = strchr(safe_chars, sp[j]);
+		if (found) {
+			safeSpName[ i++ ] = found[0];
+		}
+	}
+	safeSpName[ i ] = '\0';
+	return safeSpName;
+}
+
+/**
+	@brief Remove all but safe character from TZ name
+	@param tz User-supplied TZ name
+	@return sanitized TZ name, or NULL
+
+    The caller is expected to free the returned string.  Note that
+    this function exists only because we can't use PQescapeLiteral
+    without either forking libdbi or abandoning it.
+*/
+static char* _sanitize_tz_name( const char* tz ) {
+
+	if (NULL == tz) return NULL;
+
+	const char* safe_chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ012345789_/-+";
+
+	// PostgreSQL uses NAMEDATALEN-1 as a max length for identifiers,
+	// and the default value of NAMEDATALEN is 64; that should be long enough
+	// for our purposes, and it's unlikely that anyone is going to recompile
+	// PostgreSQL to have a smaller value, so cap the identifier name
+	// accordingly to avoid the remote chance that someone manages to pass in a
+	// 12GB savepoint name
+	const int MAX_LITERAL_NAMELEN = 63;
+	int len = 0;
+	len = strlen( tz );
+	if (len > MAX_LITERAL_NAMELEN) {
+		len = MAX_LITERAL_NAMELEN;
+	}
+
+	char* safeSpName = safe_malloc( len + 1 );
+	int i = 0;
+	int j;
+	char* found;
+	for (j = 0; j < len; j++) {
+	found = strchr(safe_chars, tz[j]);
 		if (found) {
 			safeSpName[ i++ ] = found[0];
 		}

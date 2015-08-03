@@ -31,6 +31,7 @@ my $U = 'OpenILS::Application::AppUtils';
 
 use constant COOKIE_SES => 'ses';
 use constant COOKIE_LOGGEDIN => 'eg_loggedin';
+use constant COOKIE_TZ => 'client_tz';
 use constant COOKIE_PHYSICAL_LOC => 'eg_physical_loc';
 use constant COOKIE_SSS_EXPAND => 'eg_sss_expand';
 
@@ -261,11 +262,14 @@ sub load_common {
     $ctx->{default_sort} =
         ($default_sort && $U->is_true($default_sort->enabled)) ? $default_sort->value : '';
 
+    $ctx->{client_tz} = $self->cgi->cookie(COOKIE_TZ) || $ENV{TZ};
     $ctx->{referer} = $self->cgi->referer;
     $ctx->{path_info} = $self->cgi->path_info;
     $ctx->{full_path} = $ctx->{base_path} . $self->cgi->path_info;
     $ctx->{unparsed_uri} = $self->apache->unparsed_uri;
     $ctx->{opac_root} = $ctx->{base_path} . "/opac"; # absolute base url
+
+    local $ENV{TZ} = $ctx->{client_tz};
 
     my $xul_wrapper = 
         ($self->apache->headers_in->get('OILS-Wrapper') || '') =~ /true/;
@@ -406,6 +410,7 @@ sub load_login {
     my $password = $cgi->param('password');
     my $org_unit = $ctx->{physical_loc} || $ctx->{aou_tree}->()->id;
     my $persist = $cgi->param('persist');
+    my $client_tz = $cgi->param('client_tz');
 
     # initial log form only
     return Apache2::Const::OK unless $username and $password;
@@ -466,27 +471,41 @@ sub load_login {
     # both login-related cookies should expire at the same time
     my $login_cookie_expires = ($persist) ? CORE::time + $response->{payload}->{authtime} : undef;
 
+    my $cookie_list = [
+        # contains the actual auth token and should be sent only over https
+        $cgi->cookie(
+            -name => COOKIE_SES,
+            -path => '/',
+            -secure => 1,
+            -value => $response->{payload}->{authtoken},
+            -expires => $login_cookie_expires
+        ),
+        # contains only a hint that we are logged in, and is used to
+        # trigger a redirect to https
+        $cgi->cookie(
+            -name => COOKIE_LOGGEDIN,
+            -path => '/',
+            -secure => 0,
+            -value => '1',
+            -expires => $login_cookie_expires
+        )
+    ];
+
+    if ($client_tz) {
+        # contains the client's tz, as passed by the client
+        # trigger a redirect to https
+        push @$cookie_list, $cgi->cookie(
+            -name => COOKIE_TZ,
+            -path => '/',
+            -secure => 0,
+            -value => $client_tz,
+            -expires => $login_cookie_expires
+        );
+    }
+
     return $self->generic_redirect(
         $cgi->param('redirect_to') || $acct,
-        [
-            # contains the actual auth token and should be sent only over https
-            $cgi->cookie(
-                -name => COOKIE_SES,
-                -path => '/',
-                -secure => 1,
-                -value => $response->{payload}->{authtoken},
-                -expires => $login_cookie_expires
-            ),
-            # contains only a hint that we are logged in, and is used to
-            # trigger a redirect to https
-            $cgi->cookie(
-                -name => COOKIE_LOGGEDIN,
-                -path => '/',
-                -secure => 0,
-                -value => '1',
-                -expires => $login_cookie_expires
-            )
-        ]
+        $cookie_list
     );
 }
 

@@ -51,6 +51,64 @@ sub initialize {
     $log->debug("We seem to be OK...",DEBUG);
 }
 
+sub register_method {
+    my $class = shift;
+    my %args = @_;
+
+    $args{package} ||= ref($class) || $class;
+
+    unless ($args{no_tz_force}) {
+        my %dup_args = %args;
+        $dup_args{api_name} = 'no_tz.' . $args{api_name};
+
+        $args{method} = 'force_db_tz';
+        delete $args{package};
+
+        __PACKAGE__->SUPER::register_method( %dup_args );
+
+    }
+
+    __PACKAGE__->SUPER::register_method( %args );
+
+}
+
+sub force_db_tz {
+    my $self = shift;
+    my $client = shift;
+    my @args = @_;
+
+    my ($current_xact) = $self->method_lookup('no_tz.open-ils.storage.transaction.current')->run;
+
+    if (!$current_xact && $ENV{TZ}) {
+        try {
+            OpenILS::Application::Storage::CDBI->db_Main->do(
+                'SET timezone TO ?;',
+                {},
+                $ENV{TZ}
+            );
+        } catch Error with {
+            $log->error( "Could not set timezone: $ENV{TZ}");
+        };
+    }
+
+    my $method = $self->method_lookup('no_tz.' . $self->{api_name});
+    die unless $method;
+
+    $client->respond( $_ ) for ( $method->run(@args) );
+
+    if (!$current_xact && $ENV{TZ}) {
+        try {
+            OpenILS::Application::Storage::CDBI->db_Main->do(
+                'SET timezone TO DEFAULT;',
+            );
+        } catch Error with {
+            $log->error( "Could not reset default timezone");
+        };
+    }
+
+    return undef;
+}
+
 sub child_init {
 
     $log->debug('Running child_init for ' . __PACKAGE__ . '...', DEBUG);
