@@ -1,0 +1,11 @@
+Change to Available Copies Display
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The _Show_ link in the available copies area of the record summary will now
+display for any org unit that owns a copy of a particular title, even if all
+those copies are unavailable. The _Show_ link will not display if a) the copy
+display is already scoped to that org unit or b) the org unit does not own
+copies of the title. 
+
+The language has also been changed to read "x of y copies available at z
+library." 
+

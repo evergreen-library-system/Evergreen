@@ -7,6 +7,7 @@
         ou_hiding_disabled = ctx.org_hiding_disabled();
         WHILE depth < depths;
             ou_avail = ctx.copy_summary.$depth.available;
+            ou_count = ctx.copy_summary.$depth.count;
             ou_id = ctx.copy_summary.$depth.org_unit;
             cp_org_unit = ctx.get_aou(ou_id);
             skip_me = !ou_hiding_disabled AND !ctx.org_within_hiding_scope(ou_id);
@@ -18,9 +19,9 @@
             displayed_ous.$ou_name = 1;
     %]
     <li>
-    [% l('[quant,_1,copy,copies] at [_2].', ou_avail, ou_name) | html %]
+    [% l('[_1] of [quant,_2,copy,copies] available at [_3].', ou_avail, ou_count, ou_name) | html %]
     [%- this_depth = ctx.get_aou(ou_id).ou_type.depth;
-        IF ou_avail > 0 && this_depth != ctx.copy_depth %]
+        IF ou_count > 0 && this_depth != ctx.copy_depth %]
     <a href="[% mkurl('', {copy_depth => this_depth}, ['copy_offset']); %]"
        title="[% l('Show copies at [_1]', ou_name); %]">
        [%- l('(Show)'); %]</a>
