@@ -637,6 +637,7 @@ function activatePoStage2(noAssets) {
 
     var want_refresh = false;
     progressDialog.show(true);
+    progressDialog.attr("title", localeStrings.PO_ACTIVATING);
     fieldmapper.standardRequest(
         ["open-ils.acq", "open-ils.acq.purchase_order.activate"], {
             "async": true,
@@ -650,11 +651,12 @@ function activatePoStage2(noAssets) {
                 }
             ],
             "onresponse": function(r) {
-                progressDialog.hide();
                 activatePoButton.attr("disabled", false);
                 want_refresh = Boolean(openils.Util.readResponse(r));
             },
             "oncomplete": function() {
+                progressDialog.hide();
+                progressDialog.attr("title", "");
                 if (want_refresh)
                     location.href = location.href;
             }

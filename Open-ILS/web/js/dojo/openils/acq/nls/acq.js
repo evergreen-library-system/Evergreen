@@ -103,5 +103,13 @@
     "DUPE_PO_NAME_MSG" : "This name is already in use by another PO",
     "DUPE_PO_NAME_LINK" : "View PO",
     "PO_NAME_OPTIONAL" : "${0} (optional)",
-    "LI_EXISTING_COPIES" : "There are ${0} existing copies for this bibliographic record at this location"
+    "LI_EXISTING_COPIES" : "There are ${0} existing copies for this bibliographic record at this location",
+    "LI_CREATING_ASSETS" : "Creating bib, call number, and copy records...",
+    "PO_ACTIVATING" : "Activating purchase order...",
+    "ACTIVATE_LI_PROCESSED"             : "Lineitems Processed: ${0}",
+    "ACTIVATE_VQBR_PROCESSED"           : "Vandelay Records Processed: ${0}",
+    "ACTIVATE_BIBS_PROCESSED"           : "Bib Records Merged/Imported: ${0}",
+    "ACTIVATE_LID_PROCESSED"            : "ACQ Copies Processed: ${0}",
+    "ACTIVATE_DEBITS_ACCRUED_PROCESSED" : "Debits Encumbered: ${0}",
+    "ACTIVATE_COPIES_PROCESSED"         : "Real Copies Processed: ${0}"
 }

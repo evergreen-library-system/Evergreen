@@ -48,6 +48,22 @@ if(!dojo._hasResource['openils.widget.ProgressDialog']) {
                 }
                     
                 this.inherited(arguments);
+            },
+
+            update_message : function(msg) {
+                if(msg || (msg = this.message) ) {
+                    if(!this.msgDiv) {
+                        this.msgDiv = dojo.create('div', {innerHTML : msg});
+                        this.containerNode.insertBefore(this.msgDiv, this.progress.domNode);
+                    } else {
+                        this.msgDiv.innerHTML = msg;
+                    }
+                } else {
+                    if(this.msgDiv) {
+                        this.containerNode.removeChild(this.msgDiv);
+                        this.msgDiv = null;
+                    }
+                }
             }
         }
     );

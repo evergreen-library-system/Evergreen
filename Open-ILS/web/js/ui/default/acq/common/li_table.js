@@ -95,6 +95,7 @@ function AcqLiTable() {
         }
     );
     this.vlAgent = new VLAgent();
+    this.batchProgress = {};
 
     if (dojo.byId('acq-lit-apply-idents')) {
         dojo.byId('acq-lit-apply-idents').onclick = function() {
@@ -2943,13 +2944,16 @@ function AcqLiTable() {
         this.show('acq-lit-progress-numbers');
         var self = this;
         var vlArgs = (noVl) ? {} : {vandelay : this.vlAgent.values()};
+        this.batchProgress = {};
+        progressDialog.show(false);
+        progressDialog.attr("title", localeStrings.LI_CREATING_ASSETS);
         fieldmapper.standardRequest(
             ['open-ils.acq', 'open-ils.acq.purchase_order.assets.create'],
             {   async: true,
                 params: [this.authtoken, this.isPO, vlArgs],
                 onresponse: function(r) {
                     var resp = openils.Util.readResponse(r);
-                    self._updateProgressNumbers(resp, !Boolean(onAssetsCreated), onAssetsCreated);
+                    self._updateProgressNumbers(resp, !Boolean(onAssetsCreated), onAssetsCreated, true);
                 }
             }
         );
@@ -3249,9 +3253,16 @@ function AcqLiTable() {
         );
     };
 
-    this._updateProgressNumbers = function(resp, reloadOnComplete, onComplete) {
+    this._updateProgressNumbers = function(resp, reloadOnComplete, onComplete, clearProgressDialog) {
+        this._updateProgressDialog(resp);
         this.vlAgent.handleResponse(resp,
             function(resp, res) {
+                if (clearProgressDialog) {
+                    progressDialog.update({ "progress": 100});
+                    progressDialog.update_message();
+                    progressDialog.hide();
+                    progressDialog.attr("title", "");
+                }
                 if(reloadOnComplete)
                      location.href = location.href;
                 if (onComplete)
@@ -3260,6 +3271,21 @@ function AcqLiTable() {
         );
     }
 
+    this._updateProgressDialog = function(resp) {
+        progressDialog.update({ "progress": (resp.progress / resp.total) * 100 });
+        var keys = ['li', 'vqbr', 'bibs', 'lid', 'debits_accrued', 'copies'];
+        for (var i = 0; i < keys.length; i++) {
+            if (resp[keys[i]] > (this.batchProgress[keys[i]] || 0)) {
+                progressDialog.update_message(
+                    dojo.string.substitute(
+                        localeStrings["ACTIVATE_" + keys[i].toUpperCase() + "_PROCESSED"],
+                        [ resp[keys[i]] ]
+                    )
+                );
+            }
+        }
+        this.batchProgress = resp;
+    }
 
     this._createPO = function(fields) {
         var wantall = (fields.create_from == "all");

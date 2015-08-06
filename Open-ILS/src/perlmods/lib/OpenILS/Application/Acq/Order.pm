@@ -4,6 +4,10 @@ use OpenSRF::AppSession;
 use OpenSRF::EX qw/:try/;
 use strict; use warnings;
 
+# empirically derived number of responses we can
+# stream back before the XUL client has indigestion
+use constant MAX_RESPONSES => 20;
+
 sub new {
     my($class, %args) = @_;
     my $self = bless(\%args, $class);
@@ -24,6 +28,7 @@ sub new {
     };
     $self->{cache} = {};
     $self->throttle(4) unless $self->throttle;
+    $self->exponential_falloff(1) unless $self->exponential_falloff;
     $self->{post_proc_queue} = [];
     $self->{last_respond_progress} = 0;
     return $self;
@@ -39,6 +44,11 @@ sub throttle {
     $self->{throttle} = $val if $val;
     return $self->{throttle};
 }
+sub exponential_falloff {
+    my($self, $val) = @_;
+    $self->{exponential_falloff} = $val if defined $val;
+    return $self->{exponential_falloff};
+}
 sub respond {
     my($self, %other_args) = @_;
     if($self->throttle and not %other_args) {
@@ -48,7 +58,7 @@ sub respond {
     }
     $self->conn->respond({ %{$self->{args}}, %other_args });
     $self->{last_respond_progress} = $self->{args}->{progress};
-    $self->throttle($self->throttle * 2) unless $self->throttle >= 256;
+    $self->throttle($self->throttle * 2) if ($self->exponential_falloff() and $self->throttle < 256);
 }
 sub respond_complete {
     my($self, %other_args) = @_;
@@ -74,6 +84,12 @@ sub total {
     my($self, $val) = @_;
     $self->{args}->{total} = $val if defined $val;
     $self->{args}->{maximum} = $self->{args}->{total};
+    if ($self->{args}->{maximum}) {
+        # if a total has been set, space responses linearly
+        $self->exponential_falloff(0);
+        $self->throttle(int($self->{args}->{maximum} / MAX_RESPONSES));
+        $self->throttle(4) if $self->throttle < 4;
+    }
     return $self->{args}->{total};
 }
 sub purchase_order {
@@ -1762,7 +1778,9 @@ sub create_po_assets {
         where => {'+acqpo' => {id => $po_id}}
     })->[0]->{id};
 
-    $mgr->total(scalar(@$li_ids) + $lid_total);
+    # maximum number of Vandelay bib actions is twice
+    # the number line items (queue bib, then create it)
+    $mgr->total(scalar(@$li_ids) * 2 + $lid_total);
 
     create_lineitem_list_assets($mgr, $li_ids, $args->{vandelay}) 
         or return $e->die_event;
