@@ -5014,7 +5014,7 @@ INSERT into config.org_unit_setting_type
         'coust', 'label'),
     oils_i18n_gettext(
         'bill.prohibit_negative_balance_default',
-        'Default setting to prevent negative balances (refunds) on circulation related bills',
+        'Default setting to prevent negative balances (refunds) on circulation related bills. Set to "true" to prohibit negative balances at all times or, when used in conjunction with an interval setting, to prohibit negative balances after a set period of time. ',
         'coust', 'description'),
     'bool', null)
 ,(  'bill.prohibit_negative_balance_on_overdues', 'finance',
@@ -5024,7 +5024,7 @@ INSERT into config.org_unit_setting_type
         'coust', 'label'),
     oils_i18n_gettext(
         'bill.prohibit_negative_balance_on_overdues',
-        'Prevent negative balances (refunds) on bills for overdue materials',
+        'Prevent negative balances (refunds) on bills for overdue materials. Set to "true" to prohibit negative balances at all times or, when used in conjunction with an interval setting, to prohibit negative balances after a set period of time.',
         'coust', 'description'),
     'bool', null)
 ,(  'bill.prohibit_negative_balance_on_lost', 'finance',
@@ -5034,7 +5034,7 @@ INSERT into config.org_unit_setting_type
         'coust', 'label'),
     oils_i18n_gettext(
         'bill.prohibit_negative_balance_on_lost',
-        'Prevent negative balances (refunds) on bills for lost/long overdue materials',
+        'Prevent negative balances (refunds) on bills for lost/long overdue materials. Set to "true" to prohibit negative balances at all times or, when used in conjunction with an interval setting, to prohibit negative balances after an interval of time.',
         'coust', 'description'),
     'bool', null)
 ,(  'bill.negative_balance_interval_default', 'finance',
@@ -5044,7 +5044,7 @@ INSERT into config.org_unit_setting_type
         'coust', 'label'),
     oils_i18n_gettext(
         'bill.negative_balance_interval_default',
-        'Amount of time after which no negative balances (refunds) are allowed on circulation bills',
+        'Amount of time after which no negative balances (refunds) are allowed on circulation bills. The "Prohibit negative balance on bills" setting must also be set to "true".',
         'coust', 'description'),
     'interval', null)
 ,(  'bill.negative_balance_interval_on_overdues', 'finance',
@@ -5054,7 +5054,7 @@ INSERT into config.org_unit_setting_type
         'coust', 'label'),
     oils_i18n_gettext(
         'bill.negative_balance_interval_on_overdues',
-        'Amount of time after which no negative balances (refunds) are allowed on bills for overdue materials',
+        'Amount of time after which no negative balances (refunds) are allowed on bills for overdue materials. The "Prohibit negative balance on bills for overdue materials" setting must also be set to "true".',
         'coust', 'description'),
     'interval', null)
 ,(  'bill.negative_balance_interval_on_lost', 'finance',
@@ -5064,7 +5064,7 @@ INSERT into config.org_unit_setting_type
         'coust', 'label'),
     oils_i18n_gettext(
         'bill.negative_balance_interval_on_lost',
-        'Amount of time after which no negative balances (refunds) are allowed on bills for lost/long overdue materials',
+        'Amount of time after which no negative balances (refunds) are allowed on bills for lost/long overdue materials. The "Prohibit negative balance on bills for lost materials" setting must also be set to "true".',
         'coust', 'description'),
     'interval', null)
 ;
