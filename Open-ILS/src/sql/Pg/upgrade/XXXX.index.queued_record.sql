@@ -7,9 +7,9 @@ BEGIN;
 
 SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
 
-CREATE INDEX acq_lineitem_history_queued_record ON acq.acq_lineitem_history (queued_record);
-CREATE INDEX li_queued_record ON acq.lineitem (queued_record);
-CREATE INDEX bib_match_queued_record ON vandelay.bib_match (queued_record);
-CREATE INDEX import_item_record ON vandelay.import_item (record);
+CREATE INDEX acq_lineitem_history_queued_record_idx ON acq.acq_lineitem_history (queued_record);
+CREATE INDEX li_queued_record_idx ON acq.lineitem (queued_record);
+CREATE INDEX bib_match_queued_record_idx ON vandelay.bib_match (queued_record);
+CREATE INDEX import_item_record_idx ON vandelay.import_item (record);
 
 COMMIT;

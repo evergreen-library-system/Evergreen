@@ -150,7 +150,7 @@ CREATE TABLE vandelay.bib_match (
     quality         INT         NOT NULL DEFAULT 1,
     match_score     INT         NOT NULL DEFAULT 0
 );
-CREATE INDEX bib_match_queued_record ON vandelay.bib_match (queued_record);
+CREATE INDEX bib_match_queued_record_idx ON vandelay.bib_match (queued_record);
 
 CREATE TABLE vandelay.import_item (
     id              BIGSERIAL   PRIMARY KEY,
@@ -181,7 +181,7 @@ CREATE TABLE vandelay.import_item (
     opac_visible    BOOL,
     internal_id     BIGINT -- queue_type == 'acq' ? acq.lineitem_detail.id : asset.copy.id
 );
-CREATE INDEX import_item_record ON vandelay.import_item (record);
+CREATE INDEX import_item_record_idx ON vandelay.import_item (record);
 
 CREATE TABLE vandelay.import_bib_trash_group(
     id           SERIAL  PRIMARY KEY,

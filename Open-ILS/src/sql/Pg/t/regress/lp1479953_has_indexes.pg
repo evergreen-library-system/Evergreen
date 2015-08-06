@@ -1,0 +1,10 @@
+BEGIN;
+
+SELECT plan(4);
+
+SELECT has_index('acq', 'acq_lineitem_history', 'acq_lineitem_history_queued_record_idx', ARRAY['queued_record']);
+SELECT has_index('acq', 'lineitem', 'li_queued_record_idx', ARRAY['queued_record']);
+SELECT has_index('vandelay', 'bib_match', 'bib_match_queued_record_idx', ARRAY['queued_record']);
+SELECT has_index('vandelay', 'import_item', 'import_item_record_idx', ARRAY['record']);
+
+ROLLBACK;
