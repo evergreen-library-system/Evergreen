@@ -5,7 +5,7 @@ BEGIN;
  * speeding up vandelay.bib_queue deletions).
  */
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0922', :eg_version);
 
 CREATE INDEX acq_lineitem_history_queued_record_idx ON acq.acq_lineitem_history (queued_record);
 CREATE INDEX li_queued_record_idx ON acq.lineitem (queued_record);
