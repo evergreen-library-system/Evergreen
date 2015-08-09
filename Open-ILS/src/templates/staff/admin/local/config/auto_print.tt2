@@ -1,0 +1,86 @@
+[%
+  WRAPPER "staff/base.tt2";
+  ctx.page_title = l("Auto-Print Settings"); 
+  ctx.page_app = "egAdminConfig";
+  ctx.page_ctrl = 'AutoPrintCtl';
+%]
+
+[% BLOCK APP_JS %]
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/admin/local/config/auto_print.js"></script>
+<link rel="stylesheet" href="[% ctx.base_path %]/staff/css/admin.css" />
+[% END %]
+
+<div class="container-fluid" style="text-align:center">
+  <div class="alert alert-info alert-less-pad strong-text-2">
+    [% l('Auto-Print Settings') %]
+  </div>
+</div>
+
+<div id="auto-print-container">
+
+  <div class="strong-text-2 row">
+    [% l('Disable Automatic Print Attempt Type List') %]
+  </div>
+
+  <div class="row">
+[% | l %]Disable automatic print attempts from staff client interfaces
+for the receipt types in this list.  Possible values: "Checkout", "Bill
+Pay", "Hold Slip", "Transit Slip", and "Hold/Transit Slip".  This is
+different from the Auto-Print checkbox in the pertinent interfaces
+in that it disables automatic print attempts altogether, rather than
+encouraging silent printing by suppressing the print dialog.  The
+Auto-Print checkbox in these interfaces have no effect on the behavior
+for this setting.  In the case of the Hold, Transit, and Hold/Transit
+slips, this also suppresses the alert dialogs that precede the print
+dialog (the ones that offer Print and Do Not Print as options).[% END %]
+  </div>
+
+  <div class="row">
+    <div class="strong-text-2">[% l('New Setting') %]</div>
+    <div>
+      [% l('Disable auto-print attempts for these receipt/slip types') %]
+    </div>
+  </div>
+
+  <div class="row"></div><!-- add some padding -->
+
+  <div>
+    <div class="form-group">
+      <label class="col-md-2">[% l('Checkout Receipt') %]</label>
+      <input type="checkbox" ng-model="co_recpt"/>
+    </div>
+    <div class="form-group">
+      <label class="col-md-2">[% l('Bill Pay Receipt') %]</label>
+      <input type="checkbox" ng-model="bill_recpt"/>
+    </div>
+    <div class="form-group">
+      <label class="col-md-2">[% l('Hold Slip') %]</label>
+      <input type="checkbox" ng-model="hold_slip"/>
+    </div>
+    <div class="form-group">
+      <label class="col-md-2">[% l('Transit Slip') %]</label>
+      <input type="checkbox" ng-model="transit_slip"/>
+    </div>
+    <div class="form-group">
+      <label class="col-md-2">[% l('Hold/Transit Slip') %]</label>
+      <input type="checkbox" ng-model="hold_transit_slip"/>
+    </div>
+    <div class="form-group">
+      <label class="col-md-2">[% l('For This Library and Descendants') %]</label>
+      <eg-org-selector selected="context_org" 
+        onchange="show_org_values" disable-test="cant_use_org"></eg-org-selector>
+    </div>
+  </div>
+  </div>
+    <div class="form-group">
+      <button class="btn btn-default" 
+        ng-class="{disabled : in_flight}"
+        ng-click="update_auto_print()">
+        [% l('Update Settings') %]
+      </button>
+    </div>
+  </div>
+
+</div>
+
+[% END %]

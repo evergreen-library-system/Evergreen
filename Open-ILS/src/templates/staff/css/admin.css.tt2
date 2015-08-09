@@ -21,3 +21,10 @@
   border-top: 2px solid #F5F5F5;
 }
 
+#auto-print-container {
+  margin-top: 20px;
+}
+
+#auto-print-container .row {
+  margin-top: 20px;
+}

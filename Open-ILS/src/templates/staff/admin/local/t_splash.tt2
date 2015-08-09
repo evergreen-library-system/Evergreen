@@ -8,31 +8,49 @@
 <div class="container admin-splash-container">
 
   <div class="row new-entry">
-    <div class="col-md-3">
+    <div class="col-md-4">
       <span class="glyphicon glyphicon-pencil"></span>
       <a target="_self" href="./admin/local/actor/address_alert">
         [% l('Address Alerts') %]
       </a>
     </div>
+    <div class="col-md-4">
+      <span class="glyphicon glyphicon-pencil"></span>
+      <a target="_self" href="./admin/local/asset/copy_locations">
+        [% l('Copy Locations Editor') %]
+      </a>
+    </div>
   </div>
   <div class="row new-entry">
-    <div class="col-md-3">
+    <div class="col-md-4">
       <span class="glyphicon glyphicon-pencil"></span>
       <a target="_self" href="./admin/local/circ/age_to_lost">
         [% l('Age Overdue Circs to Lost') %]
       </a>
     </div>
+    <div class="col-md-4">
+      <span class="glyphicon glyphicon-pencil"></span>
+      <a target="_self" href="./admin/local/asset/copy_template">
+        [% l('Copy Template Editor') %]
+      </a>
+    </div>
   </div>
   <div class="row new-entry">
-    <div class="col-md-3">
+    <div class="col-md-4">
       <span class="glyphicon glyphicon-pencil"></span>
       <a target="_self" href="./admin/local/config/barcode_completion">
         [% l('Barcode Completion') %]
       </a>
     </div>
+    <div class="col-md-4">
+      <span class="glyphicon glyphicon-pencil"></span>
+      <a target="_self" href="./admin/local/config/auto_print">
+        [% l('Auto-Print Settings') %]
+      </a>
+    </div>
   </div>
   <div class="row new-entry">
-    <div class="col-md-3">
+    <div class="col-md-4">
       <span class="glyphicon glyphicon-pencil"></span>
       <a target="_self" href="./admin/local/money/cash_reports">
         [% l('Cash Reports') %]
@@ -40,7 +58,7 @@
     </div>
   </div>
   <div class="row new-entry">
-    <div class="col-md-3">
+    <div class="col-md-4">
       <span class="glyphicon glyphicon-pencil"></span>
       <a target="_self" href="./admin/local/config/circ_limit_set">
         [% l('Circ Limit Sets') %]
@@ -48,7 +66,7 @@
     </div>
   </div>
   <div class="row new-entry">
-    <div class="col-md-3">
+    <div class="col-md-4">
       <span class="glyphicon glyphicon-pencil"></span>
       <a target="_self" href="./admin/local/config/circ_matrix_matchpoint">
         [% l('Circulation Policies') %]
@@ -56,10 +74,26 @@
     </div>
   </div>
   <div class="row new-entry">
-    <div class="col-md-3">
+    <div class="col-md-4">
       <span class="glyphicon glyphicon-pencil"></span>
       <a target="_self" href="./admin/local/actor/closed_dates">
-        [% l('Closed Dates Editor') %]
+        [% l('Closed Dates Editor (pending)') %]
+      </a>
+    </div>
+  </div>
+  <div class="row new-entry">
+    <div class="col-md-4">
+      <span class="glyphicon glyphicon-pencil"></span>
+      <a target="_self" href="./admin/local/asset/copy_location_group">
+        [% l('Copy Location Groups') %]
+      </a>
+    </div>
+  </div>
+  <div class="row new-entry">
+    <div class="col-md-4">
+      <span class="glyphicon glyphicon-pencil"></span>
+      <a target="_self" href="./admin/local/asset/copy_location_order">
+        [% l('Copy Location Order') %]
       </a>
     </div>
   </div>

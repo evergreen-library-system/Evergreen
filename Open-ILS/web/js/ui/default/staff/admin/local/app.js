@@ -24,6 +24,13 @@ angular.module('egLocalAdmin',
         controller: 'EmbedXHTMLCtl', // non-conify
         resolve : resolver
     });
+    
+    // non-conify routes come first
+    $routeProvider.when('/admin/local/asset/copy_locations', {
+        template: eframe_template,
+        controller: 'EmbedXHTMLCtl', // non-conify
+        resolve : resolver
+    });
 
     // Conify page handler
     $routeProvider.when('/admin/local/:schema/:page', {
