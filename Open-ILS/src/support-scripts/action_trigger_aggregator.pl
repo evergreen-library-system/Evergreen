@@ -77,6 +77,9 @@ $0 \
 
 Options
 
+    --cleanup
+        Remove the local file after script is done.
+
     --event-defs 
         action_trigger.event_definition IDs to include
 
@@ -88,7 +91,11 @@ Options
         Only collect output for events whose run_time is on or after this ISO date
 
     --end-date 
-        Only collect output for events whose run_time occurred before this IDO date
+        Only collect output for events whose run_time occurred before this ISO date
+
+    --osrf-config
+        To set the OpenSRF config to something other than the default of
+        '/openils/conf/opensrf_core.xml'
 
     --output-file [default STDOUT]
         Output goes to this file.  
@@ -100,6 +107,12 @@ Options
     --remote-account
         Evergreen config.remote_account ID
         If set, the output-file will be sent via sFTP/SCP to this server.
+
+    --verbose
+        Show more information about what the script is doing.
+
+    --help
+        Show command usage information.
 
 HELP
     exit;
