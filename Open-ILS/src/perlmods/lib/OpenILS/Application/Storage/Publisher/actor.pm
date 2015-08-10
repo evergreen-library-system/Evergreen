@@ -30,13 +30,13 @@ sub juv_to_adult {
     my $adult_age = shift;
 
     my $sql = <<"    SQL";
-            UPDATE  actor.usr
-              SET   juvenile = FALSE
-              WHERE id IN (
-              SELECT au.id
-              FROM actor.usr au
-              WHERE AGE(au.dob) > COALESCE( BTRIM( (SELECT value FROM actor.org_unit_ancestor_setting('global.juvenile_age_threshold', au.home_ou)),'"' ), ? )::INTERVAL
-              AND au.juvenile IS TRUE)
+        UPDATE actor.usr
+            SET juvenile = FALSE
+            WHERE juvenile IS TRUE
+            AND deleted IS FALSE
+            AND AGE(dob) > COALESCE( BTRIM( (
+                    SELECT value FROM actor.org_unit_ancestor_setting(
+                    'global.juvenile_age_threshold', home_ou)),'"' ), ?)::INTERVAL
     SQL
 
     my $sth = actor::user->db_Main->prepare_cached($sql);
