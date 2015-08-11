@@ -1,4 +1,4 @@
-Circulating Items
+﻿Circulating Items
 -----------------
 
 Check Out (F1)
@@ -330,6 +330,35 @@ claims returned_ and/or the _Void lost item processing fee when claims returned_
 settings are enabled. Both settings are available via the Library Settings
 editor.
 ====================================
+
+Enhancements to Items Out
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+By default, the *Items Out* interface in the patron's account is divided into two sections beneath the patron information: *Items Out* and *Other/Special Circulations*.  In previous versions of Evergreen, all circulations appeared in the *Items Out* portion of the interface except for those marked LOST, LONGOVERDUE, or CLAIMSRETURNED, which appeared in the *Other/Special Circulations* portion of the interface.
+
+This enhancement enables you to customize the placement of items in the LOST, LONGOVERDUE, or CLAIMSRETURNED statuses in the top or bottom list.  The value of this enhancement includes increased control over and organization of the Items Out interface.
+
+1) Three new org unit settings enable you to control the placement of these items.  To access these settings, click *Admin* -> *Local Administration* -> *Library Settings Editor*, and search for the following settings:
+
+* Items Out Lost Display Setting
+
+* Items Out Long-Overdue Display Setting
+
+* Items Out Claims Returned Display Setting
+
+The value for each setting is a numeric code describing the list in which the circulation should be placed when the item is checked out, and whether the circulation should appear in the bottom list when checked in, regardless of the state of the transaction. For example, an item may be checked in but the circulation may remain open because fees or fines are owed by the patron.
+
+2) Enter the appropriate value, and click *Update setting*.
+
+1 = Top list, then bottom list
+2 = Bottom list, then bottom list
+5 = Top list, then do not display
+6 = Bottom list, then do not display
+
+To Hide the bottom list entirely, set the value for all special statuses to "5".
+
+Note that if all of the special statuses are hidden, then the interface more accurately represents a patron's items out instead of a combination of items out and items with special circumstances.  Alternatively, if all items out and items with special statuses display in the top list, then the bottom list is hidden, and more screen space exists to display a patron's items out.
+
 
 Mark an Item Long Overdue
 ~~~~~~~~~~~~~~~~~~~~~~~~~
