@@ -175,7 +175,7 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
         return true;
     };
 
-    $scope.local_overlay_target = 0;
+    $scope.local_overlay_target = egCore.hatch.getLocalItem('eg.cat.marked_overlay_record') || 0;
     $scope.mark_as_overlay_target = function() {
         var items = $scope.gridControls.selectedItems();
         if ($scope.local_overlay_target == items[0].tcn()) {
@@ -183,6 +183,7 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
         } else {
             $scope.local_overlay_target = items[0].tcn();
         }
+        egCore.hatch.setLocalItem('eg.cat.marked_overlay_record',$scope.local_overlay_target);
     }
     $scope.cant_overlay = function() {
         if (!$scope.local_overlay_target) return true;
