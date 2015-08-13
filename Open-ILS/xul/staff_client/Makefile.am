@@ -15,7 +15,7 @@ XULRUNNER_VERSION=14.0.1
 XULRUNNER_WINFILE=xulrunner-$(XULRUNNER_VERSION).en-US.win32.zip
 XULRUNNER_LINUX32FILE=xulrunner-$(XULRUNNER_VERSION).en-US.linux-i686.tar.bz2
 XULRUNNER_LINUX64FILE=xulrunner-$(XULRUNNER_VERSION).en-US.linux-x86_64.tar.bz2
-XULRUNNER_URL=ftp://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/$(XULRUNNER_VERSION)/runtimes/
+XULRUNNER_URL=http://archive.mozilla.org/pub/mozilla.org/xulrunner/releases/$(XULRUNNER_VERSION)/runtimes/
 XULRUNNER_MAJOR_VERSION=$$(echo ${XULRUNNER_VERSION} | cut -d. -f1)
 
 # Extensions we include when not an extension ourselves
