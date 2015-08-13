@@ -37,6 +37,7 @@ SQLPO=db.seed.po
 SQLOUT=950.data.seed-values
 TPAC_SRC=../../Open-ILS/src/templates/opac/
 TT_LOCALE=../../Open-ILS/src/templates/locale/
+WEBSTAFF_SRC=../../Open-ILS/src/templates/staff/
 PROGRESS=--progress none
 
 # This Makefile can be used to generate and update PO files for Evergreen,
@@ -99,6 +100,7 @@ newpo:
 	@pot2po $(PROGRESS) -i po/selfcheck.js/selfcheck.js.pot -o $(PO)/selfcheck.js/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/serial.properties/serial.properties.pot -o $(PO)/serial.properties/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/tpac/tpac.pot -o $(PO)/tpac/$(LOCALE).po 
+	@pot2po $(PROGRESS) -i po/webstaff/webstaff.pot -o $(PO)/webstaff/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/AutoFieldWidget.js/AutoFieldWidget.js.pot -o $(PO)/AutoFieldWidget.js/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/FlattenerGrid.js/FlattenerGrid.js.pot -o $(PO)/FlattenerGrid.js/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/PCrudFilterPane.js/PCrudFilterPane.js.pot -o $(PO)/PCrudFilterPane.js/$(LOCALE).po 
@@ -151,6 +153,7 @@ updatepo: prep_output
 	@pot2po $(PROGRESS) -i po/selfcheck.js/selfcheck.js.pot -o $(PO)/selfcheck.js/$(LOCALE).po  -t $(PO)/selfcheck.js/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/serial.properties/serial.properties.pot -o $(PO)/serial.properties/$(LOCALE).po  -t $(PO)/serial.properties/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/tpac/tpac.pot -o $(PO)/tpac/$(LOCALE).po -t $(PO)/tpac/$(LOCALE).po 
+	@pot2po $(PROGRESS) -i po/webstaff/webstaff.pot -o $(PO)/webstaff/$(LOCALE).po -t $(PO)/webstaff/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/AutoFieldWidget.js/AutoFieldWidget.js.pot -o $(PO)/AutoFieldWidget.js/$(LOCALE).po  -t $(PO)/AutoFieldWidget.js/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/FlattenerGrid.js/FlattenerGrid.js.pot -o $(PO)/FlattenerGrid.js/$(LOCALE).po  -t $(PO)/FlattenerGrid.js/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/PCrudFilterPane.js/PCrudFilterPane.js.pot -o $(PO)/PCrudFilterPane.js/$(LOCALE).po  -t $(PO)/PCrudFilterPane.js/$(LOCALE).po 
@@ -239,6 +242,10 @@ tpac2pot: mklocale
 	@mkdir -p po/tpac
 	@xgettext.pl --plugin=tt2 --directory=$(TPAC_SRC) --output-dir=po/tpac/ --output=tpac.pot
 
+webstaff2pot: mklocale
+	@mkdir -p po/webstaff
+	@xgettext.pl --plugin=tt2 --directory=$(WEBSTAFF_SRC) --output-dir=po/webstaff/ --output=webstaff.pot
+
 mklocale:
 	@mkdir -p locale/$(LOCALE)
 
@@ -315,6 +322,7 @@ install: updatepo project fmidl2fmidlent fmidlpo2entity-en
 	cp $(PROJECT)/$(LOCALE)/serial.properties $(SERVER_PROPSDIR)/$(LOCALE)/.
 	mkdir -p $(TT_LOCALE)
 	cp po/tpac/$(LOCALE).po $(TT_LOCALE)/tpac.$(LOCALE).po
+	cp po/webstaff/$(LOCALE).po $(TT_LOCALE)/webstaff.$(LOCALE).po
 	cp $(PROJECT)/$(LOCALE)/$(FMIDLENTITY) $(DTDDIR)/$(LOCALE)/
 	@scripts/merge_ils_events.py --master $(EVTSRC) --localization $(PROJECT)/$(LOCALE)/$(EVTXML) --output $(EVTSRC)
 	cp $(PROJECT)/$(LOCALE)/$(SQLOUT).sql $(SQLSRCDIR)/$(SQLOUT)-$(LOCALE).sql
@@ -356,6 +364,7 @@ install: updatepo project fmidl2fmidlent fmidlpo2entity-en
 	cp $(PROJECT)/$(LOCALE)/XULTermLoader.js $(DOJO_WIDGET_SRC)/$(DOJO_LOCALE)/XULTermLoader.js
 	mkdir -p $(TT2_DATA_DIR)
 	cp $(PO)/tpac/$(LOCALE).po $(TT2_DATA_DIR)/.
+	cp $(PO)/webstaff/$(LOCALE).po $(TT2_DATA_DIR)/.
 
 install_all_locales: newpot
 	for i in `ls po/*/*po|grep -v en-US | cut -f3 -d'/' | cut -f1 -d. | sort | uniq`; \
