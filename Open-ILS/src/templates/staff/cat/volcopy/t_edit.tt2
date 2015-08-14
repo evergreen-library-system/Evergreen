@@ -1,0 +1,30 @@
+
+<style> input[type=number] { width: 50px } </style>
+<style> select { width: 80px } </style>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-1">[% l('Library') %]</div>
+        <div class="col-xs-1">[% l('Volumes') %]</div>
+        <div class="col-xs-10">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-xs-1">[% l('Classification') %]</div>
+                    <div class="col-xs-1">[% l('Prefix') %]</div>
+                    <div class="col-xs-3">[% l('Call Number') %]</div>
+                    <div class="col-xs-1">[% l('Suffix') %]</div>
+                    <div class="col-xs-1">[% l('Copies') %]</div>
+                    <div class="col-xs-5">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-xs-6">[% l('Barcode') %]</div>
+                                <div class="col-xs-3">[% l('Copy #') %]</div>
+                                <div class="col-xs-3">[% l('Part') %]</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> <!-- row -->
+    <eg-vol-edit ng-repeat="(lib,callnumbers) in data" record="{{record.id()}}" lib="{{lib}}" struct="data[lib]"></eg-vol-edit>
+</div> <!-- container -->

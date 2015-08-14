@@ -1,0 +1,35 @@
+<eg-record-summary record-id="record_id" record="summaryRecord"></eg-record-summary>
+
+<!-- tabbed copy data view -->
+<h1>[% l('Volume/Copy Editor') %]</h1>
+
+<div class="pad-vert"></div>
+
+<ul class="nav nav-tabs">
+  <li ng-class="{active : tab == 'edit'}">
+    <a ng-click="set_volcopy_tab('edit')" >[% l('Edit') %]</a>
+  </li>
+  <li ng-class="{active : tab == 'templates'}">
+    <a ng-click="set_volcopy_tab('templates')" >[% l('Templates') %]</a>
+  </li>
+  <li ng-class="{active : tab == 'defaults'}">
+    <a ng-click="set_volcopy_tab('defaults')" >[% l('defaults') %]</a>
+  </li>
+</ul>
+
+<div class="tab-content">
+  <div class="tab-pane active">
+    <div ng-show="tab == 'edit'">
+      <div ng-include="'[% ctx.base_path %]/staff/cat/volcopy/t_edit'"></div>
+    </div>
+<!--
+    <div ng-show="tab == 'templates'">
+      <div ng-include="'[% ctx.base_path %]/staff/cat/volcopy/t_'+tab"></div>
+    </div>
+    <div ng-show="tab == 'defaults'">
+      <div ng-include="'[% ctx.base_path %]/staff/cat/volcopy/t_'+tab"></div>
+    </div>
+-->
+  </div>
+</div>
+

@@ -207,6 +207,36 @@ function($modal, $interpolate) {
     };
 })
 
+.directive('egBasicComboBox', function() {
+    return {
+        restrict: 'E',
+        replace: true,
+        scope: {
+            list: "=", // list of strings
+            selected: "="
+        },
+        template:
+            '<div class="input-group">'+
+                '<input type="text" class="form-control" ng-model="selected">'+
+                '<div class="input-group-btn">'+
+                    '<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>'+
+                    '<ul class="dropdown-menu dropdown-menu-right" role="menu">'+
+                        '<li ng-repeat="item in list" class="input-lg"><a href="#" ng-click="changeValue(item)">{{item}}</a></li>'+
+                    '</ul>'+
+                '</div>'+
+            '</div>',
+        controller: ['$scope',
+            function($scope) {
+
+                $scope.changeValue = function (newVal) {
+                    $scope.selected = newVal;
+                }
+
+            }
+        ]
+    };
+})
+
 /**
  * Nested org unit selector modeled as a Bootstrap dropdown button.
  */

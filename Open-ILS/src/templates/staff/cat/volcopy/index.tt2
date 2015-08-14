@@ -1,0 +1,29 @@
+[%
+  WRAPPER "staff/base.tt2";
+  ctx.page_title = l("Volume/Copy Editor"); 
+  ctx.page_app = "egVolCopy";
+  ctx.page_ctrl = "EditCtrl";
+%]
+
+[% BLOCK APP_JS %]
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/grid.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/ui.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/file.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/eframe.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/cat/volcopy/app.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/cat/services/record.js"></script>
+[% END %]
+
+<style>
+  /* FIXME: MOVE ME */
+  #item-status-barcode {width: 16em;}
+  #item-status-form { 
+    margin-bottom: 20px; 
+  }
+</style>
+
+<div ng-view></div>
+
+[% END %]
+
+
