@@ -1,0 +1,131 @@
+BEGIN;
+
+SELECT plan(63);
+
+SELECT is(xml_famous5_to_text('&lt;'), '<', 'less than simple test');
+
+SELECT isnt(xml_famous5_to_text('&lt'), '<', 'less than bad syntax');
+
+SELECT is(xml_famous5_to_text('&gt;'), '>', 'greater than simple test');
+
+SELECT isnt(xml_famous5_to_text('&gt'), '>', 'greater than bad syntax');
+
+SELECT is(xml_famous5_to_text('&apos;'), '''', 'apostrophe simple test');
+
+SELECT isnt(xml_famous5_to_text('&apos'), '''', 'apostrohpe bad syntax');
+
+SELECT is(xml_famous5_to_text('&quot;'), '"', 'quotation simple test');
+
+SELECT isnt(xml_famous5_to_text('&quot'), '"', 'quotation bad syntax');
+
+SELECT is(xml_famous5_to_text('&amp;'), '&', 'ampersand simple test');
+
+SELECT isnt(xml_famous5_to_text('&amp'), '&', 'ampersand bad syntax');
+
+SELECT is(xml_famous5_to_text('&lt; &gt; &apos; &quot; &amp;'), '< > '' " &', 'all famous five simple test');
+
+SELECT isnt(xml_famous5_to_text('&lt &gt; &apos; &quot; &amp;'), '< > '' " &', 'all famous five single syntax error');
+
+SELECT isnt(xml_famous5_to_text('&lt &gt &apos; &quot; &amp;'), '< > '' " &', 'all famous five two syntax errors');
+
+SELECT isnt(xml_famous5_to_text('&lt &gt &apos &quot; &amp;'), '< > '' " &', 'all famous five three syntax errors');
+
+SELECT isnt(xml_famous5_to_text('&lt &gt &apos &quot &amp;'), '< > '' " &', 'all famous five four syntax errors');
+
+SELECT isnt(xml_famous5_to_text('&lt &gt &apos &quot &amp'), '< > '' " &', 'all famous five five syntax errors');
+
+SELECT isnt(xml_famous5_to_text('&lt &gt; &apos; &quot; &amp;'), '< > '' " &', 'all famous five less than syntax error');
+
+SELECT isnt(xml_famous5_to_text('&lt; &gt &apos; &quot; &amp;'), '< > '' " &', 'all famous five greater than syntax error');
+
+SELECT isnt(xml_famous5_to_text('&lt; &gt; &apos &quot; &amp;'), '< > '' " &', 'all famous five apostrophe syntax error');
+
+SELECT isnt(xml_famous5_to_text('&lt; &gt; &apos; &quot &amp;'), '< > '' " &', 'all famous five quotation syntax error');
+
+SELECT isnt(xml_famous5_to_text('&lt; &gt; &apos; &quot; &amp'), '< > '' " &', 'all famous five ampersand syntax error');
+
+SELECT isnt(xml_famous5_to_text('&lt &gt &apos; &quot; &amp;'), '< > '' " &', 'all famous five less than + greater than syntax error');
+
+SELECT isnt(xml_famous5_to_text('&lt &gt; &apos &quot; &amp;'), '< > '' " &', 'all famous five less than + apostrophe syntax error');
+
+SELECT isnt(xml_famous5_to_text('&lt &gt; &apos; &quot &amp;'), '< > '' " &', 'all famous five less than + quotation syntax error');
+
+SELECT isnt(xml_famous5_to_text('&lt &gt; &apos; &quot; &amp'), '< > '' " &', 'all famous five less than + ampersand syntax error');
+
+SELECT isnt(xml_famous5_to_text('&lt; &gt &apos &quot; &amp;'), '< > '' " &', 'all famous five greater than + apostrophe syntax error');
+
+SELECT isnt(xml_famous5_to_text('&lt; &gt &apos; &quot &amp;'), '< > '' " &', 'all famous five greater than + quotation syntax error');
+
+SELECT isnt(xml_famous5_to_text('&lt; &gt &apos; &quot; &amp'), '< > '' " &', 'all famous five greater than + ampersand syntax error');
+
+SELECT isnt(xml_famous5_to_text('&lt; &gt; &apos &quot &amp;'), '< > '' " &', 'all famous five apostrophe + quotation syntax error');
+
+SELECT isnt(xml_famous5_to_text('&lt; &gt; &apos &quot; &amp'), '< > '' " &', 'all famous five apostrophe + ampersand syntax error');
+
+SELECT isnt(xml_famous5_to_text('&lt; &gt; &apos; &quot &amp'), '< > '' " &', 'all famous five quotation + ampersand syntax error');
+
+SELECT isnt(xml_famous5_to_text('&lt &gt &apos &quot; &amp;'), '< > '' " &', 'all famous five less than + greater than + apostrophe syntax error');
+
+SELECT isnt(xml_famous5_to_text('&lt &gt &apos; &quot &amp;'), '< > '' " &', 'all famous five less than + greater than + quotation syntax error');
+
+SELECT isnt(xml_famous5_to_text('&lt &gt &apos; &quot; &amp'), '< > '' " &', 'all famous five less than + greater than + ampersand syntax error');
+
+SELECT isnt(xml_famous5_to_text('&lt; &gt &apos &quot &amp;'), '< > '' " &', 'all famous five greater than + apostrophe + quotation syntax error');
+
+SELECT isnt(xml_famous5_to_text('&lt; &gt &apos &quot; &amp'), '< > '' " &', 'all famous five greater than + apostrophe + ampersand syntax error');
+
+SELECT isnt(xml_famous5_to_text('&lt; &gt; &apos &quot &amp'), '< > '' " &', 'all famous five apostrophe + quotation+  ampersand syntax error');
+
+SELECT isnt(xml_famous5_to_text('&lt; &gt &apos &quot &amp'), '< > '' " &', 'all famous five greater than + apostrophe + quotation + ampersand syntax error');
+
+SELECT isnt(xml_famous5_to_text('&lt &gt; &apos &quot &amp'), '< > '' " &', 'all famous five less than + apostrophe + quotation + ampersand syntax error');
+
+SELECT isnt(xml_famous5_to_text('&lt &gt &apos; &quot &amp'), '< > '' " &', 'all famous five less than + greater than + quotation + ampersand syntax error');
+
+SELECT isnt(xml_famous5_to_text('&lt &gt &apos &quot; &amp'), '< > '' " &', 'all famous five less than + greater than + apostrophe + quotation syntax error');
+
+SELECT isnt(xml_famous5_to_text('&lt &gt &apos &quot &amp;'), '< > '' " &', 'all famous five less than + greater than + apostrophe + quotation syntax error');
+
+SELECT is(xml_famous5_to_text('&lt; &lt;'), '< <', 'two less thans simple test');
+
+SELECT is(xml_famous5_to_text('&gt; &gt;'), '> >', 'two greater thans simple test');
+
+SELECT is(xml_famous5_to_text('&apos; &apos;'), ''' ''', 'two apostrophes simple test');
+
+SELECT is(xml_famous5_to_text('&quot; &quot;'), '" "', 'two quotations simple test');
+
+SELECT is(xml_famous5_to_text('&amp; &amp;'), '& &', 'two ampersands simple test');
+
+SELECT isnt(xml_famous5_to_text('&lt; &lt'), '< <', 'two less thans one syntax error');
+
+SELECT isnt(xml_famous5_to_text('&gt; &gt'), '> >', 'two greater thans one syntax error');
+
+SELECT isnt(xml_famous5_to_text('&apos; &apos'), ''' ''', 'two apostrophes one syntax error');
+
+SELECT isnt(xml_famous5_to_text('&quot; &quot'), '" "', 'two quotations one syntax error');
+
+SELECT isnt(xml_famous5_to_text('&amp; &amp'), '& &', 'two ampersands one syntax error');
+
+SELECT is(xml_famous5_to_text('One plus one is &lt; one. Two is &gt; one.  A possessive is indicated by &apos;.  Quotation marks look like &quot;.  Ampersands look like &amp;.'), 'One plus one is < one. Two is > one.  A possessive is indicated by ''.  Quotation marks look like ".  Ampersands look like &.', 'all famous five complex test');
+
+SELECT isnt(xml_famous5_to_text('One plus one is &lt one. Two is &gt; one.  A possessive is indicated by &apos;.  Quotation marks look like &quot;.  Ampersands look like &amp;.'), 'One plus one is < one. Two is > one.  A possessive is indicated by ''.  Quotation marks look like ".  Ampersands look like &.', 'all famous five one syntax errors complex test');
+
+SELECT isnt(xml_famous5_to_text('One plus one is &lt one. Two is &gt one.  A possessive is indicated by &apos;.  Quotation marks look like &quot;.  Ampersands look like &amp;.'), 'One plus one is < one. Two is > one.  A possessive is indicated by ''.  Quotation marks look like ".  Ampersands look like &.', 'all famous five two syntax errors complex test');
+
+SELECT isnt(xml_famous5_to_text('One plus one is &lt one. Two is &gt one.  A possessive is indicated by &apos.  Quotation marks look like &quot;.  Ampersands look like &amp;.'), 'One plus one is < one. Two is > one.  A possessive is indicated by ''.  Quotation marks look like ".  Ampersands look like &.', 'all famous five three syntax errors complex test');
+
+SELECT isnt(xml_famous5_to_text('One plus one is &lt one. Two is &gt one.  A possessive is indicated by &apos.  Quotation marks look like &quot.  Ampersands look like &amp;.'), 'One plus one is < one. Two is > one.  A possessive is indicated by ''.  Quotation marks look like ".  Ampersands look like &.', 'all famous five four syntax errors complex test');
+
+SELECT isnt(xml_famous5_to_text('One plus one is &lt one. Two is &gt one.  A possessive is indicated by &apos.  Quotation marks look like &quot.  Ampersands look like &amp.'), 'One plus one is < one. Two is > one.  A possessive is indicated by ''.  Quotation marks look like ".  Ampersands look like &.', 'all famous five five syntax errors complex test');
+
+SELECT isnt(xml_famous5_to_text('One plus one is &lt one. Two is &gt; one.  A possessive is indicated by &apos;.  Quotation marks look like &quot;.  Ampersands look like &amp;.'), 'One plus one is < one. Two is > one.  A possessive is indicated by ''.  Quotation marks look like ".  Ampersands look like &.', 'less than syntax errors complex test');
+ 
+SELECT isnt(xml_famous5_to_text('One plus one is &lt; one. Two is &gt one.  A possessive is indicated by &apos;.  Quotation marks look like &quot;.  Ampersands look like &amp;.'), 'One plus one is < one. Two is > one.  A possessive is indicated by ''.  Quotation marks look like ".  Ampersands look like &.', 'greater than syntax errors complex test');
+ 
+SELECT isnt(xml_famous5_to_text('One plus one is &lt; one. Two is &gt; one.  A possessive is indicated by &apos.  Quotation marks look like &quot;.  Ampersands look like &amp;.'), 'One plus one is < one. Two is > one.  A possessive is indicated by ''.  Quotation marks look like ".  Ampersands look like &.', 'apostrophe syntax errors complex test');
+ 
+SELECT isnt(xml_famous5_to_text('One plus one is &lt; one. Two is &gt; one.  A possessive is indicated by &apos;.  Quotation marks look like &quot.  Ampersands look like &amp;.'), 'One plus one is < one. Two is > one.  A possessive is indicated by ''.  Quotation marks look like ".  Ampersands look like &.', 'quotation syntax errors complex test');
+ 
+SELECT isnt(xml_famous5_to_text('One plus one is &lt; one. Two is &gt; one.  A possessive is indicated by &apos;.  Quotation marks look like &quot;.  Ampersands look like &amp.'), 'One plus one is < one. Two is > one.  A possessive is indicated by ''.  Quotation marks look like ".  Ampersands look like &.', 'ampersand syntax errors complex test');
+ 
+ROLLBACK;
