@@ -1,0 +1,6 @@
+Pre-Expiration A/T Event Definition
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+A new Action Trigger event definition ("30 Day Account Expiration Courtesy 
+Notice") for sending alerts to users before their accounts are expired has 
+been added.  This is intended to give users time to renew their account before 
+they lose access to library services.
