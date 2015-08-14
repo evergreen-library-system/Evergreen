@@ -312,6 +312,21 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         return cp_id_list;
     }
 
+    $scope.selectedHoldingsVolCopyEdit = function (){
+        egCore.net.request(
+            'open-ils.actor',
+            'open-ils.actor.anon_cache.set_value',
+            null, 'edit-these-copies', {record_id: $scope.record_id, copies: gatherSelectedHoldingsIds() }
+        ).then(function(key) {
+            if (key) {
+                var url = egCore.env.basePath + 'cat/volcopy/' + key;
+                $timeout(function() { $window.open(url, '_blank') });
+            } else {
+                alert('Could not create anonymous cache key!');
+            }
+        });
+    }
+
     $scope.selectedHoldingsItemStatus = function (){
         var url = egCore.env.basePath + 'cat/item/search/' + gatherSelectedHoldingsIds().join(',')
         $timeout(function() { $window.open(url, '_blank') });
