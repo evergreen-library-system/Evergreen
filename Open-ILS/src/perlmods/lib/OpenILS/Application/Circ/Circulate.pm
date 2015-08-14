@@ -2367,9 +2367,8 @@ sub do_checkin {
     }
 
     if( $self->circ ) {
-        $self->checkin_handle_circ;
+        $self->checkin_handle_circ_start;
         return if $self->bail_out;
-        $self->checkin_changed(1);
 
         if (!$dont_change_lost_zero) {
             # if this circ is LOST and we are configured to generate overdue
@@ -2392,6 +2391,11 @@ sub do_checkin {
             # handle fines for this circ, including overdue gen if needed
             $self->handle_fines;
         }
+
+        $self->checkin_handle_circ_finish;
+        return if $self->bail_out;
+        $self->checkin_changed(1);
+
     } elsif( $self->transit ) {
         my $hold_transit = $self->process_received_transit;
         $self->checkin_changed(1);
@@ -3224,7 +3228,7 @@ sub handle_fines {
    return undef;
 }
 
-sub checkin_handle_circ {
+sub checkin_handle_circ_start {
    my $self = shift;
    my $circ = $self->circ;
    my $copy = $self->copy;
@@ -3272,9 +3276,15 @@ sub checkin_handle_circ {
         $self->update_copy;
     }
 
+    return undef;
+}
+
+sub checkin_handle_circ_finish {
+    my $self = shift;
+    my $circ = $self->circ;
 
     # see if there are any fines owed on this circ.  if not, close it
-    ($obt) = $U->fetch_mbts($circ->id, $self->editor);
+    my ($obt) = $U->fetch_mbts($circ->id, $self->editor);
     $circ->xact_finish('now') if( $obt and $obt->balance_owed == 0 );
 
     $logger->debug("circulator: ".$obt->balance_owed." is owed on this circulation");
