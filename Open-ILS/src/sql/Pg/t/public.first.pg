@@ -1,0 +1,22 @@
+-- Load the TAP functions.
+BEGIN;
+
+-- Plan the tests.
+SELECT plan(2);
+
+-- Run the tests. 
+SELECT is(
+    (SELECT public.first(name) FROM config.copy_status WHERE id in (1,2,3)) ,
+    (SELECT name FROM config.copy_status WHERE id = 1),
+    'testing having three rows; picking first row'
+);
+
+SELECT is(
+    (SELECT public.first(name) FROM config.copy_status WHERE id = 1) ,
+    (SELECT name FROM config.copy_status WHERE id = 1),
+    'testing having one row; picking first row'
+);
+
+-- Finish the tests and clean up.
+SELECT * FROM finish();
+ROLLBACK;

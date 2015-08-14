@@ -1,0 +1,22 @@
+-- Load the TAP functions.
+BEGIN;
+
+-- Plan the tests.
+SELECT plan(2);
+
+-- Run the tests. 
+SELECT is(
+    public.first_agg(1,2),
+    1,
+    'testing having two interger parameters; picking first parameter'
+);
+
+SELECT is(
+    public.first_agg('1'::text,'2'::text),
+    '1',
+    'testing having two string parameters; picking first parameter'
+);
+
+-- Finish the tests and clean up.
+SELECT * FROM finish();
+ROLLBACK;
