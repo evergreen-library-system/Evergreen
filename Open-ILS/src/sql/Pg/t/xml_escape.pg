@@ -1,0 +1,39 @@
+
+BEGIN;
+
+-- Plan the tests.
+SELECT plan(5);
+
+SELECT is(
+    evergreen.xml_escape('A Song of Ice & Fire'),
+    'A Song of Ice &amp; Fire',
+    'XML-Escape ampersand'
+);
+
+SELECT is(
+    evergreen.xml_escape('A Song of Rice and <<< Fire'),
+    'A Song of Rice and &lt;&lt;&lt; Fire',
+    'XML-Escape less-than'
+);
+
+SELECT is(
+    evergreen.xml_escape('>A Song of Mice and >>> Fire'),
+    '&gt;A Song of Mice and &gt;&gt;&gt; Fire',
+    'XML-Escape greater-than'
+);
+
+SELECT is(
+    evergreen.xml_escape('<A> Song of Vice &&& <<Fire'),
+    '&lt;A&gt; Song of Vice &amp;&amp;&amp; &lt;&lt;Fire',
+    'XML-Escape mixed'
+);
+
+SELECT is(
+    evergreen.xml_escape('åbçdéñœöîøæÇıÂÅÍÎÏÔÔÒÚÆŒè'), 
+    'åbçdéñœöîøæÇıÂÅÍÎÏÔÔÒÚÆŒè',
+    'XML-Escape no changes'
+);
+
+-- Finish the tests and clean up.
+SELECT * FROM finish();
+ROLLBACK;
