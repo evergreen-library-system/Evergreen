@@ -1,0 +1,21 @@
+-- Start transaction and plan the tests.
+BEGIN;
+
+-- Number of tests that will be run
+SELECT plan(7);
+
+-- Run the tests
+
+SELECT is( evergreen.lowercase('aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ'), 'aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzz', 'English Characters');
+SELECT is( evergreen.lowercase('0123456789!@#$%^&*()-+'), '0123456789!@#$%^&*()-+', 'Numbers and Symbols');
+SELECT is( evergreen.lowercase('ÁÉÍÑÓÚÜáéíñóúü¿¡'), 'áéíñóúüáéíñóúü¿¡', 'Spanish');
+SELECT is( evergreen.lowercase('ÖÜÇĞŞöüçğş'), 'öüçğşöüçğş', 'Turkish');
+-- Skipping Turkish i's - İ-> i, I -> ı since the lowercase doesn't seem to handle them correctly.
+SELECT is( evergreen.lowercase('ÄÉÖÜ'), 'äéöü', 'German');
+SELECT is( evergreen.lowercase('АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ'), 'абвгдежзийклмнопрстуфхцчшщъыьэюя', 'Russian');
+SELECT is( evergreen.lowercase('ÁĄÄÉĘĚÍÓÔÚŮÝČĹŇŔŘŠŽ'), 'áąäéęěíóôúůýčĺňŕřšž', 'Czeck, Slovack & Slovenian');
+
+
+-- Finish the test and clean up.
+SELECT * FROM finish();
+ROLLBACK;
