@@ -1,0 +1,31 @@
+-- Load the TAP functions.
+BEGIN;
+
+-- Plan the tests.
+SELECT plan(6);
+
+SELECT is(public.text_concat('foo','bar'), 'foo bar', '2 Strings');
+SELECT is(public.text_concat('åbçdéñœöîøæ', 'ÇıÂÅÍÎÏÔÔÒÚÆŒè'), 
+    'åbçdéñœöîøæ ÇıÂÅÍÎÏÔÔÒÚÆŒè', '2 More Strings');
+SELECT is(public.text_concat('foo',NULL), 'foo', 'string + NULL');
+SELECT is(public.text_concat(NULL, 'bar'), 'bar', 'NULL + string');
+SELECT is(public.text_concat(NULL, NULL), NULL, 'NULL + NULL');
+
+-- test aggregate use
+
+INSERT INTO config.billing_type (name, owner, default_price) VALUES
+('pgtap 1', 1, DEFAULT),
+('pgtap 2', 1, '3.34'),
+('pgtap 3', 1, '4.56');
+
+SELECT is(
+    (SELECT agg_text(subq.default_price::text) FROM 
+        (SELECT * FROM config.billing_type 
+            WHERE name ~ 'pgtap' ORDER BY name) subq),
+    '3.34 4.56',
+    'agg_text() aggregates some text'
+);
+
+-- Finish the tests and clean up.
+SELECT * FROM finish();
+ROLLBACK;
