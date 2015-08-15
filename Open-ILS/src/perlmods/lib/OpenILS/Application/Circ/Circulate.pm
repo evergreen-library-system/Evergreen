@@ -209,13 +209,6 @@ sub run_method {
             }
         }
     }
-            
-    
-
-    # --------------------------------------------------------------------------
-    # Go ahead and load the script runner to make sure we have all 
-    # of the objects we need
-    # --------------------------------------------------------------------------
 
     if ($circulator->use_booking) {
         $circulator->is_res_checkin($circulator->is_checkin(1))
@@ -295,8 +288,6 @@ sub run_method {
     }
     
     $conn->respond_complete(circ_events($circulator));
-
-    $circulator->script_runner->cleanup if $circulator->script_runner;
 
     return undef if $circulator->bail_out;
 
@@ -400,7 +391,6 @@ my @AUTOLOAD_FIELDS = qw/
     patron
     patron_id
     patron_barcode
-    script_runner
     volume
     title
     is_renewal
@@ -955,7 +945,6 @@ my $LEGACY_CIRC_EVENT_MAP = {
 # ---------------------------------------------------------------------
 sub run_patron_permit_scripts {
     my $self        = shift;
-    my $runner      = $self->script_runner;
     my $patronid    = $self->patron->id;
 
     my @allevents; 
@@ -1177,7 +1166,6 @@ sub get_max_fine_amount {
 sub run_copy_permit_scripts {
     my $self = shift;
     my $copy = $self->copy || return;
-    my $runner = $self->script_runner;
 
     my @allevents;
 
@@ -1720,7 +1708,6 @@ sub run_checkout_scripts {
     my $nobail = shift;
 
     my $evt;
-    my $runner = $self->script_runner;
 
     my $duration;
     my $recurring;
@@ -2140,10 +2127,6 @@ sub make_precat_copy {
         $self->push_events($self->editor->event);
         return;
     }   
-
-    # this is a little bit of a hack, but we need to 
-    # get the copy into the script runner
-    $self->script_runner->insert("environment.copy", $copy, 1) if $self->script_runner;
 }
 
 
