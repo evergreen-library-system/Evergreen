@@ -561,6 +561,12 @@ function($scope,  $q,  $location , $filter,  egCore,  egUser,  patronSvc) {
         return Boolean($location.path().match(/patron\/\d+\/edit$/));
     }
 
+    // To support the fixed position patron edit actions bar,
+    // its markup has to live outside the scope of the patron 
+    // edit controller.  Insert a scope blob here that can be
+    // modifed from within the patron edit controller.
+    $scope.edit_passthru = {};
+
     // returns true if a redirect occurs
     function redirectToAlertPanel() {
 

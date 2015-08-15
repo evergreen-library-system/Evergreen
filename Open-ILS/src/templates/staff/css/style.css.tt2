@@ -102,6 +102,13 @@
  * Local style
  */
 
+/* no bootstrap way to directly disable a link.  */
+a.disabled {
+  pointer-events: none;
+  cursor: default;
+  color: #888;
+}
+
 #splash-nav .panel-body div {
     padding-bottom: 10px;
 }

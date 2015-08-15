@@ -145,29 +145,7 @@ angular.module('egCoreMod').run(['egStrings', function(s) {
       </li>
     </ul>
     <div class="flex-row patron-reg-actions-bar" ng-if="is_patron_edit()">
-      <div>
-        <span>
-          [% l('Show:') %]
-          <span class="pad-all-min" ng-show="!display_required_fields">
-            <a href>[% l('Required Fields') %]</a>
-          </span>
-          <span class="pad-all-min" ng-show="!display_suggested_fields">
-            <a href>[% l('Suggested Fields') %]</a>
-          </span>
-          <span class="pad-all-min" ng-show="!display_all_fields">
-            <a href>[% l('All Fields') %]</a>
-          </span>
-        </span>
-      </div>
-      <div class="flex-cell"></div>
-      <div>
-        <span class="pad-all-min">
-          <button type="button" class="btn btn-default">[% l('Save') %]</button>
-        </span>
-        <span class="pad-all-min">
-          <button type="button" class="btn btn-default">[% l('Save & Clone') %]</button>
-        </span>
-      </div>
+      [% INCLUDE 'staff/circ/patron/reg_actions.tt2' %]
     </div>
 
   </div><!-- col -->

@@ -134,20 +134,30 @@ angular.module('egCoreMod')
     // some org settings require the retrieval of additional data
     service.process_org_settings = function(settings) {
 
-        if (!settings['sms.enable']) {
-            return $q.when();
+        var promises = [];
+
+        if (settings['sms.enable']) {
+            // fetch SMS carriers
+            promises.push(
+                egCore.pcrud.search('csc', 
+                    {active: 'true'}, 
+                    {'order_by':[
+                        {'class':'csc', 'field':'name'},
+                        {'class':'csc', 'field':'region'}
+                    ]}, {atomic : true}
+                ).then(function(carriers) {
+                    service.sms_carriers = carriers;
+                })
+            );
+        } else {
+            // if other promises are added below, this is not necessary.
+            promises.push($q.when());  
         }
 
-        return egCore.pcrud.search('csc', 
-            {active: 'true'}, 
-            {'order_by':[
-                {'class':'csc', 'field':'name'},
-                {'class':'csc', 'field':'region'}
-            ]},
-            {atomic : true}
-        ).then(function(carriers) {
-            service.sms_carriers = carriers;
-        });
+        // other post-org-settings processing goes here,
+        // adding to promises as needed.
+
+        return $q.all(promises);
     };
 
     service.get_ident_types = function() {
@@ -313,10 +323,22 @@ angular.module('egCoreMod')
 function PatronRegCtrl($scope, $routeParams, 
     $q, egCore, patronSvc, patronRegSvc) {
 
+
     $scope.clone_id = $routeParams.clone_id;
     $scope.stage_username = $routeParams.stage_username;
     $scope.patron_id = 
         patronRegSvc.patron_id = $routeParams.edit_id || $routeParams.id;
+
+    if (!$scope.edit_passthru) {
+        // in edit more, scope.edit_passthru is delivered to us by
+        // the enclosing controller.  In register mode, there is 
+        // no enclosing controller, so we create our own.
+        $scope.edit_passthru = {};
+    }
+
+    // 0=all, 1=suggested, 2=all
+    $scope.edit_passthru.vis_level = 0; 
+    // TODO: add save/clone handlers here
 
     $q.all([
 
@@ -342,6 +364,9 @@ function PatronRegCtrl($scope, $routeParams,
         $scope.sms_carriers = prs.sms_carriers;
         $scope.stat_cats = prs.stat_cats;
         $scope.surveys = prs.surveys;
+
+        if ($scope.org_settings['ui.patron.edit.default_suggested'])
+            $scope.edit_passthru.vis_level = 1;
     });
 
     // returns the tree depth of the selected profile group tree node.
@@ -358,6 +383,60 @@ function PatronRegCtrl($scope, $routeParams,
         aua : egCore.idl.classes.aua.field_map
     };
 
+    // field visibility cache.  Some fields are universally required.
+    var field_visibility = {
+        'ac.barcode' : 2,
+        'au.usrname' : 2,
+        'au.passwd' :  2,
+        // TODO passwd2 2,
+        'au.first_given_name' : 2,
+        'au.family_name' : 2,
+        'au.ident_type' : 2,
+        'au.home_ou' : 2,
+        'au.profile' : 2,
+        'au.expire_date' : 2,
+        'au.net_access_level' : 2,
+        'aua.address_type' : 2,
+        'aua.post_code' : 2,
+        'aua.street1' : 2,
+        'aua.street2' : 2,
+        'aua.city' : 2,
+        'aua.county' : 2,
+        'aua.state' : 2,
+        'aua.country' : 2,
+        'aua.valid' : 2,
+        'aua.within_city_limits' : 2,
+        'stat_cats' : 1,
+        'surveys' : 1
+    }; 
+
+    // returns true if the selected field should be visible
+    // given the current required/suggested/all setting.
+    $scope.show_field = function(field_key) {
+
+        if (field_visibility[field_key] == undefined) {
+            // compile and cache the visibility for the selected field
+
+            // org settings have not been received yet.
+            if (!$scope.org_settings) return false;
+
+            var req_set = 'ui.patron.edit.' + field_key + '.require';
+            var sho_set = 'ui.patron.edit.' + field_key + '.show';
+            var sug_set = 'ui.patron.edit.' + field_key + '.suggest';
+
+            if ($scope.org_settings[req_set]) {
+                field_visibility[field_key] = 2;
+            } else if ($scope.org_settings[sho_set]) {
+                field_visibility[field_key] = 2;
+            } else if ($scope.org_settings[sug_set]) {
+                field_visibility[field_key] = 1;
+            } else {
+                field_visibility[field_key] = 0;
+            }
+        }
+
+        return field_visibility[field_key] >= $scope.edit_passthru.vis_level;
+    }
 }
 
 

@@ -10,31 +10,10 @@
   </div>
 
   <div class="flex-row" class='patron-reg-actions-bar'>
-    <div>
-      <span>
-        [% l('Show:') %]
-        <span class="pad-all-min" ng-show="!display_required_fields">
-          <a href>[% l('Required Fields') %]</a>
-        </span>
-        <span class="pad-all-min" ng-show="!display_suggested_fields">
-          <a href>[% l('Suggested Fields') %]</a>
-        </span>
-        <span class="pad-all-min" ng-show="!display_all_fields">
-          <a href>[% l('All Fields') %]</a>
-        </span>
-      </span>
-    </div>
-    <div class="flex-cell"></div>
-    <div>
-      <span class="pad-all-min">
-        <button type="button" class="btn btn-default">[% l('Save') %]</button>
-      </span>
-      <span class="pad-all-min">
-        <button type="button" class="btn btn-default">[% l('Save & Clone') %]</button>
-      </span>
-    </div>
+    [% INCLUDE 'staff/circ/patron/reg_actions.tt2' %]
   </div>
 </div>
+
 
 <!-- edit banner -->
 <div ng-if="patron_id"
@@ -54,16 +33,17 @@
 
   IF NOT input_type; input_type = 'text'; END %] 
 
-<div class="row reg-field-row">
+<div class="row reg-field-row" 
+  ng-show="show_field('[% cls _ '.' _ field %]')">
 
   <div class="col-md-3 reg-field-label"> <!-- field label -->
 
-  <label>{{idl_fields.[% cls %].[% field %].label}}</label>
+    <label>{{idl_fields.[% cls %].[% field %].label}}</label>
 
-  <!-- field documentation img/link -->
-  <img ng-show="field_doc.[% cls %].[% field %]" 
-    ng-click="selected_field_doc=field_doc.[% cls %].[% field %]"
-    src='[% DOC_IMG %]'></img>
+    <!-- field documentation img/link -->
+    <img ng-show="field_doc.[% cls %].[% field %]" 
+      ng-click="selected_field_doc=field_doc.[% cls %].[% field %]"
+      src='[% DOC_IMG %]'></img>
   </div>
 
   <div class="col-md-3 reg-field-input"> <!-- field form input -->
@@ -135,7 +115,7 @@
 [% formfield('au', 'suffix') %]
 [% formfield('au', 'alias') %]
 
-<div class="row reg-field-row">
+<div class="row reg-field-row" ng-show="show_field('au.dob')">
   <div class="col-md-3 reg-field-label">
     <label>{{idl_fields.au.dob.label}}</label>
     <img ng-show="field_doc.au.dob" 
@@ -152,7 +132,7 @@
 
 <!-- ident_type -->
 
-<div class="row reg-field-row">
+<div class="row reg-field-row" ng-show="show_field('au.ident_type')">
   <div class="col-md-3 reg-field-label">
     <label>{{idl_fields.au.ident_type.label}}</label>
     <img ng-show="field_doc.au.ident_type" 
@@ -186,7 +166,7 @@
 
 <!-- home org unit selector -->
 
-<div class="row reg-field-row">
+<div class="row reg-field-row" ng-show="show_field('au.home_ou')">
   <div class="col-md-3 reg-field-label">
     <label>{{idl_fields.au.home_ou.label}}</label>
     <img ng-show="field_doc.au.home_ou" 
@@ -201,7 +181,7 @@
 
 <!-- profile selector -->
 
-<div class="row reg-field-row">
+<div class="row reg-field-row" ng-show="show_field('au.profile')">
   <div class="col-md-3 reg-field-label">
     <label>{{idl_fields.au.profile.label}}</label>
     <img ng-show="field_doc.au.profile" 
@@ -227,7 +207,7 @@
   </div>
 </div>
 
-<div class="row reg-field-row">
+<div class="row reg-field-row" ng-show="show_field('au.expire_date')">
   <div class="col-md-3 reg-field-label">
   <label>{{idl_fields.au.expire_date.label}}</label>
     <img ng-show="field_doc.au.expire_date" 
@@ -245,7 +225,7 @@
 
 <!-- net_access_level -->
 
-<div class="row reg-field-row">
+<div class="row reg-field-row" ng-show="show_field('au.net_access_level')">
   <div class="col-md-3 reg-field-label">
     <label>{{idl_fields.au.net_access_level.label}}</label>
     <img ng-show="field_doc.au.net_access_level" 
@@ -395,11 +375,13 @@
 
 <!-- pending address -->
 
-<div class="alert alert-success row" role="alert" ng-if="stat_cats.length > 0">
+<div class="alert alert-success row" role="alert" 
+    ng-show="show_field('stat_cats')" ng-if="stat_cats.length > 0">
     <div class="col-md-6">[% l('Statistical Categories') %]</div>
 </div>
 
-<div class="row reg-field-row" ng-repeat="cat in stat_cats">
+<div class="row reg-field-row" 
+    ng-show="show_field('stat_cats')" ng-repeat="cat in stat_cats">
   <div class="col-md-3 reg-field-label">
     <label>{{cat.name()}}</label>
   </div>
@@ -425,11 +407,13 @@
 
 <!-- surveys -->
 
-<div class="alert alert-success row" role="alert" ng-if="surveys.length > 0">
+<div class="alert alert-success row" role="alert" 
+    ng-show="show_field('surveys')" ng-if="surveys.length > 0">
     <div class="col-md-6">[% l('Surveys') %]</div>
 </div>
 
-<div class="row reg-field-row" ng-repeat="survey in surveys">
+<div class="row reg-field-row" 
+    ng-show="show_field('surveys')" ng-repeat="survey in surveys">
   <div class="col-md-3 reg-field-label">
     <label>{{survey.name()}}</label>
   </div>

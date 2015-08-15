@@ -1,0 +1,32 @@
+<!-- actions bar shared by both variations of the patron edit UI -->
+
+<div>
+  <span>
+    [% l('Show:') %]
+    <span class="pad-all-min">
+      <a href 
+        ng-class="{disabled : edit_passthru.vis_level == 2}"
+        ng-click="edit_passthru.vis_level=2">[% l('Required Fields') %]</a>
+    </span>
+    <span class="pad-all-min">
+      <a href 
+        ng-class="{disabled : edit_passthru.vis_level == 1}"
+        ng-click="edit_passthru.vis_level=1">[% l('Suggested Fields') %]</a>
+    </span>
+    <span class="pad-all-min">
+      <a href 
+        ng-class="{disabled : edit_passthru.vis_level == 0}"
+        ng-click="edit_passthru.vis_level=0">[% l('All Fields') %]</a>
+    </span>
+  </span>
+</div>
+<div class="flex-cell"></div>
+<div>
+  <span class="pad-all-min">
+    <button type="button" class="btn btn-default">[% l('Save') %]</button>
+  </span>
+  <span class="pad-all-min">
+    <button type="button" class="btn btn-default">[% l('Save & Clone') %]</button>
+  </span>
+</div>
+
