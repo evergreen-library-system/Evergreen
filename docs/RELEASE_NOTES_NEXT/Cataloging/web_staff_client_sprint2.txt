@@ -1,0 +1,14 @@
+Web staff client cataloging preview
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The web staff client now includes additional functionality
+to support cataloging and item maintenance, including:
+
+- a new MARC editor
+- Z39.50 search and record import
+- improvements to copy and record bucket functionality
+- embedding the link checker interface
+- embedding the MARC batch import/export interface
+- the beginnings of the web staff volume/copy editor
+
+The web staff client remains a preview and is not recommended
+for production use.
