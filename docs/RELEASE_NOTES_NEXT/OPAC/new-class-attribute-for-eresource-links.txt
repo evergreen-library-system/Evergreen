@@ -1,0 +1,6 @@
+New class attribute for e-resource links
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+In the catalog, links to electronic resources now have a link class
+attribute of "uri_link" to make them easier to customize or build
+additional services upon.
+
