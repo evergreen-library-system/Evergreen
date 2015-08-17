@@ -15817,8 +15817,8 @@ INSERT INTO action_trigger.environment (event_def, path) VALUES
 --Start new patron welcome email notice/action -----------
 --create hook for actor.usr.create_date
 INSERT INTO action_trigger.hook (key, core_type, description, passive)
-    VALUES ('create', 'au', 'Account is created', 't');
-       
+    VALUES ('au.created', 'au', 'Account is created', 't');
+	
 --SQL to create event definition for new account creation notice
 --Inactive, owned by top of org tree by default.  Modify to suit needs.
 
@@ -15827,7 +15827,7 @@ INSERT INTO action_trigger.event_definition (
     validator, reactor, delay, delay_field,
     max_delay, template
 )  VALUES (
-    'f', '1', 'New User Created Welcome Notice', 'create',
+    'f', '1', 'New User Created Welcome Notice', 'au.created',
     'NOOP_True', 'SendEmail', '10 seconds', 'create_date',
     '1 day',
 $$
