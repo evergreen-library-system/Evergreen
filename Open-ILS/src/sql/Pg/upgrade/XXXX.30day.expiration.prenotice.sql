@@ -2,7 +2,7 @@ BEGIN;
 
 --create hook for actor.usr.expire_date
 INSERT INTO action_trigger.hook (key, core_type, description, passive)
-    VALUES ('expire', 'au', 'Account is expired', 't');
+    VALUES ('au.expired', 'au', 'A user account has expired', 't');
 	
 --SQL to create event definition for 30 day account pre-expiration notice
 --Inactive, owned by top of org tree by default.  Modify to suit needs.
@@ -13,7 +13,7 @@ INSERT INTO action_trigger.event_definition (
     validator, reactor, delay, delay_field,
     max_delay, repeat_delay, template
 )  VALUES (
-    'f', '1', '30 Day Account Expiration Courtesy Notice', 'expire',
+    'f', '1', '30 Day Account Expiration Courtesy Notice', 'au.expired',
     'NOOP_True', 'SendEmail', '-30 days', 'expire_date',
     '-29 days', '30 days',
 $$

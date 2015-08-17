@@ -14316,14 +14316,14 @@ INSERT INTO action_trigger.environment (event_def, path) VALUES
 -- 30 Day Pre Expire A/T Notice - Notify customers before their account expires
 
 INSERT INTO action_trigger.hook (key, core_type, description, passive)
-    VALUES ('expire', 'au', 'Account is expired', 't');
+    VALUES ('au.expired', 'au', 'A user account has expired', 't');
 	
 INSERT INTO action_trigger.event_definition (
     active, owner, name, hook,
     validator, reactor, delay, delay_field,
     max_delay, repeat_delay, template
 ) VALUES (
-    'f', '1', '30 Day Account Expiration Courtesy Notice','expire',
+    'f', '1', '30 Day Account Expiration Courtesy Notice','au.expired',
     'NOOP_True', 'SendEmail', '-30 days', 'expire_date', '-29 days', '30 days',
 $$
 [%- USE date -%]
