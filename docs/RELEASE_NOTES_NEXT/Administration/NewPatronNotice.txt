@@ -1,0 +1,15 @@
+New Patron Action Trigger Notice
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+A new Action Trigger event definition ("New User Created Welcome Notice") 
+has been added that will allow you to send a notice after a new patron has 
+been created, based on the actor.usr create-date field.
+
+This notice can be used for various tasks.
+
+  * Sending a welcome email to new patrons to market Library services.
+  * Confirm that a new patron email address is correct.
+  * Generate postal notices to send a welcome packet to new patrons.
+
+Enable this event in the staff client at *Admin* -> *Local Administration* 
+-> *Notifications / Action Triggers*.
