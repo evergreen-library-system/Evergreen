@@ -1,0 +1,7 @@
+New bib source variable for catalog customization
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+For bibliographic records, there is a "bib source" that can be
+associated with every record. This source is now available as a
+variable that can be used behind the scenes when customizing
+the online catalog. The new bib source variables do not present
+themselves in the catalog display by default.
