@@ -1,0 +1,22 @@
+-- Load the TAP functions.
+BEGIN;
+
+-- Plan the tests.
+SELECT plan(2);
+
+-- Run the tests. 
+SELECT is(
+    (SELECT sf_list FROM authority.control_set_authority_field WHERE tag = '100') ,
+    'abcdfklmnopqrstvxyz',
+    'verify that subfield "e" has been removed'
+);
+
+SELECT is(
+    (SELECT sf_list FROM authority.control_set_authority_field WHERE tag = '110') ,
+    'abcdfgklmnoprstvxyz',
+    'verify that subfield "e" has been removed'
+);
+
+-- Finish the tests and clean up.
+SELECT * FROM finish();
+ROLLBACK;

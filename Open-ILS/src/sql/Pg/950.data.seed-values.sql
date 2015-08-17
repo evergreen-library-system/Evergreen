@@ -11039,9 +11039,9 @@ INSERT INTO authority.control_set_authority_field (id, control_set, main_entry, 
 INSERT INTO authority.control_set_authority_field (id, control_set, main_entry, tag, sf_list, display_sf_list, name) VALUES
 
 -- Main entries
-    (1, 1, NULL, '100', 'abcdefklmnopqrstvxyz', 'abcdefklmnopqrstvxyz',
+    (1, 1, NULL, '100', 'abcdfklmnopqrstvxyz', 'abcdefklmnopqrstvxyz',
         oils_i18n_gettext('1','Heading -- Personal Name','acsaf','name')),
-    (2, 1, NULL, '110', 'abcdefgklmnoprstvxyz', 'abcdefgklmnoprstvxyz',
+    (2, 1, NULL, '110', 'abcdfgklmnoprstvxyz', 'abcdefgklmnoprstvxyz',
         oils_i18n_gettext('2','Heading -- Corporate Name','acsaf','name')),
     (3, 1, NULL, '111', 'acdefgklnpqstvxyz', 'acdefgklnpqstvxyz',
         oils_i18n_gettext('3','Heading -- Meeting Name','acsaf','name')),
