@@ -114,10 +114,11 @@ function(egCore , $q) {
 
     service.addCopy = function (cp) {
 
+        if (!cp.parts()) cp.parts([]); // just in case...
+
         var lib = cp.call_number().owning_lib();
         var cn = cp.call_number().id();
 
-        // XXX need to change this data structure, likely...
         if (!service.tree[lib]) service.tree[lib] = {};
         if (!service.tree[lib][cn]) service.tree[lib][cn] = [];
 
@@ -220,7 +221,7 @@ function(egCore , $q) {
                 '</div>'+
             '</div>',
 
-        scope: { copies: "=" },
+        scope: {allcopies: "=", copies: "=" },
         controller : ['$scope','itemSvc','egCore',
             function ( $scope , itemSvc , egCore ) {
                 $scope.new_cp_id = 0;
@@ -264,12 +265,20 @@ function(egCore , $q) {
                         cp.circ_lib( $scope.lib );
                         cp.call_number( $scope.callNumber );
                         $scope.copies.push( cp );
+                        $scope.allcopies.push( cp );
                     }
 
                     var how_many = $scope.copies.length - $scope.copy_count;
                     if (how_many > 0) {
-                        $scope.copies.splice($scope.copy_count,how_many);
+                        var dead = $scope.copies.splice($scope.copy_count,how_many);
                         $scope.callNumber.copies($scope.copies);
+
+                        // Trimming the global list is a bit more tricky
+                        angular.forEach( dead, function (d) {
+                            angular.forEach( $scope.allcopies, function (l, i) { 
+                                if (l === d) $scope.allcopies.splice(i,1);
+                            });
+                        });
                     }
                 }
 
@@ -289,12 +298,12 @@ function(egCore , $q) {
                 '<div class="col-xs-1"><input type="number" min="{{orig_cn_count}}" ng-model="cn_count" ng-change="changeCNCount()"/></div>'+
                 '<div class="col-xs-10">'+
                     '<div class="container-fluid">'+
-                        '<eg-vol-row ng-repeat="(cn,copies) in struct track by cn" copies="copies"></eg-vol-row>'+
+                        '<eg-vol-row ng-repeat="(cn,copies) in struct track by cn" copies="copies" allcopies="allcopies"></eg-vol-row>'+
                     '</div>'+
                 '</div>'+
             '</div>',
 
-        scope: { struct: "=", lib: "@", record: "@" },
+        scope: { allcopies: "=", struct: "=", lib: "@", record: "@" },
         controller : ['$scope','itemSvc','egCore',
             function ( $scope , itemSvc , egCore ) {
                 $scope.new_cn_id = 0;
@@ -325,6 +334,7 @@ function(egCore , $q) {
                             cp.call_number( cn );
 
                             $scope.struct[cn.id()] = [cp];
+                            $scope.allcopies.push(cp);
                         }
                     } else if (n < o) { // removing
                         var how_many = o - n;
@@ -333,6 +343,12 @@ function(egCore , $q) {
                                 .sort(function(a, b){return a-b})
                                 .reverse();
                         for (var i = how_many; i > 0; i--) {
+                            // Trimming the global list is a bit more tricky
+                            angular.forEach($scope.struct[list[i]], function (d) {
+                                angular.forEach( $scope.allcopies, function (l, j) { 
+                                    if (l === d) $scope.allcopies.splice(j,1);
+                                });
+                            });
                             delete $scope.struct[list[i]];
                         }
                     }
@@ -388,9 +404,34 @@ function($scope , $q , $routeParams , $location , $timeout , egCore , egNet , eg
 
             $scope.record_id = data.record_id;
 
-            return itemSvc.fetchIds(data.copies);
+            if (data.copies && data.copies.length)
+                return itemSvc.fetchIds(data.copies);
+
+            if (data.raw && data.raw.length) {
+
+                /* data.raw must be an array of copies with (at least)
+                 * the call number fleshed on each.  For new copies
+                 * create from whole cloth, the id for each should
+                 * probably be negative and isnew() should return true.
+                 * Each /distinct/ call number must have a distinct id
+                 * as well, probably negative also if they're new. Clear?
+                 */
+
+                angular.forEach(
+                    data.raw,
+                    function (cp) { itemSvc.addCopy(cp) }
+                );
+
+                return itemSvc.copies;
+            }
+
         }).then( function() {
-            $scope.data = itemSvc.tree;
+            $scope.data = itemSvc;
+            $scope.workingGridDataProvider.refresh();
+        });
+
+        $scope.$watch('data.copies.length', function () {
+            console.log('data.copies.length changed');
             $scope.workingGridDataProvider.refresh();
         });
 

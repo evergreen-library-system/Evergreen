@@ -30,7 +30,7 @@
                     </div>
                 </div>
             </div> <!-- row -->
-            <eg-vol-edit ng-repeat="(lib,callnumbers) in data" record="{{record.id()}}" lib="{{lib}}" struct="data[lib]"></eg-vol-edit>
+            <eg-vol-edit ng-repeat="(lib,callnumbers) in data.tree" record="{{record.id()}}" lib="{{lib}}" allcopies="data.copies" struct="data.tree[lib]"></eg-vol-edit>
         </div> <!-- container -->
 
     </accordion-group>
