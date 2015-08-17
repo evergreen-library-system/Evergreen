@@ -1,0 +1,11 @@
+SKOS for coded values
+^^^^^^^^^^^^^^^^^^^^^
+Some vocabularies used (or which could be used) for stock
+record attributes and coded value maps in Evergreen are
+published on the web using SKOS. The record attributes system
+can now associate Linked Data URIs with specific attribute
+values. In particular, seed data supplying URIs for the
+RDA Content Type, Media Type, and Carrier Type in this release.
+
+This is an experimental, "under-the-hood" feature that will be built
+upon in subsuquent releases.
