@@ -31,6 +31,14 @@ angular.module('egGridMod',
 
             // comma-separated list of supported or disabled grid features
             // supported features:
+            //  startSelected : init the grid with all rows selected by default
+            //  -menu : don't show any menu buttons (or use space for them)
+            //  -picker : don't show the column picker
+            //  -pagination : don't show any pagination elements, and set
+            //                the limit to 1000
+            //  -actions : don't show the actions dropdown
+            //  -index : don't show the row index column (can't use "index"
+            //           as the idField in this case)
             //  -display : columns are hidden by default
             //  -sort    : columns are unsortable by default 
             //  -multisort : sort priorities config disabled by default
@@ -112,6 +120,15 @@ angular.module('egGridMod',
                 $scope.actionGroups = [{actions:[]}]; // Grouped actions for selected items
                 $scope.menuItems = []; // global actions
 
+                $scope.showIndex = ($scope.features.indexOf('-index') == -1);
+
+                $scope.startSelected = $scope.selectAll = ($scope.features.indexOf('startSelected') > -1);
+                $scope.showActions = ($scope.features.indexOf('-actions') == -1);
+                $scope.showPagination = ($scope.features.indexOf('-pagination') == -1);
+                $scope.showPicker = ($scope.features.indexOf('-picker') == -1);
+
+                $scope.showMenu = ($scope.features.indexOf('-menu') == -1);
+
                 // remove some unneeded values from the scope to reduce bloat
 
                 grid.idlClass = $scope.idlClass;
@@ -121,11 +138,16 @@ angular.module('egGridMod',
                 delete $scope.persistKey;
 
                 var stored_limit = 0;
-                if (grid.persistKey) {
-                    var stored_limit = Number(
-                        egCore.hatch.getLocalItem('eg.grid.' + grid.persistKey + '.limit')
-                    );
+                if ($scope.showPagination) {
+                    if (grid.persistKey) {
+                        var stored_limit = Number(
+                            egCore.hatch.getLocalItem('eg.grid.' + grid.persistKey + '.limit')
+                        );
+                    }
+                } else {
+                    stored_limit = 10000; // maybe support "Inf"?
                 }
+
                 grid.limit = Number(stored_limit) || Number($scope.pageSize) || 25;
 
                 grid.indexField = $scope.idField;
@@ -933,6 +955,8 @@ angular.module('egGridMod',
                         $scope.items.push(item)
                         if (grid.controls.itemRetrieved)
                             grid.controls.itemRetrieved(item);
+                        if ($scope.selectAll)
+                            $scope.selected[grid.indexValue(item)] = true
                     }
                 }).finally(function() { 
                     console.debug('egGrid.collect() complete');

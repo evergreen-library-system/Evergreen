@@ -9,7 +9,7 @@
   <div class="eg-grid-primary-label">{{mainLabel}}</div>
 
   <div class="btn-group" 
-    is-open="gridMenuIsOpen" ng-if="menuLabel" dropdown>
+    is-open="gridMenuIsOpen" ng-if="menuLabel && showMenu" dropdown>
     <button type="button" class="btn btn-default dropdown-toggle eg-grid-menu-item">
       {{menuLabel}}<span class="caret"></span>
     </button>
@@ -28,7 +28,7 @@
 
   <!-- if no menu label is present, present menu-items as a 
        horizontal row of buttons -->
-  <div class="btn-group" ng-if="!menuLabel">
+  <div class="btn-group" ng-if="!menuLabel && showMenu">
     <button ng-if="!item.checkbox && !item.hidden()"
       class="btn btn-default eg-grid-menu-item"
       ng-repeat="item in menuItems"
@@ -54,10 +54,11 @@
   <div class="flex-cell"></div>
 
   <!-- column picker, pager, etc. -->
-  <div class="btn-group column-picker">
+  <div class="btn-group column-picker" ng-show="showPagination || showActions || showPicker">
 
     <!-- first page -->
     <button type="button" class="btn btn-default" 
+      ng-show="showPagination"
       ng-class="{disabled : onFirstPage()}" 
       ng-click="offset(0);collect()"
       title="[% l('Start') %]">
@@ -66,6 +67,7 @@
 
     <!-- previous page -->
     <button type="button" class="btn btn-default" 
+      ng-show="showPagination"
       ng-class="{disabled : onFirstPage()}"
       ng-click="decrementPage()"
       title="[% l('Previous Page') %]">
@@ -75,6 +77,7 @@
     <!-- next page -->
     <!-- todo: paging needs a total count value to be fully functional -->
     <button type="button" class="btn btn-default" 
+      ng-show="showPagination"
       ng-class="{disabled : !hasNextPage()}"
       ng-click="incrementPage()"
       title="[% l('Next Page') %]">
@@ -82,7 +85,7 @@
     </button>
 
     <!-- actions drop-down menu -->
-    <div class="btn-group" ng-if="actionGroups.length > 1 || actionGroups[0].actions.length" dropdown>                                                  
+    <div class="btn-group" ng-show="showActions" ng-if="actionGroups.length > 1 || actionGroups[0].actions.length" dropdown>                                                  
       <button type="button" class="btn btn-default dropdown-toggle">
         [% l('Actions') %] <span class="caret"></span>                       
       </button>                                                              
@@ -98,7 +101,7 @@
       </ul>
     </div>
 
-    <div class="btn-group" dropdown is-open="gridRowCountIsOpen">
+    <div class="btn-group" dropdown is-open="gridRowCountIsOpen" ng-show="showPagination">
       <button type="button" title="[% ('Select Row Count') %]"
         class="btn btn-default dropdown-toggle">
         [% l('Rows [_1]', '{{limit()}}') %]
@@ -113,7 +116,7 @@
       </ul>
     </div>
 
-    <div class="btn-group" dropdown is-open="gridPageSelectIsOpen">
+    <div class="btn-group" dropdown is-open="gridPageSelectIsOpen" ng-show="showPagination">
       <button type="button" title="[% ('Select Page') %]"
         class="btn btn-default dropdown-toggle">
         [% l('Page [_1]', '{{page()}}') %]
@@ -140,7 +143,7 @@
       </ul>
     </div>
 
-    <div class="btn-group" dropdown is-open="gridColumnPickerIsOpen">
+    <div class="btn-group" dropdown is-open="gridColumnPickerIsOpen" ng-show="showPicker">
       <button type="button" 
         class="btn btn-default dropdown-toggle">
         <span class="caret"></span>
@@ -199,7 +202,7 @@
   <div ng-transclude></div>
 
   <div class="eg-grid-row eg-grid-header-row">
-    <div class="eg-grid-cell eg-grid-cell-stock">
+    <div class="eg-grid-cell eg-grid-cell-stock" ng-show="showIndex">
       <div title="[% l('Row Number Column') %]">[% l('#') %]</div>
     </div>
     <div class="eg-grid-cell eg-grid-cell-stock" ng-show="canMultiSelect">
@@ -276,7 +279,7 @@
         ng-repeat="item in items"
         ng-show="items.length > 0"
         ng-class="{'eg-grid-row-selected' : selected[indexValue(item)]}">
-      <div class="eg-grid-cell eg-grid-cell-stock"
+      <div class="eg-grid-cell eg-grid-cell-stock" ng-show="showIndex"
         ng-click="handleRowClick($event, item)" title="[% l('Row Index') %]">
         <a href ng-show="gridControls.activateItem" 
           ng-click="gridControls.activateItem(item)" style="font-weight:bold">
