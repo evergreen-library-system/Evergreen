@@ -76,6 +76,19 @@ function(egCore , $q) {
 
     };
 
+    service.get_statuses = function() {
+        if (egCore.env.ccs)
+            return $q.when(egCore.env.ccs.list);
+
+        return egCore.pcrud.retrieveAll('ccs', {}, {atomic : true}).then(
+            function(list) {
+                egCore.env.absorbList(list, 'ccs');
+                return list;
+            }
+        );
+
+    };
+
     service.bmp_parts = {};
     service.get_parts = function(rec) {
         if (service.bmp_parts[rec])
@@ -94,14 +107,9 @@ function(egCore , $q) {
     service.flesh = {   
         flesh : 3, 
         flesh_fields : {
-            acp : ['call_number','parts'],
+            acp : ['call_number','parts','location'],
             acn : ['label_class','prefix','suffix']
-        },
-        select : { 
-            // avoid fleshing MARC on the bre
-            // note: don't add simple_record.. not sure why
-            bre : ['id','tcn_value','creator','editor'],
-        } 
+        }
     }
 
     service.addCopy = function (cp) {
@@ -146,8 +154,8 @@ function(egCore , $q) {
             function ( $scope , itemSvc ) {
                 $scope.new_part_id = 0;
 
-                $scope.updateBarcode = function () { $scope.copy.barcode($scope.barcode) };
-                $scope.updateCopyNo = function () { $scope.copy.copy_number($scope.copy_number) };
+                $scope.updateBarcode = function () { $scope.copy.barcode($scope.barcode); $scope.copy.ischanged(1); };
+                $scope.updateCopyNo = function () { $scope.copy.copy_number($scope.copy_number); $scope.copy.ischanged(1); };
                 $scope.updatePart = function () {
                     var p = angular.filter($scope.part_list, function (x) {
                         return x.label() == $scope.part
@@ -161,6 +169,7 @@ function(egCore , $q) {
                         part.label( $scope.part );
                         part.record( $scope.callNumber.owning_lib() );
                         $scope.copy.parts([part]);
+                        $scope.copy.ischanged(1);
                     }
                 }
 
@@ -223,26 +232,26 @@ function(egCore , $q) {
                 itemSvc.get_suffixes($scope.callNumber.owning_lib()).then(function(list){
                     $scope.suffix_list = list;
                 });
-                $scope.updateSuffix = function () { $scope.callNumber.suffix($scope.suffix) };
+                $scope.updateSuffix = function () { $scope.callNumber.suffix($scope.suffix); $scope.callNumber.ischanged(1); };
 
                 $scope.prefix_list = [];
                 itemSvc.get_prefixes($scope.callNumber.owning_lib()).then(function(list){
                     $scope.prefix_list = list;
                 });
-                $scope.updatePrefix = function () { $scope.callNumber.prefix($scope.prefix) };
+                $scope.updatePrefix = function () { $scope.callNumber.prefix($scope.prefix); $scope.callNumber.ischanged(1); };
 
                 $scope.classification_list = [];
                 itemSvc.get_classifications().then(function(list){
                     $scope.classification_list = list;
                 });
-                $scope.updateClassification = function () { $scope.callNumber.label_class($scope.classification) };
+                $scope.updateClassification = function () { $scope.callNumber.label_class($scope.classification); $scope.callNumber.ischanged(1); };
 
                 $scope.classification = $scope.callNumber.label_class();
                 $scope.prefix = $scope.callNumber.prefix();
                 $scope.suffix = $scope.callNumber.suffix();
 
                 $scope.label = $scope.callNumber.label();
-                $scope.updateLabel = function () { $scope.callNumber.label($scope.label) };
+                $scope.updateLabel = function () { $scope.callNumber.label($scope.label); $scope.callNumber.ischanged(1); };
 
                 $scope.copy_count = $scope.copies.length;
                 $scope.orig_copy_count = $scope.copy_count;
@@ -341,35 +350,60 @@ function(egCore , $q) {
        ['$scope','$q','$routeParams','$location','$timeout','egCore','egNet','egGridDataProvider','itemSvc',
 function($scope , $q , $routeParams , $location , $timeout , egCore , egNet , egGridDataProvider , itemSvc) {
 
+    $scope.show_vols = true;
+    $scope.show_copies = true;
+
+    $scope.idTracker = function (x) { if (x) return x.id() };
+
     $timeout(function(){
 
     var dataKey = $routeParams.dataKey;
     console.debug('dataKey: ' + dataKey);
 
     if (dataKey && dataKey.length > 0) {
+        $scope.working = {};
+
         $scope.tab = 'edit';
         $scope.summaryRecord = null;
         $scope.record_id = null;
         $scope.data = {};
 
-        $scope.gridDataProvider = egGridDataProvider.instance({
+        $scope.workingGridDataProvider = egGridDataProvider.instance({
             get : function(offset, count) {
                 //return provider.arrayNotifier(itemSvc.copies, offset, count);
                 return this.arrayNotifier(itemSvc.copies, offset, count);
             }
         });
 
+        $scope.workingGridControls = {};
+
         egNet.request(
             'open-ils.actor',
             'open-ils.actor.anon_cache.get_value',
             dataKey, 'edit-these-copies'
         ).then(function (data) {
+
+            if (data.hide_vols) $scope.show_vols = false;
+            if (data.hide_copies) $scope.show_copies = false;
+
             $scope.record_id = data.record_id;
+
             return itemSvc.fetchIds(data.copies);
         }).then( function() {
             $scope.data = itemSvc.tree;
-            $scope.gridDataProvider.refresh();
+            $scope.workingGridDataProvider.refresh();
         });
+
+        $scope.status_list = [];
+        itemSvc.get_statuses().then(function(list){
+            $scope.status_list = list;
+        });
+        $scope.updateWorkingStatus = function () {
+            angular.forEach(
+                $scope.workingGridControls.selectedItems(),
+                function (cp) { cp.status($scope.working.status.id()); cp.ischanged(1); }
+            );
+        };
     }
 
     });

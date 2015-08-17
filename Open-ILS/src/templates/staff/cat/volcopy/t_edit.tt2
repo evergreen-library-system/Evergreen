@@ -1,30 +1,130 @@
 
 <style> input[type=number] { width: 50px } </style>
 <style> select { width: 80px } </style>
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-xs-1">[% l('Library') %]</div>
-        <div class="col-xs-1">[% l('Volumes') %]</div>
-        <div class="col-xs-10">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-xs-1">[% l('Classification') %]</div>
-                    <div class="col-xs-1">[% l('Prefix') %]</div>
-                    <div class="col-xs-3">[% l('Call Number') %]</div>
-                    <div class="col-xs-1">[% l('Suffix') %]</div>
-                    <div class="col-xs-1">[% l('Copies') %]</div>
-                    <div class="col-xs-5">
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-xs-6">[% l('Barcode') %]</div>
-                                <div class="col-xs-3">[% l('Copy #') %]</div>
-                                <div class="col-xs-3">[% l('Part') %]</div>
+
+<accordion close-others="false">
+    <accordion-group heading="Volume Editor" is-open="show_vols">
+
+        <div collapse="hide_vols" class="container-fluid">
+            <div class="row">
+                <div class="col-xs-1">[% l('Library') %]</div>
+                <div class="col-xs-1">[% l('Volumes') %]</div>
+                <div class="col-xs-10">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-xs-1">[% l('Classification') %]</div>
+                            <div class="col-xs-1">[% l('Prefix') %]</div>
+                            <div class="col-xs-3">[% l('Call Number') %]</div>
+                            <div class="col-xs-1">[% l('Suffix') %]</div>
+                            <div class="col-xs-1">[% l('Copies') %]</div>
+                            <div class="col-xs-5">
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-xs-6">[% l('Barcode') %]</div>
+                                        <div class="col-xs-3">[% l('Copy #') %]</div>
+                                        <div class="col-xs-3">[% l('Part') %]</div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div> <!-- row -->
+            <eg-vol-edit ng-repeat="(lib,callnumbers) in data" record="{{record.id()}}" lib="{{lib}}" struct="data[lib]"></eg-vol-edit>
+        </div> <!-- container -->
+
+    </accordion-group>
+    <accordion-group heading="Copy Editor" is-open="show_copies">
+
+    <div collapse="hide_vols" class="container-fluid">
+        <div class="row">
+            <div class="col-lg-4">
+
+                <eg-grid
+                  id-field="id"
+                  idl-class="acp"
+                  features="startSelected,-pagination,-actions,-menu,-picker,-index"
+                  main-label="[% l('Working Copies') %]"
+                  items-provider="workingGridDataProvider"
+                  grid-controls="workingGridControls"
+                  persist-key="cat.volcopy.copies">
+                
+                  <eg-grid-field label="[% l('Barcode') %]"     path='barcode' visible></eg-grid-field>
+                  <eg-grid-field label="[% l('Created') %]"     path="create_date" visible></eg-grid-field>
+                  <eg-grid-field label="[% l('Activated') %]"   path="active_date" visible></eg-grid-field>
+                  <eg-grid-field label="[% l('Call Number') %]" path="call_number.label" visible></eg-grid-field>
+                
+                </eg-grid>
+
+            </div>
+            <div class="col-lg-8">
+                <div class="container-fluid">
+                    <div class="row">
+
+                        <div class="col-md-4">
+                            <div class="container-fluid"> <!-- first column -->
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <b>[% l('Circulate?') %]</b>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="container-fluid"> <!-- circulate? -->
+                                            <div class="row">
+                                                <div class="col-xs-6">
+                                                    <label>
+                                                        <input type="radio" ng-model="working.circulate" value="t"/>
+                                                        [% l('Yes') %]
+                                                    </label>
+                                                </div>
+                                                <div class="col-xs-6">
+                                                    <label>
+                                                        <input type="radio" ng-model="working.circulate" value="f"/>
+                                                        [% l('No') %]
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="container-fluid"> <!-- second column -->
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <b>[% l('Status') %]</b>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <select
+                                            ng-model="working.status"
+                                            ng-change="updateWorkingStatus()"
+                                            ng-options="s.name() for s in status_list track by idTracker(s)"
+                                        ></select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="container-fluid"> <!-- third column -->
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <b>[% l('Statistical Catagories') %]</b>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
             </div>
         </div>
-    </div> <!-- row -->
-    <eg-vol-edit ng-repeat="(lib,callnumbers) in data" record="{{record.id()}}" lib="{{lib}}" struct="data[lib]"></eg-vol-edit>
-</div> <!-- container -->
+    </div>
+
+    </accordion-group>
+</accordion>
