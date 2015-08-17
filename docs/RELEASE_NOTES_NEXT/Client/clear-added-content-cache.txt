@@ -1,0 +1,6 @@
+Link in catalog to clear Added Content cache
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+On the catalog's record summary page, there is now a link for staff that
+allow them to forcibly clear the cache for the Added Content for that
+record. This is helpful for if the Added Content retrieved the wrong
+cover jacket art, summary, etc. and caches the wrong result.
