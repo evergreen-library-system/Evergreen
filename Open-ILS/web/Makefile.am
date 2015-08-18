@@ -51,9 +51,6 @@ webcore-install:
 	cp -r @top_srcdir@/Open-ILS/web/. $(DESTDIR)$(WEBDIR)
 	cp @top_srcdir@/Open-ILS/xsl/*.xsl $(opacextrasdir)
 	cp @top_srcdir@/Open-ILS/xsl/*.xsl $(DESTDIR)$(XSLDIR)
-	for i in mresult.xml rresult.xml rdetail.xml advanced.xml myopac.xml cnbrowse.xml authbrowse.xml; do \
-		cd $(DESTDIR)$(WEBDIR)/opac/skin/default/xml/ && rm -f $$i && $(LN_S) index.xml $$i; \
-	done
 
 offline-install:
 	@echo "Installing offline CGIs to $(CGIDIR)/offline";
