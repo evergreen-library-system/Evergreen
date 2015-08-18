@@ -819,7 +819,7 @@
 <!ENTITY staff.main.menu.admin.server_admin.conify.circulation_limit_group.label "Circulation Limit Groups">
 <!ENTITY staff.main.menu.admin.server_admin.conify.floating_groups.label "Floating Groups">
 
-<!ENTITY staff.main.menu.admin.server_admin.acq.label "Acquisitions">
+<!ENTITY staff.main.menu.admin.server_admin.acq.label "Acquisitions Administration">
 <!ENTITY staff.main.menu.admin.server_admin.acq.accesskey "A">
 <!ENTITY staff.main.menu.admin.server_admin.acq.lineitem_alert.label "Line Item Alerts">
 <!ENTITY staff.main.menu.admin.server_admin.acq.lineitem_alert.accesskey "L">
