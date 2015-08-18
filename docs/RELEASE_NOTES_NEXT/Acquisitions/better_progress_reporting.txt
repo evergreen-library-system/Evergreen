@@ -1,0 +1,7 @@
+Improved reporting of progress during purchase order activation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The progress dialog that is displayed when activating a purchase
+order now displays more information, particularly during the asset
+creation phase. It is now also updated in a more linear fashion;
+making it less likely for it to appear that the activation has
+stalled.
