@@ -1180,8 +1180,8 @@ sub create_purchase_order {
 }
 
 # ----------------------------------------------------------------------------
-# if all of the lineitems for this PO are received,
-# mark the PO as received
+# if all of the lineitems for this PO are received and no 
+# blanket charges are still encumbered, mark the PO as received.
 # ----------------------------------------------------------------------------
 sub check_purchase_order_received {
     my($mgr, $po_id) = @_;
@@ -1193,6 +1193,21 @@ sub check_purchase_order_received {
 
     my $po = $mgr->editor->retrieve_acq_purchase_order($po_id);
     return $po if @$non_recv_li;
+
+    # avoid marking the PO as received if any blanket charges
+    # are still encumbered.
+    my $blankets = $mgr->editor->json_query({
+        select => {acqpoi => ['id']},
+        from => {
+            acqpoi => {
+                aiit => {filter => {blanket=>'t'}},
+                acqfdeb => {filter => {encumbrance => 't'}}
+            }
+        },
+        where => {'+acqpoi' => {purchase_order => $po_id}}
+    });
+
+    return $po if @$blankets;
 
     $po->state('received');
     return update_purchase_order($mgr, $po);
