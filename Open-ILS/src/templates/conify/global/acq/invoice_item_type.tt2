@@ -21,8 +21,29 @@
 <script type="text/javascript">
     dojo.require("openils.widget.AutoGrid");
     dojo.require("dijit.form.FilteringSelect");
+    dojo.require('openils.PermaCrud');
     openils.Util.addOnLoad(
-        function() { aiitGrid.loadAll({"order_by": {"aiit": "name"}}); }
+        function() { 
+          aiitGrid.loadAll({"order_by": {"aiit": "name"}}); 
+
+          // If either "prorate" or "blanket" are selected, 
+          // the other must be deselected.  
+          // "For neither can live while the other survives...."
+          aiitGrid.onEditPane = function(pane) {
+
+            pane.onSubmit = function(inv_type, ops) {
+
+              if (inv_type.blanket() == 't') {
+                if (inv_type.prorate() == 't') {
+                  alert('[% l('Only one of "prorate" and "blanket" may be selected') %]');
+                  return;
+                }
+              }
+
+              (new openils.PermaCrud())[pane.mode](inv_type, ops);
+            }
+          }
+        }
     );
 </script>
 [% END %]
