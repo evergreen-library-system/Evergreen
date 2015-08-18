@@ -979,6 +979,7 @@ angular.module('egGridMod',
         require : '^egGrid',
         restrict : 'AE',
         scope : {
+            flesher: '=', // optional; function that can flesh a linked field, given the value
             name  : '@', // required; unique name
             path  : '@', // optional; flesh path
             ignore: '@', // optional; fields to ignore when path is a wildcard
@@ -1241,6 +1242,7 @@ angular.module('egGridMod',
         // the fields over that we need (so the scope object can go away).
         cols.cloneFromScope = function(colSpec) {
             return {
+                flesher  : colSpec.flesher,
                 name  : colSpec.name,
                 label : colSpec.label,
                 path  : colSpec.path,
@@ -1421,15 +1423,18 @@ angular.module('egGridMod',
             // TODO: consider a caching layer to speed up template 
             // rendering, particularly for nested objects?
             gridData.itemFieldValue = function(item, column) {
+                var val;
                 if (column.name in item) {
                     if (typeof item[column.name] == 'function') {
-                        return item[column.name]();
+                        val = item[column.name]();
                     } else {
-                        return item[column.name];
+                        val = item[column.name];
                     }
                 } else {
-                    return gridData.nestedItemFieldValue(item, column);
+                    val = gridData.nestedItemFieldValue(item, column);
                 }
+
+                return val;
             }
 
             // TODO: deprecate me
@@ -1445,6 +1450,8 @@ angular.module('egGridMod',
             // value is an IDL field, run the value through its
             // corresponding output filter.
             gridData.nestedItemFieldValue = function(obj, column) {
+                item = obj; // keep a copy around
+
                 if (obj === null || obj === undefined || obj === '') return '';
                 if (!column.path) return obj;
 
@@ -1453,9 +1460,13 @@ angular.module('egGridMod',
 
                 angular.forEach(parts, function(step, idx) {
                     // object is not fleshed to the expected extent
-                    if (!obj || typeof obj != 'object') {
-                        obj = '';
-                        return;
+                    if (typeof obj != 'object') {
+                        if (typeof obj != 'undefined' && column.flesher) {
+                            obj = column.flesher(obj, column, item);
+                        } else {
+                            obj = '';
+                            return;
+                        }
                     }
 
                     var cls = obj.classname;
