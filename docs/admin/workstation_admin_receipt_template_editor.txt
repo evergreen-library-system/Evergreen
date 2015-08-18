@@ -184,7 +184,7 @@ Printed by %STAFF_FIRSTNAME% at %SHORTNAME%<br/>.<br/>
 
 Hold_Slip  #2
 ^^^^^^^^^^^^^
-This is the slip is when a hold is fulfilled.  This slip uses the SUBSTR macro to truncate the Patrons Last name to the first 4 characters and the patron's barcode to the last 5 digits.  This slip is designed for libraries that use self serve holds.  So, you will notice a lot of information about the hold is left off of the receipt. 
+This is the slip that prints when a hold is fulfilled.  This slip uses the SUBSTR macro to truncate the Patrons Last name to the first 4 characters and the patron's barcode to the last 5 digits.  This slip is designed for libraries that use self-serve holds.  So, you will notice a lot of information about the hold is left off of the receipt. 
 
 Header
 [source,html]

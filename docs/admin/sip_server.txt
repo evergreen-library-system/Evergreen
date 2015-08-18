@@ -281,7 +281,7 @@ For clarification, the ``Request'' is from the device (selfcheck or otherwise) t
 response to the request ;). 
 
 Within each request and response, a number of fields (either a fixed width or separated with a | [pipe symbol] and 
-preceeded with a 2-character field identifier) are used. The fields vary between message pairs. 
+preceded with a 2-character field identifier) are used. The fields vary between message pairs. 
 
 |===========================================================================
 | *Pair* | *Name*              | *Supported?*          |*Details* 

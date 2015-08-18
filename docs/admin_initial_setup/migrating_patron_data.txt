@@ -43,7 +43,7 @@ NOTE: The _default_ variables allow you to set default for your library or to po
 required fields in Evergreen if your data includes NULL values.
 +
 The data field profile in the above SQL script refers to the user group and should be an 
-integer referencing the id field in permission.grp_tree. Setting this value will effect 
+integer referencing the id field in permission.grp_tree. Setting this value will affect 
 the permissions for the user. See the values in permission.grp_tree for possibilities.
 +
 ident_type is the identification type used for identifying users. This is a integer value 
