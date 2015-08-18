@@ -111,7 +111,7 @@ expenditures on children's materials rather than reporting on each individual
 fund.
 
 . To create a fund tag, select *Admin > Server Administration > Acquisitions >
-  Fund Tags*. Click the the *New Fund Tag* button. Select a owning library and
+  Fund Tags*. Click the *New Fund Tag* button. Select a owning library and
   add the name for the fund tag.
 . To apply a fund tag to a fund, select *Admin > Server Administration >
   Acquisitions > Funds*. Click on the hyperlinked name for the fund. Click the
