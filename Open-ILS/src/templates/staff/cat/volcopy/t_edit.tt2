@@ -5,7 +5,7 @@
 <accordion close-others="false">
     <accordion-group heading="Volume Editor" is-open="show_vols">
 
-        <div collapse="hide_vols" class="container-fluid">
+        <div class="container-fluid">
             <div class="row">
                 <div class="col-xs-1">[% l('Library') %]</div>
                 <div class="col-xs-1">[% l('Volumes') %]</div>
@@ -36,18 +36,34 @@
     </accordion-group>
     <accordion-group heading="Copy Editor" is-open="show_copies">
 
-    <div collapse="hide_vols" class="container-fluid">
+        <ul ng-model="copytab" class="nav nav-tabs">
+          <li ng-class="{active : copytab == 'working'}">
+            <a ng-click="copytab='working'" >[% l('Working Copies') %]</a>
+          </li>
+          <li ng-class="{active : copytab == 'complete'}">
+            <a ng-click="copytab='complete'" >[% l('Completed Copies') %]</a>
+          </li>
+        </ul>
+
+<div class="tab-content">
+  <div class="tab-pane active">
+    <div ng-show="copytab == 'working'">
+
+    <div class="container-fluid"> <!-- working copy editor -->
         <div class="row">
             <div class="col-lg-4">
 
                 <eg-grid
                   id-field="id"
                   idl-class="acp"
-                  features="startSelected,-pagination,-actions,-menu,-picker,-index"
-                  main-label="[% l('Working Copies') %]"
+                  features="startSelected,-pagination,-actions,-picker,-index"
                   items-provider="workingGridDataProvider"
                   grid-controls="workingGridControls"
                   persist-key="cat.volcopy.copies">
+
+                  <eg-grid-menu-item handler="workingToComplete"
+                   label="[% l('Store Selected') %]"></eg-grid-menu-item>
+
                 
                   <eg-grid-field label="[% l('Barcode') %]"     path='barcode' visible></eg-grid-field>
                   <eg-grid-field label="[% l('Created') %]"     path="create_date" visible></eg-grid-field>
@@ -63,6 +79,7 @@
 
                         <div class="col-md-4">
                             <div class="container-fluid"> <!-- first column -->
+
                                 <div class="row">
                                     <div class="col-md-12">
                                         <b>[% l('Circulate?') %]</b>
@@ -88,11 +105,136 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <b>[% l('Circulation Library') %]</b>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <eg-org-selector selected="working.circ_lib" disableTest="cant_have_vols"></eg-org-selector>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <b>[% l('Shelving Location') %]</b>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <select
+                                            ng-model="working.location"
+                                            ng-options="l.name() for l in location_list track by idTracker(l)"
+                                        ></select>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <b>[% l('Circulation Modifier') %]</b>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <select
+                                            ng-model="working.circ_modifier"
+                                            ng-options="m.name() for m in circ_mod_list track by tracker(m,'code')"
+                                        ></select>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <b>[% l('Circulate as Type') %]</b>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <select
+                                            ng-model="working.circ_as_type"
+                                            ng-options="t.value() for t in circ_type_list track by tracker(t,'code')"
+                                        ></select>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <b>[% l('Holdable?') %]</b>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="container-fluid">
+                                            <div class="row">
+                                                <div class="col-xs-6">
+                                                    <label>
+                                                        <input type="radio" ng-model="working.holdable" value="t"/>
+                                                        [% l('Yes') %]
+                                                    </label>
+                                                </div>
+                                                <div class="col-xs-6">
+                                                    <label>
+                                                        <input type="radio" ng-model="working.holdable" value="f"/>
+                                                        [% l('No') %]
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <b>[% l('Loan Duration') %]</b>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <select ng-model="working.loan_duration">
+                                            <option value="1">[% l('Short') %]</option>
+                                            <option value="2" selected>[% l('Normal') %]</option>
+                                            <option value="3">[% l('Extended') %]</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <b>[% l('Fine Level') %]</b>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <select ng-model="working.fine_level">
+                                            <option value="1">[% l('Low') %]</option>
+                                            <option value="2" selected>[% l('Normal') %]</option>
+                                            <option value="3">[% l('High') %]</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <b>[% l('Age-based Hold Protection') %]</b>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <select
+                                            ng-model="working.age_protect"
+                                            ng-options="a.name() for a in age_protect_list track by idTracker(a)"
+                                        ></select>
+                                    </div>
+                                </div>
+
+                            </div> <!-- first column -->
                         </div>
 
                         <div class="col-md-4">
                             <div class="container-fluid"> <!-- second column -->
+
                                 <div class="row">
                                     <div class="col-md-12">
                                         <b>[% l('Status') %]</b>
@@ -102,11 +244,148 @@
                                     <div class="col-md-12">
                                         <select
                                             ng-model="working.status"
-                                            ng-change="updateWorkingStatus()"
                                             ng-options="s.name() for s in status_list track by idTracker(s)"
                                         ></select>
                                     </div>
                                 </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <b>[% l('Reference?') %]</b>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="container-fluid">
+                                            <div class="row">
+                                                <div class="col-xs-6">
+                                                    <label>
+                                                        <input type="radio" ng-model="working.ref" value="t"/>
+                                                        [% l('Yes') %]
+                                                    </label>
+                                                </div>
+                                                <div class="col-xs-6">
+                                                    <label>
+                                                        <input type="radio" ng-model="working.ref" value="f"/>
+                                                        [% l('No') %]
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <b>[% l('OPAC Visible?') %]</b>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="container-fluid">
+                                            <div class="row">
+                                                <div class="col-xs-6">
+                                                    <label>
+                                                        <input type="radio" ng-model="working.opac_visible" value="t"/>
+                                                        [% l('Yes') %]
+                                                    </label>
+                                                </div>
+                                                <div class="col-xs-6">
+                                                    <label>
+                                                        <input type="radio" ng-model="working.opac_visible" value="f"/>
+                                                        [% l('No') %]
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <b>[% l('Price') %]</b>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <input ng-model="working.price" type="text"/>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <b>[% l('Cost') %]</b>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <input ng-model="working.cost" type="text"/>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <b>[% l('Deposit?') %]</b>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="container-fluid">
+                                            <div class="row">
+                                                <div class="col-xs-6">
+                                                    <label>
+                                                        <input type="radio" ng-model="working.deposit" value="t"/>
+                                                        [% l('Yes') %]
+                                                    </label>
+                                                </div>
+                                                <div class="col-xs-6">
+                                                    <label>
+                                                        <input type="radio" ng-model="working.deposit" value="f"/>
+                                                        [% l('No') %]
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <b>[% l('Deposit Amount') %]</b>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <input ng-model="working.deposit_amount" type="text"/>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <b>[% l('Quality') %]</b>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="container-fluid">
+                                            <div class="row">
+                                                <div class="col-xs-6">
+                                                    <label>
+                                                        <input type="radio" ng-model="working.mint_condition" value="t"/>
+                                                        [% l('Good') %]
+                                                    </label>
+                                                </div>
+                                                <div class="col-xs-6">
+                                                    <label>
+                                                        <input type="radio" ng-model="working.mint_condition" value="f"/>
+                                                        [% l('Damaged') %]
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
 
@@ -125,6 +404,40 @@
             </div>
         </div>
     </div>
+
+    </div>
+    <div ng-show="copytab == 'complete'">
+       <eg-grid
+         id-field="id"
+         idl-class="acp"
+         features="-pagination,-actions,-picker,-index"
+         items-provider="completedGridDataProvider"
+         grid-controls="completedGridControls"
+         persist-key="cat.volcopy.copies.complete">
+       
+         <eg-grid-menu-item handler="completeToWorking"
+          label="[% l('Edit Selected') %]"></eg-grid-menu-item>
+
+         <eg-grid-menu-item handler="saveAndExit"
+          label="[% l('Save & Exit') %]"></eg-grid-menu-item>
+
+         <eg-grid-field label="[% l('Barcode') %]"     path='barcode' visible></eg-grid-field>
+         <eg-grid-field label="[% l('Created') %]"     path="create_date" visible></eg-grid-field>
+         <eg-grid-field label="[% l('Activated') %]"   path="active_date" visible></eg-grid-field>
+         <eg-grid-field label="[% l('Call Number') %]" path="call_number.label" visible></eg-grid-field>
+         <eg-grid-field label="[% l('Circ Library') %]" flesher="orgById" path="circ_lib.name" visible></eg-grid-field>
+         <eg-grid-field label="[% l('Shelving Location') %]" flesher="locationById" path="location.name" visible></eg-grid-field>
+         <eg-grid-field label="[% l('Circ Modifier') %]" path="circ_modifier" visible></eg-grid-field>
+         <eg-grid-field label="[% l('Circulate?') %]"  path="circulate" visible></eg-grid-field>
+         <eg-grid-field label="[% l('Holdable?') %]"   path="circulate" visible></eg-grid-field>
+         <eg-grid-field label="[% l('Reference?') %]"  path="ref" visible></eg-grid-field>
+         <eg-grid-field label="[% l('Status') %]"      flesher="statusById" path="status.name" visible></eg-grid-field>
+         <eg-grid-field label="[% l('OPAC Visible') %]" path="opac_visible" visible></eg-grid-field>
+       
+       </eg-grid>
+    </div>
+  </div>
+</div>
 
     </accordion-group>
 </accordion>
