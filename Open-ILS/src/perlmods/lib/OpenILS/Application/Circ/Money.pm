@@ -907,6 +907,8 @@ __PACKAGE__->register_method(
 sub void_bill {
     my( $s, $c, $authtoken, @billids ) = @_;
     my $editor = new_editor(authtoken=>$authtoken, xact=>1);
+    return $editor->die_event unless $editor->checkauth;
+    return $editor->die_event unless $editor->allowed('VOID_BILLING');
     my $rv = $CC->void_bills($editor, \@billids);
     if (ref($rv) eq 'HASH') {
         # We got an event.

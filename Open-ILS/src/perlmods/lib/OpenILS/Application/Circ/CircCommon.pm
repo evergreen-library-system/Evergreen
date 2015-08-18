@@ -849,8 +849,6 @@ sub bill_payment_map_for_xact {
 # CStoreEditor, an arrayref of bill ids or bills, and an optional note.
 sub void_bills {
     my ($class, $e, $billids, $note) = @_;
-    return $e->die_event unless $e->checkauth;
-    return $e->die_event unless $e->allowed('VOID_BILLING');
 
     my %users;
     my $bills;
@@ -903,10 +901,6 @@ sub void_bills {
 # CStoreEditor, an arrayref of bill ids or bills, and an optional note.
 sub adjust_bills_to_zero {
     my ($class, $e, $billids, $note) = @_;
-
-    # Get with the editor to see if we have permission to void bills.
-    return $e->die_event unless $e->checkauth;
-    return $e->die_event unless $e->allowed('VOID_BILLING');
 
     my %users;
 
