@@ -2,7 +2,7 @@
 /* push the patron summary up to compensate for the extra
  * padding required to support the fixed navigation */
 .patron-summary-grid-wrapper {
-  margin-top: -60px;
+  margin-top: 20px;
 }
 
 /** style to make a grid look like a striped table */
@@ -29,10 +29,15 @@ but the ones I'm finding aren't quite cutting it..*/
     position: fixed;
     top: 50px;
     right: 15px;
+    left: 45px;
     padding-top: 20px;
     padding-top: 10px;
     z-index: 1;
     background-color: rgba(255,255,255,1);
+}
+
+.patron-name-header {
+  margin-top: 20px;
 }
 
 /* let search form elements fill their containers w/ slight padding */

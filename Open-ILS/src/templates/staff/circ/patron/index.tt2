@@ -54,15 +54,37 @@ angular.module('egCoreMod').run(['egStrings', function(s) {
   #top-content-container { padding-top: 80px; }
 </style>
 
-
 [% END %]
 
-<div class="row">
-  <div class="col-md-3">
-    <!-- just here to keep this slot open for the patron summary column -->
+<div class="row" id="patron-fixed-tabs">
+  <div class="col-md-3 patron-name-header">
+    <div ng-show="patron()">
+      <h4 title="{{patron().id()}}">
+        <div class="flex-row">
+          <div class="flex-cell">
+            [% l('[_1], [_2] [_3]', 
+                '{{patron().family_name()}}',
+                '{{patron().first_given_name()}}',
+                '{{patron().second_given_name()}}') %]
+          </div>
+          <div ng-show="tab != 'search'">
+            <a href ng-click="toggle_expand_summary()"
+              title="[% l('Collapse Patron Summary Display') %]"
+              ng-hide="collapse_summary()">
+              <span class="glyphicon glyphicon-resize-small"></span>
+            </a>
+            <a href ng-click="toggle_expand_summary()"
+              title="[% l('Expand Patron Summary Display') %]"
+              ng-show="collapse_summary()">
+              <span class="glyphicon glyphicon-resize-full"></span>
+            </a>
+          </div>
+        </div>
+      </h4>
+    </div>
   </div>
 
-  <div class="col-md-9" id="patron-fixed-tabs">
+  <div class="col-md-9">
     <ul class="nav nav-pills nav-pills-like-tabs">
       <li ng-class="{active : tab == 'checkout', disabled : !patron()}">
         <a a-disabled="!patron()" href="./circ/patron/{{patron().id()}}/checkout">[% l('Check Out') %]</a>
