@@ -98,6 +98,7 @@ function($scope,  egCore,  egGridDataProvider , egConfirmDialog) {
                 coArgs, {title : $scope.selectedNcType()}
             );
         }
+        $scope.args.barcode='';
     }
 
     function performCheckout(method, args, data) {
