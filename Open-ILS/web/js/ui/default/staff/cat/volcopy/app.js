@@ -279,26 +279,46 @@ function(egCore , $q) {
                 itemSvc.get_suffixes($scope.callNumber.owning_lib()).then(function(list){
                     $scope.suffix_list = list;
                 });
-                $scope.updateSuffix = function () { $scope.callNumber.suffix($scope.suffix); $scope.callNumber.ischanged(1); };
+                $scope.updateSuffix = function () {
+                    angular.forEach($scope.copies, function(cp) {
+                        cp.call_number().suffix($scope.suffix);
+                        cp.call_number().ischanged(1);
+                    });
+                }
 
                 $scope.prefix_list = [];
                 itemSvc.get_prefixes($scope.callNumber.owning_lib()).then(function(list){
                     $scope.prefix_list = list;
                 });
-                $scope.updatePrefix = function () { $scope.callNumber.prefix($scope.prefix); $scope.callNumber.ischanged(1); };
+                $scope.updatePrefix = function () {
+                    angular.forEach($scope.copies, function(cp) {
+                        cp.call_number().prefix($scope.prefix);
+                        cp.call_number().ischanged(1);
+                    });
+                }
 
                 $scope.classification_list = [];
                 itemSvc.get_classifications().then(function(list){
                     $scope.classification_list = list;
                 });
-                $scope.updateClassification = function () { $scope.callNumber.label_class($scope.classification); $scope.callNumber.ischanged(1); };
+                $scope.updateClassification = function () {
+                    angular.forEach($scope.copies, function(cp) {
+                        cp.call_number().label_class($scope.classification);
+                        cp.call_number().ischanged(1);
+                    });
+                }
 
                 $scope.classification = $scope.callNumber.label_class();
                 $scope.prefix = $scope.callNumber.prefix();
                 $scope.suffix = $scope.callNumber.suffix();
 
                 $scope.label = $scope.callNumber.label();
-                $scope.updateLabel = function () { $scope.callNumber.label($scope.label); $scope.callNumber.ischanged(1); };
+                $scope.updateLabel = function () {
+                    angular.forEach($scope.copies, function(cp) {
+                        cp.call_number().label($scope.label);
+                        cp.call_number().ischanged(1);
+                    });
+                }
 
                 $scope.copy_count = $scope.copies.length;
                 $scope.orig_copy_count = $scope.copy_count;
