@@ -1,0 +1,28 @@
+BEGIN;
+
+SELECT plan(3);
+
+SELECT has_column('acq', 'invoice_item_type', 
+    'blanket', '"blanket" column created');
+
+-- A type cannot be both blanket and prorate
+
+SELECT throws_ok(
+    'INSERT INTO acq.invoice_item_type 
+        (code, name, prorate, blanket) VALUES (''foo'', ''foo'', TRUE, TRUE)',
+    23514 -- check_violation
+);
+
+SELECT is(
+    (SELECT blanket FROM acq.invoice_item_type WHERE code = 'BLA'),
+    TRUE,
+    'New item type is set to blanket=TRUE'
+);
+
+
+SELECT * FROM finish();
+
+ROLLBACK;
+
+
+
