@@ -3931,7 +3931,7 @@ INSERT into config.org_unit_setting_type
         'Password format',
         'coust', 'label'),
     oils_i18n_gettext('global.password_regex',
-        'Regular expression defining the password format',
+        'Regular expression defining the password format.  Note: Be sure to update the update_password_msg.tt2 TPAC template with a user-friendly description of your password strength requirements.',
         'coust', 'description'),
     'string', null)
 
