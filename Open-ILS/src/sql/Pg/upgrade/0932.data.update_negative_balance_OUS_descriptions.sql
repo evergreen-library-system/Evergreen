@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0932', :eg_version);
 
 UPDATE config.org_unit_setting_type 
     SET description = 'Default setting to prevent negative balances (refunds) on circulation related bills. Set to "true" to prohibit negative balances at all times or, when used in conjunction with an interval setting, to prohibit negative balances after a set period of time.'
