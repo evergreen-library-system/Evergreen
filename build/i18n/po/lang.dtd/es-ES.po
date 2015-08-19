@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2014-09-11 02:13-0400\n"
-"PO-Revision-Date: 2014-09-13 23:55+0000\n"
-"Last-Translator: Adolfo Jayme <fitoschido@gmail.com>\n"
+"POT-Creation-Date: 2015-02-27 11:41-0400\n"
+"PO-Revision-Date: 2015-07-13 19:17+0000\n"
+"Last-Translator: Mariano Couto <cocospam@gmail.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2014-09-14 06:53+0000\n"
-"X-Generator: Launchpad (build 17196)\n"
+"X-Launchpad-Export-Date: 2015-08-07 05:42+0000\n"
+"X-Generator: Launchpad (build 17656)\n"
 
 #: lang.version
 msgid "remote v1"
@@ -399,7 +399,7 @@ msgstr "Código de barras"
 #: staff.acp_label_call_number
 msgctxt "staff.acp_label_call_number"
 msgid "Call Number"
-msgstr "Llamar al numero"
+msgstr "Signatura Topográfica"
 
 #: staff.acp_label_circ_as_type
 msgid "Circulate As Type"
@@ -11356,7 +11356,7 @@ msgstr ""
 
 #: staff.cat.copy_summary.call_number.label
 msgid "Call Number:"
-msgstr ""
+msgstr "Signatura Topográfica:"
 
 #: staff.cat.copy_summary.status.label
 msgid "Status:"
@@ -11429,7 +11429,7 @@ msgstr ""
 #: staff.cat.marcedit.fastItemAdd_callnumber.label
 #: staff.cat.marcedit.fastItemAdd_callnumber.accesskey
 msgid "&Call Number"
-msgstr ""
+msgstr "&Signatura Topográfica"
 
 #: staff.cat.marcedit.fastItemAdd_barcode.label
 #: staff.cat.marcedit.fastItemAdd_barcode.accesskey
@@ -11945,7 +11945,7 @@ msgstr ""
 
 #: staff.cat.spine_labels.inc_call_number.label
 msgid "Include Call Number"
-msgstr ""
+msgstr "Incluir Signatura Topográfica"
 
 #: staff.cat.spine_labels.inc_owning_library_policy_code.label
 msgid "Include Owning Library (policy code)"
@@ -13189,6 +13189,11 @@ msgstr ""
 #: staff.patron.info.triggered_events.label
 #: staff.patron.info.triggered_events.accesskey
 msgid "Triggered E&vents"
+msgstr ""
+
+#: staff.patron.message_center.label
+#: staff.patron.message_center.accesskey
+msgid "Message Cente&r"
 msgstr ""
 
 #: staff.patron.info.stat_cats.label

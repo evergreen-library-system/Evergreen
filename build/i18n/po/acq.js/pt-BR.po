@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2014-09-11 02:13-0400\n"
+"POT-Creation-Date: 2015-02-27 11:41-0400\n"
 "PO-Revision-Date: 2013-03-15 12:53+0000\n"
 "Last-Translator: Job Diógenes Ribeiro Borges <jobdrb@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <pt_BR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2014-09-12 06:25+0000\n"
-"X-Generator: Launchpad (build 17196)\n"
+"X-Launchpad-Export-Date: 2015-08-07 05:45+0000\n"
+"X-Generator: Launchpad (build 17656)\n"
 
 #: acq.js:ACQ_SEARCH_CLASS_ABBR_acqlid
 msgid "LID"
@@ -149,6 +149,10 @@ msgid ""
 msgstr ""
 "Já existe uma nota fiscal no sistema com a combinação fornecida  de  'ID  "
 "Fatura Fornecedor' e 'Fornecedor', o que não é permitido."
+
+#: acq.js:DUPE_PO_NAME_LINK
+msgid "View PO"
+msgstr ""
 
 #: acq.js:CONFIRM_DELETE_MAPPING
 msgid "Are you sure you want to remove this tag from this fund?"
@@ -296,6 +300,14 @@ msgstr "Selecionar campo de pesquisa"
 msgid "VENDOR PUBLIC"
 msgstr "Fornecedor público"
 
+#: acq.js:CONFIRM_SPLIT_PO
+msgid ""
+"Are you sure you want to split this purchase order into\n"
+"one purchase order for every constituent line item?"
+msgstr ""
+"Tem certeza de que quer dividir este pedido de compra em\n"
+"um pedido de compra para cada item?"
+
 #: acq.js:VENDOR_SAYS_PREPAY_NEEDED
 msgid ""
 "The selected vendor requires prepayment, according to records.\n"
@@ -421,6 +433,10 @@ msgstr "Este arquivo é muito grande para esta operação."
 msgid "Unexpected problem building virtual combined PO"
 msgstr "Problema inesperado ao criar um OP virtual combinada"
 
+#: acq.js:PO_NAME_OPTIONAL
+msgid "${0} (optional)"
+msgstr ""
+
 #: acq.js:DELETE_LI_COPIES_CONFIRM
 msgid "This will delete the last ${0} copies in the table.  Proceed?"
 msgstr "Esta operação apagará as ultimas ${0} cópias na tabela.  Proceder?"
@@ -434,12 +450,6 @@ msgid "Are you sure? Did you see the warning about over-encumbering a fund?"
 msgstr ""
 "Você tem certeza? Você viu o alerta sobre comprometimento excessivo de um "
 "fundo?"
-
-#: acq.js:UR_FILTER_USER
-msgid "Enter barcode for user (or leave blank to unset the filter):"
-msgstr ""
-"Entre com o código de barras para o usuário (ou deixe em branco para remover "
-"o filtro):"
 
 #: acq.js:UR_FILTER_LINEITEM
 msgid "Enter id for lineitem (or leave blank to unset the filter):"
@@ -459,13 +469,11 @@ msgstr ""
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: acq.js:CONFIRM_SPLIT_PO
-msgid ""
-"Are you sure you want to split this purchase order into\n"
-"one purchase order for every constituent line item?"
+#: acq.js:UR_FILTER_USER
+msgid "Enter barcode for user (or leave blank to unset the filter):"
 msgstr ""
-"Tem certeza de que quer dividir este pedido de compra em\n"
-"um pedido de compra para cada item?"
+"Entre com o código de barras para o usuário (ou deixe em branco para remover "
+"o filtro):"
 
 #: acq.js:CHANGE_CLAIM_POLICY
 msgid "Change claim policy"
@@ -478,6 +486,11 @@ msgstr "Ativada $(0)"
 #: acq.js:ADD_LI_TO_PO_BAD_PO_STATE
 msgid "The selected PO has already been activated"
 msgstr "A OP selecionada já foi ativada"
+
+#: acq.js:LI_EXISTING_COPIES
+msgid ""
+"There are ${0} existing copies for this bibliographic record at this location"
+msgstr ""
 
 #: acq.js:EXPORT_SAVE_DIALOG_TITLE
 msgid "Save field values to a file"
@@ -506,6 +519,10 @@ msgstr "Reiniciar fórmulas"
 #: acq.js:UNRECEIVE_LI
 msgid "Are you sure you want to mark this lineitem as UN-received?"
 msgstr "Você tem certeza que quer marcar este item como não recebido?"
+
+#: acq.js:DUPE_PO_NAME_MSG
+msgid "This name is already in use by another PO"
+msgstr ""
 
 #: acq.js:ACQ_SEARCH_CLASS_ABBR_jub
 msgid "LI"

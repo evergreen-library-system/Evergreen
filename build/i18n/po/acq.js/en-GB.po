@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2014-09-11 02:13-0400\n"
-"PO-Revision-Date: 2014-02-25 14:53+0000\n"
+"POT-Creation-Date: 2015-02-27 11:41-0400\n"
+"PO-Revision-Date: 2015-03-25 16:23+0000\n"
 "Last-Translator: Andi Chandler <Unknown>\n"
 "Language-Team: English (United Kingdom) <en_GB@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2014-09-12 06:25+0000\n"
-"X-Generator: Launchpad (build 17196)\n"
+"X-Launchpad-Export-Date: 2015-08-07 05:45+0000\n"
+"X-Generator: Launchpad (build 17656)\n"
 
 #: acq.js:ACQ_SEARCH_CLASS_ABBR_acqlid
 msgid "LID"
@@ -98,6 +98,20 @@ msgid ""
 "href='${11}/acq/picklist/view/${14}?focus_li=${10}&source=${22}'>&#x2756; "
 "${15}</a></div>"
 msgstr ""
+"<div class='acq-lineitem-summary'><a "
+"href='${19}?focus_li=${10}&source=${22}'>${0}</a>, by ${1} (${2})</div>\n"
+"<div class='acq-lineitem-summary-extra'>\n"
+"${3} Ordered, ${4} Received, ${7} Invoiced, ${8} Claimed, ${9} Cancelled, "
+"${23} Delayed</div>\n"
+"<div class='acq-lineitem-summary-extra'>Estimated $${6}, Encumbered $${16}, "
+"Paid $${17}</div>\n"
+"<div class='acq-lineitem-summary-extra'>\n"
+"# ${10} <a style='padding-right: 10px;' class='hidden${20}'  "
+"href='${11}/acq/po/view/${12}?focus_li=${10}&source=${22}'>&#x2318; ${13} "
+"${18}</a>\n"
+"<a style='padding-right: 10px;' class='hidden${21}' "
+"href='${11}/acq/picklist/view/${14}?focus_li=${10}&source=${22}'>&#x2756; "
+"${15}</a></div>"
 
 #: acq.js:INVOICE_CONFIRM_PRORATE
 msgid ""
@@ -144,6 +158,10 @@ msgid ""
 msgstr ""
 "There is already an invoice in the system with the given combination of "
 "'Vendor Invoice ID' and 'Provider,' which is not allowed."
+
+#: acq.js:DUPE_PO_NAME_LINK
+msgid "View PO"
+msgstr ""
 
 #: acq.js:CONFIRM_DELETE_MAPPING
 msgid "Are you sure you want to remove this tag from this fund?"
@@ -289,6 +307,14 @@ msgstr "Select Search Field"
 msgid "VENDOR PUBLIC"
 msgstr "VENDOR PUBLIC"
 
+#: acq.js:CONFIRM_SPLIT_PO
+msgid ""
+"Are you sure you want to split this purchase order into\n"
+"one purchase order for every constituent line item?"
+msgstr ""
+"Are you sure you want to split this purchase order into\n"
+"one purchase order for every constituent line item?"
+
 #: acq.js:VENDOR_SAYS_PREPAY_NEEDED
 msgid ""
 "The selected vendor requires prepayment, according to records.\n"
@@ -412,6 +438,10 @@ msgstr "That file is too large for this operation."
 msgid "Unexpected problem building virtual combined PO"
 msgstr "Unexpected problem building virtual combined PO"
 
+#: acq.js:PO_NAME_OPTIONAL
+msgid "${0} (optional)"
+msgstr ""
+
 #: acq.js:DELETE_LI_COPIES_CONFIRM
 msgid "This will delete the last ${0} copies in the table.  Proceed?"
 msgstr "This will delete the last ${0} copies in the table.  Proceed?"
@@ -423,10 +453,6 @@ msgstr "Are you sure you're ready to commit this transfer?"
 #: acq.js:PO_FUND_WARNING_CONFIRM
 msgid "Are you sure? Did you see the warning about over-encumbering a fund?"
 msgstr "Are you sure? Did you see the warning about over-encumbering a fund?"
-
-#: acq.js:UR_FILTER_USER
-msgid "Enter barcode for user (or leave blank to unset the filter):"
-msgstr "Enter barcode for user (or leave blank to unset the filter):"
 
 #: acq.js:UR_FILTER_LINEITEM
 msgid "Enter id for lineitem (or leave blank to unset the filter):"
@@ -444,13 +470,9 @@ msgstr "SL"
 msgid "Cancel"
 msgstr "Cancel"
 
-#: acq.js:CONFIRM_SPLIT_PO
-msgid ""
-"Are you sure you want to split this purchase order into\n"
-"one purchase order for every constituent line item?"
-msgstr ""
-"Are you sure you want to split this purchase order into\n"
-"one purchase order for every constituent line item?"
+#: acq.js:UR_FILTER_USER
+msgid "Enter barcode for user (or leave blank to unset the filter):"
+msgstr "Enter barcode for user (or leave blank to unset the filter):"
 
 #: acq.js:CHANGE_CLAIM_POLICY
 msgid "Change claim policy"
@@ -463,6 +485,11 @@ msgstr "Activated ${0}"
 #: acq.js:ADD_LI_TO_PO_BAD_PO_STATE
 msgid "The selected PO has already been activated"
 msgstr "The selected PO has already been activated"
+
+#: acq.js:LI_EXISTING_COPIES
+msgid ""
+"There are ${0} existing copies for this bibliographic record at this location"
+msgstr ""
 
 #: acq.js:EXPORT_SAVE_DIALOG_TITLE
 msgid "Save field values to a file"
@@ -491,6 +518,10 @@ msgstr "Reset Formulas"
 #: acq.js:UNRECEIVE_LI
 msgid "Are you sure you want to mark this lineitem as UN-received?"
 msgstr "Are you sure you want to mark this lineitem as UN-received?"
+
+#: acq.js:DUPE_PO_NAME_MSG
+msgid "This name is already in use by another PO"
+msgstr ""
 
 #: acq.js:ACQ_SEARCH_CLASS_ABBR_jub
 msgid "LI"

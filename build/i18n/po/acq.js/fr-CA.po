@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2014-09-11 02:13-0400\n"
+"POT-Creation-Date: 2015-02-27 11:41-0400\n"
 "PO-Revision-Date: 2011-04-19 04:00+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: French <fr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2014-09-12 06:25+0000\n"
-"X-Generator: Launchpad (build 17196)\n"
+"X-Launchpad-Export-Date: 2015-08-07 05:45+0000\n"
+"X-Generator: Launchpad (build 17656)\n"
 
 #: acq.js:ACQ_SEARCH_CLASS_ABBR_acqlid
 msgid "LID"
@@ -146,6 +146,10 @@ msgstr "Détails sur le dossier"
 msgid ""
 "There is already an invoice in the system with the given combination of "
 "'Vendor Invoice ID' and 'Provider,' which is not allowed."
+msgstr ""
+
+#: acq.js:DUPE_PO_NAME_LINK
+msgid "View PO"
 msgstr ""
 
 #: acq.js:CONFIRM_DELETE_MAPPING
@@ -294,6 +298,14 @@ msgstr "Sélectionnez le champ de recherche"
 msgid "VENDOR PUBLIC"
 msgstr "FOURNISSEUR : PUBLIC"
 
+#: acq.js:CONFIRM_SPLIT_PO
+msgid ""
+"Are you sure you want to split this purchase order into\n"
+"one purchase order for every constituent line item?"
+msgstr ""
+"Êtes-vous certain de vouloir diviser ce bon de commande en \n"
+"aucun bon de commande pour chaque article constituant?"
+
 #: acq.js:VENDOR_SAYS_PREPAY_NEEDED
 msgid ""
 "The selected vendor requires prepayment, according to records.\n"
@@ -416,6 +428,10 @@ msgstr ""
 "Problème non prévu lors de la mise au point d’un bon de commande virtuel "
 "combiné"
 
+#: acq.js:PO_NAME_OPTIONAL
+msgid "${0} (optional)"
+msgstr ""
+
 #: acq.js:DELETE_LI_COPIES_CONFIRM
 msgid "This will delete the last ${0} copies in the table.  Proceed?"
 msgstr ""
@@ -431,10 +447,6 @@ msgid "Are you sure? Did you see the warning about over-encumbering a fund?"
 msgstr ""
 "Êtes-vous certain? Avez-vous vu le message d’avertissement concernant la "
 "suraffectation d’un fonds?"
-
-#: acq.js:UR_FILTER_USER
-msgid "Enter barcode for user (or leave blank to unset the filter):"
-msgstr ""
 
 #: acq.js:UR_FILTER_LINEITEM
 msgid "Enter id for lineitem (or leave blank to unset the filter):"
@@ -452,13 +464,9 @@ msgstr ""
 msgid "Cancel"
 msgstr "Annuler"
 
-#: acq.js:CONFIRM_SPLIT_PO
-msgid ""
-"Are you sure you want to split this purchase order into\n"
-"one purchase order for every constituent line item?"
+#: acq.js:UR_FILTER_USER
+msgid "Enter barcode for user (or leave blank to unset the filter):"
 msgstr ""
-"Êtes-vous certain de vouloir diviser ce bon de commande en \n"
-"aucun bon de commande pour chaque article constituant?"
 
 #: acq.js:CHANGE_CLAIM_POLICY
 msgid "Change claim policy"
@@ -470,6 +478,11 @@ msgstr "Activé(e) ${0}"
 
 #: acq.js:ADD_LI_TO_PO_BAD_PO_STATE
 msgid "The selected PO has already been activated"
+msgstr ""
+
+#: acq.js:LI_EXISTING_COPIES
+msgid ""
+"There are ${0} existing copies for this bibliographic record at this location"
 msgstr ""
 
 #: acq.js:EXPORT_SAVE_DIALOG_TITLE
@@ -499,6 +512,10 @@ msgstr "Réinitialiser les formules"
 #: acq.js:UNRECEIVE_LI
 msgid "Are you sure you want to mark this lineitem as UN-received?"
 msgstr "Êtes-vous certain de vouloir indiquer cet article comme NON reçu?"
+
+#: acq.js:DUPE_PO_NAME_MSG
+msgid "This name is already in use by another PO"
+msgstr ""
 
 #: acq.js:ACQ_SEARCH_CLASS_ABBR_jub
 msgid "LI"

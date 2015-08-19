@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2014-09-11 02:13-0400\n"
+"POT-Creation-Date: 2015-02-27 11:41-0400\n"
 "PO-Revision-Date: 2012-05-25 22:59+0000\n"
 "Last-Translator: Tomas Abril <Unknown>\n"
 "Language-Team: Português do Brasil <kde-i18n-doc@kde.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2014-09-12 06:22+0000\n"
-"X-Generator: Launchpad (build 17196)\n"
+"X-Launchpad-Export-Date: 2015-08-07 05:43+0000\n"
+"X-Generator: Launchpad (build 17656)\n"
 "X-Poedit-Country: BRAZIL\n"
 "X-Poedit-Language: Portuguese\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -13269,6 +13269,11 @@ msgstr "&Observações"
 #: staff.patron.info.triggered_events.accesskey
 msgid "Triggered E&vents"
 msgstr "E&ventos Engatilhados"
+
+#: staff.patron.message_center.label
+#: staff.patron.message_center.accesskey
+msgid "Message Cente&r"
+msgstr ""
 
 #: staff.patron.info.stat_cats.label
 #: staff.patron.info.stat_cats.accesskey

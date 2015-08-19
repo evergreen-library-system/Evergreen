@@ -7,28 +7,30 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2014-09-11 02:13-0400\n"
-"PO-Revision-Date: 2013-11-14 20:09+0000\n"
-"Last-Translator: Gerson Vazquez <gerson.v.h@gmail.com>\n"
+"POT-Creation-Date: 2015-02-27 11:41-0400\n"
+"PO-Revision-Date: 2015-07-13 17:54+0000\n"
+"Last-Translator: Mariano Couto <cocospam@gmail.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2014-09-12 06:25+0000\n"
-"X-Generator: Launchpad (build 17196)\n"
+"X-Launchpad-Export-Date: 2015-08-07 05:45+0000\n"
+"X-Generator: Launchpad (build 17656)\n"
 
 #: acq.js:ACQ_SEARCH_CLASS_ABBR_acqlid
 msgid "LID"
-msgstr ""
+msgstr "LID"
 
 #: acq.js:ADD_LI_TO_PO_BAD_LI_STATE
 msgid ""
 "The selected lineitem is not in a state that can be added to a purchase order"
 msgstr ""
+"El ítem seleccionado está en un estado que no permite ser añadido a una "
+"orden de compra"
 
 #: acq.js:NO_LI_TO_CLAIM
 msgid "You have not selected any line items to claim."
-msgstr ""
+msgstr "Usted no ha seleccionado ningún ítem para reclamar"
 
 #: acq.js:CONFIRM_FUNDS_AT_WARNING
 msgid ""
@@ -73,7 +75,7 @@ msgstr ""
 
 #: acq.js:ACQ_SEARCH_CLASS_ABBR_acqlia
 msgid "LIA"
-msgstr ""
+msgstr "LIA"
 
 #: acq.js:LI_ATTR_SEARCH_CHOOSE_FILE
 msgid "Select file with search terms"
@@ -146,6 +148,12 @@ msgstr "Detalles del Registro"
 msgid ""
 "There is already an invoice in the system with the given combination of "
 "'Vendor Invoice ID' and 'Provider,' which is not allowed."
+msgstr ""
+"Ya existe una factura en el sistema con la combinación ofrecida para'Nº de "
+"factura' y 'Proveedor', lo cual no se permite"
+
+#: acq.js:DUPE_PO_NAME_LINK
+msgid "View PO"
 msgstr ""
 
 #: acq.js:CONFIRM_DELETE_MAPPING
@@ -258,6 +266,11 @@ msgid ""
 "put the system's idea of your purchase order in a state that is inconsistent "
 "with reality.  Are you sure you mean to do this?"
 msgstr ""
+"Ya se ordenó el ítem seleccionado! El borrarlo ahora no cancelará ni "
+"modificará cualquier pedido que haya sido realizado a un proveedor. El "
+"borrar el ítem puede provocar una idea incorrecta del estado de la orden de "
+"compra en el sistema lo que es una inconsistencia con la realidad. Está "
+"seguro que quiere realizar esto?"
 
 #: acq.js:CREATE_PO_ASSETS_CONFIRM
 msgid ""
@@ -287,6 +300,14 @@ msgstr "Eliga Campo de Busqueda"
 #: acq.js:VENDOR_PUBLIC
 msgid "VENDOR PUBLIC"
 msgstr "VENDEDOR PÚBLICO"
+
+#: acq.js:CONFIRM_SPLIT_PO
+msgid ""
+"Are you sure you want to split this purchase order into\n"
+"one purchase order for every constituent line item?"
+msgstr ""
+"¿Estás seguro de que desea separar la orden de compra entre\n"
+"una orden de compra por cada artículo de línea constituyente?"
 
 #: acq.js:VENDOR_SAYS_PREPAY_NEEDED
 msgid ""
@@ -413,6 +434,10 @@ msgstr "Ese archivo es muy grande para esta operación."
 msgid "Unexpected problem building virtual combined PO"
 msgstr "Problema inesperado creando el PO combinado virtual"
 
+#: acq.js:PO_NAME_OPTIONAL
+msgid "${0} (optional)"
+msgstr ""
+
 #: acq.js:DELETE_LI_COPIES_CONFIRM
 msgid "This will delete the last ${0} copies in the table.  Proceed?"
 msgstr "Esto borrara las últimas ${0} copias en la tabla.¿Continuar?"
@@ -424,10 +449,6 @@ msgstr "¿Estás seguro que esta listo para cometer esta transferencia?"
 #: acq.js:PO_FUND_WARNING_CONFIRM
 msgid "Are you sure? Did you see the warning about over-encumbering a fund?"
 msgstr "¿Estás seguro?¿Vieno la alerta sobre sobrecargar su fondo?"
-
-#: acq.js:UR_FILTER_USER
-msgid "Enter barcode for user (or leave blank to unset the filter):"
-msgstr ""
 
 #: acq.js:UR_FILTER_LINEITEM
 msgid "Enter id for lineitem (or leave blank to unset the filter):"
@@ -445,13 +466,9 @@ msgstr ""
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: acq.js:CONFIRM_SPLIT_PO
-msgid ""
-"Are you sure you want to split this purchase order into\n"
-"one purchase order for every constituent line item?"
+#: acq.js:UR_FILTER_USER
+msgid "Enter barcode for user (or leave blank to unset the filter):"
 msgstr ""
-"¿Estás seguro de que desea separar la orden de compra entre\n"
-"una orden de compra por cada artículo de línea constituyente?"
 
 #: acq.js:CHANGE_CLAIM_POLICY
 msgid "Change claim policy"
@@ -464,6 +481,11 @@ msgstr "Activado ${0}"
 #: acq.js:ADD_LI_TO_PO_BAD_PO_STATE
 msgid "The selected PO has already been activated"
 msgstr "La OC seleccionada ha sido previamente activada"
+
+#: acq.js:LI_EXISTING_COPIES
+msgid ""
+"There are ${0} existing copies for this bibliographic record at this location"
+msgstr ""
 
 #: acq.js:EXPORT_SAVE_DIALOG_TITLE
 msgid "Save field values to a file"
@@ -493,6 +515,10 @@ msgstr "Restablecer fórmulas"
 msgid "Are you sure you want to mark this lineitem as UN-received?"
 msgstr ""
 "¿Estás seguro de que desea marcar este artículo de línea como no recibido?"
+
+#: acq.js:DUPE_PO_NAME_MSG
+msgid "This name is already in use by another PO"
+msgstr ""
 
 #: acq.js:ACQ_SEARCH_CLASS_ABBR_jub
 msgid "LI"

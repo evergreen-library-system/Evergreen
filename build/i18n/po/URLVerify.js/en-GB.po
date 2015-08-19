@@ -1,16 +1,16 @@
-# Armenian translation for evergreen
-# Copyright (c) 2013 Rosetta Contributors and Canonical Ltd 2013
+# English (United Kingdom) translation for evergreen
+# Copyright (c) 2015 Rosetta Contributors and Canonical Ltd 2015
 # This file is distributed under the same license as the evergreen package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2013.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2015.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2015-02-27 11:41-0400\n"
-"PO-Revision-Date: 2013-06-08 13:51+0000\n"
-"Last-Translator: TZ <tigran@flib.sci.am>\n"
-"Language-Team: Armenian <hy@li.org>\n"
+"PO-Revision-Date: 2015-03-25 16:46+0000\n"
+"Last-Translator: Andi Chandler <Unknown>\n"
+"Language-Team: English (United Kingdom) <en_GB@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -23,31 +23,31 @@ msgstr "XPath"
 
 #: URLVerify.js:NOTHING_SELECTED
 msgid "No rows are selected, so no action will be taken."
-msgstr "Չկան ընտրված սյունակներ, հետևաբար ոչ մի գործողություն չի կատարվի։"
+msgstr "No rows are selected, so no action will be taken."
 
 #: URLVerify.js:REVIEW_ATTEMPT
 msgid "Review this verification attempt"
-msgstr "Ուսումնասիրի փոխճանաչման այս գործողությունը։"
+msgstr "Review this verification attempt"
 
 #: URLVerify.js:CREATING
 msgid "Creating session ..."
-msgstr "Ստեղծման սեսիա..."
+msgstr "Creating session ..."
 
 #: URLVerify.js:MARC_EDITOR_TITLE
 msgid "Record ID #${0}"
-msgstr "Գրառման հմր #${0}"
+msgstr "Record ID #${0}"
 
 #: URLVerify.js:SESSION_NAME
 msgid "Session '${0}'"
-msgstr "Սեսիա '${0}'"
+msgstr "Session '${0}'"
 
 #: URLVerify.js:CLONING
 msgid "Cloning existing session ..."
-msgstr "Առկա սեսիայի կլոնավորում..."
+msgstr "Cloning existing session ..."
 
 #: URLVerify.js:INTERFACE_SETUP
 msgid "Setting up interface ..."
-msgstr "Միջերեսի կարգաբերում..."
+msgstr "Setting up interface ..."
 
 #: URLVerify.js:VERIFY_ALL
 msgid ""
@@ -55,65 +55,64 @@ msgid ""
 "your search terms.  Click 'Cancel' if the selected, visible URLs are the "
 "only ones you want verified."
 msgstr ""
-"Սեղմիր 'ԼԱՎ' որպեսզի փոխստուգես ԲՈԼՈՐ հղումները որ պատկանում են այս սեսիային "
-"և համընկնում են որոնման քո պայմաններին։ Սեղմիր 'Չեղյալ անել' եթե ընտրված "
-"տեսանելի հղումները միակն են որ ցանկանում ես փոխստուգել։"
+"Click 'OK' to verify ALL the URLs that belong to this session and match all "
+"your search terms.  Click 'Cancel' if the selected, visible URLs are the "
+"only ones you want verified."
 
 #: URLVerify.js:VERIFICATION_ATTEMPT_ID
 msgid "Verification attempt ID: ${0}"
-msgstr "Փոխճանաչման փորձի հմր: ${0}"
+msgstr "Verification attempt ID: ${0}"
 
 #: URLVerify.js:VERIFICATION_DIALOG
 msgid "Verifying URLs ..."
-msgstr "Հղումների փոխճանաչում..."
+msgstr "Verifying URLs ..."
 
 #: URLVerify.js:NEED_UVUS
 msgid "You must add some tag and subfield combinations."
-msgstr "Դու պետք է ավելացնես որոշ ցուցիչի և ենթադաշտի կոմբինացիա։"
+msgstr "You must add some tag and subfield combinations."
 
 #: URLVerify.js:CLONE_SESSION
 msgid "Clone"
-msgstr "Կլոն"
+msgstr "Clone"
 
 #: URLVerify.js:MARC_EDITOR_LINK
 msgid "Click to open MARC Editor for this record"
-msgstr "Սեղմիր որպեսզի այս գրառման համար բացվի ՄԵԸՔ խմբագրիչը"
+msgstr "Click to open MARC Editor for this record"
 
 #: URLVerify.js:SELECT_MORE
 msgid ""
 "Click here to review all session URLs and/or select other URLs to verify"
 msgstr ""
-"Սեղմիր այստեղ դիտելու բոլոր սեսիաների հղումները և/կամ ընտրի այլ հղում "
-"փոխճանաչման համար։"
+"Click here to review all session URLs and/or select other URLs to verify"
 
 #: URLVerify.js:PERFORMING_SEARCH
 msgid "Performing search ..."
-msgstr "Փնտրման իրականացում..."
+msgstr "Performing search ..."
 
 #: URLVerify.js:MARC_EDITOR_SAVE_RECORD
 msgid "Save Record"
-msgstr "Հիշիր գրառումը"
+msgstr "Save Record"
 
 #: URLVerify.js:EDIT
 msgid "Edit"
-msgstr "Խմբագրել"
+msgstr "Edit"
 
 #: URLVerify.js:SAVING_TAGS
 msgid "Saving tag/subfield selectors ..."
-msgstr "Հիշվում է ցուցիչի/ենթադաշտի ընտրիչները..."
+msgstr "Saving tag/subfield selectors ..."
 
 #: URLVerify.js:CLONE_SESSION_NAME
 msgid "Copy of ${0}"
-msgstr "${0} պատճեն"
+msgstr "Copy of ${0}"
 
 #: URLVerify.js:EXTRACTING_URLS
 msgid "Extracting URLs ..."
-msgstr "Հղումների բացում..."
+msgstr "Extracting URLs ..."
 
 #: URLVerify.js:REDIRECTING
 msgid "Loading next interface ..."
-msgstr "Հաջորդ միջերեսի բեռնավորում..."
+msgstr "Loading next interface ..."
 
 #: URLVerify.js:REREVIEW
 msgid "Open"
-msgstr "Բացել"
+msgstr "Open"
