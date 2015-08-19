@@ -1,4 +1,4 @@
--- Evergreen DB patch XXXX.schema.rank_cp_visibility.sql
+-- Evergreen DB patch 0924.schema.rank_cp_visibility.sql
 --
 -- rank_cp() is meant to return the most-available copies, so it needs to
 -- factor in the opac_visible flag on the copies themselves
@@ -6,7 +6,7 @@
 BEGIN;
 
 -- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0924', :eg_version);
 
 -- function is being expanded and renamed, so drop the old version
 DROP FUNCTION IF EXISTS evergreen.rank_cp_status(INT);
