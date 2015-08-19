@@ -1,6 +1,6 @@
 BEGIN;
 
---SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0928', :eg_version);
 
 CREATE OR REPLACE FUNCTION oils_xpath_tag_to_table(marc text, tag text, xpaths text[]) RETURNS SETOF record AS $function$
 
