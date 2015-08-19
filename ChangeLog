@@ -1,3 +1,660 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit e49f8f3a4520c790941a5271148dd9f485896020
+Author: Ben Shum <bshum@biblio.org>
+Date:   Wed Feb 4 14:42:16 2015 -0500
+
+    Bump OpenILS.pm version to 2.7.7
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit 9076d045ce0dc64b5c66eefddb336d8050a3923c
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Jan 16 15:07:40 2014 -0500
+
+    Changes to smooth out make_release
+    
+    1) Make the fake 'HeadURL' into a URL which works with our web repo.
+    Note that this has 'tags/' hardcoded in, so it only works with true
+    release branches (e.g. rel_x_y_z) not "working" branches
+    (e.g. rel_x_y).
+    
+    2) Change range selector when building log to better exclude commits
+    from previous releases.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+2	2	build/tools/make_release
+
+commit 90d022249201a37e277e960e33433d0d9196f9bb
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Wed Aug 19 15:52:47 2015 -0400
+
+    Fix mis-stamping of 0940.schema.vlist_freq.sql.
+    
+    I typed the wrong number in the upgrade script.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+1	1	Open-ILS/src/sql/Pg/upgrade/0940.schema.vlist_freq.sql
+
+commit 9a9b062a7ec1b4762838850935af59d581d75d41
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed May 20 12:24:13 2015 -0400
+
+    LP#1457111 eg-pbx-allocator uses modern rpc api name
+    
+    Replace "-" with "__" in XML-RPC method name for compatibility with
+    modern Perl XML-RPC libraries.
+    
+    See also https://bugs.launchpad.net/bugs/1050596
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/asterisk/pbx-daemon/eg-pbx-allocator.pl
+
+commit 813541a513bd8d8ecc2594350d28e1e1acaa06dc
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Wed Aug 19 15:01:10 2015 -0400
+
+    LP 1438136: Stamping upgrade script.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+    
+    Conflicts:
+    	Open-ILS/src/sql/Pg/002.schema.config.sql
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+37	0	Open-ILS/src/sql/Pg/upgrade/0940.schema.vlist_freq.sql
+0	37	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.vlist_freq.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0940.schema.vlist_freq.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.vlist_freq.sql
+
+commit 5fbf8f14b447bd5708e77b372cdbb5945b1aa945
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Sun Apr 26 12:29:18 2015 -0400
+
+    LP#1438136: Make upgrade script forgiving
+    
+    If the functions already exist, that's OK.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/sql/Pg/300.schema.staged_search.sql
+1	1	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.vlist_freq.sql
+
+commit 451d2ec08645735d0bbcac660bbd6a39eb4d2bb0
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Fri Apr 17 12:37:06 2015 -0400
+
+    LP#1438136: Protect PG < 9.2 from our stats probe
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+16	6	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Driver/Pg/QueryParser.pm
+1	0	Open-ILS/src/sql/Pg/300.schema.staged_search.sql
+1	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.vlist_freq.sql
+
+commit fbed5b92f1ffa5cad20e56388e0bdf2c3401abb5
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Thu Apr 16 17:39:49 2015 -0400
+
+    LP#1438136: Update baseline schema files
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+30	0	Open-ILS/src/sql/Pg/300.schema.staged_search.sql
+
+commit 50e76bbfdbd11ed49156dec36a42884fb6249e2d
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Apr 15 12:10:27 2015 -0400
+
+    LP#1438136: Teach QP to be smart about attribute selectivity
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+28	12	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Driver/Pg/QueryParser.pm
+36	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.vlist_freq.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.vlist_freq.sql
+
+commit 88ddb52a04a57f185c7f47025941ca905e386b81
+Author: Ben Shum <bshum@biblio.org>
+Date:   Wed Aug 19 15:06:08 2015 -0400
+
+    LP#1442796: (backport) Stamping upgrade script for xpath-based record attributes
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+221	0	Open-ILS/src/sql/Pg/upgrade/0936.schema.fix_ingest_of_xpath_based_attrs.sql
+0	221	Open-ILS/src/sql/Pg/upgrade/lp1442796_1of1.schema.fix_ingest_of_xpath_based_attrs.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0936.schema.fix_ingest_of_xpath_based_attrs.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/lp1442796_1of1.schema.fix_ingest_of_xpath_based_attrs.sql
+
+commit 308e72f8a47d6657f1b9cc0c488e58e844dfa61c
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Fri Apr 10 20:56:17 2015 +0000
+
+    LP#1442796: make XPath-based record attribute definitions work
+    
+    Record attribue definitions that use XPath to extract their values
+    could break ingest; this patch fixes that.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/sql/Pg/030.schema.metabib.sql
+31	0	Open-ILS/src/sql/Pg/t/regress/lp1442796_record_attr_using_xpath.pg
+221	0	Open-ILS/src/sql/Pg/upgrade/lp1442796_1of1.schema.fix_ingest_of_xpath_based_attrs.sql
+ create mode 100644 Open-ILS/src/sql/Pg/t/regress/lp1442796_record_attr_using_xpath.pg
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/lp1442796_1of1.schema.fix_ingest_of_xpath_based_attrs.sql
+
+commit 45dcc8299cb5dc807c443d70c2a3e33a5bb8e24e
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Aug 19 11:08:48 2015 -0400
+
+    LP#1240119 safe auth activity live test
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+43	0	Open-ILS/src/perlmods/live_t/11-lp1240119-safe-token-activity.t
+ create mode 100644 Open-ILS/src/perlmods/live_t/11-lp1240119-safe-token-activity.t
+
+commit a5c030f94bfbc2f63fb59921dc9fda9da2875305
+Author: Bill Erickson <berick@esilibrary.com>
+Date:   Mon Aug 19 09:24:17 2013 -0400
+
+    LP#1240119 Safe auth token activity logging
+    
+    Expand safe token generation to include user ID in the cached data,
+    which can be retrieved later for activity logging.  Add activity logging
+    directly to the open-ils.actor.safe_token.home_lib.shortname API.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Josh Stompro <stomproj@larl.org>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+14	8	Open-ILS/src/perlmods/lib/OpenILS/Application/Actor.pm
+
+commit c99a45667aeec97a0a0f06444dbd5ab50876ebd6
+Author: Matt Berowski <berowskim@larl.org>
+Date:   Tue Aug 18 09:17:26 2015 -0500
+
+    Documentation typo fixes
+     - Corrected effect to affect
+     - Removed double the
+     - Spelling correction Preceeded to Preceded
+     - Corrected Spelling error self serve to self-serve
+     - Small typo in staff client receipt template - hold slip 2 docs.
+    
+    Matt's first commit to evergreen docs!
+    
+    Signed-off-by: Matt Berowski <berowskim@larl.org>
+    Signed-off-by: Josh Stompro <stomproj@larl.org>
+
+2	2	docs/admin/sip_server.txt
+1	1	docs/admin/workstation_admin_receipt_template_editor.txt
+1	1	docs/admin_initial_setup/migrating_patron_data.txt
+1	1	docs/admin_initial_setup/ordering_materials.txt
+
+commit 1ea17671155f447c00cfab12d849f08c8be4c310
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Jun 9 17:59:42 2015 -0400
+
+    LP#1463590 Loosen read access to distribution formulas
+    
+    Make it possible for ACQ staff that have the CREATE_PURCHASE_ORDER
+    permission to view distribution formulas (via PCRUD) , making it
+    possible to use them from the PO batch update operation.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/examples/fm_IDL.xml
+
+commit 55fbf4e3e3bc7921b8aaa3ad084c9c89f9bf7190
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Mar 30 11:19:55 2015 -0400
+
+    LP#1438252 SIP honor floating copy checkin location
+    
+    Report the new value for a copy's circ_lib when it's a floating copy
+    whose circ_lib is modified during checkin.
+    
+    This affects the AQ field of the SIP checkin (10) message.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+14	0	Open-ILS/src/perlmods/lib/OpenILS/SIP/Transaction/Checkin.pm
+
+commit 0a294d7453e864e8c6c25ffc8cd9f7884e49e357
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Thu Mar 12 16:06:16 2015 -0400
+
+    LP1431541: SRU UTF8 encoding issues
+    
+    The SuperCat SRU service was encoding MARCXML using an encode_utf8()
+    call that ended up corrupting non-ASCII characters. In addition, the
+    HTTP header charset was not being set, meaning that the return header
+    would default to ISO-8859-1.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+3	4	Open-ILS/src/perlmods/lib/OpenILS/WWW/SuperCat.pm
+
+commit 1ee6d382348c5849b3ba93eb0f18d083b11e4b6d
+Author: Ben Shum <bshum@biblio.org>
+Date:   Tue Aug 18 23:06:39 2015 -0400
+
+    LP#1419172: Stamping upgrade script for optimizing full circ count
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+12	0	Open-ILS/src/sql/Pg/upgrade/0927.schema.optimize_full_circ_count.sql
+0	12	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.optimize_full_circ_count.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0927.schema.optimize_full_circ_count.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.optimize_full_circ_count.sql
+
+commit de63ff6ad6960ae26348e4283dc83a89237e71b4
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu May 7 16:43:16 2015 -0400
+
+    LP#1419172 Optimize full_circ_count view to avoid seq scans
+    
+    As reported by Chris Sharp:
+    
+    "The reporter.classic_item_list view was modified in bug 1208572 to use
+    extend_reporter.full_circ_count to provide the use count for each item.
+    Unfortunately, this change was found to be the cause of consistently
+    long-running (2+ hours) reports queries in PINES as its query plan on
+    our PostgreSQL 9.3 server was resulting in sequential scans of both the
+    circulation and aged_circulation tables."
+    
+    This commit restructures the view to avoid JOINs, and is in production
+    at PINES with noted improvement.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+5	6	Open-ILS/src/sql/Pg/extend-reporter.sql
+12	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.optimize_full_circ_count.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.optimize_full_circ_count.sql
+
+commit 2fd6c8239bacffdd2d57f64972c86f273b00fbb9
+Author: Thomas Berezansky <tsbere@mvlc.org>
+Date:   Wed Apr 15 10:48:03 2015 -0400
+
+    LP#1444514: Have amnesty mode override backdate for voiding
+    
+    Otherwise you get amnesty notes on just backdate voiding.
+    
+    Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Circulate.pm
+
+commit f6a60e9c4d2c9512a7c93c6f6ab1ae6590a63931
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Aug 5 17:41:51 2015 -0400
+
+    LP#1481036 Ignore future backdates live test
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+36	0	Open-ILS/src/perlmods/live_t/10-lp1481036-future-backdate.t
+ create mode 100644 Open-ILS/src/perlmods/live_t/10-lp1481036-future-backdate.t
+
+commit fe2947c4b6e6e29dade91de63da2976bf4260326
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Aug 3 14:03:52 2015 -0400
+
+    LP#1481036 Ignore future backdates (part 2).
+    
+    Ensure that future backdates are successully ignored in the checkin API.
+    The logic was in place to do this, but it failed to clear the values,
+    resulting in using the future backdate anyway.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+5	3	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Circulate.pm
+
+commit fc48994d3a0afb7ff92db55c0e6ec0d29a93a797
+Author: Ben Shum <bshum@biblio.org>
+Date:   Tue Aug 18 22:30:13 2015 -0400
+
+    LP#1204671: Stamping upgrade script for fund tag propagation
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+319	0	Open-ILS/src/sql/Pg/upgrade/0926.fund_tags_persist.sql
+0	317	Open-ILS/src/sql/Pg/upgrade/XXXX.fund_tags_persist.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0926.fund_tags_persist.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.fund_tags_persist.sql
+
+commit 2366b20a791397148f48ea1aafd5d06d84bb2cff
+Author: Dan Pearl <dpearl@cwmars.org>
+Date:   Fri Jan 9 14:23:58 2015 -0500
+
+    LP#1204671  Allow fund tags to remain attached to new fund during end-of-year propagation
+    or rollower.
+    
+    Signed-off-by: Dan Pearl dpearl@cwmars.org
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+28	0	Open-ILS/src/sql/Pg/200.schema.acq.sql
+317	0	Open-ILS/src/sql/Pg/upgrade/XXXX.fund_tags_persist.sql
+4	0	docs/RELEASE_NOTES_NEXT/Acquisitions/Fund_Tag_Preservation.txt
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.fund_tags_persist.sql
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Acquisitions/Fund_Tag_Preservation.txt
+
+commit bd103005ea3f1e6734ac367d123cd1d55aa1d9e0
+Author: Ben Shum <bshum@biblio.org>
+Date:   Tue Aug 18 22:22:42 2015 -0400
+
+    LP#1450561: Stamping upgrade script for library settings editor history limits
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+26	0	Open-ILS/src/sql/Pg/upgrade/0925.limit_logs_oust-create.sql
+0	26	Open-ILS/src/sql/Pg/upgrade/XXXX.lmit_logs_oust-create.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0925.limit_logs_oust-create.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.lmit_logs_oust-create.sql
+
+commit 618910ec115d47111d68c2e7bd3c409320265f9a
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Fri May 1 15:33:05 2015 -0400
+
+    LP 1450561: Restore org. unit settings history limit function and trigger
+    
+    The evergreen.limit_oustl function and the limit_log_oustl trigger on
+    config.org_unit_setting_type_log were missed in the upgrade scripts
+    when these were added to the base schema.  This commit adds them and a
+    pgtap test to check that they exist after.
+    
+    This commit also alters the body of the limit_oustl function to take into
+    account of the org unit when deleting entries from the log table.  This
+    change allows multiple consortium members to have their own five history
+    entries.  The original code only kept the last five entries of any given
+    setting across the whole installation.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+3	3	Open-ILS/src/sql/Pg/002.schema.config.sql
+12	0	Open-ILS/src/sql/Pg/t/lp1450561-limit_oustl.pg
+26	0	Open-ILS/src/sql/Pg/upgrade/XXXX.lmit_logs_oust-create.sql
+ create mode 100644 Open-ILS/src/sql/Pg/t/lp1450561-limit_oustl.pg
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.lmit_logs_oust-create.sql
+
+commit a3f27f0b54c9222c2eec692a0972f9144cbb555e
+Author: Ben Shum <bshum@biblio.org>
+Date:   Tue Aug 18 22:14:26 2015 -0400
+
+    LP#1112723: stamping upgrade script for unapi copy visibility
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+    
+    Conflicts:
+    	Open-ILS/src/sql/Pg/002.schema.config.sql
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+209	0	Open-ILS/src/sql/Pg/upgrade/0924.schema.rank_cp_visibility.sql
+0	209	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.rank_cp_visibility.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0924.schema.rank_cp_visibility.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.rank_cp_visibility.sql
+
+commit 11eade3939fcea1fd5c8f1184fcba4d70dc81f65
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Mar 7 08:30:02 2013 -0500
+
+    LP#1112723 Consider copy-level opac_visible flag when ranking
+    
+    The current unAPI calls consider opac_visibility of the status,
+    but not the copy itself. If you have a record with copies set to
+    opac_visible = false, you might see few or no copies in the OPAC
+    results list, as these invisible copies may be the first five
+    returned, and they then crowd out the visible copies.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Josh Stompro <stomproj@larl.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+2	2	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Record.pm
+32	9	Open-ILS/src/sql/Pg/990.schema.unapi.sql
+209	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.rank_cp_visibility.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.rank_cp_visibility.sql
+
+commit 44bc436649eefd8c23d90fc5ca6bb1a9f1a79ed7
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Jul 28 10:39:57 2015 -0400
+
+    LP#1478997 Items out display sort overdues to top
+    
+    Sort overdue items to the top of the patron items out display in the XUL
+    client, consistent with pre-2.5 behavior.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/xul/staff_client/server/patron/items.js
+
+commit cbb8076af25f8e7c3fe30ba4b3f88208635e5122
+Author: Josh Stompro <stomproj@larl.org>
+Date:   Sat Jun 13 06:38:10 2015 -0500
+
+    LP#1463097 - eg_db_config.in help text fix
+    
+    Two of the descriptions of which config files are used were transposed.
+    
+    Signed-off-by: Josh Stompro <stomproj@larl.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2	2	Open-ILS/src/support-scripts/eg_db_config.in
+
+commit 5fe29e98f5a9f4d0851eab365dbbaa65f5133b01
+Author: Josh Stompro <stomproj@larl.org>
+Date:   Fri Jul 24 14:20:21 2015 -0500
+
+    LP#1478123: fix leak of file descriptors by Apache workers
+    
+    Apache backends handling TPAC requests and making requests
+    of the added content handler were not properly closing
+    their sockets. This patch adds a close() after the shutdown()
+    to plug the leak.
+    
+    Signed-off-by: Josh Stompro <stomproj@larl.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+4	1	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Record.pm
+
+commit 52f7adbd1fbe600d24be8b9f2795244cbf81d435
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Thu Aug 13 15:22:33 2015 -0400
+
+    LP 1484655: ftp://ftp.mozilla.org moved to http://archive.mozilla.org
+    
+    This commit changes the XULRUNNER_URL in Open-ILS/xul/staff_client/
+    Makefile.am from using ftp to talk to ftp.mozilla.org to using http
+    with archive.mozilla.org.  This is necessary because Mozilla.org
+    have apparently declared the former to be closed and the latter to
+    be the canonical location for downloads.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	1	Open-ILS/xul/staff_client/Makefile.am
+
+commit 9a8fca0714155d131b32746475e76b9a8bf33b25
+Author: Bill Ott <bott@grpl.org>
+Date:   Tue Jul 28 16:05:31 2015 -0400
+
+    LP#1394989: Do not include deleted users when retrieving for Collections
+    
+    As a side effect of discovering that users with no cards were being retrieved
+    as part of the Collections API calls, those users ended up being mostly
+    made up of deleted users (merged with an actual lead record, etc.)
+    
+    This patch contribued by Bill Ott changes the retrieval so that it skips
+    over those deleted users.
+    
+    Signed-off-by: Bill Ott <bott@grpl.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+2	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Publisher/money.pm
+
+commit d16ee8734748bf484492a82e1bc6db4047f57fe4
+Author: Michael Peters <mpeters@emeralddata.net>
+Date:   Thu Nov 20 17:41:44 2014 -0500
+
+    LP#1394989: Make users_of_interest test for defined actor.usr.card values
+    
+    If the open-ils.collections.users_of_interest API encounters a patron that
+    has a null "card" value in actor.usr the API will crash with an error like:
+    
+    Received Exception:
+    Name: osrfMethodException
+    Status:  *** Call to [open-ils.collections.users_of_interest.retrieve] failed for session [1416515351.333446.1416515351406], thread trace [1]:
+    Can't call method "barcode" on an undefined value at /usr/local/share/perl/5.14.2/OpenILS/Application/Collections.pm line 299.
+    
+    This patches users_of_interest to provide "undef" in the event that there is
+    not a proper barcode associated with the user when retrieving results for the
+    API call.
+    
+    Signed-off-by: Michael Peters <mpeters@emeralddata.net>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Collections.pm
+
+commit b7b858f7c2d39625e66946b02bb14b0e0046c5cc
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Mon Jun 15 15:32:20 2015 -0400
+
+    LP#1465385: Fix some syntax issues with make_release
+    
+    Some versions of bash become confused when a unary = operator
+    is used in place of a binary == operator.  Also, some variables
+    live without the protection of quoting, and thus further confuse
+    the shell when their contents are not as simple as originally
+    expected.
+    
+    Here we adress those issues.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+12	12	build/tools/make_release
+
+commit 2aad1520e62b8c2e389cc04a7a02e0911fad20d7
+Author: Angela Kilsdonk <akilsdonk@esilibrary.com>
+Date:   Wed Jun 24 12:16:21 2015 -0500
+
+    Docs: 2.6 Duplicate Serials Barcode Alert
+    
+    Documentation for new duplicate serials barcode alert in Serials Batch Receive.
+    
+    Signed-off-by: Angela Kilsdonk <akilsdonk@esilibrary.com>
+
+-	-	docs/media/dup_serials_barcode.JPG
+7	0	docs/serials/F-Receiving.txt
+ create mode 100644 docs/media/dup_serials_barcode.JPG
+
+commit 3e960988b7e6f3460b2580e850ea650f7d345c36
+Author: Josh Stompro <stomproj@larl.org>
+Date:   Tue Apr 28 08:16:54 2015 -0500
+
+    Docs: Update action trigger docs to add missing fields.
+    
+    Rename heading to "Notifications / Action Trigger" so it matches
+    the staff client admin menu.
+    
+    Signed-off-by: Josh Stompro <stomproj@larl.org>
+
+11	4	docs/admin/actiontriggers.txt
+
+commit f626ee32d2183fdd47164953c2f150d3e313fa4c
+Author: Yamil Suarez <yamil@yamil.com>
+Date:   Fri Jun 19 10:50:45 2015 -0400
+
+    LP#1465830: authority linker now ignores $e and $4 in bib name headings
+    
+    presence of relator terms or codes in $e or $4 can prevent authority
+    headings linking
+    
+    To test
+    -------
+    [1] Create an authority record with a name heading like this
+    
+        100 $a Example, Natalia $d 1945-
+    
+    [2] Create a bib record that contains the name and a relator
+        code or term, e.g.,
+    
+        100 $a Example, Natalia $d 1945- $4edt
+    
+    [3] Run authority_control_fields.pl. Note that the
+        heading in the bib is *NOT* linked, as evidence
+        by no $0 being added to the bib heading and no
+        rows added to authority.bib_linking for that bib
+        and authority.
+    
+    [4] Apply the patch and re-run step 3.  This time,
+        the link gets established:
+    
+        100 $a Example, Natalia $d 1945- $4 edt $0 (CONS)xxx
+    
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+0	13	Open-ILS/src/support-scripts/authority_control_fields.pl.in
+
+commit dede50c572e16fd623db896062b46983e96efd9c
+Author: Ben Shum <bshum@biblio.org>
+Date:   Wed Jun 17 23:59:16 2015 -0400
+
+    Docs: Change references to release 2.7.6
+    
+    Since 2.7.6 is released, change references in upgrade docs to this newest
+    release.
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+16	15	docs/installation/server_upgrade.txt
+
+commit f2e25f58f0a813b41f086f5a8a8a9d710eae028c
+Author: Ben Shum <bshum@biblio.org>
+Date:   Wed Jun 17 23:53:57 2015 -0400
+
+    Forward-port 2.7.5-2.7.6 upgrade script
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+35	0	Open-ILS/src/sql/Pg/version-upgrade/2.7.5-2.7.6-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.7.5-2.7.6-upgrade-db.sql
