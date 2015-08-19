@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0927', :eg_version);
 
 CREATE OR REPLACE VIEW extend_reporter.full_circ_count AS
    SELECT cp.id,
