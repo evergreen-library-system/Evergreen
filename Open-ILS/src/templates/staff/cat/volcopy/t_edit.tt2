@@ -3,26 +3,57 @@
 <style> select { width: 80px } </style>
 
 <accordion close-others="false">
-    <accordion-group heading="Volume Editor" is-open="show_vols">
+    <accordion-group heading="Volume/Copy Details" is-open="show_vols">
 
         <div class="container-fluid">
-            <div class="row">
-                <div class="col-xs-1">[% l('Library') %]</div>
-                <div class="col-xs-1">[% l('Volumes') %]</div>
+            <div class="row bg-info">
+                <div class="col-xs-2"><h4 class="center-block">[% l('Batch Apply') %]</h4></div>
                 <div class="col-xs-10">
                     <div class="container-fluid">
                         <div class="row">
-                            <div class="col-xs-1">[% l('Classification') %]</div>
-                            <div class="col-xs-1">[% l('Prefix') %]</div>
-                            <div class="col-xs-3">[% l('Call Number') %]</div>
-                            <div class="col-xs-1">[% l('Suffix') %]</div>
-                            <div class="col-xs-1">[% l('Copies') %]</div>
+                            <div class="col-xs-1">
+                                <select ng-model="batch.classification" ng-options="cl.id() as cl.name() for cl in classification_list">
+                                    <option value="">[% l('(Unset)') %]</option>
+                                </select>
+                            </div>
+                            <div class="col-xs-1">
+                                <select ng-model="batch.prefix" ng-options="p.id() as p.label() for p in prefix_list">
+                                    <option value="">[% l('(Unset)') %]</option>
+                                </select>
+                            </div>
+                            <div class="col-xs-3">
+                                <input type="text" ng-model="batch.label"/>
+                            </div>
+                            <div class="col-xs-1">
+                                <select ng-model="batch.suffix" ng-options="s.id() as s.label() for s in suffix_list">
+                                    <option value="">[% l('(Unset)') %]</option>
+                                </select>
+                            </div>
+                            <div class="col-xs-1"></div>
+                            <div class="col-xs-5">
+                                <button class="btn btn-default center-block" ng-click="applyBatchCNValues()" type="button">Apply</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- row -->
+            <div class="row">
+                <div class="col-xs-1"><h5>[% l('Library') %]</h5></div>
+                <div class="col-xs-1"><h5>[% l('Volumes') %]</h5></div>
+                <div class="col-xs-10">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-xs-1"><h5>[% l('Classification') %]</h5></div>
+                            <div class="col-xs-1"><h5>[% l('Prefix') %]</h5></div>
+                            <div class="col-xs-3"><h5>[% l('Call Number') %]</h5></div>
+                            <div class="col-xs-1"><h5>[% l('Suffix') %]</h5></div>
+                            <div class="col-xs-1"><h5>[% l('Copies') %]</h5></div>
                             <div class="col-xs-5">
                                 <div class="container-fluid">
                                     <div class="row">
-                                        <div class="col-xs-6">[% l('Barcode') %]</div>
-                                        <div class="col-xs-3">[% l('Copy #') %]</div>
-                                        <div class="col-xs-3">[% l('Part') %]</div>
+                                        <div class="col-xs-6"><h5>[% l('Barcode') %]</h5></div>
+                                        <div class="col-xs-3"><h5>[% l('Copy #') %]</h5></div>
+                                        <div class="col-xs-3"><h5>[% l('Part') %]</h5></div>
                                     </div>
                                 </div>
                             </div>
@@ -34,7 +65,7 @@
         </div> <!-- container -->
 
     </accordion-group>
-    <accordion-group heading="Copy Editor" is-open="show_copies">
+    <accordion-group heading="Copy Attributes" is-open="show_copies">
 
         <ul ng-model="copytab" class="nav nav-tabs">
           <li ng-class="{active : copytab == 'working'}">
@@ -82,7 +113,7 @@
 
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <b>[% l('Circulate?') %]</b>
+                                        <h5>[% l('Circulate?') %]</h5>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -108,7 +139,7 @@
 
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <b>[% l('Circulation Library') %]</b>
+                                        <h5>[% l('Circulation Library') %]</h5>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -119,7 +150,7 @@
 
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <b>[% l('Shelving Location') %]</b>
+                                        <h5>[% l('Shelving Location') %]</h5>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -133,7 +164,7 @@
 
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <b>[% l('Circulation Modifier') %]</b>
+                                        <h5>[% l('Circulation Modifier') %]</h5>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -147,7 +178,7 @@
 
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <b>[% l('Circulate as Type') %]</b>
+                                        <h5>[% l('Circulate as Type') %]</h5>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -161,7 +192,7 @@
 
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <b>[% l('Holdable?') %]</b>
+                                        <h5>[% l('Holdable?') %]</h5>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -187,7 +218,7 @@
 
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <b>[% l('Loan Duration') %]</b>
+                                        <h5>[% l('Loan Duration') %]</h5>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -202,7 +233,7 @@
 
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <b>[% l('Fine Level') %]</b>
+                                        <h5>[% l('Fine Level') %]</h5>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -217,7 +248,7 @@
 
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <b>[% l('Age-based Hold Protection') %]</b>
+                                        <h5>[% l('Age-based Hold Protection') %]</h5>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -237,7 +268,7 @@
 
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <b>[% l('Status') %]</b>
+                                        <h5>[% l('Status') %]</h5>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -251,7 +282,7 @@
 
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <b>[% l('Reference?') %]</b>
+                                        <h5>[% l('Reference?') %]</h5>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -277,7 +308,7 @@
 
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <b>[% l('OPAC Visible?') %]</b>
+                                        <h5>[% l('OPAC Visible?') %]</h5>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -303,7 +334,7 @@
 
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <b>[% l('Price') %]</b>
+                                        <h5>[% l('Price') %]</h5>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -314,7 +345,7 @@
 
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <b>[% l('Cost') %]</b>
+                                        <h5>[% l('Cost') %]</h5>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -325,7 +356,7 @@
 
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <b>[% l('Deposit?') %]</b>
+                                        <h5>[% l('Deposit?') %]</h5>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -351,7 +382,7 @@
 
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <b>[% l('Deposit Amount') %]</b>
+                                        <h5>[% l('Deposit Amount') %]</h5>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -362,7 +393,7 @@
 
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <b>[% l('Quality') %]</b>
+                                        <h5>[% l('Quality') %]</h5>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -393,7 +424,7 @@
                             <div class="container-fluid"> <!-- third column -->
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <b>[% l('Statistical Catagories') %]</b>
+                                        <h5>[% l('Statistical Catagories') %]</h5>
                                     </div>
                                 </div>
                             </div>

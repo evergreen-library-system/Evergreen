@@ -49,16 +49,10 @@ function(egCore , $q) {
     };
 
     service.get_prefixes = function(org) {
-        if (egCore.env.acnp)
-            return $q.when(egCore.env.acnp.list);
-
         return egCore.pcrud.search('acnp',
             {owning_lib : egCore.org.fullPath(org, true)},
             null, {atomic : true}
-        ).then(function(list) {
-            egCore.env.absorbList(list, 'acnp');
-            return list;
-        });
+        );
 
     };
 
@@ -70,16 +64,10 @@ function(egCore , $q) {
     };
 
     service.get_suffixes = function(org) {
-        if (egCore.env.acns)
-            return $q.when(egCore.env.acns.list);
-
         return egCore.pcrud.search('acns',
             {owning_lib : egCore.org.fullPath(org, true)},
             null, {atomic : true}
-        ).then(function(list) {
-            egCore.env.absorbList(list, 'acns');
-            return list;
-        });
+        );
 
     };
 
@@ -204,7 +192,7 @@ function(egCore , $q) {
                 $scope.updateBarcode = function () { $scope.copy.barcode($scope.barcode); $scope.copy.ischanged(1); };
                 $scope.updateCopyNo = function () { $scope.copy.copy_number($scope.copy_number); $scope.copy.ischanged(1); };
                 $scope.updatePart = function () {
-                    var p = angular.filter($scope.part_list, function (x) {
+                    var p = $scope.part_list.filter(function (x) {
                         return x.label() == $scope.part
                     });
                     if (p.length > 0) { // preexisting part
@@ -308,17 +296,48 @@ function(egCore , $q) {
                     });
                 }
 
-                $scope.classification = $scope.callNumber.label_class();
-                $scope.prefix = $scope.callNumber.prefix();
-                $scope.suffix = $scope.callNumber.suffix();
-
-                $scope.label = $scope.callNumber.label();
                 $scope.updateLabel = function () {
                     angular.forEach($scope.copies, function(cp) {
                         cp.call_number().label($scope.label);
                         cp.call_number().ischanged(1);
                     });
                 }
+
+                $scope.$watch('callNumber.prefix()', function (v) {
+                    if (typeof v != 'object') {
+                        $scope.prefix = $scope.prefix_list.filter(function (p) {
+                            return p.id() == v;
+                        })[0];
+                        $scope.callNumber.prefix($scope.prefix);
+                    }
+                });
+
+                $scope.$watch('callNumber.suffix()', function (v) {
+                    if (typeof v != 'object') {
+                        $scope.suffix = $scope.suffix_list.filter( function (s) {
+                            return s.id() == v;
+                        })[0];
+                        $scope.callNumber.suffix($scope.suffix);
+                    }
+                });
+
+                $scope.$watch('callNumber.label_class()', function (v) {
+                    if (typeof v != 'object') {
+                        $scope.classification = $scope.classification_list.filter(function (c) {
+                            return c.id() == v;
+                        })[0];
+                        $scope.callNumber.label_class($scope.classification);
+                    }
+                });
+
+                $scope.$watch('callNumber.label()', function (v) {
+                    $scope.label = v;
+                });
+
+                $scope.prefix = $scope.callNumber.prefix();
+                $scope.suffix = $scope.callNumber.suffix();
+                $scope.classification = $scope.callNumber.label_class();
+                $scope.label = $scope.callNumber.label();
 
                 $scope.copy_count = $scope.copies.length;
                 $scope.orig_copy_count = $scope.copy_count;
@@ -503,6 +522,26 @@ function($scope , $q , $routeParams , $location , $timeout , egCore , egNet , eg
         $scope.completed_copies = [];
         $scope.location_orgs = [];
         $scope.location_cache = {};
+        $scope.batch = {};
+
+        $scope.applyBatchCNValues = function () {
+            if ($scope.data.tree) {
+                angular.forEach($scope.data.tree, function(cn_hash) {
+                    angular.forEach(cn_hash, function(copies) {
+                        angular.forEach(copies, function(cp) {
+                            if (typeof $scope.batch.classification != 'undefined' && $scope.batch.classification != '')
+                                cp.call_number().label_class($scope.batch.classification);
+                            if (typeof $scope.batch.prefix != 'undefined' && $scope.batch.prefix != '')
+                                cp.call_number().prefix($scope.batch.prefix);
+                            if (typeof $scope.batch.label != 'undefined' && $scope.batch.label != '')
+                                cp.call_number().label($scope.batch.label);
+                            if (typeof $scope.batch.suffix != 'undefined' && $scope.batch.suffix != '')
+                                cp.call_number().suffix($scope.batch.suffix);
+                        });
+                    });
+                });
+            }
+        }
 
         $scope.completedGridDataProvider = egGridDataProvider.instance({
             get : function(offset, count) {
@@ -590,6 +629,21 @@ function($scope , $q , $routeParams , $location , $timeout , egCore , egNet , eg
             }
 
             $scope.workingGridDataProvider.refresh();
+        });
+
+        $scope.suffix_list = [];
+        itemSvc.get_suffixes(egCore.auth.user().ws_ou()).then(function(list){
+            $scope.suffix_list = list;
+        });
+
+        $scope.prefix_list = [];
+        itemSvc.get_prefixes(egCore.auth.user().ws_ou()).then(function(list){
+            $scope.prefix_list = list;
+        });
+
+        $scope.classification_list = [];
+        itemSvc.get_classifications().then(function(list){
+            $scope.classification_list = list;
         });
 
         $scope.$watch('completed_copies.length', function () {
