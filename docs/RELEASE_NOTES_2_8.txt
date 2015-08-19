@@ -1,6 +1,65 @@
 Evergreen 2.8 Release Notes
 =============================
 
+Evergreen 2.8.3
+---------------
+This release contains several bugfixes improving on Evergreen 2.8.2
+
+Circulation
+~~~~~~~~~~~
+* Restores sort order in the patron's Items Out display so that overdue items
+sort to the top.
+* Changes the behavior of the checkin API so that future backdates are 
+successfully ignored.
+* Fixes a problem where amnesty mode was ignored when backdating checkins.
+* Allows SIP to honor floating copy checkin locations.
+
+Cataloging
+~~~~~~~~~~
+
+* Changes the behavior of the authority linker to now ignore $e and $4 in bib
+name headings.
+
+Acquisitions
+~~~~~~~~~~~~
+
+* Changes the behavior of the end-of-year process so that fund tags will now
+remain on propagated funds.
+* Allows staff with the CREAT_PURCHSE_ORDER permission to view distribution
+formulas, making it possible to use them for PO batch update operations.
+
+Public Catalog
+~~~~~~~~~~~~~~
+
+* Improves performance of OPAC searches using format filters.
+* Removes opac_invisible copies from consideration when displaying copies on
+the search results page.
+* Fixes a UTF8 encoding issue with the SuperCat SRU service.
+
+
+Reports
+~~~~~~~
+* Optimizes the extend_reporter.full_circ_count view to improve performance
+for sites with large datasets.
+
+
+Admin
+~~~~~
+
+* Fixes a JS TypeError that prevents stat cats from displaying in the stat cat
+editor.
+* Fixes a problem where where the Collections API would crash when encountering
+users with null card values.
+* Updates the XULRunner URL in Makefile.am, allowing makefile to continue
+building the staff client.
+* Fixes a problem where the added content handler was not properly closing
+sockets.
+* Fixes a problem where the Library Settings History was not properly
+keeping the latest five settings per org unit. 
+* Expands safe token generation to include user ID in the cached data, which
+can be retrieved later for activity logging.
+* Makes xpath-based record attribute definitions work.
+
 Evergreen 2.8.2
 ---------------
 
