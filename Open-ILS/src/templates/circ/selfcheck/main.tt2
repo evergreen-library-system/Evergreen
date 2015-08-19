@@ -56,26 +56,6 @@
         </table>
     </form>
 </div>
-<div dojoType="dijit.Dialog" jsId='oilsSelfckWsDialog' class='oils-logout-dialog' style='display:none;'>
-    <form>
-        <table>
-            <tr>
-                <td>[% l('Choose a location') %]</td>
-                <td><div dojoType='openils.widget.OrgUnitFilteringSelect' jsId='oilsSelfckWsLocSelector' 
-                    searchAttr='shortname' labelAttr='shortname'></div></td>
-            </tr>
-            <tr>
-                <td>[% l('Enter a workstation name') %]</td>
-                <td><input dojoType='dijit.form.TextBox' jsId='oilsSelfckWsName'/></td>
-            </tr>
-            <tr>
-                <td colspan='2' align='center'>
-                    <button jsId='oilsSelfckWsSubmit' dojoType='dijit.form.Button'>[% l('Submit') %]</button>
-                </td>
-            </tr>
-        </table>
-    </form>
-</div>
 
 [% END %]
 
