@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('0926', :eg_version);
+
 CREATE OR REPLACE FUNCTION acq.copy_fund_tags(
         old_fund_id INTEGER,
         new_fund_id INTEGER
