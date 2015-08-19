@@ -1,0 +1,28 @@
+Removal of legacy selfcheck interface
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The legacy selfcheck interface is no longer included in Evergreen as
+of this release.
+
+This interface was formerly located at a URL ending in
+extras/selfcheck/selfcheck.xml
+
+No attempt is made at upgrade time to automatically remove this
+interface.
+
+It is recommended that you remove this interface and its associated
+configuration after performing an upgrade:
+
+(paths relative to Evergreen web root)
+
+- opac/extras/selfcheck/selfcheck.css
+- opac/extras/selfcheck/selfcheck.js
+- opac/extras/selfcheck/selfcheck.xml
+- opac/extras/selfcheck/selfcheck_print.css
+
+You can also remove the related Apache configuration block starting
+with:
+
+[source, conf]
+<LocationMatch .*/selfcheck.xml>
+
