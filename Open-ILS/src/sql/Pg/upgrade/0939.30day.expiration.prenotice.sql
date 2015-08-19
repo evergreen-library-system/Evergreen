@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('0939', :eg_version);
+
 --create hook for actor.usr.expire_date
 INSERT INTO action_trigger.hook (key, core_type, description, passive)
     VALUES ('au.expired', 'au', 'A user account has expired', 't');
