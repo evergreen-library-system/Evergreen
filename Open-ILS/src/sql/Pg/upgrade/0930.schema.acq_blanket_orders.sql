@@ -1,6 +1,6 @@
 BEGIN;
 
---SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0930', :eg_version);
 
 ALTER TABLE acq.invoice_item_type
     ADD COLUMN blanket BOOLEAN NOT NULL DEFAULT FALSE,
