@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('0939', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0940', :eg_version);
 
 CREATE OR REPLACE FUNCTION evergreen.pg_statistics (tab TEXT, col TEXT) RETURNS TABLE(element TEXT, frequency INT) AS $$
 BEGIN
