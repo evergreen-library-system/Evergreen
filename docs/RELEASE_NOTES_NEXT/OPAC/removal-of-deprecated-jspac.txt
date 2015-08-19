@@ -1,0 +1,29 @@
+Removal of deprecated "JSPAC" interface
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The deprecated Javascript OPAC interface known as "JSPAC" is no
+longer included in Evergreen as of this release.
+
+With the understanding that local sites may have made use of
+existing parts of the old JSPAC interface -- especially images and
+CSS -- no attempt is made at upgrade time to automatically remove
+the existing files from disk.
+
+When upgrading, you may wish to remove "index.xml" from your Apache
+DirectoryIndex directives.
+
+The following directories, xml, js, and css files were formerly part
+of JSPAC, and you may be able to safely remove them from your system
+after verifying that they and their contents are no longer required:
+
+- web/opac/common/css/
+- web/opac/common/js/dtree.js
+- web/opac/common/xml/
+- web/opac/extras/bbags.js
+- web/opac/extras/bbags.xml
+- web/opac/skin/default/js/
+- web/opac/skin/default/xml/
+- web/opac/theme/
+
+The list of images removed in this change is lengthy, and not
+included here.
