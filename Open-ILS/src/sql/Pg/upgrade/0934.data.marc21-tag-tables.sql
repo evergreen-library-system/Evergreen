@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('0934', :eg_version);
+
 INSERT INTO config.marc_format(id, code, name) VALUES (1, 'marc21', 'MARC 21');
 SELECT SETVAL('config.marc_format_id_seq', 100);
 ALTER SEQUENCE config.marc_field_id_seq RESTART WITH 1;

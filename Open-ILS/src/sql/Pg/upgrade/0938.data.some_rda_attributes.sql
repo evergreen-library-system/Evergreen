@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('0938', :eg_version);
+
 INSERT INTO config.record_attr_definition (name, label, format, xpath, vocabulary) VALUES (
     'content_type', oils_i18n_gettext('content_type', 'Content Type', 'ccvm', 'label'),
     'marcxml',

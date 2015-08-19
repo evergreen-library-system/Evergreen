@@ -1,5 +1,8 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('0933', :eg_version);
+
+
 CREATE TABLE config.marc_format (
     id                  SERIAL PRIMARY KEY,
     code                TEXT NOT NULL,
