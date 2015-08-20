@@ -149,23 +149,6 @@
                 <checkin_hold_as_transit>1</checkin_hold_as_transit>
                 -->
 
-                <!-- If uncommented, overrides the legacy_script_support value in opensrf.xml for SIP. -->
-                <!--
-                <legacy_script_support>false</legacy_script_support>
-                -->
-
-				<scripts>
-                    <!-- 
-                        When legacy script support is disabled, the <script> configuration
-                        is ignored.  The SIP server pulls item configuration information
-                        from the database instead (config.circ_modifier).
-                    -->
-					<path>LOCALSTATEDIR/</path>
-                    <path>LOCALSTATEDIR/catalog/</path>
-		    <path>LIBDIR/javascript/</path>
-					<item_config>circ/circ_item_config.js</item_config>
-				</scripts>
-
 			</implementation_config>
 	
 		</institution>
