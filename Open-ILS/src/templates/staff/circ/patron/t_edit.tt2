@@ -70,18 +70,26 @@
   </div>
 
   <!-- supplemental actions and example text -->
-  <div class="col-md-3 patron-reg-example">
+  <div class="col-md-6 patron-reg-example">
 
     [% IF field == 'barcode' %]
 
       <button class="btn btn-default">[% l('Replace Barcode') %]</button>
       <button class="btn btn-default">[% l('See All') %]</button>
 
-    [% ELSIF field == 'password' %]
+    [% ELSIF field == 'passwd' %]
 
-      <button class="btn btn-default">[% l('Generate Password') %]</button>
+      <button class="btn btn-default" ng-click="generate_password()">
+        [% l('Generate Password') %]</button>
 
     [% ELSE %]
+
+      <!-- invalidate buttons -->
+
+      [% IF field.match('phone') OR field.match('email') %]
+        <button ng-show="patron.[% field %]" class="btn btn-default"
+          ng-click="">[% l('Invalidate') %]</button>
+      [% END %]
 
       <!-- example strings -->
 
@@ -92,15 +100,14 @@
         [% l('Example: [_1]', "{{" _ set_str _ "}}") %]
       </span>
 
+      <!-- phones have a fall-through example strings -->
       [% IF field.match('phone') %]
-        <!-- phones have a fall-through example option -->
         <span ng-if="![% set_str %] && org_settings['ui.patron.edit.phone.example']">
           [% l('Example: [_1]', 
-           "{{org_settings['ui.patron.edit.phone.example']}}") %]
+          "{{org_settings['ui.patron.edit.phone.example']}}") %]
         </span>
       [% END %]
     [% END %]
-
   </div>
 </div>
 [% END %]
@@ -200,11 +207,14 @@
         <li ng-repeat="grp in profiles">
           <a href 
             style="padding-left: {{pgt_depth(grp) * 10 + 5}}px"
-            ng-click="patron.profile = grp">{{grp.name()}}</a>
+            ng-click="set_profile(grp)">{{grp.name()}}</a>
         </li>
       </ul>
     </div>
   </div>
+  <div class="col-md-3">
+    <button class="btn btn-default">[% l('Secondary Groups') %]</button>
+  </div> 
 </div>
 
 <div class="row reg-field-row" ng-show="show_field('au.expire_date')">
@@ -219,7 +229,8 @@
       class="form-control" ng-model="patron.expire_date"/>
   </div>
   <div class="col-md-3">
-    <button class="btn btn-default">[% l('Update Expire Date') %]</button>
+    <button class="btn btn-default" ng-click="set_expire_date()">
+      [% l('Update Expire Date') %]</button>
   </div>
 </div>
 

@@ -437,6 +437,26 @@ function PatronRegCtrl($scope, $routeParams,
 
         return field_visibility[field_key] >= $scope.edit_passthru.vis_level;
     }
+
+    // generates a random 4-digit password
+    $scope.generate_password = function() {
+        $scope.patron.passwd = Math.floor(Math.random()*9000) + 1000;
+    }
+
+    $scope.set_expire_date = function() {
+        if (!$scope.patron.profile) return;
+        var seconds = egCore.date.intervalToSeconds(
+            $scope.patron.profile.perm_interval());
+        var now_epoch = new Date().getTime();
+        $scope.patron.expire_date = new Date(
+            now_epoch + (seconds * 1000 /* milliseconds */))
+    }
+
+    // grp is the pgt object
+    $scope.set_profile = function(grp) {
+        $scope.patron.profile = grp;
+        $scope.set_expire_date();
+    }
 }
 
 
