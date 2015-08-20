@@ -1261,7 +1261,9 @@ angular.module('egGridMod',
 
                     var col = cols.cloneFromScope(colSpec);
                     col.path = (dotpath ? dotpath + '.' + field.name : field.name);
-                    console.debug('egGrid: field: ' +field.name + '; parent field: ' + js2JSON(idl_field));
+
+                    // log line below is very chatty.  disable until needed.
+                    // console.debug('egGrid: field: ' +field.name + '; parent field: ' + js2JSON(idl_field));
                     cols.add(col, false, true, 
                         {idl_parent : idl_field, idl_field : field, idl_class : class_obj});
                 });
