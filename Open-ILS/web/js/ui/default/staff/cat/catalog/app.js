@@ -312,11 +312,16 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         return cp_id_list;
     }
 
-    $scope.selectedHoldingsVolCopyEdit = function (){
+    spawnHoldingsEdit = function (hide_vols,hide_copies){
         egCore.net.request(
             'open-ils.actor',
             'open-ils.actor.anon_cache.set_value',
-            null, 'edit-these-copies', {record_id: $scope.record_id, copies: gatherSelectedHoldingsIds() }
+            null, 'edit-these-copies', {
+                record_id: $scope.record_id,
+                copies: gatherSelectedHoldingsIds(),
+                hide_vols : hide_vols,
+                hide_copies : hide_copies
+            }
         ).then(function(key) {
             if (key) {
                 var url = egCore.env.basePath + 'cat/volcopy/' + key;
@@ -326,6 +331,9 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
             }
         });
     }
+    $scope.selectedHoldingsVolCopyEdit = function () { spawnHoldingsEdit(false,false) }
+    $scope.selectedHoldingsVolEdit = function () { spawnHoldingsEdit(false,true) }
+    $scope.selectedHoldingsCopyEdit = function () { spawnHoldingsEdit(true,false) }
 
     $scope.selectedHoldingsItemStatus = function (){
         var url = egCore.env.basePath + 'cat/item/search/' + gatherSelectedHoldingsIds().join(',')
