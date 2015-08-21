@@ -1,71 +1,69 @@
+<div>
+    <div class="btn-group">
+        <label class="btn btn-default" ng-click="show_vols = !show_vols">
+            <span ng-show="show_vols" style="padding-right: 5px;">[% l('Hide Volume/Copy Details') %]</span>
+            <span ng-hide="show_vols" style="padding-right: 5px;">[% l('Show Volume/Copy Details') %]</span>
+        </label>
+        <label class="btn btn-default" ng-click="show_copies = !show_copies">
+            <span ng-show="show_copies" style="padding-right: 5px;">[% l('Hide Copy Attributes') %]</span>
+            <span ng-hide="show_copies" style="padding-right: 5px;">[% l('Show Copy Attributes') %]</span>
+        </label>
+    </div>
 
-<style> input[type=number] { width: 50px } </style>
-<style> select { width: 80px } </style>
-
-<accordion close-others="false">
-    <accordion-group heading="Volume/Copy Details" is-open="show_vols">
-
-        <div class="container-fluid">
-            <div class="row bg-info">
-                <div class="col-xs-2"><h4 class="center-block">[% l('Batch Apply') %]</h4></div>
-                <div class="col-xs-10">
-                    <div class="container-fluid">
+    <div class="container-fluid pad-vert" ng-show="show_vols">
+        <div class="row bg-info">
+            <div class="col-xs-2"><h4 class="center-block">[% l('Batch Apply') %]</h4></div>
+            <div class="col-xs-10">
+                <div class="row">
+                    <div class="col-xs-2">
+                        <select class="form-control" ng-model="batch.classification" ng-options="cl.id() as cl.name() for cl in classification_list">
+                        </select>
+                    </div>
+                    <div class="col-xs-1">
+                        <select class="form-control" ng-model="batch.prefix" ng-options="p.id() as p.label() for p in prefix_list">
+                        </select>
+                    </div>
+                    <div class="col-xs-2">
+                        <input class="form-control" type="text" ng-model="batch.label"/>
+                    </div>
+                    <div class="col-xs-1">
+                        <select class="form-control" ng-model="batch.suffix" ng-options="s.id() as s.label() for s in suffix_list">
+                        </select>
+                    </div>
+                    <div class="col-xs-1"></div>
+                    <div class="col-xs-5">
+                        <button class="btn btn-default center-block" ng-click="applyBatchCNValues()" type="button">Apply</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row pad-vert">
+            <div class="col-xs-1"><b>[% l('Library') %]</b></div>
+            <div class="col-xs-1"><b>[% l('Volumes') %]</b></div>
+            <div class="col-xs-10">
+                <div class="row">
+                    <div class="col-xs-2"><b>[% l('Classification') %]</b></div>
+                    <div class="col-xs-1"><b>[% l('Prefix') %]</b></div>
+                    <div class="col-xs-2"><b>[% l('Call Number') %]</b></div>
+                    <div class="col-xs-1"><b>[% l('Suffix') %]</b></div>
+                    <div class="col-xs-1"><b>[% l('Copies') %]</b></div>
+                    <div class="col-xs-5">
                         <div class="row">
-                            <div class="col-xs-1">
-                                <select ng-model="batch.classification" ng-options="cl.id() as cl.name() for cl in classification_list">
-                                    <option value="">[% l('(Unset)') %]</option>
-                                </select>
-                            </div>
-                            <div class="col-xs-1">
-                                <select ng-model="batch.prefix" ng-options="p.id() as p.label() for p in prefix_list">
-                                    <option value="">[% l('(Unset)') %]</option>
-                                </select>
-                            </div>
-                            <div class="col-xs-3">
-                                <input type="text" ng-model="batch.label"/>
-                            </div>
-                            <div class="col-xs-1">
-                                <select ng-model="batch.suffix" ng-options="s.id() as s.label() for s in suffix_list">
-                                    <option value="">[% l('(Unset)') %]</option>
-                                </select>
-                            </div>
-                            <div class="col-xs-1"></div>
-                            <div class="col-xs-5">
-                                <button class="btn btn-default center-block" ng-click="applyBatchCNValues()" type="button">Apply</button>
-                            </div>
+                            <div class="col-xs-5"><b>[% l('Barcode') %]</b></div>
+                            <div class="col-xs-3"><b>[% l('Copy #') %]</b></div>
+                            <div class="col-xs-4"><b>[% l('Part') %]</b></div>
                         </div>
                     </div>
                 </div>
-            </div> <!-- row -->
-            <div class="row">
-                <div class="col-xs-1"><h5>[% l('Library') %]</h5></div>
-                <div class="col-xs-1"><h5>[% l('Volumes') %]</h5></div>
-                <div class="col-xs-10">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-xs-1"><h5>[% l('Classification') %]</h5></div>
-                            <div class="col-xs-1"><h5>[% l('Prefix') %]</h5></div>
-                            <div class="col-xs-3"><h5>[% l('Call Number') %]</h5></div>
-                            <div class="col-xs-1"><h5>[% l('Suffix') %]</h5></div>
-                            <div class="col-xs-1"><h5>[% l('Copies') %]</h5></div>
-                            <div class="col-xs-5">
-                                <div class="container-fluid">
-                                    <div class="row">
-                                        <div class="col-xs-6"><h5>[% l('Barcode') %]</h5></div>
-                                        <div class="col-xs-3"><h5>[% l('Copy #') %]</h5></div>
-                                        <div class="col-xs-3"><h5>[% l('Part') %]</h5></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> <!-- row -->
-            <eg-vol-edit ng-repeat="(lib,callnumbers) in data.tree" record="{{record.id()}}" lib="{{lib}}" allcopies="data.copies" struct="data.tree[lib]"></eg-vol-edit>
-        </div> <!-- container -->
+            </div>
+        </div> <!-- row -->
+        <eg-vol-edit ng-repeat="(lib,callnumbers) in data.tree" record="record.id()" lib="{{lib}}" allcopies="data.copies" struct="data.tree[lib]"></eg-vol-edit>
+    </div>
 
-    </accordion-group>
-    <accordion-group heading="Copy Attributes" is-open="show_copies">
+</div>
+<div class="pad-vert">
+
+    <div class="pad-vert" ng-show="show_copies">
 
         <ul ng-model="copytab" class="nav nav-tabs">
           <li ng-class="{active : copytab == 'working'}">
@@ -76,399 +74,74 @@
           </li>
         </ul>
 
-<div class="tab-content">
-  <div class="tab-pane active">
-    <div ng-show="copytab == 'working'">
-
-    <div class="container-fluid"> <!-- working copy editor -->
-        <div class="row">
-            <div class="col-lg-4">
-
-                <eg-grid
-                  id-field="id"
-                  idl-class="acp"
-                  features="startSelected,-pagination,-actions,-picker,-index"
-                  items-provider="workingGridDataProvider"
-                  grid-controls="workingGridControls"
-                  persist-key="cat.volcopy.copies">
-
-                  <eg-grid-menu-item handler="workingToComplete"
-                   label="[% l('Store Selected') %]"></eg-grid-menu-item>
-
-                
-                  <eg-grid-field label="[% l('Barcode') %]"     path='barcode' visible></eg-grid-field>
-                  <eg-grid-field label="[% l('Created') %]"     path="create_date" visible></eg-grid-field>
-                  <eg-grid-field label="[% l('Activated') %]"   path="active_date" visible></eg-grid-field>
-                  <eg-grid-field label="[% l('Call Number') %]" path="call_number.label" visible></eg-grid-field>
-                
-                </eg-grid>
-
-            </div>
-            <div class="col-lg-8">
-                <div class="container-fluid">
-                    <div class="row">
-
-                        <div class="col-md-4">
-                            <div class="container-fluid"> <!-- first column -->
-
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <h5>[% l('Circulate?') %]</h5>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="container-fluid"> <!-- circulate? -->
-                                            <div class="row">
-                                                <div class="col-xs-6">
-                                                    <label>
-                                                        <input type="radio" ng-model="working.circulate" value="t"/>
-                                                        [% l('Yes') %]
-                                                    </label>
-                                                </div>
-                                                <div class="col-xs-6">
-                                                    <label>
-                                                        <input type="radio" ng-model="working.circulate" value="f"/>
-                                                        [% l('No') %]
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <h5>[% l('Circulation Library') %]</h5>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <eg-org-selector selected="working.circ_lib" disableTest="cant_have_vols"></eg-org-selector>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <h5>[% l('Shelving Location') %]</h5>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <select
-                                            ng-model="working.location"
-                                            ng-options="l.name() for l in location_list track by idTracker(l)"
-                                        ></select>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <h5>[% l('Circulation Modifier') %]</h5>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <select
-                                            ng-model="working.circ_modifier"
-                                            ng-options="m.name() for m in circ_mod_list track by tracker(m,'code')"
-                                        ></select>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <h5>[% l('Circulate as Type') %]</h5>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <select
-                                            ng-model="working.circ_as_type"
-                                            ng-options="t.value() for t in circ_type_list track by tracker(t,'code')"
-                                        ></select>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <h5>[% l('Holdable?') %]</h5>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="container-fluid">
-                                            <div class="row">
-                                                <div class="col-xs-6">
-                                                    <label>
-                                                        <input type="radio" ng-model="working.holdable" value="t"/>
-                                                        [% l('Yes') %]
-                                                    </label>
-                                                </div>
-                                                <div class="col-xs-6">
-                                                    <label>
-                                                        <input type="radio" ng-model="working.holdable" value="f"/>
-                                                        [% l('No') %]
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <h5>[% l('Loan Duration') %]</h5>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <select ng-model="working.loan_duration">
-                                            <option value="1">[% l('Short') %]</option>
-                                            <option value="2" selected>[% l('Normal') %]</option>
-                                            <option value="3">[% l('Extended') %]</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <h5>[% l('Fine Level') %]</h5>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <select ng-model="working.fine_level">
-                                            <option value="1">[% l('Low') %]</option>
-                                            <option value="2" selected>[% l('Normal') %]</option>
-                                            <option value="3">[% l('High') %]</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <h5>[% l('Age-based Hold Protection') %]</h5>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <select
-                                            ng-model="working.age_protect"
-                                            ng-options="a.name() for a in age_protect_list track by idTracker(a)"
-                                        ></select>
-                                    </div>
-                                </div>
-
-                            </div> <!-- first column -->
-                        </div>
-
-                        <div class="col-md-4">
-                            <div class="container-fluid"> <!-- second column -->
-
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <h5>[% l('Status') %]</h5>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <select
-                                            ng-model="working.status"
-                                            ng-options="s.name() for s in status_list track by idTracker(s)"
-                                        ></select>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <h5>[% l('Reference?') %]</h5>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="container-fluid">
-                                            <div class="row">
-                                                <div class="col-xs-6">
-                                                    <label>
-                                                        <input type="radio" ng-model="working.ref" value="t"/>
-                                                        [% l('Yes') %]
-                                                    </label>
-                                                </div>
-                                                <div class="col-xs-6">
-                                                    <label>
-                                                        <input type="radio" ng-model="working.ref" value="f"/>
-                                                        [% l('No') %]
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <h5>[% l('OPAC Visible?') %]</h5>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="container-fluid">
-                                            <div class="row">
-                                                <div class="col-xs-6">
-                                                    <label>
-                                                        <input type="radio" ng-model="working.opac_visible" value="t"/>
-                                                        [% l('Yes') %]
-                                                    </label>
-                                                </div>
-                                                <div class="col-xs-6">
-                                                    <label>
-                                                        <input type="radio" ng-model="working.opac_visible" value="f"/>
-                                                        [% l('No') %]
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <h5>[% l('Price') %]</h5>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <input ng-model="working.price" type="text"/>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <h5>[% l('Cost') %]</h5>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <input ng-model="working.cost" type="text"/>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <h5>[% l('Deposit?') %]</h5>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="container-fluid">
-                                            <div class="row">
-                                                <div class="col-xs-6">
-                                                    <label>
-                                                        <input type="radio" ng-model="working.deposit" value="t"/>
-                                                        [% l('Yes') %]
-                                                    </label>
-                                                </div>
-                                                <div class="col-xs-6">
-                                                    <label>
-                                                        <input type="radio" ng-model="working.deposit" value="f"/>
-                                                        [% l('No') %]
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <h5>[% l('Deposit Amount') %]</h5>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <input ng-model="working.deposit_amount" type="text"/>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <h5>[% l('Quality') %]</h5>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="container-fluid">
-                                            <div class="row">
-                                                <div class="col-xs-6">
-                                                    <label>
-                                                        <input type="radio" ng-model="working.mint_condition" value="t"/>
-                                                        [% l('Good') %]
-                                                    </label>
-                                                </div>
-                                                <div class="col-xs-6">
-                                                    <label>
-                                                        <input type="radio" ng-model="working.mint_condition" value="f"/>
-                                                        [% l('Damaged') %]
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-
-                        <div class="col-md-4">
-                            <div class="container-fluid"> <!-- third column -->
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <h5>[% l('Statistical Catagories') %]</h5>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
+        <div class="tab-content">
+          <div class="tab-pane active">
+            <div ng-show="copytab == 'working'">
+        
+            <div class="container-fluid"> <!-- working copy editor -->
+                <div class="row">
+                    <div class="col-lg-4">
+        
+                        <eg-grid
+                          id-field="id"
+                          idl-class="acp"
+                          features="startSelected,-pagination,-actions,-picker,-index"
+                          items-provider="workingGridDataProvider"
+                          grid-controls="workingGridControls"
+                          persist-key="cat.volcopy.copies">
+        
+                          <eg-grid-menu-item handler="workingToComplete"
+                           label="[% l('Store Selected') %]"></eg-grid-menu-item>
+        
+                        
+                          <eg-grid-field label="[% l('Barcode') %]"     path='barcode' visible></eg-grid-field>
+                          <eg-grid-field label="[% l('Created') %]"     path="create_date" visible></eg-grid-field>
+                          <eg-grid-field label="[% l('Activated') %]"   path="active_date" visible></eg-grid-field>
+                          <eg-grid-field label="[% l('Call Number') %]" path="call_number.label" visible></eg-grid-field>
+                        
+                        </eg-grid>
+        
+                    </div>
+        
+                    <div class="col-lg-8 give-cell-border">
+                        <div ng-include="'[% ctx.base_path %]/staff/cat/volcopy/t_attr_edit'"></div>
                     </div>
                 </div>
             </div>
+        
+            </div>
+            <div ng-show="copytab == 'complete'">
+               <eg-grid
+                 id-field="id"
+                 idl-class="acp"
+                 features="-pagination,-actions,-picker,-index"
+                 items-provider="completedGridDataProvider"
+                 grid-controls="completedGridControls"
+                 persist-key="cat.volcopy.copies.complete">
+               
+                 <eg-grid-menu-item handler="completeToWorking"
+                  label="[% l('Edit Selected') %]"></eg-grid-menu-item>
+        
+                 <eg-grid-menu-item handler="saveAndExit"
+                  label="[% l('Save & Exit') %]"></eg-grid-menu-item>
+        
+                 <eg-grid-field label="[% l('Barcode') %]"     path='barcode' visible></eg-grid-field>
+                 <eg-grid-field label="[% l('Created') %]"     path="create_date" visible></eg-grid-field>
+                 <eg-grid-field label="[% l('Activated') %]"   path="active_date" visible></eg-grid-field>
+                 <eg-grid-field label="[% l('Call Number') %]" path="call_number.label" visible></eg-grid-field>
+                 <eg-grid-field label="[% l('Circ Library') %]" flesher="orgById" path="circ_lib.name" visible></eg-grid-field>
+                 <eg-grid-field label="[% l('Shelving Location') %]" flesher="locationById" path="location.name" visible></eg-grid-field>
+                 <eg-grid-field label="[% l('Circ Modifier') %]" path="circ_modifier" visible></eg-grid-field>
+                 <eg-grid-field label="[% l('Circulate?') %]"  path="circulate" visible></eg-grid-field>
+                 <eg-grid-field label="[% l('Holdable?') %]"   path="circulate" visible></eg-grid-field>
+                 <eg-grid-field label="[% l('Reference?') %]"  path="ref" visible></eg-grid-field>
+                 <eg-grid-field label="[% l('Status') %]"      flesher="statusById" path="status.name" visible></eg-grid-field>
+                 <eg-grid-field label="[% l('OPAC Visible') %]" path="opac_visible" visible></eg-grid-field>
+               
+               </eg-grid>
+            </div>
+          </div>
         </div>
-    </div>
 
     </div>
-    <div ng-show="copytab == 'complete'">
-       <eg-grid
-         id-field="id"
-         idl-class="acp"
-         features="-pagination,-actions,-picker,-index"
-         items-provider="completedGridDataProvider"
-         grid-controls="completedGridControls"
-         persist-key="cat.volcopy.copies.complete">
-       
-         <eg-grid-menu-item handler="completeToWorking"
-          label="[% l('Edit Selected') %]"></eg-grid-menu-item>
-
-         <eg-grid-menu-item handler="saveAndExit"
-          label="[% l('Save & Exit') %]"></eg-grid-menu-item>
-
-         <eg-grid-field label="[% l('Barcode') %]"     path='barcode' visible></eg-grid-field>
-         <eg-grid-field label="[% l('Created') %]"     path="create_date" visible></eg-grid-field>
-         <eg-grid-field label="[% l('Activated') %]"   path="active_date" visible></eg-grid-field>
-         <eg-grid-field label="[% l('Call Number') %]" path="call_number.label" visible></eg-grid-field>
-         <eg-grid-field label="[% l('Circ Library') %]" flesher="orgById" path="circ_lib.name" visible></eg-grid-field>
-         <eg-grid-field label="[% l('Shelving Location') %]" flesher="locationById" path="location.name" visible></eg-grid-field>
-         <eg-grid-field label="[% l('Circ Modifier') %]" path="circ_modifier" visible></eg-grid-field>
-         <eg-grid-field label="[% l('Circulate?') %]"  path="circulate" visible></eg-grid-field>
-         <eg-grid-field label="[% l('Holdable?') %]"   path="circulate" visible></eg-grid-field>
-         <eg-grid-field label="[% l('Reference?') %]"  path="ref" visible></eg-grid-field>
-         <eg-grid-field label="[% l('Status') %]"      flesher="statusById" path="status.name" visible></eg-grid-field>
-         <eg-grid-field label="[% l('OPAC Visible') %]" path="opac_visible" visible></eg-grid-field>
-       
-       </eg-grid>
-    </div>
-  </div>
 </div>
-
-    </accordion-group>
-</accordion>

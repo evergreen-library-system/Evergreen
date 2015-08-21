@@ -1,19 +1,16 @@
 <eg-record-summary record-id="record_id" record="summaryRecord"></eg-record-summary>
 
 <!-- tabbed copy data view -->
-<h1>[% l('Volume/Copy Editor') %]</h1>
-
-<div class="pad-vert"></div>
 
 <ul class="nav nav-tabs">
   <li ng-class="{active : tab == 'edit'}">
-    <a ng-click="set_volcopy_tab('edit')" >[% l('Edit') %]</a>
+    <a ng-click="tab = 'edit'" >[% l('Edit') %]</a>
   </li>
   <li ng-class="{active : tab == 'templates'}">
-    <a ng-click="set_volcopy_tab('templates')" >[% l('Templates') %]</a>
+    <a ng-click="tab = 'templates'" >[% l('Copy Templates') %]</a>
   </li>
   <li ng-class="{active : tab == 'defaults'}">
-    <a ng-click="set_volcopy_tab('defaults')" >[% l('defaults') %]</a>
+    <a ng-click="tab = 'defaults'" >[% l('Defaults') %]</a>
   </li>
 </ul>
 
@@ -22,10 +19,10 @@
     <div ng-show="tab == 'edit'">
       <div ng-include="'[% ctx.base_path %]/staff/cat/volcopy/t_edit'"></div>
     </div>
-<!--
     <div ng-show="tab == 'templates'">
-      <div ng-include="'[% ctx.base_path %]/staff/cat/volcopy/t_'+tab"></div>
+      <eg-vol-template></eg-vol-template>
     </div>
+<!--
     <div ng-show="tab == 'defaults'">
       <div ng-include="'[% ctx.base_path %]/staff/cat/volcopy/t_'+tab"></div>
     </div>

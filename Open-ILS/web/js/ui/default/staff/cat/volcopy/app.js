@@ -179,15 +179,23 @@ function(egCore , $q) {
         replace: true,
         template:
             '<div class="row">'+
-                '<div class="col-xs-6"><input type="text" ng-model="barcode" ng-change="updateBarcode()"/></div>'+
-                '<div class="col-xs-2"><input type="number" ng-model="copy_number" ng-change="updateCopyNo()"/></div>'+
+                '<div class="col-xs-5">'+
+                    '<input id="{{callNumber.id()}}.{{copy.id()}}"'+
+                    ' eg-enter="nextBarcode()" class="form-control"'+
+                    ' type="text" ng-model="barcode" ng-change="updateBarcode()"/>'+
+                '</div>'+
+                '<div class="col-xs-3"><input class="form-control" type="number" ng-model="copy_number" ng-change="updateCopyNo()"/></div>'+
                 '<div class="col-xs-4"><eg-basic-combo-box list="parts" selected="part"></eg-basic-combo-box></div>'+
             '</div>',
 
-        scope: { copy: "=", callNumber: "=" },
+        scope: { copy: "=", callNumber: "=", index: "@" },
         controller : ['$scope','itemSvc',
             function ( $scope , itemSvc ) {
                 $scope.new_part_id = 0;
+
+                $scope.nextBarcode = function (i) {
+                    $scope.$parent.focusNextBarcode($scope.copy.id());
+                }
 
                 $scope.updateBarcode = function () { $scope.copy.barcode($scope.barcode); $scope.copy.ischanged(1); };
                 $scope.updateCopyNo = function () { $scope.copy.copy_number($scope.copy_number); $scope.copy.ischanged(1); };
@@ -237,21 +245,19 @@ function(egCore , $q) {
         transclude: true,
         template:
             '<div class="row">'+
-                '<div class="col-xs-1">'+
-                    '<select ng-model="classification" ng-options="cl.name() for cl in classification_list track by idTracker(cl)"/>'+
+                '<div class="col-xs-2">'+
+                    '<select class="form-control" ng-model="classification" ng-options="cl.name() for cl in classification_list track by idTracker(cl)"/>'+
                 '</div>'+
                 '<div class="col-xs-1">'+
-                    '<select ng-model="prefix" ng-change="updatePrefix()" ng-options="p.label() for p in prefix_list track by idTracker(p)"/>'+
+                    '<select class="form-control" ng-model="prefix" ng-change="updatePrefix()" ng-options="p.label() for p in prefix_list track by idTracker(p)"/>'+
                 '</div>'+
-                '<div class="col-xs-3"><input type="text" ng-change="updateLabel()" ng-model="label"/></div>'+
+                '<div class="col-xs-2"><input class="form-control" type="text" ng-change="updateLabel()" ng-model="label"/></div>'+
                 '<div class="col-xs-1">'+
-                    '<select ng-model="suffix" ng-change="updateSuffix()" ng-options="s.label() for s in suffix_list track by idTracker(s)"/>'+
+                    '<select class="form-control" ng-model="suffix" ng-change="updateSuffix()" ng-options="s.label() for s in suffix_list track by idTracker(s)"/>'+
                 '</div>'+
-                '<div class="col-xs-1"><input type="number" ng-model="copy_count" min="{{orig_copy_count}}" ng-change="changeCPCount()"></div>'+
+                '<div class="col-xs-1"><input class="form-control" type="number" ng-model="copy_count" min="{{orig_copy_count}}" ng-change="changeCPCount()"></div>'+
                 '<div class="col-xs-5">'+
-                    '<div class="container-fluid">'+
-                        '<eg-vol-copy-edit ng-repeat="cp in copies track by idTracker(cp)" copy="cp" call-number="callNumber"></eg-vol-copy-edit>'+
-                    '</div>'+
+                    '<eg-vol-copy-edit ng-repeat="cp in copies track by idTracker(cp)" copy="cp" call-number="callNumber"></eg-vol-copy-edit>'+
                 '</div>'+
             '</div>',
 
@@ -262,6 +268,28 @@ function(egCore , $q) {
                 $scope.callNumber =  $scope.copies[0].call_number();
 
                 $scope.idTracker = function (x) { if (x) return x.id() };
+
+                // XXX $() is not working! arg
+                $scope.focusNextBarcode = function (i) {
+                    var n;
+                    var yep = false;
+                    angular.forEach($scope.copies, function (cp) {
+                        if (n) return;
+
+                        if (cp.id() == i) {
+                            yep = true;
+                            return;
+                        }
+
+                        if (yep) n = cp.id();
+                    });
+
+                    if (n) {
+                        var next = '#' + $scope.callNumber.id() + '.' + n;
+                        var el = $(next).get(0);
+                        if (el) el.focus()
+                    }
+                }
 
                 $scope.suffix_list = [];
                 itemSvc.get_suffixes($scope.callNumber.owning_lib()).then(function(list){
@@ -380,11 +408,9 @@ function(egCore , $q) {
         template:
             '<div class="row">'+
                 '<div class="col-xs-1"><eg-org-selector selected="owning_lib" disableTest="cant_have_vols"></eg-org-selector></div>'+
-                '<div class="col-xs-1"><input type="number" min="{{orig_cn_count}}" ng-model="cn_count" ng-change="changeCNCount()"/></div>'+
+                '<div class="col-xs-1"><input class="form-control" type="number" min="{{orig_cn_count}}" ng-model="cn_count" ng-change="changeCNCount()"/></div>'+
                 '<div class="col-xs-10">'+
-                    '<div class="container-fluid">'+
-                        '<eg-vol-row ng-repeat="(cn,copies) in struct track by cn" copies="copies" allcopies="allcopies"></eg-vol-row>'+
-                    '</div>'+
+                    '<eg-vol-row ng-repeat="(cn,copies) in struct track by cn" copies="copies" allcopies="allcopies"></eg-vol-row>'+
                 '</div>'+
             '</div>',
 
@@ -456,6 +482,8 @@ function(egCore , $q) {
        ['$scope','$q','$routeParams','$location','$timeout','egCore','egNet','egGridDataProvider','itemSvc',
 function($scope , $q , $routeParams , $location , $timeout , egCore , egNet , egGridDataProvider , itemSvc) {
 
+    $scope.dirty = false;
+
     $scope.show_vols = true;
     $scope.show_copies = true;
 
@@ -492,26 +520,53 @@ function($scope , $q , $routeParams , $location , $timeout , egCore , egNet , eg
     createSimpleUpdateWatcher = function (field) {
         $scope.$watch('working.' + field, function () {
             var newval = $scope.working[field];
-            if (angular.isObject(newval)) { // we'll use the pkey
-                if (newval.id) newval = newval.id();
-                else if (newval.code) newval = newval.code();
-            }
 
-            if ($scope.workingGridControls && $scope.workingGridControls.selectedItems) {
-                angular.forEach(
-                    $scope.workingGridControls.selectedItems(),
-                    function (cp) { cp[field](newval); cp.ischanged(1); }
-                );
+            if (typeof newval != 'undefined') {
+                if (angular.isObject(newval)) { // we'll use the pkey
+                    if (newval.id) newval = newval.id();
+                    else if (newval.code) newval = newval.code();
+                }
+
+                if (newval == "") {
+                    $scope.working[field] = undefined;
+                    newval = null;
+                }
+
+                if ($scope.workingGridControls && $scope.workingGridControls.selectedItems) {
+                    angular.forEach(
+                        $scope.workingGridControls.selectedItems(),
+                        function (cp) { cp[field](newval); cp.ischanged(1); }
+                    );
+                }
             }
         });
     }
 
-    $timeout(function(){
+    $scope.applyTemplate = function (n) {
+        angular.forEach($scope.templates[n], function (v,k) {
+            $scope.working[k] = angular.copy(v);
+        });
+    }
 
     var dataKey = $routeParams.dataKey;
     console.debug('dataKey: ' + dataKey);
 
     if (dataKey && dataKey.length > 0) {
+
+        $scope.templates = {};
+        $scope.template_name = '';
+        $scope.template_name_list = [];
+
+        $scope.fetchTemplates = function () {
+            egCore.hatch.getItem('cat.copy.templates').then(function(t) {
+                if (t) {
+                    $scope.templates = t;
+                    $scope.template_name_list = Object.keys(t);
+                }
+            });
+        }
+        $scope.fetchTemplates();
+ 
         $scope.working = {};
 
         $scope.copytab = 'working';
@@ -543,6 +598,13 @@ function($scope , $q , $routeParams , $location , $timeout , egCore , egNet , eg
             }
         }
 
+        $scope.clearWorking = function () {
+            angular.forEach($scope.working, function (v,k,o) {
+                if (typeof v != 'undefined')
+                    $scope.working[k] = undefined;
+            });
+        }
+
         $scope.completedGridDataProvider = egGridDataProvider.instance({
             get : function(offset, count) {
                 //return provider.arrayNotifier(itemSvc.copies, offset, count);
@@ -567,30 +629,32 @@ function($scope , $q , $routeParams , $location , $timeout , egCore , egNet , eg
             dataKey, 'edit-these-copies'
         ).then(function (data) {
 
-            if (data.hide_vols) $scope.show_vols = false;
-            if (data.hide_copies) $scope.show_copies = false;
+            if (data) {
+                if (data.hide_vols) $scope.show_vols = false;
+                if (data.hide_copies) $scope.show_copies = false;
 
-            $scope.record_id = data.record_id;
+                $scope.record_id = data.record_id;
 
-            if (data.copies && data.copies.length)
-                return itemSvc.fetchIds(data.copies);
+                if (data.copies && data.copies.length)
+                    return itemSvc.fetchIds(data.copies);
 
-            if (data.raw && data.raw.length) {
+                if (data.raw && data.raw.length) {
 
-                /* data.raw must be an array of copies with (at least)
-                 * the call number fleshed on each.  For new copies
-                 * create from whole cloth, the id for each should
-                 * probably be negative and isnew() should return true.
-                 * Each /distinct/ call number must have a distinct id
-                 * as well, probably negative also if they're new. Clear?
-                 */
+                    /* data.raw must be an array of copies with (at least)
+                     * the call number fleshed on each.  For new copies
+                     * create from whole cloth, the id for each should
+                     * probably be negative and isnew() should return true.
+                     * Each /distinct/ call number must have a distinct id
+                     * as well, probably negative also if they're new. Clear?
+                     */
 
-                angular.forEach(
-                    data.raw,
-                    function (cp) { itemSvc.addCopy(cp) }
-                );
+                    angular.forEach(
+                        data.raw,
+                        function (cp) { itemSvc.addCopy(cp) }
+                    );
 
-                return itemSvc.copies;
+                    return itemSvc.copies;
+                }
             }
 
         }).then( function() {
@@ -662,9 +726,9 @@ function($scope , $q , $routeParams , $location , $timeout , egCore , egNet , eg
         });
         createSimpleUpdateWatcher('status');
 
-        $scope.circ_mod_list = [];
+        $scope.circ_modifier_list = [];
         itemSvc.get_circ_mods().then(function(list){
-            $scope.circ_mod_list = list;
+            $scope.circ_modifier_list = list;
         });
         createSimpleUpdateWatcher('circ_modifier');
 
@@ -680,6 +744,7 @@ function($scope , $q , $routeParams , $location , $timeout , egCore , egNet , eg
         });
         createSimpleUpdateWatcher('age_protect');
 
+        createSimpleUpdateWatcher('circ_lib');
         createSimpleUpdateWatcher('circulate');
         createSimpleUpdateWatcher('holdable');
         createSimpleUpdateWatcher('fine_level');
@@ -693,8 +758,159 @@ function($scope , $q , $routeParams , $location , $timeout , egCore , egNet , eg
 
     }
 
-    });
-
 }])
+
+.directive("egVolTemplate", function () {
+    return {
+        restrict: 'E',
+        replace: true,
+        template: '<div ng-include="'+"'/eg/staff/cat/volcopy/t_attr_edit'"+'"></div>',
+        scope: { },
+        controller : ['$scope','itemSvc','egCore',
+            function ( $scope , itemSvc , egCore ) {
+
+                $scope.dirty = false;
+                $scope.template_controls = true;
+
+                $scope.fetchTemplates = function () {
+                    egCore.hatch.getItem('cat.copy.templates').then(function(t) {
+                        if (t) {
+                            $scope.templates = t;
+                            $scope.template_name_list = Object.keys(t);
+                        }
+                    });
+                }
+                $scope.fetchTemplates();
+            
+                $scope.applyTemplate = function (n) {
+                    angular.forEach($scope.templates[n], function (v,k) {
+                        $scope.working[k] = angular.copy(v);
+                    });
+                }
+            
+                $scope.deleteTemplate = function (n) {
+                    if (n) {
+                        delete $scope.templates[n]
+                        $scope.template_name_list = Object.keys($scope.templates);
+                        $scope.template_name = '';
+                        egCore.hatch.setItem('cat.copy.templates', $scope.templates);
+                        $scope.$parent.fetchTemplates();
+                    }
+                }
+
+                $scope.saveTemplate = function (n) {
+                    if (n) {
+                        var tmpl = {};
+            
+                        angular.forEach($scope.working, function (v,k) {
+                            if (angular.isObject(v)) { // we'll use the pkey
+                                if (v.id) v = v.id();
+                                else if (v.code) v = v.code();
+                            }
+            
+                            tmpl[k] = v;
+                        });
+            
+                        $scope.templates[n] = tmpl;
+                        $scope.template_name_list = Object.keys($scope.templates);
+            
+                        egCore.hatch.setItem('cat.copy.templates', $scope.templates);
+                        $scope.$parent.fetchTemplates();
+                    }
+                }
+            
+                $scope.templates = {};
+                $scope.template_name = '';
+                $scope.template_name_list = [];
+            
+                $scope.tracker = function (x,f) { if (x) return x[f]() };
+                $scope.idTracker = function (x) { if (x) return $scope.tracker(x,'id') };
+                $scope.cant_have_vols = function (id) { return !egCore.org.CanHaveVolumes(id); };
+            
+                $scope.orgById = function (id) { return egCore.org.get(id) }
+                $scope.statusById = function (id) {
+                    return $scope.status_list.filter( function (s) { return s.id() == id } )[0];
+                }
+                $scope.locationById = function (id) {
+                    return $scope.location_cache[''+id];
+                }
+            
+                createSimpleUpdateWatcher = function (field) {
+                    $scope.$watch('working.' + field, function () {
+                        var newval = $scope.working[field];
+            
+                        if (typeof newval != 'undefined') {
+                            $scope.dirty = true;
+                            if (angular.isObject(newval)) { // we'll use the pkey
+                                if (newval.id) $scope.working[field] = newval.id();
+                                else if (newval.code) $scope.working[field] = newval.code();
+                            }
+            
+                            if (newval == "") {
+                                $scope.working[field] = undefined;
+                            }
+            
+                        }
+                    });
+                }
+            
+                $scope.clearWorking = function () {
+                    angular.forEach($scope.working, function (v,k) {
+                        if (typeof v != 'undefined')
+                            $scope.working[k] = undefined;
+                    });
+                }
+            
+                $scope.working = {};
+                $scope.location_orgs = [];
+                $scope.location_cache = {};
+            
+                $scope.location_list = [];
+                itemSvc.get_locations(
+                    egCore.org.fullPath( egCore.auth.user().ws_ou(), true )
+                ).then(function(list){
+                    $scope.location_list = list;
+                });
+                createSimpleUpdateWatcher('location');
+            
+                $scope.status_list = [];
+                itemSvc.get_statuses().then(function(list){
+                    $scope.status_list = list;
+                });
+                createSimpleUpdateWatcher('status');
+            
+                $scope.circ_modifier_list = [];
+                itemSvc.get_circ_mods().then(function(list){
+                    $scope.circ_modifier_list = list;
+                });
+                createSimpleUpdateWatcher('circ_modifier');
+            
+                $scope.circ_type_list = [];
+                itemSvc.get_circ_types().then(function(list){
+                    $scope.circ_type_list = list;
+                });
+                createSimpleUpdateWatcher('circ_as_type');
+            
+                $scope.age_protect_list = [];
+                itemSvc.get_age_protects().then(function(list){
+                    $scope.age_protect_list = list;
+                });
+                createSimpleUpdateWatcher('age_protect');
+            
+                createSimpleUpdateWatcher('circ_lib');
+                createSimpleUpdateWatcher('circulate');
+                createSimpleUpdateWatcher('holdable');
+                createSimpleUpdateWatcher('fine_level');
+                createSimpleUpdateWatcher('loan_duration');
+                createSimpleUpdateWatcher('cost');
+                createSimpleUpdateWatcher('deposit');
+                createSimpleUpdateWatcher('deposit_amount');
+                createSimpleUpdateWatcher('mint_condition');
+                createSimpleUpdateWatcher('opac_visible');
+                createSimpleUpdateWatcher('ref');
+            }
+        ]
+    }
+})
 
 
