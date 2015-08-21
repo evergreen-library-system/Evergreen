@@ -482,6 +482,47 @@ function(egCore , $q) {
        ['$scope','$q','$routeParams','$location','$timeout','egCore','egNet','egGridDataProvider','itemSvc',
 function($scope , $q , $routeParams , $location , $timeout , egCore , egNet , egGridDataProvider , itemSvc) {
 
+    $scope.defaults = { // If defaults are not set at all, allow everything
+        attributes : {
+            status : true,
+            loan_duration : true,
+            fine_level : true,
+            cost : true,
+            alerts : true,
+            deposit : true,
+            deposit_amount : true,
+            opac_visible : true,
+            price : true,
+            circulate : true,
+            mint_condition : true,
+            circ_lib : true,
+            ref : true,
+            circ_modifier : true,
+            circ_as_type : true,
+            location : true,
+            holdable : true,
+            age_protect : true
+        }
+    };
+
+    $scope.saveDefaults = function () {
+        egCore.hatch.setItem('cat.copy.defaults', $scope.defaults);
+    }
+
+    $scope.fetchDefaults = function () {
+        egCore.hatch.getItem('cat.copy.defaults').then(function(t) {
+            if (t) {
+                $scope.defaults = t;
+                if (!$scope.batch) $scope.batch = {};
+                $scope.batch.classification = $scope.defaults.classification;
+                $scope.batch.prefix = $scope.defaults.prefix;
+                $scope.batch.suffix = $scope.defaults.suffix;
+                if ($scope.defaults.always_vols) $scope.show_vols = true;
+            }
+        });
+    }
+    $scope.fetchDefaults();
+
     $scope.dirty = false;
 
     $scope.show_vols = true;
@@ -577,7 +618,7 @@ function($scope , $q , $routeParams , $location , $timeout , egCore , egNet , eg
         $scope.completed_copies = [];
         $scope.location_orgs = [];
         $scope.location_cache = {};
-        $scope.batch = {};
+        if (!$scope.batch) $scope.batch = {};
 
         $scope.applyBatchCNValues = function () {
             if ($scope.data.tree) {
@@ -630,7 +671,7 @@ function($scope , $q , $routeParams , $location , $timeout , egCore , egNet , eg
         ).then(function (data) {
 
             if (data) {
-                if (data.hide_vols) $scope.show_vols = false;
+                if (data.hide_vols && !$scope.defaults.always_vols) $scope.show_vols = false;
                 if (data.hide_copies) $scope.show_copies = false;
 
                 $scope.record_id = data.record_id;
@@ -768,6 +809,38 @@ function($scope , $q , $routeParams , $location , $timeout , egCore , egNet , eg
         scope: { },
         controller : ['$scope','itemSvc','egCore',
             function ( $scope , itemSvc , egCore ) {
+
+                $scope.defaults = { // If defaults are not set at all, allow everything
+                    attributes : {
+                        status : true,
+                        loan_duration : true,
+                        fine_level : true,
+                        cost : true,
+                        alerts : true,
+                        deposit : true,
+                        deposit_amount : true,
+                        opac_visible : true,
+                        price : true,
+                        circulate : true,
+                        mint_condition : true,
+                        circ_lib : true,
+                        ref : true,
+                        circ_modifier : true,
+                        circ_as_type : true,
+                        location : true,
+                        holdable : true,
+                        age_protect : true
+                    }
+                };
+
+                $scope.fetchDefaults = function () {
+                    egCore.hatch.getItem('cat.copy.defaults').then(function(t) {
+                        if (t) {
+                            $scope.defaults = t;
+                        }
+                    });
+                }
+                $scope.fetchDefaults();
 
                 $scope.dirty = false;
                 $scope.template_controls = true;

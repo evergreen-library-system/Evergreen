@@ -1,0 +1,291 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="row">
+                <div class="col-xs-12">
+                    <h4>[% l('Volume/Copy Detail defaults') %]</h4>
+                    <label>
+                        <input type="checkbox" ng-change="saveDefaults()" ng-model="defaults.always_volumes"/>
+                        [% l('Always display Volume/Copy Detail pane') %]
+                    </label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12">
+                    <h4 class="pad-vert">[% l('Creation Defaults') %]</h4>
+                    <select class="form-control" ng-change="saveDefaults()" ng-model="defaults.classification" ng-options="cl.id() as cl.name() for cl in classification_list">
+                        <option value="">Unset Default Classification Scheme</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12">
+                    <select class="form-control" ng-change="saveDefaults()" ng-model="defaults.prefix" ng-options="p.id() as p.label() for p in prefix_list">
+                        <option value="">Unset Default Prefix</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12">
+                    <select class="form-control" ng-change="saveDefaults()" ng-model="defaults.suffix" ng-options="s.id() as s.label() for s in suffix_list">
+                        <option value="">Unset Default Suffix</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row pad-vert">
+                <div class="col-xs-12">
+                    <label>
+                        <input type="checkbox" ng-change="saveDefaults()" ng-model="defaults.auto_gen_barcode"/>
+                        [% l('Auto-generate Barcodes') %]
+                    </label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12">
+                    <label style="padding-left: 25px">
+                        <input type="checkbox" ng-change="saveDefaults()" ng-model="defaults.barcode_checkdigit"/>
+                        [% l('Use checkdigit') %]
+                    </label>
+                </div>
+            </div>
+
+            <div class="row pad-vert">
+                <div class="col-xs-12">
+                    <label>
+                        <input type="checkbox" ng-change="saveDefaults()" ng-model="defaults.print_spine_labels"/>
+                        [% l('Print Spine Labels') %]
+                    </label>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-md-5">
+            <div class="row">
+                <div class="col-xs-12">
+                    <h4>[% l('Display defaults for Working Copy tab') %]</h4>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-6">
+                    <h6>[% l('Copy display') %]</h6>
+                </div>
+                <div class="col-xs-6">
+                    <h6>[% l('Miscellaneous') %]</h6>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-6">
+                    <label>
+                        <input type="checkbox" ng-change="workingGridControls.saveConfig()" ng-model="workingGridControls.columnMap()['active_date'].visible"/>
+                        [% l('Activated') %]
+                    </label>
+                </div>
+                <div class="col-xs-6">
+                    <label>
+                        <input type="checkbox" ng-change="saveDefaults()" ng-model="defaults.attributes.alerts"/>
+                        [% l('Alerts') %]
+                    </label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-6">
+                    <label>
+                        <input type="checkbox" ng-change="workingGridControls.saveConfig()" ng-model="workingGridControls.columnMap()['create_date'].visible"/>
+                        [% l('Created') %]
+                    </label>
+                </div>
+                <div class="col-xs-6">
+                    <label>
+                        <input type="checkbox" ng-change="saveDefaults()" ng-model="defaults.attributes.deposit"/>
+                        [% l('Deposit?') %]
+                    </label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-6">
+                    <label>
+                        <input type="checkbox" ng-change="workingGridControls.saveConfig()" ng-model="workingGridControls.columnMap()['call_number.label'].visible"/>
+                        [% l('Call Number') %]
+                    </label>
+                </div>
+                <div class="col-xs-6">
+                    <label>
+                        <input type="checkbox" ng-change="saveDefaults()" ng-model="defaults.attributes.deposit_amount"/>
+                        [% l('Deposit Amount') %]
+                    </label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-6">
+                </div>
+                <div class="col-xs-6">
+                    <label>
+                        <input type="checkbox" ng-change="saveDefaults()" ng-model="defaults.attributes.opac_visible"/>
+                        [% l('OPAC Visible?') %]
+                    </label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-6">
+                    <h6>[% l('Circulation') %]</h6>
+                </div>
+                <div class="col-xs-6">
+                    <label>
+                        <input type="checkbox" ng-change="saveDefaults()" ng-model="defaults.attributes.price"/>
+                        [% l('Price') %]
+                    </label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-6">
+                    <label>
+                        <input type="checkbox" ng-change="saveDefaults()" ng-model="defaults.attributes.circulate"/>
+                        [% l('Circulate?') %]
+                    </label>
+                </div>
+                <div class="col-xs-6">
+                    <label>
+                        <input type="checkbox" ng-change="saveDefaults()" ng-model="defaults.attributes.mint_condition"/>
+                        [% l('Quality') %]
+                    </label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-6">
+                    <label>
+                        <input type="checkbox" ng-change="saveDefaults()" ng-model="defaults.attributes.circ_lib"/>
+                        [% l('Circulation Library') %]
+                    </label>
+                </div>
+                <div class="col-xs-6">
+                    <label>
+                        <input type="checkbox" ng-change="saveDefaults()" ng-model="defaults.attributes.ref"/>
+                        [% l('Reference?') %]
+                    </label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-6">
+                    <label>
+                        <input type="checkbox" ng-change="saveDefaults()" ng-model="defaults.attributes.circ_modifier"/>
+                        [% l('Circulation Modifier') %]
+                    </label>
+                </div>
+                <div class="col-xs-6">
+                    <label>
+                        <input type="checkbox" ng-change="saveDefaults()" ng-model="defaults.attributes.cost"/>
+                        [% l('Cost') %]
+                    </label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-6">
+                    <label>
+                        <input type="checkbox" ng-change="saveDefaults()" ng-model="defaults.attributes.circ_as_type"/>
+                        [% l('Circulate as Type') %]
+                    </label>
+                </div>
+                <div class="col-xs-6">
+                    <label>
+                        <input type="checkbox" ng-change="saveDefaults()" ng-model="defaults.attributes.status"/>
+                        [% l('Status') %]
+                    </label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-6">
+                    <label>
+                        <input type="checkbox" ng-change="saveDefaults()" ng-model="defaults.attributes.loan_duration"/>
+                        [% l('Loan Duration') %]
+                    </label>
+                </div>
+                <div class="col-xs-6">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-6">
+                    <label>
+                        <input type="checkbox" ng-change="saveDefaults()" ng-model="defaults.attributes.fine_level"/>
+                        [% l('Fine Level') %]
+                    </label>
+                </div>
+                <div class="col-xs-6">
+                    <h6>[% l('Statistical Categories') %]</h6>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-6">
+                    <label>
+                        <input type="checkbox" ng-change="saveDefaults()" ng-model="defaults.attributes.location"/>
+                        [% l('Shelving Location') %]
+                    </label>
+                </div>
+                <div class="col-xs-6">
+                    <label>
+                        <eg-org-selector selected="defaults.statcats.org_filter" noDefault label="[% l('Default Filter Library') %]" disableTest="cant_have_vols"></eg-org-selector>
+                    </label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-6">
+                    <label>
+                        <input type="checkbox" ng-change="saveDefaults()" ng-model="defaults.attributes.holdable"/>
+                        [% l('Holdable?') %]
+                    </label>
+                </div>
+                <div class="col-xs-6">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-6">
+                    <label>
+                        <input type="checkbox" ng-change="saveDefaults()" ng-model="defaults.attributes.age_protect"/>
+                        [% l('Age-based Hold Protection') %]
+                    </label>
+                </div>
+                <div class="col-xs-6">
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-md-4">
+            <div class="row">
+                <div class="col-xs-12">
+                    <h4>[% l('Display defaults for Completed Copies tab') %]</h4>
+                </div>
+            </div>
+
+            <div class="row" ng-repeat="col in completedGridControls.columnsProvider().columns">
+                <div class="col-xs-12">
+                    <label>
+                        <input ng-change="completedGridControls.saveConfig()" type="checkbox" ng-model="col.visible"/>
+                        {{col.label}}
+                    </label>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>        

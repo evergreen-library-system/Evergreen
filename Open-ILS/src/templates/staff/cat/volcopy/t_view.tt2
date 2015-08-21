@@ -22,11 +22,9 @@
     <div ng-show="tab == 'templates'">
       <eg-vol-template></eg-vol-template>
     </div>
-<!--
     <div ng-show="tab == 'defaults'">
-      <div ng-include="'[% ctx.base_path %]/staff/cat/volcopy/t_'+tab"></div>
+      <div ng-include="'[% ctx.base_path %]/staff/cat/volcopy/t_defaults'"></div>
     </div>
--->
   </div>
 </div>
 
