@@ -84,7 +84,13 @@
 
             <div class="row">
                 <div class="col-md-6" ng-class="{'bg-success': working.circ_lib !== undefined}">
-                    <eg-org-selector selected="working.circ_lib" noDefault label="[% l('(Unset)') %]" disableTest="cant_have_vols"></eg-org-selector>
+                    <eg-org-selector
+                        alldisabled="{{!defaults.attributes.circ_lib}}"
+                        selected="working.circ_lib"
+                        noDefault
+                        label="[% l('(Unset)') %]"
+                        disableTest="cant_have_vols"
+                    ></eg-org-selector>
                 </div>
                 <div class="col-md-6" ng-class="{'bg-success': working.ref !== undefined}">
                     <div class="row">
