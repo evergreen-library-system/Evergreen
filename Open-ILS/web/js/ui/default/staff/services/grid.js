@@ -218,6 +218,18 @@ angular.module('egGridMod',
                 // them up even if the caller doesn't request them.
                 var controls = $scope.gridControls || {};
 
+                controls.columnMap = function() {
+                    var m = {};
+                    angular.forEach(grid.columnsProvider.columns, function (c) {
+                        m[c.name] = c;
+                    });
+                    return m;
+                }
+
+                controls.columnsProvider = function() {
+                    return grid.columnsProvider;
+                }
+
                 // link in the control functions
                 controls.selectedItems = function() {
                     return grid.getSelectedItems()
@@ -285,6 +297,10 @@ angular.module('egGridMod',
                 }
                 controls.getOffset = function() {
                     return grid.offset;
+                }
+
+                controls.saveConfig = function () {
+                    return $scope.saveConfig();
                 }
 
                 grid.dataProvider.refresh = controls.refresh;
@@ -399,6 +415,7 @@ angular.module('egGridMod',
                 });
             }
 
+
             // load the columns configuration (position, sort, width) from
             // eg.grid.<persist-key> and apply the loaded settings to the
             // columns on our columnsProvider
@@ -444,6 +461,7 @@ angular.module('egGridMod',
 
                     grid.columnsProvider.columns = new_cols;
                     grid.compileSort();
+
                 });
             }
 
