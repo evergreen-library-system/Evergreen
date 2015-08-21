@@ -218,10 +218,10 @@ function($modal, $interpolate) {
         template:
             '<div class="input-group">'+
                 '<input type="text" class="form-control" ng-model="selected">'+
-                '<div class="input-group-btn">'+
-                    '<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>'+
-                    '<ul class="dropdown-menu dropdown-menu-right" role="menu">'+
-                        '<li ng-repeat="item in list" class="input-lg"><a href="#" ng-click="changeValue(item)">{{item}}</a></li>'+
+                '<div class="input-group-btn" dropdown>'+
+                    '<button type="button" class="btn btn-default dropdown-toggle"><span class="caret"></span></button>'+
+                    '<ul class="dropdown-menu dropdown-menu-right">'+
+                        '<li ng-repeat="item in list"><a href ng-click="changeValue(item)">{{item}}</a></li>'+
                     '</ul>'+
                 '</div>'+
             '</div>',
@@ -246,8 +246,9 @@ function($modal, $interpolate) {
         transclude : true,
         replace : true, // makes styling easier
         scope : {
-            selected : '=', // defaults to workstation or root org
-            
+            selected : '=', // defaults to workstation or root org,
+                            // unless the nodefault attibute exists
+
             // Each org unit is passed into this function and, for
             // any org units where the response value is true, the
             // org unit will not be added to the selector.
@@ -286,6 +287,9 @@ function($modal, $interpolate) {
         controller : ['$scope','$timeout','egOrg','egAuth',
               function($scope , $timeout , egOrg , egAuth) {
 
+            $scope.egOrg = egOrg; // for use in the link function
+            $scope.egAuth = egAuth; // for use in the link function
+
             // avoid linking the full fleshed tree to the scope by 
             // tossing in a flattened list.
             $scope.orgList = egOrg.list().map(function(org) {
@@ -307,12 +311,41 @@ function($modal, $interpolate) {
                 if ($scope.onchange) $scope.onchange($scope.selected);
             }
 
-            if (!$scope.selected)
-                $scope.selected = egOrg.get(egAuth.user().ws_ou());
-        }]
+        }],
+        link : function(scope, element, attrs, egGridCtrl) {
+
+            // boolean fields are presented as value-less attributes
+            angular.forEach(
+                ['nodefault'],
+                function(field) {
+                    if (angular.isDefined(attrs[field]))
+                        scope[field] = true;
+                    else
+                        scope[field] = false;
+                }
+            );
+
+            if (!scope.selected && !scope.nodefault)
+                scope.selected = scope.egOrg.get(scope.egAuth.user().ws_ou());
+        }
+
     }
 })
 
+/* http://eric.sau.pe/angularjs-detect-enter-key-ngenter/ */
+.directive('egEnter', function () {
+    return function (scope, element, attrs) {
+        element.bind("keydown keypress", function (event) {
+            if(event.which === 13) {
+                scope.$apply(function (){
+                    scope.$eval(attrs.egEnter);
+                });
+ 
+                event.preventDefault();
+            }
+        });
+    };
+})
 
 /*
 http://stackoverflow.com/questions/18061757/angular-js-and-html5-date-input-value-how-to-get-firefox-to-show-a-readable-d
