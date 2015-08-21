@@ -259,6 +259,9 @@ function($modal, $interpolate) {
             // org unit will not be available for selection.
             disableTest : '=',
 
+            // if set to true, disable the UI element altogether
+            alldisabled : '@',
+
             // Caller can either $watch(selected, ..) or register an
             // onchange handler.
             onchange : '=',
@@ -270,7 +273,7 @@ function($modal, $interpolate) {
         // any reason to move this into a TT2 template?
         template : 
             '<div class="btn-group eg-org-selector" dropdown>'
-            + '<button type="button" class="btn btn-default dropdown-toggle">'
+            + '<button type="button" class="btn btn-default dropdown-toggle" ng-disabled="disable_button">'
              + '<span style="padding-right: 5px;">{{getSelectedName()}}</span>'
              + '<span class="caret"></span>'
            + '</button>'
@@ -286,6 +289,12 @@ function($modal, $interpolate) {
 
         controller : ['$scope','$timeout','egOrg','egAuth',
               function($scope , $timeout , egOrg , egAuth) {
+
+            if ($scope.alldisabled) {
+                $scope.disable_button = $scope.alldisabled == 'true' ? true : false;
+            } else {
+                $scope.disable_button = false;
+            }
 
             $scope.egOrg = egOrg; // for use in the link function
             $scope.egAuth = egAuth; // for use in the link function
