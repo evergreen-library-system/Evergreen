@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2015-02-27 11:41:34-0400\n"
+"POT-Creation-Date: 2015-08-26 13:12:38-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -358,6 +358,10 @@ msgstr ""
 msgid "Booking reservation not found"
 msgstr ""
 
+#: 1211.BILL_ALREADY_VOIDED:81
+msgid "The bill is already voided"
+msgstr ""
+
 #: 1700.NON_CAT_TYPE_EXISTS:710
 msgid "The non-cataloged type object already exists"
 msgstr ""
@@ -527,10 +531,6 @@ msgstr ""
 
 #: 1534.ACTOR_USER_SETTING_NOT_FOUND:261
 msgid "The requested actor_user_setting was not found"
-msgstr ""
-
-#: 1211.BILL_ALREADY_VOIDED:81
-msgid "The selecte bill has already been voided"
 msgstr ""
 
 #: 7026.PATRON_NOT_AN_ACTIVE_PASSWORD_RESET_REQUEST:828
@@ -1089,6 +1089,12 @@ msgstr ""
 msgid "User already has an open hold on the selected item"
 msgstr ""
 
+#: 11107.AVAIL_HOLD_COPY_RATIO_EXCEEDED:1045
+msgid ""
+"Renewal attempt failed because the \"hold / available copies\" ratio exceeds"
+" the configured limit"
+msgstr ""
+
 #: 1712.AUTH_QUEUE_EXISTS:752
 msgid "An authority record queue with the same name already exists"
 msgstr ""
@@ -1233,6 +1239,12 @@ msgstr ""
 
 #: 1603.CONTAINER_USER_BUCKET_ITEM_NOT_FOUND:460
 msgid "The requested container_user_bucket_item was not found"
+msgstr ""
+
+#: 11106.TOTAL_HOLD_COPY_RATIO_EXCEEDED:1041
+msgid ""
+"Renewal attempt failed because the \"hold / total copies\" ratio exceeds the"
+" configured limit"
 msgstr ""
 
 #: 1615.ACTION_NON_CATALOGED_CIRCULATION_NOT_FOUND:496

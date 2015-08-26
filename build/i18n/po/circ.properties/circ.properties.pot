@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-27 11:41-0400\n"
+"POT-Creation-Date: 2015-08-26 13:12-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1799,6 +1799,12 @@ msgstr ""
 msgid ""
 "Check In Failed.  If you wish to use the offline interface, in the top "
 "menubar select Circulation -> Offline Interface"
+msgstr ""
+
+#: staff.circ.checkin.possible_dupe_scan
+msgid ""
+"Check In May Have Failed.  Possible double-scan of the barcode.  Use Item "
+"Status to confirm Check In and possible Hold capture."
 msgstr ""
 
 #: staff.circ.checkin.renew_failed.error

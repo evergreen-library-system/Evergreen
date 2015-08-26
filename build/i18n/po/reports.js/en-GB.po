@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2014-09-11 02:13-0400\n"
-"PO-Revision-Date: 2009-12-29 17:39+0000\n"
-"Last-Translator: Jonathan Field <Unknown>\n"
+"POT-Creation-Date: 2015-02-27 11:41-0400\n"
+"PO-Revision-Date: 2015-03-25 16:24+0000\n"
+"Last-Translator: Andi Chandler <Unknown>\n"
 "Language-Team: English (United Kingdom) <en_GB@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2014-09-12 06:24+0000\n"
-"X-Generator: Launchpad (build 17196)\n"
+"X-Launchpad-Export-Date: 2015-08-07 05:44+0000\n"
+"X-Generator: Launchpad (build 17656)\n"
 
 #: reports.js:OPERATORS_IN_LIST reports.js:FILTERS_LABEL_IN
 msgid "In list"
@@ -309,7 +309,7 @@ msgstr "Round"
 
 #: reports.js:TEMPLATE_FIELD_DOC_PROMPT_CHANGE
 msgid "Change the field hint to:"
-msgstr ""
+msgstr "Change the field hint to:"
 
 #: reports.js:FILTERS_LABEL_NULL_BLANK reports.js:OPERATORS_NULL_BLANK
 msgid "Is NULL or Blank"
@@ -405,7 +405,7 @@ msgstr "Quarters ago"
 
 #: reports.js:REPORT_EDITOR_ENTER_NEW_NAME_ALERT
 msgid "Please change the report name"
-msgstr ""
+msgstr "Please change the report name"
 
 #: reports.js:TEMPLATE_CONF_SELECT_CANCEL
 msgid "Select the value, or cancel:"
