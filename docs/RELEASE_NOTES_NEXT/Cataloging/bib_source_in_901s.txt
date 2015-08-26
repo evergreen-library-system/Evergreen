@@ -1,0 +1,6 @@
+Bibliographic record source now copied to 901$s
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+If a bibliographic record has a source set, the name of that source
+is now copied to the 901$s whenever the record is created or updated.
+This allows the source to be used for record matching and MARC
+field queries.

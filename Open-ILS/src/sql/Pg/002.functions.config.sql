@@ -395,6 +395,18 @@ if ($schema eq 'biblio') {
         $new_901->add_subfields("d" => $_TD->{new}{share_depth});
     }
 
+    if ($_TD->{new}{source}) {
+        my $plan = spi_prepare('
+            SELECT source
+            FROM config.bib_source
+            WHERE id = $1
+        ', 'INTEGER');
+        my $source_name =
+            spi_exec_prepared($plan, {limit => 1}, $_TD->{new}{source})->{rows}[0]{source};
+        spi_freeplan($plan);
+        $new_901->add_subfields("s" => $source_name) if $source_name;
+    }
+
     $marc->append_fields($new_901);
 } elsif ($schema eq 'authority') {
     my $new_901 = MARC::Field->new("901", " ", " ",

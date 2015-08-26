@@ -1,0 +1,21 @@
+BEGIN;
+
+SELECT plan(1);
+
+INSERT INTO config.bib_source(id, source) VALUES (-999, 'fuente bibliográfica');
+INSERT INTO biblio.record_entry (marc, last_xact_id, source)
+VALUES ('<record xmlns="http://www.loc.gov/MARC21/slim"><leader>00531nam a2200157 a 4500</leader></record>', 'test', -999);
+
+SELECT is((
+            SELECT (XPATH(
+                '//marc:datafield[@tag="901"]/marc:subfield[@code="s"]/text()',
+                marc::XML,
+                ARRAY[ARRAY['marc', 'http://www.loc.gov/MARC21/slim']]
+            ))[1]::TEXT
+            FROM biblio.record_entry
+            WHERE id = CURRVAL('biblio.record_entry_id_seq')
+          ),
+          'fuente bibliográfica',
+          'bibliographic source placed in 901$s');
+
+ROLLBACK;
