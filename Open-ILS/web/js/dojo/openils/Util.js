@@ -494,5 +494,19 @@ if(!dojo._hasResource["openils.Util"]) {
         );
     };
 
+    /**
+     * Check to see if we're running in an iframe; if we
+     * are, we assume that the iframe is specifically one
+     * used by the web staff client to embed legacy interfaces.
+     */
+    openils.Util.inIframe = function() {
+        /* http://stackoverflow.com/a/326076 */
+        try {
+            return window.self !== window.top;
+        } catch (e) {
+            return true;
+        }
+    };
+
 }
 
