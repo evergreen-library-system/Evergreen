@@ -30,6 +30,8 @@ if (my $circ_resp = $circ_req->recv) {
             !$circ->xact_finish,
             'Circ with id = ' . $circ_id . ' is overdue with fines, so xact_finish isn\'t set'
         );
+    } else {
+        fail('unable to retrieve circ');
     }
 }
 
