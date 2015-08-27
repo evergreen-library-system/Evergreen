@@ -20,9 +20,9 @@ SELECT plan(1);
 
 -- ensures the column exists and seed data has been updated.
 SELECT cmp_ok(
-    COUNT(*)::int, '>=', 3, 
-    'At least 3 copy status should be configured as "checkout_ok"') 
-    FROM config.copy_status WHERE checkout_ok;
+    COUNT(*)::int, '>=', 2, 
+    'At least 2 copy status should be configured as "is_available"') 
+    FROM config.copy_status WHERE is_available;
 
 -- Finish the tests and clean up.
 SELECT * FROM finish();

@@ -500,7 +500,7 @@ BEGIN
 
     -- Fail if the item isn't in a circulateable status on a non-renewal
     IF NOT renewal AND item_object.status NOT IN ( 
-        (SELECT id FROM config.copy_status WHERE checkout_ok) ) THEN 
+        (SELECT id FROM config.copy_status WHERE is_available) ) THEN 
         result.fail_part := 'asset.copy.status';
         result.success := FALSE;
         done := TRUE;

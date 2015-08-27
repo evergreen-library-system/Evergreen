@@ -227,13 +227,13 @@
 											}
 										  }
 										},
-										{ name : ccs_strings.CHECKOUT_OK,
-										  field : "checkout_ok",
+										{ name : ccs_strings.IS_AVAILABLE,
+										  field : "is_available",
 										  editor : dojox.grid.editors.bool,
 										  get : function (row) {
 											var r = window.status_data_model.getRow(row);
 											if (r) {
-												var h = r.checkout_ok;
+												var h = r.is_available;
 												if (h == 't' || h === true) return true;
 												return false;
 											}
