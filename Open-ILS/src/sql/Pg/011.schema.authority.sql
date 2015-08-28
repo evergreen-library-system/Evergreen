@@ -207,6 +207,20 @@ CREATE INDEX authority_full_rec_value_index ON authority.full_rec (value);
 
 CREATE RULE protect_authority_rec_delete AS ON DELETE TO authority.record_entry DO INSTEAD (UPDATE authority.record_entry SET deleted = TRUE WHERE OLD.id = authority.record_entry.id; DELETE FROM authority.full_rec WHERE record = OLD.id);
 
+CREATE OR REPLACE FUNCTION authority.extract_thesaurus( marcxml TEXT ) RETURNS TEXT AS $func$
+DECLARE
+    thes_code TEXT;
+BEGIN
+    thes_code := vandelay.marc21_extract_fixed_field(marcxml,'Subj');
+    IF thes_code IS NULL THEN
+        thes_code := '|';
+    ELSIF thes_code = 'z' THEN
+        thes_code := COALESCE( oils_xpath_string('//*[@tag="040"]/*[@code="f"][1]', marcxml), '' );
+    END IF;
+    RETURN thes_code;
+END;
+$func$ LANGUAGE PLPGSQL STABLE STRICT;
+
 -- Intended to be used in a unique index on authority.record_entry like so:
 -- CREATE UNIQUE INDEX unique_by_heading_and_thesaurus
 --   ON authority.record_entry (heading)
@@ -233,13 +247,6 @@ BEGIN
           FROM  authority.control_set_authority_field
           WHERE tag IN ( SELECT  UNNEST(XPATH('//*[starts-with(@tag,"1")]/@tag',marcxml::XML)::TEXT[]))
           LIMIT 1;
-    END IF;
-
-    thes_code := vandelay.marc21_extract_fixed_field(marcxml,'Subj');
-    IF thes_code IS NULL THEN
-        thes_code := '|';
-    ELSIF thes_code = 'z' THEN
-        thes_code := COALESCE( oils_xpath_string('//*[@tag="040"]/*[@code="f"][1]', marcxml), '' );
     END IF;
 
     heading_text := '';
@@ -291,6 +298,7 @@ BEGIN
         IF no_thesaurus IS TRUE THEN
             heading_text := tag_used || ' ' || public.naco_normalize(heading_text);
         ELSE
+            thes_code := authority.extract_thesaurus(marcxml);
             heading_text := tag_used || '_' || COALESCE(nfi_used,'-') || '_' || thes_code || ' ' || public.naco_normalize(heading_text);
         END IF;
     ELSE
@@ -307,7 +315,8 @@ CREATE TABLE authority.simple_heading (
     atag            INT         NOT NULL REFERENCES authority.control_set_authority_field (id),
     value           TEXT        NOT NULL,
     sort_value      TEXT        NOT NULL,
-    index_vector    tsvector    NOT NULL
+    index_vector    tsvector    NOT NULL,
+    thesaurus       TEXT
 );
 CREATE TRIGGER authority_simple_heading_fti_trigger
     BEFORE UPDATE OR INSERT ON authority.simple_heading
@@ -317,6 +326,7 @@ CREATE INDEX authority_simple_heading_index_vector_idx ON authority.simple_headi
 CREATE INDEX authority_simple_heading_value_idx ON authority.simple_heading (value);
 CREATE INDEX authority_simple_heading_sort_value_idx ON authority.simple_heading (sort_value);
 CREATE INDEX authority_simple_heading_record_idx ON authority.simple_heading (record);
+CREATE INDEX authority_simple_heading_thesaurus_idx ON authority.simple_heading (thesaurus);
 
 CREATE OR REPLACE FUNCTION authority.simple_heading_set( marcxml TEXT ) RETURNS SETOF authority.simple_heading AS $func$
 DECLARE
@@ -345,6 +355,7 @@ BEGIN
     END IF;
 
     res.record := auth_id;
+    res.thesaurus := authority.extract_thesaurus(marcxml);
 
     FOR acsaf IN SELECT * FROM authority.control_set_authority_field WHERE control_set = cset LOOP
 
@@ -613,7 +624,7 @@ $func$ LANGUAGE plpgsql;
 
 
 -- Support function used to find the pivot for alpha-heading-browse style searching
-CREATE OR REPLACE FUNCTION authority.simple_heading_find_pivot( a INT[], q TEXT ) RETURNS TEXT AS $$
+CREATE OR REPLACE FUNCTION authority.simple_heading_find_pivot( a INT[], q TEXT, thesauruses TEXT DEFAULT '' ) RETURNS TEXT AS $$
 DECLARE
     sort_value_row  RECORD;
     value_row       RECORD;
@@ -629,6 +640,10 @@ BEGIN
       FROM  authority.simple_heading ash
       WHERE ash.atag = ANY (a)
             AND ash.sort_value >= t_term
+            AND CASE thesauruses
+                WHEN '' THEN TRUE
+                ELSE ash.thesaurus = ANY(regexp_split_to_array(thesauruses, ','))
+                END
       ORDER BY rank DESC, ash.sort_value
       LIMIT 1;
 
@@ -639,6 +654,10 @@ BEGIN
       FROM  authority.simple_heading ash
       WHERE ash.atag = ANY (a)
             AND ash.value >= t_term
+            AND CASE thesauruses
+                WHEN '' THEN TRUE
+                ELSE ash.thesaurus = ANY(regexp_split_to_array(thesauruses, ','))
+                END
       ORDER BY rank DESC, ash.sort_value
       LIMIT 1;
 
@@ -650,7 +669,7 @@ BEGIN
 END;
 $$ LANGUAGE PLPGSQL;
 
-CREATE OR REPLACE FUNCTION authority.simple_heading_browse_center( atag_list INT[], q TEXT, page INT DEFAULT 0, pagesize INT DEFAULT 9 ) RETURNS SETOF BIGINT AS $$
+CREATE OR REPLACE FUNCTION authority.simple_heading_browse_center( atag_list INT[], q TEXT, page INT DEFAULT 0, pagesize INT DEFAULT 9, thesauruses TEXT DEFAULT '' ) RETURNS SETOF BIGINT AS $$
 DECLARE
     pivot_sort_value    TEXT;
     boffset             INT DEFAULT 0;
@@ -659,7 +678,7 @@ DECLARE
     alimit              INT DEFAULT 0;
 BEGIN
 
-    pivot_sort_value := authority.simple_heading_find_pivot(atag_list,q);
+    pivot_sort_value := authority.simple_heading_find_pivot(atag_list,q,thesauruses);
 
     IF page = 0 THEN
         blimit := pagesize / 2;
@@ -688,6 +707,10 @@ BEGIN
                         row_number() over ()
                   FROM  authority.simple_heading ash
                   WHERE ash.atag = ANY (atag_list)
+                        AND CASE thesauruses
+                            WHEN '' THEN TRUE
+                            ELSE ash.thesaurus = ANY(regexp_split_to_array(thesauruses, ','))
+                            END
                         AND ash.sort_value < pivot_sort_value
                   ORDER BY ash.sort_value DESC
                   LIMIT blimit
@@ -701,6 +724,10 @@ BEGIN
             SELECT  ash.id
               FROM  authority.simple_heading ash
               WHERE ash.atag = ANY (atag_list)
+                    AND CASE thesauruses
+                        WHEN '' THEN TRUE
+                        ELSE ash.thesaurus = ANY(regexp_split_to_array(thesauruses, ','))
+                        END
                     AND ash.sort_value >= pivot_sort_value
               ORDER BY ash.sort_value
               LIMIT alimit
@@ -756,37 +783,37 @@ CREATE OR REPLACE FUNCTION authority.atag_authority_tags_refs(atag TEXT) RETURNS
 $$ LANGUAGE SQL;
 
 
-CREATE OR REPLACE FUNCTION authority.axis_browse_center( a TEXT, q TEXT, page INT DEFAULT 0, pagesize INT DEFAULT 9 ) RETURNS SETOF BIGINT AS $$
-    SELECT * FROM authority.simple_heading_browse_center(authority.axis_authority_tags($1), $2, $3, $4)
+CREATE OR REPLACE FUNCTION authority.axis_browse_center( a TEXT, q TEXT, page INT DEFAULT 0, pagesize INT DEFAULT 9, thesauruses TEXT DEFAULT '' ) RETURNS SETOF BIGINT AS $$
+    SELECT * FROM authority.simple_heading_browse_center(authority.axis_authority_tags($1), $2, $3, $4, $5)
 $$ LANGUAGE SQL ROWS 10;
 
-CREATE OR REPLACE FUNCTION authority.btag_browse_center( a TEXT, q TEXT, page INT DEFAULT 0, pagesize INT DEFAULT 9 ) RETURNS SETOF BIGINT AS $$
-    SELECT * FROM authority.simple_heading_browse_center(authority.btag_authority_tags($1), $2, $3, $4)
+CREATE OR REPLACE FUNCTION authority.btag_browse_center( a TEXT, q TEXT, page INT DEFAULT 0, pagesize INT DEFAULT 9, thesauruses TEXT DEFAULT '' ) RETURNS SETOF BIGINT AS $$
+    SELECT * FROM authority.simple_heading_browse_center(authority.btag_authority_tags($1), $2, $3, $4, $5)
 $$ LANGUAGE SQL ROWS 10;
 
-CREATE OR REPLACE FUNCTION authority.atag_browse_center( a TEXT, q TEXT, page INT DEFAULT 0, pagesize INT DEFAULT 9 ) RETURNS SETOF BIGINT AS $$
-    SELECT * FROM authority.simple_heading_browse_center(authority.atag_authority_tags($1), $2, $3, $4)
+CREATE OR REPLACE FUNCTION authority.atag_browse_center( a TEXT, q TEXT, page INT DEFAULT 0, pagesize INT DEFAULT 9, thesauruses TEXT DEFAULT '' ) RETURNS SETOF BIGINT AS $$
+    SELECT * FROM authority.simple_heading_browse_center(authority.atag_authority_tags($1), $2, $3, $4, $5)
 $$ LANGUAGE SQL ROWS 10;
 
-CREATE OR REPLACE FUNCTION authority.axis_browse_center_refs( a TEXT, q TEXT, page INT DEFAULT 0, pagesize INT DEFAULT 9 ) RETURNS SETOF BIGINT AS $$
-    SELECT * FROM authority.simple_heading_browse_center(authority.axis_authority_tags_refs($1), $2, $3, $4)
+CREATE OR REPLACE FUNCTION authority.axis_browse_center_refs( a TEXT, q TEXT, page INT DEFAULT 0, pagesize INT DEFAULT 9, thesauruses TEXT DEFAULT '' ) RETURNS SETOF BIGINT AS $$
+    SELECT * FROM authority.simple_heading_browse_center(authority.axis_authority_tags_refs($1), $2, $3, $4, $5)
 $$ LANGUAGE SQL ROWS 10;
 
-CREATE OR REPLACE FUNCTION authority.btag_browse_center_refs( a TEXT, q TEXT, page INT DEFAULT 0, pagesize INT DEFAULT 9 ) RETURNS SETOF BIGINT AS $$
-    SELECT * FROM authority.simple_heading_browse_center(authority.btag_authority_tags_refs($1), $2, $3, $4)
+CREATE OR REPLACE FUNCTION authority.btag_browse_center_refs( a TEXT, q TEXT, page INT DEFAULT 0, pagesize INT DEFAULT 9, thesauruses TEXT DEFAULT '' ) RETURNS SETOF BIGINT AS $$
+    SELECT * FROM authority.simple_heading_browse_center(authority.btag_authority_tags_refs($1), $2, $3, $4, $5)
 $$ LANGUAGE SQL ROWS 10;
 
-CREATE OR REPLACE FUNCTION authority.atag_browse_center_refs( a TEXT, q TEXT, page INT DEFAULT 0, pagesize INT DEFAULT 9 ) RETURNS SETOF BIGINT AS $$
-    SELECT * FROM authority.simple_heading_browse_center(authority.atag_authority_tags_refs($1), $2, $3, $4)
+CREATE OR REPLACE FUNCTION authority.atag_browse_center_refs( a TEXT, q TEXT, page INT DEFAULT 0, pagesize INT DEFAULT 9, thesauruses TEXT DEFAULT '' ) RETURNS SETOF BIGINT AS $$
+    SELECT * FROM authority.simple_heading_browse_center(authority.atag_authority_tags_refs($1), $2, $3, $4, $5)
 $$ LANGUAGE SQL ROWS 10;
 
 
-CREATE OR REPLACE FUNCTION authority.simple_heading_browse_top( atag_list INT[], q TEXT, page INT DEFAULT 0, pagesize INT DEFAULT 10 ) RETURNS SETOF BIGINT AS $$
+CREATE OR REPLACE FUNCTION authority.simple_heading_browse_top( atag_list INT[], q TEXT, page INT DEFAULT 0, pagesize INT DEFAULT 10, thesauruses TEXT DEFAULT '' ) RETURNS SETOF BIGINT AS $$
 DECLARE
     pivot_sort_value    TEXT;
 BEGIN
 
-    pivot_sort_value := authority.simple_heading_find_pivot(atag_list,q);
+    pivot_sort_value := authority.simple_heading_find_pivot(atag_list,q,thesauruses);
 
     IF page < 0 THEN
         RETURN QUERY
@@ -796,6 +823,10 @@ BEGIN
                         row_number() over ()
                   FROM  authority.simple_heading ash
                   WHERE ash.atag = ANY (atag_list)
+                        AND CASE thesauruses
+                            WHEN '' THEN TRUE
+                            ELSE ash.thesaurus = ANY(regexp_split_to_array(thesauruses, ','))
+                            END
                         AND ash.sort_value < pivot_sort_value
                   ORDER BY ash.sort_value DESC
                   LIMIT pagesize
@@ -809,6 +840,10 @@ BEGIN
             SELECT  ash.id
               FROM  authority.simple_heading ash
               WHERE ash.atag = ANY (atag_list)
+                AND CASE thesauruses
+                    WHEN '' THEN TRUE
+                    ELSE ash.thesaurus = ANY(regexp_split_to_array(thesauruses, ','))
+                    END
                     AND ash.sort_value >= pivot_sort_value
               ORDER BY ash.sort_value
               LIMIT pagesize
@@ -817,38 +852,42 @@ BEGIN
 END;
 $$ LANGUAGE PLPGSQL ROWS 10;
 
-CREATE OR REPLACE FUNCTION authority.axis_browse_top( a TEXT, q TEXT, page INT DEFAULT 0, pagesize INT DEFAULT 10 ) RETURNS SETOF BIGINT AS $$
-    SELECT * FROM authority.simple_heading_browse_top(authority.axis_authority_tags($1), $2, $3, $4)
+CREATE OR REPLACE FUNCTION authority.axis_browse_top( a TEXT, q TEXT, page INT DEFAULT 0, pagesize INT DEFAULT 10, thesauruses TEXT DEFAULT '' ) RETURNS SETOF BIGINT AS $$
+    SELECT * FROM authority.simple_heading_browse_top(authority.axis_authority_tags($1), $2, $3, $4, $5)
 $$ LANGUAGE SQL ROWS 10;
 
-CREATE OR REPLACE FUNCTION authority.btag_browse_top( a TEXT, q TEXT, page INT DEFAULT 0, pagesize INT DEFAULT 10 ) RETURNS SETOF BIGINT AS $$
-    SELECT * FROM authority.simple_heading_browse_top(authority.btag_authority_tags($1), $2, $3, $4)
+CREATE OR REPLACE FUNCTION authority.btag_browse_top( a TEXT, q TEXT, page INT DEFAULT 0, pagesize INT DEFAULT 10, thesauruses TEXT DEFAULT '' ) RETURNS SETOF BIGINT AS $$
+    SELECT * FROM authority.simple_heading_browse_top(authority.btag_authority_tags($1), $2, $3, $4, $5)
 $$ LANGUAGE SQL ROWS 10;
 
-CREATE OR REPLACE FUNCTION authority.atag_browse_top( a TEXT, q TEXT, page INT DEFAULT 0, pagesize INT DEFAULT 10 ) RETURNS SETOF BIGINT AS $$
-    SELECT * FROM authority.simple_heading_browse_top(authority.atag_authority_tags($1), $2, $3, $4)
+CREATE OR REPLACE FUNCTION authority.atag_browse_top( a TEXT, q TEXT, page INT DEFAULT 0, pagesize INT DEFAULT 10, thesauruses TEXT DEFAULT '' ) RETURNS SETOF BIGINT AS $$
+    SELECT * FROM authority.simple_heading_browse_top(authority.atag_authority_tags($1), $2, $3, $4, $5)
 $$ LANGUAGE SQL ROWS 10;
 
-CREATE OR REPLACE FUNCTION authority.axis_browse_top_refs( a TEXT, q TEXT, page INT DEFAULT 0, pagesize INT DEFAULT 10 ) RETURNS SETOF BIGINT AS $$
-    SELECT * FROM authority.simple_heading_browse_top(authority.axis_authority_tags_refs($1), $2, $3, $4)
+CREATE OR REPLACE FUNCTION authority.axis_browse_top_refs( a TEXT, q TEXT, page INT DEFAULT 0, pagesize INT DEFAULT 10, thesauruses TEXT DEFAULT '' ) RETURNS SETOF BIGINT AS $$
+    SELECT * FROM authority.simple_heading_browse_top(authority.axis_authority_tags_refs($1), $2, $3, $4, $5)
 $$ LANGUAGE SQL ROWS 10;
 
-CREATE OR REPLACE FUNCTION authority.btag_browse_top_refs( a TEXT, q TEXT, page INT DEFAULT 0, pagesize INT DEFAULT 10 ) RETURNS SETOF BIGINT AS $$
-    SELECT * FROM authority.simple_heading_browse_top(authority.btag_authority_tags_refs($1), $2, $3, $4)
+CREATE OR REPLACE FUNCTION authority.btag_browse_top_refs( a TEXT, q TEXT, page INT DEFAULT 0, pagesize INT DEFAULT 10, thesauruses TEXT DEFAULT '' ) RETURNS SETOF BIGINT AS $$
+    SELECT * FROM authority.simple_heading_browse_top(authority.btag_authority_tags_refs($1), $2, $3, $4, $5)
 $$ LANGUAGE SQL ROWS 10;
 
-CREATE OR REPLACE FUNCTION authority.atag_browse_top_refs( a TEXT, q TEXT, page INT DEFAULT 0, pagesize INT DEFAULT 10 ) RETURNS SETOF BIGINT AS $$
-    SELECT * FROM authority.simple_heading_browse_top(authority.atag_authority_tags_refs($1), $2, $3, $4)
+CREATE OR REPLACE FUNCTION authority.atag_browse_top_refs( a TEXT, q TEXT, page INT DEFAULT 0, pagesize INT DEFAULT 10, thesauruses TEXT DEFAULT '' ) RETURNS SETOF BIGINT AS $$
+    SELECT * FROM authority.simple_heading_browse_top(authority.atag_authority_tags_refs($1), $2, $3, $4, $5)
 $$ LANGUAGE SQL ROWS 10;
 
 
-CREATE OR REPLACE FUNCTION authority.simple_heading_search_rank( atag_list INT[], q TEXT, page INT DEFAULT 0, pagesize INT DEFAULT 10 ) RETURNS SETOF BIGINT AS $$
+CREATE OR REPLACE FUNCTION authority.simple_heading_search_rank( atag_list INT[], q TEXT, page INT DEFAULT 0, pagesize INT DEFAULT 10, thesauruses TEXT DEFAULT '' ) RETURNS SETOF BIGINT AS $$
     SELECT  ash.id
       FROM  authority.simple_heading ash,
             public.naco_normalize($2) t(term),
             plainto_tsquery('keyword'::regconfig,$2) ptsq(term)
       WHERE ash.atag = ANY ($1)
             AND ash.index_vector @@ ptsq.term
+            AND CASE thesauruses
+                WHEN '' THEN TRUE
+                ELSE ash.thesaurus = ANY(regexp_split_to_array(thesauruses, ','))
+                END
       ORDER BY ts_rank_cd(ash.index_vector,ptsq.term,14)::numeric
                     + CASE WHEN ash.sort_value LIKE t.term || '%' THEN 2 ELSE 0 END
                     + CASE WHEN ash.value LIKE t.term || '%' THEN 1 ELSE 0 END DESC
@@ -856,65 +895,69 @@ CREATE OR REPLACE FUNCTION authority.simple_heading_search_rank( atag_list INT[]
       OFFSET $4 * $3;
 $$ LANGUAGE SQL ROWS 10;
 
-CREATE OR REPLACE FUNCTION authority.axis_search_rank( a TEXT, q TEXT, page INT DEFAULT 0, pagesize INT DEFAULT 10 ) RETURNS SETOF BIGINT AS $$
-    SELECT * FROM authority.simple_heading_search_rank(authority.axis_authority_tags($1), $2, $3, $4)
+CREATE OR REPLACE FUNCTION authority.axis_search_rank( a TEXT, q TEXT, page INT DEFAULT 0, pagesize INT DEFAULT 10, thesauruses TEXT DEFAULT '' ) RETURNS SETOF BIGINT AS $$
+    SELECT * FROM authority.simple_heading_search_rank(authority.axis_authority_tags($1), $2, $3, $4, $5)
 $$ LANGUAGE SQL ROWS 10;
 
-CREATE OR REPLACE FUNCTION authority.btag_search_rank( a TEXT, q TEXT, page INT DEFAULT 0, pagesize INT DEFAULT 10 ) RETURNS SETOF BIGINT AS $$
-    SELECT * FROM authority.simple_heading_search_rank(authority.btag_authority_tags($1), $2, $3, $4)
+CREATE OR REPLACE FUNCTION authority.btag_search_rank( a TEXT, q TEXT, page INT DEFAULT 0, pagesize INT DEFAULT 10, thesauruses TEXT DEFAULT '' ) RETURNS SETOF BIGINT AS $$
+    SELECT * FROM authority.simple_heading_search_rank(authority.btag_authority_tags($1), $2, $3, $4, $5)
 $$ LANGUAGE SQL ROWS 10;
 
-CREATE OR REPLACE FUNCTION authority.atag_search_rank( a TEXT, q TEXT, page INT DEFAULT 0, pagesize INT DEFAULT 10 ) RETURNS SETOF BIGINT AS $$
-    SELECT * FROM authority.simple_heading_search_rank(authority.atag_authority_tags($1), $2, $3, $4)
+CREATE OR REPLACE FUNCTION authority.atag_search_rank( a TEXT, q TEXT, page INT DEFAULT 0, pagesize INT DEFAULT 10, thesauruses TEXT DEFAULT '' ) RETURNS SETOF BIGINT AS $$
+    SELECT * FROM authority.simple_heading_search_rank(authority.atag_authority_tags($1), $2, $3, $4, $5)
 $$ LANGUAGE SQL ROWS 10;
 
-CREATE OR REPLACE FUNCTION authority.axis_search_rank_refs( a TEXT, q TEXT, page INT DEFAULT 0, pagesize INT DEFAULT 10 ) RETURNS SETOF BIGINT AS $$
-    SELECT * FROM authority.simple_heading_search_rank(authority.axis_authority_tags_refs($1), $2, $3, $4)
+CREATE OR REPLACE FUNCTION authority.axis_search_rank_refs( a TEXT, q TEXT, page INT DEFAULT 0, pagesize INT DEFAULT 10, thesauruses TEXT DEFAULT '' ) RETURNS SETOF BIGINT AS $$
+    SELECT * FROM authority.simple_heading_search_rank(authority.axis_authority_tags_refs($1), $2, $3, $4, $5)
 $$ LANGUAGE SQL ROWS 10;
 
-CREATE OR REPLACE FUNCTION authority.btag_search_rank_refs( a TEXT, q TEXT, page INT DEFAULT 0, pagesize INT DEFAULT 10 ) RETURNS SETOF BIGINT AS $$
-    SELECT * FROM authority.simple_heading_search_rank(authority.btag_authority_tags_refs($1), $2, $3, $4)
+CREATE OR REPLACE FUNCTION authority.btag_search_rank_refs( a TEXT, q TEXT, page INT DEFAULT 0, pagesize INT DEFAULT 10, thesauruses TEXT DEFAULT '' ) RETURNS SETOF BIGINT AS $$
+    SELECT * FROM authority.simple_heading_search_rank(authority.btag_authority_tags_refs($1), $2, $3, $4, $5)
 $$ LANGUAGE SQL ROWS 10;
 
-CREATE OR REPLACE FUNCTION authority.atag_search_rank_refs( a TEXT, q TEXT, page INT DEFAULT 0, pagesize INT DEFAULT 10 ) RETURNS SETOF BIGINT AS $$
-    SELECT * FROM authority.simple_heading_search_rank(authority.atag_authority_tags_refs($1), $2, $3, $4)
+CREATE OR REPLACE FUNCTION authority.atag_search_rank_refs( a TEXT, q TEXT, page INT DEFAULT 0, pagesize INT DEFAULT 10, thesauruses TEXT DEFAULT '' ) RETURNS SETOF BIGINT AS $$
+    SELECT * FROM authority.simple_heading_search_rank(authority.atag_authority_tags_refs($1), $2, $3, $4, $5)
 $$ LANGUAGE SQL ROWS 10;
 
 
-CREATE OR REPLACE FUNCTION authority.simple_heading_search_heading( atag_list INT[], q TEXT, page INT DEFAULT 0, pagesize INT DEFAULT 10 ) RETURNS SETOF BIGINT AS $$
+CREATE OR REPLACE FUNCTION authority.simple_heading_search_heading( atag_list INT[], q TEXT, page INT DEFAULT 0, pagesize INT DEFAULT 10, thesauruses TEXT DEFAULT '' ) RETURNS SETOF BIGINT AS $$
     SELECT  ash.id
       FROM  authority.simple_heading ash,
             public.naco_normalize($2) t(term),
             plainto_tsquery('keyword'::regconfig,$2) ptsq(term)
       WHERE ash.atag = ANY ($1)
             AND ash.index_vector @@ ptsq.term
+            AND CASE thesauruses
+                WHEN '' THEN TRUE
+                ELSE ash.thesaurus = ANY(regexp_split_to_array(thesauruses, ','))
+                END
       ORDER BY ash.sort_value
       LIMIT $4
       OFFSET $4 * $3;
 $$ LANGUAGE SQL ROWS 10;
 
-CREATE OR REPLACE FUNCTION authority.axis_search_heading( a TEXT, q TEXT, page INT DEFAULT 0, pagesize INT DEFAULT 10 ) RETURNS SETOF BIGINT AS $$
-    SELECT * FROM authority.simple_heading_search_heading(authority.axis_authority_tags($1), $2, $3, $4)
+CREATE OR REPLACE FUNCTION authority.axis_search_heading( a TEXT, q TEXT, page INT DEFAULT 0, pagesize INT DEFAULT 10, thesauruses TEXT DEFAULT '' ) RETURNS SETOF BIGINT AS $$
+    SELECT * FROM authority.simple_heading_search_heading(authority.axis_authority_tags($1), $2, $3, $4, $5)
 $$ LANGUAGE SQL ROWS 10;
 
-CREATE OR REPLACE FUNCTION authority.btag_search_heading( a TEXT, q TEXT, page INT DEFAULT 0, pagesize INT DEFAULT 10 ) RETURNS SETOF BIGINT AS $$
-    SELECT * FROM authority.simple_heading_search_heading(authority.btag_authority_tags($1), $2, $3, $4)
+CREATE OR REPLACE FUNCTION authority.btag_search_heading( a TEXT, q TEXT, page INT DEFAULT 0, pagesize INT DEFAULT 10, thesauruses TEXT DEFAULT '' ) RETURNS SETOF BIGINT AS $$
+    SELECT * FROM authority.simple_heading_search_heading(authority.btag_authority_tags($1), $2, $3, $4, $5)
 $$ LANGUAGE SQL ROWS 10;
 
-CREATE OR REPLACE FUNCTION authority.atag_search_heading( a TEXT, q TEXT, page INT DEFAULT 0, pagesize INT DEFAULT 10 ) RETURNS SETOF BIGINT AS $$
-    SELECT * FROM authority.simple_heading_search_heading(authority.atag_authority_tags($1), $2, $3, $4)
+CREATE OR REPLACE FUNCTION authority.atag_search_heading( a TEXT, q TEXT, page INT DEFAULT 0, pagesize INT DEFAULT 10, thesauruses TEXT DEFAULT '' ) RETURNS SETOF BIGINT AS $$
+    SELECT * FROM authority.simple_heading_search_heading(authority.atag_authority_tags($1), $2, $3, $4, $5)
 $$ LANGUAGE SQL ROWS 10;
 
-CREATE OR REPLACE FUNCTION authority.axis_search_heading_refs( a TEXT, q TEXT, page INT DEFAULT 0, pagesize INT DEFAULT 10 ) RETURNS SETOF BIGINT AS $$
-    SELECT * FROM authority.simple_heading_search_heading(authority.axis_authority_tags_refs($1), $2, $3, $4)
+CREATE OR REPLACE FUNCTION authority.axis_search_heading_refs( a TEXT, q TEXT, page INT DEFAULT 0, pagesize INT DEFAULT 10, thesauruses TEXT DEFAULT '' ) RETURNS SETOF BIGINT AS $$
+    SELECT * FROM authority.simple_heading_search_heading(authority.axis_authority_tags_refs($1), $2, $3, $4, $5)
 $$ LANGUAGE SQL ROWS 10;
 
-CREATE OR REPLACE FUNCTION authority.btag_search_heading_refs( a TEXT, q TEXT, page INT DEFAULT 0, pagesize INT DEFAULT 10 ) RETURNS SETOF BIGINT AS $$
-    SELECT * FROM authority.simple_heading_search_heading(authority.btag_authority_tags_refs($1), $2, $3, $4)
+CREATE OR REPLACE FUNCTION authority.btag_search_heading_refs( a TEXT, q TEXT, page INT DEFAULT 0, pagesize INT DEFAULT 10, thesauruses TEXT DEFAULT '' ) RETURNS SETOF BIGINT AS $$
+    SELECT * FROM authority.simple_heading_search_heading(authority.btag_authority_tags_refs($1), $2, $3, $4, $5)
 $$ LANGUAGE SQL ROWS 10;
 
-CREATE OR REPLACE FUNCTION authority.atag_search_heading_refs( a TEXT, q TEXT, page INT DEFAULT 0, pagesize INT DEFAULT 10 ) RETURNS SETOF BIGINT AS $$
-    SELECT * FROM authority.simple_heading_search_heading(authority.atag_authority_tags_refs($1), $2, $3, $4)
+CREATE OR REPLACE FUNCTION authority.atag_search_heading_refs( a TEXT, q TEXT, page INT DEFAULT 0, pagesize INT DEFAULT 10, thesauruses TEXT DEFAULT '' ) RETURNS SETOF BIGINT AS $$
+    SELECT * FROM authority.simple_heading_search_heading(authority.atag_authority_tags_refs($1), $2, $3, $4, $5)
 $$ LANGUAGE SQL ROWS 10;
 
 

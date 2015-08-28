@@ -1611,8 +1611,8 @@ sub string_browse {
     my $path = $cgi->path_info;
     $path =~ s/^\///og;
 
-    my ($format,$axis,$site,$string,$page,$page_size) = split '/', $path;
-    #warn " >>> $format -> $axis -> $site -> $string -> $page -> $page_size ";
+    my ($format,$axis,$site,$string,$page,$page_size,$thesauruses) = split '/', $path;
+    #warn " >>> $format -> $axis -> $site -> $string -> $page -> $page_size -> $thesauruses";
 
     return item_age_browse($apache) if ($axis eq 'item-age'); # short-circut to the item-age sub
 
@@ -1621,12 +1621,16 @@ sub string_browse {
     $site ||= $cgi->param('searchOrg');
     $page ||= $cgi->param('startPage') || 0;
     $page_size ||= $cgi->param('count') || 9;
+    $thesauruses //= '';
+    $thesauruses =~ s/\s//g;
+    # protect against cats bouncing on the comma key...
+    $thesauruses = join(',', grep { $_ ne '' } split /,/, $thesauruses); 
 
     $page = 0 if ($page !~ /^-?\d+$/);
     $page_size = 9 if $page_size !~ /^\d+$/;
 
-    my $prev = join('/', $base,$format,$axis,$site,$string,$page - 1,$page_size);
-    my $next = join('/', $base,$format,$axis,$site,$string,$page + 1,$page_size);
+    my $prev = join('/', $base,$format,$axis,$site,$string,$page - 1,$page_size,$thesauruses);
+    my $next = join('/', $base,$format,$axis,$site,$string,$page + 1,$page_size,$thesauruses);
 
     unless ($string and $axis and grep { $axis eq $_ } keys %browse_types) {
         warn "something's wrong...";
@@ -1650,7 +1654,8 @@ sub string_browse {
             $realaxis,
             $string,
             $page,
-            $page_size
+            $page_size,
+            $thesauruses
         )->gather(1);
     } else {
         $tree = $supercat->request(
@@ -1696,20 +1701,24 @@ sub string_startwith {
     my $path = $cgi->path_info;
     $path =~ s/^\///og;
 
-    my ($format,$axis,$site,$string,$page,$page_size) = split '/', $path;
-    #warn " >>> $format -> $axis -> $site -> $string -> $page -> $page_size ";
+    my ($format,$axis,$site,$string,$page,$page_size,$thesauruses) = split '/', $path;
+    #warn " >>> $format -> $axis -> $site -> $string -> $page -> $page_size -> $thesauruses ";
 
     my $status = [$cgi->param('status')];
     my $cpLoc = [$cgi->param('copyLocation')];
     $site ||= $cgi->param('searchOrg');
     $page ||= $cgi->param('startPage') || 0;
     $page_size ||= $cgi->param('count') || 9;
+    $thesauruses //= '';
+    $thesauruses =~ s/\s//g;
+    # protect against cats bouncing on the comma key...
+    $thesauruses = join(',', grep { $_ ne '' } split /,/, $thesauruses); 
 
     $page = 0 if ($page !~ /^-?\d+$/);
     $page_size = 9 if $page_size !~ /^\d+$/;
 
-    my $prev = join('/', $base,$format,$axis,$site,$string,$page - 1,$page_size);
-    my $next = join('/', $base,$format,$axis,$site,$string,$page + 1,$page_size);
+    my $prev = join('/', $base,$format,$axis,$site,$string,$page - 1,$page_size,$thesauruses);
+    my $next = join('/', $base,$format,$axis,$site,$string,$page + 1,$page_size,$thesauruses);
 
     unless ($string and $axis and grep { $axis eq $_ } keys %browse_types) {
         warn "something's wrong...";
@@ -1733,7 +1742,8 @@ sub string_startwith {
             $realaxis,
             $string,
             $page,
-            $page_size
+            $page_size,
+            $thesauruses
         )->gather(1);
     } else {
         $tree = $supercat->request(

@@ -279,7 +279,9 @@ __PACKAGE__->register_method(
             {name => "term", type => "string", desc => "Search term"},
             {name => "page", type => "number", desc => "Zero-based page number"},
             {name => "page_size", type => "number",
-                desc => "Number of records per page"}
+                desc => "Number of records per page"},
+            {name => "thesauruses", type => "string",
+                desc => "Comma-separated this of thesauruses to restrict search/browse to"},
         ],
         return => {
             desc => "A list of authority record IDs",
@@ -298,7 +300,7 @@ sub authority_in_db_browse_or_search {
         qq/
             SELECT
                 (SELECT record FROM authority.simple_heading WHERE id = func.heading)
-            FROM authority.$method(?, ?, ?, ?) func(heading)
+            FROM authority.$method(?, ?, ?, ?, ?) func(heading)
         /,
         {}, @args
     );

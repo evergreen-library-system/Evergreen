@@ -1642,8 +1642,8 @@ BEGIN
 
     FOR ashs IN SELECT * FROM authority.simple_heading_set(NEW.marc) LOOP
 
-        INSERT INTO authority.simple_heading (record,atag,value,sort_value)
-            VALUES (ashs.record, ashs.atag, ashs.value, ashs.sort_value);
+        INSERT INTO authority.simple_heading (record,atag,value,sort_value,thesaurus)
+            VALUES (ashs.record, ashs.atag, ashs.value, ashs.sort_value, ashs.thesaurus);
             ash_id := CURRVAL('authority.simple_heading_id_seq'::REGCLASS);
 
         SELECT INTO mbe_row * FROM metabib.browse_entry

@@ -281,6 +281,7 @@ sub generic_new_authorities_method {
     my $term = ''.shift;
     my $page = int(shift || 0);
     my $page_size = shift;
+    my $thesauruses = shift;
 
     # undef ok, but other non numbers not ok
     $page_size = int($page_size) if defined $page_size;
@@ -303,7 +304,7 @@ sub generic_new_authorities_method {
     my $storage = create OpenSRF::AppSession("open-ils.storage");
     my $list = $storage->request(
         "open-ils.storage.authority.in_db.browse_or_search",
-        $method, $what, $term, $page, $page_size
+        $method, $what, $term, $page, $page_size, $thesauruses
     )->gather(1);
 
     $storage->kill_me;
