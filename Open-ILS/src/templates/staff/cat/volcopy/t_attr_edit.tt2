@@ -1,48 +1,48 @@
 <div class="container-fluid">
-<div class="row bg-info">
-    <div class="col-md-1">
-        <h5>[% l('Template') %]</h5>
-    </div>
-    <div class="col-md-2">
-        <eg-basic-combo-box list="template_name_list" selected="template_name"></eg-basic-combo-box>
-    </div>
-    <div class="col-md-1">
-        <button class="btn btn-default " ng-click="applyTemplate(template_name)" type="button">[% l('Apply') %]</button>
-    </div>
-    <div class="col-md-6">
-        <div class="row" ng-show="template_controls">
-            <div class="col-md-4">
-                <div class="btn-group">
-                    <label class="btn btn-default" ng-click="saveTemplate(template_name)">[% l('Save') %]</label>
-                    <label class="btn btn-default" ng-click="deleteTemplate(template_name)">[% l('Delete') %]</label>
+    <div class="row bg-info">
+        <div class="col-md-1">
+            <h5>[% l('Template') %]</h5>
+        </div>
+        <div class="col-md-2">
+            <eg-basic-combo-box list="template_name_list" selected="template_name"></eg-basic-combo-box>
+        </div>
+        <div class="col-md-1">
+            <button class="btn btn-default " ng-click="applyTemplate(template_name)" type="button">[% l('Apply') %]</button>
+        </div>
+        <div class="col-md-6">
+            <div class="row" ng-show="template_controls">
+                <div class="col-md-4">
+                    <div class="btn-group">
+                        <label class="btn btn-default" ng-click="saveTemplate(template_name)">[% l('Save') %]</label>
+                        <label class="btn btn-default" ng-click="deleteTemplate(template_name)">[% l('Delete') %]</label>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-8">
-                <div class="btn-group pull-right">
-                    <label class="btn btn-default" ng-click="importTemplates()">[% l('Import') %]</label>
-                    <label class="btn btn-default" ng-click="exportTemplates()">[% l('Export') %]</label>
+                <div class="col-md-8">
+                    <div class="btn-group pull-right">
+                        <label class="btn btn-default" ng-click="importTemplates()">[% l('Import') %]</label>
+                        <label class="btn btn-default" ng-click="exportTemplates()">[% l('Export') %]</label>
+                    </div>
                 </div>
             </div>
         </div>
+        <div class="col-md-2">
+            <button class="btn btn-default pull-right" ng-click="clearWorking()" type="button">Clear</button>
+        </div>
     </div>
-    <div class="col-md-2">
-        <button class="btn btn-default pull-right" ng-click="clearWorking()" type="button">Clear</button>
-    </div>
-</div>
 
-<div class="row pad-vert"></div>
+    <div class="row pad-vert"></div>
 
-<div class="row bg-info">
-    <div class="col-md-4">
-        <b>[% l('Circulate?') %]</b>
+    <div class="row bg-info">
+        <div class="col-md-4">
+            <b>[% l('Circulate?') %]</b>
+        </div>
+        <div class="col-md-4">
+            <b>[% l('Status') %]</b>
+        </div>
+        <div class="col-md-4">
+            <b>[% l('Statistical Catagories') %]</b>
+        </div>
     </div>
-    <div class="col-md-4">
-        <b>[% l('Status') %]</b>
-    </div>
-    <div class="col-md-4">
-        <b>[% l('Statistical Catagories') %]</b>
-    </div>
-</div>
 
     <div class="row">
         <div class="col-md-8">
@@ -66,8 +66,8 @@
                 <div class="col-md-6" ng-class="{'bg-success': working.status !== undefined}">
                     <select class="form-control"
                         ng-disabled="!defaults.attributes.status" ng-model="working.status"
-                        ng-options="s.id() as s.name() for s in status_list"
-                    ></select>
+                        ng-options="s.id() as s.name() for s in status_list">
+                    </select>
                 </div>
             </div>
 
@@ -158,7 +158,7 @@
             </div>
 
             <div class="row">
-                <div class="col-md-6" ng-class="{'bg-success': working.circ_modifier !== undefined}">
+                <div class="nullable col-md-6" ng-class="{'bg-success': working.circ_modifier !== undefined}">
                     <select class="form-control"
                         ng-disabled="!defaults.attributes.circ_modifier" ng-model="working.circ_modifier"
                         ng-options="m.code() as m.name() for m in circ_modifier_list"
@@ -207,11 +207,12 @@
             </div>
 
             <div class="row">
-                <div class="col-md-6" ng-class="{'bg-success': working.circ_as_type !== undefined}">
+                <div class="nullable col-md-6" ng-class="{'bg-success': working.circ_as_type !== undefined}">
                     <select class="form-control"
                         ng-disabled="!defaults.attributes.circ_as_type" ng-model="working.circ_as_type"
-                        ng-options="t.code() as t.value() for t in circ_type_list"
-                    ></select>
+                        ng-options="t.code() as t.value() for t in circ_type_list">
+                      <option value="">[% l('<NONE>') %]</option>
+                    </select>
                 </div>
                 <div class="col-md-6" ng-class="{'bg-success': working.deposit !== undefined}">
                     <div class="row">
@@ -318,22 +319,41 @@
                 </div>
             </div>
         </div>
-        <div class="col=md-4">
-            statcats<br/>
-            statcats<br/>
-            statcats<br/>
-            statcats<br/>
-            statcats<br/>
-            statcats<br/>
-            statcats<br/>
-            statcats<br/>
-            statcats<br/>
-            statcats<br/>
-            statcats<br/>
-            statcats<br/>
-            statcats<br/>
-            statcats<br/>
+
+        <div class="col-md-4">
+            <div class="row">
+                <div class="col-xs-12">
+                    <select class="form-control" ng-disabled="!defaults.statcats"
+                        ng-model="working.statcat_filter"
+                        ng-options="o.id() as o.shortname() for o in statcat_filter_list">
+                      <option value="">[% l('Filter by Library') %]</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row pad-vert"></div>
+
+            <div class="row" ng-repeat="sc in statcats">
+                <div class="col-xs-12">
+                    <div class="row bg-info">
+                        <div class="col-xs-12">
+                            <span>{{ sc.owner().name() }} : {{ sc.name() }}</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="nullable col-xs-12" ng-class="{'bg-success': working.statcats[sc.id()] !== undefined}">
+                            <select class="form-control" ng-disabled="!defaults.statcats"
+                                ng-change="statcatUpdate(sc.id())"
+                                ng-model="working.statcats[sc.id()]"
+                                ng-options="e.id() as e.value() for e in sc.entries()">
+                                <option value="">[% l('<NONE>') %]</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+
     </div>
 </div>
 </div>

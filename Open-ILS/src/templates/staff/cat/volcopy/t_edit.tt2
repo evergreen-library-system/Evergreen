@@ -85,6 +85,8 @@
                           features="startSelected,-pagination,-actions,-picker,-index"
                           items-provider="workingGridDataProvider"
                           grid-controls="workingGridControls"
+                          on-select="handleItemSelect"
+                          after-select="afterItemSelect"
                           persist-key="cat.volcopy.copies">
         
                           <eg-grid-menu-item handler="workingToComplete"

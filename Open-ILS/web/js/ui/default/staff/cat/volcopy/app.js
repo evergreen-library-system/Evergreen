@@ -56,6 +56,18 @@ function(egCore , $q) {
 
     };
 
+    service.get_statcats = function(orgs) {
+        return egCore.pcrud.search('asc',
+            {owner : orgs},
+            { flesh : 1,
+              flesh_fields : {
+                asc : ['owner','entries']
+              }
+            },
+            { atomic : true }
+        );
+    };
+
     service.get_locations = function(orgs) {
         return egCore.pcrud.search('acpl',
             {owning_lib : orgs},
@@ -141,7 +153,7 @@ function(egCore , $q) {
     service.flesh = {   
         flesh : 3, 
         flesh_fields : {
-            acp : ['call_number','parts'],
+            acp : ['call_number','parts','stat_cat_entries'],
             acn : ['label_class','prefix','suffix']
         }
     }
@@ -483,6 +495,7 @@ function(egCore , $q) {
 function($scope , $q , $routeParams , $location , $timeout , egCore , egNet , egGridDataProvider , itemSvc) {
 
     $scope.defaults = { // If defaults are not set at all, allow everything
+        statcats : true,
         attributes : {
             status : true,
             loan_duration : true,
@@ -517,6 +530,7 @@ function($scope , $q , $routeParams , $location , $timeout , egCore , egNet , eg
                 $scope.batch.classification = $scope.defaults.classification;
                 $scope.batch.prefix = $scope.defaults.prefix;
                 $scope.batch.suffix = $scope.defaults.suffix;
+                $scope.working.statcat_filter = $scope.defaults.statcat_filter;
                 if ($scope.defaults.always_vols) $scope.show_vols = true;
             }
         });
@@ -559,7 +573,7 @@ function($scope , $q , $routeParams , $location , $timeout , egCore , egNet , eg
     }
 
     createSimpleUpdateWatcher = function (field) {
-        $scope.$watch('working.' + field, function () {
+        return $scope.$watch('working.' + field, function () {
             var newval = $scope.working[field];
 
             if (typeof newval != 'undefined') {
@@ -568,7 +582,7 @@ function($scope , $q , $routeParams , $location , $timeout , egCore , egNet , eg
                     else if (newval.code) newval = newval.code();
                 }
 
-                if (newval == "") {
+                if (""+newval == "" || newval == null) {
                     $scope.working[field] = undefined;
                     newval = null;
                 }
@@ -583,9 +597,77 @@ function($scope , $q , $routeParams , $location , $timeout , egCore , egNet , eg
         });
     }
 
+    $scope.working = {
+        statcats: {},
+        statcat_filter: undefined
+    };
+
+    $scope.statcatUpdate = function (id) {
+        var newval = $scope.working.statcats[id];
+
+        if (typeof newval != 'undefined') {
+            if (angular.isObject(newval)) { // we'll use the pkey
+                newval = newval.id();
+            }
+    
+            if (""+newval == "" || newval == null) {
+                $scope.working.statcats[id] = undefined;
+                newval = null;
+            }
+    
+            if (!$scope.in_item_select && $scope.workingGridControls && $scope.workingGridControls.selectedItems) {
+                angular.forEach(
+                    $scope.workingGridControls.selectedItems(),
+                    function (cp) {
+                        cp.stat_cat_entries(
+                            angular.forEach( cp.stat_cat_entries(), function (e) {
+                                if (e.stat_cat() == id) { // mark deleted
+                                    e.isdeleted(1);
+                                }
+                            })
+                        );
+    
+                        if (newval) {
+                            var e = new egCore.idl.ascecm();
+                            e.isnew( 1 );
+                            e.owning_copy( cp.id() );
+                            e.stat_cat( id );
+                            e.stat_cat_entry( newval );
+
+                            cp.stat_cat_entries(
+                                cp.stat_cat_entries().concat([ e ])
+                            );
+
+                        }
+
+                        cp.stat_cat_entries( // trim out ephemeral deleted ones
+                            cp.stat_cat_entries().filter(function (e) {
+                                if (Boolean(e.isnew())) {
+                                    if (Boolean(e.isdeleted())) {
+                                        return false;
+                                    }
+                                }
+                                return true;
+                            })
+                        );
+   
+                        cp.ischanged(1);
+                    }
+                );
+            }
+        }
+    }
+
     $scope.applyTemplate = function (n) {
         angular.forEach($scope.templates[n], function (v,k) {
-            $scope.working[k] = angular.copy(v);
+            if (!angular.isObject(v)) {
+                $scope.working[k] = angular.copy(v);
+            } else {
+                angular.forEach(v, function (sv,sk) {
+                    $scope.working[k][sk] = angular.copy(sv);
+                    if (k == 'statcats') $scope.statcatUpdate(sk);
+                });
+            }
         });
     }
 
@@ -608,8 +690,6 @@ function($scope , $q , $routeParams , $location , $timeout , egCore , egNet , eg
         }
         $scope.fetchTemplates();
  
-        $scope.working = {};
-
         $scope.copytab = 'working';
         $scope.tab = 'edit';
         $scope.summaryRecord = null;
@@ -618,6 +698,7 @@ function($scope , $q , $routeParams , $location , $timeout , egCore , egNet , eg
         $scope.completed_copies = [];
         $scope.location_orgs = [];
         $scope.location_cache = {};
+        $scope.statcats = [];
         if (!$scope.batch) $scope.batch = {};
 
         $scope.applyBatchCNValues = function () {
@@ -641,9 +722,17 @@ function($scope , $q , $routeParams , $location , $timeout , egCore , egNet , eg
 
         $scope.clearWorking = function () {
             angular.forEach($scope.working, function (v,k,o) {
-                if (typeof v != 'undefined')
-                    $scope.working[k] = undefined;
+                if (!angular.isObject(v)) {
+                    if (typeof v != 'undefined')
+                        $scope.working[k] = undefined;
+                } else if (k != 'circ_lib') {
+                    angular.forEach(v, function (sv,sk) {
+                        if (typeof v != 'undefined')
+                            $scope.working[k][sk] = undefined;
+                    });
+                }
             });
+            $scope.working.circ_lib = undefined; // special
         }
 
         $scope.completedGridDataProvider = egGridDataProvider.instance({
@@ -703,11 +792,82 @@ function($scope , $q , $routeParams , $location , $timeout , egCore , egNet , eg
             $scope.workingGridDataProvider.refresh();
         });
 
+        $scope.in_item_select = false;
+        $scope.afterItemSelect = function() { $scope.in_item_select = false };
+        $scope.handleItemSelect = function (item_list) {
+            if (item_list && item_list.length > 0) {
+                $scope.in_item_select = true;
+
+                angular.forEach(Object.keys($scope.defaults.attributes), function (attr) {
+
+                    var value_hash = {};
+                    angular.forEach(item_list, function (item) {
+                        if (item[attr]) {
+                            var v = item[attr]()
+                            if (angular.isObject(v)) {
+                                if (v.id) v = v.id();
+                                else if (v.code) v = v.code();
+                            }
+                            value_hash[v] = 1;
+                        }
+                    });
+
+                    if (Object.keys(value_hash).length == 1) {
+                        if (attr == 'circ_lib') {
+                            $scope.working[attr] = egCore.org.get(item_list[0][attr]());
+                        } else {
+                            $scope.working[attr] = item_list[0][attr]();
+                        }
+                    } else {
+                        $scope.working[attr] = undefined;
+                    }
+                });
+
+                angular.forEach($scope.statcats, function (sc) {
+
+                    var counter = -1;
+                    var value_hash = {};
+                    var none = false;
+                    angular.forEach(item_list, function (item) {
+                        if (item.stat_cat_entries().length > 0) {
+                            var right_sc = item.stat_cat_entries().filter(function (e) {
+                                return e.stat_cat() == sc.id() && !Boolean(e.isdeleted());
+                            });
+
+                            if (right_sc.length > 0) {
+                                value_hash[right_sc[0].stat_cat_entry()] = right_sc[0].stat_cat_entry();
+                            } else {
+                                none = true;
+                            }
+                        } else {
+                            none = true;
+                        }
+                    });
+
+                    if (!none && Object.keys(value_hash).length == 1) {
+                        $scope.working.statcats[sc.id()] = value_hash[Object.keys(value_hash)[0]];
+                    } else {
+                        $scope.working.statcats[sc.id()] = undefined;
+                    }
+                });
+
+            } else {
+                $scope.clearWorking();
+            }
+
+        }
+
         $scope.$watch('data.copies.length', function () {
             if ($scope.data.copies) {
                 var base_orgs = $scope.data.copies.map(function(cp){
                     return cp.circ_lib()
-                }).filter(function(e,i,a){
+                }).concat(
+                    $scope.data.copies.map(function(cp){
+                        return cp.call_number().owning_lib()
+                    })
+                ).concat(
+                    [egCore.auth.user().ws_ou()]
+                ).filter(function(e,i,a){
                     return a.lastIndexOf(e) === i;
                 });
 
@@ -728,6 +888,28 @@ function($scope , $q , $routeParams , $location , $timeout , egCore , egNet , eg
                                 $scope.location_cache[ ''+l.id() ] = l;
                             });
                             $scope.location_list = list;
+                        });
+
+                        $scope.statcat_filter_list = [];
+                        angular.forEach($scope.location_orgs, function (o) {
+                            $scope.statcat_filter_list.push(egCore.org.get(o));
+                        });
+
+                        itemSvc.get_statcats($scope.location_orgs).then(function(list){
+                            $scope.statcats = list;
+                            angular.forEach($scope.statcats, function (s) {
+
+                                if (!$scope.working)
+                                    $scope.working = { statcats: {}, statcat_filter: undefined};
+                                if (!$scope.working.statcats)
+                                    $scope.working.statcats = {};
+
+                                if (!$scope.in_item_select) {
+                                    $scope.working.statcats[s.id()] = undefined;
+                                }
+                                createStatcatUpdateWatcher(s.id());
+                            });
+                            $scope.in_item_select = false;
                         });
                     }
                 }
@@ -811,6 +993,7 @@ function($scope , $q , $routeParams , $location , $timeout , egCore , egNet , eg
             function ( $scope , itemSvc , egCore ) {
 
                 $scope.defaults = { // If defaults are not set at all, allow everything
+                    statcats : true,
                     attributes : {
                         status : true,
                         loan_duration : true,
@@ -837,6 +1020,7 @@ function($scope , $q , $routeParams , $location , $timeout , egCore , egNet , eg
                     egCore.hatch.getItem('cat.copy.defaults').then(function(t) {
                         if (t) {
                             $scope.defaults = t;
+                            $scope.working.statcat_filter = $scope.defaults.statcat_filter;
                         }
                     });
                 }
@@ -857,10 +1041,16 @@ function($scope , $q , $routeParams , $location , $timeout , egCore , egNet , eg
             
                 $scope.applyTemplate = function (n) {
                     angular.forEach($scope.templates[n], function (v,k) {
-                        $scope.working[k] = angular.copy(v);
+                        if (!angular.isObject(v)) {
+                            $scope.working[k] = angular.copy(v);
+                        } else {
+                            angular.forEach(v, function (sv,sk) {
+                                $scope.working[k][sk] = angular.copy(sv);
+                            });
+                        }
                     });
                 }
-            
+
                 $scope.deleteTemplate = function (n) {
                     if (n) {
                         delete $scope.templates[n]
@@ -919,7 +1109,7 @@ function($scope , $q , $routeParams , $location , $timeout , egCore , egNet , eg
                                 else if (newval.code) $scope.working[field] = newval.code();
                             }
             
-                            if (newval == "") {
+                            if (""+newval == "" || newval == null) {
                                 $scope.working[field] = undefined;
                             }
             
@@ -927,13 +1117,45 @@ function($scope , $q , $routeParams , $location , $timeout , egCore , egNet , eg
                     });
                 }
             
-                $scope.clearWorking = function () {
-                    angular.forEach($scope.working, function (v,k) {
-                        if (typeof v != 'undefined')
-                            $scope.working[k] = undefined;
+                $scope.working = {
+                    statcats: {},
+                    statcat_filter: undefined
+                };
+            
+                createStatcatUpdateWatcher = function (id) {
+                    return $scope.$watch('working.statcats[' + id + ']', function () {
+                        if ($scope.working.statcats) {
+                            var newval = $scope.working.statcats[id];
+                
+                            if (typeof newval != 'undefined') {
+                                if (angular.isObject(newval)) { // we'll use the pkey
+                                    newval = newval.id();
+                                }
+                
+                                if (""+newval == "" || newval == null) {
+                                    $scope.working.statcats[id] = undefined;
+                                    newval = null;
+                                }
+                
+                            }
+                        }
                     });
                 }
-            
+
+                $scope.clearWorking = function () {
+                    angular.forEach($scope.working, function (v,k,o) {
+                        if (!angular.isObject(v)) {
+                            if (typeof v != 'undefined')
+                                $scope.working[k] = undefined;
+                        } else if (k != 'circ_lib') {
+                            angular.forEach(v, function (sv,sk) {
+                                $scope.working[k][sk] = undefined;
+                            });
+                        }
+                    });
+                    $scope.working.circ_lib = undefined; // special
+                }
+
                 $scope.working = {};
                 $scope.location_orgs = [];
                 $scope.location_cache = {};
@@ -945,6 +1167,25 @@ function($scope , $q , $routeParams , $location , $timeout , egCore , egNet , eg
                     $scope.location_list = list;
                 });
                 createSimpleUpdateWatcher('location');
+
+                $scope.statcat_filter_list = egCore.org.fullPath( egCore.auth.user().ws_ou() );
+
+                $scope.statcats = [];
+                itemSvc.get_statcats(
+                    egCore.org.fullPath( egCore.auth.user().ws_ou(), true )
+                ).then(function(list){
+                    $scope.statcats = list;
+                    angular.forEach($scope.statcats, function (s) {
+
+                        if (!$scope.working)
+                            $scope.working = { statcats: {}, statcat_filter: undefined};
+                        if (!$scope.working.statcats)
+                            $scope.working.statcats = {};
+
+                        $scope.working.statcats[s.id()] = undefined;
+                        createStatcatUpdateWatcher(s.id());
+                    });
+                });
             
                 $scope.status_list = [];
                 itemSvc.get_statuses().then(function(list){

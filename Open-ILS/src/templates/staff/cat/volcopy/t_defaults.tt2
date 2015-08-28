@@ -241,7 +241,7 @@
                 </div>
                 <div class="col-xs-6">
                     <label>
-                        <eg-org-selector selected="defaults.statcats.org_filter" noDefault label="[% l('Default Filter Library') %]" disableTest="cant_have_vols"></eg-org-selector>
+                        <eg-org-selector selected="defaults.statcat_filter" noDefault label="[% l('Default Filter Library') %]" disableTest="cant_have_vols"></eg-org-selector>
                     </label>
                 </div>
             </div>
@@ -254,6 +254,10 @@
                     </label>
                 </div>
                 <div class="col-xs-6">
+                    <label>
+                        <input type="checkbox" ng-change="saveDefaults()" ng-model="defaults.statcats"/>
+                        [% l('Edit Statistical Data') %]
+                    </label>
                 </div>
             </div>
 
