@@ -292,6 +292,7 @@
              consequences and is unnecessary, avoid it -->
         <div>
           <input type='checkbox' title="[% l('Select Row') %]"
+            ng-change="updateSelected()"
             ng-model="selected[indexValue(item)]"/>
         </div>
       </div>

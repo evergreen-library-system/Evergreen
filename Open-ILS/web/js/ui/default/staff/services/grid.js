@@ -29,6 +29,12 @@ angular.module('egGridMod',
             // Reference to externally provided egGridDataProvider
             itemsProvider : '=',
 
+            // Reference to externally provided item-selection handler
+            onSelect : '=',
+
+            // Reference to externally provided after-item-selection handler
+            afterSelect : '=',
+
             // comma-separated list of supported or disabled grid features
             // supported features:
             //  startSelected : init the grid with all rows selected by default
@@ -652,19 +658,28 @@ angular.module('egGridMod',
 
             // selects or deselects an item, without affecting the others.
             // returns true if the item is selected; false if de-selected.
+            // we overwrite the object so that we can watch $scope.selected
             grid.toggleSelectOneItem = function(index) {
                 if ($scope.selected[index]) {
                     delete $scope.selected[index];
+                    $scope.selected = angular.copy($scope.selected);
                     return false;
                 } else {
-                    return $scope.selected[index] = true;
+                    $scope.selected[index] = true;
+                    $scope.selected = angular.copy($scope.selected);
+                    return true;
                 }
             }
+
+            $scope.updateSelected = function () { 
+                    return $scope.selected = angular.copy($scope.selected);
+            };
 
             grid.selectAllItems = function() {
                 angular.forEach($scope.items, function(item) {
                     $scope.selected[grid.indexValue(item)] = true
-                });
+                }); 
+                $scope.selected = angular.copy($scope.selected);
             }
 
             $scope.$watch('selectAll', function(newVal) {
@@ -674,6 +689,13 @@ angular.module('egGridMod',
                     $scope.selected = {};
                 }
             });
+
+            if ($scope.onSelect) {
+                $scope.$watch('selected', function(newVal) {
+                    $scope.onSelect(grid.getSelectedItems());
+                    if ($scope.afterSelect) $scope.afterSelect();
+                });
+            }
 
             // returns true if item1 appears in the list before item2;
             // false otherwise.  this is slightly more efficient that
@@ -758,6 +780,7 @@ angular.module('egGridMod',
                             $scope.selected[curIdx] = true;
                             if (curIdx == index) break; // all done
                         }
+                        $scope.selected = angular.copy($scope.selected);
                     }
                         
                 } else {
@@ -979,6 +1002,7 @@ angular.module('egGridMod',
                 }).finally(function() { 
                     console.debug('egGrid.collect() complete');
                     grid.collecting = false 
+                    $scope.selected = angular.copy($scope.selected);
                 });
             }
 
