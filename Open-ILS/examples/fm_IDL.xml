@@ -6072,7 +6072,7 @@ SELECT  usr,
 			<link field="bucket" reltype="has_a" key="id" map="" class="ccnb"/>
 		</links>
 	</class>
-	<class id="asc" controller="open-ils.cstore" oils_obj:fieldmapper="asset::stat_cat" oils_persist:tablename="asset.stat_cat" reporter:label="Asset Statistical Category">
+	<class id="asc" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::stat_cat" oils_persist:tablename="asset.stat_cat" reporter:label="Asset Statistical Category">
 		<fields oils_persist:primary="id" oils_persist:sequence="asset.stat_cat_id_seq">
 			<field reporter:label="Entries" name="entries" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Stat Cat ID" name="id" reporter:datatype="id" reporter:selector="name"/>
@@ -6089,6 +6089,11 @@ SELECT  usr,
 			<link field="sip_field" reltype="has_a" key="field" map="" class="ascsf"/>
 			<link field="entries" reltype="has_many" key="stat_cat" map="" class="asce"/>
 		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<retrieve permission="STAFF_LOGIN" global_required="true"/>
+			</actions>
+		</permacrud>
 	</class>
 	<class id="ac" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::card" oils_persist:tablename="actor.card" reporter:label="Library Card">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.card_id_seq">
@@ -7151,7 +7156,7 @@ SELECT  usr,
 			<link field="item" reltype="has_a" key="id" map="" class="cbrebi"/>
 		</links>
 	</class>
-	<class id="asce" controller="open-ils.cstore" oils_obj:fieldmapper="asset::stat_cat_entry" oils_persist:tablename="asset.stat_cat_entry" reporter:label="Item Stat Cat Entry">
+	<class id="asce" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::stat_cat_entry" oils_persist:tablename="asset.stat_cat_entry" reporter:label="Item Stat Cat Entry">
 		<fields oils_persist:primary="id" oils_persist:sequence="asset.stat_cat_entry_id_seq">
 			<field reporter:label="Entry ID" name="id" reporter:datatype="int" />
 			<field reporter:label="Entry Owner" name="owner" reporter:datatype="link"/>
@@ -7162,6 +7167,11 @@ SELECT  usr,
 			<link field="stat_cat" reltype="has_a" key="id" map="" class="asc"/>
 			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
 		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<retrieve permission="STAFF_LOGIN" global_required="true"/>
+			</actions>
+		</permacrud>
 	</class>
     <class id="ascsf" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::stat_cat_sip_fields" oils_persist:tablename="asset.stat_cat_sip_fields" reporter:label="SIP Statistical Category Field Identifier">
         <fields oils_persist:primary="field">
