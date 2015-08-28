@@ -78,6 +78,12 @@ angular.module('egCatalogApp', ['ui.bootstrap','ngRoute','egCoreMod','egGridMod'
         resolve : resolver
     });
 
+    $routeProvider.when('/cat/catalog/authority/:authority_id/marc_edit', {
+        templateUrl: './cat/catalog/t_authority',
+        controller: 'AuthorityCtrl',
+        resolve : resolver
+    });
+
     $routeProvider.otherwise({redirectTo : '/cat/catalog/index'});
 })
 
@@ -560,6 +566,19 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
     }
     $scope.set_record_tab(tab);
 
+}])
+
+.controller('AuthorityCtrl',
+       ['$scope','$routeParams','$location','$window','$q','egCore',
+function($scope , $routeParams , $location , $window , $q , egCore) {
+
+    // set record ID on page load if available...
+    $scope.authority_id = $routeParams.authority_id;
+
+    if ($routeParams.authority_id) $scope.from_route = true;
+    else $scope.from_route = false;
+
+    $scope.stop_unload = false;
 }])
 
 .controller('URLVerifyCtrl',

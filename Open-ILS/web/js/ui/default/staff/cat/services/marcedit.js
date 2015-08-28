@@ -469,7 +469,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                 $scope.controlfields = [];
                 $scope.datafields = [];
 
-                egTagTable.loadTagTable();
+                egTagTable.loadTagTable({ marcRecordType : $scope.record_type });
 
                 $scope.saveFlatTextMARC = function () {
                     $scope.record = new MARC21.Record({ marcbreaker : $scope.flat_text_marc });

@@ -36,7 +36,7 @@ function($q,   egCore,   egAuth) {
                 fields.marcFormat = args.marcFormat;
             }
             if (args.marcRecordType) {
-                fields.marcFormat = service.normalizeRecordType(args.marcFormat);
+                fields.marcRecordType = service.normalizeRecordType(args.marcRecordType);
             }
         }
         var tt_key = 'current_tag_table_' + fields.marcFormat + '_' +

@@ -114,7 +114,7 @@
             <eg-marc-edit-fixed-field fixed-field="SubjUse" record="record"></eg-marc-edit-fixed-field>
             <eg-marc-edit-fixed-field fixed-field="SerUse" record="record"></eg-marc-edit-fixed-field>
             <eg-marc-edit-fixed-field fixed-field="TypeSubd" record="record"></eg-marc-edit-fixed-field>
-            <eg-marc-edit-fixed-field fixed-field="GovAgn" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="GovtAgn" record="record"></eg-marc-edit-fixed-field>
             <eg-marc-edit-fixed-field fixed-field="RefStatus" record="record"></eg-marc-edit-fixed-field>
             <eg-marc-edit-fixed-field fixed-field="UpdStatus" record="record"></eg-marc-edit-fixed-field>
         </div>
