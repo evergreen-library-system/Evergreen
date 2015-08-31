@@ -2,7 +2,6 @@
   WRAPPER "staff/base.tt2";
   ctx.page_title = l("Volume/Copy Editor"); 
   ctx.page_app = "egVolCopy";
-  ctx.page_ctrl = "EditCtrl";
 %]
 
 [% BLOCK APP_JS %]
