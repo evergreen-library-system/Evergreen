@@ -126,14 +126,18 @@ angular.module('egGridMod',
                 $scope.actionGroups = [{actions:[]}]; // Grouped actions for selected items
                 $scope.menuItems = []; // global actions
 
-                $scope.showIndex = ($scope.features.indexOf('-index') == -1);
+                var features = ($scope.features) ? 
+                    $scope.features.split(',') : [];
+                delete $scope.features;
 
-                $scope.startSelected = $scope.selectAll = ($scope.features.indexOf('startSelected') > -1);
-                $scope.showActions = ($scope.features.indexOf('-actions') == -1);
-                $scope.showPagination = ($scope.features.indexOf('-pagination') == -1);
-                $scope.showPicker = ($scope.features.indexOf('-picker') == -1);
+                $scope.showIndex = (features.indexOf('-index') == -1);
 
-                $scope.showMenu = ($scope.features.indexOf('-menu') == -1);
+                $scope.startSelected = $scope.selectAll = (features.indexOf('startSelected') > -1);
+                $scope.showActions = (features.indexOf('-actions') == -1);
+                $scope.showPagination = (features.indexOf('-pagination') == -1);
+                $scope.showPicker = (features.indexOf('-picker') == -1);
+
+                $scope.showMenu = (features.indexOf('-menu') == -1);
 
                 // remove some unneeded values from the scope to reduce bloat
 
@@ -160,10 +164,6 @@ angular.module('egGridMod',
                 delete $scope.idField;
 
                 grid.dataProvider = $scope.itemsProvider;
-
-                var features = ($scope.features) ? 
-                    $scope.features.split(',') : [];
-                delete $scope.features;
 
                 if (!grid.indexField && grid.idlClass)
                     grid.indexField = egCore.idl.classes[grid.idlClass].pkey;
