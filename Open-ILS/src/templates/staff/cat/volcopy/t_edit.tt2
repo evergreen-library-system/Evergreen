@@ -82,7 +82,7 @@
                         <eg-grid
                           id-field="id"
                           idl-class="acp"
-                          features="startSelected,-pagination,-actions,-picker,-index"
+                          features="startSelected,-pagination,-actions,-index"
                           items-provider="workingGridDataProvider"
                           grid-controls="workingGridControls"
                           on-select="handleItemSelect"
@@ -113,7 +113,7 @@
                <eg-grid
                  id-field="id"
                  idl-class="acp"
-                 features="-pagination,-actions,-picker,-index"
+                 features="-pagination,-actions,-index"
                  items-provider="completedGridDataProvider"
                  grid-controls="completedGridControls"
                  persist-key="cat.volcopy.copies.complete">
