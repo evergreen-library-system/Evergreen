@@ -468,6 +468,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                 $scope.save_stack_depth = 0;
                 $scope.controlfields = [];
                 $scope.datafields = [];
+                $scope.controlSet = new egTagTable.authorityControlSet();
 
                 egTagTable.loadTagTable({ marcRecordType : $scope.record_type });
 

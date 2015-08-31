@@ -13,7 +13,10 @@ function($q,   egCore,   egAuth) {
         },
         fields : { },
         ff_pos_map : { },
-        ff_value_map : { }
+        ff_value_map : { },
+        authority_control_set : {
+            _controlsets : [ ]
+        }
     };
 
     // allow 'bre' and 'biblio' to be synonyms, etc.
@@ -178,6 +181,319 @@ function($q,   egCore,   egAuth) {
             });
         }, list);
         return list;
+    }
+
+    service.authorityControlSet = function (kwargs) {
+    
+        kwargs = kwargs || {};
+
+        this._fetch_class = function(hint, cache_key) {
+            return egCore.pcrud.retrieveAll(hint, {}, {atomic : true}).then(
+                function(list) {
+                    egCore.env.absorbList(list, hint);
+                    service.authority_control_set[cache_key] = list;
+                }
+            );
+        };
+
+        this._fetch = function(cmap) {
+            var deferred = $q.defer();
+            var promises = [];
+            for (var hint in cmap) {
+                promises.push(this._fetch_class(hint, cmap[hint]));
+            }
+            $q.all(promises).then(function() {
+                deferred.resolve();
+            });
+            return deferred.promise;
+        };
+
+        this._parse = function() {
+            service.authority_control_set._browse_axis_by_code = {};
+            service.authority_control_set._browse_axis_list.forEach(function (ba) {
+                ba.maps(
+                    service.authority_control_set._browse_field_map_list.filter(
+                        function (m) { return m.axis() == ba.code() }
+                    )
+                );
+                service.authority_control_set._browse_axis_by_code[ba.code()] = ba;
+            });
+    
+            // loop over each acs
+            service.authority_control_set._control_set_list.forEach(function (cs) {
+                service.authority_control_set._controlsets[''+cs.id()] = {
+                    id : cs.id(),
+                    name : cs.name(),
+                    description : cs.description(),
+                    authority_tag_map : {},
+                    control_map : {},
+                    bib_fields : [],
+                    raw : cs
+                };
+    
+                // grab the authority fields
+                var acsaf_list = service.authority_control_set._authority_field_list.filter(
+                    function (af) { return af.control_set() == cs.id() }
+                );
+    
+                var at_list = service.authority_control_set._thesaurus_list.filter(
+                    function (at) { return at.control_set() == cs.id() }
+                );
+    
+                service.authority_control_set._controlsets[''+cs.id()].raw.authority_fields( acsaf_list );
+                service.authority_control_set._controlsets[''+cs.id()].raw.thesauri( at_list );
+    
+                // and loop over each
+                acsaf_list.forEach(function (csaf) {
+                    csaf.axis_maps([]);
+    
+                    // link the main entry if we're subordinate
+                    if (csaf.main_entry()) {
+                        csaf.main_entry(
+                            acsaf_list.filter(function (x) {
+                                return x.id() == csaf.main_entry();
+                            })[0]
+                        );
+                    }
+    
+                    // link the sub entries if we're main
+                    csaf.sub_entries(
+                        acsaf_list.filter(function (x) {
+                            return x.main_entry() == csaf.id();
+                        })
+                    );
+    
+                    // now, bib fields
+                    var acsbf_list = service.authority_control_set._bib_field_list.filter(
+                        function (b) { return b.authority_field() == csaf.id() }
+                    );
+                    csaf.bib_fields( acsbf_list );
+    
+                    service.authority_control_set._controlsets[''+cs.id()].bib_fields = [].concat(
+                        service.authority_control_set._controlsets[''+cs.id()].bib_fields,
+                        acsbf_list
+                    );
+    
+                    acsbf_list.forEach(function (csbf) {
+                        // link the authority field to the bib field
+                        if (csbf.authority_field()) {
+                            csbf.authority_field(
+                                acsaf_list.filter(function (x) {
+                                    return x.id() == csbf.authority_field();
+                                })[0]
+                            );
+                        }
+    
+                    });
+    
+                    service.authority_control_set._browse_axis_list.forEach(
+                        function (ba) {
+                            ba.maps().filter(
+                                function (m) { return m.field() == csaf.id() }
+                            ).forEach(
+                                function (fm) { fm.field( csaf ); csaf.axis_maps().push( fm ) } // and set the field
+                            )
+                        }
+                    );
+    
+                });
+    
+                // build the authority_tag_map
+                service.authority_control_set._controlsets[''+cs.id()].bib_fields.forEach(function (bf) {
+    
+                    if (!service.authority_control_set._controlsets[''+cs.id()].control_map[bf.tag()])
+                        service.authority_control_set._controlsets[''+cs.id()].control_map[bf.tag()] = {};
+    
+                    bf.authority_field().sf_list().split('').forEach(function (sf_code) {
+    
+                        if (!service.authority_control_set._controlsets[''+cs.id()].control_map[bf.tag()][sf_code])
+                            service.authority_control_set._controlsets[''+cs.id()].control_map[bf.tag()][sf_code] = {};
+    
+                        service.authority_control_set._controlsets[''+cs.id()].control_map[bf.tag()][sf_code][bf.authority_field().tag()] = sf_code;
+                    });
+                });
+    
+            });
+    
+            if (this.controlSetList().length > 0)
+                delete service.authority_control_set._controlsets['-1'];
+    
+        }
+    
+        this.controlSetId = function (x) {
+            if (x) this._controlset = ''+x;
+            return this._controlset;
+        }
+
+        this.controlSetList = function () {
+            var l = [];
+            for (var i in service.authority_control_set._controlsets) {
+                l.push(i);
+            }
+            return l;
+        }
+    
+    
+        if (!service.authority_control_set._remote_loaded) {
+    
+            // TODO -- push the raw tree into the oils cache for later reuse
+    
+            // fetch everything up front...
+            var parent = this;
+            this._fetch({
+                "acs": "_control_set_list",
+                "at": "_thesaurus_list",
+                "acsaf": "_authority_field_list",
+                "acsbf": "_bib_field_list",
+                "aba": "_browse_axis_list",
+                "abaafm": "_browse_field_map_list"
+            }).then(function() {
+                service.authority_control_set._remote_loaded = true;
+                parent._parse();
+            });
+        }
+
+        this.controlSet = function (x) {
+            return service.authority_control_set._controlsets[''+this.controlSetId(x)];
+        }
+    
+        this.controlSetByThesaurusCode = function (x) {
+            var thes = service.authority_control_set._thesaurus_list.filter(
+                function (at) { return at.code() == x }
+            )[0];
+    
+            return this.controlSet(thes.control_set());
+        }
+    
+        this.browseAxisByCode = function(code) {
+            return service.authority_control_set._browse_axis_by_code[code];
+        }
+    
+        this.bibFieldByTag = function (x) {
+            var me = this;
+            return me.controlSet().bib_fields.filter(
+                function (bf) { if (bf.tag() == x) return true }
+            )[0];
+        }
+    
+        this.bibFields = function (x) {
+            return this.controlSet(x).bib_fields;
+        }
+    
+        this.bibFieldBrowseAxes = function (t) {
+            var blist = [];
+            for (var bcode in service.authority_control_set._browse_axis_by_code) {
+                service.authority_control_set._browse_axis_by_code[bcode].maps().forEach(
+                    function (m) {
+                        if (m.field().bib_fields().filter(
+                                function (b) { return b.tag() == t }
+                            ).length > 0
+                        ) blist.push(bcode);
+                    }
+                );
+            }
+            return blist;
+        }
+    
+        this.authorityFields = function (x) {
+            return this.controlSet(x).raw.authority_fields();
+        }
+    
+        this.thesauri = function (x) {
+            return this.controlSet(x).raw.thesauri();
+        }
+    
+        this.findControlSetsForTag = function (tag) {
+            var me = this;
+            var old_acs = this.controlSetId();
+            var acs_list = me.controlSetList().filter(
+                function(acs_id) { return (me.controlSet(acs_id).control_map[tag]) }
+            );
+            this.controlSetId(old_acs);
+            return acs_list;
+        }
+    
+        this.findControlSetsForAuthorityTag = function (tag) {
+            var me = this;
+            var old_acs = this.controlSetId();
+    
+            var acs_list = me.controlSetList().filter(
+                function(acs_id) {
+                    var a = me.controlSet(acs_id);
+                    for (var btag in a.control_map) {
+                        for (var sf in a.control_map[btag]) {
+                            if (a.control_map[btag][sf][tag]) return true;
+                        }
+                    }
+                    return false;
+                }
+            );
+            this.controlSetId(old_acs);
+            return acs_list;
+        }
+    
+        this.bibToAuthority = function (field) {
+            var b_field = this.bibFieldByTag(field.tag);
+    
+            if (b_field) { // construct an marc authority record
+                var af = b_field.authority_field();
+    
+                var sflist = [];                
+                for (var i = 0; i < field.subfields.length; i++) {
+                    if (af.sf_list().indexOf(field.subfields[i][0]) > -1) {
+                        sflist.push(field.subfields[i]);
+                    }
+                }
+    
+                var m = new MARC21.Record ({rtype:'AUT'});
+                m.appendFields(
+                    new MARC21.Field ({
+                        tag : af.tag(),
+                        ind1: field.ind1,
+                        ind2: field.ind2,
+                        subfields: sflist
+                    })
+                );
+    
+                return m.toXmlString();
+            }
+    
+            return null;
+        }
+    
+        this.bibToAuthorities = function (field) {
+            var auth_list = [];
+            var me = this;
+    
+            var old_acs = this.controlSetId();
+            me.controlSetList().forEach(
+                function (acs_id) {
+                    var acs = me.controlSet(acs_id);
+                    var x = me.bibToAuthority(field);
+                    if (x) { var foo = {}; foo[acs_id] = x; auth_list.push(foo); }
+                }
+            );
+            this.controlSetId(old_acs);
+    
+            return auth_list;
+        }
+    
+        // This should not be used in an angular world.  Instead, the call
+        // to open-ils.search.authority.simple_heading.from_xml.batch.atomic should
+        // be performed by the code that wants to find matching authorities.
+        this.findMatchingAuthorities = function (field) {
+            return fieldmapper.standardRequest(
+                [ 'open-ils.search', 'open-ils.search.authority.simple_heading.from_xml.batch.atomic' ],
+                this.bibToAuthorities(field)
+            );
+        }
+    
+        if (kwargs.controlSet) {
+            this.controlSetId( kwargs.controlSet );
+        } else {
+            this.controlSetId( this.controlSetList().sort(function(a,b){return (a - b)}) );
+        }
+    
     }
 
     return service;
