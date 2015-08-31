@@ -613,7 +613,7 @@ var MARC21 = {
 
             for (var i = 0; i < args.code.length; i++) {
                 var sub_pos = {};
-                for (var j = 0; j < me.subfields; j++) {
+                for (var j = 0; j < me.subfields.length; j++) {
                     if (me.subfields[j][0] == args.code[i]) {
 
                         if (!sub_pos[args.code[i]]) sub_pos[args.code[j]] = 0;
