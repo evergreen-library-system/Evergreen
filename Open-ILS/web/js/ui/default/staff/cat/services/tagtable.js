@@ -350,6 +350,11 @@ function($q,   egCore,   egAuth) {
             }).then(function() {
                 service.authority_control_set._remote_loaded = true;
                 parent._parse();
+                if (kwargs.controlSet) {
+                    parent.controlSetId( kwargs.controlSet );
+                } else {
+                    parent.controlSetId( parent.controlSetList().sort(function(a,b){return (a - b)}) );
+                }
             });
         }
 
@@ -487,13 +492,7 @@ function($q,   egCore,   egAuth) {
                 this.bibToAuthorities(field)
             );
         }
-    
-        if (kwargs.controlSet) {
-            this.controlSetId( kwargs.controlSet );
-        } else {
-            this.controlSetId( this.controlSetList().sort(function(a,b){return (a - b)}) );
-        }
-    
+
     }
 
     return service;
