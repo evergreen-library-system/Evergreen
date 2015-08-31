@@ -492,6 +492,19 @@ function PatronRegCtrl($scope, $routeParams,
             }
         });
         $scope.patron.addresses = addresses;
+    } 
+
+    $scope.post_code_changed = function(addr) { 
+        console.log('post code ' + addr.post_code);
+        egCore.net.request(
+            'open-ils.search', 'open-ils.search.zip', addr.post_code)
+        .then(function(resp) {
+            if (!resp) return;
+            if (resp.city) addr.city = resp.city;
+            if (resp.state) addr.state = resp.state;
+            if (resp.county) addr.county = resp.county;
+            if (resp.alert) alert(resp.alert);
+        });
     }
 }
 

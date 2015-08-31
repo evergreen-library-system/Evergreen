@@ -61,6 +61,9 @@
 
     [% IF field == 'alert_message' %]
       <textarea class="form-control" ng-model="[% model %]"/>
+    [% ELSIF field == 'post_code' %]
+      <input type="text" ng-blur="post_code_changed(patron.[% path %])"
+        class="form-control" ng-model="[% model %]"/>
     [% ELSE %]
       <input type="[% input_type %]" 
         class="form-control" ng-model="[% model %]"/>
