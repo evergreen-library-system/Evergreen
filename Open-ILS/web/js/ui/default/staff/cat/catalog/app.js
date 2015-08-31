@@ -13,8 +13,19 @@ angular.module('egCatalogApp', ['ui.bootstrap','ngRoute','egCoreMod','egGridMod'
     $locationProvider.html5Mode(true);
     $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|blob):/); // grid export
 
-    var resolver = {delay : 
-        ['egStartup', function(egStartup) {return egStartup.go()}]}
+    var resolver = {delay : ['egCore','egStartup', function(egCore,  egStartup) {
+        egCore.env.classLoaders.aous = function() {
+            return egCore.org.settings([
+                'cat.marc_control_number_identifier'
+            ]).then(function(settings) {
+                // local settings are cached within egOrg.  Caching them
+                // again in egEnv just simplifies the syntax for access.
+                egCore.env.aous = settings;
+            });
+        }
+        egCore.env.loadClasses.push('aous');
+        return egStartup.go()
+    }]};
 
     $routeProvider.when('/cat/catalog/index', {
         templateUrl: './cat/catalog/t_catalog',

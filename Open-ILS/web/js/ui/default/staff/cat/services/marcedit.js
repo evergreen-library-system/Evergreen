@@ -364,9 +364,59 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                     '<span><eg-marc-edit-ind field="field" ind="field.ind1" on-keydown="onKeydown" ind-number="1"/></span>'+
                     '<span><eg-marc-edit-ind field="field" ind="field.ind2" on-keydown="onKeydown" ind-number="2"/></span>'+
                     '<span><eg-marc-edit-subfield ng-repeat="subfield in field.subfields" subfield="subfield" field="field" on-keydown="onKeydown"/></span>'+
+                    // FIXME: template should probably be moved to file to improve
+                    // translatibility
+                    '<button class="btn btn-info btn-xs" '+
+                    'aria-label="Manage authority record links" '+
+                    'ng-show="isAuthorityControlled(field)"'+
+                    'ng-click="spawnAuthorityLinker()"'+
+                    '>'+
+                    '<span class="glyphicon glyphicon-link"></span>'+
+                    '</button>'+
                   '</div>',
         scope: { field: "=", onKeydown: '=' },
-        replace: true
+        replace: true,
+        controller : ['$scope','$modal',
+            function ( $scope,  $modal ) {
+                $scope.isAuthorityControlled = function () {
+                    return ($scope.$parent.$parent.record_type == 'bre') &&
+                           $scope.$parent.$parent.controlSet.bibFieldByTag($scope.field.tag);
+                }
+                $scope.spawnAuthorityLinker = function() {
+                    // intentionally making a clone in case
+                    // user decides to abandon the linking
+                    var fieldCopy = new MARC21.Field({
+                        tag       : $scope.field.tag,
+                        ind1      : $scope.field.ind1,
+                        ind2      : $scope.field.ind2
+                    });
+                    angular.forEach($scope.field.subfields, function(sf) {
+                        fieldCopy.subfields.push(sf.slice(0));
+                    });
+                    var cs = $scope.$parent.$parent.controlSet;
+                    var args = { changed : false };
+                    $modal.open({
+                        templateUrl: './cat/share/t_authority_link_dialog',
+                        size: 'md',
+                        controller: ['$scope', '$modalInstance', function($scope, $modalInstance) {
+                            $scope.controlSet = cs;
+                            $scope.bibField = fieldCopy;
+                            $scope.focusMe = true;
+                            $scope.args = args;
+                            $scope.ok = function(args) { $modalInstance.close(args) };
+                            $scope.cancel = function () { $modalInstance.dismiss() };
+                        }]
+                    }).result.then(function (args) {
+                        if (args.changed) {
+                            $scope.field.subfields.length = 0;
+                            angular.forEach(fieldCopy.subfields, function(sf) {
+                                $scope.field.addSubfields(sf[0], sf[1]);
+                            });
+                        }
+                    });
+                }
+            }
+        ]
     }
 })
 
@@ -819,9 +869,15 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                                 deferred.resolve(rec);
                             });
                         } else {
-                            var bre = new egCore.idl.bre();
-                            bre.marc($scope.marcXml);
-                            deferred.resolve(bre);
+                            if ($scope.recordType == 'bre') {
+                                var bre = new egCore.idl.bre();
+                                bre.marc($scope.marcXml);
+                                deferred.resolve(bre);
+                            } else if ($scope.recordType == 'are') {
+                                var are = new egCore.idl.are();
+                                are.marc($scope.marcXml);
+                                deferred.resolve(are);
+                            }
                             $scope.brandNewRecord = true;
                         }
                         return deferred.promise;
@@ -1041,5 +1097,107 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
         ]
     }
 }])
+
+.directive("egMarcEditAuthorityLinker", function () {
+    return {
+        restrict: 'E',
+        replace: true,
+        templateUrl: './cat/share/t_authority_linker',
+        scope : {
+            bibField : '=',
+            controlSet : '=',
+            changed : '='
+        },
+        controller: ['$scope','$modal','egCore','egAuth',
+            function ($scope , $modal,  egCore,  egAuth) {
+
+                var cni = egCore.env.aous['cat.marc_control_number_identifier'] ||
+                  'Set cat.marc_control_number_identifier in Library Settings';
+                
+                $scope._controlled_sf_list = {};
+                var found_acs = [];
+                angular.forEach($scope.controlSet.controlSetList(), function(acs_id) {
+                    if ($scope.controlSet.controlSet(acs_id).control_map[$scope.bibField.tag])
+                        found_acs.push(acs_id);
+                });
+                if (found_acs.length) {
+                     angular.forEach(
+                        $scope.controlSet.controlSet(found_acs[0]).control_map[$scope.bibField.tag],                         function(sf) {
+                            $scope._controlled_sf_list[ sf[$scope.bibField.tag] ] = 1;
+                        }
+                    )
+                }
+
+                $scope.bibField.subfields.forEach(function (sf) {
+                    if (sf[0] in $scope._controlled_sf_list) {
+                        sf.selected = true;
+                        sf.selectable = true;
+                    } else {
+                        sf.selectable = false;
+                    }
+                });
+                $scope.summarizeField = function() {
+                    var source_f = {
+                        'tag': $scope.bibField.tag,
+                        'ind1': $scope.bibField.ind1,
+                        'ind2': $scope.bibField.ind2,
+                        'subfields': []
+                    };
+                    $scope.bibField.subfields.forEach(function(sf) {
+                        if (sf.selected) {
+                            source_f.subfields.push([ sf[0], sf[1] ]);
+                        }
+                    });
+                    return source_f;
+                }
+
+                $scope.updateSubfieldZero = function(value) {
+                    $scope.changed = true;
+                    $scope.bibField.deleteSubfield({ code : ['0'] });
+                    $scope.bibField.subfields.push([
+                        '0', '(' + cni + ')' + value
+                    ]);
+                };
+
+                $scope.createAuthorityFromBib = function(spawn_editor) {
+                    var source_f = $scope.summarizeField();
+
+                    var args = { authority_id : 0 };
+                    var method = (spawn_editor) ?
+                        'open-ils.cat.authority.record.create_from_bib.readonly' :
+                        'open-ils.cat.authority.record.create_from_bib';
+                    egCore.net.request(
+                        'open-ils.cat',
+                        method,
+                        source_f,
+                        cni,
+                        egAuth.token()
+                    ).then(function(newAuthority) {
+                        if (spawn_editor) {
+                            $modal.open({
+                                templateUrl: './cat/share/t_edit_new_authority',
+                                size: 'lg',
+                                controller:
+                                    ['$scope', '$modalInstance', function($scope, $modalInstance) {
+                                    $scope.focusMe = true;
+                                    $scope.args = args;
+                                    $scope.dirty_flag = false;
+                                    $scope.marc_xml = newAuthority,
+                                    $scope.ok = function(args) { $modalInstance.close(args) }
+                                    $scope.cancel = function () { $modalInstance.dismiss() }
+                                }]
+                            }).result.then(function (args) {
+                                if (!args || !args.authority_id) return;
+                                $scope.updateSubfieldZero(args.authority_id);
+                            });
+                        } else {
+                            $scope.updateSubfieldZero(newAuthority.id());
+                        }
+                    });
+                }
+            }
+        ]
+    }
+})
 
 ;

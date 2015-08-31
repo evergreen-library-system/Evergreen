@@ -1,0 +1,15 @@
+<div>
+  <div class="modal-header">
+    <button type="button" class="close"
+      ng-click="cancel()" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">[% l('Edit New Authority') %]</h4>
+  </div>
+  <div class="modal-body">
+    <eg-marc-edit-record dirty-flag="dirty_flag" record-type="are" record-id="args.authority_id" marc-xml="marc_xml" />
+  </div>
+  <div class="modal-footer">
+    <input type="submit" ng-click="ok(args)"
+        class="btn btn-primary" value="[% l('Use this authority') %]"/>
+    <button class="btn btn-warning" ng-click="cancel()">[% l('Cancel') %]</button>
+  </div>
+</div>

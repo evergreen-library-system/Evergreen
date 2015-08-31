@@ -1,0 +1,15 @@
+<div>
+  <div class="modal-header">
+    <button type="button" class="close"
+      ng-click="cancel()" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">[% l('Manage authority record links') %]</h4>
+  </div>
+  <div class="modal-body">
+    <eg-marc-edit-authority-linker bib-field="bibField" control-set="controlSet" changed="args.changed" />
+  </div>
+  <div class="modal-footer">
+    <input type="submit" ng-click="ok(args)"
+        class="btn btn-primary" value="[% l('Save') %]"/>
+    <button class="btn btn-warning" ng-click="cancel()">[% l('Cancel') %]</button>
+  </div>
+</div>
