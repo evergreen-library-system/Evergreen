@@ -265,6 +265,15 @@ angular.module('egCoreMod')
         return service.init_existing_patron(current)
     }
 
+    service.ingest_address = function(patron, addr) {
+        addr.valid = addr.valid == 't';
+        addr.within_city_limits = addr.within_city_limits == 't';
+        addr._is_mailing = (patron.mailing_address && 
+            addr.id == patron.mailing_address.id);
+        addr._is_billing = (patron.billing_address && 
+            addr.id == patron.billing_address.id);
+    }
+
     /*
      * Existing patron objects reqire some data munging before insertion
      * into the scope.
@@ -289,10 +298,8 @@ angular.module('egCoreMod')
             function(field) { patron[field] = patron[field] == 't'; }
         );
 
-        angular.forEach(patron.addresses, function(addr) {
-            addr.valid = addr.valid == 't';
-            addr.within_city_limits = addr.within_city_limits == 't';
-        });
+        angular.forEach(patron.addresses, 
+            function(addr) { service.ingest_address(patron, addr) });
 
         return patron;
     }
@@ -456,6 +463,35 @@ function PatronRegCtrl($scope, $routeParams,
     $scope.set_profile = function(grp) {
         $scope.patron.profile = grp;
         $scope.set_expire_date();
+    }
+
+    var new_addr_id = -1;
+    $scope.new_address = function() {
+        var addr = egCore.idl.toHash(new egCore.idl.aua());
+        patronRegSvc.ingest_address($scope.patron, addr);
+        addr.id = new_addr_id--;
+        addr.valid = true;
+        addr.within_city_limits = true;
+        $scope.patron.addresses.push(addr);
+    }
+
+    // keep deleted addresses out of the patron object so
+    // they won't appear in the UI.  They'll be re-inserted
+    // when the patron is updated.
+    deleted_addresses = [];
+    $scope.delete_address = function(id) {
+        var addresses = [];
+        angular.forEach($scope.patron.addresses, function(addr) {
+            if (addr.id == id) {
+                if (id > 0) {
+                    addr.isdeleted = true;
+                    deleted_addresses.push(addr);
+                }
+            } else {
+                addresses.push(addr);
+            }
+        });
+        $scope.patron.addresses = addresses;
     }
 }
 

@@ -352,39 +352,46 @@
   </div>
 </div>
 
-<div class="alert alert-success row" role="alert">
-    <div class="col-md-3">[% l('Address') %]</div>
-    <div class="col-md-3">
-        <span class='pad-all-min'>
-          [% l('Mailing') %] <input type='checkbox'/>
-        </span>
-        <span class='pad-all-min'>
-          [% l('Physical') %] <input type='checkbox'/>
-        </span>
-        <span class='pad-all-min'>
-          <button type="button" class="btn btn-danger">[% l('X') %]</button>
-        </span>
-    </div>
-</div>
 
 <!-- addresses -->
 
-[% formfield('aua', 'address_type', 'mailing_address') %]
-[% formfield('aua', 'post_code', 'mailing_address') %]
-[% formfield('aua', 'street1', 'mailing_address') %]
-[% formfield('aua', 'street2', 'mailing_address') %]
-[% formfield('aua', 'city', 'mailing_address') %]
-[% formfield('aua', 'county', 'mailing_address') %]
-[% formfield('aua', 'state', 'mailing_address') %]
-[% formfield('aua', 'country', 'mailing_address') %]
-[% formfield('aua', 'valid', 'mailing_address', 'checkbox') %]
-[% formfield('aua', 'within_city_limits', 'mailing_address', 'checkbox') %]
 
-<div class="row">
-  <button type="button" class="btn btn-success">[% l('New Address') %]</button>
-</div>
+<div ng-repeat="addr in patron.addresses">
+  <div class="alert alert-success row" role="alert">
+      <div class="col-md-3">[% l('Address') %]</div>
+      <div class="col-md-3">
+          <span class='pad-all-min'>
+            [% l('Mailing') %] <input type='checkbox' ng-model="addr._is_mailing"/>
+          </span>
+          <span class='pad-all-min'>
+            [% l('Physical') %] <input type='checkbox' ng-model="addr._is_billing"/>
+          </span>
+          <span class='pad-all-min'>
+            <button type="button" ng-click="delete_address(addr.id)" 
+              class="btn btn-danger">[% l('X') %]</button>
+          </span>
+      </div>
+  </div>
 
-<!-- pending address -->
+  [% formfield('aua', 'address_type', 'addresses[$index]') %]
+  [% formfield('aua', 'post_code', 'addresses[$index]') %]
+  [% formfield('aua', 'street1', 'addresses[$index]') %]
+  [% formfield('aua', 'street2', 'addresses[$index]') %]
+  [% formfield('aua', 'city', 'addresses[$index]') %]
+  [% formfield('aua', 'county', 'addresses[$index]') %]
+  [% formfield('aua', 'state', 'addresses[$index]') %]
+  [% formfield('aua', 'country', 'addresses[$index]') %]
+  [% formfield('aua', 'valid', 'addresses[$index]', 'checkbox') %]
+  [% formfield('aua', 'within_city_limits', 'addresses[$index]', 'checkbox') %]
+
+  <div class="row" ng-if="$last">
+    <button type="button" ng-click="new_address()" 
+      class="btn btn-success">[% l('New Address') %]</button>
+  </div>
+
+  <!-- pending address -->
+
+</div> <!-- addresses -->
 
 <div class="alert alert-success row" role="alert" 
     ng-show="show_field('stat_cats')" ng-if="stat_cats.length > 0">
