@@ -121,7 +121,7 @@
                  <eg-grid-menu-item handler="completeToWorking"
                   label="[% l('Edit Selected') %]"></eg-grid-menu-item>
         
-                 <eg-grid-menu-item handler="saveAndExit"
+                 <eg-grid-menu-item handler="saveCompletedCopies"
                   label="[% l('Save & Exit') %]"></eg-grid-menu-item>
         
                  <eg-grid-field label="[% l('Barcode') %]"     path='barcode' visible></eg-grid-field>

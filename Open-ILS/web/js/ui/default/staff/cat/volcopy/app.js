@@ -212,21 +212,26 @@ function(egCore , $q) {
                 $scope.updateBarcode = function () { $scope.copy.barcode($scope.barcode); $scope.copy.ischanged(1); };
                 $scope.updateCopyNo = function () { $scope.copy.copy_number($scope.copy_number); $scope.copy.ischanged(1); };
                 $scope.updatePart = function () {
-                    var p = $scope.part_list.filter(function (x) {
-                        return x.label() == $scope.part
-                    });
-                    if (p.length > 0) { // preexisting part
-                        $scope.copy.parts(p)
-                    } else { // create one...
-                        var part = new egCore.idl.bmp();
-                        part.id( --$scope.new_part_id );
-                        part.isnew( true );
-                        part.label( $scope.part );
-                        part.record( $scope.callNumber.owning_lib() );
-                        $scope.copy.parts([part]);
-                        $scope.copy.ischanged(1);
+                    if ($scope.part) {
+                        var p = $scope.part_list.filter(function (x) {
+                            return x.label() == $scope.part
+                        });
+                        if (p.length > 0) { // preexisting part
+                            $scope.copy.parts(p)
+                        } else { // create one...
+                            var part = new egCore.idl.bmp();
+                            part.id( --$scope.new_part_id );
+                            part.isnew( true );
+                            part.label( $scope.part );
+                            part.record( $scope.callNumber.owning_lib() );
+                            $scope.copy.parts([part]);
+                            $scope.copy.ischanged(1);
+                        }
+                    } else {
+                        $scope.copy.parts([]);
                     }
                 }
+                $scope.$watch('part', $scope.updatePart);
 
                 $scope.barcode = $scope.copy.barcode();
                 $scope.copy_number = $scope.copy.copy_number();
@@ -242,6 +247,7 @@ function(egCore , $q) {
                 itemSvc.get_parts($scope.callNumber.record()).then(function(list){
                     $scope.part_list = list;
                     angular.forEach(list, function(p){ $scope.parts.push(p.label()) });
+                    $scope.parts = angluar.copy($scope.parts);
                 });
 
             }
@@ -983,6 +989,35 @@ function($scope , $q , $routeParams , $location , $timeout , egCore , egNet , eg
         createSimpleUpdateWatcher('mint_condition');
         createSimpleUpdateWatcher('opac_visible');
         createSimpleUpdateWatcher('ref');
+
+        $scope.saveCompletedCopies = function () {
+            var cnHash = {};
+            var perCnCopies = {};
+            angular.forEach( $scope.completed_copies, function (cp) {
+                var cn_id = cp.call_number().id();
+                if (!cnHash[cn_id]) {
+                    cnHash[cn_id] = cp.call_number();
+                    perCnCopies[cn_id] = [cp];
+                } else {
+                    perCnCopies[cn_id].push(cp);
+                }
+            });
+
+            angular.forEach(perCnCopies, function (v, k) {
+                cnHash[k].copies(v);
+            });
+
+            cnList = [];
+            angular.forEach(cnHash, function (v, k) {
+                cnList.push(v);
+            });
+
+            egCore.net.request(
+                'open-ils.cat',
+                'open-ils.cat.asset.volume.fleshed.batch.update.override',
+                cnList, 1, { auto_merge_vols : 1, create_parts : 1 }
+            );
+        }
 
     }
 
