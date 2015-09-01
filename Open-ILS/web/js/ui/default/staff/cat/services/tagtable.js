@@ -15,9 +15,14 @@ function($q,   egCore,   egAuth) {
         ff_pos_map : { },
         ff_value_map : { },
         authority_control_set : {
+            _remote_loaded : false,
             _controlsets : [ ]
         }
     };
+
+    service.initialized = function() {
+        return service.authority_control_set._remote_loaded;
+    }
 
     // allow 'bre' and 'biblio' to be synonyms, etc.
     service.normalizeRecordType = function(recordType) {
