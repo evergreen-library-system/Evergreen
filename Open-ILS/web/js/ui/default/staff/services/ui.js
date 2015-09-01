@@ -217,7 +217,7 @@ function($modal, $interpolate) {
         },
         template:
             '<div class="input-group">'+
-                '<input type="text" class="form-control" ng-model="selected" focus-me="always" ng-change="makeOpen()">'+
+                '<input type="text" class="form-control" ng-model="selected" ng-change="makeOpen()">'+
                 '<div class="input-group-btn" dropdown ng-class="{open:isopen}">'+
                     '<button type="button" class="btn btn-default dropdown-toggle"><span class="caret"></span></button>'+
                     '<ul class="dropdown-menu dropdown-menu-right">'+
