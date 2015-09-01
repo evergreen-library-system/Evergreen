@@ -37,7 +37,7 @@
             <li ng-repeat="seealso in main.seealso_headings">
                 <div class="form-inline">
                     <button class="btn btn-xs btn-warning" ng-click="applyHeading({hdg : seealso.headingField})">[% l('Apply') %]</button>
-                    [% l('See also: [_1]', '{{seealso.heading}}') %]
+                    [% l('See also from: [_1]', '{{seealso.heading}}') %]
                     (<span style="font-family: 'Lucida Console', Monaco, monospace;">
                         <span ng-repeat="sf in seealso.headingField.subfields">
                             <span class="marcsfcodedelimiter">‡{{sf.0}}</span> {{sf.1}}

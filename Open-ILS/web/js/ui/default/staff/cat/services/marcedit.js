@@ -1355,8 +1355,8 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                                 auth_org = rec.field('003').data;
                             }
                             var headingField = rec.field('1..');
-                            var seeAlsos = rec.field('4..', true);
-                            var seeFroms = rec.field('5..', true);
+                            var seeFroms = rec.field('4..', true);
+                            var seeAlsos = rec.field('5..', true);
 
                             var main_heading = {
                                 authority_id : authId,
