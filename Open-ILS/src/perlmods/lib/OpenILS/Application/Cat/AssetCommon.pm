@@ -160,7 +160,7 @@ sub update_copy_stat_entries {
 # authoritative list for the copy. existing part maps not targeting
 # these parts will be deleted from the DB
 sub update_copy_parts {
-    my($class, $editor, $copy, $delete_maps) = @_;
+    my($class, $editor, $copy, $delete_maps, $create_parts) = @_;
 
     return undef if $copy->isdeleted;
     return undef unless $copy->ischanged or $copy->isnew;
@@ -197,6 +197,15 @@ sub update_copy_parts {
 
         # if this link already exists in the DB, don't attempt to re-create it
         next if( grep{$_->part == $incoming_part->id} @$maps );
+
+        if ($incoming_part->isnew) {
+            next unless $create_parts;
+            my $new_part = Fieldmapper::biblio::monograph_part->new();
+            $new_part->record( $incoming_part->record );
+            $new_part->label( $incoming_part->label );
+            $incoming_part = $editor->create_biblio_monograph_part($new_part)
+                or return $editor->event;
+        }
     
         my $new_map = Fieldmapper::asset::copy_part_map->new();
 
@@ -284,7 +293,7 @@ sub check_hold_retarget {
 
 # this does the actual work
 sub update_fleshed_copies {
-    my($class, $editor, $override, $vol, $copies, $delete_stats, $retarget_holds, $force_delete_empty_bib) = @_;
+    my($class, $editor, $override, $vol, $copies, $delete_stats, $retarget_holds, $force_delete_empty_bib, $create_parts) = @_;
 
     $override = { all => 1 } if($override && !ref $override);
     $override = { all => 0 } if(!ref $override);
@@ -340,7 +349,7 @@ sub update_fleshed_copies {
         $evt = $class->update_copy_stat_entries($editor, $copy, $delete_stats);
         $copy->parts( $parts );
         # probably okay to use $delete_stats here for simplicity
-        $evt = $class->update_copy_parts($editor, $copy, $delete_stats);
+        $evt = $class->update_copy_parts($editor, $copy, $delete_stats, $create_parts);
         return $evt if $evt;
     }
 

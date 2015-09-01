@@ -721,7 +721,7 @@ __PACKAGE__->register_method(
 
 
 sub fleshed_copy_update {
-    my( $self, $conn, $auth, $copies, $delete_stats, $oargs ) = @_;
+    my( $self, $conn, $auth, $copies, $delete_stats, $oargs, $create_parts ) = @_;
     return 1 unless ref $copies;
     my( $reqr, $evt ) = $U->checkses($auth);
     return $evt if $evt;
@@ -733,7 +733,7 @@ sub fleshed_copy_update {
     }
     my $retarget_holds = [];
     $evt = OpenILS::Application::Cat::AssetCommon->update_fleshed_copies(
-        $editor, $oargs, undef, $copies, $delete_stats, $retarget_holds, undef);
+        $editor, $oargs, undef, $copies, $delete_stats, $retarget_holds, undef, $create_parts);
 
     if( $evt ) { 
         $logger->info("fleshed copy update failed with event: ".OpenSRF::Utils::JSON->perl2JSON($evt));
@@ -865,6 +865,7 @@ sub fleshed_volume_update {
     my $editor = new_editor( requestor => $reqr, xact => 1 );
     my $retarget_holds = [];
     my $auto_merge_vols = $options->{auto_merge_vols};
+    my $create_parts = $options->{create_parts};
 
     for my $vol (@$volumes) {
         $logger->info("vol-update: investigating volume ".$vol->id);
@@ -908,7 +909,7 @@ sub fleshed_volume_update {
         if( $copies and @$copies and !$vol->isdeleted ) {
             $_->call_number($vol->id) for @$copies;
             $evt = $assetcom->update_fleshed_copies(
-                $editor, $oargs, $vol, $copies, $delete_stats, $retarget_holds, undef);
+                $editor, $oargs, $vol, $copies, $delete_stats, $retarget_holds, undef, $create_parts);
             return $evt if $evt;
         }
     }
