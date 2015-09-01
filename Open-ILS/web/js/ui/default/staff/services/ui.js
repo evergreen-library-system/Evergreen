@@ -240,6 +240,7 @@ function($modal, $interpolate) {
 
                 $scope.changeValue = function (newVal) {
                     $scope.selected = newVal;
+                    $scope.isopen = false;
                 }
 
             }
