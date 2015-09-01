@@ -393,17 +393,19 @@ function(egCore , $q) {
                         $scope.allcopies.push( cp );
                     }
 
-                    var how_many = $scope.copies.length - $scope.copy_count;
-                    if (how_many > 0) {
-                        var dead = $scope.copies.splice($scope.copy_count,how_many);
-                        $scope.callNumber.copies($scope.copies);
+                    if ($scope.copy_count >= $scope.orig_copy_count) {
+                        var how_many = $scope.copies.length - $scope.copy_count;
+                        if (how_many > 0) {
+                            var dead = $scope.copies.splice($scope.copy_count,how_many);
+                            $scope.callNumber.copies($scope.copies);
 
-                        // Trimming the global list is a bit more tricky
-                        angular.forEach( dead, function (d) {
-                            angular.forEach( $scope.allcopies, function (l, i) { 
-                                if (l === d) $scope.allcopies.splice(i,1);
+                            // Trimming the global list is a bit more tricky
+                            angular.forEach( dead, function (d) {
+                                angular.forEach( $scope.allcopies, function (l, i) { 
+                                    if (l === d) $scope.allcopies.splice(i,1);
+                                });
                             });
-                        });
+                        }
                     }
                 }
 
@@ -464,7 +466,7 @@ function(egCore , $q) {
                             $scope.struct[cn.id()] = [cp];
                             $scope.allcopies.push(cp);
                         }
-                    } else if (n < o) { // removing
+                    } else if (n < o && n >= $scope.orig_cn_count) { // removing
                         var how_many = o - n;
                         var list = Object
                                 .keys($scope.struct)
@@ -658,20 +660,6 @@ function($scope , $q , $routeParams , $location , $timeout , egCore , egNet , eg
         }
     }
 
-    $scope.applyTemplate = function (n) {
-        angular.forEach($scope.templates[n], function (v,k) {
-            if (!angular.isObject(v)) {
-                $scope.working[k] = angular.copy(v);
-            } else {
-                angular.forEach(v, function (sv,sk) {
-                    $scope.working[k][sk] = angular.copy(sv);
-                    if (k == 'statcats') $scope.statcatUpdate(sk);
-                });
-            }
-        });
-        $scope.template_name = '';
-    }
-
     var dataKey = $routeParams.dataKey;
     console.debug('dataKey: ' + dataKey);
 
@@ -690,7 +678,21 @@ function($scope , $q , $routeParams , $location , $timeout , egCore , egNet , eg
             });
         }
         $scope.fetchTemplates();
- 
+
+         $scope.applyTemplate = function (n) {
+            angular.forEach($scope.templates[n], function (v,k) {
+                if (!angular.isObject(v)) {
+                    $scope.working[k] = angular.copy(v);
+                } else {
+                    angular.forEach(v, function (sv,sk) {
+                        $scope.working[k][sk] = angular.copy(sv);
+                        if (k == 'statcats') $scope.statcatUpdate(sk);
+                    });
+                }
+            });
+            $scope.template_name = '';
+        }
+
         $scope.copytab = 'working';
         $scope.tab = 'edit';
         $scope.summaryRecord = null;
@@ -830,15 +832,17 @@ function($scope , $q , $routeParams , $location , $timeout , egCore , egNet , eg
                     var value_hash = {};
                     var none = false;
                     angular.forEach(item_list, function (item) {
-                        if (item.stat_cat_entries().length > 0) {
-                            var right_sc = item.stat_cat_entries().filter(function (e) {
-                                return e.stat_cat() == sc.id() && !Boolean(e.isdeleted());
-                            });
+                        if (item.stat_cat_entries()) {
+                            if (item.stat_cat_entries().length > 0) {
+                                var right_sc = item.stat_cat_entries().filter(function (e) {
+                                    return e.stat_cat() == sc.id() && !Boolean(e.isdeleted());
+                                });
 
-                            if (right_sc.length > 0) {
-                                value_hash[right_sc[0].stat_cat_entry()] = right_sc[0].stat_cat_entry();
-                            } else {
-                                none = true;
+                                if (right_sc.length > 0) {
+                                    value_hash[right_sc[0].stat_cat_entry()] = right_sc[0].stat_cat_entry();
+                                } else {
+                                    none = true;
+                                }
                             }
                         } else {
                             none = true;
