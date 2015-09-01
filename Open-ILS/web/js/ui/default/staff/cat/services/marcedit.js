@@ -397,7 +397,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                     var args = { changed : false };
                     $modal.open({
                         templateUrl: './cat/share/t_authority_link_dialog',
-                        size: 'md',
+                        size: 'lg',
                         controller: ['$scope', '$modalInstance', function($scope, $modalInstance) {
                             $scope.controlSet = cs;
                             $scope.bibField = fieldCopy;
@@ -1306,7 +1306,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
             function ($scope , $http) {
 
                 $scope.page = 0;
-                $scope.limit = 10;
+                $scope.limit = 5;
                 $scope.main_headings = [];
 
                 function getHeadingString(headingField) {
