@@ -1111,19 +1111,32 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
         controller: ['$scope','$modal','egCore','egAuth',
             function ($scope , $modal,  egCore,  egAuth) {
 
+                $scope.searchStr = '';
                 var cni = egCore.env.aous['cat.marc_control_number_identifier'] ||
                   'Set cat.marc_control_number_identifier in Library Settings';
-                
+
+                var axis_list = $scope.controlSet.bibFieldBrowseAxes($scope.bibField.tag);
+                $scope.axis = axis_list[0];
+
                 $scope._controlled_sf_list = {};
+                $scope._controlled_auth_sf_list = {};
                 var found_acs = [];
                 angular.forEach($scope.controlSet.controlSetList(), function(acs_id) {
                     if ($scope.controlSet.controlSet(acs_id).control_map[$scope.bibField.tag])
                         found_acs.push(acs_id);
                 });
                 if (found_acs.length) {
-                     angular.forEach(
-                        $scope.controlSet.controlSet(found_acs[0]).control_map[$scope.bibField.tag],                         function(sf) {
-                            $scope._controlled_sf_list[ sf[$scope.bibField.tag] ] = 1;
+                     angular.forEach($scope.controlSet.controlSet(found_acs[0]).control_map[$scope.bibField.tag],
+                        function(value, sf_label) {
+                            $scope._controlled_sf_list[ sf_label ] = 1;
+                            angular.forEach($scope.controlSet.controlSet(found_acs[0]).control_map[$scope.bibField.tag][sf_label],
+                                function(auth_sf, auth_tag) {
+                                    if (!$scope._controlled_auth_sf_list[auth_tag]) {
+                                        $scope._controlled_auth_sf_list[auth_tag] = { };
+                                    }
+                                    $scope._controlled_auth_sf_list[auth_tag][auth_sf] = 1;
+                                }
+                            );
                         }
                     )
                 }
@@ -1150,6 +1163,25 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                     });
                     return source_f;
                 }
+                $scope.getSearchString = function() {
+                    var source_f = $scope.summarizeField();
+                    var values = [];
+                    angular.forEach(source_f.subfields, function(val) {
+                        values.push(val[1]);
+                    });
+                    return values.join(' ');
+                }
+                $scope.searchStr = $scope.getSearchString();
+                $scope.$watch(function() {
+                    var ct = 0;
+                    angular.forEach($scope.bibField.subfields, function(sf) {
+                        if (sf.selected) ct++
+                        });
+                    return ct;
+                },
+                function(newVal, oldVal) {
+                    $scope.searchStr = $scope.getSearchString();
+                });
 
                 $scope.updateSubfieldZero = function(value) {
                     $scope.changed = true;
@@ -1158,6 +1190,64 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                         '0', '(' + cni + ')' + value
                     ]);
                 };
+
+                $scope.applyHeading = function(headingField) {
+                    // TODO: move the MARC21 rules for copying indicators
+                    // out of here
+                    if (headingField.tag == '130' && $scope.bibField.tag == '130') {
+                        $scope.bibField.ind1 = headingField.ind2;
+                    } else {
+                        $scope.bibField.ind1 = headingField.ind1;
+                    }
+                    // deal with 4xx and 5xx
+                    var authFallbackTag = '1' + headingField.tag.substr(1, 2);
+                    var _valid_auth_sfs = (headingField.tag in $scope._controlled_auth_sf_list) ?
+                                          $scope._controlled_auth_sf_list[headingField.tag] :
+                                          (authFallbackTag in $scope._controlled_auth_sf_list) ?
+                                          $scope._controlled_auth_sf_list[authFallbackTag] :
+                                          [];
+                    // save the $0 for later use
+                    var sfZero = '';
+                    if (headingField.subfield('0')) {
+                        sfZero = headingField.subfield('0')[1];
+                    }
+                    // grab any bib subfields not under authority control
+                    // TODO do something about uncontrolled subdivisions
+                    var uncontrolledBibSf = [];
+                    angular.forEach($scope.bibField.subfields, function(sf) {
+                        if (!(sf[0] in $scope._controlled_sf_list) && (sf[0] != '0')) {
+                            uncontrolledBibSf.push([ sf[0], sf[1] ]);
+                        }
+                    });
+                    // grab the authority subfields
+                    var authoritySf = [];
+                    angular.forEach(headingField.subfields, function(sf) {
+                        if (sf[0] in _valid_auth_sfs) {
+                            authoritySf.push([ sf[0], sf[1] ]);
+                        }
+                    });
+                    $scope.bibField.subfields.length = 0;
+                    angular.forEach(authoritySf, function(sf) {
+                        $scope.bibField.addSubfields(sf[0], sf[1]);
+                    });
+                    angular.forEach(uncontrolledBibSf, function(sf) {
+                        $scope.bibField.addSubfields(sf[0], sf[1]);
+                    });
+                    if (sfZero) {
+                        $scope.bibField.addSubfields('0', sfZero);
+                    }
+                    $scope.bibField.subfields.forEach(function (sf) {
+                    if (sf[0] in $scope._controlled_sf_list) {
+                            // intentionally not selecting any subfields
+                            // after we've applied an authority heading
+                            sf.selected = false;
+                            sf.selectable = true;
+                        } else {
+                            sf.selectable = false;
+                        }
+                    });
+                    $scope.changed = true;
+                }
 
                 $scope.createAuthorityFromBib = function(spawn_editor) {
                     var source_f = $scope.summarizeField();
@@ -1195,6 +1285,127 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                         }
                     });
                 }
+
+            }
+        ]
+    }
+})
+
+.directive("egMarcEditAuthorityBrowser", function () {
+    return {
+        restrict: 'E',
+        replace: true,
+        templateUrl: './cat/share/t_authority_browser',
+        scope : {
+            searchString : '=',
+            controlSet : '=',
+            axis : '=',
+            applyHeading : '&'
+        },
+        controller: ['$scope','$http',
+            function ($scope , $http) {
+
+                $scope.page = 0;
+                $scope.limit = 10;
+                $scope.main_headings = [];
+
+                function getHeadingString(headingField) {
+                    var heading = '';
+                    angular.forEach(headingField.subfields, function (sf) {
+                        if (['x', 'y', 'z'].indexOf(sf[0]) > -1) {
+                            heading += ' --';
+                        }
+                        if (heading) {
+                            heading += ' ';
+                        }
+                        heading += sf[1];
+                    });
+                    return heading;
+                }
+
+                $scope.doBrowse = function() {
+                    $scope.main_headings.length = 0;
+                    if ($scope.searchString.length == 0) return;
+                    var type = 'authority.'
+                    var url = '/opac/extras/browse/marcxml/'
+                            + 'authority.' + $scope.axis + '.refs'
+                            + '/1' // OU - currently unscoped
+                            + '/' + $scope.searchString
+                            + '/' + $scope.page
+                            + '/' + $scope.limit;
+                    $http({
+                        url : url,
+                        method : 'GET',
+                        transformResponse : function(data) {
+                            // use a bit of jQuery to deal with the XML
+                            var $xml = $( $.parseXML(data) );
+                            var marc = [];
+                            $xml.find('record').each(function() {
+                                var rec = new MARC21.Record();
+                                rec.fromXmlDocument($(this)[0].outerHTML);
+                                marc.push(rec);
+                            });
+                            return marc;
+                        }
+                    }).then(function(response) {
+                        angular.forEach(response.data, function(rec) {
+                            var authId = rec.subfield('901', 'c')[1];
+                            var auth_org = '';
+                            if (rec.field('003')) {
+                                auth_org = rec.field('003').data;
+                            }
+                            var headingField = rec.field('1..');
+                            var seeAlsos = rec.field('4..', true);
+                            var seeFroms = rec.field('5..', true);
+
+                            var main_heading = {
+                                authority_id : authId,
+                                heading : getHeadingString(headingField),
+                                seealso_headings : [ ],
+                                seefrom_headings : [ ],
+                            };
+
+                            var sfZero = '';
+                            if (auth_org) {
+                                sfZero = '(' + auth_org + ')';
+                            }
+                            sfZero += authId;
+                            headingField.addSubfields('0', sfZero);
+
+                            main_heading['headingField'] = headingField;
+                            angular.forEach(seeAlsos, function(headingField) {
+                                main_heading.seealso_headings.push({
+                                    heading : getHeadingString(headingField),
+                                    headingField : headingField
+                                });
+                            });
+                            angular.forEach(seeFroms, function(headingField) {
+                                main_heading.seefrom_headings.push({
+                                    heading : getHeadingString(headingField),
+                                    headingField : headingField
+                                });
+                            });
+                            $scope.main_headings.push(main_heading);
+                        });
+                    });
+                }
+
+                $scope.$watch('searchString',
+                    function(newVal, oldVal) {
+                        if (newVal !== oldVal) {
+                            $scope.doBrowse();
+                        }
+                    }
+                );
+                $scope.$watch('page',
+                    function(newVal, oldVal) {
+                        if (newVal !== oldVal) {
+                            $scope.doBrowse();
+                        }
+                    }
+                );
+
+                $scope.doBrowse();
             }
         ]
     }

@@ -1,0 +1,52 @@
+<div>
+<div>
+<ul>
+    <li ng-repeat="main in main_headings">
+        {{main.heading}}
+        <div class="row form-inline">
+            <button class="btn btn-xs btn-primary" ng-click="applyHeading({hdg : main.headingField})" >[% l('Apply') %]</button>
+            <span style="font-family: 'Lucida Console', Monaco, monospace;">
+                <span ng-repeat="sf in main.headingField.subfields">
+                    <span class="marcsfcodedelimiter">‡{{sf.0}}</span> {{sf.1}}
+                </span>
+            </span>
+        </div>
+        <ul ng-if="main.seefrom_headings || main.seealso_headings">
+            <li ng-repeat="seefrom in main.seefrom_headings">
+                [% l('See from: [_1]', '{{seefrom.heading}}') %]
+                <div class="row form-inline">
+                    <button class="btn btn-xs btn-warning" ng-click="applyHeading({hdg : seefrom.headingField})">[% l('Apply') %]</button>
+                    <span style="font-family: 'Lucida Console', Monaco, monospace;">
+                        <span ng-repeat="sf in seefrom.headingField.subfields">
+                            <span class="marcsfcodedelimiter">‡{{sf.0}}</span> {{sf.1}}
+                        </span>
+                    </span>
+                </div>
+            </li>
+            <li ng-repeat="seealso in main.seealso_headings">
+                [% l('See also: [_1]', '{{seealso.heading}}') %]
+                <div class="row form-inline">
+                    <button class="btn btn-xs btn-warning" ng-click="applyHeading({hdg : seealso.headingField})">[% l('Apply') %]</button>
+                    <span style="font-family: 'Lucida Console', Monaco, monospace;">
+                        <span ng-repeat="sf in seealso.headingField.subfields">
+                            <span class="marcsfcodedelimiter">‡{{sf.0}}</span> {{sf.1}}
+                        </span>
+                    </span>
+                </div>
+            </li>
+        </ul>
+    </li>
+</ul>
+</div>
+<div>
+    <button class="btn btn-default btn-sm" ng-click="page = 0">
+         [% l('Start') %]
+    </button>
+    <button class="btn btn-default btn-sm" ng-class="{disabled : !page}" ng-click="page = page - 1">
+         [% l('Previous') %]
+    </button>
+    <button class="btn btn-default btn-sm" ng-click="page = page + 1">
+         [% l('Next') %]
+    </button>
+</div>
+</div>

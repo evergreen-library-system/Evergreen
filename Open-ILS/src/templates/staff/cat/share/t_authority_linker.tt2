@@ -8,11 +8,15 @@
     </div>
     <div class="row form-inline">
         [% l('Create new authority from this field') %]
-        <button class="btn btn-primary button-sm" ng-click="createAuthorityFromBib()">
+        <button class="btn btn-primary btn-sm" ng-click="createAuthorityFromBib()">
              [% l('Immediately') %]
         </button>
-        <button class="btn btn-primary button-sm" ng-click="createAuthorityFromBib(true)">
+        <button class="btn btn-primary btn-sm" ng-click="createAuthorityFromBib(true)">
              [% l('Create and edit') %]
         </button>
+    </div>
+    <hr>
+    <div class="row">
+        <eg-marc-edit-authority-browser search-string="searchStr" control-set="controlSet" axis="axis" apply-heading="applyHeading(hdg)" />
     </div>
 </div>
