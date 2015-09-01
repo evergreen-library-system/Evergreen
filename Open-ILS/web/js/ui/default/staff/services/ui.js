@@ -217,16 +217,26 @@ function($modal, $interpolate) {
         },
         template:
             '<div class="input-group">'+
-                '<input type="text" class="form-control" ng-model="selected">'+
-                '<div class="input-group-btn" dropdown>'+
+                '<input type="text" class="form-control" ng-model="selected" focus-me="always" ng-change="makeOpen()">'+
+                '<div class="input-group-btn" dropdown ng-class="{open:isopen}">'+
                     '<button type="button" class="btn btn-default dropdown-toggle"><span class="caret"></span></button>'+
                     '<ul class="dropdown-menu dropdown-menu-right">'+
-                        '<li ng-repeat="item in list"><a href ng-click="changeValue(item)">{{item}}</a></li>'+
+                        '<li ng-repeat="item in list|filter:selected"><a href ng-click="changeValue(item)">{{item}}</a></li>'+
                     '</ul>'+
                 '</div>'+
             '</div>',
-        controller: ['$scope',
-            function($scope) {
+        controller: ['$scope','$filter',
+            function( $scope , $filter) {
+
+                $scope.always = true;
+                $scope.isopen = false;
+
+                $scope.makeOpen = function () {
+                    return $scope.isopen = $filter('filter')(
+                        $scope.list,
+                        $scope.selected
+                    ).length > 0 && $scope.selected.length > 0;
+                }
 
                 $scope.changeValue = function (newVal) {
                     $scope.selected = newVal;
