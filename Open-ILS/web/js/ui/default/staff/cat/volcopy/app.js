@@ -669,6 +669,7 @@ function($scope , $q , $routeParams , $location , $timeout , egCore , egNet , eg
                 });
             }
         });
+        $scope.template_name = '';
     }
 
     var dataKey = $routeParams.dataKey;
@@ -1049,6 +1050,7 @@ function($scope , $q , $routeParams , $location , $timeout , egCore , egNet , eg
                             });
                         }
                     });
+                    $scope.template_name = '';
                 }
 
                 $scope.deleteTemplate = function (n) {
