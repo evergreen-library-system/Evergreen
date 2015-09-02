@@ -1,0 +1,47 @@
+Preventing improper data deletion from subfield $e
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This release contains a fix for LP bug 1484281, "authority data may be
+deleted during propagation with current values of
+authority.control_set_authority_field."
+
+For more details see: https://bugs.launchpad.net/evergreen/+bug/1484281
+
+The related upgrade script from this release removes subfield $e
+in authority tags 100 and 110, but only from the Evergreen default
+"LoC" authority control set configuration. If your Evergreen system is
+set up with additional authority control sets besides the default
+"LoC" one, you will need to run the following pieces of SQL code.
+
+First verify that you have an additional control set besides the
+default of "LoC". Run the following SQL code and write down the ID
+number for your additional control set. The number will be an integer
+like 101.
+
+[source,sql]
+--------------------------------------------------------------------
+select *
+from authority.control_set
+where name != 'LoC'
+order by id
+--------------------------------------------------------------------
+
+In the following code you will need to change the two sections of
+"control_set = XYZ". Change the part labeled with the text "XYZ", with
+the ID number from the above query.
+
+If the above query displayed more than one additional authority
+control set, then you will need to run the code below once for each
+additional control set ID number.
+
+[source,sql]
+--------------------------------------------------------------------
+UPDATE authority.control_set_authority_field
+SET sf_list = REGEXP_REPLACE( sf_list, 'e', '', 'i')
+WHERE tag = '100' AND control_set = XYZ AND  sf_list ILIKE '%e%';
+
+UPDATE authority.control_set_authority_field
+SET sf_list = REGEXP_REPLACE( sf_list, 'e', '', 'i')
+WHERE tag = '110' AND control_set = XYZ AND  sf_list ILIKE '%e%';
+--------------------------------------------------------------------
+
