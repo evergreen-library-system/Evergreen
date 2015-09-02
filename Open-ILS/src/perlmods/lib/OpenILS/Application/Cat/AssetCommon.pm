@@ -75,7 +75,8 @@ sub create_copy {
     $copy->call_number($vol->id);
     $class->fix_copy_price($copy);
 
-    $editor->create_asset_copy($copy) or return $editor->die_event;
+    my $cp = $editor->create_asset_copy($copy) or return $editor->die_event;
+    $copy->id($cp->id);
     return undef;
 }
 
@@ -223,6 +224,40 @@ sub update_copy_parts {
 
 
 
+sub update_copy_notes {
+    my($class, $editor, $copy) = @_;
+
+    return undef if $copy->isdeleted;
+    return undef unless $copy->ischanged or $copy->isnew;
+
+    my $evt;
+    my $incoming_notes = $copy->notes;
+
+    for my $incoming_note (@$incoming_notes) { 
+        next unless $incoming_note;
+
+        if ($incoming_note->isnew) {
+            my $new_note = Fieldmapper::asset::copy_note->new();
+            $new_note->owning_copy( $copy->id );
+            $new_note->pub( $incoming_note->pub );
+            $new_note->title( $incoming_note->title );
+            $new_note->value( $incoming_note->value );
+            $new_note->creator( $incoming_note->creator || $editor->requestor->id );
+            $incoming_note = $editor->create_asset_copy_note($new_note)
+                or return $editor->event;
+        } elif ($incoming_note->ischanged) {
+            $incoming_note = $editor->update_asset_copy_note($incoming_note)
+        } elif ($incoming_note->isdeleted) {
+            $incoming_note = $editor->delete_asset_copy_note($incoming_note->id)
+        }
+    
+    }
+
+    return undef;
+}
+
+
+
 sub update_copy {
     my($class, $editor, $override, $vol, $copy, $retarget_holds, $force_delete_empty_bib) = @_;
 
@@ -350,6 +385,7 @@ sub update_fleshed_copies {
         $copy->parts( $parts );
         # probably okay to use $delete_stats here for simplicity
         $evt = $class->update_copy_parts($editor, $copy, $delete_stats, $create_parts);
+        $evt = $class->update_copy_notes($editor, $copy);
         return $evt if $evt;
     }
 
