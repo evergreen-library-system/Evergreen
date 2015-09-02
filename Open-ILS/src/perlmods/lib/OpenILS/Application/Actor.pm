@@ -3929,7 +3929,7 @@ sub request_password_reset {
     
     my $email_must_match = $U->ou_ancestor_setting_value($user->home_ou, 'circ.password_reset_request_requires_matching_email');
     if ($email_must_match) {
-        if ($user->email ne $email) {
+        if (lc($user->email) ne lc($email)) {
             return OpenILS::Event->new('EMAIL_VERIFICATION_FAILED');
         }
     }
