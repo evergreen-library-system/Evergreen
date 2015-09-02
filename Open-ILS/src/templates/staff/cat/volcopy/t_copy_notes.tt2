@@ -52,7 +52,7 @@
         </div>
       </div>
 
-      <div class="row" ng-repeat="n in note_list" ng-init="pub = n.pub(); title = n.title(); value = n.value(); deleted = n.isdeleted()">
+      <div class="row" ng-repeat="n in note_list" ng-init="pub = n.pub() == 't'; title = n.title(); value = n.value(); deleted = n.isdeleted()">
         <div class="col-md-12">
           <div class="row">
             <div class="col-md-6">

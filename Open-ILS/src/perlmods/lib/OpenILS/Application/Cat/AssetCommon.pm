@@ -228,7 +228,6 @@ sub update_copy_notes {
     my($class, $editor, $copy) = @_;
 
     return undef if $copy->isdeleted;
-    return undef unless $copy->ischanged or $copy->isnew;
 
     my $evt;
     my $incoming_notes = $copy->notes;
@@ -245,9 +244,9 @@ sub update_copy_notes {
             $new_note->creator( $incoming_note->creator || $editor->requestor->id );
             $incoming_note = $editor->create_asset_copy_note($new_note)
                 or return $editor->event;
-        } elif ($incoming_note->ischanged) {
+        } elsif ($incoming_note->ischanged) {
             $incoming_note = $editor->update_asset_copy_note($incoming_note)
-        } elif ($incoming_note->isdeleted) {
+        } elsif ($incoming_note->isdeleted) {
             $incoming_note = $editor->delete_asset_copy_note($incoming_note->id)
         }
     
@@ -360,11 +359,17 @@ sub update_fleshed_copies {
         $copy->location( $copy->location->id ) if ref($copy->location);
         $copy->circ_lib( $copy->circ_lib->id ) if ref($copy->circ_lib);
         
+        my $parts = $copy->parts;
+        $copy->clear_parts;
+
         my $sc_entries = $copy->stat_cat_entries;
         $copy->clear_stat_cat_entries;
 
-        my $parts = $copy->parts;
-        $copy->clear_parts;
+        my $sc_entries = $copy->stat_cat_entries;
+        $copy->clear_stat_cat_entries;
+
+        my $notes = $copy->notes;
+        $copy->clear_notes;
 
         if( $copy->isdeleted ) {
             $evt = $class->delete_copy($editor, $override, $vol, $copy, $retarget_holds, $force_delete_empty_bib);
@@ -382,9 +387,12 @@ sub update_fleshed_copies {
 
         $copy->stat_cat_entries( $sc_entries );
         $evt = $class->update_copy_stat_entries($editor, $copy, $delete_stats);
+
         $copy->parts( $parts );
         # probably okay to use $delete_stats here for simplicity
         $evt = $class->update_copy_parts($editor, $copy, $delete_stats, $create_parts);
+
+        $copy->notes( $notes );
         $evt = $class->update_copy_notes($editor, $copy);
         return $evt if $evt;
     }
