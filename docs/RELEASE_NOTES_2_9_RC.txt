@@ -1,0 +1,620 @@
+Evergreen 2_9_RC Release Notes
+==============================
+:toc:
+:numbered:
+
+Upgrade notes
+-------------
+
+New Features
+------------
+
+
+
+Acquisitions
+~~~~~~~~~~~~
+
+
+
+Improved reporting of progress during purchase order activation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The progress dialog that is displayed when activating a purchase
+order now displays more information, particularly during the asset
+creation phase. It is now also updated in a more linear fashion;
+making it less likely for it to appear that the activation has
+stalled.
+
+
+
+
+Fund Tag Preservation
+^^^^^^^^^^^^^^^^^^^^^
+For convenience when propagating or rolling over a fund for a new fiscal year, fund tags will be copied from the current fund to
+the new year's fund.
+
+
+
+
+==== "Blanket" Orders
+
+"Blanket" orders allow staff to invoice an encumbered amount multiple times,
+paying off the charge over a period of time.  The work flow supported by this 
+development assumes staff does not need to track the individual contents of 
+the order, only the amounts encumbered and invoiced in bulk.
+
+===== Example
+
+ . Staff creates PO with a Direct Charge of "Popular Fiction 2015" and
+   a charge type of "Blanket Order".
+ . The amount entered for the charge equals the total amount expected
+   to be charged over the duration of the order.
+ . When a shipment of "Popular Fiction" items arrive, staff creates an 
+   invoice from the "Popular Fiction 2015" PO page and enters the amount 
+   billed/paid for the received shipment under the "Popular Fiction 2015" 
+   charge in the invoice.
+ . When the final shipment arrives, staff select the 'Final invoice
+   for Blanket Order' option on the invoice screen to mark the PO as
+   'received' and drop any remaining encumbrances to $0.
+  .. Alternatively, if the PO needs to be finalized without creating
+     a final invoice, staff can use the new 'Finalize Blanket Order'
+     option on the PO page.
+
+===== New Components/Terminology/Concepts
+
+ * Invoice Item Types have a new flag called 'blanket', available under
+   Admin -> Server Administration -> Acq -> Invoice Item Types in the
+   staff client.
+ * Any direct charge using a 'blanket' item type will create a long-lived
+   charge that can be invoiced multiple times.
+ * Such a charge is considered open until its purchase order is "finalized" 
+   (received).
+ * "Finalizing" a PO changes the PO's state to 'received' (assuming there are
+   no pending lineitems on the PO) and fully dis-encumbers all blanket charges
+   on the PO by setting the fund_debit amount to $0 on the original fund_debit
+   for the charge.
+ * Invoicing a 'blanket' charge does the following under the covers:
+  .. Create an invoice_item to track the payment
+  .. Create a new fund_debit to implement the payment whose amount matches the
+     invoiced amount.
+  .. Subtract the invoiced amount from the fund_debit linked to the original
+     'blanket' po_item, thus reducing the amount encumbered on the charge as 
+     a whole by the invoiced amount.
+ * A PO can have multiple blanket charges.  E.g. you could have a blanket
+   order for "Popular Fiction 2015" and a second charge for "Pop Fiction 
+   20156 Taxes" to track / pay taxes over time on a blanket charge.
+ * A PO can have a mix of lineitems, non-blanket charges, and blanket charges.  
+ * A 'blanket' Invoice Item Type cannot also be a 'prorate' type, since it's
+   nonsensical.  Blanket items are encumbered, whereas prorated items are 
+   only paid at invoice time and never encumbered.
+
+
+
+
+
+
+Administration
+~~~~~~~~~~~~~~
+
+
+
+Examples in Apache configuration for "No Image"
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+There are now commented out examples for custom images to be used when
+"no image" is present in the catalog for cover art. The included examples
+are for small/medium/large jacket image art in the event they are not
+found by the configured Added Content module.
+
+
+
+
+Pre-Expiration A/T Event Definition
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+A new Action Trigger event definition ("30 Day Account Expiration Courtesy 
+Notice") for sending alerts to users before their accounts are expired has 
+been added.  This is intended to give users time to renew their account before 
+they lose access to library services.
+
+
+
+
+Upgrade Notes
+^^^^^^^^^^^^^
+
+Remove Script-Based Circulation Configuration
++++++++++++++++++++++++++++++++++++++++++++++
+
+Evergreen no longer supports script-based circulation policies.  All
+policies must now be managed within the Local Administration ->
+Circulation Policies, Hold Policies, and related interfaces.
+
+Remove open-ils.penalty service
++++++++++++++++++++++++++++++++
+
+Evergreen no longer uses the 'open-ils.penalty' service.  It is safe 
+(though not required) to remove the following XML chunks from 
+/openils/conf/opensrf.xml after stopping services.
+
+[source,xml]
+----------------------------------------------------------------------------
+
+<!-- first element -->
+
+<open-ils.penalty>
+    <keepalive>3</keepalive>
+    <stateless>1</stateless>
+    <language>perl</language>
+    <implementation>OpenILS::Application::Penalty</implementation>
+    <max_requests>99</max_requests>
+    <unix_config>
+        <max_requests>1000</max_requests>
+        <unix_log>open-ils.penalty_unix.log</unix_log>
+        <unix_sock>open-ils.penalty_unix.sock</unix_sock>
+        <unix_pid>open-ils.penalty_unix.pid</unix_pid>
+        <min_children>1</min_children>
+        <max_children>15</max_children>
+        <min_spare_children>1</min_spare_children>
+        <max_spare_children>5</max_spare_children>
+    </unix_config>
+    <app_settings>
+        <patron_penalty>penalty/patron_penalty.js</patron_penalty>
+        <script_path>LIBDIR/javascript</script_path>
+        <script_path>LOCALSTATEDIR</script_path>
+        <script_path>LOCALSTATEDIR/catalog</script_path>
+   </app_settings>
+</open-ils.penalty>
+
+<!-- second element -->
+
+<appname>open-ils.penalty</appname>
+----------------------------------------------------------------------------
+
+
+
+
+Improved caching of web server templates
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Template Toolkit processors used by Apache are now cached for
+better performance (by virtue of thereby being able to take advantage
+of Template Toolkit's internal caching mechanism). In addition, the
+*compiled* versions of the templates themselves can be cached to
+provide an additional performance boost.
+
+Two Apache virtualhost configuration variables are added to
+control caching of compiled templates:
+
+ * `OILSWebCompiledTemplateCache` - specifies location on the
+   web server filesystem to store compiled templates.
+ * `OILSWebTemplateStatTTL` - specifies number of seconds before
+   checking to see if a newer version of a cached template is
+   available.
+
+As a result of the caching changes, it is now necessary for
+Evergreen administrators to reload Apache to ensure that a change
+to (say) TPAC templates becomes visible.
+
+
+
+
+Cataloging
+~~~~~~~~~~
+
+
+
+Display Authoirty Subject Heading Thesaurus Value 
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+There is now a new column in the *Manage Authorities* search results. Each result row now displays each authority's thesaurus value with a "Thes: " prefix. In the authority MARC editor interface the thesaurus value corresponds to the "Subject Heading Thesaurus" fixed field (http://www.loc.gov/marc/authority/ad008.html) labeled “Subj”. For example, a value of "Thes: a" means that the authority is a Library of Congress Subject Heading, and a value of "Thes: k" means the authority is a Canadian Subject Heading.
+
+*A Library of Congress list of thesaurus values:*
+
+
+* '' = Alternate no attempt to code
+* a = Library of Congress Subject Headings
+* b = LC subject headings for children's literature
+* c = Medical Subject Headings
+* d = National Agricultural Library subject authority file
+* k = Canadian Subject Headings
+* n = Not applicable
+* r = Art and Architecture Thesaurus
+* s = Sears List of Subject Headings
+* v = Repertoire de vedettes-matiere
+* z = Other
+* | = No attempt to code
+
+
+
+Importing Statistical Categories
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+You can now retrieve statistical categories (stat cats) from the MARC
+record and apply them to the items in Evergreen. When importing or
+overlaying items through the Vandelay MARC batch import process, edit
+your Holdings Import Profile to tell Evergreen which subfield contains
+your stat cat data. That subfield in your MARC records should be
+formatted like the following:
+
+----
+CATEGORY 1|VALUE 1||CATEGORY 2|VALUE 2
+----
+
+Notice that the pipe character '|' is used to separate each category
+from its value, and two pipes separate each pair of category values.
+
+If you are overlaying existing copies which already have stat cats
+attached to them, the overlay process will keep those values unless the
+incoming copies contain updated values for matching categories.
+
+
+
+
+Preventing improper data deletion from subfield $e
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This release contains a fix for LP bug 1484281, "authority data may be
+deleted during propagation with current values of
+authority.control_set_authority_field."
+
+For more details see: https://bugs.launchpad.net/evergreen/+bug/1484281
+
+The related upgrade script from this release removes subfield $e
+in authority tags 100 and 110, but only from the Evergreen default
+"LoC" authority control set configuration. If your Evergreen system is
+set up with additional authority control sets besides the default
+"LoC" one, you will need to run the following pieces of SQL code.
+
+First verify that you have an additional control set besides the
+default of "LoC". Run the following SQL code and write down the ID
+number for your additional control set. The number will be an integer
+like 101.
+
+[source,sql]
+--------------------------------------------------------------------
+select *
+from authority.control_set
+where name != 'LoC'
+order by id
+--------------------------------------------------------------------
+
+In the following code you will need to change the two sections of
+"control_set = XYZ". Change the part labeled with the text "XYZ", with
+the ID number from the above query.
+
+If the above query displayed more than one additional authority
+control set, then you will need to run the code below once for each
+additional control set ID number.
+
+[source,sql]
+--------------------------------------------------------------------
+UPDATE authority.control_set_authority_field
+SET sf_list = REGEXP_REPLACE( sf_list, 'e', '', 'i')
+WHERE tag = '100' AND control_set = XYZ AND  sf_list ILIKE '%e%';
+
+UPDATE authority.control_set_authority_field
+SET sf_list = REGEXP_REPLACE( sf_list, 'e', '', 'i')
+WHERE tag = '110' AND control_set = XYZ AND  sf_list ILIKE '%e%';
+--------------------------------------------------------------------
+
+
+
+
+
+Remove the ‡biblios.net Z39.50 target from seed data
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The Z39.50 target at z3950.biblios.net/bibliographic has not worked
+for years, so its service definition is no longer provided in the
+seed data for new installations of Evergreen.
+
+Users of existing Evergreen systems should consider removing
+the Z39.50 definition for ‡biblios.net. This can be done from
+Admin | Server Administration | Z39.50 Servers in the staff
+client.
+
+
+
+
+SKOS for coded values
+^^^^^^^^^^^^^^^^^^^^^
+Some vocabularies used (or which could be used) for stock
+record attributes and coded value maps in Evergreen are
+published on the web using SKOS. The record attributes system
+can now associate Linked Data URIs with specific attribute
+values. In particular, seed data supplying URIs for the
+RDA Content Type, Media Type, and Carrier Type in this release.
+
+This is an experimental, "under-the-hood" feature that will be built
+upon in subsuquent releases.
+
+
+
+
+MARC Tag-table Service
+^^^^^^^^^^^^^^^^^^^^^^
+The tag tables for the web staff client MARC editor are
+now stored in the database rather than a separate XML
+tooltips file as used by the XUL MARC editor.  The tag-table
+service, which is part of the web staff client sprint 2
+preview in this release, has the following features:
+
+- specifies whether (sub)fields are optional or mandatory
+- specifies whether (sub)fields are repeatable or not
+- a coded value map can be associated with a subfield to
+  establish a controlled vocabulary for that subfield
+- MARC field and subfield definitions can be overridden
+  by institutions further down in the organizational unit
+  hierarchy.  This allows, for example, a library to specify
+  definitions for local MARC tags.
+- values supplied by the tag-table service are used to
+  populate values in context menus in the web staff client
+  MARC editor.
+
+The initial seed data for the in-database tag table is
+derived from the current tooltips XML file.
+
+
+
+
+Web staff client cataloging preview
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The web staff client now includes additional functionality
+to support cataloging and item maintenance, including:
+
+- a new MARC editor
+- Z39.50 search and record import
+- improvements to copy and record bucket functionality
+- embedding the link checker interface
+- embedding the MARC batch import/export interface
+- the beginnings of the web staff volume/copy editor
+
+The web staff client remains a preview and is not recommended
+for production use.
+
+
+
+
+Circulation
+~~~~~~~~~~~
+
+
+
+Conditional Negative Balances
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Evergreen sites will now have more control over whether a negative balance can
+be applied to a user's billing record and when that negative balance can be 
+applied. Through a series of Library Settings, a site can prohibit negative
+balances on bills or can allow those negative balances to be applied for a
+specific period of time after a lost or overdue bill is charged to the user.
+Sites can set a default for all types of bills or can apply distinct settings
+for lost bills and for overdue fines. The more specific settings will override
+the default. 
+
+Sites that opt to allow negative balances for a specific period of time must
+1) enable the relevant "prohibit negative balances" setting(s) and 2) specify
+the time period in the relevant Negative Balance Interval setting(s).  
+
+In addition to the new library settings, the system now has a new account 
+adjustment payment type. This payment type will be utilized for libraries 
+prohibiting negative balances to replace the previous voiding behavior that 
+caused the negative balances to occur. The account adjustment payment type will
+also be used for all libraries, regardless of the state of negative balance
+settings, in cases where overdue fines are adjusted when an overdue item is
+marked lost.
+
+An _Adjust to Zero_ option replaces the _Void All Billings_ option in the bills
+area of the patron record. This option will always adjust the selected bill to
+a zero balance. It can also be used to clear a negative balance from the
+patron's record. 
+
+New Library Settings
+++++++++++++++++++++
+ * Negative Balance Interval (Default) (bill.negative_balance_interval_default)
+ * Negative Balance Interval for Lost (bill.negative_balance_interval_on_lost) -
+ * Negative Balance Interval for Overdues (bill.negative_balance_interval_on_overdues
+ * Prohibit negative balance on bills (Default) (bill.prohibit_negative_balance_default)
+ * Prohibit negative balance on bills for lost materials (bill.prohibit_negative_balance_on_lost)
+ * Prohibit negative balance on bills for overdue materials (bill.prohibit_negative_balance_on_overdues)
+ 
+ 
+
+
+
+
+Selfcheck Inactivity Warning
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Selfcheck interface now warns patrons when they are about to be
+logged out due to inactivity 20 seconds prior to logging them out.
+
+The inactivity timeout is also reset with each checkout to avoid timeouts 
+while checking out lots of items.
+
+
+
+
+User Registration Includes Inactive Accounts in Dupe Search
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+When registering a user the system checks to see if there are already exiting users with the same name, address, email, etc. Now this duplicate user search includes inactive users so that matches can be re-activated if desired, rather than creating duplicate accounts.
+
+
+
+
+Client
+~~~~~~
+
+
+
+Link in catalog to clear Added Content cache
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+On the catalog's record summary page, there is now a link for staff that
+allow them to forcibly clear the cache for the Added Content for that
+record. This is helpful for if the Added Content retrieved the wrong
+cover jacket art, summary, etc. and caches the wrong result.
+
+
+
+
+Disable Google Analytics in Staff Client
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+In the staff client interface, Google Analytics for the web catalog is
+now disabled by default. This was a preventive measure to reduce the
+potential risks for leaking patron information.
+
+
+
+
+Move Acquisitions Admin Menu
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+In the staff client interface, the Acquisitions Administration menu is
+now directly accessible from the main "Admin" menu instead of 
+living under "Server Administration". It has also been renamed as "Acquisitions
+Administration".
+
+
+
+
+OPAC
+~~~~
+
+
+
+Account Expiration Date in My Account
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The Account Expiration Date has been added to the catalog's My Account display
+on the main Account Summary page and the Account Preferences page.  This should
+help patrons with figuring out when their accounts are due to expire before
+they actually expire.
+
+
+
+
+
+Column sorting in circulation screens
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Sorting of selected columns is now available in the *Items Checked Out*, *Check Out History*,
+and *Holds* screen.
+
+* Clicking on the appropriate column heads now sorts the contents from
+``ascending'' to ``descending'' to ``no sort''.  (The ``no sort'' restores the
+original list as presented in the screen.)
+
+* The sort indicator (an up or down arrow) is placed to the right
+of the column head, as appropriate.
+
+* The combined *Title/Author* column in the *Items Checked Out* screen is now separated into two
+independently sortable columns (Title and Author).
+
+* Title sorting is done with the so-called `filing' characters (leading ``the'', ``a'',
+``an'', and other langugage equivalents) removed. The leading articles are rendered in
+a smaller font, so as to keep the main entry prominent.  In
+addition to the filing characters removed for the sort, leading
+non-alphanumeric characters are ignored in the sort.
+
+
+
+
+New bib source variable for catalog customization
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+For bibliographic records, there is a "bib source" that can be
+associated with every record. This source is now available as a
+variable that can be used behind the scenes when customizing
+the online catalog. The new bib source variables do not present
+themselves in the catalog display by default.
+
+
+
+
+New class attribute for e-resource links
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+In the catalog, links to electronic resources now have a link class
+attribute of "uri_link" to make them easier to customize or build
+additional services upon.
+
+
+
+
+
+Removal of deprecated "JSPAC" interface
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The deprecated Javascript OPAC interface known as "JSPAC" is no
+longer included in Evergreen as of this release.
+
+With the understanding that local sites may have made use of
+existing parts of the old JSPAC interface -- especially images and
+CSS -- no attempt is made at upgrade time to automatically remove
+the existing files from disk.
+
+When upgrading, you may wish to remove "index.xml" from your Apache
+DirectoryIndex directives.
+
+The following directories, xml, js, and css files were formerly part
+of JSPAC, and you may be able to safely remove them from your system
+after verifying that they and their contents are no longer required:
+
+- web/opac/common/css/
+- web/opac/common/js/dtree.js
+- web/opac/common/xml/
+- web/opac/extras/bbags.js
+- web/opac/extras/bbags.xml
+- web/opac/skin/default/js/
+- web/opac/skin/default/xml/
+- web/opac/theme/
+
+The list of images removed in this change is lengthy, and not
+included here.
+
+
+
+
+Removal of legacy selfcheck interface
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The legacy selfcheck interface is no longer included in Evergreen as
+of this release.
+
+This interface was formerly located at a URL ending in
+extras/selfcheck/selfcheck.xml
+
+No attempt is made at upgrade time to automatically remove this
+interface.
+
+It is recommended that you remove this interface and its associated
+configuration after performing an upgrade:
+
+(paths relative to Evergreen web root)
+
+- opac/extras/selfcheck/selfcheck.css
+- opac/extras/selfcheck/selfcheck.js
+- opac/extras/selfcheck/selfcheck.xml
+- opac/extras/selfcheck/selfcheck_print.css
+
+You can also remove the related Apache configuration block starting
+with:
+
+[source, conf]
+<LocationMatch .*/selfcheck.xml>
+
+
+
+
+Acknowledgments
+---------------
+The Evergreen project would like to acknowledge the following
+organizations who commissioned developments in this release of
+Evergreen:
+
+ * **TODO**
+
+We would also like to thank the following individuals who contributed
+code and documentations patches to this release of Evergreen:
+
+ * **TODO**
+
+We also thank the following organizations whose employees contributed
+patches:
+
+ * **TODO**
+
+We regret any omissions.  If a contributor has been inadvertantly
+missed, please open a bug at http://bugs.launchpad.net/evergreen/
+with a correction.
+
