@@ -1,0 +1,91 @@
+<form ng-submit="ok(note)" role="form">
+    <div class="modal-header">
+      <button type="button" class="close" ng-click="cancel()" 
+        aria-hidden="true">&times;</button>
+      <h4 class="modal-title">[% l('New Copy Note') %]</h4>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-md-6">
+          <input class="form-control" type="text"
+            ng-model="note.title" placeholder="[% l('Title...') %]"/>
+        </div>
+        <div class="col-md-3">
+          <label>
+            <input type="checkbox" ng-model="note.pub"/>
+            [% l('Public Note') %]
+          </label>
+        </div>
+      </div>
+      <div class="row pad-vert">
+        <div class="col-md-12">
+          <textarea class="form-control" 
+            ng-model="note.value" placeholder="[% l('Note...') %]">
+          </textarea>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div class="row">
+        <div class="col-md-2">
+          <input type="text" class="form-control" ng-hide="!require_initials" 
+            ng-model="initials" placeholder="[% l('Initials') %]" ng-required="require_initials"/>
+        </div>
+        <div class="col-md-10 pull-right">
+          <input type="submit" class="btn btn-primary" value="[% l('OK') %]"/>
+          <button class="btn btn-warning" ng-click="cancel($event)">[% l('Cancel') %]</button>
+        </div>
+      </div>
+
+      <div class="row pad-vert" ng-if="note_list.length &gt; 0"> 
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-md-12">
+              <hr/>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <h4 class="pull-left">[% l('Existing Copy Notes') %]</h4>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row" ng-repeat="n in note_list" ng-init="pub = n.pub(); title = n.title(); value = n.value(); deleted = n.isdeleted()">
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-md-6">
+              <input class="form-control" type="text" ng-change="n.title(title) && n.ischanged(1)"
+                ng-model="title" placeholder="[% l('Title...') %]" ng-disabled="deleted"/>
+            </div>
+            <div class="col-md-3">
+              <label>
+                <input type="checkbox" ng-model="pub" ng-change="n.pub(pub) && n.ischanged(1)" ng-disabled="deleted"/>
+                [% l('Public Note') %]
+              </label>
+            </div>
+            <div class="col-md-3">
+              <label>
+                <input type="checkbox" ng-model="deleted" ng-change="n.isdeleted(deleted)"/>
+                [% l('Deleted?') %]
+              </label>
+            </div>
+          </div>
+          <div class="row pad-vert">
+            <div class="col-md-12">
+              <textarea class="form-control" ng-change="n.value(value) && n.ischanged(1)"
+                ng-model="value" placeholder="[% l('Note...') %]" ng-disabled="deleted">
+              </textarea>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <hr/>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+</form>

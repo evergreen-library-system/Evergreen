@@ -153,7 +153,7 @@ function(egCore , $q) {
     service.flesh = {   
         flesh : 3, 
         flesh_fields : {
-            acp : ['call_number','parts','stat_cat_entries'],
+            acp : ['call_number','parts','stat_cat_entries', 'notes'],
             acn : ['label_class','prefix','suffix']
         }
     }
@@ -499,11 +499,12 @@ function(egCore , $q) {
  * Edit controller!
  */
 .controller('EditCtrl', 
-       ['$scope','$q','$window','$routeParams','$location','$timeout','egCore','egNet','egGridDataProvider','itemSvc',
-function($scope , $q , $window , $routeParams , $location , $timeout , egCore , egNet , egGridDataProvider , itemSvc) {
+       ['$scope','$q','$window','$routeParams','$location','$timeout','egCore','egNet','egGridDataProvider','itemSvc','$modal',
+function($scope , $q , $window , $routeParams , $location , $timeout , egCore , egNet , egGridDataProvider , itemSvc , $modal) {
 
     $scope.defaults = { // If defaults are not set at all, allow everything
         statcats : true,
+        copy_notes : true,
         attributes : {
             status : true,
             loan_duration : true,
@@ -1048,7 +1049,6 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                 'open-ils.cat.asset.volume.fleshed.batch.update.override',
                 egCore.auth.token(), cnList, 1, { auto_merge_vols : 1, create_parts : 1 }
             ).then(function(update_count) {
-                alert(update_count + ' call numbers updated');
                 if (and_exit) {
                     $scope.dirty = false;
                     $timeout(function(){$window.close()});
@@ -1060,6 +1060,60 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
             $scope.saveCompletedCopies(true);
         }
 
+    }
+
+    $scope.copy_notes_dialog = function(copy_list) {
+        var default_pub = Boolean($scope.defaults.copy_notes_pub);
+        if (!angular.isArray(copy_list)) copy_list = [copy_list];
+
+        return $modal.open({
+            templateUrl: './cat/volcopy/t_copy_notes',
+            animation: true,
+            controller:
+                   ['$scope','$modalInstance',
+            function($scope , $modalInstance) {
+                $scope.focusNote = true;
+                $scope.note = {
+                    creator : egCore.auth.user().id(),
+                    title   : '',
+                    value   : '',
+                    pub     : default_pub,
+                };
+
+                $scope.require_initials = false;
+                egCore.org.settings([
+                    'ui.staff.require_initials.copy_notes'
+                ]).then(function(set) {
+                    $scope.require_initials = Boolean(set['ui.staff.require_initials.copy_notes']);
+                });
+
+                $scope.note_list = [];
+                if (copy_list.length == 1) {
+                    $scope.note_list = copy_list[0].notes();
+                }
+
+                $scope.ok = function(note) {
+
+                    if (note.initials) note.value += ' [' + note.initials + ']';
+                    angular.forEach(copy_list, function (cp) {
+                        var n = new egCore.idl.acpn();
+                        n.creator(note.creator);
+                        n.pub(note.pub);
+                        n.title(note.title);
+                        n.value(note.value);
+                        n.owning_copy(cp.id());
+                        cp.notes().push( n );
+                    });
+
+                    $modalInstance.close();
+                }
+
+                $scope.cancel = function($event) {
+                    $modalInstance.dismiss();
+                    $event.preventDefault();
+                }
+            }]
+        });
     }
 
 }])
@@ -1075,6 +1129,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
 
                 $scope.defaults = { // If defaults are not set at all, allow everything
                     statcats : true,
+                    copy_notes : true,
                     attributes : {
                         status : true,
                         loan_duration : true,

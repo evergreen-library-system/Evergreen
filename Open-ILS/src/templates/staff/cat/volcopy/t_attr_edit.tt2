@@ -360,6 +360,15 @@
                         <option value="3">[% l('High') %]</option>
                     </select>
                 </div>
+                <div class="col-md-6">
+                    <button
+                      class="btn btn-default"
+                      ng-disabled="!defaults.copy_notes"
+                      ng-click="copy_notes_dialog(workingGridControls.selectedItems())"
+                      type="button">
+                        [% l('Copy Notes') %]
+                    </button>
+                </div>
             </div>
         </div>
 

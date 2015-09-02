@@ -229,6 +229,10 @@
                     </label>
                 </div>
                 <div class="col-xs-6">
+                    <label>
+                        <input type="checkbox" ng-change="saveDefaults()" ng-model="defaults.copy_notes"/>
+                        [% l('Add/Edit Copy Notes') %]
+                    </label>
                 </div>
             </div>
 
@@ -240,7 +244,10 @@
                     </label>
                 </div>
                 <div class="col-xs-6">
-                    <h6>[% l('Statistical Categories') %]</h6>
+                    <label>
+                        <input type="checkbox" ng-change="saveDefaults()" ng-model="defaults.copy_notes_pub"/>
+                        [% l('Copy Notes are Public') %]
+                    </label>
                 </div>
             </div>
 
@@ -252,9 +259,7 @@
                     </label>
                 </div>
                 <div class="col-xs-6">
-                    <label>
-                        <eg-org-selector selected="defaults.statcat_filter" noDefault label="[% l('Default Filter Library') %]" disableTest="cant_have_vols"></eg-org-selector>
-                    </label>
+                    <h6>[% l('Statistical Categories') %]</h6>
                 </div>
             </div>
 
@@ -267,8 +272,10 @@
                 </div>
                 <div class="col-xs-6">
                     <label>
-                        <input type="checkbox" ng-change="saveDefaults()" ng-model="defaults.statcats"/>
-                        [% l('Edit Statistical Data') %]
+                        <eg-org-selector
+                            selected="defaults.statcat_filter"
+                            noDefault label="[% l('Default Filter Library') %]"
+                            disableTest="cant_have_vols"></eg-org-selector>
                     </label>
                 </div>
             </div>
@@ -281,6 +288,10 @@
                     </label>
                 </div>
                 <div class="col-xs-6">
+                    <label>
+                        <input type="checkbox" ng-change="saveDefaults()" ng-model="defaults.statcats"/>
+                        [% l('Edit Statistical Data') %]
+                    </label>
                 </div>
             </div>
 
