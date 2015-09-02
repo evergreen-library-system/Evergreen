@@ -298,6 +298,12 @@ angular.module('egCoreMod')
             function(field) { patron[field] = patron[field] == 't'; }
         );
 
+        angular.forEach(patron.cards, function(card) {
+            card.active = card.active == 't'
+            if (card.id == patron.card.id)
+                card._primary = 'on';
+        });
+
         angular.forEach(patron.addresses, 
             function(addr) { service.ingest_address(patron, addr) });
 
@@ -328,7 +334,7 @@ angular.module('egCoreMod')
 
 
 function PatronRegCtrl($scope, $routeParams, 
-    $q, egCore, patronSvc, patronRegSvc) {
+    $q, $modal, egCore, patronSvc, patronRegSvc) {
 
 
     $scope.clone_id = $routeParams.clone_id;
@@ -495,7 +501,6 @@ function PatronRegCtrl($scope, $routeParams,
     } 
 
     $scope.post_code_changed = function(addr) { 
-        console.log('post code ' + addr.post_code);
         egCore.net.request(
             'open-ils.search', 'open-ils.search.zip', addr.post_code)
         .then(function(resp) {
@@ -506,6 +511,37 @@ function PatronRegCtrl($scope, $routeParams,
             if (resp.alert) alert(resp.alert);
         });
     }
+
+    $scope.cards_dialog = function() {
+        $modal.open({
+            templateUrl: './circ/patron/t_patron_cards_dialog',
+            controller: 
+                   ['$scope','$modalInstance','cards',
+            function($scope , $modalInstance , cards) {
+                // scope here is the modal-level scope
+                $scope.args = {cards : cards};
+                $scope.ok = function() { $modalInstance.close($scope.args) }
+                $scope.cancel = function () { $modalInstance.dismiss() }
+            }],
+            resolve : {
+                cards : function() {
+                    // scope here is the controller-level scope
+                    return $scope.patron.cards;
+                }
+            }
+        }).result.then(
+            function(args) {
+                angular.forEach(args.cards, function(card) {
+                    card.ischanged = true; // assume cards need updating, OK?
+                    if (card._primary == 'on' && 
+                        card.id != $scope.patron.card.id) {
+                        $scope.patron.card = card;
+                    }
+                });
+            }
+        );
+    }
+
 }
 
 

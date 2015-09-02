@@ -141,6 +141,10 @@ but the ones I'm finding aren't quite cutting it..*/
   font-weight: bold;
 }
 
+.patron-reg-barcodes > .header {
+  font-weight: bold;
+}
+
 /* -- end patron registration -- */
 
 [%# 

@@ -78,7 +78,8 @@
     [% IF field == 'barcode' %]
 
       <button class="btn btn-default">[% l('Replace Barcode') %]</button>
-      <button class="btn btn-default">[% l('See All') %]</button>
+      <button class="btn btn-default" 
+        ng-click="cards_dialog()">[% l('See All') %]</button>
 
     [% ELSIF field == 'passwd' %]
 
