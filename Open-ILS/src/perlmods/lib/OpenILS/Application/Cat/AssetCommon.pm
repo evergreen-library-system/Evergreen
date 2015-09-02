@@ -236,6 +236,8 @@ sub update_copy_notes {
         next unless $incoming_note;
 
         if ($incoming_note->isnew) {
+            next if ($incoming_note->isdeleted); # if it was added and deleted in the same session
+
             my $new_note = Fieldmapper::asset::copy_note->new();
             $new_note->owning_copy( $copy->id );
             $new_note->pub( $incoming_note->pub );
@@ -244,6 +246,7 @@ sub update_copy_notes {
             $new_note->creator( $incoming_note->creator || $editor->requestor->id );
             $incoming_note = $editor->create_asset_copy_note($new_note)
                 or return $editor->event;
+
         } elsif ($incoming_note->ischanged) {
             $incoming_note = $editor->update_asset_copy_note($incoming_note)
         } elsif ($incoming_note->isdeleted) {
