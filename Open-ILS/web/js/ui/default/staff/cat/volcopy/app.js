@@ -499,8 +499,8 @@ function(egCore , $q) {
  * Edit controller!
  */
 .controller('EditCtrl', 
-       ['$scope','$q','$routeParams','$location','$timeout','egCore','egNet','egGridDataProvider','itemSvc',
-function($scope , $q , $routeParams , $location , $timeout , egCore , egNet , egGridDataProvider , itemSvc) {
+       ['$scope','$q','$window','$routeParams','$location','$timeout','egCore','egNet','egGridDataProvider','itemSvc',
+function($scope , $q , $window , $routeParams , $location , $timeout , egCore , egNet , egGridDataProvider , itemSvc) {
 
     $scope.defaults = { // If defaults are not set at all, allow everything
         statcats : true,
@@ -546,6 +546,17 @@ function($scope , $q , $routeParams , $location , $timeout , egCore , egNet , eg
     $scope.fetchDefaults();
 
     $scope.dirty = false;
+    $scope.$watch('dirty',
+        function(newVal, oldVal) {
+            if (newVal && newVal != oldVal) {
+                $($window).on('beforeunload.edit', function(){
+                    return 'There is unsaved data!'
+                });
+            } else {
+                $($window).off('beforeunload.edit');
+            }
+        }
+    );
 
     $scope.show_vols = true;
     $scope.show_copies = true;
@@ -598,7 +609,13 @@ function($scope , $q , $routeParams , $location , $timeout , egCore , egNet , eg
                 if ($scope.workingGridControls && $scope.workingGridControls.selectedItems) {
                     angular.forEach(
                         $scope.workingGridControls.selectedItems(),
-                        function (cp) { cp[field](newval); cp.ischanged(1); }
+                        function (cp) {
+                            if (cp[field]() !== newval) {
+                                cp[field](newval);
+                                cp.ischanged(1);
+                                $scope.dirty = true;
+                            }
+                        }
                     );
                 }
             }
@@ -627,6 +644,8 @@ function($scope , $q , $routeParams , $location , $timeout , egCore , egNet , eg
                 angular.forEach(
                     $scope.workingGridControls.selectedItems(),
                     function (cp) {
+                        $scope.dirty = true;
+
                         cp.stat_cat_entries(
                             angular.forEach( cp.stat_cat_entries(), function (e) {
                                 if (e.stat_cat() == id) { // mark deleted
@@ -724,12 +743,16 @@ function($scope , $q , $routeParams , $location , $timeout , egCore , egNet , eg
                         angular.forEach(copies, function(cp) {
                             if (typeof $scope.batch.classification != 'undefined' && $scope.batch.classification != '')
                                 cp.call_number().label_class($scope.batch.classification);
+                                $scope.dirty = true;
                             if (typeof $scope.batch.prefix != 'undefined' && $scope.batch.prefix != '')
                                 cp.call_number().prefix($scope.batch.prefix);
+                                $scope.dirty = true;
                             if (typeof $scope.batch.label != 'undefined' && $scope.batch.label != '')
                                 cp.call_number().label($scope.batch.label);
+                                $scope.dirty = true;
                             if (typeof $scope.batch.suffix != 'undefined' && $scope.batch.suffix != '')
                                 cp.call_number().suffix($scope.batch.suffix);
+                                $scope.dirty = true;
                         });
                     });
                 });
@@ -997,7 +1020,7 @@ function($scope , $q , $routeParams , $location , $timeout , egCore , egNet , eg
         createSimpleUpdateWatcher('opac_visible');
         createSimpleUpdateWatcher('ref');
 
-        $scope.saveCompletedCopies = function () {
+        $scope.saveCompletedCopies = function (and_exit) {
             var cnHash = {};
             var perCnCopies = {};
             angular.forEach( $scope.completed_copies, function (cp) {
@@ -1008,6 +1031,7 @@ function($scope , $q , $routeParams , $location , $timeout , egCore , egNet , eg
                 } else {
                     perCnCopies[cn_id].push(cp);
                 }
+                cp.call_number(cn_id); // prevent loops in JSON-ification
             });
 
             angular.forEach(perCnCopies, function (v, k) {
@@ -1022,10 +1046,18 @@ function($scope , $q , $routeParams , $location , $timeout , egCore , egNet , eg
             egNet.request(
                 'open-ils.cat',
                 'open-ils.cat.asset.volume.fleshed.batch.update.override',
-                cnList, 1, { auto_merge_vols : 1, create_parts : 1 }
+                egCore.auth.token(), cnList, 1, { auto_merge_vols : 1, create_parts : 1 }
             ).then(function(update_count) {
                 alert(update_count + ' call numbers updated');
+                if (and_exit) {
+                    $scope.dirty = false;
+                    $timeout(function(){$window.close()});
+                }
             });
+        }
+
+        $scope.saveAndExit = function () {
+            $scope.saveCompletedCopies(true);
         }
 
     }
@@ -1038,8 +1070,8 @@ function($scope , $q , $routeParams , $location , $timeout , egCore , egNet , eg
         replace: true,
         template: '<div ng-include="'+"'/eg/staff/cat/volcopy/t_attr_edit'"+'"></div>',
         scope: { },
-        controller : ['$scope','itemSvc','egCore',
-            function ( $scope , itemSvc , egCore ) {
+        controller : ['$scope','$window','itemSvc','egCore',
+            function ( $scope , $window , itemSvc , egCore ) {
 
                 $scope.defaults = { // If defaults are not set at all, allow everything
                     statcats : true,
@@ -1076,6 +1108,18 @@ function($scope , $q , $routeParams , $location , $timeout , egCore , egNet , eg
                 $scope.fetchDefaults();
 
                 $scope.dirty = false;
+                $scope.$watch('dirty',
+                    function(newVal, oldVal) {
+                        if (newVal && newVal != oldVal) {
+                            $($window).on('beforeunload.template', function(){
+                                return 'There is unsaved template data!'
+                            });
+                        } else {
+                            $($window).off('beforeunload.template');
+                        }
+                    }
+                );
+
                 $scope.template_controls = true;
 
                 $scope.fetchTemplates = function () {
@@ -1129,6 +1173,8 @@ function($scope , $q , $routeParams , $location , $timeout , egCore , egNet , eg
             
                         egCore.hatch.setItem('cat.copy.templates', $scope.templates);
                         $scope.$parent.fetchTemplates();
+
+                        $scope.dirty = false;
                     }
                 }
             
@@ -1178,6 +1224,7 @@ function($scope , $q , $routeParams , $location , $timeout , egCore , egNet , eg
                             var newval = $scope.working.statcats[id];
                 
                             if (typeof newval != 'undefined') {
+                                $scope.dirty = true;
                                 if (angular.isObject(newval)) { // we'll use the pkey
                                     newval = newval.id();
                                 }
@@ -1204,6 +1251,7 @@ function($scope , $q , $routeParams , $location , $timeout , egCore , egNet , eg
                         }
                     });
                     $scope.working.circ_lib = undefined; // special
+                    $scope.dirty = false;
                 }
 
                 $scope.working = {};
