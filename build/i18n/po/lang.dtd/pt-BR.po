@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2015-02-27 11:41-0400\n"
+"POT-Creation-Date: 2015-08-26 13:12-0400\n"
 "PO-Revision-Date: 2012-05-25 22:59+0000\n"
 "Last-Translator: Tomas Abril <Unknown>\n"
 "Language-Team: Português do Brasil <kde-i18n-doc@kde.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2015-08-07 05:43+0000\n"
-"X-Generator: Launchpad (build 17656)\n"
+"X-Launchpad-Export-Date: 2015-08-27 05:21+0000\n"
+"X-Generator: Launchpad (build 17690)\n"
 "X-Poedit-Country: BRAZIL\n"
 "X-Poedit-Language: Portuguese\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -3136,11 +3136,8 @@ msgstr ""
 
 #: staff.main.menu.admin.server_admin.acq.label
 #: staff.main.menu.admin.server_admin.acq.accesskey
-msgctxt ""
-"staff.main.menu.admin.server_admin.acq.label "
-"staff.main.menu.admin.server_admin.acq.accesskey"
-msgid "&Acquisitions"
-msgstr "Aquisições"
+msgid "&Acquisitions Administration"
+msgstr ""
 
 #: staff.main.menu.admin.server_admin.acq.lineitem_alert.label
 #: staff.main.menu.admin.server_admin.acq.lineitem_alert.accesskey
@@ -3674,7 +3671,6 @@ msgstr ""
 
 #: staff.main.menu.acq.label
 #: staff.main.menu.acq.accesskey
-msgctxt "staff.main.menu.acq.label staff.main.menu.acq.accesskey"
 msgid "&Acquisitions"
 msgstr ""
 
@@ -12636,6 +12632,11 @@ msgstr ""
 msgid "&Refund"
 msgstr ""
 
+#: staff.patron.bill_interface.adjust_to_zero.label
+#: staff.patron.bill_interface.adjust_to_zero.accesskey
+msgid "Adjust to &Zero"
+msgstr ""
+
 #: staff.patron.bill_interface.full_details.label
 #: staff.patron.bill_interface.full_details.accesskey
 msgctxt ""
@@ -15725,3 +15726,9 @@ msgstr ""
 #~ "personaliza-la com informações ou funcionalidades que a sua organização "
 #~ "precisa para dar apoio às suas operações. Por exemplo, você pode adicionar "
 #~ "links para o processo e documentação dos procedimentos."
+
+#~ msgctxt ""
+#~ "staff.main.menu.admin.server_admin.acq.label "
+#~ "staff.main.menu.admin.server_admin.acq.accesskey"
+#~ msgid "&Acquisitions"
+#~ msgstr "Aquisições"

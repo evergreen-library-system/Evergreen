@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-25 02:28-0400\n"
-"PO-Revision-Date: 2013-10-04 12:28+0000\n"
+"POT-Creation-Date: 2015-08-26 13:12-0400\n"
+"PO-Revision-Date: 2015-08-31 14:35+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2014-10-10 04:50+0000\n"
-"X-Generator: Launchpad (build 17196)\n"
+"X-Launchpad-Export-Date: 2015-09-01 05:14+0000\n"
+"X-Generator: Launchpad (build 17690)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: Czech\n"
@@ -266,10 +266,34 @@ msgctxt "staff.patron.bills.handle_refund.btn_no"
 msgid "No"
 msgstr "Ne"
 
-#: staff.patron.bills.handle_refund.confirm_message
-msgctxt "staff.patron.bills.handle_refund.confirm_message"
+#: staff.patron.bills.handle_adjust_to_zero.confirm_message
+msgctxt "staff.patron.bills.handle_adjust_to_zero.confirm_message"
 msgid "Check here to confirm this message"
 msgstr "Zaškrtnutím potvrďte tuto zprávu"
+
+#: staff.patron.bills.handle_adjust_to_zero.message_plural
+msgid ""
+"Are you sure you would like to adjust to zero the balance on bills %1$s?"
+msgstr "Opravdu chcete zůstatek  poplatků %1$s natavit na nulu ?"
+
+#: staff.patron.bills.handle_adjust_to_zero.message_singular
+msgid ""
+"Are you sure you would like to adjust to zero the balance on bill %1$s?"
+msgstr "Opravdu chcete zůstatek poplatku  %1$s nastavit na nulu?"
+
+#: staff.patron.bills.handle_adjust_to_zero.title
+msgid "Adjust to Zero"
+msgstr "Nastavit na nulu"
+
+#: staff.patron.bills.handle_adjust_to_zero.btn_yes
+msgctxt "staff.patron.bills.handle_adjust_to_zero.btn_yes"
+msgid "Yes"
+msgstr "Ano"
+
+#: staff.patron.bills.handle_adjust_to_zero.btn_no
+msgctxt "staff.patron.bills.handle_adjust_to_zero.btn_no"
+msgid "No"
+msgstr "Ne"
 
 #: staff.patron.bill_history.print_bills.print_error
 msgid "printing bills"
@@ -2020,6 +2044,10 @@ msgstr "Dostuné / Celkem"
 
 #~ msgid "Record ID: %1$s Create Date: %2$s "
 #~ msgstr "ID záznamu: %1$s Datum vytvoření: %2$s "
+
+#~ msgctxt "staff.patron.bills.handle_refund.confirm_message"
+#~ msgid "Check here to confirm this message"
+#~ msgstr "Zaškrtnutím potvrďte tuto zprávu"
 
 #~ msgid "Patron account is INACTIVE.<br/><br/>"
 #~ msgstr "Čtenářský účet je NEAKTIVNÍ.<br/><br/>"
