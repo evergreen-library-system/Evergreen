@@ -30,6 +30,49 @@
         </div>
     </div>
 
+    <div class="row pad-vert" ng-if="template_controls && defaults.show_vol_template_controls">
+        <div class="row">
+            <div class="col-xs-12">
+                <h4 class="center-block">[% l('Volume Attributes') %]</h4>
+            </div>
+        </div>
+    </div>
+
+    <div class="row pad-vert" ng-if="template_controls && defaults.show_vol_template_controls">
+        <div class="col-md-1 bg-info">
+            <b>[% l('Classification') %]</b>
+        </div>
+        <div class="nullable col-md-2" ng-class="{'bg-success': working.callnumber.classification !== undefined}">
+            <select class="form-control" ng-model="working.callnumber.classification" ng-options="cl.id() as cl.name() for cl in classification_list">
+                <option value="">[% l('<NONE>') %]</option>
+            </select>
+        </div>
+        <div class="col-md-1 bg-info">
+            <b>[% l('Prefix') %]</b>
+        </div>
+        <div class="nullable col-xs-2" ng-class="{'bg-success': working.callnumber.prefix !== undefined}">
+            <select class="form-control" ng-model="working.callnumber.prefix" ng-options="p.id() as p.label() for p in prefix_list">
+                <option value="">[% l('<NONE>') %]</option>
+            </select>
+        </div>
+        <div class="col-md-1 bg-info">
+            <b>[% l('Suffix') %]</b>
+        </div>
+        <div class="nullable col-md-2" ng-class="{'bg-success': working.callnumber.suffix !== undefined}">
+            <select class="form-control" ng-model="working.callnumber.suffix" ng-options="s.id() as s.label() for s in suffix_list">
+                <option value="">[% l('<NONE>') %]</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="row pad-vert" ng-if="template_controls && defaults.show_vol_template_controls">
+        <div class="row">
+            <div class="col-xs-12">
+                <h4 class="center-block">[% l('Copy Attributes') %]</h4>
+            </div>
+        </div>
+    </div>
+
     <div class="row pad-vert"></div>
 
     <div class="row bg-info">

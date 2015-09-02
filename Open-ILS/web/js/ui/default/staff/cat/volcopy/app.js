@@ -201,8 +201,8 @@ function(egCore , $q) {
             '</div>',
 
         scope: { copy: "=", callNumber: "=", index: "@" },
-        controller : ['$scope','itemSvc',
-            function ( $scope , itemSvc ) {
+        controller : ['$scope','itemSvc','egCore',
+            function ( $scope , itemSvc , egCore ) {
                 $scope.new_part_id = 0;
 
                 $scope.nextBarcode = function (i) {
@@ -247,7 +247,7 @@ function(egCore , $q) {
                 itemSvc.get_parts($scope.callNumber.record()).then(function(list){
                     $scope.part_list = list;
                     angular.forEach(list, function(p){ $scope.parts.push(p.label()) });
-                    $scope.parts = angluar.copy($scope.parts);
+                    $scope.parts = angular.copy($scope.parts);
                 });
 
             }
@@ -691,8 +691,15 @@ function($scope , $q , $routeParams , $location , $timeout , egCore , egNet , eg
                     $scope.working[k] = angular.copy(v);
                 } else {
                     angular.forEach(v, function (sv,sk) {
-                        $scope.working[k][sk] = angular.copy(sv);
-                        if (k == 'statcats') $scope.statcatUpdate(sk);
+                        if (k == 'callnumber') {
+                            angular.forEach(v, function (cnv,cnk) {
+                                $scope.batch[cnk] = cnv;
+                            });
+                            $scope.applyBatchCNValues();
+                        } else {
+                            $scope.working[k][sk] = angular.copy(sv);
+                            if (k == 'statcats') $scope.statcatUpdate(sk);
+                        }
                     });
                 }
             });
@@ -1012,11 +1019,13 @@ function($scope , $q , $routeParams , $location , $timeout , egCore , egNet , eg
                 cnList.push(v);
             });
 
-            egCore.net.request(
+            egNet.request(
                 'open-ils.cat',
                 'open-ils.cat.asset.volume.fleshed.batch.update.override',
                 cnList, 1, { auto_merge_vols : 1, create_parts : 1 }
-            );
+            ).then(function(update_count) {
+                alert(update_count + ' call numbers updated');
+            });
         }
 
     }
@@ -1263,6 +1272,25 @@ function($scope , $q , $routeParams , $location , $timeout , egCore , egNet , eg
                 createSimpleUpdateWatcher('mint_condition');
                 createSimpleUpdateWatcher('opac_visible');
                 createSimpleUpdateWatcher('ref');
+
+                $scope.suffix_list = [];
+                itemSvc.get_suffixes(egCore.auth.user().ws_ou()).then(function(list){
+                    $scope.suffix_list = list;
+                });
+
+                $scope.prefix_list = [];
+                itemSvc.get_prefixes(egCore.auth.user().ws_ou()).then(function(list){
+                    $scope.prefix_list = list;
+                });
+
+                $scope.classification_list = [];
+                itemSvc.get_classifications().then(function(list){
+                    $scope.classification_list = list;
+                });
+
+                createSimpleUpdateWatcher('working.callnumber.classification');
+                createSimpleUpdateWatcher('working.callnumber.prefix');
+                createSimpleUpdateWatcher('working.callnumber.suffix');
             }
         ]
     }

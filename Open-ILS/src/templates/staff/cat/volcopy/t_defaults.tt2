@@ -4,9 +4,21 @@
             <div class="row">
                 <div class="col-xs-12">
                     <h4>[% l('Volume/Copy Detail defaults') %]</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
                     <label>
                         <input type="checkbox" ng-change="saveDefaults()" ng-model="defaults.always_volumes"/>
                         [% l('Always display Volume/Copy Detail pane') %]
+                    </label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <label>
+                        <input type="checkbox" ng-change="saveDefaults()" ng-model="defaults.show_vol_template_controls"/>
+                        [% l('Allow Call Number attributes in Copy Templates') %]
                     </label>
                 </div>
             </div>
