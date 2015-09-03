@@ -1026,6 +1026,13 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                         }
                     }
                 );
+                $scope.$watch('marcXml',
+                    function(newVal, oldVal) {
+                        if (newVal && newVal !== oldVal) {
+                            loadRecord();
+                        }
+                    }
+                );
 
                 var unregister = $scope.$watch(function() {
                     return egTagTable.initialized();

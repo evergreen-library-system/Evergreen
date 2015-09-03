@@ -1,0 +1,13 @@
+<div class="form-inline row" ng-show="!have_template">
+    <div class="col-xs-6">
+        <div class="form-group">
+            <label for="select-marc-template" class="control-label">[% l('Select MARC template') %]</label>
+            <select id="select-marc-template" class="form-control" ng-model="template_name" ng-options="name as name for name in template_list"></select>
+        </div>
+        <button class="btn btn-primary" ng-click="loadTemplate()">[% l('Load') %]</button>
+        <button class="btn btn-default" ng-click="setDefaultTemplate()">[% l('Set Workstation Default') %]</button>
+    </div>
+</div>
+<div ng-show="have_template" class="row col-md-12">
+  <eg-marc-edit-record dirty-flag="stop_unload" record_id="new_bib_id" marc-xml="marc_template" record-type="bre" />
+</div>

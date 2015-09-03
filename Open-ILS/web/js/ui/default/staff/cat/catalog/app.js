@@ -45,6 +45,12 @@ angular.module('egCatalogApp', ['ui.bootstrap','ngRoute','egCoreMod','egGridMod'
         resolve : resolver
     });
 
+    $routeProvider.when('/cat/catalog/new_bib', {
+        templateUrl: './cat/catalog/t_new_bib',
+        controller: 'NewBibCtrl',
+        resolve : resolver
+    });
+
     // create some catalog page-specific mappings
     $routeProvider.when('/cat/catalog/record/:record_id', {
         templateUrl: './cat/catalog/t_catalog',
@@ -160,6 +166,62 @@ function($scope , $routeParams , $location , $q , egCore ) {
             return loadRecord(record_id);
         });
     }
+
+}])
+
+.controller('NewBibCtrl',
+       ['$scope','$routeParams','$location','$window','$q','egCore',
+        'egGridDataProvider','egHoldGridActions','$timeout','holdingsSvc',
+function($scope , $routeParams , $location , $window , $q , egCore) {
+
+    $scope.have_template = false;
+    $scope.marc_template = '';
+    $scope.stop_unload = false;
+    $scope.template_list = [];
+    $scope.template_name = '';
+    $scope.new_bib_id = 0;
+
+    egCore.net.request(
+        'open-ils.cat',
+        'open-ils.cat.marc_template.types.retrieve'
+    ).then(function(resp) {
+        angular.forEach(resp, function(name) {
+            $scope.template_list.push(name);
+        });
+        $scope.template_list.sort();
+    });
+    egCore.hatch.getItem('cat.default_bib_marc_template').then(function(template) {
+        $scope.template_name = template;
+    });
+
+    $scope.loadTemplate = function() {
+        if ($scope.template_name) {
+            egCore.net.request(
+                'open-ils.cat',
+                'open-ils.cat.biblio.marc_template.retrieve',
+                $scope.template_name
+            ).then(function(template) {
+                $scope.marc_template = template;
+                $scope.have_template = true;
+            });
+        }
+    }
+
+    $scope.setDefaultTemplate = function() {
+        var hatch_key = "cat.default_bib_marc_template";
+        if ($scope.template_name) {
+            egCore.hatch.setItem(hatch_key, $scope.template_name);
+        } else {
+            egCore.hatch.removeItem(hatch_key);
+        }
+    }
+
+    $scope.$watch('new_bib_id', function(newVal, oldVal) {
+        if (newVal) {
+            $location.path('/cat/catalog/record/' + $scope.new_bib_id);
+        }
+    });
+    
 
 }])
 
