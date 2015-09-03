@@ -311,7 +311,6 @@ function($scope,  $location,  $q,  $timeout,  $modal,
         })
     }
 
-
     // opens the delete confirmation and deletes the current
     // bucket if the user confirms.
     $scope.openDeleteBucketDialog = function() {
@@ -402,9 +401,9 @@ function($scope,  $routeParams,  bucketSvc , egGridDataProvider,   egCore) {
 }])
 
 .controller('ViewCtrl',
-       ['$scope','$q','$routeParams','bucketSvc', 'egCore',
+       ['$scope','$q','$routeParams','$timeout','$window','bucketSvc','egCore',
         'egConfirmDialog',
-function($scope,  $q , $routeParams,  bucketSvc, egCore,
+function($scope,  $q , $routeParams , $timeout , $window , bucketSvc , egCore,
          egConfirmDialog) {
 
     $scope.setTab('view');
@@ -447,6 +446,35 @@ function($scope,  $q , $routeParams,  bucketSvc, egCore,
 
         bucketSvc.bucketNeedsRefresh = true;
         return $q.all(promises).then(drawBucket);
+    }
+
+    $scope.spawnHoldingsEdit = function (copies) {
+        var rec_hash = {};
+        angular.forEach($scope.gridControls.selectedItems(), function (i) {
+            var rec = i['call_number.record.id'];
+            if (!rec_hash[rec]) rec_hash[rec] = [];
+            rec_hash[rec].push(i.id);
+        })
+
+        angular.forEach(rec_hash, function(cp_list,r) {
+            egCore.net.request(
+                'open-ils.actor',
+                'open-ils.actor.anon_cache.set_value',
+                null, 'edit-these-copies', {
+                    record_id: r,
+                    copies: cp_list,
+                    hide_vols : true,
+                    hide_copies : false
+                }
+            ).then(function(key) {
+                if (key) {
+                    var url = egCore.env.basePath + 'cat/volcopy/' + key;
+                    $timeout(function() { $window.open(url, '_blank') });
+                } else {
+                    alert('Could not create anonymous cache key!');
+                }
+            });
+        });
     }
 
     $scope.deleteCopiesFromCatalog = function(copies) {

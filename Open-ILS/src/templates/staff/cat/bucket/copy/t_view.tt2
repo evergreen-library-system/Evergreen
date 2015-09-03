@@ -10,6 +10,8 @@
 
   [% INCLUDE 'staff/cat/bucket/copy/t_grid_menu.tt2' %]
 
+  <eg-grid-action label="[% l('Edit Selected Copies') %]" 
+    handler="spawnHoldingsEdit"></eg-grid-action>
   <eg-grid-action label="[% l('Remove Selected Copies') %]" 
     handler="detachCopies"></eg-grid-action>
   <eg-grid-action label="[% l('Delete Selected Copies from Catalog') %]" 
