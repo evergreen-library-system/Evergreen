@@ -13,7 +13,7 @@
  */
 
 angular.module('egCatCopyBuckets', 
-    ['ngRoute', 'ui.bootstrap', 'egCoreMod', 'egUiMod', 'egGridMod'])
+    ['ngRoute', 'ui.bootstrap', 'egCoreMod', 'egUiMod', 'egGridMod', 'egUserMod'])
 
 .config(function($routeProvider, $locationProvider, $compileProvider) {
     $locationProvider.html5Mode(true);
@@ -401,9 +401,9 @@ function($scope,  $routeParams,  bucketSvc , egGridDataProvider,   egCore) {
 }])
 
 .controller('ViewCtrl',
-       ['$scope','$q','$routeParams','$timeout','$window','bucketSvc','egCore',
+       ['$scope','$q','$routeParams','$timeout','$window','$modal','bucketSvc','egCore','egUser',
         'egConfirmDialog',
-function($scope,  $q , $routeParams , $timeout , $window , bucketSvc , egCore,
+function($scope,  $q , $routeParams , $timeout , $window , $modal , bucketSvc , egCore , egUser ,
          egConfirmDialog) {
 
     $scope.setTab('view');
@@ -474,6 +474,80 @@ function($scope,  $q , $routeParams , $timeout , $window , bucketSvc , egCore,
                     alert('Could not create anonymous cache key!');
                 }
             });
+        });
+    }
+
+    $scope.requestItems = function() {
+        var copy_list = $scope.gridControls.selectedItems().map(
+            function (i) {
+                i.id;
+            }
+        );
+
+        if (copy_list.length == 0) return;
+
+        return $modal.open({
+            templateUrl: './cat/catalog/t_request_items',
+            animation: true,
+            controller:
+                   ['$scope','$modalInstance',
+            function($scope , $modalInstance) {
+                $scope.user = null;
+                $scope.first_user_fetch = true;
+
+                $scope.hold_data = {
+                    hold_type : 'C',
+                    copy_list : copy_list,
+                    pickup_lib: egCore.org.get(egCore.auth.user().ws_ou()),
+                    user      : egCore.auth.user().id()
+                };
+
+                egUser.get( $scope.hold_data.user ).then(function(u) {
+                    $scope.user = u;
+                    $scope.barcode = u.card().barcode();
+                    $scope.user_name = egUser.format_name(u);
+                    $scope.hold_data.user = u.id();
+                });
+
+                $scope.user_name = '';
+                $scope.barcode = '';
+                $scope.$watch('barcode', function (n) {
+                    if (!$scope.first_user_fetch) {
+                        egUser.getByBarcode(n).then(function(u) {
+                            $scope.user = u;
+                            $scope.user_name = egUser.format_name(u);
+                            $scope.hold_data.user = u.id();
+                        }, function() {
+                            $scope.user = null;
+                            $scope.user_name = '';
+                            delete $scope.hold_data.user;
+                        });
+                    }
+                    $scope.first_user_fetch = false;
+                });
+
+                $scope.ok = function(h) {
+                    var args = {
+                        patronid  : h.user,
+                        hold_type : h.hold_type,
+                        pickup_lib: h.pickup_lib.id(),
+                        depth     : 0
+                    };
+
+                    egCore.net.request(
+                        'open-ils.circ',
+                        'open-ils.circ.holds.test_and_create.batch.override',
+                        egCore.auth.token(), args, h.copy_list
+                    );
+
+                    $modalInstance.close();
+                }
+
+                $scope.cancel = function($event) {
+                    $modalInstance.dismiss();
+                    $event.preventDefault();
+                }
+            }]
         });
     }
 
