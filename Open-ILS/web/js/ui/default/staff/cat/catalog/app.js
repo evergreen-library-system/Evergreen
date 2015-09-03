@@ -7,13 +7,13 @@
  *
  */
 
-angular.module('egCatalogApp', ['ui.bootstrap','ngRoute','egCoreMod','egGridMod', 'egMarcMod'])
+angular.module('egCatalogApp', ['ui.bootstrap','ngRoute','egCoreMod','egGridMod', 'egMarcMod', 'egUserMod'])
 
 .config(function($routeProvider, $locationProvider, $compileProvider) {
     $locationProvider.html5Mode(true);
     $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|blob):/); // grid export
 
-    var resolver = {delay : ['egCore','egStartup', function(egCore,  egStartup) {
+    var resolver = {delay : ['egCore','egStartup','egUser', function(egCore, egStartup, egUser) {
         egCore.env.classLoaders.aous = function() {
             return egCore.org.settings([
                 'cat.marc_control_number_identifier'
@@ -227,9 +227,9 @@ function($scope , $routeParams , $location , $window , $q , egCore) {
 
 .controller('CatalogCtrl',
        ['$scope','$routeParams','$location','$window','$q','egCore','egHolds','egCirc',
-        'egGridDataProvider','egHoldGridActions','$timeout','holdingsSvc',
+        'egGridDataProvider','egHoldGridActions','$timeout','$modal','holdingsSvc','egUser',
 function($scope , $routeParams , $location , $window , $q , egCore , egHolds , egCirc, 
-         egGridDataProvider , egHoldGridActions , $timeout , holdingsSvc) {
+         egGridDataProvider , egHoldGridActions , $timeout , $modal , holdingsSvc , egUser) {
 
     // set record ID on page load if available...
     $scope.record_id = $routeParams.record_id;
@@ -315,6 +315,75 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
             return this.arrayNotifier(holdingsSvc.copies, offset, count);
         }
     });
+
+    $scope.requestItems = function() {
+        var copy_list = gatherSelectedHoldingsIds();
+        if (copy_list.length == 0) return;
+
+        return $modal.open({
+            templateUrl: './cat/catalog/t_request_items',
+            animation: true,
+            controller:
+                   ['$scope','$modalInstance',
+            function($scope , $modalInstance) {
+                $scope.user = null;
+                $scope.first_user_fetch = true;
+
+                $scope.hold_data = {
+                    hold_type : 'C',
+                    copy_list : copy_list,
+                    pickup_lib: egCore.org.get(egCore.auth.user().ws_ou()),
+                    user      : egCore.auth.user().id()
+                };
+
+                egUser.get( $scope.hold_data.user ).then(function(u) {
+                    $scope.user = u;
+                    $scope.barcode = u.card().barcode();
+                    $scope.user_name = egUser.format_name(u);
+                    $scope.hold_data.user = u.id();
+                });
+
+                $scope.user_name = '';
+                $scope.barcode = '';
+                $scope.$watch('barcode', function (n) {
+                    if (!$scope.first_user_fetch) {
+                        egUser.getByBarcode(n).then(function(u) {
+                            $scope.user = u;
+                            $scope.user_name = egUser.format_name(u);
+                            $scope.hold_data.user = u.id();
+                        }, function() {
+                            $scope.user = null;
+                            $scope.user_name = '';
+                            delete $scope.hold_data.user;
+                        });
+                    }
+                    $scope.first_user_fetch = false;
+                });
+
+                $scope.ok = function(h) {
+                    var args = {
+                        patronid  : h.user,
+                        hold_type : h.hold_type,
+                        pickup_lib: h.pickup_lib.id(),
+                        depth     : 0
+                    };
+
+                    egCore.net.request(
+                        'open-ils.circ',
+                        'open-ils.circ.holds.test_and_create.batch.override',
+                        egCore.auth.token(), args, h.copy_list
+                    );
+
+                    $modalInstance.close();
+                }
+
+                $scope.cancel = function($event) {
+                    $modalInstance.dismiss();
+                    $event.preventDefault();
+                }
+            }]
+        });
+    }
 
     // refresh the list of holdings when the record_id is changed.
     $scope.holdings_record_id_changed = function(id) {
@@ -486,7 +555,6 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
                 'eg.cat.item_transfer_target',
                 $scope.holdingsGridControls.selectedItems()[0].call_number.id
             );
-            console.log('item_transfer_dest: '+$scope.holdingsGridControls.selectedItems()[0].call_number.id);
         }
     }
 
@@ -495,7 +563,6 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
             'eg.cat.volume_transfer_target',
             $scope.holdingsGridControls.selectedItems()[0].owner_id
         );
-        console.log('vol_transfer_dest: '+$scope.holdingsGridControls.selectedItems()[0].owner_id);
     }
 
     $scope.selectedHoldingsItemStatusDetail = function (){

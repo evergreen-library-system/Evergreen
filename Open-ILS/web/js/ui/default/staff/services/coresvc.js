@@ -10,7 +10,7 @@ angular.module('egCoreMod')
 .factory('egCore', 
        ['egIDL','egNet','egEnv','egOrg','egPCRUD','egEvent','egAuth',
         'egPerm','egHatch','egPrint','egStartup','egStrings','egDate',
-function(egIDL , egNet , egEnv , egOrg , egPCRUD , egEvent , egAuth , 
+function(egIDL , egNet , egEnv , egOrg , egPCRUD , egEvent , egAuth ,
          egPerm , egHatch , egPrint , egStartup , egStrings , egDate) {
 
     return {

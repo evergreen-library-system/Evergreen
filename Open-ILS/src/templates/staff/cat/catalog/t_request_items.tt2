@@ -1,0 +1,48 @@
+<form ng-submit="ok(hold_data)" role="form">
+  <div class="modal-header">
+    <button type="button" class="close" ng-click="cancel()" 
+      aria-hidden="true">&times;</button>
+    <h4 class="modal-title">[% l('Request Items') %]</h4>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="input-group">
+          <span class="input-group-addon">[% l('User Barcode') %]</span>
+          <input class="form-control" type="text" focus-me="true"
+            ng-model="barcode" required placeholder="[% l('User Barcode') %]"/>
+        </div>
+      </div>
+      <div class="col-md-6"> {{user_name}} </div>
+    </div>
+    <div class="row pad-vert">
+      <div class="col-md-6">
+        <div class="input-group">
+          <span class="input-group-addon">[% l('Hold Type') %]</span>
+          <select class="form-control" required ng-model="hold_data.hold_type">
+            <option value="C">[% l('Copy Hold') %]</option>
+            <option value="R" selected>[% l('Recall Hold') %]</option>
+            <option value="F">[% l('Force Hold') %]</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="input-group">
+          <span class="input-group-addon">[% l('Pickup Lib') %]</span>
+          <eg-org-selector selected="hold_data.pickup_lib" disableTest="cant_have_vols"></eg-org-selector>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="row">
+      <div class="col-md-6">
+        [% l('Number of items: ') %] {{hold_data.copy_list.length}}
+      </div>
+      <div class="col-md-6 pull-right">
+        <input type="submit" class="btn btn-primary" value="[% l('OK') %]" ng-disabled="!hold_data.user"/>
+        <button class="btn btn-warning" ng-click="cancel($event)">[% l('Cancel') %]</button>
+      </div>
+    </div>
+  </div>
+</form>

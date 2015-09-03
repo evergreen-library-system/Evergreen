@@ -33,6 +33,9 @@
       checkbox="holdings_show_vols"
       checked="holdings_show_vols"/>
 
+    <eg-grid-action handler="requestItems"
+      label="[% l('Request Items') %]"></eg-grid-action>
+
     <eg-grid-action handler="selectedHoldingsItemStatus" group="[% l('Show') %]"
       label="[% l('Item Status (list)') %]"></eg-grid-action>
     <eg-grid-action handler="selectedHoldingsItemStatusDetail" group="[% l('Show') %]"
