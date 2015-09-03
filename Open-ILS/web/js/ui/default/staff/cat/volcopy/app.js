@@ -32,6 +32,8 @@ angular.module('egVolCopy',
 function(egCore , $q) {
 
     var service = {
+        new_cp_id : 0,
+        new_cn_id : 0,
         tree : {}, // holds lib->cn->copy hash stack
         copies : [] // raw copy list
     };
@@ -282,7 +284,6 @@ function(egCore , $q) {
         scope: {allcopies: "=", copies: "=" },
         controller : ['$scope','itemSvc','egCore',
             function ( $scope , itemSvc , egCore ) {
-                $scope.new_cp_id = 0;
                 $scope.callNumber =  $scope.copies[0].call_number();
 
                 $scope.idTracker = function (x) { if (x) return x.id() };
@@ -391,7 +392,7 @@ function(egCore , $q) {
                 $scope.changeCPCount = function () {
                     while ($scope.copy_count > $scope.copies.length) {
                         var cp = new egCore.idl.acp();
-                        cp.id( --$scope.new_cp_id );
+                        cp.id( --itemSvc.new_cp_id );
                         cp.isnew( true );
                         cp.circ_lib( $scope.lib );
                         cp.call_number( $scope.callNumber );
@@ -437,7 +438,6 @@ function(egCore , $q) {
         scope: { allcopies: "=", struct: "=", lib: "@", record: "@" },
         controller : ['$scope','itemSvc','egCore',
             function ( $scope , itemSvc , egCore ) {
-                $scope.new_cn_id = 0;
                 $scope.first_cn = Object.keys($scope.struct)[0];
                 $scope.full_cn = $scope.struct[$scope.first_cn][0].call_number();
 
@@ -458,13 +458,13 @@ function(egCore , $q) {
                     if (n > o) { // adding
                         for (var i = o; o < n; o++) {
                             var cn = new egCore.idl.acn();
-                            cn.id( --$scope.new_cn_id );
+                            cn.id( --itemSvc.new_cn_id );
                             cn.isnew( true );
                             cn.owning_lib( $scope.owning_lib.id() );
                             cn.record( $scope.full_cn.record() );
 
                             var cp = new egCore.idl.acp();
-                            cp.id( --$scope.new_cp_id );
+                            cp.id( --itemSvc.new_cp_id );
                             cp.isnew( true );
                             cp.circ_lib( $scope.owning_lib.id() );
                             cp.call_number( cn );
@@ -810,17 +810,51 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
 
                 if (data.raw && data.raw.length) {
 
-                    /* data.raw must be an array of copies with (at least)
-                     * the call number fleshed on each.  For new copies
-                     * create from whole cloth, the id for each should
-                     * probably be negative and isnew() should return true.
-                     * Each /distinct/ call number must have a distinct id
-                     * as well, probably negative also if they're new. Clear?
+                    /* data.raw data structure looks like this:
+                     * [{
+                     *      callnumber : $cn_id, // optional, to add a copy to a cn
+                     *      owner      : $org, // optional, defaults to ws_ou
+                     *      label      : $cn_label, // optional, to supply a label on a new cn
+                     *      barcode    : $cp_barcode // optional, to supply a barcode on a new cp
+                     * },...]
+                     * 
+                     * All can be left out and a completely empty vol/copy combo will be vivicated.
                      */
 
                     angular.forEach(
                         data.raw,
-                        function (cp) { itemSvc.addCopy(cp) }
+                        function (proto) {
+                            if (proto.callnumber) {
+                                return egCore.pcrud.retrieve('acn', proto.callnumber)
+                                .then(function(cn) {
+                                    var cp = new egCore.idl.acp();
+                                    cp.call_number( cn );
+                                    cp.id( --itemSvc.new_cp_id );
+                                    cp.isnew( true );
+                                    cp.circ_lib( $scope.record_id );
+                                    if (proto.barcode) cp.barcode( proto.barcode );
+
+                                    itemSvc.addCopy(cp)
+                                });
+                            } else {
+                                var cn = new egCore.idl.acn();
+                                cn.id( --itemSvc.new_cn_id );
+                                cn.isnew( true );
+                                cn.owning_lib( proto.owner || egCore.auth.user().ws_ou() );
+                                cn.record( $scope.record_id );
+                                if (proto.label) cn.label( proto.label );
+
+                                var cp = new egCore.idl.acp();
+                                cp.call_number( cn );
+                                cp.id( --itemSvc.new_cp_id );
+                                cp.isnew( true );
+                                cp.circ_lib( $scope.record_id );
+                                if (proto.barcode) cp.barcode( proto.barcode );
+
+                                itemSvc.addCopy(cp)
+                            }
+    
+                        }
                     );
 
                     return itemSvc.copies;

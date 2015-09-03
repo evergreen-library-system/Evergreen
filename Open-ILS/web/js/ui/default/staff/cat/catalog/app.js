@@ -354,6 +354,42 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         return cn_id_list;
     }
 
+    spawnHoldingsAdd = function (hide_vols,hide_copies){
+        var raw = [];
+        if (hide_vols) { // just a copy on existing volumes
+            angular.forEach(gatherSelectedVolumeIds(), function (v) {
+                raw.push( {callnumber : v} );
+            });
+        } else {
+            angular.forEach(
+                $scope.holdingsGridControls.selectedItems(),
+                function (item) {
+                    raw.push({owner : item.owner_id});
+                }
+            );
+        }
+
+        egCore.net.request(
+            'open-ils.actor',
+            'open-ils.actor.anon_cache.set_value',
+            null, 'edit-these-copies', {
+                record_id: $scope.record_id,
+                raw: raw,
+                hide_vols : hide_vols,
+                hide_copies : hide_copies
+            }
+        ).then(function(key) {
+            if (key) {
+                var url = egCore.env.basePath + 'cat/volcopy/' + key;
+                $timeout(function() { $window.open(url, '_blank') });
+            } else {
+                alert('Could not create anonymous cache key!');
+            }
+        });
+    }
+    $scope.selectedHoldingsVolCopyAdd = function () { spawnHoldingsAdd(false,false) }
+    $scope.selectedHoldingsCopyAdd = function () { spawnHoldingsAdd(true,false) }
+
     spawnHoldingsEdit = function (hide_vols,hide_copies){
         egCore.net.request(
             'open-ils.actor',
@@ -864,6 +900,7 @@ function(egCore , $q) {
                             current_blob.call_number = cp.call_number;
                             current_blob.owner_list = cp.owner_list;
                             current_blob.owner_label = cp.owner_label;
+                            current_blob.owner_id = cp.owner_id;
                         } else {
                             var current_key = cp.owner_list.join('') + cp.call_number.label;
                             if (prev_key == current_key) { // collapse into current_blob
@@ -880,6 +917,7 @@ function(egCore , $q) {
                                 current_blob.id_list = cp.id_list;
                                 current_blob.raw = cp.raw;
                                 current_blob.owner_label = cp.owner_label;
+                                current_blob.owner_id = cp.owner_id;
                                 current_blob.call_number = cp.call_number;
                                 current_blob.owner_list = cp.owner_list;
                             }
@@ -906,6 +944,7 @@ function(egCore , $q) {
                                 current_blob.copy_count = cp.copy_count;
                                 current_blob.owner_list = cp.owner_list;
                                 current_blob.owner_label = cp.owner_label;
+                                current_blob.owner_id = cp.owner_id;
                             } else {
                                 var current_key = cp.owner_list.join('');
                                 if (prev_key == current_key) { // collapse into current_blob
@@ -923,6 +962,7 @@ function(egCore , $q) {
                                     current_blob.id_list = cp.id_list;
                                     current_blob.raw = cp.raw;
                                     current_blob.owner_label = cp.owner_label;
+                                    current_blob.owner_id = cp.owner_id;
                                     current_blob.cn_count = 1;
                                     current_blob.copy_count = cp.copy_count;
                                     current_blob.owner_list = cp.owner_list;
