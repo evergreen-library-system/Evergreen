@@ -556,18 +556,22 @@ angular.module('egGridMod',
 
             // fires the hide handler function for a context action
             $scope.actionHide = function(action) {
-                if (!action.hide) {
+                if (typeof action.hide == 'undefined') {
                     return false;
                 }
-                return action.hide(action);
+                if (angular.isFunction(action.hide))
+                    return action.hide(action);
+                return action.hide;
             }
 
             // fires the disable handler function for a context action
             $scope.actionDisable = function(action) {
-                if (!action.disabled) {
+                if (typeof action.disabled == 'undefined') {
                     return false;
                 }
-                return action.disabled(action);
+                if (angular.isFunction(action.disabled))
+                    return action.disabled(action);
+                return action.disabled;
             }
 
             // fires the action handler function for a context action

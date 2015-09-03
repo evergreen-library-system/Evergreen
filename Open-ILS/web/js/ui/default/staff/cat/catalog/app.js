@@ -316,6 +316,10 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         })
     });
 
+    $scope.vols_not_shown = function () {
+        return !$scope.holdings_show_vols;
+    }
+
     $scope.holdings_checkbox_handler = function (item) {
         $scope.holdings_cb_changed(item.checkbox,item.checked);
     }
@@ -327,6 +331,27 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
             function (item) { cp_id_list = cp_id_list.concat(item.id_list) }
         );
         return cp_id_list;
+    }
+
+    function gatherSelectedRawCopies () {
+        var cp_list = [];
+        angular.forEach(
+            $scope.holdingsGridControls.selectedItems(),
+            function (item) { cp_list = cp_list.concat(item.raw) }
+        );
+        return cp_list;
+    }
+
+    function gatherSelectedVolumeIds () {
+        var cn_id_list = [];
+        angular.forEach(
+            $scope.holdingsGridControls.selectedItems(),
+            function (item) {
+                if (cn_id_list.indexOf(item.call_number.id) == -1)
+                    cn_id_list.push(item.call_number.id)
+            }
+        );
+        return cn_id_list;
     }
 
     spawnHoldingsEdit = function (hide_vols,hide_copies){
@@ -357,6 +382,24 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         $timeout(function() { $window.open(url, '_blank') });
     }
 
+    $scope.markVolAsItemTarget = function() {
+        if ($scope.holdingsGridControls.selectedItems()[0].call_number.id) { // cn.id missing when vols are collapsed
+            egCore.hatch.setLocalItem(
+                'eg.cat.item_transfer_target',
+                $scope.holdingsGridControls.selectedItems()[0].call_number.id
+            );
+            console.log('item_transfer_dest: '+$scope.holdingsGridControls.selectedItems()[0].call_number.id);
+        }
+    }
+
+    $scope.markLibAsVolTarget = function() {
+        egCore.hatch.setLocalItem(
+            'eg.cat.volume_transfer_target',
+            $scope.holdingsGridControls.selectedItems()[0].owner_id
+        );
+        console.log('vol_transfer_dest: '+$scope.holdingsGridControls.selectedItems()[0].owner_id);
+    }
+
     $scope.selectedHoldingsItemStatusDetail = function (){
         angular.forEach(
             gatherSelectedHoldingsIds(),
@@ -366,6 +409,67 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
                 $timeout(function() { $window.open(url, '_blank') });
             }
         );
+    }
+
+    $scope.transferVolumes = function (){
+        var xfer_target = egCore.hatch.getLocalItem('eg.cat.volume_transfer_target');
+
+        if (xfer_target) {
+            egCore.net.request(
+                'open-ils.cat',
+                'open-ils.open-ils.cat.asset.volume.batch.transfer.override',
+                egCore.auth.token(), {
+                    docid   : $scope.record_id,
+                    lib     : xfer_target,
+                    volumes : gatherSelectedVolumeIds()
+                }
+            ).then(function(success) {
+                if (success) {
+                    holdingsSvc.fetch({
+                        rid : $scope.record_id,
+                        org : $scope.holdings_ou,
+                        copy: $scope.holdings_show_copies,
+                        vol : $scope.holdings_show_vols,
+                        empty: $scope.holdings_show_empty
+                    }).then(function() {
+                        $scope.holdingsGridDataProvider.refresh();
+                    });
+                } else {
+                    alert('Could not transfer volumes!');
+                }
+            });
+        }
+        
+    }
+
+    $scope.transferItems = function (){
+        var xfer_target = egCore.hatch.getLocalItem('eg.cat.item_transfer_target');
+        if (xfer_target) {
+            var copy_list = gatherSelectedRawCopies();
+
+            angular.forEach(copy_list, function (cp) {
+                cp.call_number(xfer_target);
+            });
+
+            egCore.pcrud.update(
+                copy_list
+            ).then(function(success) {
+                if (success) {
+                    holdingsSvc.fetch({
+                        rid : $scope.record_id,
+                        org : $scope.holdings_ou,
+                        copy: $scope.holdings_show_copies,
+                        vol : $scope.holdings_show_vols,
+                        empty: $scope.holdings_show_empty
+                    }).then(function() {
+                        $scope.holdingsGridDataProvider.refresh();
+                    });
+                } else {
+                    alert('Could not transfer items!');
+                }
+            });
+        }
+        
     }
 
     $scope.selectedHoldingsItemStatusTgrEvt = function (){
@@ -756,6 +860,7 @@ function(egCore , $q) {
                             if (cp.barcode) current_blob.copy_count = 1;
                             current_blob.index = index++;
                             current_blob.id_list = cp.id_list;
+                            current_blob.raw = cp.raw;
                             current_blob.call_number = cp.call_number;
                             current_blob.owner_list = cp.owner_list;
                             current_blob.owner_label = cp.owner_label;
@@ -764,6 +869,7 @@ function(egCore , $q) {
                             if (prev_key == current_key) { // collapse into current_blob
                                 current_blob.copy_count++;
                                 current_blob.id_list = current_blob.id_list.concat(cp.id_list);
+                                current_blob.raw = current_blob.raw.concat(cp.raw);
                             } else {
                                 current_blob.barcode = current_blob.copy_count;
                                 cp_list.push(current_blob);
@@ -772,6 +878,7 @@ function(egCore , $q) {
                                 if (cp.barcode) current_blob.copy_count = 1;
                                 current_blob.index = index++;
                                 current_blob.id_list = cp.id_list;
+                                current_blob.raw = cp.raw;
                                 current_blob.owner_label = cp.owner_label;
                                 current_blob.call_number = cp.call_number;
                                 current_blob.owner_list = cp.owner_list;
@@ -794,6 +901,7 @@ function(egCore , $q) {
                                 prev_key = cp.owner_list.join('');
                                 current_blob.index = index++;
                                 current_blob.id_list = cp.id_list;
+                                current_blob.raw = cp.raw;
                                 current_blob.cn_count = 1;
                                 current_blob.copy_count = cp.copy_count;
                                 current_blob.owner_list = cp.owner_list;
@@ -804,6 +912,7 @@ function(egCore , $q) {
                                     current_blob.cn_count++;
                                     current_blob.copy_count += cp.copy_count;
                                     current_blob.id_list = current_blob.id_list.concat(cp.id_list);
+                                    current_blob.raw = current_blob.raw.concat(cp.raw);
                                 } else {
                                     current_blob.barcode = current_blob.copy_count;
                                     current_blob.call_number = { label : current_blob.cn_count };
@@ -812,6 +921,7 @@ function(egCore , $q) {
                                     current_blob = {};
                                     current_blob.index = index++;
                                     current_blob.id_list = cp.id_list;
+                                    current_blob.raw = cp.raw;
                                     current_blob.owner_label = cp.owner_label;
                                     current_blob.cn_count = 1;
                                     current_blob.copy_count = cp.copy_count;
@@ -844,29 +954,33 @@ function(egCore , $q) {
                     cp.call_number(cn);
                 });
 
-                var flat = egCore.idl.toHash(copies);
-                if (flat[0]) {
-                    var owner = egCore.org.get(flat[0].call_number.owning_lib);
+                var owner_id = cn.owning_lib();
+                var owner = egCore.org.get(owner_id);
 
-                    var owner_name_list = [];
-                    while (owner.parent_ou()) { // we're going to skip the top of the tree...
-                        owner_name_list.unshift(owner.name());
-                        owner = egCore.org.get(owner.parent_ou());
-                    }
+                var owner_name_list = [];
+                while (owner.parent_ou()) { // we're going to skip the top of the tree...
+                    owner_name_list.unshift(owner.name());
+                    owner = egCore.org.get(owner.parent_ou());
+                }
 
-                    angular.forEach(flat, function (cp) {
-                        cp.owner_list = owner_name_list;
-                        cp.id_list = [cp.id];
+                if (copies[0]) {
+                    var flat = [];
+                    angular.forEach(copies, function (cp) {
+                        var flat_cp = egCore.idl.toHash(cp);
+                        flat_cp.owner_id = owner_id;
+                        flat_cp.owner_list = owner_name_list;
+                        flat_cp.id_list = [flat_cp.id];
+                        flat_cp.raw = [cp];
+                        flat.push(flat_cp);
                     });
 
                     service.copies = service.copies.concat(flat);
-
-                    if (empty && flat.length == 0) {
-                        service.copies.push({
-                            owner_list : owner_name_list,
-                            call_number: egCore.idl.toHash(cn)
-                        });
-                    }
+                } else if (empty) {
+                    service.copies.push({
+                        owner_id   : owner_id,
+                        owner_list : owner_name_list,
+                        call_number: egCore.idl.toHash(cn)
+                    });
                 }
 
                 return cn;
