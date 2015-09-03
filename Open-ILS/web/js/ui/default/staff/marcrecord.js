@@ -335,6 +335,27 @@ var MARC21 = {
             return this;
         }
 
+        this.pruneEmptyFieldsAndSubfields = function() {
+            var me = this;
+            var fields_to_remove = [];
+            for (var i = 0; i < this.fields.length; i++) {
+                var f = this.fields[i];
+                if (f.isControlfield()) {
+                    if (!f.data){
+                        fields_to_remove.push(f);
+                    }
+                } else {
+                    f.pruneEmptySubfields();
+                    if (f.isEmptyDatafield()) {
+                        fields_to_remove.push(f);
+                    }
+                }
+            }
+            fields_to_remove.forEach(function(f) {
+                me.deleteField(f);
+            });
+        }
+
         this.toBreaker = function () {
 
             var me = this;
@@ -656,6 +677,30 @@ var MARC21 = {
 
         this.isControlfield = function () {
             return this.tag < '010' ? true : false;
+        }
+
+        this.pruneEmptySubfields = function () {
+            if (this.isControlfield()) return;
+            var me = this;
+            var subfields_to_remove = [];
+            this.subfields.forEach( function(f) {
+                if (f[1] == '') {
+                    subfields_to_remove.push(f);
+                }
+            });
+            subfields_to_remove.forEach(function(f) {
+                me.deleteExactSubfields(f);
+            });
+        }
+        this.isEmptyDatafield = function () {
+            if (this.isControlfield()) return false;
+            var isEmpty = true;
+            this.subfields.forEach( function(f) {
+                if (isEmpty && f[1] != '') {
+                    isEmpty = false;
+                }
+            });
+            return isEmpty;
         }
 
         this.indicator = function (num, value) {

@@ -999,6 +999,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                     $scope.mangle_005();
                     $scope.Record().editor(egCore.auth.user().id());
                     $scope.Record().edit_date('now');
+                    $scope.record.pruneEmptyFieldsAndSubfields();
                     $scope.Record().marc($scope.record.toXmlString());
                     if ($scope.recordId) {
                         return egCore.pcrud.update(
