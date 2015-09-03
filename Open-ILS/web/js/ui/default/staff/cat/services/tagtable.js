@@ -489,16 +489,6 @@ function($q,   egCore,   egAuth) {
             return auth_list;
         }
     
-        // This should not be used in an angular world.  Instead, the call
-        // to open-ils.search.authority.simple_heading.from_xml.batch.atomic should
-        // be performed by the code that wants to find matching authorities.
-        this.findMatchingAuthorities = function (field) {
-            return fieldmapper.standardRequest(
-                [ 'open-ils.search', 'open-ils.search.authority.simple_heading.from_xml.batch.atomic' ],
-                this.bibToAuthorities(field)
-            );
-        }
-
     }
 
     service.getAuthorityControlSet = function() {

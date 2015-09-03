@@ -43,6 +43,10 @@ input.marcedit:focus {
     border-right: 0px !important;
 }
 
+.unvalidatedheading {
+    color: red;
+}
+
 .marctag, .marcind {
     text-align: center;
 }

@@ -18,6 +18,9 @@
       <eg-marc-edit-bibsource/>
     </div>
     <div class="col-md-1">
+      <button class="btn btn-default" ng-show="record_type == 'bre'" ng-click="validateHeadings()">[% l('Validate') %]</button>
+    </div>
+    <div class="col-md-1">
       <button class="btn btn-default" ng-click="saveRecord()">Save</button>
     </div>
     <div class="col-md-1">

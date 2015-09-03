@@ -363,7 +363,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                     '<span><eg-marc-edit-tag field="field" tag="field.tag" on-keydown="onKeydown"/></span>'+
                     '<span><eg-marc-edit-ind field="field" ind="field.ind1" on-keydown="onKeydown" ind-number="1"/></span>'+
                     '<span><eg-marc-edit-ind field="field" ind="field.ind2" on-keydown="onKeydown" ind-number="2"/></span>'+
-                    '<span><eg-marc-edit-subfield ng-repeat="subfield in field.subfields" subfield="subfield" field="field" on-keydown="onKeydown"/></span>'+
+                    '<span><eg-marc-edit-subfield ng-class="{ \'unvalidatedheading\' : field.heading_checked && !field.heading_valid}" ng-repeat="subfield in field.subfields" subfield="subfield" field="field" on-keydown="onKeydown"/></span>'+
                     // FIXME: template should probably be moved to file to improve
                     // translatibility
                     '<button class="btn btn-info btn-xs" '+
@@ -373,6 +373,8 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                     '>'+
                     '<span class="glyphicon glyphicon-link"></span>'+
                     '</button>'+
+                    '<span ng-show="field.heading_checked && field.heading_valid" class="glyphicon glyphicon-ok-sign"></span>'+
+                    '<span ng-show="field.heading_checked && !field.heading_valid" class="glyphicon glyphicon-question-sign"></span>'+
                   '</div>',
         scope: { field: "=", onKeydown: '=' },
         replace: true,
@@ -990,6 +992,40 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                     $scope.Record().deleted(false);
                     return $scope.saveRecord();
                 };
+
+                $scope.validateHeadings = function () {
+                    if ($scope.record_type != 'bre') return;
+                    angular.forEach($scope.record.fields, function(f) {
+                        if (!$scope.controlSet.bibFieldByTag(f.tag)) return;
+                        // if heading already has a $0, assume it's good
+                        if (f.subfield('0', true).length) {
+                            f.heading_checked = true;
+                            f.heading_valid = true;
+                            return;
+                        }
+                        var auth_match = $scope.controlSet.bibToAuthorities(f);
+                        egCore.net.request(
+                            'open-ils.search',
+                            'open-ils.search.authority.simple_heading.from_xml.batch.atomic',
+                            auth_match[0]
+                        ).then(function (matches) {
+                            f.heading_valid = false;
+                            if (matches[0]) { // probably set
+                                for (var cset in matches[0]) {
+                                    var arr = matches[0][cset];
+                                    if (arr.length) {
+                                        // protect against errant empty string values
+                                        if (arr.length == 1 && arr[0] == '')
+                                            continue;
+                                        f.heading_valid = true;
+                                        break;
+                                    }
+                                }
+                            }
+                            f.heading_checked = true;
+                        });
+                    });
+                }
 
                 $scope.saveRecord = function () {
                     if ($scope.inPlaceMode) {
