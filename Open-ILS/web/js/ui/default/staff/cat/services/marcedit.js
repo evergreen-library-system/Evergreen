@@ -1110,6 +1110,10 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                     alert($scope.record.toBreaker());
                 };
 
+                $scope.markOverlay = function () {
+                    egCore.hatch.setLocalItem('eg.cat.marked_overlay_record',$scope.recordId);
+                };
+
                 $scope.$watch('recordId',
                     function(newVal, oldVal) {
                         if (newVal && newVal !== oldVal) {

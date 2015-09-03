@@ -44,6 +44,9 @@
         </span>
       </div>
     </div>
+    <div class="col-md-1" ng-hide="brandNewRecord">
+      <button class="btn btn-default" ng-click="markOverlay()">[% l('Mark as Overlay Target') %]</button>
+    </div>
   </div>
 
   <div ng-show="flatEditor">
