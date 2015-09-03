@@ -995,6 +995,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
 
                 $scope.validateHeadings = function () {
                     if ($scope.record_type != 'bre') return;
+                    var chain = $q.when();
                     angular.forEach($scope.record.fields, function(f) {
                         if (!$scope.controlSet.bibFieldByTag(f.tag)) return;
                         // if heading already has a $0, assume it's good
@@ -1004,25 +1005,28 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                             return;
                         }
                         var auth_match = $scope.controlSet.bibToAuthorities(f);
-                        egCore.net.request(
-                            'open-ils.search',
-                            'open-ils.search.authority.simple_heading.from_xml.batch.atomic',
-                            auth_match[0]
-                        ).then(function (matches) {
-                            f.heading_valid = false;
-                            if (matches[0]) { // probably set
-                                for (var cset in matches[0]) {
-                                    var arr = matches[0][cset];
-                                    if (arr.length) {
-                                        // protect against errant empty string values
-                                        if (arr.length == 1 && arr[0] == '')
-                                            continue;
-                                        f.heading_valid = true;
-                                        break;
+                        chain = chain.then(function() {
+                            var promise = egCore.net.request(
+                                'open-ils.search',
+                                'open-ils.search.authority.simple_heading.from_xml.batch.atomic',
+                                auth_match[0]
+                            ).then(function (matches) {
+                                f.heading_valid = false;
+                                if (matches[0]) { // probably set
+                                    for (var cset in matches[0]) {
+                                        var arr = matches[0][cset];
+                                        if (arr.length) {
+                                            // protect against errant empty string values
+                                            if (arr.length == 1 && arr[0] == '')
+                                                continue;
+                                            f.heading_valid = true;
+                                            break;
+                                        }
                                     }
                                 }
-                            }
-                            f.heading_checked = true;
+                                f.heading_checked = true;
+                            });
+                            return promise;
                         });
                     });
                 }
