@@ -17,7 +17,8 @@ function($q,   egCore,   egAuth) {
         authority_control_set : {
             _remote_loaded : false,
             _controlsets : [ ]
-        }
+        },
+        _active_control_set : undefined
     };
 
     service.initialized = function() {
@@ -498,6 +499,14 @@ function($q,   egCore,   egAuth) {
             );
         }
 
+    }
+
+    service.getAuthorityControlSet = function() {
+        if (!service._active_control_set) {
+            service.authority_control_set._remote_loaded = false;
+            service._active_control_set = new service.authorityControlSet();
+        }
+        return service._active_control_set;
     }
 
     return service;
