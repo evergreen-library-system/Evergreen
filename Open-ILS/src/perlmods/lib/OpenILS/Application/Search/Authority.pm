@@ -66,19 +66,26 @@ sub search_authority_by_simple_normalize_heading {
     my $marcxml = shift;
     my $controlset = shift;
 
+    my $norm_heading_query = {
+        from => [ 'authority.simple_normalize_heading' => $marcxml ]
+    };
+
+    my $e = new_editor();
+    my $norm_heading = $e->json_query($norm_heading_query)->[0]->{'authority.simple_normalize_heading'};
+
     my $query = {
         select => { are => ['id'] },
         from   => 'are',
         where  => {
             deleted => 'f',
             simple_heading => {
-                'startwith' => [ 'authority.simple_normalize_heading' => $marcxml ]
+                'startwith' => $norm_heading
             },
             defined($controlset) ? ( control_set => $controlset ) : ()
         }
     };
 
-    $client->respond($_->{id}) for @{ new_editor()->json_query( $query ) };
+    $client->respond($_->{id}) for @{ $e->json_query( $query ) };
     $client->respond_complete;
 }
 __PACKAGE__->register_method(
