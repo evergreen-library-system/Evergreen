@@ -11,7 +11,7 @@ done
 
 if [ -z "$ver" ]; then echo "I need a version: -r"; exit; fi
 
-outfile="../RELEASE_NOTES_$ver.txt"
+outfile="../RELEASE_NOTES_$ver.adoc"
 
 title="Evergreen $ver Release Notes"
 
@@ -31,7 +31,7 @@ echo ------------ >> $outfile
 echo >> $outfile
 
 for i in `ls -l|grep ^d|awk '{print $9}'`; do
-    files=$(ls $i/*txt 2>/dev/null)
+    files=$(ls $i/*{txt,adoc} 2>/dev/null)
     if [ "_$files" != "_" ]; then
         echo >> $outfile
         echo >> $outfile
@@ -50,7 +50,7 @@ for i in `ls -l|grep ^d|awk '{print $9}'`; do
     fi
 done
 
-files=$(ls *txt 2>/dev/null | grep -v 'RELEASE_NOTE_TEMPLATE.txt')
+files=$(ls *{txt,adoc} 2>/dev/null | grep -v 'RELEASE_NOTE_TEMPLATE.txt')
 if [ "_$files" != "_" ]; then
     echo >> $outfile
     echo Miscellaneous >> $outfile
