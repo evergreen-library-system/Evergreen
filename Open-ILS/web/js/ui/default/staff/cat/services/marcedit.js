@@ -502,11 +502,14 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
             });
 
         },
-        controller : ['$timeout','$scope','$q','egCore', 'egTagTable',
-            function ( $timeout , $scope , $q,  egCore ,  egTagTable ) {
+        controller : ['$timeout','$scope','$q','$window','egCore', 'egTagTable',
+            function ( $timeout , $scope , $q,  $window , egCore ,  egTagTable ) {
 
                 MARC21.Record.delimiter = '$';
 
+                $scope.enable_fast_add = false;
+                $scope.fast_item_callnumber = '';
+                $scope.fast_item_barcode = '';
                 $scope.flatEditor = false;
                 $scope.brandNewRecord = false;
                 $scope.bib_source = null;
@@ -1044,7 +1047,30 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                     if ($scope.recordId) {
                         return egCore.pcrud.update(
                             $scope.Record()
-                        ).then(loadRecord);
+                        ).then(function() {
+                            if ($scope.enable_fast_add) {
+                                egCore.net.request(
+                                    'open-ils.actor',
+                                    'open-ils.actor.anon_cache.set_value',
+                                    null, 'edit-these-copies', {
+                                        record_id: $scope.recordId,
+                                        raw: [{
+                                            label : $scope.fast_item_callnumber,
+                                            barcode : $scope.fast_item_barcode,
+                                        }],
+                                        hide_vols : false,
+                                        hide_copies : false
+                                    }
+                                ).then(function(key) {
+                                    if (key) {
+                                        var url = egCore.env.basePath + 'cat/volcopy/' + key;
+                                        $timeout(function() { $window.open(url, '_blank') });
+                                    } else {
+                                        alert('Could not create anonymous cache key!');
+                                    }
+                                });
+                            }
+                        }).then(loadRecord);
                     } else {
                         $scope.Record().creator(egCore.auth.user().id());
                         $scope.Record().create_date('now');
@@ -1052,8 +1078,32 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                             $scope.Record()
                         ).then(function(bre) {
                             $scope.recordId = bre.id(); 
+                            if ($scope.enable_fast_add) {
+                                egCore.net.request(
+                                    'open-ils.actor',
+                                    'open-ils.actor.anon_cache.set_value',
+                                    null, 'edit-these-copies', {
+                                        record_id: $scope.recordId,
+                                        raw: [{
+                                            label : $scope.fast_item_callnumber,
+                                            barcode : $scope.fast_item_barcode,
+                                        }],
+                                        hide_vols : false,
+                                        hide_copies : false
+                                    }
+                                ).then(function(key) {
+                                    if (key) {
+                                        var url = egCore.env.basePath + 'cat/volcopy/' + key;
+                                        $timeout(function() { $window.open(url, '_blank') });
+                                    } else {
+                                        alert('Could not create anonymous cache key!');
+                                    }
+                                });
+                            }
                         }).then(loadRecord);
                     }
+
+
                 };
 
                 $scope.seeBreaker = function () {

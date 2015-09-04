@@ -809,6 +809,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                     return itemSvc.fetchIds(data.copies);
 
                 if (data.raw && data.raw.length) {
+                    $scope.dirty = true;
 
                     /* data.raw data structure looks like this:
                      * [{
