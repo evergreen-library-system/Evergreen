@@ -66,6 +66,13 @@
     <eg-grid-action handler="selectedHoldingsVolCopyEdit" group="[% l('Edit') %]"
       label="[% l('Volumes and Copies') %]"></eg-grid-action>
 
+    <eg-grid-action handler="selectedHoldingsEmptyVolCopyDelete" group="[% l('Delete') %]" disabled="vols_not_shown"
+      label="[% l('Empty Volumes') %]"></eg-grid-action>
+    <eg-grid-action handler="selectedHoldingsCopyDelete" group="[% l('Delete') %]" disabled="copies_not_shown"
+      label="[% l('Copies') %]"></eg-grid-action>
+    <eg-grid-action handler="selectedHoldingsVolCopyDelete" group="[% l('Delete') %]" disabled="copies_not_shown"
+      label="[% l('Volumes and Copies') %]"></eg-grid-action>
+
     <eg-grid-action handler="transferVolumes" group="[% l('Transfer') %]"
       label="[% l('Volumes to Previously Marked Library') %]"></eg-grid-action>
     <eg-grid-action handler="transferItems" group="[% l('Transfer') %]"

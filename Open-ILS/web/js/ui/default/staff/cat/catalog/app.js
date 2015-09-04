@@ -451,6 +451,10 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         return !$scope.holdings_show_vols;
     }
 
+    $scope.copies_not_shown = function () {
+        return !$scope.holdings_show_copies;
+    }
+
     $scope.holdings_checkbox_handler = function (item) {
         $scope.holdings_cb_changed(item.checkbox,item.checked);
     }
@@ -468,7 +472,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         var cp_list = [];
         angular.forEach(
             $scope.holdingsGridControls.selectedItems(),
-            function (item) { cp_list = cp_list.concat(item.raw) }
+            function (item) { if (item.raw) cp_list = cp_list.concat(item.raw) }
         );
         return cp_list;
     }
@@ -485,13 +489,65 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         return cn_id_list;
     }
 
-    spawnHoldingsAdd = function (hide_vols,hide_copies){
+    $scope.selectedHoldingsDelete = function (vols, copies) {
+
+        var cnHash = {};
+        var perCnCopies = {};
+
+        angular.forEach(
+            $scope.holdingsGridControls.selectedItems(),
+            function (item) {
+                if (vols && item.raw_call_number) {
+                    cnHash[item.call_number.id] = egCore.idl.Clone(item.raw_call_number);
+                    cnHash[item.call_number.id].isdeleted(1);
+                } else if (copies) {
+                    angular.forEach(egCore.idl.Clone(item.raw), function (cp) {
+                        cp.isdeleted(1);
+                        var cn_id = cp.call_number().id();
+                        if (!cnHash[cn_id]) {
+                            cnHash[cn_id] = cp.call_number();
+                            perCnCopies[cn_id] = [cp];
+                        } else {
+                            perCnCopies[cn_id].push(cp);
+                        }
+                        cp.call_number(cn_id); // prevent loops in JSON-ification
+                    });
+
+                }
+            }
+        );
+
+        angular.forEach(perCnCopies, function (v, k) {
+            if (vols) cnHash[k].isdeleted(1);
+            cnHash[k].copies(v);
+        });
+
+        cnList = [];
+        angular.forEach(cnHash, function (v, k) {
+            cnList.push(v);
+        });
+
+        if (cnList.length == 0) return;
+
+        egCore.net.request(
+            'open-ils.cat',
+            'open-ils.cat.asset.volume.fleshed.batch.update.override',
+            egCore.auth.token(), cnList, 1, {}
+        ).then(function(update_count) {
+            $scope.holdingsGridDataProvider.refresh();
+        });
+    }
+    $scope.selectedHoldingsCopyDelete = function () { $scope.selectedHoldingsDelete(false,true) }
+    $scope.selectedHoldingsVolCopyDelete = function () { $scope.selectedHoldingsDelete(true,true) }
+    $scope.selectedHoldingsEmptyVolCopyDelete = function () { $scope.selectedHoldingsDelete(true,false) }
+
+    spawnHoldingsAdd = function (vols,copies){
         var raw = [];
-        if (hide_vols) { // just a copy on existing volumes
+        if (copies) { // just a copy on existing volumes
             angular.forEach(gatherSelectedVolumeIds(), function (v) {
                 raw.push( {callnumber : v} );
             });
-        } else {
+        } else if (vols) {
             angular.forEach(
                 $scope.holdingsGridControls.selectedItems(),
                 function (item) {
@@ -506,8 +562,8 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
             null, 'edit-these-copies', {
                 record_id: $scope.record_id,
                 raw: raw,
-                hide_vols : hide_vols,
-                hide_copies : hide_copies
+                hide_vols : false,
+                hide_copies : false
             }
         ).then(function(key) {
             if (key) {
@@ -518,8 +574,8 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
             }
         });
     }
-    $scope.selectedHoldingsVolCopyAdd = function () { spawnHoldingsAdd(false,false) }
-    $scope.selectedHoldingsCopyAdd = function () { spawnHoldingsAdd(true,false) }
+    $scope.selectedHoldingsVolCopyAdd = function () { spawnHoldingsAdd(true,false) }
+    $scope.selectedHoldingsCopyAdd = function () { spawnHoldingsAdd(false,true) }
 
     spawnHoldingsEdit = function (hide_vols,hide_copies){
         egCore.net.request(
@@ -1018,14 +1074,14 @@ function(egCore , $q) {
                     index = 0;
                     var cp_list = [];
                     var prev_key;
-                    var current_blob = {};
+                    var current_blob = { copy_count : 0 };
                     angular.forEach(new_list, function (cp) {
                         if (!prev_key) {
                             prev_key = cp.owner_list.join('') + cp.call_number.label;
                             if (cp.barcode) current_blob.copy_count = 1;
                             current_blob.index = index++;
                             current_blob.id_list = cp.id_list;
-                            current_blob.raw = cp.raw;
+                            if (cp.raw) current_blob.raw = cp.raw;
                             current_blob.call_number = cp.call_number;
                             current_blob.owner_list = cp.owner_list;
                             current_blob.owner_label = cp.owner_label;
@@ -1040,11 +1096,11 @@ function(egCore , $q) {
                                 current_blob.barcode = current_blob.copy_count;
                                 cp_list.push(current_blob);
                                 prev_key = current_key;
-                                current_blob = {};
+                                current_blob = { copy_count : 0 };
                                 if (cp.barcode) current_blob.copy_count = 1;
                                 current_blob.index = index++;
                                 current_blob.id_list = cp.id_list;
-                                current_blob.raw = cp.raw;
+                                if (cp.raw) current_blob.raw = cp.raw;
                                 current_blob.owner_label = cp.owner_label;
                                 current_blob.owner_id = cp.owner_id;
                                 current_blob.call_number = cp.call_number;
@@ -1062,13 +1118,13 @@ function(egCore , $q) {
                         index = 0;
                         var cn_list = [];
                         prev_key = '';
-                        var current_blob = {};
+                        current_blob = { copy_count : 0 };
                         angular.forEach(cp_list, function (cp) {
                             if (!prev_key) {
                                 prev_key = cp.owner_list.join('');
                                 current_blob.index = index++;
                                 current_blob.id_list = cp.id_list;
-                                current_blob.raw = cp.raw;
+                                if (cp.raw) current_blob.raw = cp.raw;
                                 current_blob.cn_count = 1;
                                 current_blob.copy_count = cp.copy_count;
                                 current_blob.owner_list = cp.owner_list;
@@ -1080,16 +1136,16 @@ function(egCore , $q) {
                                     current_blob.cn_count++;
                                     current_blob.copy_count += cp.copy_count;
                                     current_blob.id_list = current_blob.id_list.concat(cp.id_list);
-                                    current_blob.raw = current_blob.raw.concat(cp.raw);
+                                    if (cp.raw) current_blob.raw = current_blob.raw.concat(cp.raw);
                                 } else {
                                     current_blob.barcode = current_blob.copy_count;
                                     current_blob.call_number = { label : current_blob.cn_count };
                                     cn_list.push(current_blob);
                                     prev_key = current_key;
-                                    current_blob = {};
+                                    current_blob = { copy_count : 0 };
                                     current_blob.index = index++;
                                     current_blob.id_list = cp.id_list;
-                                    current_blob.raw = cp.raw;
+                                    if (cp.raw) current_blob.raw = cp.raw;
                                     current_blob.owner_label = cp.owner_label;
                                     current_blob.owner_id = cp.owner_id;
                                     current_blob.cn_count = 1;
@@ -1116,7 +1172,7 @@ function(egCore , $q) {
             // notify reads the stream of copies, one at a time.
             function(cn) {
 
-                var copies = cn.copies();
+                var copies = cn.copies().filter(function(cp){ return cp.deleted() == 'f' });
                 cn.copies([]);
 
                 angular.forEach(copies, function (cp) {
@@ -1148,7 +1204,8 @@ function(egCore , $q) {
                     service.copies.push({
                         owner_id   : owner_id,
                         owner_list : owner_name_list,
-                        call_number: egCore.idl.toHash(cn)
+                        call_number: egCore.idl.toHash(cn),
+                        raw_call_number: cn
                     });
                 }
 
