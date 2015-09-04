@@ -226,9 +226,9 @@ function($scope , $routeParams , $location , $window , $q , egCore) {
 }])
 
 .controller('CatalogCtrl',
-       ['$scope','$routeParams','$location','$window','$q','egCore','egHolds','egCirc',
+       ['$scope','$routeParams','$location','$window','$q','egCore','egHolds','egCirc','egConfirmDialog',
         'egGridDataProvider','egHoldGridActions','$timeout','$modal','holdingsSvc','egUser',
-function($scope , $routeParams , $location , $window , $q , egCore , egHolds , egCirc, 
+function($scope , $routeParams , $location , $window , $q , egCore , egHolds , egCirc,  egConfirmDialog,
          egGridDataProvider , egHoldGridActions , $timeout , $modal , holdingsSvc , egUser) {
 
     // set record ID on page load if available...
@@ -494,15 +494,20 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         var cnHash = {};
         var perCnCopies = {};
 
+        var cn_count = 0;
+        var cp_count = 0;
+
         angular.forEach(
             $scope.holdingsGridControls.selectedItems(),
             function (item) {
                 if (vols && item.raw_call_number) {
                     cnHash[item.call_number.id] = egCore.idl.Clone(item.raw_call_number);
                     cnHash[item.call_number.id].isdeleted(1);
+                    cn_count++;
                 } else if (copies) {
                     angular.forEach(egCore.idl.Clone(item.raw), function (cp) {
                         cp.isdeleted(1);
+                        cp_count++;
                         var cn_id = cp.call_number().id();
                         if (!cnHash[cn_id]) {
                             cnHash[cn_id] = cp.call_number();
@@ -518,7 +523,10 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         );
 
         angular.forEach(perCnCopies, function (v, k) {
-            if (vols) cnHash[k].isdeleted(1);
+            if (vols) {
+                cnHash[k].isdeleted(1);
+                cn_count++;
+            }
             cnHash[k].copies(v);
         });
 
@@ -529,12 +537,18 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
 
         if (cnList.length == 0) return;
 
-        egCore.net.request(
-            'open-ils.cat',
-            'open-ils.cat.asset.volume.fleshed.batch.update.override',
-            egCore.auth.token(), cnList, 1, {}
-        ).then(function(update_count) {
-            $scope.holdingsGridDataProvider.refresh();
+        egConfirmDialog.open(
+            egCore.strings.CONFIRM_DELETE_COPIES_VOLUMES,
+            egCore.strings.CONFIRM_DELETE_COPIES_VOLUMES_MESSAGE,
+            {copies : cp_count, volumes : cn_count}
+        ).result.then(function() {
+            egCore.net.request(
+                'open-ils.cat',
+                'open-ils.cat.asset.volume.fleshed.batch.update.override',
+                egCore.auth.token(), cnList, 1, {}
+            ).then(function(update_count) {
+                $scope.holdingsGridDataProvider.refresh();
+            });
         });
     }
     $scope.selectedHoldingsCopyDelete = function () { $scope.selectedHoldingsDelete(false,true) }

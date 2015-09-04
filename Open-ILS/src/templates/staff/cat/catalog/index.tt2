@@ -16,6 +16,15 @@
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/services/holds.js"></script>
 [% INCLUDE 'staff/circ/share/hold_strings.tt2' %]
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/cat/catalog/app.js"></script>
+<script>
+  angular.module('egCoreMod').run(['egStrings', function(s) {
+    s.CONFIRM_DELETE_COPIES_VOLUMES =
+      "[% l('Permanently delete selected copies and/or volumes from catalog?') %]";
+    s.CONFIRM_DELETE_COPIES_VOLUMES_MESSAGE =
+      "[% l('Will delete {{copies}} copies and {{volumes}} volumes') %]";
+  }])
+</script>
+
 [% END %]
 
 <div ng-view></div>
