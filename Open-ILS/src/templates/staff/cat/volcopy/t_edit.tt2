@@ -54,7 +54,7 @@
                 </div>
             </div>
         </div> <!-- row -->
-        <eg-vol-edit ng-repeat="(lib,callnumbers) in data.tree" record="record.id()" lib="{{lib}}" allcopies="data.copies" struct="data.tree[lib]"></eg-vol-edit>
+        <eg-vol-edit focus-next="focusNextFirst" ng-repeat="(lib,callnumbers) in data.tree | orderBy:lib track by lib" ng-init="ind = $index" record="record.id()" lib="{{lib}}" allcopies="data.copies" struct="data.tree[lib]"></eg-vol-edit>
     </div>
 
 </div>

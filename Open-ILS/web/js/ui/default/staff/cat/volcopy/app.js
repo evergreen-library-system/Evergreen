@@ -194,21 +194,21 @@ function(egCore , $q) {
         template:
             '<div class="row">'+
                 '<div class="col-xs-5">'+
-                    '<input id="{{callNumber.id()}}.{{copy.id()}}"'+
-                    ' eg-enter="nextBarcode()" class="form-control"'+
+                    '<input id="{{callNumber.id()}}_{{copy.id()}}"'+
+                    ' eg-enter="nextBarcode(copy.id())" class="form-control"'+
                     ' type="text" ng-model="barcode" ng-change="updateBarcode()"/>'+
                 '</div>'+
                 '<div class="col-xs-3"><input class="form-control" type="number" ng-model="copy_number" ng-change="updateCopyNo()"/></div>'+
                 '<div class="col-xs-4"><eg-basic-combo-box list="parts" selected="part"></eg-basic-combo-box></div>'+
             '</div>',
 
-        scope: { copy: "=", callNumber: "=", index: "@" },
+        scope: { focusNext: "=", copy: "=", callNumber: "=", index: "@" },
         controller : ['$scope','itemSvc','egCore',
             function ( $scope , itemSvc , egCore ) {
                 $scope.new_part_id = 0;
 
                 $scope.nextBarcode = function (i) {
-                    $scope.$parent.focusNextBarcode($scope.copy.id());
+                    $scope.focusNext(i);
                 }
 
                 $scope.updateBarcode = function () { $scope.copy.barcode($scope.barcode); $scope.copy.ischanged(1); };
@@ -277,11 +277,11 @@ function(egCore , $q) {
                 '</div>'+
                 '<div class="col-xs-1"><input class="form-control" type="number" ng-model="copy_count" min="{{orig_copy_count}}" ng-change="changeCPCount()"></div>'+
                 '<div class="col-xs-5">'+
-                    '<eg-vol-copy-edit ng-repeat="cp in copies track by idTracker(cp)" copy="cp" call-number="callNumber"></eg-vol-copy-edit>'+
+                    '<eg-vol-copy-edit ng-repeat="cp in copies track by idTracker(cp)" focus-next="focusNextBarcode" copy="cp" call-number="callNumber"></eg-vol-copy-edit>'+
                 '</div>'+
             '</div>',
 
-        scope: {allcopies: "=", copies: "=" },
+        scope: {focusNext: "=", allcopies: "=", copies: "=" },
         controller : ['$scope','itemSvc','egCore',
             function ( $scope , itemSvc , egCore ) {
                 $scope.callNumber =  $scope.copies[0].call_number();
@@ -304,9 +304,11 @@ function(egCore , $q) {
                     });
 
                     if (n) {
-                        var next = '#' + $scope.callNumber.id() + '.' + n;
-                        var el = $(next).get(0);
+                        var next = '#' + $scope.callNumber.id() + '_' + n;
+                        var el = $(next);
                         if (el) el.focus()
+                    } else {
+                        $scope.focusNext($scope.callNumber.id())
                     }
                 }
 
@@ -431,15 +433,42 @@ function(egCore , $q) {
                 '<div class="col-xs-1"><eg-org-selector selected="owning_lib" disableTest="cant_have_vols"></eg-org-selector></div>'+
                 '<div class="col-xs-1"><input class="form-control" type="number" min="{{orig_cn_count}}" ng-model="cn_count" ng-change="changeCNCount()"/></div>'+
                 '<div class="col-xs-10">'+
-                    '<eg-vol-row ng-repeat="(cn,copies) in struct track by cn" copies="copies" allcopies="allcopies"></eg-vol-row>'+
+                    '<eg-vol-row ng-repeat="(cn,copies) in struct | orderBy:cn track by cn" focus-next="focusNextFirst" copies="copies" allcopies="allcopies"></eg-vol-row>'+
                 '</div>'+
             '</div>',
 
-        scope: { allcopies: "=", struct: "=", lib: "@", record: "@" },
+        scope: { focusNext: "=", allcopies: "=", struct: "=", lib: "@", record: "@" },
         controller : ['$scope','itemSvc','egCore',
             function ( $scope , itemSvc , egCore ) {
                 $scope.first_cn = Object.keys($scope.struct)[0];
                 $scope.full_cn = $scope.struct[$scope.first_cn][0].call_number();
+
+                $scope.focusNextFirst = function(prev_cn) {
+                    var n;
+                    var yep = false;
+                    angular.forEach(Object.keys($scope.struct).sort(), function (cn) {
+                        console.log('checking '+cn);
+                        if (n) return;
+
+                        if (cn == prev_cn) {
+                            console.log('prev is '+cn);
+                            yep = true;
+                            return;
+                        }
+                        console.log('prev is not '+cn);
+
+                        if (yep) n = cn;
+                    });
+
+                    console.log('found '+n);
+                    if (n) {
+                        var next = '#' + n + '_' + $scope.struct[n][0].id();
+                        var el = $(next);
+                        if (el) el.focus()
+                    } else {
+                        $scope.focusNext($scope.lib);
+                    }
+                }
 
                 $scope.cn_count = Object.keys($scope.struct).length;
                 $scope.orig_cn_count = $scope.cn_count;
@@ -476,10 +505,11 @@ function(egCore , $q) {
                         var how_many = o - n;
                         var list = Object
                                 .keys($scope.struct)
-                                .sort(function(a, b){return a-b})
-                                .reverse();
-                        for (var i = how_many; i > 0; i--) {
+                                .sort(function(a, b){return parseInt(a)-parseInt(b)})
+                                .filter(function(x){ return parseInt(x) <= 0 });
+                        for (var i = 0; i < how_many; i++) {
                             // Trimming the global list is a bit more tricky
+                            console.log('trying to trim ' + i);
                             angular.forEach($scope.struct[list[i]], function (d) {
                                 angular.forEach( $scope.allcopies, function (l, j) { 
                                     if (l === d) $scope.allcopies.splice(j,1);
@@ -867,6 +897,34 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
             $scope.workingGridDataProvider.refresh();
         });
 
+        $scope.focusNextFirst = function(prev_lib) {
+            var n;
+            var yep = false;
+            angular.forEach(Object.keys($scope.data.tree).sort(), function (lib) {
+                console.log('checking lib '+lib);
+                if (n) return;
+
+                if (lib == prev_lib) {
+                    console.log('prev is '+lib);
+                    yep = true;
+                    return;
+                }
+                console.log('prev is not '+lib);
+
+                if (yep) n = lib;
+            });
+
+            console.log('found '+n);
+            if (n) {
+                var first_cn = Object.keys($scope.data.tree[n])[0];
+                var next = '#' + first_cn + '_' + $scope.data.tree[n][first_cn][0].id();
+                var el = $(next);
+                if (el) el.focus()
+            } else {
+                $scope.focusNext($scope.lib);
+            }
+        }
+
         $scope.in_item_select = false;
         $scope.afterItemSelect = function() { $scope.in_item_select = false };
         $scope.handleItemSelect = function (item_list) {
@@ -955,7 +1013,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
 
                 var final_orgs = all_orgs.filter(function(e,i,a){
                     return a.lastIndexOf(e) === i;
-                }).sort(function(a,b){return b-a});
+                }).sort(function(a, b){return parseInt(a)-parseInt(b)});
 
                 if ($scope.location_orgs.toString() != final_orgs.toString()) {
                     $scope.location_orgs = final_orgs;
