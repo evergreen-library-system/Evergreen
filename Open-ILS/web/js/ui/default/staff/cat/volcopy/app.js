@@ -1117,7 +1117,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
         $scope.saveCompletedCopies = function (and_exit) {
             var cnHash = {};
             var perCnCopies = {};
-            angular.forEach( $scope.completed_copies, function (cp) {
+            angular.forEach( egCore.idl.Clone($scope.completed_copies), function (cp) {
                 var cn_id = cp.call_number().id();
                 if (!cnHash[cn_id]) {
                     cnHash[cn_id] = cp.call_number();
@@ -1147,6 +1147,10 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                     $timeout(function(){$window.close()});
                 }
             });
+        }
+
+        $scope.saveAndContinue = function () {
+            $scope.saveCompletedCopies(false);
         }
 
         $scope.saveAndExit = function () {

@@ -113,14 +113,17 @@
                <eg-grid
                  id-field="id"
                  idl-class="acp"
+                 menu-label="[% l('Save... ') %]"
                  features="-pagination,-actions,-index"
                  items-provider="completedGridDataProvider"
                  grid-controls="completedGridControls"
                  persist-key="cat.volcopy.copies.complete">
                
-                 <eg-grid-menu-item handler="completeToWorking"
+                 <eg-grid-menu-item standalone="true" handler="completeToWorking"
                   label="[% l('Edit Selected') %]"></eg-grid-menu-item>
         
+                 <eg-grid-menu-item handler="saveAndContinue"
+                  label="[% l('Save Completed') %]"></eg-grid-menu-item>
                  <eg-grid-menu-item handler="saveAndExit"
                   label="[% l('Save & Exit') %]"></eg-grid-menu-item>
         
