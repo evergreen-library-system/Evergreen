@@ -1,5 +1,19 @@
 <div>
   <div ng-show="bre" class="row pad-vert marcfastitemadd" ng-hide="brandNewRecord">
+    <div class="col-md-5">
+      <label>[% l('Mark for:') %]</label>
+      <div class="btn-group">
+        <span class="btn-group">
+          <button class="btn btn-default" ng-click="markOverlay()">[% l('Overlay Target') %]</button>
+        </span>
+        <span class="btn-group">
+          <button class="btn btn-default" ng-click="markVolTransfer()">[% l('Volume Transfer') %]</button>
+        </span>
+        <span class="btn-group">
+          <button class="btn btn-default" ng-click="markConjoined()">[% l('Conjoined Items') %]</button>
+        </span>
+      </div>
+    </div>
     <div class="col-md-2">
       <label><input type="checkbox" ng-model="enable_fast_add"/> [% l('Add Item') %]</label>
     </div>
@@ -27,7 +41,7 @@
     <div ng-if="bre" class="col-md-2">
       <eg-marc-edit-bibsource/>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-3">
       <div class="btn-group">
         <span class="btn-group">
           <button class="btn btn-default" ng-show="record_type == 'bre'" ng-click="validateHeadings()">[% l('Validate') %]</button>
@@ -36,16 +50,10 @@
           <button class="btn btn-default" ng-click="saveRecord()">[% l('Save') %]</button>
         </span>
         <span class="btn-group">
-          <button class="btn btn-default" ng-click="seeBreaker()">[% l('Breaker') %]</button>
-        </span>
-        <span class="btn-group">
           <button ng-hide="brandNewRecord || Record().deleted()" class="btn btn-default" ng-click="deleteRecord()">[% l('Delete') %]</button>
           <button ng-if="!brandNewRecord && Record().deleted()" class="btn btn-default" ng-click="undeleteRecord()">[% l('Undelete') %]</button>
         </span>
       </div>
-    </div>
-    <div class="col-md-1" ng-hide="brandNewRecord">
-      <button class="btn btn-default" ng-click="markOverlay()">[% l('Mark as Overlay Target') %]</button>
     </div>
   </div>
 

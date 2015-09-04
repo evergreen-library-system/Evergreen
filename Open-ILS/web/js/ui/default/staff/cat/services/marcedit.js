@@ -1110,6 +1110,14 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                     alert($scope.record.toBreaker());
                 };
 
+                $scope.markConjoined = function () {
+                    egCore.hatch.setLocalItem('eg.cat.marked_conjoined_record',$scope.recordId);
+                };
+
+                $scope.markVolTransfer = function () {
+                    egCore.hatch.setLocalItem('eg.cat.marked_volume_transfer_record',$scope.recordId);
+                };
+
                 $scope.markOverlay = function () {
                     egCore.hatch.setLocalItem('eg.cat.marked_overlay_record',$scope.recordId);
                 };
