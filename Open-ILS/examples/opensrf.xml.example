@@ -159,6 +159,7 @@ vim:et:ts=4:sw=4:
                     <db>evergreen</db>
                     <user>postgres</user>
                     <pw>postgres</pw>
+                    <application_name>open-ils.reporter</application_name>
                 </database>
                 <state_store>
                     <driver>Pg</driver>
@@ -167,6 +168,7 @@ vim:et:ts=4:sw=4:
                     <db>evergreen</db>
                     <user>postgres</user>
                     <pw>postgres</pw>
+                    <application_name>open-ils.reporter-state</application_name>
                 </state_store>
                 <files>
                     <!-- successful report outputs go here -->
@@ -880,6 +882,7 @@ vim:et:ts=4:sw=4:
                             <pw>postgres</pw>
                             <db>evergreen</db>
                             <client_encoding>UTF-8</client_encoding>
+                            <application_name>open-ils.storage</application_name>
                         </database>
                     </databases>
                 </app_settings>
@@ -909,6 +912,7 @@ vim:et:ts=4:sw=4:
                         <pw>postgres</pw>
                         <db>evergreen</db>
                         <client_encoding>UTF-8</client_encoding>
+                        <application_name>open-ils.cstore</application_name>
                     </database>
                 </app_settings>
             </open-ils.cstore>
@@ -943,6 +947,7 @@ vim:et:ts=4:sw=4:
                         <pw>postgres</pw>
                         <db>evergreen</db>
                         <client_encoding>UTF-8</client_encoding>
+                        <application_name>open-ils.pcrud</application_name>
                     </database>
                 </app_settings>
             </open-ils.pcrud>
@@ -970,6 +975,7 @@ vim:et:ts=4:sw=4:
                         <pw>postgres</pw>
                         <db>evergreen</db>
                         <client_encoding>UTF-8</client_encoding>
+                        <application_name>open-ils.qstore</application_name>
                     </database>
                 </app_settings>
             </open-ils.qstore>
@@ -1055,6 +1061,7 @@ vim:et:ts=4:sw=4:
                         <pw>postgres</pw>
                         <db>evergreen</db>
                         <client_encoding>UTF-8</client_encoding>
+                        <application_name>open-ils.reporter-store</application_name>
                     </database>
                 </app_settings>
             </open-ils.reporter-store>

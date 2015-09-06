@@ -167,6 +167,7 @@ dbi_conn oilsConnectDB( const char* mod_name ) {
 	char* port   = osrf_settings_host_value( "/apps/%s/app_settings/database/port", mod_name );
 	char* db     = osrf_settings_host_value( "/apps/%s/app_settings/database/db", mod_name );
 	char* pw     = osrf_settings_host_value( "/apps/%s/app_settings/database/pw", mod_name );
+	char* pg_app = osrf_settings_host_value( "/apps/%s/app_settings/database/application_name", mod_name );
 
 	osrfLogDebug( OSRF_LOG_MARK, "Attempting to load the database driver [%s]...", driver );
 	dbi_conn handle = dbi_conn_new( driver );
@@ -180,17 +181,19 @@ dbi_conn oilsConnectDB( const char* mod_name ) {
 	osrfLogInfo(OSRF_LOG_MARK, "%s connecting to database.  host=%s, "
 		"port=%s, user=%s, db=%s", mod_name, host, port, user, db );
 
-	if( host ) dbi_conn_set_option( handle, "host", host );
-	if( port ) dbi_conn_set_option_numeric( handle, "port", atoi( port ));
-	if( user ) dbi_conn_set_option( handle, "username", user );
-	if( pw )   dbi_conn_set_option( handle, "password", pw );
-	if( db )   dbi_conn_set_option( handle, "dbname", db );
+	if( host )   dbi_conn_set_option( handle, "host", host );
+	if( port )   dbi_conn_set_option_numeric( handle, "port", atoi( port ));
+	if( user )   dbi_conn_set_option( handle, "username", user );
+	if( pw )     dbi_conn_set_option( handle, "password", pw );
+	if( db )     dbi_conn_set_option( handle, "dbname", db );
+	if( pg_app ) dbi_conn_set_option( handle, "pgsql_application_name", pg_app );
 
 	free( user );
 	free( host );
 	free( port );
 	free( db );
 	free( pw );
+	free( pg_app );
 
 	if( dbi_conn_connect( handle ) < 0 ) {
 		sleep( 1 );

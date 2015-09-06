@@ -71,7 +71,8 @@
                 "dbi:Pg:".
                     "host=$$master{host};".
                     "port=$$master{port};".
-                    "dbname=$$master{db}",
+                    "dbname=$$master{db}".
+                    ($$master{application_name} ? ";application_name='$$master{application_name}'": ""),
                 $$master{user},
                 $$master{pw},
                 \%attrs)
@@ -80,7 +81,8 @@
                     "dbi:Pg:".
                         "host=$$master{host};".
                         "port=$$master{port};".
-                        "dbname=$$master{db}",
+                        "dbname=$$master{db}".
+                        ($$master{application_name} ? ";application_name='$$master{application_name}'": ""),
                     $$master{user},
                     $$master{pw},
                     \%attrs) }
@@ -100,8 +102,8 @@
 
         for my $db (@$_db_params) {
             try {
-                push @slave_dbs, DBI->connect("dbi:Pg:host=$$db{host};port=$$db{port};dbname=$$db{db}",$$db{user},$$db{pw}, \%attrs)
-                    || do { sleep(1); DBI->connect("dbi:Pg:host=$$db{host};port=$$db{port};dbname=$$db{db}",$$db{user},$$db{pw}, \%attrs) }
+                push @slave_dbs, DBI->connect("dbi:Pg:host=$$db{host};port=$$db{port};dbname=$$db{db}". ($$db{application_name} ? ";application_name='$$db{application_name}'" : ""),$$db{user},$$db{pw}, \%attrs)
+                    || do { sleep(1); DBI->connect("dbi:Pg:host=$$db{host};port=$$db{port};dbname=$$db{db}". ($$db{application_name} ? ";application_name='$$db{application_name}'" : ""),$$db{user},$$db{pw}, \%attrs) }
                     || throw OpenSRF::EX::ERROR
                         ("Couldn't connect to $$db{db}".
                         " on $$db{host}::$$db{port}".
