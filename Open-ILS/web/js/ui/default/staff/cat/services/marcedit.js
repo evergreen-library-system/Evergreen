@@ -436,8 +436,27 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                       'on-keydown="onKeydown" '+
                       'id="r{{field.record.subfield(\'901\',\'c\')[1]}}f{{field.position}}data"'+
                       '/></span>'+
+                      // TODO: move to TT2 template
+                      '<button class="btn btn-info btn-xs" '+
+                      'aria-label="Physical Characteristics Wizard" '+
+                      'ng-show="showPhysCharLink()"'+
+                      'ng-click="spawnPhysCharWizard()"'+
+                      '>'+
+                      '<span class="glyphicon glyphicon-link"></span>'+
+                      '</button>'+
                   '</div>',
-        scope: { field: "=", onKeydown: '=' }
+        scope: { field: "=", onKeydown: '=' },
+        controller : ['$scope','$modal',
+            function ( $scope,  $modal ) {
+                $scope.showPhysCharLink = function () {
+                    return ($scope.$parent.$parent.record_type == 'bre') 
+                        && $scope.field.tag == '007';
+                }
+                $scope.spawnPhysCharWizard = function() {
+                    console.log('HERE');
+                }
+            }
+        ]
     }
 })
 

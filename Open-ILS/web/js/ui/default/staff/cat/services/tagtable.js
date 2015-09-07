@@ -534,7 +534,7 @@ function($q,   egCore,   egAuth) {
     // Fetches + caches the config.marc21_physical_characteristic_value_map
     // for the requested ptype_subfield (subfield_map.id).  
     // Maps are ordered by value.
-    serivice.getPhysCharValueMap = function(ptype_subfield) {
+    service.getPhysCharValueMap = function(ptype_subfield) {
         if (service.phys_char_value_map[ptype_subfield]) {
             return $q.when(service.phys_char_value_map[ptype_subfield]);
         }
