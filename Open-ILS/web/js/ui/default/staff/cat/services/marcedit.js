@@ -447,13 +447,30 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                   '</div>',
         scope: { field: "=", onKeydown: '=' },
         controller : ['$scope','$modal',
-            function ( $scope,  $modal ) {
+            function ( $scope,  $modal) {
                 $scope.showPhysCharLink = function () {
                     return ($scope.$parent.$parent.record_type == 'bre') 
                         && $scope.field.tag == '007';
                 }
                 $scope.spawnPhysCharWizard = function() {
-                    console.log('HERE');
+                    var args = {
+                        changed : false,
+                        field : $scope.field
+                    };
+                    $modal.open({
+                        templateUrl: './cat/share/t_physchar_dialog',
+                        controller: ['$scope','$modalInstance',
+                            function( $scope , $modalInstance) {
+                            $scope.focusMe = true;
+                            $scope.args = args;
+                            $scope.ok = function(args) { $modalInstance.close(args) };
+                            $scope.cancel = function () { $modalInstance.dismiss() };
+                        }],
+                    }).result.then(function (args) {
+                        if (!args.changed) return;
+                        // $scope.field.data = ...
+                    });
+
                 }
             }
         ]
@@ -1426,6 +1443,50 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
         ]
     }
 })
+
+.directive("egPhyscharWizard", function () {
+    return {
+        restrict: 'E',
+        replace: true,
+        templateUrl: './cat/share/t_physchar_wizard',
+        scope : {
+            field : '='
+        },
+        controller: ['$scope','egTagTable',
+            function ($scope , egTagTable) {
+                $scope.step = 'a';
+                if ($scope.field.data) $scope.field.data = '';
+
+                $scope.value_for_step = '';
+                $scope.values_for_step = [];
+
+                egTagTable.getPhysCharTypeMap().then(function(list) {
+                    // we start with the types selector
+                    $scope.values_for_step = list;
+                });
+
+                $scope.current_ptype = function() {
+                    return $scope.field.data.substr(0, 1);   
+                }
+
+                $scope.get_label_for_step = function() {
+                    return 'TEST';
+                }
+
+                $scope.get_values_for_step = function() {
+                    if ($scope.step == 'a') {
+                        egTagTable.getPhysCharTypeMap().then(function(list) {
+                            $scope.values_for_step = list;
+                        });
+                    } else {
+                        //
+                    }
+                }
+            }
+        ]
+    }
+})
+
 
 .directive("egMarcEditAuthorityBrowser", function () {
     return {

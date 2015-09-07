@@ -1,0 +1,32 @@
+<div>
+  <div class="row">
+    <div class="col-md-4">[% l('007 Value') %]</div>
+    <div class="col-md-4">{{field.data}}</div>
+  </div>
+  <div class="row">
+    <div ng-if="step == 'a'">
+      <div class="col-md-4">[% l('Category of Material') %]</div>
+      <div class="col-md-4">
+        <select ng-model="value_for_step">
+          <option ng-repeat="option in values_for_step" 
+            value="{{option.ptype_key()}}">{{option.label()}}</option>
+        </select>
+      </div>
+    </div>
+    <div ng-if="step != 'a'">
+      <div class="col-md-4" ng-show="step != 'a'">{{get_label_for_step()}}</div>
+      <div class="col-md-4">
+        <select ng-model="value_for_step">
+          <option ng-repeat="option in values_for_step" 
+            value="{{option.value()}}">{{option.label()}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <button class="btn btn-default">[% l('Previous') %]</button>
+    </div>
+    <div class="col-md-2">
+      <button class="btn btn-default">[% l('Next') %]</button>
+    </div>
+  </div>
+</div>

@@ -510,8 +510,8 @@ function($q,   egCore,   egAuth) {
             return $q.when(service.phys_char_type_map);
         }
 
-        return egCore.pcrud.retrieveAll('cmpctm')
-        .then(function(map) {service.phys_char_type_map = map});
+        return egCore.pcrud.retrieveAll('cmpctm', {}, {atomic : true})
+        .then(function(map) {return service.phys_char_type_map = map});
     }
 
     // Fetch+caches the config.marc21_physical_characteristic_subfield_map
@@ -525,9 +525,10 @@ function($q,   egCore,   egAuth) {
 
         return egCore.pcrud.search('cmpcsm', 
             {ptype_key : ptype_key},
-            {order_by : {cmpcsm : ['start_pos']}})
-        .then(function(maps) {
-            service.phys_char_sf_map[ptype_key] = maps;
+            {order_by : {cmpcsm : ['start_pos']}},
+            {atomic : true}
+        ).then(function(maps) {
+            return service.phys_char_sf_map[ptype_key] = maps;
         });
     }
 
@@ -541,9 +542,10 @@ function($q,   egCore,   egAuth) {
 
         return egCore.pcrud.search('cmpcvm', 
             {ptype_subfield : ptype_subfield},
-            {order_by : {cmpcsm : ['value']}})
-        .then(function(maps) {
-            service.phys_char_sf_map[ptype_subfield] = maps;
+            {order_by : {cmpcsm : ['value']}},
+            {atomic : true}
+        ).then(function(maps) {
+            return service.phys_char_sf_map[ptype_subfield] = maps;
         });
     }
 

@@ -1,0 +1,15 @@
+<div>
+  <div class="modal-header">
+    <button type="button" class="close"
+      ng-click="cancel()" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">[% l('Physical Characteristics Wizard') %]</h4>
+  </div>
+  <div class="modal-body">
+    <eg-physchar-wizard changed="args.changed" field="args.field"/>
+  </div>
+  <div class="modal-footer">
+    <input type="submit" ng-click="ok(args)"
+        class="btn btn-primary" value="[% l('Save') %]"/>
+    <button class="btn btn-warning" ng-click="cancel()">[% l('Cancel') %]</button>
+  </div>
+</div>
