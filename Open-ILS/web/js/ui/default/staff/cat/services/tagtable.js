@@ -14,6 +14,9 @@ function($q,   egCore,   egAuth) {
         fields : { },
         ff_pos_map : { },
         ff_value_map : { },
+        phys_char_type_map : null,
+        phys_char_sf_map : { },
+        phys_char_value_map : { },
         authority_control_set : {
             _remote_loaded : false,
             _controlsets : [ ]
@@ -497,6 +500,51 @@ function($q,   egCore,   egAuth) {
             service._active_control_set = new service.authorityControlSet();
         }
         return service._active_control_set;
+    }
+
+    // fetches and caches the full set of values from 
+    // config.marc21_physical_characteristic_type_map
+    service.getPhysCharTypeMap = function() {
+
+        if (service.phys_char_type_map) {
+            return $q.when(service.phys_char_type_map);
+        }
+
+        return egCore.pcrud.retrieveAll('cmpctm')
+        .then(function(map) {service.phys_char_type_map = map});
+    }
+
+    // Fetch+caches the config.marc21_physical_characteristic_subfield_map
+    // values for the requested ptype_key (i.e. type_map.ptype_key).
+    // Values are sorted by start_pos
+    service.getPhysCharSubfieldMap = function(ptype_key) {
+
+        if (service.phys_char_sf_map[ptype_key]) {
+            return $q.when(service.phys_char_sf_map[ptype_key]);
+        }
+
+        return egCore.pcrud.search('cmpcsm', 
+            {ptype_key : ptype_key},
+            {order_by : {cmpcsm : ['start_pos']}})
+        .then(function(maps) {
+            service.phys_char_sf_map[ptype_key] = maps;
+        });
+    }
+
+    // Fetches + caches the config.marc21_physical_characteristic_value_map
+    // for the requested ptype_subfield (subfield_map.id).  
+    // Maps are ordered by value.
+    serivice.getPhysCharValueMap = function(ptype_subfield) {
+        if (service.phys_char_value_map[ptype_subfield]) {
+            return $q.when(service.phys_char_value_map[ptype_subfield]);
+        }
+
+        return egCore.pcrud.search('cmpcvm', 
+            {ptype_subfield : ptype_subfield},
+            {order_by : {cmpcsm : ['value']}})
+        .then(function(maps) {
+            service.phys_char_sf_map[ptype_subfield] = maps;
+        });
     }
 
     return service;
