@@ -1455,6 +1455,10 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
         controller: ['$scope','$q','egTagTable',
             function ($scope , $q , egTagTable) {
 
+                // $scope.step is the 1-based position in the list of 
+                // subfields for the currently selected type.
+                $scope.step = 0;
+
                 if (!$scope.field.data) $scope.field.data = '';
 
                 $scope.selected_option = null;
@@ -1465,34 +1469,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
 
                 function current_subfield() {
                     return egTagTable.getPhysCharSubfieldMap(current_ptype())
-                    .then(function(subfields) {
-                        // find the subfield at the current location
-                        return subfields.filter(function(sub) {
-                            return sub.start_pos() == $scope.step;
-                        })[0];
-                    });
-                }
-
-                function next_subfield() {
-                    return egTagTable.getPhysCharSubfieldMap(current_ptype())
-                    .then(function(sf_list) {
-                        for (var idx = 0; idx < sf_list.length; idx++) {
-                            if (sf_list[idx].start_pos() > $scope.step) {
-                                return sf_list[idx];
-                            }
-                        }
-                    });
-                }
-
-                function prev_subfield() {
-                    return egTagTable.getPhysCharSubfieldMap(current_ptype())
-                    .then(function(sf_list) {
-                        for (var idx = sf_list.length-1; idx >= 0; idx--) {
-                            if (sf_list[idx].start_pos() < $scope.step) {
-                                return sf_list[idx];
-                            }
-                        }
-                    });
+                    .then(function(sf_list) {return sf_list[$scope.step-1]});
                 }
 
                 $scope.values_for_step = [];
@@ -1528,9 +1505,13 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                 $scope.change_option = function(option) {
                     $scope.selected_option = option;
                     var new_val = option.value();
-                    if (current_ptype() != new_val) {
-                        $scope.field.data = new_val; // total reset
-                    }
+                    get_step_slot().then(function(slot) {
+                        // TODO fill in gaps with "|" values.
+                        var value = $scope.field.data;
+                        var before = value.substr(0, slot[0]);
+                        var after = value.substr(slot[0] + slot[1]);
+                        $scope.field.data = before + new_val.substr(0, slot[1]) + after;
+                    });
                 }
 
                 function get_step_slot() {
@@ -1541,7 +1522,15 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                 }
 
                 $scope.is_last_step = function() {
-                    return false; // TODO
+                    // This one is called w/ every digest, so avoid async
+                    // calls.  Wait until we know for sure if this is 
+                    // the last step.
+                    return (
+                        current_ptype() && 
+                        egTagTable.phys_char_sf_map[current_ptype()] &&
+                        egTagTable.phys_char_sf_map[current_ptype()].length 
+                            == $scope.step
+                    );
                 }
 
                 $scope.label_for_step = '';
@@ -1554,24 +1543,13 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                 }
                 
                 $scope.next_step = function() {
-                    next_subfield().then(function(sf) {
-                        $scope.step = sf.start_pos()
-                        console.debug('setting step to ' + $scope.step);
-                        set_values_for_step();
-                    });
+                    $scope.step++;
+                    set_values_for_step();
                 }
 
                 $scope.prev_step = function() {
-                    if ($scope.step == 1) {
-                        $scope.step = 0;
-                        set_values_for_step();
-                    } else {
-                        prev_subfield().then(function(sf) {
-                            $scope.step = sf.start_pos();
-                            console.debug('setting step to ' + $scope.step);
-                            set_values_for_step();
-                        });
-                    }
+                    $scope.step--;
+                    set_values_for_step();
                 }
 
                 function set_selected_option_from_field() {
@@ -1593,7 +1571,6 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                     }
                 }
 
-                $scope.step = 0; // always start with type selector
                 set_values_for_step();
             }
         ]
