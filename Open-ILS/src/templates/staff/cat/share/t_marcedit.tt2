@@ -58,7 +58,7 @@
   </div>
 
   <div ng-show="flatEditor">
-    <textarea cols="120" rows="40" ng-model="flat_text_marc" ng-change="saveFlatTextMARC()"></textarea>
+    <textarea cols="120" rows="40" ng-model="flat_text_marc" ng-blur="saveFlatTextMARC()"></textarea>
   </div>
   <div ng-show="!flatEditor">
     <div class="row pad-vert">
