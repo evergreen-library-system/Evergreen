@@ -10,7 +10,7 @@ function($q,   egCore,   egAuth) {
     };
     
     service.loadTargets = function() {
-        var default_targets = egCore.hatch.getLocalItem('eg.cat.z3950.default_targets');
+        var default_targets = egCore.hatch.getLocalItem('eg.cat.z3950.default_targets') || [];
         egCore.net.request(
             'open-ils.search',
             'open-ils.search.z3950.retrieve_services',
