@@ -814,6 +814,49 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         });
     }
 
+    $scope.attach_to_peer_bib = function() {
+        var copy_list = gatherSelectedHoldingsIds();
+        if (copy_list.length == 0) return;
+
+        egCore.hatch.getItem('eg.cat.marked_conjoined_record').then(function(target_record) {
+            if (!target_record) return;
+
+            return $modal.open({
+                templateUrl: './cat/catalog/t_conjoined_selector',
+                animation: true,
+                controller:
+                       ['$scope','$modalInstance',
+                function($scope , $modalInstance) {
+                    $scope.peer_type = null;
+                    $scope.peer_type_list = [];
+                    holdingsSvc.get_peer_types().then(function(list){
+                        $scope.peer_type_list = list;
+                    });
+    
+                    $scope.ok = function(type) {
+                        var promises = [];
+    
+                        angular.forEach(copy_list, function (cp) {
+                            var n = new egCore.idl.bpbcm();
+                            n.isnew(true);
+                            n.peer_record(target_record);
+                            n.target_copy(cp);
+                            n.peer_type(type);
+                            promises.push(egCore.pcrud.create(n));
+                        });
+    
+                        return $q.all(promises).then(function(){$modalInstance.close()});
+                    }
+    
+                    $scope.cancel = function($event) {
+                        $modalInstance.dismiss();
+                        $event.preventDefault();
+                    }
+                }]
+            });
+        });
+    }
+
 
     // ------------------------------------------------------------------
     // Holds 
@@ -1284,6 +1327,18 @@ function(egCore , $q) {
             }
         );
     }
+
+    // returns a promise resolved with the list of peer bib types
+    service.get_peer_types = function() {
+        if (egCore.env.bpt)
+            return $q.when(egCore.env.bpt.list);
+
+        return egCore.pcrud.retrieveAll('bpt', null, {atomic : true})
+        .then(function(list) {
+            egCore.env.absorbList(list, 'bpt');
+            return list;
+        });
+    };
 
     return service;
 }])
