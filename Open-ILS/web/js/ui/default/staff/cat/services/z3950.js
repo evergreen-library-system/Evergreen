@@ -131,10 +131,10 @@ function($q,   egCore,   egAuth) {
         angular.forEach(service.targets, function(target, idx) {
             if (target.selected) {
                 saved_targets[target.code] = {};
-            }
-            if (target.settings.auth == 't') {
-                saved_targets[target.code]['username'] = target.username;
-                saved_targets[target.code]['password'] = target.password;
+                if (target.settings.auth == 't') {
+                    saved_targets[target.code]['username'] = target.username;
+                    saved_targets[target.code]['password'] = target.password;
+                }
             }
         }); 
         egCore.hatch.setLocalItem('eg.cat.z3950.default_targets', saved_targets);
