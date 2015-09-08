@@ -150,3 +150,12 @@ grid[name="-none-"] * label { color: black; }
 #z3950-search-form-row {
     margin-bottom: 20px;
 }
+
+/*
+ *  MARC view styles
+ */
+
+/* ensure that side-by-side MARC record views don't overlap text */
+.marc_tag_row {
+    word-break: break-word;
+}
