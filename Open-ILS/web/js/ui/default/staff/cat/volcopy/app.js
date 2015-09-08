@@ -424,7 +424,10 @@ function(egCore , $q) {
                 '<div class="col-xs-1"><eg-org-selector selected="owning_lib" disableTest="cant_have_vols"></eg-org-selector></div>'+
                 '<div class="col-xs-1"><input class="form-control" type="number" min="{{orig_cn_count}}" ng-model="cn_count" ng-change="changeCNCount()"/></div>'+
                 '<div class="col-xs-10">'+
-                    '<eg-vol-row ng-repeat="(cn,copies) in struct | orderBy:cn track by cn" focus-next="focusNextFirst" copies="copies" allcopies="allcopies"></eg-vol-row>'+
+                    '<eg-vol-row '+
+                        'ng-repeat="(cn,copies) in struct | orderBy:cn track by cn" '+
+                        'focus-next="focusNextFirst" copies="copies" allcopies="allcopies">'+
+                    '</eg-vol-row>'+
                 '</div>'+
             '</div>',
 
@@ -494,8 +497,22 @@ function(egCore , $q) {
                             cn.record( $scope.full_cn.record() );
 
                             var cp = new egCore.idl.acp();
+                            cp.call_number( cn );
                             cp.id( --itemSvc.new_cp_id );
                             cp.isnew( true );
+
+                            cp.deposit(0);
+                            cp.price(0);
+                            cp.deposit_amount(0);
+                            cp.fine_level(2); // Normal
+                            cp.loan_duration(2); // Normal
+                            cp.location(1); // Stacks
+                            cp.circulate('t');
+                            cp.holdable('t');
+                            cp.opac_visible('t');
+                            cp.ref('f');
+                            cp.mint_condition('t');
+
                             cp.circ_lib( $scope.owning_lib.id() );
                             cp.call_number( cn );
 
@@ -865,7 +882,20 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                                     cp.call_number( cn );
                                     cp.id( --itemSvc.new_cp_id );
                                     cp.isnew( true );
-                                    cp.circ_lib( $scope.record_id );
+                                    cp.circ_lib( proto.owner || egCore.auth.user().ws_ou() );
+
+                                    cp.deposit(0);
+                                    cp.price(0);
+                                    cp.deposit_amount(0);
+                                    cp.fine_level(2); // Normal
+                                    cp.loan_duration(2); // Normal
+                                    cp.location(1); // Stacks
+                                    cp.circulate('t');
+                                    cp.holdable('t');
+                                    cp.opac_visible('t');
+                                    cp.ref('f');
+                                    cp.mint_condition('t');
+
                                     if (proto.barcode) cp.barcode( proto.barcode );
 
                                     itemSvc.addCopy(cp)
@@ -885,7 +915,20 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                                 cp.call_number( cn );
                                 cp.id( --itemSvc.new_cp_id );
                                 cp.isnew( true );
-                                cp.circ_lib( $scope.record_id );
+
+                                cp.deposit(0);
+                                cp.price(0);
+                                cp.deposit_amount(0);
+                                cp.fine_level(2); // Normal
+                                cp.loan_duration(2); // Normal
+                                cp.location(1); // Stacks
+                                cp.circulate('t');
+                                cp.holdable('t');
+                                cp.opac_visible('t');
+                                cp.ref('f');
+                                cp.mint_condition('t');
+
+                                cp.circ_lib( proto.owner || egCore.auth.user().ws_ou() );
                                 if (proto.barcode) cp.barcode( proto.barcode );
 
                                 itemSvc.addCopy(cp)
@@ -899,12 +942,12 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
             }
 
         }).then( function() {
+            $scope.data = itemSvc;
             if ($scope.add_vols_copies) {
                 egCore.org.settings([
                     'cat.default_copy_status_fast'
                 ]).then(function(set) {
                     $scope.fast_ccs = set['cat.default_copy_status_fast'] || 0;
-                    $scope.data = itemSvc;
                     angular.forEach($scope.data.copies, function (cp) {
                         cp.status($scope.fast_ccs);
                     });
