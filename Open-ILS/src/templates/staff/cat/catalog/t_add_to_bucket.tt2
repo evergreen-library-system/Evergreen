@@ -1,0 +1,34 @@
+<div class="modal-header">
+  <button type="button" class="close" ng-click="cancel()"
+    aria-hidden="true">&times;</button>
+  <h4 class="modal-title">[% l('Add To Bucket') %]</h4>
+</div>
+<div class="modal-body">
+  <div class="row">
+    <div class="form-inline">
+      <div class="form-gruop">
+        <label for="select-bucket">[% l('Copy this record into which bucket?') %]</label>
+        <select id="select-bucket" class="form-control" ng-model="bucket_id"
+                ng-options="bucket.name() for bucket in allBuckets track by bucket.id()">
+        </select>
+        <button class="btn btn-primary" ng-class="{disabled : !bucket_id}" 
+                ng-click="add_to_bucket()">[% l('Add To Selected Bucket') %]</button>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="form-inline">
+      <div class="form-gruop">
+        <label for="new-bucket-name">[% l('Name For New Bucket') %]</label>
+        <input type="text" class="form-control" id="new-bucket-name" ng-model="newBucketName" />
+        <button class="btn btn-primary" ng-class="{disabled : !newBucketName}"
+                ng-click="add_to_new_bucket()">[% l('Add To New Bucket') %]</button>
+      </div>
+  </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <div class="col-md-6 pull-right">
+    <button class="btn btn-warning" ng-click="cancel($event)">[% l('Cancel') %]</button>
+  </div>
+</div>

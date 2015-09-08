@@ -250,6 +250,63 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         }
     }
 
+    $scope.add_to_record_bucket = function() {
+        var recId = $scope.record_id;
+        return $modal.open({
+            templateUrl: './cat/catalog/t_add_to_bucket',
+            animation: true,
+            size: 'md',
+            controller:
+                   ['$scope','$modalInstance',
+            function($scope , $modalInstance) {
+
+                $scope.bucket_id = 0;
+                $scope.newBucketName = '';
+                $scope.allBuckets = [];
+                egCore.net.request(
+                    'open-ils.actor',
+                    'open-ils.actor.container.retrieve_by_class.authoritative',
+                    egCore.auth.token(), egCore.auth.user().id(),
+                    'biblio', 'staff_client'
+                ).then(function(buckets) { $scope.allBuckets = buckets; });
+
+                $scope.add_to_bucket = function() {
+                    var item = new egCore.idl.cbrebi();
+                    item.bucket($scope.bucket_id);
+                    item.target_biblio_record_entry(recId);
+                    egCore.net.request(
+                        'open-ils.actor',
+                        'open-ils.actor.container.item.create',
+                        egCore.auth.token(), 'biblio', item
+                    ).then(function(resp) {
+                        $modalInstance.close();
+                    });
+                }
+
+                $scope.add_to_new_bucket = function() {
+                    var bucket = new egCore.idl.cbreb();
+                    bucket.owner(egCore.auth.user().id());
+                    bucket.name($scope.newBucketName);
+                    bucket.description('');
+                    bucket.btype('staff_client');
+
+                    egCore.net.request(
+                        'open-ils.actor',
+                        'open-ils.actor.container.create',
+                        egCore.auth.token(), 'biblio', bucket
+                    ).then(function(bucket) {
+                        $scope.bucket_id = bucket;
+                        $scope.add_to_bucket();
+                    });
+                }
+
+                $scope.cancel = function() {
+                    $modalInstance.dismiss();
+                }
+            }]
+        });
+    }
+
     $scope.stop_unload = false;
     $scope.$watch('stop_unload',
         function(newVal, oldVal) {

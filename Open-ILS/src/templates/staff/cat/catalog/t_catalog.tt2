@@ -21,6 +21,11 @@
        [% l('Back To Results') %]
     </button>
   </div>
+  <div class="col-md-3">
+    <button type="button" class="btn btn-default" ng-click="add_to_record_bucket()">
+        [% l('Add To Bucket') %]
+    </button>
+  </div>
 </div>
 
 <ul class="nav nav-tabs">
