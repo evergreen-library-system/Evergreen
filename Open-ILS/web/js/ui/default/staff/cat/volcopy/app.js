@@ -823,6 +823,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
         });
 
         $scope.workingGridControls = {};
+        $scope.add_vols_copies = false;
 
         egNet.request(
             'open-ils.actor',
@@ -841,6 +842,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
 
                 if (data.raw && data.raw.length) {
                     $scope.dirty = true;
+                    $scope.add_vols_copies = true;
 
                     /* data.raw data structure looks like this:
                      * [{
@@ -897,8 +899,18 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
             }
 
         }).then( function() {
-            $scope.data = itemSvc;
-            $scope.workingGridDataProvider.refresh();
+            if ($scope.add_vols_copies) {
+                egCore.org.settings([
+                    'cat.default_copy_status_fast'
+                ]).then(function(set) {
+                    $scope.fast_ccs = set['cat.default_copy_status_fast'] || 0;
+                    $scope.data = itemSvc;
+                    angular.forEach($scope.data.copies, function (cp) {
+                        cp.status($scope.fast_ccs);
+                    });
+                    $scope.workingGridDataProvider.refresh();
+                });
+            }
         });
 
         $scope.focusNextFirst = function(prev_lib) {
