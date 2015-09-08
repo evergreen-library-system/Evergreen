@@ -3,30 +3,51 @@
     <div class="col-md-4">[% l('007 Value') %]</div>
     <div class="col-md-4">{{field.data}}</div>
   </div>
+  <div class="row"><div class="col-md-12 pad-vert"><hr/></div></div>
   <div class="row">
-    <div ng-if="step == 'a'">
+    <div ng-if="step == 0">
       <div class="col-md-4">[% l('Category of Material') %]</div>
       <div class="col-md-4">
-        <select ng-model="value_for_step">
-          <option ng-repeat="option in values_for_step" 
-            value="{{option.ptype_key()}}">{{option.label()}}</option>
-        </select>
+        <div class="btn-group" dropdown>
+          <button type="button" class="btn btn-default dropdown-toggle">
+           <span style="padding-right: 5px;">{{selected_option.label()}}</span>
+           <span class="caret"></span>
+         </button>
+         <ul class="dropdown-menu">
+           <li ng-repeat="option in values_for_step">
+             <a href ng-click="change_ptype(option)">
+              {{option.label()}}
+             </a>
+           </li>
+         </ul>
+        </div>
       </div>
     </div>
-    <div ng-if="step != 'a'">
-      <div class="col-md-4" ng-show="step != 'a'">{{get_label_for_step()}}</div>
+    <div ng-if="step != 0">
+      <div class="col-md-4">{{label_for_step}}</div>
       <div class="col-md-4">
-        <select ng-model="value_for_step">
-          <option ng-repeat="option in values_for_step" 
-            value="{{option.value()}}">{{option.label()}}</option>
-        </select>
+        <div class="btn-group" dropdown>
+          <button type="button" class="btn btn-default dropdown-toggle">
+           <span style="padding-right: 5px;">{{selected_option.label()}}</span>
+           <span class="caret"></span>
+         </button>
+         <ul class="dropdown-menu">
+           <li ng-repeat="option in values_for_step">
+             <a href ng-click="change_option(option)">
+              {{option.label()}}
+             </a>
+           </li>
+         </ul>
+        </div>
       </div>
     </div>
     <div class="col-md-2">
-      <button class="btn btn-default">[% l('Previous') %]</button>
+      <button class="btn btn-default" ng-click="prev_step()" 
+        ng-class="{disabled : !step}">[% l('Previous') %]</button>
     </div>
     <div class="col-md-2">
-      <button class="btn btn-default">[% l('Next') %]</button>
+      <button class="btn btn-default" ng-click="next_step()"
+        ng-class="{disabled : is_last_step()}">[% l('Next') %]</button>
     </div>
   </div>
 </div>

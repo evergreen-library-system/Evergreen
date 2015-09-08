@@ -1452,36 +1452,149 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
         scope : {
             field : '='
         },
-        controller: ['$scope','egTagTable',
-            function ($scope , egTagTable) {
-                $scope.step = 'a';
-                if ($scope.field.data) $scope.field.data = '';
+        controller: ['$scope','$q','egTagTable',
+            function ($scope , $q , egTagTable) {
 
-                $scope.value_for_step = '';
-                $scope.values_for_step = [];
+                if (!$scope.field.data) $scope.field.data = '';
 
-                egTagTable.getPhysCharTypeMap().then(function(list) {
-                    // we start with the types selector
-                    $scope.values_for_step = list;
-                });
+                $scope.selected_option = null;
 
-                $scope.current_ptype = function() {
+                function current_ptype() {
                     return $scope.field.data.substr(0, 1);   
                 }
 
-                $scope.get_label_for_step = function() {
-                    return 'TEST';
+                function current_subfield() {
+                    return egTagTable.getPhysCharSubfieldMap(current_ptype())
+                    .then(function(subfields) {
+                        // find the subfield at the current location
+                        return subfields.filter(function(sub) {
+                            return sub.start_pos() == $scope.step;
+                        })[0];
+                    });
                 }
 
-                $scope.get_values_for_step = function() {
-                    if ($scope.step == 'a') {
-                        egTagTable.getPhysCharTypeMap().then(function(list) {
-                            $scope.values_for_step = list;
-                        });
+                function next_subfield() {
+                    return egTagTable.getPhysCharSubfieldMap(current_ptype())
+                    .then(function(sf_list) {
+                        for (var idx = 0; idx < sf_list.length; idx++) {
+                            if (sf_list[idx].start_pos() > $scope.step) {
+                                return sf_list[idx];
+                            }
+                        }
+                    });
+                }
+
+                function prev_subfield() {
+                    return egTagTable.getPhysCharSubfieldMap(current_ptype())
+                    .then(function(sf_list) {
+                        for (var idx = sf_list.length-1; idx >= 0; idx--) {
+                            if (sf_list[idx].start_pos() < $scope.step) {
+                                return sf_list[idx];
+                            }
+                        }
+                    });
+                }
+
+                $scope.values_for_step = [];
+                function set_values_for_step() {
+                    var promise;
+
+                    if ($scope.step == 0) {
+                        promise = egTagTable.getPhysCharTypeMap();
                     } else {
-                        //
+                        promise = current_subfield().then(
+                            function(subfield) {
+                                return egTagTable
+                                    .getPhysCharValueMap(subfield.id());
+                            }
+                        );
+                    }
+
+                    return promise.then(function(list) { 
+                        $scope.values_for_step = list;
+                        set_selected_option_from_field();
+                        set_label_for_step();
+                    });
+                }
+
+                $scope.change_ptype = function(option) {
+                    $scope.selected_option = option;
+                    var new_val = option.ptype_key();
+                    if (current_ptype() != new_val) {
+                        $scope.field.data = new_val; // total reset
                     }
                 }
+
+                $scope.change_option = function(option) {
+                    $scope.selected_option = option;
+                    var new_val = option.value();
+                    if (current_ptype() != new_val) {
+                        $scope.field.data = new_val; // total reset
+                    }
+                }
+
+                function get_step_slot() {
+                    if ($scope.step == 0) return $q.when([0, 1]);
+                    return current_subfield().then(function(sf) {
+                        return [sf.start_pos(), sf.length()]
+                    });
+                }
+
+                $scope.is_last_step = function() {
+                    return false; // TODO
+                }
+
+                $scope.label_for_step = '';
+                function set_label_for_step() {
+                    if ($scope.step > 0) {
+                        current_subfield().then(function(sf) {
+                            $scope.label_for_step = sf.label();
+                        });
+                    }
+                }
+                
+                $scope.next_step = function() {
+                    next_subfield().then(function(sf) {
+                        $scope.step = sf.start_pos()
+                        console.debug('setting step to ' + $scope.step);
+                        set_values_for_step();
+                    });
+                }
+
+                $scope.prev_step = function() {
+                    if ($scope.step == 1) {
+                        $scope.step = 0;
+                        set_values_for_step();
+                    } else {
+                        prev_subfield().then(function(sf) {
+                            $scope.step = sf.start_pos();
+                            console.debug('setting step to ' + $scope.step);
+                            set_values_for_step();
+                        });
+                    }
+                }
+
+                function set_selected_option_from_field() {
+                    if ($scope.step == 0) {
+                        $scope.selected_option = $scope.values_for_step
+                        .filter(function(opt) {
+                            return (opt.ptype_key() == current_ptype())})[0];
+                    } else {
+                        get_step_slot().then(function(slot) {
+                            var val = String.prototype.substr.apply(                      
+                                $scope.field.data, slot);
+                            if (val) {
+                                $scope.selected_option = $scope.values_for_step
+                                .filter(function(opt) { return (opt.value() == val)})[0];
+                            } else {
+                                $scope.selected_option = $scope.values_for_step[0];
+                            }
+                        })
+                    }
+                }
+
+                $scope.step = 0; // always start with type selector
+                set_values_for_step();
             }
         ]
     }
