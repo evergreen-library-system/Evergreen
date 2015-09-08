@@ -286,7 +286,7 @@ function(egCore , $q) {
             function ( $scope , itemSvc , egCore ) {
                 $scope.callNumber =  $scope.copies[0].call_number();
 
-                $scope.idTracker = function (x) { if (x) return x.id() };
+                $scope.idTracker = function (x) { if (x && x.id) return x.id() };
 
                 // XXX $() is not working! arg
                 $scope.focusNextBarcode = function (i) {
@@ -315,10 +315,16 @@ function(egCore , $q) {
                 $scope.suffix_list = [];
                 itemSvc.get_suffixes($scope.callNumber.owning_lib()).then(function(list){
                     $scope.suffix_list = list;
+                    $scope.$watch('callNumber.suffix()', function (v) {
+                        $scope.suffix = $scope.suffix_list.filter( function (s) {
+                            return s.id() == v;
+                        })[0];
+                    });
+
                 });
                 $scope.updateSuffix = function () {
                     angular.forEach($scope.copies, function(cp) {
-                        cp.call_number().suffix($scope.suffix);
+                        cp.call_number().suffix($scope.suffix.id());
                         cp.call_number().ischanged(1);
                     });
                 }
@@ -326,10 +332,16 @@ function(egCore , $q) {
                 $scope.prefix_list = [];
                 itemSvc.get_prefixes($scope.callNumber.owning_lib()).then(function(list){
                     $scope.prefix_list = list;
+                    $scope.$watch('callNumber.prefix()', function (v) {
+                        $scope.prefix = $scope.prefix_list.filter(function (p) {
+                            return p.id() == v;
+                        })[0];
+                    });
+
                 });
                 $scope.updatePrefix = function () {
                     angular.forEach($scope.copies, function(cp) {
-                        cp.call_number().prefix($scope.prefix);
+                        cp.call_number().prefix($scope.prefix.id());
                         cp.call_number().ischanged(1);
                     });
                 }
@@ -337,10 +349,16 @@ function(egCore , $q) {
                 $scope.classification_list = [];
                 itemSvc.get_classifications().then(function(list){
                     $scope.classification_list = list;
+                    $scope.$watch('callNumber.label_class()', function (v) {
+                        $scope.classification = $scope.classification_list.filter(function (c) {
+                            return c.id() == v;
+                        })[0];
+                    });
+
                 });
                 $scope.updateClassification = function () {
                     angular.forEach($scope.copies, function(cp) {
-                        cp.call_number().label_class($scope.classification);
+                        cp.call_number().label_class($scope.classification.id());
                         cp.call_number().ischanged(1);
                     });
                 }
@@ -351,33 +369,6 @@ function(egCore , $q) {
                         cp.call_number().ischanged(1);
                     });
                 }
-
-                $scope.$watch('callNumber.prefix()', function (v) {
-                    if (typeof v != 'object') {
-                        $scope.prefix = $scope.prefix_list.filter(function (p) {
-                            return p.id() == v;
-                        })[0];
-                        $scope.callNumber.prefix($scope.prefix);
-                    }
-                });
-
-                $scope.$watch('callNumber.suffix()', function (v) {
-                    if (typeof v != 'object') {
-                        $scope.suffix = $scope.suffix_list.filter( function (s) {
-                            return s.id() == v;
-                        })[0];
-                        $scope.callNumber.suffix($scope.suffix);
-                    }
-                });
-
-                $scope.$watch('callNumber.label_class()', function (v) {
-                    if (typeof v != 'object') {
-                        $scope.classification = $scope.classification_list.filter(function (c) {
-                            return c.id() == v;
-                        })[0];
-                        $scope.callNumber.label_class($scope.classification);
-                    }
-                });
 
                 $scope.$watch('callNumber.label()', function (v) {
                     $scope.label = v;
@@ -443,6 +434,13 @@ function(egCore , $q) {
                 $scope.first_cn = Object.keys($scope.struct)[0];
                 $scope.full_cn = $scope.struct[$scope.first_cn][0].call_number();
 
+                $scope.defaults = {};
+                egCore.hatch.getItem('cat.copy.defaults').then(function(t) {
+                    if (t) {
+                        $scope.defaults = t;
+                    }
+                });
+
                 $scope.focusNextFirst = function(prev_cn) {
                     var n;
                     var yep = false;
@@ -489,6 +487,9 @@ function(egCore , $q) {
                             var cn = new egCore.idl.acn();
                             cn.id( --itemSvc.new_cn_id );
                             cn.isnew( true );
+                            cn.prefix( $scope.defaults.prefix || -1 );
+                            cn.suffix( $scope.defaults.suffix || -1 );
+                            cn.label_class( $scope.defaults.classification || 1 );
                             cn.owning_lib( $scope.owning_lib.id() );
                             cn.record( $scope.full_cn.record() );
 
@@ -871,6 +872,9 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                                 var cn = new egCore.idl.acn();
                                 cn.id( --itemSvc.new_cn_id );
                                 cn.isnew( true );
+                                cn.prefix( $scope.defaults.prefix || -1 );
+                                cn.suffix( $scope.defaults.suffix || -1 );
+                                cn.label_class( $scope.defaults.classification || 1 );
                                 cn.owning_lib( proto.owner || egCore.auth.user().ws_ou() );
                                 cn.record( $scope.record_id );
                                 if (proto.label) cn.label( proto.label );
