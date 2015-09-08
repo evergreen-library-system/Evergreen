@@ -10,6 +10,7 @@ function($q,   egCore,   egAuth) {
     };
     
     service.loadTargets = function() {
+        var default_targets = egCore.hatch.getLocalItem('eg.cat.z3950.default_targets');
         egCore.net.request(
             'open-ils.search',
             'open-ils.search.z3950.retrieve_services',
@@ -21,13 +22,18 @@ function($q,   egCore,   egAuth) {
             var localTarget = res['native-evergreen-catalog'];
             delete res['native-evergreen-catalog'];
             angular.forEach(res, function(value, key) {
-                this.push({
+                var tgt = {
                     code:       key,
                     settings:   value,
-                    selected:   false,
+                    selected:   (key in default_targets),
                     username:   '',
                     password:   ''
-                });
+                };
+                if (tgt.code in default_targets && tgt.settings.auth == 't') {
+                    tgt['username'] = default_targets[tgt.code]['username'] || '';
+                    tgt['password'] = default_targets[tgt.code]['password'] || '';
+                }
+                this.push(tgt);
             }, service.targets);
             service.targets.sort(function (a, b) {
                 a = a.settings.label;
@@ -37,7 +43,7 @@ function($q,   egCore,   egAuth) {
             service.targets.unshift({
                 code:       'native-evergreen-catalog',
                 settings:   localTarget,
-                selected:   false,
+                selected:   ('native-evergreen-catalog' in default_targets),
                 username:   '',
                 password:   ''
             });
@@ -117,6 +123,21 @@ function($q,   egCore,   egAuth) {
 
     service.setRawSearch = function(raw_search) {
         service.raw_search = raw_search;
+    }
+
+    // store selected targets
+    service.saveDefaultZ3950Targets = function() {
+        var saved_targets = {};
+        angular.forEach(service.targets, function(target, idx) {
+            if (target.selected) {
+                saved_targets[target.code] = {};
+            }
+            if (target.settings.auth == 't') {
+                saved_targets[target.code]['username'] = target.username;
+                saved_targets[target.code]['password'] = target.password;
+            }
+        }); 
+        egCore.hatch.setLocalItem('eg.cat.z3950.default_targets', saved_targets);
     }
 
     return service;

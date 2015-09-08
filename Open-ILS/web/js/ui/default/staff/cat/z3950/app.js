@@ -131,6 +131,10 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
         egZ3950TargetSvc.clearSearchFields();
     };
 
+    $scope.saveDefaultZ3950Targets = function() {
+        egZ3950TargetSvc.saveDefaultZ3950Targets();
+    }
+
     var display_form = true;
     $scope.show_search_form = function() {
         return display_form;
