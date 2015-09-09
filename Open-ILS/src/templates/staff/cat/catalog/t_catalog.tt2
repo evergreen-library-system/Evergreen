@@ -59,6 +59,11 @@
         [% l('Holdings View') %]
     </a>
   </li>
+  <li ng-class="{disabled : !record_id, active : record_tab == 'conjoined'}">
+    <a ng-click="set_record_tab('conjoined')" >
+        [% l('Conjoined Items') %]
+    </a>
+  </li>
 </ul>
 
 <div class="tab-content">
@@ -85,6 +90,9 @@
     </div>
     <div ng-if="record_tab == 'holdings'">
       [% INCLUDE 'staff/cat/catalog/t_holdings.tt2' %]
+    </div>
+    <div ng-if="record_tab == 'conjoined'">
+      [% INCLUDE 'staff/cat/catalog/t_conjoined_items.tt2' %]
     </div>
   </div>
 </div>

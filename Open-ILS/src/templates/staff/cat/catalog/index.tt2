@@ -22,6 +22,10 @@
       "[% l('Permanently delete selected copies and/or volumes from catalog?') %]";
     s.CONFIRM_DELETE_COPIES_VOLUMES_MESSAGE =
       "[% l('Will delete {{copies}} copies and {{volumes}} volumes') %]";
+    s.CONFIRM_DELETE_PEERS =
+      "[% l('Unlink selected conjoined copies?') %]";
+    s.CONFIRM_DELETE_PEERS_MESSAGE =
+      "[% l('Will unlink {{peers}} copies') %]";
   }])
 </script>
 

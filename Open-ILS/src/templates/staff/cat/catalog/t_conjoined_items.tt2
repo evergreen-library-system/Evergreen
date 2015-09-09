@@ -1,0 +1,35 @@
+
+<div>
+  <eg-grid
+    id-field="id"
+    idl-class="bpbcm"
+    features="-display,-sort,-multisort,-pagination,-picker,-actions"
+    items-provider="conjoinedGridDataProvider"
+    grid-controls="conjoinedGridControls"
+    persist-key="cat.peer_bibs">
+
+     <eg-grid-menu-item handler="refreshConjoined"
+      label="[% l('Refresh') %]"/>
+ 
+     <eg-grid-menu-item handler="deleteSelectedConjoined"
+      label="[% l('Unlink') %]"/>
+ 
+    <eg-grid-menu-item handler="changeConjoinedType"
+      label="[% l('Change Type') %]"/>
+
+    <eg-grid-field label="[% l('Copy') %]"  path="target_copy.barcode" visible>
+      <a target="_self" href="[% ctx.base_path %]/staff/cat/item/{{item.target_copy().id()}}">
+        {{item.target_copy().barcode()}}
+      </a>
+    </eg-grid-field>
+    <eg-grid-field label="[% l('Title') %]"  path="target_copy.call_number.record.simple_record.title" visible>
+      <a target="_self" href="[% ctx.base_path %]/staff/cat/catalog/record/{{item.target_copy().call_number().record().id()}}">
+        {{item.target_copy().call_number().record().simple_record().title()}}
+      </a>
+    </eg-grid-field>
+    <eg-grid-field label="[% l('Type') %]"  path="peer_type.name" visible></eg-grid-field>
+    <eg-grid-field label="[% l('ID') %]"  path="peer_type.id" ></eg-grid-field>
+  
+  </eg-grid>
+</div>
+  

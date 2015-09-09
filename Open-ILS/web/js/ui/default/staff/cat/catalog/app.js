@@ -227,9 +227,9 @@ function($scope , $routeParams , $location , $window , $q , egCore) {
 
 .controller('CatalogCtrl',
        ['$scope','$routeParams','$location','$window','$q','egCore','egHolds','egCirc','egConfirmDialog',
-        'egGridDataProvider','egHoldGridActions','$timeout','$modal','holdingsSvc','egUser',
+        'egGridDataProvider','egHoldGridActions','$timeout','$modal','holdingsSvc','egUser','conjoinedSvc',
 function($scope , $routeParams , $location , $window , $q , egCore , egHolds , egCirc,  egConfirmDialog,
-         egGridDataProvider , egHoldGridActions , $timeout , $modal , holdingsSvc , egUser) {
+         egGridDataProvider , egHoldGridActions , $timeout , $modal , holdingsSvc , egUser , conjoinedSvc) {
 
     // set record ID on page load if available...
     $scope.record_id = $routeParams.record_id;
@@ -338,6 +338,9 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
             $scope.record_id = match[1];
             egCore.hatch.setLocalItem("eg.cat.last_record_retrieved", $scope.record_id);
             $scope.holdings_record_id_changed($scope.record_id);
+            conjoinedSvc.fetch($scope.record_id).then(function(){
+                $scope.conjoinedGridDataProvider.refresh();
+            });
             init_parts_url();
         } else {
             delete $scope.record_id;
@@ -362,6 +365,92 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
 
     // xulG catalog handlers
     $scope.handlers = { }
+
+    // ------------------------------------------------------------------
+    // Conjoined items
+
+    $scope.conjoinedGridControls = {};
+    $scope.conjoinedGridDataProvider = egGridDataProvider.instance({
+        get : function(offset, count) {
+            return this.arrayNotifier(conjoinedSvc.items, offset, count);
+        }
+    });
+
+    $scope.changeConjoinedType = function () {
+        var peers = egCore.idl.Clone($scope.conjoinedGridControls.selectedItems());
+        angular.forEach(peers, function (p) {
+            p.target_copy(p.target_copy().id());
+            p.peer_type(p.peer_type().id());
+        });
+
+        var conjoinedGridDataProviderRef = $scope.conjoinedGridDataProvider;
+
+        return $modal.open({
+            templateUrl: './cat/catalog/t_conjoined_selector',
+            animation: true,
+            controller:
+                   ['$scope','$modalInstance',
+            function($scope , $modalInstance) {
+                $scope.update = true;
+
+                $scope.peer_type = null;
+                $scope.peer_type_list = [];
+                conjoinedSvc.get_peer_types().then(function(list){
+                    $scope.peer_type_list = list;
+                });
+    
+                $scope.ok = function(type) {
+                    var promises = [];
+    
+                    angular.forEach(peers, function (p) {
+                        p.ischanged(1);
+                        p.peer_type(type);
+                        promises.push(egCore.pcrud.update(p));
+                    });
+    
+                    return $q.all(promises)
+                        .then(function(){$modalInstance.close()})
+                        .then(function(){return conjoinedSvc.fetch()})
+                        .then(function(){conjoinedGridDataProviderRef.refresh()});
+                }
+    
+                $scope.cancel = function($event) {
+                    $modalInstance.dismiss();
+                    $event.preventDefault();
+                }
+            }]
+        });
+        
+    }
+
+    $scope.refreshConjoined = function () {
+        conjoinedSvc.fetch($scope.record_id)
+        .then(function(){$scope.conjoinedGridDataProvider.refresh();});
+    }
+
+    $scope.deleteSelectedConjoined = function () {
+        var peers = $scope.conjoinedGridControls.selectedItems();
+
+        if (peers.length > 0) {
+            egConfirmDialog.open(
+                egCore.strings.CONFIRM_DELETE_PEERS,
+                egCore.strings.CONFIRM_DELETE_PEERS_MESSAGE,
+                {peers : peers.length}
+            ).result.then(function() {
+                angular.forEach(peers, function (p) {
+                    p.isdeleted(1);
+                });
+
+                egCore.pcrud.remove(peers).then(function() {
+                    return conjoinedSvc.fetch();
+                }).then(function() {
+                    $scope.conjoinedGridDataProvider.refresh();
+                });
+            });
+        }
+    }
+    if ($scope.record_id)
+        conjoinedSvc.fetch($scope.record_id);
 
     // ------------------------------------------------------------------
     // Holdings
@@ -827,9 +916,11 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
                 controller:
                        ['$scope','$modalInstance',
                 function($scope , $modalInstance) {
+                    $scope.update = false;
+
                     $scope.peer_type = null;
                     $scope.peer_type_list = [];
-                    holdingsSvc.get_peer_types().then(function(list){
+                    conjoinedSvc.get_peer_types().then(function(list){
                         $scope.peer_type_list = list;
                     });
     
@@ -1326,6 +1417,53 @@ function(egCore , $q) {
                 return cn;
             }
         );
+    }
+
+    return service;
+}])
+
+.factory('conjoinedSvc', 
+       ['egCore','$q',
+function(egCore , $q) {
+
+    var service = {
+        items : [], // record search results
+        index : 0, // search grid index
+        rid : null
+    };
+
+    service.flesh = {   
+        flesh : 4, 
+        flesh_fields : {
+            bpbcm : ['target_copy','peer_type'],
+            acp : ['call_number'],
+            acn : ['record'],
+            bre : ['simple_record']
+        },
+        // avoid fetching the MARC blob by specifying which
+        // fields on the bre to select.  More may be needed.
+        // note that fleshed fields are explicitly selected.
+        select : { bre : ['id'] },
+        order_by : { bpbcm : ['id'] },
+    }
+
+    // resolved with the last received copy
+    service.fetch = function(rid) {
+        if (!rid && !service.rid) return $q.when();
+
+        if (rid) service.rid = rid;
+        service.items = [];
+        service.index = 0;
+
+        return egCore.pcrud.search(
+            'bpbcm',
+            {peer_record : service.rid},
+            service.flesh,
+            {atomic : true}
+        ).then( function(list) { // finished
+            service.items = list;
+            return service.items;
+        });
     }
 
     // returns a promise resolved with the list of peer bib types
