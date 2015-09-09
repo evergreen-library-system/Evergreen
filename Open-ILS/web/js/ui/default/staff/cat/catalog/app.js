@@ -462,6 +462,73 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         }
     });
 
+    $scope.add_copies_to_bucket = function() {
+        var copy_list = gatherSelectedHoldingsIds();
+        if (copy_list.length == 0) return;
+
+        return $modal.open({
+            templateUrl: './cat/catalog/t_add_to_bucket',
+            animation: true,
+            size: 'md',
+            controller:
+                   ['$scope','$modalInstance',
+            function($scope , $modalInstance) {
+
+                $scope.bucket_id = 0;
+                $scope.newBucketName = '';
+                $scope.allBuckets = [];
+
+                egCore.net.request(
+                    'open-ils.actor',
+                    'open-ils.actor.container.retrieve_by_class.authoritative',
+                    egCore.auth.token(), egCore.auth.user().id(),
+                    'copy', 'staff_client'
+                ).then(function(buckets) { $scope.allBuckets = buckets; });
+
+                $scope.add_to_bucket = function() {
+                    var promises = [];
+                    angular.forEach(copy_list, function (cp) {
+                        var item = new egCore.idl.ccbi()
+                        item.bucket($scope.bucket_id);
+                        item.target_copy(cp);
+                        promises.push(
+                            egCore.net.request(
+                                'open-ils.actor',
+                                'open-ils.actor.container.item.create',
+                                egCore.auth.token(), 'copy', item
+                            )
+                        );
+
+                        return $q.all(promises).then(function() {
+                            $modalInstance.close();
+                        });
+                    });
+                }
+
+                $scope.add_to_new_bucket = function() {
+                    var bucket = new egCore.idl.ccb();
+                    bucket.owner(egCore.auth.user().id());
+                    bucket.name($scope.newBucketName);
+                    bucket.description('');
+                    bucket.btype('staff_client');
+
+                    return egCore.net.request(
+                        'open-ils.actor',
+                        'open-ils.actor.container.create',
+                        egCore.auth.token(), 'copy', bucket
+                    ).then(function(bucket) {
+                        $scope.bucket_id = bucket;
+                        $scope.add_to_bucket();
+                    });
+                }
+
+                $scope.cancel = function() {
+                    $modalInstance.dismiss();
+                }
+            }]
+        });
+    }
+
     $scope.requestItems = function() {
         var copy_list = gatherSelectedHoldingsIds();
         if (copy_list.length == 0) return;

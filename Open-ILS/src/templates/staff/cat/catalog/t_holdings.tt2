@@ -33,6 +33,8 @@
       checkbox="holdings_show_vols"
       checked="holdings_show_vols"/>
 
+    <eg-grid-action handler="add_copies_to_bucket"
+      label="[% l('Add Items to Bucket') %]"></eg-grid-action>
     <eg-grid-action handler="requestItems"
       label="[% l('Request Items') %]"></eg-grid-action>
     <eg-grid-action handler="attach_to_peer_bib"

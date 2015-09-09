@@ -5,24 +5,29 @@
 </div>
 <div class="modal-body">
   <div class="row">
-    <div class="form-inline">
-      <div class="form-gruop">
-        <label for="select-bucket">[% l('Copy this record into which bucket?') %]</label>
-        <select id="select-bucket" class="form-control" ng-model="bucket_id"
-                ng-options="bucket.name() for bucket in allBuckets track by bucket.id()">
-        </select>
-        <button class="btn btn-primary" ng-class="{disabled : !bucket_id}" 
-                ng-click="add_to_bucket()">[% l('Add To Selected Bucket') %]</button>
-      </div>
+    <div class="col-md-4">
+      <label for="select-bucket">[% l('Name of existing bucket') %]</label>
+    </div>
+    <div class="col-md-4">
+      <select id="select-bucket" class="form-control" ng-model="bucket_id"
+              ng-options="bucket.id() as bucket.name() for bucket in allBuckets | orderBy:bucket.name()">
+      </select>
+    </div>
+    <div class="col-md-4">
+      <button class="btn btn-primary" ng-class="{disabled : !bucket_id}" 
+          ng-click="add_to_bucket()">[% l('Add To Selected Bucket') %]</button>
     </div>
   </div>
-  <div class="row">
-    <div class="form-inline">
-      <div class="form-gruop">
-        <label for="new-bucket-name">[% l('Name For New Bucket') %]</label>
+  <div class="row pad-vert">
+    <div class="col-md-4">
+      <label for="new-bucket-name">[% l('Name For New Bucket') %]</label>
+    </div>
+    <div class="col-md-4">
         <input type="text" class="form-control" id="new-bucket-name" ng-model="newBucketName" />
-        <button class="btn btn-primary" ng-class="{disabled : !newBucketName}"
-                ng-click="add_to_new_bucket()">[% l('Add To New Bucket') %]</button>
+    </div>
+    <div class="col-md-4">
+      <button class="btn btn-primary" ng-class="{disabled : !newBucketName}"
+          ng-click="add_to_new_bucket()">[% l('Add To New Bucket') %]</button>
       </div>
   </div>
   </div>
