@@ -840,6 +840,8 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
             );
         }
 
+        if (raw.length == 0) raw.push({});
+
         egCore.net.request(
             'open-ils.actor',
             'open-ils.actor.anon_cache.set_value',
