@@ -275,13 +275,13 @@ function(egCore , $q) {
                 '<div class="col-xs-1">'+
                     '<select class="form-control" ng-model="suffix" ng-change="updateSuffix()" ng-options="s.label() for s in suffix_list track by idTracker(s)"/>'+
                 '</div>'+
-                '<div class="col-xs-1"><input class="form-control" type="number" ng-model="copy_count" min="{{orig_copy_count}}" ng-change="changeCPCount()"></div>'+
-                '<div class="col-xs-5">'+
+                '<div ng-hide="onlyVols" class="col-xs-1"><input class="form-control" type="number" ng-model="copy_count" min="{{orig_copy_count}}" ng-change="changeCPCount()"></div>'+
+                '<div ng-hide="onlyVols" class="col-xs-5">'+
                     '<eg-vol-copy-edit ng-repeat="cp in copies track by idTracker(cp)" focus-next="focusNextBarcode" copy="cp" call-number="callNumber"></eg-vol-copy-edit>'+
                 '</div>'+
             '</div>',
 
-        scope: {focusNext: "=", allcopies: "=", copies: "=" },
+        scope: {focusNext: "=", allcopies: "=", copies: "=", onlyVols: "=" },
         controller : ['$scope','itemSvc','egCore',
             function ( $scope , itemSvc , egCore ) {
                 $scope.callNumber =  $scope.copies[0].call_number();
@@ -424,14 +424,14 @@ function(egCore , $q) {
                 '<div class="col-xs-1"><eg-org-selector selected="owning_lib" disableTest="cant_have_vols"></eg-org-selector></div>'+
                 '<div class="col-xs-1"><input class="form-control" type="number" min="{{orig_cn_count}}" ng-model="cn_count" ng-change="changeCNCount()"/></div>'+
                 '<div class="col-xs-10">'+
-                    '<eg-vol-row '+
+                    '<eg-vol-row only-vols="onlyVols"'+
                         'ng-repeat="(cn,copies) in struct | orderBy:cn track by cn" '+
                         'focus-next="focusNextFirst" copies="copies" allcopies="allcopies">'+
                     '</eg-vol-row>'+
                 '</div>'+
             '</div>',
 
-        scope: { focusNext: "=", allcopies: "=", struct: "=", lib: "@", record: "@" },
+        scope: { focusNext: "=", allcopies: "=", struct: "=", lib: "@", record: "@", onlyVols: "=" },
         controller : ['$scope','itemSvc','egCore',
             function ( $scope , itemSvc , egCore ) {
                 $scope.first_cn = Object.keys($scope.struct)[0];
@@ -607,6 +607,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
         }
     );
 
+    $scope.only_vols = false;
     $scope.show_vols = true;
     $scope.show_copies = true;
 
@@ -629,6 +630,8 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                     $scope.completed_copies = $scope.completed_copies.concat(itemSvc.copies.splice(i,1));
             });
         });
+
+        return true;
     }
 
     $scope.completeToWorking = function () {
@@ -638,6 +641,8 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                     itemSvc.copies = itemSvc.copies.concat($scope.completed_copies.splice(i,1));
             });
         });
+
+        return true;
     }
 
     createSimpleUpdateWatcher = function (field) {
@@ -850,7 +855,10 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
 
             if (data) {
                 if (data.hide_vols && !$scope.defaults.always_vols) $scope.show_vols = false;
-                if (data.hide_copies) $scope.show_copies = false;
+                if (data.hide_copies) {
+                    $scope.show_copies = false;
+                    $scope.only_vols = true;
+                }
 
                 $scope.record_id = data.record_id;
 
