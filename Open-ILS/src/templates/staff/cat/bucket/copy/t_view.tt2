@@ -16,6 +16,8 @@
     handler="spawnHoldingsEdit"></eg-grid-action>
   <eg-grid-action label="[% l('Remove Selected Copies') %]" 
     handler="detachCopies"></eg-grid-action>
+  <eg-grid-action label="[% l('Transfer Selected Copies to Marked Volume') %]" 
+    handler="transferCopies"></eg-grid-action>
   <eg-grid-action label="[% l('Delete Selected Copies from Catalog') %]" 
     handler="deleteCopiesFromCatalog"></eg-grid-action>
 

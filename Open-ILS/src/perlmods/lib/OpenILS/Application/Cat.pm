@@ -756,6 +756,76 @@ sub reset_hold_list {
     $ses->request('open-ils.circ.hold.reset.batch', $auth, $hold_ids);
 }
 
+__PACKAGE__->register_method(
+    method    => "transfer_copies_to_volume",
+    api_name  => "open-ils.cat.transfer_copies_to_volume",
+    argc      => 3,
+    signature => {
+        desc   => 'Transfers specified copies to the specified call number, and changes Circ Lib to match the new Owning Lib.',
+        params => [
+            {desc => 'Authtoken', type => 'string'},
+            {desc => 'Call Number ID', type => 'number'},
+            {desc => 'Array of Copy IDs', type => 'array'},
+        ]
+    },
+    return => {desc => '1 on success, Event on error'}
+);
+
+__PACKAGE__->register_method(
+    method   => "transfer_copies_to_volume",
+    api_name => "open-ils.cat.transfer_copies_to_volume.override",);
+
+sub transfer_copies_to_volume {
+    my( $self, $conn, $auth, $volume, $copies, $oargs ) = @_;
+    my $delete_stats = 1;
+    my $force_delete_empty_bib = undef;
+    my $create_parts = undef;
+
+    # initial tests
+
+    return 1 unless ref $copies;
+    my( $reqr, $evt ) = $U->checkses($auth);
+    return $evt if $evt;
+    my $editor = new_editor(requestor => $reqr, xact => 1);
+    if ($self->api_name =~ /override/) {
+        $oargs = { all => 1 } unless defined $oargs;
+    } else {
+        $oargs = {};
+    }
+
+    # does the volume exist?  good, we also need its owning_lib later
+    my( $cn, $cn_evt ) = $U->fetch_callnumber( $volume, 0, $editor );
+    return $cn_evt if $cn_evt;
+
+    # flesh and munge the copies
+    my $fleshed_copies = [];
+    my ($copy, $copy_evt);
+    foreach my $copy_id ( @{ $copies } ) {
+        ($copy, $copy_evt) = $U->fetch_copy($copy_id);
+        return $copy_evt if $copy_evt;
+        $copy->call_number( $volume );
+        $copy->circ_lib( $cn->owning_lib() );
+        $copy->ischanged( 't' );
+        push @$fleshed_copies, $copy;
+    }
+
+    # actual work
+    my $retarget_holds = [];
+    $evt = OpenILS::Application::Cat::AssetCommon->update_fleshed_copies(
+        $editor, $oargs, undef, $fleshed_copies, $delete_stats, $retarget_holds, $force_delete_empty_bib, $create_parts);
+
+    if( $evt ) { 
+        $logger->info("copy to volume transfer failed with event: ".OpenSRF::Utils::JSON->perl2JSON($evt));
+        $editor->rollback; 
+        return $evt; 
+    }
+
+    $editor->commit;
+    $logger->info("copy to volume transfer successfully updated ".scalar(@$copies)." copies");
+    reset_hold_list($auth, $retarget_holds);
+
+    return 1;
+}
 
 __PACKAGE__->register_method(
     method    => 'in_db_merge',

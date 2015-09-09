@@ -17,6 +17,12 @@
       "[% l('One or more items could not be deleted. Override?') %]";
     s.OVERRIDE_DELETE_COPY_BUCKET_ITEMS_FROM_CATALOG_BODY =
       "[% l('Reason(s) include: [_1]', '{{evt_desc}}') %]";
+    s.CONFIRM_TRANSFER_COPY_BUCKET_ITEMS_TO_MARKED_VOLUME =
+      "[% l('Are you sure you want to transfer selected items to the marked volume?') %]";
+    s.OVERRIDE_TRANSFER_COPY_BUCKET_ITEMS_TO_MARKED_VOLUME_TITLE =
+      "[% l('One or more items could not be transferred. Override?') %]";
+    s.OVERRIDE_TRANSFER_COPY_BUCKET_ITEMS_TO_MARKED_VOLUME_BODY =
+      "[% l('Reason(s) include: [_1]', '{{evt_desc}}') %]";
   }])
 </script>
 [% END %]

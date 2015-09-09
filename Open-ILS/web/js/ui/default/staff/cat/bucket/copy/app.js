@@ -602,6 +602,52 @@ function($scope,  $q , $routeParams , $timeout , $window , $modal , bucketSvc , 
         });
     }
 
+    $scope.transferCopies = function(copies) {
+        var xfer_target = egCore.hatch.getLocalItem('eg.cat.item_transfer_target');
+        var copy_ids = copies.map(
+            function(curr,idx,arr) {
+                return curr.id;
+            }
+        );
+        if (xfer_target) {
+            egCore.net.request(
+                'open-ils.cat',
+                'open-ils.cat.transfer_copies_to_volume',
+                egCore.auth.token(),
+                xfer_target,
+                copy_ids
+            ).then(
+                function(resp) { // oncomplete
+                    var evt = egCore.evt.parse(resp);
+                    if (evt) {
+                        egConfirmDialog.open(
+                            egCore.strings.OVERRIDE_TRANSFER_COPY_BUCKET_ITEMS_TO_MARKED_VOLUME_TITLE,
+                            egCore.strings.OVERRIDE_TRANSFER_COPY_BUCKET_ITEMS_TO_MARKED_VOLUME_BODY,
+                            {'evt_desc': evt.desc}
+                        ).result.then(function() {
+                            egCore.net.request(
+                                'open-ils.cat',
+                                'open-ils.cat.transfer_copies_to_volume.override',
+                                egCore.auth.token(),
+                                xfer_target,
+                                copy_ids,
+                                { events: ['TITLE_LAST_COPY', 'COPY_DELETE_WARNING'] }
+                            ).then(function(resp) {
+                                bucketSvc.bucketNeedsRefresh = true;
+                                drawBucket();
+                            });
+                        });
+                    } else {
+                        bucketSvc.bucketNeedsRefresh = true;
+                        drawBucket();
+                    }
+                },
+                null, // onerror
+                null // onprogress
+            )
+        }
+    }
+
     // fetch the bucket;  on error show the not-allowed message
     if ($scope.bucketId) 
         drawBucket()['catch'](function() { $scope.forbidden = true });
