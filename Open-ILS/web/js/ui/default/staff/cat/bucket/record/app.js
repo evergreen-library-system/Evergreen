@@ -13,7 +13,7 @@
  */
 
 angular.module('egCatRecordBuckets', 
-    ['ngRoute', 'ui.bootstrap', 'egCoreMod', 'egUiMod', 'egGridMod'])
+    ['ngRoute', 'ui.bootstrap', 'egCoreMod', 'egUiMod', 'egGridMod', 'egMarcMod'])
 
 .config(function($routeProvider, $locationProvider, $compileProvider) {
     $locationProvider.html5Mode(true);
@@ -532,6 +532,73 @@ function($scope,  $q , $routeParams,  bucketSvc, egCore, $window,
                 }
             }
         );
+    }
+
+    // opens the record merge dialog
+    $scope.openRecordMergeDialog = function(records) {
+        $modal.open({
+            templateUrl: './cat/bucket/record/t_merge_records',
+            size: 'lg',
+            controller:
+                ['$scope', '$modalInstance', function($scope, $modalInstance) {
+                $scope.records = [];
+                $scope.lead_id = 0;
+                angular.forEach(records, function(rec) {
+                    $scope.records.push({ id : rec.id });
+                });
+                $scope.ok = function() {
+                    $modalInstance.close({
+                        lead_id : $scope.lead_id,
+                        records : $scope.records
+                    });
+                }
+                $scope.cancel = function () { $modalInstance.dismiss() }
+                $scope.use_as_lead = function(rec) {
+                    if ($scope.lead_id) {
+                        $scope.records.push({ id : $scope.lead_id });
+                    }
+                    $scope.lead_id = rec.id;
+                    $scope.drop(rec);
+                }
+                $scope.drop = function(rec) {
+                    angular.forEach($scope.records, function(val, i) {
+                        if (rec == $scope.records[i]) {
+                            $scope.records.splice(i, 1);
+                        }
+                    });
+                }
+                $scope.edit_lead = function() {
+                    var lead_id = $scope.lead_id;
+                    $modal.open({
+                        templateUrl: './cat/bucket/record/t_edit_lead_record',
+                        size: 'lg',
+                        controller:
+                            ['$scope', '$modalInstance', function($scope, $modalInstance) {
+                            $scope.focusMe = true;
+                            $scope.record_id = lead_id;
+                            $scope.dirty_flag = false;
+                            $scope.ok = function() { $modalInstance.close() }
+                            $scope.cancel = function () { $modalInstance.dismiss() }
+                        }]
+                    }).result.then(function() {
+                        // TODO: need a way to force a refresh of the egRecordHtml, as
+                        // the record ID does not change
+                    });
+                };
+            }]
+        }).result.then(function (args) {
+            if (!args.lead_id) return;
+            if (!args.records.length) return;
+            egCore.net.request(
+                'open-ils.cat',
+                'open-ils.cat.biblio.records.merge',
+                egCore.auth.token(),
+                args.lead_id,
+                args.records.map(function(val) { return val.id; })
+            ).then(function() {
+                drawBucket();
+            });
+        });
     }
 
     $scope.showAllRecords = function() {

@@ -8,6 +8,10 @@
 [% BLOCK APP_JS %]
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/services/grid.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/services/ui.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/marcrecord.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/cat/services/record.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/cat/services/tagtable.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/cat/services/marcedit.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/cat/bucket/record/app.js"></script>
 <script>
   angular.module('egCoreMod').run(['egStrings', function(s) {
