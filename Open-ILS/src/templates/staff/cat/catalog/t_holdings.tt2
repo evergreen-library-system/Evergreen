@@ -67,6 +67,8 @@
       label="[% l('Copies') %]"></eg-grid-action>
     <eg-grid-action handler="selectedHoldingsVolCopyEdit" group="[% l('Edit') %]"
       label="[% l('Volumes and Copies') %]"></eg-grid-action>
+    <eg-grid-action handler="replaceBarcodes" group="[% l('Edit') %]"
+      label="[% l('Replace Barcodes') %]"></eg-grid-action>
 
     <eg-grid-action handler="selectedHoldingsEmptyVolCopyDelete" group="[% l('Delete') %]" disabled="vols_not_shown"
       label="[% l('Empty Volumes') %]"></eg-grid-action>

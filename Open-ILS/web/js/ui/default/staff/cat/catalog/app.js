@@ -531,6 +531,63 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         });
     }
 
+    $scope.replaceBarcodes = function() {
+        var copy_list = gatherSelectedRawCopies();
+        if (copy_list.length == 0) return;
+
+        var holdingsGridDataProviderRef = $scope.holdingsGridDataProvider;
+
+        angular.forEach(copy_list, function (cp) {
+            $modal.open({
+                templateUrl: './cat/share/t_replace_barcode',
+                animation: true,
+                controller:
+                           ['$scope','$modalInstance',
+                    function($scope , $modalInstance) {
+                        $scope.isModal = true;
+                        $scope.focusBarcode = false;
+                        $scope.focusBarcode2 = true;
+                        $scope.barcode1 = cp.barcode();
+
+                        $scope.updateBarcode = function() {
+                            $scope.copyNotFound = false;
+                            $scope.updateOK = false;
+                
+                            egCore.pcrud.search('acp',
+                                {deleted : 'f', barcode : $scope.barcode1})
+                            .then(function(copy) {
+                
+                                if (!copy) {
+                                    $scope.focusBarcode = true;
+                                    $scope.copyNotFound = true;
+                                    return;
+                                }
+                
+                                $scope.copyId = copy.id();
+                                copy.barcode($scope.barcode2);
+                
+                                egCore.pcrud.update(copy).then(function(stat) {
+                                    $scope.updateOK = stat;
+                                    $scope.focusBarcode = true;
+                                    holdingsSvc.fetchAgain().then(function (){
+                                        holdingsGridDataProviderRef.refresh();
+                                    });
+                                });
+
+                            });
+                            $modalInstance.close();
+                        }
+
+                        $scope.cancel = function($event) {
+                            $modalInstance.dismiss();
+                            $event.preventDefault();
+                        }
+                    }
+                ]
+            });
+        });
+    }
+
     // refresh the list of holdings when the record_id is changed.
     $scope.holdings_record_id_changed = function(id) {
         if ($scope.record_id != id) $scope.record_id = id;
@@ -806,13 +863,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
                 }
             ).then(function(success) {
                 if (success) {
-                    holdingsSvc.fetch({
-                        rid : $scope.record_id,
-                        org : $scope.holdings_ou,
-                        copy: $scope.holdings_show_copies,
-                        vol : $scope.holdings_show_vols,
-                        empty: $scope.holdings_show_empty
-                    }).then(function() {
+                    holdingsSvc.fetchAgain().then(function() {
                         $scope.holdingsGridDataProvider.refresh();
                     });
                 } else {
@@ -836,13 +887,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
                 copy_list
             ).then(function(success) {
                 if (success) {
-                    holdingsSvc.fetch({
-                        rid : $scope.record_id,
-                        org : $scope.holdings_ou,
-                        copy: $scope.holdings_show_copies,
-                        vol : $scope.holdings_show_vols,
-                        empty: $scope.holdings_show_empty
-                    }).then(function() {
+                    holdingsSvc.fetchAgain().then(function() {
                         $scope.holdingsGridDataProvider.refresh();
                     });
                 } else {
@@ -877,13 +922,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
 
     $scope.selectedHoldingsDamaged = function () {
         egCirc.mark_damaged(gatherSelectedHoldingsIds()).then(function() {
-            holdingsSvc.fetch({
-                rid : $scope.record_id,
-                org : $scope.holdings_ou,
-                copy: $scope.holdings_show_copies,
-                vol : $scope.holdings_show_vols,
-                empty: $scope.holdings_show_empty
-            }).then(function() {
+            holdingsSvc.fetchAgain().then(function() {
                 $scope.holdingsGridDataProvider.refresh();
             });
         });
@@ -891,13 +930,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
 
     $scope.selectedHoldingsMissing = function () {
         egCirc.mark_missing(gatherSelectedHoldingsIds()).then(function() {
-            holdingsSvc.fetch({
-                rid : $scope.record_id,
-                org : $scope.holdings_ou,
-                copy: $scope.holdings_show_copies,
-                vol : $scope.holdings_show_vols,
-                empty: $scope.holdings_show_empty
-            }).then(function() {
+            holdingsSvc.fetchAgain().then(function() {
                 $scope.holdingsGridDataProvider.refresh();
             });
         });
@@ -1183,6 +1216,16 @@ function(egCore , $q) {
         }
     }
 
+    service.fetchAgain = function() {
+        return service.fetch({
+            rid: service.rid,
+            org: service.org,
+            copy: service.copy,
+            vol: service.vol,
+            empty: service.empty
+        })
+    }
+
     // resolved with the last received copy
     service.fetch = function(opts) {
         if (service.ongoing) {
@@ -1203,6 +1246,10 @@ function(egCore , $q) {
 
         service.rid = rid;
         service.org = org;
+        service.copy = opts.copy;
+        service.vol = opts.vol;
+        service.empty = opts.empty;
+
         service.copies = [];
         service.index = 0;
 

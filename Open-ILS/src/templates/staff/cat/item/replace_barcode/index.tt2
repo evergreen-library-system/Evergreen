@@ -10,40 +10,6 @@
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/cat/item/replace_barcode/app.js"></script>
 [% END %]
 
-<h2>[% l('Replace Item Barcode') %]</h2>
+[% INCLUDE 'staff/cat/share/t_replace_barcode.tt2' %]
 
-<div class="row">
-  <div class="col-md-6 pad-vert">
-    <form role="form" ng-submit="updateBarcode()">
-      <div class="form-group">
-        <label for="barcode1">[% l('Enter Original Barcode for Item') %]</label>
-        <input type="text" class="form-control" id="barcode1" required
-          ng-model="barcode1"
-          placeholder="[% l('Original Barcode...') %]" select-me="focusBarcode">
-      </div>
-      <div class="form-group">
-        <label for="barcode2">[% l('Enter New Barcode for Item') %]</label>
-        <input type="text" class="form-control" id="barcode2" 
-          ng-model="barcode2"
-          required placeholder="[% l('New Barcode...') %]">
-      </div>
-      <button type="submit" class="btn btn-default">[% l('Submit') %]</button>
-    </form>
-  </div>
-</div>
-
-<div class="row pad-vert">
-  <div class="col-md-6">
-    <div class="alert alert-danger" ng-if="copyNotFound">
-      [% l('Copy Not Found') %]
-    </div>
-    <div class="alert alert-success" ng-if="updateOK">
-      <span>[% l('Copy Updated') %]</span>
-      <span class="horiz-pad" ng-if="copyId">
-        <a href="./cat/item/{{copyId}}/summary" target="_self">
-          [% l('View Item Details') %]
-        </a>
-    </div>
-  </div>
-</div>
 [% END %]
