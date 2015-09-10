@@ -455,7 +455,8 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                 $scope.spawnPhysCharWizard = function() {
                     var args = {
                         changed : false,
-                        field : $scope.field
+                        field : $scope.field,
+                        orig_value : $scope.field.data
                     };
                     $modal.open({
                         templateUrl: './cat/share/t_physchar_dialog',
@@ -464,11 +465,14 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                             $scope.focusMe = true;
                             $scope.args = args;
                             $scope.ok = function(args) { $modalInstance.close(args) };
-                            $scope.cancel = function () { $modalInstance.dismiss() };
+                            $scope.cancel = function () { 
+                                $modalInstance.dismiss();
+                                args.field.data = args.orig_value;
+                            };
                         }],
                     }).result.then(function (args) {
-                        if (!args.changed) return;
-                        // $scope.field.data = ...
+                        // $scope.field.data is changed within the 
+                        // wizard.  Nothing left to do on submit.
                     });
 
                 }
@@ -1457,10 +1461,13 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
 
                 // $scope.step is the 1-based position in the list of 
                 // subfields for the currently selected type.
+                // step==0 means we are currently selecting the type
                 $scope.step = 0;
 
-                if (!$scope.field.data) $scope.field.data = '';
+                if (!$scope.field.data) 
+                    $scope.field.data = '';
 
+                // currently selected subfield value selector option
                 $scope.selected_option = null;
 
                 function current_ptype() {
@@ -1506,11 +1513,13 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                     $scope.selected_option = option;
                     var new_val = option.value();
                     get_step_slot().then(function(slot) {
-                        // TODO fill in gaps with "|" values.
                         var value = $scope.field.data;
+                        while (value.length < (slot[0] + slot[1])) 
+                            value += ' ';
                         var before = value.substr(0, slot[0]);
                         var after = value.substr(slot[0] + slot[1]);
-                        $scope.field.data = before + new_val.substr(0, slot[1]) + after;
+                        $scope.field.data = 
+                            before + new_val.substr(0, slot[1]) + after;
                     });
                 }
 
@@ -1523,8 +1532,8 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
 
                 $scope.is_last_step = function() {
                     // This one is called w/ every digest, so avoid async
-                    // calls.  Wait until we know for sure if this is 
-                    // the last step.
+                    // calls.  Wait until we have loaded the current ptype
+                    // subfields to determine if this is the last step.
                     return (
                         current_ptype() && 
                         egTagTable.phys_char_sf_map[current_ptype()] &&
@@ -1563,14 +1572,14 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                                 $scope.field.data, slot);
                             if (val) {
                                 $scope.selected_option = $scope.values_for_step
-                                .filter(function(opt) { return (opt.value() == val)})[0];
+                                .filter(function(opt) { 
+                                    return (opt.value() == val)})[0];
                             } else {
-                                $scope.selected_option = $scope.values_for_step[0];
+                                $scope.selected_option = null;
                             }
                         })
                     }
                 }
-
                 set_values_for_step();
             }
         ]
