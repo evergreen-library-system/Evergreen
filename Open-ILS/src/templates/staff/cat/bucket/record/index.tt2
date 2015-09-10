@@ -12,6 +12,8 @@
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/cat/services/record.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/cat/services/tagtable.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/cat/services/marcedit.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/services/holds.js"></script>
+[% INCLUDE 'staff/circ/share/hold_strings.tt2' %]
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/cat/bucket/record/app.js"></script>
 <script>
   angular.module('egCoreMod').run(['egStrings', function(s) {

@@ -19,7 +19,9 @@ s.SET_TOP_OF_QUEUE =
 s.CLEAR_TOP_OF_QUEUE = 
   "[% l('Unset the Top of Queue flag for [_1] Hold(s)?', '{{num_holds}}') %]";
 s.TRANSFER_HOLD_TO_TITLE = 
-  "[% l('Tranfer [_1] Hold(s) to bib record ID [_2]?', '{{num_holds}}', '{{bib_id}}') %]";
+  "[% l('Transfer [_1] Hold(s) to bib record ID [_2]?', '{{num_holds}}', '{{bib_id}}') %]";
+s.TRANSFER_ALL_BIB_HOLDS_TO_TITLE = 
+  "[% l('Transfer holds on [_1] bib(s) to bib record ID [_2]?', '{{num_bibs}}', '{{bib_id}}') %]";
 s.NO_HOLD_TRANSFER_TITLE_MARKED = 
   "[% l('No record is marked as a hold transfer target!') %]";
 s.RETARGET_HOLDS = 

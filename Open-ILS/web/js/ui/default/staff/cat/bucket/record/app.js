@@ -503,10 +503,10 @@ function($scope,  $routeParams,  bucketSvc , egGridDataProvider) {
 }])
 
 .controller('ViewCtrl',
-       ['$scope','$q','$routeParams','bucketSvc', 'egCore', '$window',
-        '$timeout', 'egConfirmDialog', '$modal',
-function($scope,  $q , $routeParams,  bucketSvc, egCore, $window,
-        $timeout, egConfirmDialog, $modal) {
+       ['$scope','$q','$routeParams','bucketSvc','egCore','$window',
+        '$timeout','egConfirmDialog','$modal','egHolds',
+function($scope,  $q , $routeParams,  bucketSvc,  egCore,  $window,
+         $timeout,  egConfirmDialog,  $modal,  egHolds) {
 
     $scope.setTab('view');
     $scope.bucketId = $routeParams.id;
@@ -532,6 +532,12 @@ function($scope,  $q , $routeParams,  bucketSvc, egCore, $window,
                 }
             }
         );
+    }
+
+    // runs the transfer title holds action
+    $scope.transfer_holds_to_marked = function(records) {
+        var bib_ids = records.map(function(val) { return val.id; })
+        egHolds.transfer_all_bib_holds_to_marked_title(bib_ids);
     }
 
     // opens the record merge dialog

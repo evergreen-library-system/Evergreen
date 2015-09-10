@@ -368,6 +368,31 @@ function($modal , $q , egCore , egConfirmDialog , egAlertDialog) {
         });
     }
 
+    service.transfer_all_bib_holds_to_marked_title = function(bib_ids) {
+        if (!bib_ids.length) return $q.when();
+
+        var target_bib_id = egCore.hatch.getLocalItem(
+            'eg.circ.hold.title_transfer_target');
+
+        if (!target_bib_id) {
+            // no target marked
+            return egAlertDialog.open(
+                egCore.strings.NO_HOLD_TRANSFER_TITLE_MARKED).result;
+        }
+
+        return egConfirmDialog.open(
+            egCore.strings.TRANSFER_ALL_BIB_HOLDS_TO_TITLE, '', {
+                num_bibs : bib_ids.length,
+                bib_id : target_bib_id
+            }
+        ).result.then(function() {
+            return egCore.net.request(
+                'open-ils.circ',
+                'open-ils.circ.hold.change_title',
+                egCore.auth.token(), target_bib_id, bib_ids);
+        });
+    }
+
     // serially retargets each hold
     service.retarget = function(hold_ids) {
         if (!hold_ids.length) return $q.when();
