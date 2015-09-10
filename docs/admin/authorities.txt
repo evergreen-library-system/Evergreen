@@ -140,33 +140,6 @@ Fields*
 image::media/Authority_Control_Sets6.jpg[Authority_Control_Sets6]
 
 
-OPAC Searching of Authorities
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Patrons and librarians can browse authorities through the OPAC.
-
-
-Search for Authorities
-^^^^^^^^^^^^^^^^^^^^^^
-
-. Click *Advanced Search* in the OPAC.
-. Find the *Authority Browse* column in the left side of the screen.
-. Select a browse axis, and enter a keyword. The terms in the middle of the
-results list should yield the best match.
-+
-image::media/Authority_Control_Sets7.jpg[Authority_Control_Sets7]
-. Click *Submit*.
-. A list of results will appear.  The authorities with bibliographic records
-attached will be listed in bold with the number of attached bibliographic
-records in parentheses.
-+
-image::media/Authority_Control_Sets8.jpg[Authority_Control_Sets8]
-+
-. Click on the bolded text to view bibliographic records.
-
-image::media/Authority_Control_Sets9.jpg[Authority_Control_Sets9]
-
-
 *Permissions to use this Feature*
 
 
