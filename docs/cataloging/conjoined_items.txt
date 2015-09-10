@@ -12,95 +12,84 @@ The Conjoined Items feature was designed so that you can link items between bibl
 
 .Scenario 1: I want to link an item to another bibliographic record, but I do not have the item in hand
 
-1) Retrieve the bibliographic record to which you would like to link an item.  
+1. Retrieve the bibliographic record to which you would like to link an item.
  
-2) Click *Actions for this Record -> Mark as Target for Conjoined Items.*  
- 
-                                                                                                                                                                             
-image::media/conj1.jpg[conj1]
- 
- 
-3) A confirmation message will appear.  Click *OK.* 
- 
-4) In a new tab, retrieve the bibliographic record with the item that you want to link to the other record. 
- 
-5) Click *Actions for this Record -> Holdings Maintenance.* 
- 
-6) Select the copy that you want to link to the other bibliographic record.  Right-click, or click *Actions for Selected Rows -> Link as Conjoined Items to Previously Marked Bib Record.* 
+2. Click *Actions for this Record -> Mark as Target for Conjoined Items.*
++
+image::media/conjoined_menu_markfor.png[Menu: Mark as Target for Conjoined Items]
 
+3. A confirmation message will appear.  Click *OK.*
+ 
+4. In a new tab, retrieve the bibliographic record with the item that
+you want to link to the other record.
+ 
+5. Click *Actions for this Record -> Holdings Maintenance.*
+ 
+6. Select the copy that you want to link to the other bibliographic
+record. Right-click, or click *Actions for Selected Rows -> Link as
+Conjoined Items to Previously Marked Bib Record.*
++
 image::media/conj2.jpg[conj2]
- 
- 
-7) The *Manage Conjoined Items* interface opens in a new tab.  This interface enables you to confirm the success of the link, and to change the peer type if desired.  The *Result* column indicates that you created a successful link between the item and the bib record. 
- 
+
+7. The *Manage Conjoined Items* interface opens in a new tab. This
+interface enables you to confirm the success of the link, and to change
+the peer type if desired.  The *Result* column indicates that you
+created a successful link between the item and the bib record.
++
 image::media/conj3.jpg[conj3]
- 
++
 The default peer type, *Back-to-back*, was set as the peer type for our item.  To change a peer type after the link has been created, right-click or click *Actions for Selected Items -> Change Peer Type*.  A drop down menu will appear.  Select the desired peer type, and click *OK.* 
- 
- 
++
 image::media/conj4.jpg[conj4]
  
- 
-8) The *Result* column will indicate that the *Peer Type* [has been] *Updated.* 
- 
- 
+8. The *Result* column will indicate that the *Peer Type* [has been] *Updated.*
++
 image::media/conj5.jpg[conj5]
  
- 
-9) To confirm the link between the item and the desired bib record, reload the tab containing the bib record to which you linked the item. Click the link for *Linked Titles.* 
- 
- 
-image::media/conj6.jpg[conj6]
- 
- 
-10) To view the copy details, including the peer type, click *Copy Details.* 
- 
- 
-image::media/conj7.jpg[conj7]
- 
- 
-Items can be linked to multiple bibliographic records simultaneously.  If you click the linked titles button in the copy details, then you will retrieve a list of bibliographic records to which this item is linked. 
- 
- 
-image::media/conj8.jpg[conj8]
- 
+9. To confirm the link between the item and the desired bib record,
+reload the tab containing the bib record to which you linked the item.
+You should now see the copy linked in the copies table.
++
+image::media/conjoined_opac.png[Catalog Record showing Conjoined Item link]
+
  
 .Scenario 2: I want to link an item to another bibliographic record, and I do have the item in hand
 
-1) Retrieve the bibliographic record to which you would like to add the item. 
+1. Retrieve the bibliographic record to which you would like to add the item.
  
-2) Click *Actions for this Record -> Manage Conjoined Items.* 
+2. Click *Actions for this Record -> Manage Conjoined Items.*
++
+image::media/conjoined_menu_markfor.png[Menu: Manage Conjoined Items]
  
+3. A note in the bottom left corner of the screen will confirm that the
+record was targeted for linkage with conjoined items, and the *Manage
+Conjoined Items* screen will appear.
  
-image::media/conj9.jpg[conj9]
+4. Select the peer type from the drop down menu, and scan in the barcode
+of the item that you want to link to this record.
  
- 
-3) A note in the bottom left corner of the screen will confirm that the record was targeted for linkage with conjoined items, and the *Manage Conjoined Items* screen will appear. 
- 
-4) Select the peer type from the drop down menu, and scan in the barcode of the item that you want to link to this record. 
- 
-5) Click *Link to Bib (Submit).* 
- 
- 
+5. Click *Link to Bib (Submit).*
++
 image::media/conj10.jpg[conj10]
  
+6. The linked item will appear in the screen. The *Result* column indicates Success.
  
-6) The linked item will appear in the screen. The *Result* column indicates Success. 
+7. To confirm the linkage, click *Actions for this Record -> OPAC View.*
  
-7) To confirm the linkage, click *Actions for this Record -> OPAC View.* 
- 
-8) When the bibliographic record appears, click *Reload.  Linked Titles* will show the linked title and item. 
+8. When the bibliographic record appears, click *Reload. Linked Titles*
+will show the linked title and item.
  
 
 .Scenario 3: I want to edit or break the link between a copy and a bibliographic record
  
-1) Retrieve the bibliographic record that has a copy linked to it. 
+1. Retrieve the bibliographic record that has a copy linked to it.
  
-2) Click *Actions for this Record -> Manage Conjoined Items.* 
+2. Click *Actions for this Record -> Manage Conjoined Items.*
  
-3) Select the copy that you want to edit, and right-click or click *Actions for Selected Items.* 
+3. Select the copy that you want to edit, and right-click or click
+*Actions for Selected Items.*
  
-4) Make any changes, and click *OK.* 
+4. Make any changes, and click *OK.*
  
  
 UPDATE_COPY  -  Link items to bibliographic records

@@ -464,8 +464,8 @@ patron’s name in the patron summary pane.
 image::media/circulation_patron_records-22.png[circulation_patron_records 22]
 
 Notes are strictly communicative and may be made visible to the patron via their
-account on the OPAC.  In the JSPAC, these notes display on the account summary
-screen in the OPAC.
+account on the OPAC. These notes appear in the <<_patron_message_center,
+Patron Message Center>>.
 
 image::media/circulation_patron_records-23.png[circulation_patron_records 23]
 

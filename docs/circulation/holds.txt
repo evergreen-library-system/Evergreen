@@ -33,24 +33,53 @@ If you select the _Suspend this Hold_ checkbox, the hold will be suspended and n
 
 . To place a title level hold, retrieve the title record on the catalog and click the _Place Hold_ link beside the title on the search results list, or click the _Place Hold_ link on the title summary screen.
 +
-image::media/holds-placing-1.png[holds-placing-1]
+image::media/holds_title_searchresults.png[Search Results with Place Hold link]
 +
-. Scan or type patron's barcode into _Enter recipient barcode_ then click _Submit_.
-. Edit patron hold notification and expiration date fields as required and click _Place Hold_. Confirm your action in the pop-up window.
+. Scan or type patron's barcode into the _Place hold for patron by
+barcode_ box, or choose _Place this hold for me_.
+. If this title contains multiple parts, you can specify which part to
+request. If you do not select a part, the hold will target any of the
+other copies on this record, that is, those with no parts attached.
+Those copies are usually the complete set, containing all the parts.
+. Edit patron hold notification and expiration date fields as required.
+Be sure to choose a valid _Pickup location_.
+. Click _Submit_.
 +
-image::media/holds-placing-3.png[holds-placing-3]
+image::media/holds_title_options.png[Place Holds screen with Basic Options]
++
+. A confirmation screen appears with the message "Hold was successfully placed".
++
+image::media/holds_title_success.png[Place Holds confirmation screen]
+
+*Advanced Hold Options*
+
+Clicking the *Advanced Hold Options* link will take you into the
+metarecord level hold feature, where you can select multiple formats
+and/or languages, if available.
+
+Selecting multiple formats will not place all of these formats on hold.
+For example, selecting CD Audiobook and Book implies that either the CD
+format or the book format is the acceptable format to fill the hold. If
+no format is selected, then any of the available formats may be used to
+fill the hold. The same holds true for selecting multiple languages.
+
+image::media/holds_title_options_adv.png[Place Hold screen with Advanced Options]
+
+See also the section on placing <<_tpac_metarecord_search_and_metarecord_level_holds,
+Metarecord Holds>>.
 
 Parts Level Hold
 ~~~~~~~~~~~~~~~~
 
-. To place a parts level hold, retrieve a record with parts-level items attached to the title, such as a multi-disc DVD, an annual travel guide, or a multi-volume book set.
-. Place the hold as you would for a title-level hold.
-. Scan or type patron's barcode into _Enter recipient barcode_ then click _Submit_.
-. Select the applicable part from the _Parts_ dropdown menu.
+. To place a parts level hold, retrieve a record with parts-level items
+attached to the title, such as a multi-disc DVD, an annual travel guide,
+or a multi-volume book set.
+. Place the hold as you would for a title-level hold, including patron
+barcode, notification details, and a valid pickup location.
+. Select the applicable part from the _Select a Part_ dropdown menu.
+. Click _Submit_.
 +
-image::media/holds-placing-6.png[holds-placing-6]
-+
-. Click _Place Hold_.
+image::media/holds_title_options.png[Place Holds screen with Basic Options]
 +
 [TIP]
 ===============

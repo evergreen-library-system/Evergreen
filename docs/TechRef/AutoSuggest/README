@@ -54,7 +54,7 @@ for that particular field.  For a song title index, for example.  To take
 advantage of this, you would also have to customize your OPAC to have an
 entry in the search class dropdown for 'title|songtitle' (or whatever's
 appropriate for your specialty index).  This is easy to do and should be
-covered somewhere in documentation for both the JSPAC and the TPAC.
+covered somewhere in documentation for the TPAC.
 
 The order of suggestions otherwise has mostly to do with how well what users
 have typed matches what's in your bib records, and the value of the weight
@@ -77,9 +77,6 @@ Managing the little stuff
 -------------------------
 CSS classes that affect the look of suggestions are in this file for the TPAC:
     Open-ILS/web/css/skin/default/opac/style.css
-
-and in this file for the JSPAC:
-    Open-ILS/web/opac/skin/default/css/layout.css
 
 At bottom, autosuggest is shaped by PostgreSQL's Full Text Search features.
 Some of the arguments that are passed to TS_RANK_CD() and TS_HEADLINE() are
