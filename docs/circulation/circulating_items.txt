@@ -134,8 +134,9 @@ options are:
 routed to Cataloging with Cataloging status.
 - Suppress Holds and Transit: item will not be used to fill holds or sent in
 transit. Item has Reshelving status.
-- Amnesty Mode/Forgive Fines: overdue fines will be voided if already created or
-not be inserted if not yet created (e.g. hourly loans).
+- Amnesty Mode/Forgive Fines: overdue fines will be removed if already created
+or not be inserted if not yet created (e.g. hourly loans). The fines are removed
+with an account_adjustment payment type.
 - Auto-Print Hold and Transit Slips: slips will be automatically printed without
 prompt for confirmation.
 
@@ -246,40 +247,14 @@ voided if set by local policy. Overdue fines may be reinstated on
 lost-then-returned items if set by local policy.
 ========================
 
-Refunds for Lost Items
-^^^^^^^^^^^^^^^^^^^^^^
+Refunding and Clearing Negative Balances
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-If an item is returned after a lost bill has been paid and the library's policy
-is to void the replacement fee for lost-then-returned items, there will be a
-negative balance in the bill. A refund needs to be made to close the bill and
-the circulation record. Once the outstanding amount has been refunded, the bill
-and circulation record will be closed and the item will disappear from the
-Items Out screen.
+If an item is returned after a lost bill has been paid, there may be a negative
+balance on the bill. See ... for more information on settings that affect
+negative balances. See <<removing_negative_balances, Removing Negative Balances
+from a Patron Account>> for more information on clearing that balance.
 
-[NOTE]
-.More on Negative Balances
-========================================
-Evergreen sites can prevent negative balances from occurring on fully-paid
-transactions with the _Do not change fines/fees on zero-balance LOST
-transaction_ setting available through the Library Settings Editor.  It will 
-also prevent negative balances due to fully-paid, long overdue materials being 
-returned. Negative balances will continue to occur when partially-paid lost
-items are reutnred.
-========================================
-
-If you need to balance a bill with a negative amount and close the linked lost
-circulation record without making a refund (removing the item from the *Lost,
-Claimed Returned, Long Overdue, Has Unpaid Bills* panel on the *Items Out*
-screen), you need to add a dummy bill to the existing bill equal to the absolute
-value of the negative amount. To do so:
-
-1) Select the billing with the negative balance.
-
-2) Choose **Actions for Selected Transactions** --> **Add Billing**.
-
-3) Click Yes.
-
-4) Enter the absolute value of the negative balance. 
 
 Claimed Returned Items
 ^^^^^^^^^^^^^^^^^^^^^^^

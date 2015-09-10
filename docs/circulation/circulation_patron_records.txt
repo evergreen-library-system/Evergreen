@@ -722,13 +722,41 @@ edit the bills, click on the Bills button from the patron account screen.
 
 image::media/circulation_patron_bills-2.png[circulation_patron_bills 2]
 
+The Bills Interface
+^^^^^^^^^^^^^^^^^^^
+All current bills are itemized in the grid in the bills interface. Click on a 
+column header to sort bills in this grid. Most columns sort alphabetically, but 
+the "Total Billed" and *Total Paid* columns sort numerically.
+
+Colors distinguish bills for items that are attached to checked out, lost and
+long overdue circulations. These colors are accompanied by helpful indicators
+that define the meaning of the colors for staff.  
+
+By default, circulations that are still checked out appear in bright red. The
+default indicator reads, "Red Items are still Checked out.
+
+Lost circulations will appear in dark red. The default indicator reads,
+“Dark Red Items are Lost.”  
+
+When the 6 Month Overdue Mark Long-Overdue trigger event definition is enabled,
+Long Overdue circulations will appear in orange, by default. The default
+indicator reads, “Orange Items are Long Overdue.”  
+ 
+image::media/Billed_Transaction_Color.jpg[Billed Transaction Color]
+ 
+Both the color distinctions and indicators are customizable. To customize, a
+change to circ.css (for the color) and lang.dtd (for the indicator) are
+required.
+
+
 [[circ_vs_grocery]] 
 *Circulation bills*: system-generated (overdue fines, lost
 item cost, processing fees, etc.).
 
 * Overdue fines are added daily once an item is overdue.
-* When an item is marked as lost, bills may be automatically generated to cover
-the item's cost and a processing fee, according to library policy.
+* When an item is marked as lost or long overdue, bills may be automatically
+generated to cover the item's cost and a processing fee, according to library
+policy.
 
 *Grocery bills*: staff-applied to patron accounts.
 
@@ -799,11 +827,6 @@ TIP: if you need more time to review the amount due, click outside the _Payment
 Received_ box before selecting _Apply Payment!_ This will cause the screen to
 refresh and display the amount due.
 
-It is possible to convert change due to a patron credit by selecting the
-_Convert Change to Patron Credit_ checkbox.
-
-image::media/circulation_patron_bills-9.png[circulation_patron_bills 9]
-
 [TIP] 
 ================================================ 
 * Items marked with red are still checked out. Items marked with dark red are
@@ -819,10 +842,71 @@ the _Use Lost and Paid copy status_ setting in the Library Settings Editor
 status will automatically change from _Lost_ to _Lost and Paid_.
 ================================================
 
-Void vs. Forgive 
-^^^^^^^^^^^^^^^^
+Patron Credits
+^^^^^^^^^^^^^^
+It is possible to convert change due to a patron credit by selecting the
+_Convert Change to Patron Credit_ checkbox and to later apply that credit to a
+bill by selecting the _Patron Credit_ payment type.
+
+By default, the payment type *Patron Credit* is enabled in the staff client.
+Within the Bills interface of a patron’s account, the Patron Credit payment
+type, the Credit Available, and the option to Convert Change to Patron Credit
+are exposed by default in the staff client. 
+
+image::media/Default_Patron_Billing_Screen.jpg[Default Patron Billing Screen]
+
+The Library Setting, *Disable Patron Credit*, allows staff to disable the Patron
+Credit payment type and to hide patron credit payment actions within the billing
+interface of a patron’s account. If a library doesn't use patron credits, the
+library will want to enable this setting to prevent accidental selection of the
+checkbox that converts change to patron credit.
+
+When the Library Setting, *Disable Patron Credit*, is set to *True*,
+the patron credit payment type will be disabled.
+Patron Credit will not be an option within the payment type dropdown menu.
+The Convert Change to Patron Credit and the summary of Credit Available will be
+hidden from the patron billing interface in the staff client. 
+
+image::media/Disabled_Patron_Credit_Patron_Billing_Screen.jpg[Disabled Patron Credit Patron Billing Screen]
+
+To set the Library Setting:
+
+. Click *Admin* -> *Local Administration* -> *Library Settings Editor*
+
+. Search for *Disable Patron Credit*
+
+. Click *Edit*
+
+. Set the value to *True*
+
+. Click *Update Setting*
+
+image::media/Disable_Patron_Credit_Library_Setting.jpg[Disable Patron Credit Library Setting]
+
+NOTE: After applying changes to this library setting, it is necessary to restart
+the staff client to see the changes take effect.  
+
+
+Void vs. Forgive vs. Adjustment
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
  
-Void clears all history of the bill, while forgive retains the history. 
+The following are guidelines for using void, forgive, and adjust when clearing
+bills off a patron record.
+
+* Use forgive when staff is waiving a portion/all of a bill. A forgive_payment
+payment type will be used to credit the bill. The history of the bill will be
+retained. 
+
+* Use void when the bill should not be on the patron record and when the goal
+is to remove the entire bill. Once voided, there will be no history of the bill
+available from the staff client. If the bill was partially paid before voiding,
+a negative balance will be produced.
+
+* Use adjust to zero when the bill should not be on the patron record and when 
+the goal is to remove the balance of the bill. An account_adjustment payment
+type will be used to adjust the bill's balance. The history of the bill will be
+retained and available from the Bill History interface of the staff client.
+
 
 Forgiving Bills 
 ^^^^^^^^^^^^^^^
@@ -868,6 +952,18 @@ Void Selected Billings and confirm the action.
 
 image::media/circulation_patron_bills-11.png[circulation_patron_bills 11]
 
+Adjusting Bills to Zero
+^^^^^^^^^^^^^^^^^^^^^^^
+
+In the Bills interface, select the bill to adjust.
+
+Right click or use the _Actions for Selected Transactions_ menu to select
+_Adjust to Zero_.
+
+image::media/adjust_to_zero_action.png[adjust_to_zero_action.png]
+
+Confirm the action.
+
 Adding New ``Grocery'' Bills 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -902,29 +998,39 @@ after clicking _Submit this Bill_.
 Negative Balances on Patron Accounts
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Negative balances are sometimes automatically applied to patron accounts due to certain circulation workflows and settings.  For example:
+If a library has not enabled Prohibit Negative Balance settings via the library
+settings editor, certain workflows and settings can create a negative balance on
+a patron's account. See...for information on settings that affect negative
+balances.
 
-. A patron loses an item and pays the lost fees in full.
-. The item is later found and returned to the library.
-. Evergreen is set up to void lost fines and reinstate overdue fines to the patron account if the lost item is returned.
-. As a result, a negative balance is applied to the patron's account.
-
-A new Library Setting called _Do not change fines/fees on zero-balance LOST transaction_ has been added to help eliminate the generation of negative balances on patron accounts.  If this new Library Setting is enabled, it will prevent Evergreen from voiding lost fines and reinstating overdue fines to a patron account in the scenario described above.  It will also prevent negative balances due to paid, long overdue materials being returned.
+[[removing_negative_balances]]
 
 *Removing negative balances from a patron account*
 
-If a negative balance is added to a patron account, the following workflow can be used to remove it:
+A negative balance can be cleared either by refunding a bill or by adjusting the
+bill to zero. 
 
-. Retrieve the patron account and go to the *Bills* screen.
-. Select the bill with the negative balance, click on *Actions for Selected Transactions* or right-click on it, and select *Add Billing*.
-. A window will pop up that asks "Are you sure you would like to add a billing to bill 1234?"  Click *Yes*.
-. A new window with the _Bill Patron Wizard_ will appear.  Select a _Billing Type_ and enter in a positive bill amount for the same amount as the negative balance.  For example, if the negative balance is -$35.00, enter $35.00 for the bill.  Click *Submit this Bill*.
-. The negative balance will now be cancelled out and cleared from the patron account.
+To refund the bill:
 
-image::media/negative_balance1.jpg[Negative Balance-Add Billing]
+1) Select the billing with the negative balance.
 
+2) Choose **Actions for Selected Transactions** --> **Refund**.
 
-image::media/negative_balance2.jpg[Negative Balance-Add Bill]
+3) Click Yes.
+
+4) Click Apply Payment.
+
+The refunded amount will be deducted from the cash_payment total in the
+workstations Cash Report.
+
+To clear the negative balance without affecting the Cash Report:
+
+1) Right click on the billing with the negative balance.
+
+2) Select **Adjust to zero**.
+
+3) Click Yes.
+
 
 Bill History 
 ^^^^^^^^^^^^
@@ -933,8 +1039,8 @@ Bill History
 
 . Retrieve the patron record.  
 . From the _Bills_ screen, click _History_.  
-. A _Bill History_ screen with two tabs will display.  One for _Transactions_ and
-one for _Payments_.  
+. A _Bill History_ screen with two tabs will display.  One for _Transactions_ 
+and one for _Payments_.  
 +
 image::media/circulation_patron_bills-14.png[circulation_patron_bills 14] 
 + 
@@ -946,56 +1052,5 @@ image::media/circulation_patron_bills-15.png[circulation_patron_bills 15]
 
 Items may be deleted from the catalog even if a charge for that item is still
 attached to the patron's record.  The charge will remain on the patron's account
-after the deletion.
-
-Sorting Money Columns in Billing Interface
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-This enhancement enables Evergreen to sort money columns numerically in the billing interface.  You can perform an ascending or descending sort on these columns.
-
-To view and sort patron bills, retrieve the patron's account, and click the *Bills* tab in the top right corner of the screen.  You can view the money that is owed or paid in the "Total Billed" and *Total Paid* columns. Simply click on the headers of these columns to sort the columns numerically.
-
-Disable Patron Credit in Billing Interface
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The Library Setting, *Disable Patron Credit*, allows staff to disable the Patron Credit payment type and to hide patron credit payment actions within the billing interface of a patron’s account. 
-
-By default, the payment type *Patron Credit* is enabled in the staff client. Within the Bills interface of a patron’s account, the Patron Credit payment type, the Credit Available, and the option to Convert Change to Patron Credit are exposed by default in the staff client. 
-
-image::media/Default_Patron_Billing_Screen.jpg[Default Patron Billing Screen]
-
-When the Library Setting, *Disable Patron Credit*, is set to *True*, the patron credit payment type will be disabled. Patron Credit will not be an option within the payment type dropdown menu. The Convert Change to Patron Credit and the summary of Credit Available will be hidden from the patron billing interface in the staff client. 
-
-image::media/Disabled_Patron_Credit_Patron_Billing_Screen.jpg[Disabled Patron Credit Patron Billing Screen]
-
-To set the new Library Setting:
-
-. Click *Admin* -> *Local Administration* -> *Library Settings Editor*
-
-. Search for *Disable Patron Credit*
-
-. Click *Edit*
-
-. Set the value to *True*
-
-. Click *Update Setting*
-
-image::media/Disable_Patron_Credit_Library_Setting.jpg[Disable Patron Credit Library Setting]
-
-NOTE: After applying changes to this library setting, it is necessary to restart the staff client to see the changes take effect.  
-
-
-Lost and Long Overdue Bill Colors
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-This stylization enhancement distinguishes Lost and Long Overdue circulations that appear within the billed transactions of a patron’s account from other items that are still checked out.  
-
-Within the patron’s list of billed transactions, Lost or Long Overdue items, which have not yet been returned, display differently from other items that are still checked out. The color distinctions are applied to the entire row of the billed transaction (previous to version 2.5, only the title of the billed transaction was highlighted). These color enhancements are accompanied by helpful indicators that define the meaning of the colors for staff.  
-
-By default, Lost circulations will appear in dark red. The default indicator reads, “Dark Red Items are Lost.”  
-
-When the 6 Month Overdue Mark Long-Overdue trigger event definition is enabled, Long Overdue circulations will appear in orange, by default. The default indicator reads, “Orange Items are Long Overdue.”  
- 
-image::media/Billed_Transaction_Color.jpg[Billed Transaction Color]
- 
-Both the color distinctions and indicators are customizable. To customize, a change to circ.css (for the color) and lang.dtd (for the indicator) are required.   
+after the deletion.   
 
