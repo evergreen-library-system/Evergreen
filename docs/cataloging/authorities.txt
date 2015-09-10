@@ -40,3 +40,18 @@ _Edit_, _Mark for Merge_, _Delete_
 * Authority Subject heading system/thesaurus, for example a value of "a" means authority originated from the Library of Congress 
  (http://www.loc.gov/marc/authority/ad008.html)
 
+
+*Library of Congress list of thesaurus values:*
+
+* '' = Alternate no attempt to code
+* a = Library of Congress Subject Headings
+* b = LC subject headings for children's literature
+* c = Medical Subject Headings
+* d = National Agricultural Library subject authority file
+* k = Canadian Subject Headings
+* n = Not applicable
+* r = Art and Architecture Thesaurus
+* s = Sears List of Subject Headings
+* v = Repertoire de vedettes-matiere
+* z = Other
+* | = No attempt to code
