@@ -3,6 +3,9 @@ My Lists
 
 The *My Lists* feature replaces the bookbag feature that was available in versions prior to 2.2.  The *My Lists* feature is a part of the Template Toolkit OPAC that is available in version 2.2.  This feature enables you to create temporary and permanent lists; create and edit notes for items in lists; place holds on items in lists; and share lists via RSS feeds and CSV files.
 
+There is now a direct link to *My Lists* from the *My Account* area in the top right part of the screen.  This gives users the ability to quickly access their lists while logged into the catalog.
+
+image::media/My_Lists.png[My Lists]
 
 *Create New Lists*
 
