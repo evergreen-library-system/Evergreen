@@ -26,7 +26,7 @@
     </div>
     <div ng-if="step != 0">
       <div class="col-md-4">{{label_for_step}}</div>
-      <div class="col-md-4">
+      <div class="col-md-6">
         <div class="btn-group" dropdown>
           <button type="button" class="btn btn-default dropdown-toggle">
            <span style="padding-right: 5px;" ng-if="selected_option">{{selected_option.label()}}</span>
@@ -43,11 +43,11 @@
         </div>
       </div>
     </div>
-    <div class="col-md-2">
+  </div>
+  <div class="row">
+    <div class="col-md-4 pull-right">
       <button class="btn btn-default" ng-click="prev_step()" 
         ng-class="{disabled : !step}">[% l('Previous') %]</button>
-    </div>
-    <div class="col-md-2">
       <button class="btn btn-default" ng-click="next_step()"
         ng-class="{disabled : is_last_step()}">[% l('Next') %]</button>
     </div>
