@@ -945,26 +945,46 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
 
     $scope.transferItems = function (){
         var xfer_target = egCore.hatch.getLocalItem('eg.cat.item_transfer_target');
-        if (xfer_target) {
-            var copy_list = gatherSelectedRawCopies();
-
-            angular.forEach(copy_list, function (cp) {
-                cp.call_number(xfer_target);
-            });
-
-            egCore.pcrud.update(
-                copy_list
-            ).then(function(success) {
-                if (success) {
-                    holdingsSvc.fetchAgain().then(function() {
-                        $scope.holdingsGridDataProvider.refresh();
-                    });
-                } else {
-                    alert('Could not transfer items!');
-                }
-            });
+        var copy_ids = gatherSelectedHoldingsIds();
+        if (xfer_target && copy_ids.length > 0) {
+            egCore.net.request(
+                'open-ils.cat',
+                'open-ils.cat.transfer_copies_to_volume',
+                egCore.auth.token(),
+                xfer_target,
+                copy_ids
+            ).then(
+                function(resp) { // oncomplete
+                    var evt = egCore.evt.parse(resp);
+                    if (evt) {
+                        egConfirmDialog.open(
+                            egCore.strings.OVERRIDE_TRANSFER_COPIES_TO_MARKED_VOLUME_TITLE,
+                            egCore.strings.OVERRIDE_TRANSFER_COPIES_TO_MARKED_VOLUME_BODY,
+                            {'evt_desc': evt.desc}
+                        ).result.then(function() {
+                            egCore.net.request(
+                                'open-ils.cat',
+                                'open-ils.cat.transfer_copies_to_volume.override',
+                                egCore.auth.token(),
+                                xfer_target,
+                                copy_ids,
+                                { events: ['TITLE_LAST_COPY', 'COPY_DELETE_WARNING'] }
+                            ).then(function(resp) {
+                                holdingsSvc.fetchAgain().then(function() {
+                                    $scope.holdingsGridDataProvider.refresh();
+                                });
+                            });
+                        });
+                    } else {
+                        holdingsSvc.fetchAgain().then(function() {
+                            $scope.holdingsGridDataProvider.refresh();
+                        });
+                    }
+                },
+                null, // onerror
+                null // onprogress
+            )
         }
-        
     }
 
     $scope.selectedHoldingsItemStatusTgrEvt = function (){

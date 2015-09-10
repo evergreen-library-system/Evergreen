@@ -26,6 +26,12 @@
       "[% l('Unlink selected conjoined copies?') %]";
     s.CONFIRM_DELETE_PEERS_MESSAGE =
       "[% l('Will unlink {{peers}} copies') %]";
+    s.CONFIRM_TRANSFER_COPIES_TO_MARKED_VOLUME =                                                                                                                  
+      "[% l('Are you sure you want to transfer selected items to the marked volume?') %]";                                                                                   
+    s.OVERRIDE_TRANSFER_COPIES_TO_MARKED_VOLUME_TITLE =                                                                                                           
+      "[% l('One or more items could not be transferred. Override?') %]";                                                                                                    
+    s.OVERRIDE_TRANSFER_COPIES_TO_MARKED_VOLUME_BODY =                                                                                                            
+      "[% l('Reason(s) include: [_1]', '{{evt_desc}}') %]";                
   }])
 </script>
 
