@@ -477,12 +477,15 @@ Google Analytics
 ~~~~~~~~~~~~~~~~
 
 Google Analytics is a free service to collect statistics for your Evergreen
-site.  In order to use Google Analytics you will first need to set up the
-service from the Google Analytics website at http://www.google.com/analytics/.
-To activate Google Analytics you will need to edit _config.tt2_ in your
-template. To enable the service set the value of google_analytics.enabled to
-true and change the value of _google_analytics.code_ to be the code in your
-Google Analytics account.
+site. Statistic tracking is disabled by default through the Evergreen 
+client software when library staff use your site within the client, but active 
+when anyone uses the site without the client. This was a preventive measure to 
+reduce the potential risks for leaking patron information. In order to use Google 
+Analytics you will first need to set up the service from the Google Analytics 
+website at http://www.google.com/analytics/. To activate Google Analytics you 
+will need to edit _config.tt2_ in your template. To enable the service set 
+the value of google_analytics.enabled to true and change the value of 
+_google_analytics.code_ to be the code in your Google Analytics account.
 
 NoveList
 ~~~~~~~~
