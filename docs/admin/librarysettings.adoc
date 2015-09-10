@@ -68,6 +68,7 @@ values.
 
 ((("Acquisitions", "Library Settings Editor")))
 
+[[lse-acq]]
 .Acquisitions
 [options="header"]
 |========
@@ -99,6 +100,7 @@ values.
 ((("Booking", "Library Settings Editor")))
 ((("Cataloging", "Library Settings Editor")))
 
+[[lse-cataloging]]
 .Booking and Cataloging
 [options="header"]
 |======================
@@ -123,6 +125,7 @@ values.
 
 ((("Circulation", "Library Settings Editor")))
 
+[[lse-circulation]]
 .Circulation
 [options="header"]
 |===========
@@ -145,7 +148,7 @@ values.
 |Load patron from Checkout|When scanning barcodes into Checkout auto-detect if a new patron barcode is scanned and auto-load the new patron.|True/False|
 |Long-Overdue Check-In Interval Uses Last Activity Date|Use the long-overdue last-activity date instead of the due_date to determine whether the item has been checked out too long to perform long-overdue check-in processing. If set, the system will first check the last payment time, followed by the last billing time, followed by the due date. See also "Long-Overdue Max Return Interval"|True/False|
 |Long-Overdue Items Usable on Checkin|Long-overdue items are usable on checkin instead of going "home" first|True/False|
-|Long-Overdue Max Return Interval|Long-overdue check-in processing (voiding fees, re-instating overdues, etc.) will not take place for items that have been overdue for (or have last activity older than) this amount of time|True/False|
+|Long-Overdue Max Return Interval|Long-overdue check-in processing (voiding fees, re-instating overdues, etc.) will not take place for items that have been overdue for (or have last activity older than) this amount of time|Duration|
 |Lost check-in generates new overdues|Enabling this setting causes retroactive creation of not-yet-existing overdue fines on lost item check-in, up to the point of check-in time (or max fines is reached). This is different than "restore overdue on lost", because it only creates new overdue fines. Use both settings together to get the full complement of overdue fines for a lost item|True/False|
 |Lost items usable on checkin|Lost items are usable on checkin instead of going 'home' first|True/false|
 |Max patron claims returned count|When this count is exceeded, a staff override is required to mark the item as claims returned.|Number|
@@ -181,6 +184,7 @@ values.
 
 ((("Credit Card Processing", "Library Settings Editor")))
 
+[[lse-cataloging]]
 .Credit Card Processing
 [options="header"]
 |======================
@@ -209,6 +213,7 @@ values.
 
 ((("Finances", "Library Settings Editor")))
 
+[[lse-finances]]
 .Finances
 [options="header"]
 |========
@@ -225,6 +230,12 @@ values.
 |Lost materials processing fee|The amount charged in addition to item price when an item is marked lost.| Number|Currency
 |Maximum Item Price|When charging for lost items, limit the charge to this as a maximum.|Number|Currency
 |Minimum Item Price|When charging for lost items, charge this amount as a minimum.|Number|Currency
+|Negative Balance Interval (DEFAULT)|Amount of time after which no negative balances (refunds) are allowed on circulation bills. The "Prohibit negative balance on bills" setting must also be set to "true".|Duration|
+|Negative Balance Interval for Lost|Amount of time after which no negative balances (refunds) are allowed on bills for lost/long overdue materials. The "Prohibit negative balance on bills for lost materials" setting must also be set to "true".|Duration|
+|Negative Balance Interval for Overdues|Amount of time after which no negative balances (refunds) are allowed on bills for overdue materials. The "Prohibit negative balance on bills for overdue materials" setting must also be set to "true".|Duration|
+|Prohibit negative balance on bills (Default)|Default setting to prevent negative balances (refunds) on circulation related bills. Set to "true" to prohibit negative balances at all times or, when used in conjunction with an interval setting, to prohibit negative balances after a set period of time.|True/False|
+|Prohibit negative balance on bills for lost materials|Prevent negative balances (refunds) on bills for lost/long overdue materials. Set to "true" to prohibit negative balances at all times or, when used in conjunction with an interval setting, to prohibit negative balances after an interval of time.|True/False|
+|Prohibit negative balance on bills for overdue materials|Prevent negative balances (refunds) on bills for lost/long overdue materials. Set to "true" to prohibit negative balances at all times or, when used in conjunction with an interval setting, to prohibit negative balances after an interval of time.|True/False|
 |Void Overdue Fines When Items are Marked Long-Overdue|If true overdue fines are voided when an item is marked Long-Overdue|True/False|
 |Void overdue fines when items are marked lost|If true overdue fines are voided when an item is marked lost|True/False|
 |========
@@ -233,6 +244,7 @@ values.
 ((("Graphic User Interface", "Library Settings Editor")))
 ((("Patron Registration Settings", "Library Settings Editor")))
 
+[[lse-gui]]
 .GUI: Graphic User Interface
 [options="header",separator="!"]
 !===========================
@@ -289,6 +301,7 @@ values.
 
 ((("Global", "Library Settings Editor")))
 
+[[lse-global]]
 .Global
 [options="header"]
 |======
@@ -303,6 +316,7 @@ values.
 
 ((("Holds", "Library Settings Editor")))
 
+[[lse-holds]]
 .Holds
 [options="header"]
 |=====
@@ -337,6 +351,7 @@ For multiple branch libraries
 
 ((("Library", "Library Settings Editor")))
 
+[[lse-library]]
 .Library
 [options="header"]
 |=======
@@ -355,6 +370,7 @@ The default is at midnight each night for items with "Reshelving" status for ove
 
 ((("OPAC", "Library Settings Editor")))
 
+[[lse-opac]]
 .OPAC
 [options="header"]
 |====
@@ -380,6 +396,7 @@ The default is at midnight each night for items with "Reshelving" status for ove
 ((("Offline", "Library Settings Editor")))
 ((("Program", "Library Settings Editor")))
 
+[[lse-offline]]
 .Offline and Program
 [options="header"]
 |===================
@@ -396,6 +413,7 @@ The default is at midnight each night for items with "Reshelving" status for ove
 ((("SMS Settings", "Library Settings Editor")))
 ((("Text Messaging", "Library Settings Editor")))
 
+[[lse-receipt]]
 .Receipt Templates and SMS Text Message
 [options="header"]
 |======================================
@@ -411,6 +429,7 @@ The default is at midnight each night for items with "Reshelving" status for ove
 
 ((("Security", "Library Settings Editor")))
 
+[[lse-security]]
 .Security
 [options="header"]
 |========
@@ -432,6 +451,7 @@ usernames in addition to barcode. For this setting to work, a barcode format mus
 
 ((("Self Check", "Library Settings Editor")))
 
+[[lse-selfcheck]]
 .Self Check and Others
 [options="header"]
 |=====================
@@ -454,6 +474,7 @@ usernames in addition to barcode. For this setting to work, a barcode format mus
 
 ((("Vandelay", "Library Settings Editor")))
 
+[[lse-vandelay]]
 .Vandelay
 [options="header"]
 |========
