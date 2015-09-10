@@ -32,10 +32,58 @@ angular.module('egVolCopy',
 function(egCore , $q) {
 
     var service = {
+        currently_generating : false,
+        auto_gen_barcode : false,
+        barcode_checkdigit : false,
         new_cp_id : 0,
         new_cn_id : 0,
         tree : {}, // holds lib->cn->copy hash stack
         copies : [] // raw copy list
+    };
+
+    service.nextBarcode = function(bc) {
+        service.currently_generating = true;
+        return egCore.net.request(
+            'open-ils.cat',
+            'open-ils.cat.item.barcode.autogen',
+            egCore.auth.token(),
+            bc, 1, { checkdigit: service.barcode_checkdigit }
+        ).then(function(resp) { // get_barcodes
+            var evt = egCore.evt.parse(resp);
+            if (!evt) return resp[0];
+            return '';
+        });
+    };
+
+    service.checkBarcode = function(bc) {
+        if (!service.barcode_checkdigit) return true;
+        if (bc != Number(bc)) return false;
+        bc = bc.toString();
+        // "16.00" == Number("16.00"), but the . is bad.
+        // Throw out any barcode that isn't just digits
+        if (bc.search(/\D/) != -1) return false;
+        var last_digit = bc.substr(bc.length-1);
+        var stripped_barcode = bc.substr(0,bc.length-1);
+        return service.barcodeCheckdigit(stripped_barcode).toString() == last_digit;
+    };
+
+    service.barcodeCheckdigit = function(bc) {
+        var reverse_barcode = bc.toString().split('').reverse();
+        var check_sum = 0; var multiplier = 2;
+        for (var i = 0; i < reverse_barcode.length; i++) {
+            var digit = reverse_barcode[i];
+            var product = digit * multiplier; product = product.toString();
+            var temp_sum = 0;
+            for (var j = 0; j < product.length; j++) {
+                temp_sum += Number( product[j] );
+            }
+            check_sum += Number( temp_sum );
+            multiplier = ( multiplier == 2 ? 1 : 2 );
+        }
+        check_sum = check_sum.toString();
+        var next_multiple_of_10 = (check_sum.match(/(\d*)\d$/)[1] * 10) + 10;
+        var check_digit = next_multiple_of_10 - Number(check_sum); if (check_digit == 10) check_digit = 0;
+        return check_digit;
     };
 
     // returns a promise resolved with the list of circ mods
@@ -193,7 +241,7 @@ function(egCore , $q) {
         replace: true,
         template:
             '<div class="row">'+
-                '<div class="col-xs-5">'+
+                '<div class="col-xs-5" ng-class="{'+"'has-error'"+':barcode_has_error}">'+
                     '<input id="{{callNumber.id()}}_{{copy.id()}}"'+
                     ' eg-enter="nextBarcode(copy.id())" class="form-control"'+
                     ' type="text" ng-model="barcode" ng-change="updateBarcode()"/>'+
@@ -206,12 +254,21 @@ function(egCore , $q) {
         controller : ['$scope','itemSvc','egCore',
             function ( $scope , itemSvc , egCore ) {
                 $scope.new_part_id = 0;
+                $scope.barcode_has_error = false;
 
                 $scope.nextBarcode = function (i) {
-                    $scope.focusNext(i);
+                    $scope.focusNext(i, $scope.barcode);
                 }
 
-                $scope.updateBarcode = function () { $scope.copy.barcode($scope.barcode); $scope.copy.ischanged(1); };
+                $scope.updateBarcode = function () {
+                    if ($scope.barcode != '')
+                        $scope.barcode_has_error = !Boolean(itemSvc.checkBarcode($scope.barcode));
+                    $scope.copy.barcode($scope.barcode);
+                    $scope.copy.ischanged(1);
+                    if (itemSvc.currently_generating)
+                        $scope.focusNext($scope.copy.id(), $scope.barcode);
+                };
+
                 $scope.updateCopyNo = function () { $scope.copy.copy_number($scope.copy_number); $scope.copy.ischanged(1); };
                 $scope.updatePart = function () {
                     if ($scope.part) {
@@ -289,7 +346,7 @@ function(egCore , $q) {
                 $scope.idTracker = function (x) { if (x && x.id) return x.id() };
 
                 // XXX $() is not working! arg
-                $scope.focusNextBarcode = function (i) {
+                $scope.focusNextBarcode = function (i, prev_bc) {
                     var n;
                     var yep = false;
                     angular.forEach($scope.copies, function (cp) {
@@ -306,9 +363,20 @@ function(egCore , $q) {
                     if (n) {
                         var next = '#' + $scope.callNumber.id() + '_' + n;
                         var el = $(next);
-                        if (el) el.focus()
+                        if (el) {
+                            if (!itemSvc.currently_generating) el.focus();
+                            if (prev_bc && itemSvc.auto_gen_barcode && el.val() == "") {
+                                itemSvc.nextBarcode(prev_bc).then(function(bc){
+                                    el.focus();
+                                    el.val(bc);
+                                    el.trigger('change');
+                                });
+                            } else {
+                                itemSvc.currently_generating = false;
+                            }
+                        }
                     } else {
-                        $scope.focusNext($scope.callNumber.id())
+                        $scope.focusNext($scope.callNumber.id(),prev_bc)
                     }
                 }
 
@@ -444,30 +512,37 @@ function(egCore , $q) {
                     }
                 });
 
-                $scope.focusNextFirst = function(prev_cn) {
+                $scope.focusNextFirst = function(prev_cn,prev_bc) {
                     var n;
                     var yep = false;
                     angular.forEach(Object.keys($scope.struct).sort(), function (cn) {
-                        console.log('checking '+cn);
                         if (n) return;
 
                         if (cn == prev_cn) {
-                            console.log('prev is '+cn);
                             yep = true;
                             return;
                         }
-                        console.log('prev is not '+cn);
 
                         if (yep) n = cn;
                     });
 
-                    console.log('found '+n);
                     if (n) {
                         var next = '#' + n + '_' + $scope.struct[n][0].id();
                         var el = $(next);
-                        if (el) el.focus()
+                        if (el) {
+                            if (!itemSvc.currently_generating) el.focus();
+                            if (prev_bc && itemSvc.auto_gen_barcode && el.val() == "") {
+                                itemSvc.nextBarcode(prev_bc).then(function(bc){
+                                    el.focus();
+                                    el.val(bc);
+                                    el.trigger('change');
+                                });
+                            } else {
+                                itemSvc.currently_generating = false;
+                            }
+                        }
                     } else {
-                        $scope.focusNext($scope.lib);
+                        $scope.focusNext($scope.lib, prev_bc);
                     }
                 }
 
@@ -527,7 +602,6 @@ function(egCore , $q) {
                                 .filter(function(x){ return parseInt(x) <= 0 });
                         for (var i = 0; i < how_many; i++) {
                             // Trimming the global list is a bit more tricky
-                            console.log('trying to trim ' + i);
                             angular.forEach($scope.struct[list[i]], function (d) {
                                 angular.forEach( $scope.allcopies, function (l, j) { 
                                     if (l === d) $scope.allcopies.splice(j,1);
@@ -551,6 +625,8 @@ function(egCore , $q) {
 function($scope , $q , $window , $routeParams , $location , $timeout , egCore , egNet , egGridDataProvider , itemSvc , $modal) {
 
     $scope.defaults = { // If defaults are not set at all, allow everything
+        barcode_checkdigit : false,
+        auto_gen_barcode : false,
         statcats : true,
         copy_notes : true,
         attributes : {
@@ -589,6 +665,8 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                 $scope.batch.suffix = $scope.defaults.suffix;
                 $scope.working.statcat_filter = $scope.defaults.statcat_filter;
                 if ($scope.defaults.always_vols) $scope.show_vols = true;
+                if ($scope.defaults.barcode_checkdigit) itemSvc.barcode_checkdigit = true;
+                if ($scope.defaults.auto_gen_barcode) itemSvc.auto_gen_barcode = true;
             }
         });
     }
@@ -964,31 +1042,36 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
             }
         });
 
-        $scope.focusNextFirst = function(prev_lib) {
+        $scope.focusNextFirst = function(prev_lib,prev_bc) {
             var n;
             var yep = false;
             angular.forEach(Object.keys($scope.data.tree).sort(), function (lib) {
-                console.log('checking lib '+lib);
                 if (n) return;
 
                 if (lib == prev_lib) {
-                    console.log('prev is '+lib);
                     yep = true;
                     return;
                 }
-                console.log('prev is not '+lib);
 
                 if (yep) n = lib;
             });
 
-            console.log('found '+n);
             if (n) {
                 var first_cn = Object.keys($scope.data.tree[n])[0];
                 var next = '#' + first_cn + '_' + $scope.data.tree[n][first_cn][0].id();
                 var el = $(next);
-                if (el) el.focus()
-            } else {
-                $scope.focusNext($scope.lib);
+                if (el) {
+                    if (!itemSvc.currently_generating) el.focus();
+                    if (prev_bc && itemSvc.auto_gen_barcode && el.val() == "") {
+                        itemSvc.nextBarcode(prev_bc).then(function(bc){
+                            el.focus();
+                            el.val(bc);
+                            el.trigger('change');
+                        });
+                    } else {
+                        itemSvc.currently_generating = false;
+                    }
+                }
             }
         }
 
@@ -1292,6 +1375,8 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
             function ( $scope , $window , itemSvc , egCore ) {
 
                 $scope.defaults = { // If defaults are not set at all, allow everything
+                    barcode_checkdigit : false,
+                    auto_gen_barcode : false,
                     statcats : true,
                     copy_notes : true,
                     attributes : {
