@@ -545,6 +545,26 @@ points to the Syndetic service:
 For changes to be activated for your public interface you will need to restart
 Evergreen and Apache.
 
+
+Clear External/Added Content Cache
+----------------------------------
+
+On the catalog’s record summary page, there is a link for staff that will forcibly clear 
+the cache of the Added Content for that record. This is helpful for when the Added Content 
+retrieved the wrong cover jacket art, summary, etc. and caches the wrong result.
+
+image::media/clear-added-content-cache-1.png[Clear Cache Link]
+
+Once clicked, there is a pop up that will display what was cleared from the cache. 
+
+image::media/clear-added-content-cache-2.jpg[Example Popup]
+
+You will need to reload the record in the staff client to obtain the new images from your 
+Added Content Supplier.
+
+
+
+
 Including Locally Hosted Content in Your Public Interface
 ---------------------------------------------------------
 
