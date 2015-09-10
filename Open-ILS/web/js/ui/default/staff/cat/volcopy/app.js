@@ -672,6 +672,14 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
     }
     $scope.fetchDefaults();
 
+    $scope.$watch('defaults.auto_gen_barcode', function (n,o) {
+        itemSvc.auto_gen_barcode = n
+    });
+
+    $scope.$watch('defaults.barcode_checkdigit', function (n,o) {
+        itemSvc.barcode_checkdigit = n
+    });
+
     $scope.dirty = false;
     $scope.$watch('dirty',
         function(newVal, oldVal) {
