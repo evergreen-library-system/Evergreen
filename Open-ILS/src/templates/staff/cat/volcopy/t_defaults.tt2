@@ -59,7 +59,7 @@
 
             <div class="row">
                 <div class="col-xs-12">
-                    <label style="padding-left: 25px">
+                    <label>
                         <input type="checkbox" ng-change="saveDefaults()" ng-model="defaults.barcode_checkdigit"/>
                         [% l('Use checkdigit') %]
                     </label>
