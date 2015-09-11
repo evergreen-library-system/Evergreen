@@ -133,6 +133,18 @@ When a duplicate purchase order name is detected during the renaming of an exist
 * Click *View PO* to view the purchase order with the matching name. The purchase order will open in a new tab.
 * Repeat the steps to change the name of an existing purchase order and make the name unique.
 
+Purchase Order Activation Progress Bar
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+After you click *Activate Order*, you will be presented with the record import interface for records that are not already in the catalog. Once you complete entering in the parameters for the record import interface, the progress screen will appear. As of Evergreen 2.9, this progress screen consists of a progress bar in the foreground, and a tally of the following in the background of the bottom-left corner:
+
+* Lineitems processed
+* Vandelay Records processed
+* Bib Records Merged/Imported
+* ACQ Copies Processed
+* Debits Encumbered
+* Real Copies Processed
+
 Activate Purchase Order with Zero Copies
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
