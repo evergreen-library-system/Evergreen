@@ -513,7 +513,7 @@ Account Summary
 
 indexterm:[my account, account summary]
 
-In the _My Account_, _Account Summary_ you can see your total number of items checked out, items on hold, and items ready for pickup. In addition item summary lists your current fines and payment history are listed there, too.
+In the *My Account* -> *Account Summary* page, you can see when your account expires and your total number of items checked out, items on hold, and items ready for pickup. In addition, the Account Summary page lists your current fines and payment history.
 
 
 Items Checked Out 
@@ -521,7 +521,13 @@ Items Checked Out
 
 indexterm:[my account, items checked out]
 
-Users can manage items currently checked out, like renew specific items. Users can also view overdue items and see how many renewals they have remaining for specific item. 
+Users can manage items currently checked out, like renew specific items. Users can also view overdue items and see how many renewals they have remaining for specific item.
+
+As of Evergreen version 2.9, sorting of selected columns is available in the _Items Checked Out_ and _Check Out History_ pages. Clicking on the appropriate column heads sorts the contents from "ascending" to "descending" to "no sort". (The "no sort" restores the original list as presented in the screen.) The sort indicator (an up or down arrow) is placed to the right of the column head, as appropriate.
+
+Within *Items Checked Out* -> *Current Items Checked Out*, the following column headers can be sorted: _Title_, _Author_, _Renewals Left_, _Due Date_, _Barcode_, and _Call Number_.
+
+Within *Items Checked Out* -> *Check Out History*, the following column headers can be sorted: _Title_, _Author_, _Checkout Date_, _Due Date_, _Date Returned_, _Barcode_, and _Call Number_
 
 
 Holds
@@ -529,7 +535,7 @@ Holds
 
 indexterm:[my account, holds]
 
-From _My Account_, patrons can see _Items on hold_ and _Holds History_ and manage items currently being requested. 
+From *My Account*, patrons can see *Items on Hold* and *Holds History* and manage items currently being requested. In *Holds* -> *Items on Hold*, the content shown can be sorted by clicking on the following column headers: _Title_, _Author_, and _Format_ (based on format name represented by the icon).
 
 Actions include: 
 
@@ -557,7 +563,7 @@ Account Preferences
 
 indexterm:[my account, account preferences]
 
-From here you can manage display preferences including your _Personal Information_, _Notification Preferences_, and _Search and History Preferences_. 
+From here you can manage display preferences including your *Personal Information*, *Notification Preferences*, and *Search and History Preferences*. Additional static information, such as your _Account Expiration Date_, can be found under Personal Information.
 
 For example: 
 
