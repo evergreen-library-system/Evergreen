@@ -5,7 +5,9 @@
     <h4 class="modal-title">[% l('Import Record') %]</h4>
   </div>
   <div class="modal-body">
-    <eg-marc-edit-record dirty-flag="dirty_flag" record-id="record_id" marc-xml="marc_xml"/>
+    <eg-marc-edit-record dirty-flag="dirty_flag" record-id="record_id" marc-xml="marc_xml"
+                         record-type="bre"
+    />
   </div>
   <div class="modal-footer">
     <button class="btn btn-warning" ng-click="cancel()">[% l('Cancel') %]</button>
