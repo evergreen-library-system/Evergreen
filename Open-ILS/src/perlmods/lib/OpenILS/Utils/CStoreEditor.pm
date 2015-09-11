@@ -797,6 +797,8 @@ sub runmethod {
         $method .= '.atomic';
     }
 
+    local $ENV{TZ} = $$options{no_tz} ? undef : $ENV{TZ};
+
     $method =~ s/search/id_list/o if $options->{idlist};
 
     $method =~ s/\.atomic$//o if $self->substream($$options{substream} || 0);
