@@ -372,8 +372,7 @@ function handle_refund() {
     var r = g.error.yns_alert(msg,
         $("patronStrings").getString('staff.patron.bills.handle_refund.title'),
         $("patronStrings").getString('staff.patron.bills.handle_refund.btn_yes'),
-        $("patronStrings").getString('staff.patron.bills.handle_refund.btn_no'),null,
-        $("patronStrings").getString('staff.patron.bills.handle_refund.confirm_message'));
+        $("patronStrings").getString('staff.patron.bills.handle_refund.btn_no'),null);
     if (r == 0) {
         for (var i = 0; i < g.bill_list_selection.length; i++) {
             var bill_id = g.bill_list_selection[i];
@@ -408,10 +407,7 @@ function handle_adjust_to_zero() {
         $("patronStrings").getString(
             'staff.patron.bills.handle_adjust_to_zero.btn_yes'),
         $("patronStrings").getString(
-            'staff.patron.bills.handle_adjust_to_zero.btn_no'),null,
-        $("patronStrings").getString(
-            'staff.patron.bills.handle_adjust_to_zero.confirm_message'));
-
+            'staff.patron.bills.handle_adjust_to_zero.btn_no'),null);
     if (r == 0) {
         var xact_ids = [];
         for (var i = 0; i < g.bill_list_selection.length; i++) {
