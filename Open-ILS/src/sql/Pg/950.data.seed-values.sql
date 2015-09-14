@@ -1596,7 +1596,9 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  (  561, 'AVAIL_HOLD_COPY_RATIO_EXCEEDED.override', oils_i18n_gettext( 561,
     'Override the AVAIL_HOLD_COPY_RATIO_EXCEEDED event', 'ppl', 'description')),
  ( 562, 'ADMIN_TAG_TABLE', oils_i18n_gettext( 562, 
-    'Allow administration of MARC tag tables', 'ppl', 'description' ))
+    'Allow administration of MARC tag tables', 'ppl', 'description' )),
+ ( 563, 'ADJUST_BILLS', oils_i18n_gettext( 563,
+    'Allow a user to adjust a bill (generally to zero)', 'ppl', 'description' ))
 ;
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
@@ -1971,6 +1973,7 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 		pgt.name = 'Circulators' AND
 		aout.name = 'Branch' AND
 		perm.code IN (
+			'ADJUST_BILLS',
 			'ADMIN_BOOKING_RESERVATION',
 			'ADMIN_BOOKING_RESOURCE',
 			'ADMIN_BOOKING_RESOURCE_ATTR',
@@ -2101,6 +2104,7 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 		pgt.name = 'Circulation Administrator' AND
 		aout.name = 'System' AND
 		perm.code IN (
+			'ADJUST_BILLS',
 			'ADMIN_BOOKING_RESERVATION',
 			'ADMIN_BOOKING_RESERVATION_ATTR_MAP',
 			'ADMIN_BOOKING_RESERVATION_ATTR_VALUE_MAP',
