@@ -884,9 +884,9 @@ CREATE OR REPLACE FUNCTION authority.simple_heading_search_rank( atag_list INT[]
             plainto_tsquery('keyword'::regconfig,$2) ptsq(term)
       WHERE ash.atag = ANY ($1)
             AND ash.index_vector @@ ptsq.term
-            AND CASE thesauruses
+            AND CASE $5
                 WHEN '' THEN TRUE
-                ELSE ash.thesaurus = ANY(regexp_split_to_array(thesauruses, ','))
+                ELSE ash.thesaurus = ANY(regexp_split_to_array($5, ','))
                 END
       ORDER BY ts_rank_cd(ash.index_vector,ptsq.term,14)::numeric
                     + CASE WHEN ash.sort_value LIKE t.term || '%' THEN 2 ELSE 0 END
@@ -927,9 +927,9 @@ CREATE OR REPLACE FUNCTION authority.simple_heading_search_heading( atag_list IN
             plainto_tsquery('keyword'::regconfig,$2) ptsq(term)
       WHERE ash.atag = ANY ($1)
             AND ash.index_vector @@ ptsq.term
-            AND CASE thesauruses
+            AND CASE $5
                 WHEN '' THEN TRUE
-                ELSE ash.thesaurus = ANY(regexp_split_to_array(thesauruses, ','))
+                ELSE ash.thesaurus = ANY(regexp_split_to_array($5, ','))
                 END
       ORDER BY ash.sort_value
       LIMIT $4
