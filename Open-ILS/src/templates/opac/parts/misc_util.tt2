@@ -633,8 +633,12 @@
     # which is a superset of 'loc'.
     BLOCK get_library;
         loc_name = 'locg';
-        loc_value = ctx.copy_location_group_org ||  # resolved locg
-            CGI.param(loc_name) || CGI.param('loc') || ctx.search_ou;
+
+        # Location groups don't have shortnames, so they'll take priority
+        # (_org doesn't contain the group and breaks the selector).
+        loc_value = ctx.copy_location_group ? CGI.param(loc_name)
+                  : ctx.copy_location_group_org # resolved locg
+                    || CGI.param(loc_name) || CGI.param('loc') || ctx.search_ou;
     END;
 
 %]
