@@ -299,7 +299,7 @@ angular.module('egCoreMod')
         );
 
         angular.forEach(patron.cards, function(card) {
-            card.active = card.active == 't'
+            card.active = card.active == 't';
             if (card.id == patron.card.id)
                 card._primary = 'on';
         });
@@ -327,6 +327,74 @@ angular.module('egCoreMod')
             mailing_address : addr,
             addresses : [addr]
         };
+    }
+
+    // translate the patron back into IDL form
+    service.save_patron = function(phash) {
+
+        var patron = new egCore.idl.au();
+
+        for (var key in phash) {
+            if (typeof patron[key] == 'function')
+                patron[key](phash[key]);
+        }
+
+        patron.home_ou(patron.home_ou().id());
+        patron.expire_date(
+            patron.expire_date().toISOString().replace(/T.*/,''));
+        patron.dob(patron.dob().toISOString().replace(/T.*/,''));
+        patron.profile(patron.profile().id());
+        patron.net_access_level(patron.net_access_level().id());
+        patron.ident_type(patron.ident_type().id());
+
+        angular.forEach(
+            ['juvenile', 'barred', 'active', 'master_account'],
+            function(field) { patron[field](phash[field] ? 't' : 'f'); }
+        );
+
+        var card_hashes = patron.cards();
+        patron.cards([]);
+        angular.forEach(card_hashes, function(chash) {
+            var card = new egCore.idl.ac();
+            patron.cards().push(card);
+            for (var key in chash) {
+                if (typeof card[key] == 'function') 
+                    card[key](chash[key]);
+            }
+            card.usr(patron.id());
+            card.active(chash.active ? 't' : 'f');
+
+            if (chash._primary) {
+                patron.card(card);
+            }
+        });
+
+        var addr_hashes = patron.addresses();
+        patron.addresses([]);
+        angular.forEach(addr_hashes, function(addr_hash) {
+            var addr = new egCore.idl.aua();
+            patron.addresses().push(addr);
+            for (var key in addr_hash) {
+                if (typeof addr[key] == 'function') 
+                    addr[key](addr_hash[key]);
+            }
+
+            addr.valid(addr.valid() ? 't' : 'f');
+            addr.within_city_limits(addr.within_city_limits() ? 't' : 'f');
+            if (addr_hash._is_mailing) patron.mailing_address(addr);
+            if (addr_hash._is_billing) patron.billing_address(addr);
+        });
+
+        egCore.net.request(
+            'open-ils.actor', 
+            'open-ils.actor.patron.update',
+            egCore.auth.token(), patron)
+        .then(function(resp) {
+            // TODO: see original
+            console.log(js2JSON(resp));
+        });
+
+        console.log(js2JSON(patron));
     }
 
     return service;
@@ -540,6 +608,10 @@ function PatronRegCtrl($scope, $routeParams,
                 });
             }
         );
+    }
+
+    $scope.edit_passthru.save = function() {
+        patronRegSvc.save_patron($scope.patron);        
     }
 
 }
