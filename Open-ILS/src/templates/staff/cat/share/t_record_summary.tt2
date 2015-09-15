@@ -1,6 +1,11 @@
 <div class="strong-text-2">
   <div class="flex-row" style="justify-content: space-between">
-    <div class="flex-cell">[% l('Record Summary') %]</div>
+    <div class="flex-cell">
+        [% l('Record Summary') %]
+        <span ng-if="record.deleted() == 't'" class="record-summary-alert">
+            [% l('(Deleted)') %]
+        </span>
+    </div>
     <div ng-if="!noMarcLink" class="flex-cell">
       <a target="_self" 
         href="[% ctx.base_path %]/staff/cat/catalog/record/{{record.id()}}/marc_html">

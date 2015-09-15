@@ -1,3 +1,8 @@
+/* record summary */
+.record-summary-alert {
+    color: red;
+}
+
 .marcrecord {
     //background-color: #f5f5f5;
 }
