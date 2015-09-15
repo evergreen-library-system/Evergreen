@@ -51,8 +51,8 @@
         <menupopup id="actions_popup">
             <menuitem command="opac" />
             <menuitem command="copy_details" />
-            <menuitem command="voidall" />
-            <menuitem command="adjust_to_zero" />
+            <menuitem class="voidall_command" command="voidall" />
+            <menuitem class="adjust_to_zero_command" command="adjust_to_zero" />
             <menuitem command="refund" />
             <menuitem command="add" />
             <menuitem command="details" />
@@ -146,7 +146,8 @@
                             <menupopup>
                                 <menuitem command="opac" />
                                 <menuitem command="copy_details" />
-                                <menuitem command="voidall" />
+                                <menuitem class="voidall_command" command="voidall" />
+                                <menuitem class="adjust_to_zero_command" command="adjust_to_zero" />
                                 <menuitem command="refund" />
                                 <menuitem command="add" />
                                 <menuitem command="details" />

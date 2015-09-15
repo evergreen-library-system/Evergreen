@@ -223,6 +223,8 @@ function my_init() {
 
         init_lists();
 
+        check_void_button();
+
         retrieve_mb();
         retrieve_mp();
 
@@ -319,9 +321,36 @@ function handle_void() {
         if (mb_list.length == 0) { alert($("patronStrings").getString('staff.patron.bill_details.handle_void.voided_billings.alert')); return; }
 
         var sum = 0;
-        for (var i = 0; i < mb_list.length; i++) sum += util.money.dollars_float_to_cents_integer( mb_list[i].amount() );
-        sum = util.money.cents_as_dollars( sum );
+        var has_overdue = false;
+        var has_lost_or_lo = false;
+        for (var i = 0; i < mb_list.length; i++) {
+            var bill = mb_list[i];
+            sum += util.money.dollars_float_to_cents_integer( bill.amount() );
+            var btype = bill.btype();
+            if (!has_overdue && btype == 1) {
+                has_overdue = true;
+            } else if (!has_lost_or_lo && (btype == 3 || btype == 4 || btype == 10 || btype == 11)) {
+                has_lost_or_lo = true;
+            }
+        }
+        var prohibit_default = g.data.hash.aous['bill.prohibit_negative_balance_default'];
+        var prohibit_on_overdues = g.data.hash.aous['bill.prohibit_negative_balance_on_overdues'];
+        if (prohibit_on_overdues === undefined) prohibit_on_overdues = prohibit_default;
+        var prohibit_on_lost = g.data.hash.aous['bill.prohibit_negative_balance_on_lost'];
+        if (prohibit_on_lost === undefined) prohibit_on_lost = prohibit_default;
+        if (has_overdue && prohibit_on_overdues || has_lost_or_lo && prohibit_on_lost) {
+            var choice = g.error.yns_alert_original(
+                $("patronStrings").getString('staff.patron.bills.void_warning.message'),
+                $("patronStrings").getString('staff.patron.bills.void_warning.title'),
+                $('commonStrings').getString('common.yes'),
+                $('commonStrings').getString('common.no'),
+                null,
+                $('commonStrings').getString('common.confirm')
+            );
+            if (choice != 0) return;
+        }
 
+        sum = util.money.cents_as_dollars( sum );
         var msg = $("patronStrings").getFormattedString('staff.patron.bill_details.handle_void.confirm_void_billing', sum);
         var r = g.error.yns_alert(msg,
             $("patronStrings").getString('staff.patron.bill_details.handle_void.confirm_void_billing_title'),
@@ -359,3 +388,15 @@ function handle_void() {
     }
 }
 
+function check_void_button() {
+    try {
+        var check = g.network.simple_request('PERM_CHECK',[ses(),ses('staff_id'),g.au_obj.home_ou(),['VOID_BILLING']]);
+        if (typeof check.ilsevent != 'undefined') {
+            g.error.standard_unexpected_error_alert('check_void_button()',check);
+            return;
+        }
+        if (check.length != 0) $('void').setAttribute('hidden', true);
+    } catch(E) {
+        g.error.standard_unexpected_error_alert('check_void_button()',E);
+    }
+}

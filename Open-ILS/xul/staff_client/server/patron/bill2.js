@@ -714,6 +714,23 @@ function handle_add() {
 }
 
 function handle_void_all() {
+    var prohibit_default = g.data.hash.aous['bill.prohibit_negative_balance_default'];
+    var prohibit_on_overdues = g.data.hash.aous['bill.prohibit_negative_balance_on_overdues'];
+    if (prohibit_on_overdues === undefined) prohibit_on_overdues = prohibit_default;
+    var prohibit_on_lost = g.data.hash.aous['bill.prohibit_negative_balance_on_lost'];
+    if (prohibit_on_lost === undefined) prohibit_on_lost = prohibit_default;
+
+    if (prohibit_on_overdues || prohibit_on_lost) {
+        var choice = g.error.yns_alert_original(
+            $("patronStrings").getString('staff.patron.bills.void_warning.message'),
+            $("patronStrings").getString('staff.patron.bills.void_warning.title'),
+            $('commonStrings').getString('common.yes'),
+            $('commonStrings').getString('common.no'),
+            null,
+            $('commonStrings').getString('common.confirm')
+        );
+        if (choice != 0) return;
+    }
     if(g.bill_list_selection.length > 1) {
         var msg = $("patronStrings").getFormattedString('staff.patron.bill_history.handle_void.message_plural', [g.bill_list_selection]);
     } else {
@@ -1119,6 +1136,42 @@ function refresh_patron() {
         if (typeof au_obj.ilsevent == 'undefined') {
             g.patron = au_obj;
             $('credit_forward').setAttribute('value',util.money.sanitize( g.patron.credit_forward_balance() ));
+            set_patron_based_menu_options();
         }
     });
+}
+
+function set_patron_based_menu_options() {
+    ['voidall', 'adjust_to_zero'].forEach(function (commandname) {
+        show_hide_menu_by_class(commandname + '_command', true);
+    });
+
+    $('voidall').setAttribute('hidden','true');
+    $('adjust_to_zero').setAttribute('hidden','true');
+    if (check_perms_for_patron_ou(['VOID_BILLING'])) {
+        show_hide_menu_by_class('voidall_command', false);
+    }
+    if (check_perms_for_patron_ou(['ADJUST_BILLS'])) {
+        show_hide_menu_by_class('adjust_to_zero_command', false);
+    }
+}
+
+function show_hide_menu_by_class(class_name, hidden) {
+    var nodes = document.getElementsByClassName(class_name);
+    for (var i = 0; i < nodes.length; i++) {
+        nodes[i].setAttribute('hidden', hidden);
+    }
+}
+
+function check_perms_for_patron_ou(perms) {
+    try {
+        var check = g.network.simple_request('PERM_CHECK',[ses(),ses('staff_id'),g.patron.home_ou(),perms]);
+        if (typeof check.ilsevent != 'undefined') {
+            g.error.standard_unexpected_error_alert('check_perms_for_patron_ou()',check);
+            return false;
+        }
+        return check.length == 0 ? true : false;
+    } catch(E) {
+        g.error.standard_unexpected_error_alert('check_perms_for_patron_ou()',E);
+    }
 }
