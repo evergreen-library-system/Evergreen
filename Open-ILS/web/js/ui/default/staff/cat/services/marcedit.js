@@ -521,6 +521,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
             dirtyFlag : '=',
             recordId : '=',
             marcXml : '=',
+            onSave : '=',
             // in-place mode means that the editor is being
             // used just to munge some MARCXML client-side, rather
             // than to (immediately) update the database
@@ -544,6 +545,11 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
         },
         controller : ['$timeout','$scope','$q','$window','egCore', 'egTagTable',
             function ( $timeout , $scope , $q,  $window , egCore ,  egTagTable ) {
+
+
+                $scope.onSaveCallback = $scope.onSave;
+                if (typeof $scope.onSaveCallback !== 'undefined' && !angular.isArray($scope.onSaveCallback))
+                    $scope.onSaveCallback = [ $scope.onSaveCallback ];
 
                 MARC21.Record.delimiter = '$';
 
@@ -1074,10 +1080,23 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                     });
                 }
 
+                processOnSaveCallbacks = function() {
+                    var deferred = $q.defer();
+                    if (typeof $scope.onSaveCallback !== 'undefined') {
+                        var promise = deferred.promise;
+
+                        angular.forEach($scope.onSaveCallback, function (f) {
+                            if (angular.isFunction(f)) promise = promise.then(f);
+                        });
+
+                    }
+                    return deferred.resolve($scope.recordId)
+                };
+
                 $scope.saveRecord = function () {
                     if ($scope.inPlaceMode) {
                         $scope.marcXml = $scope.record.toXmlString();
-                        return;
+                        return processOnSaveCallbacks();
                     }
                     $scope.mangle_005();
                     $scope.Record().editor(egCore.auth.user().id());
@@ -1110,7 +1129,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                                     }
                                 });
                             }
-                        }).then(loadRecord);
+                        }).then(loadRecord).then(processOnSaveCallbacks);
                     } else {
                         $scope.Record().creator(egCore.auth.user().id());
                         $scope.Record().create_date('now');
@@ -1140,7 +1159,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                                     }
                                 });
                             }
-                        }).then(loadRecord);
+                        }).then(loadRecord).then(processOnSaveCallbacks);
                     }
 
 

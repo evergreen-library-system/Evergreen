@@ -233,6 +233,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
 
     // set record ID on page load if available...
     $scope.record_id = $routeParams.record_id;
+    $scope.summary_pane_record;
 
     if ($routeParams.record_id) $scope.from_route = true;
     else $scope.from_route = false;
@@ -324,6 +325,20 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
     // Set the "last bib" cookie, if we have that
     if ($scope.record_id)
         egCore.hatch.setLocalItem("eg.cat.last_record_retrieved", $scope.record_id);
+
+    $scope.refresh_record_callback = function (record_id) {
+        egCore.pcrud.retrieve('bre', record_id, {
+            flesh : 1,
+            flesh_fields : {
+                bre : ['simple_record','creator','editor']
+            }
+        }).then(function(rec) {
+            rec.owner(egCore.org.get(rec.owner()));
+            $scope.summary_pane_record = rec;
+        });
+
+        return record_id;
+    }
 
     // also set it when the iframe changes to a new record
     $scope.handle_page = function(url) {

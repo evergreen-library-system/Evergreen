@@ -76,7 +76,7 @@
       <eg-embed-frame save-space="300" frame="opac_iframe" url="catalog_url" handlers="handlers" onchange="handle_page"></eg-embed-frame>
     </div>
     <div ng-show="record_tab == 'marc_edit'">
-      <eg-marc-edit-record dirty-flag="stop_unload" record-id="record_id"/>
+      <eg-marc-edit-record on-save="refresh_record_callback" dirty-flag="stop_unload" record-id="record_id"/>
     </div>
     <!-- ng-if the remaining tabs so they can be instantiated on demand -->
     <div ng-if="record_tab == 'marc_html'">
