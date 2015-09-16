@@ -584,6 +584,7 @@ function($scope,  $q , $routeParams , egCore , egGridDataProvider , patronSvc , 
     }
 
     // -- retrieve our data
+    $scope.total_circs = 0; // start with 0 instead of undefined
     egBilling.fetchXact(xact_id).then(function(xact) {
         $scope.xact = xact;
 
