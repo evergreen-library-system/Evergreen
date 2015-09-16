@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-26 13:12-0400\n"
+"POT-Creation-Date: 2015-09-16 16:43-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -248,11 +248,6 @@ msgctxt "staff.patron.bills.handle_refund.btn_no"
 msgid "No"
 msgstr ""
 
-#: staff.patron.bills.handle_adjust_to_zero.confirm_message
-msgctxt "staff.patron.bills.handle_adjust_to_zero.confirm_message"
-msgid "Check here to confirm this message"
-msgstr ""
-
 #: staff.patron.bills.handle_adjust_to_zero.message_plural
 msgid ""
 "Are you sure you would like to adjust to zero the balance on bills %1$s?"
@@ -412,6 +407,16 @@ msgstr ""
 
 #: staff.patron.bills.void_all_billings.billings_voided
 msgid "Billings voided."
+msgstr ""
+
+#: staff.patron.bills.void_warning.title
+msgid "Void Policy Warning"
+msgstr ""
+
+#: staff.patron.bills.void_warning.message
+msgid ""
+"WARNING: Voiding these bills may violate local policy.  Are you sure you "
+"wish to continue?"
 msgstr ""
 
 #: staff.patron.bill_wizard.patron_bill_finish.billing_added

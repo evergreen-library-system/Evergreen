@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2015-02-27 11:41-0400\n"
+"POT-Creation-Date: 2015-08-26 13:12-0400\n"
 "PO-Revision-Date: 2013-01-31 19:01+0000\n"
 "Last-Translator: Warren Layton <Unknown>\n"
 "Language-Team: English (Canada) <en_CA@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2015-08-07 05:45+0000\n"
-"X-Generator: Launchpad (build 17656)\n"
+"X-Launchpad-Export-Date: 2015-08-27 05:22+0000\n"
+"X-Generator: Launchpad (build 17690)\n"
 
 #: acq.js:ACQ_SEARCH_CLASS_ABBR_acqlid
 msgid "LID"
@@ -29,6 +29,12 @@ msgstr ""
 
 #: acq.js:NO_LI_TO_CLAIM
 msgid "You have not selected any line items to claim."
+msgstr ""
+
+#: acq.js:INVOICE_ITEM_PO_LABEL
+msgid ""
+"<a href='${0}/acq/po/view/${1}'>PO #${2} ${3}</a><br/>Total Estimated Cost: "
+"$${4}"
 msgstr ""
 
 #: acq.js:CONFIRM_FUNDS_AT_WARNING
@@ -111,9 +117,9 @@ msgstr ""
 "Any subsequent changes to the invoice that would affect prorated amounts "
 "should be resolved manually."
 
-#: acq.js:FUND_LIST_ROLLOVER_SUMMARY
-msgid "Fund Propagation &amp; Rollover Summary for Fiscal Year ${0}"
-msgstr "Fund Propagation &amp; Rollover Summary for Fiscal Year ${0}"
+#: acq.js:LI_CREATING_ASSETS
+msgid "Creating bib, call number, and copy records..."
+msgstr ""
 
 #: acq.js:CONFIRM_FUNDS_AT_STOP
 msgid ""
@@ -149,9 +155,13 @@ msgstr ""
 msgid "View PO"
 msgstr ""
 
-#: acq.js:CONFIRM_DELETE_MAPPING
-msgid "Are you sure you want to remove this tag from this fund?"
-msgstr "Are you sure you want to remove this tag from this fund?"
+#: acq.js:ACTIVATE_LI_PROCESSED
+msgid "Lineitems Processed: ${0}"
+msgstr ""
+
+#: acq.js:ACTIVATE_DEBITS_ACCRUED_PROCESSED
+msgid "Debits Encumbered: ${0}"
+msgstr ""
 
 #: acq.js:VENDOR_SAYS_PREPAY_NOT_NEEDED
 msgid ""
@@ -169,9 +179,9 @@ msgstr "Remove this $${0} '${1}' charge from the invoice?"
 msgid "Yes; fund ${0} (${1}) would be encumbered beyond its warning level."
 msgstr "Yes; fund ${0} (${1}) would be encumbered beyond its warning level."
 
-#: acq.js:FUND_XFER_SAME_SOURCE_AND_DEST
-msgid "Cannot transfer. The source and destination funds are the same."
-msgstr "Cannot transfer. The source and destination funds are the same."
+#: acq.js:ACTIVATE_BIBS_PROCESSED
+msgid "Bib Records Merged/Imported: ${0}"
+msgstr ""
 
 #: acq.js:ROLLBACK_LI_RECEIVE_CONFIRM
 msgid ""
@@ -221,6 +231,10 @@ msgstr "Are you SURE you want to cancel this purchase order?"
 #: acq.js:PRINT
 msgid "Print"
 msgstr "Print"
+
+#: acq.js:PO_ACTIVATING
+msgid "Activating purchase order..."
+msgstr ""
 
 #: acq.js:INVOICE_ITEM_PO_DETAILS
 msgid ""
@@ -298,13 +312,17 @@ msgstr ""
 "Are you sure you want to split this purchase order into\n"
 "one purchase order for every constituent line item?"
 
-#: acq.js:VENDOR_SAYS_PREPAY_NEEDED
+#: acq.js:FUND_LIST_ROLLOVER_SUMMARY_ROLLOVER_AMOUNT
 msgid ""
-"The selected vendor requires prepayment, according to records.\n"
-"Proceed anyway without required prepayment on this PO?"
+"<b>$${1}</b> unspent money rolled over to fiscal year ${0} for the selected "
+"locations"
 msgstr ""
-"The selected vendor requires prepayment, according to records.\n"
-"Proceed anyway without required prepayment on this PO?"
+"<b>$${1}</b> unspent money rolled over to fiscal year ${0} for the selected "
+"locations"
+
+#: acq.js:ACTIVATE_VQBR_PROCESSED
+msgid "Vandelay Records Processed: ${0}"
+msgstr ""
 
 #: acq.js:INVOICES
 msgid "Invoices"
@@ -322,9 +340,11 @@ msgstr "Invoice #${0}"
 msgid "Canceled"
 msgstr "Canceled"
 
-#: acq.js:COULD_NOT_DELETE_MAPPING
-msgid "Error removing tag from fund."
-msgstr "Error removing tag from fund."
+#: acq.js:FINALIZE_PO
+msgid ""
+"Finalize this blanket PO?\n"
+"This will disencumber all blanket charges and mark the PO as received"
+msgstr ""
 
 #: acq.js:NEW_INVOICE
 msgid "New Invoice"
@@ -333,6 +353,10 @@ msgstr ""
 #: acq.js:YES
 msgid "Yes"
 msgstr "Yes"
+
+#: acq.js:FUND_XFER_SAME_SOURCE_AND_DEST
+msgid "Cannot transfer. The source and destination funds are the same."
+msgstr "Cannot transfer. The source and destination funds are the same."
 
 #: acq.js:COPIES_TO_RECEIVE
 msgid "Number of copies to receive: "
@@ -388,17 +412,21 @@ msgstr ""
 msgid "Claims (${0} existing)"
 msgstr "Claims (${0} existing)"
 
-#: acq.js:FUND_LIST_ROLLOVER_SUMMARY_ROLLOVER_AMOUNT
+#: acq.js:VENDOR_SAYS_PREPAY_NEEDED
 msgid ""
-"<b>$${1}</b> unspent money rolled over to fiscal year ${0} for the selected "
-"locations"
+"The selected vendor requires prepayment, according to records.\n"
+"Proceed anyway without required prepayment on this PO?"
 msgstr ""
-"<b>$${1}</b> unspent money rolled over to fiscal year ${0} for the selected "
-"locations"
+"The selected vendor requires prepayment, according to records.\n"
+"Proceed anyway without required prepayment on this PO?"
 
 #: acq.js:DFA_TIP
 msgid "<strong>Applied by</strong>: ${0}<br /><strong>When</strong>: ${1}"
 msgstr "<strong>Applied by</strong>: ${0}<br /><strong>When</strong>: ${1}"
+
+#: acq.js:FUND_LIST_ROLLOVER_SUMMARY
+msgid "Fund Propagation &amp; Rollover Summary for Fiscal Year ${0}"
+msgstr "Fund Propagation &amp; Rollover Summary for Fiscal Year ${0}"
 
 #: acq.js:OUT_OF_COPIES
 msgid "You have applied distribution formulas to every copy."
@@ -412,9 +440,17 @@ msgstr ""
 msgid "A purchase order must have an ordering agency and a provider."
 msgstr "A purchase order must have an ordering agency and a provider."
 
+#: acq.js:ACTIVATE_LID_PROCESSED
+msgid "ACQ Copies Processed: ${0}"
+msgstr ""
+
 #: acq.js:LI_ATTR_SEARCH_TOO_LARGE
 msgid "That file is too large for this operation."
 msgstr "That file is too large for this operation."
+
+#: acq.js:CONFIRM_DELETE_MAPPING
+msgid "Are you sure you want to remove this tag from this fund?"
+msgstr "Are you sure you want to remove this tag from this fund?"
 
 #: acq.js:PO_HEADING_ERROR
 msgid "Unexpected problem building virtual combined PO"
@@ -435,6 +471,10 @@ msgstr "Are you sure you're ready to commit this transfer?"
 #: acq.js:PO_FUND_WARNING_CONFIRM
 msgid "Are you sure? Did you see the warning about over-encumbering a fund?"
 msgstr "Are you sure? Did you see the warning about over-encumbering a fund?"
+
+#: acq.js:ACTIVATE_COPIES_PROCESSED
+msgid "Real Copies Processed: ${0}"
+msgstr ""
 
 #: acq.js:UR_FILTER_LINEITEM
 msgid "Enter id for lineitem (or leave blank to unset the filter):"
@@ -516,6 +556,10 @@ msgstr "Error tagging fund."
 #: acq.js:UNRECEIVE_LID
 msgid "Are you sure you want to mark this copy as UN-received?"
 msgstr "Are you sure you want to mark this copy as UN-received?"
+
+#: acq.js:COULD_NOT_DELETE_MAPPING
+msgid "Error removing tag from fund."
+msgstr "Error removing tag from fund."
 
 #: acq.js:CANCEL_REASON
 msgid "Cancel reason"
