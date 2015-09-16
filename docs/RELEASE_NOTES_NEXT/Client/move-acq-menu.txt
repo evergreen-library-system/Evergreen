@@ -1,6 +1,0 @@
-Move Acquisitions Admin Menu
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-In the staff client interface, the Acquisitions Administration menu is
-now directly accessible from the main "Admin" menu instead of 
-living under "Server Administration". It has also been renamed as "Acquisitions
-Administration".
