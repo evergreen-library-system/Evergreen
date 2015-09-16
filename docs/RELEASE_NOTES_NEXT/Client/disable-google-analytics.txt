@@ -1,5 +1,0 @@
-Disable Google Analytics in Staff Client
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-In the staff client interface, Google Analytics for the web catalog is
-now disabled by default. This was a preventive measure to reduce the
-potential risks for leaking patron information.
