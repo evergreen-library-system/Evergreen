@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > ils_events.xml.po\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2015-02-27 11:41-0400\n"
+"POT-Creation-Date: 2015-08-26 13:12-0400\n"
 "PO-Revision-Date: 2009-12-10 21:46+0000\n"
 "Last-Translator: Solarus <Unknown>\n"
 "Language-Team: NRCan Library <warren.layton@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2015-08-07 05:40+0000\n"
-"X-Generator: Launchpad (build 17656)\n"
+"X-Launchpad-Export-Date: 2015-08-27 05:18+0000\n"
+"X-Generator: Launchpad (build 17690)\n"
 "X-Poedit-Country: CANADA\n"
 "X-Poedit-Language: French\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -397,6 +397,10 @@ msgstr ""
 msgid "Booking reservation not found"
 msgstr "La réservation n’est pas trouvée"
 
+#: 1211.BILL_ALREADY_VOIDED:81
+msgid "The bill is already voided"
+msgstr ""
+
 #: 1700.NON_CAT_TYPE_EXISTS:710
 msgid "The non-cataloged type object already exists"
 msgstr "L’objet de type non catalogué existe déjà"
@@ -584,10 +588,6 @@ msgstr ""
 #: 1534.ACTOR_USER_SETTING_NOT_FOUND:261
 msgid "The requested actor_user_setting was not found"
 msgstr "L’élément demandé appelé actor_user_setting n’a pas été trouvé"
-
-#: 1211.BILL_ALREADY_VOIDED:81
-msgid "The selecte bill has already been voided"
-msgstr "La facture sélectionnée a déjà été annulée"
 
 #: 7026.PATRON_NOT_AN_ACTIVE_PASSWORD_RESET_REQUEST:828
 msgid ""
@@ -1205,6 +1205,12 @@ msgstr ""
 "L’utilisateur a déjà ouvert un article mis en réserve en rapport avec "
 "l’article sélectionné"
 
+#: 11107.AVAIL_HOLD_COPY_RATIO_EXCEEDED:1045
+msgid ""
+"Renewal attempt failed because the \"hold / available copies\" ratio exceeds "
+"the configured limit"
+msgstr ""
+
 #: 1712.AUTH_QUEUE_EXISTS:752
 msgid "An authority record queue with the same name already exists"
 msgstr "Une file de comptes d'autorité avec un nom pareil existe déjà"
@@ -1362,6 +1368,12 @@ msgid "The requested container_user_bucket_item was not found"
 msgstr ""
 "L’élément demandé appelé container_user_bucket_item n’a pas été trouvé"
 
+#: 11106.TOTAL_HOLD_COPY_RATIO_EXCEEDED:1041
+msgid ""
+"Renewal attempt failed because the \"hold / total copies\" ratio exceeds the "
+"configured limit"
+msgstr ""
+
 #: 1615.ACTION_NON_CATALOGED_CIRCULATION_NOT_FOUND:496
 msgid "The requested action_non_cataloged_circulation was not found"
 msgstr ""
@@ -1382,6 +1394,9 @@ msgstr "L’élément demandé appelé money_user_summary n’a pas été trouv�
 
 #~ msgid "The requested acq.po_lineitem was not found"
 #~ msgstr "L’élément demandé appelé acq.po_lineitem n’a pas été trouvé"
+
+#~ msgid "The selecte bill has already been voided"
+#~ msgstr "La facture sélectionnée a déjà été annulée"
 
 #~ msgid "Copy has is marked as missing"
 #~ msgstr "La copie indique qu’elle est manquante"
