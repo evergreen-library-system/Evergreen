@@ -21,10 +21,21 @@ also be used for all libraries, regardless of the state of negative balance
 settings, in cases where overdue fines are adjusted when an overdue item is
 marked lost.
 
-An _Adjust to Zero_ option replaces the _Void All Billings_ option in the bills
-area of the patron record. This option will always adjust the selected bill to
-a zero balance. It can also be used to clear a negative balance from the
-patron's record. 
+An _Adjust to Zero_ option has been added to the bills interface of the patron
+record. This option will always adjust the selected bill to a zero balance.
+It can also be used to easily clear a negative balance from the patron's
+record. A user must have the new ADJUST_BILLS permission to see and use this
+option.
+
+This new feature also changes the behavior for the client option to void a bill
+from the patron record. If a user does not have the VOID_BILLING permission, the
+option to void bills will be hidden in the bills interface and in the Full 
+Details view of a specific bill. 
+
+To truly remove the ability to produce negative balances on a transaction,
+administrators need to 1) enable the relevant setting in the Library Settings
+Editor and 2) remove the VOID_BILLING permission from staff accounts since
+manual voiding will continue to produce negative balances.
 
 New Library Settings
 ++++++++++++++++++++
@@ -35,4 +46,6 @@ New Library Settings
  * Prohibit negative balance on bills for lost materials (bill.prohibit_negative_balance_on_lost)
  * Prohibit negative balance on bills for overdue materials (bill.prohibit_negative_balance_on_overdues)
  
- 
+New Permissions
++++++++++++++++
+ * ADJUST_BILLS 
