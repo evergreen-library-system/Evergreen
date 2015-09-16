@@ -1,3 +1,165 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 5742e966f5ec455b2502aab4ff05515765ce6fe7
+Author: Ben Shum <bshum@biblio.org>
+Date:   Wed Sep 16 13:38:43 2015 -0400
+
+    Docs: Change references to release 2.7.8
+    
+    Since 2.7.8 is released, change references in upgrade docs to this newest
+    release.
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+16	15	docs/installation/server_upgrade.txt
+
+commit 1a876a9cb2ecc8d48e98f133dc84afcab26f7b79
+Author: Ben Shum <bshum@biblio.org>
+Date:   Wed Sep 16 13:32:46 2015 -0400
+
+    Bump OpenILS.pm version to 2.7.8
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit 2bf9a90ebd144a26a3dc39c100fecd3dd05c430a
+Author: Michael Peters <mpeters@emeralddata.net>
+Date:   Thu Dec 4 15:56:53 2014 -0500
+
+    LP#1361266 Patron self-registration form accepts date of birth in wrong format
+    
+    This patch applys some basic javascript to validate that a date entered is
+    at least in ISO 8601 format.  This prevents someone from entering "cupcake"
+    or 55/66/6666 as a valid date of birth by validating the stgu.dob input
+    at the time of submission.
+    
+    Signed-off-by: Michael Peters <mpeters@emeralddata.net>
+    Signed-off-by: Josh Stompro <stomproj@larl.org>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+14	0	Open-ILS/src/templates/opac/parts/js.tt2
+4	3	Open-ILS/src/templates/opac/register.tt2
+
+commit ce1b5aaf0aedd46b29fc923616e8f354a8890100
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Jun 22 12:01:19 2015 -0400
+
+    LP#1465847 Empty patron search exits early
+    
+    If no search parameters or invalid search parameters are sent to the
+    patron search API, the API call exits early with zero results.  This
+    avoids cases where empty searches can lead to heavy DB calls, querying
+    and sorting he entire patron data set.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+13	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Actor.pm
+
+commit 4312cd1abd17e132cd6dee0beab6862c4fbd6ccf
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Thu Sep 3 13:48:20 2015 -0400
+
+    LP#1491962 Fix 0847 Live Test
+    
+    The fix for LP 1484281 broke the 0847.auth_overlay_generator.pg live
+    test.  Since e was removed from the controlled subfield list for the
+    100 authority tag, it needs to be removed from the expected live test
+    results.
+    
+    This commit does that.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/sql/Pg/live_t/0847.auth_overlay_generator.pg
+
+commit 1a1c8bb33691096f130ee95a8d604e6892dfd5ae
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Wed Sep 2 12:00:15 2015 -0400
+
+    LP#1484281: Stamping Upgrade Script.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+9	0	Open-ILS/src/sql/Pg/upgrade/0941.data.authority.control_set_authority_field-remove-sf-e.sql
+0	11	Open-ILS/src/sql/Pg/upgrade/XXXX.data.authority.control_set_authority_field-remove-sf-e.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0941.data.authority.control_set_authority_field-remove-sf-e.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.authority.control_set_authority_field-remove-sf-e.sql
+
+commit 7e95e008240f09ee4e6d4d9b41b1fd81c6c54d1d
+Author: Yamil Suarez <yamil@yamil.com>
+Date:   Wed Sep 2 11:20:23 2015 -0400
+
+    LP# 1484281 auth control config update release notes
+    
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+47	0	docs/RELEASE_NOTES_NEXT/Cataloging/prevent_authority_propagation_delete.txt
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Cataloging/prevent_authority_propagation_delete.txt
+
+commit 980f7c29b7eb4f372806dc98f9c1283b7733d294
+Author: Yamil Suarez <yamil@yamil.com>
+Date:   Mon Aug 17 16:47:34 2015 -0400
+
+    LP# 1484281 auth control config update to prevent propagated data deletion
+    
+    Remove subfield 'e' from authority.control_set_authority_field seed values
+    
+    Removed from the auth tag 100 and 110, which should apply to bib tags
+    100,110,600,610,700,710
+    
+    Added upgrade script, and pgTAP test.
+    
+    How to test this patch
+    ----------------------
+    [1] To test this bug you need 1 authority record and at least 1 bib record.
+    The auth record needs to have an auth 100 or 110 tag that has a subfield $e,
+    for example 100 $aDavis, Miles $ecomposer. (for the record, it is not good
+    cataloging practice to have $e in the auth record, but it can happen by mistake.)
+    The bib record needs to be have a matching bib 100 or 700 tag with the same
+    subfield $a and $e. In addition the matching bib tag has to be linked to the
+    authority record, i.e. the bib tag has to have a bib subfield $0 with the DB
+    id of the authority record.
+    
+    [2] If you open up the authority record, in the authority MARC editor, and remove
+    the subfield $e; the subfield $e found in the bib record tag will be removed.
+    This is a mistake because normally bib record tags 100/110/700/710 do use subfield
+    $e, though the subfield $e should not be used in the auth record 100/110 tags.
+    
+    [3] When this patch is applied, if a cataloger removes a subfield $e from an auth
+    100/110 tag, the deletion will not cascade to its linked bibs.
+    
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+2	2	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+22	0	Open-ILS/src/sql/Pg/t/regress/lp1465830_fix_auth_data_propagation_deletes.pg
+11	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.authority.control_set_authority_field-remove-sf-e.sql
+ create mode 100644 Open-ILS/src/sql/Pg/t/regress/lp1465830_fix_auth_data_propagation_deletes.pg
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.authority.control_set_authority_field-remove-sf-e.sql
+
+commit a5fe4626f75723e78a362faea9dbafcce7f18d92
+Author: Ben Shum <bshum@biblio.org>
+Date:   Wed Aug 19 17:29:40 2015 -0400
+
+    Forward-port 2.7.6-2.7.7 upgrade script
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+817	0	Open-ILS/src/sql/Pg/version-upgrade/2.7.6-2.7.7-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.7.6-2.7.7-upgrade-db.sql
+
+commit dbfc567877df572dad21d7c85ada5e8beb160a3a
+Author: Ben Shum <bshum@biblio.org>
+Date:   Wed Aug 19 17:27:20 2015 -0400
+
+    Docs: Change references to release 2.7.7
+    
+    Since 2.7.7 is released, change references in upgrade docs to this newest
+    release.
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+16	15	docs/installation/server_upgrade.txt
