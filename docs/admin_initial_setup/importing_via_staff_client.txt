@@ -101,10 +101,11 @@ image::media/record_quality_metrics.png[]
 Import Item Attributes
 ~~~~~~~~~~~~~~~~~~~~~~
 If you are importing copies with your records, you will need to map the data in
-your holdings tag to fields in the copy record. Click the *Import Item
-Attributes* button to map this information.
+your holdings tag to fields in the copy record. Click the *Holdings Import
+Profile* button to map this information.
 
 . Click the *New Definition* button to create a new mapping for the holdings tag.
+. Add a *Name* for the definition.
 . Use the *Tag* field to identify the MARC tag that contains your holdings
   information.
 . Add the subfields that contain specific copy information to the appropriate
@@ -112,11 +113,15 @@ Attributes* button to map this information.
 . Select the *Keep* box if Evergreen should keep this holdings tag in the
   record after it is imported. Otherwise, Evergreen will remove this holdings
   tag.
-. At a minimum, you should add a name for the definition, identify the MARC
-  holdings tag, and add the subfields that identify the circulating library, the
-  owning library, the call number and the barcode.
+. At a minimum, you should add the subfields that identify the *Circulating
+Library*, the *Owning Library*, the *Call Number* and the *Barcode*.
+. For more details, see the <<_import_item_attributes_2,full list of import fields>>
 
-image::media/import_item_attributes.png[]
+NOTE: All fields (except for Name, Tag and Keep) can contain static
+values, a MARC subfield code (such as "a"), or an XPATH query.
+
+image::media/batch_import_profile.png[Partial Screenshot of a Holdings Import Profile]
+
 
 Overlay/Merge Profiles
 ~~~~~~~~~~~~~~~~~~~~~~
