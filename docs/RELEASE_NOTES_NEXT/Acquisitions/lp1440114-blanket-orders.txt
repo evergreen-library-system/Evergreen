@@ -44,7 +44,7 @@ the order, only the amounts encumbered and invoiced in bulk.
      a whole by the invoiced amount.
  * A PO can have multiple blanket charges.  E.g. you could have a blanket
    order for "Popular Fiction 2015" and a second charge for "Pop Fiction 
-   20156 Taxes" to track / pay taxes over time on a blanket charge.
+   2015 Taxes" to track / pay taxes over time on a blanket charge.
  * A PO can have a mix of lineitems, non-blanket charges, and blanket charges.  
  * A 'blanket' Invoice Item Type cannot also be a 'prorate' type, since it's
    nonsensical.  Blanket items are encumbered, whereas prorated items are 

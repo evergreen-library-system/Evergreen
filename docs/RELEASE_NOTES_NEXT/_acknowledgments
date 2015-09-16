@@ -2,17 +2,72 @@ The Evergreen project would like to acknowledge the following
 organizations who commissioned developments in this release of
 Evergreen:
 
- * **TODO**
+ * Georgia Public Library Service
+ * Grand Rapids Public Library
+ * Kenton County Public Library
+ * King County Library System
+ * Massachusetts Library Network Cooperative
+ * NC Cardinal
+ * OhioNet
+ * Pennsylvania Integrated Library System 
 
 We would also like to thank the following individuals who contributed
-code and documentations patches to this release of Evergreen:
+code, documentations patche and tests to this release of Evergreen:
 
- * **TODO**
+ * Thomas Berezansky
+ * Matt Berowski
+ * Adam Bowling
+ * Jason Boyer
+ * Christine Burns
+ * Galen Charlton
+ * Bill Erickson
+ * Jason Etheridge
+ * Jeff Davis
+ * Lynn Floyd
+ * Jeff Godin
+ * Angela Kilsdonk
+ * Doug Kyle
+ * Debbie Luchenbill
+ * Kathy Lussier
+ * Terran McCanna
+ * Stephen Moss
+ * Dan Pearl
+ * Michael Peters
+ * Mike Rylander
+ * Jane Sandberg
+ * Dan Scott
+ * Ben Shum
+ * Josh Stompro
+ * Remington Steed
+ * Jason Stephenson
+ * Yamil Suarez
+ * Dan Wells
+ * Liam Whalen
 
 We also thank the following organizations whose employees contributed
 patches:
 
- * **TODO**
+ * Anderson County Library
+ * Berklee College of Music
+ * Bibliomation
+ * British Columbia Libraries Cooperative
+ * Calvin College
+ * Catalyst Dev Works
+ * Central/Western Massachusetts Automated Resource Sharing
+ * Emerald Data Networks, Inc.
+ * Equinox Software, Inc.
+ * Georgia Public Library Service
+ * Grand Rapids Public Library
+ * Indiana State Library
+ * King County Library System
+ * Lake Agassiz Regional Library
+ * Laurentian University
+ * Linn-Benton Community College
+ * Massachusetts Library Network Cooperative
+ * Merrimack Valley Library Consortium
+ * MOBIUS
+ * Sigio
+ * Traverse Area District Library 
 
 We regret any omissions.  If a contributor has been inadvertantly
 missed, please open a bug at http://bugs.launchpad.net/evergreen/
