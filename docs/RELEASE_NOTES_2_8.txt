@@ -1,5 +1,6 @@
 Evergreen 2.8 Release Notes
 =============================
+
 Evergreen 2.8.4
 ---------------
 This release contains several bugfixes improving on Evergreen 2.8.3
@@ -647,16 +648,19 @@ We would also like to thank the following individuals who contributed
 code and documentations patches to this release of Evergreen:
  
  * Thomas Berezansky
+ * Bradley Bonner
  * Adam Bowling
  * Jason Boyer
  * Steven Chan
  * Galen Charlton
  * Bill Erickson
  * Jason Etheridge
+ * Blake Henderson
  * Pasi Kallinen
  * Kathy Lussier
  * Terran McCanna
  * Christine Morgan
+ * Bill Ott
  * Michael Peters
  * Art Rhyno
  * Mike Rylander
@@ -680,12 +684,14 @@ patches:
  * Emerald Data Networks, Inc.
  * Equinox Software, Inc.
  * Georgia Public Library Service
+ * Grand Rapids Public Library
  * Indiana State Library
  * King County Library System
  * Laurentian University
  * Lake Agassiz Regional Library
  * Massachusetts Library Network Cooperative
  * Merrimack Valley Library Consortium
+ * MOBIUS
  * North of Boston Library Exchange
  * Pohjois-Karjalan Tietotekniikkakeskus Oy
  * Sigio
