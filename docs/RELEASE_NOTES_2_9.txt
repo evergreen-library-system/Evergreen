@@ -584,7 +584,7 @@ Evergreen:
  * Pennsylvania Integrated Library System 
 
 We would also like to thank the following individuals who contributed
-code, documentations patche and tests to this release of Evergreen:
+code, documentation patches and tests to this release of Evergreen:
 
  * Thomas Berezansky
  * Matt Berowski
