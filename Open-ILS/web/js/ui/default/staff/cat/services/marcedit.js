@@ -381,25 +381,25 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                       '/></span>',
         scope: { tag : '=', field: '=', onKeydown: '=', contextFunctions: '=' },
         replace: true,
-        controller : ['$scope', 'egTagTable',
-            function ( $scope ,  egTagTable) {
+        controller : ['$scope', 'egTagTable', 'egCore',
+            function ( $scope ,  egTagTable,   egCore) {
 
                 $scope.tag_options = [
                     function () {
                         var options = [
-                            { label : 'Add 006', action : function(j1,j2,j3,j4,e) { $scope.contextFunctions.add006(e) } },
-                            { label : 'Add 007', action : function(j1,j2,j3,j4,e) { $scope.contextFunctions.add007(e) } },
-                            { label : 'Add/Replace 008', action : function(j1,j2,j3,j4,e) { $scope.contextFunctions.reify008(e) } },
+                            { label : egCore.strings.ADD_006, action : function(j1,j2,j3,j4,e) { $scope.contextFunctions.add006(e) } },
+                            { label : egCore.strings.ADD_007, action : function(j1,j2,j3,j4,e) { $scope.contextFunctions.add007(e) } },
+                            { label : egCore.strings.ADD_REPLACE_008, action : function(j1,j2,j3,j4,e) { $scope.contextFunctions.reify008(e) } },
                         ];
 
                         if (!$scope.field.isControlfield()) {
                             options = options.concat([
-                                { label : 'Insert field after ', action : function(j1,j2,j3,j4,e) { $scope.contextFunctions.addDatafield(e) } },
-                                { label : 'Insert field before', action : function(j1,j2,j3,j4,e) { $scope.contextFunctions.addDatafield(e,true) } },
+                                { label : egCore.strings.INSERT_FIELD_AFTER, action : function(j1,j2,j3,j4,e) { $scope.contextFunctions.addDatafield(e) } },
+                                { label : egCore.strings.INSERT_FIELD_BEFORE, action : function(j1,j2,j3,j4,e) { $scope.contextFunctions.addDatafield(e,true) } },
                             ]);
                         }
 
-                        options.push({ label : 'Delete Field', action : function(j1,j2,j3,j4,e) { $scope.contextFunctions.deleteDatafield(e) } });
+                        options.push({ label : egCore.strings.DELETE_FIELD, action : function(j1,j2,j3,j4,e) { $scope.contextFunctions.deleteDatafield(e) } });
                         return options;
                     },
                     function () { return egTagTable.getFieldTags() }

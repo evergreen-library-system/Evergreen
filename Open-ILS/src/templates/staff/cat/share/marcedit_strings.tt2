@@ -1,0 +1,12 @@
+[%# Strings for cat/services/marcedit.js %]
+
+<script>
+angular.module('egCoreMod').run(['egStrings', function(s) {
+    s.INSERT_FIELD_AFTER        = "[% l('Insert field after') %]";
+    s.INSERT_FIELD_BEFORE       = "[% l('Insert field before') %]";
+    s.ADD_006                   = "[% l('Add 006') %]";
+    s.ADD_007                   = "[% l('Add 007') %]";
+    s.ADD_REPLACE_008           = "[% l('Add/Replace 008') %]";
+    s.DELETE_FIELD              = "[% l('Delete field') %]";
+}]);
+</script>
