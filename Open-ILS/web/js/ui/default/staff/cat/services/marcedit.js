@@ -64,7 +64,8 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
             contextItemContainer: '@',
             contextItemGenerator: '=',
             max: '@',
-            itype: '@'
+            itype: '@',
+            selectOnFocus: '='
         },
         controller : ['$scope',
             function ( $scope ) {
@@ -141,6 +142,11 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
         link: function (scope, element, attrs) {
 
             if (scope.onKeydown) element.bind('keydown', {scope : scope}, scope.onKeydown);
+
+            if (Boolean(scope.selectOnFocus)) {
+                element.addClass('noSelection');
+                element.bind('focus', function () { element.select() });
+            }
 
             element.bind('change', function (e) { element.size = scope.max || parseInt(scope.content.length * 1.1) });
 
@@ -293,6 +299,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                         'for="r{{field.record.subfield(\'901\',\'c\')[1]}}f{{field.position}}s{{subfield[2]}}code" '+
                         '>‡</label><eg-marc-edit-editable '+
                         'itype="sfc" '+
+                        'select-on-focus="true" '+
                         'class="marcedit marcsf marcsfcode" '+
                         'field="field" '+
                         'subfield="subfield" '+
@@ -336,6 +343,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
         template: '<span><eg-marc-edit-editable '+
                       'itype="ind" '+
                       'class="marcedit marcind" '+
+                      'select-on-focus="true" '+
                       'field="field" '+
                       'content="ind" '+
                       'max="1" '+
@@ -363,6 +371,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
         template: '<span><eg-marc-edit-editable '+
                       'itype="tag" '+
                       'class="marcedit marctag" '+
+                      'select-on-focus="true" '+
                       'field="field" '+
                       'content="tag" '+
                       'max="3" '+
@@ -385,8 +394,8 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
 
                         if (!$scope.field.isControlfield()) {
                             options = options.concat([
-                                { label : 'Add Datafield', action : function(j1,j2,j3,j4,e) { $scope.contextFunctions.addDatafield(e) } },
-                                { label : 'Insert Datafield', action : function(j1,j2,j3,j4,e) { $scope.contextFunctions.addDatafield(e,true) } },
+                                { label : 'Insert field after ', action : function(j1,j2,j3,j4,e) { $scope.contextFunctions.addDatafield(e) } },
+                                { label : 'Insert field before', action : function(j1,j2,j3,j4,e) { $scope.contextFunctions.addDatafield(e,true) } },
                             ]);
                         }
 
@@ -576,6 +585,14 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
             maxUndo : '@'
         },
         link: function (scope, element, attrs) {
+
+            element.bind('mouseup', function(e) {;
+                scope.current_event_target = $(e.target).attr('id');
+                if (scope.current_event_target && $(e.target).hasClass('noSelection')) {
+                    e.preventDefault()
+                    return false;
+                }
+            });
 
             element.bind('click', function(e) {;
                 scope.current_event_target = $(e.target).attr('id');
