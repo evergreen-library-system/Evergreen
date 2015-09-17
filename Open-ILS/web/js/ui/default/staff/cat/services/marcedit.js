@@ -9,22 +9,34 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
         restrict: 'E',
         replace: true,
         template: '<li><a ng-click="setContent(item.value,item.action)">{{item.label}}</a></li>',
-        scope: { item: '=', content: '=' },
+        scope: { item: '=', content: '=', contextMenuEvent: '=' },
         controller: ['$scope','$element',
             function ($scope , $element) {
                 if (!$scope.item.label) $scope.item.label = $scope.item.value;
                 if ($scope.item.divider) {
-                    $element.style.borderTop = 'solid 1px';
+                    $element.css('borderTop','solid 1px');
                 }
 
                 $scope.setContent = function (v, a) {
                     var replace_with = v;
-                    if (a) replace_with = a($scope,$element,$scope.item.value,$scope.$parent.$parent.content);
-                    $timeout(function(){
-                        $scope.$parent.$parent.$apply(function(){
-                            $scope.$parent.$parent.content = replace_with
-                        })
-                    }, 0);
+
+                    if (a) {
+                        replace_with = a(
+                            $scope,
+                            $element,
+                            $scope.item.value,
+                            $scope.$parent.$parent.content,
+                            $scope.contextMenuEvent
+                        );
+                    }
+
+                    if (typeof replace_with !== 'undefined') {
+                        $timeout(function(){
+                            $scope.$parent.$parent.$apply(function(){
+                                $scope.$parent.$parent.content = replace_with
+                            })
+                        }, 0);
+                    }
                     $($element).parent().css({display: 'none'});
                 }
             }
@@ -69,7 +81,22 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                     } else if ($scope.item_generator) {
                         // always recalculate; tag and/or subfield
                         // codes may have changed
-                        $scope.item_list = $scope.item_generator();
+
+                        var generator = $scope.item_generator;
+                        if (!angular.isArray(generator)) generator = [generator];
+
+                        var is_first = true;
+                        angular.forEach(generator, function (g) {
+                            var sub_list = g();
+
+                            if (is_first)
+                                is_first = false;
+                            else if (Boolean(sub_list[0]))
+                                sub_list[0].divider = true;
+
+                            $scope.item_list = $scope.item_list.concat(sub_list);
+                        });
+
                     } else {
                         return true;
                     }
@@ -78,9 +105,10 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                         console.log('Showing context menu...');
                         $('body').trigger('click');
 
+                        $scope.contextMenuEvent = event;
                         var tmpl = 
                             '<ul class="dropdown-menu" role="menu" style="z-index: 2000;">'+
-                                '<eg-context-menu-item ng-repeat="item in item_list" item="item" content="content"/>'+
+                                '<eg-context-menu-item context-menu-event="contextMenuEvent" ng-repeat="item in item_list" item="item" content="content"/>'+
                             '</ul>';
             
                         var tnode = angular.element(tmpl);
@@ -116,7 +144,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
 
             element.bind('change', function (e) { element.size = scope.max || parseInt(scope.content.length * 1.1) });
 
-            element.bind('contextmenu', scope.showContext);
+            element.bind('contextmenu', {scope : scope}, scope.showContext);
         }
     }
 }])
@@ -342,14 +370,32 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                       'context-item-generator="tag_options" '+
                       'id="r{{field.record.subfield(\'901\',\'c\')[1]}}f{{field.position}}tag"'+
                       '/></span>',
-        scope: { tag : '=', field: '=', onKeydown: '=' },
+        scope: { tag : '=', field: '=', onKeydown: '=', contextFunctions: '=' },
         replace: true,
         controller : ['$scope', 'egTagTable',
             function ( $scope ,  egTagTable) {
 
-                $scope.tag_options = function () {
-                    return egTagTable.getFieldTags();
-                }
+                $scope.tag_options = [
+                    function () {
+                        var options = [
+                            { label : 'Add 006', action : function(j1,j2,j3,j4,e) { $scope.contextFunctions.add006(e) } },
+                            { label : 'Add 007', action : function(j1,j2,j3,j4,e) { $scope.contextFunctions.add007(e) } },
+                            { label : 'Add/Replace 008', action : function(j1,j2,j3,j4,e) { $scope.contextFunctions.reify008(e) } },
+                        ];
+
+                        if (!$scope.field.isControlfield()) {
+                            options = options.concat([
+                                { label : 'Add Datafield', action : function(j1,j2,j3,j4,e) { $scope.contextFunctions.addDatafield(e) } },
+                                { label : 'Insert Datafield', action : function(j1,j2,j3,j4,e) { $scope.contextFunctions.addDatafield(e,true) } },
+                            ]);
+                        }
+
+                        options.push({ label : 'Delete Field', action : function(j1,j2,j3,j4,e) { $scope.contextFunctions.deleteDatafield(e) } });
+                        return options;
+                    },
+                    function () { return egTagTable.getFieldTags() }
+                ];
+
             }
         ]
     }
@@ -360,7 +406,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
         transclude: true,
         restrict: 'E',
         template: '<div>'+
-                    '<span><eg-marc-edit-tag field="field" tag="field.tag" on-keydown="onKeydown"/></span>'+
+                    '<span><eg-marc-edit-tag context-functions="contextFunctions" field="field" tag="field.tag" on-keydown="onKeydown"/></span>'+
                     '<span><eg-marc-edit-ind field="field" ind="field.ind1" on-keydown="onKeydown" ind-number="1"/></span>'+
                     '<span><eg-marc-edit-ind field="field" ind="field.ind2" on-keydown="onKeydown" ind-number="2"/></span>'+
                     '<span><eg-marc-edit-subfield ng-class="{ \'unvalidatedheading\' : field.heading_checked && !field.heading_valid}" ng-repeat="subfield in field.subfields" subfield="subfield" field="field" on-keydown="onKeydown"/></span>'+
@@ -376,7 +422,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                     '<span ng-show="field.heading_checked && field.heading_valid" class="glyphicon glyphicon-ok-sign"></span>'+
                     '<span ng-show="field.heading_checked && !field.heading_valid" class="glyphicon glyphicon-question-sign"></span>'+
                   '</div>',
-        scope: { field: "=", onKeydown: '=' },
+        scope: { field: "=", onKeydown: '=', contextFunctions: '=' },
         replace: true,
         controller : ['$scope','$modal',
             function ( $scope,  $modal ) {
@@ -427,7 +473,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
         transclude: true,
         restrict: 'E',
         template: '<div>'+
-                    '<span><eg-marc-edit-tag field="field" tag="field.tag" on-keydown="onKeydown"/></span>'+
+                    '<span><eg-marc-edit-tag context-functions="contextFunctions" field="field" tag="field.tag" on-keydown="onKeydown"/></span>'+
                     '<span><eg-marc-edit-editable '+
                       'itype="cfld" '+
                       'field="field" '+
@@ -445,7 +491,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                       '<span class="glyphicon glyphicon-link"></span>'+
                       '</button>'+
                   '</div>',
-        scope: { field: "=", onKeydown: '=' },
+        scope: { field: "=", onKeydown: '=', contextFunctions: '=' },
         controller : ['$scope','$modal',
             function ( $scope,  $modal) {
                 $scope.showPhysCharLink = function () {
@@ -584,6 +630,116 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                     }
                 };
 
+                var addDatafield = function (e,before) {
+                    var element = $(e.target);
+
+                    var index_field = e.data.scope.field.position;
+                    var new_field = index_field + 1;
+
+                    var new_field = new MARC21.Field({
+                        tag : '999',
+                        subfields : [[' ','',0]]
+                    });
+
+                    if (Boolean(before)) {
+                        e.data.scope.field.record.insertFieldsBefore(
+                            e.data.scope.field,
+                            new_field
+                        );
+                    } else {
+                        e.data.scope.field.record.insertFieldsAfter(
+                            e.data.scope.field,
+                            new_field
+                        );
+                    }
+
+                    $scope.current_event_target = 'r' + $scope.recordId +
+                                                  'f' + new_field + 'tag';
+
+                    $scope.current_event_target_cursor_pos = 0;
+                    $scope.current_event_target_cursor_pos_end = 3;
+                    $scope.force_render = true;
+
+                    $timeout(function(){$scope.$digest()}).then(setCaret);
+                };
+
+                var deleteDatafield = function (e) {
+                    var del_field = e.data.scope.field.position;
+
+                    var domnode = $('#r'+e.data.scope.field.record.subfield('901','c')[1] + 'f' + del_field);
+
+                    e.data.scope.field.record.deleteFields(
+                        e.data.scope.field
+                    );
+
+                    domnode.scope().$destroy();
+                    domnode.remove();
+
+                    $scope.current_event_target = 'r' + $scope.recordId +
+                                                  'f' + del_field + 'tag';
+
+                    $scope.current_event_target_cursor_pos = 0;
+                    $scope.current_event_target_cursor_pos_end = 0
+                    $scope.force_render = true;
+
+                    $timeout(function(){$scope.$digest()}).then(setCaret);
+                };
+
+                var add006 = function (e) {
+                    e.data.scope.field.record.insertOrderedFields(
+                        new MARC21.Field({
+                            tag : '006',
+                            data : '                                        '
+                        })
+                    );
+
+                    $scope.force_render = true;
+                    $timeout(function(){$scope.$digest()}).then(setCaret);
+                };
+
+                var add007 = function (e) {
+                    e.data.scope.field.record.insertOrderedFields(
+                        new MARC21.Field({
+                            tag : '007',
+                            data : '                                        '
+                        })
+                    );
+
+                    $scope.force_render = true;
+                    $timeout(function(){$scope.$digest()}).then(setCaret);
+                };
+
+                var reify008 = function (e) {
+                    var new_008_data = e.data.scope.field.record.generate008();
+
+
+                    var old_008s = e.data.scope.field.record.field('008',true);
+                    old_008s.forEach(function(o) {
+                        var domnode = $('#r'+o.record.subfield('901','c')[1] + 'f' + o.position);
+                        domnode.scope().$destroy();
+                        domnode.remove();
+                        e.data.scope.field.record.deleteFields(o);
+                    });
+
+                    e.data.scope.field.record.insertOrderedFields(
+                        new MARC21.Field({
+                            tag : '008',
+                            data : new_008_data
+                        })
+                    );
+
+                    $scope.force_render = true;
+                    $timeout(function(){$scope.$digest()}).then(setCaret);
+                };
+
+                $scope.context_functions = {
+                    addDatafield : addDatafield,
+                    deleteDatafield : deleteDatafield,
+                    add006 : add006,
+                    add007 : add007,
+                    reify008 : reify008
+                };
+
                 $scope.onKeydown = function (event) {
                     var event_return = true;
 
@@ -645,103 +801,23 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                         event_return = false;
 
                     } else if (event.which == 117 && event.shiftKey) { // shift + F6, insert 006
-                        event.data.scope.field.record.insertOrderedFields(
-                            new MARC21.Field({
-                                tag : '006',
-                                data : '                                        '
-                            })
-                        );
-
-                        $scope.force_render = true;
-                        $timeout(function(){$scope.$digest()}).then(setCaret);
-
+                        add006(event);
                         event_return = false;
 
                     } else if (event.which == 118 && event.shiftKey) { // shift + F7, insert 007
-                        event.data.scope.field.record.insertOrderedFields(
-                            new MARC21.Field({
-                                tag : '007',
-                                data : '                                        '
-                            })
-                        );
-
-                        $scope.force_render = true;
-                        $timeout(function(){$scope.$digest()}).then(setCaret);
-
+                        add007(event);
                         event_return = false;
 
                     } else if (event.which == 119 && event.shiftKey) { // shift + F8, insert/replace 008
-                        var new_008_data = event.data.scope.field.record.generate008();
-
-
-                        var old_008s = event.data.scope.field.record.field('008',true);
-                        old_008s.forEach(function(o) {
-                            var domnode = $('#r'+o.record.subfield('901','c')[1] + 'f' + o.position);
-                            domnode.scope().$destroy();
-                            domnode.remove();
-                            event.data.scope.field.record.deleteFields(o);
-                        });
-
-                        event.data.scope.field.record.insertOrderedFields(
-                            new MARC21.Field({
-                                tag : '008',
-                                data : new_008_data
-                            })
-                        );
-
-                        $scope.force_render = true;
-                        $timeout(function(){$scope.$digest()}).then(setCaret);
-
+                        reify008(event);
                         event_return = false;
 
                     } else if (event.which == 13 && event.ctrlKey) { // ctrl+enter, insert datafield
-
-                        var element = $(event.target);
-
-                        var index_field = event.data.scope.field.position;
-                        var new_field = index_field + 1;
-
-                        event.data.scope.field.record.insertFieldsAfter(
-                            event.data.scope.field,
-                            new MARC21.Field({
-                                tag : '999',
-                                subfields : [[' ','',0]]
-                            })
-                        );
-
-                        $scope.current_event_target = 'r' + $scope.recordId +
-                                                      'f' + new_field + 'tag';
-
-                        $scope.current_event_target_cursor_pos = 0;
-                        $scope.current_event_target_cursor_pos_end = 3;
-                        $scope.force_render = true;
-
-                        $timeout(function(){$scope.$digest()}).then(setCaret);
-
+                        addDatafield(event, event.shiftKey); // shift key inserts before
                         event_return = false;
 
                     } else if (event.which == 46 && event.ctrlKey) { // ctrl+del, remove field
-
-                        var del_field = event.data.scope.field.position;
-
-                        var domnode = $('#r'+event.data.scope.field.record.subfield('901','c')[1] + 'f' + del_field);
-
-                        event.data.scope.field.record.deleteFields(
-                            event.data.scope.field
-                        );
-
-                        domnode.scope().$destroy();
-                        domnode.remove();
-
-                        $scope.current_event_target = 'r' + $scope.recordId +
-                                                      'f' + del_field + 'tag';
-
-                        $scope.current_event_target_cursor_pos = 0;
-                        $scope.current_event_target_cursor_pos_end = 0
-                        $scope.force_render = true;
-
-                        $timeout(function(){$scope.$digest()}).then(setCaret);
-
+                        deleteDatafield(event);
                         event_return = false;
 
                     } else if (event.which == 46 && event.shiftKey && $(event.target).hasClass('marcsf')) { // shift+del, remove subfield

@@ -163,6 +163,7 @@
           ng-repeat="field in controlfields" 
           field="field" on-keydown="onKeydown"
           id="r{{field.record.subfield('901','c')[1]}}f{{field.position}}"
+          context-functions="context_functions"
         />
       </div>
       <div>
@@ -170,6 +171,7 @@
           ng-repeat="field in datafields" 
           field="field" on-keydown="onKeydown" 
           id="r{{field.record.subfield('901','c')[1]}}f{{field.position}}"
+          context-functions="context_functions"
         />
       </div>
     </div>
