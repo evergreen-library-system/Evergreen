@@ -368,9 +368,6 @@ sub update_fleshed_copies {
         my $sc_entries = $copy->stat_cat_entries;
         $copy->clear_stat_cat_entries;
 
-        my $sc_entries = $copy->stat_cat_entries;
-        $copy->clear_stat_cat_entries;
-
         my $notes = $copy->notes;
         $copy->clear_notes;
 
