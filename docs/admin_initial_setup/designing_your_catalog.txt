@@ -547,7 +547,7 @@ Evergreen and Apache.
 
 
 Clear External/Added Content Cache
-----------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 On the catalog’s record summary page, there is a link for staff that will forcibly clear 
 the cache of the Added Content for that record. This is helpful for when the Added Content 
@@ -563,6 +563,12 @@ You will need to reload the record in the staff client to obtain the new images 
 Added Content Supplier.
 
 
+Configure a Custom Image for Missing Images
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure a "no image" image other than the standard 1-pixel
+blank image.  The example eg_vhost.conf file provides examples in the
+comments.  Note: Evergreen does not provide default images for these.
 
 
 Including Locally Hosted Content in Your Public Interface
