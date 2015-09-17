@@ -404,7 +404,6 @@ angular.module('egCoreMod')
 function PatronRegCtrl($scope, $routeParams, 
     $q, $modal, egCore, patronSvc, patronRegSvc) {
 
-
     $scope.clone_id = $routeParams.clone_id;
     $scope.stage_username = $routeParams.stage_username;
     $scope.patron_id = 
@@ -577,6 +576,35 @@ function PatronRegCtrl($scope, $routeParams,
             if (resp.state) addr.state = resp.state;
             if (resp.county) addr.county = resp.county;
             if (resp.alert) alert(resp.alert);
+        });
+    }
+
+    var new_card_id = -1;
+    $scope.replace_card = function() {
+        $scope.patron.card.active = false;
+        $scope.patron.card.ischanged = true;
+        var new_card = egCore.idl.toHash(new egCore.idl.ac());
+        new_card.id = new_card_id--;
+        new_card.isnew = true;
+        new_card.active = true;
+        new_card._primary = true;
+        $scope.patron.card = new_card;
+        $scope.patron.cards.push(new_card);
+    }
+
+    $scope.barcode_changed = function(bc) {
+        if (!bc) return;
+        egCore.net.request(
+            'open-ils.actor',
+            'open-ils.actor.barcode.exists',
+            egCore.auth.token(), bc
+        ).then(function(resp) {
+            if (resp == '1') {
+                console.log('duplicate barcode detected: ' + bc);
+                // DUPLICATE CARD
+            } else {
+                // No dupe -- A-OK
+            }
         });
     }
 

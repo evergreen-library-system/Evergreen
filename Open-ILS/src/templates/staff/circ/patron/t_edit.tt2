@@ -64,6 +64,9 @@
     [% ELSIF field == 'post_code' %]
       <input type="text" ng-blur="post_code_changed(patron.[% path %])"
         class="form-control" ng-model="[% model %]"/>
+    [% ELSIF field == 'barcode' %]
+      <input type="text" ng-blur="barcode_changed(patron.card.barcode)"
+        class="form-control" ng-model="[% model %]"/>
     [% ELSE %]
       <input type="[% input_type %]" 
         class="form-control" ng-model="[% model %]"/>
@@ -77,7 +80,8 @@
 
     [% IF field == 'barcode' %]
 
-      <button class="btn btn-default">[% l('Replace Barcode') %]</button>
+      <button class="btn btn-default"
+        ng-click="replace_card()">[% l('Replace Barcode') %]</button>
       <button class="btn btn-default" 
         ng-click="cards_dialog()">[% l('See All') %]</button>
 
