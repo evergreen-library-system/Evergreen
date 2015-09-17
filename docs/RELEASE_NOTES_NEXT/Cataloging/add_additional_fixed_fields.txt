@@ -1,0 +1,13 @@
+Additional Fixed Fields
+^^^^^^^^^^^^^^^^^^^^^^^
+The AccM, Comp, CrTp, EntW, Cont, FMus, LTxt, Orig, Part, Proj, Relf, SpFm,
+SrTp, Tech, and TrAr fixed fields have been defined and coded value maps added
+so they can also be used for Advanced Searches or adding to Composite Value Maps.
+
+Note that AccM, Cont, LTxt, Relf, and SpFm are  compositite values based on
+the values of "helper" fields like AccM(1), AccM(2), and so on. These positional
+fields can be ignored.
+
+Coded value maps have also been added for Cont, Ctry, and DtSt, and the Time field
+has been defined. All of these fields are now available in the Fixed Field Editor
+when editing the appropriate records.

@@ -1,0 +1,236 @@
+-- Test parsing of fixed fields into record attributes for LDR and 008
+
+BEGIN;
+
+SELECT plan(50);
+
+
+-- BKS
+-- Cont, Ills blank
+INSERT INTO biblio.record_entry (last_xact_id,marc) VALUES
+  ('testing',$record$<record    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"    xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd"    xmlns="http://www.loc.gov/MARC21/slim"><leader>01337nam a22054323c 4500</leader><controlfield tag="008">010100e20080825inu    eq    a000 hcmul u</controlfield></record>$record$);
+
+SELECT cmp_ok((SELECT attrs FROM metabib.record_attr WHERE id=(SELECT CURRVAL('biblio.record_entry_id_seq'))),
+  '@>', '"bib_level"=>"m", "cat_form"=>"c", "enc_level"=>"3", "item_type"=>"a"', 'BKS LDR: BLvl, Desc, ELvl, Type');
+
+-- XXX: Checks both(?) language and item_lang. If one is ever removed, this also needs corrected.
+SELECT cmp_ok((SELECT attrs FROM metabib.record_attr WHERE id=(SELECT CURRVAL('biblio.record_entry_id_seq'))),
+  '@>', '"ctry"=>"inu", "date1"=>"2008", "date2"=>"0825", "pub_status"=>"e", "language"=>"mul", "item_lang"=>"mul"', 'BKS 008 Generic: Ctry, Date1, Date2, DtSt, Lang');
+
+SELECT cmp_ok((SELECT attrs FROM metabib.record_attr WHERE id=(SELECT CURRVAL('biblio.record_entry_id_seq'))),
+  '@>', '"biog"=>"c", "item_form"=>"q", "conf"=>"0", "gpub"=>"a", "fest"=>"0", "indx"=>"0", "audience"=>"e"', 'BKS 008 Specific: Audn, Form, Biog, Conf, GPub, Fest, Indx');
+
+SELECT cmp_ok((SELECT attrs FROM metabib.record_attr WHERE id=(SELECT CURRVAL('biblio.record_entry_id_seq'))),
+  '@>', '"cont"=>" ", "cont1"=>" ", "ills"=>" ", "ills1"=>" "', 'BKS 008 Special: Ills and Cont Fixed Field = " "');
+
+SELECT is((SELECT attr FROM metabib.record_attr_flat WHERE id=(SELECT CURRVAL('biblio.record_entry_id_seq')) AND attr IN ('ills2','ills3','ills4','ills5','ills6','cont2','cont3','cont4','cont5','cont6')),
+  NULL, 'BKS 008 Special: Ills2-6 and Cont2-6 Should not be defined');
+
+-- GPub = " ", Conf not attempted, Fest = 0, Indx = 1, Ills1 and Cont1 set, other positions blank
+INSERT INTO biblio.record_entry (last_xact_id,marc) VALUES
+  ('testing',$record$<record    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"    xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd"    xmlns="http://www.loc.gov/MARC21/slim"><leader>01337nam a22054323c 4500</leader><controlfield tag="008">010100e20080825inup   eo6    |01 hcmul u</controlfield></record>$record$);
+
+SELECT cmp_ok((SELECT attrs FROM metabib.record_attr WHERE id=(SELECT CURRVAL('biblio.record_entry_id_seq'))),
+  '@>', '"biog"=>"c", "item_form"=>"o", "conf"=>"|", "fest"=>"0", "indx"=>"1", "audience"=>"e"', 'BKS 008 Specific: Audn, Form, Biog, Conf, Fest, Indx');
+
+SELECT cmp_ok((SELECT attrs FROM metabib.record_attr WHERE id=(SELECT CURRVAL('biblio.record_entry_id_seq'))),
+  '@>', '"ills"=>"p", "ills1"=>"p"', 'BKS 008 Special: Ills and Ills1 Fixed Fields = "p"');
+
+SELECT cmp_ok((SELECT attrs FROM metabib.record_attr WHERE id=(SELECT CURRVAL('biblio.record_entry_id_seq'))),
+  '@>', '"cont"=>"6", "cont1"=>"6"', 'BKS 008 Special: Cont and Cont1 Fixed Fields = "6"');
+
+SELECT is((SELECT attr FROM metabib.record_attr_flat WHERE id=(SELECT CURRVAL('biblio.record_entry_id_seq')) AND attr IN ('ills2','ills3','ills4','ills5','ills6','cont2','cont3','cont4','cont5','cont6')),
+  NULL, 'BKS 008 Special: Ills2-6 and Cont2-6 Should not be defined');
+
+-- Turn everything up to 11
+INSERT INTO biblio.record_entry (last_xact_id,marc) VALUES
+  ('testing',$record$<record    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"    xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd"    xmlns="http://www.loc.gov/MARC21/slim"><leader>01337nam a22054323c 4500</leader><controlfield tag="008">010100e20080825inupobaeq6pqvm111 hcmul u</controlfield></record>$record$);
+
+SELECT cmp_ok((SELECT attrs FROM metabib.record_attr WHERE id=(SELECT CURRVAL('biblio.record_entry_id_seq'))),
+  '@>', '"biog"=>"c", "item_form"=>"q", "conf"=>"1", "gpub"=>"m", "fest"=>"1", "indx"=>"1", "audience"=>"e"', 'BKS 008 Specific: Audn, Form, Biog, Conf, GPub, Fest, Indx');
+
+SELECT is((SELECT COUNT(id) FROM metabib.record_attr_flat WHERE id=(SELECT CURRVAL('biblio.record_entry_id_seq')) AND attr='ills' AND value IN ('p','o','b','a')),
+  4::BIGINT, 'BKS 008 Special: There should be 4 Ills values');
+
+SELECT cmp_ok((SELECT attrs FROM metabib.record_attr WHERE id=(SELECT CURRVAL('biblio.record_entry_id_seq'))),
+  '@>', '"ills1"=>"p", "ills2"=>"o", "ills3"=>"b", "ills4"=>"a"', 'BKS 008 Special: Ills single-character attributes');
+
+SELECT is((SELECT COUNT(id) FROM metabib.record_attr_flat WHERE id=(SELECT CURRVAL('biblio.record_entry_id_seq')) AND attr='cont' AND value IN ('6','p','q','v')),
+  4::BIGINT, 'BKS 008 Special: There should be 4 Cont values');
+
+SELECT cmp_ok((SELECT attrs FROM metabib.record_attr WHERE id=(SELECT CURRVAL('biblio.record_entry_id_seq'))),
+  '@>', '"cont1"=>"6", "cont2"=>"p", "cont3"=>"q", "cont4"=>"v"', 'BKS 008 Special: Cont single-character attributes');
+
+
+-- SER, YES SER
+-- EntW set, not Cont
+INSERT INTO biblio.record_entry (last_xact_id,marc) VALUES
+  ('testing',$record$<record    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"    xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd"    xmlns="http://www.loc.gov/MARC21/slim"><leader>01337nas a22054323c 4500</leader><controlfield tag="008">010100e20080825inuax dqsu   u1   b0mul u</controlfield></record>$record$);
+
+SELECT cmp_ok((SELECT attrs FROM metabib.record_attr WHERE id=(SELECT CURRVAL('biblio.record_entry_id_seq'))),
+  '@>', '"cat_form"=>"c", "bib_level"=>"s", "enc_level"=>"3", "item_type"=>"a"', 'SER LDR: BLvl, Desc, ELvl, Type');
+
+-- XXX: Checks both(?) language and item_lang. If one is ever removed, this also needs corrected.
+SELECT cmp_ok((SELECT attrs FROM metabib.record_attr WHERE id=(SELECT CURRVAL('biblio.record_entry_id_seq'))),
+  '@>', '"ctry"=>"inu", "date1"=>"2008", "date2"=>"0825", "pub_status"=>"e", "language"=>"mul", "item_lang"=>"mul"', 'SER 008 Generic: Ctry, Date1, Date2, DtSt, Lang');
+
+SELECT cmp_ok((SELECT attrs FROM metabib.record_attr WHERE id=(SELECT CURRVAL('biblio.record_entry_id_seq'))),
+  '@>', '"alph"=>"b", "conf"=>"1", "entw"=>"u", "freq"=>"a", "gpub"=>"u", "orig"=>"q", "item_form"=>"s", "regl"=>"x", "srtp"=>"d", "ff_sl"=>"0"', 'SER 008 Specific: Freq, Regl, SrTp, Orig, Form, EntW, GPub, Conf, Alph, S/L');
+
+SELECT cmp_ok((SELECT attrs FROM metabib.record_attr WHERE id=(SELECT CURRVAL('biblio.record_entry_id_seq'))),
+  '@>', '"cont"=>" ", "cont1"=>" "', 'SER 008 Special: Cont and Cont1 = " "');
+
+SELECT is((SELECT attr FROM metabib.record_attr_flat WHERE id=(SELECT CURRVAL('biblio.record_entry_id_seq')) AND attr IN ('cont2','cont3','cont4')),
+  NULL, 'SER 008 Special: Cont2-4 Should not be defined');
+
+-- Cont fully set
+INSERT INTO biblio.record_entry (last_xact_id,marc) VALUES
+  ('testing',$record$<record    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"    xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd"    xmlns="http://www.loc.gov/MARC21/slim"><leader>01337nas a22054323c 4500</leader><controlfield tag="008">010100e20080825inuax dqsutlnu1   b0mul u</controlfield></record>$record$);
+
+SELECT is((SELECT COUNT(id) FROM metabib.record_attr_flat WHERE id=(SELECT CURRVAL('biblio.record_entry_id_seq')) AND attr='cont' AND value IN ('t','l','n')),
+  3::BIGINT, 'SER 008 Special: There should be 3 Cont values');
+
+SELECT cmp_ok((SELECT attrs FROM metabib.record_attr WHERE id=(SELECT CURRVAL('biblio.record_entry_id_seq'))),
+  '@>', '"cont1"=>"t", "cont2"=>"l", "cont3"=>"n"', 'SER 008 Special: Cont single-character attributes');
+
+
+-- COM
+-- No complicated fields for COM
+INSERT INTO biblio.record_entry (last_xact_id,marc) VALUES
+  ('testing',$record$<record    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"    xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd"    xmlns="http://www.loc.gov/MARC21/slim"><leader>01337nma a22054323c 4500</leader><controlfield tag="008">010100e20080825inu    eq  j s      mul u</controlfield></record>$record$);
+
+SELECT cmp_ok((SELECT attrs FROM metabib.record_attr WHERE id=(SELECT CURRVAL('biblio.record_entry_id_seq'))),
+  '@>', '"cat_form"=>"c", "bib_level"=>"a", "enc_level"=>"3", "item_type"=>"m"', 'COM LDR: BLvl, Desc, ELvl, Type');
+
+-- XXX: Checks both(?) language and item_lang. If one is ever removed, this also needs corrected.
+SELECT cmp_ok((SELECT attrs FROM metabib.record_attr WHERE id=(SELECT CURRVAL('biblio.record_entry_id_seq'))),
+  '@>', '"ctry"=>"inu", "date1"=>"2008", "date2"=>"0825", "pub_status"=>"e", "language"=>"mul", "item_lang"=>"mul"', 'COM 008 Generic: Ctry, Date1, Date2, DtSt, Lang');
+
+SELECT cmp_ok((SELECT attrs FROM metabib.record_attr WHERE id=(SELECT CURRVAL('biblio.record_entry_id_seq'))),
+  '@>', '"audience"=>"e", "item_form"=>"q", "file"=>"j", "gpub"=>"s"', 'COM 008 Specific: Audn, Form, File, GPub');
+
+
+-- MAP and both hands
+-- Relf and SpFm blank
+INSERT INTO biblio.record_entry (last_xact_id,marc) VALUES
+  ('testing',$record$<record    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"    xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd"    xmlns="http://www.loc.gov/MARC21/slim"><leader>01337nea a22054323c 4500</leader><controlfield tag="008">010100e20080825inu    dg a  is 0   mul u</controlfield></record>$record$);
+
+SELECT cmp_ok((SELECT attrs FROM metabib.record_attr WHERE id=(SELECT CURRVAL('biblio.record_entry_id_seq'))),
+  '@>', '"cat_form"=>"c", "bib_level"=>"a", "enc_level"=>"3", "item_type"=>"e"', 'MAP LDR: BLvl, Desc, ELvl, Type');
+
+-- XXX: Checks both(?) language and item_lang. If one is ever removed, this also needs corrected.
+SELECT cmp_ok((SELECT attrs FROM metabib.record_attr WHERE id=(SELECT CURRVAL('biblio.record_entry_id_seq'))),
+  '@>', '"ctry"=>"inu", "date1"=>"2008", "date2"=>"0825", "pub_status"=>"e", "language"=>"mul", "item_lang"=>"mul"', 'MAP 008 Generic: Ctry, Date1, Date2, DtSt, Lang');
+
+SELECT cmp_ok((SELECT attrs FROM metabib.record_attr WHERE id=(SELECT CURRVAL('biblio.record_entry_id_seq'))),
+  '@>', '"crtp"=>"a", "gpub"=>"i", "indx"=>"0", "proj"=>"dg", "item_form"=>"s"', 'MAP 008 Specific: Proj, CrTp, GPub, Form, Indx');
+
+SELECT cmp_ok((SELECT attrs FROM metabib.record_attr WHERE id=(SELECT CURRVAL('biblio.record_entry_id_seq'))),
+  '@>', '"relf"=>" ", "relf1"=>" ", "spfm"=>" ", "spfm1"=>" "', 'MAP 008 Special: Relf, SpFm both blank');
+
+SELECT is((SELECT attr FROM metabib.record_attr_flat WHERE id=(SELECT CURRVAL('biblio.record_entry_id_seq')) AND attr IN ('relf2','relf3','relf4','spfm2')),
+  NULL, 'MAP 008 Special: Relf2-4 and SpFm2 Should not be defined');
+
+-- Relf, SpFm full
+INSERT INTO biblio.record_entry (last_xact_id,marc) VALUES
+  ('testing',$record$<record    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"    xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd"    xmlns="http://www.loc.gov/MARC21/slim"><leader>01337nea a22054323c 4500</leader><controlfield tag="008">010100e20080825inuagcedg a  is 0 pomul u</controlfield></record>$record$);
+
+-- Relf
+SELECT is((SELECT COUNT(id) FROM metabib.record_attr_flat WHERE id=(SELECT CURRVAL('biblio.record_entry_id_seq')) AND attr='relf' AND value IN ('a','g','c','e')),
+  4::BIGINT, 'MAP 008 Special: There should be 4 Relf values');
+
+SELECT cmp_ok((SELECT attrs FROM metabib.record_attr WHERE id=(SELECT CURRVAL('biblio.record_entry_id_seq'))),
+  '@>', '"relf1"=>"a", "relf2"=>"g", "relf3"=>"c", "relf4"=>"e"', 'MAP 008 Special: Relf single-character attributes');
+
+-- SpFm
+SELECT is((SELECT COUNT(id) FROM metabib.record_attr_flat WHERE id=(SELECT CURRVAL('biblio.record_entry_id_seq')) AND attr='spfm' AND value IN ('p','o')),
+  2::BIGINT, 'MAP 008 Special: There should be 2 SpFm values found');
+
+SELECT cmp_ok((SELECT attrs FROM metabib.record_attr WHERE id=(SELECT CURRVAL('biblio.record_entry_id_seq'))),
+  '@>', '"spfm1"=>"p", "spfm2"=>"o"', 'MAP 008 Special: SpFm single-character attributes');
+
+
+-- MIX IT UP
+INSERT INTO biblio.record_entry (last_xact_id,marc) VALUES
+  ('testing',$record$<record    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"    xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd"    xmlns="http://www.loc.gov/MARC21/slim"><leader>01337npa a22054323c 4500</leader><controlfield tag="008">010100e20080825inu     o           mul u</controlfield></record>$record$);
+
+SELECT cmp_ok((SELECT attrs FROM metabib.record_attr WHERE id=(SELECT CURRVAL('biblio.record_entry_id_seq'))),
+  '@>', '"cat_form"=>"c", "bib_level"=>"a", "enc_level"=>"3", "item_type"=>"p"', 'MIX LDR: BLvl, Desc, ELvl, Type');
+
+-- XXX: Checks both(?) language and item_lang. If one is ever removed, this also needs corrected.
+SELECT cmp_ok((SELECT attrs FROM metabib.record_attr WHERE id=(SELECT CURRVAL('biblio.record_entry_id_seq'))),
+  '@>', '"ctry"=>"inu", "date1"=>"2008", "date2"=>"0825", "pub_status"=>"e", "language"=>"mul", "item_lang"=>"mul"', 'MIX 008 Generic: Ctry, Date1, Date2, DtSt, Lang');
+
+SELECT cmp_ok((SELECT attrs FROM metabib.record_attr WHERE id=(SELECT CURRVAL('biblio.record_entry_id_seq'))),
+  '@>', '"item_form"=>"o"', 'MIX 008 Specific: Form');
+
+
+-- MUS
+-- AccM and LTxt = ' ', all others defined.
+INSERT INTO biblio.record_entry (last_xact_id,marc) VALUES
+  ('testing',$record$<record    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"    xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd"    xmlns="http://www.loc.gov/MARC21/slim"><leader>01337njm a22054323c 4500</leader><controlfield tag="008">010100e20080825inurgadeo         c mul u</controlfield></record>$record$);
+
+SELECT cmp_ok((SELECT attrs FROM metabib.record_attr WHERE id=(SELECT CURRVAL('biblio.record_entry_id_seq'))),
+  '@>', '"bib_level"=>"m", "cat_form"=>"c", "enc_level"=>"3", "item_type"=>"j"', 'MUS LDR: BLvl, Desc, ELvl, Type');
+
+-- XXX: Checks both(?) language and item_lang. If one is ever removed, this also needs corrected.
+SELECT cmp_ok((SELECT attrs FROM metabib.record_attr WHERE id=(SELECT CURRVAL('biblio.record_entry_id_seq'))),
+  '@>', '"ctry"=>"inu", "date1"=>"2008", "date2"=>"0825", "pub_status"=>"e", "language"=>"mul", "item_lang"=>"mul"', 'MUS 008 Generic: Ctry, Date1, Date2, DtSt, Lang');
+
+SELECT cmp_ok((SELECT attrs FROM metabib.record_attr WHERE id=(SELECT CURRVAL('biblio.record_entry_id_seq'))),
+  '@>', '"audience"=>"e", "comp"=>"rg", "item_form"=>"o", "fmus"=>"a", "part"=>"d", "trar"=>"c"', 'MUS 008 Specific: Comp, FMus, Part, Audn, Form, TrAr');
+
+SELECT cmp_ok((SELECT attrs FROM metabib.record_attr WHERE id=(SELECT CURRVAL('biblio.record_entry_id_seq'))),
+  '@>', '"accm"=>" ", "accm1"=>" ", "ltxt"=>" ", "ltxt1"=>" "', 'MUS 008 Special: AccM and LTxt Fixed Fields = " "');
+
+SELECT is((SELECT attr FROM metabib.record_attr_flat WHERE id=(SELECT CURRVAL('biblio.record_entry_id_seq')) AND attr IN ('accm2','accm3','accm4','accm5','accm6','ltxt2')),
+  NULL, 'MUS 008 Special: AccM2-6 and LTxt2 Should not be defined');
+
+-- AccM1 and LTxt1 set, all other positions spaces
+INSERT INTO biblio.record_entry (last_xact_id,marc) VALUES
+  ('testing',$record$<record    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"    xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd"    xmlns="http://www.loc.gov/MARC21/slim"><leader>01337njm a22054323c 4500</leader><controlfield tag="008">010100e20080825inurgadeoh     k  c mul u</controlfield></record>$record$);
+
+SELECT cmp_ok((SELECT attrs FROM metabib.record_attr WHERE id=(SELECT CURRVAL('biblio.record_entry_id_seq'))),
+  '@>', '"accm"=>"h", "accm1"=>"h", "ltxt"=>"k", "ltxt1"=>"k"', 'MUS 008 Special: AccM1 and LTxt1 Set, others empty');
+
+SELECT is((SELECT attr FROM metabib.record_attr_flat WHERE id=(SELECT CURRVAL('biblio.record_entry_id_seq')) AND attr IN ('accm2','accm3','accm4','accm5','accm6','ltxt2')),
+  NULL, 'MUS 008 Special: AccM2-6 and LTxt2 Should not be defined');
+
+-- AccM and LTxt full
+INSERT INTO biblio.record_entry (last_xact_id,marc) VALUES
+  ('testing',$record$<record    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"    xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd"    xmlns="http://www.loc.gov/MARC21/slim"><leader>01337njm a22054323c 4500</leader><controlfield tag="008">010100e20080825inurgadeohgriszki c mul u</controlfield></record>$record$);
+
+-- AccM
+SELECT is((SELECT COUNT(id) FROM metabib.record_attr_flat WHERE id=(SELECT CURRVAL('biblio.record_entry_id_seq')) AND attr='accm' AND value IN ('h','g','r','i','s','z')),
+  6::BIGINT, 'MUS 008 Special: There should be 6 AccM values');
+
+SELECT cmp_ok((SELECT attrs FROM metabib.record_attr WHERE id=(SELECT CURRVAL('biblio.record_entry_id_seq'))),
+  '@>', '"accm1"=>"h", "accm2"=>"g", "accm3"=>"r", "accm4"=>"i", "accm5"=>"s", "accm6"=>"z"', 'MUS 008 Special: AccM single-character attributes');
+
+-- LTxt
+SELECT is((SELECT COUNT(id) FROM metabib.record_attr_flat WHERE id=(SELECT CURRVAL('biblio.record_entry_id_seq')) AND attr='ltxt' AND value IN ('k','i')),
+  2::BIGINT, 'MUS 008 Special: There should be 2 LTxt values found');
+
+SELECT cmp_ok((SELECT attrs FROM metabib.record_attr WHERE id=(SELECT CURRVAL('biblio.record_entry_id_seq'))),
+  '@>', '"ltxt1"=>"k", "ltxt2"=>"i"', 'MUS 008 Special: LTxt single-character attributes');
+
+
+-- VIS -ICALC
+INSERT INTO biblio.record_entry (last_xact_id,marc) VALUES
+  ('testing',$record$<record    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"    xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd"    xmlns="http://www.loc.gov/MARC21/slim"><leader>01337nga a22054323c 4500</leader><controlfield tag="008">010100e20080825inu120 e     us   vamul u</controlfield></record>$record$);
+
+SELECT cmp_ok((SELECT attrs FROM metabib.record_attr WHERE id=(SELECT CURRVAL('biblio.record_entry_id_seq'))),
+  '@>', '"cat_form"=>"c", "bib_level"=>"a", "enc_level"=>"3", "item_type"=>"g"', 'VIS LDR: BLvl, Desc, ELvl, Type');
+
+-- XXX: Checks both(?) language and item_lang. If one is ever removed, this also needs corrected.
+SELECT cmp_ok((SELECT attrs FROM metabib.record_attr WHERE id=(SELECT CURRVAL('biblio.record_entry_id_seq'))),
+  '@>', '"ctry"=>"inu", "date1"=>"2008", "date2"=>"0825", "pub_status"=>"e", "language"=>"mul", "item_lang"=>"mul"', 'VIS 008 Generic: Ctry, Date1, Date2, DtSt, Lang');
+
+-- Time is defined for the editor, but isn't extracted as an attribute.
+SELECT cmp_ok((SELECT attrs FROM metabib.record_attr WHERE id=(SELECT CURRVAL('biblio.record_entry_id_seq'))),
+  '@>', '"gpub"=>"u", "tech"=>"a", "type_mat"=>"v", "item_form"=>"s"', 'VIS 008 Specific: Audn, GPub, Form, TMat, Tech');
+
+
+SELECT * FROM finish();
+
+ROLLBACK;
