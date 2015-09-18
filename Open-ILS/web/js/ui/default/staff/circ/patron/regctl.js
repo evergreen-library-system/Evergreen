@@ -5,12 +5,13 @@ angular.module('egCoreMod')
 .factory('patronRegSvc', ['$q', 'egCore', function($q, egCore) {
 
     var service = {
-        field_doc : {},             // config.idl_field_doc
-        profiles : [],              // permission groups
+        field_doc : {},              // config.idl_field_doc
+        profiles : [],               // permission groups
         sms_carriers : [],
-        user_settings : {},         // applied user settings
-        user_setting_types : {},    // config.usr_setting_type
-        modified_user_settings : {} // settings modifed this session
+        user_settings : {},          // applied user settings
+        user_setting_types : {},     // config.usr_setting_type
+        modified_user_settings : {}, // settings modifed this session
+        virt_id : -1                 // virtual ID for new objects
     };
 
     // launch a series of parallel data retrieval calls
@@ -315,20 +316,30 @@ angular.module('egCoreMod')
     service.init_new_patron = function() {
 
         var addr = {
+            id : service.virt_id--,
+            isnew : true,
             valid : true,
             address_type : 'MAILING', // TODO: i18n
+            _is_mailing : true,
+            _is_billing : true,
             within_city_limits : true
-            // default state, etc.
+        };
+
+        var card = {
+            id : service.virt_id--,
+            isnew : true,
+            active : true,
+            _primary : 'on'
         };
 
         return {
             isnew : true,
             active : true,
-            card : {},
+            card : card,
+            cards : [card],
             home_ou : egCore.org.get(egCore.auth.user().ws_ou()),
                         
             // TODO default profile group?
-            mailing_address : addr,
             addresses : [addr]
         };
     }
@@ -346,10 +357,13 @@ angular.module('egCoreMod')
         patron.home_ou(patron.home_ou().id());
         patron.expire_date(
             patron.expire_date().toISOString().replace(/T.*/,''));
-        patron.dob(patron.dob().toISOString().replace(/T.*/,''));
         patron.profile(patron.profile().id());
-        patron.net_access_level(patron.net_access_level().id());
-        patron.ident_type(patron.ident_type().id());
+        if (patron.dob()) 
+            patron.dob(patron.dob().toISOString().replace(/T.*/,''));
+        if (patron.ident_type()) 
+            patron.ident_type(patron.ident_type().id());
+        if (patron.net_access_level())
+            patron.net_access_level(patron.net_access_level().id());
 
         angular.forEach(
             ['juvenile', 'barred', 'active', 'master_account'],
@@ -391,6 +405,8 @@ angular.module('egCoreMod')
 
         // TODO extract hold_notify_phone, etc.
 
+        console.log(js2JSON(patron));
+
         egCore.net.request(
             'open-ils.actor', 
             'open-ils.actor.patron.update',
@@ -399,8 +415,6 @@ angular.module('egCoreMod')
             // TODO: see original
             console.log(js2JSON(resp));
         });
-
-        console.log(js2JSON(patron));
     }
 
     return service;
@@ -564,11 +578,10 @@ function PatronRegCtrl($scope, $routeParams,
         $scope.set_expire_date();
     }
 
-    var new_addr_id = -1;
     $scope.new_address = function() {
         var addr = egCore.idl.toHash(new egCore.idl.aua());
         patronRegSvc.ingest_address($scope.patron, addr);
-        addr.id = new_addr_id--;
+        addr.id = patronRegSvc.virt_id--;
         addr.valid = true;
         addr.within_city_limits = true;
         $scope.patron.addresses.push(addr);
@@ -605,13 +618,12 @@ function PatronRegCtrl($scope, $routeParams,
         });
     }
 
-    var new_card_id = -1;
     $scope.replace_card = function() {
         $scope.patron.card.active = false;
         $scope.patron.card.ischanged = true;
 
         var new_card = egCore.idl.toHash(new egCore.idl.ac());
-        new_card.id = new_card_id--;
+        new_card.id = patronRegSvc.virt_id--;
         new_card.isnew = true;
         new_card.active = true;
         new_card._primary = 'on';
