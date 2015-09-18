@@ -314,12 +314,11 @@ angular.module('egCoreMod')
     }
 
     service.init_new_patron = function() {
-
         var addr = {
             id : service.virt_id--,
             isnew : true,
             valid : true,
-            address_type : 'MAILING', // TODO: i18n
+            address_type : egCore.strings.REG_ADDR_TYPE,
             _is_mailing : true,
             _is_billing : true,
             within_city_limits : true
@@ -405,7 +404,9 @@ angular.module('egCoreMod')
 
         // TODO extract hold_notify_phone, etc.
 
-        console.log(js2JSON(patron));
+        if (!patron.isnew()) patron.ischanged(true);
+
+        console.log(js2JSON(patron)); // TODO: debugging
 
         egCore.net.request(
             'open-ils.actor', 
