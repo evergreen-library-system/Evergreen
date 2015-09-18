@@ -227,7 +227,7 @@ angular.module('egCoreMod')
                 service.user_setting_types[stype.name()] = stype;
             });
 
-            if(service.patron_id) {
+            if (service.patron_id) {
                 // retrieve applied values for the current user 
                 // for the setting types we care about.
 
@@ -243,16 +243,16 @@ angular.module('egCoreMod')
                 ).then(function(settings) {
                     service.user_settings = settings;
                 });
-            }
+            } else {
 
-            // apply default user setting values
-            angular.forEach(setting_types, function(stype, index) {
-                if (stype.reg_default() != undefined) {
-                    service.modified_user_settings[setting.name()] = 
+                // apply default user setting values
+                angular.forEach(setting_types, function(stype, index) {
+                    if (stype.reg_default() != undefined) {
                         service.user_settings[setting.name()] = 
-                        setting.reg_default();
-                }
-            });
+                            setting.reg_default();
+                    }
+                });
+            }
         });
     }
 
@@ -300,8 +300,10 @@ angular.module('egCoreMod')
 
         angular.forEach(patron.cards, function(card) {
             card.active = card.active == 't';
-            if (card.id == patron.card.id)
+            if (card.id == patron.card.id) {
+                patron.card = card;
                 card._primary = 'on';
+            }
         });
 
         angular.forEach(patron.addresses, 
@@ -314,6 +316,7 @@ angular.module('egCoreMod')
 
         var addr = {
             valid : true,
+            address_type : 'MAILING', // TODO: i18n
             within_city_limits : true
             // default state, etc.
         };
@@ -323,6 +326,7 @@ angular.module('egCoreMod')
             active : true,
             card : {},
             home_ou : egCore.org.get(egCore.auth.user().ws_ou()),
+                        
             // TODO default profile group?
             mailing_address : addr,
             addresses : [addr]
@@ -356,13 +360,13 @@ angular.module('egCoreMod')
         patron.cards([]);
         angular.forEach(card_hashes, function(chash) {
             var card = new egCore.idl.ac();
-            patron.cards().push(card);
             for (var key in chash) {
                 if (typeof card[key] == 'function') 
                     card[key](chash[key]);
             }
             card.usr(patron.id());
             card.active(chash.active ? 't' : 'f');
+            patron.cards().push(card);
 
             if (chash._primary) {
                 patron.card(card);
@@ -384,6 +388,8 @@ angular.module('egCoreMod')
             if (addr_hash._is_mailing) patron.mailing_address(addr);
             if (addr_hash._is_billing) patron.billing_address(addr);
         });
+
+        // TODO extract hold_notify_phone, etc.
 
         egCore.net.request(
             'open-ils.actor', 
@@ -447,6 +453,26 @@ function PatronRegCtrl($scope, $routeParams,
 
         if ($scope.org_settings['ui.patron.edit.default_suggested'])
             $scope.edit_passthru.vis_level = 1;
+
+        if ($scope.patron.isnew) {
+            $scope.generate_password();
+            $scope.hold_notify_phone = true;
+            $scope.hold_notify_email = true;
+
+            if (prs.org_settings['ui.patron.default_ident_type']) {
+                $scope.patron.ident_type = 
+                    prs.org_settings['ui.patron.default_ident_type'];
+            }
+            if (prs.org_settings['ui.patron.default_inet_access_level']) {
+                $scope.patron.ident_type = 
+                    prs.org_settings['ui.patron.default_inet_access_level'];
+            }
+            if (prs.org_settings['ui.patron.default_country']) {
+                $scope.patron.addresses[0].country = 
+                    prs.org_settings['ui.patron.default_country'];
+            }
+        }
+            
     });
 
     // returns the tree depth of the selected profile group tree node.
@@ -583,11 +609,12 @@ function PatronRegCtrl($scope, $routeParams,
     $scope.replace_card = function() {
         $scope.patron.card.active = false;
         $scope.patron.card.ischanged = true;
+
         var new_card = egCore.idl.toHash(new egCore.idl.ac());
         new_card.id = new_card_id--;
         new_card.isnew = true;
         new_card.active = true;
-        new_card._primary = true;
+        new_card._primary = 'on';
         $scope.patron.card = new_card;
         $scope.patron.cards.push(new_card);
     }
