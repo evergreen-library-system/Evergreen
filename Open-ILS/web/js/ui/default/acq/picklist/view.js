@@ -14,6 +14,7 @@ var liTable;
 function load() {
     liTable = new AcqLiTable();
     liTable.isPL = plId;
+    liTable.initBatchUpdater();
     liTable.enableActionsDropdownOptions("pl");
 
     fieldmapper.standardRequest(
