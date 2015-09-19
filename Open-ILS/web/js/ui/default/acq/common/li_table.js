@@ -168,7 +168,7 @@ function AcqLiTable() {
 
     this.setFundSearchFilter = function(callback) {
         new openils.User().getPermOrgList(
-            ['CREATE_PURCHASE_ORDER', 'MANAGE_FUND'],
+            ['CREATE_PURCHASE_ORDER', 'CREATE_PICKLIST', 'MANAGE_FUND'],
             function(orgs) { 
                 fundSearchFilter.org = orgs;
                 if (callback) callback();
@@ -272,12 +272,12 @@ function AcqLiTable() {
         dojo.forEach(
             ["owning_lib","location","collection_code","circ_modifier","fund"],
             function(field) {
-                var args = self.afwCopyFieldArgs(field,"CREATE_PURCHASE_ORDER");
+                var args = self.afwCopyFieldArgs(field, "CREATE_PURCHASE_ORDER");
                 args.parentNode = dojo.byId("acq-bu-" + field);
 
                 if (field == 'fund') {
                     // The list of funds can be huge. Before fetching
-                    // funds for PO modification, see where the user has
+                    // funds for PO or Selection LIst modification, see where the user has
                     // perms and limit the retreived funds accordingly.
                     // Note:  This is the first instance of fund list
                     // retrieval.  All future fund list retrievals will
