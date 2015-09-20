@@ -638,6 +638,7 @@ patches:
  * Massachusetts Library Network Cooperative
  * Merrimack Valley Library Consortium
  * MOBIUS
+ * Northwest Regional Library System
  * Sigio
  * Traverse Area District Library 
 
