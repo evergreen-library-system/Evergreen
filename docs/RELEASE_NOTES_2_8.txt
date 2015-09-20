@@ -648,6 +648,7 @@ We would also like to thank the following individuals who contributed
 code and documentations patches to this release of Evergreen:
  
  * Thomas Berezansky
+ * Matthew Berowski
  * Bradley Bonner
  * Adam Bowling
  * Jason Boyer
@@ -693,6 +694,7 @@ patches:
  * Merrimack Valley Library Consortium
  * MOBIUS
  * North of Boston Library Exchange
+ * Northwest Regional Library System
  * Pohjois-Karjalan Tietotekniikkakeskus Oy
  * Sigio
  * University of Windsor
