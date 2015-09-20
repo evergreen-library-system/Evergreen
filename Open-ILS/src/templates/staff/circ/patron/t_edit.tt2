@@ -322,7 +322,7 @@
       <input type='checkbox' ng-model="hold_notify_email"/>
       [% l('Email') %]
     </div>
-    <div class='flex-cell'>
+    <div class='flex-cell' ng-if="org_settings['sms.enable']">
       <input type='checkbox' ng-model="hold_notify_sms"/>
       [% l('SMS') %]
     </div>

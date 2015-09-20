@@ -10,7 +10,6 @@ angular.module('egCoreMod')
         sms_carriers : [],
         user_settings : {},          // applied user settings
         user_setting_types : {},     // config.usr_setting_type
-        modified_user_settings : {}, // settings modifed this session
         virt_id : -1                 // virtual ID for new objects
     };
 
@@ -344,7 +343,7 @@ angular.module('egCoreMod')
     }
 
     // translate the patron back into IDL form
-    service.save_patron = function(phash) {
+    service.save_user = function(phash) {
 
         var patron = new egCore.idl.au();
 
@@ -406,15 +405,42 @@ angular.module('egCoreMod')
 
         if (!patron.isnew()) patron.ischanged(true);
 
-        console.log(js2JSON(patron)); // TODO: debugging
-
-        egCore.net.request(
+        return egCore.net.request(
             'open-ils.actor', 
             'open-ils.actor.patron.update',
-            egCore.auth.token(), patron)
-        .then(function(resp) {
-            // TODO: see original
-            console.log(js2JSON(resp));
+            egCore.auth.token(), patron);
+    }
+
+    service.save_user_settings = function(new_user, user_settings) {
+        // user_settings contains the values from the scope/form.
+        // service.user_settings contain the values from page load time.
+
+        var settings = {};
+        if (service.patron_id) {
+            // only update modified settings for existing patrons
+            angular.forEach(user_settings, function(val, key) {
+                console.log(val + ' : ' + service.user_settings[key]);
+                if (val !== service.user_settings[key])
+                    settings[key] = val;
+            });
+
+        } else {
+            // all non-null setting values are updated for new patrons
+            angular.forEach(user_settings, function(val, key) {
+                if (val !== null) settings[key] = val;
+            });
+        }
+
+        console.log('updating settings ' + Object.keys(settings));
+
+        if (Object.keys(settings).length == 0) return $q.when();
+
+        return egCore.net.request(
+            'open-ils.actor',
+            'open-ils.actor.patron.settings.update',
+            egCore.auth.token(), new_user.id(), settings
+        ).then(function(resp) {
+            console.log('settings returned ' + resp);
         });
     }
 
@@ -423,7 +449,7 @@ angular.module('egCoreMod')
 
 
 function PatronRegCtrl($scope, $routeParams, 
-    $q, $modal, egCore, patronSvc, patronRegSvc) {
+    $q, $modal, $window, egCore, patronSvc, patronRegSvc) {
 
     $scope.clone_id = $routeParams.clone_id;
     $scope.stage_username = $routeParams.stage_username;
@@ -458,13 +484,21 @@ function PatronRegCtrl($scope, $routeParams,
         $scope.profiles = prs.profiles;
         $scope.ident_types = prs.ident_types;
         $scope.net_access_levels = prs.net_access_levels;
-        $scope.user_settings = prs.user_settings;
         $scope.user_setting_types = prs.user_setting_types;
-        $scope.modified_user_settings = prs.modified_user_settings;
         $scope.org_settings = prs.org_settings;
         $scope.sms_carriers = prs.sms_carriers;
         $scope.stat_cats = prs.stat_cats;
         $scope.surveys = prs.surveys;
+
+        $scope.user_settings = prs.user_settings;
+        // clone the user settings back into the patronRegSvc so
+        // we have a copy of the original state of the settings.
+        prs.user_settings = {};
+        angular.forEach($scope.user_settings, function(val, key) {
+            prs.user_settings[key] = val;
+        });
+
+        extract_hold_notify();
 
         if ($scope.org_settings['ui.patron.edit.default_suggested'])
             $scope.edit_passthru.vis_level = 1;
@@ -678,10 +712,47 @@ function PatronRegCtrl($scope, $routeParams,
         );
     }
 
-    $scope.edit_passthru.save = function() {
-        patronRegSvc.save_patron($scope.patron);        
+    // Translate hold notify preferences from the form/scope back into a 
+    // single user setting value for opac.hold_notify.
+    function compress_hold_notify() {
+        var hold_notify = '';
+        var splitter = '';
+        if ($scope.hold_notify_phone) {
+            hold_notify = 'phone';
+            splitter = ':';
+        }
+        if ($scope.hold_notify_email) {
+            hold_notify = splitter + 'email';
+            splitter = ':';
+        }
+        if ($scope.hold_notify_sms) {
+            hold_notify = splitter + 'sms';
+            splitter = ':';
+        }
+        $scope.user_settings['opac.hold_notify'] = hold_notify;
     }
 
+    function extract_hold_notify() {
+        notify = $scope.user_settings['opac.hold_notify'];
+        if (!notify) return;
+        $scope.hold_notify_phone = Boolean(notify.match(/phone/));
+        $scope.hold_notify_email = Boolean(notify.match(/email/));
+        $scope.hold_notify_sms = Boolean(notify.match(/sms/));
+    }
+
+    $scope.edit_passthru.save = function() {
+        compress_hold_notify();
+        patronRegSvc.save_user($scope.patron)
+        .then(function(new_user) { 
+            return patronRegSvc.save_user_settings(
+                new_user, $scope.user_settings); 
+        }).then(function() {
+            // reloading the page means potentially losing some information
+            // (e.g. last patron search), but is the only way to ensure all
+            // components are properly updated to reflect the modified patron.
+            $window.location.href = location.href;
+        });
+    }
 }
 
 
