@@ -173,6 +173,22 @@ angular.module('egCoreMod')
         return hash;
     }
 
+    // hash-to-IDL object translater.  Does not support nested values.
+    service.fromHash = function(cls, hash) {
+        if (!service.classes[cls]) {
+            console.error('No such IDL class ' + cls);
+            return null;
+        }
+
+        var new_obj = new service[cls]();
+        angular.forEach(hash, function(val, key) {
+            if (!angular.isFunction(new_obj[key])) return;
+            new_obj[key](hash[key]);
+        });
+
+        return new_obj;
+    }
+
     // Transforms a flattened hash (see toHash() or egGridFlatDataProvider)
     // to a nested hash.
     //

@@ -345,12 +345,7 @@ angular.module('egCoreMod')
     // translate the patron back into IDL form
     service.save_user = function(phash) {
 
-        var patron = new egCore.idl.au();
-
-        for (var key in phash) {
-            if (typeof patron[key] == 'function')
-                patron[key](phash[key]);
-        }
+        var patron = egCore.idl.fromHash('au', phash);
 
         patron.home_ou(patron.home_ou().id());
         patron.expire_date(
@@ -371,15 +366,10 @@ angular.module('egCoreMod')
         var card_hashes = patron.cards();
         patron.cards([]);
         angular.forEach(card_hashes, function(chash) {
-            var card = new egCore.idl.ac();
-            for (var key in chash) {
-                if (typeof card[key] == 'function') 
-                    card[key](chash[key]);
-            }
+            var card = egCore.idl.fromHash('ac', chash)
             card.usr(patron.id());
             card.active(chash.active ? 't' : 'f');
             patron.cards().push(card);
-
             if (chash._primary) {
                 patron.card(card);
             }
@@ -388,20 +378,19 @@ angular.module('egCoreMod')
         var addr_hashes = patron.addresses();
         patron.addresses([]);
         angular.forEach(addr_hashes, function(addr_hash) {
-            var addr = new egCore.idl.aua();
+            if (!addr_hash.isnew && !addr_hash.isdeleted) 
+                addr_hash.ischanged = true;
+            var addr = egCore.idl.fromHash('aua', addr_hash);
             patron.addresses().push(addr);
-            for (var key in addr_hash) {
-                if (typeof addr[key] == 'function') 
-                    addr[key](addr_hash[key]);
-            }
-
             addr.valid(addr.valid() ? 't' : 'f');
             addr.within_city_limits(addr.within_city_limits() ? 't' : 'f');
             if (addr_hash._is_mailing) patron.mailing_address(addr);
             if (addr_hash._is_billing) patron.billing_address(addr);
+
+            console.log('deleted? ' + addr.isdeleted());
         });
 
-        // TODO extract hold_notify_phone, etc.
+        console.log(patron.addresses());
 
         if (!patron.isnew()) patron.ischanged(true);
 
@@ -419,7 +408,6 @@ angular.module('egCoreMod')
         if (service.patron_id) {
             // only update modified settings for existing patrons
             angular.forEach(user_settings, function(val, key) {
-                console.log(val + ' : ' + service.user_settings[key]);
                 if (val !== service.user_settings[key])
                     settings[key] = val;
             });
@@ -431,8 +419,6 @@ angular.module('egCoreMod')
             });
         }
 
-        console.log('updating settings ' + Object.keys(settings));
-
         if (Object.keys(settings).length == 0) return $q.when();
 
         return egCore.net.request(
@@ -441,6 +427,7 @@ angular.module('egCoreMod')
             egCore.auth.token(), new_user.id(), settings
         ).then(function(resp) {
             console.log('settings returned ' + resp);
+            return resp;
         });
     }
 
@@ -617,6 +604,7 @@ function PatronRegCtrl($scope, $routeParams,
         var addr = egCore.idl.toHash(new egCore.idl.aua());
         patronRegSvc.ingest_address($scope.patron, addr);
         addr.id = patronRegSvc.virt_id--;
+        addr.isnew = true;
         addr.valid = true;
         addr.within_city_limits = true;
         $scope.patron.addresses.push(addr);
@@ -712,6 +700,27 @@ function PatronRegCtrl($scope, $routeParams,
         );
     }
 
+    $scope.set_addr_type = function(addr, type) {
+        var addrs = $scope.patron.addresses;
+        if (addr['_is_'+type]) {
+            angular.forEach(addrs, function(a) {
+                if (a.id != addr.id) a['_is_'+type] = false;
+            });
+        } else {
+            // unchecking mailing/billing means we have to randomly
+            // select another address to fill that role.  Select the
+            // first address in the list (that does not match the
+            // modifed address)
+            for (var i = 0; i < addrs.length; i++) {
+                if (addrs[i].id != addr.id) {
+                    addrs[i]['_is_' + type] = true;
+                    break;
+                }
+            }
+        }
+    }
+
+
     // Translate hold notify preferences from the form/scope back into a 
     // single user setting value for opac.hold_notify.
     function compress_hold_notify() {
@@ -741,12 +750,24 @@ function PatronRegCtrl($scope, $routeParams,
     }
 
     $scope.edit_passthru.save = function() {
+
+        // toss the deleted addresses back into the patron's list of
+        // addresses so it's included in the update
+        $scope.patron.addresses = 
+            $scope.patron.addresses.concat(deleted_addresses);
+        
         compress_hold_notify();
+
         patronRegSvc.save_user($scope.patron)
         .then(function(new_user) { 
-            return patronRegSvc.save_user_settings(
-                new_user, $scope.user_settings); 
-        }).then(function() {
+            if (new_user && new_user.classname) {
+                return patronRegSvc.save_user_settings(
+                    new_user, $scope.user_settings); 
+            } else {
+                alert('Patron update failed. \n\n' + js2JSON(new_user));
+                return true; // ensure page reloads to reset
+            }
+        }).then(function(keep_going) {
             // reloading the page means potentially losing some information
             // (e.g. last patron search), but is the only way to ensure all
             // components are properly updated to reflect the modified patron.
@@ -755,5 +776,8 @@ function PatronRegCtrl($scope, $routeParams,
     }
 }
 
+// This controller may be loaded from different modules (patron edit vs.
+// register new patron), so we have to inject the controller params manually.
+PatronRegCtrl.$inject = ['$scope', '$routeParams', '$q', '$modal', 
+    '$window', 'egCore', 'patronSvc', 'patronRegSvc'];
 
-// TODO: $inject controller params 
