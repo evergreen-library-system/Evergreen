@@ -665,6 +665,8 @@ function PatronRegCtrl($scope, $routeParams,
                 console.log('duplicate barcode detected: ' + bc);
                 // DUPLICATE CARD
             } else {
+                if (!$scope.patron.usrname)
+                    $scope.patron.usrname = bc;
                 // No dupe -- A-OK
             }
         });
