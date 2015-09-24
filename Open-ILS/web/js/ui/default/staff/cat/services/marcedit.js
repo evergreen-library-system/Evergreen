@@ -683,7 +683,9 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                 var deleteDatafield = function (e) {
                     var del_field = e.data.scope.field.position;
 
-                    var domnode = $('#r'+e.data.scope.field.record.subfield('901','c')[1] + 'f' + del_field);
+                    var sf901c = e.data.scope.field.record.subfield('901','c');
+                    var recId = (sf901c === null) ? '' : sf901c[1];
+                    var domnode = $('#r' + recId + 'f' + del_field);
 
                     e.data.scope.field.record.deleteFields(
                         e.data.scope.field
