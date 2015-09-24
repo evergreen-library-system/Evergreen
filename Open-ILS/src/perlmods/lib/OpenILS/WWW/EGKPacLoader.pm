@@ -7,7 +7,7 @@ use OpenSRF::Utils::Logger qw/$logger/;
 use OpenILS::Application::AppUtils;
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
 my $U = 'OpenILS::Application::AppUtils';
-my $kpac_config;
+my %kpac_config;
 
 # -----------------------------------------------------------------------------
 # Override our parent's load() sub so we can do kpac-specific path routing.
@@ -237,15 +237,16 @@ sub load_kpac_config {
     my $self = shift;
     my $ctx = $self->ctx;
 
-    if (!$kpac_config) {
-        my $path = $self->apache->dir_config('KPacConfigFile');
+    my $path = $self->apache->dir_config('KPacConfigFile');
 
-        if (!$path) {
-            $self->apache->log->error("KPacConfigFile required!");
-            return;
-        }
-        
-        $kpac_config = XMLin(
+    if (!$path) {
+        $self->apache->log->error("KPacConfigFile required!");
+        return;
+    }
+
+    if (!$kpac_config{$path}) {
+    
+        $kpac_config{$path} = XMLin(
             $path,
             KeyAttr => ['id'],
             ForceArray => ['layout', 'page', 'cell'],
@@ -258,16 +259,16 @@ sub load_kpac_config {
 
     # Search up the org tree to find the nearest config for the context org unit
     while (my $org = $ctx->{get_aou}->($ou)) {
-        ($layout) = grep {$_->{owner} eq $org->id} @{$kpac_config->{layout}};
+        ($layout) = grep {$_->{owner} eq $org->id} @{$kpac_config{$path}->{layout}};
         last if $layout;
         $ou = $org->parent_ou;
     }
 
     $ctx->{kpac_layout} = $layout;
-    $ctx->{kpac_config} = $kpac_config;
+    $ctx->{kpac_config} = $kpac_config{$path};
     $ctx->{kpac_root} = $ctx->{base_path} . "/kpac"; 
     $ctx->{home_page} = $ctx->{proto} . '://' . $ctx->{hostname} . $ctx->{kpac_root} . "/home";
-    $ctx->{global_search_filter} = $kpac_config->{global_filter};
+    $ctx->{global_search_filter} = $kpac_config{$path}->{global_filter};
 }
 
 
