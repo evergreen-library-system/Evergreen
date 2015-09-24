@@ -6,6 +6,117 @@ Evergreen 2_9 Release Notes
 Upgrade notes
 -------------
 
+Remove Script-Based Circulation Configuration
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Evergreen no longer supports script-based circulation policies.  All
+policies must now be managed within the Local Administration ->
+Circulation Policies, Hold Policies, and related interfaces.
+
+
+Remove open-ils.penalty service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Evergreen no longer uses the 'open-ils.penalty' service.  It is safe
+(though not required) to remove the following XML chunks from
+/openils/conf/opensrf.xml after stopping services.
+
+[source,xml]
+----------------------------------------------------------------------------
+
+<!-- first element -->
+
+<open-ils.penalty>
+    <keepalive>3</keepalive>
+    <stateless>1</stateless>
+    <language>perl</language>
+    <implementation>OpenILS::Application::Penalty</implementation>
+    <max_requests>99</max_requests>
+    <unix_config>
+        <max_requests>1000</max_requests>
+        <unix_log>open-ils.penalty_unix.log</unix_log>
+        <unix_sock>open-ils.penalty_unix.sock</unix_sock>
+        <unix_pid>open-ils.penalty_unix.pid</unix_pid>
+        <min_children>1</min_children>
+        <max_children>15</max_children>
+        <min_spare_children>1</min_spare_children>
+        <max_spare_children>5</max_spare_children>
+    </unix_config>
+    <app_settings>
+        <patron_penalty>penalty/patron_penalty.js</patron_penalty>
+        <script_path>LIBDIR/javascript</script_path>
+        <script_path>LOCALSTATEDIR</script_path>
+        <script_path>LOCALSTATEDIR/catalog</script_path>
+   </app_settings>
+</open-ils.penalty>
+
+<!-- second element -->
+
+<appname>open-ils.penalty</appname>
+----------------------------------------------------------------------------
+
+
+Removal of deprecated "JSPAC" interface
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The deprecated Javascript OPAC interface known as "JSPAC" is no
+longer included in Evergreen as of this release.
+
+With the understanding that local sites may have made use of
+existing parts of the old JSPAC interface -- especially images and
+CSS -- no attempt is made at upgrade time to automatically remove
+the existing files from disk.
+
+When upgrading, you may wish to remove "index.xml" from your Apache
+DirectoryIndex directives.
+
+The following directories, xml, js, and css files were formerly part
+of JSPAC, and you may be able to safely remove them from your system
+after verifying that they and their contents are no longer required:
+
+- web/opac/common/css/
+- web/opac/common/js/dtree.js
+- web/opac/common/xml/
+- web/opac/extras/bbags.js
+- web/opac/extras/bbags.xml
+- web/opac/skin/default/js/
+- web/opac/skin/default/xml/
+- web/opac/theme/
+
+The list of images removed in this change is lengthy, and not
+included here.
+
+
+Removal of legacy selfcheck interface
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The legacy selfcheck interface is no longer included in Evergreen as
+of this release.
+
+This interface was formerly located at a URL ending in
+extras/selfcheck/selfcheck.xml
+
+No attempt is made at upgrade time to automatically remove this
+interface.
+
+It is recommended that you remove this interface and its associated
+configuration after performing an upgrade:
+
+(paths relative to Evergreen web root)
+
+- opac/extras/selfcheck/selfcheck.css
+- opac/extras/selfcheck/selfcheck.js
+- opac/extras/selfcheck/selfcheck.xml
+- opac/extras/selfcheck/selfcheck_print.css
+
+You can also remove the related Apache configuration block starting
+with:
+
+[source, conf]
+<LocationMatch .*/selfcheck.xml>
+
+
+
 New Features
 ------------
 
@@ -105,60 +216,6 @@ A new Action Trigger event definition ("30 Day Account Expiration Courtesy
 Notice") for sending alerts to users before their accounts are expired has 
 been added.  This is intended to give users time to renew their account before 
 they lose access to library services.
-
-
-
-
-Upgrade Notes
-^^^^^^^^^^^^^
-
-Remove Script-Based Circulation Configuration
-+++++++++++++++++++++++++++++++++++++++++++++
-
-Evergreen no longer supports script-based circulation policies.  All
-policies must now be managed within the Local Administration ->
-Circulation Policies, Hold Policies, and related interfaces.
-
-Remove open-ils.penalty service
-+++++++++++++++++++++++++++++++
-
-Evergreen no longer uses the 'open-ils.penalty' service.  It is safe 
-(though not required) to remove the following XML chunks from 
-/openils/conf/opensrf.xml after stopping services.
-
-[source,xml]
-----------------------------------------------------------------------------
-
-<!-- first element -->
-
-<open-ils.penalty>
-    <keepalive>3</keepalive>
-    <stateless>1</stateless>
-    <language>perl</language>
-    <implementation>OpenILS::Application::Penalty</implementation>
-    <max_requests>99</max_requests>
-    <unix_config>
-        <max_requests>1000</max_requests>
-        <unix_log>open-ils.penalty_unix.log</unix_log>
-        <unix_sock>open-ils.penalty_unix.sock</unix_sock>
-        <unix_pid>open-ils.penalty_unix.pid</unix_pid>
-        <min_children>1</min_children>
-        <max_children>15</max_children>
-        <min_spare_children>1</min_spare_children>
-        <max_spare_children>5</max_spare_children>
-    </unix_config>
-    <app_settings>
-        <patron_penalty>penalty/patron_penalty.js</patron_penalty>
-        <script_path>LIBDIR/javascript</script_path>
-        <script_path>LOCALSTATEDIR</script_path>
-        <script_path>LOCALSTATEDIR/catalog</script_path>
-   </app_settings>
-</open-ils.penalty>
-
-<!-- second element -->
-
-<appname>open-ils.penalty</appname>
-----------------------------------------------------------------------------
 
 
 
