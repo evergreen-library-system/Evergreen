@@ -6,10 +6,12 @@
   </div>
   <div class="modal-body">
     <eg-marc-edit-record dirty-flag="dirty_flag" record-id="record_id" marc-xml="marc_xml"
-                         record-type="bre"
+                         record-type="bre" save-label="{{save_label}}"
+                         on-save="import_record_callback"
     />
   </div>
   <div class="modal-footer">
+    <button class="btn btn-primary" ng-click="ok()" ng-disabled="!record_id">[% l('Go to imported record') %]</button>
     <button class="btn btn-warning" ng-click="cancel()">[% l('Cancel') %]</button>
   </div>
 </div>

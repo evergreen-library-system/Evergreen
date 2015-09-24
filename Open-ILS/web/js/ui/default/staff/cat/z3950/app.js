@@ -251,20 +251,28 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
 
     $scope.spawn_editor = function() {
         var items = $scope.gridControls.selectedItems();
+        var recId = 0;
         $modal.open({
             templateUrl: './cat/z3950/t_marc_edit',
             size: 'lg',
             controller:
                 ['$scope', '$modalInstance', function($scope, $modalInstance) {
                 $scope.focusMe = true;
-                $scope.record_id = 0;
+                $scope.record_id = recId;
                 $scope.dirty_flag = false;
                 $scope.marc_xml = items[0]['marcxml'];
                 $scope.ok = function(args) { $modalInstance.close(args) }
                 $scope.cancel = function () { $modalInstance.dismiss() }
+                $scope.save_label = egCore.strings.IMPORT_BUTTON_LABEL;
+                $scope.import_record_callback = function (record_id) {
+                    recId = record_id;
+                    $scope.save_label = egCore.strings.SAVE_BUTTON_LABEL;
+                };
             }]
-        }).result.then(function (args) {
-            if (!args || !args.name) return;
+        }).result.then(function () {
+            if (recId) {
+                $window.location.href = egCore.env.basePath + 'cat/catalog/record/' + recId;
+            }
         });
     }
 

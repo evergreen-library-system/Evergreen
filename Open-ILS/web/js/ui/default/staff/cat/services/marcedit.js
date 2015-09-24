@@ -582,7 +582,8 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
             // than to (immediately) update the database
             inPlaceMode : '@',
             recordType : '@',
-            maxUndo : '@'
+            maxUndo : '@',
+            saveLabel : '@'
         },
         link: function (scope, element, attrs) {
 

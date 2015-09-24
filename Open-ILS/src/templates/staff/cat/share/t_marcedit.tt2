@@ -47,7 +47,7 @@
           <button class="btn btn-default" ng-show="record_type == 'bre'" ng-click="validateHeadings()">[% l('Validate') %]</button>
         </span>
         <span class="btn-group">
-          <button class="btn btn-default" ng-click="saveRecord()">[% l('Save') %]</button>
+          <button class="btn btn-primary" ng-click="saveRecord()">{{ saveLabel || "[% l('Save') %]"}}</button>
         </span>
         <span class="btn-group">
           <button ng-hide="brandNewRecord || Record().deleted()" class="btn btn-default" ng-click="deleteRecord()">[% l('Delete') %]</button>
