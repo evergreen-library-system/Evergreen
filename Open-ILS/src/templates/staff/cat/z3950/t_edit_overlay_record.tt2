@@ -6,7 +6,7 @@
   </div>
   <div class="modal-body">
     <eg-marc-edit-record dirty-flag="dirty_flag" record-id="record_id" marc-xml="args.marc_xml"
-                         in-place-mode="true" record-type="bre" />
+                         in-place-mode="true" record-type="bre" save-label="[% l('Modify') %]" />
   </div>
   <div class="modal-footer">
     <input type="submit" ng-click="ok(args)"
