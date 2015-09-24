@@ -27,7 +27,9 @@ angular.module('egCatZ3950Search',
  */
 .controller('Z3950SearchCtrl',
        ['$scope','$q','$location','$timeout','$window','egCore','egGridDataProvider','egZ3950TargetSvc','$modal',
-function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvider,  egZ3950TargetSvc,  $modal) {
+        'egConfirmDialog',
+function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvider,  egZ3950TargetSvc,  $modal,
+         egConfirmDialog) {
 
     // get list of targets
     egZ3950TargetSvc.loadTargets();
@@ -225,7 +227,17 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
             function() { deferred.resolve() },
             null, // onerror
             function(result) {
-                console.debug('imported');
+                egConfirmDialog.open(
+                    egCore.strings.IMPORTED_RECORD_FROM_Z3950,
+                    egCore.strings.IMPORTED_RECORD_FROM_Z3950_AS_ID,
+                    { id : result.id() },
+                    egCore.strings.GO_TO_RECORD,
+                    egCore.strings.GO_BACK
+                ).result.then(function() {
+                    // NOTE: $location.path('/cat/catalog/record/' + result.id()) did not work
+                    // for some reason
+                    $window.location.href = egCore.env.basePath + 'cat/catalog/record/' + result.id();
+                });
             }
         );
 

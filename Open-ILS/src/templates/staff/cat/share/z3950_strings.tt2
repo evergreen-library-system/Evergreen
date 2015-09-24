@@ -1,0 +1,10 @@
+[%# Strings for cat/z3950/app.js %]
+
+<script>
+angular.module('egCoreMod').run(['egStrings', function(s) {
+    s.IMPORTED_RECORD_FROM_Z3950        = "[% l('Imported record') %]";
+    s.IMPORTED_RECORD_FROM_Z3950_AS_ID  = "[% l('Record imported as ID [_1]', '{{id}}') %]";
+    s.GO_TO_RECORD                      = "[% l('Go to record') %]";
+    s.GO_BACK                           = "[% l('Go back') %]";
+}]);
+</script>

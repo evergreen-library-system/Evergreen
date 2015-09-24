@@ -8,6 +8,7 @@
 [% BLOCK APP_JS %]
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/services/grid.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/services/ui.js"></script>
+[% INCLUDE 'staff/cat/share/z3950_strings.tt2' %]
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/cat/z3950/app.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/cat/services/z3950.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/marcrecord.js"></script>
