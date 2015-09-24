@@ -109,7 +109,8 @@ function($modal , $interpolate) {
 
 /**
  * egConfirmDialog.open("some message goes {{here}}", {
- *  here : 'foo', ok : function() {}, cancel : function() {}});
+ *  here : 'foo', ok : function() {}, cancel : function() {}},
+ *  'OK', 'Cancel');
  */
 .factory('egConfirmDialog', 
     
@@ -117,13 +118,15 @@ function($modal , $interpolate) {
 function($modal, $interpolate) {
     var service = {};
 
-    service.open = function(title, message, msg_scope) {
+    service.open = function(title, message, msg_scope, ok_button_label, cancel_button_label) {
         return $modal.open({
             templateUrl: './share/t_confirm_dialog',
             controller: ['$scope', '$modalInstance',
                 function($scope, $modalInstance) {
                     $scope.title = $interpolate(title)(msg_scope);
                     $scope.message = $interpolate(message)(msg_scope);
+                    $scope.ok_button_label = $interpolate(ok_button_label || '')(msg_scope);
+                    $scope.cancel_button_label = $interpolate(cancel_button_label || '')(msg_scope);
                     $scope.ok = function() {
                         if (msg_scope.ok) msg_scope.ok();
                         $modalInstance.close()
