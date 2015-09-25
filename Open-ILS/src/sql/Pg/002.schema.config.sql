@@ -128,7 +128,8 @@ CREATE TABLE config.standing_penalty (
 	label		TEXT	NOT NULL,
 	block_list	TEXT,
 	staff_alert	BOOL	NOT NULL DEFAULT FALSE,
-	org_depth	INTEGER
+	org_depth	INTEGER,
+	ignore_proximity INTEGER
 );
 
 CREATE TABLE config.xml_transform (

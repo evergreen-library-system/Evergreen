@@ -241,6 +241,8 @@ DECLARE
     hold_penalty TEXT;
     v_pickup_ou ALIAS FOR pickup_ou;
     v_request_ou ALIAS FOR request_ou;
+    item_prox INT;
+    pickup_prox INT;
 BEGIN
     SELECT INTO user_object * FROM actor.usr WHERE id = match_user;
     SELECT INTO context_org_list ARRAY_AGG(id) FROM actor.org_unit_full_path( v_pickup_ou );
@@ -358,6 +360,15 @@ BEGIN
         END IF;
     END IF;
  
+    -- Proximity of user's home_ou to the pickup_lib to see if penalty should be ignored.
+    SELECT INTO pickup_prox prox FROM actor.org_unit_proximity WHERE from_org = user_object.home_ou AND to_org = v_pickup_ou;
+    -- Proximity of user's home_ou to the items' lib to see if penalty should be ignored.
+    IF hold_test.distance_is_from_owner THEN
+        SELECT INTO item_prox prox FROM actor.org_unit_proximity WHERE from_org = user_object.home_ou AND to_org = item_cn_object.owning_lib;
+    ELSE
+        SELECT INTO item_prox prox FROM actor.org_unit_proximity WHERE from_org = user_object.home_ou AND to_org = item_object.circ_lib;
+    END IF;
+
     FOR standing_penalty IN
         SELECT  DISTINCT csp.*
           FROM  actor.usr_standing_penalty usp
@@ -365,6 +376,8 @@ BEGIN
           WHERE usr = match_user
                 AND usp.org_unit IN ( SELECT * FROM unnest(context_org_list) )
                 AND (usp.stop_date IS NULL or usp.stop_date > NOW())
+                AND (csp.ignore_proximity IS NULL OR csp.ignore_proximity < item_prox
+                     OR csp.ignore_proximity < pickup_prox)
                 AND csp.block_list LIKE '%' || hold_penalty || '%' LOOP
 
         result.fail_part := standing_penalty.name;

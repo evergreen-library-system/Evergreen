@@ -427,6 +427,8 @@ DECLARE
     items_out               INT;
     context_org_list        INT[];
     done                    BOOL := FALSE;
+    item_prox               INT;
+    home_prox               INT;
 BEGIN
     -- Assume success unless we hit a failure condition
     result.success := TRUE;
@@ -522,6 +524,12 @@ BEGIN
     -- Use Circ OU for penalties and such
     SELECT INTO context_org_list ARRAY_AGG(id) FROM actor.org_unit_full_path( circ_ou );
 
+    -- Proximity of user's home_ou to circ_ou to see if penalties should be ignored.
+    SELECT INTO home_prox prox FROM actor.org_unit_proximity WHERE from_org = user_object.home_ou AND to_org = circ_ou;
+
+    -- Proximity of user's home_ou to item circ_lib to see if penalties should be ignored.
+    SELECT INTO item_prox prox FROM actor.org_unit_proximity WHERE from_org = user_object.home_ou AND to_org = item_object.circ_lib;
+
     IF renewal THEN
         penalty_type = '%RENEW%';
     ELSE
@@ -535,6 +543,9 @@ BEGIN
           WHERE usr = match_user
                 AND usp.org_unit IN ( SELECT * FROM unnest(context_org_list) )
                 AND (usp.stop_date IS NULL or usp.stop_date > NOW())
+                AND (csp.ignore_proximity IS NULL
+                     OR csp.ignore_proximity < home_prox
+                     OR csp.ignore_proximity < item_prox)
                 AND csp.block_list LIKE penalty_type LOOP
 
         result.fail_part := standing_penalty.name;

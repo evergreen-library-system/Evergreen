@@ -3758,6 +3758,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field name="block_list" reporter:datatype="text"/>
 			<field name="staff_alert" reporter:datatype="bool"/>
 			<field name="org_depth" reporter:datatype="int"/>
+			<field name="ignore_proximity" reporter:datatype="int"/>
 		</fields>
 		<links/>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
