@@ -1482,6 +1482,22 @@ sub bail_on_events {
 sub check_hold_fulfill_blocks {
     my $self = shift;
 
+    # With the addition of ignore_proximity in csp, we need to fetch
+    # the proximity of both the circ_lib and the copy's circ_lib to
+    # the patron's home_ou.
+    my ($ou_prox, $copy_prox);
+    my $home_ou = (ref($self->patron->home_ou)) ? $self->patron->home_ou->id : $self->patron->home_ou;
+    $ou_prox = $U->get_org_unit_proximity($self->editor, $home_ou, $self->circ_lib);
+    $ou_prox = -1 unless (defined($ou_prox));
+    my $copy_ou = (ref($self->copy->circ_lib)) ? $self->copy->circ_lib->id : $self->copy->circ_lib;
+    if ($copy_ou == $self->circ_lib) {
+        # Save us the time of an extra query.
+        $copy_prox = $ou_prox;
+    } else {
+        $copy_prox = $U->get_org_unit_proximity($self->editor, $home_ou, $copy_ou);
+        $copy_prox = -1 unless (defined($copy_prox));
+    }
+
     # See if the user has any penalties applied that prevent hold fulfillment
     my $pens = $self->editor->json_query({
         select => {csp => ['name', 'label']},
@@ -1495,7 +1511,14 @@ sub check_hold_fulfill_blocks {
                     {stop_date => {'>' => 'now'}}
                 ]
             },
-            '+csp' => {block_list => {'like' => '%FULFILL%'}}
+            '+csp' => {
+                block_list => {'like' => '%FULFILL%'},
+                '-or' => [
+                    {ignore_proximity => undef},
+                    {ignore_proximity => {'<' => $ou_prox}},
+                    {ignore_proximity => {'<' => $copy_prox}}
+                ]
+            }
         }
     });
 

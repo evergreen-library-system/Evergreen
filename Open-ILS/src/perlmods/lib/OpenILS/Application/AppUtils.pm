@@ -1496,6 +1496,23 @@ sub org_unit_ancestor_at_depth {
     return ($resp) ? $resp->{id} : undef;
 }
 
+# Returns the proximity value between two org units.
+sub get_org_unit_proximity {
+    my ($class, $e, $from_org, $to_org) = @_;
+    $e = OpenILS::Utils::CStoreEditor->new unless ($e);
+    my $r = $e->json_query(
+        {
+            select => {aoup => ['prox']},
+            from => 'aoup',
+            where => {from_org => $from_org, to_org => $to_org}
+        }
+    );
+    if (ref($r) eq 'ARRAY' && @$r) {
+        return $r->[0]->{prox};
+    }
+    return undef;
+}
+
 # returns the user's configured locale as a string.  Defaults to en-US if none is configured.
 sub get_user_locale {
     my($self, $user_id, $e) = @_;

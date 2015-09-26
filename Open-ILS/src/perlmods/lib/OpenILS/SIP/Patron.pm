@@ -51,6 +51,12 @@ sub new {
     syslog("LOG_DEBUG", "OILS: new OpenILS Patron(%s => %s): searching...", $key, $patron_id);
 
     my $e = OpenILS::SIP->editor();
+    # Pass the authtoken, if any, to the editor so that we can use it
+    # to fake a context org_unit for the csp.ignore_proximity in
+    # flesh_user_penalties, below.
+    unless ($e->authtoken()) {
+        $e->authtoken($args{authtoken}) if ($args{authtoken});
+    }
 
     my $usr_flesh = {
         flesh => 2,
@@ -143,9 +149,22 @@ sub get_act_who {
 sub flesh_user_penalties {
     my ($self, $user, $e) = @_;
 
-    $user->standing_penalties(
+    # Use the ws_ou or home_ou of the authsession user, if any, as a
+    # context org_unit for the penalties and the csp.ignore_proximity.
+    my $here;
+    if ($e->authtoken()) {
+        my $auth_usr = $e->checkauth();
+        if ($auth_usr) {
+            $here = $auth_usr->ws_ou() || $auth_usr->home_ou();
+        }
+    }
+
+    # Get the "raw" list of user's penalties and flesh the
+    # standing_penalty field, so we can filter them based on
+    # csp.ignore_proximity.
+    my $raw_penalties =
         $e->search_actor_user_standing_penalty([
-            {   
+            {
                 usr => $user->id,
                 '-or' => [
 
@@ -158,21 +177,20 @@ sub flesh_user_penalties {
                     in  => {
                         select => {
                             aou => [{
-                                column => 'id', 
-                                transform => 'actor.org_unit_ancestors', 
+                                column => 'id',
+                                transform => 'actor.org_unit_ancestors',
                                 result_field => 'id'
                             }]
                         },
                         from => 'aou',
 
-                        # at this point, there is no concept of "here", so fetch penalties 
-                        # for the patron's home lib plus ancestors
-                        where => {id => $user->home_ou}, 
+                        # Use "here" or user's home_ou.
+                        where => {id => ($here) ? $here : $user->home_ou},
                         distinct => 1
                     }
                 },
 
-                # in addition to fines and excessive overdue penalties, 
+                # in addition to fines and excessive overdue penalties,
                 # we only care about penalties that result in blocks
                 standing_penalty => {
                     in => {
@@ -187,8 +205,28 @@ sub flesh_user_penalties {
                     }
                 }
             },
-        ])
-    );
+            {
+                flesh => 1,
+                flesh_fields => {ausp => ['standing_penalty']}
+            }
+        ]);
+    # We filter the raw penalties that apply into this array.
+    my $applied_penalties = [];
+    if (ref($raw_penalties) eq 'ARRAY' && @$raw_penalties) {
+        my $here_prox = ($here) ? $U->get_org_unit_proximity($e, $here, $user->home_ou())
+            : undef;
+        # Filter out those that do not apply and deflesh the standing_penalty.
+        $applied_penalties = [map
+            { $_->standing_penalty($_->standing_penalty->id()) }
+                grep {
+                    !defined($_->standing_penalty->ignore_proximity())
+                    || ((defined($here_prox))
+                        ? $_->standing_penalty->ignore_proximity() < $here_prox
+                        : $_->standing_penalty->ignore_proximity() <
+                            $U->get_org_unit_proximity($e, $_->org_unit(), $user->home_ou()))
+                } @$raw_penalties];
+    }
+    $user->standing_penalties($applied_penalties);
 }
 
 sub id {
