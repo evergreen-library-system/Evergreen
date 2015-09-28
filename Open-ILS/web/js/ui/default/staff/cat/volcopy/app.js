@@ -846,7 +846,9 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
 
          $scope.applyTemplate = function (n) {
             angular.forEach($scope.templates[n], function (v,k) {
-                if (!angular.isObject(v)) {
+                if (k == 'circ_lib') {
+                    $scope.working[k] = egCore.org.get(v);
+                } else if (!angular.isObject(v)) {
                     $scope.working[k] = angular.copy(v);
                 } else {
                     angular.forEach(v, function (sv,sk) {
@@ -1446,7 +1448,9 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
             
                 $scope.applyTemplate = function (n) {
                     angular.forEach($scope.templates[n], function (v,k) {
-                        if (!angular.isObject(v)) {
+                        if (k == 'circ_lib') {
+                            $scope.working[k] = egCore.org.get(v);
+                        } else if (!angular.isObject(v)) {
                             $scope.working[k] = angular.copy(v);
                         } else {
                             angular.forEach(v, function (sv,sk) {
@@ -1621,7 +1625,6 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                 });
                 createSimpleUpdateWatcher('age_protect');
             
-                createSimpleUpdateWatcher('circ_lib');
                 createSimpleUpdateWatcher('circulate');
                 createSimpleUpdateWatcher('holdable');
                 createSimpleUpdateWatcher('fine_level');
