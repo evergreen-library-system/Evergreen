@@ -22,6 +22,7 @@ module.exports = function(grunt) {
             'bower_components/angular-bootstrap/ui-bootstrap.min.js',
             'bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js',
             'bower_components/angular-hotkeys/build/hotkeys.min.js',
+            'bower_components/angular-location-update/angular-location-update.min.js',
             'bower_components/jquery/dist/jquery.min.js',
           ]
         }]

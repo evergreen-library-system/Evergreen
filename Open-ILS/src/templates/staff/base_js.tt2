@@ -8,6 +8,7 @@
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/angular-route.min.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/ui-bootstrap-tpls.min.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/hotkeys.min.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/angular-location-update.min.js"></script>
 
 <!-- IDL / opensrf (network) -->
 <script src="[% ctx.media_prefix %]/js/dojo/opensrf/JSON_v1.js"></script>
