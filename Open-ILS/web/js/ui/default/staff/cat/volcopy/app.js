@@ -1286,6 +1286,8 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                     perCnCopies[cn_id].push(cp);
                 }
                 cp.call_number(cn_id); // prevent loops in JSON-ification
+                cnHash[cn_id].prefix(cnHash[cn_id].prefix().id()); // un-object-ize some fields
+                cnHash[cn_id].suffix(cnHash[cn_id].suffix().id()); // un-object-ize some fields
             });
 
             angular.forEach(perCnCopies, function (v, k) {
