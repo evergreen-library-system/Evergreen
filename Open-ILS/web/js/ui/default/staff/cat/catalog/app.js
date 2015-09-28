@@ -7,7 +7,7 @@
  *
  */
 
-angular.module('egCatalogApp', ['ui.bootstrap','ngRoute','egCoreMod','egGridMod', 'egMarcMod', 'egUserMod'])
+angular.module('egCatalogApp', ['ui.bootstrap','ngRoute','ngLocationUpdate','egCoreMod','egGridMod', 'egMarcMod', 'egUserMod'])
 
 .config(function($routeProvider, $locationProvider, $compileProvider) {
     $locationProvider.html5Mode(true);
@@ -248,6 +248,9 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
             if (force_opac_tab) $scope.record_tab = 'catalog';
             $scope.in_opac_call = true;
             $scope.opac_iframe.dom.contentWindow[opac_frame_function]();
+            if (opac_frame_function == 'rdetailBackToResults') {
+                $location.update_path('/cat/catalog/index');
+            }
         }
     }
 
@@ -357,6 +360,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
                 $scope.conjoinedGridDataProvider.refresh();
             });
             init_parts_url();
+            $location.update_path('/cat/catalog/record/' + $scope.record_id);
         } else {
             delete $scope.record_id;
             $scope.from_route = false;
