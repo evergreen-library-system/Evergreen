@@ -450,7 +450,12 @@ angular.module('egGridMod',
                         grid_col.sort = col.sort || 0;
                         // all saved columns are assumed to be true
                         grid_col.visible = true;
-                        new_cols.push(grid_col);
+                        if (new_cols
+                                .filter(function (c) {
+                                    return c.name == grid_col.name;
+                                }).length == 0
+                        )
+                            new_cols.push(grid_col);
                     });
 
                     // columns which are not expressed within the saved 
