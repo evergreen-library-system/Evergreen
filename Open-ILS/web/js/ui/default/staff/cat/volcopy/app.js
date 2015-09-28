@@ -1315,6 +1315,11 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
             $scope.saveCompletedCopies(false);
         }
 
+        $scope.workingSaveAndExit = function () {
+            $scope.workingToComplete();
+            $scope.saveAndExit();
+        }
+
         $scope.saveAndExit = function () {
             $scope.saveCompletedCopies(true);
         }
