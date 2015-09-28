@@ -972,7 +972,7 @@ sub fleshed_volume_update {
             $logger->info("vol-update: update volume");
             my $resp = update_volume($vol, $editor, ($oargs->{all} or grep { $_ eq 'VOLUME_LABEL_EXISTS' } @{$oargs->{events}} or $auto_merge_vols));
             return $resp->{evt} if $resp->{evt};
-            $vol = $resp->{merge_vol};
+            $vol = $resp->{merge_vol} if $resp->{merge_vol};
         }
 
         # now update any attached copies
