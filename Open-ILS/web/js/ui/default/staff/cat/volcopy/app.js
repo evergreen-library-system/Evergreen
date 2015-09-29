@@ -844,10 +844,13 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                     $scope.template_name_list = Object.keys(t);
                 }
             });
+            egCore.hatch.getItem('cat.copy.last_template').then(function(t) {
+                if (t) $scope.template_name = t;
+            });
         }
         $scope.fetchTemplates();
 
-         $scope.applyTemplate = function (n) {
+        $scope.applyTemplate = function (n) {
             angular.forEach($scope.templates[n], function (v,k) {
                 if (k == 'circ_lib') {
                     $scope.working[k] = egCore.org.get(v);
@@ -867,7 +870,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                     });
                 }
             });
-            $scope.template_name = '';
+            egCore.hatch.setItem('cat.copy.last_template', n);
         }
 
         $scope.copytab = 'working';
