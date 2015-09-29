@@ -90,6 +90,12 @@
     <eg-grid-field label="[% l('Copy #') %]"          path="copy_number" flex="1" visible></eg-grid-field>
     <eg-grid-field label="[% l('Barcode') %]"         path="barcode" visible></eg-grid-field>
     <eg-grid-field label="[% l('Status') %]"          path="status.name" flex="1" visible></eg-grid-field>
+
+    <eg-grid-field label="[% l('Price') %]"                  path="price"></eg-grid-field>
+    <eg-grid-field label="[% l('Circulation Modifier') %]"   path="circ_modifier"></eg-grid-field>
+    <eg-grid-field label="[% l('Circulate') %]"              datatype="bool" path="circulate"></eg-grid-field>
+    <eg-grid-field label="[% l('Holdable') %]"               datatype="bool" path="holdable"></eg-grid-field>
+    <eg-grid-field label="[% l('Reference') %]"              datatype="bool" path="ref"></eg-grid-field>
   
   </eg-grid>
 </div>
