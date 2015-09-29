@@ -6683,7 +6683,7 @@ static jsonObject* oilsMakeFieldmapperFromResult( dbi_result result, osrfHash* m
 						gmtime_r( &_tmp_dt, &gmdt );
 						strftime( dt_string, sizeof( dt_string ), "%T", &gmdt );
 					} else if( !( attr & DBI_DATETIME_TIME )) {
-						localtime_r( &_tmp_dt, &gmdt );
+						gmtime_r( &_tmp_dt, &gmdt );
 						strftime( dt_string, sizeof( dt_string ), "%04Y-%m-%d", &gmdt );
 					} else {
 						localtime_r( &_tmp_dt, &gmdt );
@@ -6769,7 +6769,7 @@ static jsonObject* oilsMakeJSONFromResult( dbi_result result ) {
 						gmtime_r( &_tmp_dt, &gmdt );
 						strftime( dt_string, sizeof( dt_string ), "%T", &gmdt );
 					} else if( !( attr & DBI_DATETIME_TIME )) {
-						localtime_r( &_tmp_dt, &gmdt );
+						gmtime_r( &_tmp_dt, &gmdt );
 						strftime( dt_string, sizeof( dt_string ), "%04Y-%m-%d", &gmdt );
 					} else {
 						localtime_r( &_tmp_dt, &gmdt );

@@ -166,7 +166,7 @@ static jsonObject* get_date_column( dbi_result result, int col_idx ) {
 		gmtime_r( &timestamp, &gmdt );
 		strftime( timestring, sizeof( timestring ), "%T", &gmdt );
 	} else if( !( attr & DBI_DATETIME_TIME )) {
-		localtime_r( &timestamp, &gmdt );
+		gmtime_r( &timestamp, &gmdt );
 		strftime( timestring, sizeof( timestring ), "%F", &gmdt );
 	} else {
 		localtime_r( &timestamp, &gmdt );
