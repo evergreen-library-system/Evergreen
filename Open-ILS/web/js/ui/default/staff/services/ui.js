@@ -222,23 +222,31 @@ function($modal, $interpolate) {
             '<div class="input-group">'+
                 '<input type="text" class="form-control" ng-model="selected" ng-change="makeOpen()">'+
                 '<div class="input-group-btn" dropdown ng-class="{open:isopen}">'+
-                    '<button type="button" class="btn btn-default dropdown-toggle"><span class="caret"></span></button>'+
+                    '<button type="button" ng-click="showAll()" class="btn btn-default dropdown-toggle"><span class="caret"></span></button>'+
                     '<ul class="dropdown-menu dropdown-menu-right">'+
                         '<li ng-repeat="item in list|filter:selected"><a href ng-click="changeValue(item)">{{item}}</a></li>'+
+                        '<li ng-if="all" class="divider"><span></span></li>'+
+                        '<li ng-if="all" ng-repeat="item in list"><a href ng-click="changeValue(item)">{{item}}</a></li>'+
                     '</ul>'+
                 '</div>'+
             '</div>',
         controller: ['$scope','$filter',
             function( $scope , $filter) {
 
-                $scope.always = true;
+                $scope.all = false;
                 $scope.isopen = false;
 
+                $scope.showAll = function () {
+                    if ($scope.selected.length > 0)
+                        $scope.all = true;
+                }
+
                 $scope.makeOpen = function () {
-                    return $scope.isopen = $filter('filter')(
+                    $scope.isopen = $filter('filter')(
                         $scope.list,
                         $scope.selected
                     ).length > 0 && $scope.selected.length > 0;
+                    $scope.all = false;
                 }
 
                 $scope.changeValue = function (newVal) {
