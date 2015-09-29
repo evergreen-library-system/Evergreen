@@ -607,14 +607,13 @@ function($scope,  $q , $routeParams,  bucketSvc,  egCore,  $window,
         });
     }
 
-    $scope.showAllRecords = function() {
-        // TODO: maybe show selected would be better?
+    $scope.showRecords = function(records) {
         // TODO: probably want to set a limit on the number of
         //       new tabs one could choose to open at once
-        angular.forEach(bucketSvc.currentBucket.items(), function(rec) {
+        angular.forEach(records, function(rec) {
             var url = egCore.env.basePath +
                       'cat/catalog/record/' +
-                      rec.target_biblio_record_entry();
+                      rec.id;
             $timeout(function() { $window.open(url, '_blank') });
         });
     }
