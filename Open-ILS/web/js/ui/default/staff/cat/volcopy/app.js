@@ -323,14 +323,14 @@ function(egCore , $q) {
         template:
             '<div class="row">'+
                 '<div class="col-xs-2">'+
-                    '<select class="form-control" ng-model="classification" ng-options="cl.name() for cl in classification_list track by idTracker(cl)"/>'+
+                    '<select class="form-control" ng-model="classification" ng-change="updateClassification()" ng-options="cl.name() for cl in classification_list"/>'+
                 '</div>'+
                 '<div class="col-xs-1">'+
-                    '<select class="form-control" ng-model="prefix" ng-change="updatePrefix()" ng-options="p.label() for p in prefix_list track by idTracker(p)"/>'+
+                    '<select class="form-control" ng-model="prefix" ng-change="updatePrefix()" ng-options="p.label() for p in prefix_list"/>'+
                 '</div>'+
                 '<div class="col-xs-2"><input class="form-control" type="text" ng-change="updateLabel()" ng-model="label"/></div>'+
                 '<div class="col-xs-1">'+
-                    '<select class="form-control" ng-model="suffix" ng-change="updateSuffix()" ng-options="s.label() for s in suffix_list track by idTracker(s)"/>'+
+                    '<select class="form-control" ng-model="suffix" ng-change="updateSuffix()" ng-options="s.label() for s in suffix_list"/>'+
                 '</div>'+
                 '<div ng-hide="onlyVols" class="col-xs-1"><input class="form-control" type="number" ng-model="copy_count" min="{{orig_copy_count}}" ng-change="changeCPCount()"></div>'+
                 '<div ng-hide="onlyVols" class="col-xs-5">'+
@@ -384,6 +384,7 @@ function(egCore , $q) {
                 itemSvc.get_suffixes($scope.callNumber.owning_lib()).then(function(list){
                     $scope.suffix_list = list;
                     $scope.$watch('callNumber.suffix()', function (v) {
+                        if (angular.isObject(v)) v = v.id();
                         $scope.suffix = $scope.suffix_list.filter( function (s) {
                             return s.id() == v;
                         })[0];
@@ -392,7 +393,7 @@ function(egCore , $q) {
                 });
                 $scope.updateSuffix = function () {
                     angular.forEach($scope.copies, function(cp) {
-                        cp.call_number().suffix($scope.suffix.id());
+                        cp.call_number().suffix($scope.suffix);
                         cp.call_number().ischanged(1);
                     });
                 }
@@ -401,6 +402,7 @@ function(egCore , $q) {
                 itemSvc.get_prefixes($scope.callNumber.owning_lib()).then(function(list){
                     $scope.prefix_list = list;
                     $scope.$watch('callNumber.prefix()', function (v) {
+                        if (angular.isObject(v)) v = v.id();
                         $scope.prefix = $scope.prefix_list.filter(function (p) {
                             return p.id() == v;
                         })[0];
@@ -409,7 +411,7 @@ function(egCore , $q) {
                 });
                 $scope.updatePrefix = function () {
                     angular.forEach($scope.copies, function(cp) {
-                        cp.call_number().prefix($scope.prefix.id());
+                        cp.call_number().prefix($scope.prefix);
                         cp.call_number().ischanged(1);
                     });
                 }
@@ -418,6 +420,7 @@ function(egCore , $q) {
                 itemSvc.get_classifications().then(function(list){
                     $scope.classification_list = list;
                     $scope.$watch('callNumber.label_class()', function (v) {
+                        if (angular.isObject(v)) v = v.id();
                         $scope.classification = $scope.classification_list.filter(function (c) {
                             return c.id() == v;
                         })[0];
@@ -426,7 +429,7 @@ function(egCore , $q) {
                 });
                 $scope.updateClassification = function () {
                     angular.forEach($scope.copies, function(cp) {
-                        cp.call_number().label_class($scope.classification.id());
+                        cp.call_number().label_class($scope.classification);
                         cp.call_number().ischanged(1);
                     });
                 }
@@ -883,18 +886,29 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                 angular.forEach($scope.data.tree, function(cn_hash) {
                     angular.forEach(cn_hash, function(copies) {
                         angular.forEach(copies, function(cp) {
-                            if (typeof $scope.batch.classification != 'undefined' && $scope.batch.classification != '')
-                                cp.call_number().label_class($scope.batch.classification);
+                            if (typeof $scope.batch.classification != 'undefined' && $scope.batch.classification != '') {
+                                var label_class = $scope.classification_list.filter(function(p){ return p.id() == $scope.batch.classification })[0];
+                                cp.call_number().label_class(label_class);
+                                cp.call_number().ischanged(1);
                                 $scope.dirty = true;
-                            if (typeof $scope.batch.prefix != 'undefined' && $scope.batch.prefix != '')
-                                cp.call_number().prefix($scope.batch.prefix);
+                            }
+                            if (typeof $scope.batch.prefix != 'undefined' && $scope.batch.prefix != '') {
+                                var prefix = $scope.prefix_list.filter(function(p){ return p.id() == $scope.batch.prefix })[0];
+                                cp.call_number().prefix(prefix);
+                                cp.call_number().ischanged(1);
                                 $scope.dirty = true;
-                            if (typeof $scope.batch.label != 'undefined' && $scope.batch.label != '')
+                            }
+                            if (typeof $scope.batch.label != 'undefined' && $scope.batch.label != '') {
                                 cp.call_number().label($scope.batch.label);
+                                cp.call_number().ischanged(1);
                                 $scope.dirty = true;
-                            if (typeof $scope.batch.suffix != 'undefined' && $scope.batch.suffix != '')
-                                cp.call_number().suffix($scope.batch.suffix);
+                            }
+                            if (typeof $scope.batch.suffix != 'undefined' && $scope.batch.suffix != '') {
+                                var suffix = $scope.suffix_list.filter(function(p){ return p.id() == $scope.batch.suffix })[0];
+                                cp.call_number().suffix(suffix);
+                                cp.call_number().ischanged(1);
                                 $scope.dirty = true;
+                            }
                         });
                     });
                 });
