@@ -14,7 +14,7 @@
     handler="requestItems"></eg-grid-action>
   <eg-grid-action label="[% l('Edit Selected Copies') %]" 
     handler="spawnHoldingsEdit"></eg-grid-action>
-  <eg-grid-action label="[% l('Remove Selected Copies') %]" 
+  <eg-grid-action label="[% l('Remove Selected Copies from Bucket') %]" 
     handler="detachCopies"></eg-grid-action>
   <eg-grid-action label="[% l('Transfer Selected Copies to Marked Volume') %]" 
     handler="transferCopies"></eg-grid-action>

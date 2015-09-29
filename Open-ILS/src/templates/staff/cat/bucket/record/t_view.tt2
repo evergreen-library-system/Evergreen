@@ -13,7 +13,7 @@
   <eg-grid-action label="[% l('Show Selected Records in Catalog') %]"
     handler="showRecords"></eg-grid-action>
 
-  <eg-grid-action label="[% l('Remove Selected Records') %]" 
+  <eg-grid-action label="[% l('Remove Selected Records from Bucket') %]" 
     handler="detachRecords"></eg-grid-action>
 
   <eg-grid-action label="[% l('Delete Selected Records from Catalog') %]" 
