@@ -314,22 +314,38 @@ __PACKAGE__->register_method(
 sub ou_ancestor_setting_batch {
     my( $self, $client, $orgid, $name_list, $auth ) = @_;
 
-    my %must_check_perm = ();
-    unless (defined $auth) {
-        # figure out which OU settings *require* view permission
-        # checks
-        my $e = new_editor();
-        my $res = $e->search_config_org_unit_setting_type({
-            name      => $name_list,
-            view_perm => { "!=" => undef },
-        });
-        $must_check_perm{ $_->name() } = -1 for @$res;
+    # splitting the list of settings to fetch values
+    # so that ones that *don't* require view_perm checks
+    # can be fetched in one fell swoop, which is
+    # significantly faster in cases where a large
+    # number of settings need to be fetched.
+    my %perm_check_required = ();
+    my @perm_check_not_required = ();
+
+    # Note that ->ou_ancestor_setting also can check
+    # to see if the setting has a view_perm, but testing
+    # suggests that the redundant checks do not significantly
+    # increase the time it takes to fetch the values of
+    # permission-controlled settings.
+    my $e = new_editor();
+    my $res = $e->search_config_org_unit_setting_type({
+        name      => $name_list,
+        view_perm => { "!=" => undef },
+    });
+    %perm_check_required = map { $_->name() => 1 } @$res;
+    foreach my $setting (@$name_list) {
+        push @perm_check_not_required, $setting
+            unless exists($perm_check_required{$setting});
     }
+
     my %values;
+    if (@perm_check_not_required) {
+        %values = $U->ou_ancestor_setting_batch_insecure($orgid, \@perm_check_not_required);
+    }
     $values{$_} = $U->ou_ancestor_setting(
         $orgid, $_, undef,
-        ($auth ? $auth : $must_check_perm{$_})
-    ) for @$name_list;
+        ($auth ? $auth : -1)
+    ) for keys(%perm_check_required);
     return \%values;
 }
 

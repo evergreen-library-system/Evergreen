@@ -1304,7 +1304,28 @@ sub ou_ancestor_setting {
     return undef unless $setting;
     return {org => $setting->{org_unit}, value => OpenSRF::Utils::JSON->JSON2perl($setting->{value})};
 }   
-        
+
+# This fetches a set of OU settings in one fell swoop,
+# which can be significantly faster than invoking
+# $U->ou_ancestor_setting() one setting at a time.
+# As the "_insecure" implies, however, callers are
+# responsible for ensuring that the settings to be
+# fetch do not need view permission checks.
+sub ou_ancestor_setting_batch_insecure {
+    my( $self, $orgid, $names ) = @_;
+
+    my %result = map { $_ => undef } @$names;
+    my $query = {from => ['actor.org_unit_ancestor_setting_batch', $orgid, @$names]};
+    my $e = OpenILS::Utils::CStoreEditor->new();
+    my $settings = $e->json_query($query);
+    foreach my $setting (@$settings) {
+        $result{$setting->{name}} = {
+            org => $setting->{org_unit},
+            value => OpenSRF::Utils::JSON->JSON2perl($setting->{value})
+        };
+    }
+    return %result;
+}
 
 # returns the ISO8601 string representation of the requested epoch in GMT
 sub epoch2ISO8601 {
