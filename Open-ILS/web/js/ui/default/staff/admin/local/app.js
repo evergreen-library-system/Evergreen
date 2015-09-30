@@ -32,6 +32,25 @@ angular.module('egLocalAdmin',
         resolve : resolver
     });
 
+    // non-conify routes come first
+    $routeProvider.when('/admin/local/asset/org_unit_settings', {
+        template: eframe_template,
+        controller: 'EmbedXHTMLCtl', // non-conify
+        resolve : resolver
+    });
+
+    $routeProvider.when('/admin/local/config/non_cat_types', {
+        template: eframe_template,
+        controller: 'EmbedXHTMLCtl', // non-conify
+        resolve : resolver
+    });
+
+    $routeProvider.when('/admin/local/asset/stat_cat_editor', {
+        template: eframe_template,
+        controller: 'EmbedXHTMLCtl', // non-conify
+        resolve : resolver
+    });
+
     // Conify page handler
     $routeProvider.when('/admin/local/:schema/:page', {
         template: eframe_template,
