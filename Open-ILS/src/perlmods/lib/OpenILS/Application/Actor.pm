@@ -313,10 +313,23 @@ __PACKAGE__->register_method(
 );
 sub ou_ancestor_setting_batch {
     my( $self, $client, $orgid, $name_list, $auth ) = @_;
-    # Make sure $auth is set to something if not given.
-    $auth ||= -1;
+
+    my %must_check_perm = ();
+    unless (defined $auth) {
+        # figure out which OU settings *require* view permission
+        # checks
+        my $e = new_editor();
+        my $res = $e->search_config_org_unit_setting_type({
+            name      => $name_list,
+            view_perm => { "!=" => undef },
+        });
+        $must_check_perm{ $_->name() } = -1 for @$res;
+    }
     my %values;
-    $values{$_} = $U->ou_ancestor_setting($orgid, $_, undef, $auth) for @$name_list;
+    $values{$_} = $U->ou_ancestor_setting(
+        $orgid, $_, undef,
+        ($auth ? $auth : $must_check_perm{$_})
+    ) for @$name_list;
     return \%values;
 }
 
