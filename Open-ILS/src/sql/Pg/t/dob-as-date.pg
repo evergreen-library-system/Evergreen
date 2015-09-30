@@ -1,0 +1,38 @@
+BEGIN;
+
+SELECT plan(5);
+
+SELECT col_type_is('actor', 'usr', 'dob', 'date', 'Check dob column type');
+
+SELECT is(
+    (SELECT (
+        '2011-02-28 23:00:00-05'::timestamptz + '3 hours'::interval)::date),
+    '2011-03-01',
+    'Confirming date translation on hour-23 dates'
+);
+
+SELECT is(
+    (SELECT dob FROM actor.usr WHERE id = 1),
+    '1979-01-22', -- DoB of admin user
+    'Checking admin default dob'
+);
+
+UPDATE actor.usr SET dob = '2011-03-01 00:00:00-10' WHERE id = 1;
+
+SELECT is(
+    (SELECT dob FROM actor.usr WHERE id = 1),
+    '2011-03-01',
+    'Date truncation with timezone v1'
+);
+
+UPDATE actor.usr SET dob = '2011-06-01 00:00:00+10' WHERE id = 1;
+
+SELECT is(
+    (SELECT dob FROM actor.usr WHERE id = 1),
+    '2011-06-01', 
+    'Date truncation with timezone v2'
+);
+
+-- Finish the tests and clean up.
+SELECT * FROM finish();
+ROLLBACK;
