@@ -282,7 +282,7 @@ function(egCore , $q) {
                             part.id( --$scope.new_part_id );
                             part.isnew( true );
                             part.label( $scope.part );
-                            part.record( $scope.callNumber.owning_lib() );
+                            part.record( $scope.callNumber.record() );
                             $scope.copy.parts([part]);
                             $scope.copy.ischanged(1);
                         }
