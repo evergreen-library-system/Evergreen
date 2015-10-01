@@ -1,0 +1,20 @@
+Accent Insensitive Patron Search
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+When performing a patron search, in addition to the (existing)
+case-insensitivity, these additional characteristics will govern the
+search:
+
+Accent (diacritic) insensitivity::
+Diacritics will be transformed into a plain character equivalent for
+comparison purposes. So if the patron name is Eugène Delacroix, for
+example, you could enter euge for the First Name, and it would
+match. Ligatures such as Œ are expanded into the constituent
+characters "OE".
+
+Space insensitivity::
+Spaces will be squashed out for comparison purposes. If the patron is,
+again, Eugène Delacroix, you could enter "de la croix" in the Last
+Name field and it would match.
+
+This behavior affects the Last Name, First Name, and Middle Name fields
+of the search.

@@ -86,4 +86,12 @@ END
 $protect_reserved$
 LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION evergreen.unaccent_and_squash ( IN arg text) RETURNS text
+    IMMUTABLE STRICT AS $$
+	BEGIN
+	RETURN evergreen.lowercase(unaccent(regexp_replace(arg, '\s','','g')));
+	END;
+$$ LANGUAGE PLPGSQL;
+
+
 COMMIT;
