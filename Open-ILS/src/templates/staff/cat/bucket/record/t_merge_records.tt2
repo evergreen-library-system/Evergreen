@@ -18,16 +18,13 @@
           </div>
           <div class="col-xs-6">
             <h4>[% l('Records to merge into lead') %]</h4>
-            <accordion>
-              <accordion-group ng-repeat="rec in records">
-                <accordion-heading>
-                    [% l('Record [_1]', '{{rec.id}}') %] <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
-                </accordion-heading>
+            <tabset>
+              <tab heading="[% l('Bib [_1]', '{{rec.id}}') %]" ng-repeat="rec in records">
                 <button class="btn btn-default btn-sm" ng-click="use_as_lead(rec)">[% l('Use as lead record') %]</button>
                 <button class="btn btn-default btn-sm" ng-click="drop(rec)">[% l('Remove from consideration') %]</button>
                 <eg-record-html record-id="rec.id"></eg-record-html>
-              </accordion-group>
-            </accordian>
+              </tab>
+            </tabset>
           </div>
       </div>
   </div>
