@@ -1,0 +1,50 @@
+<div class="container-fluid" style="text-align:center">
+  <div class="alert alert-info alert-less-pad strong-text-2">
+    <span>[% l('Transit List') %]</span>
+  </div>
+</div>
+
+<span><label><input type="radio" ng-model="transit_direction" value="to"/>[% l('Transits To') %]</label></span>
+<span><label><input type="radio" ng-model="transit_direction" value="from"/>[% l('Transits From') %]</label></span>
+<br/>
+<span><label>[% l('Library: ' ) %]</label></span>
+<span><eg-org-selector selected="context_org"></eg-org-selector></span>
+<span><label>[% l('Start Date: ') %]</label><input eg-date-input ng-model="dates.start_date" /></span>
+<span><label>[% l('End Date: ') %]</label><input eg-date-input ng-model="dates.end_date" /></span>
+
+<hr/>
+
+<eg-grid
+  id-field="id"
+  idl-class="atc"
+  features="-sort,-multisort"
+  items-provider="grid_data_provider"
+  grid-controls="grid_controls"
+  persist-key="circ.transits.list"
+>
+
+  <eg-grid-menu-item handler="load_item" 
+    label="[% l('Item Status') %]"></eg-grid-menu-item>
+
+  <eg-grid-menu-item handler="abort_transit" 
+    label="[% l('Abort Transit') %]"></eg-grid-menu-item>
+
+  <eg-grid-field path='id' hidden></eg-grid-field>
+  <eg-grid-field path='target_copy.barcode'></eg-grid-field>
+  <eg-grid-field path='target_copy.circ_lib.shortname' hidden></eg-grid-field>
+  <eg-grid-field path='target_copy.call_number.label' hidden></eg-grid-field>
+  <eg-grid-field path='target_copy.call_number.record.simple_record.title'></eg-grid-field>
+  <eg-grid-field path='target_copy.call_number.record.simple_record.author' hidden></eg-grid-field>
+  <eg-grid-field path='source.shortname' label="[% l('Source Library') %]"></eg-grid-field>
+  <eg-grid-field path='dest.shortname' label="[% l('Destination Library') %]"></eg-grid-field>
+  <eg-grid-field path='source_send_time'></eg-grid-field>
+  <eg-grid-field path='dest_recv_time'></eg-grid-field>
+  <eg-grid-field path='hold_transit_copy.hold.hold_type'></eg-grid-field>
+  <eg-grid-field path='hold_transit_copy.hold.request_time' hidden></eg-grid-field>
+  <eg-grid-field path='hold_transit_copy.hold.capture_time' hidden></eg-grid-field>
+  <eg-grid-field path='hold_transit_copy.hold.expire_time' hidden></eg-grid-field>
+  <eg-grid-field path='hold_transit_copy.hold.usr.family_name' hidden></eg-grid-field>
+  <eg-grid-field path='hold_transit_copy.hold.usr.first_given_name' hidden></eg-grid-field>
+  <eg-grid-field path='hold_transit_copy.hold.usr.card.barcode' label="[% l('Patron Barcode') %]" hidden></eg-grid-field>
+</eg-grid>
+

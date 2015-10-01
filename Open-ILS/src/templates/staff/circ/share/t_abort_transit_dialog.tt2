@@ -1,0 +1,32 @@
+<form ng-submit="ok()" role="form" class="form-horizontal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" 
+        ng-click="cancel($event)" aria-hidden="true">&times;</button>
+      <h4 class="modal-title">
+        [% l('Abort Transits and Reset Associated Holds') %]
+      </h4>
+    </div>
+    <div class="modal-body">
+      <span class="form-group">
+        <ng-pluralize count="num_transits"
+            when="{
+                'one': '[% l('Abort 1 transit?') %]',
+                'other' : '[% l('Abort [_1] transits?','{{num_transits}}') %]'
+            }">
+        </ng-pluralize>
+        <ng-pluralize count="num_hold_transits"
+            when="{
+                'one' : '[% l('There is 1 associated hold.') %]',
+                'other' : '[%l ('There are [_1] associated holds.','{{num_hold_transits}}') %]'
+            }">
+        </ng-pluralize>
+      </span>
+    </div>
+    <div class="modal-footer">
+      <input type="submit" class="btn btn-success" value="[% l('Abort Transit') %]"/>
+      <button class="btn btn-warning" ng-click="cancel($event)">[% l('Exit') %]</button>
+    </div>
+  </div>
+</div>
+
