@@ -184,7 +184,7 @@ values.
 
 ((("Credit Card Processing", "Library Settings Editor")))
 
-[[lse-cataloging]]
+[[lse-credit-cards]]
 .Credit Card Processing
 [options="header"]
 |======================
