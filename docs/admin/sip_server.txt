@@ -285,25 +285,25 @@ preceded with a 2-character field identifier) are used. The fields vary between 
 
 |===========================================================================
 | *Pair* | *Name*              | *Supported?*          |*Details* 
-| 01     | Block Patron        | Yes                   |<<01_block_patron, 01/Block_Patron>> - ACS responds with 24 Patron Status Response 
-| 09-10  | Checkin             | Yes (with extensions) |<<09-10_checkin, 09/10_Checkin>> 
-| 11-12  | Checkout            | Yes (no renewals)     |<<11-12_checkout, 11/12_Checkout>> 
-| 15-16  | Hold                | Partially supported   |<<15-16_hold, 15/16_Hold>>  
-| 17-18  | Item Information    | Yes (no extensions)   |<<17-18_item_information, 17/18_Item_Information>> 
-| 19-20  | Item Status Update  | No                    |<<19-20_item_status_update, 19/20_Item_Status_Update>> - Returns Patron Enable response, but doesn't make any changes in EG  
-| 23-24  | Patron Status       | Yes                   |<<23-24_patron_status, 23/24_Patron_Status>> - 63/64 ``Patron Information'' preferred 
-| 25-26  | Patron Enable       | No                    |<<25-26_patron_enable, 25/26_Patron_Enable>> - Used during system testing and validation 
-| 29-30  | Renew               | Yes                   |<<29-30_renew, 29/30_Renew>> 
-| 35-36  | End Session         | Yes                   |<<35-36_end_session, 35/36_End_Session>>
-| 37-38  | Fee Paid            | Yes                   |<<37-38_fee_paid, 37/38_Fee_Paid>> 
-| 63-64  | Patron Information  | Yes (no extensions)   |<<63-64_patron_information, 63/64_Patron_Information>> 
-| 65-66  | Renew All           | Yes                   |<<65-66_renew_all, 65/66_Renew_All>> 
-| 93-94  | Login               | Yes                   |<<93-94_login, 93/94_Login>> - Must be first command to Evergreen ACS (via socket) or +SIP+ will terminate 
-| 97-96  | Resend last message | Yes                   |<<97-96_resend, 97/96_Resend>> 
-| 99-98  | SC-ACS Status       | Yes                   |<<99-98_sc_and_acs_status, 99/98_SC_and_ACS_Status>> 
+| 01     | Block Patron        | Yes                   |<<sip_01_block_patron, 01/Block_Patron>> - ACS responds with 24 Patron Status Response 
+| 09-10  | Checkin             | Yes (with extensions) |<<sip_09-10_checkin, 09/10_Checkin>> 
+| 11-12  | Checkout            | Yes (no renewals)     |<<sip_11-12_checkout, 11/12_Checkout>> 
+| 15-16  | Hold                | Partially supported   |<<sip_15-16_hold, 15/16_Hold>>  
+| 17-18  | Item Information    | Yes (no extensions)   |<<sip_17-18_item_information, 17/18_Item_Information>> 
+| 19-20  | Item Status Update  | No                    |<<sip_19-20_item_status_update, 19/20_Item_Status_Update>> - Returns Patron Enable response, but doesn't make any changes in EG  
+| 23-24  | Patron Status       | Yes                   |<<sip_23-24_patron_status, 23/24_Patron_Status>> - 63/64 ``Patron Information'' preferred 
+| 25-26  | Patron Enable       | No                    |<<sip_25-26_patron_enable, 25/26_Patron_Enable>> - Used during system testing and validation 
+| 29-30  | Renew               | Yes                   |<<sip_29-30_renew, 29/30_Renew>> 
+| 35-36  | End Session         | Yes                   |<<sip_35-36_end_session, 35/36_End_Session>>
+| 37-38  | Fee Paid            | Yes                   |<<sip_37-38_fee_paid, 37/38_Fee_Paid>> 
+| 63-64  | Patron Information  | Yes (no extensions)   |<<sip_63-64_patron_information, 63/64_Patron_Information>> 
+| 65-66  | Renew All           | Yes                   |<<sip_65-66_renew_all, 65/66_Renew_All>> 
+| 93-94  | Login               | Yes                   |<<sip_93-94_login, 93/94_Login>> - Must be first command to Evergreen ACS (via socket) or +SIP+ will terminate 
+| 97-96  | Resend last message | Yes                   |<<sip_97-96_resend, 97/96_Resend>> 
+| 99-98  | SC-ACS Status       | Yes                   |<<sip_99-98_sc_and_acs_status, 99/98_SC_and_ACS_Status>> 
 |===========================================================================
 
-anchor:01_block_patron[]
+anchor:sip_01_block_patron[]
 
 01 Block Patron
 ^^^^^^^^^^^^^^^
@@ -344,7 +344,7 @@ The response is a 24 ``Patron Status Response'' with the following:
 * Screen Message 1 (AF): _blocked_ 
 * Patron 
 
-anchor:09-10_checkin[]
+anchor:sip_09-10_checkin[]
 
 09/10 Checkin
 ^^^^^^^^^^^^^
@@ -409,13 +409,13 @@ Don't be confused by the different branches that can show up in the same respons
 * CT is the _destination location_ (i.e., pickup lib for a hold or target lib for a transfer). 
 ================
 
-anchor:11-12_checkout[]
+anchor:sip_11-12_checkout[]
 
 11/12 Checkout
 ^^^^^^^^^^^^^^
 
 
-anchor:15-16_hold[]
+anchor:sip_15-16_hold[]
 
 15/16 Hold
 ^^^^^^^^^^
@@ -424,7 +424,7 @@ Evergreen supports the Hold message for the purpose of canceling
 holds.  It does not currently support creating hold requests via SIP2.
 
 
-anchor:17-18_item_information[]
+anchor:sip_17-18_item_information[]
 
 17/18 Item Information 
 ^^^^^^^^^^^^^^^^^^^^^^
@@ -460,13 +460,13 @@ EXTENSIONS: The CT field for _destination location_ and CS _call number_ are use
 systems. 
 
 
-anchor:19-20_item_status_update[]
+anchor:sip_19-20_item_status_update[]
 
 19/20 Item Status Update
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
 
-anchor:23-24_patron_status[]
+anchor:sip_23-24_patron_status[]
 
 23/24 Patron Status 
 ^^^^^^^^^^^^^^^^^^^
@@ -499,7 +499,7 @@ These limitations are reflected in the 14-character _patron status_ string immed
 field definitions in your copy of the spec. 
 
 
-anchor:25-26_patron_enable[]
+anchor:sip_25-26_patron_enable[]
 
 25/26 Patron Enable 
 ^^^^^^^^^^^^^^^^^^^
@@ -507,7 +507,7 @@ anchor:25-26_patron_enable[]
 Not yet supported. 
 
 
-anchor:29-30_renew[]
+anchor:sip_29-30_renew[]
 
 29/30 Renew
 ^^^^^^^^^^^
@@ -515,7 +515,7 @@ anchor:29-30_renew[]
 Evergreen supports the Renew message.
 
 
-anchor:35-36_end_session[]
+anchor:sip_35-36_end_session[]
 
 35/36 End Session
 ^^^^^^^^^^^^^^^^^
@@ -529,7 +529,7 @@ in this context, and for evergreen it is hardcoded _Y_.
 
 
 
-anchor:37-38_fee_paid[]
+anchor:sip_37-38_fee_paid[]
 
 37/38 Fee Paid 
 ^^^^^^^^^^^^^^
@@ -537,7 +537,7 @@ anchor:37-38_fee_paid[]
 Evergreen supports the Fee Paid message.
 
 
-anchor:63-64_patron_information[]
+anchor:sip_63-64_patron_information[]
 
 63/64 Patron Information 
 ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -558,11 +558,11 @@ Attempting to retrieve patron info with a good barcode (but bad patron password)
    90210|BEdjfiander@somemail.com|BF(519) 555 1234|AQBR1|BLY|CQN|PB19640925|PCPatrons 
    |PIUnfiltered|AFOK|AOBR1| 
 
-See <<23-24_patron_status, 23/24 Patron Status>> for info on +BL+ and +CQ+ fields. 
+See <<sip_23-24_patron_status, 23/24 Patron Status>> for info on +BL+ and +CQ+ fields. 
 
 
 
-anchor:65-66_renew_all[]
+anchor:sip_65-66_renew_all[]
 
 65/66 Renew All
 ^^^^^^^^^^^^^^^
@@ -570,7 +570,7 @@ anchor:65-66_renew_all[]
 Evergreen supports the Renew All message.
 
 
-anchor:93-94_login[]
+anchor:sip_93-94_login[]
 
 93/94 Login 
 ^^^^^^^^^^^
@@ -589,13 +589,13 @@ Example:
 _941_ means successful terminal login. _940_ or getting dropped means failure.
 
 
-anchor:97-96_resend[]
+anchor:sip_97-96_resend[]
 
 97/96 Resend
 ^^^^^^^^^^^^
 
 
-anchor:99-98_sc_and_acs_status[]
+anchor:sip_99-98_sc_and_acs_status[]
 
 99/98 SC and ACS Status
 ^^^^^^^^^^^^^^^^^^^^^^^
