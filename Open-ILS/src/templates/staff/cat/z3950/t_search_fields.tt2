@@ -2,7 +2,20 @@
     <div ng-repeat="(code, search_field) in fields" class="z3950-search-field-list form-group">
         <label for="z3950-field-{{code}}" class="col-xs-6 control-label">{{search_field.label}}</label>
         <div class="col-xs-6">
-            <input type="text" class="form=control" id="z3950-field-{{code}}" ng-model="search_field.query">
+            <input type="text" class="form=control" id="z3950-field-{{code}}" ng-model="search_field.query" ng-if="code != 'item_type'">
+            <select ng-if="code == 'item_type'" ng-model="search_field.query">
+                <option value="">[% l('All Formats') %]</option>
+                <option value='art'>[% l('Papers or Articles') %]</option>
+                <option value='bks'>[% l('Books') %]</option>
+                <option value='com'>[% l('Computer files') %]</option>
+                <option value='map'>[% l('Maps') %]</option>
+                <option value='mix'>[% l('Mixed material') %]</option>
+                <option value='rec'>[% l('Sound recordings') %]</option>
+                <option value='sco'>[% l('Musical scores') %]</option>
+                <option value='ser'>[% l('Serials') %]</option>
+                <option value='url'>[% l('Internet Resources') %]</option>
+                <option value='vis'>[% l('Visual materials') %]</option>
+            </select>
         </div>
     </div>
 </div>
