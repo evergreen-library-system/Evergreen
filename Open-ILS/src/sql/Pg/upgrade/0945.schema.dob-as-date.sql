@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('0945', :eg_version);
+
 DROP VIEW action.all_circulation;
 DROP VIEW reporter.demographic;
 DROP VIEW auditor.actor_usr_lifecycle;
