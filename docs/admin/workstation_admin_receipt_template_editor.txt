@@ -520,7 +520,7 @@ indexterm:[receipt template editor, macros]
 %SUBSTR(#)%...%SUBSTR_END%:: Take substring starting at position # to end of string. If # is negative count backwards from end of string.
 %SUBSTR(#,#)%...%SUBSTR_END%:: Same as %SUBSTR(#)%, but limit to second provided number characters after start point. If second number is negative, count backwards instead of forwards.
 
-There are several macros that can carry pre-built contents specific to individual libraries. The contents can be set up in local administration. For details see <<library_settings_editor, Library Settings>>. Though text can be hard-coded in receipt templates, the pre-built contents will be automatically applied to receipts printed from all workstations without editing each template.
+There are several macros that can carry pre-built contents specific to individual libraries. The contents can be set up in local administration. For details see <<_library_settings_editor, Library Settings>>. Though text can be hard-coded in receipt templates, the pre-built contents will be automatically applied to receipts printed from all workstations without editing each template.
 
 indexterm:[receipt template editor, includes]
 
