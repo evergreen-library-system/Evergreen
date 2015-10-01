@@ -483,7 +483,12 @@ function init2() {
             params: [
                 openils.User.authtoken, 
                 [{purchase_order:poId}, {"order_by": {"jub": "id ASC"}}], 
-                {flesh_attrs:true, flesh_notes:true, flesh_cancel_reason:true, clear_marc:true}
+                {   flesh_attrs : true,
+                    flesh_notes : true,
+                    flesh_cancel_reason : true,
+                    flesh_order_summary : true,
+                    clear_marc:true
+                }
             ],
             onresponse: function(r) {
                 liTable.show('list');

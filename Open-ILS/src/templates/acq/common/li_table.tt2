@@ -187,6 +187,7 @@
                                         <span name="claim_policy" class="hidden"> | [% l("claim policy:") %] <span name="claim_policy_name"></span></span>
                                         <span name='pro' class='hidden'> | <a title='[% l('Provider') %]' name='pro_link' href='javascript:void(0);'>&#x235F; </a></span>
                                         <span name='queue' class='hidden'> | <a title='[% l('Import Queue') %]' name='queue_link' href='javascript:void(0);'>[% l('&#x27AC; queue') %]</a></span>
+                                        <span name='paid' class='hidden'> | <span class="acq-existing-count-warn">[% l('Paid') %]</span></span>
                                     </td>
                                 </tr>
                             </tbody>

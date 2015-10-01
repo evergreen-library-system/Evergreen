@@ -775,6 +775,20 @@ function AcqLiTable() {
         dojo.query('[name=expand_inline_copies]', row)[0].onclick = 
             function() {self.drawInlineCopies(li.id())};
 
+        var sum;
+        if (sum = li.order_summary()) { // assignment
+            // Only show the paid label if at least one copy is invoiced.
+            // In other words, a lineitem whose every copy is canceled
+            // is not "paid off"
+            if (sum.invoice_count() > 0) {
+                if (sum.item_count() == (
+                    sum.invoice_count() + sum.cancel_count())) {
+                    // Lineitem is fully paid.  Display the paid-off label
+                    openils.Util.show(nodeByName('paid', row), 'inline');
+                }
+            }
+        }
+
         this.drawOrderIdentSelector(li, row);
 
         if (!this.skipInitialEligibilityCheck)
