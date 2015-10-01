@@ -16,7 +16,7 @@ preference.
 
 A group of buttons can be selected or activated by default for all
 workstations at a particular library (see
-<<library_settings_editor,Library Settings>> for details). A different
+<<_library_settings_editor,Library Settings>> for details). A different
 default group can be set up on individual workstations by the following
 steps.
 
