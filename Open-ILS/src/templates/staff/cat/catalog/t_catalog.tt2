@@ -25,6 +25,34 @@
     <button type="button" class="btn btn-default" ng-click="add_to_record_bucket()">
         [% l('Add To Bucket') %]
     </button>
+    <div class="btn-group" dropdown dropdown-append-to-body>
+        <button id="mark-for-button" type="button" class="btn btn-default" dropdown-toggle>
+            [% l('Mark for:') %] <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="mark-for-button">
+            <li role="menuitem">
+                <a ng-click="markOverlay()">
+                    [% l('Overlay Target') %]
+                    <span class="target-record-aside" ng-if="current_overlay_target">[% l('(Currently [_1])', '{{current_overlay_target}}') %]</span>
+                </a>
+            </li>
+            <li role="menuitem">
+                <a ng-click="markVolTransfer()">
+                    [% l('Volume Transfer') %]
+                    <span class="target-record-aside" ng-if="current_voltransfer_target">[% l('(Currently [_1])', '{{current_voltransfer_target}}') %]</span>
+                </a>
+            </li>
+            <li role="menuitem">
+                    <a ng-click="markConjoined()">
+                        [% l('Conjoined Items') %]
+                    <span class="target-record-aside" ng-if="current_conjoined_target">[% l('(Currently [_1])', '{{current_conjoined_target}}') %]</span>
+                </a>
+            </li>
+            <li role="menuitem">
+                <a ng-click="clearRecordMarks()">[% l('Reset Record Marks') %]</a>
+            </li>
+        </ul>
+    </div>
   </div>
 </div>
 

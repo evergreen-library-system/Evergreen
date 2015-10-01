@@ -1,19 +1,5 @@
 <div>
   <div ng-show="bre" class="row pad-vert marcfastitemadd" ng-hide="brandNewRecord">
-    <div class="col-md-5">
-      <label>[% l('Mark for:') %]</label>
-      <div class="btn-group">
-        <span class="btn-group">
-          <button class="btn btn-default" ng-click="markOverlay()">[% l('Overlay Target') %]</button>
-        </span>
-        <span class="btn-group">
-          <button class="btn btn-default" ng-click="markVolTransfer()">[% l('Volume Transfer') %]</button>
-        </span>
-        <span class="btn-group">
-          <button class="btn btn-default" ng-click="markConjoined()">[% l('Conjoined Items') %]</button>
-        </span>
-      </div>
-    </div>
     <div class="col-md-2">
       <label><input type="checkbox" ng-model="enable_fast_add"/> [% l('Add Item') %]</label>
     </div>

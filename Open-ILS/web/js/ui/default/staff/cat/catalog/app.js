@@ -311,6 +311,34 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         });
     }
 
+    $scope.current_overlay_target     = egCore.hatch.getLocalItem('eg.cat.marked_overlay_record');
+    $scope.current_voltransfer_target = egCore.hatch.getLocalItem('eg.cat.marked_volume_transfer_record');
+    $scope.current_conjoined_target   = egCore.hatch.getLocalItem('eg.cat.marked_conjoined_record');
+
+    $scope.markConjoined = function () {
+        $scope.current_conjoined_target = $scope.record_id;
+        egCore.hatch.setLocalItem('eg.cat.marked_conjoined_record',$scope.record_id);
+    };
+
+    $scope.markVolTransfer = function () {
+        $scope.current_voltransfer_target = $scope.record_id;
+        egCore.hatch.setLocalItem('eg.cat.marked_volume_transfer_record',$scope.record_id);
+    };
+
+    $scope.markOverlay = function () {
+        $scope.current_overlay_target = $scope.record_id;
+        egCore.hatch.setLocalItem('eg.cat.marked_overlay_record',$scope.record_id);
+    };
+
+    $scope.clearRecordMarks = function () {
+        $scope.current_overlay_target     = null;
+        $scope.current_voltransfer_target = null;
+        $scope.current_conjoined_target   = null;
+        egCore.hatch.removeLocalItem('eg.cat.marked_volume_transfer_record');
+        egCore.hatch.removeLocalItem('eg.cat.marked_conjoined_record');
+        egCore.hatch.removeLocalItem('eg.cat.marked_overlay_record');
+    }
+
     $scope.stop_unload = false;
     $scope.$watch('stop_unload',
         function(newVal, oldVal) {
