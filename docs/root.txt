@@ -452,10 +452,11 @@ details.)
 
   . *The design may change significantly.* Initially, it will follow the design
 of the current XUL-based staff client. But the browser framework provides more
-flexibility for design choices. Also, Evergreen has accepted an
-http://wiki.evergreen-ils.org/doku.php?id=opw:ui_suggest:julialima[intern] to
-focus on a User Interface Style Guide from December 2014 through March 2015.
-Watch http://evergreen-ils.org/communicate/irc/[IRC] and the
+flexibility for design choices. Also, Evergreen hired an
+http://lima-julia.tumblr.com/EG-style-guide[intern] from December 2014 through
+March 2015 to create a
+http://evergreen-ils.org/documentation/previews/proposed_style_guide.html[User
+Interface Style Guide]. Watch http://evergreen-ils.org/communicate/irc/[IRC] and the
 http://libmail.georgialibraries.org/mailman/listinfo/open-ils-general[general
 email list] to follow the progress.
 
@@ -477,6 +478,26 @@ to try the new client, become familiar with its features, and to discover/report
 bugs that are found. Instructions to implement the web client can be found in
 the code in Open-ILS/web/js/ui/default/staff/README.install. These will be
 revised and moved to the full README for 2.7.1.
+====
+
+Evergreen 2.9 includes the following improvements to the web client preview:
+====
+The web staff client now includes additional functionality to support
+cataloging and item maintenance, including:
+
+- a new MARC editor
+- the service backing the authority headings chooser now has the ability
+  to filter the browse by subject thesaurus
+- Z39.50 search and record import
+- improvements to copy and record bucket functionality
+- embedding the link checker interface
+- embedding the MARC batch import/export interface
+- the web staff volume/copy editor
+
+Nearly all of the cataloging functionality available in the XUL staff client is
+now present in the web staff client with the exception of printing spine
+labels. Nonetheless, the web staff client remains a preview and is not
+recommended for production use.
 ====
 
 
