@@ -1,18 +1,18 @@
-angular.module('egHoldingsMod', ['egCoreMod'])
+angular.module('egHoldingsMod', ['egCoreMod','egGridMod'])
 
 .factory('holdingsSvc', 
        ['egCore','$q',
 function(egCore , $q) {
 
-    var service = {
-        ongoing : false,
-        copies : [], // record search results
-        index : 0, // search grid index
-        org : null,
-        rid : null
+    var service = function() {
+        this.ongoing = false;
+        this.copies = []; // record search results
+        this.index = 0; // search grid index
+        this.org = null;
+        this.rid = null;
     };
 
-    service.flesh = {   
+    service.prototype.flesh = {   
         flesh : 2, 
         flesh_fields : {
             acp : ['status','location'],
@@ -20,19 +20,20 @@ function(egCore , $q) {
         }
     }
 
-    service.fetchAgain = function() {
-        return service.fetch({
-            rid: service.rid,
-            org: service.org,
-            copy: service.copy,
-            vol: service.vol,
-            empty: service.empty
+    service.prototype.fetchAgain = function() {
+        return this.fetch({
+            rid: this.rid,
+            org: this.org,
+            copy: this.copy,
+            vol: this.vol,
+            empty: this.empty
         })
-    }
+    };
 
     // resolved with the last received copy
-    service.fetch = function(opts) {
-        if (service.ongoing) {
+    service.prototype.fetch = function(opts) {
+        var svc = this;
+        if (svc.ongoing) {
             console.log('Skipping fetch, ongoing = true');
             return $q.when();
         }
@@ -46,16 +47,16 @@ function(egCore , $q) {
         if (!rid) return $q.when();
         if (!org) return $q.when();
 
-        service.ongoing = true;
+        svc.ongoing = true;
 
-        service.rid = rid;
-        service.org = org;
-        service.copy = opts.copy;
-        service.vol = opts.vol;
-        service.empty = opts.empty;
+        svc.rid = rid;
+        svc.org = org;
+        svc.copy = opts.copy;
+        svc.vol = opts.vol;
+        svc.empty = opts.empty;
 
-        service.copies = [];
-        service.index = 0;
+        svc.copies = [];
+        svc.index = 0;
 
         var org_list = egCore.org.descendants(org.id(), true);
         console.log('Holdings fetch with: rid='+rid+' org='+org_list+' copy='+copy+' vol='+vol+' empty='+empty);
@@ -63,10 +64,10 @@ function(egCore , $q) {
         return egCore.pcrud.search(
             'acn',
             {record : rid, owning_lib : org_list, deleted : 'f'},
-            service.flesh
+            svc.flesh
         ).then(
             function() { // finished
-                service.copies = service.copies.sort(
+                svc.copies = svc.copies.sort(
                     function (a, b) {
                         function compare_array (x, y, i) {
                             if (x[i] && y[i]) { // both have values
@@ -108,7 +109,7 @@ function(egCore , $q) {
                 // create a label using just the unique part of the owner list
                 var index = 0;
                 var prev_owner_list;
-                angular.forEach(service.copies, function (cp) {
+                angular.forEach(svc.copies, function (cp) {
                     if (!prev_owner_list) {
                         cp.owner_label = cp.owner_list.join(' ... ');
                     } else {
@@ -124,7 +125,7 @@ function(egCore , $q) {
                     prev_owner_list = cp.owner_list.slice();
                 });
 
-                var new_list = service.copies;
+                var new_list = svc.copies;
                 if (!copy || !vol) { // collapse copy rows, supply a count instead
 
                     index = 0;
@@ -219,8 +220,8 @@ function(egCore , $q) {
                     }
                 }
 
-                service.copies = new_list;
-                service.ongoing = false;
+                svc.copies = new_list;
+                svc.ongoing = false;
             },
 
             null, // error
@@ -255,9 +256,9 @@ function(egCore , $q) {
                         flat.push(flat_cp);
                     });
 
-                    service.copies = service.copies.concat(flat);
+                    svc.copies = svc.copies.concat(flat);
                 } else if (empty) {
-                    service.copies.push({
+                    svc.copies.push({
                         owner_id   : owner_id,
                         owner_list : owner_name_list,
                         call_number: egCore.idl.toHash(cn),
@@ -268,7 +269,48 @@ function(egCore , $q) {
                 return cn;
             }
         );
-    }
+    };
 
     return service;
-}]);
+}])
+.directive("egVolumeList", function () {
+    return {
+        restrict:   'AE',
+        scope: {
+            recordId : '='
+        },
+        templateUrl: './cat/share/t_volume_list',
+        controller:
+                   ['$scope','holdingsSvc','egCore','egGridDataProvider',
+            function($scope , holdingsSvc , egCore , egGridDataProvider) {
+                var holdingsSvcInst = new holdingsSvc();
+
+                $scope.holdingsGridControls = {};
+                $scope.holdingsGridDataProvider = egGridDataProvider.instance({
+                    get : function(offset, count) {
+                        return this.arrayNotifier(holdingsSvcInst.copies, offset, count);
+                    }
+                });
+                function load_holdings() {
+                    holdingsSvcInst.fetch({
+                        rid   : $scope.recordId,
+                        org   : egCore.org.get(egCore.auth.user().ws_ou()), // TOOD: use root OU?
+                        copy  : false,
+                        vol   : true,
+                        empty : true
+                    }).then(function() {
+                        $scope.holdingsGridDataProvider.refresh();
+                    });
+                };
+                $scope.$watch('recordId',
+                    function(newVal, oldVal) {
+                        if (newVal && newVal !== oldVal) {
+                            load_holdings();
+                        }
+                    }
+                );
+                load_holdings();
+            }]
+    }
+})
+;

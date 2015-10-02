@@ -231,6 +231,8 @@ function($scope , $routeParams , $location , $window , $q , egCore) {
 function($scope , $routeParams , $location , $window , $q , egCore , egHolds , egCirc,  egConfirmDialog,
          egGridDataProvider , egHoldGridActions , $timeout , $modal , holdingsSvc , egUser , conjoinedSvc) {
 
+    var holdingsSvcInst = new holdingsSvc();
+
     // set record ID on page load if available...
     $scope.record_id = $routeParams.record_id;
     $scope.summary_pane_record;
@@ -505,7 +507,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
     $scope.holdingsGridControls = {};
     $scope.holdingsGridDataProvider = egGridDataProvider.instance({
         get : function(offset, count) {
-            return this.arrayNotifier(holdingsSvc.copies, offset, count);
+            return this.arrayNotifier(holdingsSvcInst.copies, offset, count);
         }
     });
 
@@ -706,7 +708,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
     $scope.holdings_record_id_changed = function(id) {
         if ($scope.record_id != id) $scope.record_id = id;
         console.log('record id changed to ' + id + ', loading new holdings');
-        holdingsSvc.fetch({
+        holdingsSvcInst.fetch({
             rid : $scope.record_id,
             org : $scope.holdings_ou,
             copy: $scope.holdings_show_copies,
@@ -721,7 +723,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
     $scope.holdings_ou = egCore.org.get(egCore.auth.user().ws_ou());
     $scope.holdings_ou_changed = function(org) {
         $scope.holdings_ou = org;
-        holdingsSvc.fetch({
+        holdingsSvcInst.fetch({
             rid : $scope.record_id,
             org : $scope.holdings_ou,
             copy: $scope.holdings_show_copies,
@@ -735,7 +737,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
     $scope.holdings_cb_changed = function(cb,newVal,norefresh) {
         $scope[cb] = newVal;
         egCore.hatch.setItem('cat.' + cb, newVal);
-        if (!norefresh) holdingsSvc.fetch({
+        if (!norefresh) holdingsSvcInst.fetch({
             rid : $scope.record_id,
             org : $scope.holdings_ou,
             copy: $scope.holdings_show_copies,
@@ -979,7 +981,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
                 }
             ).then(function(success) {
                 if (success) {
-                    holdingsSvc.fetchAgain().then(function() {
+                    holdingsSvcInst.fetchAgain().then(function() {
                         $scope.holdingsGridDataProvider.refresh();
                     });
                 } else {
@@ -1017,13 +1019,13 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
                                 copy_ids,
                                 { events: ['TITLE_LAST_COPY', 'COPY_DELETE_WARNING'] }
                             ).then(function(resp) {
-                                holdingsSvc.fetchAgain().then(function() {
+                                holdingsSvcInst.fetchAgain().then(function() {
                                     $scope.holdingsGridDataProvider.refresh();
                                 });
                             });
                         });
                     } else {
-                        holdingsSvc.fetchAgain().then(function() {
+                        holdingsSvcInst.fetchAgain().then(function() {
                             $scope.holdingsGridDataProvider.refresh();
                         });
                     }
@@ -1058,7 +1060,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
 
     $scope.selectedHoldingsDamaged = function () {
         egCirc.mark_damaged(gatherSelectedHoldingsIds()).then(function() {
-            holdingsSvc.fetchAgain().then(function() {
+            holdingsSvcInst.fetchAgain().then(function() {
                 $scope.holdingsGridDataProvider.refresh();
             });
         });
@@ -1066,7 +1068,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
 
     $scope.selectedHoldingsMissing = function () {
         egCirc.mark_missing(gatherSelectedHoldingsIds()).then(function() {
-            holdingsSvc.fetchAgain().then(function() {
+            holdingsSvcInst.fetchAgain().then(function() {
                 $scope.holdingsGridDataProvider.refresh();
             });
         });
