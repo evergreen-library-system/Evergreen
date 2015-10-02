@@ -413,6 +413,12 @@ table.list tr.selected td { /* deprecated? */
   }
 }
 
+/* optional class to make 'lg' Bootstrap modals even wider */
+@media (min-width: 768px) {
+  .eg-wide-modal .modal-lg {
+    width: 95%;
+  }
+}
 
 [%# 
 vim: ft=css 

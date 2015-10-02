@@ -545,6 +545,7 @@ function($scope,  $q , $routeParams,  bucketSvc,  egCore,  $window,
         $modal.open({
             templateUrl: './cat/bucket/record/t_merge_records',
             size: 'lg',
+            windowClass: 'eg-wide-modal',
             controller:
                 ['$scope', '$modalInstance', function($scope, $modalInstance) {
                 $scope.records = [];
