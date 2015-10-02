@@ -724,53 +724,53 @@ sub next {
 
     if ($data) {
         my $format = $Marque::config->option_value('format');
-        my $are = $self->{fmClass}->from_bare_hash($data);
+        my $r = $self->{fmClass}->from_bare_hash($data);
         if ($format eq 'ARE') {
-            $output = OpenSRF::Utils::JSON->perl2JSON($are);
+            $output = OpenSRF::Utils::JSON->perl2JSON($r);
         } else {
-            my $r;
+            my $marc;
             eval {
-                $r = MARC::Record->new_from_xml($are->marc(),
+                $marc = MARC::Record->new_from_xml($r->marc(),
                                                 $Marque::config->option_value('encoding'),
                                                 $Marque::config->option_value('format'));
             };
             if ($@) {
-                print STDERR "Error in authority record " . $are->id() . "\n";
+                print STDERR "Error in authority record " . $r->id() . "\n";
                 print STDERR "$@\n";
                 import MARC::File::XML; # Reset SAX Parser.
                 return $self->next();
             }
             if ($Marque::config->option_value('replace_001')) {
-                my $tcn = $r->field('001');
+                my $tcn = $marc->field('001');
                 if ($tcn) {
-                    $tcn->update($are->id());
+                    $tcn->update($r->id());
                 } else {
-                    $tcn = MARC::Field->new('001', $are->id());
-                    $r->insert_fields_ordered($tcn);
+                    $tcn = MARC::Field->new('001', $r->id());
+                    $marc->insert_fields_ordered($tcn);
                 }
             }
             if ($Marque::config->option_value('since')) {
-                my $leader = $r->leader();
-                if ($U->is_true($are->deleted())) {
+                my $leader = $marc->leader();
+                if ($U->is_true($r->deleted())) {
                     substr($leader, 5, 1) = 'd';
-                    $r->leader($leader);
+                    $marc->leader($leader);
                 } else {
                     my $create_date = Date::Manip::Date->new;
-                    $create_date->parse($are->create_date());
+                    $create_date->parse($r->create_date());
                     my $edit_date = Date::Manip::Date->new;
-                    $edit_date->parse($are->edit_date());
+                    $edit_date->parse($r->edit_date());
                     if ($self->{since_date}->cmp($create_date) < 0) {
                         substr($leader, 5, 1) = 'n';
-                        $r->leader($leader);
+                        $marc->leader($leader);
                     } elsif ($self->{since_date}->cmp($edit_date) < 0) {
                         substr($leader, 5, 1) = 'c';
-                        $r->leader($leader);
+                        $marc->leader($leader);
                     }
                 }
             }
             if ($Marque::config->option_value('format') eq 'XML') {
                 eval {
-                    $output = $r->as_xml_record;
+                    $output = $marc->as_xml_record;
                     $output =~ s/^<\?.+?\?>$//mo;
                 };
                 if ($@) {
@@ -780,7 +780,7 @@ sub next {
                 }
             } else {
                 eval {
-                    $output = $r->as_usmarc;
+                    $output = $marc->as_usmarc;
                 };
                 if ($@) {
                     print STDERR "Error in authority record " . $r->id() . "\n";
