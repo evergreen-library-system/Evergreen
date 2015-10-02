@@ -8,7 +8,16 @@
     <div id="content-wrapper" class="content-wrapper-record-page">
         <div id='main-content'>
             <br/>
-            <h2 class='success'>[% l('Your email has been queued for Delivery.') %]</h2>
+            [% IF ctx.user.email %]
+            <h2 class='success'>[% l('Your email has been queued for delivery to [_1]', ctx.user.email ) %]</h2>
+            [% ELSE %]
+            <h2 class='error'>
+                [% here_link_text = "<a href=\"${ctx.opac_root}/myopac/update_email?return_to_referer=1\">";
+                   here_link_text = here_link_text _ l("here");
+                   here_link_text = here_link_text _ "</a>";
+                   l('Your account does not currently have an email address set. Set your email address [_1]', here_link_text) %]
+            </h2>
+            [% END %]
             <br/>
             <p>[ <a href="[% mkurl(ctx.opac_root  _ '/record/' _ ctx.bre_id) %]">[% l("Back to Record") %]</a> ]</p>
             <div class="common-full-pad"></div>
