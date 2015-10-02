@@ -11,6 +11,7 @@
             <div ng-if="lead_id">
                <button class="btn btn-default btn-sm" ng-click="edit_lead()">[% l('Edit') %]</button>
                <eg-record-html record-id="lead_id"></eg-record-html>
+               <eg-volume-list record-id="lead_id"></eg-volume-list>
             </div>
             <div ng-if="!lead_id">
                 [% l('Please select a lead record from the right...') %]
@@ -23,6 +24,7 @@
                 <button class="btn btn-default btn-sm" ng-click="use_as_lead(rec)">[% l('Use as lead record') %]</button>
                 <button class="btn btn-default btn-sm" ng-click="drop(rec)">[% l('Remove from consideration') %]</button>
                 <eg-record-html record-id="rec.id"></eg-record-html>
+                <eg-volume-list record-id="rec.id"></eg-volume-list>
               </tab>
             </tabset>
           </div>
