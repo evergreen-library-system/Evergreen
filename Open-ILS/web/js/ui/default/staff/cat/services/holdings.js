@@ -281,8 +281,8 @@ function(egCore , $q) {
         },
         templateUrl: './cat/share/t_volume_list',
         controller:
-                   ['$scope','holdingsSvc','egCore','egGridDataProvider',
-            function($scope , holdingsSvc , egCore , egGridDataProvider) {
+                   ['$scope','holdingsSvc','egCore','egGridDataProvider','$modal',
+            function($scope , holdingsSvc , egCore , egGridDataProvider,  $modal) {
                 var holdingsSvcInst = new holdingsSvc();
 
                 $scope.holdingsGridControls = {};
@@ -291,6 +291,45 @@ function(egCore , $q) {
                         return this.arrayNotifier(holdingsSvcInst.copies, offset, count);
                     }
                 });
+
+                function gatherHoldingsIds () {
+                    var cp_id_list = [];
+                    angular.forEach(
+                        $scope.holdingsGridControls.allItems(),
+                        function (item) { cp_id_list = cp_id_list.concat(item.id_list) }
+                    );
+                    return cp_id_list;
+                }
+
+                $scope.edit_volumes = function () {
+                    egCore.net.request(
+                        'open-ils.actor',
+                        'open-ils.actor.anon_cache.set_value',
+                        null, 'edit-these-copies', {
+                            record_id: $scope.recordId,
+                            copies: gatherHoldingsIds(),
+                            hide_vols : false,
+                            hide_copies : true
+                        }
+                    ).then(function(key) {
+                        if (key) {
+                            $modal.open({
+                                templateUrl: './cat/share/t_embedded_volcopy',
+                                size: 'lg',
+                                controller:
+                                    ['$scope', '$modalInstance', function($scope, $modalInstance) {
+                                    $scope.volcopy_url = 
+                                        egCore.env.basePath + 'cat/volcopy/' + key + '/embedded';
+                                    $scope.ok = function(args) { $modalInstance.close(args) }
+                                    $scope.cancel = function () { $modalInstance.dismiss() }
+                                }]
+                            }).result.then(function() {
+                                load_holdings();
+                            });
+                        }
+                    });
+                }
+
                 function load_holdings() {
                     holdingsSvcInst.fetch({
                         rid   : $scope.recordId,

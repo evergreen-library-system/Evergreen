@@ -1,0 +1,14 @@
+<div>
+  <div class="modal-header">
+    <button type="button" class="close"
+      ng-click="cancel()" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">[% l('Edit volumes') %]</h4>
+  </div>
+  <div class="modal-body">
+    <eg-embed-frame save-space="500" url="volcopy_url"></eg-embed-frame>
+  </div>
+  <div class="modal-footer">
+    <input type="submit" ng-click="ok()"
+        class="btn btn-primary" value="[% l('Done') %]"/>
+  </div>
+</div>
