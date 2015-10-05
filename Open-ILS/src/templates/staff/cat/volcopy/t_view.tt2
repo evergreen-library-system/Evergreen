@@ -1,8 +1,18 @@
-<eg-record-summary record-id="record_id" record="summaryRecord"></eg-record-summary>
+<style ng-if="embedded">
+eg-navbar {
+    display: none;
+}
+#top-content-container {
+    padding-top: 0px;
+}
+</style>
+
+<eg-record-summary ng-if="!embedded"
+     record-id="record_id" record="summaryRecord"></eg-record-summary>
 
 <!-- tabbed copy data view -->
 
-<ul class="nav nav-tabs">
+<ul class="nav nav-tabs" ng-if="!embedded">
   <li ng-class="{active : tab == 'edit'}">
     <a ng-click="tab = 'edit'" >[% l('Edit') %]</a>
   </li>

@@ -25,6 +25,11 @@ angular.module('egVolCopy',
         resolve : resolver
     });
 
+    $routeProvider.when('/cat/volcopy/:dataKey/:mode', {
+        templateUrl: './cat/volcopy/t_view',
+        controller: 'EditCtrl',
+        resolve : resolver
+    });
 })
 
 .factory('itemSvc', 
@@ -653,6 +658,8 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
             age_protect : true
         }
     };
+
+    $scope.embedded = ($routeParams.mode && $routeParams.mode == 'embedded') ? true : false;
 
     $scope.saveDefaults = function () {
         egCore.hatch.setItem('cat.copy.defaults', $scope.defaults);

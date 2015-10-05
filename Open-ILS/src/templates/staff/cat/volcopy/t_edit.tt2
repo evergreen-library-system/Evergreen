@@ -52,7 +52,10 @@
                         </div>
                     </div>
                     <div class="col-xs-2" ng-show="only_vols">
-                        <button class="btn btn-default center-block" ng-click="workingToComplete() && saveAndExit()" type="button">[% l('Save & Exit') %]</button>
+                        <button class="btn btn-default center-block" ng-click="workingToComplete() && saveAndExit()" type="button">
+                            <span ng-if="embedded">[% l('Save changes') %]</span>
+                            <span ng-if="!embedded">[% l('Save & Exit') %]</span>
+                        </button>
                     </div>
                 </div>
             </div>
