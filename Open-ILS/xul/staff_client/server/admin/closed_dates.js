@@ -24,19 +24,6 @@ var myPerms = [
 
 function cdEditorInit() {
 
-    try {
-        if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
-        JSAN.errorLevel = "die"; // none, warn, or die
-        JSAN.addRepository('..');
-        JSAN.use('util.error'); g.error = new util.error();
-        JSAN.use('util.date');
-    } catch(E) {
-        var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
-            "system administrator or software developer the following:\nadmin/closed_dates.xhtml\n" + E + '\n';
-        try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
-        alert(err_msg);
-    }
-
     /* set the various template rows */
     cdTbody = $('cd_tbody');
     cdRowTemplate                    = cdTbody.removeChild($('cd_row'));
@@ -176,11 +163,18 @@ function cdBuild(r) {
 }
 
 function cdDateToHours(date) {
-    return util.date.formatted_date(date, '%H:%M');
+    var date_obj = new Date(Date.parse(date));
+    var hrs = date_obj.getHours();
+    var mins = date_obj.getMinutes();
+    // wee, strftime
+    if (hrs < 10) hrs = '0' + hrs;
+    if (mins < 10) mins = '0' + mins;
+    return hrs + ':' + mins;
 }
 
 function cdDateToDate(date) {
-    return util.date.formatted_date(date, '%F');
+    var date_obj = new Date(Date.parse(date));
+    return date_obj.toISOString().replace(/T.*/,''); // == %F
 }
 
 
@@ -396,8 +390,8 @@ function cdGetOrgList(org) {
 function cdCreateOne( org, start, end, note, refresh ) {
     var date = new aoucd();
 
-    date.close_start(util.date.formatted_date(start, '%{iso8601}'));
-    date.close_end(util.date.formatted_date(end, '%{iso8601}'));
+    date.close_start(start.toISOString());
+    date.close_end(end.toISOString());
     date.org_unit(org);
     date.reason(note);
 
