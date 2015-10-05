@@ -32,6 +32,11 @@ describe('egOrg', function(){
         mkTree(egIDL, egEnv);
         expect(egOrg.fullPath(4, true)).toEqual([4, 2, 1]);
     }));
+
+    it('should provide root', inject(function(egIDL, egEnv, egOrg) {
+        mkTree(egIDL, egEnv);
+        expect(egOrg.root().id()).toEqual(1);
+    }));
 });
 
 
