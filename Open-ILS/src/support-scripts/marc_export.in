@@ -419,13 +419,17 @@ sub next {
     if ($Marque::config->option_value('mfhd') && $self->{mfhds} && @{$self->{mfhds}}) {
         $r = shift(@{$self->{mfhds}});
         eval {
+            local $SIG{__WARN__} = sub {
+                my $message = "Warning from serial record " . $r->id() . ": "
+                    . shift;
+                warn($message);
+            };
             $marc = MARC::Record->new_from_xml($r->marc(),
                                                $Marque::config->option_value('encoding'),
                                                $Marque::config->option_value('format'));
         };
         if ($@) {
-            print STDERR "Error in serial record " . $r->id() . "\n";
-            print STDERR "$@\n";
+            warn("Error in serial record " . $r->id() . ": $@");
             import MARC::File::XML; # Reset SAX Parser.
             return $self->next();
         }
@@ -437,13 +441,17 @@ sub next {
                 $output = OpenSRF::Utils::JSON->perl2JSON($r);
             } else {
                 eval {
+                    local $SIG{__WARN__} = sub {
+                        my $message = "Warning from bibliographic record " . $r->id() . ": "
+                            . shift;
+                        warn($message);
+                    };
                     $marc = MARC::Record->new_from_xml($r->marc(),
                                                        $Marque::config->option_value('encoding'),
                                                        $Marque::config->option_value('format'));
                 };
                 if ($@) {
-                    print STDERR "Error in bibliograpic record " . $r->id() . "\n";
-                    print STDERR "$@\n";
+                    warn("Error in bibliograpic record " . $r->id() . ": $@");
                     import MARC::File::XML; # Reset SAX Parser.
                     return $self->next();
                 }
@@ -510,21 +518,29 @@ sub next {
         }
         if ($Marque::config->option_value('format') eq 'XML') {
             eval {
+                local $SIG{__WARN__} = sub {
+                    my $message = "Warning from bibliographic record " . $r->id() . ": "
+                        . shift;
+                    warn($message);
+                };
                 $output = $marc->as_xml_record;
                 $output =~ s/^<\?.+?\?>$//mo;
             };
             if ($@) {
-                print STDERR "Error in bibliograpic record " . $r->id() . "\n";
-                print STDERR "$@\n";
+                warn("Error in bibliograpic record " . $r->id() . ": $@");
                 return $self->next();
             }
         } else {
             eval {
+                local $SIG{__WARN__} = sub {
+                    my $message = "Warning from bibliographic record " . $r->id() . ": "
+                        . shift;
+                    warn($message);
+                };
                 $output = $marc->as_usmarc;
             };
             if ($@) {
-                print STDERR "Error in bibliograpic record " . $r->id() . "\n";
-                print STDERR "$@\n";
+                warn("Error in bibliograpic record " . $r->id() . ": $@");
                 return $self->next();
             }
         }
@@ -730,13 +746,17 @@ sub next {
         } else {
             my $marc;
             eval {
+                local $SIG{__WARN__} = sub {
+                    my $message = "Warning from authority record " . $r->id() . ": "
+                        . shift;
+                    warn($message);
+                };
                 $marc = MARC::Record->new_from_xml($r->marc(),
                                                 $Marque::config->option_value('encoding'),
                                                 $Marque::config->option_value('format'));
             };
             if ($@) {
-                print STDERR "Error in authority record " . $r->id() . "\n";
-                print STDERR "$@\n";
+                warn("Error in authority record " . $r->id() . ": $@");
                 import MARC::File::XML; # Reset SAX Parser.
                 return $self->next();
             }
@@ -770,21 +790,29 @@ sub next {
             }
             if ($Marque::config->option_value('format') eq 'XML') {
                 eval {
+                    local $SIG{__WARN__} = sub {
+                        my $message = "Warning from authority record " . $r->id() . ": "
+                            . shift;
+                        warn($message);
+                    };
                     $output = $marc->as_xml_record;
                     $output =~ s/^<\?.+?\?>$//mo;
                 };
                 if ($@) {
-                    print STDERR "Error in authority record " . $r->id() . "\n";
-                    print STDERR "$@\n";
+                    warn("Error in authority record " . $r->id() . ": $@");
                     return $self->next();
                 }
             } else {
                 eval {
+                    local $SIG{__WARN__} = sub {
+                        my $message = "Warning from authority record " . $r->id() . ": "
+                            . shift;
+                        warn($message);
+                    };
                     $output = $marc->as_usmarc;
                 };
                 if ($@) {
-                    print STDERR "Error in authority record " . $r->id() . "\n";
-                    print STDERR "$@\n";
+                    warn("Error in authority record " . $r->id() . ": $@");
                     return $self->next();
                 }
             }
