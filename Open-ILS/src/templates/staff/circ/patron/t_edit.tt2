@@ -65,7 +65,15 @@
       <input type="text" ng-blur="post_code_changed(patron.[% path %])"
         class="form-control" ng-model="[% model %]"/>
     [% ELSIF field == 'barcode' %]
-      <input type="text" ng-blur="barcode_changed(patron.card.barcode)"
+      <input type="text" 
+        focus-me="focus_bc"
+        ng-disabled="disable_bc"
+        ng-blur="barcode_changed(patron.card.barcode)"
+        class="form-control" ng-model="[% model %]"/>
+    [% ELSIF field == 'usrname' %]
+      <input type="text" 
+        focus-me="focus_usrname"
+        ng-blur="usrname_changed(patron.usrname)"
         class="form-control" ng-model="[% model %]"/>
     [% ELSE %]
       <input type="[% input_type %]" 

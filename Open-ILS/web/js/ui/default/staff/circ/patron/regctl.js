@@ -443,6 +443,10 @@ function PatronRegCtrl($scope, $routeParams,
     $scope.patron_id = 
         patronRegSvc.patron_id = $routeParams.edit_id || $routeParams.id;
 
+    // for existing patrons, disable barcode input by default
+    $scope.disable_bc = $scope.focus_usrname = Boolean($scope.patron_id);
+    $scope.focus_bc = !Boolean($scope.patron_id);
+
     if (!$scope.edit_passthru) {
         // in edit more, scope.edit_passthru is delivered to us by
         // the enclosing controller.  In register mode, there is 
@@ -644,6 +648,7 @@ function PatronRegCtrl($scope, $routeParams,
     $scope.replace_card = function() {
         $scope.patron.card.active = false;
         $scope.patron.card.ischanged = true;
+        $scope.disable_bc = false;
 
         var new_card = egCore.idl.toHash(new egCore.idl.ac());
         new_card.id = patronRegSvc.virt_id--;
