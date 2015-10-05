@@ -1,7 +1,19 @@
 /**
  * Core Service - egOrg
  *
- * TODO: more docs
+ * This provides access to the organizational unit tree and
+ * caches it in browser session storage.
+ *
+ * Methods include:
+ *   get()  - retrieve OU based on ID or aou object
+ *   list() - retrieve flattened list of OUs
+ *   tree() - retrieve OU as tree
+ *   root() - get aou object representing root of the OU tree
+ *   ancestors() - get ancestors of supplied OU
+ *   descendants() - get descendants of supplied OU
+ * 
+ * TODO more to document
+ * 
  */
 angular.module('egCoreMod')
 
@@ -27,6 +39,11 @@ function($q,  egEnv,  egAuth,  egNet) {
 
     service.tree = function() {
         return egEnv.aou.tree;
+    }
+
+    // get the root OU
+    service.root = function() {
+        return egEnv.aou.list[0];
     }
 
     // list of org_unit objects or IDs for ancestors + me
