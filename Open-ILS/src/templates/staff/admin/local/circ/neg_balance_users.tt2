@@ -1,0 +1,55 @@
+[%
+  WRAPPER "staff/base.tt2";
+  ctx.page_title = l("Users with Negative Balances"); 
+  ctx.page_app = "egAdminCirc";
+  ctx.page_ctrl = 'NegBalances';
+%]
+
+[% BLOCK APP_JS %]
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/grid.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/ui.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/admin/local/circ/neg_balance_users.js"></script>
+<link rel="stylesheet" href="[% ctx.base_path %]/staff/css/admin.css" />
+[% END %]
+
+<div class="container-fluid" style="text-align:center">
+  <div class="alert alert-info alert-less-pad strong-text-2">
+    [% l('Patrons with Negative Balances') %]
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-4">
+    <div class="form-group">
+      <label>[% l('Patron Library') %]</label>
+      <eg-org-selector onchange="org_changed" 
+        selected="context_org"></eg-org-selector>
+    </div>
+  </div>
+</div>
+
+<eg-grid
+  id-field="usr_id"
+  features="-sort,-multisort"
+  items-provider="grid_provider"
+  grid-controls="grid_controls"
+  persist-key="admin.local.circ.neg_balance_users">
+
+  <eg-grid-action handler="get_user"
+    label="[% l('Retrieve Patron') %]"></eg-grid-action>
+
+  <eg-grid-field label="[% l('Barred') %]" path='usr.barred'></eg-grid-field>
+  <eg-grid-field label="[% l('Date of Birth') %]" path='usr.dob'></eg-grid-field>
+  <eg-grid-field label="[% l('Last Name') %]" path='usr.family_name'></eg-grid-field>
+  <eg-grid-field label="[% l('First Name') %]" path='usr.first_given_name'></eg-grid-field>
+  <eg-grid-field label="[% l('Middle Name') %]" path='usr.second_given_name'></eg-grid-field>
+  <eg-grid-field label="[% l('Balance Owed') %]" path='balance_owed'></eg-grid-field>
+  <eg-grid-field label="[% l('Last Billing Activity') %]" 
+    path='last_billing_activity' datatype='timestamp'></eg-grid-field>
+
+  <eg-grid-field path='usr.*' parent-idl-class="au" hidden></eg-grid-field>
+</eg-grid>
+
+   
+
+[% END %]

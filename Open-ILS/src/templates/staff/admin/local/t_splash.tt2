@@ -22,8 +22,8 @@
     </div>
     <div class="col-md-4">
       <span class="glyphicon glyphicon-pencil"></span>
-      <a target="_self" href="./admin/local/actor/search_filter_group">
-        [% l('Search Filter Groups') %]
+      <a target="_self" href="./admin/local/circ/neg_balance_users">
+        [% l('Patrons with Negative Balances') %]
       </a>
     </div>
   </div>
@@ -42,8 +42,8 @@
     </div>
     <div class="col-md-4">
       <span class="glyphicon glyphicon-pencil"></span>
-      <a target="_self" href="./admin/local/config/standing_penalty">
-        [% l('Standing Penalties') %]
+      <a target="_self" href="./admin/local/actor/search_filter_group">
+        [% l('Search Filter Groups') %]
       </a>
     </div>
   </div>
@@ -62,8 +62,8 @@
     </div>
     <div class="col-md-4">
       <span class="glyphicon glyphicon-pencil"></span>
-      <a target="_self" href="./admin/local/asset/stat_cat_editor">
-        [% l('Statistical Categories Editor') %]
+      <a target="_self" href="./admin/local/config/standing_penalty">
+        [% l('Standing Penalties') %]
       </a>
     </div>
   </div>
@@ -78,6 +78,12 @@
       <span class="glyphicon glyphicon-pencil"></span>
       <a target="_self" href="./admin/local/config/idl_field_doc">
         [% l('Field Documentation') %]
+      </a>
+    </div>
+    <div class="col-md-4">
+      <span class="glyphicon glyphicon-pencil"></span>
+      <a target="_self" href="./admin/local/asset/stat_cat_editor">
+        [% l('Statistical Categories Editor') %]
       </a>
     </div>
   </div>
