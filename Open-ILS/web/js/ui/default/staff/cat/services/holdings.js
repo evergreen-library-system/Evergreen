@@ -294,7 +294,7 @@ function(egCore , $q) {
                 function load_holdings() {
                     holdingsSvcInst.fetch({
                         rid   : $scope.recordId,
-                        org   : egCore.org.get(egCore.auth.user().ws_ou()), // TOOD: use root OU?
+                        org   : egCore.org.root(),
                         copy  : false,
                         vol   : true,
                         empty : true
