@@ -581,6 +581,8 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
             // used just to munge some MARCXML client-side, rather
             // than to (immediately) update the database
             inPlaceMode : '@',
+            flatOnly : '@',
+            embedded : '@',
             recordType : '@',
             maxUndo : '@',
             saveLabel : '@'
@@ -620,7 +622,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                 $scope.enable_fast_add = false;
                 $scope.fast_item_callnumber = '';
                 $scope.fast_item_barcode = '';
-                $scope.flatEditor = false;
+                $scope.flatEditor = $scope.flatOnly ? true : false;
                 $scope.brandNewRecord = false;
                 $scope.bib_source = null;
                 $scope.record_type = $scope.recordType || 'bre';

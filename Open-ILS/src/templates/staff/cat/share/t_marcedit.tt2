@@ -1,5 +1,5 @@
 <div>
-  <div ng-show="bre" class="row pad-vert marcfastitemadd" ng-hide="brandNewRecord">
+  <div ng-show="bre && !(brandNewRecord || embedded)" class="row pad-vert marcfastitemadd">
     <div class="col-md-2">
       <label><input type="checkbox" ng-model="enable_fast_add"/> [% l('Add Item') %]</label>
     </div>
@@ -12,7 +12,7 @@
   </div>
 
   <div class="pad-vert row marctypesource">
-    <div class="col-md-2">
+    <div class="col-md-2" ng-show="!flatOnly">
       <label>
         <input type="checkbox" ng-model="flatEditor" ng-change="refreshVisual()"/>
         [% l('Flat Text Editor') %]
@@ -30,13 +30,13 @@
     <div class="col-md-3">
       <div class="btn-group">
         <span class="btn-group">
-          <button class="btn btn-default" ng-show="record_type == 'bre'" ng-click="validateHeadings()">[% l('Validate') %]</button>
+          <button class="btn btn-default" ng-show="record_type == 'bre' && !flatOnly" ng-click="validateHeadings()">[% l('Validate') %]</button>
         </span>
         <span class="btn-group">
           <button class="btn btn-primary" ng-click="saveRecord()">{{ saveLabel || "[% l('Save') %]"}}</button>
         </span>
         <span class="btn-group">
-          <button ng-hide="brandNewRecord || Record().deleted()" class="btn btn-default" ng-click="deleteRecord()">[% l('Delete') %]</button>
+          <button ng-hide="brandNewRecord || embedded || Record().deleted()" class="btn btn-default" ng-click="deleteRecord()">[% l('Delete') %]</button>
           <button ng-if="!brandNewRecord && Record().deleted()" class="btn btn-default" ng-click="undeleteRecord()">[% l('Undelete') %]</button>
         </span>
       </div>
@@ -44,7 +44,7 @@
   </div>
 
   <div ng-show="flatEditor">
-    <textarea cols="120" rows="40" ng-model="flat_text_marc" ng-blur="saveFlatTextMARC()"></textarea>
+    <textarea class="marcflateditor" cols="120" rows="40" ng-model="flat_text_marc" ng-blur="saveFlatTextMARC()"></textarea>
   </div>
   <div ng-show="!flatEditor">
     <div class="row pad-vert">

@@ -12,6 +12,10 @@
     //background-color: #f5f5f5;
 }
 
+.marcflateditor {
+    max-width: 100%;
+}
+
 .marcfastitemadd, .marctypesource {
     border-bottom: solid thin gray;
 }
