@@ -75,6 +75,60 @@ angular.module('egCoreMod')
     }
 })
 
+.directive('egRecordBreaker', function() {
+    return {
+        restrict : 'AE',
+        template : '<pre>{{breaker}}</pre>',
+        scope : {
+            recordId : '=',
+            marcXml  : '@',
+        },
+        link : function(scope, element, attrs) {
+            scope.element = angular.element(element);
+
+            // kill refs to destroyed DOM elements
+            element.bind("$destroy", function() {
+                delete scope.element;
+            });
+        },
+        controller : 
+                   ['$scope','egCore',
+            function($scope , egCore) {
+
+                function loadRecordBreaker() {
+                    var xml;
+                    if ($scope.marcXml) {
+                        $scope.breaker = new MARC21.Record({ marcxml : $scope.marcXml }).toBreaker();
+                    } else {
+                        egCore.pcrud.retrieve('bre', $scope.recordId)
+                        .then(function(rec) {
+                            $scope.breaker = new MARC21.Record({ marcxml : rec.marc() }).toBreaker();
+                        });
+                    }
+                }
+
+                $scope.$watch('recordId', 
+                    function(newVal, oldVal) {
+                        if (newVal && newVal !== oldVal) {
+                            loadRecordBreaker();
+                        }
+                    }
+                );
+                $scope.$watch('marcXml', 
+                    function(newVal, oldVal) {
+                        if (newVal && newVal !== oldVal) {
+                            loadRecordBreaker();
+                        }
+                    }
+                );
+
+                if ($scope.recordId || $scope.marcXml) 
+                    loadRecordBreaker();
+            }
+        ]
+    }
+})
+
 /*
  * A record='foo' attribute is required as a storage location of the 
  * retrieved record
