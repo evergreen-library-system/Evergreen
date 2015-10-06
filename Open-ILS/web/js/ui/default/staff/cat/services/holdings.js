@@ -259,6 +259,7 @@ function(egCore , $q) {
                     svc.copies = svc.copies.concat(flat);
                 } else if (empty) {
                     svc.copies.push({
+                        id_list    : [],
                         owner_id   : owner_id,
                         owner_list : owner_name_list,
                         call_number: egCore.idl.toHash(cn),

@@ -796,6 +796,18 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         return cp_list;
     }
 
+    function gatherSelectedEmptyVolumeIds () {
+        var cn_id_list = [];
+        angular.forEach(
+            $scope.holdingsGridControls.selectedItems(),
+            function (item) {
+                if (item.copy_count == 0)
+                    cn_id_list.push(item.call_number.id)
+            }
+        );
+        return cn_id_list;
+    }
+
     function gatherSelectedVolumeIds () {
         var cn_id_list = [];
         angular.forEach(
@@ -919,6 +931,9 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
             null, 'edit-these-copies', {
                 record_id: $scope.record_id,
                 copies: gatherSelectedHoldingsIds(),
+                raw: gatherSelectedEmptyVolumeIds().map(
+                    function(v){ return { callnumber : v } }
+                ),
                 hide_vols : hide_vols,
                 hide_copies : hide_copies
             }

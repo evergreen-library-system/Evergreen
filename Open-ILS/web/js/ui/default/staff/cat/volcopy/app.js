@@ -974,11 +974,8 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
 
                 $scope.record_id = data.record_id;
 
-                if (data.copies && data.copies.length)
-                    return itemSvc.fetchIds(data.copies);
-
-                if (data.raw && data.raw.length) {
-                    $scope.dirty = true;
+                function fetchRaw () {
+                    if (!$scope.only_vols) $scope.dirty = true;
                     $scope.add_vols_copies = true;
 
                     /* data.raw data structure looks like this:
@@ -1001,7 +998,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                                     var cp = new egCore.idl.acp();
                                     cp.call_number( cn );
                                     cp.id( --itemSvc.new_cp_id );
-                                    cp.isnew( true );
+                                    if (!$scope.only_vols) cp.isnew( true );
                                     cp.circ_lib( proto.owner || egCore.auth.user().ws_ou() );
 
                                     cp.deposit(0);
@@ -1059,6 +1056,12 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
 
                     return itemSvc.copies;
                 }
+
+                if (data.copies && data.copies.length)
+                    return itemSvc.fetchIds(data.copies).then(fetchRaw);
+
+                return fetchRaw();
+
             }
 
         }).then( function() {
