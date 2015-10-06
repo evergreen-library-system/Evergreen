@@ -12,7 +12,7 @@ eg-navbar {
 
 <!-- tabbed copy data view -->
 
-<ul class="nav nav-tabs" ng-if="!embedded">
+<ul class="nav nav-tabs" ng-show="!embedded">
   <li ng-class="{active : tab == 'edit'}">
     <a ng-click="tab = 'edit'" >[% l('Edit') %]</a>
   </li>
