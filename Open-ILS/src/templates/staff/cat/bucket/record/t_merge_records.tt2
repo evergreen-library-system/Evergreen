@@ -9,8 +9,13 @@
           <div class="col-xs-6">
             <h4>[% l('Lead record') %]</h4>
             <div ng-if="lead_id">
-               <button class="btn btn-default btn-sm" ng-click="edit_lead()">[% l('Edit') %]</button>
-               <eg-record-breaker record-id="lead_id"></eg-record-breaker>
+               <button class="btn btn-default btn-sm" ng-class="{disabled : editing_inplace}" ng-click="edit_lead_inplace()">[% l('Edit') %]</button>
+               <button class="btn btn-default btn-sm" ng-class="{disabled : editing_inplace}" ng-click="edit_lead()">[% l('Edit using full editor') %]</button>
+               <eg-marc-edit-record dirty-flag="dirty_flag" record-id="lead_id"
+                         record-type="bre" flat-only="true" embedded="true" 
+                         ng-if="editing_inplace" on-save="post_edit_inplace">
+               </eg-marc-edit-record>
+               <eg-record-breaker record-id="lead_id" ng-if="!editing_inplace"></eg-record-breaker>
                <eg-volume-list record-id="lead_id"></eg-volume-list>
             </div>
             <div ng-if="!lead_id">

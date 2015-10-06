@@ -550,6 +550,7 @@ function($scope,  $q , $routeParams,  bucketSvc,  egCore,  $window,
                 ['$scope', '$modalInstance', function($scope, $modalInstance) {
                 $scope.records = [];
                 $scope.lead_id = 0;
+                $scope.editing_inplace = false;
                 angular.forEach(records, function(rec) {
                     $scope.records.push({ id : rec.id });
                 });
@@ -574,6 +575,12 @@ function($scope,  $q , $routeParams,  bucketSvc,  egCore,  $window,
                         }
                     });
                 }
+                $scope.post_edit_inplace = function() {
+                    $scope.editing_inplace = false;
+                }
+                $scope.edit_lead_inplace = function() {
+                    $scope.editing_inplace = true;
+                }
                 $scope.edit_lead = function() {
                     var lead_id = $scope.lead_id;
                     $modal.open({
@@ -588,7 +595,7 @@ function($scope,  $q , $routeParams,  bucketSvc,  egCore,  $window,
                             $scope.cancel = function () { $modalInstance.dismiss() }
                         }]
                     }).result.then(function() {
-                        // TODO: need a way to force a refresh of the egRecordHtml, as
+                        // TODO: need a way to force a refresh of the egRecordBreaker, as
                         // the record ID does not change
                     });
                 };
