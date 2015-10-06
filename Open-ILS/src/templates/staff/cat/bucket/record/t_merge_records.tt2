@@ -10,7 +10,7 @@
             <h4>[% l('Lead record') %]</h4>
             <div ng-if="lead_id">
                <button class="btn btn-default btn-sm" ng-click="edit_lead()">[% l('Edit') %]</button>
-               <eg-record-html record-id="lead_id"></eg-record-html>
+               <eg-record-breaker record-id="lead_id"></eg-record-breaker>
                <eg-volume-list record-id="lead_id"></eg-volume-list>
             </div>
             <div ng-if="!lead_id">
@@ -23,7 +23,7 @@
               <tab heading="[% l('Bib [_1]', '{{rec.id}}') %]" ng-repeat="rec in records">
                 <button class="btn btn-default btn-sm" ng-click="use_as_lead(rec)">[% l('Use as lead record') %]</button>
                 <button class="btn btn-default btn-sm" ng-click="drop(rec)">[% l('Remove from consideration') %]</button>
-                <eg-record-html record-id="rec.id"></eg-record-html>
+                <eg-record-breaker record-id="rec.id"></eg-record-breaker>
                 <eg-volume-list record-id="rec.id"></eg-volume-list>
               </tab>
             </tabset>
