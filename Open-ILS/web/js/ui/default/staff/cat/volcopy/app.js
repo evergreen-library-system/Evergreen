@@ -1291,6 +1291,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
         createSimpleUpdateWatcher('holdable');
         createSimpleUpdateWatcher('fine_level');
         createSimpleUpdateWatcher('loan_duration');
+        createSimpleUpdateWatcher('price');
         createSimpleUpdateWatcher('cost');
         createSimpleUpdateWatcher('deposit');
         createSimpleUpdateWatcher('deposit_amount');
