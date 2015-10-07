@@ -91,7 +91,7 @@
 
   <div class="flex-row">
     <div class="flex-cell strong-text">[% l('Bib Call #:') %]</div>
-    <div class="flex-cell flex-2"><!-- FIXME: no bib call no on simple rec --></div>
+    <div class="flex-cell flex-2"><span tooltip-html-unsafe="{{bib_cn_tooltip}}">{{bib_cn}}<span></div>
 
     <div class="flex-cell strong-text"></div>
     <div class="flex-cell"></div>

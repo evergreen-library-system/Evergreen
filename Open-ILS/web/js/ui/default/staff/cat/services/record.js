@@ -143,8 +143,8 @@ angular.module('egCoreMod')
         },
         templateUrl : './cat/share/t_record_summary',
         controller : 
-                   ['$scope','egCore',
-            function($scope , egCore) {
+                   ['$scope','egCore','$sce',
+            function($scope , egCore , $sce) {
 
                 function loadRecord() {
                     egCore.pcrud.retrieve('bre', $scope.recordId, {
@@ -155,6 +155,29 @@ angular.module('egCoreMod')
                     }).then(function(rec) {
                         rec.owner(egCore.org.get(rec.owner()));
                         $scope.record = rec;
+                    });
+                    $scope.bib_cn = null;
+                    $scope.bib_cn_tooltip = '';
+                    var label_class = egCore.env.aous['cat.default_classification_scheme'] || 1;
+                    egCore.net.request(
+                        'open-ils.cat',
+                        'open-ils.cat.biblio.record.marc_cn.retrieve',
+                        $scope.recordId,
+                        label_class
+                    ).then(function(cn_array) {
+                        var tooltip = '';
+                        if (cn_array.length > 0) {
+                            for (var field in cn_array[0]) {
+                                $scope.bib_cn = cn_array[0][field];
+                            }
+                            for (var i in cn_array) {
+                                for (var field in cn_array[i]) {
+                                    tooltip += 
+                                        field + ' : ' + cn_array[i][field] + '<br>';
+                                }
+                            }
+                            $scope.bib_cn_tooltip = $sce.trustAsHtml(tooltip);
+                        }
                     });
                 }
 
