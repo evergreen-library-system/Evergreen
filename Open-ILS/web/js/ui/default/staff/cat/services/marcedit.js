@@ -1214,6 +1214,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                                         raw: [{
                                             label : $scope.fast_item_callnumber,
                                             barcode : $scope.fast_item_barcode,
+                                            fast_add : true
                                         }],
                                         hide_vols : false,
                                         hide_copies : false

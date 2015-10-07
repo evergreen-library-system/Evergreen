@@ -970,6 +970,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
 
         $scope.workingGridControls = {};
         $scope.add_vols_copies = false;
+        $scope.is_fast_add = false;
 
         egNet.request(
             'open-ils.actor',
@@ -996,6 +997,8 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                      *      owner      : $org, // optional, defaults to ws_ou
                      *      label      : $cn_label, // optional, to supply a label on a new cn
                      *      barcode    : $cp_barcode // optional, to supply a barcode on a new cp
+                     *      fast_add   : boolean // optional, to specify whether this came
+                     *                              in as a fast add
                      * },...]
                      * 
                      * All can be left out and a completely empty vol/copy combo will be vivicated.
@@ -1004,6 +1007,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                     angular.forEach(
                         data.raw,
                         function (proto) {
+                            if (proto.fast_add) $scope.is_fast_add = true;
                             if (proto.callnumber) {
                                 return egCore.pcrud.retrieve('acn', proto.callnumber)
                                 .then(function(cn) {
@@ -1079,12 +1083,16 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
         }).then( function() {
             $scope.data = itemSvc;
             if ($scope.add_vols_copies) {
+                var status_setting = $scope.is_fast_add ?
+                    'cat.default_copy_status_fast' :
+                    'cat.default_copy_status_normal';
                 egCore.org.settings([
-                    'cat.default_copy_status_fast'
+                    status_setting
                 ]).then(function(set) {
-                    $scope.fast_ccs = set['cat.default_copy_status_fast'] || 0;
+                    $scope.default_ccs = set[status_setting] || 
+                        ($scope.is_fast_add ? 0 : 5); // 0 is Available, 5 is In Process
                     angular.forEach($scope.data.copies, function (cp) {
-                        cp.status($scope.fast_ccs);
+                        cp.status($scope.default_ccs);
                     });
                     $scope.workingGridDataProvider.refresh();
                 });
