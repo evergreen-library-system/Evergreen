@@ -115,7 +115,7 @@
 
 <!-- Bib Queue Grid -->
 <div class='' id='vl-bib-queue-grid-wrapper' dojoType='dijit.layout.ContentPane'>
-    <table dojoType='dojox.grid.DataGrid' jsId='vlBibQueueGrid' query="{id:'*'}" autoHeight='true'>
+    <table dojoType='dojox.grid.DataGrid' jsId='vlBibQueueGrid' query="{id:'*'}" autoHeight='true' autoWidth='true'>
         <thead>
             <tr>
                 <th 
@@ -158,7 +158,7 @@
 
 <!-- Auth Queue Grid -->
 <div class='' id='vl-auth-queue-grid-wrapper' dojoType='dijit.layout.ContentPane'>
-    <table dojoType='dojox.grid.DataGrid' jsId='vlAuthQueueGrid' query="{id:'*'}" autoHeight='true'> 
+    <table dojoType='dojox.grid.DataGrid' jsId='vlAuthQueueGrid' query="{id:'*'}" autoHeight='true' autoWidth='true'>
         <thead>
             <tr>
                 <th 
