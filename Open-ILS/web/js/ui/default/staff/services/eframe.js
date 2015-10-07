@@ -13,11 +13,11 @@ angular.module('egCoreMod')
 
             // optional hash of functions which augment or override 
             // the stock xulG functions defined below.
-            handlers : '=',
-            frame : '=',
+            handlers : '=?',
+            frame : '=?',
 
             // called after onload of each new iframe page
-            onchange : '=',
+            onchange : '=?',
             saveSpace : '@',
         },
 
