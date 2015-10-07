@@ -16,7 +16,7 @@
                          ng-if="editing_inplace" on-save="post_edit_inplace">
                </eg-marc-edit-record>
                <eg-record-breaker record-id="lead_id" ng-if="!editing_inplace"></eg-record-breaker>
-               <eg-volume-list record-id="lead_id"></eg-volume-list>
+               <eg-volume-list record-id="lead_id" edit-copies="true" edit-volumes="true"></eg-volume-list>
             </div>
             <div ng-if="!lead_id">
                 [% l('Please select a lead record from the right...') %]
@@ -30,6 +30,7 @@
                 <button class="btn btn-default btn-sm" ng-click="drop(rec)">[% l('Remove from consideration') %]</button>
                 <eg-record-breaker record-id="rec.id"></eg-record-breaker>
                 <eg-volume-list record-id="rec.id"></eg-volume-list>
+               <eg-volume-list record-id="rec.id" edit-copies="true" edit-volumes="true"></eg-volume-list>
               </tab>
             </tabset>
           </div>
