@@ -304,7 +304,7 @@ function(egCore , $q) {
                     return cp_id_list;
                 }
 
-                $scope.edit_volumes = function (copies_too) {
+                var spawn_volume_editor = function (copies_too) {
                     egCore.net.request(
                         'open-ils.actor',
                         'open-ils.actor.anon_cache.set_value',
@@ -312,13 +312,14 @@ function(egCore , $q) {
                             record_id: $scope.recordId,
                             copies: gatherHoldingsIds(),
                             hide_vols : false,
-                            hide_copies : (copies_too) ? false : true
+                            hide_copies : ((copies_too) ? false : true)
                         }
                     ).then(function(key) {
                         if (key) {
                             $modal.open({
                                 templateUrl: './cat/share/t_embedded_volcopy',
                                 size: 'lg',
+                                windowClass: 'eg-wide-modal',
                                 controller:
                                     ['$scope', '$modalInstance', function($scope, $modalInstance) {
                                     $scope.volcopy_url = 
@@ -332,8 +333,11 @@ function(egCore , $q) {
                         }
                     });
                 }
+                $scope.edit_volumes = function() {
+                    spawn_volume_editor(false);
+                }
                 $scope.edit_copies = function() {
-                    $scope.edit_volumes(true);
+                    spawn_volume_editor(true);
                 }
 
                 function load_holdings() {
