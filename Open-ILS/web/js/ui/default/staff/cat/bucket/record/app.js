@@ -89,7 +89,7 @@ angular.module('egCatRecordBuckets',
                 'open-ils.actor',
                 'open-ils.actor.container.retrieve_by_class.authoritative',
                 egCore.auth.token(), egCore.auth.user().id(), 
-                'biblio', 'staff_client'
+                'biblio', ['staff_client', 'vandelay_queue']
             ).then(function(buckets) { self.allBuckets = buckets });
         },
 
