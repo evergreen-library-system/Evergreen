@@ -868,6 +868,9 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
 
         if (cnList.length == 0) return;
 
+        var flags = {};
+        if (vols && copies) flags.force_delete_copies = 1;
+
         egConfirmDialog.open(
             egCore.strings.CONFIRM_DELETE_COPIES_VOLUMES,
             egCore.strings.CONFIRM_DELETE_COPIES_VOLUMES_MESSAGE,
@@ -876,7 +879,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
             egCore.net.request(
                 'open-ils.cat',
                 'open-ils.cat.asset.volume.fleshed.batch.update.override',
-                egCore.auth.token(), cnList, 1, {}
+                egCore.auth.token(), cnList, 1, flags
             ).then(function(update_count) {
                 $scope.holdingsGridDataProvider.refresh();
             });
