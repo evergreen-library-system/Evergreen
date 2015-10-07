@@ -463,10 +463,22 @@ function(egCore , $q) {
                         var cp = new egCore.idl.acp();
                         cp.id( --itemSvc.new_cp_id );
                         cp.isnew( true );
-                        cp.circ_lib( $scope.lib );
+                        cp.circ_lib( $scope.callNumber.owning_lib() );
                         cp.call_number( $scope.callNumber );
+                        cp.deposit(0);
+                        cp.price(0);
+                        cp.deposit_amount(0);
+                        cp.fine_level(2); // Normal
+                        cp.loan_duration(2); // Normal
+                        cp.location(1); // Stacks
+                        cp.circulate('t');
+                        cp.holdable('t');
+                        cp.opac_visible('t');
+                        cp.ref('f');
+                        cp.mint_condition('t');
                         $scope.copies.push( cp );
                         $scope.allcopies.push( cp );
+
                     }
 
                     if ($scope.copy_count >= $scope.orig_copy_count) {
@@ -1305,15 +1317,20 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
         $scope.saveCompletedCopies = function (and_exit) {
             var cnHash = {};
             var perCnCopies = {};
-            angular.forEach( egCore.idl.Clone($scope.completed_copies), function (cp) {
+            angular.forEach( $scope.completed_copies, function (cp) {
+                var cn = cp.call_number();
+                var cn_cps = cp.call_number().copies();
+                cp.call_number().copies([]);
                 var cn_id = cp.call_number().id();
-                if (!cnHash[cn_id]) {
-                    cnHash[cn_id] = cp.call_number();
-                    perCnCopies[cn_id] = [cp];
-                } else {
-                    perCnCopies[cn_id].push(cp);
-                }
                 cp.call_number(cn_id); // prevent loops in JSON-ification
+                if (!cnHash[cn_id]) {
+                    cnHash[cn_id] = egCore.idl.Clone(cn);
+                    perCnCopies[cn_id] = [egCore.idl.Clone(cp)];
+                } else {
+                    perCnCopies[cn_id].push(egCore.idl.Clone(cp));
+                }
+                cp.call_number(cn); // put the data back
+                cp.call_number().copies(cn_cps);
                 if (typeof cnHash[cn_id].prefix() == 'object')
                     cnHash[cn_id].prefix(cnHash[cn_id].prefix().id()); // un-object-ize some fields
                 if (typeof cnHash[cn_id].suffix() == 'object')
