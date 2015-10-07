@@ -278,7 +278,9 @@ function(egCore , $q) {
     return {
         restrict:   'AE',
         scope: {
-            recordId : '='
+            recordId : '=',
+            editVolumes : '@',
+            editCopies  : '@'
         },
         templateUrl: './cat/share/t_volume_list',
         controller:
@@ -302,7 +304,7 @@ function(egCore , $q) {
                     return cp_id_list;
                 }
 
-                $scope.edit_volumes = function () {
+                $scope.edit_volumes = function (copies_too) {
                     egCore.net.request(
                         'open-ils.actor',
                         'open-ils.actor.anon_cache.set_value',
@@ -310,7 +312,7 @@ function(egCore , $q) {
                             record_id: $scope.recordId,
                             copies: gatherHoldingsIds(),
                             hide_vols : false,
-                            hide_copies : true
+                            hide_copies : (copies_too) ? false : true
                         }
                     ).then(function(key) {
                         if (key) {
@@ -329,6 +331,9 @@ function(egCore , $q) {
                             });
                         }
                     });
+                }
+                $scope.edit_copies = function() {
+                    $scope.edit_volumes(true);
                 }
 
                 function load_holdings() {
