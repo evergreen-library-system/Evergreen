@@ -150,11 +150,18 @@ angular.module('egCoreMod')
                     egCore.pcrud.retrieve('bre', $scope.recordId, {
                         flesh : 1,
                         flesh_fields : {
-                            bre : ['simple_record','creator','editor']
+                            bre : ['creator','editor']
                         }
                     }).then(function(rec) {
                         rec.owner(egCore.org.get(rec.owner()));
                         $scope.record = rec;
+                    });
+                    egCore.net.request(
+                        'open-ils.search',
+                        'open-ils.search.biblio.record.mods_slim.retrieve.authoritative',
+                        $scope.recordId
+                    ).then(function(mvr) {
+                        $scope.mvr = mvr;
                     });
                     $scope.bib_cn = null;
                     $scope.bib_cn_tooltip = '';

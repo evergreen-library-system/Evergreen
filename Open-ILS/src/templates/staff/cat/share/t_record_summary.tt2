@@ -36,16 +36,16 @@
     <div class="flex-cell flex-2">
       <a target="_self" 
         href="[% ctx.base_path %]/staff/cat/catalog/record/{{record.id()}}">
-        {{record.simple_record().title()}}
+        {{mvr.title()}}
       </a>
     </div>
 
     <div class="flex-cell strong-text">[% l('Author:') %]</div>
-    <div class="flex-cell flex-2">{{record.simple_record().author()}}</div>
+    <div class="flex-cell flex-2">{{mvr.author()}}</div>
 
     <div class="flex-cell strong-text">[% l('Pub Date:') %]</div>
     <div class="flex-cell">
-      {{record.simple_record().pubdate()}}
+      {{mvr.pubdate()}}
     </div>
 
     <div class="flex-cell strong-text">[% l('Database ID:') %]</div>
@@ -59,12 +59,12 @@
     <div class="flex-cell flex-2">
       <a target="_self" 
         href="[% ctx.base_path %]/staff/cat/catalog/record/{{record.id()}}">
-        {{record.simple_record().title()}}
+        {{mvr.title()}}
       </a>
     </div>
 
     <div class="flex-cell strong-text">[% l('Edition:') %]</div>
-    <div class="flex-cell"><!-- FIXME: no edition field on simple record --></div>
+    <div class="flex-cell">{{mvr.edition()}}</div>
 
     <div class="flex-cell strong-text">[% l('TCN:') %]</div>
     <div class="flex-cell">{{record.tcn_value()}}</div>
@@ -75,11 +75,11 @@
 
   <div class="flex-row">
     <div class="flex-cell strong-text">[% l('Author:') %]</div>
-    <div class="flex-cell flex-2">{{record.simple_record().author()}}</div>
+    <div class="flex-cell flex-2">{{mvr.author()}}</div>
 
     <div class="flex-cell strong-text">[% l('Pub Date:') %]</div>
     <div class="flex-cell">
-      {{record.simple_record().pubdate()}}
+      {{mvr.pubdate()}}
     </div>
 
     <div class="flex-cell strong-text">[% l('Database ID:') %]</div>
