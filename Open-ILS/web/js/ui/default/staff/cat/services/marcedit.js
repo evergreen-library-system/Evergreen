@@ -65,7 +65,8 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
             contextItemGenerator: '=',
             max: '@',
             itype: '@',
-            selectOnFocus: '='
+            selectOnFocus: '=',
+            advanceFocusAfterInput: '='
         },
         controller : ['$scope',
             function ( $scope ) {
@@ -146,6 +147,35 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
             if (Boolean(scope.selectOnFocus)) {
                 element.addClass('noSelection');
                 element.bind('focus', function () { element.select() });
+            }
+
+            function findCaretTarget(id, itype) {
+                var tgt = null;
+                if (itype == 'tag') {
+                    tgt = id.replace(/tag$/, 'i1');
+                } else if (itype == 'ind') {
+                    if (id.match(/i1$/)) {
+                        tgt = id.replace(/i1$/, 'i2');
+                    } else if (id.match(/i2$/)) {
+                        tgt = id.replace(/i2$/, 's0code');
+                    }
+                } else if (itype == 'sfc') {
+                    tgt = id.replace(/code$/, 'value');
+                }
+                return tgt;
+            }
+            if (Boolean(scope.advanceFocusAfterInput)) {
+                element.bind('input', function (e) {
+                    if (scope.content.length == scope.max) {
+                        var tgt = findCaretTarget(e.currentTarget.id, scope.itype);
+                        if (tgt) {
+                            var element = $('#' + tgt).get(0);
+                            if (element) {
+                                element.focus();
+                            }
+                        }
+                    }
+                });
             }
 
             element.bind('change', function (e) { element.size = scope.max || parseInt(scope.content.length * 1.1) });
@@ -300,6 +330,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                         '>‡</label><eg-marc-edit-editable '+
                         'itype="sfc" '+
                         'select-on-focus="true" '+
+                        'advance-focus-after-input="true" '+
                         'class="marcedit marcsf marcsfcode" '+
                         'field="field" '+
                         'subfield="subfield" '+
@@ -344,6 +375,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                       'itype="ind" '+
                       'class="marcedit marcind" '+
                       'select-on-focus="true" '+
+                      'advance-focus-after-input="true" '+
                       'field="field" '+
                       'content="ind" '+
                       'max="1" '+
@@ -372,6 +404,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                       'itype="tag" '+
                       'class="marcedit marctag" '+
                       'select-on-focus="true" '+
+                      'advance-focus-after-input="true" '+
                       'field="field" '+
                       'content="tag" '+
                       'max="3" '+
