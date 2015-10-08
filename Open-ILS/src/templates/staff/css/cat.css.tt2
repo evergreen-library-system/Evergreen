@@ -28,6 +28,11 @@
     margin: 0px;
 }
 
+.marcedit_stacked_subfield {
+    display: block;
+    margin-left: 3em;
+}
+
 input.marcedit:focus {
     background-color: lightcyan;
 }

@@ -141,6 +141,10 @@
       </div>
     </div>
     <div class="marcrecord pad-vert">
+      <label>
+        <input type="checkbox" ng-model="stackSubfields.enabled" />
+        [% l('Stack subfields') %]
+      </label>
       <div>
         <eg-marc-edit-leader record="record" on-keydown="onKeydown"/>
       </div>

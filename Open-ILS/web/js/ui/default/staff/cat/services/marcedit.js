@@ -418,9 +418,10 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                     '<span><eg-marc-edit-tag context-functions="contextFunctions" field="field" tag="field.tag" on-keydown="onKeydown"/></span>'+
                     '<span><eg-marc-edit-ind field="field" ind="field.ind1" on-keydown="onKeydown" ind-number="1"/></span>'+
                     '<span><eg-marc-edit-ind field="field" ind="field.ind2" on-keydown="onKeydown" ind-number="2"/></span>'+
-                    '<span><eg-marc-edit-subfield ng-class="{ \'unvalidatedheading\' : field.heading_checked && !field.heading_valid}" ng-repeat="subfield in field.subfields" subfield="subfield" field="field" on-keydown="onKeydown"/></span>'+
+                    '<span><eg-marc-edit-subfield ng-class="{ \'unvalidatedheading\' : field.heading_checked && !field.heading_valid, \'marcedit_stacked_subfield\' : stackSubfields.enabled }" ng-repeat="subfield in field.subfields" subfield="subfield" field="field" on-keydown="onKeydown"/></span>'+
                     // FIXME: template should probably be moved to file to improve
                     // translatibility
+                    '<span  ng-class="{ \'marcedit_stacked_subfield\' : stackSubfields.enabled }">' +
                     '<button class="btn btn-info btn-xs" '+
                     'aria-label="Manage authority record links" '+
                     'ng-show="isAuthorityControlled(field)"'+
@@ -430,11 +431,13 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                     '</button>'+
                     '<span ng-show="field.heading_checked && field.heading_valid" class="glyphicon glyphicon-ok-sign"></span>'+
                     '<span ng-show="field.heading_checked && !field.heading_valid" class="glyphicon glyphicon-question-sign"></span>'+
+                    '</span>'+
                   '</div>',
         scope: { field: "=", onKeydown: '=', contextFunctions: '=' },
         replace: true,
         controller : ['$scope','$modal',
             function ( $scope,  $modal ) {
+                $scope.stackSubfields = $scope.$parent.$parent.stackSubfields;
                 $scope.isAuthorityControlled = function () {
                     return ($scope.$parent.$parent.record_type == 'bre') &&
                            $scope.$parent.$parent.controlSet.bibFieldByTag($scope.field.tag);
@@ -636,6 +639,13 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                 $scope.controlfields = [];
                 $scope.datafields = [];
                 $scope.controlSet = egTagTable.getAuthorityControlSet();
+                $scope.stackSubfields = { enabled : false };
+                egCore.hatch.getItem('cat.marcedit.stack_subfields').then(function(val) {
+                    $scope.stackSubfields.enabled = val;
+                });
+                $scope.$watch('stackSubfields.enabled', function (newVal, oldVal) {
+                    if (newVal != oldVal) egCore.hatch.setItem('cat.marcedit.stack_subfields', newVal);
+                });
 
                 egTagTable.loadTagTable({ marcRecordType : $scope.record_type });
 
