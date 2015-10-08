@@ -664,7 +664,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                     var element = $(e.target);
 
                     var index_field = e.data.scope.field.position;
-                    var new_field_index = index_field + 1;
+                    var new_field_index = index_field;
 
                     var new_field = new MARC21.Field({
                         tag : '999',
@@ -681,6 +681,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                             e.data.scope.field,
                             new_field
                         );
+                        new_field_index++;
                     }
 
                     $scope.current_event_target = 'r' + $scope.recordId +
