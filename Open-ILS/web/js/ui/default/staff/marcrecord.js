@@ -302,13 +302,17 @@ var MARC21 = {
                         );
                     }
                 } else {
-                    if (current_line.substring(4,5) == me.delimiter) // add delimiters if they were left out
+                    if (current_line.substring(4,5) == me.delimiter) // add indicators if they were left out
                         current_line = current_line.substring(0,3) + ' \\\\' + current_line.substring(4);
 
                     var data = df_line_data(current_line);
                     if (!(data.substring(0,1) == me.delimiter)) data = me.delimiter + 'a' + data;
 
-                    var sf_list = data.split(me.delimiter);
+                    var local_delimiter = me.delimiter;
+                    if (data.indexOf('\u2021') > -1)
+                        local_delimiter = '\u2021';
+
+                    var sf_list = data.split(local_delimiter);
                     sf_list.shift();
 
                     me.fields.push(
@@ -319,7 +323,7 @@ var MARC21 = {
                                 ind2      : df_ind2(current_line),
                                 subfields : sf_list.map( function (sf, i) {
                                                 var sf_data = sf.substring(1);
-                                                if (me.delimiter == '$') sf_data = sf_data.replace(/\{dollar\}/g, '$');
+                                                if (local_delimiter == '$') sf_data = sf_data.replace(/\{dollar\}/g, '$');
                                                 return [ sf.substring(0,1), sf_data, i ];
                                             })
                         })
