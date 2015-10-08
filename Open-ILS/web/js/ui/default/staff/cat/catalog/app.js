@@ -190,9 +190,12 @@ function($scope , $routeParams , $location , $window , $q , egCore) {
         });
         $scope.template_list.sort();
     });
-    egCore.hatch.getItem('cat.default_bib_marc_template').then(function(template) {
-        $scope.template_name = template;
-    });
+    $scope.template_name = egCore.hatch.getSessionItem('eg.cat.last_bib_marc_template');
+    if (!$scope.template_name) {
+        egCore.hatch.getItem('cat.default_bib_marc_template').then(function(template) {
+            $scope.template_name = template;
+        });
+    }
 
     $scope.loadTemplate = function() {
         if ($scope.template_name) {
@@ -203,6 +206,7 @@ function($scope , $routeParams , $location , $window , $q , egCore) {
             ).then(function(template) {
                 $scope.marc_template = template;
                 $scope.have_template = true;
+                egCore.hatch.setSessionItem('eg.cat.last_bib_marc_template', $scope.template_name);
             });
         }
     }
