@@ -672,6 +672,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                 $scope.controlfields = [];
                 $scope.datafields = [];
                 $scope.controlSet = egTagTable.getAuthorityControlSet();
+                $scope.showHelp = false;
                 $scope.stackSubfields = { enabled : false };
                 egCore.hatch.getItem('cat.marcedit.stack_subfields').then(function(val) {
                     $scope.stackSubfields.enabled = val;

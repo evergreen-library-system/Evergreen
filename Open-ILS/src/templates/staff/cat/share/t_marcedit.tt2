@@ -141,10 +141,31 @@
       </div>
     </div>
     <div class="marcrecord pad-vert">
-      <label>
-        <input type="checkbox" ng-model="stackSubfields.enabled" />
-        [% l('Stack subfields') %]
-      </label>
+      <div class="input-group">
+        <label>
+          <input type="checkbox" ng-model="stackSubfields.enabled" />
+          [% l('Stack subfields') %]
+        </label>
+        <button class="btn btn-default btn-sm" ng-click="showHelp = !showHelp">[% l('Help') %]</button>
+        <!-- TODO: when we update to angular-ui >= 0.13.0 and get popover-template, switching to
+                   that rather than using ui.bootstrap.collapse might be good -->
+      </div>
+      <div collapse="!showHelp">
+        <ul>
+           <li>[% l('Undo: CTRL-z') %]</li>
+           <li>[% l('Redo: CTRL-y') %]</li>
+           <li>[% l('Add Row: CTRL+Enter') %]</li>
+           <li>[% l('Insert Row: CTRL+Shift+Enter') %]</li>
+           <li>[% l('Copy Current Row Above: CTRL+Up') %]</li>
+           <li>[% l('Copy Current Row Below: CTRL+Down') %]</li>
+           <li>[% l('Add Subfield: CTRL+D or CTRL+I') %]</li>
+           <li>[% l('Remove Row: CTRL+Del') %]</li>
+           <li>[% l('Remove Subfield: Shift+Del') %]</li>
+           <li>[% l('Create/Replace 006: Shift+F6') %]</li>
+           <li>[% l('Create/Replace 007: Shift+F7') %]</li>
+           <li>[% l('Create/Replace 008: Shift+F8') %]</li>
+        </ul>
+      </div>
       <div>
         <eg-marc-edit-leader record="record" on-keydown="onKeydown"/>
       </div>
