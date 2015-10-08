@@ -301,6 +301,12 @@ angular.module('egCoreMod')
         return JSON.parse(val);
     }
 
+    service.getSessionItem = function(key) {
+        var val = $window.sessionStorage.getItem(key);
+        if (val == null) return;
+        return JSON.parse(val);
+    }
+
     service.setItem = function(key, value) {
         var str = JSON.stringify(value);
         return service.setRemoteItem(key, str)['catch'](
@@ -331,6 +337,12 @@ angular.module('egCoreMod')
         if (jsonified === undefined ) 
             jsonified = JSON.stringify(value);
         $window.localStorage.setItem(key, jsonified);
+    }
+
+    service.setSessionItem = function(key, value, jsonified) {
+        if (jsonified === undefined ) 
+            jsonified = JSON.stringify(value);
+        $window.sessionStorage.setItem(key, jsonified);
     }
 
     // appends the value to the existing item stored at key.
@@ -389,6 +401,10 @@ angular.module('egCoreMod')
 
     service.removeLocalItem = function(key) {
         $window.localStorage.removeItem(key);
+    }
+
+    service.removeSessionItem = function(key) {
+        $window.sessionStorage.removeItem(key);
     }
 
     // if set, prefix limits the return set to keys starting with 'prefix'
