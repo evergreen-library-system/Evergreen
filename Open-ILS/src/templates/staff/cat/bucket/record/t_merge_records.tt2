@@ -9,14 +9,18 @@
           <div class="col-xs-6">
             <h4>[% l('Lead record') %]</h4>
             <div ng-if="lead_id">
-               <button class="btn btn-default btn-sm" ng-class="{disabled : editing_inplace}" ng-click="edit_lead_inplace()">[% l('Edit') %]</button>
-               <button class="btn btn-default btn-sm" ng-class="{disabled : editing_inplace}" ng-click="edit_lead()">[% l('Edit using full editor') %]</button>
-               <eg-marc-edit-record dirty-flag="dirty_flag" record-id="lead_id"
-                         record-type="bre" flat-only="true" embedded="true" 
-                         ng-if="editing_inplace" on-save="post_edit_inplace">
-               </eg-marc-edit-record>
-               <eg-record-breaker record-id="lead_id" ng-if="!editing_inplace"></eg-record-breaker>
-               <eg-volume-list record-id="lead_id" edit-copies="true" edit-volumes="true"></eg-volume-list>
+               <tabset>
+                 <tab heading="[% l('Bib [_1]', '{{lead_id}}') %]">
+                   <button class="btn btn-default btn-sm" ng-class="{disabled : editing_inplace}" ng-click="edit_lead_inplace()">[% l('Edit') %]</button>
+                   <button class="btn btn-default btn-sm" ng-class="{disabled : editing_inplace}" ng-click="edit_lead()">[% l('Edit using full editor') %]</button>
+                   <eg-marc-edit-record dirty-flag="dirty_flag" record-id="lead_id"
+                             record-type="bre" flat-only="true" embedded="true" 
+                             ng-if="editing_inplace" on-save="post_edit_inplace">
+                   </eg-marc-edit-record>
+                   <eg-record-breaker record-id="lead_id" ng-if="!editing_inplace"></eg-record-breaker>
+                   <eg-volume-list record-id="lead_id" edit-copies="true" edit-volumes="true"></eg-volume-list>
+                 </tab>
+               </tabset>
             </div>
             <div ng-if="!lead_id">
                 [% l('Please select a lead record from the right...') %]
@@ -29,8 +33,7 @@
                 <button class="btn btn-default btn-sm" ng-click="use_as_lead(rec)">[% l('Use as lead record') %]</button>
                 <button class="btn btn-default btn-sm" ng-click="drop(rec)">[% l('Remove from consideration') %]</button>
                 <eg-record-breaker record-id="rec.id"></eg-record-breaker>
-                <eg-volume-list record-id="rec.id"></eg-volume-list>
-               <eg-volume-list record-id="rec.id" edit-copies="true" edit-volumes="true"></eg-volume-list>
+                <eg-volume-list record-id="rec.id" edit-copies="true" edit-volumes="true"></eg-volume-list>
               </tab>
             </tabset>
           </div>
