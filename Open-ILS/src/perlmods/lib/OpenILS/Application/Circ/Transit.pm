@@ -69,10 +69,10 @@ sub transit_receive {
     ($transit, $evt) = $U->fetch_open_transit_by_copy($copyid);
     return $evt if $evt;
 
-    if( $transit->dest != $requestor->home_ou ) {
+    if( $transit->dest != $requestor->ws_ou ) {
         $logger->activity("Fowarding transit on copy which is destined ".
             "for a different location. copy=$copyid,current ".
-            "location=".$requestor->home_ou.",destination location=".$transit->dest);
+            "location=".$requestor->ws_ou.",destination location=".$transit->dest);
 
         return OpenILS::Event->new('ROUTE_ITEM', org => $transit->dest );
     }
