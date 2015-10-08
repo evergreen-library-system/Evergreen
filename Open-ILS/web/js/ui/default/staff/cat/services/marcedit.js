@@ -108,7 +108,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
 
                         $scope.contextMenuEvent = event;
                         var tmpl = 
-                            '<ul class="dropdown-menu" role="menu" style="z-index: 2000;">'+
+                            '<ul class="dropdown-menu scrollable-menu" role="menu" style="z-index: 2000;">'+
                                 '<eg-context-menu-item context-menu-event="contextMenuEvent" ng-repeat="item in item_list" item="item" content="content"/>'+
                             '</ul>';
             
@@ -254,7 +254,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                         $('body').trigger('click');
 
                         var tmpl = 
-                            '<ul class="dropdown-menu" role="menu" style="z-index: 2000;">'+
+                            '<ul class="dropdown-menu scrollable-menu" role="menu" style="z-index: 2000;">'+
                                 '<eg-context-menu-item ng-repeat="item in item_container" item="item" content="content"/>'+
                             '</ul>';
             
