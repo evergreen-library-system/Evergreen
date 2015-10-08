@@ -8,5 +8,9 @@ angular.module('egCoreMod').run(['egStrings', function(s) {
     s.ADD_007                   = "[% l('Add 007') %]";
     s.ADD_REPLACE_008           = "[% l('Add/Replace 008') %]";
     s.DELETE_FIELD              = "[% l('Delete field') %]";
+    s.CONFIRM_DELETE_RECORD     = "[% l('Delete Record') %]";
+    s.CONFIRM_DELETE_BRE_MSG    = "[% l('Are you sure you want to delete title record [_1] from the catalog?', '{{id}}') %]";
+    s.CONFIRM_DELETE_ARE_MSG    = "[% l('Are you sure you want to delete authority record [_1] from the catalog?', '{{id}}') %]";
+    s.ALERT_DELETE_FAILED       = "[% l('Could not delete record [_1]: [_2]', '{{id}}', '{{desc}}') %]";
 }]);
 </script>

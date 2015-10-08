@@ -645,8 +645,8 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
             });
 
         },
-        controller : ['$timeout','$scope','$q','$window','egCore', 'egTagTable',
-            function ( $timeout , $scope , $q,  $window , egCore ,  egTagTable ) {
+        controller : ['$timeout','$scope','$q','$window','egCore', 'egTagTable','egConfirmDialog','egAlertDialog',
+            function ( $timeout , $scope , $q,  $window , egCore ,  egTagTable , egConfirmDialog , egAlertDialog ) {
 
 
                 $scope.onSaveCallback = $scope.onSave;
@@ -1176,8 +1176,34 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                 };
 
                 $scope.deleteRecord = function () {
-                    $scope.Record().deleted(true);
-                    return $scope.saveRecord();
+                    egConfirmDialog.open(
+                        egCore.strings.CONFIRM_DELETE_RECORD,
+                        (($scope.record_type == 'bre') ?
+                            egCore.strings.CONFIRM_DELETE_BRE_MSG :
+                            egCore.strings.CONFIRM_DELETE_ARE_MSG),
+                        { id : $scope.recordId }
+                    ).result.then(function() {
+                        if ($scope.record_type == 'bre') {
+                            egCore.net.request(
+                                'open-ils.cat',
+                                'open-ils.cat.biblio.record_entry.delete',
+                                egCore.auth.token(), $scope.recordId
+                            ).then(function(resp) {
+                                var evt = egCore.evt.parse(resp);
+                                if (evt) {
+                                    return egAlertDialog.open(
+                                        egCore.strings.ALERT_DELETE_FAILED,
+                                        { id : $scope.recordId, desc : evt.desc }
+                                    );
+                                } else {
+                                    loadRecord().then(processOnSaveCallbacks);
+                                }
+                            });
+                        } else {
+                            $scope.Record().deleted(true);
+                            return $scope.saveRecord();
+                        }
+                    });
                 };
 
                 $scope.undeleteRecord = function () {
