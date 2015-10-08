@@ -89,7 +89,7 @@
       <button type="button" class="btn btn-default dropdown-toggle">
         [% l('Actions') %] <span class="caret"></span>                       
       </button>                                                              
-      <ul class="dropdown-menu pull-right grid-action-dropdown">                                  
+      <ul class="dropdown-menu pull-right grid-action-dropdown scrollable-menu">                                  
         <li ng-repeat-start="group in actionGroups">
           <span style="padding-left: 1em;" ng-if="group.label"><strong><u>{{group.label}}</u></strong></span>
         </li>
