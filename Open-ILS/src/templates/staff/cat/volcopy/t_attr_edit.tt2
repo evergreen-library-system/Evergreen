@@ -83,7 +83,7 @@
             <b>[% l('Status') %]</b>
         </div>
         <div class="col-md-4">
-            <b>[% l('Statistical Catagories') %]</b>
+            <b>[% l('Statistical Categories') %]</b>
         </div>
     </div>
 
