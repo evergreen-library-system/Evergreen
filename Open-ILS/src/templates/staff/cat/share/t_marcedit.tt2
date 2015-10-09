@@ -24,13 +24,13 @@
         [% l('Stack subfields') %]
       </label>
     </div>
-    <div class="col-md-2">
+    <div class="col-md-3">
       <div class="input-group">
         <span class="input-group-addon"><b>[% l('Record Type') %]</b></span>
         <span class="input-group-addon">{{calculated_record_type}}</span>
       </div>
     </div>
-    <div ng-if="bre" class="col-md-3">
+    <div ng-if="bre" class="col-md-2">
       <eg-marc-edit-bibsource/>
     </div>
     <div class="col-md-3">
