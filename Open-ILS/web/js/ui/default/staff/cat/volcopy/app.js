@@ -1416,6 +1416,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                     if (note.initials) note.value += ' [' + note.initials + ']';
                     angular.forEach(copy_list, function (cp) {
                         var n = new egCore.idl.acpn();
+                        n.isnew(1);
                         n.creator(note.creator);
                         n.pub(note.pub);
                         n.title(note.title);
