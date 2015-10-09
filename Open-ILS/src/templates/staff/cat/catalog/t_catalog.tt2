@@ -63,32 +63,32 @@
     </a>
   </li>
   <li ng-class="{disabled : !record_id, active : record_tab == 'marc_edit'}">
-    <a ng-click="set_record_tab('marc_edit')" >
+    <a ng-click="record_id && set_record_tab('marc_edit')" >
         [% l('MARC Edit') %]
     </a>
   </li>
   <li ng-class="{disabled : !record_id, active : record_tab == 'marc_html'}">
-    <a ng-click="set_record_tab('marc_html')" >
+    <a ng-click="record_id && set_record_tab('marc_html')" >
         [% l('MARC View') %]
     </a>
   </li>
   <li ng-class="{disabled : !record_id, active : record_tab == 'holds'}">
-    <a ng-click="set_record_tab('holds')" >
+    <a ng-click="record_id && set_record_tab('holds')" >
         [% l('View Holds') %]
     </a>
   </li>
   <li ng-class="{disabled : !record_id, active : record_tab == 'monoparts'}">
-    <a ng-click="set_record_tab('monoparts')" >
+    <a ng-click="record_id && set_record_tab('monoparts')" >
         [% l('Monograph Parts') %]
     </a>
   </li>
   <li ng-class="{disabled : !record_id, active : record_tab == 'holdings'}">
-    <a ng-click="set_record_tab('holdings')" >
+    <a ng-click="record_id && set_record_tab('holdings')" >
         [% l('Holdings View') %]
     </a>
   </li>
   <li ng-class="{disabled : !record_id, active : record_tab == 'conjoined'}">
-    <a ng-click="set_record_tab('conjoined')" >
+    <a ng-click="record_id && set_record_tab('conjoined')" >
         [% l('Conjoined Items') %]
     </a>
   </li>
