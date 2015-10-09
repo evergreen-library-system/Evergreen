@@ -141,7 +141,7 @@
       </div>
     </div>
     <div class="marcrecord pad-vert">
-      <div class="input-group">
+      <div class="form-group">
         <label>
           <input type="checkbox" ng-model="stackSubfields.enabled" />
           [% l('Stack subfields') %]
