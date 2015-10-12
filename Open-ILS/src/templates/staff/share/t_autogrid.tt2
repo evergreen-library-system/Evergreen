@@ -13,7 +13,7 @@
     <button type="button" class="btn btn-default dropdown-toggle eg-grid-menu-item">
       {{menuLabel}}<span class="caret"></span>
     </button>
-    <ul class="dropdown-menu">
+    <ul class="dropdown-menu scrollable-menu">
       <li ng-repeat="item in menuItems | filter : { standalone : 'false' }" ng-class="{divider: item.divider}">
         <a ng-if="!item.divider" href ng-disabled="item.disabled"
           ng-click="item.handler()">{{item.label}}</a>
