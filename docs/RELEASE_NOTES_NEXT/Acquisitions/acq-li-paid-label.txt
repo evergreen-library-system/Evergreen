@@ -1,0 +1,4 @@
+PO Lineitem "paid" label
+^^^^^^^^^^^^^^^^^^^^^^^^
+A new "paid" label appears along the bottom of each lineitem in the PO 
+display when every non-canceled copy on the lineitem has been invoiced.
