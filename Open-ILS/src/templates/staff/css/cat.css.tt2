@@ -90,6 +90,11 @@ input.marcedit:focus {
     min-width: 1em;
 }
 
+.active-physchar {
+    font-weight: bold;
+    color: red;
+}
+
 .tooltip {
     /* width: 10em; */
 }

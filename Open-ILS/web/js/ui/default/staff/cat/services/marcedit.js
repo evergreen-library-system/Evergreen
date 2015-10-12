@@ -1625,7 +1625,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
     }
 })
 
-.directive("egPhyscharWizard", function () {
+.directive("egPhyscharWizard", ['$sce', function ($sce) {
     return {
         restrict: 'E',
         replace: true,
@@ -1640,6 +1640,12 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                 // subfields for the currently selected type.
                 // step==0 means we are currently selecting the type
                 $scope.step = 0;
+
+                // position and offset of the "subfields" we're
+                // currently editing; this is maintained as a convenience
+                // for the highlighting of the currently active position
+                $scope.offset = 0;
+                $scope.len = 1;
 
                 if (!$scope.field.data) 
                     $scope.field.data = '';
@@ -1661,6 +1667,8 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                     var promise;
 
                     if ($scope.step == 0) {
+                        $scope.offset = 0;
+                        $scope.len    = 1;
                         promise = egTagTable.getPhysCharTypeMap();
                     } else {
                         promise = current_subfield().then(
@@ -1697,6 +1705,8 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                         var after = value.substr(slot[0] + slot[1]);
                         $scope.field.data = 
                             before + new_val.substr(0, slot[1]) + after;
+                        $scope.offset = slot[0];
+                        $scope.len    = slot[1];
                     });
                 }
 
@@ -1745,6 +1755,8 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                             return (opt.ptype_key() == current_ptype())})[0];
                     } else {
                         get_step_slot().then(function(slot) {
+                            $scope.offset = slot[0];
+                            $scope.len    = slot[1];
                             var val = String.prototype.substr.apply(                      
                                 $scope.field.data, slot);
                             if (val) {
@@ -1757,11 +1769,30 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                         })
                     }
                 }
+
+                $scope.highlightedFieldData = function() {
+                    if (
+                            $scope.len && $scope.field.data &&
+                            $scope.field.data.length > 0 &&
+                            $scope.field.data.length >= $scope.offset
+                        ) {
+                        return $sce.trustAsHtml(
+                            $scope.field.data.substring(0, $scope.offset) + 
+                            '<span class="active-physchar">' +
+                            $scope.field.data.substr($scope.offset, $scope.len) +
+                            '</span>' +
+                            $scope.field.data.substr($scope.offset + $scope.len)
+                        );
+                    } else {
+                        return $scope.field.data;
+                    }
+                };
+
                 set_values_for_step();
             }
         ]
     }
-})
+}])
 
 
 .directive("egMarcEditAuthorityBrowser", function () {
