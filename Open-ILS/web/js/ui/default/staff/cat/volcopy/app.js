@@ -252,10 +252,10 @@ function(egCore , $q) {
                     ' type="text" ng-model="barcode" ng-change="updateBarcode()"/>'+
                 '</div>'+
                 '<div class="col-xs-3"><input class="form-control" type="number" ng-model="copy_number" ng-change="updateCopyNo()"/></div>'+
-                '<div class="col-xs-4"><eg-basic-combo-box list="parts" selected="part"></eg-basic-combo-box></div>'+
+                '<div class="col-xs-4"><eg-basic-combo-box eg-disabled="record == 0" list="parts" selected="part"></eg-basic-combo-box></div>'+
             '</div>',
 
-        scope: { focusNext: "=", copy: "=", callNumber: "=", index: "@" },
+        scope: { focusNext: "=", copy: "=", callNumber: "=", index: "@", record: "@" },
         controller : ['$scope','itemSvc','egCore',
             function ( $scope , itemSvc , egCore ) {
                 $scope.new_part_id = 0;
@@ -328,22 +328,22 @@ function(egCore , $q) {
         template:
             '<div class="row">'+
                 '<div class="col-xs-2">'+
-                    '<select class="form-control" ng-model="classification" ng-change="updateClassification()" ng-options="cl.name() for cl in classification_list"/>'+
+                    '<select ng-disabled="record == 0" class="form-control" ng-model="classification" ng-change="updateClassification()" ng-options="cl.name() for cl in classification_list"/>'+
                 '</div>'+
                 '<div class="col-xs-1">'+
-                    '<select class="form-control" ng-model="prefix" ng-change="updatePrefix()" ng-options="p.label() for p in prefix_list"/>'+
+                    '<select ng-disabled="record == 0" class="form-control" ng-model="prefix" ng-change="updatePrefix()" ng-options="p.label() for p in prefix_list"/>'+
                 '</div>'+
-                '<div class="col-xs-2"><input class="form-control" type="text" ng-change="updateLabel()" ng-model="label"/></div>'+
+                '<div class="col-xs-2"><input ng-disabled="record == 0" class="form-control" type="text" ng-change="updateLabel()" ng-model="label"/></div>'+
                 '<div class="col-xs-1">'+
-                    '<select class="form-control" ng-model="suffix" ng-change="updateSuffix()" ng-options="s.label() for s in suffix_list"/>'+
+                    '<select ng-disabled="record == 0" class="form-control" ng-model="suffix" ng-change="updateSuffix()" ng-options="s.label() for s in suffix_list"/>'+
                 '</div>'+
-                '<div ng-hide="onlyVols" class="col-xs-1"><input class="form-control" type="number" ng-model="copy_count" min="{{orig_copy_count}}" ng-change="changeCPCount()"></div>'+
+                '<div ng-hide="onlyVols" class="col-xs-1"><input ng-disabled="record == 0" class="form-control" type="number" ng-model="copy_count" min="{{orig_copy_count}}" ng-change="changeCPCount()"></div>'+
                 '<div ng-hide="onlyVols" class="col-xs-5">'+
-                    '<eg-vol-copy-edit ng-repeat="cp in copies track by idTracker(cp)" focus-next="focusNextBarcode" copy="cp" call-number="callNumber"></eg-vol-copy-edit>'+
+                    '<eg-vol-copy-edit record="{{record}}" ng-repeat="cp in copies track by idTracker(cp)" focus-next="focusNextBarcode" copy="cp" call-number="callNumber"></eg-vol-copy-edit>'+
                 '</div>'+
             '</div>',
 
-        scope: {focusNext: "=", allcopies: "=", copies: "=", onlyVols: "=" },
+        scope: {focusNext: "=", allcopies: "=", copies: "=", onlyVols: "=", record: "@" },
         controller : ['$scope','itemSvc','egCore',
             function ( $scope , itemSvc , egCore ) {
                 $scope.callNumber =  $scope.copies[0].call_number();
@@ -509,10 +509,10 @@ function(egCore , $q) {
         replace: true,
         template:
             '<div class="row">'+
-                '<div class="col-xs-1"><eg-org-selector selected="owning_lib" disableTest="cant_have_vols"></eg-org-selector></div>'+
-                '<div class="col-xs-1"><input class="form-control" type="number" min="{{orig_cn_count}}" ng-model="cn_count" ng-change="changeCNCount()"/></div>'+
+                '<div class="col-xs-1"><eg-org-selector alldisabled="{{record == 0}}" selected="owning_lib" disableTest="cant_have_vols"></eg-org-selector></div>'+
+                '<div class="col-xs-1"><input ng-disabled="record == 0" class="form-control" type="number" min="{{orig_cn_count}}" ng-model="cn_count" ng-change="changeCNCount()"/></div>'+
                 '<div class="col-xs-10">'+
-                    '<eg-vol-row only-vols="onlyVols"'+
+                    '<eg-vol-row only-vols="onlyVols" record="{{record}}"'+
                         'ng-repeat="(cn,copies) in struct | orderBy:cn track by cn" '+
                         'focus-next="focusNextFirst" copies="copies" allcopies="allcopies">'+
                     '</eg-vol-row>'+

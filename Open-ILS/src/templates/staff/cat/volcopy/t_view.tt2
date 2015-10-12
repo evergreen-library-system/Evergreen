@@ -7,7 +7,7 @@ eg-navbar {
 }
 </style>
 
-<eg-record-summary ng-if="!embedded"
+<eg-record-summary ng-if="!embedded && record_id"
      record-id="record_id" record="summaryRecord"></eg-record-summary>
 
 <!-- tabbed copy data view -->

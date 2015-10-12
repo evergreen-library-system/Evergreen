@@ -216,11 +216,12 @@ function($modal, $interpolate) {
         replace: true,
         scope: {
             list: "=", // list of strings
-            selected: "="
+            selected: "=",
+            egDisabled: "="
         },
         template:
             '<div class="input-group">'+
-                '<input type="text" class="form-control" ng-model="selected" ng-change="makeOpen()">'+
+                '<input type="text" ng-disabled="egDisabled" class="form-control" ng-model="selected" ng-change="makeOpen()">'+
                 '<div class="input-group-btn" dropdown ng-class="{open:isopen}">'+
                     '<button type="button" ng-click="showAll()" class="btn btn-default dropdown-toggle"><span class="caret"></span></button>'+
                     '<ul class="dropdown-menu dropdown-menu-right">'+

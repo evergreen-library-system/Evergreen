@@ -449,31 +449,27 @@ function($scope,  $q , $routeParams , $timeout , $window , $modal , bucketSvc , 
     }
 
     $scope.spawnHoldingsEdit = function (copies) {
-        var rec_hash = {};
+        var cp_list = []
         angular.forEach($scope.gridControls.selectedItems(), function (i) {
-            var rec = i['call_number.record.id'];
-            if (!rec_hash[rec]) rec_hash[rec] = [];
-            rec_hash[rec].push(i.id);
+            cp_list.push(i.id);
         })
 
-        angular.forEach(rec_hash, function(cp_list,r) {
-            egCore.net.request(
-                'open-ils.actor',
-                'open-ils.actor.anon_cache.set_value',
-                null, 'edit-these-copies', {
-                    record_id: r,
-                    copies: cp_list,
-                    hide_vols : true,
-                    hide_copies : false
-                }
-            ).then(function(key) {
-                if (key) {
-                    var url = egCore.env.basePath + 'cat/volcopy/' + key;
-                    $timeout(function() { $window.open(url, '_blank') });
-                } else {
-                    alert('Could not create anonymous cache key!');
-                }
-            });
+        egCore.net.request(
+            'open-ils.actor',
+            'open-ils.actor.anon_cache.set_value',
+            null, 'edit-these-copies', {
+                record_id: 0, // false-y value for record_id disables record summary
+                copies: cp_list,
+                hide_vols : true,
+                hide_copies : false
+            }
+        ).then(function(key) {
+            if (key) {
+                var url = egCore.env.basePath + 'cat/volcopy/' + key;
+                $timeout(function() { $window.open(url, '_blank') });
+            } else {
+                alert('Could not create anonymous cache key!');
+            }
         });
     }
 
