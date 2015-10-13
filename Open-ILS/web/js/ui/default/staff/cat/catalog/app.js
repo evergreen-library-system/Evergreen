@@ -508,7 +508,11 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
     // ------------------------------------------------------------------
     // Holdings
 
-    $scope.holdingsGridControls = {};
+    $scope.holdingsGridControls = {
+        activateItem : function (item) {
+            $scope.selectedHoldingsVolCopyEdit();
+        }
+    };
     $scope.holdingsGridDataProvider = egGridDataProvider.instance({
         get : function(offset, count) {
             return this.arrayNotifier(holdingsSvcInst.copies, offset, count);
