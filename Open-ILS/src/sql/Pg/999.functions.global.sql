@@ -1726,6 +1726,7 @@ DECLARE
     priv_note       TEXT;
     internal_id     TEXT;
     stat_cat_data   TEXT;
+    parts_data      TEXT;
 
     attr_def        RECORD;
     tmp_attr_set    RECORD;
@@ -1890,11 +1891,18 @@ BEGIN
                 ELSE '*' || attr_def.stat_cat_data
             END;
 
+        parts_data :=
+            CASE
+                WHEN attr_def.parts_data IS NULL THEN 'null()'
+                WHEN LENGTH( attr_def.parts_data ) = 1 THEN '*[@code="' || attr_def.parts_data || '"]'
+                ELSE '*' || attr_def.parts_data
+            END;
+
 
 
         xpaths := ARRAY[owning_lib, circ_lib, call_number, copy_number, status, location, circulate,
                         deposit, deposit_amount, ref, holdable, price, barcode, circ_modifier, circ_as_type,
-                        alert_message, pub_note, priv_note, internal_id, stat_cat_data, opac_visible];
+                        alert_message, pub_note, priv_note, internal_id, stat_cat_data, parts_data, opac_visible];
 
         FOR tmp_attr_set IN
                 SELECT  *
@@ -1902,7 +1910,7 @@ BEGIN
                             AS t( ol TEXT, clib TEXT, cn TEXT, cnum TEXT, cs TEXT, cl TEXT, circ TEXT,
                                   dep TEXT, dep_amount TEXT, r TEXT, hold TEXT, pr TEXT, bc TEXT, circ_mod TEXT,
                                   circ_as TEXT, amessage TEXT, note TEXT, pnote TEXT, internal_id TEXT,
-                                  stat_cat_data TEXT, opac_vis TEXT )
+                                  stat_cat_data TEXT, parts_data TEXT, opac_vis TEXT )
         LOOP
 
             attr_set.import_error := NULL;
@@ -2085,6 +2093,7 @@ BEGIN
             attr_set.alert_message  := tmp_attr_set.amessage; -- TEXT,
             attr_set.internal_id    := tmp_attr_set.internal_id::BIGINT;
             attr_set.stat_cat_data  := tmp_attr_set.stat_cat_data; -- TEXT,
+            attr_set.parts_data     := tmp_attr_set.parts_data; -- TEXT,
 
             RETURN NEXT attr_set;
 
@@ -2137,6 +2146,7 @@ BEGIN
             internal_id,
             opac_visible,
             stat_cat_data,
+            parts_data,
             import_error,
             error_detail
         ) VALUES (
@@ -2163,6 +2173,7 @@ BEGIN
             item_data.internal_id,
             item_data.opac_visible,
             item_data.stat_cat_data,
+            item_data.parts_data,
             item_data.import_error,
             item_data.error_detail
         );

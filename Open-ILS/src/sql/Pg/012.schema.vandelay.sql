@@ -108,6 +108,7 @@ CREATE TABLE vandelay.import_item_attr_definition (
     priv_note       TEXT,
     internal_id     TEXT,
     stat_cat_data   TEXT,
+    parts_data      TEXT,
 	CONSTRAINT vand_import_item_attr_def_idx UNIQUE (owner,name)
 );
 
@@ -180,6 +181,7 @@ CREATE TABLE vandelay.import_item (
     pub_note        TEXT,
     priv_note       TEXT,
     stat_cat_data   TEXT,
+    parts_data      TEXT,
     opac_visible    BOOL,
     internal_id     BIGINT -- queue_type == 'acq' ? acq.lineitem_detail.id : asset.copy.id
 );

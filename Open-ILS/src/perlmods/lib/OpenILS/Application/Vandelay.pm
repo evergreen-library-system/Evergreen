@@ -1955,6 +1955,45 @@ sub import_record_asset_list_impl {
                 }
             }
 
+            if ($item->parts_data) {
+                $logger->info("vl: parsing parts data: " . $item->parts_data);
+                my @parts = split('\|', $item->parts_data);
+                my $part_objs = [];
+                foreach my $part_label (@parts) {
+                    my $part_obj = $e->search_biblio_monograph_part(
+                        {
+                            label=>$part_label,
+                            record=>$rec->imported_as
+                        }
+                    )->[0];
+
+                    if (!$part_obj) {
+                        $part_obj = Fieldmapper::biblio::monograph_part->new();
+                        $part_obj->label( $part_label );
+                        $part_obj->record( $rec->imported_as );
+                        unless($e->create_biblio_monograph_part($part_obj)) {
+                            $$report_args{evt} = $e->die_event;
+                            last;
+                        }
+                    }
+                    push @$part_objs, $part_obj;
+                }
+
+                if ($$report_args{evt}) {
+                    respond_with_status($report_args);
+                    next;
+                } else {
+                    $copy->parts( $part_objs );
+                    $copy->ischanged(1);
+                    $evt = OpenILS::Application::Cat::AssetCommon->update_copy_parts($e, $copy, 0); #delete_parts=0
+                    if($evt) {
+                        $$report_args{evt} = $evt;
+                        respond_with_status($report_args);
+                        next;
+                    }
+                }
+            }
+
             # set the import data on the import item
             $item->imported_as($copy->id); # $copy->id is set by create_copy() ^--
             $item->import_time('now');
