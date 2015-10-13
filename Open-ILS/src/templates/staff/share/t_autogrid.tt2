@@ -300,18 +300,18 @@
           ng-click="handleRowClick($event, item)"
           ng-dblclick="gridControls.activateItem(item)"
           ng-repeat="col in columns"
-          style="text-align:{{col.align}}; padding-left:5px; padding-right:5px; flex:{{col.flex}}"
+          style="text-align:{{col.align}}; flex:{{col.flex}}"
           ng-show="col.visible">
 
           <!-- if the cell comes with its own template,
                translate that content into HTML and insert it here -->
-          <span ng-if="col.template" 
+          <span ng-if="col.template" style="padding-left:5px; padding-right:10px;"
             ng-bind-html="translateCellTemplate(col, item)">
           </span>
 
           <!-- otherwise, simply display the item value, which may 
                pass through datatype-specific filtering. -->
-          <span ng-if="!col.template">
+          <span ng-if="!col.template" style="padding-left:5px; padding-right:10px;">
             {{itemFieldValue(item, col) | egGridValueFilter:col}}
           </span>
       </div>
