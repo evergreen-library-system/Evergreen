@@ -1083,6 +1083,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                         $scope.controlfields = $scope.record.fields.filter(function(f){ return f.isControlfield() });
                         $scope.datafields = $scope.record.fields.filter(function(f){ return !f.isControlfield() });
                         $scope.save_stack_depth = $scope.record_undo_stack.length;
+                        $scope.dirtyFlag = false;
                         $scope.flat_text_marc = $scope.record.toBreaker();
 
                         if ($scope.record_type == 'bre') {
@@ -1275,7 +1276,9 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                     if ($scope.recordId) {
                         return egCore.pcrud.update(
                             $scope.Record()
-                        ).then(function() {
+                        ).then(function() { // success
+                            $scope.save_stack_depth = $scope.record_undo_stack.length;
+                            $scope.dirtyFlag = false;
                             if ($scope.enable_fast_add) {
                                 egCore.net.request(
                                     'open-ils.actor',
@@ -1299,6 +1302,8 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                                     }
                                 });
                             }
+                        }, function() { // failure
+                            alert('Could not save the record!');
                         }).then(loadRecord).then(processOnSaveCallbacks);
                     } else {
                         $scope.Record().creator(egCore.auth.user().id());
