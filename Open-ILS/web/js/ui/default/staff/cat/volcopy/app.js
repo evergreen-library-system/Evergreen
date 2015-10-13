@@ -686,7 +686,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                 $scope.batch.prefix = $scope.defaults.prefix;
                 $scope.batch.suffix = $scope.defaults.suffix;
                 $scope.working.statcat_filter = $scope.defaults.statcat_filter;
-                if ($scope.defaults.always_vols) $scope.show_vols = true;
+                if ($scope.defaults.always_volumes) $scope.show_vols = true;
                 if ($scope.defaults.barcode_checkdigit) itemSvc.barcode_checkdigit = true;
                 if ($scope.defaults.auto_gen_barcode) itemSvc.auto_gen_barcode = true;
             }
@@ -979,7 +979,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
         ).then(function (data) {
 
             if (data) {
-                if (data.hide_vols && !$scope.defaults.always_vols) $scope.show_vols = false;
+                if (data.hide_vols && !$scope.defaults.always_volumes) $scope.show_vols = false;
                 if (data.hide_copies) {
                     $scope.show_copies = false;
                     $scope.only_vols = true;
