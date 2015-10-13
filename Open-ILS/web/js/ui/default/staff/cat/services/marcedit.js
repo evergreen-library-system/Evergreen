@@ -617,6 +617,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
             // used just to munge some MARCXML client-side, rather
             // than to (immediately) update the database
             inPlaceMode : '@',
+            fastAdd : '@',
             flatOnly : '@',
             embedded : '@',
             recordType : '@',

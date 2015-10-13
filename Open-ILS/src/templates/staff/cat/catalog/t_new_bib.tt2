@@ -9,5 +9,5 @@
     </div>
 </div>
 <div ng-show="have_template" class="row col-md-12">
-  <eg-marc-edit-record dirty-flag="stop_unload" record_id="new_bib_id" marc-xml="marc_template" record-type="bre" />
+  <eg-marc-edit-record fast-add="true" dirty-flag="stop_unload" record_id="new_bib_id" marc-xml="marc_template" record-type="bre" />
 </div>
