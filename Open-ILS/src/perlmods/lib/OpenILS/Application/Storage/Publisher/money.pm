@@ -522,4 +522,38 @@ __PACKAGE__->register_method(
 );
 
 
+sub clear_cc_number {
+    my $self = shift;
+    my $client = shift;
+    my $payment_age = shift;
+
+    # using NOW() in the AGE() calculation lets us modify payments 
+    # that occurred today without having to specify negative ages.
+
+    my $sql = <<"    SQL";
+        UPDATE money.credit_card_payment
+        SET cc_number = NULL 
+        WHERE AGE(NOW(), payment_ts) > ?::INTERVAL;
+    SQL
+
+    my $sth = actor::user->db_Main->prepare_cached($sql);
+    $sth->execute($payment_age);
+
+    return $sth->rows;
+}
+
+__PACKAGE__->register_method(
+    api_name  => 'open-ils.storage.money.clear_cc_number',
+    method    => 'clear_cc_number',
+    api_level => 1,
+    signature => q/
+        Credit card payments store the last 4 digits of the card
+        number.  This API call set the credit card number field
+        to NULL to remove this data after the payment has
+        reached the specified age.
+        @param payment_age The age as a string.
+    /
+);
+
+
 1;

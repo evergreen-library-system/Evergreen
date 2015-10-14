@@ -1,0 +1,2 @@
+#!BINDIR/srfsh
+request open-ils.storage open-ils.storage.money.clear_cc_number "1 year"
