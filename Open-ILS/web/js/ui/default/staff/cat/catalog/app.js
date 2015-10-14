@@ -889,7 +889,9 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
                 'open-ils.cat.asset.volume.fleshed.batch.update.override',
                 egCore.auth.token(), cnList, 1, flags
             ).then(function(update_count) {
-                $scope.holdingsGridDataProvider.refresh();
+                holdingsSvcInst.fetchAgain().then(function() {
+                    $scope.holdingsGridDataProvider.refresh();
+                });
             });
         });
     }
