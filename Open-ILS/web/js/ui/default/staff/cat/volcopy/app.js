@@ -509,7 +509,7 @@ function(egCore , $q) {
         replace: true,
         template:
             '<div class="row">'+
-                '<div class="col-xs-1"><eg-org-selector alldisabled="{{record == 0}}" selected="owning_lib" disableTest="cant_have_vols"></eg-org-selector></div>'+
+                '<div class="col-xs-1"><eg-org-selector alldisabled="{{record == 0}}" selected="owning_lib" disable-test="cant_have_vols"></eg-org-selector></div>'+
                 '<div class="col-xs-1"><input ng-disabled="record == 0" class="form-control" type="number" min="{{orig_cn_count}}" ng-model="cn_count" ng-change="changeCNCount()"/></div>'+
                 '<div class="col-xs-10">'+
                     '<eg-vol-row only-vols="onlyVols" record="{{record}}"'+

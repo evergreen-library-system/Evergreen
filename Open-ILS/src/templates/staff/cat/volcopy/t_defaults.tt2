@@ -275,7 +275,7 @@
                         <eg-org-selector
                             selected="defaults.statcat_filter"
                             noDefault label="[% l('Default Filter Library') %]"
-                            disableTest="cant_have_vols"></eg-org-selector>
+                        ></eg-org-selector>
                     </label>
                 </div>
             </div>

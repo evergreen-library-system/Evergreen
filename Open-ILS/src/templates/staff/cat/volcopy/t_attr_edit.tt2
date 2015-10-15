@@ -132,7 +132,7 @@
                         selected="working.circ_lib"
                         noDefault
                         label="[% l('(Unset)') %]"
-                        disableTest="cant_have_vols"
+                        disable-test="cant_have_vols"
                     ></eg-org-selector>
                 </div>
                 <div class="col-md-6" ng-class="{'bg-success': working.ref !== undefined}">
