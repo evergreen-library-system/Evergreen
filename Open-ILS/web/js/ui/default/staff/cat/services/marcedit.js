@@ -203,6 +203,11 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                 $scope.item_container = [];
                 $scope.in_handler = false;
                 $scope.ready = false;
+                $element.find('input').bind('focus', function (e) { e.target.select() });
+                $element.find('input').bind('mouseup', function(e) {
+                    e.preventDefault()
+                    return false;
+                });
 
                 $scope.$watch('content', function (newVal, oldVal) {
                     var input = $($element).find('input');
