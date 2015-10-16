@@ -290,7 +290,11 @@ function($modal, $interpolate) {
             onchange : '=',
 
             // optional primary drop-down button label
-            label : '@'
+            label : '@',
+
+            // optional name of settings key for persisting
+            // the last selected org unit
+            stickySetting : '@'
         },
 
         // any reason to move this into a TT2 template?
@@ -310,8 +314,8 @@ function($modal, $interpolate) {
            + '</ul>'
           + '</div>',
 
-        controller : ['$scope','$timeout','egOrg','egAuth',
-              function($scope , $timeout , egOrg , egAuth) {
+        controller : ['$scope','$timeout','egOrg','egAuth','egCore',
+              function($scope , $timeout , egOrg , egAuth , egCore) {
 
             if ($scope.alldisabled) {
                 $scope.disable_button = $scope.alldisabled == 'true' ? true : false;
@@ -321,6 +325,7 @@ function($modal, $interpolate) {
 
             $scope.egOrg = egOrg; // for use in the link function
             $scope.egAuth = egAuth; // for use in the link function
+            $scope.hatch = egCore.hatch // for use in the link function
 
             // avoid linking the full fleshed tree to the scope by 
             // tossing in a flattened list.
@@ -340,6 +345,9 @@ function($modal, $interpolate) {
 
             $scope.orgChanged = function(org) {
                 $scope.selected = egOrg.get(org.id);
+                if ($scope.stickySetting) {
+                    egCore.hatch.setLocalItem($scope.stickySetting, org.id);
+                }
                 if ($scope.onchange) $scope.onchange($scope.selected);
             }
 
@@ -356,6 +364,13 @@ function($modal, $interpolate) {
                         scope[field] = false;
                 }
             );
+
+            if (scope.stickySetting) {
+                var orgId = scope.hatch.getLocalItem(scope.stickySetting);
+                if (orgId) {
+                    scope.selected = scope.egOrg.get(orgId);
+                }
+            }
 
             if (!scope.selected && !scope.nodefault)
                 scope.selected = scope.egOrg.get(scope.egAuth.user().ws_ou());
