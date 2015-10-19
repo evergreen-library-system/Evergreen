@@ -1001,7 +1001,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         if (xfer_target) {
             egCore.net.request(
                 'open-ils.cat',
-                'open-ils.open-ils.cat.asset.volume.batch.transfer.override',
+                'open-ils.cat.asset.volume.batch.transfer.override',
                 egCore.auth.token(), {
                     docid   : $scope.record_id,
                     lib     : xfer_target,
