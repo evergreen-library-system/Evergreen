@@ -35,7 +35,7 @@
             </div>
         </div>
         <div class="row pad-vert">
-            <div class="col-xs-1"><b>[% l('Library') %]</b></div>
+            <div class="col-xs-1"><b>[% l('Owning Library') %]</b></div>
             <div class="col-xs-1"><b>[% l('Volumes') %]</b></div>
             <div class="col-xs-10">
                 <div class="row">
