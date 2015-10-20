@@ -426,10 +426,14 @@ function(egCore , $q) {
                     if (angular.isObject(currentPrefix)) currentPrefix = currentPrefix.id();
                     itemSvc.get_prefixes($scope.callNumber.owning_lib()).then(function(list){
                         $scope.prefix_list = list;
-                        $scope.prefix = $scope.prefix_list.filter(function (p) {
+                        var newPrefixId = $scope.prefix_list.filter(function (p) {
                             return p.id() == currentPrefix;
                         })[0] || -1;
-                        if ($scope.prefix != currentPrefix) {
+                        if (newPrefixId.id) newPrefixId = newPrefixId.id();
+                        $scope.prefix = $scope.prefix_list.filter(function (p) {
+                            return p.id() == newPrefixId;
+                        })[0];
+                        if ($scope.newPrefixId != currentPrefix) {
                             $scope.callNumber.prefix($scope.prefix);
                         }
                     });
@@ -437,10 +441,14 @@ function(egCore , $q) {
                     if (angular.isObject(currentSuffix)) currentSuffix = currentSuffix.id();
                     itemSvc.get_suffixes($scope.callNumber.owning_lib()).then(function(list){
                         $scope.suffix_list = list;
-                        $scope.suffix = $scope.suffix_list.filter(function (s) {
+                        var newSuffixId = $scope.suffix_list.filter(function (s) {
                             return s.id() == currentSuffix;
                         })[0] || -1;
-                        if ($scope.suffix != currentSuffix) {
+                        if (newSuffixId.id) newSuffixId = newSuffixId.id();
+                        $scope.suffix = $scope.suffix_list.filter(function (s) {
+                            return s.id() == newSuffixId;
+                        })[0];
+                        if ($scope.newSuffixId != currentSuffix) {
                             $scope.callNumber.suffix($scope.suffix);
                         }
                     });
