@@ -978,6 +978,31 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
     }
 
     $scope.markLibAsVolTarget = function() {
+        return $modal.open({
+            templateUrl: './cat/catalog/t_choose_vol_target_lib',
+            animation: true,
+            controller:
+                   ['$scope','$modalInstance',
+            function($scope , $modalInstance) {
+
+                var orgId = egCore.hatch.getLocalItem('eg.cat.volume_transfer_target') || 1;
+                $scope.org = egCore.org.get(orgId);
+                $scope.cant_have_vols = function (id) { return !egCore.org.CanHaveVolumes(id); };
+                $scope.ok = function(org) {
+                    egCore.hatch.setLocalItem(
+                        'eg.cat.volume_transfer_target',
+                        org.id()
+                    );
+                    $modalInstance.close();
+                }
+                $scope.cancel = function($event) {
+                    $modalInstance.dismiss();
+                    $event.preventDefault();
+                }
+            }]
+        });
+    }
+    $scope.markLibFromSelectedAsVolTarget = function() {
         egCore.hatch.setLocalItem(
             'eg.cat.volume_transfer_target',
             $scope.holdingsGridControls.selectedItems()[0].owner_id

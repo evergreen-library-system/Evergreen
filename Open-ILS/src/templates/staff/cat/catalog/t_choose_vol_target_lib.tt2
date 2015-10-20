@@ -1,0 +1,25 @@
+<form ng-submit="ok(org)" role="form">
+    <div class="modal-header">
+      <button type="button" class="close" ng-click="cancel()" 
+        aria-hidden="true">&times;</button>
+      <h4 class="modal-title">[% l('Choose volume transfer target') %]</h4>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-md-6">
+            <b>[% l('Target library:') %]</b>
+        </div>
+        <div class="col-md-6">
+            <eg-org-selector selected="org" disable-test="cant_have_vols"></eg-org-selector>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div class="row">
+        <div class="col-md-12 pull-right">
+          <input type="submit" class="btn btn-primary" value="[% l('OK') %]"/>
+          <button class="btn btn-warning" ng-click="cancel($event)">[% l('Cancel') %]</button>
+        </div>
+      </div>
+    </div>
+</form>
