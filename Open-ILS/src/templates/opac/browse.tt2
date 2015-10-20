@@ -10,7 +10,7 @@
     blimit = CGI.param('blimit') || ctx.opac_hits_per_page || 10;
 
     depart_list = ['blimit', 'bterm', 'bpivot'];
-    ctx.metalinks.push('<meta name="robots" content="noindex">');
+    ctx.metalinks.push('<meta name="robots" content="noindex,follow">');
 %]
 
     <h2 class="sr-only">[% l('Catalog Browse') %]</h2>
@@ -18,9 +18,9 @@
         [%# XXX TODO Give searchbar.tt2 more smarts so we can just do:
           # INCLUDE "opac/parts/searchbar.tt2" %]
         <div id="search-box">
-            <span class="search_catalog_lbl"><a href="[% mkurl(ctx.opac_root _ '/home', {}, depart_list) %]" rel="nofollow" vocab="">[% l('Basic Search') %]</a></span>
+            <span class="search_catalog_lbl"><a href="[% mkurl(ctx.opac_root _ '/home', {}, depart_list) %]">[% l('Basic Search') %]</a></span>
             <span class="adv_search_catalog_lbl"><a href="[% mkurl(ctx.opac_root _ '/advanced', {}, depart_list) %]"
-                    id="home_adv_search_link" rel="nofollow" vocab="">[%l('Advanced Search')%]</a></span>
+                    id="home_adv_search_link">[%l('Advanced Search')%]</a></span>
         
             <span class="browse_the_catalog_lbl mobile_hide">[% l('Browse the Catalog') %]</span>
         </div>
@@ -54,19 +54,19 @@
                 [% BLOCK browse_pager %]
                 <div class="browse-pager">
                     [% IF ctx.back_pivot %]
-                    <a class="opac-button" href="[% mkurl('', {bpivot => ctx.back_pivot}) %]" onclick="$('browse-pager-spinner-[% id %]').className = '';" rel="nofollow" vocab="">&larr; [%l ('Back') %]</a>
+                    <a class="opac-button" href="[% mkurl('', {bpivot => ctx.back_pivot}) %]" onclick="$('browse-pager-spinner-[% id %]').className = '';">&larr; [%l ('Back') %]</a>
                     [% END %]
                     [% IF ctx.pager_shortcuts;
                         current_qtype = CGI.param('qtype') || 'title' %]
                     <span class="browse-shortcuts">
                         [% FOR shortcut IN ctx.pager_shortcuts %]
-                            <a href="[% mkurl('', {qtype => current_qtype, bterm => shortcut.0}, ['bpivot','query']) %]" rel="nofollow" vocab="">[% shortcut.1 %]</a>
+                            <a href="[% mkurl('', {qtype => current_qtype, bterm => shortcut.0}, ['bpivot','query']) %]">[% shortcut.1 %]</a>
                         [% END %]
                     </span>
                     [% END %]
 
                     [% IF ctx.forward_pivot %]
-                    <a class="opac-button" href="[% mkurl('', {bpivot => ctx.forward_pivot}) %]" onclick="$('browse-pager-spinner-[% id %]').className = '';" rel="nofollow" vocab="">[%l ('Next') %] &rarr;</a>
+                    <a class="opac-button" href="[% mkurl('', {bpivot => ctx.forward_pivot}) %]" onclick="$('browse-pager-spinner-[% id %]').className = '';">[%l ('Next') %] &rarr;</a>
                     [% END %]
 
                     <img id="browse-pager-spinner-[% id %]" 
@@ -92,7 +92,7 @@
                             [% IF ctx.browse_leading_article_alternative %]
                             <p>
                             [% alternative_link = BLOCK %]
-                            <a href="[% mkurl('', {bterm => ctx.browse_leading_article_alternative}, ['bpivot']) %]" rel="nofollow" vocab="">[% ctx.browse_leading_article_alternative | html %]</a>
+                            <a href="[% mkurl('', {bterm => ctx.browse_leading_article_alternative}, ['bpivot']) %]">[% ctx.browse_leading_article_alternative | html %]</a>
                             [%-  END; # alternative_link BLOCK
                                 l("Did you mean [_1]?", alternative_link);
                             END # IF %]
@@ -108,7 +108,7 @@
                                     <a href="[% mkurl(
                                         ctx.opac_root _ '/results', {
                                             'fi:has_browse_entry' => (result.browse_entry _ ',' _ result.fields)
-                                        }) %]" rel="nofollow" vocab="">[% result.value | html %]</a>
+                                        }) %]">[% result.value | html %]</a>
                                     <span class="browse-result-sources">([%
                                         IF result.accurate == 'f';
                                             l("At least"); " ";
@@ -151,7 +151,7 @@
                                                 [% END %]
 
                                                 <li><span class="browse-result-authority-field-name">[% field.name %]</span>
-                                                <a href="[% mkurl(ctx.opac_root _ '/browse', {bterm => h.heading}, ['bpivot']) %]" rel="nofollow" vocab="">[% h.heading | html %]</a>
+                                                <a href="[% mkurl(ctx.opac_root _ '/browse', {bterm => h.heading}, ['bpivot']) %]">[% h.heading | html %]</a>
                                                 <span class="browse-result-authority-bib-links">([% h.target_count %])</span>
                                                 </li>
                                             [% END %]
@@ -187,7 +187,7 @@
                                                 <ul class="browse-result-authority-headings"> 
                                                 [% END %]
                                                 <li><span class="browse-result-authority-field-name">[% field.name %]</span>
-                                                <a href="[% mkurl(ctx.opac_root _ '/results', {query => 'identifier|authority_id[' _ h.target _ ']'}) %]" rel="nofollow" vocab="">[% h.heading | html %]</a>
+                                                <a href="[% mkurl(ctx.opac_root _ '/results', {query => 'identifier|authority_id[' _ h.target _ ']'}) %]">[% h.heading | html %]</a>
                                                 <span class="browse-result-authority-bib-links">([% h.target_count %])</span>
                                                 </li>
                                             [% END %]

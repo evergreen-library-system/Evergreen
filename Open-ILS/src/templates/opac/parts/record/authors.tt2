@@ -114,7 +114,7 @@ BLOCK build_author_links;
             END;
             iprop = iprop _ '"';
         END;
-        authtml = ' <span class="rdetail-author-div"' _ iprop _ ' resource="' _ contrib_ref _ '"><a href="' _ url _ '" rel="nofollow" vocab=""><span resource="' _ contrib_ref _ '">';
+        authtml = ' <span class="rdetail-author-div"' _ iprop _ ' resource="' _ contrib_ref _ '"><a href="' _ url _ '"><span resource="' _ contrib_ref _ '">';
         IF iprop; authtml = authtml _ '<span property="name">'; END;
         authtml = authtml _ link_term.replace('^\s+', '');
         IF iprop; authtml = authtml _ '</span>'; END;

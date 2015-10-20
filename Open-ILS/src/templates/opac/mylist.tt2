@@ -2,7 +2,7 @@
     PROCESS "opac/parts/misc_util.tt2";
     WRAPPER "opac/parts/base.tt2";
     INCLUDE "opac/parts/topnav.tt2";
-    ctx.metalinks.push('<meta name="robots" content="noindex">');
+    ctx.metalinks.push('<meta name="robots" content="noindex,follow">');
     ctx.page_title = l("Record Detail") %]
     <h2 class="sr-only">[% l('Temporary List') %]</h2>
     <div class="mobile_hide">

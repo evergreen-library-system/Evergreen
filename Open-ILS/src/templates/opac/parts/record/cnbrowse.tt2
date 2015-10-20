@@ -12,12 +12,12 @@
                 <tr>
                     <td>
                         <a class='classic_link lbl1' 
-                            href="[% mkurl('', {cnoffset => cnoffset - 1}) %]#cnbrowse" rel="nofollow" vocab="">[% l("&lt;&lt; Previous Page") %]</a>
+                            href="[% mkurl('', {cnoffset => cnoffset - 1}) %]#cnbrowse">[% l("&lt;&lt; Previous Page") %]</a>
                     </td>
                     <td colspan='1' align='center'>[% l("Shelf Browser") %]</td>
                     <td>
                         <a class='classic_link lbl1' 
-                            href="[% mkurl('', {cnoffset => cnoffset + 1}) %]#cnbrowse" rel="nofollow" vocab="">[% l("Next Page &gt;&gt;") %]</a>
+                            href="[% mkurl('', {cnoffset => cnoffset + 1}) %]#cnbrowse">[% l("Next Page &gt;&gt;") %]</a>
                     </td>
                 </tr>
             <tr class='browse_border'>
@@ -47,7 +47,7 @@
                                 href="[%-
                                     authorquery = rec_attrs.author | replace('[,\.:;]', '');
                                     mkurl(ctx.opac_root _ '/results', {qtype => 'author', query => authorquery, $loc_name => loc_value}, 1)
-                                    -%]" rel="nofollow" vocab="">[% rec_attrs.author | html %]</a>
+                                    -%]">[% rec_attrs.author | html %]</a>
                         </div>[% END %]
                         <div class='cn_browse_info' name='cn_browse_lib'>[% cn.owning_lib.name | html %]</div>
                     </td>

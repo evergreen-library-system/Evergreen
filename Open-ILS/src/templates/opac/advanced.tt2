@@ -5,7 +5,7 @@
     pane = CGI.param("pane") || "advanced";
     loc = ctx.search_ou;
 
-    ctx.metalinks.push('<meta name="robots" content="noindex">');
+    ctx.metalinks.push('<meta name="robots" content="noindex,follow">');
 -%]
     <h2 class="sr-only">[% l('Advanced Search') %]</h2>
     <div id="search-wrapper">

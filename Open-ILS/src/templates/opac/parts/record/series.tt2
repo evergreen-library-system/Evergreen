@@ -26,7 +26,7 @@ BLOCK render_series;
                 url = mkurl(ctx.opac_root _ '/results',
                     { qtype=>'series', query=>total_term }, stop_parms.merge(expert_search_parms, general_search_parms, browse_search_parms, facet_search_parms)
                 );
-                series = series _ '<a href="' _ url _ '" rel="nofollow" vocab="">' _ single_term _ '</a> ';
+                series = series _ '<a href="' _ url _ '">' _ single_term _ '</a> ';
             END;
             FOREACH link880 IN graphics;
                 link = link880.value | html;
