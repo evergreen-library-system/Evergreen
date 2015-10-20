@@ -420,6 +420,31 @@ function(egCore , $q) {
                         cp.call_number().ischanged(1);
                     });
                 }
+                $scope.$watch('callNumber.owning_lib()', function(oldLib, newLib) {
+                    if (oldLib == newLib) return;
+                    var currentPrefix = $scope.callNumber.prefix();
+                    if (angular.isObject(currentPrefix)) currentPrefix = currentPrefix.id();
+                    itemSvc.get_prefixes($scope.callNumber.owning_lib()).then(function(list){
+                        $scope.prefix_list = list;
+                        $scope.prefix = $scope.prefix_list.filter(function (p) {
+                            return p.id() == currentPrefix;
+                        })[0] || -1;
+                        if ($scope.prefix != currentPrefix) {
+                            $scope.callNumber.prefix($scope.prefix);
+                        }
+                    });
+                    var currentSuffix = $scope.callNumber.suffix();
+                    if (angular.isObject(currentSuffix)) currentSuffix = currentSuffix.id();
+                    itemSvc.get_suffixes($scope.callNumber.owning_lib()).then(function(list){
+                        $scope.suffix_list = list;
+                        $scope.suffix = $scope.suffix_list.filter(function (s) {
+                            return s.id() == currentSuffix;
+                        })[0] || -1;
+                        if ($scope.suffix != currentSuffix) {
+                            $scope.callNumber.suffix($scope.suffix);
+                        }
+                    });
+                });
 
                 $scope.classification_list = [];
                 itemSvc.get_classifications().then(function(list){
@@ -570,9 +595,11 @@ function(egCore , $q) {
                 $scope.orig_cn_count = $scope.cn_count;
 
                 $scope.owning_lib = egCore.org.get($scope.lib);
-                $scope.$watch('owning_lib', function (l) {
-                    angular.forEach( $scope.struct[$scope.first_cn], function (cp) {
-                        cp.call_number().owning_lib( $scope.owning_lib.id() );
+                $scope.$watch('owning_lib', function (oldLib, newLib) {
+                    if (oldLib == newLib) return;
+                    angular.forEach( Object.keys($scope.struct), function (cn) {
+                        $scope.struct[cn][0].call_number().owning_lib( $scope.owning_lib.id() );
+                        $scope.struct[cn][0].call_number().ischanged(1);
                     });
                 });
 
