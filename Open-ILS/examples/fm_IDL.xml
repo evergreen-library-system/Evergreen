@@ -7204,6 +7204,7 @@ SELECT  usr,
 			<field reporter:label="Last Captured Hold" name="last_captured_hold" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Has Holds" name="holds_count" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Copy Tags" name="tags" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Copy Alerts" name="copy_alerts" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="age_protect" reltype="has_a" key="id" map="" class="crahp"/>
@@ -7230,6 +7231,7 @@ SELECT  usr,
 			<link field="floating" reltype="has_a" key="id" map="" class="cfg"/>
 			<link field="holds_count" reltype="might_have" key="id" map="" class="hasholdscount"/>
 			<link field="tags" reltype="has_many" key="copy" map="" class="acptcm"/>
+			<link field="copy_alerts" reltype="has_many" key="copy" map="" class="aca"/>
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
@@ -7243,6 +7245,109 @@ SELECT  usr,
                 <delete permission="DELETE_COPY">
                     <context link="call_number" field="owning_lib"/>
                 </delete>
+            </actions>
+        </permacrud>
+	</class>
+
+	<class id="ccat" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::copy_alert_type" oils_persist:tablename="config.copy_alert_type" reporter:label="Copy Alert Type" oils_persist:restrict_primary="100">
+		<fields oils_persist:primary="id" oils_persist:sequence="config.copy_alert_type_id_seq">
+			<field reporter:label="Id" name="id" reporter:selector="name" reporter:datatype="id"/>
+			<field reporter:label="Scope Org Unit" name="scope_org"  reporter:datatype="org_unit"/>
+			<field reporter:label="Active" name="active" reporter:datatype="bool" />
+			<field reporter:label="Name" name="name" reporter:datatype="text" />
+			<field reporter:label="State" name="state" reporter:datatype="text"/>
+			<field reporter:label="Event" name="event" reporter:datatype="text" />
+			<field reporter:label="During Renewal" name="in_renew" reporter:datatype="bool" />
+			<field reporter:label="Allow At Copy Circ Lib" name="at_circ" reporter:datatype="bool"/>
+			<field reporter:label="Allow At Copy Owning Lib" name="at_owning" reporter:datatype="bool"/>
+			<field reporter:label="Invert allowed locations" name="invert_location" reporter:datatype="bool"/>
+			<field reporter:label="Next Statuses" name="next_status" reporter:datatype="text"/>
+		</fields>
+		<links>
+			<link field="scope_org" reltype="has_a" key="id" map="" class="aou"/>
+		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="ADMIN_COPY_ALERT_TYPE CREATE_COPY_ALERT_TYPE" context_field="scope_org"/>
+                <retrieve/>
+                <update permission="ADMIN_COPY_ALERT_TYPE UPDATE_COPY_ALERT_TYPE" context_field="scope_org"/>
+                <delete permission="ADMIN_COPY_ALERT_TYPE DELETE_COPY_ALERT_TYPE" context_field="scope_org"/>
+            </actions>
+        </permacrud>
+	</class>
+
+	<class id="acas" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::copy_alert_suppress" oils_persist:tablename="actor.copy_alert_suppress" reporter:label="Copy Alert Suppression">
+		<fields oils_persist:primary="id" oils_persist:sequence="actor.copy_alert_suppress_id_seq">
+			<field reporter:label="Id" name="id" reporter:datatype="id"/>
+			<field reporter:label="Org Unit" name="org"  reporter:datatype="org_unit"/>
+			<field reporter:label="Alert Type" name="alert_type" reporter:datatype="link" />
+		</fields>
+		<links>
+			<link field="org" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="alert_type" reltype="has_a" key="id" map="" class="ccat"/>
+		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="ADMIN_COPY_ALERT_SUPPRESS CREATE_COPY_ALERT_SUPPRESS" context_field="org"/>
+                <retrieve/>
+                <update permission="ADMIN_COPY_ALERT_SUPPRESS UPDATE_COPY_ALERT_SUPPRESS" context_field="org"/>
+                <delete permission="ADMIN_COPY_ALERT_SUPPRESS DELETE_COPY_ALERT_SUPPRESS" context_field="org"/>
+            </actions>
+        </permacrud>
+	</class>
+
+	<class id="aca" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::copy_alert" oils_persist:tablename="asset.copy_alert" reporter:label="Copy Alert">
+		<fields oils_persist:primary="id" oils_persist:sequence="asset.copy_alert_id_seq">
+			<field reporter:label="Id" name="id" reporter:datatype="id"/>
+			<field reporter:label="Alert Type" name="alert_type" reporter:datatype="link" />
+			<field reporter:label="Copy" name="copy"  reporter:datatype="link"/>
+			<field reporter:label="Temporary" name="temp" reporter:datatype="bool" />
+			<field reporter:label="Create Date/Time" name="create_time" reporter:datatype="timestamp" />
+			<field reporter:label="Creator" name="create_staff" reporter:datatype="link"/>
+			<field reporter:label="Note" name="note" reporter:datatype="text"/>
+			<field reporter:label="Acknowledge Date/Time" name="ack_time" reporter:datatype="timestamp" />
+			<field reporter:label="Acknowledger" name="ack_staff" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="alert_type" reltype="has_a" key="id" map="" class="ccat"/>
+			<link field="copy" reltype="has_a" key="id" map="" class="acp"/>
+			<link field="create_staff" reltype="has_a" key="id" map="" class="au"/>
+			<link field="ack_staff" reltype="has_a" key="id" map="" class="au"/>
+		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="ADMIN_COPY_ALERT CREATE_COPY_ALERT" global_required="true"/>
+                <retrieve permission="ADMIN_COPY_ALERT VIEW_COPY_ALERT" global_required="true"/>
+                <update permission="ADMIN_COPY_ALERT UPDATE_COPY_ALERT" global_required="true"/>
+                <delete permission="ADMIN_COPY_ALERT DELETE_COPY_ALERT" global_required="true"/>
+            </actions>
+        </permacrud>
+	</class>
+
+	<class id="aaca" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::active_copy_alert" oils_persist:tablename="asset.active_copy_alert" reporter:label="Active Copy Alert" oils_persist:readonly="true">
+		<fields oils_persist:primary="id">
+			<field reporter:label="Id" name="id" reporter:datatype="id"/>
+			<field reporter:label="Alert Type" name="alert_type" reporter:datatype="link" />
+			<field reporter:label="Copy" name="copy"  reporter:datatype="link"/>
+			<field reporter:label="Temporary" name="temp" reporter:datatype="bool" />
+			<field reporter:label="Create Date/Time" name="create_time" reporter:datatype="timestamp" />
+			<field reporter:label="Creator" name="create_staff" reporter:datatype="link"/>
+			<field reporter:label="Note" name="note" reporter:datatype="text"/>
+			<field reporter:label="Acknowledge Date/Time" name="ack_time" reporter:datatype="timestamp" />
+			<field reporter:label="Acknowledger" name="ack_staff" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="alert_type" reltype="has_a" key="id" map="" class="ccat"/>
+			<link field="copy" reltype="has_a" key="id" map="" class="acp"/>
+			<link field="create_staff" reltype="has_a" key="id" map="" class="au"/>
+			<link field="ack_staff" reltype="has_a" key="id" map="" class="au"/>
+		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="ADMIN_COPY_ALERT CREATE_COPY_ALERT" global_required="true"/>
+                <retrieve permission="ADMIN_COPY_ALERT VIEW_COPY_ALERT" global_required="true"/>
+                <update permission="ADMIN_COPY_ALERT UPDATE_COPY_ALERT" global_required="true"/>
+                <delete permission="ADMIN_COPY_ALERT DELETE_COPY_ALERT" global_required="true"/>
             </actions>
         </permacrud>
 	</class>

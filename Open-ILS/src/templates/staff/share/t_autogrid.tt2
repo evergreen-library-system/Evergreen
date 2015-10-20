@@ -215,7 +215,7 @@
 <div class="eg-grid" ng-class="{'eg-grid-as-conf' : showGridConf}">
 
   <!-- import our eg-grid-field defs -->
-  <div ng-transclude></div>
+  <div style="display: none;" ng-transclude></div>
 
   <div class="eg-grid-row eg-grid-header-row">
     <div class="eg-grid-cell eg-grid-cell-stock" ng-show="showIndex">
@@ -315,8 +315,12 @@
 
           <!-- if the cell comes with its own template,
                translate that content into HTML and insert it here -->
-          <span ng-if="col.template" style="padding-left:5px; padding-right:10px;"
+          <span ng-if="col.template && !col.compiled" style="padding-left:5px; padding-right:10px;"
             ng-bind-html="translateCellTemplate(col, item)">
+          </span>
+
+          <span ng-if="col.template && col.compiled" style="padding-left:5px; padding-right:10px;"
+            compile="col.template">
           </span>
 
           <!-- otherwise, simply display the item value, which may 

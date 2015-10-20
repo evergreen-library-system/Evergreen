@@ -5,9 +5,10 @@
 angular.module('egCoreMod')
 
 .factory('egCirc',
-       ['$uibModal','$q','egCore','egAlertDialog','egConfirmDialog',
+
+       ['$uibModal','$q','egCore','egAlertDialog','egConfirmDialog','egAddCopyAlertDialog','egCopyAlertManagerDialog','egCopyAlertEditorDialog',
         'egWorkLog',
-function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
+function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAlertDialog , egCopyAlertManagerDialog,  egCopyAlertEditorDialog ,
          egWorkLog) {
 
     var service = {
@@ -123,6 +124,8 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
     // options : non-parameter controls.  e.g. "override", "check_barcode"
     service.checkout = function(params, options) {
         if (!options) options = {};
+        params.new_copy_alerts = 1;
+
         console.debug('egCirc.checkout() : ' 
             + js2JSON(params) + ' : ' + js2JSON(options));
 
@@ -177,6 +180,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
     // Rejected if the renewal cannot be completed.
     service.renew = function(params, options) {
         if (!options) options = {};
+        params.new_copy_alerts = 1;
 
         console.debug('egCirc.renew() : ' 
             + js2JSON(params) + ' : ' + js2JSON(options));
@@ -224,6 +228,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
     // Rejected if the checkin cannot be completed.
     service.checkin = function(params, options) {
         if (!options) options = {};
+        params.new_copy_alerts = 1;
 
         console.debug('egCirc.checkin() : ' 
             + js2JSON(params) + ' : ' + js2JSON(options));
@@ -947,12 +952,24 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
         if (angular.isArray(evt)) evt = evt[0];
 
         if (!evt.payload.old_circ) {
-            return egCore.pcrud.search('circ',
-                {target_copy : evt.payload.copy.id(), checkin_time : null},
-                {limit : 1} // should only ever be 1
-            ).then(function(old_circ) {
-                evt.payload.old_circ = old_circ;
-               return service.circ_exists_dialog_impl(evt, params, options);
+            return egCore.net.request(
+                'open-ils.search',
+                'open-ils.search.asset.copy.fleshed2.find_by_barcode',
+                params.copy_barcode
+            ).then(function(resp){
+                console.log(resp);
+                if (egCore.evt.parse(resp)) {
+                    console.error(egCore.evt.parse(resp));
+                } else {
+                    return egCore.net.request(
+                         'open-ils.circ',
+                         'open-ils.circ.copy_checkout_history.retrieve',
+                         egCore.auth.token(), resp.id(), 1
+                    ).then( function (circs) {
+                        evt.payload.old_circ = circs[0];
+                        return service.circ_exists_dialog_impl( evt, params, options );
+                    });
+                }
             });
         } else {
             return service.circ_exists_dialog_impl( evt, params, options );
@@ -983,14 +1000,12 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
             function(args) {
                 if (sameUser) {
                     params.void_overdues = args.forgive_fines;
-                    options.override = true;
                     return service.renew(params, options);
                 }
 
                 return service.checkin({
                     barcode : params.copy_barcode,
                     noop : true,
-                    override : true,
                     void_overdues : args.forgive_fines
                 }).then(function(checkin_resp) {
                     if (checkin_resp.evt[0].textcode == 'SUCCESS') {
@@ -1344,7 +1359,21 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
         });
     }
 
+    service.add_copy_alerts = function(item_ids) {
+        return egAddCopyAlertDialog.open({
+            copy_ids : item_ids,
+            ok : function() { },
+            cancel : function() {}
+        }).result.then(function() { });
+    }
 
+    service.manage_copy_alerts = function(item_ids) {
+        return egCopyAlertEditorDialog.open({
+            copy_id : item_ids[0],
+            ok : function() { },
+            cancel : function() {}
+        }).result.then(function() { });
+    }
 
     // alert when copy location alert_message is set.
     // This does not affect processing, it only produces a click-through
@@ -1617,17 +1646,33 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
     // action == what action to take if the user confirms the alert
     service.copy_alert_dialog = function(evt, params, options, action) {
         if (angular.isArray(evt)) evt = evt[0];
-        return egConfirmDialog.open(
-            egCore.strings.COPY_ALERT_MSG_DIALOG_TITLE, 
-            evt.payload,  // payload == alert message text
-            {   copy_barcode : params.copy_barcode,
-                ok : function() {},
+        if (!angular.isArray(evt.payload)) {
+            return egConfirmDialog.open(
+                egCore.strings.COPY_ALERT_MSG_DIALOG_TITLE, 
+                evt.payload,  // payload == alert message text
+                {   copy_barcode : params.copy_barcode,
+                    ok : function() {},
+                    cancel : function() {}
+                }
+            ).result.then(function() {
+                options.override = true;
+                return service[action](params, options);
+            });
+        } else { // we got a list of copy alert objects ...
+            return egCopyAlertManagerDialog.open({
+                alerts : evt.payload,
+                mode : action,
+                ok : function(the_next_status) {
+                        if (the_next_status !== null) {
+                            params.next_copy_status = [ the_next_status ];
+                        }
+                     },
                 cancel : function() {}
-            }
-        ).result.then(function() {
-            options.override = true;
-            return service[action](params, options);
-        });
+            }).result.then(function() {
+                options.override = true;
+                return service[action](params, options);
+            });
+        }
     }
 
     // action == what action to take if the user confirms the alert

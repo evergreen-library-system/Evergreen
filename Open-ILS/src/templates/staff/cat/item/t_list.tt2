@@ -46,6 +46,8 @@
     label="[% l('Items') %]"></eg-grid-action>
   <eg-grid-action handler="selectedHoldingsVolCopyAdd" group="[% l('Add') %]"
     label="[% l('Volumes and Items') %]"></eg-grid-action>
+  <eg-grid-action handler="selectedHoldingsCopyAlertsAdd" group="[% l('Add') %]"
+    label="[% l('Copy Alerts') %]"></eg-grid-action>
 
   <eg-grid-action handler="selectedHoldingsVolEdit" group="[% l('Edit') %]"
     label="[% l('Volumes') %]"></eg-grid-action>
@@ -55,6 +57,8 @@
     label="[% l('Volumes and Items') %]"></eg-grid-action>
   <eg-grid-action handler="replaceBarcodes" group="[% l('Edit') %]"
     label="[% l('Replace Barcodes') %]"></eg-grid-action>
+  <eg-grid-action handler="selectedHoldingsCopyAlertsEdit" group="[% l('Edit') %]"
+    label="[% l('Manage Copy Alerts') %]"></eg-grid-action>
 
   <eg-grid-action handler="changeItemOwningLib" group="[% l('Transfer') %]"
     label="[% l('Items to Previously Marked Library') %]"></eg-grid-action>
@@ -74,7 +78,6 @@
       {{item['call_number.record.simple_record.title']}} <span ng-show="item['call_number.record.id']" class="glyphicon glyphicon-new-window"/>
     </a>
   </eg-grid-field>
-
 
   <eg-grid-field label="[% l('Acquisition Cost') %]"     path="cost" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Age-Based Hold Protection') %]"  path="age_protect" hidden></eg-grid-field>
@@ -127,7 +130,11 @@
   <eg-grid-field label="[% l('TCN') %]"                   path="call_number.record.tcn_value" hidden></eg-grid-field>
   <eg-grid-field label="[% l('TCN Source') %]"            path="call_number.record.tcn_source" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Transaction Complete') %]"  path="_circ.xact_finish" datatype="timestamp" hidden></eg-grid-field>
-</eg-grid>
+  <eg-grid-field label="[% l('Alerts') %]" path="copy_alert_count" handlers="gridCellHandlers" visible compiled>
+    {{item['copy_alert_count']}}
+    <button ng-disabled="item['copy_alert_count'] <= 0" class="btn btn-sm btn-default" ng-click="col.handlers.copyAlertsEdit(item['id'])">[% l('Manage') %]</button>
+  </eg-grid-field>
+  
 </eg-grid>
 
 <div class="flex-row pad-vert">

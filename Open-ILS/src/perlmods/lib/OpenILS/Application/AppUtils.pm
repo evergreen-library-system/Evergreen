@@ -2279,6 +2279,14 @@ sub unique_unnested_numbers {
     );
 }
 
+# Given a list of numbers, turn them into a PG array, skipping undef's
+sub intarray2pgarray {
+    my $class = shift;
+    no warnings 'numeric';
+
+    return '{' . join( ',', map(int, grep { defined && /^\d+$/ } @_) ) . '}';
+}
+
 # Check if a transaction should be left open or closed. Close the
 # transaction if it should be closed or open it otherwise. Returns
 # undef on success or a failure event.

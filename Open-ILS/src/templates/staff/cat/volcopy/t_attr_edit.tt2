@@ -384,6 +384,13 @@
                       type="button">
                         [% l('Copy Notes') %]
                     </button>
+                    <button
+                      class="btn btn-default"
+                      ng-disabled="!defaults.copy_alerts"
+                      ng-click="copy_alerts_dialog(workingGridControls.selectedItems())"
+                      type="button">
+                        [% l('Copy Alerts') %]
+                    </button>
                 </div>
             </div>
 

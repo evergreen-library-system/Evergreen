@@ -71,6 +71,8 @@
       label="[% l('Copies') %]"></eg-grid-action>
     <eg-grid-action handler="selectedHoldingsVolCopyAdd" group="[% l('Add') %]"
       label="[% l('Volumes and Copies') %]"></eg-grid-action>
+    <eg-grid-action handler="selectedHoldingsCopyAlertsAdd" group="[% l('Add') %]" disabled="vols_not_shown"
+      label="[% l('Copy Alerts') %]"></eg-grid-action>
 
     <eg-grid-action handler="selectedHoldingsVolEdit" group="[% l('Edit') %]"
       label="[% l('Volumes') %]"></eg-grid-action>
@@ -80,6 +82,8 @@
       label="[% l('Volumes and Copies') %]"></eg-grid-action>
     <eg-grid-action handler="replaceBarcodes" group="[% l('Edit') %]"
       label="[% l('Replace Barcodes') %]"></eg-grid-action>
+    <eg-grid-action handler="selectedHoldingsCopyAlertsManage" group="[% l('Edit') %]"
+      label="[% l('Manage Copy Alerts') %]"></eg-grid-action>
 
     <eg-grid-action handler="selectedHoldingsEmptyVolCopyDelete" group="[% l('Delete') %]" disabled="vols_not_shown"
       label="[% l('Empty Volumes') %]"></eg-grid-action>
@@ -118,6 +122,10 @@
     <eg-grid-field label="[% l('Holdable') %]"               datatype="bool" path="holdable"></eg-grid-field>
     <eg-grid-field label="[% l('Age-based Hold Protection') %]" path="age_protect.name"></eg-grid-field>
     <eg-grid-field label="[% l('Reference') %]"              datatype="bool" path="ref"></eg-grid-field>
+    <eg-grid-field label="[% l('Alerts') %]" path="copy_alert_count" handlers="gridCellHandlers" visible compiled>
+      {{item['copy_alert_count']}}
+      <button ng-disabled="item['copy_alert_count'] <= 0" class="btn btn-sm btn-default" ng-click="col.handlers.copyAlertsEdit(item['id'])">[% l('Manage') %]</button>
+    </eg-grid-field>
   
   </eg-grid>
 </div>

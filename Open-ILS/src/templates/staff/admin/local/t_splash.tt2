@@ -17,6 +17,8 @@
     ,[ l('Circ Limit Sets'), "./admin/local/config/circ_limit_set" ]
     ,[ l('Circulation Policies'), "./admin/local/config/circ_matrix_matchpoint" ]
     ,[ l('Closed Dates Editor'), "./admin/local/actor/closed_dates" ]
+    ,[ l('Copy Alert Types'), "./admin/local/config/copy_alert_types" ]
+    ,[ l('Copy Alert Suppression'), "./admin/local/actor/copy_alert_suppress" ]
     ,[ l('Copy Location Groups'), "./admin/local/asset/copy_location_group" ]
     ,[ l('Copy Location Order'), "./admin/local/asset/copy_location_order" ]
     ,[ l('Copy Locations Editor'), "./admin/local/asset/copy_locations" ]

@@ -1477,6 +1477,13 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         });
     }
 
+    $scope.gridCellHandlers = {};
+    $scope.gridCellHandlers.copyAlertsEdit = function(id) {
+        egCirc.manage_copy_alerts([id]).then(function() {
+            // update grid items?
+        });
+    };
+
     $scope.transferItems = function (){
         var xfer_target = egCore.hatch.getLocalItem('eg.cat.item_transfer_target');
         var copy_ids = gatherSelectedHoldingsIds();
@@ -1583,6 +1590,17 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
             holdingsSvcInst.fetchAgain().then(function() {
                 $scope.holdingsGridDataProvider.refresh();
             });
+        });
+    }
+
+    $scope.selectedHoldingsCopyAlertsAdd = function() {
+        egCirc.add_copy_alerts(gatherSelectedHoldingsIds()).then(function() {
+            // no need to refresh grid
+        });
+    }
+    $scope.selectedHoldingsCopyAlertsManage = function() {
+        egCirc.manage_copy_alerts(gatherSelectedHoldingsIds()).then(function() {
+            // no need to refresh grid
         });
     }
 

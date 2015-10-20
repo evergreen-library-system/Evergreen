@@ -455,6 +455,33 @@ function($scope , $q , $routeParams , $location , $timeout , $window , egCore ,
         itemSvc.spawnHoldingsAdd(copyGrid.selectedItems(),false,true);
     }
 
+    $scope.selectedHoldingsCopyAlertsAdd = function(items) {
+        var copy_ids = [];
+        angular.forEach(items, function(item) {
+            if (item.id) copy_ids.push(item.id);
+        });
+        egCirc.add_copy_alerts(copy_ids).then(function() {
+            // update grid items?
+        });
+    }
+
+    $scope.selectedHoldingsCopyAlertsEdit = function(items) {
+        var copy_ids = [];
+        angular.forEach(items, function(item) {
+            if (item.id) copy_ids.push(item.id);
+        });
+        egCirc.manage_copy_alerts(copy_ids).then(function() {
+            // update grid items?
+        });
+    }
+
+    $scope.gridCellHandlers = {};
+    $scope.gridCellHandlers.copyAlertsEdit = function(id) {
+        egCirc.manage_copy_alerts([id]).then(function() {
+            // update grid items?
+        });
+    };
+
     $scope.showBibHolds = function () {
         angular.forEach(gatherSelectedRecordIds(), function (r) {
             var url = egCore.env.basePath + 'cat/catalog/record/' + r + '/holds';
@@ -522,8 +549,8 @@ function($scope , $q , $routeParams , $location , $timeout , $window , egCore ,
  * Detail view -- shows one copy
  */
 .controller('ViewCtrl', 
-       ['$scope','$q','$location','$routeParams','$timeout','$window','egCore','egItem','egBilling',
-function($scope , $q , $location , $routeParams , $timeout , $window , egCore , itemSvc , egBilling) {
+       ['$scope','$q','$location','$routeParams','$timeout','$window','egCore','egItem','egBilling','egCirc',
+function($scope , $q , $location , $routeParams , $timeout , $window , egCore , itemSvc , egBilling , egCirc) {
     var copyId = $routeParams.id;
     $scope.args.copyId = copyId;
     $scope.tab = $routeParams.tab || 'summary';
@@ -938,6 +965,17 @@ function($scope , $q , $location , $routeParams , $timeout , $window , egCore , 
         }
 
         return;
+    }
+
+    $scope.addCopyAlerts = function(copy_id) {
+        egCirc.add_copy_alerts([copy_id]).then(function() {
+            // update grid items?
+        });
+    }
+    $scope.manageCopyAlerts = function(copy_id) {
+        egCirc.manage_copy_alerts([copy_id]).then(function() {
+            // update grid items?
+        });
     }
 
     $scope.context.toggleDisplay = function() {

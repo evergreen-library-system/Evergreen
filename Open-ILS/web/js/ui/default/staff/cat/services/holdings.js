@@ -15,7 +15,7 @@ function(egCore , $q) {
     service.prototype.flesh = {   
         flesh : 2, 
         flesh_fields : {
-            acp : ['status','location','circ_lib','parts','age_protect'],
+            acp : ['status','location','circ_lib','parts','age_protect','copy_alerts'],
             acn : ['prefix','suffix','copies']
         }
     }
@@ -115,6 +115,11 @@ function(egCore , $q) {
                     if (cp.parts && cp.parts.length > 0) {
                         cp.monograph_parts = cp.parts.map(function(obj) { return obj.label; }).join();
                     }
+                });
+
+                // create virtual field for copy alert count
+                angular.forEach(svc.copies, function (cp) {
+                    cp.copy_alert_count = cp.copy_alerts.length;
                 });
 
                 // create a label using just the unique part of the owner list

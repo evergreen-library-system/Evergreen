@@ -634,6 +634,256 @@ function($window , egStrings) {
     return service;
 }])
 
+/**
+ * egAddCopyAlertDialog - manage copy alerts
+ */
+.factory('egAddCopyAlertDialog', 
+       ['$uibModal','$interpolate','egCore',
+function($uibModal , $interpolate , egCore) {
+    var service = {};
+
+    service.open = function(args) {
+        return $uibModal.open({
+            templateUrl: './share/t_add_copy_alert_dialog',
+            controller: ['$scope','$q','$uibModalInstance',
+                function( $scope , $q , $uibModalInstance) {
+
+                    $scope.copy_ids = args.copy_ids;
+                    egCore.pcrud.search('ccat',
+                        { active : 't' },
+                        {},
+                        { atomic : true }
+                    ).then(function (ccat) {
+                        $scope.alert_types = ccat;
+                    }); 
+
+                    $scope.copy_alert = {
+                        create_staff : egCore.auth.user().id(),
+                        note         : '',
+                        temp         : false
+                    };
+
+                    $scope.ok = function(copy_alert) {
+                        if (typeof(copy_alert.note) != 'undefined' &&
+                            copy_alert.note != '') {
+                            copy_alerts = [];
+                            angular.forEach($scope.copy_ids, function (cp_id) {
+                                var a = new egCore.idl.aca();
+                                a.isnew(1);
+                                a.create_staff(copy_alert.create_staff);
+                                a.note(copy_alert.note);
+                                a.temp(copy_alert.temp ? 't' : 'f');
+                                a.copy(cp_id);
+                                a.ack_time(null);
+                                a.alert_type(
+                                    $scope.alert_types.filter(function(at) {
+                                        return at.id() == copy_alert.alert_type;
+                                    })[0]
+                                );
+                                copy_alerts.push( a );
+                            });
+                            if (copy_alerts.length > 0) {
+                                egCore.pcrud.apply(copy_alerts);
+                            }
+                        }
+                        if (args.ok) args.ok();
+                        $uibModalInstance.close()
+                    }
+                    $scope.cancel = function() {
+                        if (args.cancel) args.cancel();
+                        $uibModalInstance.dismiss();
+                    }
+                }
+            ]
+        })
+    }
+
+    return service;
+}])
+
+/**
+ * egCopyAlertManagerDialog - manage copy alerts
+ */
+.factory('egCopyAlertManagerDialog', 
+       ['$uibModal','$interpolate','egCore',
+function($uibModal , $interpolate , egCore) {
+    var service = {};
+
+    service.get_user_copy_alerts = function(copy_id) {
+        return egCore.pcrud.search('aca', { copy : copy_id, ack_time : null },
+            { flesh : 1, flesh_fields : { aca : ['alert_type'] } },
+            { atomic : true }
+        );
+    }
+
+    service.open = function(args) {
+        return $uibModal.open({
+            templateUrl: './share/t_copy_alert_manager_dialog',
+            controller: ['$scope','$q','$uibModalInstance',
+                function( $scope , $q , $uibModalInstance) {
+
+                    function init(args) {
+                        var defer = $q.defer();
+                        if (args.copy_id) {
+                            service.get_user_copy_alerts(args.copy_id).then(function(aca) {
+                                defer.resolve(aca);
+                            });
+                        } else {
+                            defer.resolve(args.alerts);
+                        }
+                        return defer.promise;
+                    }
+
+                    // returns a promise resolved with the list of circ statuses
+                    $scope.get_copy_statuses = function() {
+                        if (egCore.env.ccs)
+                            return $q.when(egCore.env.ccs.list);
+
+                        return egCore.pcrud.retrieveAll('ccs', null, {atomic : true})
+                        .then(function(list) {
+                            egCore.env.absorbList(list, 'ccs');
+                            return list;
+                        });
+                    };
+
+                    $scope.mode = args.mode || 'checkin';
+
+                    var next_statuses = [];
+                    var seen_statuses = {};
+                    $scope.next_statuses = [];
+                    $scope.params = {
+                        'the_next_status' : null
+                    }
+                    init(args).then(function(copy_alerts) {
+                        $scope.alerts = copy_alerts;
+                        angular.forEach($scope.alerts, function(copy_alert) {
+                            var state = copy_alert.alert_type().state();
+                            copy_alert.evt = copy_alert.alert_type().event();
+
+                            copy_alert.message = copy_alert.note() ||
+                                egCore.strings.ON_DEMAND_COPY_ALERT[copy_alert.evt][state];
+
+                            if (copy_alert.temp() == 't') {
+                                angular.forEach(copy_alert.alert_type().next_status(), function (st) {
+                                    if (!seen_statuses[st]) {
+                                        seen_statuses[st] = true;
+                                        next_statuses.push(st);
+                                    }
+                                });
+                            }
+                        });
+                        if ($scope.mode == 'checkin' && next_statuses.length > 0) {
+                            $scope.get_copy_statuses().then(function() {
+                                angular.forEach(next_statuses, function(st) {
+                                    if (egCore.env.ccs.map[st])
+                                    	$scope.next_statuses.push(egCore.env.ccs.map[st]);
+                                });
+                                $scope.params.the_next_status = $scope.next_statuses[0].id();
+                            });
+                        }
+                    });
+
+                    $scope.isAcknowledged = function(copy_alert) {
+                        return (copy_alert.acked);
+                    };
+                    $scope.canBeAcknowledged = function(copy_alert) {
+                        return (!copy_alert.ack_time() && copy_alert.temp() == 't');
+                    };
+                    $scope.canBeRemoved = function(copy_alert) {
+                        return (!copy_alert.ack_time() && copy_alert.temp() == 'f');
+                    };
+
+                    $scope.ok = function() {
+                        var acks = [];
+                        angular.forEach($scope.alerts, function (copy_alert) {
+                            if (copy_alert.acked) {
+                                copy_alert.ack_time('now');
+                                copy_alert.ack_staff(egCore.auth.user().id());
+                                copy_alert.ischanged(true);
+                                acks.push(copy_alert);
+                            }
+                        });
+                        if (acks.length > 0) {
+                            egCore.pcrud.apply(acks);
+                        }
+                        if (args.ok) args.ok($scope.params.the_next_status);
+                        $uibModalInstance.close()
+                    }
+                    $scope.cancel = function() {
+                        if (args.cancel) args.cancel();
+                        $uibModalInstance.dismiss();
+                    }
+                }
+            ]
+        })
+    }
+
+    return service;
+}])
+
+/**
+ * egCopyAlertEditorDialog - manage copy alerts
+ */
+.factory('egCopyAlertEditorDialog', 
+       ['$uibModal','$interpolate','egCore',
+function($uibModal , $interpolate , egCore) {
+    var service = {};
+
+    service.get_user_copy_alerts = function(copy_id) {
+        return egCore.pcrud.search('aca', { copy : copy_id, ack_time : null },
+            { flesh : 1, flesh_fields : { aca : ['alert_type'] } },
+            { atomic : true }
+        );
+    }
+
+    service.get_copy_alert_types = function() {
+        return egCore.pcrud.search('ccat',
+            { active : 't' },
+            {},
+            { atomic : true }
+        );
+    };
+
+    service.open = function(args) {
+        return $uibModal.open({
+            templateUrl: './share/t_copy_alert_editor_dialog',
+            controller: ['$scope','$q','$uibModalInstance',
+                function( $scope , $q , $uibModalInstance) {
+
+                    function init(args) {
+                        var defer = $q.defer();
+                        if (args.copy_id) {
+                            service.get_user_copy_alerts(args.copy_id).then(function(aca) {
+                                defer.resolve(aca);
+                            });
+                        } else {
+                            defer.resolve(args.alerts);
+                        }
+                        return defer.promise;
+                    }
+
+                    init(args).then(function(copy_alerts) {
+                        $scope.copy_alert_list = copy_alerts;
+                    });
+                    service.get_copy_alert_types().then(function(ccat) {
+                        $scope.alert_types = ccat;
+                    });
+
+                    $scope.ok = function() {
+                        egCore.pcrud.apply($scope.copy_alert_list);
+                        $uibModalInstance.close()
+                    }
+                    $scope.cancel = function() {
+                        if (args.cancel) args.cancel();
+                        $uibModalInstance.dismiss();
+                    }
+                }
+            ]
+        })
+    }
+
+    return service;
+}])
 .directive('aDisabled', function() {
     return {
         restrict : 'A',
@@ -676,9 +926,9 @@ function($window , egStrings) {
         template:
             '<div class="input-group">'+
                 '<input placeholder="{{placeholder}}" type="text" ng-disabled="egDisabled" class="form-control" ng-model="selected" ng-change="makeOpen()" focus-me="focusMe">'+
-                '<div class="input-group-btn" dropdown ng-class="{open:isopen}">'+
-                    '<button type="button" ng-click="showAll()" ng-disabled="egDisabled" class="btn btn-default dropdown-toggle"><span class="caret"></span></button>'+
-                    '<ul class="dropdown-menu dropdown-menu-right">'+
+                '<div class="input-group-btn" uib-dropdown ng-class="{open:isopen}">'+
+                    '<button type="button" ng-click="showAll()" ng-disabled="egDisabled" class="btn btn-default" uib-dropdown-toggle><span class="caret"></span></button>'+
+                    '<ul dropdown-menu class="dropdown-menu-right">'+
                         '<li ng-repeat="item in list|filter:selected:compare"><a href ng-click="changeValue(item)">{{item}}</a></li>'+
                         '<li ng-if="complete_list" class="divider"><span></span></li>'+
                         '<li ng-if="complete_list" ng-repeat="item in list"><a href ng-click="changeValue(item)">{{item}}</a></li>'+

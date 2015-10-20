@@ -66,10 +66,16 @@
     handler="abortTransit"
     label="[% l('Cancel Transits') %]">
   </eg-grid-action>
+  <eg-grid-action divider="true"></eg-grid-action>
+  <eg-grid-action
+    handler="addCopyAlerts"
+    label="[% l('Add Copy Alerts') %]">
+  </eg-grid-action>
+  <eg-grid-action
+    handler="manageCopyAlerts"
+    label="[% l('Manage Copy Alerts') %]">
+  </eg-grid-action>
 
-
-  <eg-grid-field label="[% l('Alert Msg') %]"   
-    path="acp.alert_message"></eg-grid-field>
 
   <eg-grid-field label="[% l('Balance Owed') %]"     
     path='mbts.balance_owed' comparator="sort_money"></eg-grid-field>

@@ -34,7 +34,29 @@ s.COPY_IN_TRANSIT = '[% l("Copy is In-Transit") %]';
 s.TOO_MANY_CLAIMS_RETURNED = 
   '[% l("Patron exceeds claims returned count.  Force this action?") %]';
 s.MARK_NEVER_CHECKED_OUT = 
-  '[% l("Mark Never Checked Out: [_1]", "{{barcodes.toString()}}") %]'
+  '[% l("Mark Never Checked Out: [_1]", "{{barcodes.toString()}}") %]';
+s.ON_DEMAND_COPY_ALERT = {
+    'CHECKIN': {
+        'NORMAL' : '[% l("Normal checkin") %]',
+        'LOST' : '[% l("Copy was marked lost") %]',
+        'LOST_AND_PAID' : '[% l("Copy was marked lost and paid for") %]',
+        'MISSING' : '[% l("Copy was marked missing") %]',
+        'DAMAGED' : '[% l("Copy was marked damaged") %]',
+        'CLAIMSRETURNED' : '[% l("Copy was marked claims returned") %]',
+        'LONGOVERDUE' : '[% l("Copy was marked long overdue") %]',
+        'CLAIMSNEVERCHECKEDOUT' : '[% l("Copy was marked claims never checked out") %]'
+    },
+    'CHECKOUT': {
+        'NORMAL' : '[% l("Normal checkout") %]',
+        'LOST' : '[% l("Copy was marked lost") %]',
+        'LOST_AND_PAID' : '[% l("Copy was marked lost and paid for") %]',
+        'MISSING' : '[% l("Copy was marked missing") %]',
+        'DAMAGED' : '[% l("Copy was marked damaged") %]',
+        'CLAIMSRETURNED' : '[% l("Copy was marked claims returned") %]',
+        'LONGOVERDUE' : '[% l("Copy was marked long overdue") %]',
+        'CLAIMSNEVERCHECKEDOUT' : '[% l("Copy was marked claims never checked out") %]'
+    }
+};
 }]);
 </script>
 

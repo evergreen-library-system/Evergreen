@@ -16,7 +16,7 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
         flesh : 3, 
         flesh_fields : {
             acp : ['call_number','location','status','location','floating','circ_modifier',
-                'age_protect','circ_lib'],
+                'age_protect','circ_lib','copy_alerts'],
             acn : ['record','prefix','suffix','label_class'],
             bre : ['simple_record','creator','editor']
         },
@@ -152,6 +152,10 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
                     flatCopy._duration = copyData.circ.duration();
                 }
                 flatCopy.index = service.index++;
+                flatCopy.copy_alert_count = copyData.copy.copy_alerts().filter(function(aca) {
+                    return !aca.ack_time();
+                }).length;
+
                 service.copies.unshift(flatCopy);
             }
 

@@ -1263,7 +1263,12 @@ angular.module('egGridMod',
             // optional: for non-IDL columns, specifying a datatype
             // lets the caller control which display filter is used.
             // datatype should match the standard IDL datatypes.
-            datatype : '@'
+            datatype : '@',
+
+            // optional hash of functions that can be imported into
+            // the directive's scope; meant for cases where the "compiled"
+            // attribute is set
+            handlers : '='
         },
         link : function(scope, element, attrs, egGridCtrl) {
 
@@ -1271,6 +1276,7 @@ angular.module('egGridMod',
             angular.forEach(
                 [
                     'visible', 
+                    'compiled', 
                     'hidden', 
                     'sortable', 
                     'nonsortable',
@@ -1538,6 +1544,8 @@ angular.module('egGridMod',
                 linkpath : colSpec.linkpath,
                 template : colSpec.template,
                 visible  : colSpec.visible,
+                compiled : colSpec.compiled,
+                handlers : colSpec.handlers,
                 hidden   : colSpec.hidden,
                 datatype : colSpec.datatype,
                 sortable : colSpec.sortable,
@@ -2075,6 +2083,31 @@ angular.module('egGridMod',
         }
     };
 })
+
+/* https://stackoverflow.com/questions/17343696/adding-an-ng-click-event-inside-a-filter/17344875#17344875 */
+.directive('compile', ['$compile', function ($compile) {
+    return function(scope, element, attrs) {
+      // pass through column defs from grid cell's scope
+      scope.col = scope.$parent.col;
+      scope.$watch(
+        function(scope) {
+          // watch the 'compile' expression for changes
+          return scope.$eval(attrs.compile);
+        },
+        function(value) {
+          // when the 'compile' expression changes
+          // assign it into the current DOM
+          element.html(value);
+
+          // compile the new DOM and link it to the current
+          // scope.
+          // NOTE: we only compile .childNodes so that
+          // we don't get into infinite loop compiling ourselves
+          $compile(element.contents())(scope);
+        }
+    );
+  };
+}])
 
 
 

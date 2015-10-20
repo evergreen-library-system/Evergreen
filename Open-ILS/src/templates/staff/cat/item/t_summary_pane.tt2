@@ -177,8 +177,11 @@
   </div>
 
   <div class="flex-row">
-    <div class="flex-cell">[% l('Alert Message') %]</div>
-    <div class="well" style="flex:7">{{copy.alert_message()}}</div>
+    <div class="flex-cell">[% l('Copy Alerts') %]</div>
+    <div id="item-status-alert-msg">
+      <button class="btn btn-default" ng-click="addCopyAlerts(copy.id())" >[% l('Add') %]</button>
+      <button class="btn btn-default" ng-click="manageCopyAlerts(copy.id())" >[% l('Manage') %]</button>
+    </div>
   </div>
 
 </div>

@@ -136,6 +136,21 @@ function(egCore , $q) {
         );
     };
 
+    service.get_copy_alert_types = function(orgs) {
+        return egCore.pcrud.search('ccat',
+            { active : 't' },
+            {},
+            { atomic : true }
+        );
+    };
+
+    service.get_copy_alerts = function(copy_id) {
+        return egCore.pcrud.search('aca', { copy : copy_id, ack_time : null },
+            { flesh : 1, flesh_fields : { aca : ['alert_type'] } },
+            { atomic : true }
+        );
+    };
+
     service.get_locations = function(orgs) {
         return egCore.pcrud.search('acpl',
             {owning_lib : orgs, deleted : 'f'},
@@ -373,6 +388,10 @@ function(egCore , $q) {
     service.addCopy = function (cp) {
 
         if (!cp.parts()) cp.parts([]); // just in case...
+
+        service.get_copy_alerts(cp.id()).then(function(aca) {
+            cp.copy_alerts(aca);
+        });
 
         var lib = cp.call_number().owning_lib();
         var cn = cp.call_number().id();
@@ -907,6 +926,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
         statcats : true,
         copy_notes : true,
         copy_tags : true,
+        copy_alerts : true,
         attributes : {
             status : true,
             loan_duration : true,
@@ -1101,6 +1121,58 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
         statcat_filter: undefined
     };
 
+    $scope.copyAlertUpdate = function (alerts) {
+        if (!$scope.in_item_select &&
+            $scope.workingGridControls &&
+            $scope.workingGridControls.selectedItems) {
+            itemSvc.get_copy_alert_types().then(function(ccat) {
+                var ccat_map = {};
+                $scope.alert_types = ccat;
+                angular.forEach(ccat, function(t) {
+                    ccat_map[t.id()] = t;
+                });
+                angular.forEach(
+                    $scope.workingGridControls.selectedItems(),
+                    function (cp) {
+                        $scope.dirty = true;
+                        angular.forEach(alerts, function(alrt) {
+                            var a = egCore.idl.fromHash('aca', alrt);
+                            a.isnew(1);
+                            a.create_staff(egCore.auth.user().id());
+                            a.alert_type(ccat_map[a.alert_type()]);
+                            a.ack_time(null);
+                            a.copy(cp.id());
+                            cp.copy_alerts().push( a );
+                        });
+                        cp.ischanged(1);
+                    }
+                );
+            });
+        }
+    };
+
+    $scope.copyNoteUpdate = function (notes) {
+        if (!$scope.in_item_select &&
+            $scope.workingGridControls &&
+            $scope.workingGridControls.selectedItems) {
+            angular.forEach(
+                $scope.workingGridControls.selectedItems(),
+                function (cp) {
+                    $scope.dirty = true;
+                    angular.forEach(notes, function(note) {
+                        var n = egCore.idl.fromHash('acpn', note);
+                        n.isnew(1);
+                        n.creator(egCore.auth.user().id());
+                        n.owning_copy(cp.id());
+                        cp.notes().push( n );
+                    });
+                    cp.ischanged(1);
+                }
+            );
+
+        }
+    }
+
     $scope.statcatUpdate = function (id) {
         var newval = $scope.working.statcats[id];
 
@@ -1184,6 +1256,10 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
             angular.forEach($scope.templates[n], function (v,k) {
                 if (k == 'circ_lib') {
                     $scope.working[k] = egCore.org.get(v);
+                } else if (k == 'copy_notes' && v.length) {
+                    $scope.copyNoteUpdate(v);
+                } else if (k == 'copy_alerts' && v.length) {
+                    $scope.copyAlertUpdate(v);
                 } else if (!angular.isObject(v)) {
                     $scope.working[k] = angular.copy(v);
                 } else {
@@ -1936,6 +2012,75 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
         });
     }
 
+    $scope.copy_alerts_dialog = function(copy_list) {
+        if (!angular.isArray(copy_list)) copy_list = [copy_list];
+
+        return $uibModal.open({
+            templateUrl: './cat/volcopy/t_copy_alerts',
+            animation: true,
+            controller:
+                   ['$scope','$uibModalInstance',
+            function($scope , $uibModalInstance) {
+
+                itemSvc.get_copy_alert_types().then(function(ccat) {
+                    $scope.alert_types = ccat;
+                });
+
+                $scope.focusNote = true;
+                $scope.copy_alert = {
+                    create_staff : egCore.auth.user().id(),
+                    note         : '',
+                    temp         : false
+                };
+
+                egCore.hatch.getItem('cat.copy.alerts.last_type').then(function(t) {
+                    if (t) $scope.copy_alert.alert_type = t;
+                });
+
+                if (copy_list.length == 1) {
+                    $scope.copy_alert_list = copy_list[0].copy_alerts();
+                }
+
+                $scope.ok = function(copy_alert) {
+
+                    if (typeof(copy_alert.note) != 'undefined' &&
+                        copy_alert.note != '') {
+                        angular.forEach(copy_list, function (cp) {
+                            var a = new egCore.idl.aca();
+                            a.isnew(1);
+                            a.create_staff(copy_alert.create_staff);
+                            a.note(copy_alert.note);
+                            a.temp(copy_alert.temp ? 't' : 'f');
+                            a.copy(cp.id());
+                            a.ack_time(null);
+                            a.alert_type(
+                                $scope.alert_types.filter(function(at) {
+                                    return at.id() == copy_alert.alert_type;
+                                })[0]
+                            );
+                            cp.copy_alerts().push( a );
+                        });
+
+                        if (copy_alert.alert_type) {
+                            egCore.hatch.setItem(
+                                'cat.copy.alerts.last_type',
+                                copy_alert.alert_type
+                            );
+                        }
+
+                    }
+
+                    $uibModalInstance.close();
+                }
+
+                $scope.cancel = function($event) {
+                    $uibModalInstance.dismiss();
+                    $event.preventDefault();
+                }
+            }]
+        });
+    }
+
 }])
 
 .directive("egVolTemplate", function () {
@@ -1946,8 +2091,8 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
         scope: {
             editTemplates: '=',
         },
-        controller : ['$scope','$window','itemSvc','egCore','ngToast',
-            function ( $scope , $window , itemSvc , egCore , ngToast) {
+        controller : ['$scope','$window','itemSvc','egCore','ngToast','$uibModal',
+            function ( $scope , $window , itemSvc , egCore , ngToast , $uibModal) {
 
                 $scope.i18n = egCore.i18n;
 
@@ -1957,6 +2102,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                     statcats : true,
                     copy_notes : true,
                     copy_tags : true,
+                    copy_alerts : true,
                     attributes : {
                         status : true,
                         loan_duration : true,
@@ -2029,7 +2175,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                     angular.forEach($scope.templates[n], function (v,k) {
                         if (k == 'circ_lib') {
                             $scope.working[k] = egCore.org.get(v);
-                        } else if (!angular.isObject(v)) {
+                        } else if (angular.isArray(v) || !angular.isObject(v)) {
                             $scope.working[k] = angular.copy(v);
                         } else {
                             angular.forEach(v, function (sv,sk) {
@@ -2080,7 +2226,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                     }
                     ngToast.create(egCore.strings.VOL_COPY_TEMPLATE_SUCCESS_SAVE);
                 }
-            
+
                 $scope.templates = {};
                 $scope.imported_templates = { data : '' };
                 $scope.template_name = '';
@@ -2134,6 +2280,8 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                 }
             
                 $scope.working = {
+                    copy_notes: [],
+                    copy_alerts: [],
                     statcats: {},
                     statcat_filter: undefined
                 };
@@ -2213,7 +2361,142 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                         createStatcatUpdateWatcher(s.id());
                     });
                 });
+
+                $scope.copy_notes_dialog = function() {
+                    var default_pub = Boolean($scope.defaults.copy_notes_pub);
+                    var working = $scope.working;
             
+                    return $uibModal.open({
+                        templateUrl: './cat/volcopy/t_copy_notes',
+                        animation: true,
+                        controller:
+                            ['$scope','$uibModalInstance',
+                        function($scope , $uibModalInstance) {
+                            $scope.focusNote = true;
+                            $scope.note = {
+                                title   : '',
+                                value   : '',
+                                pub     : default_pub,
+                            };
+
+                            $scope.require_initials = false;
+                            egCore.org.settings([
+                                'ui.staff.require_initials.copy_notes'
+                            ]).then(function(set) {
+                                $scope.require_initials = Boolean(set['ui.staff.require_initials.copy_notes']);
+                            });
+
+                            $scope.note_list = [];
+                            angular.forEach(working.copy_notes, function(note) {
+                                var acpn = egCore.idl.fromHash('acpn', note);
+                                $scope.note_list.push(acpn);
+                            });
+
+                            $scope.ok = function(note) {
+
+                                if (!working.copy_notes) {
+                                    working.copy_notes = [];
+                                }
+
+                                // clear slate
+                                working.copy_notes.length = 0;
+                                angular.forEach($scope.note_list, function(existing_note) {
+                                    if (!existing_note.isdeleted()) {
+                                        working.copy_notes.push({
+                                            pub : existing_note.pub() ? 't' : 'f',
+                                            title : existing_note.title(),
+                                            value : existing_note.value()
+                                        });
+                                    }
+                                });
+
+                                // add new note, if any
+                                if (note.initials) note.value += ' [' + note.initials + ']';
+                                note.pub = note.pub ? 't' : 'f';
+                                if (note.title.length && note.value.length) {
+                                    working.copy_notes.push(note);
+                                }
+
+                                $uibModalInstance.close();
+                            }
+
+                            $scope.cancel = function($event) {
+                                $uibModalInstance.dismiss();
+                                $event.preventDefault();
+                            }
+                        }]
+                    });
+                }
+            
+                $scope.copy_alerts_dialog = function() {
+                    var working = $scope.working;
+
+                    return $uibModal.open({
+                        templateUrl: './cat/volcopy/t_copy_alerts',
+                        animation: true,
+                        controller:
+                            ['$scope','$uibModalInstance',
+                        function($scope , $uibModalInstance) {
+
+                            itemSvc.get_copy_alert_types().then(function(ccat) {
+                                var ccat_map = {};
+                                $scope.alert_types = ccat;
+                                angular.forEach(ccat, function(t) {
+                                    ccat_map[t.id()] = t;
+                                });
+                                $scope.copy_alert_list = [];
+                                angular.forEach(working.copy_alerts, function (alrt) {
+                                    var aca = egCore.idl.fromHash('aca', alrt);
+                                    aca.alert_type(ccat_map[alrt.alert_type]);
+                                    aca.ack_time(null);
+                                    $scope.copy_alert_list.push(aca);
+                                });
+                            });
+
+                            $scope.focusNote = true;
+                            $scope.copy_alert = {
+                                note         : '',
+                                temp         : false
+                            };
+
+                            $scope.ok = function(copy_alert) {
+            
+                                if (!working.copy_alerts) {
+                                    working.copy_alerts = [];
+                                }
+                                // clear slate
+                                working.copy_alerts.length = 0;
+
+                                angular.forEach($scope.copy_alert_list, function(alrt) {
+                                    if (alrt.ack_time() == null) {
+                                        working.copy_alerts.push({
+                                            note : alrt.note(),
+                                            temp : alrt.temp(),
+                                            alert_type : alrt.alert_type().id()
+                                        });
+                                    }
+                                });
+
+                                if (typeof(copy_alert.note) != 'undefined' &&
+                                    copy_alert.note != '') {
+                                    working.copy_alerts.push({
+                                        note : copy_alert.note,
+                                        temp : copy_alert.temp ? 't' : 'f',
+                                        alert_type : copy_alert.alert_type
+                                    });
+                                }
+
+                                $uibModalInstance.close();
+                            }
+
+                            $scope.cancel = function($event) {
+                                $uibModalInstance.dismiss();
+                                $event.preventDefault();
+                            }
+                        }]
+                    });
+                }
+
                 $scope.status_list = [];
                 itemSvc.get_magic_statuses().then(function(list){
                     $scope.magic_status_list = list;

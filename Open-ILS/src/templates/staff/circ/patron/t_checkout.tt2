@@ -93,8 +93,14 @@
   persist-key="circ.patron.checkout"
   dateformat="{{$root.egDateAndTimeFormat}}">
 
-  <eg-grid-field label="[% l('Alert Msg') %]"   
-    path="acp.alert_message"></eg-grid-field>
+  <eg-grid-action
+    handler="addCopyAlerts"
+    label="[% l('Add Copy Alerts') %]">
+  </eg-grid-action>
+  <eg-grid-action
+    handler="manageCopyAlerts"
+    label="[% l('Manage Copy Alerts') %]">
+  </eg-grid-action>
 
   <eg-grid-field label="[% l('Balance Owed') %]"     
     path='mbts.balance_owed'></eg-grid-field>
@@ -138,6 +144,12 @@
   <eg-grid-field path="acp.circ_modifier.name" label="[% l('Circulation Modifier') %]"></eg-grid-field>
   <eg-grid-field path="acp.circ_lib.shortname" label="[% l('Circulation Library') %]"></eg-grid-field>
   <eg-grid-field path="acn.owning_lib.shortname" label="[% l('Owning Library') %]"></eg-grid-field>
+
+  <eg-grid-field label="[% l('Alerts') %]" path="copy_alert_count" handlers="gridCellHandlers" visible compiled>
+    {{item['copy_alert_count']}}
+    <button ng-disabled="item['copy_alert_count'] <= 0" class="btn btn-sm btn-default" ng-click="col.handlers.copyAlertsEdit(item['acp'].id())">[% l('Manage') %]</button>
+  </eg-grid-field>
+
   <eg-grid-field path="circ.*" parent-idl-class="circ" hidden></eg-grid-field>
   <eg-grid-field path="acp.*" parent-idl-class="acp" hidden></eg-grid-field>
   <eg-grid-field path="acn.*" parent-idl-class="acn" hidden></eg-grid-field>

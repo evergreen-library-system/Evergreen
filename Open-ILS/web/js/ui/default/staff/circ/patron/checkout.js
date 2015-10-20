@@ -252,8 +252,46 @@ function($scope , $q , $routeParams , egCore , egUser , patronSvc ,
             // Non-cat circs don't return the full list of circs.
             // Refresh the list of non-cat circs from the server.
             patronSvc.getUserNonCats(patronSvc.current.id());
+            row_item.copy_alert_count = 0;
+        } else {
+            row_item.copy_alert_count = 0;
+            egCore.pcrud.search(
+                'aca',
+                { copy : co_resp.data.acp.id(), ack_time : null },
+                null,
+                { atomic : true }
+            ).then(function(list) {
+                row_item.copy_alert_count = list.length;
+            });
         }
     }
+
+    $scope.addCopyAlerts = function(items) {
+        var copy_ids = [];
+        angular.forEach(items, function(item) {
+            if (item.acp) copy_ids.push(item.acp.id());
+        });
+        egCirc.add_copy_alerts(copy_ids).then(function() {
+            // update grid items?
+        });
+    }
+
+    $scope.manageCopyAlerts = function(items) {
+        var copy_ids = [];
+        angular.forEach(items, function(item) {
+            if (item.acp) copy_ids.push(item.acp.id());
+        });
+        egCirc.manage_copy_alerts(copy_ids).then(function() {
+            // update grid items?
+        });
+    }
+
+    $scope.gridCellHandlers = {};
+    $scope.gridCellHandlers.copyAlertsEdit = function(id) {
+        egCirc.manage_copy_alerts([id]).then(function() {
+            // update grid items?
+        });
+    };
 
     $scope.print_receipt = function() {
         var print_data = {circulations : []};

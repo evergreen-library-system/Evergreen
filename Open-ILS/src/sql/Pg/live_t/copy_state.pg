@@ -1,0 +1,11 @@
+BEGIN;
+
+SELECT plan(1);
+
+\set copy_id 245
+
+UPDATE asset.copy SET status = 4 WHERE id = :copy_id;
+
+SELECT is(asset.copy_state(:copy_id), 'MISSING', 'asset.copy_state detects missing state');
+
+ROLLBACK;

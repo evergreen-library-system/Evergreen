@@ -7,8 +7,14 @@
 
 [% BLOCK APP_JS %]
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/services/eframe.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/grid.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/admin/local/app.js"></script>
 <link rel="stylesheet" href="[% ctx.base_path %]/staff/css/admin.css" />
+<script>
+angular.module('egCoreMod').run(['egStrings', function(s) {
+  s.REMOVE_ITEM_CONFIRM = '[% l('Delete rows?') %]';
+}]);
+</script
 [% END %]
 
 <div ng-view></div>

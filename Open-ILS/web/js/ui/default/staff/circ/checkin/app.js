@@ -387,5 +387,26 @@ function($scope , $q , $window , $location , $timeout , egCore , checkinSvc , eg
         });
         itemSvc.print_spine_labels(copy_ids);
     }
+
+    $scope.addCopyAlerts = function(items) {
+        var copy_ids = [];
+        angular.forEach(items, function(item) {
+            if (item.acp) copy_ids.push(item.acp.id());
+        });
+        egCirc.add_copy_alerts(copy_ids).then(function() {
+            // update grid items?
+        });
+    }
+
+    $scope.manageCopyAlerts = function(items) {
+        var copy_ids = [];
+        angular.forEach(items, function(item) {
+            if (item.acp) copy_ids.push(item.acp.id());
+        });
+        egCirc.manage_copy_alerts(copy_ids).then(function() {
+            // update grid items?
+        });
+    }
+
 }])
 

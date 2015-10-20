@@ -201,6 +201,26 @@ function($scope , $window , $location , egCore , egGridDataProvider , egCirc) {
         });
     }
 
+    $scope.addCopyAlerts = function(items) {
+        var copy_ids = [];
+        angular.forEach(items, function(item) {
+            if (item.acp) copy_ids.push(item.acp.id());
+        });
+        egCirc.add_copy_alerts(copy_ids).then(function() {
+            // update grid items?
+        });
+    }
+
+    $scope.manageCopyAlerts = function(items) {
+        var copy_ids = [];
+        angular.forEach(items, function(item) {
+            if (item.acp) copy_ids.push(item.acp.id());
+        });
+        egCirc.manage_copy_alerts(copy_ids).then(function() {
+            // update grid items?
+        });
+    }
+
     $scope.print_receipt = function() {
         var print_data = {circulations : []}
 

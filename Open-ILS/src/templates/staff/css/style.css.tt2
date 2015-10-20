@@ -179,6 +179,10 @@ table.list tr.selected td { /* deprecated? */
 /* barcode inputs are everywhere.  Let's have a consistent style. */
 .barcode { width: 16em !important; }
 
+/* use strike-through to mark something that has been acknowledged,
+   e.g., a copy alert */
+.acknowledged { text-decoration: line-through; }
+
 /* bootstrap alerts are heavily padded.  use this to reduce */
 .alert-less-pad {padding: 5px;}
 

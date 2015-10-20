@@ -40,6 +40,18 @@ my $MK_ENV_FLESH = {
     flesh_fields => {acp => ['call_number','parts','floating'], acn => ['record']}
 };
 
+# table of cases where suppressing a system-generated copy alerts
+# should generate an override of an old-style event
+my %COPY_ALERT_OVERRIDES = (
+    "CLAIMSRETURNED\tCHECKOUT" => ['CIRC_CLAIMS_RETURNED'],
+    "CLAIMSRETURNED\tCHECKIN" => ['CIRC_CLAIMS_RETURNED'],
+    "LOST\tCHECKOUT" => ['OPEN_CIRCULATION_EXISTS'],
+    "LONGOVERDUE\tCHECKOUT" => ['OPEN_CIRCULATION_EXISTS'],
+    "MISSING\tCHECKOUT" => ['COPY_STATUS_MISSING'],
+    "DAMAGED\tCHECKOUT" => ['COPY_NOT_AVAILABLE'],
+    "LOST_AND_PAID\tCHECKOUT" => ['COPY_NOT_AVAILABLE', 'OPEN_CIRCULATION_EXISTS']
+);
+
 sub initialize {}
 
 __PACKAGE__->register_method(
@@ -155,6 +167,7 @@ sub run_method {
     my( $self, $conn, $auth, $args ) = @_;
     translate_legacy_args($args);
     $args->{override_args} = { all => 1 } unless defined $args->{override_args};
+    $args->{new_copy_alerts} ||= $self->api_level > 1 ? 1 : 0;
     my $api = $self->api_name;
 
     my $circulator = 
@@ -227,13 +240,13 @@ sub run_method {
 
     $circulator->is_renewal(1) if $api =~ /renew/;
     $circulator->is_checkin(1) if $api =~ /checkin/;
+    $circulator->is_checkout(1) if $api =~ /checkout/;
+    $circulator->override(1) if $api =~ /override/o;
 
     $circulator->mk_env();
     $circulator->noop(1) if $circulator->claims_never_checked_out;
 
     return circ_events($circulator) if $circulator->bail_out;
-    
-    $circulator->override(1) if $api =~ /override/o;
 
     if( $api =~ /checkout\.permit/ ) {
         $circulator->do_permit();
@@ -260,7 +273,6 @@ sub run_method {
         return $data;
 
     } elsif( $api =~ /checkout/ ) {
-        $circulator->is_checkout(1);
         $circulator->do_checkout();
 
     } elsif( $circulator->is_res_checkin ) {
@@ -270,7 +282,6 @@ sub run_method {
         $circulator->do_checkin();
 
     } elsif( $api =~ /renew/ ) {
-        $circulator->is_renewal(1);
         $circulator->do_renew();
     }
 
@@ -404,6 +415,12 @@ my @AUTOLOAD_FIELDS = qw/
     copy
     copy_id
     copy_barcode
+    new_copy_alerts
+    user_copy_alerts
+    system_copy_alerts
+    overrides_per_copy_alerts
+    next_copy_status
+    copy_state
     patron
     patron_id
     patron_barcode
@@ -640,9 +657,232 @@ sub save_trimmed_copy {
     }
 }
 
+sub collect_user_copy_alerts {
+    my $self = shift;
+    my $e = $self->editor;
+
+    if($self->copy) {
+        my $alerts = $e->search_asset_copy_alert([
+            {copy => $self->copy->id, ack_time => undef},
+            {flesh => 1, flesh_fields => { aca => [ qw/ alert_type / ] }}
+        ]);
+        if (ref $alerts eq "ARRAY") {
+            $logger->info("circulator: found " . scalar(@$alerts) . " alerts for copy " .
+                $self->copy->id);
+            $self->user_copy_alerts($alerts);
+        }
+    }
+}
+
+sub filter_user_copy_alerts {
+    my $self = shift;
+
+    my $e = $self->editor;
+
+    if(my $alerts = $self->user_copy_alerts) {
+
+        my $suppress_orgs = $U->get_org_full_path($self->circ_lib);
+        my $suppressions = $e->search_actor_copy_alert_suppress(
+            {org => $suppress_orgs}
+        );
+
+        my @final_alerts;
+        foreach my $a (@$alerts) {
+            # filter on event type
+            if (defined $a->alert_type) {
+                next if ($a->alert_type->event eq 'CHECKIN' && !$self->is_checkin && !$self->is_renewal);
+                next if ($a->alert_type->event eq 'CHECKOUT' && !$self->is_checkout && !$self->is_renewal);
+                next if (defined $a->alert_type->in_renew && $U->is_true($a->alert_type->in_renew) && !$self->is_renewal);
+                next if (defined $a->alert_type->in_renew && !$U->is_true($a->alert_type->in_renew) && $self->is_renewal);
+            }
+
+            # filter on suppression
+            next if (grep { $a->alert_type->id == $_->alert_type} @$suppressions);
+
+            # filter on "only at circ lib"
+            if (defined $a->alert_type->at_circ) {
+                my $copy_circ_lib = (ref $self->copy->circ_lib) ?
+                    $self->copy->circ_lib->id : $self->copy->circ_lib;
+                my $orgs = $U->get_org_descendants($copy_circ_lib);
+
+                if ($U->is_true($a->alert_type->invert_location)) {
+                    next if (grep {$_ == $self->circ_lib} @$orgs);
+                } else {
+                    next unless (grep {$_ == $self->circ_lib} @$orgs);
+                }
+            }
+
+            # filter on "only at owning lib"
+            if (defined $a->alert_type->at_owning) {
+                my $copy_owning_lib = (ref $self->volume->owning_lib) ?
+                    $self->volume->owning_lib->id : $self->volume->owning_lib;
+                my $orgs = $U->get_org_descendants($copy_owning_lib);
+
+                if ($U->is_true($a->alert_type->invert_location)) {
+                    next if (grep {$_ == $self->circ_lib} @$orgs);
+                } else {
+                    next unless (grep {$_ == $self->circ_lib} @$orgs);
+                }
+            }
+
+            $a->alert_type->next_status([$U->unique_unnested_numbers($a->alert_type->next_status)]);
+
+            push @final_alerts, $a;
+        }
+
+        $self->user_copy_alerts(\@final_alerts);
+    }
+}
+
+sub generate_system_copy_alerts {
+    my $self = shift;
+    return unless($self->copy);
+
+    # don't create system copy alerts if the copy
+    # is in a normal state; we're assuming that there's
+    # never a need to generate a popup for each and every
+    # checkin or checkout of normal items. If this assumption
+    # proves false, then we'll need to add a way to explicitly specify
+    # that a copy alert type should never generate a system copy alert
+    return if $self->copy_state eq 'NORMAL';
+
+    my $e = $self->editor;
+
+    my $suppress_orgs = $U->get_org_full_path($self->circ_lib);
+    my $suppressions = $e->search_actor_copy_alert_suppress(
+        {org => $suppress_orgs}
+    );
+
+    # events we care about ...
+    my $event = [];
+    push(@$event, 'CHECKIN') if $self->is_checkin;
+    push(@$event, 'CHECKOUT') if $self->is_checkout;
+    return unless scalar(@$event);
+
+    my $alert_orgs = $U->get_org_ancestors($self->circ_lib);
+    my $alert_types = $e->search_config_copy_alert_type({
+        active    => 't',
+        scope_org => $alert_orgs,
+        event     => $event,
+        state => $self->copy_state,
+        '-or' => [ { in_renew => $self->is_renewal }, { in_renew => undef } ],
+    });
+
+    my @final_types;
+    foreach my $a (@$alert_types) {
+        # filter on "only at circ lib"
+        if (defined $a->at_circ) {
+            my $copy_circ_lib = (ref $self->copy->circ_lib) ?
+                $self->copy->circ_lib->id : $self->copy->circ_lib;
+            my $orgs = $U->get_org_descendants($copy_circ_lib);
+
+            if ($U->is_true($a->invert_location)) {
+                next if (grep {$_ == $self->circ_lib} @$orgs);
+            } else {
+                next unless (grep {$_ == $self->circ_lib} @$orgs);
+            }
+        }
+
+        # filter on "only at owning lib"
+        if (defined $a->at_owning) {
+            my $copy_owning_lib = (ref $self->volume->owning_lib) ?
+                $self->volume->owning_lib->id : $self->volume->owning_lib;
+            my $orgs = $U->get_org_descendants($copy_owning_lib);
+
+            if ($U->is_true($a->invert_location)) {
+                next if (grep {$_ == $self->circ_lib} @$orgs);
+            } else {
+                next unless (grep {$_ == $self->circ_lib} @$orgs);
+            }
+        }
+
+        push @final_types, $a;
+    }
+
+    if (@final_types) {
+        $logger->info("circulator: found " . scalar(@final_types) . " system alert types for copy" .
+            $self->copy->id);
+    }
+
+    my @alerts;
+    
+    # keep track of conditions corresponding to suppressed
+    # system alerts, as these may be used to overridee
+    # certain old-style-events
+    my %auto_override_conditions = ();
+    foreach my $t (@final_types) {
+        if ($t->next_status) {
+            if (grep { $t->id == $_->alert_type } @$suppressions) {
+                $t->next_status([]);
+            } else {
+                $t->next_status([$U->unique_unnested_numbers($t->next_status)]);
+            }
+        }
+
+        my $alert = new Fieldmapper::asset::copy_alert ();
+        $alert->alert_type($t->id);
+        $alert->copy($self->copy->id);
+        $alert->temp(1);
+        $alert->create_staff($e->requestor->id);
+        $alert->create_time('now');
+        $alert->ack_staff($e->requestor->id);
+        $alert->ack_time('now');
+
+        $alert = $e->create_asset_copy_alert($alert);
+
+        next unless $alert;
+
+        $alert->alert_type($t->clone);
+
+        push(@{$self->next_copy_status}, @{$t->next_status}) if ($t->next_status);
+        if (grep {$_->alert_type == $t->id} @$suppressions) {
+            $auto_override_conditions{join("\t", $t->state, $t->event)} = 1;
+        }
+        push(@alerts, $alert) unless (grep {$_->alert_type == $t->id} @$suppressions);
+    }
+
+    $self->system_copy_alerts(\@alerts);
+    $self->overrides_per_copy_alerts(\%auto_override_conditions);
+}
+
+sub add_overrides_from_system_copy_alerts {
+    my $self = shift;
+    my $e = $self->editor;
+
+    foreach my $condition (keys %{$self->overrides_per_copy_alerts()}) {
+        if (exists $COPY_ALERT_OVERRIDES{$condition}) {
+            $self->override(1);
+            push @{$self->override_args->{events}}, @{ $COPY_ALERT_OVERRIDES{$condition} };
+            # special handling for long-overdue and lost checkouts
+            if (grep { $_ eq 'OPEN_CIRCULATION_EXISTS' } @{ $COPY_ALERT_OVERRIDES{$condition} }) {
+                my $state = (split /\t/, $condition, -1)[0];
+                my $setting;
+                if ($state eq 'LOST' or $state eq 'LOST_AND_PAID') {
+                    $setting = 'circ.copy_alerts.forgive_fines_on_lost_checkin';
+                } elsif ($state eq 'LONGOVERDUE') {
+                    $setting = 'circ.copy_alerts.forgive_fines_on_long_overdue_checkin';
+                } else {
+                    next;
+                }
+                my $forgive = $U->ou_ancestor_setting_value(
+                    $self->circ_lib, $setting, $e
+                );
+                if ($U->is_true($forgive)) {
+                    $self->void_overdues(1);
+                }
+                $self->noop(1); # do not attempt transits, just check it in
+                $self->do_checkin();
+            }
+        }
+    }
+}
+
 sub mk_env {
     my $self = shift;
     my $e = $self->editor;
+
+    $self->next_copy_status([]) unless (defined $self->next_copy_status);
+    $self->overrides_per_copy_alerts({}) unless (defined $self->overrides_per_copy_alerts);
 
     # --------------------------------------------------------------------------
     # Grab the fleshed copy
@@ -676,6 +916,7 @@ sub mk_env {
                         }
                     },
                     "where" => {
+                        deleted => 'f',
                         "+bresv" => {
                             "id" => (ref $self->reservation) ?
                                 $self->reservation->id : $self->reservation
@@ -692,6 +933,19 @@ sub mk_env {
     
         if($copy) {
             $self->save_trimmed_copy($copy);
+
+            # alerts!
+            $self->copy_state(
+                $e->json_query(
+                    {from => ['asset.copy_state', $copy->id]}
+                )->[0]{'asset.copy_state'}
+            );
+
+            $self->generate_system_copy_alerts;
+            $self->add_overrides_from_system_copy_alerts;
+            $self->collect_user_copy_alerts;
+            $self->filter_user_copy_alerts;
+
         } else {
             # We can't renew if there is no copy
             return $self->bail_on_events(OpenILS::Event->new('ASSET_COPY_NOT_FOUND'))
@@ -1207,6 +1461,21 @@ sub run_copy_permit_scripts {
 
 sub check_copy_alert {
     my $self = shift;
+
+    if ($self->new_copy_alerts) {
+        my @alerts;
+        push @alerts, @{$self->user_copy_alerts} # we have preexisting alerts 
+            if ($self->user_copy_alerts && @{$self->user_copy_alerts});
+
+        push @alerts, @{$self->system_copy_alerts} # we have new dynamic alerts 
+            if ($self->system_copy_alerts && @{$self->system_copy_alerts});
+
+        if (@alerts) {
+            $self->bail_out(1) if (!$self->override);
+            return OpenILS::Event->new( 'COPY_ALERT_MESSAGE', payload => \@alerts);
+        }
+    }
+
     return undef if $self->is_renewal;
     return OpenILS::Event->new(
         'COPY_ALERT_MESSAGE', payload => $self->copy->alert_message)
@@ -2640,7 +2909,8 @@ sub do_checkin {
             $U->ou_ancestor_setting_value($self->circ->circ_lib, 'circ.claim_never_checked_out.mark_missing')) {
 
         # the item was not supposed to be checked out to the user and should now be marked as missing
-        $self->copy->status(OILS_COPY_STATUS_MISSING);
+        my $next_status = $self->next_copy_status->[0] || OILS_COPY_STATUS_MISSING;
+        $self->copy->status($next_status);
         $self->update_copy;
 
     } else {
@@ -2716,13 +2986,15 @@ sub reshelve_copy {
 
    my $stat = $U->copy_status($copy->status)->id;
 
+   my $next_status = $self->next_copy_status->[0] || OILS_COPY_STATUS_RESHELVING;
+
    if($force || (
       $stat != OILS_COPY_STATUS_ON_HOLDS_SHELF and
       $stat != OILS_COPY_STATUS_CATALOGING and
       $stat != OILS_COPY_STATUS_IN_TRANSIT and
-      $stat != OILS_COPY_STATUS_RESHELVING  )) {
+      $stat != $next_status  )) {
 
-        $copy->status( OILS_COPY_STATUS_RESHELVING );
+        $copy->status( $next_status );
             $self->update_copy;
             $self->checkin_changed(1);
     }
@@ -3333,7 +3605,8 @@ sub checkin_handle_circ_start {
     } elsif ($circ_lib != $self->circ_lib and $stat == OILS_COPY_STATUS_MISSING) {
         $logger->info("circulator: not updating copy status on checkin because copy is missing");
     } else {
-        $self->copy->status($U->copy_status(OILS_COPY_STATUS_RESHELVING));
+        my $next_status = $self->next_copy_status->[0] || OILS_COPY_STATUS_RESHELVING;
+        $self->copy->status($U->copy_status($next_status));
         $self->update_copy;
     }
 
@@ -3521,7 +3794,8 @@ sub checkin_handle_lost_or_longoverdue {
         if ($immediately_available) {
             # item status does not need to be retained, so give it a
             # reshelving status as if it were a normal checkin
-            $self->copy->status($U->copy_status(OILS_COPY_STATUS_RESHELVING));
+            my $next_status = $self->next_copy_status->[0] || OILS_COPY_STATUS_RESHELVING;
+            $self->copy->status($U->copy_status($next_status));
             $self->update_copy;
         } else {
             $logger->info("circulator: leaving lost/longoverdue copy".
@@ -3530,7 +3804,8 @@ sub checkin_handle_lost_or_longoverdue {
     } else {
         # lost/longoverdue item is home and processed, treat like a normal 
         # checkin from this point on
-        $self->copy->status($U->copy_status(OILS_COPY_STATUS_RESHELVING));
+        my $next_status = $self->next_copy_status->[0] || OILS_COPY_STATUS_RESHELVING;
+        $self->copy->status($U->copy_status($next_status));
         $self->update_copy;
     }
 }
@@ -3571,7 +3846,8 @@ sub check_checkin_copy_status {
    my $status = $U->copy_status($copy->status)->id;
 
    return undef
-      if(   $status == OILS_COPY_STATUS_AVAILABLE   ||
+      if(   $self->new_copy_alerts ||
+            $status == OILS_COPY_STATUS_AVAILABLE   ||
             $status == OILS_COPY_STATUS_CHECKED_OUT ||
             $status == OILS_COPY_STATUS_IN_PROCESS  ||
             $status == OILS_COPY_STATUS_ON_HOLDS_SHELF  ||
