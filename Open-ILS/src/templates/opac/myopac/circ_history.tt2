@@ -58,11 +58,37 @@
     <div class="warning_box">[% l('There are no items in your circulation history.') %]</div>
     [% ELSE %]
 
+        <form method="post" id="circ-form"
+            onsubmit="return confirm('[% l("Are you sure you wish to delete the selected item(s)?") %]');">
+        <table cellpadding='0' cellspacing='0' class="item_list_padding">
+            <tr>
+                <td>
+                    <select name="action">
+                        <option value="delete">[% l('Delete Selected Titles') %]</option>
+                    </select>
+                </td>
+                <td style="padding-left:9px;">
+                    <input type="submit"
+                        value="[% l('Go') %]"
+                        alt="[% l('Go') %]" title="[% l('Go') %]"
+                        class="opac-button" />
+                </td>
+                <!--
+                <td style="padding-left:5px;">
+                    <a href="#"><img alt="[% l('Deleting Help') %]"
+                        src="[% ctx.media_prefix %]/images/question-mark.png" /></a>
+                </td>
+                -->
+            </tr>
+        </table>
     <div id='checked_main'>
         <table id="acct_checked_main_header"
             title="[% l('History of Items Checked Out') %]">
             <thead>
                 <tr>
+                    <th align="center">
+                        <input type="checkbox" onclick="var inputs=document.getElementsByTagName('input'); for (i = 0; i < inputs.length; i++) { if (inputs[i].name == 'circ_id' && !inputs[i].disabled) inputs[i].checked = this.checked;}"/>
+                    </th>
                     <th>[% sort_head("sort_title", l("Title")) %]</th>
                     <th>[% sort_head("author", l("Author")) %]</th>
                     <th>[% sort_head("checkout", l("Checkout Date")) %]</th>
@@ -136,6 +162,9 @@
 
                 FOR circ IN circ_items; %]
                     <tr>
+			<td align="center" style="text-align:center;">
+				<input type="checkbox" name="circ_id" value="[% circ.circ.id %]" />
+			</td>
                         <td>
                             <a href="[% mkurl(ctx.opac_root _ '/record/' _ 
                                 circ.circ.target_copy.call_number.record.id, {}, 1) %]"
@@ -164,6 +193,7 @@
                         </td>
                         <td>[% circ.circ.target_copy.barcode | html %]</td>
                         <td>[% circ.circ.target_copy.call_number.label | html %]</td>
+        </form>
                     </tr>
                 [% END %]
             </tbody>

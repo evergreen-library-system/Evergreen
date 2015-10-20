@@ -1585,6 +1585,10 @@ sub load_myopac_circ_history {
     my $ctx = $self->ctx;
     my $limit = $self->cgi->param('limit') || 15;
     my $offset = $self->cgi->param('offset') || 0;
+    my $action = $self->cgi->param('action') || '';
+
+    my $circ_handle_result;
+    $circ_handle_result = $self->handle_circ_update($action) if $action;
 
     $ctx->{circ_history_limit} = $limit;
     $ctx->{circ_history_offset} = $offset;
@@ -1645,6 +1649,34 @@ sub fetch_user_circ_history {
     }
 
     return \@circs;
+}
+
+sub handle_circ_update {
+    my $self = shift;
+    my $action = shift;
+    my $circ_ids = shift;
+    my $e = $self->editor;
+    my $url;
+
+    my @circ_ids = ($circ_ids) ? @$circ_ids : $self->cgi->param('circ_id'); # for non-_all actions
+
+    my $cstore_ses = OpenSRF::AppSession->create('open-ils.cstore');
+    $cstore_ses->connect();
+    $cstore_ses->request('open-ils.cstore.transaction.begin')->gather(1);
+
+    if($action =~ /delete/) {
+        for my $circ_id (@circ_ids) {
+            my $circ = $cstore_ses->request(
+                'open-ils.cstore.direct.action.circulation.retrieve', $circ_id)->gather(1);
+            $circ->hide_from_usr_history(1);
+            my $resp = $cstore_ses->request(
+                'open-ils.cstore.direct.action.circulation.update', $circ)->gather(1);
+        }
+    }
+
+    $cstore_ses->request('open-ils.cstore.transaction.commit')->gather(1);
+    $cstore_ses->disconnect();
+    return undef;
 }
 
 # TODO: action.usr_visible_holds does not return cancelled holds.  Should it?
