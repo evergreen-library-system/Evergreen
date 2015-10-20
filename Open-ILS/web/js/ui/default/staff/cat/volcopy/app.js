@@ -106,7 +106,7 @@ function(egCore , $q) {
     service.get_prefixes = function(org) {
         return egCore.pcrud.search('acnp',
             {owning_lib : egCore.org.fullPath(org, true)},
-            null, {atomic : true}
+            {order_by : { acnp : 'label_sortkey' }}, {atomic : true}
         );
 
     };
@@ -133,7 +133,7 @@ function(egCore , $q) {
     service.get_suffixes = function(org) {
         return egCore.pcrud.search('acns',
             {owning_lib : egCore.org.fullPath(org, true)},
-            null, {atomic : true}
+            {order_by : { acns : 'label_sortkey' }}, {atomic : true}
         );
 
     };
