@@ -243,6 +243,13 @@ function($scope , $q , $location , $routeParams , $timeout , $window , egCore , 
     $scope.tab = $routeParams.tab || 'summary';
     $scope.context.page = 'detail';
 
+    $scope.edit = false;
+    if ($scope.tab == 'edit') {
+        $scope.tab = 'summary';
+        $scope.edit = true;
+    }
+
+
     // use the cached record info
     if (itemSvc.copy)
         $scope.summaryRecord = itemSvc.copy.call_number().record();
@@ -563,6 +570,28 @@ function($scope , $q , $location , $routeParams , $timeout , $window , egCore , 
                 $scope.triggered_events_url = url;
                 $scope.funcs = {};
         }
+
+        if ($scope.edit) {
+            egCore.net.request(
+                'open-ils.actor',
+                'open-ils.actor.anon_cache.set_value',
+                null, 'edit-these-copies', {
+                    record_id: $scope.recordId,
+                    copies: [copyId],
+                    hide_vols : true,
+                    hide_copies : false
+                }
+            ).then(function(key) {
+                if (key) {
+                    var url = egCore.env.basePath + 'cat/volcopy/' + key;
+                    $window.location.href = url;
+                } else {
+                    alert('Could not create anonymous cache key!');
+                }
+            });
+        }
+
+        return;
     }
 
     $scope.context.toggleDisplay = function() {
