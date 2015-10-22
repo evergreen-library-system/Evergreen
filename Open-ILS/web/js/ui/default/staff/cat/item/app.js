@@ -242,6 +242,7 @@ function($scope , $q , $location , $routeParams , $timeout , $window , egCore , 
     var copyId = $routeParams.id;
     $scope.tab = $routeParams.tab || 'summary';
     $scope.context.page = 'detail';
+    $scope.summaryRecord = null;
 
     $scope.edit = false;
     if ($scope.tab == 'edit') {
@@ -252,7 +253,7 @@ function($scope , $q , $location , $routeParams , $timeout , $window , egCore , 
 
     // use the cached record info
     if (itemSvc.copy)
-        $scope.summaryRecord = itemSvc.copy.call_number().record();
+        $scope.recordId = itemSvc.copy.call_number().record().id();
 
     function loadCopy(barcode) {
         $scope.context.itemNotFound = false;
@@ -289,7 +290,6 @@ function($scope , $q , $location , $routeParams , $timeout , $window , egCore , 
 
             $scope.copy = copy;
             $scope.recordId = copy.call_number().record().id();
-            $scope.summaryRecord = itemSvc.copy.call_number().record();
             $scope.args.barcode = '';
 
             // locally flesh org units

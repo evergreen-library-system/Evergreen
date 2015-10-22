@@ -1,4 +1,4 @@
-<eg-record-summary record="summaryRecord"></eg-record-summary>
+<eg-record-summary record-id="recordId" record="summaryRecord"></eg-record-summary>
 
 <!-- tabbed copy data view -->
 
