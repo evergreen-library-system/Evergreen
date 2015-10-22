@@ -102,7 +102,7 @@
     </div>
 
     <div class="btn-group" dropdown is-open="gridRowCountIsOpen" ng-show="showPagination">
-      <button type="button" title="[% ('Select Row Count') %]"
+      <button type="button" title="[% l('Select Row Count') %]"
         class="btn btn-default dropdown-toggle">
         [% l('Rows [_1]', '{{limit()}}') %]
         <span class="caret"></span>
@@ -113,11 +113,14 @@
             {{t}}
           </a>
         </li>
+        <li ng-if="allowAll" >
+          <a href ng-click='offset(0);limit(10000);collect()'>[% l('All') %]</a>
+        </li>
       </ul>
     </div>
 
     <div class="btn-group" dropdown is-open="gridPageSelectIsOpen" ng-show="showPagination">
-      <button type="button" title="[% ('Select Page') %]"
+      <button type="button" title="[% l('Select Page') %]"
         class="btn btn-default dropdown-toggle">
         [% l('Page [_1]', '{{page()}}') %]
         <span class="caret"></span>

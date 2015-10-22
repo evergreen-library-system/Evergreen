@@ -38,10 +38,11 @@ angular.module('egGridMod',
             // comma-separated list of supported or disabled grid features
             // supported features:
             //  startSelected : init the grid with all rows selected by default
+            //  allowAll : add an "All" option to row count (really 10000)
             //  -menu : don't show any menu buttons (or use space for them)
             //  -picker : don't show the column picker
             //  -pagination : don't show any pagination elements, and set
-            //                the limit to 1000
+            //                the limit to 10000
             //  -actions : don't show the actions dropdown
             //  -index : don't show the row index column (can't use "index"
             //           as the idField in this case)
@@ -132,6 +133,7 @@ angular.module('egGridMod',
 
                 $scope.showIndex = (features.indexOf('-index') == -1);
 
+                $scope.allowAll = (features.indexOf('allowAll') > -1);
                 $scope.startSelected = $scope.selectAll = (features.indexOf('startSelected') > -1);
                 $scope.showActions = (features.indexOf('-actions') == -1);
                 $scope.showPagination = (features.indexOf('-pagination') == -1);

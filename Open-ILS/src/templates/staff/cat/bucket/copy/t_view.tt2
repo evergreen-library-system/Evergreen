@@ -1,6 +1,6 @@
 <eg-grid
   ng-hide="forbidden"
-  features="-display"
+  features="allowAll,-display"
   id-field="id"
   idl-class="acp"
   auto-fields="true"
