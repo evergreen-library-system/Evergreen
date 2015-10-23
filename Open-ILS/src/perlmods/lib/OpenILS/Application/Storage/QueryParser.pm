@@ -951,8 +951,14 @@ sub decompose {
 
     my $remainder = '';
 
+    my $loops = 0;
     while (!$remainder) {
-        warn '  'x$recursing."Start of the loop. last_type: $last_type, joiner: ".$struct->joiner.", struct: $struct\n" if $self->debug;
+        $loops++;
+        warn '  'x$recursing."Start of the loop. loop: $loops last_type: $last_type, joiner: ".$struct->joiner.", struct: $struct\n" if $self->debug;
+        if ($loops > 1000) { # the most magical of numbers...
+            warn '  'x$recursing." got to $loops loops; aborting\n" if $self->debug;
+            last;
+        }
         if ($last_type eq 'FEND' and $fstart and $fstart !=  $struct) { # fall back further
             $remainder = $_;
             last;
