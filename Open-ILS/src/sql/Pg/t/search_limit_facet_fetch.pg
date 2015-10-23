@@ -1,0 +1,85 @@
+BEGIN;
+
+SELECT plan(4);
+
+INSERT INTO biblio.record_entry (id, last_xact_id, marc)
+VALUES (999999998, 'pgtap', '<record    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"    xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd"    xmlns="http://www.loc.gov/MARC21/slim">
+  <leader>00531nam a2200157 a 4500</leader>
+  <controlfield tag="005">20080729170300.0</controlfield>
+  <controlfield tag="008">      t19981999enka              0 eng  </controlfield>
+  <datafield tag="245" ind1="1" ind2="4">
+    <subfield code="a">test-value</subfield>
+  </datafield>
+  <datafield tag="650" ind1=" " ind2=" ">
+    <subfield code="a">subject 1</subfield>
+  </datafield>
+  <datafield tag="650" ind1=" " ind2=" ">
+    <subfield code="a">subject 2</subfield>
+  </datafield>
+  <datafield tag="650" ind1=" " ind2=" ">
+    <subfield code="a">subject 3</subfield>
+  </datafield>
+  <datafield tag="650" ind1=" " ind2=" ">
+    <subfield code="a">subject 4</subfield>
+  </datafield>
+  <datafield tag="650" ind1=" " ind2=" ">
+    <subfield code="a">subject 5</subfield>
+  </datafield>
+  <datafield tag="650" ind1=" " ind2=" ">
+    <subfield code="a">subject 6</subfield>
+  </datafield>
+  <datafield tag="650" ind1=" " ind2=" ">
+    <subfield code="a">subject 7</subfield>
+  </datafield>
+  <datafield tag="650" ind1=" " ind2=" ">
+    <subfield code="a">subject 8</subfield>
+  </datafield>
+  <datafield tag="650" ind1=" " ind2=" ">
+    <subfield code="a">subject 9</subfield>
+  </datafield>
+  <datafield tag="650" ind1=" " ind2=" ">
+    <subfield code="a">subject 10</subfield>
+  </datafield>
+</record>');
+
+-- These tests assume that one subject facet field is defined
+
+SELECT is(
+    (
+        SELECT COUNT(*) FROM search.facets_for_record_set('{}', '{999999998}')
+    ),
+    10::BIGINT,
+    '10 subject facets retrieved'
+);
+
+UPDATE config.global_flag SET value = '5' WHERE name = 'search.max_facets_per_field';
+SELECT is(
+    (
+        SELECT COUNT(*) FROM search.facets_for_record_set('{}', '{999999998}')
+    ),
+    5::BIGINT,
+    '5 subject facets retrieved after setting limit'
+);
+
+SELECT is(
+    (
+        SELECT COUNT(*) FROM (
+            SELECT search.facets_for_metarecord_set('{}', array_accum(metarecord))
+            FROM metabib.metarecord_source_map
+            WHERE source = 999999998
+        ) x
+    ),
+    5::BIGINT,
+    'Works for metarecord sets too'
+);
+
+SELECT is(
+    (
+        SELECT COUNT(*) FROM search.facets_for_record_set('{subject}', '{999999998}')
+    ),
+    0::BIGINT,
+    'Zero subject facets retrieved after excluding subject facets'
+);
+
+SELECT * FROM finish();
+ROLLBACK;
