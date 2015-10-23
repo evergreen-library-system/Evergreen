@@ -60,6 +60,18 @@ is($QParser->superpage(), 1, 'Superpage stays set');
 is($QParser->superpage_size(1000), 1000, 'Superpage size setting works');
 is($QParser->superpage_size(), 1000, 'Superpage size stays set');
 
+init_qp();
+eval {
+    local $SIG{ALRM} = sub { die "timed out!\n" };
+    alarm 1;
+    $QParser->parse('-"unclosed phrase');
+};
+if ($@) {
+    fail('parsing modified unclosed phrase query timed out');
+} else {
+    pass('successfully parsed modified unclosed phrase query');
+}
+
 # It's unfortunate not to be able to use the following tests immediately, but
 # they reflect assumptions that need to be updated in light of new qp_fix code.
 # Also,, canonicalization may not preserve insignificant whitespace nor the

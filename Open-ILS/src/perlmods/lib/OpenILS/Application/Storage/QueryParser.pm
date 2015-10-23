@@ -1159,7 +1159,7 @@ sub decompose {
             $_ = $';
 
             $last_type = 'CLASS';
-        } elsif (/^\s*($$r{required_re}|$$r{disallowed_re}|$$r{negated_re})?"([^"]+)"/) { # phrase, always anded
+        } elsif (/^\s*($$r{required_re}|$$r{disallowed_re}|$$r{negated_re})?"([^"]+)(?:"|$)/) { # phrase, always anded
             warn '  'x$recursing.'Encountered' . ($1 ? " ['$1' modified]" : '') . " phrase: $2\n" if $self->debug;
 
             my $req_ness = $1 || '';
