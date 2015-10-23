@@ -1,0 +1,14 @@
+Limit number of facets retrieved during search
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Catalog search now sets a limit on the number of facets retrieved
+per defined facet field. Setting a limit is useful so that
+`open-ils.cstore backends don't end up needlessly consuming
+memory when fetching facets for a large result set; if a broad
+search retrieves over 10,000 author facets (say), even the most
+persistant user is not going to actually look at all of them. Fetching
+fewer facets can also slightly speed up generation of search results.
+
+The limit is controlled by a new global flag, `search.max_facets_per_field`,
+whose label is "Search: maximum number of facet values to retrieve for
+each facet field".  The default limit value is 1,000, but lower values
+(e.g., 100) are perhaps even better for most catalogs.
