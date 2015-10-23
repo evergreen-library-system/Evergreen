@@ -13,8 +13,8 @@
 
   <eg-grid-field label="[% l('Title') %]"       
     path="call_number.record.simple_record.title" visible>
-    <a target="_self" href="[% ctx.base_path %]/staff/cat/catalog/record/{{item['call_number.record.id']}}">
-      {{item['call_number.record.simple_record.title']}}
+    <a target="_blank" href="[% ctx.base_path %]/staff/cat/catalog/record/{{item['call_number.record.id']}}">
+      {{item['call_number.record.simple_record.title']}} <span ng-show="item['call_number.record.id']" class="glyphicon glyphicon-new-window"/>
     </a>
   </eg-grid-field>
 </eg-grid>
