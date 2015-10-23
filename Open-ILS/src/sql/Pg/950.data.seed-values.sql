@@ -14683,6 +14683,19 @@ INSERT INTO config.global_flag (name, label, value, enabled) VALUES (
     TRUE
 );
 
+INSERT INTO config.global_flag (name, value, label, enabled)
+    VALUES (
+        'search.max_facets_per_field',
+        '1000',
+        oils_i18n_gettext(
+            'search.max_facets_per_field',
+            'Search: maximum number of facet values to retrieve for each facet field',
+            'cgf', 
+            'label'
+        ),
+        TRUE
+    );
+
 INSERT INTO config.org_unit_setting_type
     (name, grp, label, description, datatype)
     VALUES

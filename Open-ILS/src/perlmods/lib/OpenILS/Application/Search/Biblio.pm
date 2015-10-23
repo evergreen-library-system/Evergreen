@@ -1565,42 +1565,14 @@ sub cache_facets {
 
     return undef unless (@$results);
 
-    # The query we're constructing
-    #
-    # select  mfae.field as id,
-    #         mfae.value,
-    #         count(distinct mmrsm.appropriate-id-field )
-    #   from  metabib.facet_entry mfae
-    #         join metabib.metarecord_sourc_map mmrsm on (mfae.source = mmrsm.source)
-    #   where mmrsm.appropriate-id-field in IDLIST
-    #   group by 1,2;
-
-    my $count_field = $metabib ? 'metarecord' : 'source';
+    my $facets_function = $metabib ? 'search.facets_for_metarecord_set'
+                                   : 'search.facets_for_record_set';
+    my $results_str = '{' . join(',', @$results) . '}';
+    my $ignore_str = ref($ignore) ? '{' . join(',', @$ignore) . '}'
+                                  : '{}';
     my $query = {   
-        select  => {
-            mfae => [ { column => 'field', alias => 'id'}, 'value' ],
-            mmrsm => [{
-                transform => 'count',
-                distinct => 1,
-                column => $count_field,
-                alias => 'count',
-                aggregate => 1
-            }]
-        },
-        from    => {
-            mfae => {
-                mmrsm => { field => 'source', fkey => 'source' },
-                cmf   => { field => 'id', fkey => 'field' }
-            }
-        },
-        where   => {
-            '+mmrsm' => { $count_field => $results },
-            '+cmf'   => { facet_field => 't' }
-        }
+        from => [ $facets_function, $ignore_str, $results_str ]
     };
-
-    $query->{where}->{'+cmf'}->{field_class} = {'not in' => $ignore}
-        if ref($ignore) and @$ignore > 0;
 
     my $facets = OpenILS::Utils::CStoreEditor->new->json_query($query, {substream => 1});
 
