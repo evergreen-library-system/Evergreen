@@ -39,6 +39,8 @@
       label="[% l('Request Items') %]"></eg-grid-action>
     <eg-grid-action handler="attach_to_peer_bib"
       label="[% l('Link as Conjoined to Previously Marked Bib Record') %]"></eg-grid-action>
+    <eg-grid-action handler="markLibAsVolTarget"
+      label="[% l('Choose Library for Volume Transfer Destination') %]"></eg-grid-action>
 
     <eg-grid-action handler="selectedHoldingsItemStatus" group="[% l('Show') %]"
       label="[% l('Item Status (list)') %]"></eg-grid-action>
@@ -53,10 +55,8 @@
       label="[% l('Item as Damaged') %]"></eg-grid-action>
     <eg-grid-action handler="selectedHoldingsMissing" group="[% l('Mark') %]"
       label="[% l('Item as Missing') %]"></eg-grid-action>
-    <eg-grid-action handler="markLibAsVolTarget" group="[% l('Mark') %]"
-      label="[% l('Library as Volume Transfer Destination') %]"></eg-grid-action>
     <eg-grid-action handler="markLibFromSelectedAsVolTarget" group="[% l('Mark') %]"
-      label="[% l('Library from Selection as Volume Transfer Destination') %]"></eg-grid-action>
+      label="[% l('Library as Volume Transfer Destination') %]"></eg-grid-action>
     <eg-grid-action handler="markVolAsItemTarget" group="[% l('Mark') %]" disabled="vols_not_shown"
       label="[% l('Volume as Item Transfer Destination') %]"></eg-grid-action>
 
