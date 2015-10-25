@@ -75,6 +75,10 @@
         focus-me="focus_usrname"
         ng-blur="usrname_changed(patron.usrname)"
         class="form-control" ng-model="[% model %]"/>
+    [% ELSIF field == 'day_phone' %]
+      <input type="text" 
+        ng-blur="day_phone_changed(patron.day_phone)"
+        class="form-control" ng-model="[% model %]"/>
     [% ELSE %]
       <input type="[% input_type %]" 
         class="form-control" ng-model="[% model %]"/>
@@ -88,7 +92,7 @@
 
     [% IF field == 'barcode' %]
 
-      <button class="btn btn-default"
+      <button class="btn btn-default" ng-show="!patron.isnew"
         ng-click="replace_card()">[% l('Replace Barcode') %]</button>
       <button class="btn btn-default" 
         ng-click="cards_dialog()">[% l('See All') %]</button>
@@ -103,7 +107,7 @@
       <!-- invalidate buttons -->
 
       [% IF field.match('phone') OR field.match('email') %]
-        <button ng-show="patron.[% field %]" class="btn btn-default"
+        <button ng-show="patron.[% field %] && !patron.isnew" class="btn btn-default"
           ng-click="">[% l('Invalidate') %]</button>
       [% END %]
 

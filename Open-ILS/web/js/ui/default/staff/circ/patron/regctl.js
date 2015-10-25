@@ -320,7 +320,7 @@ angular.module('egCoreMod')
             address_type : egCore.strings.REG_ADDR_TYPE,
             _is_mailing : true,
             _is_billing : true,
-            within_city_limits : true
+            within_city_limits : false
         };
 
         var card = {
@@ -657,6 +657,12 @@ function PatronRegCtrl($scope, $routeParams,
         new_card._primary = 'on';
         $scope.patron.card = new_card;
         $scope.patron.cards.push(new_card);
+    }
+
+    $scope.day_phone_changed = function(phone) {
+        if (phone && $scope.org_settings['patron.password.use_phone']) {
+           $scope.patron.passwd = phone.substr(-4);
+        }
     }
 
     $scope.barcode_changed = function(bc) {
