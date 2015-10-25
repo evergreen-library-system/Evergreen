@@ -372,9 +372,16 @@
   </div>
 </div>
 
+<div class="row reg-field-row" ng-repeat="type in opt_in_setting_types">
+  <div class="col-md-3 reg-field-label">
+    <label>{{type.label()}}</label>
+  </div>
+  <div class="col-md-3 reg-field-input">
+    <input type='checkbox' ng-model="user_settings[type.name()]"/>
+  </div>
+</div>
 
 <!-- addresses -->
-
 
 <div ng-repeat="addr in patron.addresses">
   <div class="alert alert-success row" role="alert">
@@ -459,20 +466,29 @@
   <div class="col-md-3 reg-field-label">
     <label>{{survey.name()}}</label>
   </div>
-  <div class="col-md-3 reg-field-input">
-    <div class="btn-group" dropdown>
-      <button type="button" class="btn btn-default dropdown-toggle">
-        <span style="padding-right: 5px;"></span>
-        <span class="caret"></span>
-      </button>
-      <ul class="dropdown-menu">
-        <li ng-repeat="question in survey.questions()">
-          <a href ng-click=""> {{question.question()}} </a>
-        </li>
-      </ul>
+  <div class="col-md-6">
+    <div class="row" ng-repeat="question in survey.questions()" 
+      style="margin-bottom: 10px;">
+      <div class="col-md-6">{{question.question()}}</div>
+      <div class="col-md-6">
+        <div class="btn-group" dropdown>
+          <button type="button" class="btn btn-default dropdown-toggle">
+            <span style="padding-right: 5px;">
+              {{survey_responses[question.id()].answer()}}
+            </span>
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+            <li ng-repeat="answer in question.answers()">
+              <a href ng-click="survey_responses[question.id()] = answer"> 
+                {{answer.answer()}} 
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
 </div>
-
 
 

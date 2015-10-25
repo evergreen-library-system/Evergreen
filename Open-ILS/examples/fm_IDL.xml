@@ -2298,7 +2298,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
                 <create permission="ADMIN_SURVEY">
                     <context link="survey" field="owner"/>
                 </create>
-                <retrieve/>
+                <retrieve permission="VIEW_USER">
+                    <context link="usr" field="home_ou"/>
+                </retrieve>
                 <update permission="ADMIN_SURVEY">
                     <context link="survey" field="owner"/>
                 </update>

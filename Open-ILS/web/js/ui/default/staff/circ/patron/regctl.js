@@ -5,12 +5,17 @@ angular.module('egCoreMod')
 .factory('patronRegSvc', ['$q', 'egCore', function($q, egCore) {
 
     var service = {
-        field_doc : {},              // config.idl_field_doc
-        profiles : [],               // permission groups
+        field_doc : {},            // config.idl_field_doc
+        profiles : [],             // permission groups
         sms_carriers : [],
-        user_settings : {},          // applied user settings
-        user_setting_types : {},     // config.usr_setting_type
-        virt_id : -1                 // virtual ID for new objects
+        user_settings : {},        // applied user settings
+        user_setting_types : {},   // config.usr_setting_type
+        opt_in_setting_types : {}, // config.usr_setting_type for event-def opt-in
+        survey_questions : {},
+        survey_answers : {},
+        survey_responses : {},     // survey.responses for loaded patron in progress
+        orig_survey_responses : {},// survey.responses for loaded patron
+        virt_id : -1               // virtual ID for new objects
     };
 
     // launch a series of parallel data retrieval calls
@@ -32,10 +37,39 @@ angular.module('egCoreMod')
 
         return egCore.pcrud.search('asv', 
             {owner : org_ids}, 
-            {flesh : 1, flesh_fields : {asv : ['questions']}}, 
+            {   flesh : 2, 
+                flesh_fields : {
+                    asv : ['questions'], 
+                    asvq : ['answers']
+                }
+            }, 
             {atomic : true}
         ).then(function(surveys) {
             service.surveys = surveys;
+
+            angular.forEach(surveys, function(survey) {
+                angular.forEach(survey.questions(), function(question) {
+                    service.survey_questions[question.id()] = question;
+                    angular.forEach(question.answers(), function(answer) {
+                        service.survey_answers[answer.id()] = answer;
+                    });
+                });
+            });
+
+            if (!service.patron_id) return;
+
+            // existing survey responses.
+            service.orig_survey_responses = [];
+
+            // when building responses in via the form, we track
+            // question ID's to answer objects.  these are later turned
+            // into survey_response's during save time.
+            return egCore.pcrud.search('asvr', {usr : service.patron_id})
+            .then(null, null, function(resp) {
+                service.orig_survey_responses.push(resp);
+                service.survey_responses[resp.question()] = 
+                    service.survey_answers[resp.answer()];
+            });
         });
     }
 
@@ -201,16 +235,18 @@ angular.module('egCoreMod')
     service.get_user_settings = function() {
         var org_ids = egCore.org.ancestors(egCore.auth.user().ws_ou(), true);
 
+        var static_types = [
+            'circ.holds_behind_desk', 
+            'circ.collections.exempt', 
+            'opac.hold_notify', 
+            'opac.default_phone', 
+            'opac.default_pickup_location', 
+            'opac.default_sms_carrier', 
+            'opac.default_sms_notify'];
+
         return egCore.pcrud.search('cust', {
             '-or' : [
-                {name : [ // common user settings
-                    'circ.holds_behind_desk', 
-                    'circ.collections.exempt', 
-                    'opac.hold_notify', 
-                    'opac.default_phone', 
-                    'opac.default_pickup_location', 
-                    'opac.default_sms_carrier', 
-                    'opac.default_sms_notify']}, 
+                {name : static_types}, // common user settings
                 {name : { // opt-in notification user settings
                     'in': {
                         select : {atevdef : ['opt_in_setting']}, 
@@ -225,6 +261,9 @@ angular.module('egCoreMod')
 
             angular.forEach(setting_types, function(stype) {
                 service.user_setting_types[stype.name()] = stype;
+                if (static_types.indexOf(stype.name()) == -1) {
+                    service.opt_in_setting_types[stype.name()] = stype;
+                }
             });
 
             if (service.patron_id) {
@@ -292,6 +331,7 @@ angular.module('egCoreMod')
         patron.profile = current.profile(); // pre-hash version
         patron.net_access_level = current.net_access_level();
         patron.ident_type = current.ident_type();
+        patron.survey_responses = service.orig_survey_responses;
 
         angular.forEach(
             ['juvenile', 'barred', 'active', 'master_account'],
@@ -386,11 +426,39 @@ angular.module('egCoreMod')
             addr.within_city_limits(addr.within_city_limits() ? 't' : 'f');
             if (addr_hash._is_mailing) patron.mailing_address(addr);
             if (addr_hash._is_billing) patron.billing_address(addr);
-
-            console.log('deleted? ' + addr.isdeleted());
         });
 
-        console.log(patron.addresses());
+        angular.forEach(service.survey_responses, function(answer) {
+
+            var existing = patron.survey_responses().filter(
+                function(resp) {
+                    return resp.question() == answer.question();
+                })[0];
+
+            if (existing) {
+                if (existing.answer() != answer.id()) {
+                    // answer changed
+                    existing.answer(answer.id());
+                    existing.answer_date('now');
+                    existing.ischanged(true);
+                    existing.isnew(false);
+                    patron.survey_responses().push(existing);
+                }
+            } else {
+                // first-time answering this question
+
+                // find the question object linked to this answer
+                var question = service.survey_questions[answer.question()];
+                var resp = new egCore.idl.asvr();
+                resp.isnew(true);
+                resp.survey(question.survey());
+                resp.question(question.id());
+                resp.answer(answer.id());
+                resp.usr(patron.id());
+                resp.answer_date('now');
+                patron.survey_responses().push(resp);
+            }
+        });
 
         if (!patron.isnew()) patron.ischanged(true);
 
@@ -476,10 +544,12 @@ function PatronRegCtrl($scope, $routeParams,
         $scope.ident_types = prs.ident_types;
         $scope.net_access_levels = prs.net_access_levels;
         $scope.user_setting_types = prs.user_setting_types;
+        $scope.opt_in_setting_types = prs.opt_in_setting_types;
         $scope.org_settings = prs.org_settings;
         $scope.sms_carriers = prs.sms_carriers;
         $scope.stat_cats = prs.stat_cats;
         $scope.surveys = prs.surveys;
+        $scope.survey_responses = prs.survey_responses;
 
         $scope.user_settings = prs.user_settings;
         // clone the user settings back into the patronRegSvc so
@@ -500,12 +570,18 @@ function PatronRegCtrl($scope, $routeParams,
             $scope.hold_notify_email = true;
 
             if (prs.org_settings['ui.patron.default_ident_type']) {
-                $scope.patron.ident_type = 
-                    prs.org_settings['ui.patron.default_ident_type'];
+                // $scope.patron needs this field to be an object
+                var id = prs.org_settings['ui.patron.default_ident_type'];
+                var ident_type = $scope.ident_types.filter(
+                    function(type) { return type.id() == id })[0];
+                $scope.patron.ident_type = ident_type;
             }
             if (prs.org_settings['ui.patron.default_inet_access_level']) {
-                $scope.patron.ident_type = 
-                    prs.org_settings['ui.patron.default_inet_access_level'];
+                // $scope.patron needs this field to be an object
+                var id = prs.org_settings['ui.patron.default_inet_access_level'];
+                var level = $scope.net_access_levels.filter(
+                    function(lvl) { return lvl.id() == id })[0];
+                $scope.patron.net_access_level = level;
             }
             if (prs.org_settings['ui.patron.default_country']) {
                 $scope.patron.addresses[0].country = 
