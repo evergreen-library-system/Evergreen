@@ -14,7 +14,7 @@ angular.module('egCoreMod')
         survey_questions : {},
         survey_answers : {},
         survey_responses : {},     // survey.responses for loaded patron in progress
-        orig_survey_responses : {},// survey.responses for loaded patron
+        stat_cat_entry_maps : {},   // cat.id to selected entry object map
         virt_id : -1               // virtual ID for new objects
     };
 
@@ -46,7 +46,6 @@ angular.module('egCoreMod')
             {atomic : true}
         ).then(function(surveys) {
             service.surveys = surveys;
-
             angular.forEach(surveys, function(survey) {
                 angular.forEach(survey.questions(), function(question) {
                     service.survey_questions[question.id()] = question;
@@ -54,21 +53,6 @@ angular.module('egCoreMod')
                         service.survey_answers[answer.id()] = answer;
                     });
                 });
-            });
-
-            if (!service.patron_id) return;
-
-            // existing survey responses.
-            service.orig_survey_responses = [];
-
-            // when building responses in via the form, we track
-            // question ID's to answer objects.  these are later turned
-            // into survey_response's during save time.
-            return egCore.pcrud.search('asvr', {usr : service.patron_id})
-            .then(null, null, function(resp) {
-                service.orig_survey_responses.push(resp);
-                service.survey_responses[resp.question()] = 
-                    service.survey_answers[resp.answer()];
             });
         });
     }
@@ -331,7 +315,6 @@ angular.module('egCoreMod')
         patron.profile = current.profile(); // pre-hash version
         patron.net_access_level = current.net_access_level();
         patron.ident_type = current.ident_type();
-        patron.survey_responses = service.orig_survey_responses;
 
         angular.forEach(
             ['juvenile', 'barred', 'active', 'master_account'],
@@ -349,6 +332,19 @@ angular.module('egCoreMod')
         angular.forEach(patron.addresses, 
             function(addr) { service.ingest_address(patron, addr) });
 
+        // toss entries for existing stat cat maps into our living 
+        // stat cat entry map, which is modified within the template.
+        angular.forEach(patron.stat_cat_entries, function(map) {
+            var entry;
+            angular.forEach(service.stat_cats, function(cat) {
+                angular.forEach(cat.entries(), function(ent) {
+                    if (ent.id() == map.stat_cat_entry)
+                        entry = ent;
+                });
+            });
+            service.stat_cat_entry_maps[map.stat_cat.id] = entry;
+        });
+
         return patron;
     }
 
@@ -360,7 +356,8 @@ angular.module('egCoreMod')
             address_type : egCore.strings.REG_ADDR_TYPE,
             _is_mailing : true,
             _is_billing : true,
-            within_city_limits : false
+            within_city_limits : false,
+            stat_cat_entries : []
         };
 
         var card = {
@@ -428,36 +425,57 @@ angular.module('egCoreMod')
             if (addr_hash._is_billing) patron.billing_address(addr);
         });
 
+        patron.survey_responses([]);
         angular.forEach(service.survey_responses, function(answer) {
+            var question = service.survey_questions[answer.question()];
+            var resp = new egCore.idl.asvr();
+            resp.isnew(true);
+            resp.survey(question.survey());
+            resp.question(question.id());
+            resp.answer(answer.id());
+            resp.usr(patron.id());
+            resp.answer_date('now');
+            patron.survey_responses().push(resp);
+        });
+        
+        // re-object-ify the patron stat cat entry maps
+        var maps = [];
+        angular.forEach(patron.stat_cat_entries(), function(entry) {
+            var e = egCore.idl.fromHash('actscecm', entry);
+            e.stat_cat(e.stat_cat().id);
+            maps.push(e);
+        });
+        patron.stat_cat_entries(maps);
 
-            var existing = patron.survey_responses().filter(
-                function(resp) {
-                    return resp.question() == answer.question();
-                })[0];
+        // service.stat_cat_entry_maps maps stats to entries
+        // patron.stat_cat_entries is an array of stat_cat_entry_usr_map's
+        angular.forEach(service.stat_cat_entry_maps, function(entry) {
 
-            if (existing) {
-                if (existing.answer() != answer.id()) {
-                    // answer changed
-                    existing.answer(answer.id());
-                    existing.answer_date('now');
-                    existing.ischanged(true);
-                    existing.isnew(false);
-                    patron.survey_responses().push(existing);
-                }
-            } else {
-                // first-time answering this question
+            // see if we already have a mapping for this entry
+            var existing = patron.stat_cat_entries().filter(function(e) {
+                return e.stat_cat() == entry.stat_cat();
+            })[0];
 
-                // find the question object linked to this answer
-                var question = service.survey_questions[answer.question()];
-                var resp = new egCore.idl.asvr();
-                resp.isnew(true);
-                resp.survey(question.survey());
-                resp.question(question.id());
-                resp.answer(answer.id());
-                resp.usr(patron.id());
-                resp.answer_date('now');
-                patron.survey_responses().push(resp);
+            if (existing) { // we have a mapping
+                // if the existing mapping matches the new one,
+                // there' nothing left to do
+                if (existing.stat_cat_entry() == entry.id()) return;
+
+                // mappings differ.  delete the old one and create
+                // a new one below.
+                existing.isdeleted(true);
             }
+
+            var newmap = new egCore.idl.actscecm();
+            newmap.target_usr(patron.id());
+            newmap.isnew(true);
+            newmap.stat_cat(entry.stat_cat());
+            newmap.stat_cat_entry(entry.id());
+            patron.stat_cat_entries().push(newmap);
+        });
+
+        angular.forEach(patron.stat_cat_entries(), function(entry) {
+            console.log(egCore.idl.toString(entry));
         });
 
         if (!patron.isnew()) patron.ischanged(true);
@@ -550,6 +568,7 @@ function PatronRegCtrl($scope, $routeParams,
         $scope.stat_cats = prs.stat_cats;
         $scope.surveys = prs.surveys;
         $scope.survey_responses = prs.survey_responses;
+        $scope.stat_cat_entry_maps = prs.stat_cat_entry_maps;
 
         $scope.user_settings = prs.user_settings;
         // clone the user settings back into the patronRegSvc so

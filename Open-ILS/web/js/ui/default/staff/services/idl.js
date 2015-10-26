@@ -173,6 +173,19 @@ angular.module('egCoreMod')
         return hash;
     }
 
+    // returns a simple string key=value string of an IDL object.
+    service.toString = function(obj) {
+        var s = '';
+        angular.forEach(
+            service.classes[obj.classname].fields.sort(
+                function(a,b) {return a.name < b.name ? -1 : 1}),
+            function(field) {
+                s += field.name + '=' + obj[field.name]() + '\n';
+            }
+        );
+        return s;
+    }
+
     // hash-to-IDL object translater.  Does not support nested values.
     service.fromHash = function(cls, hash) {
         if (!service.classes[cls]) {

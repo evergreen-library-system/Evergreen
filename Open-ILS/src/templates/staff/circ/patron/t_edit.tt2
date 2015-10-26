@@ -441,12 +441,15 @@
     <div ng-if="cat.entries().length != 0">
       <div class="btn-group" dropdown>
         <button type="button" class="btn btn-default dropdown-toggle">
-          <span style="padding-right: 5px;"></span>
+          <span style="padding-right: 5px;">
+            {{stat_cat_entry_maps[cat.id()].value()}}</span>
           <span class="caret"></span>
         </button>
         <ul class="dropdown-menu">
           <li ng-repeat="entry in cat.entries()">
-            <a href ng-click=""> {{entry.value()}} </a>
+            <a href ng-click="stat_cat_entry_maps[cat.id()]=entry"> 
+              {{entry.value()}}
+            </a>
           </li>
         </ul>
       </div>
@@ -466,7 +469,7 @@
   <div class="col-md-3 reg-field-label">
     <label>{{survey.name()}}</label>
   </div>
-  <div class="col-md-6">
+  <div class="col-md-6 reg-field-input">
     <div class="row" ng-repeat="question in survey.questions()" 
       style="margin-bottom: 10px;">
       <div class="col-md-6">{{question.question()}}</div>
