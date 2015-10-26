@@ -1295,6 +1295,15 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
             $scope.workingGridDataProvider.refresh();
         });
 
+        $scope.statcat_visible = function (sc_owner) {
+            var visible = typeof $scope.working.statcat_filter === 'undefined' || !$scope.working.statcat_filter;
+            angular.forEach(egCore.org.ancestors(sc_owner), function (anscestor_org) {
+                if ($scope.working.statcat_filter == anscestor_org.id())
+                    visible = true;
+            });
+            return visible;
+        }
+
         $scope.suffix_list = [];
         itemSvc.get_suffixes(egCore.auth.user().ws_ou()).then(function(list){
             $scope.suffix_list = list;
