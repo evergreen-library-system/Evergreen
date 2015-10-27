@@ -91,6 +91,14 @@
                             [% l('Group Formats and Editions') %]
                         </label>
                     [% END %]
+                    [% IF loc_value != 1 %]
+                    <label class="results_header_lbl" for="depth_zero" title="[% l('Select this option to expand your results to all Org Units while retaining the priority of your selected library\'s holdings.') %]">
+                        <input type="checkbox" id="depth_zero" name="depth" value="0"
+                            onchange="this.form.submit()"
+                            [% CGI.param('depth') == '0' ? ' checked="checked"' : '' %] />
+                        [% l('Show results from all Org Units') %]
+                    </label>
+                    [% END %]
                     [%- IF CGI.param('detail_record_view')
                         OR (show_more_details.default == 'true'
                         OR show_more_details.default == 'hide');
