@@ -3,9 +3,9 @@
 <script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/acq/common/li_table.js'> </script>
 <script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/acq/financial/claim_voucher.js'> </script>
 <div id='acq-lit-table-container'>
-    <div id='acq-lit-table-div' class='hidden'>
 
-        <!-- Line Item (bib record) list -->
+    <div> <!-- Container for actions selector and paging controls.
+           This container and the actions selector are always visible -->
         <div style="float: left;">
             <span>
                 <select id="acq-lit-li-actions-selector">
@@ -61,7 +61,8 @@
             </div>
         </div>
         <div style="clear: both;">&nbsp;</div><!-- XXX better way to end effects of float: left/right ? -->
-
+    </div>
+    <div id='acq-lit-table-div' class='hidden'>
         <table id="acq-batch-update" class="hidden"><!-- XXX freeze in place w/ CSS? -->
             <tr>
                 <th>

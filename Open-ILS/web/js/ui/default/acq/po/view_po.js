@@ -477,7 +477,6 @@ function init() {
 
 function init2() {
 
-    var zeroLi = true;
     fieldmapper.standardRequest(
         ['open-ils.acq', 'open-ils.acq.lineitem.search'],
         {   async: true,
@@ -487,7 +486,6 @@ function init2() {
                 {flesh_attrs:true, flesh_notes:true, flesh_cancel_reason:true, clear_marc:true}
             ],
             onresponse: function(r) {
-                zeroLi = false;
                 liTable.show('list');
                 var li = openils.Util.readResponse(r);
                 liTable.addLineitem(li);
@@ -495,7 +493,6 @@ function init2() {
 
             oncomplete : function() {
                 if (liFocus) liTable.drawCopies(liFocus);
-                if(zeroLi) openils.Util.show('acq-po-no-lineitems');
             }
         }
     );
