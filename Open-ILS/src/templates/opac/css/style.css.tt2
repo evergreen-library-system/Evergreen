@@ -2114,3 +2114,8 @@ label[for*=expert_]
     font-weight: lighter;
     font-size: 70%;
 }
+
+#results-page-depth-hint {
+    text-align: center;
+    font-style: italic;
+}

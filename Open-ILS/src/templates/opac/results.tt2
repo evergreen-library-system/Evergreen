@@ -91,12 +91,12 @@
                             [% l('Group Formats and Editions') %]
                         </label>
                     [% END %]
-                    [% IF loc_value != 1 %]
-                    <label class="results_header_lbl" for="depth_zero" title="[% l('Select this option to expand your results to all Org Units while retaining the priority of your selected library\'s holdings.') %]">
-                        <input type="checkbox" id="depth_zero" name="depth" value="0"
+                    [% IF ctx.depth_sel_checkbox %]
+                    <label class="results_header_lbl" for="depth_sel" title="[% ctx.depth_sel_tooltip | html %]">
+                        <input type="checkbox" id="depth_sel" name="depth" value="[% ctx.depth_sel_depth %]"
                             onchange="this.form.submit()"
-                            [% CGI.param('depth') == '0' ? ' checked="checked"' : '' %] />
-                        [% l('Show results from all Org Units') %]
+                            [% CGI.param('depth') == ctx.depth_sel_depth ? ' checked="checked"' : '' %] />
+                        [% ctx.depth_sel_checkbox_label | html %]
                     </label>
                     [% END %]
                     [%- IF CGI.param('detail_record_view')
@@ -112,6 +112,9 @@
     <div id="content-wrapper">
         <div id="main-content">
             <div id="results-page">
+                [%- IF (ctx.depth_sel_checkbox OR ctx.depth_sel_button) AND CGI.param('depth') == ctx.depth_sel_depth AND ctx.depth_sel_resultshint %]
+                <div id="results-page-depth-hint">[% ctx.depth_sel_resultshint | html %]</div>
+                [%- END %]
                 [% path = "opac/parts/result/" _
                     (ctx.records.size ? "table.tt2" : "lowhits.tt2");
                 INCLUDE $path %]

@@ -64,7 +64,11 @@
         <input id="detail" type="hidden" name="detail_record_view" value="1"/>
     [%- END %]
         <input id='search-submit-go' type="submit" value="[% l('Search') %]" class="opac-button"
-            onclick='setTimeout(function(){$("search-submit-spinner").className=""; $("search-submit-go").className="hidden"}, 2000)'/>
+            onclick='setTimeout(function(){$("search-submit-spinner").className=""; $("search-submit-go").className="hidden";[% IF ctx.depth_sel_button AND NOT took_care_of_form %] $("search-submit-go-depth").className="hidden";[% END %]}, 2000)'/>
+        [%- IF ctx.depth_sel_button AND NOT took_care_of_form %]
+        <button id='search-submit-go-depth' type="submit" value="[% ctx.depth_sel_depth %]" name="depth" class="[% ctx.depth_sel_button_class %]"
+            onclick='setTimeout(function(){$("search-submit-spinner").className=""; $("search-submit-go").className="hidden"; $("search-submit-go-depth").className="hidden";}, 2000)' title="[% ctx.depth_sel_tooltip | html %]">[% ctx.depth_sel_button_label | html %]</button>
+        [%- END %]
         <img id='search-submit-spinner' src='/opac/images/progressbar_green.gif' style='height:16px;width:16px;' class='hidden' alt='[% l("Search In Progress") %]'/>
     </span>
     </div>
