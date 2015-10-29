@@ -71,10 +71,11 @@ if(!dojo._hasResource["openils.biblio.monographPartMerge"]) {
 	    dojo.forEach(cpmList,
 		    function (g) {
                        g.part(parseInt(obj.itemID))		/* Assign "winner" DB id of mono_part. */
+                       g.ischanged(true);
 		    });
 
            if (cpmList.length > 0) {
-               pcrud.update( cpmList, {});
+               pcrud.apply( cpmList);
            }
  
            /*
