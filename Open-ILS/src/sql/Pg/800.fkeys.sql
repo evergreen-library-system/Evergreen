@@ -39,7 +39,9 @@ CREATE RULE protect_mono_part_delete AS
     ON DELETE TO biblio.monograph_part DO INSTEAD (
         UPDATE biblio.monograph_part
             SET deleted = TRUE
-            WHERE OLD.id = biblio.monograph_part.id
+            WHERE OLD.id = biblio.monograph_part.id;
+        DELETE FROM asset.copy_part_map
+        WHERE part = OLD.id
     );
 
 ALTER TABLE actor.usr ADD CONSTRAINT actor_usr_mailing_address_fkey FOREIGN KEY (mailing_address) REFERENCES actor.usr_address (id) DEFERRABLE INITIALLY DEFERRED;
