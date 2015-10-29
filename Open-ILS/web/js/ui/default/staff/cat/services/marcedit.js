@@ -331,7 +331,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
         restrict: 'E',
         template: '<span>'+
                     '<span><label class="marcedit marcsfcodedelimiter"'+
-                        'for="r{{field.record.subfield(\'901\',\'c\')[1]}}f{{field.position}}s{{subfield[2]}}code" '+
+                        'for="r{{field.record.subfield(\'901\',\'c\')[1] || 0}}f{{field.position}}s{{subfield[2]}}code" '+
                         '>‡</label><eg-marc-edit-editable '+
                         'itype="sfc" '+
                         'select-on-focus="true" '+
@@ -343,7 +343,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                         'max="1" '+
                         'on-keydown="onKeydown" '+
                         'context-item-generator="sf_code_options" '+
-                        'id="r{{field.record.subfield(\'901\',\'c\')[1]}}f{{field.position}}s{{subfield[2]}}code" '+
+                        'id="r{{field.record.subfield(\'901\',\'c\')[1] || 0}}f{{field.position}}s{{subfield[2]}}code" '+
                     '/></span>'+
                     '<span><eg-marc-edit-editable '+
                         'itype="sfv" '+
@@ -353,7 +353,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                         'content="subfield[1]" '+
                         'on-keydown="onKeydown" '+
                         'context-item-generator="sf_val_options" '+
-                        'id="r{{field.record.subfield(\'901\',\'c\')[1]}}f{{field.position}}s{{subfield[2]}}value" '+
+                        'id="r{{field.record.subfield(\'901\',\'c\')[1] || 0}}f{{field.position}}s{{subfield[2]}}value" '+
                     '/></span>'+
                   '</span>',
         scope: { field: "=", subfield: "=", onKeydown: '=' },
@@ -386,7 +386,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                       'max="1" '+
                       'on-keydown="onKeydown" '+
                       'context-item-generator="ind_val_options" '+
-                      'id="r{{field.record.subfield(\'901\',\'c\')[1]}}f{{field.position}}i{{indNumber}}"'+
+                      'id="r{{field.record.subfield(\'901\',\'c\')[1] || 0}}f{{field.position}}i{{indNumber}}"'+
                       '/></span>',
         scope: { ind : '=', field: '=', onKeydown: '=', indNumber: '@' },
         replace: true,
@@ -415,7 +415,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                       'max="3" '+
                       'on-keydown="onKeydown" '+
                       'context-item-generator="tag_options" '+
-                      'id="r{{field.record.subfield(\'901\',\'c\')[1]}}f{{field.position}}tag"'+
+                      'id="r{{field.record.subfield(\'901\',\'c\')[1] || 0}}f{{field.position}}tag"'+
                       '/></span>',
         scope: { tag : '=', field: '=', onKeydown: '=', contextFunctions: '=' },
         replace: true,
@@ -530,7 +530,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                       'class="marcedit marcdata" '+
                       'content="field.data" '+
                       'on-keydown="onKeydown" '+
-                      'id="r{{field.record.subfield(\'901\',\'c\')[1]}}f{{field.position}}data"'+
+                      'id="r{{field.record.subfield(\'901\',\'c\')[1] || 0}}f{{field.position}}data"'+
                       '/></span>'+
                       // TODO: move to TT2 template
                       '<button class="btn btn-info btn-xs" '+
@@ -594,7 +594,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                       'itype="ldr" '+
                       'max="{{record.leader.length}}" '+
                       'content="record.leader" '+
-                      'id="r{{record.subfield(\'901\',\'c\')[1]}}leaderdata" '+
+                      'id="r{{record.subfield(\'901\',\'c\')[1] || 0}}leaderdata" '+
                       'on-keydown="onKeydown"'+
                       '/></span>'+
                   '</div>',
