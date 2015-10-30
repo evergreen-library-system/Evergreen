@@ -33,11 +33,14 @@ angular.module('egCoreMod')
     };
 
     service.get_surveys = function() {
-        var org_ids = egCore.org.ancestors(egCore.auth.user().ws_ou(), true);
+        var org_ids = egCore.org.fullPath(egCore.auth.user().ws_ou(), true);
 
-        return egCore.pcrud.search('asv', 
-            {owner : org_ids}, 
-            {   flesh : 2, 
+        return egCore.pcrud.search('asv', {
+                owner : org_ids,
+                start_date : {'<=' : 'now'},
+                end_date : {'>=' : 'now'}
+            }, {   
+                flesh : 2, 
                 flesh_fields : {
                     asv : ['questions'], 
                     asvq : ['answers']
@@ -45,6 +48,8 @@ angular.module('egCoreMod')
             }, 
             {atomic : true}
         ).then(function(surveys) {
+            surveys = surveys.sort(function(a,b) {
+                return a.name() < b.name() ? -1 : 1 });
             service.surveys = surveys;
             angular.forEach(surveys, function(survey) {
                 angular.forEach(survey.questions(), function(question) {
@@ -63,6 +68,15 @@ angular.module('egCoreMod')
             'open-ils.circ.stat_cat.actor.retrieve.all',
             egCore.auth.token(), egCore.auth.user().ws_ou()
         ).then(function(cats) {
+            cats = cats.sort(function(a, b) {
+                return a.name() < b.name() ? -1 : 1});
+            angular.forEach(cats, function(cat) {
+                cat.entries(
+                    cat.entries().sort(function(a,b) {
+                        return a.value() < b.value() ? -1 : 1
+                    })
+                );
+            });
             service.stat_cats = cats;
         });
     };
