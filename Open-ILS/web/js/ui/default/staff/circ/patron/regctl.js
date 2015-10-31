@@ -558,6 +558,33 @@ function PatronRegCtrl($scope, $routeParams,
     $scope.edit_passthru.vis_level = 0; 
     // TODO: add save/clone handlers here
 
+    // Apply default values for new patrons during initial registration
+    // prs is shorthand for patronSvc
+    function set_new_patron_defaults(prs) {
+        $scope.generate_password();
+        $scope.hold_notify_phone = true;
+        $scope.hold_notify_email = true;
+
+        if (prs.org_settings['ui.patron.default_ident_type']) {
+            // $scope.patron needs this field to be an object
+            var id = prs.org_settings['ui.patron.default_ident_type'];
+            var ident_type = $scope.ident_types.filter(
+                function(type) { return type.id() == id })[0];
+            $scope.patron.ident_type = ident_type;
+        }
+        if (prs.org_settings['ui.patron.default_inet_access_level']) {
+            // $scope.patron needs this field to be an object
+            var id = prs.org_settings['ui.patron.default_inet_access_level'];
+            var level = $scope.net_access_levels.filter(
+                function(lvl) { return lvl.id() == id })[0];
+            $scope.patron.net_access_level = level;
+        }
+        if (prs.org_settings['ui.patron.default_country']) {
+            $scope.patron.addresses[0].country = 
+                prs.org_settings['ui.patron.default_country'];
+        }
+    }
+
     $q.all([
 
         $scope.initTab ? // initTab comes from patron app
@@ -597,31 +624,8 @@ function PatronRegCtrl($scope, $routeParams,
         if ($scope.org_settings['ui.patron.edit.default_suggested'])
             $scope.edit_passthru.vis_level = 1;
 
-        if ($scope.patron.isnew) {
-            $scope.generate_password();
-            $scope.hold_notify_phone = true;
-            $scope.hold_notify_email = true;
-
-            if (prs.org_settings['ui.patron.default_ident_type']) {
-                // $scope.patron needs this field to be an object
-                var id = prs.org_settings['ui.patron.default_ident_type'];
-                var ident_type = $scope.ident_types.filter(
-                    function(type) { return type.id() == id })[0];
-                $scope.patron.ident_type = ident_type;
-            }
-            if (prs.org_settings['ui.patron.default_inet_access_level']) {
-                // $scope.patron needs this field to be an object
-                var id = prs.org_settings['ui.patron.default_inet_access_level'];
-                var level = $scope.net_access_levels.filter(
-                    function(lvl) { return lvl.id() == id })[0];
-                $scope.patron.net_access_level = level;
-            }
-            if (prs.org_settings['ui.patron.default_country']) {
-                $scope.patron.addresses[0].country = 
-                    prs.org_settings['ui.patron.default_country'];
-            }
-        }
-            
+        if ($scope.patron.isnew) 
+            set_new_patron_defaults(prs);
     });
 
     // update the currently displayed field documentation
