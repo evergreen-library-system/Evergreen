@@ -42,7 +42,7 @@
 
     <!-- field documentation img/link -->
     <img ng-show="field_doc.[% cls %].[% field %]" 
-      ng-click="selected_field_doc=field_doc.[% cls %].[% field %]"
+      ng-click="set_selected_field_doc('[% cls %]','[% field %]')"
       src='[% DOC_IMG %]'></img>
   </div>
 

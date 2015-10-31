@@ -624,6 +624,11 @@ function PatronRegCtrl($scope, $routeParams,
             
     });
 
+    // update the currently displayed field documentation
+    $scope.set_selected_field_doc = function(cls, field) {
+        $scope.selected_field_doc = $scope.field_doc[cls][field];
+    }
+
     // returns the tree depth of the selected profile group tree node.
     $scope.pgt_depth = function(grp) {
         var d = 0;
