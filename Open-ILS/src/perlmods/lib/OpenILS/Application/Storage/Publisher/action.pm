@@ -363,8 +363,8 @@ sub get_hold_sort_order {
     # Return only the keys of our hash, sorted by value,
     # keys for null values omitted.
     return [
-        grep { defined $row->{$_} } (
-            sort {$row->{$a} cmp $row->{$b}} keys %$row
+        sort { $row->{$a} <=> $row->{$b} } (
+          grep { defined $row->{$_} } keys %$row
         )
     ];
 }
@@ -1433,11 +1433,11 @@ sub new_hold_copy_targeter {
 
             $all_copies = [ grep { ''.$_->circ_lib ne $pu_lib && ( $_->status == 0 || $_->status == 7 ) } @good_copies ];
 
-            my $min_prox = [ sort keys %$prox_list ]->[0];
+            my $min_prox = [ sort {$a<=>$b} keys %$prox_list ]->[0];
             my $best;
             if  ($hold->hold_type eq 'R' || $hold->hold_type eq 'F') { # Recall/Force holds bypass hold rules.
                 $best = $good_copies[0] if(scalar @good_copies);
-            } else {
+            } elsif (defined $min_prox) {
                 $best = choose_nearest_copy($hold, { $min_prox => delete($$prox_list{$min_prox}) });
             }
 
@@ -1989,7 +1989,7 @@ sub choose_nearest_copy {
     my $hold = shift;
     my $prox_list = shift;
 
-    for my $p ( sort keys %$prox_list ) {
+    for my $p ( sort {$a<=>$b} keys %$prox_list ) {
         next unless (ref $$prox_list{$p});
 
         my @capturable = @{ $$prox_list{$p} };
