@@ -1,0 +1,11 @@
+Include parts label when sorting copies in the public catalog
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The list of copies on the record details page now includes
+the part label in the default sort order.
+
+Specifically, copies are now sorted by (in order), org unit, then
+call number, then part label sortkey, then copy number, and
+finally barcode.
+
+Previously, the hierarchy was org unit, then call number,
+then copy number, and finally barcode
