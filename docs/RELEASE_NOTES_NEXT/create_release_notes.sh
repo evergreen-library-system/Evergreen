@@ -50,7 +50,7 @@ for i in `ls -l|grep ^d|awk '{print $9}'`; do
     fi
 done
 
-files=$(ls *{txt,adoc} 2>/dev/null | grep -v 'RELEASE_NOTE_TEMPLATE.txt')
+files=$(ls *{txt,adoc} 2>/dev/null | grep -v 'RELEASE_NOTE_TEMPLATE.adoc')
 if [ "_$files" != "_" ]; then
     echo >> $outfile
     echo Miscellaneous >> $outfile
