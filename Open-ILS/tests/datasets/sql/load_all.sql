@@ -62,6 +62,9 @@ INSERT INTO biblio.record_entry (marc, last_xact_id)
 \i transactions.sql
 \i neg_bal_custom_transactions.sql
 
+-- funds, orders, etc.
+\i acq.sql
+
 -- clean up the env
 \i env_destroy.sql
 
