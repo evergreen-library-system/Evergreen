@@ -38,7 +38,7 @@ $req->recv;
 
 $e->xact_begin;
 $user = $e->retrieve_actor_user(USER_ID);
-is($user->juvenile, 'f', 'Junenile flag should be false');
+is($user->juvenile, 'f', 'Juvenile flag should be false');
 
 # -------------
 # User is 17 years old.  Juv-to-adult with 18 years should leave the flag.
@@ -57,7 +57,7 @@ $req->recv;
 
 $e->xact_begin;
 $user = $e->retrieve_actor_user(USER_ID);
-is($user->juvenile, 't', 'Junenile flag should be true');
+is($user->juvenile, 't', 'Juvenile flag should be true');
 
 # -------------
 # User is 17 years old, but the juv org unit setting is 16,
@@ -77,7 +77,7 @@ $req = $storage->request(
 $req->recv;
 
 $user = $e->retrieve_actor_user(USER_ID);
-is($user->juvenile, 'f', 'Junenile flag should be false');
+is($user->juvenile, 'f', 'Juvenile flag should be false');
 
 # -------------
 # Delete the user.  No modification should occur.
@@ -94,7 +94,7 @@ $req = $storage->request(
 $req->recv;
 
 $user = $e->retrieve_actor_user(USER_ID);
-is($user->juvenile, 't', 'Junenile flag should be left true after deletion');
+is($user->juvenile, 't', 'Juvenile flag should be left true after deletion');
 
 # for ease of repeating this test, delete the new org setting
 $e->xact_begin;
