@@ -451,7 +451,7 @@ sub next {
                                                        $Marque::config->option_value('format'));
                 };
                 if ($@) {
-                    warn("Error in bibliograpic record " . $r->id() . ": $@");
+                    warn("Error in bibliographic record " . $r->id() . ": $@");
                     import MARC::File::XML; # Reset SAX Parser.
                     return $self->next();
                 }
@@ -527,7 +527,7 @@ sub next {
                 $output =~ s/^<\?.+?\?>$//mo;
             };
             if ($@) {
-                warn("Error in bibliograpic record " . $r->id() . ": $@");
+                warn("Error in bibliographic record " . $r->id() . ": $@");
                 return $self->next();
             }
         } else {
@@ -540,7 +540,7 @@ sub next {
                 $output = $marc->as_usmarc;
             };
             if ($@) {
-                warn("Error in bibliograpic record " . $r->id() . ": $@");
+                warn("Error in bibliographic record " . $r->id() . ": $@");
                 return $self->next();
             }
         }
