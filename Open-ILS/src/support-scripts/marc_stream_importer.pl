@@ -68,7 +68,6 @@ my $auth_merge_profile;
 my $bib_queue;
 my $auth_queue;
 my $bib_source;
-my $auth_source;
 my $port;
 my $bib_import_no_match;
 my $bib_auto_overlay_exact;
@@ -104,7 +103,6 @@ GetOptions(
     'source=i'              => \$bib_source,
     'auth-merge-profile=i'  => \$auth_merge_profile,
     'auth-queue=i'          => \$auth_queue,
-    'auth-source=i'         => \$auth_source,
 
     # -- deprecated
     'import-no-match'          => \$import_no_match,
@@ -180,9 +178,6 @@ sub usage {
 
     --auth-queue
         ID of the vandelay authority record queue
-
-    --auth-source
-        ID of the bib source for authority records
 
     --bib-import-no-match
     --bib-auto-overlay-exact
@@ -270,7 +265,7 @@ sub set_record_type {
     $cur_rec_type = $ldr_06 eq 'z' ? 'auth' : 'bib';
 
     $cur_queue = $cur_rec_type eq 'auth' ? $auth_queue : $bib_queue;
-    $cur_rec_source = $cur_rec_type eq 'auth' ?  $auth_source : $bib_source;
+    $cur_rec_source = $cur_rec_type eq 'auth' ?  '' : $bib_source;
     set_merge_profile();
 }
 

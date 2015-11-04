@@ -12,7 +12,6 @@ New Options
 
  * --auth-merge-profile
  * --auth-queue
- * --auth-source
  * --bib-import-no-match
  * --bib-auto-overlay-exact
  * --bib-auto-overlay-1match
