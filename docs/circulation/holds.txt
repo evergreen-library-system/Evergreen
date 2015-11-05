@@ -70,6 +70,15 @@ Placing Holds in Patron Records
 
 . You may continue to search for more titles. Once you are done, click the _Holds_ button on the top to go back to the _Holds_ screen. Click the _Refresh_ button to display your newly placed holds.
 
+Placing Multiple Holds on Same Title
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+After a successful hold placement, staff have the option to place another hold on the same title by clicking the link _Place another hold for this title_.  This returns to the hold screen, where a different patron's information can be entered.
+
+image::media/place-another-hold-1.png[place-another-hold-1]
+
+This feature can be useful for book groups or new items where a list of waiting patrons needs to be transferred into the system.
+
 
 Managing Holds
 ~~~~~~~~~~~~~~
