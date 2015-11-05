@@ -1,6 +1,6 @@
 BEGIN;
 
---SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0946', :eg_version);
 
 CREATE OR REPLACE FUNCTION actor.org_unit_ancestor_setting_batch( org_id INT, VARIADIC setting_names TEXT[] ) RETURNS SETOF actor.org_unit_setting AS $$
 DECLARE
