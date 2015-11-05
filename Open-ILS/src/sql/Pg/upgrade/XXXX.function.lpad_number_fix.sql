@@ -12,16 +12,4 @@ CREATE OR REPLACE FUNCTION evergreen.lpad_number_substrings( TEXT, TEXT, INT ) R
     return $string;
 $$ LANGUAGE PLPERLU;
 
-
--- Correct any potentially incorrectly padded sortkeys
-
-UPDATE biblio.monograph_part SET label = label;
-
-UPDATE asset.call_number_prefix SET label = label;
-
--- asset.call_number.label_sortkey doesn't make use of this function
-
-UPDATE asset.call_number_suffix SET label = label;
-
 COMMIT;
-
