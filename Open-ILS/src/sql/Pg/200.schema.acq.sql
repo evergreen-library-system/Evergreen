@@ -358,6 +358,11 @@ CREATE TABLE acq.cancel_reason (
 
 SELECT SETVAL('acq.cancel_reason_id_seq'::TEXT, 2000);
 
+DROP TRIGGER IF EXISTS acq_no_deleted_reserved_cancel_reasons ON acq.cancel_reason;
+
+CREATE TRIGGER acq_no_deleted_reserved_cancel_reasons BEFORE DELETE ON acq.cancel_reason
+    FOR EACH ROW EXECUTE PROCEDURE evergreen.protect_reserved_rows_from_delete(2000);
+
 CREATE TABLE acq.purchase_order (
 	id		SERIAL				PRIMARY KEY,
 	owner		INT				NOT NULL REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,

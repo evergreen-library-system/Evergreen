@@ -1,0 +1,13 @@
+BEGIN;
+
+SELECT plan(1);
+
+SELECT throws_ok(
+    'delete from acq.cancel_reason where id = 1', 
+    'P0001', 
+    'Cannot delete row with reserved ID 1'
+);
+
+SELECT * FROM finish();
+
+ROLLBACK;
