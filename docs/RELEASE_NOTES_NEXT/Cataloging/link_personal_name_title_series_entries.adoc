@@ -1,0 +1,5 @@
+Link personal name/title series added entries
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The authority linker script now supports linking the MARC21
+field 800 (series added entry - personal name) to authority
+records.
