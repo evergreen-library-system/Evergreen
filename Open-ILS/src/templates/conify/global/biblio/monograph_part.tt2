@@ -18,8 +18,8 @@
             autoHeight='true' 
             fieldOrder="['label']"
             displayLimit=0 
-            suppressFields="['id','record','label_sortkey']"
-            suppressEditFields="['id','label_sortkey']"
+            suppressFields="['id','record','label_sortkey','deleted']"
+            suppressEditFields="['id','label_sortkey','deleted']"
             query="{id: null}"
             fmClass='bmp'
             editOnEnter='true'/>
