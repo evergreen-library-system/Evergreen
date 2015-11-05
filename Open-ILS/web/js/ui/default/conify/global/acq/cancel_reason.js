@@ -19,6 +19,11 @@ function setup() {
         );
     };
 
+    crGrid.disableSelectorForRow = function(rowIdx) {
+        var item = crGrid.getItem(rowIdx);
+        return (crGrid.store.getValue(item, 'id') < 2000);
+    }
+
     new openils.User().buildPermOrgSelector(
         'ADMIN_ACQ_CANCEL_CAUSE', contextOrgSelector, null, connect);
 }
