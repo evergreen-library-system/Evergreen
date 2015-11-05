@@ -46,6 +46,34 @@ INSERT INTO acq.provider
 
 SELECT SETVAL('acq.provider_id_seq'::TEXT, 4);
 
+INSERT INTO acq.provider_holding_subfield_map (provider, name, subfield) VALUES
+    (1, 'quantity',         'q'),
+    (1, 'estimated_price',  'p'),
+    (1, 'owning_lib',       'o'),
+    (1, 'call_number',      'n'),
+    (1, 'fund_code',        'f'),
+    (1, 'circ_modifier',    'm'),
+    (1, 'note',             'z'),
+    (1, 'copy_location',    'l'),
+    (1, 'barcode',          'b'),
+    (1, 'collection_code',  'c');
+
+-- give every provider the same holding subfield maps
+INSERT INTO acq.provider_holding_subfield_map (provider, name, subfield)
+    SELECT 2, name, subfield
+        FROM acq.provider_holding_subfield_map
+        WHERE provider = 1;
+
+INSERT INTO acq.provider_holding_subfield_map (provider, name, subfield)
+    SELECT 3, name, subfield
+        FROM acq.provider_holding_subfield_map
+        WHERE provider = 1;
+
+INSERT INTO acq.provider_holding_subfield_map (provider, name, subfield)
+    SELECT 4, name, subfield
+        FROM acq.provider_holding_subfield_map
+        WHERE provider = 1;
+
 INSERT INTO acq.purchase_order (id, owner, creator, 
     editor, ordering_agency, provider, state, order_date) VALUES
     (1, 1, 1, 1, 4, 1, 'pending', NULL),
