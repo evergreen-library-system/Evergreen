@@ -564,7 +564,7 @@ RETURNS XML AS $F$
                             (SELECT XMLAGG(bmp) FROM (
                                 SELECT  unapi.bmp( id, 'xml', 'monograph_part', evergreen.array_remove_item_by_value( evergreen.array_remove_item_by_value($5,'bre'), 'holdings_xml'), $3, $4, $6, $7, FALSE)
                                   FROM  biblio.monograph_part
-                                  WHERE record = $1
+                                  WHERE NOT deleted AND record = $1
                             )x)
                         )
                      ELSE NULL
@@ -945,7 +945,7 @@ CREATE OR REPLACE FUNCTION unapi.bmp ( obj_id BIGINT, format TEXT,  ename TEXT, 
                     CASE WHEN ('bre' = ANY ($4)) THEN unapi.bre( record, 'marcxml', 'record', evergreen.array_remove_item_by_value($4,'bmp'), $5, $6, $7, $8, FALSE) ELSE NULL END
                 )
           FROM  biblio.monograph_part
-          WHERE id = $1
+          WHERE NOT deleted AND id = $1
           GROUP BY id, label, label_sortkey, record;
 $F$ LANGUAGE SQL STABLE;
 

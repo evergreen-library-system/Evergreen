@@ -3735,6 +3735,9 @@ sub as_xml {
 package OpenILS::Application::SuperCat::unAPI::acp;
 use base qw/OpenILS::Application::SuperCat::unAPI/;
 
+use OpenILS::Application::AppUtils;
+my $U = "OpenILS::Application::AppUtils";
+
 sub as_xml {
     my $self = shift;
     my $args = shift;
@@ -3762,6 +3765,7 @@ sub as_xml {
     $xml .= "        <monograph_parts>\n";
     if (ref($self->obj->parts) && $self->obj->parts) {
         for my $part ( @{$self->obj->parts} ) {
+            next if $U->is_true($part->deleted);
             $xml .= sprintf('        <monograph_part record="%s" sortkey="%s">%s</monograph_part>',$part->record, $self->escape($part->label_sortkey), $self->escape($part->label));
             $xml .= "\n";
         }

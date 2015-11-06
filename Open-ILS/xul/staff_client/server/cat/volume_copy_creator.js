@@ -205,7 +205,7 @@ function my_init() {
 
         dojo.require('openils.PermaCrud');
         g.pcrud = new openils.PermaCrud({'authtoken':ses()});
-        g.parts = g.pcrud.search('bmp',{'record':g.doc_id},{'order_by': { 'bmp' : 'label_sortkey' } });
+        g.parts = g.pcrud.search('bmp',{'deleted':'f', 'record':g.doc_id},{'order_by': { 'bmp' : 'label_sortkey' } });
         g.parts_hash = util.functional.convert_object_list_to_hash( g.parts );
 
         /***********************************************************************************************************/
