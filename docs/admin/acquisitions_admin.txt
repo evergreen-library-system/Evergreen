@@ -38,7 +38,7 @@ in the acquisitions module
 * Temporary call number prefix - Temporary call number prefix for items that are
 created in the acquisitions module
 
-Cancel/Suspend reasons
+Cancel/Delay reasons
 ~~~~~~~~~~~~~~~~~~~~~~
 
 indexterm:[acquisitions,purchase order,cancellation]
@@ -48,12 +48,12 @@ The Cancel reasons link enables you to predefine the reasons for which a line
 item or a PO can be cancelled. A default list of reasons appears, but you can
 add custom reasons to this list. Applying the cancel reason will prevent the
 item from appearing in a claims list and will allow you to cancel debits
-associated with the purchase. Cancel reasons also enable you to suspend or delay
+associated with the purchase. Cancel reasons also enable you to delay
 a purchase. For example, you could create a cancel reason of 'back ordered,' and
 you could choose to keep the debits associated with the purchase.
 
-Create a cancel/suspend reason
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Create a cancel/delay reason
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 . To add a new cancel reason, click _Administration -> Server Administration ->
 Acquisitions -> Cancel reasons_.
@@ -70,12 +70,26 @@ Units.)
 cancel reason on an item or a PO.
 
 . Create a description of the cancel reason. This is a free text field and can
-be comprised of any text of your choosing.
+comprise any text of your choosing.
 
 . If you want to retain the debits associated with the cancelled purchase, click
 the box adjacent to Keep Debits->
 
 . Click _Save_.
+
+Delete a custom cancel/delay reason
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+You can delete custom cancel reason.
+
+. Select the checkbox for the custom cancel reason that should be deleted.
+
+. Click the _Delete Selected_ button.
+
+[TIP]
+You cannot select the checkbox for any of the default cancel reasons because the
+system expects those reasons to be available to handle EDI order responses. 
+
 
 Claiming
 ~~~~~~~~
