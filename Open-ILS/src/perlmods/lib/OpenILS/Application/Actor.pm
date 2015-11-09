@@ -2760,7 +2760,7 @@ sub create_closed_date {
     my( $user, $evt ) = $U->checkses($authtoken);
     return $evt if $evt;
 
-    $evt = $U->check_perms($user->id, $cd->org_unit, 'CREATE_CLOSEING');
+    $evt = $U->check_perms($user->id, $cd->org_unit, 'CREATE_ORG_UNIT_CLOSING');
     return $evt if $evt;
 
     $logger->activity("user ".$user->id." creating library closing for ".$cd->org_unit);
@@ -2791,7 +2791,7 @@ sub delete_closed_date {
     ($cd_obj, $evt) = fetch_closed_date($cd);
     return $evt if $evt;
 
-    $evt = $U->check_perms($user->id, $cd->org_unit, 'DELETE_CLOSEING');
+    $evt = $U->check_perms($user->id, $cd->org_unit, 'DELETE_ORG_UNIT_CLOSING');
     return $evt if $evt;
 
     $logger->activity("user ".$user->id." deleting library closing for ".$cd->org_unit);
