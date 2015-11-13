@@ -150,6 +150,8 @@ help { -moz-binding: url('chrome://open_ils_staff_client/content/main/bindings.x
 #main_toolbox toolbarbutton[command="cmd_acq_create_po"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/toolbar_blue/acq_create_po_toolbar.png"); }
 #main_toolbox toolbarbutton[command="cmd_acq_claim_eligible"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/toolbar_blue/acq_claim_eligible_toolbar.png"); }
 #main_toolbox toolbarbutton[command="cmd_acq_create_invoice"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/toolbar_blue/acq_create_invoice_toolbar.png"); }
+#main_toolbox toolbarbutton[command="cmd_acq_view_local_inv"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/toolbar_blue/acq_view_local_inv_toolbar.png"); }
+#main_toolbox toolbarbutton[command="cmd_acq_view_local_po"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/toolbar_blue/acq_view_local_po_toolbar.png"); }
 #main_toolbox toolbarbutton[command="cmd_booking_reservation"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/toolbar_blue/booking_reservation_toolbar.png"); }
 #main_toolbox toolbarbutton[command="cmd_booking_pull_list"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/toolbar_blue/booking_pull_list_toolbar.png"); }
 #main_toolbox toolbarbutton[command="cmd_booking_capture"] { list-style-image: url("chrome://open_ils_staff_client/skin/media/images/toolbar_blue/booking_capture_toolbar.png"); }

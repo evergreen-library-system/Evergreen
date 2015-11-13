@@ -227,6 +227,11 @@
         command="cmd_acq_create_po"
         templateid="acq_create_po" />
     <toolbarbutton
+        label="&staff.main.menu.acq.view_local_po.label;"
+        tooltiptext="&staff.main.menu.acq.view_local_po.label;"
+        command="cmd_acq_view_local_po"
+        templateid="acq_view_local_po" />
+    <toolbarbutton
         label="&staff.main.menu.acq.claim_eligible.label;"
         tooltiptext="&staff.main.menu.acq.claim_eligible.label;"
         command="cmd_acq_claim_eligible" 
@@ -236,6 +241,11 @@
         tooltiptext="&staff.main.menu.acq.create_invoice.label;"
         command="cmd_acq_create_invoice"
         templateid="acq_create_invoice" />
+    <toolbarbutton
+        label="&staff.main.menu.acq.view_local_inv.label;"
+        tooltiptext="&staff.main.menu.acq.view_local_inv.label;"
+        command="cmd_acq_view_local_inv"
+        templateid="acq_view_local_inv" />
     <toolbarbutton
         label="&staff.main.menu.booking.reservation.label;"
         tooltiptext="&staff.main.menu.booking.reservation.label;"
