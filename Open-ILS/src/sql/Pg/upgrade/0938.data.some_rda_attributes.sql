@@ -342,4 +342,4 @@ WHERE  tag = '337' AND code = 'a' AND marc_record_type = 'biblio';
 UPDATE config.marc_subfield set value_ctype = 'carrier_type'
 WHERE  tag = '338' AND code = 'a' AND marc_record_type = 'biblio';
 
-END;
+COMMIT;
