@@ -186,12 +186,19 @@ sub patron_barcode_from_id {
 sub format_date {
     my $class = shift;
     my $date = shift;
-    my $type = shift || 'dob';
+    my $type = shift || '';
 
     return "" unless $date;
 
     my $dt = DateTime::Format::ISO8601->new->
         parse_datetime(OpenSRF::Utils::cleanse_ISO8601($date));
+
+    # actor.usr.dob stores dates without time/timezone, which causes
+    # DateTime to assume the date is stored as UTC.  Tell DateTime
+    # to use the local time zone, instead.
+    # Other dates will have time zones and should be parsed as-is.
+    $dt->set_time_zone('local') if $type eq 'dob';
+
     my @time = localtime($dt->epoch);
 
     my $year   = $time[5]+1900;
