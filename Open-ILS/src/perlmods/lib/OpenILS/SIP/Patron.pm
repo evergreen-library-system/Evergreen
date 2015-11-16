@@ -261,7 +261,7 @@ sub home_phone {
 
 sub sip_birthdate {
     my $self = shift;
-    my $dob = OpenILS::SIP->format_date($self->{user}->dob);
+    my $dob = OpenILS::SIP->format_date($self->{user}->dob, 'dob');
     syslog('LOG_DEBUG', "OILS: Patron DOB = $dob");
     return $dob;
 }
