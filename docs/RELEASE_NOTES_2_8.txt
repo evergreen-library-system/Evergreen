@@ -1,6 +1,64 @@
 Evergreen 2.8 Release Notes
 =============================
 
+Evergreen 2.8.5
+---------------
+This release contains several bugfixes improving on Evergreen 2.8.4
+
+Acquisitions
+~~~~~~~~~~~~
+* Protects the stock acquisitions cancel reasons from deletion since they
+are required to properly handle EDI order responses.
+* Changes the copy location dropdown so that users can view and select copy
+locations owned outside the workstation branch if they have permission to do so. 
+This fix also adds the copy location's owning org unit to the display.
+
+Administration
+~~~~~~~~~~~~~~
+* Allows use of more special characters, including - and +, when
+entering a library's main email address in the Organizational Units
+editor.
+* Fixes an issue where marc_export attempts to call a non-existent field
+on MARC::Record if an error occurs while exporting authority records.
+
+Cataloging
+~~~~~~~~~~
+* Fixes the mapping between copies and the target part when using "Merge
+Selected" in the Monographic Parts interface.
+* Fixes an issue with the horizontal scrollbar bar in the MARC import
+queue inspector so the focus no longer jumps to the top of the screen
+when attempting to use the scrollbar.
+* Hides the staff-client saved searches header from screen readers when
+using the public catalog in non-staff mode.
+
+Circulation
+~~~~~~~~~~~
+* When placing a hold via the staff client and clicking Advanced Hold
+Options, fixes an issue where the barcode formfield populated with the
+staff member's barcode.
+* Fixes an issue where some holds with a higher proximity were
+preferred over holds with a lower proximity because the list of
+proximities of elgible copies was sorting ASCIIbetically instead of
+numerically.
+* Adds a delete flag for monographic parts, fixes staff client errors that
+were previously caused by deleted parts, and cancels any holds attached to
+those deleted parts.
+* Fixes an internal error that appeared when trying to renew an item on the
+booking resource list through the public catalog. Users will now get a message
+saying they do not have permission to renew the item. 
+
+
+Public Catalog
+~~~~~~~~~~~~~~
+* Fixes an issue where unclosed phrase searches returned zero results and
+tied up the open-ils.storage process.
+* Fixes an issue where parameters weren't properly maintained when
+searching by copy location group.
+
+Reports
+~~~~~~~
+* Adds support for UTF-8 in the Reports interface.
+
 Evergreen 2.8.4
 ---------------
 This release contains several bugfixes improving on Evergreen 2.8.3
@@ -99,8 +157,8 @@ Public Catalog
 ~~~~~~~~~~~~~~
 
 * Improves performance of OPAC searches using format filters.
-* Removes opac_invisible copies from consideration when displaying copies on
-the search results page.
+* Removes opac_invisible copies from consideration when displaying copies
+on the search results page.
 * Fixes a UTF8 encoding issue with the SuperCat SRU service.
 
 
@@ -647,17 +705,20 @@ Evergreen:
 We would also like to thank the following individuals who contributed
 code and documentations patches to this release of Evergreen:
  
+ * Adam Bowling
  * Thomas Berezansky
  * Matthew Berowski
  * Bradley Bonner
  * Adam Bowling
  * Jason Boyer
+ * Kate Butler
  * Steven Chan
  * Galen Charlton
  * Bill Erickson
  * Jason Etheridge
  * Blake Henderson
  * Pasi Kallinen
+ * Jake Litrell
  * Kathy Lussier
  * Terran McCanna
  * Christine Morgan
@@ -696,6 +757,7 @@ patches:
  * North of Boston Library Exchange
  * Northwest Regional Library System
  * Pohjois-Karjalan Tietotekniikkakeskus Oy
+ * Rodgers Memorial Library
  * Sigio
  * University of Windsor
 
