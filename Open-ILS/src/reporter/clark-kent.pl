@@ -553,18 +553,20 @@ sub build_html {
 				table { border-collapse: collapse; }
 				th { background-color: lightgray; }
 				td,th { border: solid black 1px; }
-				* { font-family: sans-serif; font-size: 10px; }
+				* { font-family: sans-serif; }
 			</style>
+			<script src="/js/sortable/sortable.min.js"></script>
+			<link rel="stylesheet" href="/js/sortable/sortable-theme-minimal.css" />
 		CSS
 
-		print $raw "</head><body><table>";
+		print $raw "</head><body><table class='sortable-theme-minimal' data-sortable>";
 
 		{	no warnings;
-			print $raw "<tr><th>".join('</th><th>',@{$r->{column_labels}}).'</th></tr>';
-			print $raw "<tr><td>".join('</td><td>',@$_                   ).'</td></tr>' for (@{$r->{data}});
+			print $raw "<thead><tr><th>".join('</th><th>', @{$r->{column_labels}})."</th></tr></thead>\n<tbody>";
+			print $raw "<tr><td>".join('</td><td>', @$_)."</td></tr>\n" for (@{$r->{data}});
 		}
 
-		print $raw '</table></body></html>';
+		print $raw '</tbody></table></body></html>';
 	
 		$raw->close;
 	}

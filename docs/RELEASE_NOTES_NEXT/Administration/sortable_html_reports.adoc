@@ -1,0 +1,5 @@
+Sortable HTML reports
+^^^^^^^^^^^^^^^^^^^^^
+HTML reports can now be sorted by clicking on the header for a given column.
+Clicking on the header toggles between sorting the column in ascending and
+descending order.
