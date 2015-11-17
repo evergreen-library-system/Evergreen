@@ -18,6 +18,10 @@ my $query = '#available title: foo bar* || (-baz || (subject:"1900'.
                         'strategy(exclusion) item_type(a, t) item_form(d) '.
                         'bib.subjectTitle=potter bib.subjectName=harry '.
                         'keyword|mapscale:1:250000';
+
+# For testing LP#1516707
+# $query = '#CD_documentLength #CD_meanHarmonic #CD_uniqueWords core_limit(10000) limit(1000) estimation_strategy(inclusion)  keyword: title:"the blue" depth(0)';
+
 my $superpage = 1;
 my $superpage_size = 1000;
 my $core_limit = 25000;
@@ -36,12 +40,15 @@ GetOptions(
 );
 
 
+OpenILS::Application::Storage::Driver::Pg::QueryParser->initialize;
+
 my $start = time();
 OpenILS::Application::Storage::Driver::Pg::QueryParser->new( superpage_size => $superpage_size, superpage => $superpage, core_limit => $core_limit, debug => $debug, query => $query )->parse->parse_tree for (1 .. $runs);
 my $end = time();
 
 my $plan = OpenILS::Application::Storage::Driver::Pg::QueryParser->new( superpage_size => $superpage_size, superpage => $superpage, core_limit => $core_limit, query => $query, debug => $debug );
 $plan->parse;
+print "Parser config:\n" .  Dumper( \%QueryParser::parser_config) if (!$quiet);
 print "Parsed query tree:\n" .  Dumper( $plan->parse_tree) if (!$quiet);
 #print "Parsed query tree:\n" .  Dumper( QueryParser->new( superpage_size => $superpage_size, superpage => $superpage, core_limit => $core_limit, query => $query, debug => $debug )->parse->parse_tree);
 my $sql = $plan->toSQL;

@@ -1526,7 +1526,7 @@ sub rank {
 
     my $cover_density = 0;
     for my $norm ( keys %$rank_norm_map) {
-        $cover_density += $$rank_norm_map{$norm} if ($self->plan->find_modifier($norm));
+        $cover_density += $$rank_norm_map{$norm} if ($self->plan->QueryParser->parse_tree->find_modifier($norm));
     }
 
     my $weights = join(', ', @{$self->plan->QueryParser->search_class_weights($self->classname)});
