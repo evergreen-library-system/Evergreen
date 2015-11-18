@@ -52,6 +52,8 @@ Public Catalog
 ~~~~~~~~~~~~~~
 * Fixes an issue where unclosed phrase searches returned zero results and
 tied up the open-ils.storage process.
+* Fixes an issue where phrase searches were ignoring modifiers used in relevance
+ranking, leading to poorly-ranked results.
 * Fixes an issue where parameters weren't properly maintained when
 searching by copy location group.
 
