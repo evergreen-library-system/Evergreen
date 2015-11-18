@@ -1,3 +1,639 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 19e8150ba98c34746a5ce89416d8cd29433a3225
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Nov 18 13:37:53 2015 -0500
+
+    Modify server upgrade doc for 2.8.5
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+17	15	docs/installation/server_upgrade.txt
+
+commit 2e15ba49daefa20c5aa5f81f321a6d2a46296115
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Sep 16 13:52:40 2015 -0400
+
+    Bumping Perl version string for 2.8.5 release
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit ebda03c2671147aff7d8daad656cd040cf3cca09
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Wed Nov 18 13:51:07 2015 -0500
+
+    Docs: Addition to 2.8.5 point release notes
+    
+    Last-minute addition to 2.8.5 release notes for miker's query parser fix.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+2	0	docs/RELEASE_NOTES_2_8.txt
+
+commit 17fd0961e7ff9a0a8e9543a6f94d0be2058bfc36
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Tue Nov 17 17:20:05 2015 -0500
+
+    LP#1516707: Phrase search ignores CD modifiers
+    
+    Because phrases are subqueries, we need to look at the top of the parse tree
+    when looking for modifiers for cover density.  This is because modifers are
+    normally only allowed at the top of the parse tree (or in the floating sub-
+    query).  We do that by asking the plan's QueryParse for it's reference to its
+    parse_tree member, which is always the top of the parse tree in QP.
+    
+    Included in this commit is a small change to the QP testing script to
+    facilitate testing of this fix.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+7	0	Open-ILS/src/extras/fts-replacement.pl
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Driver/Pg/QueryParser.pm
+
+commit 21733c3b0fbb618ea5ded5156312f10f57874980
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Tue Nov 17 16:37:51 2015 -0500
+
+    Docs: 2.8.5 point release notes
+    
+    Adding bug fixes and acknowledgements for the 2.8.5 point release.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+64	2	docs/RELEASE_NOTES_2_8.txt
+
+commit c3d891ddd5b9f0608842a90856857480a8c51d02
+Author: blake <blake@mobiusconsortium.org>
+Date:   Mon Jan 5 10:38:18 2015 -0600
+
+    LP1402018_Acq_Copy_location_UI_scoped_to_registered_workstation
+    
+    This little patch will open up the acq copy location dropdown UI
+    to include other library's copy locations outside of the workstation
+    registration. When the user permissions are scoped to more branches.
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+40	20	Open-ILS/web/js/dojo/openils/widget/AutoFieldWidget.js
+1	1	Open-ILS/web/js/ui/default/acq/common/li_table.js
+
+commit 64057435cd776c1a4f12b32ea3363127832f2047
+Author: Steven Chan <schan@sitka.bclibraries.ca>
+Date:   Thu Sep 19 12:51:35 2013 -0700
+
+    Fix LP1175711, OPAC can't renew item on booking resource list
+    
+    A test sequence to show the behaviour before and after the fix:
+    
+    1. Using staff client, check out an item to test account.
+    2. Go to Copy Details on the OPAC, click Book Now, and cancel the form;
+    the side effect is to put the item on the Resource list.
+    3. Using the OPAC on a web browser, log in with test account.
+    4. Go to Items Checked Out, select the item in the list and click Renew
+    Selected Items.
+    
+    Before the fix, we saw the OPAC spin forever, and we saw the Javascript
+    console of the web browser log the error noted in previous comments.
+    
+    With the fix, we see an error prompt saying, 'The system is unable to
+    renew the selected item at this time.  This usually means the item is
+    needed to fulfill a hold.  Please see a librarian for further help.'
+    
+    Note: A patron with the normal group of permissions will not be able to
+    renew an item on resource list.
+    
+    The fix is to check for an error object emitted by the function
+    Booking.pm/reservation_list_by_filters(), and to propagate it back to
+    the client, by returning a call to bail_on_events().
+    
+    We also clarify the coding of the function's parameter list and how the
+    function checks for mandatory parameters.
+    
+    Signed-off-by: Steven Chan <schan@sitka.bclibraries.ca>
+    Signed-off-by: Josh Stompro <stomproj@larl.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+7	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Booking.pm
+9	4	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Circulate.pm
+
+commit bac5b646a52cedec5f5152ff69070611bfbba96a
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Fri Nov 13 16:12:46 2015 -0500
+
+    LP#1513554 - Stamping Upgrade Script
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+21	0	Open-ILS/src/sql/Pg/upgrade/0949.schema.no_delete_acq_cancel_reasons.sql
+0	21	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.no_delete_acq_cancel_reasons.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0949.schema.no_delete_acq_cancel_reasons.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.no_delete_acq_cancel_reasons.sql
+
+commit b669e3397a85b301fd98a0c7363fcee3b2c7ac80
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Sun Nov 8 09:47:58 2015 -0500
+
+    LP#1513554 - Doc update for cancel reason selection
+    
+    Adding an update to the docs to inform users that default cancel reasons
+    cannot be selected.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+19	5	docs/admin/acquisitions_admin.txt
+
+commit 32838d5faef842d22b715c8768695745cb31e015
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Thu Nov 5 13:30:51 2015 -0500
+
+    LP#1513554 - Prevent deletion of reserved rows.
+    
+    It was previously possible to delete reserved rows in
+    the acq.cancel_reasons table via the UI.  We take a belt
+    and suspenders approach here:
+    
+    1) Grey out the checkboxes beside cancel reasons with an
+       ID lower than 2000.
+    2) Create a trigger on the acq.cancel_reason table that
+       prevents deletion of rows with an ID lower than 2000.
+    
+    The trigger executes a new generally available function
+    for use in similar situations in the future.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+9	0	Open-ILS/src/sql/Pg/000.functions.general.sql
+5	0	Open-ILS/src/sql/Pg/200.schema.acq.sql
+13	0	Open-ILS/src/sql/Pg/t/lp1513554_do_not_delete_reserved_cancel_reasons.pg
+21	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.no_delete_acq_cancel_reasons.sql
+5	0	Open-ILS/web/js/ui/default/conify/global/acq/cancel_reason.js
+ create mode 100644 Open-ILS/src/sql/Pg/t/lp1513554_do_not_delete_reserved_cancel_reasons.pg
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.no_delete_acq_cancel_reasons.sql
+
+commit ec852021bad593cd100b5a2d7cc53afc4dbc4b66
+Author: Ben Shum <bshum@biblio.org>
+Date:   Thu Nov 5 18:12:35 2015 -0500
+
+    LP#937789: Stamping upgrade script for part deletion
+    
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+    
+    Conflicts:
+    	Open-ILS/src/sql/Pg/002.schema.config.sql
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+139	0	Open-ILS/src/sql/Pg/upgrade/0948.schema.fake-delete-parts.sql
+0	137	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.fake-delete-parts.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0948.schema.fake-delete-parts.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.fake-delete-parts.sql
+
+commit 59ca73acbdb9510bfa77bd09acb6299e0132cba4
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Thu Nov 5 08:45:23 2015 -0500
+
+    LP#937789: Hide 'deleted' from parts table & editor
+    
+    This commit hides the new parts 'deleted' field from the Manage Parts
+    dojo table and popup editor.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+2	2	Open-ILS/src/templates/conify/global/biblio/monograph_part.tt2
+
+commit 521e0b6a9e06fba67d4acf50ef102deb6ec310e5
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Thu Oct 29 15:39:16 2015 +0000
+
+    LP#937789: various improvements to logical deletion of parts
+    
+    This patch ensures that when a monograph part is marked as
+    deleted, that mappings between it and its copies are also
+    removed, similar to the previous behavior of the cascade
+    on delete.
+    
+    This patch also adds some pgTAP tests and ensures that
+    unapi.bmp() and unapi.holdings_xml() get updated during upgrade.
+    
+    To test the fix for this bug:
+    
+    [1] Apply the patches.
+    [2] Create a monograph part on a record, then delete it. Verify that
+        it no longer shows up in the parts maintenance interface, but that
+        a row in the biblio.monograph_parts table still exists with the
+        deleted flag set to true.
+    [3] Create another monograph part on the same record.
+    [4] Create a new volume/copy and assign the part created in step
+        3 to it. Verify that the part shown in step 2 is *not*
+        included in the XUL part selector.
+    [5] Place a part-level hold. Verify that the hold request
+        is displayed correct in both the public catalog and the staff
+        interface.
+    [6] Delete the part created in step 3.
+    [7] Verify that viewing the list of the patron's holds in the XUL staff
+        client doesn't result in any 'network errors'.  Also verify that
+        the hold request is still displayed in patron's view in the public
+        catalog.
+    [8] Using SQL or some other means, set the expire_time and
+        prev_check_time of the test hold request to a couple days in the
+        past, then run the hold targeter.  Verify that the hold gets
+        cancelled for lack of a suitable copy to fill it.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+3	1	Open-ILS/src/sql/Pg/800.fkeys.sql
+73	0	Open-ILS/src/sql/Pg/t/regress/lp937789_fake_bmp_delete.sql
+131	1	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.fake-delete-parts.sql
+ create mode 100644 Open-ILS/src/sql/Pg/t/regress/lp937789_fake_bmp_delete.sql
+
+commit 03abdcd69f83e71a8a269b1b67da463381b6d74b
+Author: Ben Shum <bshum@biblio.org>
+Date:   Fri Nov 6 09:47:16 2015 -0500
+
+    LP#937789: fake-delete support for monograph parts
+    
+    Unlike copies, call numbers, and bibs, parts can be directly removed from the
+    database.  This has a negative impact on holds, in that the holds become not
+    just orphaned, but broken entirely.  With this commit we bring part holds to
+    parity with other hold types such that they can be system-canceled when their
+    target goes away.  This will avoid spurious UI-level errors to staff.
+    
+    Conflicts: rel_2_8 does not contain the cataloging module for webstaff, commit
+    amended.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	0	Open-ILS/examples/fm_IDL.xml
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/AppUtils.pm
+2	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Search/Biblio.pm
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/CDBI/biblio.pm
+4	0	Open-ILS/src/perlmods/lib/OpenILS/Application/SuperCat.pm
+1	0	Open-ILS/src/sql/Pg/010.schema.biblio.sql
+7	0	Open-ILS/src/sql/Pg/800.fkeys.sql
+2	2	Open-ILS/src/sql/Pg/990.schema.unapi.sql
+7	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.fake-delete-parts.sql
+1	1	Open-ILS/src/templates/conify/global/biblio/monograph_part.tt2
+1	1	Open-ILS/xul/staff_client/server/cat/volume_copy_creator.js
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.fake-delete-parts.sql
+
+commit 7969b7c06ac6dc4c89f264ff9d664165af1f5e28
+Author: Kate Butler <katebutler@rodgerslibrary.org>
+Date:   Thu Nov 5 16:21:37 2015 -0500
+
+    Docs: add 'Place another hold link' docs
+    
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+9	0	docs/circulation/holds.txt
+-	-	docs/media/place-another-hold-1.png
+ create mode 100644 docs/media/place-another-hold-1.png
+
+commit 1974d54348d30a7a1274ca036aa0bede6297cff0
+Author: Pasi Kallinen <pasi.kallinen@pttk.fi>
+Date:   Thu Jul 4 08:33:25 2013 +0300
+
+    LP#1092018: Make the reports UI use UTF-8.
+    
+    To test:
+    
+    [1] Install the translation for a language that uses
+        non-Latin-1 characters, such as Russian.
+    [2] Start the XUL staff client and open the reports
+        interface.  Note that labels are mangled.
+    [3] Apply the Apache configuration changes in this patch,
+        reload Apache, clear cache in the staff client, and
+        reload the reports UI. The labels should now be
+        displayed correctly.
+    
+    Signed-off-by: Pasi Kallinen <pasi.kallinen@pttk.fi>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+7	0	Open-ILS/examples/apache/eg_vhost.conf.in
+8	0	Open-ILS/examples/apache_24/eg_vhost.conf.in
+
+commit e524c2f0df9f480bc065751ff11e7b32ecf688bf
+Author: Josh Stompro <stomproj@larl.org>
+Date:   Sat Oct 31 10:38:41 2015 -0500
+
+    LP#1511828: sort proximities numerically when targeting holds
+    
+    The hold targeter had three instances of using lexical sorting
+    rather than numerical sorting.
+    
+    Two of the instances affected hold targeting if proximity values were
+    over 9.  Proximity values were being sorted lexically. For instance,
+    1,2,5,11,15,100,120 was sorted as 1,100,11,120,15,2,5, causing
+    interesting hold targeting results. Normally proximity doesn't go
+    that high so it isn't a problem, but we were using proximity adjustments
+    to strictly order locations so each location had a different proximity,
+    driving the numbers above 9.
+    
+    One instance wasn't causing any current issue but could cause problems in
+    the future if more best hold selection sort options are added to bring the
+    total number of sort options over 9.
+    
+    Also included are some changes to reduce warnings in the logs
+    suggested by Bill Erickson.  The sorting problem was found by
+    Galen Charlton, thanks Galen.
+    
+    Testing Notes - to trigger this issue you need to have adjusted
+      proximities over 9.
+    
+    1. Use proximity adjustment rules to add a +10 proximity adjustment to
+      one item circ lib, Branch A and a +2 proximity adjustment to the
+      item circ lib Branch B.
+    
+    2. Find a title with a copy at Branch A and B. Place a hold with a
+      pickup location of Branch B.
+    
+    3. The copy at Branch A should get targeted since it has a proximity of
+      12-14 (10+normal proximity) and Branch B has a proximity of 2
+      (2+normal proximity).  12 gets sorted before 2 lexically.
+    
+    4. After the fix the copy at Branch B should get targeted since 2
+      is sorted before 12.
+    
+    Signed-off-by: Josh Stompro <stomproj@larl.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+5	5	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Publisher/action.pm
+
+commit d1f7def042ba76f3d6f94229212dc7aefe6bdc76
+Author: Josh Stompro <stomproj@larl.org>
+Date:   Wed Jun 10 20:12:10 2015 -0500
+
+    LP#1400801 - Updated email validation regex for Org Unit admin gui
+    
+    Grabbed the example of a simplified RFC 5322 email regex from
+    http://www.regular-expressions.info/email.html and lightly modified it
+    for case sensitivity and removed the "&" character from the localpart allowed
+    characters, which causes a 500 server error for some reason.
+    
+    This matches many more of the valid localpart special characters.
+    
+    Signed-off-by: Josh Stompro <stomproj@larl.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/web/conify/global/actor/org_unit.html
+
+commit 432757b90c6cd0b0417148cb1363723d701c8e8a
+Author: Adam Bowling <abowling@emeralddata.net>
+Date:   Mon Jan 19 12:05:19 2015 -0500
+
+    LP#1406387 Fix for Holds Placement Advanced Options
+    
+    In the staff client, when placing a hold and clicking
+    Advanced Hold Options, the barcode input will populate
+    with the staff member's barcode if it was previously
+    empty, regardless of whether the radio input for the
+    hold was specified for a patron or the staff member.
+    
+    This patch corrects that behavior, and also populates
+    the input radio on load after clicking Advanced Hold
+    Options.
+    
+    Signed-off-by: Adam Bowling <abowling@emeralddata>
+    Signed-off-by: Michael Peters <mpeters@emeralddata.net>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+13	2	Open-ILS/src/templates/opac/parts/place_hold.tt2
+22	0	Open-ILS/web/js/ui/default/opac/staff.js
+
+commit 02ea34923c32de76e6fcff4e7eb7cb54d611ca96
+Author: Jake Litrell <jake@masslnc.org>
+Date:   Mon Sep 14 17:49:29 2015 -0400
+
+    LP#1340852: Retain search params for copy location groups
+    
+    The order in which we determined what to 'selected' in the "Library"
+    dropdown put the resolved locg first (which allows for shortnames, e.g.
+    BR1).  That only gives us half the location group though, which is why
+    it was bumping up a level.  Now, if we have a location group selected,
+    it will use that first (since they don't have shortnames); the remaining
+    select order will be the same.
+    
+    Signed-off-by: Jake Litrell <jake@masslnc.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+6	2	Open-ILS/src/templates/opac/parts/misc_util.tt2
+
+commit 15b0730a427979ce70ca7f7c27769129f88c0a0f
+Author: Yamil Suarez <yamil@yamil.com>
+Date:   Mon Jun 22 14:33:28 2015 -0400
+
+    LP#1467634: Hide saved searches from screen readers for non-staff client
+    
+    This commit will only allow screen readers to see the saved searches for
+    users that are logged through XUL client.
+    Assuming that a screen reader can be attached to the XUL client.
+    
+    It should also work for a user logged in through the web staff
+    client that is using a screen reader.
+    
+    To test
+    -------
+    [1] Apply the patch, then perform a search in the public catalog and
+        view the HTML source.  Verify that there's no "sr-only" heading
+        for "Saved searches".
+    [2] Set the opac.staff_saved_search.size library setting to a non-zero
+        value.
+    [3] In the web staff client, perform a search using the embeded OPAC;
+        verify that the recent searches list is displayed.
+    [4] Repeat step 4 in the XUL client.
+    
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+    Signed-off-by: Josh Stompro <stomproj@larl.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2	0	Open-ILS/src/templates/opac/parts/result/table.tt2
+
+commit 51decf3af821ceb86ba6238b79b79efaed0d61be
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Wed Oct 7 17:49:19 2015 +0000
+
+    LP#1503782: fix horizontal scrollbar in MARC import queue inspector
+    
+    In the XUL client (and webstaff), attempting to view the contents
+    of a MARC record import queue displays a table that, due to
+    its width, will almost always have a horizontal scrollbar. However,
+    attempting to actually use the scrollbar often causes the
+    focus to jump to the top of the table instead.  This patch
+    fixes that.
+    
+    To test:
+    
+    [1] Create a bib queue that has at least a dozen records or so.
+    [2] Inspect the contents of the queue, scroll to the bottom of
+        the table, and interact with the horizontal scrollbar.
+    [3] Observe that doing so typically results in jumping up
+        to the top of the table.
+    [4] Apply the patch, clear cache and refresh, and try step #2
+        again.
+    [5] This time, the horizontal scrollbar should act normally.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+2	2	Open-ILS/src/templates/vandelay/inc/queue.tt2
+
+commit d60b5648e17e8643447053fb95615747ebf1be27
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Thu Oct 29 19:30:31 2015 +0000
+
+    LP#1406786: fix remapping copies during parts merge
+    
+    This patch fixes an issue with how copies are mapped
+    on the target part when using "Merge Selected" in the
+    Monograph Parts interface.
+    
+    To test:
+    
+    [1] Create some monograph parts on a record and assign
+        some copies to use them.
+    [2] Use the merge parts function to collapse all of the
+        parts created in step 1 onto a single part.
+    [3] Verify that the copies whose original parts were removed
+        are now mapped onto the part that was the target of the
+        merge.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+2	1	Open-ILS/web/js/dojo/openils/biblio/monographPartMerge.js
+
+commit b2843639e8e0f75a88542a7c01e70a1c35b17dc4
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Fri Oct 23 20:03:07 2015 +0000
+
+    LP#1509479: set a limit on loops in QP's decompose() method
+    
+    Following a suggestion of Dan Scott's, add a pair of
+    suspenders to the belt and enforce an arbitrary limit
+    of 1000 passes through QP->decompse().
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+7	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/QueryParser.pm
+
+commit e40ee650203f52b29fadbc9c7e9a1747f10171b5
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Fri Oct 23 19:23:05 2015 +0000
+
+    LP#1509479: fix infinite loop bug in QueryParser
+    
+    An unclosed phrase search that has a modifier can cause QueryParser to
+    enter an infinite loop, tying up open-ils.storage backends.
+    
+    Examples of such searches include:
+    
+      -"cats and dogs
+      subject:+"physical chemistry
+    
+    This patch fixes the bug by allowing the end of the query string
+    to terminate a phrase (in addition to a quotation mark).
+    
+    To test:
+    
+    [1] Verify that the t/21-QueryParser.t unit test passes
+    [2] To test in a *development* database, before applying the patch
+        run one of the example queries.  Observe that no
+        results are returned, and that one of the open-ils.storage
+        drones is running at 100% CPU.
+    [3] Apply the patch and restart the open-ils.storage service.
+    [4] Try the query again; this time, it should return results
+        immediately without causing an open-ils.storage drone to
+        peg a CPU.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/QueryParser.pm
+12	0	Open-ILS/src/perlmods/t/21-QueryParser.t
+
+commit a97830d71ee66f26e958d10fddf035ff66978986
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Fri Oct 2 10:17:09 2015 -0400
+
+    LP 1502156: Fix marc_export error when dumping authorities.
+    
+    There is a chance that marc_export will attempt to call a nonexistent
+    field on MARC::Record if an error occurs while exporting authority
+    records.  The bug could only be triggered if a conversion error
+    occurred while exporting the authority as either MARCXML or USMARC.
+    
+    The fix is to rename a couple of variables in the Marque::Authority->next
+    method to be more like those used in Marque::Biblio->next.  This will have
+    the side effect of making marc_export easier to maintain, since the
+    variables used in one method will now have the same meaning as those
+    in the other.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+18	18	Open-ILS/src/support-scripts/marc_export.in
+
+commit e38f089bb54397c6465b9c12bf2c4c0d3ac12a39
+Author: Josh Stompro <stomproj@larl.org>
+Date:   Sun Sep 20 10:43:10 2015 -0500
+
+    LP#1497318 - Acknowledgments update Adding Northwest Regional Library System
+      and Matthew Berowski for typo fixes.
+    
+    Signed-off-by: Josh Stompro <stomproj@larl.org>
+
+2	0	docs/RELEASE_NOTES_2_8.txt
+
+commit fcfed58bd2e875d1b7246f2a1052836770bfd9b5
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Thu Sep 17 08:24:56 2015 -0400
+
+    LP#1496837: Postgres fixed a bug and broke our test
+    
+    So, we will unbreak it here.  The PG fix in question can be seen here:
+    
+    http://git.postgresql.org/gitweb/?p=postgresql.git;a=commitdiff;h=c975fa4713c2325623d7bbfd81806327234281ac
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/sql/Pg/live_t/0847.auth_overlay_generator.pg
+
+commit 2dcc84612ccc83eb775d36bd4de21a05efefa28b
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Wed Sep 16 16:14:51 2015 -0400
+
+    Docs: 2.8 Acknowledgements addition
+    
+    We missed acknowledgements for a few code contributors during the 2.8.3
+    point release. Adding them here as well as a fix to get the header to display
+    properly for the 2.8.4 release notes.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+6	0	docs/RELEASE_NOTES_2_8.txt
+
+commit 37e3c70bce9e1911bb4328654a2993195d01512b
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Sep 16 15:20:49 2015 -0400
+
+    Porting 2.8.3->2.8.4 SQL upgrade
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+12	0	Open-ILS/src/sql/Pg/version-upgrade/2.8.3-2.8.4-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.8.3-2.8.4-upgrade-db.sql
