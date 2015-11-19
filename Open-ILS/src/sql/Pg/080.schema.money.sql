@@ -387,7 +387,7 @@ BEGIN
 	IF NOT OLD.voided THEN
 		UPDATE	money.materialized_billable_xact_summary
 		  SET	total_owed = total_owed - OLD.amount,
-			balance_owed = balance_owed + OLD.amount
+			balance_owed = balance_owed - OLD.amount
 		  WHERE	id = OLD.xact;
 	END IF;
 
