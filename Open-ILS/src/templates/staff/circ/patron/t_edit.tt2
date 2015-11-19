@@ -249,7 +249,9 @@
     </div>
   </div>
   <div class="col-md-3">
-    <button class="btn btn-default">[% l('Secondary Groups') %]</button>
+    <button class="btn btn-default" ng-click="secondary_groups_dialog()">
+        [% l('Secondary Groups') %]
+    </button>
   </div> 
 </div>
 

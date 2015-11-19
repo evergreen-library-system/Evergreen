@@ -47,7 +47,8 @@ angular.module('egPatronApp', ['ngRoute', 'ui.bootstrap',
                 'net_access_level',
                 'ident_type',
                 'ident_type2',
-                'cards'
+                'cards',
+                'groups'
             ]);
         }
 

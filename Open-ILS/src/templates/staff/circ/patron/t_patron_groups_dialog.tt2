@@ -1,0 +1,46 @@
+<form ng-submit="ok(args)" role="form">
+    <div class="modal-header">
+      <button type="button" class="close" ng-click="cancel()" 
+        aria-hidden="true">&times;</button>
+      <h4 class="modal-title">[% l('Secondary Permission Groups') %]</h4>
+    </div>
+    <div class="modal-body patron-reg-barcodes">
+      <div class="row pad-all">
+      [% | l %]
+Assign additional permission groups to users here.  
+This does not affect circulation policy.
+      [% END %]
+      </div>
+      <div class="row header">
+        <div class="col-md-6">
+          <label>[% l('Group') %]</label>
+        </div>
+        <div class="col-md-6">
+          <label>[% l('Action') %]</label>
+        </div>
+      </div>
+      <div class="row pad-all-min" ng-repeat="grp in args.linked_groups">
+        <div class="col-md-6">{{grp.name()}}</div>
+        <div class="col-md-6">
+            <button class="btn btn-default" ng-click="unlink_group($event, grp)">
+                [% l('Delete') %]
+            </button>
+        </div>
+      </div>
+      <div class="row pad-all-min">
+        <div class="col-md-6">
+            <!-- group selector -->
+        </div>
+        <div class="col-md-6">
+            <button class="btn btn-default" ng-click="link_group($event, grp)">
+                [% l('Add') %]
+            </button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <input type="submit" class="btn btn-primary" value="[% l('Apply Changes') %]"/>
+      <button class="btn btn-warning" ng-click="cancel()">[% l('Cancel') %]</button>
+    </div>
+  </div> <!-- modal-content -->
+</form>
