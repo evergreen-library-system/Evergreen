@@ -193,13 +193,29 @@ angular.module('egCoreMod')
     };
 
     service.get_ident_types = function() {
-        return egCore.pcrud.retrieveAll('cit', {}, {atomic : true})
-        .then(function(types) { service.ident_types = types });
+        if (egCore.env.cit) {
+            service.ident_types = egCore.env.cit.list;
+            return $q.when();
+        } else {
+            return egCore.pcrud.retrieveAll('cit', {}, {atomic : true})
+            .then(function(types) { 
+                egCore.env.absorbList(types, 'cit')
+                service.ident_types = types 
+            });
+        }
     };
 
     service.get_net_access_levels = function() {
-        return egCore.pcrud.retrieveAll('cnal', {}, {atomic : true})
-        .then(function(levels) { service.net_access_levels = levels });
+        if (egCore.env.cnal) {
+            service.net_access_levels = egCore.env.cnal.list;
+            return $q.when();
+        } else {
+            return egCore.pcrud.retrieveAll('cnal', {}, {atomic : true})
+            .then(function(levels) { 
+                egCore.env.absorbList(levels, 'cnal')
+                service.net_access_levels = levels 
+            });
+        }
     }
 
     service.get_perm_groups = function() {
@@ -538,6 +554,7 @@ angular.module('egCoreMod')
 function PatronRegCtrl($scope, $routeParams, 
     $q, $modal, $window, egCore, patronSvc, patronRegSvc) {
 
+    $scope.page_data_loaded = false;
     $scope.clone_id = $routeParams.clone_id;
     $scope.stage_username = $routeParams.stage_username;
     $scope.patron_id = 
@@ -626,6 +643,9 @@ function PatronRegCtrl($scope, $routeParams,
 
         if ($scope.patron.isnew) 
             set_new_patron_defaults(prs);
+
+        $scope.page_data_loaded = true;
+        console.log('here with ' + $scope.page_data_loaded);
     });
 
     // update the currently displayed field documentation

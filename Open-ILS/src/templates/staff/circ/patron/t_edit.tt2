@@ -132,6 +132,22 @@
 </div>
 [% END %]
 
+<!-- progress dialog displayed as we await all data to finish loading -->
+<div class="row" ng-show="!page_data_loaded">
+  <div class="col-md-6 pad-vert">
+    <div class="progress progress-striped active">
+        <div class="progress-bar"  role="progressbar" aria-valuenow="100" 
+              aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+            <span class="sr-only">[% l('Loading...') %]</span>
+        </div>
+    </div>
+  </div>
+</div>
+
+<!-- this div wraps the entire form so we can hide it 
+     until all needed data has been loaded -->
+<div ng-show="page_data_loaded"><!-- form wrapper -->
+
 [% formfield('ac', 'barcode', 'card') %]
 [% formfield('au', 'usrname') %]
 [% formfield('au', 'passwd') %]
@@ -494,4 +510,4 @@
   </div>
 </div>
 
-
+</div><!-- /form wrapper -->
