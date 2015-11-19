@@ -424,13 +424,6 @@ vim:et:ts=4:sw=4:
                 </unix_config>
                 <app_settings>
                     <!-- defined app-specific settings here -->
-                    <default_timeout>
-                        <!-- default login timeouts based on login type -->
-                        <opac>420</opac>
-                        <staff>7200</staff>
-                        <temp>300</temp>
-                        <persist>2 weeks</persist>
-                    </default_timeout>
                     <auth_limits>
                         <seed>30</seed> <!-- amount of time a seed request is valid for -->
                         <block_time>90</block_time> <!-- amount of time since last auth or seed request to save failure counts -->
@@ -438,6 +431,33 @@ vim:et:ts=4:sw=4:
                     </auth_limits>
                 </app_settings>
             </open-ils.auth>
+
+            <!-- Internal authentication server -->
+            <open-ils.auth_internal>
+                <keepalive>5</keepalive>
+                <stateless>1</stateless>
+                <language>c</language>
+                <implementation>oils_auth_internal.so</implementation>
+                <unix_config>
+                    <max_requests>1000</max_requests>
+                    <min_children>1</min_children>
+                    <max_children>15</max_children>
+                    <min_spare_children>1</min_spare_children>
+                    <max_spare_children>5</max_spare_children>
+                </unix_config>
+                <app_settings>
+                    <!-- defined app-specific settings here -->
+                    <default_timeout>
+                        <!-- default login timeouts based on login type -->
+                        <opac>420</opac>
+                        <staff>7200</staff>
+                        <temp>300</temp>
+                        <persist>2 weeks</persist>
+                    </default_timeout>
+                </app_settings>
+            </open-ils.auth_internal>
+
+
 
             <!-- Authentication proxy server -->
             <open-ils.auth_proxy>
@@ -1177,6 +1197,7 @@ vim:et:ts=4:sw=4:
                 <appname>open-ils.circ</appname> 
                 <appname>open-ils.actor</appname> 
                 <appname>open-ils.auth</appname> 
+                <appname>open-ils.auth_internal</appname>
                 <appname>open-ils.auth_proxy</appname> 
                 <appname>open-ils.storage</appname>  
                 <appname>open-ils.justintime</appname>  

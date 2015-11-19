@@ -33,7 +33,7 @@ test_qstore_CFLAGS = $(AM_CFLAGS)
 test_qstore_LDFLAGS = $(AM_LDFLAGS) -loils_idl -loils_utils
 test_qstore_DEPENDENCIES = liboils_idl.la liboils_utils.la
 
-lib_LTLIBRARIES = liboils_idl.la liboils_utils.la oils_cstore.la oils_qstore.la oils_rstore.la oils_pcrud.la oils_auth.la
+lib_LTLIBRARIES = liboils_idl.la liboils_utils.la oils_cstore.la oils_qstore.la oils_rstore.la oils_pcrud.la oils_auth.la oils_auth_internal.la
 
 liboils_idl_la_SOURCES = oils_idl-core.c
 liboils_idl_la_LDFLAGS = -version-info 2:0:0
@@ -60,5 +60,10 @@ oils_pcrud_la_DEPENDENCIES = liboils_utils.la
 oils_auth_la_SOURCES = oils_auth.c
 oils_auth_la_LDFLAGS = -module -loils_utils -lpcre -version-info 2:0:0
 oils_auth_la_DEPENDENCIES = liboils_utils.la
+
+oils_auth_internal_la_SOURCES = oils_auth_internal.c
+oils_auth_internal_la_LDFLAGS = -module -loils_utils -version-info 2:0:0
+oils_auth_internal_la_DEPENDENCIES = liboils_utils.la
+
 
 

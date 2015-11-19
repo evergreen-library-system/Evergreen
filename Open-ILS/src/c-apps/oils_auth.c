@@ -24,10 +24,6 @@
 int osrfAppInitialize();
 int osrfAppChildInit();
 
-static long _oilsAuthOPACTimeout = 0;
-static long _oilsAuthStaffTimeout = 0;
-static long _oilsAuthOverrideTimeout = 0;
-static long _oilsAuthPersistTimeout = 0;
 static long _oilsAuthSeedTimeout = 0;
 static long _oilsAuthBlockTimeout = 0;
 static long _oilsAuthBlockCount = 0;
@@ -535,130 +531,6 @@ static int oilsAuthVerifyPassword( const osrfMethodContext* ctx, int user_id,
     return verified;
 }
 
-/**
-	@brief Determine the login timeout.
-	@param userObj Pointer to an object describing the user.
-	@param type Pointer to one of four possible character strings identifying the login type.
-	@param orgloc Org unit to use for settings lookups (negative or zero means unspecified)
-	@return The length of the timeout, in seconds.
-
-	The default timeout value comes from the configuration file, and depends on the
-	login type.
-
-	The default may be overridden by a corresponding org unit setting.  The @a orgloc
-	parameter says what org unit to use for the lookup.  If @a orgloc <= 0, or if the
-	lookup for @a orgloc yields no result, we look up the setting for the user's home org unit
-	instead (except that if it's the same as @a orgloc we don't bother repeating the lookup).
-
-	Whether defined in the config file or in an org unit setting, a timeout value may be
-	expressed as a raw number (i.e. all digits, possibly with leading and/or trailing white
-	space) or as an interval string to be translated into seconds by PostgreSQL.
-*/
-static long oilsAuthGetTimeout( const jsonObject* userObj, const char* type, int orgloc ) {
-
-	if(!_oilsAuthOPACTimeout) { /* Load the default timeouts */
-
-		jsonObject* value_obj;
-
-		value_obj = osrf_settings_host_value_object(
-			"/apps/open-ils.auth/app_settings/default_timeout/opac" );
-		_oilsAuthOPACTimeout = oilsUtilsIntervalToSeconds( jsonObjectGetString( value_obj ));
-		jsonObjectFree(value_obj);
-		if( -1 == _oilsAuthOPACTimeout ) {
-			osrfLogWarning( OSRF_LOG_MARK, "Invalid default timeout for OPAC logins" );
-			_oilsAuthOPACTimeout = 0;
-		}
-
-		value_obj = osrf_settings_host_value_object(
-			"/apps/open-ils.auth/app_settings/default_timeout/staff" );
-		_oilsAuthStaffTimeout = oilsUtilsIntervalToSeconds( jsonObjectGetString( value_obj ));
-		jsonObjectFree(value_obj);
-		if( -1 == _oilsAuthStaffTimeout ) {
-			osrfLogWarning( OSRF_LOG_MARK, "Invalid default timeout for staff logins" );
-			_oilsAuthStaffTimeout = 0;
-		}
-
-		value_obj = osrf_settings_host_value_object(
-			"/apps/open-ils.auth/app_settings/default_timeout/temp" );
-		_oilsAuthOverrideTimeout = oilsUtilsIntervalToSeconds( jsonObjectGetString( value_obj ));
-		jsonObjectFree(value_obj);
-		if( -1 == _oilsAuthOverrideTimeout ) {
-			osrfLogWarning( OSRF_LOG_MARK, "Invalid default timeout for temp logins" );
-			_oilsAuthOverrideTimeout = 0;
-		}
-
-		value_obj = osrf_settings_host_value_object(
-			"/apps/open-ils.auth/app_settings/default_timeout/persist" );
-		_oilsAuthPersistTimeout = oilsUtilsIntervalToSeconds( jsonObjectGetString( value_obj ));
-		jsonObjectFree(value_obj);
-		if( -1 == _oilsAuthPersistTimeout ) {
-			osrfLogWarning( OSRF_LOG_MARK, "Invalid default timeout for persist logins" );
-			_oilsAuthPersistTimeout = 0;
-		}
-
-		osrfLogInfo(OSRF_LOG_MARK, "Set default auth timeouts: "
-			"opac => %ld : staff => %ld : temp => %ld : persist => %ld",
-			_oilsAuthOPACTimeout, _oilsAuthStaffTimeout,
-			_oilsAuthOverrideTimeout, _oilsAuthPersistTimeout );
-	}
-
-	int home_ou = (int) jsonObjectGetNumber( oilsFMGetObject( userObj, "home_ou" ));
-	if(orgloc < 1)
-		orgloc = home_ou;
-
-	char* setting = NULL;
-	long default_timeout = 0;
-
-	if( !strcmp( type, OILS_AUTH_OPAC )) {
-		setting = OILS_ORG_SETTING_OPAC_TIMEOUT;
-		default_timeout = _oilsAuthOPACTimeout;
-	} else if( !strcmp( type, OILS_AUTH_STAFF )) {
-		setting = OILS_ORG_SETTING_STAFF_TIMEOUT;
-		default_timeout = _oilsAuthStaffTimeout;
-	} else if( !strcmp( type, OILS_AUTH_TEMP )) {
-		setting = OILS_ORG_SETTING_TEMP_TIMEOUT;
-		default_timeout = _oilsAuthOverrideTimeout;
-	} else if( !strcmp( type, OILS_AUTH_PERSIST )) {
-		setting = OILS_ORG_SETTING_PERSIST_TIMEOUT;
-		default_timeout = _oilsAuthPersistTimeout;
-	}
-
-	// Get the org unit setting, if there is one.
-	char* timeout = oilsUtilsFetchOrgSetting( orgloc, setting );
-	if(!timeout) {
-		if( orgloc != home_ou ) {
-			osrfLogDebug(OSRF_LOG_MARK, "Auth timeout not defined for org %d, "
-				"trying home_ou %d", orgloc, home_ou );
-			timeout = oilsUtilsFetchOrgSetting( home_ou, setting );
-		}
-	}
-
-	if(!timeout)
-		return default_timeout;   // No override from org unit setting
-
-	// Translate the org unit setting to a number
-	long t;
-	if( !*timeout ) {
-		osrfLogWarning( OSRF_LOG_MARK,
-			"Timeout org unit setting is an empty string for %s login; using default",
-			timeout, type );
-		t = default_timeout;
-	} else {
-		// Treat timeout string as an interval, and convert it to seconds
-		t = oilsUtilsIntervalToSeconds( timeout );
-		if( -1 == t ) {
-			// Unable to convert; possibly an invalid interval string
-			osrfLogError( OSRF_LOG_MARK,
-				"Unable to convert timeout interval \"%s\" for %s login; using default",
-				timeout, type );
-			t = default_timeout;
-		}
-	}
-
-	free(timeout);
-	return t;
-}
-
 /*
 	Adds the authentication token to the user cache.  The timeout for the
 	auth token is based on the type of login as well as (if type=='opac')
@@ -669,80 +541,38 @@ static long oilsAuthGetTimeout( const jsonObject* userObj, const char* type, int
 static oilsEvent* oilsAuthHandleLoginOK( jsonObject* userObj, const char* uname,
 		const char* type, int orgloc, const char* workstation ) {
 
-	oilsEvent* response;
+	oilsEvent* response = NULL;
 
-	long timeout;
-	char* wsorg = jsonObjectToSimpleString(oilsFMGetObject(userObj, "ws_ou"));
-	if(wsorg) { /* if there is a workstation, use it for the timeout */
-		osrfLogDebug( OSRF_LOG_MARK,
-				"Auth session trying workstation id %d for auth timeout", atoi(wsorg));
-		timeout = oilsAuthGetTimeout( userObj, type, atoi(wsorg) );
-		free(wsorg);
-	} else {
-		osrfLogDebug( OSRF_LOG_MARK,
-				"Auth session trying org from param [%d] for auth timeout", orgloc );
-		timeout = oilsAuthGetTimeout( userObj, type, orgloc );
-	}
-	osrfLogDebug(OSRF_LOG_MARK, "Auth session timeout for %s: %ld", uname, timeout );
+    jsonObject* params = jsonNewObject(NULL);
+    jsonObjectSetKey(params, "user_id", 
+        jsonNewNumberObject(oilsFMGetObjectId(userObj)));
+    jsonObjectSetKey(params,"org_unit", jsonNewNumberObject(orgloc));
+    jsonObjectSetKey(params, "login_type", jsonNewObject(type));
+    if (workstation) 
+        jsonObjectSetKey(params, "workstation", jsonNewObject(workstation));
 
-	char* string = va_list_to_string(
-			"%d.%ld.%s", (long) getpid(), time(NULL), uname );
-	char* authToken = md5sum(string);
-	char* authKey = va_list_to_string(
-			"%s%s", OILS_AUTH_CACHE_PRFX, authToken );
+    jsonObject* authEvt = oilsUtilsQuickReq(
+        "open-ils.auth_internal",
+        "open-ils.auth_internal.session.create", params);
+    jsonObjectFree(params);
 
-	const char* ws = (workstation) ? workstation : "";
-	osrfLogActivity(OSRF_LOG_MARK,
-		"successful login: username=%s, authtoken=%s, workstation=%s", uname, authToken, ws );
+    if (authEvt) {
 
-	oilsFMSetString( userObj, "passwd", "" );
-	jsonObject* cacheObj = jsonParseFmt( "{\"authtime\": %ld}", timeout );
-	jsonObjectSetKey( cacheObj, "userobj", jsonObjectClone(userObj));
+        response = oilsNewEvent2(
+            OSRF_LOG_MARK, 
+            jsonObjectGetString(jsonObjectGetKey(authEvt, "textcode")),
+            jsonObjectGetKey(authEvt, "payload")   // cloned within Event
+        );
 
-	if( !strcmp( type, OILS_AUTH_PERSIST )) {
-		// Add entries for endtime and reset_interval, so that we can gracefully
-		// extend the session a bit if the user is active toward the end of the 
-		// timeout originally specified.
-		time_t endtime = time( NULL ) + timeout;
-		jsonObjectSetKey( cacheObj, "endtime", jsonNewNumberObject( (double) endtime ) );
+        jsonObjectFree(authEvt);
 
-		// Reset interval is hard-coded for now, but if we ever want to make it
-		// configurable, this is the place to do it:
-		jsonObjectSetKey( cacheObj, "reset_interval",
-			jsonNewNumberObject( (double) DEFAULT_RESET_INTERVAL ));
-	}
+    } else {
+        osrfLogError(OSRF_LOG_MARK, 
+            "Error caching auth session in open-ils.auth_internal");
+    }
 
-	osrfCachePutObject( authKey, cacheObj, (time_t) timeout );
-	jsonObjectFree(cacheObj);
-	osrfLogInternal(OSRF_LOG_MARK, "oilsAuthHandleLoginOK(): Placed user object into cache");
-	jsonObject* payload = jsonParseFmt(
-		"{ \"authtoken\": \"%s\", \"authtime\": %ld }", authToken, timeout );
-
-	response = oilsNewEvent2( OSRF_LOG_MARK, OILS_EVENT_SUCCESS, payload );
-	free(string); free(authToken); free(authKey);
-	jsonObjectFree(payload);
-
-	return response;
+    return response;
 }
-
-static oilsEvent* oilsAuthVerifyWorkstation(
-		const osrfMethodContext* ctx, jsonObject* userObj, const char* ws ) {
-	osrfLogInfo(OSRF_LOG_MARK, "Attaching workstation to user at login: %s", ws);
-	jsonObject* workstation = oilsUtilsFetchWorkstationByName(ws);
-	if(!workstation || workstation->type == JSON_NULL) {
-		jsonObjectFree(workstation);
-		return oilsNewEvent(OSRF_LOG_MARK, "WORKSTATION_NOT_FOUND");
-	}
-	long wsid = oilsFMGetObjectId(workstation);
-	LONG_TO_STRING(wsid);
-	char* orgid = oilsFMGetString(workstation, "owning_lib");
-	oilsFMSetString(userObj, "wsid", LONGSTR);
-	oilsFMSetString(userObj, "ws_ou", orgid);
-	free(orgid);
-	jsonObjectFree(workstation);
-	return NULL;
-}
-
 
 
 /**
@@ -926,24 +756,6 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 	if( oilsAuthCheckLoginPerm( ctx, userObj, type ) == -1 ) {
 		jsonObjectFree(userObj);
 		return 0;
-	}
-
-	// If a workstation is defined, add the workstation info
-	if( workstation != NULL ) {
-		osrfLogDebug(OSRF_LOG_MARK, "Workstation is %s", workstation);
-		response = oilsAuthVerifyWorkstation( ctx, userObj, workstation );
-		if(response) {
-			jsonObjectFree(userObj);
-			osrfAppRespondComplete( ctx, oilsEventToJSON(response) );
-			oilsEventFree(response);
-			return 0;
-		}
-
-	} else {
-		// Otherwise, use the home org as the workstation org on the user
-		char* orgid = oilsFMGetString(userObj, "home_ou");
-		oilsFMSetString(userObj, "ws_ou", orgid);
-		free(orgid);
 	}
 
 	char* freeable_uname = NULL;
