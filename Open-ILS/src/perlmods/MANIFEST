@@ -132,6 +132,7 @@ lib/OpenILS/Utils/Cronscript.pm
 lib/OpenILS/Utils/Cronscript.pm.in
 lib/OpenILS/Utils/CStoreEditor.pm
 lib/OpenILS/Utils/Fieldmapper.pm
+lib/OpenILS/Utils/HTTPClient.pm
 lib/OpenILS/Utils/ISBN.pm
 lib/OpenILS/Utils/Lockfile.pm
 lib/OpenILS/Utils/MFHD.pm

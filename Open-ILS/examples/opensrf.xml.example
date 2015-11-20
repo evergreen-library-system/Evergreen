@@ -232,6 +232,39 @@ vim:et:ts=4:sw=4:
         instructions on mapping the old XML entries to database tables.
         -->
 
+        <http_client>
+            <!--
+            These settings are used by the OpenILS::Utils::HTTPClient module
+            when communicating with external services (e.g. third-party APIs)
+            over HTTP.  Values are passed along to LWP::UserAgent.
+            -->
+
+            <!-- custom useragent for HTTP requests
+            <useragent>Evergreen</useragent>
+            -->
+
+            <!-- default timeout value (in seconds) -->
+            <default_timeout>60</default_timeout>
+
+            <ssl_opts>
+                <!--
+                When using HTTPS, verify that the external server has a valid
+                SSL certificate matching the expected hostname.  (Set to 0 to
+                disable verification, 1 to enable it.)
+                -->
+                <verify_hostname>1</verify_hostname>
+
+                <!--
+                If verify_hostname is enabled, you may need to specify a path
+                for CA certificates installed on your system.  Use ONE of the
+                following settings.  See LWP::UserAgent docs for details.
+                <SSL_ca_path>/etc/ssl/certs</SSL_ca_path>
+                <SSL_ca_file>/etc/ssl/certs/ca-certificates.crt</SSL_ca_file>
+                -->
+            </ssl_opts>
+
+        </http_client>
+
         <added_content>
             <!-- load the OpenLibrary added content module -->
             <module>OpenILS::WWW::AddedContent::OpenLibrary</module>
