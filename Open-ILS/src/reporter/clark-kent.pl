@@ -113,6 +113,12 @@ my $resultset_limit     = $opt_resultset_limit //
                           0;
 $resultset_limit = 0 unless $resultset_limit =~ /^\d+$/; # 0 means no limit
 
+# What follows is an emperically-derived magic number; if
+# the row count is larger than this, the table-sorting JavaScript
+# won't be loaded to excessive churn when viewing HTML reports
+# in the staff client or web browser.
+my $sortable_limit = 10000;
+
 my ($dbh,$running,$sth,@reports,$run, $current_time);
 
 if ($daemon) {
@@ -555,7 +561,6 @@ sub build_html {
 				td,th { border: solid black 1px; }
 				* { font-family: sans-serif; }
 			</style>
-			<script src="/js/sortable/sortable.min.js"></script>
 			<link rel="stylesheet" href="/js/sortable/sortable-theme-minimal.css" />
 		CSS
 
@@ -566,7 +571,11 @@ sub build_html {
 			print $raw "<tr><td>".join('</td><td>', @$_)."</td></tr>\n" for (@{$r->{data}});
 		}
 
-		print $raw '</tbody></table></body></html>';
+		print $raw '</tbody></table>';
+		if (@{ $r->{data} } <= $sortable_limit) {
+			print $raw '<script src="/js/sortable/sortable.min.js"></script>';
+		}
+		print $raw '</body></html>';
 	
 		$raw->close;
 	}

@@ -2,4 +2,5 @@ Sortable HTML reports
 ^^^^^^^^^^^^^^^^^^^^^
 HTML reports can now be sorted by clicking on the header for a given column.
 Clicking on the header toggles between sorting the column in ascending and
-descending order.
+descending order. Note that sorting is available only when there are
+at most 10,000 rows of output.
