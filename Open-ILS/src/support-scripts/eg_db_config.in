@@ -226,10 +226,27 @@ sub set_admin_account {
 		print STDERR "Error was " . $dbh->errstr . "\n";
 		return;
 	}
-	my $stmt = $dbh->prepare("UPDATE actor.usr SET usrname = ?, passwd = ? WHERE id = 1");
-	$stmt->execute(($admin_user, $admin_pw));
+	my $stmt = $dbh->prepare("UPDATE actor.usr SET usrname = ? WHERE id = 1");
+	$stmt->execute(($admin_user));
 	if ($dbh->err) {
-		print STDERR "Failed to set admin account. ";
+		print STDERR "Failed to set admin username. ";
+		print STDERR "Error was " . $dbh->errstr . "\n";
+		return;
+	}
+
+	# Legacy actor.usr.passwd-style passwords must go through
+	# in intermediate round of hashing before final crypt'ing.
+	# The hashing step requires access to the password salt.
+	# Create a new salt, perform MD5 hashing, set the new password.
+	$stmt = $dbh->prepare("SELECT actor.create_salt('main') AS new_salt");
+	$stmt->execute;
+	my $new_salt = $stmt->selectrow_hashref->{new_salt};
+
+    $stmt = $dbh->prepare(
+		"SELECT actor.set_passwd(1, 'main', MD5(? || MD5(?)), ?)");
+	$stmt->execute(($new_salt, $admin_pw, $new_salt));
+	if ($dbh->err) {
+		print STDERR "Failed to set admin password. ";
 		print STDERR "Error was " . $dbh->errstr . "\n";
 		return;
 	}
