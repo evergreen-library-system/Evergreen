@@ -240,7 +240,7 @@ sub set_admin_account {
 	# Create a new salt, perform MD5 hashing, set the new password.
 	$stmt = $dbh->prepare("SELECT actor.create_salt('main') AS new_salt");
 	$stmt->execute;
-	my $new_salt = $stmt->selectrow_hashref->{new_salt};
+	my $new_salt = $dbh->selectrow_hashref($stmt)->{new_salt};
 
     $stmt = $dbh->prepare(
 		"SELECT actor.set_passwd(1, 'main', MD5(? || MD5(?)), ?)");
