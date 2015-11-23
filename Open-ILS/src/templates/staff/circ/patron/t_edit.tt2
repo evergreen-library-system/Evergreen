@@ -240,7 +240,7 @@
         <span class="caret"></span>
       </button>
       <ul class="dropdown-menu">
-        <li ng-repeat="grp in profiles">
+        <li ng-repeat="grp in edit_profiles">
           <a href 
             style="padding-left: {{pgt_depth(grp) * 10 + 5}}px"
             ng-click="set_profile(grp)">{{grp.name()}}</a>
@@ -249,9 +249,8 @@
     </div>
   </div>
   <div class="col-md-3">
-    <button class="btn btn-default" ng-click="secondary_groups_dialog()">
-        [% l('Secondary Groups') %]
-    </button>
+    <button class="btn btn-default" ng-disabled="!has_group_link_perm"
+      ng-click="secondary_groups_dialog()">[% l('Secondary Groups') %]</button>
   </div> 
 </div>
 

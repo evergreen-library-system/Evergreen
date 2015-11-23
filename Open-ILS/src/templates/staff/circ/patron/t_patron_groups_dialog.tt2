@@ -29,10 +29,24 @@ This does not affect circulation policy.
       </div>
       <div class="row pad-all-min">
         <div class="col-md-6">
-            <!-- group selector -->
+            <div class="btn-group" dropdown>
+              <button type="button" class="btn btn-default dropdown-toggle">
+                <span style="padding-right: 5px;">{{args.new_profile.name()}}</span>
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu">
+                <li ng-repeat="grp in args.edit_profiles">
+                  <a href
+                    style="padding-left: {{pgt_depth(grp) * 10 + 5}}px"
+                    ng-click="args.new_profile = grp">{{grp.name()}}</a>
+                </li>
+              </ul>
+            </div>
+
         </div>
         <div class="col-md-6">
-            <button class="btn btn-default" ng-click="link_group($event, grp)">
+            <button class="btn btn-default" 
+              ng-click="link_group($event, args.new_profile)">
                 [% l('Add') %]
             </button>
         </div>

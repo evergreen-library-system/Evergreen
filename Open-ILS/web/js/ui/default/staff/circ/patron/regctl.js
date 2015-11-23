@@ -7,7 +7,7 @@ angular.module('egCoreMod')
     var service = {
         field_doc : {},            // config.idl_field_doc
         profiles : [],             // permission groups
-        no_edit_profiles : [],     // perm groups we cannot modify
+        edit_profiles : [],        // perm groups we can modify
         sms_carriers : [],
         user_settings : {},        // applied user settings
         user_setting_types : {},   // config.usr_setting_type
@@ -36,7 +36,7 @@ angular.module('egCoreMod')
     //service.check_grp_app_perm = function(grp_id) {
 
     // determine which user groups our user is not allowed to modify
-    service.set_no_edit_profiles = function() {
+    service.set_edit_profiles = function() {
         var all_app_perms = [];
         var failed_perms = [];
 
@@ -46,12 +46,12 @@ angular.module('egCoreMod')
                 all_app_perms.push(grp.application_perm());
         }); 
 
-        // fill in service.no_edit_profiles by inspecting failed_perms
+        // fill in service.edit_profiles by inspecting failed_perms
         function traverse_grp_tree(grp, failed) {
             failed = failed || 
                 failed_perms.indexOf(grp.application_perm()) > -1;
 
-            if (failed) service.no_edit_profiles.push(grp.id());
+            if (!failed) service.edit_profiles.push(grp);
 
             angular.forEach(
                 service.profiles.filter( // children of grp
@@ -62,20 +62,19 @@ angular.module('egCoreMod')
 
         return egCore.perm.hasPermAt(all_app_perms, true).then(
             function(perm_orgs) {
-
                 angular.forEach(all_app_perms, function(p) {
                     if (perm_orgs[p].length == 0)
                         failed_perms.push(p);
                 });
 
                 traverse_grp_tree(egCore.env.pgt.tree);
-                console.log('User is not allowed to edit profiles: ' 
-                    + service.no_edit_profiles);
             }
         );
     }
 
-    service.group_link_perms = function() {
+    service.has_group_link_perms = function(org_id) {
+        return egCore.perm.hasPermAt('CREATE_USER_GROUP_LINK', true)
+        .then(function(p) { return p.indexOf(org_id) > -1; });
     }
 
     service.get_surveys = function() {
@@ -267,7 +266,7 @@ angular.module('egCoreMod')
     service.get_perm_groups = function() {
         if (egCore.env.pgt) {
             service.profiles = egCore.env.pgt.list;
-            return service.set_no_edit_profiles();
+            return service.set_edit_profiles();
         } else {
             return egCore.pcrud.search('pgt', {parent : null}, 
                 {flesh : -1, flesh_fields : {pgt : ['children']}}
@@ -275,7 +274,7 @@ angular.module('egCoreMod')
                 function(tree) {
                     egCore.env.absorbTree(tree, 'pgt')
                     service.profiles = egCore.env.pgt.list;
-                    return service.set_no_edit_profiles();
+                    return service.set_edit_profiles();
                 }
             );
         }
@@ -650,6 +649,13 @@ function PatronRegCtrl($scope, $routeParams,
         }
     }
 
+    function handle_home_org_changed() {
+        org_id = $scope.patron.home_ou.id();
+
+        patronRegSvc.has_group_link_perms(org_id)
+        .then(function(bool) {$scope.has_group_link_perm = bool});
+    }
+
     $q.all([
 
         $scope.initTab ? // initTab comes from patron app
@@ -664,7 +670,7 @@ function PatronRegCtrl($scope, $routeParams,
         // in standalone mode, we have no patronSvc
         $scope.patron = prs.init_patron(patronSvc ? patronSvc.current : null);
         $scope.field_doc = prs.field_doc;
-        $scope.profiles = prs.profiles;
+        $scope.edit_profiles = prs.edit_profiles;
         $scope.ident_types = prs.ident_types;
         $scope.net_access_levels = prs.net_access_levels;
         $scope.user_setting_types = prs.user_setting_types;
@@ -685,6 +691,7 @@ function PatronRegCtrl($scope, $routeParams,
         });
 
         extract_hold_notify();
+        handle_home_org_changed();
 
         if ($scope.org_settings['ui.patron.edit.default_suggested'])
             $scope.edit_passthru.vis_level = 1;
@@ -939,17 +946,31 @@ function PatronRegCtrl($scope, $routeParams,
         $scope.user_settings['opac.hold_notify'] = hold_notify;
     }
 
+    // dialog for selecting additional permission groups
     $scope.secondary_groups_dialog = function() {
         $modal.open({
             templateUrl: './circ/patron/t_patron_groups_dialog',
             controller: 
-                   ['$scope','$modalInstance','linked_groups',
-            function($scope , $modalInstance , linked_groups) {
-                // scope here is the modal-level scope
-                $scope.link_group = function(grp) {
-                    $scope.args.linked_groups.push(grp);
+                   ['$scope','$modalInstance','linked_groups','pgt_depth',
+            function($scope , $modalInstance , linked_groups , pgt_depth) {
+
+                $scope.pgt_depth = pgt_depth;
+                $scope.args = {
+                    linked_groups : linked_groups,
+                    edit_profiles : patronRegSvc.edit_profiles,
+                    new_profile   : patronRegSvc.edit_profiles[0]
+                };
+
+                // add a new group to the linked groups list
+                $scope.link_group = function($event, grp) {
+                    var found = false; // avoid duplicates
+                    angular.forEach($scope.args.linked_groups, 
+                        function(g) {if (g.id() == grp.id()) found = true});
+                    if (!found) $scope.args.linked_groups.push(grp);
                     $event.preventDefault(); // avoid close
                 }
+
+                // remove a group from the linked groups list
                 $scope.unlink_group = function($event, grp) {
                     $scope.args.linked_groups = 
                         $scope.args.linked_groups.filter(function(g) {
@@ -957,20 +978,29 @@ function PatronRegCtrl($scope, $routeParams,
                     });
                     $event.preventDefault(); // avoid close
                 }
-                $scope.args = {linked_groups : linked_groups};
+
                 $scope.ok = function() { $modalInstance.close($scope.args) }
                 $scope.cancel = function () { $modalInstance.dismiss() }
             }],
             resolve : {
-                linked_groups : function() {
-                    // scope here is the controller-level scope
-                    return $scope.patron.groups;
-                }
+                linked_groups : function() { return $scope.patron.groups },
+                pgt_depth : function() { return $scope.pgt_depth }
             }
         }).result.then(
             function(args) {
-                angular.forEach(args.linked_groups, function(grp) {
-                    // TODO add/remove linked groups
+                var ids = args.linked_groups.map(function(g) {return g.id()});
+                console.log('linking permission groups ' + ids);
+                return egCore.net.request(
+                    'open-ils.actor',
+                    'open-ils.actor.user.set_groups',
+                    egCore.auth.token(), $scope.patron.id, ids)
+                .then(function(resp) {
+                    if (resp == 1) {
+                        $scope.patron.groups = args.linked_groups;
+                    } else {
+                        // debugging -- should be no events
+                        alert('linked groups failure ' + egCore.evt.parse(resp));
+                    }
                 });
             }
         );
