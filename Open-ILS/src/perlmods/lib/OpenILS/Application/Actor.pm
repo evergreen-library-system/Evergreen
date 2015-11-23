@@ -1475,15 +1475,32 @@ sub update_passwd {
         or return $e->die_event;
     my $api = $self->api_name;
 
-    # make sure the original password matches the in-database password
-    if (md5_hex($orig_pw) ne $db_user->passwd) {
+    if (!$U->verify_migrated_user_password($e, $db_user->id, $orig_pw)) {
         $e->rollback;
         return new OpenILS::Event('INCORRECT_PASSWORD');
     }
 
     if( $api =~ /password/o ) {
+        # NOTE: with access to the plain text password we could crypt
+        # the password without the extra MD5 pre-hashing.  Other changes
+        # would be required.  Noting here for future reference.
 
-        $db_user->passwd($new_val);
+        # new password gets a new salt
+        my $new_salt = $e->json_query({
+            from => ['actor.create_salt', 'main']})->[0];
+        $new_salt = $new_salt->{'actor.create_salt'};
+
+        $e->json_query({
+            from => [
+                'actor.set_passwd',
+                $db_user->id,
+                'main',
+                md5_hex($new_salt . md5_hex($new_val)),
+                $new_salt
+            ]
+        });
+
+        $db_user->passwd('');
 
     } else {
 
@@ -3301,8 +3318,8 @@ sub verify_user_password {
     return 0 if (!$user);
     return 0 if ($user_by_username && $user_by_barcode && $user_by_username->id != $user_by_barcode->id); 
     return $e->event unless $e->allowed('VIEW_USER', $user->home_ou);
-    return 1 if $user->passwd eq $password;
-    return 0;
+    return $U->verify_migrated_user_password(
+        $e, $user_by_username->id, $password, 1);
 }
 
 __PACKAGE__->register_method (

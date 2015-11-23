@@ -1,5 +1,4 @@
 package OpenILS::Application::AppUtils;
-# vim:noet:ts=4
 use strict; use warnings;
 use OpenILS::Application;
 use base qw/OpenILS::Application/;
@@ -18,6 +17,7 @@ use Encode;
 use DateTime;
 use DateTime::Format::ISO8601;
 use List::MoreUtils qw/uniq/;
+use Digest::MD5 qw(md5_hex);
 
 # ---------------------------------------------------------------------------
 # Pile of utilty methods used accross applications.
@@ -2289,6 +2289,55 @@ sub fpsum {
         $result += $arg * 100;
     }
     return $result / 100;
+}
+
+# Non-migrated passwords can be verified directly in the DB
+# with any extra hashing.
+sub verify_user_password {
+    my ($class, $e, $user_id, $passwd, $pw_type) = @_;
+
+    $pw_type ||= 'main'; # primary login password
+
+    my $verify = $e->json_query({
+        from => [
+            'actor.verify_passwd', 
+            $user_id, $pw_type, $passwd
+        ]
+    })->[0];
+
+    return $class->is_true($verify->{'actor.verify_passwd'});
+}
+
+# Passwords migrated from the original MD5 scheme are passed through 2
+# extra layers of MD5 hashing for backwards compatibility with the
+# MD5 passwords of yore and the MD5-based chap-style authentication.  
+# Passwords are stored in the DB like this:
+# CRYPT( MD5( pw_salt || MD5(real_password) ), pw_salt )
+#
+# If 'as_md5' is true, the password provided has already been
+# MD5 hashed.
+sub verify_migrated_user_password {
+    my ($class, $e, $user_id, $passwd, $as_md5) = @_;
+
+    # 'main' is the primary login password. This is the only password 
+    # type that requires the additional MD5 hashing.
+    my $pw_type = 'main';
+
+    # Sometimes we have the bare password, sometimes the MD5 version.
+    my $md5_pass = $as_md5 ? $passwd : md5_hex($passwd);
+
+    my $salt = $e->json_query({
+        from => [
+            'actor.get_salt', 
+            $user_id, 
+            $pw_type
+        ]
+    })->[0];
+
+    $salt = $salt->{'actor.get_salt'};
+
+    return $class->verify_user_password(
+        $e, $user_id, md5_hex($salt . $md5_pass), $pw_type);
 }
 
 
