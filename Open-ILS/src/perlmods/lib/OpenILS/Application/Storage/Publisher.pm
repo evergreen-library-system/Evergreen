@@ -332,25 +332,6 @@ sub mass_delete {
     return $success;
 }
 
-sub remote_update_node {
-    my $self = shift;
-    my $client = shift;
-    my $keys = shift;
-    my $vals = shift;
-
-    local $OpenILS::Application::Storage::WRITE = 1;
-
-    my $cdbi = $self->{cdbi};
-
-    my $success = 1;
-    try {
-        $success = $cdbi->remote_update($keys,$vals);
-    } catch Error with {
-        $success = 0;
-    };
-    return $success;
-}
-
 sub merge_node {
     my $self = shift;
     my $client = shift;
@@ -713,29 +694,6 @@ for my $fmclass ( (Fieldmapper->classes) ) {
                 method      => 'batch_call',
                 unwrap      => 1,
                 api_level   => 1,
-                cdbi        => $cdbi,
-                argc        => 1,
-            );
-        }
-
-        # Create the remote_update method
-        unless ( __PACKAGE__->is_registered( $api_prefix.'.remote_update' ) ) {
-            __PACKAGE__->register_method(
-                api_name    => $api_prefix.'.remote_update',
-                method      => 'remote_update_node',
-                api_level   => 1,
-                cdbi        => $cdbi,
-                argc        => 1,
-            );
-        }
-
-        # Create the batch remote_update method
-        unless ( __PACKAGE__->is_registered( $api_prefix.'.batch.remote_update' ) ) {
-            __PACKAGE__->register_method(
-                api_name    => $api_prefix.'.batch.remote_update',
-                method      => 'batch_call',
-                api_level   => 1,
-                unwrap      => 1,
                 cdbi        => $cdbi,
                 argc        => 1,
             );
