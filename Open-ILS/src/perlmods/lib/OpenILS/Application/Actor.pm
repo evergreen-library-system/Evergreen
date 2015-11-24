@@ -374,19 +374,16 @@ __PACKAGE__->register_method(
 );
 
 sub update_patron {
-    my( $self, $client, $user_session, $patron ) = @_;
+    my( $self, $client, $auth, $patron ) = @_;
 
-    my $session = $apputils->start_db_session();
+    my $e = new_editor(xact => 1, authtoken => $auth);
+    return $e->event unless $e->checkauth;
 
-    $logger->info($patron->isnew ? "Creating new patron..." : "Updating Patron: " . $patron->id);
+    $logger->info($patron->isnew ? "Creating new patron..." : 
+        "Updating Patron: " . $patron->id);
 
-    my( $user_obj, $evt ) = $U->checkses($user_session);
+    my $evt = check_group_perm($e, $e->requestor, $patron);
     return $evt if $evt;
-
-    $evt = check_group_perm($session, $user_obj, $patron);
-    return $evt if $evt;
-
-    $apputils->set_audit_info($session, $user_session, $user_obj->id, $user_obj->wsid);
 
     # $new_patron is the patron in progress.  $patron is the original patron
     # passed in with the method.  new_patron will change as the components
@@ -411,74 +408,76 @@ sub update_patron {
     my $barred_hook = '';
 
     if($patron->isnew()) {
-        ( $new_patron, $evt ) = _add_patron($session, _clone_patron($patron), $user_obj);
+        ( $new_patron, $evt ) = _add_patron($e, _clone_patron($patron));
         return $evt if $evt;
         if($U->is_true($patron->barred)) {
-            $evt = $U->check_perms($user_obj->id, $patron->home_ou, 'BAR_PATRON');
-            return $evt if $evt;
+            return $e->die_event unless
+                $e->allowed('BAR_PATRON', $patron->home_ou);
         }
     } else {
         $new_patron = $patron;
 
         # Did auth checking above already.
-        my $e = new_editor;
         $old_patron = $e->retrieve_actor_user($patron->id) or
             return $e->die_event;
-        $e->disconnect;
+
         if($U->is_true($old_patron->barred) != $U->is_true($new_patron->barred)) {
-            $evt = $U->check_perms($user_obj->id, $patron->home_ou, $U->is_true($old_patron->barred) ? 'UNBAR_PATRON' : 'BAR_PATRON');
-            return $evt if $evt;
+            my $perm = $U->is_true($old_patron->barred) ? 'UNBAR_PATRON' : 'BAR_PATRON';
+            return $e->die_event unless $e->allowed($perm, $patron->home_ou);
 
             $barred_hook = $U->is_true($new_patron->barred) ? 
                 'au.barred' : 'au.unbarred';
         }
     }
 
-    ( $new_patron, $evt ) = _add_update_addresses($session, $patron, $new_patron, $user_obj);
+    ( $new_patron, $evt ) = _add_update_addresses($e, $patron, $new_patron);
     return $evt if $evt;
 
-    ( $new_patron, $evt ) = _add_update_cards($session, $patron, $new_patron, $user_obj);
+    ( $new_patron, $evt ) = _add_update_cards($e, $patron, $new_patron);
     return $evt if $evt;
 
-    ( $new_patron, $evt ) = _add_survey_responses($session, $patron, $new_patron, $user_obj);
+    ( $new_patron, $evt ) = _add_survey_responses($e, $patron, $new_patron);
     return $evt if $evt;
 
     # re-update the patron if anything has happened to him during this process
     if($new_patron->ischanged()) {
-        ( $new_patron, $evt ) = _update_patron($session, $new_patron, $user_obj);
+        ( $new_patron, $evt ) = _update_patron($e, $new_patron);
         return $evt if $evt;
     }
 
-    ( $new_patron, $evt ) = _clear_badcontact_penalties($session, $old_patron, $new_patron, $user_obj);
+    ( $new_patron, $evt ) = _clear_badcontact_penalties($e, $old_patron, $new_patron);
     return $evt if $evt;
 
-    ($new_patron, $evt) = _create_stat_maps($session, $user_session, $patron, $new_patron, $user_obj);
+    ($new_patron, $evt) = _create_stat_maps($e, $patron, $new_patron);
     return $evt if $evt;
 
-    ($new_patron, $evt) = _create_perm_maps($session, $user_session, $patron, $new_patron, $user_obj);
+    ($new_patron, $evt) = _create_perm_maps($e, $patron, $new_patron);
     return $evt if $evt;
 
-    $apputils->commit_db_session($session);
-
-    $evt = apply_invalid_addr_penalty($patron);
+    $evt = apply_invalid_addr_penalty($e, $patron);
     return $evt if $evt;
+
+    $e->commit;
 
     my $tses = OpenSRF::AppSession->create('open-ils.trigger');
     if($patron->isnew) {
-        $tses->request('open-ils.trigger.event.autocreate', 'au.create', $new_patron, $new_patron->home_ou);
+        $tses->request('open-ils.trigger.event.autocreate', 
+            'au.create', $new_patron, $new_patron->home_ou);
     } else {
-        $tses->request('open-ils.trigger.event.autocreate', 'au.update', $new_patron, $new_patron->home_ou);
+        $tses->request('open-ils.trigger.event.autocreate', 
+            'au.update', $new_patron, $new_patron->home_ou);
 
         $tses->request('open-ils.trigger.event.autocreate', $barred_hook, 
             $new_patron, $new_patron->home_ou) if $barred_hook;
     }
 
-    return flesh_user($new_patron->id(), new_editor(requestor => $user_obj, xact => 1));
+    $e->xact_begin; # $e->rollback is called in new_flesh_user
+    return flesh_user($new_patron->id(), $e);
 }
 
 sub apply_invalid_addr_penalty {
+    my $e = shift;
     my $patron = shift;
-    my $e = new_editor(xact => 1);
 
     # grab the invalid address penalty if set
     my $penalties = OpenILS::Utils::Penalty->retrieve_usr_penalties($e, $patron->id, $patron->home_ou);
@@ -513,10 +512,6 @@ sub apply_invalid_addr_penalty {
         $penalty->standing_penalty(OILS_PENALTY_INVALID_PATRON_ADDRESS);
 
         $e->create_actor_user_standing_penalty($penalty) or return $e->die_event;
-        $e->commit;
-
-    } else {
-        $e->rollback;
     }
 
     return undef;
@@ -573,41 +568,34 @@ sub _clone_patron {
 
 sub _add_patron {
 
-    my $session     = shift;
+    my $e          = shift;
     my $patron      = shift;
-    my $user_obj    = shift;
 
-    my $evt = $U->check_perms($user_obj->id, $patron->home_ou, 'CREATE_USER');
-    return (undef, $evt) if $evt;
+    return (undef, $e->die_event) unless 
+        $e->allowed('CREATE_USER', $patron->home_ou);
 
-    my $ex = $session->request(
-        'open-ils.storage.direct.actor.user.search.usrname', $patron->usrname())->gather(1);
-    if( $ex and @$ex ) {
-        return (undef, OpenILS::Event->new('USERNAME_EXISTS'));
-    }
+    my $ex = $e->search_actor_user(
+        {usrname => $patron->usrname}, {idlist => 1});
+    return (undef, OpenILS::Event->new('USERNAME_EXISTS')) if @$ex;
 
     $logger->info("Creating new user in the DB with username: ".$patron->usrname());
 
-    my $id = $session->request(
-        "open-ils.storage.direct.actor.user.create", $patron)->gather(1);
-    return (undef, $U->DB_UPDATE_FAILED($patron)) unless $id;
+    $e->create_actor_user($patron) or return $e->die_event;
+    my $id = $patron->id; # added by CStoreEditor
 
     $logger->info("Successfully created new user [$id] in DB");
-
-    return ( $session->request( 
-        "open-ils.storage.direct.actor.user.retrieve", $id)->gather(1), undef );
+    return ($e->retrieve_actor_user($id), undef);
 }
 
 
 sub check_group_perm {
-    my( $session, $requestor, $patron ) = @_;
+    my( $e, $requestor, $patron ) = @_;
     my $evt;
 
     # first let's see if the requestor has 
     # priveleges to update this user in any way
     if( ! $patron->isnew ) {
-        my $p = $session->request(
-            'open-ils.storage.direct.actor.user.retrieve', $patron->id )->gather(1);
+        my $p = $e->retrieve_actor_user($patron->id);
 
         # If we are the requestor (trying to update our own account)
         # and we are not trying to change our profile, we're good
@@ -617,20 +605,20 @@ sub check_group_perm {
         }
 
 
-        $evt = group_perm_failed($session, $requestor, $p);
+        $evt = group_perm_failed($e, $requestor, $p);
         return $evt if $evt;
     }
 
     # They are allowed to edit this patron.. can they put the 
     # patron into the group requested?
-    $evt = group_perm_failed($session, $requestor, $patron);
+    $evt = group_perm_failed($e, $requestor, $patron);
     return $evt if $evt;
     return undef;
 }
 
 
 sub group_perm_failed {
-    my( $session, $requestor, $patron ) = @_;
+    my( $e, $requestor, $patron ) = @_;
 
     my $perm;
     my $grp;
@@ -639,40 +627,33 @@ sub group_perm_failed {
     do {
 
         $logger->debug("user update looking for group perm for group $grpid");
-        $grp = $session->request(
-            'open-ils.storage.direct.permission.grp_tree.retrieve', $grpid )->gather(1);
-        return OpenILS::Event->new('PERMISSION_GRP_TREE_NOT_FOUND') unless $grp;
+        $grp = $e->retrieve_permission_grp_tree($grpid);
 
     } while( !($perm = $grp->application_perm) and ($grpid = $grp->parent) );
 
     $logger->info("user update checking perm $perm on user ".
         $requestor->id." for update/create on user username=".$patron->usrname);
 
-    my $evt = $U->check_perms($requestor->id, $patron->home_ou, $perm);
-    return $evt if $evt;
-    return undef;
+    return $e->allowed($perm, $patron->home_ou) ? undef : $e->die_event;
 }
 
 
 
 sub _update_patron {
-    my( $session, $patron, $user_obj, $noperm) = @_;
+    my( $e, $patron, $noperm) = @_;
 
     $logger->info("Updating patron ".$patron->id." in DB");
 
     my $evt;
 
     if(!$noperm) {
-        $evt = $U->check_perms($user_obj->id, $patron->home_ou, 'UPDATE_USER');
-        return (undef, $evt) if $evt;
+        return (undef, $e->die_event)
+            unless $e->allowed('UPDATE_USER', $patron->home_ou);
     }
 
     # update the password by itself to avoid the password protection magic
     if( $patron->passwd ) {
-        my $s = $session->request(
-            'open-ils.storage.direct.actor.user.remote_update',
-            {id => $patron->id}, {passwd => $patron->passwd})->gather(1);
-        return (undef, $U->DB_UPDATE_FAILED($patron)) unless defined($s);
+        modify_migrated_user_password($e, $patron->id, $patron->passwd);
         $patron->clear_passwd;
     }
 
@@ -681,21 +662,18 @@ sub _update_patron {
         $patron->clear_ident_value;
     }
 
-    $evt = verify_last_xact($session, $patron);
+    $evt = verify_last_xact($e, $patron);
     return (undef, $evt) if $evt;
 
-    my $stat = $session->request(
-        "open-ils.storage.direct.actor.user.update",$patron )->gather(1);
-    return (undef, $U->DB_UPDATE_FAILED($patron)) unless defined($stat);
+    $e->update_actor_user($patron) or return (undef, $e->die_event);
 
     return ($patron);
 }
 
 sub verify_last_xact {
-    my( $session, $patron ) = @_;
+    my( $e, $patron ) = @_;
     return undef unless $patron->id and $patron->id > 0;
-    my $p = $session->request(
-        'open-ils.storage.direct.actor.user.retrieve', $patron->id)->gather(1);
+    my $p = $e->retrieve_actor_user($patron->id);
     my $xact = $p->last_xact_id;
     return undef unless $xact;
     $logger->info("user xact = $xact, saving with xact " . $patron->last_xact_id);
@@ -733,7 +711,7 @@ sub _check_dup_ident {
 
 sub _add_update_addresses {
 
-    my $session = shift;
+    my $e = shift;
     my $patron = shift;
     my $new_patron = shift;
 
@@ -767,7 +745,7 @@ sub _add_update_addresses {
 
             $address->usr($new_patron->id());
 
-            ($address, $evt) = _add_address($session,$address);
+            ($address, $evt) = _add_address($e,$address);
             return (undef, $evt) if $evt;
 
             # we need to get the new id
@@ -787,24 +765,24 @@ sub _add_update_addresses {
 
         } elsif($address->ischanged() ) {
 
-            ($address, $evt) = _update_address($session, $address);
+            ($address, $evt) = _update_address($e, $address);
             return (undef, $evt) if $evt;
 
         } elsif($address->isdeleted() ) {
 
             if( $address->id() == $new_patron->mailing_address() ) {
                 $new_patron->clear_mailing_address();
-                ($new_patron, $evt) = _update_patron($session, $new_patron);
+                ($new_patron, $evt) = _update_patron($e, $new_patron);
                 return (undef, $evt) if $evt;
             }
 
             if( $address->id() == $new_patron->billing_address() ) {
                 $new_patron->clear_billing_address();
-                ($new_patron, $evt) = _update_patron($session, $new_patron);
+                ($new_patron, $evt) = _update_patron($e, $new_patron);
                 return (undef, $evt) if $evt;
             }
 
-            $evt = _delete_address($session, $address);
+            $evt = _delete_address($e, $address);
             return (undef, $evt) if $evt;
         } 
     }
@@ -815,30 +793,24 @@ sub _add_update_addresses {
 
 # adds an address to the db and returns the address with new id
 sub _add_address {
-    my($session, $address) = @_;
+    my($e, $address) = @_;
     $address->clear_id();
 
     $logger->info("Creating new address at street ".$address->street1);
 
     # put the address into the database
-    my $id = $session->request(
-        "open-ils.storage.direct.actor.user_address.create", $address )->gather(1);
-    return (undef, $U->DB_UPDATE_FAILED($address)) unless $id;
-
-    $address->id( $id );
+    $e->create_actor_user_address($address) or return (undef, $e->die_event);
     return ($address, undef);
 }
 
 
 sub _update_address {
-    my( $session, $address ) = @_;
+    my( $e, $address ) = @_;
 
     $logger->info("Updating address ".$address->id." in the DB");
 
-    my $stat = $session->request(
-        "open-ils.storage.direct.actor.user_address.update", $address )->gather(1);
+    $e->update_actor_user_address($address) or return (undef, $e->die_event);
 
-    return (undef, $U->DB_UPDATE_FAILED($address)) unless defined($stat);
     return ($address, undef);
 }
 
@@ -846,7 +818,7 @@ sub _update_address {
 
 sub _add_update_cards {
 
-    my $session = shift;
+    my $e = shift;
     my $patron = shift;
     my $new_patron = shift;
 
@@ -862,7 +834,7 @@ sub _add_update_cards {
         if(ref($card) and $card->isnew()) {
 
             $virtual_id = $card->id();
-            ( $card, $evt ) = _add_card($session,$card);
+            ( $card, $evt ) = _add_card($e, $card);
             return (undef, $evt) if $evt;
 
             #if(ref($patron->card)) { $patron->card($patron->card->id); }
@@ -872,7 +844,7 @@ sub _add_update_cards {
             }
 
         } elsif( ref($card) and $card->ischanged() ) {
-            $evt = _update_card($session, $card);
+            $evt = _update_card($e, $card);
             return (undef, $evt) if $evt;
         }
     }
@@ -883,29 +855,23 @@ sub _add_update_cards {
 
 # adds an card to the db and returns the card with new id
 sub _add_card {
-    my( $session, $card ) = @_;
+    my( $e, $card ) = @_;
     $card->clear_id();
 
     $logger->info("Adding new patron card ".$card->barcode);
 
-    my $id = $session->request(
-        "open-ils.storage.direct.actor.card.create", $card )->gather(1);
-    return (undef, $U->DB_UPDATE_FAILED($card)) unless $id;
-    $logger->info("Successfully created patron card $id");
+    $e->create_actor_card($card) or return (undef, $e->die_event);
 
-    $card->id($id);
     return ( $card, undef );
 }
 
 
 # returns event on error.  returns undef otherwise
 sub _update_card {
-    my( $session, $card ) = @_;
+    my( $e, $card ) = @_;
     $logger->info("Updating patron card ".$card->id);
 
-    my $stat = $session->request(
-        "open-ils.storage.direct.actor.card.update", $card )->gather(1);
-    return $U->DB_UPDATE_FAILED($card) unless defined($stat);
+    $e->update_actor_card($card) or return $e->die_event;
     return undef;
 }
 
@@ -914,21 +880,18 @@ sub _update_card {
 
 # returns event on error.  returns undef otherwise
 sub _delete_address {
-    my( $session, $address ) = @_;
+    my( $e, $address ) = @_;
 
     $logger->info("Deleting address ".$address->id." from DB");
 
-    my $stat = $session->request(
-        "open-ils.storage.direct.actor.user_address.delete", $address )->gather(1);
-
-    return $U->DB_UPDATE_FAILED($address) unless defined($stat);
+    $e->delete_actor_user_address($address) or return $e->die_event;
     return undef;
 }
 
 
 
 sub _add_survey_responses {
-    my ($session, $patron, $new_patron) = @_;
+    my ($e, $patron, $new_patron) = @_;
 
     $logger->info( "Updating survey responses for patron ".$new_patron->id );
 
@@ -949,12 +912,11 @@ sub _add_survey_responses {
 }
 
 sub _clear_badcontact_penalties {
-    my ($session, $old_patron, $new_patron, $user_obj) = @_;
+    my ($e, $old_patron, $new_patron) = @_;
 
     return ($new_patron, undef) unless $old_patron;
 
     my $PNM = $OpenILS::Utils::BadContact::PENALTY_NAME_MAP;
-    my $e = new_editor(xact => 1);
 
     # This ignores whether the caller of update_patron has any permission
     # to remove penalties, but these penalties no longer make sense
@@ -998,38 +960,34 @@ sub _clear_badcontact_penalties {
         $e->update_actor_user_standing_penalty($_) or return (undef, $e->die_event);
     }
 
-    $e->commit;
     return ($new_patron, undef);
 }
 
 
 sub _create_stat_maps {
 
-    my($session, $user_session, $patron, $new_patron) = @_;
+    my($e, $patron, $new_patron) = @_;
 
     my $maps = $patron->stat_cat_entries();
 
     for my $map (@$maps) {
 
-        my $method = "open-ils.storage.direct.actor.stat_cat_entry_user_map.update";
+        my $method = "update_actor_stat_cat_entry_user_map";
 
         if ($map->isdeleted()) {
-            $method = "open-ils.storage.direct.actor.stat_cat_entry_user_map.delete";
+            $method = "delete_actor_stat_cat_entry_user_map";
 
         } elsif ($map->isnew()) {
-            $method = "open-ils.storage.direct.actor.stat_cat_entry_user_map.create";
+            $method = "create_actor_stat_cat_entry_user_map";
             $map->clear_id;
         }
 
 
         $map->target_usr($new_patron->id);
 
-        #warn "
         $logger->info("Updating stat entry with method $method and map $map");
 
-        my $stat = $session->request($method, $map)->gather(1);
-        return (undef, $U->DB_UPDATE_FAILED($map)) unless defined($stat);
-
+        $e->$method($map) or return (undef, $e->die_event);
     }
 
     return ($new_patron, undef);
@@ -1037,29 +995,25 @@ sub _create_stat_maps {
 
 sub _create_perm_maps {
 
-    my($session, $user_session, $patron, $new_patron) = @_;
+    my($e, $patron, $new_patron) = @_;
 
     my $maps = $patron->permissions;
 
     for my $map (@$maps) {
 
-        my $method = "open-ils.storage.direct.permission.usr_perm_map.update";
+        my $method = "update_permission_usr_perm_map";
         if ($map->isdeleted()) {
-            $method = "open-ils.storage.direct.permission.usr_perm_map.delete";
+            $method = "delete_permission_usr_perm_map";
         } elsif ($map->isnew()) {
-            $method = "open-ils.storage.direct.permission.usr_perm_map.create";
+            $method = "create_permission_usr_perm_map";
             $map->clear_id;
         }
 
-
         $map->usr($new_patron->id);
 
-        #warn( "Updating permissions with method $method and session $user_session and map $map" );
         $logger->info( "Updating permissions with method $method and map $map" );
 
-        my $stat = $session->request($method, $map)->gather(1);
-        return (undef, $U->DB_UPDATE_FAILED($map)) unless defined($stat);
-
+        $e->$method($map) or return (undef, $e->die_event);
     }
 
     return ($new_patron, undef);
@@ -1424,6 +1378,29 @@ sub patron_adv_search {
 }
 
 
+# A migrated (main) password has the form:
+# CRYPT( MD5( pw_salt || MD5(real_password) ), pw_salt )
+sub modify_migrated_user_password {
+    my ($e, $user_id, $passwd) = @_;
+
+    # new password gets a new salt
+    my $new_salt = $e->json_query({
+        from => ['actor.create_salt', 'main']})->[0];
+    $new_salt = $new_salt->{'actor.create_salt'};
+
+    $e->json_query({
+        from => [
+            'actor.set_passwd',
+            $user_id,
+            'main',
+            md5_hex($new_salt . md5_hex($passwd)),
+            $new_salt
+        ]
+    });
+}
+
+
+
 __PACKAGE__->register_method(
     method    => "update_passwd",
     api_name  => "open-ils.actor.user.password.update",
@@ -1484,22 +1461,7 @@ sub update_passwd {
         # NOTE: with access to the plain text password we could crypt
         # the password without the extra MD5 pre-hashing.  Other changes
         # would be required.  Noting here for future reference.
-
-        # new password gets a new salt
-        my $new_salt = $e->json_query({
-            from => ['actor.create_salt', 'main']})->[0];
-        $new_salt = $new_salt->{'actor.create_salt'};
-
-        $e->json_query({
-            from => [
-                'actor.set_passwd',
-                $db_user->id,
-                'main',
-                md5_hex($new_salt . md5_hex($new_val)),
-                $new_salt
-            ]
-        });
-
+        modify_migrated_user_password($e, $db_user->id, $new_val);
         $db_user->passwd('');
 
     } else {
@@ -3750,8 +3712,7 @@ sub really_delete_user {
     return $e->die_event unless $e->requestor->id != $user->id;
     return $e->die_event unless $e->allowed('DELETE_USER', $user->home_ou);
     # Check if you are allowed to mess with this patron permission group at all
-    my $session = OpenSRF::AppSession->create( "open-ils.storage" );
-    my $evt = group_perm_failed($session, $e->requestor, $user);
+    my $evt = group_perm_failed($e, $e->requestor, $user);
     return $e->die_event($evt) if $evt;
     my $stat = $e->json_query(
         {from => ['actor.usr_delete', $user_id, $dest_user_id]})->[0]
