@@ -4103,8 +4103,7 @@ sub commit_password_reset {
     }
 
     # All is well; update the password
-    $user->passwd($password);
-    $e->update_actor_user($user);
+    modify_migrated_user_password($e, $user->id, $password);
 
     # And flag that this password reset request has been honoured
     $aupr->[0]->has_been_reset('t');
