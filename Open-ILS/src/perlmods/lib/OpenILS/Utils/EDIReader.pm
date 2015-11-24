@@ -32,7 +32,7 @@ my %edi_fields = (
 );
 
 my %edi_li_fields = (
-    id      => qr/^RFF\+LI:(?:\S+\/)?(\d+)/,
+    id      => qr/^RFF\+LI:(?:[^\/]+\/)?(\d+)/,
     index   => qr/^LIN\+([^\+]+)/,
     amount_billed   => qr/^MOA\+203:([^:]+)/,
     net_unit_price  => qr/^PRI\+AAA:([^:]+)/,
