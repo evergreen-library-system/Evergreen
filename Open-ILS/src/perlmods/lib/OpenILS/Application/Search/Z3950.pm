@@ -194,6 +194,7 @@ sub fetch_service_defs {
             publisher => {code => 'publisher', label => 'Publisher'},
             pubdate => {code => 'pubdate', label => 'Pub Date'},
             item_type => {code => 'item_type', label => 'Item Type'},
+            upc => {code => 'upc', label => 'UPC'},
         }
     };
 
