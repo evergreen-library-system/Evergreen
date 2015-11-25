@@ -1002,6 +1002,7 @@ sub cat_search_z_style_wrapper {
     $$searchhash{searches}{keyword}{term} = $$args{search}{keyword} if $$args{search}{keyword};
     $$searchhash{searches}{'identifier|isbn'}{term} = $$args{search}{isbn} if $$args{search}{isbn};
     $$searchhash{searches}{'identifier|issn'}{term} = $$args{search}{issn} if $$args{search}{issn};
+    $$searchhash{searches}{'identifier|upc'}{term} = $$args{search}{upc} if $$args{search}{upc};
 
     $$searchhash{searches}{keyword}{term} .= join ' ', $$searchhash{searches}{keyword}{term}, $$args{search}{tcn}       if $$args{search}{tcn};
     $$searchhash{searches}{keyword}{term} .= join ' ', $$searchhash{searches}{keyword}{term}, $$args{search}{publisher} if $$args{search}{publisher};
