@@ -95,15 +95,13 @@ CREATE OR REPLACE VIEW money.transaction_billing_type_summary AS
 	  ORDER BY MAX(billing_ts);
 
 CREATE OR REPLACE VIEW money.transaction_billing_summary AS
-	SELECT	xact,
-		LAST(billing_type) AS last_billing_type,
-		LAST(note) AS last_billing_note,
-		MAX(billing_ts) AS last_billing_ts,
-		SUM(COALESCE(amount,0)) AS total_owed
-	  FROM	money.billing
-	  WHERE	voided IS FALSE
-	  GROUP BY xact
-	  ORDER BY MAX(billing_ts);
+    SELECT id as xact,
+        last_billing_type,
+        last_billing_note,
+        last_billing_ts,
+        total_owed
+      FROM money.materialized_billable_xact_summary;            
+
 
 CREATE OR REPLACE VIEW money.transaction_payment_summary AS
 	SELECT	xact,
