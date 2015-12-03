@@ -26,8 +26,10 @@ sub _prepare_biblio_search_basics {
         next unless $query =~ /\S/;
 
         # Hack for journal title
+        my $jtitle = 0;
         if ($qtype eq 'jtitle') {
             $qtype = 'title';
+            $jtitle = 1;
         }
 
         # This stuff probably will need refined or rethought to better handle
@@ -49,6 +51,12 @@ sub _prepare_biblio_search_basics {
             $query = '^' . $query;
             $query = ('"' . $query . '"') if index $query, ' ';
         }
+
+        # Journal title hackery complete
+        if ($jtitle) {
+            $query = "bib_level(s) $query";
+        }
+
         $query = "$qtype:$query" unless $qtype eq 'keyword' and $i == 0;
 
         $bool = ($bool and $bool eq 'or') ? '||' : '&&';
@@ -89,11 +97,6 @@ sub _prepare_biblio_search {
 
     if ($cgi->param("bookbag")) {
         $query = "container(bre,bookbag," . int($cgi->param("bookbag")) . ") $query";
-    }
-
-    # Journal title hackery complete
-    if ($cgi->param("qtype") && $cgi->param("qtype") eq "jtitle") {
-        $query = "bib_level(s) $query";
     }
 
     if ($cgi->param('pubdate') && $cgi->param('date1')) {
