@@ -9,6 +9,11 @@
 RedirectMatch 301 ^/$ /eg/opac/home
 
 # ----------------------------------------------------------------------------------
+# Redirect staff to the correct URL if they forget to include the final /
+# ----------------------------------------------------------------------------------
+RedirectMatch 301 ^/eg/staff$ /eg/staff/
+
+# ----------------------------------------------------------------------------------
 # Point / to the IP address redirector
 # ----------------------------------------------------------------------------------
 #<LocationMatch ^/$>
@@ -811,6 +816,9 @@ RewriteRule ^/openurl$ ${openurl:%1} [NE,PT]
 <LocationMatch /eg/staff/>
     Options -MultiViews
     PerlSetVar OILSWebStopAtIndex "true"
+
+    RewriteCond %{HTTPS} off
+    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [NE,R,L]
 
     # sample staff-specific translation files
     #PerlAddVar OILSWebLocale "en_ca"                                           
