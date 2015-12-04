@@ -484,3 +484,119 @@ function($window , egStrings) {
         };
     }
 ])
+
+.factory('egWorkLog', ['egCore', function(egCore) {
+    var service = {};
+
+    service.retrieve_all = function() {
+        var workLog = egCore.hatch.getLocalItem('eg.work_log') || [];
+        var patronLog = egCore.hatch.getLocalItem('eg.patron_log') || [];
+
+        return { 'work_log' : workLog, 'patron_log' : patronLog };
+    }
+
+    service.record = function(message,data) {
+        var max_entries;
+        var max_patrons;
+        if (typeof egCore != 'undefined') {
+            if (typeof egCore.env != 'undefined') {
+                if (typeof egCore.env.aous != 'undefined') {
+                    max_entries = egCore.env.aous['ui.admin.work_log.max_entries'];
+                    max_patrons = egCore.env.aous['ui.admin.patron_log.max_entries'];
+                } else {
+                    console.log('worklog: missing egCore.env.aous');
+                }
+            } else {
+                console.log('worklog: missing egCore.env');
+            }
+        } else {
+            console.log('worklog: missing egCore');
+        }
+        if (!max_entries) {
+            if (typeof egCore.org != 'undefined') {
+                if (typeof egCore.org.cachedSettings != 'undefined') {
+                    max_entries = egCore.org.cachedSettings['ui.admin.work_log.max_entries'];
+                } else {
+                    console.log('worklog: missing egCore.org.cachedSettings');
+                }
+            } else {
+                console.log('worklog: missing egCore.org');
+            }
+        }
+        if (!max_patrons) {
+            if (typeof egCore.org != 'undefined') {
+                if (typeof egCore.org.cachedSettings != 'undefined') {
+                    max_patrons = egCore.org.cachedSettings['ui.admin.patron_log.max_entries'];
+                } else {
+                    console.log('worklog: missing egCore.org.cachedSettings');
+                }
+            } else {
+                console.log('worklog: missing egCore.org');
+            }
+        }
+        if (!max_entries) {
+            max_entries = 20;
+            console.log('worklog: defaulting to max_entries = ' + max_entries);
+        }
+        if (!max_patrons) {
+            max_patrons = 10;
+            console.log('worklog: defaulting to max_patrons = ' + max_patrons);
+        }
+
+        var workLog = egCore.hatch.getLocalItem('eg.work_log') || [];
+        var patronLog = egCore.hatch.getLocalItem('eg.patron_log') || [];
+        var entry = {
+            'when' : new Date(),
+            'msg' : message,
+            'data' : data,
+            'action' : data.action,
+            'actor' : egCore.auth.user().usrname()
+        };
+        if (data.action == 'checkin') {
+            entry['item'] = data.response.params.copy_barcode;
+            entry['user'] = data.response.data.au.family_name();
+            entry['item_id'] = data.response.data.acp.id();
+            entry['patron_id'] = data.response.data.au.id();
+        }
+        if (data.action == 'checkout') {
+            entry['item'] = data.response.params.copy_barcode;
+            entry['user'] = data.response.data.au.family_name();
+            entry['item_id'] = data.response.data.acp.id();
+            entry['patron_id'] = data.response.data.au.id();
+        }
+        if (data.action == 'renew') {
+            entry['item'] = data.response.params.copy_barcode;
+            entry['user'] = data.response.data.au.family_name();
+            entry['item_id'] = data.response.data.acp.id();
+            entry['patron_id'] = data.response.data.au.id();
+        }
+        if (data.action == 'requested_hold'
+            || data.action == 'edited_patron'
+            || data.action == 'registered_patron'
+            || data.action == 'paid_bill') {
+            entry['patron_id'] = data.patron_id;
+        }
+        if (data.action == 'paid_bill') {
+            entry['amount'] = data.total_amount;
+        }
+
+        workLog.push( entry );
+        if (workLog.length > max_entries) workLog.shift();
+        egCore.hatch.setLocalItem('eg.work_log',workLog); // hatch JSONifies the data, so should be okay re: memory leaks?
+
+        if (entry['patron_id']) {
+            var temp = [];
+            for (var i = 0; i < patronLog.length; i++) { // filter out any matching patron
+                if (patronLog[i]['patron_id'] != entry['patron_id']) temp.push(patronLog[i]);
+            }
+            temp.push( entry );
+            if (temp.length > max_patrons) temp.shift();
+            patronLog = temp;
+            egCore.hatch.setLocalItem('eg.patron_log',patronLog);
+        }
+
+        console.log('worklog',entry);
+    }
+
+    return service;
+}]);

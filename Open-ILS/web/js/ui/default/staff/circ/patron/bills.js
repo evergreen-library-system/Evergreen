@@ -4,8 +4,8 @@
 angular.module('egPatronApp')
 
 .factory('billSvc', 
-       ['$q','egCore','patronSvc',
-function($q , egCore , patronSvc) {
+       ['$q','egCore','egWorkLog','patronSvc',
+function($q , egCore , egWorkLog , patronSvc) {
 
     var service = {};
 
@@ -39,6 +39,24 @@ function($q , egCore , patronSvc) {
             patronSvc.current.last_xact_id()
         ).then(function(resp) {
             console.debug('payments: ' + js2JSON(resp));
+            var total = 0; angular.forEach(payments,function(p) { total += p[1]; });
+            var msg;
+            switch(type) {
+                case 'cash_payment' : msg = egCore.strings.EG_WORK_LOG_CASH_PAYMENT; break;
+                case 'check_payment' : msg = egCore.strings.EG_WORK_LOG_CHECK_PAYMENT; break;
+                case 'credit_card_payment' : msg = egCore.strings.EG_WORK_LOG_CREDIT_CARD_PAYMENT; break;
+                case 'credit_payment' : msg = egCore.strings.EG_WORK_LOG_CREDIT_PAYMENT; break;
+                case 'work_payment' : msg = egCore.strings.EG_WORK_LOG_WORK_PAYMENT; break;
+                case 'forgive_payment' : msg = egCore.strings.EG_WORK_LOG_FORGIVE_PAYMENT; break;
+                case 'goods_payment' : msg = egCore.strings.EG_WORK_LOG_GOODS_PAYMENT; break;
+            }
+            egWorkLog.record(
+                msg,{
+                    'action' : 'paid_bill',
+                    'patron_id' : service.userId,
+                    'total_amount' : total
+                }
+            );
             if (evt = egCore.evt.parse(resp)) 
                 return alert(evt);
 

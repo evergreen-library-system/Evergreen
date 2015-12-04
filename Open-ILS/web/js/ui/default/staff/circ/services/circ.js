@@ -5,9 +5,10 @@
 angular.module('egCoreMod')
 
 .factory('egCirc',
-
        ['$uibModal','$q','egCore','egAlertDialog','egConfirmDialog',
-function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog) {
+        'egWorkLog',
+function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
+         egWorkLog) {
 
     var service = {
         // auto-override these events after the first override
@@ -17,7 +18,9 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog) {
 
     egCore.startup.go().finally(function() {
         egCore.org.settings([
-            'ui.staff.require_initials.patron_standing_penalty'
+            'ui.staff.require_initials.patron_standing_penalty',
+            'ui.admin.work_log.max_entries',
+            'ui.admin.patron_log.max_entries'
         ]).then(function(set) {
             service.require_initials = Boolean(set['ui.staff.require_initials.patron_standing_penalty']);
         });
@@ -131,7 +134,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog) {
                     return service.handle_checkout_resp(evt, params, options);
                 })
                 .then(function(final_resp) {
-                    return service.munge_resp_data(final_resp)
+                    return service.munge_resp_data(final_resp,'checkout',method)
                 })
             });
         });
@@ -171,7 +174,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog) {
                     return service.handle_renew_resp(evt, params, options);
                 })
                 .then(function(final_resp) {
-                    return service.munge_resp_data(final_resp)
+                    return service.munge_resp_data(final_resp,'renew',method)
                 })
             });
         });
@@ -210,14 +213,14 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog) {
                     return service.handle_checkin_resp(evt, params, options);
                 })
                 .then(function(final_resp) {
-                    return service.munge_resp_data(final_resp)
+                    return service.munge_resp_data(final_resp,'checkin',method)
                 })
             });
         });
     }
 
     // provide consistent formatting of the final response data
-    service.munge_resp_data = function(final_resp) {
+    service.munge_resp_data = function(final_resp,worklog_action,worklog_method) {
         var data = final_resp.data = {};
 
         if (!final_resp.evt[0]) return;
@@ -255,6 +258,19 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog) {
                 data.route_to = data.acp.location().name();
             }
         }
+
+        egWorkLog.record(
+            worklog_action == 'checkout'
+            ? egCore.strings.EG_WORK_LOG_CHECKOUT
+            : (worklog_action == 'renew'
+                ? egCore.strings.EG_WORK_LOG_RENEW
+                : egCore.strings.EG_WORK_LOG_CHECKIN // worklog_action == 'checkin'
+            ),{
+                'action' : worklog_action,
+                'method' : worklog_method,
+                'response' : final_resp
+            }
+        );
 
         return final_resp;
     }

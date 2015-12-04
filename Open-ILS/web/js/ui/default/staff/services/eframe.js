@@ -244,6 +244,7 @@ angular.module('egCoreMod')
                 if ($scope.handlers) {
                     $scope.handlers.reload = $scope.reload;
                     angular.forEach($scope.handlers, function(val, key) {
+                        console.log('eframe applying xulG handlers: ' + key);
                         $scope.iframe.contentWindow.xulG[key] = val;
                     });
                 }

@@ -348,9 +348,15 @@ angular.module('egCoreMod')
             'sms.enable',
             'ui.patron.edit.aua.state.require',
             'ui.patron.edit.aua.state.suggest',
-            'ui.patron.edit.aua.state.show'
+            'ui.patron.edit.aua.state.show',
+            'ui.admin.work_log.max_entries',
+            'ui.admin.patron_log.max_entries'
         ]).then(function(settings) {
             service.org_settings = settings;
+            if (egCore && egCore.env && !egCore.env.aous) {
+                egCore.env.aous = settings;
+                console.log('setting egCore.env.aous');
+            }
             return service.process_org_settings(settings);
         });
     };
@@ -1078,11 +1084,13 @@ angular.module('egCoreMod')
     return service;
 }])
 
-.controller('PatronRegCtrl', 
+.controller('PatronRegCtrl',
        ['$scope','$routeParams','$q','$uibModal','$window','egCore',
         'patronSvc','patronRegSvc','egUnloadPrompt','egAlertDialog',
-function($scope , $routeParams , $q , $uibModal , $window , egCore , 
-         patronSvc , patronRegSvc , egUnloadPrompt, egAlertDialog) {
+        'egWorkLog',
+function($scope , $routeParams , $q , $uibModal , $window , egCore ,
+         patronSvc , patronRegSvc , egUnloadPrompt, egAlertDialog ,
+         egWorkLog) {
 
     $scope.page_data_loaded = false;
     $scope.clone_id = patronRegSvc.clone_id = $routeParams.clone_id;
@@ -1801,6 +1809,17 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
 
         }).then(function() {
 
+            if (updated_user) {
+                egWorkLog.record(
+                    $scope.patron.isnew
+                    ? egCore.strings.EG_WORK_LOG_REGISTERED_PATRON
+                    : egCore.strings.EG_WORK_LOG_EDITED_PATRON, {
+                        'action' : $scope.patron.isnew ? 'registered_patron' : 'edited_patron',
+                        'patron_id' : updated_user.id()
+                    }
+                );
+            }
+
             // reloading the page means potentially losing some information
             // (e.g. last patron search), but is the only way to ensure all
             // components are properly updated to reflect the modified patron.
@@ -1821,4 +1840,3 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
         });
     }
 }])
-

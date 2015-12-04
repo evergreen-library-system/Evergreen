@@ -59,13 +59,17 @@
                                 window.addEventListener(
                                     'load',
                                     function() {
-                                        try {
-                                            if (typeof xulG != 'undefined' && xulG.opac_hold_placed) {
-                                                xulG.opac_hold_placed([% hdata.hold_success %]);
-                                            }
-                                        } catch(E) {
-                                            alert('Error updating Work Log with hold placement: ' + E);
-                                        }
+                                        setTimeout( // we want this to run _after_ other onload handlers (such as from eframe.js)
+                                            function() {
+                                                try {
+                                                    if (typeof xulG != 'undefined' && xulG.opac_hold_placed) {
+                                                        xulG.opac_hold_placed([% hdata.hold_success %]);
+                                                    }
+                                                } catch(E) {
+                                                    alert('Error updating Work Log with hold placement: ' + E);
+                                                }
+                                            }, 0
+                                        );
                                     },
                                     false
                                 );

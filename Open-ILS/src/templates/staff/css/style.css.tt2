@@ -220,6 +220,7 @@ table.list tr.selected td { /* deprecated? */
 .eg-grid-primary-label {
   font-weight: bold;
   font-size: 120%;
+  margin-right: 2em;
 }
 
 /* odd/even row styling */
