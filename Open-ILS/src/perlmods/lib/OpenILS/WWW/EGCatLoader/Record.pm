@@ -150,6 +150,9 @@ sub load_record {
         return Apache2::Const::HTTP_NOT_FOUND;
     }
 
+    $ctx->{mfhd_summaries} =
+        $self->get_mfhd_summaries($rec_id, $org, $copy_depth);
+
     if (
         $ctx->{get_org_setting}->
             ($org, "opac.fully_compressed_serial_holdings")
@@ -158,9 +161,6 @@ sub load_record {
         # *are* going to display something in the "issues" expandy?
         $self->load_serial_holding_summaries($rec_id, $org, $copy_depth);
     } else {
-        $ctx->{mfhd_summaries} =
-            $self->get_mfhd_summaries($rec_id, $org, $copy_depth);
-
         if ($ctx->{mfhd_summaries} && scalar(@{$ctx->{mfhd_summaries}})
         ) {
             $ctx->{have_mfhd_to_show} = 1;
