@@ -522,6 +522,33 @@ BEGIN
         output := tmp_xml;
     END IF;
 
+    IF ('bre.extern' = ANY (includes)) THEN 
+        output := REGEXP_REPLACE(
+            tmp_xml,
+            '</' || top_el || '>(.*?)',
+            XMLELEMENT(
+                name extern,
+                XMLATTRIBUTES(
+                    'http://open-ils.org/spec/biblio/v1' AS xmlns,
+                    me.creator AS creator,
+                    me.editor AS editor,
+                    me.create_date AS create_date,
+                    me.edit_date AS edit_date,
+                    me.quality AS quality,
+                    me.fingerprint AS fingerprint,
+                    me.tcn_source AS tcn_source,
+                    me.tcn_value AS tcn_value,
+                    me.owner AS owner,
+                    me.share_depth AS share_depth,
+                    me.active AS active,
+                    me.deleted AS deleted
+                )
+            )::TEXT || '</' || top_el || E'>\\1'
+        );
+    ELSE
+        output := tmp_xml;
+    END IF;
+
     output := REGEXP_REPLACE(output::TEXT,E'>\\s+<','><','gs')::XML;
     RETURN output;
 END;
