@@ -107,8 +107,11 @@
       <!-- invalidate buttons -->
 
       [% IF field.match('phone') OR field.match('email') %]
-        <button ng-show="patron.[% field %] && !patron.isnew" class="btn btn-default"
-          ng-click="">[% l('Invalidate') %]</button>
+        <button ng-show="patron.[% field %] && !patron.isnew" 
+            class="btn btn-default" 
+            ng-click="invalidate_field('[% field %]')">
+            [% l('Invalidate') %]
+        </button>
       [% END %]
 
       <!-- example strings -->

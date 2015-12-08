@@ -355,6 +355,24 @@ angular.module('egCoreMod')
         });
     }
 
+    service.invalidate_field = function(patron, field) {
+        console.log('Invalidating patron field ' + field);
+
+        return egCore.net.request(
+            'open-ils.actor',
+            'open-ils.actor.invalidate.' + field,
+            egCore.auth.token(), patron.id, null, patron.home_ou.id()
+
+        ).then(function(res) {
+            // clear the invalid value from the form
+            patron[field] = '';
+
+            // update last_xact_id so future save operations
+            // on this patron will be allowed
+            patron.last_xact_id = res.payload.last_xact_id[patron.id];
+        });
+    }
+
     service.init_patron = function(current) {
 
         if (!current)
@@ -387,7 +405,8 @@ angular.module('egCoreMod')
 
         patron.home_ou = egCore.org.get(patron.home_ou.id);
         patron.expire_date = new Date(Date.parse(patron.expire_date));
-        patron.dob = new Date(Date.parse(patron.dob));
+        patron.dob = patron.dob ?
+            new Date(Date.parse(patron.dob)) : null;
         patron.profile = current.profile(); // pre-hash version
         patron.net_access_level = current.net_access_level();
         patron.ident_type = current.ident_type();
@@ -1012,6 +1031,10 @@ function PatronRegCtrl($scope, $routeParams,
         $scope.hold_notify_phone = Boolean(notify.match(/phone/));
         $scope.hold_notify_email = Boolean(notify.match(/email/));
         $scope.hold_notify_sms = Boolean(notify.match(/sms/));
+    }
+
+    $scope.invalidate_field = function(field) {
+        patronRegSvc.invalidate_field($scope.patron, field);
     }
 
     $scope.edit_passthru.save = function() {
