@@ -79,6 +79,27 @@
       <input type="text" 
         ng-blur="day_phone_changed(patron.day_phone)"
         class="form-control" ng-model="[% model %]"/>
+    [% ELSIF field.match('phone') %]
+      <input type="text" 
+        ng-blur="dupe_value_changed('phone', patron.[% field %])"
+        class="form-control" ng-model="[% model %]"/>
+    [% ELSIF field.match('ident_value') %]
+      <input type="text" 
+        ng-blur="dupe_value_changed('ident', patron.[% field %])"
+        class="form-control" ng-model="[% model %]"/>
+    [% ELSIF field == 'first_given_name' OR field == 'family_name' %]
+      <input type="text" 
+        ng-blur="dupe_value_changed('name', patron.[% field %])"
+        class="form-control" ng-model="[% model %]"/>
+    [% ELSIF field == 'email' %]
+      <input type="[% input_type %]" 
+        ng-blur="dupe_value_changed('email', patron.email)"
+        class="form-control" ng-model="[% model %]"/>
+    [% ELSIF field.match('street') OR field == 'city' %]
+      <!-- note: passing address object to dupe_value_changed -->
+      <input type="[% input_type %]" 
+        ng-blur="dupe_value_changed('address', patron.[% path %])"
+        class="form-control" ng-model="[% model %]"/>
     [% ELSE %]
       <input type="[% input_type %]" 
         class="form-control" ng-model="[% model %]"/>

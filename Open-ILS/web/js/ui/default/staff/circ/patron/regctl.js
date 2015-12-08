@@ -373,6 +373,63 @@ angular.module('egCoreMod')
         });
     }
 
+    service.dupe_patron_search = function(patron, type, value) {
+        var search;
+
+        console.log('Dupe search called with "' + 
+            type +"' and value " + value);
+
+        switch (type) {
+
+            // TODO hide dupe results links matching the type 
+            // of the current search
+
+            case 'name':
+                var fname = patron.first_given_name;   
+                var lname = patron.family_name;   
+                if (!(fname && lname)) return;
+                search = {
+                    first_given_name : {value : fname, group : 0},
+                    family_name : {value : lname, group : 0}
+                };
+                break;
+
+            case 'email':
+                search = {email : {value : value, group : 0}};
+                break;
+
+            case 'ident':
+                search = {ident : {value : value, group : 2}};
+                break;
+
+            case 'phone':
+                search = {phone : {value : value, group : 2}};
+                break;
+
+            case 'address':
+                search = {};
+                angular.forEach(['street1', 'street2', 'city', 'post_code'],
+                    function(field) {
+                        if(value[field])
+                            search[field] = {value : value[field], group: 1};
+                    }
+                );
+                break;
+        }
+
+        return egCore.net.request( 
+            'open-ils.actor', 
+            'open-ils.actor.patron.search.advanced',
+            egCore.auth.token(), search, null, null, 1
+        ).then(function(res) {
+
+            res = res.filter(function(id) {return id != patron.id});
+            if (res.length == 0) return;
+
+            console.log(js2JSON(res));
+        });
+    }
+
     service.init_patron = function(current) {
 
         if (!current)
@@ -481,8 +538,7 @@ angular.module('egCoreMod')
         var patron = egCore.idl.fromHash('au', phash);
 
         patron.home_ou(patron.home_ou().id());
-        patron.expire_date(
-            patron.expire_date().toISOString().replace(/T.*/,''));
+        patron.expire_date(patron.expire_date().toISOString());
         patron.profile(patron.profile().id());
         if (patron.dob()) 
             patron.dob(patron.dob().toISOString().replace(/T.*/,''));
@@ -1035,6 +1091,10 @@ function PatronRegCtrl($scope, $routeParams,
 
     $scope.invalidate_field = function(field) {
         patronRegSvc.invalidate_field($scope.patron, field);
+    }
+
+    $scope.dupe_value_changed = function(type, value) {
+        patronRegSvc.dupe_patron_search($scope.patron, type, value);
     }
 
     $scope.edit_passthru.save = function() {
