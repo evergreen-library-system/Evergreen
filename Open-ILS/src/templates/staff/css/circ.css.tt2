@@ -110,6 +110,14 @@ but the ones I'm finding aren't quite cutting it..*/
     margin-top: 20px;
 }
 
+#reg-dupe-links {
+    position: fixed;
+    top:180px;
+    right:20px;
+    padding: 10px;
+    margin-top: 10px;
+}
+
 #reg-field-doc legend {
     /* otherwise the font size is quite large */
     font-size: 100%;

@@ -793,11 +793,16 @@ function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore,
 
     // Handle URL-encoded searches
     if ($location.search().search) {
+        console.log('URL search = ' + $location.search().search);
         patronSvc.urlSearch = {search : JSON2js($location.search().search)};
 
         // why the double-JSON encoded sort?
-        patronSvc.urlSearch.sort = 
-            JSON2js(patronSvc.urlSearch.search.search_sort);
+        if (patronSvc.urlSearch.search.search_sort) {
+            patronSvc.urlSearch.sort = 
+                JSON2js(patronSvc.urlSearch.search.search_sort);
+        } else {
+            patronSvc.urlSearch.sort = [];
+        }
         delete patronSvc.urlSearch.search.search_sort;
     }
 

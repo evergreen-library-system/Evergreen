@@ -381,9 +381,6 @@ angular.module('egCoreMod')
 
         switch (type) {
 
-            // TODO hide dupe results links matching the type 
-            // of the current search
-
             case 'name':
                 var fname = patron.first_given_name;   
                 var lname = patron.family_name;   
@@ -422,11 +419,11 @@ angular.module('egCoreMod')
             'open-ils.actor.patron.search.advanced',
             egCore.auth.token(), search, null, null, 1
         ).then(function(res) {
-
             res = res.filter(function(id) {return id != patron.id});
-            if (res.length == 0) return;
-
-            console.log(js2JSON(res));
+            return {
+                count : res.length,
+                search : search
+            };
         });
     }
 
@@ -685,6 +682,7 @@ function PatronRegCtrl($scope, $routeParams,
     // for existing patrons, disable barcode input by default
     $scope.disable_bc = $scope.focus_usrname = Boolean($scope.patron_id);
     $scope.focus_bc = !Boolean($scope.patron_id);
+    $scope.dupe_counts = {};
 
     if (!$scope.edit_passthru) {
         // in edit more, scope.edit_passthru is delivered to us by
@@ -1094,7 +1092,13 @@ function PatronRegCtrl($scope, $routeParams,
     }
 
     $scope.dupe_value_changed = function(type, value) {
-        patronRegSvc.dupe_patron_search($scope.patron, type, value);
+        $scope.dupe_counts[type] = 0;
+        patronRegSvc.dupe_patron_search($scope.patron, type, value)
+        .then(function(res) {
+            $scope.dupe_counts[type] = res.count;
+            $scope.dupe_search_encoded = 
+                encodeURIComponent(js2JSON(res.search));
+        });
     }
 
     $scope.edit_passthru.save = function() {
