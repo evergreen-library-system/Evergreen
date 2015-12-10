@@ -97,9 +97,8 @@ but the ones I'm finding aren't quite cutting it..*/
   text-align: right;
 }
 
-
 /* floating div along top-right with field documentation */
-#reg-field-doc {
+#reg-alert-pane {
     position: fixed;
     top:160px;
     right:20px;
@@ -111,12 +110,9 @@ but the ones I'm finding aren't quite cutting it..*/
 }
 
 #reg-dupe-links {
-    position: fixed;
-    top:180px;
-    right:20px;
-    padding: 10px;
-    margin-top: 10px;
+		margin-bottom: 10px;
 }
+
 
 #reg-field-doc legend {
     /* otherwise the font size is quite large */

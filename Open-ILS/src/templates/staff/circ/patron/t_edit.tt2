@@ -19,46 +19,50 @@
 <div ng-if="patron_id"
     class="strong-text-2">[% l('Patron Edit') %]</div>
 
-<!-- IDL field documentation window -->
-<fieldset id="reg-field-doc" ng-show="selected_field_doc">
-  <legend>
-  {{idl_fields[selected_field_doc.fm_class()][selected_field_doc.field()].label}}
-  </legend>
-  <div>{{selected_field_doc.string()}}</div>
-</fieldset>
 
-<div id="reg-dupe-links">
-    [%# dupe_search_encoded is uri escaped in the JS %]
-    <div>
-        <a target="_blank" ng-show="dupe_counts.name"
-            href="/eg/staff/circ/patron/search?search={{dupe_search_encoded}}" >
-        [% l('Found [_1] patron(s) with the same name', '{{dupe_counts.name}}') %]
-        </a>
-    </div>
-    <div>
-        <a target="_blank" ng-show="dupe_counts.email"
-            href="/eg/staff/circ/patron/search?search={{dupe_search_encoded}}" >
-            [% l('Found [_1] patron(s) with the same email address', 
-            '{{dupe_counts.email}}') %]</a>
-    </div>
-    <div>
-        <a target="_blank" ng-show="dupe_counts.ident"
-            href="/eg/staff/circ/patron/search?search={{dupe_search_encoded}}" >
-            [% l('Found [_1] patron(s) with the same identification', 
-            '{{dupe_counts.ident}}') %]</a>
-    </div>
-    <div>
-        <a target="_blank" ng-show="dupe_counts.phone"
-            href="/eg/staff/circ/patron/search?search={{dupe_search_encoded}}" >
-            [% l('Found [_1] patron(s) with the same phone number', 
-            '{{dupe_counts.phone}}') %]</a>
-    </div>
-    <div>
-        <a target="_blank" ng-show="dupe_counts.address"
-            href="/eg/staff/circ/patron/search?search={{dupe_search_encoded}}" >
-            [% l('Found [_1] patron(s) with the same address', 
-            '{{dupe_counts.address}}') %]</a>
-    </div>
+<div id="reg-alert-pane">
+
+	<div id="reg-dupe-links">
+		[%# dupe_search_encoded is uri escaped in the JS %]
+		<div>
+			<a target="_blank" ng-show="dupe_counts.name"
+				href="/eg/staff/circ/patron/search?search={{dupe_search_encoded}}" >
+			[% l('[_1] patron(s) with same name', '{{dupe_counts.name}}') %]
+			</a>
+		</div>
+		<div>
+			<a target="_blank" ng-show="dupe_counts.email"
+				href="/eg/staff/circ/patron/search?search={{dupe_search_encoded}}" >
+				[% l('[_1] patron(s) with same email', 
+				'{{dupe_counts.email}}') %]</a>
+		</div>
+		<div>
+			<a target="_blank" ng-show="dupe_counts.ident"
+				href="/eg/staff/circ/patron/search?search={{dupe_search_encoded}}" >
+				[% l('[_1] patron(s) with same identification', 
+				'{{dupe_counts.ident}}') %]</a>
+		</div>
+		<div>
+			<a target="_blank" ng-show="dupe_counts.phone"
+				href="/eg/staff/circ/patron/search?search={{dupe_search_encoded}}" >
+				[% l('[_1] patron(s) with same phone', 
+				'{{dupe_counts.phone}}') %]</a>
+		</div>
+		<div>
+			<a target="_blank" ng-show="dupe_counts.address"
+				href="/eg/staff/circ/patron/search?search={{dupe_search_encoded}}" >
+				[% l('Found [_1] patron(s) with same address', 
+				'{{dupe_counts.address}}') %]</a>
+		</div>
+	</div>
+
+	<!-- IDL field documentation window -->
+	<fieldset id="reg-field-doc" ng-show="selected_field_doc">
+		<legend>
+		{{idl_fields[selected_field_doc.fm_class()][selected_field_doc.field()].label}}
+		</legend>
+		<div>{{selected_field_doc.string()}}</div>
+	</fieldset>
 </div>
 
 
