@@ -51,7 +51,7 @@
 		<div>
 			<a target="_blank" ng-show="dupe_counts.address"
 				href="/eg/staff/circ/patron/search?search={{dupe_search_encoded}}" >
-				[% l('Found [_1] patron(s) with same address', 
+				[% l('[_1] patron(s) with same address', 
 				'{{dupe_counts.address}}') %]</a>
 		</div>
 	</div>
