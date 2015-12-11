@@ -721,6 +721,10 @@ sub __hold_to_title {
         $e->retrieve_asset_copy($hold->target)) 
         if $hold->hold_type eq 'C' or $hold->hold_type eq 'F' or $hold->hold_type eq 'R';
 
+    return __part_to_title($e,
+        $e->retrieve_biblio_monograph_part($hold->target))
+        if $hold->hold_type eq 'P';
+
     return __volume_to_title($e, 
         $e->retrieve_asset_call_number($hold->target))
         if $hold->hold_type eq 'V';
@@ -744,6 +748,12 @@ sub __copy_to_title {
     return __volume_to_title($e, $vol);
 }
 
+sub __part_to_title {
+    my( $e, $part ) = @_;
+    #syslog('LOG_DEBUG', "OILS: part_to_title(%s)", $part->id);
+
+    return __record_to_title($e, $part->record);
+}
 
 sub __volume_to_title {
     my( $e, $volume ) = @_;
