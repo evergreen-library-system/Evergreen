@@ -1,6 +1,6 @@
 BEGIN;
 
-INSERT INTO config.upgrade_log (version) VALUES ('XXXX'); 
+INSERT INTO config.upgrade_log (version) VALUES ('0950'); 
 
 CREATE OR REPLACE FUNCTION money.materialized_summary_billing_del () RETURNS TRIGGER AS $$
 DECLARE
