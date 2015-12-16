@@ -10621,7 +10621,7 @@ SELECT  usr,
 		</fields>
 		<links>
 			<link field="id" reltype="has_a" key="id" map="" class="bre"/>
-			<link field="pickup_lib" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="pickup_lib_or_desc" reltype="has_a" key="id" map="" class="aou"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
