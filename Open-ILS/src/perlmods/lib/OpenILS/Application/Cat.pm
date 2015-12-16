@@ -680,10 +680,24 @@ sub _build_volume_list {
 
         my $copies = $e->search_asset_copy([
             { call_number => $volume->id , deleted => 'f' },
-            { flesh => 1, flesh_fields => { acp => ['stat_cat_entries','parts'] } }
+            {
+                join => {
+                    acpm => {
+                        type => 'left',
+                        join => {
+                            bmp => { type => 'left' }
+                        }
+                    }
+                },
+                flesh => 1,
+                flesh_fields => { acp => ['stat_cat_entries','parts'] },
+                order_by => [
+                    {'class' => 'bmp', 'field' => 'label_sortkey', 'transform' => 'oils_text_as_bytea'},
+                    {'class' => 'bmp', 'field' => 'label', 'transform' => 'oils_text_as_bytea'},
+                    {'class' => 'acp', 'field' => 'barcode'}
+                ]
+            }
         ]);
-
-        $copies = [ sort { $a->barcode cmp $b->barcode } @$copies  ];
 
         for my $c (@$copies) {
             if( $c->status == OILS_COPY_STATUS_CHECKED_OUT ) {
