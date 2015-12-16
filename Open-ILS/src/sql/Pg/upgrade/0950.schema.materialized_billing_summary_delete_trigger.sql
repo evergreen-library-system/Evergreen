@@ -1,6 +1,6 @@
 BEGIN;
 
-INSERT INTO config.upgrade_log (version) VALUES ('0950'); 
+SELECT evergreen.upgrade_deps_block_check('0950', :eg_version); 
 
 CREATE OR REPLACE FUNCTION money.materialized_summary_billing_del () RETURNS TRIGGER AS $$
 DECLARE
