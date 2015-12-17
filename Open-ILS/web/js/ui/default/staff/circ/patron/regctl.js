@@ -671,7 +671,7 @@ angular.module('egCoreMod')
 
 
 function PatronRegCtrl($scope, $routeParams, 
-    $q, $modal, $window, egCore, patronSvc, patronRegSvc) {
+    $q, $modal, $window, egCore, patronSvc, patronRegSvc, egUnloadPrompt) {
 
     $scope.page_data_loaded = false;
     $scope.clone_id = $routeParams.clone_id;
@@ -694,6 +694,9 @@ function PatronRegCtrl($scope, $routeParams,
     // 0=all, 1=suggested, 2=all
     $scope.edit_passthru.vis_level = 0; 
     // TODO: add save/clone handlers here
+
+    // TODO: call attach() on the first instance of a modified value
+    //egUnloadPrompt.attach($scope);
 
     // Apply default values for new patrons during initial registration
     // prs is shorthand for patronSvc
@@ -1131,5 +1134,5 @@ function PatronRegCtrl($scope, $routeParams,
 // This controller may be loaded from different modules (patron edit vs.
 // register new patron), so we have to inject the controller params manually.
 PatronRegCtrl.$inject = ['$scope', '$routeParams', '$q', '$modal', 
-    '$window', 'egCore', 'patronSvc', 'patronRegSvc'];
+    '$window', 'egCore', 'patronSvc', 'patronRegSvc', 'egUnloadPrompt'];
 
