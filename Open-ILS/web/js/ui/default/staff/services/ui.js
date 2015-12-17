@@ -184,6 +184,34 @@ function($modal, $interpolate) {
     return service;
 }])
 
+/**
+ * Warn on page unload and give the user a chance to avoid navigating
+ * away from the current page.
+ * NOTE: we can't use an egUnloadDialog as the dialog builder, because
+ * it renders asynchronously, which allows the page to redirect before
+ * the dialog appears.
+ */
+.factory('egUnloadPrompt', [
+        '$window','egStrings', 
+function($window , egStrings) {
+    var service = {};
+
+    service.attach = function($scope, msg) {
+
+        // handle page change
+        $($window).on('beforeunload', function() { 
+            return msg || egStrings.EG_UNLOAD_PAGE_PROMPT_MSG;
+        });
+
+        // handle controller change (e.g. tabbed navigation)
+        $scope.$on('$locationChangeStart', function(evt, next, current) {
+            if (!confirm(msg || egStrings.EG_UNLOAD_CTRL_PROMPT_MSG)) 
+                evt.preventDefault();
+        });
+    };
+    return service;
+}])
+
 .directive('aDisabled', function() {
     return {
         restrict : 'A',

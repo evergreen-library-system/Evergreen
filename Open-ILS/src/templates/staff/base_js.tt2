@@ -48,5 +48,13 @@
   // pending api_level thunking in C
   // OpenSRF.api_level = 2;
   OpenSRF.Session.transport = OSRF_TRANSPORT_TYPE_WS;
+
+  // Here lie JS strings that may be used on any/all pages.
+  angular.module('egCoreMod').run(['egStrings', function(s) {
+    s.EG_UNLOAD_CTRL_PROMPT_MSG = 
+      '[% l('This page may have unsaved data.\n\nAre you sure you want to leave this page?') %]';
+    s.EG_UNLOAD_PAGE_PROMPT_MSG = 
+      '[% l('This page may have unsaved data.') %]';
+  }]);
 </script>
 
