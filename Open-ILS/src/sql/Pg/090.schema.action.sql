@@ -879,51 +879,6 @@ BEGIN
 END;
 $$ LANGUAGE 'plpgsql';
 
--- Return the list of circ chain heads in xact_start order that the user has chosen to "retain"
-CREATE OR REPLACE FUNCTION action.usr_visible_circs (usr_id INT) RETURNS SETOF action.circulation AS $func$
-DECLARE
-    c               action.circulation%ROWTYPE;
-    view_age        INTERVAL;
-    usr_view_age    actor.usr_setting%ROWTYPE;
-    usr_view_start  actor.usr_setting%ROWTYPE;
-BEGIN
-    SELECT * INTO usr_view_age FROM actor.usr_setting WHERE usr = usr_id AND name = 'history.circ.retention_age';
-    SELECT * INTO usr_view_start FROM actor.usr_setting WHERE usr = usr_id AND name = 'history.circ.retention_start';
-
-    IF usr_view_age.value IS NOT NULL AND usr_view_start.value IS NOT NULL THEN
-        -- User opted in and supplied a retention age
-        IF oils_json_to_text(usr_view_age.value)::INTERVAL > AGE(NOW(), oils_json_to_text(usr_view_start.value)::TIMESTAMPTZ) THEN
-            view_age := AGE(NOW(), oils_json_to_text(usr_view_start.value)::TIMESTAMPTZ);
-        ELSE
-            view_age := oils_json_to_text(usr_view_age.value)::INTERVAL;
-        END IF;
-    ELSIF usr_view_start.value IS NOT NULL THEN
-        -- User opted in
-        view_age := AGE(NOW(), oils_json_to_text(usr_view_start.value)::TIMESTAMPTZ);
-    ELSE
-        -- User did not opt in
-        RETURN;
-    END IF;
-
-    FOR c IN
-        SELECT  *
-          FROM  action.circulation
-          WHERE usr = usr_id
-                AND parent_circ IS NULL
-                AND xact_start > NOW() - view_age
-          ORDER BY xact_start DESC
-    LOOP
-        RETURN NEXT c;
-    END LOOP;
-
-    RETURN;
-END;
-$func$ LANGUAGE PLPGSQL;
-
-CREATE OR REPLACE FUNCTION action.usr_visible_circ_copies( INTEGER ) RETURNS SETOF BIGINT AS $$
-    SELECT DISTINCT(target_copy) FROM action.usr_visible_circs($1)
-$$ LANGUAGE SQL ROWS 10;
-
 CREATE OR REPLACE FUNCTION action.usr_visible_holds (usr_id INT) RETURNS SETOF action.hold_request AS $func$
 DECLARE
     h               action.hold_request%ROWTYPE;
@@ -989,8 +944,6 @@ $func$ LANGUAGE PLPGSQL;
 
 CREATE OR REPLACE FUNCTION action.purge_circulations () RETURNS INT AS $func$
 DECLARE
-    usr_keep_age    actor.usr_setting%ROWTYPE;
-    usr_keep_start  actor.usr_setting%ROWTYPE;
     org_keep_age    INTERVAL;
     org_use_last    BOOL = false;
     org_age_is_min  BOOL = false;
@@ -1052,24 +1005,7 @@ BEGIN
                 last_finished := circ_chain_tail.xact_finish;
             END IF;
 
-            -- Now get the user settings, if any, to block purging if the user wants to keep more circs
-            usr_keep_age.value := NULL;
-            SELECT * INTO usr_keep_age FROM actor.usr_setting WHERE usr = circ_chain_head.usr AND name = 'history.circ.retention_age';
-
-            usr_keep_start.value := NULL;
-            SELECT * INTO usr_keep_start FROM actor.usr_setting WHERE usr = circ_chain_head.usr AND name = 'history.circ.retention_start';
-
-            IF usr_keep_age.value IS NOT NULL AND usr_keep_start.value IS NOT NULL THEN
-                IF oils_json_to_text(usr_keep_age.value)::INTERVAL > AGE(NOW(), oils_json_to_text(usr_keep_start.value)::TIMESTAMPTZ) THEN
-                    keep_age := AGE(NOW(), oils_json_to_text(usr_keep_start.value)::TIMESTAMPTZ);
-                ELSE
-                    keep_age := oils_json_to_text(usr_keep_age.value)::INTERVAL;
-                END IF;
-            ELSIF usr_keep_start.value IS NOT NULL THEN
-                keep_age := AGE(NOW(), oils_json_to_text(usr_keep_start.value)::TIMESTAMPTZ);
-            ELSE
-                keep_age := COALESCE( org_keep_age, '2000 years'::INTERVAL );
-            END IF;
+            keep_age := COALESCE( org_keep_age, '2000 years'::INTERVAL );
 
             IF org_age_is_min THEN
                 keep_age := GREATEST( keep_age, org_keep_age );
@@ -1369,5 +1305,94 @@ END;
 $f$ LANGUAGE PLPGSQL;
 
 CREATE TRIGGER hold_copy_proximity_update_tgr BEFORE INSERT OR UPDATE ON action.hold_copy_map FOR EACH ROW EXECUTE PROCEDURE action.hold_copy_calculated_proximity_update ();
+
+CREATE TABLE action.usr_circ_history (
+    id           BIGSERIAL PRIMARY KEY,
+    usr          INTEGER NOT NULL REFERENCES actor.usr(id)
+                 DEFERRABLE INITIALLY DEFERRED,
+    xact_start   TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+    target_copy  BIGINT NOT NULL REFERENCES asset.copy(id)
+                 DEFERRABLE INITIALLY DEFERRED,
+    due_date     TIMESTAMP WITH TIME ZONE NOT NULL,
+    checkin_time TIMESTAMP WITH TIME ZONE,
+    source_circ  BIGINT REFERENCES action.circulation(id)
+                 ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED
+);
+
+CREATE OR REPLACE FUNCTION action.maintain_usr_circ_history() 
+    RETURNS TRIGGER AS $FUNK$
+DECLARE
+    cur_circ  BIGINT;
+    first_circ BIGINT;
+BEGIN                                                                          
+
+    -- Any retention value signifies history is enabled.
+    -- This assumes that clearing these values via external 
+    -- process deletes the action.usr_circ_history rows.
+    -- TODO: replace these settings w/ a single bool setting?
+    PERFORM 1 FROM actor.usr_setting 
+        WHERE usr = NEW.usr AND value IS NOT NULL AND name IN (
+            'history.circ.retention_age', 
+            'history.circ.retention_start'
+        );
+
+    IF NOT FOUND THEN
+        RETURN NEW;
+    END IF;
+
+    IF TG_OP = 'INSERT' AND NEW.parent_circ IS NULL THEN
+        -- Starting a new circulation.  Insert the history row.
+        INSERT INTO action.usr_circ_history 
+            (usr, xact_start, target_copy, due_date, source_circ)
+        VALUES (
+            NEW.usr, 
+            NEW.xact_start, 
+            NEW.target_copy, 
+            NEW.due_date, 
+            NEW.id
+        );
+
+        RETURN NEW;
+    END IF;
+
+    -- find the first and last circs in the circ chain 
+    -- for the currently modified circ.
+    FOR cur_circ IN SELECT id FROM action.circ_chain(NEW.id) LOOP
+        IF first_circ IS NULL THEN
+            first_circ := cur_circ;
+            CONTINUE;
+        END IF;
+        -- Allow the loop to continue so that at as the loop
+        -- completes cur_circ points to the final circulation.
+    END LOOP;
+
+    IF NEW.id <> cur_circ THEN
+        -- Modifying an intermediate circ.  Ignore it.
+        RETURN NEW;
+    END IF;
+
+    -- Update the due_date/checkin_time on the history row if the current 
+    -- circ is the last circ in the chain and an update is warranted.
+
+    UPDATE action.usr_circ_history 
+        SET 
+            due_date = NEW.due_date,
+            checkin_time = NEW.checkin_time
+        WHERE 
+            source_circ = first_circ 
+            AND (
+                due_date <> NEW.due_date OR (
+                    (checkin_time IS NULL AND NEW.checkin_time IS NOT NULL) OR
+                    (checkin_time IS NOT NULL AND NEW.checkin_time IS NULL) OR
+                    (checkin_time <> NEW.checkin_time)
+                )
+            );
+    RETURN NEW;
+END;                                                                           
+$FUNK$ LANGUAGE PLPGSQL; 
+
+CREATE TRIGGER maintain_usr_circ_history_tgr 
+    AFTER INSERT OR UPDATE ON action.circulation 
+    FOR EACH ROW EXECUTE PROCEDURE action.maintain_usr_circ_history();
 
 COMMIT;

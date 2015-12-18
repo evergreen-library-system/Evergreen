@@ -4259,7 +4259,27 @@ SELECT  usr,
 			<link field="aaasc_entries" reltype="has_many" key="xact" map="" class="aaasc"/>
 		</links>
 	</class>
-
+	<class id="auch" 
+		controller="open-ils.cstore" 
+		oils_obj:fieldmapper="action::user_circ_history" 
+		oils_persist:tablename="action.usr_circ_history" 
+		reporter:label="User Checkout History">
+		<fields oils_persist:primary="id" oils_persist:sequence="action.usr_circ_history_id_seq">
+			<field reporter:label="ID" name="id" reporter:datatype="id"/>
+			<!-- prevent reporting on the user that owns the checkout history -->
+			<field reporter:label="User" name="usr" reporter:datatype="link" suppress_controller="open-ils.reporter-store"/>
+			<field reporter:label="Circulating Item" name="target_copy" reporter:datatype="link"/>
+			<field reporter:label="Checkin Time" name="checkin_time" reporter:datatype="timestamp" />
+			<field reporter:label="Due Date" name="due_date" reporter:datatype="timestamp" />
+			<field reporter:label="Checkout Time" name="xact_start" reporter:datatype="timestamp" />
+			<field reporter:label="Source Circulation" name="source_circ" reporter:datatype="link" />
+		</fields>
+		<links>
+			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
+			<link field="target_copy" reltype="has_a" key="id" map="" class="acp"/>
+			<link field="source_circ" reltype="has_a" key="id" map="" class="circ"/>
+		</links>
+	</class>
 	<class id="brt" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="booking::resource_type" oils_persist:tablename="booking.resource_type" reporter:label="Resource Type">
 		<fields oils_persist:primary="id" oils_persist:sequence="booking.resource_type_id_seq">
 			<field reporter:label="Resource Type ID" name="id" reporter:datatype="id" reporter:selector="name"/>

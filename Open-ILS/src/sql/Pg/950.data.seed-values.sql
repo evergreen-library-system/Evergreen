@@ -9445,7 +9445,7 @@ INSERT INTO
 
 INSERT INTO action_trigger.hook (key,core_type,description,passive) VALUES (
         'circ.format.history.email',
-        'circ', 
+        'auch', 
         oils_i18n_gettext(
             'circ.format.history.email',
             'An email has been requested for a circ history.',
@@ -9456,7 +9456,7 @@ INSERT INTO action_trigger.hook (key,core_type,description,passive) VALUES (
     )
     ,(
         'circ.format.history.print',
-        'circ', 
+        'auch', 
         oils_i18n_gettext(
             'circ.format.history.print',
             'A circ history needs to be formatted for printing.',
@@ -9523,7 +9523,11 @@ Subject: Circulation History
             Barcode: [% circ.target_copy.barcode %]
             Checked Out: [% date.format(helpers.format_date(circ.xact_start), '%Y-%m-%d') %]
             Due Date: [% date.format(helpers.format_date(circ.due_date), '%Y-%m-%d') %]
-            Returned: [% date.format(helpers.format_date(circ.checkin_time), '%Y-%m-%d') %]
+            Returned: [%
+                date.format(
+                    helpers.format_date(circ.checkin_time), '%Y-%m-%d') 
+                    IF circ.checkin_time; 
+            %]
     [% END %]
 $$
     )
@@ -9552,7 +9556,11 @@ $$
             <div>Barcode: [% circ.target_copy.barcode %]</div>
             <div>Checked Out: [% date.format(helpers.format_date(circ.xact_start), '%Y-%m-%d') %]</div>
             <div>Due Date: [% date.format(helpers.format_date(circ.due_date), '%Y-%m-%d') %]</div>
-            <div>Returned: [% date.format(helpers.format_date(circ.checkin_time), '%Y-%m-%d') %]</div>
+            <div>Returned: [%
+                date.format(
+                    helpers.format_date(circ.checkin_time), '%Y-%m-%d') 
+                    IF circ.checkin_time; -%]
+            </div>
         </li>
     [% END %]
     </ol>
