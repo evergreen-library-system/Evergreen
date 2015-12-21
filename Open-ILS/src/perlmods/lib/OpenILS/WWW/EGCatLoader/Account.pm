@@ -616,16 +616,79 @@ sub load_myopac_prefs_settings {
         $settings{$key}= $val unless $$set_map{$key} eq $val;
     }
 
+    # Used by the settings update form when warning on history delete.
+    my $clear_circ_history = 0;
+    my $clear_hold_history = 0;
+
+    # true if we need to show the warning on next page load.
+    my $hist_warning_needed = 0;
+    my $hist_clear_confirmed = $self->cgi->param('history_delete_confirmed');
+
     my $now = DateTime->now->strftime('%F');
-    foreach my $key (qw/history.circ.retention_start history.hold.retention_start/) {
+    foreach my $key (
+            qw/history.circ.retention_start history.hold.retention_start/) {
+
         my $val = $self->cgi->param($key);
         if($val and $val eq 'on') {
             # Set the start time to 'now' unless a start time already exists for the user
             $settings{$key} = $now unless $$set_map{$key};
+
         } else {
-            # clear the start time if one previously existed for the user
-            $settings{$key} = undef if $$set_map{$key};
+
+            next unless $$set_map{$key}; # nothing to do
+
+            $clear_circ_history = 1 if $key =~ /circ/;
+            $clear_hold_history = 1 if $key =~ /hold/;
+
+            if (!$hist_clear_confirmed) {
+                # when clearing circ history, only warn if history data exists.
+    
+                if ($clear_circ_history) {
+
+                    if ($self->fetch_user_circ_history(0, 1)->[0]) {
+                        $hist_warning_needed = 1;
+                        next; # no history updates while confirmation pending
+                    }
+
+                } else {
+
+                    my $one_hold = $e->json_query({
+                        select => {
+                            au => [{
+                                column => 'id', 
+                                transform => 'action.usr_visible_holds', 
+                                result_field => 'id'
+                            }]
+                        },
+                        from => 'au',
+                        where => {id => $e->requestor->id},
+                        limit => 1
+                    })->[0];
+
+                    if ($one_hold) {
+                        $hist_warning_needed = 1;
+                        next; # no history updates while confirmation pending
+                    }
+                }
+            }
+
+            $settings{$key} = undef;
+
+            if ($key eq 'history.circ.retention_start') {
+                # delete existing circulation history data.
+                $U->simplereq(
+                    'open-ils.actor',
+                    'open-ils.actor.history.circ.clear',
+                    $self->editor->authtoken);
+            }
         }
+    }
+
+    # Warn patrons before clearing circ/hold history
+    if ($hist_warning_needed) {
+        $self->ctx->{clear_circ_history} = $clear_circ_history;
+        $self->ctx->{clear_hold_history} = $clear_hold_history;
+        $self->ctx->{confirm_history_delete} = 1;
     }
 
     # Send the modified settings off to be saved
@@ -1526,38 +1589,62 @@ sub load_myopac_circ_history {
     $ctx->{circ_history_limit} = $limit;
     $ctx->{circ_history_offset} = $offset;
 
-    my $circ_ids;
-    if ($self->cgi->param('sort') ne "") {		# Defer limitation to circ_history.tt2
-       $circ_ids = $e->json_query({
-        select => {
-            au => [{
-                column => 'id', 
-                transform => 'action.usr_visible_circs', 
-                result_field => 'id'
-            }]
-        },
-        from => 'au',
-        where => {id => $e->requestor->id}  
-        });
+    # Defer limitation to circ_history.tt2 when sorting
+    if ($self->cgi->param('sort')) {
+        $limit = undef;
+        $offset = undef;
+    }
 
-    } else {
-       $circ_ids = $e->json_query({
-        select => {
-            au => [{
-                column => 'id', 
-                transform => 'action.usr_visible_circs', 
-                result_field => 'id'
-            }]
+    $ctx->{circs} = $self->fetch_user_circ_history(1, $limit, $offset);
+    return Apache2::Const::OK;
+}
+
+# if 'flesh' is set, copy data etc. is loaded and the return value is 
+# a hash of 'circ' and 'marc_xml'.  Othwerwise, it's just a list of 
+# auch objects.
+sub fetch_user_circ_history {
+    my ($self, $flesh, $limit, $offset) = @_;
+    my $e = $self->editor;
+
+    my %limits = ();
+    $limits{offset} = $offset if defined $offset;
+    $limits{limit} = $limit if defined $limit;
+
+    my %flesh_ops = (
+        flesh => 3,
+        flesh_fields => {
+            auch => ['target_copy'],
+            acp => ['call_number'],
+            acn => ['record']
         },
-        from => 'au',
-        where => {id => $e->requestor->id}, 
-        limit => $limit,
-        offset => $offset
+    );
+
+    $e->xact_begin;
+    my $circs = $e->search_action_user_circ_history([
+        {usr => $e->requestor->id},
+        {   # order newest to oldest by default
+            order_by => {auch => 'xact_start DESC'},
+            $flesh ? %flesh_ops : (),
+            %limits
+        },
+        {substream => 1}
+    ]);
+    $e->rollback;
+
+    return $circs unless $flesh;
+
+    my @circs;
+    for my $circ (@$circs) {
+        push(@circs, {
+            circ => $circ, 
+            marc_xml => ($circ->target_copy->call_number->id != -1) ? 
+                XML::LibXML->new->parse_string(
+                    $circ->target_copy->call_number->record->marc) : 
+                undef  # pre-cat copy, use the dummy title/author instead
         });
     }
 
-    $ctx->{circs} = $self->fetch_user_circs(1, [map { $_->{id} } @$circ_ids]);
-    return Apache2::Const::OK;
+    return \@circs;
 }
 
 # TODO: action.usr_visible_holds does not return cancelled holds.  Should it?
@@ -2590,22 +2677,13 @@ sub load_myopac_circ_history_export {
     my $e = $self->editor;
     my $filename = $self->cgi->param('filename') || 'circ_history.csv';
 
-    my $ids = $e->json_query({
-        select => {
-            au => [{
-                column => 'id', 
-                transform => 'action.usr_visible_circs', 
-                result_field => 'id'
-            }]
-        },
-        from => 'au',
-        where => {id => $e->requestor->id} 
-    });
+    my $circs = $self->fetch_user_circ_history;
 
     $self->ctx->{csv} = $U->fire_object_event(
         undef, 
         'circ.format.history.csv',
-        $e->search_action_circulation({id => [map {$_->{id}} @$ids]}, {substream =>1}),
+        $e->search_action_circulation(
+            {id => [map {$_->id} @$circs]}, {substream =>1}),
         $self->editor->requestor->home_ou
     );
 

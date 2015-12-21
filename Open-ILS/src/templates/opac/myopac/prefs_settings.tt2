@@ -72,7 +72,8 @@
                     <td>
                         <input id='[% setting %]' name='[% setting %]' 
                             type="checkbox" title="[% circ_name %]"
-                            [% IF ctx.user_setting_map.$setting; %] checked='checked' [% END %]/>
+                            [% IF ctx.user_setting_map.$setting 
+                              AND !ctx.clear_circ_history; %] checked='checked' [% END %]/>
                     </td>
                 </tr>
                 [%- setting = 'history.hold.retention_start' -%]
@@ -82,7 +83,8 @@
                     <td>
                         <input id='[% setting %]' name='[% setting %]' 
                             type="checkbox" title="[% hold_name %]"
-                            [% IF ctx.user_setting_map.$setting; %] checked='checked' [% END %]/>
+                            [% IF ctx.user_setting_map.$setting
+                              AND !ctx.clear_hold_history; %] checked='checked' [% END %]/>
                     </td>
                 </tr>
                 [%- setting = 'opac.temporary_list_no_warn' -%]
@@ -121,7 +123,18 @@
 
             </tbody>
         </table>
+        [% IF ctx.confirm_history_delete %]
+        <div id='clear-history-confirm'>
+        [% l('Disabling checkout or holds history will permanently remove all items from your history.') %]
+        <br/>
+        [% l('Are you sure you wish to continue?') %]
+        </div>
+        <a href="[% mkurl() %]">[% l('Cancel') %]</a>
+        <input type='hidden' name='history_delete_confirmed' value='1'/>
+        <input type="submit" value="[% l('Confirm') %]" class="opac-button"/>
+        [% ELSE %]
         <input type="submit" value="[% l('Save') %]" class="opac-button"/>
+        [% END %]
     </form>
     [% INCLUDE "opac/parts/myopac/prefs_hints.tt2" %]
 [% END %]

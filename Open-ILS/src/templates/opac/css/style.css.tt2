@@ -2133,3 +2133,9 @@ label[for*=expert_]
     text-align: center;
     font-style: italic;
 }
+
+#clear-history-confirm {
+  font-weight: bold;
+  color: [% css_colors.text_badnews %]; 
+  padding: 10px;
+}

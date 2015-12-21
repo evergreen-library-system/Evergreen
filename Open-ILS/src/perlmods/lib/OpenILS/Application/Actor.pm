@@ -4215,33 +4215,47 @@ sub event_def_opt_in_settings {
 
 
 __PACKAGE__->register_method(
-    method    => "user_visible_circs",
-    api_name  => "open-ils.actor.history.circ.visible",
+    method    => "user_circ_history",
+    api_name  => "open-ils.actor.history.circ",
     stream => 1,
+    authoritative => 1,
     signature => {
-        desc   => 'Returns the set of opt-in visible circulations accompanied by circulation chain summaries',
+        desc   => 'Returns user circ history objects for the calling user',
         params => [
             { desc => 'Authentication token',  type => 'string'},
-            { desc => 'User ID.  If no user id is present, the authenticated user is assumed', type => 'number' },
             { desc => 'Options hash.  Supported fields are "limit" and "offset"', type => 'object' },
         ],
         return => {
-            desc => q/An object with 2 fields: circulation and summary.  
-                circulation is the "circ" object.   summary is the related "accs" object/,
+            desc => q/Stream of 'auch' circ history objects/,
             type => 'object',
         }
     }
 );
 
 __PACKAGE__->register_method(
-    method    => "user_visible_circs",
-    api_name  => "open-ils.actor.history.circ.visible.print",
+    method    => "user_circ_history",
+    api_name  => "open-ils.actor.history.circ.clear",
     stream => 1,
     signature => {
-        desc   => 'Returns printable output for the set of opt-in visible circulations',
+        desc   => 'Delete all user circ history entries for the calling user',
         params => [
             { desc => 'Authentication token',  type => 'string'},
-            { desc => 'User ID.  If no user id is present, the authenticated user is assumed', type => 'number' },
+        ],
+        return => {
+            desc => q/1 on success, event on error/,
+            type => 'object',
+        }
+    }
+);
+
+__PACKAGE__->register_method(
+    method    => "user_circ_history",
+    api_name  => "open-ils.actor.history.circ.print",
+    stream => 1,
+    signature => {
+        desc   => q/Returns printable output for the caller's circ history objects/,
+        params => [
+            { desc => 'Authentication token',  type => 'string'},
             { desc => 'Options hash.  Supported fields are "limit" and "offset"', type => 'object' },
         ],
         return => {
@@ -4252,11 +4266,11 @@ __PACKAGE__->register_method(
 );
 
 __PACKAGE__->register_method(
-    method    => "user_visible_circs",
-    api_name  => "open-ils.actor.history.circ.visible.email",
+    method    => "user_circ_history",
+    api_name  => "open-ils.actor.history.circ.email",
     stream => 1,
     signature => {
-        desc   => 'Emails the set of opt-in visible circulations to the requestor',
+        desc   => q/Emails the caller's circ history/,
         params => [
             { desc => 'Authentication token',  type => 'string'},
             { desc => 'User ID.  If no user id is present, the authenticated user is assumed', type => 'number' },
@@ -4267,6 +4281,68 @@ __PACKAGE__->register_method(
         }
     }
 );
+
+sub user_circ_history {
+    my ($self, $conn, $auth, $options) = @_;
+    $options ||= {};
+
+    my $for_print = ($self->api_name =~ /print/);
+    my $for_email = ($self->api_name =~ /email/);
+    my $for_clear = ($self->api_name =~ /clear/);
+
+    # No perm check is performed.  Caller may only access his/her own
+    # circ history entries.
+    my $e = new_editor(authtoken => $auth);
+    return $e->event unless $e->checkauth;
+
+    my %limits = ();
+    if (!$for_clear) { # clear deletes all
+        $limits{offset} = $options->{offset} if defined $options->{offset};
+        $limits{limit} = $options->{limit} if defined $options->{limit};
+    }
+
+    my $circs = $e->search_action_user_circ_history([
+        {usr => $e->requestor->id},
+        {   # order newest to oldest by default
+            order_by => {auch => 'xact_start DESC'},
+            %limits
+        },
+        {substream => 1} # could be a large list
+    ]);
+
+    if ($for_print) {
+        return $U->fire_object_event(undef, 
+            'circ.format.history.print', $circs, $e->requestor->home_ou);
+    }
+
+    $e->xact_begin if $for_clear;
+    $conn->respond_complete(1) if $for_email;  # no sense in waiting
+
+    for my $circ (@$circs) {
+
+        if ($for_email) {
+            # events will be fired from action_trigger_runner
+            $U->create_events_for_hook('circ.format.history.email', 
+                $circ, $e->editor->home_ou, undef, undef, 1);
+
+        } elsif ($for_clear) {
+
+            $e->delete_action_user_circ_history($circ) 
+                or return $e->die_event;
+
+        } else {
+            $conn->respond($circ);
+        }
+    }
+
+    if ($for_clear) {
+        $e->commit;
+        return 1;
+    }
+
+    return undef;
+}
+
 
 __PACKAGE__->register_method(
     method    => "user_visible_circs",
@@ -4321,10 +4397,10 @@ __PACKAGE__->register_method(
     }
 );
 
-sub user_visible_circs {
+sub user_visible_holds {
     my($self, $conn, $auth, $user_id, $options) = @_;
 
-    my $is_hold = ($self->api_name =~ /hold/);
+    my $is_hold = 1;
     my $for_print = ($self->api_name =~ /print/);
     my $for_email = ($self->api_name =~ /email/);
     my $e = new_editor(authtoken => $auth);
