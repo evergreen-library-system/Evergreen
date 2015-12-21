@@ -706,8 +706,12 @@ function PatronRegCtrl($scope, $routeParams,
     $scope.edit_passthru.vis_level = 0; 
     // TODO: add save/clone handlers here
 
-    // TODO: call attach() on the first instance of a modified value
-    //egUnloadPrompt.attach($scope);
+    var modify_tracked = false;
+    $scope.field_modified = function() {
+        if (modify_tracked) return;
+        modify_tracked = true;
+        egUnloadPrompt.attach($scope);
+    }
 
     // Apply default values for new patrons during initial registration
     // prs is shorthand for patronSvc
@@ -881,6 +885,7 @@ function PatronRegCtrl($scope, $routeParams,
     $scope.set_profile = function(grp) {
         $scope.patron.profile = grp;
         $scope.set_expire_date();
+        $scope.field_modified();
     }
 
     $scope.new_address = function() {
@@ -1117,6 +1122,9 @@ function PatronRegCtrl($scope, $routeParams,
     }
 
     $scope.edit_passthru.save = function() {
+
+        // remove page unload warning prompt
+        egUnloadPrompt.clear();
 
         // toss the deleted addresses back into the patron's list of
         // addresses so it's included in the update

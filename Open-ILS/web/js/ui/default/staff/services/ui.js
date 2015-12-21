@@ -186,7 +186,8 @@ function($modal, $interpolate) {
 
 /**
  * Warn on page unload and give the user a chance to avoid navigating
- * away from the current page.
+ * away from the current page.  
+ * Only one handler is supported per page.
  * NOTE: we can't use an egUnloadDialog as the dialog builder, because
  * it renders asynchronously, which allows the page to redirect before
  * the dialog appears.
@@ -196,6 +197,7 @@ function($modal, $interpolate) {
 function($window , egStrings) {
     var service = {};
 
+    // attach a page/scope unload prompt
     service.attach = function($scope, msg) {
 
         // handle page change
@@ -203,12 +205,24 @@ function($window , egStrings) {
             return msg || egStrings.EG_UNLOAD_PAGE_PROMPT_MSG;
         });
 
-        // handle controller change (e.g. tabbed navigation)
-        $scope.$on('$locationChangeStart', function(evt, next, current) {
+        if (!$scope) return;
+
+        // If a scope was provided, attach a scope-change handler,
+        // similar to the page-page prompt.
+        service.locChangeCancel = 
+            $scope.$on('$locationChangeStart', function(evt, next, current) {
             if (!confirm(msg || egStrings.EG_UNLOAD_CTRL_PROMPT_MSG)) 
                 evt.preventDefault();
         });
     };
+
+    // remove the page unload prompt
+    service.clear = function() {
+        $($window).off('beforeunload');
+        if (service.locChangeCancel)
+            service.locChangeCancel();
+    }
+
     return service;
 }])
 

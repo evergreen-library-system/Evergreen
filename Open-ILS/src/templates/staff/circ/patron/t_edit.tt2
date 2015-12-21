@@ -24,32 +24,32 @@
 
 	<div id="reg-dupe-links">
 		[%# dupe_search_encoded is uri escaped in the JS %]
-		<div>
-			<a target="_blank" ng-show="dupe_counts.name"
-				href="/eg/staff/circ/patron/search?search={{dupe_search_encoded}}" >
+		<div class="alert alert-danger" ng-show="dupe_counts.name">
+			<a target="_blank"
+				href="/eg/staff/circ/patron/search?search={{dupe_search_encoded}}">
 			[% l('[_1] patron(s) with same name', '{{dupe_counts.name}}') %]
 			</a>
 		</div>
-		<div>
-			<a target="_blank" ng-show="dupe_counts.email"
-				href="/eg/staff/circ/patron/search?search={{dupe_search_encoded}}" >
+		<div class="alert alert-danger" ng-show="dupe_counts.email">
+			<a target="_blank"
+				href="/eg/staff/circ/patron/search?search={{dupe_search_encoded}}">
 				[% l('[_1] patron(s) with same email', 
 				'{{dupe_counts.email}}') %]</a>
 		</div>
-		<div>
-			<a target="_blank" ng-show="dupe_counts.ident"
-				href="/eg/staff/circ/patron/search?search={{dupe_search_encoded}}" >
+		<div class="alert alert-danger" ng-show="dupe_counts.ident">
+			<a target="_blank" 
+				href="/eg/staff/circ/patron/search?search={{dupe_search_encoded}}">
 				[% l('[_1] patron(s) with same identification', 
 				'{{dupe_counts.ident}}') %]</a>
 		</div>
-		<div>
-			<a target="_blank" ng-show="dupe_counts.phone"
-				href="/eg/staff/circ/patron/search?search={{dupe_search_encoded}}" >
+		<div class="alert alert-danger" ng-show="dupe_counts.phone">
+			<a target="_blank" 
+				href="/eg/staff/circ/patron/search?search={{dupe_search_encoded}}">
 				[% l('[_1] patron(s) with same phone', 
 				'{{dupe_counts.phone}}') %]</a>
 		</div>
-		<div>
-			<a target="_blank" ng-show="dupe_counts.address"
+		<div class="alert alert-danger" ng-show="dupe_counts.address">
+			<a target="_blank" 
 				href="/eg/staff/circ/patron/search?search={{dupe_search_encoded}}" >
 				[% l('[_1] patron(s) with same address', 
 				'{{dupe_counts.address}}') %]</a>
@@ -57,12 +57,14 @@
 	</div>
 
 	<!-- IDL field documentation window -->
-	<fieldset id="reg-field-doc" ng-show="selected_field_doc">
-		<legend>
-		{{idl_fields[selected_field_doc.fm_class()][selected_field_doc.field()].label}}
-		</legend>
-		<div>{{selected_field_doc.string()}}</div>
-	</fieldset>
+  <div class="alert alert-info" ng-show="selected_field_doc">
+    <fieldset id="reg-field-doc">
+      <legend>
+      {{idl_fields[selected_field_doc.fm_class()][selected_field_doc.field()].label}}
+      </legend>
+      <div>{{selected_field_doc.string()}}</div>
+    </fieldset>
+  </div>
 </div>
 
 
@@ -99,48 +101,59 @@
     <!-- text / number input -->
 
     [% IF field == 'alert_message' %]
-      <textarea class="form-control" ng-model="[% model %]"/>
+      <textarea ng-change="field_modified()" 
+        class="form-control" ng-model="[% model %]"/>
     [% ELSIF field == 'post_code' %]
-      <input type="text" ng-blur="post_code_changed(patron.[% path %])"
+      <input type="text" ng-change="field_modified()" 
+        ng-blur="post_code_changed(patron.[% path %])"
         class="form-control" ng-model="[% model %]"/>
     [% ELSIF field == 'barcode' %]
       <input type="text" 
         focus-me="focus_bc"
+        ng-change="field_modified()" 
         ng-disabled="disable_bc"
         ng-blur="barcode_changed(patron.card.barcode)"
         class="form-control" ng-model="[% model %]"/>
     [% ELSIF field == 'usrname' %]
       <input type="text" 
         focus-me="focus_usrname"
+        ng-change="field_modified()" 
         ng-blur="usrname_changed(patron.usrname)"
         class="form-control" ng-model="[% model %]"/>
     [% ELSIF field == 'day_phone' %]
       <input type="text" 
         ng-blur="day_phone_changed(patron.day_phone)"
+        ng-change="field_modified()" 
         class="form-control" ng-model="[% model %]"/>
     [% ELSIF field.match('phone') %]
       <input type="text" 
+        ng-change="field_modified()" 
         ng-blur="dupe_value_changed('phone', patron.[% field %])"
         class="form-control" ng-model="[% model %]"/>
     [% ELSIF field.match('ident_value') %]
       <input type="text" 
+        ng-change="field_modified()" 
         ng-blur="dupe_value_changed('ident', patron.[% field %])"
         class="form-control" ng-model="[% model %]"/>
     [% ELSIF field == 'first_given_name' OR field == 'family_name' %]
       <input type="text" 
+        ng-change="field_modified()" 
         ng-blur="dupe_value_changed('name', patron.[% field %])"
         class="form-control" ng-model="[% model %]"/>
     [% ELSIF field == 'email' %]
       <input type="[% input_type %]" 
+        ng-change="field_modified()" 
         ng-blur="dupe_value_changed('email', patron.email)"
         class="form-control" ng-model="[% model %]"/>
     [% ELSIF field.match('street') OR field == 'city' %]
       <!-- note: passing address object to dupe_value_changed -->
       <input type="[% input_type %]" 
+        ng-change="field_modified()" 
         ng-blur="dupe_value_changed('address', patron.[% path %])"
         class="form-control" ng-model="[% model %]"/>
     [% ELSE %]
       <input type="[% input_type %]" 
+        ng-change="field_modified()" 
         class="form-control" ng-model="[% model %]"/>
     [% END %]
   [% END %]
@@ -230,6 +243,7 @@
   </div>
   <div class="col-md-3 reg-field-input">
     <input eg-date-input 
+      ng-change="field_modified()" 
       class="form-control" ng-model="patron.dob"/>
   </div>
 </div>
@@ -255,7 +269,9 @@
       </button>
       <ul class="dropdown-menu">
         <li ng-repeat="type in ident_types">
-          <a href ng-click="patron.ident_type = type">{{type.name()}}</a>
+          <a href ng-click="patron.ident_type = type; field_modified()">
+            {{type.name()}}
+          </a>
         </li>
       </ul>
     </div>
@@ -280,7 +296,7 @@
       src='[% DOC_IMG %]'></img>
     </div>
     <div class="col-md-3 reg-field-input">
-      <eg-org-selector selected="patron.home_ou" onchange="">
+      <eg-org-selector selected="patron.home_ou" onchange="field_modified">
       </eg-org-selector>
   </div>
 </div>
@@ -326,6 +342,7 @@
   </div>
   <div class="col-md-3 reg-field-input">
     <input eg-date-input 
+      ng-change="field_modified()" 
       class="form-control" ng-model="patron.expire_date"/>
   </div>
   <div class="col-md-3">
@@ -377,7 +394,9 @@
     <label>{{user_setting_types['opac.default_phone'].label()}}</label>
   </div>
   <div class="col-md-3 reg-field-input">
-    <input type='text' ng-model="user_settings['opac.default_phone']"/>
+    <input 
+      ng-change="field_modified()" 
+      type='text' ng-model="user_settings['opac.default_phone']"/>
   </div>
 </div>
 
@@ -386,7 +405,9 @@
     <label>{{user_setting_types['opac.default_pickup_location'].label()}}</label>
   </div>
   <div class="col-md-3 reg-field-input">
-    <eg-org-selector selected="patron.home_ou" onchange=""></eg-org-selector>
+    <eg-org-selector 
+      xonchange="field_modified" 
+      selected="patron.home_ou"></eg-org-selector>
   </div>
 </div>
 
@@ -396,7 +417,9 @@
   </div>
   <div class="col-md-3 reg-field-input">
     <div class='checkbox'>
-      <input type='checkbox' ng-model="user_settings['circ.holds_behind_desk']"/>
+      <input 
+        ng-change="field_modified()" 
+        type='checkbox' ng-model="user_settings['circ.holds_behind_desk']"/>
     </div>
   </div>
 </div>
@@ -407,15 +430,21 @@
   </div>
   <div class="col-md-3 reg-field-input flex-row">
     <div class='flex-cell'>
-      <input type='checkbox' ng-model="hold_notify_phone"/>
+      <input 
+        ng-change="field_modified()" 
+        type='checkbox' ng-model="hold_notify_phone"/>
       [% l('Phone') %]
     </div>
     <div class='flex-cell'>
-      <input type='checkbox' ng-model="hold_notify_email"/>
+      <input 
+        ng-change="field_modified()" 
+        type='checkbox' ng-model="hold_notify_email"/>
       [% l('Email') %]
     </div>
     <div class='flex-cell' ng-if="org_settings['sms.enable']">
-      <input type='checkbox' ng-model="hold_notify_sms"/>
+      <input 
+        ng-change="field_modified()" 
+        type='checkbox' ng-model="hold_notify_sms"/>
       [% l('SMS') %]
     </div>
   </div>
@@ -426,7 +455,9 @@
     <label>[% l('Default SMS/Text Number') %]</label>
   </div>
   <div class="col-md-3 reg-field-input">
-    <input type='text'/>
+    <input 
+      ng-change="field_modified()" 
+      type='text'/>
   </div>
 </div>
 
@@ -443,7 +474,7 @@
       <ul class="dropdown-menu">
         <li ng-repeat="carrier in sms_carriers">
           <a href 
-            ng-click="user_settings['opac.default_sms_carrier'] = carrier">
+            ng-click="field_modified();user_settings['opac.default_sms_carrier'] = carrier">
                 {{carrier.name()}}
           </a>
         </li>
@@ -457,7 +488,9 @@
     <label>{{type.label()}}</label>
   </div>
   <div class="col-md-3 reg-field-input">
-    <input type='checkbox' ng-model="user_settings[type.name()]"/>
+    <input 
+      ng-change="field_modified()" 
+      type='checkbox' ng-model="user_settings[type.name()]"/>
   </div>
 </div>
 
@@ -469,16 +502,17 @@
       <div class="col-md-3">
           <span class='pad-all-min'>
             [% l('Mailing') %] <input type='checkbox' 
-              ng-change="set_addr_type(addr, 'mailing')" 
+              ng-change="field_modified();set_addr_type(addr, 'mailing')" 
               ng-model="addr._is_mailing"/>
           </span>
           <span class='pad-all-min'>
             [% l('Physical') %] <input type='checkbox' 
-              ng-change="set_addr_type(addr, 'billing')" 
+              ng-change="field_modified();set_addr_type(addr, 'billing')" 
               ng-model="addr._is_billing"/>
           </span>
           <span class='pad-all-min'>
-            <button type="button" ng-click="delete_address(addr.id)" 
+            <button type="button" 
+              ng-click="field_modified();delete_address(addr.id)" 
               class="btn btn-danger">[% l('X') %]</button>
           </span>
       </div>
@@ -516,7 +550,9 @@
   </div>
   <div class="col-md-3 reg-field-input">
     <div ng-if="cat.entries().length == 0">
-      <input type="text" class="form-control"/>
+      <input 
+        ng-change="field_modified()" 
+        type="text" class="form-control"/>
     </div>
     <div ng-if="cat.entries().length != 0">
       <div class="btn-group" dropdown>
@@ -527,7 +563,8 @@
         </button>
         <ul class="dropdown-menu">
           <li ng-repeat="entry in cat.entries()">
-            <a href ng-click="stat_cat_entry_maps[cat.id()]=entry"> 
+            <a href 
+              ng-click="field_modified();stat_cat_entry_maps[cat.id()]=entry"> 
               {{entry.value()}}
             </a>
           </li>
@@ -563,7 +600,8 @@
           </button>
           <ul class="dropdown-menu">
             <li ng-repeat="answer in question.answers()">
-              <a href ng-click="survey_responses[question.id()] = answer"> 
+              <a href 
+                ng-click="field_modified();survey_responses[question.id()] = answer"> 
                 {{answer.answer()}} 
               </a>
             </li>
