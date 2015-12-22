@@ -1465,8 +1465,8 @@ sub tag_circulated_records {
 
     my $query = {
         select   => { acn => [{ column => 'record', alias => 'tagme' }] }, 
-        from     => { acp => 'acn' }, 
-        where    => { id => { in => { from => ['action.usr_visible_circ_copies', $e->requestor->id] } } },
+        from     => { auch => { acp => { join => 'acn' }} }, 
+        where    => { usr => $e->requestor->id },
         distinct => 1
     };
 
