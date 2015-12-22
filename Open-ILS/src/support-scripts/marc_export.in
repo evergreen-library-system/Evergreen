@@ -470,7 +470,13 @@ sub next {
                         next unless ($acp);
                         my $location = $Marque::config->option_value('location');
                         my $price = ($acp->price() ? $Marque::config->option_value('money').$acp->price() : '');
-                        $marc->insert_grouped_field(
+                        eval {
+                            local $SIG{__WARN__} = sub {
+                                my $message = "Warning from bibliographic record " . $r->id() . ": "
+                                    . shift;
+                                warn($message);
+                            };
+                            $marc->insert_grouped_field(
                             MARC::Field->new(
                                 '852', '4', ' ',
                                 ($location ? ('a' => $location) : ()),
@@ -487,6 +493,12 @@ sub next {
                                 (!$U->is_true($acp->circulate()) ? (x => 'noncirculating') : ()),
                                 (!$U->is_true($acp->opac_visible()) ? (x => 'hidden') : ())
                             ));
+                        };
+                        if ($@) {
+                            warn("Error in bibliographic record " . $r->id() . ": $@");
+                            import MARC::File::XML; # Reset SAX Parser.
+                            return $self->next();
+                        }
                     }
                 }
                 if ($Marque::config->option_value('mfhd')) {
