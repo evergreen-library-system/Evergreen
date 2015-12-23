@@ -511,6 +511,7 @@
                 copies = volume.findnodes('./*[local-name()="copies"]/*[local-name()="copy"]');
                 FOR copy IN copies;
                     parts = copy.findnodes('./*[local-name()="monograph_parts"]/*[local-name()="monograph_part"]');
+                    part_label = '';
                     FOREACH part IN parts;
                         part_label = part.getAttribute('label');
                         LAST IF part_label != '';
