@@ -1,0 +1,85 @@
+BEGIN;
+
+SELECT plan(5);
+
+-- at the time of writing, user '2' has zero circulations 
+-- in the default sample data set.
+\set circ_usr 2
+
+-- activate circ history tracking for a patron
+INSERT INTO actor.usr_setting (usr, name, value) VALUES 
+    (:circ_usr, 'history.circ.retention_start', '"2015-01-01"');
+
+INSERT INTO action.circulation (
+    usr, target_copy, circ_lib, circ_staff, renewal_remaining,
+    grace_period, duration, recurring_fine, max_fine, duration_rule,
+    recurring_fine_rule, max_fine_rule, due_date )
+VALUES (
+    :circ_usr, 1, 4, 1, 2, '1 day', '14 days','0.10', '10',
+   'default','default','default', now() + '14 days'::interval
+);
+
+SELECT isnt_empty(
+    'SELECT * FROM action.usr_circ_history WHERE usr = ' || :circ_usr,
+    'Confirm a history row was inserted'
+);
+
+SELECT is(
+    (SELECT checkin_time FROM action.usr_circ_history WHERE usr = :circ_usr),
+    NULL,
+    'Confirm checkin_time is NULL'
+);
+
+-- simulate a renewal
+UPDATE action.circulation 
+    SET checkin_time = NOW(), stop_fines = 'RENEW' 
+    WHERE usr = :circ_usr;
+
+-- create the renewal
+INSERT INTO action.circulation (
+    usr, target_copy, circ_lib, circ_staff, renewal_remaining,
+    grace_period, duration, recurring_fine, max_fine, duration_rule,
+    recurring_fine_rule, max_fine_rule, due_date, parent_circ )
+VALUES (
+    :circ_usr, 1, 4, 1, 2, '1 day', '14 days','0.10', '10',
+   'default','default','default', '3001-01-01',
+   (SELECT id FROM action.circulation WHERE usr = :circ_usr)
+);
+
+-- confirm due_date on the history object is updated to match the
+-- due date of the renewal circ.
+SELECT is(
+    (SELECT DATE(due_date) FROM action.usr_circ_history WHERE usr = :circ_usr),
+    '3001-01-01',
+    'Confirm due_date matches renewal due date'
+);
+
+UPDATE action.circulation SET checkin_time = NOW() 
+    WHERE usr = :circ_usr AND stop_fines IS NULL;
+
+SELECT isnt(
+    (SELECT checkin_time FROM action.usr_circ_history WHERE usr = :circ_usr),
+    NULL,
+    'Confirm checkin_time is set'
+);
+
+-- Confirm no history is created users that are not opted in.
+-- Assumes :circ_usr + 1 is a valid user id.
+INSERT INTO action.circulation (
+    usr, target_copy, circ_lib, circ_staff, renewal_remaining,
+    grace_period, duration, recurring_fine, max_fine, duration_rule,
+    recurring_fine_rule, max_fine_rule, due_date )
+VALUES (
+    :circ_usr + 1, 1, 4, 1, 2, '1 day', '14 days','0.10', '10',
+   'default','default','default', now() + '14 days'::interval
+);
+
+SELECT is_empty(
+    'SELECT * FROM action.usr_circ_history WHERE usr = ' || :circ_usr + 1,
+    'Confirm no history is created'
+);
+
+
+-- Finish the tests and clean up.
+SELECT * FROM finish();
+ROLLBACK;
