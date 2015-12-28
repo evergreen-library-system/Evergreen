@@ -1,0 +1,54 @@
+Patron Checkout History Stored in a Dedicated Table
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Patron checkout history is now stored in separate, dedicated database 
+table instead of being derived from the main circulation data.  This
+allows us to age/anonymize circulations more aggressively, since they 
+no longer need to stick around in cases where they represent a patron's
+opt-in checkout history.
+
+This has a number of patron privacy implications.
+
+ * Minimal metadata is stored in the new patron checkout history table, 
+   so once the corresponding circulation is aged, the full set of 
+   circulation metadata is no longer linked to a patron's reading history.
+   ** It is limited to checkout date, due date, checkin date, and copy data.
+ * Staff can no longer report on a patron's reading history.  
+   ** While it is possible to build aggregate reports on reading history 
+      data, it is not possible to report on which user an entry in the
+      history table belongs to.  (The 'usr' column is hidden from the 
+      reporter).
+ * Staff can no longer retrieve a patron's reading history via API.  Only
+   the user that owns the history data can access it.
+ * Though not implemented as part of this change, it will now be possible
+   with future development to truly remove specific items from a patron's
+   checkout history.
+
+TPAC Patron History Disable Warning
++++++++++++++++++++++++++++++++++++
+
+When disabling checkout and/or holds history in the TPAC Search and
+History Preferences tab, patrons will be warned that the operation is
+irreversible when history data exists that will be deleted as part of 
+the update.
+
+Upgrade Notes
++++++++++++++
+
+Administrators should verify the CSV export of checkout history works after
+deploying this change.  If local changes were made to the CSV template,
+the template will not be updated as part of this deployment.  The stock 
+template was modified to handle gracefully NULL values for checkin_time.
+
+For example:
+
+[source,diff]
+------------------------------------------------------------------------
+-    Returned: [% date.format(helpers.format_date(circ.checkin_time), '%Y-%m-%d') %]
++    Returned: [%
++        date.format(
++            helpers.format_date(circ.checkin_time), '%Y-%m-%d') 
++            IF circ.checkin_time; 
++    %]
+------------------------------------------------------------------------
+
