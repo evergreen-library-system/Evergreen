@@ -1055,13 +1055,22 @@ ALTER TABLE config.best_hold_order ADD CHECK ((
 ));
 
 CREATE OR REPLACE FUNCTION 
-    evergreen.z3950_attr_name_is_valid(TEXT) RETURNS BOOLEAN AS $func$
-    SELECT EXISTS (SELECT 1 FROM config.z3950_attr WHERE name = $1);
-$func$ LANGUAGE SQL STRICT STABLE;
+    evergreen.z3950attr_name_is_valid() RETURNS TRIGGER AS $func$
+    BEGIN
 
-COMMENT ON FUNCTION evergreen.z3950_attr_name_is_valid(TEXT) IS $$
-Results in TRUE if there exists at least one config.z3950_attr
-with the provided name.  Used by config.z3950_index_field_map
+      PERFORM * FROM config.z3950_attr WHERE name = NEW.z3950_attr_type;
+
+      IF FOUND THEN
+        RETURN NULL;
+      END IF;
+
+      RAISE EXCEPTION '% is not a valid Z39.50 attribute type', NEW.z3950_attr_type;
+
+    END;
+$func$ LANGUAGE PLPGSQL STABLE;
+
+COMMENT ON FUNCTION evergreen.z3950_attr_name_is_valid() IS $$
+Used by a config.z3950_index_field_map constraint trigger
 to verify z3950_attr_type maps.
 $$;
 
@@ -1081,13 +1090,12 @@ CREATE TABLE config.z3950_index_field_map (
     CONSTRAINT attr_or_attr_type CHECK (
         z3950_attr IS NOT NULL OR 
         z3950_attr_type IS NOT NULL
-    ),
-    -- ensure the selected z3950_attr_type refers to a valid attr name
-    CONSTRAINT valid_z3950_attr_type CHECK (
-        z3950_attr_type IS NULL OR 
-            evergreen.z3950_attr_name_is_valid(z3950_attr_type)
     )
 );
+
+CREATE CONSTRAINT TRIGGER valid_z3950_attr_type AFTER INSERT OR UPDATE ON config.z3950_index_field_map
+    DEFERRABLE INITIALLY DEFERRED FOR EACH ROW WHEN (NEW.z3950_attr_type IS NOT NULL)
+    EXECUTE PROCEDURE evergreen.z3950_attr_name_is_valid();
 
 CREATE TABLE config.marc_format (
     id                  SERIAL PRIMARY KEY,

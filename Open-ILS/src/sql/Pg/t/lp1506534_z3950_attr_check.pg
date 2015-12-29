@@ -1,0 +1,21 @@
+BEGIN;
+SELECT plan(5);
+
+-- Is the proper constraint present?
+SELECT is((SELECT COUNT(*) FROM pg_constraint WHERE conname='valid_z3950_attr_type' AND contype='c')::INTEGER, 0::INTEGER, 'CHECK constraint not present');
+SELECT has_trigger('config', 'z3950_index_field_map', 'valid_z3950_attr_type', 'CONSTRAINT TRIGGER present on config.z3950_index_field_map');
+
+-- Does it work properly?
+SET CONSTRAINTS config.valid_z3950_attr_type IMMEDIATE;
+PREPARE busted_insert AS INSERT INTO config.z3950_index_field_map (label, metabib_field, z3950_attr_type) VALUES ('Title', 5, 'sadface');
+PREPARE ok_type_insert AS INSERT INTO config.z3950_index_field_map (label, metabib_field, z3950_attr_type) VALUES ('Title2', 5, 'title');
+PREPARE ok_attr_insert AS INSERT INTO config.z3950_index_field_map (label, metabib_field, z3950_attr) VALUES ('Title3', 5, 5);
+
+SELECT throws_ok('busted_insert', 'P0001', 'sadface is not a valid Z39.50 attribute type', 'Invalid Insert Test');
+SELECT lives_ok('ok_type_insert', 'Valid z3950_attr_type Insert');
+SELECT lives_ok('ok_attr_insert', 'Valid z3950_attr Insert, z3950_attr_type is NULL');
+
+-- Finish the tests and clean up.
+SELECT * FROM finish();
+ROLLBACK;
+
