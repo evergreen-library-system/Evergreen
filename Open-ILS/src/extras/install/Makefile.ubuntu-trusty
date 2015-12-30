@@ -24,6 +24,7 @@ export DEBS = \
 	libbusiness-isbn-data-perl\
 	libbusiness-issn-perl\
 	libbusiness-onlinepayment-authorizenet-perl\
+	libbusiness-onlinepayment-payflowpro-perl\
 	libbusiness-onlinepayment-perl\
 	libdate-manip-perl\
 	libdatetime-format-builder-perl\

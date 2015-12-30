@@ -463,4 +463,5 @@ SRU
 JSON::XS
 UUID::Tiny
 Business::CreditCard
+Business::OnlinePayment::PayflowPro
 Net::Z3950::Simple2ZOOM

@@ -82,6 +82,7 @@ export CPAN_MODULES_FORCE = \
 	Class::DBI::Frozen::301 \
 	Business::OnlinePayment \
 	Business::OnlinePayment::AuthorizeNet \
+	Business::OnlinePayment::PayflowPro \
 	Business::OnlinePayment::PayPal
 
 PGSQL_FEDORA_RPMS = \
