@@ -431,6 +431,7 @@ BEGIN
 	UPDATE action.non_cataloged_circulation SET staff = dest_usr WHERE staff = src_usr;
 	DELETE FROM action.survey_response WHERE usr = src_usr;
 	UPDATE action.fieldset SET owner = dest_usr WHERE owner = src_usr;
+	DELETE FROM action.usr_circ_history WHERE usr = src_usr;
 
 	-- actor.*
 	DELETE FROM actor.card WHERE usr = src_usr;
