@@ -1,0 +1,8 @@
+Disencumber Funds on Invoice Close
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Fund debits linked to an invoice are now marked as paid (encumbrance=false)
+when the invoice is marked as closed/complete instead of at invoice create
+time.  This is particularly useful for EDI invoices which may be 
+created well in advance of receipt and payment.
+
