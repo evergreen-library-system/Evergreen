@@ -7,156 +7,47 @@
 
 <div class="container admin-splash-container">
 
+[%
+    interfaces = [
+     [ l('Address Alerts'), "./admin/local/actor/address_alert" ]
+    ,[ l('Age Overdue Circs to Lost'), "./admin/local/circ/age_to_lost" ]
+    ,[ l('Auto-Print Settings'), "./admin/local/config/auto_print" ]
+    ,[ l('Barcode Completion'), "./admin/local/config/barcode_completion" ]
+    ,[ l('Cash Reports'), "./admin/local/money/cash_reports" ]
+    ,[ l('Circ Limit Sets'), "./admin/local/config/circ_limit_set" ]
+    ,[ l('Circulation Policies'), "./admin/local/config/circ_matrix_matchpoint" ]
+    ,[ l('Closed Dates Editor'), "./admin/local/actor/closed_dates" ]
+    ,[ l('Copy Location Groups'), "./admin/local/asset/copy_location_group" ]
+    ,[ l('Copy Location Order'), "./admin/local/asset/copy_location_order" ]
+    ,[ l('Copy Locations Editor'), "./admin/local/asset/copy_locations" ]
+    ,[ l('Copy Template Editor'), "./admin/local/asset/copy_template" ]
+    ,[ l('Field Documentation'), "./admin/local/config/idl_field_doc" ]
+    ,[ l('Group Penalty Thresholds'), "./admin/local/permission/grp_penalty_threshold" ]
+    ,[ l('Hold Policies'), "./admin/local/config/hold_matrix_matchpoint" ]
+    ,[ l('Library Settings Editor'), "./admin/local/asset/org_unit_settings" ]
+    ,[ l('Non-Cataloged Types Editor'), "./admin/local/config/non_cat_types" ]
+    ,[ l('Notifications / Action Triggers'), "./admin/local/action_trigger/event_definition" ]
+    ,[ l('Patrons with Negative Balances'), "./admin/local/circ/neg_balance_users" ]
+    ,[ l('Search Filter Groups'), "./admin/local/actor/search_filter_group" ]
+    ,[ l('Standing Penalties'), "./admin/local/config/standing_penalty" ]
+    ,[ l('Statistical Categories Editor'), "./admin/local/asset/stat_cat_editor" ]
+   ];
+
+   USE table(interfaces, rows=9);
+%]
+
+[% FOREACH row = table.rows %]
   <div class="row new-entry">
+    [% FOREACH item = row %][% IF item.1 %]
     <div class="col-md-4">
       <span class="glyphicon glyphicon-pencil"></span>
-      <a target="_self" href="./admin/local/actor/address_alert">
-        [% l('Address Alerts') %]
+      <a target="_self" href="[% item.1 %]">
+        [% item.0 %]
       </a>
     </div>
-    <div class="col-md-4">
-      <span class="glyphicon glyphicon-pencil"></span>
-      <a target="_self" href="./admin/local/asset/copy_locations">
-        [% l('Copy Locations Editor') %]
-      </a>
-    </div>
-    <div class="col-md-4">
-      <span class="glyphicon glyphicon-pencil"></span>
-      <a target="_self" href="./admin/local/circ/neg_balance_users">
-        [% l('Patrons with Negative Balances') %]
-      </a>
-    </div>
+    [% END %][% END %]
   </div>
-  <div class="row new-entry">
-    <div class="col-md-4">
-      <span class="glyphicon glyphicon-pencil"></span>
-      <a target="_self" href="./admin/local/circ/age_to_lost">
-        [% l('Age Overdue Circs to Lost') %]
-      </a>
-    </div>
-    <div class="col-md-4">
-      <span class="glyphicon glyphicon-pencil"></span>
-      <a target="_self" href="./admin/local/asset/copy_template">
-        [% l('Copy Template Editor') %]
-      </a>
-    </div>
-    <div class="col-md-4">
-      <span class="glyphicon glyphicon-pencil"></span>
-      <a target="_self" href="./admin/local/actor/search_filter_group">
-        [% l('Search Filter Groups') %]
-      </a>
-    </div>
-  </div>
-  <div class="row new-entry">
-    <div class="col-md-4">
-      <span class="glyphicon glyphicon-pencil"></span>
-      <a target="_self" href="./admin/local/config/barcode_completion">
-        [% l('Barcode Completion') %]
-      </a>
-    </div>
-    <div class="col-md-4">
-      <span class="glyphicon glyphicon-pencil"></span>
-      <a target="_self" href="./admin/local/config/auto_print">
-        [% l('Auto-Print Settings') %]
-      </a>
-    </div>
-    <div class="col-md-4">
-      <span class="glyphicon glyphicon-pencil"></span>
-      <a target="_self" href="./admin/local/config/standing_penalty">
-        [% l('Standing Penalties') %]
-      </a>
-    </div>
-  </div>
-  <div class="row new-entry">
-    <div class="col-md-4">
-      <span class="glyphicon glyphicon-pencil"></span>
-      <a target="_self" href="./admin/local/money/cash_reports">
-        [% l('Cash Reports') %]
-      </a>
-    </div>
-    <div class="col-md-4">
-      <span class="glyphicon glyphicon-pencil"></span>
-      <a target="_self" href="./admin/local/config/idl_field_doc">
-        [% l('Field Documentation') %]
-      </a>
-    </div>
-    <div class="col-md-4">
-      <span class="glyphicon glyphicon-pencil"></span>
-      <a target="_self" href="./admin/local/asset/stat_cat_editor">
-        [% l('Statistical Categories Editor') %]
-      </a>
-    </div>
-  </div>
-  <div class="row new-entry">
-    <div class="col-md-4">
-      <span class="glyphicon glyphicon-pencil"></span>
-      <a target="_self" href="./admin/local/config/circ_limit_set">
-        [% l('Circ Limit Sets') %]
-      </a>
-    </div>
-    <div class="col-md-4">
-      <span class="glyphicon glyphicon-pencil"></span>
-      <a target="_self" href="./admin/local/permission/grp_penalty_threshold">
-        [% l('Group Penalty Thresholds') %]
-      </a>
-    </div>
-  </div>
-  <div class="row new-entry">
-    <div class="col-md-4">
-      <span class="glyphicon glyphicon-pencil"></span>
-      <a target="_self" href="./admin/local/config/circ_matrix_matchpoint">
-        [% l('Circulation Policies') %]
-      </a>
-    </div>
-    <div class="col-md-4">
-      <span class="glyphicon glyphicon-pencil"></span>
-      <a target="_self" href="./admin/local/config/hold_matrix_matchpoint">
-        [% l('Hold Policies') %]
-      </a>
-    </div>
-  </div>
-  <div class="row new-entry">
-    <div class="col-md-4">
-      <span class="glyphicon glyphicon-pencil"></span>
-      <a target="_self" href="./admin/local/actor/closed_dates">
-        [% l('Closed Dates Editor') %]
-      </a>
-    </div>
-    <div class="col-md-4">
-      <span class="glyphicon glyphicon-pencil"></span>
-      <a target="_self" href="./admin/local/asset/org_unit_settings">
-        [% l('Library Settings Editor') %]
-      </a>
-    </div>
-  </div>
-  <div class="row new-entry">
-    <div class="col-md-4">
-      <span class="glyphicon glyphicon-pencil"></span>
-      <a target="_self" href="./admin/local/asset/copy_location_group">
-        [% l('Copy Location Groups') %]
-      </a>
-    </div>
-    <div class="col-md-4">
-      <span class="glyphicon glyphicon-pencil"></span>
-      <a target="_self" href="./admin/local/config/non_cat_types">
-        [% l('Non-Cataloged Types Editor') %]
-      </a>
-    </div>
-  </div>
-  <div class="row new-entry">
-    <div class="col-md-4">
-      <span class="glyphicon glyphicon-pencil"></span>
-      <a target="_self" href="./admin/local/asset/copy_location_order">
-        [% l('Copy Location Order') %]
-      </a>
-    </div>
-    <div class="col-md-4">
-      <span class="glyphicon glyphicon-pencil"></span>
-      <a target="_self" href="./admin/local/action_trigger/event_definition">
-        [% l('Notifications / Action Triggers') %]
-      </a>
-    </div>
-  </div>
+[% END %]
 
 </div>
 
