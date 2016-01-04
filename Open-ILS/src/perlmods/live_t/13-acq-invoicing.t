@@ -1,6 +1,6 @@
 #!perl
 use strict; use warnings;
-use Test::More tests => 4;
+use Test::More tests => 7;
 use OpenILS::Utils::TestUtils;
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
 
@@ -44,8 +44,17 @@ my $req = $acq_ses->request(
     'open-ils.acq.invoice.update', $script->authtoken, $invoice, [$entry]);
 
 $invoice = $req->recv->content;
+$entry = $invoice->entries->[0];
 
 is(ref $invoice, 'Fieldmapper::acq::invoice', 'Invoice created');
+
+my $inv_debit = 
+    $e->search_acq_fund_debit({invoice_entry => $entry->id})->[0];
+
+isnt($inv_debit, undef, 'A fund_debit links to new invoice entry');
+
+is($inv_debit->encumbrance, 't', 
+    'Debit is still encumbered after invoice create');
 
 # Close the invoice.  LP#1333254. 
 $invoice->complete('t');
@@ -58,10 +67,22 @@ $invoice = $req->recv->content;
 
 is($invoice->complete, 't', 'Invoice is closed');
 
-$entry = $invoice->entries->[0];
-my $debits = $e->search_acq_fund_debit({id => [1,2]});
-my @matching = grep { ($_->invoice_entry || '') eq $entry->id } @$debits;
+$inv_debit = $e->retrieve_acq_fund_debit($inv_debit->id);
 
-isnt(scalar(@matching), 0, 
-    'At least one fund_debit should link to new invoice entry');
+is($inv_debit->encumbrance, 'f', 
+    'Debit is disencumbered after invoice close');
+
+# re-open the invoice
+$invoice->complete('f');
+$invoice->ischanged(1);
+
+$req = $acq_ses->request(
+    'open-ils.acq.invoice.update', $script->authtoken, $invoice);
+
+$invoice = $req->recv->content;
+
+$inv_debit = $e->retrieve_acq_fund_debit($inv_debit->id);
+
+is($inv_debit->encumbrance, 't', 
+    'Debit is re-encumbered when invoice is reopened');
 
