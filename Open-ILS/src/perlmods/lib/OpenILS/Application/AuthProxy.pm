@@ -234,8 +234,8 @@ sub login {
         } elsif (defined $code) { # code is '0', i.e. SUCCESS
             if (exists $event->{'payload'}) { # we have a complete native login
                 return $event;
-            } else { # do a 'forced' login
-                return &_do_login($args, 1);
+            } else { # create an EG session for the successful external login
+                return &_create_session($args);
             }
         }
     }
@@ -247,6 +247,35 @@ sub login {
     }
     # TODO: send back some form of collected error events
     return OpenILS::Event->new( 'LOGIN_FAILED' );
+}
+
+sub _create_session {
+    my $args = shift;
+
+    my $user = $U->cstorereq(
+        "open-ils.cstore.direct.actor.user.search.atomic",
+        { usrname => $args->{'username'} }
+    );
+    if (!$user->[0]) {
+        $logger->debug("Authenticated username '" . $args->{'username'} . "' has no Evergreen account, aborting");
+        return OpenILS::Event->new( 'LOGIN_FAILED' );
+    } else {
+        $args->{user_id} = $user->[0]->id;
+    }
+
+    my $response = OpenSRF::AppSession->create("open-ils.auth_internal")->request(
+        'open-ils.auth_internal.session.create',
+        {
+            user_id => $args->{user_id},
+            login_type => $args->{type},
+            org_unit => $args->{org}
+        }
+    )->gather(1);
+
+    return OpenILS::Event->new( 'LOGIN_FAILED' )
+      unless $response;
+
+    return $response;
 }
 
 sub _do_login {
@@ -262,22 +291,7 @@ sub _do_login {
       unless $seed;
 
     my $real_password = $args->{'password'};
-    # if we have already authenticated, look up the password needed to finish
-    if ($authenticated) {
-        # username is required
-        return OpenILS::Event->new( 'LOGIN_FAILED' ) if !$args->{'username'};
-        my $user = $U->cstorereq(
-            "open-ils.cstore.direct.actor.user.search.atomic",
-            { usrname => $args->{'username'} }
-        );
-        if (!$user->[0]) {
-            $logger->debug("Authenticated username '" . $args->{'username'} . "' has no Evergreen account, aborting");
-            return OpenILS::Event->new( 'LOGIN_FAILED' );
-        }
-        $args->{'password'} = md5_hex( $seed . $user->[0]->passwd );
-    } else {
-        $args->{'password'} = md5_hex( $seed . md5_hex($real_password) );
-    }
+    $args->{'password'} = md5_hex( $seed . md5_hex($real_password) );
     my $response = OpenSRF::AppSession->create("open-ils.auth")->request(
         'open-ils.auth.authenticate.complete',
         $args
