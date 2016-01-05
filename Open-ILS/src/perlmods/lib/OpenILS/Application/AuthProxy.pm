@@ -185,18 +185,19 @@ sub login {
             {flesh => 1, flesh_fields => {ac => ['usr']}}
         ])->[0];
 
-        $args->{username} = $card->usr->usrname if $card;
+        if ($card) {
+            $args->{username} = $card->usr->usrname;
+        } else { # must have or resolve to a username
+            return OpenILS::Event->new( 'LOGIN_FAILED' );
+        }
     }
 
     # check for possibility of brute-force attack
-    my $fail_count;
-    if ($args->{'username'}) {
-        $fail_count = $cache->get_cache('oils_auth_' . $args->{'username'} . '_count') || 0;
-        if ($fail_count >= $block_count) {
-            $logger->debug("AuthProxy found too many recent failures for '" . $args->{'username'} . "' : $fail_count, forcing failure state.");
-            $cache->put_cache('oils_auth_' . $args->{'username'} . '_count', ++$fail_count, $block_timeout);
-            return OpenILS::Event->new( 'LOGIN_FAILED' );
-        }
+    my $fail_count = $cache->get_cache('oils_auth_' . $args->{'username'} . '_count') || 0;
+    if ($fail_count >= $block_count) {
+        $logger->debug("AuthProxy found too many recent failures for '" . $args->{'username'} . "' : $fail_count, forcing failure state.");
+        $cache->put_cache('oils_auth_' . $args->{'username'} . '_count', ++$fail_count, $block_timeout);
+        return OpenILS::Event->new( 'LOGIN_FAILED' );
     }
 
     my @error_events;
@@ -241,7 +242,7 @@ sub login {
 
     # if we got this far, we failed
     # increment the brute force counter if 'native' didn't already
-    if ($args->{'username'} and !exists $authenticators_by_name{'native'}) {
+    if (!exists $authenticators_by_name{'native'}) {
         $cache->put_cache('oils_auth_' . $args->{'username'} . '_count', ++$fail_count, $block_timeout);
     }
     # TODO: send back some form of collected error events
