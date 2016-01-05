@@ -32,6 +32,9 @@
     ,[ l('Standing Penalties'), "./admin/local/config/standing_penalty" ]
     ,[ l('Statistical Categories Editor'), "./admin/local/asset/stat_cat_editor" ]
     ,[ l('Statistical Popularity Badges'), "./admin/local/rating/badge" ]
+    ,[ l('Surveys'), "./admin/local/action/survey" ]
+    ,[ l('Transit List'), "./circ/transits/list" ]
+    ,[ l('Work Log'), "./admin/workstation/log" ]
    ];
 
    USE table(interfaces, rows=9);
