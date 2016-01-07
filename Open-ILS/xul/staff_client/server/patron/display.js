@@ -336,7 +336,7 @@ patron.display.prototype = {
                         ['command'],
                         function(ev) {
                             obj.right_deck.set_iframe(
-                                xulG.url_prefix(urls.XUL_REMOTE_BROWSER),
+                                xulG.url_prefix(urls.XUL_REMOTE_BROWSER) + '?triggered_events',
                                 {},
                                 {
                                     'url': urls.EG_TRIGGER_EVENTS + "?patron_id=" + obj.patron.id(),
@@ -350,7 +350,7 @@ patron.display.prototype = {
                         ['command'],
                         function(ev) {
                             obj.right_deck.set_iframe(
-                                xulG.url_prefix(urls.XUL_REMOTE_BROWSER),
+                                xulG.url_prefix(urls.XUL_REMOTE_BROWSER) + '?message_center',
                                 {},
                                 {
                                     'url': urls.EG_PATRON_MESSAGE_CENTER + "/" + obj.patron.id(),
