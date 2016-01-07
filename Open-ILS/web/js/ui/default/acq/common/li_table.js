@@ -360,6 +360,7 @@ function AcqLiTable() {
     this.reset = function(keep_selectors) {
         while(self.tbody.childNodes[0])
             self.tbody.removeChild(self.tbody.childNodes[0]);
+        self.liCache = {};
         self.noteAcks = {};
         self.relCache = {};
 
