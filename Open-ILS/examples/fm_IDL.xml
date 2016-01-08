@@ -240,6 +240,98 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</permacrud>
 	</class>
 
+	<class  id="rrbs" 
+            controller="open-ils.cstore open-ils.pcrud" 
+            oils_obj:fieldmapper="rating::record_badge_score" 
+            oils_persist:tablename="rating.record_badge_score" 
+            reporter:label="Statistical Popularity Badge">
+		<fields oils_persist:primary="id" 
+                oils_persist:sequence="rating.record_badge_score_id_seq">
+			<field reporter:label="ID" name="id" reporter:datatype="id" reporter:selector="name"/>
+			<field reporter:label="Badge" name="badge" reporter:datatype="link"/>
+			<field reporter:label="Record" name="record" reporter:datatype="link"/>
+			<field reporter:label="Score" name="score" reporter:datatype="int"/>
+		</fields>
+        <links>
+            <link field="badge" reltype="has_a" key="id" map="" class="rb"/>
+            <link field="record" reltype="has_a" key="id" map="" class="bre"/>
+        </links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<retrieve/>
+			</actions>
+		</permacrud>
+	</class>
+
+	<class  id="rp" 
+            controller="open-ils.cstore open-ils.pcrud" 
+            oils_obj:fieldmapper="rating::popularity_parameter" 
+            oils_persist:tablename="rating.popularity_parameter" 
+            reporter:label="Statistical Popularity Parameter">
+		<fields oils_persist:primary="id" 
+                oils_persist:sequence="rating.popularity_parameter_id_seq">
+			<field reporter:label="ID" name="id" reporter:datatype="id" reporter:selector="name"/>
+			<field reporter:label="Name" name="name" reporter:datatype="text"/>
+			<field reporter:label="Description" name="description" reporter:datatype="text"/>
+			<field reporter:label="Population Function" name="func" reporter:datatype="text"/>
+			<field reporter:label="Require Horizon" name="require_horizon" reporter:datatype="bool"/>
+			<field reporter:label="Require Percentile" name="require_percentile" reporter:datatype="bool"/>
+			<field reporter:label="Require Importance" name="require_importance" reporter:datatype="bool"/>
+		</fields>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="CREATE_POP_PARAMETER" global_required="true"/>
+				<retrieve/>
+				<update permission="UPDATE_POP_PARAMETER" global_required="true"/>
+				<delete permission="DELETE_POP_PARAMETER" global_required="true"/>
+			</actions>
+		</permacrud>
+	</class>
+
+	<class  id="rb" 
+            controller="open-ils.cstore open-ils.pcrud" 
+            oils_obj:fieldmapper="rating::badge" 
+            oils_persist:tablename="rating.badge" 
+            reporter:label="Statistical Popularity Badge">
+		<fields oils_persist:primary="id" 
+                oils_persist:sequence="rating.badge_id_seq">
+			<field reporter:label="ID" name="id" reporter:datatype="id" reporter:selector="name"/>
+			<field reporter:label="Name" name="name" reporter:datatype="text" oils_persist:i18n="true"/>
+			<field reporter:label="Description" name="description" reporter:datatype="text" oils_persist:i18n="true"/>
+			<field reporter:label="Scope" name="scope" reporter:datatype="org_unit"/>
+			<field reporter:label="Weight" name="weight" reporter:datatype="int"/>
+			<field reporter:label="Age Horizon" name="horizon_age" reporter:datatype="text"/>
+			<field reporter:label="Importance Horizon" name="importance_age" reporter:datatype="text"/>
+			<field reporter:label="Importance Interval" name="importance_interval" reporter:datatype="text"/>
+			<field reporter:label="Importance Scale" name="importance_scale" reporter:datatype="text"/>
+			<field reporter:label="Percentile" name="percentile" reporter:datatype="int"/>
+			<field reporter:label="Attribute Filter" name="attr_filter" reporter:datatype="text"/>
+			<field reporter:label="Circ Mod Filter" name="circ_mod_filter" reporter:datatype="link"/>
+			<field reporter:label="Bib Source Filter" name="src_filter" reporter:datatype="link"/>
+			<field reporter:label="Location Group Filter" name="loc_grp_filter" reporter:datatype="link"/>
+			<field reporter:label="Recalculation Interval" name="recalc_interval" reporter:datatype="text"/>
+			<field reporter:label="Fixed Rating" name="fixed_rating" reporter:datatype="int"/>
+			<field reporter:label="Discard Value Count" name="discard" reporter:datatype="int"/>
+			<field reporter:label="Last Refresh Time" name="last_calc" reporter:datatype="timestamp"/>
+			<field reporter:label="Popularity Parameter" name="popularity_parameter" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="scope" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="popularity_parameter" reltype="has_a" key="id" map="" class="rp"/>
+			<link field="src_filter" reltype="has_a" key="id" map="" class="cbs"/>
+			<link field="circ_mod_filter" reltype="has_a" key="code" map="" class="ccm"/>
+			<link field="loc_grp_filter" reltype="has_a" key="id" map="" class="acplg"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="CREATE_POP_BADGE" global_required="true"/>
+				<retrieve/>
+				<update permission="UPDATE_POP_BADGE" global_required="true"/>
+				<delete permission="DELETE_POP_BADGE" global_required="true"/>
+			</actions>
+		</permacrud>
+	</class>
+
 	<class  id="vibtg" 
             controller="open-ils.cstore open-ils.pcrud" 
             oils_obj:fieldmapper="vandelay::import_bib_trash_group" 
