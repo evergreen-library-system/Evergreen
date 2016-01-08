@@ -417,44 +417,6 @@ int oilsAuthInit(osrfMethodContext* ctx) {
 }
 
 /**
-	Verifies that the user has permission to login with the
-	given type.  If the permission fails, an oilsEvent is returned
-	to the caller.
-	@return -1 if the permission check failed, 0 if the permission
-	is granted
-*/
-static int oilsAuthCheckLoginPerm(
-		osrfMethodContext* ctx, const jsonObject* userObj, const char* type ) {
-
-	if(!(userObj && type)) return -1;
-	oilsEvent* perm = NULL;
-
-	if(!strcasecmp(type, OILS_AUTH_OPAC)) {
-		char* permissions[] = { "OPAC_LOGIN" };
-		perm = oilsUtilsCheckPerms( oilsFMGetObjectId( userObj ), -1, permissions, 1 );
-
-	} else if(!strcasecmp(type, OILS_AUTH_STAFF)) {
-		char* permissions[] = { "STAFF_LOGIN" };
-		perm = oilsUtilsCheckPerms( oilsFMGetObjectId( userObj ), -1, permissions, 1 );
-
-	} else if(!strcasecmp(type, OILS_AUTH_TEMP)) {
-		char* permissions[] = { "STAFF_LOGIN" };
-		perm = oilsUtilsCheckPerms( oilsFMGetObjectId( userObj ), -1, permissions, 1 );
-	} else if(!strcasecmp(type, OILS_AUTH_PERSIST)) {
-		char* permissions[] = { "PERSISTENT_LOGIN" };
-		perm = oilsUtilsCheckPerms( oilsFMGetObjectId( userObj ), -1, permissions, 1 );
-	}
-
-	if(perm) {
-		osrfAppRespondComplete( ctx, oilsEventToJSON(perm) );
-		oilsEventFree(perm);
-		return -1;
-	}
-
-	return 0;
-}
-
-/**
 	Returns 1 if the password provided matches the user's real password
 	Returns 0 otherwise
 	Returns -1 on error
@@ -652,7 +614,6 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
     oilsEvent* response = NULL; // free
     jsonObject* userObj = NULL; // free
     int card_active = 1; // boolean; assume active until proven otherwise
-    int using_card  = 0; // true if this is a barcode login
 
     char* cache_key = va_list_to_string(
         "%s%s%s", OILS_AUTH_CACHE_PRFX, identifier, nonce);
@@ -674,47 +635,49 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
         "open-ils.cstore.direct.actor.user.retrieve", param);
     jsonObjectFree(param);
 
-    using_card = (jsonObjectGetKeyConst(cacheObj, "barcode") != NULL);
+    char* freeable_uname = NULL;
+    if (!uname) {
+        uname = freeable_uname = oilsFMGetString(userObj, "usrname");
+    }
 
-    if (using_card) {
-        // see if the card is inactive
+    // See if the user is allowed to login.
 
-		jsonObject* params = jsonParseFmt("{\"barcode\":\"%s\"}", identifier);
-		jsonObject* card = oilsUtilsCStoreReq(
-			"open-ils.cstore.direct.actor.card.search", params);
-		jsonObjectFree(params);
+    jsonObject* params = jsonNewObject(NULL);
+    jsonObjectSetKey(params, "user_id", 
+        jsonNewNumberObject(oilsFMGetObjectId(userObj)));
+    jsonObjectSetKey(params,"org_unit", jsonNewNumberObject(orgloc));
+    jsonObjectSetKey(params, "login_type", jsonNewObject(type));
 
-        if (card) {
-            if (card->type != JSON_NULL) {
-			    char* card_active_str = oilsFMGetString(card, "active");
-			    card_active = oilsUtilsIsDBTrue(card_active_str);
-			    free(card_active_str);
-			}
-            jsonObjectFree(card);
-		}
-	}
+    jsonObject* authEvt = oilsUtilsQuickReq( // freed after password test
+        "open-ils.auth_internal",
+        "open-ils.auth_internal.user.validate", params);
+    jsonObjectFree(params);
 
-	int     barred = 0, deleted = 0;
-	char   *barred_str, *deleted_str;
+    if (!authEvt) {
+        // Something went seriously wrong.  Get outta here before 
+        // we start segfaulting.
+        jsonObjectFree(userObj);
+        if(freeable_uname) free(freeable_uname);
+        return -1;
+    }
 
-	if (userObj) {
-		barred_str = oilsFMGetString(userObj, "barred");
-		barred = oilsUtilsIsDBTrue(barred_str);
-		free(barred_str);
+    const char* evtCode = 
+        jsonObjectGetString(jsonObjectGetKey(authEvt, "textcode"));
 
-		deleted_str = oilsFMGetString(userObj, "deleted");
-		deleted = oilsUtilsIsDBTrue(deleted_str);
-		free(deleted_str);
-	}
+    // For security/privacy sake, only report that a patron is 
+    // inactive if the correct password is provided below.
+    int user_inactive = !strcmp(evtCode, "PATRON_INACTIVE");
 
-	if(!userObj || barred || deleted) {
-		response = oilsNewEvent( __FILE__, harmless_line_number, OILS_EVENT_AUTH_FAILED );
-		osrfLogInfo(OSRF_LOG_MARK,  "failed login: username=%s, barcode=%s, workstation=%s",
-				uname, (barcode ? barcode : "(none)"), ws );
-		osrfAppRespondComplete( ctx, oilsEventToJSON(response) );
-		oilsEventFree(response);
-		return 0;           // No such user
-	}
+    if (strcmp(evtCode, "SUCCESS") && !user_inactive) { // validate failed
+        osrfLogInfo(OSRF_LOG_MARK,  
+            "failed login: username=%s, barcode=%s, workstation=%s",
+            uname, (barcode ? barcode : "(none)"), ws);
+        osrfAppRespondComplete(ctx, authEvt);
+        jsonObjectFree(authEvt);
+        jsonObjectFree(userObj);
+        if(freeable_uname) free(freeable_uname);
+        return 0;           // No such user
+    }
 
 	// Such a user exists and isn't barred or deleted.
 	// Now see if he or she has the right credentials.
@@ -722,46 +685,23 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
         ctx, user_id, identifier, password, nonce);
 
 	if( passOK < 0 ) {
+        jsonObjectFree(authEvt);
 		jsonObjectFree(userObj);
+        if(freeable_uname) free(freeable_uname);
 		return passOK;
 	}
 
-	// See if the account is active
-	char* active = oilsFMGetString(userObj, "active");
-	if( !oilsUtilsIsDBTrue(active) ) {
-		if( passOK )
-			response = oilsNewEvent( OSRF_LOG_MARK, "PATRON_INACTIVE" );
-		else
-			response = oilsNewEvent( __FILE__, harmless_line_number, OILS_EVENT_AUTH_FAILED );
+    if (passOK && user_inactive) {
+        // Patron is inactive but provided the correct password.
+        // Return the original PATRON_INACTIVE event.
+        osrfAppRespondComplete(ctx, authEvt);
+        jsonObjectFree(authEvt);
+        jsonObjectFree(userObj);
+        if(freeable_uname) free(freeable_uname);
+        return 0;
+    }
 
-		osrfAppRespondComplete( ctx, oilsEventToJSON(response) );
-		oilsEventFree(response);
-		jsonObjectFree(userObj);
-		free(active);
-		return 0;
-	}
-	free(active);
-
-	if( !card_active ) {
-		osrfLogInfo( OSRF_LOG_MARK, "barcode %s is not active, returning event", barcode );
-		response = oilsNewEvent( OSRF_LOG_MARK, "PATRON_CARD_INACTIVE" );
-		osrfAppRespondComplete( ctx, oilsEventToJSON( response ) );
-		oilsEventFree( response );
-		jsonObjectFree( userObj );
-		return 0;
-	}
-
-
-	// See if the user is even allowed to log in
-	if( oilsAuthCheckLoginPerm( ctx, userObj, type ) == -1 ) {
-		jsonObjectFree(userObj);
-		return 0;
-	}
-
-	char* freeable_uname = NULL;
-	if(!uname) {
-		uname = freeable_uname = oilsFMGetString( userObj, "usrname" );
-	}
+    jsonObjectFree(authEvt); // we're all done with this now.
 
 	if( passOK ) { // login successful  
         

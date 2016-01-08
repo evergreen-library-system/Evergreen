@@ -20,6 +20,9 @@
 // Default time for extending a persistent session: ten minutes
 #define DEFAULT_RESET_INTERVAL 10 * 60
 
+int safe_line = __LINE__;
+#define OILS_LOG_MARK_SAFE __FILE__,safe_line
+
 int osrfAppInitialize();
 int osrfAppChildInit();
 
@@ -46,6 +49,15 @@ int osrfAppInitialize() {
         "oilsAutInternalCreateSession",
         "Adds a user to the authentication cache to indicate "
         "the user is authenticated", 1, 0 
+    );
+
+    osrfAppRegisterMethod(
+        MODULENAME,
+        "open-ils.auth_internal.user.validate",
+        "oilsAutInternalValidate",
+        "Determines whether a user should be allowed to login.  " 
+        "Returns SUCCESS oilsEvent when the user is valid, otherwise "
+        "returns a non-SUCCESS oilsEvent object", 1, 0
     );
 
     return 0;
@@ -212,6 +224,33 @@ static oilsEvent* oilsAuthVerifyWorkstation(
     return NULL;
 }
 
+/**
+    Verifies that the user has permission to login with the given type.  
+    Caller is responsible for freeing returned oilsEvent.
+    @return oilsEvent* if the permission check failed, NULL otherwise.
+*/
+static oilsEvent* oilsAuthCheckLoginPerm(osrfMethodContext* ctx, 
+    int user_id, int org_id, const char* type ) {
+
+    char* perms[1];
+
+    if (!strcasecmp(type, OILS_AUTH_OPAC)) {
+        perms[0] = "OPAC_LOGIN";
+
+    } else if (!strcasecmp(type, OILS_AUTH_STAFF)) {
+        perms[0] = "STAFF_LOGIN";
+
+    } else if (!strcasecmp(type, OILS_AUTH_TEMP)) {
+        perms[0] = "STAFF_LOGIN";
+
+    } else if (!strcasecmp(type, OILS_AUTH_PERSIST)) {
+        perms[0] = "PERSISTENT_LOGIN";
+    }
+
+    return oilsUtilsCheckPerms(user_id, org_id, perms, 1);
+}
+
+
 
 /**
     @brief Implement the session create method
@@ -244,7 +283,7 @@ int oilsAutInternalCreateSession(osrfMethodContext* ctx) {
             "Missing parameters for method: %s", ctx->method->name );
     }
 
-	oilsEvent* response = NULL;
+    oilsEvent* response = NULL;
 
     // fetch the user object
     jsonObject* idParam = jsonNewNumberStringObject(user_id);
@@ -311,6 +350,104 @@ int oilsAutInternalCreateSession(osrfMethodContext* ctx) {
     jsonObjectFree(payload);
 
     jsonObjectFree(userObj);
+    osrfAppRespondComplete(ctx, oilsEventToJSON(response));
+    oilsEventFree(response);
+
+    return 0;
+}
+
+
+int oilsAutInternalValidate(osrfMethodContext* ctx) {
+    OSRF_METHOD_VERIFY_CONTEXT(ctx);
+
+    const jsonObject* args  = jsonObjectGetIndex(ctx->params, 0);
+
+    const char* user_id     = jsonObjectGetString(jsonObjectGetKeyConst(args, "user_id"));
+    const char* barcode     = jsonObjectGetString(jsonObjectGetKeyConst(args, "barcode"));
+    const char* org_unit    = jsonObjectGetString(jsonObjectGetKeyConst(args, "org_unit"));
+    const char* login_type  = jsonObjectGetString(jsonObjectGetKeyConst(args, "login_type"));
+
+    if ( !(user_id && login_type && org_unit) ) {
+        return osrfAppRequestRespondException( ctx->session, ctx->request,
+            "Missing parameters for method: %s", ctx->method->name );
+    }
+
+    oilsEvent* response = NULL;
+    jsonObject *userObj = NULL, *params = NULL;
+    char* tmp_str = NULL;
+    int user_exists = 0, user_active = 0, 
+        user_barred = 0, user_deleted = 0;
+
+    // Confirm user exists, active=true, barred=false, deleted=false
+    params = jsonNewNumberStringObject(user_id);
+    userObj = oilsUtilsCStoreReq(
+        "open-ils.cstore.direct.actor.user.retrieve", params);
+    jsonObjectFree(params);
+
+    if (userObj && userObj->type != JSON_NULL) {
+        user_exists = 1;
+
+        tmp_str = oilsFMGetString(userObj, "active");
+        user_active = oilsUtilsIsDBTrue(tmp_str);
+        free(tmp_str);
+
+        tmp_str = oilsFMGetString(userObj, "barred");
+        user_barred = oilsUtilsIsDBTrue(tmp_str);
+        free(tmp_str);
+
+        tmp_str = oilsFMGetString(userObj, "deleted");
+        user_deleted = oilsUtilsIsDBTrue(tmp_str);
+        free(tmp_str);
+    }
+
+    if (!user_exists || user_barred || user_deleted) {
+        response = oilsNewEvent(OILS_LOG_MARK_SAFE, OILS_EVENT_AUTH_FAILED);
+    }
+
+    if (!response && !user_active) {
+        // In some cases, it's useful for the caller to know if the
+        // patron was unable to login becuase the account is inactive.
+        // Return a specific event for this.
+        response = oilsNewEvent(OILS_LOG_MARK_SAFE, "PATRON_INACTIVE");
+    }
+
+    if (!response && barcode) {
+        // Caller provided a barcode.  Ensure it exists and is active.
+
+        int card_ok = 0;
+        params = jsonParseFmt("{\"barcode\":\"%s\"}", barcode);
+        jsonObject* card = oilsUtilsCStoreReq(
+            "open-ils.cstore.direct.actor.card.search", params);
+        jsonObjectFree(params);
+
+        if (card && card->type != JSON_NULL) {
+            tmp_str = oilsFMGetString(card, "active");
+            card_ok = oilsUtilsIsDBTrue(tmp_str);
+            free(tmp_str);
+        }
+
+        jsonObjectFree(card); // card=NULL OK here.
+
+        if (!card_ok) {
+            response = oilsNewEvent(
+                OILS_LOG_MARK_SAFE, "PATRON_CARD_INACTIVE");
+        }
+    }
+
+    if (!response) { // Still OK
+        // Confirm user has permission to login w/ the requested type.
+        response = oilsAuthCheckLoginPerm(
+            ctx, atoi(user_id), atoi(org_unit), login_type);
+    }
+
+
+    if (!response) {
+        // No tests failed.  Return SUCCESS.
+        response = oilsNewEvent(OSRF_LOG_MARK, OILS_EVENT_SUCCESS);
+    }
+
+
+    jsonObjectFree(userObj); // userObj=NULL OK here.
     osrfAppRespondComplete(ctx, oilsEventToJSON(response));
     oilsEventFree(response);
 
