@@ -647,6 +647,7 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
         jsonNewNumberObject(oilsFMGetObjectId(userObj)));
     jsonObjectSetKey(params,"org_unit", jsonNewNumberObject(orgloc));
     jsonObjectSetKey(params, "login_type", jsonNewObject(type));
+    if (barcode) jsonObjectSetKey(params, "barcode", jsonNewObject(barcode));
 
     jsonObject* authEvt = oilsUtilsQuickReq( // freed after password test
         "open-ils.auth_internal",
@@ -661,78 +662,93 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
         return -1;
     }
 
-    const char* evtCode = 
+    const char* authEvtCode = 
         jsonObjectGetString(jsonObjectGetKey(authEvt, "textcode"));
 
-    // For security/privacy sake, only report that a patron is 
-    // inactive if the correct password is provided below.
-    int user_inactive = !strcmp(evtCode, "PATRON_INACTIVE");
+    if (!strcmp(authEvtCode, OILS_EVENT_AUTH_FAILED)) {
+        // Received the generic login failure event.
 
-    if (strcmp(evtCode, "SUCCESS") && !user_inactive) { // validate failed
         osrfLogInfo(OSRF_LOG_MARK,  
             "failed login: username=%s, barcode=%s, workstation=%s",
             uname, (barcode ? barcode : "(none)"), ws);
-        osrfAppRespondComplete(ctx, authEvt);
-        jsonObjectFree(authEvt);
-        jsonObjectFree(userObj);
-        if(freeable_uname) free(freeable_uname);
-        return 0;           // No such user
+
+        response = oilsNewEvent(
+            __FILE__, harmless_line_number, OILS_EVENT_AUTH_FAILED);
     }
 
-	// Such a user exists and isn't barred or deleted.
-	// Now see if he or she has the right credentials.
-	int passOK = oilsAuthVerifyPassword(
-        ctx, user_id, identifier, password, nonce);
+    int passOK = 0;
+    
+    if (!response) {
+        // User exists and is not barred, etc.  Test the password.
 
-	if( passOK < 0 ) {
-        jsonObjectFree(authEvt);
-		jsonObjectFree(userObj);
-        if(freeable_uname) free(freeable_uname);
-		return passOK;
-	}
+        passOK = oilsAuthVerifyPassword(
+            ctx, user_id, identifier, password, nonce);
 
-    if (passOK && user_inactive) {
-        // Patron is inactive but provided the correct password.
-        // Return the original PATRON_INACTIVE event.
-        osrfAppRespondComplete(ctx, authEvt);
-        jsonObjectFree(authEvt);
-        jsonObjectFree(userObj);
-        if(freeable_uname) free(freeable_uname);
-        return 0;
+        if (!passOK) {
+            // Password check failed. Return generic login failure.
+
+            response = oilsNewEvent(
+                __FILE__, harmless_line_number, OILS_EVENT_AUTH_FAILED);
+
+            osrfLogInfo(OSRF_LOG_MARK,  
+                "failed login: username=%s, barcode=%s, workstation=%s",
+                    uname, (barcode ? barcode : "(none)"), ws );
+        }
     }
 
-    jsonObjectFree(authEvt); // we're all done with this now.
 
-	if( passOK ) { // login successful  
-        
-		char* ewhat = "login";
+    // Below here, we know the password check succeeded if no response
+    // object is present.
 
-		if (0 == strcmp(ctx->method->name, "open-ils.auth.authenticate.verify")) {
-			response = oilsNewEvent( OSRF_LOG_MARK, OILS_EVENT_SUCCESS );
-			ewhat = "verify";
+    if (!response && (
+        !strcmp(authEvtCode, "PATRON_INACTIVE") ||
+        !strcmp(authEvtCode, "PATRON_CARD_INACTIVE"))) {
+        // Patron and/or card is inactive but the correct password 
+        // was provided.  Alert the caller to the inactive-ness.
+        response = oilsNewEvent2(
+            OSRF_LOG_MARK, authEvtCode,
+            jsonObjectGetKey(authEvt, "payload")   // cloned within Event
+        );
+    }
 
-		} else {
-			response = oilsAuthHandleLoginOK( userObj, uname, type, orgloc, workstation );
-		}
+    if (!response && strcmp(authEvtCode, OILS_EVENT_SUCCESS)) {
+        // Validate API returned an unexpected non-success event.
+        // To be safe, treat this as a generic login failure.
 
-		oilsUtilsTrackUserActivity(
-			oilsFMGetObjectId(userObj), 
-			ewho, ewhat, 
-			osrfAppSessionGetIngress()
-		);
+        response = oilsNewEvent(
+            __FILE__, harmless_line_number, OILS_EVENT_AUTH_FAILED);
+    }
 
-	} else {
-		response = oilsNewEvent( __FILE__, harmless_line_number, OILS_EVENT_AUTH_FAILED );
-		osrfLogInfo(OSRF_LOG_MARK,  "failed login: username=%s, barcode=%s, workstation=%s",
-				uname, (barcode ? barcode : "(none)"), ws );
-	}
+    if (!response) {
+        // password OK and no other events have prevented login completion.
 
-	jsonObjectFree(userObj);
-	osrfAppRespondComplete( ctx, oilsEventToJSON(response) );
-	oilsEventFree(response);
+        char* ewhat = "login";
 
-	if(freeable_uname)
-		free(freeable_uname);
+        if (0 == strcmp(ctx->method->name, "open-ils.auth.authenticate.verify")) {
+            response = oilsNewEvent( OSRF_LOG_MARK, OILS_EVENT_SUCCESS );
+            ewhat = "verify";
+
+        } else {
+            response = oilsAuthHandleLoginOK(
+                userObj, uname, type, orgloc, workstation);
+        }
+
+        oilsUtilsTrackUserActivity(
+            oilsFMGetObjectId(userObj), 
+            ewho, ewhat, 
+            osrfAppSessionGetIngress()
+        );
+    }
+
+    // reply
+    osrfAppRespondComplete(ctx, oilsEventToJSON(response));
+
+    // clean up
+    oilsEventFree(response);
+    jsonObjectFree(userObj);
+    jsonObjectFree(authEvt);
+    if(freeable_uname)
+        free(freeable_uname);
 
 	return 0;
 }
