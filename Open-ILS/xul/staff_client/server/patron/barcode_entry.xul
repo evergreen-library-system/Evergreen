@@ -129,7 +129,14 @@
                         throw(r);
                     } else {
 
-                        if (r == 0) {
+                        if (r == 2) {
+                            // opt-in is disallowed at this location by patron's home library
+                            sound.bad();
+                            add_msg($("patronStrings").getFormattedString('staff.patron.barcode_entry.opt_in_restricted'));
+                            return;
+                        }
+
+                        else if (r == 0) {
 
                             JSAN.use('patron.util');
                             var parts;

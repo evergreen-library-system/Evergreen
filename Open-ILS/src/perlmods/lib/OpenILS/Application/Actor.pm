@@ -3148,6 +3148,7 @@ __PACKAGE__->register_method(
         @param $auth The auth token
         @param user_id The ID of the user to test
         @return 1 if the user has opted in at the specified org,
+            2 if opt-in is disallowed for the user's home org,
             event on error, and 0 otherwise. /
 );
 sub user_opt_in_at_org {
@@ -3173,6 +3174,17 @@ sub user_opt_in_at_org {
     my $opt_orgs = $U->get_org_descendants($ws_org, $opt_boundary);
 
     return 1 if grep $_ eq $user->home_ou, @$opt_orgs;
+
+    # check whether opt-in is restricted at the user's home library
+    my $opt_restrict_depth = $U->ou_ancestor_setting_value($user->home_ou, 'org.restrict_opt_to_depth');
+    if ($opt_restrict_depth) {
+        my $restrict_ancestor = $U->org_unit_ancestor_at_depth($user->home_ou, $opt_restrict_depth);
+        my $unrestricted_orgs = $U->get_org_descendants($restrict_ancestor);
+
+        # opt-in is disallowed unless the workstation org is within the home
+        # library's opt-in scope
+        return 2 unless grep $_ eq $e->requestor->ws_ou, @$unrestricted_orgs;
+    }
 
     my $vals = $e->search_actor_usr_org_unit_opt_in(
         {org_unit=>$opt_orgs, usr=>$user_id},{idlist=>1});

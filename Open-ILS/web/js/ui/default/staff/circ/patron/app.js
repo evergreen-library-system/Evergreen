@@ -701,6 +701,7 @@ function($scope , $location , egCore , egConfirmDialog , egUser , patronSvc) {
 
     $scope.submitBarcode = function(args) {
         $scope.bcNotFound = null;
+        $scope.optInRestricted = false;
         if (!args.barcode) return;
 
         // blur so next time it's set to true it will re-apply select()
@@ -739,6 +740,13 @@ function($scope , $location , egCore , egConfirmDialog , egUser , patronSvc) {
 
             if (evt = egCore.evt.parse(optInResp)) {
                 alert(evt); // FIXME
+                return;
+            }
+
+            if (optInResp == 2) {
+                // opt-in disallowed at this location by patron's home library
+                $scope.optInRestricted = true;
+                $scope.selectMe = true;
                 return;
             }
            

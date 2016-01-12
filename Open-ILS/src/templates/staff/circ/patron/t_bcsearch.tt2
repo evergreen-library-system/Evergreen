@@ -18,5 +18,7 @@
 <div class="alert alert-warning" ng-show="bcNotFound">
   [% l('Barcode Not Found: [_1]', '{{bcNotFound}}') %]
 </div>
-
+<div class="alert alert-warning" ng-show="optInRestricted">
+  [% l("This patron's record is not viewable at your library.") %]
+</div>
 
