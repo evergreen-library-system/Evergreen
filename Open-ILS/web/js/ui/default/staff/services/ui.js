@@ -202,6 +202,7 @@ function($window , egStrings) {
 
         // handle page change
         $($window).on('beforeunload', function() { 
+            service.clear();
             return msg || egStrings.EG_UNLOAD_PAGE_PROMPT_MSG;
         });
 
@@ -211,8 +212,13 @@ function($window , egStrings) {
         // similar to the page-page prompt.
         service.locChangeCancel = 
             $scope.$on('$locationChangeStart', function(evt, next, current) {
-            if (!confirm(msg || egStrings.EG_UNLOAD_CTRL_PROMPT_MSG)) 
+            if (confirm(msg || egStrings.EG_UNLOAD_CTRL_PROMPT_MSG)) {
+                // user allowed the page to change.  
+                // Clear the unload handler.
+                service.clear();
+            } else {
                 evt.preventDefault();
+            }
         });
     };
 
