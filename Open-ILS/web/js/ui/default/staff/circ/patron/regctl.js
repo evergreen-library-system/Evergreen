@@ -12,15 +12,27 @@ angular.module('egCoreMod')
         user_settings : {},        // applied user settings
         user_setting_types : {},   // config.usr_setting_type
         opt_in_setting_types : {}, // config.usr_setting_type for event-def opt-in
+        surveys : [],
         survey_questions : {},
         survey_answers : {},
         survey_responses : {},     // survey.responses for loaded patron in progress
+        stat_cats : [],
         stat_cat_entry_maps : {},   // cat.id to selected entry object map
-        virt_id : -1               // virtual ID for new objects
+        virt_id : -1,               // virtual ID for new objects
+        init_done : false           // have we loaded our initialization data?
     };
 
     // launch a series of parallel data retrieval calls
     service.init = function(scope) {
+
+        // Data loaded here only needs to be retrieved the first time this
+        // tab becomes active within the current instance of the patron app.
+        // In other words, navigating between patron tabs will not cause
+        // all of this data to be reloaded.  Navigating to a separate app
+        // and returning will cause the data to be reloaded.
+        if (service.init_done) return $q.when();
+        service.init_done = true;
+
         return $q.all([
             service.get_field_doc(),
             service.get_perm_groups(),
@@ -281,7 +293,6 @@ angular.module('egCoreMod')
     }
 
     service.get_field_doc = function() {
-
         return egCore.pcrud.search('fdoc', {
             fm_class: ['au', 'ac', 'aua', 'actsc', 'asv', 'asvq', 'asva']})
         .then(null, null, function(doc) {
