@@ -939,8 +939,9 @@ function PatronRegCtrl($scope, $routeParams,
     }
 
     $scope.day_phone_changed = function(phone) {
-        if (phone && $scope.org_settings['patron.password.use_phone']) {
-           $scope.patron.passwd = phone.substr(-4);
+        if (phone && $scope.patron.isnew && 
+            $scope.org_settings['patron.password.use_phone']) {
+            $scope.patron.passwd = phone.substr(-4);
         }
     }
 
