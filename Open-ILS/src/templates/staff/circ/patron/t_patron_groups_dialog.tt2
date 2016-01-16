@@ -34,7 +34,7 @@ This does not affect circulation policy.
                 <span style="padding-right: 5px;">{{args.new_profile.name()}}</span>
                 <span class="caret"></span>
               </button>
-              <ul class="dropdown-menu">
+              <ul class="dropdown-menu scrollable-menu">
                 <li ng-repeat="grp in args.edit_profiles">
                   <a href
                     style="padding-left: {{pgt_depth(grp) * 10 + 5}}px"
