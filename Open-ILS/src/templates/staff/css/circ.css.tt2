@@ -102,7 +102,7 @@ but the ones I'm finding aren't quite cutting it..*/
     position: fixed;
     top:160px;
     right:20px;
-    border:2px dashed #d9e8f9;
+    /*border:2px dashed #d9e8f9;*/
     -moz-border-radius: 10px;
     font-weight: bold;
     padding: 20px;
