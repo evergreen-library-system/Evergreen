@@ -126,7 +126,7 @@ function(egCore , $q) {
     service.get_locations = function(orgs) {
         return egCore.pcrud.search('acpl',
             {owning_lib : orgs},
-            null, {atomic : true}
+            {order_by : { acpl : 'name' }}, {atomic : true}
         );
     };
 
@@ -142,7 +142,7 @@ function(egCore , $q) {
         if (egCore.env.ccs)
             return $q.when(egCore.env.ccs.list);
 
-        return egCore.pcrud.retrieveAll('ccs', {}, {atomic : true}).then(
+        return egCore.pcrud.retrieveAll('ccs', {order_by : { ccs : 'name' }}, {atomic : true}).then(
             function(list) {
                 egCore.env.absorbList(list, 'ccs');
                 return list;
