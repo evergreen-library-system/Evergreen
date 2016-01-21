@@ -370,6 +370,23 @@
                     </button>
                 </div>
             </div>
+
+            <div class="row pad-vert"></div>
+
+            <div class="row bg-info">
+                <div class="col-md-6">
+                    <b>[% l('Floating') %]</b>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6" ng-class="{'bg-success': working.floating !== undefined}">
+                    <select class="form-control"
+                        ng-disabled="!defaults.attributes.floating" ng-model="working.floating"
+                        ng-options="a.id() as a.name() for a in floating_list"
+                    ></select>
+                </div>
+            </div>
         </div>
 
         <div class="col-md-4">

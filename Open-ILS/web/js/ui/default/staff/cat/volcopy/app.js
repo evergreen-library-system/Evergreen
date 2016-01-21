@@ -190,6 +190,19 @@ function(egCore , $q) {
 
     };
 
+    service.get_floating_groups = function() {
+        if (egCore.env.cfg)
+            return $q.when(egCore.env.cfg.list);
+
+        return egCore.pcrud.retrieveAll('cfg', {}, {atomic : true}).then(
+            function(list) {
+                egCore.env.absorbList(list, 'cfg');
+                return list;
+            }
+        );
+
+    };
+
     service.bmp_parts = {};
     service.get_parts = function(rec) {
         if (service.bmp_parts[rec])
@@ -702,7 +715,8 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
             circ_as_type : true,
             location : true,
             holdable : true,
-            age_protect : true
+            age_protect : true,
+            floating : true
         }
     };
 
@@ -1353,6 +1367,12 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
         });
         createSimpleUpdateWatcher('age_protect');
 
+        $scope.floating_list = [];
+        itemSvc.get_floating_groups().then(function(list){
+            $scope.floating_list = list;
+        });
+        createSimpleUpdateWatcher('floating');
+
         createSimpleUpdateWatcher('circ_lib');
         createSimpleUpdateWatcher('circulate');
         createSimpleUpdateWatcher('holdable');
@@ -1515,7 +1535,8 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                         circ_as_type : true,
                         location : true,
                         holdable : true,
-                        age_protect : true
+                        age_protect : true,
+                        floating : true
                     }
                 };
 
