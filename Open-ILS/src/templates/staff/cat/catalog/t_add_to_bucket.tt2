@@ -10,7 +10,7 @@
     </div>
     <div class="col-md-4">
       <select id="select-bucket" class="form-control" ng-model="bucket_id"
-              ng-options="bucket.id() as bucket.name() for bucket in allBuckets | orderBy:bucket.name()">
+              ng-options="bucket.id() as bucket.name() for bucket in allBuckets | orderBy:'name()'">
       </select>
     </div>
     <div class="col-md-4">
