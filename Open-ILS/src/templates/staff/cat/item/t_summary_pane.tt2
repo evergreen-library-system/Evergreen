@@ -140,7 +140,7 @@
 
   <div class="flex-row">
     <div class="flex-cell">[% l('Floating') %]</div>
-    <div class="flex-cell well">{{copy.floating()}}</div>
+    <div class="flex-cell well">{{copy.floating().name()}}</div>
 
     <div class="flex-cell">[% l('Circulate') %]</div>
     <div class="flex-cell well">{{copy.circulate()}}</div>

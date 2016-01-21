@@ -59,7 +59,7 @@ function(egCore) {
     service.flesh = {   
         flesh : 3, 
         flesh_fields : {
-            acp : ['call_number','location','status','location'],
+            acp : ['call_number','location','status','location','floating'],
             acn : ['record','prefix','suffix'],
             bre : ['simple_record','creator','editor']
         },
@@ -302,7 +302,7 @@ function($scope , $q , $location , $routeParams , $timeout , $window , egCore , 
 
             // make boolean for auto-magic true/false display
             angular.forEach(
-                ['ref','opac_visible','holdable','floating','circulate'],
+                ['ref','opac_visible','holdable','circulate'],
                 function(field) { copy[field](Boolean(copy[field]() == 't')) }
             );
 
