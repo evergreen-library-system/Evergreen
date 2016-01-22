@@ -499,7 +499,7 @@ angular.module('egCoreMod')
             var entry;
             angular.forEach(service.stat_cats, function(cat) {
                 angular.forEach(cat.entries(), function(ent) {
-                    if (ent.id() == map.stat_cat_entry)
+                    if (ent.value() == map.stat_cat_entry)
                         entry = ent;
                 });
             });
@@ -619,7 +619,7 @@ angular.module('egCoreMod')
             if (existing) { // we have a mapping
                 // if the existing mapping matches the new one,
                 // there' nothing left to do
-                if (existing.stat_cat_entry() == entry.id()) return;
+                if (existing.stat_cat_entry() == entry.value()) return;
 
                 // mappings differ.  delete the old one and create
                 // a new one below.
@@ -630,7 +630,7 @@ angular.module('egCoreMod')
             newmap.target_usr(patron.id());
             newmap.isnew(true);
             newmap.stat_cat(entry.stat_cat());
-            newmap.stat_cat_entry(entry.id());
+            newmap.stat_cat_entry(entry.value());
             patron.stat_cat_entries().push(newmap);
         });
 
