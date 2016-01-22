@@ -651,6 +651,8 @@ __PACKAGE__->add_search_filter( 'statuses' );
 __PACKAGE__->add_search_filter( 'locations' );
 __PACKAGE__->add_search_filter( 'location_groups' );
 __PACKAGE__->add_search_filter( 'bib_source' );
+__PACKAGE__->add_search_filter( 'badge_orgs' );
+__PACKAGE__->add_search_filter( 'badges' );
 __PACKAGE__->add_search_filter( 'site' );
 __PACKAGE__->add_search_filter( 'pref_ou' );
 __PACKAGE__->add_search_filter( 'lasso' );
@@ -808,7 +810,6 @@ sub toSQL {
         $rel = "($rel * COALESCE( NULLIF( FIRST(mrv.vlist \@> ARRAY[lang_with.id]), FALSE )::INT * $plw, 1))";
         $$flat_plan{uses_mrv} = 1;
     }
-    $rel = "1.0/($rel)::NUMERIC";
 
     my $mrv_join = '';
     if ($$flat_plan{uses_mrv}) {
@@ -831,23 +832,66 @@ sub toSQL {
         $bre_join = 'INNER JOIN biblio.record_entry bre ON m.source = bre.id';
     }
     
-    my $rank = $rel;
-
     my $desc = 'ASC';
     $desc = 'DESC' if ($self->find_modifier('descending'));
 
     my $nullpos = 'NULLS LAST';
     $nullpos = 'NULLS FIRST' if ($self->find_modifier('nullsfirst'));
 
+    # Do we have a badges() filter?
+    my $badges = '';
+    my ($badge_filter) = $self->find_filter('badges');
+    if ($badge_filter && @{$badge_filter->args}) {
+        $badges = join (',', grep /^\d+$/, @{$badge_filter->args});
+    }
+
+    # Do we have a badge_orgs() filter? (used for calculating popularity)
+    my $borgs = '';
+    my ($bo_filter) = $self->find_filter('badge_orgs');
+    if ($bo_filter && @{$bo_filter->args}) {
+        $borgs = join (',', grep /^\d+$/, @{$bo_filter->args});
+    }
+
+    # Build the badge-ish WITH query
+    my $pop_with = <<'    WITH';
+        pop_with AS (
+            SELECT  record,
+                    ARRAY_AGG(badge) AS badges,
+                    SUM(s.score::NUMERIC*b.weight::NUMERIC)/SUM(b.weight::NUMERIC) AS total_score
+              FROM  rating.record_badge_score s
+                    JOIN rating.badge b ON (
+                        b.id = s.badge
+    WITH
+
+    $pop_with .= " AND b.id = ANY ('{$badges}')" if ($badges);
+    $pop_with .= " AND b.scope = ANY ('{$borgs}')" if ($borgs);
+    $pop_with .= ') GROUP BY 1)'; 
+
+    my $pop_join = $badges ? # inner join if we are restricting via badges()
+        'INNER JOIN pop_with ON ( m.source = pop_with.record )' : 
+        'LEFT JOIN pop_with ON ( m.source = pop_with.record )';
+
+    $$flat_plan{with} .= ',' if $$flat_plan{with};
+    $$flat_plan{with} .= $pop_with;
+
+
+    my $rank;
+    my $pop_extra_sort = '';
     if (grep {$_ eq $sort_filter} @{$self->QueryParser->dynamic_sorters}) {
         $rank = "FIRST((SELECT value FROM metabib.record_sorter rbr WHERE rbr.source = m.source and attr = '$sort_filter'))"
     } elsif ($sort_filter eq 'create_date') {
         $rank = "FIRST((SELECT create_date FROM biblio.record_entry rbr WHERE rbr.id = m.source))";
     } elsif ($sort_filter eq 'edit_date') {
         $rank = "FIRST((SELECT edit_date FROM biblio.record_entry rbr WHERE rbr.id = m.source))";
+    } elsif ($sort_filter eq 'poprel') {
+        $rank = '1.0/((' . $rel . ') * (1.0 + AVG(COALESCE(pop_with.total_score::NUMERIC,0.0)) / 5.0))::NUMERIC';
+    } elsif ($sort_filter =~ /^pop/) {
+        $rank = '1.0/(AVG(COALESCE(pop_with.total_score::NUMERIC,0.0)) + 5.0)::NUMERIC';
+        my $pop_desc = $desc eq 'ASC' ? 'DESC' : 'ASC';
+        $pop_extra_sort = "3 $pop_desc $nullpos,";
     } else {
         # default to rel ranking
-        $rank = $rel;
+        $rank = "1.0/($rel)::NUMERIC";
     }
 
     my $key = 'm.source';
@@ -877,18 +921,21 @@ SELECT  $key AS id,
         $agg_records,
         $rel AS rel,
         $rank AS rank, 
-        FIRST(pubdate_t.value) AS tie_break
+        FIRST(pubdate_t.value) AS tie_break,
+        STRING_AGG(ARRAY_TO_STRING(pop_with.badges,','),',') AS badges,
+        AVG(COALESCE(pop_with.total_score::NUMERIC,0.0))::NUMERIC(2,1) AS popularity
   FROM  metabib.metarecord_source_map m
         $$flat_plan{from}
-        $pubdate_join
         $mra_join
         $mrv_join
         $bre_join
+        $pop_join
+        $pubdate_join
         $lang_join
   WHERE 1=1
         $flat_where
   GROUP BY 1
-  ORDER BY 4 $desc $nullpos, 5 DESC $nullpos, 3 DESC
+  ORDER BY 4 $desc $nullpos, $pop_extra_sort 5 DESC $nullpos, 3 DESC
   LIMIT $core_limit
 SQL
 

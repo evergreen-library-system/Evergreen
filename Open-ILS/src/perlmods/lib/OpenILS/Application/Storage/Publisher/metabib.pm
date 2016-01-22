@@ -3067,6 +3067,8 @@ sub query_parser_fts {
     delete $$summary_row{id};
     delete $$summary_row{rel};
     delete $$summary_row{record};
+    delete $$summary_row{badges};
+    delete $$summary_row{popularity};
 
     if (defined($simple_plan)) {
         $$summary_row{complex_query} = $simple_plan ? 0 : 1;
@@ -3098,6 +3100,8 @@ __PACKAGE__->register_method(
     cachable    => 1,
 );
 
+my $top_org;
+
 sub query_parser_fts_wrapper {
     my $self = shift;
     my $client = shift;
@@ -3113,6 +3117,8 @@ sub query_parser_fts_wrapper {
     if (! scalar( keys %{$args{searches}} )) {
         die "No search arguments were passed to ".$self->api_name;
     }
+
+    $top_org ||= actor::org_unit->search( { parent_ou => undef } )->next;
 
     $log->debug("Constructing QueryParser query from staged search hash ...", DEBUG);
     my $base_query = '';
@@ -3144,7 +3150,59 @@ sub query_parser_fts_wrapper {
         if ($args{preferred_language_weight} and !$base_plan->parse_tree->find_filter('preferred_language_weight') and !$base_plan->parse_tree->find_filter('preferred_language_multiplier'));
 
 
+    my $borgs = undef;
+    if (!$base_plan->parse_tree->find_filter('badge_orgs')) {
+        # supply a suitable badge_orgs filter unless user has
+        # explicitly supplied one
+        my $site = undef;
+
+        my @lg_id_list = @{$args{location_groups}} if (ref $args{location_groups});
+
+        my ($lg_filter) = $base_plan->parse_tree->find_filter('location_groups');
+        @lg_id_list = @{$lg_filter->args} if ($lg_filter && @{$lg_filter->args});
+
+        if (@lg_id_list) {
+            my @borg_list;
+            for my $lg ( grep { /^\d+$/ } @lg_id_list ) {
+                my $lg_obj = asset::copy_location_group->retrieve($lg);
+                next unless $lg_obj;
+    
+                push(@borg_list, ''.$lg_obj->owner);
+            }
+            $borgs = join(',', @borg_list) if @borg_list;
+        }
+    
+        if (!$borgs) {
+            my ($site_filter) = $base_plan->parse_tree->find_filter('site');
+            if ($site_filter && @{$site_filter->args}) {
+                $site = $top_org if ($site_filter->args->[0] eq '-');
+                $site = $top_org if ($site_filter->args->[0] eq $top_org->shortname);
+                $site = actor::org_unit->search( { shortname => $site_filter->args->[0] })->next unless ($site);
+            } elsif ($args{org_unit}) {
+                $site = $top_org if ($args{org_unit} eq '-');
+                $site = $top_org if ($args{org_unit} eq $top_org->shortname);
+                $site = actor::org_unit->search( { shortname => $args{org_unit} })->next unless ($site);
+            } else {
+                $site = $top_org;
+            }
+
+            if ($site) {
+                $borgs = OpenSRF::AppSession->create( 'open-ils.cstore' )->request(
+                    'open-ils.cstore.json_query.atomic',
+                    { from => [ 'actor.org_unit_ancestors', $site->id ] }
+                )->gather(1);
+
+                if (ref $borgs && @$borgs) {
+                    $borgs = join(',', map { $_->{'id'} } @$borgs);
+                } else {
+                    $borgs = undef;
+                }
+            }
+        }
+    }
+
     $query = "estimation_strategy($args{estimation_strategy}) $query" if ($args{estimation_strategy});
+    $query = "badge_orgs($borgs) $query" if ($borgs);
     $query = "site($args{org_unit}) $query" if ($args{org_unit});
     $query = "depth($args{depth}) $query" if (defined($args{depth}));
     $query = "sort($args{sort}) $query" if ($args{sort});
@@ -3173,7 +3231,7 @@ sub query_parser_fts_wrapper {
         $args{item_form} = [ split '', $f ];
     }
 
-    for my $filter ( qw/locations location_groups statuses between audience language lit_form item_form item_type bib_level vr_format/ ) {
+    for my $filter ( qw/locations location_groups statuses between audience language lit_form item_form item_type bib_level vr_format badges/ ) {
         if (my $s = $args{$filter}) {
             $s = [$s] if (!ref($s));
 

@@ -522,13 +522,15 @@ sub load_rresults {
         }
     }
 
-    if ($tag_circs) {
-        for my $rec (@{$ctx->{records}}) {
-            my ($res_rec) = grep { $_->[0] == $rec->{$id_key} } @{$results->{ids}};
-            # index 1 in the per-record result array is a boolean which
+    for my $rec (@{$ctx->{records}}) {
+        my ($res_rec) = grep { $_->[0] == $rec->{$id_key} } @{$results->{ids}};
+        $rec->{badges} = [split(',', $res_rec->[1])] if $res_rec->[1];
+        $rec->{popularity} = $res_rec->[2];
+        if ($tag_circs) {
+            # index 3 (5 for MR) in the per-record result array is a boolean which
             # indicates whether the record in question is in the users
             # accessible circ history list
-            my $index = $is_meta ? 3 : 1;
+            my $index = $is_meta ? 5 : 3;
             $rec->{user_circulated} = 1 if $res_rec->[$index];
         }
     }

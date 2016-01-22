@@ -314,6 +314,16 @@ IF num_uris > 0;
         </span>
     </li>
     [%- END %]
+    [%- IF (ctx.badge_scores.size > 0) %]
+    <li id='rdetail_badges'>
+        <strong class='rdetail_label'>[% l("Badges:") %]</strong>
+        <ul>
+          [% FOR bscore IN ctx.badge_scores; %]
+            <li><strong>[% bscore.badge.name | html %]</strong>: [% bscore.score %] / 5.0</li>
+        [%- END -%]
+        </span>
+    </li>
+    [%- END %]
 </ul>
 
 [%- INCLUDE "opac/parts/record/contents.tt2" %]

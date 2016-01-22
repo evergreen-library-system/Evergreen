@@ -66,6 +66,21 @@ sub load_record {
         $self->mk_copy_query($rec_id, $org, $copy_depth, $copy_limit, $copy_offset, $pref_ou)
     );
 
+    if ($self->cgi->param('badges')) {
+        my $badges = $self->cgi->param('badges');
+        $badges = $badges ? [split(',', $badges)] : [];
+        $badges = [grep { /^\d+$/ }, @$badges];
+        if (@$badges) {
+            $self->ctx->{badge_scores} = $cstore->request(
+                'open-ils.cstore.direct.rating.record_badge_score.search.atomic',
+                { record => $rec_id, badge => $badges },
+                { flesh => 1, flesh_fields => { rrbs => ['badge'] } }
+            )->gather(1);
+        }
+    } else {
+        $self->ctx->{badge_scores} = [];
+    }
+
     # find foreign copy data
     my $peer_rec = $U->simplereq(
         'open-ils.search',

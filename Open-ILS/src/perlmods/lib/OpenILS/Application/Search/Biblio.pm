@@ -1364,9 +1364,9 @@ sub staged_search {
 
             # Create backwards-compatible result structures
             if($IAmMetabib) {
-                $results = [map {[$_->{id}, $_->{rel}, $_->{record}]} @$results];
+                $results = [map {[$_->{id}, $_->{badges}, $_->{popularity}, $_->{rel}, $_->{record}]} @$results];
             } else {
-                $results = [map {[$_->{id}]} @$results];
+                $results = [map {[$_->{id}, $_->{badges}, $_->{popularity}]} @$results];
             }
 
             push @$new_ids, grep {defined($_)} map {$_->[0]} @$results;

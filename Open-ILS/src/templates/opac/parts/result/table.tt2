@@ -56,11 +56,11 @@
                                 ELSE;
                                     # for MR, bre_id refers to the master and in
                                     # this case, only, record
-                                    record_url = mkurl(ctx.opac_root _ '/record/' _ rec.bre_id);
+                                    record_url = mkurl(ctx.opac_root _ '/record/' _ rec.bre_id, { badges => rec.badges.join(',') });
                                 END;
                                 hold_type = 'M';
                             ELSE;
-                                record_url = mkurl(ctx.opac_root _ '/record/' _ rec.bre_id);
+                                record_url = mkurl(ctx.opac_root _ '/record/' _ rec.bre_id, { badges => rec.badges.join(',') });
                                 hold_type = 'T';
                             END;
                     -%]
@@ -155,6 +155,11 @@ END;
                                                         END
                                                     -%]
                                                     </div>
+                                                    [% IF rec.popularity > 0.0 %]
+                                                      <div>
+                                                        <span><strong>[% l('Popularity:') %]</strong> [% rec.popularity %] / 5.0</span>
+                                                      </div>
+                                                    [% END %]
                                                     <table 
                                                        role="presentation"
                                                        title="[% l('Record Holdings Summary') %]"
