@@ -401,7 +401,92 @@ Use the Other menu to navigate to _Notes_.
 
 image::media/circulation_patron_records-24_web_client.png[circulation_patron_records 24]
 
-Select the _Add New Note_ button. An _Add Note_ window displays.  
+Select the _Add New Note_ button. A _Create a new note_ window displays.  
 
+[TIP] 
+================================================ 
+To add a box in the _Add Note_ window for staff initials and require their
+entry, see the "Require staff initials..." settings in the
+<<_library_settings_editor,Library Settings Editor>> section.
+================================================ 
+
+Enter note information. 
+
+Select the check box for _Patron Visible_ to display the note in the OPAC. 
+
+image::media/circulation_patron_records-25_web_client.png[circulation_patron_records 25]
+
+Select _OK_ to save the note to the patron account.  
+
+To delete a note, go to _Other -> Notes_ and use the _Delete_ button
+on the right of each note.
+
+image::media/circulation_patron_records-26_web_client.png[circulation_patron_records 26]
+
+Staff-Generated Penalties/Messages
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+[[staff_generated_penalties]]
+To access this feature, use the _Messages_ button in the patron record.
+
+image::media/staff-penalties-1_web_client.png[Messages screen]
+
+Add a Message
+^^^^^^^^^^^^^
+
+Click *Apply Penalty/Message* to begin the process of adding a message to the patron.
+
+image::media/staff-penalties-2_web_client.png[Apply Penalty Dialog Box]
+
+There are three options: Notes, Alerts, Blocks
+
+* *Note*: This will create a non-blocking, non-alerting note visible to staff. Staff will be alerted to the message by the light-blue framing around the patron name, and can view the message by clicking the _Messages_ button on the patron record.  (Notes created in this fashion will not display via _Other_ -> _Notes_, and cannot be shared with the patron. See the <<circulation_patron_notes,Patron Notes>> section for notes which can be shared with the patron.)
+
+* *Alert*: This will create a non-blocking alert which appears when the patron record is first retrieved.  The alert will generate a dark-blue frame around the patron name. Alerts may be viewed by clicking the _Messages_ button on the patron record or by selecting _Other_ -> _Display Alerts and Messages_.
+
+* *Block*: This will create a blocking alert which appears when the patron record is first retrieved, and which behaves much as the non-blocking alert described previously. The patron will be also blocked from circulation, holds and renewals until the block is cleared by staff.
+
+After selecting the type of message to create, enter the message body into the box. If Staff Initials are required, they must be entered into the _Initials_ box before the message can be added.  Otherwise, fill in the optional _Initials_ box and click *OK*
+
+The message should now be visible in the _Staff-Generated Penalties/Messages_ list. If a blocking or non-blocking alert, the message will also display immediately when the patron record is retrieved.
+
+image::media/staff-penalties-3_web_client.png[[Messages on a record]
+
+Modify a Message
+^^^^^^^^^^^^^^^^
+
+Messages can be edited by staff after they are created. 
+
+image::media/staff-penalties-4_web_client.png[[Actions menu]
+
+Click to select the message to be modified, then click _Actions_ -> _Modify Penalty/Message_. This menu can also be accessed by right-clicking in the message area.
+
+image::media/staff-penalties-5_web_client.png[Modify penalty dialog box]
+
+To change the type of message, click on *Note*, *Alert*, *Block* to select the new type. Edit or add new text in the message body.  Enter Staff Initials into the _Initials_ box (may be required.) and click *OK* to submit the alterations.
+
+image::media/staff-penalties-6_web_client.png[Modified message in the list]
+
+Archive a Message
+^^^^^^^^^^^^^^^^^
+
+Messages which are no longer current can be archived by staff. This action will remove any alerts or blocks associated with the message, but retains the information contained there for future reference.
+
+image::media/staff-penalties-4_web_client.png[[Actions menu]
+
+Click to select the message to be archived, then click _Actions_ -> _Archive Penalty/Message_. This menu can also be accessed by right-clicking in the message area.
+
+image::media/staff-penalties-7_web_client.png[Archived messages]
+
+Archived messages will be shown in the section labelled _Archived Penalties/Messages_. To view messages, click *Retrieve Archived Penalties*. By default, messages archived within the past year will be retrieved. To retrieve messages from earlier dates, change the start date to the desired date before clicking *Retrieve Archived Penalties*.
+
+Remove a Message
+^^^^^^^^^^^^^^^^
+
+Messages which are no longer current can be removed by staff.  This action removes any alerts or blocks associated with the message and deletes the information from the system.
+
+image::media/staff-penalties-4_web_client.png[[Actions menu]
+
+Click to select the message to be removed, then click _Actions_ -> _Remove Penalty/Message_. This menu can also be accessed by right-clicking in the message area.
 
 
