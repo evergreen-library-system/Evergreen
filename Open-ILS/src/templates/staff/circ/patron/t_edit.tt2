@@ -549,28 +549,41 @@
     <label>{{cat.name()}}</label>
   </div>
   <div class="col-md-3 reg-field-input">
-    <div ng-if="cat.entries().length == 0">
-      <input 
-        ng-change="field_modified()" 
-        type="text" class="form-control"/>
-    </div>
+
+    <!-- Editable typeahead is not support in this version of 
+        angularjs-bootstrap.  Requires Angular 1.4 and 
+        angularjs-bootstrap version 1.1+ -->
+
+    <!-- typeahead is wonky.  Consider updating -->
+    <!--
+    <input type="text" ng-model="stat_cat_entry_maps[cat.id()]"
+      typeahead="value as entry.value() for entry in cat.entries() | filter:$viewValue | limitTo:8" 
+      class="form-control">
+    -->
+    
     <div ng-if="cat.entries().length != 0">
       <div class="btn-group" dropdown>
         <button type="button" class="btn btn-default dropdown-toggle">
           <span style="padding-right: 5px;">
-            {{stat_cat_entry_maps[cat.id()].value()}}</span>
+            {{stat_cat_entry_maps[cat.id()]}}</span>
           <span class="caret"></span>
         </button>
         <ul class="dropdown-menu">
           <li ng-repeat="entry in cat.entries()">
             <a href 
-              ng-click="field_modified();stat_cat_entry_maps[cat.id()]=entry"> 
+              ng-click="field_modified();stat_cat_entry_maps[cat.id()]=entry.value()"> 
               {{entry.value()}}
             </a>
           </li>
         </ul>
       </div>
     </div>
+  </div>
+
+  <!-- Stat cat retrieval API uses open-ils.storage under the covers
+      which represents DB bools at 1/0 instead of cstore-style t/f -->
+  <div class="col-md-3 reg-field-input" ng-if="cat.allow_freetext() == '1'">
+    <input type="text" ng-model="stat_cat_entry_maps[cat.id()]"/>
   </div>
 </div>
 

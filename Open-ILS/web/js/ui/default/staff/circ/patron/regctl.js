@@ -17,7 +17,7 @@ angular.module('egCoreMod')
         survey_answers : {},
         survey_responses : {},     // survey.responses for loaded patron in progress
         stat_cats : [],
-        stat_cat_entry_maps : {},   // cat.id to selected entry object map
+        stat_cat_entry_maps : {},   // cat.id to selected value
         virt_id : -1,               // virtual ID for new objects
         init_done : false           // have we loaded our initialization data?
     };
@@ -496,14 +496,7 @@ angular.module('egCoreMod')
         // toss entries for existing stat cat maps into our living 
         // stat cat entry map, which is modified within the template.
         angular.forEach(patron.stat_cat_entries, function(map) {
-            var entry;
-            angular.forEach(service.stat_cats, function(cat) {
-                angular.forEach(cat.entries(), function(ent) {
-                    if (ent.value() == map.stat_cat_entry)
-                        entry = ent;
-                });
-            });
-            service.stat_cat_entry_maps[map.stat_cat.id] = entry;
+            service.stat_cat_entry_maps[map.stat_cat.id] = map.stat_cat_entry;
         });
 
         return patron;
@@ -607,19 +600,19 @@ angular.module('egCoreMod')
         });
         patron.stat_cat_entries(maps);
 
-        // service.stat_cat_entry_maps maps stats to entries
+        // service.stat_cat_entry_maps maps stats to values
         // patron.stat_cat_entries is an array of stat_cat_entry_usr_map's
-        angular.forEach(service.stat_cat_entry_maps, function(entry) {
+        angular.forEach(
+            service.stat_cat_entry_maps, function(value, cat_id) {
 
             // see if we already have a mapping for this entry
-            var existing = patron.stat_cat_entries().filter(function(e) {
-                return e.stat_cat() == entry.stat_cat();
-            })[0];
+            var existing = patron.stat_cat_entries().filter(
+                function(e) { return e.stat_cat() == cat_id })[0];
 
             if (existing) { // we have a mapping
                 // if the existing mapping matches the new one,
                 // there' nothing left to do
-                if (existing.stat_cat_entry() == entry.value()) return;
+                if (existing.stat_cat_entry() == value) return;
 
                 // mappings differ.  delete the old one and create
                 // a new one below.
@@ -629,13 +622,9 @@ angular.module('egCoreMod')
             var newmap = new egCore.idl.actscecm();
             newmap.target_usr(patron.id());
             newmap.isnew(true);
-            newmap.stat_cat(entry.stat_cat());
-            newmap.stat_cat_entry(entry.value());
+            newmap.stat_cat(cat_id);
+            newmap.stat_cat_entry(value);
             patron.stat_cat_entries().push(newmap);
-        });
-
-        angular.forEach(patron.stat_cat_entries(), function(entry) {
-            console.log(egCore.idl.toString(entry));
         });
 
         if (!patron.isnew()) patron.ischanged(true);
