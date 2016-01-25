@@ -144,8 +144,14 @@ Optional: Extra steps for browser-based staff client
 ----------------------------------------------------
 
 [NOTE]
-Skip this section if you are using an official release tarball downloaded
+Skip this entire section if you are using an official release tarball downloaded
 from http://evergreen-ils.org/downloads
+
+[NOTE]
+You make skip the subsection `Install dependencies for browser-based staff client'
+if you are installing on either Debian Jessie or Ubuntu Trusty and you have
+installed the `Optional: Developer Additions' described above.  You will still
+need to do the steps in `Install files for browser-based staff client' below.
 
 Install dependencies for browser-based staff client
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
