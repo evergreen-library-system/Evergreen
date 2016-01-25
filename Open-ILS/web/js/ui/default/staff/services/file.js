@@ -25,4 +25,20 @@ angular.module('egCoreMod')
             });
         }
     }
-}]);
+}])
+
+.directive('egJsonExporter', ['FileSaver', 'Blob', function(FileSaver, Blob) {
+    return {
+        scope: {
+            container: '=',
+            defaultFileName: '='
+        },
+        link: function (scope, element, attributes) {
+            element.bind('click', function (clickEvent) {
+                var data = new Blob([JSON.stringify(scope.container)], {type : 'application/json'});
+                FileSaver.saveAs(data, scope.defaultFileName);
+            });
+        }
+    }
+}])
+;
