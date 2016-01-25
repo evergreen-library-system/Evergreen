@@ -19,8 +19,15 @@
                 </div>
                 <div class="col-md-8">
                     <div class="btn-group pull-right">
-                        <label class="btn btn-default" ng-click="importTemplates()">[% l('Import') %]</label>
-                        <label class="btn btn-default" ng-click="exportTemplates()">[% l('Export') %]</label>
+                        <span class="btn btn-default btn-file">
+                            [% l('Import') %]
+                            <input type="file" eg-file-reader container="imported_templates.data">
+                        </span>
+                        <label class="btn btn-default"
+                            eg-json-exporter container="templates"
+                            default-file-name="'[% l('exported_copy_templates.json') %]'">
+                            [% l('Export') %]
+                        </label>
                     </div>
                 </div>
             </div>

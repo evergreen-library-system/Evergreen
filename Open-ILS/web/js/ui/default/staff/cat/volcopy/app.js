@@ -1624,9 +1624,24 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                 }
             
                 $scope.templates = {};
+                $scope.imported_templates = { data : '' };
                 $scope.template_name = '';
                 $scope.template_name_list = [];
-            
+
+                $scope.$watch('imported_templates.data', function(newVal, oldVal) {
+                    if (newVal && newVal != oldVal) {
+                        try {
+                            var newTemplates = JSON.parse(newVal);
+                            if (!Object.keys(newTemplates).length) return;
+                            $scope.templates = newTemplates;
+                            $scope.template_name_list = Object.keys(newTemplates);
+                            $scope.template_name = '';
+                        } catch (E) {
+                            console.log('tried to import an invalid copy template file');
+                        }
+                    }
+                });
+
                 $scope.tracker = function (x,f) { if (x) return x[f]() };
                 $scope.idTracker = function (x) { if (x) return $scope.tracker(x,'id') };
                 $scope.cant_have_vols = function (id) { return !egCore.org.CanHaveVolumes(id); };
