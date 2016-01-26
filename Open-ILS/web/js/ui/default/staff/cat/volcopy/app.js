@@ -1091,7 +1091,23 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                                 cn.label_class( $scope.defaults.classification || 1 );
                                 cn.owning_lib( proto.owner || egCore.auth.user().ws_ou() );
                                 cn.record( $scope.record_id );
-                                if (proto.label) cn.label( proto.label );
+                                if (proto.label) {
+                                     cn.label( proto.label );
+                                } else {
+                                    egCore.net.request(
+                                        'open-ils.cat',
+                                        'open-ils.cat.biblio.record.marc_cn.retrieve',
+                                        $scope.record_id,
+                                        $scope.defaults.classification || 1
+                                    ).then(function(cn_array) {
+                                        if (cn_array.length > 0) {
+                                            for (var field in cn_array[0]) {
+                                                cn.label( cn_array[0][field] );
+                                                break;
+                                            }
+                                        }
+                                    });
+                                } 
 
                                 var cp = new egCore.idl.acp();
                                 cp.call_number( cn );
