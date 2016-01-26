@@ -40,7 +40,7 @@
     <eg-grid-action handler="attach_to_peer_bib"
       label="[% l('Link as Conjoined to Previously Marked Bib Record') %]"></eg-grid-action>
     <eg-grid-action handler="markLibAsVolTarget"
-      label="[% l('Choose Library for Volume Transfer Destination') %]"></eg-grid-action>
+      label="[% l('Choose Library for Volume/Copy Transfer Destination') %]"></eg-grid-action>
 
     <eg-grid-action handler="selectedHoldingsItemStatus" group="[% l('Show') %]"
       label="[% l('Item Status (list)') %]"></eg-grid-action>
@@ -83,6 +83,8 @@
 
     <eg-grid-action handler="transferVolumes" group="[% l('Transfer') %]"
       label="[% l('Volumes to Previously Marked Library') %]"></eg-grid-action>
+    <eg-grid-action handler="changeItemOwningLib" group="[% l('Transfer') %]"
+      label="[% l('Copies to Previously Marked Library') %]"></eg-grid-action>
     <eg-grid-action handler="transferItems" group="[% l('Transfer') %]"
       label="[% l('Items to Previously Marked Volume') %]"></eg-grid-action>
 

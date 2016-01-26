@@ -1045,6 +1045,59 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         
     }
 
+    // this "transfers" selected copies to a new owning library,
+    // auto-creating volumes and deleting unused volumes as required.
+    $scope.changeItemOwningLib = function() {
+        var xfer_target = egCore.hatch.getLocalItem('eg.cat.volume_transfer_target');
+        var items = $scope.holdingsGridControls.selectedItems();
+        if (!xfer_target || !items.length) {
+            return;
+        }
+        var vols_to_move   = {};
+        var copies_to_move = {};
+        angular.forEach(items, function(item) {
+            if (item.call_number.owning_lib != xfer_target) {
+                if (item.call_number.id in vols_to_move) {
+                    copies_to_move[item.call_number.id].push(item.id);
+                } else {
+                    vols_to_move[item.call_number.id] = item.call_number;
+                    copies_to_move[item.call_number.id] = new Array;
+                    copies_to_move[item.call_number.id].push(item.id);
+                }
+            }
+        });
+    
+        var promises = [];
+        angular.forEach(vols_to_move, function(vol) {
+            promises.push(egCore.net.request(
+                'open-ils.cat',
+                'open-ils.cat.call_number.find_or_create',
+                egCore.auth.token(),
+                vol.label,
+                vol.record,
+                xfer_target,
+                vol.prefix.id,
+                vol.suffix.id,
+                vol.label_class
+            ).then(function(resp) {
+                var evt = egCore.evt.parse(resp);
+                if (evt) return;
+                return egCore.net.request(
+                    'open-ils.cat',
+                    'open-ils.cat.transfer_copies_to_volume',
+                    egCore.auth.token(),
+                    resp.acn_id,
+                    copies_to_move[vol.id]
+                );
+            }));
+        });
+        $q.all(promises).then(function() {
+            holdingsSvcInst.fetchAgain().then(function() {
+                $scope.holdingsGridDataProvider.refresh();
+            });
+        });
+    }
+
     $scope.transferItems = function (){
         var xfer_target = egCore.hatch.getLocalItem('eg.cat.item_transfer_target');
         var copy_ids = gatherSelectedHoldingsIds();
