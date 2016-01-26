@@ -195,7 +195,13 @@ static char* oilsAuthBuildInitCache(
     char* count_key = va_list_to_string(
         "%s%s%s", OILS_AUTH_CACHE_PRFX, ident, OILS_AUTH_COUNT_SFFX);
 
-    char* auth_seed = oilsAuthGetSalt(user_id);
+    char* auth_seed;
+    if (user_id == -1) {
+        // user does not exist.  Use a dummy seed
+        auth_seed = strdup("x");
+    } else {
+        auth_seed = oilsAuthGetSalt(user_id);
+    }
 
     jsonObject* seed_object = jsonParseFmt(
         "{\"%s\":\"%s\",\"user_id\":%d,\"seed\":\"%s\"}",
@@ -207,7 +213,12 @@ static char* oilsAuthBuildInitCache(
     }
 
     osrfCachePutObject(cache_key, seed_object, _oilsAuthSeedTimeout);
-    osrfCachePutObject(count_key, count_object, _oilsAuthBlockTimeout);
+
+    if (user_id != -1) {
+        // Only track login counts for existing users, since a 
+        // login for a nonexistent user will never succeed anyway.
+        osrfCachePutObject(count_key, count_object, _oilsAuthBlockTimeout);
+    }
 
     osrfLogDebug(OSRF_LOG_MARK, 
         "oilsAuthInit(): has seed %s and key %s", auth_seed, cache_key);
@@ -226,26 +237,18 @@ static int oilsAuthInitUsernameHandler(
     osrfLogInfo(OSRF_LOG_MARK, 
         "User logging in with username %s", username);
 
+    int user_id = -1;
     jsonObject* resp = NULL; // free
     jsonObject* user_obj = oilsUtilsFetchUserByUsername(username); // free
 
-    if (user_obj) {
+    if (user_obj && user_obj->type != JSON_NULL) 
+        user_id = oilsFMGetObjectId(user_obj);
 
-        if (JSON_NULL == user_obj->type) { // user not found
-            resp = jsonNewObject("x");
+    jsonObjectFree(user_obj); // NULL OK
 
-        } else {
-            char* seed = oilsAuthBuildInitCache(
-                oilsFMGetObjectId(user_obj), username, "username", nonce);
-            resp = jsonNewObject(seed);
-            free(seed);
-        }
-
-        jsonObjectFree(user_obj);
-
-    } else {
-        resp = jsonNewObject("x");
-    }
+    char* seed = oilsAuthBuildInitCache(user_id, username, "username", nonce);
+    resp = jsonNewObject(seed);
+    free(seed);
 
     osrfAppRespondComplete(ctx, resp);
     jsonObjectFree(resp);
@@ -276,23 +279,18 @@ static int oilsAuthInitBarcodeHandler(
     osrfLogInfo(OSRF_LOG_MARK, 
         "User logging in with barcode %s", barcode);
 
+    int user_id = -1;
     jsonObject* resp = NULL; // free
     jsonObject* user_obj = oilsUtilsFetchUserByBarcode(barcode); // free
 
-    if (user_obj) {
-        if (JSON_NULL == user_obj->type) { // not found
-            resp = jsonNewObject("x");
-        } else {
-            char* seed = oilsAuthBuildInitCache(
-                oilsFMGetObjectId(user_obj), barcode, "barcode", nonce);
-            resp = jsonNewObject(seed);
-            free(seed);
-        }
+    if (user_obj && user_obj->type != JSON_NULL) 
+        user_id = oilsFMGetObjectId(user_obj);
 
-        jsonObjectFree(user_obj);
-    } else {
-        resp = jsonNewObject("x");
-    }
+    jsonObjectFree(user_obj); // NULL OK
+
+    char* seed = oilsAuthBuildInitCache(user_id, barcode, "barcode", nonce);
+    resp = jsonNewObject(seed);
+    free(seed);
 
     osrfAppRespondComplete(ctx, resp);
     jsonObjectFree(resp);
@@ -630,6 +628,17 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
     int user_id = jsonObjectGetNumber(
         jsonObjectGetKeyConst(cacheObj, "user_id"));
 
+    if (user_id == -1) {
+        // User was not found during init.  Clean up and exit early.
+        response = oilsNewEvent(
+            __FILE__, harmless_line_number, OILS_EVENT_AUTH_FAILED);
+        osrfAppRespondComplete(ctx, oilsEventToJSON(response));
+        oilsEventFree(response); // frees event JSON
+        osrfCacheRemove(cache_key);
+        jsonObjectFree(cacheObj);
+        return 0;
+    }
+
     jsonObject* param = jsonNewNumberObject(user_id); // free
     userObj = oilsUtilsCStoreReq(
         "open-ils.cstore.direct.actor.user.retrieve", param);
@@ -747,6 +756,7 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
     oilsEventFree(response);
     jsonObjectFree(userObj);
     jsonObjectFree(authEvt);
+    jsonObjectFree(cacheObj);
     if(freeable_uname)
         free(freeable_uname);
 
