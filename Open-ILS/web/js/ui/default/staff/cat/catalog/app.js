@@ -1020,7 +1020,45 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         );
     }
 
-    $scope.transferVolumes = function (){
+    $scope.transferVolumesToRecord = function (){
+        var target_record = egCore.hatch.getLocalItem('eg.cat.marked_volume_transfer_record');
+        if (!target_record) return;
+        if ($scope.record_id == target_record) return;
+        var items = $scope.holdingsGridControls.selectedItems();
+        if (!items.length) return;
+
+        var vols_to_move   = {};
+        angular.forEach(items, function(item) {
+            if (!(item.call_number.owning_lib in vols_to_move)) {
+                vols_to_move[item.call_number.owning_lib] = new Array;
+            }
+            vols_to_move[item.call_number.owning_lib].push(item.call_number.id);
+        });
+
+        var promises = [];        
+        angular.forEach(vols_to_move, function(vols, owning_lib) {
+            promises.push(egCore.net.request(
+                'open-ils.cat',
+                'open-ils.cat.asset.volume.batch.transfer.override',
+                egCore.auth.token(), {
+                    docid   : target_record,
+                    lib     : owning_lib,
+                    volumes : vols
+                }
+            ));
+        });
+        $q.all(promises).then(function(success) {
+            if (success) {
+                holdingsSvcInst.fetchAgain().then(function() {
+                    $scope.holdingsGridDataProvider.refresh();
+                });
+            } else {
+                alert('Could not transfer volumes!');
+            }
+        });
+    }
+
+    $scope.transferVolumes = function (new_record){
         var xfer_target = egCore.hatch.getLocalItem('eg.cat.volume_transfer_target');
 
         if (xfer_target) {
@@ -1028,7 +1066,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
                 'open-ils.cat',
                 'open-ils.cat.asset.volume.batch.transfer.override',
                 egCore.auth.token(), {
-                    docid   : $scope.record_id,
+                    docid   : (new_record ? new_record : $scope.record_id),
                     lib     : xfer_target,
                     volumes : gatherSelectedVolumeIds()
                 }
@@ -1043,6 +1081,12 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
             });
         }
         
+    }
+
+    $scope.transferVolumesToRecordAndLibrary = function() {
+        var target_record = egCore.hatch.getLocalItem('eg.cat.marked_volume_transfer_record');
+        if (!target_record) return;
+        $scope.transferVolumes(target_record);
     }
 
     // this "transfers" selected copies to a new owning library,
