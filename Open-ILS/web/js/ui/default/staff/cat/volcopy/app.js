@@ -661,6 +661,14 @@ function(egCore , $q) {
 
                             $scope.struct[cn.id()] = [cp];
                             $scope.allcopies.push(cp);
+                            if (!scope.defaults.classification) {
+                                egCore.org.settings(
+                                    ['cat.default_classification_scheme'],
+                                    cn.owning_lib()
+                                ).then(function (val) {
+                                    cn.label_class(val['cat.default_classification_scheme']);
+                                });
+                            }
                         }
                     } else if (n < o && n >= $scope.orig_cn_count) { // removing
                         var how_many = o - n;
@@ -1088,26 +1096,35 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                                 cn.isnew( true );
                                 cn.prefix( $scope.defaults.prefix || -1 );
                                 cn.suffix( $scope.defaults.suffix || -1 );
-                                cn.label_class( $scope.defaults.classification || 1 );
                                 cn.owning_lib( proto.owner || egCore.auth.user().ws_ou() );
                                 cn.record( $scope.record_id );
-                                if (proto.label) {
-                                     cn.label( proto.label );
-                                } else {
-                                    egCore.net.request(
-                                        'open-ils.cat',
-                                        'open-ils.cat.biblio.record.marc_cn.retrieve',
-                                        $scope.record_id,
-                                        $scope.defaults.classification || 1
-                                    ).then(function(cn_array) {
-                                        if (cn_array.length > 0) {
-                                            for (var field in cn_array[0]) {
-                                                cn.label( cn_array[0][field] );
-                                                break;
+                                egCore.org.settings(
+                                    ['cat.default_classification_scheme'],
+                                    cn.owning_lib()
+                                ).then(function (val) {
+                                    cn.label_class(
+                                        $scope.defaults.classification ||
+                                        val['cat.default_classification_scheme'] ||
+                                        1
+                                    );
+                                    if (proto.label) {
+                                        cn.label( proto.label );
+                                    } else {
+                                        egCore.net.request(
+                                            'open-ils.cat',
+                                            'open-ils.cat.biblio.record.marc_cn.retrieve',
+                                            $scope.record_id,
+                                            cn.label_class()
+                                        ).then(function(cn_array) {
+                                            if (cn_array.length > 0) {
+                                                for (var field in cn_array[0]) {
+                                                    cn.label( cn_array[0][field] );
+                                                    break;
+                                                }
                                             }
-                                        }
-                                    });
-                                } 
+                                        });
+                                    }
+                                });
 
                                 var cp = new egCore.idl.acp();
                                 cp.call_number( cn );
