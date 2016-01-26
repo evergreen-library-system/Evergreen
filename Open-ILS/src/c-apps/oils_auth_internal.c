@@ -46,7 +46,7 @@ int osrfAppInitialize() {
     osrfAppRegisterMethod(
         MODULENAME,
         "open-ils.auth_internal.session.create",
-        "oilsAutInternalCreateSession",
+        "oilsAuthInternalCreateSession",
         "Adds a user to the authentication cache to indicate "
         "the user is authenticated", 1, 0 
     );
@@ -54,7 +54,7 @@ int osrfAppInitialize() {
     osrfAppRegisterMethod(
         MODULENAME,
         "open-ils.auth_internal.user.validate",
-        "oilsAutInternalValidate",
+        "oilsAuthInternalValidate",
         "Determines whether a user should be allowed to login.  " 
         "Returns SUCCESS oilsEvent when the user is valid, otherwise "
         "returns a non-SUCCESS oilsEvent object", 1, 0
@@ -272,7 +272,7 @@ static oilsEvent* oilsAuthCheckLoginPerm(osrfMethodContext* ctx,
         - "workstation" -- workstation name
 
 */
-int oilsAutInternalCreateSession(osrfMethodContext* ctx) {
+int oilsAuthInternalCreateSession(osrfMethodContext* ctx) {
     OSRF_METHOD_VERIFY_CONTEXT(ctx);
 
     const jsonObject* args  = jsonObjectGetIndex(ctx->params, 0);
@@ -365,7 +365,7 @@ int oilsAutInternalCreateSession(osrfMethodContext* ctx) {
 }
 
 
-int oilsAutInternalValidate(osrfMethodContext* ctx) {
+int oilsAuthInternalValidate(osrfMethodContext* ctx) {
     OSRF_METHOD_VERIFY_CONTEXT(ctx);
 
     const jsonObject* args  = jsonObjectGetIndex(ctx->params, 0);
