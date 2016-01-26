@@ -1620,6 +1620,10 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                         $scope.$parent.fetchTemplates();
 
                         $scope.dirty = false;
+                    } else {
+                        // save all templates, as we might do after an import
+                        egCore.hatch.setItem('cat.copy.templates', $scope.templates);
+                        $scope.$parent.fetchTemplates();
                     }
                 }
             
