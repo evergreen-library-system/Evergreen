@@ -235,7 +235,38 @@ sub login {
             if (exists $event->{'payload'}) { # we have a complete native login
                 return $event;
             } else { # create an EG session for the successful external login
-                return &_create_session($args);
+                #
+                # before we actually create the session, let's first check if
+                # Evergreen thinks this user is allowed to login
+                #
+                # (we do this *after* authentication to avoid any personal data
+                # leakage)
+
+                # get the user id
+                my $user = $U->cstorereq(
+                    "open-ils.cstore.direct.actor.user.search.atomic",
+                    { usrname => $args->{'username'} }
+                );
+                if (!$user->[0]) {
+                    $logger->debug("Authenticated username '" . $args->{'username'} . "' has no Evergreen account, aborting");
+                    return OpenILS::Event->new( 'LOGIN_FAILED' );
+                } else {
+                    $args->{user_id} = $user->[0]->id;
+                }
+
+                # validate the account
+                my $trimmed_args = {
+                    user_id => $args->{user_id},
+                    login_type => $args->{type},
+                    org_unit => $args->{org}
+                };
+                $event = &_auth_internal('user.validate', $trimmed_args);
+                if ($U->event_code($event)) { # non-zero = we didn't succeed
+                    # can't recover from invalid user, return right away
+                    return $event;
+                } else { # it's all good
+                    return &_auth_internal('session.create', $trimmed_args);
+                }
             }
         }
     }
@@ -249,27 +280,12 @@ sub login {
     return OpenILS::Event->new( 'LOGIN_FAILED' );
 }
 
-sub _create_session {
-    my $args = shift;
-
-    my $user = $U->cstorereq(
-        "open-ils.cstore.direct.actor.user.search.atomic",
-        { usrname => $args->{'username'} }
-    );
-    if (!$user->[0]) {
-        $logger->debug("Authenticated username '" . $args->{'username'} . "' has no Evergreen account, aborting");
-        return OpenILS::Event->new( 'LOGIN_FAILED' );
-    } else {
-        $args->{user_id} = $user->[0]->id;
-    }
+sub _auth_internal {
+    my ($method, $args) = @_;
 
     my $response = OpenSRF::AppSession->create("open-ils.auth_internal")->request(
-        'open-ils.auth_internal.session.create',
-        {
-            user_id => $args->{user_id},
-            login_type => $args->{type},
-            org_unit => $args->{org}
-        }
+        'open-ils.auth_internal.'.$method,
+        $args
     )->gather(1);
 
     return OpenILS::Event->new( 'LOGIN_FAILED' )
