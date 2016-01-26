@@ -348,7 +348,7 @@ function($modal, $interpolate) {
             });
 
             $scope.getSelectedName = function() {
-                if ($scope.selected)
+                if ($scope.selected && $scope.selected.shortname)
                     return $scope.selected.shortname();
                 return $scope.label;
             }
