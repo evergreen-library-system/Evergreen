@@ -319,18 +319,10 @@ int oilsAuthInitBarcode(osrfMethodContext* ctx) {
 // returns true if the provided identifier matches the barcode regex.
 static int oilsAuthIdentIsBarcode(const char* identifier) {
 
-    // before we can fetch the barcode regex unit setting,
-    // first determine what the root org unit ID is.
+    // Assumes barcode regex is a global setting.
     // TODO: add an org_unit param to the .init API for future use?
-    
-    jsonObject *params = jsonParse("{\"parent_ou\":null}");
-    jsonObject *org_unit_id = oilsUtilsCStoreReq(
-        "open-ils.cstore.direct.actor.org_unit.id_list", params);
-    jsonObjectFree(params);
-
     char* bc_regex = oilsUtilsFetchOrgSetting(
-        (int) jsonObjectGetNumber(org_unit_id), "opac.barcode_regex");
-    jsonObjectFree(org_unit_id);
+        oilsUtilsGetRootOrgId(), "opac.barcode_regex");
 
     if (!bc_regex) {
         // if no regex is set, assume any identifier starting

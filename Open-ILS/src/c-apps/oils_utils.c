@@ -164,49 +164,65 @@ int oilsUtilsTrackUserActivity(long usr, const char* ewho, const char* ewhat, co
 }
 
 
+static int rootOrgId = 0; // cache the ID of the root org unit.
+int oilsUtilsGetRootOrgId() {
+
+    // return the cached value if we have it.
+    if (rootOrgId > 0) return rootOrgId;
+
+    jsonObject* where_clause = jsonParse("{\"parent_ou\":null}");
+    jsonObject* org = oilsUtilsQuickReq(
+        "open-ils.cstore",
+        "open-ils.cstore.direct.actor.org_unit.search",
+        where_clause
+    );
+
+    rootOrgId = (int) 
+        jsonObjectGetNumber(oilsFMGetObject(org, "id"));
+
+    jsonObjectFree(where_clause);
+    jsonObjectFree(org);
+
+    return rootOrgId;
+}
 
 oilsEvent* oilsUtilsCheckPerms( int userid, int orgid, char* permissions[], int size ) {
-	if (!permissions) return NULL;
-	int i;
-	oilsEvent* evt = NULL;
+    if (!permissions) return NULL;
+    int i;
 
-	// Find the root org unit, i.e. the one with no parent.
-	// Assumption: there is only one org unit with no parent.
-	if (orgid == -1) {
-		jsonObject* where_clause = jsonParse( "{\"parent_ou\":null}" );
-		jsonObject* org = oilsUtilsQuickReq(
-			"open-ils.cstore",
-			"open-ils.cstore.direct.actor.org_unit.search",
-			where_clause
-		);
-		jsonObjectFree( where_clause );
+    // Check perms against the root org unit if no org unit is provided.
+    if (orgid == -1)
+        orgid = oilsUtilsGetRootOrgId();
 
-		orgid = (int)jsonObjectGetNumber( oilsFMGetObject( org, "id" ) );
+    for( i = 0; i < size && permissions[i]; i++ ) {
+        oilsEvent* evt = NULL;
+        char* perm = permissions[i];
 
-		jsonObjectFree(org);
-	}
+        jsonObject* params = jsonParseFmt(
+            "{\"from\":[\"permission.usr_has_perm\",\"%d\",\"%s\",\"%d\"]}",
+            userid, perm, orgid
+        );
 
-	for( i = 0; i < size && permissions[i]; i++ ) {
+        // Execute the query
+        jsonObject* result = oilsUtilsCStoreReq(
+            "open-ils.cstore.json_query", params);
 
-		char* perm = permissions[i];
-		jsonObject* params = jsonParseFmt("[%d, \"%s\", %d]", userid, perm, orgid);
-		jsonObject* o = oilsUtilsQuickReq( "open-ils.storage",
-			"open-ils.storage.permission.user_has_perm", params );
+        const jsonObject* hasPermStr = 
+            jsonObjectGetKeyConst(result, "permission.usr_has_perm");
 
-		char* r = jsonObjectToSimpleString(o);
+        if (!oilsUtilsIsDBTrue(jsonObjectGetString(hasPermStr))) {
+            evt = oilsNewEvent3(
+                OSRF_LOG_MARK, OILS_EVENT_PERM_FAILURE, perm, orgid);
+        }
 
-		if(r && !strcmp(r, "0"))
-			evt = oilsNewEvent3( OSRF_LOG_MARK, OILS_EVENT_PERM_FAILURE, perm, orgid );
+        jsonObjectFree(params);
+        jsonObjectFree(result);
 
-		jsonObjectFree(params);
-		jsonObjectFree(o);
-		free(r);
+        // return first failed permission check.
+        if (evt) return evt;
+    }
 
-		if(evt)
-			break;
-	}
-
-	return evt;
+    return NULL; // all perm checks succeeded
 }
 
 /**

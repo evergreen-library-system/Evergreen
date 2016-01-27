@@ -110,6 +110,11 @@ long oilsUtilsIntervalToSeconds( const char* interval );
  */
 int oilsUtilsTrackUserActivity( long usr, const char* ewho, const char* ewhat, const char* ehow );
 
+/**
+ * Returns the ID of the root org unit (parent_ou = NULL)
+ */
+int oilsUtilsGetRootOrgId();
+
 #ifdef __cplusplus
 }
 #endif
