@@ -232,6 +232,10 @@ static oilsEvent* oilsAuthVerifyWorkstation(
 static oilsEvent* oilsAuthCheckLoginPerm(osrfMethodContext* ctx, 
     int user_id, int org_id, const char* type ) {
 
+    // For backwards compatibility, check all login permissions 
+    // using the root org unit as the context org unit.
+    org_id = -1;
+
     char* perms[1];
 
     if (!strcasecmp(type, OILS_AUTH_OPAC)) {
