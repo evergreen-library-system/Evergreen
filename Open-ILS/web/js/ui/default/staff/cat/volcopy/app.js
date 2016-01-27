@@ -250,6 +250,30 @@ function(egCore , $q) {
         );
     }
 
+    // create a new acp object with default values
+    // (both hard-coded and coming from OU settings)
+    service.generateNewCopy = function(callNumber, owningLib, isNew) {
+        var cp = new egCore.idl.acp();
+        cp.id( --service.new_cp_id );
+        if (isNew) {
+            cp.isnew( true );
+        }
+        cp.circ_lib( owningLib );
+        cp.call_number( callNumber );
+        cp.deposit(0);
+        cp.price(0);
+        cp.deposit_amount(0);
+        cp.fine_level(2); // Normal
+        cp.loan_duration(2); // Normal
+        cp.location(1); // Stacks
+        cp.circulate('t');
+        cp.holdable('t');
+        cp.opac_visible('t');
+        cp.ref('f');
+        cp.mint_condition('t');
+        return cp;
+    }
+
     return service;
 }])
 
@@ -506,22 +530,10 @@ function(egCore , $q) {
 
                 $scope.changeCPCount = function () {
                     while ($scope.copy_count > $scope.copies.length) {
-                        var cp = new egCore.idl.acp();
-                        cp.id( --itemSvc.new_cp_id );
-                        cp.isnew( true );
-                        cp.circ_lib( $scope.callNumber.owning_lib() );
-                        cp.call_number( $scope.callNumber );
-                        cp.deposit(0);
-                        cp.price(0);
-                        cp.deposit_amount(0);
-                        cp.fine_level(2); // Normal
-                        cp.loan_duration(2); // Normal
-                        cp.location(1); // Stacks
-                        cp.circulate('t');
-                        cp.holdable('t');
-                        cp.opac_visible('t');
-                        cp.ref('f');
-                        cp.mint_condition('t');
+                        var cp = itemSvc.generateNewCopy(
+                            $scope.callNumber,
+                            $scope.callNumber.owning_lib()
+                        );
                         $scope.copies.push( cp );
                         $scope.allcopies.push( cp );
 
@@ -639,25 +651,7 @@ function(egCore , $q) {
                             cn.owning_lib( $scope.owning_lib.id() );
                             cn.record( $scope.full_cn.record() );
 
-                            var cp = new egCore.idl.acp();
-                            cp.call_number( cn );
-                            cp.id( --itemSvc.new_cp_id );
-                            cp.isnew( true );
-
-                            cp.deposit(0);
-                            cp.price(0);
-                            cp.deposit_amount(0);
-                            cp.fine_level(2); // Normal
-                            cp.loan_duration(2); // Normal
-                            cp.location(1); // Stacks
-                            cp.circulate('t');
-                            cp.holdable('t');
-                            cp.opac_visible('t');
-                            cp.ref('f');
-                            cp.mint_condition('t');
-
-                            cp.circ_lib( $scope.owning_lib.id() );
-                            cp.call_number( cn );
+                            var cp = itemSvc.generateNewCopy(cn, $scope.owning_lib.id());
 
                             $scope.struct[cn.id()] = [cp];
                             $scope.allcopies.push(cp);
@@ -1068,23 +1062,11 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                             if (proto.callnumber) {
                                 return egCore.pcrud.retrieve('acn', proto.callnumber)
                                 .then(function(cn) {
-                                    var cp = new egCore.idl.acp();
-                                    cp.call_number( cn );
-                                    cp.id( --itemSvc.new_cp_id );
-                                    if (!$scope.only_vols) cp.isnew( true );
-                                    cp.circ_lib( proto.owner || egCore.auth.user().ws_ou() );
-
-                                    cp.deposit(0);
-                                    cp.price(0);
-                                    cp.deposit_amount(0);
-                                    cp.fine_level(2); // Normal
-                                    cp.loan_duration(2); // Normal
-                                    cp.location(1); // Stacks
-                                    cp.circulate('t');
-                                    cp.holdable('t');
-                                    cp.opac_visible('t');
-                                    cp.ref('f');
-                                    cp.mint_condition('t');
+                                    var cp = new itemSvc.generateNewCopy(
+                                        cn,
+                                        proto.owner || egCore.auth.user().ws_ou(),
+                                        ((!$scope.only_vols) ? true : false)
+                                    );
 
                                     if (proto.barcode) cp.barcode( proto.barcode );
 
@@ -1126,24 +1108,11 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                                     }
                                 });
 
-                                var cp = new egCore.idl.acp();
-                                cp.call_number( cn );
-                                cp.id( --itemSvc.new_cp_id );
-                                cp.isnew( true );
+                                var cp = new itemSvc.generateNewCopy(
+                                    cn,
+                                    proto.owner || egCore.auth.user().ws_ou()
+                                );
 
-                                cp.deposit(0);
-                                cp.price(0);
-                                cp.deposit_amount(0);
-                                cp.fine_level(2); // Normal
-                                cp.loan_duration(2); // Normal
-                                cp.location(1); // Stacks
-                                cp.circulate('t');
-                                cp.holdable('t');
-                                cp.opac_visible('t');
-                                cp.ref('f');
-                                cp.mint_condition('t');
-
-                                cp.circ_lib( proto.owner || egCore.auth.user().ws_ou() );
                                 if (proto.barcode) cp.barcode( proto.barcode );
 
                                 itemSvc.addCopy(cp)
