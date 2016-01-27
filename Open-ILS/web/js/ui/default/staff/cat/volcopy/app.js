@@ -252,7 +252,7 @@ function(egCore , $q) {
 
     // create a new acp object with default values
     // (both hard-coded and coming from OU settings)
-    service.generateNewCopy = function(callNumber, owningLib, isNew) {
+    service.generateNewCopy = function(callNumber, owningLib, isFastAdd, isNew) {
         var cp = new egCore.idl.acp();
         cp.id( --service.new_cp_id );
         if (isNew) {
@@ -271,6 +271,19 @@ function(egCore , $q) {
         cp.opac_visible('t');
         cp.ref('f');
         cp.mint_condition('t');
+
+        var status_setting = isFastAdd ?
+            'cat.default_copy_status_fast' :
+            'cat.default_copy_status_normal';
+        egCore.org.settings(
+            [status_setting],
+            owningLib
+        ).then(function(set) {
+            var default_ccs = set[status_setting] || 
+                (isFastAdd ? 0 : 5); // 0 is Available, 5 is In Process
+            cp.status(default_ccs);
+        });
+
         return cp;
     }
 
@@ -1065,6 +1078,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                                     var cp = new itemSvc.generateNewCopy(
                                         cn,
                                         proto.owner || egCore.auth.user().ws_ou(),
+                                        $scope.is_fast_add,
                                         ((!$scope.only_vols) ? true : false)
                                     );
 
@@ -1110,7 +1124,8 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
 
                                 var cp = new itemSvc.generateNewCopy(
                                     cn,
-                                    proto.owner || egCore.auth.user().ws_ou()
+                                    proto.owner || egCore.auth.user().ws_ou(),
+                                    $scope.is_fast_add
                                 );
 
                                 if (proto.barcode) cp.barcode( proto.barcode );
@@ -1133,21 +1148,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
 
         }).then( function() {
             $scope.data = itemSvc;
-            if ($scope.add_vols_copies) {
-                var status_setting = $scope.is_fast_add ?
-                    'cat.default_copy_status_fast' :
-                    'cat.default_copy_status_normal';
-                egCore.org.settings([
-                    status_setting
-                ]).then(function(set) {
-                    $scope.default_ccs = set[status_setting] || 
-                        ($scope.is_fast_add ? 0 : 5); // 0 is Available, 5 is In Process
-                    angular.forEach($scope.data.copies, function (cp) {
-                        cp.status($scope.default_ccs);
-                    });
-                    $scope.workingGridDataProvider.refresh();
-                });
-            }
+            $scope.workingGridDataProvider.refresh();
         });
 
         $scope.focusNextFirst = function(prev_lib,prev_bc) {
