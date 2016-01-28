@@ -879,7 +879,7 @@ sub void_bills {
         $bill->voider($e->requestor->id);
         $bill->void_time('now');
         my $n = ($bill->note) ? sprintf("%s\n", $bill->note) : "";
-        $bill->note(sprintf("$n%s", ($note) ? $note : "System: VOIDED FOR BACKDATE"));
+        $bill->note(sprintf("$n%s", $note));
 
         $e->update_money_billing($bill) or return $e->die_event;
         my $evt = $U->check_open_xact($e, $bill->xact, $xact);

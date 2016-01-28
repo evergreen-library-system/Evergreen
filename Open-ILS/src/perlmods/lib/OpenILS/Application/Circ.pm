@@ -604,7 +604,7 @@ sub post_checkin_backdate_circ_impl {
     $e->update_action_circulation($circ) or return $e->die_event;
 
     # now void the overdues "erased" by the back-dating
-    my $evt = OpenILS::Application::Circ::CircCommon->void_or_zero_overdues($e, $circ, {backdate => $backdate});
+    my $evt = OpenILS::Application::Circ::CircCommon->void_or_zero_overdues($e, $circ, {backdate => $backdate, note => 'System: OVERDUE REVERSED FOR BACKDATE'});
     return $evt if $evt;
 
     # If the circ was closed before and the balance owned !=0, re-open the transaction
