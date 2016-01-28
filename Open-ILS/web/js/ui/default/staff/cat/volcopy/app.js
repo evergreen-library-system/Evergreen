@@ -891,26 +891,25 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                         );
     
                         if (newval) {
-                            var e = new egCore.idl.ascecm();
+                            var e = new egCore.idl.asce();
                             e.isnew( 1 );
-                            e.owning_copy( cp.id() );
                             e.stat_cat( id );
-                            e.stat_cat_entry( newval );
+                            e.id(newval);
 
                             cp.stat_cat_entries(
-                                cp.stat_cat_entries().concat([ e ])
+                                cp.stat_cat_entries() ?
+                                    cp.stat_cat_entries().concat([ e ]) :
+                                    [ e ]
                             );
 
                         }
 
-                        cp.stat_cat_entries( // trim out ephemeral deleted ones
+                        // trim out all deleted ones; the API used to
+                        // do the update doesn't actually consult
+                        // isdeleted for stat cat entries
+                        cp.stat_cat_entries(
                             cp.stat_cat_entries().filter(function (e) {
-                                if (Boolean(e.isnew())) {
-                                    if (Boolean(e.isdeleted())) {
-                                        return false;
-                                    }
-                                }
-                                return true;
+                                return !Boolean(e.isdeleted());
                             })
                         );
    
@@ -1238,7 +1237,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                                 });
 
                                 if (right_sc.length > 0) {
-                                    value_hash[right_sc[0].stat_cat_entry()] = right_sc[0].stat_cat_entry();
+                                    value_hash[right_sc[0].id()] = right_sc[0].id();
                                 } else {
                                     none = true;
                                 }
