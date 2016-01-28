@@ -344,6 +344,7 @@ function(egCore , $q) {
                     } else {
                         $scope.copy.parts([]);
                     }
+                    $scope.copy.ischanged(1);
                 }
                 $scope.$watch('part', $scope.updatePart);
 
