@@ -34,7 +34,7 @@ Fieldmapper->import(IDL => $config->option_value('xml-idl'));
 # Look for passed in ids:
 my @ids = ();
 if ($config->need_ids()) {
-    print STDERR "Waiting for input\n";
+    print STDERR "Waiting for input\n" if (-t);
     while (my $i = <>) {
         push @ids, $i if ($i =~ /^\s*[0-9]+\s*$/);
     }
