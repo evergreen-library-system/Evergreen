@@ -15,7 +15,7 @@ function(egCore , $q) {
     service.prototype.flesh = {   
         flesh : 2, 
         flesh_fields : {
-            acp : ['status','location','circ_lib'],
+            acp : ['status','location','circ_lib','parts'],
             acn : ['prefix','suffix','copies']
         }
     }
@@ -105,6 +105,14 @@ function(egCore , $q) {
                         return owner_order;
                     }
                 );
+
+                // create virtual field for displaying active parts
+                angular.forEach(svc.copies, function (cp) {
+                    cp.monograph_parts = '';
+                    if (cp.parts && cp.parts.length > 0) {
+                        cp.monograph_parts = cp.parts.map(function(obj) { return obj.label; }).join();
+                    }
+                });
 
                 // create a label using just the unique part of the owner list
                 var index = 0;

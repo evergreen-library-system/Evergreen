@@ -99,6 +99,9 @@
     <eg-grid-field label="[% l('Barcode') %]"         path="barcode" visible></eg-grid-field>
     <eg-grid-field label="[% l('Status') %]"          path="status.name" flex="1" visible></eg-grid-field>
 
+    <eg-grid-field label="[% l('Prefix') %]"                 path="call_number.prefix.label"></eg-grid-field>
+    <eg-grid-field label="[% l('Suffix') %]"                 path="call_number.suffix.label"></eg-grid-field>
+    <eg-grid-field label="[% l('Parts') %]"                  path="monograph_parts"></eg-grid-field>
     <eg-grid-field label="[% l('Circulating Library') %]"    path="circ_lib.name"></eg-grid-field>
     <eg-grid-field label="[% l('Price') %]"                  path="price"></eg-grid-field>
     <eg-grid-field label="[% l('Circulation Modifier') %]"   path="circ_modifier"></eg-grid-field>
