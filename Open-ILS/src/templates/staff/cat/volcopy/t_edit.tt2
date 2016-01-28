@@ -114,6 +114,7 @@
                           <eg-grid-field label="[% l('Created') %]"     path="create_date" visible></eg-grid-field>
                           <eg-grid-field label="[% l('Activated') %]"   path="active_date" visible></eg-grid-field>
                           <eg-grid-field label="[% l('Call Number') %]" path="call_number.label" visible></eg-grid-field>
+                          <eg-grid-field label="[% l('Copy ID') %]"     path="id" hidden></eg-grid-field>
                         
                         </eg-grid>
         
@@ -156,7 +157,8 @@
                  <eg-grid-field label="[% l('Reference?') %]"  path="ref" visible></eg-grid-field>
                  <eg-grid-field label="[% l('Status') %]"      flesher="statusById" path="status.name" visible></eg-grid-field>
                  <eg-grid-field label="[% l('OPAC Visible') %]" path="opac_visible" visible></eg-grid-field>
-               
+                 <eg-grid-field label="[% l('Copy ID') %]"      path="id" hidden></eg-grid-field>
+
                </eg-grid>
             </div>
           </div>

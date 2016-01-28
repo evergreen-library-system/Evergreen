@@ -105,6 +105,7 @@
     <eg-grid-field label="[% l('Circulating Library') %]"    path="circ_lib.name"></eg-grid-field>
     <eg-grid-field label="[% l('Price') %]"                  path="price"></eg-grid-field>
     <eg-grid-field label="[% l('Circulation Modifier') %]"   path="circ_modifier"></eg-grid-field>
+    <eg-grid-field label="[% l('Copy ID') %]"                path="id"></eg-grid-field>
     <eg-grid-field label="[% l('Circulate As MARC Type') %]" path="circ_as_type"></eg-grid-field>
     <eg-grid-field label="[% l('Circulate') %]"              datatype="bool" path="circulate"></eg-grid-field>
     <eg-grid-field label="[% l('Holdable') %]"               datatype="bool" path="holdable"></eg-grid-field>
