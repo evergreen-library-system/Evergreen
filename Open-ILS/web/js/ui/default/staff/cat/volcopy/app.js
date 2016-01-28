@@ -750,6 +750,13 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                 $scope.batch.prefix = $scope.defaults.prefix;
                 $scope.batch.suffix = $scope.defaults.suffix;
                 $scope.working.statcat_filter = $scope.defaults.statcat_filter;
+                if (typeof $scope.defaults.statcat_filter == 'object') {
+                    // want fieldmapper object here...
+                    $scope.defaults.statcat_filter =
+                         egCore.idl.Clone($scope.defaults.statcat_filter);
+                    // ... and ID here
+                    $scope.working.statcat_filter = $scope.defaults.statcat_filter.id();
+                }
                 if ($scope.defaults.always_volumes) $scope.show_vols = true;
                 if ($scope.defaults.barcode_checkdigit) itemSvc.barcode_checkdigit = true;
                 if ($scope.defaults.auto_gen_barcode) itemSvc.auto_gen_barcode = true;
@@ -758,6 +765,9 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
     }
     $scope.fetchDefaults();
 
+    $scope.$watch('defaults.statcat_filter', function() {
+        $scope.saveDefaults();
+    });
     $scope.$watch('defaults.auto_gen_barcode', function (n,o) {
         itemSvc.auto_gen_barcode = n
     });
@@ -1314,8 +1324,8 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
 
         $scope.statcat_visible = function (sc_owner) {
             var visible = typeof $scope.working.statcat_filter === 'undefined' || !$scope.working.statcat_filter;
-            angular.forEach(egCore.org.ancestors(sc_owner), function (anscestor_org) {
-                if ($scope.working.statcat_filter == anscestor_org.id())
+            angular.forEach(egCore.org.ancestors(sc_owner), function (ancestor_org) {
+                if ($scope.working.statcat_filter == ancestor_org.id())
                     visible = true;
             });
             return visible;
@@ -1548,6 +1558,13 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                         if (t) {
                             $scope.defaults = t;
                             $scope.working.statcat_filter = $scope.defaults.statcat_filter;
+                            if (typeof $scope.defaults.statcat_filter == 'object') {
+                                // want fieldmapper object here...
+                                $scope.defaults.statcat_filter =
+                                    egCore.idl.Clone($scope.defaults.statcat_filter);
+                                // ... and ID here
+                                $scope.working.statcat_filter = $scope.defaults.statcat_filter.id();
+                            }
                         }
                     });
                 }
@@ -1685,6 +1702,15 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                     statcat_filter: undefined
                 };
             
+                $scope.statcat_visible = function (sc_owner) {
+                    var visible = typeof $scope.working.statcat_filter === 'undefined' || !$scope.working.statcat_filter;
+                    angular.forEach(egCore.org.ancestors(sc_owner), function (ancestor_org) {
+                        if ($scope.working.statcat_filter == ancestor_org.id())
+                            visible = true;
+                    });
+                    return visible;
+                }
+
                 createStatcatUpdateWatcher = function (id) {
                     return $scope.$watch('working.statcats[' + id + ']', function () {
                         if ($scope.working.statcats) {
