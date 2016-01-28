@@ -5233,7 +5233,7 @@ SELECT  usr,
 		</permacrud>
 	</class>
 
-	<class id="ascecm" controller="open-ils.cstore" oils_obj:fieldmapper="asset::stat_cat_entry_copy_map" oils_persist:tablename="asset.stat_cat_entry_copy_map" reporter:label="Statistical Category Entry Copy Map">
+	<class id="ascecm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::stat_cat_entry_copy_map" oils_persist:tablename="asset.stat_cat_entry_copy_map" reporter:label="Statistical Category Entry Copy Map">
 		<fields oils_persist:primary="id" oils_persist:sequence="asset.stat_cat_entry_copy_map_id_seq">
 			<field name="id" reporter:datatype="id" />
 			<field name="owning_copy" reporter:datatype="link"/>
@@ -5245,6 +5245,11 @@ SELECT  usr,
 			<link field="stat_cat_entry" reltype="has_a" key="id" map="" class="asce"/>
 			<link field="stat_cat" reltype="has_a" key="id" map="" class="asc"/>
 		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<retrieve/>
+			</actions>
+		</permacrud>
 	</class>
 	<class id="citm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::item_type_map" oils_persist:tablename="config.item_type_map" reporter:label="Item Type Map" oils_persist:field_safe="true">
 		<fields oils_persist:primary="code">
