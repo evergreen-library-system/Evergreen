@@ -1602,6 +1602,8 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                             $scope.working[k] = angular.copy(v);
                         } else {
                             angular.forEach(v, function (sv,sk) {
+                                if (!(k in $scope.working))
+                                    $scope.working[k] = {};
                                 $scope.working[k][sk] = angular.copy(sv);
                             });
                         }
