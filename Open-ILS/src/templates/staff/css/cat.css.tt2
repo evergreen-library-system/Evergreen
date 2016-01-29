@@ -183,3 +183,13 @@ grid[name="-none-"] * label { color: black; }
 .marc_tag_row {
     word-break: break-word;
 }
+
+/*
+ * Volume / Copy Editor Styles
+ * /
+
+/* Wrapping in bootstrap style can separate radio buttons from their labels. */
+.col-xs-3 {
+    white-space: nowrap;
+}
+
