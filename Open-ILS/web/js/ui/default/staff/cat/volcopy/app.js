@@ -1135,7 +1135,8 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                                 var cp = new itemSvc.generateNewCopy(
                                     cn,
                                     proto.owner || egCore.auth.user().ws_ou(),
-                                    $scope.is_fast_add
+                                    $scope.is_fast_add,
+                                    true
                                 );
 
                                 if (proto.barcode) cp.barcode( proto.barcode );
