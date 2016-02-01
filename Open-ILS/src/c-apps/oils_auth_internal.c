@@ -278,14 +278,18 @@ int oilsAutInternalCreateSession(osrfMethodContext* ctx) {
     const jsonObject* args  = jsonObjectGetIndex(ctx->params, 0);
 
     const char* user_id     = jsonObjectGetString(jsonObjectGetKeyConst(args, "user_id"));
-    const char* org_unit    = jsonObjectGetString(jsonObjectGetKeyConst(args, "org_unit"));
     const char* login_type  = jsonObjectGetString(jsonObjectGetKeyConst(args, "login_type"));
     const char* workstation = jsonObjectGetString(jsonObjectGetKeyConst(args, "workstation"));
+    int org_unit            = jsonObjectGetNumber(jsonObjectGetKeyConst(args, "org_unit"));
 
-    if ( !(user_id && login_type && org_unit) ) {
+    if ( !(user_id && login_type) ) {
         return osrfAppRequestRespondException( ctx->session, ctx->request,
             "Missing parameters for method: %s", ctx->method->name );
     }
+
+    // default to the root org unit if none is provided.
+    if (org_unit < 1) 
+        org_unit = oilsUtilsGetRootOrgId();
 
     oilsEvent* response = NULL;
 
@@ -318,7 +322,7 @@ int oilsAutInternalCreateSession(osrfMethodContext* ctx) {
     }
 
     // determine the auth/cache timeout
-    long timeout = oilsAuthGetTimeout(userObj, login_type, atoi(org_unit));
+    long timeout = oilsAuthGetTimeout(userObj, login_type, org_unit);
 
     char* string = va_list_to_string("%d.%ld.%ld", 
         (long) getpid(), time(NULL), oilsFMGetObjectId(userObj));
@@ -368,13 +372,17 @@ int oilsAutInternalValidate(osrfMethodContext* ctx) {
 
     const char* user_id     = jsonObjectGetString(jsonObjectGetKeyConst(args, "user_id"));
     const char* barcode     = jsonObjectGetString(jsonObjectGetKeyConst(args, "barcode"));
-    const char* org_unit    = jsonObjectGetString(jsonObjectGetKeyConst(args, "org_unit"));
     const char* login_type  = jsonObjectGetString(jsonObjectGetKeyConst(args, "login_type"));
+    int org_unit            = jsonObjectGetNumber(jsonObjectGetKeyConst(args, "org_unit"));
 
-    if ( !(user_id && login_type && org_unit) ) {
+    if ( !(user_id && login_type) ) {
         return osrfAppRequestRespondException( ctx->session, ctx->request,
             "Missing parameters for method: %s", ctx->method->name );
     }
+
+    // default to the root org unit if none is provided.
+    if (org_unit < 1) 
+        org_unit = oilsUtilsGetRootOrgId();
 
     oilsEvent* response = NULL;
     jsonObject *userObj = NULL, *params = NULL;
@@ -441,7 +449,7 @@ int oilsAutInternalValidate(osrfMethodContext* ctx) {
     if (!response) { // Still OK
         // Confirm user has permission to login w/ the requested type.
         response = oilsAuthCheckLoginPerm(
-            ctx, atoi(user_id), atoi(org_unit), login_type);
+            ctx, atoi(user_id), org_unit, login_type);
     }
 
 
