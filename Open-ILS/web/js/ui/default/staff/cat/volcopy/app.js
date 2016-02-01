@@ -751,7 +751,10 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                 $scope.batch.prefix = $scope.defaults.prefix;
                 $scope.batch.suffix = $scope.defaults.suffix;
                 $scope.working.statcat_filter = $scope.defaults.statcat_filter;
-                if (typeof $scope.defaults.statcat_filter == 'object') {
+                if (
+                        typeof $scope.defaults.statcat_filter == 'object' &&
+                        Object.keys($scope.defaults.statcat_filter).length > 0
+                   ) {
                     // want fieldmapper object here...
                     $scope.defaults.statcat_filter =
                          egCore.idl.Clone($scope.defaults.statcat_filter);
@@ -1559,7 +1562,10 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                         if (t) {
                             $scope.defaults = t;
                             $scope.working.statcat_filter = $scope.defaults.statcat_filter;
-                            if (typeof $scope.defaults.statcat_filter == 'object') {
+                            if (
+                                    typeof $scope.defaults.statcat_filter == 'object' &&
+                                    Object.keys($scope.defaults.statcat_filter).length > 0
+                                ) {
                                 // want fieldmapper object here...
                                 $scope.defaults.statcat_filter =
                                     egCore.idl.Clone($scope.defaults.statcat_filter);
