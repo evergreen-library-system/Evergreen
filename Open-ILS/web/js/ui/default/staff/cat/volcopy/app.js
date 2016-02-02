@@ -1318,6 +1318,10 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                                 createStatcatUpdateWatcher(s.id());
                             });
                             $scope.in_item_select = false;
+                            // do a refresh here to work around a race
+                            // condition that can result in stat cats
+                            // not being selected.
+                            $scope.workingGridDataProvider.refresh();
                         });
                     }
                 }
