@@ -546,7 +546,9 @@ function(egCore , $q) {
                     while ($scope.copy_count > $scope.copies.length) {
                         var cp = itemSvc.generateNewCopy(
                             $scope.callNumber,
-                            $scope.callNumber.owning_lib()
+                            $scope.callNumber.owning_lib(),
+                            $scope.fast_add,
+                            true
                         );
                         $scope.copies.push( cp );
                         $scope.allcopies.push( cp );
@@ -665,7 +667,12 @@ function(egCore , $q) {
                             cn.owning_lib( $scope.owning_lib.id() );
                             cn.record( $scope.full_cn.record() );
 
-                            var cp = itemSvc.generateNewCopy(cn, $scope.owning_lib.id());
+                            var cp = itemSvc.generateNewCopy(
+                                cn,
+                                $scope.owning_lib.id(),
+                                $scope.fast_add,
+                                true
+                            );
 
                             $scope.struct[cn.id()] = [cp];
                             $scope.allcopies.push(cp);
