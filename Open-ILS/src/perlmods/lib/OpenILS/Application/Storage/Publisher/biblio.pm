@@ -185,6 +185,33 @@ __PACKAGE__->register_method(
     api_level   => 1,
 );
 
+
+sub regenerate_badge_list {
+    my $self = shift;
+    my $client = shift;
+
+    my $sth = biblio::record_entry->db_Main->prepare_cached( <<"    SQL" );
+        SELECT  r.id AS badge
+          FROM  rating.badge r
+          WHERE r.last_calc < NOW() - r.recalc_interval
+                OR r.last_calc IS NULL
+          ORDER BY r.last_calc ASC NULLS FIRST -- oldest first
+    SQL
+
+    $sth->execute;
+    while ( my $row = $sth->fetchrow_hashref ) {
+        $client->respond( $row->{badge} );
+    }
+    return undef;
+}
+__PACKAGE__->register_method(
+    api_name    => 'open-ils.storage.biblio.regenerate_badge_list',
+    method      => 'regenerate_badge_list',
+    api_level   => 1,
+    cachable    => 1,
+);
+
+
 sub record_by_barcode {
     my $self = shift;
     my $client = shift;
