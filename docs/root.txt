@@ -523,7 +523,13 @@ Circulation
 -----------
 Use this section for understanding the circulation procedures in the Evergreen system.
 
+// Push titles down one level.
+:leveloffset: 1
+
 include::circulation/circulation_patron_records_web_client.txt[]
+
+// Return to normal title levels.
+:leveloffset: 0
 
 Cataloging
 ----------
