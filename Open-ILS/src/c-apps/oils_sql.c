@@ -859,6 +859,7 @@ int beginTransaction( osrfMethodContext* ctx ) {
 
 	if (tz) {
 		setenv("TZ",tz,1);
+		tzset();
 		dbi_result tz_res = dbi_conn_queryf( writehandle, "SET LOCAL timezone TO '%s'; -- cstore", tz );
 		if( !tz_res ) {
 			osrfLogError( OSRF_LOG_MARK, "%s: Error setting timezone %s", modulename, tz);
@@ -871,6 +872,7 @@ int beginTransaction( osrfMethodContext* ctx ) {
 		}
 	} else {
 		unsetenv("TZ");
+		tzset();
 		dbi_result res = dbi_conn_queryf( writehandle, "SET timezone TO DEFAULT; -- no tz" );
 		if( !res ) {
 			osrfLogError( OSRF_LOG_MARK, "%s: Error resetting timezone", modulename);
@@ -5890,6 +5892,7 @@ static jsonObject* doFieldmapperSearch( osrfMethodContext* ctx, osrfHash* class_
 	if (!getXactId(ctx)) {
 		if (tz) {
 			setenv("TZ",tz,1);
+			tzset();
 			dbi_result tz_res = dbi_conn_queryf( writehandle, "SET timezone TO '%s'; -- cstore", tz );
 			if( !tz_res ) {
 				osrfLogError( OSRF_LOG_MARK, "%s: Error setting timezone %s", modulename, tz);
@@ -5904,6 +5907,7 @@ static jsonObject* doFieldmapperSearch( osrfMethodContext* ctx, osrfHash* class_
 			}
 		} else {
 			unsetenv("TZ");
+			tzset();
 			dbi_result res = dbi_conn_queryf( writehandle, "SET timezone TO DEFAULT; -- cstore" );
 			if( !res ) {
 				osrfLogError( OSRF_LOG_MARK, "%s: Error resetting timezone", modulename);
