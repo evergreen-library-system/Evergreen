@@ -9,6 +9,7 @@ module.exports = function(config){
       'build/js/angular.min.js',
       'build/js/angular-route.min.js',
       'bower_components/angular-mocks/angular-mocks.js', // testing only
+      'bower_components/angular-file-saver/dist/angular-file-saver.bundle.min.js',
       'build/js/ui-bootstrap.min.js',
       'build/js/hotkeys.min.js',
       /* OpenSRF must be installed first */
