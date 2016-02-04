@@ -1,0 +1,14 @@
+-- Load the TAP functions.
+BEGIN;
+
+-- Plan the tests.
+SELECT plan(1);
+
+-- Run the tests.
+
+SELECT has_column('vandelay', 'merge_profile', 'update_bib_source', 
+    'Column "update_bib_source" on vandelay.merge_profile should exist');
+
+-- Finish the tests and clean up.
+SELECT * FROM finish();
+ROLLBACK;

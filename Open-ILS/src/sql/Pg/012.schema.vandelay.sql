@@ -210,6 +210,7 @@ CREATE TABLE vandelay.merge_profile (
     replace_spec    TEXT,
     strip_spec      TEXT,
     preserve_spec   TEXT,
+    update_bib_source BOOLEAN	NOT NULL DEFAULT FALSE,
     lwm_ratio       NUMERIC,
 	CONSTRAINT vand_merge_prof_owner_name_idx UNIQUE (owner,name),
 	CONSTRAINT add_replace_strip_or_preserve CHECK ((preserve_spec IS NOT NULL OR replace_spec IS NOT NULL) OR (preserve_spec IS NULL AND replace_spec IS NULL))
@@ -1463,6 +1464,7 @@ DECLARE
     v_bib_source    INT;
     update_fields   TEXT[];
     update_query    TEXT;
+    update_bib      BOOL;
 BEGIN
 
     SELECT  q.marc, q.bib_source INTO v_marc, v_bib_source
@@ -1481,29 +1483,33 @@ BEGIN
                 import_time = NOW()
           WHERE id = import_id;
 
-        editor_string := (oils_xpath('//*[@tag="905"]/*[@code="u"]/text()',v_marc))[1];
+	  SELECT q.update_bib_source INTO update_bib FROM vandelay.merge_profile q where q.id = merge_profile_Id;
 
-        IF editor_string IS NOT NULL AND editor_string <> '' THEN
-            SELECT usr INTO editor_id FROM actor.card WHERE barcode = editor_string;
+          IF update_bib THEN
+		editor_string := (oils_xpath('//*[@tag="905"]/*[@code="u"]/text()',v_marc))[1];
 
-            IF editor_id IS NULL THEN
-                SELECT id INTO editor_id FROM actor.usr WHERE usrname = editor_string;
-            END IF;
+		IF editor_string IS NOT NULL AND editor_string <> '' THEN
+		    SELECT usr INTO editor_id FROM actor.card WHERE barcode = editor_string;
 
-            IF editor_id IS NOT NULL THEN
-                --only update the edit date if we have a valid editor
-                update_fields := ARRAY_APPEND(update_fields, 'editor = ' || editor_id || ', edit_date = NOW()');
-            END IF;
-        END IF;
+		    IF editor_id IS NULL THEN
+			SELECT id INTO editor_id FROM actor.usr WHERE usrname = editor_string;
+		    END IF;
 
-        IF v_bib_source IS NOT NULL THEN
-            update_fields := ARRAY_APPEND(update_fields, 'source = ' || v_bib_source);
-        END IF;
+		    IF editor_id IS NOT NULL THEN
+			--only update the edit date if we have a valid editor
+			update_fields := ARRAY_APPEND(update_fields, 'editor = ' || editor_id || ', edit_date = NOW()');
+		    END IF;
+		END IF;
 
-        IF ARRAY_LENGTH(update_fields, 1) > 0 THEN
-            update_query := 'UPDATE biblio.record_entry SET ' || ARRAY_TO_STRING(update_fields, ',') || ' WHERE id = ' || eg_id || ';';
-            --RAISE NOTICE 'query: %', update_query;
-            EXECUTE update_query;
+		IF v_bib_source IS NOT NULL THEN
+		    update_fields := ARRAY_APPEND(update_fields, 'source = ' || v_bib_source);
+		END IF;
+
+		IF ARRAY_LENGTH(update_fields, 1) > 0 THEN
+		    update_query := 'UPDATE biblio.record_entry SET ' || ARRAY_TO_STRING(update_fields, ',') || ' WHERE id = ' || eg_id || ';';
+		    --RAISE NOTICE 'query: %', update_query;
+		    EXECUTE update_query;
+		END IF;
         END IF;
 
         RETURN TRUE;

@@ -1,0 +1,15 @@
+Selectable Bibliographic Source Update
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+During vandelay, the bib source has always recorded the record source,
+the time of the update and the identity of the user associated with the 
+operation.  This is not really desired for match-only merges.
+
+This feature provides a way to control whether the bib source data 
+is updated or not.
+
+In MARC Import, select the "Merge / Overlay" tab.  Each entry in the table has 
+a value in the new "Update bib. source" column. If that value is "true", then 
+the bib source data will be updated.
+
+The two system-defined entries have been pre-set to appropriate values (Full Overlay = true;
+Match-Only Merge = false).
