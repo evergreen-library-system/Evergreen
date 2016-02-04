@@ -11712,6 +11712,20 @@ INSERT INTO config.global_flag (name, label, value, enabled) VALUES (
     TRUE
 );
 
+/* To be added when upgrade scripts are pulled into the baseline
+INSERT INTO config.global_flag (name, label, value, enabled) VALUES (
+    'opac.default_sort',
+    oils_i18n_gettext(
+        'opac.default_sort',
+        'OPAC Default Sort (titlesort, authorsort, pubdate, popularity, poprel, or empty)',
+        'cgf',
+        'label'
+    ),
+    '',
+    TRUE
+);
+*/
+
 INSERT INTO config.usr_setting_type (name,opac_visible,label,description,datatype)
     VALUES (
         'history.circ.retention_age',

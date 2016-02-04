@@ -98,7 +98,12 @@
         [% END %]
     </div>
     [%- END %]
-    [% UNLESS took_care_of_form %]</form>[% END %]
+    [% UNLESS took_care_of_form %]
+        [% IF ctx.default_sort %]
+            <input type="hidden" name="sort" value="[% ctx.default_sort %]"/>
+        [% END %]
+        </form>
+    [% END %]
     [% IF (is_advanced AND NOT is_special) AND CGI.param('qtype') %]
     <div class="opac-auto-102">
         [ <a href="[% mkurl(ctx.opac_root _ '/advanced') %]">[%

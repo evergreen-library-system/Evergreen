@@ -256,6 +256,11 @@ sub load_common {
         return $self->redirect_ssl unless $self->cgi->https;
     }
 
+    # XXX Cache this? Makes testing difficult as apache needs a restart.
+    my $default_sort = $e->retrieve_config_global_flag('opac.default_sort');
+    $ctx->{default_sort} =
+        ($default_sort && $U->is_true($default_sort->enabled)) ? $default_sort->value : '';
+
     $ctx->{referer} = $self->cgi->referer;
     $ctx->{path_info} = $self->cgi->path_info;
     $ctx->{full_path} = $ctx->{base_path} . $self->cgi->path_info;

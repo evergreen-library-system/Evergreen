@@ -128,6 +128,13 @@ CREATE TRIGGER reporter_hold_request_record_trigger AFTER INSERT OR UPDATE ON ac
 
 CREATE SCHEMA rating;
 
+INSERT INTO config.global_flag (name, label, value, enabled) VALUES (
+    'opac.default_sort',
+    'OPAC Default Sort (titlesort, authorsort, pubdate, popularity, poprel, or empty for relevance)',
+    '',
+    TRUE
+);
+
 CREATE TABLE rating.popularity_parameter (
     id          INT     PRIMARY KEY,
     name        TEXT    NOT NULL UNIQUE, -- i18n

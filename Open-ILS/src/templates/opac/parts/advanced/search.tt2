@@ -118,9 +118,13 @@
                             [% END %]
 [%
                 CASE "sort_selector";
+                    default_sort=ctx.default_sort;
+                    IF CGI.param('sort');
+                        default_sort=CGI.param('sort');
+                    END;
                     INCLUDE "opac/parts/filtersort.tt2"
                         id=adv_chunk.id
-                        value=CGI.param('sort') class='results_header_sel';
+                        value=default_sort class='results_header_sel';
                     %]
 
                     [% IF NOT metarecords.disabled %]
