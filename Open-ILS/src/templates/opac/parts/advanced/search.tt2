@@ -1,4 +1,4 @@
-[% 
+[%
     PROCESS "opac/parts/misc_util.tt2";
     PROCESS get_library;
 %]
@@ -35,7 +35,7 @@
         <span>
             <input id='search-submit-go' type="submit" value="[% l('Search') %]" title="[% l('Search') %]" class="opac-button"
                 onclick='setTimeout(function(){$("search-submit-spinner").className=""; $("search-submit-go").className="hidden"}, 2000)'/>
-            <img id='search-submit-spinner' src='/opac/images/progressbar_green.gif' 
+            <img id='search-submit-spinner' src='/opac/images/progressbar_green.gif'
                 class='hidden' alt="[% l('Search in progress icon') %]"/>
         </span>
 
@@ -76,7 +76,7 @@
                             </div>
 [%
                 CASE "pub_year"; %]
-                            <select name='pubdate' 
+                            <select name='pubdate'
                                 id="[% adv_chunk.id %]"
                                 onchange='if(this.selectedIndex == 3)
                                     unHideMe($("adv_global_pub_date_2_span"));
@@ -89,13 +89,13 @@
                                             {"code" => "between", "label" => l("Between")} ] %]
                                         <option value="[% opt.code %]"[% CGI.param('pubdate') == opt.code ? ' selected="selected"' : '' %]>[% opt.label | html %]</option>
                                     [%  END %]
-                            </select>    
+                            </select>
                             <br/>
                             <div id='adv_special_block'>
-                                <input title="[% l('Search date') %]" 
+                                <input title="[% l('Search date') %]"
                                   name='date1' type='text' size='4' maxlength='4' value="[% CGI.param('date1') | html %]" />
                                 <span id='adv_global_pub_date_2_span' class='[% CGI.param("pubdate") == "between" ? "" : "hide_me" %]'>
-                                   [% l("and") %] <input name='date2' 
+                                   [% l("and") %] <input name='date2'
                                     title="[% l('Secondary search date') %]" type='text' size='4' maxlength='4' value="[% CGI.param('date2') | html %]" />
                                 </span>
                             </div>
@@ -111,7 +111,7 @@
                             <input> (below) to drop down inline w/ its label -->
                         <div class="adv_search_available">
                             <input type='checkbox' name="modifier" value="metabib"
-                              [%- CGI.param('modifier').grep('metabib').size ? 
+                              [%- CGI.param('modifier').grep('metabib').size ?
                                     ' checked="checked"' : '' %]
                                 id='opac.result.ismetabib' />
                             <label for='opac.result.ismetabib'>
@@ -120,21 +120,21 @@
                     [% END %]
 
                 [% CASE "copy_location" %]
-                    <select id="adv_copy_location_selector" 
+                    <select id="adv_copy_location_selector"
                         title="[% l('Select Shelving Location') %]"
                         name="fi:locations" size="3" multiple="multiple">
                     </select>
-                [% 
+                [%
             END;
         ELSIF adv_chunk.adv_attr;
             INCLUDE "opac/parts/coded_value_selector.tt2"
                 id=adv_chunk.id
-                attr=adv_chunk.adv_attr multiple="multiple" 
+                attr=adv_chunk.adv_attr multiple="multiple"
                 size=adv_chunk.adv_size || search.default_adv_select_height || "4";
         ELSIF adv_chunk.adv_filter;
             INCLUDE "opac/parts/filter_group_selector.tt2"
                 id=adv_chunk.id
-                filter_group=adv_chunk.adv_filter multiple="multiple" 
+                filter_group=adv_chunk.adv_filter multiple="multiple"
                 size=adv_chunk.adv_size || search.default_adv_select_height || "4";
         END; %]
             </div>
