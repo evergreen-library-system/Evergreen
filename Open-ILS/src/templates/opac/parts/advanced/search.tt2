@@ -99,6 +99,12 @@
                                     title="[% l('Secondary search date') %]" type='text' size='4' maxlength='4' value="[% CGI.param('date2') | html %]" />
                                 </span>
                             </div>
+                            <div class="adv_search_available">
+                                <input type='checkbox' name="fi:-search_format" value="electronic" id='opac.result.excludeelec' />
+                                <label for='opac.result.excludeelec'>
+                                    [% l("Exclude Electronic Resources") %]
+                                </label>
+                            </div>
 [%
                 CASE "sort_selector";
                     INCLUDE "opac/parts/filtersort.tt2"
