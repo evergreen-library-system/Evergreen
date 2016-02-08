@@ -1,11 +1,21 @@
 BEGIN;
 
-SELECT plan(1);
+SELECT plan(3);
 
 SELECT throws_ok(
     'delete from acq.cancel_reason where id = 1', 
     'P0001', 
     'Cannot delete row with reserved ID 1'
+);
+
+SELECT lives_ok(
+    'insert into acq.cancel_reason (id, org_unit, label, description) values (3001, 1, ''Test Reason'', ''Test Cancel Reason'')',
+    'Creating test cancel reason'
+);
+
+SELECT lives_ok(
+    'delete from acq.cancel_reason where id = 3001',
+    'Testing delete of non-reserved cancel reason'
 );
 
 SELECT * FROM finish();
