@@ -81,6 +81,7 @@ BEGIN
 IF OLD.id < TG_ARGV[0]::INT THEN
     RAISE EXCEPTION 'Cannot delete row with reserved ID %', OLD.id;
 END IF;
+RETURN OLD;
 END
 $protect_reserved$
 LANGUAGE plpgsql;
