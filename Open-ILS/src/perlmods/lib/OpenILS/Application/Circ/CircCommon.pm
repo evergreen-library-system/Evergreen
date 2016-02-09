@@ -38,6 +38,7 @@ sub void_or_zero_overdues {
 
     if( $opts->{backdate} ) {
         my $backdate = $opts->{backdate};
+        $opts->{note} = 'System: OVERDUE REVERSED FOR BACKDATE' if !$opts->{note};
         # ------------------------------------------------------------------
         # Fines for overdue materials are assessed up to, but not including,
         # one fine interval after the fines are applicable.  Here, we add
