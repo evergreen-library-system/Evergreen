@@ -1,0 +1,13 @@
+Alternate Parts Selection Display When Placing Holds
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Users often miss the list of parts on the Place Holds screen, leading to many
+title-level holds on records where only one or two libraries may have
+'unparted' copies.
+
+A new option is available to change this display so that a part is selected
+via radio buttons instead of the traditional dropdown menu. This display
+increases the visibility of parts on the Place Holds screen and also
+forces users to make an explicit choice.
+
+To enable the alternate display, set the enable.radio.parts option to 'true'
+in parts/config.tt2.
