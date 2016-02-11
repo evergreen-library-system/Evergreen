@@ -267,7 +267,7 @@ and being set as the default locale:
 
 ----
 PerlAddVar OILSWebLocale "fr_ca"
-PerlAddVar OILSWebLocale "/openils/var/data/locale/fr-CA.po"
+PerlAddVar OILSWebLocale "/openils/var/data/locale/opac/fr-CA.po"
 PerlAddVar OILSWebDefaultLocale "fr-CA"
 ----
 
@@ -276,13 +276,13 @@ Below is a table of the currently supported languages packaged with Evergreen:
 [options="header"]
 |================================================================
 |Language| Code| PO file
-|Czech| cs_cz| /openils/var/data/locale/cs-CZ.po
-|English - Canada| en_ca| /openils/var/data/locale/en-CA.po
-|English - Great Britain| en_gb| /openils/var/data/locale/en-GB.po
+|Czech| cs_cz| /openils/var/data/locale/opac/cs-CZ.po
+|English - Canada| en_ca| /openils/var/data/locale/opac/en-CA.po
+|English - Great Britain| en_gb| /openils/var/data/locale/opac/en-GB.po
 |*English - United States| en_us| not applicable
-|French - Canada| fr_ca| /openils/var/data/locale/fr-CA.po
-|Portuguese - Brazil| pt_br| /openils/var/data/locale/pt_BR.po
-|Russian| ru_ru| /openils/var/data/locale/ru_RU.po
+|French - Canada| fr_ca| /openils/var/data/locale/opac/fr-CA.po
+|Portuguese - Brazil| pt_br| /openils/var/data/locale/opac/pt_BR.po
+|Russian| ru_ru| /openils/var/data/locale/opac/ru_RU.po
 |=================================================================
 *American English is built into Evergreen so you do not need to set up this
 language and there are no PO files. 
