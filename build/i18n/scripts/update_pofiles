@@ -94,6 +94,7 @@ my @pofiles = qw/
     User.js
     vandelay.dtd
     vandelay.js
+    webstaff
     XULTermLoader.js
 /;
 
