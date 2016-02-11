@@ -18,7 +18,7 @@ customizing TPAC behavior. These directives should generally live within a
 +
 ------------------------------------------------------------------------------
 PerlAddVar OILSWebLocale "fr_ca"
-PerlAddVar OILSWebLocale "/openils/var/data/locale/fr-CA.po"
+PerlAddVar OILSWebLocale "/openils/var/data/locale/opac/fr-CA.po"
 PerlAddVar OILSWebDefaultLocale "fr-CA"
 ------------------------------------------------------------------------------
 +
