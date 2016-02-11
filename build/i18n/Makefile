@@ -6,7 +6,8 @@ POTLIST=$(shell ls -d po/*)
 DTDDIR=../../Open-ILS/web/opac/locale
 CHROME_PROPSDIR=../../Open-ILS/xul/staff_client/chrome/locale
 SERVER_PROPSDIR=../../Open-ILS/xul/staff_client/server/locale
-TT2_DATA_DIR=../../Open-ILS/src/data/locale
+TT2_OPAC_DATA_DIR=../../Open-ILS/src/data/locale/opac
+TT2_WEBSTAFF_DATA_DIR=../../Open-ILS/src/data/locale/staff
 DOJO_LOCALE := $(shell echo ${LOCALE} | tr '[:upper:]' '[:lower:]')
 DOJO_ACQ_SRC=../../Open-ILS/web/js/dojo/openils/acq/nls
 DOJO_ACTOR_SRC=../../Open-ILS/web/js/dojo/openils/actor/nls
@@ -362,9 +363,10 @@ install: updatepo project fmidl2fmidlent fmidlpo2entity-en
 	cp $(PROJECT)/$(LOCALE)/Searcher.js $(DOJO_WIDGET_SRC)/$(DOJO_LOCALE)/Searcher.js
 	cp $(PROJECT)/$(LOCALE)/TranslatorPopup.js $(DOJO_WIDGET_SRC)/$(DOJO_LOCALE)/TranslatorPopup.js
 	cp $(PROJECT)/$(LOCALE)/XULTermLoader.js $(DOJO_WIDGET_SRC)/$(DOJO_LOCALE)/XULTermLoader.js
-	mkdir -p $(TT2_DATA_DIR)
-	cp $(PO)/tpac/$(LOCALE).po $(TT2_DATA_DIR)/.
-	cp $(PO)/webstaff/$(LOCALE).po $(TT2_DATA_DIR)/.
+	mkdir -p $(TT2_OPAC_DATA_DIR)
+	cp $(PO)/tpac/$(LOCALE).po $(TT2_OPAC_DATA_DIR)/.
+	mkdir -p $(TT2_WEBSTAFF_DATA_DIR)
+	cp $(PO)/webstaff/$(LOCALE).po $(TT2_WEBSTAFF_DATA_DIR)/.
 
 install_all_locales: newpot
 	for i in `ls po/*/*po|grep -v en-US | cut -f3 -d'/' | cut -f1 -d. | sort | uniq`; \
