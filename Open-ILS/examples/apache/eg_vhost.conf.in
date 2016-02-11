@@ -682,11 +682,11 @@ RewriteRule ^/openurl$ ${openurl:%1} [NE,PT]
     # select their preferred locale from a locale picker in the TPAC.
     #
     #PerlAddVar OILSWebLocale "en"
-    #PerlAddVar OILSWebLocale "@localstatedir@/data/locale/messages.en.po"
+    #PerlAddVar OILSWebLocale "@localstatedir@/data/locale/opac/messages.en.po"
     #PerlAddVar OILSWebLocale "en_ca"
-    #PerlAddVar OILSWebLocale "@localstatedir@/data/locale/en-CA.po"
+    #PerlAddVar OILSWebLocale "@localstatedir@/data/locale/opac/en-CA.po"
     #PerlAddVar OILSWebLocale "fr_ca"
-    #PerlAddVar OILSWebLocale "@localstatedir@/data/locale/fr-CA.po"
+    #PerlAddVar OILSWebLocale "@localstatedir@/data/locale/opac/fr-CA.po"
 
     # Set the default locale: defaults to en-US
     #PerlAddVar OILSWebDefaultLocale "fr_ca"
