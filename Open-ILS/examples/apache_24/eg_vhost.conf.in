@@ -828,10 +828,10 @@ RewriteRule ^/openurl$ ${openurl:%1} [NE,PT]
     RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [NE,R,L]
 
     # sample staff-specific translation files
-    #PerlAddVar OILSWebLocale "en_ca"                                           
-    #PerlAddVar OILSWebLocale "/openils/var/data/locale/staff/en-CA.po"         
-    #PerlAddVar OILSWebLocale "fr_ca"                                           
-    #PerlAddVar OILSWebLocale "/openils/var/data/locale/staff/fr-CA.po"   
+    #PerlAddVar OILSWebLocale "en_ca"
+    #PerlAddVar OILSWebLocale "/openils/var/data/locale/staff/en-CA.po"
+    #PerlAddVar OILSWebLocale "fr_ca"
+    #PerlAddVar OILSWebLocale "/openils/var/data/locale/staff/fr-CA.po"
 </LocationMatch>
 
 <Location /js/>
