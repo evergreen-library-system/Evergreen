@@ -1,0 +1,8 @@
+Removal of unused methods
+^^^^^^^^^^^^^^^^^^^^^^^^^
+The following public methods, which were both broken and not in use,
+are removed:
+
+ * `open-ils.actor.org_unit.closed_date.create`
+ * `open-ils.actor.org_unit.closed_date.delete`
+
