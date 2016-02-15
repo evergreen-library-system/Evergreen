@@ -247,8 +247,10 @@ sub show_processing_template {
             var u = new openils.User({ authtoken: authtoken });
 
             dojo.addOnLoad(function () {
-                progress_dialog.show(true);
-                progress_dialog.update({maximum:$rec_string});
+                
+                progress_dialog.update({maximum: $rec_string});
+                progress_dialog.attr("title", "MARC Batch Editor Progress......");
+                progress_dialog.show();
 
                 var interval;
                 interval = setInterval( function() {
@@ -290,30 +292,75 @@ sub show_processing_template {
 
             });
         </script>
+<style>
+table {
+    #width:100%;
+}
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 5px;
+    text-align: left;
+}
+table tr:nth-child(even) {
+    background-color: #eee;
+}
+table tr:nth-child(odd) {
+   background-color:#fff;
+}
+table th	{
+    background-color: black;
+    color: white;
+}
+tr#fail	{
+    color: red;
+}
+tr#processed	{
+    font-weight: bold;
+}
+div#complete_msg {
+    font-weight:bold;
+    color: green;
+    font-size: larger;
+    text-decoration: underline;
+}
+</style>
     </head>
+    
 
-    <body style="margin:10px;" class='tundra'>
+    <body style="margin:10px;font-size: 130%" class='tundra'>
         <div class="hide_me"><div dojoType="openils.widget.ProgressDialog" jsId="progress_dialog"></div></div>
 
-        <table style="width:100%; margin-top:100px;">
-            <th>
-                <td>Status</td>
-                <td>Record Count</td>
-            </th>
+        <h1>MARC Batch Editor Status</h1>
+
+        <table>
+            <tr>
+                <th>Status</th>
+                <th>Record Count</th>
+            </tr>
             <tr>
                 <td>Success</td>
                 <td id='success_count'></td>
             </tr>
-            <tr>
+            <tr id='fail'>
                 <td>Failure</td>
                 <td id='fail_count'></td>
             </tr>
-            <tr>
-                <td></td>
+            <tr id='processed' >
+                <td>Total Processed</td>
                 <td id='total_count'></td>
             </tr>
+            <tr>
+               <td></td>
+            </tr>
+            <tr>
+                <td>Total To Process</td>
+                <td>$rec_string</td>
+            </tr>
         </table>
-
+        <br>
         <div id='complete_msg'></div>
 
     </body>
