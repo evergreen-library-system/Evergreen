@@ -462,7 +462,7 @@ function($scope , $q , egCore) {
     }
 
     $scope.save_locally = function() {
-        egCore.hatch.storePrintTemplate(
+        egCore.print.storePrintTemplate(
             $scope.print.template_name,
             $scope.print.template_content
         );
