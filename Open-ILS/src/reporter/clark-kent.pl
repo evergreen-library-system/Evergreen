@@ -67,6 +67,7 @@ if (!$data_db{db_name}) {
 }
 $data_db{db_user}   = $sc->config_value( reporter => setup => database => 'user' );
 $data_db{db_pw}     = $sc->config_value( reporter => setup => database => 'pw' );
+$data_db{db_app}    = $sc->config_value( reporter => setup => database => 'application_name' );
 
 
 
@@ -80,6 +81,8 @@ if (!$state_db{db_name}) {
 }
 $state_db{db_user}   = $sc->config_value( reporter => setup => state_store => 'user'   ) || $data_db{db_user};
 $state_db{db_pw}     = $sc->config_value( reporter => setup => state_store => 'pw'     ) || $data_db{db_pw};
+$state_db{db_app}    = $sc->config_value( reporter => setup => state_store => 'application_name' )
+                         || $data_db{db_app};
 
 
 die "Unable to retrieve database connection information from the settings server"
@@ -94,7 +97,9 @@ my $output_base      = $sc->config_value( reporter => setup => files => 'output_
 my $base_uri         = $sc->config_value( reporter => setup => 'base_uri' );
 
 my $state_dsn = "dbi:" . $state_db{db_driver} . ":dbname=" . $state_db{db_name} .';host=' . $state_db{db_host} . ';port=' . $state_db{db_port};
+$state_dsn .= ";application_name='$state_db{db_app}'" if $state_db{db_app};
 my $data_dsn  = "dbi:" .  $data_db{db_driver} . ":dbname=" .  $data_db{db_name} .';host=' .  $data_db{db_host} . ';port=' .  $data_db{db_port};
+$data_dsn .= ";application_name='$data_db{db_app}'" if $data_db{db_app};
 
 my $count               = $opt_count //
                           $sc->config_value( reporter => setup => 'parallel' ) //

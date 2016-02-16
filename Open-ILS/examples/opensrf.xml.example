@@ -159,7 +159,7 @@ vim:et:ts=4:sw=4:
                     <db>evergreen</db>
                     <user>postgres</user>
                     <pw>postgres</pw>
-                    <application_name>open-ils.reporter</application_name>
+                    <application_name>Clark Kent (reports)</application_name>
                 </database>
                 <state_store>
                     <driver>Pg</driver>
@@ -168,7 +168,7 @@ vim:et:ts=4:sw=4:
                     <db>evergreen</db>
                     <user>postgres</user>
                     <pw>postgres</pw>
-                    <application_name>open-ils.reporter-state</application_name>
+                    <application_name>Clark Kent (state)</application_name>
                 </state_store>
                 <files>
                     <!-- successful report outputs go here -->
