@@ -1,0 +1,12 @@
+BEGIN;
+
+SELECT plan(1);
+
+SELECT matches(
+    (SELECT unapi.bre(-1, 'marcxml', 'bre', '{bre.extern}', '-')::TEXT),
+    '<extern xmlns="http://open-ils.org/spec/biblio/v1"',
+    'bre.extern include for unapi.bre supplies <extern> element'
+);
+    
+SELECT * FROM finish();
+ROLLBACK;
