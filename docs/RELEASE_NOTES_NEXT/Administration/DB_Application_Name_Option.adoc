@@ -1,0 +1,8 @@
+Set application name when connecting to database
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The services that connect directly to the PostgreSQL database
+(and Clark Kent) now look for an application_name parameter
+as part of the database login credentials specified in
+`opensrf.xml`.  If present, the value is used to set the
+application name Pg connection value; this in turn shows up in
+the Postgres `pg_stat_activity` table and Pg's logs.
