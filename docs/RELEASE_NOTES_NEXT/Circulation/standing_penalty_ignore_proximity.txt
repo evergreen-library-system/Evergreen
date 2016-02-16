@@ -26,5 +26,5 @@ you set the ignore_proximity to 0 on patron exceeds overdue fines,
 then the patron will still be able to place holds on and checkout
 copies owned by their home organizational unit at their home
 organizational unit.  They will not, however, be able to receive
-copies form other organizational units, nor use other organizational
+copies from other organizational units, nor use other organizational
 units as a patron.
