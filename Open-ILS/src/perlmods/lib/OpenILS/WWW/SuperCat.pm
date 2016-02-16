@@ -458,9 +458,39 @@ sub unapi2 {
 
     print "Content-type: $ctype; charset=utf-8\n\n";
     print "<?xml version='1.0' encoding='UTF-8' ?>\n";
-    print $supercat
-        ->request("open-ils.supercat.u2", $u2->toURI, $format)
-        ->gather(1);
+    print $U->entityize(
+         $supercat->request("open-ils.supercat.u2", $u2->toURI, $format)
+        ->gather(1)
+    );
+
+    return Apache2::Const::OK;
+}
+
+sub unapi2_formats {
+    my $apache = shift;
+    my $u2 = shift;
+
+    print "Content-type: application/xml; charset=utf-8\n\n";
+    print "<?xml version='1.0' encoding='UTF-8' ?>\n";
+    my $id = $u2->toURI;
+    if ($u2->classname =~ /^(?:bre|biblio_record_entry_feed)$/) {
+        # TODO: if/when unapi.bre_output_layout becomes something
+        # that actually changes, the hard-coding here should be
+        # replaced
+        print <<FORMATS;
+<formats id='$id'>
+<format name="holdings_xml" type="application/xml"/>
+<format name="marcxml" type="application/xml" namespace_uri="http://www.loc.gov/MARC21/slim" docs="http://www.loc.gov/marcxml/" schema_location="http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd"/>
+<format name="mods32" type="application/xml" namespace_uri="http://www.loc.gov/mods/v3" docs="http://www.loc.gov/mods/" schema_location="http://www.loc.gov/standards/mods/v3/mods-3-2.xsd"/>
+</formats>
+FORMATS
+    } else {
+        print <<FORMATS;
+<formats id='$id'>
+<format name="xml" type="application/xml"/>
+</formats>
+FORMATS
+    }
 
     return Apache2::Const::OK;
 }
@@ -490,8 +520,12 @@ sub unapi {
     my $format = $cgi->param('format') || '';
     (my $base_format = $format) =~ s/(-full|-uris)$//o;
     my $u2uri = OpenILS::Utils::TagURI->new($uri);
-    if ($format and $u2uri->version > 1) {
-        return unapi2($apache, $u2uri, $format);
+    if ($u2uri->version > 1) {
+        if ($format) {
+            return unapi2($apache, $u2uri, $format);
+        } else {
+            return unapi2_formats($apache, $u2uri);
+        }
     }
 
     my $host = $cgi->virtual_host || $cgi->server_name;

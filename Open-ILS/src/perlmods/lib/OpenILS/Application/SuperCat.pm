@@ -748,18 +748,22 @@ sub u2 {
         $u2->id( $copy->id );
     }
 
+    if ($u2->classname eq 'biblio_record_entry_feed') {
+        $u2->id( '{' . $u2->id . '}' );
+    }
+    my $args = [
+        'unapi.' . $u2->classname,
+        $u2->id,
+        $format,
+    ];
+    push @$args, $u2->classname unless $u2->classname eq 'biblio_record_entry_feed';
+    push @$args, '{' . ( $u2->includes ? join( ',', keys %{ $u2->includes } ) : '' ) . '}';
+    push @$args, ($u2->location || undef);
+    push @$args, ($u2->depth || undef);
+
     return OpenSRF::AppSession->create('open-ils.cstore')->request(
         "open-ils.cstore.json_query.atomic",
-        { from =>
-            [   'unapi.' . $u2->classname,
-                $u2->id,
-                $format,
-                $u2->classname,
-                '{' . ( $u2->includes ? join( ',', keys %{ $u2->includes } ) : '' ) . '}',
-                $u2->location || undef,
-                $u2->depth || undef
-            ]
-        }
+        { from => $args }
     )->gather(1)->[0]{'unapi.'. $u2->classname};
 }
 __PACKAGE__->register_method(
