@@ -3,6 +3,68 @@ Evergreen 2.9 Release Notes
 :toc:
 :numbered:
 
+Evergreen 2.9.2
+---------------
+This release contains several bugfixes improving on Evergreen 2.9.1.
+
+Acquisitions / Cataloging
+~~~~~~~~~~~~~~~~~~~~~~~~~
+* Allows the Z39.50 itnerface and the acquisitions MARC Federated Search
+interface to search the UPC index of the local catalog if Z39.50 is configured
+to search that field.
+* Fixes an issue where spaces in a PO name cause the system to improperly
+process EDI response messages.
+
+Circulation
+~~~~~~~~~~~
+* Fixes a problem where the balance owed was miscalculated when a row
+was deleted from money.billing.
+* Fixes an issue where credit card payments made via PayflowPro failed because
+Evergreen does not install the PayflowPro module by default.
+* Changes credit card payment behavior so that the patron's billing address will
+be read when the patron has no mailing address. If all address fields are 
+properly set by the API caller except the country and the
+patron has no addresses, the system will attempt to determine the country from
+library settings. If insufficient address data is provided, the system will
+return an invalid params Event.
+* Modifies the reasons for various void/adjust events to more accurately reflect
+the reason why a fine/fee was removed from a patron's record.
+
+OPAC
+~~~~
+* Fixes an issue where the reset password link was displaying even on systems
+that had disabled the ability to reset passwords.
+* Fixes an issue where the journal type search did not work when entering it as
+the second or third input on the advanced search screen.
+* Fixes an issue where catalog translations were broken by creating separate 
+directories for the catalog and web staff client translations.
+
+Administration
+~~~~~~~~~~~~~~
+* Changes marc_export to only print "waiting for input" when running
+interactively.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed
+code and documentation patches to the 2.9.1. point release of Evergreen:
+
+* Galen Charlton
+* Bill Erickson
+* Blake Henderson
+* Mike Rylander
+* Jason Stephenson
+* Dan Wells
+
+We also thank the following organizations whose employees contributed
+patches:
+
+* Calvin College
+* Equinox Software, Inc.
+* King County Library System
+* Merrimack Valley Library Consortium
+* MOBIUS
+
 Evergreen 2.9.1
 ----------------
 This release contains several bugfixes improving on Evergreen 2.9.0.
