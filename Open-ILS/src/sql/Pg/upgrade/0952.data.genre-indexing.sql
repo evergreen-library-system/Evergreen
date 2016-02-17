@@ -1,5 +1,7 @@
 BEGIN;
 
+INSERT INTO config.upgrade_log (version, applied_to) VALUES ('0952', :eg_version); --miker/kmlussier/gmcharlt
+
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, browse_field, facet_field, facet_xpath, joiner ) VALUES
     (33, 'identifier', 'genre', oils_i18n_gettext(33, 'Genre', 'cmf', 'label'), 'marcxml', $$//marc:datafield[@tag='655']$$, FALSE, TRUE, $$//*[local-name()='subfield' and contains('abvxyz',@code)]$$, ' -- ' ); -- /* to fool vim */;
 
