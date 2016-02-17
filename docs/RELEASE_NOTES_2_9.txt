@@ -53,6 +53,7 @@ code and documentation patches to the 2.9.1. point release of Evergreen:
 * Bill Erickson
 * Blake Henderson
 * Mike Rylander
+* Ben Shum
 * Jason Stephenson
 * Dan Wells
 
