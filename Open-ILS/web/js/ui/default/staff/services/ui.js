@@ -195,10 +195,12 @@ function($modal, $interpolate) {
 .factory('egUnloadPrompt', [
         '$window','egStrings', 
 function($window , egStrings) {
-    var service = {};
+    var service = {attached : false};
 
     // attach a page/scope unload prompt
     service.attach = function($scope, msg) {
+        if (service.attached) return;
+        service.attached = true;
 
         // handle page change
         $($window).on('beforeunload', function() { 
@@ -227,6 +229,7 @@ function($window , egStrings) {
         $($window).off('beforeunload');
         if (service.locChangeCancel)
             service.locChangeCancel();
+        service.attached = false;
     }
 
     return service;

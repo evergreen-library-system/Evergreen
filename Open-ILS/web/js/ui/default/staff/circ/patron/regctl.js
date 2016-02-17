@@ -695,10 +695,11 @@ function PatronRegCtrl($scope, $routeParams,
     $scope.edit_passthru.vis_level = 0; 
     // TODO: add save/clone handlers here
 
-    var modify_tracked = false;
     $scope.field_modified = function() {
-        if (modify_tracked) return;
-        modify_tracked = true;
+        // Call attach with every field change, regardless of whether
+        // it's been called before.  This will allow for re-attach after
+        // the user clicks through the unload warning. egUnloadPrompt
+        // will ensure we only attach once.
         egUnloadPrompt.attach($scope);
     }
 
