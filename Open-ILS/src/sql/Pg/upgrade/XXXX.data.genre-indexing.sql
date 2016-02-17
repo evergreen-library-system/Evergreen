@@ -1,7 +1,7 @@
 BEGIN;
 
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, browse_field, facet_field, facet_xpath, joiner ) VALUES
-    (33, 'identifier', 'genre', oils_i18n_gettext(33, 'Genre', 'cmf', 'label'), 'marcxml', $$//marc:datafield[@tag='655' or @tag='659']$$, FALSE, TRUE, $$//*[local-name()='subfield' and contains('abvxyz',@code)]$$, ' -- ' ); -- /* to fool vim */;
+    (33, 'identifier', 'genre', oils_i18n_gettext(33, 'Genre', 'cmf', 'label'), 'marcxml', $$//marc:datafield[@tag='655']$$, FALSE, TRUE, $$//*[local-name()='subfield' and contains('abvxyz',@code)]$$, ' -- ' ); -- /* to fool vim */;
 
 INSERT INTO config.metabib_field_index_norm_map (field,norm)
     SELECT  m.id,
@@ -19,6 +19,6 @@ COMMIT;
 \qecho
 \qecho SELECT metabib.reingest_metabib_field_entries(record, FALSE, TRUE, FALSE)
 \qecho FROM metabib.real_full_rec
-\qecho WHERE tag IN (''''655'''', ''''659'''')
+\qecho WHERE tag IN (''''655'''')
 \qecho GROUP BY record; 
 \qecho

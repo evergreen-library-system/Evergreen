@@ -1,8 +1,9 @@
 New Form/Genre Search and Facet Index
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The stock indexing definitions now include a search
-and facet index on the form/genre field (tag 655)
-and a commonly-used local genre field (659).  This allows
-genre links in the public catalog record display to retrieve
-works in the same genre.  A partial reingest during upgrade
-is required to use this index.
+The stock indexing definitions now include a search and facet index on the
+form/genre field (tag 655). This allows genre links in the public catalog
+record display to retrieve works in the same genre. The public catalog genre
+links will no longer display content from the 659 MARC fields. 
+
+The genre facet will also display by default in the public catalog.  A partial
+reingest during upgrade is required to use this index.

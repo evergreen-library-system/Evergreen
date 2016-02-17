@@ -102,6 +102,7 @@ record.summary.jacket_size = 'medium';
 facet.display = [
     {facet_class => 'author',  facet_order => ['personal', 'corporate']},
     {facet_class => 'subject', facet_order => ['topic']},
+    {facet_class => 'identifier', facet_order => ['genre']},
     {facet_class => 'series',  facet_order => ['seriestitle']},
     {facet_class => 'subject', facet_order => ['name', 'geographic']}
 ];

@@ -7,7 +7,7 @@
             label => l('Genre: '),
             facet => 'identifier|genre',
             joiner => ' -- ',
-            xpath => '//*[@tag="655" or @tag="659"]',
+            xpath => '//*[@tag="655"]',
             subfields => '[abvxyz]'
         }, {
             label => l('Topic Heading: '),
