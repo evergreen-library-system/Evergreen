@@ -487,10 +487,12 @@ It also allows us to abstract away some browser finickiness.
                 ngModelCtrl.$formatters.unshift(function (modelValue) {
                     // apply strip_time here in case the user never 
                     // modifies the date value.
+                    if (!modelValue) return '';
                     return dateFilter(strip_time(modelValue), 'yyyy-MM-dd');
                 });
                 
                 ngModelCtrl.$parsers.unshift(function(viewValue) {
+                    if (!viewValue) return null;
                     return strip_time(new Date(viewValue));
                 });
             },
