@@ -2440,7 +2440,7 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 -- Admin user account
 INSERT INTO actor.passwd_type 
     (code, name, login, crypt_algo, iter_count) 
-    VALUES ('main', 'Main Login Password', TRUE, 'bf', 14);
+    VALUES ('main', 'Main Login Password', TRUE, 'bf', 10);
 
 INSERT INTO actor.usr ( profile, card, usrname, passwd, first_given_name, family_name, dob, master_account, super_user, ident_type, ident_value, home_ou ) VALUES ( 1, 1, md5(random()::text), md5(random()::text), 'Administrator', 'System Account', '1979-01-22', TRUE, TRUE, 1, 'identification', 1 );
 

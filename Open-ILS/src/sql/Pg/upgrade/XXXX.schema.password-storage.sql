@@ -214,6 +214,6 @@ $$ STRICT LANGUAGE PLPGSQL;
 
 INSERT INTO actor.passwd_type 
     (code, name, login, crypt_algo, iter_count) 
-    VALUES ('main', 'Main Login Password', TRUE, 'bf', 14);
+    VALUES ('main', 'Main Login Password', TRUE, 'bf', 10);
 
 COMMIT;
