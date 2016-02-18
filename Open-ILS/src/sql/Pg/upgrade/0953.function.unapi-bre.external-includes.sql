@@ -1,6 +1,9 @@
 
 BEGIN;
 
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('0953', :eg_version)
+
 CREATE OR REPLACE FUNCTION unapi.bre (
     obj_id BIGINT,
     format TEXT,
