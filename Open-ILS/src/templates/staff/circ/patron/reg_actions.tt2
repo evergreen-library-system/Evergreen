@@ -27,7 +27,8 @@
       ng-click="edit_passthru.save()">[% l('Save') %]</button>
   </span>
   <span class="pad-all-min">
-    <button type="button" class="btn btn-default">[% l('Save & Clone') %]</button>
+    <button type="button" class="btn btn-default"
+      ng_click="edit_passthru.save({clone:true})">[% l('Save & Clone') %]</button>
   </span>
 </div>
 

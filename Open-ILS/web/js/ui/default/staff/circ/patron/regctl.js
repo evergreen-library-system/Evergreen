@@ -41,9 +41,30 @@ angular.module('egCoreMod')
             service.get_org_settings(),
             service.get_stat_cats(),
             service.get_surveys(),
+            service.get_clone_user(),
             service.get_net_access_levels()
         ]);
     };
+
+    service.get_clone_user = function() {
+        if (!service.clone_id) return $q.when();
+        // we could load egUser and use its get() function, but loading
+        // user.js into the standalone register UI would mean creating a
+        // new module, since egUser is not loaded into egCoreMod.  This
+        // is a lot simpler.
+        return egCore.net.request(
+            'open-ils.actor',
+            'open-ils.actor.user.fleshed.retrieve',
+            egCore.auth.token(), service.clone_id, 
+            ['billing_address', 'mailing_address'])
+        .then(function(cuser) {
+            if (e = egCore.evt.parse(cuser)) {
+                alert(e);
+            } else {
+                service.clone_user = cuser;
+            }
+        });
+    }
 
     //service.check_grp_app_perm = function(grp_id) {
 
@@ -521,16 +542,127 @@ angular.module('egCoreMod')
             _primary : 'on'
         };
 
-        return {
+        var user = {
             isnew : true,
             active : true,
             card : card,
             cards : [card],
             home_ou : egCore.org.get(egCore.auth.user().ws_ou()),
-                        
-            // TODO default profile group?
             addresses : [addr]
         };
+
+        if (service.clone_user)
+            service.copy_clone_data(user);
+
+        return user;
+    }
+
+    // copy select values from the cloned user to the new user.
+    // user is a hash
+    service.copy_clone_data = function(user) {
+        var clone_user = service.clone_user;
+
+        // flesh the home org locally
+        user.home_ou = egCore.org.get(clone_user.home_ou());
+
+        if (!clone_user.billing_address() &&
+            !clone_user.mailing_address())
+            return; // no addresses to copy or link
+
+        // if the cloned user has any addresses, we don't need 
+        // the stub address created in init_new_patron.
+        user.addresses = [];
+
+        var copy_addresses = 
+            service.org_settings['circ.patron_edit.clone.copy_address'];
+
+        var clone_fields = [
+            'day_phone',
+            'evening_phone',
+            'other_phone',
+            'usrgroup'
+        ]; 
+
+        angular.forEach(clone_fields, function(field) {
+            user[field] = clone_user[field]();
+        });
+
+        if (copy_addresses) {
+            var bill_addr, mail_addr;
+
+            // copy the billing and mailing addresses into new addresses
+            function clone_addr(addr) {
+                var new_addr = egCore.idl.toHash(addr);
+                new_addr.id = service.virt_id--;
+                new_addr.usr = user.id;
+                new_addr.isnew = true;
+                new_addr.valid = true;
+                user.addresses.push(new_addr);
+                return new_addr;
+            }
+
+            if (bill_addr = clone_user.billing_address()) {
+                var addr = clone_addr(bill_addr);
+                addr._is_billing = true;
+                user.billing_address = addr;
+            }
+
+            if (mail_addr = clone_user.mailing_address()) {
+
+                if (bill_addr && bill_addr.id() == mail_addr.id()) {
+                    user.mailing_address = user.billing_address;
+                    user.mailing_address._is_mailing = true;
+                } else {
+                    var addr = clone_addr(mail_addr);
+                    addr._is_mailing = true;
+                    user.mailing_address = addr;
+                }
+
+                if (!bill_addr) {
+                    // if there is no billing addr, use the mailing addr
+                    user.billing_address = user.mailing_address;
+                    user.billing_address._is_billing = true;
+                }
+            }
+
+
+        } else {
+
+            // link the billing and mailing addresses
+            var addr;
+            if (addr = clone_user.billing_address()) {
+                user.billing_address = egCore.idl.toHash(addr);
+                user.billing_address._is_billing = true;
+                user.addresses.push(user.billing_address);
+                user.billing_address._linked_owner_id = clone_user.id();
+                // TODO: see note above about egUser, which has its
+                // own name formatting function.
+                user.billing_address._linked_owner =
+                    clone_user.family_name() + ', ' + 
+                    clone_user.first_given_name() + ' ' + 
+                    clone_user.second_given_name();
+            }
+
+            if (addr = clone_user.mailing_address()) {
+                if (user.billing_address && 
+                    addr.id() == user.billing_address.id) {
+                    // mailing matches billing
+                    user.mailing_address = user.billing_address;
+                    user.mailing_address._is_mailing = true;
+                } else {
+                    user.mailing_address = egCore.idl.toHash(addr);
+                    user.mailing_address._is_mailing = true;
+                    user.addresses.push(user.mailing_address);
+                    user.mailing_address._linked_owner_id = clone_user.id();
+                    // TODO: see note above about egUser, which has its
+                    // own name formatting function.
+                    user.mailing_address._linked_owner =
+                        clone_user.family_name() + ', ' + 
+                        clone_user.first_given_name() + ' ' + 
+                        clone_user.second_given_name();
+                }
+            }
+        }
     }
 
     // translate the patron back into IDL form
@@ -674,7 +806,7 @@ function PatronRegCtrl($scope, $routeParams,
     $q, $modal, $window, egCore, patronSvc, patronRegSvc, egUnloadPrompt) {
 
     $scope.page_data_loaded = false;
-    $scope.clone_id = $routeParams.clone_id;
+    $scope.clone_id = patronRegSvc.clone_id = $routeParams.clone_id;
     $scope.stage_username = $routeParams.stage_username;
     $scope.patron_id = 
         patronRegSvc.patron_id = $routeParams.edit_id || $routeParams.id;
@@ -781,6 +913,7 @@ function PatronRegCtrl($scope, $routeParams,
             set_new_patron_defaults(prs);
 
         $scope.page_data_loaded = true;
+
     });
 
     // update the currently displayed field documentation
@@ -1111,7 +1244,8 @@ function PatronRegCtrl($scope, $routeParams,
         });
     }
 
-    $scope.edit_passthru.save = function() {
+    $scope.edit_passthru.save = function(save_args) {
+        if (!save_args) save_args = {};
 
         // remove page unload warning prompt
         egUnloadPrompt.clear();
@@ -1123,9 +1257,11 @@ function PatronRegCtrl($scope, $routeParams,
         
         compress_hold_notify();
 
+        var updated_user;
         patronRegSvc.save_user($scope.patron)
         .then(function(new_user) { 
             if (new_user && new_user.classname) {
+                updated_user = new_user;
                 return patronRegSvc.save_user_settings(
                     new_user, $scope.user_settings); 
             } else {
@@ -1136,7 +1272,19 @@ function PatronRegCtrl($scope, $routeParams,
             // reloading the page means potentially losing some information
             // (e.g. last patron search), but is the only way to ensure all
             // components are properly updated to reflect the modified patron.
-            $window.location.href = location.href;
+            if (save_args.clone) {
+                // open a separate tab for registering a new 
+                // patron from our cloned data.
+                var url = 'https://' 
+                    + $window.location.hostname 
+                    + egCore.env.basePath 
+                    + '/circ/patron/register/clone/' 
+                    + updated_user.id();
+                $window.open(url, '_blank').focus();
+            } else {
+                // reload the current page
+                $window.location.href = location.href;
+            }
         });
     }
 }

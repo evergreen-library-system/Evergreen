@@ -498,7 +498,15 @@
 
 <div ng-repeat="addr in patron.addresses">
   <div class="alert alert-success row" role="alert">
-      <div class="col-md-3">[% l('Address') %]</div>
+      <div class="col-md-3">
+        [% l('Address') %]
+        <div ng-show="addr._linked_owner">
+          (<a target="_blank"
+            href="/eg/staff/circ/patron/{{addr._linked_owner_id}}/edit">
+            [% l('Owned by [_1]', '{{addr._linked_owner}}') %]
+          </a>)
+        </div>
+      </div>
       <div class="col-md-3">
           <span class='pad-all-min'>
             [% l('Mailing') %] <input type='checkbox' 
