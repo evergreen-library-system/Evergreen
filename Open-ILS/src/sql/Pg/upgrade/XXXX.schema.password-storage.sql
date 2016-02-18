@@ -157,6 +157,16 @@ BEGIN
      * hashing is not required of other passwords.
      */
 
+    -- Avoid calling get_salt() here, because it may result in a 
+    -- migrate_passwd() call, creating a loop.
+    SELECT INTO pw_salt salt FROM actor.passwd 
+        WHERE usr = pw_usr AND passwd_type = 'main';
+
+    -- Only migrate passwords that have not already been migrated.
+    IF FOUND THEN
+        RETURN pw_salt;
+    END IF;
+
     SELECT INTO usr_row * FROM actor.usr WHERE id = pw_usr;
 
     pw_salt := actor.create_salt('main');
