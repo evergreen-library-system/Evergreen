@@ -1,6 +1,6 @@
 BEGIN;
 
--- SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0956', :eg_version);
 
 ALTER TABLE money.credit_card_payment 
     DROP COLUMN cc_type,

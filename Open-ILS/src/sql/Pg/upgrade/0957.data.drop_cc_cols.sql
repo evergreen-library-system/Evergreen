@@ -1,7 +1,7 @@
 
 BEGIN;
 
--- SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0957', :eg_version);
 
 -- Remove references to dropped CC payment columns in the print/email 
 -- payment receipt templates, but only if the in-db template matches 
