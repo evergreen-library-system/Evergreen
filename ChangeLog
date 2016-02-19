@@ -1,3 +1,449 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 517d22b95a1ee5310e2ea71575aa3e927e3080ac
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Fri Feb 19 09:07:58 2016 -0500
+
+    Bumping Perl version string for 2.9.2.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit a3984186b8a674779a698e7911c24f6d40e7af94
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Wed Feb 17 14:43:24 2016 -0500
+
+    Forgot an acknowledgement in the 2.9.2 point release notes
+    
+    Sorry Ben!
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	0	docs/RELEASE_NOTES_2_9.txt
+
+commit 0fdd8f7007ba26ac07f9eb857eaa7464151214bf
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Wed Feb 17 14:34:18 2016 -0500
+
+    Adding 2.9.2 bug fixes and acknowledgements to the 2.9 release notes
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+62	0	docs/RELEASE_NOTES_2_9.txt
+
+commit bc8b8aa4a37c3ac0e58935d0e24b4c797178afc8
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Wed Feb 17 13:03:40 2016 -0500
+
+    Adding 2.8.6 bug fixes to the 2.8 Release Notes
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+39	0	docs/RELEASE_NOTES_2_8.txt
+
+commit cffa81a5335563cd9adda91a372609037ed3791f
+Author: Ben Shum <ben@evergreener.net>
+Date:   Wed Feb 17 13:39:22 2016 -0500
+
+    LP#1544606: Copy the new directories we make for locales
+    
+    Make it cp -r to copy the directories and not just the files (of which
+    there won't be any by default).
+    
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+1	1	Open-ILS/src/Makefile.am
+
+commit a0fcc135bb8ef39385e3e70999a25ebfd83001a7
+Author: Ben Shum <ben@evergreener.net>
+Date:   Thu Feb 11 15:40:05 2016 -0500
+
+    LP#1544606: Change i18n Makefile so that there are different dirs for opac vs webstaff
+    
+    In i18n Makefile, we only have a single directory variable TT2_DATA_DIR.
+    
+    Remove that variable, and add distinct variables for TT2_OPAC_DATA_DIR and
+    TT2_WEBSTAFF_DATA_DIR that point to more distinct defined areas.
+    
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+6	4	build/i18n/Makefile
+
+commit 706b8a073b979c78ff00f1753ffad4567e926629
+Author: Ben Shum <ben@evergreener.net>
+Date:   Thu Feb 11 14:54:49 2016 -0500
+
+    LP#1544606: Change docs to more specific locale/opac location
+    
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+7	7	docs/admin_initial_setup/designing_your_catalog.txt
+1	1	docs/opac/new_skin_customizations.txt
+
+commit 51658b0ab61fd90fbd42ab8bcf11255e2d758f05
+Author: Ben Shum <ben@evergreener.net>
+Date:   Thu Feb 11 14:30:57 2016 -0500
+
+    LP#1544606: Change apache examples for TPAC to more specific locale/opac location
+    
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+3	3	Open-ILS/examples/apache/eg_vhost.conf.in
+3	3	Open-ILS/examples/apache_24/eg_vhost.conf.in
+
+commit 119b9320b54e4cb4dcca74f4fe863770d944d8e0
+Author: Ben Shum <ben@evergreener.net>
+Date:   Thu Feb 11 14:36:35 2016 -0500
+
+    LP#1544606: Change static entry to variable in config example for locale/staff
+    
+    We were using a hardcoded entry for /openils/var here, but this should be a
+    variable that is altered based on how users configure/build Evergreen.
+    
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+2	2	Open-ILS/examples/apache/eg_vhost.conf.in
+2	2	Open-ILS/examples/apache_24/eg_vhost.conf.in
+
+commit b004f1b0064c9809b7e4327b8bdcd78661ef3c46
+Author: Ben Shum <ben@evergreener.net>
+Date:   Thu Feb 11 14:27:20 2016 -0500
+
+    LP#1544606: Remove trailing whitespace from sample configs for locale/staff
+    
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+4	4	Open-ILS/examples/apache/eg_vhost.conf.in
+4	4	Open-ILS/examples/apache_24/eg_vhost.conf.in
+
+commit 338ff97d2667921d68831779fa2925ee52574ce9
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Mar 6 17:18:21 2015 -0500
+
+    LP#1429268 credit card payment address fall-thru
+    
+    When a patron has no mailing address linked, attempt to read address
+    data from the patron's billing address.  Similarly, if all address
+    fields are properly set by the API caller, except the country, and the
+    patron has no addresses, attempt to determine the country from org unit
+    settings.
+    
+    If insufficient address data is provided or divined, return an invalid
+    params Event (similar to other CC failures).
+    
+    To test:
+    
+    [1] Create a patron record that has no mailing address but does
+        have a billing address.  Perform or simulate a credit card
+        payment; it shoudl fail with an internal error.
+    [2] Apply the patch and repeat step 1; this time, the payment
+        attempt should succeed and use the billing address.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+33	8	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/CreditCard.pm
+
+commit 8adbe84b5ba98cd1970d73c14a650d031f7b1a2d
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Tue Feb 9 10:22:46 2016 -0500
+
+    LP#1526547 Re-broaden backdate note setting
+    
+    The previous commit missed a case where we still want the backdate
+    message to appear.  Let's recentralize it, but at a different level.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ.pm
+1	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/CircCommon.pm
+
+commit afa3df06d213ce02057db732a194fc02c39e887c
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Jan 28 14:49:42 2016 -0500
+
+    LP#1526547 Improve note setting for backdates
+    
+    The backdate note was the default note for voiding and adjusting, but
+    this proved to be an unexpected default.
+    
+    Let's set the note only where we need it, and also genericize the
+    wording to cover both voiding and adjusting.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ.pm
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/CircCommon.pm
+
+commit 0b10034823951253be56ff7ce04e0baaf804d5ad
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Fri Dec 14 13:39:21 2012 -0500
+
+    LP#1526547 Prevent bogus notes when adjusting lost/lod overdues
+    
+    If you void/adjust an overdue, but don't supply a reason, the code
+    automatically adds "VOIDED FOR BACKDATE" to the billing note. This is
+    obviously wrong for overdues adjusted or voided due to lost (or long
+    overdue) processing.
+    
+    This commit simply adds a more appropriate note.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Cat/AssetCommon.pm
+
+commit b7890baa23654aa2b65a7b00bed8a26c8ab310a2
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Thu Jan 28 08:55:22 2016 -0500
+
+    LP#1539088: marc_export prints "Waiting for input" when non-interactive
+    
+    This commit modifies marc_export to only print "Waiting for input"
+    when run in an interactive manner.  This suppresses the output when
+    run from a pipe.
+    
+    To test this change:
+    
+    Before the commit is applied both of the following command lines will
+    output "Waiting for input" to standard error:
+    
+    $ marc_export --format XML
+    
+    $ echo <bibid> | marc_export --format XML
+    
+    Where you replace <bibid> with a bibliographic record entry id from
+    your database.
+    
+    After the commit is applied, only the first command line will output
+    the "Waiting for input" message.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+1	1	Open-ILS/src/support-scripts/marc_export.in
+
+commit 58407b1b81377c9017327aed7c4355fcbb3eb908
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Tue Jan 26 11:24:17 2016 -0500
+
+    Forward port 2.9.0 to 2.9.1 db upgrade script.
+    
+    Thanks to Benjamin Shum for noticing that this was missing.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+161	0	Open-ILS/src/sql/Pg/version-upgrade/2.9.0-2.9.1-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.9.0-2.9.1-upgrade-db.sql
+
+commit 9096c57ab55c00aaa4cac8ced6e7b8877d5673c2
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Thu Dec 3 16:13:09 2015 -0500
+
+    LP#1522538: Improper detection of jtitle search type
+    
+    Before this change, the system would only check the first qtype URL parameter
+    to see if it needed to apply the journal title "bib_level(s)" filter.  Instead
+    it should check each qtype in turn while it turns an advanced search into a
+    simple search string.  Here the code is moved into place to accomplish that.
+    
+    To test, load all test datasets into a fresh database.  Perform an advanced
+    search on journal title for "proceedings" (no quotes) using the second search
+    input row.  Before this commit, two records are retrieved.  After, only one
+    is retrieved.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+8	5	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Search.pm
+
+commit 183b612de93610a74306e12089d31c2e2cc1c1d0
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Tue Nov 24 13:57:33 2015 -0500
+
+    LP 1519465: POs with spaces in the name cause EDI problems.
+    
+    This is a small modification to the regular expression for parsing
+    the id from the edi line item fields in EDIReader.pm that allows the
+    ids to parse correctly when the PO name contained a space or spaces
+    in it.  This change was suggesting by Bill Erickson (berick) in
+    http://irc.evergreen-ils.org/evergreen/2015-11-24#i_216736
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Utils/EDIReader.pm
+
+commit 39df0abbc6934e347fa35ba35a1fbb2776269181
+Author: Jason Boyer <jboyer@library.in.gov>
+Date:   Fri Dec 4 01:17:21 2015 -0500
+
+    LP1522686: Force SSL for Web Staff, Add Basic Redirect for Staff URL
+    
+    1 minor change, 1 less minor change.
+    
+    First, add a simple redirect for staff that forget to enter the
+    final '/' at the end of <server>/eg/staff/.
+    
+    Second, and most importantly, force all connections to the web
+    staff client to be redirected through an HTTPS connection. By
+    default the system would accept whichever connection type you
+    enter by hand, and fewer and fewer people actually enter the
+    protocol specifier these days.
+    
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+8	0	Open-ILS/examples/apache/eg_vhost.conf.in
+8	0	Open-ILS/examples/apache_24/eg_vhost.conf.in
+
+commit 34ec4e3dc534078ba72f4ae9c4295aedb2ac8830
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Wed Dec 30 11:00:26 2015 -0500
+
+    LP#1530158: ensure that Business::OnlinePayment::PayflowPro is installed
+    
+    Business::OnlinePayment::PayflowPro is a Perl module required if
+    the user wants to use PayflowPro as a credit card processor; without
+    it, attempts to make payments in TPAC using that processor will fail
+    with an internal server error.
+    
+    This patch ensures that the module will get installed on Debian,
+    Ubuntu, and Fedora.
+    
+    Strictly speaking, the Perl module is strictly optional, as
+    Business::OnlinePayment uses lazy loading for its drivers, but this
+    patch is making the assumption that its easiest all around if
+    we just install all dependencies that an Evergreen application
+    server might need.
+    
+    To test
+    -------
+    [1] Install or upgrade Evergreen, then run settings-tester.pl to
+        verify that the module is installed.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	0	Open-ILS/src/extras/install/Makefile.debian-jessie
+1	0	Open-ILS/src/extras/install/Makefile.debian-squeeze
+1	0	Open-ILS/src/extras/install/Makefile.debian-wheezy
+1	0	Open-ILS/src/extras/install/Makefile.fedora
+1	0	Open-ILS/src/extras/install/Makefile.ubuntu-precise
+1	0	Open-ILS/src/extras/install/Makefile.ubuntu-trusty
+1	0	Open-ILS/src/support-scripts/settings-tester.pl
+
+commit b6881f363816503b1874fd66ff300b1b25b15b2a
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Feb 13 11:56:19 2014 -0500
+
+    LP#1526543 Truthiness check for reset_password is flawed
+    
+    We expect boolean options in config.tt2 to be 'true' or 'false',
+    but the code was simple asking 'IF reset_password', which is true
+    for either value.
+    
+    Instead, match on the string (as we do in other places).
+    
+    To test:
+    - Load the stock catalog login page
+    - Notice the "Forgot your password?" link staying no matter which way
+      'reset_password' is set in config.tt2
+    - Apply patch, and change 'reset_password' value in config.tt2 to 'false'
+    - RESULT: Password reset link doesn't show up
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Ben Shum <bshum@biblio.org>
+
+1	1	Open-ILS/src/templates/opac/parts/login/form.tt2
+
+commit 6de2d95fc3d0b494f1785fd5924f2494c017c6ca
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Wed Dec 16 09:27:40 2015 -0500
+
+    Fixing upgrade 0950 upgrade script
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	1	Open-ILS/src/sql/Pg/upgrade/0950.schema.materialized_billing_summary_delete_trigger.sql
+
+commit 94fedecbc2b9d83b6f1888a715cdb81746b119aa
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Tue Dec 15 14:21:12 2015 -0500
+
+    LP#1319998 Stamping upgrade script
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+32	0	Open-ILS/src/sql/Pg/upgrade/0950.schema.materialized_billing_summary_delete_trigger.sql
+0	32	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.materialized_billing_summmary_delete_trigger.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0950.schema.materialized_billing_summary_delete_trigger.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.materialized_billing_summmary_delete_trigger.sql
+
+commit be49b8a01257fb9921c1f65b594150c155dddaee
+Author: blake <blake@mobiusconsortium.org>
+Date:   Thu Nov 19 16:14:37 2015 -0600
+
+    LP1319998_materialized_summary_billing_del_ADDS_to_balance_owed
+    
+    Switched the plus sign to a minus sign. This will keep the
+    materialized view correct when deleting rows from money.billing.
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	1	Open-ILS/src/sql/Pg/080.schema.money.sql
+32	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.materialized_billing_summmary_delete_trigger.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.materialized_billing_summmary_delete_trigger.sql
+
+commit 5bc3e5e8a5ec583d17a918f4fcb4d0bd5292bd43
+Author: Josh Stompro <stomproj@larl.org>
+Date:   Wed Nov 25 13:36:08 2015 -0600
+
+    LP#1519925 - Allow MARC Federated Search to search UPC index of local catalog.
+    
+    If a organization added UPC search for certain Z39.50 servers then the UPC search box
+    would display in the MARC Federated Search interface, but the local catalog would
+    not be searched.  This adds the ability to search the local catalog "Evergreen Catalog"
+    UPC index from that interface.
+    
+    Confirm the Issue:
+    
+    1. To trigger the initial problem you need a Z39.50 server setup that includes a UPC
+    Search.  For OCLC the following Z39.50 attributes add UPC searching.
+    Name:upc, Label:UPC, Code:1007, Format:4, Truncation:0
+    
+    2. Now the MARC Federated Search should include a UPC search option.  Try searching
+    for a UPC that exists in the local catalog.  Nothing should come up.
+    
+    After patch applied:
+    
+    1. Now if you search for a UPC in the MARC Federated Search that you know exists,
+    it will show up.
+    
+    Signed-off-by: Josh Stompro <stomproj@larl.org>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+1	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Search/Biblio.pm
+1	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Search/Z3950.pm
+
+commit 733190b9b39cbab127d2a0dc0f26d1d33df39af7
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Wed Nov 18 13:51:07 2015 -0500
+
+    Docs: Addition to 2.8.5 point release notes
+    
+    Last-minute addition to 2.8.5 release notes for miker's query parser fix.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+2	0	docs/RELEASE_NOTES_2_8.txt
