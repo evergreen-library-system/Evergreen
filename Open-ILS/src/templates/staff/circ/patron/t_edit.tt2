@@ -22,41 +22,41 @@
 
 <div id="reg-alert-pane">
 
-	<div id="reg-dupe-links">
-		[%# dupe_search_encoded is uri escaped in the JS %]
-		<div class="alert alert-danger" ng-show="dupe_counts.name">
-			<a target="_blank"
-				href="/eg/staff/circ/patron/search?search={{dupe_search_encoded}}">
-			[% l('[_1] patron(s) with same name', '{{dupe_counts.name}}') %]
-			</a>
-		</div>
-		<div class="alert alert-danger" ng-show="dupe_counts.email">
-			<a target="_blank"
-				href="/eg/staff/circ/patron/search?search={{dupe_search_encoded}}">
-				[% l('[_1] patron(s) with same email', 
-				'{{dupe_counts.email}}') %]</a>
-		</div>
-		<div class="alert alert-danger" ng-show="dupe_counts.ident">
-			<a target="_blank" 
-				href="/eg/staff/circ/patron/search?search={{dupe_search_encoded}}">
-				[% l('[_1] patron(s) with same identification', 
-				'{{dupe_counts.ident}}') %]</a>
-		</div>
-		<div class="alert alert-danger" ng-show="dupe_counts.phone">
-			<a target="_blank" 
-				href="/eg/staff/circ/patron/search?search={{dupe_search_encoded}}">
-				[% l('[_1] patron(s) with same phone', 
-				'{{dupe_counts.phone}}') %]</a>
-		</div>
-		<div class="alert alert-danger" ng-show="dupe_counts.address">
-			<a target="_blank" 
-				href="/eg/staff/circ/patron/search?search={{dupe_search_encoded}}" >
-				[% l('[_1] patron(s) with same address', 
-				'{{dupe_counts.address}}') %]</a>
-		</div>
-	</div>
+  <div id="reg-dupe-links">
+    [%# dupe_search_encoded is uri escaped in the JS %]
+    <div class="alert alert-danger" ng-show="dupe_counts.name">
+      <a target="_blank"
+        href="/eg/staff/circ/patron/search?search={{dupe_search_encoded}}">
+      [% l('[_1] patron(s) with same name', '{{dupe_counts.name}}') %]
+      </a>
+    </div>
+    <div class="alert alert-danger" ng-show="dupe_counts.email">
+      <a target="_blank"
+        href="/eg/staff/circ/patron/search?search={{dupe_search_encoded}}">
+        [% l('[_1] patron(s) with same email', 
+        '{{dupe_counts.email}}') %]</a>
+    </div>
+    <div class="alert alert-danger" ng-show="dupe_counts.ident">
+      <a target="_blank" 
+        href="/eg/staff/circ/patron/search?search={{dupe_search_encoded}}">
+        [% l('[_1] patron(s) with same identification', 
+        '{{dupe_counts.ident}}') %]</a>
+    </div>
+    <div class="alert alert-danger" ng-show="dupe_counts.phone">
+      <a target="_blank" 
+        href="/eg/staff/circ/patron/search?search={{dupe_search_encoded}}">
+        [% l('[_1] patron(s) with same phone', 
+        '{{dupe_counts.phone}}') %]</a>
+    </div>
+    <div class="alert alert-danger" ng-show="dupe_counts.address">
+      <a target="_blank" 
+        href="/eg/staff/circ/patron/search?search={{dupe_search_encoded}}" >
+        [% l('[_1] patron(s) with same address', 
+        '{{dupe_counts.address}}') %]</a>
+    </div>
+  </div>
 
-	<!-- IDL field documentation window -->
+  <!-- IDL field documentation window -->
   <div class="alert alert-info" ng-show="selected_field_doc">
     <fieldset id="reg-field-doc">
       <legend>
@@ -64,6 +64,13 @@
       </legend>
       <div>{{selected_field_doc.string()}}</div>
     </fieldset>
+  </div>
+
+  <div class="alert alert-info" ng-show="stage_user_requestor">
+    <a target="_blank" 
+      href="/eg/staff/circ/patron/{{stage_user.reqesting_usr()}}/edit">
+      [% l('Requested by [_1]', '{{stage_user_requestor}}') %]
+    </a>
   </div>
 </div>
 

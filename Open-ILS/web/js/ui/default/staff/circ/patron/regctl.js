@@ -42,6 +42,7 @@ angular.module('egCoreMod')
             service.get_stat_cats(),
             service.get_surveys(),
             service.get_clone_user(),
+            service.get_stage_user(),
             service.get_net_access_levels()
         ]);
     };
@@ -64,6 +65,48 @@ angular.module('egCoreMod')
                 service.clone_user = cuser;
             }
         });
+    }
+
+    service.get_stage_user = function() {
+        if (!service.stage_username) return $q.when();
+
+        // fetch the staged user object
+        return egCore.net.request(
+            'open-ils.actor',
+            'open-ils.actor.user.stage.retrieve.by_username',
+            egCore.auth.token(), 
+            service.stage_username
+        ).then(function(suser) {
+            if (e = egCore.evt.parse(suser)) {
+                alert(e);
+            } else {
+                service.stage_user = suser;
+            }
+        }).then(function() {
+
+            if (!service.stage_user) return;
+            var requestor = service.stage_user.user.requesting_usr();
+
+            if (!requestor) return;
+
+            // fetch the requesting user
+            return egCore.net.request(
+                'open-ils.actor', 
+                'open-ils.actor.user.retrieve.parts',
+                egCore.auth.token(),
+                requestor, 
+                ['family_name', 'first_given_name', 'second_given_name'] 
+            ).then(function(parts) {
+                service.stage_user_requestor = 
+                    service.format_name(parts[0], parts[1], parts[2]);
+            })
+        });
+    }
+
+    // See note above about not loading egUser.
+    // TODO: i18n
+    service.format_name = function(last, first, middle) {
+        return last + ', ' + first + (middle ? ' ' + middle : '');
     }
 
     //service.check_grp_app_perm = function(grp_id) {
@@ -491,8 +534,7 @@ angular.module('egCoreMod')
 
         patron.home_ou = egCore.org.get(patron.home_ou.id);
         patron.expire_date = new Date(Date.parse(patron.expire_date));
-        patron.dob = patron.dob ?
-            new Date(Date.parse(patron.dob)) : null;
+        patron.dob = service.parse_dob(patron.dob);
         patron.profile = current.profile(); // pre-hash version
         patron.net_access_level = current.net_access_level();
         patron.ident_type = current.ident_type();
@@ -554,7 +596,106 @@ angular.module('egCoreMod')
         if (service.clone_user)
             service.copy_clone_data(user);
 
+        if (service.stage_user)
+            service.copy_stage_data(user);
+
         return user;
+    }
+
+    // dob is always YYYY-MM-DD
+    // Dates of birth do not contain timezone info, which can lead to
+    // inconcistent timezone handling, potentially representing
+    // different points in time, depending on the implementation.
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse
+    // See "Differences in assumed time zone"
+    // TODO: move this into egDate ?
+    service.parse_dob = function(dob) {
+        if (!dob) return null;
+        var parts = dob.split('-');
+        var d = new Date(); // always local time zone, yay.
+        d.setFullYear(parts[0]);
+        d.setMonth(parts[1]);
+        d.setDate(parts[2]);
+        return d;
+    }
+
+    service.copy_stage_data = function(user) {
+        var cuser = service.stage_user;
+
+        // copy the data into our new user object
+
+        for (var key in egCore.idl.classes.stgu.field_map) {
+            if (egCore.idl.classes.au.field_map[key] &&
+                !egCore.idl.classes.stgu.field_map[key].virtual) {
+                if (cuser.user[key]() !== null)
+                    user[key] = cuser.user[key]();
+            }
+        }
+
+        if (user.home_ou) user.home_ou = egCore.org.get(user.home_ou);
+        if (user.profile) user.profile = egCore.env.pgt.map[user.profile];
+        if (user.ident_type) 
+            user.ident_type = egCore.env.cit.map[user.ident_type];
+        user.dob = service.parse_dob(user.dob);
+
+        // Clear the usrname if it looks like a UUID
+        if (user.usrname.replace(/-/g,'').match(/[0-9a-f]{32}/)) 
+            user.usrname = '';
+
+        // Don't use stub address if we have one from the staged user.
+        if (cuser.mailing_addresses.length || cuser.billing_addresses.length)
+            user.addresses = [];
+
+        // is_mailing=false implies is_billing
+        function addr_from_stage(stage_addr) {
+            if (!stage_addr) return;
+            var cls = stage_addr.classname;
+
+            var addr = {
+                id : service.virt_id--,
+                usr : user.id,
+                isnew : true,
+                valid : true,
+                _is_mailing : cls == 'stgma',
+                _is_billing : cls == 'stgba'
+            };
+
+            user.mailing_address = addr;
+            user.addresses.push(addr);
+
+            for (var key in egCore.idl.classes[cls].field_map) {
+                if (egCore.idl.classes.aua.field_map[key] &&
+                    !egCore.idl.classes[cls].field_map[key].virtual) {
+                    if (stage_addr[key]() !== null)
+                        addr[key] = stage_addr[key]();
+                }
+            }
+        }
+
+        addr_from_stage(cuser.mailing_addresses[0]);
+        addr_from_stage(cuser.billing_addresses[0]);
+
+        if (user.addresses.length == 1) {
+            // If there is only one address, 
+            // use it as both mailing and billing.
+            var addr = user.addresses[0];
+            addr._is_mailing = addr._is_billing = true;
+            user.mailing_address = user.billing_address = addr;
+        }
+
+        if (cuser.cards.length) {
+            user.card = {
+                id : service.virt_id--,
+                barcode : cuser.cards[0].barcode(),
+                isnew : true,
+                active : true,
+                _primary : 'on'
+            };
+
+            user.cards.push(user.card);
+            if (user.usrname == '') 
+                user.usrname = card.barcode;
+        }
     }
 
     // copy select values from the cloned user to the new user.
@@ -564,6 +705,7 @@ angular.module('egCoreMod')
 
         // flesh the home org locally
         user.home_ou = egCore.org.get(clone_user.home_ou());
+        if (user.profile) user.profile = egCore.env.pgt.map[user.profile];
 
         if (!clone_user.billing_address() &&
             !clone_user.mailing_address())
@@ -635,12 +777,11 @@ angular.module('egCoreMod')
                 user.billing_address._is_billing = true;
                 user.addresses.push(user.billing_address);
                 user.billing_address._linked_owner_id = clone_user.id();
-                // TODO: see note above about egUser, which has its
-                // own name formatting function.
-                user.billing_address._linked_owner =
-                    clone_user.family_name() + ', ' + 
-                    clone_user.first_given_name() + ' ' + 
-                    clone_user.second_given_name();
+                user.billing_address._linked_owner = service.format_name(
+                    clone_user.family_name(),
+                    clone_user.first_given_name(),
+                    clone_user.second_given_name()
+                );
             }
 
             if (addr = clone_user.mailing_address()) {
@@ -654,12 +795,11 @@ angular.module('egCoreMod')
                     user.mailing_address._is_mailing = true;
                     user.addresses.push(user.mailing_address);
                     user.mailing_address._linked_owner_id = clone_user.id();
-                    // TODO: see note above about egUser, which has its
-                    // own name formatting function.
-                    user.mailing_address._linked_owner =
-                        clone_user.family_name() + ', ' + 
-                        clone_user.first_given_name() + ' ' + 
-                        clone_user.second_given_name();
+                    user.mailing_address._linked_owner = service.format_name(
+                        clone_user.family_name(),
+                        clone_user.first_given_name(),
+                        clone_user.second_given_name()
+                    );
                 }
             }
         }
@@ -767,6 +907,16 @@ angular.module('egCoreMod')
             egCore.auth.token(), patron);
     }
 
+    service.remove_staged_user = function() {
+        if (!service.stage_user) return $q.when();
+        return egCore.net.request(
+            'open-ils.actor',
+            'open-ils.actor.user.stage.delete',
+            egCore.auth.token(),
+            service.stage_user.row_id()
+        );
+    }
+
     service.save_user_settings = function(new_user, user_settings) {
         // user_settings contains the values from the scope/form.
         // service.user_settings contain the values from page load time.
@@ -807,7 +957,8 @@ function PatronRegCtrl($scope, $routeParams,
 
     $scope.page_data_loaded = false;
     $scope.clone_id = patronRegSvc.clone_id = $routeParams.clone_id;
-    $scope.stage_username = $routeParams.stage_username;
+    $scope.stage_username = 
+        patronRegSvc.stage_username = $routeParams.stage_username;
     $scope.patron_id = 
         patronRegSvc.patron_id = $routeParams.edit_id || $routeParams.id;
 
@@ -838,9 +989,15 @@ function PatronRegCtrl($scope, $routeParams,
     // Apply default values for new patrons during initial registration
     // prs is shorthand for patronSvc
     function set_new_patron_defaults(prs) {
-        $scope.generate_password();
+        if (!$scope.patron.passwd) {
+            // passsword may originate from staged user.
+            $scope.generate_password();
+        }
         $scope.hold_notify_phone = true;
         $scope.hold_notify_email = true;
+
+        // staged users may be loaded w/ a profile.
+        $scope.set_expire_date();
 
         if (prs.org_settings['ui.patron.default_ident_type']) {
             // $scope.patron needs this field to be an object
@@ -894,6 +1051,8 @@ function PatronRegCtrl($scope, $routeParams,
         $scope.surveys = prs.surveys;
         $scope.survey_responses = prs.survey_responses;
         $scope.stat_cat_entry_maps = prs.stat_cat_entry_maps;
+        $scope.stage_user = prs.stage_user;
+        $scope.stage_user_requestor = prs.stage_user_requestor;
 
         $scope.user_settings = prs.user_settings;
         // clone the user settings back into the patronRegSvc so
@@ -1258,6 +1417,7 @@ function PatronRegCtrl($scope, $routeParams,
         compress_hold_notify();
 
         var updated_user;
+
         patronRegSvc.save_user($scope.patron)
         .then(function(new_user) { 
             if (new_user && new_user.classname) {
@@ -1266,13 +1426,20 @@ function PatronRegCtrl($scope, $routeParams,
                     new_user, $scope.user_settings); 
             } else {
                 alert('Patron update failed. \n\n' + js2JSON(new_user));
-                return true; // ensure page reloads to reset
             }
-        }).then(function(keep_going) {
+
+        }).then(function() {
+
+            // only remove the staged user if the update succeeded.
+            if (updated_user) 
+                return patronRegSvc.remove_staged_user();
+
+        }).then(function() {
+
             // reloading the page means potentially losing some information
             // (e.g. last patron search), but is the only way to ensure all
             // components are properly updated to reflect the modified patron.
-            if (save_args.clone) {
+            if (updated_user && save_args.clone) {
                 // open a separate tab for registering a new 
                 // patron from our cloned data.
                 var url = 'https://' 
@@ -1281,6 +1448,7 @@ function PatronRegCtrl($scope, $routeParams,
                     + '/circ/patron/register/clone/' 
                     + updated_user.id();
                 $window.open(url, '_blank').focus();
+
             } else {
                 // reload the current page
                 $window.location.href = location.href;
