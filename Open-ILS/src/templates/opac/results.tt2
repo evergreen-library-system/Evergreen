@@ -108,6 +108,7 @@
 
                     <label class="results_header_lbl" for='opac.result.excludeelec'>
                         <input type='checkbox' name="fi:-search_format" value="electronic"
+                            onchange="search_modifier_onchange('available', this, true)"
                             [%- CGI.param('fi:-search_format').grep('electronic').size ? ' checked="checked"' : '' %]
                             id='opac.result.excludeelec' />
                         [% l("Exclude Electronic Resources") %]
