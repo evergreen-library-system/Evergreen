@@ -3111,7 +3111,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                             document.getElementById('circStrings').getString('staff.circ.utils.hold_slip.print.no'),
                             null,
                             document.getElementById('circStrings').getString('staff.circ.confirm.msg'),
-                            '/xul/server/skin/media/images/turtle.gif'
+                            '/xul/server/skin/media/images/holdshelf.png'
                         );
                     } else {
                         if (suppress_popups && !no_print_prompting) {
@@ -3265,7 +3265,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                             document.getElementById('circStrings').getString('staff.circ.utils.reservation_slip.print.no'),
                             null,
                             document.getElementById('circStrings').getString('staff.circ.confirm.msg'),
-                            '/xul/server/skin/media/images/turtle.gif'
+                            '/xul/server/skin/media/images/reserve.png'
                         );
                     }
                     if (rv == 0) {
@@ -3540,7 +3540,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                     document.getElementById('circStrings').getString('staff.circ.utils.transit_slip.print.no'),
                     null,
                     document.getElementById('circStrings').getString('staff.circ.confirm.msg'),
-                    '/xul/server/skin/media/images/turtle.gif'
+                    '/xul/server/skin/media/images/transit.png'
                 );
             } else {
                 if (suppress_popups && !no_print_prompting) {
