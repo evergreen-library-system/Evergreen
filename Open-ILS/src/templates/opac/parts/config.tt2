@@ -1,4 +1,4 @@
-[% 
+[%
 
 ##############################################################################
 # This file contains skin-level configuration settings.
@@ -95,9 +95,9 @@ show_more_details.default = 'false';
 record.summary.jacket_size = 'medium';
 
 ##############################################################################
-# Define the order in which facets are displayed.  Only facets listed here 
-# will be displayed.  To show all facets sorted by name, comment out this 
-# setting.  
+# Define the order in which facets are displayed.  Only facets listed here
+# will be displayed.  To show all facets sorted by name, comment out this
+# setting.
 # facet.display = [] # show no facets
 facet.display = [
     {facet_class => 'author',  facet_order => ['personal', 'corporate']},
@@ -123,8 +123,8 @@ facet.default_display_count = 5;
 #   lib_selector will put the search library box (with limit to available)
 #   pub_year will put the publication year box
 #   sort_selector will put the sort results selector
-# id DOM id used for linking labels to form controls.  They are pinned 
-#   here instead of auto-generated (from the attr type, for example) 
+# id DOM id used for linking labels to form controls.  They are pinned
+#   here instead of auto-generated (from the attr type, for example)
 #   for consistency.
 
 search.adv_config = [
@@ -187,7 +187,7 @@ ctx.depth_sel_button = 1; # Basic Search Submit Button
 ctx.depth_sel_depth = 0; # Depth to set to
 ctx.depth_sel_button_label = l('All Libraries');
 ctx.depth_sel_button_class = 'opac-button';
-ctx.depth_sel_checkbox_label = l('Show results from all libraries');
+ctx.depth_sel_checkbox_label = l('Show Results from All Libraries');
 ctx.depth_sel_tooltip = l('Select this option to expand your results to all libraries while retaining the priority of your selected library\'s holdings.');
 ctx.depth_sel_resultshint = l('Showing results from all libraries');
 

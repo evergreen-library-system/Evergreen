@@ -25,14 +25,14 @@
     <h3 class="sr-only">[% l('Additional search filters and navigation') %]</h3>
     <div class="almost-content-wrapper">
 
-        [%# hide the header bar when displaying metarecord constituents 
+        [%# hide the header bar when displaying metarecord constituents
           instead of skipping it altogether to allow the search form
           variables to propagate %]
         [% IF ctx.metarecord;
           mr_attrs = {marc_xml => ctx.metarecord_master.marc_xml};
           PROCESS get_marc_attrs args=mr_attrs %]
           <div class="results_header_lbl">
-            [% l('Viewing Results for Grouped Record: [_1]', 
+            [% l('Viewing Results for Grouped Record: [_1]',
                 mr_attrs.title) | html %]
           </div>
           [% IF CGI.param('query') %]
@@ -75,12 +75,12 @@
                         [% END %]
                     </div>
                     [%- END -%]
-
+                    <br class="clear-both" />
                     <label class="results_header_lbl" for="limit_to_available">
                         <input type="checkbox" id="limit_to_available" name="modifier" value="available"
                             onchange="search_modifier_onchange('available', this, true)"
                             [% CGI.param('modifier').grep('available').size ? ' checked="checked"' : '' %] />
-                        [% l('Limit to available items') %]
+                        [% l('Limit to Available Items') %]
                     </label>
                     [% IF NOT metarecords.disabled %]
                         <label class="results_header_lbl" for="metabib_search_modifier">
@@ -105,6 +105,14 @@
                     -%]
                         <input type="hidden" name="detail_record_view" value="1" />
                     [% END %]
+
+                    <label class="results_header_lbl" for='opac.result.excludeelec'>
+                        <input type='checkbox' name="fi:-search_format" value="electronic"
+                            [%- CGI.param('fi:-search_format').grep('electronic').size ? ' checked="checked"' : '' %]
+                            id='opac.result.excludeelec' />
+                        [% l("Exclude Electronic Resources") %]
+                    </label>
+
             </div>
         </div>
     </div>
@@ -119,7 +127,7 @@
                     (ctx.records.size ? "table.tt2" : "lowhits.tt2");
                 INCLUDE $path %]
             </div>
-            <div class="common-full-pad"></div>    
+            <div class="common-full-pad"></div>
         </div>
         <br class="clear-both" />
     </div>
