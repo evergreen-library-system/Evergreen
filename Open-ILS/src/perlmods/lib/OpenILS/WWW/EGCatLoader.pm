@@ -57,6 +57,11 @@ sub new {
     return $self;
 }
 
+sub DESTROY {
+    my $self = shift;
+    $ENV{TZ} = $self->ctx->{original_tz}
+        if ($self->ctx && exists $self->ctx->{original_tz});
+}
 
 # current Apache2::RequestRec;
 sub apache {
@@ -269,7 +274,8 @@ sub load_common {
     $ctx->{unparsed_uri} = $self->apache->unparsed_uri;
     $ctx->{opac_root} = $ctx->{base_path} . "/opac"; # absolute base url
 
-    local $ENV{TZ} = $ctx->{client_tz};
+    $ctx->{original_tz} = $ENV{TZ};
+    $ENV{TZ} = $ctx->{client_tz};
 
     my $xul_wrapper = 
         ($self->apache->headers_in->get('OILS-Wrapper') || '') =~ /true/;
