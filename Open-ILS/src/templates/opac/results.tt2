@@ -75,7 +75,6 @@
                         [% END %]
                     </div>
                     [%- END -%]
-                    <br class="clear-both" />
                     <label class="results_header_lbl" for="limit_to_available">
                         <input type="checkbox" id="limit_to_available" name="modifier" value="available"
                             onchange="search_modifier_onchange('available', this, true)"
