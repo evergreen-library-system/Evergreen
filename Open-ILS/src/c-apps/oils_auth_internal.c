@@ -295,8 +295,8 @@ int oilsAuthInternalCreateSession(osrfMethodContext* ctx) {
 
     // fetch the user object
     jsonObject* idParam = jsonNewNumberStringObject(user_id);
-    jsonObject* userObj = oilsUtilsCStoreReq(
-        "open-ils.cstore.direct.actor.user.retrieve", idParam);
+    jsonObject* userObj = oilsUtilsCStoreReqCtx(
+        ctx, "open-ils.cstore.direct.actor.user.retrieve", idParam);
     jsonObjectFree(idParam);
 
     if (!userObj) {
@@ -392,8 +392,8 @@ int oilsAuthInternalValidate(osrfMethodContext* ctx) {
 
     // Confirm user exists, active=true, barred=false, deleted=false
     params = jsonNewNumberStringObject(user_id);
-    userObj = oilsUtilsCStoreReq(
-        "open-ils.cstore.direct.actor.user.retrieve", params);
+    userObj = oilsUtilsCStoreReqCtx(
+        ctx, "open-ils.cstore.direct.actor.user.retrieve", params);
     jsonObjectFree(params);
 
     if (userObj && userObj->type != JSON_NULL) {
@@ -428,8 +428,8 @@ int oilsAuthInternalValidate(osrfMethodContext* ctx) {
 
         int card_ok = 0;
         params = jsonParseFmt("{\"barcode\":\"%s\"}", barcode);
-        jsonObject* card = oilsUtilsCStoreReq(
-            "open-ils.cstore.direct.actor.card.search", params);
+        jsonObject* card = oilsUtilsCStoreReqCtx(
+            ctx, "open-ils.cstore.direct.actor.card.search", params);
         jsonObjectFree(params);
 
         if (card && card->type != JSON_NULL) {

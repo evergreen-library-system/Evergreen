@@ -10,6 +10,7 @@
 
 char* script    = NULL;
 char* authtoken = NULL;
+static char* tz = NULL;
 
 static int do_request( char* request );
 static char* format_response( const jsonObject* o );
@@ -64,6 +65,8 @@ int main( int argc, char* argv[] ) {
 
 	printf("Connected to OpenSRF network...\n");
 
+    tz = getenv("TZ");
+
 	if( username && password &&
 			( authtoken = oilsUtilsLogin(username, password, "staff", -1 )) ) {
 		printf("Login Session: %s\n", authtoken);
@@ -115,6 +118,8 @@ static int do_request( char* request ) {
 		}
 
 		osrfAppSession* session = osrfAppSessionClientInit(service);
+        if (tz) osrf_app_session_set_tz(session,tz);
+
 		int req_id = osrfAppSessionSendRequest( session, params, method, 1 );
 		osrfMessage* omsg;
 

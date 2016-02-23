@@ -13,6 +13,7 @@
 #include "oils_constants.h"
 #include "opensrf/osrf_app_session.h"
 #include "opensrf/osrf_settings.h"
+#include "opensrf/osrf_application.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -65,15 +66,20 @@ oilsEvent* oilsUtilsCheckPerms( int userid, int orgid, char* permissions[], int 
 jsonObject* oilsUtilsQuickReq( const char* service, const char* method,
 		const jsonObject* params );
 
+jsonObject* oilsUtilsQuickReqCtx( osrfMethodContext* ctx, const char* service,
+		const char* method, const jsonObject* params );
+
 jsonObject* oilsUtilsStorageReq( const char* method, const jsonObject* params );
+jsonObject* oilsUtilsStorageReqCtx( osrfMethodContext* ctx, const char* method, const jsonObject* params );
 
 jsonObject* oilsUtilsCStoreReq( const char* method, const jsonObject* params );
+jsonObject* oilsUtilsCStoreReqCtx( osrfMethodContext* ctx, const char* method, const jsonObject* params );
 
 /**
  * Searches the storage server for a user with the given username 
  * Caller is responsible for freeing the returned object
  */
-jsonObject* oilsUtilsFetchUserByUsername( const char* name );
+jsonObject* oilsUtilsFetchUserByUsername( osrfMethodContext* ctx, const char* name );
 
 
 /**
@@ -95,7 +101,7 @@ char* oilsUtilsLogin( const char* uname, const char* passwd, const char* type, i
  */
 jsonObject* oilsUtilsFetchWorkstation( long id );
 
-jsonObject* oilsUtilsFetchUserByBarcode(const char* barcode);
+jsonObject* oilsUtilsFetchUserByBarcode(osrfMethodContext* ctx, const char* barcode);
 
 jsonObject* oilsUtilsFetchWorkstationByName( const char* name );
 
@@ -108,7 +114,7 @@ long oilsUtilsIntervalToSeconds( const char* interval );
  * Creates actor.usr_activity entries
  * @return The number of rows created.  0 or 1.
  */
-int oilsUtilsTrackUserActivity( long usr, const char* ewho, const char* ewhat, const char* ehow );
+int oilsUtilsTrackUserActivity( osrfMethodContext* ctx, long usr, const char* ewho, const char* ewhat, const char* ehow );
 
 /**
  * Returns the ID of the root org unit (parent_ou = NULL)

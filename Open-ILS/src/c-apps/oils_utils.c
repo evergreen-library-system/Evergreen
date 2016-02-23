@@ -120,7 +120,7 @@ long oilsFMGetObjectId( const jsonObject* obj ) {
 	return id;
 }
 
-int oilsUtilsTrackUserActivity(long usr, const char* ewho, const char* ewhat, const char* ehow) {
+int oilsUtilsTrackUserActivity(osrfMethodContext* ctx, long usr, const char* ewho, const char* ewhat, const char* ehow) {
     if (!usr && !(ewho || ewhat || ehow)) return 0;
     int rowcount = 0;
 
@@ -260,6 +260,42 @@ jsonObject* oilsUtilsQuickReq( const char* service, const char* method,
 }
 
 /**
+	@brief Perform a remote procedure call, propagating session
+        locale and timezone
+	@param service The name of the service to invoke.
+	@param method The name of the method to call.
+	@param params The parameters to be passed to the method, if any.
+	@return A copy of whatever the method returns as a result, or a JSON_NULL if the method
+	doesn't return anything.
+
+	If the @a params parameter points to a JSON_ARRAY, pass each element of the array
+	as a separate parameter.  If it points to any other kind of jsonObject, pass it as a
+	single parameter.  If it is NULL, pass no parameters.
+
+	The calling code is responsible for freeing the returned object by calling jsonObjectFree().
+*/
+jsonObject* oilsUtilsQuickReqCtx( osrfMethodContext* ctx, const char* service,
+                const char* method, const jsonObject* params ) {
+	if(!(service && method && ctx)) return NULL;
+
+	osrfLogDebug(OSRF_LOG_MARK, "oilsUtilsQuickReqCtx(): %s - %s (%s)", service, method, ctx->session->session_tz );
+
+	// Open an application session with the service, and send the request
+	osrfAppSession* session = osrfAppSessionClientInit( service );
+	osrf_app_session_set_tz(session, ctx->session->session_tz);
+	int reqid = osrfAppSessionSendRequest( session, params, method, 1 );
+
+	// Get the response
+	osrfMessage* omsg = osrfAppSessionRequestRecv( session, reqid, 60 );
+	jsonObject* result = jsonObjectClone( osrfMessageGetResult(omsg) );
+
+	// Clean up
+	osrfMessageFree(omsg);
+	osrfAppSessionFree(session);
+	return result;
+}
+
+/**
 	@brief Call a method of the open-ils.storage service.
 	@param method Name of the method.
 	@param params Parameters to be passed to the method, if any.
@@ -293,6 +329,24 @@ jsonObject* oilsUtilsCStoreReq( const char* method, const jsonObject* params ) {
 	return oilsUtilsQuickReq("open-ils.cstore", method, params);
 }
 
+/**
+	@brief Call a method of the open-ils.cstore service, context aware.
+	@param ctx Method context object.
+	@param method Name of the method.
+	@param params Parameters to be passed to the method, if any.
+	@return A copy of whatever the method returns as a result, or a JSON_NULL if the method
+	doesn't return anything.
+
+	If the @a params parameter points to a JSON_ARRAY, pass each element of the array
+	as a separate parameter.  If it points to any other kind of jsonObject, pass it as a
+	single parameter.  If it is NULL, pass no parameters.
+
+	The calling code is responsible for freeing the returned object by calling jsonObjectFree().
+*/
+jsonObject* oilsUtilsCStoreReqCtx( osrfMethodContext* ctx, const char* method, const jsonObject* params ) {
+	return oilsUtilsQuickReqCtx(ctx, "open-ils.cstore", method, params);
+}
+
 
 
 /**
@@ -303,11 +357,11 @@ jsonObject* oilsUtilsCStoreReq( const char* method, const jsonObject* params ) {
 
 	The calling code is responsible for freeing the returned object by calling jsonObjectFree().
 */
-jsonObject* oilsUtilsFetchUserByUsername( const char* name ) {
+jsonObject* oilsUtilsFetchUserByUsername( osrfMethodContext* ctx, const char* name ) {
 	if(!name) return NULL;
 	jsonObject* params = jsonParseFmt("{\"usrname\":\"%s\"}", name);
-	jsonObject* user = oilsUtilsQuickReq(
-		"open-ils.cstore", "open-ils.cstore.direct.actor.user.search", params );
+	jsonObject* user = oilsUtilsQuickReqCtx(
+		ctx, "open-ils.cstore", "open-ils.cstore.direct.actor.user.search", params );
 
 	jsonObjectFree(params);
 	long id = oilsFMGetObjectId(user);
@@ -326,14 +380,14 @@ jsonObject* oilsUtilsFetchUserByUsername( const char* name ) {
 
 	The calling code is responsible for freeing the returned object by calling jsonObjectFree().
 */
-jsonObject* oilsUtilsFetchUserByBarcode(const char* barcode) {
+jsonObject* oilsUtilsFetchUserByBarcode(osrfMethodContext* ctx, const char* barcode) {
 	if(!barcode) return NULL;
 
 	osrfLogInfo(OSRF_LOG_MARK, "Fetching user by barcode %s", barcode);
 
 	jsonObject* params = jsonParseFmt("{\"barcode\":\"%s\"}", barcode);
-	jsonObject* card = oilsUtilsQuickReq(
-		"open-ils.cstore", "open-ils.cstore.direct.actor.card.search", params );
+	jsonObject* card = oilsUtilsQuickReqCtx(
+		ctx, "open-ils.cstore", "open-ils.cstore.direct.actor.card.search", params );
 	jsonObjectFree(params);
 
 	if(!card)
@@ -349,8 +403,8 @@ jsonObject* oilsUtilsFetchUserByBarcode(const char* barcode) {
 
 	// Look up the user in actor.usr
 	params = jsonParseFmt("[%f]", iusr);
-	jsonObject* user = oilsUtilsQuickReq(
-		"open-ils.cstore", "open-ils.cstore.direct.actor.user.retrieve", params);
+	jsonObject* user = oilsUtilsQuickReqCtx(
+		ctx, "open-ils.cstore", "open-ils.cstore.direct.actor.user.retrieve", params);
 
 	jsonObjectFree(params);
 	return user;

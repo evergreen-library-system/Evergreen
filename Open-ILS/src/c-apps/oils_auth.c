@@ -239,7 +239,7 @@ static int oilsAuthInitUsernameHandler(
 
     int user_id = -1;
     jsonObject* resp = NULL; // free
-    jsonObject* user_obj = oilsUtilsFetchUserByUsername(username); // free
+    jsonObject* user_obj = oilsUtilsFetchUserByUsername(ctx, username); // free
 
     if (user_obj && user_obj->type != JSON_NULL) 
         user_id = oilsFMGetObjectId(user_obj);
@@ -281,7 +281,7 @@ static int oilsAuthInitBarcodeHandler(
 
     int user_id = -1;
     jsonObject* resp = NULL; // free
-    jsonObject* user_obj = oilsUtilsFetchUserByBarcode(barcode); // free
+    jsonObject* user_obj = oilsUtilsFetchUserByBarcode(ctx, barcode); // free
 
     if (user_obj && user_obj->type != JSON_NULL) 
         user_id = oilsFMGetObjectId(user_obj);
@@ -490,7 +490,7 @@ static int oilsAuthVerifyPassword( const osrfMethodContext* ctx, int user_id,
 	Returns the event that should be returned to the user.
 	Event must be freed
 */
-static oilsEvent* oilsAuthHandleLoginOK( jsonObject* userObj, const char* uname,
+static oilsEvent* oilsAuthHandleLoginOK( osrfMethodContext* ctx, jsonObject* userObj, const char* uname,
 		const char* type, int orgloc, const char* workstation ) {
 
 	oilsEvent* response = NULL;
@@ -503,7 +503,8 @@ static oilsEvent* oilsAuthHandleLoginOK( jsonObject* userObj, const char* uname,
     if (workstation) 
         jsonObjectSetKey(params, "workstation", jsonNewObject(workstation));
 
-    jsonObject* authEvt = oilsUtilsQuickReq(
+    jsonObject* authEvt = oilsUtilsQuickReqCtx(
+        ctx,
         "open-ils.auth_internal",
         "open-ils.auth_internal.session.create", params);
     jsonObjectFree(params);
@@ -644,8 +645,8 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
     }
 
     jsonObject* param = jsonNewNumberObject(user_id); // free
-    userObj = oilsUtilsCStoreReq(
-        "open-ils.cstore.direct.actor.user.retrieve", param);
+    userObj = oilsUtilsCStoreReqCtx(
+        ctx, "open-ils.cstore.direct.actor.user.retrieve", param);
     jsonObjectFree(param);
 
     char* freeable_uname = NULL;
@@ -662,7 +663,8 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
     jsonObjectSetKey(params, "login_type", jsonNewObject(type));
     if (barcode) jsonObjectSetKey(params, "barcode", jsonNewObject(barcode));
 
-    jsonObject* authEvt = oilsUtilsQuickReq( // freed after password test
+    jsonObject* authEvt = oilsUtilsQuickReqCtx( // freed after password test
+        ctx
         "open-ils.auth_internal",
         "open-ils.auth_internal.user.validate", params);
     jsonObjectFree(params);
@@ -743,10 +745,11 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 
         } else {
             response = oilsAuthHandleLoginOK(
-                userObj, uname, type, orgloc, workstation);
+                ctx, userObj, uname, type, orgloc, workstation);
         }
 
         oilsUtilsTrackUserActivity(
+            ctx,
             oilsFMGetObjectId(userObj), 
             ewho, ewhat, 
             osrfAppSessionGetIngress()
