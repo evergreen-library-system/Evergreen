@@ -2681,9 +2681,7 @@ sub load_myopac_circ_history_export {
 
     $self->ctx->{csv} = $U->fire_object_event(
         undef, 
-        'circ.format.history.csv',
-        $e->search_action_circulation(
-            {id => [map {$_->id} @$circs]}, {substream =>1}),
+        'circ.format.history.csv', $circs,
         $self->editor->requestor->home_ou
     );
 
