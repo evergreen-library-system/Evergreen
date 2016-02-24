@@ -1,0 +1,48 @@
+\set ECHO 'none'
+\set QUIET 1
+-- Turn off echo and keep things quiet.
+
+-- Format the output for nice TAP.
+\pset format unaligned
+\pset tuples_only true
+\pset pager
+
+-- Revert all changes on failure.
+\set ON_ERROR_ROLLBACK 1
+\set ON_ERROR_STOP true
+
+-- let's do this thing
+BEGIN;
+
+-- putting tests in function to allow for variable reuse
+CREATE OR REPLACE FUNCTION mtbs_test() RETURNS SETOF TEXT AS $$
+DECLARE
+	max_id bigint;
+BEGIN
+
+RETURN QUERY SELECT plan(2);
+
+SELECT max(mbx.id) INTO max_id
+FROM money.billable_xact mbx
+JOIN money.billing mb ON NOT mb.voided AND mb.xact = mbx.id;
+
+RETURN QUERY SELECT is(
+    (SELECT DISTINCT ON (xact) billing_type FROM money.billing WHERE xact = max_id ORDER BY xact, billing_ts DESC),
+    (SELECT last_billing_type FROM money.transaction_billing_summary WHERE xact = max_id),
+    'mtbs has correct last billing type'
+);
+
+RETURN QUERY SELECT is(
+    (SELECT DISTINCT ON (xact) note FROM money.billing WHERE xact = max_id ORDER BY xact, billing_ts DESC),
+    (SELECT last_billing_note FROM money.transaction_billing_summary WHERE xact = max_id),
+    'mtbs has correct last billing note'
+);
+
+RETURN QUERY SELECT * FROM finish();
+
+END;
+$$ LANGUAGE plpgsql;
+
+SELECT mtbs_test();
+
+ROLLBACK;
