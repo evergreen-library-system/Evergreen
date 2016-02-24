@@ -100,3 +100,14 @@ function search_modifier_onchange(type, checkbox, submitOnChange) {
         checkbox.form.submit(); 
     }
 }
+
+function exclude_onchange(checkbox) {
+    if (checkbox.form._adv && !checkbox.checked) {
+        var search_box = $('search_box');
+        // Other functions' form submits may create duplicates of this, so /g
+        var reg = /-search_format\(electronic\)/g;
+        search_box.value = search_box.value.replace(reg, "");
+    }
+
+    checkbox.form.submit();
+}
