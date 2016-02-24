@@ -56,7 +56,7 @@ sub build_invoice_impl {
     if ($invoice->isnew) {
         $invoice->recv_method('PPR') unless $invoice->recv_method;
         $invoice->recv_date('now') unless $invoice->recv_date;
-        my $inv_closing = $U->is_true($invoice->complete);
+        $inv_closing = $U->is_true($invoice->complete);
         $e->create_acq_invoice($invoice) or return $e->die_event;
     } elsif ($invoice->isdeleted) {
         $e->delete_acq_invoice($invoice) or return $e->die_event;
