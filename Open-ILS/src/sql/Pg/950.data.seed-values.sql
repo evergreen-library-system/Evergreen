@@ -13139,7 +13139,7 @@ INSERT INTO config.org_unit_setting_type
 INSERT INTO action_trigger.hook (key, core_type, description, passive)
 VALUES (
     'circ.format.history.csv',
-    'circ',
+    'auch',
     oils_i18n_gettext(
         'circ.format.history.csv',
         'Produce CSV of circulation history',
