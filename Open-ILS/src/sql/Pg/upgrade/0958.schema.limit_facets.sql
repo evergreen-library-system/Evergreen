@@ -1,6 +1,6 @@
 BEGIN;
 
---- SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0958', :eg_version);
 
 CREATE OR REPLACE FUNCTION search.facets_for_record_set(ignore_facet_classes TEXT[], hits BIGINT[]) RETURNS TABLE (id INT, value TEXT, count BIGINT) AS $$
     SELECT id, value, count FROM (
