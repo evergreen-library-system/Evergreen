@@ -7054,6 +7054,13 @@ INSERT INTO config.coded_value_map
     oils_i18n_gettext(633, 'Blu-ray', 'ccvm', 'value'),
     oils_i18n_gettext(633, 'Blu-ray', 'ccvm', 'search_label'));
 
+-- Electronic search format, not opac_visible
+INSERT INTO config.coded_value_map
+    (id, ctype, code, value, opac_visible, search_label) VALUES
+(712, 'search_format', 'electronic', FALSE,
+    oils_i18n_gettext(712, 'Electronic', 'ccvm', 'value'),
+    oils_i18n_gettext(712, 'Electronic', 'ccvm', 'search_label'));
+
 -- RDA content type, media type, and carrier type
 INSERT INTO config.coded_value_map (id, ctype, code, value, concept_uri)
   VALUES (634, 'content_type', 'two-dimensional moving image',
@@ -7450,6 +7457,11 @@ INSERT INTO config.composite_attr_entry_definition
 -- blu-ray icon_format
 INSERT INTO config.composite_attr_entry_definition 
     (coded_value, definition) VALUES (608, '{"_attr":"vr_format","_val":"s"}');
+
+-- electronic
+INSERT INTO config.composite_attr_entry_definition
+    (coded_value, definition) VALUES
+(712, '{"_attr":"item_form","_val":"s"},{"_attr":"item_form","_val":"o"}');
 
 -- use the definitions from the icon_format as the basis for the MR hold format definitions
 DO $$
