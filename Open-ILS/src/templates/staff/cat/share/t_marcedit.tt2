@@ -61,7 +61,7 @@
         <div class="row col-md-12">
             <eg-marc-edit-fixed-field fixed-field="Type" record="record"></eg-marc-edit-fixed-field>
             <eg-marc-edit-fixed-field fixed-field="ELvl" record="record"></eg-marc-edit-fixed-field>
-            <eg-marc-edit-fixed-field fixed-field="Srce" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="Source" record="record"></eg-marc-edit-fixed-field>
             <eg-marc-edit-fixed-field fixed-field="Audn" record="record"></eg-marc-edit-fixed-field>
             <eg-marc-edit-fixed-field fixed-field="Ctrl" record="record"></eg-marc-edit-fixed-field>
             <eg-marc-edit-fixed-field fixed-field="Lang" record="record"></eg-marc-edit-fixed-field>
@@ -145,7 +145,6 @@
             <eg-marc-edit-fixed-field fixed-field="Name" record="record"></eg-marc-edit-fixed-field>
             <eg-marc-edit-fixed-field fixed-field="Status" record="record"></eg-marc-edit-fixed-field>
             <eg-marc-edit-fixed-field fixed-field="ModRec" record="record"></eg-marc-edit-fixed-field>
-            <eg-marc-edit-fixed-field fixed-field="Source" record="record"></eg-marc-edit-fixed-field>
         </div>
       </div>
     </div>

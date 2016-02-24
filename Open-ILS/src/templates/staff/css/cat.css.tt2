@@ -41,6 +41,10 @@ input.marcedit:focus {
     max-width: 800px;
 }
 
+.fixed-field-box {
+    border: 1px solid gray;
+}
+
 .marcsfvalue {
     border-left: 0px !important;
 }

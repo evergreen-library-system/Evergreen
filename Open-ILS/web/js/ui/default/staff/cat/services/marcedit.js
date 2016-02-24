@@ -197,6 +197,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
         replace: true,
         controller : ['$scope', '$element', 'egTagTable',
             function ( $scope ,  $element ,  egTagTable) {
+                $($element).removeClass('fixed-field-box');
                 $($element).children().css({ display : 'none' });
                 $scope.me = null;
                 $scope.content = null; // this is where context menus dump their values
@@ -225,6 +226,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                                     if (ff.fixed_field == $scope.fixedField && ff.rec_type == $scope.rtype) {
                                         $scope.me = ff;
                                         $scope.ready = true;
+                                        $($element).addClass('fixed-field-box');
                                         $($element).children().css({ display : 'inline' });
 
                                         var input = $($element).find('input');
