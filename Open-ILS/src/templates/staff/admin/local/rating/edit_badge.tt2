@@ -1,0 +1,42 @@
+<form ng-submit="ok(record)" role="form" class="form-validated">
+    <div class="modal-header">
+      <button type="button" class="close" ng-click="cancel()" 
+        aria-hidden="true">&times;</button>
+      <h4 class="modal-title">{{record_label}}</h4>
+    </div>
+    <div class="modal-body">
+      <div class="form-group row" ng-repeat="field in fields | filter:{virtual:'!true'}">
+        <div class="col-md-3">
+          <label for="rec-{{field.name}}">{{field.label}}</label>
+        </div>
+        <div class="col-md-9">
+            <span  ng-if="field.datatype == 'id' || field.readonly">{{record[field.name]}}</span>
+            <eg-org-selector ng-if="field.datatype == 'org_unit'"
+                selected="record[field.name + '_ou'].org" 
+                onchange="record[field.name + '_ou'].update_org">
+            </eg-org-selector>
+            <input ng-if="field.datatype == 'text'"
+                ng-required="field.is_required(record)"
+                ng-model="record[field.name]"></input>
+            <input ng-if="field.datatype == 'int'" type="number"
+                ng-required="field.is_required(record)"
+                ng-model="record[field.name]"></input>
+            <input ng-if="field.datatype == 'float'" type="number" step="0.1"
+                ng-required="field.is_required(record)"
+                ng-model="record[field.name]"></input>
+            <span ng-if="field.datatype == 'link'" class="nullable">
+            <select ng-if="field.datatype == 'link'"
+                ng-options="item.id as item.name for item in field.linked_values"
+                ng-model="record[field.name]">
+                    <option value=""></option>
+                </select>
+            </span>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <input type="submit" class="btn btn-primary" value="[% l('OK') %]"/>
+      <button class="btn btn-warning" ng-click="cancel($event)">[% l('Cancel') %]</button>
+    </div>
+  </div> <!-- modal-content -->
+</form>

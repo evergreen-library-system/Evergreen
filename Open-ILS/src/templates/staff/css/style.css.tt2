@@ -97,6 +97,9 @@
 .form-validated input.ng-valid.ng-dirty {
   background-color: #78FA89;
 }
+.form-validated input.ng-invalid-required {
+  background-color: #FACDCF;
+}
 
 /* --------------------------------------------------------------------------
  * Local style

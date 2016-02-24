@@ -1,0 +1,60 @@
+[%
+  WRAPPER 'staff/base.tt2';
+  ctx.page_type = l('Statistical Popularity Badges');
+  ctx.page_app = 'egAdminRating';
+  ctx.page_ctrl = 'Badges';
+%]
+
+[% BLOCK APP_JS %]
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/grid.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/ui.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/admin/local/rating/badge.js"></script>
+<link rel="stylesheet" href="[% ctx.base_path %]/staff/css/admin.css" />
+<script>
+  angular.module('egCoreMod').run(['egStrings', function(s) {
+    s.CONFIRM_DELETE_BADGE_TITLE =
+      "[% l('Confirm badge deletion') %]";
+    s.CONFIRM_DELETE_BADGE_BODY =
+      "[% l('Delete badge {{id}} ({{name}})?') %]";
+  }]);
+</script>
+[% END %]
+
+<div class="container-fluid" style="text-align:center">
+  <div class="alert alert-info alert-less-pad strong-text-2">
+    [% l('Statistical Popularity Badges') %]
+  </div>
+</div>
+
+<!--
+<div class="row">
+  <div class="col-md-4">
+    <div class="form-group">
+      <label>[% l('Scope Library') %]</label>
+      <eg-org-selector onchange="org_changed" 
+        selected="context_org"></eg-org-selector>
+    </div>
+  </div>
+</div>
+-->
+
+<eg-grid
+    id-field="id"
+    idl-class="rb"
+    grid-controls="gridControls"
+    features="-multiselect"
+    persist-key="admin.local.rating.badge">
+   
+    <eg-grid-action label="[% l('Add badge') %]" handler="create_rb"></eg-grid-action> 
+    <eg-grid-action label="[% l('Edit badge') %]" handler="update_rb"></eg-grid-action> 
+    <eg-grid-action label="[% l('Delete badge') %]" handler="delete_rb"></eg-grid-action> 
+
+    <eg-grid-field label="[% l('Name') %]"                   path='name'></eg-grid-field>
+    <eg-grid-field label="[% l('Description') %]"            path='description'></eg-grid-field>
+    <eg-grid-field label="[% l('Scope') %]"                  path='scope.name'></eg-grid-field>
+    <eg-grid-field label="[% l('Popularity Parameter') %]"   path='popularity_parameter.name'></eg-grid-field>
+    <eg-grid-field label="[% l('ID') %]" path='id' required hidden></eg-grid-field>
+    <eg-grid-field path='*' hidden></eg-grid-field> 
+</eg-grid>
+
+[% END %]
