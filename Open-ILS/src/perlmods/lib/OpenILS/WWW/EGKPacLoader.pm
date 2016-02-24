@@ -36,8 +36,12 @@ sub load {
     # ----------------------------------------------------------------
     return $self->redirect_ssl unless $self->cgi->https;
 
-    return $self->load_getit_results if $path =~ m|kpac/getit_results|;
-    return $self->load_getit if $path =~ m|kpac/getit|;
+	#logic added to resolve path-matching conflict
+	if ($path =~ m|kpac/getit_results|) {
+	    return $self->load_getit_results;
+	} elsif ($path =~ m|kpac/getit|) {
+	    return $self->load_getit;
+	}
 
     # ----------------------------------------------------------------
     #  Everything below here requires authentication
@@ -209,7 +213,8 @@ sub load_getit_results {
     my $hold_id = $self->cgi->param('hold');
     my $rec_id = $ctx->{page_args}->[0];
 
-    my (undef, @rec_data) = $self->get_records_and_facets([$rec_id]);
+    my (undef, @rec_data) = $self->get_records_and_facets([$rec_id], undef, 
+                {flesh => '{mra,holdings_xml,acp,exclude_invisible_acn}'});
     $ctx->{bre_id} = $rec_data[0]->{id};
     $ctx->{marc_xml} = $rec_data[0]->{marc_xml};
 
