@@ -2,6 +2,11 @@
 <div class="rdetail_header">
     <span class="rdetail_results">
         <a href='[% mkurl(ctx.opac_root _ '/results', {}, stop_parms); %]'><span class="nav_arrow_fix">&#9668;</span> [% l('Search Results') %]</a>
+        <!-- stash these in JS for the web staff client to find -->
+        <script>
+            window.search_result_hit_count = [% ctx.hit_count %];
+            window.search_result_index = [% ctx.search_result_index %];
+        </script>
         <span class="rdetail_result_count">
             [% l('Showing Item [_1] of [_2]', ctx.search_result_index + 1, ctx.hit_count) %]
         </span>

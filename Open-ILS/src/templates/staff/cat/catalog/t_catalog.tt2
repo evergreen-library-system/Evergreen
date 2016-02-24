@@ -18,7 +18,7 @@
        [% l('End') %]
     </button>
     <button type="button" ng-disabled="from_route" class="btn btn-default" ng-click="opac_call('rdetailBackToResults', true)">
-       [% l('Back To Results') %]
+       [% l('Back To Results') %] ( {{ search_result_index }} / {{ search_result_hit_count }} )
     </button>
   </div>
   <div class="col-md-3">

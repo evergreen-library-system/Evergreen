@@ -248,6 +248,25 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
     $scope.opac_iframe = null;
     $scope.parts_iframe = null;
 
+    $scope.search_result_index = 1;
+    $scope.search_result_hit_count = 1;
+
+    $scope.$watch(
+        'opac_iframe.dom.contentWindow.search_result_index',
+        function (n,o) {
+            if (!isNaN(parseInt(n)))
+                $scope.search_result_index = n + 1;
+        }
+    );
+
+    $scope.$watch(
+        'opac_iframe.dom.contentWindow.search_result_hit_count',
+        function (n,o) {
+            if (!isNaN(parseInt(n)))
+                $scope.search_result_hit_count = n;
+        }
+    );
+
     $scope.in_opac_call = false;
     $scope.opac_call = function (opac_frame_function, force_opac_tab) {
         if ($scope.opac_iframe) {
