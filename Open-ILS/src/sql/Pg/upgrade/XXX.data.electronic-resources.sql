@@ -14,3 +14,10 @@ INSERT INTO config.composite_attr_entry_definition
 
 
 COMMIT;
+
+\qecho To use the new electronic search format, it is necessary to do a
+\qecho record attribute reingest. For example,
+\qecho
+\qecho SELECT 'metabib.reingest_record_attributes(' || id || ');'
+\qecho biblio.record_entry WHERE NOT DELETED and id > 0;
+\qecho
