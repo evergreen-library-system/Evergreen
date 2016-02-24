@@ -18,7 +18,7 @@
         [% l('To manage your lists, go to [_1]My Lists[_2]', '<a href="' _ mkurl(ctx.opac_root _ '/myopac/lists', {}, 1) _ '">', '</a>') %]
         <p>
     [% ELSIF ctx.added_to_list %]
-        [% list_html = ctx.list.name | html %]
+        [% list_html = ctx.added_to_list.name | html %]
         <h2 class="sub_header2">[% l('You Saved It!') %]</h2>
         <p>
         [% l('You successfully saved [_1] to [_2].', title_html, list_html) %]<br/>
