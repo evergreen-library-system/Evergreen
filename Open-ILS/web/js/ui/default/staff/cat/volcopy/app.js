@@ -279,8 +279,9 @@ function(egCore , $q) {
             [status_setting],
             owningLib
         ).then(function(set) {
-            var default_ccs = set[status_setting] || 
-                (isFastAdd ? 0 : 5); // 0 is Available, 5 is In Process
+            var default_ccs = parseInt(set[status_setting]);
+            if (isNaN(default_ccs))
+                default_ccs = (isFastAdd ? 0 : 5); // 0 is Available, 5 is In Process
             cp.status(default_ccs);
         });
 
