@@ -1,0 +1,7 @@
+Limiter to exclude electronic resources
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+A limiter to exclude electronic resources from search results is now available
+on the advanced search screen and from the search results page. This limiter
+will exclude any search results with an item form of o or s. This limiter
+will be applied on top of any other format limiters used in the search.
+
