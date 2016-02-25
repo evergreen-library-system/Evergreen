@@ -19,15 +19,19 @@
       <div class="row" ng-repeat="card in args.cards">
         <div class="col-md-4">{{card.barcode}}</div>
         <div class="col-md-4">
-          <input type='checkbox' ng-model='card.active'/>
+          <input type='checkbox' ng-model='card.active' 
+            ng-disabled="!perms.UPDATE_PATRON_ACTIVE_CARD"/>
         </div>
         <div class="col-md-4">
-          <input type='radio' name='primary' value='on' ng-model='card._primary'/>
+          <input type='radio' name='primary' value='on' 
+            ng-model='card._primary'
+            ng-disabled="!perms.UPDATE_PATRON_PRIMARY_CARD"/>
         </div>
       </div>
     </div>
     <div class="modal-footer">
-      <input type="submit" class="btn btn-primary" value="[% l('Apply Changes') %]"/>
+      <input type="submit" class="btn btn-primary" value="[% l('Apply Changes') %]"
+        ng-disabled="!perms.UPDATE_PATRON_PRIMARY_CARD && !perms.UPDATE_PATRON_ACTIVE_CARD"/>
       <button class="btn btn-warning" ng-click="cancel()">[% l('Cancel') %]</button>
     </div>
   </div> <!-- modal-content -->
