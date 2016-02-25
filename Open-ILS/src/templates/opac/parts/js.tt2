@@ -133,7 +133,7 @@ var aou_hash = {
        return false;
     }
     function validateHoldForm() {
-      if (validateRadioSelection (document.forms["PlaceHold"]["part"]))
+      if (validateRadioSelection (document.getElementsByName("part")))
       {
         return true;
        }
