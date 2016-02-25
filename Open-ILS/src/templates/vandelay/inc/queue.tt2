@@ -15,6 +15,7 @@
                                 <tr><td><a href='javascript:;' onclick='vlHandleQueueItemsAction("import")'>[% l('Import Selected Records') %]</a></td></tr>
                                 <tr><td><a href='javascript:;' onclick='vlHandleQueueItemsAction("import_all")'>[% l('Import All  Records') %]</a></td></tr>
                                 <tr><td><a href='javascript:;' onclick='vlLoadErrorUIAll();'>[% l('View Import Items') %]</a></td></tr>
+                                <tr><td><a href='javascript:;' onclick='vlExportRecordQueue({"nonimported":1})'>[% l('Export Non-Imported Records') %]</a></td></tr>
                                 <tr><td><a href='javascript:;' onclick='
                                     if(confirm("[% l('Are you sure you want to delete this queue?') %]")) {
                                         vlDeleteQueue(currentType, currentQueueId, 

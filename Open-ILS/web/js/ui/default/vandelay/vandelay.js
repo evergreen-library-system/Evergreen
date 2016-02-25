@@ -74,6 +74,7 @@ var authAttrsFetched = false;
 var attrDefMap = {}; // maps attr def code names to attr def ids
 var currentType;
 var currentQueueId = null;
+var currentQueueName = null;
 var userCache = {};
 var currentMatchedRecords; // set of loaded matched bib records
 var currentOverlayRecordsMap; // map of import record to overlay record
@@ -558,6 +559,32 @@ function exportHandler(type, response) {
         }
     } catch(E) {
         alert('Error exporting data: ' + E);
+    }
+}
+
+/* export all (or just non-imported) queue records */
+function vlExportRecordQueue(opts) {
+    /* conform type to exporter */
+    var type = currentType == 'auth' ? 'auth' : 'biblio';
+    var url = '/exporter?format=xml&type='+type+'&queueid='+currentQueueId;
+    if (opts.nonimported) {
+        url += '&nonimported=1';
+    }
+
+    var req = new XMLHttpRequest();
+    req.open('GET',url,true);
+    req.send(null);
+    req.onreadystatechange = function () {
+        if (req.readyState == 4) {
+            var file_tag = opts.nonimported ? '_nonimported' : '';
+            openils.XUL.contentToFileSaveDialog(req.responseText, null, {
+                defaultString : currentQueueName + file_tag + '.xml',
+                defaultExtension : '.xml',
+                filterName : 'XML',
+                filterExtension : '*.xml',
+                filterAll : true
+            } );
+        }
     }
 }
 
@@ -1178,7 +1205,8 @@ var handleRetrieveRecords = function() {
     }
     vlFetchQueueSummary(currentQueueId, currentType, 
         function(summary) {
-            dojo.byId('vl-queue-summary-name').innerHTML = summary.queue.name();
+            currentQueueName = summary.queue.name();
+            dojo.byId('vl-queue-summary-name').innerHTML = currentQueueName;
             dojo.byId('vl-queue-summary-total-count').innerHTML = summary.total +'';
             dojo.byId('vl-queue-summary-import-count').innerHTML = summary.imported + '';
             dojo.byId('vl-queue-summary-import-item-count').innerHTML = summary.total_items + '';

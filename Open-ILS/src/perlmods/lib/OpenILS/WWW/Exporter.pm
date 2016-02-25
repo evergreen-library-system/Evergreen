@@ -105,9 +105,50 @@ sub handler {
         @records = map { ($_->target_biblio_record_entry) } @$recs;
     }
 
+    my $type = $cgi->param('rectype') || 'biblio';
+    my $retrieve_func;
+    # STILL no records ...
+    my $queue_id = $cgi->param('queueid');
+    if ($queue_id) {
+        # check that we're logged in -- XXX necessary? conservative for now
+        my $authid = $cgi->cookie('ses') || $cgi->param('ses');
+        my $auth = verify_login($authid);
+        if (!$auth) {
+            return 403;
+        }
+
+        # validate type
+        my $queue_type;
+        if ($type eq 'biblio') {
+            $queue_type = 'bib';
+        } elsif ($type eq 'authority') {
+            $queue_type = $type;
+        } else {
+            return 400;
+        }
+
+        # does queue exist?  This check is really just for better error logging
+        my $queue = $ses->request( "open-ils.cstore.direct.vandelay.${queue_type}_queue.retrieve", $queue_id )->gather(1);
+        unless($queue) {
+            $r->log->error("No such queue $queue_id");
+            $logger->error("No such queue $queue_id");
+            return Apache2::Const::NOT_FOUND;
+        }
+
+        # fetch the records
+        my $query = {queue => $queue_id};
+        if ($cgi->param('nonimported')) {
+            $query->{import_time} = undef;
+        }
+        $retrieve_func = "vandelay.queued_${queue_type}_record";
+        my $recs = $ses->request( "open-ils.cstore.direct.${retrieve_func}.id_list.atomic", $query )->gather(1);
+        @records = @$recs;
+    } else {
+        $retrieve_func = "$type.record_entry";
+    }
+
     return show_template($r) unless (@records);
 
-    my $type = $cgi->param('rectype') || 'biblio';
     if ($type ne 'biblio' && $type ne 'authority') {
         return 400;
     }
@@ -197,7 +238,7 @@ sub handler {
             try {
                 local $SIG{ALRM} = sub { die "TIMEOUT\n" };
                 alarm(1);
-                $bib = $ses->request( "open-ils.cstore.direct.$type.record_entry.retrieve", $i, $flesh )->gather(1);
+                $bib = $ses->request( "open-ils.cstore.direct.$retrieve_func.retrieve", $i, $flesh )->gather(1);
                 alarm(0);
             } otherwise {
                 warn "\n!!!!!! Timed out trying to read record $i\n";
