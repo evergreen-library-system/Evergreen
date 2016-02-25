@@ -12,7 +12,18 @@
             title="[% l('Search and History Preferences') %]">
             <tbody>
 
-                [% IF ctx.updated_user_settings %]
+                [% IF ctx.confirm_history_delete %]
+                <tr><td colspan='2'>
+                  <div id='clear-history-confirm' class='renew-summary'>
+                  [% l('Disabling checkout or holds history will permanently remove all items from your history.') %]
+                  <br/>
+                  [% l('Are you sure you wish to continue?') %]
+                  </div>
+                  <a href="[% mkurl() %]">[% l('Cancel') %]</a>
+                  <input type='hidden' name='history_delete_confirmed' value='1'/>
+                  <input type="submit" value="[% l('Confirm') %]" class="opac-button"/>
+                </td></tr>
+                [% ELSIF ctx.updated_user_settings %]
                 <tr><td colspan='2'>
                     <div class='renew-summary'>
                         [% l('Account Successfully Updated') %]
@@ -123,16 +134,7 @@
 
             </tbody>
         </table>
-        [% IF ctx.confirm_history_delete %]
-        <div id='clear-history-confirm'>
-        [% l('Disabling checkout or holds history will permanently remove all items from your history.') %]
-        <br/>
-        [% l('Are you sure you wish to continue?') %]
-        </div>
-        <a href="[% mkurl() %]">[% l('Cancel') %]</a>
-        <input type='hidden' name='history_delete_confirmed' value='1'/>
-        <input type="submit" value="[% l('Confirm') %]" class="opac-button"/>
-        [% ELSE %]
+        [% IF !ctx.confirm_history_delete %]
         <input type="submit" value="[% l('Save') %]" class="opac-button"/>
         [% END %]
     </form>
