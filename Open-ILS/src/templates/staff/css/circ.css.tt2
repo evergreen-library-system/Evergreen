@@ -151,6 +151,21 @@ but the ones I'm finding aren't quite cutting it..*/
   font-weight: bold;
 }
 
+/* Bootstrap alert panes are too stylized/padded/etc. in this case,
+ * but consider revisiting. */
+.patron-reg-validation-alert {
+  font-weight: bold;
+  color: red;
+}
+
+/* Angular applies these classes based on the field's 
+ * required and pattern settings */
+#patron-reg-container .ng-invalid,
+#patron-reg-container .ng-invalid-required {
+  background-color: yellow;
+  color: red;
+}
+
 /* -- end patron registration -- */
 
 [%# 

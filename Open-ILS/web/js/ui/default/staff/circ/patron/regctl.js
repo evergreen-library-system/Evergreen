@@ -109,6 +109,13 @@ angular.module('egCoreMod')
         return last + ', ' + first + (middle ? ' ' + middle : '');
     }
 
+    service.check_dupe_username = function(usrname) {
+        return egCore.net.request(
+            'open-ils.actor',
+            'open-ils.actor.username.exists',
+            egCore.auth.token(), usrname);
+    }
+
     //service.check_grp_app_perm = function(grp_id) {
 
     // determine which user groups our user is not allowed to modify
@@ -148,9 +155,31 @@ angular.module('egCoreMod')
         );
     }
 
-    service.has_group_link_perms = function(org_id) {
-        return egCore.perm.hasPermAt('CREATE_USER_GROUP_LINK', true)
-        .then(function(p) { return p.indexOf(org_id) > -1; });
+    // resolves to a hash of perm-name => boolean value indicating
+    // wether the user has the permission at org_id.
+    service.has_perms_for_org = function(org_id) {
+
+        var perms_needed = [
+            'UPDATE_USER',
+            'CREATE_USER',
+            'CREATE_USER_GROUP_LINK', 
+            'UPDATE_PATRON_COLLECTIONS_EXEMPT',
+            'UPDATE_PATRON_CLAIM_RETURN_COUNT',
+            'UPDATE_PATRON_CLAIM_NEVER_CHECKED_OUT_COUNT',
+            'UPDATE_PATRON_ACTIVE_CARD',
+            'UPDATE_PATRON_PRIMARY_CARD'
+        ];
+
+        return egCore.perm.hasPermAt(perms_needed, true)
+        .then(function(perm_map) {
+
+            angular.forEach(perms_needed, function(perm) {
+                perm_map[perm] = 
+                    Boolean(perm_map[perm].indexOf(org_id) > -1);
+            });
+
+            return perm_map;
+        });
     }
 
     service.get_surveys = function() {
@@ -451,15 +480,14 @@ angular.module('egCoreMod')
     service.dupe_patron_search = function(patron, type, value) {
         var search;
 
-        console.log('Dupe search called with "' + 
-            type +"' and value " + value);
+        console.log('Dupe search called with "'+ type +'" and value '+ value);
 
         switch (type) {
 
             case 'name':
                 var fname = patron.first_given_name;   
                 var lname = patron.family_name;   
-                if (!(fname && lname)) return;
+                if (!(fname && lname)) return $q.when({count:0});
                 search = {
                     first_given_name : {value : fname, group : 0},
                     family_name : {value : lname, group : 0}
@@ -574,7 +602,7 @@ angular.module('egCoreMod')
             _is_mailing : true,
             _is_billing : true,
             within_city_limits : false,
-            stat_cat_entries : []
+            country : service.org_settings['ui.patron.default_country'],
         };
 
         var card = {
@@ -590,6 +618,7 @@ angular.module('egCoreMod')
             card : card,
             cards : [card],
             home_ou : egCore.org.get(egCore.auth.user().ws_ou()),
+            stat_cat_entries : [],
             addresses : [addr]
         };
 
@@ -943,8 +972,46 @@ angular.module('egCoreMod')
             'open-ils.actor.patron.settings.update',
             egCore.auth.token(), new_user.id(), settings
         ).then(function(resp) {
-            console.log('settings returned ' + resp);
             return resp;
+        });
+    }
+
+    // Applies field-specific validation regex's from org settings 
+    // to form fields.  Be careful not remove any pattern data we
+    // are not explicitly over-writing in the provided patterns obj.
+    service.set_field_patterns = function(patterns) {
+        if (service.org_settings['opac.username_regex']) {
+            patterns.au.usrname = 
+                new RegExp(service.org_settings['opac.username_regex']);
+        }
+
+        if (service.org_settings['opac.barcode_regex']) {
+            patterns.ac.barcode = 
+                new RegExp(service.org_settings['opac.barcode_regex']);
+        }
+
+        if (service.org_settings['global.password_regex']) {
+            patterns.au.passwd = 
+                new RegExp(service.org_settings['global.password_regex']);
+        }
+
+        var phone_reg = service.org_settings['ui.patron.edit.phone.regex'];
+        if (phone_reg) {
+            // apply generic phone regex first, replace below as needed.
+            patterns.au.day_phone = new RegExp(phone_reg);
+            patterns.au.evening_phone = new RegExp(phone_reg);
+            patterns.au.other_phone = new RegExp(phone_reg);
+        }
+
+        // the remaining patterns fit a well-known key name pattern
+
+        angular.forEach(service.org_settings, function(val, key) {
+            if (!val) return;
+            var parts = key.match(/ui.patron.edit\.(\w+)\.(\w+)\.regex/);
+            if (!parts) return;
+            var cls = parts[1];
+            var name = parts[2];
+            patterns[cls][name] = new RegExp(val);
         });
     }
 
@@ -967,6 +1034,10 @@ function PatronRegCtrl($scope, $routeParams,
     $scope.focus_bc = !Boolean($scope.patron_id);
     $scope.dupe_counts = {};
 
+    // map of perm name to true/false for perms the logged in user
+    // has at the currently selected patron home org unit.
+    $scope.perms = {};
+
     if (!$scope.edit_passthru) {
         // in edit more, scope.edit_passthru is delivered to us by
         // the enclosing controller.  In register mode, there is 
@@ -976,15 +1047,6 @@ function PatronRegCtrl($scope, $routeParams,
 
     // 0=all, 1=suggested, 2=all
     $scope.edit_passthru.vis_level = 0; 
-    // TODO: add save/clone handlers here
-
-    $scope.field_modified = function() {
-        // Call attach with every field change, regardless of whether
-        // it's been called before.  This will allow for re-attach after
-        // the user clicks through the unload warning. egUnloadPrompt
-        // will ensure we only attach once.
-        egUnloadPrompt.attach($scope);
-    }
 
     // Apply default values for new patrons during initial registration
     // prs is shorthand for patronSvc
@@ -1019,13 +1081,21 @@ function PatronRegCtrl($scope, $routeParams,
         }
     }
 
-    function handle_home_org_changed() {
-        org_id = $scope.patron.home_ou.id();
-
-        patronRegSvc.has_group_link_perms(org_id)
-        .then(function(bool) {$scope.has_group_link_perm = bool});
+    // A null or undefined pattern leads to exceptions.  Before the
+    // patterns are loaded from the server, default all patterns
+    // to an innocuous regex.  To avoid re-creating numerous
+    // RegExp objects, cache the stub RegExp after initial creation.
+    // note: angular docs say ng-pattern accepts a regexp or string,
+    // but as of writing, it only works with a regexp object.
+    // (Likely an angular 1.2 vs. 1.4 issue).
+    var field_patterns = {au : {}, ac : {}, aua : {}};
+    $scope.field_pattern = function(cls, field) { 
+        if (!field_patterns[cls][field])
+            field_patterns[cls][field] = new RegExp('.*');
+        return field_patterns[cls][field];
     }
 
+    // Main page load function.  Kicks off tab init and data loading.
     $q.all([
 
         $scope.initTab ? // initTab comes from patron app
@@ -1063,7 +1133,7 @@ function PatronRegCtrl($scope, $routeParams,
         });
 
         extract_hold_notify();
-        handle_home_org_changed();
+        $scope.handle_home_org_changed();
 
         if ($scope.org_settings['ui.patron.edit.default_suggested'])
             $scope.edit_passthru.vis_level = 1;
@@ -1073,6 +1143,7 @@ function PatronRegCtrl($scope, $routeParams,
 
         $scope.page_data_loaded = true;
 
+        prs.set_field_patterns(field_patterns);
     });
 
     // update the currently displayed field documentation
@@ -1095,26 +1166,28 @@ function PatronRegCtrl($scope, $routeParams,
     };
 
     // field visibility cache.  Some fields are universally required.
+    // 3 == value universally required
+    // 2 == field is visible by default
+    // 1 == field is suggested by default
     var field_visibility = {
-        'ac.barcode' : 2,
-        'au.usrname' : 2,
-        'au.passwd' :  2,
-        // TODO passwd2 2,
-        'au.first_given_name' : 2,
-        'au.family_name' : 2,
-        'au.ident_type' : 2,
-        'au.home_ou' : 2,
-        'au.profile' : 2,
-        'au.expire_date' : 2,
-        'au.net_access_level' : 2,
-        'aua.address_type' : 2,
-        'aua.post_code' : 2,
-        'aua.street1' : 2,
+        'ac.barcode' : 3,
+        'au.usrname' : 3,
+        'au.passwd' :  3,
+        'au.first_given_name' : 3,
+        'au.family_name' : 3,
+        'au.ident_type' : 3,
+        'au.home_ou' : 3,
+        'au.profile' : 3,
+        'au.expire_date' : 3,
+        'au.net_access_level' : 3,
+        'aua.address_type' : 3,
+        'aua.post_code' : 3,
+        'aua.street1' : 3,
         'aua.street2' : 2,
-        'aua.city' : 2,
+        'aua.city' : 3,
         'aua.county' : 2,
         'aua.state' : 2,
-        'aua.country' : 2,
+        'aua.country' : 3,
         'aua.valid' : 2,
         'aua.within_city_limits' : 2,
         'stat_cats' : 1,
@@ -1136,7 +1209,7 @@ function PatronRegCtrl($scope, $routeParams,
             var sug_set = 'ui.patron.edit.' + field_key + '.suggest';
 
             if ($scope.org_settings[req_set]) {
-                field_visibility[field_key] = 2;
+                field_visibility[field_key] = 3;
             } else if ($scope.org_settings[sho_set]) {
                 field_visibility[field_key] = 2;
             } else if ($scope.org_settings[sug_set]) {
@@ -1147,6 +1220,18 @@ function PatronRegCtrl($scope, $routeParams,
         }
 
         return field_visibility[field_key] >= $scope.edit_passthru.vis_level;
+    }
+
+    // See $scope.show_field().
+    // A field with visbility level 3 means it's required.
+    $scope.field_required = function(cls, field) {
+
+        // Value in the password field is not required
+        // for existing patrons.
+        if (field == 'passwd' && $scope.patron && !$scope.patron.isnew) 
+          return false;
+
+        return (field_visibility[cls + '.' + field] == 3);
     }
 
     // generates a random 4-digit password
@@ -1170,6 +1255,14 @@ function PatronRegCtrl($scope, $routeParams,
         $scope.field_modified();
     }
 
+    $scope.invalid_profile = function() {
+        return !(
+            $scope.patron && 
+            $scope.patron.profile && 
+            $scope.patron.profile.usergroup() == 't'
+        );
+    }
+
     $scope.new_address = function() {
         var addr = egCore.idl.toHash(new egCore.idl.aua());
         patronRegSvc.ingest_address($scope.patron, addr);
@@ -1177,6 +1270,7 @@ function PatronRegCtrl($scope, $routeParams,
         addr.isnew = true;
         addr.valid = true;
         addr.within_city_limits = true;
+        addr.country = $scope.org_settings['ui.patron.default_country'];
         $scope.patron.addresses.push(addr);
     }
 
@@ -1234,12 +1328,14 @@ function PatronRegCtrl($scope, $routeParams,
 
     $scope.barcode_changed = function(bc) {
         if (!bc) return;
+        $scope.dupe_barcode = false;
         egCore.net.request(
             'open-ils.actor',
             'open-ils.actor.barcode.exists',
             egCore.auth.token(), bc
         ).then(function(resp) {
             if (resp == '1') {
+                $scope.dupe_barcode = true;
                 console.log('duplicate barcode detected: ' + bc);
                 // DUPLICATE CARD
             } else {
@@ -1254,10 +1350,11 @@ function PatronRegCtrl($scope, $routeParams,
         $modal.open({
             templateUrl: './circ/patron/t_patron_cards_dialog',
             controller: 
-                   ['$scope','$modalInstance','cards',
-            function($scope , $modalInstance , cards) {
+                   ['$scope','$modalInstance','cards', 'perms',
+            function($scope , $modalInstance , cards, perms) {
                 // scope here is the modal-level scope
                 $scope.args = {cards : cards};
+                $scope.perms = perms;
                 $scope.ok = function() { $modalInstance.close($scope.args) }
                 $scope.cancel = function () { $modalInstance.dismiss() }
             }],
@@ -1265,6 +1362,9 @@ function PatronRegCtrl($scope, $routeParams,
                 cards : function() {
                     // scope here is the controller-level scope
                     return $scope.patron.cards;
+                },
+                perms : function() {
+                    return $scope.perms;
                 }
             }
         }).result.then(
@@ -1393,14 +1493,146 @@ function PatronRegCtrl($scope, $routeParams,
         patronRegSvc.invalidate_field($scope.patron, field);
     }
 
+
     $scope.dupe_value_changed = function(type, value) {
         $scope.dupe_counts[type] = 0;
         patronRegSvc.dupe_patron_search($scope.patron, type, value)
         .then(function(res) {
             $scope.dupe_counts[type] = res.count;
-            $scope.dupe_search_encoded = 
-                encodeURIComponent(js2JSON(res.search));
+            if (res.count) {
+                $scope.dupe_search_encoded = 
+                    encodeURIComponent(js2JSON(res.search));
+            } else {
+                $scope.dupe_search_encoded = '';
+            }
         });
+    }
+
+    $scope.handle_home_org_changed = function() {
+        org_id = $scope.patron.home_ou.id();
+        patronRegSvc.has_perms_for_org(org_id).then(function(map) {
+            angular.forEach(map, function(v, k) { $scope.perms[k] = v });
+        });
+    }
+
+    // This is called with every character typed in a form field,
+    // since that's the only way to gaurantee something has changed.
+    // See handle_field_changed for ng-change vs. ng-blur.
+    $scope.field_modified = function() {
+        // Call attach with every field change, regardless of whether
+        // it's been called before.  This will allow for re-attach after
+        // the user clicks through the unload warning. egUnloadPrompt
+        // will ensure we only attach once.
+        egUnloadPrompt.attach($scope);
+    }
+
+    // obj could be the patron, an address, etc.
+    // This is called any time a form field achieves then loses focus.
+    // It does not necessarily mean the field has changed.
+    // The alternative is ng-change, but it's called with each character
+    // typed, which would be overkill for many of the actions called here.
+    $scope.handle_field_changed = function(obj, field_name) {
+        var cls = obj.classname; // set by egIdl
+        var value = obj[field_name];
+
+        console.log('changing field ' + field_name + ' to ' + value);
+
+        switch (field_name) {
+            case 'day_phone' : 
+                if ($scope.patron.day_phone && 
+                    $scope.patron.isnew && 
+                    $scope.org_settings['patron.password.use_phone']) {
+                    $scope.patron.passwd = phone.substr(-4);
+                }
+            case 'evening_phone' : 
+            case 'other_phone' : 
+                $scope.dupe_value_changed('phone', value);
+                break;
+
+            case 'ident_value':
+            case 'ident_value2':
+                $scope.dupe_value_changed('ident', value);
+                break;
+
+            case 'first_given_name':
+            case 'family_name':
+                $scope.dupe_value_changed('name', value);
+                break;
+
+            case 'email':
+                $scope.dupe_value_changed('email', value);
+                break;
+
+            case 'street1':
+            case 'street2':
+            case 'city':
+                // dupe search on address wants the address object as the value.
+                $scope.dupe_value_changed('address', obj);
+                break;
+
+            case 'post_code':
+                $scope.post_code_changed(obj);
+                break;
+
+            case 'usrname':
+                patronRegSvc.check_dupe_username(value)
+                .then(function(yes) {$scope.dupe_username = Boolean(yes)});
+                break;
+
+            case 'barcode':
+                // TODO: finish barcode_changed handler.
+                $scope.barcode_changed(value);
+                break;
+
+            case 'dob':
+                maintain_juvenile_flag();
+                break;
+        }
+    }
+
+    // patron.juvenile is set to true if the user was born after
+    function maintain_juvenile_flag() {
+        if ( !($scope.patron && $scope.patron.dob) ) return;
+
+        var juv_interval = 
+            $scope.org_settings['global.juvenile_age_threshold'] 
+            || '18 years';
+
+        var base = new Date();
+
+        base.setTime(base.getTime() - 
+            Number(egCore.date.intervalToSeconds(juv_interval) + '000'));
+
+        $scope.patron.juvenile = ($scope.patron.dob > base);
+    }
+
+    // returns true (disable) for orgs that cannot have users.
+    $scope.disable_home_org = function(org_id) {
+        if (!org_id) return;
+        var org = egCore.org.get(org_id);
+        return (
+            org &&
+            org.ou_type() &&
+            org.ou_type().can_have_users() == 'f'
+        );
+    }
+
+    // Returns true if any input elements are tagged as invalid
+    $scope.edit_passthru.has_invalid_fields = function() {
+        return $('#patron-reg-container .ng-invalid').length > 0;
+    }
+
+    // Returns true if the Save and Save & Clone buttons should be disabled.
+    $scope.edit_passthru.hide_save_actions = function() {
+        var can_save = $scope.patron.isnew ?
+            $scope.perms.CREATE_USER : $scope.perms.UPDATE_USER;
+
+        return (
+            !can_save ||
+            $scope.dupe_username ||
+            $scope.dupe_barcode ||
+            $scope.edit_passthru.has_invalid_fields()
+        );
     }
 
     $scope.edit_passthru.save = function(save_args) {
