@@ -85,7 +85,7 @@ sub build_invoice_impl {
                 $e->create_acq_invoice_entry($entry) or return $e->die_event;
                 return $evt if $evt = uncancel_copies_as_needed($e, $entry);
                 return $evt if $evt = update_entry_debits(
-                    $e, $entry, 0, $inv_closing, $inv_reopening);
+                    $e, $entry, 'unlinked', $inv_closing, $inv_reopening);
             } elsif ($entry->isdeleted) {
                 # XXX Deleting entries does not recancel anything previously
                 # uncanceled.
@@ -97,15 +97,19 @@ sub build_invoice_impl {
 
                 if ($orig_entry->amount_paid != $entry->amount_paid or
                     $entry->phys_item_count != $orig_entry->phys_item_count) {
-                    return $evt if $evt = rollback_entry_debits($e,$orig_entry);
+                    return $evt if $evt = rollback_entry_debits(
+                        $e, $orig_entry, $orig_entry);
 
                     # XXX Updates can only uncancel more LIDs when
                     # phys_item_count goes up, but cannot recancel them when
                     # phys_item_count goes down.
                     return $evt if $evt = uncancel_copies_as_needed($e, $entry);
 
+                    # debits were rolled back (encumbrance=t) above, so now 
+                    # search for un-invoiced, potentially linked debits 
+                    # to (re-) invoice.
                     return $evt if $evt = update_entry_debits(
-                        $e, $entry, 1, $inv_closing, $inv_reopening);
+                        $e, $entry, 'all', $inv_closing, $inv_reopening);
                 }
 
                 $e->update_acq_invoice_entry($entry) or return $e->die_event;
@@ -300,7 +304,7 @@ sub handle_invoice_state_change {
 
     my @debits;
     for my $entry (@{$invoice->entries}) {
-        push(@debits, @{find_entry_debits($e, $entry, 1, $enc_find)});
+        push(@debits, @{find_linked_entry_debits($e, $entry, $enc_find)});
     }
 
     for my $item (@{$invoice->items}) {
@@ -340,10 +344,26 @@ sub build_invoice_api {
 }
 
 
+# 1. set encumbrance=true
+# 2. unlink debit entries.
 sub rollback_entry_debits {
-    my($e, $entry) = @_;
-    my $debits = find_entry_debits($e, $entry, 1, 'f', entry_amount_per_item($entry));
-    my $lineitem = $e->retrieve_acq_lineitem($entry->lineitem) or return $e->die_event;
+    my($e, $entry, $orig_entry) = @_;
+
+    # when modifying an entry, roll back all debits that were 
+    # affected given the previous state of the entry.
+    my $need_count = $orig_entry ? 
+        $orig_entry->phys_item_count : $entry->phys_item_count;
+
+    # Un-link all linked debits when rolling back
+    my $debits = find_linked_entry_debits($e, $entry);
+
+    # Additionally, find legacy dis-encumbered debits that link 
+    # to this entry via lineitem.
+    push (@$debits, @{find_non_linked_debits(
+        $e, $entry->lineitem, $need_count, undef, 'f')});
+
+    my $lineitem = $e->retrieve_acq_lineitem($entry->lineitem) 
+        or return $e->die_event;
 
     for my $debit (@$debits) {
         # revert to the original estimated amount re-encumber
@@ -364,10 +384,10 @@ sub rollback_entry_debits {
 # inv_closing -- invoice is going from complete=f to t.
 # inv_reopening -- invoice is going from complete=t to f.
 sub update_entry_debits {
-    my($e, $entry, $invoiced, $inv_closing, $inv_reopening) = @_;
+    my($e, $entry, $link_state, $inv_closing, $inv_reopening) = @_;
 
     my $debits = find_entry_debits(
-        $e, $entry, $invoiced, $inv_reopening ? 'f' : 't');
+        $e, $entry, $link_state, $inv_reopening ? 'f' : 't');
     return undef unless @$debits;
 
     if($entry->phys_item_count > @$debits) {
@@ -523,7 +543,7 @@ sub amounts_spent_per_fund {
 
     my %totals_by_fund;
     foreach my $entry (@$entries) {
-        my $debits = find_entry_debits($e, $entry, 1, "f") or return 0;
+        my $debits = find_entry_debits($e, $entry, 'linked', "f") or return 0;
         foreach (@$debits) {
             $totals_by_fund{$_->fund} ||= 0.0;
             $totals_by_fund{$_->fund} += $_->amount;
@@ -548,74 +568,106 @@ sub amounts_spent_per_fund {
     return \@totals;
 }
 
-# find fund debits related to an invoice entry.
-# invoiced -- debits already linked to this invoice
-sub find_entry_debits {
-    my($e, $entry, $invoiced, $encumbrance, $amount, $fallback) = @_;
+# Returns all debits linked to the provided invoice entry.
+# If an encumbrance value is provided, only debits matching the
+# encumbrance state are returned.
+sub find_linked_entry_debits {
+    my($e, $entry, $encumbrance) = @_;
 
     my $query = {
         select => {acqfdeb => ['id']},
-        # sort received items to the front
-        order_by => {'acqlid' => ['recv_time']}
+        order_by => {'acqlid' => ['recv_time']},
+        from => {acqfdeb => 'acqlid'},
+        where => {'+acqfdeb' => {invoice_entry => $entry->id}}
     };
 
-    if ($invoiced && !$fallback) { # previously invoiced
+    $query->{where}->{'+acqfdeb'}->{encumbrance} 
+        = $encumbrance if $encumbrance;
 
-        # Debits which have been invoiced will have a link to the last 
-        # invoice entry which affected them.
+    my $debits = $e->json_query($query);
 
-        $query->{from} = {acqfdeb => 'acqlid'};
-        $query->{where} = {'+acqfdeb' => {invoice_entry => $entry->id}};
+    return [] unless @$debits;
 
-    } else {
+    my $debit_ids = [map { $_->{id} } @$debits];
+    return $e->search_acq_fund_debit({id => $debit_ids});
+}
 
-        # For un-invoiced (or $fallback) debits, search for those 
-        # that are linked to the entry via the lineitem.
+# Returns all debits for the requested lineitem
+# that are not yet linked to an invoice entry.
+# If an encumbrance value is provided, only debits matching the
+# encumbrance state are returned.
+# note: only legacy debits can exist in a state where 
+# encumbrance=false and the debit is not linked to an entry.
+sub find_non_linked_debits {
+    my($e, $li_id, $count, $amount, $encumbrance) = @_;
 
-        $query->{from} = {
+    my $query = {
+        select => {acqfdeb => ['id']},
+        order_by => {'acqlid' => ['recv_time']},
+        where => {'+acqfdeb' => {invoice_entry => undef}},
+        from => {
             acqfdeb => {
                 acqlid => {
                     join => {
-                        jub =>  {
-                            join => {
-                                acqie => {
-                                    filter => {id => $entry->id}
-                                }
-                            }
+                        jub => {
+                            filter => {id => $li_id}
                         }
                     }
                 }
             }
-        };
-
-        $query->{where} = {'+acqfdeb' => {}}; # for later
-        $query->{where}->{'+acqfdeb'}->{amount} = $amount if $amount;
-        $query->{limit} = $entry->phys_item_count;
-    }
+        }
+    };
 
     $query->{where}->{'+acqfdeb'}->{encumbrance} = $encumbrance if $encumbrance;
+    $query->{where}->{'+acqfdeb'}->{amount} = $amount if $amount;
+    $query->{limit} = $count if defined $count;
 
     my $debits = $e->json_query($query);
-    my $debit_ids = [map { $_->{id} } @$debits];
 
-    if (!@$debit_ids) { # no debits found
+    return [] unless @$debits;
+
+    my $debit_ids = [map { $_->{id} } @$debits];
+    return $e->search_acq_fund_debit({id => $debit_ids});
+}
+
+# find fund debits related to an invoice entry.
+# link_state -- 'linked', 'unlinked', 'all'
+# When link_state==undef, start with linked debits, then add unlinked debits.
+sub find_entry_debits {
+    my($e, $entry, $link_state, $encumbrance, $amount, $count) = @_;
+
+    my $need_count = $count || $entry->phys_item_count;
+    my $debits = [];
+
+    if ($link_state eq 'all' || $link_state eq 'linked') {
+        $debits = find_linked_entry_debits($e, $entry, $encumbrance);
+        return $debits if @$debits && scalar(@$debits) == $need_count;
+    }
+
+    # either we don't have enough linked debits to cover the need_count
+    # or we are not looking for linked debits.  Keep looking.
+
+    if ($link_state eq 'all' || $link_state eq 'unlinked') {
+
+        # If we found linked debits above, reduce the number of
+        # required debits remaining by the number already found.
+        $need_count = $need_count - scalar(@$debits);
+
+        push (@$debits, @{find_non_linked_debits(
+            $e, $entry->lineitem, $need_count, $amount, $encumbrance)});
+
+    } elsif (scalar(@$debits) == 0) {
 
         # if a lookup for previously invoiced debits returns zero
         # results, it may be becuase the debits were created before
         # the presence of the acq.fund_debit.invoice_entry column.
-        # Attempt to use the old-style lookup for these debits using the
-        # "$fallback" flag.
-        if ($invoiced && !$fallback) {
-            $logger->info(
-                "invoice: using debit fallback lookup for entry ".$entry->id);
-            return find_entry_debits(
-                $e, $entry, $invoiced, $encumbrance, $amount, 1);
-        }
+        # Fall back to using the old-style lookup.
 
-        return [];
+        push (@$debits, @{find_non_linked_debits(
+            $e, $entry->lineitem, $need_count, $amount, $encumbrance)});
     }
 
-    return $e->search_acq_fund_debit({id => $debit_ids});
+    return $debits;
 }
 
 
@@ -694,7 +746,7 @@ sub prorate_invoice {
 
     my @lid_debits;
     push(@lid_debits, 
-        @{find_entry_debits($e, $_, 1, 'f', entry_amount_per_item($_))}) 
+        @{find_entry_debits($e, $_, 'linked', 'f', entry_amount_per_item($_))}) 
         for @{$invoice->entries};
 
     my $inv_items = $e->search_acq_invoice_item([
