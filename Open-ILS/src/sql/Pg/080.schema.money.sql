@@ -94,14 +94,6 @@ CREATE OR REPLACE VIEW money.transaction_billing_type_summary AS
 	  GROUP BY xact,billing_type
 	  ORDER BY MAX(billing_ts);
 
-CREATE OR REPLACE VIEW money.transaction_billing_summary AS
-    SELECT id as xact,
-        last_billing_type,
-        last_billing_note,
-        last_billing_ts,
-        total_owed
-      FROM money.materialized_billable_xact_summary;            
-
 
 CREATE OR REPLACE VIEW money.transaction_payment_summary AS
 	SELECT	xact,
@@ -262,6 +254,14 @@ ALTER TABLE money.materialized_billable_xact_summary ADD PRIMARY KEY (id);
 
 CREATE INDEX money_mat_summary_usr_idx ON money.materialized_billable_xact_summary (usr);
 CREATE INDEX money_mat_summary_xact_start_idx ON money.materialized_billable_xact_summary (xact_start);
+
+CREATE OR REPLACE VIEW money.transaction_billing_summary AS
+    SELECT id as xact,
+        last_billing_type,
+        last_billing_note,
+        last_billing_ts,
+        total_owed
+      FROM money.materialized_billable_xact_summary;
 
 /* AFTER trigger only! */
 CREATE OR REPLACE FUNCTION money.mat_summary_create () RETURNS TRIGGER AS $$
