@@ -104,12 +104,14 @@
                     -%]
                         <input type="hidden" name="detail_record_view" value="1" />
                     [% END %]
+                    [% IF ctx.exclude_electronic_checkbox %]
                     <label class="results_header_lbl" for='opac.result.excludeelec'>
                         <input type='checkbox' id='opac.result.excludeelec' name="fi:-search_format" value="electronic"
                             onchange="exclude_onchange(this)"
                             [%- CGI.param('fi:-search_format').grep('electronic').size ? ' checked="checked"' : '' %] />
                         [% l("Exclude Electronic Resources") %]
                     </label>
+                    [% END %]
             </div>
         </div>
     </div>

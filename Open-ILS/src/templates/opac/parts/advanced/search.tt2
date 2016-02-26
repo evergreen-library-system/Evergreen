@@ -90,15 +90,20 @@
                                         <option value="[% opt.code %]"[% CGI.param('pubdate') == opt.code ? ' selected="selected"' : '' %]>[% opt.label | html %]</option>
                                     [%  END %]
                             </select>
+                            [% IF !ctx.exclude_electronic_checkbox %]
                             <br/>
                             <div id='adv_special_block'>
+                            [% END %]
                                 <input title="[% l('Search date') %]"
                                   name='date1' type='text' size='4' maxlength='4' value="[% CGI.param('date1') | html %]" />
                                 <span id='adv_global_pub_date_2_span' class='[% CGI.param("pubdate") == "between" ? "" : "hide_me" %]'>
                                    [% l("and") %] <input name='date2'
                                     title="[% l('Secondary search date') %]" type='text' size='4' maxlength='4' value="[% CGI.param('date2') | html %]" />
                                 </span>
+                            [% IF !ctx.exclude_electronic_checkbox %]
                             </div>
+                            [% END %]
+                            [% IF ctx.exclude_electronic_checkbox %]
                             <div class="adv_search_available">
                                 <input type='checkbox' name="fi:-search_format" value="electronic"
                                 [%- CGI.param('fi:-search_format').grep('electronic').size ?
@@ -108,6 +113,7 @@
                                     [% l("Exclude Electronic Resources") %]
                                 </label>
                             </div>
+                            [% END %]
 [%
                 CASE "sort_selector";
                     INCLUDE "opac/parts/filtersort.tt2"

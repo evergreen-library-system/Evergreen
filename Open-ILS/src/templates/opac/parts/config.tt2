@@ -192,6 +192,12 @@ ctx.depth_sel_tooltip = l('Select this option to expand your results to all libr
 ctx.depth_sel_resultshint = l('Showing results from all libraries');
 
 ##############################################################################
+# Exclude Electronic Resources Checkbox
+# One setting for both the advanced search page and the results bar.
+# Off by default; set to 1 to display.
+ctx.exclude_electronic_checkbox = 0;
+
+##############################################################################
 # Metarecords configuration
 # metarecords.disabled = 1; # disable all metarecord access points
 ##############################################################################
