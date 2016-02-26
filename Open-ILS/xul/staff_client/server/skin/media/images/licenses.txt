@@ -3,8 +3,8 @@ http://www.iconfinder.com/icondetails/1227/128/alarm_bell_icon
 GLPL
 
 holdshelf.png, reserve.png and transit.png were created by Christine Morgan
-at the North Of Boston Library Exchange. Copyright © North of Boston Library
-Exchange, all rights reserved. Permission is granted to copy, distribute
+at the North Of Boston Library Exchange. Copyright © 2016 North of Boston
+Library Exchange, all rights reserved. Permission is granted to copy, distribute
 and/or modify this document under the terms of the GNU Free Documentation
 License, Version 1.2 or any later version published by the Free Software
 Foundation; with no Invariant Sections, no Front-Cover Texts, and no Back-Cover
