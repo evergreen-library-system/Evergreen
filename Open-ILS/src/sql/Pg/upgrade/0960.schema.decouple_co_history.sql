@@ -4,7 +4,7 @@ BEGIN;
 -- TODO process to delete history items once the age threshold 
 -- history.circ.retention_age is reached?
 
--- SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version); 
+SELECT evergreen.upgrade_deps_block_check('0960', :eg_version); 
 
 CREATE TABLE action.usr_circ_history (
     id           BIGSERIAL PRIMARY KEY,
