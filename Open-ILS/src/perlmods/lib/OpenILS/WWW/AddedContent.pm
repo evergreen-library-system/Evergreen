@@ -181,6 +181,11 @@ sub handler {
             undef $_ if !defined($_->{value});
         } @issns;
 
+        #Remove undef values from @isbns and @issns.
+        #Prevents empty requests to providers
+        @isbns = grep {defined} @isbns;
+        @issns = grep {defined} @issns;
+
         $keyhash = {
             isbn => [map {$_->{value}} @isbns],
             issn => [map {$_->{value}} @issns],
