@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0963', :eg_version);
 
 ALTER TABLE config.z3950_index_field_map DROP CONSTRAINT "valid_z3950_attr_type";
 
