@@ -1055,7 +1055,7 @@ ALTER TABLE config.best_hold_order ADD CHECK ((
 ));
 
 CREATE OR REPLACE FUNCTION 
-    evergreen.z3950attr_name_is_valid() RETURNS TRIGGER AS $func$
+    evergreen.z3950_attr_name_is_valid() RETURNS TRIGGER AS $func$
     BEGIN
 
       PERFORM * FROM config.z3950_attr WHERE name = NEW.z3950_attr_type;
