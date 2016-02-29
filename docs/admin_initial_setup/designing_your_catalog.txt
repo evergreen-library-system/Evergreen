@@ -339,6 +339,26 @@ For example, if you delete the line:
 the language field will no longer appear on your advanced search page. Changes
 will appear immediately after you save your changes.
 
+You can also add fields based on Search Facet Groups that you create in the
+staff client's Local Administration menu. This can be helpful if you want to
+simplify your patrons' experience by presenting them with only certain
+limiters (e.g. the most commonly used languages in your area).  To do this,
+
+. Click *Admin -> Local Administration -> Search Facet Groups*.
+. Click *New*.
+. Enter descriptive values into the code and label fields.  The owner needs to
+be set to your consortium.
+. Once the Facet Group is created, click on the blue hyperlinked code value.
+. Click the *New* button to create the necessary values for your field.
+. Go to the _opac/parts/config.tt2_ file, and add a line like the following,
+where *Our Library's Field* is the name you'd like to be displayed next to
+your field, and *facet_group_code* is the code you've added using the staff
+client.
+
+---
+ {adv_label => l("Our Library's Field"), adv_filter => "facet_group_code"},
+---
+
 Changing the display of facets and facet groups
 -----------------------------------------------
 
