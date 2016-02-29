@@ -7056,7 +7056,7 @@ INSERT INTO config.coded_value_map
 
 -- Electronic search format, not opac_visible
 INSERT INTO config.coded_value_map
-    (id, ctype, code, value, opac_visible, search_label) VALUES
+    (id, ctype, code, opac_visible, value, search_label) VALUES
 (712, 'search_format', 'electronic', FALSE,
     oils_i18n_gettext(712, 'Electronic', 'ccvm', 'value'),
     oils_i18n_gettext(712, 'Electronic', 'ccvm', 'search_label'));
@@ -7461,7 +7461,7 @@ INSERT INTO config.composite_attr_entry_definition
 -- electronic
 INSERT INTO config.composite_attr_entry_definition
     (coded_value, definition) VALUES
-(712, '{"_attr":"item_form","_val":"s"},{"_attr":"item_form","_val":"o"}');
+(712, '[{"_attr":"item_form","_val":"s"},{"_attr":"item_form","_val":"o"}]');
 
 -- use the definitions from the icon_format as the basis for the MR hold format definitions
 DO $$
