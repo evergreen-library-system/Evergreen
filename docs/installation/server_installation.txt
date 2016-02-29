@@ -57,8 +57,8 @@ Installing prerequisites
   * **PostgreSQL**: Version 9.3 is recommended. The minimum supported version
     is 9.1.
   * **Linux**: Evergreen 2.8 has been tested on Debian Jessie (8.0), 
-    Debian Wheezy (7.0), Ubuntu Trusty Tahr (14.04), 
-    Ubuntu Precise Pangolin (12.04), and Fedora. 
+    Debian Wheezy (7.0), Ubuntu Xenial Xerus (16.04), 
+    Ubuntu Trusty Tahr (14.04), Ubuntu Precise Pangolin (12.04), and Fedora. 
     If you are running an older version of these distributions, you may want 
     to upgrade before upgrading Evergreen. For instructions on upgrading these
     distributions, visit the Debian, Ubuntu or Fedora websites.
@@ -73,7 +73,7 @@ before you can successfully configure, compile, and install Evergreen.
 2. On some distributions, it is necessary to install PostgreSQL 9.1+ from external
    repositories.
 +
-  * Debian Wheezy and Jessie Ubuntu Precise and Trusty comes with
+  * Debian (Wheezy and Jessie) and Ubuntu (Precise, Trusty, and Xenial) comes with
     PostgreSQL 9.1+, so no additional steps are required.
   * Fedora 19 and 20 come with PostgreSQL 9.2+, so no additional steps are required.
 +
@@ -82,7 +82,7 @@ before you can successfully configure, compile, and install Evergreen.
 4. Issue the following commands as the *root* Linux account to install
    prerequisites using the `Makefile.install` prerequisite installer,
    substituting `debian-jessie`, `debian-wheezy`, `fedora`, 
-   `ubuntu-trusty`, or `ubuntu-precise` for <osname> below:
+   `ubuntu-xenial`, `ubuntu-trusty`, or `ubuntu-precise` for <osname> below:
 +
 [source, bash]
 ------------------------------------------------------------------------------
@@ -93,7 +93,7 @@ make -f Open-ILS/src/extras/Makefile.install <osname>
    issuing the following commands as the *root* Linux account:
 +
 [NOTE]
-You should skip this step if installing on Ubuntu Precise, Trusty or Debian Jessie. The ubuntu
+You should skip this step if installing on Ubuntu Precise, Trusty, Xenial or Debian Jessie. The Ubuntu
 and Debian Jessie targets use libdbd-pgsql from packages.
 +
 .Debian Wheezy
@@ -142,7 +142,7 @@ from http://evergreen-ils.org/downloads
 
 [NOTE]
 You make skip the subsection `Install dependencies for browser-based staff client'
-if you are installing on either Debian Jessie or Ubuntu Trusty and you have
+if you are installing on either Debian Jessie, Ubuntu Trusty, or Ubuntu Xenial and you have
 installed the `Optional: Developer Additions' described above.  You will still
 need to do the steps in `Install files for browser-based staff client' below.
 
@@ -309,7 +309,7 @@ mkdir /etc/apache2/ssl
 cd /etc/apache2/ssl
 ------------------------------------------------------------------------------
 +
-.Ubuntu Trusty and Debian Jessie
+.Ubuntu Trusty, Ubuntu Xenial, and Debian Jessie
 [source,bash]
 ------------------------------------------------------------------------------------
 cp Open-ILS/examples/apache_24/eg_24.conf       /etc/apache2/sites-available/eg.conf
@@ -379,7 +379,7 @@ place.
    MaxRequestsPerChild 10000
 </IfModule>
 ------------------------------------------------------------------------------
-    d. (Ubuntu Trusty, Debian Jessie) As the *root* user, edit 
+    d. (Ubuntu Trusty, Ubuntu Xenial, Debian Jessie) As the *root* user, edit 
        /etc/apache2/mods-available/mpm_prefork.conf to match the above values.  
        Then, also as the *root* user, enable the mpm_prefork module by doing:
 +
@@ -400,7 +400,7 @@ a2dissite default  # OPTIONAL: disable the default site (the "It Works" page)
 a2ensite eg.conf
 ------------------------------------------------------------------------------
 +
-(Ubuntu Trusty, Debian Jessie):
+(Ubuntu Trusty, Ubuntu Xenial, Debian Jessie):
 +
 [source,bash]
 ------------------------------------------------------------------------------
@@ -474,6 +474,7 @@ make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-jessie
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-wheezy
 make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-precise
 make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-trusty
+make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-xenial
 make -f Open-ILS/src/extras/Makefile.install postgres-server-fedora
 ------------------------------------------------------------------------------
 
@@ -497,7 +498,7 @@ distribution as the *root* Linux account:
 cpan Rose::URI
 ---------------------------------------------------------------------------------
 
-.(Debian "wheezy" and Ubuntu Trusty) 
+.(Debian Wheezy, Ubuntu Trusty, and Ubuntu Xenial) 
 No extra modules required for these distributions.
 
 .(Fedora)
