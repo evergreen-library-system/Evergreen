@@ -5,7 +5,7 @@
 # Makefile to install prerequisites for OpenSRF and Evergreen
 #
 # Currently supports Debian (jessie, wheezy), Ubuntu (12.04), 
-# Ubuntu (14.04) and Fedora (16 and 17).
+# Ubuntu (14.04), Ubuntu (16.04), and Fedora (16 and 17).
 #
 # Installs Perl prereqs, libdbi, libdbi-drivers, and libyaz
 #
@@ -17,6 +17,8 @@
 # 	make -f Makefile.install ubuntu-precise
 # 	- or -
 # 	make -f Makefile.install ubuntu-trusty
+# 	- or -
+# 	make -f Makefile.install ubuntu-xenial
 # 	- or -
 # 	make -f Makefile.install fedora
 #
@@ -63,6 +65,8 @@ debian-jessie:
 	@make -f $(DIR)/Makefile.debian-jessie
 debian-wheezy:
 	@make -f $(DIR)/Makefile.debian-wheezy
+ubuntu-xenial:
+	@make -f $(DIR)/Makefile.ubuntu-xenial
 ubuntu-trusty:
 	@make -f $(DIR)/Makefile.ubuntu-trusty
 ubuntu-precise:
@@ -74,6 +78,8 @@ postgres-server-debian-jessie:
 	@make -f $(DIR)/Makefile.debian-jessie install_postgres_server
 postgres-server-debian-wheezy:
 	@make -f $(DIR)/Makefile.debian-wheezy install_postgres_server
+postgres-server-ubuntu-xenial:
+	@make -f $(DIR)/Makefile.ubuntu-xenial install_postgres_server
 postgres-server-ubuntu-trusty:
 	@make -f $(DIR)/Makefile.ubuntu-trusty install_postgres_server
 postgres-server-ubuntu-precise:
@@ -81,6 +87,8 @@ postgres-server-ubuntu-precise:
 postgres-server-fedora:
 	@make -f $(DIR)/Makefile.fedora install_postgres_server
 
+ubuntu-xenial-developer:
+	@make -f $(DIR)/Makefile.xenial-trusty install_developer
 ubuntu-trusty-developer:
 	@make -f $(DIR)/Makefile.ubuntu-trusty install_developer
 debian-jessie-developer:
@@ -90,6 +98,8 @@ ubuntu-precise-developer:
 debian-wheezy-developer:
 	@make -f $(DIR)/Makefile.debian-wheezy install_developer
 
+ubuntu-xenial-packager:
+	@make -f $(DIR)/Makefile.ubuntu-xenial install_packager
 ubuntu-trusty-packager:
 	@make -f $(DIR)/Makefile.ubuntu-trusty install_packager
 debian-jessie-packager:
