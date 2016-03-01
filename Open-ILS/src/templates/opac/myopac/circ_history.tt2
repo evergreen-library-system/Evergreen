@@ -193,12 +193,12 @@
                         </td>
                         <td>[% circ.circ.target_copy.barcode | html %]</td>
                         <td>[% circ.circ.target_copy.call_number.label | html %]</td>
-        </form>
                     </tr>
                 [% END %]
             </tbody>
         </table>
     </div>
+    </form>
     [% END %]
 </div>
 [% END %]

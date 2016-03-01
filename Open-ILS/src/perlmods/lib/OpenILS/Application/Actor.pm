@@ -4217,6 +4217,7 @@ __PACKAGE__->register_method(
         desc   => 'Delete all user circ history entries for the calling user',
         params => [
             { desc => 'Authentication token',  type => 'string'},
+            { desc => "Options hash. 'circ_ids' is an arrayref of circulation IDs to delete", type => 'object' },
         ],
         return => {
             desc => q/1 on success, event on error/,
@@ -4278,8 +4279,12 @@ sub user_circ_history {
         $limits{limit} = $options->{limit} if defined $options->{limit};
     }
 
+    my $circ_id_list = $options->{circ_ids} ? $options->{circ_ids} : undef;
+
     my $circs = $e->search_action_user_circ_history([
-        {usr => $e->requestor->id},
+        {   usr => $e->requestor->id,
+            id  => {'in' => $circ_id_list},
+        },
         {   # order newest to oldest by default
             order_by => {auch => 'xact_start DESC'},
             %limits

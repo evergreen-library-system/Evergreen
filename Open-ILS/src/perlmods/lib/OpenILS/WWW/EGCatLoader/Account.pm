@@ -1544,7 +1544,6 @@ sub handle_circ_renew {
     return @responses;
 }
 
-
 sub load_myopac_circs {
     my $self = shift;
     my $e = $self->editor;
@@ -1652,31 +1651,26 @@ sub fetch_user_circ_history {
 }
 
 sub handle_circ_update {
-    my $self = shift;
-    my $action = shift;
+    my $self     = shift;
+    my $action   = shift;
     my $circ_ids = shift;
-    my $e = $self->editor;
-    my $url;
 
-    my @circ_ids = ($circ_ids) ? @$circ_ids : $self->cgi->param('circ_id'); # for non-_all actions
+    my $circ_ids //= [$self->cgi->param('circ_id')];
 
-    my $cstore_ses = OpenSRF::AppSession->create('open-ils.cstore');
-    $cstore_ses->connect();
-    $cstore_ses->request('open-ils.cstore.transaction.begin')->gather(1);
+    if ($action =~ /delete/) {
+        my $options = {
+            circ_ids => $circ_ids,
+        };
 
-    if($action =~ /delete/) {
-        for my $circ_id (@circ_ids) {
-            my $circ = $cstore_ses->request(
-                'open-ils.cstore.direct.action.circulation.retrieve', $circ_id)->gather(1);
-            $circ->hide_from_usr_history(1);
-            my $resp = $cstore_ses->request(
-                'open-ils.cstore.direct.action.circulation.update', $circ)->gather(1);
-        }
+        $U->simplereq(
+            'open-ils.actor',
+            'open-ils.actor.history.circ.clear',
+            $self->editor->authtoken,
+            $options
+        );
     }
 
-    $cstore_ses->request('open-ils.cstore.transaction.commit')->gather(1);
-    $cstore_ses->disconnect();
-    return undef;
+    return;
 }
 
 # TODO: action.usr_visible_holds does not return cancelled holds.  Should it?
