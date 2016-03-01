@@ -20,7 +20,7 @@ sub prepare_extended_user_info {
     my $e = $self->editor;
 
     # are we already in a transaction?
-    my $local_xact = !$e->{xact_id}; 
+    my $local_xact = !$e->{xact_id};
     $e->xact_begin if $local_xact;
 
     # keep the original user object so we can restore
@@ -47,7 +47,7 @@ sub prepare_extended_user_info {
     $self->ctx->{user}->addresses([
         grep {$_->id > 0} @{$self->ctx->{user}->addresses} ]);
 
-    return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR 
+    return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR
         unless $self->ctx->{user};
 
     return;
@@ -101,7 +101,7 @@ sub local_avail_concern {
     return (0, 0);
 }
 
-# context additions: 
+# context additions:
 #   user : au object, fleshed
 sub load_myopac_prefs {
     my $self = shift;
@@ -133,7 +133,7 @@ sub load_myopac_prefs {
         }
     }
 
-    return Apache2::Const::OK unless 
+    return Apache2::Const::OK unless
         $pending_addr or $replace_addr or $delete_pending;
 
     my @form_fields = qw/address_type street1 street2 city county state country post_code/;
@@ -156,13 +156,13 @@ sub load_myopac_prefs {
 
     } elsif( $delete_pending ) {
         $paddr = $e->retrieve_actor_user_address($delete_pending);
-        return Apache2::Const::HTTP_BAD_REQUEST unless 
+        return Apache2::Const::HTTP_BAD_REQUEST unless
             $paddr and $paddr->usr == $user->id and $U->is_true($paddr->pending);
         $paddr->isdeleted(1);
     }
 
     my $resp = $U->simplereq(
-        'open-ils.actor', 
+        'open-ils.actor',
         'open-ils.actor.user.address.pending.cud',
         $e->authtoken, $paddr);
 
@@ -172,7 +172,7 @@ sub load_myopac_prefs {
     }
 
     # in light of these changes, re-fetch latest data
-    $e->xact_begin; 
+    $e->xact_begin;
     $self->prepare_extended_user_info;
     $e->rollback;
 
@@ -198,7 +198,7 @@ sub load_myopac_prefs_notify {
 
     my %settings;
     my $set_map = $self->ctx->{user_setting_map};
- 
+
     foreach my $key (qw/
         opac.default_phone
         opac.default_sms_notify
@@ -227,11 +227,11 @@ sub load_myopac_prefs_notify {
 
     # Send the modified settings off to be saved
     $U->simplereq(
-        'open-ils.actor', 
+        'open-ils.actor',
         'open-ils.actor.patron.settings.update',
         $self->editor->authtoken, undef, \%settings);
 
-    # re-fetch user prefs 
+    # re-fetch user prefs
     $self->ctx->{updated_user_settings} = \%settings;
     return $self->_load_user_with_prefs || Apache2::Const::OK;
 }
@@ -256,8 +256,8 @@ sub fetch_optin_prefs {
     my $user_set = $U->simplereq(
         'open-ils.actor',
         'open-ils.actor.patron.settings.retrieve',
-        $e->authtoken, 
-        $e->requestor->id, 
+        $e->authtoken,
+        $e->requestor->id,
         [map {$_->name} @$opt_ins]
     );
 
@@ -304,7 +304,7 @@ sub load_myopac_messages {
     if ($fetch_all) {
         # fetch all the messages
         ($ctx->{patron_messages_count}, $messages) =
-            $self->_fetch_user_messages($pcrud, $offset, $limit);    
+            $self->_fetch_user_messages($pcrud, $offset, $limit);
     }
 
     $pcrud->kill_me;
@@ -317,7 +317,7 @@ sub load_myopac_messages {
             message     => $aum->message,
             create_date => $aum->create_date,
             is_read     => defined($aum->read_date) ? 1 : 0,
-            library     => $aum->sending_lib->name, 
+            library     => $aum->sending_lib->name,
         };
     }
 
@@ -495,7 +495,7 @@ sub update_optin_prefs {
 
     # remove now-false settings
     for my $pref (grep { $_->{value} } @$user_prefs) {
-        $newsets{$pref->{cust}->name} = undef 
+        $newsets{$pref->{cust}->name} = undef
             unless grep { $_ eq $pref->{cust}->name } @settings;
     }
 
@@ -506,7 +506,7 @@ sub update_optin_prefs {
 
     # update the local prefs to match reality
     for my $pref (@$user_prefs) {
-        $pref->{value} = $newsets{$pref->{cust}->name} 
+        $pref->{value} = $newsets{$pref->{cust}->name}
             if exists $newsets{$pref->{cust}->name};
     }
 
@@ -519,7 +519,7 @@ sub _load_user_with_prefs {
     return $stat if $stat; # not-OK
 
     $self->ctx->{user_setting_map} = {
-        map { $_->name => OpenSRF::Utils::JSON->JSON2perl($_->value) } 
+        map { $_->name => OpenSRF::Utils::JSON->JSON2perl($_->value) }
             @{$self->ctx->{user}->settings}
     };
 
@@ -591,7 +591,7 @@ sub load_myopac_prefs_settings {
         'circ.holds.behind_desk_pickup_supported');
 
     if ($bdous) {
-        my $setting = 
+        my $setting =
             $e->retrieve_config_usr_setting_type(
                 'circ.holds_behind_desk');
 
@@ -604,8 +604,8 @@ sub load_myopac_prefs_settings {
     return Apache2::Const::OK
         unless $self->cgi->request_method eq 'POST';
 
-    # some setting values from the form don't match the 
-    # required value/format for the db, so they have to be 
+    # some setting values from the form don't match the
+    # required value/format for the db, so they have to be
     # individually translated.
 
     my %settings;
@@ -642,7 +642,7 @@ sub load_myopac_prefs_settings {
 
             if (!$hist_clear_confirmed) {
                 # when clearing circ history, only warn if history data exists.
-    
+
                 if ($clear_circ_history) {
 
                     if ($self->fetch_user_circ_history(0, 1)->[0]) {
@@ -655,8 +655,8 @@ sub load_myopac_prefs_settings {
                     my $one_hold = $e->json_query({
                         select => {
                             au => [{
-                                column => 'id', 
-                                transform => 'action.usr_visible_holds', 
+                                column => 'id',
+                                transform => 'action.usr_visible_holds',
                                 result_field => 'id'
                             }]
                         },
@@ -693,11 +693,11 @@ sub load_myopac_prefs_settings {
 
     # Send the modified settings off to be saved
     $U->simplereq(
-        'open-ils.actor', 
+        'open-ils.actor',
         'open-ils.actor.patron.settings.update',
         $self->editor->authtoken, undef, \%settings);
 
-    # re-fetch user prefs 
+    # re-fetch user prefs
     $self->ctx->{updated_user_settings} = \%settings;
     return $self->_load_user_with_prefs || Apache2::Const::OK;
 }
@@ -755,8 +755,8 @@ sub fetch_user_holds {
         my $circ = OpenSRF::AppSession->create('open-ils.circ');
 
         $hold_ids = $circ->request(
-            'open-ils.circ.holds.id_list.retrieve.authoritative', 
-            $e->authtoken, 
+            'open-ils.circ.holds.id_list.retrieve.authoritative',
+            $e->authtoken,
             $e->requestor->id,
             $available
         )->gather(1);
@@ -791,7 +791,7 @@ sub fetch_user_holds {
             last unless $hold_id;
             my $ses = OpenSRF::AppSession->create('open-ils.circ');
             my $req = $ses->request(
-                'open-ils.circ.hold.details.retrieve', 
+                'open-ils.circ.hold.details.retrieve',
                 $e->authtoken, $hold_id, $args);
             push(@ses, {ses => $ses, req => $req});
         }
@@ -825,13 +825,13 @@ sub fetch_user_holds {
 
                     my $filter_data = $U->simplereq(
                         'open-ils.circ',
-                        'open-ils.circ.mmr.holds.filters.authoritative.atomic', 
+                        'open-ils.circ.mmr.holds.filters.authoritative.atomic',
                         $hold->target, $filter_org, [$hold->id]
                     );
 
-                    $blob->{metarecord_filters} = 
+                    $blob->{metarecord_filters} =
                         $filter_data->[0]->{metarecord};
-                    $blob->{metarecord_selected_filters} = 
+                    $blob->{metarecord_selected_filters} =
                         $filter_data->[1]->{hold};
                 } else {
 
@@ -884,7 +884,7 @@ sub handle_hold_update {
         }
 
     } elsif ($action =~ /activate|suspend/) {
-        
+
         my $vlist = [];
         for my $hold_id (@hold_ids) {
             my $vals = {id => $hold_id};
@@ -901,7 +901,7 @@ sub handle_hold_update {
         }
 
         my $resp = $circ->request('open-ils.circ.hold.update.batch.atomic', $e->authtoken, undef, $vlist)->gather(1);
-        $self->ctx->{hold_suspend_post_capture} = 1 if 
+        $self->ctx->{hold_suspend_post_capture} = 1 if
             grep {$U->event_equals($_, 'HOLD_SUSPEND_AFTER_CAPTURE')} @$resp;
 
     } elsif ($action eq 'edit') {
@@ -945,7 +945,7 @@ sub load_myopac_holds {
     my $self = shift;
     my $e = $self->editor;
     my $ctx = $self->ctx;
-    
+
     my $limit = $self->cgi->param('limit') || 15;
     my $offset = $self->cgi->param('offset') || 0;
     my $action = $self->cgi->param('action') || '';
@@ -1057,8 +1057,8 @@ sub load_place_hold {
         M => sub {
             # target metarecords
             my $mrecs = $e->batch_retrieve_metabib_metarecord([
-                \@targets, 
-                {flesh => 1, flesh_fields => {mmr => ['master_record']}}], 
+                \@targets,
+                {flesh => 1, flesh_fields => {mmr => ['master_record']}}],
                 {substream => 1}
             );
 
@@ -1070,11 +1070,11 @@ sub load_place_hold {
                     'open-ils.circ',
                     'open-ils.circ.mmr.holds.filters.authoritative', $mr->id, $ou_id);
 
-                my $holdable_formats = 
+                my $holdable_formats =
                     $self->compile_holdable_formats($mr->id);
 
                 push(@hold_data, $data_filler->({
-                    target => $mr, 
+                    target => $mr,
                     record => $mr->master_record,
                     holdable_formats => $holdable_formats,
                     metarecord_filters => $filter_data->{metarecord}
@@ -1091,25 +1091,25 @@ sub load_place_hold {
                 my ($rec) = grep {$_->id eq $id} @$recs;
 
                 # NOTE: if tpac ever supports locked-down pickup libs,
-                # we'll need to pass a pickup_lib param along with the 
+                # we'll need to pass a pickup_lib param along with the
                 # record to filter the set of monographic parts.
                 my $parts = $U->simplereq(
                     'open-ils.search',
-                    'open-ils.search.biblio.record_hold_parts', 
+                    'open-ils.search.biblio.record_hold_parts',
                     {record => $rec->id}
                 );
 
-                # T holds on records that have parts are OK, but if the record has 
-                # no non-part copies, the hold will ultimately fail.  When that 
+                # T holds on records that have parts are OK, but if the record has
+                # no non-part copies, the hold will ultimately fail.  When that
                 # happens, require the user to select a part.
                 my $part_required = 0;
                 if (@$parts) {
                     my $np_copies = $e->json_query({
-                        select => { acp => [{column => 'id', transform => 'count', alias => 'count'}]}, 
-                        from => {acp => {acn => {}, acpm => {type => 'left'}}}, 
+                        select => { acp => [{column => 'id', transform => 'count', alias => 'count'}]},
+                        from => {acp => {acn => {}, acpm => {type => 'left'}}},
                         where => {
                             '+acp' => {deleted => 'f'},
-                            '+acn' => {deleted => 'f', record => $rec->id}, 
+                            '+acn' => {deleted => 'f', record => $rec->id},
                             '+acpm' => {id => undef}
                         }
                     });
@@ -1132,7 +1132,7 @@ sub load_place_hold {
                 }
             ], {substream => 1});
 
-            for my $id (@targets) { 
+            for my $id (@targets) {
                 my ($vol) = grep {$_->id eq $id} @$vols;
                 push(@hold_data, $data_filler->({target => $vol, record => $vol->record}));
             }
@@ -1148,7 +1148,7 @@ sub load_place_hold {
                 }
             ], {substream => 1});
 
-            for my $id (@targets) { 
+            for my $id (@targets) {
                 my ($copy) = grep {$_->id eq $id} @$copies;
                 push(@hold_data, $data_filler->({target => $copy, record => $copy->call_number->record}));
             }
@@ -1163,7 +1163,7 @@ sub load_place_hold {
                 }
             ], {substream => 1});
 
-            for my $id (@targets) { 
+            for my $id (@targets) {
                 my ($iss) = grep {$_->id eq $id} @$isses;
                 push(@hold_data, $data_filler->({target => $iss, record => $iss->subscription->record_entry}));
             }
@@ -1197,7 +1197,7 @@ sub load_place_hold {
         # find the real hold target
 
         $usr = $U->simplereq(
-            'open-ils.actor', 
+            'open-ils.actor',
             "open-ils.actor.user.retrieve_id_by_barcode_or_username",
             $e->authtoken, $cgi->param("hold_usr"));
 
@@ -1207,21 +1207,21 @@ sub load_place_hold {
         }
     }
 
-    # target_id is the true target_id for holds placement.  
+    # target_id is the true target_id for holds placement.
     # needed for attempt_hold_placement()
     # With the exception of P-type holds, target_id == target->id.
     $_->{target_id} = $_->{target}->id for @hold_data;
 
     if ($ctx->{hold_type} eq 'T') {
 
-        # Much like quantum wave-particles, P-type holds pop into 
+        # Much like quantum wave-particles, P-type holds pop into
         # and out of existence at the user's whim.  For our purposes,
-        # we treat such holds as T(itle) holds with a selected_part 
-        # designation.  When the time comes to pass the hold information 
-        # off for holds possibility testing and placement, make it look 
+        # we treat such holds as T(itle) holds with a selected_part
+        # designation.  When the time comes to pass the hold information
+        # off for holds possibility testing and placement, make it look
         # like a real P-type hold.
         my (@p_holds, @t_holds);
-        
+
         for my $idx (0..$#parts) {
             my $hdata = $hold_data[$idx];
             if (my $part = $parts[$idx]) {
@@ -1242,11 +1242,11 @@ sub load_place_hold {
         $self->attempt_hold_placement($usr, $pickup_lib, $ctx->{hold_type}, @hold_data);
     }
 
-    # NOTE: we are leaving the staff-placed patron barcode cookie 
-    # in place.  Otherwise, it's not possible to place more than 
-    # one hold for the patron within a staff/patron session.  This 
-    # does leave the barcode to linger longer than is ideal, but 
-    # normal staff work flow will cause the cookie to be replaced 
+    # NOTE: we are leaving the staff-placed patron barcode cookie
+    # in place.  Otherwise, it's not possible to place more than
+    # one hold for the patron within a staff/patron session.  This
+    # does leave the barcode to linger longer than is ideal, but
+    # normal staff work flow will cause the cookie to be replaced
     # with each new patron anyway.
     # TODO: See about getting the staff client to clear the cookie
 
@@ -1261,12 +1261,12 @@ sub attempt_hold_placement {
     my $ctx = $self->ctx;
     my $e = $self->editor;
 
-    # First see if we should warn/block for any holds that 
+    # First see if we should warn/block for any holds that
     # might have locally available items.
     for my $hdata (@hold_data) {
         my ($local_block, $local_alert) = $self->local_avail_concern(
             $hdata->{target_id}, $hold_type, $pickup_lib);
-    
+
         if ($local_block) {
             $hdata->{hold_failed} = 1;
             $hdata->{hold_local_block} = 1;
@@ -1295,17 +1295,17 @@ sub attempt_hold_placement {
         # map each set to the ID of the target.
         my $holdable_formats = {};
         if ($hold_type eq 'M') {
-            $holdable_formats->{$_->{target_id}} = 
+            $holdable_formats->{$_->{target_id}} =
                 $_->{holdable_formats} for @hold_data;
         }
 
         my $bses = OpenSRF::AppSession->create('open-ils.circ');
-        my $breq = $bses->request( 
-            $method, 
-            $e->authtoken, 
-            $data_filler->({   
+        my $breq = $bses->request(
+            $method,
+            $e->authtoken,
+            $data_filler->({
                 patronid => $usr,
-                pickup_lib => $pickup_lib, 
+                pickup_lib => $pickup_lib,
                 hold_type => $hold_type,
                 holdable_formats_map => $holdable_formats
             }),
@@ -1331,14 +1331,14 @@ sub attempt_hold_placement {
                 $hdata->{hold_failed_event} = $result;
 
             } else {
-                
+
                 if(not ref $result and $result > 0) {
                     # successul hold returns the hold ID
 
-                    $hdata->{hold_success} = $result; 
-    
+                    $hdata->{hold_success} = $result;
+
                 } else {
-                    # hold-specific failure event 
+                    # hold-specific failure event
                     $hdata->{hold_failed} = 1;
 
                     if (ref $result eq 'HASH') {
@@ -1351,7 +1351,7 @@ sub attempt_hold_placement {
                             $hdata->{could_override} = $self->editor->allowed( $theTextcode );
                             $hdata->{age_protect} = 1;
                         } else {
-                            $hdata->{could_override} = $result->{place_unfillable} || 
+                            $hdata->{could_override} = $result->{place_unfillable} ||
                                 $self->test_could_override($hdata->{hold_failed_event});
                         }
                     } elsif (ref $result eq 'ARRAY') {
@@ -1387,15 +1387,15 @@ sub compile_holdable_formats {
     my $cgi = $self->cgi;
 
     # exit early if not needed
-    return undef unless 
-        grep /metarecord_formats_|metarecord_langs_/, 
+    return undef unless
+        grep /metarecord_formats_|metarecord_langs_/,
         $cgi->param;
 
     # CGI params are based on the MR id, since during hold placement
-    # we have no old ID.  During hold edit, map the hold ID back to 
+    # we have no old ID.  During hold edit, map the hold ID back to
     # the metarecod target.
-    $mr_id = 
-        $e->retrieve_action_hold_request($hold_id)->target 
+    $mr_id =
+        $e->retrieve_action_hold_request($hold_id)->target
         unless $mr_id;
 
     my $format_attr = $self->ctx->{get_cgf}->(
@@ -1419,13 +1419,13 @@ sub compile_holdable_formats {
     my $blob = {};
     if (@selected_formats) {
         $blob->{0} = [
-            map { {_attr => $format_attr, _val => $_} } 
+            map { {_attr => $format_attr, _val => $_} }
             @selected_formats
         ];
     }
     if (@selected_langs) {
         $blob->{1} = [
-            map { {_attr => 'item_lang', _val => $_} } 
+            map { {_attr => 'item_lang', _val => $_} }
             @selected_langs
         ];
     }
@@ -1490,9 +1490,9 @@ sub fetch_user_circs {
     my @circs;
     for my $circ (@$circs) {
         push(@circs, {
-            circ => $circ, 
-            marc_xml => ($flesh and $circ->target_copy->call_number->id != -1) ? 
-                XML::LibXML->new->parse_string($circ->target_copy->call_number->record->marc) : 
+            circ => $circ,
+            marc_xml => ($flesh and $circ->target_copy->call_number->id != -1) ?
+                XML::LibXML->new->parse_string($circ->target_copy->call_number->record->marc) :
                 undef  # pre-cat copy, use the dummy title/author instead
         });
     }
@@ -1525,7 +1525,7 @@ sub handle_circ_renew {
     for my $circ (@$circs) {
 
         my $evt = $U->simplereq(
-            'open-ils.circ', 
+            'open-ils.circ',
             'open-ils.circ.renew',
             $self->editor->authtoken,
             {
@@ -1535,7 +1535,7 @@ sub handle_circ_renew {
             }
         );
 
-        # TODO return these, then insert them into the circ data 
+        # TODO return these, then insert them into the circ data
         # blob that is shoved into the template for each circ
         # so the template won't have to match them
         push(@responses, {copy => $circ->{circ}->target_copy, evt => $evt});
@@ -1603,8 +1603,8 @@ sub load_myopac_circ_history {
     return Apache2::Const::OK;
 }
 
-# if 'flesh' is set, copy data etc. is loaded and the return value is 
-# a hash of 'circ' and 'marc_xml'.  Othwerwise, it's just a list of 
+# if 'flesh' is set, copy data etc. is loaded and the return value is
+# a hash of 'circ' and 'marc_xml'.  Othwerwise, it's just a list of
 # auch objects.
 sub fetch_user_circ_history {
     my ($self, $flesh, $limit, $offset) = @_;
@@ -1640,10 +1640,10 @@ sub fetch_user_circ_history {
     my @circs;
     for my $circ (@$circs) {
         push(@circs, {
-            circ => $circ, 
-            marc_xml => ($circ->target_copy->call_number->id != -1) ? 
+            circ => $circ,
+            marc_xml => ($circ->target_copy->call_number->id != -1) ?
                 XML::LibXML->new->parse_string(
-                    $circ->target_copy->call_number->record->marc) : 
+                    $circ->target_copy->call_number->record->marc) :
                 undef  # pre-cat copy, use the dummy title/author instead
         });
     }
@@ -1692,8 +1692,8 @@ sub load_myopac_hold_history {
     my $hold_ids = $e->json_query({
         select => {
             au => [{
-                column => 'id', 
-                transform => 'action.usr_visible_holds', 
+                column => 'id',
+                transform => 'action.usr_visible_holds',
                 result_field => 'id'
             }]
         },
@@ -1740,7 +1740,7 @@ sub load_myopac_payments {
         my $min_ts = DateTime->now(
             "time_zone" => DateTime::TimeZone->new("name" => "local"),
         )->subtract("seconds" => interval_to_seconds($max_age))->iso8601();
-        
+
         $logger->info("XXX min_ts: $min_ts");
         $args->{"where"} = {"payment_ts" => {">=" => $min_ts}};
     }
@@ -1769,7 +1769,7 @@ sub load_myopac_pay_init {
         return $stat if $stat;
         @payment_xacts =
             map { $_->{xact}->id } (
-                @{$self->ctx->{fines}->{circulation}}, 
+                @{$self->ctx->{fines}->{circulation}},
                 @{$self->ctx->{fines}->{grocery}}
         );
     }
@@ -1785,7 +1785,7 @@ sub load_myopac_pay_init {
     /);
 
     my $cache_args = {
-        cc_args => $cc_args, 
+        cc_args => $cc_args,
         user => $self->ctx->{user}->id,
         xacts => \@payment_xacts
     };
@@ -1798,8 +1798,8 @@ sub load_myopac_pay_init {
 
     # after we render the processing page, we quickly redirect to submit
     # the actual payment.  The refresh url contains the payment token.
-    # It also contains the list of xact IDs, which allows us to clear the 
-    # cache at the earliest possible time while leaving a trace of which 
+    # It also contains the list of xact IDs, which allows us to clear the
+    # cache at the earliest possible time while leaving a trace of which
     # transactions we were processing, so the UI can bring the user back
     # to the payment form w/ the same xacts if the payment fails.
 
@@ -1828,7 +1828,7 @@ sub load_myopac_pay {
     my @payment_xacts = @{$cache_args->{xacts}};
     my $cc_args = $cache_args->{cc_args};
 
-    # as an added security check, verify the user submitting 
+    # as an added security check, verify the user submitting
     # the form is the same as the user whose data was cached
     return Apache2::Const::HTTP_BAD_REQUEST unless
         $cache_args->{user} == $self->ctx->{user}->id;
@@ -1859,8 +1859,8 @@ sub load_myopac_pay {
 
     unless ($resp->{"textcode"}) {
         $self->ctx->{printable_receipt} = $U->simplereq(
-           "open-ils.circ", "open-ils.circ.money.payment_receipt.print",
-           $self->editor->authtoken, $resp->{payments}
+        "open-ils.circ", "open-ils.circ.money.payment_receipt.print",
+        $self->editor->authtoken, $resp->{payments}
         );
     }
 
@@ -1871,8 +1871,8 @@ sub load_myopac_receipt_print {
     my $self = shift;
 
     $self->ctx->{printable_receipt} = $U->simplereq(
-       "open-ils.circ", "open-ils.circ.money.payment_receipt.print",
-       $self->editor->authtoken, [$self->cgi->param("payment")]
+    "open-ils.circ", "open-ils.circ.money.payment_receipt.print",
+    $self->editor->authtoken, [$self->cgi->param("payment")]
     );
 
     return Apache2::Const::OK;
@@ -1885,8 +1885,8 @@ sub load_myopac_receipt_email {
     # question has an email address, so we do.
     if ($self->ctx->{user}->email) {
         $self->ctx->{email_receipt_result} = $U->simplereq(
-           "open-ils.circ", "open-ils.circ.money.payment_receipt.email",
-           $self->editor->authtoken, [$self->cgi->param("payment")]
+        "open-ils.circ", "open-ils.circ.money.payment_receipt.email",
+        $self->editor->authtoken, [$self->cgi->param("payment")]
         );
     } else {
         $self->ctx->{email_receipt_result} =
@@ -1913,7 +1913,7 @@ sub prepare_fines {
 
     my $cstore = OpenSRF::AppSession->create('open-ils.cstore');
 
-    # TODO: This should really be a ML call, but the existing calls 
+    # TODO: This should really be a ML call, but the existing calls
     # return an excessive amount of data and don't offer streaming
 
     my %paging = ($limit or $offset) ? (limit => $limit, offset => $offset) : ();
@@ -1979,7 +1979,7 @@ sub prepare_fines {
                 xact => $mobts,
                 last_grocery_billing => $last_billing,
                 marc_xml => $marc_xml
-            } 
+            }
         );
     }
 
@@ -2028,7 +2028,7 @@ sub load_myopac_update_email {
     # needed for most up-to-date email address
     if (my $r = $self->prepare_extended_user_info) { return $r };
 
-    return Apache2::Const::OK 
+    return Apache2::Const::OK
         unless $self->cgi->request_method eq 'POST';
 
     unless($email =~ /.+\@.+\..+/) { # TODO better regex?
@@ -2037,8 +2037,8 @@ sub load_myopac_update_email {
     }
 
     my $stat = $U->simplereq(
-        'open-ils.actor', 
-        'open-ils.actor.user.email.update', 
+        'open-ils.actor',
+        'open-ils.actor.user.email.update',
         $e->authtoken, $email, $current_pw);
 
     if($U->event_equals($stat, 'INCORRECT_PASSWORD')) {
@@ -2093,7 +2093,7 @@ sub load_myopac_update_username {
         return $self->generic_redirect($url);
     }
 
-    return Apache2::Const::OK 
+    return Apache2::Const::OK
         unless $self->cgi->request_method eq 'POST';
 
     unless($username and $username !~ /\s/) { # any other username restrictions?
@@ -2117,8 +2117,8 @@ sub load_myopac_update_username {
     if($username ne $e->requestor->usrname) {
 
         my $evt = $U->simplereq(
-            'open-ils.actor', 
-            'open-ils.actor.user.username.update', 
+            'open-ils.actor',
+            'open-ils.actor.user.username.update',
             $e->authtoken, $username, $current_pw);
 
         if($U->event_equals($evt, 'INCORRECT_PASSWORD')) {
@@ -2143,7 +2143,7 @@ sub load_myopac_update_password {
     my $e = $self->editor;
     my $ctx = $self->ctx;
 
-    return Apache2::Const::OK 
+    return Apache2::Const::OK
         unless $self->cgi->request_method eq 'POST';
 
     my $current_pw = $self->cgi->param('current_pw') || '';
@@ -2168,8 +2168,8 @@ sub load_myopac_update_password {
     }
 
     my $evt = $U->simplereq(
-        'open-ils.actor', 
-        'open-ils.actor.user.password.update', 
+        'open-ils.actor',
+        'open-ils.actor.user.password.update',
         $e->authtoken, $new_pw, $current_pw);
 
 
@@ -2326,8 +2326,8 @@ sub load_myopac_bookbags {
                 }
             }
 
-            # we're done with our CStoreEditor.  Rollback here so 
-            # later calls don't cause a timeout, resulting in a 
+            # we're done with our CStoreEditor.  Rollback here so
+            # later calls don't cause a timeout, resulting in a
             # transaction rollback under the covers.
             $e->rollback;
 
@@ -2349,7 +2349,7 @@ sub load_myopac_bookbags {
 
             my (undef, @recs) = $self->get_records_and_facets(
                 [ map {$_->target_biblio_record_entry->id} @$items ],
-                undef, 
+                undef,
                 {
                     flesh => '{mra,holdings_xml,acp,exclude_invisible_acn}',
                     flesh_depth => 1,
@@ -2383,7 +2383,7 @@ sub load_myopac_bookbags {
         }
     }
 
-    # this rollback may be a dupe, but that's OK because 
+    # this rollback may be a dupe, but that's OK because
     # cstoreditor ignores dupe rollbacks
     $e->rollback;
 
@@ -2443,7 +2443,7 @@ sub load_myopac_bookbag_update {
                     $item->bucket($list_id);
                     $item->target_biblio_record_entry($add_rec);
                     $success = $U->simplereq('open-ils.actor',
-                                             'open-ils.actor.container.item.create', $e->authtoken, 'biblio', $item);
+                                            'open-ils.actor.container.item.create', $e->authtoken, 'biblio', $item);
                     last unless $success;
                 }
             }
@@ -2462,7 +2462,7 @@ sub load_myopac_bookbag_update {
                 @hold_recs = map { $_->target_biblio_record_entry } @$items;
             }
         }
-                
+
         return Apache2::Const::OK unless @hold_recs;
         $logger->info("placing holds from list page on: @hold_recs");
 
@@ -2479,12 +2479,12 @@ sub load_myopac_bookbag_update {
 
         $list = $e->retrieve_container_biblio_record_entry_bucket($list_id);
 
-        return Apache2::Const::HTTP_BAD_REQUEST unless 
+        return Apache2::Const::HTTP_BAD_REQUEST unless
             $list and $list->owner == $e->requestor->id;
     }
 
     if($action eq 'delete') {
-        $success = $U->simplereq('open-ils.actor', 
+        $success = $U->simplereq('open-ils.actor',
             'open-ils.actor.container.full_delete', $e->authtoken, 'biblio', $list_id);
         if ($success) {
             # We check to see if we're deleting the user's default list.
@@ -2504,21 +2504,21 @@ sub load_myopac_bookbag_update {
     } elsif($action eq 'show') {
         unless($U->is_true($list->pub)) {
             $list->pub('t');
-            $success = $U->simplereq('open-ils.actor', 
+            $success = $U->simplereq('open-ils.actor',
                 'open-ils.actor.container.update', $e->authtoken, 'biblio', $list);
         }
 
     } elsif($action eq 'hide') {
         if($U->is_true($list->pub)) {
             $list->pub('f');
-            $success = $U->simplereq('open-ils.actor', 
+            $success = $U->simplereq('open-ils.actor',
                 'open-ils.actor.container.update', $e->authtoken, 'biblio', $list);
         }
 
     } elsif($action eq 'rename') {
         if($name) {
             $list->name($name);
-            $success = $U->simplereq('open-ils.actor', 
+            $success = $U->simplereq('open-ils.actor',
                 'open-ils.actor.container.update', $e->authtoken, 'biblio', $list);
         }
 
@@ -2527,7 +2527,7 @@ sub load_myopac_bookbag_update {
             my $item = Fieldmapper::container::biblio_record_entry_bucket_item->new;
             $item->bucket($list_id);
             $item->target_biblio_record_entry($add_rec);
-            $success = $U->simplereq('open-ils.actor', 
+            $success = $U->simplereq('open-ils.actor',
                 'open-ils.actor.container.item.create', $e->authtoken, 'biblio', $item);
             last unless $success;
         }
@@ -2712,7 +2712,7 @@ sub load_myopac_circ_history_export {
     my $circs = $self->fetch_user_circ_history;
 
     $self->ctx->{csv} = $U->fire_object_event(
-        undef, 
+        undef,
         'circ.format.history.csv', $circs,
         $self->editor->requestor->home_ou
     );
@@ -2740,16 +2740,16 @@ sub load_password_reset {
             if ($pwd1 eq $pwd2) {
 
                 my $response = $U->simplereq(
-                    'open-ils.actor', 
+                    'open-ils.actor',
                     'open-ils.actor.patron.password_reset.commit',
                     $uuid, $pwd1);
 
                 $logger->info("patron password reset response " . Dumper($response));
 
                 if ($U->event_code($response)) { # non-success event
-                    
+
                     my $code = $response->{textcode};
-                    
+
                     if ($code eq 'PATRON_NOT_AN_ACTIVE_PASSWORD_RESET_REQUEST') {
                         $ctx->{pwreset} = {style => 'error', status => 'NOT_ACTIVE'};
                     }
@@ -2779,7 +2779,7 @@ sub load_password_reset {
         push(@params, $email) if $email;
 
         $U->simplereq(
-            'open-ils.actor', 
+            'open-ils.actor',
             'open-ils.actor.patron.password_reset.request', @params);
 
         $ctx->{pwreset} = {status => 'REQUEST_SUCCESS'};

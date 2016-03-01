@@ -203,7 +203,7 @@ sub user_settings {
             $settings{$_} = get_setting($e, $user_id, $_) for @$setting;
             return \%settings;
         } else {
-            return get_setting($e, $user_id, $setting);    
+            return get_setting($e, $user_id, $setting);
         }
     } else {
         my $s = $e->search_actor_user_setting({usr => $user_id});
@@ -217,7 +217,7 @@ __PACKAGE__->register_method(
     api_name  => "open-ils.actor.org_unit_setting.values.ranged.retrieve",
     signature => {
         desc   => "Retrieves all org unit settings for the given org_id, up to whatever limit " .
-                  "is implied for retrieving OU settings by the authenticated users' permissions.",
+                "is implied for retrieving OU settings by the authenticated users' permissions.",
         params => [
             {desc => 'Authentication token',   type => 'string'},
             {desc => 'Org unit ID',            type => 'number'},
@@ -239,7 +239,7 @@ sub ranged_ou_settings {
     # start at the context org and capture the setting value
     # without clobbering settings we've already captured
     for my $this_org_id (@$org_list) {
-        
+
         my @sets = grep { $_->org_unit == $this_org_id } @$settings;
 
         for my $set (@sets) {
@@ -282,8 +282,8 @@ __PACKAGE__->register_method(
 );
 
 # ------------------------------------------------------------------
-# Attempts to find the org setting value for a given org.  if not 
-# found at the requested org, searches up the org tree until it 
+# Attempts to find the org setting value for a given org.  if not
+# found at the requested org, searches up the org tree until it
 # finds a parent that has the requested setting.
 # when found, returns { org => $id, value => $value }
 # otherwise, returns NULL
@@ -357,12 +357,12 @@ __PACKAGE__->register_method(
     signature => {
         desc   => q/
             Update an existing user, or create a new one.  Related objects,
-            like cards, addresses, survey responses, and stat cats, 
+            like cards, addresses, survey responses, and stat cats,
             can be updated by attaching them to the user object in their
             respective fields.  For examples, the billing address object
-            may be inserted into the 'billing_address' field, etc.  For each 
-            attached object, indicate if the object should be created, 
-            updated, or deleted using the built-in 'isnew', 'ischanged', 
+            may be inserted into the 'billing_address' field, etc.  For each
+            attached object, indicate if the object should be created,
+            updated, or deleted using the built-in 'isnew', 'ischanged',
             and 'isdeleted' fields on the object.
         /,
         params => [
@@ -379,7 +379,7 @@ sub update_patron {
     my $e = new_editor(xact => 1, authtoken => $auth);
     return $e->event unless $e->checkauth;
 
-    $logger->info($patron->isnew ? "Creating new patron..." : 
+    $logger->info($patron->isnew ? "Creating new patron..." :
         "Updating Patron: " . $patron->id);
 
     my $evt = check_group_perm($e, $e->requestor, $patron);
@@ -393,9 +393,9 @@ sub update_patron {
 
     # unflesh the real items on the patron
     $patron->card( $patron->card->id ) if(ref($patron->card));
-    $patron->billing_address( $patron->billing_address->id ) 
+    $patron->billing_address( $patron->billing_address->id )
         if(ref($patron->billing_address));
-    $patron->mailing_address( $patron->mailing_address->id ) 
+    $patron->mailing_address( $patron->mailing_address->id )
         if(ref($patron->mailing_address));
 
     # create/update the patron first so we can use his id
@@ -425,7 +425,7 @@ sub update_patron {
             my $perm = $U->is_true($old_patron->barred) ? 'UNBAR_PATRON' : 'BAR_PATRON';
             return $e->die_event unless $e->allowed($perm, $patron->home_ou);
 
-            $barred_hook = $U->is_true($new_patron->barred) ? 
+            $barred_hook = $U->is_true($new_patron->barred) ?
                 'au.barred' : 'au.unbarred';
         }
     }
@@ -461,13 +461,13 @@ sub update_patron {
 
     my $tses = OpenSRF::AppSession->create('open-ils.trigger');
     if($patron->isnew) {
-        $tses->request('open-ils.trigger.event.autocreate', 
+        $tses->request('open-ils.trigger.event.autocreate',
             'au.create', $new_patron, $new_patron->home_ou);
     } else {
-        $tses->request('open-ils.trigger.event.autocreate', 
+        $tses->request('open-ils.trigger.event.autocreate',
             'au.update', $new_patron, $new_patron->home_ou);
 
-        $tses->request('open-ils.trigger.event.autocreate', $barred_hook, 
+        $tses->request('open-ils.trigger.event.autocreate', $barred_hook,
             $new_patron, $new_patron->home_ou) if $barred_hook;
     }
 
@@ -482,9 +482,9 @@ sub apply_invalid_addr_penalty {
     # grab the invalid address penalty if set
     my $penalties = OpenILS::Utils::Penalty->retrieve_usr_penalties($e, $patron->id, $patron->home_ou);
 
-    my ($addr_penalty) = grep 
+    my ($addr_penalty) = grep
         { $_->standing_penalty->name eq 'INVALID_PATRON_ADDRESS' } @$penalties;
-    
+
     # do we enforce invalid address penalty
     my $enforce = $U->ou_ancestor_setting_value(
         $patron->home_ou, 'circ.patron_invalid_address_apply_penalty') || 0;
@@ -500,12 +500,12 @@ sub apply_invalid_addr_penalty {
         $e->commit;
 
     } elsif($enforce and $addr_count > 0 and !$addr_penalty) {
-        
+
         my $ptype = $e->retrieve_config_standing_penalty(29) or return $e->die_event;
         my $depth = $ptype->org_depth;
         my $ctx_org = $U->org_unit_ancestor_at_depth($patron->home_ou, $depth) if defined $depth;
         $ctx_org = $patron->home_ou unless defined $ctx_org;
-        
+
         my $penalty = Fieldmapper::actor::user_standing_penalty->new;
         $penalty->usr($patron->id);
         $penalty->org_unit($ctx_org);
@@ -571,7 +571,7 @@ sub _add_patron {
     my $e          = shift;
     my $patron      = shift;
 
-    return (undef, $e->die_event) unless 
+    return (undef, $e->die_event) unless
         $e->allowed('CREATE_USER', $patron->home_ou);
 
     my $ex = $e->search_actor_user(
@@ -592,14 +592,14 @@ sub check_group_perm {
     my( $e, $requestor, $patron ) = @_;
     my $evt;
 
-    # first let's see if the requestor has 
+    # first let's see if the requestor has
     # priveleges to update this user in any way
     if( ! $patron->isnew ) {
         my $p = $e->retrieve_actor_user($patron->id);
 
         # If we are the requestor (trying to update our own account)
         # and we are not trying to change our profile, we're good
-        if( $p->id == $requestor->id and 
+        if( $p->id == $requestor->id and
                 $p->profile == $patron->profile ) {
             return undef;
         }
@@ -609,7 +609,7 @@ sub check_group_perm {
         return $evt if $evt;
     }
 
-    # They are allowed to edit this patron.. can they put the 
+    # They are allowed to edit this patron.. can they put the
     # patron into the group requested?
     $evt = group_perm_failed($e, $requestor, $patron);
     return $evt if $evt;
@@ -689,11 +689,11 @@ sub _check_dup_ident {
     return undef unless $patron->ident_value;
 
     my $search = {
-        ident_type  => $patron->ident_type, 
+        ident_type  => $patron->ident_type,
         ident_value => $patron->ident_value,
     };
 
-    $logger->debug("patron update searching for dup ident values: " . 
+    $logger->debug("patron update searching for dup ident values: " .
         $patron->ident_type . ':' . $patron->ident_value);
 
     $search->{id} = {'!=' => $patron->id} if $patron->id and $patron->id > 0;
@@ -732,7 +732,7 @@ sub _add_update_addresses {
             $new_patron->billing_address($address->id());
             $new_patron->ischanged(1);
         }
-    
+
         if( $patron->mailing_address() and
             $patron->mailing_address() == $current_id ) {
             $new_patron->mailing_address($address->id());
@@ -749,7 +749,7 @@ sub _add_update_addresses {
             return (undef, $evt) if $evt;
 
             # we need to get the new id
-            if( $patron->billing_address() and 
+            if( $patron->billing_address() and
                     $patron->billing_address() == $current_id ) {
                 $new_patron->billing_address($address->id());
                 $logger->info("setting billing addr to $current_id");
@@ -784,7 +784,7 @@ sub _add_update_addresses {
 
             $evt = _delete_address($e, $address);
             return (undef, $evt) if $evt;
-        } 
+        }
     }
 
     return ( $new_patron, undef );
@@ -901,7 +901,7 @@ sub _add_survey_responses {
 
         $_->usr($new_patron->id) for (@$responses);
 
-        my $evt = $U->simplereq( "open-ils.circ", 
+        my $evt = $U->simplereq( "open-ils.circ",
             "open-ils.circ.survey.submit.user_id", $responses );
 
         return (undef, $evt) if defined($U->event_code($evt));
@@ -939,7 +939,7 @@ sub _clear_badcontact_penalties {
     my @penalties_to_clear;
     my ($field, $penalty_name);
 
-    # For each field that might have an associated bad contact penalty, 
+    # For each field that might have an associated bad contact penalty,
     # check for such penalties and add them to the to-clear list if that
     # field has changed.
     while (($field, $penalty_name) = each(%$PNM)) {
@@ -1143,7 +1143,7 @@ sub get_user_by_id {
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
     my $user = $e->retrieve_actor_user($id) or return $e->event;
-    return $e->event unless $e->allowed('VIEW_USER', $user->home_ou);   
+    return $e->event unless $e->allowed('VIEW_USER', $user->home_ou);
     return $user;
 }
 
@@ -1164,7 +1164,7 @@ __PACKAGE__->register_method(
 my $ident_types;
 sub get_user_ident_types {
     return $ident_types if $ident_types;
-    return $ident_types = 
+    return $ident_types =
         new_editor()->retrieve_all_config_identification_type();
 }
 
@@ -1197,7 +1197,7 @@ sub search_org_unit {
 
     my $list = OpenILS::Application::AppUtils->simple_scalar_request(
         "open-ils.cstore",
-        "open-ils.cstore.direct.actor.org_unit.search.atomic", 
+        "open-ils.cstore.direct.actor.org_unit.search.atomic",
         { $field => $value } );
 
     return $list;
@@ -1209,7 +1209,7 @@ sub search_org_unit {
 __PACKAGE__->register_method(
     method  => "get_org_tree",
     api_name    => "open-ils.actor.org_tree.retrieve",
-    argc        => 0, 
+    argc        => 0,
     note        => "Returns the entire org tree structure",
 );
 
@@ -1234,7 +1234,7 @@ sub get_org_descendants {
         my @trees;
         for my $i (0..scalar(@$org_unit)-1) {
             my $list = $U->simple_scalar_request(
-                "open-ils.storage", 
+                "open-ils.storage",
                 "open-ils.storage.actor.org_unit.descendants.atomic",
                 $org_unit->[$i], $depth->[$i] );
             push(@trees, $U->build_org_tree($list));
@@ -1243,7 +1243,7 @@ sub get_org_descendants {
 
     } else {
         my $orglist = $apputils->simple_scalar_request(
-                "open-ils.storage", 
+                "open-ils.storage",
                 "open-ils.storage.actor.org_unit.descendants.atomic",
                 $org_unit, $depth );
         return $U->build_org_tree($orglist);
@@ -1260,7 +1260,7 @@ __PACKAGE__->register_method(
 sub get_org_ancestors {
     my( $self, $client, $org_unit, $depth ) = @_;
     my $orglist = $apputils->simple_scalar_request(
-            "open-ils.storage", 
+            "open-ils.storage",
             "open-ils.storage.actor.org_unit.ancestors.atomic",
             $org_unit, $depth );
     return $U->build_org_tree($orglist);
@@ -1275,7 +1275,7 @@ __PACKAGE__->register_method(
 my $user_standings;
 sub get_standings {
     return $user_standings if $user_standings;
-    return $user_standings = 
+    return $user_standings =
         $apputils->simple_scalar_request(
             "open-ils.cstore",
             "open-ils.cstore.direct.config.standing.search.atomic",
@@ -1316,7 +1316,7 @@ __PACKAGE__->register_method(
     # seeing results fairly quickly
     max_chunk_size => 4096, # bundling
 
-    # api_level => 2, 
+    # api_level => 2,
     # pending opensrf work -- also, not sure if needed since we're not
     # actaully creating an alternate vesrion, only offering to return a
     # different format.
@@ -1328,7 +1328,7 @@ __PACKAGE__->register_method(
 );
 
 sub patron_adv_search {
-    my( $self, $client, $auth, $search_hash, $search_limit, 
+    my( $self, $client, $auth, $search_hash, $search_limit,
         $search_sort, $include_inactive, $search_ou, $flesh_fields, $offset) = @_;
 
     # API params sanity checks.
@@ -1366,8 +1366,8 @@ sub patron_adv_search {
     }
 
     my $ids = $U->storagereq(
-        "open-ils.storage.actor.user.crazy_search", $search_hash, 
-        $search_limit, $search_sort, $include_inactive, 
+        "open-ils.storage.actor.user.crazy_search", $search_hash,
+        $search_limit, $search_sort, $include_inactive,
         $e->requestor->ws_ou, $search_ou, $opt_boundary, $offset);
 
     return $ids unless $self->api_name =~ /fleshed/;
@@ -1405,7 +1405,7 @@ __PACKAGE__->register_method(
     method    => "update_passwd",
     api_name  => "open-ils.actor.user.password.update",
     signature => {
-        desc   => "Update the operator's password", 
+        desc   => "Update the operator's password",
         params => [
             { desc => 'Authentication token', type => 'string' },
             { desc => 'New password',         type => 'string' },
@@ -1419,7 +1419,7 @@ __PACKAGE__->register_method(
     method    => "update_passwd",
     api_name  => "open-ils.actor.user.username.update",
     signature => {
-        desc   => "Update the operator's username", 
+        desc   => "Update the operator's username",
         params => [
             { desc => 'Authentication token', type => 'string' },
             { desc => 'New username',         type => 'string' },
@@ -1433,7 +1433,7 @@ __PACKAGE__->register_method(
     method    => "update_passwd",
     api_name  => "open-ils.actor.user.email.update",
     signature => {
-        desc   => "Update the operator's email address", 
+        desc   => "Update the operator's email address",
         params => [
             { desc => 'Authentication token', type => 'string' },
             { desc => 'New email address',    type => 'string' },
@@ -1473,7 +1473,7 @@ sub update_passwd {
         if( $api =~ /username/o ) {
 
             # make sure no one else has this username
-            my $exist = $e->search_actor_user({usrname=>$new_val},{idlist=>1}); 
+            my $exist = $e->search_actor_user({usrname=>$new_val},{idlist=>1});
             if (@$exist) {
                 $e->rollback;
                 return new OpenILS::Event('USERNAME_EXISTS');
@@ -1601,7 +1601,7 @@ __PACKAGE__->register_method(
     authoritative => 1,
     signature => {
         desc => q/
-            Returns a set of org unit IDs which represent the highest orgs in 
+            Returns a set of org unit IDs which represent the highest orgs in
             the org tree where the user has the requested permission.  The
             purpose of this method is to return the smallest set of org units
             which represent the full expanse of the user's ability to perform
@@ -1610,7 +1610,7 @@ __PACKAGE__->register_method(
         params => [
             {desc => 'authtoken', type => 'string'},
             {desc => 'permission name', type => 'string'},
-            {desc => q/user id, optional.  If present, check perms for 
+            {desc => q/user id, optional.  If present, check perms for
                 this user instead of the logged in user/, type => 'number'},
         ],
         return => {desc => 'An array of org IDs'}
@@ -1658,15 +1658,15 @@ __PACKAGE__->register_method(
         'VIEW_PERMISSION' rights at the home org unit of the target user
         @param authtoken The login session key
         @param userid The id of the user in question
-        @param perms An array of perm names to check 
-        @return An array of orgId's  representing the org unit 
+        @param perms An array of perm names to check
+        @return An array of orgId's  representing the org unit
         highest in the org tree within which the user has the requested permission
         The arrah of orgId's has matches the order of the perms array
     /);
 
 sub check_user_perms4 {
     my( $self, $client, $authtoken, $userid, $perms ) = @_;
-    
+
     my( $staff, $target, $org, $evt );
 
     ( $staff, $target, $evt ) = $apputils->checkses_requestor(
@@ -1690,7 +1690,7 @@ __PACKAGE__->register_method(
     authoritative => 1,
     signature     => {
         desc   => 'Returns a short summary of the users total open fines, '  .
-                  'excluding voided fines Params are login_session, user_id' ,
+                'excluding voided fines Params are login_session, user_id' ,
         params => [
             {desc => 'Authentication token', type => 'string'},
             {desc => 'User ID',              type => 'string'}  # number?
@@ -1709,7 +1709,7 @@ sub user_fines_summary {
 
     if( $user_id ne $e->requestor->id ) {
         my $user = $e->retrieve_actor_user($user_id) or return $e->event;
-        return $e->event unless 
+        return $e->event unless
             $e->allowed('VIEW_USER_FINES_SUMMARY', $user->home_ou);
     }
 
@@ -1724,8 +1724,8 @@ __PACKAGE__->register_method(
     authoritative => 1,
     signature     => {
         desc   => 'Returns a short summary of the users vital stats, including '  .
-                  'identification information, accumulated balance, number of holds, ' .
-                  'and current open circulation stats' ,
+                'identification information, accumulated balance, number of holds, ' .
+                'and current open circulation stats' ,
         params => [
             {desc => 'Authentication token',                          type => 'string'},
             {desc => 'Optional User ID, for use in the staff client', type => 'number'}  # number?
@@ -1820,7 +1820,7 @@ foreach (keys %methods) {
             params => $common_params,
             return => {
                 desc => "List of objects, or event on error.  Each object is a hash containing: transaction, circ, record. "
-                      . 'These represent the relevant (mbts) transaction, attached circulation and title pointed to in the circ, respectively.',
+                    . 'These represent the relevant (mbts) transaction, attached circulation and title pointed to in the circ, respectively.',
             }
         }
     );
@@ -1873,7 +1873,7 @@ sub user_transactions {
 
     my $user = $e->retrieve_actor_user($user_id) or return $e->event;
 
-    return $e->event unless 
+    return $e->event unless
         $e->requestor->id == $user_id or
         $e->allowed('VIEW_USER_TRANSACTIONS', $user->home_ou);
 
@@ -1887,7 +1887,7 @@ sub user_transactions {
     $method = "$method.authoritative" if $api =~ /authoritative/;
     my ($trans) = $self->method_lookup($method)->run($auth, $user_id, $type, $filter, $options);
 
-    if($api =~ /total/o) { 
+    if($api =~ /total/o) {
         my $total = 0.0;
         $total += $_->balance_owed for @$trans;
         return $total;
@@ -1898,7 +1898,7 @@ sub user_transactions {
 
     my @resp;
     for my $t (@$trans) {
-            
+
         if( $t->xact_type ne 'circulation' ) {
             push @resp, {transaction => $t};
             next;
@@ -1908,8 +1908,8 @@ sub user_transactions {
         push @resp, {transaction => $t, %$circ_data};
     }
 
-    return \@resp; 
-} 
+    return \@resp;
+}
 
 
 __PACKAGE__->register_method(
@@ -1993,13 +1993,13 @@ __PACKAGE__->register_method(
     argc          => 1,
     notes         => q/
         Returns hold ready vs. total counts.
-        If a context org unit is provided, a third value 
+        If a context org unit is provided, a third value
         is returned with key 'behind_desk', which reports
-        how many holds are ready at the pickup library 
+        how many holds are ready at the pickup library
         with the behind_desk flag set to true.
     /
 );
-    
+
 sub hold_request_count {
     my( $self, $client, $authtoken, $user_id, $ctx_org ) = @_;
     my $e = new_editor(authtoken => $authtoken);
@@ -2022,13 +2022,13 @@ sub hold_request_count {
         }
     });
 
-    my @ready = grep { 
+    my @ready = grep {
         $_->{current_shelf_lib} and # avoid undef warnings
-        $_->{pickup_lib} eq $_->{current_shelf_lib} 
+        $_->{pickup_lib} eq $_->{current_shelf_lib}
     } @$holds;
 
-	my $resp = { 
-        total => scalar(@$holds), 
+    my $resp = {
+        total => scalar(@$holds),
         ready => scalar(@ready)
     };
 
@@ -2052,16 +2052,16 @@ __PACKAGE__->register_method(
     argc          => 2,
     signature     => {
         desc => "For a given user, returns a structure of circulations objects sorted by out, overdue, lost, claims_returned, long_overdue. "
-              . "A list of IDs are returned of each type.  Circs marked lost, long_overdue, and claims_returned will not be 'finished' "
-              . "(i.e., outstanding balance or some other pending action on the circ). "
-              . "The .count method also includes a 'total' field which sums all open circs.",
+            . "A list of IDs are returned of each type.  Circs marked lost, long_overdue, and claims_returned will not be 'finished' "
+            . "(i.e., outstanding balance or some other pending action on the circ). "
+            . "The .count method also includes a 'total' field which sums all open circs.",
         params => [
             { desc => 'Authentication Token', type => 'string'},
             { desc => 'User ID',              type => 'string'},
         ],
         return => {
             desc => 'Returns event on error, or an object with ID lists, like: '
-                  . '{"out":[12552,451232], "claims_returned":[], "long_overdue":[23421] "overdue":[], "lost":[]}'
+                . '{"out":[12552,451232], "claims_returned":[], "long_overdue":[23421] "overdue":[], "lost":[]}'
         },
     }
 );
@@ -2159,7 +2159,7 @@ sub checked_in_with_fines {
     # money is owed on these items and they are checked in
     my $open = $e->search_action_circulation(
         {
-            usr             => $userid, 
+            usr             => $userid,
             xact_finish     => undef,
             checkin_time    => { "!=" => undef },
         }
@@ -2191,9 +2191,9 @@ sub _sigmaker {
         api_name  => "open-ils.actor.user.transactions.$api",
         signature => {
             desc   => "For a given User ID, returns a list of billable transaction" .
-                      ($ids ? " id" : '') .
-                      "s$desc, optionally filtered by type and/or fields in money.billable_xact_summary.  " .
-                      "The VIEW_USER_TRANSACTIONS permission is required to view another user's transactions",
+                    ($ids ? " id" : '') .
+                    "s$desc, optionally filtered by type and/or fields in money.billable_xact_summary.  " .
+                    "The VIEW_USER_TRANSACTIONS permission is required to view another user's transactions",
             params => [
                 {desc => 'Authentication token',        type => 'string'},
                 {desc => 'User ID',                     type => 'number'},
@@ -2274,8 +2274,8 @@ sub user_transaction_history {
     }
 
     my $options_clause = { order_by => { mbt => 'xact_start DESC' } };
-    $options_clause->{'limit'} = $options->{'limit'} if $options->{'limit'}; 
-    $options_clause->{'offset'} = $options->{'offset'} if $options->{'offset'}; 
+    $options_clause->{'limit'} = $options->{'limit'} if $options->{'limit'};
+    $options_clause->{'offset'} = $options->{'offset'} if $options->{'offset'};
 
     my $mbts = $e->search_money_billable_transaction_summary(
         [   { usr => $userid, @xact_finish, %$filter },
@@ -2288,7 +2288,7 @@ sub user_transaction_history {
 
     my @resp;
     for my $t (@$mbts) {
-            
+
         if( $t->xact_type ne 'circulation' ) {
             push @resp, {transaction => $t};
             next;
@@ -2298,7 +2298,7 @@ sub user_transaction_history {
         push @resp, {transaction => $t, %$circ_data};
     }
 
-    return \@resp; 
+    return \@resp;
 }
 
 
@@ -2309,7 +2309,7 @@ __PACKAGE__->register_method(
     argc     => 1,
     notes    => "Returns a list of permissions"
 );
-    
+
 sub user_perms {
     my( $self, $client, $authtoken, $user ) = @_;
 
@@ -2373,15 +2373,15 @@ __PACKAGE__->register_method(
     api_name => "open-ils.actor.groups.tree.retrieve",
     notes    => "Returns a list of user groups"
 );
-    
+
 sub retrieve_groups_tree {
     my( $self, $client ) = @_;
     return new_editor()->search_permission_grp_tree(
         [
             { parent => undef},
-            {   
+            {
                 flesh               => -1,
-                flesh_fields    => { pgt => ["children"] }, 
+                flesh_fields    => { pgt => ["children"] },
                 order_by            => { pgt => 'name'}
             }
         ]
@@ -2394,7 +2394,7 @@ __PACKAGE__->register_method(
     api_name => "open-ils.actor.user.set_groups",
     notes    => "Adds a user to one or more permission groups"
 );
-    
+
 sub add_user_to_groups {
     my( $self, $client, $authtoken, $userid, $groups ) = @_;
 
@@ -2409,7 +2409,7 @@ sub add_user_to_groups {
     $apputils->simplereq(
         'open-ils.storage',
         'open-ils.storage.direct.permission.usr_grp_map.mass_delete', { usr => $userid } );
-        
+
     for my $group (@$groups) {
         my $link = Fieldmapper::permission::usr_grp_map->new;
         $link->grp($group);
@@ -2440,7 +2440,7 @@ sub get_user_perm_groups {
     return $apputils->simplereq(
         'open-ils.cstore',
         'open-ils.cstore.direct.permission.usr_grp_map.search.atomic', { usr => $userid } );
-}   
+}
 
 
 __PACKAGE__->register_method(
@@ -2472,7 +2472,7 @@ sub get_user_work_ous {
 
     # client just wants a list of org IDs
     return $U->get_user_work_ou_ids($e, $userid);
-}   
+}
 
 
 
@@ -2507,17 +2507,17 @@ sub register_workstation {
     if( $existing ) {
 
         if( $self->api_name =~ /override/o && ($oargs->{all} || grep { $_ eq 'WORKSTATION_NAME_EXISTS' } @{$oargs->{events}}) ) {
-            # workstation with the given name exists.  
+            # workstation with the given name exists.
 
             if($owner ne $existing->owning_lib) {
                 # if necessary, update the owning_lib of the workstation
 
                 $logger->info("changing owning lib of workstation ".$existing->id.
                     " from ".$existing->owning_lib." to $owner");
-                return $e->die_event unless 
-                    $e->allowed('UPDATE_WORKSTATION', $existing->owning_lib); 
+                return $e->die_event unless
+                    $e->allowed('UPDATE_WORKSTATION', $existing->owning_lib);
 
-                return $e->die_event unless $e->allowed('UPDATE_WORKSTATION', $owner); 
+                return $e->die_event unless $e->allowed('UPDATE_WORKSTATION', $owner);
 
                 $existing->owning_lib($owner);
                 return $e->die_event unless $e->update_actor_workstation($existing);
@@ -2525,7 +2525,7 @@ sub register_workstation {
                 $e->commit;
 
             } else {
-                $logger->info(  
+                $logger->info(
                     "attempt to register an existing workstation.  returning existing ID");
             }
 
@@ -2562,7 +2562,7 @@ sub workstation_list {
     my %results;
 
     for my $o (@orgs) {
-        return $e->event 
+        return $e->event
             unless $e->allowed('REGISTER_WORKSTATION', $o);
         $results{$o} = $e->search_actor_workstation({owning_lib=>$o});
     }
@@ -2601,7 +2601,7 @@ sub fetch_patron_note {
             return $evt if $evt;
         }
         return $U->cstorereq(
-            'open-ils.cstore.direct.actor.usr_note.search.atomic', 
+            'open-ils.cstore.direct.actor.usr_note.search.atomic',
             { usr => $patronid, pub => 't' } );
     }
 
@@ -2629,7 +2629,7 @@ sub create_user_note {
     my $user = $e->retrieve_actor_user($note->usr)
         or return $e->die_event;
 
-    return $e->die_event unless 
+    return $e->die_event unless
         $e->allowed('UPDATE_USER',$user->home_ou);
 
     $note->creator($e->requestor->id);
@@ -2657,9 +2657,9 @@ sub delete_user_note {
         or return $e->die_event;
     my $user = $e->retrieve_actor_user($note->usr)
         or return $e->die_event;
-    return $e->die_event unless 
+    return $e->die_event unless
         $e->allowed('UPDATE_USER', $user->home_ou);
-    
+
     $e->delete_actor_usr_note($note) or return $e->die_event;
     $e->commit;
     return 1;
@@ -2681,7 +2681,7 @@ sub update_user_note {
     return $e->die_event unless $e->checkauth;
     my $patron = $e->retrieve_actor_user($note->usr)
         or return $e->die_event;
-    return $e->die_event unless 
+    return $e->die_event unless
         $e->allowed('UPDATE_USER', $patron->home_ou);
     $e->update_actor_user_note($note)
         or return $e->die_event;
@@ -2834,8 +2834,8 @@ sub session_safe_token {
 
     # add more user fields as needed
     $cache->put_cache(
-        "safe-token-user-$safe_token", {   
-            id => $e->requestor->id, 
+        "safe-token-user-$safe_token", {
+            id => $e->requestor->id,
             home_ou_shortname => $e->retrieve_actor_org_unit(
                 $e->requestor->home_ou)->shortname,
         },
@@ -2903,8 +2903,8 @@ sub apply_penalty {
     return $e->die_event unless $e->allowed('UPDATE_USER', $user->home_ou);
 
     my $ptype = $e->retrieve_config_standing_penalty($penalty->standing_penalty) or return $e->die_event;
-    
-    my $ctx_org = 
+
+    my $ctx_org =
         (defined $ptype->org_depth) ?
         $U->org_unit_ancestor_at_depth($penalty->org_unit, $ptype->org_depth) :
         $penalty->org_unit;
@@ -3041,13 +3041,13 @@ sub new_flesh_user {
         $user->addresses([]) unless @{$user->addresses};
         # don't expose "replaced" addresses by default
         $user->addresses([grep {$_->id >= 0} @{$user->addresses}]);
-    
+
         if( ref $user->billing_address ) {
             unless( grep { $user->billing_address->id == $_->id } @{$user->addresses} ) {
                 push( @{$user->addresses}, $user->billing_address );
             }
         }
-    
+
         if( ref $user->mailing_address ) {
             unless( grep { $user->mailing_address->id == $_->id } @{$user->addresses} ) {
                 push( @{$user->addresses}, $user->mailing_address );
@@ -3059,7 +3059,7 @@ sub new_flesh_user {
         # grab the user penalties ranged for this location
         $user->standing_penalties(
             $e->search_actor_user_standing_penalty([
-                {   usr => $id, 
+                {   usr => $id,
                     '-or' => [
                         {stop_date => undef},
                         {stop_date => {'>' => 'now'}}
@@ -3078,21 +3078,21 @@ sub new_flesh_user {
 
         # max number to return for simple patron fleshing
         my $limit = $U->ou_ancestor_setting_value(
-            $e->requestor->ws_ou, 
+            $e->requestor->ws_ou,
             'circ.patron.usr_activity_retrieve.max');
 
         my $opts = {
             flesh => 1,
             flesh_fields => {auact => ['etype']},
-            order_by => {auact => 'event_time DESC'}, 
+            order_by => {auact => 'event_time DESC'},
         };
 
         # 0 == none, <0 == return all
         $limit = 1 unless defined $limit;
         $opts->{limit} = $limit if $limit > 0;
 
-        $user->usr_activity( 
-            ($limit == 0) ? 
+        $user->usr_activity(
+            ($limit == 0) ?
                 [] : # skip the DB call
                 $e->search_actor_usr_activity([{usr => $user->id}, $opts])
         );
@@ -3136,10 +3136,10 @@ __PACKAGE__->register_method(
 sub user_opt_in_enabled {
     my($self, $conn) = @_;
     my $sc = OpenSRF::Utils::SettingsClient->new;
-    return 1 if lc($sc->config_value(share => user => 'opt_in')) eq 'true'; 
+    return 1 if lc($sc->config_value(share => user => 'opt_in')) eq 'true';
     return 0;
 }
-    
+
 
 __PACKAGE__->register_method(
     method    => 'user_opt_in_at_org',
@@ -3168,7 +3168,7 @@ sub user_opt_in_at_org {
 
     # get the boundary setting
     my $opt_boundary = $U->ou_ancestor_setting_value($e->requestor->ws_ou,'org.patron_opt_boundary');
- 
+
     # auto opt in if user falls within the opt boundary
     my $opt_orgs = $U->get_org_descendants($ws_org, $opt_boundary);
 
@@ -3195,17 +3195,17 @@ sub create_user_opt_in_at_org {
 
     my $e = new_editor(authtoken => $auth, xact=>1);
     return $e->die_event unless $e->checkauth;
-   
+
     # if a specific org unit wasn't passed in, get one based on the defaults;
     if(!$org_id){
         my $wsou = $e->requestor->ws_ou;
         # get the default opt depth
-        my $opt_depth = $U->ou_ancestor_setting_value($wsou,'org.patron_opt_default'); 
+        my $opt_depth = $U->ou_ancestor_setting_value($wsou,'org.patron_opt_default');
         # get the org unit at that depth
-        my $org = $e->json_query({ 
+        my $org = $e->json_query({
             from => [ 'actor.org_unit_ancestor_at_depth', $wsou, $opt_depth ]})->[0];
         $org_id = $org->{id};
-    } 
+    }
     if (!$org_id) {
         # fall back to the workstation OU, the pre-opt-in-boundary way
         $org_id = $e->requestor->ws_ou;
@@ -3254,7 +3254,7 @@ __PACKAGE__->register_method (
     method      => 'verify_user_password',
     api_name    => 'open-ils.actor.verify_user_password',
     signature   => q/
-        Given a barcode or username and the MD5 encoded password, 
+        Given a barcode or username and the MD5 encoded password,
         returns 1 if the password is correct.  Returns 0 otherwise.
     /
 );
@@ -3278,7 +3278,7 @@ sub verify_user_password {
         $user = $user_by_username;
     }
     return 0 if (!$user);
-    return 0 if ($user_by_username && $user_by_barcode && $user_by_username->id != $user_by_barcode->id); 
+    return 0 if ($user_by_username && $user_by_barcode && $user_by_username->id != $user_by_barcode->id);
     return $e->event unless $e->allowed('VIEW_USER', $user->home_ou);
     return $U->verify_migrated_user_password(
         $e, $user_by_username->id, $password, 1);
@@ -3327,7 +3327,7 @@ sub retrieve_usr_id_via_barcode_or_usrname {
         $user = $user_by_username;
     }
     return OpenILS::Event->new( 'ACTOR_USER_NOT_FOUND' ) if (!$user);
-    return OpenILS::Event->new( 'ACTOR_USER_NOT_FOUND' ) if ($user_by_username && $user_by_barcode && $user_by_username->id != $user_by_barcode->id); 
+    return OpenILS::Event->new( 'ACTOR_USER_NOT_FOUND' ) if ($user_by_username && $user_by_barcode && $user_by_username->id != $user_by_barcode->id);
     return $e->event unless $e->allowed('VIEW_USER', $user->home_ou);
     return $user->id;
 }
@@ -3339,7 +3339,7 @@ __PACKAGE__->register_method (
     signature   => {
         desc => q/
             Given a list of source users and destination user, transfer all data from the source
-            to the dest user and delete the source user.  All user related data is 
+            to the dest user and delete the source user.  All user related data is
             transferred, including circulations, holds, bookbags, etc.
         /
     }
@@ -3370,10 +3370,10 @@ sub merge_users {
             return $e->die_event unless $e->allowed('MERGE_USERS', $master_user->home_ou);
         }
 
-        return $e->die_event unless 
+        return $e->die_event unless
             $e->json_query({from => [
-                'actor.usr_merge', 
-                $src_id, 
+                'actor.usr_merge',
+                $src_id,
                 $master_id,
                 $del_addrs,
                 $del_cards,
@@ -3400,7 +3400,7 @@ sub approve_user_address {
     my $e = new_editor(xact => 1, authtoken => $auth);
     return $e->die_event unless $e->checkauth;
     if(ref $addr) {
-        # if the caller passes an address object, assume they want to 
+        # if the caller passes an address object, assume they want to
         # update it first before approving it
         $e->update_actor_user_address($addr) or return $e->die_event;
     } else {
@@ -3411,7 +3411,7 @@ sub approve_user_address {
     my $result = $e->json_query({from => ['actor.approve_pending_address', $addr->id]})->[0]
         or return $e->die_event;
     $e->commit;
-    return [values %$result]->[0]; 
+    return [values %$result]->[0];
 }
 
 
@@ -3438,7 +3438,7 @@ sub retrieve_friends {
         return $e->event unless $e->allowed('VIEW_USER', $user->home_ou);
     }
 
-    return OpenILS::Application::Actor::Friends->retrieve_friends(  
+    return OpenILS::Application::Actor::Friends->retrieve_friends(
         $e, $user_id, $options);
 }
 
@@ -3463,7 +3463,7 @@ sub apply_friend_perms {
     }
 
     for my $perm (@perms) {
-        my $evt = 
+        my $evt =
             OpenILS::Application::Actor::Friends->apply_friend_perm(
                 $e, $user_id, $delegate_id, $perm);
         return $evt if $evt;
@@ -3522,7 +3522,7 @@ sub user_events {
     my $user_field = 'usr';
 
     $filters ||= {};
-    $filters->{target} = { 
+    $filters->{target} = {
         select => { $obj_type => ['id'] },
         from => $obj_type,
         where => {usr => $user_id}
@@ -3534,7 +3534,7 @@ sub user_events {
     }
 
     my $ses = OpenSRF::AppSession->create('open-ils.trigger');
-    my $req = $ses->request('open-ils.trigger.events_by_target', 
+    my $req = $ses->request('open-ils.trigger.events_by_target',
         $obj_type, $filters, {atevdef => ['reactor', 'validator']}, 2);
 
     while(my $resp = $req->recv) {
@@ -3579,7 +3579,7 @@ sub copy_events {
     $copy_field = 'current_copy' if $obj_type eq 'ahr';
 
     $filters ||= {};
-    $filters->{target} = { 
+    $filters->{target} = {
         select => { $obj_type => ['id'] },
         from => $obj_type,
         where => {$copy_field => $copy_id}
@@ -3587,13 +3587,13 @@ sub copy_events {
 
 
     my $ses = OpenSRF::AppSession->create('open-ils.trigger');
-    my $req = $ses->request('open-ils.trigger.events_by_target', 
+    my $req = $ses->request('open-ils.trigger.events_by_target',
         $obj_type, $filters, {atevdef => ['reactor', 'validator']}, 2);
 
     while(my $resp = $req->recv) {
         my $val = $resp->content;
         my $tgt = $val->target;
-        
+
         my $user = $e->retrieve_actor_user($tgt->usr);
         if($e->requestor->id != $user->id) {
             return $e->event unless $e->allowed('VIEW_USER', $user->home_ou);
@@ -3677,7 +3677,7 @@ __PACKAGE__->register_method (
     method      => 'really_delete_user',
     api_name    => 'open-ils.actor.user.delete',
     signature   => q/
-        It anonymizes all personally identifiable information in actor.usr. By calling actor.usr_purge_data() 
+        It anonymizes all personally identifiable information in actor.usr. By calling actor.usr_purge_data()
         it also purges related data from other tables, sometimes by transferring it to a designated destination user.
         The usrname field (along with first_given_name and family_name) is updated to id '-PURGED-' now().
         dest_usr_id is only required when deleting a user that performs staff functions.
@@ -3742,26 +3742,26 @@ sub user_payments {
     return $e->die_event unless $e->checkauth;
 
     my $user = $e->retrieve_actor_user($user_id) or return $e->event;
-    return $e->event unless 
+    return $e->event unless
         $e->requestor->id == $user_id or
         $e->allowed('VIEW_USER_TRANSACTIONS', $user->home_ou);
 
     # Find all payments for all transactions for user $user_id
     my $query = {
-        select => {mp => ['id']}, 
-        from => 'mp', 
+        select => {mp => ['id']},
+        from => 'mp',
         where => {
             xact => {
                 in => {
-                    select => {mbt => ['id']}, 
-                    from => 'mbt', 
+                    select => {mbt => ['id']},
+                    from => 'mbt',
                     where => {usr => $user_id}
-                }   
+                }
             }
         },
         order_by => [
             { # by default, order newest payments first
-                class => 'mp', 
+                class => 'mp',
                 field => 'payment_ts',
                 direction => 'desc'
             }, {
@@ -3780,7 +3780,7 @@ sub user_payments {
     if(defined $filters->{where}) {
         foreach (keys %{$filters->{where}}) {
             # don't allow the caller to expand the result set to other users
-            $query->{where}->{$_} = $filters->{where}->{$_} unless $_ eq 'xact'; 
+            $query->{where}->{$_} = $filters->{where}->{$_} unless $_ eq 'xact';
         }
     }
 
@@ -3826,7 +3826,7 @@ __PACKAGE__->register_method (
     signature   => q/
         Returns all users that have an overall negative balance
         @param auth Authentication token
-        @param org_id The context org unit as an ID or list of IDs.  This will be the home 
+        @param org_id The context org unit as an ID or list of IDs.  This will be the home
         library of the user.  If no org_unit is specified, no org unit filter is applied
     /
 );
@@ -3839,29 +3839,29 @@ sub negative_balance_users {
     return $e->die_event unless $e->allowed('VIEW_USER', $org_id);
 
     my $query = {
-        select => { 
-            mous => ['usr', 'balance_owed'], 
-            au => ['home_ou'], 
+        select => {
+            mous => ['usr', 'balance_owed'],
+            au => ['home_ou'],
             mbts => [
                 {column => 'last_billing_ts', transform => 'max', aggregate => 1},
                 {column => 'last_payment_ts', transform => 'max', aggregate => 1},
             ]
-        }, 
-        from => { 
-            mous => { 
-                au => { 
-                    fkey => 'usr', 
-                    field => 'id', 
-                    join => { 
-                        mbts => { 
-                            key => 'id', 
-                            field => 'usr' 
-                        } 
-                    } 
-                } 
-            } 
-        }, 
-        where => {'+mous' => {balance_owed => {'<' => 0}}} 
+        },
+        from => {
+            mous => {
+                au => {
+                    fkey => 'usr',
+                    field => 'id',
+                    join => {
+                        mbts => {
+                            key => 'id',
+                            field => 'usr'
+                        }
+                    }
+                }
+            }
+        },
+        where => {'+mous' => {balance_owed => {'<' => 0}}}
     };
 
     $query->{from}->{mous}->{au}->{filter}->{home_ou} = $org_id if $org_id;
@@ -3914,19 +3914,19 @@ sub request_password_reset {
         my $card = $e->search_actor_card([
             {barcode => $user_id},
             {flesh => 1, flesh_fields => {ac => ['usr']}}])->[0];
-        if (!$card) { 
+        if (!$card) {
             $e->die_event;
             return OpenILS::Event->new('ACTOR_USER_NOT_FOUND');
         }
         $user = $card->usr;
     }
-    
+
     # If the user doesn't have an email address, we can't help them
     if (!$user->email) {
         $e->die_event;
         return OpenILS::Event->new('PATRON_NO_EMAIL_ADDRESS');
     }
-    
+
     my $email_must_match = $U->ou_ancestor_setting_value($user->home_ou, 'circ.password_reset_request_requires_matching_email');
     if ($email_must_match) {
         if (lc($user->email) ne lc($email)) {
@@ -3986,7 +3986,7 @@ sub _reset_password_request {
     # TODO Check to see if the user is in a password-reset-restricted group
 
     # Otherwise, go ahead and try to get the user.
- 
+
     # Check the number of active requests for this user
     $active_requests = $e->json_query({
         from => 'aupr',
@@ -4116,10 +4116,10 @@ sub commit_password_reset {
 sub check_password_strength_default {
     my $password = shift;
     # Use the default set of checks
-    if ( (length($password) < 7) or 
-            ($password !~ m/.*\d+.*/) or 
+    if ( (length($password) < 7) or
+            ($password !~ m/.*\d+.*/) or
             ($password !~ m/.*[A-Za-z]+.*/)
-       ) {
+    ) {
         return 0;
     }
     return 1;
@@ -4145,8 +4145,8 @@ __PACKAGE__->register_method(
         desc   => 'Streams the set of "cust" objects that are used as opt-in settings for event definitions',
         params => [
             { desc => 'Authentication token',  type => 'string'},
-            { 
-                desc => 'Org Unit ID.  (optional).  If no org ID is present, the home_ou of the requesting user is used', 
+            {
+                desc => 'Org Unit ID.  (optional).  If no org ID is present, the home_ou of the requesting user is used',
                 type => 'number'
             },
         ],
@@ -4164,7 +4164,7 @@ sub event_def_opt_in_settings {
     return $e->event unless $e->checkauth;
 
     if(defined $org_id and $org_id != $e->requestor->home_ou) {
-        return $e->event unless 
+        return $e->event unless
             $e->allowed(['VIEW_USER_SETTING_TYPE', 'ADMIN_USER_SETTING_TYPE'], $org_id);
     } else {
         $org_id = $e->requestor->home_ou;
@@ -4172,8 +4172,8 @@ sub event_def_opt_in_settings {
 
     # find all config.user_setting_type's related to event_defs for the requested org unit
     my $types = $e->json_query({
-        select => {cust => ['name']}, 
-        from => {atevdef => 'cust'}, 
+        select => {cust => ['name']},
+        from => {atevdef => 'cust'},
         where => {
             '+atevdef' => {
                 owner => $U->get_org_ancestors($org_id), # context org plus parents
@@ -4183,7 +4183,7 @@ sub event_def_opt_in_settings {
     });
 
     if(@$types) {
-        $conn->respond($_) for 
+        $conn->respond($_) for
             @{$e->search_config_usr_setting_type({name => [map {$_->{name}} @$types]})};
     }
 
@@ -4288,7 +4288,7 @@ sub user_circ_history {
     ]);
 
     if ($for_print) {
-        return $U->fire_object_event(undef, 
+        return $U->fire_object_event(undef,
             'circ.format.history.print', $circs, $e->requestor->home_ou);
     }
 
@@ -4299,12 +4299,12 @@ sub user_circ_history {
 
         if ($for_email) {
             # events will be fired from action_trigger_runner
-            $U->create_events_for_hook('circ.format.history.email', 
+            $U->create_events_for_hook('circ.format.history.email',
                 $circ, $e->editor->home_ou, undef, undef, 1);
 
         } elsif ($for_clear) {
 
-            $e->delete_action_user_circ_history($circ) 
+            $e->delete_action_user_circ_history($circ)
                 or return $e->die_event;
 
         } else {
@@ -4402,7 +4402,7 @@ sub user_visible_holds {
         offset => $$options{offset}
 
         # TODO: I only want IDs. code below didn't get me there
-        # {"select":{"au":[{"column":"id", "result_field":"id", 
+        # {"select":{"au":[{"column":"id", "result_field":"id",
         # "transform":"action.usr_visible_circs"}]}, "where":{"id":10}, "from":"au"}
     },{
         substream => 1
@@ -4485,7 +4485,7 @@ __PACKAGE__->register_method(
         return => {
             desc   => q/The retrieved or updated saved search object, or id of a deleted object; Event on error/,
             class  => 'auss'
-        }   
+        }
     }
 );
 
@@ -4502,7 +4502,7 @@ __PACKAGE__->register_method(
         return => {
             desc   => q/The saved search object, Event on error/,
             class  => 'auss'
-        }   
+        }
     }
 );
 
@@ -4677,7 +4677,7 @@ sub address_alert_test {
 
     # map the json_query hashes to real objects
     return [
-        map {$e->retrieve_actor_address_alert($_)} 
+        map {$e->retrieve_actor_address_alert($_)}
             (map {$_->{id}} @$alerts)
     ];
 }
@@ -4820,7 +4820,7 @@ __PACKAGE__->register_method(
                 type => "number"}
         ],
         return => {
-            desc => "Entry fleshed with query on Create, Retrieve, and Uupdate.  1 on Delete", 
+            desc => "Entry fleshed with query on Create, Retrieve, and Uupdate.  1 on Delete",
             type => "object"
         }
     }
@@ -4836,7 +4836,7 @@ sub filter_group_entry_crud {
     if (ref $arg) {
 
         if ($arg->isnew) {
-            
+
             my $grp = $e->retrieve_actor_search_filter_group($arg->grp)
                 or return $e->die_event;
 
@@ -4906,7 +4906,7 @@ sub filter_group_entry_crud {
         ]) or return $e->die_event;
 
         return $e->die_event unless $e->allowed(
-            ['ADMIN_SEARCH_FILTER_GROUP', 'VIEW_SEARCH_FILTER_GROUP'], 
+            ['ADMIN_SEARCH_FILTER_GROUP', 'VIEW_SEARCH_FILTER_GROUP'],
             $entry->grp->owner);
 
         $e->rollback;
