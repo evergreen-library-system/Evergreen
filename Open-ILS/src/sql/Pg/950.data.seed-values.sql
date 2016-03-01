@@ -8556,21 +8556,24 @@ $$
     <div>[% date.format %]</div>
     <br/>
 
+	Fines for:<br/>
     [% user.family_name %], [% user.first_given_name %]
     <ol>
     [% FOR xact IN user.open_billable_transactions_summary %]
-        <li>
-            <div>Details: 
-                [% IF xact.xact_type == 'circulation' %]
-                    [%- helpers.get_copy_bib_basics(xact.circulation.target_copy).title -%]
-                [% ELSE %]
-                    [%- xact.last_billing_type -%]
-                [% END %]
-            </div>
-            <div>Total Billed: [% xact.total_owed %]</div>
-            <div>Total Paid: [% xact.total_paid %]</div>
-            <div>Balance Owed : [% xact.balance_owed %]</div>
-        </li>
+        [% IF xact.balance_owed > 0 %]
+            <li>
+                <div>Details: 
+                    [% IF xact.xact_type == 'circulation' %]
+                        [%- helpers.get_copy_bib_basics(xact.circulation.target_copy).title -%]
+                    [% ELSE %]
+                        [%- xact.last_billing_type -%]
+                    [% END %]
+                </div>
+                <div>Total Billed: [% xact.total_owed %]</div>
+                <div>Total Paid: [% xact.total_paid %]</div>
+                <div>Balance Owed : [% xact.balance_owed %]</div>
+            </li>
+        [% END %]
     [% END %]
     </ol>
 </div>
