@@ -8781,7 +8781,7 @@ $$
     <div>[% date.format %]</div>
     <div>[% lib.name %]</div>
     <div>[% lib_addr.street1 %] [% lib_addr.street2 %]</div>
-    <div>[% lib_addr.city %], [% lib_addr.state %] [% lb_addr.post_code %]</div>
+    <div>[% lib_addr.city %], [% lib_addr.state %] [% lib_addr.post_code %]</div>
     <div>[% lib.phone %]</div>
     <br/>
 
@@ -10797,7 +10797,7 @@ From: [%- params.sender_email || default_sender %]
 Subject: Hold Request Cancelled
 
 Dear [% user.family_name %], [% user.first_given_name %]
-The following holds were cancelled because no items were found to fullfil the hold.
+The following holds were cancelled because no items were found to fulfill the hold.
 
 [% FOR hold IN target %]
     Title: [% hold.bib_rec.bib_record.simple_record.title %]
@@ -14278,7 +14278,7 @@ INSERT INTO action_trigger.event_definition (
 $$
 [%- USE date -%]
 [%- user = target.0.usr -%]
-The following holds were cancelled because no items were found to fullfil them.
+The following holds were cancelled because no items were found to fulfill them.
 
 [% FOR hold IN target %]
     Title: [% hold.bib_rec.bib_record.simple_record.title %]
