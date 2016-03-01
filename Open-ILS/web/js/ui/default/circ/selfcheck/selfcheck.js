@@ -1518,10 +1518,11 @@ SelfCheckManager.prototype.printPaymentReceipt = function(response, callback) {
 }
 
 /**
- * Print a receipt for this user's items out
+ * Print a receipt for this user's fines
  */
 SelfCheckManager.prototype.printFinesReceipt = function(callback) {
 
+    if(!this.creditPayableBalance.length) return;
     progressDialog.show(true);
 
     var params = [
