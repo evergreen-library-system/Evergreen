@@ -383,6 +383,23 @@ You may also change the default number of facets appearing under each category
 by editing the _facet.default_display_count_ value in _config.tt2_. The default 
 value is 5.
 
+Change Date Format in Patron Account View
+-----------------------------------------
+Libraries with same-day circulations may want their patrons to be able to view
+the due *time* as well as due date when they log in to their OPAC account.  To
+accomplish this, go to _opac/myopac/circs.tt2_.  Find the line that reads:
+
+----
+[% date.format(due_date, DATE_FORMAT) %]
+----
+
+Replace it with:
+
+----
+[% date.format(due_date, '%D %I:%M %p') %]
+----
+
+
 Including External Content in Your Public Interface
 ---------------------------------------------------
 
