@@ -8496,8 +8496,9 @@ $$
     <style> li { padding: 8px; margin 5px; }</style>
     <div>[% date.format %]</div>
     <br/>
-
-    [% user.family_name %], [% user.first_given_name %]
+    Holds for:<br/>
+	[% user.family_name %], [% user.first_given_name %]
+	
     <ol>
     [% FOR hold IN target %]
         [%-
@@ -8505,9 +8506,9 @@ $$
             SET udata =  user_data.$idx
         -%]
         <li>
-            <div>Title: [% hold.bib_rec.bib_record.simple_record.title %]</div>
-            <div>Author: [% hold.bib_rec.bib_record.simple_record.author %]</div>
-            <div>Pickup Location: [% hold.pickup_lib.name %]</div>
+            <div>Title: [% udata.item_title %]</div>
+            <div>Author: [% udata.item_author %]</div>
+            <div>Pickup Location: [% udata.pickup_lib %]</b></div>
             <div>Status: 
                 [%- IF udata.ready -%]
                     Ready for pickup
