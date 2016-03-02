@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+INSERT INTO config.upgrade_log (version, applied_to) VALUES ('0966', :eg_version); -- miker/jpringle/gmcharlt
 
 -- Allow NULL post-normalization sorters
 CREATE OR REPLACE FUNCTION metabib.reingest_record_attributes (rid BIGINT, pattr_list TEXT[] DEFAULT NULL, prmarc TEXT DEFAULT NULL, rdeleted BOOL DEFAULT TRUE) RETURNS VOID AS $func$
