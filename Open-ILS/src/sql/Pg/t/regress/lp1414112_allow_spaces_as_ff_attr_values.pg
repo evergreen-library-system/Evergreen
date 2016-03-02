@@ -11,7 +11,15 @@ VALUES (
 SELECT ok(attrs ? 'audience', 'audience attribute exists')
 FROM metabib.record_attr WHERE id = CURRVAL('biblio.record_entry_id_seq');
 
-SELECT ok(NOT attrs ? 'date1' , 'date1 attribute does not exist')
-FROM metabib.record_attr WHERE id = CURRVAL('biblio.record_entry_id_seq');
+SELECT is(
+    ( 
+        SELECT attrs->'date1' 
+        FROM metabib.record_attr 
+        WHERE id = CURRVAL('biblio.record_entry_id_seq')
+    ),
+    '0000',
+    'as of LP#1470957, date1 = "    " normalizes to 0000'
+)
+;
 
 ROLLBACK;
