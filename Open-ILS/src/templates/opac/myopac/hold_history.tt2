@@ -102,7 +102,11 @@
                         END %]
                     </td>
                     <td>
-                        [% l(ahr.frozen == 'f' ? 'Active' : 'Suspended') %]
+                        [% IF hold.hold.status == 6 %]
+                            [% l('Canceled') %]
+                        [% ELSE %]
+                            [% l(ahr.frozen == 'f' ? 'Active' : 'Suspended') %]
+                        [% END %]
                     </td>
                     <td>
                         [% IF ahr.fulfillment_time;
