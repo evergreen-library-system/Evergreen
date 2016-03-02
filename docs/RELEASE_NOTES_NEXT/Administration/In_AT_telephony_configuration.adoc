@@ -1,0 +1,39 @@
+Configure multiple telephony servers via Action/Trigger
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+If you are using the AstCall Action/Trigger reactor
+to generate callfiles to send to an Asterisk server, until
+now the only place to specify the relevant configuration
+was in `opensrf.xml`. However, this restricted an Evergreen
+consortium to using only one Asterisk instance.
+
+Now, the telephony parameters can also be specified as 
+A/T event parameters, allowing per-library configuration.
+
+.Telephony parameters
+|===
+| Name | Example value
+
+| enabled
+| 0
+
+| driver
+| "SIP"
+
+| channels
+| ["Zap/1", "Zap/2", "IAX/user:secret@widgets.biz"]
+
+| host
+| "localhost"
+
+| port
+| "10080"
+
+| user
+| "evergreen"
+
+| pw
+| "evergreen"
+
+| callfile_lines
+| ["MaxRetries: 3", "RetryTime: 60", "WaitTime: 30", "Archive: 1", "Extension: 10"]
+|===
