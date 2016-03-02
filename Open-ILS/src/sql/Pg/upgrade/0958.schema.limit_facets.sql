@@ -13,9 +13,9 @@ CREATE OR REPLACE FUNCTION search.facets_for_record_set(ignore_facet_classes TEX
         FROM metabib.facet_entry mfae
         JOIN metabib.metarecord_source_map mmrsm ON (mfae.source = mmrsm.source)
         JOIN config.metabib_field cmf ON (cmf.id = mfae.field)
-        WHERE mmrsm.source IN (SELECT * FROM unnest(hits))
+        WHERE mmrsm.source IN (SELECT * FROM unnest($2))
         AND cmf.facet_field
-        AND cmf.field_class NOT IN (SELECT * FROM unnest(ignore_facet_classes))
+        AND cmf.field_class NOT IN (SELECT * FROM unnest($1))
         GROUP by 1, 2
     ) all_facets
     WHERE rownum <= (SELECT COALESCE((SELECT value::INT FROM config.global_flag WHERE name = 'search.max_facets_per_field' AND enabled), 1000));
@@ -32,9 +32,9 @@ CREATE OR REPLACE FUNCTION search.facets_for_metarecord_set(ignore_facet_classes
         FROM metabib.facet_entry mfae
         JOIN metabib.metarecord_source_map mmrsm ON (mfae.source = mmrsm.source)
         JOIN config.metabib_field cmf ON (cmf.id = mfae.field)
-        WHERE mmrsm.metarecord IN (SELECT * FROM unnest(hits))
+        WHERE mmrsm.metarecord IN (SELECT * FROM unnest($2))
         AND cmf.facet_field
-        AND cmf.field_class NOT IN (SELECT * FROM unnest(ignore_facet_classes))
+        AND cmf.field_class NOT IN (SELECT * FROM unnest($1))
         GROUP by 1, 2
     ) all_facets
     WHERE rownum <= (SELECT COALESCE((SELECT value::INT FROM config.global_flag WHERE name = 'search.max_facets_per_field' AND enabled), 1000));
