@@ -35,7 +35,7 @@ BEGIN
         norm_attr_value := '{}'::TEXT[];
         attr_vector_tmp := '{}'::INT[];
 
-        SELECT * INTO ccvm_row FROM config.coded_value_map c WHERE c.ctype = attr_def.name LIMIT 1;
+        SELECT * INTO ccvm_row FROM config.coded_value_map c WHERE c.ctype = attr_def.name LIMIT 1; 
 
         -- tag+sf attrs only support SVF
         IF attr_def.tag IS NOT NULL THEN -- tag (and optional subfield list) selection
@@ -44,7 +44,7 @@ BEGIN
               WHERE record = rid
                     AND tag LIKE attr_def.tag
                     AND CASE
-                        WHEN attr_def.sf_list IS NOT NULL
+                        WHEN attr_def.sf_list IS NOT NULL 
                             THEN POSITION(subfield IN attr_def.sf_list) > 0
                         ELSE TRUE
                     END
@@ -62,7 +62,7 @@ BEGIN
         ELSIF attr_def.xpath IS NOT NULL THEN -- and xpath expression
 
             SELECT INTO xfrm * FROM config.xml_transform WHERE name = attr_def.format;
-
+        
             -- See if we can skip the XSLT ... it's expensive
             IF prev_xfrm IS NULL OR prev_xfrm <> xfrm.name THEN
                 -- Can't skip the transform
@@ -71,7 +71,7 @@ BEGIN
                 ELSE
                     transformed_xml := rmarc;
                 END IF;
-
+    
                 prev_xfrm := xfrm.name;
             END IF;
 
@@ -81,7 +81,7 @@ BEGIN
                 prev_xfrm := xfrm.name;
             END IF;
 
-            FOR tmp_xml IN SELECT oils_xpath(attr_def.xpath, transformed_xml, ARRAY[ARRAY[xfrm.prefix, xfrm.namespace_uri]]) LOOP
+            FOR tmp_xml IN SELECT UNNEST(oils_xpath(attr_def.xpath, transformed_xml, ARRAY[ARRAY[xfrm.prefix, xfrm.namespace_uri]])) LOOP
                 tmp_val := oils_xpath_string(
                                 '//*',
                                 tmp_xml,
@@ -133,7 +133,7 @@ BEGIN
                 norm_attr_value := norm_attr_value || tmp_val;
             END IF;
         END LOOP;
-
+        
         IF attr_def.filter THEN
             -- Create unknown uncontrolled values and find the IDs of the values
             IF ccvm_row.id IS NULL THEN
@@ -171,7 +171,7 @@ BEGIN
    requested attrs, and then add back the new
    set of attr values. */
 
-    IF ARRAY_LENGTH(pattr_list, 1) > 0 THEN
+    IF ARRAY_LENGTH(pattr_list, 1) > 0 THEN 
         SELECT vlist INTO attr_vector_tmp FROM metabib.record_attr_vector_list WHERE source = rid;
         SELECT attr_vector_tmp - ARRAY_AGG(id::INT) INTO attr_vector_tmp FROM metabib.full_attr_id_map WHERE attr = ANY (pattr_list);
         attr_vector := attr_vector || attr_vector_tmp;
