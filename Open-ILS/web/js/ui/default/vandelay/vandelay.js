@@ -566,7 +566,7 @@ function exportHandler(type, response) {
 function vlExportRecordQueue(opts) {
     /* conform type to exporter */
     var type = currentType == 'auth' ? 'auth' : 'biblio';
-    var url = '/exporter?format=xml&type='+type+'&queueid='+currentQueueId;
+    var url = '/exporter?type='+type+'&queueid='+currentQueueId;
     if (opts.nonimported) {
         url += '&nonimported=1';
     }
