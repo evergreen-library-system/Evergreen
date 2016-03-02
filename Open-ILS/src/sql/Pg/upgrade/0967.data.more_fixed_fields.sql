@@ -1,7 +1,7 @@
 BEGIN;
 -- Correct SER and COM records, add most other subfields and make them usable as CCVMs
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0967', :eg_version);
 
 -- Fix SER
 DELETE FROM config.marc21_ff_pos_map WHERE fixed_field = 'Audn' AND rec_type = 'SER';
