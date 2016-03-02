@@ -4279,11 +4279,12 @@ sub user_circ_history {
         $limits{limit} = $options->{limit} if defined $options->{limit};
     }
 
-    my $circ_id_list = $options->{circ_ids} ? $options->{circ_ids} : undef;
+    my %circ_id_filter = $options->{circ_ids} ?
+        (id => $options->{circ_ids}) : ();
 
     my $circs = $e->search_action_user_circ_history([
         {   usr => $e->requestor->id,
-            id  => {'in' => $circ_id_list},
+            %circ_id_filter
         },
         {   # order newest to oldest by default
             order_by => {auch => 'xact_start DESC'},
