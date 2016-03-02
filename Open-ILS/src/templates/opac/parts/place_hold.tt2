@@ -81,7 +81,14 @@
                     [% IF !this_hold_disallowed %]
                     <input type="hidden" name="hold_target" value="[% hdata.target.id | html %]" />
                     [% END %]
-                    <div class='hold-items-list-title'>[% attrs.title_extended | html %]</div>
+                    <div class='hold-items-list-title'>
+					    <!-- If hold is for grouped formats/editions (metarecord), show short title - else, show complete title --> 
+					    [% IF CGI.param('hold_type') == 'M' %]
+						    [% attrs.title | html %]
+						[% ELSE %]
+						    [% attrs.title_extended | html %]
+						[% END %]
+                    </div>
                     [% IF hdata.parts AND !this_hold_disallowed %]
                         [% IF hdata.parts.size > 0 %]
                         <div style='padding-left: 10px'>
