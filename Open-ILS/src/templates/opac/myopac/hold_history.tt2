@@ -32,7 +32,7 @@
             %]
             [% curpage + 1 %]
                     [%- ELSE %]
-            <a href='[% mkurl('holds_history', {limit => limit, offset => (curpage * limit)}) %]'>[% curpage + 1 %]</a>
+            <a href='[% mkurl('hold_history', {limit => limit, offset => (curpage * limit)}) %]'>[% curpage + 1 %]</a>
                     [%- END;
                     curpage = curpage + 1;
                 END;
