@@ -174,7 +174,7 @@ UPDATE config.record_attr_definition SET composite = TRUE WHERE name IN ('accm',
 
 -- "Next" id for stock config.coded_value_map is 634 as of 7/16/15, but there's an incoming patch that takes 634-711
 INSERT INTO config.coded_value_map (id, ctype, code, value) VALUES
-    (712, 'accm', ' ', 			oils_i18n_gettext('712', 'No accompanying matter', 'ccvm', 'value')),
+    (1735, 'accm', ' ', 		oils_i18n_gettext('1735', 'No accompanying matter', 'ccvm', 'value')),
     (713, 'accm', 'a', 			oils_i18n_gettext('713', 'Discography', 'ccvm', 'value')),
     (714, 'accm', 'b', 			oils_i18n_gettext('714', 'Bibliography', 'ccvm', 'value')),
     (715, 'accm', 'c', 			oils_i18n_gettext('715', 'Thematic index', 'ccvm', 'value')),
@@ -839,7 +839,7 @@ INSERT INTO config.coded_value_map (id, ctype, code, value) VALUES
 -- The ' ' codes only apply to the first position because if there's anything in pos 1 then the rest of the spaces are just filler.
 -- There's also no need for them to be opac visible because there will be composite attributes that OR these numbered attributes together.
 INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES
-    (1353, 'accm1', ' ', 	oils_i18n_gettext('712', 'No accompanying matter', 'ccvm', 'value'), FALSE),
+    (1353, 'accm1', ' ', 	oils_i18n_gettext('1735', 'No accompanying matter', 'ccvm', 'value'), FALSE),
     (1354, 'accm1', 'a', 	oils_i18n_gettext('713', 'Discography', 'ccvm', 'value'), FALSE),
     (1355, 'accm1', 'b', 	oils_i18n_gettext('714', 'Bibliography', 'ccvm', 'value'), FALSE),
     (1356, 'accm1', 'c', 	oils_i18n_gettext('715', 'Thematic index', 'ccvm', 'value'), FALSE),
@@ -1249,7 +1249,7 @@ INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES
 -- Space is used as a filler for any position other than the first, so for something to actually have "No accompanying matter," for example, specifically accm1 must = ' '.
 -- Any other value has the same meaning in any position.
 INSERT INTO config.composite_attr_entry_definition (coded_value, definition) VALUES
-    (712, '{"_attr":"accm1","_val":" "}'),
+    (1735, '{"_attr":"accm1","_val":" "}'),
     (713, '[{"_attr":"accm6","_val":"a"},{"_attr":"accm5","_val":"a"},{"_attr":"accm4","_val":"a"},{"_attr":"accm3","_val":"a"},{"_attr":"accm2","_val":"a"},{"_attr":"accm1","_val":"a"}]'),
     (714, '[{"_attr":"accm6","_val":"b"},{"_attr":"accm5","_val":"b"},{"_attr":"accm4","_val":"b"},{"_attr":"accm3","_val":"b"},{"_attr":"accm2","_val":"b"},{"_attr":"accm1","_val":"b"}]'),
     (715, '[{"_attr":"accm6","_val":"c"},{"_attr":"accm5","_val":"c"},{"_attr":"accm4","_val":"c"},{"_attr":"accm3","_val":"c"},{"_attr":"accm2","_val":"c"},{"_attr":"accm1","_val":"c"}]'),

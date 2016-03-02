@@ -7534,7 +7534,7 @@ INSERT INTO config.coded_value_map (id, ctype, code, value, concept_uri)
   'http://rdaregistry.info/termList/RDACarrierType/1002');
 
 -- Accompanying Matter
-INSERT INTO config.coded_value_map (id, ctype, code, value) VALUES (712, 'accm', ' ', oils_i18n_gettext('712', 'No accompanying matter', 'ccvm', 'value'));
+INSERT INTO config.coded_value_map (id, ctype, code, value) VALUES (1735, 'accm', ' ', oils_i18n_gettext('1735', 'No accompanying matter', 'ccvm', 'value'));
 INSERT INTO config.coded_value_map (id, ctype, code, value) VALUES (713, 'accm', 'a', oils_i18n_gettext('713', 'Discography', 'ccvm', 'value'));
 INSERT INTO config.coded_value_map (id, ctype, code, value) VALUES (714, 'accm', 'b', oils_i18n_gettext('714', 'Bibliography', 'ccvm', 'value'));
 INSERT INTO config.coded_value_map (id, ctype, code, value) VALUES (715, 'accm', 'c', oils_i18n_gettext('715', 'Thematic index', 'ccvm', 'value'));
@@ -8214,7 +8214,7 @@ INSERT INTO config.coded_value_map (id, ctype, code, value) VALUES (1352, 'pub_s
 -- i18n ids are left as-is because they are exactly the same value.
 -- The ' ' codes only apply to the first position because if there's anything in pos 1 then additional spaces are just filler.
 -- There's also no need for them to be opac visible because there are composite attributes that OR these numbered attributes together.
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1353, 'accm1', ' ', oils_i18n_gettext('712', 'No accompanying matter', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1353, 'accm1', ' ', oils_i18n_gettext('1735', 'No accompanying matter', 'ccvm', 'value'), FALSE);
 INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1354, 'accm1', 'a', oils_i18n_gettext('713', 'Discography', 'ccvm', 'value'), FALSE);
 INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1355, 'accm1', 'b', oils_i18n_gettext('714', 'Bibliography', 'ccvm', 'value'), FALSE);
 INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1356, 'accm1', 'c', oils_i18n_gettext('715', 'Thematic index', 'ccvm', 'value'), FALSE);
@@ -8707,7 +8707,7 @@ INSERT INTO config.composite_attr_entry_definition
 -- electronic
 INSERT INTO config.composite_attr_entry_definition
     (coded_value, definition) VALUES
-(712, '[{"_attr":"item_form","_val":"s"},{"_attr":"item_form","_val":"o"}]');
+(1735, '[{"_attr":"item_form","_val":"s"},{"_attr":"item_form","_val":"o"}]');
 
 -- use the definitions from the icon_format as the basis for the MR hold format definitions
 DO $$
@@ -8768,7 +8768,7 @@ UPDATE config.composite_attr_entry_definition
 -- Any other value has the same meaning in any position.
 
 -- Accompanying Matter
-INSERT INTO config.composite_attr_entry_definition (coded_value, definition) VALUES (712, '{"_attr":"accm1","_val":" "}');
+INSERT INTO config.composite_attr_entry_definition (coded_value, definition) VALUES (1735, '{"_attr":"accm1","_val":" "}');
 INSERT INTO config.composite_attr_entry_definition (coded_value, definition) VALUES (713, '[{"_attr":"accm6","_val":"a"},{"_attr":"accm5","_val":"a"},{"_attr":"accm4","_val":"a"},{"_attr":"accm3","_val":"a"},{"_attr":"accm2","_val":"a"},{"_attr":"accm1","_val":"a"}]');
 INSERT INTO config.composite_attr_entry_definition (coded_value, definition) VALUES (714, '[{"_attr":"accm6","_val":"b"},{"_attr":"accm5","_val":"b"},{"_attr":"accm4","_val":"b"},{"_attr":"accm3","_val":"b"},{"_attr":"accm2","_val":"b"},{"_attr":"accm1","_val":"b"}]');
 INSERT INTO config.composite_attr_entry_definition (coded_value, definition) VALUES (715, '[{"_attr":"accm6","_val":"c"},{"_attr":"accm5","_val":"c"},{"_attr":"accm4","_val":"c"},{"_attr":"accm3","_val":"c"},{"_attr":"accm2","_val":"c"},{"_attr":"accm1","_val":"c"}]');
