@@ -35,6 +35,14 @@ sub new_org_setting {
     return $set;
 }
 
+sub opt_in_enabled {
+    my $resp = $U->simplereq(
+        'open-ils.actor',
+        'open-ils.actor.user.org_unit_opt_in.enabled'
+    );
+    return $resp;
+}
+
 # do an opt-in check
 sub opt_in_check {
     my ($authtoken, $usr_id) = @_;
@@ -43,6 +51,10 @@ sub opt_in_check {
         'open-ils.actor.user.org_unit_opt_in.check',
         $authtoken, $usr_id);
     return $resp;
+}
+
+unless(opt_in_enabled()) {
+    BAIL_OUT('cannot test opt-in unless enabled in opensrf.xml');
 }
 
 #----------------------------------------------------------------
