@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2015-08-26 22:16+0000\n"
+"POT-Creation-Date: 2015-09-16 22:29+0000\n"
 "PO-Revision-Date: 2014-02-02 18:16+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: Armenian <hy@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2015-08-27 05:22+0000\n"
-"X-Generator: Launchpad (build 17690)\n"
+"X-Launchpad-Export-Date: 2015-09-17 05:21+0000\n"
+"X-Generator: Launchpad (build 17737)\n"
 
 #: ../../Open-ILS/src/templates/opac/register.tt2:63
 msgid ""
@@ -128,7 +128,7 @@ msgid "(%1)"
 msgstr ""
 
 #. (example)
-#: ../../Open-ILS/src/templates/opac/register.tt2:166
+#: ../../Open-ILS/src/templates/opac/register.tt2:167
 msgid "(Example: %1)"
 msgstr "(Օրինակ: %1)"
 
@@ -1749,7 +1749,7 @@ msgstr "Աշխարհագրական տեղեկատվության մասնագետ
 msgid "Go"
 msgstr "Գնա"
 
-#: ../../Open-ILS/src/templates/opac/myopac/holds/edit.tt2:115 ../../Open-ILS/src/templates/opac/register.tt2:177
+#: ../../Open-ILS/src/templates/opac/myopac/holds/edit.tt2:115 ../../Open-ILS/src/templates/opac/register.tt2:178
 msgid "Go Back"
 msgstr "Ետ գնալ"
 
@@ -4017,7 +4017,7 @@ msgstr "Հաստատել"
 msgid "Submit Payment"
 msgstr "Հաստատել վճարումը"
 
-#: ../../Open-ILS/src/templates/opac/register.tt2:179
+#: ../../Open-ILS/src/templates/opac/register.tt2:180
 msgid "Submit Registration"
 msgstr "Հաստատիր գրանցումը"
 
@@ -4224,7 +4224,7 @@ msgstr "Համակարգը չի կարող գտնել այս ընթերցողի�
 msgid "The username \"%1\" is taken.  Please try a different username."
 msgstr "Վերցված է \"%1\" օգտվողի անունը։ Փորձիր մեկ այլ անուն։"
 
-#: ../../Open-ILS/src/templates/opac/register.tt2:161
+#: ../../Open-ILS/src/templates/opac/register.tt2:162
 msgid "The value entered does not have the correct format"
 msgstr "Մուտք արած արժեքը չունի ճիշտ ձևաչափ։"
 
@@ -4245,7 +4245,7 @@ msgid ""
 "This account has been deactivated.  Please contact your local library."
 msgstr "Այս հաշիվը ապաակտիվացված է։ Կապվիր քո տեղային գրադարանի հետ։"
 
-#: ../../Open-ILS/src/templates/opac/register.tt2:157
+#: ../../Open-ILS/src/templates/opac/register.tt2:158
 msgid "This field is required"
 msgstr "Այս դաշտը պահանջված է։"
 
@@ -4566,8 +4566,8 @@ msgid "Writer of supplementary textual content"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/register.tt2:1
-msgid "YYYY-MM-DD"
-msgstr "ՏՏՏՏ-ԱԱ-ՕՕ"
+msgid "YYYY-MM-DD or YYYY/MM/DD"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:40
 msgid "Yes"
