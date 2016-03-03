@@ -691,6 +691,13 @@ until 24 hours after they have been added to the system or moved to a holdable
 copy status.
 
 
+Distinct images for pop-ups and slips
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The client now supports using distinct images for hold, transit, and booking
+reservation popup windows and slips. In addition, three new images have been
+provided, replacing the turtle that was previously. The turtle file
+is still available in the images directory for those sites that still wish
+to use it.
 
 
 Development
