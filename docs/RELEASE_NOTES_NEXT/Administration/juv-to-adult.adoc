@@ -1,9 +1,0 @@
-Juvenile-to-Adult Batch Script Honors Org Unit Setting
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The batch juv_to_adult.srfsh script, which is typically run via CRON,
-that is responsible for toggling a patron from juvenile to adult now
-honors the age value set in the org unit setting named "Juvenile Age
-Threshold" (global.juvenile_age_threshold).  When no org setting value
-is present at a given patron's home library, the value passed in to the
-script will be used as a default.
