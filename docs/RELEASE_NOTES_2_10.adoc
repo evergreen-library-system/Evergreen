@@ -281,6 +281,46 @@ whether a patron logs back into the system.
 Beware that doing this for all users in the a large database will 
 take some time and should probably be performed in batches.
 
+Changing Encryption Work Factor
++++++++++++++++++++++++++++++++
+
+Roughly speaking, the 'work factor' determines the amount of time/effort
+required to crack passwords.  The higher the value, the more secure the
+password.  Higher values also mean that it takes longer for password
+verification (e.g. during login) to work.
+
+At time of release, Evergreen uses a work factor value of 10.  The value
+is set in the database table/column actor.passwd_type.iter_count (hash
+iteration count).  When this value is modified, any passwords created or
+modified after the change will use the new work factor.  Other passwords
+will continue using the work factor in place when they were
+created/modified, until they are changed once again.
+
+Beware that raising the work factor can have a significant impact on
+login speeds.  A work factor of 10 requires ~0.1 seconds to verify a
+password.  A work factor of 15 takes almost 2 full seconds!  Also beware
+that once a password is encoded with a higher work factor, it cannot be
+lowered again through any automatic means.  The owner of the password
+would have to login and modify the password after the work factor is
+re-lowered.
+
+Because of this, it's recommended that admins thoroughly test work
+factor modifications before deploying to production.
+
+To check encryption timing:
+
+[source,sq]
+--------------------------------------------------------------------------
+-- enable psql timing
+evergreen=# \timing
+
+-- encode password "HELLOWORLD" with a work factor of 10.
+evergreen=# select crypt('HELLOWORLD', gen_salt('bf', 10));
+(1 row)
+
+Time: 95.082 ms
+--------------------------------------------------------------------------
+
 open-ils.auth_internal
 ++++++++++++++++++++++
 To support the new storage mechanism, a new Evergreen service has
