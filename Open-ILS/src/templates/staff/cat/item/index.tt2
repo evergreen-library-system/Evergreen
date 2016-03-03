@@ -13,6 +13,26 @@
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/cat/item/app.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/cat/services/record.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/services/billing.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/services/circ.js"></script>
+[% INCLUDE 'staff/circ/share/circ_strings.tt2' %]
+<script>
+  angular.module('egCoreMod').run(['egStrings', function(s) {
+    s.CONFIRM_DELETE_COPIES_VOLUMES =
+      "[% l('Permanently delete selected copies and/or volumes from catalog?') %]";
+    s.CONFIRM_DELETE_COPIES_VOLUMES_MESSAGE =
+      "[% l('Will delete {{copies}} copies and {{volumes}} volumes') %]";
+    s.CONFIRM_DELETE_PEERS =
+      "[% l('Unlink selected conjoined copies?') %]";
+    s.CONFIRM_DELETE_PEERS_MESSAGE =
+      "[% l('Will unlink {{peers}} copies') %]";
+    s.CONFIRM_TRANSFER_COPIES_TO_MARKED_VOLUME =
+      "[% l('Are you sure you want to transfer selected items to the marked volume?') %]";
+    s.OVERRIDE_TRANSFER_COPIES_TO_MARKED_VOLUME_TITLE =
+      "[% l('One or more items could not be transferred. Override?') %]";
+    s.OVERRIDE_TRANSFER_COPIES_TO_MARKED_VOLUME_BODY =
+      "[% l('Reason(s) include: [_1]', '{{evt_desc}}') %]";
+  }])
+</script>
 [% END %]
 
 <style>
