@@ -8707,7 +8707,7 @@ INSERT INTO config.composite_attr_entry_definition
 -- electronic
 INSERT INTO config.composite_attr_entry_definition
     (coded_value, definition) VALUES
-(1735, '[{"_attr":"item_form","_val":"s"},{"_attr":"item_form","_val":"o"}]');
+(712, '[{"_attr":"item_form","_val":"s"},{"_attr":"item_form","_val":"o"}]');
 
 -- use the definitions from the icon_format as the basis for the MR hold format definitions
 DO $$
