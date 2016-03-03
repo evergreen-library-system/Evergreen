@@ -4975,7 +4975,7 @@ INSERT into config.org_unit_setting_type
         'coust',
         'description'
     ),
-    'string', null)
+    'link', 'vms')
 ,( 'opac.browse.pager_shortcuts', 'opac',
     oils_i18n_gettext(
         'opac.browse.pager_shortcuts',
