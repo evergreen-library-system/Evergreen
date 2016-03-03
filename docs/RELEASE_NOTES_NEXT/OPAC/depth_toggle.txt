@@ -1,9 +1,0 @@
-Search Scope Depth Selection
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-A common usage of the catalog is to do a search in a restricted scope,
-like a local library. When the results are lacking, the search is repeated in a
-consortium-wide scope.  This feature provides an optional button and checkbox
-to alter the depth of the search to a defined level.
-
-This feature can be turned off from config.tt2.
-

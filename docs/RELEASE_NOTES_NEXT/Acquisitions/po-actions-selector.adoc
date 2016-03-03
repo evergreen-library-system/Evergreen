@@ -1,9 +1,0 @@
-PO Actions Selector Always Visible
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The actions selector is now always visible in the purchase order view,
-even when no lineitems exist.  With this, users can print PO's that
-only contain direct charges.
-
-The custom "Add Brief Record" button is no longer present, since the
-same action is accessible via the now-visible selector.
