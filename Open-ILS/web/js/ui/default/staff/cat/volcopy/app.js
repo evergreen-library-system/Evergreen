@@ -240,6 +240,16 @@ function(egCore , $q) {
         service.copies.push(cp);
     }
 
+    service.checkDuplicateBarcode = function(bc) {
+        var final = false;
+        return egCore.pcrud.search('acp', { deleted : 'f', 'barcode' : bc })
+            .then(
+                function () { return final },
+                function () { return final },
+                function () { final = true; }
+            );
+    }
+
     service.fetchIds = function(idList) {
         service.tree = {}; // clear the tree on fetch
         service.copies = []; // clear the copy list on fetch
@@ -301,6 +311,8 @@ function(egCore , $q) {
                     '<input id="{{callNumber.id()}}_{{copy.id()}}"'+
                     ' eg-enter="nextBarcode(copy.id())" class="form-control"'+
                     ' type="text" ng-model="barcode" ng-change="updateBarcode()"/>'+
+                    '<div class="label label-danger" ng-if="duplicate_barcode">{{duplicate_barcode_string}}</div>'+
+                    '<div class="label label-danger" ng-if="empty_barcode">{{empty_barcode_string}}</div>'+
                 '</div>'+
                 '<div class="col-xs-3"><input class="form-control" type="number" ng-model="copy_number" ng-change="updateCopyNo()"/></div>'+
                 '<div class="col-xs-4"><eg-basic-combo-box eg-disabled="record == 0" list="parts" selected="part"></eg-basic-combo-box></div>'+
@@ -311,14 +323,27 @@ function(egCore , $q) {
             function ( $scope , itemSvc , egCore ) {
                 $scope.new_part_id = 0;
                 $scope.barcode_has_error = false;
+                $scope.duplicate_barcode = false;
+                $scope.empty_barcode = false;
+                $scope.duplicate_barcode_string = window.duplicate_barcode_string;
+                $scope.empty_barcode_string = window.empty_barcode_string;
 
                 $scope.nextBarcode = function (i) {
                     $scope.focusNext(i, $scope.barcode);
                 }
 
                 $scope.updateBarcode = function () {
-                    if ($scope.barcode != '')
+                    if ($scope.barcode != '') {
+                        $scope.empty_barcode = false;
                         $scope.barcode_has_error = !Boolean(itemSvc.checkBarcode($scope.barcode));
+                        if ($scope.copy.isnew()) {
+                            itemSvc.checkDuplicateBarcode($scope.barcode)
+                            .then(function (state) { $scope.duplicate_barcode = state });
+                        }
+                    } else {
+                        $scope.empty_barcode = true;
+                    }
+                        
                     $scope.copy.barcode($scope.barcode);
                     $scope.copy.ischanged(1);
                     if (itemSvc.currently_generating)
@@ -385,7 +410,10 @@ function(egCore , $q) {
                 '<div class="col-xs-1">'+
                     '<select ng-disabled="record == 0" class="form-control" ng-model="prefix" ng-change="updatePrefix()" ng-options="p.label() for p in prefix_list"/>'+
                 '</div>'+
-                '<div class="col-xs-2"><input ng-disabled="record == 0" class="form-control" type="text" ng-change="updateLabel()" ng-model="label"/></div>'+
+                '<div class="col-xs-2">'+
+                    '<input ng-disabled="record == 0" class="form-control" type="text" ng-change="updateLabel()" ng-model="label"/>'+
+                    '<div class="label label-danger" ng-if="empty_label">{{empty_label_string}}</div>'+
+                '</div>'+
                 '<div class="col-xs-1">'+
                     '<select ng-disabled="record == 0" class="form-control" ng-model="suffix" ng-change="updateSuffix()" ng-options="s.label() for s in suffix_list"/>'+
                 '</div>'+
@@ -399,6 +427,9 @@ function(egCore , $q) {
         controller : ['$scope','itemSvc','egCore',
             function ( $scope , itemSvc , egCore ) {
                 $scope.callNumber =  $scope.copies[0].call_number();
+
+                $scope.empty_label = false;
+                $scope.empty_label_string = window.empty_label_string;
 
                 $scope.idTracker = function (x) { if (x && x.id) return x.id() };
 
@@ -525,6 +556,11 @@ function(egCore , $q) {
                 }
 
                 $scope.updateLabel = function () {
+                    if ($scope.label == '') {
+                        $scope.empty_label = true;
+                    } else {
+                        $scope.empty_label = false;
+                    }
                     angular.forEach($scope.copies, function(cp) {
                         cp.call_number().label($scope.label);
                         cp.call_number().ischanged(1);

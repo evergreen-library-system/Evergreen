@@ -1,4 +1,7 @@
 <div>
+    <script>window.duplicate_barcode_string = "[% l('Duplicate Barcode') %]";</script>
+    <script>window.empty_barcode_string = "[% l('Missing Barcode') %]";</script>
+    <script>window.empty_label_string = "[% l('Missing Call Number') %]";</script>
     <div ng-show="!only_vols" class="btn-group">
         <label class="btn btn-default" ng-click="show_vols = !show_vols">
             <span ng-show="show_vols" style="padding-right: 5px;">[% l('Hide Volume/Copy Details') %]</span>
