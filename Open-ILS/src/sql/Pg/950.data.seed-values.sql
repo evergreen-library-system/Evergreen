@@ -5073,7 +5073,7 @@ INSERT into config.org_unit_setting_type
         'coust',
         'description'
     ),
-    'string', null)
+    'link', 'vms')
 ,(
     'cat.default_merge_profile', 'cat',
     oils_i18n_gettext(
