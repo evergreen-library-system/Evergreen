@@ -617,9 +617,9 @@ integer value.  When set, the value of this field represents the
 proximity from the user's home organizational unit where this penalty
 will be ignored for purposes of circulation and holds.  Typical values
 for this field would be 0, 1, or 2 when using a standard hierarchy of
-Consortium -> System -> Branch -> Sublibrary/Bookmoblie.  A value of 1
+Consortium -> System -> Branch -> Sublibrary/Bookmobile.  A value of 1
 would cause the penalty to be ignored at the user's home organization
-unit, it's parent and/or immediate child.  A value of 2 should cause
+unit, its parent and/or immediate child.  A value of 2 should cause
 it to be ignored at the above as well as all sibling organizational
 units to the user's home.  In all cases, a value of zero causes the
 penalty to be ignored at the user's home and to apply at all other
