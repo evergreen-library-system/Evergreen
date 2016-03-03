@@ -309,7 +309,7 @@ factor modifications before deploying to production.
 
 To check encryption timing:
 
-[source,sq]
+[source,sql]
 --------------------------------------------------------------------------
 -- enable psql timing
 evergreen=# \timing
@@ -713,6 +713,19 @@ are removed:
 Public catalog
 ~~~~~~~~~~~~~~
 
+Editable borrowing history
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+Patrons can now delete titles that they do not wish to appear in their
+Check Out History.
+
+ * In "My Account", click on the "Items Checked Out" tab, then
+   the "Check Out History" sub-tab.
+ * Check off the items to conceal.
+ * Click the Go button next to the "Delete Selected Titles" drop-down box.
+ * Click OK in the pop-up to confirm the deletion.  Note that deletions
+   cannot be undone.
+
+Deleted titles will also not appear in the downloaded CSV file.
 
 Patron history disable warning
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
