@@ -1,5 +1,7 @@
 BEGIN;
 
+INSERT INTO config.upgrade_log (version, applied_to) VALUES ('0968', :eg_version); -- jstompro/gmcharlt
+
 --create hook for actor.usr.create_date
 INSERT INTO action_trigger.hook (key, core_type, description, passive)
     VALUES ('au.created', 'au', 'A user was created', 't');
