@@ -11482,7 +11482,9 @@ INSERT INTO acq.cancel_reason (org_unit, keep_debits, id, label, description) VA
 (1, 't', 1246, oils_i18n_gettext(1246, 'Delayed: Pieces Delivered', 'acqcr', 'label'),
     oils_i18n_gettext(1246, 'Number of pieces actually received at the final destination.', 'acqcr', 'description')),
 (1, 't', 1283, oils_i18n_gettext(1283, 'Delayed: Backorder', 'acqcr', 'label'),
-    oils_i18n_gettext(1283, 'The quantity of goods that is on back-order.', 'acqcr', 'description'));
+    oils_i18n_gettext(1283, 'The quantity of goods that is on back-order.', 'acqcr', 'description')),
+(1, 'f',( 85+1200), oils_i18n_gettext(1285, 'Canceled: By Vendor', 'acqcr', 'label'),
+    oils_i18n_gettext(1285, 'Line item canceled by vendor', 'acqcr', 'description'));
 
 INSERT INTO config.global_flag (name, label, enabled)
     VALUES (
