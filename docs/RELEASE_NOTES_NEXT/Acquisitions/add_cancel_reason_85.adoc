@@ -1,0 +1,6 @@
+Add Acquisitions Cancel Reason 85 for Baker&Taylor EDI
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Baker & Taylor send back a quantity status code of 85
+when a line item is canceled when using EDI.  That code
+is now included in the system so those cancelations get 
+properly registered. 
