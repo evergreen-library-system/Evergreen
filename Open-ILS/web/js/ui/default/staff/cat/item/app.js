@@ -581,6 +581,15 @@ function($scope , $q , $routeParams , $location , $timeout , $window , egCore , 
             $location.path('/cat/item/' + item.id + '/holds');
     }
 
+    $scope.cancel_transit = function () {
+        var initial_list = copyGrid.selectedItems();
+        angular.forEach(copyGrid.selectedItems(), function(cp) {
+            egCirc.find_copy_transit(null, {copy_barcode:cp.barcode})
+                .then(function(t) { return egCirc.abort_transit(t.id())    })
+                .then(function()  { return add_barcode_to_list(cp.barcode) });
+        });
+    }
+
     $scope.selectedHoldingsDamaged = function () {
         var initial_list = copyGrid.selectedItems();
         egCirc.mark_damaged(gatherSelectedHoldingsIds()).then(function(){

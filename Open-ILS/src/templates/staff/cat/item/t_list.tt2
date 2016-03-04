@@ -14,11 +14,13 @@
   <eg-grid-action handler="attach_to_peer_bib"
     label="[% l('Link as Conjoined to Previously Marked Bib Record') %]"></eg-grid-action>
   <eg-grid-action handler="selectedHoldingsCopyDelete"
-    label="[% l('Delete Copies') %]"></eg-grid-action>
+    label="[% l('Delete Items') %]"></eg-grid-action>
   <eg-grid-action handler="checkin"
-    label="[% l('Check In Copies') %]"></eg-grid-action>
+    label="[% l('Check In Items') %]"></eg-grid-action>
   <eg-grid-action handler="renew"
-    label="[% l('Renew Copies') %]"></eg-grid-action>
+    label="[% l('Renew Items') %]"></eg-grid-action>
+  <eg-grid-action handler="cancel_transit"
+    label="[% l('Cancel Transit') %]"></eg-grid-action>
     
   <eg-grid-action handler="selectedHoldingsItemStatusTgrEvt" group="[% l('Show') %]"
     label="[% l('Triggered Events') %]"></eg-grid-action>
@@ -33,16 +35,16 @@
     label="[% l('Item as Missing') %]"></eg-grid-action>
     
   <eg-grid-action handler="selectedHoldingsCopyAdd" group="[% l('Add') %]"
-    label="[% l('Copies') %]"></eg-grid-action>
+    label="[% l('Items') %]"></eg-grid-action>
   <eg-grid-action handler="selectedHoldingsVolCopyAdd" group="[% l('Add') %]"
-    label="[% l('Volumes and Copies') %]"></eg-grid-action>
+    label="[% l('Volumes and Items') %]"></eg-grid-action>
 
   <eg-grid-action handler="selectedHoldingsVolEdit" group="[% l('Edit') %]"
     label="[% l('Volumes') %]"></eg-grid-action>
   <eg-grid-action handler="selectedHoldingsCopyEdit" group="[% l('Edit') %]"
-    label="[% l('Copies') %]"></eg-grid-action>
+    label="[% l('Items') %]"></eg-grid-action>
   <eg-grid-action handler="selectedHoldingsVolCopyEdit" group="[% l('Edit') %]"
-    label="[% l('Volumes and Copies') %]"></eg-grid-action>
+    label="[% l('Volumes and Items') %]"></eg-grid-action>
   <eg-grid-action handler="replaceBarcodes" group="[% l('Edit') %]"
     label="[% l('Replace Barcodes') %]"></eg-grid-action>
 
