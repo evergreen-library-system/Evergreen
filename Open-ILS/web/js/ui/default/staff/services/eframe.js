@@ -115,7 +115,7 @@ angular.module('egCoreMod')
                         // HACK! for vandelay
                         if (!e) {
                             e = $scope.iframe.contentWindow.document.getElementById('vl-body-wrapper');
-                            extra = 50;
+                            extra = 10000;
                         }
 
                         if (!e) {
