@@ -103,7 +103,7 @@ static long oilsAuthGetTimeout(
         jsonObject* value_obj;
 
         value_obj = osrf_settings_host_value_object(
-            "/apps/open-ils.auth/app_settings/default_timeout/opac" );
+            "/apps/open-ils.auth_internal/app_settings/default_timeout/opac" );
         _oilsAuthOPACTimeout = oilsUtilsIntervalToSeconds( jsonObjectGetString( value_obj ));
         jsonObjectFree(value_obj);
         if( -1 == _oilsAuthOPACTimeout ) {
@@ -112,7 +112,7 @@ static long oilsAuthGetTimeout(
         }
 
         value_obj = osrf_settings_host_value_object(
-            "/apps/open-ils.auth/app_settings/default_timeout/staff" );
+            "/apps/open-ils.auth_internal/app_settings/default_timeout/staff" );
         _oilsAuthStaffTimeout = oilsUtilsIntervalToSeconds( jsonObjectGetString( value_obj ));
         jsonObjectFree(value_obj);
         if( -1 == _oilsAuthStaffTimeout ) {
@@ -121,7 +121,7 @@ static long oilsAuthGetTimeout(
         }
 
         value_obj = osrf_settings_host_value_object(
-            "/apps/open-ils.auth/app_settings/default_timeout/temp" );
+            "/apps/open-ils.auth_internal/app_settings/default_timeout/temp" );
         _oilsAuthOverrideTimeout = oilsUtilsIntervalToSeconds( jsonObjectGetString( value_obj ));
         jsonObjectFree(value_obj);
         if( -1 == _oilsAuthOverrideTimeout ) {
@@ -130,7 +130,7 @@ static long oilsAuthGetTimeout(
         }
 
         value_obj = osrf_settings_host_value_object(
-            "/apps/open-ils.auth/app_settings/default_timeout/persist" );
+            "/apps/open-ils.auth_internal/app_settings/default_timeout/persist" );
         _oilsAuthPersistTimeout = oilsUtilsIntervalToSeconds( jsonObjectGetString( value_obj ));
         jsonObjectFree(value_obj);
         if( -1 == _oilsAuthPersistTimeout ) {
