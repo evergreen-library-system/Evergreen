@@ -449,7 +449,7 @@ When inspecting a queue in MARC Batch Import/Export, there is now
 a link to download to MARC file any records in the queue that were
 not imported into the catalog.  This allows catalogers to quickly
 manipulate the records that failed to import using an external
-tool, then attempt to import then again.
+tool, then attempt to import them again.
 
 
 
