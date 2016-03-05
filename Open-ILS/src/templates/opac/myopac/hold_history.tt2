@@ -60,7 +60,7 @@
                     <td><span>[% l('Author') %]</span></td>
                     <td> <span>[% l('Format') %]</span></td>
                     <td><span>[% l('Pickup Location') %]</span> </td>
-                    <td>[% l('Active On') %]</td>
+                    <td>[% l('Activate') %]</td>
                     <td>[% l('Active') %]</td>
                     <td>[% l('Date Fulfilled') %]</td>
                     <td><span>[% l('Status') %]</span></td>
@@ -102,11 +102,13 @@
                         END %]
                     </td>
                     <td>
-                        [% IF hold.hold.status == 6 %]
-                            [% l('Canceled') %]
-                        [% ELSE %]
-                            [% l(ahr.frozen == 'f' ? 'Active' : 'Suspended') %]
-                        [% END %]
+                        [% IF ahr.fulfillment_time;
+                             l('Fulfilled');
+                           ELSIF hold.hold.status == 6;
+                             l('Canceled'); 
+                           ELSE; 
+                             l(ahr.frozen == 'f' ? 'Active' : 'Suspended');
+                        END %]
                     </td>
                     <td>
                         [% IF ahr.fulfillment_time;
