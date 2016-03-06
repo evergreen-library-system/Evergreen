@@ -67,6 +67,21 @@ angular.module('egCoreMod')
         });
     }
 
+    service.apply_secondary_groups = function(user_id, group_ids) {
+        return egCore.net.request(
+            'open-ils.actor',
+            'open-ils.actor.user.set_groups',
+            egCore.auth.token(), user_id, group_ids)
+        .then(function(resp) {
+            if (resp == 1) {
+                return true;
+            } else {
+                // debugging -- should be no events
+                alert('linked groups failure ' + egCore.evt.parse(resp));
+            }
+        });
+    }
+
     service.get_stage_user = function() {
         if (!service.stage_username) return $q.when();
 
@@ -619,6 +634,7 @@ angular.module('egCoreMod')
             cards : [card],
             home_ou : egCore.org.get(egCore.auth.user().ws_ou()),
             stat_cat_entries : [],
+            groups : [],
             addresses : [addr]
         };
 
@@ -1463,19 +1479,20 @@ function PatronRegCtrl($scope, $routeParams,
             }
         }).result.then(
             function(args) {
+
+                if ($scope.patron.isnew) {
+                    // groups must be linked for new patrons after the
+                    // patron is created.
+                    $scope.patron.groups = args.linked_groups;
+                    return;
+                }
+
+                // update links groups for existing users in real time.
                 var ids = args.linked_groups.map(function(g) {return g.id()});
-                console.log('linking permission groups ' + ids);
-                return egCore.net.request(
-                    'open-ils.actor',
-                    'open-ils.actor.user.set_groups',
-                    egCore.auth.token(), $scope.patron.id, ids)
-                .then(function(resp) {
-                    if (resp == 1) {
+                patronRegSvc.apply_secondary_groups($scope.patron.id, ids)
+                .then(function(success) {
+                    if (success)
                         $scope.patron.groups = args.linked_groups;
-                    } else {
-                        // debugging -- should be no events
-                        alert('linked groups failure ' + egCore.evt.parse(resp));
-                    }
                 });
             }
         );
@@ -1665,6 +1682,20 @@ function PatronRegCtrl($scope, $routeParams,
             // only remove the staged user if the update succeeded.
             if (updated_user) 
                 return patronRegSvc.remove_staged_user();
+
+            return $q.when();
+
+        }).then(function() {
+
+            // linked groups for new users must be created after the new
+            // user is created.
+            if ($scope.patron.isnew && 
+                $scope.patron.groups && $scope.patron.groups.length) {
+                var ids = $scope.patron.groups.map(function(g) {return g.id()});
+                return patronRegSvc.apply_secondary_groups(updated_user.id(), ids)
+            }
+
+            return $q.when();
 
         }).then(function() {
 
