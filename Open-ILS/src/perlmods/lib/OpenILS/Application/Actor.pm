@@ -667,6 +667,10 @@ sub _update_patron {
 
     $e->update_actor_user($patron) or return (undef, $e->die_event);
 
+    # re-fetch the user to pick up the latest last_xact_id value
+    # to avoid collisions.
+    $patron = $e->retrieve_actor_user($patron->id);
+
     return ($patron);
 }
 
