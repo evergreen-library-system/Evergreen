@@ -824,6 +824,11 @@ function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore,
     var propagate;
     if (patronSvc.lastSearch) {
         propagate = patronSvc.lastSearch.search;
+        // home_ou needs to be treated specially
+        propagate.home_ou = {
+            value : patronSvc.lastSearch.home_ou,
+            group : 0
+        };
     } else if (patronSvc.urlSearch) {
         propagate = patronSvc.urlSearch.search;
     }
@@ -845,7 +850,7 @@ function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore,
         // populate the search form with our cached / preexisting search info
         angular.forEach(propagate, function(val, key) {
             if (key == 'profile')
-                val.value = $scope.profiles.filter(function(p) { p.id() == val.value })[0];
+                val.value = $scope.profiles.filter(function(p) { return p.id() == val.value })[0];
             if (key == 'home_ou')
                 val.value = egCore.org.get(val.value);
             $scope.searchArgs[key] = val.value;
