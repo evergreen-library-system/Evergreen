@@ -85,19 +85,19 @@ function($timeout , $parse) {
  */
 .factory('egAlertDialog', 
 
-        ['$modal','$interpolate',
-function($modal , $interpolate) {
+        ['$uibModal','$interpolate',
+function($uibModal , $interpolate) {
     var service = {};
 
     service.open = function(message, msg_scope) {
-        return $modal.open({
+        return $uibModal.open({
             templateUrl: './share/t_alert_dialog',
-            controller: ['$scope', '$modalInstance',
-                function($scope, $modalInstance) {
+            controller: ['$scope', '$uibModalInstance',
+                function($scope, $uibModalInstance) {
                     $scope.message = $interpolate(message)(msg_scope);
                     $scope.ok = function() {
                         if (msg_scope && msg_scope.ok) msg_scope.ok();
-                        $modalInstance.close()
+                        $uibModalInstance.close()
                     }
                 }
             ]
@@ -114,26 +114,26 @@ function($modal , $interpolate) {
  */
 .factory('egConfirmDialog', 
     
-       ['$modal','$interpolate',
-function($modal, $interpolate) {
+       ['$uibModal','$interpolate',
+function($uibModal, $interpolate) {
     var service = {};
 
     service.open = function(title, message, msg_scope, ok_button_label, cancel_button_label) {
-        return $modal.open({
+        return $uibModal.open({
             templateUrl: './share/t_confirm_dialog',
-            controller: ['$scope', '$modalInstance',
-                function($scope, $modalInstance) {
+            controller: ['$scope', '$uibModalInstance',
+                function($scope, $uibModalInstance) {
                     $scope.title = $interpolate(title)(msg_scope);
                     $scope.message = $interpolate(message)(msg_scope);
                     $scope.ok_button_label = $interpolate(ok_button_label || '')(msg_scope);
                     $scope.cancel_button_label = $interpolate(cancel_button_label || '')(msg_scope);
                     $scope.ok = function() {
                         if (msg_scope.ok) msg_scope.ok();
-                        $modalInstance.close()
+                        $uibModalInstance.close()
                     }
                     $scope.cancel = function() {
                         if (msg_scope.cancel) msg_scope.cancel();
-                        $modalInstance.dismiss();
+                        $uibModalInstance.dismiss();
                     }
                 }
             ]
@@ -156,25 +156,25 @@ function($modal, $interpolate) {
  */
 .factory('egPromptDialog', 
     
-       ['$modal','$interpolate',
-function($modal, $interpolate) {
+       ['$uibModal','$interpolate',
+function($uibModal, $interpolate) {
     var service = {};
 
     service.open = function(message, promptValue, msg_scope) {
-        return $modal.open({
+        return $uibModal.open({
             templateUrl: './share/t_prompt_dialog',
-            controller: ['$scope', '$modalInstance',
-                function($scope, $modalInstance) {
+            controller: ['$scope', '$uibModalInstance',
+                function($scope, $uibModalInstance) {
                     $scope.message = $interpolate(message)(msg_scope);
                     $scope.args = {value : promptValue || ''};
                     $scope.focus = true;
                     $scope.ok = function() {
                         if (msg_scope.ok) msg_scope.ok($scope.args.value);
-                        $modalInstance.close()
+                        $uibModalInstance.close()
                     }
                     $scope.cancel = function() {
                         if (msg_scope.cancel) msg_scope.cancel();
-                        $modalInstance.dismiss();
+                        $uibModalInstance.dismiss();
                     }
                 }
             ]

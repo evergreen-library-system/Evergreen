@@ -112,11 +112,9 @@ function($q , egCore , patronSvc) {
  */
 .controller('PatronBillsCtrl',
        ['$scope','$q','$routeParams','egCore','egConfirmDialog','$location',
-        'egGridDataProvider','billSvc','patronSvc','egPromptDialog','$modal',
-        'egBilling',
+        'egGridDataProvider','billSvc','patronSvc','egPromptDialog', 'egBilling',
 function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
-         egGridDataProvider , billSvc , patronSvc , egPromptDialog , $modal,
-         egBilling) {
+         egGridDataProvider , billSvc , patronSvc , egPromptDialog, egBilling) {
 
     $scope.initTab('bills', $routeParams.id);
     billSvc.userId = $routeParams.id;

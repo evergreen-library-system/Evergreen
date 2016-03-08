@@ -211,9 +211,9 @@ angular.module('egCatCopyBuckets',
  * Hosts functions needed by all controllers.
  */
 .controller('CopyBucketCtrl',
-       ['$scope','$location','$q','$timeout','$modal',
+       ['$scope','$location','$q','$timeout','$uibModal',
         '$window','egCore','bucketSvc',
-function($scope,  $location,  $q,  $timeout,  $modal,  
+function($scope,  $location,  $q,  $timeout,  $uibModal,  
          $window,  egCore,  bucketSvc) {
 
     $scope.bucketSvc = bucketSvc;
@@ -264,13 +264,13 @@ function($scope,  $location,  $q,  $timeout,  $modal,
     }
 
     $scope.openCreateBucketDialog = function() {
-        $modal.open({
+        $uibModal.open({
             templateUrl: './cat/bucket/copy/t_bucket_create',
             controller: 
-                ['$scope', '$modalInstance', function($scope, $modalInstance) {
+                ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
                 $scope.focusMe = true;
-                $scope.ok = function(args) { $modalInstance.close(args) }
-                $scope.cancel = function () { $modalInstance.dismiss() }
+                $scope.ok = function(args) { $uibModalInstance.close(args) }
+                $scope.cancel = function () { $uibModalInstance.dismiss() }
             }]
         }).result.then(function (args) {
             if (!args || !args.name) return;
@@ -288,10 +288,10 @@ function($scope,  $location,  $q,  $timeout,  $modal,
     }
 
     $scope.openEditBucketDialog = function() {
-        $modal.open({
+        $uibModal.open({
             templateUrl: './cat/bucket/copy/t_bucket_edit',
             controller: 
-                ['$scope', '$modalInstance', function($scope, $modalInstance) {
+                ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
                 $scope.focusMe = true;
                 $scope.args = {
                     name : bucketSvc.currentBucket.name(),
@@ -304,9 +304,9 @@ function($scope,  $location,  $q,  $timeout,  $modal,
                     args.pub = args.pub ? 't' : 'f';
                     // close the dialog after edit has completed
                     bucketSvc.editBucket(args).then(
-                        function() { $modalInstance.close() });
+                        function() { $uibModalInstance.close() });
                 }
-                $scope.cancel = function () { $modalInstance.dismiss() }
+                $scope.cancel = function () { $uibModalInstance.dismiss() }
             }]
         })
     }
@@ -314,13 +314,13 @@ function($scope,  $location,  $q,  $timeout,  $modal,
     // opens the delete confirmation and deletes the current
     // bucket if the user confirms.
     $scope.openDeleteBucketDialog = function() {
-        $modal.open({
+        $uibModal.open({
             templateUrl: './cat/bucket/copy/t_bucket_delete',
             controller : 
-                ['$scope', '$modalInstance', function($scope, $modalInstance) {
+                ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
                 $scope.bucket = function() { return bucketSvc.currentBucket }
-                $scope.ok = function() { $modalInstance.close() }
-                $scope.cancel = function() { $modalInstance.dismiss() }
+                $scope.ok = function() { $uibModalInstance.close() }
+                $scope.cancel = function() { $uibModalInstance.dismiss() }
             }]
         }).result.then(function () {
             bucketSvc.deleteBucket(bucketSvc.currentBucket.id())
@@ -333,17 +333,17 @@ function($scope,  $location,  $q,  $timeout,  $modal,
 
     // retrieves the requested bucket by ID
     $scope.openSharedBucketDialog = function() {
-        $modal.open({
+        $uibModal.open({
             templateUrl: './cat/bucket/copy/t_load_shared',
             controller :
-                ['$scope', '$modalInstance', function($scope, $modalInstance) {
+                ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
                 $scope.focusMe = true;
                 $scope.ok = function(args) {
                     if (args && args.id) {
-                        $modalInstance.close(args.id)
+                        $uibModalInstance.close(args.id)
                     }
                 }
-                $scope.cancel = function() { $modalInstance.dismiss() }
+                $scope.cancel = function() { $uibModalInstance.dismiss() }
             }]
         }).result.then(function(id) {
             // RecordBucketCtrl $scope is not inherited by the
@@ -401,9 +401,9 @@ function($scope,  $routeParams,  bucketSvc , egGridDataProvider,   egCore) {
 }])
 
 .controller('ViewCtrl',
-       ['$scope','$q','$routeParams','$timeout','$window','$modal','bucketSvc','egCore','egUser',
+       ['$scope','$q','$routeParams','$timeout','$window','$uibModal','bucketSvc','egCore','egUser',
         'egConfirmDialog',
-function($scope,  $q , $routeParams , $timeout , $window , $modal , bucketSvc , egCore , egUser ,
+function($scope,  $q , $routeParams , $timeout , $window , $uibModal , bucketSvc , egCore , egUser ,
          egConfirmDialog) {
 
     $scope.setTab('view');
@@ -482,12 +482,12 @@ function($scope,  $q , $routeParams , $timeout , $window , $modal , bucketSvc , 
 
         if (copy_list.length == 0) return;
 
-        return $modal.open({
+        return $uibModal.open({
             templateUrl: './cat/catalog/t_request_items',
             animation: true,
             controller:
-                   ['$scope','$modalInstance',
-            function($scope , $modalInstance) {
+                   ['$scope','$uibModalInstance',
+            function($scope , $uibModalInstance) {
                 $scope.user = null;
                 $scope.first_user_fetch = true;
 
@@ -536,11 +536,11 @@ function($scope,  $q , $routeParams , $timeout , $window , $modal , bucketSvc , 
                         egCore.auth.token(), args, h.copy_list
                     );
 
-                    $modalInstance.close();
+                    $uibModalInstance.close();
                 }
 
                 $scope.cancel = function($event) {
-                    $modalInstance.dismiss();
+                    $uibModalInstance.dismiss();
                     $event.preventDefault();
                 }
             }]

@@ -238,9 +238,9 @@ function($scope , $routeParams , $location , $window , $q , egCore) {
 
 .controller('CatalogCtrl',
        ['$scope','$routeParams','$location','$window','$q','egCore','egHolds','egCirc','egConfirmDialog','ngToast',
-        'egGridDataProvider','egHoldGridActions','$timeout','$modal','holdingsSvc','egUser','conjoinedSvc',
+        'egGridDataProvider','egHoldGridActions','$timeout','$uibModal','holdingsSvc','egUser','conjoinedSvc',
 function($scope , $routeParams , $location , $window , $q , egCore , egHolds , egCirc , egConfirmDialog , ngToast ,
-         egGridDataProvider , egHoldGridActions , $timeout , $modal , holdingsSvc , egUser , conjoinedSvc) {
+         egGridDataProvider , egHoldGridActions , $timeout , $uibModal , holdingsSvc , egUser , conjoinedSvc) {
 
     var holdingsSvcInst = new holdingsSvc();
 
@@ -288,13 +288,13 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
 
     $scope.add_to_record_bucket = function() {
         var recId = $scope.record_id;
-        return $modal.open({
+        return $uibModal.open({
             templateUrl: './cat/catalog/t_add_to_bucket',
             animation: true,
             size: 'md',
             controller:
-                   ['$scope','$modalInstance',
-            function($scope , $modalInstance) {
+                   ['$scope','$uibModalInstance',
+            function($scope , $uibModalInstance) {
 
                 $scope.bucket_id = 0;
                 $scope.newBucketName = '';
@@ -315,7 +315,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
                         'open-ils.actor.container.item.create',
                         egCore.auth.token(), 'biblio', item
                     ).then(function(resp) {
-                        $modalInstance.close();
+                        $uibModalInstance.close();
                     });
                 }
 
@@ -337,7 +337,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
                 }
 
                 $scope.cancel = function() {
-                    $modalInstance.dismiss();
+                    $uibModalInstance.dismiss();
                 }
             }]
         });
@@ -467,12 +467,12 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
 
         var conjoinedGridDataProviderRef = $scope.conjoinedGridDataProvider;
 
-        return $modal.open({
+        return $uibModal.open({
             templateUrl: './cat/catalog/t_conjoined_selector',
             animation: true,
             controller:
-                   ['$scope','$modalInstance',
-            function($scope , $modalInstance) {
+                   ['$scope','$uibModalInstance',
+            function($scope , $uibModalInstance) {
                 $scope.update = true;
 
                 $scope.peer_type = null;
@@ -491,13 +491,13 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
                     });
     
                     return $q.all(promises)
-                        .then(function(){$modalInstance.close()})
+                        .then(function(){$uibModalInstance.close()})
                         .then(function(){return conjoinedSvc.fetch()})
                         .then(function(){conjoinedGridDataProviderRef.refresh()});
                 }
     
                 $scope.cancel = function($event) {
-                    $modalInstance.dismiss();
+                    $uibModalInstance.dismiss();
                     $event.preventDefault();
                 }
             }]
@@ -552,13 +552,13 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         var copy_list = gatherSelectedHoldingsIds();
         if (copy_list.length == 0) return;
 
-        return $modal.open({
+        return $uibModal.open({
             templateUrl: './cat/catalog/t_add_to_bucket',
             animation: true,
             size: 'md',
             controller:
-                   ['$scope','$modalInstance',
-            function($scope , $modalInstance) {
+                   ['$scope','$uibModalInstance',
+            function($scope , $uibModalInstance) {
 
                 $scope.bucket_id = 0;
                 $scope.newBucketName = '';
@@ -586,7 +586,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
                         );
 
                         return $q.all(promises).then(function() {
-                            $modalInstance.close();
+                            $uibModalInstance.close();
                         });
                     });
                 }
@@ -609,7 +609,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
                 }
 
                 $scope.cancel = function() {
-                    $modalInstance.dismiss();
+                    $uibModalInstance.dismiss();
                 }
             }]
         });
@@ -619,12 +619,12 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         var copy_list = gatherSelectedHoldingsIds();
         if (copy_list.length == 0) return;
 
-        return $modal.open({
+        return $uibModal.open({
             templateUrl: './cat/catalog/t_request_items',
             animation: true,
             controller:
-                   ['$scope','$modalInstance',
-            function($scope , $modalInstance) {
+                   ['$scope','$uibModalInstance',
+            function($scope , $uibModalInstance) {
                 $scope.user = null;
                 $scope.first_user_fetch = true;
 
@@ -673,11 +673,11 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
                         egCore.auth.token(), args, h.copy_list
                     );
 
-                    $modalInstance.close();
+                    $uibModalInstance.close();
                 }
 
                 $scope.cancel = function($event) {
-                    $modalInstance.dismiss();
+                    $uibModalInstance.dismiss();
                     $event.preventDefault();
                 }
             }]
@@ -691,12 +691,12 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         var holdingsGridDataProviderRef = $scope.holdingsGridDataProvider;
 
         angular.forEach(copy_list, function (cp) {
-            $modal.open({
+            $uibModal.open({
                 templateUrl: './cat/share/t_replace_barcode',
                 animation: true,
                 controller:
-                           ['$scope','$modalInstance',
-                    function($scope , $modalInstance) {
+                           ['$scope','$uibModalInstance',
+                    function($scope , $uibModalInstance) {
                         $scope.isModal = true;
                         $scope.focusBarcode = false;
                         $scope.focusBarcode2 = true;
@@ -728,11 +728,11 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
                                 });
 
                             });
-                            $modalInstance.close();
+                            $uibModalInstance.close();
                         }
 
                         $scope.cancel = function($event) {
-                            $modalInstance.dismiss();
+                            $uibModalInstance.dismiss();
                             $event.preventDefault();
                         }
                     }
@@ -1008,12 +1008,12 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
     }
 
     $scope.markLibAsVolTarget = function() {
-        return $modal.open({
+        return $uibModal.open({
             templateUrl: './cat/catalog/t_choose_vol_target_lib',
             animation: true,
             controller:
-                   ['$scope','$modalInstance',
-            function($scope , $modalInstance) {
+                   ['$scope','$uibModalInstance',
+            function($scope , $uibModalInstance) {
 
                 var orgId = egCore.hatch.getLocalItem('eg.cat.volume_transfer_target') || 1;
                 $scope.org = egCore.org.get(orgId);
@@ -1023,10 +1023,10 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
                         'eg.cat.volume_transfer_target',
                         org.id()
                     );
-                    $modalInstance.close();
+                    $uibModalInstance.close();
                 }
                 $scope.cancel = function($event) {
-                    $modalInstance.dismiss();
+                    $uibModalInstance.dismiss();
                     $event.preventDefault();
                 }
             }]
@@ -1270,12 +1270,12 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         egCore.hatch.getItem('eg.cat.marked_conjoined_record').then(function(target_record) {
             if (!target_record) return;
 
-            return $modal.open({
+            return $uibModal.open({
                 templateUrl: './cat/catalog/t_conjoined_selector',
                 animation: true,
                 controller:
-                       ['$scope','$modalInstance',
-                function($scope , $modalInstance) {
+                       ['$scope','$uibModalInstance',
+                function($scope , $uibModalInstance) {
                     $scope.update = false;
 
                     $scope.peer_type = null;
@@ -1296,11 +1296,11 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
                             promises.push(egCore.pcrud.create(n));
                         });
     
-                        return $q.all(promises).then(function(){$modalInstance.close()});
+                        return $q.all(promises).then(function(){$uibModalInstance.close()});
                     }
     
                     $scope.cancel = function($event) {
-                        $modalInstance.dismiss();
+                        $uibModalInstance.dismiss();
                         $event.preventDefault();
                     }
                 }]

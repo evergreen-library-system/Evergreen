@@ -6,8 +6,8 @@
 angular.module('egCoreMod')
 
 .factory('egBilling', 
-       ['$modal','$q','egCore',
-function($modal , $q , egCore) {
+       ['$uibModal','$q','egCore',
+function($uibModal , $q , egCore) {
 
     var service = {};
 
@@ -112,11 +112,11 @@ function($modal , $q , egCore) {
     //   patron OR patron_id
     service.showBillDialog = function(args) {
 
-        return $modal.open({
+        return $uibModal.open({
             templateUrl: './circ/share/t_bill_patron_dialog',
             controller: 
-                   ['$scope','$modalInstance','$timeout','billingTypes','xact','patron',
-            function($scope , $modalInstance , $timeout , billingTypes , xact , patron) {
+                   ['$scope','$uibModalInstance','$timeout','billingTypes','xact','patron',
+            function($scope , $uibModalInstance , $timeout , billingTypes , xact , patron) {
                 console.debug('billing patron ' + patron.id());
                 $scope.focus = true;
                 if (xact && xact._isfieldmapper)
@@ -130,8 +130,8 @@ function($modal , $q , egCore) {
                     xact : xact,
                     patron_id : patron.id()
                 }
-                $scope.ok = function(args) { $modalInstance.close(args) }
-                $scope.cancel = function () { $modalInstance.dismiss() }
+                $scope.ok = function(args) { $uibModalInstance.close(args) }
+                $scope.cancel = function () { $uibModalInstance.dismiss() }
                 $scope.updateDefaultPrice = function() {
                     var type = billingTypes.filter(function(t) {
                         return t.id() == $scope.billArgs.billingType })[0];

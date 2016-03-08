@@ -1062,8 +1062,8 @@ function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore,
  * Manages messages
  */
 .controller('PatronMessagesCtrl',
-       ['$scope','$q','$routeParams','egCore','$modal','patronSvc','egCirc',
-function($scope , $q , $routeParams,  egCore , $modal , patronSvc , egCirc) {
+       ['$scope','$q','$routeParams','egCore','$uibModal','patronSvc','egCirc',
+function($scope , $q , $routeParams,  egCore , $uibModal , patronSvc , egCirc) {
     $scope.initTab('messages', $routeParams.id);
     var usr_id = $routeParams.id;
 
@@ -1288,8 +1288,8 @@ function($scope,  $routeParams , $location , egCore , patronSvc) {
 }])
 
 .controller('PatronNotesCtrl',
-       ['$scope','$routeParams','$location','egCore','patronSvc','$modal',
-function($scope,  $routeParams , $location , egCore , patronSvc , $modal) {
+       ['$scope','$routeParams','$location','egCore','patronSvc','$uibModal',
+function($scope,  $routeParams , $location , egCore , patronSvc , $uibModal) {
     $scope.initTab('other', $routeParams.id);
     var usr_id = $routeParams.id;
 
@@ -1307,15 +1307,15 @@ function($scope,  $routeParams , $location , egCore , patronSvc , $modal) {
 
     // open the new-note dialog and create the note
     $scope.newNote = function() {
-        $modal.open({
+        $uibModal.open({
             templateUrl: './circ/patron/t_new_note_dialog',
             controller: 
-                ['$scope', '$modalInstance',
-            function($scope, $modalInstance) {
+                ['$scope', '$uibModalInstance',
+            function($scope, $uibModalInstance) {
                 $scope.focusNote = true;
                 $scope.args = {};
-                $scope.ok = function(count) { $modalInstance.close($scope.args) }
-                $scope.cancel = function () { $modalInstance.dismiss() }
+                $scope.ok = function(count) { $uibModalInstance.close($scope.args) }
+                $scope.cancel = function () { $uibModalInstance.dismiss() }
             }],
         }).result.then(
             function(args) {
@@ -1353,9 +1353,9 @@ function($scope,  $routeParams , $location , egCore , patronSvc , $modal) {
 
 .controller('PatronGroupCtrl',
        ['$scope','$routeParams','$q','$window','$timeout','$location','egCore',
-        'patronSvc','$modal','egPromptDialog','egConfirmDialog',
+        'patronSvc','$uibModal','egPromptDialog','egConfirmDialog',
 function($scope,  $routeParams , $q , $window , $timeout,  $location , egCore ,
-         patronSvc , $modal , egPromptDialog , egConfirmDialog) {
+         patronSvc , $uibModal , egPromptDialog , egConfirmDialog) {
 
     var usr_id = $routeParams.id;
 
@@ -1463,18 +1463,18 @@ function($scope,  $routeParams , $q , $window , $timeout,  $location , egCore ,
             egCore.pcrud.retrieve('au', card.usr())
             .then(function(user) {
                 user.card(card);
-                $modal.open({
+                $uibModal.open({
                     templateUrl: './circ/patron/t_move_to_group_dialog',
                     controller: [
-                                '$scope','$modalInstance',
-                        function($scope , $modalInstance) {
+                                '$scope','$uibModalInstance',
+                        function($scope , $uibModalInstance) {
                             $scope.user = user;
                             $scope.selected = selected;
                             $scope.outbound = outbound;
                             $scope.ok = 
-                                function(count) { $modalInstance.close() }
+                                function(count) { $uibModalInstance.close() }
                             $scope.cancel = 
-                                function () { $modalInstance.dismiss() }
+                                function () { $uibModalInstance.dismiss() }
                         }
                     ]
                 }).result.then(function() {

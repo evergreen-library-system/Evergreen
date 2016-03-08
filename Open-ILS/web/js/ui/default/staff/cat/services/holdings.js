@@ -292,8 +292,8 @@ function(egCore , $q) {
         },
         templateUrl: './cat/share/t_volume_list',
         controller:
-                   ['$scope','holdingsSvc','egCore','egGridDataProvider','$modal',
-            function($scope , holdingsSvc , egCore , egGridDataProvider,  $modal) {
+                   ['$scope','holdingsSvc','egCore','egGridDataProvider','$uibModal',
+            function($scope , holdingsSvc , egCore , egGridDataProvider,  $uibModal) {
                 var holdingsSvcInst = new holdingsSvc();
 
                 $scope.holdingsGridControls = {};
@@ -324,16 +324,16 @@ function(egCore , $q) {
                         }
                     ).then(function(key) {
                         if (key) {
-                            $modal.open({
+                            $uibModal.open({
                                 templateUrl: './cat/share/t_embedded_volcopy',
                                 size: 'lg',
                                 windowClass: 'eg-wide-modal',
                                 controller:
-                                    ['$scope', '$modalInstance', function($scope, $modalInstance) {
+                                    ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
                                     $scope.volcopy_url = 
                                         egCore.env.basePath + 'cat/volcopy/' + key + '/embedded';
-                                    $scope.ok = function(args) { $modalInstance.close(args) }
-                                    $scope.cancel = function () { $modalInstance.dismiss() }
+                                    $scope.ok = function(args) { $uibModalInstance.close(args) }
+                                    $scope.cancel = function () { $uibModalInstance.dismiss() }
                                 }]
                             }).result.then(function() {
                                 load_holdings();

@@ -751,8 +751,8 @@ function(egCore , $q) {
  * Edit controller!
  */
 .controller('EditCtrl', 
-       ['$scope','$q','$window','$routeParams','$location','$timeout','egCore','egNet','egGridDataProvider','itemSvc','$modal',
-function($scope , $q , $window , $routeParams , $location , $timeout , egCore , egNet , egGridDataProvider , itemSvc , $modal) {
+       ['$scope','$q','$window','$routeParams','$location','$timeout','egCore','egNet','egGridDataProvider','itemSvc','$uibModal',
+function($scope , $q , $window , $routeParams , $location , $timeout , egCore , egNet , egGridDataProvider , itemSvc , $uibModal) {
 
     $scope.defaults = { // If defaults are not set at all, allow everything
         barcode_checkdigit : false,
@@ -1535,12 +1535,12 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
         var default_pub = Boolean($scope.defaults.copy_notes_pub);
         if (!angular.isArray(copy_list)) copy_list = [copy_list];
 
-        return $modal.open({
+        return $uibModal.open({
             templateUrl: './cat/volcopy/t_copy_notes',
             animation: true,
             controller:
-                   ['$scope','$modalInstance',
-            function($scope , $modalInstance) {
+                   ['$scope','$uibModalInstance',
+            function($scope , $uibModalInstance) {
                 $scope.focusNote = true;
                 $scope.note = {
                     creator : egCore.auth.user().id(),
@@ -1576,11 +1576,11 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                         cp.notes().push( n );
                     });
 
-                    $modalInstance.close();
+                    $uibModalInstance.close();
                 }
 
                 $scope.cancel = function($event) {
-                    $modalInstance.dismiss();
+                    $uibModalInstance.dismiss();
                     $event.preventDefault();
                 }
             }]

@@ -6,9 +6,9 @@ angular.module('egPatronApp')
 
 .controller('PatronItemsOutCtrl',
        ['$scope','$q','$routeParams','$timeout','egCore','egUser','patronSvc','$location',
-        'egGridDataProvider','$modal','egCirc','egConfirmDialog','egBilling','$window',
+        'egGridDataProvider','$uibModal','egCirc','egConfirmDialog','egBilling','$window',
 function($scope,  $q,  $routeParams,  $timeout,  egCore , egUser,  patronSvc , $location, 
-         egGridDataProvider , $modal , egCirc , egConfirmDialog , egBilling , $window) {
+         egGridDataProvider , $uibModal , egCirc , egConfirmDialog , egBilling , $window) {
 
     // list of noncatatloged circulations. Define before initTab to 
     // avoid any possibility of race condition, since they are loaded
@@ -254,11 +254,11 @@ function($scope,  $q,  $routeParams,  $timeout,  egCore , egUser,  patronSvc , $
     $scope.edit_due_date = function(items) {
         if (!items.length) return;
 
-        $modal.open({
+        $uibModal.open({
             templateUrl : './circ/patron/t_edit_due_date_dialog',
             controller : [
-                        '$scope','$modalInstance',
-                function($scope , $modalInstance) {
+                        '$scope','$uibModalInstance',
+                function($scope , $uibModalInstance) {
 
                     // if there is only one circ, default to the due date
                     // of that circ.  Otherwise, default to today.
@@ -299,12 +299,12 @@ function($scope,  $q,  $routeParams,  $timeout,  egCore , egUser,  patronSvc , $
                         });
 
                         $q.all(promises).then(function() {
-                            $modalInstance.close();
+                            $uibModalInstance.close();
                             provider.refresh();
                         });
                     }
                     $scope.cancel = function($event) {
-                        $modalInstance.dismiss();
+                        $uibModalInstance.dismiss();
                         $event.preventDefault();
                     }
                 }
@@ -406,17 +406,17 @@ function($scope,  $q,  $routeParams,  $timeout,  egCore , egUser,  patronSvc , $
         var barcodes = items.map(function(circ) 
             { return circ.target_copy().barcode() });
 
-        return $modal.open({
+        return $uibModal.open({
             templateUrl : './circ/patron/t_edit_due_date_dialog',
             templateUrl : './circ/patron/t_renew_with_date_dialog',
             controller : [
-                        '$scope','$modalInstance',
-                function($scope , $modalInstance) {
+                        '$scope','$uibModalInstance',
+                function($scope , $uibModalInstance) {
                     $scope.args = {
                         barcodes : barcodes,
                         date : new Date()
                     }
-                    $scope.cancel = function() {$modalInstance.dismiss()}
+                    $scope.cancel = function() {$uibModalInstance.dismiss()}
 
                     // Fire off the due-date updater for each circ.
                     // When all is done, close the dialog
@@ -429,7 +429,7 @@ function($scope,  $q,  $routeParams,  $timeout,  egCore , egUser,  patronSvc , $
                                 egCirc.renew({copy_barcode : bc, due_date : due})
                                 .finally(do_one);
                             } else {
-                                $modalInstance.close(); 
+                                $uibModalInstance.close(); 
                                 reset_page();
                             }
                         }

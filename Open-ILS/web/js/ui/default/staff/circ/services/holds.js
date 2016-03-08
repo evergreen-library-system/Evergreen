@@ -6,8 +6,8 @@ angular.module('egCoreMod')
 
 .factory('egHolds',
 
-       ['$modal','$q','egCore','egConfirmDialog','egAlertDialog',
-function($modal , $q , egCore , egConfirmDialog , egAlertDialog) {
+       ['$uibModal','$q','egCore','egConfirmDialog','egAlertDialog',
+function($uibModal , $q , egCore , egConfirmDialog , egAlertDialog) {
 
     var service = {};
 
@@ -58,11 +58,11 @@ function($modal , $q , egCore , egConfirmDialog , egAlertDialog) {
 
     service.cancel_holds = function(hold_ids) {
        
-        return $modal.open({
+        return $uibModal.open({
             templateUrl : './circ/share/t_cancel_hold_dialog',
             controller : 
-                ['$scope', '$modalInstance', 'cancel_reasons',
-                function($scope, $modalInstance, cancel_reasons) {
+                ['$scope', '$uibModalInstance', 'cancel_reasons',
+                function($scope, $uibModalInstance, cancel_reasons) {
                     $scope.args = {
                         cancel_reason : 5,
                         cancel_reasons : cancel_reasons,
@@ -70,7 +70,7 @@ function($modal , $q , egCore , egConfirmDialog , egAlertDialog) {
                     };
                     
                     $scope.cancel = function($event) {
-                        $modalInstance.dismiss();
+                        $uibModalInstance.dismiss();
                         $event.preventDefault();
                     }
 
@@ -79,7 +79,7 @@ function($modal , $q , egCore , egConfirmDialog , egAlertDialog) {
                         function cancel_one() {
                             var hold_id = hold_ids.pop();
                             if (!hold_id) {
-                                $modalInstance.close();
+                                $uibModalInstance.close();
                                 return;
                             }
                             egCore.net.request(
@@ -110,17 +110,17 @@ function($modal , $q , egCore , egConfirmDialog , egAlertDialog) {
 
     service.uncancel_holds = function(hold_ids) {
        
-        return $modal.open({
+        return $uibModal.open({
             templateUrl : './circ/share/t_uncancel_hold_dialog',
             controller : 
-                ['$scope', '$modalInstance',
-                function($scope, $modalInstance) {
+                ['$scope', '$uibModalInstance',
+                function($scope, $uibModalInstance) {
                     $scope.args = {
                         num_holds : hold_ids.length
                     };
                     
                     $scope.cancel = function($event) {
-                        $modalInstance.dismiss();
+                        $uibModalInstance.dismiss();
                         $event.preventDefault();
                     }
 
@@ -129,7 +129,7 @@ function($modal , $q , egCore , egConfirmDialog , egAlertDialog) {
                         function uncancel_one() {
                             var hold_id = hold_ids.pop();
                             if (!hold_id) {
-                                $modalInstance.close();
+                                $uibModalInstance.close();
                                 return;
                             }
                             egCore.net.request(
@@ -170,22 +170,22 @@ function($modal , $q , egCore , egConfirmDialog , egAlertDialog) {
 
     service.set_copy_quality = function(hold_ids) {
         if (!hold_ids.length) return $q.when();
-        return $modal.open({
+        return $uibModal.open({
             templateUrl : './circ/share/t_hold_copy_quality_dialog',
             controller : 
-                ['$scope', '$modalInstance',
-                function($scope, $modalInstance) {
+                ['$scope', '$uibModalInstance',
+                function($scope, $uibModalInstance) {
 
                     function update(val) {
                         var vals = hold_ids.map(function(hold_id) {
                             return {id : hold_id, mint_condition : val}})
                         service.update_holds(vals).finally(function() {
-                            $modalInstance.close();
+                            $uibModalInstance.close();
                         });
                     }
                     $scope.good = function() { update(true) }
                     $scope.any = function() { update(false) }
-                    $scope.cancel = function() { $modalInstance.dismiss() }
+                    $scope.cancel = function() { $uibModalInstance.dismiss() }
                 }
             ]
         }).result;
@@ -193,11 +193,11 @@ function($modal , $q , egCore , egConfirmDialog , egAlertDialog) {
 
     service.edit_pickup_lib = function(hold_ids) {
         if (!hold_ids.length) return $q.when();
-        return $modal.open({
+        return $uibModal.open({
             templateUrl : './circ/share/t_hold_edit_pickup_lib',
             controller : 
-                ['$scope', '$modalInstance',
-                function($scope, $modalInstance) {
+                ['$scope', '$uibModalInstance',
+                function($scope, $uibModalInstance) {
                     $scope.cant_be_pickup = function (id) { return !egCore.org.CanHaveUsers(id); };
                     $scope.args = {};
                     $scope.ok = function() { 
@@ -208,10 +208,10 @@ function($modal , $q , egCore , egConfirmDialog , egAlertDialog) {
                             }
                         });
                         service.update_holds(vals).finally(function() {
-                            $modalInstance.close();
+                            $uibModalInstance.close();
                         });
                     }
-                    $scope.cancel = function() { $modalInstance.dismiss() }
+                    $scope.cancel = function() { $uibModalInstance.dismiss() }
                 }
             ]
         }).result;
@@ -225,11 +225,11 @@ function($modal , $q , egCore , egConfirmDialog , egAlertDialog) {
 
     service.edit_notify_prefs = function(hold_ids) {
         if (!hold_ids.length) return $q.when();
-        return $modal.open({
+        return $uibModal.open({
             templateUrl : './circ/share/t_hold_notification_prefs',
             controller : 
-                ['$scope', '$modalInstance', 'sms_carriers',
-                function($scope, $modalInstance, sms_carriers) {
+                ['$scope', '$uibModalInstance', 'sms_carriers',
+                function($scope, $uibModalInstance, sms_carriers) {
                     $scope.args = {}
                     $scope.sms_carriers = sms_carriers;
                     $scope.num_holds = hold_ids.length;
@@ -251,10 +251,10 @@ function($modal , $q , egCore , egConfirmDialog , egAlertDialog) {
                         });
 
                         service.update_holds(vals).finally(function() {
-                            $modalInstance.close();
+                            $uibModalInstance.close();
                         });
                     }
-                    $scope.cancel = function() { $modalInstance.dismiss() }
+                    $scope.cancel = function() { $uibModalInstance.dismiss() }
                 }
             ],
             resolve : {
@@ -285,11 +285,11 @@ function($modal , $q , egCore , egConfirmDialog , egAlertDialog) {
             return service.update_holds(vals);
         }
 
-        return $modal.open({
+        return $uibModal.open({
             templateUrl : './circ/share/t_hold_dates',
             controller : 
-                ['$scope', '$modalInstance',
-                function($scope, $modalInstance) {
+                ['$scope', '$uibModalInstance',
+                function($scope, $uibModalInstance) {
                     var today = new Date();
                     $scope.args = {
                         thaw_date : today,
@@ -299,9 +299,9 @@ function($modal , $q , egCore , egConfirmDialog , egAlertDialog) {
                     }
                     $scope.num_holds = hold_ids.length;
                     $scope.ok = function() { 
-                        relay_to_update($scope).then($modalInstance.close);
+                        relay_to_update($scope).then($uibModalInstance.close);
                     }
-                    $scope.cancel = function() { $modalInstance.dismiss() }
+                    $scope.cancel = function() { $uibModalInstance.dismiss() }
                 }
             ],
         }).result;
@@ -589,8 +589,8 @@ function($window , $location , $timeout , egCore , egHolds , egCirc) {
             showPatron : '='
         },
         controller : [
-                    '$scope','$modal','egCore','egHolds','egCirc',
-            function($scope , $modal , egCore , egHolds , egCirc) {
+                    '$scope','$uibModal','egCore','egHolds','egCirc',
+            function($scope , $uibModal , egCore , egHolds , egCirc) {
 
                 function draw() {
                     if (!$scope.holdId) return;
@@ -648,17 +648,17 @@ function($window , $location , $timeout , egCore , egHolds , egCirc) {
                 }
 
                 $scope.new_note = function() {
-                    return $modal.open({
+                    return $uibModal.open({
                         templateUrl : './circ/share/t_hold_note_dialog',
                         controller : 
-                            ['$scope', '$modalInstance',
-                            function($scope, $modalInstance) {
+                            ['$scope', '$uibModalInstance',
+                            function($scope, $uibModalInstance) {
                                 $scope.args = {};
                                 $scope.ok = function() {
-                                    $modalInstance.close($scope.args)
+                                    $uibModalInstance.close($scope.args)
                                 },
                                 $scope.cancel = function($event) {
-                                    $modalInstance.dismiss();
+                                    $uibModalInstance.dismiss();
                                     $event.preventDefault();
                                 }
                             }
@@ -678,17 +678,17 @@ function($window , $location , $timeout , egCore , egHolds , egCirc) {
                 }
 
                 $scope.new_notification = function() {
-                    return $modal.open({
+                    return $uibModal.open({
                         templateUrl : './circ/share/t_hold_notification_dialog',
                         controller : 
-                            ['$scope', '$modalInstance',
-                            function($scope, $modalInstance) {
+                            ['$scope', '$uibModalInstance',
+                            function($scope, $uibModalInstance) {
                                 $scope.args = {};
                                 $scope.ok = function() {
-                                    $modalInstance.close($scope.args)
+                                    $uibModalInstance.close($scope.args)
                                 },
                                 $scope.cancel = function($event) {
-                                    $modalInstance.dismiss();
+                                    $uibModalInstance.dismiss();
                                     $event.preventDefault();
                                 }
                             }

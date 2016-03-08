@@ -475,8 +475,8 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                   '</div>',
         scope: { field: "=", onKeydown: '=', contextFunctions: '=' },
         replace: true,
-        controller : ['$scope','$modal',
-            function ( $scope,  $modal ) {
+        controller : ['$scope','$uibModal',
+            function ( $scope,  $uibModal ) {
                 $scope.stackSubfields = $scope.$parent.$parent.stackSubfields;
                 $scope.isAuthorityControlled = function () {
                     return ($scope.$parent.$parent.record_type == 'bre') &&
@@ -495,16 +495,16 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                     });
                     var cs = $scope.$parent.$parent.controlSet;
                     var args = { changed : false };
-                    $modal.open({
+                    $uibModal.open({
                         templateUrl: './cat/share/t_authority_link_dialog',
                         size: 'lg',
-                        controller: ['$scope', '$modalInstance', function($scope, $modalInstance) {
+                        controller: ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
                             $scope.controlSet = cs;
                             $scope.bibField = fieldCopy;
                             $scope.focusMe = true;
                             $scope.args = args;
-                            $scope.ok = function(args) { $modalInstance.close(args) };
-                            $scope.cancel = function () { $modalInstance.dismiss() };
+                            $scope.ok = function(args) { $uibModalInstance.close(args) };
+                            $scope.cancel = function () { $uibModalInstance.dismiss() };
                         }]
                     }).result.then(function (args) {
                         if (args.changed) {
@@ -544,8 +544,8 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                       '</button>'+
                   '</div>',
         scope: { field: "=", onKeydown: '=', contextFunctions: '=' },
-        controller : ['$scope','$modal',
-            function ( $scope,  $modal) {
+        controller : ['$scope','$uibModal',
+            function ( $scope,  $uibModal) {
                 $scope.showPhysCharLink = function () {
                     return ($scope.$parent.$parent.record_type == 'bre') 
                         && $scope.field.tag == '007';
@@ -556,15 +556,15 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                         field : $scope.field,
                         orig_value : $scope.field.data
                     };
-                    $modal.open({
+                    $uibModal.open({
                         templateUrl: './cat/share/t_physchar_dialog',
-                        controller: ['$scope','$modalInstance',
-                            function( $scope , $modalInstance) {
+                        controller: ['$scope','$uibModalInstance',
+                            function( $scope , $uibModalInstance) {
                             $scope.focusMe = true;
                             $scope.args = args;
-                            $scope.ok = function(args) { $modalInstance.close(args) };
+                            $scope.ok = function(args) { $uibModalInstance.close(args) };
                             $scope.cancel = function () { 
-                                $modalInstance.dismiss();
+                                $uibModalInstance.dismiss();
                                 args.field.data = args.orig_value;
                             };
                         }],
@@ -1455,8 +1455,8 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
             controlSet : '=',
             changed : '='
         },
-        controller: ['$scope','$modal','egCore','egAuth',
-            function ($scope , $modal,  egCore,  egAuth) {
+        controller: ['$scope','$uibModal','egCore','egAuth',
+            function ($scope , $uibModal,  egCore,  egAuth) {
 
                 $scope.searchStr = '';
                 var cni = egCore.env.aous['cat.marc_control_number_identifier'] ||
@@ -1611,17 +1611,17 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                         egAuth.token()
                     ).then(function(newAuthority) {
                         if (spawn_editor) {
-                            $modal.open({
+                            $uibModal.open({
                                 templateUrl: './cat/share/t_edit_new_authority',
                                 size: 'lg',
                                 controller:
-                                    ['$scope', '$modalInstance', function($scope, $modalInstance) {
+                                    ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
                                     $scope.focusMe = true;
                                     $scope.args = args;
                                     $scope.dirty_flag = false;
                                     $scope.marc_xml = newAuthority,
-                                    $scope.ok = function(args) { $modalInstance.close(args) }
-                                    $scope.cancel = function () { $modalInstance.dismiss() }
+                                    $scope.ok = function(args) { $uibModalInstance.close(args) }
+                                    $scope.cancel = function () { $uibModalInstance.dismiss() }
                                 }]
                             }).result.then(function (args) {
                                 if (!args || !args.authority_id) return;

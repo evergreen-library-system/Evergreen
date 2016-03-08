@@ -4,10 +4,10 @@
 
 angular.module('egPatronApp').controller('PatronCheckoutCtrl',
 
-       ['$scope','$q','$modal','$routeParams','egCore','egUser','patronSvc',
+       ['$scope','$q','$routeParams','egCore','egUser','patronSvc',
         'egGridDataProvider','$location','$timeout','egCirc',
 
-function($scope , $q , $modal , $routeParams , egCore , egUser , patronSvc , 
+function($scope , $q , $routeParams , egCore , egUser , patronSvc , 
          egGridDataProvider , $location , $timeout , egCirc) {
 
     $scope.initTab('checkout', $routeParams.id).finally(function(){

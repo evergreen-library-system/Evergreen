@@ -1079,8 +1079,8 @@ angular.module('egCoreMod')
 }]);
 
 
-function PatronRegCtrl($scope, $routeParams, $q, $modal, $window, egCore, 
-    patronSvc, patronRegSvc, egUnloadPrompt, egAlertDialog) {
+function PatronRegCtrl($scope, $routeParams, $q, $uibModal, $window, 
+    egCore, patronSvc, patronRegSvc, egUnloadPrompt, egAlertDialog) {
 
     $scope.page_data_loaded = false;
     $scope.clone_id = patronRegSvc.clone_id = $routeParams.clone_id;
@@ -1426,16 +1426,16 @@ function PatronRegCtrl($scope, $routeParams, $q, $modal, $window, egCore,
     }
 
     $scope.cards_dialog = function() {
-        $modal.open({
+        $uibModal.open({
             templateUrl: './circ/patron/t_patron_cards_dialog',
             controller: 
-                   ['$scope','$modalInstance','cards', 'perms',
-            function($scope , $modalInstance , cards, perms) {
+                   ['$scope','$uibModalInstance','cards','perms',
+            function($scope , $uibModalInstance , cards , perms) {
                 // scope here is the modal-level scope
                 $scope.args = {cards : cards};
                 $scope.perms = perms;
-                $scope.ok = function() { $modalInstance.close($scope.args) }
-                $scope.cancel = function () { $modalInstance.dismiss() }
+                $scope.ok = function() { $uibModalInstance.close($scope.args) }
+                $scope.cancel = function () { $uibModalInstance.dismiss() }
             }],
             resolve : {
                 cards : function() {
@@ -1502,11 +1502,11 @@ function PatronRegCtrl($scope, $routeParams, $q, $modal, $window, egCore,
 
     // dialog for selecting additional permission groups
     $scope.secondary_groups_dialog = function() {
-        $modal.open({
+        $uibModal.open({
             templateUrl: './circ/patron/t_patron_groups_dialog',
             controller: 
-                   ['$scope','$modalInstance','linked_groups','pgt_depth',
-            function($scope , $modalInstance , linked_groups , pgt_depth) {
+                   ['$scope','$uibModalInstance','linked_groups','pgt_depth',
+            function($scope , $uibModalInstance , linked_groups , pgt_depth) {
 
                 $scope.pgt_depth = pgt_depth;
                 $scope.args = {
@@ -1533,8 +1533,8 @@ function PatronRegCtrl($scope, $routeParams, $q, $modal, $window, egCore,
                     $event.preventDefault(); // avoid close
                 }
 
-                $scope.ok = function() { $modalInstance.close($scope.args) }
-                $scope.cancel = function () { $modalInstance.dismiss() }
+                $scope.ok = function() { $uibModalInstance.close($scope.args) }
+                $scope.cancel = function () { $uibModalInstance.dismiss() }
             }],
             resolve : {
                 linked_groups : function() { return $scope.patron.groups },
@@ -1814,8 +1814,6 @@ function PatronRegCtrl($scope, $routeParams, $q, $modal, $window, egCore,
     }
 }
 
-// This controller may be loaded from different modules (patron edit vs.
-// register new patron), so we have to inject the controller params manually.
-PatronRegCtrl.$inject = ['$scope', '$routeParams', '$q', '$modal', 
+PatronRegCtrl.$inject = ['$scope', '$routeParams', '$q', '$uibModal', 
     '$window', 'egCore', 'patronSvc', 'patronRegSvc', 'egUnloadPrompt', 'egAlertDialog'];
 
