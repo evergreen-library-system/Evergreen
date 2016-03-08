@@ -83,6 +83,26 @@ from the Node package network.
 % grunt all
 ------------------------------------------------------------------------------
 
+== Updating Dependencies
+
+ * Remove the contents of the "dependencies" {} in bowser.json
+ * rm -r bower_components
+ * Re-install all dependencies:
+
+[source,sh]
+------------------------------------------------------------------------------
+bower install --save angular-latest
+bower install --save jquery
+bower install --save bootstrap
+bower install --save angular-route
+bower install --save angular-mocks
+bower install --save angular-bootstrap
+bower install --save angular-hotkeys
+bower install --save angular-file-saver
+bower install --save angular-location-update
+# ... others as needed
+------------------------------------------------------------------------------
+
 == TODO ==
 
  * Minification of app-specific JS files
