@@ -1076,11 +1076,13 @@ angular.module('egCoreMod')
     }
 
     return service;
-}]);
+}])
 
-
-function PatronRegCtrl($scope, $routeParams, $q, $uibModal, $window, 
-    egCore, patronSvc, patronRegSvc, egUnloadPrompt, egAlertDialog) {
+.controller('PatronRegCtrl', 
+       ['$scope','$routeParams','$q','$uibModal','$window','egCore',
+        'patronSvc','patronRegSvc','egUnloadPrompt','egAlertDialog',
+function($scope , $routeParams , $q , $uibModal , $window , egCore , 
+         patronSvc , patronRegSvc , egUnloadPrompt, egAlertDialog) {
 
     $scope.page_data_loaded = false;
     $scope.clone_id = patronRegSvc.clone_id = $routeParams.clone_id;
@@ -1812,8 +1814,5 @@ function PatronRegCtrl($scope, $routeParams, $q, $uibModal, $window,
             }
         });
     }
-}
-
-PatronRegCtrl.$inject = ['$scope', '$routeParams', '$q', '$uibModal', 
-    '$window', 'egCore', 'patronSvc', 'patronRegSvc', 'egUnloadPrompt', 'egAlertDialog'];
+}])
 
