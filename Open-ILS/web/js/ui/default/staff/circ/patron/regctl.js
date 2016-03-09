@@ -703,7 +703,7 @@ angular.module('egCoreMod')
         var parts = dob.split('-');
         var d = new Date(); // always local time zone, yay.
         d.setFullYear(parts[0]);
-        d.setMonth(parts[1]);
+        d.setMonth(parts[1] - 1);
         d.setDate(parts[2]);
         return d;
     }
