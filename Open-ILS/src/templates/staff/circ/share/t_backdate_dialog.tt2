@@ -13,8 +13,7 @@
   <div class="pad-vert row">
     <div class="col-md-6">[% l('Effective Date:') %]</div>
     <div class="col-md-6">
-      <input eg-date-input required 
-        class="form-control" ng-model="dialog.backdate"/>
+      <eg-date-input required ng-model="dialog.backdate"></eg-date-input>
     </div>
   </div>
 </div>

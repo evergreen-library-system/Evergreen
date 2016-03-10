@@ -59,6 +59,7 @@
       '[% l('This page may have unsaved data.\n\nAre you sure you want to leave this page?') %]';
     s.EG_UNLOAD_PAGE_PROMPT_MSG = 
       '[% l('This page may have unsaved data.') %]';
+    s.EG_DATE_INPUT_CLOSE_TEXT = '[% l('Close') %]';
   }]);
 </script>
 

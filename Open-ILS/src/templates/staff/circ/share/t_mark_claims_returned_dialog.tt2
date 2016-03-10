@@ -14,8 +14,9 @@
   </div>
   <div class="pad-vert row">
     <div class="col-md-5">
-      <input eg-date-input required 
-        class="form-control" ng-model="args.date"/>
+      <eg-date-input ng-required="true"
+        class="form-control" ng-model="args.date">
+      </eg-date-input>
     </div>
   </div>
 </div>

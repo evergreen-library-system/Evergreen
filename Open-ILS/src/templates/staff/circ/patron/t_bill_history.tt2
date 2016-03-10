@@ -15,17 +15,28 @@
 <div class="tab-content">
   <div class="tab-pane active">
 
-    <div class="flex-row padded">
-      <div ng-if="bill_tab == 'transactions'">[% l('Selected Billed:') %]</div>
-      <div ng-if="bill_tab == 'transactions'">{{totals.selected_billed() | currency}}</div>
-      <div>[% l('Selected Paid:') %]</div>
-      <div>{{totals.selected_paid() | currency}}</div>
-      <div class="flex-cell"></div>
-      <div><button class="btn btn-default" ng-click="actions.apply_date_range()">[% l('Apply') %]</button></div>
-      <div>[% l('Start Date:') %]</div>
-      <div><input eg-date-input class="form-control" ng-model="dates.xact_start"/></div>
-      <div>[% l('End Date:') %]</div>
-      <div><input eg-date-input class="form-control" ng-model="dates.xact_finish"/></div>
+    <div class="row padded">
+      <div class="col-md-2">
+        <span ng-if="bill_tab == 'transactions'">
+            <label>[% l('Selected Billed:') %]</label>
+            {{totals.selected_billed() | currency}}
+            <br/>
+        </span>
+        <label>[% l('Selected Paid:') %]</label>
+        <span>{{totals.selected_paid() | currency}}</span>
+      </div>
+      <div class="col-md-1">
+        <span><button class="btn btn-default" 
+            ng-click="actions.apply_date_range()">[% l('Apply') %]</button></span>
+      </div>
+      <div class="col-md-4 flex-row padded">
+        <label>[% l('Start Date:') %]</label>
+        <div><eg-date-input ng-model="dates.xact_start"></eg-date-input></div>
+      </div>
+      <div class="col-md-4 flex-row padded">
+        <label>[% l('End Date:') %]</label>
+        <div><eg-date-input ng-model="dates.xact_finish"></eg-date-input></div>
+      </div>
     </div><!-- top row -->
     <hr/>
     [% INCLUDE 'staff/circ/patron/t_bill_history_xacts.tt2' %]

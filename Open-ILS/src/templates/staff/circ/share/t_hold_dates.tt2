@@ -22,8 +22,9 @@
         <label for='thaw_date'>[% l("Hold Activate Date") %]</label>
       </div>
       <div class="col-md-7">
-        <input id='thaw_date' eg-date-input 
-          ng-disabled="!args.modify_thaw_date" ng-model="args.thaw_date"/>
+        <eg-date-input id='thaw_date'
+          ng-disabled="!args.modify_thaw_date" ng-model="args.thaw_date">
+        </eg-date-input>
       </div>
     </div>
     <div class="row">
@@ -35,8 +36,9 @@
         <label for='request_time'>[% l("Hold Request Date") %]</label>
       </div>
       <div class="col-md-7">
-        <input id='request_time' eg-date-input 
-          ng-disabled="!args.modify_request_time" ng-model="args.request_time"/>
+        <eg-date-input id='request_time'
+          ng-disabled="!args.modify_request_time" ng-model="args.request_time">
+        </eg-date-input>
       </div>
     </div>
     <div class="row">
@@ -48,8 +50,9 @@
         <label for='expire_time'>[% l("Hold Expire Date") %]</label>
       </div>
       <div class="col-md-7">
-        <input id='expire_time' eg-date-input 
-          ng-disabled="!args.modify_expire_time" ng-model="args.expire_time"/>
+        <eg-date-input id='expire_time'
+          ng-disabled="!args.modify_expire_time" ng-model="args.expire_time">
+        </eg-date-input>
       </div>
     </div>
     <div class="row">
@@ -61,8 +64,9 @@
         <label for='shelf_expire_time'>[% l("Shelf Expire Date") %]</label>
       </div>
       <div class="col-md-7">
-        <input id='shelf_expire_time' eg-date-input 
+        <ng-date-input id='shelf_expire_time'
           ng-disabled="!args.modify_shelf_expire_time" ng-model="args.shelf_expire_time"/>
+        </eg-date-input>
       </div>
     </div>
   </div>

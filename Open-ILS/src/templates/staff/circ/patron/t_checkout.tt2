@@ -50,8 +50,7 @@
       -->
       <!-- FIXME: This needs a time component as well, but type="datetime" 
             is not yet supported by any browsers -->
-      <div><input eg-date-input class="form-control" 
-        ng-model="checkoutArgs.due_date"/>
+      <div><eg-date-input ng-model="checkoutArgs.due_date"></eg-date-input>
       </div>
     </div>
   </div>

@@ -1,0 +1,38 @@
+<div>
+  <div>
+    <!-- Date Picker -->
+    <div class="input-group">
+      <input type="text"
+        class="form-control"
+        ng-show="!hideDatePicker"
+        uib-datepicker-popup="shortDate"
+        is-open="datePickerIsOpen"
+        ng-model="ngModel"
+        ng-change="ngChange"
+        ng-disabled="ngDisabled"
+        ng-required="ngRequired"
+        close-text="{{closeText}}"/>
+      <span class="input-group-btn">
+        <button type="button" class="btn btn-default"
+          ng-click="datePickerIsOpen=!datePickerIsOpen">
+          <i class="glyphicon glyphicon-calendar"></i>
+        </button>
+      </span>
+    </div>
+  </div>
+  <!-- Time Picker
+      let time picker break to a new line since it does not
+       not line up horizontally very well with the date picker -->
+  <div>
+    <span>
+      <uib-timepicker
+        ng-show="showTimePicker"
+        ng-model="ngModel"
+        ng-disabled="ngDisabled"
+        ng-required="ngRequired"
+        ng-change="ngChange">
+      </uib-timepicker>
+    </span>
+  </div>
+</div>
+

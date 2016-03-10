@@ -456,45 +456,30 @@ function($window , egStrings) {
 })
 
 /*
-http://stackoverflow.com/questions/18061757/angular-js-and-html5-date-input-value-how-to-get-firefox-to-show-a-readable-d
-
-This directive allows us to use html5 input type="date" (for Chrome) and 
-gracefully fall back to a regular ISO text input for Firefox.
-It also allows us to abstract away some browser finickiness.
+* Handy wrapper directive for uib-datapicker-popup
 */
 .directive(
-    'egDateInput',
-    function(dateFilter) {
+    'egDateInput', ['egStrings',
+    function(egStrings) {
         return {
-            require: 'ngModel',
-            template: '<input type="date"></input>',
-            replace: true,
-            link: function(scope, elm, attrs, ngModelCtrl) {
-
-                // since this is a date-only selector, set the time
-                // portion to 00:00:00, which should better match the
-                // user's expectations.  Note this allows us to retain
-                // the timezone.
-                function strip_time(date) {
-                    if (!date) date = new Date();
-                    date.setHours(0);
-                    date.setMinutes(0);
-                    date.setSeconds(0);
-                    date.setMilliseconds(0);
-                    return date;
-                }
-
-                ngModelCtrl.$formatters.unshift(function (modelValue) {
-                    // apply strip_time here in case the user never 
-                    // modifies the date value.
-                    if (!modelValue) return '';
-                    return dateFilter(strip_time(modelValue), 'yyyy-MM-dd');
-                });
-                
-                ngModelCtrl.$parsers.unshift(function(viewValue) {
-                    if (!viewValue) return null;
-                    return strip_time(new Date(viewValue));
-                });
+            scope : {
+                closeText : '@',
+                ngModel : '=',
+                ngChange : '=',
+                ngDisabled : '=',
+                ngRequired : '=',
+                hideDatePicker : '='
             },
+            require: 'ngModel',
+            templateUrl: './share/t_datetime',
+            replace: true,
+            link : function(scope, elm, attrs) {
+                if (!scope.closeText)
+                    scope.closeText = egStrings.EG_DATE_INPUT_CLOSE_TEXT;
+
+                if ('showTimePicker' in attrs)
+                    scope.showTimePicker = true;
+            }
         };
-})
+    }
+])

@@ -27,13 +27,18 @@
 
 <div class="pad-vert"><hr/></div>
 
-<div class="pad-vert flex-row padded">
-  <div class="strong-text-2">[% l('Archived Penalties / Messages') %]</div>
-  <div class="flex-cell"></div>
-  <div>[% l('Set Date Start:') %]</div>
-  <div><input eg-date-input class="form-control" ng-model="dates.start_date"/></div>
-  <div>[% l('Set Date End:') %]</div>
-  <div><input eg-date-input class="form-control" ng-model="dates.end_date"/></div>
+<div class="pad-vert row padded">
+  <div class="col-md-4">
+    <div class="strong-text-2">[% l('Archived Penalties / Messages') %]</div>
+  </div>
+  <div class="col-md-4">
+    <label>[% l('Set Date Start:') %]</label>
+    <eg-date-input ng-model="dates.start_date"></eg-date-input>
+  </div>
+  <div class="col-md-4">
+    <label>[% l('Set Date End:') %]</label>
+    <eg-date-input ng-model="dates.end_date"></eg-date-input>
+  </div>
 </div>
 <eg-grid
   idl-class="ausp"

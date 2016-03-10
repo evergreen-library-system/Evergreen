@@ -80,8 +80,7 @@
       <div class="flex-cell"></div>
       <div class="pad-horiz">[% l('Effective Date') %]</div>
       <!-- date max= not yet supported -->
-      <div><input eg-date-input
-        class="form-control" ng-model="checkinArgs.backdate"/>
+      <div><eg-date-input ng-model="checkinArgs.backdate"></eg-date-input>
       </div>
     </div>
   </div>

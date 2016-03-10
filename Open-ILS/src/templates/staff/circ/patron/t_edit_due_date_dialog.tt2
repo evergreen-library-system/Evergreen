@@ -8,11 +8,11 @@
   </div>
   <div class="modal-body">
     <div class="form-group row pad-vert">
-      <div class="col-md-6">
+      <div class="col-md-4">
         [% l('Enter Due Date: ') %]
       </div>
-      <div class="col-md-6">
-        <input eg-date-input class="form-control" ng-model="args.due_date"/>
+      <div class="col-md-8">
+        <eg-date-input show-time-picker ng-model="args.due_date"></eg-date-input>
       </div>
     </div>
     <!-- TODO: time picker -->
