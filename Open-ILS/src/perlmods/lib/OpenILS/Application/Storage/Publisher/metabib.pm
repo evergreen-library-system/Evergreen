@@ -5,12 +5,15 @@ use OpenSRF::EX qw/:try/;
 use OpenILS::Application::Storage::FTS;
 use OpenILS::Utils::Fieldmapper;
 use OpenSRF::Utils::Logger qw/:level/;
+use OpenILS::Application::AppUtils;
 use OpenSRF::Utils::Cache;
 use OpenSRF::Utils::JSON;
 use Data::Dumper;
 use Digest::MD5 qw/md5_hex/;
 
 use OpenILS::Application::Storage::QueryParser;
+
+my $U = 'OpenILS::Application::AppUtils';
 
 my $log = 'OpenSRF::Utils::Logger';
 
@@ -69,6 +72,16 @@ sub _initialize_parser {
                 { name => { "!=" => undef } }
             )->gather(1),
     );
+
+    my $max_mult;
+    my $cgf = $cstore->request(
+        'open-ils.cstore.direct.config.global_flag.retrieve',
+        'search.max_popularity_importance_multiplier'
+    )->gather(1);
+    $max_mult = $cgf->value if $cgf && $U->is_true($cgf->enabled);
+    $max_mult //= 2.0;
+    $max_mult = 2.0 unless $max_mult =~ /^-?(?:\d+\.?|\.\d)\d*\z/; # just in case
+    $parser->max_popularity_importance_multiplier($max_mult);
 
     $cstore->disconnect;
     die("Cannot initialize $parser!") unless ($parser->initialization_complete);

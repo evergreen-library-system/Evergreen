@@ -135,6 +135,18 @@ INSERT INTO config.global_flag (name, label, value, enabled) VALUES (
     TRUE
 );
 
+INSERT INTO config.global_flag (name, label, value, enabled) VALUES (
+    'search.max_popularity_importance_multiplier',
+    oils_i18n_gettext(
+        'search.max_popularity_importance_multiplier',
+        'Maximum popularity importance multiplier for popularity-adjusted relevance searches (decimal value between 1.0 and 2.0)',
+        'cgf',
+        'label'
+    ),
+    '2.0',
+    TRUE
+);
+
 CREATE TABLE rating.popularity_parameter (
     id          INT     PRIMARY KEY,
     name        TEXT    NOT NULL UNIQUE, -- i18n

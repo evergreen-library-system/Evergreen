@@ -126,6 +126,14 @@ sub default_preferred_language_multiplier {
     return $self->custom_data->{default_preferred_language_multiplier};
 }
 
+sub max_popularity_importance_multiplier {
+    my $self = shift;
+    my $max = shift;
+
+    $self->custom_data->{max_popularity_importance_multiplier} = $max if defined($max);
+    return $self->custom_data->{max_popularity_importance_multiplier};
+}
+
 sub simple_plan {
     my $self = shift;
 
@@ -884,7 +892,60 @@ sub toSQL {
     } elsif ($sort_filter eq 'edit_date') {
         $rank = "FIRST((SELECT edit_date FROM biblio.record_entry rbr WHERE rbr.id = m.source))";
     } elsif ($sort_filter eq 'poprel') {
-        $rank = '1.0/((' . $rel . ') * (1.0 + AVG(COALESCE(pop_with.total_score::NUMERIC,0.0)) / 5.0))::NUMERIC';
+        my $max_mult = $self->QueryParser->max_popularity_importance_multiplier() // 2.0;
+        $max_mult = 0.1 if $max_mult < 0.1; # keep it within reasonable bounds,
+                                            # and avoid the division-by-zero error
+                                            # you'd get if you allowed it to be
+                                            # zero
+
+        if ( $max_mult == 1.0 ) { # no adjustment requested by the configuration
+            $rank = "1.0/($rel)::NUMERIC";
+        } else { # calculate adjustment
+
+            # Scale the 0-5 effect of popularity badges by providing a multiplier
+            # for the badge average based on the overall maximum
+            # multiplier.  Two examples, comparing the effect to the default
+            # $max_mult value of 2.0, which causes a $adjusted_scale value
+            # of 0.2:
+            #
+            #  * Given the default $max_mult of 2.0, the value of
+            #    $adjusted_scale will be 0.2 [($max_mult - 1.0) / 5.0].
+            #    For a record whose average badge score is the maximum
+            #    of 5.0, that would make the relevance multiplier be
+            #    2.0:
+            #       1.0 + (5.0 [average score] * 0.2 [ $adjusted_scale ],
+            #    This would have the effect of doubling the effective
+            #    relevance of highly popular items.
+            #
+            #  * Given a $max_mult of 1.1, the value of $adjusted_scale
+            #    will be 0.02, meaning that the average badge value will be
+            #    multiplied by 0.02 rather than 0.2, then added to 1.0 and
+            #    used as a multiplier against the base relevance.  Thus a
+            #    change of at most 10% to the base relevance for a record
+            #    with a 5.0 average badge score. This will allow records
+            #    that are naturally very relevant to avoid being pushed
+            #    below badge-heavy records.
+            #
+            #  * Given a $max_mult of 3.0, the value of $adjusted_scale
+            #    will be 0.4, meaning that the average badge value will be
+            #    multiplied by 0.4 rather than 0.2, then added to 1.0 and
+            #    used as a multiplier against the base relevance. Thus a
+            #    change of as much as 200% to (or three times the size of)
+            #    the base relevance for a record with a 5.0 average badge
+            #    score.  This in turn will cause badges to outweigh
+            #    relevance to a very large degree.
+            #
+            # The maximum badge multiplier can be set to a value less than
+            # 1.0; this would have the effect of making less popular items
+            # show up higher in the results.  While this is not a likely
+            # option for production use, it could be useful for identifying
+            # interesting long-tail hits, particularly in a database
+            # where enough badges are configured so that very few records
+            # have an overage badge score of zero.
+
+            my $adjusted_scale = ( $max_mult - 1.0 ) / 5.0;
+            $rank = "1.0/(( $rel ) * (1.0 + (AVG(COALESCE(pop_with.total_score::NUMERIC,0.0)) * $adjusted_scale)))::NUMERIC";
+        }
     } elsif ($sort_filter =~ /^pop/) {
         $rank = '1.0/(AVG(COALESCE(pop_with.total_score::NUMERIC,0.0)) + 5.0)::NUMERIC';
         my $pop_desc = $desc eq 'ASC' ? 'DESC' : 'ASC';
