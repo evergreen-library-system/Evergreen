@@ -4340,7 +4340,7 @@ sub user_circ_history {
 
 
 __PACKAGE__->register_method(
-    method    => "user_visible_circs",
+    method    => "user_visible_holds",
     api_name  => "open-ils.actor.history.hold.visible",
     stream => 1,
     signature => {
@@ -4358,7 +4358,7 @@ __PACKAGE__->register_method(
 );
 
 __PACKAGE__->register_method(
-    method    => "user_visible_circs",
+    method    => "user_visible_holds",
     api_name  => "open-ils.actor.history.hold.visible.print",
     stream => 1,
     signature => {
@@ -4376,7 +4376,7 @@ __PACKAGE__->register_method(
 );
 
 __PACKAGE__->register_method(
-    method    => "user_visible_circs",
+    method    => "user_visible_holds",
     api_name  => "open-ils.actor.history.hold.visible.email",
     stream => 1,
     signature => {
