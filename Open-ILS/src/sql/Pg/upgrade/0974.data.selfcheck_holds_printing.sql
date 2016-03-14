@@ -1,6 +1,6 @@
 BEGIN;
 
--- SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0974', :eg_version); -- tmccanna/gmcharlt
 
 UPDATE action_trigger.event_definition SET template = 
 $$
