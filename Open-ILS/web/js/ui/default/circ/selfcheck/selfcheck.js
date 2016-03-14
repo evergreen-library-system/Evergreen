@@ -100,7 +100,7 @@ function SelfCheckManager() {
 
     this.checkouts = [];
     this.itemsOut = [];
-	this.holds = []; 
+    this.holds = []; 
 
     // During renewals, keep track of the ID of the previous circulation. 
     // Previous circ is used for tracking failed renewals (for receipts).
@@ -808,10 +808,10 @@ SelfCheckManager.prototype.drawHoldsPage = function() {
 }
 
 SelfCheckManager.prototype.insertHold = function(data) {
-	
-	// store hold data to pass along to receipt printing function
-    this.holds.push(data);	
-	
+
+    // store hold data to pass along to receipt printing function
+    this.holds.push(data);
+
     var row = this.holdTemplate.cloneNode(true);
 
     if(data.mvr.isbn()) {
@@ -1446,23 +1446,23 @@ SelfCheckManager.prototype.printHoldsReceipt = function(callback) {
         function(data) {
             holdIds.push(data.hold.id());
 
-			//get pickup library info
+            //get pickup library info
             var pu = fieldmapper.standardRequest(['open-ils.actor','open-ils.actor.org_unit.retrieve'],[null,data.hold.pickup_lib()]);
-			
+            
             if(data.status == 4) {
                 holdData.push({
-					ready : true,
+                    ready : true,
                     item_title : data.mvr.title(),
-					item_author : data.mvr.author(),
-					pickup_lib : pu.name()
-				});
+                    item_author : data.mvr.author(),
+                    pickup_lib : pu.name()
+                });
             } else {
                 holdData.push({
                     queue_position : data.queue_position, 
                     potential_copies : data.potential_copies,
                     item_title : data.mvr.title(),
-					item_author : data.mvr.author(),
-					pickup_lib : pu.name()
+                    item_author : data.mvr.author(),
+                    pickup_lib : pu.name()
                 });
             }
         }
