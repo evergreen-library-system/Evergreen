@@ -36,12 +36,12 @@ sub load {
     # ----------------------------------------------------------------
     return $self->redirect_ssl unless $self->cgi->https;
 
-	#logic added to resolve path-matching conflict
-	if ($path =~ m|kpac/getit_results|) {
-	    return $self->load_getit_results;
-	} elsif ($path =~ m|kpac/getit|) {
-	    return $self->load_getit;
-	}
+    #logic added to resolve path-matching conflict
+    if ($path =~ m|kpac/getit_results|) {
+        return $self->load_getit_results;
+    } elsif ($path =~ m|kpac/getit|) {
+        return $self->load_getit;
+    }
 
     # ----------------------------------------------------------------
     #  Everything below here requires authentication
