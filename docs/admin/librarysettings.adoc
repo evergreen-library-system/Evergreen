@@ -309,7 +309,7 @@ values.
 |Allow multiple username changes|If enabled (and Lock Usernames is not set) patrons will be allowed to change their username when it does not look like a barcode. Otherwise username changing in the OPAC will only be allowed when the patron's username looks like a barcode.|True/False|Default TRUE.
 |Global default locale||Number|
 |Lock Usernames|If enabled username changing via the OPAC will be disabled.|Default FALSE|
-|Password format|Defines acceptable format for OPAC account passwords|Regular expression||Default requires that passwords "be at least 7 characters in length,contain at least one letter (a-z/A-Z), and contain at least one number.
+|Password format|Defines acceptable format for OPAC account passwords|Regular expression|Default requires that passwords "be at least 7 characters in length,contain at least one letter (a-z/A-Z), and contain at least one number.
 |Patron barcode format|Defines acceptable format for patron barcodes|Regular expression|
 |Patron username format|Regular expression defining the patron username format, used for patron registration and self-service username changing only|Regular expression|
 |======
