@@ -88,18 +88,18 @@
                                  [%- IF ctx.user.email -%]
                                       [% ctx.notify_method.search('email') ? 
                                      '<input type="hidden" id="email_notify" name="email_notify" value="t"/>' : '' %]
-			                     [%- END -%]
+                                 [%- END -%]
 
-			                     [%- IF allow_phone_notifications == 'true' -%]
-								     [% IF ctx.default_phone %]
+                                 [%- IF allow_phone_notifications == 'true' -%]
+                                     [% IF ctx.default_phone %]
                                             [% phone_value = ctx.default_phone %]
                                      [% ELSE %]
                                             [% phone_value= ctx.user.day_phone %]
                                      [% END %]
-									 
-									 [% ctx.notify_method.search('phone') ? 
+                                     
+                                     [% ctx.notify_method.search('phone') ? 
                                          '<input type="hidden" id="phone_notify_checkbox" name="phone_notify_checkbox" value="t"/>
-		                                 <input type="hidden" name="phone_notify" value="' _ phone_value _ '"/>' : '' %]
+                                         <input type="hidden" name="phone_notify" value="' _ phone_value _ '"/>' : '' %]
                                  [%- END -%]
 
                                 [% IF ctx.get_org_setting(ctx.search_ou, 'sms.enable') == 1 %]
@@ -109,7 +109,7 @@
                                             '<input type="hidden" id="sms_notify_checkbox" name="sms_notify_checkbox" value="t" />
                                              <input type="hidden" id="sms_carrier" name="sms_carrier" value="' _ ctx.user_setting_map.$setting_carrier _ '" />
                                              <input type="hidden" id="sms_notify" name="sms_notify" value="' _ ctx.user_setting_map.$setting_notify _ '" />' : '' %]
-                                 [% END %]								 
+                                 [% END %]                               
 
                                 </div>
                                 [% END %]
