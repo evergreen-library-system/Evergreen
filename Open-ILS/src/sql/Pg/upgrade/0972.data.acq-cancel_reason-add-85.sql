@@ -1,6 +1,6 @@
 BEGIN;
 
--- INSERT INTO config.upgrade_log (version) VALUES ('xxxx');
+SELECT evergreen.upgrade_deps_block_check('0972', :eg_version); -- jstompro/gmcharlt
 
 -- LP#1550495 - Add Baker&Taylor EDI Quantity Cancel Code
 -- Insert EDI Cancel Reason 85 (1200 + 85 = 1285) if it doesn't already exist
