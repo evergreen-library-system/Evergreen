@@ -3293,11 +3293,10 @@ sub verify_user_password {
         $user_by_username = $e->search_actor_user({usrname => $username})->[0] or return 0;
         $user = $user_by_username;
     }
-    return 0 if (!$user);
+    return 0 if (!$user || $U->is_true($user->deleted));
     return 0 if ($user_by_username && $user_by_barcode && $user_by_username->id != $user_by_barcode->id);
     return $e->event unless $e->allowed('VIEW_USER', $user->home_ou);
-    return $U->verify_migrated_user_password(
-        $e, $user_by_username->id, $password, 1);
+    return $U->verify_migrated_user_password($e, $user->id, $password, 1);
 }
 
 __PACKAGE__->register_method (
