@@ -39,7 +39,12 @@ Setting up Authority Record Match Sets
 . If you have sufficient privileges, you will be able to click on the *New Match Set*.  If you are unable to do so, check that you have the ADMIN_IMPORT_MATCH_SET permission.
 . Give your new set a descriptive name, an owning library, and a match set type of *authority.*
 . Click on the blue hyperlinked name of the match set you just created to add criteria.
-. You can match against MARC tag/subfield entries, against a record's normalized heading + thesaurus.
+. You can match against MARC tag/subfield entries or against a record's normalized heading.
+
+[NOTE]
+=================
+Evergreen's database stores normalized authority headings in a format that includes the thesaurus. This way, record match sets will not match terms from other thesauri, even if the term is very similar.
+=================
 
 [TIP]
 =================
