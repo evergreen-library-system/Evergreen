@@ -1,5 +1,5 @@
-Evergreen 2.10 Release Notes
-============================
+Evergreen 2.10-rc Release Notes
+===============================
 :toc:
 :numbered:
 
