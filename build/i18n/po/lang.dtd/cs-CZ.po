@@ -3,14 +3,14 @@ msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-08-26 13:12-0400\n"
-"PO-Revision-Date: 2015-09-15 11:57+0000\n"
+"PO-Revision-Date: 2016-03-09 08:37+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2015-09-16 05:19+0000\n"
-"X-Generator: Launchpad (build 17737)\n"
+"X-Launchpad-Export-Date: 2016-03-10 05:24+0000\n"
+"X-Generator: Launchpad (build 17936)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: Czech\n"
@@ -1052,8 +1052,8 @@ msgid ""
 "the same as the initial login into the staff client. Permanent will discard "
 "the existing login session and replace it with the new one."
 msgstr ""
-"Dočasná přihlášení do systému vyprší po několoka minutách bez aktivity. "
-"Přihlášení personálu jsou stejná, jako počáteční přihlášení do služebního "
+"Dočasné přihlášení do systému vyprší po několoka minutách bez aktivity. "
+"Přihlášení personálu je stejné, jako počáteční přihlášení do služebního "
 "klienta. Trvalé přihlášení zruší existující přihlašovací relaci a nahradí ji "
 "novou."
 
@@ -5246,7 +5246,7 @@ msgstr "http://www.oclc.org/bibformats/en/fixedfield/blvl.shtm"
 
 #: staff.marc.LDR.blvl.short
 msgid "BLvl"
-msgstr "BLvl"
+msgstr "BibUr"
 
 #: staff.marc.LDR.ctrl.desc
 msgid "Type of Control"
@@ -12662,7 +12662,7 @@ msgstr "Naúčtovat k vy&brané transakci další poplatek"
 #: staff.patron.bill_interface.void_all_billings.label
 #: staff.patron.bill_interface.void_all_billings.accesskey
 msgid "&Void All Billings"
-msgstr "Zrušit všechny platby"
+msgstr "Zrušit všechny poplatky"
 
 #: staff.patron.bill_interface.refund.label
 #: staff.patron.bill_interface.refund.accesskey
