@@ -132,7 +132,7 @@ Example diff:
 Clearing the last 4 of the CC number
 ++++++++++++++++++++++++++++++++++++
 
-To active automatic CC number clearing, add the following to opensrf's
+To activate automatic CC number clearing, add the following to opensrf's
 crontab.  Change timing to suit.
 
 [source,sh]
@@ -238,7 +238,7 @@ been created, based on the actor.usr create-date field.
 
 This notice can be used for various tasks.
 
-  * Sending a welcome email to new patrons to market Library services.
+  * Sending a welcome email to new patrons to market library services.
   * Confirm that a new patron email address is correct.
   * Generate postal notices to send a welcome packet to new patrons.
 
@@ -278,7 +278,7 @@ Using this, admins could perform manual batch updates to force all
 users to use the new, more secure passwords, regardless of when or
 whether a patron logs back into the system.  
 
-Beware that doing this for all users in the a large database will 
+Beware that doing this for all users in a large database will 
 take some time and should probably be performed in batches.
 
 Changing Encryption Work Factor
@@ -301,7 +301,7 @@ login speeds.  A work factor of 10 requires ~0.1 seconds to verify a
 password.  A work factor of 15 takes almost 2 full seconds!  Also beware
 that once a password is encoded with a higher work factor, it cannot be
 lowered again through any automatic means.  The owner of the password
-would have to login and modify the password after the work factor is
+would have to log in and modify the password after the work factor is
 re-lowered.
 
 Because of this, it's recommended that admins thoroughly test work
@@ -430,7 +430,7 @@ Additional fixed fields
 ^^^^^^^^^^^^^^^^^^^^^^^
 The AccM, Comp, CrTp, EntW, Cont, FMus, LTxt, Orig, Part, Proj, Relf, SpFm,
 SrTp, Tech, and TrAr fixed fields have been defined and coded value maps added
-so they can also be used for Advanced Searches or adding to Composite Value Maps.
+so they can also be used for Advanced Searches or inclusion in Composite Value Maps.
 
 Note that AccM, Cont, LTxt, Relf, and SpFm are  compositite values based on
 the values of "helper" fields like AccM(1), AccM(2), and so on. These positional
@@ -543,9 +543,11 @@ increases the visibility of parts on the Place Holds screen and also
 forces users to make an explicit choice.
 
 To enable the alternate display, set the enable.radio.parts option to 'true'
-in parts/config.tt2.
+in config.tt2.
 
-
+New config.tt2 setting
+++++++++++++++++++++++
+enable.radio.parts
 
 
 Web staff client patron editor
@@ -567,7 +569,7 @@ supports the following actions:
 
 ==== Non-active status copy transit message ====
 
-After copy checkin, if the copy is in-transit, display a special
+After copy checkin, if the copy is in transit, display a special
 message in the transit alert dialog and in the printed transit receipt
 (optionally, via macro) if the copy is in (or, rather, will be once it
 arrives at its destination) a non-active copy status.
@@ -656,7 +658,6 @@ units as a patron.
 
 
 
-
 Patron checkout history stored in a dedicated table
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -679,11 +680,26 @@ This has a number of patron privacy implications.
       reporter).
  * Staff can no longer retrieve a patron's reading history via API.  Only
    the user that owns the history data can access it.
- * Though not implemented as part of this change, it will now be possible
-   with future development to truly remove specific items from a patron's
-   checkout history.
 
+Upgrade notes
++++++++++++++
 
+Administrators should verify the CSV export of checkout history works after
+deploying this change.  If local changes were made to the CSV template,
+the template will not be updated as part of this deployment.  The stock
+template was modified to handle gracefully NULL values for checkin_time.
+
+For example:
+
+[source,diff]
+------------------------------------------------------------------------
+-    Returned: [% date.format(helpers.format_date(circ.checkin_time), '%Y-%m-%d') %]
++    Returned: [%
++        date.format(
++            helpers.format_date(circ.checkin_time), '%Y-%m-%d')
++            IF circ.checkin_time;
++    %]
+------------------------------------------------------------------------
 
 
 
@@ -709,7 +725,7 @@ Distinct images for pop-ups and slips
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 The client now supports using distinct images for hold, transit, and booking
 reservation popup windows and slips. In addition, three new images have been
-provided, replacing the turtle that was previously. The turtle file
+provided, replacing the turtle that previously displayed. The turtle file
 is still available in the images directory for those sites that still wish
 to use it.
 
@@ -756,30 +772,11 @@ Search and History Preferences tab, patrons will be warned that the
 operation is irreversible when history data exists that will be
 deleted as part of the update.
 
-Upgrade notes
-+++++++++++++
-
-Administrators should verify the CSV export of checkout history works after
-deploying this change.  If local changes were made to the CSV template,
-the template will not be updated as part of this deployment.  The stock 
-template was modified to handle gracefully NULL values for checkin_time.
-
-For example:
-
-[source,diff]
-------------------------------------------------------------------------
--    Returned: [% date.format(helpers.format_date(circ.checkin_time), '%Y-%m-%d') %]
-+    Returned: [%
-+        date.format(
-+            helpers.format_date(circ.checkin_time), '%Y-%m-%d') 
-+            IF circ.checkin_time; 
-+    %]
-------------------------------------------------------------------------
 
 
-Include parts label when sorting copies in the public catalog
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The list of copies on the record details page now includes
+Include parts label when sorting copies on the record details page
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The list of copies on the catalog's record details page now includes
 the part label in the default sort order.
 
 Specifically, copies are now sorted by (in order), org unit, then
@@ -791,19 +788,26 @@ then copy number, and finally barcode
 
 
 
-
-Search scope depth selection
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Quick option to change search scope to all libraries
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 A common usage of the catalog is to do a search in a restricted scope,
 like a local library. When the results are lacking, the search is repeated in a
 consortium-wide scope.  This feature provides an optional button and checkbox
 to alter the depth of the search to a defined level.
 
-This feature can be turned off from config.tt2.
+This feature is enabled by default and can be configured in the Depth Button/
+Checkbox section of config.tt2.
 
-
-
-
+New config.tt2 settings
++++++++++++++++++++++++
+  * ctx.depth_sel_checkbox
+  * ctx.depth_sel_button
+  * ctx.depth_sel_depth
+  * ctx.sel_button_label
+  * ctx.depth_sel_button_class
+  * ctx.depth_sel_checkbox_label
+  * ctx.depth_sel_tooltip
+  * ctx.depth_sel_resultshint
 
 Limiter to exclude electronic resources
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -812,10 +816,12 @@ on the advanced search screen and from the search results page. This limiter
 will exclude any search results with an item form of o or s. This limiter
 will be applied on top of any other format limiters used in the search.
 
-The checkboxes are disabled by default; to display them in both places, please
-toggle the 'ctx.exclude_electronic_checkbox' setting in config.tt2.
+The checkboxes are disabled by default. To display them in both places, set
+the 'ctx.exclude_electronic_checkbox' setting in config.tt2 to 1.
 
-
+New config.tt2 setting
+++++++++++++++++++++++
+ctx.exclude_electronic_checkbox
 
 
 Expand unAPI API
@@ -867,7 +873,7 @@ following form:
     by commas)
   * followed, optionally, by limit and offset in square brackets
   * followed, optionally, by a comma-separated list of "includes"
-    enclosed in curly brackets.  The list list of includes is
+    enclosed in curly brackets.  The list of includes is
     the same as the list of classes with the following addition:
     * +bre.extern+ (information from the non-MARC parts of a bib
       record)
@@ -901,7 +907,7 @@ reingest during upgrade is required to use this index.
 
 Limit number of facets retrieved during search
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Catalog search now sets a limit on the number of facets retrieved
+Catalog search now limits the number of facets retrieved
 per defined facet field. Setting a limit is useful so that
 `open-ils.cstore backends don't end up needlessly consuming
 memory when fetching facets for a large result set; if a broad
@@ -967,6 +973,7 @@ tests to this release of Evergreen:
  * Jake Litrell
  * Kathy Lussier
  * Terran McCanna
+ * Christine Morgan
  * Dan Pearl
  * Michael Peters
  * Jennifer Pringle
