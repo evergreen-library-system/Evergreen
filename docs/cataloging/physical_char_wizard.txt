@@ -76,11 +76,11 @@ image::media/pcw11.jpg[]
 If the user edits an existing 007 field that does not already account for the skipped positions, then Evergreen will not automatically generate where the skipped positions should be in the 007 field. It is recommended that users delete the existing 007 field and start with a new 007 field, to ensure that Evergreen appropriately accounts for the obsolete positions for the Category of Material selected.
 
 *Administration*
+
 The information driving the MARC 007 Field Physical Characteristics Wizard is already a part of the Evergreen database. This data can be customized by individual sites and / or updated when the Library of Congress dictates new values or positions in the 007 field.
 There are three relevant tables where the information that drives the wizard is stored:
+
 . *config.marc21_physical_characteristic_type_map* contains the list of materials, or values, for the positions of the 007 field.
 . *config.marc21_physical_characteristic_subfield_map* contains rows that list the meaning of the various positions in the 007 field for each Category of Material.
 . *config.marc21_physical_characteristic_value_map* lists all of the values possible for all of the positions in the config.marc21_physical_characteristic_subfield_map table.
-
-
 
