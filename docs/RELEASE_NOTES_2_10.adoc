@@ -900,6 +900,24 @@ whose label is "Search: maximum number of facet values to retrieve for
 each facet field".  The default limit value is 1,000, but lower values
 (e.g., 100) are perhaps even better for most catalogs.
 
+Significant bugfixes
+~~~~~~~~~~~~~~~~~~~~
+
+Add acquisitions cancel reason 85 for Baker & Taylor EDI
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Baker & Taylor send backs a quantity status code of 85
+when a line item is canceled when using EDI.  That code
+is now included in the system so those cancelations get 
+properly registered. 
+
+Self-check printing
+^^^^^^^^^^^^^^^^^^^
+Corrections were made to the self-check holds and fines printing
+functionality to so that the proper transactions can be printed.
+The change requires that the Self-Checkout Fines Receipt and
+Self-Checkout Holds Receipt action/trigger templates be updated
+in order to work properly. 
+
 Miscellaneous
 ~~~~~~~~~~~~~
 
