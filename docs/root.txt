@@ -533,11 +533,15 @@ include::circulation/circulation_patron_records_web_client.txt[]
 
 Cataloging
 ----------
-Cataloguers should use this part for understanding the cataloguing procedures used in Evergreen.
 
+// Push titles down one level.
+:leveloffset: 1
 
+include::cataloging/cataloging_web_client.txt[]
 include::cataloging/copy-buckets_web_client.txt[]
 
+// Return to normal title levels.
+:leveloffset: 0
 
 
 Using the Public Access Catalog
