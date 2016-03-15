@@ -511,6 +511,20 @@ through Vandelay now.
 
 
 
+Support for monograph parts import in MARC Batch Import/Export
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+When adding or overlaying copies in MARC Batch Import/Export
+(Vandelay), monograph part labels can now be assigned during the import
+process.  This feature is modeled after the existing support for
+statistical category import.  As such, it:
+
+ * Uses '|' characters to separate labels to allow for multiple part
+   assignment
+ * Adds to (rather than replaces) any existing parts assigned to overlay
+   copies
+
+
+
 
 Circulation
 ~~~~~~~~~~~
