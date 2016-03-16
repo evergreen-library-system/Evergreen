@@ -1,6 +1,57 @@
 Evergreen 2.8 Release Notes
 =============================
 
+Evergreen 2.8.7
+---------------
+This release contains several bugfixes improving on Evergreen 2.8.6
+
+Acquisitions
+~~~~~~~~~~~~
+* Adds EDI Cancel Code 85 to the acquisitions cancel reason table.
+* Fixes an issue where the "Expand All" button in selection lists was not
+working.
+
+Cataloging
+~~~~~~~~~~
+* Improves sorting in holdings maintenance so that copies sort first by parts
+then by barcode.
+
+Circulation
+~~~~~~~~~~~
+* Fixes an issue where the wrong last billing type and last billing note were
+displaying for some transactions.
+* Now calculates credit payments as integers to avoid rounding errors with
+large sets of small billings.
+* Fixes an issue in the patron record where staff was unable to retrieve the
+Message Center interface after visiting the Triggered Events page and vice 
+versa.
+* Now displays the short version of a title on the Place Holds screen when
+placing metabib holds to reduce instances where the wrong title/format
+displayed.
+
+OPAC
+~~~~
+* Fixes an issue where detailed search results showed parts for items that 
+didn't have parts.
+* Changes the e-mail address check on password reset requests so that it is no
+longer case sensitive.
+* Fixes a problem where users were unable to navigate through multiple pages of
+their holds history.
+* Removes undefined values from ISBN and ISSN arrays to prevent empty requests
+from being sent to added content providers.
+* Fixes an issue where the kids catalog was not displaying title information
+after hold placement or after adding a title to a list.
+* Corrects the kids catalog holds notification default preferences to allow for
+SMS text messaging options.
+
+
+Miscelleneous
+~~~~~~~~~~~~~
+* Fixes an issue where the Selfcheck fines receipt templated printed all open
+billable transactions, regardless of whether it had bills associated with it.
+* Fixes an issue that prevented Selfcheck's "Print List" for holds view from
+working.
+
 Evergreen 2.8.6
 ---------------
 This release contains several bugfixes improving on Evergreen 2.8.5
