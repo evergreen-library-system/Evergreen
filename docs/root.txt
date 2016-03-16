@@ -319,9 +319,15 @@ Introduction
 Cataloguers should use this part for understanding the cataloguing procedures
 used in Evergreen.
 
-include::cataloging/MARC_Fixed_Field.txt[]
+include::cataloging/MARC_Editor.txt[]
+
+// Push titles down one level.
+:leveloffset: 2
 
 include::cataloging/physical_char_wizard.txt[]
+
+// Return titles to correct level.
+:leveloffset: 0
 
 include::cataloging/batch_importing_MARC.txt[]
 
