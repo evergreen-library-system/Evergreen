@@ -1,5 +1,60 @@
-﻿MARC Fixed Field Editor Right-Click Context Menu Options
---------------------------------------------------------
+﻿Working with the MARC Editor 
+----------------------------
+
+You can use the MARC Editor to edit MARC fields, sub-fields, and indicators.
+
+Editing MARC Records 
+~~~~~~~~~~~~~~~~~~~~
+
+. Retrieve the record. 
+. Actions for this Record -> MARC Edit . 
+. The MARC record will display. 
+. Select viewing and editing options, if desired. 
+* Stack subfields to display each subfield on its own line. 
+* Flat-Text Editor switches to a plain-text (menmonic) MARC format. This format can be useful when copying and pasting multiple lines. It also allows the use of tools like MarcEdit (http://marcedit.reeset.net/ ). Unclick the box to switch back. 
+  * Note that you can use a backslash character as a placeholder in the flat text editor's indicators and fixed-length fields.
+* Fast Item Add allows attaching items quickly with call number and barcode. When _Save_ is clicked, the copy editor will open. 
+. Make changes as desired. 
+* Right click into a tag field to add/remove rows or replace tags. 
+* To work with the data in a tag or indicator, click or _Tab_ into the required field. Right click to view valid
+tags or indicators.
++
+[NOTE]
+==========
+You can navigate the MARC Editor using keyboard shortcuts. Click _Help_ to see the shortcut menu from 
+within the MARC Editor. 
+==========
++
+. When finished, click _Save Record_. The record stays open in the editor. You can close the tab or switch to 
+another view under _Actions for this Record_ (for example to view it as it appears in the OPAC). 
+
+MARC Record Leader and MARC fixed field 008
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+You can edit parts of the leader and the 008 field in the MARC Editor via the fixed field editor box displayed above 
+the MARC record.
+
+To edit the MARC record leader
+++++++++++++++++++++++++++++++
+
+. Retrieve and display the appropriate record in _MARC Edit_ view. 
+
+. Click into any box displayed in the fixed field editor. 
+
+. Press _Tab_ or use the mouse to move between fields. 
+
+. Click _Save Record_.
+
+. Click _OK_ to save record edits.
+
+. The OPAC icon for the appropriate material type will display.
+
+
+OPAC icons for text, moving pictures and sound rely on correct MARC coding in the leader, 007, and 008, as do OPAC 
+search filters such as publication date, item type, or target audience.
+
+MARC Fixed Field Editor Right-Click Context Menu Options
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 The MARC Fixed Field Editor provides suggested values for select fixed fields based on the record type being edited. Users can right-click on the value control for a fixed field and choose the appropriate value from the menu options.
 The Evergreen database contains information from the Library of Congress’s MARC 21 format standards that includes possible values for select fixed fields. The right-click context menu options are available for fixed fields whose values are already stored in the database. For the fixed fields that do not already contain possible values in the database, the user will see the basic clipboard operation options (such as cut, copy, paste, etc.).
@@ -36,8 +91,4 @@ There are three relevant tables that contain the values that display in the fixe
 . *config.marc21_ff_pos_map* describes, for the given record type, where a fixed field is located, its start position, and its length.
 . *config.coded_value_map* defines the set of valid values for many of the fixed fields and the translatable, human-friendly labels for them.
 . *config.record_attr_definition* links together the information from the config.marc21_ff_pos_map and  config.coded_value_map tables.
-
-
-
-
 
