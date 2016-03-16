@@ -42,5 +42,5 @@ angular.module('egPatronRegApp', ['ui.bootstrap','ngRoute','egCoreMod', 'egUiMod
 })
 
 // dummy service so standalone patron editor can reference it
-.factory('patronSvc', function() {});
+.factory('patronSvc', function() { return { /* dummy */ } });
 
