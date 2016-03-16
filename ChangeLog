@@ -1,3 +1,601 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 040d0b08cf8dcf103bca6a406e45f7fafc620d15
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Feb 25 15:47:20 2016 -0500
+
+    LP#1206936 Base SQL schema repair
+    
+    Avoid referencing money.materialized_billable_xact_summary before it's
+    defined.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+8	8	Open-ILS/src/sql/Pg/080.schema.money.sql
+
+commit dc4a2113ec622ae124bbc1870bc62ae7a391717a
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Wed Mar 16 13:54:10 2016 -0400
+
+    Docs: 2.9.3 Release notes
+    
+    Adding bug fixes to the point release notes for 2.9.3
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+89	2	docs/RELEASE_NOTES_2_9.txt
+
+commit df29e8d1766ed927f0c9912ca4afd4cce8299746
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Wed Mar 16 13:35:22 2016 -0400
+
+    docs-2.8.7 release notes
+    
+    Adding point release notes for 2.8.7
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+51	0	docs/RELEASE_NOTES_2_8.txt
+
+commit 341babf860a20539529e29db252545031b01ed5f
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Jan 7 11:47:43 2016 -0500
+
+    LP#1208613: Reset lineitem cache when resetting table
+    
+    Stale cache entries in this table were causing the "expand all"
+    functionality to break.  This might be a nuclear option, but as far as
+    I could see, this "cache" gets repopulated on every pagination anyway,
+    so I don't think we're losing anything.
+    
+    To test:
+    
+    [1] Select a large list from the Acquisitions --> My Selection List
+        screen.
+    [2] Click on the Expand All button and the items on the page expand
+        with more information.
+    [3] Click on the Next link to bring up page 2 of the list.
+    [4] Click on the Expand All button and verify that additional
+        information is displayed.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Erica Rohlfs <erohlfs@esilibrary.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+1	0	Open-ILS/web/js/ui/default/acq/common/li_table.js
+
+commit 0e7bb08d991fc55eeb62eef2cf4b636d76af56e7
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Mon Mar 14 17:35:59 2016 -0400
+
+    LP#1370694: stamp database update
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+74	0	Open-ILS/src/sql/Pg/upgrade/0974.data.selfcheck_holds_printing.sql
+0	74	Open-ILS/src/sql/Pg/upgrade/XXXX.data.selfcheck_holds_printing.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0974.data.selfcheck_holds_printing.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.selfcheck_holds_printing.sql
+
+commit 66b92744ec2da55dbc207dc3ea59da00a42719d6
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Mon Mar 14 17:33:49 2016 -0400
+
+    LP#1370694: don't update already-customized format.selfcheck.holds
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+36	3	Open-ILS/src/sql/Pg/upgrade/XXXX.data.selfcheck_holds_printing.sql
+
+commit 7e5fda81ec3dffbc4be3761cd68aea7c0a782741
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Mon Mar 14 17:09:53 2016 -0400
+
+    LP#1370694: clean up whitespace
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+13	13	Open-ILS/web/js/ui/default/circ/selfcheck/selfcheck.js
+
+commit 107eac51aa2378515eb92da6c8604466bf045608
+Author: Terran McCanna <tmccanna@georgialibraries.org>
+Date:   Tue Mar 1 16:47:20 2016 -0500
+
+    LP#1370694 Selfcheck: "Print List" for Holds view does not work
+    
+    Prior to this change, the holds data was not getting passed to the
+    print function. Now, it is being captured and passed to the print
+    function. Because of some sorting discrepancies between the order of
+    the information being passed from here to the action trigger and the
+    order that the information is presented when pulled directly out of the
+    database by the action trigger (which led to data mismatches between the
+    title/author and the hold status/pickup locations for each printed item),
+    I modified this script to pass all of the hold information together in the
+    desired order to the action trigger rather than relying on the template
+    to match the data coming from the script with the data from the database.
+    
+    This change requires the action trigger printing template to be updated in
+    order to work. I've included an upgrade script as well as an update to the
+    seed data script.
+    
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Jennifer Pringle <jennifer.pringle@bc.libraries.coop>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+6	5	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+41	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.selfcheck_holds_printing.sql
+20	3	Open-ILS/web/js/ui/default/circ/selfcheck/selfcheck.js
+5	0	docs/RELEASE_NOTES_NEXT/Circulation/selfcheck_printing_holds.adoc
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.selfcheck_holds_printing.sql
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Circulation/selfcheck_printing_holds.adoc
+
+commit 66f14b6e9d8c1b1ceba9332a37db0d9c2ff3a24e
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Mon Mar 14 17:01:16 2016 -0400
+
+    LP#1551447: stamp database update
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+65	0	Open-ILS/src/sql/Pg/upgrade/0973.data.selfcheck_fines_printing.sql
+0	65	Open-ILS/src/sql/Pg/upgrade/XXXX.data.selfcheck_fines_printing.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0973.data.selfcheck_fines_printing.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.selfcheck_fines_printing.sql
+
+commit 73b9f0cb41b3bc191f2f072cf2de144cc387832a
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Mon Mar 14 16:48:50 2016 -0400
+
+    LP#1551447: don't update already-customized format.selfcheck.fines
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+31	2	Open-ILS/src/sql/Pg/upgrade/XXXX.data.selfcheck_fines_printing.sql
+
+commit c658bd0d5dd7ae5855d1c140b1c770551217b707
+Author: Terran McCanna <tmccanna@georgialibraries.org>
+Date:   Tue Mar 1 17:35:28 2016 -0500
+
+    LP#1551447 Selfcheck: Printing Fines Prints All Open Transactions
+    
+    This corrects the behavior of the selfcheck fines receipt print template.
+    Prior to this, it printed all open billable transactions (eg, every item
+    that the patron had checked out) regardless of whether or not it had bills
+    associated with it. This adds a small bit of logic to the template to
+    check for a balance due. It also updates the javascript to check for a
+    balance on the account before launching the print function to prevent the
+    system from taking unnecessary action.
+    
+    This includes a SQL upgrade script to update the Self-Checked Fines
+    Receipt template for systems that are already in production, as well as
+    including an update to the seed data.
+    
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Jennifer Pringle <jennifer.pringle@bc.libraries.coop>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+15	12	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+36	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.selfcheck_fines_printing.sql
+2	1	Open-ILS/web/js/ui/default/circ/selfcheck/selfcheck.js
+6	0	docs/RELEASE_NOTES_NEXT/Circulation/selfcheck_printing_fines.adoc
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.selfcheck_fines_printing.sql
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Circulation/selfcheck_printing_fines.adoc
+
+commit 61cb8e54e3161a3bc2d78afe8e86a16bb09eed8c
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Mon Mar 14 15:10:14 2016 -0400
+
+    LP#1454871: whitespace cleanup
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+7	7	Open-ILS/src/templates/kpac/getit.tt2
+
+commit bd30cabe5cb87d69edd5fff8d52db9c8be4280db
+Author: Terran McCanna <tmccanna@georgialibraries.org>
+Date:   Thu Jun 11 18:15:13 2015 -0400
+
+    LP#1454871: Fix KPAC Hold Notification Preferences
+    
+    Correction to KPAC holds notification default preferences to allow for
+    SMS text messaging options.
+    
+    Prior to this correction, KPAC hold notifications would only pick up
+    hold preferences if set to email and/or phone. This correction allows
+    it to pick up email and/or phone and/or sms notification preferences.
+    
+    To test, set hold preferences to different options, place hold via the
+    KPAC, and then view the hold to see which preferences were recognized.
+    (May need to show columns for Phone Notify, Text Notify, and Email Notify.)
+    
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Josh Stompro <stomproj@larl.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+24	12	Open-ILS/src/templates/kpac/getit.tt2
+
+commit 3f2b5047fd02b7c691f32927f94db54c59d403c0
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Mon Mar 14 15:06:12 2016 -0400
+
+    LP#1548869: tidy up whitespace
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+6	6	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGKPacLoader.pm
+
+commit e84f1af9274df0c02bbf9c48ee78842726d69fb5
+Author: Terran McCanna <tmccanna@georgialibraries.org>
+Date:   Wed Feb 24 17:17:27 2016 -0500
+
+    LP#1548869 KPAC hold results screen not displaying complete info
+    
+    The getit_results.tt2 page was not displaying item title after
+    hold placement or after adding to a list. It was also not pulling
+    in the item id (which was needed for navigational links back to the
+    record) and was not pulling in the list name after adding an item
+    to a named list.
+    
+    This patch adds some logic to prevent subroutine conflicts, adds
+    missing parameters to a function call, and corrects a variable name.
+    
+    To test:
+    
+    Log in to the KPAC and perform the following actions:
+    
+    1. Place a successful hold (results screen should show item title
+       and pickup library, and provide links back to record page).
+    2. Place an unsuccessful hold (try placing a hold on an item you
+       already have a hold on - the results screen should show the item
+       title).
+    3. Add item to a temporary list (results screen should show item title).
+    4. Add item to a named list (results screen should show item title and
+       title of list it was added to).
+    
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Jennifer Pringle <jennifer.pringle@bc.libraries.coop>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+8	3	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGKPacLoader.pm
+1	1	Open-ILS/src/templates/kpac/getit_results.tt2
+
+commit 0c76ab2eaac7793d6ce846c2fc8b4877b4b563a0
+Author: Josh Stompro <stomproj@larl.org>
+Date:   Sat Feb 27 08:54:04 2016 -0600
+
+    LP#1549393 - Remove undef values from isbn and issn arrays.
+    
+    This prevents empty requests being sent to content providers.
+    
+    This caused a problem for us because invalid ISBNs were causing
+    requests to Content Cafe to fail, since Content Cafe returns an
+    error if there is a blank key sent along with valid ISBNs and UPCs.
+    
+    Specifically we had problems with DVD records from Baker & Taylor because
+    B&T creates unoffical ISBNs for the DVDs they sell.  Those ISBN's do
+    not validate when run through B::ISBN.
+    
+    ISSNs are also cleaned since they are validated and set to undef if
+    invalid just like ISBNs are.
+    
+    It shouldn't hurt to not send blank requests to providers in any case.
+    
+    To test:
+    1. I know this is a problem with Content Cafe, I don't
+    know if any other providers are effected.  Let me know
+    if you need Content Cafe credentials to test.
+    
+    2. Add an invalid ISBN 020a entry to a bib record that has added content.
+    9786316271976 is an example of a fake ISBN that doesn't
+    pass B::ISBN validation.  Or just make up a fake number.
+    
+    3. Clear out the memcache entries for that record.  In 2.9+ there
+    is a link to clear the cache in the record detail view under Permalink.
+    
+    4. Reload the record and the cover art and other added content should
+    not be displayed.  This is because the invalid ISBN gets set to undef
+    , and the undef gets sent to content cafe as a blank key request.
+    
+    5. Now apply the fix.  Clear the memcache entries for that bib, and now
+    the cover art should be displayed since the undef entries due to the invalid
+    ISBN's have been removed.
+    
+    Signed-off-by: Josh Stompro <stomproj@larl.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+5	0	Open-ILS/src/perlmods/lib/OpenILS/WWW/AddedContent.pm
+
+commit 8a8aecb40d252866dbb036f16cb8082a3bd96c7f
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Mon Mar 14 14:46:19 2016 -0400
+
+    LP#1550495: stamp DB update
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+18	0	Open-ILS/src/sql/Pg/upgrade/0972.data.acq-cancel_reason-add-85.sql
+0	18	Open-ILS/src/sql/Pg/upgrade/xxxx.acq.cancel_reason-add-85.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0972.data.acq-cancel_reason-add-85.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/xxxx.acq.cancel_reason-add-85.sql
+
+commit 6499b8adad89a76352e7260f6bc0be747efeb625
+Author: Josh Stompro <stomproj@larl.org>
+Date:   Fri Mar 4 13:51:34 2016 -0600
+
+    LP#1550495 - Add EDI Cancel Code 85 - used by Baker & Taylor
+    
+    Baker & Taylor send back a quantity code 85 response when they cancel
+    a line item.  This code wasn't included as one of the built in EDI
+    codes so those line items were not being canceled automatically in
+    evergreen.
+    
+    The system looks for the response code + 1200 to find the cancel reason,
+    so this code is entered as ID 1285 in the acq.cancel_reason table.
+    
+    I received confirmation from another system that uses B&T as an EDI vendor
+    that they also receive code 85 responses when something gets canceled.
+    
+    Signed-off-by: Josh Stompro <stomproj@larl.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+3	1	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+18	0	Open-ILS/src/sql/Pg/upgrade/xxxx.acq.cancel_reason-add-85.sql
+6	0	docs/RELEASE_NOTES_NEXT/Acquisitions/add_cancel_reason_85.adoc
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/xxxx.acq.cancel_reason-add-85.sql
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Acquisitions/add_cancel_reason_85.adoc
+
+commit b594a9524b799303b2837ca0800a0f791c9bcfde
+Author: Terran McCanna <tmccanna@georgialibraries.org>
+Date:   Wed Mar 2 12:16:43 2016 -0500
+
+    LP#1454884 Hold placed on grouped metabib result displays wrong title
+    
+    Prior to this change, a full/extended title displayed even on metarecord
+    holds that had different extended titles, which sometimes led to situations
+    where a video's full title displayed on a book hold, or vice versa. This
+    change displays the short version of the title on metarecord holds and
+    the full version on individual record holds.
+    
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+8	1	Open-ILS/src/templates/opac/parts/place_hold.tt2
+
+commit ce835a3ac9a7e4e294d7f55f24aa2c23cc34b338
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Fri Mar 4 11:31:06 2016 -0500
+
+    LP 1533331: Stamping upgrade script.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    
+    Conflicts:
+    	Open-ILS/src/sql/Pg/002.schema.config.sql
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+15	0	Open-ILS/src/sql/Pg/upgrade/0971.schema.fix_protect_reserved_rows_from_delete.sql
+0	15	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.fix_protect_reserved_rows_from_delete.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0971.schema.fix_protect_reserved_rows_from_delete.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.fix_protect_reserved_rows_from_delete.sql
+
+commit c3b95afaad2d3ceb5a8e31607be6e5c4bea0d499
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Mon Feb 8 13:00:06 2016 -0500
+
+    LP#1533331 - Fix evergreen.protect_reserved_rows_from_delete() trigger function
+    
+    The fix for bug 1513554 included creating a general trigger function to prevent
+    the deletion of reserved table rows with an ID lower than a specified threshold.
+    Testing for that seemed to pass muster, but using the function in practice revealed
+    a failure to delete deletable rows either.
+    
+    This adds an explicit RETURN to the function, which fixes the issue.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+1	0	Open-ILS/src/sql/Pg/000.functions.general.sql
+11	1	Open-ILS/src/sql/Pg/t/lp1513554_do_not_delete_reserved_cancel_reasons.pg
+15	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.fix_protect_reserved_rows_from_delete.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.fix_protect_reserved_rows_from_delete.sql
+
+commit 3e2179e781d1c2440524439f4287b4c31b9a8825
+Author: Terran McCanna <tmccanna@georgialibraries.org>
+Date:   Wed Mar 2 17:11:40 2016 -0500
+
+    LP #1422932 TPAC: Holds history pager typo
+    
+    Corrects typo in link that caused page not found errors when attempting
+    to navigate multiple pages of hold history through My OPAC.
+    
+    Patch originally by Bob Wicksall.
+    
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+1	1	Open-ILS/src/templates/opac/myopac/hold_history.tt2
+
+commit 43319f4b31639d90ac5167763aafd2e3a1dc273a
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Wed Mar 2 15:38:52 2016 -0500
+
+    LP#1516757: add Perl test case
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+9	2	Open-ILS/src/perlmods/t/12-OpenILS-SIP.t
+
+commit 188029b6a60e53c3a91d5374592ad04957dc5d74
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Nov 16 14:48:23 2015 -0500
+
+    LP#1516757: ensure that SIP2 returns DOB correctly
+    
+    Parse dates of birth using the local timezone to ensure that the date in
+    the database will match what is sent to SIP clients.  Otherwise, the
+    date will be parsed as UTC and may result in the DoB value being offset
+    by one day in the SIP response.
+    
+    To test
+    -------
+    [1] Fire up a SIP client of some sort and retrieve a patron record;
+        verify that the patron's date of birth is correct, and not
+        offset by one day.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+8	1	Open-ILS/src/perlmods/lib/OpenILS/SIP.pm
+1	1	Open-ILS/src/perlmods/lib/OpenILS/SIP/Patron.pm
+
+commit 036ce850ba7b625077078137704001128a6de025
+Author: Thomas Berezansky <tsbere@mvlc.org>
+Date:   Thu Jan 7 14:34:18 2016 -0500
+
+    LP#1531976: fix bringing up Mesage Center and Triggered Events
+    
+    This patch fixes a bug in the XUL staff client where
+    using Other -> Triggered Events from the patron page,
+    then Other -> Message Center, only brings up the Triggered
+    Events page in both cases (and vice versa).
+    
+    This patch works by preventing the deck code from thinking they are
+    the same page, despite both using the browser wrapper as their base URL.
+    
+    Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2	2	Open-ILS/xul/staff_client/server/patron/display.js
+
+commit 9335dcb1a146333b5ee3b2bd51f94234c33fc3f4
+Author: Jason Boyer <jboyer@library.in.gov>
+Date:   Wed Sep 2 16:20:13 2015 -0400
+
+    LP#1491571: Ignore Case when Checking PW Reset email
+    
+    Emails are not passwords and are not case sensitive;
+    while it is a good idea to require patrons to prove
+    they know the address associated with their account
+    it is not cool to deny them because they don't know
+    the capitalization of the value in the database.
+    
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Actor.pm
+
+commit 00b1e695be7e693903630fe86eabdb8624f5c663
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Jul 14 14:25:34 2015 -0400
+
+    LP#1474566 Avoid credit card payment rounding
+    
+    Calculate total amount for credit payment as integers to avoid rounding
+    errors w/ large sets of small billings.
+    
+    E.g. avoid trying to pay a fine of 9.999999999999 for a set of fines
+    which should add up to 10.00.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+5	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Money.pm
+
+commit 5f9ab6499c3539fd84b6517bca25ff59614a78fc
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Wed Feb 24 14:27:15 2016 -0500
+
+    LP#1206936 Stamping upgrade script; adding test
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    
+    Conflicts:
+    	Open-ILS/src/sql/Pg/002.schema.config.sql
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+48	0	Open-ILS/src/sql/Pg/live_t/0959.schema.correct_mtbs_view.pg
+13	0	Open-ILS/src/sql/Pg/upgrade/0959.schema.correct_mtbs_view.sql
+0	13	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.correct_mtbs_view.sql
+ create mode 100644 Open-ILS/src/sql/Pg/live_t/0959.schema.correct_mtbs_view.pg
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0959.schema.correct_mtbs_view.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.correct_mtbs_view.sql
+
+commit ab29e9f89dd9443905008b228950376460fbd1df
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Mon Nov 30 09:48:26 2015 -0500
+
+    LP#1206936 - Fix wrong billing info in money.transaction_billing_summary
+    
+    The money.transaction_billing_summary view was showing the wrong
+    last billing type and last billing note for certain transactions.
+    This fix, from Dan Scott, in turn from Mike Rylander, recreates
+    that view so that it depends on the speedier and more accurate
+    money.materialized_billable_xact_summary view.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+7	9	Open-ILS/src/sql/Pg/080.schema.money.sql
+13	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.correct_mtbs_view.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.correct_mtbs_view.sql
+
+commit 7066a3200f96c0863445cf196e933f71df04f94e
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Wed Dec 16 15:46:17 2015 -0500
+
+    LP#1526546 Sort copies by part label in holdings maint.
+    
+    This commit improves the sorting of copies on the Holdings Maintenance
+    screen in the XUL-based staff client. The previous code sorted the
+    copies by their barcodes after retrieval. This commit moves the sorting
+    logic into the search call and adds logic to first sort by the part
+    label sort key.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+17	3	Open-ILS/src/perlmods/lib/OpenILS/Application/Cat.pm
+
+commit bd8411c9e141ab3d6bf3cb3ac895b85bc43012b6
+Author: blake <blake@mobiusconsortium.org>
+Date:   Wed Dec 23 14:20:40 2015 -0600
+
+    LP#1466990: Detailed search results shows parts for items that dont have parts
+    
+    The part_label variable needs to be reset between iterations. The variable was still set
+    and bled from copy to copy. Testing this will require a search with details turned on.
+    The search result set needs to include a bib that has copies with parts (with at least
+    one copy invisible) and another bib that has copies without parts.
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+1	0	Open-ILS/src/templates/opac/parts/misc_util.tt2
+
+commit bea2cddccfc17fcadeadf2c7c893b44aa43bd224
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Feb 19 12:35:42 2016 -0500
+
+    Porting 2.8.4-2.8.5 / 2.8.5-2.8.6 DB upgrade scripts
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+161	0	Open-ILS/src/sql/Pg/version-upgrade/2.8.4-2.8.5-upgrade-db.sql
+35	0	Open-ILS/src/sql/Pg/version-upgrade/2.8.5-2.8.6-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.8.4-2.8.5-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.8.5-2.8.6-upgrade-db.sql
+
+commit 862bfb900db4be48c6aabf534e6d748f3f562aa1
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Fri Feb 19 12:00:24 2016 -0500
+
+    Forward port 2.9.1 to 2.9.2 upgrade script and server upgrade instructions.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+35	0	Open-ILS/src/sql/Pg/version-upgrade/2.9.1-2.9.2-upgrade-db.sql
+16	15	docs/installation/server_upgrade.txt
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.9.1-2.9.2-upgrade-db.sql
