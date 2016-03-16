@@ -9,6 +9,7 @@
         is-open="datePickerIsOpen"
         ng-model="ngModel"
         ng-change="ngChange"
+        ng-blur="ngBlur"
         ng-disabled="ngDisabled"
         ng-required="ngRequired"
         close-text="{{closeText}}"/>
@@ -22,7 +23,7 @@
   </div>
   <!-- Time Picker
       let time picker break to a new line since it does not
-       not line up horizontally very well with the date picker -->
+      not line up horizontally very well with the date picker -->
   <div>
     <span>
       <uib-timepicker
@@ -30,6 +31,7 @@
         ng-model="ngModel"
         ng-disabled="ngDisabled"
         ng-required="ngRequired"
+        ng-blur="ngBlur"
         ng-change="ngChange">
       </uib-timepicker>
     </span>

@@ -466,6 +466,7 @@ function($window , egStrings) {
                 closeText : '@',
                 ngModel : '=',
                 ngChange : '=',
+                ngBlur : '=',
                 ngDisabled : '=',
                 ngRequired : '=',
                 hideDatePicker : '='
