@@ -1,5 +1,5 @@
-Evergreen 2.10 Release Notes
-============================
+Evergreen 2.10.0 Release Notes
+==============================
 :toc:
 :numbered:
 
@@ -7,13 +7,13 @@ Upgrade notes
 -------------
 
 * Support for PostgreSQL 9.1 is deprecated as of
-  the release of Evergreen 2.10. Users are recommended
+  the release of Evergreen 2.10.0. Users are recommended
   to install Evergreen on PostgreSQL 9.2 or later.
-* In the next major release following 2.10, Evergreen will no
+* In the next major release following 2.10.0, Evergreen will no
   longer officially support PostgreSQL 9.1.
 * Please read the release notes thoroughly for information
   about changes that Evergreen administrators may need
-  to make manually when upgrading to 2.10.  In particular,
+  to make manually when upgrading to 2.10.0.  In particular,
   the enhancement to user password storage introduces a
   new service, `open-ils.auth_internal`, and requires
   changes to `opensrf.xml` in order for users to be able
