@@ -1,0 +1,1136 @@
+Evergreen 2.10.0 Release Notes
+==============================
+:toc:
+:numbered:
+
+Upgrade notes
+-------------
+
+* Support for PostgreSQL 9.1 is deprecated as of
+  the release of Evergreen 2.10.0. Users are recommended
+  to install Evergreen on PostgreSQL 9.2 or later.
+* In the next major release following 2.10.0, Evergreen will no
+  longer officially support PostgreSQL 9.1.
+* Please read the release notes thoroughly for information
+  about changes that Evergreen administrators may need
+  to make manually when upgrading to 2.10.0.  In particular,
+  the enhancement to user password storage introduces a
+  new service, `open-ils.auth_internal`, and requires
+  changes to `opensrf.xml` in order for users to be able
+  log in.
+
+New Features
+------------
+
+
+
+Acquisitions
+~~~~~~~~~~~~
+
+
+
+PO Line item "paid" label
+^^^^^^^^^^^^^^^^^^^^^^^^^
+A new "paid" label appears along the bottom of each line item in the PO 
+display when every non-canceled copy on the line item has been invoiced.
+
+
+
+
+Disencumber funds on invoice close
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Fund debits linked to an invoice are now marked as paid (encumbrance=false)
+when the invoice is marked as closed/complete instead of at invoice create
+time.  This is particularly useful for EDI invoices which may be 
+created well in advance of receipt and payment.
+
+
+
+
+
+PO actions selector always visible
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The actions selector is now always visible in the purchase order view,
+even when no line items exist.  With this, users can print PO's that
+only contain direct charges.
+
+The custom "Add Brief Record" button is no longer present, since the
+same action is accessible via the now-visible selector.
+
+
+
+
+Administration
+~~~~~~~~~~~~~~
+
+
+
+Set application name when connecting to database
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The services that connect directly to the PostgreSQL database
+(and Clark Kent) now look for an application_name parameter
+as part of the database login credentials specified in
+`opensrf.xml`.  If present, the value is used to set the
+application name Pg connection value; this in turn shows up in
+the Postgres `pg_stat_activity` table and Pg's logs.
+
+
+
+
+Credit card receipts and privacy
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+To improve privacy and security, Evergreen now stores less data 
+about credit card transactions.  The following fields are no 
+longer stored:
+
+ * `cc_type`
+ * `cc_first_name`
+ * `cc_last_name`
+ * `expire_month`
+ * `expire_year`
+
+NOTE: All existing data within these fields will be deleted during
+the upgrade.  Reports using this data will no longer function.
+
+Additionally, a tool has been added to Evergreen for clearing the 
+last 4 digits of the credit payment from the database after payments
+reach a certain age.
+
+Print/email templates
++++++++++++++++++++++
+
+The stock print and email payment templates have been modified to no 
+longer use these fields, but only when the existing templates matched
+the stock templates.  If local changes have been applied, it will
+be necessary to modify local templates to avoid referencing these
+fields which no longer exist.
+
+Any templates whose hook is "money.format.payment_receipt.print" or 
+"money.format.payment_receipt.email" may need modification.  In stock
+Evergreen, these are templates:
+
+1. "money.payment_receipt.email" (stock id 29)
+2. "money.payment_receipt.print" (stock id 30)
+
+Example diff:
+
+[source,diff]
+---------------------------------------------
+-  [% CASE "credit_card_payment" %]credit card (
+-      [%- SET cc_chunks = mp.credit_card_payment.cc_number.replace(' ','').chunk(4); -%]
+-      [%- cc_chunks.slice(0, -1+cc_chunks.max).join.replace('\S','X') -%] 
+-      [% cc_chunks.last -%]
+-      exp [% mp.credit_card_payment.expire_month %]/[% mp.credit_card_payment.expire_year -%]
+-  )
++  [% CASE "credit_card_payment" %]credit card
++  [%- IF mp.credit_card_payment.cc_number %] ([% mp.credit_card_payment.cc_number %])[% END %]
+---------------------------------------------
+
+Clearing the last 4 of the CC number
+++++++++++++++++++++++++++++++++++++
+
+To activate automatic CC number clearing, add the following to opensrf's
+crontab.  Change timing to suit.
+
+[source,sh]
+---------------------------------------------
+5  4  * * *   . ~/.bashrc && $EG_BIN_DIR/clear_cc_number.srfsh
+---------------------------------------------
+
+The default retention age is 1 year, but this can be changed by modifying
+`clear_cc_number.srfsh` (typically found in `/openils/bin/`).  Replace "1 year"
+with the age of your choice.
+
+
+
+
+
+
+Configure multiple telephony servers via action/trigger
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+If you are using the AstCall action/trigger reactor
+to generate callfiles to send to an Asterisk server, until
+now the only place to specify the relevant configuration
+was in `opensrf.xml`. However, this restricted an Evergreen
+consortium to using only one Asterisk instance.
+
+Now, the telephony parameters can also be specified as 
+A/T event parameters, allowing per-library configuration.
+
+.Telephony parameters
+|===
+| Name | Example value
+
+| enabled
+| 0
+
+| driver
+| "SIP"
+
+| channels
+| ["Zap/1", "Zap/2", "IAX/user:secret@widgets.biz"]
+
+| host
+| "localhost"
+
+| port
+| "10080"
+
+| user
+| "evergreen"
+
+| pw
+| "evergreen"
+
+| callfile_lines
+| ["MaxRetries: 3", "RetryTime: 60", "WaitTime: 30", "Archive: 1", "Extension: 10"]
+|===
+
+
+
+
+Juvenile-to-adult batch script honors library setting
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The batch `juv_to_adult.srfsh` script that, when set up as a cronjob,
+is responsible for toggling a patron from juvenile to adult now
+honors the age value set in the library setting named "Juvenile Age
+Threshold" (`global.juvenile_age_threshold`).  When no library setting value
+is present at a given patron's home library, the value passed in to the
+script will be used as a default.
+
+
+
+
+New reporting source for hold/copy ratios
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+A new reporting source is added, "Hold/Copy Ratio per Bib
+and Pickup Library (and Descendants)", that, for each bib
+that has a hold request on it or any of its components,
+calculates the following:
+
+ * active holds at each OU (including the OU's descendants)
+ * holdable copies at each OU (and its descendants)
+ * the ratio of the above two counts
+ * counts and ratio across the entire consortium
+
+This source differs from the "Hold/Copy Ratio per Bib
+and Pickup Library" source by including all descendants
+of the organization unit one is filtering on.
+
+One use case is allowing a multi-branch system within an
+Evergreen consortium that doesn't do full resource sharing
+to readily calculate whether additional copies should be
+purchased for that system.
+
+
+
+
+New patron action/trigger notice
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+A new action/trigger event definition ("New User Created Welcome Notice") 
+has been added that will allow you to send a notice after a new patron has 
+been created, based on the actor.usr create-date field.
+
+This notice can be used for various tasks.
+
+  * Sending a welcome email to new patrons to market library services.
+  * Confirm that a new patron email address is correct.
+  * Generate postal notices to send a welcome packet to new patrons.
+
+Enable this event in the staff client at *Admin* -> *Local Administration* 
+-> *Notifications / Action Triggers*.
+
+
+
+
+Improved password management and authentication
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Evergreen user passwords are now stored with additional layers of 
+encryption and may only be accessed directly by the database, not
+the application layer.
+
+All API changes are backwards compatible with existing 3rd-party
+clients.
+
+Migrating passwords
++++++++++++++++++++
+
+Passwords are migrated for each user automatically the first time a user
+logs in under the new setup.  However, it is also possible to force
+password migration for a given user via a database function:
+
+[source,sql]
+------------------------------------------------------------
+-- actor.migrate_passwd() will only migrate un-migrated 
+-- accounts, but it's faster to avoid any re-migration attempts.
+SELECT actor.migrate_passwd(au.id)
+FROM actor.usr au
+    LEFT JOIN actor.passwd pw ON (pw.usr = au.id)
+WHERE pw.usr IS NULL; 
+------------------------------------------------------------
+
+Using this, admins could perform manual batch updates to force all
+users to use the new, more secure passwords, regardless of when or
+whether a patron logs back into the system.  
+
+Beware that doing this for all users in a large database will 
+take some time and should probably be performed in batches.
+
+Changing Encryption Work Factor
++++++++++++++++++++++++++++++++
+
+Roughly speaking, the 'work factor' determines the amount of time/effort
+required to crack passwords.  The higher the value, the more secure the
+password.  Higher values also mean that it takes longer for password
+verification (e.g. during login) to work.
+
+At time of release, Evergreen uses a work factor value of 10.  The value
+is set in the database table/column actor.passwd_type.iter_count (hash
+iteration count).  When this value is modified, any passwords created or
+modified after the change will use the new work factor.  Other passwords
+will continue using the work factor in place when they were
+created/modified, until they are changed once again.
+
+Beware that raising the work factor can have a significant impact on
+login speeds.  A work factor of 10 requires ~0.1 seconds to verify a
+password.  A work factor of 15 takes almost 2 full seconds!  Also beware
+that once a password is encoded with a higher work factor, it cannot be
+lowered again through any automatic means.  The owner of the password
+would have to log in and modify the password after the work factor is
+re-lowered.
+
+Because of this, it's recommended that admins thoroughly test work
+factor modifications before deploying to production.
+
+To check encryption timing:
+
+[source,sql]
+--------------------------------------------------------------------------
+-- enable psql timing
+evergreen=# \timing
+
+-- encode password "HELLOWORLD" with a work factor of 10.
+evergreen=# select crypt('HELLOWORLD', gen_salt('bf', 10));
+(1 row)
+
+Time: 95.082 ms
+--------------------------------------------------------------------------
+
+open-ils.auth_internal
+++++++++++++++++++++++
+To support the new storage mechanism, a new Evergreen service has
+been added called `open-ils.auth_internal`.  This service runs on
+the private OpenSRF/XMPP domain and is used to store authenticated 
+user data in the authentication cache.  
+
+This is a required service and changes to `opensrf.xml` (typically 
+`/openils/conf/opensrf.xml`) are needed to run the new service.
+
+.Modifying opensrf.xml
+* A new `<open-ils.auth_internal>` app stanza is added to define the 
+  new service
+* Cache timeout settings are moved from the app stanza for `open-ils.auth`
+  into `open-ils.auth_internal`
+* `open-ils.auth_internal` is added to the set of running services for the 
+  domain.
+
+Example diff:
+
+[source,diff]
+---------------------------------------------------------------------
+diff --git a/Open-ILS/examples/opensrf.xml.example b/Open-ILS/examples/opensrf.xml.example
+index 3b47481..59f737a 100644
+--- a/Open-ILS/examples/opensrf.xml.example
++++ b/Open-ILS/examples/opensrf.xml.example
+@@ -424,6 +424,29 @@ vim:et:ts=4:sw=4:
+                 </unix_config>
+                 <app_settings>
+                     <!-- defined app-specific settings here -->
++                    <auth_limits>
++                        <seed>30</seed> <!-- amount of time a seed request is valid for -->
++                        <block_time>90</block_time> <!-- amount of time since last auth or seed request to save failure counts -->
++                        <block_count>10</block_count> <!-- number of failures before blocking access -->
++                    </auth_limits>
++                </app_settings>
++            </open-ils.auth>
++
++            <!-- Internal authentication server -->
++            <open-ils.auth_internal>
++                <keepalive>5</keepalive>
++                <stateless>1</stateless>
++                <language>c</language>
++                <implementation>oils_auth_internal.so</implementation>
++                <unix_config>
++                    <max_requests>1000</max_requests>
++                    <min_children>1</min_children>
++                    <max_children>15</max_children>
++                    <min_spare_children>1</min_spare_children>
++                    <max_spare_children>5</max_spare_children>
++                </unix_config>
++                <app_settings>
++                    <!-- defined app-specific settings here -->
+                     <default_timeout>
+                         <!-- default login timeouts based on login type -->
+                         <opac>420</opac>
+@@ -431,13 +454,10 @@ vim:et:ts=4:sw=4:
+                         <temp>300</temp>
+                         <persist>2 weeks</persist>
+                     </default_timeout>
+-                    <auth_limits>
+-                        <seed>30</seed> <!-- amount of time a seed request is valid for -->
+-                        <block_time>90</block_time> <!-- amount of time since last auth or seed request to save failure counts -->
+-                        <block_count>10</block_count> <!-- number of failures before blocking access -->
+-                    </auth_limits>
+                 </app_settings>
+-            </open-ils.auth>
++            </open-ils.auth_internal>
++
++
+ 
+             <!-- Authentication proxy server -->
+             <open-ils.auth_proxy>
+@@ -1177,6 +1197,7 @@ vim:et:ts=4:sw=4:
+                 <appname>open-ils.circ</appname> 
+                 <appname>open-ils.actor</appname> 
+                 <appname>open-ils.auth</appname> 
++                <appname>open-ils.auth_internal</appname>
+                 <appname>open-ils.auth_proxy</appname> 
+                 <appname>open-ils.storage</appname>  
+                 <appname>open-ils.justintime</appname>  
+---------------------------------------------------------------------
+
+
+
+
+
+
+
+
+Sortable HTML reports
+^^^^^^^^^^^^^^^^^^^^^
+HTML reports can now be sorted by clicking on the header for a given column.
+Clicking on the header toggles between sorting the column in ascending and
+descending order. Note that sorting is available only when there are
+at most 10,000 rows of output.
+
+
+
+
+Cataloging
+~~~~~~~~~~
+
+
+
+Additional fixed fields
+^^^^^^^^^^^^^^^^^^^^^^^
+The AccM, Comp, CrTp, EntW, Cont, FMus, LTxt, Orig, Part, Proj, Relf, SpFm,
+SrTp, Tech, and TrAr fixed fields have been defined and coded value maps added
+so they can also be used for Advanced Searches or inclusion in Composite Value Maps.
+
+Note that AccM, Cont, LTxt, Relf, and SpFm are  compositite values based on
+the values of "helper" fields like AccM(1), AccM(2), and so on. These positional
+fields can be ignored.
+
+Coded value maps have also been added for Cont, Ctry, and DtSt, and the Time field
+has been defined. All of these fields are now available in the Fixed Field Editor
+when editing the appropriate records.
+
+
+
+
+Quickly export non-imported records
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+When inspecting a queue in MARC Batch Import/Export, there is now
+a link to download to MARC file any records in the queue that were
+not imported into the catalog.  This allows catalogers to quickly
+manipulate the records that failed to import using an external
+tool, then attempt to import them again.
+
+
+
+
+Link personal name/title series added entries
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The authority linker script now supports linking the MARC21
+field 800 (series added entry - personal name) to authority
+records.
+
+
+
+
+MARC stream importer authority records and repairs
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The MARC stream importer script, commonly used with external 
+services like OCLC Connexion, is now capable of importing authority
+records in addition to bib records.  A single running instance of
+the script can import either type of record, based on the record
+leader.
+
+New Options
++++++++++++
+
+ * --auth-merge-profile
+ * --auth-queue
+ * --bib-import-no-match
+ * --bib-auto-overlay-exact
+ * --bib-auto-overlay-1match
+ * --bib-auto-overlay-best-match
+ * --auth-import-no-match
+ * --auth-auto-overlay-exact
+ * --auth-auto-overlay-1match
+ * --auth-auto-overlay-best-match
+
+Deprecated options
+++++++++++++++++++
+
+The following options still work and map to the "bib" equivalent
+of the option, however a deprecation warning message is generated 
+when the script is started.
+
+ * --import-no-match
+ * --auto-overlay-exact
+ * --auto-overlay-1match
+ * --auto-overlay-best-match
+
+No longer supported options
++++++++++++++++++++++++++++
+
+--import-by-queue is no longer supported.  This option serves no
+particular purpose and is a bad idea when re-using the same queue over
+and over as most people do, because queue bloat will increase run times.
+
+--noqueue (AKA "direct import") is no longer supported.  All imports go
+through Vandelay now.
+
+
+
+
+Support for monograph parts import in MARC Batch Import/Export
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+When adding or overlaying copies in MARC Batch Import/Export
+(Vandelay), monograph part labels can now be assigned during the import
+process.  This feature is modeled after the existing support for
+statistical category import.  As such, it:
+
+ * Uses '|' characters to separate labels to allow for multiple part
+   assignment
+ * Adds to (rather than replaces) any existing parts assigned to overlay
+   copies
+
+
+
+
+Circulation
+~~~~~~~~~~~
+
+
+
+Alternate parts selection display when placing holds
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Users often miss the list of parts on the Place Holds screen, leading to many
+title-level holds on records where only one or two libraries may have
+'unparted' copies.
+
+A new option is available to change this display so that a part is selected
+via radio buttons instead of the traditional dropdown menu. This display
+increases the visibility of parts on the Place Holds screen and also
+forces users to make an explicit choice.
+
+To enable the alternate display, set the enable.radio.parts option to 'true'
+in config.tt2.
+
+New config.tt2 setting
+++++++++++++++++++++++
+enable.radio.parts
+
+
+Web staff client patron editor
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The web staff interface now includes a patron editor/registration form
+that is written using AngularJS, leading to faster and more responsive
+patron editing.  This feature is currently available in preview mode, but
+supports the following actions:
+
+  * adding and editing base patron records and addresses
+  * setting statistical categories
+  * editing secondary groups
+  * cloning patron records
+  * duplicate detection
+  * surveys
+
+
+
+
+==== Non-active status copy transit message ====
+
+After copy checkin, if the copy is in transit, display a special
+message in the transit alert dialog and in the printed transit receipt
+(optionally, via macro) if the copy is in (or, rather, will be once it
+arrives at its destination) a non-active copy status.
+
+===== Upgrade notes =====
+
+ * To add the new message to the transit slip, add the
+   'transit_copy_status_msg' MACRO.
+ * To remove the new message from the alert dialog, remove the 
+   'staff.circ.utils.transit.copy_status_message' string property
+   from 'Open-ILS/xul/staff_client/server/locale/LOCALE/circ.properties'
+ * For a list of non-active copy statuses, see in the staff client
+   under Admin -> Server Administration -> Copy Statuses.
+
+
+
+
+
+Selectively disallow opt-in based on patron's home library
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+A new library setting has been added which enables a library to prevent their
+patrons from being opted in at other libraries.
+
+For example, consider the following org unit hierarchy:
+
+       Org Units          Depth
+
+          CONS              0
+           |
+      +-----+-----+
+      |           |
+     SYS1        SYS2       1
+      |           |
+   +--+--+     +--+--+
+   |     |     |     |
+  BR1   BR2   BR3   BR4     2
+
+Suppose that SYS1 wishes to prevent its patrons from being opted in at SYS2.
+To accomplish this, it sets the value of the "Restrict patron opt-in to home
+library and related orgs at specified depth" setting to 1, meaning that patrons
+at SYS1 libraries at or below that depth in the org tree cannot be opted in by
+libraries outside that part of the org tree.  Thus, BR1 patrons can be opted in
+at BR2, but not at BR3 or BR4.
+
+(This setting is distinct from the "Patron Opt-In Boundary" setting, which
+merely determines the depth at which Evergreen prompts for the patron to opt
+in.)
+
+New library setting
++++++++++++++++++++
+  * Restrict patron opt-in to home library and related orgs at specified depth (`org.restrict_opt_to_depth`)
+
+
+
+
+Standing penalty ignore proximity
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Standing penalties now have an `ignore_proximity` field that takes an
+integer value.  When set, the value of this field represents the
+proximity from the user's home organizational unit where this penalty
+will be ignored for purposes of circulation and holds.  Typical values
+for this field would be 0, 1, or 2 when using a standard hierarchy of
+Consortium -> System -> Branch -> Sublibrary/Bookmobile.  A value of 1
+would cause the penalty to be ignored at the user's home organization
+unit, its parent and/or immediate child.  A value of 2 should cause
+it to be ignored at the above as well as all sibling organizational
+units to the user's home.  In all cases, a value of zero causes the
+penalty to be ignored at the user's home and to apply at all other
+organizational units.  If the value of this field is left unset (or
+set to a negative value), the penalty will still take effect
+everywhere using the normal organizational unit and depth values.  If
+you use a custom hierarchy, you will need to figure out any values
+greater than 0 on your own.
+
+The `ignore_proximity` does not affect where penalties are applied. It
+is used when determining whether or not a penalty blocks an activity
+at the current organizational unit or the organizational unit that
+owns the copy involved in the current transaction.  For instance, if
+you set the `ignore_proximity` to 0 on patron exceeds overdue fines,
+then the patron will still be able to place holds on and checkout
+copies owned by their home organizational unit at their home
+organizational unit.  They will not, however, be able to receive
+copies from other organizational units, nor use other organizational
+units as a patron.
+
+
+
+Patron checkout history stored in a dedicated table
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Patron checkout history is now stored in separate, dedicated database 
+table instead of being derived from the main circulation data.  This
+allows us to age/anonymize circulations more aggressively, since they 
+no longer need to stick around in cases where they represent a patron's
+opt-in checkout history.
+
+This has a number of patron privacy implications.
+
+ * Minimal metadata is stored in the new patron checkout history table, 
+   so once the corresponding circulation is aged, the full set of 
+   circulation metadata is no longer linked to a patron's reading history.
+   ** It is limited to checkout date, due date, checkin date, and copy data.
+ * Staff can no longer report on a patron's reading history.  
+   ** While it is possible to build aggregate reports on reading history 
+      data, it is not possible to report on which user an entry in the
+      history table belongs to.  (The 'usr' column is hidden from the 
+      reporter).
+ * Staff can no longer retrieve a patron's reading history via API.  Only
+   the user that owns the history data can access it.
+
+Upgrade notes
++++++++++++++
+
+Administrators should verify the CSV export of checkout history works after
+deploying this change.  If local changes were made to the CSV template,
+the template will not be updated as part of this deployment.  The stock
+template was modified to handle gracefully NULL values for checkin_time.
+
+For example:
+
+[source,diff]
+------------------------------------------------------------------------
+-    Returned: [% date.format(helpers.format_date(circ.checkin_time), '%Y-%m-%d') %]
++    Returned: [%
++        date.format(
++            helpers.format_date(circ.checkin_time), '%Y-%m-%d')
++            IF circ.checkin_time;
++    %]
+------------------------------------------------------------------------
+
+
+
+Client
+~~~~~~
+
+
+
+Holds count column picker option
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+A new column picker option showing the number of holds for a given item will
+now be available in various interfaces displaying item information, including
+the patron's Items Out tab and the Item Status, Check Out, Check In, Renew
+Item and Record In-House Use screens.
+
+Note: Because the holds count is generated from the hold_copy_map, newly-added
+items and items in a non-holdable status will not display accurate hold counts
+until 24 hours after they have been added to the system or moved to a holdable
+copy status.
+
+
+Distinct images for pop-ups and slips
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The client now supports using distinct images for hold, transit, and booking
+reservation popup windows and slips. In addition, three new images have been
+provided, replacing the turtle that previously displayed. The turtle file
+is still available in the images directory for those sites that still wish
+to use it.
+
+
+Development
+~~~~~~~~~~~
+
+
+
+Removal of unused methods
+^^^^^^^^^^^^^^^^^^^^^^^^^
+The following public methods, which were both broken and not in use,
+are removed:
+
+ * `open-ils.actor.org_unit.closed_date.create`
+ * `open-ils.actor.org_unit.closed_date.delete`
+
+
+
+
+
+Public catalog
+~~~~~~~~~~~~~~
+
+Editable borrowing history
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+Patrons can now delete titles that they do not wish to appear in their
+Check Out History.
+
+ * In "My Account", click on the "Items Checked Out" tab, then
+   the "Check Out History" sub-tab.
+ * Check off the items to conceal.
+ * Click the Go button next to the "Delete Selected Titles" drop-down box.
+ * Click OK in the pop-up to confirm the deletion.  Note that deletions
+   cannot be undone.
+
+Deleted titles will also not appear in the downloaded CSV file.
+
+Patron history disable warning
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+When disabling checkout and/or holds history in the public catalog's
+Search and History Preferences tab, patrons will be warned that the
+operation is irreversible when history data exists that will be
+deleted as part of the update.
+
+
+
+Include parts label when sorting copies on the record details page
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The list of copies on the catalog's record details page now includes
+the part label in the default sort order.
+
+Specifically, copies are now sorted by (in order), org unit, then
+call number, then part label sortkey, then copy number, and
+finally barcode.
+
+Previously, the hierarchy was org unit, then call number,
+then copy number, and finally barcode
+
+
+
+Quick option to change search scope to all libraries
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+A common usage of the catalog is to do a search in a restricted scope,
+like a local library. When the results are lacking, the search is repeated in a
+consortium-wide scope.  This feature provides an optional button and checkbox
+to alter the depth of the search to a defined level.
+
+This feature is enabled by default and can be configured in the Depth Button/
+Checkbox section of config.tt2.
+
+New config.tt2 settings
++++++++++++++++++++++++
+  * ctx.depth_sel_checkbox
+  * ctx.depth_sel_button
+  * ctx.depth_sel_depth
+  * ctx.sel_button_label
+  * ctx.depth_sel_button_class
+  * ctx.depth_sel_checkbox_label
+  * ctx.depth_sel_tooltip
+  * ctx.depth_sel_resultshint
+
+Limiter to exclude electronic resources
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+A limiter to exclude electronic resources from search results is now available
+on the advanced search screen and from the search results page. This limiter
+will exclude any search results with an item form of o or s. This limiter
+will be applied on top of any other format limiters used in the search.
+
+The checkboxes are disabled by default. To display them in both places, set
+the 'ctx.exclude_electronic_checkbox' setting in config.tt2 to 1.
+
+New config.tt2 setting
+++++++++++++++++++++++
+ctx.exclude_electronic_checkbox
+
+
+Expand unAPI API
+^^^^^^^^^^^^^^^^
+Evergreen's unAPI support now includes access to many more
+record types. For example, the following URL would fetch
+bib 267 in MODS32 along with holdings, volume, copy,
+and record attribute information:
+
+https://example.org/opac/extras/unapi?id=tag::U2@bre/267{holdings_xml,acn,acp,mra}&format=mods32
+
+To access the new unAPI features, the unAPI ID should have the
+following form:
+
+  * +tag::U2@+
+  * followed by class name, which may be
+    * +bre+ (bibs)
+    * +biblio_record_entry_feed+ (multiple bibs)
+    * +acl+ (copy locations)
+    * +acn+ (volumes)
+    * +acnp+ (call number prefixes)
+    * +acns+ (call number suffixes)
+    * +acp+ (copies)
+    * +acpn+ (copy notes)
+    * +aou+ (org units)
+    * +ascecm+ (copy stat cat entries)
+    * +auri+ (located URIs)
+    * +bmp+ (monographic parts)
+    * +cbs+ (bib sources)
+    * +ccs+ (copy statuses)
+    * +circ+ (loan checkout and due dates)
+    * +holdings_xml+ (holdings)
+    * +mmr+ (metarecords)
+    * +mmr_holdings_xml+ (metarecords with holdings)
+    * +mmr_mra+ (metarecords with record attributes)
+    * +mra+ (record attributes)
+    * +sbsum+ (serial basic summaries)
+    * +sdist+ (serial distributions)
+    * +siss+ (serial issues)
+    * +sisum+ (serial index summaries)
+    * +sitem+ (serial items)
+    * +sssum+ (serial supplement summaries)
+    * +sstr+ (serial streams)
+    * +ssub+ (serial subscriptions)
+    * +sunit+ (serial units)
+  * followed by +/+
+  * followed by a record identifier (or in the case of
+    the +biblio_record_entry_feed+ class, multiple IDs separated
+    by commas)
+  * followed, optionally, by limit and offset in square brackets
+  * followed, optionally, by a comma-separated list of "includes"
+    enclosed in curly brackets.  The list of includes is
+    the same as the list of classes with the following addition:
+    * +bre.extern+ (information from the non-MARC parts of a bib
+      record)
+   * followed, optionally, by +/+ and org unit; "-" signifies
+     the top of the org unit tree
+   * followed, optionally, by +/+ and org unit depth
+   * followed, optionally, by +/+ and a path. If the path
+     is +barcode+ and the class is +acp+, the record ID is taken
+     to be a copy barcode rather than a copy ID; for example, in
+     +tag::U2@acp/ACQ140{acn,bre,mra}/-/0/barcode+, +ACQ140+ is
+     meant to be a copy barcode.
+   * followed, optionally, by +&format=+ and the format in which the record
+     should be retrieved. If this part is omitted, the list of available 
+     formats will be retrieved. 
+
+
+
+
+New form/genre search and facet index
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The stock indexing definitions now include a search and facet index on the
+form/genre field (tag 655). This allows genre links in the public catalog
+record display to retrieve works in the same genre. The public catalog genre
+links will no longer display content from the 659 MARC fields. 
+
+The genre facet will also display by default in the public catalog.  A partial
+reingest during upgrade is required to use this index.
+
+
+
+
+Limit number of facets retrieved during search
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Catalog search now limits the number of facets retrieved
+per defined facet field. Setting a limit is useful so that
+`open-ils.cstore backends don't end up needlessly consuming
+memory when fetching facets for a large result set; if a broad
+search retrieves over 10,000 author facets (say), even the most
+persistant user is not going to actually look at all of them. Fetching
+fewer facets can also slightly speed up generation of search results.
+
+The limit is controlled by a new global flag, `search.max_facets_per_field`,
+whose label is "Search: maximum number of facet values to retrieve for
+each facet field".  The default limit value is 1,000, but lower values
+(e.g., 100) are perhaps even better for most catalogs.
+
+Significant bugfixes
+~~~~~~~~~~~~~~~~~~~~
+
+Add acquisitions cancel reason 85 for Baker & Taylor EDI
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Baker & Taylor send backs a quantity status code of 85
+when a line item is canceled when using EDI.  That code
+is now included in the system so those cancelations get 
+properly registered. 
+
+Self-check printing
+^^^^^^^^^^^^^^^^^^^
+Corrections were made to the self-check holds and fines printing
+functionality to so that the proper transactions can be printed.
+The change requires that the Self-Checkout Fines Receipt and
+Self-Checkout Holds Receipt action/trigger templates be updated
+in order to work properly. 
+
+Miscellaneous
+~~~~~~~~~~~~~
+
+* Copy records in the "Concerto" test data set now have prices.
+* The web-based self-check interface now displays the patron
+  information area only when a patron is logged in.
+* The progress page displayed by MARC Batch Edit is improved.
+* The public catalog now better handles the situation where
+  a patron who does not have an email address registered in
+  Evergreen tries to email a record.
+
+Bugs and enhancement requests closed in this release
+----------------------------------------------------
+
+* https://bugs.launchpad.net/bugs/838525[Bug 838525: Timestamp on dob can make date appear off by a day]
+* https://bugs.launchpad.net/bugs/963341[Bug 963341: Allow the JSPac and TPac to display both MFHD records and Serial Control/Alternate records,]
+* https://bugs.launchpad.net/bugs/1067823[Bug 1067823: tpac: genre links in record details page launch subject search]
+* https://bugs.launchpad.net/bugs/1164174[Bug 1164174: Add support for author/title series added entry]
+* https://bugs.launchpad.net/bugs/1175711[Bug 1175711: can't renew items on OPAC due to items being on Booking resource list]
+* https://bugs.launchpad.net/bugs/1197636[Bug 1197636: Email record detail does not check for email]
+* https://bugs.launchpad.net/bugs/1202742[Bug 1202742: Support alert/print message for transiting, non-active copies]
+* https://bugs.launchpad.net/bugs/1206936[Bug 1206936: money.transaction_billing_summary view displays incorrect billing_type and billing_note for the actual last transaction]
+* https://bugs.launchpad.net/bugs/1208613[Bug 1208613: Expand All button does not work past the 1st page when viewing a large picklist.]
+* https://bugs.launchpad.net/bugs/1229757[Bug 1229757: support distinct pop-up images for holds, transits, and hold transits]
+* https://bugs.launchpad.net/bugs/1240657[Bug 1240657: OpenILS::Application::Actor should check_perms for CREATE_CLOSED_DATE, not CREATE_CLOSEING]
+* https://bugs.launchpad.net/bugs/1251415[Bug 1251415: Use the juvenile setting when auto-removing juvenile flag.]
+* https://bugs.launchpad.net/bugs/1275118[Bug 1275118: Holds history displays canceled holds as active]
+* https://bugs.launchpad.net/bugs/1312699[Bug 1312699: Editable Checkout History]
+* https://bugs.launchpad.net/bugs/1319998[Bug 1319998: money.materialized_summary_billing_del() ADDS to balance_owed]
+* https://bugs.launchpad.net/bugs/1333254[Bug 1333254: EDI invoices automatically expend debits]
+* https://bugs.launchpad.net/bugs/1367926[Bug 1367926: Add support for (nearly) direct access to the full unapi backend]
+* https://bugs.launchpad.net/bugs/1370694[Bug 1370694: Selfcheck "Print List" for Holds view does not work]
+* https://bugs.launchpad.net/bugs/1371647[Bug 1371647: config.marc21_ff_pos_map needs an audit]
+* https://bugs.launchpad.net/bugs/1375043[Bug 1375043: Support for in-A/T telephony configuration]
+* https://bugs.launchpad.net/bugs/1380709[Bug 1380709: invoice print amounts-per-fund uses wrong value when item price varies]
+* https://bugs.launchpad.net/bugs/1384740[Bug 1384740: Add authority records support to marc stream importer (Connexion)]
+* https://bugs.launchpad.net/bugs/1391282[Bug 1391282: Default Action Trigger Templates  Updates]
+* https://bugs.launchpad.net/bugs/1392396[Bug 1392396: Wishlist: Action Trigger for new user creation]
+* https://bugs.launchpad.net/bugs/1402018[Bug 1402018: Acq Copy location UI scoped to registered workstation]
+* https://bugs.launchpad.net/bugs/1402770[Bug 1402770: Add column picker option for number of holds in item context]
+* https://bugs.launchpad.net/bugs/1406786[Bug 1406786: Merge parts functionality fails to preserve copy_part mapping]
+* https://bugs.launchpad.net/bugs/1422802[Bug 1422802: Parts need to be more visible on the place holds screen]
+* https://bugs.launchpad.net/bugs/1422932[Bug 1422932: TPAC: Holds history pager typo]
+* https://bugs.launchpad.net/bugs/1429268[Bug 1429268: Credit card payment fails on NULL mailing address]
+* https://bugs.launchpad.net/bugs/1452950[Bug 1452950: Angularize the patron editor]
+* https://bugs.launchpad.net/bugs/1454871[Bug 1454871: KPAC Hold Notifications - SMS]
+* https://bugs.launchpad.net/bugs/1454884[Bug 1454884: Hold placed on grouped metabib result displays wrong title]
+* https://bugs.launchpad.net/bugs/1464765[Bug 1464765: evergreen.lpad_number_substrings doesn't handle internal substring matches properly]
+* https://bugs.launchpad.net/bugs/1466173[Bug 1466173: Wishlist: Selfcheck Hide UI Elements until patron auth]
+* https://bugs.launchpad.net/bugs/1466990[Bug 1466990: Detailed search results shows parts for items that dont have parts]
+* https://bugs.launchpad.net/bugs/1468422[Bug 1468422: Improve Password Management and Authentication]
+* https://bugs.launchpad.net/bugs/1470957[Bug 1470957: Items are incorrectly sorting when using the Sort By Publication date feature]
+* https://bugs.launchpad.net/bugs/1474051[Bug 1474051: Avoid storing partial credit card payment info]
+* https://bugs.launchpad.net/bugs/1474455[Bug 1474455: Fixed navigation menu for the web client]
+* https://bugs.launchpad.net/bugs/1474566[Bug 1474566: Credit card API amount paid rounding error.]
+* https://bugs.launchpad.net/bugs/1482336[Bug 1482336: create_release_notes.sh include .adoc files]
+* https://bugs.launchpad.net/bugs/1483500[Bug 1483500: evergreen.lowercase needs test]
+* https://bugs.launchpad.net/bugs/1483506[Bug 1483506: public.first_agg needs test]
+* https://bugs.launchpad.net/bugs/1483508[Bug 1483508: public.text_concat needs tests]
+* https://bugs.launchpad.net/bugs/1486151[Bug 1486151: Modifying password regular expression in Library Settings Editor can cause helper on the Update Password page to be invalid]
+* https://bugs.launchpad.net/bugs/1486294[Bug 1486294: Add acquisitions data to the Concerto dataset]
+* https://bugs.launchpad.net/bugs/1486592[Bug 1486592: Copies in concerto data should have prices]
+* https://bugs.launchpad.net/bugs/1487527[Bug 1487527: TPAC: Provide shortcut for changing search scope]
+* https://bugs.launchpad.net/bugs/1491571[Bug 1491571: When circ.password_reset_request_requires_matching_email setting is true, email case must match in addition to content]
+* https://bugs.launchpad.net/bugs/1492793[Bug 1492793: Support for PostgreSQL Application Name Connection Options]
+* https://bugs.launchpad.net/bugs/1496837[Bug 1496837: xml-related test is invalid]
+* https://bugs.launchpad.net/bugs/1499123[Bug 1499123: Ability to Ignore Certain Standing Penalties Within a Proximity to the Patron's Home Library]
+* https://bugs.launchpad.net/bugs/1501471[Bug 1501471: fetching OU settings in batch can be made faster]
+* https://bugs.launchpad.net/bugs/1501516[Bug 1501516: Indicate whether a lineitem is fully paid/invoiced in PO list]
+* https://bugs.launchpad.net/bugs/1502152[Bug 1502152: Trap Warnings in marc_export for better error reporting]
+* https://bugs.launchpad.net/bugs/1504615[Bug 1504615: OPAC: Suggest record detail more useful when sorted by parts]
+* https://bugs.launchpad.net/bugs/1505286[Bug 1505286: set limit on facets retrieved during search]
+* https://bugs.launchpad.net/bugs/1506534[Bug 1506534: valid_z3950_attr_type check constraint can cause errors during pg_restore]
+* https://bugs.launchpad.net/bugs/1507845[Bug 1507845: Correct search engine optimization -- allow robots to crawl, but not index, results]
+* https://bugs.launchpad.net/bugs/1508477[Bug 1508477: browser client: hotkeys don't work if an input element has focus]
+* https://bugs.launchpad.net/bugs/1509479[Bug 1509479: infinite loop when parsing modified unclosed phrase search query]
+* https://bugs.launchpad.net/bugs/1510641[Bug 1510641: Cannot print PO without lineitems]
+* https://bugs.launchpad.net/bugs/1513554[Bug 1513554: It is possible to delete acq.cancel_reasons that are used by the system]
+* https://bugs.launchpad.net/bugs/1516022[Bug 1516022: reporting source for copy/hold ratio at pickup library and descendants]
+* https://bugs.launchpad.net/bugs/1516104[Bug 1516104: Wishlist: Additional Acq Toolbar Options]
+* https://bugs.launchpad.net/bugs/1516707[Bug 1516707: Relevance ranking deteriorates when phrases are added to search]
+* https://bugs.launchpad.net/bugs/1516757[Bug 1516757: SIP Date of Birth off by one day / parsed as UTC]
+* https://bugs.launchpad.net/bugs/1516867[Bug 1516867: HTML reports should be dynamically sortable]
+* https://bugs.launchpad.net/bugs/1519055[Bug 1519055: Simple checkbox to exclude electronic resources from search results]
+* https://bugs.launchpad.net/bugs/1519465[Bug 1519465: Purchase Orders with spaces in the name cause problems with EDI processing]
+* https://bugs.launchpad.net/bugs/1519911[Bug 1519911: Typo in seed data for hold cancel notification action triggers]
+* https://bugs.launchpad.net/bugs/1519925[Bug 1519925: Add UPC search to MARC Federated Search -  Native Evergreen option]
+* https://bugs.launchpad.net/bugs/1522538[Bug 1522538: Unexpected Journal Title Search Results when using second or third Search Input in Advanced Search]
+* https://bugs.launchpad.net/bugs/1522604[Bug 1522604: webclient: Red font to highlight Lost items in patron summary extends to Non-Cataloged label]
+* https://bugs.launchpad.net/bugs/1526543[Bug 1526543: Cannot disable password reset in TPAC]
+* https://bugs.launchpad.net/bugs/1526546[Bug 1526546: Parts do not sort correctly on Holdings Maintenance screen]
+* https://bugs.launchpad.net/bugs/1526547[Bug 1526547: Overdues adjusted via lost (or long overdue) processing get an incorrect note ("VOIDED FOR BACKDATE")]
+* https://bugs.launchpad.net/bugs/1527342[Bug 1527342: Maintain patron reading history in a dedicated table.]
+* https://bugs.launchpad.net/bugs/1528596[Bug 1528596: Another untrapped marc_export warning]
+* https://bugs.launchpad.net/bugs/1531976[Bug 1531976: Triggered Events UI not loading after visiting Message Center UI and vice-versa]
+* https://bugs.launchpad.net/bugs/1533329[Bug 1533329: Selectively disallow opt-in based on patron's home library]
+* https://bugs.launchpad.net/bugs/1533331[Bug 1533331: evergreen.protect_reserved_rows_from_delete() trigger function returning error]
+* https://bugs.launchpad.net/bugs/1538697[Bug 1538697: webclient: copy record does not save when changing stat cat entries]
+* https://bugs.launchpad.net/bugs/1539088[Bug 1539088: marc export should only print "Waiting for Input" when running interactively]
+* https://bugs.launchpad.net/bugs/1539776[Bug 1539776: webclient: Wrapping improvements for vol / copy editor]
+* https://bugs.launchpad.net/bugs/1544723[Bug 1544723: Add webstaff to update_pofiles]
+* https://bugs.launchpad.net/bugs/1545178[Bug 1545178: two dead methods for dealing with closed dates should be removed]
+* https://bugs.launchpad.net/bugs/1545226[Bug 1545226: MARC Batch Editor summary table html problems]
+* https://bugs.launchpad.net/bugs/1546125[Bug 1546125: Print Templates -&gt; Save Locally not working]
+* https://bugs.launchpad.net/bugs/1548143[Bug 1548143: Add Parts Support to Vandelay Item Import]
+* https://bugs.launchpad.net/bugs/1548147[Bug 1548147: Quick Export Feature for Vandelay Queues]
+* https://bugs.launchpad.net/bugs/1548869[Bug 1548869: KPAC - hold results screen not showing title]
+* https://bugs.launchpad.net/bugs/1549393[Bug 1549393: AddedContent: Invalid ISBN's are sent to Content Cafe as blank string]
+* https://bugs.launchpad.net/bugs/1550495[Bug 1550495: EDI Default Cancel Reason for Baker &amp; Taylor not included: Code 85]
+* https://bugs.launchpad.net/bugs/1551447[Bug 1551447: Selfcheck: Printing Fines Prints All Open Transactions]
+* https://bugs.launchpad.net/bugs/1552060[Bug 1552060: Persistent login no longer working in OPAC]
+* https://bugs.launchpad.net/bugs/1553813[Bug 1553813: Browser patron editor field validation and permission checks]
+* https://bugs.launchpad.net/bugs/1556339[Bug 1556339: API attempts to use nonexistent user_visible_circs method]
+* https://bugs.launchpad.net/bugs/1557525[Bug 1557525: Release Notes Omission]
+* https://bugs.launchpad.net/bugs/1557621[Bug 1557621: Verify password API fails on barcode; returns success on deleted users]
+* https://bugs.launchpad.net/bugs/1557683[Bug 1557683: Missing semicolon in 0953.function.unapi-bre.external-includes.sql]
+
+Acknowledgments
+---------------
+The Evergreen project would like to thank the following 
+individuals who contributed code, documentations patches and
+tests to this release of Evergreen:
+
+ * Thomas Berezansky
+ * Adam Bowling
+ * Jason Boyer
+ * Kate Butler
+ * Steven Callender
+ * Steven Chan
+ * Galen Charlton
+ * Mark Cooper
+ * Jeff Davis
+ * Martha Driscoll
+ * Bill Erickson
+ * Jason Etheridge
+ * Blake Henderson
+ * Pasi Kallinen
+ * Jake Litrell
+ * Kathy Lussier
+ * Terran McCanna
+ * Christine Morgan
+ * Dan Pearl
+ * Michael Peters
+ * Jennifer Pringle
+ * Mike Rylander
+ * Dan Scott
+ * Chris Sharp
+ * Ben Shum
+ * Remington Steed
+ * Jason Stephenson
+ * Josh Stompro
+ * Yamil Suarez
+ * Dan Wells
+ * Bob Wicksall
+
+We would also like to thank the following individuals who
+tested and signed off on patches:
+
+ * Christine Burns
+ * Andrea Neiman
+ * Erica Rohlfs
+
+We would also like to thank the following organizations who
+commissioned developments in this release of Evergreen:
+
+ * Linn Libraries Consortium
+ * King County Library System
+ * MassLNC
+
+We also thank the following organizations whose employees contributed
+to this release:
+
+ * BC Libraries Coooperative
+ * Berklee College of Music
+ * Bibliomation
+ * Calvin College
+ * CW/MARS
+ * Emerald Data
+ * Equinox Software
+ * Georgia Public Library Service
+ * Indiana State Library
+ * Kent County Public Library
+ * King County Library System
+ * Lake Agassiz Regional Library
+ * Laurentian University
+ * MassLNC
+ * MOBIUS
+ * MVLC
+ * NOBLE
+ * Rodgers Memorial Library
+ * Sigio
+
+We regret any omissions.  If a contributor has been inadvertantly
+missed, please open a bug at http://bugs.launchpad.net/evergreen/
+with a correction.
+
