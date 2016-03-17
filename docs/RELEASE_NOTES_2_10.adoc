@@ -991,13 +991,16 @@ tests to this release of Evergreen:
 We would also like to thank the following individuals who
 tested and signed off on patches:
 
- * Andrea Neiman
  * Christine Burns
+ * Andrea Neiman
+ * Erica Rohlfs
 
 We would also like to thank the following organizations who
 commissioned developments in this release of Evergreen:
 
- * **TO DO**
+ * Linn Libraries Consortium
+ * King County Library System
+ * MassLNC
 
 We also thank the following organizations whose employees contributed
 to this release:
@@ -1020,6 +1023,7 @@ to this release:
  * MVLC
  * NOBLE
  * Rodgers Memorial Library
+ * Sigio
 
 We regret any omissions.  If a contributor has been inadvertantly
 missed, please open a bug at http://bugs.launchpad.net/evergreen/
