@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2015-08-26 13:12-0400\n"
+"POT-Creation-Date: 2016-03-14 20:44-0400\n"
 "PO-Revision-Date: 2015-01-07 14:46+0000\n"
 "Last-Translator: Tobias Bannert <Unknown>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2015-08-27 05:14+0000\n"
-"X-Generator: Launchpad (build 17690)\n"
+"X-Launchpad-Export-Date: 2016-03-16 05:32+0000\n"
+"X-Generator: Launchpad (build 17947)\n"
 
 #: staff.circ.alert
 msgid "Alert"
@@ -1999,4 +1999,12 @@ msgstr ""
 
 #: staff.circ.missing_pieces.scan_item.error_alert
 msgid "No item with barcode \"%1$s\""
+msgstr ""
+
+#: staff.circ.utils.transit.copy_status_message.label
+msgid "Transit Copy Status Message"
+msgstr ""
+
+#: staff.circ.utils.transit.copy_status_message
+msgid "This item is in status %1$s, additional staff action may be required."
 msgstr ""
