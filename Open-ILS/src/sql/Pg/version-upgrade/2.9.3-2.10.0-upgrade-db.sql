@@ -2727,9 +2727,6 @@ INSERT INTO config.composite_attr_entry_definition
 (712, '[{"_attr":"item_form","_val":"s"},{"_attr":"item_form","_val":"o"}]');
 
 
---COMMIT;
---BEGIN;
-
 SELECT evergreen.upgrade_deps_block_check('0965', :eg_version);
 
 UPDATE action_trigger.event_definition SET template =
@@ -3103,8 +3100,6 @@ END;
 
 $func$ LANGUAGE PLPGSQL;
 
---COMMIT;
--- BEGIN;
 -- Correct SER and COM records, add most other subfields and make them usable as CCVMs
 
 SELECT evergreen.upgrade_deps_block_check('0967', :eg_version);
@@ -4523,9 +4518,6 @@ INSERT INTO action_trigger.environment (event_def, path) VALUES
     (CURRVAL('action_trigger.event_definition_id_seq'), 'home_ou.mailing_address'),
     (CURRVAL('action_trigger.event_definition_id_seq'), 'home_ou.billing_address');
 	
---COMMIT;
---BEGIN;
-
 SELECT evergreen.upgrade_deps_block_check('0969', :eg_version); -- jeffdavis/stompro
 
 INSERT INTO config.org_unit_setting_type
