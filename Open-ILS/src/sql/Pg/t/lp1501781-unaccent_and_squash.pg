@@ -1,0 +1,61 @@
+-- Start transaction and plan the tests.
+BEGIN;
+
+-- Number of tests that will be run
+SELECT plan(15);
+
+-- Run the tests
+
+SELECT isnt_empty(
+    'SELECT * FROM config.org_unit_setting_type WHERE name = $$circ.patron_search.diacritic_insensitive$$',
+    'circ.patron_search.diacritic_insensitive exists');
+
+SELECT has_index('actor', 'usr', 'actor_usr_first_given_name_unaccent_idx',
+                 'unaccent_and_squash(first_given_name)',
+                 'Index actor_usr_first_given_name_unaccent_idx exists');
+
+SELECT has_index('actor', 'usr', 'actor_usr_second_given_name_unaccent_idx',
+                 'unaccent_and_squash(second_given_name)',
+                 'Index actor_usr_second_given_name_unaccent_idx exists');
+
+SELECT has_index('actor', 'usr', 'actor_usr_family_name_unaccent_idx',
+                 'unaccent_and_squash(family_name)',
+                 'Index actor_usr_family_name_unaccent_idx exists');
+
+SELECT is(evergreen.unaccent_and_squash('aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ'),
+          'aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzz',
+          'English Characters');
+
+SELECT is(evergreen.unaccent_and_squash('0123456789!@#$%^&*()-+'),
+          '0123456789!@#$%^&*()-+', 'Numbers and Symbols');
+
+SELECT is(evergreen.unaccent_and_squash('ÁÉÍÑÓÚÜáéíñóúü¿¡'),
+          'aeinouuaeinouu¿¡', 'Spanish');
+
+SELECT is(evergreen.unaccent_and_squash('ÖÜÇĞŞöüçğşİI'),
+          'oucgsoucgsii', 'Turkish');
+
+SELECT is(evergreen.unaccent_and_squash('ÄÉÖÜ'),
+          'aeou', 'German');
+
+SELECT is(evergreen.unaccent_and_squash('АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ'),
+          'абвгдежзийклмнопрстуфхцчшщъыьэюя', 'Russian');
+
+SELECT is(evergreen.unaccent_and_squash('ÁĄÄÉĘĚÍÓÔÚŮÝČĹŇŔŘŠŽ'),
+          'aaaeeeioouuyclnrrsz', 'Czeck, Slovack & Slovenian');
+
+SELECT is(evergreen.unaccent_and_squash('Άά Έέ Ήή Ίί Όό Ύύ Ώώ'),
+          'άάέέήήίίόόύύώώ', 'Greek');
+
+SELECT is(evergreen.unaccent_and_squash('Jacques Bélanger'),
+          'jacquesbelanger', 'French nom and prénom');
+
+SELECT is(evergreen.unaccent_and_squash('El Niño'),
+          'elnino', 'Spanish "The Kid"');
+
+SELECT is(evergreen.unaccent_and_squash('Œuvres'),
+          'euvres', 'oe ligature');
+
+-- Finish the test and clean up.
+SELECT * FROM finish();
+ROLLBACK;
