@@ -5,11 +5,15 @@ use OpenSRF::Utils::Logger qw/:level/;
 use OpenSRF::Utils qw/:datetime/;
 use OpenILS::Utils::Fieldmapper;
 use OpenSRF::Utils::SettingsClient;
-
+use OpenILS::Application::AppUtils;
+use OpenSRF::Utils::JSON;
 use DateTime;           
 use DateTime::Format::ISO8601;  
 use DateTime::Set;
 use DateTime::SpanSet;
+
+my $U = "OpenILS::Application::AppUtils";
+my $JSON = "OpenSRF::Utils::JSON";
 
 my $_dt_parser = DateTime::Format::ISO8601->new;    
 
@@ -617,6 +621,15 @@ __PACKAGE__->register_method(
     NOTE
 );
 
+sub _prepare_name_argument {
+    # Get rid of extra spaces, accents, and regex characters
+    my ($search) = _clean_regex_chars(@_);
+    my $sth = actor::user->db_Main->prepare_cached("SELECT evergreen.unaccent_and_squash(?)");
+    $sth->execute($search);
+    my $r = $sth->fetch;
+    return ($r && @$r) ? $r->[0] : $search;
+};
+
 sub _clean_regex_chars {
     my ($search) = @_;
 
@@ -664,8 +677,23 @@ sub patron_search {
     # group 2 = phone, ident
     # group 3 = barcode
 
-    my $usr = join ' AND ', map { "evergreen.lowercase(CAST($_ AS text)) ~ ?" } grep { ''.$$search{$_}{group} eq '0' } keys %$search;
-    my @usrv = map { "^" . _clean_regex_chars($$search{$_}{value}) } grep { ''.$$search{$_}{group} eq '0' } keys %$search;
+    # Treatment of name fields depends on whether the org has 
+    # diacritic_insensitivity turned on or off.
+
+    my $diacritic_insensitive =  $U->ou_ancestor_setting_value($ws_ou, 'circ.patron_search.diacritic_insensitive');
+    # Parse from JSON to Perl boolean (1|0):
+    $diacritic_insensitive = ($diacritic_insensitive) ? $JSON->JSON2perl($diacritic_insensitive) : 0;
+    my $usr;
+    my @usrv;
+
+    if ($diacritic_insensitive) {
+       $usr = join ' AND ', map { "evergreen.unaccent_and_squash(CAST($_ AS text)) ~ ?" } grep { ''.$$search{$_}{group} eq '0' } keys %$search;
+       @usrv = map { "^" . _prepare_name_argument($$search{$_}{value}) } grep { ''.$$search{$_}{group} eq '0' } keys %$search;
+
+    } else {
+       $usr = join ' AND ', map { "evergreen.lowercase(CAST($_ AS text)) ~ ?" } grep { ''.$$search{$_}{group} eq '0' } keys %$search;
+       @usrv = map { "^" . _clean_regex_chars($$search{$_}{value}) } grep { ''.$$search{$_}{group} eq '0' } keys %$search;
+    }
 
     my $addr = join ' AND ', map { "evergreen.lowercase(CAST($_ AS text)) ~ ?" } grep { ''.$$search{$_}{group} eq '1' } keys %$search;
     my @addrv = map { "^" . _clean_regex_chars($$search{$_}{value}) } grep { ''.$$search{$_}{group} eq '1' } keys %$search;
@@ -712,7 +740,11 @@ sub patron_search {
     my @namev;
     if (0 && $nv) {
         for my $n ( qw/first_given_name second_given_name family_name/ ) {
-            push @ns, "evergreen.lowercase($n) ~ ?";
+            if ($diacritic_insensitive) {
+                push @ns, "evergreen.unaccent_and_squash($n) ~ ?";
+            } else {
+                push @ns, "evergreen.lowercase($n) ~ ?";
+            }
             push @namev, "^$nv";
         }
         $name = '(' . join(' OR ', @ns) . ')';
