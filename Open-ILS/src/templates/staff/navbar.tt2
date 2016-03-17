@@ -29,12 +29,11 @@
         class="glyphicon glyphicon-home"></a><li>
 
       <!-- search -->
-      <li class="dropdown">
-        <a href="javascript:;" class="dropdown-toggle"
-          data-toggle="dropdown">[% l('Search') %]
+      <li class="dropdown" uib-dropdown>
+        <a href uib-dropdown-toggle>[% l('Search') %]
           <b class="caret"></b>
         </a>
-        <ul class="dropdown-menu">
+        <ul uib-dropdown-menu>
           <li>
             <a href="./circ/patron/search" target="_self"
               eg-accesskey="[% l('alt+s') %]" 
@@ -64,13 +63,11 @@
 
 
       <!-- circulation -->
-      <li class="dropdown">
-        <a href="javascript:;" class="dropdown-toggle"
-          data-toggle="dropdown">[% l('Circulation') %]
-          <b class="caret"></b>
+      <li class="dropdown" uib-dropdown>
+        <a href uib-dropdown-toggle>[% l('Circulation') %]<b class="caret"></b>
         </a>
 
-        <ul class="dropdown-menu">
+        <ul uib-dropdown-menu>
           <li>
             <a href="./circ/patron/bcsearch" target="_self"
               eg-accesskey="[% l('f1') %]" 
@@ -173,12 +170,10 @@
       </li><!-- circ -->
 
       <!-- cataloging -->
-      <li class="dropdown">
-        <a href="javascript:;" class="dropdown-toggle" 
-          data-toggle="dropdown">[% l('Cataloging') %]
-            <b class="caret"></b>
+      <li class="dropdown" uib-dropdown>
+        <a href uib-dropdown-toggle>[% l('Cataloging') %]<b class="caret"></b>
         </a>
-        <ul class="dropdown-menu">
+        <ul uib-dropdown-menu>
           <li>
             <a href="./cat/catalog/index" target="_self">
               <span class="glyphicon glyphicon-search"></span>
@@ -263,12 +258,9 @@
       </li>
 
       <!-- admin -->
-      <li class="dropdown">
-        <a href="javascript:;" class="dropdown-toggle" 
-          data-toggle="dropdown">[% l('Administration') %]
-            <b class="caret"></b>
-        </a>
-        <ul class="dropdown-menu">
+      <li class="dropdown" uib-dropdown>
+        <a href uib-dropdown-toggle>[% l('Administration') %]<b class="caret"></b></a>
+        <ul uib-dropdown-menu>
           <li>
             <a href="./admin/workstation/index" target="_self">
               <span class="glyphicon glyphicon-hdd"></span>
@@ -303,12 +295,12 @@
       <!-- locale selector.  
         only shown if multiple locales are registered -->
       [% IF ctx.locales.keys.size > 1 %]
-      <li class="dropdown">
-        <a href='' class="dropdown-toggle" data-toggle="dropdown">
-            [% lcl = ctx.locale;  ctx.locales.$lcl %]
-            <span class="glyphicon glyphicon-flag"></span>
+      <li class="dropdown" uib-dropdown>
+        <a href uib-dropdown-toggle>
+          [% lcl = ctx.locale;  ctx.locales.$lcl %]
+          <span class="glyphicon glyphicon-flag"></span>
         </a>
-        <ul class="dropdown-menu">
+        <ul uib-dropdown-menu>
         [% FOR locale IN ctx.locales.keys.sort %]
           <!-- disable the selected locale -->
           <li ng-class="{disabled : '[% ctx.locale %]'=='[% locale %]'}">
@@ -321,10 +313,10 @@
       </li>
       [% END %]
 
-      <li class="dropdown" ng-show="username">
-        <a href='' class="dropdown-toggle glyphicon glyphicon-list" 
-          data-toggle="dropdown"></a>
-        <ul class="dropdown-menu">
+      <li class="dropdown" ng-show="username" uib-dropdown>
+        <a href class="glyphicon glyphicon-list" 
+          uib-dropdown-toggle></a>
+        <ul uib-dropdown-menu>
           <li class="disabled">
             <a href="" ng-click="" target="_self">
               <span class="glyphicon glyphicon-random"></span>
