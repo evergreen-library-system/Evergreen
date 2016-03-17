@@ -3,15 +3,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > cat.properties.po\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-27 11:41-0400\n"
-"PO-Revision-Date: 2012-05-15 06:22+0000\n"
-"Last-Translator: Yves MATHIEU <MisterY_vonvon@hotmail.com>\n"
+"POT-Creation-Date: 2016-03-14 20:44-0400\n"
+"PO-Revision-Date: 2015-11-20 20:25+0000\n"
+"Last-Translator: jplemoine <untoutseul05@free.fr>\n"
 "Language-Team: NRCan Library\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2015-08-07 05:35+0000\n"
-"X-Generator: Launchpad (build 17656)\n"
+"X-Launchpad-Export-Date: 2016-03-16 05:31+0000\n"
+"X-Generator: Launchpad (build 17947)\n"
 "X-Poedit-Country: Canada\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: French\n"
@@ -43,7 +43,7 @@ msgstr "Retourne %1$s visites"
 
 #: staff.cat.bib_brief.record_id
 msgid "Database ID = %1$s"
-msgstr ""
+msgstr "ID base de données = %1$s"
 
 #: staff.cat.bib_brief.deleted
 msgid "(Deleted)"
@@ -234,6 +234,7 @@ msgstr "%1$s"
 #: staff.cat.edit_volume.exception
 msgid "An error occurred while you were trying to edit these volumes."
 msgstr ""
+"Une erreur s'est produite alors que vous tentiez de modifier ces volumes"
 
 #: staff.cat.copy_browser.can_have_copies.false
 msgid "Records from %1$s cannot have copies."
@@ -278,7 +279,7 @@ msgstr ""
 
 #: staff.cat.copy_browser.delete_volume.copies_remain.cancel
 msgid "Cancel Delete"
-msgstr ""
+msgstr "Annumer la suppression"
 
 #: staff.cat.copy_browser.delete_volume.exception
 msgid "copy browser -> delete volumes"
@@ -773,7 +774,7 @@ msgstr "<Enlever catégories statistiques>"
 
 #: staff.cat.copy_editor.remove_age_based_hold_protection
 msgid "<Remove Protection>"
-msgstr "<Enlever protection>"
+msgstr "<Supprimer la protection>"
 
 #: staff.cat.copy_editor.remove_circulate_as_type
 msgid "<Remove Circulate as Type>"
