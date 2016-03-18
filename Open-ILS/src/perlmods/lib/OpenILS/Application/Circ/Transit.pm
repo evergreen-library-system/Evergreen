@@ -239,20 +239,24 @@ sub __abort_transit {
         return $e->die_event unless $e->allowed('ABORT_REMOTE_TRANSIT', $e->requestor->ws_ou);
     }
 
-    # recover the copy status
-    $copy->status( $transit->copy_status );
-    $copy->editor( $e->requestor->id );
-    $copy->edit_date('now');
-
     my $holdtransit = $e->retrieve_action_hold_transit_copy($transit->id);
 
-    if( $holdtransit ) {
-        $logger->info("setting copy to reshelving on hold transit abort");
-        $copy->status( OILS_COPY_STATUS_RESHELVING );
+    return $e->die_event unless $e->delete_action_transit_copy($transit);
+
+    # Only change the copy status if the copy status is "In Transit."
+    if ($copy->status == OILS_COPY_STATUS_IN_TRANSIT) {
+        # recover the copy status
+        $copy->status( $transit->copy_status );
+        $copy->editor( $e->requestor->id );
+        $copy->edit_date('now');
+
+        if ( $holdtransit ) {
+            $logger->info("setting copy to reshelving on hold transit abort");
+            $copy->status( OILS_COPY_STATUS_RESHELVING );
+        }
+        return $e->die_event unless $e->update_asset_copy($copy);
     }
 
-    return $e->die_event unless $e->delete_action_transit_copy($transit);
-    return $e->die_event unless $e->update_asset_copy($copy);
 
     $e->commit unless $no_commit;
 
