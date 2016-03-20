@@ -9,8 +9,8 @@ angular.module('egInHouseUseApp',
 })
 
 .controller('InHouseUseCtrl',
-       ['$scope','egCore','egGridDataProvider','egConfirmDialog',
-function($scope,  egCore,  egGridDataProvider , egConfirmDialog) {
+       ['$scope','egCore','egGridDataProvider','egConfirmDialog', 'egAlertDialog',
+function($scope,  egCore,  egGridDataProvider , egConfirmDialog, egAlertDialog) {
 
     var countCap;
     var countMax;
@@ -31,11 +31,17 @@ function($scope,  egCore,  egGridDataProvider , egConfirmDialog) {
         
         egCore.org.settings([
             'ui.circ.in_house_use.entry_cap',
-            'ui.circ.in_house_use.entry_warn'
+            'ui.circ.in_house_use.entry_warn',
+            'circ.in_house_use.copy_alert',
+            'circ.in_house_use.checkin_alert'
         ]).then(function(set) {
             countWarn = set['ui.circ.in_house_use.entry_warn'] || 20;
             $scope.countMax = countMax = 
                 set['ui.circ.in_house_use.entry_cap'] || 99;
+            $scope.copyAlert = copyAlert =
+                set['circ.in_house_use.copy_alert'] || false;
+            $scope.checkinAlert = checkinAlert =
+                set['circ.in_house_use.checkin_alert'] || false;
         });
     });
 
@@ -85,6 +91,16 @@ function($scope,  egCore,  egGridDataProvider , egConfirmDialog) {
                 }
 
                 coArgs.copyid = copy.id();
+
+                // LP1507807: Display the copy alert if the setting is on.
+                if ($scope.copyAlert && copy.alert_message()) {
+                    egAlertDialog.open(copy.alert_message()).result;
+                }
+
+                // LP1507807: Display the location alert if the setting is on.
+                if ($scope.checkinAlert && copy.location().checkin_alert() == 't') {
+                    egAlertDialog.open(egCore.strings.LOCATION_ALERT_MSG, {copy: copy}).result;
+                }
 
                 performCheckout(
                     'open-ils.circ.in_house_use.create',

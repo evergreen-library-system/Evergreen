@@ -8,6 +8,7 @@
 [% BLOCK APP_JS %]
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/services/grid.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/services/ui.js"></script>
+[% INCLUDE 'staff/circ/share/circ_strings.tt2' %]
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/in_house_use/app.js"></script>
 [% END %]
 
