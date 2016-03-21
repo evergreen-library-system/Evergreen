@@ -1,5 +1,0 @@
-Self-Check Printing
-^^^^^^^^^^^^^
-Corrections were made to the Self-Check Holds functionality to allow 
-printing. The change requires that the Self-Checkout Holds Receipt 
-action trigger template be updated in order to work properly. 
