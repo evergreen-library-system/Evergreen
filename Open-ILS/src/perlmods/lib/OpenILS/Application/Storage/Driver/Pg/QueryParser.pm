@@ -85,15 +85,24 @@ sub quote_phrase_value {
 
     my $left_anchored = '';
     my $right_anchored = '';
+    my $left_wb = 0;
+    my $right_wb = 0;
+
     $left_anchored  = $1 if $value =~ m/^([*\^])/;
     $right_anchored = $1 if $value =~ m/([*\$])$/;
+
+    # We can't use word-boundary bracket expressions if the relevant char
+    # is not actually a "word" characters.
+    $left_wb  = $wb if $value =~ m/^\w+/;
+    $right_wb = $wb if $value =~ m/\w+$/;
+
     $value =~ s/^[*\^]//   if $left_anchored;
     $value =~ s/[*\$]$//  if $right_anchored;
     $value = quotemeta($value);
     $value = '^' . $value if $left_anchored eq '^';
     $value = "$value\$"   if $right_anchored eq '$';
-    $value = '[[:<:]]' . $value if $wb && !$left_anchored;
-    $value .= '[[:>:]]' if $wb && !$right_anchored;
+    $value = '[[:<:]]' . $value if $left_wb && !$left_anchored;
+    $value .= '[[:>:]]' if $right_wb && !$right_anchored;
     return $self->quote_value($value);
 }
 
