@@ -1,10 +1,35 @@
-Evergreen 2.10.0 Release Notes
+Evergreen 2.10.1 Release Notes
 ==============================
 :toc:
 :numbered:
 
-Upgrade notes
--------------
+Evergreen 2.10.1
+----------------
+
+Evergreen 2.10.1 is a bugfix release that fixes one significant
+bug in 2.10.0:
+
+* https://bugs.launchpad.net/bugs/1560174[Bug 1560174: Importing MARC records can fail in database upgraded to 2.10.0]
+
+This bug affected only databases that were upgraded to 2.10.0 from a
+previous version; fresh installations of 2.10.0 are not affected.
+
+Evergreen users who prefer not to perform a full upgrade from 2.10.0
+to 2.10.1 can fix the bug by applying the database update script
+`2.10.0-2.10.1-upgrade-db.sql` (found in the source directory
+`Open-ILS/src/sql/Pg/version-upgrade`).
+
+Evergreen 2.10.1 Acknowledgments
+--------------------------------
+The Evergreen project would like to thank the following 
+individuals who contributed code and testing to this release
+of Evergreen:
+
+ * Galen Charlton
+ * Dan Wells
+
+Evergreen 2.10.0 Upgrade notes
+------------------------------
 
 * Support for PostgreSQL 9.1 is deprecated as of
   the release of Evergreen 2.10.0. Users are recommended
@@ -19,8 +44,8 @@ Upgrade notes
   changes to `opensrf.xml` in order for users to be able
   log in.
 
-New Features
-------------
+Evergreen 2.10.0 New Features
+-----------------------------
 
 
 
@@ -949,8 +974,8 @@ Miscellaneous
   a patron who does not have an email address registered in
   Evergreen tries to email a record.
 
-Bugs and enhancement requests closed in this release
-----------------------------------------------------
+Evergreen 2.10.0 bugs closed
+----------------------------
 
 * https://bugs.launchpad.net/bugs/838525[Bug 838525: Timestamp on dob can make date appear off by a day]
 * https://bugs.launchpad.net/bugs/963341[Bug 963341: Allow the JSPac and TPac to display both MFHD records and Serial Control/Alternate records,]
@@ -1055,8 +1080,8 @@ Bugs and enhancement requests closed in this release
 * https://bugs.launchpad.net/bugs/1557621[Bug 1557621: Verify password API fails on barcode; returns success on deleted users]
 * https://bugs.launchpad.net/bugs/1557683[Bug 1557683: Missing semicolon in 0953.function.unapi-bre.external-includes.sql]
 
-Acknowledgments
----------------
+Evergreen 2.10.0 Acknowledgments
+--------------------------------
 The Evergreen project would like to thank the following 
 individuals who contributed code, documentations patches and
 tests to this release of Evergreen:
