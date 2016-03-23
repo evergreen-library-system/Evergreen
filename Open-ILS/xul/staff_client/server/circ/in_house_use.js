@@ -292,6 +292,16 @@ circ.in_house_use.prototype = {
                     [ ses(), { 'copyid' : copy.id(), 'location' : obj.data.list.au[0].ws_ou(), 'count' : multiplier } ]
                 );
 
+                // LP1507807: Display the copy alert if the setting is on.
+                if (obj.data.hash.aous['circ.in_house_use.copy_alert'] && copy.alert_message()) {
+                    alert(copy.alert_message());
+                }
+
+                // LP1507807: Display the location alert if the setting is on.
+                if (obj.data.hash.aous['circ.in_house_use.checkin_alert'] && isTrue(copy.location().checkin_alert())) {
+                    alert(document.getElementById('circStrings').getFormattedString('staff.circ.utils.route_to.msg', [copy.location().name()]));
+                }
+
             } else {
                 var result = obj.network.simple_request('FM_ANCIHU_CREATE',
                     [ ses(), { 'non_cat_type' : obj.controller.view.in_house_use_menu.value, 'location' : obj.data.list.au[0].ws_ou(), 'count' : multiplier } ]
