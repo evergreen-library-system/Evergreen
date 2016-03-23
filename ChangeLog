@@ -1,3 +1,107 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit d4116821ce6859526cdf95f137cfb5b61f7368fc
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Tue Mar 22 22:27:04 2016 -0400
+
+    update upgrade instructions for 2.10.1
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+18	16	docs/installation/server_upgrade.txt
+
+commit eca371a1e696e0807ca83ecb662653dbdcb61487
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Tue Mar 22 22:24:33 2016 -0400
+
+    release notes for Evergreen 2.10.1
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+34	9	docs/RELEASE_NOTES_2_10.adoc
+
+commit 187410760e0c56b617a4ed1badb4b8624dacef32
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Tue Mar 22 21:51:39 2016 -0400
+
+    2.10.0 - 2.10.1 schema update script
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+413	0	Open-ILS/src/sql/Pg/version-upgrade/2.10.0-2.10.1-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.10.0-2.10.1-upgrade-db.sql
+
+commit 764f29998c54973f1b338da6b7b36651c262b069
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Mon Mar 21 17:49:15 2016 -0400
+
+    LP#1560174 Stamping upgrade script
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+409	0	Open-ILS/src/sql/Pg/upgrade/0975.schema.fix_vandelay_stored_procs.sql
+0	409	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.fix_vandelay_stored_procs.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0975.schema.fix_vandelay_stored_procs.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.fix_vandelay_stored_procs.sql
+
+commit a11eaabdec82e1e4fe95271a09fb989ed52e1ba7
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Mon Mar 21 15:23:42 2016 -0400
+
+    LP#1560174: fix MARC import for database upgraded to 2.10.0
+    
+    This patch applies the correct version of the vandelay.ingest_items()
+    stored procedure introduced in the patch for bug 1548143.
+    
+    To test
+    -------
+    [1] Upgrade an Evergreen database to 2.10.0 (a fresh database
+        will not run into the bug).
+    [2] Try importing a MARC bib record via Vandelay using a profile
+        that imports items.  This should fail.
+    [3] Apply the schema update in this patch.
+    [4] Repeat step 2; this time, the import should succeed.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+409	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.fix_vandelay_stored_procs.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.fix_vandelay_stored_procs.sql
+
+commit 7b37221dac66eb8dcef6a4ef8f41ec00f2ce267d
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Mon Mar 14 20:50:25 2016 -0400
+
+    Translation updates - newpot
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+3	3	build/i18n/po/cat.properties/cat.properties.pot
+10	3	build/i18n/po/circ.properties/circ.properties.pot
+3	3	build/i18n/po/common.properties/common.properties.pot
+5876	2564	build/i18n/po/db.seed/db.seed.pot
+2599	2543	build/i18n/po/fm_IDL.dtd/fm_IDL.dtd.pot
+25	24	build/i18n/po/lang.dtd/lang.dtd.pot
+6	3	build/i18n/po/patron.properties/patron.properties.pot
+185	123	build/i18n/po/tpac/tpac.pot
+640	206	build/i18n/po/webstaff/webstaff.pot
+
+commit 0743d8fbd68089780d59b9725a8ebd9a75e14a57
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Thu Mar 17 18:46:02 2016 -0400
+
+    forward-port 2.9.3-2.10.0 monolithic DB update script
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+4645	0	Open-ILS/src/sql/Pg/version-upgrade/2.9.3-2.10.0-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.9.3-2.10.0-upgrade-db.sql
+
+commit 39b1b170039353aa9f9aca472114bc3c7f51139e
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Thu Mar 17 18:50:40 2016 -0400
+
+    forward-port the 2.10.0 upgrade instructions
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+25	22	docs/installation/server_upgrade.txt
