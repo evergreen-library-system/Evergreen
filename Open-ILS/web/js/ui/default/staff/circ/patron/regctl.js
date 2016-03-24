@@ -125,6 +125,16 @@ angular.module('egCoreMod')
     }
 
     service.check_dupe_username = function(usrname) {
+
+        // empty usernames can't be dupes
+        if (!usrname) return $q.when(false);
+
+        // avoid dupe check if username matches the originally loaded usrname
+        if (service.existing_patron) {
+            if (usrname == service.existing_patron.usrname())
+                return $q.when(false);
+        }
+
         return egCore.net.request(
             'open-ils.actor',
             'open-ils.actor.username.exists',
@@ -572,6 +582,8 @@ angular.module('egCoreMod')
      * 3. Bools must be Boolean, not t/f.
      */
     service.init_existing_patron = function(current) {
+
+        service.existing_patron = current;
 
         var patron = egCore.idl.toHash(current);
 
