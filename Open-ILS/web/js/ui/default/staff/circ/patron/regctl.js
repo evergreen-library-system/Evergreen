@@ -1172,7 +1172,9 @@ function PatronRegCtrl($scope, $routeParams,
         $scope.page_data_loaded = true;
 
         prs.set_field_patterns(field_patterns);
+        apply_username_regex();
     });
+
 
     // update the currently displayed field documentation
     $scope.set_selected_field_doc = function(cls, field) {
@@ -1362,10 +1364,9 @@ function PatronRegCtrl($scope, $routeParams,
             'open-ils.actor.barcode.exists',
             egCore.auth.token(), bc
         ).then(function(resp) {
-            if (resp == '1') {
+            if (resp == '1') { // duplicate card
                 $scope.dupe_barcode = true;
                 console.log('duplicate barcode detected: ' + bc);
-                // DUPLICATE CARD
             } else {
                 if (!$scope.patron.usrname)
                     $scope.patron.usrname = bc;
@@ -1555,6 +1556,27 @@ function PatronRegCtrl($scope, $routeParams,
         egUnloadPrompt.attach($scope);
     }
 
+    // username regex (if present) must be removed any time
+    // the username matches the barcode to avoid firing the
+    // invalid field handlers.
+    function apply_username_regex() {
+        var regex = $scope.org_settings['opac.username_regex'];
+        if (regex) {
+            if ($scope.patron.card.barcode) {
+                // username must match the regex or the barcode
+                field_patterns.au.usrname = 
+                    new RegExp(
+                        regex + '|^' + $scope.patron.card.barcode + '$');
+            } else {
+                // username must match the regex
+                field_patterns.au.usrname = new RegExp(regex);
+            }
+        } else {
+            // username can be any format.
+            field_patterns.au.usrname = new RegExp('.*');
+        }
+    }
+
     // obj could be the patron, an address, etc.
     // This is called any time a form field achieves then loses focus.
     // It does not necessarily mean the field has changed.
@@ -1611,6 +1633,7 @@ function PatronRegCtrl($scope, $routeParams,
             case 'barcode':
                 // TODO: finish barcode_changed handler.
                 $scope.barcode_changed(value);
+                apply_username_regex();
                 break;
 
             case 'dob':
