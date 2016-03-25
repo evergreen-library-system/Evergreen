@@ -120,15 +120,18 @@ sub _prepare_biblio_search {
     return () unless $query;
 
     # sort is treated specially, even though it's actually a filter
-    if ($cgi->param('sort')) {
+    if (defined($cgi->param('sort'))) {
         $query =~ s/sort\([^\)]*\)//g;  # override existing sort(). no stacking.
         my ($axis, $desc) = split /\./, $cgi->param('sort');
-        $query = "sort($axis) $query";
+        $query = "sort($axis) $query" if $axis;
         if ($desc and not $query =~ /\#descending/) {
             $query = "#descending $query";
         } elsif (not $desc) {
             $query =~ s/\#descending//;
         }
+        # tidy up
+        $query =~ s/^\s+//;
+        $query =~ s/\s+$//;
     }
 
     my (@naive_query_re, $site);
