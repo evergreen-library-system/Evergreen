@@ -1,0 +1,18 @@
+Display Copy Alerts With In-House-Use
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Two library settings are used to control the display of copy alert
+messages or copy location check in alerts when recording in-house-use
+in Evergreen.
+
+Setting 'Display copy alert for in-house-use' to true for an
+organization will cause an alert to appear with the copy's alert
+message, if it has one, when recording in-house-use for the copy.
+
+Setting 'Display copy location check in alert for in-house-use' to true
+for an organization will cause an alert to display a message
+indicating that the item needs to be routed to its location if the
+location has check in alert set to true.
+
+The settings are independent of one another because you may want to
+display one and not the other when recording in-house-use.
