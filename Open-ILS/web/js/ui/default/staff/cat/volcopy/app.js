@@ -240,9 +240,9 @@ function(egCore , $q) {
         service.copies.push(cp);
     }
 
-    service.checkDuplicateBarcode = function(bc) {
+    service.checkDuplicateBarcode = function(bc, id) {
         var final = false;
-        return egCore.pcrud.search('acp', { deleted : 'f', 'barcode' : bc })
+        return egCore.pcrud.search('acp', { deleted : 'f', 'barcode' : bc, id : { '!=' : id } })
             .then(
                 function () { return final },
                 function () { return final },
@@ -281,6 +281,7 @@ function(egCore , $q) {
         cp.opac_visible('t');
         cp.ref('f');
         cp.mint_condition('t');
+        cp.empty_barcode = true;
 
         var status_setting = isFastAdd ?
             'cat.default_copy_status_fast' :
@@ -328,20 +329,20 @@ function(egCore , $q) {
                 $scope.duplicate_barcode_string = window.duplicate_barcode_string;
                 $scope.empty_barcode_string = window.empty_barcode_string;
 
+                if (!$scope.copy.barcode()) $scope.copy.empty_barcode = true;
+
                 $scope.nextBarcode = function (i) {
                     $scope.focusNext(i, $scope.barcode);
                 }
 
                 $scope.updateBarcode = function () {
                     if ($scope.barcode != '') {
-                        $scope.empty_barcode = false;
+                        $scope.copy.empty_barcode = $scope.empty_barcode = false;
                         $scope.barcode_has_error = !Boolean(itemSvc.checkBarcode($scope.barcode));
-                        if ($scope.copy.isnew()) {
-                            itemSvc.checkDuplicateBarcode($scope.barcode)
-                            .then(function (state) { $scope.duplicate_barcode = state });
-                        }
+                        itemSvc.checkDuplicateBarcode($scope.barcode, $scope.copy.id())
+                            .then(function (state) { $scope.copy.duplicate_barcode = $scope.duplicate_barcode = state });
                     } else {
-                        $scope.empty_barcode = true;
+                        $scope.copy.empty_barcode = $scope.empty_barcode = true;
                     }
                         
                     $scope.copy.barcode($scope.barcode);
@@ -427,6 +428,7 @@ function(egCore , $q) {
         controller : ['$scope','itemSvc','egCore',
             function ( $scope , itemSvc , egCore ) {
                 $scope.callNumber =  $scope.copies[0].call_number();
+                if (!$scope.callNumber.label()) $scope.callNumber.emtpy_label = true;
 
                 $scope.empty_label = false;
                 $scope.empty_label_string = window.empty_label_string;
@@ -557,9 +559,9 @@ function(egCore , $q) {
 
                 $scope.updateLabel = function () {
                     if ($scope.label == '') {
-                        $scope.empty_label = true;
+                        $scope.callNumber.empty_label = $scope.empty_label = true;
                     } else {
-                        $scope.empty_label = false;
+                        $scope.callNumber.empty_label = $scope.empty_label = false;
                     }
                     angular.forEach($scope.copies, function(cp) {
                         cp.call_number().label($scope.label);
@@ -1208,6 +1210,25 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
             $scope.data = itemSvc;
             $scope.workingGridDataProvider.refresh();
         });
+
+        $scope.can_save = false;
+        function check_saveable () {
+            var can_save = true;
+            angular.forEach(
+                itemSvc.copies,
+                function (i) {
+                    if (i.duplicate_barcode || i.empty_barcode || i.call_number().empty_label)
+                        can_save = false;
+                }
+            );
+
+            $scope.can_save = can_save;
+        }
+
+        $scope.disableSave = function () {
+            check_saveable();
+            return !$scope.can_save;
+        }
 
         $scope.focusNextFirst = function(prev_lib,prev_bc) {
             var n;

@@ -15,7 +15,7 @@
     </button>
     <ul class="dropdown-menu scrollable-menu">
       <li ng-repeat="item in menuItems | filter : { standalone : 'false' }" ng-class="{divider: item.divider}">
-        <a ng-if="!item.divider" href ng-disabled="item.disabled"
+        <a ng-if="!item.divider" href a-disabled="item.disabled()"
           ng-click="item.handler()">{{item.label}}</a>
       </li>
     </ul>
