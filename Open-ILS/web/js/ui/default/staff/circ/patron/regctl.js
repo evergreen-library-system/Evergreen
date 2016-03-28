@@ -1309,6 +1309,14 @@ function PatronRegCtrl($scope, $routeParams, $q, $modal, $window, egCore,
     // when the patron is updated.
     deleted_addresses = [];
     $scope.delete_address = function(id) {
+
+        if ($scope.patron.isnew &&
+            $scope.patron.addresses.length == 1 &&
+            $scope.org_settings['ui.patron.registration.require_address']) {
+            egAlertDialog.open(egCore.strings.REG_ADDR_REQUIRED);
+            return;
+        }
+
         var addresses = [];
         angular.forEach($scope.patron.addresses, function(addr) {
             if (addr.id == id) {
