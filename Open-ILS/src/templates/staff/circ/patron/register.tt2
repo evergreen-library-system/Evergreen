@@ -14,6 +14,8 @@ angular.module('egCoreMod').run(['egStrings', function(s) {
   s.REG_ADDR_TYPE = "[% l('Mailing') %]";
   s.REG_INVALID_FIELDS = 
     "[% l('Please enter valid values for all required fields.') %]"
+  s.REG_ADDR_REQUIRED = 
+    "[% l('An address is required during registration.') %]"
 }]);
 </script>
 <link rel="stylesheet" href="[% ctx.base_path %]/staff/css/circ.css" />
