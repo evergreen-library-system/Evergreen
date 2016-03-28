@@ -1199,7 +1199,8 @@ function PatronRegCtrl($scope, $routeParams, $q, $modal, $window, egCore,
     // 3 == value universally required
     // 2 == field is visible by default
     // 1 == field is suggested by default
-    var field_visibility = {
+    var field_visibility = {};
+    var default_field_visibility = {
         'ac.barcode' : 3,
         'au.usrname' : 3,
         'au.passwd' :  3,
@@ -1224,15 +1225,16 @@ function PatronRegCtrl($scope, $routeParams, $q, $modal, $window, egCore,
         'surveys' : 1
     }; 
 
-    // returns true if the selected field should be visible
+    // Returns true if the selected field should be visible
     // given the current required/suggested/all setting.
+    // The visibility flag applied to each field as a result of calling
+    // this function also sets (via the same flag) the requiredness state.
     $scope.show_field = function(field_key) {
+        // org settings have not been received yet.
+        if (!$scope.org_settings) return false;
 
         if (field_visibility[field_key] == undefined) {
             // compile and cache the visibility for the selected field
-
-            // org settings have not been received yet.
-            if (!$scope.org_settings) return false;
 
             var req_set = 'ui.patron.edit.' + field_key + '.require';
             var sho_set = 'ui.patron.edit.' + field_key + '.show';
@@ -1240,13 +1242,21 @@ function PatronRegCtrl($scope, $routeParams, $q, $modal, $window, egCore,
 
             if ($scope.org_settings[req_set]) {
                 field_visibility[field_key] = 3;
+
             } else if ($scope.org_settings[sho_set]) {
                 field_visibility[field_key] = 2;
+
             } else if ($scope.org_settings[sug_set]) {
                 field_visibility[field_key] = 1;
-            } else {
-                field_visibility[field_key] = 0;
             }
+        }
+
+        if (field_visibility[field_key] == undefined) {
+            // No org settings were applied above.  Use the default
+            // settings if present or assume the field has no
+            // visibility flags applied.
+            field_visibility[field_key] = 
+                default_field_visibility[field_key] || 0;
         }
 
         return field_visibility[field_key] >= $scope.edit_passthru.vis_level;
