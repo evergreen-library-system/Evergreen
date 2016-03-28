@@ -276,7 +276,14 @@ within the "form" by name for validation.
 
 <div class="row reg-field-row" ng-show="show_field('au.juvenile')">
   [% draw_field_label('au', 'juvenile') %]
-  [% draw_form_input('au', 'juvenile', '', 'checkbox'); %]
+  <div class="col-md-3 reg-field-input">
+    <div class='checkbox'>
+      <input 
+        ng-change="field_modified()" 
+        ng-blur="handle_field_changed(patron, 'juvenile')"
+        type='checkbox' ng-model="patron.juvenile"/>
+    </div>
+  </div>
 </div>
 
 <!-- ident_type -->
@@ -457,21 +464,42 @@ within the "form" by name for validation.
 
 <div class="row reg-field-row" ng-show="show_field('au.active')">
   [% draw_field_label('au', 'active') %]
-  [% draw_form_input('au', 'active', '', 'checkbox') %]
+  <div class="col-md-3 reg-field-input">
+    <div class='checkbox'>
+      <input 
+        ng-change="field_modified()" 
+        ng-blur="handle_field_changed(patron, 'active')"
+        type='checkbox' ng-model="patron.active"/>
+    </div>
+  </div>
 </div>
 
 <!-- BARRED -->
 
 <div class="row reg-field-row" ng-show="show_field('au.barred')">
   [% draw_field_label('au', 'barred') %]
-  [% draw_form_input('au', 'barred', '', 'checkbox') %]
+  <div class="col-md-3 reg-field-input">
+    <div class='checkbox'>
+      <input 
+        ng-change="field_modified()" 
+        ng-blur="handle_field_changed(patron, 'barred')"
+        type='checkbox' ng-model="patron.barred"/>
+    </div>
+  </div>
 </div>
 
 <!-- MASTER_ACCOUNT -->
 
 <div class="row reg-field-row" ng-show="show_field('au.master_account')">
   [% draw_field_label('au', 'master_account') %]
-  [% draw_form_input('au', 'master_account', '', 'checkbox') %]
+  <div class="col-md-3 reg-field-input">
+    <div class='checkbox'>
+      <input 
+        ng-change="field_modified()" 
+        ng-blur="handle_field_changed(patron, 'master_account')"
+        type='checkbox' ng-model="patron.master_account"/>
+    </div>
+  </div>
 </div>
 
 <!-- CLAIMS_RETURNED_COUNT -->
@@ -755,7 +783,15 @@ within the "form" by name for validation.
 
   <div class="row reg-field-row" ng-show="show_field('aua.valid')">
     [% draw_field_label('aua', 'valid') %]
-    [% draw_form_input('aua', 'valid', 'addresses[$index]', 'checkbox') %]
+    <div class="col-md-3 reg-field-input">
+      <div class='checkbox'>
+        <input 
+          type='checkbox' 
+          ng-change="field_modified()" 
+          ng-blur="handle_field_changed(patron.addresses[$index], 'valid')"
+          ng-model="patron.addresses[$index].valid"/>
+      </div>
+    </div>
     <div class="col-md-6 patron-reg-example">
       [% draw_example_text('aua', 'valid') %]
     </div>
@@ -765,7 +801,15 @@ within the "form" by name for validation.
 
   <div class="row reg-field-row" ng-show="show_field('aua.within_city_limits')">
     [% draw_field_label('aua', 'within_city_limits') %]
-    [% draw_form_input('aua', 'within_city_limits', 'addresses[$index]', 'checkbox') %]
+    <div class="col-md-3 reg-field-input">
+      <div class='checkbox'>
+        <input 
+          type='checkbox' 
+          ng-change="field_modified()" 
+          ng-blur="handle_field_changed(patron.addresses[$index], 'within_city_limits')"
+          ng-model="patron.addresses[$index].within_city_limits"/>
+      </div>
+    </div>
     <div class="col-md-6 patron-reg-example">
       [% draw_example_text('aua', 'within_city_limits') %]
     </div>
