@@ -44,6 +44,8 @@ angular.module('egCoreMod').run(['egStrings', function(s) {
   s.RENEW_ITEMS = "[% l('Renew Items?') %]";
   s.RENEW_ALL_ITEMS = "[% l('Renew All Items?') %]";
   s.CHECK_IN_CONFIRM = "[% l('Check In Items?') %]";
+  s.REG_INVALID_FIELDS = 
+    "[% l('Please enter valid values for all required fields.') %]"
 }]);
 </script>
 
