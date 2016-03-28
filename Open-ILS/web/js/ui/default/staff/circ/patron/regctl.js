@@ -1047,8 +1047,8 @@ angular.module('egCoreMod')
 }]);
 
 
-function PatronRegCtrl($scope, $routeParams, 
-    $q, $modal, $window, egCore, patronSvc, patronRegSvc, egUnloadPrompt) {
+function PatronRegCtrl($scope, $routeParams, $q, $modal, $window, egCore, 
+    patronSvc, patronRegSvc, egUnloadPrompt, egAlertDialog) {
 
     $scope.page_data_loaded = false;
     $scope.clone_id = patronRegSvc.clone_id = $routeParams.clone_id;
@@ -1669,26 +1669,35 @@ function PatronRegCtrl($scope, $routeParams,
         );
     }
 
+    // Returns true if the Save and Save & Clone buttons should be disabled.
+    $scope.edit_passthru.hide_save_actions = function() {
+        return $scope.patron.isnew ?
+            !$scope.perms.CREATE_USER : 
+            !$scope.perms.UPDATE_USER;
+    }
+
     // Returns true if any input elements are tagged as invalid
-    $scope.edit_passthru.has_invalid_fields = function() {
+    // via Angular patterns or required attributes.
+    function form_has_invalid_fields() {
         return $('#patron-reg-container .ng-invalid').length > 0;
     }
 
-    // Returns true if the Save and Save & Clone buttons should be disabled.
-    $scope.edit_passthru.hide_save_actions = function() {
-        var can_save = $scope.patron.isnew ?
-            $scope.perms.CREATE_USER : $scope.perms.UPDATE_USER;
-
+    function form_is_incomplete() {
         return (
-            !can_save ||
             $scope.dupe_username ||
             $scope.dupe_barcode ||
-            $scope.edit_passthru.has_invalid_fields()
+            form_has_invalid_fields()
         );
+
     }
 
     $scope.edit_passthru.save = function(save_args) {
         if (!save_args) save_args = {};
+
+        if (form_is_incomplete()) {
+            // User has not provided valid values for all required fields.
+            return egAlertDialog.open(egCore.strings.REG_INVALID_FIELDS);
+        }
 
         // remove page unload warning prompt
         egUnloadPrompt.clear();
@@ -1758,5 +1767,5 @@ function PatronRegCtrl($scope, $routeParams,
 // This controller may be loaded from different modules (patron edit vs.
 // register new patron), so we have to inject the controller params manually.
 PatronRegCtrl.$inject = ['$scope', '$routeParams', '$q', '$modal', 
-    '$window', 'egCore', 'patronSvc', 'patronRegSvc', 'egUnloadPrompt'];
+    '$window', 'egCore', 'patronSvc', 'patronRegSvc', 'egUnloadPrompt', 'egAlertDialog'];
 
