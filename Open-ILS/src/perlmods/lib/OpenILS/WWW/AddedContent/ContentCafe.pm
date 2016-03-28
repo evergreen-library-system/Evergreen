@@ -9,6 +9,10 @@ use XML::LibXML;
 use MIME::Base64;
 use DateTime;
 
+# Hack country_data to allow B&T fake ISBNs LP#1559281
+$Business::ISBN::country_data{630} = ['B&T' => ['0000000' => '9999999']];
+$Business::ISBN::country_data{631} = ['B&T' => ['0000000' => '9999999']];
+
 my $AC = 'OpenILS::WWW::AddedContent';
 
 my $post_url = 'http://contentcafe2.btol.com/ContentCafe/ContentCafe.asmx/XmlPost';
