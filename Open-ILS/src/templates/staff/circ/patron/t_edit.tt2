@@ -703,7 +703,8 @@ within the "form" by name for validation.
   <!-- ADDRESS_TYPE -->
   <div class="row reg-field-row" ng-show="show_field('aua.address_type')">
     [% draw_field_label('aua', 'address_type') %]
-    [% draw_form_input('aua', 'address_type', 'addresses[$index]') %]
+    [% draw_form_input('aua', 
+      'address_type', 'addresses[$index]', '', 'addr._linked_owner') %]
     <div class="col-md-6 patron-reg-example">
       [% draw_example_text('aua', 'address_type') %]
     </div>
@@ -713,7 +714,8 @@ within the "form" by name for validation.
 
   <div class="row reg-field-row" ng-show="show_field('aua.post_code')">
     [% draw_field_label('aua', 'post_code') %]
-    [% draw_form_input('aua', 'post_code', 'addresses[$index]') %]
+    [% draw_form_input('aua', 
+      'post_code', 'addresses[$index]', '', 'addr._linked_owner') %]
     <div class="col-md-6 patron-reg-example">
       [% draw_example_text('aua', 'post_code') %]
     </div>
@@ -723,7 +725,8 @@ within the "form" by name for validation.
 
   <div class="row reg-field-row" ng-show="show_field('aua.street1')">
     [% draw_field_label('aua', 'street1') %]
-    [% draw_form_input('aua', 'street1', 'addresses[$index]') %]
+    [% draw_form_input('aua', 
+      'street1', 'addresses[$index]', '', 'addr._linked_owner') %]
     <div class="col-md-6 patron-reg-example">
       [% draw_example_text('aua', 'street1') %]
     </div>
@@ -733,7 +736,8 @@ within the "form" by name for validation.
 
   <div class="row reg-field-row" ng-show="show_field('aua.street2')">
     [% draw_field_label('aua', 'street2') %]
-    [% draw_form_input('aua', 'street2', 'addresses[$index]') %]
+    [% draw_form_input('aua', 
+      'street2', 'addresses[$index]', '', 'addr._linked_owner') %]
     <div class="col-md-6 patron-reg-example">
       [% draw_example_text('aua', 'street2') %]
     </div>
@@ -743,7 +747,8 @@ within the "form" by name for validation.
 
   <div class="row reg-field-row" ng-show="show_field('aua.city')">
     [% draw_field_label('aua', 'city') %]
-    [% draw_form_input('aua', 'city', 'addresses[$index]') %]
+    [% draw_form_input('aua', 
+      'city', 'addresses[$index]', '', 'addr._linked_owner') %]
     <div class="col-md-6 patron-reg-example">
       [% draw_example_text('aua', 'city') %]
     </div>
@@ -753,7 +758,8 @@ within the "form" by name for validation.
 
   <div class="row reg-field-row" ng-show="show_field('aua.county')">
     [% draw_field_label('aua', 'county') %]
-    [% draw_form_input('aua', 'county', 'addresses[$index]') %]
+    [% draw_form_input('aua', 
+      'county', 'addresses[$index]', '', 'addr._linked_owner') %]
     <div class="col-md-6 patron-reg-example">
       [% draw_example_text('aua', 'county') %]
     </div>
@@ -763,7 +769,8 @@ within the "form" by name for validation.
 
   <div class="row reg-field-row" ng-show="show_field('aua.state')">
     [% draw_field_label('aua', 'state') %]
-    [% draw_form_input('aua', 'state', 'addresses[$index]') %]
+    [% draw_form_input('aua', 
+      'state', 'addresses[$index]', '', 'addr._linked_owner') %]
     <div class="col-md-6 patron-reg-example">
       [% draw_example_text('aua', 'state') %]
     </div>
@@ -773,7 +780,8 @@ within the "form" by name for validation.
 
   <div class="row reg-field-row" ng-show="show_field('aua.country')">
     [% draw_field_label('aua', 'country') %]
-    [% draw_form_input('aua', 'country', 'addresses[$index]') %]
+    [% draw_form_input('aua', 
+      'country', 'addresses[$index]', '', 'addr._linked_owner') %]
     <div class="col-md-6 patron-reg-example">
       [% draw_example_text('aua', 'country') %]
     </div>
@@ -788,6 +796,7 @@ within the "form" by name for validation.
         <input 
           type='checkbox' 
           ng-change="field_modified()" 
+          ng-disabled='addr._linked_owner'
           ng-blur="handle_field_changed(patron.addresses[$index], 'valid')"
           ng-model="patron.addresses[$index].valid"/>
       </div>
@@ -806,6 +815,7 @@ within the "form" by name for validation.
         <input 
           type='checkbox' 
           ng-change="field_modified()" 
+          ng-disabled='addr._linked_owner'
           ng-blur="handle_field_changed(patron.addresses[$index], 'within_city_limits')"
           ng-model="patron.addresses[$index].within_city_limits"/>
       </div>
