@@ -815,14 +815,14 @@ within the "form" by name for validation.
     </div>
   </div>
 
-  <div class="row" ng-if="$last">
-    <button type="button" ng-click="new_address()" 
-      class="btn btn-success">[% l('New Address') %]</button>
-  </div>
-
   <!-- pending address -->
 
 </div> <!-- addresses -->
+
+<div class="row">
+  <button type="button" ng-click="new_address()" 
+    class="btn btn-success">[% l('New Address') %]</button>
+</div>
 
 <div class="alert alert-success row" role="alert" 
     ng-show="show_field('stat_cats')" ng-if="stat_cats.length > 0">
