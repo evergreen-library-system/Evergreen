@@ -1672,7 +1672,7 @@ sub find_event_def_by_hook {
     for my $org_id (reverse @$orgs) {
 
         my $def = $e->search_action_trigger_event_definition(
-            {hook => $hook, owner => $org_id})->[0];
+            {hook => $hook, owner => $org_id, active => 't'})->[0];
 
         return $def if $def;
     }
