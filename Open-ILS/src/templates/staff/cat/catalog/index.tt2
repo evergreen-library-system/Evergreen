@@ -34,6 +34,20 @@
       "[% l('One or more items could not be transferred. Override?') %]";                                                                                                    
     s.OVERRIDE_TRANSFER_COPIES_TO_MARKED_VOLUME_BODY =                                                                                                            
       "[% l('Reason(s) include: [_1]', '{{evt_desc}}') %]";                
+    s.VOLS_TRANSFERED =                                                                                                            
+      "[% l('Volume(s) transfered') %]";                
+    s.ITEMS_TRANSFERED =                                                                                                            
+      "[% l('Item(s) transfered') %]";                
+    s.HOLD_TRANSFER_DEST_MARKED =                                                                                                            
+      "[% l('Hold Transfer Destination set') %]";                
+    s.MARK_CONJ_TARGET =                                                                                                            
+      "[% l('Conjoined Item Target set') %]";                
+    s.MARK_VOL_TARGET =                                                                                                            
+      "[% l('Volume Transfer Target set') %]";                
+    s.MARK_ITEM_TARGET =                                                                                                            
+      "[% l('Item Transfer Target set') %]";                
+    s.MARK_OVERLAY_TARGET =                                                                                                            
+      "[% l('Record Overlay Target set') %]";                
   }])
 </script>
 

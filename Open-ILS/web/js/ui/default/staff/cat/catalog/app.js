@@ -7,7 +7,14 @@
  *
  */
 
-angular.module('egCatalogApp', ['ui.bootstrap','ngRoute','ngLocationUpdate','egCoreMod','egGridMod', 'egMarcMod', 'egUserMod', 'egHoldingsMod'])
+angular.module('egCatalogApp', ['ui.bootstrap','ngRoute','ngLocationUpdate','egCoreMod','egGridMod', 'egMarcMod', 'egUserMod', 'egHoldingsMod', 'ngToast'])
+
+.config(['ngToastProvider', function(ngToastProvider) {
+  ngToastProvider.configure({
+    verticalPosition: 'bottom',
+    animation: 'fade'
+  });
+}])
 
 .config(function($routeProvider, $locationProvider, $compileProvider) {
     $locationProvider.html5Mode(true);
@@ -230,9 +237,9 @@ function($scope , $routeParams , $location , $window , $q , egCore) {
 }])
 
 .controller('CatalogCtrl',
-       ['$scope','$routeParams','$location','$window','$q','egCore','egHolds','egCirc','egConfirmDialog',
+       ['$scope','$routeParams','$location','$window','$q','egCore','egHolds','egCirc','egConfirmDialog','ngToast',
         'egGridDataProvider','egHoldGridActions','$timeout','$modal','holdingsSvc','egUser','conjoinedSvc',
-function($scope , $routeParams , $location , $window , $q , egCore , egHolds , egCirc,  egConfirmDialog,
+function($scope , $routeParams , $location , $window , $q , egCore , egHolds , egCirc , egConfirmDialog , ngToast ,
          egGridDataProvider , egHoldGridActions , $timeout , $modal , holdingsSvc , egUser , conjoinedSvc) {
 
     var holdingsSvcInst = new holdingsSvc();
@@ -343,9 +350,11 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
     $scope.markConjoined = function () {
         $scope.current_conjoined_target = $scope.record_id;
         egCore.hatch.setLocalItem('eg.cat.marked_conjoined_record',$scope.record_id);
+        ngToast.create(egCore.strings.MARK_CONJ_TARGET);
     };
 
     $scope.markVolTransfer = function () {
+        ngToast.create(egCore.strings.MARK_VOL_TARGET);
         $scope.current_voltransfer_target = $scope.record_id;
         egCore.hatch.setLocalItem('eg.cat.marked_volume_transfer_record',$scope.record_id);
     };
@@ -353,6 +362,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
     $scope.markOverlay = function () {
         $scope.current_overlay_target = $scope.record_id;
         egCore.hatch.setLocalItem('eg.cat.marked_overlay_record',$scope.record_id);
+        ngToast.create(egCore.strings.MARK_OVERLAY_TARGET);
     };
 
     $scope.clearRecordMarks = function () {
@@ -993,6 +1003,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
                 'eg.cat.item_transfer_target',
                 $scope.holdingsGridControls.selectedItems()[0].call_number.id
             );
+            ngToast.create(egCore.strings.MARK_ITEM_TARGET);
         }
     }
 
@@ -1026,6 +1037,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
             'eg.cat.volume_transfer_target',
             $scope.holdingsGridControls.selectedItems()[0].owner_id
         );
+        ngToast.create(egCore.strings.MARK_VOL_TARGET);
     }
 
     $scope.selectedHoldingsItemStatusDetail = function (){
@@ -1068,6 +1080,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         });
         $q.all(promises).then(function(success) {
             if (success) {
+                ngToast.create(egCore.strings.VOLS_TRANSFERED);
                 holdingsSvcInst.fetchAgain().then(function() {
                     $scope.holdingsGridDataProvider.refresh();
                 });
@@ -1091,6 +1104,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
                 }
             ).then(function(success) {
                 if (success) {
+                    ngToast.create(egCore.strings.VOLS_TRANSFERED);
                     holdingsSvcInst.fetchAgain().then(function() {
                         $scope.holdingsGridDataProvider.refresh();
                     });
@@ -1155,6 +1169,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
             }));
         });
         $q.all(promises).then(function() {
+            ngToast.create(egCore.strings.ITEMS_TRANSFERED);
             holdingsSvcInst.fetchAgain().then(function() {
                 $scope.holdingsGridDataProvider.refresh();
             });
@@ -1194,6 +1209,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
                             });
                         });
                     } else {
+                        ngToast.create(egCore.strings.ITEMS_TRANSFERED);
                         holdingsSvcInst.fetchAgain().then(function() {
                             $scope.holdingsGridDataProvider.refresh();
                         });
@@ -1373,6 +1389,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
     $scope.mark_hold_transfer_dest = function() {
         egCore.hatch.setLocalItem(
             'eg.circ.hold.title_transfer_target', $scope.record_id);
+        ngToast.create(egCore.strings.HOLD_TRANSFER_DEST_MARKED);
     }
 
     // UI presents this option as "all holds"
