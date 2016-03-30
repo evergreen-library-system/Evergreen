@@ -30,6 +30,7 @@
     "angular-location-update": "./extern/angular-location-update/",
     "angular-file-saver": "~1.0.2",
     "ngtoast": "~2.0.0",
-    "angular-tree-control": "~0.2.23"
+    "angular-tree-control": "~0.2.23",
+    "angular-animate": "~1.5.3"
   }
 }

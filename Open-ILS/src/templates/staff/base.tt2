@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="[% ctx.base_path %]/staff/css/print.css" type="text/css" media="print" />
   </head>
   <body>
+    <toast></toast>
 
     <!-- load the navbar template inline since it's used on every page -->
     <script type="text/ng-template" id="eg-navbar-template">

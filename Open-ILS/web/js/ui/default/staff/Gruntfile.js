@@ -17,6 +17,10 @@ module.exports = function(grunt) {
           src: [
             'bower_components/angular/angular.min.js',
             'bower_components/angular/angular.min.js.map',
+            'bower_components/angular-animate/angular-animate.min.js',
+            'bower_components/angular-animate/angular-animate.min.js.map',
+            'bower_components/angular-sanitize/angular-sanitize.min.js',
+            'bower_components/angular-sanitize/angular-sanitize.min.js.map',
             'bower_components/angular-route/angular-route.min.js',
             'bower_components/angular-route/angular-route.min.js.map',
             'bower_components/angular-bootstrap/ui-bootstrap.min.js',
@@ -92,6 +96,8 @@ module.exports = function(grunt) {
             // The order is important.
             'build/js/jquery.min.js',
             'build/js/angular.min.js',
+            'build/js/angular-animate.min.js',
+            'build/js/angular-sanitize.min.js',
             'build/js/angular-route.min.js',
             'build/js/ui-bootstrap.min.js',
             'build/js/ui-bootstrap-tpls.min.js',
