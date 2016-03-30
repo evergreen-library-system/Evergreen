@@ -1325,8 +1325,7 @@ CREATE TABLE action.usr_circ_history (
     usr          INTEGER NOT NULL REFERENCES actor.usr(id)
                  DEFERRABLE INITIALLY DEFERRED,
     xact_start   TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
-    target_copy  BIGINT NOT NULL REFERENCES asset.copy(id)
-                 DEFERRABLE INITIALLY DEFERRED,
+    target_copy  BIGINT NOT NULL,
     due_date     TIMESTAMP WITH TIME ZONE NOT NULL,
     checkin_time TIMESTAMP WITH TIME ZONE,
     source_circ  BIGINT REFERENCES action.circulation(id)

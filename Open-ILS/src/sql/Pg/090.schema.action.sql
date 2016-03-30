@@ -1311,13 +1311,16 @@ CREATE TABLE action.usr_circ_history (
     usr          INTEGER NOT NULL REFERENCES actor.usr(id)
                  DEFERRABLE INITIALLY DEFERRED,
     xact_start   TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
-    target_copy  BIGINT NOT NULL REFERENCES asset.copy(id)
-                 DEFERRABLE INITIALLY DEFERRED,
+    target_copy  BIGINT NOT NULL, -- asset.copy.id / serial.unit.id
     due_date     TIMESTAMP WITH TIME ZONE NOT NULL,
     checkin_time TIMESTAMP WITH TIME ZONE,
     source_circ  BIGINT REFERENCES action.circulation(id)
                  ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED
 );
+
+CREATE TRIGGER action_usr_circ_history_target_copy_trig 
+    AFTER INSERT OR UPDATE ON action.usr_circ_history 
+    FOR EACH ROW EXECUTE PROCEDURE evergreen.fake_fkey_tgr('target_copy');
 
 CREATE OR REPLACE FUNCTION action.maintain_usr_circ_history() 
     RETURNS TRIGGER AS $FUNK$
