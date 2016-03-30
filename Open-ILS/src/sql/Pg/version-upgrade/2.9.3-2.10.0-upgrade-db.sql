@@ -1527,6 +1527,14 @@ BEGIN
 
         FOR cur_circ IN SELECT * FROM action.usr_visible_circs(cur_usr) LOOP
 
+            PERFORM TRUE FROM asset.copy WHERE id = cur_circ.target_copy;
+
+            -- Avoid inserting a circ history row when the circulated
+            -- item has been (forcibly) removed from the database.
+            IF NOT FOUND THEN
+                CONTINUE;
+            END IF;
+
             -- Find the last circ in the circ chain.
             SELECT INTO last_circ * 
                 FROM action.circ_chain(cur_circ.id) 
