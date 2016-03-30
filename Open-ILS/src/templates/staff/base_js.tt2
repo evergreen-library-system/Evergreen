@@ -10,6 +10,8 @@
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/hotkeys.min.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/angular-file-saver.bundle.min.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/angular-location-update.min.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/ngToast.min.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/angular-tree-control.js"></script>
 
 <!-- IDL / opensrf (network) -->
 <script src="[% ctx.media_prefix %]/js/dojo/opensrf/JSON_v1.js"></script>

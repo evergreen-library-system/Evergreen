@@ -24,6 +24,8 @@ module.exports = function(grunt) {
             'bower_components/angular-hotkeys/build/hotkeys.min.js',
             'bower_components/angular-file-saver/dist/angular-file-saver.bundle.min.js',
             'bower_components/angular-location-update/angular-location-update.min.js',
+            'bower_components/angular-tree-control/angular-tree-control.js',
+            'bower_components/ngtoast/dist/ngToast.min.js',
             'bower_components/jquery/dist/jquery.min.js',
           ]
         }]
@@ -37,7 +39,11 @@ module.exports = function(grunt) {
           expand : true,
           src : [
             'bower_components/angular-hotkeys/build/hotkeys.min.css',
-            'bower_components/bootstrap/dist/css/bootstrap.min.css' 
+            'bower_components/bootstrap/dist/css/bootstrap.min.css', 
+            'bower_components/ngtoast/dist/ngToast.min.css',
+            'bower_components/ngtoast/dist/ngToast-animations.min.css',
+            'bower_components/angular-tree-control/css/tree-control.css',
+            'bower_components/angular-tree-control/css/tree-control-attribute.css',
           ]
         }]
       },
@@ -65,7 +71,11 @@ module.exports = function(grunt) {
         files: {
           'build/css/evergreen-staff-client-deps.<%= pkg.version %>.min.css' : [
             'build/css/hotkeys.min.css',
-            'build/css/bootstrap.min.css'
+            'build/css/bootstrap.min.css',
+            'build/css/ngToast.min.css',
+            'build/css/ngToast-animations.min.css',
+            'build/css/tree-control.css',
+            'build/css/tree-control-attribute.css',
           ]
         }
       }
@@ -86,6 +96,8 @@ module.exports = function(grunt) {
             'build/js/ui-bootstrap.min.js',
             'build/js/ui-bootstrap-tpls.min.js',
             'build/js/hotkeys.min.js',
+            'build/js/angular-tree-control.js',
+            'build/js/ngToast.min.js',
             // NOTE: OpenSRF must be installed
             '/openils/lib/javascript/JSON_v1.js',
             '/openils/lib/javascript/opensrf.js',

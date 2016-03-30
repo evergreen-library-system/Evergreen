@@ -11,6 +11,10 @@
     [% IF EXPAND_WEB_IMPORTS %]
     <link rel="stylesheet" href="[% WEB_BUILD_PATH %]/css/bootstrap.min.css" />
     <link rel="stylesheet" href="[% WEB_BUILD_PATH %]/css/hotkeys.min.css" />
+    <link rel="stylesheet" href="[% WEB_BUILD_PATH %]/css/ngToast.min.css" />
+    <link rel="stylesheet" href="[% WEB_BUILD_PATH %]/css/ngToast-animations.min.css" />
+    <link rel="stylesheet" href="[% WEB_BUILD_PATH %]/css/tree-control.css" />
+    <link rel="stylesheet" href="[% WEB_BUILD_PATH %]/css/tree-control-attribute.css" />
     [% ELSE %]
     <link rel="stylesheet" href="[% WEB_BUILD_PATH %]/css/evergreen-staff-client-deps.[% EVERGREEN_VERSION %].min.css" />
     [% END %]
