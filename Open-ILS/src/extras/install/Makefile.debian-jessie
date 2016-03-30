@@ -53,6 +53,8 @@ export DEBS = \
 	libnspr4-dev\
 	libole-storage-lite-perl\
 	libparent-perl\
+	libpcre3\
+	libpcre3-dev\
 	libpq5\
 	libpq-dev\
 	librpc-xml-perl\
