@@ -15,6 +15,7 @@ angular.module('egCoreMod')
         restrict : 'AE',
         replace : true,
         templateUrl : 'eg-status-bar-template',
+        scope : { },
         controller : [
                     '$scope','$rootScope','egHatch',
             function($scope , $rootScope , egHatch) {
@@ -49,7 +50,7 @@ angular.module('egCoreMod')
             }
 
             $rootScope.$on('egStatusBarMessage', function(evt, args) {
-                $scope.messages.unshift(args.message);
+                $scope.messages.unshift(args);
 
                 // ensure the list does not exceed 10 messages
                 // TODO: configurable?
