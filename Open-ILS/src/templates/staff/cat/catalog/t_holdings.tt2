@@ -83,7 +83,7 @@
 
     <eg-grid-action handler="transferVolumesToRecord" group="[% l('Transfer') %]"
       label="[% l('Volumes to Previously Marked Record') %]"></eg-grid-action>
-    <eg-grid-action handler="transferVolumes" group="[% l('Transfer') %]"
+    <eg-grid-action handler="transferVolumesLibrary" group="[% l('Transfer') %]"
       label="[% l('Volumes to Previously Marked Library') %]"></eg-grid-action>
     <eg-grid-action handler="transferVolumesToRecordAndLibrary" group="[% l('Transfer') %]"
       label="[% l('Volumes to Previously Marked Record and Library') %]"></eg-grid-action>

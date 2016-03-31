@@ -1090,7 +1090,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         });
     }
 
-    $scope.transferVolumes = function (new_record){
+    function transferVolumes(new_record){
         var xfer_target = egCore.hatch.getLocalItem('eg.cat.volume_transfer_target');
 
         if (xfer_target) {
@@ -1116,10 +1116,14 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         
     }
 
+    $scope.transferVolumesToLibrary = function() {
+        transferVolumes();
+    }
+
     $scope.transferVolumesToRecordAndLibrary = function() {
         var target_record = egCore.hatch.getLocalItem('eg.cat.marked_volume_transfer_record');
         if (!target_record) return;
-        $scope.transferVolumes(target_record);
+        transferVolumes(target_record);
     }
 
     // this "transfers" selected copies to a new owning library,
