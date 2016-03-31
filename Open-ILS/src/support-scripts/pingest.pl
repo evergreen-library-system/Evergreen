@@ -37,6 +37,7 @@ my $start_id;     # start processing at this bib ID.
 my $end_id;       # stop processing when this bib ID is reached.
 my $max_duration; # max processing duration in seconds
 my $help;         # show help text
+my $opt_pipe;     # Read record ids from STDIN.
 
 GetOptions(
     'batch-size=i'   => \$batch_size,
@@ -47,6 +48,7 @@ GetOptions(
     'skip-facets'    => \$skip_facets,
     'start-id=i'     => \$start_id,
     'end-id=i'       => \$end_id,
+    'pipe'           => \$opt_pipe,
     'max-duration=i' => \$max_duration,
     'help'           => \$help
 );
@@ -75,6 +77,10 @@ sub help {
     --end-id
         Stop processing when this record ID is reached
 
+    --pipe
+        Read record IDs to reingest from standard input.
+        This option conflicts with --start-id and/or --end-id.
+
     --max-duration
         Stop processing after this many total seconds have passed.
 
@@ -86,6 +92,12 @@ HELP
 }
 
 help() if $help;
+
+# Check for mutually exclusive options:
+if ($opt_pipe && ($start_id || $end_id)) {
+    warn('Mutually exclusive options');
+    help();
+}
 
 my $where = "WHERE deleted = 'f'";
 if ($start_id && $end_id) {
@@ -130,9 +142,21 @@ sub duration_expired {
 # connect to your database.
 my $dbh = DBI->connect('DBI:Pg:');
 
-my $results = $dbh->selectall_arrayref($q);
-foreach my $r (@$results) {
-    my $record = $r->[0];
+# Get the input records from either standard input or the database.
+my @input;
+if ($opt_pipe) {
+    while (<STDIN>) {
+        # Want only numbers, one per line.
+        if ($_ =~ /([0-9]+)/) {
+            push(@input, $1);
+        }
+    }
+} else {
+    @input = ($dbh->selectall_arrayref($q));
+}
+
+foreach my $r (@input) {
+    my $record = (ref($r)) ? $r->[0] : $r;
     push(@blist, $record); # separate list of browse-only ingest
     push(@$records, $record);
     if (++$count == $batch_size) {
