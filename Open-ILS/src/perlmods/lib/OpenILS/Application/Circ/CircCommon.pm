@@ -234,7 +234,7 @@ sub extend_grace_period {
             $logger->info( "Circ lib has an hours-of-operation entry and grace period extension is enabled." );
 
             my $closed = 0;
-            my %h_closed = {};
+            my %h_closed;
             for my $i (0 .. 6) {
                 my $dow_open = "dow_${i}_open";
                 my $dow_close = "dow_${i}_close";
