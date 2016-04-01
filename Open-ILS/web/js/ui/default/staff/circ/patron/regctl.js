@@ -611,6 +611,19 @@ angular.module('egCoreMod')
         angular.forEach(patron.addresses, 
             function(addr) { service.ingest_address(patron, addr) });
 
+        // Remove stat cat entries that link to out-of-scope stat
+        // cats.  With this, we avoid unnecessarily updating (or worse,
+        // modifying) stat cat values that are not ours to modify.
+        patron.stat_cat_entries = patron.stat_cat_entries.filter(
+            function(map) {
+                return Boolean(
+                    // service.stat_cats only contains in-scope stat cats.
+                    service.stat_cats.filter(function(cat) { 
+                        return (cat.id() == map.stat_cat.id) })[0]
+                );
+            }
+        );
+
         // toss entries for existing stat cat maps into our living 
         // stat cat entry map, which is modified within the template.
         angular.forEach(patron.stat_cat_entries, function(map) {
