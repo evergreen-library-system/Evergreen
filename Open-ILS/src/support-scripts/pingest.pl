@@ -140,7 +140,6 @@ sub duration_expired {
 #
 # 2) edit the DBI->connect() calls in this program so that it can
 # connect to your database.
-my $dbh = DBI->connect('DBI:Pg:');
 
 # Get the input records from either standard input or the database.
 my @input;
@@ -152,7 +151,9 @@ if ($opt_pipe) {
         }
     }
 } else {
+    my $dbh = DBI->connect('DBI:Pg:');
     @input = @{$dbh->selectall_arrayref($q)};
+    $dbh->disconnect();
 }
 
 foreach my $r (@input) {
@@ -167,7 +168,6 @@ foreach my $r (@input) {
 }
 $lol[$lists++] = $records if ($count); # Last batch is likely to be
                                        # small.
-$dbh->disconnect();
 
 # We're going to reuse $count to keep track of the total number of
 # batches processed.
