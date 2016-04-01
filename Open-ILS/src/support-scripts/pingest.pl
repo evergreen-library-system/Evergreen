@@ -152,7 +152,7 @@ if ($opt_pipe) {
         }
     }
 } else {
-    @input = ($dbh->selectall_arrayref($q));
+    @input = @{$dbh->selectall_arrayref($q)};
 }
 
 foreach my $r (@input) {
