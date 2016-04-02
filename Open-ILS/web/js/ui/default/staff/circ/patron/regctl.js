@@ -67,6 +67,23 @@ angular.module('egCoreMod')
         });
     }
 
+    // When editing a user with addresses linked to other users, fetch
+    // the linked user(s) so we can display their names and edit links.
+    service.get_linked_addr_users = function(addrs) {
+        angular.forEach(addrs, function(addr) {
+            if (addr.usr == service.existing_patron.id()) return;
+            egCore.pcrud.retrieve('au', addr.usr)
+            .then(function(usr) {
+                addr._linked_owner_id = usr.id();
+                addr._linked_owner = service.format_name(
+                    usr.family_name(),
+                    usr.first_given_name(),
+                    usr.second_given_name()
+                );
+            })
+        });
+    }
+
     service.apply_secondary_groups = function(user_id, group_ids) {
         return egCore.net.request(
             'open-ils.actor',
@@ -610,6 +627,8 @@ angular.module('egCoreMod')
 
         angular.forEach(patron.addresses, 
             function(addr) { service.ingest_address(patron, addr) });
+
+        service.get_linked_addr_users(patron.addresses);
 
         // Remove stat cat entries that link to out-of-scope stat
         // cats.  With this, we avoid unnecessarily updating (or worse,
