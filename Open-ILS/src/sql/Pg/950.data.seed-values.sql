@@ -249,8 +249,6 @@ SELECT SETVAL('config.non_cataloged_type_id_seq'::TEXT, 100);
 INSERT INTO config.identification_type ( id, name ) VALUES 
     ( 1, oils_i18n_gettext(1, 'Drivers License', 'cit', 'name') );
 INSERT INTO config.identification_type ( id, name ) VALUES 
-    ( 2, oils_i18n_gettext(2, 'SSN', 'cit', 'name') );
-INSERT INTO config.identification_type ( id, name ) VALUES 
     ( 3, oils_i18n_gettext(3, 'Other', 'cit', 'name') );
 SELECT SETVAL('config.identification_type_id_seq'::TEXT, 100);
 
