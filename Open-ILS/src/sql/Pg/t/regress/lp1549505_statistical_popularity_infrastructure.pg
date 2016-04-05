@@ -1,0 +1,33 @@
+BEGIN;
+
+SELECT plan(1);
+
+INSERT INTO config.bib_source (id,        source       )
+	VALUES                (999999998, 'test source');
+INSERT INTO rating.badge (id,        name,         scope, popularity_parameter, src_filter)
+	VALUES           (999999998, 'test badge', 1,     15,                   999999998 );
+
+INSERT INTO biblio.record_entry (id,        source,    last_xact_id, marc)
+VALUES                          (999999998, 999999998, 'pgtap',      $$<record
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd"
+    xmlns="http://www.loc.gov/MARC21/slim">
+  <leader>00531nam a2200157 a 4500</leader>
+  <controlfield tag="005">20080729170300.0</controlfield>
+  <controlfield tag="008">      t19981999enka              0 eng  </controlfield>
+  <datafield tag="245" ind1="1" ind2="4">
+    <subfield code="a">test record</subfield>
+  </datafield>
+</record>$$);
+
+SELECT rating.recalculate_badge_score(999999998);
+
+SELECT is(
+    score, 5,
+    'LP#1549505: Badge caclulation framework is operational'
+)
+FROM rating.record_badge_score;
+WHERE record = 999999998
+AND badge = 999999998;
+
+ROLLBACK;
