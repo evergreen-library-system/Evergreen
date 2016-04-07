@@ -494,7 +494,7 @@ sub process_file {
     $msg .= "Successfully imported $imported $cur_rec_type records ".
         "using merge profile '$profile'\n" if $imported;
     $msg .= "Failed to import $failed $cur_rec_type records\n" if $failed;
-    $msg .= "\x00";
+    $msg .= "\x00" unless $spoolfile;
     print $msg;
 
     clear_auth_token(); # logout
