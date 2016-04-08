@@ -89,17 +89,16 @@ CREATE TABLE permission.usr_grp_map (
 		CONSTRAINT usr_grp_once UNIQUE (usr,grp)
 );
 
-CREATE OR REPLACE FUNCTION permission.grp_ancestors ( INT ) RETURNS SETOF permission.grp_tree AS $$
-	SELECT	a.*
-	FROM	connectby('permission.grp_tree'::text,'parent'::text,'id'::text,'name'::text,$1::text,100,'.'::text)
-			AS t(keyid text, parent_keyid text, level int, branch text,pos int)
-		JOIN permission.grp_tree a ON a.id::text = t.keyid::text
-	ORDER BY
-		CASE WHEN a.parent IS NULL
-			THEN 0
-			ELSE 1
-		END, a.name;
-$$ LANGUAGE SQL STABLE ROWS 1;
+CREATE OR REPLACE FUNCTION permission.grp_ancestors( INT ) RETURNS SETOF permission.grp_tree AS $$
+    WITH RECURSIVE grp_ancestors_distance(id, distance) AS (
+            SELECT $1, 0
+        UNION
+            SELECT ou.parent, ouad.distance+1
+            FROM permission.grp_tree ou JOIN grp_ancestors_distance ouad ON (ou.id = ouad.id)
+            WHERE ou.parent IS NOT NULL
+    )
+    SELECT ou.* FROM permission.grp_tree ou JOIN grp_ancestors_distance ouad USING (id) ORDER BY ouad.distance DESC;
+$$ LANGUAGE SQL ROWS 1;
 
 CREATE OR REPLACE FUNCTION permission.grp_ancestors_distance( INT ) RETURNS TABLE (id INT, distance INT) AS $$
     WITH RECURSIVE grp_ancestors_distance(id, distance) AS (
@@ -120,6 +119,44 @@ CREATE OR REPLACE FUNCTION permission.grp_descendants_distance( INT ) RETURNS TA
             FROM permission.grp_tree pgt JOIN grp_descendants_distance gdd ON (pgt.parent = gdd.id)
     )
     SELECT * FROM grp_descendants_distance;
+$$ LANGUAGE SQL STABLE ROWS 1;
+
+CREATE OR REPLACE FUNCTION permission.grp_descendants( INT ) RETURNS SETOF permission.grp_tree AS $$
+    WITH RECURSIVE descendant_depth AS (
+        SELECT  gr.id,
+                gr.parent,
+          FROM  permission.grp_tree gr
+          WHERE gr.id = $1
+            UNION ALL
+        SELECT  gr.id,
+                gr.parent,
+          FROM  permission.grp_tree gr
+                JOIN descendant_depth dd ON (dd.id = gr.parent)
+    ) SELECT gr.* FROM permission.grp_tree gr JOIN descendant_depth USING (id);
+$$ LANGUAGE SQL ROWS 1;
+
+CREATE OR REPLACE FUNCTION permission.grp_tree_full_path ( INT ) RETURNS SETOF permission.grp_tree AS $$
+        SELECT  *
+          FROM  permission.grp_tree_ancestors($1)
+                        UNION
+        SELECT  *
+          FROM  permission.grp_tree_descendants($1);
+$$ LANGUAGE SQL STABLE ROWS 1;
+
+CREATE OR REPLACE FUNCTION permission.grp_tree_combined_ancestors ( INT, INT ) RETURNS SETOF permission.grp_tree AS $$
+        SELECT  *
+          FROM  permission.grp_tree_ancestors($1)
+                        UNION
+        SELECT  *
+          FROM  permission.grp_tree_ancestors($2);
+$$ LANGUAGE SQL STABLE ROWS 1;
+
+CREATE OR REPLACE FUNCTION permission.grp_tree_common_ancestors ( INT, INT ) RETURNS SETOF permission.grp_tree AS $$
+        SELECT  *
+          FROM  permission.grp_tree_ancestors($1)
+                        INTERSECT
+        SELECT  *
+          FROM  permission.grp_tree_ancestors($2);
 $$ LANGUAGE SQL STABLE ROWS 1;
 
 CREATE OR REPLACE FUNCTION permission.usr_perms ( INT ) RETURNS SETOF permission.usr_perm_map AS $$
