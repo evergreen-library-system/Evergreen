@@ -124,12 +124,12 @@ $$ LANGUAGE SQL STABLE ROWS 1;
 CREATE OR REPLACE FUNCTION permission.grp_descendants( INT ) RETURNS SETOF permission.grp_tree AS $$
     WITH RECURSIVE descendant_depth AS (
         SELECT  gr.id,
-                gr.parent,
+                gr.parent
           FROM  permission.grp_tree gr
           WHERE gr.id = $1
             UNION ALL
         SELECT  gr.id,
-                gr.parent,
+                gr.parent
           FROM  permission.grp_tree gr
                 JOIN descendant_depth dd ON (dd.id = gr.parent)
     ) SELECT gr.* FROM permission.grp_tree gr JOIN descendant_depth USING (id);
@@ -137,26 +137,26 @@ $$ LANGUAGE SQL ROWS 1;
 
 CREATE OR REPLACE FUNCTION permission.grp_tree_full_path ( INT ) RETURNS SETOF permission.grp_tree AS $$
         SELECT  *
-          FROM  permission.grp_tree_ancestors($1)
+          FROM  permission.grp_ancestors($1)
                         UNION
         SELECT  *
-          FROM  permission.grp_tree_descendants($1);
+          FROM  permission.grp_descendants($1);
 $$ LANGUAGE SQL STABLE ROWS 1;
 
 CREATE OR REPLACE FUNCTION permission.grp_tree_combined_ancestors ( INT, INT ) RETURNS SETOF permission.grp_tree AS $$
         SELECT  *
-          FROM  permission.grp_tree_ancestors($1)
+          FROM  permission.grp_ancestors($1)
                         UNION
         SELECT  *
-          FROM  permission.grp_tree_ancestors($2);
+          FROM  permission.grp_ancestors($2);
 $$ LANGUAGE SQL STABLE ROWS 1;
 
 CREATE OR REPLACE FUNCTION permission.grp_tree_common_ancestors ( INT, INT ) RETURNS SETOF permission.grp_tree AS $$
         SELECT  *
-          FROM  permission.grp_tree_ancestors($1)
+          FROM  permission.grp_ancestors($1)
                         INTERSECT
         SELECT  *
-          FROM  permission.grp_tree_ancestors($2);
+          FROM  permission.grp_ancestors($2);
 $$ LANGUAGE SQL STABLE ROWS 1;
 
 CREATE OR REPLACE FUNCTION permission.usr_perms ( INT ) RETURNS SETOF permission.usr_perm_map AS $$
