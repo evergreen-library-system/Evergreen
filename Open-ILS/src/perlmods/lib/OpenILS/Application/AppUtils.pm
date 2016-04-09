@@ -1315,7 +1315,13 @@ sub ou_ancestor_setting_batch_insecure {
     my( $self, $orgid, $names ) = @_;
 
     my %result = map { $_ => undef } @$names;
-    my $query = {from => ['actor.org_unit_ancestor_setting_batch', $orgid, @$names]};
+    my $query = {
+        from => [
+            'actor.org_unit_ancestor_setting_batch',
+            $orgid,
+            '{' . join(',', @$names) . '}'
+        ]
+    };
     my $e = OpenILS::Utils::CStoreEditor->new();
     my $settings = $e->json_query($query);
     foreach my $setting (@$settings) {
