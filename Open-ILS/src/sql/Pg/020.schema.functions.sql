@@ -293,7 +293,7 @@ Search "up" the org_unit tree until we find the first occurrence of an
 org_unit_setting with the given name.
 $$;
 
-CREATE OR REPLACE FUNCTION actor.org_unit_ancestor_setting_batch( org_id INT, VARIADIC setting_names TEXT[] ) RETURNS SETOF actor.org_unit_setting AS $$
+CREATE OR REPLACE FUNCTION actor.org_unit_ancestor_setting_batch( org_id INT, setting_names TEXT[] ) RETURNS SETOF actor.org_unit_setting AS $$
 DECLARE
     setting RECORD;
     setting_name TEXT;
@@ -316,7 +316,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql STABLE;
 
-COMMENT ON FUNCTION actor.org_unit_ancestor_setting_batch( INT, VARIADIC TEXT[] ) IS $$
+COMMENT ON FUNCTION actor.org_unit_ancestor_setting_batch( INT,  TEXT[] ) IS $$
 For each setting name passed, search "up" the org_unit tree until
 we find the first occurrence of an org_unit_setting with the given name.
 $$;
