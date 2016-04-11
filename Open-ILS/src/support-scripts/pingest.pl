@@ -152,12 +152,11 @@ if ($opt_pipe) {
     }
 } else {
     my $dbh = DBI->connect('DBI:Pg:');
-    @input = @{$dbh->selectall_arrayref($q)};
+    @input = @{$dbh->selectcol_arrayref($q)};
     $dbh->disconnect();
 }
 
-foreach my $r (@input) {
-    my $record = (ref($r)) ? $r->[0] : $r;
+foreach my $record (@input) {
     push(@blist, $record); # separate list of browse-only ingest
     push(@$records, $record);
     if (++$count == $batch_size) {
