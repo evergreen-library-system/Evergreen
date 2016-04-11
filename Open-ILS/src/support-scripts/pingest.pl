@@ -145,9 +145,9 @@ sub duration_expired {
 my @input;
 if ($opt_pipe) {
     while (<STDIN>) {
-        # Want only numbers, one per line.
-        if ($_ =~ /([0-9]+)/) {
-            push(@input, $1);
+        # Assume any string of digits is an id.
+        if (my @subs = /([0-9]+)/g) {
+            push(@input, @subs);
         }
     }
 } else {
