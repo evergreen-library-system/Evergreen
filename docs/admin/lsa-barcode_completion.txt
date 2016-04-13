@@ -1,5 +1,5 @@
 Barcode Completion
-==================
+------------------
 
 indexterm:[Barcode Completion,Lazy Circ]
 

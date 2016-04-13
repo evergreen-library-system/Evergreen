@@ -275,11 +275,11 @@ include::admin/librarysettings.adoc[]
 //    Address Alert Feature
 include::admin/lsa-address_alert.txt[]
 
-// Push titles down one level.
-:leveloffset: 1
-
 //    Barcode Completion Feature
 include::admin/lsa-barcode_completion.txt[]
+
+// Push titles down one level.
+:leveloffset: 1
 
 include::admin/hold_driven_recalls.txt[]
 
