@@ -329,7 +329,7 @@ There are several types of messages available for staff to leave notes on patron
 
 *Patron Alerts*: This type of alert is added via _Edit_ button in the patron record. There is currently no way to require staff initials for this type of alert. (See the section <<circulation_patron_alerts_wc,Patron Alerts>> for more.)
 
-*Staff-Generated Penalties/Messages*: These messages are added via the _Messages_ button in the patron record. They can be a note, alert or block. Staff initials can be required. (See the section <<staff_generated_penalties,Staff-Generated Penalties/Messages>> for more.)
+*Staff-Generated Penalties/Messages*: These messages are added via the _Messages_ button in the patron record. They can be a note, alert or block. Staff initials can be required. (See the section <<staff_generated_penalties_web_client,Staff-Generated Penalties/Messages>> for more.)
 
 Patron Alerts 
 ~~~~~~~~~~~~~~
@@ -426,7 +426,7 @@ image::media/circulation_patron_records-26_web_client.png[circulation_patron_rec
 Staff-Generated Penalties/Messages
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-[[staff_generated_penalties]]
+[[staff_generated_penalties_web_client]]
 To access this feature, use the _Messages_ button in the patron record.
 
 image::media/staff-penalties-1_web_client.png[Messages screen]
