@@ -64,7 +64,7 @@
         <label for='shelf_expire_time'>[% l("Shelf Expire Date") %]</label>
       </div>
       <div class="col-md-7">
-        <ng-date-input id='shelf_expire_time'
+        <eg-date-input id='shelf_expire_time'
           ng-disabled="!args.modify_shelf_expire_time" ng-model="args.shelf_expire_time"/>
         </eg-date-input>
       </div>
