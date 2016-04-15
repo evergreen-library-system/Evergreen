@@ -33,7 +33,7 @@ If you are importing authorities from an external vendor and want to track this,
 
 
 Setting up Authority Record Match Sets
-++++++++++++++++++++++++++++++++++++++
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 . Click *Cataloging -> MARC Batch Import/Export.*
 . Click *Record Match Sets.*
 . If you have sufficient privileges, you will be able to click on the *New Match Set*.  If you are unable to do so, check that you have the ADMIN_IMPORT_MATCH_SET permission.
@@ -55,7 +55,7 @@ through the *Cataloging* menu.
 
 
 Searching for authorities
-+++++++++++++++++++++++++
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 To search for authorities in your system, first select the *Cataloging* menu and then select *Manage Authorities*. 
 Then proceed to fill out the search form. 
