@@ -1007,7 +1007,7 @@ CREATE TABLE config.usr_activity_type (
     label       TEXT                        NOT NULL, -- i18n
     egroup      config.usr_activity_group   NOT NULL,
     enabled     BOOL                        NOT NULL DEFAULT TRUE,
-    transient   BOOL                        NOT NULL DEFAULT FALSE,
+    transient   BOOL                        NOT NULL DEFAULT TRUE,
     CONSTRAINT  one_of_wwh CHECK (COALESCE(ewho,ewhat,ehow) IS NOT NULL)
 );
 
