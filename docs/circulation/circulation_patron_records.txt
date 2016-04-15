@@ -579,21 +579,21 @@ Patron Message Center
 Creating a Patron Message in the Patron Account
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-1. Retrieve a patron account in the staff client.
-2. Within the account, go to *Other -> Notes*.
-3. In the Notes interface, click on *Add New Note*.  A new window will pop up that allows you to create a note on the patron account.
-
+. Retrieve a patron account in the staff client.
+. Within the account, go to *Other -> Notes*.
+. In the Notes interface, click on *Add New Note*.  A new window will pop up that allows you to create a note on the patron account.
++
 image::media/message_center1.PNG[Message Center 1]
-
-4. Check the box next to *Patron Visible?*  This will make the message appear in the patron's OPAC account.
-5. Enter a subject for the message in the *Title* field.
-6. Enter the body of the message in the *Note* field.
-7. Enter *Initials* if staff are required to add initials to notes.
-8. Click, *Add Note*.  The note will now appear as a Patron Visible note in the staff client and as a Message in the patron's OPAC Account.
-
++
+. Check the box next to *Patron Visible?*  This will make the message appear in the patron's OPAC account.
+. Enter a subject for the message in the *Title* field.
+. Enter the body of the message in the *Note* field.
+. Enter *Initials* if staff are required to add initials to notes.
+. Click, *Add Note*.  The note will now appear as a Patron Visible note in the staff client and as a Message in the patron's OPAC Account.
++
 image::media/message_center2.PNG[Message Center 2]
-
-9.The patron visible note will also create a message in the patron account in the staff client in *Other -> Message Center*.  See *Managing Patron Messages in the Staff Client* below.
++
+. The patron visible note will also create a message in the patron account in the staff client in *Other -> Message Center*.  See *Managing Patron Messages in the Staff Client* below.
 
 Creating a Patron Message using Action Triggers
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
