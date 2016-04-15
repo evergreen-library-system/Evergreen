@@ -1,0 +1,68 @@
+BEGIN;
+
+SELECT plan(6);
+
+\set usr_one 1
+\set usr_two 2
+
+-- shuffle event_times for randomness.
+INSERT INTO actor.usr_activity (usr, etype, event_time) VALUES
+    (:usr_one, 1, NOW() - '2 days'::INTERVAL),
+    (:usr_one, 1, NOW()),
+    (:usr_one, 1, NOW() - '1 days'::INTERVAL),
+    (:usr_one, 2, NOW() - '1 days'::INTERVAL),
+    (:usr_one, 2, NOW()),
+    (:usr_one, 2, NOW() - '2 days'::INTERVAL),
+    (:usr_two, 1, NOW() - '1 days'::INTERVAL),
+    (:usr_two, 1, NOW()),
+    (:usr_two, 1, NOW() - '2 days'::INTERVAL);
+
+
+SELECT actor.purge_usr_activity_by_type(1);
+SELECT actor.purge_usr_activity_by_type(2);
+
+SELECT is(
+    (SELECT COUNT(*) FROM actor.usr_activity 
+        WHERE usr = :usr_one AND etype = 1),
+    1::BIGINT, 
+    'Confirm only one event row exists'
+);
+
+SELECT is(
+    (SELECT DATE(event_time) FROM actor.usr_activity 
+        WHERE usr = :usr_one AND etype = 1),
+    DATE(NOW()), 
+    'Confirm most recent event is retained'
+);
+
+SELECT is(
+    (SELECT COUNT(*) FROM actor.usr_activity 
+        WHERE usr = :usr_one AND etype = 2),
+    1::BIGINT, 
+    'Confirm only one event row exists'
+);
+
+SELECT is(
+    (SELECT DATE(event_time) FROM actor.usr_activity 
+        WHERE usr = :usr_one AND etype = 2),
+    DATE(NOW()), 
+    'Confirm most recent event is retained'
+);
+
+SELECT is(
+    (SELECT COUNT(*) FROM actor.usr_activity 
+        WHERE usr = :usr_two AND etype = 1),
+    1::BIGINT, 
+    'Confirm only one event row exists'
+);
+
+SELECT is(
+    (SELECT DATE(event_time) FROM actor.usr_activity 
+        WHERE usr = :usr_two AND etype = 1),
+    DATE(NOW()), 
+    'Confirm most recent event is retained'
+);
+
+SELECT * FROM finish();
+ROLLBACK;
+
