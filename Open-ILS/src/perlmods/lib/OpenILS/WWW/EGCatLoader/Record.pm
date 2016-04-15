@@ -69,7 +69,7 @@ sub load_record {
     if ($self->cgi->param('badges')) {
         my $badges = $self->cgi->param('badges');
         $badges = $badges ? [split(',', $badges)] : [];
-        $badges = [grep { /^\d+$/ }, @$badges];
+        $badges = [grep { /^\d+$/ } @$badges];
         if (@$badges) {
             $self->ctx->{badge_scores} = $cstore->request(
                 'open-ils.cstore.direct.rating.record_badge_score.search.atomic',
