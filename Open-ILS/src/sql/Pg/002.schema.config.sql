@@ -1011,6 +1011,26 @@ CREATE TABLE config.usr_activity_type (
     CONSTRAINT  one_of_wwh CHECK (COALESCE(ewho,ewhat,ehow) IS NOT NULL)
 );
 
+-- Remove all activity entries by activity type, 
+-- except the most recent entry per user. 
+CREATE OR REPLACE FUNCTION 
+    actor.purge_usr_activity_by_type(act_type INTEGER) 
+    RETURNS VOID AS $$
+DECLARE
+    cur_usr INTEGER;
+BEGIN
+    FOR cur_usr IN SELECT DISTINCT(usr) 
+        FROM actor.usr_activity WHERE etype = act_type LOOP
+        DELETE FROM actor.usr_activity WHERE id IN (
+            SELECT id 
+            FROM actor.usr_activity 
+            WHERE usr = cur_usr AND etype = act_type
+            ORDER BY event_time DESC OFFSET 1
+        );
+
+    END LOOP;
+END $$ LANGUAGE PLPGSQL;
+
 CREATE UNIQUE INDEX unique_wwh ON config.usr_activity_type 
     (COALESCE(ewho,''), COALESCE (ewhat,''), COALESCE(ehow,''));
 
