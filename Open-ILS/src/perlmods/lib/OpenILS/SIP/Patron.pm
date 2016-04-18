@@ -354,12 +354,46 @@ sub charge_ok {
         $u->card->active eq 't';
 }
 
-
-
-# How much more detail do we need to check here?
 sub renew_ok {
     my $self = shift;
-    return $self->charge_ok;
+    my $u = $self->{user};
+    my $e = $self->{editor};
+    my $renew_block_penalty = 'f';
+
+    # compute expiration date for borrowing privileges
+    my $expire = DateTime::Format::ISO8601->new->parse_datetime(cleanse_ISO8601($u->expire_date));
+
+    # if barred or expired, forget it and save us the CPU
+    return 0 if(($u->barred eq 't') or (CORE::time > $expire->epoch));
+
+    # flesh penalties so we can look close at the block list
+    my $penalty_flesh = {
+        flesh => 2,
+        flesh_fields => {
+            au => [
+                "standing_penalties",
+            ],
+            ausp => [
+                "standing_penalty",
+            ],
+            csp => [
+                "block_list",
+            ],
+        }
+    };
+    my $user = $e->retrieve_actor_user([ $u->id, $penalty_flesh ]);
+    foreach( @{ $user->standing_penalties } )
+    {
+        # archived penalty - ignore
+        next if ( $_->stop_date && ( CORE::time >  DateTime::Format::ISO8601->new->parse_datetime(cleanse_ISO8601($_->stop_date))->epoch ) );
+        # check to see if this penalty blocks renewals
+        $renew_block_penalty = 't' if $_->standing_penalty->block_list =~ /RENEW/;
+    }
+
+    return
+        $u->active eq 't' &&
+        $u->card->active eq 't' &&
+        $renew_block_penalty eq 'f';
 }
 
 sub recall_ok {
