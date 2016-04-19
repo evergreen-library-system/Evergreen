@@ -88,7 +88,7 @@ postgres-server-fedora:
 	@make -f $(DIR)/Makefile.fedora install_postgres_server
 
 ubuntu-xenial-developer:
-	@make -f $(DIR)/Makefile.xenial-trusty install_developer
+	@make -f $(DIR)/Makefile.ubuntu-xenial install_developer
 ubuntu-trusty-developer:
 	@make -f $(DIR)/Makefile.ubuntu-trusty install_developer
 debian-jessie-developer:
