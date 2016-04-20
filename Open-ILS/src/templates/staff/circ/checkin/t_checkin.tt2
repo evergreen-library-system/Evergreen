@@ -135,12 +135,12 @@
     </div><!-- flex row -->
   </div><!-- col -->
   <div class="col-md-2">
-    <div class="input-group-btn" dropdown>
-      <button type="button" class="btn btn-default dropdown-toggle">
+    <div class="input-group-btn" uib-dropdown>
+      <button type="button" class="btn btn-default" uib-dropdown-toggle>
         [% l('Checkin Modifiers') %]
         <span class="caret"></span>
       </button>
-      <ul class="dropdown-menu pull-right">
+      <ul class="pull-right" uib-dropdown-menu>
         <li>
           <a href
             ng-click="toggle_mod('no_precat_alert')">

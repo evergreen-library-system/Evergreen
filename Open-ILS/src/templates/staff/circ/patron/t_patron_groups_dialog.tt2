@@ -29,12 +29,12 @@ This does not affect circulation policy.
       </div>
       <div class="row pad-all-min">
         <div class="col-md-6">
-            <div class="btn-group" dropdown>
-              <button type="button" class="btn btn-default dropdown-toggle">
+            <div class="btn-group" uib-dropdown>
+              <button type="button" class="btn btn-default" uib-dropdown-toggle>
                 <span style="padding-right: 5px;">{{args.new_profile.name()}}</span>
                 <span class="caret"></span>
               </button>
-              <ul class="dropdown-menu scrollable-menu">
+              <ul class="scrollable-menu" uib-dropdown-menu>
                 <li ng-repeat="grp in args.edit_profiles">
                   <a href
                     style="padding-left: {{pgt_depth(grp) * 10 + 5}}px"

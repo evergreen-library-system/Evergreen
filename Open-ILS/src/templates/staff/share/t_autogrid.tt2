@@ -9,11 +9,11 @@
   <div class="eg-grid-primary-label">{{mainLabel}}</div>
 
   <div class="btn-group" 
-    is-open="gridMenuIsOpen" ng-if="menuLabel && showMenu" dropdown>
-    <button type="button" class="btn btn-default dropdown-toggle eg-grid-menu-item">
+    is-open="gridMenuIsOpen" ng-if="menuLabel && showMenu" uib-dropdown>
+    <button type="button" class="btn btn-default eg-grid-menu-item" uib-dropdown-toggle>
       {{menuLabel}}<span class="caret"></span>
     </button>
-    <ul class="dropdown-menu scrollable-menu">
+    <ul class="scrollable-menu" uib-dropdown-menu>
       <li ng-repeat="item in menuItems | filter : { standalone : 'false' }" ng-class="{divider: item.divider}">
         <a ng-if="!item.divider" href a-disabled="item.disabled()"
           ng-click="item.handler()">{{item.label}}</a>
@@ -85,11 +85,11 @@
     </button>
 
     <!-- actions drop-down menu -->
-    <div class="btn-group" ng-show="showActions" ng-if="actionGroups.length > 1 || actionGroups[0].actions.length" dropdown>                                                  
-      <button type="button" class="btn btn-default dropdown-toggle">
+    <div class="btn-group" ng-show="showActions" ng-if="actionGroups.length > 1 || actionGroups[0].actions.length" uib-dropdown>                                                  
+      <button type="button" class="btn btn-default" uib-dropdown-toggle>
         [% l('Actions') %] <span class="caret"></span>                       
       </button>                                                              
-      <ul class="dropdown-menu pull-right grid-action-dropdown scrollable-menu">                                  
+      <ul class="pull-right grid-action-dropdown scrollable-menu" uib-dropdown-menu>
         <li ng-repeat-start="group in actionGroups">
           <span style="padding-left: 1em;" ng-if="group.label"><strong><u>{{group.label}}</u></strong></span>
         </li>
@@ -101,13 +101,13 @@
       </ul>
     </div>
 
-    <div class="btn-group" dropdown is-open="gridRowCountIsOpen" ng-show="showPagination">
+    <div class="btn-group" uib-dropdown is-open="gridRowCountIsOpen" ng-show="showPagination">
       <button type="button" title="[% l('Select Row Count') %]"
-        class="btn btn-default dropdown-toggle">
+        class="btn btn-default" uib-dropdown-toggle>
         [% l('Rows [_1]', '{{limit()}}') %]
         <span class="caret"></span>
       </button>
-      <ul class="dropdown-menu">
+      <ul uib-dropdown-menu>
         <li ng-repeat="t in [5,10,25,50,100]">
           <a href ng-click='offset(0);limit(t);collect()'>
             {{t}}
@@ -119,13 +119,13 @@
       </ul>
     </div>
 
-    <div class="btn-group" dropdown is-open="gridPageSelectIsOpen" ng-show="showPagination">
+    <div class="btn-group" uib-dropdown is-open="gridPageSelectIsOpen" ng-show="showPagination">
       <button type="button" title="[% l('Select Page') %]"
-        class="btn btn-default dropdown-toggle">
+        class="btn btn-default" uib-dropdown-toggle>
         [% l('Page [_1]', '{{page()}}') %]
         <span class="caret"></span>
       </button>
-      <ul class="dropdown-menu">
+      <ul uib-dropdown-menu>
         <li>
           <div class="input-group">
             <input type="text" class="form-control"
@@ -146,12 +146,12 @@
       </ul>
     </div>
 
-    <div class="btn-group" dropdown is-open="gridColumnPickerIsOpen" ng-show="showPicker">
+    <div class="btn-group" uib-dropdown is-open="gridColumnPickerIsOpen" ng-show="showPicker">
       <button type="button" 
-        class="btn btn-default dropdown-toggle">
+        class="btn btn-default" uib-dropdown-toggle>
         <span class="caret"></span>
       </button>
-      <ul class="dropdown-menu pull-right eg-grid-column-picker">
+      <ul class="pull-right eg-grid-column-picker" uib-dropdown-menu>
         <li><a href ng-click="toggleConfDisplay()">
           <span class="glyphicon glyphicon-wrench"></span>
           [% l('Configure Columns') %]

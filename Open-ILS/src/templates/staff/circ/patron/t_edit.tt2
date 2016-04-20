@@ -407,15 +407,15 @@ within the "form" by name for validation.
 <div class="row reg-field-row" ng-show="show_field('au.profile')">
   [% draw_field_label('au', 'profile') %]
   <div class="col-md-3 reg-field-input">
-    <div class="btn-group" dropdown>
-      <button type="button" class="btn btn-default dropdown-toggle"
+    <div class="btn-group" uib-dropdown>
+      <button type="button" class="btn btn-default" uib-dropdown-toggle
           ng-class="{'ng-invalid' : invalid_profile()}">
         <span style="padding-right: 5px;">
           {{patron.profile.name() || "[% l('Profile Group') %]"}}
         </span>
         <span class="caret"></span>
       </button>
-      <ul class="dropdown-menu">
+      <ul uib-dropdown-menu>
         <li ng-repeat="grp in edit_profiles" 
           ng-class="{disabled : grp.usergroup() == 'f'}">
           <a href 
@@ -641,12 +641,12 @@ within the "form" by name for validation.
     <label>[% l('Default SMS Carrier') %]</label>
   </div>
   <div class="col-md-3 reg-field-input">
-    <div class="btn-group" dropdown>
-      <button type="button" class="btn btn-default dropdown-toggle">
+    <div class="btn-group" uib-dropdown>
+      <button type="button" class="btn btn-default" uib-dropdown-toggle>
         <span style="padding-right: 5px;"></span>
         <span class="caret"></span>
       </button>
-      <ul class="dropdown-menu">
+      <ul uib-dropdown-menu>
         <li ng-repeat="carrier in sms_carriers">
           <a href 
             ng-click="field_modified();user_settings['opac.default_sms_carrier'] = carrier">
@@ -859,13 +859,13 @@ within the "form" by name for validation.
     -->
     
     <div ng-if="cat.entries().length != 0">
-      <div class="btn-group" dropdown>
-        <button type="button" class="btn btn-default dropdown-toggle">
+      <div class="btn-group" uib-dropdown>
+        <button type="button" class="btn btn-default" uib-dropdown-toggle>
           <span style="padding-right: 5px;">
             {{stat_cat_entry_maps[cat.id()]}}</span>
           <span class="caret"></span>
         </button>
-        <ul class="dropdown-menu">
+        <ul uib-dropdown-menu>
           <li ng-repeat="entry in cat.entries()">
             <a href 
               ng-click="field_modified();stat_cat_entry_maps[cat.id()]=entry.value()"> 
@@ -901,14 +901,14 @@ within the "form" by name for validation.
       style="margin-bottom: 10px;">
       <div class="col-md-6">{{question.question()}}</div>
       <div class="col-md-6">
-        <div class="btn-group" dropdown>
-          <button type="button" class="btn btn-default dropdown-toggle">
+        <div class="btn-group" uib-dropdown>
+          <button type="button" class="btn btn-default" uib-dropdown-toggle>
             <span style="padding-right: 5px;">
               {{survey_responses[question.id()].answer()}}
             </span>
             <span class="caret"></span>
           </button>
-          <ul class="dropdown-menu">
+          <ul uib-dropdown-menu>
             <li ng-repeat="answer in question.answers()">
               <a href 
                 ng-click="field_modified();survey_responses[question.id()] = answer"> 

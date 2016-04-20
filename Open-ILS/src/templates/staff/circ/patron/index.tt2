@@ -122,12 +122,12 @@ angular.module('egCoreMod').run(['egStrings', function(s) {
       <li ng-class="{active : tab == 'edit', disabled : !patron()}">
         <a href="./circ/patron/{{patron().id()}}/edit">[% l('Edit') %]</a>
       </li>
-      <li class="dropdown" ng-class="{active : tab == 'other', disabled : !patron()}">
-        <a a-disabled="!patron()" href class="dropdown-toggle" data-toggle="dropdown">
+      <li uib-dropdown ng-class="{active : tab == 'other', disabled : !patron()}">
+        <a a-disabled="!patron()" href uib-dropdown-toggle>
             [% l('Other') %]
             <b class="caret"></b>
         </a>
-        <ul class="dropdown-menu">
+        <ul uib-dropdown-menu>
           <li>
             <a href="./circ/patron/{{patron().id()}}/alerts">
               [% l('Display Alert and Messages') %]

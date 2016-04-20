@@ -115,12 +115,12 @@
             typeahead-editable="false" />
             -->
 
-            <div class="btn-group patron-search-selector" dropdown>
-              <button type="button" class="btn btn-default dropdown-toggle">
+            <div class="btn-group patron-search-selector" uib-dropdown>
+              <button type="button" class="btn btn-default" uib-dropdown-toggle>
                 <span style="padding-right: 5px;">{{searchArgs.profile.name() || "[% l('Profile Group') %]"}}</span>
                 <span class="caret"></span>
               </button>
-              <ul class="dropdown-menu">
+              <ul uib-dropdown-menu>
                 <li ng-repeat="grp in profiles">
                   <a href
                     style="padding-left: {{pgt_depth(grp) * 10 + 5}}px"

@@ -33,12 +33,12 @@
 
     <div class="col-md-6">
       <div class="input-group">
-        <div class="input-group-btn" dropdown>
-          <button type="button" class="btn btn-default dropdown-toggle">
+        <div class="input-group-btn" uib-dropdown>
+          <button type="button" class="btn btn-default" uib-dropdown-toggle>
             {{selectedNcType() || "[% l('Barcode') %]"}}
             <span class="caret"></span>
           </button>
-          <ul class="dropdown-menu">
+          <ul uib-dropdown-menu>
             <li><a href
               ng-click="args.noncat_type='barcode';bcFocus=true">
               [% l('Barcode') %]</a>

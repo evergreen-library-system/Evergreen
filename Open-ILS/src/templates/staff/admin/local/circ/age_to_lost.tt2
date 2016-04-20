@@ -28,12 +28,12 @@ you wish to age to a Lost status.  Note the descendants of these values
   <div xclass="form-inline">
     <div class="form-group">
       <label class="col-md-2">[% l('User Profile') %]</label>
-      <div class="btn-group" dropdown>
-        <button type="button" class="btn btn-default dropdown-toggle">
+      <div class="btn-group" uib-dropdown>
+        <button type="button" class="btn btn-default" uib-dropdown-toggle>
           <span style="padding-right: 5px;">{{selected_profile.name()}}</span>
           <span class="caret"></span>
         </button>
-        <ul class="dropdown-menu">
+        <ul uib-dropdown-menu>
           <li ng-repeat="grp in profiles">
             <a href
               style="padding-left: {{pgt_depth(grp) * 10 + 5}}px"

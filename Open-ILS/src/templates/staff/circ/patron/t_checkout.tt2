@@ -5,13 +5,13 @@
     <form ng-submit="checkout(checkoutArgs)" role="form" class="form-inline">
       <div class="input-group">
 
-        <div class="input-group-btn" dropdown>
-          <button type="button" class="btn btn-default dropdown-toggle"
+        <div class="input-group-btn" uib-dropdown>
+          <button type="button" class="btn btn-default" uib-dropdown-toggle
             ng-class="{disabled : disable_checkout()}">
             {{selectedNcType() || "[% l('Barcode') %]"}}
             <span class="caret"></span>
           </button>
-          <ul class="dropdown-menu">
+          <ul uib-dropdown-menu>
             <li><a href
               ng-click="checkoutArgs.noncat_type='barcode';focusMe=true">
               [% l('Barcode') %]</a>
