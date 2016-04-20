@@ -139,8 +139,8 @@ function($scope , $location , egCore , egGridDataProvider , itemSvc) {
  * List view - grid stuff
  */
 .controller('ListCtrl', 
-       ['$scope','$q','$routeParams','$location','$timeout','$window','egCore','egGridDataProvider','itemSvc','egUser','$modal','egCirc','egConfirmDialog',
-function($scope , $q , $routeParams , $location , $timeout , $window , egCore , egGridDataProvider , itemSvc , egUser , $modal , egCirc , egConfirmDialog) {
+       ['$scope','$q','$routeParams','$location','$timeout','$window','egCore','egGridDataProvider','itemSvc','egUser','$uibModal','egCirc','egConfirmDialog',
+function($scope , $q , $routeParams , $location , $timeout , $window , egCore , egGridDataProvider , itemSvc , egUser , $uibModal , egCirc , egConfirmDialog) {
     var copyId = [];
     var cp_list = $routeParams.idList;
     if (cp_list) {
@@ -268,13 +268,13 @@ function($scope , $q , $routeParams , $location , $timeout , $window , egCore , 
         var copy_list = gatherSelectedHoldingsIds();
         if (copy_list.length == 0) return;
 
-        return $modal.open({
+        return $uibModal.open({
             templateUrl: './cat/catalog/t_add_to_bucket',
             animation: true,
             size: 'md',
             controller:
-                   ['$scope','$modalInstance',
-            function($scope , $modalInstance) {
+                   ['$scope','$uibModalInstance',
+            function($scope , $uibModalInstance) {
 
                 $scope.bucket_id = 0;
                 $scope.newBucketName = '';
@@ -302,7 +302,7 @@ function($scope , $q , $routeParams , $location , $timeout , $window , egCore , 
                         );
 
                         return $q.all(promises).then(function() {
-                            $modalInstance.close();
+                            $uibModalInstance.close();
                         });
                     });
                 }
@@ -325,7 +325,7 @@ function($scope , $q , $routeParams , $location , $timeout , $window , egCore , 
                 }
 
                 $scope.cancel = function() {
-                    $modalInstance.dismiss();
+                    $uibModalInstance.dismiss();
                 }
             }]
         });
@@ -335,12 +335,12 @@ function($scope , $q , $routeParams , $location , $timeout , $window , egCore , 
         var copy_list = gatherSelectedHoldingsIds();
         if (copy_list.length == 0) return;
 
-        return $modal.open({
+        return $uibModal.open({
             templateUrl: './cat/catalog/t_request_items',
             animation: true,
             controller:
-                   ['$scope','$modalInstance','egUser',
-            function($scope , $modalInstance , egUser) {
+                   ['$scope','$uibModalInstance','egUser',
+            function($scope , $uibModalInstance , egUser) {
                 $scope.user = null;
                 $scope.first_user_fetch = true;
 
@@ -389,11 +389,11 @@ function($scope , $q , $routeParams , $location , $timeout , $window , egCore , 
                         egCore.auth.token(), args, h.copy_list
                     );
 
-                    $modalInstance.close();
+                    $uibModalInstance.close();
                 }
 
                 $scope.cancel = function($event) {
-                    $modalInstance.dismiss();
+                    $uibModalInstance.dismiss();
                     $event.preventDefault();
                 }
             }]
@@ -402,12 +402,12 @@ function($scope , $q , $routeParams , $location , $timeout , $window , egCore , 
 
     $scope.replaceBarcodes = function() {
         angular.forEach(copyGrid.selectedItems(), function (cp) {
-            $modal.open({
+            $uibModal.open({
                 templateUrl: './cat/share/t_replace_barcode',
                 animation: true,
                 controller:
-                           ['$scope','$modalInstance',
-                    function($scope , $modalInstance) {
+                           ['$scope','$uibModalInstance',
+                    function($scope , $uibModalInstance) {
                         $scope.isModal = true;
                         $scope.focusBarcode = false;
                         $scope.focusBarcode2 = true;
@@ -437,11 +437,11 @@ function($scope , $q , $routeParams , $location , $timeout , $window , egCore , 
                                 });
 
                             });
-                            $modalInstance.close();
+                            $uibModalInstance.close();
                         }
 
                         $scope.cancel = function($event) {
-                            $modalInstance.dismiss();
+                            $uibModalInstance.dismiss();
                             $event.preventDefault();
                         }
                     }
@@ -456,12 +456,12 @@ function($scope , $q , $routeParams , $location , $timeout , $window , egCore , 
         egCore.hatch.getItem('eg.cat.marked_conjoined_record').then(function(target_record) {
             if (!target_record) return;
 
-            return $modal.open({
+            return $uibModal.open({
                 templateUrl: './cat/catalog/t_conjoined_selector',
                 animation: true,
                 controller:
-                       ['$scope','$modalInstance',
-                function($scope , $modalInstance) {
+                       ['$scope','$uibModalInstance',
+                function($scope , $uibModalInstance) {
                     $scope.update = false;
 
                     $scope.peer_type = null;
@@ -494,11 +494,11 @@ function($scope , $q , $routeParams , $location , $timeout , $window , egCore , 
                             promises.push(egCore.pcrud.create(n).then(function(){add_barcode_to_list(cp.barcode)}));
                         });
 
-                        return $q.all(promises).then(function(){$modalInstance.close()});
+                        return $q.all(promises).then(function(){$uibModalInstance.close()});
                     }
 
                     $scope.cancel = function($event) {
-                        $modalInstance.dismiss();
+                        $uibModalInstance.dismiss();
                         $event.preventDefault();
                     }
                 }]
