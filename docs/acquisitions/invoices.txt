@@ -77,7 +77,7 @@ to true. This setting can be adjusted via _Admin_ -> _Server Administration_
 +
 
 - Click _Close_. Choose this option when you have completed the invoice. This
-option will also save any changes that have been made.
+option will also save any changes that have been made.  Funds will be disencumbered when the invoice is closed.
 
 . You can re-open a closed invoice by clicking the link, _Re-open invoice_. This
 link appears at the bottom of a closed invoice.
@@ -206,7 +206,7 @@ to true. This setting can be adjusted via _Admin_ -> _Server Administration_
 +
 
 - Click _Close_. Choose this option when you have completed the invoice. This
-option will also save any changes that have been made.
+option will also save any changes that have been made.  Funds will be disencumbered when the invoice is closed.
 
 . You can re-open a closed invoice by clicking the link, _Re-open invoice_. This
 link appears at the bottom of a closed invoice.
