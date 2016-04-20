@@ -351,6 +351,22 @@ Click on a search result's title to view a detailed record of the title, includi
 image::media/catalogue-8.png[catalogue-8]
 image::media/catalogue-8a.png[catalogue-8a]
 
+Details
+~~~~~~~
+
+The record shows details such as the cover image, title, author, publication information, and an abstract or summary, if available.
+
+The Record Details view shows how many copies are at the library or libraries you have selected, and whether they are available or checked out. It also displays the Call number and Copy Location for locating the item on the shelves. Clicking on Text beside the call number will allow you to send the item's call number by text message, if desired. Clicking the location library link will reveal information about owning library, such as address and open hours.
+
+Below the local details you can open up various tabs to display more information. You can select Reviews and More to see the book’s summaries and reviews, if available. You can select Shelf Browser to view items appearing near the current item on the library shelves. Often this is a good way to browse for similar items. You can select MARC Record to display the record in MARC format. If your library offers the service, clicking on Awards, Reviews, and Suggested Reads will reveal that additional information.
+
+[NOTE]
+==========
+Copies are sorted by (in order): org unit, call number, part label, copy number, and barcode.
+==========
+
+
+
 Placing Holds 
 ^^^^^^^^^^^^^
 
