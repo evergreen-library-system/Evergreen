@@ -160,6 +160,8 @@ Renewing via a Patron's Account
 
 image::media/items_out_click.png[]
 
+TIP: Add "Holds Count" from the column picker to quickly see whether an item to be renewed has holds.
+
 2) Select the item you want to renew. *Click on Actions for Selected Items* -> 
 *Renew*. If you want to renew all items in the account, click *Renew All*
 instead.
