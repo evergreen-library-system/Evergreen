@@ -25,11 +25,11 @@
     <button type="button" class="btn btn-default" ng-click="add_to_record_bucket()">
         [% l('Add To Bucket') %]
     </button>
-    <div class="btn-group" dropdown dropdown-append-to-body>
-        <button id="mark-for-button" type="button" class="btn btn-default" dropdown-toggle>
+    <div class="btn-group" uib-dropdown dropdown-append-to-body>
+        <button id="mark-for-button" type="button" class="btn btn-default" uib-dropdown-toggle>
             [% l('Mark for:') %] <span class="caret"></span>
         </button>
-        <ul class="dropdown-menu" role="menu" aria-labelledby="mark-for-button">
+        <ul uib-dropdown-menu role="menu" aria-labelledby="mark-for-button">
             <li role="menuitem">
                 <a ng-click="markOverlay()">
                     [% l('Overlay Target') %]

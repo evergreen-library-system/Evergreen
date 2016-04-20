@@ -1,8 +1,8 @@
-<div class="btn-group text-left" dropdown>
-  <button type="button" class="btn btn-default dropdown-toggle">
+<div class="btn-group text-left" uib-dropdown>
+  <button type="button" class="btn btn-default" uib-dropdown-toggle>
     [% l('Buckets') %]<span class="caret"></span>
   </button>
-  <ul class="dropdown-menu">
+  <ul uib-dropdown-menu>
     <li>
       <a href='' ng-click="openCreateBucketDialog()">[% l('New Bucket') %]</a>
     </li>
