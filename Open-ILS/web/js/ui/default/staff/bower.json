@@ -30,5 +30,8 @@
     "ngtoast": "~2.0.0",
     "angular-tree-control": "~0.2.23",
     "angular-animate": "~1.5.3"
+  },
+  "resolutions": {
+    "angular": "1.5.5"
   }
 }
