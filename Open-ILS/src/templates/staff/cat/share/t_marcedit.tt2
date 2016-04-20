@@ -149,7 +149,7 @@
       </div>
     </div>
     <div class="marcrecord pad-vert">
-      <div collapse="!showHelp">
+      <div uib-collapse="!showHelp">
         <div class="row">
           <div class="col-md-4">
             <ul>
