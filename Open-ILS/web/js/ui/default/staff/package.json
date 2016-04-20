@@ -17,7 +17,7 @@
     "grunt-karma": "^0.8.3",
     "karma": "^0.12.14",
     "karma-jasmine": "^0.1.5",
-    "karma-phantomjs-launcher": "^0.1.4",
+    "karma-phantomjs-launcher": "^1.0.0",
     "karma-script-launcher": "~0.1.0",
     "karma-spec-reporter": "0.0.12",
     "karma-story-reporter": "^0.2.2"
