@@ -181,7 +181,7 @@ Paid PO Line Items
 
 Purchase Order line items are marked as "Paid" in red text when all non-cancelled copies on the line item have been invoiced.
 
-image::media/2.10_Lineitem_Paid.PNG
+image::media/2.10_Lineitem_Paid.PNG[Paid Lineitem]
 
 
 Brief Records
