@@ -176,6 +176,13 @@ A delayed line item can now be canceled.  You can mark a line item as delayed, a
 
 Cancel/delay reasons now appear on the worksheet and the printable purchase order.
 
+Paid PO Line Items
+^^^^^^^^^^^^^^^^^^
+
+Purchase Order line items are marked as "Paid" in red text when all non-cancelled copies on the line item have been invoiced.
+
+image::media/2.10_Lineitem_Paid.PNG
+
 
 Brief Records
 ~~~~~~~~~~~~~
