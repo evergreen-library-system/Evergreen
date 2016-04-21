@@ -100,6 +100,23 @@ Local Admin -> Statistical Categories Editor_).
 Date_ button will work, since the permission group determines the expiration date.
 ============================================================================
 
+New Patron Duplicate Search
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+As a new patron is being registered Evergreen checks some of the information entered against existing patrons to catch duplicate registrations.
+
+The fields that are checked are patron name (_First Name_ and _Last Name_), _Email_, _Daytime Phone_, _Evening Phone_, and _Other Phone_.  Both active and inactive patrons are checked.
+
+When a match is found a link will appear indicating how many duplicate patrons there are and what information they match on.
+
+image::media/patron-reg-duplicate-search-1.png[patron registration]
+
+To view the duplicate matches click on the link.  This performs a patron search in a new tab.
+
+WARNING: This search only includes inactive patrons if the _Include inactive patrons?_ check box is checked. 
+
+image::media/patron-reg-duplicate-search-2.png[patron search]
+
 
 Patron Self-Registration
 ~~~~~~~~~~~~~~~~~~~~~~~~
