@@ -116,6 +116,21 @@ indexterm:[advanced search, limit to available]
 
 This checkbox is at the bottom line of _Search Library_. Select _Limit to Available_ to limit results to those titles that have items with a circulation status of "available" (by default, either _Available_ or _Reshelving_).
 
+Exclude Electronic Resources
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+indexterm:[advanced search, exclude electronic resources]
+
+This checkbox is below _Limit to Available_.  Select _Exclude Electronic Resources_ to limit results to those bibliographic records that do not have an "o" or "s" in the _Item Form_ fixed field (electronic forms) and overrides other form limiters. 
+
+This feature is optional and will not appear for patrons or staff until enabled.
+
+[TIP]
+===============
+To display the *Exclude Electronic Resources* checkbox in the advance search page and search results, set
+the 'ctx.exclude_electronic_checkbox' setting in config.tt2 to 1.
+===============
+
 
 Search Filter
 ^^^^^^^^^^^^^
@@ -312,6 +327,8 @@ Brief information about the title, such as author, edition, publication date, et
 Clicking a title goes to the title details. Clicking an author searches all works by the author. If you want to place a hold on the title, click _Place Hold_ beside the format icons.
 
 On the top right, there is a _Limit to Available_ checkbox. Checking this box will filter out those titles with no available copies in the library or libraries at the moment. Usually you will see your search results are re-displayed with fewer titles. 
+
+When enabled, under the _Limit to Available_ checkbox, there is an _Exclude Electronic Resources_ checkbox.  Checking this box will filter out materials that are cataloged as electronic in form.
 
 The _Sort by_ dropdown list is found at the top of the search results, beside the _Show More Details_ link. Clicking an entry on the list will re-sort your search results accordingly.
 
