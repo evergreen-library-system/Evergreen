@@ -27,7 +27,7 @@ my $checkin_resp = $script->do_checkin({
 
 is(ref $checkin_resp,'HASH','Checkin request returned a HASH');
 
-my $ymd = DateTime->now->strftime('%F');
+my $ymd = DateTime->now->set_time_zone(DateTime::TimeZone->new( name => "local" ))->strftime('%F');
 
 ok(
     substr($checkin_resp->{payload}->{circ}->checkin_time, 0, 10) eq $ymd,
