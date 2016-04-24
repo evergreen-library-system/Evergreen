@@ -23,6 +23,8 @@ patron.search_form.prototype = {
                             null :
                             JSON2js( params.query.search_sort ); // Let's assume this is encoded as JSON
 
+        obj.include_inactive = (typeof params.query.include_inactive !== 'undefined') ? params.query.include_inactive : null;
+
         JSAN.use('OpenILS.data'); this.OpenILS = {}; 
         obj.OpenILS.data = new OpenILS.data(); obj.OpenILS.data.init({'via':'stash'});
 
@@ -295,12 +297,16 @@ patron.search_form.prototype = {
 
         var cb = obj.controller.view.inactive;
         obj.event_listeners.add(cb, 'command',function() {
+                obj.include_inactive = null;
                 cb.setAttribute('value',cb.checked ? "true" : "false");
                 var file = new util.file('patron_search_prefs.'+obj.OpenILS.data.server_unadorned);
                 util.widgets.save_attributes(file, { 'search_depth_ml' : [ 'value' ], 'inactive' : [ 'value' ] });
             }, false
         );
-        cb.checked = cb.getAttribute('value') == "true" ? true : false;
+        if (obj.include_inactive !== null)
+            cb.checked = obj.include_inactive == "true" ? true : false;
+        else
+            cb.checked = cb.getAttribute('value') == "true" ? true : false;
 
         /* Populate the Patron Profile filter, if it exists */
         if (obj.controller.view.profile) {
@@ -355,6 +361,9 @@ patron.search_form.prototype = {
             if (node && node.value != '') {
                 if (id == 'inactive') {
                     query[id] = node.getAttribute('value');
+                    // always include inactive when include_inactive is true
+                    if (obj.include_inactive !== null)
+                        query[id] = obj.include_inactive;
                     obj.error.sdump('D_DEBUG','id = ' + id + '  value = ' + node.getAttribute('value') + '\n');
                 } else if (id == 'profile') {
                     query[id] = node.firstChild.getAttribute('value');
