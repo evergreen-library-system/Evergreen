@@ -1,0 +1,17 @@
+-- Load the TAP functions.
+BEGIN;
+
+-- Plan the tests.
+SELECT plan(2);
+
+-- Run the tests.
+
+SELECT has_column('config', 'circ_matrix_matchpoint', 'description', 
+    'Column "description" on config.circ_matrix_matchpoint should exist');
+SELECT has_column('config', 'hold_matrix_matchpoint', 'description',
+    'Column "description" on config.hold_matrix_matchpoint should exist');
+
+-- Finish the tests and clean up.
+SELECT * FROM finish();
+ROLLBACK;
+

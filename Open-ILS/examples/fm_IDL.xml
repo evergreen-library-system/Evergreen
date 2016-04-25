@@ -1870,6 +1870,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Max Holds" name="max_holds" reporter:datatype="int"/>
 			<field reporter:label="Max includes Frozen" name="include_frozen_holds" reporter:datatype="bool"/>
 			<field reporter:label="Copy Age Hold Protection Rule" name="age_hold_protect_rule" reporter:datatype="link"/>
+			<field name="description" reporter:datatype="text" reporter:label="Description"/>
 		</fields>
 		<links>
 			<link field="user_home_ou" reltype="has_a" key="id" map="" class="aou"/>
@@ -1928,6 +1929,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Script Test" name="script_test" reporter:datatype="text"/>
 			<field name="total_copy_hold_ratio" reporter:datatype="float" reporter:label="Minimum Total Copy/Hold Ratio"/>
 			<field name="available_copy_hold_ratio" reporter:datatype="float" reporter:label="Minimum Available Copy/Hold Ratio"/>
+			<field name="description" reporter:datatype="text" reporter:label="Description"/>
 		</fields>
 		<links>
 			<link field="org_unit" reltype="has_a" key="id" map="" class="aou"/>

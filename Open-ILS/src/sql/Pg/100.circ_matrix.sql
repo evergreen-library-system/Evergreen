@@ -81,7 +81,8 @@ CREATE TABLE config.circ_matrix_matchpoint (
     grace_period         INTERVAL,    -- Grace period override
     script_test          TEXT,                           -- javascript source 
     total_copy_hold_ratio     FLOAT,
-    available_copy_hold_ratio FLOAT
+    available_copy_hold_ratio FLOAT,
+    description          TEXT
 );
 
 -- Nulls don't count for a constraint match, so we have to coalesce them into something that does.

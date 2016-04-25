@@ -55,7 +55,8 @@ CREATE TABLE config.hold_matrix_matchpoint (
     max_holds               INT,                            -- Total hold requests must be less than this, NULL means skip (always pass)
     include_frozen_holds    BOOL    NOT NULL DEFAULT TRUE,                -- Include frozen hold requests in the count for max_holds test
     stop_blocked_user       BOOL    NOT NULL DEFAULT FALSE,                -- Stop users who cannot check out items from placing holds
-    age_hold_protect_rule   INT        REFERENCES config.rule_age_hold_protect (id) DEFERRABLE INITIALLY DEFERRED    -- still not sure we want to move this off the copy
+    age_hold_protect_rule   INT        REFERENCES config.rule_age_hold_protect (id) DEFERRABLE INITIALLY DEFERRED,    -- still not sure we want to move this off the copy
+    description             TEXT
 );
 
 -- Nulls don't count for a constraint match, so we have to coalesce them into something that does.
