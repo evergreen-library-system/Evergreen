@@ -26,3 +26,4 @@ preview in this release, has the following features:
 
 The initial seed data for the in-database tag table is
 derived from the current tooltips XML file.
+

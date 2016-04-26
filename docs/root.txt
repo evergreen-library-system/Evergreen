@@ -544,6 +544,7 @@ Cataloging
 :leveloffset: 1
 
 include::cataloging/cataloging_web_client.txt[]
+
 include::cataloging/copy-buckets_web_client.txt[]
 
 // Return to normal title levels.
