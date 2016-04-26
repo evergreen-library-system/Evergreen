@@ -43,7 +43,12 @@ function drawSurvey(svyId) {
     var surveyFoot = dojo.create('tfoot', { id: "survey_foot"}, surveyTable);
     var footRow = dojo.create('tr', {id: "foot_row"}, surveyFoot);  
     var footLabel = dojo.create('td', {id: "foot_label", innerHTML: "<h3>"+localeStrings.SURVEY_FOOT_LABEL+"</h3>"}, footRow);
-    var footCell = dojo.create('td', {innerHTML: "<hr>", id: "foot_cell"}, footRow);
+    if (startDate <= today) {
+      var warnRow = dojo.create('tr', {id: "warn_row"}, surveyFoot);
+      var warnText = dojo.create('td', {id: "warn_text", style: "padding: 5px", innerHTML: localeStrings.SURVEY_WARN_TEXT}, warnRow);
+    }
+    var footRule = dojo.create('tr', {id:"foot_rule"}, surveyFoot);
+    var footCell = dojo.create('td', {innerHTML: "<hr>", id: "foot_cell"}, footRule);
     getQuestions(svyId, survey);
 
 }

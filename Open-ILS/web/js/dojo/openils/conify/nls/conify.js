@@ -86,6 +86,7 @@
     "SURVEY_QUESTION": "Question:",
     "SURVEY_ID": "Survey ID # ${0}",
     "SURVEY_FOOT_LABEL": "Questions & Answers",
+    "SURVEY_WARN_TEXT": "No questions can be modified or added at this time. The survey Start Date must be set for the future to add new questions or modify existing questions.",
     "EVENT_DEF_LABEL" : "${0}: ${1}",
     "ACQ_DISTRIB_FORMULA_NAME_PROMPT" : "Enter new formula name",
     "ACQ_DISTRIB_FORMULA_NAME_CLONE" : "${0} (Clone)",
