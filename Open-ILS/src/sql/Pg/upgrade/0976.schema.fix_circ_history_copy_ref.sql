@@ -1,7 +1,6 @@
-
 BEGIN;
 
---SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0976', :eg_version);
 
 ALTER TABLE action.usr_circ_history 
     DROP CONSTRAINT IF EXISTS usr_circ_history_target_copy_fkey;
