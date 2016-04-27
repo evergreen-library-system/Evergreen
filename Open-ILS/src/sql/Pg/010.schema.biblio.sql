@@ -99,8 +99,8 @@ CREATE TABLE biblio.monograph_part (
     label           TEXT    NOT NULL,
     label_sortkey   TEXT    NOT NULL,
     deleted         BOOL    NOT NULL DEFAULT FALSE,
-    CONSTRAINT record_label_unique UNIQUE (record,label)
 );
+CREATE UNIQUE INDEX CONCURRENTLY record_label_unique_idx ON biblio.monograph_part (record, label) WHERE deleted = FALSE;
 
 CREATE OR REPLACE FUNCTION biblio.normalize_biblio_monograph_part_sortkey () RETURNS TRIGGER AS $$
 BEGIN
