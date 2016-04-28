@@ -6,7 +6,9 @@ Evergreen 2.8.8
 This release contains several bugfixes improving on Evergreen 2.8.7
 
 * Fixes a bug where phrase searching in the catalog failed when the phrase
-started or ended with puntuation.
+started or ended with punctuation.
+* Fixes a bug where changing the sort order in the public catalog to
+"relevance" could fail.
 * Silences unnecessary warnings emitted for libraries using extending grace
 periods.
 * Removes support for Debian Squeeze now that its long-term support period
