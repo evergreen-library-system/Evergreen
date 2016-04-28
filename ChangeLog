@@ -1,3 +1,180 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 7139e42161db225700b66c9ffd3c4405f57aa1b3
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Apr 28 15:51:47 2016 -0400
+
+    Adding 2.8.7 -> 2.8.8 DB upgrade script
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+7	0	Open-ILS/src/sql/Pg/version-upgrade/2.8.7-2.8.8-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.8.7-2.8.8-upgrade-db.sql
+
+commit 3c0999ec17752a1ccc50221774da24d34053fcaa
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Apr 28 15:00:58 2016 -0400
+
+    Modify server upgrade doc for 2.8.8
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+16	15	docs/installation/server_upgrade.txt
+
+commit f7707eeb1ea40ae77775515e7951f15df6c03a65
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Sep 16 13:52:40 2015 -0400
+
+    Bumping Perl version string for 2.8.8 release
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit 7620bd793f5d215baf238efa4da2da61e2457507
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Thu Apr 28 12:20:45 2016 -0400
+
+    updates to 2.8.8 release notes
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+3	1	docs/RELEASE_NOTES_2_8.txt
+
+commit 753fb70bfc86c842c7e3dac7f22c2e26e2a9d69d
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Thu Apr 28 08:35:43 2016 -0400
+
+    Point release notes for the 2.8.8 release
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+11	0	docs/RELEASE_NOTES_2_8.txt
+
+commit 79f84219958470215631bb0505a99c4177af3502
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Fri Mar 25 16:46:24 2016 -0400
+
+    LP#1562153: fix case where changing sort order to relevance can fail
+    
+    This patch fixes a cause where sending a 'sort' CGI parameter
+    with the empty string as value (which specifies relevance sorting)
+    fails to override a previously-set sort order.
+    
+    To test:
+    
+    [1] Do a public catalog search starting from the advanced search form,
+        e.g., keyword = "cats"
+    [2] Change the sort order to (say) Title A-Z from the results page.
+    [3] Note that the query string changes to "sort(titlesort) cats" and
+        that the results are re-sorted
+    [4] Attempt to change the sort order to relevance.
+    [5] This time, the sort order does not change ... and it should have.
+    [6] Apply the patch and repeat steps 1-5. This time, the sort order
+        should be successfully changed.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+5	2	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Search.pm
+
+commit 015da0004de9aad129dc285f19fd772ef4096a77
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Fri Mar 25 16:44:15 2016 -0400
+
+    LP#1562153: add regression test
+    
+    This patch adds a regression test for successfully
+    overrding the sort order in a query from a 'sort' CGI
+    parameter.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+12	1	Open-ILS/src/perlmods/t/19-OpenILS-WWW-EGCatLoader.t
+
+commit 724b97de25ec216798a908899d3fe4bf6d71a06e
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Fri Mar 18 10:34:40 2016 -0400
+
+    LP#1559121: remove Debian Squeeze support
+    
+    Now that Debian Squeeze's LTS (long-term support) period
+    has ended, Evergreen no longer offers community support
+    for that distribution. This patch removes references
+    to Squeeze from the installation scripts and documentation.
+    
+    To test:
+    
+    [1] Verify that Debian Squeeze is no longer referenced in
+        the installation documentation.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+    
+    Conflicts:
+    	docs/installation/server_upgrade.txt
+
+1	7	Open-ILS/src/extras/Makefile.install
+0	134	Open-ILS/src/extras/install/Makefile.debian-squeeze
+5	13	docs/installation/server_installation.txt
+1	2	docs/installation/server_upgrade.txt
+ delete mode 100644 Open-ILS/src/extras/install/Makefile.debian-squeeze
+
+commit a408daf740cbe904bbe2bd5647381af7ca78a0f5
+Author: Yamil Suarez <yamil@yamil.com>
+Date:   Tue Apr 5 19:13:03 2016 -0400
+
+    Docs: typo fix in authentication_proxy.txt
+    
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+2	2	docs/admin/authentication_proxy.txt
+
+commit 408e779278707c8bf9d61ada1c7f07a945d3b71c
+Author: Jason Boyer <jboyer@library.in.gov>
+Date:   Thu Mar 31 08:08:03 2016 -0400
+
+    LP1564378: Silence Hash Init Warning
+    
+    A trivial change to silence a lot of noise (if your libraries
+    use extending grace periods.)
+    
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlcstaff.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/CircCommon.pm
+
+commit c45e4fbbcbada1592324201ebe84d0b6f0a8cda9
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Tue Mar 22 11:50:58 2016 -0400
+
+    LP#1373601: Consider relevant characters before using word-boundary checks
+    
+    To perform unanchored phrase limits, we make sure that the phrase supplied
+    by the user does not end in the middle of a word by bounding the condition
+    with word-boundary bracket expresssions.  However, if the phrase starts
+    or ends with a non-word character (that is, something other than numbers,
+    letters, or the underscore) then the word-boundary expression won't match.
+    The effect of this is to cause phrase searches starting or ending in
+    punctuation to fail when the user would not expect them to.
+    
+    To address this, we now test the phrase for word-iness at the front and
+    back before applying word-boundary bracket expressions.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+11	2	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Driver/Pg/QueryParser.pm
+
+commit 3ea367dba2b7a2ddada5fa4fe37cdc7a94924874
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Mar 16 16:46:38 2016 -0400
+
+    Porting 2.8.6 -> 2.8.7 SQL upgrade
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+167	0	Open-ILS/src/sql/Pg/version-upgrade/2.8.6-2.8.7-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.8.6-2.8.7-upgrade-db.sql
