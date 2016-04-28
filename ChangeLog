@@ -1,3 +1,859 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 6448ccefe958d50a2c2dcf8e0b130f29b68c1ad4
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Thu Apr 28 13:15:42 2016 -0400
+
+    2.10.1 to 2.10.2 schema upgrade script
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+54	0	Open-ILS/src/sql/Pg/version-upgrade/2.10.1-2.10.2-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.10.1-2.10.2-upgrade-db.sql
+
+commit 3420c4733abc05b57e4f75a7d2e17d17a8de33e1
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Thu Apr 28 12:26:19 2016 -0400
+
+    updates to the 2.10.2 release notes
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+13	3	docs/RELEASE_NOTES_2_10.adoc
+
+commit 42d0847d431a1d57d3757cda779b2959aa89e5f9
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Thu Apr 28 09:27:16 2016 -0400
+
+    Adding 2.10.2 point release notes
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+57	0	docs/RELEASE_NOTES_2_10.adoc
+
+commit 7a3b89d1f9cd6299275bdf3a3df73c8d838bbedc
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Thu Apr 28 12:21:50 2016 -0400
+
+    update release notes for 2.9.4
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+6	1	docs/RELEASE_NOTES_2_9.txt
+
+commit 7773be463aa34344ea6e59ab33dfa43707a4932d
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Thu Apr 28 08:47:05 2016 -0400
+
+    Adding 2.9.4 release notes
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+29	0	docs/RELEASE_NOTES_2_9.txt
+
+commit 07a6e3f2cb1a74bca1cec136c61507d300088c72
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Thu Apr 28 12:20:45 2016 -0400
+
+    updates to 2.8.8 release notes
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+3	1	docs/RELEASE_NOTES_2_8.txt
+
+commit 3858d51553d9d66f3f9941322dc005f4743f40a0
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Thu Apr 28 08:35:43 2016 -0400
+
+    Point release notes for the 2.8.8 release
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+11	0	docs/RELEASE_NOTES_2_8.txt
+
+commit 063ac67fad399b6993abca66ede7b9d498356785
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Fri Mar 25 16:46:24 2016 -0400
+
+    LP#1562153: fix case where changing sort order to relevance can fail
+    
+    This patch fixes a cause where sending a 'sort' CGI parameter
+    with the empty string as value (which specifies relevance sorting)
+    fails to override a previously-set sort order.
+    
+    To test:
+    
+    [1] Do a public catalog search starting from the advanced search form,
+        e.g., keyword = "cats"
+    [2] Change the sort order to (say) Title A-Z from the results page.
+    [3] Note that the query string changes to "sort(titlesort) cats" and
+        that the results are re-sorted
+    [4] Attempt to change the sort order to relevance.
+    [5] This time, the sort order does not change ... and it should have.
+    [6] Apply the patch and repeat steps 1-5. This time, the sort order
+        should be successfully changed.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+5	2	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Search.pm
+
+commit cb5684cc8da7aa4259a0a2fc6a0ea57b50cf7222
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Fri Mar 25 16:44:15 2016 -0400
+
+    LP#1562153: add regression test
+    
+    This patch adds a regression test for successfully
+    overrding the sort order in a query from a 'sort' CGI
+    parameter.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+12	1	Open-ILS/src/perlmods/t/19-OpenILS-WWW-EGCatLoader.t
+
+commit 12e9b3225eed12a763b45de7c20797674c9dcdad
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Wed Mar 30 13:29:10 2016 -0400
+
+    LP#1563531: add libpcre3/libpcre3-dev deps for Jessie
+    
+    This patch adds libpcre3 and libpcre3-dev to the list
+    of packages installed when installing Evergreen on Debian
+    Jessie. Evergreen's direct dependency on libpcre3 is new in 2.10
+    (see bug 1468422); it happens that libpcre3 and libpcre3-dev
+    are installed on Wheezy by virtue of a different dependency
+    chain.
+    
+    To test
+    -------
+    [1] On a fresh Debian Jessie netinstall, follow the OpenSRF
+        and Evergreen installation instructions. Verify that with
+        this patch in place, Evergreen's "configure" step succeeds.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2	0	Open-ILS/src/extras/install/Makefile.debian-jessie
+
+commit f81ec9ce061fe093498ed3902fb6b8b4fd6fe1d3
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Thu Apr 28 11:54:28 2016 -0400
+
+    LP#1568195: Stamping upgrade script
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+36	0	Open-ILS/src/sql/Pg/upgrade/0978.schema.make_ous_batch_retrieve_func_nonvariadic.sql
+0	36	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.make_ous_batch_retrieve_func_nonvariadic.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0978.schema.make_ous_batch_retrieve_func_nonvariadic.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.make_ous_batch_retrieve_func_nonvariadic.sql
+
+commit 904ad79f0a7d114454d08b2822f955e10bc7bf73
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Fri Apr 8 21:46:35 2016 -0400
+
+    LP#1568195: fix retrieving big OUS batches
+    
+    This patch fixes a regression introduced in LP#1501471
+    where the Library Settings Editor could fail to retrieve
+    the values of org unit settings if more than 99 were
+    requested at a time.
+    
+    To test
+    -------
+    [1] Open the XUL library settings editor and ensure that
+        no search filters are in effect. Note that values
+        are not displayed for any of the OU settings, and that
+        the Pg log contains error messages like this:
+    
+        "ERROR: cannot pass more than 100 arguments to a function"
+    
+    [2] Apply the patch.
+    [3] Repeat step one, and verify that values are now retrieved
+        for all of the OU settings that have values set.
+    [4] Verify that the pgTAP tests in live_t/aous_batch.pg pass.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+7	1	Open-ILS/src/perlmods/lib/OpenILS/Application/AppUtils.pm
+2	2	Open-ILS/src/sql/Pg/020.schema.functions.sql
+3	3	Open-ILS/src/sql/Pg/live_t/aous_batch.pg
+36	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.make_ous_batch_retrieve_func_nonvariadic.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.make_ous_batch_retrieve_func_nonvariadic.sql
+
+commit c86b93b9c3a2e49934072b2bab8388c81dfe8cf7
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Thu Apr 28 11:31:20 2016 -0400
+
+    LP#1569884: stamp schema update
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+8	0	Open-ILS/src/sql/Pg/upgrade/0977.schema.allow_parts_to_be_recreated.sql
+0	8	Open-ILS/src/sql/XXXX.schema.allow_parts_to_be_recreated.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0977.schema.allow_parts_to_be_recreated.sql
+ delete mode 100644 Open-ILS/src/sql/XXXX.schema.allow_parts_to_be_recreated.sql
+
+commit aee25ed4af15e12830fbabc5acdb783f9fb77d80
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Thu Apr 28 11:27:11 2016 -0400
+
+    LP#1569884: fix schema update script
+    
+    CREATE INDEX cannot run concurrently in a transaction
+    block period, at least as of 9.4.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+1	1	Open-ILS/src/sql/XXXX.schema.allow_parts_to_be_recreated.sql
+
+commit 9c734be41407263ce3ce77a822302edcf05fb199
+Author: Jason Stephenson <jstephenson@mvlcstaff.org>
+Date:   Wed Apr 27 15:43:31 2016 -0400
+
+    LP#1569884 Fix two problems in previous commit.
+    
+    The CREATE TABLE biblio.monograph_part statement in
+    010.schema.biblio.sql ended up with a trailing comma.
+    
+    The CREATE UNIQUE INDEX on biblio.monograph_part cannot be done
+    CONCURRENTLY at DB creation time, apparently.  At least not on
+    PostgreSQL 9.3.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlcstaff.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2	2	Open-ILS/src/sql/Pg/010.schema.biblio.sql
+
+commit 5e82acab0c48c2fc08299608ce2043dc595b2288
+Author: Steven Callender <stevecallender@esilibrary.com>
+Date:   Wed Apr 27 12:05:48 2016 -0400
+
+    LP#1569884 Updated base schema with monograph parts index.
+    
+    Signed-off-by: Steven Callender <stevecallender@esilibrary.com>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlcstaff.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+1	1	Open-ILS/src/sql/Pg/010.schema.biblio.sql
+
+commit 12d9fa7cc810fc87e619ab3ecd9ba70ec1238355
+Author: Steven Callender <stevecallender@esilibrary.com>
+Date:   Wed Apr 13 11:15:27 2016 -0400
+
+    LP#1569884 Allow deleted monograph parts to be recreated.
+    
+    Changed the constraint on the biblio.monograph_part table to allow for a
+    monograph part to be created if a duplicate deleted version is found.
+    
+    To test:
+    
+    [1] Add a monograph part to a bib.
+    [2] Delete that monograph part.
+    [3] Attempt to add a monograph part to the same bib using
+        the same part label. Without the patches installed, this
+        will fail; upon applying the database update, this operation
+        should succeed.
+    
+    Signed-off-by: Steven Callender <stevecallender@esilibrary.com>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlcstaff.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+8	0	Open-ILS/src/sql/XXXX.schema.allow_parts_to_be_recreated.sql
+ create mode 100644 Open-ILS/src/sql/XXXX.schema.allow_parts_to_be_recreated.sql
+
+commit 5edce038cd5965261d725afee4c2dbb9e24f36e4
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Thu Apr 28 11:20:29 2016 -0400
+
+    LP#1569884: add regression test
+    
+    This pgTAP test verifies that if you logically delete a monograph part,
+    you can subsequently add a new one with the same label as that of the
+    deleted one.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+52	0	Open-ILS/src/sql/Pg/t/regress/lp1569884_readd_deleted_bmp.sql
+ create mode 100644 Open-ILS/src/sql/Pg/t/regress/lp1569884_readd_deleted_bmp.sql
+
+commit 5b63792c560afb0e29fb33f048c76f5ba3440608
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Sat Mar 26 20:16:34 2016 -0400
+
+    LP 1562426: Renumber Perl live_t tests.
+    
+    We had some overlap in numbers at the beginning of test file names.
+    The OCD in me think this should be straightened out.  This branch
+    renumbers the duplicates starting with 10-.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+0	36	Open-ILS/src/perlmods/live_t/10-lp1481036-future-backdate.t
+0	38	Open-ILS/src/perlmods/live_t/10-lp1484989_dont_close_fined_xacts.t
+0	43	Open-ILS/src/perlmods/live_t/11-lp1240119-safe-token-activity.t
+36	0	Open-ILS/src/perlmods/live_t/11-lp1481036-future-backdate.t
+38	0	Open-ILS/src/perlmods/live_t/12-lp1484989_dont_close_fined_xacts.t
+0	252	Open-ILS/src/perlmods/live_t/12-lp1499123_csp_ignore_proximity.t
+0	173	Open-ILS/src/perlmods/live_t/12-lp1533329-opt-in.t
+0	88	Open-ILS/src/perlmods/live_t/13-acq-invoicing.t
+43	0	Open-ILS/src/perlmods/live_t/13-lp1240119-safe-token-activity.t
+252	0	Open-ILS/src/perlmods/live_t/14-lp1499123_csp_ignore_proximity.t
+173	0	Open-ILS/src/perlmods/live_t/15-lp1533329-opt-in.t
+88	0	Open-ILS/src/perlmods/live_t/16-acq-invoicing.t
+ delete mode 100644 Open-ILS/src/perlmods/live_t/10-lp1481036-future-backdate.t
+ delete mode 100644 Open-ILS/src/perlmods/live_t/10-lp1484989_dont_close_fined_xacts.t
+ delete mode 100644 Open-ILS/src/perlmods/live_t/11-lp1240119-safe-token-activity.t
+ create mode 100644 Open-ILS/src/perlmods/live_t/11-lp1481036-future-backdate.t
+ create mode 100644 Open-ILS/src/perlmods/live_t/12-lp1484989_dont_close_fined_xacts.t
+ delete mode 100644 Open-ILS/src/perlmods/live_t/12-lp1499123_csp_ignore_proximity.t
+ delete mode 100644 Open-ILS/src/perlmods/live_t/12-lp1533329-opt-in.t
+ delete mode 100644 Open-ILS/src/perlmods/live_t/13-acq-invoicing.t
+ create mode 100644 Open-ILS/src/perlmods/live_t/13-lp1240119-safe-token-activity.t
+ create mode 100644 Open-ILS/src/perlmods/live_t/14-lp1499123_csp_ignore_proximity.t
+ create mode 100644 Open-ILS/src/perlmods/live_t/15-lp1533329-opt-in.t
+ create mode 100644 Open-ILS/src/perlmods/live_t/16-acq-invoicing.t
+
+commit aabe6f8d397873e07734cb0642f92c0f053514a2
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Wed Apr 27 10:35:49 2016 -0400
+
+    LP#1564079 Stamping upgrade script
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+13	0	Open-ILS/src/sql/Pg/upgrade/0976.schema.fix_circ_history_copy_ref.sql
+0	14	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.fix_circ_history_copy_ref.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0976.schema.fix_circ_history_copy_ref.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.fix_circ_history_copy_ref.sql
+
+commit 9a87f5241b722336ba194a9146fdd79a38474f91
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Mar 30 17:57:59 2016 -0400
+
+    LP#1564079 Checkout history skips nonexistent items
+    
+    Modify the user checkout history migration process
+    (2.9.3-2.10.0-upgrade-db.sql and 0960.schema.decouple_co_history.sql) to
+    avoid inserting history rows for circulations whose copies do not
+    exist in the database.
+    
+    For reference, this is a rare condition that cannot be recreated in a
+    modern EG system short of modifying constraints.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+8	0	Open-ILS/src/sql/Pg/upgrade/0960.schema.decouple_co_history.sql
+8	0	Open-ILS/src/sql/Pg/version-upgrade/2.9.3-2.10.0-upgrade-db.sql
+
+commit 95def1984b4ccded97a0657e8196d4d4e95e96d7
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Mar 30 17:49:26 2016 -0400
+
+    LP#1564079 Checkout history handles serials
+    
+    Remove the target_copy foreign key constraint on action.usr_circ_history
+    so that it does not prevent creation of rows from circulation's that
+    link to serial.unit objects.  Similar to action.circulation, the foreign
+    key constraint is enforced via a evergreen.fake_fkey_tgr trigger
+    instead.
+    
+    This modifies the 2.9.3-2.10.0-upgrade-db.sql and 0960 upgrade scripts,
+    since without this change, the scripts may fail.
+    
+    A separate upgrade script is added to drop the constraint for those who
+    have already successfully run the the 2.9.3-2.10.0-upgrade-db.sql script
+    (i.e. those who don't use serials).  For simplicity, the
+    evergreen.fake_fkey_tgr trigger is only applied in this separate upgrade
+    script (in addition to the base schema, of course).
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+5	2	Open-ILS/src/sql/Pg/090.schema.action.sql
+1	2	Open-ILS/src/sql/Pg/upgrade/0960.schema.decouple_co_history.sql
+14	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.fix_circ_history_copy_ref.sql
+1	2	Open-ILS/src/sql/Pg/version-upgrade/2.9.3-2.10.0-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.fix_circ_history_copy_ref.sql
+
+commit f49bdab6743fbcf44492b0e6ce2a35721b9c8195
+Author: Angela Kilsdonk <akilsdonk@esilibrary.com>
+Date:   Wed Apr 20 14:42:09 2016 -0400
+
+    Docs: image fix
+    
+    Signed-off-by: Angela Kilsdonk <akilsdonk@esilibrary.com>
+
+1	1	docs/acquisitions/selection_lists_po.txt
+
+commit 369634e325d38a5b52b43d716057f1fbbcd6b37c
+Author: Angela Kilsdonk <akilsdonk@esilibrary.com>
+Date:   Wed Apr 20 14:23:02 2016 -0400
+
+    Docs: Paid PO Lineitems
+    
+    Signed-off-by: Angela Kilsdonk <akilsdonk@esilibrary.com>
+
+7	0	docs/acquisitions/selection_lists_po.txt
+-	-	docs/media/2.10_Lineitem_Paid.PNG
+ create mode 100644 docs/media/2.10_Lineitem_Paid.PNG
+
+commit 2b99495d4843a1009150ce5e06db7f0bb30fb358
+Author: Angela Kilsdonk <akilsdonk@esilibrary.com>
+Date:   Wed Apr 20 11:04:45 2016 -0400
+
+    Docs: Funds disencumbered when invoice is closed
+    
+    Signed-off-by: Angela Kilsdonk <akilsdonk@esilibrary.com>
+
+2	2	docs/acquisitions/invoices.txt
+
+commit 532fa7423bb0e3cceffe264b2f698407dc955208
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Fri Mar 18 10:34:40 2016 -0400
+
+    LP#1559121: remove Debian Squeeze support
+    
+    Now that Debian Squeeze's LTS (long-term support) period
+    has ended, Evergreen no longer offers community support
+    for that distribution. This patch removes references
+    to Squeeze from the installation scripts and documentation.
+    
+    To test:
+    
+    [1] Verify that Debian Squeeze is no longer referenced in
+        the installation documentation.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+    
+    Conflicts:
+    	docs/installation/server_upgrade.txt
+
+1	7	Open-ILS/src/extras/Makefile.install
+0	133	Open-ILS/src/extras/install/Makefile.debian-squeeze
+5	13	docs/installation/server_installation.txt
+1	2	docs/installation/server_upgrade.txt
+ delete mode 100644 Open-ILS/src/extras/install/Makefile.debian-squeeze
+
+commit 525798bdb17e3e1f3970530506b2184a67451cf1
+Author: Yamil Suarez <yamil@yamil.com>
+Date:   Fri Apr 22 16:51:20 2016 -0400
+
+    Docs: clean up formatting & typos in using_the_public_access_catalog.txt
+    
+    Thanks to Anna Goben for these fixes.
+    
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+7	7	docs/opac/using_the_public_access_catalog.txt
+
+commit c3bab41e8906265ce8333458e59d53030702a869
+Author: Jennifer Pringle <jennifer.pringle@bc.libraries.coop>
+Date:   Thu Apr 21 20:02:21 2016 -0700
+
+    Docs: Screenshots and step by step instructions added to Self Check section
+    
+    Signed-off-by: Jennifer Pringle <jennifer.pringle@bc.libraries.coop>
+
+79	11	docs/circulation/self_check.txt
+-	-	docs/media/self-check-admin-login.png
+-	-	docs/media/self_check_check_out_1.png
+-	-	docs/media/self_check_check_out_1b.png
+-	-	docs/media/self_check_check_out_2.png
+-	-	docs/media/self_check_check_out_3.png
+-	-	docs/media/self_check_check_out_4.png
+-	-	docs/media/self_check_check_out_5.png
+-	-	docs/media/self_check_check_out_6.png
+-	-	docs/media/self_check_error_1.png
+-	-	docs/media/self_check_view_fines_1.png
+-	-	docs/media/self_check_view_fines_2.png
+-	-	docs/media/self_check_view_holds_1.png
+-	-	docs/media/self_check_view_holds_2.png
+-	-	docs/media/self_check_view_items_out_1.png
+-	-	docs/media/self_check_view_items_out_2.png
+ create mode 100644 docs/media/self-check-admin-login.png
+ create mode 100644 docs/media/self_check_check_out_1.png
+ create mode 100644 docs/media/self_check_check_out_1b.png
+ create mode 100644 docs/media/self_check_check_out_2.png
+ create mode 100644 docs/media/self_check_check_out_3.png
+ create mode 100644 docs/media/self_check_check_out_4.png
+ create mode 100644 docs/media/self_check_check_out_5.png
+ create mode 100644 docs/media/self_check_check_out_6.png
+ create mode 100644 docs/media/self_check_error_1.png
+ create mode 100644 docs/media/self_check_view_fines_1.png
+ create mode 100644 docs/media/self_check_view_fines_2.png
+ create mode 100644 docs/media/self_check_view_holds_1.png
+ create mode 100644 docs/media/self_check_view_holds_2.png
+ create mode 100644 docs/media/self_check_view_items_out_1.png
+ create mode 100644 docs/media/self_check_view_items_out_2.png
+
+commit bb2b028a7d54e2663590ffc939e4bda71c8eedb4
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Thu Apr 21 23:29:42 2016 -0400
+
+    LP#1573372: Opt-in test broken because it uses bail-out.
+    
+    Use skip instead!
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+115	116	Open-ILS/src/perlmods/live_t/12-lp1533329-opt-in.t
+
+commit a25d07d529a178b3a948676e747d9a0e79056e2e
+Author: Jennifer Pringle <jennifer.pringle@bc.libraries.coop>
+Date:   Thu Apr 21 15:36:36 2016 -0700
+
+    Docs: New changes to new patron registration duplicate search.
+    
+    Signed-off-by: Jennifer Pringle <jennifer.pringle@bc.libraries.coop>
+
+17	0	docs/circulation/circulation_patron_records.txt
+-	-	docs/media/patron-reg-duplicate-search-1.png
+-	-	docs/media/patron-reg-duplicate-search-2.png
+ create mode 100644 docs/media/patron-reg-duplicate-search-1.png
+ create mode 100644 docs/media/patron-reg-duplicate-search-2.png
+
+commit 9d99d22ecce50461a81a1249d1f35529b9a910af
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Thu Apr 21 23:00:09 2016 -0400
+
+    LP#1573364: Use a timezone in the future backdate checkin test.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+1	1	Open-ILS/src/perlmods/live_t/10-lp1481036-future-backdate.t
+
+commit e0e72f96524b5e6e6853bc838efc660c62f6c960
+Author: Anna Goben <AGoben@library.in.gov>
+Date:   Thu Apr 21 22:58:14 2016 -0400
+
+    Docs: Exclude Electronic Resources
+    
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+-	-	docs/media/catalogue-3.png
+17	0	docs/opac/using_the_public_access_catalog.txt
+
+commit 30983acd969d485d6819488309ffbb1e51745de7
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Thu Apr 21 15:22:58 2016 -0700
+
+    Docs: Updated attributions.txt
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+16	12	docs/attributions.txt
+
+commit ebc113dbe0ad2e1b3e0c602136165584090a128d
+Author: Yamil Suarez <yamil@yamil.com>
+Date:   Wed Apr 20 16:20:16 2016 -0400
+
+    Docs: resized image
+    
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+-	-	docs/media/catalogue-8a.png
+
+commit c4022c8b20672674b5a83a657b9c3d62ef92fa82
+Author: Debbie Luchenbill <debbie@mobiusconsortium.org>
+Date:   Wed Apr 20 16:17:55 2016 -0400
+
+    Docs: Expanded information about item record view in OPAC
+    
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+16	0	docs/opac/using_the_public_access_catalog.txt
+
+commit 00b53dd5e9bc4f7a76a68bb62316d3f25ffa6558
+Author: Yamil Suarez <yamil@yamil.com>
+Date:   Wed Apr 20 15:58:12 2016 -0400
+
+    Docs: resized image
+    
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+-	-	docs/media/catalogue-8.png
+
+commit 7cae49fe7bca8fee489a08ed6b0289c8d6ba32bd
+Author: Debbie Luchenbill <debbie@mobiusconsortium.org>
+Date:   Wed Apr 20 15:07:51 2016 -0400
+
+    Docs: added tip on using hold counts in renewals
+    
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+2	0	docs/circulation/circulating_items.txt
+
+commit 386a8e5de983c4ce0b11282f90ac76e59c06b0ce
+Author: Yamil Suarez <yamil@yamil.com>
+Date:   Fri Apr 15 11:58:16 2016 -0400
+
+    Docs: small syntax fix circulation/circulation_patron_records.txt
+    
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+13	13	docs/circulation/circulation_patron_records.txt
+
+commit 1ba6c15a1f094f0a5268825d7a0a4246e137485f
+Author: Yamil Suarez <yamil@yamil.com>
+Date:   Fri Apr 15 11:53:56 2016 -0400
+
+    Docs: small syntax fix in cataloging/authorities.txt
+    
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+2	2	docs/cataloging/authorities.txt
+
+commit 6c02ebd7f1431bf2ff4f824a3591178941e4ee71
+Author: Yamil Suarez <yamil@yamil.com>
+Date:   Tue Apr 12 22:36:12 2016 -0400
+
+    Docs: small fix for circulation_patron_records_web_client.txt & root.txt
+    
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+2	2	docs/circulation/circulation_patron_records_web_client.txt
+0	5	docs/root.txt
+
+commit 1fb0cfdf37ce64bed20a08f178fd786910e4b84c
+Author: Yamil Suarez <yamil@yamil.com>
+Date:   Tue Apr 12 22:33:43 2016 -0400
+
+    Docs: small fix for lsa-barcode_completion.txt & root.txt
+    
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+1	1	docs/admin/lsa-barcode_completion.txt
+3	3	docs/root.txt
+
+commit c8bf2978ac1f3579aac8b6803f4bade9d94c2baf
+Author: Yamil Suarez <yamil@yamil.com>
+Date:   Thu Apr 7 13:51:14 2016 -0400
+
+    Docs: update root.txt to include 2.10 release notes
+    
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+1	1	docs/root.txt
+
+commit cca3c338ec75162ada984ab46cac37541d7c9a2e
+Author: Yamil Suarez <yamil@yamil.com>
+Date:   Tue Apr 5 19:13:03 2016 -0400
+
+    Docs: typo fix in authentication_proxy.txt
+    
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+2	2	docs/admin/authentication_proxy.txt
+
+commit 736aa4d9261f717fc7a9b37219ab1c7e1a044c45
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Sat Apr 2 18:11:12 2016 -0400
+
+    LP#1564685 Prevent linked address edit on reload
+    
+    Prevent editing of linked addresses when a user is loaded after the
+    clone operation.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+19	0	Open-ILS/web/js/ui/default/staff/circ/patron/regctl.js
+
+commit f25e0567bda92cc0e635cd427bd27ceb4328c957
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Mar 31 20:35:00 2016 -0400
+
+    LP#1564685 Avoid referencing out-of-scope stat cats
+    
+    Fixes a bug in the patron editor where out-of-scope stat cats would be
+    incorrectly bundled in the patron save operation, resulting in a
+    server-side error on save.  In short, ignore out-of-scope stat cat
+    entries for patrons in the editor.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+13	0	Open-ILS/web/js/ui/default/staff/circ/patron/regctl.js
+
+commit d2dcd6ba6fe6ddfd086e6e8f05e95544c7a05c9f
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Mar 28 16:10:10 2016 -0400
+
+    LP#1564685 Prevent edit of linked addresses
+    
+    Do not allow a cloned user to modify a linked address.  Only the address
+    owner should be able to do that.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+18	8	Open-ILS/src/templates/staff/circ/patron/t_edit.tt2
+
+commit 1464aa082ea93da70a7809a42f44d2bf0f9a028f
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Mar 28 16:00:18 2016 -0400
+
+    LP#1564685 New Address button is always accessible
+    
+    The New Address button in the patron editor is now always accessible,
+    regardless of the existence of any addresses.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+5	5	Open-ILS/src/templates/staff/circ/patron/t_edit.tt2
+
+commit 13b61f30ec24a660b1d638da1d37ddd2973a923e
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Mar 28 15:57:26 2016 -0400
+
+    LP#1564685 Repair patron editor checkboxes sizing
+    
+    Fix the checkbox HTML markup to prevent huge checkboxes in the patron
+    editor.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+50	6	Open-ILS/src/templates/staff/circ/patron/t_edit.tt2
+
+commit 140be17c673bec818e37363959a90ad247b0404e
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Mar 28 15:48:29 2016 -0400
+
+    LP#1564685 Required-field org settings overlay defaults
+    
+    An org setting requiring a value for a field in the patron editor means
+    the field is required, even if it's not required by default.  IOW, fix
+    the code that was supposed to do that already.
+    
+    Of note, county and state can now both be marked as required by org
+    settings in the patron editor.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+17	7	Open-ILS/web/js/ui/default/staff/circ/patron/regctl.js
+
+commit 6ec8bd4c16eb2bed8a4c59856f5ee17137ce853f
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Mar 28 15:30:37 2016 -0400
+
+    LP#1564685 Allow delete of all patron addresses
+    
+    If the org setting ui.patron.registration.require_address is not true,
+    allow all addresses to be removed from a patron's account.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2	0	Open-ILS/src/templates/staff/circ/patron/register.tt2
+8	0	Open-ILS/web/js/ui/default/staff/circ/patron/regctl.js
+
+commit 50153a8d3392eb75304fed54323f3664040e5c8f
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Mar 28 15:22:52 2016 -0400
+
+    LP#1564685 Alert and stop on invalid fields
+    
+    Display an alert message and prevent save or save+clone when invalid
+    values exist in the patron edit form.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2	0	Open-ILS/src/templates/staff/circ/patron/index.tt2
+2	0	Open-ILS/src/templates/staff/circ/patron/register.tt2
+20	11	Open-ILS/web/js/ui/default/staff/circ/patron/regctl.js
+
+commit 68eacf38e0bb967e2683146b3b314e39f87ccd0a
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Mar 23 22:13:44 2016 -0400
+
+    LP#1564685 Allow barcode as username despite regex
+    
+    Allow a patron's barcode to be considered a valid username in the patron
+    editor even in the presence of an 'opac.username_regex' org setting
+    value that does not match the barcode.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+25	2	Open-ILS/web/js/ui/default/staff/circ/patron/regctl.js
+
+commit a802095aff2b6c300045fb7a6ef181bcb5f15903
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Mar 23 21:21:12 2016 -0400
+
+    LP#1564685 Avoid dupe usrname warning on matching patron
+    
+    Do not treat usernames as duplicates when they belong to the patron
+    being edited.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+12	0	Open-ILS/web/js/ui/default/staff/circ/patron/regctl.js
+
+commit fba80e28dc490157cf2d06aa4cdfe6787064ef3e
+Author: Jason Boyer <jboyer@library.in.gov>
+Date:   Thu Mar 31 08:08:03 2016 -0400
+
+    LP1564378: Silence Hash Init Warning
+    
+    A trivial change to silence a lot of noise (if your libraries
+    use extending grace periods.)
+    
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlcstaff.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/CircCommon.pm
+
+commit b6f977f633b478e401874c898727a97acc31ba16
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Tue Mar 22 11:50:58 2016 -0400
+
+    LP#1373601: Consider relevant characters before using word-boundary checks
+    
+    To perform unanchored phrase limits, we make sure that the phrase supplied
+    by the user does not end in the middle of a word by bounding the condition
+    with word-boundary bracket expresssions.  However, if the phrase starts
+    or ends with a non-word character (that is, something other than numbers,
+    letters, or the underscore) then the word-boundary expression won't match.
+    The effect of this is to cause phrase searches starting or ending in
+    punctuation to fail when the user would not expect them to.
+    
+    To address this, we now test the phrase for word-iness at the front and
+    back before applying word-boundary bracket expressions.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+11	2	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Driver/Pg/QueryParser.pm
