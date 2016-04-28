@@ -3,6 +3,35 @@ Evergreen 2.9 Release Notes
 :toc:
 :numbered:
 
+Evergreen 2.9.4
+---------------
+This release contains several bugfixes improving on Evergreen 2.9.3
+
+* Fixes a bug where phrase searching in the catalog failed when the phrase
+started or ended with puntuation.
+* Silences unnecessary warnings emitted for libraries using extending grace
+periods.
+* Removes support for Debian Squeeze now that its long-term support period
+has ended.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed
+code and documentation patches to the 2.9.4 point release of Evergreen:
+
+* Jason Boyer
+* Galen Charlton
+* Mike Rylander
+* Yamil Suarez
+
+We also thank the following organizations whose employees contributed
+patches:
+
+* Berklee College of Music
+* Equinox Software, Inc.
+* Evergreen Indiana
+
+
 Evergreen 2.9.3
 ---------------
 This release contains several bugfixes improving on Evergreen 2.9.2.
