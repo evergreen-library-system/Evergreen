@@ -3,6 +3,63 @@ Evergreen 2.10.1 Release Notes
 :toc:
 :numbered:
 
+Evergreen 2.10.2
+---------------
+This release contains several bugfixes improving on Evergreen 2.10.1
+
+* Fixes a bug where phrase searching in the catalog failed when the phrase
+started or ended with puntuation.
+* Fixes a bug where serials checkouts failed for users that track circulation
+history. 
+* Fixes several issues with the new web-based Angular patron editor, including:
+** Allows barcodes to be used as user name even if it doesn't match the user
+name regex.
+** Presents an alert when trying to save a form with invalid values.
+** Allows staff to delete all patron addresses if the corresponding Library 
+Setting allows them to do so.
+** Honors Library Settings to require the county and state fields at patron
+registration time.
+** Resizes checkboxes that had become huge in some browsers.
+** Displays the New Address button at all times.
+** Prevents staff from editing linked addresses for cloned users.
+** Fixes a bug where out-of-scope stat cats would be incorrectly bundled in the 
+patron save operation, resulting in a server-side error on save.
+* Silences unnecessary warnings emitted for libraries using extending grace
+periods.
+* Removes support for Debian Squeeze now that its long-term support period
+has ended.
+* Fixes some QA tests that had been failing. 
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed
+code and documentation patches to the 2.10.2 point release of Evergreen:
+
+* Jason Boyer
+* Galen Charlton
+* Bill Erickson
+* Anna Goben
+* Angela Kilsdonk
+* Debbie Luchenbill
+* Jennifer Pringle
+* Mike Rylander
+* Jane Sandberg
+* Jason Stephenson
+* Yamil Suarez
+
+We also thank the following organizations whose employees contributed
+patches:
+
+* BC Libraries Cooperative
+* Berklee College of Music
+* Equinox Software, Inc.
+* Evergreen Indiana
+* King County Library System
+* Linn Libraries Consortium
+* Merrimack Valley Library Consortium
+* MOBIUS
+
+
 Evergreen 2.10.1
 ----------------
 
