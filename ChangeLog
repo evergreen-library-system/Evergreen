@@ -1,3 +1,261 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 51451da9f1efd176b5797233338f86eb3b5556a0
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Thu Apr 28 12:21:50 2016 -0400
+
+    update release notes for 2.9.4
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+6	1	docs/RELEASE_NOTES_2_9.txt
+
+commit 5d69c0cacbddabf40aa274b8fce3437e0079c6b4
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Thu Apr 28 08:47:05 2016 -0400
+
+    Adding 2.9.4 release notes
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+29	0	docs/RELEASE_NOTES_2_9.txt
+
+commit fcb8226a9b8452b945da30b395eb48d2762626c4
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Fri Mar 25 16:46:24 2016 -0400
+
+    LP#1562153: fix case where changing sort order to relevance can fail
+    
+    This patch fixes a cause where sending a 'sort' CGI parameter
+    with the empty string as value (which specifies relevance sorting)
+    fails to override a previously-set sort order.
+    
+    To test:
+    
+    [1] Do a public catalog search starting from the advanced search form,
+        e.g., keyword = "cats"
+    [2] Change the sort order to (say) Title A-Z from the results page.
+    [3] Note that the query string changes to "sort(titlesort) cats" and
+        that the results are re-sorted
+    [4] Attempt to change the sort order to relevance.
+    [5] This time, the sort order does not change ... and it should have.
+    [6] Apply the patch and repeat steps 1-5. This time, the sort order
+        should be successfully changed.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+5	2	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Search.pm
+
+commit f1608d58437a4c8a6b4f5312e3e2905e947aa624
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Fri Mar 25 16:44:15 2016 -0400
+
+    LP#1562153: add regression test
+    
+    This patch adds a regression test for successfully
+    overrding the sort order in a query from a 'sort' CGI
+    parameter.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+12	1	Open-ILS/src/perlmods/t/19-OpenILS-WWW-EGCatLoader.t
+
+commit 2caf056a9045615927e3beac2ba29e91041938d2
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Thu Apr 28 11:31:20 2016 -0400
+
+    LP#1569884: stamp schema update
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    
+    Conflicts:
+    	Open-ILS/src/sql/Pg/002.schema.config.sql
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+8	0	Open-ILS/src/sql/Pg/upgrade/0977.schema.allow_parts_to_be_recreated.sql
+0	8	Open-ILS/src/sql/XXXX.schema.allow_parts_to_be_recreated.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0977.schema.allow_parts_to_be_recreated.sql
+ delete mode 100644 Open-ILS/src/sql/XXXX.schema.allow_parts_to_be_recreated.sql
+
+commit 9e20a27a9d1370b9375d25cadd413caa44eb9c33
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Thu Apr 28 11:27:11 2016 -0400
+
+    LP#1569884: fix schema update script
+    
+    CREATE INDEX cannot run concurrently in a transaction
+    block period, at least as of 9.4.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+1	1	Open-ILS/src/sql/XXXX.schema.allow_parts_to_be_recreated.sql
+
+commit f6d4dea4af5f37849367b099a4d8652dea304867
+Author: Jason Stephenson <jstephenson@mvlcstaff.org>
+Date:   Wed Apr 27 15:43:31 2016 -0400
+
+    LP#1569884 Fix two problems in previous commit.
+    
+    The CREATE TABLE biblio.monograph_part statement in
+    010.schema.biblio.sql ended up with a trailing comma.
+    
+    The CREATE UNIQUE INDEX on biblio.monograph_part cannot be done
+    CONCURRENTLY at DB creation time, apparently.  At least not on
+    PostgreSQL 9.3.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlcstaff.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2	2	Open-ILS/src/sql/Pg/010.schema.biblio.sql
+
+commit 9e5e06bfef338c85bb6e77da51a1c6779f3ad194
+Author: Steven Callender <stevecallender@esilibrary.com>
+Date:   Wed Apr 27 12:05:48 2016 -0400
+
+    LP#1569884 Updated base schema with monograph parts index.
+    
+    Signed-off-by: Steven Callender <stevecallender@esilibrary.com>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlcstaff.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+1	1	Open-ILS/src/sql/Pg/010.schema.biblio.sql
+
+commit 25024ec416017d68b79308897d2b936203fc2e73
+Author: Steven Callender <stevecallender@esilibrary.com>
+Date:   Wed Apr 13 11:15:27 2016 -0400
+
+    LP#1569884 Allow deleted monograph parts to be recreated.
+    
+    Changed the constraint on the biblio.monograph_part table to allow for a
+    monograph part to be created if a duplicate deleted version is found.
+    
+    To test:
+    
+    [1] Add a monograph part to a bib.
+    [2] Delete that monograph part.
+    [3] Attempt to add a monograph part to the same bib using
+        the same part label. Without the patches installed, this
+        will fail; upon applying the database update, this operation
+        should succeed.
+    
+    Signed-off-by: Steven Callender <stevecallender@esilibrary.com>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlcstaff.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+8	0	Open-ILS/src/sql/XXXX.schema.allow_parts_to_be_recreated.sql
+ create mode 100644 Open-ILS/src/sql/XXXX.schema.allow_parts_to_be_recreated.sql
+
+commit e1f051997cbd50e9d2c5be7ca54b8b542fc7ac74
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Thu Apr 28 11:20:29 2016 -0400
+
+    LP#1569884: add regression test
+    
+    This pgTAP test verifies that if you logically delete a monograph part,
+    you can subsequently add a new one with the same label as that of the
+    deleted one.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+52	0	Open-ILS/src/sql/Pg/t/regress/lp1569884_readd_deleted_bmp.sql
+ create mode 100644 Open-ILS/src/sql/Pg/t/regress/lp1569884_readd_deleted_bmp.sql
+
+commit 71dfb5bd98de998396fb98442d6ea657d21342a2
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Fri Mar 18 10:34:40 2016 -0400
+
+    LP#1559121: remove Debian Squeeze support
+    
+    Now that Debian Squeeze's LTS (long-term support) period
+    has ended, Evergreen no longer offers community support
+    for that distribution. This patch removes references
+    to Squeeze from the installation scripts and documentation.
+    
+    To test:
+    
+    [1] Verify that Debian Squeeze is no longer referenced in
+        the installation documentation.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+    
+    Conflicts:
+    	docs/installation/server_upgrade.txt
+
+1	7	Open-ILS/src/extras/Makefile.install
+0	133	Open-ILS/src/extras/install/Makefile.debian-squeeze
+5	13	docs/installation/server_installation.txt
+1	2	docs/installation/server_upgrade.txt
+ delete mode 100644 Open-ILS/src/extras/install/Makefile.debian-squeeze
+
+commit 6598be1adf4aea45a682811cc5de913b7e693699
+Author: Yamil Suarez <yamil@yamil.com>
+Date:   Tue Apr 5 19:13:03 2016 -0400
+
+    Docs: typo fix in authentication_proxy.txt
+    
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+2	2	docs/admin/authentication_proxy.txt
+
+commit a02207d5d319a27101ed2463b340bb40ef1bfec9
+Author: Jason Boyer <jboyer@library.in.gov>
+Date:   Thu Mar 31 08:08:03 2016 -0400
+
+    LP1564378: Silence Hash Init Warning
+    
+    A trivial change to silence a lot of noise (if your libraries
+    use extending grace periods.)
+    
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlcstaff.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/CircCommon.pm
+
+commit de875779594720f9a405580c87e1d5754269e354
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Tue Mar 22 11:50:58 2016 -0400
+
+    LP#1373601: Consider relevant characters before using word-boundary checks
+    
+    To perform unanchored phrase limits, we make sure that the phrase supplied
+    by the user does not end in the middle of a word by bounding the condition
+    with word-boundary bracket expresssions.  However, if the phrase starts
+    or ends with a non-word character (that is, something other than numbers,
+    letters, or the underscore) then the word-boundary expression won't match.
+    The effect of this is to cause phrase searches starting or ending in
+    punctuation to fail when the user would not expect them to.
+    
+    To address this, we now test the phrase for word-iness at the front and
+    back before applying word-boundary bracket expressions.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+11	2	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Driver/Pg/QueryParser.pm
+
+commit 4c0b69dd7e170577b62b60f5b12d06b8a97f4585
+Author: Jason Stephenson <jstephenson@mvlcstaff.org>
+Date:   Wed Mar 16 16:54:44 2016 -0400
+
+    Forward port 2.9.2 to 2.9.3 upgrade script and server upgrade instructions.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlcstaff.org>
+
+180	0	Open-ILS/src/sql/Pg/version-upgrade/2.9.2-2.9.3-upgrade-db.sql
+17	16	docs/installation/server_upgrade.txt
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.9.2-2.9.3-upgrade-db.sql
+
+commit 68aa1d4ee7daa2c77acf6b67c6ae186275c4e299
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Mar 16 16:46:38 2016 -0400
+
+    Porting 2.8.6 -> 2.8.7 SQL upgrade
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+167	0	Open-ILS/src/sql/Pg/version-upgrade/2.8.6-2.8.7-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.8.6-2.8.7-upgrade-db.sql
