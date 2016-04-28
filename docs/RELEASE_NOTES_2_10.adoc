@@ -8,9 +8,15 @@ Evergreen 2.10.2
 This release contains several bugfixes improving on Evergreen 2.10.1
 
 * Fixes a bug where phrase searching in the catalog failed when the phrase
-started or ended with puntuation.
+started or ended with punctuation.
+* Fixes a bug where changing the sort order in the public catalog to
+"relevance" could fail.
+* Fixes a bug that prevented users from recreating a monograph part that
+had previously been deleted.
 * Fixes a bug where serials checkouts failed for users that track circulation
-history. 
+history.
+* Fixes a bug that prevented the Library Settings Editor from
+consistently retrieving the values of library settings.
 * Fixes several issues with the new web-based Angular patron editor, including:
 ** Allows barcodes to be used as user name even if it doesn't match the user
 name regex.
@@ -28,7 +34,10 @@ patron save operation, resulting in a server-side error on save.
 periods.
 * Removes support for Debian Squeeze now that its long-term support period
 has ended.
-* Fixes some QA tests that had been failing. 
+* Fixes a bug that had prevented the dependency libpcre3 from being
+intalled on Debian Jessie.
+* Fixes some QA tests that had been failing.
+* Renumbers the Perl unit test files.
 
 Acknowledgements
 ~~~~~~~~~~~~~~~~
@@ -36,6 +45,7 @@ We would like to thank the following individuals who contributed
 code and documentation patches to the 2.10.2 point release of Evergreen:
 
 * Jason Boyer
+* Steve Callender
 * Galen Charlton
 * Bill Erickson
 * Anna Goben
