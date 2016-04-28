@@ -8,7 +8,11 @@ Evergreen 2.9.4
 This release contains several bugfixes improving on Evergreen 2.9.3
 
 * Fixes a bug where phrase searching in the catalog failed when the phrase
-started or ended with puntuation.
+started or ended with punctuation.
+* Fixes a bug where changing the sort order in the public catalog to
+"relevance" could fail.
+* Fixes a bug that prevented users from recreating a monograph part that
+had previously been deleted.
 * Silences unnecessary warnings emitted for libraries using extending grace
 periods.
 * Removes support for Debian Squeeze now that its long-term support period
@@ -20,6 +24,7 @@ We would like to thank the following individuals who contributed
 code and documentation patches to the 2.9.4 point release of Evergreen:
 
 * Jason Boyer
+* Steve Callender
 * Galen Charlton
 * Mike Rylander
 * Yamil Suarez
