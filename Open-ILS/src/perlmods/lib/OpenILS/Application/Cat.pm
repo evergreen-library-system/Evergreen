@@ -528,6 +528,7 @@ sub biblio_record_marc_cn {
         my $tag = substr($field, 0, 3);
         $logger->debug("Tag = $tag");
         my @node = $doc->findnodes("//marc:datafield[\@tag='$tag']");
+        next unless (@node);
 
         # Now parse the subfields and build up the subfield XPath
         my @subfields = split(//, substr($field, 3));
@@ -536,16 +537,17 @@ sub biblio_record_marc_cn {
         if (!@subfields) {
             @subfields = ('a');
         }
-        my $subxpath;
-        foreach my $sf (@subfields) {
-            $subxpath .= "\@code='$sf' or ";
-        }
-        $subxpath = substr($subxpath, 0, -4);
-        $logger->debug("subxpath = $subxpath");
+        my $xpath = 'marc:subfield[' . join(' or ', map { "\@code='$_'" } @subfields) . ']';
+        $logger->debug("xpath = $xpath");
 
         # Find the contents of the specified subfields
         foreach my $x (@node) {
-            my $cn = $x->findvalue("marc:subfield[$subxpath]");
+            # We can't use find($xpath)->to_literal_delimited here because older 2.x
+            # versions of the XML::LibXML module don't have to_literal_delimited().
+            my $cn = join(
+                ' ',
+                map { $_->textContent } $x->findnodes($xpath)
+            );
             push @res, {$tag => $cn} if ($cn);
         }
     }
