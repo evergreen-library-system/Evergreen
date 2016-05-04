@@ -18,8 +18,8 @@ angular.module('egWorkLogApp',
 })
 
 .controller('WorkLogCtrl',
-       ['$scope','$q','$routeParams','$window','$location','$timeout','egCore','egGridDataProvider','egWorkLog',
-function($scope , $q , $routeParams , $window , $location , $timeout , egCore , egGridDataProvider , egWorkLog ) {
+       ['$scope','$q','$routeParams','$window','$timeout','egCore','egGridDataProvider','egWorkLog',
+function($scope , $q , $routeParams , $window , $timeout , egCore , egGridDataProvider , egWorkLog ) {
 
     var work_log_entries = [];
     var patron_log_entries = [];
@@ -34,9 +34,7 @@ function($scope , $q , $routeParams , $window , $location , $timeout , egCore , 
         if (!angular.isArray(log_entries)) log_entries = [log_entries];
         angular.forEach(log_entries, function(log_entry) {
             $window.open(
-                $location.path(
-                    '/cat/item/' + log_entry.item_id
-                ).absUrl(),
+                egCore.env.basePath + '/cat/item/' + log_entry.item_id,
                 '_blank'
             ).focus();
         });
@@ -51,9 +49,8 @@ function($scope , $q , $routeParams , $window , $location , $timeout , egCore , 
         if (!angular.isArray(log_entries)) log_entries = [log_entries];
         angular.forEach(log_entries, function(log_entry) {
             $window.open(
-                $location.path(
-                    '/circ/patron/' + log_entry.patron_id + '/checkout'
-                ).absUrl(),
+                egCore.env.basePath +
+                '/circ/patron/' + log_entry.patron_id + '/checkout',
                 '_blank'
             ).focus();
         });
@@ -67,14 +64,15 @@ function($scope , $q , $routeParams , $window , $location , $timeout , egCore , 
         activateItem : load_patron
     }
 
-    function refresh_page() {
+    $scope.refresh_ui = function() {
         work_log_entries = [];
         patron_log_entries = [];
-        provider.refresh();
+        work_log_provider.refresh();
+        patron_log_provider.refresh();
     }
 
     function fetch_hold(deferred,entry) {
-        egCore.pcrud.search('ahr',
+        return egCore.pcrud.search('ahr',
             { 'id' : entry.data.hold_id }, {
                 'flesh' : 2,
                 'flesh_fields' : {
@@ -82,26 +80,22 @@ function($scope , $q , $routeParams , $window , $location , $timeout , egCore , 
                 },
             }
         ).then(
-            deferred.resolve, null, 
             function(hold) {
                 entry.patron_id = hold.usr().id();
                 entry.user = hold.usr().family_name();
                 if (hold.current_copy()) {
                     entry.item = hold.current_copy().barcode();
                 }
-                deferred.notify(entry);
             }
         );
     }
 
     function fetch_patron(deferred,entry) {
-        egCore.pcrud.search('au',
+        return egCore.pcrud.search('au',
             { 'id' : entry.data.patron_id }, {}
         ).then(
-            deferred.resolve, null,
             function(usr) {
                 entry.user = usr.family_name();
-                deferred.notify(entry);
             }
         );
     }
@@ -111,24 +105,29 @@ function($scope , $q , $routeParams , $window , $location , $timeout , egCore , 
         console.log(log_entries);
         var deferred = $q.defer();
 
-        $timeout( function() {
-            log_entries.work_log.forEach(
-                function(el,idx) {
-                    el.id = idx;
-                    if (el.action == 'requested_hold') {
-                        fetch_hold(deferred,el);
-                    } else if (el.action == 'registered_patron') {
-                        fetch_patron(deferred,el);
-                    } else if (el.action == 'edited_patron') {
-                        fetch_patron(deferred,el);
-                    } else if (el.action == 'paid_bill') {
-                        fetch_patron(deferred,el);
-                    } else {
-                        deferred.notify(el);
-                    }
+        var promises = [];
+        var entries = count ?
+                      log_entries.work_log.slice(offset, offset + count) :
+                      log_entries.work_log;
+        entries.forEach(
+            function(el,idx) {
+                el.id = idx;
+                // notify right away and in order; fetch_* will
+                // fill in entry later if necessary
+                promises.push($timeout(function() { deferred.notify(el) }));
+                if (el.action == 'requested_hold') {
+                    promises.push(fetch_hold(deferred,el));
+                } else if (el.action == 'registered_patron') {
+                    promises.push(fetch_patron(deferred,el));
+                } else if (el.action == 'edited_patron') {
+                    promises.push(fetch_patron(deferred,el));
+                } else if (el.action == 'paid_bill') {
+                    promises.push(fetch_patron(deferred,el));
                 }
-            );
-        });
+            }
+        );
+        $q.all(promises).then(deferred.resolve);
+
         return deferred.promise;
     }
 
@@ -137,24 +136,29 @@ function($scope , $q , $routeParams , $window , $location , $timeout , egCore , 
         console.log(log_entries);
         var deferred = $q.defer();
 
-        $timeout( function() {
-            log_entries.patron_log.forEach(
-                function(el,idx) {
-                    el.id = idx;
-                    if (el.action == 'requested_hold') {
-                        fetch_hold(deferred,el);
-                    } else if (el.action == 'registered_patron') {
-                        fetch_patron(deferred,el);
-                    } else if (el.action == 'edited_patron') {
-                        fetch_patron(deferred,el);
-                    } else if (el.action == 'paid_bill') {
-                        fetch_patron(deferred,el);
-                    } else {
-                        deferred.notify(el);
-                    }
+        var promises = [];
+        var entries = count ?
+                      log_entries.patron_log.slice(offset, offset + count) :
+                      log_entries.patron_log;
+        log_entries.patron_log.forEach(
+            function(el,idx) {
+                el.id = idx;
+                // notify right away and in order; fetch_* will
+                // fill in entry later if necessary
+                promises.push($timeout(function() { deferred.notify(el) }));
+                if (el.action == 'requested_hold') {
+                    promises.push(fetch_hold(deferred,el));
+                } else if (el.action == 'registered_patron') {
+                    promises.push(fetch_patron(deferred,el));
+                } else if (el.action == 'edited_patron') {
+                    promises.push(fetch_patron(deferred,el));
+                } else if (el.action == 'paid_bill') {
+                    promises.push(fetch_patron(deferred,el));
                 }
-            );
-        });
+            }
+        );
+        $q.all(promises).then(deferred.resolve);
+
         return deferred.promise;
     }
 
