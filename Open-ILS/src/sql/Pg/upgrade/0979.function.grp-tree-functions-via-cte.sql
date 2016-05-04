@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('0979', :eg_version);
+
 -- Replace connectby from the tablefunc extension with CTEs
 
 
