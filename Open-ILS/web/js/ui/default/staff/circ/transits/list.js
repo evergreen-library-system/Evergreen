@@ -18,8 +18,8 @@ angular.module('egTransitListApp',
 })
 
 .controller('TransitListCtrl',
-       ['$scope','$q','$routeParams','$window','$location','egCore','egTransits','egGridDataProvider',
-function($scope , $q , $routeParams , $window , $location , egCore , egTransits , egGridDataProvider) {
+       ['$scope','$q','$routeParams','$window','egCore','egTransits','egGridDataProvider',
+function($scope , $q , $routeParams , $window , egCore , egTransits , egGridDataProvider) {
 
     var transits = [];
     var provider = egGridDataProvider.instance({});
@@ -68,11 +68,10 @@ function($scope , $q , $routeParams , $window , $location , egCore , egTransits 
         if (!angular.isArray(transits)) transits = [transits];
         angular.forEach(transits, function(transit) {
             $window.open(
-                $location.path(
-                    '/cat/item/' + transit.target_copy().id()
-                ).absUrl(),
+                egCore.env.basePath + '/cat/item/' +
+                transit.target_copy().id(),
                 '_blank'
-            ).focus();
+            ).focus()
         });
     }
 
