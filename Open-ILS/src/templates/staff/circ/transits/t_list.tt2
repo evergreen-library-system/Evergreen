@@ -4,13 +4,24 @@
   </div>
 </div>
 
-<span><label><input type="radio" ng-model="transit_direction" value="to"/>[% l('Transits To') %]</label></span>
-<span><label><input type="radio" ng-model="transit_direction" value="from"/>[% l('Transits From') %]</label></span>
-<br/>
-<span><label>[% l('Library: ' ) %]</label></span>
-<span><eg-org-selector selected="context_org"></eg-org-selector></span>
-<span><label>[% l('Start Date: ') %]</label><input eg-date-input ng-model="dates.start_date" /></span>
-<span><label>[% l('End Date: ') %]</label><input eg-date-input ng-model="dates.end_date" /></span>
+<div>
+  <div class="form-group col-md-4">
+    <div class="row">
+      <label><input type="radio" ng-model="transit_direction" value="to"></input>[% l('Transits To') %]</label>
+      <label><input type="radio" ng-model="transit_direction" value="from"></input>[% l('Transits From') %]</label>
+    </div>
+    <div class="row">
+      <label for="select-transit-ou">[% l('Library: ' ) %]</label>
+      <eg-org-selector id="select-transit-ou" selected="context_org"></eg-org-selector>
+    </div>
+  </div>
+  <div class="form-group form-inline col-md-4">
+    <label for="select-start-date">[% l('Start Date: ') %]</label>
+    <eg-date-input id="select-start-date" ng-model="dates.start_date"></eg-date-input>
+    <label for="select-end-date">[% l('End Date: ') %]</label>
+    <eg-date-input id="select-end-date" ng-model="dates.end_date"></eg-date-input>
+  </div>
+</div>
 
 <hr/>
 
