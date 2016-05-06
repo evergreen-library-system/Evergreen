@@ -1,10 +1,10 @@
-Evergreen 2.10.1 Release Notes
-==============================
+Evergreen 2.10 Release Notes
+============================
 :toc:
 :numbered:
 
 Evergreen 2.10.2
----------------
+----------------
 This release contains several bugfixes improving on Evergreen 2.10.1
 
 * Fixes a bug where phrase searching in the catalog failed when the phrase
