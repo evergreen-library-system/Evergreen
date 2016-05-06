@@ -241,19 +241,27 @@ sub login {
     }
 
     my $nonce = rand($$);
-    my $seed = $U->simplereq( 
+
+    my $seed = $U->simplereq(
         'open-ils.auth',
         'open-ils.auth.authenticate.init', $username, $nonce );
 
-    my $response = $U->simplereq(
-        'open-ils.auth', 
-        'open-ils.auth.authenticate.complete', 
-        {    
-            username => $username, 
-            password => md5_hex($seed . md5_hex($password)), 
+    my $opts =
+        {
+            username => $username,
+            password => md5_hex($seed . md5_hex($password)),
             type     => 'opac',
             nonce    => $nonce
-        }
+        };
+
+    if ($self->{login}->{location}) {
+        $opts->{workstation} = $self->{login}->{location};
+    }
+
+    my $response = $U->simplereq(
+        'open-ils.auth',
+        'open-ils.auth.authenticate.complete',
+        $opts
     );
 
     if( my $code = $U->event_code($response) ) {
