@@ -432,6 +432,8 @@ CREATE INDEX hold_request_current_copy_before_cap_idx ON action.hold_request (cu
 CREATE UNIQUE INDEX hold_request_capture_protect_idx ON action.hold_request (current_copy) WHERE current_copy IS NOT NULL AND capture_time IS NOT NULL AND cancel_time IS NULL AND fulfillment_time IS NULL;
 CREATE INDEX hold_request_copy_capture_time_idx ON action.hold_request (current_copy,capture_time);
 CREATE INDEX hold_request_open_captured_shelf_lib_idx ON action.hold_request (current_shelf_lib) WHERE capture_time IS NOT NULL AND fulfillment_time IS NULL AND (pickup_lib <> current_shelf_lib);
+CREATE INDEX hold_fulfillment_time_idx ON action.hold_request (fulfillment_time) WHERE fulfillment_time IS NOT NULL;
+CREATE INDEX hold_request_time_idx ON action.hold_request (request_time);
 
 
 CREATE TABLE action.hold_request_note (

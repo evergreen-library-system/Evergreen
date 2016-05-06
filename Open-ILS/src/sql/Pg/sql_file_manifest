@@ -39,6 +39,8 @@ FTS_CONFIG_FILE
 200.schema.acq.sql
 201.acq.audit-functions.sql
 
+220.schema.rating.sql
+
 300.schema.staged_search.sql
 400.schema.action_trigger.sql
 

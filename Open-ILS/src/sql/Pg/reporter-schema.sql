@@ -257,25 +257,79 @@ SELECT	id,
 	END AS "type"
   FROM	action.circulation;
 
-CREATE OR REPLACE VIEW reporter.hold_request_record AS
-SELECT	id,
-	target,
-	hold_type,
-	CASE
-		WHEN hold_type = 'T'
-			THEN target
-		WHEN hold_type = 'I'
-			THEN (SELECT ssub.record_entry FROM serial.subscription ssub JOIN serial.issuance si ON (si.subscription = ssub.id) WHERE si.id = ahr.target)
-		WHEN hold_type = 'V'
-			THEN (SELECT cn.record FROM asset.call_number cn WHERE cn.id = ahr.target)
-		WHEN hold_type IN ('C','R','F')
-			THEN (SELECT cn.record FROM asset.call_number cn JOIN asset.copy cp ON (cn.id = cp.call_number) WHERE cp.id = ahr.target)
-		WHEN hold_type = 'M'
-			THEN (SELECT mr.master_record FROM metabib.metarecord mr WHERE mr.id = ahr.target)
-        WHEN hold_type = 'P'
-            THEN (SELECT bmp.record FROM biblio.monograph_part bmp WHERE bmp.id = ahr.target)
-	END AS bib_record
-  FROM	action.hold_request ahr;
+-- rhrr needs to be a real table, so it can be fast. To that end, we use
+-- a materialized view updated via a trigger.
+CREATE TABLE reporter.hold_request_record  AS
+SELECT  id,
+        target,
+        hold_type,
+        CASE
+                WHEN hold_type = 'T'
+                        THEN target
+                WHEN hold_type = 'I'
+                        THEN (SELECT ssub.record_entry FROM serial.subscription ssub JOIN serial.issuance si ON (si.subscription = ssub.id) WHERE si.id = ahr.target)
+                WHEN hold_type = 'V'
+                        THEN (SELECT cn.record FROM asset.call_number cn WHERE cn.id = ahr.target)
+                WHEN hold_type IN ('C','R','F')
+                        THEN (SELECT cn.record FROM asset.call_number cn JOIN asset.copy cp ON (cn.id = cp.call_number) WHERE cp.id = ahr.target)
+                WHEN hold_type = 'M'
+                        THEN (SELECT mr.master_record FROM metabib.metarecord mr WHERE mr.id = ahr.target)
+                WHEN hold_type = 'P'
+                        THEN (SELECT bmp.record FROM biblio.monograph_part bmp WHERE bmp.id = ahr.target)
+        END AS bib_record
+  FROM  action.hold_request ahr;
+
+CREATE UNIQUE INDEX reporter_hold_request_record_pkey_idx ON reporter.hold_request_record (id);
+CREATE INDEX reporter_hold_request_record_bib_record_idx ON reporter.hold_request_record (bib_record);
+
+ALTER TABLE reporter.hold_request_record ADD PRIMARY KEY USING INDEX reporter_hold_request_record_pkey_idx;
+
+CREATE FUNCTION reporter.hold_request_record_mapper () RETURNS TRIGGER AS $$
+BEGIN
+    IF TG_OP = 'INSERT' THEN
+        INSERT INTO reporter.hold_request_record (id, target, hold_type, bib_record)
+        SELECT  NEW.id,
+                NEW.target,
+                NEW.hold_type,
+                CASE
+                    WHEN NEW.hold_type = 'T'
+                        THEN NEW.target
+                    WHEN NEW.hold_type = 'I'
+                        THEN (SELECT ssub.record_entry FROM serial.subscription ssub JOIN serial.issuance si ON (si.subscription = ssub.id) WHERE si.id = NEW.target)
+                    WHEN NEW.hold_type = 'V'
+                        THEN (SELECT cn.record FROM asset.call_number cn WHERE cn.id = NEW.target)
+                    WHEN NEW.hold_type IN ('C','R','F')
+                        THEN (SELECT cn.record FROM asset.call_number cn JOIN asset.copy cp ON (cn.id = cp.call_number) WHERE cp.id = NEW.target)
+                    WHEN NEW.hold_type = 'M'
+                        THEN (SELECT mr.master_record FROM metabib.metarecord mr WHERE mr.id = NEW.target)
+                    WHEN NEW.hold_type = 'P'
+                        THEN (SELECT bmp.record FROM biblio.monograph_part bmp WHERE bmp.id = NEW.target)
+                END AS bib_record;
+    ELSIF TG_OP = 'UPDATE' AND (OLD.target <> NEW.target OR OLD.hold_type <> NEW.hold_type) THEN
+        UPDATE  reporter.hold_request_record
+          SET   target = NEW.target,
+                hold_type = NEW.hold_type,
+                bib_record = CASE
+                    WHEN NEW.hold_type = 'T'
+                        THEN NEW.target
+                    WHEN NEW.hold_type = 'I'
+                        THEN (SELECT ssub.record_entry FROM serial.subscription ssub JOIN serial.issuance si ON (si.subscription = ssub.id) WHERE si.id = NEW.target)
+                    WHEN NEW.hold_type = 'V'
+                        THEN (SELECT cn.record FROM asset.call_number cn WHERE cn.id = NEW.target)
+                    WHEN NEW.hold_type IN ('C','R','F')
+                        THEN (SELECT cn.record FROM asset.call_number cn JOIN asset.copy cp ON (cn.id = cp.call_number) WHERE cp.id = NEW.target)
+                    WHEN NEW.hold_type = 'M'
+                        THEN (SELECT mr.master_record FROM metabib.metarecord mr WHERE mr.id = NEW.target)
+                    WHEN NEW.hold_type = 'P'
+                        THEN (SELECT bmp.record FROM biblio.monograph_part bmp WHERE bmp.id = NEW.target)
+                END;
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE PLPGSQL;
+
+CREATE TRIGGER reporter_hold_request_record_trigger AFTER INSERT OR UPDATE ON action.hold_request
+    FOR EACH ROW EXECUTE PROCEDURE reporter.hold_request_record_mapper();
 
 CREATE OR REPLACE VIEW reporter.xact_billing_totals AS
 SELECT	b.xact,

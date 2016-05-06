@@ -11712,7 +11712,6 @@ INSERT INTO config.global_flag (name, label, value, enabled) VALUES (
     TRUE
 );
 
-/* To be added when upgrade scripts are pulled into the baseline
 INSERT INTO config.global_flag (name, label, value, enabled) VALUES (
     'opac.default_sort',
     oils_i18n_gettext(
@@ -11736,7 +11735,6 @@ INSERT INTO config.global_flag (name, label, value, enabled) VALUES (
     '2.0',
     TRUE
 );
-*/
 
 INSERT INTO config.usr_setting_type (name,opac_visible,label,description,datatype)
     VALUES (

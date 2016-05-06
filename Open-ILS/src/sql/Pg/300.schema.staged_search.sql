@@ -61,7 +61,7 @@ CREATE TABLE search.relevance_adjustment (
 );
 CREATE UNIQUE INDEX bump_once_per_field_idx ON search.relevance_adjustment ( field, bump_type );
 
-CREATE TYPE search.search_result AS ( id BIGINT, rel NUMERIC, record INT, total INT, checked INT, visible INT, deleted INT, excluded INT );
+CREATE TYPE search.search_result AS ( id BIGINT, rel NUMERIC, record INT, total INT, checked INT, visible INT, deleted INT, excluded INT, badges TEXT, popularity NUMERIC );
 CREATE TYPE search.search_args AS ( id INT, field_class TEXT, field_name TEXT, table_alias TEXT, term TEXT, term_type TEXT );
 
 CREATE OR REPLACE FUNCTION search.query_parser_fts (
@@ -190,6 +190,8 @@ BEGIN
 
                 current_res.id = core_result.id;
                 current_res.rel = core_result.rel;
+                current_res.badges = core_result.badges;
+                current_res.popularity = core_result.popularity;
 
                 tmp_int := 1;
                 IF metarecord THEN
@@ -225,6 +227,8 @@ BEGIN
 
                 current_res.id = core_result.id;
                 current_res.rel = core_result.rel;
+                current_res.badges = core_result.badges;
+                current_res.popularity = core_result.popularity;
 
                 tmp_int := 1;
                 IF metarecord THEN
@@ -393,6 +397,8 @@ BEGIN
 
         current_res.id = core_result.id;
         current_res.rel = core_result.rel;
+        current_res.badges = core_result.badges;
+        current_res.popularity = core_result.popularity;
 
         tmp_int := 1;
         IF metarecord THEN
@@ -416,6 +422,8 @@ BEGIN
     current_res.id = NULL;
     current_res.rel = NULL;
     current_res.record = NULL;
+    current_res.badges = NULL;
+    current_res.popularity = NULL;
     current_res.total = total_count;
     current_res.checked = check_count;
     current_res.deleted = deleted_count;
