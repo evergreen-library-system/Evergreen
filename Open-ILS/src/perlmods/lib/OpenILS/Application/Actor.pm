@@ -428,6 +428,13 @@ sub update_patron {
             $barred_hook = $U->is_true($new_patron->barred) ?
                 'au.barred' : 'au.unbarred';
         }
+
+        # update the password by itself to avoid the password protection magic
+        if ($patron->passwd && $patron->passwd ne $old_patron->passwd) {
+            modify_migrated_user_password($e, $patron->id, $patron->passwd);
+            $new_patron->passwd(''); # subsequent update will set
+                                     # actor.usr.passwd to MD5('')
+        }
     }
 
     ( $new_patron, $evt ) = _add_update_addresses($e, $patron, $new_patron);
@@ -580,7 +587,12 @@ sub _add_patron {
 
     $logger->info("Creating new user in the DB with username: ".$patron->usrname());
 
+    # do a dance to get the password hashed securely
+    my $saved_password = $patron->passwd;
+    $patron->passwd('');
     $e->create_actor_user($patron) or return $e->die_event;
+    modify_migrated_user_password($e, $patron->id, $saved_password);
+
     my $id = $patron->id; # added by CStoreEditor
 
     $logger->info("Successfully created new user [$id] in DB");
@@ -649,12 +661,6 @@ sub _update_patron {
     if(!$noperm) {
         return (undef, $e->die_event)
             unless $e->allowed('UPDATE_USER', $patron->home_ou);
-    }
-
-    # update the password by itself to avoid the password protection magic
-    if( $patron->passwd ) {
-        modify_migrated_user_password($e, $patron->id, $patron->passwd);
-        $patron->clear_passwd;
     }
 
     if(!$patron->ident_type) {
