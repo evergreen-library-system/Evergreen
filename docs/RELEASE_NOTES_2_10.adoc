@@ -3,6 +3,34 @@ Evergreen 2.10 Release Notes
 :toc:
 :numbered:
 
+Evergreen 2.10.3
+----------------
+This release contains bugfixes improving on Evergreen 2.10.2:
+
+* Fixes a critical bug where a newly-registered patron record could
+  not be used to log in to Evergreen using the password supplied during
+  registration. Under some circumstances, the same bug could also
+  prevent patron records that were modified via the patron registration
+  form from being used to log in.
+* Emails sent using the Action Trigger SendEmail reactor now always
+  MIME-encode the From, To, Subject, Bcc, Cc, Reply-To, and Sender
+  headers. As a consequence, non-ASCII character in those fields are
+  more likely to be displayed correctly in email clients.
+
+Acknowledgements
+~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed
+code, testing, and documentation patches to the 2.10.3 point release
+of Evergreen:
+
+* Galen Charlton
+* Pasi Kallinen
+* Kathy Lussier
+* Mike Rylander
+* Dan Scott
+* Remington Steed
+* Dan Wells
+
 Evergreen 2.10.2
 ----------------
 This release contains several bugfixes improving on Evergreen 2.10.1
