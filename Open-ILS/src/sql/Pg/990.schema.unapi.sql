@@ -140,12 +140,13 @@ CREATE OR REPLACE FUNCTION evergreen.ranked_volumes(
     )
 
     SELECT ua.id, ua.name, ua.label_sortkey, MIN(ua.rank) AS rank FROM (
-        SELECT acn.id, aou.name, acn.label_sortkey,
+        SELECT acn.id, owning_lib.name, acn.label_sortkey,
             evergreen.rank_cp(acp),
             RANK() OVER w
         FROM asset.call_number acn
             JOIN asset.copy acp ON (acn.id = acp.call_number)
             JOIN descendants AS aou ON (acp.circ_lib = aou.id)
+            JOIN actor.org_unit AS owning_lib ON (acn.owning_lib = owning_lib.id)
         WHERE acn.record = ANY ($1)
             AND acn.deleted IS FALSE
             AND acp.deleted IS FALSE
@@ -155,7 +156,7 @@ CREATE OR REPLACE FUNCTION evergreen.ranked_volumes(
                     FROM asset.opac_visible_copies 
                     WHERE copy_id = acp.id AND record = acn.record
                 ) ELSE TRUE END
-        GROUP BY acn.id, evergreen.rank_cp(acp), aou.name, acn.label_sortkey, aou.id
+        GROUP BY acn.id, evergreen.rank_cp(acp), owning_lib.name, acn.label_sortkey, aou.id
         WINDOW w AS (
             ORDER BY 
                 COALESCE(
