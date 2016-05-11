@@ -28,3 +28,10 @@
 #auto-print-container .row {
   margin-top: 20px;
 }
+
+#edit-org-container input.ng-invalid-required {
+  background-color: yellow;
+  color: red;
+}
+
+

@@ -1,0 +1,15 @@
+[%
+  WRAPPER "staff/base.tt2";
+  ctx.page_title = l("Organizational Units");
+  ctx.page_app = "egOrgUnitApp";
+%]
+
+[% BLOCK APP_JS %]
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/ui.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/admin/actor/org_unit/app.js"></script>
+<link rel="stylesheet" href="[% ctx.base_path %]/staff/css/admin.css" />
+[% END %]
+
+<div ng-view></div>
+
+[% END %]

@@ -1,0 +1,46 @@
+<div id="edit-org-container" class="container">
+
+<form name="orgForm" novalidate class="simple-form">
+    <div class="row">
+        <div class="col-md-2">
+            <span>[% l('Name') %]</span>
+        </div>
+        <div class="col-md-9">
+            <input class="form-control" type="text" ng-model="org.name" required ng-disabled="!org"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <span>[% l('Short Name') %]</span>
+        </div>
+        <div class="col-md-9">
+            <input class="form-control" type="text" ng-model="org.shortname" required ng-disabled="!org"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <span>[% l('Email') %]</span>
+        </div>
+        <div class="col-md-9">
+            <input class="form-control" type="text" ng-model="org.email" ng-disabled="!org"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <span>[% l('Phone') %]</span>
+        </div>
+        <div class="col-md-9">
+            <input class="form-control" type="text" ng-model="org.phone" ng-disabled="!org"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <button class="form-control" ng-click="reset()">[% l('Reset Form') %]</button>
+            <button class="form-control" ng-click="update()" ng-disabled="orgForm.$invalid">[% l('Update Org') %]</button>
+        </div>
+        <div class="col-md-7">
+        </div>
+    </div>
+</form>
+
+</div>

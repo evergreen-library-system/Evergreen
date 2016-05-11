@@ -1,0 +1,51 @@
+<div class="container-fluid" style="text-align:center">
+  <div class="alert alert-info alert-less-pad strong-text-2">
+    <span>[% l('Organizational Unit') %]</span>
+  </div>
+</div>
+
+<div class="row">
+    <div class="col-md-3">
+        <treecontrol class="tree-classic" tree-model="treedata" on-selection="showSelected(node)" expanded-nodes="expandedNodes">
+            {{node.shortname}} : {{node.name}} ({{node.children.length}})
+        </treecontrol>
+    </div>
+
+    <div class="col-md-9">
+
+        <span class="strong-text-1">{{selectedNode.name || '&nbsp;'}}</span>
+
+        <ul class="nav nav-tabs">
+          <li ng-class="{active : org_tab == 'main'}">
+            <a ng-click="set_org_tab('main')" >
+                [% l('Main Settings') %]
+            </a>
+          </li>
+          <li ng-class="{active : org_tab == 'hours'}">
+            <a ng-click="set_org_tab('hours')" >
+                [% l('Hours of Operation') %]
+            </a>
+          </li>
+          <li ng-class="{active : org_tab == 'addresses'}">
+            <a ng-click="set_org_tab('addresses')" >
+                [% l('Addresses') %]
+            </a>
+          </li>
+        </ul>
+
+        <div class="tab-content">
+          <div class="tab-pane active">
+            <div ng-show="org_tab == 'main'">
+                [% INCLUDE 'staff/admin/actor/org_unit/t_main_tab.tt2' %]
+            </div>
+            <div ng-show="org_tab == 'hours'">
+                <span>hours tab</span>
+            </div>
+            <div ng-show="org_tab == 'addresses'">
+                <span>addr tab</span>
+            </div>
+          </div>
+        </div>
+
+    </div>
+</div>
