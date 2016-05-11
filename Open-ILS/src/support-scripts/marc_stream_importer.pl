@@ -371,10 +371,12 @@ sub import_queued_records {
     $pcrud->request('open-ils.pcrud.transaction.begin', $authtoken)->recv;
     my $err;
 
+    my $api = 'open-ils.pcrud.delete.';
+    $api .= $cur_rec_type eq 'auth' ? 'vqar' : 'vqbr';
+
     foreach (@cleanup_recs) {
         eval {
-            $pcrud->request(
-                'open-ils.pcrud.delete.vqbr', $authtoken, $_)->recv;
+            $pcrud->request($api, $authtoken, $_)->recv;
         };
 
         if ($@) {
