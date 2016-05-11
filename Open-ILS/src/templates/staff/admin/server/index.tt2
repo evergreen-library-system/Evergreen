@@ -1,0 +1,15 @@
+[%
+  WRAPPER "staff/base.tt2";
+  ctx.page_title = l("Server Administration"); 
+  ctx.page_app = "egServerAdmin";
+%]
+
+[% BLOCK APP_JS %]
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/eframe.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/admin/server/app.js"></script>
+<link rel="stylesheet" href="[% ctx.base_path %]/staff/css/admin.css" />
+[% END %]
+
+<div ng-view></div>
+
+[% END %]

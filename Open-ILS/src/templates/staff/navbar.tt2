@@ -274,6 +274,12 @@
             </a>
           </li>
           <li>
+            <a href="./admin/server/index" target="_self">
+              <span class="glyphicon glyphicon-briefcase"></span>
+              [% l('Server Administration') %]
+            </a>
+          </li>
+          <li>
             <a href="./admin/local/index" target="_self">
               <span class="glyphicon glyphicon-picture"></span>
               [% l('Local Administration') %]

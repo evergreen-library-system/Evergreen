@@ -1,0 +1,78 @@
+
+<div class="container-fluid" style="text-align:center">
+  <div class="alert alert-info alert-less-pad strong-text-2">
+    <span>[% l('Server Administration') %]</span>
+  </div>
+</div>
+
+<div class="container admin-splash-container">
+
+[%
+    interfaces = [
+     [ l('Actor Stat Cat Sip Fields'), "./admin/server/config/actor_sip_fields" ]
+    ,[ l('Age Hold Protect Rules'), "./admin/server/config/rule_age_hold_protect" ]
+    ,[ l('Asset Stat Cat Sip Fields'), "./admin/server/config/asset_sip_fields" ]
+    ,[ l('Authority Browse Axes'), "./admin/server/cat/authority/browse_axis" ]
+    ,[ l('Authority Control Sets'), "./admin/server/cat/authority/control_set" ]
+    ,[ l('Authority Thesauri'), "./admin/server/cat/authority/thesaurus" ]
+    ,[ l('Best-Hold Selection Sort Order'), "./admin/server/config/best_hold_order" ]
+    ,[ l('Billing Types'), "./admin/server/config/billing_type" ]
+    ,[ l('Booking Resource Attribute Maps'), "./admin/server/booking/resource_attr_map" ]
+    ,[ l('Booking Resource Attribute Values'), "./admin/server/booking/resource_attr_value" ]
+    ,[ l('Booking Resource Attributes'), "./admin/server/booking/resource_attr" ]
+    ,[ l('Booking Resource Types'), "./admin/server/booking/resource_type" ]
+    ,[ l('Booking Resources'), "./admin/server/booking/resource" ]
+    ,[ l('Call Number Prefixes'), "./admin/server/config/acn_prefix" ]
+    ,[ l('Call Number Suffixes'), "./admin/server/config/acn_suffix" ]
+    ,[ l('Circulation Duration Rules'), "./admin/server/config/rule_circ_duration" ]
+    ,[ l('Circulation Limit Groups'), "./admin/server/config/circ_limit_group" ]
+    ,[ l('Circulation Matchpoint Weights'), "./admin/server/config/circ_matrix_weights" ]
+    ,[ l('Circulation Max Fine Rules'), "./admin/server/config/rule_max_fine" ]
+    ,[ l('Circulation Modifiers'), "./admin/server/config/circ_modifier" ]
+    ,[ l('Circulation Recurring Fine Rules'), "./admin/server/config/rule_recurring_fine" ]
+    ,[ l('Copy Statuses'), "./admin/server/legacy/config/copy_status" ]
+    ,[ l('Custom Org Unit Trees'), "./admin/server/actor/org_unit_custom_tree" ]
+    ,[ l('Floating Groups'), "./admin/server/config/floating_groups" ]
+    ,[ l('Global Flags'), "./admin/server/config/global_flag" ]
+    ,[ l('Hard Due Date Changes'), "./admin/server/config/hard_due_date" ]
+    ,[ l('Hold Matchpoint Weights'), "./admin/server/config/hold_matrix_weights" ]
+    ,[ l('Import Match Sets'), "./admin/server/vandelay/match_set" ]
+    ,[ l('MARC Coded Value Maps'), "./admin/server/config/coded_value_map" ]
+    ,[ l('MARC Import Remove Fields'), "./admin/server/vandelay/import_bib_trash_group" ]
+    ,[ l('MARC Record Attributes'), "./admin/server/config/record_attr_definition" ]
+    ,[ l('MARC Search/Facet Class FTS Maps'), "./admin/server/config/metabib_class_ts_map" ]
+    ,[ l('MARC Search/Facet Classes'), "./admin/server/config/metabib_class" ]
+    ,[ l('MARC Search/Facet Field FTS Maps'), "./admin/server/config/metabib_field_ts_map" ]
+    ,[ l('MARC Search/Facet Fields'), "./admin/server/config/metabib_field" ]
+    ,[ l('Org Unit Proximity Adjustments'), "./admin/server/config/org_unit_proximity_adjustment" ]
+    ,[ l('Organization Types'), "./admin/server/legacy/actor/org_unit_type" ]
+    ,[ l('Org Unit Setting Types'), "./admin/server/config/org_unit_setting_type" ]
+    ,[ l('Organizational Units'), "./admin/server/legacy/actor/org_unit" ]
+    ,[ l('Permission Groups'), "./admin/server/legacy/permission/grp_tree" ]
+    ,[ l('Permissions'), "./admin/server/legacy/permission/perm_list" ]
+    ,[ l('Remote Accounts'), "./admin/server/config/remote_account" ]
+    ,[ l('SMS Carriers'), "./admin/server/config/sms_carrier" ]
+    ,[ l('User Activity Types'), "./admin/server/config/usr_activity_type" ]
+    ,[ l('User Setting Types'), "./admin/server/config/usr_setting_type" ]
+    ,[ l('Weights Association'), "./admin/server/config/weight_assoc" ]
+    ,[ l('Z39.50 Index Field Maps'), "./admin/server/config/z3950_index_field_map" ]
+    ,[ l('Z39.50 Servers'), "./admin/server/config/z3950_source" ]
+   ];
+
+   USE table(interfaces, rows=16);
+%]
+
+[% FOREACH row = table.rows %]
+  <div class="row new-entry">
+    [% FOREACH item = row %][% IF item.1 %]
+    <div class="col-md-4">
+      <span class="glyphicon glyphicon-pencil"></span>
+      <a target="_self" href="[% item.1 %]">
+        [% item.0 %]
+      </a>
+    </div>
+    [% END %][% END %]
+  </div>
+[% END %]
+
+</div>
