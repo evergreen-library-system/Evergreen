@@ -1608,6 +1608,12 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
         egUnloadPrompt.attach($scope);
     }
 
+    // also monitor when form is changed *by the user*, as using
+    // an ng-change handler doesn't work with eg-date-input
+    $scope.$watch('reg_form.$pristine', function(newVal, oldVal) {
+        if (!newVal) egUnloadPrompt.attach($scope);
+    });
+
     // username regex (if present) must be removed any time
     // the username matches the barcode to avoid firing the
     // invalid field handlers.

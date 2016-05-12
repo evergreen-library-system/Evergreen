@@ -262,7 +262,6 @@ within the "form" by name for validation.
   <div class="col-md-3 reg-field-input">
     <eg-date-input 
       ng-model="patron.dob"
-      ng-change="field_modified()" 
       ng-blur="handle_field_changed(patron, 'dob')">
     </eg-date-input>
   </div>
@@ -435,7 +434,6 @@ within the "form" by name for validation.
   [% draw_field_label('au', 'expire_date') %]
   <div class="col-md-3 reg-field-input">
     <eg-date-input 
-      ng-change="field_modified()" 
       ng-blur="handle_field_changed(patron, 'expire_date')"
       ng-model="patron.expire_date">
     </eg-date-input>
