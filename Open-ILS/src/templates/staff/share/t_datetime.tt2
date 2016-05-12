@@ -5,7 +5,7 @@
       <input type="text"
         class="form-control"
         ng-show="!hideDatePicker"
-        uib-datepicker-popup="shortDate"
+        uib-datepicker-popup="{{date_format}}"
         is-open="datePickerIsOpen"
         ng-model="ngModel"
         ng-change="ngChange"

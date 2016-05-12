@@ -459,8 +459,8 @@ function($window , egStrings) {
 * Handy wrapper directive for uib-datapicker-popup
 */
 .directive(
-    'egDateInput', ['egStrings',
-    function(egStrings) {
+    'egDateInput', ['egStrings', 'egCore',
+    function(egStrings, egCore) {
         return {
             scope : {
                 closeText : '@',
@@ -469,7 +469,8 @@ function($window , egStrings) {
                 ngBlur : '=',
                 ngDisabled : '=',
                 ngRequired : '=',
-                hideDatePicker : '='
+                hideDatePicker : '=',
+                dateFormat : '=?'
             },
             require: 'ngModel',
             templateUrl: './share/t_datetime',
@@ -480,6 +481,14 @@ function($window , egStrings) {
 
                 if ('showTimePicker' in attrs)
                     scope.showTimePicker = true;
+
+                var default_format = 'mediumDate';
+                egCore.org.settings(['format.date']).then(function(set) {
+                    default_format = set['format.date'];
+                    scope.date_format = (scope.dateFormat) ?
+                        scope.dateFormat :
+                        default_format;
+                });
             }
         };
     }
