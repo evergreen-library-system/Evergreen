@@ -65,6 +65,27 @@ module.exports = function(grunt) {
             'bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.woff'
           ]
         }]
+      },
+
+      images : {
+        files : [{
+          dest : 'build/images/',
+          flatten : true,
+          filter : 'isFile',
+          expand : true,
+          src : [
+            'bower_components/angular-tree-control/images/sample.png',
+            'bower_components/angular-tree-control/images/node-opened-2.png',
+            'bower_components/angular-tree-control/images/folder.png',
+            'bower_components/angular-tree-control/images/node-closed.png',
+            'bower_components/angular-tree-control/images/node-closed-light.png',
+            'bower_components/angular-tree-control/images/node-opened.png',
+            'bower_components/angular-tree-control/images/node-opened-light.png',
+            'bower_components/angular-tree-control/images/folder-closed.png',
+            'bower_components/angular-tree-control/images/node-closed-2.png',
+            'bower_components/angular-tree-control/images/file.png'
+          ]
+        }]
       }
     },
 
