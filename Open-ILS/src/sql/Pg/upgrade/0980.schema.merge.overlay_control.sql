@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0980', :eg_version);
 
 ALTER TABLE vandelay.merge_profile ADD COLUMN update_bib_source BOOLEAN NOT NULL DEFAULT false;
 UPDATE vandelay.merge_profile SET update_bib_source = true WHERE id=2;
