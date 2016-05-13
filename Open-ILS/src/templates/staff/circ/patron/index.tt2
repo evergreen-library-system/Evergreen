@@ -46,6 +46,9 @@ angular.module('egCoreMod').run(['egStrings', function(s) {
   s.CHECK_IN_CONFIRM = "[% l('Check In Items?') %]";
   s.REG_INVALID_FIELDS = 
     "[% l('Please enter valid values for all required fields.') %]"
+  s.PAYMENT_WARN_AMOUNT = "[% l('Are you sure you want to apply a payment of $[_1]?', '{{payment_amount}}') %]";
+  s.PAYMENT_WARN_AMOUNT_TITLE = "[% l('Verify Payment Amount') %]";
+  s.PAYMENT_OVER_MAX = "[% l('Payments over $[_1] are denied by policy.', '{{max_amount}}') %]";
 }]);
 </script>
 

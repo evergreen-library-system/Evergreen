@@ -5078,6 +5078,26 @@ INSERT into config.org_unit_setting_type
         'Amount of time after which no negative balances (refunds) are allowed on bills for lost/long overdue materials. The "Prohibit negative balance on bills for lost materials" setting must also be set to "true".',
         'coust', 'description'),
     'interval', null)
+,(  'ui.circ.billing.amount_limit', 'gui',
+    oils_i18n_gettext(
+      'ui.circ.billing.amount_limit',
+      'Maximum payment amount allowed.',
+      'coust', 'label'),
+    oils_i18n_gettext(
+      'ui.circ.billing.amount_limit',
+      'The payment amount in the Patron Bills interface may not exceed the value of this setting.',
+      'coust', 'description'),
+    'currency',null)
+,(  'ui.circ.billing.amount_warn', 'gui',
+    oils_i18n_gettext(
+      'ui.circ.billing.amount_warn',
+      'Payment amount threshold for Are You Sure? dialog.',
+      'coust', 'label'),
+    oils_i18n_gettext(
+      'ui.circ.billing.amount_warn',
+      'In the Patron Bills interface, a payment attempt will warn if the amount exceeds the value of this setting.',
+      'coust', 'description'),
+    'currency', null)
 ;
 
 UPDATE config.org_unit_setting_type

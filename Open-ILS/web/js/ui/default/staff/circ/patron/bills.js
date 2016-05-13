@@ -13,7 +13,7 @@ function($q , egCore , patronSvc) {
     service.fetchBillSettings = function() {
         if (service.settings) return $q.when(service.settings);
         return egCore.org.settings(
-            ['ui.circ.billing.uncheck_bills_and_unfocus_payment_box']
+            ['ui.circ.billing.uncheck_bills_and_unfocus_payment_box','ui.circ.billing.amount_warn','ui.circ.billing.amount_limit']
         ).then(function(s) {return service.settings = s});
     }
 
@@ -112,9 +112,11 @@ function($q , egCore , patronSvc) {
  */
 .controller('PatronBillsCtrl',
        ['$scope','$q','$routeParams','egCore','egConfirmDialog','$location',
-        'egGridDataProvider','billSvc','patronSvc','egPromptDialog', 'egBilling',
+        'egGridDataProvider','billSvc','patronSvc','egPromptDialog', 'egAlertDialog',
+        'egBilling',
 function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
-         egGridDataProvider , billSvc , patronSvc , egPromptDialog, egBilling) {
+         egGridDataProvider , billSvc , patronSvc , egPromptDialog, egAlertDialog,
+         egBilling) {
 
     $scope.initTab('bills', $routeParams.id);
     billSvc.userId = $routeParams.id;
@@ -128,6 +130,9 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
     $scope.annotate_payment = false;
     $scope.receipt_count = 1;
     $scope.receipt_on_pay = false;
+    $scope.warn_amount = 1000;
+    $scope.max_amount = 100000;
+    $scope.amount_verified = false;
 
     // pre-define list-returning funcs in case we access them
     // before the grid instantiates
@@ -376,6 +381,12 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
             // arrive, manually de-select everything.
             $scope.gridControls.selectItems([]);
         }
+        if (s['ui.circ.billing.amount_warn']) {
+            $scope.warn_amount = Number(s['ui.circ.billing.amount_warn']);
+        }
+        if (s['ui.circ.billing.amount_limit']) {
+            $scope.max_amount = Number(s['ui.circ.billing.amount_limit']);
+        }
     });
 
     $scope.gridControls.allItemsRetrieved = function() {
@@ -424,6 +435,37 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
     }
 
     $scope.applyPayment = function() {
+
+        if ($scope.payment_amount > $scope.max_amount ) {
+            egAlertDialog.open(
+                egCore.strings.PAYMENT_OVER_MAX,
+                {   max_amount : ''+$scope.max_amount,
+                    ok : function() {
+                        $scope.payment_amount = 0;
+                    }
+                }
+            );
+            return;
+        }
+
+        if (($scope.payment_amount > $scope.warn_amount) && ($scope.amount_verified == false)) {
+            egConfirmDialog.open(
+                egCore.strings.PAYMENT_WARN_AMOUNT_TITLE, egCore.strings.PAYMENT_WARN_AMOUNT,
+                {   payment_amount : ''+$scope.payment_amount,
+                    ok : function() {
+                        $scope.amount_verfied = true;
+                        $scope.applyPayment();
+                    },
+                    cancel : function() {
+                        $scope.payment_amount = 0;
+                    }
+                }
+            );
+            return;
+        }
+
+        $scope.amount_verfied = false;
+
         if ($scope.annotate_payment) {
             egPromptDialog.open(
                 egCore.strings.ANNOTATE_PAYMENT_MSG, '',

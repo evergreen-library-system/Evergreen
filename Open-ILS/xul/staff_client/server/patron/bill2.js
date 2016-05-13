@@ -155,6 +155,7 @@ function event_listeners() {
             'keypress',
             function(ev) {
                 if (! (ev.keyCode == 13 /* enter */ || ev.keyCode == 77 /* mac enter */) ) { return; }
+                if (!verify_amount()) { return; }
                 distribute_payment();
                 $('apply_payment_btn').focus();
             },
@@ -213,8 +214,10 @@ function event_listeners() {
             function(ev) {
                 try {
                     $('apply_payment_btn').disabled = true;
-                    apply_payment();
-                    tally_all();
+                    if (verify_amount()) {
+                        apply_payment();
+                        tally_all();
+                    }
                     $('apply_payment_btn').disabled = false;
                 } catch(E) {
                     alert('Error in bill2.js, apply_payment_btn: ' + E);
@@ -857,6 +860,40 @@ function distribute_payment() {
         alert('Error in bill2.js, distribute_payment(): ' + E);
     }
 }
+
+function verify_amount() {
+
+    try {
+        var amt_warn = Number(g.data.hash.aous['ui.circ.billing.amount_warn']) || 1000;
+        var amt_limit = Number(g.data.hash.aous['ui.circ.billing.amount_limit']) || 100000;
+        var box = $('payment');
+        var amt = Number(box.value);
+
+        if (amt <= amt_warn) { return true;}
+
+        if (amt > amt_limit) {
+            alert($("patronStrings").getFormattedString('staff.patron.bills.pay.over_limit', [amt_limit]));
+        } else {
+            var r = g.error.yns_alert(
+                    $('patronStrings').getFormattedString('staff.patron.bills.pay.over_warn_limit', [amt]),
+                    $('patronStrings').getString('staff.patron.bills.pay.over_warn_limit.title'),
+                    $('commonStrings').getString('common.yes'),
+                    $('commonStrings').getString('common.no'),
+                    null
+                );
+            if (r == 0) { return true; }
+        }
+
+        box.value = ''; box.select(); box.focus();
+        distribute_payment();
+        return false;
+
+    } catch (e) {
+      return false;
+    }
+
+}
+
 
 function apply_payment() {
     try {
