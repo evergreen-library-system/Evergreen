@@ -33,6 +33,7 @@
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/services/startup.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/services/hatch.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/services/print.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/audio.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/services/coresvc.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/services/user.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/services/navbar.js"></script>

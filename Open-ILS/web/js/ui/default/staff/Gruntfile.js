@@ -141,6 +141,7 @@ module.exports = function(grunt) {
             'services/startup.js',
             'services/hatch.js',
             'services/print.js',
+            'services/audio.js',
             'services/coresvc.js',
             'services/navbar.js',
             'services/statusbar.js',
