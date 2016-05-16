@@ -4184,6 +4184,8 @@ SELECT  usr,
 			<link field="copy_bib_record" reltype="has_a" key="id" map="" class="bre"/>
 			<link field="aaactsc_entries" reltype="has_many" key="xact" map="" class="aaactsc"/>
 			<link field="aaasc_entries" reltype="has_many" key="xact" map="" class="aaasc"/>
+			<link field="usr_home_ou" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="usr_profile" reltype="has_a" key="id" map="" class="pgt"/>
 		</links>
 	</class>
 	<class id="acirc" controller="open-ils.cstore" oils_obj:fieldmapper="action::aged_circulation" oils_persist:tablename="action.aged_circulation" reporter:core="true" reporter:label="Aged (patronless) Circulation">
