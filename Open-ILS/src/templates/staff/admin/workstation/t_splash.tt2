@@ -92,6 +92,30 @@
   </div>
 
   <div class="row new-entry">
+    <div class="col-md-2">
+      <div class="checkbox">
+        <label>
+          <input type="checkbox"
+            ng-model="disable_sound" 
+              ng-change="apply_sound()">
+            [% l('Disable Sounds?') %]
+        </label>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <span>Test: </span>
+      <button class="btn btn-success" ng-class="{disabled : disable_sound}" 
+        ng-click="test_audio('success')">[% l('Success') %]</button>
+      <button class="btn btn-info" ng-class="{disabled : disable_sound}" 
+        ng-click="test_audio('info')">[% l('Info') %]</button>
+      <button class="btn btn-warning" ng-class="{disabled : disable_sound}" 
+        ng-click="test_audio('warning')">[% l('Warning') %]</button>
+      <button class="btn btn-danger" ng-class="{disabled : disable_sound}" 
+        ng-click="test_audio('error')">[% l('Error') %]</button>
+    </div>
+  </div>
+
+  <div class="row new-entry">
     <div class="col-md-6">
       <span class="glyphicon glyphicon-print"></span>
       <a target="_self" href="./admin/workstation/print/config">
