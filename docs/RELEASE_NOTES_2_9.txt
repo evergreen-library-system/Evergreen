@@ -3,6 +3,37 @@ Evergreen 2.9 Release Notes
 :toc:
 :numbered:
 
+Evergreen 2.9.5
+---------------
+This release contains several bugixes improving on Evergreen 2.9.4
+
+* Emails sent using the Action Trigger SendEmail reactor now always MIME-encode
+the From, To, Subject, Bcc, Cc, Reply-To, and Sender headers. As a consequence,
+non-ASCII character in those fields are more likely to be displayed correctly
+in email clients. 
+* Fixes the responsive view of the My Account Items Out screen so that _Title_
+and _Author_ are now in separate columns.
+* Fixes an incorrect link for the MVF field definition and adds a new link to
+BRE in fm_IDL.xml.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed
+code and documentation patches to the 2.9.5 point release of Evergreen:
+
+* Blake Henderson
+* Pasi Kallinen
+* Dan Scott
+* Dan Wells
+
+We also thank the following organizations whose employees contributed
+patches:
+
+* Calvin College
+* Laurentian University
+* MOBIUS
+* Pohjois-Karjalan Tietotekniikkakeskus Oy
+
 Evergreen 2.9.4
 ---------------
 This release contains several bugfixes improving on Evergreen 2.9.3
