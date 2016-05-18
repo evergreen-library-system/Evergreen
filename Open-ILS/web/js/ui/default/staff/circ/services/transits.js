@@ -45,6 +45,7 @@ function($uibModal , $q , egCore , egConfirmDialog , egAlertDialog) {
                                 egCore.auth.token(), { 'transitid' : transit.id() }
                             ).then(function(resp) {
                                 if (evt = egCore.evt.parse(resp)) {
+                                    egCore.audio.play('warning.transit.abort_failed');
                                     console.error('unable to abort transit: ' 
                                         + evt.toString());
                                 }

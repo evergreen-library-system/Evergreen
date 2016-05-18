@@ -384,6 +384,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
         // Other events
         switch (evt[0].textcode) {
             case 'SUCCESS':
+                egCore.audio.play('success.renew');
                 return $q.when(final_resp);
 
             case 'COPY_IN_TRANSIT':
@@ -391,18 +392,21 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
             case 'PATRON_INACTIVE':
             case 'PATRON_ACCOUNT_EXPIRED':
             case 'CIRC_CLAIMS_RETURNED':
+                egCore.audio.play('warning.renew');
                 return service.exit_alert(
                     egCore.strings[evt[0].textcode],
                     {barcode : params.copy_barcode}
                 );
 
             case 'PERM_FAILURE':
+                egCore.audio.play('warning.renew.permission');
                 return service.exit_alert(
                     egCore.strings[evt[0].textcode],
                     {permission : evt[0].ilsperm}
                 );
 
             default:
+                egCore.audio.play('warning.renew.unknown');
                 return service.exit_alert(
                     egCore.strings.CHECKOUT_FAILED_GENERIC, {
                         barcode : params.copy_barcode,
@@ -431,6 +435,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
                 return $q.when(final_resp);
 
             case 'ITEM_NOT_CATALOGED':
+                egCore.audio.play('warning.checkout.no_cataloged');
                 return service.precat_dialog(params, options);
 
             case 'OPEN_CIRCULATION_EXISTS':
@@ -1240,12 +1245,14 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
                     case 4: /* MISSING */                                          
                     case 7: /* RESHELVING */ 
 
+                        egCore.audio.play('success.checkin');
+
                         // see if the copy location requires an alert
                         return service.handle_checkin_loc_alert(evt, params, options)
                         .then(function() {return final_resp});
 
                     case 8: /* ON HOLDS SHELF */
-
+                        egCore.audio.play('info.checkin.holds_shelf');
                         
                         if (hold) {
 
@@ -1262,6 +1269,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
                                 // normally, if the hold was on the shelf at a 
                                 // different location, it would be put into 
                                 // transit, resulting in a ROUTE_ITEM event.
+                                egCore.audio.play('warning.checkin.wrong_shelf');
                                 return $q.when(final_resp);
                             }
                         } else {
@@ -1272,14 +1280,17 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
                         }
 
                     case 11: /* CATALOGING */
+                        egCore.audio.play('info.checkin.cataloging');
                         evt[0].route_to = egCore.strings.ROUTE_TO_CATALOGING;
                         return $q.when(final_resp);
 
                     case 15: /* ON_RESERVATION_SHELF */
+                        egCore.audio.play('info.checkin.reservation');
                         // TODO: show booking reservation dialog
                         return $q.when(final_resp);
 
                     default:
+                        egCore.audio.play('error.checkin.unknown');
                         console.error('Unhandled checkin copy status: ' 
                             + copy.status().id() + ' : ' + copy.status().name());
                         return $q.when(final_resp);
@@ -1292,11 +1303,13 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
                 ).then(function() { return final_resp });
 
             case 'ASSET_COPY_NOT_FOUND':
+                egCore.audio.play('warning.checkin.not_found');
                 return egAlertDialog.open(
                     egCore.strings.UNCAT_ALERT_DIALOG, params)
                     .result.then(function() {return final_resp});
 
             case 'ITEM_NOT_CATALOGED':
+                egCore.audio.play('warning.checkin.not_cataloged');
                 evt[0].route_to = egCore.strings.ROUTE_TO_CATALOGING;
                 if (options.no_precat_alert) 
                     return $q.when(final_resp);
@@ -1305,6 +1318,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
                     .result.then(function() {return final_resp});
 
             default:
+                egCore.audio.play('error.checkin.unknown');
                 console.warn('unhandled checkin response : ' + evt[0].textcode);
                 return $q.when(final_resp);
         }
@@ -1372,6 +1386,10 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
                 print_context.hold = egCore.idl.toHash(evt.payload.hold);
                 print_context.patron = egCore.idl.toHash(data.patron);
             }
+
+            var sound = 'info.checkin.transit';
+            if (evt.payload.hold) sound += '.hold';
+            egCore.audio.play(sound);
 
             function print_transit() {
                 var template = data.transit ? 

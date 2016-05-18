@@ -89,6 +89,8 @@ function($uibModal , $q , egCore , egConfirmDialog , egAlertDialog) {
                                 $scope.args.note
                             ).then(function(resp) {
                                 if (evt = egCore.evt.parse(resp)) {
+                                    egCore.audio.play(
+                                        'warning.hold.cancel_failed');
                                     console.error('unable to cancel hold: ' 
                                         + evt.toString());
                                 }
@@ -137,6 +139,8 @@ function($uibModal , $q , egCore , egConfirmDialog , egAlertDialog) {
                                 egCore.auth.token(), hold_id
                             ).then(function(resp) {
                                 if (evt = egCore.evt.parse(resp)) {
+                                    egCore.audio.play(
+                                        'warning.hold.uncancel_failed');
                                     console.error('unable to uncancel hold: ' 
                                         + evt.toString());
                                 }
