@@ -1,3 +1,98 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 5092f74aef3bb67fe1c3a64e5f09a90e7500ac4d
+Author: Jason Stephenson <jstephenson@mvlcstaff.org>
+Date:   Wed May 18 10:09:56 2016 -0400
+
+     Update server upgrade instructions for 2.9.5.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlcstaff.org>
+
+17	16	docs/installation/server_upgrade.txt
+
+commit 2b942322ef267dc1c335b5d154bffcff7069f39d
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Wed May 18 09:55:55 2016 -0400
+
+    Docs: Adding 2.9.5 Release Notes
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+31	0	docs/RELEASE_NOTES_2_9.txt
+
+commit 6cb7d76101c77d9956d5ede11210cdb55f95013b
+Author: blake <blake@mobiusconsortium.org>
+Date:   Fri Sep 18 12:24:28 2015 -0500
+
+    LP1497374 fm_IDL.xml metabib::record_attr_flat contains an incorrect link
+    
+    Corrected the link in fm_IDL.xml. Also added a link to metabib::record_attr_flat
+    in biblio::record_entry
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+3	1	Open-ILS/examples/fm_IDL.xml
+
+commit 22f6dd1a933a144366ce127c3c947f6d226a21b1
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu May 5 11:58:52 2016 -0400
+
+    LP#1578716 Fix Responsive Items Out
+    
+    With "Title" and "Author" as separate columns, here is a quick fix
+    to get the responsive labels to line up again.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+6	5	Open-ILS/src/templates/opac/css/style.css.tt2
+
+commit f26ac9d10c283c9bb5bf86ac0c7ef2cc2e383f77
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Wed Jan 7 18:22:22 2015 -0500
+
+    LP#1031335 No-op the escape_email_header helper
+    
+    As suggested by Mike Rylander, keep the escape_email_header helper
+    around to avoid breaking templates that already adopted it, but make it
+    a no-op as the SendEmail reactor now encodes the email headers of
+    interest by default.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+3	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Trigger/Reactor.pm
+
+commit 78484aa419267a01f29a1a362894f188f03f40ad
+Author: Pasi Kallinen <pasi.kallinen@pttk.fi>
+Date:   Wed Jul 24 09:28:13 2013 +0300
+
+    Fix LP#1031335 by escaping some email headers automatically
+    
+    Signed-off-by: Pasi Kallinen <pasi.kallinen@pttk.fi>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+9	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Trigger/Reactor/SendEmail.pm
+
+commit 4dd941fc98ed9800db1c7385bfce0cdc320b54c6
+Author: Jason Stephenson <jstephenson@mvlcstaff.org>
+Date:   Thu Apr 28 19:32:47 2016 -0400
+
+    Forward port 2.9.3 to 2.9.4 db upgrade script.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlcstaff.org>
+
+11	0	Open-ILS/src/sql/Pg/version-upgrade/2.9.3-2.9.4-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.9.3-2.9.4-upgrade-db.sql
+
+commit 34906a00c030e908723a43c2f0a6b694e1730614
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Apr 28 15:51:47 2016 -0400
+
+    Adding 2.8.7 -> 2.8.8 DB upgrade script
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+7	0	Open-ILS/src/sql/Pg/version-upgrade/2.8.7-2.8.8-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.8.7-2.8.8-upgrade-db.sql
