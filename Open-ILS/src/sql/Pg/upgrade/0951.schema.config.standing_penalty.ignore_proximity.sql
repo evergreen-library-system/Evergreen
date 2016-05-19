@@ -1,6 +1,6 @@
 BEGIN;
 
---SELECT evergreen.upgrade_deps_block_check('0951', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0951', :eg_version);
 
 ALTER TABLE config.standing_penalty
       ADD COLUMN ignore_proximity INTEGER;
