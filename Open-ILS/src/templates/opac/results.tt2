@@ -69,8 +69,8 @@
 
                     [%- IF show_more_details.default != 'hide' -%]
                     <div class='results_header_sel' id='simple-detail-view-links'>
-                        [% IF CGI.param('detail_record_view') %]
-                        <a href="[% mkurl('', {detail_record_view => ''}) %]" rel="nofollow" vocab="">[% l('Show Fewer Details') %]</a> [% ELSE %]
+                        [% IF show_detail_view %]
+                        <a href="[% mkurl('', {detail_record_view => 0}) %]" rel="nofollow" vocab="">[% l('Show Fewer Details') %]</a> [% ELSE %]
                         <a href="[% mkurl('', {detail_record_view => 1}) %]" rel="nofollow" vocab="">[% l('Show More Details') %]</a>
                         [% END %]
                     </div>
@@ -90,12 +90,6 @@
                                 [% CGI.param('modifier').grep('metabib').size ? ' checked="checked"' : '' %] />
                             [% l('Group Formats and Editions') %]
                         </label>
-                    [% END %]
-                    [%- IF CGI.param('detail_record_view')
-                        OR (show_more_details.default == 'true'
-                        OR show_more_details.default == 'hide');
-                    -%]
-                        <input type="hidden" name="detail_record_view" value="1" />
                     [% END %]
             </div>
         </div>
