@@ -12,6 +12,19 @@
     is_advanced = CGI.param("_adv").size;
     is_special = CGI.param("_special").size;
 
+    # Check if we want to show the detail record view.  Doing this
+    # here because we don't want to repeat logic in multiple other
+    # files, nor do we want to add a new tt2 file just for this.  The
+    # below is currently needed for parts/result/table.tt2,
+    # parts/searchbar.tt2, and results.tt2.
+    show_detail_view = 0;
+    IF CGI.param("detail_record_view").defined;
+        show_detail_view = CGI.param("detail_record_view");
+    ELSIF show_more_details.default == "true" OR
+          show_more_details.default == "hide";
+        show_detail_view = 1;
+    END;
+
     #variables to use to remove parameters via mkurk
     expert_search_parms = ['tag','subfield','term','_special'];
     general_search_parms = ['page','sort','query','bool','contains','pubdate'];
