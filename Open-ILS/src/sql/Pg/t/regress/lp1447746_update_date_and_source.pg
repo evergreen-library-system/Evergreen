@@ -1,0 +1,137 @@
+BEGIN;
+
+SELECT plan(8);
+
+-------------------------
+-- Setup test environment
+--   User w/ library card
+--   Vandelay settings (merge profile, queue)
+--   "Pre-loaded" bib record to be overlayed
+--   Matching bib record added to Vandelay queue
+--     including 905u with user barcode
+-------------------------
+
+INSERT INTO actor.usr (profile, ident_type, usrname, home_ou, family_name,
+            passwd, first_given_name, expire_date, dob, suffix)
+    VALUES (13, 1, 'TEST_USER', 1, 'TESTER', 'TEST1234', 'TEST',
+            NOW() + '3 years'::INTERVAL, NULL, NULL);
+
+INSERT INTO actor.card (barcode, usr)
+    VALUES ('TEST_BARCODE', CURRVAL('actor.usr_id_seq'));
+
+UPDATE actor.usr
+    SET card = CURRVAL('actor.card_id_seq')
+    WHERE id = CURRVAL('actor.usr_id_seq');
+
+INSERT INTO vandelay.merge_profile (owner, name, preserve_spec, update_bib_source)
+    VALUES (1, 'TEST', '901c', TRUE);
+
+--XXX: Do we need to create a custom item_attr_def?
+--     If def 1 was deleted from an install, this will break
+INSERT INTO vandelay.bib_queue (owner, name, item_attr_def)
+    VALUES (CURRVAL('actor.usr_id_seq'), 'TEST', 1);
+
+INSERT INTO biblio.record_entry (id, edit_date, last_xact_id, marc)
+    VALUES (1234512345, now() - '15 days'::INTERVAL, 'TEST',
+            '<record xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/MARC21/slim" xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd"><leader>00374nam a22001212  4500</leader><controlfield tag="001">A101401-2143164</controlfield><controlfield tag="005">20140506000000.0</controlfield><datafield tag="020" ind1=" " ind2=" "><subfield code="a">9780199588480 (Trade Paper)</subfield><subfield code="c">USD 11.95 List</subfield></datafield><datafield tag="100" ind1="1" ind2=" "><subfield code="a">Haigh, John</subfield><subfield code="e">Author</subfield></datafield><datafield tag="245" ind1="1" ind2="0"><subfield code="a">Probability</subfield></datafield><datafield tag="260" ind1=" " ind2=" "><subfield code="b">Oxford University Press, Incorporated</subfield><subfield code="c">2012-05-04</subfield></datafield><datafield tag="300" ind1=" " ind2=" "><subfield code="a">144 p.</subfield><subfield code="c">16..84 l. X 11..63 w. in.</subfield></datafield><datafield tag="901" ind1=" " ind2=" "><subfield code="t">biblio</subfield></datafield></record>');
+
+INSERT INTO vandelay.queued_bib_record (queue, bib_source, purpose, marc)
+    SELECT CURRVAL('vandelay.queue_id_seq'), 2, 'overlay',
+            '<record xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/MARC21/slim" xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd"><leader>00374nam a22001212  4500</leader><controlfield tag="001">A101401-2143164</controlfield><controlfield tag="005">20140506000000.0</controlfield><datafield tag="020" ind1=" " ind2=" "><subfield code="a">9780199588480 (Trade Paper)</subfield><subfield code="c">USD 11.95 List</subfield></datafield><datafield tag="100" ind1="1" ind2=" "><subfield code="a">Haigh, John</subfield><subfield code="e">Author</subfield></datafield><datafield tag="245" ind1="1" ind2="0"><subfield code="a">Probability</subfield></datafield><datafield tag="260" ind1=" " ind2=" "><subfield code="b">Oxford University Press, Incorporated</subfield><subfield code="c">2012-05-04</subfield></datafield><datafield tag="300" ind1=" " ind2=" "><subfield code="a">144 p.</subfield><subfield code="c">16..84 l. X 11..63 w. in.</subfield></datafield><datafield tag="901" ind1=" " ind2=" "><subfield code="t">biblio</subfield><subfield code="c">1234512345</subfield></datafield><datafield tag="905" ind1=" " ind2=" "><subfield code="u">'
+            || barcode || '</subfield></datafield></record>'
+    FROM actor.card
+    WHERE id = CURRVAL('actor.card_id_seq');
+
+-----------------------
+-- Import the record --
+-----------------------
+SELECT ok(
+    (
+        SELECT vandelay.overlay_bib_record( queued_record, eg_record,
+            CURRVAL('vandelay.merge_profile_id_seq')::int )
+        FROM vandelay.bib_match
+        WHERE queued_record = CURRVAL('vandelay.queued_record_id_seq')
+    ),
+    'Function call succeeded'
+);
+
+---------------------------------
+-- Test for new values of editor,
+-- edit date, and source
+---------------------------------
+SELECT is(
+    (SELECT editor::bigint FROM biblio.record_entry ORDER BY id DESC LIMIT 1),
+    CURRVAL('actor.usr_id_seq'),
+    'Editor was updated'
+);
+
+SELECT is(
+    (SELECT edit_date::date FROM biblio.record_entry ORDER BY id DESC LIMIT 1),
+    CURRENT_DATE,
+    'Edit Date was updated'
+);
+
+SELECT is(
+    (SELECT source FROM biblio.record_entry ORDER BY id DESC LIMIT 1),
+    2,
+    'Record source was updated'
+);
+
+--------------------------------
+-- Set up test to verify a false
+-- update_bib_source flag will
+-- not update editor, edit date
+-- and source
+--------------------------------
+
+UPDATE vandelay.merge_profile
+   SET update_bib_source = FALSE
+   WHERE name = 'TEST';
+
+INSERT INTO biblio.record_entry (id, source, edit_date, last_xact_id, marc)
+    VALUES (9876598764, 1, now() - '15 days'::INTERVAL, 'TEST',
+         '<record    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"    xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd"    xmlns="http://www.loc.gov/MARC21/slim"><leader>01047cam a22003498a 4500</leader><controlfield tag="001">339</controlfield><controlfield tag="003">CONS</controlfield><controlfield tag="005">20090505140900.0</controlfield><controlfield tag="008">001129s2001    ctu    c      001 0 eng  </controlfield><datafield tag="010" ind1=" " ind2=" "><subfield code="a">   00065571 </subfield></datafield><datafield tag="020" ind1=" " ind2=" "><subfield code="a">0761322507 (lib. bdg.)</subfield></datafield><datafield tag="035" ind1=" " ind2=" "><subfield code="a">(MAnMC)807579</subfield></datafield><datafield tag="035" ind1=" " ind2=" "><subfield code="a">(OCoLC)ocm45661816</subfield></datafield><datafield tag="040" ind1=" " ind2=" "><subfield code="a">DLC</subfield><subfield code="c">DLC</subfield><subfield code="d">DPL</subfield><subfield code="d">MRQ</subfield><subfield code="d">UtOrBLW</subfield></datafield><datafield tag="042" ind1=" " ind2=" "><subfield code="a">pcc</subfield><subfield code="a">lcac</subfield></datafield><datafield tag="049" ind1=" " ind2=" "><subfield code="a">MRQA</subfield></datafield><datafield tag="082" ind1="0" ind2="0"><subfield code="a">523.4</subfield><subfield code="2">21</subfield></datafield><datafield tag="099" ind1=" " ind2=" "><subfield code="a">J</subfield></datafield><datafield tag="100" ind1="1" ind2=" "><subfield code="a">Farndon, John</subfield></datafield><datafield tag="245" ind1="1" ind2="0"><subfield code="a">Planets and their moons /</subfield><subfield code="c">John Farndon.</subfield></datafield><datafield tag="260" ind1=" " ind2=" "><subfield code="a">Brookfield, CT :</subfield><subfield code="b">Copper Beech Books,</subfield><subfield code="c">c2001.</subfield></datafield><datafield tag="300" ind1=" " ind2=" "><subfield code="a">32 p. :</subfield><subfield code="b">col. ill. ;</subfield><subfield code="c">27 cm.</subfield></datafield><datafield tag="901" ind1=" " ind2=" "><subfield code="t">biblio</subfield></datafield></record>');
+
+INSERT INTO vandelay.queued_bib_record (queue, bib_source, purpose, marc)
+    SELECT CURRVAL('vandelay.queue_id_seq'), 2, 'overlay',
+            '<record    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"    xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd"    xmlns="http://www.loc.gov/MARC21/slim"><leader>01047cam a22003498a 4500</leader><controlfield tag="001">339</controlfield><controlfield tag="003">CONS</controlfield><controlfield tag="005">20090505140900.0</controlfield><controlfield tag="008">001129s2001    ctu    c      001 0 eng  </controlfield><datafield tag="010" ind1=" " ind2=" "><subfield code="a">   00065571 </subfield></datafield><datafield tag="020" ind1=" " ind2=" "><subfield code="a">0761322507 (lib. bdg.)</subfield></datafield><datafield tag="035" ind1=" " ind2=" "><subfield code="a">(MAnMC)807579</subfield></datafield><datafield tag="035" ind1=" " ind2=" "><subfield code="a">(OCoLC)ocm45661816</subfield></datafield><datafield tag="040" ind1=" " ind2=" "><subfield code="a">DLC</subfield><subfield code="c">DLC</subfield><subfield code="d">DPL</subfield><subfield code="d">MRQ</subfield><subfield code="d">UtOrBLW</subfield></datafield><datafield tag="042" ind1=" " ind2=" "><subfield code="a">pcc</subfield><subfield code="a">lcac</subfield></datafield><datafield tag="049" ind1=" " ind2=" "><subfield code="a">MRQA</subfield></datafield><datafield tag="082" ind1="0" ind2="0"><subfield code="a">523.4</subfield><subfield code="2">21</subfield></datafield><datafield tag="099" ind1=" " ind2=" "><subfield code="a">J</subfield></datafield><datafield tag="100" ind1="1" ind2=" "><subfield code="a">Farndon, John</subfield></datafield><datafield tag="245" ind1="1" ind2="0"><subfield code="a">Planets and their moons /</subfield><subfield code="c">John Farndon.</subfield></datafield><datafield tag="260" ind1=" " ind2=" "><subfield code="a">Brookfield, CT :</subfield><subfield code="b">Copper Beech Books,</subfield><subfield code="c">c2001.</subfield></datafield><datafield tag="300" ind1=" " ind2=" "><subfield code="a">32 p. :</subfield><subfield code="b">col. ill. ;</subfield><subfield code="c">27 cm.</subfield></datafield><datafield tag="901" ind1=" " ind2=" "><subfield code="t">biblio</subfield><subfield code="c">9876598764</subfield></datafield><datafield tag="905" ind1=" " ind2=" "><subfield code="u">'
+            || barcode || '</subfield></datafield></record>'
+    FROM actor.card
+    WHERE id = CURRVAL('actor.card_id_seq');
+
+------------------------
+-- Import the new record
+------------------------
+SELECT ok(
+    (
+        SELECT vandelay.overlay_bib_record( queued_record, eg_record,
+            CURRVAL('vandelay.merge_profile_id_seq')::int )
+        FROM vandelay.bib_match
+        WHERE queued_record = CURRVAL('vandelay.queued_record_id_seq')
+    ),
+    'Function call succeeded'
+);
+
+------------------------------------
+-- Test for no new values of editor,
+-- edit date, and source
+------------------------------------
+SELECT isnt(
+    (SELECT editor::bigint FROM biblio.record_entry ORDER BY id DESC LIMIT 1),
+    CURRVAL('actor.usr_id_seq'),
+    'Editor was not updated'
+);
+
+SELECT isnt(
+    (SELECT edit_date::date FROM biblio.record_entry ORDER BY id DESC LIMIT 1),
+    CURRENT_DATE,
+    'Edit Date was not updated'
+);
+
+SELECT isnt(
+    (SELECT source FROM biblio.record_entry ORDER BY id DESC LIMIT 1),
+    2,
+    'Record source was not updated'
+);
+
+ROLLBACK;
