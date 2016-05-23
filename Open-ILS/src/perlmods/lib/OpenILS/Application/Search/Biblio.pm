@@ -1472,8 +1472,8 @@ sub tag_circulated_records {
 
     if ($metabib) {
         $query = {
-            select   => { mmsm => [{ column => 'metarecord', alias => 'tagme' }] },
-            from     => 'mmsm',
+            select   => { mmrsm => [{ column => 'metarecord', alias => 'tagme' }] },
+            from     => 'mmrsm',
             where    => { source => { in => $query } },
             distinct => 1
         };
