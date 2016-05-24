@@ -7,8 +7,6 @@
                 CASE "asc";
                    mkurl('',{sort=>field, sort_type=>'desc'},1);
                 CASE "desc";
-                   mkurl('',{},1);
-                CASE;
                    mkurl('',{sort=>field, sort_type=>'asc'}, 1);
                 END;
 	ELSE;
