@@ -380,7 +380,7 @@ sub import_queued_records {
         };
 
         if ($@) {
-            $logger->error("Error deleteing queued bib record $_: $@");
+            $logger->error("Error deleting queued $cur_rec_type record $_: $@");
             last;
         }
     }
