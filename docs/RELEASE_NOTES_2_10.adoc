@@ -14,7 +14,7 @@ BRE in fm_IDL.xml.
 * Fixes a bug where the MARC stream authority cleanup deleted a bib 
 record instead of an authority record from the authority queue.
 * Fixes a bug where Action Triggers could select an inactive event
-defintion when running.
+definition when running.
 * Eliminates the output of a null byte after a spool file is processed
 in MARC steam importer.
 * Fixes an issue where previously-checked-out items did not display in
@@ -24,8 +24,8 @@ enabled.
 inserting the version into config.upgrade_log because the line to do so
 was still commented out.
 
-Acknowledgements
-~~~~~~~~~~~~~~~~
+Acknowledgments
+~~~~~~~~~~~~~~~
 We would like to thank the following individuals who contributed
 code, testing, and documentation patches to the 2.10.4 point release
 of Evergreen:
