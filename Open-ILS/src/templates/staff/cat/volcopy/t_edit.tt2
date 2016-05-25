@@ -65,7 +65,7 @@
         </div> <!-- row -->
         <eg-vol-edit
             focus-next="focusNextFirst"
-            ng-repeat="(lib,callnumbers) in data.tree | orderBy:lib track by lib"
+            ng-repeat="(lib,callnumbers) in data.tree"
             ng-init="ind = $index"
             record="{{record_id}}"
             only-vols="only_vols"
