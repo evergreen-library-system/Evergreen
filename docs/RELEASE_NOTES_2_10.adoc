@@ -1,7 +1,42 @@
-Evergreen 2.10.1 Release Notes
-==============================
+Evergreen 2.10 Release Notes
+============================
 :toc:
 :numbered:
+
+Evergreen 2.10.4
+----------------
+This release contains bugfixes improving on Evergreen 2.10.3
+
+* Fixes the responsive view of the My Account Items Out screen so that Title and
+Author are now in separate columns.
+* Fixes an incorrect link for the MVF field definition and adds a new link to
+BRE in fm_IDL.xml.
+* Fixes a bug where the MARC stream authority cleanup deleted a bib 
+record instead of an authority record from the authority queue.
+* Fixes a bug where Action Triggers could select an inactive event
+defintion when running.
+* Eliminates the output of a null byte after a spool file is processed
+in MARC steam importer.
+* Fixes an issue where previously-checked-out items did not display in
+metarecord searches when the Tag Circulated Items Library Setting is
+enabled.
+* Fixes an issue in the 0951 upgrade script where the script was not
+inserting the version into config.upgrade_log because the line to do so
+was still commented out.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed
+code, testing, and documentation patches to the 2.10.4 point release
+of Evergreen:
+
+* Jason Boyer
+* Bill Erickson
+* Galen Charlton
+* Kathy Lussier
+* Jason Stephenson
+* Josh Stompro
+
 
 Evergreen 2.10.3
 ----------------
