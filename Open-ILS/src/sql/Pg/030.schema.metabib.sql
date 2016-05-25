@@ -2192,6 +2192,7 @@ BEGIN
                 superpage_of_records := all_brecords[slice_start:slice_end];
                 qpfts_query :=
                     'SELECT NULL::BIGINT AS id, ARRAY[r] AS records, ' ||
+                    'NULL AS badges, NULL AS popularity, ' ||
                     '1::INT AS rel FROM (SELECT UNNEST(' ||
                     quote_literal(superpage_of_records) || '::BIGINT[]) AS r) rr';
 
@@ -2230,6 +2231,7 @@ BEGIN
                 superpage_of_records := all_arecords[slice_start:slice_end];
                 qpfts_query :=
                     'SELECT NULL::BIGINT AS id, ARRAY[r] AS records, ' ||
+                    'NULL AS badges, NULL AS popularity, ' ||
                     '1::INT AS rel FROM (SELECT UNNEST(' ||
                     quote_literal(superpage_of_records) || '::BIGINT[]) AS r) rr';
 
