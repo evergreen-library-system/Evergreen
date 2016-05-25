@@ -739,11 +739,31 @@ CREATE TABLE acq.fiscal_year (
     CONSTRAINT acq_fy_physical_key UNIQUE ( calendar, year_begin )
 );
 
+CREATE TABLE acq.edi_attr (
+    key     TEXT PRIMARY KEY,
+    label   TEXT NOT NULL UNIQUE
+);
+
+CREATE TABLE acq.edi_attr_set (
+    id      SERIAL  PRIMARY KEY,
+    label   TEXT NOT NULL UNIQUE
+);
+
+CREATE TABLE acq.edi_attr_set_map (
+    id          SERIAL  PRIMARY KEY,
+    attr_set    INTEGER NOT NULL REFERENCES acq.edi_attr_set(id) 
+                ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    attr        TEXT NOT NULL REFERENCES acq.edi_attr(key) 
+                ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    CONSTRAINT edi_attr_set_map_attr_once UNIQUE (attr_set, attr)
+);
+
 CREATE TABLE acq.edi_account (      -- similar tables can extend remote_account for other parts of EG
     provider    INT     NOT NULL REFERENCES acq.provider          (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
     in_dir      TEXT,   -- incoming messages dir (probably different than config.remote_account.path, the outgoing dir)
     vendcode    TEXT,
-    vendacct    TEXT
+    vendacct    TEXT,
+    attr_set    INTEGER REFERENCES acq.edi_attr_set(id) -- NULL OK
 ) INHERITS (config.remote_account);
 
 -- We need a UNIQUE constraint here also, to support the FK from acq.provider.edi_default

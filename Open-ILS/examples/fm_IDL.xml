@@ -9213,10 +9213,12 @@ SELECT  usr,
 			<field name="in_dir"        reporter:datatype="text"      reporter:label="Incoming Directory"/>
 			<field name="vendacct"      reporter:datatype="text"      reporter:label="Vendor Account Number"/>
 			<field name="vendcode"      reporter:datatype="text"      reporter:label="Vendor Assigned Code"/>
+			<field name="attr_set"      reporter:datatype="link"      reporter:label="EDI Attribute Set"/>
 		</fields>
 		<links>
 			<link field="provider" reltype="has_a" key="id" map="" class="acqpro"/>
 			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="attr_set" reltype="has_a" key="id" map="" class="aeas"/>
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
@@ -9235,6 +9237,65 @@ SELECT  usr,
             </actions>
         </permacrud>
 	</class>
+
+	<class id="aea" controller="open-ils.cstore open-ils.pcrud" 
+		oils_obj:fieldmapper="acq::edi_attr" 
+		oils_persist:tablename="acq.edi_attr" reporter:label="EDI Attribute">
+		<fields oils_persist:primary="key">
+			<field name="key"   reporter:datatype="text" reporter:label="Key" reporter:selector="label"/>
+			<field name="label" reporter:datatype="text" reporter:label="Label"/>
+		</fields>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="ADMIN_PROVIDER" global_required="true"/>
+                <retrieve/>
+                <update permission="ADMIN_PROVIDER" global_required="true"/>
+                <delete permission="ADMIN_PROVIDER" global_required="true"/>
+            </actions>
+        </permacrud>
+	</class>
+	<class id="aeas" controller="open-ils.cstore open-ils.pcrud" 
+		oils_obj:fieldmapper="acq::edi_attr_set" 
+		oils_persist:tablename="acq.edi_attr_set" reporter:label="EDI Attribute Set">
+		<fields oils_persist:primary="id" oils_persist:sequence="acq.edi_attr_set_id_seq">
+			<field name="id"    reporter:datatype="id"   reporter:label="ID" reporter:selector="label"/>
+			<field name="label" reporter:datatype="text" reporter:label="Label"/>
+			<field name="attr_maps" reporter:datatype="link" oils_persist:virtual="true" reporter:label="Mapped EDI Attributes"/>
+		</fields>
+		<links>
+			<link field="attr_maps" reltype="has_many" key="attr_set" map="" class="aeasm"/>
+		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="ADMIN_PROVIDER" global_required="true"/>
+                <retrieve/>
+                <update permission="ADMIN_PROVIDER" global_required="true"/>
+                <delete permission="ADMIN_PROVIDER" global_required="true"/>
+            </actions>
+        </permacrud>
+	</class>
+	<class id="aeasm" controller="open-ils.cstore open-ils.pcrud" 
+		oils_obj:fieldmapper="acq::edi_attr_set_map" 
+		oils_persist:tablename="acq.edi_attr_set_map" reporter:label="EDI Attribute Set Map">
+		<fields oils_persist:primary="id" oils_persist:sequence="acq.edi_attr_set_map_id_seq">
+			<field name="id"       reporter:datatype="id"   reporter:label="ID" reporter:selector="label"/>
+			<field name="attr_set" reporter:datatype="link" reporter:label="Attribute Set"/>
+			<field name="attr"     reporter:datatype="link" reporter:label="Attribute"/>
+		</fields>
+		<links>
+			<link field="attr_set" reltype="has_a" key="id" map="" class="aeas"/>
+			<link field="attr" reltype="has_a" key="id" map="" class="aea"/>
+		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="ADMIN_PROVIDER" global_required="true"/>
+                <retrieve/>
+                <update permission="ADMIN_PROVIDER" global_required="true"/>
+                <delete permission="ADMIN_PROVIDER" global_required="true"/>
+            </actions>
+        </permacrud>
+	</class>
+
 
 	<class id="acqedim" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::edi_message" oils_persist:tablename="acq.edi_message" reporter:label="EDI Message">
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.edi_message_id_seq">
