@@ -1,3 +1,217 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit c16e53de997b702ccaa26ab6baeb19209ec71bed
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Wed May 25 17:11:24 2016 -0400
+
+    bump up upgrade instructions for 2.10.4
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+19	18	docs/installation/server_upgrade.txt
+
+commit a02892ae444d5237bf3349312d6ce78e90c6e494
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Wed May 25 17:07:52 2016 -0400
+
+    2.10.3-2.10.4 schema upgrade script
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+7	0	Open-ILS/src/sql/Pg/version-upgrade/2.10.3-2.10.4-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.10.3-2.10.4-upgrade-db.sql
+
+commit 9cecd82b48f6ab5ab6bfee1e1f6f1ba19842b307
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Wed May 25 17:01:41 2016 -0400
+
+    fix typos in 2.10.4 release notes
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+3	3	docs/RELEASE_NOTES_2_10.adoc
+
+commit 2008e4186b7cc6d34e56b280ab5c517130df1afe
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Wed May 25 11:29:22 2016 -0400
+
+    Docs: Adding 2.10.4 Point Release Notes
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+35	0	docs/RELEASE_NOTES_2_10.adoc
+
+commit 5c7d5696ceae6dd6b350b15f2354226b4966c9f3
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Mon May 23 10:29:09 2016 -0400
+
+    LP#1584801: fix tagging of previous circs in metarecord search results
+    
+    This patch fixes a bug where previously-checked-out items were not
+    indicated as such in search results when doing a metarecord search.
+    
+    To test:
+    
+    [1] Ensure that the opac.search.tag_circulated_items library setting
+        is enabled and that you are testing with a user that has opted-in
+        to retaining circ history.
+    [2] Make a couple loans to that user.
+    [3] Log into the public catalog using that user.
+    [4] Perform a catalog search, choosing search terms such that
+        the previously-loaned items appear in results.
+    [5] Verify that "I have checked this item out before" is displayed
+        on the relevant hits.
+    [6] Click the "Group Formats and Editions" checkbox; note that
+        after the page refreshes, previously-borrowed hits are /not/
+        tagged.
+    [7] Apply the patch and restart the open-ils.search service.
+    [8] Repeat step 6; verify that this time previously-borrowed hits
+        are tagged.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+2	2	Open-ILS/src/perlmods/lib/OpenILS/Application/Search/Biblio.pm
+
+commit 83a1dc028e866629c4df9611da06e800588ffd23
+Author: Jason Boyer <jboyer@library.in.gov>
+Date:   Thu Apr 7 12:08:09 2016 -0400
+
+    LP1567514 - Don't Output Null Byte for Spool Files
+    
+    If a spool file is defined on the marc_stream_importer.pl
+    command line, no null byte is output after the record(s)
+    are processed.
+    
+    To test:
+    
+    [1] Use marc_stream_importer.pl to import a record from
+        a file; verify that the output messages do not include
+        a null character.
+    
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+1	1	Open-ILS/src/support-scripts/marc_stream_importer.pl
+
+commit 11d618df05b4d82803dd1e73f4e8798178873e82
+Author: Josh Stompro <stomproj@larl.org>
+Date:   Wed Mar 30 08:47:57 2016 -0500
+
+    LP#1517556 - Exclude inactive event defs from find_event_def_by_hook.
+    
+    Currently when find_event_def_by_hook is called to find an appropriate
+    event_def based on the hook, it doesn't exclude inactive event defs.  So
+    strange behavior can happen if inactive event defs are present.
+    
+    I ran into this issue when I was trying out different versions of the self
+    check receipt event def.  I had one ative and one inactive while I was
+    troubleshooting, and when the system would grab the inactive event def by
+    chance, the self check UI would freeze.  I think it is a resonable expectation
+    that an event def marked inactive doesn't get used by the system.
+    
+    To test this out, clone one of the self check event defs, such as
+    "Self-Checkout Items Out Receipt" and mark the copy as inactive.  Now
+    go and trigger this event in the self check interface by attempting to
+    print from the Items Out screen.  It should now fail 50% of the time, since
+    both the active and inactive defs are returned.
+    
+    After the fix the inactive event def will always be excluded, so the action
+    should no longer fail.
+    
+    Signed-off-by: Josh Stompro <stomproj@larl.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/AppUtils.pm
+
+commit c980529a092609af40235f28b55390f4e1ffa415
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Tue May 24 13:27:05 2016 -0400
+
+    LP#1580676: fix error message
+    
+    This patch fixes a typo in the error message presented
+    if the queued record could not be cleaned up for some
+    reason; it also reports the correct type of the record.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+1	1	Open-ILS/src/support-scripts/marc_stream_importer.pl
+
+commit 7b7759c6b9746888e33086e632e839f7b9021779
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed May 11 12:19:12 2016 -0400
+
+    LP#1580676 MARC stream authority cleanup repair
+    
+    Delete the successfully imported authority record from the vandelay
+    authority queue instead of the bib record that happens to have the same
+    ID as the imported authority record.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+4	2	Open-ILS/src/support-scripts/marc_stream_importer.pl
+
+commit d8fb80ae4a6911e3ac596730d9fb06572f4f021d
+Author: Jason Stephenson <jstephenson@mvlcstaff.org>
+Date:   Thu May 19 10:33:18 2016 -0400
+
+    LP 1499123: 0951.schema.config.standing_penalty.ignore_proximity.sql.
+    
+    The script was not inserting the version into config.upgrade_log when
+    run standalone because the line to do so was still commented out.
+    This commit removes the comment characters.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlcstaff.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	1	Open-ILS/src/sql/Pg/upgrade/0951.schema.config.standing_penalty.ignore_proximity.sql
+
+commit 76e2c302abc858bb2f0e88afa2f46a11f20c4011
+Author: Jason Stephenson <jstephenson@mvlcstaff.org>
+Date:   Wed May 18 14:36:15 2016 -0400
+
+    Forward port 2.9.4 to 2.9.5 db upgrade script.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlcstaff.org>
+
+5	0	Open-ILS/src/sql/Pg/version-upgrade/2.9.4-2.9.5-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.9.4-2.9.5-upgrade-db.sql
+
+commit fbdb5b78d530b291eb06ac61dd7a71c96402e174
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Wed May 18 09:55:55 2016 -0400
+
+    Docs: Adding 2.9.5 Release Notes
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+31	0	docs/RELEASE_NOTES_2_9.txt
+
+commit 800d075644c7cbe4fd28d0d5f22483a585af2507
+Author: blake <blake@mobiusconsortium.org>
+Date:   Fri Sep 18 12:24:28 2015 -0500
+
+    LP1497374 fm_IDL.xml metabib::record_attr_flat contains an incorrect link
+    
+    Corrected the link in fm_IDL.xml. Also added a link to metabib::record_attr_flat
+    in biblio::record_entry
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+3	1	Open-ILS/examples/fm_IDL.xml
+
+commit d7d281488b5ce767bc1056e6561bfc351e8a9f25
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu May 5 11:58:52 2016 -0400
+
+    LP#1578716 Fix Responsive Items Out
+    
+    With "Title" and "Author" as separate columns, here is a quick fix
+    to get the responsive labels to line up again.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+6	5	Open-ILS/src/templates/opac/css/style.css.tt2
