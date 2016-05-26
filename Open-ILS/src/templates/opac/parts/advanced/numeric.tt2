@@ -2,6 +2,8 @@
     <div class="header_middle">[% l("Numeric Search") %]</div>
     <input type="hidden" name="contains" value="contains" />
     <input type="hidden" name="_special" value="1" />
+    <input id="detail" type="hidden" name="detail_record_view"
+           value="[% show_detail_view %]"/>
     <div id='adv_numeric_block'>
             <label for="numeric_qtype"><strong>[% l("Field:") %]</strong></label>
                 <select id="numeric_qtype" name="qtype">
