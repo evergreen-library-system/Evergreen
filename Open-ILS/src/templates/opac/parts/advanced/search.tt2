@@ -32,6 +32,8 @@
 
     <div id='adv_search_submit'>
         <input type="hidden" name="_adv" value="1" />
+        <input id="detail" type="hidden" name="detail_record_view"
+               value="[% show_detail_view %]"/>
         <span>
             <input id='search-submit-go' type="submit" value="[% l('Search') %]" title="[% l('Search') %]" class="opac-button"
                 onclick='setTimeout(function(){$("search-submit-spinner").className=""; $("search-submit-go").className="hidden"}, 2000)'/>
