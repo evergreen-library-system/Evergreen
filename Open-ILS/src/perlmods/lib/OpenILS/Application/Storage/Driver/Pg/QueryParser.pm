@@ -944,10 +944,10 @@ sub toSQL {
             # have an overage badge score of zero.
 
             my $adjusted_scale = ( $max_mult - 1.0 ) / 5.0;
-            $rank = "1.0/(( $rel ) * (1.0 + (AVG(COALESCE(pop_with.total_score::NUMERIC,0.0)) * $adjusted_scale)))::NUMERIC";
+            $rank = "1.0/(( $rel ) * (1.0 + (AVG(COALESCE(pop_with.total_score::NUMERIC,0.0::NUMERIC)) * ${adjusted_scale}::NUMERIC)))::NUMERIC";
         }
     } elsif ($sort_filter =~ /^pop/) {
-        $rank = '1.0/(AVG(COALESCE(pop_with.total_score::NUMERIC,0.0)) + 5.0)::NUMERIC';
+        $rank = '1.0/(AVG(COALESCE(pop_with.total_score::NUMERIC,0.0::NUMERIC)) + 5.0::NUMERIC)::NUMERIC';
         my $pop_desc = $desc eq 'ASC' ? 'DESC' : 'ASC';
         $pop_extra_sort = "3 $pop_desc $nullpos,";
     } else {
@@ -980,11 +980,11 @@ sub toSQL {
 $with
 SELECT  $key AS id,
         $agg_records,
-        $rel AS rel,
+        ${rel}::NUMERIC AS rel,
         $rank AS rank, 
         FIRST(pubdate_t.value) AS tie_break,
         STRING_AGG(ARRAY_TO_STRING(pop_with.badges,','),',') AS badges,
-        AVG(COALESCE(pop_with.total_score::NUMERIC,0.0))::NUMERIC(2,1) AS popularity
+        AVG(COALESCE(pop_with.total_score::NUMERIC,0.0::NUMERIC))::NUMERIC(2,1) AS popularity
   FROM  metabib.metarecord_source_map m
         $$flat_plan{from}
         $mra_join
