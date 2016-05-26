@@ -1,6 +1,8 @@
 <form action="[% ctx.opac_root %]/results" method="get">
     <div class="header_middle">[% l("Expert Search") %]</div>
     <input type="hidden" name="_special" value="1" />
+    <input id="detail" type="hidden" name="detail_record_view"
+           value="[% show_detail_view %]"/>
     <table class="expert-search">
         <tbody id="adv_expert_rows_here">
             <tr id="adv_expert_row">
