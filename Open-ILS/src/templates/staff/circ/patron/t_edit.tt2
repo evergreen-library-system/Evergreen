@@ -25,7 +25,7 @@
     [%# dupe_search_encoded is uri escaped in the JS %]
     <div class="alert alert-danger" ng-show="dupe_counts.name">
       <a target="_blank"
-        href="/eg/staff/circ/patron/search?search={{dupe_search_encoded}}">
+        href="/eg/staff/circ/patron/search?search={{dupe_search_encoded}}&inactive=1">
       [% l('[_1] patron(s) with same name', '{{dupe_counts.name}}') %]
       </a>
     </div>
