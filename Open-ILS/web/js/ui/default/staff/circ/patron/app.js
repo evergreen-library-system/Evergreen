@@ -851,9 +851,15 @@ function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore,
             patronSvc.urlSearch.sort = [];
         }
         delete patronSvc.urlSearch.search.search_sort;
+
+        // include inactive patrons if "inactive" param
+        if ($location.search().inactive) {
+            patronSvc.urlSearch.inactive = $location.search().inactive;
+        }
     }
 
     var propagate;
+    var propagate_inactive;
     if (patronSvc.lastSearch) {
         propagate = patronSvc.lastSearch.search;
         // home_ou needs to be treated specially
@@ -863,6 +869,9 @@ function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore,
         };
     } else if (patronSvc.urlSearch) {
         propagate = patronSvc.urlSearch.search;
+        if (patronSvc.urlSearch.inactive) {
+            propagate_inactive = patronSvc.urlSearch.inactive;
+        }
     }
 
     if (egCore.env.pgt) {
@@ -887,6 +896,9 @@ function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore,
                 val.value = egCore.org.get(val.value);
             $scope.searchArgs[key] = val.value;
         });
+        if (propagate_inactive) {
+            $scope.searchArgs[inactive] = propagate_inactive;
+        }
     }
 
     var provider = egGridDataProvider.instance({});
