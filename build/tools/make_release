@@ -246,8 +246,8 @@ if [ "$PREV_BRANCH" != "PACKAGE" ]; then
         if [ -f "$UPGRADE_FILE" ]; then
             echo "Upgrade script for $PREV_VERSION-$VERSION already exists. Skipping."
             UPGRADE_FILE=""
-        elif [ -n "$UPGRADE_CHECK" ]; then
-            echo "Found Upgrade Files! Building Upgrade Script."
+        else
+            echo "Building Upgrade Script."
             echo "--Upgrade Script for $PREV_VERSION to $VERSION" > $UPGRADE_FILE
             echo "\set eg_version '''$VERSION'''" >> $UPGRADE_FILE
             echo "BEGIN;" >> $UPGRADE_FILE
