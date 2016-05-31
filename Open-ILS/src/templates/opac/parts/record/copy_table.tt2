@@ -25,7 +25,7 @@ FOREACH copy_info IN copies;
     END;
 END;
 -%]
-[%- IF has_copies; %]
+[%- IF has_copies or ctx.foreign_copies; %]
 <table class="table_no_border_space table_no_cell_pad table_no_border" width="100%" id="rdetails_status">
     <thead>
         <tr>
