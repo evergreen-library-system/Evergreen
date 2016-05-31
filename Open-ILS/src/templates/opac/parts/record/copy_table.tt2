@@ -26,7 +26,7 @@ FOREACH copy_info IN copies;
 END;
 -%]
 [%-
-IF has_copies; 
+IF has_copies or ctx.foreign_copies;
   depth = CGI.param('copy_depth').defined ? CGI.param('copy_depth') : CGI.param('depth').defined ? CGI.param('depth') : ctx.copy_summary.last.depth;
   total_copies = ctx.copy_summary.$depth.count;
 %]
