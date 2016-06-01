@@ -1785,12 +1785,16 @@ CREATE OR REPLACE FUNCTION vandelay.overlay_authority_record ( import_id BIGINT,
 DECLARE
     merge_profile   vandelay.merge_profile%ROWTYPE;
     dyn_profile     vandelay.compile_profile%ROWTYPE;
+    editor_string   TEXT;
+    editor_id       INT;
     source_marc     TEXT;
     target_marc     TEXT;
     eg_marc         TEXT;
     v_marc          TEXT;
     replace_rule    TEXT;
     match_count     INT;
+    update_fields   TEXT[];
+    update_query    TEXT;
 BEGIN
 
     SELECT  b.marc INTO eg_marc
@@ -1807,6 +1811,11 @@ BEGIN
         -- RAISE NOTICE 'no marc for vandelay or authority record';
         RETURN FALSE;
     END IF;
+
+    -- Extract the editor string before any modification to the vandelay
+    -- MARC occur.
+    editor_string := 
+        (oils_xpath('//*[@tag="905"]/*[@code="u"]/text()',v_marc))[1];
 
     dyn_profile := vandelay.compile_profile( v_marc );
 
@@ -1842,17 +1851,48 @@ BEGIN
       SET   marc = vandelay.merge_record_xml( target_marc, source_marc, dyn_profile.add_rule, replace_rule, dyn_profile.strip_rule )
       WHERE id = eg_id;
 
-    IF FOUND THEN
-        UPDATE  vandelay.queued_authority_record
-          SET   imported_as = eg_id,
-                import_time = NOW()
-          WHERE id = import_id;
-        RETURN TRUE;
+    IF NOT FOUND THEN 
+        -- Import/merge failed.  Nothing left to do.
+        RETURN FALSE;
     END IF;
 
-    -- RAISE NOTICE 'update of authority.record_entry failed';
+    -- Authority record successfully merged / imported.
 
-    RETURN FALSE;
+    -- Update the vandelay record to show the successful import.
+    UPDATE  vandelay.queued_authority_record
+      SET   imported_as = eg_id,
+            import_time = NOW()
+      WHERE id = import_id;
+
+    -- If an editor value can be found, update the authority record
+    -- editor and edit_date values.
+    IF editor_string IS NOT NULL AND editor_string <> '' THEN
+
+        -- Vandelay.pm sets the value to 'usrname' when needed.  
+        SELECT id INTO editor_id 
+            FROM actor.usr WHERE usrname = editor_string;
+
+        IF editor_id IS NULL THEN
+            SELECT usr INTO editor_id 
+                FROM actor.card WHERE barcode = editor_string;
+        END IF;
+
+        IF editor_id IS NOT NULL THEN
+            --only update the edit date if we have a valid editor
+            update_fields := ARRAY_APPEND(update_fields, 
+                'editor = ' || editor_id || ', edit_date = NOW()');
+        END IF;
+    END IF;
+
+    IF ARRAY_LENGTH(update_fields, 1) > 0 THEN
+        update_query := 'UPDATE authority.record_entry SET ' || 
+            ARRAY_TO_STRING(update_fields, ',') || 
+            ' WHERE id = ' || eg_id || ';';
+        --RAISE NOTICE 'query: %', update_query;
+        EXECUTE update_query;
+    END IF;
+
+    RETURN TRUE;
 
 END;
 $$ LANGUAGE PLPGSQL;
