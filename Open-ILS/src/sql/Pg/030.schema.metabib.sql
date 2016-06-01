@@ -1346,7 +1346,16 @@ DECLARE
 BEGIN
 
     IF attr_list IS NULL OR rdeleted THEN -- need to do the full dance on INSERT or undelete
-        SELECT ARRAY_AGG(name) INTO attr_list FROM config.record_attr_definition;
+        SELECT ARRAY_AGG(name) INTO attr_list FROM config.record_attr_definition
+        WHERE (
+            tag IS NOT NULL OR
+            fixed_field IS NOT NULL OR
+            xpath IS NOT NULL OR
+            phys_char_sf IS NOT NULL OR
+            composite
+        ) AND (
+            filter OR sorter
+        );
     END IF;
 
     IF rmarc IS NULL THEN
