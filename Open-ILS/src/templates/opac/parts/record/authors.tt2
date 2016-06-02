@@ -25,6 +25,7 @@ authors = [
 
 BLOCK normalize_qterm;
     subfield.textContent.replace('[#"^$\+\-,\.:;&|\[\]()]', ' ');
+    subfield.textContent.replace('\s{2,}', ' ');
 END;
 
 BLOCK normalize_authors;
@@ -42,7 +43,7 @@ BLOCK build_author_links;
         link_term = ''; # Linked term (e.g. Personal name + Fuller form of name)
         supp_term = ''; # Supplementary terms
         qterm = ''; # Search query
-        tlabel = '';
+        tlabels = [];
         birthdate = '';
         deathdate = '';
         graphics = [];
@@ -53,7 +54,11 @@ BLOCK build_author_links;
             code = subfield.getAttribute('code');
             IF code == '4';
                 relcode = subfield.textContent.substr(0,3);
-                tlabel = relators.$relcode || label;
+                tlabels.push( relators.$relcode || label );
+            END;
+            IF code == 'e';
+                tlabels.push( subfield.textContent() );
+                indexed_term = 1;
             END;
             IF code == '6';
                target_field = tag;
@@ -92,6 +97,8 @@ BLOCK build_author_links;
             END;
         END;
         url = mkurl(ctx.opac_root _ '/results', {query => qterm.replace('^\s*(.*?)\s*$', '$1'), qtype => 'author'}, stop_parms.merge(expert_search_parms, general_search_parms, browse_search_parms, facet_search_parms));
+	tlabel = tlabels.join(', ');
+	tlabels = [];
         author_type = (tlabel || label) | html;
         
         # schema.org changes

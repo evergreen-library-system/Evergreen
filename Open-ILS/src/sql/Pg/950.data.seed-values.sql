@@ -10046,6 +10046,13 @@ INSERT INTO config.index_normalizer (name, description, func, param_count) VALUE
 	0
 );
 
+INSERT INTO config.index_normalizer (name, description, func, param_count) VALUES (
+	'Trim Trailing Punctuation',
+	'Eliminate extraneous trailing commas and periods in text',
+	'metabib.trim_trailing_punctuation',
+	0
+);
+
 -- make use of the index normalizers
 
 INSERT INTO config.metabib_field_index_norm_map (field,norm)
@@ -10102,6 +10109,16 @@ INSERT INTO config.metabib_field_index_norm_map (field,norm,pos)
             config.index_normalizer i
       WHERE i.func = 'remove_paren_substring'
             AND m.id IN (28);
+
+INSERT INTO config.metabib_field_index_norm_map (field,norm,pos)
+    SELECT  m.id,
+            i.id,
+            -1
+      FROM  config.metabib_field m,
+            config.index_normalizer i
+      WHERE i.func = 'metabib.trim_trailing_punctuation'
+            AND m.id IN (7,8,9,10);
+
 
 INSERT INTO config.record_attr_index_norm_map (attr,norm,pos)
     SELECT  m.name, i.id, 0
