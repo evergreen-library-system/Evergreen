@@ -66,6 +66,7 @@ function my_init() {
                remote xul for new copies */
             fake_item.deposit(0);
             fake_item.price(0);
+            fake_item.cost(0);
             fake_item.deposit_amount(0);
             fake_item.fine_level(2); // Normal
             fake_item.loan_duration(2); // Normal
@@ -1149,6 +1150,13 @@ g.panes_and_field_names = {
         { 
             render: 'fm.ref() == null ? $("catStrings").getString("staff.cat.copy_editor.field.unset_or_null") : ( get_bool( fm.ref() ) ? $("catStrings").getString("staff.cat.copy_editor.field.reference.yes_or_true") : $("catStrings").getString("staff.cat.copy_editor.field.reference.no_or_false") )', 
             input: 'c = function(v){ g.apply("ref",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ [ $("catStrings").getString("staff.cat.copy_editor.field.reference.yes_or_true"), get_db_true() ], [ $("catStrings").getString("staff.cat.copy_editor.field.reference.no_or_false"), get_db_false() ] ] ); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+        }
+    ],
+		[
+        $('catStrings').getString('staff.cat.copy_editor.field.cost.label'),
+        {
+            render: 'if (fm.cost() == null) { $("catStrings").getString("staff.cat.copy_editor.field.unset_or_null"); } else { util.money.sanitize( fm.cost() ); }',
+            input: 'c = function(v){ g.apply("cost",v); if (typeof post_c == "function") post_c(v); }; x = document.createElement("textbox"); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
         }
     ],
     [

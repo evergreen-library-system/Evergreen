@@ -1033,6 +1033,22 @@ circ.util.columns = function(modify,params) {
             },
             'sort_type' : 'money'
         },
+		{
+            'fm_class' : 'acp',
+            'id' : 'cost',
+            'label' : document.getElementById('commonStrings').getString('staff.acp_label_cost'),
+            'flex' : 1,
+            'primary' : false,
+            'hidden' : true,
+            'editable' : false, 'render' : function(my) {
+                if (my.acp.cost() == null) {
+                    return document.getElementById('circStrings').getString('staff.circ.utils.unset');
+                } else {
+                    return util.money.sanitize(my.acp.cost());
+                }
+            },
+            'sort_type' : 'money'
+        },
         {
             'fm_class' : 'acp',
             'id' : 'circ_as_type',

@@ -41,10 +41,8 @@
   </div>
 
   <div class="flex-row">
-    <div class="flex-cell">[% l('ISBN') %]</div>
-    <div class="flex-cell well">
-      {{copy.call_number().record().simple_record().isbn()}}
-    </div>
+	<div class="flex-cell">[% l('Acquisition Cost') %]</div>
+    <div class="flex-cell well">{{copy.cost()}}</div>
 
     <div class="flex-cell">[% l('Copy Location') %]</div>
     <div
@@ -62,8 +60,10 @@
   </div>
 
   <div class="flex-row">
-    <div class="flex-cell">[% l('Date Created') %]</div>
-    <div class="flex-cell well">{{copy.create_date() | date:'short'}}</div>
+    <div class="flex-cell">[% l('ISBN') %]</div>
+    <div class="flex-cell well">
+      {{copy.call_number().record().simple_record().isbn()}}
+    </div>
 
     <div class="flex-cell">[% l('Loan Duration') %]</div>
     <div class="flex-cell well">{{circ.duration()}}</div>
@@ -80,9 +80,8 @@
   </div>
 
   <div class="flex-row">
-    <div class="flex-cell">[% l('Date Active') %]</div>
-    <div class="flex-cell well">{{copy.active_date() | date:'short'}}</div>
-
+    <div class="flex-cell">[% l('Date Created') %]</div>
+    <div class="flex-cell well">{{copy.create_date() | date:'short'}}</div>
     <div class="flex-cell">[% l('Fine Level') %]</div>
     <div class="flex-cell well">{{circ.duration_rule().name()}}</div>
 
@@ -94,8 +93,8 @@
   </div>
 
   <div class="flex-row">
-    <div class="flex-cell">[% l('Status Changed') %]</div>
-    <div class="flex-cell well">{{copy.status_changed_time() | date:'short'}}</div>
+    <div class="flex-cell">[% l('Date Active') %]</div>
+    <div class="flex-cell well">{{copy.active_date() | date:'short'}}</div>
 
     <div class="flex-cell">[% l('Reference') %]</div>
     <div class="flex-cell well">{{copy.ref()}}</div>
@@ -108,8 +107,8 @@
   </div>
 
   <div class="flex-row">
-    <div class="flex-cell">[% l('Copy ID') %]</div>
-    <div class="flex-cell well">{{copy.id()}}</div>
+    <div class="flex-cell">[% l('Status Changed') %]</div>
+    <div class="flex-cell well">{{copy.status_changed_time() | date:'short'}}</div>
 
     <div class="flex-cell">[% l('OPAC Visible') %]</div>
     <div class="flex-cell well">{{copy.opac_visible()}}</div>
@@ -122,8 +121,8 @@
   </div>
 
   <div class="flex-row">
-    <div class="flex-cell">[% l('TCN') %]</div>
-    <div class="flex-cell well">{{copy.call_number().record().tcn_value()}}</div>
+    <div class="flex-cell">[% l('Copy ID') %]</div>
+    <div class="flex-cell well">{{copy.id()}}</div>
 
     <div class="flex-cell">[% l('Holdable') %]</div>
     <div class="flex-cell well">{{copy.opac_visible()}}</div>
@@ -139,8 +138,8 @@
   </div>
 
   <div class="flex-row">
-    <div class="flex-cell">[% l('Floating') %]</div>
-    <div class="flex-cell well">{{copy.floating().name()}}</div>
+    <div class="flex-cell">[% l('TCN') %]</div>
+    <div class="flex-cell well">{{copy.call_number().record().tcn_value()}}</div>
 
     <div class="flex-cell">[% l('Circulate') %]</div>
     <div class="flex-cell well">{{copy.circulate()}}</div>
@@ -156,9 +155,8 @@
   </div>
 
   <div class="flex-row">
-    <!-- empty -->
-    <div class="flex-cell"></div>
-    <div class="flex-cell"></div>
+    <div class="flex-cell">[% l('Floating') %]</div>
+    <div class="flex-cell well">{{copy.floating().name()}}</div>
 
     <div class="flex-cell">[% l('Circ Modifier') %]</div>
     <div class="flex-cell well">{{copy.circ_modifier().name()}}</div>

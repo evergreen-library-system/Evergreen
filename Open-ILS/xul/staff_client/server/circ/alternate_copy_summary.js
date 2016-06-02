@@ -174,6 +174,9 @@ function load_item() {
         set("renewal_type", '');
         set("opac_visible", '');
         set("price", '');
+        set_tooltip("price", '');
+        set("cost", '');
+        set_tooltip("cost", '');
         set("ref", '');
         set("copy_status", '');
         set_tooltip("copy_status", '');
@@ -245,6 +248,9 @@ function load_item() {
                 ));
             set("opac_visible", get_localized_bool( details.copy.opac_visible() )); 
             set("price", details.copy.price()); 
+            set_tooltip("price" , "Replacement Amount charged to Patron");
+            set("cost", details.copy.cost());
+            set_tooltip("cost" , "Acquisition Amount paid by Library");
             set("ref", get_localized_bool( details.copy.ref() )); 
             var copy_status = typeof details.copy.status() == 'object' ? details.copy.status() : data.hash.ccs[ details.copy.status() ];
                 set("copy_status", copy_status.name() );

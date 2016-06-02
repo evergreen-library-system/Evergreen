@@ -201,7 +201,7 @@
                 <div class="col-xs-6">
                     <label>
                         <input type="checkbox" ng-change="saveDefaults()" ng-model="defaults.attributes.cost"/>
-                        [% l('Cost') %]
+                        [% l('Acquisition Cost') %]
                     </label>
                 </div>
             </div>
