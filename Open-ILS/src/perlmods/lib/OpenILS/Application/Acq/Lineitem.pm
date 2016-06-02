@@ -65,6 +65,12 @@ sub create_lineitem {
     $li->selector($e->requestor->id);
     $li = $e->create_acq_lineitem($li) or return $e->die_event;
 
+    # if no price is set, see if it can be extracted from the price attribute.
+    if (not defined $li->estimated_unit_price) { # '0' is valid
+        my $evt = set_li_price_from_attr($e, $li);
+        return $evt if $evt;
+    }
+
     if ($po) {
         # apply the default number of copies for this provider
         for (1 .. $po->provider->default_copy_count) {
@@ -77,6 +83,35 @@ sub create_lineitem {
 
     $e->commit;
     return $li->id;
+}
+
+# See if we have a value for the price attribute.  If so, apply the price 
+# value to the lineitem.
+# Returns undef on success, Event on error.
+sub set_li_price_from_attr {
+    my ($e, $li) = @_;
+
+    my $attr = $e->search_acq_lineitem_attr({
+        lineitem => $li->id,
+        attr_type => 'lineitem_marc_attr_definition',
+        attr_name  => 'price'
+    })->[0];
+
+    return unless $attr;
+
+    my $val = $attr->attr_value;
+
+    return unless defined $val; # '0' is valid
+
+    $li->estimated_unit_price($val);
+
+    if (!$e->update_acq_lineitem($li)) {
+        $e->rollback;
+        return OpenILS::Event->new('BAD_PARAMS', 
+            desc => "Invalid lineitem price value: '$val'") ;
+    }
+
+    return undef;
 }
 
 
