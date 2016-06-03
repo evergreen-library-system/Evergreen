@@ -16344,3 +16344,15 @@ INSERT INTO actor.org_unit_setting (
     'circ.patron_search.diacritic_insensitive',
     'true'
 );
+
+INSERT INTO config.global_flag (name, enabled, label) VALUES (
+    'ingest.disable_authority_auto_update_bib_meta',  FALSE, 
+    oils_i18n_gettext(
+        'ingest.disable_authority_auto_update_bib_meta',
+        'Authority Automation: Disable automatic authority updates ' ||
+            'from modifying bib record editor and edit_date',
+        'cgf',
+        'label'
+    )
+);
+
