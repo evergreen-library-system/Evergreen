@@ -331,8 +331,12 @@ SelfCheckManager.prototype.loadOrgSettings = function() {
             this.orgSettings[k] = settings[k].value;
     }
 
-    if(settings[SET_BARCODE_REGEX]) 
+    if(settings[SET_BARCODE_REGEX]) {
         this.patronBarcodeRegex = new RegExp(settings[SET_BARCODE_REGEX].value);
+    } else {
+        this.patronBarcodeRegex = new RegExp(/^\d/); 
+        // this assumes barcodes start with digits
+    }
 
     // Subtract the timeout warning interval from the configured timeout 
     // so that when taken together they add up to the configured amount.
