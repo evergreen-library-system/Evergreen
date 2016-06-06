@@ -124,8 +124,12 @@ if(!dojo._hasResource["openils.User"]) {
             if (!args.passwd) args.passwd = _u.passwd;
             if (!args.agent) args.agent = _u.login_agent;
             if (!args.type) args.type = _u.type;
-
-            var initReq = OpenSRF.CachedClientSession('open-ils.auth').request('open-ils.auth.authenticate.init', args.username);
+            
+            if (args.username) {
+                var initReq = OpenSRF.CachedClientSession('open-ils.auth').request('open-ils.auth.authenticate.init', args.username);
+            } else {
+                var initReq = OpenSRF.CachedClientSession('open-ils.auth').request('open-ils.auth.authenticate.init', args.barcode);
+            }
     
             initReq.oncomplete = function(r) {
                 var seed = r.recv().content(); 
