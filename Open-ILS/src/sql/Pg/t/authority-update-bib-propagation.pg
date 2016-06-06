@@ -1,0 +1,105 @@
+BEGIN;
+
+/* 
+Started as a test plan for LP#1588948 (authority edits modify bib record
+editor and edit_date), but includes general tests for confirming authority
+update propagation to bib records.
+*/
+
+SELECT plan(8);
+
+INSERT INTO actor.usr (profile, ident_type, usrname, home_ou, family_name,
+            passwd, first_given_name, expire_date, dob, suffix)
+    VALUES (13, 1, 'TEST_USER', 1, 'TESTER', 'TEST1234', 'TEST',
+            NOW() + '3 years'::INTERVAL, NULL, NULL);
+
+INSERT INTO authority.record_entry (id, marc, last_xact_id)
+VALUES (999999100, $$
+<record    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"    xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd"    xmlns="http://www.loc.gov/MARC21/slim"><leader>     nz  a22     o  4500</leader><controlfield tag="001">999999100</controlfield><controlfield tag="003">LOCAL</controlfield><controlfield tag="005">20160606150106.0</controlfield><controlfield tag="008">      ||||||||||||||||||||||||||||||||||</controlfield><datafield tag="040" ind1=" " ind2=" "><subfield code="a">LOCAL</subfield><subfield code="c">LOCAL</subfield></datafield><datafield tag="100" ind1=" " ind2=" "><subfield code="a">Doe, Jane</subfield></datafield><datafield tag="901" ind1=" " ind2=" "><subfield code="c">999999100</subfield><subfield code="t">authority</subfield></datafield></record>
+$$, 'test'
+);
+
+INSERT INTO biblio.record_entry (id, editor, edit_date, last_xact_id, marc)
+    VALUES (1234512345, 1, now() - '15 days'::INTERVAL, 'test', $$
+<record    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"    xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd"    xmlns="http://www.loc.gov/MARC21/slim"><leader>00620cam a2200205Ka 4500</leader><controlfield tag="001">1234512345</controlfield><controlfield tag="003">LOCAL</controlfield><controlfield tag="005">20160606145837.0</controlfield><controlfield tag="008">070101s                            eng d</controlfield><datafield tag="100" ind1=" " ind2=" "><subfield code="0">(LOCAL)999999100</subfield><subfield code="a">Doe, Jane</subfield></datafield><datafield tag="245" ind1=" " ind2=" "><subfield code="a">Test Record</subfield></datafield><datafield tag="901" ind1=" " ind2=" "><subfield code="a">1234512345</subfield><subfield code="b"></subfield><subfield code="c">1234512345</subfield><subfield code="t">biblio</subfield></datafield></record>
+$$);
+
+
+-- modify the authority record to propagate changes
+UPDATE authority.record_entry SET 
+    editor = CURRVAL('actor.usr_id_seq'), -- test user created above
+    marc = $$
+<record    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"    xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd"    xmlns="http://www.loc.gov/MARC21/slim"><leader>     nz  a22     o  4500</leader><controlfield tag="001">999999100</controlfield><controlfield tag="003">LOCAL</controlfield><controlfield tag="005">20160606150106.0</controlfield><controlfield tag="008">      ||||||||||||||||||||||||||||||||||</controlfield><datafield tag="040" ind1=" " ind2=" "><subfield code="a">LOCAL</subfield><subfield code="c">LOCAL</subfield></datafield><datafield tag="100" ind1=" " ind2=" "><subfield code="a">Doe, Jane Smith</subfield></datafield><datafield tag="901" ind1=" " ind2=" "><subfield code="c">999999100</subfield><subfield code="t">authority</subfield></datafield></record>
+$$
+WHERE id = 999999100;
+
+SELECT is(
+    (SELECT value FROM metabib.full_rec 
+        WHERE record = 1234512345 AND tag = '100' and subfield = 'a'),
+    'doe, jane smith',
+    'Authority field change propagated to bib record'
+);
+
+SELECT is(
+    (SELECT editor FROM biblio.record_entry WHERE id = 1234512345),
+    CURRVAL('actor.usr_id_seq')::INTEGER,
+    'Bib editor matches authority editor'
+);
+
+SELECT is(
+    (SELECT DATE(edit_date) FROM biblio.record_entry WHERE id = 1234512345),
+    CURRENT_DATE,
+    'Bib edit_date is updated'
+);
+
+-- Reset the bib data for easier testing
+
+UPDATE biblio.record_entry 
+    SET editor = 1, edit_date = NOW() - '1 week'::INTERVAL 
+    WHERE id = 1234512345;
+
+SELECT is(
+    (SELECT editor FROM biblio.record_entry WHERE id = 1234512345),
+    1,
+    'Bib editor is reset'
+);
+
+SELECT is(
+    (SELECT DATE(edit_date) FROM biblio.record_entry WHERE id = 1234512345),
+    DATE(NOW() - '1 week'::INTERVAL),
+    'Bib edit_date is reset'
+);
+
+-- Disable bib edit data propagation by enabled the disable flag
+UPDATE config.global_flag SET enabled = TRUE
+    WHERE name = 'ingest.disable_authority_auto_update_bib_meta';
+
+-- modify the authority record to propagate changes
+UPDATE authority.record_entry SET 
+    editor = CURRVAL('actor.usr_id_seq'), -- test user created above
+    marc = $$
+<record    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"    xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd"    xmlns="http://www.loc.gov/MARC21/slim"><leader>     nz  a22     o  4500</leader><controlfield tag="001">999999100</controlfield><controlfield tag="003">LOCAL</controlfield><controlfield tag="005">20160606150106.0</controlfield><controlfield tag="008">      ||||||||||||||||||||||||||||||||||</controlfield><datafield tag="040" ind1=" " ind2=" "><subfield code="a">LOCAL</subfield><subfield code="c">LOCAL</subfield></datafield><datafield tag="100" ind1=" " ind2=" "><subfield code="a">Doe, Jane Double-Smith</subfield></datafield><datafield tag="901" ind1=" " ind2=" "><subfield code="c">999999100</subfield><subfield code="t">authority</subfield></datafield></record>
+$$
+WHERE id = 999999100;
+
+SELECT is(
+    (SELECT value FROM metabib.full_rec 
+        WHERE record = 1234512345 AND tag = '100' and subfield = 'a'),
+    'doe, jane double smith',
+    'Authority field change propagated to bib record'
+);
+
+SELECT isnt(
+    (SELECT editor FROM biblio.record_entry WHERE id = 1234512345),
+    CURRVAL('actor.usr_id_seq')::INTEGER,
+    'Bib editor does not match authority editor'
+);
+
+SELECT isnt(
+    (SELECT DATE(edit_date) FROM biblio.record_entry WHERE id = 1234512345),
+    CURRENT_DATE,
+    'Bib edit_date is not updated'
+);
+
+ROLLBACK;
+
