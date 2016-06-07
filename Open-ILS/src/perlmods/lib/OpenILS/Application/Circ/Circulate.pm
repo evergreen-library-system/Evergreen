@@ -2305,7 +2305,11 @@ sub checkin_retarget {
                 next if ($_->{hold_type} eq 'P');
             }
             # So much for easy stuff, attempt a retarget!
-            my $tresult = $U->storagereq('open-ils.storage.action.hold_request.copy_targeter', undef, $_->{id}, $self->copy->id);
+            my $tresult = $U->simplereq(
+                'open-ils.hold-targeter',
+                'open-ils.hold-targeter.target', 
+                {hold => $_->{id}, find_copy => $self->copy->id}
+            );
             if(ref $tresult eq "ARRAY" and scalar @$tresult) {
                 last if(exists $tresult->[0]->{found_copy} and $tresult->[0]->{found_copy});
             }
@@ -3078,8 +3082,8 @@ sub do_hold_notify {
 sub retarget_holds {
     my $self = shift;
     $logger->info("circulator: retargeting holds @{$self->retarget} after opportunistic capture");
-    my $ses = OpenSRF::AppSession->create('open-ils.storage');
-    $ses->request('open-ils.storage.action.hold_request.copy_targeter', undef, $self->retarget);
+    my $ses = OpenSRF::AppSession->create('open-ils.hold-targeter');
+    $ses->request('open-ils.hold-targeter.target', {hold => $self->retarget});
     # no reason to wait for the return value
     return;
 }

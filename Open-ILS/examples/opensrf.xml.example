@@ -1176,6 +1176,27 @@ vim:et:ts=4:sw=4:
                 </app_settings>
             </open-ils.serial>
 
+            <open-ils.hold-targeter>
+                <keepalive>3</keepalive>
+                <stateless>1</stateless>
+                <language>perl</language>
+                <implementation>OpenILS::Application::HoldTargeter</implementation>
+                <max_requests>17</max_requests>
+                <unix_config>
+                    <unix_sock>open-ils.hold-targeter_unix.sock</unix_sock>
+                    <unix_pid>open-ils.hold-targeter_unix.pid</unix_pid>
+                    <max_requests>1000</max_requests>
+                    <unix_log>open-ils.hold-targeter_unix.log</unix_log>
+                    <min_children>1</min_children>
+                    <max_children>15</max_children>
+                    <min_spare_children>1</min_spare_children>
+                    <max_spare_children>5</max_spare_children>
+                </unix_config>
+                <app_settings>
+                </app_settings>
+            </open-ils.hold-targeter>
+
+
         </apps>
     </default>
 
@@ -1220,6 +1241,7 @@ vim:et:ts=4:sw=4:
                 <appname>open-ils.fielder</appname>  
                 <appname>open-ils.vandelay</appname>  
                 <appname>open-ils.serial</appname>  
+                <appname>open-ils.hold-targeter</appname>  
             </activeapps>
         </localhost>
     </hosts>

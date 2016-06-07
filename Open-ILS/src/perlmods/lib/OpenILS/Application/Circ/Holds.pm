@@ -380,9 +380,9 @@ sub create_hold {
 
     $conn->respond_complete($hold->id);
 
-    $U->storagereq(
-        'open-ils.storage.action.hold_request.copy_targeter',
-        undef, $hold->id ) unless $U->is_true($hold->frozen);
+    $U->simplereq('open-ils.hold-targeter',
+        'open-ils.hold-targeter.target', {hold => $hold->id}
+    ) unless $U->is_true($hold->frozen);
 
     return undef;
 }
@@ -746,7 +746,8 @@ sub uncancel_hold {
     $e->update_action_hold_request($hold) or return $e->die_event;
     $e->commit;
 
-    $U->storagereq('open-ils.storage.action.hold_request.copy_targeter', undef, $hold_id);
+    $U->simplereq('open-ils.hold-targeter',
+        'open-ils.hold-targeter.target', {hold => $hold_id});
 
     return 1;
 }
@@ -1064,15 +1065,16 @@ sub update_hold_impl {
 
     if(!$U->is_true($hold->frozen) && $U->is_true($orig_hold->frozen)) {
         $logger->info("Running targeter on activated hold ".$hold->id);
-        $U->storagereq( 'open-ils.storage.action.hold_request.copy_targeter', undef, $hold->id );
+        $U->simplereq('open-ils.hold-targeter', 
+            'open-ils.hold-targeter.target', {hold => $hold->id});
     }
 
     # a change to mint-condition changes the set of potential copies, so retarget the hold;
     if($U->is_true($hold->mint_condition) and !$U->is_true($orig_hold->mint_condition)) {
         _reset_hold($self, $e->requestor, $hold)
     } elsif($need_retarget && !defined $hold->capture_time()) { # If needed, retarget the hold due to changes
-        $U->storagereq(
-            'open-ils.storage.action.hold_request.copy_targeter', undef, $hold->id );
+        $U->simplereq('open-ils.hold-targeter', 
+            'open-ils.hold-targeter.target', {hold => $hold->id});
     }
 
     return $hold->id;
@@ -1160,7 +1162,8 @@ sub update_hold_if_frozen {
     } else {
         if($U->is_true($orig_hold->frozen)) {
             $logger->info("Running targeter on activated hold ".$hold->id);
-            $U->storagereq( 'open-ils.storage.action.hold_request.copy_targeter', undef, $hold->id );
+            $U->simplereq('open-ils.hold-targeter', 
+                'open-ils.hold-targeter.target', {hold => $hold->id});
         }
     }
 }
@@ -1993,8 +1996,8 @@ sub _reset_hold {
     $e->update_action_hold_request($hold) or return $e->die_event;
     $e->commit;
 
-    $U->storagereq(
-        'open-ils.storage.action.hold_request.copy_targeter', undef, $hold->id );
+    $U->simplereq('open-ils.hold-targeter', 
+        'open-ils.hold-targeter.target', {hold => $hold->id});
 
     return undef;
 }
