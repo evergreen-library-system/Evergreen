@@ -201,7 +201,8 @@ sub do_checkin {
 
         $self->item->hold_patron_bcode( ($holder->card) ? $holder->card->barcode : '');
         $self->item->hold_patron_name($holder_name);
-        $self->item->destination_loc($pickup_lib_sn); 
+        $self->item->destination_loc($pickup_lib_sn);
+        $self->item->hold_patron_phone($self->item->hold->phone_notify);
 
         my $atype = ($pickup_lib_id == $phys_location) ? '01' : '02';
         $self->alert_type($atype);

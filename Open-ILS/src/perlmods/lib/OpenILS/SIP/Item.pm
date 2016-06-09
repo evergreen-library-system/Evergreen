@@ -46,6 +46,7 @@ my %fields = (
     volume             => 0,
     record             => 0,
     mods               => 0,
+    hold_patron_phone  => 0,
 );
 
 our $AUTOLOAD;
@@ -219,6 +220,7 @@ sub fetch_hold {
 
         syslog('LOG_WARNING', "OILS: Item(".$copy->barcode.
             ") is captured for a hold, but there is no matching hold request") unless $hold;
+        $self->{hold_patron_phone} = $hold->phone_notify unless !$hold;
 
         return $hold;
     }
