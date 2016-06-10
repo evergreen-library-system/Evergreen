@@ -39,10 +39,10 @@
                 [% INCLUDE 'staff/admin/actor/org_unit/t_main_tab.tt2' %]
             </div>
             <div ng-show="org_tab == 'hours'">
-                <span>hours tab</span>
+                [% INCLUDE 'staff/admin/actor/org_unit/t_hours_tab.tt2' %]
             </div>
             <div ng-show="org_tab == 'addresses'">
-                <span>addr tab</span>
+                [% INCLUDE 'staff/admin/actor/org_unit/t_addresses_tab.tt2' %]
             </div>
           </div>
         </div>

@@ -58,6 +58,7 @@ function($scope , $q , $routeParams , $window , egCore , egOrg  ) {
     // the org tree
 
     $scope.treedata = [ egCore.idl.toHash( egOrg.tree() ) ];
+    $scope.selected = $scope.treedata[0]; // FIXME -- why no work?
     $scope.expandedNodes = [ $scope.treedata[0] ];
 
     $scope.showSelected = function(sel) {
