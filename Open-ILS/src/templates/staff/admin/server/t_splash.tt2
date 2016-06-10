@@ -44,6 +44,7 @@
     ,[ l('MARC Search/Facet Classes'), "./admin/server/config/metabib_class" ]
     ,[ l('MARC Search/Facet Field FTS Maps'), "./admin/server/config/metabib_field_ts_map" ]
     ,[ l('MARC Search/Facet Fields'), "./admin/server/config/metabib_field" ]
+    ,[ l('MARC Tag Tables'), "./admin/server/config/marc_field" ]
     ,[ l('Org Unit Proximity Adjustments'), "./admin/server/config/org_unit_proximity_adjustment" ]
     ,[ l('Organization Types'), "./admin/server/legacy/actor/org_unit_type" ]
     ,[ l('Org Unit Setting Types'), "./admin/server/config/org_unit_setting_type" ]
@@ -59,7 +60,7 @@
     ,[ l('Z39.50 Servers'), "./admin/server/config/z3950_source" ]
    ];
 
-   USE table(interfaces, rows=16);
+   USE table(interfaces, rows=17);
 %]
 
 [% FOREACH row = table.rows %]
