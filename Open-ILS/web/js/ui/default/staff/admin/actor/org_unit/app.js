@@ -27,31 +27,6 @@ angular.module('egOrgUnitApp',
        ['$scope','$q','$routeParams','$window','egCore','egOrg',
 function($scope , $q , $routeParams , $window , egCore , egOrg  ) {
 
-    $scope.update = function() {
-        var new_org = egOrg.get($scope.org.id);
-        new_org.name( $scope.org.name );
-        new_org.shortname( $scope.org.shortname );
-        new_org.email( $scope.org.email );
-        new_org.phone( $scope.org.phone );
-        egCore.pcrud.update(new_org).then(
-            function(res) { // success
-                console.log('handler1');
-                window.handler1 = res;
-                window.sessionStorage.removeItem('eg.env.aou.tree');
-                egCore.env.load();
-                init(0);
-            },
-            function(res) { // success
-                console.log('handler2');
-                window.handler2 = res;
-            },
-            function(res) { // error
-                console.log('handler3');
-                window.handler3 = res;
-            }
-        );
-    };
-
     $scope.reset = function() {
         $scope.org = angular.copy($scope.selectedNode);
     };
@@ -95,6 +70,36 @@ function($scope , $q , $routeParams , $window , egCore , egOrg  ) {
                 break;
         }
     }
+
+    // main tab behavior
+
+    $scope.update = function() {
+        var new_org = egOrg.get($scope.org.id);
+        new_org.name( $scope.org.name );
+        new_org.shortname( $scope.org.shortname );
+        new_org.email( $scope.org.email );
+        new_org.phone( $scope.org.phone );
+        egCore.pcrud.update(new_org).then(
+            function(res) { // success
+                console.log('handler1');
+                window.handler1 = res;
+                window.sessionStorage.removeItem('eg.env.aou.tree');
+                egCore.env.load();
+                init(0);
+            },
+            function(res) { // success
+                console.log('handler2');
+                window.handler2 = res;
+            },
+            function(res) { // error
+                console.log('handler3');
+                window.handler3 = res;
+            }
+        );
+    };
+
+
+
 
 }])
 
