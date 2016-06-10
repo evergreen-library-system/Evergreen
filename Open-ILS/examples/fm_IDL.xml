@@ -880,10 +880,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	</class>
 
 	<class id="cmrcfmt" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::marc_format" oils_persist:tablename="config.marc_format" reporter:label="MARC Formats" oils_persist:field_safe="true">
-		<fields oils_persist:primary="id">
-			<field reporter:label="ID"   name="id" reporter:datatype="id"/>
-			<field reporter:label="Code" name="code" reporter:datatype="text"/>
-			<field reporter:label="Name" name="name" reporter:datatype="text" oils_persist:i18n="true"/>
+		<fields oils_persist:primary="id" oils_persist:sequence="config.marc_format_id_seq">
+			<field reporter:label="ID"   name="id" reporter:datatype="id" reporter:selector="name" />
+			<field reporter:label="Code" name="code" reporter:datatype="text" oils_obj:required="true"/>
+			<field reporter:label="Name" name="name" reporter:datatype="text" oils_persist:i18n="true" oils_obj:required="true"/>
         </fields>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
@@ -896,18 +896,18 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	</class>
 
 	<class id="cmrcfld" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::marc_field" oils_persist:tablename="config.marc_field" reporter:label="MARC Fields" oils_persist:field_safe="true">
-		<fields oils_persist:primary="id">
+		<fields oils_persist:primary="id" oils_persist:sequence="config.marc_field_id_seq">
 			<field reporter:label="ID"   name="id" reporter:datatype="id"/>
-			<field reporter:label="MARC Format" name="marc_format" reporter:datatype="link" />
-			<field reporter:label="MARC Record Type" name="marc_record_type" reporter:datatype="text" />
-			<field reporter:label="MARC Tag" name="tag" reporter:datatype="text" />
+			<field reporter:label="MARC Format" name="marc_format" reporter:datatype="link" oils_obj:required="true"/>
+			<field reporter:label="MARC Record Type" name="marc_record_type" reporter:datatype="text" oils_obj:required="true" />
+			<field reporter:label="MARC Tag" name="tag" reporter:datatype="text" oils_obj:required="true"/>
 			<field reporter:label="Name" name="name" reporter:datatype="text" oils_persist:i18n="true"/>
 			<field reporter:label="Description" name="description" reporter:datatype="text" oils_persist:i18n="true"/>
 			<field reporter:label="Fixed Field?" name="fixed_field" reporter:datatype="bool"/>
 			<field reporter:label="Repeatable?" name="repeatable" reporter:datatype="bool"/>
 			<field reporter:label="Mandatory?" name="mandatory" reporter:datatype="bool"/>
 			<field reporter:label="Hidden?" name="hidden" reporter:datatype="bool"/>
-			<field reporter:label="Owner" name="owner" reporter:datatype="link"/>
+			<field reporter:label="Owner" name="owner" reporter:datatype="org_unit"/>
         </fields>
 		<links>
 			<link field="marc_format" reltype="has_a" key="id" map="" class="cmrcfmt"/>
@@ -924,17 +924,17 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	</class>
 
 	<class id="cmrcsubfld" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::marc_subfield" oils_persist:tablename="config.marc_subfield" reporter:label="MARC Subfields" oils_persist:subfield_safe="true">
-		<fields oils_persist:primary="id">
+		<fields oils_persist:primary="id" oils_persist:sequence="config.marc_subfield_id_seq">
 			<field reporter:label="ID"   name="id" reporter:datatype="id"/>
-			<field reporter:label="MARC Format" name="marc_format" reporter:datatype="link" />
-			<field reporter:label="MARC Record Type" name="marc_record_type" reporter:datatype="text" />
-			<field reporter:label="MARC Tag" name="tag" reporter:datatype="text" />
-			<field reporter:label="MARC Subfield" name="code" reporter:datatype="text" />
+			<field reporter:label="MARC Format" name="marc_format" reporter:datatype="link" oils_obj:required="true"/>
+			<field reporter:label="MARC Record Type" name="marc_record_type" reporter:datatype="text" oils_obj:required="true"/>
+			<field reporter:label="MARC Tag" name="tag" reporter:datatype="text" oils_obj:required="true"/>
+			<field reporter:label="MARC Subfield" name="code" reporter:datatype="text" oils_obj:required="true"/>
 			<field reporter:label="Description" name="description" reporter:datatype="text" oils_persist:i18n="true"/>
 			<field reporter:label="Repeatable?" name="repeatable" reporter:datatype="bool"/>
 			<field reporter:label="Mandatory?" name="mandatory" reporter:datatype="bool"/>
 			<field reporter:label="Hidden?" name="hidden" reporter:datatype="bool"/>
-			<field reporter:label="Owner" name="owner" reporter:datatype="link"/>
+			<field reporter:label="Owner" name="owner" reporter:datatype="org_unit"/>
         </fields>
 		<links>
 			<link field="marc_format" reltype="has_a" key="id" map="" class="cmrcfmt"/>
