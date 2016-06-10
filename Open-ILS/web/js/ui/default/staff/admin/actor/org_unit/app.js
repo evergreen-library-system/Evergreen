@@ -35,9 +35,20 @@ function($scope , $q , $routeParams , $window , egCore , egOrg  ) {
 
     // the org tree
 
-    function init(n) {
+    function init(id) {
         $scope.treedata = [ egCore.idl.toHash( egOrg.tree() ) ];
-        $scope.selected = $scope.treedata[0]; // FIXME -- why no work?
+        function find_org(tree,id) {
+            if (tree.id==id) {
+                return tree;
+            }
+            for (var i in tree.children) {
+                var child = tree.children[i];
+                ou = find_org( child, id );
+                if (ou) { return ou; }
+            }
+            return null;
+        }
+        $scope.selected = find_org($scope.treedata,id) || $scope.treedata[0]; // FIXME -- why no work?
         $scope.expandedNodes = [ $scope.treedata[0], $scope.selected ];
     }
     init(1);
