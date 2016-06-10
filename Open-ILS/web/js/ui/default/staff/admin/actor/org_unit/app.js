@@ -37,6 +37,9 @@ function($scope , $q , $routeParams , $window , egCore , egOrg  ) {
             function(res) { // success
                 console.log('handler1');
                 window.handler1 = res;
+                window.sessionStorage.removeItem('eg.env.aou.tree');
+                egCore.env.load();
+                init(0);
             },
             function(res) { // success
                 console.log('handler2');
@@ -57,9 +60,18 @@ function($scope , $q , $routeParams , $window , egCore , egOrg  ) {
 
     // the org tree
 
-    $scope.treedata = [ egCore.idl.toHash( egOrg.tree() ) ];
-    $scope.selected = $scope.treedata[0]; // FIXME -- why no work?
-    $scope.expandedNodes = [ $scope.treedata[0] ];
+    function init(n) {
+        $scope.treedata = [ egCore.idl.toHash( egOrg.tree() ) ];
+        $scope.selected = $scope.treedata[0]; // FIXME -- why no work?
+        $scope.expandedNodes = [ $scope.treedata[0], $scope.selected ];
+    }
+    init(1);
+
+    window.phasefx = {
+         'scope' : $scope
+        ,'egorg' : egOrg
+        ,'egcore' : egCore
+    };
 
     $scope.showSelected = function(sel) {
         $scope.selectedNode = sel;
