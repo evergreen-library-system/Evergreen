@@ -74,6 +74,8 @@
     s.EG_WORK_LOG_FORGIVE_PAYMENT = '[% l('Forgive Payment') %]';
     s.EG_WORK_LOG_GOODS_PAYMENT = '[% l('Goods Payment') %]';
     s.EG_WORK_LOG_REQUESTED_HOLD = '[% l('Hold Request') %]';
+    s.EG_CONFIRM_DELETE_RECORD_TITLE = '[% l('Confirm Record Deletion') %]';
+    s.EG_CONFIRM_DELETE_RECORD_BODY = "[% l('Delete record {{id}}?') %]";
   }]);
 </script>
 
