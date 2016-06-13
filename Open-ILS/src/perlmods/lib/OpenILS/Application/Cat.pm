@@ -850,10 +850,24 @@ sub transfer_copies_to_volume {
 
     # flesh and munge the copies
     my $fleshed_copies = [];
-    my ($copy, $copy_evt);
+    my $copy;
     foreach my $copy_id ( @{ $copies } ) {
-        ($copy, $copy_evt) = $U->fetch_copy($copy_id);
-        return $copy_evt if $copy_evt;
+        $copy = $editor->search_asset_copy([
+            { id => $copy_id , deleted => 'f' },
+            {
+                join => {
+                    acpm => {
+                        type => 'left',
+                        join => {
+                            bmp => { type => 'left' }
+                        }
+                    }
+                },
+                flesh => 1,
+                flesh_fields => { acp => ['parts'] }
+            }
+        ])->[0];
+        return OpenILS::Event->new('ASSET_COPY_NOT_FOUND') if !$copy;
         $copy->call_number( $volume );
         $copy->circ_lib( $cn->owning_lib() );
         $copy->ischanged( 't' );
@@ -869,6 +883,35 @@ sub transfer_copies_to_volume {
         $logger->info("copy to volume transfer failed with event: ".OpenSRF::Utils::JSON->perl2JSON($evt));
         $editor->rollback; 
         return $evt; 
+    }
+
+    # take care of the parts
+    for my $copy (@$fleshed_copies) {
+        my $parts = $copy->parts;
+        next unless $parts;
+        my $part_objs = [];
+        foreach my $part (@$parts) {
+            my $part_label = $part->label;
+            my $part_obj = $editor->search_biblio_monograph_part(
+              {
+                   label=>$part_label,
+                   record=>$cn->record
+              }
+           )->[0];
+           if (!$part_obj) {
+               $part_obj = Fieldmapper::biblio::monograph_part->new();
+               $part_obj->label( $part_label );
+               $part_obj->record( $cn->record );
+               unless($editor->create_biblio_monograph_part($part_obj)) {
+                 return $editor->die_event if $editor->die_event;
+               }
+           }
+           push @$part_objs, $part_obj;
+        }
+        $copy->parts( $part_objs );
+        $copy->ischanged(1);
+        $evt = OpenILS::Application::Cat::AssetCommon->update_copy_parts($editor, $copy, 1); #delete_parts=1
+        return $evt if $evt;
     }
 
     $editor->commit;
@@ -1294,6 +1337,9 @@ sub batch_volume_transfer {
             }
         }
 
+        # record the difference between the destination bib and the present bib
+        my $same_bib = $vol->record == $rec;
+
         # see if there is a volume at the destination lib that 
         # already has the requested label
         my $existing_vol = $e->search_asset_call_number(
@@ -1345,7 +1391,21 @@ sub batch_volume_transfer {
 
         # regardless of what volume was used as the destination, 
         # update any copies that have moved over to the new lib
-        my $copies = $e->search_asset_copy({call_number=>$vol->id, deleted => 'f'});
+        my $copies = $e->search_asset_copy([
+            { call_number => $vol->id , deleted => 'f' },
+            {
+                join => {
+                    acpm => {
+                        type => 'left',
+                        join => {
+                            bmp => { type => 'left' }
+                        }
+                    }
+                },
+                flesh => 1,
+                flesh_fields => { acp => ['parts'] }
+            }
+        ]);
 
         # update circ lib on the copies - make this a method flag?
         for my $copy (@$copies) {
@@ -1355,6 +1415,39 @@ sub batch_volume_transfer {
             $copy->editor($e->requestor->id);
             $copy->edit_date('now');
             $e->update_asset_copy($copy) or return $e->event;
+        }
+
+        # update parts if volume is moving bib records
+        if( !$same_bib ) {
+            for my $copy (@$copies) {
+                my $parts = $copy->parts;
+                next unless $parts;
+                my $part_objs = [];
+                foreach my $part (@$parts) {
+                    my $part_label = $part->label;
+                    my $part_obj = $e->search_biblio_monograph_part(
+                       {
+                            label=>$part_label,
+                            record=>$rec
+                       }
+                    )->[0];
+
+                    if (!$part_obj) {
+                        $part_obj = Fieldmapper::biblio::monograph_part->new();
+                        $part_obj->label( $part_label );
+                        $part_obj->record( $rec );
+                        unless($e->create_biblio_monograph_part($part_obj)) {
+                          return $e->die_event if $e->die_event;
+                        }
+                    }
+                    push @$part_objs, $part_obj;
+                }
+
+                $copy->parts( $part_objs );
+                $copy->ischanged(1);
+                $evt = OpenILS::Application::Cat::AssetCommon->update_copy_parts($e, $copy, 1); #delete_parts=1
+                return $evt if $evt;
+            }
         }
 
         # Now see if any empty records need to be deleted after all of this

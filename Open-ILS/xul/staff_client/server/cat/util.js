@@ -184,17 +184,9 @@ cat.util.transfer_copies = function(params) {
 
         JSAN.use('util.functional');
 
-        var copies = network.simple_request('FM_ACP_FLESHED_BATCH_RETRIEVE.authoritative', [ params.copy_ids ]);
-
-        for (var i = 0; i < copies.length; i++) {
-            copies[i].call_number( data.marked_volume );
-            copies[i].circ_lib( params.owning_lib );
-            copies[i].ischanged( 1 );
-        }
-
         var robj = network.simple_request(
-            'FM_ACP_FLESHED_BATCH_UPDATE', 
-            [ ses(), copies, true ], 
+            'FM_ACP_TRANSFER_COPIES_BATCH',
+            [ ses(), data.marked_volume , params.copy_ids ],
             null,
             {
                 'title' : $("catStrings").getString('staff.cat.util.transfer_copies.override_transfer_failure'),
