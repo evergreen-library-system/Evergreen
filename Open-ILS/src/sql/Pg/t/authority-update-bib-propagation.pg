@@ -6,7 +6,7 @@ editor and edit_date), but includes general tests for confirming authority
 update propagation to bib records.
 */
 
-SELECT plan(8);
+SELECT plan(9);
 
 INSERT INTO actor.usr (profile, ident_type, usrname, home_ou, family_name,
             passwd, first_given_name, expire_date, dob, suffix)
@@ -50,6 +50,25 @@ SELECT is(
     (SELECT DATE(edit_date) FROM biblio.record_entry WHERE id = 1234512345),
     CURRENT_DATE,
     'Bib edit_date is updated'
+);
+
+-- Apply a change to the authority record that has no effect on the bib.
+
+UPDATE biblio.record_entry 
+    SET editor = 1, edit_date = NOW() - '1 week'::INTERVAL
+    WHERE id = 1234512345;
+
+UPDATE authority.record_entry SET 
+    editor = CURRVAL('actor.usr_id_seq'), -- test user created above
+    marc = $$
+<record    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"    xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd"    xmlns="http://www.loc.gov/MARC21/slim"><leader>     nz  a22     o  4500</leader><controlfield tag="001">999999100</controlfield><controlfield tag="003">LOCAL</controlfield><controlfield tag="005">20160606150106.0</controlfield><controlfield tag="008">      ||||||||||||||||||||||||||||||||||</controlfield><datafield tag="040" ind1=" " ind2=" "><subfield code="a">LOCAL</subfield><subfield code="c">LOCAL</subfield></datafield><datafield tag="100" ind1=" " ind2=" "><subfield code="a">Doe, Jane Smith</subfield></datafield><datafield tag="901" ind1=" " ind2=" "><subfield code="c">999999100</subfield><subfield code="t">authority</subfield><subfield code="x">test</subfield></datafield></record>
+$$
+WHERE id = 999999100;
+
+SELECT isnt(
+    (SELECT DATE(edit_date) FROM biblio.record_entry WHERE id = 1234512345),
+    CURRENT_DATE,
+    'Authority change with no effect does not update bib record'
 );
 
 -- Reset the bib data for easier testing

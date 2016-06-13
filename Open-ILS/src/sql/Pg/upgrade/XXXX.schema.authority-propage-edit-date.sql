@@ -7,12 +7,19 @@ CREATE OR REPLACE FUNCTION authority.propagate_changes
     (aid BIGINT, bid BIGINT) RETURNS BIGINT AS $func$
 DECLARE
     bib_rec biblio.record_entry%ROWTYPE;
+    new_marc TEXT;
 BEGIN
 
     SELECT INTO bib_rec * FROM biblio.record_entry WHERE id = bid;
 
-    bib_rec.marc := vandelay.merge_record_xml(
+    new_marc := vandelay.merge_record_xml(
         bib_rec.marc, authority.generate_overlay_template(aid));
+
+    IF new_marc = bib_rec.marc THEN
+        -- Authority record change had no impact on this bib record.
+        -- Nothing left to do.
+        RETURN aid;
+    END IF;
 
     PERFORM 1 FROM config.global_flag 
         WHERE name = 'ingest.disable_authority_auto_update_bib_meta' 
@@ -26,7 +33,7 @@ BEGIN
     END IF;
 
     UPDATE biblio.record_entry SET
-        marc = bib_rec.marc,
+        marc = new_marc,
         editor = bib_rec.editor,
         edit_date = bib_rec.edit_date
     WHERE id = bid;
