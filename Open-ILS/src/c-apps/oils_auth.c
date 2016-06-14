@@ -516,6 +516,18 @@ static oilsEvent* oilsAuthHandleLoginOK( jsonObject* userObj, const char* uname,
             jsonObjectGetKey(authEvt, "payload")   // cloned within Event
         );
 
+        osrfLogActivity(OSRF_LOG_MARK,
+            "successful login: username=%s, authtoken=%s, workstation=%s",
+            uname,
+            jsonObjectGetString(
+                jsonObjectGetKeyConst(
+                    jsonObjectGetKeyConst(authEvt, "payload"),
+                    "authtoken"
+                )
+            ),
+            workstation ? workstation : ""
+        );
+
         jsonObjectFree(authEvt);
 
     } else {
