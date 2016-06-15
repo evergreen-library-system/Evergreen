@@ -17,6 +17,7 @@ use Digest::MD5 qw(md5_hex);
 use OpenILS::SIP;
 use OpenILS::Application::AppUtils;
 use OpenILS::Application::Actor;
+use OpenILS::Const qw/:const/;
 use OpenSRF::Utils qw/:datetime/;
 use DateTime::Format::ISO8601;
 my $U = 'OpenILS::Application::AppUtils';
@@ -447,7 +448,7 @@ sub too_many_charged {      # not implemented
 sub too_many_overdue { 
     my $self = shift;
     return scalar( # PATRON_EXCEEDS_OVERDUE_COUNT
-        grep { $_->standing_penalty == 2 } @{$self->{user}->standing_penalties}
+        grep { $_ == OILS_PENALTY_PATRON_EXCEEDS_OVERDUE_COUNT } @{$self->{user}->standing_penalties}
     );
 }
 
@@ -472,7 +473,7 @@ sub too_many_lost {
 sub excessive_fines { 
     my $self = shift;
     return scalar( # PATRON_EXCEEDS_FINES
-        grep { $_->standing_penalty == 1 } @{$self->{user}->standing_penalties}
+        grep { $_ == OILS_PENALTY_PATRON_EXCEEDS_FINES } @{$self->{user}->standing_penalties}
     );
 }
 
