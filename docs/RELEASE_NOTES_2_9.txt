@@ -3,6 +3,40 @@ Evergreen 2.9 Release Notes
 :toc:
 :numbered:
 
+Evergreen 2.9.6
+---------------
+This release contains several bugfixes improving on Evergreen 2.9.5
+
+* Fixes a bug where Action Triggers could select an inactive event definition 
+when running.
+* Fixes an issue where previously-checked-out items did not display in
+metarecord searches when the Tag Circulated Items Library Setting is enabled.
+* Fixes an error that occurred when the system attempted to display a translated
+string for the "Has Local Copy" hold placement error message.
+* Fixes an issue where the Show More/Show Fewer Details button didn't work in
+catalogs that default to showing more details.
+* Removes Social Security Number as a stock patron identification type for
+new installations. This fix does not change patron identification types for 
+existing Evergreen systems.
+* Adds two missing link fields (patron profile and patron home library) to
+the fm_idl.xml for the Combined Active and Aged Circulations (combcirc)
+reporter source.
+* Adds a performance improvement for the "Clear Holds Shelf" checkin modifier.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed
+code, testing and documentation patches to the 2.9.6 point release of Evergreen:
+
+* Galen Charlton
+* Codey Kolasinski
+* Jeanette Lundgren
+* Kathy Lussier
+* Terran McCanna
+* Michele Morgan
+* Jason Stephenson
+* Josh Stompro
+
 Evergreen 2.9.5
 ---------------
 This release contains several bugixes improving on Evergreen 2.9.4
