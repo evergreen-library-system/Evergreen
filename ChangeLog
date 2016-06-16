@@ -1,3 +1,264 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit b56c0a7de9b606235b0dad1e50654671c3521101
+Author: Jason Stephenson <jstephenson@mvlcstaff.org>
+Date:   Wed Jun 15 15:08:53 2016 -0400
+
+    Forward port 2.9.5 to 2.9.6 upgrade script.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlcstaff.org>
+
+11	0	Open-ILS/src/sql/Pg/version-upgrade/2.9.5-2.9.6-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.9.5-2.9.6-upgrade-db.sql
+
+commit aebfec3adb5551bf3190c0b8a4d84cd79447388b
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Wed Jun 15 20:34:31 2016 -0400
+
+    bump up upgrade instructions for 2.10.5
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+19	18	docs/installation/server_upgrade.txt
+
+commit f1a9bdc883f957537e92df822a4117b9ce0a3bb4
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Wed Jun 15 20:32:10 2016 -0400
+
+    2.10.4-2.10.5 schema upgrade script
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+12	0	Open-ILS/src/sql/Pg/version-upgrade/2.10.4-2.10.5-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.10.4-2.10.5-upgrade-db.sql
+
+commit cc46f72de1f5eefba303964a8080a7790719677e
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Wed Jun 15 12:45:31 2016 -0400
+
+    Docs: Adding 2.10 Release Notes
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+37	0	docs/RELEASE_NOTES_2_10.adoc
+
+commit 48ae78c187cef3360f1d6bbbcab6d002edac52a2
+Author: Jeff Godin <jgodin@tadl.org>
+Date:   Wed Jun 15 12:25:24 2016 -0400
+
+    LP#1592891: Fix SIP2 standing penalty failures
+    
+    Update too_many_overdue and excessive_fines in OpenILS::SIP::Patron
+    to account for the fact that the user object in this context no
+    longer contains an array of ausp objects, but just an array of ausp
+    IDs.
+    
+    This fixes SIP2 failures with patron information messages when a
+    patron has one or more blocking penalties that are not otherwise
+    ignored.
+    
+    Signed-off-by: Jeff Godin <jgodin@tadl.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+3	2	Open-ILS/src/perlmods/lib/OpenILS/SIP/Patron.pm
+
+commit 5cc787635e0601196ef5c28455b0e620fc3f1de9
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Wed Jun 15 20:16:52 2016 -0400
+
+    LP#1592891: tweak tests
+    
+    This patch wraps the standing penalty checks in evals so that if they
+    crash, the test script can carry on -- and make it to the point where
+    it cleans up the standing penalties it adds.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+16	2	Open-ILS/src/perlmods/live_t/18-lp1592891_sip_standing_penalties.t
+
+commit 50384a91677a7cb1dc46a76472167b514e81dacb
+Author: Jeff Godin <jgodin@tadl.org>
+Date:   Wed Jun 15 13:46:09 2016 -0400
+
+    LP#1592891: Tests - SIP2 standing penalty failures
+    
+    Tests for SIP2 standing penalty failures in LP#1592891
+    
+    Much of the code in these tests was copied or adapted from Jason
+    Stephenson's tests in 14-lp1499123_csp_ignore_proximity.t
+    
+    Signed-off-by: Jeff Godin <jgodin@tadl.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+190	0	Open-ILS/src/perlmods/live_t/18-lp1592891_sip_standing_penalties.t
+ create mode 100644 Open-ILS/src/perlmods/live_t/18-lp1592891_sip_standing_penalties.t
+
+commit 3f97d1e1c2ad331c0a37f03a4a3eda784144c023
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Jun 14 16:16:08 2016 -0400
+
+    LP#1592565 Log successful authtoken and workstation
+    
+    Recover a previously existing activity log entry that logged the
+    username, authtoken, and workstation (when available) for successful
+    logins.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jeff Godin <jgodin@tadl.org>
+
+12	0	Open-ILS/src/c-apps/oils_auth.c
+
+commit ab260df4412d0304e9a8ddf87dc0661a24cb2ca4
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Fri Jun 10 11:51:41 2016 -0400
+
+    LP#1526858: Stamping upgrade script for faster alhr query
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    
+    Conflicts:
+    	Open-ILS/src/sql/Pg/002.schema.config.sql
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+8	0	Open-ILS/src/sql/Pg/upgrade/0981.schema.indexes_for_alhr_queries.sql
+0	8	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.indexes_for_alhr_queries.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0981.schema.indexes_for_alhr_queries.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.indexes_for_alhr_queries.sql
+
+commit a67bc88d44ce930674b133d3e0c111e5cb614f8f
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Wed Dec 16 11:03:42 2015 -0500
+
+    LP#1526858: speed up queries for shelf-expired holds during checkin
+    
+    This patch adds indexes on action.hold_request and tweaks
+    the definition of the alhr IDL view to more efficiently
+    identify holds that can be canceled if the "Clear Holds Shelf"
+    checkin modifier is in use.  This can prevent a problem
+    where such checkins can time out in very large databases.
+    
+    The tweaks were created by Jason Etheridge and have been in
+    production at a large consortium for some time.
+    
+    To test
+    -------
+    [1] With a suitably large database, set up an item that
+        is on the holds shelf but has passed its shelf-expiration
+        time, then check it in using the "Clear Holds Shelf" modifier.
+    [2] The checkin may fail with a "network failure" message due
+        the query on the alhr timing out.
+    [3] Apply the patch and repeat step 1. This time, the checkin
+        should succeed.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Jeanette Lundgren <jlundgren@cwmars.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	1	Open-ILS/examples/fm_IDL.xml
+2	0	Open-ILS/src/sql/Pg/090.schema.action.sql
+8	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.indexes_for_alhr_queries.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.indexes_for_alhr_queries.sql
+
+commit 03c12181bbe3931f12c329eb35b0de72193f0562
+Author: Codey Kolasinski <ckolasinski@cwmars.org>
+Date:   Mon May 16 09:28:09 2016 -0400
+
+    Adds two missing link fields (patron profile and patron home library) to
+    the fm_idl.xml for the Combined Active and Aged Circulations (combcirc)
+    reporter source. The fix was originally posted in a comment to the
+    Launchpad bug by Codey Kolasinski.
+    
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Jeanette Lundgren <jlundgren@cwmars.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+2	0	Open-ILS/examples/fm_IDL.xml
+
+commit bc5f5135d0314c8a015c6b453c66e3f3da09fd1a
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Mon Apr 4 17:31:58 2016 -0400
+
+    LP#1566016: remove SSN as a stock ident type
+    
+    This patch removes the SSN (Social Security Number) as a stock
+    patron identification type, as it is no longer recommended
+    practice for libraries to store SSNs.
+    
+    To test:
+    
+    [1] Verify that in a fresh installation of Evergreen that
+        has this patch in place, that SSN is no longer listed
+        as a patron identification type.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+0	2	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+
+commit 79c125c34b6591684a4c78eec4c27e011d8dc4bf
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Mon May 23 12:29:04 2016 -0400
+
+    LP#1373578: fix translatability of hold placement errors
+    
+    This patch fixes a circumstance where ->maketext() could be
+    passed an empty string, causing it to emit the PO file header text
+    rather than a desired string.
+    
+    To test
+    -------
+    [1] Configure Evergreen to use a TPAC localization (e.g.,
+        the Czech translation).
+    [2] Enable the "Has Local Copy Alert" library setting.
+    [3] In the OPAC, change locale and attempt to place a
+        hold that would trigger the alert saying that there's
+        already a local copy available.
+    [4] Note that the alert reads as "Project-Id-Version: evergreen
+        Report-Msgid-Bugs-To: ..."
+    [5] Apply the patch.
+    [6] Try step 3; this time the alert will be translated correctly,
+        e.g., "Ve vaší domovské knihovně je již dostupný exemplář."
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+1	1	Open-ILS/src/templates/opac/parts/place_hold_result.tt2
+
+commit 1f226dc715dd28b24643a351dd087c6fe2ac6783
+Author: Jason Stephenson <jstephenson@mvlcstaff.org>
+Date:   Thu May 26 15:23:03 2016 -0400
+
+    LP 1548993: Remember the Show More/Fewer Details button selection.
+    
+    The state of the Show More/Fewer Details button selection was
+    previously not remembered across searches or across changes to
+    advanced search.  This commit attempts to remedy that.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlcstaff.org>
+    Signed-off-by: Jeanette Lundgren <jlundgren@cwmars.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+2	0	Open-ILS/src/templates/opac/parts/advanced/expert.tt2
+2	0	Open-ILS/src/templates/opac/parts/advanced/numeric.tt2
+2	0	Open-ILS/src/templates/opac/parts/advanced/search.tt2
+1	1	Open-ILS/src/templates/opac/results.tt2
+
+commit f8180327b6b51d93320377528553a4563c0481ec
+Author: Jason Stephenson <jstephenson@mvlcstaff.org>
+Date:   Thu May 19 15:53:48 2016 -0400
+
+    LP 1548993: Restore Show More/Show Fewer Details button functionality.
+    
+    When using a show_more_details.default setting of true in config.tt2,
+    the Show More/Show Fewer Details button functionality is broken.  The
+    detail record view is always shown, regardless of the button's state.
+    This patch attempts to repair the behavior so that the user can toggle
+    the detail record view even though the default is set to true.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlcstaff.org>
+    Signed-off-by: Jeanette Lundgren <jlundgren@cwmars.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+13	0	Open-ILS/src/templates/opac/parts/header.tt2
+3	10	Open-ILS/src/templates/opac/parts/result/table.tt2
+1	3	Open-ILS/src/templates/opac/parts/searchbar.tt2
+2	8	Open-ILS/src/templates/opac/results.tt2
