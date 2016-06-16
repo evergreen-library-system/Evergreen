@@ -92,13 +92,27 @@ sub patron_sip_test {
 sub patron_sip_too_many_overdue_test {
     my $patron_id = shift;
     my $patron = OpenILS::SIP::Patron->new(usr => $patron_id, authtoken => $script->authtoken);
-    return $patron->too_many_overdue;
+    my $rv;
+    eval { $rv = $patron->too_many_overdue };
+    if ($@) {
+        diag('$patron->too_many_overdue crashed: ' . $@);
+        return;
+    } else {
+        return $rv;
+    }
 }
 
 sub patron_sip_excessive_fines_test {
     my $patron_id = shift;
     my $patron = OpenILS::SIP::Patron->new(usr => $patron_id, authtoken => $script->authtoken);
-    return $patron->excessive_fines;
+    my $rv;
+    eval { $rv = $patron->excessive_fines };
+    if ($@) {
+        diag('$patron->excessive_fines crashed: ' . $@);
+        return;
+    } else {
+        return $rv;
+    }
 }
 
 # In concerto, we need to register a workstation.
