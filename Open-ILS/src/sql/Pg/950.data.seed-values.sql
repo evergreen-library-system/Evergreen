@@ -8894,6 +8894,7 @@ $$
 [%- user = target.0.usr -%]
 To: [%- params.recipient_email || user.email %]
 From: [%- params.sender_email || default_sender %]
+Date: [%- date.format(date.now, '%a, %d %b %Y %T -0000', gmt => 1) %]
 Subject: Overdue Notification
 Auto-Submitted: auto-generated
 
@@ -8939,6 +8940,7 @@ $$
 [%- user = target.0.usr -%]
 To: [%- params.recipient_email || user.email %]
 From: [%- params.sender_email || default_sender %]
+Date: [%- date.format(date.now, '%a, %d %b %Y %T -0000', gmt => 1) %]
 Subject: Overdue Items Marked Lost
 Auto-Submitted: auto-generated
 
@@ -9124,6 +9126,7 @@ $$
 [%- user = target.0.usr -%]
 To: [%- params.recipient_email || user.email %]
 From: [%- params.sender_email || default_sender %]
+Date: [%- date.format(date.now, '%a, %d %b %Y %T -0000', gmt => 1) %]
 Subject: Hold Available Notification
 Auto-Submitted: auto-generated
 
@@ -9190,6 +9193,7 @@ $$
 [%- user = target.0.usr -%]
 To: [%- params.recipient_email || user.email %]
 From: [%- params.sender_email || default_sender %]
+Date: [%- date.format(date.now, '%a, %d %b %Y %T -0000', gmt => 1) %]
 Subject: Hold Available Notification
 Auto-Submitted: auto-generated
 
@@ -9268,6 +9272,7 @@ $$
 [%- user = target.0.usr -%]
 To: [%- params.recipient_email || user.email %]
 From: [%- params.sender_email || default_sender %]
+Date: [%- date.format(date.now, '%a, %d %b %Y %T -0000', gmt => 1) %]
 Subject: Long Wait Hold Notification
 Auto-Submitted: auto-generated
 
@@ -9407,6 +9412,7 @@ $$
 
 To: [%- params.recipient_email || user.email %]
 From: [%- params.sender_email || default_sender %]
+Date: [%- date.format(date.now, '%a, %d %b %Y %T -0000', gmt => 1) %]
 Subject: Acquisition Request Notification
 Auto-Submitted: auto-generated
 
@@ -9442,6 +9448,7 @@ $$
 
 To: [%- params.recipient_email || user.email %]
 From: [%- params.sender_email || default_sender %]
+Date: [%- date.format(date.now, '%a, %d %b %Y %T -0000', gmt => 1) %]
 Subject: Acquisition Request Notification
 Auto-Submitted: auto-generated
 
@@ -9477,6 +9484,7 @@ $$
 
 To: [%- params.recipient_email || user.email %]
 From: [%- params.sender_email || default_sender %]
+Date: [%- date.format(date.now, '%a, %d %b %Y %T -0000', gmt => 1) %]
 Subject: Acquisition Request Notification
 Auto-Submitted: auto-generated
 
@@ -9510,6 +9518,7 @@ $$
 
 To: [%- params.recipient_email || user.email %]
 From: [%- params.sender_email || default_sender %]
+Date: [%- date.format(date.now, '%a, %d %b %Y %T -0000', gmt => 1) %]
 Subject: Acquisition Request Notification
 Auto-Submitted: auto-generated
 
@@ -9543,6 +9552,7 @@ $$
 
 To: [%- params.recipient_email || user.email %]
 From: [%- params.sender_email || default_sender %]
+Date: [%- date.format(date.now, '%a, %d %b %Y %T -0000', gmt => 1) %]
 Subject: Acquisition Request Notification
 Auto-Submitted: auto-generated
 
@@ -9588,6 +9598,7 @@ $$
 [%- user = target.usr -%]
 To: [%- params.recipient_email || user.email %]
 From: [%- params.sender_email || user.home_ou.email || default_sender %]
+Date: [%- date.format(date.now, '%a, %d %b %Y %T -0000', gmt => 1) %]
 Subject: [% user.home_ou.name %]: library account password reset request
 Auto-Submitted: auto-generated
 
@@ -10101,6 +10112,7 @@ $$
 [%- user = target.0.usr -%]
 To: [%- params.recipient_email || user.email %]
 From: [%- params.sender_email || default_sender %]
+Date: [%- date.format(date.now, '%a, %d %b %Y %T -0000', gmt => 1) %]
 Subject: Courtesy Notice
 Auto-Submitted: auto-generated
 
@@ -10935,6 +10947,7 @@ $$
 [%- SET user = target.0.usr -%]
 To: [%- params.recipient_email || user.email %]
 From: [%- params.sender_email || default_sender %]
+Date: [%- date.format(date.now, '%a, %d %b %Y %T -0000', gmt => 1) %]
 Subject: Circulation History
 Auto-Submitted: auto-generated
 
@@ -11002,6 +11015,7 @@ $$
 [%- SET user = target.0.usr -%]
 To: [%- params.recipient_email || user.email %]
 From: [%- params.sender_email || default_sender %]
+Date: [%- date.format(date.now, '%a, %d %b %Y %T -0000', gmt => 1) %]
 Subject: Hold Request History
 Auto-Submitted: auto-generated
 
@@ -11112,6 +11126,7 @@ $$
 [%- SET user = target.0.xact.usr -%]
 To: [%- params.recipient_email || user.email %]
 From: [%- params.sender_email || default_sender %]
+Date: [%- date.format(date.now, '%a, %d %b %Y %T -0000', gmt => 1) %]
 Subject: Payment Receipt
 Auto-Submitted: auto-generated
 
@@ -11337,9 +11352,11 @@ INSERT INTO action_trigger.event_definition (
         NULL,
         '00:00:00',
 $$
+[%- USE date -%]
 [%- SET user = target.0.owner -%]
 To: [%- params.recipient_email || user.email %]
 From: [%- params.sender_email || default_sender %]
+Date: [%- date.format(date.now, '%a, %d %b %Y %T -0000', gmt => 1) %]
 Subject: Bibliographic Records
 Auto-Submitted: auto-generated
 
@@ -12133,6 +12150,7 @@ $$
 [%- user = target.0.usr -%]
 To: [%- params.recipient_email || user.email %]
 From: [%- params.sender_email || default_sender %]
+Date: [%- date.format(date.now, '%a, %d %b %Y %T -0000', gmt => 1) %]
 Subject: Item Recall Notification
 Auto-Submitted: auto-generated 
 
@@ -12204,6 +12222,7 @@ $$
 [%- user = target.0.usr -%]
 To: [%- params.recipient_email || user.email %]
 From: [%- params.sender_email || default_sender %]
+Date: [%- date.format(date.now, '%a, %d %b %Y %T -0000', gmt => 1) %]
 Subject: Hold Request Cancelled
 Auto-Submitted: auto-generated
 
@@ -12456,6 +12475,7 @@ $$
 [%- SET user = target.0.queue.owner -%]
 To: [%- params.recipient_email || user.email || 'root@localhost' %]
 From: [%- params.sender_email || default_sender %]
+Date: [%- date.format(date.now, '%a, %d %b %Y %T -0000', gmt => 1) %]
 Subject: Bibs from Import Queue
 Auto-Submitted: auto-generated
 
@@ -12599,6 +12619,7 @@ $$
 [%- SET user = target.0.queue.owner -%]
 To: [%- params.recipient_email || user.email || 'root@localhost' %]
 From: [%- params.sender_email || default_sender %]
+Date: [%- date.format(date.now, '%a, %d %b %Y %T -0000', gmt => 1) %]
 Subject: Authorities from Import Queue
 Auto-Submitted: auto-generated
 
@@ -12756,6 +12777,7 @@ $$
 [%- SET user = target.0.record.queue.owner -%]
 To: [%- params.recipient_email || user.email || 'root@localhost' %]
 From: [%- params.sender_email || default_sender %]
+Date: [%- date.format(date.now, '%a, %d %b %Y %T -0000', gmt => 1) %]
 Subject: Import Items from Import Queue
 Auto-Submitted: auto-generated
 
@@ -14377,6 +14399,7 @@ INSERT INTO action_trigger.event_definition (
     '[%- USE date -%]
 [%- user = target.0.usr -%]
 From: [%- params.sender_email || default_sender %]
+Date: [%- date.format(date.now, ''%a, %d %b %Y %T -0000'', gmt => 1) %]
 To: [%- params.recipient_email || helpers.get_sms_gateway_email(target.0.sms_carrier,target.0.sms_notify) %]
 Subject: [% target.size %] hold(s) ready
 Auto-Submitted: auto-generated
@@ -14445,6 +14468,7 @@ INSERT INTO action_trigger.event_definition (
     '[%- USE date -%]
 From: [%- params.sender_email || default_sender %]
 To: [%- params.recipient_email || helpers.get_sms_gateway_email(user_data.sms_carrier,user_data.sms_notify) %]
+Date: [%- date.format(date.now, ''%a, %d %b %Y %T -0000'', gmt => 1) %]
 Subject: Call Number
 Auto-Submitted: auto-generated
 
@@ -15652,6 +15676,7 @@ $$
 [%- user = target.0.usr -%]
 To: [%- params.recipient_email || user.email %]
 From: [%- params.sender_email || default_sender %]
+Date: [%- date.format(date.now, '%a, %d %b %Y %T -0000', gmt => 1) %]
 Subject: Overdue Items Marked Long Overdue
 Auto-Submitted: auto-generated
 
@@ -15791,6 +15816,7 @@ $$
 [%- lib = target.home_ou -%]
 To: [%- params.recipient_email || user.email %]
 From: [%- helpers.get_org_setting(target.home_ou.id, 'org.bounced_emails') || lib.email || params.sender_email || default_sender %]
+Date: [%- date.format(date.now, '%a, %d %b %Y %T -0000', gmt => 1) %]
 Reply-To: [%- helpers.get_org_setting(target.home_ou.id, 'org.bounced_emails') || lib.email || params.sender_email || default_sender %]
 Subject: Courtesy Notice - Library Account Expiration in 30 days
 Auto-Submitted: auto-generated
@@ -15840,6 +15866,7 @@ $$
 [%- lib = target.home_ou -%]
 To: [%- params.recipient_email || user.email %]
 From: [%- helpers.get_org_setting(target.home_ou.id, 'org.bounced_emails') || lib.email || params.sender_email || default_sender %]
+Date: [%- date.format(date.now, '%a, %d %b %Y %T -0000', gmt => 1) %]
 Reply-To: [%- helpers.get_org_setting(target.home_ou.id, 'org.bounced_emails') || lib.email || params.sender_email || default_sender %]
 Subject: New Library Account Sign-up - Welcome!
 Auto-Submitted: auto-generated

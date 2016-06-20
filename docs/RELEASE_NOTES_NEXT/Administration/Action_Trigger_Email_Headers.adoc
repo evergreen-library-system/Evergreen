@@ -1,0 +1,16 @@
+Add Date Header to Action Trigger Email/SMS Templates
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The Date: header specified in RFC 2822 has been added to the seed data
+for the example Action Trigger email and SMS templates, but no attempt
+has been made to automatically modify existing templates. To add this
+header (and end any "Why are my library emails from 1969/70?" questions
+you may have heard) make sure the following lines are in all templates
+that use the SendEmail or SendSMS reactors:
+
+The first is already in most sample templates, but you may need to add
+it to the top of any custom templates:
+`[%- USE date -%]`
+
+And this line should be inserted into the header block of each template:
+`Date: [%- date.format(date.now, '%a, %d %b %Y %T -0000', gmt => 1) %]`
+
