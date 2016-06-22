@@ -170,6 +170,20 @@ INSERT INTO config.biblio_fingerprint (name, xpath, format, first_word)
         TRUE
     );
 
+INSERT INTO config.biblio_fingerprint (name, xpath, format)
+    VALUES (
+        'PartName',
+        '//mods32:mods/mods32:titleInfo/mods32:partName',
+        'mods32'
+    );
+
+INSERT INTO config.biblio_fingerprint (name, xpath, format)
+    VALUES (
+        'PartNumber',
+        '//mods32:mods/mods32:titleInfo/mods32:partNumber',
+        'mods32'
+    );
+
 CREATE TABLE config.metabib_class (
     name     TEXT    PRIMARY KEY,
     label    TEXT    NOT NULL UNIQUE,
