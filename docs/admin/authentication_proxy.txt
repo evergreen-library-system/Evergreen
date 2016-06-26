@@ -49,3 +49,7 @@ In order to activate Authentication Proxy, the Evergreen system administrator wi
 +
 . Restart Evergreen and Apache to activate configuration changes. 
    
+[TIP]
+====================================================================
+If using proxy authentication with library employees that will use the _Admin > Change Operator: New_ feature in the client software, then add "temp" as a *_login_types_*.
+====================================================================
