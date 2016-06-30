@@ -2416,6 +2416,9 @@ sub do_checkin {
                     );
             }
 
+            # Set stop_fines when claimed never checked out
+            $self->circ->stop_fines( OILS_STOP_FINES_CLAIMS_NEVERCHECKEDOUT ) if( $self->claims_never_checked_out );
+
             # handle fines for this circ, including overdue gen if needed
             $self->handle_fines;
         }
