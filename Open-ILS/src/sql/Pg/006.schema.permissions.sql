@@ -539,21 +539,10 @@ BEGIN
 			-- Use connectby() to find all dependent org units at the specified depth.
 			--
 			FOR n_curr_ou IN
-				SELECT ou::INTEGER
-				FROM connectby( 
-						'actor.org_unit',         -- table name
-						'id',                     -- key column
-						'parent_ou',              -- recursive foreign key
-						n_work_ou::TEXT,          -- id of starting point
-						(n_min_depth - n_depth)   -- max depth to search, relative
-					)                             --   to starting point
-					AS t(
-						ou text,            -- dependent org unit
-						parent_ou text,     -- (ignore)
-						level int           -- depth relative to starting point
-					)
+				SELECT id
+				FROM actor.org_unit_descendants_distance(n_work_ou)
 				WHERE
-					level = n_min_depth - n_depth
+					distance = n_min_depth - n_depth
 			LOOP
 				RETURN NEXT n_curr_ou;
 			END LOOP;
@@ -596,22 +585,10 @@ BEGIN
 	LOOP
 		--
 		-- The permission applies only at a depth greater than the work org unit.
-		-- Use connectby() to find all dependent org units at the specified depth.
 		--
 		FOR n_child_ou IN
-			SELECT ou::INTEGER
-			FROM connectby( 
-					'actor.org_unit',   -- table name
-					'id',               -- key column
-					'parent_ou',        -- recursive foreign key
-					n_head_ou::TEXT,    -- id of starting point
-					0                   -- no limit on search depth
-				)
-				AS t(
-					ou text,            -- dependent org unit
-					parent_ou text,     -- (ignore)
-					level int           -- (ignore)
-				)
+            SELECT id
+            FROM actor.org_unit_descendants(n_head_ou)
 		LOOP
 			RETURN NEXT n_child_ou;
 		END LOOP;

@@ -1,0 +1,15 @@
+Tablefunc Extension No Longer Required
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Changes in the behavior of the connectby function in PostgreSQL 9.5
+have prompted its removal from the database.  It is easier for
+Evergreen to maintain compatibility with previous versions of
+PostgreSQL without this function.
+
+By eliminating the use of the connectby function, we eliminate the
+requirement for the tablefunc database extension.  It is no longer
+installed when the database is created.  If you are upgrading and wish
+to remove it from your database, you may run the following statement
+in the database to drop it:
+
+ DROP EXTENSION tablefunc;
+
