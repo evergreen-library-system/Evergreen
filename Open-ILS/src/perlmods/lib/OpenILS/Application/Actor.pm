@@ -4715,12 +4715,13 @@ __PACKAGE__->register_method(
     method   => "mark_users_contact_invalid",
     api_name => "open-ils.actor.invalidate.email",
     signature => {
-        desc => "Given a patron, clear the email field and put the old email address into a note and/or create a standing penalty, depending on OU settings",
+        desc => "Given a patron or email address, clear the email field for one patron or all patrons with that email address and put the old email address into a note and/or create a standing penalty, depending on OU settings",
         params => [
             {desc => "Authentication token", type => "string"},
-            {desc => "Patron ID", type => "number"},
+            {desc => "Patron ID (optional if Email address specified)", type => "number"},
             {desc => "Additional note text (optional)", type => "string"},
-            {desc => "penalty org unit ID (optional)", type => "number"}
+            {desc => "penalty org unit ID (optional)", type => "number"},
+            {desc => "Email address (optional)", type => "string"}
         ],
         return => {desc => "Event describing success or failure", type => "object"}
     }
@@ -4730,12 +4731,13 @@ __PACKAGE__->register_method(
     method   => "mark_users_contact_invalid",
     api_name => "open-ils.actor.invalidate.day_phone",
     signature => {
-        desc => "Given a patron, clear the day_phone field and put the old day_phone into a note and/or create a standing penalty, depending on OU settings",
+        desc => "Given a patron or phone number, clear the day_phone field for one patron or all patrons with that day_phone number and put the old day_phone into a note and/or create a standing penalty, depending on OU settings",
         params => [
             {desc => "Authentication token", type => "string"},
-            {desc => "Patron ID", type => "number"},
+            {desc => "Patron ID (optional if Phone Number specified)", type => "number"},
             {desc => "Additional note text (optional)", type => "string"},
-            {desc => "penalty org unit ID (optional)", type => "number"}
+            {desc => "penalty org unit ID (optional)", type => "number"},
+            {desc => "Phone Number (optional)", type => "string"}
         ],
         return => {desc => "Event describing success or failure", type => "object"}
     }
@@ -4745,12 +4747,13 @@ __PACKAGE__->register_method(
     method   => "mark_users_contact_invalid",
     api_name => "open-ils.actor.invalidate.evening_phone",
     signature => {
-        desc => "Given a patron, clear the evening_phone field and put the old evening_phone into a note and/or create a standing penalty, depending on OU settings",
+        desc => "Given a patron or phone number, clear the evening_phone field for one patron or all patrons with that evening_phone number and put the old evening_phone into a note and/or create a standing penalty, depending on OU settings",
         params => [
             {desc => "Authentication token", type => "string"},
-            {desc => "Patron ID", type => "number"},
+            {desc => "Patron ID (optional if Phone Number specified)", type => "number"},
             {desc => "Additional note text (optional)", type => "string"},
-            {desc => "penalty org unit ID (optional)", type => "number"}
+            {desc => "penalty org unit ID (optional)", type => "number"},
+            {desc => "Phone Number (optional)", type => "string"}
         ],
         return => {desc => "Event describing success or failure", type => "object"}
     }
@@ -4760,20 +4763,21 @@ __PACKAGE__->register_method(
     method   => "mark_users_contact_invalid",
     api_name => "open-ils.actor.invalidate.other_phone",
     signature => {
-        desc => "Given a patron, clear the other_phone field and put the old other_phone into a note and/or create a standing penalty, depending on OU settings",
+        desc => "Given a patron or phone number, clear the other_phone field for one patron or all patrons with that other_phone number and put the old other_phone into a note and/or create a standing penalty, depending on OU settings",
         params => [
             {desc => "Authentication token", type => "string"},
-            {desc => "Patron ID", type => "number"},
+            {desc => "Patron ID (optional if Phone Number specified)", type => "number"},
             {desc => "Additional note text (optional)", type => "string"},
             {desc => "penalty org unit ID (optional, default to top of org tree)",
-                type => "number"}
+                type => "number"},
+            {desc => "Phone Number (optional)", type => "string"}
         ],
         return => {desc => "Event describing success or failure", type => "object"}
     }
 );
 
 sub mark_users_contact_invalid {
-    my ($self, $conn, $auth, $patron_id, $addl_note, $penalty_ou) = @_;
+    my ($self, $conn, $auth, $patron_id, $addl_note, $penalty_ou, $contact) = @_;
 
     # This method invalidates an email address or a phone_number which
     # removes the bad email address or phone number, copying its contents
@@ -4786,9 +4790,20 @@ sub mark_users_contact_invalid {
 
     my $e = new_editor(authtoken => $auth, xact => 1);
     return $e->die_event unless $e->checkauth;
-
+    
+    my $howfind = {};
+    if ($patron_id){
+        $howfind = {usr => $patron_id};
+    }
+    elsif ($contact){
+        $howfind = {$contact_type => $contact};
+    }
+    else{ #Error out if no patron id set or no contact is set.
+        return $e->die_event;
+    }
+ 
     return OpenILS::Utils::BadContact->mark_users_contact_invalid(
-        $e, $contact_type, {usr => $patron_id},
+        $e, $contact_type, $howfind,
         $addl_note, $penalty_ou, $e->requestor->id
     );
 }
