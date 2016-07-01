@@ -14415,6 +14415,42 @@ INSERT INTO config.sms_carrier VALUES
         ),
         '$number@myhelio.com',
         TRUE
+    ),
+
+    -- Republic Wireless and Google Fi
+    (
+        66,
+        oils_i18n_gettext(
+            66,
+            'USA',
+            'csc',
+            'region'
+        ),
+        oils_i18n_gettext(
+            66,
+            'Republic Wireless (must enable on device)',
+            'csc',
+            'name'
+        ),
+        '$number@text.republicwireless.com',
+        TRUE
+    ),
+    (
+        67,
+        oils_i18n_gettext(
+            67,
+            'USA',
+            'csc',
+            'region'
+        ),
+        oils_i18n_gettext(
+            67,
+            'Google Fi',
+            'csc',
+            'name'
+        ),
+        '$number@msg.fi.google.com',
+        TRUE
     )
 ;
 
