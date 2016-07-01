@@ -142,8 +142,11 @@ patron.display.prototype = {
                                                 return;
                                             break;
                                         }
+                                        obj.refresh_all();
                                     }
-                                    obj.refresh_all();
+                                    else {
+                                        alert( document.getElementById('patronStrings').getString('staff.patron.display.cmd_patron_delete.success_message') );
+                                    }
                                 }
                             } catch(E) {
                                 obj.error.standard_unexpected_error_alert('Error in server/patron/display.js -> cmd_patron_delete: ',E);
