@@ -1,6 +1,6 @@
 BEGIN;
 
--- SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0982', :eg_version);
 
 CREATE OR REPLACE FUNCTION permission.usr_has_perm_at_nd(
 	user_id    IN INTEGER,
