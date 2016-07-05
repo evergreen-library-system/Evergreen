@@ -27,7 +27,7 @@ install_libdbi:
 	cd $(LIBDBI_DRIVERS) && ./configure  \
 		--disable-docs --with-pgsql --enable-libdbi && make all install  
 
-# NOTE: Deprecate me with wheezy / precise
+# NOTE: Deprecate me with wheezy
 install_nodejs_from_source:
 	git clone https://github.com/joyent/node.git
 	cd node; \

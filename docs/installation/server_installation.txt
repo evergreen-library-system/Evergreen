@@ -58,7 +58,7 @@ Installing prerequisites
     is 9.1.
   * **Linux**: Evergreen 2.8 has been tested on Debian Jessie (8.0), 
     Debian Wheezy (7.0), Ubuntu Xenial Xerus (16.04), 
-    Ubuntu Trusty Tahr (14.04), Ubuntu Precise Pangolin (12.04), and Fedora. 
+    Ubuntu Trusty Tahr (14.04), and Fedora. 
     If you are running an older version of these distributions, you may want 
     to upgrade before upgrading Evergreen. For instructions on upgrading these
     distributions, visit the Debian, Ubuntu or Fedora websites.
@@ -73,7 +73,7 @@ before you can successfully configure, compile, and install Evergreen.
 2. On some distributions, it is necessary to install PostgreSQL 9.1+ from external
    repositories.
 +
-  * Debian (Wheezy and Jessie) and Ubuntu (Precise, Trusty, and Xenial) comes with
+  * Debian (Wheezy and Jessie) and Ubuntu (Trusty and Xenial) comes with
     PostgreSQL 9.1+, so no additional steps are required.
   * Fedora 19 and 20 come with PostgreSQL 9.2+, so no additional steps are required.
 +
@@ -82,7 +82,7 @@ before you can successfully configure, compile, and install Evergreen.
 4. Issue the following commands as the *root* Linux account to install
    prerequisites using the `Makefile.install` prerequisite installer,
    substituting `debian-jessie`, `debian-wheezy`, `fedora`, 
-   `ubuntu-xenial`, `ubuntu-trusty`, or `ubuntu-precise` for <osname> below:
+   `ubuntu-xenial`, or `ubuntu-trusty` for <osname> below:
 +
 [source, bash]
 ------------------------------------------------------------------------------
@@ -93,7 +93,7 @@ make -f Open-ILS/src/extras/Makefile.install <osname>
    issuing the following commands as the *root* Linux account:
 +
 [NOTE]
-You should skip this step if installing on Ubuntu Precise, Trusty, Xenial or Debian Jessie. The Ubuntu
+You should skip this step if installing on Ubuntu Trusty, Ubuntu Xenial or Debian Jessie. The Ubuntu
 and Debian Jessie targets use libdbd-pgsql from packages.
 +
 .Debian Wheezy
@@ -298,7 +298,7 @@ versions 2.4 or greater) to configure your Web server for the Evergreen
 catalog, staff client, Web services, and administration interfaces. Issue the
 following commands as the *root* Linux account:
 +
-.Debian Wheezy and Ubuntu Precise
+.Debian Wheezy
 [source,bash]
 ------------------------------------------------------------------------------
 cp Open-ILS/examples/apache/eg.conf       /etc/apache2/sites-available/
@@ -365,7 +365,7 @@ place.
        a request timing out unexpectedly, but increase the risk of using up
        all available Apache child processes.
     b. 'Optional': Change `MaxKeepAliveRequests` to `100`
-    c. (Debian Wheezy, Ubuntu Precise, and Fedora) Update the prefork configuration 
+    c. (Debian Wheezy and Fedora) Update the prefork configuration 
        section to suit your environment. The following settings apply to a busy 
        system:
 +
@@ -392,7 +392,7 @@ a2enmod mpm_prefork
 6. (Fedora): As the *root* Linux account, edit the `/etc/httpd/eg_vhost.conf`
    file to change references from the non-existent `/etc/apache2/` directory
    to `/etc/httpd/`.
-7. (Debian Wheezy and Ubuntu Precise): As the *root* Linux account, enable the Evergreen site:
+7. (Debian Wheezy): As the *root* Linux account, enable the Evergreen site:
 +
 [source,bash]
 ------------------------------------------------------------------------------
@@ -472,7 +472,6 @@ command below based on your operating system.
 ------------------------------------------------------------------------------
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-jessie
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-wheezy
-make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-precise
 make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-trusty
 make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-xenial
 make -f Open-ILS/src/extras/Makefile.install postgres-server-fedora
@@ -491,12 +490,6 @@ systemctl start postgresql
 
 For a standalone PostgreSQL server, install the following Perl modules for your
 distribution as the *root* Linux account:
-
-.(Ubuntu Precise)
-[source,bash]
----------------------------------------------------------------------------------
-cpan Rose::URI
----------------------------------------------------------------------------------
 
 .(Debian Wheezy, Ubuntu Trusty, and Ubuntu Xenial) 
 No extra modules required for these distributions.
