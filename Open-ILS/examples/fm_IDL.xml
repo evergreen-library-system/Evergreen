@@ -4219,6 +4219,26 @@ SELECT  usr,
 			</actions>
 		</permacrud>
 	</class>
+	<class id="aacct" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action::all_circulation_combined_types" oils_persist:tablename="action.all_circulation_combined_types" reporter:core="true" reporter:label="All Circulation Combined Types" oils_persist:readonly="true">
+		<fields>
+			<field reporter:label="Circulating Library" name="circ_lib" reporter:datatype="org_unit"/>
+			<field reporter:label="Circulating Staff" name="circ_staff" reporter:datatype="link"/>
+			<field reporter:label="Circ ID" name="id" reporter:datatype="text" />
+			<field reporter:label="Checkout Date/Time" name="xact_start" reporter:datatype="timestamp" />
+			<field reporter:label="Create Date/Time" name="create_time" reporter:datatype="timestamp" />
+			<field reporter:label="Circulation Type" name="circ_type" reporter:datatype="text"/>
+			<field reporter:label="Item Type" name="item_type" reporter:datatype="text"/>
+		</fields>
+		<links>
+			<link field="circ_staff" reltype="has_a" key="id" map="" class="au"/>
+			<link field="circ_lib" reltype="has_a" key="id" map="" class="aou"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<retrieve permission="VIEW_CIRCULATIONS" context_field="circ_lib" />
+			</actions>
+		</permacrud>
+	</class>
 	<class id="combcirc" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action::all_circulation" oils_persist:tablename="action.all_circulation" reporter:core="true" reporter:label="Combined Aged and Active Circulations" oils_persist:readonly="true">
 		<fields oils_persist:primary="id" oils_persist:sequence="money.billable_xact_id_seq">
 			<field reporter:label="Check In Library" name="checkin_lib" reporter:datatype="org_unit"/>

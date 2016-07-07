@@ -1,0 +1,27 @@
+\set ECHO
+\set QUIET 1
+-- Turn off echo and keep things quiet.
+
+-- Format the output for nice TAP.
+\pset format unaligned
+\pset tuples_only true
+\pset pager
+
+-- Revert all changes on failure.
+\set ON_ERROR_ROLLBACK 1
+\set ON_ERROR_STOP true
+\set QUIET 1
+
+-- Load the TAP functions.
+BEGIN;
+
+-- Plan the tests.
+SELECT plan(1);
+
+-- Run the tests.
+-- Check to make sure that the action.all_circulation_combined_types view exists
+SELECT has_view( 'action', 'all_circulation_combined_types', 'VIEW action.all_circulation_combined_types EXISTS' );
+
+-- Finish the tests and clean up.
+SELECT * FROM finish();
+ROLLBACK;
