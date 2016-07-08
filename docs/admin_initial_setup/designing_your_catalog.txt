@@ -189,18 +189,18 @@ _opac/parts/header.tt2_ file.
 </div>
 ----
 
-For the most part, the page looks like regular HTML, but note the _[%_(" ")%]_
-that surrounds the text of each link. The _[% ... %]_ signifies a TT block, 
-which can contain one or more TT processing instructions. l(" ... "); is a
+For the most part, the page looks like regular HTML, but note the `[%_(" ")%]`
+that surrounds the text of each link. The `[% ... %]` signifies a TT block,
+which can contain one or more TT processing instructions. `l(" ... ");` is a
 function that marks text for localization (translation); a separate process can
 subsequently extract localized text as GNU gettext-formatted PO (Portable
 Object) files.
 
 As Evergreen supports multiple languages, any customization to Evergreen's
 default text must use the localization function. Also, note that the
-localization function supports placeholders such as [_1], [_2] in the text;
+localization function supports placeholders such as `[_1]`, `[_2]` in the text;
 these are replaced by the contents of variables passed as extra arguments to the
-l() function.
+`l()` function.
 
 Once the link and link text has been edited to your satisfaction, load the page
 in a Web browser and see the live changes immediately.
