@@ -11,6 +11,8 @@
   angular.module('egCoreMod').run(['egStrings', function(s) {
     s.ORG_UPDATE_SUCCESS = "[% l('Org Unit Updated') %]";
     s.ORG_UPDATE_FAILURE = "[% l('Org Unit Not Updated') %]";
+    s.ORG_DELETE_SUCCESS = "[% l('Org Unit Deleted') %]";
+    s.ORG_DELETE_FAILURE = "[% l('Org Unit Not Deleted') %]";
   }])
 </script>
 <link rel="stylesheet" href="[% ctx.base_path %]/staff/css/admin.css" />

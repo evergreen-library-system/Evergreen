@@ -34,13 +34,33 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-2">
             <button class="form-control" ng-click="reset()">[% l('Reset Form') %]</button>
-            <button class="form-control" ng-click="update()" ng-disabled="orgForm.$invalid">[% l('Update Org') %]</button> [% l('NOTE: A server-side "autogen" process is needed to complete updates to the Org Hierarchy.') %]
         </div>
-        <div class="col-md-7">
+        <div class="col-md-9">
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-2">
+            <button class="form-control" ng-click="update()" ng-disabled="orgForm.$invalid">[% l('Update Org') %]</button>
+        </div>
+        <div class="col-md-9">
+            [% l('NOTE: A server-side "autogen" process is needed to complete updates, additions, and deletions to the Org Hierarchy.') %]
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <button class="form-control" ng-click="delete()" ng-disabled="!i_am_sure">[% l('Delete Org') %]</button>
+        </div>
+        <div class="col-md-9">
+            <span>
+                [% l('NOTE: In practice, once an org unit has been used or assigned to items, patrons, etc. deletion becomes non-trivial and will require DBA intervention.') %]
+                [% l('Are you sure?') %]
+            </span>
+            <input type="checkbox" ng-model="i_am_sure" ng-disabled="!org"/>
+        </div>
+    </div>
+
 </form>
 
 </div>

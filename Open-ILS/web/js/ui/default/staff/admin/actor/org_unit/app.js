@@ -112,8 +112,22 @@ function($scope , $q , $routeParams , $window , egCore , egOrg , ngToast ) {
         );
     };
 
-
-
+    $scope.delete = function() {
+        var new_org = egOrg.get($scope.org.id);
+        egCore.pcrud.remove(new_org).then(
+            function(res) { // success
+                window.sessionStorage.removeItem('eg.env.aou.tree');
+                egCore.env.load();
+                init(0);
+                ngToast.create(egCore.strings.ORG_DELETE_SUCCESS);
+            },
+            function(res) { // failure
+                ngToast.create(egCore.strings.ORG_DELETE_FAILURE);
+            },
+            function(res) { // progress
+            }
+        );
+    };
 
 }])
 
