@@ -35,6 +35,18 @@
     </div>
     <div class="row">
         <div class="col-md-2">
+            <span>[% l('OU Type') %]</span>
+        </div>
+        <div class="col-md-9">
+            <select class="form-control" ng-model="selectedOUType">
+                <option ng-repeat="t in outypes" value="{{t}}" ng-selected="t == selectedOUType">
+                {{getOUTypeLabel(t)}}
+                </option>
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
             <button class="form-control" ng-click="reset()">[% l('Reset Form') %]</button>
         </div>
         <div class="col-md-9">
