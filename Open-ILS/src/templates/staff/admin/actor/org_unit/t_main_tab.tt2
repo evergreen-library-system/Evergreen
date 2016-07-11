@@ -50,7 +50,7 @@
     </div>
     <div class="row">
         <div class="col-md-2">
-            <button class="form-control" ng-click="delete()" ng-disabled="!i_am_sure">[% l('Delete Org') %]</button>
+            <button class="form-control" ng-click="remove()" ng-disabled="!i_am_sure">[% l('Delete Org') %]</button>
         </div>
         <div class="col-md-9">
             <span>

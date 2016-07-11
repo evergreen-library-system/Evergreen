@@ -112,7 +112,7 @@ function($scope , $q , $routeParams , $window , egCore , egOrg , ngToast ) {
         );
     };
 
-    $scope.delete = function() {
+    $scope.remove = function() {
         var new_org = egOrg.get($scope.org.id);
         egCore.pcrud.remove(new_org).then(
             function(res) { // success
