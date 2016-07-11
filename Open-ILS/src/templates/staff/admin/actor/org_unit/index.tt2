@@ -7,6 +7,12 @@
 [% BLOCK APP_JS %]
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/services/ui.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/admin/actor/org_unit/app.js"></script>
+<script>
+  angular.module('egCoreMod').run(['egStrings', function(s) {
+    s.ORG_UPDATE_SUCCESS = "[% l('Org Unit Updated') %]";
+    s.ORG_UPDATE_FAILURE = "[% l('Org Unit Not Updated') %]";
+  }])
+</script>
 <link rel="stylesheet" href="[% ctx.base_path %]/staff/css/admin.css" />
 [% END %]
 

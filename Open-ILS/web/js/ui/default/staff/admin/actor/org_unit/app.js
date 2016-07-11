@@ -1,5 +1,12 @@
 angular.module('egOrgUnitApp',
-    ['ngRoute', 'ui.bootstrap', 'treeControl', 'egCoreMod', 'egUiMod'])
+    ['ngRoute', 'ui.bootstrap', 'treeControl', 'egCoreMod', 'egUiMod', 'ngToast'])
+
+.config(['ngToastProvider', function(ngToastProvider) {
+  ngToastProvider.configure({
+    verticalPosition: 'bottom',
+    animation: 'fade'
+  });
+}])
 
 .config(function($routeProvider, $locationProvider, $compileProvider) {
     $locationProvider.html5Mode(true);
@@ -24,8 +31,8 @@ angular.module('egOrgUnitApp',
 })
 
 .controller('OrgUnitCtrl',
-       ['$scope','$q','$routeParams','$window','egCore','egOrg',
-function($scope , $q , $routeParams , $window , egCore , egOrg  ) {
+       ['$scope','$q','$routeParams','$window','egCore','egOrg','ngToast',
+function($scope , $q , $routeParams , $window , egCore , egOrg , ngToast ) {
 
     $scope.reset = function() {
         $scope.org = angular.copy($scope.selectedNode);
@@ -92,19 +99,15 @@ function($scope , $q , $routeParams , $window , egCore , egOrg  ) {
         new_org.phone( $scope.org.phone );
         egCore.pcrud.update(new_org).then(
             function(res) { // success
-                console.log('handler1');
-                window.handler1 = res;
                 window.sessionStorage.removeItem('eg.env.aou.tree');
                 egCore.env.load();
                 init(0);
+                ngToast.create(egCore.strings.ORG_UPDATE_SUCCESS);
             },
-            function(res) { // success
-                console.log('handler2');
-                window.handler2 = res;
+            function(res) { // failure
+                ngToast.create(egCore.strings.ORG_UPDATE_FAILURE);
             },
-            function(res) { // error
-                console.log('handler3');
-                window.handler3 = res;
+            function(res) { // progress
             }
         );
     };

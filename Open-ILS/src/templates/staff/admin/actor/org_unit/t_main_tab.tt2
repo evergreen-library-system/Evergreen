@@ -36,7 +36,7 @@
     <div class="row">
         <div class="col-md-3">
             <button class="form-control" ng-click="reset()">[% l('Reset Form') %]</button>
-            <button class="form-control" ng-click="update()" ng-disabled="orgForm.$invalid">[% l('Update Org') %]</button>
+            <button class="form-control" ng-click="update()" ng-disabled="orgForm.$invalid">[% l('Update Org') %]</button> [% l('NOTE: A server-side "autogen" process is needed to complete updates to the Org Hierarchy.') %]
         </div>
         <div class="col-md-7">
         </div>
