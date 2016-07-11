@@ -31,8 +31,8 @@ angular.module('egOrgUnitApp',
 })
 
 .controller('OrgUnitCtrl',
-       ['$scope','$q','$routeParams','$window','egCore','egOrg','ngToast',
-function($scope , $q , $routeParams , $window , egCore , egOrg , ngToast ) {
+       ['$scope','$q','$routeParams','$window','egCore','egIDL','egOrg','ngToast',
+function($scope , $q , $routeParams , $window , egCore , egIDL , egOrg , ngToast ) {
 
     $scope.reset = function() {
         $scope.org = angular.copy($scope.selectedNode);
@@ -92,12 +92,15 @@ function($scope , $q , $routeParams , $window , egCore , egOrg , ngToast ) {
     // main tab behavior
 
     $scope.update = function() {
-        var new_org = egOrg.get($scope.org.id);
+        var new_org = $scope.org.id == -1 ? new egIDL.aou() : egOrg.get($scope.org.id);
+        new_org.id( $scope.org.id );
+        new_org.parent_ou( $scope.org.parent_ou );
         new_org.name( $scope.org.name );
         new_org.shortname( $scope.org.shortname );
         new_org.email( $scope.org.email );
         new_org.phone( $scope.org.phone );
-        egCore.pcrud.update(new_org).then(
+        new_org.ou_type( 2 ); // FIXME
+        egCore.pcrud[$scope.org.id == -1 ? 'create' : 'update'](new_org).then(
             function(res) { // success
                 window.sessionStorage.removeItem('eg.env.aou.tree');
                 egCore.env.load();
@@ -127,6 +130,13 @@ function($scope , $q , $routeParams , $window , egCore , egOrg , ngToast ) {
             function(res) { // progress
             }
         );
+    };
+
+    $scope.new_child = function() {
+        $scope.org.parent_ou = $scope.org.id;
+        $scope.org.id = -1;
+        $scope.org.name = '';
+        $scope.org.shortname = '';
     };
 
 }])

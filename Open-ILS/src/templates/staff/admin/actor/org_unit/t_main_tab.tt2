@@ -60,6 +60,14 @@
             <input type="checkbox" ng-model="i_am_sure" ng-disabled="!org"/>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-2">
+            <button class="form-control" ng-click="new_child()">[% l('New Child') %]</button>
+        </div>
+        <div class="col-md-9">
+                [% l('NOTE: The new org unit will not exist in the database until Update Org is applied.') %]
+        </div>
+    </div>
 
 </form>
 
