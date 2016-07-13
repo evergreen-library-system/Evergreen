@@ -354,10 +354,10 @@ be set to your consortium.
 where *Our Library's Field* is the name you'd like to be displayed next to
 your field, and *facet_group_code* is the code you've added using the staff
 client.
-
----
++
+----
  {adv_label => l("Our Library's Field"), adv_filter => "facet_group_code"},
----
+----
 
 Changing the display of facets and facet groups
 -----------------------------------------------
