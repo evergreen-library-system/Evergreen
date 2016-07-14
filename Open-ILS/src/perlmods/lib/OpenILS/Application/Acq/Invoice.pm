@@ -746,7 +746,7 @@ sub prorate_invoice {
 
     my @lid_debits;
     push(@lid_debits, 
-        @{find_entry_debits($e, $_, 'linked', 'f', entry_amount_per_item($_))}) 
+        @{find_entry_debits($e, $_, 'linked', undef, entry_amount_per_item($_))})
         for @{$invoice->entries};
 
     my $inv_items = $e->search_acq_invoice_item([
