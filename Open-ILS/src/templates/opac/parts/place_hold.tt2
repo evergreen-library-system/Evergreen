@@ -125,7 +125,7 @@
                         [% END %]
                     [% END %]
                     [% IF NOT metarecords.disabled %]
-                        [% IF CGI.param('hold_type') == 'T' AND hdata.record.metarecord %]
+                        [% IF CGI.param('hold_type') == 'T' AND hdata.record.metarecord AND !hdata.part_required %]
                         <!-- Grab the bre_id so that we can restore it if user accidentally clicks advanced options -->
                            [% bre_id = hdata.target.id %]
                             <a  id='advanced_hold_link'
