@@ -143,7 +143,7 @@ INSERT INTO config.global_flag (name, label, value, enabled) VALUES (
         'cgf',
         'label'
     ),
-    '2.0',
+    '1.1',
     TRUE
 );
 
