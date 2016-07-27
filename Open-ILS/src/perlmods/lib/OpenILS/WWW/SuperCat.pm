@@ -1933,20 +1933,53 @@ sub sru_search {
 
         $log->info("SRU search string [$cql_query] converted to [$search_string]\n");
 
+        if (!$shortname || $shortname eq '-') {
+            my $search_org = get_ou($shortname);
+            $shortname = $search_org->[0]->shortname;
+        }
+
          my $recs = $search->request(
             'open-ils.search.biblio.multiclass.query' => {offset => $offset, limit => $limit} => $search_string => 1
         )->gather(1);
 
-        my $bre = $supercat->request( 'open-ils.supercat.record.object.retrieve' => [ map { $_->[0] } @{$recs->{ids}} ] )->gather(1);
+        my $cstore = OpenSRF::AppSession->create('open-ils.cstore');
+        foreach my $rec (@{$recs->{ids}}) {
+            my $rec_id = shift @$rec;
+            my $data = $cstore->request(
+                'open-ils.cstore.json_query' => {
+                    from => [
+                        'unapi.bre', $rec_id,
+                        'marcxml', 'record',
+                        ($holdings) ? '{holdings_xml,acp}' : '{}',
+                        $shortname
+                    ]
+                }
+            )->gather(1);
+            try {
+                my $marcxml = XML::LibXML->load_xml( string => $data->{'unapi.bre'} );
 
-        foreach my $record (@$bre) {
-            my $marcxml = $record->marc;
-            # Make the beast conform to a VDX-supported format
-            # See http://vdxipedia.oclc.org/index.php/Holdings_Parsing
-            # Trying to implement LIBSOL_852_A format; so much for standards
-            if ($holdings) {
-                my $bib_holdings = $supercat->request('open-ils.supercat.record.basic_holdings.retrieve', $record->id, $shortname || '-')->gather(1);
-                my $marc = MARC::Record->new_from_xml($marcxml, 'UTF8', 'XML');
+                # process <holdings> element, if any
+                my @copies;
+                for my $node ($marcxml->getElementsByTagName('holdings')) {
+                    for my $volume ($node->getElementsByTagName('volume')) {
+                        my $cn = $volume->getAttribute('label');
+                        my $owning_lib = $volume->getAttribute('lib');
+                        for my $copy ($volume->getElementsByTagName('copy')) {
+                            push @copies, {
+                                a => $copy->getChildrenByTagName('location')->[0]->textContent,
+                                b => $owning_lib,
+                                c => $cn,
+                                d => $copy->getChildrenByTagName('circlib')->[0]->textContent,
+                                g => $copy->getAttribute('barcode'),
+                                n => $copy->getChildrenByTagName('status')->[0]->textContent
+                            };
+                        }
+                    }
+                    # remove <holdings> element
+                    $node->parentNode->removeChild($node);
+                }
+
+                my $marc = MARC::Record->new_from_xml($marcxml->toString(), 'UTF8', 'XML');
 
                 # Force record leader to 'a' as our data is always UTF8
                 # Avoids marc8_to_utf8 from being invoked with horrible results
@@ -1959,37 +1992,38 @@ sub sru_search {
                 $marc->delete_field($_) for ($marc->field('001'));
                 if (!$marc->field('001')) {
                     $marc->insert_fields_ordered(
-                        MARC::Field->new( '001', $record->id )
+                        MARC::Field->new( '001', $rec_id )
                     );
                 }
+
                 $marc->delete_field($_) for ($marc->field('852')); # remove any legacy 852s
-                foreach my $cn (keys %$bib_holdings) {
-                    foreach my $cp (@{$bib_holdings->{$cn}->{'copies'}}) {
-                        $marc->insert_fields_ordered(
-                            MARC::Field->new(
-                                '852', '4', '',
-                                a => $cp->{'location'},
-                                b => $bib_holdings->{$cn}->{'owning_lib'},
-                                c => $cn,
-                                d => $cp->{'circlib'},
-                                g => $cp->{'barcode'},
-                                n => $cp->{'status'},
-                            )
-                        );
-                    }
+                for my $copy (@copies) {
+                    $marc->insert_fields_ordered(
+                        MARC::Field->new(
+                            '852', '4', '',
+                            a => $copy->{a},
+                            b => $copy->{b},
+                            c => $copy->{c},
+                            d => $copy->{d},
+                            g => $copy->{g},
+                            n => $copy->{n}
+                        )
+                    );
                 }
 
-                $marcxml = $marc->as_xml_record();
-                $marcxml =~ s/^<\?xml version="1.0" encoding="UTF-8"\?>//o;
+                my $output = $marc->as_xml_record();
+                $output =~ s/^<\?xml version="1.0" encoding="UTF-8"\?>//o;
+                $resp->addRecord(
+                    SRU::Response::Record->new(
+                        recordSchema    => 'info:srw/schema/1/marcxml-v1.1',
+                        recordData => $output,
+                        recordPosition => ++$offset
+                    )
+                );
 
+            } catch Error with {
+                $log->error("Failed to process record for SRU search");
             }
-            $resp->addRecord(
-                SRU::Response::Record->new(
-                    recordSchema    => 'info:srw/schema/1/marcxml-v1.1',
-                    recordData => $marcxml,
-                    recordPosition => ++$offset
-                )
-            );
         }
 
         $resp->numberOfRecords($recs->{count});
