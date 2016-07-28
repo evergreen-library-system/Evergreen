@@ -2,9 +2,9 @@ angular.module('egAdminRating',
     ['ngRoute','ui.bootstrap','egCoreMod','egUiMod','egGridMod'])
 
 .controller('Badges',
-       ['$scope','$q','$timeout','$location','$window','$modal',
+       ['$scope','$q','$timeout','$location','$window','$uibModal',
         'egCore','egGridDataProvider','egConfirmDialog',
-function($scope , $q , $timeout , $location , $window , $modal ,
+function($scope , $q , $timeout , $location , $window , $uibModal ,
          egCore , egGridDataProvider , egConfirmDialog) {
 
     egCore.startup.go();
@@ -95,10 +95,10 @@ function($scope , $q , $timeout , $location , $window , $modal ,
 
     function spawn_editor(rb, action) {
         var deferred = $q.defer();
-        $modal.open({
+        $uibModal.open({
             templateUrl: './admin/local/rating/edit_badge',
             controller:
-                ['$scope', '$modalInstance', function($scope, $modalInstance) {
+                ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
                 $scope.focusMe = true;
                 $scope.record = egCore.idl.toHash(rb);
                 // non-integer numeric field require parseFloat
@@ -106,8 +106,8 @@ function($scope , $q , $timeout , $location , $window , $modal ,
                 $scope.record_label = get_record_label();
                 $scope.fields = get_field_list($scope.record);
                 get_popularity_with_required();
-                $scope.ok = function(args) { $modalInstance.close(args) }
-                $scope.cancel = function () { $modalInstance.dismiss() }
+                $scope.ok = function(args) { $uibModalInstance.close(args) }
+                $scope.cancel = function () { $uibModalInstance.dismiss() }
             }]
         }).result.then(function(args) {
             var rb = new egCore.idl.rb();
