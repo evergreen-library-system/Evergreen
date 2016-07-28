@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2016-03-14 20:44-0400\n"
-"PO-Revision-Date: 2013-11-15 19:07+0000\n"
-"Last-Translator: Gerson Vazquez <gerson.v.h@gmail.com>\n"
+"PO-Revision-Date: 2016-06-07 21:11+0000\n"
+"Last-Translator: Anahi Valdez <avaldez@emeralddata.net>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2016-03-16 05:31+0000\n"
-"X-Generator: Launchpad (build 17947)\n"
+"X-Launchpad-Export-Date: 2016-06-08 05:16+0000\n"
+"X-Generator: Launchpad (build 18097)\n"
 
 #: bib.no_marc
 msgid "No MARC Record"
@@ -43,7 +43,7 @@ msgstr "Devolviendo %1$s aciertos"
 
 #: staff.cat.bib_brief.record_id
 msgid "Database ID = %1$s"
-msgstr ""
+msgstr "Base de datos ID = %1$s"
 
 #: staff.cat.bib_brief.deleted
 msgid "(Deleted)"
@@ -65,6 +65,8 @@ msgstr "Elemento no catalogado"
 #: staff.cat.manage_multi_bib_items.tab_name
 msgid "Manage Conjoined Items for Bib with DB ID %1$s"
 msgstr ""
+"Administrar siameses Artículos para Bib con DB ID %1$s \r\n"
+" # %1$s = Bib Base de Datos de registro ID"
 
 #: staff.cat.manage_multi_bib_items.result.column.value.error
 msgid "Error"
@@ -80,11 +82,11 @@ msgstr "Falló"
 
 #: staff.cat.manage_multi_bib_items.result.column.value.item_linked_to_bib
 msgid "Item linked to bib"
-msgstr ""
+msgstr "Elemento vinculado con el bib"
 
 #: staff.cat.manage_multi_bib_items.result.column.value.item_native_to_bib
 msgid "Item native to bib"
-msgstr ""
+msgstr "Articulo nativo de bib"
 
 #: staff.cat.manage_multi_bib_items.result.column.value.peer_type_updated
 msgid "Peer Type updated"
@@ -98,11 +100,16 @@ msgstr "Cambiar tipo de Peer"
 #: staff.cat.manage_multi_bib_items.prompt.confirm.unlink_item_from_bib.singular
 msgid "Unlink selected item from Bib with DB ID %1$s"
 msgstr ""
+"Desconectar elemento seleccionado de Bib con DB ID %1$s\r\n"
+"  # %1$s = Bib Base de Datos de registro ID"
 
 #. # %1$s = Bib Record Database ID, %2$s = Number of selected items
 #: staff.cat.manage_multi_bib_items.prompt.confirm.unlink_item_from_bib.plural
 msgid "Unlink %2$s selected items from Bib with DB ID %1$s"
 msgstr ""
+"Desconectar %2$s articulos seleccionados de Bib con DB ID %1$s \r\n"
+"# %1$s = Bib Base de Datos de registros ID, %2$s = Número de articulos "
+"seleccionados"
 
 #: staff.cat.copy_browser.add_item.title
 msgid "Add Item"
@@ -192,7 +199,7 @@ msgstr "Etiquetas de lomo"
 
 #: staff.cat.copy_browser.print_spine.error
 msgid "copy browser -> Spine Labels"
-msgstr ""
+msgstr "Copiar navegador -> Etiquetas de lomo"
 
 #: staff.cat.copy_browser.add_volume.permission_error
 msgid "You do not have permission to add volumes to that library."
@@ -235,7 +242,7 @@ msgstr ""
 
 #: staff.cat.copy_browser.can_have_copies.false
 msgid "Records from %1$s cannot have copies."
-msgstr ""
+msgstr "Los registros de % 1$s no pueden tener copias"
 
 #: staff.cat.copy_browser.delete_volume.prompt
 msgid "Are you sure you would like to delete this volume?"
@@ -262,7 +269,7 @@ msgstr "Cancelar"
 #: staff.cat.copy_browser.delete_volume.override
 msgctxt "staff.cat.copy_browser.delete_volume.override"
 msgid "Override Delete Failure?"
-msgstr ""
+msgstr "Omitir Falla de Borrado?"
 
 #: staff.cat.copy_browser.delete_volume.copies_remain
 msgid ""
@@ -430,16 +437,19 @@ msgstr ""
 msgctxt "staff.cat.copy_buckets.menulist.render.choose_bucket"
 msgid "Choose a bucket..."
 msgstr ""
+"Elija un cubo...  staff.cat.copy_buckets.menulist.render.choose_bucket"
 
 #: staff.cat.copy_buckets.menulist.render.retrieve_bucket
 msgctxt "staff.cat.copy_buckets.menulist.render.retrieve_bucket"
 msgid "Retrieve shared bucket..."
 msgstr ""
+"Recuperar cubo compartida.\r\n"
+"staff.cat.copy_buckets.menulist.render.retrieve_bucket"
 
 #: staff.cat.copy_buckets.menulist.change_bucket.prompt
 msgctxt "staff.cat.copy_buckets.menulist.change_bucket.prompt"
 msgid "Enter bucket number:"
-msgstr ""
+msgstr "Ingrese el numero de tarro:"
 
 #: staff.cat.copy_buckets.menulist.change_bucket.undefined
 msgctxt "staff.cat.copy_buckets.menulist.change_bucket.undefined"
@@ -453,6 +463,7 @@ msgstr "¿Error cargando tarro. Uso un tarro con identificación válida?"
 #: staff.cat.copy_buckets.copy_buckets_batch_copy_delete.confirm
 msgid "Are you sure you want to delete all items in bucket from catalog?"
 msgstr ""
+"¿Está seguro de que desea borrar todos los articulos en el cubo del catálogo?"
 
 #: staff.cat.copy_buckets.copy_buckets_add.error
 msgctxt "staff.cat.copy_buckets.copy_buckets_add.error"
@@ -476,7 +487,7 @@ msgstr "Acción completa."
 #: staff.cat.copy_buckets.copy_buckets_delete_bucket.confirm
 msgctxt "staff.cat.copy_buckets.copy_buckets_delete_bucket.confirm"
 msgid "Delete the bucket named %1$s?"
-msgstr ""
+msgstr "Eliminar el cubo llamado %1$s ?"
 
 #: staff.cat.copy_buckets.copy_buckets_delete_bucket.complete
 msgctxt "staff.cat.copy_buckets.copy_buckets_delete_bucket.complete"
@@ -485,7 +496,7 @@ msgstr "Acción completa."
 
 #: staff.cat.copy_buckets.copy_buckets_delete_bucket.error
 msgid "Bucket deletion likely failed."
-msgstr ""
+msgstr "eliminación de cubo probable que falló."
 
 #: staff.cat.copy_buckets.copy_buckets_new_bucket.prompt
 msgctxt "staff.cat.copy_buckets.copy_buckets_new_bucket.prompt"
@@ -495,21 +506,21 @@ msgstr "¿Que nombre desea para el tarro?"
 #: staff.cat.copy_buckets.copy_buckets_new_bucket.title
 msgctxt "staff.cat.copy_buckets.copy_buckets_new_bucket.title"
 msgid "Bucket Creation"
-msgstr ""
+msgstr "Creación De Cubo"
 
 #: staff.cat.copy_buckets.copy_buckets_new_bucket.container_exists
 msgctxt "staff.cat.copy_buckets.copy_buckets_new_bucket.container_exists"
 msgid "You already have a bucket with that name."
-msgstr ""
+msgstr "Ya tiene un cubo con ese nombre."
 
 #: staff.cat.copy_buckets.copy_buckets_new_bucket.success
 msgid "Bucket \"%1$s\" created."
-msgstr ""
+msgstr "Cubo \"%1$s\" creado."
 
 #: staff.cat.copy_buckets.copy_buckets_new_bucket.error
 msgctxt "staff.cat.copy_buckets.copy_buckets_new_bucket.error"
 msgid "Bucket creation failed."
-msgstr ""
+msgstr "Creación de cubo fallida."
 
 #: staff.cat.copy_buckets.batch.error
 msgid "Batch Item Deletion"
@@ -528,6 +539,9 @@ msgid ""
 "Transfer the items in bucket \"%1$s\" from their original volumes to the "
 "volume labelled \"%2$s\" for the library \"%3$s\" on the following record?"
 msgstr ""
+"¿Transferir los artículos en el cubo \"%1$s\" de sus volúmenes originales a "
+"el volumen etiquetado \"%2$s\" para la biblioteca \"%3$s\" en el siguiente "
+"registro?"
 
 #: staff.cat.copy_buckets.copy_buckets_transfer_to_volume.error
 msgid "Items not likely transferred."
@@ -535,7 +549,7 @@ msgstr "Artículos probablemente no transferidos."
 
 #: staff.cat.copy_buckets.cmd_export_to_copy_status.error
 msgid "Copy Status from Copy Buckets"
-msgstr ""
+msgstr "Copiar Estado de Copiar Cubos"
 
 #: staff.cat.copy_buckets.prep_item_for_list.error
 msgid "List building failed."
@@ -543,12 +557,12 @@ msgstr "Construcción de la lista fallo."
 
 #: staff.cat.copy_buckets_quick.bucket_prompt
 msgid "Copy this item into which bucket?"
-msgstr ""
+msgstr "Copiar este artículo al cual cubo?"
 
 #: staff.cat.copy_buckets_quick.bucket_prompt.plural
 msgctxt "staff.cat.copy_buckets_quick.bucket_prompt.plural"
 msgid "Copy these %1$s items into which bucket?"
-msgstr ""
+msgstr "¿Copiar estos %1$s artículos dentro de cual cubo?"
 
 #: staff.cat.copy_buckets_quick.copy_buckets_new_bucket.prompt
 msgctxt "staff.cat.copy_buckets_quick.copy_buckets_new_bucket.prompt"
@@ -558,16 +572,18 @@ msgstr "¿Cual nombre desea para el tarro?"
 #: staff.cat.copy_buckets_quick.copy_buckets_new_bucket.title
 msgctxt "staff.cat.copy_buckets_quick.copy_buckets_new_bucket.title"
 msgid "Bucket Creation"
-msgstr ""
+msgstr "Creación De Cubo"
 
 #: staff.cat.copy_buckets_quick.copy_buckets_new_bucket.error
 msgctxt "staff.cat.copy_buckets_quick.copy_buckets_new_bucket.error"
 msgid "Bucket creation failed."
-msgstr ""
+msgstr "Creación de cubo fallida."
 
 #: staff.cat.copy_buckets_quick.addition.error
 msgid "Addition likely failed for bucket = %1$s and copy ID = %2$s."
 msgstr ""
+"Adición probablemente fallida para el cubo = %1$s y copia con identificación "
+"= %2$s."
 
 #: staff.cat.copy_editor.caption
 msgid "Copy Editor"
@@ -711,18 +727,24 @@ msgstr "Error importando planillas"
 msgid ""
 "Template tried to change field '%1$s', which is not allowed currently."
 msgstr ""
+"Plantilla trató de cambiar de campo '%1$s', lo que no está permitido "
+"actualmente."
 
 #: staff.cat.copy_editor.apply_owning_lib.undefined_volume.error
 msgid ""
 "Error retrieving Volume information for copy %1$s.  The owning library for "
 "this copy will not be changed."
 msgstr ""
+"Error cargando información del Volumen para copiar %1$s. La bibliotequa que "
+"posee esta copia no sera cambiada."
 
 #: staff.cat.copy_editor.apply_owning_lib.call_number.error
 msgid ""
 "Error changing owning library for copy %1$s.  The owning library for this "
 "copy will not be changed."
 msgstr ""
+"Error cargando la biblioteca dueña para copia %1$s. La biblioteca que posee "
+"esta copia no sera cambiada."
 
 #: staff.cat.copy_editor.copy_count
 msgid "1 copy"
@@ -761,7 +783,7 @@ msgstr "Error populando las categorías estadísticas para mostrarlas"
 
 #: staff.cat.copy_editor.remove_stat_cat_entry
 msgid "<Remove Stat Cat>"
-msgstr ""
+msgstr "<Remover Estadística Cat>"
 
 #: staff.cat.copy_editor.remove_age_based_hold_protection
 msgid "<Remove Protection>"
@@ -773,12 +795,12 @@ msgstr "<Remover Circular como Tipo>"
 
 #: staff.cat.copy_editor.remove_floating
 msgid "<Remove Floating>"
-msgstr ""
+msgstr "<Remover Flotante>"
 
 #: staff.cat.copy_editor.field.unset_or_null
 msgctxt "staff.cat.copy_editor.field.unset_or_null"
 msgid "<Unset>"
-msgstr ""
+msgstr "<Desmontar>"
 
 #: staff.cat.copy_editor.field.owning_library.label
 msgid "Owning Lib : Call Number"
@@ -802,7 +824,7 @@ msgstr "Fecha De Creación"
 
 #: staff.cat.copy_editor.field.active_date.label
 msgid "Active Date"
-msgstr ""
+msgstr "Fecha Activa"
 
 #: staff.cat.copy_editor.field.last_edit_date.label
 msgid "Last Edit Date"
@@ -1179,7 +1201,7 @@ msgstr "No es un subcampo controlado"
 
 #: staff.cat.marcedit.apply_full.label
 msgid "Apply Full Authority (1XX)"
-msgstr ""
+msgstr "Applicar Authoridad Completa"
 
 #: staff.cat.marcedit.apply_selected.label
 msgid "Apply Selected"
@@ -1244,7 +1266,7 @@ msgstr "Error al establecer plantilla MARC como predeterminada: %1$s"
 
 #: staff.cat.marc_new.set_default.success
 msgid "Default template set to %1$s"
-msgstr ""
+msgstr "plantilla por defecto ajustado en %1$s"
 
 #: staff.cat.opac.set_marc_edit.alert
 msgid "Record successfully saved."
@@ -1257,10 +1279,12 @@ msgstr "Registro probablemente no actualizado."
 #: staff.cat.opac.refresh.function_not_implemented.alert
 msgid "Not yet implemented.  Work around: Choose Duplicate in New Tab option"
 msgstr ""
+"Todavía no implementado. Forma de pasar alrededor: Eliga Duplicar en la "
+"opción de Ficha Nueva"
 
 #: staff.cat.opac.set_tab_name
 msgid "Record DB ID: %1$s"
-msgstr ""
+msgstr "Registro DB ID: %1$s"
 
 #: staff.cat.opac.title_for_hold_transfer.destination_needed.label
 msgid "Need to mark a record as a Title Hold Transfer Destination first."
@@ -1280,10 +1304,12 @@ msgstr "Apartados no transferidos."
 msgid ""
 "WARNING: Move selected holds from multiple bibs to single targeted bib?"
 msgstr ""
+"ADVERTENCIA : Mover seleccionado sostiene desde múltiples bibs para "
+"individuales dirigidos bib?"
 
 #: staff.cat.record_buckets.tab_name
 msgid "Record Buckets"
-msgstr ""
+msgstr "Registro De Cubos"
 
 #: staff.cat.record_buckets.save_file_as
 msgid "Save File As"
@@ -1308,22 +1334,23 @@ msgstr "Error cargando mvr para el registro con la identificación = %1$s"
 
 #: staff.cat.record_buckets.buckets.std_unexpected_error
 msgid "Could not retrieve your buckets."
-msgstr ""
+msgstr "No se pudo cargar sus cubos."
 
 #: staff.cat.record_buckets.menulist_placeholder.item1
 msgctxt "staff.cat.record_buckets.menulist_placeholder.item1"
 msgid "Choose a bucket..."
 msgstr ""
+"Elija un cubo...  staff.cat.copy_buckets.menulist.render.choose_bucket"
 
 #: staff.cat.record_buckets.menulist_placeholder.item2
 msgctxt "staff.cat.record_buckets.menulist_placeholder.item2"
 msgid "Retrieve shared bucket..."
-msgstr ""
+msgstr "Cargar tarros compartidos..."
 
 #: staff.cat.record_buckets.change_bucket.bucket_id
 msgctxt "staff.cat.record_buckets.change_bucket.bucket_id"
 msgid "Enter bucket number:"
-msgstr ""
+msgstr "Ingrese el numero de tarro:"
 
 #: staff.cat.record_buckets.change_bucket.error
 msgid "Error retrieving bucket.  Did you use a valid bucket ID?"
@@ -1337,21 +1364,21 @@ msgstr "¿Borrar el tarro llamado %1$s?"
 #: staff.cat.record_buckets.new_bucket.bucket_prompt
 msgctxt "staff.cat.record_buckets.new_bucket.bucket_prompt"
 msgid "What would you like to name the bucket?"
-msgstr ""
+msgstr "¿Que nombre desea para el cubo?"
 
 #: staff.cat.record_buckets.new_bucket.bucket_prompt_title
 msgctxt "staff.cat.record_buckets.new_bucket.bucket_prompt_title"
 msgid "Bucket Creation"
-msgstr ""
+msgstr "Creación De Cubo"
 
 #: staff.cat.record_buckets.new_bucket.same_name_alert
 msgctxt "staff.cat.record_buckets.new_bucket.same_name_alert"
 msgid "You already have a bucket with that name."
-msgstr ""
+msgstr "Ya tiene un cubo con ese nombre."
 
 #: staff.cat.record_buckets.new_bucket.bucket_created
 msgid "Bucket %1$s created."
-msgstr ""
+msgstr "Cubo %1$s creado."
 
 #: staff.cat.record_buckets.merge_records.fancy_prompt_title
 msgid "Record Merging"
@@ -1432,35 +1459,37 @@ msgstr "No se pudo cargar el registro: %1$s"
 
 #: staff.cat.record_buckets_quick.copy_one_record
 msgid "Copy this record into which bucket?"
-msgstr ""
+msgstr "¿Copiar este registro dentro de qual cubo?"
 
 #: staff.cat.record_buckets_quick.copy_multiple_records
 msgctxt "staff.cat.record_buckets_quick.copy_multiple_records"
 msgid "Copy these %1$s items into which bucket?"
-msgstr ""
+msgstr "¿Copiar estos %1$s artículos dentro de cual cubo?"
 
 #: staff.cat.record_buckets_quick.initing_record_buckets_quick_xul
 msgid "Trying to init record_buckets_quick.xul"
-msgstr ""
+msgstr "Intentando de inicializar record_buckets_quick.xul"
 
 #: staff.cat.record_buckets_quick.name_of_bucket
 msgctxt "staff.cat.record_buckets_quick.name_of_bucket"
 msgid "What would you like to name the bucket?"
-msgstr ""
+msgstr "¿Cual nombre desea para el cubo?"
 
 #: staff.cat.record_buckets_quick.name_of_bucket.title
 msgctxt "staff.cat.record_buckets_quick.name_of_bucket.title"
 msgid "Bucket Creation"
-msgstr ""
+msgstr "Creación De Cubo"
 
 #: staff.cat.record_buckets_quick.bucket_creation_failure
 msgctxt "staff.cat.record_buckets_quick.bucket_creation_failure"
 msgid "Bucket creation failed."
-msgstr ""
+msgstr "Creación de cubo fallida."
 
 #: staff.cat.record_buckets_quick.add_to_bucket.addition_failed
 msgid "Addition likely failed for bucket = %1$s and record ID = %2$s"
 msgstr ""
+"Adición probablemente fallida pare el tarro = %1$s y con identificación de "
+"registro = %2$s"
 
 #: staff.cat.record_buckets.menulist.change_bucket.undefined
 msgctxt "staff.cat.record_buckets.menulist.change_bucket.undefined"
@@ -1545,6 +1574,9 @@ msgid ""
 "Transfer items from their original volumes to %1$s's volume labelled %2$s on "
 "the following record (and change their circulation libs to match)?"
 msgstr ""
+"¿Transferir artículos de sus volúmenes originiales a %1$s volúmenes "
+"etiquetados %2$s en el siguiente registro ( y cambie la circulación libs "
+"para que esten de acuerdo)?"
 
 #: staff.cat.util.transfer_copies.transfer.label
 msgctxt "staff.cat.util.transfer_copies.transfer.label"
@@ -1718,6 +1750,8 @@ msgid ""
 "Item %1$s will be marked damaged.  Was returned on %3$s for %2$s.  Charge "
 "this patron $%4$s for the damage? "
 msgstr ""
+"Elemento% 1 $ s se marcarán dañado . Fue devuelta a % 3 $ s de % 2 $ s . "
+"Cargar este patrón $ % 4 $ s por el daño ? "
 
 #: staff.cat.util.mark_item_damaged.charge_patron_prompt.title
 msgid "Charge Patron For Damaged Item? "
@@ -1862,11 +1896,11 @@ msgstr "Cargando título..."
 
 #: staff.cat.util.add_titles_to_bucket.number_of_precats_skipped
 msgid "Skipping %1$s pre-cat records..."
-msgstr ""
+msgstr "Saltarse % 1 $ s registros pre - gato..."
 
 #: staff.cat.volume_buckets.window_tab_name
 msgid "Volume Buckets"
-msgstr ""
+msgstr "Cubos De Volumen"
 
 #: staff.cat.volume_copy_creator.my_init.btn.label
 msgctxt "staff.cat.volume_copy_creator.my_init.btn.label"
@@ -1880,7 +1914,7 @@ msgstr "A"
 
 #: staff.cat.volume_copy_creator.create_part.btn.label
 msgid "Create Part Designator"
-msgstr ""
+msgstr "Crear Parte de designación"
 
 #: staff.cat.volume_copy_creator.edit_then_create.btn.label
 msgid "Edit then Create"
@@ -1893,7 +1927,7 @@ msgstr "C"
 
 #: staff.cat.volume_copy_creator.create_with_defaults.btn.label
 msgid "Create with Defaults"
-msgstr ""
+msgstr "Crear con la configuración Defacta."
 
 #: staff.cat.volume_copy_creator.create_with_defaults.btn.accesskey
 msgid "D"
@@ -1901,12 +1935,12 @@ msgstr "D"
 
 #: staff.cat.volume_copy_creator.create.btn.label
 msgid "Create Volumes/Items"
-msgstr ""
+msgstr "Crear volúmenes / Artículos"
 
 #: staff.cat.volume_copy_creator.create.btn.accesskey
 msgctxt "staff.cat.volume_copy_creator.create.btn.accesskey"
 msgid "C"
-msgstr ""
+msgstr "C"
 
 #: staff.cat.volume_copy_creator.edit_then_rebarcode.btn.label
 msgid "Edit then Re-barcode"
@@ -1918,7 +1952,7 @@ msgstr "E"
 
 #: staff.cat.volume_copy_creator.rebarcode.btn.label
 msgid "Re-barcode / Update Items"
-msgstr ""
+msgstr "Re - código de barras /Actualizar Articulos"
 
 #: staff.cat.volume_copy_creator.rebarcode.btn.accesskey
 msgid "R"
@@ -1942,19 +1976,19 @@ msgstr "Aceptar"
 
 #: staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.classification
 msgid "Classification"
-msgstr ""
+msgstr "Clasificación"
 
 #: staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.prefix
 msgid "Prefix"
-msgstr ""
+msgstr "Prefijo"
 
 #: staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.call_nums
 msgid "Call Number"
-msgstr ""
+msgstr "Llamar al número"
 
 #: staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.suffix
 msgid "Suffix"
-msgstr ""
+msgstr "Sufijo"
 
 #: staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.num_of_copies
 msgid "# of Copies"
@@ -1962,7 +1996,7 @@ msgstr "# de Copias"
 
 #: staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.barcodes_and_parts
 msgid "Barcode / Part Designation"
-msgstr ""
+msgstr "Código de barras / Parte Designación"
 
 #: staff.cat.volume_copy_creator.render_barcode_entry.alert_message
 msgid "\"%1$s\" is an invalid barcode."
@@ -2009,13 +2043,13 @@ msgstr "Error guardando las preferencias"
 #: staff.cat.volume_copy_creator.call_number_prefix.menuitem_label
 msgctxt "staff.cat.volume_copy_creator.call_number_prefix.menuitem_label"
 msgid "%2$s : %1$s"
-msgstr ""
+msgstr "%2$s : %1$s"
 
 #. # %1$s = Call Number Suffix Label, %2$s = Call Number Suffix Owning Lib Shortname
 #: staff.cat.volume_copy_creator.call_number_suffix.menuitem_label
 msgctxt "staff.cat.volume_copy_creator.call_number_suffix.menuitem_label"
 msgid "%2$s : %1$s"
-msgstr ""
+msgstr "%2$s : %1$s"
 
 #: staff.cat.z3950.native_catalog
 msgid "Native Catalog"
@@ -2036,7 +2070,7 @@ msgstr "V"
 
 #: staff.cat.z3950.marc_view.label
 msgid "MARC View"
-msgstr ""
+msgstr "Vista MARC"
 
 #: staff.cat.z3950.marc_view.accesskey
 msgctxt "staff.cat.z3950.marc_view.accesskey"
@@ -2063,31 +2097,31 @@ msgstr "T"
 
 #: staff.cat.z3950.marked_record_for_overlay_indicator.record_id.label
 msgid "Record with ID %1$s marked for overlay."
-msgstr ""
+msgstr "Registro con la identificación %1$s marcado por sobrepuesta."
 
 #: staff.cat.z3950.marked_record_for_overlay_indicator.tcn.label
 msgid "Record with TCN %1$s marked for overlay."
-msgstr ""
+msgstr "Registro con TCN %1$s marcado por sobrepuesta."
 
 #: staff.cat.z3950.marked_record_for_overlay_indicator.no_record.label
 msgid "No record marked for overlay."
-msgstr ""
+msgstr "Ningun registro marcado por sobrepuesta."
 
 #: staff.cat.z3950.obj_controller_init.marc_view_error
 msgid "Failure during MARC view."
-msgstr ""
+msgstr "Fracaso durante la vista MARC."
 
 #: staff.cat.z3950.obj_controller_init.marc_import_error
 msgid "Failure during MARC import."
-msgstr ""
+msgstr "Fracaso durante la importación MARC."
 
 #: staff.cat.z3950.obj_controller_init.marc_import_overlay_error
 msgid "Failure during MARC import overlay."
-msgstr ""
+msgstr "Fracaso durante la importación de la cubierta MARC."
 
 #: staff.cat.z3950.obj_controller_init.search_fields_error
 msgid "Error setting up search fields."
-msgstr ""
+msgstr "Error estableciendo los campos de busqueda."
 
 #: staff.cat.z3950.obj_controller_init.z39_service_error
 msgid "Z39.50 services not likely retrieved."
@@ -2099,7 +2133,7 @@ msgstr "Ningun servicio seleccionado para buscar."
 
 #: staff.cat.z3950.initial_search.too_many_selections
 msgid "Only one service can be used with raw search at a time."
-msgstr ""
+msgstr "Solo un servicio puede ser usado para una busqueda pura a la vez."
 
 #: staff.cat.z3950.initial_search.searching
 msgctxt "staff.cat.z3950.initial_search.searching"
@@ -2112,17 +2146,20 @@ msgstr "Fracaso durante la busqueda inicial."
 
 #: staff.cat.z3950.initial_search.raw_prompt.title
 msgid "Raw Z39.50 PQN Search"
-msgstr ""
+msgstr "Busqueda pura Z39.50 PQN"
 
 #: staff.cat.z3950.initial_search.raw_prompt.msg
 msgid ""
 "WARNING: This is not a simple keyword search.  Enter raw z39.50 PQN search "
 "string: "
 msgstr ""
+"ADVERTENCIA : Esto no es una simple búsqueda de palabras clave. Introduzca "
+"z39.50 prima cadena de búsqueda PQN "
 
 #: staff.cat.z3950.initial_search.raw_search_unsupported_for_native_catalog
 msgid "Raw z39.50 PQN search not yet implemented for native catalog."
 msgstr ""
+"Busqueda pura z39.50 PQN aún no implementadas para el catálogo nativo."
 
 #: staff.cat.z3950.page_next.more_results
 msgid "Retrieving more results..."
@@ -2138,7 +2175,7 @@ msgstr "Fracaso durante la busqueda actual."
 
 #: staff.cat.z3950.handle_results.null_server_error
 msgid "Server Error: request returned null"
-msgstr ""
+msgstr "Error del Servidor: solicitud regreso null"
 
 #: staff.cat.z3950.handle_results.server_error
 msgid "Server Error: %1$s : %2$s"
@@ -2154,7 +2191,7 @@ msgstr "Mostrando %1$s of %2$s for %3$s"
 
 #: staff.cat.z3950.handle_results.showing_total_results
 msgid "Showing %1$s of %2$s "
-msgstr ""
+msgstr "Mostrando %1 $s de %2$s "
 
 #: staff.cat.z3950.handle_results.num_of_results
 msgid "%1$s records found"
@@ -2166,7 +2203,7 @@ msgstr "Error cargando resultados."
 
 #: staff.cat.z3950.handle_results.search_result_error
 msgid "Failure during search result handling."
-msgstr ""
+msgstr "Fracaso durante el manejo del resultado de la busqueda."
 
 #: staff.cat.z3950.replace_tab_with_opac.tab_name
 msgctxt "staff.cat.z3950.replace_tab_with_opac.tab_name"
@@ -2175,7 +2212,7 @@ msgstr "Cargando título..."
 
 #: staff.cat.z3950.spawn_marc_editor.save_button_label
 msgid "Import Record"
-msgstr ""
+msgstr "Importar registro"
 
 #: staff.cat.z3950.spawn_marc_editor.same_tcn
 msgctxt "staff.cat.z3950.spawn_marc_editor.same_tcn"
@@ -2194,7 +2231,7 @@ msgstr "Importar Colisión"
 #: staff.cat.z3950.spawn_marc_editor.btn1_overlay
 msgctxt "staff.cat.z3950.spawn_marc_editor.btn1_overlay"
 msgid "Overlay"
-msgstr ""
+msgstr "Sobreponer"
 
 #: staff.cat.z3950.spawn_marc_editor.btn2_import
 msgid "Import with alternate TCN %1$s"
@@ -2203,7 +2240,7 @@ msgstr "Importan con un TCN %1$s sustituto"
 #: staff.cat.z3950.spawn_marc_editor.permission_error
 msgctxt "staff.cat.z3950.spawn_marc_editor.permission_error"
 msgid "check permission"
-msgstr ""
+msgstr "comprobación de permisos"
 
 #: staff.cat.z3950.spawn_marc_editor.btn3_cancel_import
 msgctxt "staff.cat.z3950.spawn_marc_editor.btn3_cancel_import"
@@ -2261,16 +2298,18 @@ msgstr "C"
 
 #: staff.cat.z3950.confirm_overlay.title
 msgid "Record Overlay"
-msgstr ""
+msgstr "Sobrepuesta del Registro"
 
 #: staff.cat.z3950.confirm_overlay.aborted
 msgid "Overlay Aborted"
-msgstr ""
+msgstr "Sobrepuesta Abortada"
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.try_again
 msgid ""
 "Please mark a record for overlay from within the catalog and try this again."
 msgstr ""
+"Por favor marque el registro para sobreponer desde el catálogo y intente "
+"denuevo."
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.tab_name
 msgid "MARC Editor"
@@ -2278,7 +2317,7 @@ msgstr "Editor de MARC"
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.overlay_record_label
 msgid "Overlay Record"
-msgstr ""
+msgstr "Registro de la Sobrepuesta"
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.same_tcn
 msgctxt "staff.cat.z3950.spawn_marc_editor_for_overlay.same_tcn"
@@ -2296,7 +2335,7 @@ msgstr "Importar Colisión"
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.btn1_overlay
 msgid "Overlay with alternate TCN %1$s"
-msgstr ""
+msgstr "Sobrepuesta con TCN %1$s sustituto"
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.permission_error
 msgctxt "staff.cat.z3950.spawn_marc_editor_for_overlay.permission_error"
@@ -2315,92 +2354,92 @@ msgstr "Marque aquí para confirmar esta acción"
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.successful_overlay_with_new_TCN
 msgid "Record successfully overlaid with alternate TCN."
-msgstr ""
+msgstr "Registro exitosamente sobrepuesto con el TCN sustituto."
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.cancelled_overlay
 msgid "Record overlay cancelled"
-msgstr ""
+msgstr "Sobrepuesta del registro cancelada"
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.success_overlay
 msgctxt "staff.cat.z3950.spawn_marc_editor_for_overlay.success_overlay"
 msgid "Record successfully overlaid."
-msgstr ""
+msgstr "Registro exitosamente sobrepuesto."
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.overlay_error
 msgid "Record not likely overlaid."
-msgstr ""
+msgstr "Registro probablemente no sobrepuesto."
 
 #: staff.cat.z3950.load_creds.z3950_cred_error
 msgid "Error retrieving stored z39.50 credentials"
-msgstr ""
+msgstr "Error cargando las credenciales guardadas z39.50"
 
 #: staff.cat.z3950.save_creds.z3950_cred_error
 msgid "Problem storing z39.50 credentials."
-msgstr ""
+msgstr "Problema guardando crendeciales z39.50"
 
 #: staff.cat.bib_brief.title.label
 msgid "Title:"
-msgstr ""
+msgstr "Título:"
 
 #: staff.cat.bib_brief.author.label
 msgid "Author:"
-msgstr ""
+msgstr "Autor:"
 
 #: staff.cat.bib_brief.edition.label
 msgid "Edition:"
-msgstr ""
+msgstr "Edición:"
 
 #: staff.cat.bib_brief.pubdate.label
 msgid "Pub Date:"
-msgstr ""
+msgstr "Fecha Pub:"
 
 #: staff.cat.bib_brief.bib_call_number.label
 msgid "Bib Call #:"
-msgstr ""
+msgstr "Bib llamada #:"
 
 #: staff.cat.bib_brief.call_number.label
 msgid "Item Call #:"
-msgstr ""
+msgstr "Elemento de llamadas #:"
 
 #: staff.cat.bib_brief.tcn.label
 msgid "TCN:"
-msgstr ""
+msgstr "TCN:"
 
 #: staff.cat.bib_brief.mvr_doc_id.label
 msgid "Bib DB ID:"
-msgstr ""
+msgstr "Bib DB ID:"
 
 #: staff.cat.bib_brief.owner.label
 msgid "Record Owner:"
-msgstr ""
+msgstr "Propietario del Registro:"
 
 #: staff.cat.bib_brief.creator.label
 msgid "Created By:"
-msgstr ""
+msgstr "Creada por:"
 
 #: staff.cat.bib_brief.create_date.label
 msgid "Created On:"
-msgstr ""
+msgstr "Creado en:"
 
 #: staff.cat.bib_brief.editor.label
 msgid "Last Edited By:"
-msgstr ""
+msgstr "Editado por última vez por:"
 
 #: staff.cat.bib_brief.edit_date.label
 msgid "Last Edited On:"
-msgstr ""
+msgstr "Editado por última vez el:"
 
 #: staff.cat.bib_brief.holds.label
 msgid "Holds:"
-msgstr ""
+msgstr "Asimiento"
 
 #: staff.cat.bib_brief.items.label
 msgid "Items:"
-msgstr ""
+msgstr "Elementos:"
 
 #: staff.cat.bib_brief.items.available.tooltip
 msgid "%1$s available"
-msgstr ""
+msgstr "% 1 $s disponibles"
 
 #~ msgid "Volumes deleted."
 #~ msgstr "Volúmenes eliminados"

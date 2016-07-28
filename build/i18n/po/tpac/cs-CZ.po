@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2016-03-15 02:36+0000\n"
-"PO-Revision-Date: 2016-02-29 10:47+0000\n"
+"PO-Revision-Date: 2016-03-21 15:26+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2016-03-16 05:41+0000\n"
-"X-Generator: Launchpad (build 17947)\n"
+"X-Launchpad-Export-Date: 2016-03-22 05:24+0000\n"
+"X-Generator: Launchpad (build 17958)\n"
 
 #: ../../Open-ILS/src/templates/opac/register.tt2:63
 msgid ""
@@ -79,7 +79,7 @@ msgstr "%1 (%2)"
 #. (bib_lib_name)
 #: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:58
 msgid "%1 (foreign item)"
-msgstr "%1 (Cizí exemplář)"
+msgstr "%1 (cizí exemplář)"
 
 #. (ctx.page_title, libname)
 #: ../../Open-ILS/src/templates/opac/parts/base.tt2:21
@@ -404,11 +404,11 @@ msgstr "Všechny nosiče"
 
 #: ../../Open-ILS/src/templates/opac/parts/config.tt2:1
 msgid "All Libraries"
-msgstr ""
+msgstr "Všechny knihovny"
 
 #: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:102
 msgid "All Parts"
-msgstr ""
+msgstr "Všechny části"
 
 #: ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:84
 msgid ""
@@ -486,11 +486,11 @@ msgstr "Opravdu chcete naúčtovat %1 na vaši kreditní kartu?"
 
 #: ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:20
 msgid "Are you sure you wish to continue?"
-msgstr ""
+msgstr "Opravdu chcete pokračovat?"
 
 #: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:62
 msgid "Are you sure you wish to delete the selected item(s)?"
-msgstr ""
+msgstr "Opravdu chcete smazat vybrané položky?"
 
 #: ../../Open-ILS/src/templates/opac/myopac/messages/list.tt2:53
 msgid "Are you sure you wish to permanently delete the selected messsage(s)?"
@@ -828,7 +828,7 @@ msgstr "Zrušit, pokud nebude splněno do"
 
 #: ../../Open-ILS/src/templates/opac/myopac/hold_history.tt2:106
 msgid "Canceled"
-msgstr ""
+msgstr "Zrušeno"
 
 #: ../../Open-ILS/src/templates/opac/parts/relators.tt2:1
 msgid "Cartographer"
@@ -1021,7 +1021,7 @@ msgstr "Dirigent"
 
 #: ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:24
 msgid "Confirm"
-msgstr ""
+msgstr "Potvrdit"
 
 #: ../../Open-ILS/src/templates/opac/parts/relators.tt2:1
 msgid "Conservator"
@@ -1306,7 +1306,7 @@ msgstr "Smazat seznam"
 
 #: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:67
 msgid "Delete Selected Titles"
-msgstr ""
+msgstr "Smazat vybrané tituly"
 
 #. (ctx.message_update_changed)
 #: ../../Open-ILS/src/templates/opac/myopac/messages/list.tt2:27
@@ -1315,7 +1315,7 @@ msgstr "Byly smazány %1 zprávy."
 
 #: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:78
 msgid "Deleting Help"
-msgstr ""
+msgstr "Nápověda ke smazání"
 
 #: ../../Open-ILS/src/templates/opac/parts/relators.tt2:1
 msgid "Delineator"
@@ -1351,6 +1351,8 @@ msgid ""
 "Disabling checkout or holds history will permanently remove all items from "
 "your history."
 msgstr ""
+"Pokud deaktivujete volbu ukládání historie výpůjček nebo rezervací, všechny "
+"položky z Vaší historie budou NEVRATNĚ SMAZÁNY."
 
 #: ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:210
 msgid "Discard Pending Address"
@@ -1593,7 +1595,7 @@ msgstr "Separát"
 
 #: ../../Open-ILS/src/templates/opac/parts/advanced/search.tt2:113 ../../Open-ILS/src/templates/opac/results.tt2:112
 msgid "Exclude Electronic Resources"
-msgstr ""
+msgstr "Vynechat elektronické zdroje"
 
 #: ../../Open-ILS/src/templates/opac/parts/record/contents.tt2:1
 msgid "Exhibitions Note: "
@@ -2284,7 +2286,7 @@ msgstr "Omezit na dostupné"
 
 #: ../../Open-ILS/src/templates/opac/results.tt2:82
 msgid "Limit to Available Items"
-msgstr ""
+msgstr "Omezit na dostupné exempláře"
 
 #: ../../Open-ILS/src/templates/opac/parts/result/facets.tt2:133
 msgid "Limit to results matching this term"
@@ -3768,6 +3770,8 @@ msgid ""
 "Select this option to expand your results to all libraries while retaining "
 "the priority of your selected library's holdings."
 msgstr ""
+"Výběrem této možnosti rozšíříte výsledky na všechny knihovny (priorita "
+"exemplářů ze zvolené knihovny bude zachována)."
 
 #: ../../Open-ILS/src/templates/opac/myopac/holds.tt2:60
 msgid "Select your action for the selected holds"
@@ -3875,7 +3879,7 @@ msgstr "Zobrazit více podrobností"
 
 #: ../../Open-ILS/src/templates/opac/parts/config.tt2:1
 msgid "Show Results from All Libraries"
-msgstr ""
+msgstr "Zobrazit výsledky ze všech knihoven"
 
 #: ../../Open-ILS/src/templates/opac/myopac/holds.tt2:88 ../../Open-ILS/src/templates/opac/myopac/holds.tt2:91
 msgid "Show all holds"
@@ -3921,7 +3925,7 @@ msgstr "Zobrazeno %1.  záznam z %2"
 
 #: ../../Open-ILS/src/templates/opac/parts/config.tt2:1
 msgid "Showing results from all libraries"
-msgstr ""
+msgstr "Zobrazuji výsledky ze všech knihoven"
 
 #: ../../Open-ILS/src/templates/opac/parts/relators.tt2:1
 msgid "Signer"
@@ -4720,6 +4724,8 @@ msgid ""
 "Your account does not currently have an email address set. Set your email "
 "address %1"
 msgstr ""
+"Ve Vašem kontě aktuálně  není uvedena e-mailová adresa. Nastavte svou e-"
+"mailovou adresu %1"
 
 #: ../../Open-ILS/src/templates/opac/browse.tt2:91
 msgid ""
@@ -4744,7 +4750,7 @@ msgstr "Vaše heslo nebylo správné"
 #. (ctx.user.email)
 #: ../../Open-ILS/src/templates/opac/record/email.tt2:12
 msgid "Your email has been queued for delivery to %1"
-msgstr ""
+msgstr "Váš e-mail byl zařazen k odeslání na adresu   %1"
 
 #. (fmt_expire_date)
 #: ../../Open-ILS/src/templates/opac/parts/myopac/main_base.tt2:37
@@ -4821,7 +4827,7 @@ msgstr "harry"
 
 #: ../../Open-ILS/src/templates/opac/record/email.tt2:0
 msgid "here"
-msgstr ""
+msgstr "zde"
 
 #: ../../Open-ILS/src/templates/opac/parts/result/lowhits.tt2:56
 msgid "stone"

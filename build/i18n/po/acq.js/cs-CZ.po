@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2015-08-26 13:12-0400\n"
-"PO-Revision-Date: 2015-08-31 19:18+0000\n"
+"PO-Revision-Date: 2016-04-19 13:41+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2015-09-01 05:14+0000\n"
-"X-Generator: Launchpad (build 17690)\n"
+"X-Launchpad-Export-Date: 2016-04-20 04:34+0000\n"
+"X-Generator: Launchpad (build 17995)\n"
 
 #: acq.js:ACQ_SEARCH_CLASS_ABBR_acqlid
 msgid "LID"
@@ -388,7 +388,7 @@ msgstr "Přesun nelze uskutečnit. Zdrojový fond je totožný s cílovým fonde
 
 #: acq.js:COPIES_TO_RECEIVE
 msgid "Number of copies to receive: "
-msgstr "Počet exemplářů k vyzvednutní: "
+msgstr "Počet exemplářů k vyzvednutí: "
 
 #: acq.js:PO_CHECKING
 msgid "[One moment...]"
