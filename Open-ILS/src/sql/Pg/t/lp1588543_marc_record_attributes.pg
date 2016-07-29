@@ -1,0 +1,211 @@
+-- tests to verify that the expected record attributes are
+-- parsed during record ingest; note that this is expected
+-- to fluctuate as seed data for record attributes definitions
+-- get updated.
+BEGIN;
+
+SELECT plan(2);
+
+INSERT INTO biblio.record_entry (last_xact_id, marc) VALUES (
+    'marc-attr-test',
+    $record$<record xmlns="http://www.loc.gov/MARC21/slim">
+  <leader>02137cam a2200457 a 4500</leader>
+  <controlfield tag="001">ocn694080497</controlfield>
+  <controlfield tag="003">OCoLC</controlfield>
+  <controlfield tag="005">20160729104757.0</controlfield>
+  <controlfield tag="008">101217s2011    txu      b    001 0 eng  </controlfield>
+  <datafield tag="010" ind1=" " ind2=" ">
+    <subfield code="a">  2010053400</subfield>
+  </datafield>
+  <datafield tag="040" ind1=" " ind2=" ">
+    <subfield code="a">DLC</subfield>
+    <subfield code="b">eng</subfield>
+    <subfield code="c">DLC</subfield>
+    <subfield code="d">RCJ</subfield>
+    <subfield code="d">CLU</subfield>
+    <subfield code="d">YDXCP</subfield>
+    <subfield code="d">BWX</subfield>
+    <subfield code="d">YLS</subfield>
+    <subfield code="d">CDX</subfield>
+    <subfield code="d">ONA</subfield>
+    <subfield code="d">OCLCF</subfield>
+    <subfield code="d">OCLCO</subfield>
+    <subfield code="d">OCL</subfield>
+    <subfield code="d">OCLCQ</subfield>
+    <subfield code="d">OCLCO</subfield>
+  </datafield>
+  <datafield tag="020" ind1=" " ind2=" ">
+    <subfield code="a">9780735587786</subfield>
+  </datafield>
+  <datafield tag="020" ind1=" " ind2=" ">
+    <subfield code="a">0735587787</subfield>
+  </datafield>
+  <datafield tag="020" ind1=" " ind2=" ">
+    <subfield code="a">9780735587793</subfield>
+    <subfield code="q">(pbk. ;</subfield>
+    <subfield code="q">teacher&apos;s manual)</subfield>
+  </datafield>
+  <datafield tag="020" ind1=" " ind2=" ">
+    <subfield code="a">0735587795</subfield>
+    <subfield code="q">(pbk. ;</subfield>
+    <subfield code="q">teacher&apos;s manual)</subfield>
+  </datafield>
+  <datafield tag="035" ind1=" " ind2=" ">
+    <subfield code="a">(OCoLC)694080497</subfield>
+  </datafield>
+  <datafield tag="042" ind1=" " ind2=" ">
+    <subfield code="a">pcc</subfield>
+  </datafield>
+  <datafield tag="043" ind1=" " ind2=" ">
+    <subfield code="a">n-us---</subfield>
+  </datafield>
+  <datafield tag="050" ind1="0" ind2="0">
+    <subfield code="a">KF9619</subfield>
+    <subfield code="b">.C62 2011</subfield>
+  </datafield>
+  <datafield tag="082" ind1="0" ind2="0">
+    <subfield code="a">345.73/05</subfield>
+    <subfield code="2">22</subfield>
+  </datafield>
+  <datafield tag="049" ind1=" " ind2=" ">
+    <subfield code="a">EQNX</subfield>
+  </datafield>
+  <datafield tag="245" ind1="0" ind2="0">
+    <subfield code="a">Comprehensive criminal procedure /</subfield>
+    <subfield code="c">Ronald Jay Allen [and others].</subfield>
+  </datafield>
+  <datafield tag="250" ind1=" " ind2=" ">
+    <subfield code="a">3rd ed.</subfield>
+  </datafield>
+  <datafield tag="260" ind1=" " ind2=" ">
+    <subfield code="a">Austin :</subfield>
+    <subfield code="b">Wolters Kluwer Law &amp; Business,</subfield>
+    <subfield code="c">©2011.</subfield>
+  </datafield>
+  <datafield tag="300" ind1=" " ind2=" ">
+    <subfield code="a">xxxvi, 1699 pages ;</subfield>
+    <subfield code="c">26 cm +</subfield>
+    <subfield code="e">teacher&apos;s manual.</subfield>
+  </datafield>
+  <datafield tag="336" ind1=" " ind2=" ">
+    <subfield code="a">text</subfield>
+    <subfield code="b">txt</subfield>
+    <subfield code="2">rdacontent</subfield>
+  </datafield>
+  <datafield tag="337" ind1=" " ind2=" ">
+    <subfield code="a">unmediated</subfield>
+    <subfield code="b">n</subfield>
+    <subfield code="2">rdamedia</subfield>
+  </datafield>
+  <datafield tag="338" ind1=" " ind2=" ">
+    <subfield code="a">volume</subfield>
+    <subfield code="b">nc</subfield>
+    <subfield code="2">rdacarrier</subfield>
+  </datafield>
+  <datafield tag="490" ind1="1" ind2=" ">
+    <subfield code="a">Aspen casebook series</subfield>
+  </datafield>
+  <datafield tag="504" ind1=" " ind2=" ">
+    <subfield code="a">Includes bibliographical references and index.</subfield>
+  </datafield>
+  <datafield tag="505" ind1="0" ind2=" ">
+    <subfield code="a">Introduction to the criminal justice &quot;system&quot; -- The idea of due process -- The right to counsel and other assistance -- The rise and fall of Boyd v. United States -- The Fourth Amendment -- The Fifth Amendment -- Complex investigations in the Fourth Amendment&apos;s shadow -- Bail and pretrial detention -- The charging decision -- Pretrial screening and the grand jury -- The scope of the prosecution -- Discovery and disclosure -- Guilty pleas and plea bargaining -- The jury and the criminal trial -- Sentencing -- Double jeopardy -- Appellate and collateral review.</subfield>
+  </datafield>
+  <datafield tag="650" ind1=" " ind2="0">
+    <subfield code="a">Criminal procedure</subfield>
+    <subfield code="z">United States.</subfield>
+  </datafield>
+  <datafield tag="650" ind1=" " ind2="7">
+    <subfield code="a">Criminal procedure.</subfield>
+    <subfield code="2">fast</subfield>
+    <subfield code="0">(OCoLC)fst00883421</subfield>
+  </datafield>
+  <datafield tag="651" ind1=" " ind2="7">
+    <subfield code="a">United States.</subfield>
+    <subfield code="2">fast</subfield>
+    <subfield code="0">(OCoLC)fst01204155</subfield>
+  </datafield>
+  <datafield tag="655" ind1=" " ind2="7">
+    <subfield code="a">Casebooks.</subfield>
+    <subfield code="2">fast</subfield>
+    <subfield code="0">(OCoLC)fst01774238</subfield>
+  </datafield>
+  <datafield tag="655" ind1=" " ind2="7">
+    <subfield code="a">Casebooks.</subfield>
+    <subfield code="2">lcgft</subfield>
+  </datafield>
+  <datafield tag="700" ind1="1" ind2=" ">
+    <subfield code="a">Allen, Ronald J.</subfield>
+    <subfield code="q">(Ronald Jay),</subfield>
+    <subfield code="d">1948-</subfield>
+  </datafield>
+  <datafield tag="830" ind1=" " ind2="0">
+    <subfield code="a">Aspen casebook series.</subfield>
+  </datafield>
+</record>$record$);
+
+SELECT cmp_ok(
+    (SELECT attrs FROM metabib.record_attr WHERE id=(SELECT CURRVAL('biblio.record_entry_id_seq'))),
+    '@>',
+    $attr$
+        "conf"=>"0",
+        "cont"=>"b",
+        "ctry"=>"txu",
+        "fest"=>"0",
+        "ills"=>" ",
+        "indx"=>"1",
+        "cont1"=>"b",
+        "date1"=>"2011",
+        "date2"=>"9999",
+        "ills1"=>" ",
+        "audience"=>" ",
+        "cat_form"=>"a",
+        "language"=>"eng",
+        "lit_form"=>"0",
+        "bib_level"=>"m",
+        "item_lang"=>"eng",
+        "item_type"=>"a",
+        "media_type"=>"unmediated",
+        "pub_status"=>"s",
+        "icon_format"=>"book",
+        "carrier_type"=>"volume",
+        "content_type"=>"text",
+        "search_format"=>"book",
+        "mr_hold_format"=>"book"
+    $attr$,
+    'all expected record attributes found'
+);
+
+SELECT cmp_ok(
+    (SELECT attrs FROM metabib.record_attr WHERE id=(SELECT CURRVAL('biblio.record_entry_id_seq'))),
+    '<@',
+    $attr$
+        "conf"=>"0",
+        "cont"=>"b",
+        "ctry"=>"txu",
+        "fest"=>"0",
+        "ills"=>" ",
+        "indx"=>"1",
+        "cont1"=>"b",
+        "date1"=>"2011",
+        "date2"=>"9999",
+        "ills1"=>" ",
+        "audience"=>" ",
+        "cat_form"=>"a",
+        "language"=>"eng",
+        "lit_form"=>"0",
+        "bib_level"=>"m",
+        "item_lang"=>"eng",
+        "item_type"=>"a",
+        "media_type"=>"unmediated",
+        "pub_status"=>"s",
+        "icon_format"=>"book",
+        "carrier_type"=>"volume",
+        "content_type"=>"text",
+        "search_format"=>"book",
+        "mr_hold_format"=>"book"
+    $attr$,
+    'no extra record attributes found'
+);
+
+ROLLBACK;
