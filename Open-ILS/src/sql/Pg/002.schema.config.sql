@@ -821,6 +821,8 @@ CREATE TABLE config.coded_value_map (
                             -- coded value represents
 );
 
+CREATE INDEX config_coded_value_map_ctype_idx ON config.coded_value_map (ctype);
+
 CREATE VIEW config.language_map AS SELECT code, value FROM config.coded_value_map WHERE ctype = 'item_lang';
 CREATE VIEW config.bib_level_map AS SELECT code, value FROM config.coded_value_map WHERE ctype = 'bib_level';
 CREATE VIEW config.item_form_map AS SELECT code, value FROM config.coded_value_map WHERE ctype = 'item_form';
