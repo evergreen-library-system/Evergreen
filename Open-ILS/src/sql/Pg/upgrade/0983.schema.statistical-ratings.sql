@@ -1,6 +1,8 @@
 
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('0983', :eg_version);
+
 -- Create these so that the queries in the UDFs will validate
 CREATE TEMP TABLE precalc_filter_bib_list (
     id  BIGINT

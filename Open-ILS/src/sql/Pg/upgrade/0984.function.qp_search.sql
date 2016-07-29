@@ -17,6 +17,8 @@
 
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('0984', :eg_version);
+
 ALTER TYPE search.search_result ADD ATTRIBUTE badges TEXT, ADD ATTRIBUTE popularity NUMERIC;
 
 CREATE OR REPLACE FUNCTION search.query_parser_fts (
