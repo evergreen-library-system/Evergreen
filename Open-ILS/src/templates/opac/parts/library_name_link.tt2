@@ -11,7 +11,7 @@
     UNLESS lib_url && prefer_external_url;
         lib_url = mkurl(opac_root _ '/library/' _ ctx.get_aou(copy_info.circ_lib).shortname, {}, 1);
     END; 
-    IF lib_url; '<a property="seller" typeof="Library" href="'; lib_url | url; '">'; END;
+    IF lib_url; '<a property="offeredBy" typeof="Library" href="'; lib_url | url; '">'; END;
     '<span property="name">'; org_name | html; '</span>';
     IF lib_url; '</a>'; END;
 -%]
