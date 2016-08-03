@@ -12,6 +12,8 @@ s.CIRC_CLAIMS_RETURNED =
   '[% l('Item "[_1]" is marked as Claims Returned', '{{barcode}}') %]';
 s.CHECKOUT_FAILED_GENERIC =
   '[% l('Unable to checkout copy "[_1]" : [_2]', '{{barcode}}', '{{textcode}}') %]';
+s.EMAILED_CHECKOUT_RECEIPT =
+  "[% l('Emailed checkout receipt') %]";
 s.COPY_ALERT_MSG_DIALOG_TITLE =
   '[% l('Copy Alert Message for "[_1]"', '{{copy_barcode}}') %]';
 s.UNCAT_ALERT_DIALOG =

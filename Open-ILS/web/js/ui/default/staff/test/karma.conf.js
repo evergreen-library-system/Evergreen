@@ -10,6 +10,8 @@ module.exports = function(config){
       'build/js/angular-route.min.js',
       'bower_components/angular-mocks/angular-mocks.js', // testing only
       'bower_components/angular-file-saver/dist/angular-file-saver.bundle.min.js',
+      'bower_components/ngtoast/dist/ngToast.min.js',
+      'bower_components/angular-sanitize/angular-sanitize.min.js',
       'build/js/ui-bootstrap.min.js',
       'build/js/hotkeys.min.js',
       'build/js/angular-cookies.min.js',

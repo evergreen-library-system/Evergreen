@@ -131,12 +131,33 @@
     </label>
   </div>
   <div class="pad-horiz">
-    <button class="btn btn-default" 
-      ng-click="print_receipt()">[% l('Print Receipt') %]</button>
+    <span ng-show="may_email_receipt()" class="glyphicon glyphicon-envelope" aria-label="[% l('Send Email Receipt') %]"></span>
+    <span ng-show="!may_email_receipt()" class="glyphicon glyphicon-print" aria-label="[% l('Print Receipt') %]"></span>
+    <div class="btn-group" uib-dropdown>
+      <button ng-click="print_or_email_receipt()" id="quick-button" type="button" ng-disabled="checkouts.length == 0" class="btn btn-default">[% l('Quick Receipt') %]</button>
+      <button type="button" ng-disabled="checkouts.length == 0" class="btn btn-default" uib-dropdown-toggle>
+        <span class="caret"></span>
+        <span class="sr-only">[% l('receipt option') %]</span>
+      </button>
+      <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="quick-button">
+        <li role="menuitem" ng-class="{disabled : !has_email_address()}"><a ng-click="email_receipt()" a-disabled="!has_email_address()" href="#">[% l('Email Receipt') %]</a></li>
+        <li role="menuitem"><a ng-click="print_receipt()" href="#">[% l('Print Receipt') %]</a></li>
+      </ul>
+    </div>
   </div>
-  <div>
+  <div class="btn-group" uib-dropdown>
     <button class="btn btn-default" 
-      ng-click="done()">[% l('Done') %]</button>
+      id="done-button" type="button"
+      ng-click="done_auto_receipt()">[% l('Done') %]</button>
+      <button type="button" class="btn btn-default" uib-dropdown-toggle>
+        <span class="caret"></span>
+        <span class="sr-only">[% l('receipt option') %]</span>
+      </button>
+      <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="done-button">
+        <li role="menuitem"><a ng-click="done_no_receipt()" href="#">[% l('No Receipt') %]</a></li>
+        <li role="menuitem" ng-class="{disabled : !has_email_address()}"><a ng-click="done_email_receipt()" a-disabled="!has_email_address()" href="#">[% l('Email Receipt') %]</a></li>
+        <li role="menuitem"><a ng-click="done_print_receipt()" href="#">[% l('Print Receipt') %]</a></li>
+      </ul>
   </div>
 </div>
 

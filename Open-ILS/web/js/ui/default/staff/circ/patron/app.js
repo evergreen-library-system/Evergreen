@@ -5,7 +5,14 @@
  */
 
 angular.module('egPatronApp', ['ngRoute', 'ui.bootstrap', 
-    'egCoreMod', 'egUiMod', 'egGridMod', 'egUserMod'])
+    'egCoreMod', 'egUiMod', 'egGridMod', 'egUserMod', 'ngToast'])
+
+.config(['ngToastProvider', function(ngToastProvider) {
+    ngToastProvider.configure({
+        verticalPosition: 'bottom',
+        animation: 'fade'
+    });
+}])
 
 .config(function($routeProvider, $locationProvider, $compileProvider) {
     $locationProvider.html5Mode(true);

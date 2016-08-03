@@ -5,10 +5,10 @@
 angular.module('egPatronApp').controller('PatronCheckoutCtrl',
 
        ['$scope','$q','$routeParams','egCore','egUser','patronSvc',
-        'egGridDataProvider','$location','$timeout','egCirc',
+        'egGridDataProvider','$location','$timeout','egCirc','ngToast',
 
 function($scope , $q , $routeParams , egCore , egUser , patronSvc , 
-         egGridDataProvider , $location , $timeout , egCirc) {
+         egGridDataProvider , $location , $timeout , egCirc , ngToast) {
 
     $scope.initTab('checkout', $routeParams.id).finally(function(){
         $scope.focusMe = true;
@@ -31,6 +31,34 @@ function($scope , $q , $routeParams , egCore , egUser , patronSvc ,
             patronSvc.current.active() == 'f' ||
             patronSvc.current.deleted() == 't' ||
             patronSvc.current.card().active() == 'f'
+        );
+    }
+
+    function setting_value (user, setting) {
+        if (user) {
+            var list = user.settings().filter(function(s){
+                return s.name() == setting;
+            });
+
+            if (list.length) return list[0].value();
+        }
+    }
+
+    $scope.has_email_address = function() {
+        return (
+            patronSvc.current &&
+            patronSvc.current.email() &&
+            patronSvc.current.email().match(/.*@.*/).length
+        );
+    }
+
+    $scope.may_email_receipt = function() {
+        return (
+            $scope.has_email_address() &&
+            setting_value(
+                patronSvc.current,
+                'circ.send_email_checkout_receipts'
+            ) == 'true'
         );
     }
 
@@ -191,18 +219,63 @@ function($scope , $q , $routeParams , egCore , egUser , patronSvc ,
         });
     }
 
-    // Redirect the user to the barcode entry page to load a new patron.
-    // If configured to do so, print the receipt first
-    $scope.done = function() {
-        if (printOnComplete) {
-
-            $scope.print_receipt().then(function() {
-                $location.path('/circ/patron/bcsearch');
+    $scope.email_receipt = function() {
+        if ($scope.has_email_address() && $scope.checkouts.length) {
+            return egCore.net.request(
+                'open-ils.circ',
+                'open-ils.circ.checkout.batch_notify.session.atomic',
+                egCore.auth.token(),
+                patronSvc.current.id(),
+                $scope.checkouts.map(function (c) { return c.circ.id() })
+            ).then(function() {
+                ngToast.create(egCore.strings.EMAILED_CHECKOUT_RECEIPT);
+                return $q.when();
             });
-
-        } else {
-            $location.path('/circ/patron/bcsearch');
         }
+        return $q.when();
+    }
+
+    $scope.print_or_email_receipt = function() {
+        if ($scope.may_email_receipt()) return $scope.email_receipt();
+        $scope.print_receipt();
+    }
+
+    // set of functions to issue a receipt (if desired), then
+    // redirect
+    $scope.done_auto_receipt = function() {
+        if ($scope.may_email_receipt()) {
+            $scope.email_receipt().then(function() {
+                $scope.done_redirect();
+            });
+        } else {
+            if (printOnComplete) {
+
+                $scope.print_receipt().then(function() {
+                    $scope.done_redirect();
+                });
+
+            } else {
+                $scope.done_redirect();
+            }
+        }
+    }
+    $scope.done_print_receipt = function() {
+        $scope.print_receipt().then( function () {
+            $scope.done_redirect();
+        });
+    }
+    $scope.done_email_receipt = function() {
+        $scope.email_receipt().then( function () {
+            $scope.done_redirect();
+        });
+    }
+    $scope.done_no_receipt = function() {
+        $scope.done_redirect();
+    }
+
+    // Redirect the user to the barcode entry page to load a new patron.
+    $scope.done_redirect = function() {
+        $location.path('/circ/patron/bcsearch');
     }
 }])
 

@@ -11,6 +11,7 @@ function($q,  $timeout,  egNet,  egAuth,  egOrg) {
     var service = {
         defaultFleshFields : [
             'card',                                                                
+            'settings',
             'standing_penalties',                                                  
             'addresses',                                                           
             'billing_address',                                                     
