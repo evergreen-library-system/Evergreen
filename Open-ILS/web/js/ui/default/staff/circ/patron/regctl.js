@@ -791,6 +791,10 @@ angular.module('egCoreMod')
             if (user.usrname == '') 
                 user.usrname = card.barcode;
         }
+
+        angular.forEach(cuser.settings, function(setting) {
+            service.user_settings[setting.setting()] = Boolean(setting.value());
+        });
     }
 
     // copy select values from the cloned user to the new user.
@@ -1008,7 +1012,7 @@ angular.module('egCoreMod')
             'open-ils.actor',
             'open-ils.actor.user.stage.delete',
             egCore.auth.token(),
-            service.stage_user.row_id()
+            service.stage_user.user.row_id()
         );
     }
 
