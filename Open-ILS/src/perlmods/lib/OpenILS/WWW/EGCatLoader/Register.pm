@@ -24,6 +24,8 @@ sub load_patron_reg {
     $ctx->{register}{valid_orgs} = 
         $self->setting_is_true_for_orgs('opac.allow_pending_user');
 
+    $self->collect_opt_in_settings;
+
     # just loading the form
     return Apache2::Const::OK
         unless $cgi->request_method eq 'POST';
@@ -62,6 +64,20 @@ sub load_patron_reg {
     # attempt to create a pending address
     $addr = undef unless $has_addr;
 
+    # opt-in settings
+    my $settings = [];
+    foreach (grep /^stgs\./, $cgi->param) {
+        my $val = $cgi->param($_);
+        next unless $val; # opt-in settings are always Boolean,
+                          # so just skip if not set
+        $self->inspect_register_value($_, $val);
+        s/^stgs.//g;
+        my $setting = Fieldmapper::staging::setting_stage->new;
+        $setting->setting($_);
+        $setting->value('true');
+        push @$settings, $setting;
+    }
+
     # At least one value was invalid. Exit early and re-render.
     return Apache2::Const::OK if $ctx->{register}{invalid};
 
@@ -72,7 +88,7 @@ sub load_patron_reg {
     my $resp = $U->simplereq(
         'open-ils.actor', 
         'open-ils.actor.user.stage.create',
-        $user, $addr
+        $user, $addr, undef, [], $settings
     );
 
     if (!$resp or ref $resp) {
@@ -113,6 +129,25 @@ sub collect_requestor_info {
         $vhash->{stgma}{state} = $addr->state;
         $vhash->{stgma}{post_code} = $addr->post_code;
     }
+}
+
+sub collect_opt_in_settings {
+    my $self = shift;
+    my $e = $self->editor;
+
+    my $types = $e->json_query({
+        select => {cust => ['name']},
+        from => {atevdef => 'cust'},
+        transform => 'distinct',
+        where => {
+            '+atevdef' => {
+                owner => [ map { $_ } @{ $self->ctx->{register}{valid_orgs} } ],
+                active => 't'
+            }
+        }
+    });
+    $self->ctx->{register}{opt_in_settings} =
+        $e->search_config_usr_setting_type({name => [map {$_->{name}} @$types]});
 }
 
 # if the username is in use by an actor.usr OR a 
@@ -223,7 +258,22 @@ sub collect_register_validation_settings {
 sub inspect_register_value {
     my ($self, $field_path, $value) = @_;
     my $ctx = $self->ctx;
-    my ($scls, $field) = split(/\./, $field_path);
+    my ($scls, $field) = split(/\./, $field_path, 2);
+
+    if ($scls eq 'stgs') {
+        my $found = 0;
+        foreach my $type (@{ $self->ctx->{register}{opt_in_settings} }) {
+            if ($field eq $type->name) {
+                $found = 1;
+            }
+        }
+        if (!$found) {
+            $ctx->{register}{invalid}{$scls}{$field}{invalid} = 1;
+            $logger->info("patron register: trying to set an opt-in ".
+                          "setting $field that is not allowed.");
+        }
+        return;
+    }
 
     if (!$value) {
 

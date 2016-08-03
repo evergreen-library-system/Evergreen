@@ -172,6 +172,21 @@ FOR field_def IN register_fields;
 </tr>
 [% END %]
 <!-- ====> shifting the code back to the right for context -->
+                    [% IF ctx.register.opt_in_settings.size > 0 %]
+                        [% FOR optin IN ctx.register.opt_in_settings %]
+                        <tr>
+                            <td><label for="stgs.[% optin.name | uri %]'">[% optin.label | html %]</label></td>
+                            <td>
+                                <input type='checkbox'
+                                    name='stgs.[% optin.name | uri %]'
+                                    id='stgs.[% optin.name | uri %]'
+                                    title="[% optin.label | html %]"
+                                ></input>
+                            </td>
+                            <td><!-- display errors and example text --></td>
+                        </tr>
+                        [% END %]
+                    [% END %]
                     <tr>
                         <td colspan='3'>
                             <a href="[% ctx.opac_root %]/home" 
