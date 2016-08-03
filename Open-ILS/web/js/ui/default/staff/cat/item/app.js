@@ -902,6 +902,7 @@ function($scope , $q , $location , $routeParams , $timeout , $window , egCore , 
         delete $scope.circ;
         delete $scope.circ_summary;
         delete $scope.prev_circ_summary;
+        delete $scope.prev_circ_usr;
         if (!copyId) return;
         
         egCore.pcrud.search('circ', 
@@ -945,12 +946,12 @@ function($scope , $q , $location , $routeParams , $timeout , $window , egCore , 
             ).then(null, null, function(summary) {
                 $scope.prev_circ_summary = summary.summary;
 
-                egCore.pcrud.retrieve('au', summary.usr,
-                    {flesh : 1, flesh_fields : {au : ['card']}})
+                if (summary.usr) { // aged circs have no 'usr'.
+                    egCore.pcrud.retrieve('au', summary.usr,
+                        {flesh : 1, flesh_fields : {au : ['card']}})
 
-                .then(function(user) {
-                    $scope.prev_circ_usr = user;
-                });
+                    .then(function(user) { $scope.prev_circ_usr = user });
+                }
             });
         });
     }
@@ -976,7 +977,8 @@ function($scope , $q , $location , $routeParams , $timeout , $window , egCore , 
     $scope.retrieveAllPatrons = function() {
         var users = new Set();
         angular.forEach($scope.circ_list.map(function(circ) { return circ.usr(); }),function(usr) {
-            users.add(usr);
+            // aged circs have no 'usr'.
+            if (usr) users.add(usr);
         });
         users.forEach(function(usr) {
             $timeout(function() {
@@ -1010,11 +1012,11 @@ function($scope , $q , $location , $routeParams , $timeout , $window , egCore , 
 
         }).then(function(count) {
 
-            egCore.pcrud.search('circ', 
+            egCore.pcrud.search('combcirc', 
                 {target_copy : copyId},
                 {   flesh : 2,
                     flesh_fields : {
-                        circ : [
+                        combcirc : [
                             'usr',
                             'workstation',                                         
                             'checkin_workstation',                                 
@@ -1022,7 +1024,7 @@ function($scope , $q , $location , $routeParams , $timeout , $window , egCore , 
                         ],
                         au : ['card']
                     },
-                    order_by : {circ : 'xact_start desc'}, 
+                    order_by : {combcirc : 'xact_start desc'}, 
                     limit :  count
                 }
 

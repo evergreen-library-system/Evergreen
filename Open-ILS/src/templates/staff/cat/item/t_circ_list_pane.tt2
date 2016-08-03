@@ -17,17 +17,20 @@
 <div class="row" ng-repeat="circ in circ_list">
   <div class="flex-row">
     <div class="flex-cell well">
-      <a href="./circ/patron/{{circ.usr().id()}}/checkout" target="_self">
+      <a ng-if="circ.usr()" target="_self"
+        href="./circ/patron/{{circ.usr().id()}}/checkout">
         [% l('[_1], [_2] [_3] : [_4]', 
           '{{circ.usr().family_name()}}'
           '{{circ.usr().first_given_name()}}'
           '{{circ.usr().second_given_name()}}'
           '{{circ.usr().card().barcode()}}') %]
       </a>
+      <span ng-if="!circ.usr()">[% l('<Aged Circulation>') | html %]</span>
       <span class="pad-horiz">[% l('Circulation ID: [_1]', '{{circ.id()}}') %]</span>
     </div>
     <div>
-      <button class="btn btn-default" ng-click="addBilling(circ)">
+      <button class="btn btn-default" ng-click="addBilling(circ)" 
+        ng-disabled="!circ.usr()">
         [% l('Add Billing') %]
       </button>
     </div>

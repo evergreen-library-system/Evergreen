@@ -14,13 +14,16 @@
     <div class="flex-cell">[% l('Patron') %]</div>
     <div class="flex-cell well">
       <a href="./circ/patron/{{prev_circ_usr.id()}}/checkout" 
-        ng-if="prev_circ_summary" target="_self">
+        ng-if="prev_circ_usr" target="_self">
         [% l('[_1], [_2] [_3] : [_4]', 
-          '{{prev_circ_usr.family_name()}}'
-          '{{prev_circ_usr.first_given_name()}}'
-          '{{prev_circ_usr.second_given_name()}}'
-          '{{prev_circ_usr.card().barcode()}}') %]
+        '{{prev_circ_usr.family_name()}}'
+        '{{prev_circ_usr.first_given_name()}}'
+        '{{prev_circ_usr.second_given_name()}}'
+        '{{prev_circ_usr.card().barcode()}}') %]
       </a>
+      <span ng-show="!prev_circ_usr">
+        [% l('<Aged Circulation>') | html %]
+    </span>
     </div>
   </div>
 
