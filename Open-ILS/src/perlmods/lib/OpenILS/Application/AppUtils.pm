@@ -1811,7 +1811,7 @@ sub create_uuid_string {
 
 sub create_circ_chain_summary {
     my($class, $e, $circ_id) = @_;
-    my $sum = $e->json_query({from => ['action.summarize_circ_chain', $circ_id]})->[0];
+    my $sum = $e->json_query({from => ['action.summarize_all_circ_chain', $circ_id]})->[0];
     return undef unless $sum;
     my $obj = Fieldmapper::action::circ_chain_summary->new;
     $obj->$_($sum->{$_}) for keys %$sum;
