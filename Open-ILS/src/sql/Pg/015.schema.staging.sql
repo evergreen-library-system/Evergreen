@@ -60,6 +60,15 @@ CREATE TABLE staging.statcat_stage (
         complete        BOOL DEFAULT FALSE
 );
 
+CREATE TABLE staging.setting_stage (
+        row_id          BIGSERIAL PRIMARY KEY,
+        row_date        TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+        usrname         TEXT NOT NULL,
+        setting         TEXT NOT NULL,
+        value           TEXT NOT NULL,
+        complete        BOOL DEFAULT FALSE
+);
+
 -- stored procedure for deleting expired pending patrons
 CREATE OR REPLACE FUNCTION staging.purge_pending_users() RETURNS VOID AS $$
 DECLARE

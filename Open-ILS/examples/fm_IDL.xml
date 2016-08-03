@@ -9608,6 +9608,17 @@ SELECT  usr,
         </fields>
     </class>
 
+    <class id="stgs" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="staging::setting_stage" oils_persist:tablename="staging.setting_stage" reporter:label="User Setting Stage">
+        <fields oils_persist:primary="row_id" oils_persist:sequence="staging.setting_stage_row_id_seq">
+            <field reporter:label="Row ID" name="row_id" reporter:datatype="id"/>
+            <field reporter:label="Row Date" name="row_date" reporter:datatype="timestamp"/>
+            <field reporter:label="User Name" name="usrname" reporter:datatype="text"/>
+            <field reporter:label="User Setting Code" name="setting" reporter:datatype="text"/>
+            <field reporter:label="User Setting Value" name="value" reporter:datatype="text"/>
+            <field reporter:label="Complete" name="complete" reporter:datatype="bool"/>
+        </fields>
+    </class>
+
 	<class id="afs" controller="open-ils.cstore" oils_obj:fieldmapper="action::fieldset" oils_persist:tablename="action.fieldset" reporter:label="Fieldset">
 		<fields oils_persist:primary="id" oils_persist:sequence="action.fieldset_id_seq">
 			<field reporter:label="Fieldset ID" name="id" reporter:datatype="id"/>

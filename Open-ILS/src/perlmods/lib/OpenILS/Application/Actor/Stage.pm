@@ -13,7 +13,8 @@ __PACKAGE__->register_method (
     api_name    => 'open-ils.actor.user.stage.create',
     signature => {
         desc => q/
-            Creates a new pending user account including addresses and statcats.
+            Creates a new pending user account including addresses, statcats, and
+            settings.
             Users are added to staging tables pending staff review.
         /,
         params => [
@@ -21,6 +22,7 @@ __PACKAGE__->register_method (
             {desc => 'Mailing address.  Optional', type => 'object', class => 'stgma'},
             {desc => 'Billing address.  Optional', type => 'object', class => 'stgba'},
             {desc => 'Statcats.  Optional.  This is an array of "stgsc" objects', type => 'array'},
+            {desc => 'Settings.  Optional.  This is an array of "stgs" objects', type => 'array'},
         ],
         return => {
             desc => 'username on success, Event on error',
@@ -31,7 +33,7 @@ __PACKAGE__->register_method (
 );
 
 sub create_user_stage {
-    my($self, $conn, $user, $mail_addr, $bill_addr, $statcats) = @_; # more?
+    my($self, $conn, $user, $mail_addr, $bill_addr, $statcats, $settings) = @_; # more?
 
     return OpenILS::Event->new('BAD_PARAMS') unless $user;
     return 0 unless $U->ou_ancestor_setting_value($user->home_ou, 'opac.allow_pending_user');
@@ -61,6 +63,13 @@ sub create_user_stage {
         foreach (@$statcats) {
             $_->usrname($uname);
             $e->create_staging_statcat_stage($_) or return $e->die_event;
+        }
+    }
+
+    if($settings) {
+        foreach (@$settings) {
+            $_->usrname($uname);
+            $e->create_staging_setting_stage($_) or return $e->die_event;
         }
     }
 
@@ -111,7 +120,8 @@ sub flesh_user_stage {
         billing_addresses => $e->search_staging_billing_address_stage({usrname => $user->usrname}),
         mailing_addresses => $e->search_staging_mailing_address_stage({usrname => $user->usrname}),
         cards => $e->search_staging_card_stage({usrname => $user->usrname}),
-        statcats => $e->search_staging_statcat_stage({usrname => $user->usrname})
+        statcats => $e->search_staging_statcat_stage({usrname => $user->usrname}),
+        settings => $e->search_staging_setting_stage({usrname => $user->usrname}),
     };
 }
 
@@ -169,6 +179,10 @@ sub delete_user_stage {
 
     for my $statcat (@{$data->{statcats}}) {
         $e->delete_staging_statcat_stage($statcat) or return $e->die_event;
+    }
+
+    for my $setting (@{$data->{settings}}) {
+        $e->delete_staging_setting_stage($setting) or return $e->die_event;
     }
 
     $e->commit;
