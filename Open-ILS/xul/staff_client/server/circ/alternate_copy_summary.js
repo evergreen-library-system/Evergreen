@@ -448,17 +448,26 @@ function load_item() {
             set("stop_fines", details.circ.stop_fines()); 
             set("stop_fines_time", util.date.formatted_date( details.circ.stop_fines_time(), '%{localized}' )); 
             set("target_copy", details.circ.target_copy()); 
-            set("circ_usr", details.circ.usr()); 
-            network.simple_request('FM_AU_FLESHED_RETRIEVE_VIA_ID',[ ses(), details.circ.usr() ], function(preq) {
-                var r_au = preq.getResultObject();
-                JSAN.use('patron.util');
-                set(
-                    'patron_name', 
-                    patron.util.format_name( r_au ) + ' : ' + r_au.card().barcode(),
-                    details.circ.usr()
-                );
+
+            if (details.circ.usr()) {
+                set("circ_usr", details.circ.usr()); 
+                network.simple_request('FM_AU_FLESHED_RETRIEVE_VIA_ID',
+                    [ ses(), details.circ.usr() ], function(preq) {
+                    var r_au = preq.getResultObject();
+                    JSAN.use('patron.util');
+                    set(
+                        'patron_name', 
+                        patron.util.format_name( r_au ) + ' : ' + r_au.card().barcode(),
+                        details.circ.usr()
+                    );
+                    set_tooltip('patron_name','circ id ' + details.circ.id());
+                });
+            } else {
+                set("circ_usr", "");
+                set('patron_name', document.getElementById(
+                    'circStrings').getString('staff.circ.aged_circ'));
                 set_tooltip('patron_name','circ id ' + details.circ.id());
-            });
+            }
             set("xact_finish", util.date.formatted_date( details.circ.xact_finish(), '%{localized}' )); 
             set("xact_start", util.date.formatted_date( details.circ.xact_start(), '%{localized}' )); 
             set("create_time", util.date.formatted_date( details.circ.create_time(), '%{localized}' )); 
@@ -491,16 +500,22 @@ function load_item() {
                     var robj = req.getResultObject();
                     if (!robj || typeof robj == 'null') { return; }
                     var summary = robj['summary'];
-                    network.simple_request('FM_AU_FLESHED_RETRIEVE_VIA_ID',[ ses(), robj['usr'] ], function(preq) {
-                        var r_au = preq.getResultObject();
-                        JSAN.use('patron.util');
-                        set(
-                            'prev_patron_name', 
-                            patron.util.format_name( r_au ) + ' : ' + r_au.card().barcode(),
-                            robj['usr']
-                        );
+                    if (robj['usr']) {
+                        network.simple_request('FM_AU_FLESHED_RETRIEVE_VIA_ID',[ ses(), robj['usr'] ], function(preq) {
+                            var r_au = preq.getResultObject();
+                            JSAN.use('patron.util');
+                            set(
+                                'prev_patron_name', 
+                                patron.util.format_name( r_au ) + ' : ' + r_au.card().barcode(),
+                                robj['usr']
+                            );
+                            set_tooltip('prev_patron_name','circ chain prior to circ id ' + details.circ.id());
+                        });
+                    } else {
+                        set('prev_patron_name', document.getElementById(
+                            'circStrings').getString('staff.circ.aged_circ'));
                         set_tooltip('prev_patron_name','circ chain prior to circ id ' + details.circ.id());
-                    });
+                    }
                     set("prev_num_circs", summary.num_circs());
                     set("prev_num_renewals", Number(summary.num_circs()) - 1);
                     set("prev_xact_start", util.date.formatted_date( summary.start_time(), '%{localized}' )); 

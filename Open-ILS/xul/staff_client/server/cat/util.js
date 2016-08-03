@@ -418,6 +418,20 @@ cat.util.mark_item_damaged = function(copy_ids) {
                                     /* short-circuit this behavior.  We don't want to mark an item damaged and still have it circulating.  At least for now.  Wait until someone asks for it. */
                                     auto_checkin = true; 
                                     JSAN.use('patron.util');
+
+                                    if (!my_circ.usr()) {
+                                        // Since we are looking at copies that are still checked out,
+                                        // we should never get here.  Best to be safe, though.
+                                        alert(
+                                            document.getElementById('catStrings')
+                                            .getFormattedString(
+                                                'staff.cat.util.mark_item_damaged.item_no_linked_patron',
+                                                copies[i].barcode()
+                                            )
+                                        );
+                                        continue;
+                                    }
+
                                     var patron_obj = patron.util.retrieve_fleshed_au_via_id( ses(), my_circ.usr() );
                                     var patron_name = patron.util.format_name( patron_obj ) + ' : ' + patron_obj.card().barcode();
                                     var msg = $("catStrings").getFormattedString('staff.cat.util.mark_item_damaged.item_circulating_to_patron', [ 

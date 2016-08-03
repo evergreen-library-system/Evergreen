@@ -68,13 +68,21 @@
                         if (get_bool(r_circ.opac_renewal() ) ) r += 'OPAC ';
                         if (get_bool(r_circ.phone_renewal() ) ) r += 'PHONE ';
                         $('renewal').value = r || document.getElementById('circStrings').getString('staff.circ.checkout.no.btn');
-                        g.patron_id = r_circ.usr(); $('add_billing').disabled = false;
-                        g.network.simple_request('FM_AU_FLESHED_RETRIEVE_VIA_ID',[ ses(), r_circ.usr() ], function(preq) {
-                            var r_au = preq.getResultObject();
-                            JSAN.use('patron.util'); 
-                            $('patron_name').value = patron.util.format_name( r_au ) + ' : ' + r_au.card().barcode();
-                            patron.util.set_penalty_css(r_au);
-                        });
+                        g.patron_id = r_circ.usr(); 
+                        if (g.patron_id) {
+                            $('add_billing').disabled = false;
+                            g.network.simple_request(
+                                'FM_AU_FLESHED_RETRIEVE_VIA_ID',[ ses(), r_circ.usr() ], function(preq) {
+                                var r_au = preq.getResultObject();
+                                JSAN.use('patron.util'); 
+                                $('patron_name').value = patron.util.format_name( r_au ) + ' : ' + r_au.card().barcode();
+                                patron.util.set_penalty_css(r_au);
+                            });
+                        } else {
+                            $('patron_name').value = 
+                                document.getElementById('circStrings')
+                                .getString('staff.circ.aged_circ');
+                        }
 
                     } catch(E) {
                         g.error.standard_unexpected_error_alert(document.getElementById('circStrings').getString('staff.circ.circ_brief.failure'), E);
@@ -82,7 +90,7 @@
                 }
 
                 if (g.circ_id) {
-                    g.network.simple_request( 'FM_CIRC_RETRIEVE_VIA_ID', [ ses(), g.circ_id ], circ_callback);
+                    g.network.simple_request( 'FM_CIRC_RETRIEVE_VIA_ID', [ ses(), g.circ_id, true ], circ_callback);
                 } else {
                     g.circ = g.data.temp_circ; g.data.temp_circ = null; g.data.stash('temp_circ');
                     g.circ_id = g.data.temp_circ_id; g.data.temp_circ_id = null; g.data.stash('temp_circ_id');
@@ -90,7 +98,7 @@
                     if (g.circ) {
                         circ_callback( { 'getResultObject' : function() { return g.circ; } } );
                     } else {
-                        g.network.simple_request( 'FM_CIRC_RETRIEVE_VIA_ID', [ ses(), g.circ_id ], circ_callback);
+                        g.network.simple_request( 'FM_CIRC_RETRIEVE_VIA_ID', [ ses(), g.circ_id, true ], circ_callback);
                     }
                 }
 

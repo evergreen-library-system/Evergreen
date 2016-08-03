@@ -141,6 +141,10 @@ circ.util.show_last_few_circs = function(selection_list) {
             if (typeof my_xulG.retrieve_these_patrons == 'undefined') continue;
             var patrons = my_xulG.retrieve_these_patrons;
             for (var j = 0; j < patrons.length; j++) {
+
+                // combcirc objects may have a null value for user
+                if (!patrons[j]) continue;
+
                 if (typeof window.xulG == 'object' && typeof window.xulG.new_tab == 'function') {
                     try {
                         window.xulG.new_patron_tab( {}, { 'id' : patrons[j] } );

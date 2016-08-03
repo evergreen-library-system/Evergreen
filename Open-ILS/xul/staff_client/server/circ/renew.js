@@ -152,7 +152,16 @@ circ.renew.prototype = {
                             for (var i = 0; i < obj.selection_list.length; i++) {
                                 var circs = obj.network.simple_request('FM_CIRC_RETRIEVE_VIA_COPY',[ses(),obj.selection_list[i].copy_id,1]);
                                 if (circs.length > 0) {
-                                    patrons[circs[0].usr()] = 1;
+                                    if (circs[0].usr()) {
+                                        patrons[circs[0].usr()] = 1;
+                                    } else {
+                                        alert(
+                                            document.getElementById('circStrings')
+                                            .getFormattedString(
+                                                'staff.circ.item_no_user', 
+                                                [obj.selection_list[i].barcode])
+                                        );
+                                    }
                                 } else {
                                     alert(document.getElementById('circStrings').getFormattedString('staff.circ.item_no_circs', [obj.selection_list[i].barcode]));
                                 }
