@@ -1,8 +1,13 @@
 <div id='oils-selfck-circ-info-div'>
     <div id='oils-selfck-info-nav'>
         <span><a id='oils-selfck-nav-home' href='javascript:void(0);' class='selected'><button type="button" class="self-button">[% l('Home') %]</button></a></span>
-        <span><a id='oils-selfck-nav-logout-print' href='javascript:void(0);'><button type="button" class="self-button">[% l('Logout') %]</button></a></span>
-        <span><a id='oils-selfck-nav-logout' href='javascript:void(0);'><button type="button" class="self-button">[% l('Logout (No Receipt)') %]</button></a></span>
+        <span><a id='oils-selfck-nav-logout' href='javascript:void(0);'><button type="button" class="self-button">[% l('Logout') %]</button></a></span>
+    </div>
+    <div id='oils-selfck-info-nav'>
+        <span for='oils-selfck-nav-receipt'>[% l('Receipt:') %] </span>
+        <span class="hidden"><input type="radio" name="receipt_type" id='oils-selfck-receipt-email' value="email"/><label for="oils-selfck-receipt-email"> [% l('Email') %]</label></span>
+        <span><input type="radio" name="receipt_type" id='oils-selfck-receipt-print' value="email" checked/><label for="oils-selfck-receipt-print"> [% l('Print') %]</label></span>
+        <span><input type="radio" name="receipt_type" id='oils-selfck-receipt-none' value="email"/><label for="oils-selfck-receipt-none"> [% l('None') %]</label></span>
     </div>
     <fieldset>
         <legend>[% l('Items Checked Out') %]</legend>

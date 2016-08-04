@@ -202,8 +202,7 @@ SelfCheckManager.prototype.init = function() {
             );
         },
         'oils-selfck-nav-home' : function() { self.drawCircPage(); },
-        'oils-selfck-nav-logout' : function() { self.logoutPatron(); },
-        'oils-selfck-nav-logout-print' : function() { self.logoutPatron(true); },
+        'oils-selfck-nav-logout' : function() { self.logoutPatron(true); },
         'oils-selfck-items-out-details-link' : function() { self.drawItemsOutPage(); },
         'oils-selfck-print-list-link' : function() { self.printList(); }
     }
@@ -466,10 +465,28 @@ SelfCheckManager.prototype.fetchPatron = function(barcode, usrname) {
         this.handleAlert('', false, 'login-success');
         dojo.byId('oils-selfck-user-banner').innerHTML = 
             dojo.string.substitute(localeStrings.WELCOME_BANNER, [this.patron.first_given_name()]);
+
+        if (this.patron.email() && // they have an email address set and ...
+            this.patron.email().match(/.*@.*/).length > 0 // it sorta looks like an email address
+        ) {
+            openils.Util.removeCSSClass( dojo.byId('oils-selfck-receipt-email').parentNode, 'hidden' );
+            if (user_setting_value(this.patron, 'circ.send_email_checkout_receipts') == 'true') // their selected default
+                dojo.byId('oils-selfck-receipt-email').checked = true;
+        }
+
         this.drawCircPage();
     }
 }
 
+function user_setting_value (user, setting) {
+    if (user) {
+        var list = user.settings().filter(function(s){
+            return s.name() == setting;
+        });
+
+        if (list.length) return list[0].value();
+    }
+}
 
 SelfCheckManager.prototype.handleAlert = function(message, shouldPopup, sound) {
 
@@ -1311,6 +1328,40 @@ SelfCheckManager.prototype.initPrinter = function() {
 }
 
 /**
+ * Email a receipt for this session's checkouts
+ */
+SelfCheckManager.prototype.emailSessionReceipt = function(callback) {
+
+    var circIds = [];
+
+    // collect the circs and failure info
+    dojo.forEach(
+        this.checkouts, 
+        function(blob) {
+            circIds.push(blob.circ);
+        }
+    );
+
+    var params = [
+        this.authtoken, 
+        this.patron.id(),
+        circIds
+    ];
+
+    var self = this;
+    fieldmapper.standardRequest(
+        ['open-ils.circ', 'open-ils.circ.checkout.batch_notify.session.atomic'],
+        {   
+            async : true,
+            params : params,
+            oncomplete : function() {
+                if (callback) callback(); // fire and forget
+            }
+        }
+    );
+}
+
+/**
  * Print a receipt for this session's checkouts
  */
 SelfCheckManager.prototype.printSessionReceipt = function(callback) {
@@ -1386,6 +1437,7 @@ SelfCheckManager.prototype.printData = function(data, numItems, callback) {
         sleepTime 
     );
 }
+
 
 
 /**
@@ -1585,11 +1637,22 @@ SelfCheckManager.prototype.printFinesReceipt = function(callback) {
 SelfCheckManager.prototype.logoutPatron = function(print) {
     progressDialog.show(true); // prevent patron from clicking logout link twice
     if(print && this.checkouts.length) {
-        this.printSessionReceipt(
-            function() {
-                location.href = location.href;
-            }
-        );
+        if (dojo.byId('oils-selfck-receipt-print').checked) {
+            this.printSessionReceipt(
+                function() {
+                    location.href = location.href;
+                }
+            );
+        } else if (dojo.byId('oils-selfck-receipt-email').checked) {
+            this.emailSessionReceipt(
+                function() {
+                    location.href = location.href;
+                }
+            );
+        } else {
+            // user elected to get no receipt
+            location.href = location.href;
+        }
     } else {
         location.href = location.href;
     }
