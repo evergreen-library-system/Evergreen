@@ -843,18 +843,12 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
         if (angular.isArray(evt)) evt = evt[0];
 
         if (!evt.payload.old_circ) {
-            return egCore.net.request(
-                'open-ils.search',
-                'open-ils.search.asset.copy.fleshed2.find_by_barcode',
-                params.copy_barcode
-            ).then(function(resp){
-                console.log(resp);
-                if (egCore.evt.parse(resp)) {
-                    console.error(egCore.evt.parse(resp));
-                } else {
-                   evt.payload.old_circ = resp.circulations()[0];
-                   return service.circ_exists_dialog_impl( evt, params, options );
-                }
+            return egCore.pcrud.search('circ',
+                {target_copy : evt.payload.copy.id(), checkin_time : null},
+                {limit : 1} // should only ever be 1
+            ).then(function(old_circ) {
+                evt.payload.old_circ = old_circ;
+               return service.circ_exists_dialog_impl(evt, params, options);
             });
         } else {
             return service.circ_exists_dialog_impl( evt, params, options );
