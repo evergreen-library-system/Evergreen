@@ -54,6 +54,7 @@
 
 [%- IF ENV.OILS_NOVELIST_URL -%]
             /* Load novelist content */
+            setTimeout( function() {
             novSelect.loadContentForQuery(
                 {
                     ClientIdentifier : '[% ident %]',
@@ -67,7 +68,7 @@
                     // hide the Loading... text
                     dojo.byId('novelist-loading').innerHTML = '';
                 }
-            );
+            )}, 100);
 [%- END; # Novelist -%]
 
         [% END; # IF ident
