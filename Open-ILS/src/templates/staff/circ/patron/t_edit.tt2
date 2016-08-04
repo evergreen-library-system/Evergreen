@@ -334,6 +334,17 @@ within the "form" by name for validation.
   </div>
 </div>
 
+<div class="row reg-field-row" ng-show="show_field('au.email') && opt_in_setting_types['circ.send_email_checkout_receipts']">
+  <div class="col-md-3 reg-field-label">
+    <label>{{opt_in_setting_types['circ.send_email_checkout_receipts'].label()}}</label>
+  </div>
+  <div class="col-md-3 reg-field-input">
+    <input
+      ng-change="field_modified()"
+      type='checkbox' ng-model="user_settings['circ.send_email_checkout_receipts']"/>
+  </div>
+</div>
+
 <!-- DAY_PHONE -->
 
 <div class="row reg-field-row" ng-show="show_field('au.day_phone')">
@@ -657,10 +668,10 @@ within the "form" by name for validation.
 </div>
 
 <div class="row reg-field-row" ng-repeat="type in opt_in_setting_types">
-  <div class="col-md-3 reg-field-label">
+  <div class="col-md-3 reg-field-label" ng-if="type.name() != 'circ.send_email_checkout_receipts'">
     <label>{{type.label()}}</label>
   </div>
-  <div class="col-md-3 reg-field-input">
+  <div class="col-md-3 reg-field-input" ng-if="type.name() != 'circ.send_email_checkout_receipts'">
     <input 
       ng-change="field_modified()" 
       type='checkbox' ng-model="user_settings[type.name()]"/>
