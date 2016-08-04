@@ -31,6 +31,8 @@ module.exports = function(grunt) {
             'bower_components/angular-tree-control/angular-tree-control.js',
             'bower_components/ngtoast/dist/ngToast.min.js',
             'bower_components/jquery/dist/jquery.min.js',
+            'bower_components/angular-cookies/angular-cookies.min.js',
+            'bower_components/angular-cookies/angular-cookies.min.js.map'
           ]
         }]
       },

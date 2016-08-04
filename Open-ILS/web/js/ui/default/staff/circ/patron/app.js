@@ -207,8 +207,8 @@ angular.module('egPatronApp', ['ngRoute', 'ui.bootstrap',
  * Patron service
  */
 .factory('patronSvc',
-       ['$q','$timeout','$location','egCore','egUser','$locale',
-function($q , $timeout , $location , egCore,  egUser , $locale) {
+       ['$q','$timeout','$location','$cookies','egCore','egUser','$locale',
+function($q , $timeout , $location , $cookies , egCore,  egUser , $locale) {
 
     var service = {
         // cached patron search results
@@ -271,7 +271,7 @@ function($q , $timeout , $location , egCore,  egUser , $locale) {
 
         // when loading a new patron, update the last patron setting
         if (!service.current || service.current.id() != user_id)
-            egCore.hatch.setLocalItem('eg.circ.last_patron', user_id);
+            $cookies.put('eg.circ.last_patron', user_id);
 
         // avoid running multiple retrievals for the same patron, which
         // can happen during dbl-click by maintaining a single running
@@ -1553,10 +1553,10 @@ function($scope,  $routeParams , $q , egCore , patronSvc) {
 }])
 
 .controller('PatronFetchLastCtrl',
-       ['$scope','$location','egCore',
-function($scope , $location , egCore) {
+       ['$scope','$location','$cookies','egCore',
+function($scope , $location , $cookies, egCore) {
 
-    var id = egCore.hatch.getLocalItem('eg.circ.last_patron');
+    var id = $cookies.get('eg.circ.last_patron');
     if (id) return $location.path('/circ/patron/' + id + '/checkout');
 
     $scope.no_last = true;

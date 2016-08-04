@@ -12,6 +12,7 @@ module.exports = function(config){
       'bower_components/angular-file-saver/dist/angular-file-saver.bundle.min.js',
       'build/js/ui-bootstrap.min.js',
       'build/js/hotkeys.min.js',
+      'build/js/angular-cookies.min.js',
       /* OpenSRF must be installed first */
       '/openils/lib/javascript/md5.js',
       '/openils/lib/javascript/JSON_v1.js',

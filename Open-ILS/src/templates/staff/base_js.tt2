@@ -12,6 +12,7 @@
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/angular-location-update.min.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/angular-animate.min.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/angular-sanitize.min.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/angular-cookies.min.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/ngToast.min.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/angular-tree-control.js"></script>
 
