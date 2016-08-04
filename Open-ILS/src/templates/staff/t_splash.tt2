@@ -35,6 +35,19 @@
           <div class="panel-title text-center">[% l('Item Search and Cataloging') %]</div>
         </div>
         <div class="panel-body">
+          <div class="row">
+            <div class="col-md-8">
+                <input focus-me="focus_search" 
+                    class="form-control" ng-model="cat_query" type="text" 
+                    ng-keypress="catalog_search($event)"
+                    placeholder="[% l('Search catalog for...') %]"/>
+            </div>
+            <div class="col-md-4">
+                <button class='btn btn-default' ng-click="catalog_search()">
+                    [% l('Search') %]
+                </button>
+            </div>
+          </div>
           <div>
             <img src="/xul/server/skin/media/images/portal/bucket.png"/>
             <a target="_self" href="./cat/bucket/record/">[% l('Record Buckets') %]</a>

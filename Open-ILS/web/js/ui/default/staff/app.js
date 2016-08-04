@@ -117,9 +117,17 @@ function($routeProvider , $locationProvider) {
 /**
  * Splash page dynamic content.
  */
-.controller('SplashCtrl', ['$scope',
-    function($scope) {
-        console.log('SplashCtrl');
+.controller('SplashCtrl', ['$scope', '$window', function($scope, $window) {
+    console.log('SplashCtrl');
+    $scope.focus_search = true;
+
+    $scope.catalog_search = function($event) {
+        $scope.focus_search = true;
+        if (!$scope.cat_query) return;
+        if ($event && $event.keyCode != 13) return; // input ng-keypress
+        $window.location.href = 
+            '/eg/staff/cat/catalog/results?query=' + 
+            encodeURIComponent($scope.cat_query);
     }
-]);
+}]);
 

@@ -40,6 +40,14 @@ angular.module('egCatalogApp', ['ui.bootstrap','ngRoute','ngLocationUpdate','egC
         resolve : resolver
     });
 
+    // Jump directly to the results page.  Any URL parameter 
+    // supported by the embedded catalog is supported here.
+    $routeProvider.when('/cat/catalog/results', {
+        templateUrl: './cat/catalog/t_catalog',
+        controller: 'CatalogCtrl',
+        resolve : resolver
+    });
+
     $routeProvider.when('/cat/catalog/retrieve_by_id', {
         templateUrl: './cat/catalog/t_retrieve_by_id',
         controller: 'CatalogRecordRetrieve',
@@ -1417,6 +1425,19 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         // specific page.
         if ($routeParams.record_id) {
             url = url.replace(/advanced/, '/record/' + $scope.record_id);
+        }
+
+        // Jumping directly to the results page by passing a search
+        // query via the URL.  Copy all URL params to the iframe url.
+        if ($location.path().match(/catalog\/results/)) {
+            url = url.replace(/advanced/, '/results?');
+            var first = true;
+            angular.forEach($location.search(), function(val, key) {
+                if (!first) url += '&';
+                first = false;
+                url += encodeURIComponent(key) 
+                    + '=' + encodeURIComponent(val);
+            });
         }
 
         $scope.catalog_url = url;
