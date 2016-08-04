@@ -1786,18 +1786,19 @@ DECLARE
     merge_profile   vandelay.merge_profile%ROWTYPE;
     dyn_profile     vandelay.compile_profile%ROWTYPE;
     editor_string   TEXT;
-    editor_id       INT;
+    new_editor      INT;
+    new_edit_date   TIMESTAMPTZ;
     source_marc     TEXT;
     target_marc     TEXT;
+    eg_marc_row     authority.record_entry%ROWTYPE;
     eg_marc         TEXT;
     v_marc          TEXT;
     replace_rule    TEXT;
     match_count     INT;
-    update_fields   TEXT[];
     update_query    TEXT;
 BEGIN
 
-    SELECT  b.marc INTO eg_marc
+    SELECT  * INTO eg_marc_row
       FROM  authority.record_entry b
             JOIN vandelay.authority_match m ON (m.eg_record = b.id AND m.queued_record = import_id)
       LIMIT 1;
@@ -1806,6 +1807,8 @@ BEGIN
       FROM  vandelay.queued_record q
             JOIN vandelay.authority_match m ON (m.queued_record = q.id AND q.id = import_id)
       LIMIT 1;
+
+    eg_marc := eg_marc_row.marc;
 
     IF eg_marc IS NULL OR v_marc IS NULL THEN
         -- RAISE NOTICE 'no marc for vandelay or authority record';
@@ -1816,6 +1819,30 @@ BEGIN
     -- MARC occur.
     editor_string := 
         (oils_xpath('//*[@tag="905"]/*[@code="u"]/text()',v_marc))[1];
+
+    -- If an editor value can be found, update the authority record
+    -- editor and edit_date values.
+    IF editor_string IS NOT NULL AND editor_string <> '' THEN
+
+        -- Vandelay.pm sets the value to 'usrname' when needed.  
+        SELECT id INTO new_editor
+            FROM actor.usr WHERE usrname = editor_string;
+
+        IF new_editor IS NULL THEN
+            SELECT usr INTO new_editor
+                FROM actor.card WHERE barcode = editor_string;
+        END IF;
+
+        IF new_editor IS NOT NULL THEN
+            new_edit_date := NOW();
+        ELSE -- No valid editor, use current values
+            new_editor = eg_marc_row.editor;
+            new_edit_date = eg_marc_row.edit_date;
+        END IF;
+    ELSE
+        new_editor = eg_marc_row.editor;
+        new_edit_date = eg_marc_row.edit_date;
+    END IF;
 
     dyn_profile := vandelay.compile_profile( v_marc );
 
@@ -1848,7 +1875,9 @@ BEGIN
     END IF;
 
     UPDATE  authority.record_entry
-      SET   marc = vandelay.merge_record_xml( target_marc, source_marc, dyn_profile.add_rule, replace_rule, dyn_profile.strip_rule )
+      SET   marc = vandelay.merge_record_xml( target_marc, source_marc, dyn_profile.add_rule, replace_rule, dyn_profile.strip_rule ),
+            editor = new_editor,
+            edit_date = new_edit_date
       WHERE id = eg_id;
 
     IF NOT FOUND THEN 
@@ -1863,34 +1892,6 @@ BEGIN
       SET   imported_as = eg_id,
             import_time = NOW()
       WHERE id = import_id;
-
-    -- If an editor value can be found, update the authority record
-    -- editor and edit_date values.
-    IF editor_string IS NOT NULL AND editor_string <> '' THEN
-
-        -- Vandelay.pm sets the value to 'usrname' when needed.  
-        SELECT id INTO editor_id 
-            FROM actor.usr WHERE usrname = editor_string;
-
-        IF editor_id IS NULL THEN
-            SELECT usr INTO editor_id 
-                FROM actor.card WHERE barcode = editor_string;
-        END IF;
-
-        IF editor_id IS NOT NULL THEN
-            --only update the edit date if we have a valid editor
-            update_fields := ARRAY_APPEND(update_fields, 
-                'editor = ' || editor_id || ', edit_date = NOW()');
-        END IF;
-    END IF;
-
-    IF ARRAY_LENGTH(update_fields, 1) > 0 THEN
-        update_query := 'UPDATE authority.record_entry SET ' || 
-            ARRAY_TO_STRING(update_fields, ',') || 
-            ' WHERE id = ' || eg_id || ';';
-        --RAISE NOTICE 'query: %', update_query;
-        EXECUTE update_query;
-    END IF;
 
     RETURN TRUE;
 
