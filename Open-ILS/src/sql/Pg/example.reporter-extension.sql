@@ -110,7 +110,7 @@ SELECT	cl.shortname AS circ_lib,
 	JOIN actor.org_unit hl ON (p.home_ou = hl.id)
 	JOIN permission.grp_tree g ON (p.profile = g.id)
 	JOIN reporter.demographic dem ON (dem.id = p.id)
-	JOIN actor.usr_address paddr ON (paddr.id = p.billing_address)
+	LEFT JOIN actor.usr_address paddr ON (paddr.id = p.billing_address)
 	LEFT JOIN config.language_map lm ON (rd.item_lang = lm.code)
 	LEFT JOIN config.lit_form_map lfm ON (rd.lit_form = lfm.code)
 	LEFT JOIN config.item_form_map ifm ON (rd.item_form = ifm.code)
