@@ -17,12 +17,12 @@ function($q , $timeout , $rootScope , egNet , egHatch) {
 
         // the currently active auth token string
         token : function() {
-            return egHatch.getLocalItem('eg.auth.token');
+            return egHatch.getLoginSessionItem('eg.auth.token');
         },
 
         // authtime in seconds
         authtime : function() {
-            return egHatch.getLocalItem('eg.auth.time');
+            return egHatch.getLoginSessionItem('eg.auth.time');
         },
 
         // the currently active workstation name
@@ -68,7 +68,7 @@ function($q , $timeout , $rootScope , egNet , egHatch) {
                     }
                 } else {
                     // authtoken test failed
-                    egHatch.removeLocalItem('eg.auth.token');
+                    egHatch.clearLoginSessionItems();
                     deferred.reject(); 
                 }
             });
@@ -87,6 +87,17 @@ function($q , $timeout , $rootScope , egNet , egHatch) {
      */
     service.login = function(args) {
         var deferred = $q.defer();
+
+        // Clear old LoginSession keys that were left in localStorage
+        // when the previous user closed the browser without logging
+        // out.  Under normal circumstance, LoginSession data would
+        // have been cleared by now, either during logout or cookie
+        // expiration.  But, if for some reason the user manually
+        // removed the auth token cookie w/o closing the browser
+        // (say, for testing), then this serves double duty to ensure
+        // LoginSession data cannot persist across logins.
+        egHatch.clearLoginSessionItems();
+
         egNet.request(
             'open-ils.auth',
             'open-ils.auth.authenticate.init', args.username).then(
@@ -99,9 +110,9 @@ function($q , $timeout , $rootScope , egNet , egHatch) {
                         if (evt.textcode == 'SUCCESS') {
                             service.ws = args.workstation; 
                             service.poll();
-                            egHatch.setLocalItem(
+                            egHatch.setLoginSessionItem(
                                 'eg.auth.token', evt.payload.authtoken);
-                            egHatch.setLocalItem(
+                            egHatch.setLoginSessionItem(
                                 'eg.auth.time', evt.payload.authtime);
                             deferred.resolve();
                         } else {
@@ -157,8 +168,7 @@ function($q , $timeout , $rootScope , egNet , egHatch) {
                 'open-ils.auth', 
                 'open-ils.auth.session.delete', 
                 service.token()); // fire and forget
-            egHatch.removeLocalItem('eg.auth.token');
-            egHatch.removeLocalItem('eg.auth.time');
+            egHatch.clearLoginSessionItems();
         }
         service._user = null;
     };
