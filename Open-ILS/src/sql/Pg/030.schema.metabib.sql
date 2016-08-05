@@ -1400,15 +1400,11 @@ DECLARE
     uri_id          INT;
     uri_cn_id       INT;
     uri_map_id      INT;
+    current_uri     INT;
+    uri_map_count   INT;
+    current_map_owner_list  INT[];
+    orphaned_uri_list       INT[];
 BEGIN
-
-    -- Clear any URI mappings and call numbers for this bib.
-    -- This leads to acn / auricnm inflation, but also enables
-    -- old acn/auricnm's to go away and for bibs to be deleted.
-    FOR uri_cn_id IN SELECT id FROM asset.call_number WHERE record = bib_id AND label = '##URI##' AND NOT deleted LOOP
-        DELETE FROM asset.uri_call_number_map WHERE call_number = uri_cn_id;
-        DELETE FROM asset.call_number WHERE id = uri_cn_id;
-    END LOOP;
 
     uris := oils_xpath('//*[@tag="856" and (@ind1="4" or @ind1="1") and (@ind2="0" or @ind2="1")]',marcxml);
     IF ARRAY_UPPER(uris,1) > 0 THEN
@@ -1487,12 +1483,41 @@ BEGIN
                         INSERT INTO asset.uri_call_number_map (call_number, uri) VALUES (uri_cn_id, uri_id);
                     END IF;
 
+                    current_map_owner_list := current_map_owner_list || uri_cn_id
+
                 END LOOP;
 
             END IF;
 
         END LOOP;
     END IF;
+
+    -- Clear any orphaned URIs, URI mappings and call
+    -- numbers for this bib that weren't mapped above.
+    FOR uri_cn_id IN
+        SELECT  id
+          FROM  asset.call_number
+          WHERE record = bib_id
+                AND label = '##URI##'
+                AND NOT deleted
+                AND NOT (id = ANY (current_map_owner_list))
+    LOOP
+        -- Check for URIs to-be-orphaned URIs
+        FOR current_uri IN
+            SELECT  uri
+              FROM  asset.uri_call_number_map
+              WHERE call_number = uri_cn_id
+        LOOP
+            SELECT COUNT(*) INTO uri_map_count FROM asset.uri_call_number_map WHERE uri = current_uri;
+            IF uri_map_count = 1 THEN -- only one means it's the last
+                orphaned_uri_list := orphaned_uri_list || current_uri;
+            END IF;
+        END LOOP;
+        -- Remove links
+        DELETE FROM asset.uri_call_number_map WHERE call_number = uri_cn_id;
+        DELETE FROM asset.call_number WHERE id = uri_cn_id;
+        DELETE FROM asset.uri WHERE id = ANY (orphaned_uri_list);
+    END LOOP;
 
     RETURN;
 END;
