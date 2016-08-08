@@ -38,7 +38,8 @@ oilsRptParamEditor.prototype.draw = function() {
 		var par = params[p];
 		var row = oilsRptParamEditor.row.cloneNode(true);
 		this.tbody.appendChild(row);
-		$n(row, 'column').appendChild(text(oilsRptMakeLabel(par.path)));
+		var clabel = oilsRptMakeLabel(par.path) || par.label || par.alias;
+		$n(row, 'column').appendChild(text(clabel));
 
         if (par.field_doc) {
 		    $n(row, 'column').appendChild(

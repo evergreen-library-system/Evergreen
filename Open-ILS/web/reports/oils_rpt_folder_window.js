@@ -1,6 +1,9 @@
 dojo.requireLocalization("openils.reports", "reports");
 
 var rpt_strings = dojo.i18n.getLocalization("openils.reports", "reports");
+var NG_NEW_TEMPLATE_INTERFACE = '/eg/staff/reporter/template/new';
+var NG_CLONE_TEMPLATE_INTERFACE = '/eg/staff/reporter/template/clone';
+var NG_CLONE_LEGACY_TEMPLATE_INTERFACE = '/eg/staff/reporter/legacy/template/clone';
 var OILS_TEMPLATE_INTERFACE = 'xul/template_builder.xul';
 var OILS_LEGACY_TEMPLATE_INTERFACE = 'oils_rpt_builder.xhtml';
 
@@ -104,7 +107,11 @@ oilsRptFolderWindow.prototype.drawEditActions = function() {
 		var s = location.search+'';
 		s = s.replace(/\&folder=\d+/g,'');
 		s = s.replace(/\&ct=\d+/g,'');
-		goTo( OILS_TEMPLATE_INTERFACE+s+'&folder='+obj.folderNode.folder.id());
+		if (window.IAMBROWSER) {
+            window.top.location.href = NG_NEW_TEMPLATE_INTERFACE+'/'+obj.folderNode.folder.id();
+        } else {
+            goTo( OILS_TEMPLATE_INTERFACE+s+'&folder='+obj.folderNode.folder.id());
+        }
 	}
 
 
@@ -294,11 +301,21 @@ oilsRptFolderWindow.prototype.cloneTemplate = function(template) {
 			s = s.replace(/\&folder=\d+/g,'');
 			s = s.replace(/\&ct=\d+/g,'');
             version = JSON2js(template.data()).version;
-            if(version && version >= 2) {
-                _debug('entering new template building interface with template version ' + version);
-			    goTo(OILS_TEMPLATE_INTERFACE+s+'&folder='+folderid+'&ct='+template.id());
+            if(version && version >= 5) {
+			    window.top.location.href = NG_CLONE_TEMPLATE_INTERFACE+'/'+folderid+'/'+template.id();
+            } else if(version && version >= 2) {
+		        if (window.IAMBROWSER) {
+			        window.top.location.href = NG_CLONE_LEGACY_TEMPLATE_INTERFACE+'/'+folderid+'/'+template.id();
+                } else {
+                    _debug('entering new template building interface with template version ' + version);
+	    		    goTo(OILS_TEMPLATE_INTERFACE+s+'&folder='+folderid+'&ct='+template.id());
+                }
             } else {
-			    goTo(OILS_LEGACY_TEMPLATE_INTERFACE+s+'&folder='+folderid+'&ct='+template.id());
+		        if (window.IAMBROWSER) {
+			        window.top.location.href = NG_CLONE_LEGACY_TEMPLATE_INTERFACE+'/'+folderid+'/'+template.id();
+                } else {
+    			    goTo(OILS_LEGACY_TEMPLATE_INTERFACE+s+'&folder='+folderid+'&ct='+template.id());
+                }
             }
 		}
 	);
