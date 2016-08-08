@@ -9063,7 +9063,7 @@ SELECT  usr,
 			<link field="reports" reltype="has_many" key="folder" map="" class="rr"/>
 		</links>
 	</class>
-	<class id="rt" controller="open-ils.reporter-store" oils_obj:fieldmapper="reporter::template" oils_persist:tablename="reporter.template" reporter:label="Template">
+	<class id="rt" controller="open-ils.reporter-store open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="reporter::template" oils_persist:tablename="reporter.template" reporter:label="Template">
 		<fields oils_persist:primary="id" oils_persist:sequence="reporter.template_id_seq">
 			<field name="id" reporter:datatype="id" />
 			<field name="owner" reporter:datatype="link"/>
@@ -9079,6 +9079,14 @@ SELECT  usr,
 			<link field="folder" reltype="has_a" key="id" map="" class="rtf"/>
 			<link field="reports" reltype="has_many" key="template" map="" class="rr"/>
 		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create   permission="RUN_REPORTS" owning_user="owner" global_required="true"/>
+                <retrieve permission="RUN_REPORTS" owning_user="owner" global_required="true"/>
+                <update   permission="RUN_REPORTS" owning_user="owner" global_required="true"/>
+                <delete   permission="RUN_REPORTS" owning_user="owner" global_required="true"/>
+            </actions>
+        </permacrud>
 	</class>
 	<class id="rr" controller="open-ils.reporter-store" oils_obj:fieldmapper="reporter::report" oils_persist:tablename="reporter.report" reporter:label="Report">
 		<fields oils_persist:primary="id" oils_persist:sequence="reporter.report_id_seq">
@@ -10562,20 +10570,20 @@ SELECT  usr,
             -- -- If we expect to use pcrud to query against specific bibs, we probably want to do this.  However, if we're using this to populate a report, we
             -- -- may not.
             -- SELECT
-            --     bre.id AS "bib_id",
-            --     COALESCE( z.copy_count, 0 ) AS "copy_count",
-            --     COALESCE( z.hold_count, 0 ) AS "hold_count",
-            --     COALESCE( z.copy_hold_ratio, 0 ) AS "hold_copy_ratio"
+            --     bre.id AS bib_id,
+            --     COALESCE( z.copy_count, 0 ) AS copy_count,
+            --     COALESCE( z.hold_count, 0 ) AS hold_count,
+            --     COALESCE( z.copy_hold_ratio, 0 ) AS hold_copy_ratio
             -- FROM (
                 SELECT
-                    y.bre AS "id",
-                    COALESCE( x.copy_count, 0 ) AS "copy_count",
-                    y.hold_count AS "hold_count",
-                    (y.hold_count::REAL / (CASE WHEN x.copy_count = 0 OR x.copy_count IS NULL THEN 0.1 ELSE x.copy_count::REAL END)) AS "hold_copy_ratio"
+                    y.bre AS id,
+                    COALESCE( x.copy_count, 0 ) AS copy_count,
+                    y.hold_count AS hold_count,
+                    (y.hold_count::REAL / (CASE WHEN x.copy_count = 0 OR x.copy_count IS NULL THEN 0.1 ELSE x.copy_count::REAL END)) AS hold_copy_ratio
                 FROM (
                         SELECT
-                            (SELECT bib_record FROM reporter.hold_request_record r WHERE r.id = h.id LIMIT 1) AS "bre",
-                            COUNT(*) AS "hold_count"
+                            (SELECT bib_record FROM reporter.hold_request_record r WHERE r.id = h.id LIMIT 1) AS bre,
+                            COUNT(*) AS hold_count
                         FROM action.hold_request h
                         WHERE
                             cancel_time IS NULL
@@ -10587,8 +10595,8 @@ SELECT  usr,
                             (SELECT id
                                 FROM biblio.record_entry 
                                 WHERE id = (SELECT record FROM asset.call_number WHERE id = call_number and deleted is false)
-                            ) AS "bre", 
-                            COUNT(*) AS "copy_count"
+                            ) AS bre, 
+                            COUNT(*) AS copy_count
                         FROM asset.copy
                             JOIN asset.copy_location loc ON (copy.location = loc.id AND loc.holdable)
                         WHERE copy.holdable 
@@ -11527,7 +11535,7 @@ SELECT  usr,
 	</class>
 	<class id="hasholdscount" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action::has_holds_count" reporter:label="Copy Has Holds Count" oils_persist:readonly="true">
         <oils_persist:source_definition>
-	SELECT ahcm.target_copy AS "id",count(*) AS "count"
+	SELECT ahcm.target_copy AS id,count(*) AS count
 	 FROM
 	 action.hold_request ahr,
 	 action.hold_copy_map ahcm

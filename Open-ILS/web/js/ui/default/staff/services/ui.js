@@ -185,6 +185,51 @@ function($uibModal, $interpolate) {
 }])
 
 /**
+ * egSelectDialog.open(
+ *    "message goes {{here}}", 
+ *    list,           // ['values','for','dropdown'],
+ *    selectedValue,  // optional
+ *    {
+ *      here : 'foo',
+ *      ok : function(value) {console.log(value)}, 
+ *      cancel : function() {console.log('prompt denied')}
+ *    }
+ *  );
+ */
+.factory('egSelectDialog', 
+    
+       ['$uibModal','$interpolate',
+function($uibModal, $interpolate) {
+    var service = {};
+
+    service.open = function(message, inputList, selectedValue, msg_scope) {
+        return $uibModal.open({
+            templateUrl: './share/t_select_dialog',
+            controller: ['$scope', '$uibModalInstance',
+                function($scope, $uibModalInstance) {
+                    $scope.message = $interpolate(message)(msg_scope);
+                    $scope.args = {
+                        list  : inputList,
+                        value : selectedValue
+                    };
+                    $scope.focus = true;
+                    $scope.ok = function() {
+                        if (msg_scope.ok) msg_scope.ok($scope.args.value);
+                        $uibModalInstance.close()
+                    }
+                    $scope.cancel = function() {
+                        if (msg_scope.cancel) msg_scope.cancel();
+                        $uibModalInstance.dismiss();
+                    }
+                }
+            ]
+        })
+    }
+
+    return service;
+}])
+
+/**
  * Warn on page unload and give the user a chance to avoid navigating
  * away from the current page.  
  * Only one handler is supported per page.
@@ -268,7 +313,8 @@ function($window , egStrings) {
         scope: {
             list: "=", // list of strings
             selected: "=",
-            egDisabled: "="
+            egDisabled: "=",
+            allowAll: "@",
         },
         template:
             '<div class="input-group">'+
@@ -277,33 +323,50 @@ function($window , egStrings) {
                     '<button type="button" ng-click="showAll()" class="btn btn-default dropdown-toggle"><span class="caret"></span></button>'+
                     '<ul class="dropdown-menu dropdown-menu-right">'+
                         '<li ng-repeat="item in list|filter:selected"><a href ng-click="changeValue(item)">{{item}}</a></li>'+
-                        '<li ng-if="all" class="divider"><span></span></li>'+
-                        '<li ng-if="all" ng-repeat="item in list"><a href ng-click="changeValue(item)">{{item}}</a></li>'+
+                        '<li ng-if="complete_list" class="divider"><span></span></li>'+
+                        '<li ng-if="complete_list" ng-repeat="item in list"><a href ng-click="changeValue(item)">{{item}}</a></li>'+
                     '</ul>'+
                 '</div>'+
             '</div>',
         controller: ['$scope','$filter',
             function( $scope , $filter) {
 
-                $scope.all = false;
+                $scope.complete_list = false;
                 $scope.isopen = false;
+                $scope.clickedopen = false;
+                $scope.clickedclosed = null;
 
                 $scope.showAll = function () {
-                    if ($scope.selected.length > 0)
-                        $scope.all = true;
+
+                    $scope.clickedopen = !$scope.clickedopen;
+
+                    if ($scope.clickedclosed === null) {
+                        if (!$scope.clickedopen) {
+                            $scope.clickedclosed = true;
+                        }
+                    } else {
+                        $scope.clickedclosed = !$scope.clickedopen;
+                    }
+
+                    if ($scope.selected.length > 0) $scope.complete_list = true;
+                    if ($scope.selected.length == 0) $scope.complete_list = false;
+                    $scope.makeOpen();
                 }
 
                 $scope.makeOpen = function () {
-                    $scope.isopen = $filter('filter')(
+                    $scope.isopen = $scope.clickedopen || ($filter('filter')(
                         $scope.list,
                         $scope.selected
-                    ).length > 0 && $scope.selected.length > 0;
-                    $scope.all = false;
+                    ).length > 0 && $scope.selected.length > 0);
+                    if ($scope.clickedclosed) $scope.isopen = false;
                 }
 
                 $scope.changeValue = function (newVal) {
                     $scope.selected = newVal;
                     $scope.isopen = false;
+                    $scope.clickedclosed = null;
+                    $scope.clickedopen = false;
+                    if ($scope.selected.length == 0) $scope.complete_list = false;
                 }
 
             }

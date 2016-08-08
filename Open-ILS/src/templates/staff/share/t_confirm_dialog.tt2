@@ -11,7 +11,7 @@
   <div class="modal-footer">
     [% dialog_footer %]
     <input type="submit" class="btn btn-primary" 
-      ng-click="ok()" value="{{ ok_button_label || '[% l('OK/Continue') %]'}}"/>
+      ng-click="ok()" value="{{ ok_button_label || '[% l("OK/Continue") %]'}}"/>
     <button class="btn btn-warning" 
       ng-click="cancel()">{{ cancel_button_label || "[% l('Cancel') %]"}}</button>
   </div>

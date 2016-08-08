@@ -125,6 +125,11 @@ sub load_IDL {
         return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
     }
 
+    $xml =~ s/<!--.*?-->//sg;     # filter out XML comments ...
+    $xml =~ s/(?:^|\s+)--.*$//mg; # and SQL comments ...
+    $xml =~ s/^\s+/ /mg;          # and extra leading spaces ...
+    $xml =~ s/\R*//g;             # and newlines
+
     my $output;
     try {
         my $idl_doc = XML::LibXML->load_xml(string => $xml);

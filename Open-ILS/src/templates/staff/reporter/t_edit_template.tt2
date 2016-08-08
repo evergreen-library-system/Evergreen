@@ -1,0 +1,233 @@
+<!-- report template builder -->
+
+<div class="row">
+  <div class="col-md-2">
+    [% l('Template Name') %]
+  </div>
+  <div class="col-md-4">
+    <div><input type="text" class="form-control" ng-model="templateName"/></div>
+  </div>
+  <div class="col-md-2">
+    [% l('Documentation URL') %]
+  </div>
+  <div class="col-md-4">
+    <div><input type="text" class="form-control" ng-model="templateDocURL"/></div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-2">
+    [% l('Template Description') %]
+  </div>
+  <div class="col-md-10">
+    <div><textarea class="form-control" ng-model="templateDescription"/></div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-2">
+    <button ng-click="saveTemplate()" class="btn btn-default">[% l('Save Template') %]</button>
+  </div>
+</div>
+
+<hr/>
+
+<div class="row panel" style="max-height: 400px; min-height: 400px;">
+  <div class="col-md-5" style="max-height: 400px; min-height: 400px; overflow-y: scroll;">
+
+    <div class="row">
+      <div class="col-xs-3"><strong>[% l('Core Source') %]</strong></div>
+      <div class="col-xs-6">
+        <div class="source-selector nullable">
+          <select class="form-control" ng-model="coreSource" ng-change="changeCoreSource()"
+            ng-options="s.name as s.label group by s.core_label for s in allSources">
+            <option value="">[% l('-- Select Source --') %]</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-xs-3">
+        <label for="enable_nullability_cb">
+          [% l('Nullability') %]
+        </lable>
+        <input type="checkbox" ng-model="enable_nullability"/>
+      </div>
+    </div>
+
+    <br/>
+
+    <treecontrol
+        class="tree-light"
+        tree-model="class_tree"
+        on-node-toggle="treeExpand(node, expanded)"
+        on-selection="selectSource(node, selected, $path)"
+    >
+      <select
+          ng-show="enable_nullability"
+          ng-model="node.jtype"
+          ng-init="join_types = [{type:'inner',label:'[% l('Default') %]'},{type:'left',label:'[% l('Child nullable') %]'},{type:'right',label:'[% l('Parent nullable') %]'}]"
+          ng-options="j.type as j.label for j in join_types"></select>
+      {{ node.label || n.id }}
+    </treecontrol>
+
+  </div>
+  <div class="col-md-7">
+    <div class="row">
+      <div class="col-md-7" style="max-height: 400px; min-height: 400px; overflow-y: scroll;">
+        <div class="row">
+            <div class="col-xs-3"><strong>[% l('Source Path') %]</strong></div>
+            <div class="col-xs-9"><input type="text" class="form-control" ng-model="currentPathLabel"/></div>
+        </div>
+
+        <br/>
+
+        <treecontrol
+          class="tree-light"
+          tree-model="selected_source_fields"
+          selected-nodes="selected_source_field_list"
+          on-selection="selectFields()"
+          options="field_tree_opts"
+          filter-expression="filterFields"
+        >
+          <span ng-switch="" on="node.datatype">
+            <span ng-switch-when="bool" class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>
+            <span ng-switch-when="float" class="glyphicon glyphicon-sound-5-1" aria-hidden="true"></span>
+            <span ng-switch-when="id" class="glyphicon glyphicon-barcode" aria-hidden="true"></span>
+            <span ng-switch-when="int" class="glyphicon glyphicon-scale" aria-hidden="true"></span>
+            <span ng-switch-when="interval" class="glyphicon glyphicon-resize-horizontal" aria-hidden="true"></span>
+            <span ng-switch-when="link" class="glyphicon glyphicon-link" aria-hidden="true"></span>
+            <span ng-switch-when="money" class="glyphicon glyphicon-usd" aria-hidden="true"></span>
+            <span ng-switch-when="number" class="glyphicon glyphicon-scale" aria-hidden="true"></span>
+            <span ng-switch-when="org_unit" class="glyphicon glyphicon-tree-conifer" aria-hidden="true"></span>
+            <span ng-switch-when="text" class="glyphicon glyphicon-font" aria-hidden="true"></span>
+            <span ng-switch-when="timestamp" class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+          </span>
+          {{ node.label || node.name }}
+        </treecontrol>
+      </div>
+      <div class="col-md-5" style="max-height: 400px; min-height: 400px; overflow-y: scroll;">
+        <strong>[% l('Transform') %]</strong>
+        <br/>
+        <br/>
+        <br/>
+        <treecontrol
+          class="tree-light"
+          tree-model="available_field_transforms"
+          selected-node="selected_transform"
+          options="field_transforms_tree_opts"
+        >
+          {{ node.label || node.transform }}
+        </treecontrol>
+      </div>
+    </div>
+      </div>
+
+    <hr/>
+
+    <div class="row">
+      <div class="col-md-12">
+
+      <uib-tabset> 
+        <uib-tab index="0" heading="[% l('Display Fields') %]">
+          <eg-grid
+            id-field="index"
+            features="-sort,-multisort,-multiselect"
+            items-provider="grid_display_fields_provider"
+            grid-controls="display_grid_controls"
+          >
+            <eg-grid-action 
+              handler="changeDisplayLabel"
+              label="[% l('Change Column Label') %]">
+            </eg-grid-action>
+
+            <eg-grid-action 
+              handler="changeDisplayFieldDoc"
+              label="[% l('Change Column Documentation') %]">
+            </eg-grid-action>
+          
+            <eg-grid-action 
+              handler="changeTransform"
+              label="[% l('Change Transform') %]">
+            </eg-grid-action>
+          
+            <eg-grid-action 
+              handler="moveDisplayFieldUp"
+              label="[% l('Move Field Up') %]">
+            </eg-grid-action>
+          
+            <eg-grid-action 
+              handler="moveDisplayFieldDown"
+              label="[% l('Move Field Down') %]">
+            </eg-grid-action>
+          
+            <eg-grid-action 
+              handler="removeDisplayField"
+              label="[% l('Remove Field') %]">
+            </eg-grid-action>
+          
+            <eg-grid-menu-item handler="addDisplayFields"
+              label="[% l('Add Fields') %]"></eg-grid-menu-item>
+          
+            <eg-grid-field path='path_label' label="[% l('Source Path') %]"></eg-grid-field>
+            <eg-grid-field path='name' label="[% l('Column') %]" hidden></eg-grid-field>
+            <eg-grid-field path='doc_text' label="[% l('Documentation') %]" hidden></eg-grid-field>
+            <eg-grid-field path='label' label="[% l('Column Label') %]"></eg-grid-field>
+            <eg-grid-field path='datatype' label="[% l('Data Type') %]"></eg-grid-field>
+            <eg-grid-field path='transform.label' label="[% l('Field Transform') %]"></eg-grid-field>
+          </eg-grid>
+        </uib-tab>
+
+        <uib-tab index="1" heading="[% l('Filters') %]">
+          <eg-grid
+            id-field="index"
+            features="-sort,-multisort,-multiselect"
+            items-provider="grid_filter_fields_provider"
+            grid-controls="filter_grid_controls"
+          >
+            <eg-grid-action 
+              handler="changeFilterFieldDoc"
+              label="[% l('Change Column Documentation') %]">
+            </eg-grid-action>
+
+            <eg-grid-action 
+              handler="changeTransform"
+              label="[% l('Change Transform') %]">
+            </eg-grid-action>
+
+            <eg-grid-action 
+              handler="changeOperator"
+              label="[% l('Change Operator') %]">
+            </eg-grid-action>
+          
+            <eg-grid-action 
+              handler="changeFilterValue"
+              label="[% l('Change Filter Value') %]">
+            </eg-grid-action>
+          
+            <eg-grid-action 
+              handler="removeFilterValue"
+              label="[% l('Remove Filter Value') %]">
+            </eg-grid-action>
+      
+            <eg-grid-action 
+              handler="removeFilterField"
+              label="[% l('Remove Field') %]">
+            </eg-grid-action>
+          
+            <eg-grid-menu-item handler="addFilterFields"
+              label="[% l('Add Fields') %]"></eg-grid-menu-item>
+          
+            <eg-grid-field path='path_label' label="[% l('Source Path') %]"></eg-grid-field>
+            <eg-grid-field path='label' label="[% l('Name') %]"></eg-grid-field>
+            <eg-grid-field path='name' label="[% l('Column') %]"></eg-grid-field>
+            <eg-grid-field path='datatype' label="[% l('Data Type') %]"></eg-grid-field>
+            <eg-grid-field path='operator.label' label="[% l('Operator') %]"></eg-grid-field>
+            <eg-grid-field path='transform.label' label="[% l('Field Transform') %]"></eg-grid-field>
+            <eg-grid-field path='value' label="[% l('Filter Value') %]"></eg-grid-field>
+          </eg-grid>
+        </uib-tab>
+      </uib-tabset>
+
+    </div>
+  </div>
+</div>
+

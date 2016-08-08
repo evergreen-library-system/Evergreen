@@ -1,0 +1,180 @@
+
+<script>
+angular.module('egCoreMod').run(['egStrings', function(s) {
+
+s.RPT_BUILDER_CONFIRM_SAVE = '[% l( "Save Template?") %]';
+
+s.SELECT_TFORM = '[% l( "Select Transform") %]';
+s.SELECT_OP = '[% l( "Select Operator") %]';
+
+s.LINK_NULLABLE_DEFAULT = '[% l( "Default") %]';
+s.LINK_NULLABLE_RIGHT = '[% l( "Parent") %]';
+s.LINK_NULLABLE_LEFT = '[% l( "Child") %]';
+s.LINK_NULLABLE_NONE = '[% l( "None") %]';
+
+s.FILTERS_LABEL_EQUALS = '[% l("Equals") %]';
+s.FILTERS_LABEL_LIKE = '[% l( "Contains Matching substring") %]';
+s.FILTERS_LABEL_ILIKE = '[% l( "Contains Matching substring (ignore case)") %]';
+s.FILTERS_LABEL_GREATER_THAN = '[% l( "Greater than") %]';
+s.FILTERS_LABEL_GT_TIME = '[% l( "After (Date/Time)") %]';
+s.FILTERS_LABEL_GT_EQUAL = '[% l( "Greater than or equal to") %]';
+s.FILTERS_LABEL_GTE_TIME = '[% l( "On or After (Date/Time)") %]';
+s.FILTERS_LABEL_LESS_THAN = '[% l( "Less than") %]';
+s.FILTERS_LABEL_LT_TIME = '[% l( "Before (Date/Time)") %]';
+s.FILTERS_LABEL_LT_EQUAL = '[% l( "Less than or equal to") %]';
+s.FILTERS_LABEL_LSE_TIME = '[% l( "On or Before (Date/Time)") %]';
+s.FILTERS_LABEL_IN = '[% l( "In list") %]';
+s.FILTERS_LABEL_NOT_IN = '[% l( "Not in list") %]';
+s.FILTERS_LABEL_BETWEEN = '[% l( "Between") %]';
+s.FILTERS_LABEL_NOT_BETWEEN = '[% l( "Not between") %]';
+s.FILTERS_LABEL_NULL = '[% l( "Is NULL") %]';
+s.FILTERS_LABEL_NOT_NULL = '[% l( "Is not NULL") %]';
+s.FILTERS_LABEL_NULL_BLANK = '[% l( "Is NULL or Blank") %]';
+s.FILTERS_LABEL_NOT_NULL_BLANK = '[% l( "Is not NULL or Blank") %]';
+s.FILTERS_LABEL_EQ_ANY = '[% l( "Equals Any") %]';
+s.FILTERS_LABEL_NE_ANY = '[% l( "Does Not Equal Any") %]';
+
+s.FOLDERS_TEMPLATES = '[% l( "Templates") %]';
+s.FOLDERS_TEMPLATE = '[% l( "Template") %]';
+s.FOLDERS_REPORTS = '[% l( "Reports") %]';
+s.FOLDERS_REPORT = '[% l( "Report") %]';
+s.FOLDERS_OUTPUT = '[% l( "Output") %]';
+
+s.FOLDER_WINDOW_SELECT_ITEM = '[% l( "Please select an item from the list") %]';
+s.FOLDER_WINDOW_CHANGE_FOLDERS = '[% l( "Change Folders") %]';
+s.FOLDER_WINDOW_COLNAME_SELECT = '[% l( "Select") %]';
+s.FOLDER_WINDOW_COLNAME_ALL = '[% l( "All") %]';
+s.FOLDER_WINDOW_COLNAME_NONE = '[% l( "None") %]';
+
+s.REPORT_EDITOR_REPORT_FOLDERS = '[% l( "Report Folders") %]';
+s.REPORT_EDITOR_OUTPUT_FOLDERS = '[% l( "Output Folders") %]';
+s.REPORT_EDITOR_PROVIDE_FOLDER_ALERT = '[% l( "Please provide a report folder") %]';
+s.REPORT_EDITOR_ENTER_NAME_ALERT = '[% l( "Please enter a report name") %]';
+s.REPORT_EDITOR_ENTER_NEW_NAME_ALERT = '[% l( "Please change the report name") %]';
+s.REPORT_EDITOR_INVALID_DATE_ALERT = '[% l( "invalid start date -  YYYY-MM-DD") %]';
+s.REPORT_EDITOR_PROVIDE_OUTPUT_ALERT = '[% l( "Please provide an output folder") %]';
+
+s.TFORMS_LABEL_RAW_DATA = '[% l( "Raw Data") %]';
+s.TFORMS_LABEL_FIRST = '[% l( "First Value") %]';
+s.TFORMS_LABEL_LAST = '[% l( "Last Value") %]';
+s.TFORMS_LABEL_COUNT = '[% l( "Count") %]';
+s.TFORMS_LABEL_COUNT_DISTINCT = '[% l( "Count Distinct") %]';
+s.TFORMS_LABEL_MIN = '[% l( "Min") %]';
+s.TFORMS_LABEL_MAX = '[% l( "Max") %]';
+s.TFORMS_LABEL_LOWER = '[% l( "Lower case") %]';
+s.TFORMS_LABEL_UPPER = '[% l( "Upper case") %]';
+s.TFORMS_LABEL_FIRST5 = '[% l( "First 5 characters (for US ZIP code)") %]';
+s.TFORMS_LABEL_FIRST_WORD = '[% l( "First contiguous non-space string") %]';
+s.TFORMS_LABEL_DOW = '[% l( "Day of Week") %]';
+s.TFORMS_LABEL_DOM = '[% l( "Day of Month") %]';
+s.TFORMS_LABEL_DOY = '[% l( "Day of Year") %]';
+s.TFORMS_LABEL_WOY = '[% l( "Week of Year") %]';
+s.TFORMS_LABEL_MOY = '[% l( "Month of Year") %]';
+s.TFORMS_LABEL_QOY = '[% l( "Quarter of Year") %]';
+s.TFORMS_LABEL_HOD = '[% l( "Hour of day") %]';
+s.TFORMS_LABEL_DATE = '[% l( "Date") %]';
+s.TFORMS_LABEL_MONTH_TRUNC = '[% l( "Year + Month") %]';
+s.TFORMS_LABEL_YEAR_TRUNC = '[% l( "Year") %]';
+s.TFORMS_LABEL_HOUR_TRUNC = '[% l( "Hour") %]';
+s.TFORMS_LABEL_DAY_NAME = '[% l( "Day Name") %]';
+s.TFORMS_LABEL_MONTH_NAME = '[% l( "Month Name") %]';
+s.TFORMS_LABEL_AGE = '[% l( "Age") %]';
+s.TFORMS_LABEL_MONTHS_AGO = '[% l( "Months ago") %]';
+s.TFORMS_LABEL_QUARTERS_AGO = '[% l( "Quarters ago") %]';
+s.TFORMS_LABEL_SUM = '[% l( "Sum") %]';
+s.TFORMS_LABEL_AVERAGE = '[% l( "Average") %]';
+s.TFORMS_LABEL_ROUND = '[% l( "Round") %]';
+s.TFORMS_LABEL_INT = '[% l( "Drop trailing decimals") %]';
+
+s.WIDGET_DAYS = '[% l( "Day(s)") %]';
+s.WIDGET_MONTHS = '[% l( "Month(s)") %]';
+s.WIDGET_YEARS = '[% l( "Year(s)") %]';
+s.WIDGET_QUARTERS = '[% l( "Quarter(s)") %]';
+s.WIDGET_REAL_DATE = '[% l( "Real Date") %]';
+s.WIDGET_RELATIVE_DATE = '[% l( "Relative Date") %]';
+
+s.OPERATORS_EQUALS = '[% l( "Equals") %]';
+s.OPERATORS_LIKE = '[% l( "Contains Matching substring") %]';
+s.OPERATORS_ILIKE = '[% l( "Contains Matching substring (ignore case)") %]';
+s.OPERATORS_GREATER_THAN = '[% l( "Greater than") %]';
+s.OPERATORS_GT_TIME = '[% l( "After (Date/Time)") %]';
+s.OPERATORS_GT_EQUAL = '[% l( "Greater than or equal to") %]';
+s.OPERATORS_GTE_TIME = '[% l( "On or After (Date/Time)") %]';
+s.OPERATORS_LESS_THAN = '[% l( "Less than") %]';
+s.OPERATORS_LT_TIME = '[% l( "Before (Date/Time)") %]';
+s.OPERATORS_LT_EQUAL = '[% l( "Less than or equal to") %]';
+s.OPERATORS_LTE_TIME = '[% l( "On or Before (Date/Time)") %]';
+s.OPERATORS_IN_LIST = '[% l( "In list") %]';
+s.OPERATORS_NOT_IN_LIST = '[% l( "Not in list") %]';
+s.OPERATORS_BETWEEN = '[% l( "Between") %]';
+s.OPERATORS_NOT_BETWEEN = '[% l( "Not between") %]';
+s.OPERATORS_IS_NULL = '[% l( "Is NULL") %]';
+s.OPERATORS_IS_NOT_NULL = '[% l( "Is not NULL") %]';
+s.OPERATORS_NULL_BLANK = '[% l( "Is NULL or Blank") %]';
+s.OPERATORS_NOT_NULL_BLANK = '[% l( "Is not NULL or Blank") %]';
+s.OPERATORS_EQ_ANY = '[% l( "Equals Any") %]';
+s.OPERATORS_NE_ANY = '[% l( "Does Not Equal Any") %]';
+
+s.SOURCE_BROWSE_AGGREGATE = '[% l( "Aggregate") %]';
+s.SOURCE_BROWSE_NON_AGGREGATE = '[% l( "Non-Aggregate") %]';
+
+s.SOURCE_SETUP_CONFIRM_EXIT = '[% l( "You have started building a template! Selecting a new starting source will destroy the current template and start over.  Is this OK?") %]';
+s.SOURCE_SETUP_CORE_SOURCES = '[% l( "Core Sources") %]';
+s.SOURCE_SETUP_ALL_AVAIL_SOURCES = '[% l( "All Available Sources") %]';
+
+s.TEMPLATE_CONF_BARE = '[% l( "Bare") %]';
+s.TEMPLATE_CONF_RAW_DATA = '[% l( "Raw Data") %]';
+s.TEMPLATE_CONF_EQUALS = '[% l( "Equals") %]';
+s.TEMPLATE_CONF_CONFIRM_RESET = '[% l( "You have already added this field. Click OK if you would like to reset this field.") %]';
+s.TEMPLATE_CONF_PROMPT_CHANGE = '[% l( "Change the column header?") %]';
+s.TEMPLATE_FIELD_DOC_PROMPT_CHANGE = '[% l( "Change the field hint to:") %]';
+s.TEMPLATE_CONF_BOOLEAN_VALUE = '[% l( "Boolean Value") %]';
+s.TEMPLATE_CONF_SELECT_CANCEL = '[% l( "Select the value, or cancel:") %]';
+s.TEMPLATE_CONF_TRUE = '[% l( "True") %]';
+s.TEMPLATE_CONF_FALSE = '[% l( "False") %]';
+s.TEMPLATE_CONF_CONFIRM_STATE = '[% l( "Click OK for TRUE and Cancel for FALSE.") %]';
+s.TEMPLATE_CONF_NO_MATCH = '[% l( "Field does not match one of list (comma separated):") %]';
+s.TEMPLATE_CONF_NOT_BETWEEN = '[% l( "Field value is not between (comma separated):") %]';
+s.TEMPLATE_CONF_BETWEEN = '[% l( "Field value is between (comma separated):") %]';
+s.TEMPLATE_CONF_NOT_IN = '[% l( "Field does not match one of list (comma separated):") %]';
+s.TEMPLATE_CONF_IN = '[% l( "Field matches one of list (comma separated):") %]';
+s.TEMPLATE_CONF_DEFAULT = '[% l( "Value:") %]';
+s.TEMPLATE_CONF_CONFIRM_SAVE = '[% l( "Save Template?") %]';
+s.TEMPLATE_CONF_SUCCESS_SAVE = '[% l( "Template was successfully saved.") %]';
+s.TEMPLATE_CONF_FAIL_SAVE = '[% l( "Template save failed.") %]';
+
+s.TRANSFORMS_BARE = '[% l( "Raw Data") %]';
+s.TRANSFORMS_FIRST = '[% l( "First Value") %]';
+s.TRANSFORMS_LAST = '[% l( "Last Value") %]';
+s.TRANSFORMS_COUNT = '[% l( "Count") %]';
+s.TRANSFORMS_COUNT_DISTINCT = '[% l( "Count Distinct") %]';
+s.TRANSFORMS_MIN = '[% l( "Min") %]';
+s.TRANSFORMS_MAX = '[% l( "Max") %]';
+s.TRANSFORMS_SUBSTRING = '[% l( "Substring") %]';
+s.TRANSFORMS_LOWER = '[% l( "Lower case") %]';
+s.TRANSFORMS_UPPER = '[% l( "Upper case") %]';
+s.TRANSFORMS_FIRST5 = '[% l( "First 5 characters (for US ZIP code)") %]';
+s.TRANSFORMS_FIRST_WORD = '[% l( "First contiguous non-space string") %]';
+s.TRANSFORMS_DOW = '[% l( "Day of Week") %]';
+s.TRANSFORMS_DOM = '[% l( "Day of Month") %]';
+s.TRANSFORMS_DOY = '[% l( "Day of Year") %]';
+s.TRANSFORMS_WOY = '[% l( "Week of Year") %]';
+s.TRANSFORMS_MOY = '[% l( "Month of Year") %]';
+s.TRANSFORMS_QOY = '[% l( "Quarter of Year") %]';
+s.TRANSFORMS_HOD = '[% l( "Hour of day") %]';
+s.TRANSFORMS_DATE = '[% l( "Date") %]';
+s.TRANSFORMS_MONTH_TRUNC = '[% l( "Year + Month") %]';
+s.TRANSFORMS_YEAR_TRUNC = '[% l( "Year") %]';
+s.TRANSFORMS_HOUR_TRUNC = '[% l( "Hour") %]';
+s.TRANSFORMS_DAY_NAME = '[% l( "Day Name") %]';
+s.TRANSFORMS_MONTH_NAME = '[% l( "Month Name") %]';
+s.TRANSFORMS_AGE = '[% l( "Age") %]';
+s.TRANSFORMS_MONTHS_AGO = '[% l( "Months ago") %]';
+s.TRANSFORMS_QUARTERS_AGO = '[% l( "Quarters ago") %]';
+s.TRANSFORMS_SUM = '[% l( "Sum") %]';
+s.TRANSFORMS_AVERAGE = '[% l( "Average") %]';
+s.TRANSFORMS_ROUND = '[% l( "Round") %]';
+s.TRANSFORMS_INT = '[% l( "Drop trailing decimals") %]';
+
+}]);
+</script>

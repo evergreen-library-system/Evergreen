@@ -1,0 +1,21 @@
+[%
+  WRAPPER "staff/base.tt2";
+  ctx.page_title = l("Reporter"); 
+  ctx.page_app = "egReporter";
+%]
+
+[% BLOCK APP_JS %]
+<script src="[% ctx.media_prefix %]/js/dojo/opensrf/md5.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/grid.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/eframe.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/ui.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/user.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/reporter/services/template.js"></script>
+[% INCLUDE 'staff/reporter/share/report_strings.tt2' %]
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/reporter/template/app.js"></script>
+<link rel="stylesheet" href="[% ctx.base_path %]/staff/css/reporter.css" />
+[% END %]
+
+<div ng-view></div>
+
+[% END %]
