@@ -1538,6 +1538,8 @@ angular.module('egGridMod',
                         }
                     }
 
+                    if (!obj) return '';
+
                     var cls = obj.classname;
                     if (cls && (class_obj = egCore.idl.classes[cls])) {
                         idl_field = class_obj.field_map[step];
