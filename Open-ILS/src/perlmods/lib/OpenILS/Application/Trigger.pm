@@ -72,7 +72,7 @@ sub create_active_events_for_object {
     for my $def ( @$defs ) {
         next if ($granularity && $def->granularity ne $granularity );
 
-        if ($def->usr_field && $def->opt_in_setting) {
+        if (!$self->{ignore_opt_in} && $def->usr_field && $def->opt_in_setting) {
             my $ufield = $def->usr_field;
             my $uid = $target->$ufield;
             $uid = $uid->id if (ref $uid); # fleshed user object, unflesh it
@@ -123,6 +123,14 @@ __PACKAGE__->register_method(
     api_level=> 1,
     stream   => 1,
     argc     => 3
+);
+__PACKAGE__->register_method(
+    api_name      => 'open-ils.trigger.event.autocreate.ignore_opt_in',
+    method        => 'create_active_events_for_object',
+    api_level     => 1,
+    stream        => 1,
+    argc          => 3,
+    ignore_opt_in => 1
 );
 
 sub create_event_for_object_and_def {

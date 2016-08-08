@@ -74,7 +74,7 @@ sub circ_batch_notify {
     );
 
     $multi->request(
-        'open-ils.trigger.event.autocreate',
+        'open-ils.trigger.event.autocreate.ignore_opt_in',
         $hook => $_ => $e->requestor->ws_ou
     ) for ( @$circs );
     $client->status( new OpenSRF::DomainObject::oilsContinueStatus );
