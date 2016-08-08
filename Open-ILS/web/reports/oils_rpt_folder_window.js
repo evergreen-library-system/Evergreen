@@ -390,7 +390,7 @@ oilsRptFolderWindow.prototype.showOutput = function(sched) {
 		function(r) {
 			var url = oilsRptBuildOutputLink(r.template(), r.id(), sched.id());
 			_debug("launching report output view at URL: " + url);
-			if(isXUL()) 
+			if(isXUL() && !window.IAMBROWSER) 
 				xulG.new_tab(xulG.url_prefix('XUL_REMOTE_BROWSER?url=') + url,
 					{tab_name: dojo.string.substitute( rpt_strings.FOLDER_WINDOW_REPORT_OUTPUT, [r.name()] ), browser:false},
 					{no_xulG:false, show_nav_buttons:true, show_print_button:true});

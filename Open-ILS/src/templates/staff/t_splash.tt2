@@ -65,6 +65,12 @@
               [% l('Workstation Administration') %]
             </a>
           </div>
+          <div>
+            <img src="/xul/server/skin/media/images/portal/reports.png"/>
+            <a target="_top" href="./reporter/legacy/main">
+              [% l('Reports') %]
+            </a>
+          </div>
         </div>
       </div>
     </div>
