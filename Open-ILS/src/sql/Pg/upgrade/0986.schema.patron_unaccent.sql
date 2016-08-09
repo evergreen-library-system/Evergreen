@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0986', :eg_version);
 
 CREATE EXTENSION IF NOT EXISTS unaccent SCHEMA public;
 
