@@ -578,10 +578,10 @@ function vlExportRecordQueue(opts) {
         if (req.readyState == 4) {
             var file_tag = opts.nonimported ? '_nonimported' : '';
             openils.XUL.contentToFileSaveDialog(req.responseText, null, {
-                defaultString : currentQueueName + file_tag + '.xml',
-                defaultExtension : '.xml',
-                filterName : 'XML',
-                filterExtension : '*.xml',
+                defaultString : currentQueueName + file_tag + '.mrc',
+                defaultExtension : '.mrc',
+                filterName : 'MARC21',
+                filterExtension : '*.mrc',
                 filterAll : true
             } );
         }
