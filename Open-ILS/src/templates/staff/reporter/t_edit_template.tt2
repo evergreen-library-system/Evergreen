@@ -1,11 +1,12 @@
 <!-- report template builder -->
+<ng-form name="reportTemplateForm" class="form-validated">
 
 <div class="row">
   <div class="col-md-2">
     [% l('Template Name') %]
   </div>
   <div class="col-md-4">
-    <div><input type="text" class="form-control" ng-model="templateName"/></div>
+    <div><input type="text" class="form-control" ng-model="templateName" required/></div>
   </div>
   <div class="col-md-2">
     [% l('Documentation URL') %]
@@ -20,15 +21,16 @@
     [% l('Template Description') %]
   </div>
   <div class="col-md-10">
-    <div><textarea class="form-control" ng-model="templateDescription"/></div>
+    <div><textarea class="form-control" ng-model="templateDescription" required/></div>
   </div>
 </div>
 
 <div class="row">
   <div class="col-md-2">
-    <button ng-click="saveTemplate()" class="btn btn-default">[% l('Save Template') %]</button>
+    <button ng-disabled="reportTemplateForm.$invalid" ng-click="saveTemplate()" class="btn btn-default">[% l('Save Template') %]</button>
   </div>
 </div>
+</ng-form>
 
 <hr/>
 

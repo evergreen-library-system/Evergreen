@@ -97,8 +97,11 @@
 .form-validated input.ng-valid.ng-dirty {
   background-color: #78FA89;
 }
-.form-validated input.ng-invalid-required {
-  background-color: #FACDCF;
+.form-validated textarea.ng-invalid.ng-dirty {
+  background-color: #FA787E;
+}
+.form-validated textarea.ng-valid.ng-dirty {
+  background-color: #78FA89;
 }
 
 /* --------------------------------------------------------------------------
