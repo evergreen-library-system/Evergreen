@@ -2031,7 +2031,7 @@ sub sru_search {
                                 a => $copy->getChildrenByTagName('location')->[0]->textContent,
                                 b => $owning_lib,
                                 c => $cn,
-                                d => $copy->getChildrenByTagName('circlib')->[0]->textContent,
+                                d => $copy->getChildrenByTagName('circ_lib')->[0]->getAttribute('shortname'),
                                 g => $copy->getAttribute('barcode'),
                                 n => $copy->getChildrenByTagName('status')->[0]->textContent
                             };
