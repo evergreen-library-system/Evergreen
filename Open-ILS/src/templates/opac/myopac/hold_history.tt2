@@ -55,14 +55,11 @@
         <table id='acct_holds_hist_header' class='table_no_border_space table_no_cell_pad' title="[% l('History of items on hold') %]">
             <thead>
                 <tr>
-                    <th><span>[% l('Title') %]</span></td>
-                    <th><span>[% l('Author') %]</span></td>
-                    <th> <span>[% l('Format') %]</span></td>
-                    <th><span>[% l('Pickup Location') %]</span> </td>
-                    <th>[% l('Activate') %]</td>
-                    <th>[% l('Active') %]</td>
-                    <th>[% l('Date Fulfilled') %]</td>
-                    <th><span>[% l('Status') %]</span></td>
+                    <td><span>[% l('Title') %]</span></td>
+                    <td><span>[% l('Author') %]</span></td>
+                    <td> <span>[% l('Format') %]</span></td>
+                    <td><span>[% l('Pickup Location') %]</span> </td>
+                    <td><span>[% l('Status') %]</span></td>
                 </tr>
             </thead>
             <tbody id='holds_temp_parent'>
@@ -94,25 +91,6 @@
                     </td>
                     <td>
                         [% ctx.get_aou(ahr.pickup_lib).name | html %]
-                    </td>
-                    <td>
-                        [% IF ahr.frozen == 't' AND ahr.thaw_date;
-                            date.format(ctx.parse_datetime(ahr.thaw_date), DATE_FORMAT);
-                        END %]
-                    </td>
-                    <td>
-                        [% IF ahr.fulfillment_time;
-                             l('Fulfilled');
-                           ELSIF hold.hold.status == 6;
-                             l('Canceled'); 
-                           ELSE; 
-                             l(ahr.frozen == 'f' ? 'Active' : 'Suspended');
-                        END %]
-                    </td>
-                    <td>
-                        [% IF ahr.fulfillment_time;
-                            date.format(ctx.parse_datetime(ahr.fulfillment_time), DATE_FORMAT);
-                        END %]
                     </td>
                     <td>
                         <div name="acct_holds_status">

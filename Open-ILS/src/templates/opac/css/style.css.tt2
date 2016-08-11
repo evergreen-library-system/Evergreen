@@ -2079,19 +2079,14 @@ a.preflib_change {
         table#acct_holds_main_header td:nth-of-type(3):before { content: "[% l('Author') %]"; }
         table#acct_holds_main_header td:nth-of-type(4):before { content: "[% l('Format') %]"; }
         table#acct_holds_main_header td:nth-of-type(5):before { content: "[% l('Pickup Location') %]"; }
-        table#acct_holds_main_header td:nth-of-type(6):before { content: "[% l('Activate') %]"; }
-        table#acct_holds_main_header td:nth-of-type(7):before { content: "[% l('Cancel on') %]"; }
-        table#acct_holds_main_header td:nth-of-type(8):before { content: "[% l('Active') %]"; }
-        table#acct_holds_main_header td:nth-of-type(9):before { content: "[% l('Status') %]"; }
+        table#acct_holds_main_header td:nth-of-type(6):before { content: "[% l('Cancel on') %]"; }
+        table#acct_holds_main_header td:nth-of-type(7):before { content: "[% l('Status') %]"; }
         table#acct_holds_main_header td.hold_notes:before { content: "[% l('Notes') %]"; }
 
         table#acct_holds_hist_header td:nth-of-type(1):before { content: "[% l('Title') %]";}
         table#acct_holds_hist_header td:nth-of-type(2):before { content: "[% l('Author') %]"; }
         table#acct_holds_hist_header td:nth-of-type(3):before { content: "[% l('Format') %]"; }
         table#acct_holds_hist_header td:nth-of-type(4):before { content: "[% l('Pickup Location') %]"; }
-        table#acct_holds_hist_header td:nth-of-type(5):before { content: "[% l('Activate') %]"; }
-        table#acct_holds_hist_header td:nth-of-type(6):before { content: "[% l('Active') %]"; }
-        table#acct_holds_hist_header td:nth-of-type(7):before { content: "[% l('Date Fulfilled') %]"; }
         table#acct_holds_hist_header td:nth-of-type(8):before { content: "[% l('Status') %]"; }
 
 

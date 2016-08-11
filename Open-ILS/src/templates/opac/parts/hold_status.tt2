@@ -1,13 +1,29 @@
 [% BLOCK get_hold_status %]
     <div>
-    [% 
+    [%
         IF hold.hold.status == 4;
             l("Available") | html;
             IF ahr.shelf_expire_time;
                 '<br/>';
-                l('Expires [_1]', 
+                l('Expires [_1]',
                     date.format(ctx.parse_datetime(ahr.shelf_expire_time), DATE_FORMAT)) | html;
             END;
+
+        ELSIF hold.hold.status == 6;
+               l("Canceled [_1]",
+                  date.format(ctx.parse_datetime(ahr.cancel_time), DATE_FORMAT)) | html;
+
+        ELSIF hold.hold.status == 7;
+               l("Suspended") | html;
+               IF ahr.thaw_date;
+                   "<br/>";
+                   l("Activate On [_1]",
+                       date.format(ctx.parse_datetime(ahr.thaw_date), DATE_FORMAT)) | html;
+               END;
+
+        ELSIF hold.hold.status == 9;
+               l("Fulfilled [_1]",
+                  date.format(ctx.parse_datetime(ahr.fulfillment_time), DATE_FORMAT))| html;
 
         ELSIF hold.hold.estimated_wait AND hold.hold.estimated_wait > 0;
             # estimated wait is delivered as seconds.
@@ -19,11 +35,16 @@
 
         ELSIF hold.hold.status < 3;
             l("Waiting for copy") | html;
-        END 
+        END
     %]
     </div>
     <div>
-        [% l('Hold #[_1] on [quant,_2, copy, copies]', 
-            hold.hold.queue_position, hold.hold.potential_copies) | html %]
+        [% # Only show the count for holds that have not been captured
+           IF hold.hold.status < 3 OR hold.hold.status == 7;
+             l('Hold #[_1] on [quant,_2, copy, copies]',
+              hold.hold.queue_position, hold.hold.potential_copies) | html;
+          END
+        %]
     </div>
 [% END %]
+

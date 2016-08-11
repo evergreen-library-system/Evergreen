@@ -1231,6 +1231,7 @@ Returns event on error or:
  6 for 'canceled'
  7 for 'suspended'
  8 for 'captured, on wrong hold shelf'
+ 9 for 'fulfilled'
 END_OF_DESC
         }
     }
@@ -1262,6 +1263,9 @@ sub _hold_status {
     }
     if ($hold->current_shelf_lib and $hold->current_shelf_lib ne $hold->pickup_lib) {
         return 8;
+    }
+    if ($hold->fulfillment_time) {
+        return 9;
     }
     return 1 unless $hold->current_copy;
     return 2 unless $hold->capture_time;
