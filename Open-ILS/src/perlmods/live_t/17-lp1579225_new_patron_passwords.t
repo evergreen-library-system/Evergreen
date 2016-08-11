@@ -35,7 +35,7 @@ $new_user->family_name('Doe');
 $new_user->first_given_name('Jane');
 $new_user->profile(2);
 $new_user->home_ou(4);
-$new_user->ident_type(2);
+$new_user->ident_type(1);
 $new_user->isnew(1);
 
 my $resp = $U->simplereq(
