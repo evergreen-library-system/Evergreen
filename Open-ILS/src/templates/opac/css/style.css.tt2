@@ -832,6 +832,16 @@ div.result_table_utils_cont {
     
 }
 
+.myopac-hold-available {
+    color: [% css_colors.text_greatnews %];
+    font-weight: bold;
+}
+
+.myopac-hold-suspended {
+    color: [% css_colors.text_badnews %];
+    font-weight: bold;
+}
+
 #myopac_prefs_div .data_grid {
     border-collapse:collapse;
 }
