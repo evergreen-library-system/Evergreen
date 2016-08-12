@@ -1078,7 +1078,7 @@ sub copy_details {
     OpenILS::Application::Circ::Holds::flesh_hold_transits([$hold]) if $hold;
 
     my $transit = $e->search_action_transit_copy(
-        { target_copy => $copy_id, dest_recv_time => undef } )->[0];
+        { target_copy => $copy_id, dest_recv_time => undef, cancel_time => undef } )->[0];
 
     # find the most recent circulation for the requested copy,
     # be it active, completed, or aged.

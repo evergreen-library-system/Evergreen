@@ -2362,6 +2362,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Prev Destination" name="prev_dest" reporter:datatype="org_unit"/>
 			<field reporter:label="Send Date/Time" name="source_send_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Transited Copy" name="target_copy" reporter:datatype="link"/>
+			<field reporter:label="Cancel Date/Time" name="cancel_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Hold Transit" name="hold_transit_copy" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
@@ -7397,6 +7398,7 @@ SELECT  usr,
 			<field reporter:label="Transited Copy" name="target_copy" reporter:datatype="link"/>
 			<field reporter:label="Base Transit" name="transit_copy" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Prev Destination Library" name="prev_dest" reporter:datatype="org_unit"/>
+			<field reporter:label="Cancel Date/Time" name="cancel_time" reporter:datatype="timestamp"/>
 		</fields>
 		<links>
 			<link field="transit_copy" reltype="might_have" key="id" map="" class="atc"/>
@@ -7432,6 +7434,7 @@ SELECT  usr,
 			<field reporter:label="Transited Copy" name="target_copy" reporter:datatype="link"/>
 			<field reporter:label="Base Transit" name="transit_copy" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Prev Destination Library" name="prev_dest" reporter:datatype="org_unit"/>
+			<field reporter:label="Cancel Date/Time" name="cancel_time" reporter:datatype="timestamp"/>
 		</fields>
 		<links>
 			<link field="transit_copy" reltype="might_have" key="id" map="" class="atc"/>
@@ -11133,6 +11136,7 @@ SELECT  usr,
 			<field reporter:label="Send Date/Time" name="source_send_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Transited Copy" name="target_copy" reporter:datatype="link"/>
 			<field reporter:label="Hold Transit" name="hold_transit_copy" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Cancel Date/Time" name="cancel_time" reporter:datatype="timestamp"/>
 		</fields>
 		<links>
 			<link field="hold_transit_copy" reltype="might_have" key="id" map="" class="ahtc"/>

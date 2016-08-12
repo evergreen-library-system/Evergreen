@@ -204,7 +204,7 @@ sub abort_transit {
     } elsif( $copy ) {
 
         $transit = $e->search_action_transit_copy(
-            { target_copy => $copy->id, dest_recv_time => undef })->[0];
+            { target_copy => $copy->id, dest_recv_time => undef, cancel_time => undef })->[0];
         return $e->event unless $transit;
     }
 
@@ -241,7 +241,9 @@ sub __abort_transit {
 
     my $holdtransit = $e->retrieve_action_hold_transit_copy($transit->id);
 
-    return $e->die_event unless $e->delete_action_transit_copy($transit);
+    # rather than deleting the transit row, set the cancel_time
+    $transit->cancel_time('now');
+    return $e->die_event unless $e->update_action_transit_copy($transit);
 
     # Only change the copy status if the copy status is "In Transit."
     if ($copy->status == OILS_COPY_STATUS_IN_TRANSIT) {
@@ -297,7 +299,7 @@ sub get_open_copy_transit {
     return $e->event unless $e->checkauth;
     return $e->event unless $e->allowed('VIEW_USER'); # XXX rely on editor perms
     my $t = $e->search_action_transit_copy(
-        { target_copy => $copyid, dest_recv_time => undef });
+        { target_copy => $copyid, dest_recv_time => undef, cancel_time => undef });
     return $e->event unless @$t;
     return $$t[0];
 }
@@ -316,7 +318,8 @@ sub fetch_transit_by_copy {
     my $t = $e->search_action_transit_copy(
         {
             target_copy => $copyid,
-            dest_recv_time => undef
+            dest_recv_time => undef,
+            cancel_time => undef
         }
     )->[0];
     return $e->event unless $t;
@@ -340,7 +343,7 @@ sub transits_by_lib {
     return $e->event unless $e->allowed('VIEW_CIRCULATIONS'); # eh.. basically the same permission
 
     my $order_by = {order_by => { atc => 'source_send_time' }};
-    my $search = { dest_recv_time => undef };
+    my $search = { dest_recv_time => undef, cancel_time => undef };
 
     if($end_date) {
         if($start_date) {

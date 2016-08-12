@@ -124,7 +124,7 @@ __PACKAGE__->table('action_hold_transit_copy');
 __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->columns(Essential => qw/source dest persistant_transfer target_copy
                      source_send_time dest_recv_time prev_hop prev_dest
-                     copy_status hold/);
+                     cancel_time copy_status hold/);
 
 #-------------------------------------------------------------------------------
 
@@ -134,7 +134,7 @@ __PACKAGE__->table('action_reservation_transit_copy');
 __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->columns(Essential => qw/source dest persistant_transfer target_copy
                      source_send_time dest_recv_time prev_hop prev_dest
-                     copy_status reservation/);
+                     cancel_time copy_status reservation/);
 
 #-------------------------------------------------------------------------------
 
@@ -144,7 +144,7 @@ __PACKAGE__->table('action_transit_copy');
 __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->columns(Essential => qw/source dest persistant_transfer target_copy
                      source_send_time dest_recv_time prev_hop prev_dest
-                     copy_status/);
+                     cancel_time copy_status/);
 
 #-------------------------------------------------------------------------------
 

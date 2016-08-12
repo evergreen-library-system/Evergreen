@@ -170,7 +170,8 @@ sub fetch_transit {
         my $transit = $e->search_action_transit_copy([
             {
                 target_copy    => $copy->id,    # NOT barcode ($self->id)
-                dest_recv_time => undef
+                dest_recv_time => undef,
+                cancel_time => undef
             },
             {
                 flesh => 1,

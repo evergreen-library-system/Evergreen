@@ -411,7 +411,7 @@ sub fetch_hold_transit_by_hold {
 
     $transit = $self->simplereq(
         'open-ils.cstore',
-        'open-ils.cstore.direct.action.hold_transit_copy.search', { hold => $holdid } );
+        'open-ils.cstore.direct.action.hold_transit_copy.search', { hold => $holdid, cancel_time => undef } );
 
     $evt = OpenILS::Event->new('ACTION_HOLD_TRANSIT_COPY_NOT_FOUND', holdid => $holdid) unless $transit;
 
@@ -978,7 +978,7 @@ sub fetch_open_transit_by_copy {
     my($transit, $evt);
     $transit = $self->cstorereq(
         'open-ils.cstore.direct.action.transit_copy.search',
-        { target_copy => $copyid, dest_recv_time => undef });
+        { target_copy => $copyid, dest_recv_time => undef, cancel_time => undef });
     $evt = OpenILS::Event->new('ACTION_TRANSIT_COPY_NOT_FOUND') unless $transit;
     return ($transit, $evt);
 }

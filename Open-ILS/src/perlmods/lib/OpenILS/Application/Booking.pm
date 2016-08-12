@@ -1044,7 +1044,7 @@ sub capture_reservation {
 
         # need to transit the item ... is it already in transit?
         my $transit = $e->search_action_reservation_transit_copy(
-            {"reservation" => $res_id, "dest_recv_time" => undef}
+            {"reservation" => $res_id, "dest_recv_time" => undef, cancel_time => undef}
         )->[0];
 
         if (!$transit) { # not yet in transit

@@ -176,7 +176,7 @@ sub run_method {
             my $res_id_list = [ map { $_->id } @$resources ];
             my $transit = $circulator->editor->search_action_reservation_transit_copy(
                 [
-                    { target_copy => $res_id_list, dest => $circulator->circ_lib, dest_recv_time => undef },
+                    { target_copy => $res_id_list, dest => $circulator->circ_lib, dest_recv_time => undef, cancel_time => undef },
                     { order_by => { artc => 'source_send_time' }, limit => 1 }
                 ]
             )->[0]; # Any transit for this barcode?
@@ -2208,7 +2208,7 @@ sub check_transit_checkin_interval {
     # capture the transit so we don't have to fetch it again later during checkin
     $self->transit(
         $self->editor->search_action_transit_copy(
-            {target_copy => $self->copy->id, dest_recv_time => undef}
+            {target_copy => $self->copy->id, dest_recv_time => undef, cancel_time => undef}
         )->[0]
     ); 
 
@@ -2397,7 +2397,7 @@ sub do_checkin {
     if( $self->copy and !$self->transit ) {
         $self->transit(
             $self->editor->search_action_transit_copy(
-                { target_copy => $self->copy->id, dest_recv_time => undef }
+                { target_copy => $self->copy->id, dest_recv_time => undef, cancel_time => undef }
             )->[0]
         ); 
     }

@@ -428,12 +428,13 @@ sub delete_copy {
     $copy->edit_date('now');
     $editor->update_asset_copy($copy) or return $editor->event;
 
-    # Delete any open transits for this copy
+    # Cancel any open transits for this copy
     my $transits = $editor->search_action_transit_copy(
-        { target_copy=>$copy->id, dest_recv_time => undef } );
+        { target_copy=>$copy->id, dest_recv_time => undef, cancel_time => undef } );
 
     for my $t (@$transits) {
-        $editor->delete_action_transit_copy($t)
+        $t->cancel_time('now');
+        $editor->update_action_transit_copy($t)
             or return $editor->event;
     }
 

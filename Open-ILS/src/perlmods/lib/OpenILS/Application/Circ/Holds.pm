@@ -620,7 +620,7 @@ sub retrieve_holds {
 
         $hold->transit(
             $e->search_action_hold_transit_copy([
-                {hold => $hold->id},
+                {hold => $hold->id, cancel_time => undef},
                 {order_by => {ahtc => 'source_send_time desc'}, limit => 1}])->[0]
         );
 
@@ -807,7 +807,7 @@ sub cancel_hold {
 
             my $hid = $hold->id;
             $logger->warn("! canceling hold [$hid] that is in transit");
-            my $transid = $e->search_action_hold_transit_copy({hold=>$hold->id},{idlist=>1})->[0];
+            my $transid = $e->search_action_hold_transit_copy({hold=>$hold->id,cancel_time=>undef},{idlist=>1})->[0];
 
             if( $transid ) {
                 my $trans = $e->retrieve_action_transit_copy($transid);
@@ -1011,7 +1011,7 @@ sub update_hold_impl {
 
             # update the transit to reflect the new pickup location
             my $transit = $e->search_action_hold_transit_copy(
-                {hold=>$hold->id, dest_recv_time => undef})->[0]
+                {hold=>$hold->id, cancel_time => undef, dest_recv_time => undef})->[0]
                 or return $e->die_event;
 
             $transit->prev_dest($transit->dest); # mark the previous destination on the transit
@@ -1293,6 +1293,7 @@ sub _hold_status {
         my $transit    = $e->search_action_hold_transit_copy({
                             hold           => $hold->id,
                             target_copy    => $copy->id,
+                            cancel_time     => undef,
                             dest_recv_time => {'!=' => undef},
                          })->[0];
         my $start_time = ($transit) ? $transit->dest_recv_time : $hold->capture_time;
@@ -1972,7 +1973,7 @@ sub _reset_hold {
             # We don't want the copy to remain "in transit"
             $copy->status(OILS_COPY_STATUS_RESHELVING);
             $logger->warn("! reseting hold [$hid] that is in transit");
-            my $transid = $e->search_action_hold_transit_copy({hold=>$hold->id},{idlist=>1})->[0];
+            my $transid = $e->search_action_hold_transit_copy({hold=>$hold->id,cancel_time=>undef},{idlist=>1})->[0];
 
             if( $transid ) {
                 my $trans = $e->retrieve_action_transit_copy($transid);
@@ -2049,7 +2050,7 @@ sub flesh_hold_transits {
             $apputils->simplereq(
                 'open-ils.cstore',
                 "open-ils.cstore.direct.action.hold_transit_copy.search.atomic",
-                { hold => $hold->id },
+                { hold => $hold->id, cancel_time => undef },
                 { order_by => { ahtc => 'id desc' }, limit => 1 }
             )->[0]
         );
