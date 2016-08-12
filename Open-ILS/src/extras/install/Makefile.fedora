@@ -31,6 +31,7 @@ FEDORA_RPMS = \
 	libyaz \
 	libyaz-devel \
 	mingw32-nsiswrapper \
+	mod_perl \
 	mod_ssl \
 	ncurses-devel \
 	ncurses-libs \

@@ -19,6 +19,7 @@ export DEBS = \
 	apache2-prefork-dev\
 	aspell\
 	aspell-en\
+	libapache2-mod-perl2\
 	libbusiness-creditcard-perl\
 	libbusiness-isbn-data-perl\
 	libbusiness-issn-perl\
@@ -80,7 +81,8 @@ export DEB_APACHE_MODS = \
     proxy\
     proxy_http\
     rewrite\
-    cgi
+    cgi\
+    perl
 
 export DEB_APACHE_DISMODS = \
     deflate
