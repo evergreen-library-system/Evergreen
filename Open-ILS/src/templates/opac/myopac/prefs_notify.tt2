@@ -84,32 +84,21 @@
                 </td>
             </tr>
             [% END %]
+            [% FOR optin IN ctx.opt_in_settings %]
+            <tr>
+                <td><label for='[% optin.cust.name | uri %]'>[% optin.cust.label | html %]</label></td>
+                <td>
+                    <input type='checkbox' name='setting' 
+                        value='[% optin.cust.name | uri %]' 
+                        id='[% optin.cust.name | uri %]' 
+                        title="[% optin.cust.label | html %]"
+                        [% IF optin.value %] checked='checked' [% END %]/>
+                </td>
+            </tr>
+            [% END %]
         </tbody>
     </table>
 
-    [% IF ctx.opt_in_settings.size > 0 %]
-    <div class='user_opt_in_settings'>
-      <table>
-        <thead><tr>
-            <th>[% l('Notification Type') %]</th>
-            <th>[% l('Enabled') %]</th>
-        </tr></thead>
-        <tbody class='data_grid'>
-            [% FOR optin IN ctx.opt_in_settings %]
-                <tr>
-                    <td>[% optin.cust.label | html %]</td>
-                    <td>
-                        <input type='checkbox' name='setting' 
-                            value='[% optin.cust.name | uri %]' 
-                            title="[% optin.cust.label | html %]"
-                            [% IF optin.value %] checked='checked' [% END %]/>
-                    </td>
-                </tr>
-            [% END %]
-        </tbody>
-      </table>
-    </div>
-    [% END %]
     <input type='submit' value="[% l('Save') %]" class="opac-button" />
 </form>
 [% END %]
