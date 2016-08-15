@@ -25,7 +25,7 @@
   </div>
   <div class="modal-footer">
     <input type="submit" class="btn btn-primary" ng-click="ok()"
-        value="[% l('Abort Transit then Checkout') %]"/>
+        value="[% l('Cancel Transit then Checkout') %]"/>
     <button class="btn btn-warning" 
         ng-click="cancel()">[% l('Cancel') %]</button>
   </div>

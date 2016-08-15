@@ -2139,7 +2139,7 @@
 <!ENTITY staff.server.admin.transit.list.circs.accesskey "L">
 <!ENTITY staff.server.admin.transit.list.edit.label "Edit Item Attributes">
 <!ENTITY staff.server.admin.transit.list.edit.accesskey "E">
-<!ENTITY staff.server.admin.transit.list.abort.label "Abort Transits">
+<!ENTITY staff.server.admin.transit.list.abort.label "Cancel Transits">
 <!ENTITY staff.server.admin.transit.list.save.label "Save Columns">
 <!ENTITY staff.server.admin.cash.title "Evergreen: Cash Reports">
 <!ENTITY staff.server.admin.cash.welcome "Welcome ">
@@ -2457,7 +2457,7 @@
 <!ENTITY staff.circ.checkin_overlay.sel_mark_items_damaged.accesskey "D">
 <!ENTITY staff.circ.checkin_overlay.sel_mark_missing_pieces.label "Mark Item as Missing Pieces">
 <!ENTITY staff.circ.checkin_overlay.sel_mark_missing_pieces.accesskey "M">
-<!ENTITY staff.circ.checkin_overlay.sel_transit_abort.label "Abort Transit">
+<!ENTITY staff.circ.checkin_overlay.sel_transit_abort.label "Cancel Transit">
 <!ENTITY staff.circ.checkin_overlay.sel_spine.label "Print Spine Label">
 <!ENTITY staff.circ.checkin_overlay.sel_spine.accesskey "P">
 <!ENTITY staff.circ.checkin_overlay.save_columns.label "Save Columns">
@@ -2511,7 +2511,7 @@
 <!ENTITY staff.circ.renew_overlay.sel_edit.accesskey "E">
 <!ENTITY staff.circ.renew_overlay.sel_mark_items_damaged.label "Mark Item Damaged">
 <!ENTITY staff.circ.renew_overlay.sel_mark_items_damaged.accesskey "D">
-<!ENTITY staff.circ.renew_overlay.sel_transit_abort.label "Abort Transit">
+<!ENTITY staff.circ.renew_overlay.sel_transit_abort.label "Cancel Transit">
 <!ENTITY staff.circ.renew_overlay.sel_spine.label "Print Spine Label">
 <!ENTITY staff.circ.renew_overlay.sel_spine.accesskey "P">
 <!ENTITY staff.circ.renew_overlay.save_columns.label "Save Columns">
@@ -2590,7 +2590,7 @@
 <!ENTITY staff.circ.copy_status_overlay.sel_mark_items_damaged.accesskey "D">
 <!ENTITY staff.circ.copy_status_overlay.sel_mark_items_missing.label "Mark Item Missing">
 <!ENTITY staff.circ.copy_status_overlay.sel_mark_items_missing.accesskey "M">
-<!ENTITY staff.circ.copy_status_overlay.sel_transit_abort.label "Abort Transits">
+<!ENTITY staff.circ.copy_status_overlay.sel_transit_abort.label "Cancel Transits">
 <!ENTITY staff.circ.copy_status_overlay.sel_checkin.label "Check In Items">
 <!ENTITY staff.circ.copy_status_overlay.sel_checkin.accesskey "N">
 <!ENTITY staff.circ.copy_status_overlay.sel_renew.label "Renew Items">

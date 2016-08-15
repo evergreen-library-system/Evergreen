@@ -27,7 +27,7 @@ s.LOCATION_ALERT_MSG =
     "{{copy.barcode()}}","{{copy.location().name()}}") %]';
 s.MARK_DAMAGED_CONFIRM = '[% l("Mark {{num_items}} items as DAMAGED?") %]';
 s.MARK_MISSING_CONFIRM = '[% l("Mark {{num_items}} items as MISSING?") %]';
-s.ABORT_TRANSIT_CONFIRM = '[% l("Abort {{num_transits}} transits?") %]';
+s.ABORT_TRANSIT_CONFIRM = '[% l("Cancel {{num_transits}} transits?") %]';
 s.ROUTE_TO_HOLDS_SHELF = '[% l("Holds Shelf") %]';
 s.ROUTE_TO_CATALOGING = '[% l("Cataloging") %]';
 s.COPY_IN_TRANSIT = '[% l("Copy is In-Transit") %]';

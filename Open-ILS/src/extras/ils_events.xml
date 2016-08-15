@@ -130,7 +130,7 @@
 		<desc xml:lang="en-US">The patron's account has expired</desc>
 	</event>
 	<event code='1225' textcode='TRANSIT_ABORT_NOT_ALLOWED'>
-		<desc xml:lang="en-US">The transit on this item may not be aborted due to the state the item is in</desc>
+		<desc xml:lang="en-US">The transit on this item may not be canceled due to the state the item is in</desc>
 	</event>
 
 	<event code='1226' textcode='REFUND_EXCEEDS_DESK_PAYMENTS'>

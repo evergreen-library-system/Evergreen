@@ -22,7 +22,7 @@
   </eg-grid-action>
   <eg-grid-action 
     handler="abortTransit"
-    label="[% l('Abort Transits') %]">
+    label="[% l('Cancel Transits') %]">
   </eg-grid-action>
 
   <eg-grid-field label="[% l('Alert Msg') %]"   

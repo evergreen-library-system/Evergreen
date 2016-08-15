@@ -63,7 +63,7 @@
   <eg-grid-action divider="true"></eg-grid-action>
   <eg-grid-action 
     handler="abortTransit"
-    label="[% l('Abort Transits') %]">
+    label="[% l('Cancel Transits') %]">
   </eg-grid-action>
 
 
