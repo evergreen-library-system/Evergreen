@@ -1,5 +1,5 @@
 <span id='oils-selfck-selected-total'></span>
-<span style='padding-left:5px;'><a class='hidden' href='javascript:void(0);' id='oils-selfck-pay-fines-link'>[% l('Pay Fines') %]</a></span>
+<span style='padding-left:5px;'><a class='hidden' href='javascript:void(0);' id='oils-selfck-pay-fines-link'><button class="self-button" type="button">[% l('Pay Fines') %]</button></a></span>
 <div id='oils-selfck-fines-table-div'>
     <table id='oils-selfck-fines-table' class='oils-selfck-item-table'>
         <thead>
