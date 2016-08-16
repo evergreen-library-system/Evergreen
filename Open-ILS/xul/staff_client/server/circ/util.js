@@ -922,6 +922,21 @@ circ.util.columns = function(modify,params) {
             }
         },
         {
+            'id' : 'age_protect',
+            'fm_class' : 'acp',
+            'label' : document.getElementById('circStrings').getString('staff.circ.utils.age_protect'),
+            'flex' : 1,
+            'primary' : false,
+            'hidden' : true,
+            'editable' : false, 'render' : function(my) {
+                if (Number(my.acp.age_protect())>=0) {
+                    return data.lookup("crahp", my.acp.age_protect() ).name();
+                } else {
+                    return my.acp.age_protect().name();
+                }
+            }
+        },
+        {
             'id' : 'floating',
             'fm_class' : 'acp',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.floating'),

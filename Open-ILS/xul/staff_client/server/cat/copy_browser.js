@@ -1758,6 +1758,7 @@ cat.copy_browser.prototype = {
                             'fine_level',
                             'circulate',
                             'holdable',
+                            'age_protect',
                             'opac_visible',
                             'ref',
                             'deposit',

@@ -191,7 +191,12 @@ function load_item() {
 
         if (details.copy) {
             set("stat_cat_entries", details.copy.stat_cat_entries()); 
-            set("age_protect", details.copy.age_protect()); 
+            var ap = details.copy.age_protect();
+            if (typeof data.hash.crahp[ap] != 'undefined') {
+                set("age_protect", data.lookup('crahp',details.copy.age_protect()).name());
+            } else {
+                set("age_protect","");
+            }
             set("alert_message", details.copy.alert_message()); 
             set("barcode", details.copy.barcode()); 
             if (typeof details.copy.call_number() == 'object') {

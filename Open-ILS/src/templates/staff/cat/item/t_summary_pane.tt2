@@ -161,6 +161,8 @@
     <div class="flex-cell">[% l('Circ Modifier') %]</div>
     <div class="flex-cell well">{{copy.circ_modifier().name()}}</div>
 
+    <div class="flex-cell">[% l('Age-based Hold Protection') %]</div>
+    <div class="flex-cell well">{{copy.age_protect().name()}}</div>
     <!-- empty -->
     <div class="flex-cell"></div>
     <div class="flex-cell"></div>
