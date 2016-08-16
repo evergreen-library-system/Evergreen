@@ -44,7 +44,8 @@ var my_constants = {
         '3' : { 'disable_in_copy_editor' : true, 'block_mark_item_damaged' : false, 'block_mark_item_action' : true }, /* | Lost           | f */
         '6' : { 'disable_in_copy_editor' : true, 'block_mark_item_damaged' : false, 'block_mark_item_action' : true }, /* | In transit     | t */
         '8' : { 'disable_in_copy_editor' : true, 'block_mark_item_damaged' : false, 'block_mark_item_action' : false }, /* | On holds shelf | t */
-	'16' : { 'disable_in_copy_editor' : true, 'block_mark_item_damaged' : false, 'block_mark_item_action' : true } /* | Long Overdue  | f */
+        '16' : { 'disable_in_copy_editor' : true, 'block_mark_item_damaged' : false, 'block_mark_item_action' : true }, /* | Long Overdue  | f */
+        '18' : { 'disable_in_copy_editor' : true, 'block_mark_item_damaged' : false, 'block_mark_item_action' : false} /* | Canceled Transit | t */
     }
 }
 
