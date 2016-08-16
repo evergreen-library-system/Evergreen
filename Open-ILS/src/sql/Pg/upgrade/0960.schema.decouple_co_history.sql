@@ -242,7 +242,7 @@ BEGIN
 
             -- useful for alleviating administrator anxiety.
             IF counter % 10000 = 0 THEN
-                RAISE NOTICE 'Migrated history for % total users', counter;
+                RAISE NOTICE 'Migrated history for % total circs', counter;
             END IF;
 
             counter := counter + 1;
