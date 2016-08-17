@@ -23,6 +23,7 @@ export REPORTERDIR=@localstatedir@/reporter
 export SOCK=@localstatedir@/lock
 export PID=@localstatedir@/run
 export LOG=@localstatedir@/log
+export PERL_BASE=@PERL_BASE@
 
 
 

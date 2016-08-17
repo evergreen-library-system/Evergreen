@@ -218,6 +218,12 @@ AC_ARG_WITH([dbi],
 [DBI_LIBS=${withval}],
 [DBI_LIBS=/usr/lib/x86_64-linux-gnu/dbd/])
 
+AC_ARG_WITH([perlbase],
+[  --with-perlbase=path        base location to install Perl modules (default based on Config.pm)],
+[PERL_BASE=${withval}],
+[PERL_BASE=x])
+AC_SUBST([PERL_BASE])
+
 # If the passed in value doesn't work, fall back to reasonable defaults
 # Distributions are starting to package a good version of libdbi / libdbd
 if ! test -d "$DBI_LIBS"; then
