@@ -611,7 +611,7 @@ CREATE OR REPLACE FUNCTION public.naco_normalize( TEXT, TEXT ) RETURNS TEXT AS $
     my $sf = shift;
 
     # Apply NACO normalization to input string; based on
-    # http://www.loc.gov/catdir/pcc/naco/SCA_PccNormalization_Final_revised.pdf
+    # https://www.loc.gov/aba/pcc/naco/documents/SCA_PccNormalization_Final_revised.pdf
     #
     # Note that unlike a strict reading of the NACO normalization rules,
     # output is returned as lowercase instead of uppercase for compatibility
@@ -677,7 +677,7 @@ CREATE OR REPLACE FUNCTION public.search_normalize( TEXT, TEXT ) RETURNS TEXT AS
     my $sf = shift;
 
     # Apply NACO normalization to input string; based on
-    # http://www.loc.gov/catdir/pcc/naco/SCA_PccNormalization_Final_revised.pdf
+    # https://www.loc.gov/aba/pcc/naco/documents/SCA_PccNormalization_Final_revised.pdf
     #
     # Note that unlike a strict reading of the NACO normalization rules,
     # output is returned as lowercase instead of uppercase for compatibility

@@ -10023,7 +10023,7 @@ INSERT INTO action_trigger.hook (key,core_type,description) VALUES (
 -- in-db indexing normalizers
 INSERT INTO config.index_normalizer (name, description, func, param_count) VALUES (
 	'NACO Normalize',
-	'Apply NACO normalization rules to the extracted text.  See http://www.loc.gov/catdir/pcc/naco/normrule-2.html for details.',
+	'Apply NACO normalization rules to the extracted text.  See https://www.loc.gov/aba/pcc/naco/normrule-2.html for details.',
 	'naco_normalize',
 	0
 );
@@ -10037,7 +10037,7 @@ INSERT INTO config.index_normalizer (name, description, func, param_count) VALUE
 
 INSERT INTO config.index_normalizer (name, description, func, param_count) VALUES (
 	'NACO Normalize -- retain first comma',
-	'Apply NACO normalization rules to the extracted text, retaining the first comma.  See http://www.loc.gov/catdir/pcc/naco/normrule-2.html for details.',
+	'Apply NACO normalization rules to the extracted text, retaining the first comma.  See https://www.loc.gov/aba/pcc/naco/normrule-2.html for details.',
 	'naco_normalize_keep_comma',
 	0
 );
