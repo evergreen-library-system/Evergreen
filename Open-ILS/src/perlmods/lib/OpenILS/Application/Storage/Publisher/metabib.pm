@@ -2818,6 +2818,14 @@ __PACKAGE__->register_method(
     }
 );
 
+my @available_statuses_cache;
+sub available_statuses {
+    if (!scalar(@available_statuses_cache)) {
+       @available_statuses_cache = map { $_->id } config::copy_status->search_where({is_available => 't'});
+    }
+    return @available_statuses_cache;
+}
+
 sub query_parser_fts {
     my $self = shift;
     my $client = shift;
@@ -2992,10 +3000,11 @@ sub query_parser_fts {
 
     # gather statuses, and then forget those if we have an #available modifier
     my @statuses;
-    if (my ($filter) = $query->parse_tree->find_filter('statuses')) {
+    if ($query->parse_tree->find_modifier('available')) {
+        @statuses = available_statuses();
+    } elsif (my ($filter) = $query->parse_tree->find_filter('statuses')) {
         @statuses = @{$filter->args} if (@{$filter->args});
     }
-    @statuses = (0,7,12) if ($query->parse_tree->find_modifier('available'));
 
 
     # gather locations
