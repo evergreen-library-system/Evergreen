@@ -77,7 +77,9 @@ INSERT INTO rating.popularity_parameter (id,name,func,require_horizon,require_im
     (12,'On-line Bib has attributes','rating.generic_fixed_rating_by_uri',FALSE,FALSE,FALSE),
     (13,'Bib has attributes and copies','rating.generic_fixed_rating_by_copy',FALSE,FALSE,FALSE),
     (14,'Bib has attributes and copies or URIs','rating.generic_fixed_rating_by_copy_or_uri',FALSE,FALSE,FALSE),
-    (15,'Bib has attributes','rating.generic_fixed_rating_global',FALSE,FALSE,FALSE);
+    (15,'Bib has attributes','rating.generic_fixed_rating_global',FALSE,FALSE,FALSE),
+    (16,'Copy Count','rating.copy_count',FALSE,FALSE,TRUE);
+
 
 CREATE TABLE rating.badge (
     id                      SERIAL      PRIMARY KEY,
@@ -898,6 +900,34 @@ CREATE OR REPLACE FUNCTION rating.generic_fixed_rating_global(badge_id INT)
 BEGIN
     RETURN QUERY
         SELECT id, 1.0 FROM precalc_bib_filter_bib_list;
+END;
+$f$ LANGUAGE PLPGSQL STRICT;
+
+CREATE OR REPLACE FUNCTION rating.copy_count(badge_id INT)
+    RETURNS TABLE (record INT, value NUMERIC) AS $f$
+DECLARE
+    badge   rating.badge_with_orgs%ROWTYPE;
+BEGIN
+
+    SELECT * INTO badge FROM rating.badge_with_orgs WHERE id = badge_id;
+
+    PERFORM rating.precalc_bibs_by_copy(badge_id);
+
+    DELETE FROM precalc_copy_filter_bib_list WHERE id NOT IN (
+        SELECT id FROM precalc_filter_bib_list
+            INTERSECT
+        SELECT id FROM precalc_bibs_by_copy_list
+    );
+    ANALYZE precalc_copy_filter_bib_list;
+
+    RETURN QUERY
+     SELECT f.id::INT AS bib,
+            COUNT(f.copy)::NUMERIC
+      FROM  precalc_copy_filter_bib_list f
+            JOIN asset.copy cp ON (f.copy = cp.id)
+            JOIN asset.call_number cn ON (cn.id = cp.call_number)
+      WHERE cn.owning_lib = ANY (badge.orgs) GROUP BY 1;
+
 END;
 $f$ LANGUAGE PLPGSQL STRICT;
 
