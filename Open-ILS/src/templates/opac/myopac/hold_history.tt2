@@ -52,21 +52,20 @@
             <big><strong>[% l('No holds found.') %]</strong></big>
         </div>
         [% ELSE %]
-        <table style='border-collapse:collapse; width: 100%;'
-            title="[% l('History of items on hold') %]">
-            <thead id='acct_holds_main_header'>
+        <table id='acct_holds_hist_header' class='table_no_border_space table_no_cell_pad' title="[% l('History of items on hold') %]">
+            <thead>
                 <tr>
-                    <td><span>[% l('Title') %]</span></td>
-                    <td><span>[% l('Author') %]</span></td>
-                    <td> <span>[% l('Format') %]</span></td>
-                    <td><span>[% l('Pickup Location') %]</span> </td>
-                    <td>[% l('Activate') %]</td>
-                    <td>[% l('Active') %]</td>
-                    <td>[% l('Date Fulfilled') %]</td>
-                    <td><span>[% l('Status') %]</span></td>
+                    <th><span>[% l('Title') %]</span></td>
+                    <th><span>[% l('Author') %]</span></td>
+                    <th> <span>[% l('Format') %]</span></td>
+                    <th><span>[% l('Pickup Location') %]</span> </td>
+                    <th>[% l('Activate') %]</td>
+                    <th>[% l('Active') %]</td>
+                    <th>[% l('Date Fulfilled') %]</td>
+                    <th><span>[% l('Status') %]</span></td>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id='holds_temp_parent'>
                 [% FOR hold IN ctx.holds;
                     attrs = {marc_xml => hold.marc_xml};
                     PROCESS get_marc_attrs args=attrs;
@@ -75,19 +74,19 @@
                 <tr name="acct_holds_temp" class="acct_holds_temp">
 
                     <td>
-                        <div style="margin-top:10px;margin-bottom:10px;">
+                        <div>
                             <a href="[% mkurl(ctx.opac_root _ '/record/' _ hold.hold.bre_id) %]">[% attrs.title | html %]</a>
                         </div>
                     </td>
                     <td>
-                        <div style="margin-top:10px;margin-bottom:10px;">
+                        <div>
                             <a href="[% mkurl(ctx.opac_root _ '/results',
                                 {qtype => author, query => attrs.author.replace('[,\.:;]', '')}
                             ) %]">[% attrs.author | html %]</a>
                         </div>
                     </td>
                     <td>
-                        <div style="width:26px;height:23px;margin-top:6px;margin-bottom:6px;">
+                        <div class='format_icon'>
                             [% IF attrs.format_icon %]
                             <img title="[% attrs.format_label | html %]" alt="[% attrs.format_label | html %]" src="[% attrs.format_icon %]" />
                             [% END %]
@@ -116,8 +115,7 @@
                         END %]
                     </td>
                     <td>
-                        <div name="acct_holds_status"
-                            style="margin-top:10px;margin-bottom:10px;">
+                        <div name="acct_holds_status">
                             [% PROCESS get_hold_status hold=hold; %]
                         </div>
                     </td>
