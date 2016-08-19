@@ -2012,10 +2012,10 @@ a.preflib_change {
         border-bottom: none;
     }
         /* Force table to not be like tables anymore */
-        table#acct_checked_main_header thead tr th {
+        table#acct_checked_main_header thead tr th, table#acct_holds_main_header thead tr th, table#acct_checked_hist_header thead tr th {
                 display: block;
         }
-        table#acct_checked_main_header tbody tr td {
+        table#acct_checked_main_header tbody tr td, table#acct_holds_main_header tbody tr td, table#acct_checked_hist_header tbody tr td {
                 display: block;
         }
 
@@ -2026,9 +2026,9 @@ a.preflib_change {
                 left: -9999px;
         }
 
-        table#acct_checked_main_header tr { border: 1px solid #ddd; }
+        table#acct_checked_main_header tr, table#acct_holds_main_header tr, table#acct_checked_hist_header tr { border: 1px solid #ddd; }
 
-        table#acct_checked_main_header td {
+        table#acct_checked_main_header td, table#acct_holds_main_header td, table#acct_checked_hist_header td {
                 /* Behave  like a "row" */
                 border: none;
                 border-bottom: 1px solid #eee;
@@ -2036,7 +2036,7 @@ a.preflib_change {
                 padding-left: 40%;
         }
 
-        table#acct_checked_main_header td:before {
+         table#acct_checked_main_header td:before, table#acct_holds_main_header td:before, table#acct_checked_hist_header td:before {
                 /* Now like a table header */
                 position: absolute;
                 /* Top/left values mimic padding */
@@ -2054,31 +2054,14 @@ a.preflib_change {
         table#acct_checked_main_header td:nth-of-type(6):before { content: "[% l('Barcode') %]"; }
         table#acct_checked_main_header td:nth-of-type(7):before { content: "[% l('Call number') %]"; }
 
-        table#acct_holds_main_header thead tr th {
-                display: block;
-        }
-        table#acct_holds_main_header tbody tr td {
-                display: block;
-        }
-
-        table#acct_holds_main_header td {
-                /* Behave  like a "row" */
-                border: none;
-                border-bottom: 1px solid #eee;
-                position: relative;
-                padding-left: 40%;
-        }
-
-
-        table#acct_holds_main_header td:before {
-                /* Now like a table header */
-                position: absolute;
-                /* Top/left values mimic padding */
-                left: 2px;
-                width: 40%;
-                padding-right: 10px;
-                white-space: nowrap;
-        }
+     table#acct_checked_hist_header td:nth-of-type(1) { border-top: 5px solid #aaa; padding-top: 15px; background-color: #fff;}
+        table#acct_checked_hist_header td:nth-of-type(2):before { content: "[% l('Title') %]";}
+        table#acct_checked_hist_header td:nth-of-type(3):before { content: "[% l('Author') %]"; }
+        table#acct_checked_hist_header td:nth-of-type(4):before { content: "[% l('Checkout Date') %]"; }
+        table#acct_checked_hist_header td:nth-of-type(5):before { content: "[% l('Due Date') %]"; }
+        table#acct_checked_hist_header td:nth-of-type(6):before { content: "[% l('Date Returned') %]"; }
+        table#acct_checked_hist_header td:nth-of-type(7):before { content: "[% l('Barcode') %]"; }
+        table#acct_checked_hist_header td:nth-of-type(8):before { content: "[% l('Call number') %]"; }
 
         table#acct_holds_main_header td:nth-of-type(1) { border-top: 5px solid #aaa; padding-top: 15px; background-color: #fff;}
         table#acct_holds_main_header td:nth-of-type(2):before { content: "[% l('Title') %]";}
