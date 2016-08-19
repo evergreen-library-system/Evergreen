@@ -1623,15 +1623,17 @@ sub fetch_user_circ_history {
     );
 
     $e->xact_begin;
-    my $circs = $e->search_action_user_circ_history([
-        {usr => $e->requestor->id},
-        {   # order newest to oldest by default
-            order_by => {auch => 'xact_start DESC'},
-            $flesh ? %flesh_ops : (),
-            %limits
-        },
+    my $circs = $e->search_action_user_circ_history(
+        [
+            {usr => $e->requestor->id},
+            {   # order newest to oldest by default
+                order_by => {auch => 'xact_start DESC'},
+                $flesh ? %flesh_ops : (),
+                %limits
+            }
+        ],
         {substream => 1}
-    ]);
+    );
     $e->rollback;
 
     return $circs unless $flesh;
