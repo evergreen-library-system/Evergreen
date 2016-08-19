@@ -82,7 +82,7 @@
             </tr>
         </table>
     <div id='checked_main'>
-        <table id="acct_checked_main_header"
+        <table id="acct_checked_hist_header"
             title="[% l('History of Items Checked Out') %]">
             <thead>
                 <tr>
