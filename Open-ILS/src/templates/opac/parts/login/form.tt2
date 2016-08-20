@@ -22,7 +22,7 @@
             <div class="input_bg">
                 <input type='text' id="username_field" name="username" autofocus />
             </div>
-            <div class="lbl2">[% l('Please include leading zeros and no spaces.') %]</div>
+            <div class="lbl2">[% l('Please include leading zeros.') %]</div>
             <div class="lbl2">[% l('Example: 0026626051') %]</div>
         </div>
         <div style="float: left;">
