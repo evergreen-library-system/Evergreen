@@ -7610,10 +7610,6 @@ msgstr ""
 msgid "Cancelation cause"
 msgstr ""
 
-#: field.viiad.keep.label:423
-msgid "Keep"
-msgstr ""
-
 #: field.bre.tcn_source.label:3073 field.rmsr.tcn_source.label:9170
 #: field.rssr.tcn_source.label:9194 field.rsr.tcn_source.label:9214
 msgid "TCN Source"
