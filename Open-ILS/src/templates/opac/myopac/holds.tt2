@@ -101,7 +101,7 @@
             class="table_no_border_space table_no_cell_pad">
             <thead>
             <tr>
-                <th align="center">
+                <th class="checkbox_column"> 
                     <input type="checkbox" title="[% l('Select All Holds') %]"
                       onclick="var inputs=document.getElementsByTagName('input'); for (i = 0; i < inputs.length; i++) { if (inputs[i].name == 'hold_id' &amp;&amp; !inputs[i].disabled) inputs[i].checked = this.checked;}"/>
                 </th>
@@ -173,7 +173,7 @@
                     ahr = hold.hold.hold %]
                 <tr name="acct_holds_temp"
                     class="acct_holds_temp[% ahr.frozen == 't' ? ' inactive-hold' : '' %]">
-                    <td align="center" style="text-align:center;">
+                    <td class="checkbox_column">
                         <input type="checkbox" name="hold_id" value="[% ahr.id %]" 
                             [% html_text_attr('title', l('Select hold [_1]', attrs.title)) %]/>
                     </td>

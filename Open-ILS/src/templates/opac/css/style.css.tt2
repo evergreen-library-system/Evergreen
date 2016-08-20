@@ -2026,6 +2026,10 @@ a.preflib_change {
                 left: -9999px;
         }
 
+        table#acct_checked_main_header, table#acct_holds_main_header, table#acct_checked_hist_header {
+                width: 90%;
+        }
+
         table#acct_checked_main_header tr, table#acct_holds_main_header tr, table#acct_checked_hist_header tr { border: 1px solid #ddd; }
 
         table#acct_checked_main_header td, table#acct_holds_main_header td, table#acct_checked_hist_header td {
@@ -2040,6 +2044,7 @@ a.preflib_change {
                 /* Now like a table header */
                 position: absolute;
                 /* Top/left values mimic padding */
+                top: 2px;
                 left: 2px;
                 width: 40%;
                 padding-right: 10px;
