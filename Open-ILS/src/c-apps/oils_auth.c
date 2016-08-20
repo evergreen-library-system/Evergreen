@@ -664,7 +664,7 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
     if (barcode) jsonObjectSetKey(params, "barcode", jsonNewObject(barcode));
 
     jsonObject* authEvt = oilsUtilsQuickReqCtx( // freed after password test
-        ctx
+        ctx,
         "open-ils.auth_internal",
         "open-ils.auth_internal.user.validate", params);
     jsonObjectFree(params);
