@@ -86,7 +86,7 @@
             title="[% l('History of Items Checked Out') %]">
             <thead>
                 <tr>
-                    <th align="center">
+                    <th class="checkbox_column">
                         <input type="checkbox" onclick="var inputs=document.getElementsByTagName('input'); for (i = 0; i < inputs.length; i++) { if (inputs[i].name == 'circ_id' && !inputs[i].disabled) inputs[i].checked = this.checked;}"/>
                     </th>
                     <th>[% sort_head("sort_title", l("Title")) %]</th>
@@ -162,7 +162,7 @@
 
                 FOR circ IN circ_items; %]
                     <tr>
-            <td align="center" style="text-align:center;">
+            <td class="checkbox_column">
                 <input type="checkbox" name="circ_id" value="[% circ.circ.id %]" />
             </td>
                         <td>
