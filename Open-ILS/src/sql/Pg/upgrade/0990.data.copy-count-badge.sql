@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('0990', :eg_version);
+
 CREATE OR REPLACE FUNCTION rating.copy_count(badge_id INT)
     RETURNS TABLE (record INT, value NUMERIC) AS $f$
 DECLARE
