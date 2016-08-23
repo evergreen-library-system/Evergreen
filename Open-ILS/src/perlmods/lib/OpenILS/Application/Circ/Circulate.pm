@@ -3530,6 +3530,7 @@ sub check_checkin_copy_status {
             $status == OILS_COPY_STATUS_IN_TRANSIT  ||
             $status == OILS_COPY_STATUS_CATALOGING  ||
             $status == OILS_COPY_STATUS_ON_RESV_SHELF  ||
+            $status == OILS_COPY_STATUS_CANCELED_TRANSIT ||
             $status == OILS_COPY_STATUS_RESHELVING );
 
    return OpenILS::Event->new('COPY_STATUS_LOST', payload => $copy )
