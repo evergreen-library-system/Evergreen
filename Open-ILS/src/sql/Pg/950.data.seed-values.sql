@@ -2640,7 +2640,14 @@ INSERT into config.org_unit_setting_type
         'When receiving a copy in acquisitions, set the copy "creator" to be the staff that received the copy',
         'coust', 'description'),
     'bool', null)
-
+,( 'acq.copy_status_on_receiving', 'acq',
+    oils_i18n_gettext('acq.copy_status_on_receiving',
+        'Initial status for received items',
+        'coust', 'label'),
+    oils_i18n_gettext('acq.copy_status_on_receiving',
+        'Allows staff to designate a custom copy status on received lineitems.  Default status is "In Process".',
+        'coust', 'description'),
+    'link', 'ccs')
 ,( 'acq.default_circ_modifier', 'acq',
     oils_i18n_gettext('acq.default_circ_modifier',
         'Default circulation modifier',

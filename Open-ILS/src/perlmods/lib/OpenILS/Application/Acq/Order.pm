@@ -767,7 +767,12 @@ sub receive_lineitem_detail {
     if ($lid->eg_copy_id) {
         my $copy = $e->retrieve_asset_copy($lid->eg_copy_id) or return 0;
         # only update status if it hasn't already been updated
-        $copy->status(OILS_COPY_STATUS_IN_PROCESS) if $copy->status == OILS_COPY_STATUS_ON_ORDER;
+        if ($copy->status == OILS_COPY_STATUS_ON_ORDER) {
+            my $custom_status = $U->ou_ancestor_setting_value(
+                $e->requestor->ws_ou, 'acq.copy_status_on_receiving', $e);
+            my $new_status = $custom_status || OILS_COPY_STATUS_IN_PROCESS;
+            $copy->status($new_status);
+        }
         $copy->edit_date('now');
         $copy->editor($e->requestor->id);
         $copy->creator($e->requestor->id) if $U->ou_ancestor_setting_value(
