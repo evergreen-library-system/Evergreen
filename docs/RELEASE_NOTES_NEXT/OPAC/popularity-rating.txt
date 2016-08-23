@@ -50,9 +50,12 @@ All popularity badge definitions will describe a set of configuration, populatio
 ** Bibliographic Record Age (days)
 ** Publication Age (days)
 ** Available On-Line (for e-books, etc)
+** Copy Count
 * *Fixed Rating:* An optional override supplying a fixed popularity value for all records earning this badge.  For some popularity types, such as "Available On-Line", it is preferable to specify, rather than calculate, the popularity value for a badge.  This is presented as a number spinner with a value ranging from 1 to 5.
 * *Inclusion Threshold Percentile:* Cumulative distribution percentile.  This is presented as a number spinner of "percentile" values ranging from 50 to 100, indicating the number of how much of the population a record's score must be better than in order to earn the badge.  Leaving this value unset will allow the entire population to earn the badge.
 * *Discard most common:* A value that, if greater than 0, will ignore records with extremely common values so that outliers are more readily identified, and the distribution of values can be assumed to be more normal.  Many popularity parameters, such as those for circulation counts, benefit from this input filter.  This is presented as a number spinner initially set to 0 that indicates the number of distinct, low values -- but not the values themselves -- to exclude from the population.
+
+This new feature comes with a starter badge based on the top 97th percentile of holds requested over the past five years.
 
 A word about Inclusion Threshold Percentile
 +++++++++++++++++++++++++++++++++++++++++++
