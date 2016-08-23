@@ -4,7 +4,7 @@ ALTER TABLE config.copy_status
     ADD COLUMN is_available BOOL NOT NULL DEFAULT FALSE;
 
 UPDATE config.copy_status SET is_available = TRUE
-    WHERE id IN (0, 7, 8); -- available, reshelving, holds shelf.
+    WHERE id IN (0, 7); -- available, reshelving.
 
 CREATE OR REPLACE FUNCTION action.item_user_circ_test( circ_ou INT, match_item BIGINT, match_user INT, renewal BOOL ) RETURNS SETOF action.circ_matrix_test_result AS $func$
 DECLARE
@@ -92,7 +92,7 @@ BEGIN
     END IF;
 
     -- Fail if the item isn't in a circulateable status on a non-renewal
-    IF NOT renewal AND item_object.status NOT IN ( 
+    IF NOT renewal AND item_object.status <> 8 AND item_object.status NOT IN (
         (SELECT id FROM config.copy_status WHERE is_available) ) THEN 
         result.fail_part := 'asset.copy.status';
         result.success := FALSE;
