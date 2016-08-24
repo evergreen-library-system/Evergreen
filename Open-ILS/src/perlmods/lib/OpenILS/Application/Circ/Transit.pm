@@ -245,8 +245,21 @@ sub __abort_transit {
 
     # Only change the copy status if the copy status is "In Transit."
     if ($copy->status == OILS_COPY_STATUS_IN_TRANSIT) {
-        # recover the copy status
-        $copy->status( OILS_COPY_STATUS_CANCELED_TRANSIT );
+        # if the status would normally result in 'Reshelving' once the item is checked in
+        if ($transit->copy_status == OILS_COPY_STATUS_AVAILABLE   ||
+            $transit->copy_status == OILS_COPY_STATUS_CHECKED_OUT ||
+            $transit->copy_status == OILS_COPY_STATUS_IN_PROCESS  ||
+            $transit->copy_status == OILS_COPY_STATUS_ON_HOLDS_SHELF  ||
+            $transit->copy_status == OILS_COPY_STATUS_IN_TRANSIT  ||
+            $transit->copy_status == OILS_COPY_STATUS_CATALOGING  ||
+            $transit->copy_status == OILS_COPY_STATUS_ON_RESV_SHELF  ||
+            $transit->copy_status == OILS_COPY_STATUS_RESHELVING) {
+            # set copy to Canceled Transit
+            $copy->status( OILS_COPY_STATUS_CANCELED_TRANSIT);
+        } else {
+            # recover the copy status
+            $copy->status($transit->copy_status);
+        }
         $copy->editor( $e->requestor->id );
         $copy->edit_date('now');
 
