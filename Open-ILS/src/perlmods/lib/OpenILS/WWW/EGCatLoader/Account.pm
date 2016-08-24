@@ -1504,6 +1504,15 @@ sub load_myopac_circs {
 
         if($resp) {
             my $evt = ref($resp->{evt}) eq 'ARRAY' ? $resp->{evt}->[0] : $resp->{evt};
+
+            # extract the fail_part, if present, from the event payload;
+            # since # the payload is an acp object in some cases,
+            # blindly looking for a # 'fail_part' key in the template can
+            # break things
+            $evt->{fail_part} = (ref($evt->{payload}) eq 'HASH' && exists $evt->{payload}->{fail_part}) ?
+                $evt->{payload}->{fail_part} :
+                '';
+
             $data->{renewal_response} = $evt;
             $success_renewals++ if $evt->{textcode} eq 'SUCCESS';
             $failed_renewals++ if $evt->{textcode} ne 'SUCCESS';
