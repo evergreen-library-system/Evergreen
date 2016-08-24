@@ -30,7 +30,7 @@ BEGIN
 END;
 $f$ LANGUAGE PLPGSQL STRICT;
 
-INSERT INTO rating.popularity_parameter (name, func, require_percentile) VALUES ('Copy Count', 'rating.copy_count', TRUE);
+INSERT INTO rating.popularity_parameter (id, name, func, require_percentile) VALUES (16, 'Copy Count', 'rating.copy_count', TRUE);
 
 COMMIT;
 
