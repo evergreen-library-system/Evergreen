@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('0992', :eg_version);
+
 ALTER TABLE config.copy_status
     ADD COLUMN is_available BOOL NOT NULL DEFAULT FALSE;
 
