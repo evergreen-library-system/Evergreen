@@ -1031,4 +1031,24 @@ BEGIN
 END;
 $$ STRICT LANGUAGE PLPGSQL;
 
+-- Remove all activity entries by activity type, 
+-- except the most recent entry per user. 
+CREATE OR REPLACE FUNCTION
+    actor.purge_usr_activity_by_type(act_type INTEGER)
+    RETURNS VOID AS $$
+DECLARE
+    cur_usr INTEGER;
+BEGIN
+    FOR cur_usr IN SELECT DISTINCT(usr)
+        FROM actor.usr_activity WHERE etype = act_type LOOP
+        DELETE FROM actor.usr_activity WHERE id IN (
+            SELECT id
+            FROM actor.usr_activity
+            WHERE usr = cur_usr AND etype = act_type
+            ORDER BY event_time DESC OFFSET 1
+        );
+
+    END LOOP;
+END $$ LANGUAGE PLPGSQL;
+
 COMMIT;
