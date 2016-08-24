@@ -1,7 +1,7 @@
 
 BEGIN;
 
--- SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('0998', :eg_version);
 
 DROP VIEW IF EXISTS action.all_circulation;
 CREATE VIEW action.all_circulation AS
