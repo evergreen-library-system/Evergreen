@@ -1,0 +1,7 @@
+SIP Renewals
+^^^^^^^^^^^^^
+Renewals attempted via SIP will now consider whether a penalty is configured
+to block renewals before blocking the renewal. Previously, any penalty, even
+if it wasn't set to block renewals, would prevent a renewal from succeeding
+via SIP. 
+
