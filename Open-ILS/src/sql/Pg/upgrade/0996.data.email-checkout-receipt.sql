@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('0996', :eg_version);
+
 INSERT INTO config.usr_setting_type (
     name,
     opac_visible,
