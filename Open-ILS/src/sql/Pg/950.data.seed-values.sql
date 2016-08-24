@@ -328,6 +328,7 @@ INSERT INTO config.copy_status
 INSERT INTO config.copy_status
 (id, name, holdable, opac_visible, copy_active, restrict_copy_delete)
 VALUES (17, 'Lost and Paid', FALSE, FALSE, FALSE, TRUE);
+INSERT INTO config.copy_status(id,name) VALUES (18,oils_i18n_gettext(18, 'Canceled Transit', 'ccs', 'name'));
 
 
 SELECT SETVAL('config.copy_status_id_seq'::TEXT, 100);

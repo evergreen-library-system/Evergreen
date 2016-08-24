@@ -246,17 +246,12 @@ sub __abort_transit {
     # Only change the copy status if the copy status is "In Transit."
     if ($copy->status == OILS_COPY_STATUS_IN_TRANSIT) {
         # recover the copy status
-        $copy->status( $transit->copy_status );
+        $copy->status( OILS_COPY_STATUS_CANCELED_TRANSIT );
         $copy->editor( $e->requestor->id );
         $copy->edit_date('now');
 
-        if ( $holdtransit ) {
-            $logger->info("setting copy to reshelving on hold transit abort");
-            $copy->status( OILS_COPY_STATUS_RESHELVING );
-        }
         return $e->die_event unless $e->update_asset_copy($copy);
     }
-
 
     $e->commit unless $no_commit;
 
