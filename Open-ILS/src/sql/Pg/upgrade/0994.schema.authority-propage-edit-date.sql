@@ -1,6 +1,8 @@
 
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('0994', :eg_version);
+
 CREATE OR REPLACE FUNCTION authority.propagate_changes 
     (aid BIGINT, bid BIGINT) RETURNS BIGINT AS $func$
 DECLARE
