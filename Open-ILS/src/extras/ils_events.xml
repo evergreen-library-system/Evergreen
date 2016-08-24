@@ -159,13 +159,13 @@
 		<desc xml:lang="en-US">The selected bib record has volumes attached</desc>
 	</event>
 	<event code='1232' textcode='ITEM_DEPOSIT_REQUIRED'>
-		<desc xml:lang="en-US"></desc>
+		<desc xml:lang="en-US">Payment of an item deposit is required.</desc>
 	</event>
 	<event code='1233' textcode='ITEM_RENTAL_FEE_REQUIRED'>
-		<desc xml:lang="en-US"></desc>
+		<desc xml:lang="en-US">Payment of an item rental fee is required.</desc>
 	</event>
 	<event code='1234' textcode='ITEM_DEPOSIT_PAID'>
-		<desc xml:lang="en-US"></desc>
+		<desc xml:lang="en-US">An item deposit was paid.</desc>
 	</event>
 	<event code='1235' textcode='INVALID_USER_XACT_ID'>
         <desc xml:lang="en-US">While you were trying to make payments, this account's transaction history changed.  Please go back and try again.</desc>

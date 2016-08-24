@@ -179,7 +179,7 @@
                             circ.renewal_response.textcode != 'SUCCESS' %]
                     <tr>
                         <td colspan="6">[%# XXX colspan="0" does not work in IE %]
-                            <span class="failure-text" title="[% circ.renewal_response.textcode | html %] / [% circ.renewal_response.payload.fail_part | html %]">
+                            <span class="failure-text" title="[% circ.renewal_response.textcode | html %] / [% circ.renewal_response.fail_part | html %]">
                                 [%
                                     renew_fail_msg = '';
                                     IF circ.renewal_response.textcode == 'TOTAL_HOLD_COPY_RATIO_EXCEEDED' OR
@@ -188,7 +188,7 @@
                                         renew_fail_msg = l('Item is needed for a hold');
                                     ELSE;
                                         renew_fail_msg = circ.renewal_response.desc || 
-                                            circ.renewal_response.payload.fail_part || 
+                                            circ.renewal_response.fail_part || 
                                             circ.renewal_response.textcode;
                                     END;
                                     renew_fail_msg | html;
