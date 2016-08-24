@@ -75,6 +75,8 @@
             }
         }
 
+        var newest_circ_aged = true;
+        var all_circs_aged = true;
         function show_circs() {
             try {
                 $('r_last').disabled = true; $('r_all').disabled = true;    
@@ -87,6 +89,12 @@
 
                 var gb = $('circs');
                 for (var j = 0; j < g.circs.length; j++) {
+                    if (g.circs[j].usr()) { // have at least 1 active circ
+                        all_circs_aged = false;
+                        if (j == 0) { // first circ is active
+                            newest_circ_aged = false;
+                        }
+                    }
                     var iframe = document.createElement('iframe');
                     iframe.setAttribute('style','overflow: none; min-height: 100px;');
                     iframe.setAttribute('flex','1');
@@ -94,6 +102,12 @@
                     iframe.setAttribute('src', urls.XUL_CIRC_BRIEF); // + '?circ_id=' + g.circs[j].id() );
                     get_contentWindow(iframe).xulG = { 'circ_id' : g.circs[j].id() };
                 }
+
+                // Disable retrieve patron buttons when there are no
+                // patrons to retrieve, because related circs are aged.
+                $('r_all').disabled = all_circs_aged;
+                $('r_last').disabled = newest_circ_aged;
+
             } catch(E) {
                 g.error.standard_unexpected_error_alert('error showing circs',E);
             }

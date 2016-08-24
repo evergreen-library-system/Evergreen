@@ -791,7 +791,7 @@ sub view_circs {
 
     return $e->search_action_all_circulation([
         {target_copy => $copyid}, 
-        {limit => $count, order_by => { circ => "xact_start DESC" }} 
+        {limit => $count, order_by => { combcirc => "xact_start DESC" }} 
     ]);
 }
 
