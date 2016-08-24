@@ -36,6 +36,26 @@ SQLPO=db.seed.po
 SQLOUT=950.data.seed-values
 TT2_OPAC_DATA_DIR=../../Open-ILS/src/data/locale/opac
 TT2_WEBSTAFF_DATA_DIR=../../Open-ILS/src/data/locale/staff
+TEMPLATES_ACQ_DATA_DIR=../../Open-ILS/src/data/locale/acq
+TEMPLATES_ACTOR_DATA_DIR=../../Open-ILS/src/data/locale/actor
+TEMPLATES_BOOKING_DATA_DIR=../../Open-ILS/src/data/locale/booking
+TEMPLATES_CAT_DATA_DIR=../../Open-ILS/src/data/locale/cat
+TEMPLATES_CIRC_DATA_DIR=../../Open-ILS/src/data/locale/circ
+TEMPLATES_CONIFY_DATA_DIR=../../Open-ILS/src/data/locale/conify
+TEMPLATES_KPAC_DATA_DIR=../../Open-ILS/src/data/locale/kpac
+TEMPLATES_SERIAL_DATA_DIR=../../Open-ILS/src/data/locale/serial
+TEMPLATES_URLVERIFY_DATA_DIR=../../Open-ILS/src/data/locale/url_verify
+TEMPLATES_VANDELAY_DATA_DIR=../../Open-ILS/src/data/locale/vandelay
+TEMPLATES_ACQ_SRC=../../Open-ILS/src/templates/acq/
+TEMPLATES_ACTOR_SRC=../../Open-ILS/src/templates/actor/
+TEMPLATES_BOOKING_SRC=../../Open-ILS/src/templates/booking/
+TEMPLATES_CAT_SRC=../../Open-ILS/src/templates/cat/
+TEMPLATES_CIRC_SRC=../../Open-ILS/src/templates/circ/
+TEMPLATES_CONIFY_SRC=../../Open-ILS/src/templates/conify/
+TEMPLATES_KPAC_SRC=../../Open-ILS/src/templates/kpac/
+TEMPLATES_SERIAL_SRC=../../Open-ILS/src/templates/serial/
+TEMPLATES_URLVERIFY_SRC=../../Open-ILS/src/templates/url_verify/
+TEMPLATES_VANDELAY_SRC=../../Open-ILS/src/templates/vandelay/
 TPAC_SRC=../../Open-ILS/src/templates/opac/
 TT_LOCALE=../../Open-ILS/src/templates/locale/
 WEBSTAFF_SRC=../../Open-ILS/src/templates/staff/
@@ -102,6 +122,16 @@ newpo:
 	@pot2po $(PROGRESS) -i po/serial.properties/serial.properties.pot -o $(PO)/serial.properties/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/tpac/tpac.pot -o $(PO)/tpac/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/webstaff/webstaff.pot -o $(PO)/webstaff/$(LOCALE).po 
+	@pot2po $(PROGRESS) -i po/acq/acq.pot -o $(PO)/acq/$(LOCALE).po
+	@pot2po $(PROGRESS) -i po/actor/actor.pot -o $(PO)/actor/$(LOCALE).po
+	@pot2po $(PROGRESS) -i po/booking/booking.pot -o $(PO)/booking/$(LOCALE).po
+	@pot2po $(PROGRESS) -i po/cat/cat.pot -o $(PO)/cat/$(LOCALE).po
+	@pot2po $(PROGRESS) -i po/circ/circ.pot -o $(PO)/circ/$(LOCALE).po
+	@pot2po $(PROGRESS) -i po/conify/conify.pot -o $(PO)/conify/$(LOCALE).po
+	@pot2po $(PROGRESS) -i po/kpac/kpac.pot -o $(PO)/kpac/$(LOCALE).po
+	@pot2po $(PROGRESS) -i po/serial/serial.pot -o $(PO)/serial/$(LOCALE).po
+	@pot2po $(PROGRESS) -i po/urlverify/urlverify.pot -o $(PO)/urlverify/$(LOCALE).po
+	@pot2po $(PROGRESS) -i po/vandelay/vandelay.pot -o $(PO)/vandelay/$(LOCALE).po
 	@pot2po $(PROGRESS) -i po/AutoFieldWidget.js/AutoFieldWidget.js.pot -o $(PO)/AutoFieldWidget.js/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/FlattenerGrid.js/FlattenerGrid.js.pot -o $(PO)/FlattenerGrid.js/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/PCrudFilterPane.js/PCrudFilterPane.js.pot -o $(PO)/PCrudFilterPane.js/$(LOCALE).po 
@@ -116,7 +146,7 @@ newpo:
 	@echo "Generated new PO files for locale $(LOCALE)"
 
 # Generate a new set of POT files and entityized fieldmapper IDL
-newpot: dtds2pot fmidl2pot fmidl2fmidlent ils2pot props2pot sql2pot dojo2pot tpac2pot webstaff2pot
+newpot: dtds2pot fmidl2pot fmidl2fmidlent ils2pot props2pot sql2pot dojo2pot tpac2pot webstaff2pot templates2pot
 	@echo "Generated new POT files"
 
 # Generate DTD, JavaScript message catalogs, fieldmapper IDL,
@@ -155,6 +185,16 @@ updatepo: prep_output
 	@pot2po $(PROGRESS) -i po/serial.properties/serial.properties.pot -o $(PO)/serial.properties/$(LOCALE).po  -t $(PO)/serial.properties/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/tpac/tpac.pot -o $(PO)/tpac/$(LOCALE).po -t $(PO)/tpac/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/webstaff/webstaff.pot -o $(PO)/webstaff/$(LOCALE).po -t $(PO)/webstaff/$(LOCALE).po 
+	@pot2po $(PROGRESS) -i po/acq/acq.pot -o $(PO)/acq/$(LOCALE).po -t $(PO)/acq/$(LOCALE).po
+	@pot2po $(PROGRESS) -i po/actor/actor.pot -o $(PO)/actor/$(LOCALE).po -t $(PO)/actor/$(LOCALE).po
+	@pot2po $(PROGRESS) -i po/booking/booking.pot -o $(PO)/booking/$(LOCALE).po -t $(PO)/booking/$(LOCALE).po
+	@pot2po $(PROGRESS) -i po/cat/cat.pot -o $(PO)/cat/$(LOCALE).po -t $(PO)/cat/$(LOCALE).po
+	@pot2po $(PROGRESS) -i po/circ/circ.pot -o $(PO)/circ/$(LOCALE).po -t $(PO)/circ/$(LOCALE).po
+	@pot2po $(PROGRESS) -i po/conify/conify.pot -o $(PO)/conify/$(LOCALE).po -t $(PO)/conify/$(LOCALE).po
+	@pot2po $(PROGRESS) -i po/kpac/kpac.pot -o $(PO)/kpac/$(LOCALE).po -t $(PO)/kpac/$(LOCALE).po
+	@pot2po $(PROGRESS) -i po/serial/serial.pot -o $(PO)/serial/$(LOCALE).po -t $(PO)/serial/$(LOCALE).po
+	@pot2po $(PROGRESS) -i po/urlverify/urlverify.pot -o $(PO)/urlverify/$(LOCALE).po -t $(PO)/urlverify/$(LOCALE).po
+	@pot2po $(PROGRESS) -i po/vandelay/vandelay.pot -o $(PO)/vandelay/$(LOCALE).po -t $(PO)/vandelay/$(LOCALE).po
 	@pot2po $(PROGRESS) -i po/AutoFieldWidget.js/AutoFieldWidget.js.pot -o $(PO)/AutoFieldWidget.js/$(LOCALE).po  -t $(PO)/AutoFieldWidget.js/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/FlattenerGrid.js/FlattenerGrid.js.pot -o $(PO)/FlattenerGrid.js/$(LOCALE).po  -t $(PO)/FlattenerGrid.js/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/PCrudFilterPane.js/PCrudFilterPane.js.pot -o $(PO)/PCrudFilterPane.js/$(LOCALE).po  -t $(PO)/PCrudFilterPane.js/$(LOCALE).po 
@@ -238,6 +278,28 @@ props2pot: mklocale
 	@moz2po -P $(PROGRESS) -o $(PO)/multiclass_search_help.html/multiclass_search_help.html.pot -i $(SERVER_PROPSDIR)/en-US/multiclass_search_help.html 2>&1
 	@moz2po -P $(PROGRESS) -o $(PO)/patron.properties/patron.properties.pot -i $(SERVER_PROPSDIR)/en-US/patron.properties 2>&1
 	@moz2po -P $(PROGRESS) -o $(PO)/serial.properties/serial.properties.pot -i $(SERVER_PROPSDIR)/en-US/serial.properties 2>&1
+
+templates2pot: mklocale
+	@mkdir -p po/acq
+	@xgettext.pl --plugin=tt2 --directory=$(TEMPLATES_ACQ_SRC) --output-dir=po/acq/ --output=acq.pot
+	@mkdir -p po/actor
+	@xgettext.pl --plugin=tt2 --directory=$(TEMPLATES_ACTOR_SRC) --output-dir=po/actor/ --output=actor.pot
+	@mkdir -p po/booking
+	@xgettext.pl --plugin=tt2 --directory=$(TEMPLATES_BOOKING_SRC) --output-dir=po/booking/ --output=booking.pot
+	@mkdir -p po/cat
+	@xgettext.pl --plugin=tt2 --directory=$(TEMPLATES_CAT_SRC) --output-dir=po/cat/ --output=cat.pot
+	@mkdir -p po/circ
+	@xgettext.pl --plugin=tt2 --directory=$(TEMPLATES_CIRC_SRC) --output-dir=po/circ/ --output=circ.pot
+	@mkdir -p po/conify
+	@xgettext.pl --plugin=tt2 --directory=$(TEMPLATES_CONIFY_SRC) --output-dir=po/conify/ --output=conify.pot
+	@mkdir -p po/kpac
+	@xgettext.pl --plugin=tt2 --directory=$(TEMPLATES_KPAC_SRC) --output-dir=po/kpac/ --output=kpac.pot
+	@mkdir -p po/serial
+	@xgettext.pl --plugin=tt2 --directory=$(TEMPLATES_SERIAL_SRC) --output-dir=po/serial/ --output=serial.pot
+	@mkdir -p po/urlverify
+	@xgettext.pl --plugin=tt2 --directory=$(TEMPLATES_URLVERIFY_SRC) --output-dir=po/urlverify/ --output=urlverify.pot
+	@mkdir -p po/vandelay
+	@xgettext.pl --plugin=tt2 --directory=$(TEMPLATES_VANDELAY_SRC) --output-dir=po/vandelay/ --output=vandelay.pot
 
 tpac2pot: mklocale
 	@mkdir -p po/tpac
@@ -324,6 +386,16 @@ install: updatepo project fmidl2fmidlent fmidlpo2entity-en
 	mkdir -p $(TT_LOCALE)
 	cp po/tpac/$(LOCALE).po $(TT_LOCALE)/tpac.$(LOCALE).po
 	cp po/webstaff/$(LOCALE).po $(TT_LOCALE)/webstaff.$(LOCALE).po
+	cp po/acq/$(LOCALE).po $(TT_LOCALE)/acq.$(LOCALE).po
+	cp po/actor/$(LOCALE).po $(TT_LOCALE)/actor.$(LOCALE).po
+	cp po/booking/$(LOCALE).po $(TT_LOCALE)/booking.$(LOCALE).po
+	cp po/cat/$(LOCALE).po $(TT_LOCALE)/cat.$(LOCALE).po
+	cp po/circ/$(LOCALE).po $(TT_LOCALE)/circ.$(LOCALE).po
+	cp po/conify/$(LOCALE).po $(TT_LOCALE)/conify.$(LOCALE).po
+	cp po/kpac/$(LOCALE).po $(TT_LOCALE)/kpac.$(LOCALE).po
+	cp po/serial/$(LOCALE).po $(TT_LOCALE)/serial.$(LOCALE).po
+	cp po/urlverify/$(LOCALE).po $(TT_LOCALE)/urlverify.$(LOCALE).po
+	cp po/vandelay/$(LOCALE).po $(TT_LOCALE)/vandelay.$(LOCALE).po
 	cp $(PROJECT)/$(LOCALE)/$(FMIDLENTITY) $(DTDDIR)/$(LOCALE)/
 	@scripts/merge_ils_events.py --master $(EVTSRC) --localization $(PROJECT)/$(LOCALE)/$(EVTXML) --output $(EVTSRC)
 	cp $(PROJECT)/$(LOCALE)/$(SQLOUT).sql $(SQLSRCDIR)/$(SQLOUT)-$(LOCALE).sql
@@ -367,6 +439,26 @@ install: updatepo project fmidl2fmidlent fmidlpo2entity-en
 	cp $(PO)/tpac/$(LOCALE).po $(TT2_OPAC_DATA_DIR)/.
 	mkdir -p $(TT2_WEBSTAFF_DATA_DIR)
 	cp $(PO)/webstaff/$(LOCALE).po $(TT2_WEBSTAFF_DATA_DIR)/.
+	mkdir -p $(TEMPLATES_ACQ_DATA_DIR)
+	cp $(PO)/acq/$(LOCALE).po $(TEMPLATES_ACQ_DATA_DIR)/.
+	mkdir -p $(TEMPLATES_ACTOR_DATA_DIR)
+	cp $(PO)/actor/$(LOCALE).po $(TEMPLATES_ACTOR_DATA_DIR)/.
+	mkdir -p $(TEMPLATES_BOOKING_DATA_DIR)
+	cp $(PO)/booking/$(LOCALE).po $(TEMPLATES_BOOKING_DATA_DIR)/.
+	mkdir -p $(TEMPLATES_CAT_DATA_DIR)
+	cp $(PO)/cat/$(LOCALE).po $(TEMPLATES_CAT_DATA_DIR)/.
+	mkdir -p $(TEMPLATES_CIRC_DATA_DIR)
+	cp $(PO)/circ/$(LOCALE).po $(TEMPLATES_CIRC_DATA_DIR)/.
+	mkdir -p $(TEMPLATES_CONIFY_DATA_DIR)
+	cp $(PO)/conify/$(LOCALE).po $(TEMPLATES_CONIFY_DATA_DIR)/.
+	mkdir -p $(TEMPLATES_KPAC_DATA_DIR)
+	cp $(PO)/kpac/$(LOCALE).po $(TEMPLATES_KPAC_DATA_DIR)/.
+	mkdir -p $(TEMPLATES_SERIAL_DATA_DIR)
+	cp $(PO)/serial/$(LOCALE).po $(TEMPLATES_SERIAL_DATA_DIR)/.
+	mkdir -p $(TEMPLATES_URLVERIFY_DATA_DIR)
+	cp $(PO)/urlverify/$(LOCALE).po $(TEMPLATES_URLVERIFY_DATA_DIR)/.
+	mkdir -p $(TEMPLATES_VANDELAY_DATA_DIR)
+	cp $(PO)/vandelay/$(LOCALE).po $(TEMPLATES_VANDELAY_DATA_DIR)/.
 
 install_all_locales: newpot
 	for i in `ls po/*/*po|grep -v en-US | cut -f3 -d'/' | cut -f1 -d. | sort | uniq`; \
