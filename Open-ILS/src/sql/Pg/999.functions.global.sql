@@ -1658,10 +1658,10 @@ BEGIN
             RETURN NEW;
         END IF;
 
-        -- Unless there's a setting stopping us, propagate these updates to any linked bib records
+        -- Unless there's a setting stopping us, propagate these updates to any linked bib records when the heading changes
         PERFORM * FROM config.internal_flag WHERE name = 'ingest.disable_authority_auto_update' AND enabled;
 
-        IF NOT FOUND THEN
+        IF NOT FOUND AND NEW.heading <> OLD.heading THEN
             PERFORM authority.propagate_changes(NEW.id);
         END IF;
 	
