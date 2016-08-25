@@ -3,6 +3,55 @@ Evergreen 2.9 Release Notes
 :toc:
 :numbered:
 
+Evergreen 2.9.7
+---------------
+This release contains several bugfixes improving on Evergreen 2.9.6
+
+* The claims never checked out counter on the patron record is now
+  incremented correctly when marking a lost loan as
+  claims-never-checked-out.
+* When a transit is canceled, the copy's status is changed only
+  if its status was previously "In Transit".
+* Retrieving records with embedded holdings via SRU and Z39.50 is now
+  faster.
+* The hold status message in the public catalog now uses
+  better grammar.
+* The error message displayed when a patron attempts to place
+  a hold but is prevented from doing so due to policy reasons
+  is now more likely to be useful
+* The public catalog now draws the edition statement only
+  from the 250 field; it no longer tries to check the 534
+  and 775 fields.
+* Embedded schema.org microdata now uses "offeredBy" rather
+  than "seller".
+* The ContentCafe added content plugin now handles the "fake"
+  ISBNs that Baker and Taylor assigns to media items.
+* Attempting to renew a rental or deposit item in the public
+  catalog no longer causes an internal server errorr.
+* Various format icons now have transparent backgrounds (as opposed
+  to white).
+* The staff client will no longer wait indefinitely for Novelist
+  to supply added content, improving its responsiveness.
+* A few additional strings are now marked as translatable.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+testing and documentation patches to the 2.9.6 point release of
+Evergreen:
+
+* Thomas Berezansky
+* Jason Boyer
+* Galen Charlton
+* Jeff Davis
+* Blake Graham-Henderson
+* Jim Keenan
+* Kathy Lussier
+* Dan Scott
+* Remington Steed
+* Jason Stephenson
+* Yamil Suarez
+
 Evergreen 2.9.6
 ---------------
 This release contains several bugfixes improving on Evergreen 2.9.5
