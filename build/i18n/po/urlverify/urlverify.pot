@@ -1,0 +1,132 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../Open-ILS/src/templates/url_verify/create_session.tt2:107
+msgid "Add"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/url_verify/review_attempt.tt2:51
+msgid "Attempt ID"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/url_verify/create_session.tt2:130
+msgid "Begin"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/url_verify/sessions.tt2:43
+msgid "Creator "
+msgstr ""
+
+#: ../../Open-ILS/src/templates/url_verify/review_attempt.tt2:34 ../../Open-ILS/src/templates/url_verify/select_urls.tt2:35
+msgid "Download CSV"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/url_verify/sessions.tt2:2
+msgid "Link Checker"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/url_verify/create_session.tt2:2
+msgid "Link Checker - Create Session"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/url_verify/review_attempt.tt2:2
+msgid "Link Checker - Review Verification Attempt"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/url_verify/select_urls.tt2:2
+msgid "Link Checker - Select URLs"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/url_verify/create_session.tt2:90
+msgid "NOTE: When cloning sessions, any saved searches used in the original session will already be mentioned in the 'Search' field above. You should not need to select them again here."
+msgstr ""
+
+#: ../../Open-ILS/src/templates/url_verify/sessions.tt2:21
+msgid "New Link Checker Session"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/url_verify/create_session.tt2:88
+msgid "Optionally select one or more to combine with 'Search' field above."
+msgstr ""
+
+#: ../../Open-ILS/src/templates/url_verify/select_urls.tt2:30
+msgid "Print URLs"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/url_verify/review_attempt.tt2:30
+msgid "Print verification results"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/url_verify/create_session.tt2:116
+msgid "Process immediately?"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/url_verify/create_session.tt2:79
+msgid "Saved searches:"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/url_verify/create_session.tt2:53
+msgid "Search scope:"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/url_verify/create_session.tt2:67
+msgid "Search:"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/url_verify/create_session.tt2:41
+msgid "Session name:"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/url_verify/create_session.tt2:105
+msgid "Subfield(s)"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/url_verify/create_session.tt2:103
+msgid "Tag"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/url_verify/create_session.tt2:97
+msgid "Tags and subfields to search for URLs:"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/url_verify/create_session.tt2:59
+msgid "This will only be used if your search doesn't contain an explicit filter such as site(BR1)"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/url_verify/sessions.tt2:46
+msgid "URL Selectors"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/url_verify/sessions.tt2:42
+msgid "Verification Attempts"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/url_verify/select_urls.tt2:37
+msgid "Verify Selected URLs"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/url_verify/sessions.tt2:25
+msgid "View existing sessions started at:"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/url_verify/review_attempt.tt2:33
+msgid "link-checker-results"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/url_verify/select_urls.tt2:34
+msgid "link-checker-urls"
+msgstr ""

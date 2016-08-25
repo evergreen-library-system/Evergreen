@@ -1,0 +1,365 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../Open-ILS/src/templates/kpac/getit.tt2:40
+msgid " Enter Numbers... "
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/parts/searchbox.tt2:6
+msgid " Enter Text... "
+msgstr ""
+
+#. (callnum, copy_info.part_label)
+#: ../../Open-ILS/src/templates/kpac/parts/copy_table.tt2:43
+msgid "%1 (%2)"
+msgstr ""
+
+#. (attrs.publisher, attrs.pubdate)
+#: ../../Open-ILS/src/templates/kpac/parts/record_row.tt2:18 ../../Open-ILS/src/templates/kpac/record.tt2:52
+msgid "%1, %2"
+msgstr ""
+
+#. (title.substr(0, tlen - 3))
+#: ../../Open-ILS/src/templates/kpac/parts/breadcrumb.tt2:29
+msgid "%1..."
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/getit.tt2:146
+msgid "-- Temporary List --"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/record.tt2:81
+msgid "About this item:"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/getit.tt2:144
+msgid "Add to one of your lists?"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/home.tt2:36 ../../Open-ILS/src/templates/kpac/parts/searchbox.tt2:13
+msgid "Author"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/parts/addedcontent.tt2:3
+msgid "Author Notes"
+msgstr ""
+
+#. (title)
+#: ../../Open-ILS/src/templates/kpac/getit_results.tt2:49
+msgid "Back to %1"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/parts/footer.tt2:5
+msgid "Back to Main Catalog"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/parts/copy_table.tt2:19
+msgid "Call Number"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/getit.tt2:72
+msgid "Choose a Pickup Library:"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/parts/footer.tt2:2
+msgid "Contact Us"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/getit.tt2:24
+msgid "Enter your password"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/parts/addedcontent.tt2:3
+msgid "Excerpt"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/parts/searchbox.tt2:37
+msgid "Full Collection"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/parts/header.tt2:27
+msgid "Get a Library Card"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/getit_results.tt2:1 ../../Open-ILS/src/templates/kpac/parts/breadcrumb.tt2:41 ../../Open-ILS/src/templates/kpac/record.tt2:63
+msgid "Get it"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/record.tt2:67
+msgid "Go Back"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/parts/header.tt2:28
+msgid "Help"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/getit_results.tt2:29
+msgid "Hold Successful!"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/home.tt2:1 ../../Open-ILS/src/templates/kpac/parts/breadcrumb.tt2:6
+msgid "Home"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/getit.tt2:29
+msgid "If you would like to place a hold on this item, please enter the following information and click Submit below:"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/getit.tt2:130
+msgid "If you would like to save this item to a list to be requested later, click Submit below."
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/parts/record_row.tt2:10 ../../Open-ILS/src/templates/kpac/record.tt2:17
+msgid "Image of item"
+msgstr ""
+
+#. (ctx.page_title)
+#: ../../Open-ILS/src/templates/kpac/parts/base.tt2:10
+msgid "Kid's Catalog - %1"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/getit.tt2:41
+msgid "Library Card Number without spaces:"
+msgstr ""
+
+#. (ctx.library.name)
+#: ../../Open-ILS/src/templates/kpac/library.tt2:1
+msgid "Library details: %1"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/parts/copy_table.tt2:18
+msgid "Location"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/parts/header.tt2:25
+msgid "Login"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/parts/header.tt2:5
+msgid "Logo"
+msgstr ""
+
+#. (ctx.user.first_given_name, ctx.user.family_name)
+#: ../../Open-ILS/src/templates/kpac/parts/header.tt2:22
+msgid "Logout (%1 %2)"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/parts/searchbox.tt2:1
+msgid "New Search"
+msgstr ""
+
+#. (ctx.copy_limit)
+#: ../../Open-ILS/src/templates/kpac/parts/copy_table.tt2:67
+msgid "Next %1"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/parts/addedcontent.tt2:41
+msgid "No Content Available"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/results.tt2:13
+msgid "No records were found that matched your search."
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/home.tt2:46
+msgid "Or click on an image to get started:"
+msgstr ""
+
+#. ("</td><td class=\"current_page\">' _ (page + 1) _ '</td><td>", "</td><td class=\"total_pages\">' _ page_count _ '</td>")
+#: ../../Open-ILS/src/templates/kpac/parts/paginate.tt2:27
+msgid "Page %1 of %2"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/getit.tt2:54
+msgid "Password"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/getit_results.tt2:37
+msgid "Please see a librarian."
+msgstr ""
+
+#. (ctx.copy_offset - new_offset)
+#: ../../Open-ILS/src/templates/kpac/parts/copy_table.tt2:60
+msgid "Previous %1"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/parts/header.tt2:14
+msgid "Print"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/record.tt2:45
+msgid "Rate this"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/parts/addedcontent.tt2:3
+msgid "Reviews"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/results.tt2:1 ../../Open-ILS/src/templates/kpac/results.tt2:7
+msgid "Search Results"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/home.tt2:20
+msgid "Search your Library"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/parts/copy_table.tt2:20
+msgid "Shelving Location"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/parts/copy_table.tt2:77
+msgid "Show fewer copies"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/parts/copy_table.tt2:75
+msgid "Show more copies"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/parts/footer.tt2:3
+msgid "Site Help"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/parts/footer.tt2:4
+msgid "Site Map"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/parts/copy_table.tt2:21
+msgid "Status"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/getit.tt2:120 ../../Open-ILS/src/templates/kpac/getit.tt2:155
+msgid "Submit"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/parts/addedcontent.tt2:3
+msgid "Summary"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/parts/addedcontent.tt2:3
+msgid "Table of Contents"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/parts/header.tt2:11
+msgid "Text size"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/home.tt2:32 ../../Open-ILS/src/templates/kpac/parts/searchbox.tt2:13
+msgid "Title"
+msgstr ""
+
+#. ("<a href=\"' _ mkurl(ctx.opac_root _ '/myopac/lists', {   }, 1) _ '\">", "</a>")
+#: ../../Open-ILS/src/templates/kpac/getit_results.tt2:18 ../../Open-ILS/src/templates/kpac/getit_results.tt2:25
+msgid "To manage your lists, go to %1My Lists%2"
+msgstr ""
+
+#. ("<a href=\"' _ mkurl(ctx.kpac_root _ '/record/' _ ctx.bre_id, {   }, kill_params) _ '\">' _ title_html _ '</a>")
+#: ../../Open-ILS/src/templates/kpac/getit_results.tt2:36
+msgid "Unable to request %1."
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/home.tt2:28 ../../Open-ILS/src/templates/kpac/parts/searchbox.tt2:13
+msgid "Word"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/getit_results.tt2:15 ../../Open-ILS/src/templates/kpac/getit_results.tt2:22
+msgid "You Saved It!"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/record.tt2:75
+msgid "You can find this item at these locations:"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/getit.tt2:134
+msgid "You may also save this item to a list you have already created by selecting one of your lists below."
+msgstr ""
+
+#. (title_html, list_html)
+#: ../../Open-ILS/src/templates/kpac/getit_results.tt2:24
+msgid "You successfully saved %1 to %2."
+msgstr ""
+
+#. (title_html)
+#: ../../Open-ILS/src/templates/kpac/getit_results.tt2:17
+msgid "You successfully saved %1."
+msgstr ""
+
+#. (lib_html)
+#: ../../Open-ILS/src/templates/kpac/getit_results.tt2:32
+msgid "You will be notified when your item is ready for pickup.  You will be able to pick your item up at %1."
+msgstr ""
+
+#. ("<a href=\"' _ mkurl(ctx.kpac_root _ '/record/' _ ctx.bre_id, {   }, kill_params) _ '\">' _ title_html _ '</a>")
+#: ../../Open-ILS/src/templates/kpac/getit_results.tt2:31
+msgid "Your request for %1 was successful."
+msgstr ""
+
+#. (attrs.author)
+#: ../../Open-ILS/src/templates/kpac/parts/record_row.tt2:15 ../../Open-ILS/src/templates/kpac/record.tt2:22
+msgid "by %1"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/home.tt2:21
+msgid "for books, movies, music, magazines, and more!"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/parts/record_row.tt2:26
+msgid "get it"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/getit.tt2:28
+msgid "get it!"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/getit.tt2:21
+msgid "library card"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/parts/record_row.tt2:24
+msgid "more info"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/getit.tt2:63
+msgid "password help"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/getit.tt2:49
+msgid "pin number help"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/parts/header.tt2:15
+msgid "print"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/record.tt2:44
+msgid "rating"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/getit.tt2:129
+msgid "save it!"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/home.tt2:40 ../../Open-ILS/src/templates/kpac/parts/searchbox.tt2:48
+msgid "search"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/parts/breadcrumb.tt2:23
+msgid "search results"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/parts/header.tt2:12
+msgid "text size"
+msgstr ""

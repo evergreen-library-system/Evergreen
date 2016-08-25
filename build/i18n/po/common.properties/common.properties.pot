@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-14 20:44-0400\n"
+"POT-Creation-Date: 2016-08-25 17:09-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -203,9 +203,17 @@ msgstr ""
 msgid "Price"
 msgstr ""
 
+#: staff.acp_label_cost
+msgid "Acquisition Cost"
+msgstr ""
+
 #: staff.acp_label_status
 msgctxt "staff.acp_label_status"
 msgid "Status"
+msgstr ""
+
+#: staff.acp_label_age_protect
+msgid "Age-based Hold Protection"
 msgstr ""
 
 #: staff.ahr_current_copy_label

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-14 20:44-0400\n"
+"POT-Creation-Date: 2016-08-25 17:09-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,6 +19,14 @@ msgstr ""
 
 #: staff.circ.item_no_circs
 msgid "Item %1$s has never circulated."
+msgstr ""
+
+#: staff.circ.item_no_user
+msgid "Item %1$s circulation is an aged circulation and has no linked user."
+msgstr ""
+
+#: staff.circ.aged_circ
+msgid "<Aged Circulation>"
 msgstr ""
 
 #: staff.circ.invalid_date
@@ -1060,6 +1068,10 @@ msgstr ""
 
 #: staff.circ.utils.holdable
 msgid "Holdable?"
+msgstr ""
+
+#: staff.circ.utils.age_protect
+msgid "Age-based Hold Protection"
 msgstr ""
 
 #: staff.circ.utils.floating

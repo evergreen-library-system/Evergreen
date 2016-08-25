@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-14 20:42-0400\n"
+"POT-Creation-Date: 2016-08-25 17:08-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -14279,6 +14279,10 @@ msgctxt "staff.circ.alternate_copy_summary.Holdable.label"
 msgid "Holdable"
 msgstr ""
 
+#: staff.circ.alternate_copy_summary.Age_Protect.label
+msgid "Age-based Hold Protection"
+msgstr ""
+
 #: staff.circ.alternate_copy_summary.Hold_Shelf_Location.label
 msgid "Hold Shelf Location"
 msgstr ""
@@ -14333,6 +14337,10 @@ msgstr ""
 #: staff.circ.alternate_copy_summary.Price.label
 msgctxt "staff.circ.alternate_copy_summary.Price.label"
 msgid "Price"
+msgstr ""
+
+#: staff.circ.alternate_copy_summary.Cost.label
+msgid "Acquisition Cost"
 msgstr ""
 
 #: staff.circ.alternate_copy_summary.Previous_Circ_Group.label

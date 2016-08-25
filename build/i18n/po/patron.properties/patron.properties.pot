@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-14 20:44-0400\n"
+"POT-Creation-Date: 2016-08-25 17:09-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -333,6 +333,18 @@ msgstr ""
 
 #: staff.patron.bills.pay.payment_failed
 msgid "Bill payment likely failed"
+msgstr ""
+
+#: staff.patron.bills.pay.over_warn_limit.title
+msgid "Verify Payment Amount"
+msgstr ""
+
+#: staff.patron.bills.pay.over_warn_limit
+msgid "Are you sure you want to apply a payment of $%1$s?"
+msgstr ""
+
+#: staff.patron.bills.pay.over_limit
+msgid "Payments over $%1$s are denied by policy."
 msgstr ""
 
 #: staff.patron.bills.info_box.label_value.reservation

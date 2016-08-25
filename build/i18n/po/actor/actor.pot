@@ -1,0 +1,192 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../Open-ILS/src/templates/actor/user/register.tt2:63
+msgid "Active"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/actor/user/register.tt2:50
+msgid "Address Alert"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/actor/user/register.tt2:78
+msgid "Apply Changes"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/actor/user/register.tt2:101
+msgid "Assign additional permission groups to users here.<br/>This does not affect circulation policy."
+msgstr ""
+
+#: ../../Open-ILS/src/templates/actor/user/register.tt2:62
+msgid "Barcode"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/actor/user/event_log.tt2:242
+msgid "Cancel Selected Events"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/actor/user/event_log.tt2:112
+msgid "Circulation"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/actor/user/register.tt2:77
+msgid "Close"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/actor/user/event_log.tt2:128
+msgid "Collected"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/actor/user/event_log.tt2:132
+msgid "Complete"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/actor/user/message.tt2:97
+msgid "Context Org Unit"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/actor/user/message.tt2:93
+msgid "Delete Selected"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/actor/user/event_log.tt2:133
+msgid "Error"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/actor/user/event_log.tt2:280
+msgid "Event Name"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/actor/user/event_log.tt2:127
+msgid "Found"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/actor/user/event_log.tt2:113
+msgid "Hold"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/actor/user/event_log.tt2:129
+msgid "Invalid"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/actor/user/message.tt2:2 ../../Open-ILS/src/templates/actor/user/message.tt2:91
+msgid "Patron Messages"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/actor/user/event_log.tt2:130
+msgid "Pending"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/actor/user/register.tt2:64
+msgid "Primary"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/actor/user/event_log.tt2:246
+msgid "Print All Events"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/actor/user/event_log.tt2:244
+msgid "Print Selected Events"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/actor/user/event_log.tt2:131
+msgid "Reacting"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/actor/user/event_log.tt2:240
+msgid "Reset Selected Events"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/actor/user/register.tt2:114
+msgid "Save"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/actor/user/register_table.tt2:47
+msgid "Secondary Groups"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/actor/user/register.tt2:94
+msgid "Secondary Permission Groups"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/actor/user/register.tt2:23
+msgid "Show All Fields"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/actor/user/register.tt2:21
+msgid "Show Only Required Fields"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/actor/user/register.tt2:22
+msgid "Show Suggested Fields"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/actor/user/event_log.tt2:250
+msgid "Show events at and below"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/actor/user/event_log.tt2:291
+msgid "Target Circulation - Author"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/actor/user/event_log.tt2:289
+msgid "Target Circulation - Copy Barcode"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/actor/user/event_log.tt2:292
+msgid "Target Circulation - Patron Barcode"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/actor/user/event_log.tt2:290
+msgid "Target Circulation - Title"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/actor/user/event_log.tt2:294
+msgid "Target Hold - Author"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/actor/user/event_log.tt2:295
+msgid "Target Hold - Patron Barcode"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/actor/user/event_log.tt2:293
+msgid "Target Hold - Title"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/actor/user/event_log.tt2:2
+msgid "Triggered Event Log"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/actor/user/event_log.tt2:163
+msgid "Up to how many rows?"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/actor/user/register.tt2:1
+msgid "User Editor"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/actor/user/event_log.tt2:171
+msgid "You selected nothing."
+msgstr ""
+
+#: ../../Open-ILS/src/templates/actor/user/event_log.tt2:235
+msgid "copy specific"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/actor/user/event_log.tt2:236
+msgid "patron specific"
+msgstr ""
