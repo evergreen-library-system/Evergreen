@@ -1,3 +1,413 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 4e9814fdc877b926bc377753013aee893062e17b
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Thu Aug 25 17:37:12 2016 -0400
+
+    Update server upgrade instructions for 2.9.7.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+17	16	docs/installation/server_upgrade.txt
+
+commit fe9f553860a3fdb9a6d3797932649f04337c0358
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Thu Aug 25 17:30:40 2016 -0400
+
+    Update Perl version for 2.9.7
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit 6dcc2f94e1d63a0d962d10613b8970cac6e9c3f6
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Thu Aug 25 17:29:12 2016 -0400
+
+    Docs: Add Additional 2.9.7 Acknowledgments for Testing/Signoff
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+3	0	docs/RELEASE_NOTES_2_9.txt
+
+commit f36ae97ce82ff43d4c64da6baa9d564cdea6dae3
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Thu Aug 25 17:26:19 2016 -0400
+
+    Docs: Adding 2.9.7 Release Notes
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+49	0	docs/RELEASE_NOTES_2_9.txt
+
+commit 6a4174d57251bd1ff2da540495bacd0888310cc7
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Thu Aug 25 14:03:38 2016 -0400
+
+    LP#1617017: make another TPAC string translatable
+    
+    "Export List" in hold_history.tt2
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+1	1	Open-ILS/src/templates/opac/myopac/hold_history.tt2
+
+commit 1dbcfbb474cf7f1e3defd3fdfb5bbf1e1f747ba0
+Author: blake <blake@mobiusconsortium.org>
+Date:   Thu Jun 30 15:41:35 2016 -0500
+
+    LP1496556 Claimed never checked out count not increased when applied to LOST circulation
+    
+    Bug within the Lost copy status checkin block. Needed to set the stop_fines
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+3	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Circulate.pm
+
+commit 00c0947e565c7406bd4d912bf8595c2f0d7b6365
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Thu Aug 25 11:57:42 2016 -0400
+
+    LP#1613709: Make DOB validation alert failure translatable.
+    
+    The alert message about an invalid DOB being entered in the OPAC
+    patron registration is not translatable.  The solution, suggested by
+    Eva Cerninakova, is to wrap the string in the l() template function to
+    make it so.  That is what this branch does.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+1	1	Open-ILS/src/templates/opac/parts/js.tt2
+
+commit 29f7062f310e80ebf2c551b50588b4d1eef8020d
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Thu Aug 25 11:11:00 2016 -0400
+
+    LP#1616882: mark another string as translateable
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+1	1	Open-ILS/src/templates/opac/parts/myopac/base.tt2
+
+commit 777da634e11c2c149c6a3fc98ac3e0234bf8021a
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Thu Aug 25 11:05:25 2016 -0400
+
+    LP#1616882: mark string as translateable
+    
+    This patch makes the "Branch relationship" string in TPAC
+    available to be translated.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+1	1	Open-ILS/src/templates/opac/parts/library/core_info.tt2
+
+commit 1295e37ab87534651f8ef10908a211c168bf17cb
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Mon May 30 13:01:45 2016 -0400
+
+    LP 1583608: The make_release script always makes a db upgrade script.
+    
+    Alter make_release to always create a db upgrade script, even when no
+    actual db upgrades need to be applied.  The minimal script created
+    will at least set the upgrade version in config.upgrade_log.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+2	2	build/tools/make_release
+
+commit 1f0705f065b3bd18c753479bca00421505f6f815
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Sat Aug 20 01:39:09 2016 -0400
+
+    LP#1612364: Add transparency to some format icons
+    
+    Some format icons had a white background instead of a transparent one. The
+    transparent ones will look better in the My Account screens, where the icons
+    site on a gray background.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+-	-	Open-ILS/web/images/format_icons/icon_format/cd.png
+-	-	Open-ILS/web/images/format_icons/icon_format/cdmusic.png
+-	-	Open-ILS/web/images/format_icons/icon_format/dvd.png
+-	-	Open-ILS/web/images/format_icons/icon_format/eaudio.png
+-	-	Open-ILS/web/images/format_icons/icon_format/ebook.png
+-	-	Open-ILS/web/images/format_icons/icon_format/evideo.png
+-	-	Open-ILS/web/images/format_icons/icon_format/kit.png
+-	-	Open-ILS/web/images/format_icons/icon_format/map.png
+-	-	Open-ILS/web/images/format_icons/icon_format/microform.png
+-	-	Open-ILS/web/images/format_icons/icon_format/music.png
+-	-	Open-ILS/web/images/format_icons/icon_format/phonomusic.png
+-	-	Open-ILS/web/images/format_icons/icon_format/score.png
+-	-	Open-ILS/web/images/format_icons/icon_format/vhs.png
+
+commit 56f99a97820cfe4788ef5333a9392dbc31958204
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Aug 24 08:11:11 2016 -0400
+
+    LP#1306666: Rename test file
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+0	423	Open-ILS/src/perlmods/live_t/17-lp1306666-abort-transit-copy-status.t
+423	0	Open-ILS/src/perlmods/live_t/19-lp1306666-abort-transit-copy-status.t
+ delete mode 100644 Open-ILS/src/perlmods/live_t/17-lp1306666-abort-transit-copy-status.t
+ create mode 100644 Open-ILS/src/perlmods/live_t/19-lp1306666-abort-transit-copy-status.t
+
+commit 3b05cbdebb2507508a5b980590b476849c5d79d0
+Author: Jason Stephenson <jstephenson@mvlcstaff.org>
+Date:   Mon Mar 28 15:34:32 2016 -0400
+
+    LP 1306666: Add Perl tests for new behavior.
+    
+    These tests check that the copy status is correct after aborting
+    transits dependent upon the status of the copy.  More tests could be
+    added to cover more situations, but these tests cover the basics.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlcstaff.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+423	0	Open-ILS/src/perlmods/live_t/17-lp1306666-abort-transit-copy-status.t
+ create mode 100644 Open-ILS/src/perlmods/live_t/17-lp1306666-abort-transit-copy-status.t
+
+commit 4249b4d5f65ca0a98e3e5b1b974fc96853515e47
+Author: Jason Stephenson <jstephenson@mvlcstaff.org>
+Date:   Fri Mar 18 16:38:33 2016 -0400
+
+    LP 1306666: Abort Transit Only Change Copy Status if In Transit
+    
+    When aborting a transit, the copy status is presently changed, either
+    to the status stored in action.transit_copy or to Reshelving if the
+    transit was for a hold.  This causes problems with "hanging" transits
+    where something was not handled properly before.  We've had cases
+    where a transit sticks around on a copy that is later checked out, and
+    while that copy is checked out, the transit is aborted, thus setting
+    the copy status to Reshelving when it should be Checked Out.
+    
+    The code change in this branch only changes the copy's status if it is
+    In Transit.  A copy in any other status has its status left untouched.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlcstaff.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+14	10	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Transit.pm
+
+commit 9516f19afd7e686c4dffa137d90c1afa76c5c372
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Wed Aug 24 11:41:57 2016 -0400
+
+    LP#1205492: fix crash when attempting to renew deposit & rental loans in OPAC
+    
+    This patch fixes a bug where attempting to renew a loan on an item
+    that requires a deposit or a rental fee can cause an Apache
+    internal server error.
+    
+    In particular, this patch supplies descriptions for the following
+    events:
+    
+      ITEM_DEPOSIT_REQUIRED
+      ITEM_RENTAL_FEE_REQUIRED
+      ITEM_DEPOSIT_PAID
+    
+    It also normalizes how 'fail_part' is set in the renewal response,
+    as the payload of an event returned when a renewal fails can
+    be either a hash or an acp Fieldmapper object depending on the
+    type of event.  In the former case, attempting to access an
+    nonexistent ->fail_part method is what causes the crash.
+    
+    To test
+    -------
+    [1] Create an item that requires a deposit or a rental fee
+        and check it out.
+    [2] Attempt to renew the loan in the public catalog. Note
+        that an internal server error is returned.
+    [3] Apply the patch and attept step 2 again. This time, the
+        public catalog should display a notification to the patron
+        that the renewal cannot take place, rather than crashing.
+    [4] Set up other situations where a renewal should fail for
+        reasons other than a deposit/rental fee being required. Verify
+        that appropriate error messages are displayed in the public
+        catalog.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+3	3	Open-ILS/src/extras/ils_events.xml
+9	0	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Account.pm
+2	2	Open-ILS/src/templates/opac/myopac/circs.tt2
+
+commit 9e2afb458bd823cb43c81f4deec773f8f74a4b57
+Author: Jim Keenan <jkeenan@cwmars.org>
+Date:   Fri Aug 12 14:51:28 2016 -0400
+
+    lp1592934 removed lines referencing edition fields 534 and 775. These fields refer to other, different editions of the work and not to the work actually being returned.
+    
+    Signed-off-by: Jim Keenan <jkeenan@cwmars.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	3	Open-ILS/src/templates/opac/parts/misc_util.tt2
+
+commit 67d75ee9aac226a45dcd29bbe4ede79abf2996cc
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Wed Aug 10 10:26:06 2016 -0400
+
+    LP#1609556: (follow-up) restore previous 852$d output
+    
+    The previous patch had a side-effect of changing the 852$d
+    value from the circ library's shortname to its long name. This
+    patch restores the previous behavior.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/WWW/SuperCat.pm
+
+commit cf94ae1a9bbcd1c475f1bc7f9f4a573cc762f2f0
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Wed Jul 27 14:00:28 2016 -0700
+
+    LP#1609556: use unapi functions to retrieve holdings for SRU/Z39.50
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+68	34	Open-ILS/src/perlmods/lib/OpenILS/WWW/SuperCat.pm
+
+commit d9b51cda4c5e7fd9a318826da68bdf0fa9fb56f5
+Author: Thomas Berezansky <tsbere@mvlc.org>
+Date:   Thu Aug 4 10:37:17 2016 -0400
+
+    Delay Novelist loading slightly
+    
+    So that if Novelist holds things up other JavaScript, like staff client calls,
+    are not delayed due to Novelist issues.
+    
+    Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2	1	Open-ILS/src/templates/opac/parts/acjs.tt2
+
+commit 84fbdf33a8d53750d21356a7ffe7cea05c3f7196
+Author: Thomas Berezansky <tsbere@mvlc.org>
+Date:   Mon Mar 28 11:03:59 2016 -0400
+
+    LP1559281: Allow Baker and Taylor Fake ISBNs
+    
+    For Content Cafe, jam two B&T entrys into the hash so that Business::ISBN
+    doesn't register them as invalid prefix ISBNs.
+    
+    B&T uses internal ISBN's with country codes 630 and 631 for materials
+    ordered through them when no assigned ISBN exists.  The ContentCafe
+    added content service knows about these ISBNs, but they are not generally
+    used by other providers.
+    
+    To Test:  This only works if you are using the ContentCafe added content provider.
+    
+     - Before Patch -
+    1. Add the isbn 9786315820243 as the only isbn on a record. Remove UPCs also..
+    2. Clear the added content cache by restarting memcached or using the staff link.
+    3. View record in catalog and you should see no cover art.
+    
+     - After Patch -
+    1. Clear the added content cache.
+    2. View the record in the catalog and you should now see cover art for the title
+    "Video games: the movie"
+    
+    Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+    Signed-off-by: Josh Stompro <stomproj@larl.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+4	0	Open-ILS/src/perlmods/lib/OpenILS/WWW/AddedContent/ContentCafe.pm
+
+commit bf8154d907f5923b40324b465d9cc28a65012942
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Thu May 19 13:27:11 2016 -0400
+
+    LP#1424656: Fix grammatical error in My Account holds screen
+    
+    Changes the holds queue position string from 'x hold on y copies' to 'Hold #x on
+    y copies', which is gramatically correct.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/templates/opac/parts/hold_status.tt2
+
+commit 64aac0ec7cb25112c4f05903c2ebef1715f49532
+Author: Jason Boyer <jboyer1@library.in.gov>
+Date:   Fri Aug 14 11:26:54 2015 -0400
+
+    LP 1481441: Improve Hold Failure Messages
+    
+    Rearranging the order of the various sources of hold
+    failure messages makes it less likely to see spurious
+    "Item is too new to transit this far" messages. Now
+    errors due to excessive fines or number of existing
+    holds.
+    
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    
+    Conflicts:
+    	Open-ILS/src/templates/opac/parts/place_hold_result.tt2
+
+1	1	Open-ILS/src/templates/opac/parts/place_hold_result.tt2
+
+commit 61cb9fad1d6648b7fad32d58f6a5c94b827b10e7
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Mon Aug 1 18:09:04 2016 -0400
+
+    LP#1608711: Update schema.org property name from "seller" to "offeredBy"
+    
+    Per the 2015-11-05 release of schema.org
+    (http://schema.org/docs/releases.html#v2.2), the "offeredBy" property is now
+    the preferred property to use for non-commercial entities (such as libraries)
+    making an offer of an item for borrowing, sale, etc.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+1	1	Open-ILS/src/templates/opac/parts/library_name_link.tt2
+
+commit 017a05cfc9ffeb214d6ee2de0b420e061d9735e0
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Fri Jul 8 10:32:05 2016 -0400
+
+    Docs: Small syntax fix, formatting improvements
+    
+    This commit fixes a small AsciiDoc syntax bug caused by a real '_' that
+    accidentally closed the '_' italics tag. This block of documentation
+    will now more closely match the identical content found in
+    'admin/template_toolkit.txt' (chapter labeled "TPac Configuration and
+    Customization").
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+5	5	docs/admin_initial_setup/designing_your_catalog.txt
+
+commit ca9a3646070bb73f28e9a39b96f9de7961621674
+Author: Yamil Suarez <yamil@yamil.com>
+Date:   Sun Jun 26 12:52:43 2016 -0400
+
+    Docs: Add tip for using "temp" as a login_types when using "Change Operator: New"
+    
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+4	0	docs/admin/authentication_proxy.txt
+
+commit 46afbbc822384758645244d359849d72800bac29
+Author: Jason Stephenson <jstephenson@mvlcstaff.org>
+Date:   Wed Jun 15 15:08:53 2016 -0400
+
+    Add 2.9.5 to 2.9.6 upgrade script.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlcstaff.org>
+
+11	0	Open-ILS/src/sql/Pg/version-upgrade/2.9.5-2.9.6-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.9.5-2.9.6-upgrade-db.sql
