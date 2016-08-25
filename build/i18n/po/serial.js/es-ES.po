@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2015-02-27 11:41-0400\n"
-"PO-Revision-Date: 2013-11-05 20:14+0000\n"
-"Last-Translator: Gerson Vazquez <gerson.v.h@gmail.com>\n"
+"PO-Revision-Date: 2016-08-17 12:38+0000\n"
+"Last-Translator: Anahi Valdez <avaldez@emeralddata.net>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2015-08-07 05:46+0000\n"
-"X-Generator: Launchpad (build 17656)\n"
+"X-Launchpad-Export-Date: 2016-08-18 05:26+0000\n"
+"X-Generator: Launchpad (build 18169)\n"
 
 #: serial.js:SAVE_SUCCESSFUL
 msgid "Save Successful"
@@ -23,15 +23,15 @@ msgstr "Guardado exitosamente"
 
 #: serial.js:SEASON_SUMMER
 msgid "Summer"
-msgstr ""
+msgstr "Verano"
 
 #: serial.js:SELECT_VALID_CAP
 msgid "Have you selected a valid caption and pattern?"
-msgstr ""
+msgstr "¿Ha seleccionado un título y el patrón válido?"
 
 #: serial.js:SEASON_WINTER
 msgid "Winter"
-msgstr ""
+msgstr "Invierno"
 
 #: serial.js:CREATE_ISSUANCE
 msgid "Create Issuance"
@@ -49,11 +49,11 @@ msgstr ""
 
 #: serial.js:SEASON_SPRING
 msgid "Spring"
-msgstr ""
+msgstr "Primavera"
 
 #: serial.js:WIZARD
 msgid "Wizard"
-msgstr ""
+msgstr "Asistente"
 
 #: serial.js:MODIFY_ISSUANCE
 msgid "Modify Issuance"
@@ -61,7 +61,7 @@ msgstr "Modificar periodicidad"
 
 #: serial.js:NO_CAP_SUBFIELDS
 msgid "No caption subfields in selected caption and pattern"
-msgstr ""
+msgstr "No hay subcampos de título en título y el patrón seleccionado"
 
 #: serial.js:NOTES_SDIST
 msgid "Distribution Notes (ID: ${0})"
@@ -70,11 +70,13 @@ msgstr "Notas de distribución (id.: ${0})"
 #: serial.js:ERROR_BLANK_FIELDS
 msgid "A valid holding code cannot be produced with any blank fields."
 msgstr ""
+"Un código de retención válida no se puede producir con cualquier campo en "
+"blanco."
 
 #: serial.js:COMPILE
 msgid "Create Holding Code"
-msgstr ""
+msgstr "Crear Código Retención"
 
 #: serial.js:SEASON_FALL
 msgid "Fall"
-msgstr ""
+msgstr "Caer"

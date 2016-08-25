@@ -8,18 +8,18 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2015-02-27 11:41-0400\n"
-"PO-Revision-Date: 2013-11-15 19:25+0000\n"
-"Last-Translator: Gerson Vazquez <gerson.v.h@gmail.com>\n"
+"PO-Revision-Date: 2016-08-09 18:51+0000\n"
+"Last-Translator: Anahi Valdez <avaldez@emeralddata.net>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2015-08-07 05:45+0000\n"
-"X-Generator: Launchpad (build 17656)\n"
+"X-Launchpad-Export-Date: 2016-08-10 05:19+0000\n"
+"X-Generator: Launchpad (build 18169)\n"
 
 #: pickup_and_return.js:NO_SUCH_RETURNABLE_RESOURCE
 msgid "No such returnable resource."
-msgstr ""
+msgstr "No existe el recurso puede ser devuelta."
 
 #: pickup_and_return.js:PICKUP_ERROR
 msgid "Error communicating with server (attempting pickup):"
@@ -45,7 +45,7 @@ msgstr "Contestar"
 
 #: pickup_and_return.js:RETURN_ERROR
 msgid "Error communicating with server (attempting return):"
-msgstr ""
+msgstr "Error al comunicarse con el servidor (retorno de intentar):"
 
 #: pickup_and_return.js:AUTO_no_in_bresv
 msgid "Patron has not returned any resources today."
@@ -61,7 +61,7 @@ msgstr "Enter"
 
 #: pickup_and_return.js:AUTO_no_out_bresv
 msgid "Patron has no more reservations out at this time."
-msgstr ""
+msgstr "Patrón no tiene más reservas a cabo en este momento."
 
 #: pickup_and_return.js:RESERVATIONS_ERROR
 msgid "Error communicating with server (asking for reservations):"
@@ -77,7 +77,7 @@ msgstr "Limpiar / Nuevo usuario"
 
 #: pickup_and_return.js:AUTO_h1
 msgid "Reservations Pickup"
-msgstr ""
+msgstr "Reservas de recogida"
 
 #: pickup_and_return.js:AUTO_no_ready_bresv
 msgid "Patron has no reservations ready for pickup at this time."
@@ -107,6 +107,10 @@ msgid ""
 "expected, stop to examine outstanding reservations for your patron\n"
 "or on the resource."
 msgstr ""
+"Tenga en cuenta que el recurso escaneada estaba en reserva a un diferente\n"
+"patrón de último recurso ha sido escaneada. Si esto no es\n"
+"era de esperar, dejar de examinar las reservas pendientes para su patrón\n"
+"o en el recurso."
 
 #: pickup_and_return.js:SELECT_SOMETHING
 msgid "You have not selected any reservations."
@@ -118,7 +122,7 @@ msgstr "Actualmente el usuario tiene estas reservaciones en su custodia:"
 
 #: pickup_and_return.js:RESERVATIONS_NO_RESPONSE
 msgid "No response from server when asking for reservations."
-msgstr ""
+msgstr "No hay respuesta del servidor cuando se le pide para hacer reservas."
 
 #: pickup_and_return.js:AUTO_barcode_type
 msgid "Return by barcode of"
@@ -126,7 +130,7 @@ msgstr "Regresar por código de barras de"
 
 #: pickup_and_return.js:RETURN_NO_RESPONSE
 msgid "No response from server when attempting return."
-msgstr ""
+msgstr "No hay respuesta del servidor al intentar retorno."
 
 #: pickup_and_return.js:RETURN_SUCCESS
 msgid "Return successful."
@@ -138,11 +142,11 @@ msgstr "Introducir código de barras del usuario:"
 
 #: pickup_and_return.js:PICKUP_NO_RESPONSE
 msgid "No response from server when attempting pickup."
-msgstr ""
+msgstr "No hay respuesta del servidor al intentar recogida."
 
 #: pickup_and_return.js:RETURNABLE_RESOURCE_ERROR
 msgid "Error looking up returnable resource:"
-msgstr ""
+msgstr "Error al buscar recursos retornables:"
 
 #: pickup_and_return.js:AUTO_patron
 msgid "Patron"

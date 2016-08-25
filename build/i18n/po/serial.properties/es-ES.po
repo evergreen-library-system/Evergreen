@@ -8,18 +8,18 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2015-02-27 11:41-0400\n"
-"PO-Revision-Date: 2013-11-14 20:34+0000\n"
-"Last-Translator: Gerson Vazquez <gerson.v.h@gmail.com>\n"
+"PO-Revision-Date: 2016-08-22 18:17+0000\n"
+"Last-Translator: Anahi Valdez <avaldez@emeralddata.net>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2015-08-07 05:45+0000\n"
-"X-Generator: Launchpad (build 17656)\n"
+"X-Launchpad-Export-Date: 2016-08-23 05:43+0000\n"
+"X-Generator: Launchpad (build 18176)\n"
 
 #: staff.serial.editor_base.handle_update.error
 msgid "serial update error:"
-msgstr ""
+msgstr "error de actualización de serie:"
 
 #: staff.serial.editor_base.handle_update.success
 msgid "Save Successful"
@@ -33,11 +33,11 @@ msgstr "1 resumen"
 #: staff.serial.sbsum_editor.count.plural
 msgctxt "staff.serial.sbsum_editor.count.plural"
 msgid "%1$s summaries"
-msgstr ""
+msgstr "%1$s resúmenes"
 
 #: staff.serial.sbsum_editor.modify.label
 msgid "Modify Basic Summary"
-msgstr ""
+msgstr "Modificar Resumen Básico"
 
 #: staff.serial.sbsum_editor.modify.accesskey
 msgctxt "staff.serial.sbsum_editor.modify.accesskey"
@@ -52,11 +52,11 @@ msgstr "1 resumen"
 #: staff.serial.sisum_editor.count.plural
 msgctxt "staff.serial.sisum_editor.count.plural"
 msgid "%1$s summaries"
-msgstr ""
+msgstr "%1$s resúmenes"
 
 #: staff.serial.sisum_editor.modify.label
 msgid "Modify Index Summary"
-msgstr ""
+msgstr "Modificar Indice Resumen"
 
 #: staff.serial.sisum_editor.modify.accesskey
 msgctxt "staff.serial.sisum_editor.modify.accesskey"
@@ -66,55 +66,55 @@ msgstr "M"
 #: staff.serial.sssum_editor.count
 msgctxt "staff.serial.sssum_editor.count"
 msgid "1 summary"
-msgstr ""
+msgstr "1 resumen"
 
 #: staff.serial.sssum_editor.count.plural
 msgctxt "staff.serial.sssum_editor.count.plural"
 msgid "%1$s summaries"
-msgstr ""
+msgstr "%1$s resúmenes"
 
 #: staff.serial.sssum_editor.modify.label
 msgid "Modify Supplement Summary"
-msgstr ""
+msgstr "Modificar Suplemento Resumen"
 
 #: staff.serial.sssum_editor.modify.accesskey
 msgctxt "staff.serial.sssum_editor.modify.accesskey"
 msgid "M"
-msgstr ""
+msgstr "M"
 
 #: staff.serial.scap_editor.count
 msgid "1 caption and pattern"
-msgstr ""
+msgstr "1 título y el patrón"
 
 #: staff.serial.scap_editor.count.plural
 msgid "%1$s caption and patterns"
-msgstr ""
+msgstr "%1$s título y patrones"
 
 #: staff.serial.scap_editor.create.label
 msgid "Create Caption and Pattern(s)"
-msgstr ""
+msgstr "Crear Leyenda y Modelo(s)"
 
 #: staff.serial.scap_editor.create.accesskey
 msgctxt "staff.serial.scap_editor.create.accesskey"
 msgid "C"
-msgstr ""
+msgstr "C"
 
 #: staff.serial.scap_editor.modify.label
 msgid "Modify Caption and Pattern(s)"
-msgstr ""
+msgstr "Modificar Leyenda y Patrón(s)"
 
 #: staff.serial.scap_editor.modify.accesskey
 msgctxt "staff.serial.scap_editor.modify.accesskey"
 msgid "M"
-msgstr ""
+msgstr "M"
 
 #: staff.serial.scap_editor.notes
 msgid "Caption and Pattern Notes"
-msgstr ""
+msgstr "Patrón de Subtítulos y Notas"
 
 #: staff.serial.sdist_editor.count
 msgid "1 distribution"
-msgstr ""
+msgstr "1 distribución"
 
 #: staff.serial.sdist_editor.count.plural
 msgid "%1$s distributions"
@@ -127,338 +127,351 @@ msgstr "Crear distribución(es)"
 #: staff.serial.sdist_editor.create.accesskey
 msgctxt "staff.serial.sdist_editor.create.accesskey"
 msgid "C"
-msgstr ""
+msgstr "C"
 
 #: staff.serial.sdist_editor.modify.label
 msgid "Modify Distribution(s)"
-msgstr ""
+msgstr "Modificar Distribución(s)"
 
 #: staff.serial.sdist_editor.modify.accesskey
 msgctxt "staff.serial.sdist_editor.modify.accesskey"
 msgid "M"
-msgstr ""
+msgstr "M"
 
 #: staff.serial.sdist_editor.notes
 msgid "Distribution Notes"
-msgstr ""
+msgstr "Notas sobre la distribución"
 
 #: staff.serial.sdist_editor.add_to_sre.label
 msgid "Add to record entry"
-msgstr ""
+msgstr "Añadir a registro de la entrada"
 
 #: staff.serial.sdist_editor.merge_with_sre.label
 msgid "Merge with record entry"
-msgstr ""
+msgstr "Mezclar con entrada de registro"
 
 #: staff.serial.sdist_editor.use_sre_only.label
 msgid "Use record entry only"
-msgstr ""
+msgstr "Utilizar la entrada de registro sólo"
 
 #: staff.serial.sdist_editor.use_sdist_only.label
 msgid "Do not use record entry"
-msgstr ""
+msgstr "No utilizar la entrada de registro"
 
 #: staff.serial.sdist_editor.no_mfhd_available.label
 msgid "No MFHD records for this Holding Lib"
-msgstr ""
+msgstr "No hay registros para esta MFHD Holding Lib"
 
 #: staff.serial.siss_editor.count
 msgid "1 issuance"
-msgstr ""
+msgstr "1 emisión"
 
 #: staff.serial.siss_editor.count.plural
 msgid "%1$s issuances"
-msgstr ""
+msgstr "%1$s emisiones"
 
 #: staff.serial.siss_editor.create.label
 msgid "Create Issuance(s)"
-msgstr ""
+msgstr "Crear Emisión(s)"
 
 #: staff.serial.siss_editor.create.accesskey
 msgctxt "staff.serial.siss_editor.create.accesskey"
 msgid "C"
-msgstr ""
+msgstr "C"
 
 #: staff.serial.siss_editor.modify.label
 msgid "Modify Issuance(s)"
-msgstr ""
+msgstr "Modificar Emisión(s)"
 
 #: staff.serial.siss_editor.modify.accesskey
 msgctxt "staff.serial.siss_editor.modify.accesskey"
 msgid "M"
-msgstr ""
+msgstr "M"
 
 #: staff.serial.siss_editor.notes
 msgid "Issuance Notes"
-msgstr ""
+msgstr "Notas de Emisión"
 
 #: staff.serial.sitem_editor.count
 msgid "1 item"
-msgstr ""
+msgstr "1 elemento"
 
 #: staff.serial.sitem_editor.count.plural
 msgid "%1$s items"
-msgstr ""
+msgstr "%1$s artículos"
 
 #: staff.serial.sitem_editor.create.label
 msgid "Create Item(s)"
-msgstr ""
+msgstr "Crear Artículo(s)"
 
 #: staff.serial.sitem_editor.create.accesskey
 msgctxt "staff.serial.sitem_editor.create.accesskey"
 msgid "C"
-msgstr ""
+msgstr "C"
 
 #: staff.serial.sitem_editor.modify.label
 msgid "Modify Item(s)"
-msgstr ""
+msgstr "Modificar Artículo(s)"
 
 #: staff.serial.sitem_editor.modify.accesskey
 msgctxt "staff.serial.sitem_editor.modify.accesskey"
 msgid "M"
-msgstr ""
+msgstr "M"
 
 #: staff.serial.sitem_editor.notes
 msgid "Item Notes"
-msgstr ""
+msgstr "Notas del Artículo"
 
 #: staff.serial.sstr_editor.count
 msgid "1 stream"
-msgstr ""
+msgstr "Un flujo"
 
 #: staff.serial.sstr_editor.count.plural
 msgid "%1$s streams"
-msgstr ""
+msgstr "%1$s corriente(s)"
 
 #: staff.serial.sstr_editor.create.label
 msgid "Create Stream(s)"
-msgstr ""
+msgstr "Crear corriente(s)"
 
 #: staff.serial.sstr_editor.create.accesskey
 msgctxt "staff.serial.sstr_editor.create.accesskey"
 msgid "C"
-msgstr ""
+msgstr "C"
 
 #: staff.serial.sstr_editor.modify.label
 msgid "Modify Stream(s)"
-msgstr ""
+msgstr "Modificar la corriente (s)"
 
 #: staff.serial.sstr_editor.modify.accesskey
 msgctxt "staff.serial.sstr_editor.modify.accesskey"
 msgid "M"
-msgstr ""
+msgstr "M"
 
 #: staff.serial.ssub_editor.count
 msgid "1 subscription"
-msgstr ""
+msgstr "1 suscripción"
 
 #: staff.serial.ssub_editor.count.plural
 msgid "%1$s subscriptions"
-msgstr ""
+msgstr "%1$s suscripciones"
 
 #: staff.serial.ssub_editor.create.label
 msgid "Create Subscription(s)"
-msgstr ""
+msgstr "Crear Suscripción (s)"
 
 #: staff.serial.ssub_editor.create.accesskey
 msgctxt "staff.serial.ssub_editor.create.accesskey"
 msgid "C"
-msgstr ""
+msgstr "C"
 
 #: staff.serial.ssub_editor.modify.label
 msgid "Modify Subscription(s)"
-msgstr ""
+msgstr "Modificar Suscripción(s)"
 
 #: staff.serial.ssub_editor.modify.accesskey
 msgctxt "staff.serial.ssub_editor.modify.accesskey"
 msgid "M"
-msgstr ""
+msgstr "M"
 
 #: staff.serial.ssub_editor.notes
 msgid "Subscription Notes"
-msgstr ""
+msgstr "Notas de suscripción"
 
 #: staff.serial.manage_dists.add.error
 msgid "error adding object in manage_dists.js:"
-msgstr ""
+msgstr "error al añadir objeto en manage_dists.js:"
 
 #: staff.serial.manage_dists.delete.error
 msgid "error deleting object in manage_dists.js:"
-msgstr ""
+msgstr "error al eliminar objeto en manage_dists.js:"
 
 #: staff.serial.manage_dists.delete_sstr.confirm
 msgid "Are you sure you would like to delete this stream?"
-msgstr ""
+msgstr "¿Está seguro de que desea eliminar esta corriente?"
 
 #: staff.serial.manage_dists.delete_sstr.confirm.plural
 msgid "Are you sure you would like to delete these %1$s streams?"
-msgstr ""
+msgstr "¿Está seguro de que desea eliminar estos %1$s corrientes?"
 
 #: staff.serial.manage_dists.delete_sstr.title
 msgid "Delete Streams?"
-msgstr ""
+msgstr "Eliminar Corrientes?"
 
 #: staff.serial.manage_dists.delete_sstr.override
 msgctxt "staff.serial.manage_dists.delete_sstr.override"
 msgid ""
 "Override Delete Failure? Doing so will delete all attached items as well!"
 msgstr ""
+"Falla Borrar Anular? Si lo hace, se eliminarán todos los elementos "
+"conectados también!"
 
 #: staff.serial.manage_items.subscriber.label
 msgid "Subscriber"
-msgstr ""
+msgstr "Suscriptor"
 
 #: staff.serial.manage_items.holder.label
 msgid "Holder"
-msgstr ""
+msgstr "Contenedor"
 
 #: staff.serial.manage_items.notes_column.label
 msgid "Notes (Item/Dist/Sub)"
-msgstr ""
+msgstr "Notas (Artículo/Dist/Sub)"
 
 #: staff.serial.manage_items.set_claimed_success
 msgid "Successfully claimed %1$s item(s)"
-msgstr ""
+msgstr "Con éxito reivindicado %1$s artículo(s)"
 
 #: staff.serial.manage_items.set_not_held_success
 msgid "Successfully set %1$s item(s) to 'Not Held'"
-msgstr ""
+msgstr "Cambiada correctamente %1$s artículo(s) para \"No Mantenidos\""
 
 #: staff.serial.manage_items.set_not_published_success
 msgid "Successfully set %1$s item(s) to 'Not Published'"
 msgstr ""
+"Cambiada correctamente %1$s artículo(s) para \"No han sido publicados'"
 
 #: staff.serial.manage_items.alert_notes.title
 msgid "Serial Alerts"
-msgstr ""
+msgstr "Alertas de Serie"
 
 #: staff.serial.manage_items.alert_button.label
 msgid "1 Alert"
-msgstr ""
+msgstr "1 Alerta"
 
 #: staff.serial.manage_items.alert_button.plural.label
 msgid "%1s Alerts"
-msgstr ""
+msgstr "%1s Alertas"
 
 #: staff.serial.manage_subs.add.error
 msgid "error adding object in manage_subs.js:"
-msgstr ""
+msgstr "error al añadir objeto en manage_subs.js:"
 
 #: staff.serial.manage_subs.delete.error
 msgid "error deleting object in manage_subs.js:"
-msgstr ""
+msgstr "error al eliminar objeto en manage_subs.js:"
 
 #: staff.serial.manage_subs.delete_scap.confirm
 msgid "Are you sure you would like to delete this caption and pattern?"
-msgstr ""
+msgstr "¿Está seguro de que desea borrar este subtítulo y el patrón?"
 
 #: staff.serial.manage_subs.delete_scap.confirm.plural
 msgid ""
 "Are you sure you would like to delete these %1$s caption and patterns?"
-msgstr ""
+msgstr "¿Está seguro de que desea eliminar estos %1$s título y patrones?"
 
 #: staff.serial.manage_subs.delete_scap.title
 msgid "Delete Caption and Patterns?"
-msgstr ""
+msgstr "Eliminar Título y Patrones?"
 
 #: staff.serial.manage_subs.delete_scap.override
 msgid ""
 "Override Delete Failure? Doing so will delete all attached issuances and "
 "items as well!"
 msgstr ""
+"Anular Borrar Falla? Al hacerlo se eliminarán todas las emisiones y los "
+"elementos conectados también!"
 
 #: staff.serial.manage_subs.delete_sdist.confirm
 msgid "Are you sure you would like to delete this distribution?"
-msgstr ""
+msgstr "¿Está seguro de que desea eliminar esta distribución?"
 
 #: staff.serial.manage_subs.delete_sdist.confirm.plural
 msgid "Are you sure you would like to delete these %1$s distributions?"
-msgstr ""
+msgstr "¿Está seguro de que desea eliminar estos %1$s distribuciones?"
 
 #: staff.serial.manage_subs.delete_sdist.title
 msgid "Delete Distributions?"
-msgstr ""
+msgstr "Borrar Distribuciones?"
 
 #: staff.serial.manage_subs.delete_sdist.override
 msgid "Override Delete Failure?"
-msgstr ""
+msgstr "¿Sobrepasar El Fracaso De Borro?"
 
 #: staff.serial.manage_subs.delete_siss.confirm
 msgid "Are you sure you would like to delete this issuance?"
-msgstr ""
+msgstr "¿Está seguro de que desea eliminar esta publicación?"
 
 #: staff.serial.manage_subs.delete_siss.confirm.plural
 msgid "Are you sure you would like to delete these %1$s issuances?"
-msgstr ""
+msgstr "¿Está seguro de que desea eliminar estos %1$s emisiones?"
 
 #: staff.serial.manage_subs.delete_siss.title
 msgid "Delete Issuances?"
-msgstr ""
+msgstr "Borrar Emisiones?"
 
 #: staff.serial.manage_subs.delete_siss.override
 msgctxt "staff.serial.manage_subs.delete_siss.override"
 msgid ""
 "Override Delete Failure? Doing so will delete all attached items as well!"
 msgstr ""
+"Anular Borrar Falla? Si lo hace, se eliminarán todos los elementos "
+"conectados también!"
 
 #: staff.serial.manage_subs.delete_ssub.confirm
 msgid "Are you sure you would like to delete this subscription?"
-msgstr ""
+msgstr "¿Está seguro de que desea eliminar esta suscripción?"
 
 #: staff.serial.manage_subs.delete_ssub.confirm.plural
 msgid "Are you sure you would like to delete these %1$s subscriptions?"
-msgstr ""
+msgstr "¿Está seguro de que desea eliminar estos %1$s suscripciones?"
 
 #: staff.serial.manage_subs.delete_ssub.title
 msgid "Delete Subscriptions?"
-msgstr ""
+msgstr "Borrar las suscripciones?"
 
 #: staff.serial.manage_subs.delete_ssub.override
 msgid ""
 "Override Delete Failure? Doing so will delete all related data as well!"
 msgstr ""
+"Anular Borrar Falla? Si lo hace, se eliminarán todos los datos relacionados "
+"también!"
 
 #: staff.serial.notes.do_edit_note.label
 msgid "Edit This Note"
-msgstr ""
+msgstr "Editar Esta Nota"
 
 #: staff.serial.notes.edit_note.label
 msgid "Edit Note"
-msgstr ""
+msgstr "Editar nota"
 
 #: staff.serial.notes.edit_note.accesskey
 msgid "E"
-msgstr ""
+msgstr "E"
 
 #: staff.serial.required_fields_alert
 msgid "These fields are required: "
-msgstr ""
+msgstr "Estos campos son requeridos: "
 
 #: batch_receive.bib_lookup.empty
 msgid "Enter a search term."
-msgstr ""
+msgstr "Introduzca un término de búsqueda."
 
 #: batch_receive.bib_lookup.multiple
 msgid ""
 "Multiple matching records found. Please use a more specific identifier, or "
 "use the catalog to find the exact record you want."
 msgstr ""
+"Se han encontrado varias registros coincidentes. Por favor, use un "
+"identificador más específico, o usar el catálogo para encontrar el registro "
+"exacto que desea."
 
 #: batch_receive.bib_lookup.not_found
 msgid "No matching records found with any subscriptions attached."
 msgstr ""
+"No se encontraron registros coincidentes con las suscripciones adjuntos."
 
 #: batch_receive.issuance_lookup.error
 msgid "Problem retrieving issuances related to subscription."
-msgstr ""
+msgstr "Problema al recuperar las emisiones relacionadas con la suscripción."
 
 #: batch_receive.issuance_lookup.none
 msgid "There are no receivable issuances."
-msgstr ""
+msgstr "No hay emisiones por recibir."
 
 #: batch_receive.item_lookup.none
 msgid "Could not retrieve receivable items for this issuance."
-msgstr ""
+msgstr "No se pudo recuperar artículos a recibir por esta emisión."
 
 #: batch_receive.autogen_barcodes.questionable
 msgid ""
@@ -466,28 +479,35 @@ msgid ""
 "just entered.\n"
 "Fill the intervening fields with auto-generated barcodes?"
 msgstr ""
+"Ya hay códigos de barras entraron más abajo en la lista que la que acaba de "
+"introducir.\n"
+"Llenar los campos que intervienen códigos de barras generados "
+"automáticamente?"
 
 #: batch_receive.autogen_barcodes.remove
 msgid "Clear the barcodes that have already been auto-generated?"
 msgstr ""
+"Borrar los códigos de barras que ya han sido generadas automáticamente?"
 
 #: batch_receive.none
 msgid "[None]"
-msgstr ""
+msgstr "[Ninguno]"
 
 #: batch_receive.apply
 msgid "Apply"
-msgstr ""
+msgstr "Aplicar"
 
 #: batch_receive.receive_time_note
 msgid "Receive-time Note"
-msgstr ""
+msgstr "Recibe en tiempo Nota"
 
 #: batch_receive.cn_for_lib
 msgid ""
 "Do you want to use this call number at %1$s?\n"
 "It doesn't exist there, and it will have to be created."
 msgstr ""
+"¿Quieres utilizar este número de llamada en %1$s?\n"
+"No existe allí, y que tendrá que ser creado."
 
 #: batch_receive.missing_units
 msgid ""
@@ -495,200 +515,215 @@ msgid ""
 "items.  Choose OK to receive those items anyway, or choose Cancel to supply "
 "the missing information."
 msgstr ""
+"No ha proporcionado códigos de barras y números de teléfono de todos los "
+"elementos seleccionados. Haga clic en Aceptar para recibir los artículos de "
+"todos modos, o elija Cancelar para suministrar la información que falta."
 
 #: batch_receive.missing_cn
 msgid ""
 "You cannot assign a barcode without selecting a call number. Please correct "
 "the non-conforming units."
 msgstr ""
+"No se puede asignar un código de barras sin seleccionar un número de "
+"llamada. Por favor, corrija las unidades no conformes."
 
 #: batch_receive.print_routing_list_users
 msgid "Print Routing List"
-msgstr ""
+msgstr "Imprimir lista de enrutamiento"
 
 #: batch_receive.unit_barcode_collision
 msgid "Serial unit barcode '%1$s' collides with an existing barcode."
 msgstr ""
+"Unidad de serie de código de barras '% 1 $ S' choca con un código de barras "
+"existente."
 
 #: pattern_wizard.enumeration.a
 msgctxt "pattern_wizard.enumeration.a"
 msgid "First level"
-msgstr ""
+msgstr "Primer nivel"
 
 #: pattern_wizard.enumeration.b
 msgctxt "pattern_wizard.enumeration.b"
 msgid "Second level"
-msgstr ""
+msgstr "Segundo nivel"
 
 #: pattern_wizard.enumeration.c
 msgctxt "pattern_wizard.enumeration.c"
 msgid "Third level"
-msgstr ""
+msgstr "Tercer nivel"
 
 #: pattern_wizard.enumeration.d
 msgctxt "pattern_wizard.enumeration.d"
 msgid "Fourth level"
-msgstr ""
+msgstr "Cuarto nivel"
 
 #: pattern_wizard.enumeration.e
 msgid "Fifth level"
-msgstr ""
+msgstr "Quinto nivel"
 
 #: pattern_wizard.enumeration.f
 msgid "Sixth level"
-msgstr ""
+msgstr "Sexto nivel"
 
 #: pattern_wizard.enumeration.g
 msgid "First alternate"
-msgstr ""
+msgstr "Primera alternativo"
 
 #: pattern_wizard.enumeration.h
 msgid "Second alternate"
-msgstr ""
+msgstr "Segundo alterno"
 
 #: pattern_wizard.chronology.i
 msgctxt "pattern_wizard.chronology.i"
 msgid "First level"
-msgstr ""
+msgstr "Primer nivel"
 
 #: pattern_wizard.chronology.j
 msgctxt "pattern_wizard.chronology.j"
 msgid "Second level"
-msgstr ""
+msgstr "Segundo nivel"
 
 #: pattern_wizard.chronology.k
 msgctxt "pattern_wizard.chronology.k"
 msgid "Third level"
-msgstr ""
+msgstr "Tercer nivel"
 
 #: pattern_wizard.chronology.l
 msgctxt "pattern_wizard.chronology.l"
 msgid "Fourth level"
-msgstr ""
+msgstr "Cuarto nivel"
 
 #: pattern_wizard.chronology.m
 msgid "Alternative numbering scheme"
-msgstr ""
+msgstr "Esquema de numeración alternativo"
 
 #: pattern_wizard.not_removable_row
 msgid ""
 "You cannot remove this row because it's not at the end of the sequence.  "
 "Remove later rows first."
 msgstr ""
+"No se puede quitar esta fila porque no es al final de la secuencia. Elimina "
+"filas posteriores primero."
 
 #: pattern_wizard.bad_date_value
 msgid "That is not a valid day for that month."
-msgstr ""
+msgstr "Eso no es un día válido para ese mes."
 
 #: pattern_wizard.weekdays
 msgid "Monday Tuesday Wednesday Thursday Friday Saturday Sunday"
-msgstr ""
+msgstr "Lunes Martes Miercoles Jueves Viernes Sabado Domingo"
 
 #: pattern_wizard.months
 msgid ""
 "January February March April May June July August September October November "
 "December"
 msgstr ""
+"Enero Febrero Marzo Abril Mayo Junio Julio Agosto Septiembre Octubre "
+"Noviembre Diciembre"
 
 #: pattern_wizard.weeks
 msgid ""
 "Every.First.Second.Third.Fourth.Fifth.Third from last.Second from last.Last"
 msgstr ""
+"Cada.Primero.Segundo.Tercero.Cuarto.Quinto.Antepenúltimo.Segundo desde la "
+"última.Último"
 
 #: pattern_wizard.seasons
 msgid "Spring Summer Autumn Winter"
-msgstr ""
+msgstr "Primavera Verano Otoño Invierno"
 
 #: pattern_wizard.week
 msgid "week"
-msgstr ""
+msgstr "semana"
 
 #: pattern_wizard.remove_sub_row
 msgid "Remove sub-row"
-msgstr ""
+msgstr "Retire sub-fila"
 
 #: serial.editor_base.unset
 msgid "<Unset>"
-msgstr ""
+msgstr "<No definido>"
 
 #: serial.manage_dists.streams
 msgid "Streams"
-msgstr ""
+msgstr "Corrientes"
 
 #: serial.manage_dists.stream_num
 msgid "Stream : # %1$s"
-msgstr ""
+msgstr "Corriente: # %1$s"
 
 #: serial.manage_dists.sbsum
 msgid "Basic Summary"
-msgstr ""
+msgstr "Resumen Básica"
 
 #: serial.manage_dists.sssum
 msgid "Supplement Summary"
-msgstr ""
+msgstr "Suplemento Resumen"
 
 #: serial.manage_dists.sisum
 msgid "Index Summary"
-msgstr ""
+msgstr "Resumen de Indice"
 
 #: serial.manage_dists.library_label
 msgid "%1$s : %2$s"
-msgstr ""
+msgstr "%1$s : %2$s"
 
 #: serial.manage_dists.distributions
 msgctxt "serial.manage_dists.distributions"
 msgid "Distributions"
-msgstr ""
+msgstr "Distribuciones"
 
 #: serial.common.default
 msgid "Default"
-msgstr ""
+msgstr "Predeterminado"
 
 #: serial.manage_subs.predict.alert
 msgid "You must select a subscription before predicting issuances."
 msgstr ""
+"Debe seleccionar una suscripción antes de la predicción de emisiones."
 
 #: serial.manage_subs.predict.prompt
 msgid "How many items (per active pattern) would you like to predict?"
-msgstr ""
+msgstr "Cuántos artículos (por patrón activo) le gustaría predecir?"
 
 #: serial.manage_subs.predict.prompt.text
 msgid "Number of Predicted Issuances"
-msgstr ""
+msgstr "Número de Emisiones Pronosticados"
 
 #: serial.manage_subs.invalid_number
 msgid "Invalid number entered!"
-msgstr ""
+msgstr "Número inválido introducido!"
 
 #: serial.manage_subs.predict_success
 msgid "Successfully predicted %1$s item(s) for subscription # %2$s."
 msgstr ""
+"Pronosticado exitosamente %1$s artículo(s) para la suscripción #%2$s."
 
 #: serial.manage_subs.distributions
 msgctxt "serial.manage_subs.distributions"
 msgid "Distributions"
-msgstr ""
+msgstr "Distribuciones"
 
 #: serial.manage_subs.issuances
 msgid "Issuances"
-msgstr ""
+msgstr "Emisiones"
 
 #: serial.manage_subs.captions_patterns
 msgid "Captions/Patterns"
-msgstr ""
+msgstr "Subtítulos/Patrones"
 
 #: serial.manage_subs.tree_location
 msgid "Location"
-msgstr ""
+msgstr "Ubicación"
 
 #: serial.manage_subs.scap_id
 msgid "Caption / Pattern : # %1$s"
-msgstr ""
+msgstr "Caption/ Patrón: # %1$s"
 
 #: serial.manage_subs.ssub_id
 msgid "Subscription : # %1$s"
-msgstr ""
+msgstr "Suscripción: # %1$s"
 
 #: serial.manage_subs.subscriptions
 msgid "Subscriptions"
-msgstr ""
+msgstr "Suscripciones"

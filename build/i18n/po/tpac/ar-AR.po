@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2016-03-15 02:36+0000\n"
-"PO-Revision-Date: 2015-11-25 16:53+0000\n"
+"PO-Revision-Date: 2016-05-10 08:49+0000\n"
 "Last-Translator: Rashed Mualla <mu3lla79@gmail.com>\n"
 "Language-Team: Arabic <ar@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2016-03-16 05:41+0000\n"
-"X-Generator: Launchpad (build 17947)\n"
+"X-Launchpad-Export-Date: 2016-05-11 05:22+0000\n"
+"X-Generator: Launchpad (build 18025)\n"
 
 #: ../../Open-ILS/src/templates/opac/register.tt2:63
 msgid ""
@@ -595,7 +595,7 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/record/copy_counts.tt2:2
 msgid "Available copies"
-msgstr ""
+msgstr "النسخ المتاحة"
 
 #: ../../Open-ILS/src/templates/opac/parts/record/contents.tt2:1
 msgid "Awards Note: "
@@ -1034,7 +1034,7 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/record/contents.tt2:199
 msgid "Content descriptions"
-msgstr ""
+msgstr "وصف الوعاء"
 
 #: ../../Open-ILS/src/templates/opac/parts/relators.tt2:1
 msgid "Contestant"
@@ -2947,7 +2947,7 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:208
 msgid "Physical Description:"
-msgstr ""
+msgstr "الوصف المادي"
 
 #: ../../Open-ILS/src/templates/opac/css/style.css.tt2:2086 ../../Open-ILS/src/templates/opac/myopac/hold_history.tt2:62 ../../Open-ILS/src/templates/opac/myopac/holds.tt2:111
 msgid "Pickup Location"
@@ -3271,7 +3271,7 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/record.tt2:10
 msgid "Record Details"
-msgstr ""
+msgstr "بيانات الوعاء"
 
 #: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:321
 msgid "Record Holdings Details"
@@ -3283,7 +3283,7 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:183
 msgid "Record details"
-msgstr ""
+msgstr "بيانات الوعاء"
 
 #: ../../Open-ILS/src/templates/opac/parts/relators.tt2:1
 msgid "Recording engineer"

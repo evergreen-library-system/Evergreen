@@ -4,14 +4,14 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
 "POT-Creation-Date: 2016-03-14 20:42-0400\n"
-"PO-Revision-Date: 2015-09-21 19:09+0000\n"
+"PO-Revision-Date: 2016-04-19 13:51+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2016-03-16 05:35+0000\n"
-"X-Generator: Launchpad (build 17947)\n"
+"X-Launchpad-Export-Date: 2016-04-20 04:34+0000\n"
+"X-Generator: Launchpad (build 17995)\n"
 "X-Accelerator-Marker: &\n"
 
 #: class.stgu.label:9428
@@ -1368,7 +1368,7 @@ msgstr "Seznam oprávnění"
 
 #: field.atevdef.hook.label:1296 field.atul.hook.label:1434
 msgid "Hook"
-msgstr "Hák"
+msgstr "Háček"
 
 #: field.bmpc.id.label:10047
 msgid "Temp ID"
@@ -1547,7 +1547,7 @@ msgstr "Cíl"
 
 #: field.ahopl.copy_location_order_position.label:5722
 msgid "Copy Location Sort Order"
-msgstr "Pořadí umístění peo řazení"
+msgstr "Pořadí lokací  pro řazení"
 
 #: class.mfp.label:3676
 msgid "Forgive Payment"
@@ -1813,7 +1813,7 @@ msgstr "Neplatné ISBN"
 
 #: field.ath.key.label:1189
 msgid "Hook Key"
-msgstr "Klíč háku"
+msgstr "Klíč háčku"
 
 #: field.cmrcfld.marc_format.label:808 field.cmrcsubfld.marc_format.label:836
 msgid "MARC Format"
@@ -2541,7 +2541,7 @@ msgstr "Definice atributů autoritních záznamů ve frontě"
 
 #: field.cbho.cut.label:2723
 msgid "Hold Cut-in-line State"
-msgstr "Stav \"vmáčknutí\" rezervace do fornty"
+msgstr "Stav \"vmáčknutí\" rezervace do fronty"
 
 #: field.aout.opac_label.label:6307
 msgid "OPAC Label"
@@ -2735,7 +2735,7 @@ msgstr "Odpovídá všem polím"
 
 #: class.ath.label:1187
 msgid "Trigger Hook Point"
-msgstr "Bod háku spouštěče (triggeru)"
+msgstr "Bod háčku spouštěče (triggeru)"
 
 #: field.rhcrpb.hold_copy_ratio.label:10514
 msgid "Hold/Copy Ratio"
@@ -2899,7 +2899,7 @@ msgstr "Sledování kolekcí"
 
 #: field.qsi.grouped_by.label:9786
 msgid "Is Grouped By"
-msgstr "Je sekupen podle"
+msgstr "Je seskupen podle"
 
 #: field.cmrcfld.tag.label:810 field.cmrcsubfld.tag.label:838
 #: field.crad.tag.label:869
@@ -3411,7 +3411,7 @@ msgstr "Přehled bibliografických úrovní"
 
 #: class.murav.label:932
 msgid "Uncontrolled Record Attribute Values"
-msgstr "Nekontorlované hodnotyx atributů záznamu"
+msgstr "Nekontrolované hodnoty atributů záznamu"
 
 #: field.vmp.replace_spec.label:199
 msgid "Replace Specification"
@@ -3821,7 +3821,7 @@ msgstr "Zkrácení"
 
 #: class.cbfp.label:2740
 msgid "Fingerprint Definition"
-msgstr "Definice idnetifikačních postupů"
+msgstr "Definice identifikačních postupů"
 
 #: class.acqclet.label:9302 field.acqcle.type.label:9338
 #: field.acqscle.type.label:9366
@@ -5496,7 +5496,7 @@ msgstr "Věk čtenáře - demografický"
 
 #: field.rsr.corporate_subject.label:9097
 msgid "Corporate Name Subjects (normalized)"
-msgstr "Korporativní zázhlaví jako předmět (normalizováno)"
+msgstr "Korporativní záhlaví jako předmět (normalizováno)"
 
 #: field.cbho.priority.label:2722 field.pgt.hold_priority.label:6836
 msgid "Hold Priority"
@@ -5615,7 +5615,7 @@ msgstr "SIP identifikátor  polí statistických kategorií"
 
 #: field.au.performed_circulations.label:3272
 msgid "Circulations Performed as Staff"
-msgstr "Vypůjčka uskutečněna jako personál"
+msgstr "Výpůjčka uskutečněna jako personál"
 
 #: field.asvr.id.label:2286 field.asva.id.label:6855
 msgid "Answer ID"
@@ -6003,7 +6003,7 @@ msgstr "Doména"
 
 #: class.iatc.label:10946
 msgid "Inter-system Copy Transit"
-msgstr "Mezisystémový přesun exempláře"
+msgstr "Přesun exempláře mezi systémy"
 
 #: class.acqlisumi.label:10925
 msgid "Invoiceable Lineitem Summary"
