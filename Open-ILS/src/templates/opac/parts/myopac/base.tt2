@@ -18,7 +18,7 @@
 
      <!-- Added so search available from my account pages -->
     <div class="mobile_view" id="mobile_acct_search_links">
-      <span class="adv_search_catalog_lbl mobile_search_lbl_clr"><strong>Search:</strong></span>
+      <span class="adv_search_catalog_lbl mobile_search_lbl_clr"><strong>[% l('Search:') %]</strong></span>
       <span class="adv_search_catalog_lbl"><a href="[% mkurl(ctx.opac_root _ '/home', {locg => CGI.param('locg')}, 1) %]"
                     id="home_adv_search_link" class="mobile_search_lbl_clr">[%l('Basic')%]</a> &nbsp;</span>
 		<span class="adv_search_catalog_lbl"><a href="[% mkurl(ctx.opac_root _ '/advanced', {$loc_name => loc_value}, 1) %]"
