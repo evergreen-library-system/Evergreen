@@ -41,7 +41,7 @@
                [% IF count <= limit + offset %] class='invisible' [% END %] >[% l('Next') %]<span class="nav_arrow_fix">&#9658;</span></a>
         </span>
         <span style="float:right;">
-            <a class="hide_me" href="#">Export List</a>
+            <a class="hide_me" href="#">[% l('Export List') %]</a>
         </span>
     </div>
     <div class="clear-both"></div>
