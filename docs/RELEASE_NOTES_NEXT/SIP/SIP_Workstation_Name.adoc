@@ -1,8 +1,0 @@
-Treat SIP Location Field as Login Workstation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-When using a version of SIPServer that supports the feature,
-the Location (CP) field of the Login (93) message will be
-used as the workstation name if supplied. Blank or missing
-location fields will be ignored. This allows users or reports
-to determine which selfcheck performed a circulation.
-

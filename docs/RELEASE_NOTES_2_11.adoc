@@ -1,0 +1,537 @@
+Evergreen 2.11.0 Release Notes
+==============================
+:toc:
+:numbered:
+
+Upgrade notes
+-------------
+
+
+Tablefunc Extension No Longer Required
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Changes in the behavior of the connectby function in PostgreSQL 9.5
+have prompted its removal from the database.  It is easier for
+Evergreen to maintain compatibility with previous versions of
+PostgreSQL without this function.
+
+By eliminating the use of the connectby function, we eliminate the
+requirement for the tablefunc database extension.  It is no longer
+installed when the database is created.  If you are upgrading and wish
+to remove it from your database, you may run the following statement
+in the database to drop it:
+
+ DROP EXTENSION tablefunc;
+
+
+
+
+
+New Features
+------------
+
+
+
+Administration
+~~~~~~~~~~~~~~
+
+
+
+Add Date Header to Action Trigger Email/SMS Templates
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The Date: header specified in RFC 2822 has been added to the seed data
+for the example Action Trigger email and SMS templates, but no attempt
+has been made to automatically modify existing templates. To add this
+header (and end any "Why are my library emails from 1969/70?" questions
+you may have heard) make sure the following lines are in all templates
+that use the SendEmail or SendSMS reactors:
+
+The first is already in most sample templates, but you may need to add
+it to the top of any custom templates:
+`[%- USE date -%]`
+
+And this line should be inserted into the header block of each template:
+`Date: [%- date.format(date.now, '%a, %d %b %Y %T -0000', gmt => 1) %]`
+
+
+
+
+
+Support for Ubuntu 16.04
+^^^^^^^^^^^^^^^^^^^^^^^^
+Adds support for Ubuntu Xenial Xerus (16.04).
+
+
+
+
+
+Purge User Activity
+^^^^^^^^^^^^^^^^^^^
+
+User activity types are now set to transient by default for new
+Evergreen installs..  This means only the most recent activity entry per
+user per activity type is retained in the database.
+
+This change does not affect existing activity types, which were set to
+non-transient by default.  To make an activity type transient, modify the
+'Transient' field of the desired type in the staff client under Admin -> 
+Server Administration -> User Activity Types.
+
+Setting an activity type to transient means data for a given user will
+be cleaned up automatically if and when the user performs the activity
+in question.  However, administrators can also force an activity
+cleanup via SQL.  This is useful for ensuring that all old activity
+data is deleted and for controlling when the cleanup occurs, which 
+may be useulf on very large actor.usr_activity tables.
+
+To force clean all activity types:
+
+[source,sql]
+------------------------------------------------------------
+SELECT actor.purge_usr_activity_by_type(etype.id)
+    FROM config.usr_activity_type etype;
+------------------------------------------------------------
+
+NOTE: This could take hours to run on a very large actor.usr_activity table.
+
+
+
+
+
+Cataloging
+~~~~~~~~~~
+
+
+
+Authority Record Import Updates Editor, Edit Date.
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Importing an authority record via MARC Batch Import/Export now causes the 
+authority record's editor and edit_date fields to be updated.  The editor
+value may come from the MARC 905u field or, if none is present, the user 
+performing the import.
+
+
+
+
+Authority Propagation Updates Bib Editor / Edit Date
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+When a bib record is automatically updated as a result of the
+modification of a linked authority record, the bib record's "Last Edit
+Data/Time" and "Last Editing User" fields will be updated to match the
+time of the update and the editor of the modified authority record.
+
+A new global flag is available to control this behavior called
+'ingest.disable_authority_auto_update_bib_meta' ("Authority Automation:
+Disable automatic authority updates from modifying bib record editor
+and edit_date").  When enabled, theses fields will not be updated.  By
+default, this setting is disabled.
+
+An additional speed improvement is included in this feature.  No attempt
+will be made to update linked bib records when the normalized heading of
+the modified authority record is unchanged by the authority record update.
+
+
+
+
+Bibliographic Record Source Now Copied to 901$s
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+If a bibliographic record has a source set, the name of that source
+is now copied to the 901$s whenever the record is created or updated.
+This allows the source to be used for record matching and MARC
+field queries.
+
+
+
+
+Option to Update Bib Source and Edit Details on Record Import
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+When importing records through the client, users will now have the ability to
+define whether the bib source, last editor, and last edit date should be updated
+on a record merge/overlay.
+
+In MARC Batch Import / Export, select the _Merge / Overlay_ tab.  Each entry in
+the table has a value in the new _Update bib. source_ column. If that value is
+True, then the bib source, last editor, and last edit date will be updated.
+
+The two system-defined entries have been pre-set to appropriate values (Full
+Overlay = true; Match-Only Merge = false).
+
+
+
+
+Circulation
+~~~~~~~~~~~
+
+
+
+Staff Client Honors Aged Circulations
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The browser and XUL clients now better represent copy checkout history 
+by honoring and displaying information from aged circulations.  
+
+ * Browser client 'Recent Circ History' and the analogous XUL client 
+   'Circulation History' tabs show summary data for aged circulations
+   as well as regular/active circulations.  When aged circulation data
+   is displayed, any references to patron names are replaced by the string
+   "<Aged Circulation>".
+
+ * Browser client 'Circ History List' and the analogous XUL client 
+   'Last Few Circulations' tabs behave as above, plus their 'Add 
+   Billing' buttons are disabled when displaying aged circulation data.
+
+ * XUL client 'Retrieve Last Patron' actions from various UI's report, 
+   "Item XXX circulation is an aged circulation and has no linked user".
+   Browser client analog uses 'Circ History List' instead; no additional
+   changes required.
+
+
+
+
+
+"Canceled Transit" Item Status
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Previously, when a transit was aborted, the transited item would either go into
+"Reshelving" status or would return to whatever status it was in when it went
+into transit, even when the item itself was in a different status (including
+"Checked out").  Now, for most transits that get aborted, the item is put into a 
+new status, "Canceled Transit", which signals to staff the actual state of the
+item.  This feature only affects items with a status of "In transit" and does
+not affect items that were in the following statuses at the time they were sent
+into transit:
+
+* Bindery
+* Lost
+* Missing
+* On order
+* ILL
+* Damaged
+* Long Overdue
+* Lost and Paid
+* Any custom statuses
+
+This change should help clear up confusing situations caused by the previous
+"abort transit" behavior, such as items showing "Available" when they are actually
+en route, and patrons' items mysteriously disappearing from their accounts and
+showing "Available" at the item-owning library without evidence of check-in.
+
+
+
+
+Copy Status "Is Available" Flag
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+A new boolean field is now available for copy statuses to indicate when copies
+having a given status should be considered available.  The field has 2 main
+effects:
+
+1. Checking out an "available" copy will no longer result in an override-able
+   "COPY_NOT_AVAILABLE" alert for staff.  The copy will checkout without 
+   status warnings.
+
+2. "Available" copies will appear in catalog searches where "limit to
+   available" is selected as a search filter.
+
+By default, the "Available" and "Reshelving" statuses have the "Is Available" 
+flag set.  The flag may be applied to local/custom statues via the copy
+status admin interface.
+
+
+
+
+
+Email Checkout Receipts
+^^^^^^^^^^^^^^^^^^^^^^^
+This feature allows patrons to receive checkout receipts through email
+at the circulation desk and in the Evergreen self-checkout interface.
+Patrons need to opt in to receive email receipts by default and must
+have an email address associated with their account. Opt in can be staff
+mediated at the time of account creation or in existing accounts.
+Patrons can also opt in directly in their OPAC account or through patron
+self-registration. This feature does not affect the behavior of
+checkouts from SIP2 devices.
+
+Patrons can opt in to receive email checkout receipts by default via
+a new _Email checkout reciepts by default_ patron setting.
+
+This feature also enhances the patron staging tables so that patron
+settings can be chosen during self-registration.
+
+The web staff interface's checkout screen now includes a "Quick
+Receipt" button that allows staff members to generate a receipt
+at any time.
+
+
+
+
+Set Per-OU Limits on Allowed Payment Amounts
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Two new settings have been added to prevent clerks from accidentally clearing
+all patron bills by scanning a barcode into the Payment Amount field, or
+accidentally entering the amount without a decimal point (such as you
+would when using a cash register).
+
+Both settings are available via the Library Settings Editor. The _Payment
+amount threshold for Are You Sure? dialog_ (ui.circ.billing.amount_warn)
+setting identifies the amount above
+which staff will be asked if they're sure they want to apply the payment.
+The _Maximum payment amount allowed_ (ui.circ.billing.amount_limit)
+setting identifies the maximum amount of
+money that can be accepted through the staff client.
+
+These settings only effect the staff client, not credit
+cards accepted through the OPAC, or direct API calls
+from third party tools.
+
+
+
+
+Client
+~~~~~~
+
+
+
+Additional Fields Available for Display in Some Interfaces
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The holds age protection field will now be available for display in the
+following interfaces:
+
+* Item status list view column picker
+* Item status alternate view
+* Holdings maintenance column picker
+
+The asset.copy.cost field, which records the amount paid for an item when
+an invoice is processed, will be available for display in the following
+interfaces:
+
+* Items status list view column picker
+* Item status alternate view
+* Copy editor
+
+
+
+
+
+OPAC
+~~~~
+
+
+
+Merge Notification Preferences Tables in TPAC
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The patron notification preference page in the public catalog
+used to have two tables, separating notification settings
+based on their source. Since that distinction does not matter
+to patrons, and since the two tables aren't styled consistently,
+they are merged together.
+
+
+
+
+Improved Holds Screens in My Account
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The grids in the My Account _Items on Hold_ and _Holds History_ interfaces are
+simplified. Data previously contained in their own Activate, Active, and Date
+Fulfilled columns are now incorporated into the Status columns. To further
+declutter the interface, the holds queue position will only show when the user
+most needs the information - before the hold has been captured. 
+
+Distinct CSS classes have also been added for each hold status and each date
+that could potentially display in these holds interfaces. A new default style
+highlights the _Available_ status in green and the _Suspended_ status
+in red.
+
+
+
+
+
+
+Popularity Boost for Ranking Search Results
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This feature uses factors such as  circulation and hold activity, record and item age, and item ownership counts to generate popularity badges for bibliographic
+records. Each badge will have a five-point scale, where more points indicates a more popular record.  The average of the badge points earned by each record will constitute a "popularity rating". The number and types of badges will break ties for average popularity, and relevance will sort items with like popularity. 
+
+A new sort axis of popularity is created to sort first on the weighted average popularity of each record, followed by the query-specific relevance available today.  A new option is created in the dropdown called _Most Popular_ that sorts on the combination of "activity metric" (aka badge ranking, aka popularity) first and then the existing, stock relevance ranking when those are equal.  For instance, given two records that both have a badge ranking of "4.5", they sort in the order of the query relevance ranking that is calculated today as a tie breaker.  Those two records will sort above other records with lower badge rankings regardless of what today's relevance ranking says about them.
+
+In addition, a new sort axis of _Popularity-Adjusted Relevance_ is created that augments the normal Relevance sort with a normalized popularity value by multiplying the base relevance by a value controlled by a new global flag, generally set to a decimal number between 1 and 2.
+
+Finally, there will continue to be a pure _Relevance_ sort option, which is the version that exists today.
+
+Administrators can comment out one of the available sort methods by editing the
+filtersort.tt2 file.A global flag will allow Evergreen sites to select a default sort method.
+
+Badge Configuration
+^^^^^^^^^^^^^^^^^^^
+
+Administrative interfaces to configure badges are only available in the web
+client. Administrators can also configure badges directly via the database. 	
+
+Available Popluarity Parameters available for badges include:
+
+* Holds Filled Over Time
+* Holds Requested Over Time
+* Current Hold Count
+* Circulations Over Time
+* Current Circulation Count
+* Out/Total Ratio
+* Holds/Total Ratio
+* Holds/Holdable Ratio
+* Percent of Time Circulating
+* Bibliographic Record Age (days)
+* Publication Age (days)
+* Available On-Line (for e-books, etc)
+* Copy Count
+
+Badges can be configured to apply to a targeted group of bibliographic records
+based on the following available filters:
+
+* Record attribute
+* Bibliographic source
+* Circulation modifier
+* Copy location group
+
+Badges can also be be restricted to materials owned by a specific organiztional
+unit.
+
+This new feature comes with a starter badge based on the top 97th percentile of
+holds requested over the past five years.
+
+Display in the OPAC
++++++++++++++++++++
+
+Ratings for records will be displayed in the catalog in the following ways:
+
+* On the record result page, the overall average popularity rating is displayed with a label of _Popularity_.
+
+* On the record detail page, each individual badge earned by the record is
+displayed with its rating. 
+
+New Global Flags
+++++++++++++++++
+* **OPAC Default Sort (opac.default_sort)**: Identifies the default sort method
+to be used in the catlaog.
+
+* **Maximum popularity importance multiplier for popularity-adjusted relevance
+searches (search.max_popularity_importance_multiplier):** A multiplier identifying
+the importance of popularity in the Popularity-Adjusted Relevance ranked 
+searches. The number should be a decimal ranging between 1.0 and 2.0. The
+default value is 1.1.
+
+More detailed information is available TechRef docs directory in the
+Evergreen source code.
+
+
+
+
+Removal of Advanced Hold Options link when part holds are expected
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+If a user attempts to place a metarecord hold when all eligible copies
+contain parts, the hold will fail. To help prevent the user from reaching
+a dead end while placing holds, the *Advanced Hold Options* link is removed
+from the Place Hold page in cases where all copies on the record contain
+parts. The *Advanced Hold Options* link will remain for records that have
+a mix of parted and non-parted copies.
+
+
+
+
+
+SIP
+~~~
+
+
+
+SIP Renewals
+^^^^^^^^^^^^^
+Renewals attempted via SIP will now consider whether a penalty is configured
+to block renewals before blocking the renewal. Previously, any penalty, even
+if it wasn't set to block renewals, would prevent a renewal from succeeding
+via SIP. 
+
+
+
+
+
+Treat SIP Location Field as Login Workstation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+When using a version of SIPServer that supports the feature,
+the Location (CP) field of the Login (93) message will be
+used as the workstation name if supplied. Blank or missing
+location fields will be ignored. This allows users or reports
+to determine which selfcheck performed a circulation.
+
+
+
+
+
+Translations
+~~~~~~~~~~~~
+
+
+
+Translation Updates
+^^^^^^^^^^^^^^^^^^^
+Translations in this release have been significantly increased.  In
+particular, Spanish has received a huge update with over 9,000 new
+translations, Czech has received a sizeable update of over 800
+translations, and additional smaller updates have been added for
+Arabic, French (Canada), and Armenian.
+
+
+
+Acknowledgments
+---------------
+The Evergreen project would like to acknowledge the following
+organizations that commissioned developments in this release of
+Evergreen:
+
+ * Bibliomation
+ * Georgia Public Library Service
+ * MassLNC
+ * Pennsylvania Integrated Library System
+ * Pioneer Library System
+
+We would also like to thank the following individuals who contributed
+code, management, translations, documentation patches and tests to this
+release of Evergreen:
+
+ * Jason Boyer
+ * Eva Cerninakova
+ * Galen Charlton
+ * Bill Erickson
+ * Blake Henderson
+ * Jeff Godin
+ * Kathy Lussier
+ * Michele Morgan
+ * Dan Pearl
+ * Dan Scott
+ * Chris Sharp
+ * Ben Shum
+ * Mike Rylander
+ * Jason Stephenson
+ * Anahi Valdez
+ * Dan Wells
+
+
+We also thank the following organizations whose employees contributed
+patches:
+
+ * Calvin College
+ * Central/Wester Massachusetts Automated Resource Sharing
+ * Equinox Software, Inc.
+ * Emerald Data Networks, Inc.
+ * Evergreen Indiana
+ * Georgia Public Library Serivce
+ * King County Library System
+ * Knihovna Jabok
+ * Laurentian University
+ * MassLNC
+ * MOBIUS
+ * North of Boston Library Exchange
+ * Traverse Area District Library
+
+We regret any omissions.  If a contributor has been inadvertantly
+missed, please open a bug at http://bugs.launchpad.net/evergreen/
+with a correction.
+

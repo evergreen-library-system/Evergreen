@@ -1,6 +1,0 @@
-Authority Record Import Updates Editor, Edit Date.
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Importing an authority record via MARC Batch Import/Export now causes the 
-authority record's editor and edit_date fields to be updated.  The editor
-value may come from the MARC 905u field or, if none is present, the user 
-performing the import.
