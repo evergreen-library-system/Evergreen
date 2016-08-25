@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2015-02-27 11:41-0400\n"
-"PO-Revision-Date: 2013-11-15 19:16+0000\n"
-"Last-Translator: Gerson Vazquez <gerson.v.h@gmail.com>\n"
+"PO-Revision-Date: 2016-08-16 12:51+0000\n"
+"Last-Translator: Anahi Valdez <avaldez@emeralddata.net>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2015-08-07 05:44+0000\n"
-"X-Generator: Launchpad (build 17656)\n"
+"X-Launchpad-Export-Date: 2016-08-17 05:25+0000\n"
+"X-Generator: Launchpad (build 18169)\n"
 
 #. Common Entities
 #: reports.common.logged_in_as
@@ -125,10 +125,12 @@ msgid ""
 "Indicates that when filtering on the item, a list of named choices will be "
 "generated."
 msgstr ""
+"Indica que cuando se filtran en el artículo, se generará una lista de "
+"opciones con nombre."
 
 #: reports.oils_rpt_builder.temp_disp_items
 msgid "Template Display Items"
-msgstr ""
+msgstr "Elementos de plantilla de pantalla"
 
 #: reports.oils_rpt_builder.remove_selected
 msgid "Remove Selected"
@@ -153,7 +155,7 @@ msgstr "Filtros de plantilla"
 
 #: reports.oils_rpt_builder.report_aggregate_filters
 msgid "Report Aggregate Filters"
-msgstr ""
+msgstr "Filtros de informes generados"
 
 #: reports.oils_rpt_builder.hint
 msgid "Hint: "
@@ -222,7 +224,7 @@ msgstr "Elija una columna: "
 
 #: reports.oils_rpt_builder.choose_sorting_direction
 msgid "Choose the direction the sorting should occur: "
-msgstr ""
+msgstr "Seleccione la dirección que debería ocurrir la clasificación: "
 
 #: reports.oils_rpt_builder.ascending
 msgid "Ascending"
@@ -270,7 +272,7 @@ msgstr "Creador de plantillas:"
 
 #: reports.oils_rpt_editor.doc_url
 msgid "Template Documentation URL:"
-msgstr ""
+msgstr "URL Documentación de la plantilla:"
 
 #: reports.oils_rpt_editor.template_description
 msgid "Template Description:"
@@ -381,26 +383,29 @@ msgstr "Guardar informe"
 
 #: reports.oils_rpt_editor.apply_changes
 msgid "Apply Changes"
-msgstr ""
+msgstr "Aplicar Cambios"
 
 #: reports.oils_rpt_editor.save_report_new
 msgid "Save As New"
-msgstr ""
+msgstr "Guardar Como Nueva"
 
 #: reports.oils_rpt_editor.confirm_sched
 msgid ""
 "Changes will be applied to pending reports that have not yet run. Do you "
 "want to continue with modifying those pending reports?"
 msgstr ""
+"Los cambios se aplicarán a los informes pendientes que aún no se han "
+"ejecutado. ¿Quieres continuar con la modificación de dichos informes "
+"pendientes?"
 
 #: reports.oils_rpt_editor.cancel
 msgctxt "reports.oils_rpt_editor.cancel"
 msgid "Cancel"
-msgstr ""
+msgstr "Cancelar"
 
 #: reports.oils_rpt_editor.exit_report
 msgid "Return"
-msgstr ""
+msgstr "Devolver"
 
 #: reports.oils_rpt_editor.empty_parameter
 msgid ""
@@ -433,7 +438,7 @@ msgstr "Compartir esta carpeta"
 
 #: reports.oils_rpt_folder_manager.hide_folder
 msgid "Hide (un-share) this folder"
-msgstr ""
+msgstr "Ocultar (no-acción) esta carpeta"
 
 #: reports.oils_rpt_folder_manager.disable_recurrence
 msgid "Disable recurrence"
@@ -523,11 +528,11 @@ msgstr "Programar informe"
 
 #: reports.oils_rpt_folder_window.view_report
 msgid "View"
-msgstr ""
+msgstr "Ver"
 
 #: reports.oils_rpt_folder_window.edit_report
 msgid "Edit"
-msgstr ""
+msgstr "Editar"
 
 #: reports.oils_rpt_folder_window.delete_reports
 msgid "Delete selected report(s)"
@@ -594,7 +599,7 @@ msgstr "Seleccionar carpeta"
 #: reports.oils_rpt_folder_window.cancel
 msgctxt "reports.oils_rpt_folder_window.cancel"
 msgid "Cancel"
-msgstr ""
+msgstr "Cancelar"
 
 #: reports.oils_rpt_folder_window.confirm_delete
 msgid "Are you sure you wish to delete the selected item(s)?"
@@ -605,12 +610,18 @@ msgid ""
 "        One or more of the selected templates could not be deleted because \n"
 "there are reports or outputs that depend on them."
 msgstr ""
+"        Una o más de las plantillas seleccionadas no se puede eliminar "
+"porque \n"
+"hay informes o salidas que dependen de ellos."
 
 #: reports.oils_rpt_folder_window.dependant_outputs_no_delete
 msgid ""
 "        One or more of the selected reports could not be deleted because \n"
 "there are outputs that depend on them."
 msgstr ""
+"        Uno o más de los informes seleccionado no se pueden eliminar porque "
+"\n"
+"hay salidas que dependen de ellos."
 
 #: reports.oils_rpt_folder_window.cannot_delete_another_users_data
 msgid "You may not delete another user's items"
@@ -649,6 +660,13 @@ msgid ""
 " \n"
 "Do you wish to continue?"
 msgstr ""
+"        Esto también eliminará todas sus salidas conectadas a \n"
+"Este reporte. \n"
+" \n"
+"Si otros usuarios tienen salidas adjuntos a este informe, \n"
+"los que se dejará intacta y no se eliminará el informe. \n"
+"\n"
+"¿Desea continuar?"
 
 #: reports.oils_rpt_param_editor.column
 msgid "Column"
@@ -694,7 +712,7 @@ msgstr " atrás"
 
 #: reports.xul.template_builder.db_source_browser.label
 msgid "Database Source Browser"
-msgstr ""
+msgstr "Fuente de Navegador de bases"
 
 #: reports.xul.template_builder.sources_menulist.label
 msgid "Sources"
@@ -706,7 +724,7 @@ msgstr "Nombre de la fuente"
 
 #: reports.xul.template_builder.source_nullable.label
 msgid "Nullable"
-msgstr ""
+msgstr "Anulable"
 
 #: reports.xul.template_builder.nullability_select.label
 msgid "Enable nullability selection"
@@ -714,7 +732,7 @@ msgstr "Permitir selección nulabilidad"
 
 #: reports.xul.template_builder.source_specifier.label
 msgid "Source Specifier:"
-msgstr ""
+msgstr "Fuente que especifica:"
 
 #: reports.xul.template_builder.field_name.label
 msgid "Field Name"
@@ -758,7 +776,7 @@ msgstr "Descripción:"
 
 #: reports.xul.template_builder.doc_url.label
 msgid "Documentation URL:"
-msgstr ""
+msgstr "URL de la documentación:"
 
 #: reports.xul.template_builder.save.label
 msgid "Save"
@@ -787,7 +805,7 @@ msgstr "Tipo de transformación de campo"
 
 #: reports.xul.template_builder.alter_display_header.label
 msgid "Alter Display Header"
-msgstr ""
+msgstr "Alterar de pantalla de Cabecera"
 
 #: reports.xul.template_builder.move_up.label
 msgctxt "reports.xul.template_builder.move_up.label"
@@ -817,7 +835,7 @@ msgstr "Valor"
 
 #: reports.xul.template_builder.change_transform.label
 msgid "Change Transform"
-msgstr ""
+msgstr "Transformar Cambios"
 
 #: reports.xul.template_builder.change_operator.label
 msgid "Change Operator"
@@ -829,7 +847,7 @@ msgstr "Cambiar valor"
 
 #: reports.xul.template_builder.change_field_doc.label
 msgid "Change Field Hint"
-msgstr ""
+msgstr "Sugerencia Cambio Campo"
 
 #: reports.xul.template_builder.remove_value.label
 msgid "Remove value"
@@ -853,7 +871,7 @@ msgstr "Relación"
 
 #: reports.xul.template_builder.field_doc.label
 msgid "Field Hint"
-msgstr ""
+msgstr "Sugerencia de campo"
 
 #~ msgid "Cancel"
 #~ msgstr "Cancelar"

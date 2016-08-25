@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2015-02-27 11:41-0400\n"
-"PO-Revision-Date: 2013-11-15 19:13+0000\n"
-"Last-Translator: Gerson Vazquez <gerson.v.h@gmail.com>\n"
+"PO-Revision-Date: 2016-08-01 21:19+0000\n"
+"Last-Translator: Anahi Valdez <avaldez@emeralddata.net>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2015-08-07 05:44+0000\n"
-"X-Generator: Launchpad (build 17656)\n"
+"X-Launchpad-Export-Date: 2016-08-02 05:19+0000\n"
+"X-Generator: Launchpad (build 18169)\n"
 
 #. =================================================================
 #. Some generic stuff
@@ -446,6 +446,15 @@ msgid ""
 "\n"
 "<br/><br/>Alternatively, you can use the basic HTML-only catalog: "
 msgstr ""
+"JavaScript debe estar habilitado, para que pueda utilizar el catálogo "
+"regular de Evergreen. \n"
+"Sin embargo, parece que JavaScript está deshabilitado o no soportado por su "
+"navegador. \n"
+"Para utilizar el Catálogo regular de Evergreen, habilite JavaScript "
+"cambiando las opciones de su navegador, a continuación, \n"
+"<a style='color: blue; text-decoration: underline;' href='/'>try again</a>.\n"
+"<br/><br/> Como alternativa, puede utilizar el código HTML de sólo básica "
+"catálogo: "
 
 #. =================================================================
 #. MyOPAC bookbag page
@@ -1485,7 +1494,7 @@ msgstr "Búsqueda rápida"
 
 #: sidebar.authority.browse
 msgid "Authority Browse"
-msgstr ""
+msgstr "Autoridad Navegar"
 
 #: sidebar.copy.not.found
 msgid "No copy with the requested barcode was found"
@@ -1493,7 +1502,7 @@ msgstr "No se encontró ninguna copia con ese código de barras"
 
 #: sidebar.copy.not.cataloged
 msgid "The copy with the requested barcode is not cataloged"
-msgstr ""
+msgstr "La copia con el código de barras solicitado no está catalogado"
 
 #. =================================================================
 #. Search formats
@@ -1571,7 +1580,7 @@ msgstr "El Número de hoja perenne de la Llamada Hojea"
 
 #: opac.title.authbrowse
 msgid "Evergreen Authority Record Browse"
-msgstr ""
+msgstr "Evergreen Autoridad de Registro Navegar"
 
 #: opac.holds.forMe
 msgid "Place this hold for myself"
@@ -1620,6 +1629,9 @@ msgid ""
 "The system was not able to place the requested hold.  The item requested has "
 "multiple parts to choose from.  Try selecting a specific part for the hold."
 msgstr ""
+"El sistema no fue capaz de poner la reservación solicitada. El elemento "
+"solicitado tiene varias partes para elegir. Pruebe a seleccionar una parte "
+"específica de la bodega."
 
 #. =================================================================
 #. Advanced
@@ -1778,7 +1790,7 @@ msgstr "Fecha de creación"
 
 #: rdetail.cn.active
 msgid "Active Date"
-msgstr ""
+msgstr "Fecha Activa"
 
 #: rdetail.cn.holdable
 msgid "Holdable"
@@ -2063,7 +2075,7 @@ msgstr "Asuntos"
 
 #: rdetail.summary.issues_held
 msgid "Issues Held"
-msgstr ""
+msgstr "Ejemplares apartados"
 
 #: result.sort_by
 msgid "Sort Results by Relevance"
@@ -2187,7 +2199,7 @@ msgstr "ISSN:"
 
 #: common.mono_parts.label
 msgid "Monograph Parts:"
-msgstr ""
+msgstr "Partes de la monografía:"
 
 #: common.copy.barcode.label
 msgid "Copy Barcode:"
@@ -2195,7 +2207,7 @@ msgstr "Copiar código de barras:"
 
 #: common.issuance_label.label
 msgid "Issuance Label:"
-msgstr ""
+msgstr "Etiqueta de Emisión:"
 
 #: common.hold.place
 msgid "Place hold for my account"
@@ -2227,7 +2239,7 @@ msgstr "Copie el Asidero"
 
 #: common.hold.issuance
 msgid "Issuance Hold"
-msgstr ""
+msgstr "Retención de Emisión"
 
 #: common.hold.advanced
 msgid "Advanced Hold Options"
@@ -2247,6 +2259,7 @@ msgstr "Este tema ya está desprotegido."
 msgid ""
 "This item is already checked out.  Would you like to place the hold anyway?"
 msgstr ""
+"Este objeto ya está afuera. ¿Quieres poner la reservación de todos modos?"
 
 #: common.hold.exists
 msgid "A hold already exists on the requested item."
@@ -2265,6 +2278,8 @@ msgid ""
 "This hold may take extra time to fill due to library policies. Would you "
 "like to create the hold anyway?"
 msgstr ""
+"Esta retención puede tardar más tiempo para llenar debido a las políticas de "
+"la biblioteca. ¿Le gustaría crear la bodega de todos modos?"
 
 #: common.hold.place_unfillable.override
 msgid ""
@@ -2272,6 +2287,10 @@ msgid ""
 "the hold regardless, but should only do so if you believe the hold will "
 "eventually be filled. Would you like to create the hold anyway?"
 msgstr ""
+"La retención solicitada no puede actualmente ser llenado. Usted tiene "
+"permiso para poner la reservación independientemente, pero sólo debe hacerlo "
+"si cree que la espera con el tiempo se llena. ¿Le gustaría crear la bodega "
+"de todos modos?"
 
 #: common.hold.barred
 msgid ""
@@ -2466,6 +2485,11 @@ msgid ""
 "Passwords are case-sensitive.  Check your Caps-Lock key and try again or "
 "contact your local library."
 msgstr ""
+"Error de inicio de sesion. El nombre de usuario o contraseña proporcionada "
+"no es válida. \n"
+"Las contraseñas son sensibles a las mayúsculas. Compruebe su clave de "
+"bloqueo de mayúsculas y vuelva a intentarlo o póngase en contacto con su "
+"biblioteca local_"
 
 #: button.go
 msgid "Go!"
@@ -2694,7 +2718,7 @@ msgstr "El usuario tiene demasiados préstamos de este tipo de material"
 
 #: circ.fail_part.config.circ_matrix_test.available_copy_hold_ratio
 msgid "The available item-to-hold ratio is too low"
-msgstr ""
+msgstr "La relacion del elemento disponible a tener es demasiado baja."
 
 #: circ.fail_part.config.circ_matrix_test.circulate
 msgid "Circulation rules reject this item as non-circulatable"
@@ -2702,7 +2726,7 @@ msgstr "Normas de circulacion rechazan este articulo como no circulatable."
 
 #: circ.fail_part.config.circ_matrix_test.total_copy_hold_ratio
 msgid "The total item-to-hold ratio is too low"
-msgstr ""
+msgstr "La proporcion total de la pieza a tener es demasiada baja."
 
 #: circ.fail_part.config.hold_matrix_test.holdable
 msgid "Hold rules reject this item as unholdable"

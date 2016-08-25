@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2016-03-14 20:44-0400\n"
-"PO-Revision-Date: 2014-09-13 23:57+0000\n"
-"Last-Translator: Adolfo Jayme <fitoschido@gmail.com>\n"
+"PO-Revision-Date: 2016-06-07 21:18+0000\n"
+"Last-Translator: Anahi Valdez <avaldez@emeralddata.net>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2016-03-16 05:32+0000\n"
-"X-Generator: Launchpad (build 17947)\n"
+"X-Launchpad-Export-Date: 2016-06-08 05:16+0000\n"
+"X-Generator: Launchpad (build 18097)\n"
 
 #: common.exception
 msgid ""
@@ -116,7 +116,7 @@ msgstr "Marque aquí para confirmar este mensaje"
 
 #: common.processing
 msgid "Processing"
-msgstr ""
+msgstr "Procesando"
 
 #: lang.version
 msgid "remote v1"
@@ -265,11 +265,11 @@ msgstr "Notificar por teléfono"
 
 #: staff.ahr_sms_notify_label
 msgid "Text Notify"
-msgstr ""
+msgstr "Notificar texto"
 
 #: staff.ahr_sms_carrier_label
 msgid "Text Carrier"
-msgstr ""
+msgstr "Portador de texto"
 
 #: staff.ahr_pickup_lib_label
 msgid "Pickup Library"
@@ -277,7 +277,7 @@ msgstr "Biblioteca de Recolección"
 
 #: staff.ahr_current_shelf_lib_label
 msgid "Current Shelf Library"
-msgstr ""
+msgstr "Los estantes de biblioteca actual"
 
 #: staff.ahr_prev_check_time_label
 msgid "Previous Check Time"
@@ -416,7 +416,7 @@ msgstr "Biblioteca "
 
 #: staff.ausp_org_unit_full_label
 msgid "Library (Full Name)"
-msgstr ""
+msgstr "Biblioteca (Nombre Completo)"
 
 #: staff.mbts_id_label
 msgid "Bill # "
@@ -626,7 +626,7 @@ msgstr "Caduca el"
 
 #: staff.au_last_update_time_label
 msgid "Updated On"
-msgstr ""
+msgstr "Actualizado en"
 
 #: staff.au_home_library_label
 msgid "Home Library"
@@ -812,7 +812,7 @@ msgstr "Interfaz fuera de línea sincronizada con el servidor."
 
 #: staff.main.gen_offline_widgets.noncat_sort.error
 msgid "error in noncat sorting: "
-msgstr ""
+msgstr "Error en ordenamiento sin categoría "
 
 #: staff.main.gen_offline_widgets.please_wait
 msgid "Please wait"

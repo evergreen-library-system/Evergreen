@@ -1,0 +1,7 @@
+Translation Updates
+^^^^^^^^^^^^^^^^^^^
+Translations in this release have been significantly increased.  In
+particular, Spanish has received a huge update with over 8,000 new
+translations, Czech has received a sizeable update of over 800
+translations, and additional smaller updates have been added for
+Arabic, French (Canada), and Armenian.

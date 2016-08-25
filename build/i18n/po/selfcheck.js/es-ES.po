@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2015-02-27 11:41-0400\n"
-"PO-Revision-Date: 2013-11-15 19:44+0000\n"
-"Last-Translator: Gerson Vazquez <gerson.v.h@gmail.com>\n"
+"PO-Revision-Date: 2016-08-16 16:20+0000\n"
+"Last-Translator: Anahi Valdez <avaldez@emeralddata.net>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2015-08-07 05:45+0000\n"
-"X-Generator: Launchpad (build 17656)\n"
+"X-Launchpad-Export-Date: 2016-08-17 05:25+0000\n"
+"X-Generator: Launchpad (build 18169)\n"
 
 #: selfcheck.js:FAIL_PART_config_hold_matrix_test_max_holds
 msgid "The patron has reached the maximum number of holds"
@@ -23,7 +23,7 @@ msgstr "El usuario ha superado el numero máximo de solicitudes."
 
 #: selfcheck.js:FAIL_PART_location.holdable
 msgid "The item's location is not holdable"
-msgstr ""
+msgstr "La ubicación del elemento no se puede retener"
 
 #: selfcheck.js:CHECKOUT_SUCCESS
 msgid "Checkout of item ${0} succeeded"
@@ -65,6 +65,11 @@ msgid ""
 "\n"
 "Would you like to register a new workstation for this self-check interface?"
 msgstr ""
+"Se requiere una estación de trabajo para iniciar sesión en autocheckin. "
+"Puede establecer el nombre de estación de trabajo con el URL param 'ws'.  \n"
+"\n"
+"¿Le gustaría registrar una nueva estación de trabajo para esta interfaz de "
+"auto-comprobación?"
 
 #: selfcheck.js:FAIL_PART_config_circ_matrix_test_total_copy_hold_ratio
 msgid "The total item-to-hold ratio is too low"
@@ -76,7 +81,7 @@ msgstr "El ejemplar ${0} ya está prestado"
 
 #: selfcheck.js:FAIL_PART_config_circ_matrix_test_available_copy_hold_ratio
 msgid "The available item-to-hold ratio is too low"
-msgstr ""
+msgstr "La relacion del elemento disponible a tener es demasiado baja."
 
 #: selfcheck.js:TOTAL_ITEMS_ACCOUNT
 msgid "Total items on account:  ${0}."
@@ -88,7 +93,7 @@ msgstr "La biblioteca dueña del titulo no permite apartados"
 
 #: selfcheck.js:HOLD_STATUS_WAITING
 msgid "#${0} in line with ${1} copies"
-msgstr ""
+msgstr "#${0} en línea con ${1} copias"
 
 #: selfcheck.js:RENEW_SUCCESS
 msgid "Renewal of item ${0} succeeded"
@@ -114,7 +119,7 @@ msgstr ""
 
 #: selfcheck.js:FAIL_PART_actor_usr_barred
 msgid "The patron is barred"
-msgstr ""
+msgstr "El patrón es prohibido."
 
 #: selfcheck.js:PAYMENT_INVALID_USER_XACT_ID
 msgid ""
@@ -122,6 +127,9 @@ msgid ""
 "another location.  Please refresh the interface or log out and back in to "
 "retrieve the latest account information"
 msgstr ""
+"No podemos proceder con el pago, porque su cuenta se actualiza desde otra "
+"ubicación. Por favor, actualice la interfaz o la sesión y volver a recuperar "
+"la última información de la cuenta"
 
 #: selfcheck.js:FAIL_PART_status.holdable
 msgid "The item is not in a holdable status"
@@ -166,7 +174,7 @@ msgstr "Listo para ser recogido"
 
 #: selfcheck.js:GENERIC_CIRC_FAILURE
 msgid "Unable to check out item ${0}.  Please see staff."
-msgstr ""
+msgstr "No se puede desproteger artículo ${0}. Por favor, vea el personal."
 
 #: selfcheck.js:MAX_RENEWALS
 msgid "No more renewals allowed for item ${0}"
@@ -198,7 +206,7 @@ msgstr ""
 
 #: selfcheck.js:UNKNOWN_ERROR
 msgid "An unhandled exception occurred with error code ${0}"
-msgstr ""
+msgstr "Excepción no controlada con el código de error ${0}"
 
 #: selfcheck.js:TOTAL_ITEMS_SESSION
 msgid "Total items this session: ${0}."
@@ -206,7 +214,7 @@ msgstr "Total de ejemplares esta sesión: ${0}."
 
 #: selfcheck.js:FAIL_PART_config_rule_age_hold_protect_prox
 msgid "The item is too new to transit this far"
-msgstr ""
+msgstr "El tema es demasiado nuevo para transitar este momento."
 
 #: selfcheck.js:TOTAL_FINES_SELECTED
 msgid "Selected total: $${0}"

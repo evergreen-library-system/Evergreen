@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2016-03-15 02:36+0000\n"
-"PO-Revision-Date: 2014-12-23 20:58+0000\n"
-"Last-Translator: Dan Scott <dan@coffeecode.net>\n"
+"PO-Revision-Date: 2016-08-01 20:35+0000\n"
+"Last-Translator: Anahi Valdez <avaldez@emeralddata.net>\n"
 "Language-Team: French <fr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2016-03-16 05:41+0000\n"
-"X-Generator: Launchpad (build 17947)\n"
+"X-Launchpad-Export-Date: 2016-08-02 05:19+0000\n"
+"X-Generator: Launchpad (build 18169)\n"
 
 #: ../../Open-ILS/src/templates/opac/register.tt2:63
 msgid ""
@@ -26,12 +26,19 @@ msgid ""
 "                registration or in the online catalog.\n"
 "                "
 msgstr ""
+"\n"
+"                Remarque: Le nom d'utilisateur sélectionné peut être utilisé "
+"par un autre patron.  \n"
+"                Vous pouvez choisir un autre nom d'utilisateur lors de la "
+"finalisation de votre \n"
+"                enregistrement ou dans le catalogue en ligne.\n"
+"                "
 
 #. (pubdate_clean)
 #. (copyright_clean)
 #: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:149
 msgid " (%1)"
-msgstr ""
+msgstr " (%1)"
 
 #: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:159
 msgid " / "
@@ -48,6 +55,9 @@ msgid ""
 "like a barcode, and may be restricted by policy.  Please try a different "
 "username."
 msgstr ""
+"\"%1\" est pas un nom d'utilisateur valide. Nom d'utilisateur ne peuvent pas "
+"avoir des espaces ou ressembler à un code à barres, et peuvent être limités "
+"par la politique. S'il vous plaît essayer un autre nom d'utilisateur."
 
 #: ../../Open-ILS/src/templates/opac/parts/header.tt2:1
 msgid "$%.2f"
@@ -68,17 +78,17 @@ msgstr "%1 (%2)"
 #. (bib_lib_name)
 #: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:58
 msgid "%1 (foreign item)"
-msgstr ""
+msgstr "%1 (élément étranger)"
 
 #. (ctx.page_title, libname)
 #: ../../Open-ILS/src/templates/opac/parts/base.tt2:21
 msgid "%1 - %2"
-msgstr ""
+msgstr "%1 - %2"
 
 #. (libname)
 #: ../../Open-ILS/src/templates/opac/parts/base.tt2:23
 msgid "%1 OpenSearch"
-msgstr ""
+msgstr "%1 OuvrirRecherche"
 
 #. (hold.hold.queue_position, hold.hold.potential_copies)
 #: ../../Open-ILS/src/templates/opac/parts/hold_status.tt2:26
@@ -107,7 +117,7 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/results.tt2:41
 msgid "&#9668; Return to Grouped Search Results"
-msgstr ""
+msgstr "&#9668; Retourner aux résultats de recherche groupés"
 
 #: ../../Open-ILS/src/templates/opac/parts/record/cnbrowse.tt2:15
 msgid "&lt;&lt; Previous Page"
@@ -116,7 +126,7 @@ msgstr "&lt;&lt; Page précédente"
 #. (ctx.user_stats.messages.unread)
 #: ../../Open-ILS/src/templates/opac/parts/base.tt2:17
 msgid "(%1)"
-msgstr ""
+msgstr "(%1)"
 
 #. (example)
 #: ../../Open-ILS/src/templates/opac/register.tt2:167
@@ -181,11 +191,11 @@ msgstr "Un nom de liste est requis"
 
 #: ../../Open-ILS/src/templates/opac/register.tt2:78
 msgid "A registration error has occurred"
-msgstr ""
+msgstr "Une erreur d'enregistrement a eu lieu"
 
 #: ../../Open-ILS/src/templates/opac/parts/relators.tt2:1
 msgid "Abridger"
-msgstr ""
+msgstr "Abréviateur"
 
 #: ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:105
 msgid "Account Creation Date"

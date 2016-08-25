@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2015-02-27 11:41-0400\n"
-"PO-Revision-Date: 2011-09-18 15:20+0000\n"
-"Last-Translator: Antonio Paniagua <Unknown>\n"
+"PO-Revision-Date: 2016-08-01 13:45+0000\n"
+"Last-Translator: Anahi Valdez <avaldez@emeralddata.net>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2015-08-07 05:36+0000\n"
-"X-Generator: Launchpad (build 17656)\n"
+"X-Launchpad-Export-Date: 2016-08-02 05:19+0000\n"
+"X-Generator: Launchpad (build 18169)\n"
 
 #. Common entities
 #: conify.save_button.label
@@ -258,7 +258,7 @@ msgstr "Municipio"
 
 #: conify.org_unit.addresses_pane.san
 msgid "SAN"
-msgstr ""
+msgstr "SAN"
 
 #. This is a highlighted label that is followed by the name of the organizational unit
 #: conify.org_unit.status_bar

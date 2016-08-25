@@ -3,21 +3,21 @@ msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
 "POT-Creation-Date: 2016-03-14 20:44-0400\n"
-"PO-Revision-Date: 2015-12-08 10:27+0000\n"
+"PO-Revision-Date: 2016-06-29 18:34+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2016-03-16 05:33+0000\n"
-"X-Generator: Launchpad (build 17947)\n"
+"X-Launchpad-Export-Date: 2016-06-30 05:21+0000\n"
+"X-Generator: Launchpad (build 18115)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Poedit-Language: Czech\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
 #: 950.data.seed-values.sql:7939
 msgid "Estonia "
-msgstr ""
+msgstr "Estonsko "
 
 #: 950.data.seed-values.sql:117
 msgid "Series Title"
@@ -89,7 +89,7 @@ msgstr "Standardně sloučit při nahrávání při jedné shodě."
 
 #: 950.data.seed-values.sql:7701
 msgid "Full score"
-msgstr ""
+msgstr "Velká partitura"
 
 #: 950.data.seed-values.sql:4573
 msgid ""
@@ -113,7 +113,7 @@ msgstr "Povolí uživatelo vytvořit / zobrazit / smazat adresu upozornění."
 
 #: 950.data.seed-values.sql:8058
 msgid "Nunavut "
-msgstr ""
+msgstr "Nunavut "
 
 # id::crrf.name__2
 # nutná úprava dle kontextu. 10 haléřů za den se mi nelíbí
@@ -135,7 +135,7 @@ msgstr "Nahrát přednastavenou sadu shody"
 
 #: 950.data.seed-values.sql:7608
 msgid "Rock music"
-msgstr ""
+msgstr "Rocková hudba"
 
 #: 950.data.seed-values.sql:974
 msgid "DELETE_SURVEY"
@@ -143,7 +143,7 @@ msgstr "DELETE_SURVEY"
 
 #: 950.data.seed-values.sql:7880
 msgid "Aruba "
-msgstr ""
+msgstr "Aruba "
 
 #: 950.data.seed-values.sql:12892
 msgid "Heading -- Meeting Name"
@@ -151,12 +151,12 @@ msgstr "Titulek --jméno shromaždiště"
 
 #: 950.data.seed-values.sql:7757
 msgid "Not Applicable"
-msgstr ""
+msgstr "Nelze použít"
 
 #: 950.data.seed-values.sql:7731 950.data.seed-values.sql:8436
 #: 950.data.seed-values.sql:8457
 msgid "Memoirs"
-msgstr ""
+msgstr "Memoáry"
 
 #: 950.data.seed-values.sql:15459
 msgid "Long-Overdue Items Usable on Checkin"
@@ -177,7 +177,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:7754
 msgid "Instrumental and vocal parts"
-msgstr ""
+msgstr "Instrumentální a vokální části"
 
 #: 950.data.seed-values.sql:1330
 msgid "ADMIN_USER_SETTING_GROUP"
@@ -189,7 +189,7 @@ msgstr "Katalogizace: Použít interní ID jako TCN"
 
 #: 950.data.seed-values.sql:8161
 msgid "Wake Island "
-msgstr ""
+msgstr "Wake (ostrov) "
 
 #: 950.data.seed-values.sql:72
 msgid "Patron had an invalid evening phone number"
@@ -228,7 +228,7 @@ msgstr "Kawi"
 
 #: 950.data.seed-values.sql:7800
 msgid "Eckert"
-msgstr ""
+msgstr "Eckertovo zobrazení"
 
 #: 950.data.seed-values.sql:4336
 msgid "Suggest claims_never_checked_out_count field on patron registration"
@@ -242,11 +242,11 @@ msgstr "Pevná hranice"
 
 #: 950.data.seed-values.sql:8077
 msgid "Poland "
-msgstr ""
+msgstr "Polsko "
 
 #: 950.data.seed-values.sql:8120
 msgid "Switzerland "
-msgstr ""
+msgstr "Švýcarsko "
 
 #: 950.data.seed-values.sql:13435 950.data.seed-values.sql:14221
 msgid "Virgin Mobile"
@@ -258,7 +258,7 @@ msgstr "Adresář předmětových hesel"
 
 #: 950.data.seed-values.sql:7991
 msgid "Jamaica "
-msgstr ""
+msgstr "Jamaica "
 
 # id::clm.value__sas
 #: 950.data.seed-values.sql:6771
@@ -307,7 +307,7 @@ msgstr ""
 #: 950.data.seed-values.sql:7830 950.data.seed-values.sql:8524
 #: 950.data.seed-values.sql:8534
 msgid "Game"
-msgstr ""
+msgstr "Hra"
 
 #: 950.data.seed-values.sql:624
 msgid "Allow a user to delete a copy location"
@@ -323,7 +323,7 @@ msgstr "Maximálníá počet výsledku v dávce při vyhledávní v Z39.50"
 
 #: 950.data.seed-values.sql:8128
 msgid "Tasmania "
-msgstr ""
+msgstr "Tasmánie "
 
 #: 950.data.seed-values.sql:33
 msgid "Alerting Note, no blocks"
@@ -374,7 +374,7 @@ msgstr "Povolit uživateli dávkovou editaci exemplářů"
 
 #: 950.data.seed-values.sql:8103
 msgid "Singapore "
-msgstr ""
+msgstr "Singapur "
 
 #: 950.data.seed-values.sql:1308
 msgid "ADMIN_INVOICE_PAYMENT_METHOD"
@@ -382,7 +382,7 @@ msgstr "ADMIN_INVOICE_PAYMENT_METHOD"
 
 #: 950.data.seed-values.sql:8009
 msgid "Luxembourg "
-msgstr ""
+msgstr "Lucembursko "
 
 #: 950.data.seed-values.sql:942
 msgid "DELETE_COPY_STATUS"
@@ -398,7 +398,7 @@ msgstr "Ga"
 
 #: 950.data.seed-values.sql:8209
 msgid "Continuing resource status unknown"
-msgstr ""
+msgstr "Pokračující zdroj s neznámým statusem"
 
 #: 950.data.seed-values.sql:6950
 msgid "Serial"
@@ -420,7 +420,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:8164
 msgid "West Virginia "
-msgstr ""
+msgstr "Západní Virginie "
 
 #: 950.data.seed-values.sql:3469
 msgid ""
@@ -451,7 +451,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:8093
 msgid "Rwanda "
-msgstr ""
+msgstr "Rwanda "
 
 # id::i18n_l.name__en-CA
 #: 950.data.seed-values.sql:353
@@ -460,7 +460,7 @@ msgstr "Angličtina (Kanada)"
 
 #: 950.data.seed-values.sql:7868
 msgid "Armenia (Republic) "
-msgstr ""
+msgstr "Arménie "
 
 #: 950.data.seed-values.sql:7816 950.data.seed-values.sql:8472
 #: 950.data.seed-values.sql:8485 950.data.seed-values.sql:8498
@@ -505,7 +505,7 @@ msgstr "Byla vyžádána SMS na telefonní číslo."
 
 #: 950.data.seed-values.sql:11490
 msgid "Canceled: By Vendor"
-msgstr ""
+msgstr "Zrušeno dodavatelem"
 
 #: 950.data.seed-values.sql:1118
 msgid "UPDATE_ORG_UNIT_SETTING_ALL"
@@ -521,7 +521,7 @@ msgstr "Aljaška, USA"
 
 #: 950.data.seed-values.sql:7863
 msgid "Alberta "
-msgstr ""
+msgstr "Alberta "
 
 #: 950.data.seed-values.sql:3907
 msgid "Format Times with this pattern."
@@ -585,7 +585,7 @@ msgstr "Povolí uživateli vytvořit objednávku"
 #: 950.data.seed-values.sql:7727 950.data.seed-values.sql:8432
 #: 950.data.seed-values.sql:8453
 msgid "Instruction"
-msgstr ""
+msgstr "Instrukce"
 
 #: 950.data.seed-values.sql:3610
 msgid "Content of header_text include"
@@ -597,7 +597,7 @@ msgstr "Neplatná hodnota \"výše vkladu\""
 
 #: 950.data.seed-values.sql:8200
 msgid "Inclusive dates of collection"
-msgstr ""
+msgstr "Data zahrnutá v kolekci"
 
 #: 950.data.seed-values.sql:3466
 msgid "Pre-cat Item Circ Lib"
@@ -622,7 +622,7 @@ msgstr "UPDATE_ORG_UNIT_SETTING.auth.opac_timeout"
 
 #: 950.data.seed-values.sql:8055
 msgid "Nova Scotia "
-msgstr ""
+msgstr "Nové Skotsko "
 
 #: 950.data.seed-values.sql:11850
 msgid "A missing pieces slip needs to be formatted for printing."
@@ -666,7 +666,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:7885
 msgid "British Columbia "
-msgstr ""
+msgstr "Brtiská Kolumbie "
 
 # id::clfm.description__p
 #: 950.data.seed-values.sql:6928
@@ -684,7 +684,7 @@ msgstr "Germánské jazyky (ostatní)"
 
 #: 950.data.seed-values.sql:8171
 msgid "Midway Islands "
-msgstr ""
+msgstr "Midway "
 
 # id::cbs.source__1
 #: 950.data.seed-values.sql:3
@@ -699,11 +699,11 @@ msgstr "Status exempláře pro chybějící kusy."
 #: 950.data.seed-values.sql:8575 950.data.seed-values.sql:8591
 #: 950.data.seed-values.sql:8607
 msgid "Illustrations"
-msgstr ""
+msgstr "Ilustrace"
 
 #: 950.data.seed-values.sql:8129
 msgid "Tennessee "
-msgstr ""
+msgstr "Tennessee "
 
 #: 950.data.seed-values.sql:7281
 msgid "notated movement"
@@ -721,7 +721,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:8125
 msgid "Tunisia "
-msgstr ""
+msgstr "Tunisko "
 
 # id::clm.value__bih
 #: 950.data.seed-values.sql:6453
@@ -743,7 +743,7 @@ msgstr "Alltel (Allied Wireless)"
 
 #: 950.data.seed-values.sql:8169
 msgid "Saint Kitts"
-msgstr ""
+msgstr "Svatý Kryštof"
 
 # id::clm.value__goh
 #: 950.data.seed-values.sql:6561
@@ -760,7 +760,7 @@ msgstr "Temne"
 #: 950.data.seed-values.sql:8265 950.data.seed-values.sql:8279
 #: 950.data.seed-values.sql:8293
 msgid "Biography or performer or history of ensemble"
-msgstr ""
+msgstr "životopis, výkonný umělec nebo historie souboru"
 
 #: 950.data.seed-values.sql:2877
 msgid "Spine label line width"
@@ -768,7 +768,7 @@ msgstr "Sířka hřbetního štítku"
 
 #: 950.data.seed-values.sql:7629
 msgid "Map series"
-msgstr ""
+msgstr "Série map"
 
 #: 950.data.seed-values.sql:4330
 msgid ""
@@ -787,7 +787,7 @@ msgstr "VIEW_SERIAL_SUBSCRIPTION"
 
 #: 950.data.seed-values.sql:7792
 msgid "Bonne"
-msgstr ""
+msgstr "Bonneovo zobrazení"
 
 #: 950.data.seed-values.sql:3034
 msgid "Auto-Extending Grace Periods extend for all closed dates"
@@ -805,7 +805,7 @@ msgstr ""
 #: 950.data.seed-values.sql:8316 950.data.seed-values.sql:8346
 #: 950.data.seed-values.sql:8376 950.data.seed-values.sql:8406
 msgid "Surveys of the literature in a subject area"
-msgstr ""
+msgstr "Průzkum literatury v tematické oblasti"
 
 # id::crcd.name__8
 #: 950.data.seed-values.sql:272
@@ -883,7 +883,7 @@ msgstr "Indo-árijské jazyky (ostatní)"
 
 #: 950.data.seed-values.sql:8012
 msgid "Massachusetts "
-msgstr ""
+msgstr "Massachusetts "
 
 # id::cbs.source__2
 # nutný kontext
@@ -893,7 +893,7 @@ msgstr "Lokální systém"
 
 #: 950.data.seed-values.sql:8106
 msgid "San Marino "
-msgstr ""
+msgstr "San Marino "
 
 #: 950.data.seed-values.sql:13147 950.data.seed-values.sql:13153
 msgid "Default Phone Number"
@@ -1019,7 +1019,7 @@ msgstr "Norština (nynorsk)"
 
 #: 950.data.seed-values.sql:7905
 msgid "California "
-msgstr ""
+msgstr "Kalifornie "
 
 #: 950.data.seed-values.sql:2522 950.data.seed-values.sql:2523
 msgid "Hits per Page"
@@ -1041,7 +1041,7 @@ msgstr "Personální autor"
 
 #: 950.data.seed-values.sql:8162
 msgid "Wales "
-msgstr ""
+msgstr "Wales "
 
 # id::clm.value__mad
 #: 950.data.seed-values.sql:6666
@@ -1076,7 +1076,7 @@ msgstr "Khásí"
 #: 950.data.seed-values.sql:8488 950.data.seed-values.sql:8501
 #: 950.data.seed-values.sql:8514
 msgid "Land forms"
-msgstr ""
+msgstr "Reliéfy"
 
 #: 950.data.seed-values.sql:13745
 msgid "Bluegrass Cellular"
@@ -1098,6 +1098,8 @@ msgstr "Maršalština"
 msgid ""
 "Restrict patron opt-in to home library and related orgs at specified depth"
 msgstr ""
+"Omezit nastavení souhlasu čtenáře na domovskou knihovnu a související "
+"knihovny ve specifikované hloubce"
 
 # id::clm.value__yao
 #: 950.data.seed-values.sql:6878
@@ -1114,7 +1116,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:7923
 msgid "Cuba "
-msgstr ""
+msgstr "Kuba "
 
 #: 950.data.seed-values.sql:4318
 msgid "Suggest barred field on patron registration"
@@ -1124,7 +1126,7 @@ msgstr "Navrhnout pole \"blokovat čtenáře\" v registračních údajích čten
 #: 950.data.seed-values.sql:8325 950.data.seed-values.sql:8355
 #: 950.data.seed-values.sql:8385 950.data.seed-values.sql:8415
 msgid "Law reports and digests"
-msgstr ""
+msgstr "Legislativní příspěvky a sbírky"
 
 #: 950.data.seed-values.sql:6750
 msgid "Prakrit languages"
@@ -1140,7 +1142,7 @@ msgstr "Objednáno"
 
 #: 950.data.seed-values.sql:7976
 msgid "Iceland "
-msgstr ""
+msgstr "Island "
 
 #: 950.data.seed-values.sql:3442
 msgid ""
@@ -1156,7 +1158,7 @@ msgstr "Přenastavit čas poždavku u zrušených a následně obnovených"
 
 #: 950.data.seed-values.sql:7621
 msgid "Villancicos"
-msgstr ""
+msgstr "Vánoční koledy"
 
 #: 950.data.seed-values.sql:13221
 msgid "Local"
@@ -1195,7 +1197,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:8005
 msgid "Liechtenstein "
-msgstr ""
+msgstr "Lichtenštejnsko "
 
 #: 950.data.seed-values.sql:428
 msgid "Everywhere"
@@ -1244,11 +1246,11 @@ msgstr ""
 
 #: 950.data.seed-values.sql:8121
 msgid "Tajikistan "
-msgstr ""
+msgstr "Tádžikistán "
 
 #: 950.data.seed-values.sql:8090
 msgid "Rhode Island "
-msgstr ""
+msgstr "Rhode Island "
 
 #: 950.data.seed-values.sql:876
 msgid "Allows staff to manually change a patron's claims returned count"
@@ -1276,7 +1278,7 @@ msgstr "dvojrozměrný pohyblivý obraz"
 
 #: 950.data.seed-values.sql:7986
 msgid "Italy "
-msgstr ""
+msgstr "Itálie "
 
 #: 950.data.seed-values.sql:12937
 msgid "See From Tracing -- Personal Name"
@@ -1352,7 +1354,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:8089
 msgid "Zimbabwe "
-msgstr ""
+msgstr "Zimbabwe "
 
 #: 950.data.seed-values.sql:15489
 msgid "Long-Overdue Max Return Interval"
@@ -1360,7 +1362,7 @@ msgstr "Maximální interval pro vrácení dlouhodobě nevrácených"
 
 #: 950.data.seed-values.sql:7570
 msgid "Concerti grossi"
-msgstr ""
+msgstr "Concerti grossi"
 
 #: 950.data.seed-values.sql:7457
 msgid "microfilm cassette"
@@ -1368,7 +1370,7 @@ msgstr "kazeta mikrofilmu"
 
 #: 950.data.seed-values.sql:7607
 msgid "Ricercars"
-msgstr ""
+msgstr "Ricercar"
 
 #: 950.data.seed-values.sql:467
 msgid "Long-Overdue Materials"
@@ -1380,13 +1382,13 @@ msgstr "Nastavení pro zobrazení vypůjčených údajně vrácených exemplář
 
 #: 950.data.seed-values.sql:7888
 msgid "Bahamas "
-msgstr ""
+msgstr "Bahamy "
 
 #: 950.data.seed-values.sql:8549 950.data.seed-values.sql:8566
 #: 950.data.seed-values.sql:8582 950.data.seed-values.sql:8598
 #: 950.data.seed-values.sql:8614
 msgid "Facsimiles"
-msgstr ""
+msgstr "Faksimile"
 
 # id::clm.value__cat
 #: 950.data.seed-values.sql:6471
@@ -1425,7 +1427,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:7413
 msgid "overhead transparency"
-msgstr ""
+msgstr "zpětná projekce"
 
 #: 950.data.seed-values.sql:14788
 msgid ""
@@ -1439,11 +1441,11 @@ msgstr ""
 
 #: 950.data.seed-values.sql:8202
 msgid "Multiple dates"
-msgstr ""
+msgstr "Vícenásobná data"
 
 #: 950.data.seed-values.sql:7964
 msgid "Guatemala "
-msgstr ""
+msgstr "Guatemala "
 
 #: 950.data.seed-values.sql:14
 msgid "Set"
@@ -1455,11 +1457,11 @@ msgstr "Nepoužívat jako cíl rezervace"
 
 #: 950.data.seed-values.sql:7825 950.data.seed-values.sql:8519
 msgid "No specified special format characteristics"
-msgstr ""
+msgstr "Nespecifikovaná charakteristika nosiče"
 
 #: 950.data.seed-values.sql:8140
 msgid "United Kingdom Misc. Islands "
-msgstr ""
+msgstr "ostrovy pod správou Velké Británie "
 
 #: 950.data.seed-values.sql:4942
 msgid ""
@@ -1505,11 +1507,11 @@ msgstr "Personál u výpůjčního pultu (\"circulators\")"
 
 #: 950.data.seed-values.sql:7865
 msgid "Algeria "
-msgstr ""
+msgstr "Alžírsko "
 
 #: 950.data.seed-values.sql:7930
 msgid "Denmark "
-msgstr ""
+msgstr "Dánsko "
 
 #: 950.data.seed-values.sql:146
 msgid "Topic Subject"
@@ -1517,7 +1519,7 @@ msgstr "Věcné téma"
 
 #: 950.data.seed-values.sql:8010
 msgid "Latvia "
-msgstr ""
+msgstr "Lotyšsko "
 
 #: 950.data.seed-values.sql:2916
 msgid ""
@@ -1543,7 +1545,7 @@ msgstr "čtenář via SIP"
 
 #: 950.data.seed-values.sql:7843
 msgid "Updating Web site"
-msgstr ""
+msgstr "Upravuje se webová stránka"
 
 #: 950.data.seed-values.sql:1352
 msgid "CREATE_INVOICE_METHOD"
@@ -1551,15 +1553,15 @@ msgstr "CREATE_INVOICE_METHOD"
 
 #: 950.data.seed-values.sql:7784
 msgid "Krovak"
-msgstr ""
+msgstr "Křovákovo zobrazení"
 
 #: 950.data.seed-values.sql:7987
 msgid "Côte d'Ivoire "
-msgstr ""
+msgstr "Pobřeží Slonoviny "
 
 #: 950.data.seed-values.sql:7914
 msgid "Cayman Islands "
-msgstr ""
+msgstr "Kajmanské ostrovy "
 
 #: 950.data.seed-values.sql:11485
 msgid "[6024] The quantity which has been ordered."
@@ -1637,7 +1639,7 @@ msgstr "Status exempláře při čištění regálu s rezervacemi"
 
 #: 950.data.seed-values.sql:7796
 msgid "Conic, specific type unknown"
-msgstr ""
+msgstr "Kuželové zobrazení, specifický typ není znám"
 
 #: 950.data.seed-values.sql:6649
 msgid "Latin"
@@ -1649,7 +1651,7 @@ msgstr "Uživatel smí upravitpoložku čtenářské statistické kategorie"
 
 #: 950.data.seed-values.sql:7777
 msgid "Mercator"
-msgstr ""
+msgstr "Merkatorovo zobrazení"
 
 #: 950.data.seed-values.sql:1130
 msgid "UPDATE_ORG_UNIT_SETTING.circ.hold_expire_alert_interval"
@@ -1657,7 +1659,7 @@ msgstr "UPDATE_ORG_UNIT_SETTING.circ.hold_expire_alert_interval"
 
 #: 950.data.seed-values.sql:7599
 msgid "Pavans"
-msgstr ""
+msgstr "Pavana"
 
 #: 950.data.seed-values.sql:6539 950.data.seed-values.sql:6542
 msgid "Frisian"
@@ -1696,11 +1698,11 @@ msgstr "Centennial Wireless"
 #: 950.data.seed-values.sql:8266 950.data.seed-values.sql:8280
 #: 950.data.seed-values.sql:8294
 msgid "Technical and/or historical information on instruments"
-msgstr ""
+msgstr "Technické a/nebo historické informace o nástrojích"
 
 #: 950.data.seed-values.sql:7969
 msgid "Gaza Strip "
-msgstr ""
+msgstr "Pásmo Gazy "
 
 #: 950.data.seed-values.sql:12174
 msgid "New record had insufficient quality"
@@ -1730,11 +1732,11 @@ msgstr "Směrování odkazu viz též -- jméno korporace"
 
 #: 950.data.seed-values.sql:7556
 msgid "Ballets"
-msgstr ""
+msgstr "Balety"
 
 #: 950.data.seed-values.sql:7924
 msgid "Cabo Verde "
-msgstr ""
+msgstr "Kapverdy "
 
 #: 950.data.seed-values.sql:6957
 msgid "Type C"
@@ -1742,7 +1744,7 @@ msgstr "Videopáska - typ C"
 
 #: 950.data.seed-values.sql:8096
 msgid "South Carolina "
-msgstr ""
+msgstr "Jižní Karolína "
 
 #: 950.data.seed-values.sql:790
 msgid "Allow a user to delete a fund allocation"
@@ -1754,11 +1756,11 @@ msgstr "Aktualizovat   definici prefixu označení"
 
 #: 950.data.seed-values.sql:7862
 msgid "Albania "
-msgstr ""
+msgstr "Albánie "
 
 #: 950.data.seed-values.sql:7970
 msgid "Hawaii "
-msgstr ""
+msgstr "Havaj "
 
 #: 950.data.seed-values.sql:4237
 msgid "Default Ident Type for Patron Registration"
@@ -1771,11 +1773,11 @@ msgstr "Francouzština, stará (cca 842-1400)"
 
 #: 950.data.seed-values.sql:8182
 msgid "Spratly Island "
-msgstr ""
+msgstr "Spratlyovy ostrovy "
 
 #: 950.data.seed-values.sql:7901
 msgid "Bouvet Island "
-msgstr ""
+msgstr "Bouvetův ostrov "
 
 #: 950.data.seed-values.sql:14522
 msgid "LibraryElf Login"
@@ -1783,7 +1785,7 @@ msgstr "Elf přihlášení do knihovny"
 
 #: 950.data.seed-values.sql:7794
 msgid "Equidistant conic"
-msgstr ""
+msgstr "Kuželové ekvidistantní zobrazení"
 
 #: 950.data.seed-values.sql:1216 950.data.seed-values.sql:1218
 msgid "Allow a user to delete trigger template output"
@@ -1791,7 +1793,7 @@ msgstr "Povolit uživateli smazat výstup šablony spouštěče události"
 
 #: 950.data.seed-values.sql:7925
 msgid "Cook Islands "
-msgstr ""
+msgstr "Cookovy ostrovy "
 
 #: 950.data.seed-values.sql:324
 msgid "Discard/Weed"
@@ -1799,7 +1801,7 @@ msgstr "Stáhnout/vyřadit"
 
 #: 950.data.seed-values.sql:7940
 msgid "El Salvador "
-msgstr ""
+msgstr "Salvador "
 
 #: 950.data.seed-values.sql:2604
 msgid "Self Check"
@@ -1848,7 +1850,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:7937
 msgid "Timor"
-msgstr ""
+msgstr "Timor"
 
 #: 950.data.seed-values.sql:4073
 msgid "Patron Opt-In Boundary"
@@ -1943,7 +1945,7 @@ msgstr "Valonština"
 
 #: 950.data.seed-values.sql:8051
 msgid "Norway "
-msgstr ""
+msgstr "Norsko "
 
 # id::pgt.name__4
 #: 950.data.seed-values.sql:1616
@@ -1966,7 +1968,7 @@ msgstr "Rapanuiština"
 #: 950.data.seed-values.sql:8577 950.data.seed-values.sql:8593
 #: 950.data.seed-values.sql:8609
 msgid "Portraits"
-msgstr ""
+msgstr "Portréty"
 
 #: 950.data.seed-values.sql:2688 950.data.seed-values.sql:2691
 msgid "Temporary barcode prefix"
@@ -1986,7 +1988,7 @@ msgstr "Nahrát Vytvořit objednávku"
 
 #: 950.data.seed-values.sql:7605
 msgid "Requiems"
-msgstr ""
+msgstr "Rekviem"
 
 #: 950.data.seed-values.sql:5015
 msgid "Do not change fines/fees on zero-balance LOST transaction"
@@ -2004,7 +2006,7 @@ msgstr "3_dní_1_prodloužení"
 #: 950.data.seed-values.sql:8311 950.data.seed-values.sql:8341
 #: 950.data.seed-values.sql:8371 950.data.seed-values.sql:8401
 msgid "Indexes"
-msgstr ""
+msgstr "Rejstříky"
 
 #: 950.data.seed-values.sql:6425
 msgid "Mapuche"
@@ -2024,7 +2026,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:7854
 msgid "Not arrangement or transposition or not specified"
-msgstr ""
+msgstr "Bez aranžmá nebo transpozice nebo není specifikováno"
 
 #: 950.data.seed-values.sql:11479
 msgid "Accepted with changes which require no confirmation."
@@ -2058,7 +2060,7 @@ msgstr "Povolit uživateli aktualizovat rezervace jiných uživatelů"
 #: 950.data.seed-values.sql:8327 950.data.seed-values.sql:8357
 #: 950.data.seed-values.sql:8387 950.data.seed-values.sql:8417
 msgid "Yearbooks"
-msgstr ""
+msgstr "Ročenky"
 
 #: 950.data.seed-values.sql:3631
 msgid ""
@@ -2070,7 +2072,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:8119
 msgid "Syria "
-msgstr ""
+msgstr "Sýrie "
 
 #: 950.data.seed-values.sql:7513
 msgid "audiocassette"
@@ -2098,7 +2100,7 @@ msgstr "Bell Mobility & Solo Mobile"
 
 #: 950.data.seed-values.sql:7952
 msgid "Djibouti "
-msgstr ""
+msgstr "Džibutsko "
 
 # id::clm.value__kru
 #: 950.data.seed-values.sql:6637
@@ -2121,7 +2123,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:7963
 msgid "Georgia (Republic) "
-msgstr ""
+msgstr "Gruzie "
 
 #: 950.data.seed-values.sql:185
 msgid "Series Title (Browse)"
@@ -2133,7 +2135,7 @@ msgstr "Hawaiian Telcom Wireless"
 
 #: 950.data.seed-values.sql:8197
 msgid "Continuing resource currently published"
-msgstr ""
+msgstr "Pokračující zdroj aktuálně vydaný"
 
 #: 950.data.seed-values.sql:2832
 msgid "Spine and pocket label font size"
@@ -2161,11 +2163,11 @@ msgstr "UPDATE_ORG_UNIT_CLOSING"
 
 #: 950.data.seed-values.sql:8116
 msgid "Saudi Arabia "
-msgstr ""
+msgstr "Saudská Arábie "
 
 #: 950.data.seed-values.sql:7982
 msgid "Indonesia "
-msgstr ""
+msgstr "Indonésie "
 
 #: 950.data.seed-values.sql:6817
 msgid "Syriac"
@@ -2181,7 +2183,7 @@ msgstr "Friulština (furlanština)"
 
 #: 950.data.seed-values.sql:8139
 msgid "Uganda "
-msgstr ""
+msgstr "Uganda "
 
 #: 950.data.seed-values.sql:14916
 msgid ""
@@ -2215,12 +2217,12 @@ msgstr "Zakrýt pole \"datum narození\""
 
 #: 950.data.seed-values.sql:7877
 msgid "American Samoa "
-msgstr ""
+msgstr "Americká Samoa "
 
 #: 950.data.seed-values.sql:7719 950.data.seed-values.sql:8424
 #: 950.data.seed-values.sql:8445
 msgid "Autobiography"
-msgstr ""
+msgstr "Autobiografie"
 
 #: 950.data.seed-values.sql:12934
 msgid "Established Heading Linking Entry -- Chronological Term"
@@ -2249,13 +2251,13 @@ msgstr ""
 
 #: 950.data.seed-values.sql:7960
 msgid "Gabon "
-msgstr ""
+msgstr "Gabon "
 
 #: 950.data.seed-values.sql:8553 950.data.seed-values.sql:8570
 #: 950.data.seed-values.sql:8586 950.data.seed-values.sql:8602
 #: 950.data.seed-values.sql:8618
 msgid "Samples"
-msgstr ""
+msgstr "Ukázky"
 
 #: 950.data.seed-values.sql:740
 msgid "Allow a user to add/remove users to/from the \"Vendor\" group"
@@ -2308,7 +2310,7 @@ msgstr "Bulletin.net"
 
 #: 950.data.seed-values.sql:7789
 msgid "Cylindrical, specific type unknown"
-msgstr ""
+msgstr "Cylindrický, specifický typ není znám"
 
 # id::citm.value__f
 #: 950.data.seed-values.sql:6910
@@ -2403,7 +2405,7 @@ msgstr "ADMIN_INVOICE"
 
 #: 950.data.seed-values.sql:8189
 msgid "United Kingdom "
-msgstr ""
+msgstr "Spojené Království "
 
 # id::clm.value__jav
 #: 950.data.seed-values.sql:6606
@@ -2428,7 +2430,7 @@ msgstr "Nastavení výpůjčních pravidel a politik"
 
 #: 950.data.seed-values.sql:8149
 msgid "Vatican City "
-msgstr ""
+msgstr "Vatikán "
 
 # id::clm.value__kan
 #: 950.data.seed-values.sql:6615
@@ -2470,21 +2472,21 @@ msgstr "Povolit uživateli zablokovat konto čtenáře"
 
 #: 950.data.seed-values.sql:7584
 msgid "Masses"
-msgstr ""
+msgstr "Mše"
 
 #: 950.data.seed-values.sql:7856
 msgid "Arrangement"
-msgstr ""
+msgstr "Kompozice"
 
 #: 950.data.seed-values.sql:8059
 msgid "Nevada "
-msgstr ""
+msgstr "Nevada "
 
 #: 950.data.seed-values.sql:8550 950.data.seed-values.sql:8567
 #: 950.data.seed-values.sql:8583 950.data.seed-values.sql:8599
 #: 950.data.seed-values.sql:8615
 msgid "Coats of arms"
-msgstr ""
+msgstr "Erby"
 
 #: 950.data.seed-values.sql:6592
 msgid "Inuktitut"
@@ -2496,13 +2498,13 @@ msgstr "Mikrokarta"
 
 #: 950.data.seed-values.sql:7999
 msgid "Kosovo "
-msgstr ""
+msgstr "Kosovo "
 
 #: 950.data.seed-values.sql:7692 950.data.seed-values.sql:8326
 #: 950.data.seed-values.sql:8356 950.data.seed-values.sql:8386
 #: 950.data.seed-values.sql:8416
 msgid "Other reports"
-msgstr ""
+msgstr "Ostatní zprávy"
 
 #: 950.data.seed-values.sql:1248
 msgid "UPDATE_ORG_UNIT_SETTING.circ.block_renews_for_holds"
@@ -2543,7 +2545,7 @@ msgstr "Povolit uživateli upravit typy nekatalogizovaných exemplářů"
 
 #: 950.data.seed-values.sql:7586
 msgid "Minuets"
-msgstr ""
+msgstr "Menuety"
 
 # id::clm.value__tah
 #: 950.data.seed-values.sql:6819
@@ -2552,7 +2554,7 @@ msgstr "Tahitština"
 
 #: 950.data.seed-values.sql:7967
 msgid "Germany "
-msgstr ""
+msgstr "Německo "
 
 #: 950.data.seed-values.sql:814
 msgid "Allows a user to create a picklist"
@@ -2575,7 +2577,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:8104
 msgid "Sudan "
-msgstr ""
+msgstr "Súdán "
 
 #: 950.data.seed-values.sql:1601
 msgid "Allow administration of MARC tag tables"
@@ -2594,7 +2596,7 @@ msgstr "Požadovat heslo čtenáře"
 #: 950.data.seed-values.sql:8323 950.data.seed-values.sql:8353
 #: 950.data.seed-values.sql:8383 950.data.seed-values.sql:8413
 msgid "Standards/specifications"
-msgstr ""
+msgstr "Standardy/specifikace"
 
 #: 950.data.seed-values.sql:7805
 msgid "Cordiform"
@@ -2602,7 +2604,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:7945
 msgid "Fiji "
-msgstr ""
+msgstr "Fidži "
 
 # id::clfm.value__0
 #: 950.data.seed-values.sql:6918
@@ -2681,15 +2683,15 @@ msgstr "DELETE_CIRC_MOD"
 
 #: 950.data.seed-values.sql:8131
 msgid "Trinidad and Tobago "
-msgstr ""
+msgstr "Trinidad a Tobago "
 
 #: 950.data.seed-values.sql:8124
 msgid "Thailand "
-msgstr ""
+msgstr "Thajsko "
 
 #: 950.data.seed-values.sql:7980
 msgid "Illinois "
-msgstr ""
+msgstr "Illinois "
 
 #: 950.data.seed-values.sql:3100
 msgid ""
@@ -2710,7 +2712,7 @@ msgstr "Estonština"
 
 #: 950.data.seed-values.sql:7776
 msgid "Lambert's cylindrical equal area"
-msgstr ""
+msgstr "Lambertovo kuželové zobrazení"
 
 #: 950.data.seed-values.sql:3586
 msgid ""
@@ -2774,7 +2776,7 @@ msgstr "Zrušeno: Neplatné ISBN"
 
 #: 950.data.seed-values.sql:8193
 msgid "Zambia "
-msgstr ""
+msgstr "Zambie "
 
 # id::cbs.source__3
 #: 950.data.seed-values.sql:7
@@ -2795,7 +2797,7 @@ msgstr "Umožnit platbu Stripe"
 
 #: 950.data.seed-values.sql:8074
 msgid "Philippines "
-msgstr ""
+msgstr "Filipíny "
 
 #: 950.data.seed-values.sql:708
 msgid "Allow a user to put someone into collections"
@@ -2858,7 +2860,7 @@ msgstr ""
 #: 950.data.seed-values.sql:8314 950.data.seed-values.sql:8344
 #: 950.data.seed-values.sql:8374 950.data.seed-values.sql:8404
 msgid "Legislation"
-msgstr ""
+msgstr "Legislativa"
 
 #: 950.data.seed-values.sql:6756
 msgid "Rarotongan"
@@ -3009,7 +3011,7 @@ msgstr "Tupi jazyky"
 
 #: 950.data.seed-values.sql:8043
 msgid "Niger "
-msgstr ""
+msgstr "Niger "
 
 #: 950.data.seed-values.sql:11451
 msgid "Blanket Order"
@@ -3055,7 +3057,7 @@ msgstr "Neplatná hodnota pro \"status\""
 
 #: 950.data.seed-values.sql:8102
 msgid "Spanish North Africa "
-msgstr ""
+msgstr "Španělské severoafrické državy "
 
 #: 950.data.seed-values.sql:6886
 msgid "Zande"
@@ -3148,7 +3150,7 @@ msgstr "Povolit u�ivateli p��en�o OPACu"
 
 #: 950.data.seed-values.sql:7598
 msgid "Passion music"
-msgstr ""
+msgstr "Pašijová hudba"
 
 # id::clm.value__hup
 #: 950.data.seed-values.sql:6585
@@ -3170,17 +3172,17 @@ msgstr "Směrování odkazu viz též -- žánr/forma"
 
 #: 950.data.seed-values.sql:7798
 msgid "Armadillo"
-msgstr ""
+msgstr "Pásovec"
 
 #: 950.data.seed-values.sql:7947
 msgid "Florida "
-msgstr ""
+msgstr "Florida "
 
 #: 950.data.seed-values.sql:7815 950.data.seed-values.sql:8471
 #: 950.data.seed-values.sql:8484 950.data.seed-values.sql:8497
 #: 950.data.seed-values.sql:8510
 msgid "Bathymetry, soundings"
-msgstr ""
+msgstr "Batymetrie, měření"
 
 #: 950.data.seed-values.sql:2751 950.data.seed-values.sql:2754
 msgid ""
@@ -3218,7 +3220,7 @@ msgstr "Povolit uživateli vytvořit nový finanční zdroj"
 
 #: 950.data.seed-values.sql:7702
 msgid "Full score, miniature or study size"
-msgstr ""
+msgstr "Pertitura v rozsahu miniatury nebo studie"
 
 #: 950.data.seed-values.sql:7563
 msgid "Chaconnes"
@@ -3285,7 +3287,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:7936
 msgid "Equatorial Guinea "
-msgstr ""
+msgstr "Rovníková Guinea "
 
 #: 950.data.seed-values.sql:13101
 msgid "Vandelay Queue"
@@ -3297,7 +3299,7 @@ msgstr "CREATE_SURVEY"
 
 #: 950.data.seed-values.sql:7887
 msgid "Belgium "
-msgstr ""
+msgstr "Belgie "
 
 #: 950.data.seed-values.sql:7706
 msgid "Close score"
@@ -3305,7 +3307,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:8039
 msgid "North Carolina "
-msgstr ""
+msgstr "Severní Karolína "
 
 # id::crahp.name__1
 #: 950.data.seed-values.sql:306
@@ -3314,15 +3316,15 @@ msgstr "3měsíční"
 
 #: 950.data.seed-values.sql:7785
 msgid "Cassini-Soldner"
-msgstr ""
+msgstr "Cassini – Soldnerovo zobrazení"
 
 #: 950.data.seed-values.sql:7554
 msgid "Anthems"
-msgstr ""
+msgstr "Hymny"
 
 #: 950.data.seed-values.sql:7896
 msgid "Solomon Islands "
-msgstr ""
+msgstr "Šalomounovy ostrovy "
 
 #: 950.data.seed-values.sql:862
 msgid "Allows a user to view all org settings at the specified level"
@@ -3368,7 +3370,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:7580
 msgid "Hymns"
-msgstr ""
+msgstr "Chvalozpěvy"
 
 #: 950.data.seed-values.sql:1302
 msgid "ADMIN_INDEX_NORMALIZER"
@@ -3400,7 +3402,7 @@ msgstr "Název"
 
 #: 950.data.seed-values.sql:7569
 msgid "Chorales"
-msgstr ""
+msgstr "Chorály"
 
 #: 950.data.seed-values.sql:2814
 msgid "Maximum Item Price"
@@ -3413,7 +3415,7 @@ msgstr "Rumunština"
 
 #: 950.data.seed-values.sql:8030
 msgid "Mississippi "
-msgstr ""
+msgstr "Mississippi "
 
 # id::clm.value__srd
 #: 950.data.seed-values.sql:6805
@@ -3422,7 +3424,7 @@ msgstr "Sardština"
 
 #: 950.data.seed-values.sql:7704
 msgid "Voice score with accompaniment omitted"
-msgstr ""
+msgstr "Hlasová partitura s doprovodem vynechány"
 
 #: 950.data.seed-values.sql:486
 msgid "Allow a user to place a hold at the title level"
@@ -3430,7 +3432,7 @@ msgstr "Povolit uživateli zadat rezervaci na úrovni titulu"
 
 #: 950.data.seed-values.sql:7847
 msgid "Animation and live action"
-msgstr ""
+msgstr "Animace nebo přímá akce"
 
 #: 950.data.seed-values.sql:11476
 msgid "Canceled: Not Found"
@@ -3441,7 +3443,7 @@ msgstr "Zrušeno: Nenalezeno"
 #: 950.data.seed-values.sql:8262 950.data.seed-values.sql:8276
 #: 950.data.seed-values.sql:8290
 msgid "Thematic index"
-msgstr ""
+msgstr "Tematický rejstřík"
 
 #: 950.data.seed-values.sql:1168
 msgid "Allow a user to create/update/delete reasons for order cancellations"
@@ -3454,7 +3456,7 @@ msgstr "Offline"
 
 #: 950.data.seed-values.sql:7985
 msgid "Israel "
-msgstr ""
+msgstr "Izrael "
 
 #: 950.data.seed-values.sql:5074
 msgid "Negative Balance Interval for Lost"
@@ -3464,7 +3466,7 @@ msgstr "Časový interval pro záporné poplatky (refundace) za ztracené"
 #: 950.data.seed-values.sql:8487 950.data.seed-values.sql:8500
 #: 950.data.seed-values.sql:8513
 msgid "Pictorially"
-msgstr ""
+msgstr "Obrázek bez projekce"
 
 #: 950.data.seed-values.sql:1438
 msgid "ADMIN_SERIAL_CAPTION_PATTERN"
@@ -3612,7 +3614,7 @@ msgstr "mikrofiš"
 
 #: 950.data.seed-values.sql:8013
 msgid "Manitoba "
-msgstr ""
+msgstr "Manitoba "
 
 #: 950.data.seed-values.sql:3979
 msgid "Telephony: Arbitrary line(s) to include in each notice callfile"
@@ -3636,12 +3638,12 @@ msgstr "katrografický pohyblivý obraz"
 #: 950.data.seed-values.sql:8584 950.data.seed-values.sql:8600
 #: 950.data.seed-values.sql:8616
 msgid "Genealogical tables"
-msgstr ""
+msgstr "Genealogické tabulky"
 
 #: 950.data.seed-values.sql:7725 950.data.seed-values.sql:8430
 #: 950.data.seed-values.sql:8451
 msgid "Reporting"
-msgstr ""
+msgstr "Výkazy"
 
 # id::cza.label__5 id::cza.label__14 id::cza.label__23
 #: 950.data.seed-values.sql:99 950.data.seed-values.sql:390
@@ -3655,7 +3657,7 @@ msgstr "Heslo pro AuthorizeNet"
 
 #: 950.data.seed-values.sql:8167
 msgid "Cocos (Keeling) Islands "
-msgstr ""
+msgstr "Kokosové ostrovy "
 
 #: 950.data.seed-values.sql:2553
 msgid "Default location for holds pickup"
@@ -3667,7 +3669,7 @@ msgstr "Výchozí status exempláře (rychlé přidání)"
 
 #: 950.data.seed-values.sql:8071
 msgid "Peru "
-msgstr ""
+msgstr "Peru "
 
 #: 950.data.seed-values.sql:4759
 msgid "Example for post_code field on patron registration"
@@ -3712,7 +3714,7 @@ msgstr "SMS"
 
 #: 950.data.seed-values.sql:8166
 msgid "Christmas Island (Indian Ocean) "
-msgstr ""
+msgstr "Vánoční ostrov "
 
 #: 950.data.seed-values.sql:7770
 msgid "Chamberlin trimetric"
@@ -3748,7 +3750,7 @@ msgstr "Votiatština"
 
 #: 950.data.seed-values.sql:8101
 msgid "Senegal "
-msgstr ""
+msgstr "Senegal "
 
 #: 950.data.seed-values.sql:952
 msgid "DELETE_LASSO"
@@ -3760,7 +3762,7 @@ msgstr "Směrování odkazu viz -- všeobecné zpřesnění"
 
 #: 950.data.seed-values.sql:8176
 msgid "Saint Pierre and Miquelon "
-msgstr ""
+msgstr "Saint-Pierre a Miquelon "
 
 #: 950.data.seed-values.sql:1620 950.data.seed-values.sql:2596
 msgid "Acquisitions"
@@ -3805,7 +3807,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:8037
 msgid "Mozambique "
-msgstr ""
+msgstr "Mosambik "
 
 #: 950.data.seed-values.sql:19
 msgid "Barred"
@@ -3850,11 +3852,11 @@ msgstr "Povolit uživateli zobrazit finanční fond"
 
 #: 950.data.seed-values.sql:7618
 msgid "Toccatas"
-msgstr ""
+msgstr "Tokáty"
 
 #: 950.data.seed-values.sql:8191
 msgid "Yemen "
-msgstr ""
+msgstr "Jemen "
 
 #: 950.data.seed-values.sql:13401
 msgid "SaskTel"
@@ -3879,11 +3881,11 @@ msgstr "Etiopština"
 
 #: 950.data.seed-values.sql:7616
 msgid "Symphonies"
-msgstr ""
+msgstr "Symfonie"
 
 #: 950.data.seed-values.sql:8126
 msgid "Turkmenistan "
-msgstr ""
+msgstr "Turkmenistán "
 
 # id::clm.value__ijo
 #: 950.data.seed-values.sql:6591
@@ -3905,7 +3907,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:8118
 msgid "Namibia "
-msgstr ""
+msgstr "Namíbie "
 
 #: 950.data.seed-values.sql:6704
 msgid "Nauru"
@@ -3941,7 +3943,7 @@ msgstr "Gruzínština"
 
 #: 950.data.seed-values.sql:7633
 msgid "Separate supplement to another work"
-msgstr ""
+msgstr "Samostatný doplněk jiného díla"
 
 #: 950.data.seed-values.sql:7437
 msgid "film cartridge"
@@ -3962,7 +3964,7 @@ msgstr "Povolit uživateli umístit exemplář do přepravy"
 
 #: 950.data.seed-values.sql:8181
 msgid "Northern Territory "
-msgstr ""
+msgstr "Severní teritorium (Austrálie) "
 
 #: 950.data.seed-values.sql:1416
 msgid "user_request.update"
@@ -3996,7 +3998,7 @@ msgstr "Irština, stará (do 1100)"
 
 #: 950.data.seed-values.sql:7622
 msgid "Variations"
-msgstr ""
+msgstr "Variace"
 
 #: 950.data.seed-values.sql:6577
 msgid "Herero"
@@ -4004,12 +4006,12 @@ msgstr "Herero"
 
 #: 950.data.seed-values.sql:8016
 msgid "Maine "
-msgstr ""
+msgstr "Maine "
 
 #: 950.data.seed-values.sql:7728 950.data.seed-values.sql:8433
 #: 950.data.seed-values.sql:8454
 msgid "Language instruction"
-msgstr ""
+msgstr "Jazyková lekce"
 
 #: 950.data.seed-values.sql:6757
 msgid "Romance (Other)"
@@ -4030,7 +4032,7 @@ msgstr "Vytvořit rovnocenný typ biliografického záznamu"
 
 #: 950.data.seed-values.sql:8017
 msgid "Mauritius "
-msgstr ""
+msgstr "Mauricius "
 
 #: 950.data.seed-values.sql:6899
 msgid "Juvenile"
@@ -4038,7 +4040,7 @@ msgstr "Nezletilí"
 
 #: 950.data.seed-values.sql:7953
 msgid "Georgia "
-msgstr ""
+msgstr "Georgia "
 
 #: 950.data.seed-values.sql:13080
 msgid "Art and Architecture Thesaurus"
@@ -4047,7 +4049,7 @@ msgstr "Tezaurus Art and Architecture"
 #: 950.data.seed-values.sql:7833 950.data.seed-values.sql:8527
 #: 950.data.seed-values.sql:8537
 msgid "Loose-leaf"
-msgstr ""
+msgstr "Volné listy"
 
 #: 950.data.seed-values.sql:14513
 msgid "SIP2 User Verification"
@@ -4055,11 +4057,11 @@ msgstr "Uživatelské ověření SIP2"
 
 #: 950.data.seed-values.sql:8148
 msgid "British Virgin Islands "
-msgstr ""
+msgstr "Britské Panenské ostrovy "
 
 #: 950.data.seed-values.sql:8026
 msgid "Missouri "
-msgstr ""
+msgstr "Missouri "
 
 #: 950.data.seed-values.sql:6966
 msgid "8 mm."
@@ -4067,11 +4069,11 @@ msgstr "8 mm."
 
 #: 950.data.seed-values.sql:8068
 msgid "Mayotte "
-msgstr ""
+msgstr "Mayotte "
 
 #: 950.data.seed-values.sql:7838
 msgid "Updating database"
-msgstr ""
+msgstr "Aktualizuji databázi"
 
 # id::clm.value__iro
 #: 950.data.seed-values.sql:6604
@@ -4108,7 +4110,7 @@ msgstr "počítačový program"
 
 #: 950.data.seed-values.sql:8063
 msgid "New Zealand "
-msgstr ""
+msgstr "Nový Zéland "
 
 #: 950.data.seed-values.sql:4246 950.data.seed-values.sql:4249
 msgid "Default level of patrons' internet access"
@@ -4138,7 +4140,7 @@ msgstr "DELETE_BIB_LEVEL"
 
 #: 950.data.seed-values.sql:8205
 msgid "Questionable date"
-msgstr ""
+msgstr "Sporné datum"
 
 # id::clm.value__mdr
 #: 950.data.seed-values.sql:6679
@@ -4171,7 +4173,7 @@ msgstr "Povolit platby kreditní kartou"
 
 #: 950.data.seed-values.sql:7911
 msgid "Congo (Democratic Republic) "
-msgstr ""
+msgstr "Demokratická republika Kongo "
 
 #: 950.data.seed-values.sql:3568
 msgid ""
@@ -4199,15 +4201,15 @@ msgstr "UPDATE_ORG_UNIT_SETTING.circ.void_overdue_on_lost"
 
 #: 950.data.seed-values.sql:7593
 msgid "Operas"
-msgstr ""
+msgstr "Opery"
 
 #: 950.data.seed-values.sql:8152
 msgid "Vietnam "
-msgstr ""
+msgstr "Vietnam "
 
 #: 950.data.seed-values.sql:7589
 msgid "Multiple forms"
-msgstr ""
+msgstr "Více různých forem"
 
 # id::clm.value__bra
 #: 950.data.seed-values.sql:6460
@@ -4216,11 +4218,11 @@ msgstr "Bradžština"
 
 #: 950.data.seed-values.sql:7573
 msgid "Dance forms"
-msgstr ""
+msgstr "Taneční formy"
 
 #: 950.data.seed-values.sql:7893
 msgid "Bermuda Islands "
-msgstr ""
+msgstr "Bermudy "
 
 #: 950.data.seed-values.sql:5044
 msgid "Prohibit negative balance on bills for lost materials"
@@ -4228,7 +4230,7 @@ msgstr "Zakáže naúčtování záporných poplatků pro ztracené materiály"
 
 #: 950.data.seed-values.sql:7761
 msgid "Project not specified"
-msgstr ""
+msgstr "Projekt nespecifikován"
 
 #: 950.data.seed-values.sql:15090
 msgid "Import non-matching records by default during ACQ file upload"
@@ -4246,7 +4248,7 @@ msgstr "Import se nezdařil kvůli kolizi čárových kódů"
 
 #: 950.data.seed-values.sql:8136
 msgid "Tanzania "
-msgstr ""
+msgstr "Tanzánie "
 
 #: 950.data.seed-values.sql:1206
 msgid "Allow a user to update trigger hooks"
@@ -4292,7 +4294,7 @@ msgstr "UPDATE_COPY_STATUS"
 
 #: 950.data.seed-values.sql:7711
 msgid "Score"
-msgstr ""
+msgstr "Notový zápis"
 
 #: 950.data.seed-values.sql:7325
 msgid "stereographic"
@@ -4354,7 +4356,7 @@ msgstr "Turečtina, osmanská"
 
 #: 950.data.seed-values.sql:8151
 msgid "Virgin Islands of the United States "
-msgstr ""
+msgstr "Americké Panenské ostrovy "
 
 #: 950.data.seed-values.sql:11508
 msgid "Holds: Allow holds on empty issuances"
@@ -4419,7 +4421,7 @@ msgstr "UPDATE_VOLUME_NOTE"
 #: 950.data.seed-values.sql:7828 950.data.seed-values.sql:8522
 #: 950.data.seed-values.sql:8532
 msgid "Calendar"
-msgstr ""
+msgstr "Kalendář"
 
 # id::clm.value__nbl
 #: 950.data.seed-values.sql:6706
@@ -4428,7 +4430,7 @@ msgstr "Ndebelština (Jižní Afrika)"
 
 #: 950.data.seed-values.sql:7997
 msgid "Kansas "
-msgstr ""
+msgstr "Kansas "
 
 #: 950.data.seed-values.sql:908
 msgid "CREATE_LASSO_MAP"
@@ -4449,7 +4451,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:8153
 msgid "Various places "
-msgstr ""
+msgstr "Různá místa "
 
 #: 950.data.seed-values.sql:6455
 msgid "Edo"
@@ -4475,7 +4477,7 @@ msgstr "user_request.delete"
 
 #: 950.data.seed-values.sql:8190
 msgid "United States "
-msgstr ""
+msgstr "Spojené státy "
 
 # id::clm.value__epo id::clm.value__-esp
 #: 950.data.seed-values.sql:6523 950.data.seed-values.sql:6525
@@ -4502,11 +4504,11 @@ msgstr "Autor"
 
 #: 950.data.seed-values.sql:8094
 msgid "South Africa "
-msgstr ""
+msgstr "Jižní Afrika "
 
 #: 950.data.seed-values.sql:8032
 msgid "Mauritania "
-msgstr ""
+msgstr "Mauritánie "
 
 #: 950.data.seed-values.sql:14959 950.data.seed-values.sql:14965
 msgid "Link Checker's Review Attempt interface's saved columns"
@@ -4519,7 +4521,7 @@ msgstr "2_měsíce_2_prodloužení"
 
 #: 950.data.seed-values.sql:7561
 msgid "Canzonas"
-msgstr ""
+msgstr "kancóna"
 
 #: 950.data.seed-values.sql:7031 950.data.seed-values.sql:7032
 #: 950.data.seed-values.sql:7097 950.data.seed-values.sql:7098
@@ -4537,7 +4539,7 @@ msgstr "čtenář byl nahlášen dluhové agentuře"
 
 #: 950.data.seed-values.sql:8066
 msgid "Ontario "
-msgstr ""
+msgstr "Ontario "
 
 #: 950.data.seed-values.sql:4708
 msgid ""
@@ -4602,7 +4604,7 @@ msgstr "Rétorománština"
 
 #: 950.data.seed-values.sql:7594
 msgid "Oratorios"
-msgstr ""
+msgstr "Oratoria"
 
 #: 950.data.seed-values.sql:1504
 msgid "Allows a user to manually adjust a patron's active cards"
@@ -4620,7 +4622,7 @@ msgstr "Pokuta za neplatnou adresu čtenáře"
 
 #: 950.data.seed-values.sql:8099
 msgid "Seychelles "
-msgstr ""
+msgstr "Seychely "
 
 #: 950.data.seed-values.sql:914
 msgid "CREATE_NET_ACCESS_LEVEL"
@@ -4645,7 +4647,7 @@ msgstr "Církevní slověnština"
 
 #: 950.data.seed-values.sql:8113
 msgid "Western Sahara "
-msgstr ""
+msgstr "Západní Sahara "
 
 #: 950.data.seed-values.sql:14136
 msgid "Pioneer Cellular"
@@ -4661,7 +4663,7 @@ msgstr "Timeout pro přihlášení čtenáře (v sekundách)"
 
 #: 950.data.seed-values.sql:7857
 msgid "Both transposed and arranged"
-msgstr ""
+msgstr "Transponováno a uspořádáno"
 
 #: 950.data.seed-values.sql:2652 950.data.seed-values.sql:2655
 msgid "Default copy location"
@@ -4675,7 +4677,7 @@ msgstr "Čtenář překročil nastavený limit pokut"
 #: 950.data.seed-values.sql:8328 950.data.seed-values.sql:8358
 #: 950.data.seed-values.sql:8388 950.data.seed-values.sql:8418
 msgid "Treaties"
-msgstr ""
+msgstr "Smlouvy"
 
 #: 950.data.seed-values.sql:12938
 msgid "See From Tracing -- Corporate Name"
@@ -4732,7 +4734,7 @@ msgstr ""
 #: 950.data.seed-values.sql:8480 950.data.seed-values.sql:8493
 #: 950.data.seed-values.sql:8506
 msgid "Contours"
-msgstr ""
+msgstr "Kontury"
 
 #: 950.data.seed-values.sql:14517
 msgid "OPAC Login (tpac)"
@@ -4832,7 +4834,7 @@ msgstr "Ganda"
 
 #: 950.data.seed-values.sql:8034
 msgid "Malawi "
-msgstr ""
+msgstr "Malawi "
 
 #: 950.data.seed-values.sql:15067
 msgid "Upload Default Merge Profile"
@@ -4857,7 +4859,7 @@ msgstr "Ztracené exempláře jsou využitelné hned při vrácení"
 
 #: 950.data.seed-values.sql:8146
 msgid "Uzbekistan "
-msgstr ""
+msgstr "Uzbekistán "
 
 # id::cifm.value__f
 #: 950.data.seed-values.sql:6938 950.data.seed-values.sql:6989
@@ -4869,7 +4871,7 @@ msgstr "Braillovo písmo"
 
 #: 950.data.seed-values.sql:7927
 msgid "Cyprus "
-msgstr ""
+msgstr "Kypr "
 
 #: 950.data.seed-values.sql:872
 msgid ""
@@ -4932,7 +4934,7 @@ msgstr "Severní sothoština"
 
 #: 950.data.seed-values.sql:8158
 msgid "Wallis and Futuna "
-msgstr ""
+msgstr "Wallis a Futuna "
 
 #: 950.data.seed-values.sql:3793
 msgid "Often \"PayPal\" or \"VeriSign\", sometimes others"
@@ -4996,7 +4998,7 @@ msgstr "Název výchozího kreditního procesoru"
 
 #: 950.data.seed-values.sql:7756
 msgid "Vocal parts"
-msgstr ""
+msgstr "Vokální party"
 
 #: 950.data.seed-values.sql:4678
 msgid "Suggest prefix field on patron registration"
@@ -5019,11 +5021,11 @@ msgstr ""
 
 #: 950.data.seed-values.sql:7904
 msgid "Caribbean Netherlands "
-msgstr ""
+msgstr "Karibské Nizozemsko "
 
 #: 950.data.seed-values.sql:7894
 msgid "Bosnia and Herzegovina "
-msgstr ""
+msgstr "Bosna a Hercegovina "
 
 #: 950.data.seed-values.sql:6686 950.data.seed-values.sql:6687
 msgid "Malagasy"
@@ -5047,12 +5049,12 @@ msgstr "Ladinština"
 
 #: 950.data.seed-values.sql:7873
 msgid "Andorra "
-msgstr ""
+msgstr "Andorra "
 
 #: 950.data.seed-values.sql:7639 950.data.seed-values.sql:7668
 #: 950.data.seed-values.sql:8302
 msgid "Not specified"
-msgstr ""
+msgstr "Nespecifikováno"
 
 #: 950.data.seed-values.sql:6956
 msgid "EIAJ"
@@ -5072,11 +5074,11 @@ msgstr "UPDATE_AUDIENCE"
 
 #: 950.data.seed-values.sql:7810 950.data.seed-values.sql:8466
 msgid "No relief shown"
-msgstr ""
+msgstr "Bez reliéfu"
 
 #: 950.data.seed-values.sql:8080
 msgid "Papua New Guinea "
-msgstr ""
+msgstr "Papua Nová  Guinea "
 
 #: 950.data.seed-values.sql:3133
 msgid "Canceled holds display age"
@@ -5096,7 +5098,7 @@ msgstr "Paňdžábština"
 
 #: 950.data.seed-values.sql:8110
 msgid "Spain "
-msgstr ""
+msgstr "Španělsko "
 
 #: 950.data.seed-values.sql:6754
 msgid "Rajasthani"
@@ -5109,7 +5111,7 @@ msgstr "VIEW_AUTHORITY_RECORD_NOTES"
 #: 950.data.seed-values.sql:7726 950.data.seed-values.sql:8431
 #: 950.data.seed-values.sql:8452
 msgid "History"
-msgstr ""
+msgstr "Historie"
 
 #: 950.data.seed-values.sql:4417
 msgid "Show calendar widget for dob field on patron registration"
@@ -5131,7 +5133,7 @@ msgstr "UPDATE_ORG_UNIT_SETTING.circ.reshelving_complete.interval"
 
 #: 950.data.seed-values.sql:7949
 msgid "French Polynesia "
-msgstr ""
+msgstr "Francouzská Polynésie "
 
 #: 950.data.seed-values.sql:6655
 msgid "Mongo-Nkundu"
@@ -5175,7 +5177,7 @@ msgstr "CREATE_PERM"
 
 #: 950.data.seed-values.sql:7959
 msgid "Gambia "
-msgstr ""
+msgstr "Gambie "
 
 # id::clm.value__tpi
 #: 950.data.seed-values.sql:6841
@@ -5184,7 +5186,7 @@ msgstr "Tok Pisin"
 
 #: 950.data.seed-values.sql:8081
 msgid "Puerto Rico "
-msgstr ""
+msgstr "Portoriko "
 
 #: 950.data.seed-values.sql:25
 msgid "Patron exceeds max overdue item threshold"
@@ -5230,7 +5232,7 @@ msgstr "Konference"
 
 #: 950.data.seed-values.sql:7625
 msgid "Other forms"
-msgstr ""
+msgstr "Ostaní formy"
 
 #: 950.data.seed-values.sql:14802
 msgid "Leave transaction open when lost balance equals zero"
@@ -5262,7 +5264,7 @@ msgstr "Více jazyků"
 
 #: 950.data.seed-values.sql:188
 msgid "Genre"
-msgstr ""
+msgstr "Žánr"
 
 #: 950.data.seed-values.sql:4579
 msgid "Show juvenile field on patron registration"
@@ -5296,7 +5298,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:7790
 msgid "Cylindrical, other"
-msgstr ""
+msgstr "Válcový, jiný"
 
 #: 950.data.seed-values.sql:11484
 msgid "Delayed: Ordered Quantity"
@@ -5337,7 +5339,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:8047
 msgid "New Brunswick "
-msgstr ""
+msgstr "Nový Brunšvik "
 
 #: 950.data.seed-values.sql:6959
 msgid "Laserdisc"
@@ -5376,7 +5378,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:8155
 msgid "Vermont "
-msgstr ""
+msgstr "Vermont "
 
 #: 950.data.seed-values.sql:3790
 msgid "PayflowPro partner"
@@ -5392,7 +5394,7 @@ msgstr "Minangkabau"
 
 #: 950.data.seed-values.sql:8002
 msgid "Louisiana "
-msgstr ""
+msgstr "Louisiana "
 
 #: 950.data.seed-values.sql:6980
 msgid "8 rpm"
@@ -5400,7 +5402,7 @@ msgstr "8 ot/min"
 
 #: 950.data.seed-values.sql:8084
 msgid "Qatar "
-msgstr ""
+msgstr "Katar "
 
 #: 950.data.seed-values.sql:14868
 msgid "Number of seconds to wait between URL test attempts."
@@ -5441,7 +5443,7 @@ msgstr "Zvukové upozornění"
 
 #: 950.data.seed-values.sql:7886
 msgid "Burundi "
-msgstr ""
+msgstr "Burundi "
 
 #: 950.data.seed-values.sql:7804
 msgid "Dymaxion"
@@ -5449,7 +5451,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:7577
 msgid "Folk music"
-msgstr ""
+msgstr "Lidová hudba"
 
 #: 950.data.seed-values.sql:838
 msgid "Allow a user to mark an item status as 'missing'"
@@ -5473,7 +5475,7 @@ msgstr "Kornština"
 
 #: 950.data.seed-values.sql:7973
 msgid "Haiti "
-msgstr ""
+msgstr "Haiti "
 
 #: 950.data.seed-values.sql:4294
 msgid ""
@@ -5496,7 +5498,7 @@ msgstr "Tongština (nyasa)"
 
 #: 950.data.seed-values.sql:7866
 msgid "Afghanistan "
-msgstr ""
+msgstr "Afghánistán "
 
 #: 950.data.seed-values.sql:922
 msgid "CREATE_ORG_UNIT_CLOSING"
@@ -5504,7 +5506,7 @@ msgstr "CREATE_ORG_UNIT_CLOSING"
 
 #: 950.data.seed-values.sql:7962
 msgid "Greece "
-msgstr ""
+msgstr "Řecko "
 
 #: 950.data.seed-values.sql:6906
 msgid "Three-dimensional artifact or naturally occurring object"
@@ -5524,7 +5526,7 @@ msgstr "Povolit čtenáři zaznamenat platbu v rozhraní pro platby"
 
 #: 950.data.seed-values.sql:11491
 msgid "Line item canceled by vendor"
-msgstr ""
+msgstr "Položka zrušena dodavatelem"
 
 #: 950.data.seed-values.sql:1632
 msgid "Serials (includes admin features)"
@@ -5540,13 +5542,13 @@ msgstr "Neplatná data statistické kategorie"
 
 #: 950.data.seed-values.sql:8019
 msgid "Michigan "
-msgstr ""
+msgstr "Michigan "
 
 #: 950.data.seed-values.sql:7653 950.data.seed-values.sql:7683
 #: 950.data.seed-values.sql:8317 950.data.seed-values.sql:8347
 #: 950.data.seed-values.sql:8377 950.data.seed-values.sql:8407
 msgid "Reviews"
-msgstr ""
+msgstr "Recenze"
 
 #: 950.data.seed-values.sql:144
 msgid "Temporal Subject"
@@ -5612,7 +5614,7 @@ msgstr "Vypnout požadavek na autentizaci pro posílání SMS se signaturami"
 
 #: 950.data.seed-values.sql:7876
 msgid "Arkansas "
-msgstr ""
+msgstr "Arkansas "
 
 #: 950.data.seed-values.sql:6478
 msgid "Chagatai"
@@ -5750,18 +5752,18 @@ msgstr ""
 #: 950.data.seed-values.sql:7730 950.data.seed-values.sql:8435
 #: 950.data.seed-values.sql:8456
 msgid "Lectures, speeches"
-msgstr ""
+msgstr "Přednášky,  projevy"
 
 #: 950.data.seed-values.sql:7548 950.data.seed-values.sql:8228
 #: 950.data.seed-values.sql:8242 950.data.seed-values.sql:8256
 #: 950.data.seed-values.sql:8270 950.data.seed-values.sql:8284
 #: 950.data.seed-values.sql:8298
 msgid "Instructional materials"
-msgstr ""
+msgstr "Instruktážní materiál"
 
 #: 950.data.seed-values.sql:7718 950.data.seed-values.sql:8423
 msgid "Item is a music sound recording"
-msgstr ""
+msgstr "Položka je hudební zvukový záznam"
 
 #: 950.data.seed-values.sql:7365
 msgid "microfilm roll"
@@ -5802,7 +5804,7 @@ msgstr "Identifikátor"
 
 #: 950.data.seed-values.sql:7609
 msgid "Rondos"
-msgstr ""
+msgstr "Rondo"
 
 #: 950.data.seed-values.sql:312
 msgid "Checked out"
@@ -5830,7 +5832,7 @@ msgstr "Lundština"
 
 #: 950.data.seed-values.sql:8201
 msgid "Range of years of bulk of collection"
-msgstr ""
+msgstr "Rozmení  let obsahu sbírek"
 
 #: 950.data.seed-values.sql:6909
 msgid "Cartographic material"
@@ -5848,7 +5850,7 @@ msgstr "Povolit uživateli vytvořit reaktor spouštěče událostí"
 
 #: 950.data.seed-values.sql:7874
 msgid "Angola "
-msgstr ""
+msgstr "Angola "
 
 # id::clm.value__-gae id::clm.value__gla
 #: 950.data.seed-values.sql:6546 950.data.seed-values.sql:6556
@@ -5882,11 +5884,11 @@ msgstr "Čuvaština"
 
 #: 950.data.seed-values.sql:8004
 msgid "Lebanon "
-msgstr ""
+msgstr "Libanon "
 
 #: 950.data.seed-values.sql:7797
 msgid "Conic, other"
-msgstr ""
+msgstr "Kuželový, jiný"
 
 #: 950.data.seed-values.sql:1148
 msgid "UPDATE_ORG_UNIT_SETTING.circ.item_checkout_history.max"
@@ -5894,11 +5896,11 @@ msgstr "UPDATE_ORG_UNIT_SETTING.circ.item_checkout_history.max"
 
 #: 950.data.seed-values.sql:7781
 msgid "Transverse Mercator"
-msgstr ""
+msgstr "Příčné Merkatorovo zobrazení"
 
 #: 950.data.seed-values.sql:8049
 msgid "New Mexico "
-msgstr ""
+msgstr "Nové Mexico "
 
 # id::aout.opac_label__3
 #: 950.data.seed-values.sql:434
@@ -5907,11 +5909,11 @@ msgstr "Tato pobočka"
 
 #: 950.data.seed-values.sql:7604
 msgid "Ragtime music"
-msgstr ""
+msgstr "Ragtime"
 
 #: 950.data.seed-values.sql:7611
 msgid "Songs"
-msgstr ""
+msgstr "Písně"
 
 #: 950.data.seed-values.sql:4964 950.data.seed-values.sql:4970
 msgid "Default Record Match Set"
@@ -5927,7 +5929,7 @@ msgstr "DELETE_AUTHORITY_IMPORT_QUEUE"
 
 #: 950.data.seed-values.sql:8072
 msgid "Paracel Islands "
-msgstr ""
+msgstr "Paracelské ostrovy "
 
 #: 950.data.seed-values.sql:4993
 msgid ""
@@ -5976,7 +5978,7 @@ msgstr "Tato položka je prodejcem plně akceptována"
 
 #: 950.data.seed-values.sql:8134
 msgid "Tuvalu "
-msgstr ""
+msgstr "Tuvalu "
 
 #: 950.data.seed-values.sql:820
 msgid "Allow a user to view another users picklist"
@@ -6037,11 +6039,11 @@ msgstr "Povolit uživatel smazat definici spouštěče událostí"
 #: 950.data.seed-values.sql:8264 950.data.seed-values.sql:8278
 #: 950.data.seed-values.sql:8292
 msgid "Biography of composer or author"
-msgstr ""
+msgstr "Životopis skladatele nebo autora"
 
 #: 950.data.seed-values.sql:7712
 msgid "Multiple score formats"
-msgstr ""
+msgstr "Různé formáty  notového zápisu"
 
 # id::clm.value__som
 #: 950.data.seed-values.sql:6801
@@ -6065,7 +6067,7 @@ msgstr ""
 #: 950.data.seed-values.sql:8579 950.data.seed-values.sql:8595
 #: 950.data.seed-values.sql:8611
 msgid "Plans"
-msgstr ""
+msgstr "Plány"
 
 #: 950.data.seed-values.sql:662
 msgid "Allow a user to create new hold notifications"
@@ -6126,7 +6128,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:7975
 msgid "Iowa "
-msgstr ""
+msgstr "Iowa "
 
 #: 950.data.seed-values.sql:3775
 msgid ""
@@ -6145,7 +6147,7 @@ msgstr ""
 #: 950.data.seed-values.sql:8309 950.data.seed-values.sql:8339
 #: 950.data.seed-values.sql:8369 950.data.seed-values.sql:8399
 msgid "Legal articles"
-msgstr ""
+msgstr "Legislativní staťě"
 
 #: 950.data.seed-values.sql:294
 msgid "overdue_equip_max"
@@ -6169,7 +6171,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:7929
 msgid "Delaware "
-msgstr ""
+msgstr "Delaware "
 
 #: 950.data.seed-values.sql:4255
 msgid "Show active field on patron registration"
@@ -6194,7 +6196,7 @@ msgstr "EAN"
 
 #: 950.data.seed-values.sql:8175
 msgid "Saint Lucia "
-msgstr ""
+msgstr "Svatá Lucie "
 
 # id::vqbrad.description__1
 #: 950.data.seed-values.sql:5150
@@ -6207,23 +6209,23 @@ msgstr "Povolit uživateli zobrazit všechny poznámky připojené ke svazku"
 
 #: 950.data.seed-values.sql:8070
 msgid "Pitcairn Island "
-msgstr ""
+msgstr "Pitcairnovy ostrovy "
 
 #: 950.data.seed-values.sql:8083
 msgid "Paraguay "
-msgstr ""
+msgstr "Paraguay "
 
 #: 950.data.seed-values.sql:7619
 msgid "Trio-sonatas"
-msgstr ""
+msgstr "Triové sonáty"
 
 #: 950.data.seed-values.sql:8105
 msgid "Sierra Leone "
-msgstr ""
+msgstr "Sierra Leone "
 
 #: 950.data.seed-values.sql:7767
 msgid "Stereographic"
-msgstr ""
+msgstr "Stereografie"
 
 #: 950.data.seed-values.sql:13541
 msgid "General Communications, Inc."
@@ -6239,15 +6241,15 @@ msgstr "Nahrát aktivní objednávky"
 
 #: 950.data.seed-values.sql:8147
 msgid "Virginia "
-msgstr ""
+msgstr "Virginie "
 
 #: 950.data.seed-values.sql:8145
 msgid "Uruguay "
-msgstr ""
+msgstr "Uruguay "
 
 #: 950.data.seed-values.sql:7585
 msgid "Mazurkas"
-msgstr ""
+msgstr "Mazurky"
 
 #: 950.data.seed-values.sql:12164
 msgid "Import or Overlay failed"
@@ -6280,7 +6282,7 @@ msgstr "Francouzština (Kanada)"
 
 #: 950.data.seed-values.sql:7919
 msgid "Colorado "
-msgstr ""
+msgstr "Colorado "
 
 #: 950.data.seed-values.sql:183
 msgid "Title Proper (Browse)"
@@ -6314,7 +6316,7 @@ msgstr "DELETE_LIT_FORM"
 
 #: 950.data.seed-values.sql:7568
 msgid "Chorale preludes"
-msgstr ""
+msgstr "Chorální preludia"
 
 #: 950.data.seed-values.sql:4840
 msgid "Require staff initials for entry/edit of copy notes."
@@ -6364,7 +6366,7 @@ msgstr "UPDATE_ORG_UNIT_SETTING.circ.hold_boundary.hard"
 
 #: 950.data.seed-values.sql:8073
 msgid "Guinea"
-msgstr ""
+msgstr "Guinea"
 
 #: 950.data.seed-values.sql:15572
 msgid ""
@@ -6385,7 +6387,7 @@ msgstr "Prefix pro dočasné signatury"
 
 #: 950.data.seed-values.sql:7971
 msgid "Heard and McDonald Islands "
-msgstr ""
+msgstr "Heardův ostrov a McDonaldovy ostrovy "
 
 #: 950.data.seed-values.sql:4858
 msgid "URL for remote directory containing list column settings."
@@ -6409,13 +6411,13 @@ msgstr "Djula"
 
 #: 950.data.seed-values.sql:8008
 msgid "Laos "
-msgstr ""
+msgstr "Laos "
 
 #: 950.data.seed-values.sql:7813 950.data.seed-values.sql:8469
 #: 950.data.seed-values.sql:8482 950.data.seed-values.sql:8495
 #: 950.data.seed-values.sql:8508
 msgid "Gradient and bathymetric tints"
-msgstr ""
+msgstr "Gradient a batymetrické odstíny"
 
 #: 950.data.seed-values.sql:1568
 msgid "Allows a user to make changes to best-hold selection sort order"
@@ -6445,7 +6447,7 @@ msgstr "Mon-khmerské jazyky (ostatní)"
 #: 950.data.seed-values.sql:8260 950.data.seed-values.sql:8274
 #: 950.data.seed-values.sql:8288
 msgid "Discography"
-msgstr ""
+msgstr "Diskografie"
 
 #: 950.data.seed-values.sql:6937 950.data.seed-values.sql:7745
 msgid "Large print"
@@ -6542,11 +6544,11 @@ msgstr "Americká španělština"
 
 #: 950.data.seed-values.sql:7899
 msgid "Bhutan "
-msgstr ""
+msgstr "Bhútán "
 
 #: 950.data.seed-values.sql:8091
 msgid "Romania "
-msgstr ""
+msgstr "Rumunsko "
 
 #: 950.data.seed-values.sql:6499
 msgid "Cushitic (Other)"
@@ -6567,7 +6569,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:7892
 msgid "Brazil "
-msgstr ""
+msgstr "Brazílie "
 
 #: 950.data.seed-values.sql:3127
 msgid ""
@@ -6598,7 +6600,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:7840
 msgid "Monographic series"
-msgstr ""
+msgstr "Monografická řada"
 
 #: 950.data.seed-values.sql:1158
 msgid "UPDATE_ORG_UNIT_SETTING.global.juvenile_age_threshold"
@@ -6606,7 +6608,7 @@ msgstr "UPDATE_ORG_UNIT_SETTING.global.juvenile_age_threshold"
 
 #: 950.data.seed-values.sql:7765
 msgid "Orthographic"
-msgstr ""
+msgstr "Ortografie"
 
 #: 950.data.seed-values.sql:12873
 msgid "LoC"
@@ -6633,7 +6635,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:8038
 msgid "Nebraska "
-msgstr ""
+msgstr "Nebraska "
 
 #: 950.data.seed-values.sql:14577
 msgid "Produce CSV of circulation history"
@@ -6641,7 +6643,7 @@ msgstr "Vytvořit CSV historie výpůjček"
 
 #: 950.data.seed-values.sql:8179
 msgid "New South Wales "
-msgstr ""
+msgstr "Nový Jižní Wales "
 
 #: 950.data.seed-values.sql:1236
 msgid ""
@@ -6682,7 +6684,7 @@ msgstr "Ověření prostřednictvím vzdálené autentizace"
 
 #: 950.data.seed-values.sql:7972
 msgid "Honduras "
-msgstr ""
+msgstr "Honduras "
 
 #: 950.data.seed-values.sql:722
 msgid "Allow a user to add/remove users to/from the \"Staff\" group"
@@ -6695,7 +6697,7 @@ msgstr "Povolit uživateli smazat reaktor spouštěče"
 
 #: 950.data.seed-values.sql:8041
 msgid "Netherlands "
-msgstr ""
+msgstr "Nizozemsko "
 
 #: 950.data.seed-values.sql:3115
 msgid "Use Active Date for Age Protection"
@@ -6715,7 +6717,7 @@ msgstr "Burjatština"
 
 #: 950.data.seed-values.sql:7806
 msgid "Lambert conformal"
-msgstr ""
+msgstr "Lambertovo konformní zobrazení"
 
 # id::cam.description__d
 #: 950.data.seed-values.sql:6895
@@ -6737,7 +6739,7 @@ msgstr "ADMIN_CIRC_MATRIX_MATCHPOINT"
 
 #: 950.data.seed-values.sql:7766
 msgid "Azimuthal equidistant"
-msgstr ""
+msgstr "Azimutální ekvidistantní zobrazení"
 
 #: 950.data.seed-values.sql:13240 950.data.seed-values.sql:13257
 #: 950.data.seed-values.sql:13274
@@ -6801,7 +6803,7 @@ msgstr "Rundština"
 
 #: 950.data.seed-values.sql:8178
 msgid "Macedonia "
-msgstr ""
+msgstr "Makedonie "
 
 #: 950.data.seed-values.sql:171
 msgid "Local Free-Text Call Number"
@@ -6809,7 +6811,7 @@ msgstr "Lokální signatura (zapsaná volným textem)"
 
 #: 950.data.seed-values.sql:8023
 msgid "Malta "
-msgstr ""
+msgstr "Malta "
 
 #: 950.data.seed-values.sql:1028
 msgid "UPDATE_SURVEY"
@@ -6827,7 +6829,7 @@ msgstr "CREATE_BIB_IMPORT_FIELD_DEF"
 #: 950.data.seed-values.sql:8578 950.data.seed-values.sql:8594
 #: 950.data.seed-values.sql:8610
 msgid "Charts"
-msgstr ""
+msgstr "Diagramy"
 
 #: 950.data.seed-values.sql:1202
 msgid "Allow a user to create trigger hooks"
@@ -6835,7 +6837,7 @@ msgstr "Povolit uživateli vytvořit vazby spouštěče (triggeru)"
 
 #: 950.data.seed-values.sql:5232
 msgid "List Published Book Lists"
-msgstr ""
+msgstr "Procházet seznamy publikovaných knih"
 
 #: 950.data.seed-values.sql:756
 msgid "Allow staff to force checkout of Missing/Lost type items"
@@ -6865,7 +6867,7 @@ msgstr "Osage"
 
 #: 950.data.seed-values.sql:7917
 msgid "Cameroon "
-msgstr ""
+msgstr "Kamerun "
 
 #: 950.data.seed-values.sql:15405
 msgid "Pubdate"
@@ -6918,7 +6920,7 @@ msgstr "Povolit uživateli smazat exemplář"
 
 #: 950.data.seed-values.sql:7558
 msgid "Blues"
-msgstr ""
+msgstr "Blues"
 
 #: 950.data.seed-values.sql:3079
 msgid "Expire Interval"
@@ -6964,7 +6966,7 @@ msgstr "ADMIN_RECURRING_FINE_RULE"
 
 #: 950.data.seed-values.sql:7793
 msgid "Lambert's conformal conic"
-msgstr ""
+msgstr "Lambertovo konformní kuželové zobrazení"
 
 #: 950.data.seed-values.sql:457
 msgid "System: Deposit"
@@ -7002,7 +7004,7 @@ msgstr "Povolit uživateli zobrazit typy poplatků"
 #: 950.data.seed-values.sql:8359 950.data.seed-values.sql:8389
 #: 950.data.seed-values.sql:8419
 msgid "Offprints"
-msgstr ""
+msgstr "Separáty"
 
 # id::clm.value__lao
 #: 950.data.seed-values.sql:6647
@@ -7077,7 +7079,7 @@ msgstr "Kurdština"
 
 #: 950.data.seed-values.sql:7946
 msgid "Falkland Islands "
-msgstr ""
+msgstr "Falklandy "
 
 #: 950.data.seed-values.sql:666
 msgid "Allow a user to upload an offline script"
@@ -7112,11 +7114,11 @@ msgstr "Irština, střední doba (cca 1100-1550)"
 
 #: 950.data.seed-values.sql:7933
 msgid "Dominican Republic "
-msgstr ""
+msgstr "Dominikánská republika "
 
 #: 950.data.seed-values.sql:7782
 msgid "Gauss-Kruger"
-msgstr ""
+msgstr "Gauss - Krügerovo zobrazení"
 
 #: 950.data.seed-values.sql:7010 950.data.seed-values.sql:7011
 #: 950.data.seed-values.sql:7079 950.data.seed-values.sql:7080
@@ -7160,11 +7162,11 @@ msgstr ""
 
 #: 950.data.seed-values.sql:8177
 msgid "Saint Vincent and the Grenadines "
-msgstr ""
+msgstr "Svatý Vincenc a Grenadiny "
 
 #: 950.data.seed-values.sql:7623
 msgid "Waltzes"
-msgstr ""
+msgstr "Valčíky"
 
 #: 950.data.seed-values.sql:800
 msgid "Allow a user to delete a provider"
@@ -7228,7 +7230,7 @@ msgstr "hmatový zápis hudby"
 
 #: 950.data.seed-values.sql:7910
 msgid "Congo (Brazzaville) "
-msgstr ""
+msgstr "Republika Kongo "
 
 #: 950.data.seed-values.sql:13552
 msgid "California, USA"
@@ -7296,11 +7298,11 @@ msgstr "Abchazština"
 #: 950.data.seed-values.sql:8331 950.data.seed-values.sql:8361
 #: 950.data.seed-values.sql:8391 950.data.seed-values.sql:8421
 msgid "Comics/graphic novels"
-msgstr ""
+msgstr "Komiksy/grafické romány"
 
 #: 950.data.seed-values.sql:8018
 msgid "Madagascar "
-msgstr ""
+msgstr "Madagaskar "
 
 #: 950.data.seed-values.sql:163
 msgid "ISMN"
@@ -7318,11 +7320,11 @@ msgstr "Zobrazit výpůjčky"
 #: 950.data.seed-values.sql:8481 950.data.seed-values.sql:8494
 #: 950.data.seed-values.sql:8507
 msgid "Shading"
-msgstr ""
+msgstr "Stínování:"
 
 #: 950.data.seed-values.sql:8085
 msgid "Queensland "
-msgstr ""
+msgstr "Queensland "
 
 #: 950.data.seed-values.sql:4600
 msgid ""
@@ -7341,7 +7343,7 @@ msgstr "Bantuské jazyky (ostatní)"
 
 #: 950.data.seed-values.sql:8192
 msgid "Yukon Territory "
-msgstr ""
+msgstr "Yukon "
 
 #: 950.data.seed-values.sql:4825
 msgid ""
@@ -7361,7 +7363,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:8183
 msgid "Czech Republic "
-msgstr ""
+msgstr "Česká republika "
 
 # id::clm.value__cel
 #: 950.data.seed-values.sql:6474
@@ -7421,7 +7423,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:7773
 msgid "Azimuthal, other"
-msgstr ""
+msgstr "Azimutální zobrazení ostatní"
 
 #: 950.data.seed-values.sql:1524
 msgid "Allows a user to place a hold that cannot currently be filled."
@@ -7432,6 +7434,8 @@ msgstr ""
 msgid ""
 "Search: maximum number of facet values to retrieve for each facet field"
 msgstr ""
+"Vyhledávání: maximální počet položek, které se zobrazí pro každé fazetové "
+"pole"
 
 #: 950.data.seed-values.sql:12191
 msgid "Perm failure creating a record"
@@ -7439,7 +7443,7 @@ msgstr "Trvalá chyba při vytváření záznámů"
 
 #: 950.data.seed-values.sql:7916
 msgid "Chile "
-msgstr ""
+msgstr "Chile "
 
 #: 950.data.seed-values.sql:3541
 msgid "Patron must log in with barcode and password at selfcheck station"
@@ -7449,7 +7453,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:8132
 msgid "United Arab Emirates "
-msgstr ""
+msgstr "Spojené arabské emiráty "
 
 #: 950.data.seed-values.sql:15245
 msgid ""
@@ -7469,11 +7473,11 @@ msgstr "Grafické uživatelské rozhraní"
 
 #: 950.data.seed-values.sql:8028
 msgid "Martinique "
-msgstr ""
+msgstr "Martinik "
 
 #: 950.data.seed-values.sql:8186
 msgid "Slovenia "
-msgstr ""
+msgstr "Slovinsko "
 
 #: 950.data.seed-values.sql:1510
 msgid "Allow a user to place a force hold on a specific copy"
@@ -7531,6 +7535,11 @@ msgid ""
 "the library's section of the org tree, at or below the depth specified by "
 "this setting. They cannot be opted in at any other libraries."
 msgstr ""
+"Čenáři v dané knihovně mohou poskytnou souhlas se sdílením údajů pouze "
+"knihovnám, které jsou součásní stejné organizace, tj.  ve stromu "
+"organizačních jednotek spadají do stejné sekce nebo do nižší úrovně a to do "
+"hloubky určené tímto nastavením.  Čtenáři nemohou poskytnout souhlas se "
+"sdílením údajů žádnými jiným knihovnám."
 
 #: 950.data.seed-values.sql:2679 950.data.seed-values.sql:2682
 msgid "Allows patrons to create automatic holds from purchase requests."
@@ -7552,7 +7561,7 @@ msgstr "3_měsíce_0_prodloužení"
 
 #: 950.data.seed-values.sql:7579
 msgid "Gospel music"
-msgstr ""
+msgstr "Gospelová hudba"
 
 #: 950.data.seed-values.sql:6650
 msgid "Latvian"
@@ -7566,7 +7575,7 @@ msgstr ""
 #: 950.data.seed-values.sql:7827 950.data.seed-values.sql:8521
 #: 950.data.seed-values.sql:8531
 msgid "Picture card, post card"
-msgstr ""
+msgstr "Obrázková karta, pohlednice"
 
 #: 950.data.seed-values.sql:1096
 msgid "VIEW_ACQ_FUNDING_SOURCE"
@@ -7617,7 +7626,7 @@ msgstr "Smazat defininici části monografie"
 
 #: 950.data.seed-values.sql:8108
 msgid "Saskatchewan "
-msgstr ""
+msgstr "Saskatchewan "
 
 #: 950.data.seed-values.sql:1556
 msgid ""
@@ -7632,7 +7641,7 @@ msgstr "ADMIN_FIELD_DOC"
 
 #: 950.data.seed-values.sql:8133
 msgid "Turkey "
-msgstr ""
+msgstr "Turecko "
 
 #: 950.data.seed-values.sql:6972
 msgid "Unspecified"
@@ -7654,7 +7663,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:8137
 msgid "Egypt "
-msgstr ""
+msgstr "Egypt "
 
 # id::clm.value__rom
 #: 950.data.seed-values.sql:6759
@@ -7663,7 +7672,7 @@ msgstr "Romština"
 
 #: 950.data.seed-values.sql:8011
 msgid "Libya "
-msgstr ""
+msgstr "Libye "
 
 #: 950.data.seed-values.sql:6689
 msgid "Manchu"
@@ -7671,11 +7680,11 @@ msgstr "Manchu"
 
 #: 950.data.seed-values.sql:7869
 msgid "Azerbaijan "
-msgstr ""
+msgstr "Ázerbájdžán "
 
 #: 950.data.seed-values.sql:7898
 msgid "Botswana "
-msgstr ""
+msgstr "Botswana "
 
 #: 950.data.seed-values.sql:7229
 msgid "three-dimensional moving image"
@@ -7694,13 +7703,13 @@ msgstr "Přihlášení prostřednictvím translátoru-v1"
 
 #: 950.data.seed-values.sql:7572
 msgid "Country music"
-msgstr ""
+msgstr "Country music"
 
 #: 950.data.seed-values.sql:7678 950.data.seed-values.sql:8312
 #: 950.data.seed-values.sql:8342 950.data.seed-values.sql:8372
 #: 950.data.seed-values.sql:8402
 msgid "Patent document"
-msgstr ""
+msgstr "Patentový dokument"
 
 #: 950.data.seed-values.sql:16238
 msgid "Void long overdue item processing fee when claims returned"
@@ -7745,7 +7754,7 @@ msgstr "UPDATE_CN_BTYPE"
 
 #: 950.data.seed-values.sql:7764
 msgid "Lambert's azimuthal equal area"
-msgstr ""
+msgstr "Lambertovo azimutální plochojevné zobrazení"
 
 #: 950.data.seed-values.sql:7049 950.data.seed-values.sql:7050
 #: 950.data.seed-values.sql:7115 950.data.seed-values.sql:7116
@@ -7759,11 +7768,11 @@ msgstr "kazeta počítačové pásky"
 
 #: 950.data.seed-values.sql:8117
 msgid "Sweden "
-msgstr ""
+msgstr "Švédsko "
 
 #: 950.data.seed-values.sql:7996
 msgid "Korea (South) "
-msgstr ""
+msgstr "Jižní Korea "
 
 # id::clfm.value__h
 #: 950.data.seed-values.sql:6924
@@ -7772,7 +7781,7 @@ msgstr "Humor, satira apod."
 
 #: 950.data.seed-values.sql:7948
 msgid "Micronesia (Federated States) "
-msgstr ""
+msgstr "Federativní státy Mikronésie "
 
 # id::clfm.description__i
 # velice nejistý překlad
@@ -7803,7 +7812,7 @@ msgstr "Kabardština"
 
 #: 950.data.seed-values.sql:7881
 msgid "Antarctica "
-msgstr ""
+msgstr "Antarktida "
 
 # id::clm.value__baq
 #: 950.data.seed-values.sql:6444
@@ -7812,7 +7821,7 @@ msgstr "Baskičtina"
 
 #: 950.data.seed-values.sql:7958
 msgid "Greenland "
-msgstr ""
+msgstr "Grónsko "
 
 # id::clm.value__tum
 #: 950.data.seed-values.sql:6848
@@ -7829,7 +7838,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:7928
 msgid "District of Columbia "
-msgstr ""
+msgstr "District of Columbia "
 
 #: 950.data.seed-values.sql:14507
 msgid "Verification via opensrf"
@@ -7837,11 +7846,11 @@ msgstr "Ověření  prostřednictvím opensrf"
 
 #: 950.data.seed-values.sql:7913
 msgid "Croatia "
-msgstr ""
+msgstr "Chorvatsko "
 
 #: 950.data.seed-values.sql:7956
 msgid "Ghana "
-msgstr ""
+msgstr "Ghana "
 
 #: 950.data.seed-values.sql:4426
 msgid "Require dob field on patron registration"
@@ -7853,7 +7862,7 @@ msgstr "Povolit uživateli vytvořit / změnit / smazat dodavatele"
 
 #: 950.data.seed-values.sql:8046
 msgid "New Jersey "
-msgstr ""
+msgstr "New Jersey "
 
 #: 950.data.seed-values.sql:2616
 msgid "Vandelay"
@@ -7861,7 +7870,7 @@ msgstr "Vandelay"
 
 #: 950.data.seed-values.sql:7968
 msgid "Guyana "
-msgstr ""
+msgstr "Guyana "
 
 # id::clm.value__che
 #: 950.data.seed-values.sql:6477
@@ -7929,7 +7938,7 @@ msgstr "CREATE_ITEM_TYPE"
 
 #: 950.data.seed-values.sql:7864
 msgid "Australian Capital Territory "
-msgstr ""
+msgstr "Teritorium hlavního města Austrálie "
 
 #: 950.data.seed-values.sql:11697
 msgid ""
@@ -7987,7 +7996,7 @@ msgstr "Vypnout seznam typů automatických pokusů o tisk"
 
 #: 950.data.seed-values.sql:8150
 msgid "Venezuela "
-msgstr ""
+msgstr "Venezuela "
 
 #: 950.data.seed-values.sql:7417
 msgid "filmstrip cartridge"
@@ -8011,7 +8020,7 @@ msgstr "Povolit uživateli nové umístění exempláře"
 
 #: 950.data.seed-values.sql:7934
 msgid "Eritrea "
-msgstr ""
+msgstr "Eritrea "
 
 #: 950.data.seed-values.sql:4615
 msgid "Example for other_phone field on patron registration"
@@ -8034,11 +8043,11 @@ msgstr ""
 #: 950.data.seed-values.sql:7826 950.data.seed-values.sql:8520
 #: 950.data.seed-values.sql:8530
 msgid "Manuscript"
-msgstr ""
+msgstr "Rukopis"
 
 #: 950.data.seed-values.sql:8033
 msgid "Moldova "
-msgstr ""
+msgstr "Moldavsko "
 
 #: 950.data.seed-values.sql:1058
 msgid "CREATE_TRANSLATION"
@@ -8046,7 +8055,7 @@ msgstr "CREATE_TRANSLATION"
 
 #: 950.data.seed-values.sql:7582
 msgid "Madrigals"
-msgstr ""
+msgstr "Madrigaly"
 
 # id::clm.value__heb
 #: 950.data.seed-values.sql:6576
@@ -8063,7 +8072,7 @@ msgstr "Kreolština a jiné pigdiny na základě francouzštiny"
 
 #: 950.data.seed-values.sql:8064
 msgid "Ohio "
-msgstr ""
+msgstr "Ohio "
 
 #: 950.data.seed-values.sql:6648 950.data.seed-values.sql:6791
 msgid "Sami"
@@ -8071,15 +8080,15 @@ msgstr "Sami"
 
 #: 950.data.seed-values.sql:7581
 msgid "Jazz"
-msgstr ""
+msgstr "Jazz"
 
 #: 950.data.seed-values.sql:8207
 msgid "Single known date/probable date"
-msgstr ""
+msgstr "Jedno známé datum/pravděpodobné datum"
 
 #: 950.data.seed-values.sql:7932
 msgid "Dominica "
-msgstr ""
+msgstr "Dominika "
 
 #: 950.data.seed-values.sql:15022
 msgid "Activate the purchase order by default during ACQ file upload"
@@ -8099,7 +8108,7 @@ msgstr "zpětné volání"
 
 #: 950.data.seed-values.sql:7632
 msgid "Atlas"
-msgstr ""
+msgstr "Atlas"
 
 #: 950.data.seed-values.sql:1446
 msgid "Create suffix label definition."
@@ -8107,15 +8116,15 @@ msgstr "Vytvořit definici označení sufixu"
 
 #: 950.data.seed-values.sql:8154
 msgid "Victoria "
-msgstr ""
+msgstr "Victoria "
 
 #: 950.data.seed-values.sql:7883
 msgid "Bahrain "
-msgstr ""
+msgstr "Bahrain "
 
 #: 950.data.seed-values.sql:8015
 msgid "Maryland "
-msgstr ""
+msgstr "Maryland "
 
 #: 950.data.seed-values.sql:3280
 msgid ""
@@ -8153,7 +8162,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:8100
 msgid "Sao Tome and Principe "
-msgstr ""
+msgstr "Svatý Tomáš a Princův ostrov "
 
 #: 950.data.seed-values.sql:7333
 msgid "microscopic"
@@ -8195,7 +8204,7 @@ msgstr "Neznámý nebo nespecifikovaný"
 
 #: 950.data.seed-values.sql:8188
 msgid "Canada "
-msgstr ""
+msgstr "Kanada "
 
 #: 950.data.seed-values.sql:2733
 msgid "Allow Email Notify"
@@ -8211,7 +8220,7 @@ msgstr "ADMIN_SERIAL_STREAM"
 
 #: 950.data.seed-values.sql:8156
 msgid "Washington (State) "
-msgstr ""
+msgstr "Washington (Stát) "
 
 #: 950.data.seed-values.sql:11830 950.data.seed-values.sql:11836
 msgid "OPAC Default Search Sort"
@@ -8237,11 +8246,11 @@ msgstr "Havajština"
 
 #: 950.data.seed-values.sql:8079
 msgid "Portugal "
-msgstr ""
+msgstr "Portugalsko "
 
 #: 950.data.seed-values.sql:8044
 msgid "New Hampshire "
-msgstr ""
+msgstr "New Hampshire "
 
 #: 950.data.seed-values.sql:6962
 msgid "Betacam SP"
@@ -8284,7 +8293,7 @@ msgstr "Zdrženo: doručeny kusy"
 #: 950.data.seed-values.sql:7736 950.data.seed-values.sql:8441
 #: 950.data.seed-values.sql:8462
 msgid "Sounds"
-msgstr ""
+msgstr "Zvuky"
 
 # id::clm.value__man
 #: 950.data.seed-values.sql:6672
@@ -8348,7 +8357,7 @@ msgstr "CREATE_BIB_BTYPE"
 
 #: 950.data.seed-values.sql:8127
 msgid "Tokelau "
-msgstr ""
+msgstr "Tokelau "
 
 #: 950.data.seed-values.sql:1593
 msgid "Allow a user to add/remove users to/from the \"Data Review\" group"
@@ -8357,7 +8366,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:8069
 msgid "Pennsylvania "
-msgstr ""
+msgstr "Pennsylvánie "
 
 #: 950.data.seed-values.sql:7329
 msgid "projected"
@@ -8422,11 +8431,11 @@ msgstr ""
 
 #: 950.data.seed-values.sql:7882
 msgid "Arizona "
-msgstr ""
+msgstr "Arizona "
 
 #: 950.data.seed-values.sql:7922
 msgid "Connecticut "
-msgstr ""
+msgstr "Connecticut "
 
 #: 950.data.seed-values.sql:15588
 msgid ""
@@ -8452,7 +8461,7 @@ msgstr ""
 #: 950.data.seed-values.sql:7722 950.data.seed-values.sql:8427
 #: 950.data.seed-values.sql:8448
 msgid "Drama"
-msgstr ""
+msgstr "Drama"
 
 #: 950.data.seed-values.sql:4114
 msgid ""
@@ -8494,7 +8503,7 @@ msgstr "Typ exempláře"
 
 #: 950.data.seed-values.sql:7965
 msgid "Guam "
-msgstr ""
+msgstr "Guam "
 
 #: 950.data.seed-values.sql:276
 msgid "14_days_2_renew"
@@ -8506,7 +8515,7 @@ msgstr "Igbo"
 
 #: 950.data.seed-values.sql:8208
 msgid "Publication date and copyright date"
-msgstr ""
+msgstr "Datum vydání a datum copyrightu"
 
 #: 950.data.seed-values.sql:3196
 msgid "Has Local Copy Block"
@@ -8532,15 +8541,15 @@ msgstr "Přednastavené umístění exempláře pro Vandelay"
 #: 950.data.seed-values.sql:8576 950.data.seed-values.sql:8592
 #: 950.data.seed-values.sql:8608
 msgid "Maps"
-msgstr ""
+msgstr "Mapy"
 
 #: 950.data.seed-values.sql:8082
 msgid "Palau "
-msgstr ""
+msgstr "Palau "
 
 #: 950.data.seed-values.sql:8014
 msgid "Monaco "
-msgstr ""
+msgstr "Monako "
 
 #: 950.data.seed-values.sql:3259
 msgid "Use weight-based hold targeting"
@@ -8548,7 +8557,7 @@ msgstr "Použít směrování rezervací založené na výpočtu vah."
 
 #: 950.data.seed-values.sql:8022
 msgid "Mali "
-msgstr ""
+msgstr "Mali "
 
 #: 950.data.seed-values.sql:7054 950.data.seed-values.sql:7749
 msgid "Direct electronic"
@@ -8558,13 +8567,13 @@ msgstr "Direct electronic"
 #: 950.data.seed-values.sql:8305 950.data.seed-values.sql:8335
 #: 950.data.seed-values.sql:8365 950.data.seed-values.sql:8395
 msgid "Catalogs"
-msgstr ""
+msgstr "Katalogy"
 
 #: 950.data.seed-values.sql:7658 950.data.seed-values.sql:7688
 #: 950.data.seed-values.sql:8322 950.data.seed-values.sql:8352
 #: 950.data.seed-values.sql:8382 950.data.seed-values.sql:8412
 msgid "Technical reports"
-msgstr ""
+msgstr "Technické zprávy"
 
 #: 950.data.seed-values.sql:1579
 msgid ""
@@ -8609,7 +8618,7 @@ msgstr "Kru"
 
 #: 950.data.seed-values.sql:8097
 msgid "South Sudan "
-msgstr ""
+msgstr "Jižní Súdán "
 
 #: 950.data.seed-values.sql:1520
 msgid "Allows a user to create new authority records"
@@ -8645,11 +8654,11 @@ msgstr "DELETE_IMPORT_ITEM"
 
 #: 950.data.seed-values.sql:8135
 msgid "Texas "
-msgstr ""
+msgstr "Texas "
 
 #: 950.data.seed-values.sql:7624
 msgid "Zarzuelas"
-msgstr ""
+msgstr "Operety"
 
 #: 950.data.seed-values.sql:1226
 msgid "Allow a user to update trigger validators"
@@ -8665,7 +8674,7 @@ msgstr "Regály"
 
 #: 950.data.seed-values.sql:7990
 msgid "Johnston Atoll "
-msgstr ""
+msgstr "Johnstonův atol "
 
 #: 950.data.seed-values.sql:13915
 msgid "Cellular South"
@@ -8681,7 +8690,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:7943
 msgid "French Guiana "
-msgstr ""
+msgstr "Francouzská Guyana "
 
 #: 950.data.seed-values.sql:3055
 msgid "Holds: Hard boundary"
@@ -8690,7 +8699,7 @@ msgstr "Rezervace: Pevná hranice"
 #: 950.data.seed-values.sql:7829 950.data.seed-values.sql:8523
 #: 950.data.seed-values.sql:8533
 msgid "Puzzle"
-msgstr ""
+msgstr "Puzzle"
 
 #: 950.data.seed-values.sql:12890
 msgid "Heading -- Corporate Name"
@@ -8698,7 +8707,7 @@ msgstr "Záhlaví - název korporace"
 
 #: 950.data.seed-values.sql:13128 950.data.seed-values.sql:13134
 msgid "Default SMS/Text Number"
-msgstr "Výchozí číslo SMS/zprávy"
+msgstr "Výchozí číslo pro SMS/zprávy"
 
 #: 950.data.seed-values.sql:4013
 msgid ""
@@ -8786,7 +8795,7 @@ msgstr "CREATE_METABIB_SEARCH_ALIAS"
 
 #: 950.data.seed-values.sql:7935
 msgid "Ecuador "
-msgstr ""
+msgstr "Ekvádor "
 
 # id::pgt.name__1
 #: 950.data.seed-values.sql:1610
@@ -8823,7 +8832,7 @@ msgstr "Hawai, USA"
 
 #: 950.data.seed-values.sql:7931
 msgid "Benin "
-msgstr ""
+msgstr "Benin "
 
 #: 950.data.seed-values.sql:14979
 msgid "Number of URLs to test in parallel"
@@ -8831,7 +8840,7 @@ msgstr "Počet URL, která mají být paralelně testována"
 
 #: 950.data.seed-values.sql:8088
 msgid "Réunion "
-msgstr ""
+msgstr "Réunion "
 
 #: 950.data.seed-values.sql:1370
 msgid "DELETE_CN_BTYPE"
@@ -8847,7 +8856,7 @@ msgstr "Tswanština (čwanština)"
 
 #: 950.data.seed-values.sql:7709
 msgid "Performer-conductor part"
-msgstr ""
+msgstr "Part účinkujícího dirigenta"
 
 #: 950.data.seed-values.sql:1456
 msgid "Delete prefix label definition."
@@ -8855,7 +8864,7 @@ msgstr "Smazat definici prefixu štítku"
 
 #: 950.data.seed-values.sql:7989
 msgid "Japan "
-msgstr ""
+msgstr "Japonsko "
 
 #: 950.data.seed-values.sql:568
 msgid "Allow a user to create a container item for another user"
@@ -8877,7 +8886,7 @@ msgstr ""
 #: 950.data.seed-values.sql:8589 950.data.seed-values.sql:8605
 #: 950.data.seed-values.sql:8621
 msgid "Illuminations"
-msgstr ""
+msgstr "Iluminace"
 
 # id::clm.value__zul
 #: 950.data.seed-values.sql:6887
@@ -8924,7 +8933,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:7787
 msgid "Robinson"
-msgstr ""
+msgstr "Robinson"
 
 #: 950.data.seed-values.sql:12283
 msgid ""
@@ -8939,7 +8948,7 @@ msgstr "VIEW_INVOICE"
 #: 950.data.seed-values.sql:8324 950.data.seed-values.sql:8354
 #: 950.data.seed-values.sql:8384 950.data.seed-values.sql:8414
 msgid "Legal cases and case notes"
-msgstr ""
+msgstr "Soudní případ a poznámky k případu"
 
 #: 950.data.seed-values.sql:3700 950.data.seed-values.sql:3703
 msgid "Void overdue fines when items are marked lost"
@@ -8964,7 +8973,7 @@ msgstr "ADMIN_HOLD_CANCEL_CAUSE"
 
 #: 950.data.seed-values.sql:8052
 msgid "Nepal "
-msgstr ""
+msgstr "Nepál "
 
 #: 950.data.seed-values.sql:2643 950.data.seed-values.sql:2646
 msgid "Default circulation modifier"
@@ -8980,7 +8989,7 @@ msgstr "Délka trvalého přihlášení"
 
 #: 950.data.seed-values.sql:8086
 msgid "Québec (Province) "
-msgstr ""
+msgstr "Québec (Provincie) "
 
 #: 950.data.seed-values.sql:6713
 msgid "Niger-Kordofanian (Other)"
@@ -8992,11 +9001,11 @@ msgstr "obraz"
 
 #: 950.data.seed-values.sql:8109
 msgid "Somalia "
-msgstr ""
+msgstr "Somálsko "
 
 #: 950.data.seed-values.sql:7613
 msgid "Studies and exercises"
-msgstr ""
+msgstr "Studie a cvičení"
 
 # id::clm.value__bul
 #: 950.data.seed-values.sql:6465
@@ -9012,7 +9021,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:8198
 msgid "Continuing resource ceased publication"
-msgstr ""
+msgstr "Vydávání pokračujícího zdroje zastaveno"
 
 #: 950.data.seed-values.sql:540
 msgid ""
@@ -9027,7 +9036,7 @@ msgstr "Varování o existenci lokálního exempláře"
 
 #: 950.data.seed-values.sql:7979
 msgid "India "
-msgstr ""
+msgstr "Indie "
 
 #: 950.data.seed-values.sql:3235
 msgid ""
@@ -9053,18 +9062,18 @@ msgstr "Povolit uživateli spravovat definici události spouštěče"
 
 #: 950.data.seed-values.sql:8160
 msgid "West Bank of the Jordan River "
-msgstr ""
+msgstr "Západní břeh Jordánu "
 
 #: 950.data.seed-values.sql:7762
 msgid "Aitoff"
-msgstr ""
+msgstr "Aitoffova projekce"
 
 #: 950.data.seed-values.sql:7547 950.data.seed-values.sql:8227
 #: 950.data.seed-values.sql:8241 950.data.seed-values.sql:8255
 #: 950.data.seed-values.sql:8269 950.data.seed-values.sql:8283
 #: 950.data.seed-values.sql:8297
 msgid "Ethnological information"
-msgstr ""
+msgstr "Etnologická informace"
 
 # id::cnct.name__1
 #: 950.data.seed-values.sql:246
@@ -9118,6 +9127,13 @@ msgid ""
 "for this setting should be the top org in the org hierarchy, otherwise "
 "patrons can trample their user settings when jumping between orgs."
 msgstr ""
+"Aktuálně používání  SMS zahrnuje akce \"Rezervace k vyzvednutní a  \"Poslat "
+"textovou zprávu\" pro signatury v OPACu. Pokud toto nastavení není "
+"aktivnováno, možnost zaslání SMS nebude uživatelům nabídnuta. Pokud pečlivě "
+"nehlídáte uživatele a jejich využívání OPACu,  jako kontextová organizační "
+"jednotky by měla být uvedena nejvyšší organizační jednotka v  hierarchii,  "
+"jinak může při přeskakování mezi organizačními jednotkami dojít k narušení "
+"nastavení čtenářů."
 
 #: 950.data.seed-values.sql:7034 950.data.seed-values.sql:7035
 #: 950.data.seed-values.sql:7100 950.data.seed-values.sql:7101
@@ -9147,7 +9163,7 @@ msgstr "Záznam odkazující na systemizované záhlaví -- věcný termín"
 
 #: 950.data.seed-values.sql:7900
 msgid "Bulgaria "
-msgstr ""
+msgstr "Bulharsko "
 
 #: 950.data.seed-values.sql:6861
 msgid "Urdu"
@@ -9163,7 +9179,7 @@ msgstr "Lozština"
 
 #: 950.data.seed-values.sql:8187
 msgid "No place, unknown, or undetermined "
-msgstr ""
+msgstr "Bez místa, neznámé nebo neurčené "
 
 #: 950.data.seed-values.sql:4866
 msgid ""
@@ -9203,7 +9219,7 @@ msgstr "Poplatek za zpracování poškozeného exempláře"
 
 #: 950.data.seed-values.sql:7600
 msgid "Polonaises"
-msgstr ""
+msgstr "Polonézy"
 
 #: 950.data.seed-values.sql:6488
 msgid "Cheyenne"
@@ -9213,7 +9229,7 @@ msgstr "Čejenština"
 #: 950.data.seed-values.sql:8303 950.data.seed-values.sql:8333
 #: 950.data.seed-values.sql:8363 950.data.seed-values.sql:8393
 msgid "Abstracts/summaries"
-msgstr ""
+msgstr "Abstrakty/souhrny"
 
 #: 950.data.seed-values.sql:6537
 msgid "Fon"
@@ -9267,7 +9283,7 @@ msgstr "Zrušit poplatek za zpracování při vrácení ztraceného exempláře"
 
 #: 950.data.seed-values.sql:7630
 msgid "Map serial"
-msgstr ""
+msgstr "Mapová série"
 
 #: 950.data.seed-values.sql:11469
 msgid "The information is to be or has been changed."
@@ -9292,11 +9308,11 @@ msgstr "Afrikánština"
 
 #: 950.data.seed-values.sql:8007
 msgid "Lesotho "
-msgstr ""
+msgstr "Lesotho "
 
 #: 950.data.seed-values.sql:8054
 msgid "Nigeria "
-msgstr ""
+msgstr "Nigérie "
 
 # id::vqbrad.description__4
 #: 950.data.seed-values.sql:5153
@@ -9317,7 +9333,7 @@ msgstr "Záznam odkazující na systemizované záhlaví -- geografické jméno"
 
 #: 950.data.seed-values.sql:7998
 msgid "Kuwait "
-msgstr ""
+msgstr "Kuvajt "
 
 #: 950.data.seed-values.sql:6602
 msgid "Iranian (Other)"
@@ -9418,7 +9434,7 @@ msgstr "Řečtina, starověká (do 1453)"
 #: 950.data.seed-values.sql:8400 950.data.seed-values.sql:8425
 #: 950.data.seed-values.sql:8446
 msgid "Biography"
-msgstr ""
+msgstr "Životopis"
 
 #: 950.data.seed-values.sql:6725
 msgid "Nyoro"
@@ -9430,7 +9446,7 @@ msgstr "UPDATE_ORG_ADDRESS"
 
 #: 950.data.seed-values.sql:8122
 msgid "Turks and Caicos Islands "
-msgstr ""
+msgstr "Turks a Caicos "
 
 #: 950.data.seed-values.sql:6461
 msgid "Breton"
@@ -9467,7 +9483,7 @@ msgstr "PayPal podpis"
 
 #: 950.data.seed-values.sql:7903
 msgid "Brunei "
-msgstr ""
+msgstr "Brunej "
 
 #: 950.data.seed-values.sql:7053 950.data.seed-values.sql:7748
 msgid "Online"
@@ -9475,11 +9491,11 @@ msgstr "Online"
 
 #: 950.data.seed-values.sql:7615
 msgid "Symphonic poems"
-msgstr ""
+msgstr "Symfonické básně"
 
 #: 950.data.seed-values.sql:7795
 msgid "Polyconic"
-msgstr ""
+msgstr "Polykónické zobrazení"
 
 #: 950.data.seed-values.sql:3460
 msgid ""
@@ -9587,7 +9603,7 @@ msgstr "Altajské jazyky (ostatní)"
 
 #: 950.data.seed-values.sql:7602
 msgid "Preludes"
-msgstr ""
+msgstr "Předehry"
 
 #: 950.data.seed-values.sql:6594
 msgid "Iloko"
@@ -9605,7 +9621,7 @@ msgstr "Povolit uživateli zobrazit dodavatele"
 
 #: 950.data.seed-values.sql:7889
 msgid "Bangladesh "
-msgstr ""
+msgstr "Bangladéš "
 
 # id::clm.value__dgr
 #: 950.data.seed-values.sql:6507
@@ -9618,7 +9634,7 @@ msgstr "Volapük"
 
 #: 950.data.seed-values.sql:7978
 msgid "Ireland "
-msgstr ""
+msgstr "Irsko "
 
 #: 950.data.seed-values.sql:4345
 msgid "Show claims_returned_count field on patron registration"
@@ -9649,7 +9665,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:7846
 msgid "Animation"
-msgstr ""
+msgstr "Animace"
 
 # id::clm.value__mon
 #: 950.data.seed-values.sql:6694
@@ -9662,7 +9678,7 @@ msgstr "Dzongkä"
 
 #: 950.data.seed-values.sql:8199
 msgid "Detailed date"
-msgstr ""
+msgstr "Podrobná specifikace"
 
 #: 950.data.seed-values.sql:13575
 msgid "Cincinnati Bell"
@@ -9674,7 +9690,7 @@ msgstr "Použít status Ztraceno a zpalaceno"
 
 #: 950.data.seed-values.sql:8168
 msgid "Maldives "
-msgstr ""
+msgstr "Maledivy "
 
 #: 950.data.seed-values.sql:1090
 msgid "UPDATE_LOCALE"
@@ -9700,7 +9716,7 @@ msgstr ""
 #: 950.data.seed-values.sql:7832 950.data.seed-values.sql:8526
 #: 950.data.seed-values.sql:8536
 msgid "Playing cards"
-msgstr ""
+msgstr "Hrací karty"
 
 #: 950.data.seed-values.sql:616
 msgid "Allow a user to create a new in-house-use "
@@ -9733,7 +9749,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:7920
 msgid "Comoros "
-msgstr ""
+msgstr "Komory "
 
 #: 950.data.seed-values.sql:7401
 msgid "stereograph disc"
@@ -9741,7 +9757,7 @@ msgstr "stereografický disk"
 
 #: 950.data.seed-values.sql:8020
 msgid "Montserrat "
-msgstr ""
+msgstr "Montserrat "
 
 # id::i18n_l.name__en-US
 #: 950.data.seed-values.sql:347
@@ -9750,7 +9766,7 @@ msgstr "Angličtina (US)"
 
 #: 950.data.seed-values.sql:8029
 msgid "Morocco "
-msgstr ""
+msgstr "Maroko "
 
 #: 950.data.seed-values.sql:898
 msgid "CREATE_HOURS_OF_OPERATION"
@@ -9758,7 +9774,7 @@ msgstr "CREATE_HOURS_OF_OPERATION"
 
 #: 950.data.seed-values.sql:7992
 msgid "Jordan "
-msgstr ""
+msgstr "Jordánsko "
 
 #: 950.data.seed-values.sql:4120
 msgid "Work Log: Maximum Patrons Logged"
@@ -9847,7 +9863,7 @@ msgstr "Povolit uživateli změnit natavení organizační jednotky"
 
 #: 950.data.seed-values.sql:8541 950.data.seed-values.sql:8558
 msgid "No Illustrations"
-msgstr ""
+msgstr "Bez ilustrací"
 
 #: 950.data.seed-values.sql:15186
 msgid "Upload Load Items for Imported Records by Default"
@@ -9881,15 +9897,15 @@ msgstr ""
 
 #: 950.data.seed-values.sql:7587
 msgid "Motets"
-msgstr ""
+msgstr "Moteta"
 
 #: 950.data.seed-values.sql:7786
 msgid "Oblique Mercator"
-msgstr ""
+msgstr "Šikmé Merkatorovo zobrazení"
 
 #: 950.data.seed-values.sql:7778
 msgid "Miller"
-msgstr ""
+msgstr "Millerovo zobrazení"
 
 #: 950.data.seed-values.sql:3262
 msgid "Use library weight based hold targeting"
@@ -9991,7 +10007,7 @@ msgstr "Zdrženo: Dlouhodobý požadavek na objednání"
 #: 950.data.seed-values.sql:7729 950.data.seed-values.sql:8434
 #: 950.data.seed-values.sql:8455
 msgid "Comedy"
-msgstr ""
+msgstr "Komedie"
 
 # id::cam.description__g
 #: 950.data.seed-values.sql:6898
@@ -10008,7 +10024,7 @@ msgstr "Povolit opakovanou změnu uživatelského jména"
 #: 950.data.seed-values.sql:7733 950.data.seed-values.sql:8438
 #: 950.data.seed-values.sql:8459
 msgid "Folktales"
-msgstr ""
+msgstr "Lidové pohády"
 
 #: 950.data.seed-values.sql:1310
 msgid "ADMIN_LINEITEM_MARC_ATTR_DEF"
@@ -10041,13 +10057,13 @@ msgstr "Blokovat prodloužení exemplářů,  na které je zadána rezervace"
 
 #: 950.data.seed-values.sql:8111
 msgid "Swaziland "
-msgstr ""
+msgstr "Svazijsko "
 
 #: 950.data.seed-values.sql:7821 950.data.seed-values.sql:8477
 #: 950.data.seed-values.sql:8490 950.data.seed-values.sql:8503
 #: 950.data.seed-values.sql:8516
 msgid "Rock drawings"
-msgstr ""
+msgstr "Kamenné rytiny"
 
 #: 950.data.seed-values.sql:4231
 msgid "This is the default Country for new addresses in the patron editor."
@@ -10060,7 +10076,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:8196
 msgid "No dates given; B.C. date involved"
-msgstr ""
+msgstr "Nejsou udána žádná data; data př. n. l. zahrnuta"
 
 #: 950.data.seed-values.sql:1092
 msgid "UPDATE_MARC_CODE"
@@ -10068,7 +10084,7 @@ msgstr "UPDATE_MARC_CODE"
 
 #: 950.data.seed-values.sql:7902
 msgid "Belarus "
-msgstr ""
+msgstr "Bělorusko "
 
 #: 950.data.seed-values.sql:1522
 msgid "Allows a user to create, edit, and delete custom toolbars"
@@ -10085,7 +10101,7 @@ msgstr "Doba uchování historie výpůjček - zrušené (čtenářem v OPACu)"
 
 #: 950.data.seed-values.sql:8107
 msgid "Sint Maarten "
-msgstr ""
+msgstr "Svatý Martin "
 
 # id::crrf.name__3
 #: 950.data.seed-values.sql:302
@@ -10098,14 +10114,14 @@ msgstr "Testovací mód AuthorizeNet"
 
 #: 950.data.seed-values.sql:7993
 msgid "Kenya "
-msgstr ""
+msgstr "Keňa "
 
 #: 950.data.seed-values.sql:7545 950.data.seed-values.sql:8225
 #: 950.data.seed-values.sql:8239 950.data.seed-values.sql:8253
 #: 950.data.seed-values.sql:8267 950.data.seed-values.sql:8281
 #: 950.data.seed-values.sql:8295
 msgid "Technical information on music"
-msgstr ""
+msgstr "Technické informace k hudbě"
 
 #: 950.data.seed-values.sql:2546 950.data.seed-values.sql:2547
 msgid "Hold is behind Circ Desk"
@@ -10121,11 +10137,11 @@ msgstr "Efik"
 
 #: 950.data.seed-values.sql:7559
 msgid "Canons and rounds"
-msgstr ""
+msgstr "Kánony a kolové písně"
 
 #: 950.data.seed-values.sql:8144
 msgid "Burkina Faso "
-msgstr ""
+msgstr "Burkina Faso "
 
 #: 950.data.seed-values.sql:7612
 msgid "Square dance music"
@@ -10147,7 +10163,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:7566
 msgid "Chant, Christian"
-msgstr ""
+msgstr "Křesťanské chorály"
 
 #: 950.data.seed-values.sql:586
 msgid "User may create an entry in a copy statistical category"
@@ -10231,7 +10247,7 @@ msgstr "Exemplář je určen mladistvým ve věku 9-13 let."
 
 #: 950.data.seed-values.sql:7562
 msgid "Carols"
-msgstr ""
+msgstr "Koledy"
 
 #: 950.data.seed-values.sql:13418
 msgid "MTS Mobility"
@@ -10263,7 +10279,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:7799
 msgid "Butterfly"
-msgstr ""
+msgstr "Motýl"
 
 #: 950.data.seed-values.sql:504
 msgid "Allow a user to view bill details"
@@ -10295,7 +10311,7 @@ msgstr "PC Telecom"
 
 #: 950.data.seed-values.sql:8174
 msgid "Saint Helena "
-msgstr ""
+msgstr "Svatá Helena "
 
 #: 950.data.seed-values.sql:12941
 msgid "See From Tracing -- Geographic Name"
@@ -10340,7 +10356,7 @@ msgstr "Navrhnout pole \"stát\" na kartě registračních údajů čtenáře"
 
 #: 950.data.seed-values.sql:7897
 msgid "Burma "
-msgstr ""
+msgstr "Barma "
 
 # id::crahp.name__2
 #: 950.data.seed-values.sql:308
@@ -10392,11 +10408,11 @@ msgstr "Formát rezervací metazáznamu"
 
 #: 950.data.seed-values.sql:7779
 msgid "Mollweide"
-msgstr ""
+msgstr "Mollweidovo zobrazení"
 
 #: 950.data.seed-values.sql:7553
 msgid "No information supplied"
-msgstr ""
+msgstr "Nejsou poskytnuty žádné informace"
 
 #: 950.data.seed-values.sql:770
 msgid ""
@@ -10435,7 +10451,7 @@ msgstr "Doba vypršení relace OPACu při nečinnosti (v sekundách)"
 
 #: 950.data.seed-values.sql:8036
 msgid "Malaysia "
-msgstr ""
+msgstr "Malajsie "
 
 #: 950.data.seed-values.sql:1476
 msgid "Create/Update/Delete Copy Monograph Part Map"
@@ -10443,7 +10459,7 @@ msgstr "Vytvořit/upravit/smazat mapu exempláře části monografií"
 
 #: 950.data.seed-values.sql:7631
 msgid "Globe"
-msgstr ""
+msgstr "Glóbus"
 
 #: 950.data.seed-values.sql:494 950.data.seed-values.sql:498
 #: 950.data.seed-values.sql:542
@@ -10490,7 +10506,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:8024
 msgid "Minnesota "
-msgstr ""
+msgstr "Minnesota "
 
 #: 950.data.seed-values.sql:3298
 msgid ""
@@ -10515,12 +10531,12 @@ msgstr "Ňandžština"
 
 #: 950.data.seed-values.sql:7610
 msgid "Sonatas"
-msgstr ""
+msgstr "Sonáty"
 
 #: 950.data.seed-values.sql:7831 950.data.seed-values.sql:8525
 #: 950.data.seed-values.sql:8535
 msgid "Wall map"
-msgstr ""
+msgstr "Nástěnná mapa"
 
 # id::clm.value__cad
 #: 950.data.seed-values.sql:6467
@@ -10581,7 +10597,7 @@ msgstr "Zdrženo: Rozdělený počet"
 #: 950.data.seed-values.sql:8263 950.data.seed-values.sql:8277
 #: 950.data.seed-values.sql:8291
 msgid "Libretto or text"
-msgstr ""
+msgstr "Libreto nebo text"
 
 #: 950.data.seed-values.sql:696
 msgid "Allow a user to cancel holds"
@@ -10615,7 +10631,7 @@ msgstr "Povolit uživateli zobrazení upozornění k adresám"
 
 #: 950.data.seed-values.sql:8048
 msgid "New Caledonia "
-msgstr ""
+msgstr "Nová Kaledonie "
 
 #: 950.data.seed-values.sql:4055
 msgid "Patron username format"
@@ -10669,7 +10685,7 @@ msgstr "VHS"
 #: 950.data.seed-values.sql:8483 950.data.seed-values.sql:8496
 #: 950.data.seed-values.sql:8509
 msgid "Hachures"
-msgstr ""
+msgstr "Šrafy"
 
 #: 950.data.seed-values.sql:4100
 msgid "Printing: Custom Javascript File"
@@ -10677,7 +10693,7 @@ msgstr "Tisk: Vlastní soubor Javascriptu"
 
 #: 950.data.seed-values.sql:7984
 msgid "Iran "
-msgstr ""
+msgstr "Irán "
 
 #: 950.data.seed-values.sql:7007 950.data.seed-values.sql:7008
 #: 950.data.seed-values.sql:7076 950.data.seed-values.sql:7077
@@ -10776,7 +10792,7 @@ msgstr "ADMIN_MAX_FINE_RULE"
 
 #: 950.data.seed-values.sql:7591
 msgid "Nocturnes"
-msgstr ""
+msgstr "Nokturna"
 
 #: 950.data.seed-values.sql:7596
 msgid "Part-songs"
@@ -10790,7 +10806,7 @@ msgstr "Uživatel smí smazat údaje ze statické kategorie čtenáře"
 #: 950.data.seed-values.sql:8315 950.data.seed-values.sql:8345
 #: 950.data.seed-values.sql:8375 950.data.seed-values.sql:8405
 msgid "Theses"
-msgstr ""
+msgstr "Diplomové práce"
 
 # id::clm.value__que
 #: 950.data.seed-values.sql:6753
@@ -10843,7 +10859,7 @@ msgstr "UPDATE_MERGE_PROFILE"
 
 #: 950.data.seed-values.sql:8021
 msgid "Oman "
-msgstr ""
+msgstr "Omán "
 
 # id::ccs.name__6
 #: 950.data.seed-values.sql:317
@@ -10864,7 +10880,7 @@ msgstr "Kajeet"
 
 #: 950.data.seed-values.sql:8130
 msgid "Tonga "
-msgstr ""
+msgstr "Tonga "
 
 #: 950.data.seed-values.sql:11293
 msgid "An email has been requested for one or more biblio record entries."
@@ -10881,7 +10897,7 @@ msgstr "Povolit uživateli vytvořit novou platbu  k transakci"
 
 #: 950.data.seed-values.sql:8141
 msgid "Ukraine "
-msgstr ""
+msgstr "Ukraina "
 
 #: 950.data.seed-values.sql:7022 950.data.seed-values.sql:7023
 #: 950.data.seed-values.sql:7091 950.data.seed-values.sql:7092
@@ -10924,11 +10940,11 @@ msgstr "Povídky"
 
 #: 950.data.seed-values.sql:8203
 msgid "Dates unknown"
-msgstr ""
+msgstr "Data nejsou známa"
 
 #: 950.data.seed-values.sql:7942
 msgid "Faroe Islands "
-msgstr ""
+msgstr "Faerské ostrovy "
 
 #: 950.data.seed-values.sql:4264
 msgid "Suggest active field on patron registration"
@@ -10959,7 +10975,7 @@ msgstr "Položky seznamu na stránku"
 
 #: 950.data.seed-values.sql:8172
 msgid "Coral Sea Islands Territory "
-msgstr ""
+msgstr "Ostrovy Korálového moře "
 
 #: 950.data.seed-values.sql:4049
 msgid ""
@@ -11011,7 +11027,7 @@ msgstr "Povolit uživateli zobrazit fond nebo připsat / odepsat prostředky"
 #: 950.data.seed-values.sql:8261 950.data.seed-values.sql:8275
 #: 950.data.seed-values.sql:8289
 msgid "Bibliography"
-msgstr ""
+msgstr "Bibliografie"
 
 #: 950.data.seed-values.sql:15582
 msgid "Long-Overdue Check-In Interval Uses Last Activity Date"
@@ -11030,7 +11046,7 @@ msgstr "Věcné autority National Agricultural Library"
 #: 950.data.seed-values.sql:7737 950.data.seed-values.sql:8442
 #: 950.data.seed-values.sql:8463
 msgid "Interviews"
-msgstr ""
+msgstr "Rozhovory"
 
 #: 950.data.seed-values.sql:1186
 msgid "Allow a user to create trigger cleanup entries"
@@ -11050,11 +11066,11 @@ msgstr "Všechny knihy"
 
 #: 950.data.seed-values.sql:8087
 msgid "Serbia "
-msgstr ""
+msgstr "Srbsko "
 
 #: 950.data.seed-values.sql:7628
 msgid "Single map"
-msgstr ""
+msgstr "Samostatná mapa"
 
 #: 950.data.seed-values.sql:10870
 msgid "An email has been requested for a circ history."
@@ -11062,7 +11078,7 @@ msgstr "Byl vyžádán e-mail pro historii výpůjček"
 
 #: 950.data.seed-values.sql:8061
 msgid "Norfolk Island "
-msgstr ""
+msgstr "Norfolk "
 
 #: 950.data.seed-values.sql:13603
 msgid "Midwest, USA"
@@ -11132,7 +11148,7 @@ msgstr "Inguština"
 
 #: 950.data.seed-values.sql:7575
 msgid "Fantasias"
-msgstr ""
+msgstr "Fantazie"
 
 #: 950.data.seed-values.sql:6782
 msgid "Sidamo"
@@ -11150,22 +11166,22 @@ msgstr "Divehi"
 
 #: 950.data.seed-values.sql:7966
 msgid "Guinea "
-msgstr ""
+msgstr "Guinea "
 
 #: 950.data.seed-values.sql:7643 950.data.seed-values.sql:7672
 #: 950.data.seed-values.sql:8306 950.data.seed-values.sql:8336
 #: 950.data.seed-values.sql:8366 950.data.seed-values.sql:8396
 msgid "Dictionaries"
-msgstr ""
+msgstr "Slovníky"
 
 #: 950.data.seed-values.sql:7721 950.data.seed-values.sql:8426
 #: 950.data.seed-values.sql:8447
 msgid "Conference proceedings"
-msgstr ""
+msgstr "Materiály z konferencí"
 
 #: 950.data.seed-values.sql:7890
 msgid "Belize "
-msgstr ""
+msgstr "Belize "
 
 #: 950.data.seed-values.sql:14204
 msgid "Teleflip"
@@ -11201,7 +11217,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:8143
 msgid "Utah "
-msgstr ""
+msgstr "Utah "
 
 # id::clm.value__scr
 #: 950.data.seed-values.sql:6775
@@ -11210,7 +11226,7 @@ msgstr "Chorvatština"
 
 #: 950.data.seed-values.sql:7791
 msgid "Alber's equal area"
-msgstr ""
+msgstr "Albersovo plochojevné zobrazení"
 
 #: 950.data.seed-values.sql:3712
 msgid ""
@@ -11284,11 +11300,11 @@ msgstr "Arabština"
 
 #: 950.data.seed-values.sql:8000
 msgid "Kentucky "
-msgstr ""
+msgstr "Kentucky "
 
 #: 950.data.seed-values.sql:7565
 msgid "Chansons, Polyphonic"
-msgstr ""
+msgstr "Píseň, polyfonní"
 
 # id::pgt.name__3
 #: 950.data.seed-values.sql:1614
@@ -11316,7 +11332,7 @@ msgstr "Směrování odkazu viz též -- formální zpřesnění"
 
 #: 950.data.seed-values.sql:8165
 msgid "Wyoming "
-msgstr ""
+msgstr "Wyoming "
 
 #: 950.data.seed-values.sql:954
 msgid "DELETE_LASSO_MAP"
@@ -11361,15 +11377,15 @@ msgstr "Záznam odkazující na systemizované záhlaví -- název korporace"
 
 #: 950.data.seed-values.sql:7700
 msgid "Information not supplied"
-msgstr ""
+msgstr "Informace není dodána"
 
 #: 950.data.seed-values.sql:8098
 msgid "South Dakota "
-msgstr ""
+msgstr "Jižní Dakota "
 
 #: 950.data.seed-values.sql:7926
 msgid "Central African Republic "
-msgstr ""
+msgstr "Středoafrická republika "
 
 #: 950.data.seed-values.sql:6489
 msgid "Chamic languages"
@@ -11388,7 +11404,7 @@ msgstr "Bosenština"
 
 #: 950.data.seed-values.sql:8060
 msgid "Northern Mariana Islands "
-msgstr ""
+msgstr "Severní Mariany "
 
 #: 950.data.seed-values.sql:7421
 msgid "filmstrip"
@@ -11414,7 +11430,7 @@ msgstr "Kazaština"
 
 #: 950.data.seed-values.sql:7891
 msgid "British Indian Ocean Territory "
-msgstr ""
+msgstr "Britské indickooceánské území "
 
 #: 950.data.seed-values.sql:1142
 msgid "UPDATE_ORG_UNIT_SETTING.circ.hold_boundary.soft"
@@ -11438,7 +11454,7 @@ msgstr "Povolit uživateli vytvořit/zobrazit/upravit/smazat finanční zdroj"
 
 #: 950.data.seed-values.sql:7595
 msgid "Overtures"
-msgstr ""
+msgstr "Overtury"
 
 #: 950.data.seed-values.sql:11449
 msgid "Serial Subscription"
@@ -11453,7 +11469,7 @@ msgstr "Baltské jazyky (ostatní)"
 #: 950.data.seed-values.sql:8304 950.data.seed-values.sql:8334
 #: 950.data.seed-values.sql:8364 950.data.seed-values.sql:8394
 msgid "Bibliographies"
-msgstr ""
+msgstr "Bibliografie"
 
 #: 950.data.seed-values.sql:4555
 msgid ""
@@ -11490,7 +11506,7 @@ msgstr "CREATE_BILLING_TYPE"
 #: 950.data.seed-values.sql:8318 950.data.seed-values.sql:8348
 #: 950.data.seed-values.sql:8378 950.data.seed-values.sql:8408
 msgid "Programmed texts"
-msgstr ""
+msgstr "Programátorské texty"
 
 #: 950.data.seed-values.sql:4210
 msgid "Default Hotkeyset"
@@ -11525,7 +11541,7 @@ msgstr "Uživatel smí smazat mapu údajů statistických kategorií exempláře
 
 #: 950.data.seed-values.sql:7870
 msgid "Alaska "
-msgstr ""
+msgstr "Aljaška "
 
 #: 950.data.seed-values.sql:15551 950.data.seed-values.sql:15557
 msgid "Void Overdue Fines When Items are Marked Long-Overdue"
@@ -11543,7 +11559,7 @@ msgstr "Rukopisný textový dokument"
 
 #: 950.data.seed-values.sql:7557
 msgid "Bluegrass music"
-msgstr ""
+msgstr "Bluegrass"
 
 #: 950.data.seed-values.sql:11748 950.data.seed-values.sql:11749
 msgid "Historical Hold Retention Count"
@@ -11551,7 +11567,7 @@ msgstr "Počet ponechávaných historických rezervací"
 
 #: 950.data.seed-values.sql:8050
 msgid "Vanuatu "
-msgstr ""
+msgstr "Vanuatu "
 
 #: 950.data.seed-values.sql:6634 950.data.seed-values.sql:6641
 msgid "Kusaie"
@@ -11587,7 +11603,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:7955
 msgid "Grenada "
-msgstr ""
+msgstr "Grenada "
 
 #: 950.data.seed-values.sql:11455
 msgid "Paper"
@@ -11615,7 +11631,7 @@ msgstr "Telus Mobility"
 
 #: 950.data.seed-values.sql:7875
 msgid "Antigua and Barbuda "
-msgstr ""
+msgstr "Antigua a Barbuda "
 
 #: 950.data.seed-values.sql:3844 950.data.seed-values.sql:3847
 msgid "PayPal password"
@@ -11630,7 +11646,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:7878
 msgid "Australia "
-msgstr ""
+msgstr "Austrálie "
 
 #: 950.data.seed-values.sql:11466
 msgid "Canceled: Deleted"
@@ -11638,7 +11654,7 @@ msgstr "Zrušeno: Smazáno"
 
 #: 950.data.seed-values.sql:7780
 msgid "Sinusoidal"
-msgstr ""
+msgstr "Sinusoidální zobrazení"
 
 #: 950.data.seed-values.sql:15968
 msgid "Vandelay Generate Default Call Numbers"
@@ -11688,11 +11704,11 @@ msgstr ""
 
 #: 950.data.seed-values.sql:7995
 msgid "Korea (North) "
-msgstr ""
+msgstr "Severní Korea "
 
 #: 950.data.seed-values.sql:8138
 msgid "United States Misc. Caribbean Islands "
-msgstr ""
+msgstr "Karibská zámořská území, USA "
 
 #: 950.data.seed-values.sql:4777
 msgid "Default showing suggested patron registration fields"
@@ -11718,7 +11734,7 @@ msgstr "Sinotibetské jazyky (ostatní)"
 
 #: 950.data.seed-values.sql:8078
 msgid "Panama "
-msgstr ""
+msgstr "Panama "
 
 #: 950.data.seed-values.sql:1458
 msgid "Create monograph part definition."
@@ -11797,7 +11813,7 @@ msgstr "Atribut formátu rezervace metazáznamu v OPACu"
 
 #: 950.data.seed-values.sql:8053
 msgid "Nicaragua "
-msgstr ""
+msgstr "Nicaragua "
 
 #: 950.data.seed-values.sql:1044
 msgid "CREATE_AUTHORITY_IMPORT_IMPORT_FIELD_DEF"
@@ -11805,13 +11821,13 @@ msgstr "CREATE_AUTHORITY_IMPORT_IMPORT_FIELD_DEF"
 
 #: 950.data.seed-values.sql:8075
 msgid "Prince Edward Island "
-msgstr ""
+msgstr "Ostrov prince Edwarda "
 
 #: 950.data.seed-values.sql:7649 950.data.seed-values.sql:7679
 #: 950.data.seed-values.sql:8313 950.data.seed-values.sql:8343
 #: 950.data.seed-values.sql:8373 950.data.seed-values.sql:8403
 msgid "Discographies"
-msgstr ""
+msgstr "Diskografie"
 
 #: 950.data.seed-values.sql:6949
 msgid "Monograph/Item"
@@ -11836,7 +11852,7 @@ msgstr "Číslo označující počet seznamů zobrazených na stránce"
 
 #: 950.data.seed-values.sql:8170
 msgid "Marshall Islands "
-msgstr ""
+msgstr "Marshallovy ostrovy "
 
 #: 950.data.seed-values.sql:3718 950.data.seed-values.sql:3721
 msgid "Enable AuthorizeNet payments"
@@ -11872,7 +11888,7 @@ msgstr "Maximální doba čekání (v sekundách) na vyhledání URL"
 #: 950.data.seed-values.sql:8307 950.data.seed-values.sql:8337
 #: 950.data.seed-values.sql:8367 950.data.seed-values.sql:8397
 msgid "Encyclopedias"
-msgstr ""
+msgstr "Encyklopedie"
 
 #: 950.data.seed-values.sql:6475
 msgid "Chamorro"
@@ -11895,7 +11911,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:8003
 msgid "Liberia "
-msgstr ""
+msgstr "Libérie "
 
 #: 950.data.seed-values.sql:7705
 msgid "Condensed score or piano-conductor score"
@@ -11913,11 +11929,11 @@ msgstr "CREATE_LANGUAGE"
 #: 950.data.seed-values.sql:8321 950.data.seed-values.sql:8351
 #: 950.data.seed-values.sql:8381 950.data.seed-values.sql:8411
 msgid "Statistics"
-msgstr ""
+msgstr "Statistiky"
 
 #: 950.data.seed-values.sql:7938
 msgid "England "
-msgstr ""
+msgstr "Anglie "
 
 # id::clm.value__sal
 #: 950.data.seed-values.sql:6767
@@ -12010,7 +12026,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:7884
 msgid "Barbados "
-msgstr ""
+msgstr "Barbados "
 
 # id::clm.value__suk
 #: 950.data.seed-values.sql:6810
@@ -12043,7 +12059,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:7567
 msgid "Chants, other"
-msgstr ""
+msgstr "Písně, ostatní"
 
 #: 950.data.seed-values.sql:1160
 msgid "UPDATE_ORG_UNIT_SETTING.cat.bib.keep_on_empty"
@@ -12059,11 +12075,11 @@ msgstr ""
 
 #: 950.data.seed-values.sql:7571
 msgid "Concertos"
-msgstr ""
+msgstr "Koncerty"
 
 #: 950.data.seed-values.sql:7839
 msgid "Updating loose-leaf"
-msgstr ""
+msgstr "aktualizace nevázaných  listů"
 
 #: 950.data.seed-values.sql:4123
 msgid ""
@@ -12099,11 +12115,11 @@ msgstr "DELETE_AUTHORITY_RECORD_NOTE"
 #: 950.data.seed-values.sql:8272 950.data.seed-values.sql:8286
 #: 950.data.seed-values.sql:8300
 msgid "Other accompanying matter"
-msgstr ""
+msgstr "Další doprovodný materiál"
 
 #: 950.data.seed-values.sql:8112
 msgid "Surinam "
-msgstr ""
+msgstr "Surinam "
 
 # id::clm.value__got
 #: 950.data.seed-values.sql:6564
@@ -12126,7 +12142,7 @@ msgstr "Cellcom"
 
 #: 950.data.seed-values.sql:7921
 msgid "Costa Rica "
-msgstr ""
+msgstr "Kostarika "
 
 #: 950.data.seed-values.sql:1184
 msgid "Allow a user to create, delete, and update trigger cleanup entries"
@@ -12173,12 +12189,12 @@ msgstr ""
 
 #: 950.data.seed-values.sql:7951
 msgid "Terres australes et antarctiques françaises "
-msgstr ""
+msgstr "Francouzská jižní a antarktická území "
 
 #: 950.data.seed-values.sql:7735 950.data.seed-values.sql:8440
 #: 950.data.seed-values.sql:8461
 msgid "Rehearsals"
-msgstr ""
+msgstr "Zkoušky"
 
 #: 950.data.seed-values.sql:2606
 msgid "Program"
@@ -12188,7 +12204,7 @@ msgstr "Program"
 #: 950.data.seed-values.sql:8489 950.data.seed-values.sql:8502
 #: 950.data.seed-values.sql:8515
 msgid "Bathymetry, isolines"
-msgstr ""
+msgstr "Bathymetrie, izočáry"
 
 #: 950.data.seed-values.sql:3820
 msgid "Often the same thing as the login"
@@ -12200,7 +12216,7 @@ msgstr "UPDATE_ORG_UNIT_SETTING.circ.min_item_price"
 
 #: 950.data.seed-values.sql:7614
 msgid "Suites"
-msgstr ""
+msgstr "Svity"
 
 #: 950.data.seed-values.sql:12880
 msgid "See Also From Tracing -- Uniform Title"
@@ -12238,7 +12254,7 @@ msgstr "Papuánské jazyky (ostatní)"
 #: 950.data.seed-values.sql:8320 950.data.seed-values.sql:8350
 #: 950.data.seed-values.sql:8380 950.data.seed-values.sql:8410
 msgid "Directories"
-msgstr ""
+msgstr "Adresáře"
 
 # id::cam.value__e
 #: 950.data.seed-values.sql:6896
@@ -12251,7 +12267,7 @@ msgstr "Povolit uživateli zobrazit transakce jiného uživatele"
 
 #: 950.data.seed-values.sql:7988
 msgid "Iraq"
-msgstr ""
+msgstr "Irák"
 
 #: 950.data.seed-values.sql:12166
 msgid "Import failed due to invalid circulation modifier"
@@ -12284,7 +12300,7 @@ msgstr "Balúčština"
 
 #: 950.data.seed-values.sql:7855
 msgid "Transposition"
-msgstr ""
+msgstr "Transpozice"
 
 #: 950.data.seed-values.sql:6732
 msgid "Ossetic"
@@ -12292,7 +12308,7 @@ msgstr "Osetština"
 
 #: 950.data.seed-values.sql:7872
 msgid "Anguilla "
-msgstr ""
+msgstr "Anguilla "
 
 #: 950.data.seed-values.sql:2534 950.data.seed-values.sql:2535
 msgid "Default Record View"
@@ -12356,7 +12372,7 @@ msgstr "Přeložený název"
 
 #: 950.data.seed-values.sql:8159
 msgid "Wisconsin "
-msgstr ""
+msgstr "Wisconsin "
 
 #: 950.data.seed-values.sql:1024
 msgid "UPDATE_PERM"
@@ -12372,7 +12388,7 @@ msgstr "DELETE_NET_ACCESS_LEVEL"
 
 #: 950.data.seed-values.sql:8180
 msgid "Slovakia "
-msgstr ""
+msgstr "Slovensko "
 
 #: 950.data.seed-values.sql:3604
 msgid ""
@@ -12392,11 +12408,11 @@ msgstr "Aliant"
 
 #: 950.data.seed-values.sql:8123
 msgid "Togo "
-msgstr ""
+msgstr "Togo "
 
 #: 950.data.seed-values.sql:7772
 msgid "Azimuthal, specific type unknown"
-msgstr ""
+msgstr "Azimutální zobrazení nespecifikované"
 
 #: 950.data.seed-values.sql:516
 msgid ""
@@ -12429,7 +12445,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:7588
 msgid "Motion picture music"
-msgstr ""
+msgstr "Filmová hudba"
 
 #: 950.data.seed-values.sql:15152
 msgid "Upload Default Min. Quality Ratio"
@@ -12446,7 +12462,7 @@ msgstr "Aktivovat funkce, které posílají SMS zprávy"
 
 #: 950.data.seed-values.sql:7578
 msgid "Fugues"
-msgstr ""
+msgstr "Fugy"
 
 #: 950.data.seed-values.sql:12946
 msgid "See From Tracing -- Form Subdivision"
@@ -12469,7 +12485,7 @@ msgstr "Ostatní"
 msgid ""
 "Date of distribution/release/issue and production/recording session when "
 "different"
-msgstr ""
+msgstr "Datum distribuce/uvolnění/vydání a produkce/nahrávání, pokud se liší"
 
 #: 950.data.seed-values.sql:15888
 msgid "Allow Patron Self-Registration"
@@ -12489,7 +12505,7 @@ msgstr "ADMIN_INVOICE_METHOD"
 
 #: 950.data.seed-values.sql:7755
 msgid "Instrumental parts"
-msgstr ""
+msgstr "Instrumentální části"
 
 #: 950.data.seed-values.sql:13183
 msgid "User Event Log"
@@ -12558,7 +12574,7 @@ msgstr "proužek mikrofilmu"
 
 #: 950.data.seed-values.sql:8042
 msgid "Newfoundland and Labrador "
-msgstr ""
+msgstr "Newfoundland a Labrador "
 
 #: 950.data.seed-values.sql:10881
 msgid "A circ history needs to be formatted for printing."
@@ -12583,7 +12599,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:8076
 msgid "Pakistan "
-msgstr ""
+msgstr "Pákistán "
 
 #: 950.data.seed-values.sql:1386
 msgid "MANAGE_CLAIM"
@@ -12591,7 +12607,7 @@ msgstr "MANAGE_CLAIM"
 
 #: 950.data.seed-values.sql:7981
 msgid "Indiana "
-msgstr ""
+msgstr "Indiana "
 
 #: 950.data.seed-values.sql:7289
 msgid "computer dataset"
@@ -12599,7 +12615,7 @@ msgstr "počítačová datová sada"
 
 #: 950.data.seed-values.sql:8062
 msgid "New York (State) "
-msgstr ""
+msgstr "New York (stát) "
 
 #: 950.data.seed-values.sql:11474
 msgid "Canceled: Not Accepted"
@@ -12611,7 +12627,7 @@ msgstr "Samoobslužné výpůjčky - proxy přihlášení"
 
 #: 950.data.seed-values.sql:8056
 msgid "Northwest Territories "
-msgstr ""
+msgstr "Severozápadní teritoria "
 
 #: 950.data.seed-values.sql:4156
 msgid "Record In-House Use: Maximum # of uses allowed per entry."
@@ -12644,7 +12660,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:7983
 msgid "Iraq "
-msgstr ""
+msgstr "Irák "
 
 #: 950.data.seed-values.sql:354
 msgid "Canadian English"
@@ -12654,19 +12670,19 @@ msgstr "Kanadská angličtina"
 #: 950.data.seed-values.sql:8308 950.data.seed-values.sql:8338
 #: 950.data.seed-values.sql:8368 950.data.seed-values.sql:8398
 msgid "Handbooks"
-msgstr ""
+msgstr "Příručky"
 
 #: 950.data.seed-values.sql:7746
 msgid "Newspaper format"
-msgstr ""
+msgstr "Novinový formát"
 
 #: 950.data.seed-values.sql:8025
 msgid "Montenegro "
-msgstr ""
+msgstr "Černá Hora "
 
 #: 950.data.seed-values.sql:8185
 msgid "South Georgia and the South Sandwich Islands "
-msgstr ""
+msgstr "Jižní Georgie a Jižní Sandwichovy ostrovy "
 
 #: 950.data.seed-values.sql:13227
 msgid "Test Carrier"
@@ -12682,7 +12698,7 @@ msgstr "Povolit uživateli zadávat Z39.50 dotazy na vzdálené servery"
 
 #: 950.data.seed-values.sql:7950
 msgid "France "
-msgstr ""
+msgstr "Francie "
 
 # id::clm.value__din
 #: 950.data.seed-values.sql:6508
@@ -12720,11 +12736,11 @@ msgstr "Bengálština"
 
 #: 950.data.seed-values.sql:8040
 msgid "North Dakota "
-msgstr ""
+msgstr "Severní Dakota "
 
 #: 950.data.seed-values.sql:7879
 msgid "Austria "
-msgstr ""
+msgstr "Rakousko "
 
 #: 950.data.seed-values.sql:3925
 msgid "Juvenile Age Threshold"
@@ -12782,7 +12798,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:7974
 msgid "Hungary "
-msgstr ""
+msgstr "Maďarsko "
 
 #: 950.data.seed-values.sql:2808
 msgid "When charging for lost items, charge this amount as a minimum."
@@ -12864,7 +12880,7 @@ msgstr "Gorontalo"
 
 #: 950.data.seed-values.sql:8001
 msgid "Kazakhstan "
-msgstr ""
+msgstr "Kazachstán "
 
 #: 950.data.seed-values.sql:1220
 msgid "Allow a user to create, update, and delete trigger validators"
@@ -12896,7 +12912,7 @@ msgstr "Čtenář překročil maximální povolené pokuty předběžných kolek
 
 #: 950.data.seed-values.sql:8157
 msgid "Western Australia "
-msgstr ""
+msgstr "Západní Austrálie "
 
 #: 950.data.seed-values.sql:12
 msgid "Bilingual"
@@ -12904,11 +12920,11 @@ msgstr "Dvojjazyčný"
 
 #: 950.data.seed-values.sql:8206
 msgid "Reprint/reissue date and original date"
-msgstr ""
+msgstr "Datum reprintu/dotisku"
 
 #: 950.data.seed-values.sql:7941
 msgid "Ethiopia "
-msgstr ""
+msgstr "Etiopie "
 
 # id::cst.value__1
 #: 950.data.seed-values.sql:18
@@ -12942,7 +12958,7 @@ msgstr "CREATE_IMPORT_TRASH_FIELD"
 
 #: 950.data.seed-values.sql:7560
 msgid "Cantatas"
-msgstr ""
+msgstr "Kantáty"
 
 #: 950.data.seed-values.sql:4669
 msgid "Show prefix field on patron registration"
@@ -12966,7 +12982,7 @@ msgstr "Zobrazit pole \"další telefon\" na kartě registračních údajů čte
 
 #: 950.data.seed-values.sql:8142
 msgid "United States Misc. Pacific Islands "
-msgstr ""
+msgstr "Tichomořská zámořská území, USA "
 
 #: 950.data.seed-values.sql:1402
 msgid "UPDATE_INVOICE_METHOD"
@@ -13001,7 +13017,7 @@ msgstr "Systém: Pronájem"
 #: 950.data.seed-values.sql:8588 950.data.seed-values.sql:8604
 #: 950.data.seed-values.sql:8620
 msgid "Photographs"
-msgstr ""
+msgstr "Fotografie"
 
 #: 950.data.seed-values.sql:2473
 msgid "Staff forced"
@@ -13022,7 +13038,7 @@ msgstr "Luiseño"
 
 #: 950.data.seed-values.sql:7867
 msgid "Argentina "
-msgstr ""
+msgstr "Argentina "
 
 #: 950.data.seed-values.sql:1008
 msgid "UPDATE_LASSO"
@@ -13042,7 +13058,7 @@ msgstr "Povolit uživateli vytvořit/upravit/smazat fond"
 
 #: 950.data.seed-values.sql:7871
 msgid "Alabama "
-msgstr ""
+msgstr "Alabama "
 
 #: 950.data.seed-values.sql:12915
 msgid "See Also From Tracing -- Geographic Name"
@@ -13050,11 +13066,11 @@ msgstr "Směrování odkazu viz též -- geografické jméno"
 
 #: 950.data.seed-values.sql:7763
 msgid "Gnomic"
-msgstr ""
+msgstr "Gnómonické zobrazení"
 
 #: 950.data.seed-values.sql:7703
 msgid "Accompaniment reduced for keyboard"
-msgstr ""
+msgstr "Doprovod upraven pro klávesy"
 
 #: 950.data.seed-values.sql:6970 950.data.seed-values.sql:6995
 #: 950.data.seed-values.sql:6996 950.data.seed-values.sql:7070
@@ -13071,7 +13087,7 @@ msgstr "Samojština"
 #: 950.data.seed-values.sql:7724 950.data.seed-values.sql:8429
 #: 950.data.seed-values.sql:8450
 msgid "Fiction"
-msgstr ""
+msgstr "Beletrie"
 
 #: 950.data.seed-values.sql:38
 msgid "Alerting block on Circ, Hold and Renew"
@@ -13107,7 +13123,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:8173
 msgid "Niue "
-msgstr ""
+msgstr "Niue "
 
 #: 950.data.seed-values.sql:6883
 msgid "Zapotec"
@@ -13115,7 +13131,7 @@ msgstr "Zapotéčtina"
 
 #: 950.data.seed-values.sql:7606
 msgid "Rhapsodies"
-msgstr ""
+msgstr "Rapsodie"
 
 #: 950.data.seed-values.sql:13518 950.data.seed-values.sql:13620
 #: 950.data.seed-values.sql:13637 950.data.seed-values.sql:13654
@@ -13172,7 +13188,7 @@ msgstr "Integrující zdroj"
 
 #: 950.data.seed-values.sql:8163
 msgid "Samoa "
-msgstr ""
+msgstr "Samoa "
 
 #: 950.data.seed-values.sql:12908
 msgid "Heading -- Chronological Term"
@@ -13184,7 +13200,7 @@ msgstr "Povolit upravit/znovu použít akviziční seznam"
 
 #: 950.data.seed-values.sql:7944
 msgid "Finland "
-msgstr ""
+msgstr "Finsko "
 
 #: 950.data.seed-values.sql:594
 msgid "User may update an entry in a copy statistical category"
@@ -13192,7 +13208,7 @@ msgstr "Uživatel smí upravit údaj statistické kategorie exempláře"
 
 #: 950.data.seed-values.sql:7918
 msgid "Curaçao "
-msgstr ""
+msgstr "Curaçao "
 
 #: 950.data.seed-values.sql:7040 950.data.seed-values.sql:7041
 #: 950.data.seed-values.sql:7106 950.data.seed-values.sql:7107
@@ -13215,13 +13231,13 @@ msgstr "Povolit uživateli vytvořit nový kontejner pro jiného uživatele"
 
 #: 950.data.seed-values.sql:8006
 msgid "Lithuania "
-msgstr ""
+msgstr "Lotyšsko "
 
 #: 950.data.seed-values.sql:7655 950.data.seed-values.sql:7685
 #: 950.data.seed-values.sql:8319 950.data.seed-values.sql:8349
 #: 950.data.seed-values.sql:8379 950.data.seed-values.sql:8409
 msgid "Filmographies"
-msgstr ""
+msgstr "Filmografie"
 
 #: 950.data.seed-values.sql:2769
 msgid "Default Classification Scheme"
@@ -13242,7 +13258,7 @@ msgstr "Poplatek za zpracování dlouhodobě nevrácených materiálů"
 
 #: 950.data.seed-values.sql:7994
 msgid "Kyrgyzstan "
-msgstr ""
+msgstr "Kyrgyzstán "
 
 #: 950.data.seed-values.sql:6483
 msgid "Choctaw"
@@ -13263,11 +13279,11 @@ msgstr "Jihoamerické indiánské jazyky (ostatní)"
 
 #: 950.data.seed-values.sql:7895
 msgid "Bolivia "
-msgstr ""
+msgstr "Bolívia "
 
 #: 950.data.seed-values.sql:7842
 msgid "Periodical"
-msgstr ""
+msgstr "Periodikum"
 
 #: 950.data.seed-values.sql:4914
 msgid ""
@@ -13360,7 +13376,7 @@ msgstr "Poškozený záznam způsobil chybu při přepsání"
 #: 950.data.seed-values.sql:8486 950.data.seed-values.sql:8499
 #: 950.data.seed-values.sql:8512
 msgid "Spot heights"
-msgstr ""
+msgstr "Bodový výškopis"
 
 #: 950.data.seed-values.sql:564
 msgid "Allow a user to see what another user has checked out"
@@ -13368,7 +13384,7 @@ msgstr "Povolit uživateli zobrazit výpůjčky jiného uživatele"
 
 #: 950.data.seed-values.sql:8065
 msgid "Oklahoma "
-msgstr ""
+msgstr "Oklahoma "
 
 #: 950.data.seed-values.sql:3559
 msgid "All selfcheck stations must use a workstation"
@@ -13448,7 +13464,7 @@ msgstr "Směrování odkazu viz -- jméno akce"
 
 #: 950.data.seed-values.sql:7583
 msgid "Marches"
-msgstr ""
+msgstr "Pochody"
 
 #: 950.data.seed-values.sql:6777
 msgid "Semitic (Other)"
@@ -13507,7 +13523,7 @@ msgstr "UPDATE_BILLING_TYPE"
 
 #: 950.data.seed-values.sql:7908
 msgid "Chad "
-msgstr ""
+msgstr "Čad "
 
 #: 950.data.seed-values.sql:14928
 msgid "All Link Checker filter dialogs"
@@ -13519,11 +13535,11 @@ msgstr "Výchozí knihovna pro vyzvednutí rezervací"
 
 #: 950.data.seed-values.sql:8115
 msgid "Scotland "
-msgstr ""
+msgstr "Skotsko "
 
 #: 950.data.seed-values.sql:7555
 msgid "Ballads"
-msgstr ""
+msgstr "Balady"
 
 #: 950.data.seed-values.sql:1244
 msgid "Allows a user to capture booking reservations"
@@ -13539,7 +13555,7 @@ msgstr "Povolí uživateli vytvořit/upravit/smazat rezervované zdroje"
 
 #: 950.data.seed-values.sql:7741 950.data.seed-values.sql:7837
 msgid "None of the following"
-msgstr ""
+msgstr "žádný z uvedených"
 
 #: 950.data.seed-values.sql:13206
 msgid "Circulation Policy Configuration Column Settings"
@@ -13547,7 +13563,7 @@ msgstr "Nastavení sloupců pro konfiguraci výpůjčních pravidel (politik)"
 
 #: 950.data.seed-values.sql:7912
 msgid "China (Republic : 1949"
-msgstr ""
+msgstr "Čína (republika : 1949"
 
 #: 950.data.seed-values.sql:3937
 msgid ""
@@ -13555,6 +13571,9 @@ msgid ""
 "the update_password_msg.tt2 TPAC template with a user-friendly description "
 "of your password strength requirements."
 msgstr ""
+"Regulární výraz, který definuje formát hesla. Upozornění: Ujistěte se, že "
+"jste do šlablony TPACu update_password_msg.tt2,  přidali  srozumitelnou "
+"nápovědu pro uživatele o požadavcích na sílu hesla."
 
 #: 950.data.seed-values.sql:177
 msgid "Authority Record ID"
@@ -13562,7 +13581,7 @@ msgstr "ID autoritního záznamu"
 
 #: 950.data.seed-values.sql:7909
 msgid "Sri Lanka "
-msgstr ""
+msgstr "Srí Lanka "
 
 #: 950.data.seed-values.sql:5220 950.data.seed-values.sql:5224
 msgid "General Staff Client container"
@@ -13608,7 +13627,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:7841
 msgid "Newspaper"
-msgstr ""
+msgstr "Noviny"
 
 #: 950.data.seed-values.sql:4672 950.data.seed-values.sql:4681
 msgid ""
@@ -13626,7 +13645,7 @@ msgstr "Testovací mód pro PayflowPro"
 
 #: 950.data.seed-values.sql:8057
 msgid "Nauru "
-msgstr ""
+msgstr "Nauru "
 
 #: 950.data.seed-values.sql:6698
 msgid "Creek"
@@ -13666,7 +13685,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:7907
 msgid "China "
-msgstr ""
+msgstr "Čína "
 
 #: 950.data.seed-values.sql:1162
 msgid "UPDATE_ORG_UNIT_SETTING.cat.bib.alert_on_empty"
@@ -13685,7 +13704,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:7957
 msgid "Gibraltar "
-msgstr ""
+msgstr "Gibraltar "
 
 #: 950.data.seed-values.sql:12168 950.data.seed-values.sql:12169
 msgid "Import failed due to system id collision"
@@ -13728,7 +13747,7 @@ msgstr "Povolit uživateli označit status exempláře jako \"vypůjčeno\""
 
 #: 950.data.seed-values.sql:8035
 msgid "Mexico "
-msgstr ""
+msgstr "Mexico "
 
 #: 950.data.seed-values.sql:36
 msgid "Alerting block on Circ and Hold"
@@ -13766,7 +13785,7 @@ msgstr "Povolit uživateli přidat/vytvořit/smazat záznamy SMS operátorů"
 
 #: 950.data.seed-values.sql:7769
 msgid "Modified stereographic for Alaska"
-msgstr ""
+msgstr "Upravená stereografie pro Aljašku"
 
 #: 950.data.seed-values.sql:11581
 msgid "Historical Hold Retention Age - Canceled (Hold Shelf expiration)"
@@ -13811,7 +13830,7 @@ msgstr "Severoamerické indiánské jazyky (ostatní)"
 
 #: 950.data.seed-values.sql:7537 950.data.seed-values.sql:8217
 msgid "No accompanying matter"
-msgstr ""
+msgstr "Bez doprovodných materiálů"
 
 # id::clm.value__crh
 #: 950.data.seed-values.sql:6497
@@ -13832,7 +13851,7 @@ msgstr "CREATE_LASSO"
 
 #: 950.data.seed-values.sql:8067
 msgid "Oregon "
-msgstr ""
+msgstr "Oregon "
 
 # id::clm.value__nog
 #: 950.data.seed-values.sql:6717
@@ -13844,7 +13863,7 @@ msgstr "Nogai"
 #: 950.data.seed-values.sql:8268 950.data.seed-values.sql:8282
 #: 950.data.seed-values.sql:8296
 msgid "Historical information"
-msgstr ""
+msgstr "Historická informace"
 
 #: 950.data.seed-values.sql:4998
 msgid ""
@@ -13898,13 +13917,13 @@ msgstr "Interlingua (Mezinárodní pomocná jazyková asociace)"
 
 #: 950.data.seed-values.sql:8184
 msgid "South Australia "
-msgstr ""
+msgstr "Jižní Austrálie "
 
 #: 950.data.seed-values.sql:7664 950.data.seed-values.sql:7696
 #: 950.data.seed-values.sql:8330 950.data.seed-values.sql:8360
 #: 950.data.seed-values.sql:8390 950.data.seed-values.sql:8420
 msgid "Calendars"
-msgstr ""
+msgstr "Kalendáře"
 
 #: 950.data.seed-values.sql:6853
 msgid "Twi"
@@ -14034,11 +14053,11 @@ msgstr "Afar"
 
 #: 950.data.seed-values.sql:7634
 msgid "Bound as part of another work"
-msgstr ""
+msgstr "Přívažky a části jiného díla"
 
 #: 950.data.seed-values.sql:8027
 msgid "Mongolia "
-msgstr ""
+msgstr "Mongolsko "
 
 #: 950.data.seed-values.sql:11483
 msgid "Part of the whole quantity."
@@ -14103,15 +14122,15 @@ msgstr "Povolit uživteli zobrazit skupinu oprávnění u jiných uživatelů"
 
 #: 950.data.seed-values.sql:8092
 msgid "Russia (Federation) "
-msgstr ""
+msgstr "Rusko (Ruská federace) "
 
 #: 950.data.seed-values.sql:7961
 msgid "Guadeloupe "
-msgstr ""
+msgstr "Guadeloupe "
 
 #: 950.data.seed-values.sql:8045
 msgid "Northern Ireland "
-msgstr ""
+msgstr "Severní Irsko "
 
 #: 950.data.seed-values.sql:6964
 msgid "M-II"
@@ -14129,7 +14148,7 @@ msgstr "Obsah inkludu event_text"
 
 #: 950.data.seed-values.sql:7601
 msgid "Popular music"
-msgstr ""
+msgstr "Populární hudba"
 
 #: 950.data.seed-values.sql:1428
 msgid "VIEW_HOLD_MATRIX_MATCHPOINT"
@@ -14137,7 +14156,7 @@ msgstr "VIEW_HOLD_MATRIX_MATCHPOINT"
 
 #: 950.data.seed-values.sql:8031
 msgid "Montana "
-msgstr ""
+msgstr "Montana "
 
 #: 950.data.seed-values.sql:684
 msgid "Allow a user to check in/out an item that has an alert message"
@@ -14145,7 +14164,7 @@ msgstr "Povolit uživateli vracení/půjčování jednotek, které mají upozorn
 
 #: 950.data.seed-values.sql:7771
 msgid "Polar stereographic"
-msgstr ""
+msgstr "Polární stereografická projekce"
 
 #: 950.data.seed-values.sql:15385
 msgid "During fiscal rollover, update distribution formalae to use new funds"
@@ -14171,7 +14190,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:7977
 msgid "Idaho "
-msgstr ""
+msgstr "Idaho "
 
 #: 950.data.seed-values.sql:840
 msgid "Allow a user to mark an item status as 'in process'"
@@ -14184,7 +14203,7 @@ msgstr "Susu"
 
 #: 950.data.seed-values.sql:7906
 msgid "Cambodia "
-msgstr ""
+msgstr "Kambodža "
 
 #: 950.data.seed-values.sql:1298
 msgid "ADMIN_IDENT_TYPE"
@@ -14225,7 +14244,7 @@ msgstr "Záhlaví -- osobní jméno"
 
 #: 950.data.seed-values.sql:7915
 msgid "Colombia "
-msgstr ""
+msgstr "Kolumbie "
 
 #: 950.data.seed-values.sql:4564
 msgid ""
@@ -14287,11 +14306,11 @@ msgstr "Povolit uživateli manuálně upravit primární čtenářský průkaz"
 
 #: 950.data.seed-values.sql:7954
 msgid "Kiribati "
-msgstr ""
+msgstr "Kiribati "
 
 #: 950.data.seed-values.sql:7576
 msgid "Flamenco"
-msgstr ""
+msgstr "Flamenco"
 
 # id::clm.value''in__gwi
 #~ msgid "Gwich"
