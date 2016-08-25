@@ -829,141 +829,21 @@ __PACKAGE__->register_method(
 }
 
 sub multiclass_query {
+    # arghash only really supports limit/offset anymore
     my($self, $conn, $arghash, $query, $docache) = @_;
 
-    $logger->debug("initial search query => $query");
-    my $orig_query = $query;
-
-    $query =~ s/\+/ /go;
-    $query =~ s/^\s+//go;
-
-    # convert convenience classes (e.g. kw for keyword) to the full class name
-    # ensure that the convenience class isn't part of a word (e.g. 'playhouse')
-    $query =~ s/(^|\s)kw(:|\|)/$1keyword$2/go;
-    $query =~ s/(^|\s)ti(:|\|)/$1title$2/go;
-    $query =~ s/(^|\s)au(:|\|)/$1author$2/go;
-    $query =~ s/(^|\s)su(:|\|)/$1subject$2/go;
-    $query =~ s/(^|\s)se(:|\|)/$1series$2/go;
-    $query =~ s/(^|\s)name(:|\|)/$1author$2/og;
-
-    $logger->debug("cleansed query string => $query");
-    my $search = {};
-
-    my $simple_class_re  = qr/((?:\w+(?:\|\w+)?):[^:]+?)$/;
-    my $class_list_re    = qr/(?:keyword|title|author|subject|series)/;
-    my $modifier_list_re = qr/(?:site|dir|sort|lang|available|preflib)/;
-
-    my $tmp_value = '';
-    while ($query =~ s/$simple_class_re//so) {
-
-        my $qpart = $1;
-        my $where = index($qpart,':');
-        my $type  = substr($qpart, 0, $where++);
-        my $value = substr($qpart, $where);
-
-        if ($type !~ /^(?:$class_list_re|$modifier_list_re)/o) {
-            $tmp_value = "$qpart $tmp_value";
-            next;
-        }
-
-        if ($type =~ /$class_list_re/o ) {
-            $value .= $tmp_value;
-            $tmp_value = '';
-        }
-
-        next unless $type and $value;
-
-        $value =~ s/^\s*//og;
-        $value =~ s/\s*$//og;
-        $type = 'sort_dir' if $type eq 'dir';
-
-        if($type eq 'site') {
-            # 'site' is the org shortname.  when using this, we also want 
-            # to search at the requested org's depth
-            my $e = new_editor();
-            if(my $org = $e->search_actor_org_unit({shortname => $value})->[0]) {
-                $arghash->{org_unit} = $org->id if $org;
-                $arghash->{depth} = $e->retrieve_actor_org_unit_type($org->ou_type)->depth;
-            } else {
-                $logger->warn("'site:' query used on invalid org shortname: $value ... ignoring");
-            }
-        } elsif($type eq 'pref_ou') {
-            # 'pref_ou' is the preferred org shortname.
-            my $e = new_editor();
-            if(my $org = $e->search_actor_org_unit({shortname => $value})->[0]) {
-                $arghash->{pref_ou} = $org->id if $org;
-            } else {
-                $logger->warn("'pref_ou:' query used on invalid org shortname: $value ... ignoring");
-            }
-
-        } elsif($type eq 'available') {
-            # limit to available
-            $arghash->{available} = 1 unless $value eq 'false' or $value eq '0';
-
-        } elsif($type eq 'lang') {
-            # collect languages into an array of languages
-            $arghash->{language} = [] unless $arghash->{language};
-            push(@{$arghash->{language}}, $value);
-
-        } elsif($type =~ /^sort/o) {
-            # sort and sort_dir modifiers
-            $arghash->{$type} = $value;
-
-        } else {
-            # append the search term to the term under construction
-            $search->{$type} =  {} unless $search->{$type};
-            $search->{$type}->{term} =  
-                ($search->{$type}->{term}) ? $search->{$type}->{term} . " $value" : $value;
-        }
+    if ($query) {
+        $query =~ s/\+/ /go;
+        $query =~ s/^\s+//go;
+        $query =~ s/\s+/ /go;
+        $arghash->{query} = $query
     }
 
-    $query .= " $tmp_value";
-    $query =~ s/\s+/ /go;
-    $query =~ s/^\s+//go;
-    $query =~ s/\s+$//go;
+    $logger->debug("initial search query => $query") if $query;
 
-    my $type = $arghash->{default_class} || 'keyword';
-    $type = ($type eq '-') ? 'keyword' : $type;
-    $type = ($type !~ /^(title|author|keyword|subject|series)(?:\|\w+)?$/o) ? 'keyword' : $type;
+    (my $method = $self->api_name) =~ s/\.query/.staged/o;
+    return $self->method_lookup($method)->dispatch($arghash, $docache);
 
-    if($query) {
-        # This is the front part of the string before any special tokens were
-        # parsed OR colon-separated strings that do not denote a class.
-        # Add this data to the default search class
-        $search->{$type} =  {} unless $search->{$type};
-        $search->{$type}->{term} =
-            ($search->{$type}->{term}) ? $search->{$type}->{term} . " $query" : $query;
-    }
-    my $real_search = $arghash->{searches} = { $type => { term => $orig_query } };
-
-    # capture the original limit because the search method alters the limit internally
-    my $ol = $arghash->{limit};
-
-    my $sclient = OpenSRF::Utils::SettingsClient->new;
-
-    (my $method = $self->api_name) =~ s/\.query//o;
-
-    $method =~ s/multiclass/multiclass.staged/
-        if $sclient->config_value(apps => 'open-ils.search',
-            app_settings => 'use_staged_search') =~ /true/i;
-
-    # XXX This stops the session locale from doing the right thing.
-    # XXX Revisit this and have it translate to a lang instead of a locale.
-    #$arghash->{preferred_language} = $U->get_org_locale($arghash->{org_unit})
-    #    unless $arghash->{preferred_language};
-
-    $method = $self->method_lookup($method);
-    my ($data) = $method->run($arghash, $docache);
-
-    $arghash->{searches} = $search if (!$data->{complex_query});
-
-    $arghash->{limit} = $ol if $ol;
-    $data->{compiled_search} = $arghash;
-    $data->{query} = $orig_query;
-
-    $logger->info("compiled search is " . OpenSRF::Utils::JSON->perl2JSON($arghash));
-
-    return $data;
 }
 
 __PACKAGE__->register_method(
@@ -1249,6 +1129,7 @@ __PACKAGE__->register_method(
     signature => q/The .staff search includes hidden bibs, hidden items and bibs with no items.  Otherwise, @see open-ils.search.biblio.multiclass.staged/
 );
 
+my $estimation_strategy;
 sub staged_search {
     my($self, $conn, $search_hash, $docache) = @_;
 
@@ -1261,10 +1142,12 @@ sub staged_search {
     $method .= '.staff' if $self->api_name =~ /staff$/;
     $method .= '.atomic';
                 
-    return {count => 0} unless (
-        $search_hash and 
-        $search_hash->{searches} and 
-        scalar( keys %{$search_hash->{searches}} ));
+    if (!$search_hash{query}) {
+        return {count => 0} unless (
+            $search_hash and 
+            $search_hash->{searches} and 
+            scalar( keys %{$search_hash->{searches}} ));
+    }
 
     my $search_duration;
     my $user_offset = $search_hash->{offset} ||  0; # user-specified offset
@@ -1285,11 +1168,13 @@ sub staged_search {
     $search_hash->{core_limit}  = $superpage_size * $max_superpages;
 
     # Set the configured estimation strategy, defaults to 'inclusion'.
-    my $estimation_strategy = OpenSRF::Utils::SettingsClient
-        ->new
-        ->config_value(
-            apps => 'open-ils.search', app_settings => 'estimation_strategy'
-        ) || 'inclusion';
+    unless ($estimation_strategy) {
+        $estimation_strategy = OpenSRF::Utils::SettingsClient
+            ->new
+            ->config_value(
+                apps => 'open-ils.search', app_settings => 'estimation_strategy'
+            ) || 'inclusion';
+    }
     $search_hash->{estimation_strategy} = $estimation_strategy;
 
     # pull any existing results from the cache
@@ -1343,6 +1228,7 @@ sub staged_search {
             # retrieve the window of results from the database
             $logger->debug("staged search: fetching results from the database");
             $search_hash->{skip_check} = $page * $superpage_size;
+            $search_hash->{return_query} = $page == 0 ? 1 : 0;
             my $start = time;
             $results = $U->storagereq($method, %$search_hash);
             $search_duration = time - $start;
@@ -1383,6 +1269,12 @@ sub staged_search {
         push(@$all_results, @$results);
 
         my $current_count = scalar(@$all_results);
+
+        if ($page == 0) {
+            foreach (qw/ query_struct canonicalized_query /) {
+                $global_summary->{$_} = $summary->{$_};
+            }
+        }
 
         $est_hit_count = $summary->{estimated_hit_count} || $summary->{visible}
             if $page == 0;
@@ -1444,6 +1336,7 @@ sub staged_search {
 
     $conn->respond_complete(
         {
+            global_summary    => $global_summary,
             count             => $est_hit_count,
             core_limit        => $search_hash->{core_limit},
             superpage_size    => $search_hash->{check_limit},
@@ -1453,9 +1346,9 @@ sub staged_search {
         }
     );
 
-    cache_facets($facet_key, $new_ids, $IAmMetabib, $ignore_facet_classes) if $docache;
+    $logger->info("Completed canonicalized search is: $$global_summary{canonicalized_query}");
 
-    return undef;
+    return cache_facets($facet_key, $new_ids, $IAmMetabib, $ignore_facet_classes) if $docache;
 }
 
 sub tag_circulated_records {

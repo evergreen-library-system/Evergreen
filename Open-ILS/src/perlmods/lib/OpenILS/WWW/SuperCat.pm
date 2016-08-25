@@ -1438,19 +1438,20 @@ sub opensearch_feed {
     my $org_unit = get_ou($org);
 
     # Apostrophes break search and get indexed as spaces anyway
+    # XXX ^that's kinda a lie ...
     my $safe_terms = $terms;
     $safe_terms =~ s{'}{ }go;
+    
+    my $query_terms = 'site('.$org_unit->[0]->shortname.") $safe_terms";
+    $query_tems = "sort($sort) $query_terms" if ($sort);
+    $query_tems = "language($lang) $query_terms" if ($lang);
+    $query_tems = "#$sortdir $query_terms" if ($sortdir);
 
     my $recs = $search->request(
         'open-ils.search.biblio.multiclass.query' => {
-            org_unit    => $org_unit->[0]->id,
             offset        => $offset,
-            limit        => $limit,
-            sort        => $sort,
-            sort_dir    => $sortdir,
-            default_class => $class,
-            ($lang ?    ( 'language' => $lang    ) : ()),
-        } => $safe_terms => 1
+            limit        => $limit
+        } => $query_terms => 1
     )->gather(1);
 
     $log->debug("Hits for [$terms]: $recs->{count}");

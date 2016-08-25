@@ -1459,10 +1459,9 @@ sub abstract_query2str_impl {
                 ($abstract_query->{content} || '') .
                 ($abstract_query->{suffix} || '');
         } elsif ($abstract_query->{type} eq 'facet') {
-            # facet syntax [ # ] is hardcoded I guess?
             my $prefix = $abstract_query->{negate} ? $qpconfig->{operators}{disallowed} : '';
             $q .= ($q ? ' ' : '') . $prefix . $abstract_query->{name} . "[" .
-                join(" # ", @{$abstract_query->{values}}) . "]";
+                join("][", @{$abstract_query->{values}}) . "]";
         }
     }
 

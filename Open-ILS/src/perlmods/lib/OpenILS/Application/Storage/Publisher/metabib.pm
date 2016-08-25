@@ -2792,7 +2792,7 @@ __PACKAGE__->register_method(
 sub abstract_query2str {
     my ($self, $conn, $query) = @_;
 
-    return QueryParser::Canonicalize::abstract_query2str_impl($query, 0);
+    return QueryParser::Canonicalize::abstract_query2str_impl($query, 0, $OpenILS::Application::Storage::QParser);
 }
 
 __PACKAGE__->register_method(
@@ -3134,6 +3134,11 @@ sub query_parser_fts {
         $$summary_row{complex_query} = $query->simple_plan ? 0 : 1;
     }
 
+    if ($args{return_query}) {
+        $$summary_row{query_struct} = $query->parse_tree->to_abstract_query();
+        $$summary_row{canonicalized_query} = QueryParser::Canonicalize::abstract_query2str_impl($$summary_row{query_struct}, 0, $parser);
+    }
+
     $client->respond( $summary_row );
 
     $log->debug("Search yielded ".scalar(@$recs)." checked, visible results with an approximate visible total of $estimate.",DEBUG);
@@ -3173,17 +3178,20 @@ sub query_parser_fts_wrapper {
 
     _initialize_parser($parser) unless $parser->initialization_complete;
 
-    if (! scalar( keys %{$args{searches}} )) {
+    $args{searches} ||= {};
+    if (!scalar(keys(%{$args{searches}})) && !$args{query}) {
         die "No search arguments were passed to ".$self->api_name;
     }
 
     $top_org ||= actor::org_unit->search( { parent_ou => undef } )->next;
 
-    $log->debug("Constructing QueryParser query from staged search hash ...", DEBUG);
-    my $base_query = '';
-    for my $sclass ( keys %{$args{searches}} ) {
-        $log->debug(" --> staged search key: $sclass --> term: $args{searches}{$sclass}{term}", DEBUG);
-        $base_query .= " $sclass: $args{searches}{$sclass}{term}";
+    my $base_query = $args{query} || '';
+    if (scalar(keys($args{searches}))) {
+        $log->debug("Constructing QueryParser query from staged search hash ...", DEBUG);
+        for my $sclass ( keys %{$args{searches}} ) {
+            $log->debug(" --> staged search key: $sclass --> term: $args{searches}{$sclass}{term}", DEBUG);
+            $base_query .= " $sclass: $args{searches}{$sclass}{term}";
+        }
     }
 
     my $query = $base_query;
@@ -3262,6 +3270,8 @@ sub query_parser_fts_wrapper {
 
     $query = "estimation_strategy($args{estimation_strategy}) $query" if ($args{estimation_strategy});
     $query = "badge_orgs($borgs) $query" if ($borgs);
+
+    # XXX All of the following, down to the 'return' is basically dead code. someone higher up should handle it
     $query = "site($args{org_unit}) $query" if ($args{org_unit});
     $query = "depth($args{depth}) $query" if (defined($args{depth}));
     $query = "sort($args{sort}) $query" if ($args{sort});
@@ -3290,13 +3300,12 @@ sub query_parser_fts_wrapper {
         $args{item_form} = [ split '', $f ];
     }
 
-    for my $filter ( qw/locations location_groups statuses between audience language lit_form item_form item_type bib_level vr_format badges/ ) {
+    for my $filter ( qw/locations location_groups statuses audience language lit_form item_form item_type bib_level vr_format badges/ ) {
         if (my $s = $args{$filter}) {
             $s = [$s] if (!ref($s));
 
             my @filter_list = @$s;
 
-            next if ($filter eq 'between' and scalar(@filter_list) != 2);
             next if (@filter_list == 0);
 
             my $filter_string = join ',', @filter_list;
@@ -3306,7 +3315,7 @@ sub query_parser_fts_wrapper {
 
     $log->debug("Full QueryParser query: $query", DEBUG);
 
-    return query_parser_fts($self, $client, query => $query, _simple_plan => $base_plan->simple_plan );
+    return query_parser_fts($self, $client, query => $query, _simple_plan => $base_plan->simple_plan, return_query => $args{return_query} );
 }
 __PACKAGE__->register_method(
     api_name    => "open-ils.storage.biblio.multiclass.staged.search_fts",
