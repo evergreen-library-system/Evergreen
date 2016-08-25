@@ -47,9 +47,12 @@ Evergreen:
 * Blake Graham-Henderson
 * Jim Keenan
 * Kathy Lussier
+* Mike Rylander
 * Dan Scott
+* Ben Shum
 * Remington Steed
 * Jason Stephenson
+* Josh Stompro
 * Yamil Suarez
 
 Evergreen 2.9.6
