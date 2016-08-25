@@ -3,6 +3,95 @@ Evergreen 2.10 Release Notes
 :toc:
 :numbered:
 
+Evergreen 2.10.6
+----------------
+This release contains bugfixes improving on Evergreen 2.10.5.
+
+Add Date Header to Action Trigger Email/SMS Templates
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The Date: header specified in RFC 2822 has been added to the seed data
+for the example Action Trigger email and SMS templates, but no attempt
+has been made to automatically modify existing templates. To add this
+header (and end any "Why are my library emails from 1969/70?" questions
+you may have heard) make sure the following lines are in all templates
+that use the SendEmail or SendSMS reactors:
+
+The first is already in most sample templates, but you may need to add
+it to the top of any custom templates:
+`[%- USE date -%]`
+
+And this line should be inserted into the header block of each template:
+`Date: [%- date.format(date.now, '%a, %d %b %Y %T -0000', gmt => 1) %]`
+
+Other Bugfixes
+~~~~~~~~~~~~~~
+* Prorating invoice charges now works again.
+* The claims never checked out counter on the patron record is now
+  incremented correctly when marking a lost loan as
+  claims-never-checked-out.
+* When a transit is canceled, the copy's status is changed only
+  if its status was previously "In Transit".
+* Retrieving records with embedded holdings via SRU and Z39.50 is now
+  faster.
+* A performance issue with sorting entries on the public catalog
+  circulation history page is fixed.
+* Various style and responsive design improvements are made to the
+  circulation and holds history pages in the public catalog.
+* The public catalog holds history page now indicates if a hold
+  had been fulfilled.
+* The hold status message in the public catalog now uses
+  better grammar.
+* The error message displayed when a patron attempts to place
+  a hold but is prevented from doing so due to policy reasons
+  is now more likely to be useful
+* The public catalog now draws the edition statement only
+  from the 250 field; it no longer tries to check the 534
+  and 775 fields.
+* Embedded schema.org microdata now uses "offeredBy" rather
+  than "seller".
+* The ContentCafe added content plugin now handles the "fake"
+  ISBNs that Baker and Taylor assigns to media items.
+* Attempting to renew a rental or deposit item in the public
+  catalog no longer causes an internal server errorr.
+* Various format icons now have transparent backgrounds (as opposed
+  to white).
+* The file extension when exporting non-imported records is
+  now ".mrc" rather than ".xml".
+* The staff client will no longer wait indefinitely for Novelist
+  to supply added content, improving its responsiveness.
+* A few additional strings are now marked as translatable.
+
+Translation Updates
+~~~~~~~~~~~~~~~~~~~
+Translations in this release have been significantly increased.  In
+particular, Spanish has received a huge update with over 9,000 new
+translations, Czech has received a sizeable update of over 800
+translations, and additional smaller updates have been added for
+Arabic, French (Canada), and Armenian.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed
+code, testing and documentation patches to the 2.10.6 point release of Evergreen:
+
+* Thomas Berezansky
+* Jason Boyer
+* Galen Charlton
+* Jeff Davis
+* Bill Erickson
+* Blake Graham-Henderson
+* Jim Keenan
+* Kathy Lussier
+* Mike Rylander
+* Jane Sandberg
+* Dan Scott
+* Ben Shum
+* Remington Steed
+* Jason Stephenson
+* Josh Stompro
+* Yamil Suarez
+* Dan Wells
+
 Evergreen 2.10.5
 ----------------
 This release contains bugfixes improving on Evergreen 2.10.4
