@@ -1,7 +1,0 @@
-Merge Notification Preferences Tables in TPAC
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The patron notification preference page in the public catalog
-used to have two tables, separating notification settings
-based on their source. Since that distinction does not matter
-to patrons, and since the two tables aren't styled consistently,
-they are merged together.
