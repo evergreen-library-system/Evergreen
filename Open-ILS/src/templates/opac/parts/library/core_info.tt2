@@ -45,7 +45,7 @@
     [%- END; %]
 
     [%- IF ctx.library.parent_ou; %]
-    <h2>Branch relationship</h2>
+    <h2>[% l('Branch relationship') %]</h2>
     <div id="branch-info">[% l('Parent library: ') %]
         <a property="branchOf" href="[% mkurl(opac_root _ '/library/' _ ctx.parent.shortname, {}, 1) %]">[% ctx.parent.name | html %]</a>
     </div>
