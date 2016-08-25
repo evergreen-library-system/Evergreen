@@ -52,7 +52,7 @@ Other Bugfixes
 * The ContentCafe added content plugin now handles the "fake"
   ISBNs that Baker and Taylor assigns to media items.
 * Attempting to renew a rental or deposit item in the public
-  catalog no longer causes an internal server errorr.
+  catalog no longer causes an internal server error.
 * Various format icons now have transparent backgrounds (as opposed
   to white).
 * The file extension when exporting non-imported records is
@@ -65,12 +65,12 @@ Translation Updates
 ~~~~~~~~~~~~~~~~~~~
 Translations in this release have been significantly increased.  In
 particular, Spanish has received a huge update with over 9,000 new
-translations, Czech has received a sizeable update of over 800
+translations, Czech has received a sizable update of over 800
 translations, and additional smaller updates have been added for
 Arabic, French (Canada), and Armenian.
 
-Acknowledgements
-~~~~~~~~~~~~~~~~
+Acknowledgments
+~~~~~~~~~~~~~~~
 We would like to thank the following individuals who contributed
 code, testing and documentation patches to the 2.10.6 point release of Evergreen:
 
