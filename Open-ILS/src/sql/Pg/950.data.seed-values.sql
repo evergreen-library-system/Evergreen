@@ -16350,7 +16350,6 @@ INSERT INTO actor.org_unit_setting (
     'true'
 );
 
-<<<<<<< HEAD
 INSERT INTO config.global_flag (name, enabled, label) VALUES (
     'ingest.disable_authority_auto_update_bib_meta',  FALSE, 
     oils_i18n_gettext(
@@ -16362,7 +16361,6 @@ INSERT INTO config.global_flag (name, enabled, label) VALUES (
     )
 );
 
-=======
 -- email checkout receipts
 INSERT INTO config.usr_setting_type (
     name,
@@ -16462,4 +16460,3 @@ INSERT INTO action_trigger.environment (
     currval('action_trigger.event_definition_id_seq'),
     'circ_lib'
 );
->>>>>>> a452d2f... LP#1356477: seed data for email checkout receipts
