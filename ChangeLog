@@ -1,3 +1,809 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 6003862e49417ace15d19563b17c1b39a2539a96
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Thu Aug 25 20:08:58 2016 -0400
+
+    bump up upgrade instructions for 2.10.6
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+19	18	docs/installation/server_upgrade.txt
+
+commit fa4ccde581b6daa9e93f56f1b47328334258a96f
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Thu Aug 25 20:06:25 2016 -0400
+
+    forward-port 2.9.6-2.9.7 schema upgrade script
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+5	0	Open-ILS/src/sql/Pg/version-upgrade/2.9.6-2.9.7-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.9.6-2.9.7-upgrade-db.sql
+
+commit 8226f259fa43b85357d501d031dc90f4af46f3e4
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Thu Aug 25 17:29:12 2016 -0400
+
+    Docs: Add Additional 2.9.7 Acknowledgments for Testing/Signoff
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+3	0	docs/RELEASE_NOTES_2_9.txt
+
+commit 157d7007eb043b9ea48c9a66564464fb6830b593
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Thu Aug 25 17:26:19 2016 -0400
+
+    Docs: Adding 2.9.7 Release Notes
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+49	0	docs/RELEASE_NOTES_2_9.txt
+
+commit d8b50cb63e7a0fde8c931233035e7e5a1d068d52
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Wed Jun 15 13:04:23 2016 -0400
+
+    Docs: Adding 2.9.6 Release Notes
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+34	0	docs/RELEASE_NOTES_2_9.txt
+
+commit b56b63e12780df7a9c27a96793841dba4c9158e4
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Thu Aug 25 19:56:42 2016 -0400
+
+    let the 2.10.6 release notes be free of errorr
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+4	4	docs/RELEASE_NOTES_2_10.adoc
+
+commit 1b49902949094b6bbecf07e8bad49caf16b4b423
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Thu Aug 25 17:04:41 2016 -0400
+
+    first pass at 2.10.6 release notes
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+89	0	docs/RELEASE_NOTES_2_10.adoc
+
+commit 29c563c4003fd893f7eada8bc620b37eb0ccfa69
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Aug 25 17:01:05 2016 -0400
+
+    Translation updates - po files, part 2
+    
+    Missed the *new* po files in the previous commit.  Number of new
+    translations for Spanish now stands at 9000+ (wow!).
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+34	0	build/i18n/po/FlattenerGrid.js/es-ES.po
+125	0	build/i18n/po/PCrudFilterPane.js/es-ES.po
+4713	0	build/i18n/po/webstaff/es-ES.po
+1	1	docs/RELEASE_NOTES_NEXT/Translations/Updates.adoc
+ create mode 100644 build/i18n/po/FlattenerGrid.js/es-ES.po
+ create mode 100644 build/i18n/po/PCrudFilterPane.js/es-ES.po
+ create mode 100644 build/i18n/po/webstaff/es-ES.po
+
+commit 762d7cc018532ee91a83893bc4f4705b04a5b16e
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Aug 25 15:27:56 2016 -0400
+
+    Translation updates - po files
+    
+    Translations have been significantly increased.  In particular, Spanish
+    has received a huge update with over 8,000 new translations, Czech has
+    received a sizeable update of over 800 translations, and additional
+    smaller updates have been added for Arabic, French (Canada), and
+    Armenian.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+19	15	build/i18n/po/AutoFieldWidget.js/es-ES.po
+25	25	build/i18n/po/Searcher.js/es-ES.po
+23	17	build/i18n/po/URLVerify.js/es-ES.po
+5	5	build/i18n/po/XULTermLoader.js/es-ES.po
+4	4	build/i18n/po/acq.js/cs-CZ.po
+54	24	build/i18n/po/acq.js/es-ES.po
+7	7	build/i18n/po/admin.properties/es-ES.po
+4	4	build/i18n/po/cat.properties/cs-CZ.po
+138	99	build/i18n/po/cat.properties/es-ES.po
+7	6	build/i18n/po/circ.properties/cs-CZ.po
+91	60	build/i18n/po/circ.properties/es-ES.po
+6	6	build/i18n/po/circ.properties/hy-AM.po
+11	11	build/i18n/po/common.properties/es-ES.po
+5	5	build/i18n/po/conify.dtd/es-ES.po
+7	7	build/i18n/po/conify.js/es-ES.po
+593	574	build/i18n/po/db.seed/cs-CZ.po
+3077	1917	build/i18n/po/db.seed/es-ES.po
+14	14	build/i18n/po/fm_IDL.dtd/cs-CZ.po
+1714	1698	build/i18n/po/fm_IDL.dtd/es-ES.po
+5	5	build/i18n/po/fm_IDL.dtd/fr-CA.po
+292	208	build/i18n/po/ils_events.xml/es-ES.po
+4	4	build/i18n/po/lang.dtd/cs-CZ.po
+2489	2290	build/i18n/po/lang.dtd/es-ES.po
+22	10	build/i18n/po/match_set.js/es-ES.po
+271	165	build/i18n/po/offline.properties/es-ES.po
+239	62	build/i18n/po/opac.dtd/ar-AR.po
+38	14	build/i18n/po/opac.dtd/es-ES.po
+4	4	build/i18n/po/patron.properties/cs-CZ.po
+413	276	build/i18n/po/patron.properties/es-ES.po
+16	12	build/i18n/po/pickup_and_return.js/es-ES.po
+12	11	build/i18n/po/pull_list.js/es-ES.po
+13	13	build/i18n/po/register.js/es-ES.po
+42	24	build/i18n/po/reports.dtd/es-ES.po
+6	6	build/i18n/po/reports.js/es-ES.po
+56	21	build/i18n/po/reservation.js/es-ES.po
+19	11	build/i18n/po/selfcheck.js/es-ES.po
+14	12	build/i18n/po/serial.js/es-ES.po
+169	134	build/i18n/po/serial.properties/es-ES.po
+8	8	build/i18n/po/tpac/ar-AR.po
+27	21	build/i18n/po/tpac/cs-CZ.po
+453	386	build/i18n/po/tpac/es-ES.po
+22	12	build/i18n/po/tpac/fr-CA.po
+129	123	build/i18n/po/webstaff/cs-CZ.po
+7	0	docs/RELEASE_NOTES_NEXT/Translations/Updates.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Translations/Updates.adoc
+
+commit 2838a8294d5e5bde97c6f23e6884bc3ff9b9d1d4
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Thu Aug 25 14:03:38 2016 -0400
+
+    LP#1617017: make another TPAC string translatable
+    
+    "Export List" in hold_history.tt2
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+1	1	Open-ILS/src/templates/opac/myopac/hold_history.tt2
+
+commit fb2a828fab884680ac904cee89784ab39802c077
+Author: blake <blake@mobiusconsortium.org>
+Date:   Thu Jun 30 15:41:35 2016 -0500
+
+    LP1496556 Claimed never checked out count not increased when applied to LOST circulation
+    
+    Bug within the Lost copy status checkin block. Needed to set the stop_fines
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+3	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Circulate.pm
+
+commit 88d141146534dd4116ee69afa3b64d55fb50656e
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Thu Aug 25 11:57:42 2016 -0400
+
+    LP#1613709: Make DOB validation alert failure translatable.
+    
+    The alert message about an invalid DOB being entered in the OPAC
+    patron registration is not translatable.  The solution, suggested by
+    Eva Cerninakova, is to wrap the string in the l() template function to
+    make it so.  That is what this branch does.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+1	1	Open-ILS/src/templates/opac/parts/js.tt2
+
+commit 04acf5f610ab716eddcb962a14aaeb88042ac3d9
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Thu Aug 25 11:11:00 2016 -0400
+
+    LP#1616882: mark another string as translateable
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+1	1	Open-ILS/src/templates/opac/parts/myopac/base.tt2
+
+commit f920694c092aa3610cab94f3a0cd42ed801f57ae
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Thu Aug 25 11:05:25 2016 -0400
+
+    LP#1616882: mark string as translateable
+    
+    This patch makes the "Branch relationship" string in TPAC
+    available to be translated.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+1	1	Open-ILS/src/templates/opac/parts/library/core_info.tt2
+
+commit 838d34f187b11309ad7d99152811873c6751d28b
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Mon May 30 13:01:45 2016 -0400
+
+    LP 1583608: The make_release script always makes a db upgrade script.
+    
+    Alter make_release to always create a db upgrade script, even when no
+    actual db upgrades need to be applied.  The minimal script created
+    will at least set the upgrade version in config.upgrade_log.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+2	2	build/tools/make_release
+
+commit 0438a04530ac4769ce2196d234a4016ba952c58b
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Wed Aug 24 11:41:57 2016 -0400
+
+    LP#1205492: fix crash when attempting to renew deposit & rental loans in OPAC
+    
+    This patch fixes a bug where attempting to renew a loan on an item
+    that requires a deposit or a rental fee can cause an Apache
+    internal server error.
+    
+    In particular, this patch supplies descriptions for the following
+    events:
+    
+      ITEM_DEPOSIT_REQUIRED
+      ITEM_RENTAL_FEE_REQUIRED
+      ITEM_DEPOSIT_PAID
+    
+    It also normalizes how 'fail_part' is set in the renewal response,
+    as the payload of an event returned when a renewal fails can
+    be either a hash or an acp Fieldmapper object depending on the
+    type of event.  In the former case, attempting to access an
+    nonexistent ->fail_part method is what causes the crash.
+    
+    To test
+    -------
+    [1] Create an item that requires a deposit or a rental fee
+        and check it out.
+    [2] Attempt to renew the loan in the public catalog. Note
+        that an internal server error is returned.
+    [3] Apply the patch and attept step 2 again. This time, the
+        public catalog should display a notification to the patron
+        that the renewal cannot take place, rather than crashing.
+    [4] Set up other situations where a renewal should fail for
+        reasons other than a deposit/rental fee being required. Verify
+        that appropriate error messages are displayed in the public
+        catalog.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+3	3	Open-ILS/src/extras/ils_events.xml
+9	0	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Account.pm
+2	2	Open-ILS/src/templates/opac/myopac/circs.tt2
+
+commit e0a3df1d99441bd2bff808f06566a0861f39dd46
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Sat Aug 20 01:39:09 2016 -0400
+
+    LP#1612364: Add transparency to some format icons
+    
+    Some format icons had a white background instead of a transparent one. The
+    transparent ones will look better in the My Account screens, where the icons
+    site on a gray background.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+-	-	Open-ILS/web/images/format_icons/icon_format/cd.png
+-	-	Open-ILS/web/images/format_icons/icon_format/cdmusic.png
+-	-	Open-ILS/web/images/format_icons/icon_format/dvd.png
+-	-	Open-ILS/web/images/format_icons/icon_format/eaudio.png
+-	-	Open-ILS/web/images/format_icons/icon_format/ebook.png
+-	-	Open-ILS/web/images/format_icons/icon_format/evideo.png
+-	-	Open-ILS/web/images/format_icons/icon_format/kit.png
+-	-	Open-ILS/web/images/format_icons/icon_format/map.png
+-	-	Open-ILS/web/images/format_icons/icon_format/microform.png
+-	-	Open-ILS/web/images/format_icons/icon_format/music.png
+-	-	Open-ILS/web/images/format_icons/icon_format/phonomusic.png
+-	-	Open-ILS/web/images/format_icons/icon_format/score.png
+-	-	Open-ILS/web/images/format_icons/icon_format/vhs.png
+
+commit 8f3f77578c83aad7d5d0fc198b2bd3eb761777f7
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Mon Aug 22 06:10:14 2016 -0400
+
+    LP#1614807: Make holds history more responsive
+    
+    When retrieving the holds history page on a mobile device, re-orient the table
+    as we do with other My Account screens.
+    
+    Test plan
+    Pre-patch, retrieve the holds history screen for a patron that has enabled
+    holds history. Resize the screen to a width of 600 pixels or smaller. No
+    adjustments will be made to the table, and horizontal scrolling is required to
+    see some data.
+    
+    Post-patch, after resizing this screen, the table should reorient itself with
+    the headers displaying in the left column, as is done on the other My Account
+    screens.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+21	5	Open-ILS/src/templates/opac/css/style.css.tt2
+
+commit 345ae86e22b60722dd1afbc46afd39c0da6acd64
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Sat Aug 20 00:54:40 2016 -0400
+
+    LP#1614807: Fix spacing issues in responsive design for My Account screens
+    
+    This commit fixes the following spacing issues that are found in the My Account
+    screens when loaded on a small-screen device:
+    
+    * When a field has no value, the text in the table header, which displays along
+     the left, is cut off at the bottom. The Notes field on the Holds page is one
+    place where this issue is commonly seen. With the fix, the headers are slightly
+    out of alignment with the field data, but this is still an improvement over
+    cutting off text on the screen.
+    
+    * If the only title(s) listed on the screen are short, requiring little width
+    in a table cell, the text in the table header runs into field data. A good
+    example in the Concerto data is if the user only has a check out for record ID
+    2 (Le concerto) on their account.
+    
+    * The checkboxes in the Check Out History and Items on Hold screen were pushed
+    to the right. We fix it by giving the cells with a checkbox a "checkbox_column"
+    class, which was already in use by the checkbox on the Items Out screen.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+5	0	Open-ILS/src/templates/opac/css/style.css.tt2
+2	2	Open-ILS/src/templates/opac/myopac/circ_history.tt2
+2	2	Open-ILS/src/templates/opac/myopac/holds.tt2
+
+commit 45bc9c2bad16e3910cd710bd47e058573c2e3830
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Fri Aug 19 13:41:14 2016 -0400
+
+    LP#1614807: Holds history should look like other My Account screens
+    
+    The Holds History My Account interface looks entirely different than the Items
+    Out, Check Out History, and Items On Holds interfaces. This commit adds a new
+    acct_holds_hist_header CSS class that shares the same styles as the CSS classes
+    used for the other three interfaces. Inline styles are removed from this table.
+    
+    Test plan
+    Pre-patch: Go to the My Account Items Out, Check Out History, Items on Hold,
+    and Holds History interfaces. While the first three interfaces use a table with
+    a white background for the headers and a gray background for the body, the Holds
+    History interface is the opposite.
+    
+    Post patch: All four interfaces should show a similar style to each other.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+3	3	Open-ILS/src/templates/opac/css/style.css.tt2
+15	17	Open-ILS/src/templates/opac/myopac/hold_history.tt2
+
+commit 401b3e4e305b48d4d991a4b5b9c8cd880136e195
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Fri Aug 19 11:59:27 2016 -0400
+
+    LP#1614807: Fix Circ History table header display on small screens
+    
+    Because the table in circs.tt2 and circ_history.tt2 shared the same CSS class,
+    circ_history.tt2 was displaying circs.tt2's column headers on mobile devices
+    and other small screens. The two tables now have distinct classes, and
+    styles.css.tt2 has been updated to provide the correct table headers for the
+    circ history page.
+    
+    Test plan
+    Pre-patch, pull up a user account that has a circ history in My Account, go to
+    the Check Out History tab, then resize the screen to a width of 600 pixels or
+    smaller. The table headers will now display along the side, but the headers
+    will be the ones that typically display in the Items Out screen. The Barcode
+    will display in the Date Returned row and the Call number will display in the
+    Barcode row.
+    
+    Post-patch, after resizing the screen, the headers that display along the side
+    should match the ones from the Checkout History interface. All data should
+    display in its appropriate row.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+13	30	Open-ILS/src/templates/opac/css/style.css.tt2
+1	1	Open-ILS/src/templates/opac/myopac/circ_history.tt2
+
+commit 40732b267e19c91d3a0bbf7ace515917b4cb3b8f
+Author: Jason Boyer <jboyer@library.in.gov>
+Date:   Mon Jun 20 12:38:00 2016 -0400
+
+    LP1593834: Add Date Header to A/T Email Examples
+    
+    RFCs 822 and 2822 specify that a Date: header has to be sent
+    indicating when an email was sent. Without this, clients that
+    default to displaying the Sent Date may end up using a "NULL"
+    date, or 1970-01-01 00:00:00 UTC, which is not ideal. This
+    adds the header to the example A/T templates for email and
+    SMS messages, and includes instructions on correcting
+    existing tempalates.
+    
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+27	0	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+16	0	docs/RELEASE_NOTES_NEXT/Administration/Action_Trigger_Email_Headers.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Administration/Action_Trigger_Email_Headers.adoc
+
+commit 8fce88a1e29fb87753f721ed3d3e6e271cd893b0
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Aug 24 08:11:11 2016 -0400
+
+    LP#1306666: Rename test file
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+0	423	Open-ILS/src/perlmods/live_t/17-lp1306666-abort-transit-copy-status.t
+423	0	Open-ILS/src/perlmods/live_t/19-lp1306666-abort-transit-copy-status.t
+ delete mode 100644 Open-ILS/src/perlmods/live_t/17-lp1306666-abort-transit-copy-status.t
+ create mode 100644 Open-ILS/src/perlmods/live_t/19-lp1306666-abort-transit-copy-status.t
+
+commit 4c308d5cc8c2748bf276940d4e3d4b9bc11c4422
+Author: Jason Stephenson <jstephenson@mvlcstaff.org>
+Date:   Mon Mar 28 15:34:32 2016 -0400
+
+    LP 1306666: Add Perl tests for new behavior.
+    
+    These tests check that the copy status is correct after aborting
+    transits dependent upon the status of the copy.  More tests could be
+    added to cover more situations, but these tests cover the basics.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlcstaff.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+423	0	Open-ILS/src/perlmods/live_t/17-lp1306666-abort-transit-copy-status.t
+ create mode 100644 Open-ILS/src/perlmods/live_t/17-lp1306666-abort-transit-copy-status.t
+
+commit 22cf9bb24ef8a81660998617c1126891c14a2c84
+Author: Jason Stephenson <jstephenson@mvlcstaff.org>
+Date:   Fri Mar 18 16:38:33 2016 -0400
+
+    LP 1306666: Abort Transit Only Change Copy Status if In Transit
+    
+    When aborting a transit, the copy status is presently changed, either
+    to the status stored in action.transit_copy or to Reshelving if the
+    transit was for a hold.  This causes problems with "hanging" transits
+    where something was not handled properly before.  We've had cases
+    where a transit sticks around on a copy that is later checked out, and
+    while that copy is checked out, the transit is aborted, thus setting
+    the copy status to Reshelving when it should be Checked Out.
+    
+    The code change in this branch only changes the copy's status if it is
+    In Transit.  A copy in any other status has its status left untouched.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlcstaff.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+14	10	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Transit.pm
+
+commit 46b9c4f0bf66df57da7e45e0606d1ac1d6a26ada
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Aug 19 11:41:14 2016 -0400
+
+    LP#1615025 TPAC large circ history sort repair
+    
+    Fix TPAC circ history retrieval code thinko so that history rows are
+    retrieved one at a time instead of in a batch (.atomic) to avoid
+    overwhelming Ejabberd.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+10	8	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Account.pm
+
+commit 172b2317d6fc11685cc6a2ca7ac5fddb9a1b4f97
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Wed Aug 17 11:01:26 2016 -0400
+
+    LP#1476049: disable serve-cgi-bin Apache config on Jessie
+    
+    This patch ensures that the stock Apache configuration
+    "serve-cgi-bin" is disabled when installing on Debian Jessie,
+    as otherwise the default cgi-bin location
+    can override what Evergreen specifies for offline.pl.
+    
+    To test:
+    
+    [1] Run the Makefile.install step on Jessie; verify
+        that there is no /etc/apache2/conf-enabled/serve-cgi-bin.conf
+        symlink.
+    [2] Proceed with the rest of the Evergreen installation; verify
+        that the Apache error log doesn't contain a warning like this:
+    
+        "The Alias directive in /etc/apache2/sites-enabled/eg.conf ...
+         will probably never match because it overlaps an earlier
+         ScriptAlias."
+    
+    [3] For extra credit, verify that one can access offline circulation
+        sessions.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+3	0	Open-ILS/src/extras/install/Makefile.debian-jessie
+
+commit b0dc5c36ea9b9fb96c02281f8001d31657cda379
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Tue Apr 26 10:23:14 2016 -0700
+
+    fixing missing newline
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+1	0	docs/cataloging/cataloging_web_client.txt
+1	0	docs/root.txt
+
+commit fbda66d05f9aa3f64d2d0325e4300ed5d1210c9c
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Tue Mar 15 11:50:30 2016 -0700
+
+    resolving merge conflict
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+28	0	docs/cataloging/cataloging_web_client.txt
+5	1	docs/root.txt
+ create mode 100644 docs/cataloging/cataloging_web_client.txt
+
+commit ccac5b5f5cc68be574cfd274bed9fdde21fc8cf3
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Tue Mar 15 21:44:57 2016 -0700
+
+    LP954213 adding MARC Editor documentation somewhat based on 2.1
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+94	0	docs/cataloging/MARC_Editor.txt
+0	43	docs/cataloging/MARC_Fixed_Field.txt
+1	1	docs/cataloging/physical_char_wizard.txt
+7	1	docs/root.txt
+ create mode 100644 docs/cataloging/MARC_Editor.txt
+ delete mode 100644 docs/cataloging/MARC_Fixed_Field.txt
+
+commit 9f3e0e209fd1fac2c8b6528aa73bb58ea731918b
+Author: Jim Keenan <jkeenan@cwmars.org>
+Date:   Fri Aug 12 14:51:28 2016 -0400
+
+    lp1592934 removed lines referencing edition fields 534 and 775. These fields refer to other, different editions of the work and not to the work actually being returned.
+    
+    Signed-off-by: Jim Keenan <jkeenan@cwmars.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	3	Open-ILS/src/templates/opac/parts/misc_util.tt2
+
+commit 3df9e925090c1f65fb5e0733f3d8ca3eea5d702f
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Thu Aug 11 08:20:34 2016 -0400
+
+    LP#1612054: unbreak test case now that SSN is no longer an ID type
+    
+    The patch for bug 1566016 broke the live_t/17-lp1579225_new_patron_passwords.t
+    test, as it used a patron ID type that is no longer in the seed
+    data. This patch fixes the test.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+1	1	Open-ILS/src/perlmods/live_t/17-lp1579225_new_patron_passwords.t
+
+commit 505d70f0a006a54dc3c8d16ba25affe07ad5c0ff
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Fri Mar 4 20:51:04 2016 -0500
+
+    LP#1576502 Fulfilled holds also should not display as active
+    
+    Once a hold has been fulfilled, the patron doesn't consider it active, so let's
+    change the active status for those holds too.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+8	6	Open-ILS/src/templates/opac/myopac/hold_history.tt2
+
+commit a23e17d66f2287530aed4b7a3e7b21c38cb8c62e
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Wed Aug 10 10:26:06 2016 -0400
+
+    LP#1609556: (follow-up) restore previous 852$d output
+    
+    The previous patch had a side-effect of changing the 852$d
+    value from the circ library's shortname to its long name. This
+    patch restores the previous behavior.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/WWW/SuperCat.pm
+
+commit c887ac651de1082a73a1d28af93a318e68855a2b
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Wed Jul 27 14:00:28 2016 -0700
+
+    LP#1609556: use unapi functions to retrieve holdings for SRU/Z39.50
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+68	34	Open-ILS/src/perlmods/lib/OpenILS/WWW/SuperCat.pm
+
+commit 022810ff439253fdb94bd128534eda64c1b50556
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Tue Aug 9 15:50:50 2016 -0400
+
+    LP#1611495 Don't use .xml for MARC21 files in Vandelay Export
+    
+    The new 'Export Non-imported Records' feature in Vandelay (see bug
+    LP#1548147) was tweaked before merge to export MARC21 files by default
+    (rather than MARC-XML). However, the file save dialog still defaults to
+    (and filters by) ".xml" for the file extension. This is confusing and
+    otherwise problematic.
+    
+    Let's go ahead and save the export using a ".mrc" extension instead.
+    While not an official extension (as far as I know), it is widely used,
+    easy to understand, and far less likely to cause issues with other
+    software.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+4	4	Open-ILS/web/js/ui/default/vandelay/vandelay.js
+
+commit 66ee8ab4580604b2d7a88ec902f5654fab8018f6
+Author: Thomas Berezansky <tsbere@mvlc.org>
+Date:   Thu Aug 4 10:37:17 2016 -0400
+
+    Delay Novelist loading slightly
+    
+    So that if Novelist holds things up other JavaScript, like staff client calls,
+    are not delayed due to Novelist issues.
+    
+    Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2	1	Open-ILS/src/templates/opac/parts/acjs.tt2
+
+commit ffa57c81e0c3477b82577b8a1afa68d91097516c
+Author: Thomas Berezansky <tsbere@mvlc.org>
+Date:   Mon Mar 28 11:03:59 2016 -0400
+
+    LP1559281: Allow Baker and Taylor Fake ISBNs
+    
+    For Content Cafe, jam two B&T entrys into the hash so that Business::ISBN
+    doesn't register them as invalid prefix ISBNs.
+    
+    B&T uses internal ISBN's with country codes 630 and 631 for materials
+    ordered through them when no assigned ISBN exists.  The ContentCafe
+    added content service knows about these ISBNs, but they are not generally
+    used by other providers.
+    
+    To Test:  This only works if you are using the ContentCafe added content provider.
+    
+     - Before Patch -
+    1. Add the isbn 9786315820243 as the only isbn on a record. Remove UPCs also..
+    2. Clear the added content cache by restarting memcached or using the staff link.
+    3. View record in catalog and you should see no cover art.
+    
+     - After Patch -
+    1. Clear the added content cache.
+    2. View the record in the catalog and you should now see cover art for the title
+    "Video games: the movie"
+    
+    Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+    Signed-off-by: Josh Stompro <stomproj@larl.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+4	0	Open-ILS/src/perlmods/lib/OpenILS/WWW/AddedContent/ContentCafe.pm
+
+commit 81c6b3587cf0be50e8c482bd8bbf6994db37ba35
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Thu May 19 13:27:11 2016 -0400
+
+    LP#1424656: Fix grammatical error in My Account holds screen
+    
+    Changes the holds queue position string from 'x hold on y copies' to 'Hold #x on
+    y copies', which is gramatically correct.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/templates/opac/parts/hold_status.tt2
+
+commit 8c6d44500a8e668869cb5402991afc6d2bcc9611
+Author: Jason Boyer <jboyer1@library.in.gov>
+Date:   Fri Aug 14 11:26:54 2015 -0400
+
+    LP 1481441: Improve Hold Failure Messages
+    
+    Rearranging the order of the various sources of hold
+    failure messages makes it less likely to see spurious
+    "Item is too new to transit this far" messages. Now
+    errors due to excessive fines or number of existing
+    holds.
+    
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    
+    Conflicts:
+    	Open-ILS/src/templates/opac/parts/place_hold_result.tt2
+
+1	1	Open-ILS/src/templates/opac/parts/place_hold_result.tt2
+
+commit 65f31c52d163ebd80ad796ee423af0b7d1221735
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Mon Aug 1 18:09:04 2016 -0400
+
+    LP#1608711: Update schema.org property name from "seller" to "offeredBy"
+    
+    Per the 2015-11-05 release of schema.org
+    (http://schema.org/docs/releases.html#v2.2), the "offeredBy" property is now
+    the preferred property to use for non-commercial entities (such as libraries)
+    making an offer of an item for borrowing, sale, etc.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+1	1	Open-ILS/src/templates/opac/parts/library_name_link.tt2
+
+commit 5a97be51a7368f81c181444955b5a5ff8d9535ae
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Thu Jul 14 14:10:13 2016 -0700
+
+    LP#1589586: use all fund debits (even encumbrances) when doing prorate calculations
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Acq/Invoice.pm
+
+commit 4b90a2aa40a34332c509826c00d66f0d63e0f07f
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Wed Jul 13 09:37:11 2016 -0400
+
+    Docs: Fix syntax for code block within list
+    
+    This commit fixes two small AsciiDoc syntax problems that prevented a
+    line of code from displaying properly. First, it changes the code block
+    lines from three dashes to four dashes. Second, it adds a plus sign on
+    the preceding line, to connect the code block to the previous list item.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+3	3	docs/admin_initial_setup/designing_your_catalog.txt
+
+commit fefaf9688e338271e0fc975328b0143a4ef1cdff
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Fri Jul 8 10:32:05 2016 -0400
+
+    Docs: Small syntax fix, formatting improvements
+    
+    This commit fixes a small AsciiDoc syntax bug caused by a real '_' that
+    accidentally closed the '_' italics tag. This block of documentation
+    will now more closely match the identical content found in
+    'admin/template_toolkit.txt' (chapter labeled "TPac Configuration and
+    Customization").
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+5	5	docs/admin_initial_setup/designing_your_catalog.txt
+
+commit 6c0e9a84ce81fc9da4c91f42967403ae46d70681
+Author: Yamil Suarez <yamil@yamil.com>
+Date:   Sun Jun 26 12:52:43 2016 -0400
+
+    Docs: Add tip for using "temp" as a login_types when using "Change Operator: New"
+    
+    Signed-off-by: Yamil Suarez <yamil@yamil.com>
+
+4	0	docs/admin/authentication_proxy.txt
