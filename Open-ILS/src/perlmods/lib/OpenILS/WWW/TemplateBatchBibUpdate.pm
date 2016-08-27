@@ -245,7 +245,6 @@ sub show_processing_template {
         </script>
 
         <script src='/js/dojo/dojo/dojo.js'></script>
-        <!-- <script src="/js/dojo/dojo/openils_dojo.js"></script> -->
 
         <script type="text/javascript">
 
@@ -414,7 +413,6 @@ sub show_template {
         </script>
 
         <script src='/js/dojo/dojo/dojo.js'></script>
-        <!-- <script src="/js/dojo/dojo/openils_dojo.js"></script> -->
 
         <script type="text/javascript">
 
