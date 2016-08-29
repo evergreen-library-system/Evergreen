@@ -92,8 +92,8 @@ treechildren::-moz-tree-cell-text(selected,focus) {
 
 button.sym {width:2em; min-width:1em; }
 
-.outline_me { -moz-outline: solid; }
-.clipboard_outline_me { -moz-outline: dotted thin gray; }
+.outline_me { outline: solid; }
+.clipboard_outline_me { outline: dotted thin gray; }
 
 .click_link { text-decoration: underline; color: blue; -moz-user-focus: normal; cursor: pointer; }
 
@@ -124,8 +124,8 @@ iframe { background: #CDCED3 url("chrome://browser/skin/icons/box-background.png
 .my_bg { background: #CDCED3 url("chrome://browser/skin/icons/box-background.png") repeat-x bottom !important; }
 */
 
-.postit_hb { -moz-border-radius: 30px; background-color: black; }
-.postit_gb { -moz-border-radius: 30px; background-color: yellow; }
+.postit_hb { border-radius: 30px; background-color: black; }
+.postit_gb { border-radius: 30px; background-color: yellow; }
 
 .success_text { color: white; background-color: green; }
 .failure_text { color: white; background-color: red; }

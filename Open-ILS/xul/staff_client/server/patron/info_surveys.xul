@@ -169,7 +169,7 @@
     
     <stack hidden="true" id="asv_template" flex="1">
         <groupbox flex="1" style="background-color: black;"/>
-        <groupbox flex="1" style="background-color: #CC9966; -moz-border-radius-topright: 35px;" >
+        <groupbox flex="1" style="background-color: #CC9966; border-top-right-radius: 35px;" >
             <hbox>
                 <label value="&staff.patron.info_surveys.survey_number.value;" style="font-weight: bold"/>
                 <label name="id" style="font-weight: bold"/>

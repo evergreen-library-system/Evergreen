@@ -147,7 +147,7 @@ label[for="attr_search_type_scalar"] { vertical-align: top; }
 #acq-lit-info-tbody td {padding:5px;}
 #acq-lit-info-related { margin-top: 10px; }
 #acq-lit-distrib-formula-table { margin-top: 10px; margin-bottom: 5px;}
-#acq-lit-li-details-table {margin-top:5px; border-top;}
+#acq-lit-li-details-table {margin-top:5px;}
 #acq-lit-li-details-table td {padding:0px 3px 1px 3px;}
 #acq-lit-li-details-table th {padding:0px 3px 1px 3px; font-weight:bold;}
 #acq-lit-li-details-table .dijit {width:130px;}
@@ -175,9 +175,9 @@ span[name="worksheet"] { padding: 0 6px; }
 
 .acq-menu-bar {width:99%; text-align:left; border:1px solid #aaa; margin:5px 0px 10px 0px;}
 .acq-notes-note-row { margin: 6px 0; }
-#acq-po-notes-tbody li { margin-bottom:10px; border:1px solid #aaa; -moz-border-radius: 5px 5px 5px 5px; }
+#acq-po-notes-tbody li { margin-bottom:10px; border:1px solid #aaa; border-radius: 5px 5px 5px 5px; }
 #acq-po-notes-tbody td {padding: 20px 10px 20px 10px; border-bottom:2px solid #aaa;}
-#acq-lit-notes-tbody li { margin-bottom:10px; border:1px solid #aaa; -moz-border-radius: 5px 5px 5px 5px; }
+#acq-lit-notes-tbody li { margin-bottom:10px; border:1px solid #aaa; border-radius: 5px 5px 5px 5px; }
 #acq-lit-notes-tbody td {padding: 20px 10px 20px 10px; border-bottom:2px solid #aaa;}
 #acq-lit-alert-value { height: 5em; width: 20em; }
 span[name="vendor_public"] {color: #00c;padding-right: 1em;font-weight: bold;}

@@ -76,7 +76,7 @@
 			</vbox>
 			<splitter id="splitter2" oils_persist="state hidden" oils_persist_peers="after_slitter1 after_splitter2"><grippy /></splitter>
 			<vbox flex="1" id="after_splitter2" oils_persist="width">
-				<button style="font-weight: bold; font-size: normal" label="&staff.serial.sitem_editor.item_dates.btn;" accesskey="&staff.serial.sitem_editor.item_dates.accesskey;" oncommand="document.getElementById('sitem_editor_right_pane').firstChild.firstChild.focus();"/>
+				<button style="font-weight: bold; font-size: medium" label="&staff.serial.sitem_editor.item_dates.btn;" accesskey="&staff.serial.sitem_editor.item_dates.accesskey;" oncommand="document.getElementById('sitem_editor_right_pane').firstChild.firstChild.focus();"/>
 				<vbox id="sitem_editor_right_pane" flex="1"/>
 			</vbox>
 		</hbox>

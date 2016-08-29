@@ -335,7 +335,7 @@
 
 	<stack hidden="true" id="note_template" flex="1">
 		<vbox flex="1" style="background-color: black; margin:3px"/>
-		<vbox flex="1" style="background-color: #FFDE00; -moz-border-radius-topright: 35px; border: 2px groove ThreeDFace; margin:3px;" >
+		<vbox flex="1" style="background-color: #FFDE00; border-top-right-radius: 35px; border: 2px groove ThreeDFace; margin:3px;" >
 			<hbox align="start">
 				<description name="title" style="font-weight: bold"/>
 				<spacer flex="1"/>

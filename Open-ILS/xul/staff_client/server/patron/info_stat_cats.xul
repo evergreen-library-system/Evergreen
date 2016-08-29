@@ -181,7 +181,7 @@
 
     <stack hidden="true" id="actsc_template" flex="1">
         <groupbox flex="1" style="background-color: black;"/>
-        <groupbox flex="1" style="background-color: #99CC66; -moz-border-radius-topright: 35px;" >
+        <groupbox flex="1" style="background-color: #99CC66; border-top-right-radius: 35px;" >
             <hbox>
                 <description name="name" style="font-weight: bold"/>
                 <spacer flex="1"/>

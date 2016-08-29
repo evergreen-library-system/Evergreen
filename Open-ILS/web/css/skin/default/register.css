@@ -14,7 +14,7 @@
     right:30px;
     width:200px;
     border:2px solid #d9e8f9;
-    -moz-border-radius: 10px;
+    border-radius: 10px;
     font-weight: bold;
     padding: 12px;
     text-align:center;
@@ -27,7 +27,7 @@
     right:30px;
     width:300px;
     border:2px dashed #d9e8f9;
-    -moz-border-radius: 10px;
+    border-radius: 10px;
     font-weight: bold;
     padding: 20px;
     margin-top: 20px;
@@ -39,7 +39,7 @@
     right:30px;
     width:300px;
     border:2px dashed #d9e8f9;
-    -moz-border-radius: 10px;
+    border-radius: 10px;
     font-weight: bold;
     padding: 20px;
 }
@@ -50,14 +50,14 @@
     right:30px;
     width:300px;
     border:2px dashed #d9e8f9;
-    -moz-border-radius: 10px;
+    border-radius: 10px;
     font-weight: bold;
     padding: 10px;
     text-align: center;
 }
 #uedit-address-alert-header { 
     color: red; 
-    text-decoration: italic
+    font-style: italic;
     text-align: center;
 }
 
