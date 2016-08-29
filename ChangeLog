@@ -1,3 +1,3707 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 43eff0f6bed430530fb9091ce2f4f536957d2bb8
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Mon Aug 29 17:38:10 2016 -0400
+
+    Stamping upgrade script for Spanish locale seed data
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+11	0	Open-ILS/src/sql/Pg/upgrade/1000.data.add-spanish-to-i18n-locale.sql
+0	11	Open-ILS/src/sql/Pg/upgrade/XXXX.data.add-spanish-to-i18n-locale.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1000.data.add-spanish-to-i18n-locale.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.add-spanish-to-i18n-locale.sql
+
+commit fd5519681af1e532efdb6a410056db643bce1e64
+Author: Ben Shum <ben@evergreener.net>
+Date:   Mon Aug 29 15:37:48 2016 -0400
+
+    LP#1618183: Add Spanish to config.i18n_locale
+    
+    Add Spanish to this table so that it is an option for supported translations.
+    
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+3	0	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+11	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.add-spanish-to-i18n-locale.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.add-spanish-to-i18n-locale.sql
+
+commit e54d1531855868d8db35b7ebbd4254279480ddd1
+Author: Jeff Godin <jgodin@tadl.org>
+Date:   Mon Aug 29 12:58:27 2016 -0400
+
+    LP#1618136 Fix webstaff IDL2js.js test failures
+    
+    Fix webstaff test failures due to an invalid IDL2js.js file by adding
+    newly-required preprocessing to the support script that generates that
+    file when running tests.
+    
+    Signed-off-by: Jeff Godin <jgodin@tadl.org>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+15	1	Open-ILS/web/js/ui/default/staff/test/data/idl2js.pl
+
+commit da0e47ef6624dbbc6823c6c93c0fa4e442a122de
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Aug 25 18:08:07 2016 -0400
+
+    Update release notes
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+522	0	docs/RELEASE_NOTES_2_11.adoc
+0	16	docs/RELEASE_NOTES_NEXT/Administration/Action_Trigger_Email_Headers.adoc
+0	15	docs/RELEASE_NOTES_NEXT/Administration/lp1568046-tablefunc-extension-removed.adoc
+0	29	docs/RELEASE_NOTES_NEXT/Administration/user-activity-purge.adoc
+0	6	docs/RELEASE_NOTES_NEXT/Cataloging/auth_bib_update.adoc
+0	16	docs/RELEASE_NOTES_NEXT/Cataloging/auth_prop_bib_update.adoc
+0	6	docs/RELEASE_NOTES_NEXT/Cataloging/bib_source_in_901s.txt
+0	15	docs/RELEASE_NOTES_NEXT/Cataloging/marc_bib_update.adoc
+0	21	docs/RELEASE_NOTES_NEXT/Circulation/aged-circs-see-light-of-day.adoc
+0	26	docs/RELEASE_NOTES_NEXT/Circulation/canceled-transit-copy-status.adoc
+0	17	docs/RELEASE_NOTES_NEXT/Circulation/copy-status-is-avail.adoc
+0	20	docs/RELEASE_NOTES_NEXT/Circulation/email_cko_receipts.adoc
+0	16	docs/RELEASE_NOTES_NEXT/Circulation/limit_payment_amounts_accepted.txt
+0	17	docs/RELEASE_NOTES_NEXT/Client/added-fields-for-client-interfaces.adoc
+0	7	docs/RELEASE_NOTES_NEXT/OPAC/combine_notice_prefs_tables.adoc
+0	14	docs/RELEASE_NOTES_NEXT/OPAC/improved-myopac-holds-screens.adoc
+0	101	docs/RELEASE_NOTES_NEXT/OPAC/popularity-rating.txt
+0	9	docs/RELEASE_NOTES_NEXT/OPAC/remove_advanced_hold_options_for_parts.adoc
+0	8	docs/RELEASE_NOTES_NEXT/SIP/SIP_Workstation_Name.adoc
+0	7	docs/RELEASE_NOTES_NEXT/SIP/SIP_renewal_blocks.adoc
+0	7	docs/RELEASE_NOTES_NEXT/Translations/Updates.adoc
+21	41	docs/installation/server_upgrade.txt
+ create mode 100644 docs/RELEASE_NOTES_2_11.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/Administration/Action_Trigger_Email_Headers.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/Administration/lp1568046-tablefunc-extension-removed.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/Administration/user-activity-purge.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/Cataloging/auth_bib_update.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/Cataloging/auth_prop_bib_update.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/Cataloging/bib_source_in_901s.txt
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/Cataloging/marc_bib_update.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/Circulation/aged-circs-see-light-of-day.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/Circulation/canceled-transit-copy-status.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/Circulation/copy-status-is-avail.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/Circulation/email_cko_receipts.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/Circulation/limit_payment_amounts_accepted.txt
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/Client/added-fields-for-client-interfaces.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/OPAC/combine_notice_prefs_tables.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/OPAC/improved-myopac-holds-screens.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/OPAC/popularity-rating.txt
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/OPAC/remove_advanced_hold_options_for_parts.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/SIP/SIP_Workstation_Name.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/SIP/SIP_renewal_blocks.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/Translations/Updates.adoc
+
+commit 0621419b5048da3eb29503ec223f21f524c1cda4
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Jul 28 18:51:35 2016 -0400
+
+    Bumping Perl version string for 2.11 beta
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit e07ac6c32679a87ecf2dcc5c4c11a01347871313
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Aug 26 17:00:20 2016 -0400
+
+    Stamp 0999 upgrade; remove merge conflict markers
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+0	3	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+14	0	Open-ILS/src/sql/Pg/upgrade/0999.schema.staging-user-setting.sql
+0	12	Open-ILS/src/sql/Pg/upgrade/YYYY.schema.staging-user-setting.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0999.schema.staging-user-setting.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/YYYY.schema.staging-user-setting.sql
+
+commit 936fbc26d45f6685225988008241aac11de524e3
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Thu Aug 25 20:47:47 2016 -0400
+
+    forward-port 2.10.5-2.10.6 schema update script
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+5	0	Open-ILS/src/sql/Pg/version-upgrade/2.10.5-2.10.6-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.10.5-2.10.6-upgrade-db.sql
+
+commit ec802af48798087d8fda770fff67d9e2ebcffc40
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Aug 25 17:55:36 2016 -0400
+
+    Translation updates - newpot
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1835	0	build/i18n/po/acq/acq.pot
+192	0	build/i18n/po/actor/actor.pot
+52	0	build/i18n/po/booking/booking.pot
+5	1	build/i18n/po/cat.properties/cat.properties.pot
+56	0	build/i18n/po/cat/cat.pot
+13	1	build/i18n/po/circ.properties/circ.properties.pot
+333	0	build/i18n/po/circ/circ.pot
+9	1	build/i18n/po/common.properties/common.properties.pot
+16	5	build/i18n/po/conify.js/conify.js.pot
+1592	0	build/i18n/po/conify/conify.pot
+3293	3219	build/i18n/po/db.seed/db.seed.pot
+2827	2697	build/i18n/po/fm_IDL.dtd/fm_IDL.dtd.pot
+51	40	build/i18n/po/ils_events.xml/ils_events.xml.pot
+365	0	build/i18n/po/kpac/kpac.pot
+9	1	build/i18n/po/lang.dtd/lang.dtd.pot
+13	1	build/i18n/po/patron.properties/patron.properties.pot
+406	0	build/i18n/po/serial/serial.pot
+183	156	build/i18n/po/tpac/tpac.pot
+132	0	build/i18n/po/urlverify/urlverify.pot
+620	0	build/i18n/po/vandelay/vandelay.pot
+1380	284	build/i18n/po/webstaff/webstaff.pot
+ create mode 100644 build/i18n/po/acq/acq.pot
+ create mode 100644 build/i18n/po/actor/actor.pot
+ create mode 100644 build/i18n/po/booking/booking.pot
+ create mode 100644 build/i18n/po/cat/cat.pot
+ create mode 100644 build/i18n/po/circ/circ.pot
+ create mode 100644 build/i18n/po/conify/conify.pot
+ create mode 100644 build/i18n/po/kpac/kpac.pot
+ create mode 100644 build/i18n/po/serial/serial.pot
+ create mode 100644 build/i18n/po/urlverify/urlverify.pot
+ create mode 100644 build/i18n/po/vandelay/vandelay.pot
+
+commit b54e57616d0659975e250faa1fa069d16a6bd598
+Author: Ben Shum <ben@evergreener.net>
+Date:   Wed Aug 24 16:33:18 2016 -0400
+
+    LP#1095280: i18n - Add templates to update_pofiles
+    
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+10	0	build/i18n/scripts/update_pofiles
+
+commit df174c20829437634a7a4377420af88e1e057757
+Author: Ben Shum <ben@evergreener.net>
+Date:   Wed Aug 24 09:32:47 2016 -0400
+
+    LP#1095280: i18n - Add new templates for translation to Makefile
+    
+    Add various source and output files for new templates directories for i18n
+    along with make targets and other copy commands.
+    
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+93	1	build/i18n/Makefile
+
+commit a66cccae9cd9a76356437bce06ffd155e05276ab
+Author: Ben Shum <ben@evergreener.net>
+Date:   Wed Aug 24 09:25:27 2016 -0400
+
+    LP#1095280: i18n - Move existing templates closer together in Makefile
+    
+    In the interest of making it easier to edit, move all the lines
+    for generating i18n translation files for Open-ILS/src/templates/*
+    closer together.
+    
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+2	2	build/i18n/Makefile
+
+commit 18c769a8441e9728007c59ae88c6965f3655cc56
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Thu Aug 25 07:15:11 2016 -0400
+
+    LP#1613374 - Canceled Transit status Release Notes
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+26	0	docs/RELEASE_NOTES_NEXT/Circulation/canceled-transit-copy-status.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Circulation/canceled-transit-copy-status.adoc
+
+commit b2af4872895e860abd8b48cc5cb2cf06c68bb852
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Wed Aug 24 19:43:44 2016 -0400
+
+    Docs: Some missing release notes for 2.11
+    
+    We were missing release notes for some of the new fields added to client
+    interfaces as well as one of the new SIP features.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+17	0	docs/RELEASE_NOTES_NEXT/Client/added-fields-for-client-interfaces.adoc
+7	0	docs/RELEASE_NOTES_NEXT/SIP/SIP_renewal_blocks.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Client/added-fields-for-client-interfaces.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/SIP/SIP_renewal_blocks.adoc
+
+commit 15ad6d45c3066c3e88c6d6e0c28b2f445a3132b0
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Aug 24 18:32:02 2016 -0400
+
+    Stamping upgrade scripts for aged circs display branch
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+141	0	Open-ILS/src/sql/Pg/upgrade/0998.schema.aged-circ-chains.sql
+0	141	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.aged-circ-chains.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0998.schema.aged-circ-chains.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.aged-circ-chains.sql
+
+commit 3f2d3a0335fe935e4ec3a310b018b76cdd9f7e3f
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Aug 24 17:01:01 2016 -0400
+
+    LP#1497335 Show Last Few Circs patron retrieve options
+    
+    In the Show Last Few Circulations window (XUL), disable the "Retrieve
+    Last Patron" button when the most recent circulation is aged.  Disable
+    the "Retrieve All These Patrons" button when all circulations displayed
+    are aged.
+    
+    Fixes a sort bug in open-ils.circ.copy_checkout_history.retrieve.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ.pm
+14	0	Open-ILS/xul/staff_client/server/circ/circ_summary.xul
+
+commit 57697077ec3a4431c16d043d1d9270c3e18c1fba
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Aug 3 15:18:59 2016 -0400
+
+    LP#1497335 Aged circ display release notes
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+21	0	docs/RELEASE_NOTES_NEXT/Circulation/aged-circs-see-light-of-day.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Circulation/aged-circs-see-light-of-day.adoc
+
+commit b9e5c623f2cde86b1b87d07ba9e4a637f1b3ac5e
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Aug 3 14:45:39 2016 -0400
+
+    LP#1497335 Item details shows aged circs (XUL edition)
+    
+    * Item Status -> Circulation History now displays aged circulations as
+      appropriate, showing "<Aged Circulation>" in lieu the patron's name.
+    
+    * Item Status (and others) -> Show Last Few Circulations, ditto above.
+      Also, the 'Add Billing' button is disabled when displayed with an aged
+      circulation row.
+    
+    * Copy -> Retrieve Last Patron action now includes aged circulations
+      when looking for the most recent circulation.  When the most recent
+      circ is an aged circ, the UI reports "Item XXX circulation is an aged
+      circulation and has no linked user".  Among other things, this means
+      the 3rd from last circ will not be confused as the 2nd to last circ
+      when the 2nd to last is aged.
+    
+    * Mark Item Damaged will warn if the circ in question is aged.  This is
+      just a sanity check and should never happen in reality, since the UI
+      only supports this option on checked out items (i.e. active circs).
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+14	0	Open-ILS/xul/staff_client/server/cat/util.js
+34	19	Open-ILS/xul/staff_client/server/circ/alternate_copy_summary.js
+10	1	Open-ILS/xul/staff_client/server/circ/checkin.js
+17	9	Open-ILS/xul/staff_client/server/circ/circ_brief.xul
+10	1	Open-ILS/xul/staff_client/server/circ/renew.js
+4	0	Open-ILS/xul/staff_client/server/circ/util.js
+2	0	Open-ILS/xul/staff_client/server/locale/en-US/circ.properties
+
+commit 11d7f2206e4583db64626f9761c00c7746242cbe
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Aug 3 13:52:33 2016 -0400
+
+    LP#1497335 Browser client item details aged circs
+    
+    1. Use all_circulation (combcirc) class (now accessible via pcrud) to
+    render the item Circ History List tab.  In cases where a combcirc object
+    has no 'usr' value, the interface displays <Aged Circulation> where
+    the patron's name would normally be and disables the 'Add Billing'
+    button.
+    
+    2. Handle null 'usr' values in the item status Recent Circ History tab.
+    When a renewal chain summary has no 'usr' value, the interface displays
+    <Aged Circulation> where the patron's name would normally be.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+5	2	Open-ILS/src/templates/staff/cat/item/t_circ_list_pane.tt2
+8	5	Open-ILS/src/templates/staff/cat/item/t_circs_pane.tt2
+11	9	Open-ILS/web/js/ui/default/staff/cat/item/app.js
+
+commit 52bf3fe8e791c43448c49fa9818f5790625c724c
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Aug 3 13:34:29 2016 -0400
+
+    LP#1497335 Aged/All circulation API access
+    
+    Various SQL, IDL, and API changes for accessing aged circulations,
+    primarily via all_circulation objects, for imporoved staff client
+    integration.
+    
+    *. Support open-ils.pcrud access to the action.all_circulation DB view /
+       'combcirc' class.
+    
+    *. Add missing parent_circ, checkin_scan_time, checkin_workstation to
+       combcirc class.
+    
+    *. Add 'usr' field to combcirc.  The action.all_circulation VIEW will
+       return NULL as the 'usr' column value when returning data for an
+       aged_circulation.
+    
+    *. Add virtual 'active_circ' and 'aged_circ' fields to combcirc for
+       fleshing the related action.circulation or action.aged_circulation
+       object.
+    
+    * Adds SQL functions for action.all_circ_chain and
+      action.summarize_all_circ_chain, which pull data from
+      aged_circulation.
+    
+    *. API calls
+    open-ils.circ.[prev_]renewal_chain.retrieve_by_circ[.summary] now return
+    data for active and aged circulations by using action.all_circ_chain and
+    action.summarize_all_circ_chain.  When using these APIs, a null value
+    in the 'usr' column is the indication that a given circulation or circ
+    chain summary represents an aged circulation.
+    
+    * API open-ils.circ.copy_details.retrieve will now optionally return
+      aged circ data within the copy circ history.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+17	1	Open-ILS/examples/fm_IDL.xml
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/AppUtils.pm
+75	71	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ.pm
+92	2	Open-ILS/src/sql/Pg/090.schema.action.sql
+141	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.aged-circ-chains.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.aged-circ-chains.sql
+
+commit 8decad6183c9c3786377bd59eae8c55472ab35c4
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Aug 24 18:07:13 2016 -0400
+
+    Stamping upgrade script for Canceled Transit status branch
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+7	0	Open-ILS/src/sql/Pg/upgrade/0997.data.canceled-transit-item-status.sql
+0	7	Open-ILS/src/sql/Pg/upgrade/XXXX.data.canceled-transit-item-status.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0997.data.canceled-transit-item-status.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.canceled-transit-item-status.sql
+
+commit a5f6a489ea0436b085831fcf033ca176c61204f9
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Wed Aug 24 14:23:09 2016 -0400
+
+    LP#1613374 - Check stored copy status before clobbering it.
+    
+    Some transit.copy_statuses would result in some other behavior
+    upon checkin, so we check all that would go into 'Reshelving'
+    status, otherwise, restore the stored status.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+15	2	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Transit.pm
+
+commit 58cd99ec3a4f83fd2d68b2e732069587c70b1459
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Tue Aug 23 09:32:59 2016 -0400
+
+    LP#1613374 - Add 'Canceled Transit' to non-'BAD' copy statuses.
+    
+    During checkin, Circulate.pm checks the copy status and if it
+    isn't listed as an okay status, the event COPY_BAD_STATUS is
+    returned, which requires an override.  This change makes copies
+    in 'Canceled Transit' status check in without an alert.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Circulate.pm
+
+commit 49ea249d5f7d315aa7bf1980edb4c7ea961f7833
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Tue Aug 16 07:11:24 2016 -0400
+
+    LP#1613374 - Add 'Canceled Transit' to "magical statuses"
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2	1	Open-ILS/xul/staff_client/chrome/content/main/constants.js
+
+commit fcc46ccaa72260f8dc970df156985c983f1e19f4
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Mon Aug 22 08:58:24 2016 -0400
+
+    LP#1613374 - Make 'Canceled Transit' status holdable and OPAC-visible.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+1	1	Open-ILS/src/sql/Pg/upgrade/XXXX.data.canceled-transit-item-status.sql
+
+commit 6c27a324d4665b7c64d37784ac339037bdb31423
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Wed Aug 24 14:12:04 2016 -0400
+
+    LP#1613374 - Set item status to 'Canceled Transit' when transit is canceled.
+    
+    I opened a separate bug report on this issue (bug 1613374) before realizing
+    bug 1306666 was reported.  This commit creates a new 'Canceled Transit' status
+    that signals to staff what happened to an item when a transit is aborted/canceled.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    
+    Conflicts:
+    	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Transit.pm
+    
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	6	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Transit.pm
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Const.pm
+1	0	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+7	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.canceled-transit-item-status.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.canceled-transit-item-status.sql
+
+commit c820aa492739c544e09a7b646a09b8507ae3993b
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Aug 24 18:01:33 2016 -0400
+
+    Stamping upgrade for email receipts
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+105	0	Open-ILS/src/sql/Pg/upgrade/0996.data.email-checkout-receipt.sql
+0	103	Open-ILS/src/sql/Pg/upgrade/XXXX.data.email-checkout-receipt.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0996.data.email-checkout-receipt.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.email-checkout-receipt.sql
+
+commit 33746b32ffab1c7d5e530df8acc9336c2b15859f
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Mon Aug 22 18:08:37 2016 -0400
+
+    LP#1356477: release notes for email checkout receipts
+    
+    A portion of the text was written by Angela Kilsdonk.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+20	0	docs/RELEASE_NOTES_NEXT/Circulation/email_cko_receipts.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Circulation/email_cko_receipts.adoc
+
+commit 92f1bdb26d0027b52b3b3db84ff3d52104d6b1fe
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Thu Aug 4 10:38:48 2016 -0400
+
+    LP#1356477: update selfcheck interface
+    
+    This patch replaces the Logout and Logout with Receipt buttons in
+    the selfcheck interface with a single Logout button and a set of radio
+    buttons (whose labels are clickable) that allow the user to specify
+    whether they want an email receipt, a print receipt, or no receipt upon
+    logging out.
+    
+    If the user has no email address, the option to select email receipts
+    will not be presented to them.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+7	2	Open-ILS/src/templates/circ/selfcheck/summary.tt2
+70	7	Open-ILS/web/js/ui/default/circ/selfcheck/selfcheck.js
+
+commit 4d512bfac53dfdc94696f1731bbae6e50542bccc
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Thu Aug 4 12:07:14 2016 -0400
+
+    LP#1356477: move email receipt checkbox on patron editor
+    
+    This patch updates the patron editor so that the checkbox
+    for setting whether the user wishes to get email checkout
+    receipts by default is moved next to the email address
+    input.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+13	2	Open-ILS/src/templates/staff/circ/patron/t_edit.tt2
+
+commit f8422d9abd41f9b10b1b1cc4cc824e0eaef5b84e
+Author: Mike Rylander <miker@esilibrary.com>
+Date:   Wed Aug 3 16:51:54 2016 -0400
+
+    LP#1356477: add quick receipt button
+    
+    This patch adds a new button to the webstaff checkout page
+    called Quick Receipt. If the button itself is pushed, a
+    receipt containing the current checkouts is either printed
+    or emailed, depending on the user's preference. If the
+    drop-down portion of the button is used, staff members can
+    override the user's default preference to print or email
+    the receipt.
+    
+    The Quick Receipt button is enabled only if at least one
+    checkout has been made during the current session.
+    
+    Note that email receipts is an option only when the patron
+    has an email address supplied.
+    
+    An icon next to the Quick Receipt button will be either a
+    printer or an envelope depending on the user's preferred
+    receipt setting.
+    
+    This patch also modifies the "Done" button. If pressed, the session
+    is ended and the receipt is generated according to the user's
+    preferences, but the drop-down portion can be used to end
+    the session while letting the staff member choose how the
+    receipt is emitted.
+    
+    If a receipt is emailed, a toast is displayed saying so.
+    
+    Signed-off-by: Mike Rylander <miker@esilibrary.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Actor.pm
+25	4	Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2
+2	0	Open-ILS/src/templates/staff/circ/share/circ_strings.tt2
+8	1	Open-ILS/web/js/ui/default/staff/circ/patron/app.js
+83	10	Open-ILS/web/js/ui/default/staff/circ/patron/checkout.js
+1	0	Open-ILS/web/js/ui/default/staff/services/user.js
+2	0	Open-ILS/web/js/ui/default/staff/test/karma.conf.js
+
+commit 9d1d36d3d56dcbe46d462ce8e431911df7b7166b
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Wed Aug 3 15:38:49 2016 -0400
+
+    LP#1356477: teach OPAC patron registration form about staged user (opt-in) settings
+    
+    This patch causes a checkbox to be added for each user setting
+    that controls opt-in for active Action/Trigger event definitions. In
+    the specific context of email checkout receipts, this means that
+    a patron who is self-registering can elect to get email checkout
+    receipts by default.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+52	2	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Register.pm
+15	0	Open-ILS/src/templates/opac/register.tt2
+
+commit aa47fc5fdc1a5a9f3889fc3f67588739ba9e1700
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Wed Aug 3 15:36:18 2016 -0400
+
+    LP#1356477: teach webstaff patron editor about staged user settings
+    
+    This patch also fixes a bug that preferred the webstaff patron editor
+    from successfully removing a staged patron upon completing the
+    registration of the patron.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+5	1	Open-ILS/web/js/ui/default/staff/circ/patron/regctl.js
+
+commit f3d2d070e8ca3a8b12a820489ee6caff8dc1c7e9
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Wed Aug 3 15:37:39 2016 -0400
+
+    LP#1356477: create new staging table for user settings
+    
+    This patch creates a new table called staging.setting_stage
+    that allows for storing user settings when a patron uses
+    (for example) the self-registration page.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+11	0	Open-ILS/examples/fm_IDL.xml
+17	3	Open-ILS/src/perlmods/lib/OpenILS/Application/Actor/Stage.pm
+9	0	Open-ILS/src/sql/Pg/015.schema.staging.sql
+12	0	Open-ILS/src/sql/Pg/upgrade/YYYY.schema.staging-user-setting.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/YYYY.schema.staging-user-setting.sql
+
+commit 7e3a8e2c61f4ee24317d11d478930851671b1c1d
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Mon Aug 8 16:50:08 2016 -0400
+
+    LP#1356477: add ability to unconditionally send email
+    
+    This patch defines and uses an
+    open-ils.trigger.event.autocreate.ignore_opt_in method that does what
+    it says on the tin; the caller is reponsible for not abusing this.
+    
+    This supports a use case in the webstaff checkout interface where staff
+    can choose to have the receipt be emailed, provided that the patron
+    record has an email address defined, even if the user setting to
+    email receipts by default is not set. (It is assumed that the staff
+    member would have gotten permission from the patron on the spot.)
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/CircNotify.pm
+9	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Trigger.pm
+
+commit 53fc56475feedb6433a28f5c49096de7a46d87a9
+Author: Mike Rylander <miker@esilibrary.com>
+Date:   Wed Aug 3 12:45:10 2016 -0400
+
+    LP#1356477: business logic for email checking receipts
+    
+    This patch adds two methods, open-ils.circ.checkout.batch_notify
+    and open-ils.circ.checkout.batch_notify.session, that when passed
+    a set of circulation IDs, creates A/T events for the
+    checkout notification hooks. In the specific case of the email
+    checkout receipts feature, the seed data contains a stock
+    event that would send out emails, but it is conceivable
+    that other forms of notification could be done by defining
+    A/T events appropriately.
+    
+    Signed-off-by: Mike Rylander <miker@esilibrary.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+3	0	Open-ILS/src/extras/ils_events.xml
+1	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ.pm
+145	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/CircNotify.pm
+ create mode 100644 Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/CircNotify.pm
+
+commit b09ad8fd9ccf37b374ddf9840cf20fc63f45a624
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Wed Aug 3 12:18:19 2016 -0400
+
+    LP#1356477: seed data for email checkout receipts
+    
+    This patch adds seed data for email checkout receipts,
+    including:
+    
+    - The action/trigger hooks circ.checkout.batch_notify
+      and circ.checkout.batch_notify.session.
+    - The default event definition
+    - The circ.send_email_checkout_receipts (Email checkout receipts by
+      default?) user setting.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    
+    Conflicts:
+    	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+
+102	0	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+103	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.email-checkout-receipt.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.email-checkout-receipt.sql
+
+commit be0ed357743e8b36f13fe38a9127dc8bd0f4172e
+Author: Ben Shum <ben@evergreener.net>
+Date:   Tue Jul 5 13:03:57 2016 -0400
+
+    LP#1603708: Remove support for Ubuntu 12.04 Precise
+    
+    With support for Ubuntu 16.04 Xenial in place, remove the oldest LTS, which is
+    Ubuntu 12.04 Precise.
+    
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	11	Open-ILS/src/extras/Makefile.install
+1	1	Open-ILS/src/extras/install/Makefile.common
+0	148	Open-ILS/src/extras/install/Makefile.ubuntu-precise
+7	14	docs/installation/server_installation.txt
+1	2	docs/installation/server_upgrade.txt
+ delete mode 100644 Open-ILS/src/extras/install/Makefile.ubuntu-precise
+
+commit 7bdfe9f5a2e8771c481bf8e15ad7da350b654533
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Aug 24 14:55:29 2016 -0400
+
+    Stamping upgrade script for badge seed data
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+8	0	Open-ILS/src/sql/Pg/upgrade/0995.data.popularity-badge-seed-data.sql
+0	8	Open-ILS/src/sql/Pg/upgrade/XXXX.data.popularity-badge-seed-data.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0995.data.popularity-badge-seed-data.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.popularity-badge-seed-data.sql
+
+commit 6d176feb4e4bbfc67e9c4179cd7e446fd148fd4d
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Tue Aug 23 16:01:35 2016 -0400
+
+    LP#1614237: Popularity badge seed data
+    
+    Adding popularity badge seed data for a badge based on Holds Requested over the
+    past 5 years.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+4	0	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+8	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.popularity-badge-seed-data.sql
+3	0	docs/RELEASE_NOTES_NEXT/OPAC/popularity-rating.txt
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.popularity-badge-seed-data.sql
+
+commit fd725a7eb939fedb31f6eb13066f45b35baabb9c
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Wed Aug 17 18:29:09 2016 -0400
+
+    LP#1614290: Add badge_score_generator to example crontab
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+3	0	Open-ILS/examples/crontab.example
+
+commit 9fc06033c0805b3f1832e74c0953d243d1a9465d
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Aug 24 14:51:32 2016 -0400
+
+    Moving function creation to later in the schema def, where its deps exist.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+0	20	Open-ILS/src/sql/Pg/002.schema.config.sql
+20	0	Open-ILS/src/sql/Pg/005.schema.actors.sql
+
+commit 12159383d46bf76db3e710a689ad8b5140436007
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Aug 24 12:56:28 2016 -0400
+
+    Stamping upgrade script for authority edit changes and propagation improvement
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+144	0	Open-ILS/src/sql/Pg/upgrade/0994.schema.authority-propage-edit-date.sql
+0	142	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.authority-propage-edit-date.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0994.schema.authority-propage-edit-date.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.authority-propage-edit-date.sql
+
+commit 84bed711249098679ae25f83eeb588871022ed19
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Aug 24 11:38:49 2016 -0400
+
+    LP#1588948: Only attempt a bib update if the heading changes
+    
+    This should significantly reduce the churn on bibs and the time to save
+    an authority where the heading that would propagate to bibs has not changed.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+2	2	Open-ILS/src/sql/Pg/999.functions.global.sql
+82	2	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.authority-propage-edit-date.sql
+
+commit d61a652d97339961fd4a65bf27c77f4bc1314ffb
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Jun 13 13:57:30 2016 -0400
+
+    LP#1588948 Auth propagate bib meta on change only
+    
+    Only update bib record editor and edit_date if an authority record
+    change propagation resulted in a modified bib record.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+9	2	Open-ILS/src/sql/Pg/999.functions.global.sql
+20	1	Open-ILS/src/sql/Pg/t/authority-update-bib-propagation.pg
+9	2	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.authority-propage-edit-date.sql
+
+commit 8e959742b7751403e942694d1123a3f38cbbb239
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Jun 6 10:19:30 2016 -0400
+
+    LP#1588948 Release notes (auth prop. bib edit[or|_date])
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+16	0	docs/RELEASE_NOTES_NEXT/Cataloging/auth_prop_bib_update.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Cataloging/auth_prop_bib_update.adoc
+
+commit 7605ed8a65a2151e42a3e8c20cd8640f81fab962
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Jun 6 11:14:47 2016 -0400
+
+    LP#1588948 Authority propagation PGTAP test
+    
+    Adds a new general purpose authority->bib propagation pgtap test,
+    covering basic propagation and editor / edit_date propagation.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+105	0	Open-ILS/src/sql/Pg/t/authority-update-bib-propagation.pg
+ create mode 100644 Open-ILS/src/sql/Pg/t/authority-update-bib-propagation.pg
+
+commit 28d9ccf8df4cd3e9989d91e3053c26aca6a48e76
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Jun 3 15:16:58 2016 -0400
+
+    LP#1588948 Propagate authority->bib edit[or|_date]
+    
+    Adds a new global flag 'ingest.disable_authority_auto_update_bib_meta',
+    which is disabled by default.
+    
+    When disabled, the 'editor' and 'edit_date' columns on bib records
+    updated via authority field propagation are updated to the value of the
+    editor on the authority record and NOW(), respectively.
+    
+    When enabled, editor and edit_date are not modified.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+12	0	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+32	6	Open-ILS/src/sql/Pg/999.functions.global.sql
+55	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.authority-propage-edit-date.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.authority-propage-edit-date.sql
+
+commit 95ea3d5223963777f8d76d11ab0dd7e4eeeeceff
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Aug 24 12:38:58 2016 -0400
+
+    Stamping upgrade script for transient usr_activity
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+35	0	Open-ILS/src/sql/Pg/upgrade/0993.schema.usr_activity_transient.sql
+0	35	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.usr_activity_transient.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0993.schema.usr_activity_transient.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.usr_activity_transient.sql
+
+commit cfad22b42c2b3bbe04697a31644c925eff8e6a1a
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Apr 15 17:07:02 2016 -0400
+
+    LP#1570909 User activity purge release notes
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+29	0	docs/RELEASE_NOTES_NEXT/Administration/user-activity-purge.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Administration/user-activity-purge.adoc
+
+commit fc5b3ec873215363be00ca4ff51ccd4a42403280
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Apr 15 16:54:48 2016 -0400
+
+    LP#1570909 User activity purge pgtap test
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+68	0	Open-ILS/src/sql/Pg/live_t/purge-user-activity.pg
+ create mode 100644 Open-ILS/src/sql/Pg/live_t/purge-user-activity.pg
+
+commit ea8b2ae34dee14d15f4958ced3dadbdc4ea8ebbe
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Apr 15 16:26:57 2016 -0400
+
+    LP#1570909 User activity purge function
+    
+    Utility function for removing all activity entries by activity type,
+    except for the most recent entry per user.  This is primarily useful
+    when cleaning up rows prior to setting the transient flag on an
+    activity type to true.  It allows for immediate cleanup of data (e.g.
+    for patron privacy) and lets admins control when the data is deleted,
+    which could be useful for huge activity tables.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+20	0	Open-ILS/src/sql/Pg/002.schema.config.sql
+25	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.usr_activity_transient.sql
+
+commit b1f4d599b87a375ab43b7439dcc2ba1208c7c5be
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Apr 15 11:23:33 2016 -0400
+
+    LP#1570909 User activity transient default
+    
+    Only retain the most recent user activity entry (per activity type) by
+    default.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+10	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.usr_activity_transient.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.usr_activity_transient.sql
+
+commit 40e20683c5d2aa78a128ed019be163349545a4d7
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Aug 24 12:17:11 2016 -0400
+
+    Stamping upgrade of is_available branch
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+231	0	Open-ILS/src/sql/Pg/upgrade/0992.schema.copy_status_co_allowed.sql
+0	229	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.copy_status_co_allowed.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0992.schema.copy_status_co_allowed.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.copy_status_co_allowed.sql
+
+commit d60ea525afa3e4318f474f481e9c8b911ff39e99
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Aug 24 10:26:28 2016 -0400
+
+    LP#1464709 Copy status is_available release notes
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+17	0	docs/RELEASE_NOTES_NEXT/Circulation/copy-status-is-avail.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Circulation/copy-status-is-avail.adoc
+
+commit f0aa5d587467a42e61669f1d3e417489e57813d3
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Tue Aug 23 16:59:33 2016 -0400
+
+    LP#1464709: Disentangle on-holds-shelf from is_available
+    
+    Avoid treating On-Holds-Shelf items as is_available so they do not
+    appear in the catalog as #available.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/100.circ_matrix.sql
+1	1	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+2	2	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.copy_status_co_allowed.sql
+
+commit fed65df3c669e1337f187d533e9033a697d6b263
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Thu Aug 18 09:52:20 2016 -0400
+
+    LP#1464709: teach QP about is_available statuses
+    
+    We look them up, cache them, and use them for the #available modifier.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+11	2	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Publisher/metabib.pm
+
+commit 2c40b84273316525de7ef65ca6ceca9f939c7052
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Aug 27 17:24:38 2015 -0400
+
+    LP#1464709 Rename checkout_ok to is_available
+    
+    And update pgptap to check for only 2 is_available statuses (not
+    on-holds shelf).
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/examples/fm_IDL.xml
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+1	1	Open-ILS/src/sql/Pg/100.circ_matrix.sql
+3	3	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+4	4	Open-ILS/src/sql/Pg/live_t/lp1464709-copy-stat-co-ok.live.pg
+3	3	Open-ILS/src/sql/Pg/t/lp1464709-copy-stat-co-ok.pg
+3	3	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.copy_status_co_allowed.sql
+3	3	Open-ILS/web/conify/global/config/copy_status.html
+1	1	Open-ILS/web/js/dojo/openils/conify/nls/conify.js
+
+commit 3c37c14663fbf9eea99e2bcd82773a229d02bf1c
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Jun 15 18:09:01 2015 -0400
+
+    LP#1464709 Non-standard copy status pgtap tests
+    
+    Includes unit test plus a set of live tests.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+48	0	Open-ILS/src/sql/Pg/live_t/lp1464709-copy-stat-co-ok.live.pg
+29	0	Open-ILS/src/sql/Pg/t/lp1464709-copy-stat-co-ok.pg
+ create mode 100644 Open-ILS/src/sql/Pg/live_t/lp1464709-copy-stat-co-ok.live.pg
+ create mode 100644 Open-ILS/src/sql/Pg/t/lp1464709-copy-stat-co-ok.pg
+
+commit 31480730b2458e8915660f4fb78893418ccdf9cb
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Jun 3 19:30:40 2015 -0400
+
+    LP#1464709 Seamless non-standard copy status checkout
+    
+    Add a new boolean configuration option to copy statuses which allow such
+    copies to be checked out without requiring an alert or override.
+    
+    New column is config.copy_status.checkout_ok.  Any status with this
+    boolean enabled will be treated the same as Available, Reshelving, and
+    Holds Shelf status copies in that the status will be considered
+    checkout-able.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2	1	Open-ILS/examples/fm_IDL.xml
+2	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+2	1	Open-ILS/src/sql/Pg/100.circ_matrix.sql
+3	3	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+229	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.copy_status_co_allowed.sql
+12	0	Open-ILS/web/conify/global/config/copy_status.html
+1	0	Open-ILS/web/js/dojo/openils/conify/nls/conify.js
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.copy_status_co_allowed.sql
+
+commit 51759b283ca19b15a252faa830c2e4b4a3199695
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Aug 24 11:58:56 2016 -0400
+
+    Stamping upgrade script for ranked-volumes update
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+98	0	Open-ILS/src/sql/Pg/upgrade/0991.function.unapi.ranked_volumes.sql
+0	98	Open-ILS/src/sql/Pg/upgrade/XXXX.function.unapi.ranked_volumes.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0991.function.unapi.ranked_volumes.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.function.unapi.ranked_volumes.sql
+
+commit db9a0bb41e4bd569fbbdc7e4a57778da98f69604
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Tue May 10 15:41:54 2016 -0400
+
+    LP#1315552 Don't use circ_lib name in ranked_volumes
+    
+    ranked_volumes() is supposed to return only volume info, but the name
+    returned was from copy.circ_lib, not acn.owning_lib, so it could result
+    in duplicate rows if circ_lib's varied across a single acn.
+    
+    Let's just use the owning_lib name instead.  Note: the circ_lib join
+    is left undisturbed to keep the current sorting behavior
+    (necessary?).
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+3	2	Open-ILS/src/sql/Pg/990.schema.unapi.sql
+98	0	Open-ILS/src/sql/Pg/upgrade/XXXX.function.unapi.ranked_volumes.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.function.unapi.ranked_volumes.sql
+
+commit f5867b209304ecaf25ce94bf538299d9d15cc34e
+Author: Jason Boyer <jboyer@library.in.gov>
+Date:   Fri May 6 14:08:48 2016 -0400
+
+    LP1259196: Use Location as Workstation on Login
+    
+    When using a SIPServer with LP1579144 applied, use the
+    Location (CP) field of the Login (93) message as a
+    workstation name. This allows you to determine which
+    selfcheck performed which circulation.
+    
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+16	8	Open-ILS/src/perlmods/lib/OpenILS/SIP.pm
+8	0	docs/RELEASE_NOTES_NEXT/SIP/SIP_Workstation_Name.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/SIP/SIP_Workstation_Name.adoc
+
+commit 58fc8f0c8383c60299186debb54730f8883394ac
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Aug 24 10:49:41 2016 -0400
+
+    Correct upgrade script
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/upgrade/0990.data.copy-count-badge.sql
+
+commit 36f331390345e05e264e96a0d70d598e1f2bc263
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Thu Aug 18 21:10:43 2016 -0400
+
+    LP#1612274: Release notes for improved holds interfaces
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+14	0	docs/RELEASE_NOTES_NEXT/OPAC/improved-myopac-holds-screens.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/OPAC/improved-myopac-holds-screens.adoc
+
+commit 504076521062d6b52842e137e79877b1abf8f2a5
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Thu Aug 11 13:24:00 2016 -0400
+
+    LP#1612274: Add distinct classes for hold statuses
+    
+    With more data in the My Account hold status field, libraries may want to
+    style some statuses or dates differently so that they pop out to the user. Each
+    hold status and date now has its own class for more flexible styling.
+    
+    The available status also now has a green, bold font and the suspended status
+    has a red, bold font.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+10	0	Open-ILS/src/templates/opac/css/style.css.tt2
+51	39	Open-ILS/src/templates/opac/parts/hold_status.tt2
+
+commit b39eaf4328563a8965a2fabfdad52b898795d116
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Wed Aug 10 23:41:51 2016 -0400
+
+    LP#1612274: Improve display of holds status in My Account
+    
+    Collapse the data contained in the Activate, Active, and Date Fulfilled columns
+    into the status filed on the My Account holds and holds history interfaces.
+    This change cleans up the display and removes extraneous information that the
+    user doesn't need to see.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+4	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Holds.pm
+2	7	Open-ILS/src/templates/opac/css/style.css.tt2
+5	27	Open-ILS/src/templates/opac/myopac/hold_history.tt2
+0	10	Open-ILS/src/templates/opac/myopac/holds.tt2
+26	5	Open-ILS/src/templates/opac/parts/hold_status.tt2
+
+commit 2888b409b32cfe541247cc2e39ba23d0e19170c6
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Mon Aug 22 14:02:58 2016 -0400
+
+    LP#1613730: Stamping upgrade script for copy count badge
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+36	0	Open-ILS/src/sql/Pg/upgrade/0990.data.copy-count-badge.sql
+0	34	Open-ILS/src/sql/Pg/upgrade/XXXX.data.copy-count-badge.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0990.data.copy-count-badge.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.copy-count-badge.sql
+
+commit da240e76b8a16cf7e079ab09b1fd8571a4d68818
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Thu Aug 18 12:58:25 2016 -0400
+
+    LP#1613730: Add a "Copy Count" rating function for badges
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+31	1	Open-ILS/src/sql/Pg/220.schema.rating.sql
+34	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.copy-count-badge.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.copy-count-badge.sql
+
+commit c597e8f644afc216f7ed86e01765da12a79f6780
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Sat Aug 20 14:52:15 2016 -0400
+
+    LP#1586221 - Remove "no spaces" message from login form.
+    
+    Since the fix to bug 1086064 removes any spaces entered into
+    the login form, it is now inaccurate to require the user to type
+    their cards with no spaces (since most library cards have spaces
+    in the number on the physical card).
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	1	Open-ILS/src/templates/opac/parts/login/form.tt2
+
+commit 079d0ed5f08da74201b79f53275f559aba8a19f2
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Mon Aug 15 14:07:21 2016 -0400
+
+    LP#1613381: combine two tables in patron notification preferences
+    
+    This patch consolidates the two tables in the public catalog
+    notification preferences page into one table, as patrons have
+    no reason to care about the distinction between A/T opt-in
+    settings and the hold, phone, and SMS user settings.
+    
+    This patch also adds a <label> element for opt-in setting
+    names.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+12	23	Open-ILS/src/templates/opac/myopac/prefs_notify.tt2
+7	0	docs/RELEASE_NOTES_NEXT/OPAC/combine_notice_prefs_tables.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/OPAC/combine_notice_prefs_tables.adoc
+
+commit 4e4525c85e795a42231ffbb0e8e10c027d50a682
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Wed Aug 17 10:53:19 2016 -0400
+
+    LP#1476049: disable serve-cgi-bin Apache config on Jessie and Xenial
+    
+    This patch ensures that the stock Apache configuration
+    "serve-cgi-bin" is disabled when installing on Debian Jessie
+    and Ubuntu Xenial, as otherwise the default cgi-bin location
+    can override what Evergreen specifies for offline.pl.
+    
+    To test:
+    
+    [1] Run the Makefile.install step on Jessie or Xenial; verify
+        that there is no /etc/apache2/conf-enabled/serve-cgi-bin.conf
+        symlink.
+    [2] Proceed with the rest of the Evergreen installation; verify
+        that the Apache error log doesn't contain a warning like this:
+    
+        "The Alias directive in /etc/apache2/sites-enabled/eg.conf ...
+         will probably never match because it overlaps an earlier
+         ScriptAlias."
+    
+    [3] For extra credit, verify that one can access offline circulation
+        sessions.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+3	0	Open-ILS/src/extras/install/Makefile.debian-jessie
+3	0	Open-ILS/src/extras/install/Makefile.ubuntu-xenial
+
+commit 3d78e822af3a6337430825dcf328889ea254c6b6
+Author: Michele Morgan <mmorgan@noblenet.org>
+Date:   Tue Aug 16 14:47:43 2016 -0400
+
+    LP#1583729 Item status screen column options do not include age protection
+    
+    Adds the age_protect field to several missing copy interfaces:
+    
+    XUL client:
+    
+    - Item status list view column picker
+    - Item status alternate view
+    - Holdings Maintenance column picker
+    
+    Web client:
+    
+    - Item status alternate view
+    - Holdings view column picker
+    
+    Also addresses an issue with displaying the circ modifier in some item
+    interfaces.
+    
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	0	Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2
+2	0	Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2
+1	1	Open-ILS/web/js/ui/default/staff/cat/item/app.js
+1	1	Open-ILS/web/js/ui/default/staff/cat/services/holdings.js
+1	0	Open-ILS/web/opac/locale/en-US/lang.dtd
+1	0	Open-ILS/xul/staff_client/server/cat/copy_browser.js
+6	1	Open-ILS/xul/staff_client/server/circ/alternate_copy_summary.js
+2	1	Open-ILS/xul/staff_client/server/circ/alternate_copy_summary.xul
+15	0	Open-ILS/xul/staff_client/server/circ/util.js
+1	0	Open-ILS/xul/staff_client/server/locale/en-US/circ.properties
+1	0	Open-ILS/xul/staff_client/server/locale/en-US/common.properties
+
+commit 059411ba21bb1dffb2d2db351ce1eddfc540fb8f
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Aug 5 12:39:54 2016 -0400
+
+    LP#1527694 Webstaff egHatch supports 'LoginSession' storage
+    
+    Adds support for a class of cached value (AKA "LoginSession" items)
+    that are cleared when either the user logs out or the browser is closed.
+    Values are stored as cookies.
+    
+    Authentication tokens and "retrieve last patron" data are now stored as
+    "LoginSession" items.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+6	6	Open-ILS/web/js/ui/default/staff/circ/patron/app.js
+17	7	Open-ILS/web/js/ui/default/staff/services/auth.js
+85	3	Open-ILS/web/js/ui/default/staff/services/hatch.js
+
+commit 350500afb00a0a2b244ef93d5cabb9549ffa59cd
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Aug 4 12:34:56 2016 -0400
+
+    LP#1527694 Webstaff clear last patron
+    
+    Store most recent patron ID via cookie instead of localStorage so the
+    value can expire when then browser is closed.
+    
+    Adds angular-cookies (ngCookies) dependency.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    
+    Conflicts:
+    	Open-ILS/web/js/ui/default/staff/bower.json
+
+1	0	Open-ILS/src/templates/staff/base_js.tt2
+2	0	Open-ILS/web/js/ui/default/staff/Gruntfile.js
+2	1	Open-ILS/web/js/ui/default/staff/bower.json
+6	6	Open-ILS/web/js/ui/default/staff/circ/patron/app.js
+1	1	Open-ILS/web/js/ui/default/staff/services/core.js
+1	0	Open-ILS/web/js/ui/default/staff/test/karma.conf.js
+
+commit f6eeb168a73ac86506890997ae6f426d8ddaedbe
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Aug 4 17:56:32 2016 -0400
+
+    LP#1522635 Webstaff lost (etc.) checkout completes
+    
+    Resolves an issue in the browser client where checkout of LOST
+    (and other non status='checked out' copies) failed to show the
+    open-circ-exists dialog.  In short, when searching for an existing
+    open circulation, look for any open circulation linked to the copy,
+    regardless of the status of the copy.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+6	12	Open-ILS/web/js/ui/default/staff/circ/services/circ.js
+
+commit 997a30a6973b9161c7336a086534c41810665f50
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Aug 4 15:22:22 2016 -0400
+
+    LP#1464350 Webstaff home page catalog search
+    
+    Search the catalog directly from the home/splash page in the browser
+    client.
+    
+    A side effect of this commit is that it's now possible to jump directly
+    to a set of search results in the embedded catalog by going to:
+    
+    /eg/staff/cat/catalog/results?<query-params>
+    
+    E.g.
+    
+    /eg/staff/cat/catalog/results?query=scores&qtype=subject
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+13	0	Open-ILS/src/templates/staff/t_splash.tt2
+12	4	Open-ILS/web/js/ui/default/staff/app.js
+21	0	Open-ILS/web/js/ui/default/staff/cat/catalog/app.js
+
+commit d78e8a4f5e3a9fa501573e7f26bf69de566632ad
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Wed Aug 10 12:10:58 2016 -0400
+
+    start adding form validation to receipt template editor
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+5	2	Open-ILS/src/templates/staff/css/style.css.tt2
+5	3	Open-ILS/src/templates/staff/reporter/t_edit_template.tt2
+
+commit b1f1f64b932bf113c7e6ddf80ee66b892dc6fdfd
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Mon Aug 8 17:05:10 2016 -0400
+
+    Ignore null fleshed objects in autofleshing grid columns
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2	0	Open-ILS/web/js/ui/default/staff/services/grid.js
+
+commit 804a907f4b21132c2b5c7865eed955df2a5e3814
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Mon Aug 8 15:09:43 2016 -0400
+
+    Repair output popup, and add Reports to the splash page
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+6	0	Open-ILS/src/templates/staff/t_splash.tt2
+1	1	Open-ILS/web/reports/oils_rpt_folder_window.js
+
+commit 59af472f0726b7ffdc89c66dab685fd3e686c9f7
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Mon Aug 8 14:15:09 2016 -0400
+
+    Report Templates!
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+22	14	Open-ILS/examples/fm_IDL.xml
+5	0	Open-ILS/src/perlmods/lib/OpenILS/WWW/IDL2js.pm
+0	0	Open-ILS/src/templates/staff/css/reporter.css
+21	0	Open-ILS/src/templates/staff/reporter/index.tt2
+180	0	Open-ILS/src/templates/staff/reporter/share/report_strings.tt2
+233	0	Open-ILS/src/templates/staff/reporter/t_edit_template.tt2
+1	0	Open-ILS/src/templates/staff/reporter/t_legacy.tt2
+1	1	Open-ILS/src/templates/staff/share/t_confirm_dialog.tt2
+23	0	Open-ILS/src/templates/staff/share/t_select_dialog.tt2
+1	1	Open-ILS/web/js/ui/default/staff/bower.json
+440	0	Open-ILS/web/js/ui/default/staff/reporter/services/template.js
+600	0	Open-ILS/web/js/ui/default/staff/reporter/template/app.js
+80	2	Open-ILS/web/js/ui/default/staff/services/idl.js
+72	9	Open-ILS/web/js/ui/default/staff/services/ui.js
+1	1	Open-ILS/xsl/fm_IDL2js.xsl
+ create mode 100644 Open-ILS/src/templates/staff/css/reporter.css
+ create mode 100644 Open-ILS/src/templates/staff/reporter/index.tt2
+ create mode 100644 Open-ILS/src/templates/staff/reporter/share/report_strings.tt2
+ create mode 100644 Open-ILS/src/templates/staff/reporter/t_edit_template.tt2
+ create mode 100644 Open-ILS/src/templates/staff/reporter/t_legacy.tt2
+ create mode 100644 Open-ILS/src/templates/staff/share/t_select_dialog.tt2
+ create mode 100644 Open-ILS/web/js/ui/default/staff/reporter/services/template.js
+ create mode 100644 Open-ILS/web/js/ui/default/staff/reporter/template/app.js
+
+commit 541921ab1de0a45002a501a2bea545c47f2c5252
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Mon Aug 8 14:10:32 2016 -0400
+
+    Let the legacy interface do the right thing when embedded in the web client
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+22	5	Open-ILS/web/reports/oils_rpt_folder_window.js
+2	1	Open-ILS/web/reports/oils_rpt_param_editor.js
+3	0	Open-ILS/web/reports/oils_rpt_utils.js
+
+commit 461eef4e0bd4caec45adafdce2ec9c8095a24256
+Author: Jason Etheridge <jason@esilibrary.com>
+Date:   Mon Jul 11 15:57:48 2016 -0400
+
+    toward ou type dropdown
+
+12	0	Open-ILS/src/templates/staff/admin/actor/org_unit/t_main_tab.tt2
+
+commit d72697057908bbbecc961cc9a0eae421ab688c7d
+Author: Jason Etheridge <jason@esilibrary.com>
+Date:   Mon Jul 11 14:52:53 2016 -0400
+
+    child node creation
+    
+    Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+
+8	0	Open-ILS/src/templates/staff/admin/actor/org_unit/t_main_tab.tt2
+14	4	Open-ILS/web/js/ui/default/staff/admin/actor/org_unit/app.js
+
+commit 60c2eb3b9137c7b07c1bdbb7c1cbd1ab598d0b5e
+Author: Jason Etheridge <jason@esilibrary.com>
+Date:   Mon Jul 11 11:59:06 2016 -0400
+
+    change to delete to remove, since JS uses delete
+    
+    Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+
+1	1	Open-ILS/src/templates/staff/admin/actor/org_unit/t_main_tab.tt2
+1	1	Open-ILS/web/js/ui/default/staff/admin/actor/org_unit/app.js
+
+commit a2d1ab854f916606d9af3ce991c9601ff8c9897f
+Author: Jason Etheridge <jason@esilibrary.com>
+Date:   Mon Jul 11 11:25:00 2016 -0400
+
+    UI tweak and org deletion
+    
+    Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+
+2	0	Open-ILS/src/templates/staff/admin/actor/org_unit/index.tt2
+23	3	Open-ILS/src/templates/staff/admin/actor/org_unit/t_main_tab.tt2
+16	2	Open-ILS/web/js/ui/default/staff/admin/actor/org_unit/app.js
+
+commit 4e911171a113e5d7562ed998229f108a9120badc
+Author: Jason Etheridge <jason@esilibrary.com>
+Date:   Mon Jul 11 10:20:43 2016 -0400
+
+    toast, comments, logging
+    
+    Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+
+6	0	Open-ILS/src/templates/staff/admin/actor/org_unit/index.tt2
+1	1	Open-ILS/src/templates/staff/admin/actor/org_unit/t_main_tab.tt2
+14	11	Open-ILS/web/js/ui/default/staff/admin/actor/org_unit/app.js
+
+commit 872c8c2f0d98016fc1639dcc0d49300ae03e1660
+Author: Jason Etheridge <jason@esilibrary.com>
+Date:   Fri Jun 10 14:22:45 2016 -0400
+
+    programmatic selection of tree node still not working
+    
+    Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+
+13	2	Open-ILS/web/js/ui/default/staff/admin/actor/org_unit/app.js
+
+commit aca3dd932957a062eb5f6385bb89d3dfae08d011
+Author: Jason Etheridge <jason@esilibrary.com>
+Date:   Fri Jun 10 14:17:13 2016 -0400
+
+    refactor
+    
+    Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+
+30	25	Open-ILS/web/js/ui/default/staff/admin/actor/org_unit/app.js
+
+commit d914aab30ba0ccf75a081aa8dfcf157e8385c1e1
+Author: Jason Etheridge <jason@esilibrary.com>
+Date:   Fri Jun 10 14:16:22 2016 -0400
+
+    getting changes to stick within a session
+    
+    Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+
+15	3	Open-ILS/web/js/ui/default/staff/admin/actor/org_unit/app.js
+
+commit 297a0b142326320f54f83b1f3d9d7f7c9a0b495a
+Author: Jason Etheridge <jason@esilibrary.com>
+Date:   Fri Jun 10 12:37:01 2016 -0400
+
+    better stub out the other tabs, and try to select CONS by default
+    
+    Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+
+1	0	Open-ILS/src/templates/staff/admin/actor/org_unit/t_addresses_tab.tt2
+1	0	Open-ILS/src/templates/staff/admin/actor/org_unit/t_hours_tab.tt2
+2	2	Open-ILS/src/templates/staff/admin/actor/org_unit/t_index.tt2
+1	0	Open-ILS/web/js/ui/default/staff/admin/actor/org_unit/app.js
+
+commit efa65bd5c7640758585070e66819f06e82522b78
+Author: Jason Etheridge <jason@esilibrary.com>
+Date:   Wed May 11 15:17:47 2016 -0400
+
+    Toward an Angular replacement for Org Units Conify
+    
+    Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+
+15	0	Open-ILS/src/templates/staff/admin/actor/org_unit/index.tt2
+0	0	Open-ILS/src/templates/staff/admin/actor/org_unit/t_addresses_tab.tt2
+0	0	Open-ILS/src/templates/staff/admin/actor/org_unit/t_hours_tab.tt2
+51	0	Open-ILS/src/templates/staff/admin/actor/org_unit/t_index.tt2
+46	0	Open-ILS/src/templates/staff/admin/actor/org_unit/t_main_tab.tt2
+7	0	Open-ILS/src/templates/staff/css/admin.css.tt2
+87	0	Open-ILS/web/js/ui/default/staff/admin/actor/org_unit/app.js
+ create mode 100644 Open-ILS/src/templates/staff/admin/actor/org_unit/index.tt2
+ create mode 100644 Open-ILS/src/templates/staff/admin/actor/org_unit/t_addresses_tab.tt2
+ create mode 100644 Open-ILS/src/templates/staff/admin/actor/org_unit/t_hours_tab.tt2
+ create mode 100644 Open-ILS/src/templates/staff/admin/actor/org_unit/t_index.tt2
+ create mode 100644 Open-ILS/src/templates/staff/admin/actor/org_unit/t_main_tab.tt2
+ create mode 100644 Open-ILS/web/js/ui/default/staff/admin/actor/org_unit/app.js
+
+commit 4e93a8bd0d240a10ec545c927ca92864efba95e9
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Fri Jun 10 18:21:31 2016 -0400
+
+    webstaff: add admin interface for MARC tag tables
+    
+    This is a simple interface using eg-edit-fm-record to start;
+    more work will be required to better deal with the semantics
+    for overriding tag definitions at various levels of the OU
+    hierarchy.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+53	0	Open-ILS/src/templates/staff/admin/server/config/marc_field.tt2
+2	1	Open-ILS/src/templates/staff/admin/server/t_splash.tt2
+88	0	Open-ILS/web/js/ui/default/staff/admin/server/config/marc_field.js
+ create mode 100644 Open-ILS/src/templates/staff/admin/server/config/marc_field.tt2
+ create mode 100644 Open-ILS/web/js/ui/default/staff/admin/server/config/marc_field.js
+
+commit 3bf01639f186522674cd6d1f347b713f0d5766e8
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Fri Jun 10 18:19:17 2016 -0400
+
+    webstaff: a couple strings for a generic record deletion dialog
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2	0	Open-ILS/src/templates/staff/base_js.tt2
+
+commit eabda938c992ae2269ec793eefd2ec0980f100ed
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Fri Jun 10 18:14:20 2016 -0400
+
+    webstaff: new directive: egEditFmRecord
+    
+    This implements a generic IDL record editor widget:
+    
+    <eg-edit-fm-record
+      idl-class            = "xyz"
+      mode                 = "update"
+      record-id            = "223"
+      hidden-fields        = "bar,baz"
+      readonly-fields      = "quux"
+      required-fields      = "foo"
+      is-required-override = "bundle_of_custom_functions"
+      on-save              = "on_save_handler"
+      on-cancel            = "on_cancel"
+    ></eg-edit-fm-record>
+    
+    The mode can be either "create" or "update"; if it is "create",
+    then it is not necessary or desired to pass a record-id.
+    
+    Currently eg-edit-fm-record expects to be invoked from
+    inside a uibModal.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+62	0	Open-ILS/src/templates/staff/share/t_fm_record_editor.tt2
+187	0	Open-ILS/web/js/ui/default/staff/services/fm_record_editor.js
+ create mode 100644 Open-ILS/src/templates/staff/share/t_fm_record_editor.tt2
+ create mode 100644 Open-ILS/web/js/ui/default/staff/services/fm_record_editor.js
+
+commit d271b796cebc71e916e85249c15c2484444a390b
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Fri Jun 10 12:15:18 2016 -0400
+
+    IDL improvements for classes releated to MARC tag tables
+    
+    In the course of building the admin interface for the
+    MARC tag tables, some deficiencies in the IDL were
+    run across. This patch fixes them.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+15	15	Open-ILS/examples/fm_IDL.xml
+
+commit 2a8148341428dc0fc1c4947a148e5d996bc6db6b
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Fri May 13 11:51:42 2016 -0400
+
+    webstaff: fix typo in field name
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+1	1	Open-ILS/examples/fm_IDL.xml
+
+commit bface48e0fff0512d46dee412bc46e8454521c5a
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed May 25 13:14:44 2016 -0400
+
+    LP#1585369: Angular broke my copy editor!
+    
+    It seems Angular 1.5 is either less flexible or less forgiving in its
+    ng-repeat implementation, and does not like an orderBy filter on object
+    iterators.  Removing that, and the track by clause, allows the holdings
+    editor to render properly.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2
+1	1	Open-ILS/web/js/ui/default/staff/cat/volcopy/app.js
+
+commit 28f7159c31279217d01258eb85d662fad2785680
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue May 17 22:09:34 2016 -0400
+
+    webstaff: circ audio alerts
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+19	1	Open-ILS/web/js/ui/default/staff/circ/services/circ.js
+4	0	Open-ILS/web/js/ui/default/staff/circ/services/holds.js
+1	0	Open-ILS/web/js/ui/default/staff/circ/services/transits.js
+
+commit 676fdff4e78bcf33eb4f8c488d8995fcf9f75f65
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon May 16 23:16:34 2016 -0400
+
+    webstaff: audio disable and testing options
+    
+    For workstation admin UI.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+24	0	Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2
+17	0	Open-ILS/web/js/ui/default/staff/admin/workstation/app.js
+
+commit d02c84fce8a3e99ce7be5357277b5958d8b04183
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Sun May 15 12:51:24 2016 -0400
+
+    webstaff: egAudio HTML5 audio service
+    
+    egCore.audio.play('audio.event.dot.path');
+    
+    Service to look up audio URL's by key name.  Supports fall-thru behavior
+    where 'foo.bar.baz' will fall-thru to 'foo.bar' and 'foo' depending on
+    whether an audio file is avaialable.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	0	Open-ILS/src/templates/staff/base_js.tt2
+-	-	Open-ILS/web/audio/notifications/error.wav
+-	-	Open-ILS/web/audio/notifications/info.wav
+-	-	Open-ILS/web/audio/notifications/success.wav
+-	-	Open-ILS/web/audio/notifications/warning.wav
+1	0	Open-ILS/web/js/ui/default/staff/Gruntfile.js
+78	0	Open-ILS/web/js/ui/default/staff/services/audio.js
+5	2	Open-ILS/web/js/ui/default/staff/services/coresvc.js
+2	2	Open-ILS/web/js/ui/default/staff/test/karma.conf.js
+ create mode 100644 Open-ILS/web/audio/notifications/error.wav
+ create mode 100644 Open-ILS/web/audio/notifications/info.wav
+ create mode 100644 Open-ILS/web/audio/notifications/success.wav
+ create mode 100644 Open-ILS/web/audio/notifications/warning.wav
+ create mode 100644 Open-ILS/web/js/ui/default/staff/services/audio.js
+
+commit eb53b50cf844ba7bfe3bf5f069cd6a9d80be868e
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Thu May 12 12:27:11 2016 -0400
+
+    LP#1581126: webstaff: make egDateInput respect format.date OUS
+    
+    This patch makes the egDateInput directive fetch the
+    date format from the format.date library setting. The
+    directive also now accepts a dateFormat attribute for cases
+    where there is a reason to override the library setting.
+    
+    If no format is set via library setting or in how the
+    directive is invoked, the format defaults to "mediumDate",
+    e.g., "May 2, 1999".
+    
+    To test:
+    
+    [1] Open the webstaff patron registration form. Verify that
+        date widgets display the date in the format that
+        corresponds to the value of the format.date library setting
+        for the current work station, or (if the library setting
+        is not set, "Month day, year".
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+1	1	Open-ILS/src/templates/staff/share/t_datetime.tt2
+12	3	Open-ILS/web/js/ui/default/staff/services/ui.js
+
+commit cea022c407e4193dcf3fed6b9ca81edfe04c3038
+Author: Jason Etheridge <jason@esilibrary.com>
+Date:   Thu May 12 11:51:09 2016 -0400
+
+    Add images for angular-tree-control to bower
+    
+    Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+
+21	0	Open-ILS/web/js/ui/default/staff/Gruntfile.js
+
+commit f20039da9caa3e43bf626b65b667516e4383b0d5
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Wed May 11 16:31:33 2016 -0400
+
+    webstaff: tweak legacy OU editor
+    
+    This adds a CSS hack so that the right-hand pane of
+    the legacy OU editor is displayed when embedded in
+    the web staff client.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+7	0	Open-ILS/web/conify/global/actor/org_unit.html
+
+commit cce69273995f6f6668e5f5a0c52cafd4ed20f54d
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Wed May 11 16:30:34 2016 -0400
+
+    webstaff: tweak permission group editor
+    
+    This adds a couple hackish formating tweaks so that
+    the permission group editor works when embedded
+    in the web staff client.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+9	1	Open-ILS/web/conify/global/permission/grp_tree.html
+
+commit 7292174f182bba027362946c0a4a47d3ba2534da
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Wed May 11 13:17:55 2016 -0400
+
+    webstaff: add server administration page
+    
+    This patch adds a landing page for Server Administration and
+    code to embed all of the admin pages available under Serer
+    Administration in the XUL staff client.
+    
+    TODO:
+    
+    * fix the permission groups editor so that it works
+      when embedded in the web staff client
+    * refactor admin/local/app.js and admin/server/app.js to
+      unify some of the copy and pasting
+    * replace the embedded legacy OU editor with a new
+      angular one
+    * fixes some CSS issues that make text hard to read in
+      a few places
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+15	0	Open-ILS/src/templates/staff/admin/server/index.tt2
+78	0	Open-ILS/src/templates/staff/admin/server/t_splash.tt2
+6	0	Open-ILS/src/templates/staff/navbar.tt2
+80	0	Open-ILS/web/js/ui/default/staff/admin/server/app.js
+ create mode 100644 Open-ILS/src/templates/staff/admin/server/index.tt2
+ create mode 100644 Open-ILS/src/templates/staff/admin/server/t_splash.tt2
+ create mode 100644 Open-ILS/web/js/ui/default/staff/admin/server/app.js
+
+commit 84df55949e502b16c724fdfdcc8dcafa59dedd28
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Wed May 4 15:04:23 2016 -0400
+
+    webstaff: work log: various improvements
+    
+    * Don't use $location.path() to generate a URL for when opening
+      a new window, as that can cause the parent window to reset
+      itself.
+    * Fix the refresh button
+    * Add support for paging through worklog entries
+    * Don't prematurely resolve the promise that is
+      feeding rows to the grid
+    * Ensure that entries are displayed in timestamp order
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+54	50	Open-ILS/web/js/ui/default/staff/admin/workstation/log.js
+
+commit 51fe14771d2f117f0f980047f53a64772f2c2ba1
+Author: Jason Etheridge <jason@esilibrary.com>
+Date:   Fri Dec 4 11:06:56 2015 -0500
+
+    webstaff: egWorkLog service and Work Log UI
+    
+    under Administration -> Local Administration
+    
+    The original XUL feature starts here: 29d1b357eef061bb3698e4ce0506eb93b63421be
+    
+    Make sure egCore from the calling interface is pulling in these org unit
+    settings:
+    
+    ui.admin.work_log.max_entries
+    ui.admin.patron_log.max_entries
+    
+    Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+11	7	Open-ILS/src/templates/opac/parts/place_hold_result.tt2
+17	0	Open-ILS/src/templates/staff/admin/workstation/log.tt2
+59	0	Open-ILS/src/templates/staff/admin/workstation/t_log.tt2
+13	0	Open-ILS/src/templates/staff/base_js.tt2
+1	0	Open-ILS/src/templates/staff/css/style.css.tt2
+162	0	Open-ILS/web/js/ui/default/staff/admin/workstation/log.js
+20	2	Open-ILS/web/js/ui/default/staff/circ/patron/bills.js
+10	4	Open-ILS/web/js/ui/default/staff/circ/patron/holds.js
+23	5	Open-ILS/web/js/ui/default/staff/circ/patron/regctl.js
+23	7	Open-ILS/web/js/ui/default/staff/circ/services/circ.js
+1	0	Open-ILS/web/js/ui/default/staff/services/eframe.js
+116	0	Open-ILS/web/js/ui/default/staff/services/ui.js
+ create mode 100644 Open-ILS/src/templates/staff/admin/workstation/log.tt2
+ create mode 100644 Open-ILS/src/templates/staff/admin/workstation/t_log.tt2
+ create mode 100644 Open-ILS/web/js/ui/default/staff/admin/workstation/log.js
+
+commit 4e1a8f8245d649e8574b0357f5e79f92414bba3b
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Thu May 5 16:35:25 2016 -0400
+
+    webstaff: transit list: improve styling of form
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+18	7	Open-ILS/src/templates/staff/circ/transits/t_list.tt2
+
+commit 7482a039798fb9f71a64562b4a94d05be4db0ff8
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Wed May 4 15:01:50 2016 -0400
+
+    webstaff: transit list: don't reset form
+    
+    $location.path(foo) is a setter, and should not
+    be used to calculate a URL for opening a new window
+    unless you also want to refresh the source page.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+5	6	Open-ILS/web/js/ui/default/staff/circ/transits/list.js
+
+commit bc5aebd7b20b53b24fa2c5c7eb066d7d21cb3689
+Author: Jason Etheridge <jason@esilibrary.com>
+Date:   Thu Oct 1 07:23:44 2015 -0400
+
+    webstaff: Transit List
+    
+    under Administration -> Local Administration
+    
+    Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+32	0	Open-ILS/src/templates/staff/circ/share/t_abort_transit_dialog.tt2
+18	0	Open-ILS/src/templates/staff/circ/transits/list.tt2
+50	0	Open-ILS/src/templates/staff/circ/transits/t_list.tt2
+68	0	Open-ILS/web/js/ui/default/staff/circ/services/transits.js
+154	0	Open-ILS/web/js/ui/default/staff/circ/transits/list.js
+ create mode 100644 Open-ILS/src/templates/staff/circ/share/t_abort_transit_dialog.tt2
+ create mode 100644 Open-ILS/src/templates/staff/circ/transits/list.tt2
+ create mode 100644 Open-ILS/src/templates/staff/circ/transits/t_list.tt2
+ create mode 100644 Open-ILS/web/js/ui/default/staff/circ/services/transits.js
+ create mode 100644 Open-ILS/web/js/ui/default/staff/circ/transits/list.js
+
+commit f3931174b5257fa1574b298c3608839bdcddaf12
+Author: Jason Etheridge <jason@esilibrary.com>
+Date:   Tue Jan 5 11:23:36 2016 -0500
+
+    webstaff: links to Surveys, Transit List, Work Log
+    
+    Under Administration -> Local Administration
+    
+    Links to the existing Surveys interface; following commits implement
+    the new Transit List and Work Log interfaces.
+    
+    Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+3	0	Open-ILS/src/templates/staff/admin/local/t_splash.tt2
+
+commit dffd94b2e673c87faae1e5e49153d0f05bf35d6f
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Fri Aug 12 14:15:29 2016 -0400
+
+    LP#1587639: stamp schema upgrade
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+124	0	Open-ILS/src/sql/Pg/upgrade/0989.schema.authority-vandeley-edit-date.sql
+0	124	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.authority-vandeley-edit-date.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0989.schema.authority-vandeley-edit-date.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.authority-vandeley-edit-date.sql
+
+commit 744c0e74493d09dff1a4f7e7a1cfb6d9597cf3fc
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Thu Aug 4 14:00:17 2016 -0400
+
+    LP#1587639 Avoid double-update of editor/edit_date
+    
+    Look for an editor first, and if not found just use the existing values.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+33	32	Open-ILS/src/sql/Pg/012.schema.vandelay.sql
+33	32	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.authority-vandeley-edit-date.sql
+
+commit ada5bc49fb90f34c18bb3551c83d27ca0bb89626
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Jun 1 11:55:27 2016 -0400
+
+    LP#1587639 Vand. authority updates release notes
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+6	0	docs/RELEASE_NOTES_NEXT/Cataloging/auth_bib_update.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Cataloging/auth_bib_update.adoc
+
+commit 720cb4391ec0149632fbaf9687edf58a4a1d1142
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Jun 1 11:51:00 2016 -0400
+
+    LP#1587639 Vand. authority updates PGTAP
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+73	0	Open-ILS/src/sql/Pg/t/vandelay-auth-import.sql
+ create mode 100644 Open-ILS/src/sql/Pg/t/vandelay-auth-import.sql
+
+commit 43f06ef45bde83713b4b2700692dcc5606fb2a91
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Jun 1 10:40:45 2016 -0400
+
+    LP#1587639 Vandelay authority update editor/edit_date
+    
+    Update the editor and edit_date of authority records when modified by
+    Vandelay merge/overlay.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+9	9	Open-ILS/src/perlmods/lib/OpenILS/Application/Vandelay.pm
+48	8	Open-ILS/src/sql/Pg/012.schema.vandelay.sql
+123	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.authority-vandeley-edit-date.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.authority-vandeley-edit-date.sql
+
+commit 5317ba59cace4fd62365fc084addac6a3315fcd0
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Tue Aug 9 14:55:30 2016 -0400
+
+    Stamping upgrade for bib_source-in-901
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+122	0	Open-ILS/src/sql/Pg/upgrade/0988.schema.bib_source_in_901.sql
+0	122	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.bib_source_in_901.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0988.schema.bib_source_in_901.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.bib_source_in_901.sql
+
+commit 8db4cb64bb4741713edc7a364adcd9d0f865ba7d
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Wed Aug 26 17:59:37 2015 +0000
+
+    LP#1037553: bibliographic record source now copied to 901$s
+    
+    If a bibliographic record has a source set, the name of that source
+    is now copied to the 901$s whenever the record is created or updated.
+    This allows the source to be used for record matching and MARC
+    field queries.
+    
+    To test:
+    
+    [1] Create or import a bibliographic record and ensure that its
+        source is set to a non-null value.
+    [2] Inspect the record in MARC format view and verify that its
+        901 field now has a subfield $s containing the name of the
+        source.
+    [3] Use pg_prove to run the pgTAP test added by this patch
+        and verify that the test passes.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+12	0	Open-ILS/src/sql/Pg/002.functions.config.sql
+21	0	Open-ILS/src/sql/Pg/t/bib_901_field.pg
+122	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.bib_source_in_901.sql
+6	0	docs/RELEASE_NOTES_NEXT/Cataloging/bib_source_in_901s.txt
+ create mode 100644 Open-ILS/src/sql/Pg/t/bib_901_field.pg
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.bib_source_in_901.sql
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Cataloging/bib_source_in_901s.txt
+
+commit 983e8f9cf1bbc69fd8a134b987cdc87e4fc8e406
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Thu Oct 8 09:39:34 2015 -0400
+
+    LP 1503867: Use ws_ou in open-ils.circ.copy_transit.receive.
+    
+    After putting NCIPServer into production, we discovered that a staff
+    user cannot receive a transit destined for their work org. unit if
+    the actor.usr.home_ou is not the same as their current work_ou.
+    This occurred because transit_receive in OpenILS::Application::
+    Circ::Transit uses the requestor's home_ou and not the ws_ou.
+    
+    If you want to trigger this bug, write a little script to receive
+    transits, then login with a staff account at a location other than
+    their home_ou and try to receive a transit destined for the work_ou.
+    It will fail.
+    
+    This small commit replaces home_ou in two places with ws_ou in order
+    to make the above work.
+    
+    NOTE: This bug affects an API call not used in Evergreen except in
+    one test script.  It used in two ILL add-ons for Evergreen: issa and
+    NCIPServer.  Receiving transits by checking copies in via the staff
+    client, the typical workflow, is not affected by this bug or its fix.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2	2	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Transit.pm
+
+commit 31563d8f54fd65d318635375b3b07520bf7bfc31
+Author: Liam Whalen <liam.whalen@bc.libraries.coop>
+Date:   Thu Sep 24 15:00:17 2015 -0700
+
+    LP#1499537 Fixed kpac.xml caching problem
+    
+    KPAC config files must be cached per config path in order to support
+    cases where more than one KPAC interface has been configured in different
+    vhosts or locations.
+    
+    Signed-off-by: Liam Whalen <liam.whalen@bc.libraries.coop>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+13	12	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGKPacLoader.pm
+
+commit 5a5834d993e2ad7b4e9fdce9e839b956414a9ab3
+Author: Michele Morgan <mmorgan@noblenet.org>
+Date:   Thu Jun 2 12:44:02 2016 -0400
+
+    LP#1588450 asset.copy.cost Field Missing from Client Interfaces
+    
+    This patch adds the asset.copy.cost cost field, with the label 'Acquisition
+    Cost' to the following:
+    
+    XUL client:
+    
+    - Item status list view column picker
+    - Item status alternate view
+    - Copy editor
+    
+    Web client:
+    
+    - Item status alternate view
+    - Copy editor label change
+    
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+18	20	Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2
+1	1	Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2
+1	1	Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2
+1	0	Open-ILS/web/opac/locale/en-US/lang.dtd
+8	0	Open-ILS/xul/staff_client/server/cat/copy_editor.js
+6	0	Open-ILS/xul/staff_client/server/circ/alternate_copy_summary.js
+16	15	Open-ILS/xul/staff_client/server/circ/alternate_copy_summary.xul
+16	0	Open-ILS/xul/staff_client/server/circ/util.js
+1	0	Open-ILS/xul/staff_client/server/locale/en-US/cat.properties
+1	0	Open-ILS/xul/staff_client/server/locale/en-US/common.properties
+
+commit 4c92d095da106a4c2a54bf26e392d5ad57938f4d
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Tue Apr 26 11:47:27 2016 -0400
+
+    LP#1575177 Add text informing users they cannot add survey questions
+    
+    Survey questions cannot be added or modified once a survey has started, so
+    let's add some warning text in the interface letting them know why they can't
+    perform these actions.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	0	Open-ILS/web/js/dojo/openils/conify/nls/conify.js
+6	1	Open-ILS/web/js/ui/default/conify/global/action/survey/edit.js
+
+commit abefaa0dffe415bca9669de7a884ce22d6a9c2a3
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Tue Jul 19 14:02:12 2016 -0400
+
+    LP#1604515: Remove Advanced Hold Options link when part holds are expected
+    
+    This branch removes the Advanced Hold Options link from the Place Hold
+    screen in cases where all copies on the bib record contain parts. If a user
+    attempts to place a metarecord hold and all other copies in the group also
+    contain parts, the hold will fail. By removing the link, we are removing one
+    potential point of failure for the user.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/templates/opac/parts/place_hold.tt2
+9	0	docs/RELEASE_NOTES_NEXT/OPAC/remove_advanced_hold_options_for_parts.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/OPAC/remove_advanced_hold_options_for_parts.adoc
+
+commit 2ba2c3bf0c3fe3bcccd242fa435d589fe0847bf3
+Author: blake <blake@mobiusconsortium.org>
+Date:   Mon Apr 18 16:25:46 2016 -0500
+
+    LP1534283 SIP prevents renewal when user has any blocking standing penalties
+    
+    This code dives into each penalty to investigate weather or not the patron
+    can renew based on the block list column. Before, SIP would block renewals with
+    the presence of penalty 1 or 2 regardless.
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+38	4	Open-ILS/src/perlmods/lib/OpenILS/SIP/Patron.pm
+
+commit e51f6070f186e9f5504c3e1da5a93e7627738599
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Tue Aug 9 12:46:07 2016 -0400
+
+    Stamping upgrade for payment limits.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+33	0	Open-ILS/src/sql/Pg/upgrade/0987.data.lp1183964_payment_limit.sql
+0	33	Open-ILS/src/sql/Pg/upgrade/XXXX_lp1183964_payment_limit.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0987.data.lp1183964_payment_limit.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX_lp1183964_payment_limit.sql
+
+commit ad10cde090791e02cb106e36a310581bfaafface
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Tue Aug 9 12:41:54 2016 -0400
+
+    Stamping upgrade for accent-ignoring patron search
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+43	0	Open-ILS/src/sql/Pg/upgrade/0986.schema.patron_unaccent.sql
+0	43	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.patron_unaccent.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0986.schema.patron_unaccent.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.patron_unaccent.sql
+
+commit 10aaac3955bd6baaa68f502c1ef851fce093b183
+Author: Jason Stephenson <jstephenson@mvlcstaff.org>
+Date:   Thu Mar 17 17:47:52 2016 -0400
+
+    LP 1501781: Make patron name search diacritic/space insensitive.
+    
+    Add pgtap tests for the new org unit setting, the new indexes, and to
+    test the evergreen.unaccent_and_squash() functionality.  Many of the
+    latter tests are based on the tests for evergreen.lowercase().
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+61	0	Open-ILS/src/sql/Pg/t/lp1501781-unaccent_and_squash.pg
+ create mode 100644 Open-ILS/src/sql/Pg/t/lp1501781-unaccent_and_squash.pg
+
+commit 42d5c82b1ca74ca4aa0581b930ecf0b22772fefe
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Thu Mar 17 08:01:54 2016 -0400
+
+    LP 1501781: Make patron name search diacritic/space insensitive.
+    
+    This commit adds the necessary code to storage actor publisher to use
+    the new evergreen.unaccent_and_squash db function when doing a patron
+    name search.
+    
+    It is based on code originally by Dan Pearl, but then modified to
+    remove a dependency on a new Perl module by calling the db function on
+    the search input as well.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+36	4	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Publisher/actor.pm
+
+commit 85a470ef7144265ee0a2618fafffeac8bb36b65d
+Author: Dan Pearl <dpearl@cwmars.org>
+Date:   Thu Oct 1 09:49:17 2015 -0400
+
+    LP#1501781 - Make patron name search diacritic/space insensitive.
+    
+    Diacritical marks may exist in the patron record, as they should, but
+    this makes patron name search difficult for librarians who may be
+    unfamiliar with all the special characters used and also how to elicit
+    them from a keyboard.  To ease this, accented characters will be
+    converted into their 'plain' analogs for comparison purposes.
+    
+    So, for example, if the patron's last name is Chávez, typing "Chavez"
+    in the Last Name box in Patron Search will match it.
+    
+    Spaces in a name (like "De la Croix") will be squashed out so that
+    name would be matched by "Delacroix" or "De la Croix" or variants.
+    
+    The librarian can enter the accented characters or not.
+    
+    Signed-off-by: Dan Pearl <dpearl@cwmars.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+8	0	Open-ILS/src/sql/Pg/000.functions.general.sql
+3	0	Open-ILS/src/sql/Pg/005.schema.actors.sql
+20	0	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+1	0	Open-ILS/src/sql/Pg/create_database_extensions.sql
+43	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.patron_unaccent.sql
+20	0	docs/RELEASE_NOTES_NEXT/Client/accent_insensitive_patron_search
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.patron_unaccent.sql
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Client/accent_insensitive_patron_search
+
+commit 9bdfdf9a870dceb5baa92ddde6575b9a34a624fb
+Author: Jason Boyer <jboyer@library.in.gov>
+Date:   Fri May 13 12:51:07 2016 -0400
+
+    LP1183964: Payment Limit Options
+    
+    Add support for 2 new OU settings, a payment warning
+    amount (try to pay more than this and you're required
+    to confirm it) and a hard limit where no payment larger
+    will be accepted. Support is also added to both the XUL
+    client and webstaff client.
+    
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+    Signed-off-by: Jeanette Lundgren <jlundgren@cwmars.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+20	0	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+33	0	Open-ILS/src/sql/Pg/upgrade/XXXX_lp1183964_payment_limit.sql
+3	0	Open-ILS/src/templates/staff/circ/patron/index.tt2
+45	3	Open-ILS/web/js/ui/default/staff/circ/patron/bills.js
+3	0	Open-ILS/xul/staff_client/server/locale/en-US/patron.properties
+39	2	Open-ILS/xul/staff_client/server/patron/bill2.js
+16	0	docs/RELEASE_NOTES_NEXT/Circulation/limit_payment_amounts_accepted.txt
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX_lp1183964_payment_limit.sql
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Circulation/limit_payment_amounts_accepted.txt
+
+commit 4b5b791fffef5420e6d142964dfefdb647051e22
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Tue Aug 9 12:04:35 2016 -0400
+
+    Stamping upgrade for reingest speedup
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+231	0	Open-ILS/src/sql/Pg/upgrade/0985.schema.speed_record_attr_ingest.sql
+0	231	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.speed_record_attr_ingest.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0985.schema.speed_record_attr_ingest.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.speed_record_attr_ingest.sql
+
+commit 982472f1110b5874757d57c421e121c0a5962f61
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Fri Jul 29 11:40:46 2016 -0400
+
+    LP#1588543: schema update script
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+231	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.speed_record_attr_ingest.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.speed_record_attr_ingest.sql
+
+commit f668201078a11fe06d9bb8e1c658648e7ed2be60
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Fri Jul 29 11:34:06 2016 -0400
+
+    LP#1588543: tests for verifying correct generated of record attributes
+    
+    This patch adds tests to verify that the expected
+    set of record attributes are generated when a bib record
+    is ingested.  The tests serve a couple purposes:
+    
+    - verifying that changes to the record attribute ingest
+      stored procedure don't have unexpected side-effects
+    - validating record attribute definitions in the seed data
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+211	0	Open-ILS/src/sql/Pg/t/lp1588543_marc_record_attributes.pg
+ create mode 100644 Open-ILS/src/sql/Pg/t/lp1588543_marc_record_attributes.pg
+
+commit 6cc1d1e0911f4dd4a92d17a9b60025888b080bff
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Fri Jul 29 11:24:07 2016 -0400
+
+    LP#1588543: further speed up record attribute ingest
+    
+    Following a suggestion from Dan Wells, this patch adds
+    an index on config.coded_value_map(ctype). My testing shows
+    that the index by itself can halve the time required to
+    fully ingest a new record; in conjunction with the
+    change in the previous patch, full reingest time is
+    reduced by about 60%.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2	0	Open-ILS/src/sql/Pg/002.schema.config.sql
+
+commit cf3bd149e53585676a517d38093f2470dbcfaaeb
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Wed Jun 1 14:36:29 2016 -0400
+
+    LP#1588543: Speed up record attribute ingest
+    
+    A huge number of rows (700+) have been added to
+    config.record_attr_definition in recent versions of Evergreen. However,
+    these rows do not actually define any indexing at all, but are used for
+    other purposes.  The reingest process currently churns over all of these
+    rows to ultimately do nothing.
+    
+    This commit limits the group of attributes considered at ingest to only
+    those which might index something.  Testing indicates a substantial
+    speed boost to typical use of metabib.reingest_record_attributes()
+    (over 2x speedup).
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+10	1	Open-ILS/src/sql/Pg/030.schema.metabib.sql
+
+commit d5ce5929495c31eeac6bfdc3df6bd3e275a3ed0d
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Fri Jul 29 17:51:14 2016 -0400
+
+    LP#1549505: Stamping upgrade scripts 0983-84 for stat pop ratings
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+1005	0	Open-ILS/src/sql/Pg/upgrade/0983.schema.statistical-ratings.sql
+606	0	Open-ILS/src/sql/Pg/upgrade/0984.function.qp_search.sql
+0	1003	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.statisitcal-ratings.sql
+0	604	Open-ILS/src/sql/Pg/upgrade/YYYY.function.qp_search.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0983.schema.statistical-ratings.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0984.function.qp_search.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.statisitcal-ratings.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/YYYY.function.qp_search.sql
+
+commit ac561d3b347e4f7393000a6b76ea1071927d9d4e
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Thu Jul 28 12:19:15 2016 -0400
+
+    LP#1549505: update $modal to $uibModal
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+6	6	Open-ILS/web/js/ui/default/staff/admin/local/rating/badge.js
+
+commit 940270761e1ef9c4ea51c8ad9229e3c9bd8d45a2
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Thu Jul 21 12:02:38 2016 -0400
+
+    LP#1549505: Decrease value of Max popularity importance multiplier
+    
+    My testing found that a setting between 1.1 and 1.2 resulted in fairly good
+    results when using the popularity-adjusted relevance sort. Adjusting the value
+    in the seed data to 1.1 since it will be a better starting point for libraries.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	1	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+1	1	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.statisitcal-ratings.sql
+
+commit cf614499238ad958f34f91ec0107d482ac124d30
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Thu Jul 21 11:52:24 2016 -0400
+
+    LP#1549505: Remove stray semicolon from PgTap test
+    
+    The semicolon was causing failures in the test.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	1	Open-ILS/src/sql/Pg/t/regress/lp1549505_statistical_popularity_infrastructure.pg
+
+commit ae3bb32ede6e7569b935a92ed5bc7fc1cb0564cf
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Thu May 26 17:51:49 2016 -0400
+
+    LP#1549505: Query literal interpolation casts incorrectly
+    
+    We need to be sure that all query values are of the same type in the same
+    columns because PLPGSQL functions are compiled and cached.  In this case,
+    the core query of the in-db search cannot have its shape change.  This
+    commit assures that browse and search uses of the SP provide core queries
+    that match on their SELECT lists.  Of particular importance is the type
+    of the "rel" output column, which was variously float8 or numeric, depending
+    on whether the search contained any terms (a "search") or not (a browse
+    link).
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+4	4	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Driver/Pg/QueryParser.pm
+4	4	Open-ILS/src/sql/Pg/030.schema.metabib.sql
+4	4	Open-ILS/src/sql/Pg/upgrade/YYYY.function.qp_search.sql
+
+commit 3d5b37a1072bfd177bf484d02e717dae57a62427
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Wed May 25 12:53:24 2016 -0400
+
+    LP#1549505: fix staged browse
+    
+    This patch ensures that the core query passed to
+    query_parser_fts by staged browse contains dummy
+    badges and popularity columns (and thus, doesn't break);
+    note that browse itself cares nothing about popularity.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+2	0	Open-ILS/src/sql/Pg/030.schema.metabib.sql
+208	0	Open-ILS/src/sql/Pg/upgrade/YYYY.function.qp_search.sql
+
+commit df0d763642e5841baaac36d09b1fa9df525b2b67
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Fri May 6 11:29:39 2016 -0400
+
+    LP#1549505: update baseline database schema
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+2	0	Open-ILS/src/sql/Pg/090.schema.action.sql
+905	0	Open-ILS/src/sql/Pg/220.schema.rating.sql
+9	1	Open-ILS/src/sql/Pg/300.schema.staged_search.sql
+0	2	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+73	19	Open-ILS/src/sql/Pg/reporter-schema.sql
+2	0	Open-ILS/src/sql/Pg/sql_file_manifest
+ create mode 100644 Open-ILS/src/sql/Pg/220.schema.rating.sql
+
+commit 36ed838b1bc73b4bb5957aa7a3da29fc94f2563f
+Author: Jason Stephenson <jstephenson@mvlcstaff.org>
+Date:   Fri Apr 15 09:36:51 2016 -0400
+
+    LP 1549505: Fix syntax error in OpenILS/WWW/EGCatLoader/Record.pm
+    
+    Typo/error apparently introduced on line 72 in commit eeee27c.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlcstaff.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Record.pm
+
+commit 6fd72121637701f4dfc50e2cd3b2896c49197c5c
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Tue Apr 5 16:26:41 2016 -0400
+
+    LP#1549505: Release notes for statistically generated record ratings (popularity)
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+98	0	docs/RELEASE_NOTES_NEXT/OPAC/popularity-rating.txt
+ create mode 100644 docs/RELEASE_NOTES_NEXT/OPAC/popularity-rating.txt
+
+commit 4f48f276d052a6211be625d3b87d8077a789999c
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Tue Apr 5 12:10:53 2016 -0400
+
+    LP#1549505: PGTap test to show the infrastructure is working
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+33	0	Open-ILS/src/sql/Pg/t/regress/lp1549505_statistical_popularity_infrastructure.pg
+ create mode 100644 Open-ILS/src/sql/Pg/t/regress/lp1549505_statistical_popularity_infrastructure.pg
+
+commit 1fd8103bf33430fe0b4b5ae8d2b2b051802ac473
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Fri Mar 11 13:27:03 2016 -0500
+
+    LP#1549505: add flag to tweak popularity-adjusted relevance
+    
+    This adds a new global_flag, search.max_popularity_importance_multiplier,
+    to control the factor by which popularity affects Popularity Adjusted
+    Relevance ranking.
+    
+    The value should be a decimal number, typically between 1.0 and 2.0:
+    
+    * 1.0 be would be equivalent to not adjusting relevance for popularity
+      at all.
+    * 1.1 would mean that the multiplier would range from 1 (for zero
+      popularity) to 1.1 (for maximum popularity), for a maximum boost of
+      10% of the base relevance value of the record.
+    
+    What's happening in the code:
+    
+    Scale the 0-5 effect of popularity badges by providing a multiplier
+    for the badge average based on the overall maximum multiplier.  Two
+    examples, comparing the effect to the default $max_mult value of 2.0,
+    which causes a $adjusted_scale value of 0.2:
+    
+     * Given the default $max_mult of 2.0, the value of
+       $adjusted_scale will be 0.2 [($max_mult - 1.0) / 5.0].
+       For a record whose average badge score is the maximum
+       of 5.0, that would make the relevance multiplier be
+       2.0:
+          1.0 + (5.0 [average score] * 0.2 [ $adjusted_scale ],
+       This would have the effect of doubling the effective
+       relevance of highly popular items.
+    
+     * Given a $max_mult of 1.1, the value of $adjusted_scale
+       will be 0.02, meaning that the average badge value will be
+       multiplied by 0.02 rather than 0.2, then added to 1.0 and
+       used as a multiplier against the base relevance.  Thus a
+       change of at most 10% to the base relevance for a record
+       with a 5.0 average badge score. This will allow records
+       that are naturally very relevant to avoid being pushed
+       below badge-heavy records.
+    
+     * Given a $max_mult of 3.0, the value of $adjusted_scale
+       will be 0.4, meaning that the average badge value will be
+       multiplied by 0.4 rather than 0.2, then added to 1.0 and
+       used as a multiplier against the base relevance. Thus a
+       change of as much as 200% to (or three times the size of)
+       the base relevance for a record with a 5.0 average badge
+       score.  This in turn will cause badges to outweigh
+       relevance to a very large degree.
+    
+    The maximum badge multiplier can be set to a value less than
+    1.0; this would have the effect of making less popular items
+    show up higher in the results.  While this is not a likely
+    option for production use, it could be useful for identifying
+    interesting long-tail hits, particularly in a database
+    where enough badges are configured so that very few records
+    have an average badge score of zero.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+62	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Driver/Pg/QueryParser.pm
+13	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Publisher/metabib.pm
+12	0	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+12	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.statisitcal-ratings.sql
+
+commit d4d2f42e8674f93284d2932e171bf9a4f9cc8cf4
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Wed Feb 24 17:19:14 2016 -0500
+
+    LP#1549505: add admin interface to manage badges
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	1	Open-ILS/examples/fm_IDL.xml
+60	0	Open-ILS/src/templates/staff/admin/local/rating/badge.tt2
+42	0	Open-ILS/src/templates/staff/admin/local/rating/edit_badge.tt2
+1	0	Open-ILS/src/templates/staff/admin/local/t_splash.tt2
+3	0	Open-ILS/src/templates/staff/css/style.css.tt2
+189	0	Open-ILS/web/js/ui/default/staff/admin/local/rating/badge.js
+ create mode 100644 Open-ILS/src/templates/staff/admin/local/rating/badge.tt2
+ create mode 100644 Open-ILS/src/templates/staff/admin/local/rating/edit_badge.tt2
+ create mode 100644 Open-ILS/web/js/ui/default/staff/admin/local/rating/badge.js
+
+commit 701d069268f75620e145ea73a2e21aec7ec5db42
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Thu Feb 4 17:19:03 2016 -0500
+
+    LP#1549505: Add ability to set default sorter via global flag
+    
+    In addition, support for sorting by ascending popularity remains
+    in the back end, however, since if one's configured badges such
+    that almost every record has a badge score, that sort order could
+    be useful for examining the long tail of the collection.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+5	0	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader.pm
+14	0	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+7	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.statisitcal-ratings.sql
+5	1	Open-ILS/src/templates/opac/parts/advanced/search.tt2
+12	0	Open-ILS/src/templates/opac/parts/filtersort.tt2
+6	1	Open-ILS/src/templates/opac/parts/searchbar.tt2
+
+commit b6dd839f6c292849017cdc8a2f0ff590facd70cc
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Feb 3 15:46:52 2016 -0500
+
+    LP#1549505: Provide a cron-able script to perform badge recalculation
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+27	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Publisher/biblio.pm
+60	0	Open-ILS/src/support-scripts/badge_score_generator.pl
+ create mode 100755 Open-ILS/src/support-scripts/badge_score_generator.pl
+
+commit 8180b60d040d6b1025de21bbd587839076037493
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Fri Jan 22 17:13:25 2016 -0500
+
+    LP#1549505: Teach QP and its caller stack how to use badges
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+2	2	Open-ILS/src/perlmods/lib/OpenILS/Application/Search/Biblio.pm
+54	7	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Driver/Pg/QueryParser.pm
+59	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Publisher/metabib.pm
+15	0	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Record.pm
+7	5	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Search.pm
+396	0	Open-ILS/src/sql/Pg/upgrade/YYYY.function.qp_search.sql
+10	0	Open-ILS/src/templates/opac/parts/record/summary.tt2
+7	2	Open-ILS/src/templates/opac/parts/result/table.tt2
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/YYYY.function.qp_search.sql
+
+commit 1dd8d953b01ccedc5e42162d53471f132156e77a
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Thu Jan 7 22:00:20 2016 -0500
+
+    LP#1549505: schema and IDL for statistical poularity ratings
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+92	0	Open-ILS/examples/fm_IDL.xml
+984	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.statisitcal-ratings.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.statisitcal-ratings.sql
+
+commit 357aabae410bbe25160947acd52693841d690e92
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Thu May 12 15:58:49 2016 -0400
+
+    LP#1581196: webstaff: fix dirty form detection in patron editor
+    
+    This patch fixes a problem wherein the patron editor
+    form would think that it had been modified by the
+    user immediately after initialization.
+    
+    To test
+    -------
+    [1] Load the patron editor, then refresh the page. Note that
+        you are warned that there is unsaved input.
+    [2] As above, but hit the save button. Note that after saving,
+        you still get a warning that there is unsaved input.
+    [3] Apply the page, then repeat tests 1 and 2. This time, you
+        shouldn't get inappropriate unsaved data warnings.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+0	2	Open-ILS/src/templates/staff/circ/patron/t_edit.tt2
+6	0	Open-ILS/web/js/ui/default/staff/circ/patron/regctl.js
+
+commit 50eb643d555b8307e02a312d8e09919dd003b2d3
+Author: Ben Shum <ben@evergreener.net>
+Date:   Tue Jul 5 01:14:38 2016 -0400
+
+    LP#1568046: Stamping upgrade script for eliminating connectby from functions
+    
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+256	0	Open-ILS/src/sql/Pg/upgrade/0982.function.perm_functions_without_connectby.sql
+0	256	Open-ILS/src/sql/Pg/upgrade/XXXX.function.perm_functions_without_connectby.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0982.function.perm_functions_without_connectby.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.function.perm_functions_without_connectby.sql
+
+commit 499d69d64e7c7b660ee1dffc250f8f9552df8daa
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Fri Jul 1 13:13:16 2016 -0400
+
+    LP#1568046: Replace last two uses of connectby with other function calls.
+    
+    Modify permission functions permission.usr_has_perm_at_nd and
+    permission.usr_has_perm_at_all_nd to no longer require the connectby
+    function from the tablefunc extension.  The connectby functionality is
+    replaced by existing database functions to retrieve org. unit
+    descendants.
+    
+    This change removes the need to load the tablefunc extension, so it is
+    dropped from the create scripts.  The upgrade script does not remove
+    the extension as sites may be using connectby or other functions from
+    the extension.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+5	28	Open-ILS/src/sql/Pg/006.schema.permissions.sql
+0	2	Open-ILS/src/sql/Pg/create_database_contribs.sql
+0	1	Open-ILS/src/sql/Pg/create_database_extensions.sql
+256	0	Open-ILS/src/sql/Pg/upgrade/XXXX.function.perm_functions_without_connectby.sql
+15	0	docs/RELEASE_NOTES_NEXT/Administration/lp1568046-tablefunc-extension-removed.adoc
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.function.perm_functions_without_connectby.sql
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Administration/lp1568046-tablefunc-extension-removed.adoc
+
+commit 1463f3597487048127cee5b19ba79bb3bec5a878
+Author: Ben Shum <ben@evergreener.net>
+Date:   Wed Jun 8 07:41:30 2016 -0400
+
+    LP#1554714: Set angular 1.5.5 as minimum, not exact version
+    
+    By adding the ~ in front of the angular version specified, we say
+    make this the minimum version to look for.  This bypasses the issue
+    for when new releases of the 1.5.x angular series is released, such
+    as 1.5.6, which is the current new version as of this patch.
+    
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	1	Open-ILS/web/js/ui/default/staff/bower.json
+
+commit a6d3bdea207394fafc8caf92dcd18843410fcb2e
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Fri Jun 10 11:51:41 2016 -0400
+
+    LP#1526858: Stamping upgrade script for faster alhr query
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+8	0	Open-ILS/src/sql/Pg/upgrade/0981.schema.indexes_for_alhr_queries.sql
+0	8	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.indexes_for_alhr_queries.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0981.schema.indexes_for_alhr_queries.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.indexes_for_alhr_queries.sql
+
+commit ae4ccf75a047719ef3b8809349bde93398121cb1
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Wed May 25 11:29:22 2016 -0400
+
+    Docs: Adding 2.10.4 Point Release Notes
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+37	2	docs/RELEASE_NOTES_2_10.adoc
+
+commit 8ab630642cf7331a3cbb3d216f376ff837e7ed52
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Mon May 23 19:17:36 2016 -0400
+
+    LP#1447746: Fix lp957466_update_date_and_source regression test
+    
+    The new code introduced through LP1447746 adding an update_bib_source flag to
+    Vandelay merge profiles broke a test that was verifying the bib source and
+    edit fields were updated in Vandelay uploads.
+    
+    This patch fixes the test and also adds a new test to ensure the flag works as
+    expected when set to both true and false. It also renames the test since the
+    it's now testing the newer code rather than the previous expected behavior.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+137	0	Open-ILS/src/sql/Pg/t/regress/lp1447746_update_date_and_source.pg
+0	80	Open-ILS/src/sql/Pg/t/regress/lp957466_update_date_and_source.pg
+ create mode 100644 Open-ILS/src/sql/Pg/t/regress/lp1447746_update_date_and_source.pg
+ delete mode 100644 Open-ILS/src/sql/Pg/t/regress/lp957466_update_date_and_source.pg
+
+commit 2f024d424fefe801aafaf9f9b2debab0c6b74483
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu May 19 14:28:11 2016 -0400
+
+    LP#1554714 Add explicit phantomjs-prebuilt dependency
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlcstaff.org>
+
+1	0	Open-ILS/web/js/ui/default/staff/package.json
+
+commit 3e614940ad2fbdb6ec88e96b580ca7437e044410
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu May 19 16:25:12 2016 -0400
+
+    LP#1554714 Ang. 2.5 hotkeys plugin update
+    
+    As with other dependencies, the hotkeys package name changed since the
+    last update.  It's now cfp-angular-hotkeys
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlcstaff.org>
+
+2	2	Open-ILS/web/js/ui/default/staff/bower.json
+
+commit 670a9115b9aaad5570f1f7143d630f0c985537e6
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Thu May 12 16:49:11 2016 -0400
+
+    LP#1447746 Stamping upgrade script for update-bib-source flag in Vandelay
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+74	0	Open-ILS/src/sql/Pg/upgrade/0980.schema.merge.overlay_control.sql
+0	74	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.merge_overlay_control.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0980.schema.merge.overlay_control.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.merge_overlay_control.sql
+
+commit 651020ea6ceb732bc4ac743075bf0080c10ae39f
+Author: Dan Pearl <dpearl@cwmars.org>
+Date:   Thu Feb 4 12:46:46 2016 -0500
+
+    LP#1447746: Do not update bib source on match-only merge
+    
+    This adds a flag to control the updating of the bib source on a vandelay operation.
+    
+    Signed-off-by: Dan Pearl <dpearl@cwmars.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	0	Open-ILS/examples/fm_IDL.xml
+24	18	Open-ILS/src/sql/Pg/012.schema.vandelay.sql
+4	4	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+14	0	Open-ILS/src/sql/Pg/t/lp1447746_import_flag.pg
+74	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.merge_overlay_control.sql
+1	1	Open-ILS/src/templates/vandelay/inc/profiles.tt2
+15	0	docs/RELEASE_NOTES_NEXT/Cataloging/marc_bib_update.adoc
+ create mode 100644 Open-ILS/src/sql/Pg/t/lp1447746_import_flag.pg
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.merge_overlay_control.sql
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Cataloging/marc_bib_update.adoc
+
+commit 0f0f6c13effb05c0fb88a5485b615b57d0acc9f6
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Mon May 9 17:03:20 2016 -0400
+
+    release notes for 2.10.3
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+29	1	docs/RELEASE_NOTES_2_10.adoc
+
+commit 2cf65ef923145aade9a6ced615dfd29d4d6216b3
+Author: Ben Shum <ben@evergreener.net>
+Date:   Wed May 4 13:22:28 2016 -0400
+
+    LP#1551084: Add 16.04 version notes in server_upgrade doc
+    
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+2	1	docs/installation/server_upgrade.txt
+
+commit ae4505cb7ae130906d8801b6ec726e052357eed9
+Author: Ben Shum <ben@evergreener.net>
+Date:   Tue Apr 19 10:36:39 2016 -0400
+
+    LP#1551084: Fixup typo for ubuntu-xenial-developer
+    
+    Jason spotted a typo. Can probably squash this in later.
+    
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+1	1	Open-ILS/src/extras/Makefile.install
+
+commit f811b197ab5381883961f38f1cf2a3e2d47f2e05
+Author: Ben Shum <ben@evergreener.net>
+Date:   Mon Feb 29 01:30:29 2016 -0500
+
+    LP#1551084: Update README to include references for 'ubuntu-xenial'
+    
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+11	10	docs/installation/server_installation.txt
+
+commit 0605c1eb6d22a616773e6fba27a10e936a2c5d35
+Author: Ben Shum <ben@evergreener.net>
+Date:   Mon Feb 29 01:20:34 2016 -0500
+
+    LP#1551084: Start new Makefile target for 'ubuntu-xenial'
+    
+    For Ubuntu 16.04, let's start a new Makefile target for 'ubuntu-xenial'
+    
+    For major changes, the packaged version of PostgreSQL that ships with
+    Ubuntu 16.04 is PostgreSQL 9.5.
+    
+    Also, during the configure step, the build process looks for libpcre3-dev,
+    so we add that as an additional prerequisite now.
+    
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+11	1	Open-ILS/src/extras/Makefile.install
+156	0	Open-ILS/src/extras/install/Makefile.ubuntu-xenial
+ create mode 100644 Open-ILS/src/extras/install/Makefile.ubuntu-xenial
+
+commit 233e14df23361ef2e14e086be57d584ecb3eaca4
+Author: Ben Shum <ben@evergreener.net>
+Date:   Mon Feb 29 01:14:38 2016 -0500
+
+    LP#1551084: Symlink for 000.english.pg95.fts-config.sql
+    
+    We need this so that the eg_db_config script can make the Evergreen
+    database with PostgreSQL 9.5 systems.
+    
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+1	0	Open-ILS/src/sql/Pg/000.english.pg95.fts-config.sql
+ create mode 120000 Open-ILS/src/sql/Pg/000.english.pg95.fts-config.sql
+
+commit 463f5358841f1ec668290ad598dc0e83b9e8fc90
+Author: Ben Shum <ben@evergreener.net>
+Date:   Wed May 4 12:59:01 2016 -0400
+
+    LP#1568046: Stamping upgrade script for changes to permission.grp_ancestors
+    
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+62	0	Open-ILS/src/sql/Pg/upgrade/0979.function.grp-tree-functions-via-cte.sql
+0	60	Open-ILS/src/sql/Pg/upgrade/XXXX.function.grp-tree-functions-via-cte.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/0979.function.grp-tree-functions-via-cte.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.function.grp-tree-functions-via-cte.sql
+
+commit 5a4a6518b5ba10ab3b14bc0bd9530d47096fb29c
+Author: Jason Stephenson <jstephenson@mvlcstaff.org>
+Date:   Fri Apr 8 15:30:32 2016 -0400
+
+    LP#1568046: Fix some mistakes in previous commit.
+    
+    Looks like a few thinkos crept in from it being dashed off in a hurry.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlcstaff.org>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+8	8	Open-ILS/src/sql/Pg/006.schema.permissions.sql
+8	8	Open-ILS/src/sql/Pg/upgrade/XXXX.function.grp-tree-functions-via-cte.sql
+
+commit 452c4de9ed109717b216154fccd031aeb6e02007
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Fri Apr 8 14:49:10 2016 -0400
+
+    LP#1568046: Use CTE instead of connectby for group tree queries
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlcstaff.org>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+48	11	Open-ILS/src/sql/Pg/006.schema.permissions.sql
+60	0	Open-ILS/src/sql/Pg/upgrade/XXXX.function.grp-tree-functions-via-cte.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.function.grp-tree-functions-via-cte.sql
+
+commit e6f79f6abe4ae4943c29cdf1c823f8e3d1f21c37
+Author: Jason Stephenson <jstephenson@mvlcstaff.org>
+Date:   Fri Apr 29 07:48:44 2016 -0400
+
+    Add entries to .mailmap.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlcstaff.org>
+
+3	0	.mailmap
+
+commit 2026b4bb6716d8c2ce34f21fbc007294d52e3e5e
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Tue Mar 15 11:59:44 2016 -0700
+
+    LP1494346: Docs syntax error
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+2	2	docs/cataloging/physical_char_wizard.txt
+
+commit b51c2799600c2e154591e41b657a61c306bcd35b
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Tue Mar 15 11:36:01 2016 -0700
+
+    Adding more information about authorities+Vandelay
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+6	1	docs/cataloging/authorities.txt
+
+commit 8c1035bbd5821cd5b183a0aff895f48d6829bd80
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Wed Apr 20 11:20:36 2016 -0400
+
+    LP#1554714: update to latest Collapse attribute
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	1	Open-ILS/src/templates/staff/cat/share/t_marcedit.tt2
+
+commit a07656a4f6fda9c50d6b8acc0e4774506bc659bf
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Wed Apr 20 11:11:47 2016 -0400
+
+    LP#1554714: final $modal => $uibModal
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+22	22	Open-ILS/web/js/ui/default/staff/cat/item/app.js
+
+commit 87debaaadab41bb05d7a494f7ff1316452c70a48
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Wed Apr 20 11:07:43 2016 -0400
+
+    LP#1554714: more drop-down fixes
+    
+    Should be the last of them.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+3	3	Open-ILS/src/templates/staff/cat/bucket/copy/t_bucket_selector.tt2
+3	3	Open-ILS/src/templates/staff/cat/bucket/record/t_bucket_selector.tt2
+3	3	Open-ILS/src/templates/staff/cat/catalog/t_catalog.tt2
+3	3	Open-ILS/src/templates/staff/cat/item/index.tt2
+6	6	Open-ILS/src/templates/staff/cat/share/t_physchar_wizard.tt2
+
+commit c70a1988ed2be80559d1f79b420d60180afeb4f5
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Wed Apr 20 11:03:06 2016 -0400
+
+    LP#1554714: specify resolution to make angular-animate happy
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+3	0	Open-ILS/web/js/ui/default/staff/bower.json
+
+commit f64cb46b636d175fb5d2ea9ec5420ef7d29160b7
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Wed Apr 20 10:50:27 2016 -0400
+
+    LP#1554714: fix up more drop-down menus
+    
+    This patch intentionally doesn't change templates
+    under cat/; that will come later.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+3	3	Open-ILS/src/templates/staff/admin/local/circ/age_to_lost.tt2
+3	3	Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2
+3	3	Open-ILS/src/templates/staff/circ/checkin/t_checkin.tt2
+3	3	Open-ILS/src/templates/staff/circ/in_house_use/index.tt2
+3	3	Open-ILS/src/templates/staff/circ/patron/index.tt2
+3	3	Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2
+12	12	Open-ILS/src/templates/staff/circ/patron/t_edit.tt2
+3	3	Open-ILS/src/templates/staff/circ/patron/t_patron_groups_dialog.tt2
+3	3	Open-ILS/src/templates/staff/circ/patron/t_search.tt2
+15	15	Open-ILS/src/templates/staff/share/t_autogrid.tt2
+
+commit 0705bc6051840c6b8783b52ea8246b0790eb79fb
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Wed Apr 20 10:19:40 2016 -0400
+
+    LP#1554714: (indirectly) bump up PhantomJS version
+    
+    It turns out that PhantomJS 2 or later is required for
+    angular-mocks to succesfully inject dependencies; this patch
+    updates karma-phantomjs-launcher to a version that will
+    bring in a recent-enough version of PhantomJS.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	1	Open-ILS/web/js/ui/default/staff/package.json
+
+commit d7c5cd3dcf5abca7b7c2bc46ccf808bcfd135419
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Apr 14 10:36:13 2016 -0400
+
+    LP#1554714 Ang 1.5 org unit dropdown repair
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+3	3	Open-ILS/web/js/ui/default/staff/services/ui.js
+
+commit e0c30a7bd6d05fe9b3e263095838739d5d8af8c0
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Apr 14 10:19:24 2016 -0400
+
+    LP#1554714 ng-date-input -> eg-date-input typo
+    
+    We're using eg-date-input, not ng-date-input.
+    
+    Thanks to Mike Rylander for pointing this out.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+1	1	Open-ILS/src/templates/staff/circ/share/t_hold_dates.tt2
+
+commit 0d31cec39723e90643f09d69a278a4e17350c5a9
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Mar 17 10:26:42 2016 -0400
+
+    LP#1554714 Ang. 1.5 navbar menu repairs
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+21	29	Open-ILS/src/templates/staff/navbar.tt2
+
+commit 10f15b04854296c78b35224af1784cced716916a
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Mar 16 18:10:12 2016 -0400
+
+    LP#1554714 Ang 1.5 requires service to return an object
+    
+    Return a {} from the dummy patronSvc service used by the standalone
+    patron editor.  Ang 1.5 requires services to return non-null.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+1	1	Open-ILS/web/js/ui/default/staff/circ/patron/register.js
+
+commit f9b0b5a7fd0424a5c63cfa545749134d8d91b538
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Mar 16 18:09:51 2016 -0400
+
+    LP#1554714 eg-date-input relays ng-blur
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+3	1	Open-ILS/src/templates/staff/share/t_datetime.tt2
+1	0	Open-ILS/web/js/ui/default/staff/services/ui.js
+
+commit 2c20d1ce06dd7636e0fae03f1da9faefd494e830
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Mar 10 13:08:00 2016 -0500
+
+    LP#1554714 Migrate eg-date-input to ui-datepicker-popup
+    
+    Also add support for uib-timepicker as an option secondary component of
+    the input.
+    
+    Refactor existing use of eg-date-input to use <eg-date-input/>-style
+    declaration to better differentiate between a normal <input> and the
+    more complete/stylized date input div.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+1	0	Open-ILS/src/templates/staff/base_js.tt2
+1	2	Open-ILS/src/templates/staff/circ/checkin/t_checkin.tt2
+22	11	Open-ILS/src/templates/staff/circ/patron/t_bill_history.tt2
+1	2	Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2
+8	10	Open-ILS/src/templates/staff/circ/patron/t_edit.tt2
+3	3	Open-ILS/src/templates/staff/circ/patron/t_edit_due_date_dialog.tt2
+12	7	Open-ILS/src/templates/staff/circ/patron/t_messages.tt2
+1	2	Open-ILS/src/templates/staff/circ/patron/t_renew_with_date_dialog.tt2
+1	1	Open-ILS/src/templates/staff/circ/renew/t_renew.tt2
+1	2	Open-ILS/src/templates/staff/circ/share/t_backdate_dialog.tt2
+11	7	Open-ILS/src/templates/staff/circ/share/t_hold_dates.tt2
+3	2	Open-ILS/src/templates/staff/circ/share/t_mark_claims_returned_dialog.tt2
+38	0	Open-ILS/src/templates/staff/share/t_datetime.tt2
+20	35	Open-ILS/web/js/ui/default/staff/services/ui.js
+ create mode 100644 Open-ILS/src/templates/staff/share/t_datetime.tt2
+
+commit 9643e60d45a84a8562b8228b3d1d14ac0a93a25e
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Mar 9 14:00:27 2016 -0500
+
+    LP#1554714 Patron reg DoB via datepicker
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+4	1	Open-ILS/src/templates/staff/circ/patron/t_edit.tt2
+
+commit 636812ad7cba1f3aca1a5038485c4d4a91736844
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Mar 9 14:01:31 2016 -0500
+
+    LP#1554714 Patron reg DoB parse month bug repair
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+1	1	Open-ILS/web/js/ui/default/staff/circ/patron/regctl.js
+
+commit 34f53d9225556ec4553e5ddc4c5ed6fd09bd7b72
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Mar 9 08:38:41 2016 -0500
+
+    LP#1554714 Patron reg 1.5 controller consolidation
+    
+    Angular 1.4+ requires that each controller be instantiated via the
+    module.controller() function.  No more global functions.  The patron
+    reg. controller, shared by 2 different modules, was defined as a global
+    function.  Resolve this by hanging it off the core module (when loaded).
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+7	8	Open-ILS/web/js/ui/default/staff/circ/patron/regctl.js
+0	1	Open-ILS/web/js/ui/default/staff/circ/patron/register.js
+
+commit 31dc20a3bdc4e0debe69ff41be8bed1a2ab8d410
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Mar 8 16:12:48 2016 -0500
+
+    LP#1554714 angular-bootstrap 1.4 uibModal migration
+    
+    angular-bootstrap's $modal module is now known as $uibModal.  Ditto
+    $uibModalInstance.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+25	25	Open-ILS/web/js/ui/default/staff/cat/bucket/copy/app.js
+36	36	Open-ILS/web/js/ui/default/staff/cat/bucket/record/app.js
+37	37	Open-ILS/web/js/ui/default/staff/cat/catalog/app.js
+6	6	Open-ILS/web/js/ui/default/staff/cat/services/holdings.js
+19	19	Open-ILS/web/js/ui/default/staff/cat/services/marcedit.js
+7	7	Open-ILS/web/js/ui/default/staff/cat/volcopy/app.js
+22	22	Open-ILS/web/js/ui/default/staff/cat/z3950/app.js
+16	16	Open-ILS/web/js/ui/default/staff/circ/patron/app.js
+2	4	Open-ILS/web/js/ui/default/staff/circ/patron/bills.js
+2	2	Open-ILS/web/js/ui/default/staff/circ/patron/checkout.js
+12	12	Open-ILS/web/js/ui/default/staff/circ/patron/items_out.js
+13	15	Open-ILS/web/js/ui/default/staff/circ/patron/regctl.js
+7	7	Open-ILS/web/js/ui/default/staff/circ/services/billing.js
+62	62	Open-ILS/web/js/ui/default/staff/circ/services/circ.js
+44	44	Open-ILS/web/js/ui/default/staff/circ/services/holds.js
+20	20	Open-ILS/web/js/ui/default/staff/services/ui.js
+
+commit 43e7bc4fb44f46fc6374fb626e01004fcdf2d950
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Mar 8 16:01:15 2016 -0500
+
+    LP#1554714 Browser client dependency updates note
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+20	0	Open-ILS/web/js/ui/default/staff/README.install
+
+commit 2b67c0ddf140b1667a3f0eff73af839740bd8302
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Mar 8 15:58:33 2016 -0500
+
+    LP#1554714 Angular 1.5 + deps bower.json updates
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+9	11	Open-ILS/web/js/ui/default/staff/bower.json
+
+commit 4db8e49cf355eb03f353041bc3679dab935bd9f4
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Thu Apr 21 23:29:42 2016 -0400
+
+    LP#1573372: Opt-in test broken because it uses bail-out.
+    
+    Use skip instead!
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+115	116	Open-ILS/src/perlmods/live_t/15-lp1533329-opt-in.t
+
+commit 9ed71b6bb17b9c15b700b48999d9014168deff63
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Thu Apr 21 23:00:09 2016 -0400
+
+    LP#1573364: Use a timezone in the future backdate checkin test.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+1	1	Open-ILS/src/perlmods/live_t/11-lp1481036-future-backdate.t
+
+commit ffd11aefdca6c119ab2bba456ef1f2fa778e2ee3
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Sat Mar 26 20:16:34 2016 -0400
+
+    LP 1562426: Renumber Perl live_t tests.
+    
+    We had some overlap in numbers at the beginning of test file names.
+    The OCD in me think this should be straightened out.  This branch
+    renumbers the duplicates starting with 10-.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+0	36	Open-ILS/src/perlmods/live_t/10-lp1481036-future-backdate.t
+0	38	Open-ILS/src/perlmods/live_t/10-lp1484989_dont_close_fined_xacts.t
+0	43	Open-ILS/src/perlmods/live_t/11-lp1240119-safe-token-activity.t
+36	0	Open-ILS/src/perlmods/live_t/11-lp1481036-future-backdate.t
+38	0	Open-ILS/src/perlmods/live_t/12-lp1484989_dont_close_fined_xacts.t
+0	252	Open-ILS/src/perlmods/live_t/12-lp1499123_csp_ignore_proximity.t
+0	174	Open-ILS/src/perlmods/live_t/12-lp1533329-opt-in.t
+0	88	Open-ILS/src/perlmods/live_t/13-acq-invoicing.t
+43	0	Open-ILS/src/perlmods/live_t/13-lp1240119-safe-token-activity.t
+252	0	Open-ILS/src/perlmods/live_t/14-lp1499123_csp_ignore_proximity.t
+174	0	Open-ILS/src/perlmods/live_t/15-lp1533329-opt-in.t
+88	0	Open-ILS/src/perlmods/live_t/16-acq-invoicing.t
+ delete mode 100644 Open-ILS/src/perlmods/live_t/10-lp1481036-future-backdate.t
+ delete mode 100644 Open-ILS/src/perlmods/live_t/10-lp1484989_dont_close_fined_xacts.t
+ delete mode 100644 Open-ILS/src/perlmods/live_t/11-lp1240119-safe-token-activity.t
+ create mode 100644 Open-ILS/src/perlmods/live_t/11-lp1481036-future-backdate.t
+ create mode 100644 Open-ILS/src/perlmods/live_t/12-lp1484989_dont_close_fined_xacts.t
+ delete mode 100644 Open-ILS/src/perlmods/live_t/12-lp1499123_csp_ignore_proximity.t
+ delete mode 100644 Open-ILS/src/perlmods/live_t/12-lp1533329-opt-in.t
+ delete mode 100644 Open-ILS/src/perlmods/live_t/13-acq-invoicing.t
+ create mode 100644 Open-ILS/src/perlmods/live_t/13-lp1240119-safe-token-activity.t
+ create mode 100644 Open-ILS/src/perlmods/live_t/14-lp1499123_csp_ignore_proximity.t
+ create mode 100644 Open-ILS/src/perlmods/live_t/15-lp1533329-opt-in.t
+ create mode 100644 Open-ILS/src/perlmods/live_t/16-acq-invoicing.t
+
+commit 7212b5074df1cda1af1aef2ec6a7aa600c3c6c04
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Thu Mar 31 16:50:51 2016 -0400
+
+    LP#1570091: webstaff: fix typo
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	1	Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2
+
+commit 5435c0ec37d218ffeb59a5bc84b31d9a2f644af5
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Thu Mar 31 16:47:02 2016 -0400
+
+    LP#1570091: webstaff: fix transfer Volumes to Previously Marked Library
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	1	Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2
+6	2	Open-ILS/web/js/ui/default/staff/cat/catalog/app.js
+
+commit 15fa6be7eba1ed9f8968f99f890e8db0a517fd6c
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Wed Mar 30 22:13:43 2016 -0400
+
+    LP#1570091: webstaff: isolate the scope of eg-status-bar
+    
+    The messages array was fighting with ngToast's
+    messages array... and winning.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+2	1	Open-ILS/web/js/ui/default/staff/services/statusbar.js
+
+commit 66d120bdd8f10ac907a5654f4bf5f18a1d325d82
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Mar 30 17:25:06 2016 -0400
+
+    LP#1570091: webstaff: make use of ngToast for holdings action notifications
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+14	0	Open-ILS/src/templates/staff/cat/catalog/index.tt2
+20	3	Open-ILS/web/js/ui/default/staff/cat/catalog/app.js
+
+commit 05a95958d49e6b9fdbd2d817e8261d9e1a57bb58
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Mar 30 17:24:32 2016 -0400
+
+    LP#1570091: webstaff: fix deps for ngToast, and put it in place gloablly
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	0	Open-ILS/src/templates/staff/base.tt2
+2	0	Open-ILS/src/templates/staff/base_js.tt2
+6	0	Open-ILS/web/js/ui/default/staff/Gruntfile.js
+2	1	Open-ILS/web/js/ui/default/staff/bower.json
+
+commit c309391a11a21db0b55444ddc35c4bdefbc5138f
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Mar 30 13:32:23 2016 -0400
+
+    LP#1570091: webstaff: add tree control and a simple toaster for notifications
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+4	0	Open-ILS/src/templates/staff/base.tt2
+2	0	Open-ILS/src/templates/staff/base_js.tt2
+14	2	Open-ILS/web/js/ui/default/staff/Gruntfile.js
+3	1	Open-ILS/web/js/ui/default/staff/bower.json
+
+commit b7e42d60141bdf73d104017e6ead3509d73088a9
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Fri Mar 25 16:30:02 2016 -0400
+
+    LP#1570091: webstaff: always check for duplciate barcodes
+    
+    ... and disallow saving if critical data is missing
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+4	4	Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2
+1	1	Open-ILS/src/templates/staff/share/t_autogrid.tt2
+31	10	Open-ILS/web/js/ui/default/staff/cat/volcopy/app.js
+
+commit 5001213edf127746fdcc9307c5bde5ea18c82da8
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Fri Mar 25 13:52:54 2016 -0400
+
+    LP#1539084: webstaff: sort column picker entries by class path and column labels
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    
+    Conflicts:
+    	Open-ILS/web/js/ui/default/staff/services/grid.js
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+26	12	Open-ILS/web/js/ui/default/staff/services/grid.js
+
+commit 3a1efa015770a67b5726d922611c5d8f91560414
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Fri Mar 4 12:34:27 2016 -0500
+
+    LP#1570091: webstaff: make the vandelay page taller
+    
+    ... to support extra-large queue inspection interfaces
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	1	Open-ILS/web/js/ui/default/staff/services/eframe.js
+
+commit fc007e72a960d93bac7ed514a9bc4f1b8d525240
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Fri Mar 4 12:14:07 2016 -0500
+
+    LP#1570091: webstaff: Add Cancel Transit action to item status
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+9	7	Open-ILS/src/templates/staff/cat/item/t_list.tt2
+9	0	Open-ILS/web/js/ui/default/staff/cat/item/app.js
+
+commit 3b311dfb1d6742880d17b479cf28552165e35d06
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Thu Mar 3 14:12:37 2016 -0500
+
+    LP#1570091: webstaff: indicate warning/error conditions in volcopy editor
+    
+    Indicate when the user has an empty barcode, duplicate barcode,
+    or empty call number label.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+3	0	Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2
+38	2	Open-ILS/web/js/ui/default/staff/cat/volcopy/app.js
+
+commit 84e988e9684f4a445a820afcb5f8933bb7796f5f
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Thu Mar 3 12:13:08 2016 -0500
+
+    LP#1570091: webstaff: adding item status actions
+    
+      - add items to bucket
+      - request items
+      - Link as Conjoined to Previously Marked Bib Record
+      - Delete Copies
+      - Check In Copies
+      - Renew Copies
+      - Show Triggered Events
+      - Show Item Holds
+      - Show Record Holds
+      - Mark Item As Damaged
+      - Mark Item as Missing
+      - Add Copies
+      - Add Volumes and Copies
+      - Edit Volumes
+      - Edit Copies
+      - Edit Volumes and Copies
+      - Replace Barcodes
+      - Transfer Items to Previously Marked Library
+      - Transfer Items to Previously Marked Volume
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+20	0	Open-ILS/src/templates/staff/cat/item/index.tt2
+44	0	Open-ILS/src/templates/staff/cat/item/t_list.tt2
+567	3	Open-ILS/web/js/ui/default/staff/cat/item/app.js
+
+commit 1f0af17da634454c59ca62af07db95db212fcbe5
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Feb 24 11:32:50 2016 -0500
+
+    LP#1570091: webstaff: fix handling of default copy status
+    
+    The status must be an int, so we cast it when coming from an YAOUS
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+3	2	Open-ILS/web/js/ui/default/staff/cat/volcopy/app.js
+
+commit 4d4807e49c3f2f18f7ec1340182193a5c50deab3
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Feb 24 11:02:42 2016 -0500
+
+    LP#1570091: Show (index / hit count) in the Back To Results button
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    
+    Conflicts:
+    	Open-ILS/src/templates/opac/parts/record/navigation.tt2
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+5	0	Open-ILS/src/templates/opac/parts/record/navigation.tt2
+1	1	Open-ILS/src/templates/staff/cat/catalog/t_catalog.tt2
+19	0	Open-ILS/web/js/ui/default/staff/cat/catalog/app.js
+
+commit 275d24ece6f3d722c9c8f682ab0f79566590e603
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Feb 24 09:54:29 2016 -0500
+
+    LP#1570091: webstaff: tweak display of fixed fields in MARC editor
+    
+    - Add border to FF boxes
+    - align Source mnewmonic for the day that the seed data exists
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	2	Open-ILS/src/templates/staff/cat/share/t_marcedit.tt2
+4	0	Open-ILS/src/templates/staff/css/cat.css.tt2
+2	0	Open-ILS/web/js/ui/default/staff/cat/services/marcedit.js
+
+commit 24da1cc22d4dd029b2d888d0380854ac6209ad59
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Mon Mar 21 09:44:01 2016 -0400
+
+    clear slate of RELEASE_NOTES_NEXT entries
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+0	6	docs/RELEASE_NOTES_NEXT/Acquisitions/add_cancel_reason_85.adoc
+0	6	docs/RELEASE_NOTES_NEXT/Circulation/selfcheck_printing_fines.adoc
+0	5	docs/RELEASE_NOTES_NEXT/Circulation/selfcheck_printing_holds.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/Acquisitions/add_cancel_reason_85.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/Circulation/selfcheck_printing_fines.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/Circulation/selfcheck_printing_holds.adoc
+
+commit 3559cd95e1bdc4012c05919e586e3b78eb23d8c8
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Thu Mar 17 17:25:14 2016 -0400
+
+    forward-port 2.10.0 release notes
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+1136	0	docs/RELEASE_NOTES_2_10.adoc
+ create mode 100644 docs/RELEASE_NOTES_2_10.adoc
+
+commit 0c131c677fdd4db27f70b3f50e28b6525d888468
+Author: Terran McCanna <tmccanna@georgialibraries.org>
+Date:   Mon Feb 29 17:45:43 2016 -0500
+
+    LP#1551451 Hide OPAC footer when viewed inside staff client
+    
+    This patch hides the contents of opac/parts/footer.tt2 if being
+    viewed in a 'staff' context.
+    
+    To test, view same OPAC pages through browser and through Staff Client.
+    
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Erica Rohlfs <erohfls@esilibrary.com>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2	0	Open-ILS/src/templates/opac/parts/footer.tt2
