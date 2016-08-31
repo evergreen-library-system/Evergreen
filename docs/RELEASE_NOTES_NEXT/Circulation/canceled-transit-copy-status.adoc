@@ -10,15 +10,15 @@ item.  This feature only affects items with a status of "In transit" and does
 not affect items that were in the following statuses at the time they were sent
 into transit:
 
-.Bindery
-.Lost
-.Missing
-.On order
-.ILL
-.Damaged
-.Long Overdue
-.Lost and Paid
-.Any custom statuses
+* Bindery
+* Lost
+* Missing
+* On order
+* ILL
+* Damaged
+* Long Overdue
+* Lost and Paid
+* Any custom statuses
 
 This change should help clear up confusing situations caused by the previous
 "abort transit" behavior, such as items showing "Available" when they are actually
