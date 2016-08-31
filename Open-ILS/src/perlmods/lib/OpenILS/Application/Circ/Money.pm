@@ -1051,7 +1051,7 @@ sub adjust_bills_to_zero_manual {
         # now we see if we can close the transaction
         # same logic as make_payments();
         my $circ = $e->retrieve_action_circulation($xact_id);
-        if ($circ and !$CC->can_close_circ($e, $circ)) {
+        if (!$circ or $CC->can_close_circ($e, $circ)) {
             # we don't check to see if the xact is already closed.  since the
             # xact had a negative balance, it should not have been closed, so
             # assume 'now' is the correct close time regardless.
