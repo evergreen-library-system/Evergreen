@@ -923,6 +923,9 @@ function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore,
             return deferred.promise;
         }
 
+        // Dispay the search progress bar to indicate a search is in progress
+        $scope.show_search_progress = true;
+
         patronSvc.patrons = [];
         egCore.net.request(
             'open-ils.actor',
@@ -937,9 +940,15 @@ function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore,
             fullSearch.offset
 
         ).then(
-            function() { deferred.resolve() },
+            function() {
+                // hide progress bar on 0-hits searches
+                $scope.show_search_progress = false;
+                deferred.resolve();
+            },
             null, // onerror
             function(user) {
+                // hide progress bar as soon as the first result appears.
+                $scope.show_search_progress = false;
                 patronSvc.localFlesh(user); // inline
                 patronSvc.patrons.push(user);
                 deferred.notify(user);
