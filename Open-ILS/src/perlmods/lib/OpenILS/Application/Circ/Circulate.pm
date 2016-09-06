@@ -2229,7 +2229,7 @@ sub check_transit_checkin_interval {
 # Retarget local holds at checkin
 sub checkin_retarget {
     my $self = shift;
-    return unless $self->retarget_mode =~ m/retarget/; # Retargeting?
+    return unless $self->retarget_mode and $self->retarget_mode =~ m/retarget/; # Retargeting?
     return unless $self->is_checkin; # Renewals need not be checked
     return if $self->capture eq 'nocapture'; # Not capturing holds anyway? Move on.
     return if $self->is_precat; # No holds for precats
