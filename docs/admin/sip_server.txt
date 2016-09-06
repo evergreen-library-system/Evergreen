@@ -229,10 +229,21 @@ This should produce something like:
 More Testing
 ^^^^^^^^^^^^
 
-. Once you have opened up either the +SIP+ OR +SIP2+ ports to be accessible from outside you can do some testing 
-via +telnet+. You can try this with localhost if you so wish, but we want to prove that +SIP2+ works from 
-non-localhost. Replace +$instid+, +$server+, +$barcode+, +$username+, and +$password+ variables below 
-as necessary.
+Once you have opened up either the +SIP+ OR +SIP2+ ports to be accessible from outside you can do some testing 
+via +telnet+. In the following tests:
+
+* Replace +$server+ with your server hostname (or +localhost+ if you want to
+  skip testing external access for now);
+* Replace +$username+, +$password+, and +$instid+ with the corresponding values
+  in the +<accounts>+ section of your SIP configuration file;
+* Replace the +$user_barcode+ and +$user_password+ variables with the values
+  for a valid user.
+
+///////////////
+Comments because we don't want to indent these numbered bullets!
+///////////////
+
+. Start by testing your ability to log into the SIP server:
 +
 [NOTE]
 ======================
@@ -242,20 +253,22 @@ We are using 6001 here which is associated with +SIP2+ as per our configuration.
    $ telnet $server 6001 
    Connected to $server. 
    Escape character is '^]'. 
-   9300CN**$username**|CO**$password**|CP**$instid** 
+   9300CN$username|CO$password|CP$instid
 +
-You should get back. 
-+
-   941 
+If successful, the SIP server returns a +941+ result. A result of +940+,
+however, indicates an unsuccessful login attempt. Check the +<accounts>+
+section of your SIP configuration and try agin.
 
-. Now just copy in the following line (with variables replaced) you don't need to hit enter, just paste!
+. Once you have logged in successfully, replace the variables in the following
+line and paste it into the telnet session:
 +
-    2300120080623    172148AO**$instid**|AA**$barcode**|AC$password|AD**$password** 
-+   
-You will get back the patron information for $barcode (something similar to the what's below). 
+    2300120080623    172148AO$instid|AA$user_barcode|AC$password|AD$user_password
 +
-   24  Y           00120100113    170738AEFirstName MiddleName LastName|AA**$barcode**|BLY|CQY 
-   |BHUSD|BV0.00|AFOK|AO**$instid**| 
+If successful, the SIP server returns the patron information for $barcode,
+similar to the following:
++
+   24  Y           00120100113    170738AEFirstName MiddleName LastName|AA$barcode|BLY|CQY 
+   |BHUSD|BV0.00|AFOK|AO$instid| 
 +
 The response declares it is a valid patron BLY with a valid password CQY and shows the user's +$name+.
 
