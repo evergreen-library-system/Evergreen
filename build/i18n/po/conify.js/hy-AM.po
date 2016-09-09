@@ -2,19 +2,23 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2015-02-27 11:41-0400\n"
+"POT-Creation-Date: 2016-08-25 17:09-0400\n"
 "PO-Revision-Date: 2013-04-01 14:26+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2015-08-07 05:36+0000\n"
-"X-Generator: Launchpad (build 17656)\n"
+"X-Launchpad-Export-Date: 2016-08-26 05:18+0000\n"
+"X-Generator: Launchpad (build 18179)\n"
 
 #: conify.js:SURVEY_ID
 msgid "Survey ID # ${0}"
 msgstr "Հարցախույզի ID # ${0}"
+
+#: conify.js:IS_AVAILABLE
+msgid "Is Available"
+msgstr ""
 
 #: conify.js:SUCCESS_NEW_PERM_MAP
 msgid "New permission map created"
@@ -149,9 +153,9 @@ msgstr "Նոր երեխա կազմակերպչական միավոր է ստեղ�
 msgid "Cannot delete ${0}, ${1} subordinates still exist."
 msgstr "Չի կարող ջնջել ${0}, ${1} ենթակաները դեռ առկա են։"
 
-#: conify.js:CBHO_EDITING_EXISTING
-msgid "You are editing best-hold order #${0}: ${1}."
-msgstr "ու խմբարում ես նոր լավագույն պահման պատվեր։ #${0}: ${1}."
+#: conify.js:ACQ_DISTRIB_FORMULA_NAME_PROMPT
+msgid "Enter new formula name"
+msgstr "Մուտք արա նոր բանաձևի անունը"
 
 #: conify.js:ERROR_DELETING_LAST_AOUT
 msgid "Cannot delete ${0}. You need at least one organization type."
@@ -235,13 +239,19 @@ msgstr "Նոր տեսակ"
 msgid "You need to enter a name for the best-hold order."
 msgstr "Քեզ պետք է մուտք անել լավագույն պահման պատվերի անունը։"
 
-#: conify.js:ACQ_DISTRIB_FORMULA_NAME_PROMPT
-msgid "Enter new formula name"
-msgstr "Մուտք արա նոր բանաձևի անունը"
+#: conify.js:CBHO_EDITING_EXISTING
+msgid "You are editing best-hold order #${0}: ${1}."
+msgstr "ու խմբարում ես նոր լավագույն պահման պատվեր։ #${0}: ${1}."
 
 #: conify.js:ERROR_CREATING_CHILD_AOU
 msgid "Problem creating child organizational unit"
 msgstr "Պրոբլեմ երեխա կազմակերպչական միավոր ստեղծելիս"
+
+#: conify.js:SURVEY_WARN_TEXT
+msgid ""
+"No questions can be modified or added at this time. The survey Start Date "
+"must be set for the future to add new questions or modify existing questions."
+msgstr ""
 
 #: conify.js:ERROR_SAVING_HOLDS
 msgid "Problem saving Holds Address data for ${0}"

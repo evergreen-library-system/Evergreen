@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > lang.dtd.po\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-14 20:42-0400\n"
+"POT-Creation-Date: 2016-08-25 17:08-0400\n"
 "PO-Revision-Date: 2016-01-01 20:21+0000\n"
 "Last-Translator: Jean-Marc <Unknown>\n"
 "Language-Team: NRCan Library <warren.layton@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2016-03-16 05:38+0000\n"
-"X-Generator: Launchpad (build 17947)\n"
+"X-Launchpad-Export-Date: 2016-08-26 05:24+0000\n"
+"X-Generator: Launchpad (build 18179)\n"
 "X-Poedit-Country: CANADA\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: French\n"
@@ -14354,6 +14354,10 @@ msgctxt "staff.circ.alternate_copy_summary.Holdable.label"
 msgid "Holdable"
 msgstr "Mise en réserve possible"
 
+#: staff.circ.alternate_copy_summary.Age_Protect.label
+msgid "Age-based Hold Protection"
+msgstr ""
+
 #: staff.circ.alternate_copy_summary.Hold_Shelf_Location.label
 msgid "Hold Shelf Location"
 msgstr "Emplacement du rayon de mise en attente"
@@ -14404,6 +14408,10 @@ msgstr "Usager"
 msgctxt "staff.circ.alternate_copy_summary.Price.label"
 msgid "Price"
 msgstr "Prix"
+
+#: staff.circ.alternate_copy_summary.Cost.label
+msgid "Acquisition Cost"
+msgstr ""
 
 #: staff.circ.alternate_copy_summary.Previous_Circ_Group.label
 msgid "Previous Circ Group"

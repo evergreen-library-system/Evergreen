@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2016-03-14 20:42-0400\n"
+"POT-Creation-Date: 2016-08-25 17:08-0400\n"
 "PO-Revision-Date: 2012-05-22 16:00+0000\n"
 "Last-Translator: kulkke <Unknown>\n"
 "Language-Team: Turkish <tr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2016-03-16 05:40+0000\n"
-"X-Generator: Launchpad (build 17947)\n"
+"X-Launchpad-Export-Date: 2016-08-26 05:26+0000\n"
+"X-Generator: Launchpad (build 18179)\n"
 
 #: lang.version
 msgid "remote v1"
@@ -14196,6 +14196,10 @@ msgctxt "staff.circ.alternate_copy_summary.Holdable.label"
 msgid "Holdable"
 msgstr ""
 
+#: staff.circ.alternate_copy_summary.Age_Protect.label
+msgid "Age-based Hold Protection"
+msgstr ""
+
 #: staff.circ.alternate_copy_summary.Hold_Shelf_Location.label
 msgid "Hold Shelf Location"
 msgstr ""
@@ -14245,6 +14249,10 @@ msgstr ""
 #: staff.circ.alternate_copy_summary.Price.label
 msgctxt "staff.circ.alternate_copy_summary.Price.label"
 msgid "Price"
+msgstr ""
+
+#: staff.circ.alternate_copy_summary.Cost.label
+msgid "Acquisition Cost"
 msgstr ""
 
 #: staff.circ.alternate_copy_summary.Previous_Circ_Group.label

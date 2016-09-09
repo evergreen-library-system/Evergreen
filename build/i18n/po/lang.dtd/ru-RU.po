@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-14 20:42-0400\n"
+"POT-Creation-Date: 2016-08-25 17:08-0400\n"
 "PO-Revision-Date: 2011-10-05 03:10+0000\n"
 "Last-Translator: Dan Scott <dan@coffeecode.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2016-03-16 05:39+0000\n"
-"X-Generator: Launchpad (build 17947)\n"
+"X-Launchpad-Export-Date: 2016-08-26 05:26+0000\n"
+"X-Generator: Launchpad (build 18179)\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Bookmarks: 1332,1333,-1,-1,-1,-1,-1,-1,-1,-1\n"
 
@@ -14316,6 +14316,10 @@ msgctxt "staff.circ.alternate_copy_summary.Holdable.label"
 msgid "Holdable"
 msgstr "Хранимый"
 
+#: staff.circ.alternate_copy_summary.Age_Protect.label
+msgid "Age-based Hold Protection"
+msgstr ""
+
 #: staff.circ.alternate_copy_summary.Hold_Shelf_Location.label
 msgid "Hold Shelf Location"
 msgstr "Право полочного хранения"
@@ -14366,6 +14370,10 @@ msgstr ""
 msgctxt "staff.circ.alternate_copy_summary.Price.label"
 msgid "Price"
 msgstr "Цена"
+
+#: staff.circ.alternate_copy_summary.Cost.label
+msgid "Acquisition Cost"
+msgstr ""
 
 #: staff.circ.alternate_copy_summary.Previous_Circ_Group.label
 msgid "Previous Circ Group"

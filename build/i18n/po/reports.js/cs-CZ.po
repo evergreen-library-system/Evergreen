@@ -3,14 +3,14 @@ msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
 "POT-Creation-Date: 2015-02-27 11:41-0400\n"
-"PO-Revision-Date: 2014-09-16 05:12+0000\n"
+"PO-Revision-Date: 2016-09-05 09:25+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2015-08-07 05:44+0000\n"
-"X-Generator: Launchpad (build 17656)\n"
+"X-Launchpad-Export-Date: 2016-09-06 05:58+0000\n"
+"X-Generator: Launchpad (build 18179)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Poedit-Language: Czech\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -229,7 +229,7 @@ msgstr "Je rovno kterémukoliv"
 
 #: reports.js:TEMPLATE_CONF_BARE
 msgid "Bare"
-msgstr "Holý"
+msgstr "Prázdny"
 
 #: reports.js:TEMPLATE_CONF_IN
 msgid "Field matches one of list (comma separated):"
@@ -262,7 +262,7 @@ msgstr "Výstup"
 
 #: reports.js:OPERATORS_LIKE reports.js:FILTERS_LABEL_LIKE
 msgid "Contains Matching substring"
-msgstr "Obsahuje odpovídající Podřetězec"
+msgstr "Obsahuje odpovídající podřetězec"
 
 #: reports.js:OPERATORS_EQUALS reports.js:TEMPLATE_CONF_EQUALS
 #: reports.js:FILTERS_LABEL_EQUALS
@@ -307,7 +307,7 @@ msgstr "Okolo"
 
 #: reports.js:TEMPLATE_FIELD_DOC_PROMPT_CHANGE
 msgid "Change the field hint to:"
-msgstr "Změnit pole na:"
+msgstr "Změnit nápovědu k polo na:"
 
 #: reports.js:FILTERS_LABEL_NULL_BLANK reports.js:OPERATORS_NULL_BLANK
 msgid "Is NULL or Blank"
