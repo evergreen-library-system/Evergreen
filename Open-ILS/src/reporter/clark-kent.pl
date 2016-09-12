@@ -569,7 +569,7 @@ sub build_html {
 			<link rel="stylesheet" href="/js/sortable/sortable-theme-minimal.css" />
 		CSS
 
-		print $raw "</head><body><table class='sortable-theme-minimal' data-sortable>";
+		print $raw "</head><body><a href='report-data.html'>Back to output index</a><br/><table class='sortable-theme-minimal' data-sortable>";
 
 		{	no warnings;
 			print $raw "<thead><tr><th>".join('</th><th>', @{$r->{column_labels}})."</th></tr></thead>\n<tbody>";
