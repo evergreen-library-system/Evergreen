@@ -285,6 +285,12 @@
               [% l('Local Administration') %]
             </a>
           </li>
+          <li>
+            <a href="./reporter/legacy/main" target="_self">
+              <span class="glyphicon glyphicon-object-align-bottom"></span>
+              [% l('Reports') %]
+            </a>
+          </li>
         </ul> <!-- admin dropdown -->
       </li>
     </ul> <!-- end left side entries -->
