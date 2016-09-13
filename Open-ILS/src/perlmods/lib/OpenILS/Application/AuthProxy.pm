@@ -258,6 +258,7 @@ sub login {
                 my $trimmed_args = {
                     user_id => $args->{user_id},
                     login_type => $args->{type},
+                    workstation => $args->{workstation},
                     org_unit => $args->{org}
                 };
                 $event = &_auth_internal('user.validate', $trimmed_args);
