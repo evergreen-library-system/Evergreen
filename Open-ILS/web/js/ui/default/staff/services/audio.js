@@ -40,37 +40,41 @@ angular.module('egCoreMod')
 
     service.play_url = function(path, orig_path) {
 
-        var url = service.url_cache[path] || 
-            service.base_url + path.replace(/\./g, '/') + '.wav';
+        egHatch.getItem('eg.audio.disable').then(function(audio_disabled) {
+            if (!audio_disabled) {
+        
+                var url = service.url_cache[path] || 
+                    service.base_url + path.replace(/\./g, '/') + '.wav';
 
-        var player = new Audio(url);
+                var player = new Audio(url);
 
-        player.onloadeddata = function() {
-            console.debug('Playing audio URL: ' + url);
-            service.url_cache[orig_path] = url;
-            player.play();
-        };
+                player.onloadeddata = function() {
+                    service.url_cache[orig_path] = url;
+                    player.play();
+                };
 
-        if (service.url_cache[path]) {
-            // when serving from the cache, avoid secondary URL lookups.
-            return;
-        }
+                if (service.url_cache[path]) {
+                    // when serving from the cache, avoid secondary URL lookups.
+                    return;
+                }
 
-        player.onerror = function() {
-            // Unable to play path at the requested URL.
+                player.onerror = function() {
+                    // Unable to play path at the requested URL.
             
-            if (!path.match(/\./)) {
-                // all fall-through options have been exhausted.
-                // No path to play.
-                console.warn(
-                    "No suitable URL found for path '" + orig_path + "'");
-                return;
-            }
+                    if (!path.match(/\./)) {
+                        // all fall-through options have been exhausted.
+                        // No path to play.
+                        console.warn(
+                            "No suitable URL found for path '" + orig_path + "'");
+                        return;
+                    }
 
-            // Fall through to the next (more generic) option
-            path = path.replace(/\.[^\.]+$/, '');
-            service.play_url(path, orig_path);
-        }
+                    // Fall through to the next (more generic) option
+                    path = path.replace(/\.[^\.]+$/, '');
+                    service.play_url(path, orig_path);
+                }
+            }
+        });
     }
 
     return service;
