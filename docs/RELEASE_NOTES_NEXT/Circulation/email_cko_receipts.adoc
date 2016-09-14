@@ -9,8 +9,8 @@ Patrons can also opt in directly in their OPAC account or through patron
 self-registration. This feature does not affect the behavior of
 checkouts from SIP2 devices.
 
-Patrons can opt in to receipt email checkout receipts by default via
-a new "Email checkout reciepts by default" patron setting.
+Patrons can opt in to receive email checkout receipts by default via
+a new _Email checkout reciepts by default_ patron setting.
 
 This feature also enhances the patron staging tables so that patron
 settings can be chosen during self-registration.

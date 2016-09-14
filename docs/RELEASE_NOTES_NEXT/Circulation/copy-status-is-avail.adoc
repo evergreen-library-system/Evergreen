@@ -1,8 +1,9 @@
 Copy Status "Is Available" Flag
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Adds a new boolean field for copy statuses to indicate when copies having
-a given status should be considered available.  The field has 2 main effects:
+A new boolean field is now available for copy statuses to indicate when copies
+having a given status should be considered available.  The field has 2 main
+effects:
 
 1. Checking out an "available" copy will no longer result in an override-able
    "COPY_NOT_AVAILABLE" alert for staff.  The copy will checkout without 

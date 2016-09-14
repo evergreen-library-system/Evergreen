@@ -2,8 +2,8 @@ Removal of Advanced Hold Options link when part holds are expected
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 If a user attempts to place a metarecord hold when all eligible copies
 contain parts, the hold will fail. To help prevent the user from reaching
-a dead end while placing holds, the _Advanced Hold Options_ link is removed
+a dead end while placing holds, the *Advanced Hold Options* link is removed
 from the Place Hold page in cases where all copies on the record contain
-parts. The _Advanced Hold Options_ link will remain for records that have
+parts. The *Advanced Hold Options* link will remain for records that have
 a mix of parted and non-parted copies.
 

@@ -8,7 +8,7 @@ most needs the information - before the hold has been captured.
 
 Distinct CSS classes have also been added for each hold status and each date
 that could potentially display in these holds interfaces. A new default style
-highlights the *Available* status in green and the *Suspended* status
+highlights the _Available_ status in green and the _Suspended_ status
 in red.
 
 
