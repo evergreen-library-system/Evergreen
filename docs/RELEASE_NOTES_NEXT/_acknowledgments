@@ -1,18 +1,37 @@
 The Evergreen project would like to acknowledge the following
-organizations who commissioned developments in this release of
+organizations that commissioned developments in this release of
 Evergreen:
 
- * **TO DO**
+ * Bibliomation
+ * Georgia Public Library Service
+ * MassLNC
+ * Pennsylvania Integrated Library System
+ * Pioneer Library System
 
 We would also like to thank the following individuals who contributed
-code, documentations patche and tests to this release of Evergreen:
+code, documentations patches and tests to this release of Evergreen:
 
- * ** TO DO**
+ * Jason Boyer
+ * Galen Charlton
+ * Bill Erickson
+ * Blake Henderson
+ * Kathy Lussier
+ * Michele Morgan
+ * Dan Pearl
+ * Chris Sharp
+ * Mike Rylander
+ * Jason Stephenson
 
 We also thank the following organizations whose employees contributed
 patches:
 
- * **TO DO** 
+ * C/W MARS
+ * Equinox Software, Inc.
+ * Evergreen Indiana
+ * Georgia Public Library Serivce
+ * King County Library System
+ * MassLNC
+ * MOBIUS
 
 We regret any omissions.  If a contributor has been inadvertantly
 missed, please open a bug at http://bugs.launchpad.net/evergreen/
