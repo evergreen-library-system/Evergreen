@@ -5,6 +5,7 @@ use OpenSRF::EX qw(:try);
 use OpenSRF::AppSession;
 use OpenSRF::Utils::SettingsClient;
 use OpenSRF::Utils::Logger qw(:logger);
+use OpenSRF::Utils::Config;
 use OpenILS::Const qw/:const/;
 use OpenILS::Application::AppUtils;
 use DateTime;
@@ -17,7 +18,12 @@ my $desk_renewal_use_circ_lib;
 
 sub determine_booking_status {
     unless (defined $booking_status) {
-        my $ses = create OpenSRF::AppSession("router");
+        my $router_name = OpenSRF::Utils::Config
+            ->current
+            ->bootstrap
+            ->router_name || 'router';
+
+        my $ses = create OpenSRF::AppSession($router_name);
         $booking_status = grep {$_ eq "open-ils.booking"} @{
             $ses->request("opensrf.router.info.class.list")->gather(1)
         };
