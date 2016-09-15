@@ -1947,8 +1947,8 @@ sub prepare_fines {
         }
     );
 
-    my @total_keys = qw/total_paid total_owed balance_owed/;
-    $self->ctx->{"fines"}->{@total_keys} = (0, 0, 0);
+    # Collect $$ amounts from each transaction for summing below.
+    my (@paid_amounts, @owed_amounts, @balance_amounts);
 
     while(my $resp = $req->recv) {
         my $mobts = $resp->content;
@@ -1960,10 +1960,9 @@ sub prepare_fines {
             $last_billing = pop(@billings);
         }
 
-        # XXX TODO confirm that the following, and the later division by 100.0
-        # to get a floating point representation once again, is sufficiently
-        # "money-safe" math.
-        $self->ctx->{"fines"}->{$_} += int($mobts->$_ * 100) for (@total_keys);
+        push(@paid_amounts, $mobts->total_paid);
+        push(@owed_amounts, $mobts->total_owed);
+        push(@balance_amounts, $mobts->balance_owed);
 
         my $marc_xml = undef;
         if ($mobts->xact_type eq 'reservation' and
@@ -1990,7 +1989,10 @@ sub prepare_fines {
 
     $cstore->kill_me;
 
-    $self->ctx->{"fines"}->{$_} /= 100.0 for (@total_keys);
+    $self->ctx->{"fines"}->{total_paid}   = $U->fpsum(@paid_amounts);
+    $self->ctx->{"fines"}->{total_owed}   = $U->fpsum(@owed_amounts);
+    $self->ctx->{"fines"}->{balance_owed} = $U->fpsum(@balance_amounts);
+
     return;
 }
 
