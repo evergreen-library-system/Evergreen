@@ -219,7 +219,7 @@ function($scope , $q , $window , $location , egCore , checkinSvc , egGridDataPro
             angular.forEach(checkinSvc.checkins, function(ci, idx) {
                 if (ci.index == row_item.index) pos = idx;
             });
-            checkinSvc.checkin.splice(pos, 1);
+            checkinSvc.checkins.splice(pos, 1);
 
         })['finally'](function() {
 
