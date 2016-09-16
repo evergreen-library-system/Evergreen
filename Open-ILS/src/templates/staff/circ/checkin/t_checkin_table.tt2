@@ -63,7 +63,7 @@
     path='circ.xact_start'></eg-grid-field>
 
   <eg-grid-field label="[% l('Title') %]" path="title">
-    <a target="_self" href="[% ctx.base_path %]/staff/cat/catalog/record/{{record.doc_id()}}">
+    <a target="_self" href="[% ctx.base_path %]/staff/cat/catalog/record/{{item.record.doc_id()}}">
       {{item.title}}
     </a>
   </eg-grid-field>
