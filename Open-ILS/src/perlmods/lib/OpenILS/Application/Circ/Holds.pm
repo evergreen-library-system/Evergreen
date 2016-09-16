@@ -2613,12 +2613,11 @@ sub _check_title_hold_is_possible {
     my $home_org = $patron->home_ou;
     my $req_org = $request_lib->id;
 
-    $logger->info("prox cache $home_org " . $prox_cache{$home_org});
-
     $prox_cache{$home_org} =
         $e->search_actor_org_unit_proximity({from_org => $home_org})
         unless $prox_cache{$home_org};
     my $home_prox = $prox_cache{$home_org};
+    $logger->info("prox cache $home_org " . $prox_cache{$home_org});
 
     my %buckets;
     my %hash = map { ($_->to_org => $_->prox) } @$home_prox;
@@ -2746,12 +2745,11 @@ sub _check_issuance_hold_is_possible {
     my $home_org = $patron->home_ou;
     my $req_org = $request_lib->id;
 
-    $logger->info("prox cache $home_org " . $prox_cache{$home_org});
-
     $prox_cache{$home_org} =
         $e->search_actor_org_unit_proximity({from_org => $home_org})
         unless $prox_cache{$home_org};
     my $home_prox = $prox_cache{$home_org};
+    $logger->info("prox cache $home_org " . $prox_cache{$home_org});
 
     my %buckets;
     my %hash = map { ($_->to_org => $_->prox) } @$home_prox;
@@ -2887,12 +2885,11 @@ sub _check_monopart_hold_is_possible {
     my $home_org = $patron->home_ou;
     my $req_org = $request_lib->id;
 
-    $logger->info("prox cache $home_org " . $prox_cache{$home_org});
-
     $prox_cache{$home_org} =
         $e->search_actor_org_unit_proximity({from_org => $home_org})
         unless $prox_cache{$home_org};
     my $home_prox = $prox_cache{$home_org};
+    $logger->info("prox cache $home_org " . $prox_cache{$home_org});
 
     my %buckets;
     my %hash = map { ($_->to_org => $_->prox) } @$home_prox;
