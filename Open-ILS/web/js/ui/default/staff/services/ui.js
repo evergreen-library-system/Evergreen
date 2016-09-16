@@ -626,9 +626,11 @@ function($window , egStrings) {
         };
         if (data.action == 'checkin') {
             entry['item'] = data.response.params.copy_barcode;
-            entry['user'] = data.response.data.au.family_name();
             entry['item_id'] = data.response.data.acp.id();
-            entry['patron_id'] = data.response.data.au.id();
+            if (data.response.data.au) {
+                entry['user'] = data.response.data.au.family_name();
+                entry['patron_id'] = data.response.data.au.id();
+            }
         }
         if (data.action == 'checkout') {
             entry['item'] = data.response.params.copy_barcode;
