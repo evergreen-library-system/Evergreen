@@ -1,6 +1,7 @@
 [%# sic! no wrapper %]
 <html>
     <head>
+        <meta charset="utf-8">
         <title>[% l('Receipt') %]</title>
     </head>
     <body onload="if (document.getElementById('printable-receipt')) window.print();">
