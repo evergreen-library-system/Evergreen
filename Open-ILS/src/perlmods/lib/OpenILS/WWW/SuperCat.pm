@@ -537,7 +537,7 @@ sub unapi {
     $supercat->session_locale($locale);
 
     my $flesh_feed = parse_feed_type($format);
-    (my $base_format = $format) =~ s/(-full|-uris)$//o;
+    ($base_format = $format) =~ s/(-full|-uris)$//o;
     my ($id,$type,$command,$lib,$depth,$paging) = ('','record','');
     my $body = "Content-type: application/xml; charset=utf-8\n\n";
 
@@ -1443,9 +1443,9 @@ sub opensearch_feed {
     $safe_terms =~ s{'}{ }go;
     
     my $query_terms = 'site('.$org_unit->[0]->shortname.") $safe_terms";
-    $query_tems = "sort($sort) $query_terms" if ($sort);
-    $query_tems = "language($lang) $query_terms" if ($lang);
-    $query_tems = "#$sortdir $query_terms" if ($sortdir);
+    $query_terms = "sort($sort) $query_terms" if ($sort);
+    $query_terms = "language($lang) $query_terms" if ($lang);
+    $query_terms = "#$sortdir $query_terms" if ($sortdir);
 
     my $recs = $search->request(
         'open-ils.search.biblio.multiclass.query' => {

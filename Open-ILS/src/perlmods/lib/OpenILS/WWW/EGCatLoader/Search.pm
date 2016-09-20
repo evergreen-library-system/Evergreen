@@ -69,7 +69,9 @@ sub _prepare_biblio_search_basics {
 sub _prepare_biblio_search {
     my ($cgi, $ctx) = @_;
 
-    my $query = _prepare_biblio_search_basics($cgi) || '';
+    # XXX This will still contain the jtitle hack...
+    my $user_query = _prepare_biblio_search_basics($cgi) || '';
+    my $query = $user_query;
 
     $query .= ' ' . $ctx->{global_search_filter} if $ctx->{global_search_filter};
 
@@ -189,9 +191,9 @@ sub _prepare_biblio_search {
         return $query;
     };
 
-    $logger->info("tpac: site=$site, depth=$depth, query=$query");
+    $logger->info("tpac: site=$site, depth=$depth, user_query=$user_query, query=$query");
 
-    return ($query, $site, $depth);
+    return ($user_query, $query, $site, $depth);
 }
 
 sub _get_search_limit {
@@ -389,7 +391,7 @@ sub load_rresults {
         $offset = 0;
     }
 
-    my ($query, $site, $depth) = _prepare_biblio_search($cgi, $ctx);
+    my ($user_query, $query, $site, $depth) = _prepare_biblio_search($cgi, $ctx);
 
     $self->get_staff_search_settings;
 
@@ -430,6 +432,7 @@ sub load_rresults {
         }
 
         # Stuff these into the TT context so that templates can use them in redrawing forms
+        $ctx->{user_query} = $user_query;
         $ctx->{processed_search_query} = $query;
 
         $query = "$_ $query" for @facets;
@@ -461,7 +464,10 @@ sub load_rresults {
 
     $ctx->{ids} = $rec_ids;
     $ctx->{hit_count} = $results->{count};
-    $ctx->{parsed_query} = $results->{parsed_query};
+    $ctx->{query_struct} = $results->{global_summary}{query_struct};
+    $logger->debug('query struct: '. Dumper($ctx->{query_struct}));
+    $ctx->{canonicalized_query} = $results->{global_summary}{canonicalized_query};
+    $ctx->{search_summary} = $results->{global_summary};
 
     if ($find_last) {
         # redirect to the record detail page for the last record in the results

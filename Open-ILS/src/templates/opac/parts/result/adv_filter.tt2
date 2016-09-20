@@ -1,0 +1,67 @@
+<div class="facet_box_wrapper">
+[%
+
+ignore_filters = ['sort','statuses','site'];
+
+FOR filter IN ctx.query_struct.filters;
+    fname = filter.name;
+
+    fvalues = filter.args;
+    crad = ctx.get_crad(fname);
+
+    IF crad; # will be some special ones, like locations
+        remove_filter = 'fi:' _ fname;
+%]
+    <div class="facet_box_temp">
+        <div class="header">
+            <a class="button"
+              title="[% l('Remove [_1] filter', crad.label) %]"
+              href="[% mkurl('', {}, [remove_filter]) %]" rel="nofollow" vocab="">
+              [% l("Remove") %]
+            </a>
+            <h4 class="title">[% IF filter.negate; l('Not'); END %] [% crad.label | html %]</h4>
+        </div>
+        <div class="box_wrapper">
+            <div class="box">
+            [% FOR fval IN fvalues;
+                thing = ctx.search_ccvm('ctype',fname,'code',fval).0;
+                display_value = thing.search_label || thing.value;
+                IF display_value.defined; %]
+                    <div class="facet_template">
+                        <div class="facet">
+                              [% display_value | html%]
+                        </div>
+                    </div>
+            [%  END; # IF %]
+            [% END; # FOR %]
+            </div>
+        </div> <!-- box_wrapper -->
+    </div> <!-- facet_box_temp -->
+    [% END; # IF crad %]
+
+[%  IF filter.name == 'locations'; locs = ctx.search_acpl('id',filter.args) %]
+    <div class="facet_box_temp">
+        <div class="header">
+            <a class="button"
+              title="[% l('Remove location filter') %]"
+              href="[% mkurl('', {}, ['locations']) %]" rel="nofollow" vocab="">
+              [% l("Remove") %]
+            </a>
+            <h4 class="title">[% IF filter.negate; l('Not'); END %] [% l('Locations') %]</h4>
+        </div>
+        <div class="box_wrapper">
+            <div class="box">
+            [% FOR loc IN locs %]
+                <div class="facet_template">
+                  <div class="facet">
+                    [% loc.name | html%]
+                  </div>
+                </div>
+            [% END; # FOR %]
+            </div>
+        </div> <!-- box_wrapper -->
+    </div> <!-- facet_box_temp -->
+    [% END; # IF locations %]
+[% END; # FOR %]
+</div> <!-- facet_box_wrapper -->
+

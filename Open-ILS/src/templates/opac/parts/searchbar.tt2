@@ -17,7 +17,7 @@
             <label id="search_box_label" for="search_box">[% l('Search: ') %]
             <input type="text" id="search_box" name="query" aria-label="[%
                     l('Enter search query:');
-                %]" value="[% is_advanced ? ctx.naive_query_scrub(ctx.processed_search_query) : CGI.param('query') | html %]"
+                %]" value="[% is_advanced ? ctx.naive_query_scrub(ctx.user_query) : CGI.param('query') | html %]"
                 [%- IF use_autosuggest.enabled == "t" %]
                 dojoType="openils.widget.AutoSuggest" type_selector="'qtype'"
                 submitter="this.textbox.form.submit();"
@@ -85,6 +85,14 @@
         [% IF ctx.processed_search_query OR (NOT is_advanced AND NOT is_special) %]
         <input name='page' type='hidden' value="0" />
         [% END %]
+        [% IF is_advanced;
+            FOR p IN CGI.params.keys;
+                NEXT UNLESS p.match('^fi:');
+                FOR pv IN CGI.params.$p;
+                    %]<input type="hidden" name="[% p %]" value="[% pv %]" />[%
+                END;
+            END;
+        END %]
         [% IF is_special %]
             <input type="hidden" name="_special" value="1" /> [%
             number_of_expert_rows = CGI.param('tag').list.size;

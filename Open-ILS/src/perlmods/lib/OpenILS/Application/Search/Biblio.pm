@@ -16,7 +16,7 @@ use OpenSRF::Utils::Logger qw/:logger/;
 
 use OpenSRF::Utils::JSON;
 
-use Time::HiRes qw(time);
+use Time::HiRes qw(time sleep);
 use OpenSRF::EX qw(:try);
 use Digest::MD5 qw(md5_hex);
 
@@ -1142,7 +1142,7 @@ sub staged_search {
     $method .= '.staff' if $self->api_name =~ /staff$/;
     $method .= '.atomic';
                 
-    if (!$search_hash{query}) {
+    if (!$search_hash->{query}) {
         return {count => 0} unless (
             $search_hash and 
             $search_hash->{searches} and 
@@ -1407,6 +1407,14 @@ sub retrieve_cached_facets {
 
     return undef unless ($key and $key =~ /_facets$/);
 
+    eval {
+        local $SIG{ALARM} = sub {die};
+        alarm(2); # we'll sleep for as much as 2s
+        do {
+            die if $cache->get_cache($key . '_COMPLETE');
+        } while (sleep(0.05));
+    };
+
     my $blob = $cache->get_cache($key) || {};
 
     my $facets = {};
@@ -1477,6 +1485,7 @@ sub cache_facets {
     $logger->info("facet compilation: cached with key=$key");
 
     $cache->put_cache($key, $data, $cache_timeout);
+    $cache->put_cache($key.'_COMPLETE', 1, $cache_timeout);
 }
 
 sub cache_staged_search_page {

@@ -46,6 +46,7 @@ sub child_init {
         $ro_object_subs->{$locale}->{aou_tree}();
         $ro_object_subs->{$locale}->{aouct_tree}();
         $ro_object_subs->{$locale}->{ccvm_list}();
+        $ro_object_subs->{$locale}->{crad_list}();
         $ro_object_subs->{$locale}->{get_authority_fields}(1);
     }
 }
@@ -109,17 +110,28 @@ sub init_ro_object_cache {
             my ($field, $val, $filterfield, $filterval) = @_;
             my $method = "search_$eclass";
             my $cacheval = $val;
+            my $scalar_cacheval = 1;
+
             if (ref $val) {
+                $scalar_cacheval = 0;
                 $val = [sort(@$val)] if ref $val eq 'ARRAY';
                 $cacheval = OpenSRF::Utils::JSON->perl2JSON($val);
                 #$self->apache->log->info("cacheval : $cacheval");
             }
+
             my $search_obj = {$field => $val};
             if($filterfield) {
                 $search_obj->{$filterfield} = $filterval;
                 $cacheval .= ':' . $filterfield . ':' . $filterval;
+            } elsif (
+                $scalar_cacheval
+                and $cache{list}{$locale}{$hint}
+                and !$cache{search}{$locale}{$hint}{$field}{$cacheval}
+            ) {
+                return $cache{search}{$locale}{$hint}{$field}{$cacheval} =
+                    [ grep { $_->$field() eq $val } @{$cache{list}{$locale}{$hint}} ];
             }
-            #$cache{search}{$locale}{$hint}{$field} = {} unless $cache{search}{$locale}{$hint}{$field};
+
             my $e = new_editor();
             $cache{search}{$locale}{$hint}{$field}{$cacheval} = $e->$method($search_obj)
                 unless $cache{search}{$locale}{$hint}{$field}{$cacheval};
@@ -453,20 +465,19 @@ sub get_records_and_facets {
         }
     }
 
-
-    $self->timelog("get_records_and_facets():almost ready to fetch facets");
-    # collect the facet data
-    my $search = OpenSRF::AppSession->create('open-ils.search');
-    my $facet_req = $search->request(
-        'open-ils.search.facet_cache.retrieve', $facet_key
-    ) if $facet_key;
-
     # gather up the unapi recs
     $ses->session_wait(1);
     $self->timelog("get_records_and_facets():past session wait");
 
     my $facets = {};
     if ($facet_key) {
+        $self->timelog("get_records_and_facets():almost ready to fetch facets");
+        # collect the facet data
+        my $search = OpenSRF::AppSession->create('open-ils.search');
+        my $facet_req = $search->request(
+            'open-ils.search.facet_cache.retrieve', $facet_key
+        );
+
         my $tmp_facets = $facet_req->gather(1);
         $self->timelog("get_records_and_facets(): gathered facet data");
         for my $cmf_id (keys %$tmp_facets) {
@@ -490,11 +501,10 @@ sub get_records_and_facets {
             }
         }
         $self->timelog("get_records_and_facets(): gathered/sorted facet data");
+        $search->kill_me;
     } else {
         $facets = undef;
     }
-
-    $search->kill_me;
 
     return ($facets, map { $tmp_data{$_} } @$rec_ids);
 }
