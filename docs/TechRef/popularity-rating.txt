@@ -1,0 +1,101 @@
+Statistically generated Record Ratings (Popularity)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Summary 
++++++++
+
+For the purpose of supplying non-bibliographic popularity adjustment to the ranking of search results, this feature implements a set of statistical modelling algorithms which will identify bibliographic records of particular note based on derivable parameters.
+
+Generally, factors such as to circulation and hold activity, record and item age, and item ownership counts will available for statistical consideration. Each factor will embody a "popularity badge" that the bibliographic record can earn, and each badge will have a 5-point scale, where more points indicates a more popular record.  The average of the badge points earned by each record will constitute a "popularity rating". The number and types of badges will break ties for average popularity, and relevance will sort items with like popularity. 
+
+A new sort axis of *Popularity* is created to sort first on the weighted average popularity of each record, followed by the query-specific relevance available today.  A new option is created in the dropdown that sorts on the combination of "activity metric" (aka badge ranking, aka popularity) first and the existing, stock relevance ranking when those are equal.  For instance, given two records that both have a badge ranking of "4.5", they will be sorted in the order of the query relevance ranking that is calculated today as a tie breaker.  Those two records will sort above other records with lower badge rankings regardless of what today's relevance ranking says about them.
+
+In addition, a new sort axis of *Popularity and Relevance* is created that augments the normal Relevance sort with a normalized popularity value by multiplying the base relevance by a value controlled by a new global flag, generally set to a decimal number between 1 and 2.
+
+Finally, there will continue to be a pure *Relevance* sort option, which is the version that exists today.
+
+A global flag will allow the selection of the default sort axis.
+
+
+The basics
+++++++++++
+
+There will exist two classes of non-bibliographic popularity badge: point-in-time popularity, such as the number of items held or the number of open hold requests; and temporal popularity, such as circulations over the past two years or hold requests placed over the last six months.
+
+Each popularity badge will have a definition.  The badge's value are calculated for each bibliographic record within the definition's bibliographic population.  The population circumscribes the bibliographic records that are eligible to receive the badge.  Each record within the population of a badge definition will receive a ranking adjustment, based on its "popularity rating" if the appropriate thresholds are met.
+
+The set of existing popularity badges is displayed as a grid.  A library selector defaulting to the workstation location will allow scoping the grid contents to specific organizational units.  Creating or editing a badge is performed within a dedicated modal popup interface that will float above the grid, disabling access to the underlying interface until the action is completed or canceled.
+
+All popularity badge definitions will describe a set of configuration, population criteria, and statistical constraints:
+
+* *Badge Name:* The administrator-assigned name of the popularity badge definition.  This is presented as a text input box, and the value is used in the OPAC.
+* *Scope:* The owning org unit of the badge.  Badges are cumulative, and are included in ranking when the Scope is equal to, or an ancestor of, the search location.  Therefore branch-specific searches will include branch, system and consortium badges, but consortium-wide searches will only make use of consortium-scoped badges.  For item-specific metrics, this also limits the population of the statistical group to those records having items whose owning library is at or below the Scope in the org tree.  This is presented as a standard Library selector.
+* *Weight:* A multiplier defining the importance of this particular badge in relation to any other badges that might be earned by a record.  This is presented as a number spinner with a default and minimum value of 1.
+* *Recalculation Interval:* How often to recalculate the badge's popularity value for each record.  For temporal popularity badges that may change quickly, such as in-house use or short-duration circulation-over-time, this may be nightly.  For slowly changing metrics such as count of items held, this may be monthly or quarterly. This is presented as a text input that will accept an interval string such as "2 years", "30 days", or "6 weeks, 2 days".  Numeric values without a timespan qualifier are considered to be a number of seconds.  For newer items that may have rapidly changing metrics, a mechanism is created to adjust the "last calculated date" so that library staff can clear the date and force a recalculation overnight. However, because the badge value each record receives is relative to all the other records in the population, the badge as a whole will need to be recalculated. This feature stores individual record raw stats, where possible and reasonable, to speed up recalculation.
+* *Population Filters:* Optional, and any combination may be used.
+** *Attribute Filter:* Filter bibliographic record population based on record attributes.  This will use an interface similar to the Composite Attribute editor.
+** *Bibliographic Source:* Filter bibliographic records to those with a specific source.  This is presented as a dropdown of sources.
+** *Circulation Modifier Filter:* Include only those items that make use of certain Circulation Modifiers in statistical calculations. This is only applicable to item-related badges.  This is presented as a dropdown of modifiers.
+** *Copy Location Group:* Include only those items that are assigned to shelving locations within specific location groups. This is only applicable to item-related badges.  This is presented as a dropdown of location groups available within the Scope for the badge.
+* *Popularity Parameter:* One of a set of predefined types of popularity measure.  This is presented as a dropdown.  These will include, but may not be limited to:
+** Holds Filled Over Time
+** Holds Requested Over Time
+** Current Hold Count
+** Circulations Over Time
+** Current Circulation Count
+** Out/Total Ratio
+** Holds/Total Ratio
+** Holds/Holdable Ratio
+** Percent of Time Circulating -- Of the time between the active date of the copies on the record and the badge calculation time, the percentage of that time during which the items have been checked out.  This is meant to be an indicator of high-demand over the lifetime of the title, and not just a temporary spike in circ count for, say, a book club or school report.  Recent temporary spikes can be represented by circs over time with a time horizon.  It's the difference between an "always popular" title and a "just recently popular" title.
+** Bibliographic Record Age (days)
+** Publication Age (days)
+** Available On-Line (for e-books, etc)
+** Copy Count
+* *Fixed Rating:* An optional override supplying a fixed popularity value for all records earning this badge.  For some popularity types, such as "Available On-Line", it is preferable to specify, rather than calculate, the popularity value for a badge.  This is presented as a number spinner with a value ranging from 1 to 5.
+* *Inclusion Threshold Percentile:* Cumulative distribution percentile.  This is presented as a number spinner of "percentile" values ranging from 50 to 100, indicating the number of how much of the population a record's score must be better than in order to earn the badge.  Leaving this value unset will allow the entire population to earn the badge.
+* *Discard most common:* A value that, if greater than 0, will ignore records with extremely common values so that outliers are more readily identified, and the distribution of values can be assumed to be more normal.  Many popularity parameters, such as those for circulation counts, benefit from this input filter.  This is presented as a number spinner initially set to 0 that indicates the number of distinct, low values -- but not the values themselves -- to exclude from the population.
+
+This new feature comes with a starter badge based on the top 97th percentile of holds requested over the past five years.
+
+A word about Inclusion Threshold Percentile
++++++++++++++++++++++++++++++++++++++++++++
+
+In order to limit the amount of data that must be retained and queried during normal search operations, to allow limiting the popular population to truly exceptional records when appropriate, and to limit the speed cost of popularity ranking, many popularity types will provide thresholds that must be passed in order to store a record's badge-specific popularity value.
+
+The administrator will be presented with a choice of "percentile" that defines the threshold which must be crossed before the value of the variable for any given record is considered statistically significant, and therefore scaled and included in ranking.  For instance, a record may need to be in the 95th percentile for Holds/Total Items before it is considered "popular" and the badge is earned.
+
+Additionally, in order to normalize populations that exhibit a "long tail" effect, such as for circulation counts were most records will have a very low number of events, the administrator will be able to instruct the algorithm to ignore the most common low values.
+
+Type-specific input modifications
++++++++++++++++++++++++++++++++++
+
+For temporal popularity badges, two time-horizons are required.  The first is the inclusion horizon, or the age at which events are no longer considered.  This will allow, for instance, limiting circulation calculations to only the past two years.  The second is the importance aging horizon, which will allow recent events to be considered more important than those further in the past.   A value of zero for this horizon will mean that all events are seen to be of equal importance.  These are presented as text inputs that will accept interval strings such as "2 years", "30 days", or "6 weeks, 2 days".  Numeric values without a timespan qualifier are considered to be a number of seconds.
+
+For those badges that have the Fixed Rating flag set, no statistical input is gathered for records in the population of the badge definition.  Instead, all records in the population are assigned this fixed value for the badge.
+
+Rating process
+++++++++++++++
+
+For badges other than those with the Fixed Rating set, the collected statistical input parameters are used to derive the mean, median, mode, min, max, and standard deviation values for the bibliographic record population. Each record passing the requisite thresholds are assigned a badge-specific value based on the quintile into which the value falls.  This value, interpreted as a one-to-five rating, is stored for static application, instead of being calculated on the fly, when the badge is in scope and the record is part of a search result set.  Thus records with values in the bottom quintile will have a rating of one, and records with values in the top quintile will have a rating of five.
+
+All badge values for all records are calculated by a secondary process that runs in the background on the server on a regular basis.
+
+Display in the OPAC
++++++++++++++++++++
+
+Ratings are displayed in two places within the OPAC.  Like the rest of the TPAC, this is templated and display can be modified or disabled through customization.
+
+First, on the record result page, the overall average popularity rating is displayed with a label of "Popularity" below the record-specific data such as call number and publisher, and above the holdings counts.
+
+Second, on the record detail page, the list of badge names earned by the record that are in scope for the search location, and the 1-5 rating value of each badge, is displayed in a horizontal list above the copy detail table.
+
+Future possibilities
+++++++++++++++++++++
+
+This infrastructure will directly support future work such as Patron and Staff ratings, and even allow search and browse filtering based  on specific badges and ratings.  Additionally, bibliographic information could be leveraged to create metadata badges that would affect the ranking of record, in addition to the non-bibliographic badges described here.
+
+Performance
++++++++++++
+
+It is expected that there may be some very small speed impact, but all attempts have been made to mitigate this by precalculating the adjustment values and by keeping the search-required data as compact as possible.  By doing this, the aggregate cost per search should be extremely small.  In addition, the development will include a setting to define the amount of database resources to dedicate to the job of badge value calculation and reduce its run time.
+

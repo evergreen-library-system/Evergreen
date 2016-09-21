@@ -9,29 +9,41 @@ Evergreen:
  * Pioneer Library System
 
 We would also like to thank the following individuals who contributed
-code, documentations patches and tests to this release of Evergreen:
+code, translations, documentations patches and tests to this release of
+Evergreen:
 
  * Jason Boyer
+ * Eva Cerninakova
  * Galen Charlton
  * Bill Erickson
  * Blake Henderson
  * Kathy Lussier
  * Michele Morgan
  * Dan Pearl
+ * Dan Scott
  * Chris Sharp
+ * Ben Shum
  * Mike Rylander
  * Jason Stephenson
+ * Anahi Valdez
+ * Dan Wells
+
 
 We also thank the following organizations whose employees contributed
 patches:
 
- * C/W MARS
+ * Calvin College
+ * Central/Wester Massachusetts Automated Resource Sharing
  * Equinox Software, Inc.
+ * Emerald Data Networks, Inc.
  * Evergreen Indiana
  * Georgia Public Library Serivce
  * King County Library System
+ * Knihovna Jabok
+ * Laurentian University
  * MassLNC
  * MOBIUS
+ * North of Boston Library Exchange
 
 We regret any omissions.  If a contributor has been inadvertantly
 missed, please open a bug at http://bugs.launchpad.net/evergreen/
