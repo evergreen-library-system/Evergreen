@@ -1,3 +1,94 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit d1f5ca4e1c75a3dcf6cc5b3956a875335a06c112
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Wed Sep 21 14:32:11 2016 -0400
+
+    Update server upgrade instructions for release 2.9.8.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+18	16	docs/installation/server_upgrade.txt
+
+commit 288d4b4394df7e2e19c6af302ae0c2aad85a4b17
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Wed Sep 21 14:21:20 2016 -0400
+
+    Bumping Perl version string for release 2.9.8.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit 7f1e55eec3adde6a7eda0a4fd084af8a3e082f5c
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Wed Sep 21 13:19:02 2016 -0400
+
+    Docs: Adding 2.9.8 point release notes
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+21	0	docs/RELEASE_NOTES_2_9.txt
+
+commit aaa0aec365419d20ff538759cbc33583846fcd95
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Sep 14 10:44:15 2016 -0400
+
+    LP#1623541: Booking will fail if its router isn't called "router"
+    
+    The circ code checks to see if the booking app is running, and if not, it
+    skips some booking-related logic. This is a useful performance enhancement
+    where booking is not in use. It does this by asking the OpenSRF router if
+    the "open-ils.booking" app has registered with it. Most of the time the
+    OpenSRF router will be called, unimaginatively, "router" but when it's not,
+    booking will not be considered by the circ module even if it's running.
+    
+    Instead of assuming "router" we should simply look up the router's name.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+7	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Circulate.pm
+
+commit ba80a25631575789e745d09614f56c9e44c25239
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Sun Sep 18 09:16:27 2016 -0400
+
+    LP#1624846 Add charset declaration to TPAC print output
+    
+    Non-ASCII characters were printed incorrectly in some browsers, such as
+    Firefox, that still default to ISO-8859-1 encodings in the absence of a
+    specifically declared encoding.
+    
+    Our output encoding will always be UTF-8, so declare it.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	0	Open-ILS/src/templates/opac/myopac/receipt_print.tt2
+1	0	Open-ILS/src/templates/opac/record/print.tt2
+
+commit 9f67541e3f95f9bbad8dd370524e9047d1dcad4e
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Jun 2 15:27:06 2016 -0400
+
+    LP#1413352 Brief record price sets lineitem price
+    
+    Propagate lineitem MARC 'price' attribute value to the lineitem
+    estimated_unit_price field.  This allows users to apply a lineitem
+    price directly from the ACQ Brief Record interface.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+35	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Acq/Lineitem.pm
+
+commit dac3e1589d9519a8d729db4542227d224ecd2e23
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Thu Aug 25 20:53:36 2016 -0400
+
+    Forward port 2.9.6 to 2.9.7 DB upgrade script.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+5	0	Open-ILS/src/sql/Pg/version-upgrade/2.9.6-2.9.7-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.9.6-2.9.7-upgrade-db.sql
