@@ -4,14 +4,14 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
 "POT-Creation-Date: 2016-08-25 17:08-0400\n"
-"PO-Revision-Date: 2016-09-08 10:15+0000\n"
+"PO-Revision-Date: 2016-09-19 10:27+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2016-09-09 05:56+0000\n"
-"X-Generator: Launchpad (build 18184)\n"
+"X-Launchpad-Export-Date: 2016-09-20 07:22+0000\n"
+"X-Generator: Launchpad (build 18200)\n"
 "X-Accelerator-Marker: &\n"
 
 #: class.stgu.label:9550
@@ -4874,7 +4874,7 @@ msgstr "Domovská knihovna uživatele"
 
 #: field.ccvm.composite_def.label:1140
 msgid "Composite Definition"
-msgstr "Kombinovaná definice"
+msgstr "Sdružená definice"
 
 #: class.aun.label:2245
 msgid "User Note"
@@ -7744,7 +7744,7 @@ msgstr "Připojené zastaralé výpůjčky"
 
 #: field.acqlia.order_ident.label:8780
 msgid "Order Identifier"
-msgstr "Starší identifikátor"
+msgstr "Identifikátor objednávky"
 
 #: field.mrd.bib_level.label:3819
 msgid "BLvl"

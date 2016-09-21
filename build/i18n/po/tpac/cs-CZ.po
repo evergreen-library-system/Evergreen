@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2016-08-25 22:33+0000\n"
-"PO-Revision-Date: 2016-09-07 11:32+0000\n"
+"PO-Revision-Date: 2016-09-18 18:18+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2016-09-08 05:55+0000\n"
-"X-Generator: Launchpad (build 18179)\n"
+"X-Launchpad-Export-Date: 2016-09-20 07:22+0000\n"
+"X-Generator: Launchpad (build 18200)\n"
 
 #: ../../Open-ILS/src/templates/opac/register.tt2:63
 msgid ""
@@ -1822,7 +1822,7 @@ msgstr "Grafický technik"
 
 #: ../../Open-ILS/src/templates/opac/parts/advanced/search.tt2:139 ../../Open-ILS/src/templates/opac/results.tt2:90
 msgid "Group Formats and Editions"
-msgstr "Seskupit nosiče a vydání"
+msgstr "Seskupit stejné tituly"
 
 #: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:232
 msgid "HTML View"
@@ -4781,7 +4781,7 @@ msgstr "Vaše heslo nebylo správné"
 #. (ctx.user.email)
 #: ../../Open-ILS/src/templates/opac/record/email.tt2:12
 msgid "Your email has been queued for delivery to %1"
-msgstr "Váš e-mail byl zařazen k odeslání na adresu   %1"
+msgstr "Váš e-mail byl zařazen do fronty a bude brzy odeslán na adresu   %1"
 
 #. (fmt_expire_date)
 #: ../../Open-ILS/src/templates/opac/parts/myopac/main_base.tt2:37
