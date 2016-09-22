@@ -1,3 +1,157 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 0d8b7fa39d74cd960508908cc29533765f014a59
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Wed Sep 21 20:31:56 2016 -0400
+
+    bump up upgrade instructions for 2.10.7
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+19	18	docs/installation/server_upgrade.txt
+
+commit 0fd473e1e2b31485ba0f961425e7745026f06bb9
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Wed Sep 21 20:27:42 2016 -0400
+
+    small typo fix in 2.10 release notes
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+1	1	docs/RELEASE_NOTES_2_10.adoc
+
+commit 0c76f465db0619098de8948a537a1aa680f54285
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Wed Sep 21 15:58:33 2016 -0400
+
+    Forward port 2.9.7 to 2.9.8 db upgrade script.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+5	0	Open-ILS/src/sql/Pg/version-upgrade/2.9.7-2.9.8-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.9.7-2.9.8-upgrade-db.sql
+
+commit f35c3a92c40c3a7f3ee11c9edb399aac47225d9d
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Wed Sep 21 15:13:56 2016 -0400
+
+    schema update script: 2.10.6 -> 2.10.7
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+5	0	Open-ILS/src/sql/Pg/version-upgrade/2.10.6-2.10.7-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.10.6-2.10.7-upgrade-db.sql
+
+commit 2eabe855668bb159e3012bbde9e7861ea30521d8
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Wed Sep 21 13:35:14 2016 -0400
+
+    Docs: Adding 2.10.7 point release notes
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+27	0	docs/RELEASE_NOTES_2_10.adoc
+
+commit 1f6754727434bc722c4398d9ae385894659c88ed
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Wed Sep 21 13:19:02 2016 -0400
+
+    Docs: Adding 2.9.8 point release notes
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+21	0	docs/RELEASE_NOTES_2_9.txt
+
+commit 34015d516b9d826fa88476782fec028d91caf9ff
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Sep 14 10:44:15 2016 -0400
+
+    LP#1623541: Booking will fail if its router isn't called "router"
+    
+    The circ code checks to see if the booking app is running, and if not, it
+    skips some booking-related logic. This is a useful performance enhancement
+    where booking is not in use. It does this by asking the OpenSRF router if
+    the "open-ils.booking" app has registered with it. Most of the time the
+    OpenSRF router will be called, unimaginatively, "router" but when it's not,
+    booking will not be considered by the circ module even if it's running.
+    
+    Instead of assuming "router" we should simply look up the router's name.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+7	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Circulate.pm
+
+commit de1b65801b42f701252a749b61ea9bd701942286
+Author: Eva Cerninakova <cerninakova@jabok.cz>
+Date:   Tue Sep 20 10:36:30 2016 -0700
+
+    Docs: improving documentation for catalog searching widgets
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+69	2	docs/opac/search_form.txt
+
+commit 7ff929013d500a09a79283e19934cb9e74064a74
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Sun Sep 18 09:16:27 2016 -0400
+
+    LP#1624846 Add charset declaration to TPAC print output
+    
+    Non-ASCII characters were printed incorrectly in some browsers, such as
+    Firefox, that still default to ISO-8859-1 encodings in the absence of a
+    specifically declared encoding.
+    
+    Our output encoding will always be UTF-8, so declare it.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	0	Open-ILS/src/templates/opac/myopac/receipt_print.tt2
+1	0	Open-ILS/src/templates/opac/record/print.tt2
+
+commit 2bcbdfd88effc5d56fb1b6b774ad2d295b530ae7
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Tue Sep 13 13:40:43 2016 -0400
+
+    LP#1620803 Add missing workstation passthru to AuthProxy
+    
+    The AuthProxy.pm login function was not passing through a possible
+    'workstation' parameter to auth_internal's 'session.create' method.
+    Without this, all login's end up with a workstation set to the user's
+    home_ou, which can affect things including opt-in and transit
+    behaviors.
+    
+    While not needed for the initial 'user.validate', it seems cleaner
+    and simpler to just bring it over when constructing the initial
+    $args hash.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+1	0	Open-ILS/src/perlmods/lib/OpenILS/Application/AuthProxy.pm
+
+commit 21b1cb9292a0d3c56e2a6f02d2d9f46b1d4cca1b
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Jun 2 15:27:06 2016 -0400
+
+    LP#1413352 Brief record price sets lineitem price
+    
+    Propagate lineitem MARC 'price' attribute value to the lineitem
+    estimated_unit_price field.  This allows users to apply a lineitem
+    price directly from the ACQ Brief Record interface.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+35	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Acq/Lineitem.pm
+
+commit 9f095c82b18b71041810a0c7e6753d7a6db47e17
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Thu Aug 25 20:47:47 2016 -0400
+
+    forward-port 2.10.5-2.10.6 schema update script
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+5	0	Open-ILS/src/sql/Pg/version-upgrade/2.10.5-2.10.6-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.10.5-2.10.6-upgrade-db.sql
