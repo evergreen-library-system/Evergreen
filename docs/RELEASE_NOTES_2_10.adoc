@@ -11,7 +11,7 @@ This release contains several bugfixes improving on Evergreen 2.10.6.
 * When adding a price to the Acquisitions Brief Record price field, it will
 now propogate to the lineitem estimated price field.
 * Declares UTF-8 encoding when printing from the catalog to resolve issues
-where non_ASCII characters printed incorrectly in some browsers.
+where non-ASCII characters printed incorrectly in some browsers.
 * Fixes an issue where the circ module sometimes skipped over booking logic
 even when booking was running on a system.
 * Fixes an issue where the workstation parameter was not passed through
