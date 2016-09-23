@@ -65,7 +65,7 @@
     </div>
     <div class="row">
       <div class="col-md-5">[% l('Items Out') %]</div>
-      <div class="col-md-7">{{patron_stats().checkouts.out}}</div>
+      <div class="col-md-7">{{patron_stats().checkouts.total_out}}</div>
     </div>
     <div class="row" 
       ng-class="{'patron-summary-alert' : patron_stats().checkouts.overdue}">
