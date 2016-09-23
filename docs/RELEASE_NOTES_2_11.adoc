@@ -116,7 +116,7 @@ Authority Propagation Updates Bib Editor / Edit Date
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 When a bib record is automatically updated as a result of the
 modification of a linked authority record, the bib record's "Last Edit
-Data/Time" and "Last Editing User" fields will be updated to match the
+Date/Time" and "Last Editing User" fields will be updated to match the
 time of the update and the editor of the modified authority record.
 
 A new global flag is available to control this behavior called
@@ -233,7 +233,7 @@ effects:
    available" is selected as a search filter.
 
 By default, the "Available" and "Reshelving" statuses have the "Is Available" 
-flag set.  The flag may be applied to local/custom statues via the copy
+flag set.  The flag may be applied to local/custom statuses via the copy
 status admin interface.
 
 
@@ -332,7 +332,7 @@ Improved Holds Screens in My Account
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 The grids in the My Account _Items on Hold_ and _Holds History_ interfaces are
 simplified. Data previously contained in their own Activate, Active, and Date
-Fulfilled columns are now incorporated into the Status columns. To further
+Fulfilled columns are now incorporated into the Status column. To further
 declutter the interface, the holds queue position will only show when the user
 most needs the information - before the hold has been captured. 
 
@@ -362,7 +362,7 @@ Administrators can comment out one of the available sort methods by editing the
 filtersort.tt2 file.A global flag will allow Evergreen sites to select a default sort method.
 
 Badge Configuration
-^^^^^^^^^^^^^^^^^^^
++++++++++++++++++++
 
 Administrative interfaces to configure badges are only available in the web
 client. Administrators can also configure badges directly via the database. 	
@@ -418,7 +418,7 @@ the importance of popularity in the Popularity-Adjusted Relevance ranked
 searches. The number should be a decimal ranging between 1.0 and 2.0. The
 default value is 1.1.
 
-More detailed information is available TechRef docs directory in the
+More detailed information is available in the TechRef docs directory of the
 Evergreen source code.
 
 
