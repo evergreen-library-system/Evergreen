@@ -127,6 +127,10 @@ angular.module('egGridMod',
                 $scope.actionGroups = [{actions:[]}]; // Grouped actions for selected items
                 $scope.menuItems = []; // global actions
 
+                // returns true if any rows are selected.
+                $scope.hasSelected = function() {
+                    return grid.getSelectedItems().length > 0 };
+
                 var features = ($scope.features) ? 
                     $scope.features.split(',') : [];
                 delete $scope.features;
