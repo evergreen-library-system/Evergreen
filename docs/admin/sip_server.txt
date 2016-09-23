@@ -238,6 +238,7 @@ via +telnet+. In the following tests:
   in the +<accounts>+ section of your SIP configuration file;
 * Replace the +$user_barcode+ and +$user_password+ variables with the values
   for a valid user.
+* Replace the +$item_barcode+ variable with the values for a valid item.
 
 ///////////////
 Comments because we don't want to indent these numbered bullets!
@@ -264,14 +265,26 @@ line and paste it into the telnet session:
 +
     2300120080623    172148AO$instid|AA$user_barcode|AC$password|AD$user_password
 +
-If successful, the SIP server returns the patron information for $barcode,
+If successful, the SIP server returns the patron information for $user_barcode,
 similar to the following:
 +
-   24  Y           00120100113    170738AEFirstName MiddleName LastName|AA$barcode|BLY|CQY 
+   24  Y           00120100113    170738AEFirstName MiddleName LastName|AA$user_barcode|BLY|CQY
    |BHUSD|BV0.00|AFOK|AO$instid| 
 +
 The response declares it is a valid patron BLY with a valid password CQY and shows the user's +$name+.
 
+. To test the SIP server's item information response, issue the following request:
++
+    1700120080623    172148AO$instid|AB$item_barcode|AC$password
++
+If successful, the SIP server returns the item information for $item_barcode,
+similar to the following:
++
+    1803020120160923    190132AB30007003601852|AJRégion de Kamouraska|CK001|AQOSUL|APOSUL|BHCAD
+    |BV0.00|BGOSUL|CSCA2 PQ NR46 73R
++
+The response declares it is a valid item, with the title, owning library,
+permanent and current locations, and call number.
 
 indexterm:[SIP]
 
