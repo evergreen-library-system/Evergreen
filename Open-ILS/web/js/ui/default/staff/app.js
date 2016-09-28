@@ -43,6 +43,8 @@ function($routeProvider , $locationProvider) {
            ['$scope','$location','$window','egCore',
     function($scope , $location , $window , egCore) {
         $scope.focusMe = true;
+        $scope.args = {};
+        $scope.workstations = [];
 
         // if the user is already logged in, jump to splash page
         if (egCore.auth.user()) $location.path('/');
@@ -92,17 +94,37 @@ function($routeProvider , $locationProvider) {
 
             if (! (args.username && args.password) ) return;
 
+            // if at least one workstation exists, it must be used.
+            if (!args.workstation && $scope.workstations.length > 0) return;
+
             args.type = 'staff';
             egCore.auth.login(args).then(
 
-                function() { 
-                    // after login, send the user back to the originally
-                    // requested page or, if none, the home page.
-                    // TODO: this is a little hinky because it causes 2 
-                    // redirects if no route_to is defined.  Improve.
-                    $window.location.href = 
-                        $location.search().route_to || 
-                        $location.path('/').absUrl()
+                function(result) { 
+                    // After login, send the user to:
+                    // 1. The WS admin page for WS maintenance.
+                    // 2. The page originally requested by the caller
+                    // 3. Home page.
+
+                    // NOTE: using $location.path(...) results in
+                    // confusing intermediate page loads, since
+                    // path(...) is a setter function.  Build the URL by
+                    // hand instead from the configured base path.
+                    var route_to = egCore.env.basePath;
+
+                    if (result.invalid_workstation) {
+                        // route to WS admin page to delete the offending
+                        // WS and create a new one.
+                        route_to += 
+                            'admin/workstation/workstations?remove=' 
+                                + encodeURIComponent(args.workstation);
+
+                    } else if ($location.search().route_to) {
+                        // Route to the originally requested page.
+                        route_to = $location.search().route_to;
+                    }
+
+                    $window.location.href = route_to;
                 },
                 function() {
                     $scope.args.password = '';
