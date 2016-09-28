@@ -1,0 +1,74 @@
+<div class="container admin-splash-container">
+
+  <div class="alert alert-warning" ng-show="removing_ws">
+    [% l('Workstation "[_1]" is no longer valid.  Removing registration.', 
+        '{{removing_ws}}'); %]
+  </div>
+
+  <div class="alert alert-danger" 
+    ng-show="page_loaded && workstations.length == 0">
+    [% l('Please register a workstation.') %]
+  </div>
+
+  <div class="row">
+    <div class="col-md-6">
+      [% l('Register a New Workstation For This Browser') %]
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="input-group">
+        <div class="input-group-btn">
+          <eg-org-selector 
+            selected="contextOrg"
+            hidden-test="wsOrgHidden">
+            disable-test="cant_have_users">
+          </eg-org-selector>
+        </div>
+        <input type='text' class='form-control'  
+          title="[% l('Workstation Name') %]"
+          placeholder="[% l('Workstation Name') %]"
+          ng-model='newWSName'/>
+        <div class="input-group-btn">
+          <button class="btn btn-default" ng-click="register_ws()"
+            ng-disabled="is_registering">
+            [% l('Register') %]
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row new-entry">
+    <div class="col-md-6">
+      [% l('Workstations Registered With This Browser') %]
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <select class="form-control" ng-model="selectedWS">
+        <option ng-repeat="ws in workstations" value="{{ws}}"
+          ng-selected="ws == selectedWS">
+          {{get_ws_label(ws)}}
+        </option>
+      </select>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6">
+      <button class="btn btn-success" ng-click="use_now()">
+        [% l('Use Now') %]
+      </button>
+      <button class="btn btn-default" ng-click="set_default_ws(selectedWS)">
+        [% l('Mark As Default') %]
+      </button>
+      <button class="btn btn-default btn-danger" 
+        ng-click="remove_ws(selectedWS)"
+        ng-disabled="is_removing || !can_delete_ws(selectedWS)">
+        [% l('Remove') %]
+      </button>
+    </div>
+  </div>
+</div>
+

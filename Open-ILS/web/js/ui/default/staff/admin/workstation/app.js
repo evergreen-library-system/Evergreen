@@ -14,6 +14,12 @@ angular.module('egWorkstationAdmin',
     $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|blob):/); 
     var resolver = {delay : function(egStartup) {return egStartup.go()}};
 
+    $routeProvider.when('/admin/workstation/workstations', {
+        templateUrl: './admin/workstation/t_workstations',
+        controller: 'WSRegCtrl',
+        resolve : resolver
+    });
+
     $routeProvider.when('/admin/workstation/print/config', {
         templateUrl: './admin/workstation/t_print_config',
         controller: 'PrintConfigCtrl',
@@ -41,71 +47,35 @@ angular.module('egWorkstationAdmin',
     });
 }])
 
-.controller('SplashCtrl',
-       ['$scope','$window','$location','egCore','egConfirmDialog',
-function($scope , $window , $location , egCore , egConfirmDialog) {
+.factory('workstationSvc',
+       ['$q','$timeout','$location','egCore','egConfirmDialog',
+function($q , $timeout , $location , egCore , egConfirmDialog) {
+    
+    var service = {};
 
-    var allWorkstations = [];
-    var permMap = {};
-    $scope.contextOrg = egCore.org.get(egCore.auth.user().ws_ou());
+    service.get_all = function() {
+        return egCore.hatch.getItem('eg.workstation.all')
+        .then(function(all) { return all || [] });
+    }
 
-    egCore.perm.hasPermAt('REGISTER_WORKSTATION', true)
-    .then(function(orgList) { 
-
-        // hide orgs in the context org selector where this login
-        // does not have the reg_ws perm
-        $scope.wsOrgHidden = function(id) {
-            return orgList.indexOf(id) == -1;
-        }
-        $scope.userHasRegPerm = 
-            orgList.indexOf($scope.contextOrg.id()) > -1;
-    });
-
-    // fetch the stored WS info
-    egCore.hatch.getItem('eg.workstation.all')
-    .then(function(all) {
-        allWorkstations = all || [];
-        $scope.workstations = 
-            allWorkstations.map(function(w) { return w.name });
+    service.get_default = function() {
         return egCore.hatch.getItem('eg.workstation.default');
-    })
-    .then(function(def) { 
-        $scope.defaultWS = def;
-        $scope.activeWS = $scope.selectedWS = egCore.auth.workstation() || def;
-    });
-
-    $scope.getWSLabel = function(ws) {
-        return ws == $scope.defaultWS ? 
-            egCore.strings.$replace(egCore.strings.DEFAULT_WS_LABEL, {ws:ws}) : ws;
     }
 
-    $scope.setDefaultWS = function() {
-        egCore.hatch.setItem(
-            'eg.workstation.default', $scope.selectedWS)
-        .then(function() { $scope.defaultWS = $scope.selectedWS });
+    service.set_default = function(name) {
+        return egCore.hatch.setItem('eg.workstation.default', name);
     }
 
-    $scope.cant_have_users = function (id) { return !egCore.org.CanHaveUsers(id); };
-    $scope.cant_have_volumes = function (id) { return !egCore.org.CanHaveVolumes(id); };
+    service.register_workstation = function(base_name, name, org_id) {
+        return service.register_ws_api(base_name, name, org_id)
+        .then(function(ws_id) {
+            return service.track_new_ws(ws_id, name, org_id);
+        });
+    };
 
-    // redirect the user to the login page using the current
-    // workstation as the workstation URL param
-    $scope.useWS = function() {
-        $window.location.href = $location
-            .path('/login')
-            .search({ws : $scope.selectedWS})
-            .absUrl();
-    }
-
-    $scope.registerWS = function() {
-        register_workstation(
-            $scope.newWSName,
-            $scope.contextOrg.shortname() + '-' + $scope.newWSName,
-            $scope.contextOrg.id()
-        );
-    }
-
-    function register_workstation(base_name, name, org_id, override) {
+    service.register_ws_api = 
+        function(base_name, name, org_id, override, deferred) {
+        if (!deferred) deferred = $q.defer();
 
         var method = 'open-ils.actor.workstation.register';
         if (override) method += '.override';
@@ -114,48 +84,79 @@ function($scope , $window , $location , egCore , egConfirmDialog) {
             'open-ils.actor', method, egCore.auth.token(), name, org_id)
 
         .then(function(resp) {
+
             if (evt = egCore.evt.parse(resp)) {
                 console.log('register returned ' + evt.toString());
 
                 if (evt.textcode == 'WORKSTATION_NAME_EXISTS' && !override) {
+
                     egConfirmDialog.open(
                         egCore.strings.WS_EXISTS, base_name, {  
                             ok : function() {
-                                register_workstation(base_name, name, org_id, true);
+                                service.register_ws_api(
+                                    base_name, name, org_id, true, deferred)
                             },
-                            cancel : function() {} 
+                            cancel : function() {deferred.reject()} 
                         }
                     );
 
                 } else {
-                    // TODO: provide permission error display
                     alert(evt.toString());
+                    deferred.reject();
                 }
             } else if (resp) {
-                $scope.workstations.push(name);
+                console.log('Resolving register promise with: ' + resp);
+                deferred.resolve(resp);
+            }
+        });
 
-                allWorkstations.push({   
-                    id : resp,
-                    name : name,
-                    owning_lib : org_id
-                });
+        return deferred.promise;
+    }
 
-                egCore.hatch.setItem(
-                    'eg.workstation.all', allWorkstations)
-                .then(function() {
-                    if (allWorkstations.length == 1) {
-                        // first one registerd, also mark it as the default
-                        $scope.selectedWS = name;
-                        $scope.setDefaultWS();
-                    }
-                });
+    service.track_new_ws = function(ws_id, ws_name, owning_lib) {
+        console.log('Tracking newly created WS with ID ' + ws_id);
+        var new_ws = {id : ws_id, name : ws_name, owning_lib : owning_lib};
+
+        return service.get_all()
+        .then(function(all) {
+            all.push(new_ws);
+            return egCore.hatch.setItem('eg.workstation.all', all)
+            .then(function() { return new_ws });
+        });
+    }
+
+    // Remove all traces of the workstation locally.
+    // This does not remove the WS from the server.
+    service.remove_workstation = function(name) {
+        console.debug('Removing workstation: ' + name);
+
+        return egCore.hatch.getItem('eg.workstation.all')
+
+        // remove from list of all workstations
+        .then(function(all) {
+            if (!all) all = [];
+            var keep = all.filter(function(ws) {return ws.name != name});
+            return egCore.hatch.setItem('eg.workstation.all', keep)
+
+        }).then(function() { 
+
+            return service.get_default()
+
+        }).then(function(def) {
+            if (def == name) {
+                console.debug('Removing default workstation: ' + name);
+                return egCore.hatch.removeItem('eg.workstation.default');
             }
         });
     }
 
-    $scope.wsOrgChanged = function(org) {
-        $scope.contextOrg = org;
-    }
+    return service;
+}])
+
+
+.controller('SplashCtrl',
+       ['$scope','$window','$location','egCore','egConfirmDialog',
+function($scope , $window , $location , egCore , egConfirmDialog) {
 
     // ---------------------
     // Hatch Configs
@@ -575,3 +576,145 @@ function($scope , $q , egCore , egConfirmDialog) {
         );
     }
 }])
+
+.controller('WSRegCtrl',
+       ['$scope','$q','$window','$location','egCore','egAlertDialog','workstationSvc',
+function($scope , $q , $window , $location , egCore , egAlertDialog , workstationSvc) {
+
+    var all_workstations = [];
+    var reg_perm_orgs = [];
+
+    $scope.page_loaded = false;
+    $scope.contextOrg = egCore.org.get(egCore.auth.user().ws_ou());
+    $scope.wsOrgChanged = function(org) { $scope.contextOrg = org; }
+
+    console.log('set context org to ' + $scope.contextOrg);
+
+    // fetch workstation reg perms
+    egCore.perm.hasPermAt('REGISTER_WORKSTATION', true)
+    .then(function(orgList) { 
+        reg_perm_orgs = orgList;
+
+        // hide orgs in the context org selector where this login
+        // does not have the reg_ws perm
+        $scope.wsOrgHidden = function(id) {
+            return reg_perm_orgs.indexOf(id) == -1;
+        }
+
+    // fetch the locally stored workstation data
+    }).then(function() {
+        return workstationSvc.get_all()
+        
+    }).then(function(all) {
+        all_workstations = all || [];
+        $scope.workstations = 
+            all_workstations.map(function(w) { return w.name });
+        return workstationSvc.get_default()
+
+    // fetch the default workstation
+    }).then(function(def) { 
+        $scope.defaultWS = def;
+        $scope.activeWS = $scope.selectedWS = egCore.auth.workstation() || def;
+
+    // Handle any URL commands.
+    }).then(function() {
+        var remove = $location.search().remove;
+         if (remove) {
+            console.log('Removing WS via URL request: ' + remove);
+            return $scope.remove_ws(remove).then(
+                function() { $scope.page_loaded = true; });
+        }
+        $scope.page_loaded = true;
+    });
+
+    $scope.get_ws_label = function(ws) {
+        return ws == $scope.defaultWS ? 
+            egCore.strings.$replace(egCore.strings.DEFAULT_WS_LABEL, {ws:ws}) : ws;
+    }
+
+    $scope.set_default_ws = function(name) {
+        delete $scope.removing_ws;
+        $scope.defaultWS = name;
+        workstationSvc.set_default(name);
+    }
+
+    $scope.cant_have_users = 
+        function (id) { return !egCore.org.CanHaveUsers(id); };
+    $scope.cant_have_volumes = 
+        function (id) { return !egCore.org.CanHaveVolumes(id); };
+
+    // Log out and return to login page with selected WS 
+    $scope.use_now = function() {
+        egCore.auth.logout();
+        $window.location.href = $location
+            .path('/login')
+            .search({ws : $scope.selectedWS})
+            .absUrl();
+    }
+
+    $scope.can_delete_ws = function(name) {
+        var ws = all_workstations.filter(
+            function(ws) { return ws.name == name })[0];
+        return ws && reg_perm_orgs.indexOf(ws.owning_lib);
+    }
+
+    $scope.remove_ws = function(remove_me) {
+        $scope.removing_ws = remove_me;
+
+        // Perm is used to disable Remove button in UI, but have to check
+        // again here in case we're removing a WS based on URL params.
+        if (!$scope.can_delete_ws(remove_me)) return $q.when();
+
+        $scope.is_removing = true;
+        return workstationSvc.remove_workstation(remove_me)
+        .then(function() {
+
+            all_workstations = all_workstations.filter(
+                function(ws) { return ws.name != remove_me });
+
+            $scope.workstations = $scope.workstations.filter(
+                function(ws) { return ws != remove_me });
+
+            if ($scope.selectedWS == remove_me) 
+                $scope.selectedWS = $scope.workstations[0];
+
+            if ($scope.defaultWS == remove_me) 
+                $scope.defaultWS = '';
+
+            $scope.is_removing = false;
+        });
+    }
+
+    $scope.register_ws = function() {
+        delete $scope.removing_ws;
+
+        var full_name = 
+            $scope.contextOrg.shortname() + '-' + $scope.newWSName;
+
+        if ($scope.workstations.indexOf(full_name) > -1) {
+            // avoid duplicate local registrations
+            return egAlertDialog.open(egCore.strings.WS_USED);
+        }
+
+        $scope.is_registering = true;
+        workstationSvc.register_workstation(
+            $scope.newWSName, full_name,
+            $scope.contextOrg.id()
+
+        ).then(function(new_ws) {
+            $scope.workstations.push(new_ws.name);
+            all_workstations.push(new_ws);  
+            $scope.is_registering = false;
+
+            if (!$scope.selectedWS) {
+                $scope.selectedWS = new_ws.name;
+            }
+            if (!$scope.defaultWS) {
+                return $scope.set_default_ws(new_ws.name);
+            }
+            $scope.newWSName = '';
+        });
+    }
+}])
+
+

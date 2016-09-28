@@ -5,6 +5,7 @@
 %]
 
 [% BLOCK APP_JS %]
+<link rel="stylesheet" href="[% ctx.base_path %]/staff/css/admin.css" />
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/services/grid.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/services/ui.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/services/user.js"></script>
@@ -15,6 +16,7 @@ angular.module('egCoreMod').run(['egStrings', function(s) {
     '[% l('Delete content for key "[_1]"?', '{{deleteKey}}') %]';
   s.DEFAULT_WS_LABEL = '[% l('[_1] (Default)', '{{ws}}') %]';
   s.WS_EXISTS = '[% l("Workstation name already exists.  Use it anyway?") %]';
+  s.WS_USED = '[% l("Workstation is already registered") %]';
 }]);
 </script>
 [% END %]
