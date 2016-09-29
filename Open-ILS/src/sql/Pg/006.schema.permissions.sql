@@ -177,7 +177,7 @@ CREATE OR REPLACE FUNCTION permission.usr_perms ( INT ) RETURNS SETOF permission
 			  FROM	permission.grp_perm_map p 
 			  WHERE	p.grp IN (SELECT (permission.grp_ancestors(m.grp)).id FROM permission.usr_grp_map m WHERE usr = $1))
 		) AS x
-	  ORDER BY 2, 3, 1 DESC, 5 DESC ;
+	  ORDER BY 2, 3, 4 ASC, 5 DESC ;
 $$ LANGUAGE SQL STABLE ROWS 10;
 
 CREATE TABLE permission.usr_work_ou_map (
