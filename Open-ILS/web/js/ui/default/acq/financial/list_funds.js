@@ -169,7 +169,6 @@ function loadYearSelector() {
                 yearList = yearList.map(function(year){return {year:year+''};}); // dojo wants strings
 
                 var yearStore = {identifier:'year', name:'year', items:yearList};
-                yearStore.items = yearStore.items.sort().reverse();
                 fundFilterYearSelect.store = new dojo.data.ItemFileWriteStore({data:yearStore});
 
                 // default to this year

@@ -224,7 +224,6 @@ function loadYearSelector() {
                 yearList = yearList.map(function(year){return {year:year+''};}); // dojo wants strings
 
                 var yearStore = {identifier:'year', name:'year', items:yearList};
-                yearStore.items = yearStore.items.sort().reverse();
                 acqUploadYearSelector.store = new dojo.data.ItemFileReadStore({data:yearStore});
 
                 // until an ordering agency is selected, default to the 
