@@ -8,7 +8,7 @@
 %]
 
 <div id="search_results_parent">
-    [% INCLUDE 'kpac/parts/record_row.tt2' rec_id=ctx.bre_id%]
+    [% INCLUDE 'kpac/parts/record_row.tt2' rec_id=ctx.bre_id %]
 </div>
           
 <div class="checkout_options">
