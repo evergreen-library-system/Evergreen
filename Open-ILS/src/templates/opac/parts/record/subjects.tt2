@@ -55,7 +55,7 @@
                 single_term = raw_term | html;
 
                 # facets should be used as-is
-                IF !s.facet; raw_term = raw_term.replace('\-', ' ').replace('[#"^$\+,\.:;&|\[\]()]', ''); END;
+                IF !s.facet; raw_term = raw_term.replace('\-', ' ').replace('[#"^$\+,:;&|\[\]()]', ''); END;
 
                 all_terms.push(raw_term);
 
