@@ -327,8 +327,11 @@ sub retrieve_org_funds {
                 acqf => [{column => 'year', transform => 'distinct'}]
             }, 
             from => 'acqf', 
-            where => $filter}
-        );
+            where => $filter,
+            order_by => {
+                acqf => {"year" => {"direction" => "desc"}}
+            }
+        });
 
         return [map { $_->{year} } @$data];
     }
