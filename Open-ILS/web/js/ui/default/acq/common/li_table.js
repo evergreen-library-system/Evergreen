@@ -30,6 +30,7 @@ var fundLabelFormat = [
 ];
 var fundSearchFormat = ['${0} (${1})', 'code', 'year'];
 var fundSearchFilter = {active : 't'};
+var fundSort = {order_by : {"acqf":"year DESC, code"}};
 
 function nodeByName(name, context) {
     return dojo.query('[name='+name+']', context)[0];
@@ -183,6 +184,7 @@ function AcqLiTable() {
                 "labelFormat": (field == 'fund') ? fundLabelFormat : null,
                 "searchFormat": (field == 'fund') ? fundSearchFormat : null,
                 "searchFilter": (field == 'fund') ? fundSearchFilter : null,
+                "searchOptions": (field == 'fund') ? fundSort : null,
                 "orgLimitPerms": (field == 'location') ? ['CREATE_PICKLIST', 'CREATE_PURCHASE_ORDER'] : [perms],
                 "dijitArgs": {
                     "required": false,
