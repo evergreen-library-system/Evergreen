@@ -445,8 +445,26 @@ destination file. The backup version of the destination file has a tilde (`~`)
 appended to the file name, so if you have forgotten the Jabber users and
 domains, you can retrieve the settings from the backup version of the files.
 
-`eg_db_config`, described in the following section, sets the database
-connection information in `opensrf.xml` for you.
+`eg_db_config`, described in <<_creating_the_evergreen_database,Creating the Evergreen
+database>>, sets the database connection information in `opensrf.xml` for you.
+
+Configure action triggers for the Evergreen application
+-------------------------------------------------------
+_Action Triggers_ provide hooks for the system to perform actions when a given
+event occurs; for example, to generate reminder or overdue notices, the
+`checkout.due` hook is processed and events are triggered for potential actions
+if there is no checkin time.
+
+To enable the default set of hooks, issue the following command as the
+*opensrf* Linux account:
+
+[source, bash]
+------------------------------------------------------------------------------
+cp -b /openils/conf/action_trigger_filters.json.example /openils/conf/action_trigger_filters.json
+------------------------------------------------------------------------------
+
+For more information about configuring and using action triggers, see
+<<_notifications_action_triggers,Notifications / Action Triggers>>.
 
 Creating the Evergreen database
 -------------------------------
