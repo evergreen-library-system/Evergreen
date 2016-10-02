@@ -292,7 +292,7 @@ cp -r /openils/var/web/js/dojo-release-1.3.3/* /openils/var/web/js/dojo/.
 Configure the Apache Web server
 -------------------------------
 
-1. Use the example configuration files in `Open-ILS/examples/apache/` (for
+. Use the example configuration files in `Open-ILS/examples/apache/` (for
 Apache versions below 2.4) or `Open-ILS/examples/apache_24/` (for Apache
 versions 2.4 or greater) to configure your Web server for the Evergreen
 catalog, staff client, Web services, and administration interfaces. Issue the
@@ -331,7 +331,7 @@ mkdir /etc/httpd/ssl
 cd /etc/httpd/ssl
 ------------------------------------------------------------------------------
 +
-2. The `openssl` command cuts a new SSL key for your Apache server. For a
+. The `openssl` command cuts a new SSL key for your Apache server. For a
 production server, you should purchase a signed SSL certificate, but you can
 just use a self-signed certificate and accept the warnings in the staff client
 and browser during testing and development. Create an SSL key for the Apache
@@ -342,7 +342,7 @@ server by issuing the following command as the *root* Linux account:
 openssl req -new -x509 -days 365 -nodes -out server.crt -keyout server.key
 ------------------------------------------------------------------------------
 +
-3. As the *root* Linux account, edit the `eg.conf` file that you copied into
+. As the *root* Linux account, edit the `eg.conf` file that you copied into
 place.
   a. To enable access to the offline upload / execute interface from any
      workstation on any network, make the following change (and note that
@@ -351,37 +351,54 @@ place.
      * (Apache 2.4): Replace `Require host 10.0.0.0/8` with `Require all granted`
   b. (Fedora): Change references from the non-existent `/etc/apache2/` directory
      to `/etc/httpd/`.
-4. Change the user for the Apache server.
+. Change the user for the Apache server.
   * (Debian and Ubuntu): As the *root* Linux account, edit
     `/etc/apache2/envvars`.  Change `export APACHE_RUN_USER=www-data` to 
     `export APACHE_RUN_USER=opensrf`.
   * (Fedora): As the *root* Linux account , edit `/etc/httpd/conf/httpd.conf`.
     Change `User apache` to `User opensrf`.
-5. Configure Apache with performance settings appropriate for Evergreen:
-  * (Debian and Ubuntu): As the *root* Linux account, edit
-    `/etc/apache2/apache2.conf`:
-  * (Fedora): As the *root* Linux account, edit `/etc/httpd/conf/httpd.conf`:
-    a. Change `KeepAliveTimeout` to `1`. Higher values reduce the chance of
-       a request timing out unexpectedly, but increase the risk of using up
-       all available Apache child processes.
-    b. 'Optional': Change `MaxKeepAliveRequests` to `100`
-    c. (Debian Wheezy, Ubuntu Precise, and Fedora) Update the prefork configuration 
-       section to suit your environment. The following settings apply to a busy 
-       system:
+. As the *root* Linux account, configure Apache with KeepAlive settings
+  appropriate for Evergreen. Higher values can improve the performance of a
+  single client by allowing multiple requests to be sent over the same TCP
+  connection, but increase the risk of using up all available Apache child
+  processes and memory.
+  * (Debian and Ubuntu): Edit `/etc/apache2/apache2.conf`.
+    a. Change `KeepAliveTimeout` to `1`.
+    b. Change `MaxKeepAliveRequests` to `100`.
+  * (Fedora): Edit `/etc/httpd/conf/httpd.conf`.
+    a. Change `KeepAliveTimeout` to `1`.
+    b. Change `MaxKeepAliveRequests` to `100`.
+. As the *root* Linux account, configure the prefork module to start and keep
+  enough Apache servers available to provide quick responses to clients without
+  running out of memory. The following settings are a good starting point for a
+  site that exposes the default Evergreen catalogue to the web:
 +
+.Debian Wheezy, Ubuntu Precise (`/etc/apache2/apache2.conf`) and Fedora (`/etc/httpd/conf/httpd.conf`)
 [source,bash]
 ------------------------------------------------------------------------------
 <IfModule mpm_prefork_module>
-   StartServers           20
-   MinSpareServers         5
-   MaxSpareServers        15
-   MaxClients            150
-   MaxRequestsPerChild 10000
+   StartServers         15
+   MinSpareServers       5
+   MaxSpareServers      15
+   MaxClients           75
+   MaxRequestsPerChild 500
 </IfModule>
 ------------------------------------------------------------------------------
-    d. (Ubuntu Trusty, Debian Jessie) As the *root* user, edit 
-       /etc/apache2/mods-available/mpm_prefork.conf to match the above values.  
-       Then, also as the *root* user, enable the mpm_prefork module by doing:
++
+.Ubuntu Trusty, Debian Jessie (`/etc/apache2/mods-available/mpm_prefork.conf`)
+[source,bash]
+------------------------------------------------------------------------------
+<IfModule mpm_prefork_module>
+   StartServers            15
+   MinSpareServers          5
+   MaxSpareServers         15
+   MaxRequestWorkers       75
+   MaxConnectionsPerChild 500
+</IfModule>
+------------------------------------------------------------------------------
++
+. (Ubuntu Trusty, Debian Jessie) As the *root* user,
+    enable the mpm_prefork module:
 +
 [source,bash]
 ------------------------------------------------------------------------------
@@ -389,10 +406,10 @@ a2dismod mpm_event
 a2enmod mpm_prefork
 ------------------------------------------------------------------------------
 +
-6. (Fedora): As the *root* Linux account, edit the `/etc/httpd/eg_vhost.conf`
+. (Fedora): As the *root* Linux account, edit the `/etc/httpd/eg_vhost.conf`
    file to change references from the non-existent `/etc/apache2/` directory
    to `/etc/httpd/`.
-7. (Debian Wheezy and Ubuntu Precise): As the *root* Linux account, enable the Evergreen site:
+. (Debian Wheezy and Ubuntu Precise): As the *root* Linux account, enable the Evergreen site:
 +
 [source,bash]
 ------------------------------------------------------------------------------
@@ -408,7 +425,7 @@ a2dissite 000-default  # OPTIONAL: disable the default site (the "It Works" page
 a2ensite eg.conf
 ------------------------------------------------------------------------------
 +
-8. (Ubuntu): As the *root* Linux account, enable Apache to write
+. (Ubuntu): As the *root* Linux account, enable Apache to write
    to the lock directory; this is currently necessary because Apache
    is running as the `opensrf` user:
 +
@@ -416,8 +433,9 @@ a2ensite eg.conf
 ------------------------------------------------------------------------------
 chown opensrf /var/lock/apache2
 ------------------------------------------------------------------------------
-+
-9. Learn more about additional Apache options in the following sections:
+
+Learn more about additional Apache options in the following sections:
+
   * <<_apache_rewrite_tricks,Apache Rewrite Tricks>>
   * <<_apache_access_handler_perl_module,Apache Access Handler Perl Module>>
 
