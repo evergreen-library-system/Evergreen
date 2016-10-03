@@ -9,13 +9,13 @@ SELECT is( metabib.trim_trailing_punctuation(''), '', 'Empty string');
 SELECT is( metabib.trim_trailing_punctuation('X,'), 'X', 'Eliminate comma A');
 SELECT is( metabib.trim_trailing_punctuation('Smith, John,'), 'Smith, John', 'Eliminate comma B');
 
-SELECT is( metabib.trim_trailing_punctuation('X.'), 'X.', 'Initial w/o preceding space (period)');
+SELECT is( metabib.trim_trailing_punctuation('X.'), 'X', 'Initial w/o preceding space (period)');
 SELECT is( metabib.trim_trailing_punctuation('X@'), 'X@', 'Initial w/o preceding space (other)');
 SELECT is( metabib.trim_trailing_punctuation('Smith, John'), 'Smith, John', 'Name no trailing punct A');
 SELECT is( metabib.trim_trailing_punctuation('Saki'), 'Saki', 'Name no trailing punct B');
 SELECT is( metabib.trim_trailing_punctuation('Smith, John.'), 'Smith, John', 'Chop trailing period');
-SELECT is( metabib.trim_trailing_punctuation('Public, John Q.'), 'Pulbic, John Q.', 'Retain trailing period');
-SELECT is( metabib.trim_trailing_punctuation('Public, John Q,'), 'Pulbic, John Q', 'Eliminate comma C');
+SELECT is( metabib.trim_trailing_punctuation('Public, John Q.'), 'Public, John Q.', 'Retain trailing period');
+SELECT is( metabib.trim_trailing_punctuation('Public, John Q,'), 'Public, John Q', 'Eliminate comma C');
 SELECT is( metabib.trim_trailing_punctuation('(FTC).'), '(FTC)', 'Trailing period');
 
 SELECT * FROM finish();
