@@ -107,7 +107,7 @@ angular.module('egCoreMod').run(['egStrings', function(s) {
         <a a-disabled="!patron()" href="./circ/patron/{{patron().id()}}/holds">
           [% l('Holds') %]
           <span ng-if="patron()">
-            (<span>{{patron_stats().holds.total}} / {{patron_stats().holds.ready}}</span>)
+            (<span>{{patron_stats().holds.ready}} / {{patron_stats().holds.total}}</span>)
           </span>
         </a>
       </li>
