@@ -6321,8 +6321,8 @@ INSERT INTO config.marc21_ff_pos_map (fixed_field, tag, rec_type,start_pos, leng
 
 -- record attributes
 INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('alph','Alph','Alph');
-INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('audience','Audn','Audn');
-INSERT INTO config.record_attr_definition (name,label,fixed_field,multi) values ('bib_level','BLvl','BLvl',FALSE);
+INSERT INTO config.record_attr_definition (name,label,fixed_field,description) values ('audience','Audn','Audn', oils_i18n_gettext('audience', 'Audience', 'crad', 'label'));
+INSERT INTO config.record_attr_definition (name,label,fixed_field,multi,description) values ('bib_level','BLvl','BLvl',FALSE,oils_i18n_gettext('bib_level', 'Bib Level', 'crad', 'label'));
 INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('biog','Biog','Biog');
 INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('conf','Conf','Conf');
 INSERT INTO config.record_attr_definition (name,label,fixed_field,multi) values ('control_type','Ctrl','Ctrl',FALSE);
@@ -6334,18 +6334,18 @@ INSERT INTO config.record_attr_definition (name,label,fixed_field,multi) values 
 INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('pub_status','DtSt','DtSt');
 INSERT INTO config.record_attr_definition (name,label,fixed_field,multi) values ('enc_level','ELvl','ELvl',FALSE);
 INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('fest','Fest','Fest');
-INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('item_form','Form','Form');
+INSERT INTO config.record_attr_definition (name,label,fixed_field,description) values ('item_form','Form','Form',oils_i18n_gettext('item_form', 'Item Form', 'crad', 'label'));
 INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('gpub','GPub','GPub');
 INSERT INTO config.record_attr_definition (name,label,fixed_field,composite) values ('ills','Ills','Ills',TRUE);
 INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('indx','Indx','Indx');
-INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('item_lang','Lang','Lang');
+INSERT INTO config.record_attr_definition (name,label,fixed_field,description) values ('item_lang','Lang','Lang',oils_i18n_gettext('item_lang', 'Language', 'crad', 'label'));
 INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('language','Language (2.0 compat version)','Lang');
-INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('lit_form','LitF','LitF');
+INSERT INTO config.record_attr_definition (name,label,fixed_field,description) values ('lit_form','LitF','LitF',oils_i18n_gettext('lit_form', 'Literary Form', 'crad', 'label'));
 INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('mrec','MRec','MRec');
 INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('ff_sl','S/L','S/L');
 INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('type_mat','TMat','TMat');
-INSERT INTO config.record_attr_definition (name,label,fixed_field,multi) values ('item_type','Type','Type',FALSE);
-INSERT INTO config.record_attr_definition (name,label,phys_char_sf) values ('vr_format','Videorecording format',72);
+INSERT INTO config.record_attr_definition (name,label,fixed_field,multi,description) values ('item_type','Type','Type',FALSE,oils_i18n_gettext('item_type', 'Item Type', 'crad', 'label'));
+INSERT INTO config.record_attr_definition (name,label,phys_char_sf,description) values ('vr_format','Videorecording format',72,oils_i18n_gettext('vr_format', 'Video Format', 'crad', 'label'));
 INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('file','File','File');
 INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('freq','Freq','Freq');
 INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('regl','Regl','Regl');
