@@ -30,7 +30,8 @@ function($scope , $q , $routeParams , egCore , egUser , patronSvc ,
             !patronSvc.current ||
             patronSvc.current.active() == 'f' ||
             patronSvc.current.deleted() == 't' ||
-            patronSvc.current.card().active() == 'f'
+            patronSvc.current.card().active() == 'f' ||
+            patronSvc.fetchedWithInactiveCard()
         );
     }
 

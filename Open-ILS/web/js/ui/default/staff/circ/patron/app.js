@@ -230,7 +230,9 @@ function($q , $timeout , $location , egCore,  egUser , $locale) {
         // event types manually overridden, which should always be
         // overridden for checkouts to this patron for this instance of
         // the interface.
-        checkout_overrides : {},
+        checkout_overrides : {},        
+        //holds the searched barcode
+        search_barcode : null,      
     };
 
     // when we change the default patron, we need to clear out any
@@ -248,7 +250,6 @@ function($q , $timeout , $location , egCore,  egUser , $locale) {
         service.alertsShown = false;
         service.patronExpired = false;
         service.patronExpiresSoon = false;
-        service.retrievedWithInactive = false;
         service.invalidAddresses = false;
     }
     service.resetPatronLists();  // initialize
@@ -417,7 +418,13 @@ function($q , $timeout , $location , egCore,  egUser , $locale) {
 
         return $q.when(fail);
     }
-
+    //resolves to true if the patron was fetched with an inactive card
+    service.fetchedWithInactiveCard = function() {
+        var bc = service.search_barcode
+        var cards = service.current.cards();
+        var card = cards.filter(function(c) { return c.barcode() == bc })[0];
+        return (card && card.active() == 'f');
+    }   
     // resolves to true if there is any aspect of the patron account
     // which should produce a message in the alerts panel
     service.checkAlerts = function() {
@@ -438,14 +445,8 @@ function($q , $timeout , $location , egCore,  egUser , $locale) {
         }
 
         // see if the user was retrieved with an inactive card
-        if (bc = $location.search().card) {
-            var card = p.cards().filter(
-                function(c) { return c.barcode() == bc })[0];
-
-            if (card && card.active() == 'f') {
-                service.hasAlerts = true;
-                service.retrievedWithInactive = true;
-            }
+        if(service.fetchedWithInactiveCard()){
+            service.hasAlerts = true;
         }
 
         // regardless of whether we know of alerts, we still need 
@@ -692,6 +693,7 @@ function($scope , $location , egCore , egConfirmDialog , egUser , patronSvc) {
         $location
         .path('/circ/patron/' + user_id + '/checkout')
         .search('card', $scope.args.barcode);
+        patronSvc.search_barcode = $scope.args.barcode;
     }
 
     // create an opt-in=yes response for the loaded user
@@ -878,7 +880,8 @@ function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore,
             delete patronSvc.urlSearch;
 
         } else {
-
+            patronSvc.search_barcode = $scope.searchArgs.card;
+            
             var search = compileSearch($scope.searchArgs);
             if (Object.keys(search) == 0) return $q.when();
 
@@ -1302,7 +1305,7 @@ function($scope,  $routeParams , $location , egCore , patronSvc) {
     .then(function() {
         $scope.patronExpired = patronSvc.patronExpired;
         $scope.patronExpiresSoon = patronSvc.patronExpiresSoon;
-        $scope.retrievedWithInactive = patronSvc.retrievedWithInactive;
+        $scope.retrievedWithInactive = patronSvc.fetchedWithInactiveCard();
         $scope.invalidAddresses = patronSvc.invalidAddresses;
     });
 
