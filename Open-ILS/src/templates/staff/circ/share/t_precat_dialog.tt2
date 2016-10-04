@@ -29,6 +29,7 @@
           <label for="precat-circmod">[% l('Circulation Modifier') %]</label>
           <select class="form-control" id="precat-circmod" 
             ng-model="precatArgs.circ_modifier">
+            <option value=""></option>
             <option ng-repeat="mod in circModifiers" 
               value="{{mod.code()}}">{{mod.name()}}</option>
           </select>
