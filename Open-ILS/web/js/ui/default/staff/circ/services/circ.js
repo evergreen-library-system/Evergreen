@@ -717,8 +717,7 @@ function($modal , $q , egCore , egAlertDialog , egConfirmDialog) {
                 function($scope, $modalInstance, circMods) {
                 $scope.focusMe = true;
                 $scope.precatArgs = {
-                    copy_barcode : params.copy_barcode,
-                    circ_modifier : circMods.length ? circMods[0].code() : null
+                    copy_barcode : params.copy_barcode
                 };
                 $scope.circModifiers = circMods;
                 $scope.ok = function(args) { $modalInstance.close(args) }
@@ -732,6 +731,7 @@ function($modal , $q , egCore , egAlertDialog , egConfirmDialog) {
         }).result.then(
             function(args) {
                 if (!args || !args.dummy_title) return $q.reject();
+                if(args.circ_modifier == "") args.circ_modifier = null;
                 angular.forEach(args, function(val, key) {params[key] = val});
                 params.precat = true;
                 return service.checkout(params, options);
