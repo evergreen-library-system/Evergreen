@@ -94,7 +94,7 @@
     <div class="row">
       <div class="col-md-5">[% l('Holds') %]</div>
       <div class="col-md-7">
-        {{patron_stats().holds.total}} / {{patron_stats().holds.ready}}
+        {{patron_stats().holds.ready}} / {{patron_stats().holds.total}}
       </div>
     </div>
     <div class="row patron-summary-divider">
