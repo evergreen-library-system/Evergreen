@@ -108,8 +108,7 @@ sub _prepare_biblio_search {
             $btw .= ')';
             $query = "$btw $query";
         } elsif ($cgi->param('pubdate') eq 'is') {
-            $query = 'between(' . $cgi->param('date1') .
-                ',' .  $cgi->param('date1') . ") $query";  # sic, date1 twice
+            $query = 'date1(' . $cgi->param('date1') . ") $query";
         } else {
             $query = $cgi->param('pubdate') .
                 '(' . $cgi->param('date1') . ") $query";
