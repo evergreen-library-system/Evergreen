@@ -1,10 +1,15 @@
 <div class="facet_box_wrapper filter_box_wrapper">
 [%
 
-ignore_filters = ['sort','statuses','site'];
+# don't display a box for the search_format filter,
+# as that's got its own widget
+ignore_filters = ['search_format'];
 
 FOR filter IN ctx.query_struct.filters;
     fname = filter.name;
+    IF ignore_filters.grep('^' _ fname _ '$').size;
+      NEXT;
+    END;
 
     fvalues = filter.args;
     crad = ctx.get_crad(fname);
@@ -23,16 +28,21 @@ FOR filter IN ctx.query_struct.filters;
         </div>
         <div class="box_wrapper">
             <div class="box">
-            [% FOR fval IN fvalues;
+            [% temp = [];
+               FOR fval IN fvalues;
                 thing = ctx.search_ccvm('ctype',fname,'code',fval).0;
                 display_value = thing.search_label || thing.value;
-                IF display_value.defined; %]
+                IF display_value.defined;
+                 temp.push(display_value);
+                END;
+               END;
+               FOR display_value IN temp.sort;
+            %]
                     <div class="facet_template filter_template">
                         <div class="facet filter">
                               [% display_value | html%]
                         </div>
                     </div>
-            [%  END; # IF %]
             [% END; # FOR %]
             </div>
         </div> <!-- box_wrapper -->
@@ -44,17 +54,21 @@ FOR filter IN ctx.query_struct.filters;
         <div class="header">
             <a class="button"
               title="[% l('Remove location filter') %]"
-              href="[% mkurl('', {}, ['locations']) %]" rel="nofollow" vocab="">
+              href="[% mkurl('', {}, ['fi:locations']) %]" rel="nofollow" vocab="">
               [% l("Remove") %]
             </a>
             <h4 class="title">[% IF filter.negate; l('Not'); END %] [% l('Locations') %]</h4>
         </div>
         <div class="box_wrapper">
             <div class="box">
-            [% FOR loc IN locs %]
+            [% temp = [];
+               FOR loc IN locs;
+                temp.push(loc.name);
+               END;
+               FOR display_name IN temp.sort; %]
                 <div class="facet_template filter_template">
                   <div class="facet filter">
-                    [% loc.name | html%]
+                    [% display_name | html%]
                   </div>
                 </div>
             [% END; # FOR %]
