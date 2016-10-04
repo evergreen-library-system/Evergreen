@@ -1,5 +1,9 @@
 <div>
     <div id="zero_search_hits">
+        <div class="facet_sidebar_hidden" id="facet_sidebar">
+          <h3 class="sr-only">[% l('Search Results filters') %]</h3>
+          [% INCLUDE 'opac/parts/result/adv_filter.tt2' %]
+        </div>
         <div class="zero_search_hits_saved">
             [% INCLUDE "opac/parts/staff_saved_searches.tt2" %]
         </div>
