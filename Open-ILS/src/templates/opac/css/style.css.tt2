@@ -1064,6 +1064,10 @@ div#facet_sidebar {
     padding-top:4px;
 }
 
+.facet_box_temp.filter_box_temp .header {
+    background: [% css_colors.background_invert %] !important;
+}
+
 .facet_box_temp .header .title {
     float:left;
     padding-top:6px;
@@ -1104,6 +1108,10 @@ div#facet_sidebar {
 .facet_template div {
     display: table-cell;
     padding: 2px;
+}
+
+.facet_template.filter_template div {
+    padding: 0px !important;
 }
 
 .facet_template .count {

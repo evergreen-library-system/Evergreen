@@ -1,4 +1,4 @@
-<div class="facet_box_wrapper">
+<div class="facet_box_wrapper filter_box_wrapper">
 [%
 
 ignore_filters = ['sort','statuses','site'];
@@ -12,7 +12,7 @@ FOR filter IN ctx.query_struct.filters;
     IF crad; # will be some special ones, like locations
         remove_filter = 'fi:' _ fname;
 %]
-    <div class="facet_box_temp">
+    <div class="facet_box_temp filter_box_temp">
         <div class="header">
             <a class="button"
               title="[% l('Remove [_1] filter', crad.label) %]"
@@ -27,8 +27,8 @@ FOR filter IN ctx.query_struct.filters;
                 thing = ctx.search_ccvm('ctype',fname,'code',fval).0;
                 display_value = thing.search_label || thing.value;
                 IF display_value.defined; %]
-                    <div class="facet_template">
-                        <div class="facet">
+                    <div class="facet_template filter_template">
+                        <div class="facet filter">
                               [% display_value | html%]
                         </div>
                     </div>
@@ -40,7 +40,7 @@ FOR filter IN ctx.query_struct.filters;
     [% END; # IF crad %]
 
 [%  IF filter.name == 'locations'; locs = ctx.search_acpl('id',filter.args) %]
-    <div class="facet_box_temp">
+    <div class="facet_box_temp filter_box_temp">
         <div class="header">
             <a class="button"
               title="[% l('Remove location filter') %]"
@@ -52,8 +52,8 @@ FOR filter IN ctx.query_struct.filters;
         <div class="box_wrapper">
             <div class="box">
             [% FOR loc IN locs %]
-                <div class="facet_template">
-                  <div class="facet">
+                <div class="facet_template filter_template">
+                  <div class="facet filter">
                     [% loc.name | html%]
                   </div>
                 </div>
