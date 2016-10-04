@@ -1357,8 +1357,10 @@ function($scope,  $routeParams , $location , egCore , patronSvc) {
 }])
 
 .controller('PatronNotesCtrl',
-       ['$scope', '$filter', '$routeParams','$location','egCore','patronSvc','$uibModal',
-function($scope,  $filter, $routeParams , $location , egCore , patronSvc , $uibModal) {
+       ['$scope','$filter','$routeParams','$location','egCore','patronSvc','$uibModal',
+        'egConfirmDialog',
+function($scope,  $filter , $routeParams , $location , egCore , patronSvc , $uibModal,
+         egConfirmDialog) {
     $scope.initTab('other', $routeParams.id);
     var usr_id = $routeParams.id;
 
@@ -1405,7 +1407,14 @@ function($scope,  $filter, $routeParams , $location , egCore , patronSvc , $uibM
 
     // delete the selected note
     $scope.deleteNote = function(note) {
-        egCore.pcrud.remove(note).then(function() {refreshPage()});
+        egConfirmDialog.open(
+            egCore.strings.PATRON_NOTE_DELETE_CONFIRM_TITLE, egCore.strings.PATRON_NOTE_DELETE_CONFIRM,
+            {ok : function() {
+                egCore.pcrud.remove(note).then(function() {refreshPage()});
+            },
+            note_title : note.title(),
+            create_date : note.create_date()
+        });
     }
 
     // print the selected note
