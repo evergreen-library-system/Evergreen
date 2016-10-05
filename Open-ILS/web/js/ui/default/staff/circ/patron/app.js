@@ -298,6 +298,7 @@ function($q , $timeout , $location , egCore,  egUser , $locale) {
 
         service.getPrimary(id, user, force)
         .then(function() {
+            service.checkAlerts();
             var p = service.primaryUserPromise;
             service.primaryUserId = null;
             // clear before resolution just to be safe.
@@ -651,6 +652,8 @@ function($scope,  $q,  $location , $filter,  egCore,  egUser,  patronSvc) {
     $scope.patron = function() { return patronSvc.current }
     $scope.patron_stats = function() { return patronSvc.patron_stats }
     $scope.summary_stat_cats = function() { return patronSvc.summary_stat_cats }
+    $scope.hasAlerts = function() { return patronSvc.hasAlerts }
+    $scope.isPatronExpired = function() { return patronSvc.patronExpired }
 
     $scope.print_address = function(addr) {
         egCore.print.print({

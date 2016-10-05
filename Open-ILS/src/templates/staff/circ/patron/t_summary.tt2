@@ -57,7 +57,8 @@
       <div class="col-md-5">[% l('Create Date') %]</div>
       <div class="col-md-7">{{patron().create_date() | date:'shortDate'}}</div>
     </div>
-    <div class="row">
+    <div class="row"
+      ng-class="{'patron-summary-alert' : isPatronExpired()}">
       <div class="col-md-5">[% l('Expire Date') %]</div>
       <div class="col-md-7">{{patron().expire_date() | date:'shortDate'}}</div>
     </div>

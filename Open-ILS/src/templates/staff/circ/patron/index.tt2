@@ -68,7 +68,8 @@ angular.module('egCoreMod').run(['egStrings', function(s) {
     <div ng-show="patron()">
       <h4 title="{{patron().id()}}">
         <div class="flex-row">
-          <div class="flex-cell">
+          <div class="flex-cell"
+          ng-class="{'patron-summary-alert' : hasAlerts()}">
             [% l('[_1], [_2] [_3]', 
                 '{{patron().family_name()}}',
                 '{{patron().first_given_name()}}',
