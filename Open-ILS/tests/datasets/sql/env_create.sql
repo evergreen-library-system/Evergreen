@@ -186,12 +186,13 @@ CREATE FUNCTION evergreen.populate_hold (
     requestor INTEGER,
     pickup_lib INTEGER,
     frozen BOOLEAN,
-    thawdate TIMESTAMP WITH TIME ZONE
+    thawdate TIMESTAMP WITH TIME ZONE,
+    holdable_formats TEXT DEFAULT NULL
 ) RETURNS void AS $$
 BEGIN
     INSERT INTO action.hold_request (
         requestor, hold_type, target, usr, pickup_lib, 
-            request_lib, selection_ou, frozen, thaw_date)
+            request_lib, selection_ou, frozen, thaw_date, holdable_formats)
     VALUES (
         requestor,
         hold_type,
@@ -201,7 +202,8 @@ BEGIN
         pickup_lib,
         pickup_lib,
         frozen,
-        thawdate
+        thawdate,
+        holdable_formats
     );
 
     -- Create hold notes for staff-placed holds: 1 public, 1 private
