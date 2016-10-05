@@ -18,7 +18,7 @@
             </li>
             <li class="divider"></li>
             <li>
-              <a href ng-repeat='type in nonCatTypes'
+              <a href ng-repeat="type in nonCatTypes | orderBy:'name()'"
                ng-click="checkoutArgs.noncat_type=type.id()">{{type.name()}}</a>
             </li>
           </ul>
