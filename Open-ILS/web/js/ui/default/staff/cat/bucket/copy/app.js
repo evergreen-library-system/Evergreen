@@ -153,6 +153,13 @@ angular.module('egCatCopyBuckets',
                 deferred.reject(evt);
                 return;
             }
+            egCore.pcrud.retrieve(
+                'au', bucket.owner()
+            ).then(function(patron) {
+                bucket._owner_name = patron.usrname();
+                bucket._owner_ou = egCore.org.get(patron.home_ou()).shortname();
+            });
+
             service.currentBucket = bucket;
             deferred.resolve(bucket);
         });
@@ -265,7 +272,7 @@ function($scope,  $location,  $q,  $timeout,  $uibModal,
 
     $scope.openCreateBucketDialog = function() {
         $uibModal.open({
-            templateUrl: './cat/bucket/copy/t_bucket_create',
+            templateUrl: './cat/bucket/share/t_bucket_create',
             controller: 
                 ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
                 $scope.focusMe = true;
@@ -289,7 +296,7 @@ function($scope,  $location,  $q,  $timeout,  $uibModal,
 
     $scope.openEditBucketDialog = function() {
         $uibModal.open({
-            templateUrl: './cat/bucket/copy/t_bucket_edit',
+            templateUrl: './cat/bucket/share/t_bucket_edit',
             controller: 
                 ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
                 $scope.focusMe = true;
@@ -315,7 +322,7 @@ function($scope,  $location,  $q,  $timeout,  $uibModal,
     // bucket if the user confirms.
     $scope.openDeleteBucketDialog = function() {
         $uibModal.open({
-            templateUrl: './cat/bucket/copy/t_bucket_delete',
+            templateUrl: './cat/bucket/share/t_bucket_delete',
             controller : 
                 ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
                 $scope.bucket = function() { return bucketSvc.currentBucket }
@@ -334,7 +341,7 @@ function($scope,  $location,  $q,  $timeout,  $uibModal,
     // retrieves the requested bucket by ID
     $scope.openSharedBucketDialog = function() {
         $uibModal.open({
-            templateUrl: './cat/bucket/copy/t_load_shared',
+            templateUrl: './cat/bucket/share/t_load_shared',
             controller :
                 ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
                 $scope.focusMe = true;

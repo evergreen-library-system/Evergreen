@@ -1,10 +1,12 @@
 <!-- edit bucket dialog -->
-<form class="form-validated" novalidate ng-submit="ok(args)" name="form">
+
+<!-- use <form> so we get submit-on-enter for free -->
+<form class="form-validated" novalidate name="form" ng-submit="ok(args)">
   <div>
     <div class="modal-header">
       <button type="button" class="close" 
         ng-click="cancel()" aria-hidden="true">&times;</button>
-      <h4 class="modal-title">[% l('Edit Bucket') %]</h4>
+      <h4 class="modal-title">[% l('Create Bucket') %]</h4>
     </div>
     <div class="modal-body">
       <div class="form-group">
@@ -19,16 +21,15 @@
       </div>
        <div class="checkbox">
         <label>
-          <input ng-model="args.pub" type="checkbox"> 
+          <input ng-model="args.pub" type="checkbox"/>
           [% l('Publicly Visible?') %]
         </label>
       </div>
     </div>
     <div class="modal-footer">
-      <input type="submit" class="btn btn-primary" 
-          ng-disabled="form.$invalid" value="[% l('Apply Changes') %]"/>
-      <button class="btn btn-warning" ng-click="cancel()"
-          ng-class="{disabled : actionPending}">[% l('Cancel') %]</button>
+      <input type="submit" ng-disabled="form.$invalid" 
+          class="btn btn-primary" value="[% l('Create Bucket') %]"/>
+      <button class="btn btn-warning" ng-click="cancel()">[% l('Cancel') %]</button>
     </div>
   </div> <!-- modal-content -->
 </form>

@@ -1,12 +1,13 @@
 
 <div ng-show="bucket()">
-  <strong>[% l('Bucket: {{bucket().name()}}') %]</strong> 
+  <strong>[% l('Bucket #{{bucket().id()}}: {{bucket().name()}}') %]</strong>
   <span>
     <ng-pluralize count="bucketSvc.currentBucket.items().length"
       when="{'one': '[% l("1 item") %]', 'other': '[% l("{} items") %]'}">
     </ng-pluralize>
-  </span> 
+  </span>
   <span> / [% l('Created {{bucket().create_time() | date}}') %]</span>
+  <span ng-show="bucket()._owner_name"> / {{bucket()._owner_name}} @ {{bucket()._owner_ou}}</span>
   <span ng-show="bucket().description()"> / {{bucket().description()}}</span>
 </div>
 

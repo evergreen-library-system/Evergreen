@@ -55,7 +55,7 @@ changing routes with each tab selection anyway.
     <!-- bucket info header -->
     <div class="row">
       <div class="col-md-6">
-        [% INCLUDE 'staff/cat/bucket/copy/t_bucket_info.tt2' %]
+        [% INCLUDE 'staff/cat/bucket/share/t_bucket_info.tt2' %]
       </div>
     </div>
 
