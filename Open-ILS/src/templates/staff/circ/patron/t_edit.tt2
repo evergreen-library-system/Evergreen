@@ -585,7 +585,8 @@ within the "form" by name for validation.
   </div>
 </div>
 
-<div class="row reg-field-row">
+<div class="row reg-field-row" 
+    ng-if="org_settings['circ.holds.behind_desk_pickup_supported']">
   <div class="col-md-3 reg-field-label">
     <label>{{user_setting_types['circ.holds_behind_desk'].label()}}</label>
   </div>
