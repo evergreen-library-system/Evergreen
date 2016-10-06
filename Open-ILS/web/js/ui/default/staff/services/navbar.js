@@ -26,8 +26,8 @@ angular.module('egCoreMod')
             inspect(element);
         },
 
-        controller:['$scope','$window','$location','$timeout','hotkeys','egCore',
-            function($scope , $window , $location , $timeout , hotkeys , egCore) {
+        controller:['$scope','$window','$location','$timeout','hotkeys','egCore','$uibModal','ngToast',
+            function($scope , $window , $location , $timeout , hotkeys , egCore , $uibModal , ngToast) {
 
                 function navTo(path) {                                           
                     // Strip the leading "./" if any.
@@ -72,6 +72,43 @@ angular.module('egCoreMod')
                         );
                 }
 
+                $scope.changeOperatorUndo = function() {
+                        egCore.auth.opChangeUndo();
+                        $scope.op_changed = false;
+                        ngToast.create(egCore.strings.OP_CHANGE_SUCCESS);
+                }
+
+                $scope.changeOperator = function() {
+                    $uibModal.open({
+                        templateUrl: './share/t_opchange',
+                        controller:
+                            ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
+                            $scope.args = {username : '', password : ''};
+                            $scope.focus = true;
+                            $scope.ok = function() { $uibModalInstance.close($scope.args) }
+                            $scope.cancel = function () { $uibModalInstance.dismiss() }
+                        }]
+                    }).result.then(function (args) {
+                        if (!args || !args.username || !args.password) return;
+                        args.workstation = egCore.auth.workstation();
+                        egCore.auth.opChange(args).then(
+                            function() {
+                                console.log('op change success');
+                                $scope.op_changed = true;
+                                ngToast.create(egCore.strings.OP_CHANGE_SUCCESS);
+                            }, // note success with toast?
+                            function() {
+                                console.log('op change failure');
+                                ngToast.warning(egCore.strings.OP_CHANGE_FAILURE);
+                            }  // note failure with toast?
+                        );
+                    });
+                }
+
+                $scope.currentToken = function () {
+                    return egCore.auth.token();
+                }
+
                 // tied to logout link
                 $scope.logout = function() {
                     egCore.auth.logout();
@@ -81,6 +118,7 @@ angular.module('egCoreMod')
                 egCore.startup.go().then(
                     function() {
                         if (egCore.auth.user()) {
+                            $scope.op_changed = egCore.auth.OCtoken() ? true : false;
                             $scope.username = egCore.auth.user().usrname();
                             $scope.workstation = egCore.auth.workstation();
                         }

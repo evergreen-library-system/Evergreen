@@ -77,6 +77,8 @@
     s.EG_WORK_LOG_REQUESTED_HOLD = '[% l('Hold Request') %]';
     s.EG_CONFIRM_DELETE_RECORD_TITLE = '[% l('Confirm Record Deletion') %]';
     s.EG_CONFIRM_DELETE_RECORD_BODY = "[% l('Delete record {{id}}?') %]";
+    s.OP_CHANGE_SUCCESS = "[% l('Operator Change Succeeded') %]";
+    s.OP_CHANGE_FAILURE = "[% l('Operator Change Failed') %]";
   }]);
 </script>
 

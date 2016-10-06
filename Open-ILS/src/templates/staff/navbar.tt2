@@ -298,7 +298,7 @@
     <!-- entries along the right side of the navbar -->
     <ul class="nav navbar-nav navbar-right" style='margin-right: 6px;'>
       <li>
-        <a ng-cloak ng-show="username" 
+        <a ng-cloak ng-show="username" title="{{currentToken()}}"
           ng-init="workstation = '[% l('<no workstation>') %]'">
             [% l('{{username}} @ {{workstation}}') %]
         </a>
@@ -329,10 +329,16 @@
         <a href class="glyphicon glyphicon-list" 
           uib-dropdown-toggle></a>
         <ul uib-dropdown-menu>
-          <li class="disabled">
-            <a href="" ng-click="" target="_self">
+          <li ng-if="!op_changed">
+            <a href="" ng-click="changeOperator()">
               <span class="glyphicon glyphicon-random"></span>
               [% l('Change Operator') %]
+            </a>
+          </li>
+          <li ng-if="op_changed">
+            <a href="" ng-click="changeOperatorUndo()">
+              <span class="glyphicon glyphicon-random"></span>
+              [% l('Restore Operator') %]
             </a>
           </li>
           <li>

@@ -11,8 +11,29 @@ function($q , $timeout , $rootScope , $window , $location , egNet , egHatch) {
 
     var service = {
         // the currently active user (au) object
-        user : function() {
+        user : function(u) {
+            if (u) {
+                this._user = u;
+            }
             return this._user;
+        },
+
+        // the user hidden by an operator change
+        OCuser : function(u) {
+            if (u) {
+                this._OCuser = u;
+            }
+            return this._OCuser;
+        },
+
+        // the Op Change hidden auth token string
+        OCtoken : function() {
+            return egHatch.getLoginSessionItem('eg.auth.token.oc');
+        },
+
+        // Op Change hidden authtime in seconds
+        OCauthtime : function() {
+            return egHatch.getLoginSessionItem('eg.auth.time.oc');
         },
 
         // the currently active auth token string
@@ -47,7 +68,7 @@ function($q , $timeout , $rootScope , $window , $location , egNet , egHatch) {
             .then(function(user) {
                 if (user && user.classname) {
                     // authtoken test succeeded
-                    service._user = user;
+                    service.user(user);
                     service.poll();
                     service.check_workstation(deferred);
 
@@ -154,6 +175,49 @@ function($q , $timeout , $rootScope , $window , $location , egNet , egHatch) {
         });
 
         return ops.deferred.promise;
+    }
+
+    /**
+     * Returns a promise, which is resolved on successful 
+     * login and rejected on failed login.
+     */
+    service.opChange = function(args) {
+        // avoid modifying the caller's data structure.
+        args = angular.copy(args);
+        args.workstation = service.workstation();
+
+        var deferred = $q.defer();
+
+        service.login_api(args).then(function(evt) {
+
+            if (evt.textcode == 'SUCCESS') {
+                service.OCuser(service.user());
+                egHatch.setLoginSessionItem('eg.auth.token.oc', service.token());
+                egHatch.setLoginSessionItem('eg.auth.time.oc', service.authtime());
+                service.handle_login_ok(args, evt);
+                deferred.resolve();
+
+            } else {
+                // note: the likely outcome here is a NO_SESION
+                // server event, which results in broadcasting an 
+                // egInvalidAuth by egNet. 
+                console.error('operator change failed ' + js2JSON(evt));
+                deferred.reject();
+            }
+        });
+
+        return deferred.promise;
+    }
+
+    service.opChangeUndo = function() {
+        if (service.OCtoken()) {
+            service.user(service.OCuser());
+            egHatch.setLoginSessionItem('eg.auth.token', service.OCtoken());
+            egHatch.setLoginSessionItem('eg.auth.time', service.OCauthtime());
+            egHatch.removeLoginSessionItem('eg.auth.token.oc');
+            egHatch.removeLoginSessionItem('eg.auth.time.oc');
+        }
+        return service.testAuthToken();
     }
 
     service.login_api = function(args) {
