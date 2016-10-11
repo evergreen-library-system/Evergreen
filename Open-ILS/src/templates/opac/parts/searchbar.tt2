@@ -1,5 +1,18 @@
 <h3 class="sr-only">[% l('Catalog Search') %]</h3>
-[% PROCESS "opac/parts/org_selector.tt2" %]
+[% PROCESS "opac/parts/org_selector.tt2";
+
+# We need to ignore some filters in our count
+
+fignore = ['core_limit','limit','badge_orgs','badges','estimation_strategy','depth'];
+fcount = 0;
+FOR f IN ctx.query_struct.filters;
+    IF fignore.grep('^' _ f.name _ '$').size;
+        NEXT;
+    END;
+    fcount = fcount + 1;
+END;
+
+ %]
 <div id="search-wrapper">
     [% UNLESS took_care_of_form -%]
     <form action="[% ctx.opac_root %]/results" method="get">
@@ -113,12 +126,20 @@
         </form>
     [% END %]
     [% IF (is_advanced AND NOT is_special) AND CGI.param('qtype') %]
-    <div class="opac-auto-102">
+    <div class="refine_search">
+        [% IF fcount > 0 %]
+        [ [% l('[quant,_1,filter,filters] applied', fcount) %] ]
+        [% END %]
         [ <a href="[% mkurl(ctx.opac_root _ '/advanced') %]">[%
             l('Refine My Original Search')
         %]</a> ]
     </div>
     [% END %]
+    <!-- Canonicalized query:
+
+    [% ctx.canonicalized_query | html %]
+
+    -->
     <!--
     <div id="breadcrumb">
         <a href="[% ctx.opac_root %]/home">[% l('Catalog Home') %]</a> &gt;

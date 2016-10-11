@@ -51,6 +51,11 @@ a {
     margin-left: 1em;
 }
 
+.refine_search {
+    padding-bottom: 7px;
+    margin-left: 1em;
+}
+
 /*
 #search-wrapper select {
     border:0px solid [% css_colors.border_dark %];
