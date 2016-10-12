@@ -8,6 +8,8 @@ DELETE FROM actor.org_unit_setting WHERE name = 'circ.selfcheck.require_patron_p
 
 DELETE FROM config.org_unit_setting_type WHERE name = 'circ.selfcheck.require_patron_password';
 
+DELETE FROM config.org_unit_setting_type_log WHERE field_name = 'circ.selfcheck.require_patron_password';
+
 DELETE FROM permission.usr_perm_map WHERE perm IN (SELECT id FROM permission.perm_list WHERE code = 'UPDATE_ORG_UNIT_SETTING.circ.selfcheck.require_patron_password');
 
 DELETE FROM permission.grp_perm_map WHERE perm IN (SELECT id FROM permission.perm_list WHERE code = 'UPDATE_ORG_UNIT_SETTING.circ.selfcheck.require_patron_password');
