@@ -3,7 +3,7 @@ dojo.require('openils.PermaCrud');
 dojo.require('openils.XUL');
 dojo.require('dojox.form.CheckedMultiSelect');
 
-var xulStorage = openils.XUL.localStorage();
+var xulStorage;
 var storekey = 'eg.acq.upload.';
 var osetkey = 'acq.upload.default.';
 var persistOrgSettings;
@@ -52,6 +52,8 @@ function VLAgent(args) {
 
     this.init = function(oncomplete) {
         var self = this;
+
+	xulStorage = openils.XUL.localStorage();
 
         // load org unit persist setting values
         fieldmapper.standardRequest(
