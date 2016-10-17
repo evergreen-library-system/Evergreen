@@ -247,8 +247,11 @@ function($scope , $routeParams , $location , $window , $q , egCore) {
 .controller('CatalogCtrl',
        ['$scope','$routeParams','$location','$window','$q','egCore','egHolds','egCirc','egConfirmDialog','ngToast',
         'egGridDataProvider','egHoldGridActions','$timeout','$uibModal','holdingsSvc','egUser','conjoinedSvc',
+        '$cookies',
 function($scope , $routeParams , $location , $window , $q , egCore , egHolds , egCirc , egConfirmDialog , ngToast ,
-         egGridDataProvider , egHoldGridActions , $timeout , $uibModal , holdingsSvc , egUser , conjoinedSvc) {
+         egGridDataProvider , egHoldGridActions , $timeout , $uibModal , holdingsSvc , egUser , conjoinedSvc,
+         $cookies
+) {
 
     var holdingsSvcInst = new holdingsSvc();
 
@@ -258,6 +261,14 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
 
     if ($routeParams.record_id) $scope.from_route = true;
     else $scope.from_route = false;
+
+    // set search and preferred library cookies
+    egCore.hatch.getItem('eg.search.search_lib').then(function(val) {
+        $cookies.put('eg_search_lib', val, { path : '/' });
+    });
+    egCore.hatch.getItem('eg.search.pref_lib').then(function(val) {
+        $cookies.put('eg_pref_lib', val, { path : '/' });
+    });
 
     // will hold a ref to the opac iframe
     $scope.opac_iframe = null;
@@ -1438,6 +1449,16 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
                 url += encodeURIComponent(key) 
                     + '=' + encodeURIComponent(val);
             });
+        }
+
+        // if we're displaying the advanced search form, select
+        // whatever default pane the user has chosen via workstation
+        // preference
+        if (url.match(/\/opac\/advanced$/)) {
+            var adv_pane = egCore.hatch.getLocalItem('eg.search.adv_pane');
+            if (adv_pane) {
+                url += '?pane=' + encodeURIComponent(adv_pane);
+            }
         }
 
         $scope.catalog_url = url;

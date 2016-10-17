@@ -548,6 +548,9 @@ sub _get_search_lib {
     if ($self->apache->headers_in->get('OILS-Search-Lib')) {
         return $self->apache->headers_in->get('OILS-Search-Lib');
     }
+    if ($self->cgi->cookie('eg_search_lib')) {
+        return $self->cgi->cookie('eg_search_lib');
+    }
 
     my $pref_lib = $self->_get_pref_lib();
     return $pref_lib if $pref_lib;
@@ -565,6 +568,9 @@ sub _get_pref_lib {
 
     if ($self->apache->headers_in->get('OILS-Pref-Lib')) {
         return $self->apache->headers_in->get('OILS-Pref-Lib');
+    }
+    if ($self->cgi->cookie('eg_pref_lib')) {
+        return $self->cgi->cookie('eg_pref_lib');
     }
 
     if ($ctx->{user}) {
