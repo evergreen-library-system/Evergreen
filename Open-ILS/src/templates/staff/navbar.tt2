@@ -257,6 +257,21 @@
        </ul>
       </li>
 
+      <!-- acquisitions -->
+      <li class="dropdown" uib-dropdown>
+        <a href uib-dropdown-toggle>[% l('Acquisitions') %]<b class="caret"></b>
+        </a>
+        <ul uib-dropdown-menu>
+          <li>
+            <a href="./acq/legacy/search/unified" target="_self">
+              <span class="glyphicon glyphicon-search"></span>
+              [% l('General Search') %]
+            </a>
+          </li>
+          <li class="divider"></li>
+       </ul>
+      </li>
+
       <!-- admin -->
       <li class="dropdown" uib-dropdown>
         <a href uib-dropdown-toggle>[% l('Administration') %]<b class="caret"></b></a>
