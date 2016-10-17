@@ -33,7 +33,7 @@ function($scope , $routeParams , $location , egCore) {
     }
 
     var acq_path = '/eg/acq/' + 
-        $routeParams.noun + '/' + $routeParams.verb;
+        $routeParams.noun + '/' + $routeParams.verb + location.search;
 
     // embed URL must include protocol/domain or it will be loaded via
     // push-state, resulting in an infinitely nested pages.

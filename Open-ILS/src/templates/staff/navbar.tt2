@@ -269,6 +269,36 @@
             </a>
           </li>
           <li class="divider"></li>
+          <li>
+            <a href="./acq/legacy/search/unified?ca=pl" target="_self">
+              <span class="glyphicon glyphicon-list"></span>
+              [% l('My Selection Lists') %]
+            </a>
+          </li>
+          <li>
+            <a href="./acq/legacy/picklist/brief_record" target="_self">
+              <span class="glyphicon glyphicon-pencil"></span>
+              [% l('New Brief Record') %]
+            </a>
+          </li>
+          <li>
+            <a href="./acq/legacy/picklist/user_request" target="_self">
+              <span class="glyphicon glyphicon-thumbs-up"></span>
+              [% l('Patron Requests') %]
+            </a>
+          </li>
+          <li>
+            <a href="./acq/legacy/picklist/bib_search" target="_self">
+              <span class="glyphicon glyphicon-cloud-download"></span>
+              [% l('MARC Federated Search') %]
+            </a>
+          </li>
+          <li>
+            <a href="./acq/legacy/picklist/from_bib" target="_self">
+              <span class="glyphicon glyphicon-import"></span>
+              [% l('Load Catalog Record IDs') %]
+            </a>
+          </li>
        </ul>
       </li>
 
