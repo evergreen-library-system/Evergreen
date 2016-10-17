@@ -306,6 +306,37 @@
               [% l('Load MARC Order Records') %]
             </a>
           </li>
+          <li>
+            <a href="./acq/legacy/search/unified?ca=po" target="_self">
+              <span class="glyphicon glyphicon-shopping-cart"></span>
+              [% l('Purchase Orders') %]
+            </a>
+          </li>
+          <li>
+            <a href="./acq/legacy/po/create" target="_self">
+              <span class="glyphicon glyphicon-plus"></span>
+              [% l('Create Purchase Order') %]
+            </a>
+          </li>
+          <li class="divider"></li>
+          <li>
+            <a href="./acq/legacy/financial/claim_eligible" target="_self">
+              <span class="glyphicon glyphicon-question-sign"></span>
+              [% l('Claim-Ready Items') %]
+            </a>
+          </li>
+          <li>
+            <a href="./acq/legacy/search/unified?ca=inv" target="_self">
+              <span class="glyphicon glyphicon-usd"></span>
+              [% l('Open Invoices') %]
+            </a>
+          </li>
+          <li>
+            <a href="./acq/legacy/invoice/view?create=1" target="_self">
+              <span class="glyphicon glyphicon-credit-card"></span>
+              [% l('Create Invoice') %]
+            </a>
+          </li>
        </ul>
       </li>
 
