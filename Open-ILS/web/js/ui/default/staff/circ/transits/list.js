@@ -104,7 +104,8 @@ function($scope , $q , $routeParams , $window , egCore , egTransits , egGridData
         var recv_index = 0;
 
         var filter = {
-            'source_send_time' : { 'between' : date_range() }
+            'source_send_time' : { 'between' : date_range() },
+            'dest_recv_time'   : null
         };
         if ($scope.transit_direction == 'to') { filter['dest'] = $scope.context_org.id(); }
         if ($scope.transit_direction == 'from') { filter['source'] = $scope.context_org.id(); }

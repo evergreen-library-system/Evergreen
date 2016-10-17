@@ -48,8 +48,7 @@
   <eg-grid-field path='target_copy.call_number.record.simple_record.author' hidden></eg-grid-field>
   <eg-grid-field path='source.shortname' label="[% l('Source Library') %]"></eg-grid-field>
   <eg-grid-field path='dest.shortname' label="[% l('Destination Library') %]"></eg-grid-field>
-  <eg-grid-field path='source_send_time'></eg-grid-field>
-  <eg-grid-field path='dest_recv_time'></eg-grid-field>
+  <eg-grid-field path='source_send_time' dateformat='short''></eg-grid-field>
   <eg-grid-field path='hold_transit_copy.hold.hold_type'></eg-grid-field>
   <eg-grid-field path='hold_transit_copy.hold.request_time' hidden></eg-grid-field>
   <eg-grid-field path='hold_transit_copy.hold.capture_time' hidden></eg-grid-field>
