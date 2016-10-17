@@ -299,6 +299,13 @@
               [% l('Load Catalog Record IDs') %]
             </a>
           </li>
+          <li class="divider"></li>
+          <li>
+            <a href="./acq/legacy/picklist/upload" target="_self">
+              <span class="glyphicon glyphicon-cloud-upload"></span>
+              [% l('Load MARC Order Records') %]
+            </a>
+          </li>
        </ul>
       </li>
 
