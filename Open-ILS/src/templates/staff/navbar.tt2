@@ -369,6 +369,12 @@
             </a>
           </li>
           <li>
+            <a href="./admin/acq/index" target="_self">
+              <span class="glyphicon glyphicon-usd"></span>
+              [% l('Acquisitions Administration') %]
+            </a>
+          </li>
+          <li>
             <a href="./reporter/legacy/main" target="_self">
               <span class="glyphicon glyphicon-object-align-bottom"></span>
               [% l('Reports') %]

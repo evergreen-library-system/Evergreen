@@ -1,0 +1,49 @@
+
+<div class="container-fluid" style="text-align:center">
+  <div class="alert alert-info alert-less-pad strong-text-2">
+    <span>[% l('Acquisitions Administration') %]</span>
+  </div>
+</div>
+
+<div class="container admin-splash-container">
+
+[%
+    interfaces = [
+     [ l('Currency Types'), "./admin/acq/currency_type/list" ]
+    ,[ l('Distribution Formulas'), "./admin/acq/conify/distribution_formula" ]
+    ,[ l('EDI Accounts'), "./admin/acq/conify/edi_account" ]
+    ,[ l('EDI Messages'), "./admin/acq/po/edi_messages" ]
+    ,[ l('Exchange Rates'), "./admin/acq/conify/exchange_rate" ]
+    ,[ l('Fund Tags'), "./admin/acq/conify/fund_tag" ]
+    ,[ l('Funding Sources'), "./admin/acq/funding_source/list" ]
+    ,[ l('Funds'), "./admin/acq/fund/list" ]
+    ,[ l('Providers'), "./admin/acq/conify/provider" ]
+    ,[ l('Claim Event Types'), "./admin/acq/conify/claim_event_type" ]
+    ,[ l('Claim Policies'), "./admin/acq/conify/claim_policy" ]
+    ,[ l('Claim Policy Actions'), "./admin/acq/conify/claim_policy_action" ]
+    ,[ l('Claim Types'), "./admin/acq/conify/claim_type" ]
+    ,[ l('Invoice Item Types'), "./admin/acq/conify/invoice_item_type" ]
+    ,[ l('Invoice Payment Method'), "./admin/acq/conify/invoice_payment_method" ]
+    ,[ l('Cancel Reasons'), "./admin/acq/conify/cancel_reason" ]
+    ,[ l('Line Item Alerts'), "./admin/acq/conify/lineitem_alert" ]
+    ,[ l('Line Item MARC Attribute Definitions'), "./admin/acq/conify/lineitem_marc_attr_def" ]
+   ];
+
+   USE table(interfaces, rows=9);
+%]
+
+[% FOREACH row = table.rows %]
+  <div class="row new-entry">
+    [% FOREACH item = row %][% IF item.1 %]
+    <div class="col-md-4">
+      <span class="glyphicon glyphicon-pencil"></span>
+      <a target="_self" href="[% item.1 %]">
+        [% item.0 %]
+      </a>
+    </div>
+    [% END %][% END %]
+  </div>
+[% END %]
+
+</div>
+
