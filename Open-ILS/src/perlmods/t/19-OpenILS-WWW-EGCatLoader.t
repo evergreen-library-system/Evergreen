@@ -1,6 +1,6 @@
 #!perl -T
 
-use Test::More tests => 9;
+use Test::More tests => 11;
 use CGI;
 
 BEGIN {
@@ -17,7 +17,14 @@ my $cgi = CGI->new();
 $cgi->param('query', 'sort(titlesort) cats site(CONS)');
 $cgi->param('sort',  '');
 $cgi->param('depth', 0);
-my ($new_query, $site, $depth) = OpenILS::WWW::EGCatLoader::_prepare_biblio_search($cgi, $ctx);
+my ($user_query, $query, $site, $depth) = OpenILS::WWW::EGCatLoader::_prepare_biblio_search($cgi, $ctx);
+is($user_query, 'sort(titlesort) cats site(CONS)', 'LP#100504: user query left as is');
 is($site,  'CONS', 'successfully parsed site');
 is($depth, '0',    'successfully parsed depth');
-is($new_query,  'cats site(CONS) depth(0)', 'LP#1562153: change sort order to relevance');
+is($query,  'cats site(CONS) depth(0)', 'LP#1562153: change sort order to relevance');
+
+# test date filter
+$cgi->param('pubdate', 'is');
+$cgi->param('date1', '1999');
+($user_query, $query, $site, $depth) = OpenILS::WWW::EGCatLoader::_prepare_biblio_search($cgi, $ctx);
+is($query, 'date1(1999)  cats site(CONS) depth(0)', 'LP#1005040: "is" pubdate filter mapped to date1() filter');
