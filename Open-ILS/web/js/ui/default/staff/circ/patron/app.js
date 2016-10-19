@@ -29,6 +29,7 @@ angular.module('egPatronApp', ['ngRoute', 'ui.bootstrap',
         // specific settings from within their respective controllers
         egCore.env.classLoaders.aous = function() {
             return egCore.org.settings([
+                'ui.staff.require_initials.patron_info_notes',
                 'circ.do_not_tally_claims_returned',
                 'circ.tally_lost',
                 'circ.obscure_dob',
@@ -1312,8 +1313,8 @@ function($scope,  $routeParams , $location , egCore , patronSvc) {
 }])
 
 .controller('PatronNotesCtrl',
-       ['$scope','$routeParams','$location','egCore','patronSvc','$uibModal',
-function($scope,  $routeParams , $location , egCore , patronSvc , $uibModal) {
+       ['$scope', '$filter', '$routeParams','$location','egCore','patronSvc','$uibModal',
+function($scope,  $filter, $routeParams , $location , egCore , patronSvc , $uibModal) {
     $scope.initTab('other', $routeParams.id);
     var usr_id = $routeParams.id;
 
@@ -1338,6 +1339,7 @@ function($scope,  $routeParams , $location , egCore , patronSvc , $uibModal) {
             function($scope, $uibModalInstance) {
                 $scope.focusNote = true;
                 $scope.args = {};
+                $scope.require_initials = egCore.env.aous['ui.staff.require_initials.patron_info_notes'];
                 $scope.ok = function(count) { $uibModalInstance.close($scope.args) }
                 $scope.cancel = function () { $uibModalInstance.dismiss() }
             }],
@@ -1350,6 +1352,8 @@ function($scope,  $routeParams , $location , egCore , patronSvc , $uibModal) {
                 note.value(args.value);
                 note.pub(args.pub ? 't' : 'f');
                 note.creator(egCore.auth.user().id());
+                if (args.initials) 
+                    note.value(note.value() + ' [' + args.initials + ']');
                 egCore.pcrud.create(note).then(function() {refreshPage()});
             }
         );

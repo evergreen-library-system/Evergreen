@@ -35,6 +35,11 @@
       </div>
     </div>
     <div class="modal-footer">
+      <div class="col-md-2">
+        <input type="text" class="form-control" ng-hide="!require_initials"
+          id="initials" ng-model="args.initials" placeholder="[% l('Initials') %]" 
+          ng-required="require_initials" />
+      </div>
       <input type="submit" class="btn btn-primary" value="[% l('OK') %]"/>
       <button class="btn btn-warning" ng-click="cancel()">[% l('Cancel') %]</button>
     </div>
