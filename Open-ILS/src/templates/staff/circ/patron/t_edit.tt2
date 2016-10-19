@@ -55,6 +55,13 @@
     </div>
   </div>
 
+  <div class="alert alert-danger" ng-show="address_alerts.length > 0">
+      <div class="strong-text-3">[% l('Address Alert') %]</div>
+      <div ng-repeat="address_alert in address_alerts">
+        {{address_alert.alert_message()}}
+      </div>
+  </div>
+
   <!-- IDL field documentation window -->
   <div class="alert alert-info" ng-show="selected_field_doc">
     <fieldset id="reg-field-doc">

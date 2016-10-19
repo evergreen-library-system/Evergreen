@@ -1106,6 +1106,7 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
     // for existing patrons, disable barcode input by default
     $scope.disable_bc = $scope.focus_usrname = Boolean($scope.patron_id);
     $scope.focus_bc = !Boolean($scope.patron_id);
+    $scope.address_alerts = [];
     $scope.dupe_counts = {};
 
     // map of perm name to true/false for perms the logged in user
@@ -1587,6 +1588,27 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
         patronRegSvc.invalidate_field($scope.patron, field);
     }
 
+    address_alert = function(addr) {
+        var args = {
+            street1: addr.street1,
+            street2: addr.street2,
+            city: addr.city,
+            state: addr.state,
+            county: addr.county,
+            country: addr.country,
+            post_code: addr.post_code,
+            mailing_address: addr._is_mailing,
+            billing_address: addr._is_billing
+        }
+
+        egCore.net.request(
+            'open-ils.actor',
+            'open-ils.actor.address_alert.test',
+            egCore.auth.token(), egCore.auth.user().ws_ou(), args
+            ).then(function(res) {
+                $scope.address_alerts = res;
+        });
+    }
 
     $scope.dupe_value_changed = function(type, value) {
         $scope.dupe_counts[type] = 0;
@@ -1689,6 +1711,7 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
             case 'city':
                 // dupe search on address wants the address object as the value.
                 $scope.dupe_value_changed('address', obj);
+                address_alert(obj);
                 break;
 
             case 'post_code':
