@@ -18,8 +18,8 @@ angular.module('egTransitListApp',
 })
 
 .controller('TransitListCtrl',
-       ['$scope','$q','$routeParams','$window','egCore','egTransits','egGridDataProvider',
-function($scope , $q , $routeParams , $window , egCore , egTransits , egGridDataProvider) {
+       ['$scope','$q','$routeParams','$window','egCore','egTransits','egGridDataProvider','$uibModal','$timeout',
+function($scope , $q , $routeParams , $window , egCore , egTransits , egGridDataProvider , $uibModal , $timeout) {
 
     var transits = [];
     var provider = egGridDataProvider.instance({});
@@ -88,6 +88,128 @@ function($scope , $q , $routeParams , $window , egCore , egTransits , egGridData
 
     $scope.abort_transit = function(action, date, transits) {
         abort_transit(transits);
+    }
+
+    $scope.add_copies_to_bucket = function(transits) {
+        var copy_list = [];
+        angular.forEach($scope.grid_controls.selectedItems(), function(transit) {
+            copy_list.push(transit.target_copy().id());
+        });
+        if (copy_list.length == 0) return;
+
+        // FIXME what follows ought to be refactored into a factory
+        return $uibModal.open({
+            templateUrl: './cat/catalog/t_add_to_bucket',
+            animation: true,
+            size: 'md',
+            controller:
+                   ['$scope','$uibModalInstance',
+            function($scope , $uibModalInstance) {
+
+                $scope.bucket_id = 0;
+                $scope.newBucketName = '';
+                $scope.allBuckets = [];
+
+                egCore.net.request(
+                    'open-ils.actor',
+                    'open-ils.actor.container.retrieve_by_class.authoritative',
+                    egCore.auth.token(), egCore.auth.user().id(),
+                    'copy', 'staff_client'
+                ).then(function(buckets) { $scope.allBuckets = buckets; });
+
+                $scope.add_to_bucket = function() {
+                    var promises = [];
+                    angular.forEach(copy_list, function (cp) {
+                        var item = new egCore.idl.ccbi()
+                        item.bucket($scope.bucket_id);
+                        item.target_copy(cp);
+                        promises.push(
+                            egCore.net.request(
+                                'open-ils.actor',
+                                'open-ils.actor.container.item.create',
+                                egCore.auth.token(), 'copy', item
+                            )
+                        );
+
+                        return $q.all(promises).then(function() {
+                            $uibModalInstance.close();
+                        });
+                    });
+                }
+
+                $scope.add_to_new_bucket = function() {
+                    var bucket = new egCore.idl.ccb();
+                    bucket.owner(egCore.auth.user().id());
+                    bucket.name($scope.newBucketName);
+                    bucket.description('');
+                    bucket.btype('staff_client');
+
+                    return egCore.net.request(
+                        'open-ils.actor',
+                        'open-ils.actor.container.create',
+                        egCore.auth.token(), 'copy', bucket
+                    ).then(function(bucket) {
+                        $scope.bucket_id = bucket;
+                        $scope.add_to_bucket();
+                    });
+                }
+
+                $scope.cancel = function() {
+                    $uibModalInstance.dismiss();
+                }
+            }]
+        });
+    }
+
+
+    function gatherSelectedRecordIds () {
+        var rid_list = [];
+        angular.forEach(
+            $scope.grid_controls.selectedItems(),
+            function (item) {
+                if (rid_list.indexOf(item.target_copy().call_number().record().simple_record().id()) == -1)
+                    rid_list.push(item.target_copy().call_number().record().simple_record().id());
+            }
+        );
+        return rid_list;
+    }
+    function gatherSelectedHoldingsIds (rid) {
+        var cp_id_list = [];
+        angular.forEach(
+            $scope.grid_controls.selectedItems(),
+            function (item) {
+                if (rid && item.target_copy().call_number().record().simple_record().id() != rid) return;
+                cp_id_list.push(item.target_copy().id());
+            }
+        );
+        return cp_id_list;
+    }
+
+    var spawnHoldingsEdit = function (hide_vols, hide_copies){
+        angular.forEach(gatherSelectedRecordIds(), function (r) {
+            egCore.net.request(
+                'open-ils.actor',
+                'open-ils.actor.anon_cache.set_value',
+                null, 'edit-these-copies', {
+                    record_id: r,
+                    copies: gatherSelectedHoldingsIds(r),
+                    raw: {},
+                    hide_vols : hide_vols,
+                    hide_copies : hide_copies
+                }
+            ).then(function(key) {
+                if (key) {
+                    var url = egCore.env.basePath + 'cat/volcopy/' + key;
+                    $timeout(function() { $window.open(url, '_blank') });
+                } else {
+                    alert('Could not create anonymous cache key!');
+                }
+            });
+        });
+    }
+   
+    $scope.edit_copies = function() { 
+        spawnHoldingsEdit(true, false);
     }
 
     $scope.grid_controls = {
