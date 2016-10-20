@@ -26,6 +26,19 @@
         <input ng-keyup="$event.keyCode == 13 ? ok() : null" type='password' ng-model="args.password" class="form-control"/>
       </div>
     </div>
+    <div class="row">
+      <div class="col-md-4">
+        [% l('Login Type:') %]
+      </div>
+      <div class="col-md-1"></div>
+      <div class="col-md-7">
+        <select class="form-control" required ng-model="args.type">
+          <option value="temp">[% l('Temporary') %]</option>
+          <option value="staff" selected>[% l('Staff') %]</option>
+          <option value="persist" selected>[% l('Persistent') %]</option>
+        </select>
+      </div>
+    </div>
   </div>
   <div class="modal-footer">
     [% dialog_footer %]

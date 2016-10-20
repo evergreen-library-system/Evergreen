@@ -83,13 +83,14 @@ angular.module('egCoreMod')
                         templateUrl: './share/t_opchange',
                         controller:
                             ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
-                            $scope.args = {username : '', password : ''};
+                            $scope.args = {username : '', password : '', type : 'temp'};
                             $scope.focus = true;
                             $scope.ok = function() { $uibModalInstance.close($scope.args) }
                             $scope.cancel = function () { $uibModalInstance.dismiss() }
                         }]
                     }).result.then(function (args) {
                         if (!args || !args.username || !args.password) return;
+                        args.type = args.type || 'temp';
                         args.workstation = egCore.auth.workstation();
                         egCore.auth.opChange(args).then(
                             function() {
