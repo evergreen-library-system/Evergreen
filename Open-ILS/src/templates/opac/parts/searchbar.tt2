@@ -3,7 +3,7 @@
 
 # We need to ignore some filters in our count
 
-fignore = ['core_limit','limit','badge_orgs','badges','estimation_strategy','depth'];
+fignore = ['location_groups','site','core_limit','limit','badge_orgs','badges','estimation_strategy','depth'];
 fcount = 0;
 FOR f IN ctx.query_struct.filters;
     IF fignore.grep('^' _ f.name _ '$').size;
