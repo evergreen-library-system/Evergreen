@@ -20,6 +20,11 @@
   grid-controls="gridControls"
   items-provider="patronSearchGridProvider"
   persist-key="circ.patron.search">
+
+  <eg-grid-menu-item handler="merge_patrons"
+    disabled="need_two_selected"
+    label="[% l('Merge Patrons') %]"></eg-grid-menu-item>
+
   <eg-grid-field label="[% ('ID') %]" path='id' visible></eg-grid-field>
   <eg-grid-field label="[% ('Card') %]" path='card.barcode' visible></eg-grid-field>
   <eg-grid-field label="[% ('Profile') %]" path='profile.name' visible></eg-grid-field>

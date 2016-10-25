@@ -18,6 +18,19 @@
       <div class="col-md-5">[% l('Profile') %]</div>
       <div class="col-md-7">{{patron().profile().name()}}</div>
     </div>
+    <div class="row" ng-if="show_name()">
+      <div class="col-md-5">[% l('ID') %]</div>
+      <div class="col-md-7">{{patron().id()}}</div>
+    </div>
+    <div class="row" ng-if="show_name()">
+      <div class="col-md-5">[% l('Name') %]</div>
+      <div class="col-md-7">
+                    [% l('[_1], [_2] [_3]',
+                '{{patron().family_name()}}',
+                '{{patron().first_given_name()}}',
+                '{{patron().second_given_name()}}') %]
+      </div>
+    </div>
     <div class="row">
       <div class="col-md-5">[% l('Home Library') %]</div>
       <div class="col-md-7">{{patron().home_ou().shortname()}}</div>

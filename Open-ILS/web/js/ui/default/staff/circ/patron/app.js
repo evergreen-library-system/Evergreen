@@ -789,8 +789,10 @@ function($scope , $location , egCore , egConfirmDialog , egUser , patronSvc) {
 .controller('PatronSearchCtrl',
        ['$scope','$q','$routeParams','$timeout','$window','$location','egCore',
        '$filter','egUser', 'patronSvc','egGridDataProvider','$document',
+       'egPatronMerge',
 function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore,
-        $filter,  egUser,  patronSvc , egGridDataProvider , $document) {
+        $filter,  egUser,  patronSvc , egGridDataProvider , $document,
+        egPatronMerge) {
 
     $scope.initTab('search');
     $scope.focusMe = true;
@@ -1079,6 +1081,27 @@ function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore,
     if (patronSvc.urlSearch) {
         // force the grid to load the url-based search on page load
         provider.refresh();
+    }
+
+    $scope.need_two_selected = function() {
+        var items = $scope.gridControls.selectedItems();
+        return (items.length == 2) ? false : true;
+    }
+    $scope.merge_patrons = function() {
+        var items = $scope.gridControls.selectedItems();
+        if (items.length != 2) return false;
+
+        var patron_ids = [];
+        angular.forEach(items, function(i) {
+            patron_ids.push(i.id());
+        });
+        egPatronMerge.do_merge(patron_ids).then(function() {
+            // ensure that we're not drawing from cached
+            // resuts, as a successful merge just deleted a
+            // record
+            delete patronSvc.lastSearch;
+            $scope.gridControls.refresh();
+        });
     }
    
 }])
