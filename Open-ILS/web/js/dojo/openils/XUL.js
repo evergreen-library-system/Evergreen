@@ -3,6 +3,13 @@ if(!dojo._hasResource["openils.XUL"]) {
     dojo.provide("openils.XUL");
     dojo.declare('openils.XUL', null, {});
 
+    openils.XUL.Component_copy;
+    try {
+        openils.XUL.Component_copy = Components;
+    } catch (e) {
+        openils.XUL.Component_copy = null;
+    };
+
     openils.XUL.isXUL = function() {
         if(location.protocol == 'chrome:' || location.protocol == 'oils:') return true;
         return Boolean(window.IAMXUL);
@@ -14,9 +21,9 @@ if(!dojo._hasResource["openils.XUL"]) {
     }
     
     openils.XUL.getStash = function() {
-        if(openils.XUL.isXUL()) {
+        if(openils.XUL.Component_copy) {
             try {
-                var CacheClass = Components.classes["@open-ils.org/openils_data_cache;1"].getService();
+                var CacheClass = openils.XUL.Component_copy.classes["@open-ils.org/openils_data_cache;1"].getService();
                 return CacheClass.wrappedJSObject.data;
             } catch(e) {
                 console.log("Error loading XUL stash: " + e);
@@ -78,34 +85,38 @@ if(!dojo._hasResource["openils.XUL"]) {
     /* This class cuts down on the obscenely long incantations needed to
      * use XPCOM components. */
     openils.XUL.SimpleXPCOM = function() {};
-    openils.XUL.SimpleXPCOM.prototype = {
-        "FP": {
-            "iface": Components.interfaces.nsIFilePicker,
-            "cls": "@mozilla.org/filepicker;1"
-        },
-        "FIS": {
-            "iface": Components.interfaces.nsIFileInputStream,
-            "cls": "@mozilla.org/network/file-input-stream;1"
-        },
-        "SIS": {
-            "iface": Components.interfaces.nsIScriptableInputStream,
-            "cls": "@mozilla.org/scriptableinputstream;1"
-        },
-        "FOS": {
-            "iface": Components.interfaces.nsIFileOutputStream,
-            "cls": "@mozilla.org/network/file-output-stream;1"
-        },
-        "COS": {
-            "iface": Components.interfaces.nsIConverterOutputStream,
-            "cls": "@mozilla.org/intl/converter-output-stream;1"
-        },
-        "create": function(key) {
-            return Components.classes[this[key].cls].
-                createInstance(this[key].iface);
-        }
-    };
+    try {
+        openils.XUL.SimpleXPCOM.prototype = {
+            "FP": {
+                "iface": openils.XUL.Component_copy.interfaces.nsIFilePicker,
+                "cls": "@mozilla.org/filepicker;1"
+            },
+            "FIS": {
+                "iface": openils.XUL.Component_copy.interfaces.nsIFileInputStream,
+                "cls": "@mozilla.org/network/file-input-stream;1"
+            },
+            "SIS": {
+                "iface": openils.XUL.Component_copy.interfaces.nsIScriptableInputStream,
+                "cls": "@mozilla.org/scriptableinputstream;1"
+            },
+            "FOS": {
+                "iface": openils.XUL.Component_copy.interfaces.nsIFileOutputStream,
+                "cls": "@mozilla.org/network/file-output-stream;1"
+            },
+            "COS": {
+                "iface": openils.XUL.Component_copy.interfaces.nsIConverterOutputStream,
+                "cls": "@mozilla.org/intl/converter-output-stream;1"
+            },
+            "create": function(key) {
+                return openils.XUL.Component_copy.classes[this[key].cls].
+                    createInstance(this[key].iface);
+            }
+        };
+    } catch (e) { /* not XUL */ };
 
     openils.XUL.contentFromFileOpenDialog = function(windowTitle, sizeLimit) {
+        if (!openils.XUL.Component_copy) return null;
+
         var api = new openils.XUL.SimpleXPCOM();
 
         var picker = api.create("FP");
@@ -126,6 +137,8 @@ if(!dojo._hasResource["openils.XUL"]) {
     };
 
     openils.XUL.contentToFileSaveDialog = function(content, windowTitle, dispositionArgs) {
+        if (!openils.XUL.Component_copy) return null;
+
         var api = new openils.XUL.SimpleXPCOM();
 
         var picker = api.create("FP");
@@ -181,20 +194,20 @@ if(!dojo._hasResource["openils.XUL"]) {
     openils.XUL.localStorage = function() {
 
         // in browser mode, use the standard localStorage interface
-        if (!openils.XUL.isXUL()) 
+        if (!openils.XUL.Component_copy) 
             return window.localStorage;
 
         var url = location.protocol + '//' + location.hostname;
-        var ios = Components.classes["@mozilla.org/network/io-service;1"]
-                  .getService(Components.interfaces.nsIIOService);
-        var ssm = Components.classes["@mozilla.org/scriptsecuritymanager;1"]
-                  .getService(Components.interfaces.nsIScriptSecurityManager);
-        var dsm = Components.classes["@mozilla.org/dom/storagemanager;1"]
-                  .getService(Components.interfaces.nsIDOMStorageManager);
+        var ios = openils.XUL.Component_copy.classes["@mozilla.org/network/io-service;1"]
+                  .getService(openils.XUL.Component_copy.interfaces.nsIIOService);
+        var ssm = openils.XUL.Component_copy.classes["@mozilla.org/scriptsecuritymanager;1"]
+                  .getService(openils.XUL.Component_copy.interfaces.nsIScriptSecurityManager);
+        var dsm = openils.XUL.Component_copy.classes["@mozilla.org/dom/storagemanager;1"]
+                  .getService(openils.XUL.Component_copy.interfaces.nsIDOMStorageManager);
         var uri = ios.newURI(url, "", null);
         var principal = ssm.getCodebasePrincipal(uri);
         return dsm.getLocalStorageForPrincipal(principal, "");
     };
 
- }catch (e) {/*meh*/}
+ }catch (e) { console.log('Failed to load openils.XUL: ' + e) }
 }
