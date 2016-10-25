@@ -246,7 +246,10 @@ function($scope , $q , $routeParams , $window , egCore , egTransits , egGridData
                     'ahr' : ['usr'],
                     'au' : ['card']
                 },
-                'select' : { 'bre' : ['id'] }
+                'select' : { 'bre' : ['id'] },
+                order_by : { atc : 'source_send_time' },
+                limit  : count,
+                offset : offset,
             }
         ).then(
             deferred.resolve, null, 
