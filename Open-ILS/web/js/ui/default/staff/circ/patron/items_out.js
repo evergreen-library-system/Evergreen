@@ -98,7 +98,7 @@ function($scope,  $q,  $routeParams,  $timeout,  egCore , egUser,  patronSvc , $
             {   flesh : 4,
                 flesh_fields : {
                     circ : ['target_copy', 'workstation', 'checkin_workstation'],
-                    acp : ['call_number', 'holds_count'],
+                    acp : ['call_number', 'holds_count', 'status'],
                     acn : ['record'],
                     bre : ['simple_record']
                 },

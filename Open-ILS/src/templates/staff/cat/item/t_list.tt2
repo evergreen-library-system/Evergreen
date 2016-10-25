@@ -65,7 +65,7 @@
     {{item['_circ']['due_date'] | date:'short'}}
   </eg-grid-field>
   <eg-grid-field label="[% l('Location') %]"       path="location.name" visible></eg-grid-field>
-  <eg-grid-field label="[% l('Status') %]"         path="status.name" visible></eg-grid-field>
+  <eg-grid-field label="[% l('Copy Status') %]"    path="status.name" visible></eg-grid-field>
   <eg-grid-field label="[% l('Title') %]"       
     path="call_number.record.simple_record.title" visible>
     <a target="_blank" href="[% ctx.base_path %]/staff/cat/catalog/record/{{item['call_number.record.id']}}">
