@@ -1,0 +1,57 @@
+-- tests to verify that metarecord mapping updates happen correctly
+BEGIN;
+
+SELECT plan(4);
+
+INSERT INTO biblio.record_entry (last_xact_id, marc) VALUES (
+    'metarecord-remap-test',
+    $record$<record xmlns="http://www.loc.gov/MARC21/slim">
+  <leader>02137cam a2200457 a 4500</leader>
+  <controlfield tag="001">ocn694080497</controlfield>
+  <controlfield tag="005">20160729104757.0</controlfield>
+  <controlfield tag="008">101217s2011    txu      b    001 0 eng  </controlfield>
+  <datafield tag="245" ind1="0" ind2="0">
+    <subfield code="a">Random Title AFDSDGFJ /</subfield>
+    <subfield code="c">Felix T. Cat.</subfield>
+  </datafield>
+</record>$record$);
+
+SELECT is(
+    (
+        SELECT COUNT(*) FROM metabib.metarecord
+        WHERE master_record = CURRVAL('biblio.record_entry_id_seq')
+    )::INT,
+    1,
+    'unique bib becomes master of just one metarecord'
+);
+SELECT is(
+    (
+        SELECT COUNT(*) FROM metabib.metarecord_source_map
+        WHERE source = CURRVAL('biblio.record_entry_id_seq')
+    )::INT,
+    1,
+    'unique bib part of just one metarecord mapping'
+);
+
+UPDATE biblio.record_entry
+SET marc = REPLACE(marc, 'Random Title AFDSDGFJ', 'Random Title XXDFYLNJ')
+WHERE id = CURRVAL('biblio.record_entry_id_seq');
+
+SELECT is(
+    (
+        SELECT COUNT(*) FROM metabib.metarecord
+        WHERE master_record = CURRVAL('biblio.record_entry_id_seq')
+    )::INT,
+    1,
+    'LP#1488655: after fingerprint change, bib still master of just one metarecord'
+);
+SELECT is(
+    (
+        SELECT COUNT(*) FROM metabib.metarecord_source_map
+        WHERE source = CURRVAL('biblio.record_entry_id_seq')
+    )::INT,
+    1,
+    'LP#1488655: after fingerprint change, bib still in just one metarecord mapping'
+);
+
+ROLLBACK;
