@@ -1266,7 +1266,7 @@ BEGIN
                 new_mapping := FALSE;
 
             ELSE -- Our fingerprint changed ... maybe remove the old MR
-                DELETE FROM metabib.metarecord_source_map WHERE metarecord = old_mr AND source = bib_id; -- remove the old source mapping
+                DELETE FROM metabib.metarecord_source_map WHERE metarecord = tmp_mr.id AND source = bib_id; -- remove the old source mapping
                 SELECT COUNT(*) INTO source_count FROM metabib.metarecord_source_map WHERE metarecord = tmp_mr.id;
                 IF source_count = 0 THEN -- No other records
                     deleted_mrs := ARRAY_APPEND(deleted_mrs, tmp_mr.id);
