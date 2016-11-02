@@ -20,6 +20,8 @@ function my_init() {
 
         g.funcs = []; g.bill_map = {}; g.row_map = {}; g.check_map = {};
 
+        g.safe_for_refresh = false;
+
         g.patron_id = xul_param('patron_id');
 
         $('circulating_hint').hidden = true;
@@ -62,6 +64,8 @@ function my_init() {
                 }
             );
         }
+
+        g.funcs.push( function() { g.safe_for_refresh = true; } );
 
     } catch(E) {
         var err_msg = $("commonStrings").getFormattedString('common.exception', ['patron/bill2.xul', E]);
@@ -519,11 +523,12 @@ function retrieve_mbts_for_list() {
     } else {
    
         g.mbts_ids.reverse();
- 
+        g.safe_for_refresh = false;
         for (var i = 0; i < g.mbts_ids.length; i++) {
             dump('i = ' + i + ' g.mbts_ids[i] = ' + g.mbts_ids[i] + '\n');
             g.funcs.push( gen_list_append_func(g.mbts_ids[i]) );
         }
+        g.funcs.push( function() { g.safe_for_refresh = true; } );
     }
 }
 
@@ -1070,14 +1075,16 @@ function pay(payment_blob) {
 
 function refresh(params) {
     try {
-        if (params && params.clear_voided_summary) {
-            g.data.voided_billings = []; g.data.stash('voided_billings');
+        if (g.safe_for_refresh) {
+            if (params && params.clear_voided_summary) {
+                g.data.voided_billings = []; g.data.stash('voided_billings');
+            }
+            refresh_patron();
+            g.bill_list.clear();
+            retrieve_mbts_for_list();
+            tally_voided();
+            distribute_payment();
         }
-        refresh_patron();
-        g.bill_list.clear();
-        retrieve_mbts_for_list();
-        tally_voided();
-        distribute_payment(); 
     } catch(E) {
         alert('Error in bill2.js, refresh(): ' + E);
     }
