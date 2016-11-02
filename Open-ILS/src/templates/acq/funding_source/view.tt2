@@ -35,22 +35,11 @@
     <div dojoType="dijit.form.DropDownButton">
         <span>[% l('Allocate to Fund') %]</span>
         <div dojoType="dijit.TooltipDialog" execute="applyFSAllocation(arguments[0]);">
-            <script type='dojo/connect' event='onOpen'>
-                openils.acq.Fund.createStore(
-                    function(store) {
-                        fundingSourceFundSelector.store = 
-                            new dojo.data.ItemFileReadStore({data:store});
-                        fundingSourceFundSelector.setValue(store.items[0].code);
-                    }, 'MANAGE_FUND'
-                );
-            </script>
             <table class='dijitTooltipTable'>
                 <tr>
-                    <td><label for="amount">[% l('Fund: ') %]</label></td>
+                    <td><label for="fund">[% l('Fund: ') %]</label></td>
                     <td>
-                        <input jsId='fundingSourceFundSelector' name="fund" 
-                            dojoType="dijit.form.FilteringSelect" searchAttr='code' labelAttr='code'>
-                        </input>
+                        <div id="oils-acq-funding-source-fund-allocate"></div>
                     </td>
                 </tr>
                 <tr>
@@ -61,7 +50,7 @@
                 </tr>
                 <!-- Percent-based allocations are not supported.  Will implement or remove later.
                 <tr>
-                    <td><label for="amount">[% l('Percent: ') %]</label></td>
+                    <td><label for="percent">[% l('Percent: ') %]</label></td>
                     <td>
                         <input 
                             dojoType="dijit.form.NumberTextBox" 

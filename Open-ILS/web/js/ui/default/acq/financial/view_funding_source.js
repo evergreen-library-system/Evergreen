@@ -66,6 +66,21 @@ function loadFS(also_load_grid) {
             also_load_grid(true /* reset_first */);
     }
     req.send();
+
+    new openils.widget.AutoFieldWidget({
+        "fmField": "fund",
+        /* We're not really using LIDs here, we just need some class
+         * that has a fund field to take advantage of AutoFieldWidget's
+         * magic. */
+        "fmClass": "acqlid",
+        "labelFormat": ["${0} (${1})", "code", "year"],
+        "searchFormat": ["${0} (${1})", "code", "year"],
+        "searchFilter": {"active": "t"},
+        "searchOptions": {"order_by" : {"acqf":"year DESC, code"}},
+        "parentNode": dojo.byId("oils-acq-funding-source-fund-allocate"),
+        "orgLimitPerms": ["MANAGE_FUND"], //???
+        "dijitArgs": { "name" : "fund" }
+    }).build(function(w, ww) {});
 }
 
 /** Some grid rendering accessor functions ----- */
