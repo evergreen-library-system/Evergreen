@@ -1,0 +1,38 @@
+New EDI Order Generator 
+^^^^^^^^^^^^^^^^^^^^^^^
+
+Configuration
++++++++++++++
+
+. New database tables exist for configuring vendor-specific EDI order 
+attributes.
+
+ * acq.edi_attr 
+  ** List of EDI order generation toggles, e.g. "INCLUDE_COPIES" to add 
+     GIR segments
+ * acq.edi_attr_set
+  ** Collection of edi_attr's.  Each edi_account may be linked to one
+     edi_attr_set.
+  ** One edi_attr_set per known vendor is added to the stock data, matching
+     the stock configuration found in the JEDI template.
+ * acq.edi_attr_set_map
+  ** Link between edi_attr's and edi_attr_set's.
+
+. EDI Attribute Sets are manged via a new (browser client only) configuration
+  interface at Administration -> Acquisistions Administration -> EDI
+  Attribute Sets.
+
+. Each acq.edi_account should be linked to an acq.edi_attr_set.  If a link 
+  is not set, default values will be used.  Links between an EDI account
+  and an attribute set are managed in the EDI Accounts configuration 
+  interface.
+
+. Local modifications to the stock EG JEDI template are managed by modifying
+  and/or adding additional edi_att_set's as needed.
+
+. A new edi_order_pusher.pl script is added which replaces the functionality
+  of edi_pusher.pl.  edi_pusher.pl is still avaialable.
+
+. After moving to edi_order_pusher.pl, the JEDI Action/Trigger event
+  definition is no longer required.  It can be disabled.
+
