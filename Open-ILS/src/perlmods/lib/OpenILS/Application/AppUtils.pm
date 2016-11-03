@@ -1913,7 +1913,7 @@ sub bib_container_items_via_search {
     }
 
     # Throw away other junk from search, keeping only bib IDs.
-    my $id_list = [ map { pop @$_ } @{$search_result->{ids}} ];
+    my $id_list = [ map { shift @$_ } @{$search_result->{ids}} ];
 
     return [] unless @$id_list;
 
