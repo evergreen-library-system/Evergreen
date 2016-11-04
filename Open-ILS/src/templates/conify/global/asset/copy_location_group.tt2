@@ -48,6 +48,9 @@
         background-color:#E7A555;
         border: 1px solid #4A4747;
     }
+    .tundra .dijitComboBoxDisabled {
+            color: gray !important;
+    }
 </style>
 
 <div id='acplg-header'>
