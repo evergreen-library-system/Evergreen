@@ -66,6 +66,7 @@ export DEBS = \
 	libsoap-lite-perl\
 	libbz2-dev\
 	libparse-recdescent-perl\
+	libexcel-writer-xlsx-perl\
 	yaz
 
 export DEB_APACHE_MODS = \
@@ -79,7 +80,6 @@ export DEB_APACHE_DISMODS = \
     deflate
 
 export CPAN_MODULES = \
-	Excel::Writer::XLSX \
 	Business::OnlinePayment::PayPal \
 	Template::Plugin::POSIX \
 
