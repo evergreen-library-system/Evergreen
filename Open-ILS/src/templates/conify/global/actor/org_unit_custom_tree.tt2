@@ -17,6 +17,9 @@
         background-color:#E7A555;
         border-bottom: 2px solid #4A4747;
     }
+    .tundra .dijitComboBoxDisabled {
+            color: gray !important;
+    }
 </style>
 
 <h2>[% l('Org Unit Custom Tree') %]</h2>
