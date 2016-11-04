@@ -20,7 +20,6 @@
     ,[ l('Copy Location Groups'), "./admin/local/asset/copy_location_group" ]
     ,[ l('Copy Location Order'), "./admin/local/asset/copy_location_order" ]
     ,[ l('Copy Locations Editor'), "./admin/local/asset/copy_locations" ]
-    ,[ l('Copy Template Editor'), "./admin/local/asset/copy_template" ]
     ,[ l('Field Documentation'), "./admin/local/config/idl_field_doc" ]
     ,[ l('Group Penalty Thresholds'), "./admin/local/permission/grp_penalty_threshold" ]
     ,[ l('Hold Policies'), "./admin/local/config/hold_matrix_matchpoint" ]
@@ -29,11 +28,13 @@
     ,[ l('Notifications / Action Triggers'), "./admin/local/action_trigger/event_definition" ]
     ,[ l('Patrons with Negative Balances'), "./admin/local/circ/neg_balance_users" ]
     ,[ l('Search Filter Groups'), "./admin/local/actor/search_filter_group" ]
+    ,[ l('Serial Copy Template Editor'), "./admin/local/asset/copy_template" ]
     ,[ l('Standing Penalties'), "./admin/local/config/standing_penalty" ]
     ,[ l('Statistical Categories Editor'), "./admin/local/asset/stat_cat_editor" ]
     ,[ l('Statistical Popularity Badges'), "./admin/local/rating/badge" ]
     ,[ l('Surveys'), "./admin/local/action/survey" ]
     ,[ l('Transit List'), "./circ/transits/list" ]
+    ,[ l('Volume/Copy Template Editor'), "./cat/volcopy/edit_templates" ]
     ,[ l('Work Log'), "./admin/workstation/log" ]
    ];
 

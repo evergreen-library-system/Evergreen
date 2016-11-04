@@ -7,12 +7,12 @@ eg-navbar {
 }
 </style>
 
-<eg-record-summary ng-if="!embedded && record_id"
+<eg-record-summary ng-if="!embedded && !edit_templates && record_id"
      record-id="record_id" record="summaryRecord"></eg-record-summary>
 
 <!-- tabbed copy data view -->
 
-<ul class="nav nav-tabs" ng-show="!embedded">
+<ul class="nav nav-tabs" ng-show="!embedded" ng-if="!edit_templates">
   <li ng-class="{active : tab == 'edit'}">
     <a ng-click="tab = 'edit'" >[% l('Edit') %]</a>
   </li>
@@ -24,7 +24,7 @@ eg-navbar {
   </li>
 </ul>
 
-<div class="tab-content">
+<div class="tab-content" ng-if="!edit_templates">
   <div class="tab-pane active">
     <div ng-show="tab == 'edit'">
       <div ng-include="'[% ctx.base_path %]/staff/cat/volcopy/t_edit'"></div>
@@ -38,3 +38,11 @@ eg-navbar {
   </div>
 </div>
 
+<div ng-if="edit_templates">
+  <div class="row">
+    <h2>[% l("Edit Volume/Copy Templates") %]</h2>
+  </div>
+  <div class="row">
+    <eg-vol-template edit-templates="edit_templates"></eg-vol-template>
+  </div>
+</div>

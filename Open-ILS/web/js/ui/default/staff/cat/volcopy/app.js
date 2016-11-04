@@ -19,6 +19,12 @@ angular.module('egVolCopy',
         delay : ['egStartup', function(egStartup) { return egStartup.go(); }]
     };
 
+    $routeProvider.when('/cat/volcopy/edit_templates', {
+        templateUrl: './cat/volcopy/t_view',
+        controller: 'EditCtrl',
+        resolve : resolver
+    });
+
     $routeProvider.when('/cat/volcopy/:dataKey', {
         templateUrl: './cat/volcopy/t_view',
         controller: 'EditCtrl',
@@ -783,6 +789,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
     };
 
     $scope.embedded = ($routeParams.mode && $routeParams.mode == 'embedded') ? true : false;
+    $scope.edit_templates = ($location.path().match(/edit_template/)) ? true : false;
 
     $scope.saveDefaults = function () {
         egCore.hatch.setItem('cat.copy.defaults', $scope.defaults);
@@ -973,7 +980,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
     var dataKey = $routeParams.dataKey;
     console.debug('dataKey: ' + dataKey);
 
-    if (dataKey && dataKey.length > 0) {
+    if ((dataKey && dataKey.length > 0) || $scope.edit_templates) {
 
         $scope.templates = {};
         $scope.template_name = '';
@@ -1594,7 +1601,9 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
         restrict: 'E',
         replace: true,
         template: '<div ng-include="'+"'/eg/staff/cat/volcopy/t_attr_edit'"+'"></div>',
-        scope: { },
+        scope: {
+            editTemplates: '=',
+        },
         controller : ['$scope','$window','itemSvc','egCore',
             function ( $scope , $window , itemSvc , egCore ) {
 
