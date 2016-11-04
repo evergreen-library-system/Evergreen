@@ -6,8 +6,8 @@
 angular.module('egCoreMod')
 
 .factory('egPrint',
-       ['$q','$window','$timeout','$http','egHatch','egAuth','egIDL','egOrg',
-function($q , $window , $timeout , $http , egHatch , egAuth , egIDL , egOrg) {
+       ['$q','$window','$timeout','$http','egHatch','egAuth','egIDL','egOrg','egEnv',
+function($q , $window , $timeout , $http , egHatch , egAuth , egIDL , egOrg , egEnv) {
 
     var service = {};
 
@@ -160,14 +160,14 @@ function($q , $window , $timeout , $http , egHatch , egAuth , egIDL , egOrg) {
             scope.elm = element;
         },
         controller : 
-                   ['$scope','$q','$window','$timeout','egHatch','egPrint',
-            function($scope , $q , $window , $timeout , egHatch , egPrint) {
+                   ['$scope','$q','$window','$timeout','egHatch','egPrint','egEnv',
+            function($scope , $q , $window , $timeout , egHatch , egPrint , egEnv) {
 
                 egPrint.ingest_print_content = function(type, content, printScope) {
 
                     if (type == 'text/csv' || type == 'text/plain') {
                         // preserve newlines, spaces, etc.
-                        content = '<pre>' + content + '</pre>';
+                        content = '<link rel="stylesheet" href="'+ egEnv.basePath + 'css/print.css" type="text/css" media="print" /><pre>' + content + '</pre>';
                     }
 
                     $scope.elm.html(content);
