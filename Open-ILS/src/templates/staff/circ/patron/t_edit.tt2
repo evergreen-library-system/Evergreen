@@ -853,16 +853,20 @@ within the "form" by name for validation.
 </div>
 
 <div class="alert alert-success row" role="alert" 
-    ng-show="show_field('stat_cats')" ng-if="stat_cats.length > 0">
+    ng-show="show_field('stat_cats') || hasRequiredStatCat" ng-if="stat_cats.length > 0">
     <div class="col-md-6">[% l('Statistical Categories') %]</div>
 </div>
 
-<div class="row reg-field-row" 
-    ng-show="show_field('stat_cats')" ng-repeat="cat in stat_cats">
+<div class="row reg-field-row"
+     ng-show="show_field('stat_cats') || hasRequiredStatCat" ng-repeat="cat in stat_cats">
+     <!-- Display this stat cat when displaying all stat cats
+       or when this stat cat is required.  Wrap the body of 
+       stat cat display in a div for easy show/hide.  -->
+  <div ng-if="show_field('stat_cats') || cat.required() == 1">
   <div class="col-md-3 reg-field-label">
     <label>{{cat.name()}}</label>
   </div>
-  <div class="col-md-3 reg-field-input">
+  <div class="reg-field-input">
 
     <!-- Editable typeahead is not support in this version of 
         angularjs-bootstrap.  Requires Angular 1.4 and 
@@ -896,9 +900,10 @@ within the "form" by name for validation.
 
   <!-- Stat cat retrieval API uses open-ils.storage under the covers
       which represents DB bools at 1/0 instead of cstore-style t/f -->
-  <div class="col-md-3 reg-field-input" ng-if="cat.allow_freetext() == '1'">
-    <input type="text" ng-model="stat_cat_entry_maps[cat.id()]"/>
+  <div class="col-md-3 reg-field-input" ng-show="show_field('stat_cats') || hasRequiredStatCat" ng-if="cat.allow_freetext() == '1'">
+    <input type="text" ng-model="stat_cat_entry_maps[cat.id()]" class="form-control" ng-required="cat.required() == 1"/>
   </div>
+  </div><!-- show/hide -->
 </div>
 
 <!-- surveys -->
