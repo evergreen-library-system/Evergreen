@@ -1229,6 +1229,23 @@ circ.util.columns = function(modify,params) {
         },
         {
             'fm_class' : 'acp',
+            'id' : 'acp_active_date',
+            'label' : document.getElementById('circStrings').getString('staff.circ.utils.active_date'),
+            'flex' : 1,
+            'sort_type' : 'date',
+            'primary' : false,
+            'hidden' : true,
+            'editable' : false, 'render' : function(my) { return util.date.formatted_date( my.acp.active_date(), '%{localized}' ); }
+            ,'sort_value' : function(my) {
+                return util.date.db_date2Date(
+                    my.acp
+                    ? my.acp.active_date()
+                    : null
+                ).getTime();
+            }
+        }, 
+        {
+            'fm_class' : 'acp',
             'id' : 'acp_edit_date',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.edit_date'),
             'flex' : 1,
