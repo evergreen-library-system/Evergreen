@@ -196,7 +196,7 @@ $copy = $apputils->simplereq(
     $authtoken[0],
     $copy->id()
 );
-is($copy->status(), OILS_COPY_STATUS_RESHELVING, 'Copy reshelving');
+is($copy->status(), OILS_COPY_STATUS_CANCELED_TRANSIT, 'Copy in Canceled Transit status');
 
 # Check copy in at BR1
 $checkin = $apputils->simplereq(
@@ -414,7 +414,7 @@ $copy = $apputils->simplereq(
     $authtoken[0],
     $copy->id()
 );
-is($copy->status(), OILS_COPY_STATUS_RESHELVING, 'Copy is reshelving after return transit abort');
+is($copy->status(), OILS_COPY_STATUS_CANCELED_TRANSIT, 'Copy is in Canceled Transit status');
 
 # Logout at BR1.
 $script->logout($authtoken[0]);
