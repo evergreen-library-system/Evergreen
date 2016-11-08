@@ -8,14 +8,14 @@ SELECT plan(6);
 -- shuffle event_times for randomness.
 INSERT INTO actor.usr_activity (usr, etype, event_time) VALUES
     (:usr_one, 1, NOW() - '2 days'::INTERVAL),
-    (:usr_one, 1, NOW()),
     (:usr_one, 1, NOW() - '1 days'::INTERVAL),
+    (:usr_one, 1, NOW()),
+    (:usr_one, 2, NOW() - '2 days'::INTERVAL),
     (:usr_one, 2, NOW() - '1 days'::INTERVAL),
     (:usr_one, 2, NOW()),
-    (:usr_one, 2, NOW() - '2 days'::INTERVAL),
+    (:usr_two, 1, NOW() - '2 days'::INTERVAL),
     (:usr_two, 1, NOW() - '1 days'::INTERVAL),
-    (:usr_two, 1, NOW()),
-    (:usr_two, 1, NOW() - '2 days'::INTERVAL);
+    (:usr_two, 1, NOW());
 
 
 SELECT actor.purge_usr_activity_by_type(1);
