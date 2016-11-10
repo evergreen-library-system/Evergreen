@@ -1503,7 +1503,7 @@ CREATE TRIGGER maintain_usr_circ_history_tgr
     FOR EACH ROW EXECUTE PROCEDURE action.maintain_usr_circ_history();
 
 CREATE OR REPLACE VIEW action.all_circulation_combined_types AS 
- SELECT 'regularcirc'::text || acirc.id AS id,
+ SELECT acirc.id AS id,
     acirc.xact_start,
     acirc.circ_lib,
     acirc.circ_staff,
@@ -1514,7 +1514,7 @@ CREATE OR REPLACE VIEW action.all_circulation_combined_types AS
     asset.copy ac_acirc
   WHERE acirc.target_copy = ac_acirc.id
 UNION ALL
- SELECT 'noncatcirc'::text || ancc.id AS id,
+ SELECT ancc.id::BIGINT AS id,
     ancc.circ_time AS xact_start,
     ancc.circ_lib,
     ancc.staff AS circ_staff,
@@ -1525,7 +1525,7 @@ UNION ALL
     config.non_cataloged_type cnct_ancc
   WHERE ancc.item_type = cnct_ancc.id
 UNION ALL
- SELECT 'inhouseuse'::text || aihu.id AS id,
+ SELECT aihu.id::BIGINT AS id,
     aihu.use_time AS xact_start,
     aihu.org_unit AS circ_lib,
     aihu.staff AS circ_staff,
@@ -1536,7 +1536,7 @@ UNION ALL
     asset.copy ac_aihu
   WHERE aihu.item = ac_aihu.id
 UNION ALL
- SELECT 'noncatinhouseuse'::text || ancihu.id AS id,
+ SELECT ancihu.id::BIGINT AS id,
     ancihu.use_time AS xact_start,
     ancihu.org_unit AS circ_lib,
     ancihu.staff AS circ_staff,
@@ -1547,7 +1547,7 @@ UNION ALL
     config.non_cataloged_type cnct_ancihu
   WHERE ancihu.item_type = cnct_ancihu.id
 UNION ALL
- SELECT 'agedcirc'::text || aacirc.id::text AS id,
+ SELECT aacirc.id AS id,
     aacirc.xact_start,
     aacirc.circ_lib,
     aacirc.circ_staff,
