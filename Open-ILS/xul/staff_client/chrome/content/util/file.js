@@ -103,7 +103,12 @@ util.file.prototype = {
             var obj_json; 
             try { obj_json = js2JSON( obj ) + '\n'; } catch(E) { throw('Could not JSONify the object: ' + E); }
 
-            this.write_content(write_type,obj_json);
+            var converter = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"]
+                .createInstance(Components.interfaces.nsIScriptableUnicodeConverter);
+            converter.charset = "UTF-8";
+            var converted = converter.ConvertFromUnicode(obj_json);
+
+            this.write_content(write_type,converted);
 
         } catch(E) {
             this.error.sdump('D_ERROR',this._file.path + '\nutil.file.write_object(): ' + E);
@@ -126,7 +131,11 @@ util.file.prototype = {
     'get_object' : function() {
         try {
             var data = this.get_content();
-            var obj; try { obj = JSON2js( data ); } catch(E) { throw('Could not js-ify the JSON: '+E); }
+            var converter = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"]
+                .createInstance(Components.interfaces.nsIScriptableUnicodeConverter);
+            converter.charset = "UTF-8";
+            var converted = converter.ConvertToUnicode(data);
+            var obj; try { obj = JSON2js( converted ); } catch(E) { throw('Could not js-ify the JSON: '+E); }
             return obj;
         } catch(E) {
             this.error.sdump('D_ERROR',this._file.path + '\nutil.file.get_object(): ' + E);
