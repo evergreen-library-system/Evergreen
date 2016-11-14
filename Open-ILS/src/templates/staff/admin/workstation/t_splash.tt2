@@ -12,15 +12,6 @@
       </div>
     </div><!-- row -->
   </div>
-  <div class="row">
-    <div class="col-md-6">
-      <input type='text' class='form-control'  
-        ng-disabled="!hatchRequired || !userHasRegPerm"
-        title="[% l('Hatch URL') %]"
-        placeholder="[% l('Hatch URL') %]"
-        ng-change='updateHatchURL()' ng-model='hatchURL'/>
-    </div>
-  </div>
 
 
   <div class="row new-entry">

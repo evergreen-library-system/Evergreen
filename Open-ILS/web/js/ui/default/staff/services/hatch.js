@@ -29,14 +29,13 @@ angular.module('egCoreMod')
     function($q , $window , $timeout , $interpolate , $http , $cookies) {
 
     var service = {};
-    service.msgId = 0;
+    service.msgId = 1;
     service.messages = {};
     service.pending = [];
-    service.socket = null;
     service.hatchAvailable = null;
-    service.defaultHatchURL = 'wss://localhost:8443/hatch'; 
+    service.state = 'IDLE'; // IDLE, INIT, CONNECTED, NO_CONNECTION
 
-    // write a message to the Hatch websocket
+    // write a message to the Hatch port
     service.sendToHatch = function(msg) {
         var msg2 = {};
 
@@ -47,7 +46,9 @@ angular.module('egCoreMod')
         });
 
         console.debug("sending to Hatch: " + JSON.stringify(msg2,null,2));
-        service.socket.send(JSON.stringify(msg2));
+
+        msg2.from = 'page';
+        $window.postMessage(msg2, $window.location.origin);
     }
 
     // Send the request to Hatch if it's available.  
@@ -57,18 +58,18 @@ angular.module('egCoreMod')
         msg.msgid = service.msgId++;
         msg.deferred = $q.defer();
 
-        if (service.hatchAvailable === false) { // Hatch is closed
+        if (service.state == 'NO_CONNECTION') {
             msg.deferred.reject(msg);
 
-        } else if (service.hatchAvailable === true) { // Hatch is open
+        } else if (service.state.match(/CONNECTED|INIT/)) {
             // Hatch is known to be open
             service.messages[msg.msgid] = msg;
             service.sendToHatch(msg);
 
-        } else {  // Hatch status unknown; attempt to connect
+        } else if (service.state == 'IDLE') { 
             service.messages[msg.msgid] = msg;
             service.pending.push(msg);
-            service.hatchConnect();
+            $timeout(service.openHatch);
         }
 
         return msg.deferred.promise;
@@ -90,18 +91,71 @@ angular.module('egCoreMod')
         msg.deferred = service.messages[msg.msgid].deferred;
         delete service.messages[msg.msgid]; // un-cache
 
-        // resolve / reject
-        if (msg.error) {
-            throw new Error(
-            "egHatch command failed : " 
-                + JSON.stringify(msg.error, null, 2));
-        } else {
-            msg.deferred.resolve(msg.content);
-        } 
+        switch (service.state) {
+
+            case 'CONNECTED': // received a standard Hatch response
+                if (msg.status == 200) {
+                    msg.deferred.resolve(msg.content);
+                } else {
+                    msg.deferred.reject();
+                    console.warn("Hatch command failed with status=" 
+                        + msg.status + " and message=" + msg.message);
+                }
+                break;
+
+            case 'INIT':
+                if (msg.status == 200) {
+                    service.hatchAvailable = true; // public flag
+                    service.state = 'CONNECTED';
+                    service.hatchOpened();
+                } else {
+                    msg.deferred.reject();
+                    service.hatchWontOpen(msg.message);
+                }
+                break;
+
+            default:
+                console.warn(
+                    "Received message in unexpected state: " + service.state); 
+        }
+    }
+
+    service.openHatch = function() {
+
+        // When the Hatch extension loads, it tacks an attribute onto
+        // the page body to indicate it's available.
+
+        if (!$window.document.body.getAttribute('hatch-is-open')) {
+            service.hatchWontOpen('Hatch is not available');
+            return;
+        }
+
+        $window.addEventListener("message", function(event) {
+            // We only accept messages from our own content script.
+            if (event.source != window) return;
+
+            // We only care about messages from the Hatch extension.
+            if (event.data && event.data.from == 'extension') {
+
+                console.debug('Hatch says: ' 
+                    + JSON.stringify(event.data, null, 2));
+
+                service.resolveRequest(event.data);
+            }
+        }); 
+
+        service.state = 'INIT';
+        service.attemptHatchDelivery({action : 'init'});
+    }
+
+    service.hatchWontOpen = function(err) {
+        console.debug("Hatch connection failed: " + err);
+        service.state = 'NO_CONNECTION';
+        service.hatchAvailable = false;
+        service.hatchClosed();
     }
 
     service.hatchClosed = function() {
-        service.socket = null;
         service.printers = [];
         service.printConfig = {};
         while ( (msg = service.pending.shift()) ) {
@@ -112,15 +166,10 @@ angular.module('egCoreMod')
             service.onHatchClose();
     }
 
-    service.hatchURL = function() {
-        return service.getLocalItem('eg.hatch.url') 
-            || service.defaultHatchURL;
-    }
-
     // Returns true if Hatch is required or if we are currently
     // communicating with the Hatch service. 
     service.usingHatch = function() {
-        return service.hatchAvailable || service.hatchRequired();
+        return service.state == 'CONNECTED' || service.hatchRequired();
     }
 
     // Returns true if this browser (via localStorage) is 
@@ -129,58 +178,14 @@ angular.module('egCoreMod')
         return service.getLocalItem('eg.hatch.required');
     }
 
-    service.hatchConnect = function() {
+    service.hatchOpened = function() {
+        // let others know we're connected
+        if (service.onHatchOpen) service.onHatchOpen();
 
-        if (service.socket && 
-            service.socket.readyState == service.socket.CONNECTING) {
-            // connection in progress.  Nothing to do.  Our queued
-            // message will be delivered when onopen() fires
-            return;
-        }
-
-        try {
-            service.socket = new WebSocket(service.hatchURL());
-        } catch(e) {
-            service.hatchAvailable = false;
-            service.hatchClosed();
-            return;
-        }
-
-        service.socket.onopen = function() {
-            console.debug('connected to Hatch');
-            service.hatchAvailable = true;
-            if (service.onHatchOpen) 
-                service.onHatchOpen();
-            while ( (msg = service.pending.shift()) ) {
-                service.sendToHatch(msg);
-            };
-        }
-
-        service.socket.onclose = function() {
-            if (service.hatchAvailable === false) return; // already registered
-
-            // onclose() will be called regularly as we disconnect from
-            // Hatch via timeouts.  Return hatchAvailable to its unknow state
-            service.hatchAvailable = null;
-            service.hatchClosed();
-        }
-
-        service.socket.onerror = function() {
-            if (service.hatchAvailable === false) return; // already registered
-            service.hatchAvailable = false;
-            console.debug(
-                "unable to connect to Hatch server at " + service.hatchURL());
-            service.hatchClosed();
-        }
-
-        service.socket.onmessage = function(evt) {
-            var msgStr = evt.data;
-            if (!msgStr) throw new Error("Hatch returned empty message");
-
-            var msgObj = JSON.parse(msgStr);
-            console.debug('Hatch says ' + JSON.stringify(msgObj, null, 2));
-            service.resolveRequest(msgObj); 
-        }
+        // Deliver any previously queued requests 
+        while ( (msg = service.pending.shift()) ) {
+            service.sendToHatch(msg);
+        };
     }
 
     service.getPrintConfig = function() {
@@ -291,8 +296,8 @@ angular.module('egCoreMod')
     service.getRemoteItem = function(key) {
         return service.attemptHatchDelivery({
             key : key,
-            action : 'get', 
-        });
+            action : 'get'
+        })
     }
 
     service.getLocalItem = function(key) {
@@ -318,16 +323,14 @@ angular.module('egCoreMod')
      * tmp values are removed during logout or browser close.
      */
     service.setItem = function(key, value) {
-        var str = JSON.stringify(value);
-
-        return service.setRemoteItem(key, str)['catch'](
+        return service.setRemoteItem(key, value)['catch'](
             function(msg) {
                 if (service.hatchRequired()) {
                     console.error("Unable to setItem: " + key
                      + "; hatchRequired=true, but hatch is not connected");
                      return null;
                 }
-                return service.setLocalItem(msg.key, null, str);
+                return service.setLocalItem(msg.key, value);
             }
         );
     }
@@ -336,7 +339,7 @@ angular.module('egCoreMod')
     service.setRemoteItem = function(key, value) {
         return service.attemptHatchDelivery({
             key : key, 
-            value : value, 
+            content : value, 
             action : 'set',
         });
     }
@@ -372,29 +375,6 @@ angular.module('egCoreMod')
         if (jsonified === undefined ) 
             jsonified = JSON.stringify(value);
         $window.sessionStorage.setItem(key, jsonified);
-    }
-
-    // appends the value to the existing item stored at key.
-    // If not item is found at key, this behaves just like setItem()
-    service.appendItem = function(key, value) {
-        return service.appendRemoteItem(key, value)['catch'](
-            function(msg) {
-                if (service.hatchRequired()) {
-                    console.error("Unable to appendItem: " + key
-                     + "; hatchRequired=true, but hatch is not connected");
-                     return null;
-                }
-                service.appendLocalItem(msg.key, msg.value);
-            }
-        );
-    }
-
-    service.appendRemoteItem = function(key, value) {
-        return service.attemptHatchDelivery({
-            key : key, 
-            value : value, 
-            action : 'append',
-        });
     }
 
     // assumes the appender and appendee are both strings

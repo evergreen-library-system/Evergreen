@@ -167,18 +167,12 @@ function($scope , $window , $location , egCore , egConfirmDialog) {
 
     // ---------------------
     // Hatch Configs
-    $scope.hatchURL = egCore.hatch.hatchURL();
     $scope.hatchRequired = 
         egCore.hatch.getLocalItem('eg.hatch.required');
 
     $scope.updateHatchRequired = function() {
         egCore.hatch.setLocalItem(
             'eg.hatch.required', $scope.hatchRequired);
-    }
-
-    $scope.updateHatchURL = function() {
-        egCore.hatch.setLocalItem(
-            'eg.hatch.url', $scope.hatchURL);
     }
 
     egCore.hatch.getItem('eg.audio.disable').then(function(val) {
@@ -311,20 +305,6 @@ function($scope , egCore) {
         }
 
         egCore.hatch.setPrintConfig($scope.printConfig)
-        .finally(function() {$scope.actionPending = false});
-    }
-
-    $scope.configurePrinter = function() {
-        $scope.printConfigError = null;
-        $scope.actionPending = true;
-        egCore.hatch.configurePrinter(
-            $scope.context,
-            $scope.printConfig[$scope.context].printer
-        )
-        .then(
-            function(config) {$scope.printConfig = config},
-            function(error) {$scope.printConfigError = error}
-        )
         .finally(function() {$scope.actionPending = false});
     }
 

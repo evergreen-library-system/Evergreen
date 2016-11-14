@@ -71,24 +71,6 @@
                   value="{{printConfig[context].printer}}">
               </div><!-- /input-group -->
             </div><!-- col -->
-            <div class="col-md-6">
-              <div class="input-group">
-                <div class="input-group-btn">
-                  <button type="button" 
-                    ng-click="configurePrinter()"
-                    ng-class="{disabled : actionPending || !printers[0]}"
-                    class="btn btn-default btn-success">
-                      [% l('Configure Printer') %]
-                  </button>
-                  <button type="button" 
-                    ng-click="resetConfig()"
-                    ng-class="{disabled : actionPending}"
-                    class="btn btn-default btn-warning">
-                      [% l('Reset Configuration') %]
-                  </button>
-                </div>
-              </div>
-            </div>
           </div><!-- row -->
           <div class="row" ng-hide="isTestView"> 
             <div class="col-md-12">
