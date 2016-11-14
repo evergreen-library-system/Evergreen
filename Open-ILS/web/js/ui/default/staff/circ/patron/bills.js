@@ -140,7 +140,7 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
     billSvc.userId = $routeParams.id;
 
     // set up some defaults
-    $scope.check_number = 0;
+    $scope.check_number = 1;
     $scope.payment_amount = null;
     $scope.session_voided = 0;
     $scope.payment_type = 'cash_payment';
