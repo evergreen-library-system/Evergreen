@@ -73,7 +73,7 @@ function($scope , $q , $routeParams , $window , $timeout , egCore , egGridDataPr
 
     function fetch_hold(deferred,entry) {
         return egCore.pcrud.search('ahr',
-            { 'id' : entry.data.hold_id }, {
+            { 'id' : entry.hold_id }, {
                 'flesh' : 2,
                 'flesh_fields' : {
                     'ahr' : ['usr','current_copy'],
@@ -92,7 +92,7 @@ function($scope , $q , $routeParams , $window , $timeout , egCore , egGridDataPr
 
     function fetch_patron(deferred,entry) {
         return egCore.pcrud.search('au',
-            { 'id' : entry.data.patron_id }, {}
+            { 'id' : entry.patron_id }, {}
         ).then(
             function(usr) {
                 entry.user = usr.family_name();

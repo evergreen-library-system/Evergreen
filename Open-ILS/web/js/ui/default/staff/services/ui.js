@@ -856,7 +856,6 @@ function($window , egStrings) {
         var entry = {
             'when' : new Date(),
             'msg' : message,
-            'data' : data,
             'action' : data.action,
             'actor' : egCore.auth.user().usrname()
         };
@@ -885,6 +884,7 @@ function($window , egStrings) {
             || data.action == 'registered_patron'
             || data.action == 'paid_bill') {
             entry['patron_id'] = data.patron_id;
+            entry['hold_id'] = data.hold_id;
         }
         if (data.action == 'paid_bill') {
             entry['amount'] = data.total_amount;
