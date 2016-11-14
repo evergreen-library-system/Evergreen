@@ -140,7 +140,7 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
     billSvc.userId = $routeParams.id;
 
     // set up some defaults
-    $scope.check_number = 1;
+    $scope.check_number = null;
     $scope.payment_amount = null;
     $scope.session_voided = 0;
     $scope.payment_type = 'cash_payment';
@@ -228,6 +228,9 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
                 amount += item['summary.balance_owed'] * 100;
         });
         return -(amount / 100);
+    }
+    $scope.invalid_check_number = function() { 
+        return $scope.payment_type == 'check_payment' && ! $scope.check_number; 
     }
 
     // update the item.payment_pending value each time the user

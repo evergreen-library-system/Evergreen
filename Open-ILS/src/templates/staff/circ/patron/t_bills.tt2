@@ -64,7 +64,8 @@
           </label>
           <div class="col-md-6">
             <input type="number" min="1" step="any" id="check-input" 
-              ng-model="check_number" focus-me="focus_check" 
+              ng-model="check_number" focus-me="focus_check"
+              ng-disabled="payment_type!='check_payment'"
               value="" class="form-control col-md-6 "/>
           </div>
         <div class="form-group">
@@ -86,7 +87,7 @@
             <button
                 type="submit"
                 class="btn btn-default"
-                ng-disabled="!gridControls.selectedItems().length"
+                ng-disabled="invalid_check_number() || !gridControls.selectedItems().length"
             >[% l('Apply Payment') %]</button>
           </div>
         </div>
