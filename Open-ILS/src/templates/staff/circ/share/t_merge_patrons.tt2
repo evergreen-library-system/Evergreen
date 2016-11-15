@@ -1,0 +1,32 @@
+<div>
+  <div class="modal-header">
+    <button type="button" class="close"
+      ng-click="cancel()" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">[% l('Merge patrons?') %]</h4>
+  </div>
+  <div class="modal-body">
+      <div class="row">
+          
+          <div class="col-xs-6">
+            <label>
+              <input type="radio" name="lead_record" ng-model="lead_id" ng-value="patron_ids[0]"/></input>
+              [% l('Use as lead') %]
+            </label>
+            <eg-patron-summary patron-id="patron_ids[0]"></eg-patron-summary>
+          </div>
+          <div class="col-xs-6">
+            <label>
+              <input type="radio" name="lead_record" ng-model="lead_id" ng-value="patron_ids[1]"/></input>
+              [% l('Use as lead') %]
+            </label>
+            <eg-patron-summary patron-id="patron_ids[1]"></eg-patron-summary>
+          </div>
+      </div>
+  </div>
+  <div class="modal-footer">
+    <input type="submit" ng-click="ok()"
+        ng-class="{disabled : !lead_id }"
+        class="btn btn-primary" value="[% l('Merge') %]"/>
+    <button class="btn btn-warning" ng-click="cancel()">[% l('Cancel') %]</button>
+  </div>
+</div>
