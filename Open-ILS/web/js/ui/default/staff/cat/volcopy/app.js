@@ -11,6 +11,13 @@ angular.module('egVolCopy',
     }
 })
 
+.config(['ngToastProvider', function(ngToastProvider) {
+  ngToastProvider.configure({
+    verticalPosition: 'bottom',
+    animation: 'fade'
+  });
+}])
+
 .config(function($routeProvider, $locationProvider, $compileProvider) {
     $locationProvider.html5Mode(true);
     $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|blob):/); // grid export
@@ -1604,8 +1611,8 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
         scope: {
             editTemplates: '=',
         },
-        controller : ['$scope','$window','itemSvc','egCore',
-            function ( $scope , $window , itemSvc , egCore ) {
+        controller : ['$scope','$window','itemSvc','egCore','ngToast',
+            function ( $scope , $window , itemSvc , egCore , ngToast) {
 
                 $scope.defaults = { // If defaults are not set at all, allow everything
                     barcode_checkdigit : false,
@@ -1704,6 +1711,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                         $scope.template_name = '';
                         egCore.hatch.setItem('cat.copy.templates', $scope.templates);
                         $scope.$parent.fetchTemplates();
+                        ngToast.create(egCore.strings.VOL_COPY_TEMPLATE_SUCCESS_DELETE);
                     }
                 }
 
@@ -1732,6 +1740,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                         egCore.hatch.setItem('cat.copy.templates', $scope.templates);
                         $scope.$parent.fetchTemplates();
                     }
+                    ngToast.create(egCore.strings.VOL_COPY_TEMPLATE_SUCCESS_SAVE);
                 }
             
                 $scope.templates = {};
