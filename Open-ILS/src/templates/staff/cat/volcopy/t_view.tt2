@@ -12,28 +12,30 @@ eg-navbar {
 
 <!-- tabbed copy data view -->
 
-<ul class="nav nav-tabs" ng-show="!embedded" ng-if="!edit_templates">
-  <li ng-class="{active : tab == 'edit'}">
-    <a ng-click="tab = 'edit'" >[% l('Edit') %]</a>
-  </li>
-  <li ng-class="{active : tab == 'templates'}">
-    <a ng-click="tab = 'templates'" >[% l('Copy Templates') %]</a>
-  </li>
-  <li ng-class="{active : tab == 'defaults'}">
-    <a ng-click="tab = 'defaults'" >[% l('Defaults') %]</a>
-  </li>
-</ul>
-
-<div class="tab-content" ng-if="!edit_templates">
-  <div class="tab-pane active">
-    <div ng-show="tab == 'edit'">
-      <div ng-include="'[% ctx.base_path %]/staff/cat/volcopy/t_edit'"></div>
-    </div>
-    <div ng-show="tab == 'templates'">
-      <eg-vol-template></eg-vol-template>
-    </div>
-    <div ng-show="tab == 'defaults'">
-      <div ng-include="'[% ctx.base_path %]/staff/cat/volcopy/t_defaults'"></div>
+<div ng-if="!edit_templates">
+  <ul class="nav nav-tabs" ng-show="!embedded">
+    <li ng-class="{active : tab == 'edit'}">
+      <a ng-click="tab = 'edit'" >[% l('Edit') %]</a>
+    </li>
+    <li ng-class="{active : tab == 'templates'}">
+      <a ng-click="tab = 'templates'" >[% l('Copy Templates') %]</a>
+    </li>
+    <li ng-class="{active : tab == 'defaults'}">
+      <a ng-click="tab = 'defaults'" >[% l('Defaults') %]</a>
+    </li>
+  </ul>
+  
+  <div class="tab-content">
+    <div class="tab-pane active">
+      <div ng-show="tab == 'edit'">
+        <div ng-include="'[% ctx.base_path %]/staff/cat/volcopy/t_edit'"></div>
+      </div>
+      <div ng-show="tab == 'templates'">
+        <eg-vol-template></eg-vol-template>
+      </div>
+      <div ng-show="tab == 'defaults'">
+        <div ng-include="'[% ctx.base_path %]/staff/cat/volcopy/t_defaults'"></div>
+      </div>
     </div>
   </div>
 </div>
