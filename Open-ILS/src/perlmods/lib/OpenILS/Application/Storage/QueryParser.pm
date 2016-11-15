@@ -1552,16 +1552,38 @@ sub pullup {
     warn "Entering pullup depth ". $self->plan_level . "\n"
         if $self->QueryParser->debug;
 
+    my $old_qnodes = $self->query_nodes; # we will ignore all but ::node objects in this list
+    warn @$old_qnodes . " plans at pullup depth ". $self->plan_level . "\n"
+        if $self->QueryParser->debug;
+
+    # PASS 0: If I only have one child, collapse filters/modifiers into me 
+    if (@$old_qnodes == 1) {
+        my $kid = $$old_qnodes[0];
+        if ($kid->isa('QueryParser::query_plan')) {
+            $self->add_filter($_) foreach @{$kid->filters};
+            $self->add_facet($_) foreach @{$kid->facets};
+            $self->add_modifier($_) foreach @{$kid->modifiers};
+            $kid->{filters} = [];
+            $kid->{facets} = [];
+            $kid->{modifiers} = [];
+
+            my $kid_qnodes = $kid->query_nodes;
+            if (@$kid_qnodes == 1) { # And if my kid is a plan with only one node, absorb that
+                my $a = $$kid_qnodes[0];
+                if ($a->isa('QueryParser::query_plan')) {
+                    $self->{query} = [$a];
+                    return $self;
+                }
+            }
+        }
+    }
+
     # PASS 1: loop, attempting to pull up simple nodes
     my @new_nodes;
     my $prev_node;
     my $prev_op;
 
     my $prev_joiner;
-
-    my $old_qnodes = $self->query_nodes; # we will ignore all but ::node objects in this list
-    warn @$old_qnodes . " plans at pullup depth ". $self->plan_level . "\n"
-        if $self->QueryParser->debug;
 
     while (my $p = shift(@$old_qnodes)) {
 
@@ -1617,7 +1639,6 @@ sub pullup {
                 
     warn @new_nodes . " nodes after pullup of simple nodes at depth ". $self->plan_level . "\n"
         if $self->QueryParser->debug;
-
 
     # PASS 2: merge adjacent ::node's
     my $dangling = 0;
