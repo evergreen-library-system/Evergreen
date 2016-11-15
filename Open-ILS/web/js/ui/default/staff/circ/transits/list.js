@@ -21,9 +21,6 @@ angular.module('egTransitListApp',
        ['$scope','$q','$routeParams','$window','egCore','egTransits','egGridDataProvider','$uibModal','$timeout',
 function($scope , $q , $routeParams , $window , egCore , egTransits , egGridDataProvider , $uibModal , $timeout) {
 
-    var transits = [];
-    var provider = egGridDataProvider.instance({});
-    $scope.grid_data_provider = provider;
     $scope.transit_direction = 'to';
 
     function init_dates() {
@@ -90,10 +87,10 @@ function($scope , $q , $routeParams , $window , egCore , egTransits , egGridData
         abort_transit(transits);
     }
 
-    $scope.add_copies_to_bucket = function(transits) {
+    $scope.add_copies_to_bucket = function() {
         var copy_list = [];
         angular.forEach($scope.grid_controls.selectedItems(), function(transit) {
-            copy_list.push(transit.target_copy().id());
+            copy_list.push(transit['target_copy.id']);
         });
         if (copy_list.length == 0) return;
 
@@ -167,8 +164,8 @@ function($scope , $q , $routeParams , $window , egCore , egTransits , egGridData
         angular.forEach(
             $scope.grid_controls.selectedItems(),
             function (item) {
-                if (rid_list.indexOf(item.target_copy().call_number().record().simple_record().id()) == -1)
-                    rid_list.push(item.target_copy().call_number().record().simple_record().id());
+                if (rid_list.indexOf(item['target_copy.call_number.record.simple_record.id']) == -1)
+                    rid_list.push(item['target_copy.call_number.record.simple_record.id']);
             }
         );
         return rid_list;
@@ -178,8 +175,8 @@ function($scope , $q , $routeParams , $window , egCore , egTransits , egGridData
         angular.forEach(
             $scope.grid_controls.selectedItems(),
             function (item) {
-                if (rid && item.target_copy().call_number().record().simple_record().id() != rid) return;
-                cp_id_list.push(item.target_copy().id());
+                if (rid && item['target_copy.call_number.record.simple_record.id'] != rid) return;
+                cp_id_list.push(item['target_copy.id']);
             }
         );
         return cp_id_list;
@@ -212,54 +209,24 @@ function($scope , $q , $routeParams , $window , egCore , egTransits , egGridData
         spawnHoldingsEdit(true, false);
     }
 
-    $scope.grid_controls = {
-        activateItem : load_item
-    }
-
-    function refresh_page() {
-        transits = [];
-        provider.refresh();
-    }
-
-    provider.get = function(offset, count) {
-        var deferred = $q.defer();
-        var recv_index = 0;
-
+    function current_query() {
         var filter = {
             'source_send_time' : { 'between' : date_range() },
             'dest_recv_time'   : null
         };
         if ($scope.transit_direction == 'to') { filter['dest'] = $scope.context_org.id(); }
         if ($scope.transit_direction == 'from') { filter['source'] = $scope.context_org.id(); }
+        return filter;
+    }
 
-        egCore.pcrud.search('atc',
-            filter, {
-                'flesh' : 5,
-                // atc -> target_copy       -> call_number -> record -> simple_record
-                // atc -> hold_transit_copy -> hold        -> usr    -> card
-                'flesh_fields' : {
-                    'atc' : ['target_copy','dest','source','hold_transit_copy'],
-                    'acp' : ['call_number','location','circ_lib'],
-                    'acn' : ['record'],
-                    'bre' : ['simple_record'],
-                    'ahtc' : ['hold'],
-                    'ahr' : ['usr'],
-                    'au' : ['card']
-                },
-                'select' : { 'bre' : ['id'] },
-                order_by : { atc : 'source_send_time' },
-                limit  : count,
-                offset : offset,
-            }
-        ).then(
-            deferred.resolve, null, 
-            function(transit) {
-                transits[offset + recv_index++] = transit;
-                deferred.notify(transit);
-            }
-        );
+    $scope.grid_controls = {
+        activateItem : load_item,
+        setQuery : current_query
+    }
 
-        return deferred.promise;
+    function refresh_page() {
+        $scope.grid_controls.setQuery(current_query());
+        $scope.grid_controls.refresh();
     }
 
     $scope.context_org = egCore.org.get(egCore.auth.user().ws_ou());

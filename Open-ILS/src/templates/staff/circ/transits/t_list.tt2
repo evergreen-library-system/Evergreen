@@ -29,7 +29,6 @@
   id-field="id"
   idl-class="atc"
   features="-sort,-multisort"
-  items-provider="grid_data_provider"
   grid-controls="grid_controls"
   persist-key="circ.transits.list"
 >
@@ -42,21 +41,24 @@
   <eg-grid-menu-item handler="abort_transit" 
     label="[% l('Abort Transit') %]"></eg-grid-menu-item>
 
-  <eg-grid-field path='id' hidden></eg-grid-field>
-  <eg-grid-field path='target_copy.barcode' label="[% l('Barcode') %]">
-    <a target="_self" href='./cat/item/{{item.target_copy().id()}}'>{{item.target_copy().barcode()}}</a>
+  <eg-grid-field path='id' hidden required></eg-grid-field>
+  <eg-grid-field path='target_copy.id' hidden required></eg-grid-field>
+  <eg-grid-field path='target_copy.call_number.record.simple_record.id' hidden required></eg-grid-field>
+  <eg-grid-field path='hold_transit_copy.hold.id' hidden required></eg-grid-field>
+  <eg-grid-field path='target_copy.barcode' label="[% l('Barcode') %]" sortable>
+    <a target="_self" href="./cat/item/{{item['target_copy.id']}}">{{item['target_copy.barcode']}}</a>
   </eg-grid-field>
   <eg-grid-field path='target_copy.circ_lib.shortname' hidden></eg-grid-field>
   <eg-grid-field path='target_copy.call_number.label' hidden></eg-grid-field>
-  <eg-grid-field path='target_copy.call_number.record.simple_record.title' label="[% l('Title') %]">
-    <a target="_self" href="[% ctx.base_path %]/staff/cat/catalog/record/{{item.target_copy().call_number().record().simple_record().id()}}">
-      {{item.target_copy().call_number().record().simple_record().title()}}
+  <eg-grid-field path='target_copy.call_number.record.simple_record.title' label="[% l('Title') %]" sortable>
+    <a target="_self" href="[% ctx.base_path %]/staff/cat/catalog/record/{{item['target_copy.call_number.record.simple_record.id']}}">
+      {{item['target_copy.call_number.record.simple_record.title']}}
     </a>
   </eg-grid-field>
   <eg-grid-field path='target_copy.call_number.record.simple_record.author' hidden></eg-grid-field>
-  <eg-grid-field path='source.shortname' label="[% l('Source Library') %]"></eg-grid-field>
-  <eg-grid-field path='dest.shortname' label="[% l('Destination Library') %]"></eg-grid-field>
-  <eg-grid-field path='source_send_time' dateformat='short''></eg-grid-field>
+  <eg-grid-field path='source.shortname' label="[% l('Source Library') %]" sortable></eg-grid-field>
+  <eg-grid-field path='dest.shortname' label="[% l('Destination Library') %]" sortable></eg-grid-field>
+  <eg-grid-field path='source_send_time' dateformat='short' sortable></eg-grid-field>
   <eg-grid-field path='hold_transit_copy.hold.hold_type'></eg-grid-field>
   <eg-grid-field path='hold_transit_copy.hold.request_time' hidden></eg-grid-field>
   <eg-grid-field path='hold_transit_copy.hold.capture_time' hidden></eg-grid-field>

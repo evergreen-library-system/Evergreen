@@ -22,7 +22,7 @@ function($uibModal , $q , egCore , egConfirmDialog , egAlertDialog) {
                     $scope.num_transits = transits.length;
                     $scope.num_hold_transits = 0;
                     angular.forEach(transits, function(t) {
-                        if (t.hold_transit_copy()) {
+                        if (t['hold_transit_copy.hold.id']) {
                             $scope.num_hold_transits++;
                         }
                     });
@@ -42,7 +42,7 @@ function($uibModal , $q , egCore , egConfirmDialog , egAlertDialog) {
                             }
                             egCore.net.request(
                                 'open-ils.circ', 'open-ils.circ.transit.abort',
-                                egCore.auth.token(), { 'transitid' : transit.id() }
+                                egCore.auth.token(), { 'transitid' : transit['id'] }
                             ).then(function(resp) {
                                 if (evt = egCore.evt.parse(resp)) {
                                     egCore.audio.play('warning.transit.abort_failed');
