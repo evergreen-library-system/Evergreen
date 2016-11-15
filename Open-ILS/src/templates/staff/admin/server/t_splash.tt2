@@ -60,20 +60,24 @@
     ,[ l('Z39.50 Servers'), "./admin/server/config/z3950_source" ]
    ];
 
-   USE table(interfaces, rows=17);
+   USE table(interfaces, cols=3);
 %]
 
-[% FOREACH row = table.rows %]
-  <div class="row new-entry">
-    [% FOREACH item = row %][% IF item.1 %]
+<div class="row">
+[% FOREACH col = table.cols %]
     <div class="col-md-4">
-      <span class="glyphicon glyphicon-pencil"></span>
-      <a target="_self" href="[% item.1 %]">
-        [% item.0 %]
-      </a>
-    </div>
+    [% FOREACH item = col %][% IF item.1 %]
+        <div class="row new-entry">
+            <div class="col-md-12">
+            <span class="glyphicon glyphicon-pencil"></span>
+            <a target="_self" href="[% item.1 %]">
+                [% item.0 %]
+            </a>
+            </div>
+        </div>
     [% END %][% END %]
-  </div>
+    </div>
 [% END %]
+</div>
 
 </div>
