@@ -38,21 +38,26 @@
     ,[ l('Work Log'), "./admin/workstation/log" ]
    ];
 
-   USE table(interfaces, rows=9);
+   USE table(interfaces, cols=3);
 %]
 
-[% FOREACH row = table.rows %]
-  <div class="row new-entry">
-    [% FOREACH item = row %][% IF item.1 %]
-    <div class="col-md-4">
-      <span class="glyphicon glyphicon-pencil"></span>
-      <a target="_self" href="[% item.1 %]">
-        [% item.0 %]
-      </a>
-    </div>
-    [% END %][% END %]
-  </div>
-[% END %]
+<div class="row">
+    [% FOREACH col = table.cols %]
+        <div class="col-md-4">
+        [% FOREACH item = col %][% IF item.1 %]
+        <div class="row new-entry">
+            <div class="col-md-12">
+                <span class="glyphicon glyphicon-pencil"></span>
+                <a target="_self" href="[% item.1 %]">
+                    [% item.0 %]
+                </a>
+            </div>
+        </div>
+        [% END %]
+    [% END %]
+        </div>
+    [% END %]
+</div>
 
 </div>
 
