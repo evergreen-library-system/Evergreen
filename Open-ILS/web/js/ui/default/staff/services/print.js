@@ -91,11 +91,12 @@ function($q , $window , $timeout , $http , egHatch , egAuth , egIDL , egOrg , eg
                         // (absorption) for browser printing
                         return service.ingest_print_content(
                             args.content_type, args.content, args.scope
-                        ).then(function() { $window.print() });
+                        ).then(function() { $window.print(); service.clear_print_content(); });
                     } else {
                         // HTML content is already ingested and accessible
                         // within the page to the printer.  
                         $window.print();
+                        service.clear_print_content();
                     }
                 }
             );
@@ -152,7 +153,7 @@ function($q , $window , $timeout , $http , egHatch , egAuth , egIDL , egOrg , eg
 // option will always result in empty pages.  Move the print CSS
 // out of the standalone CSS file and put it into a template file
 // for this directive.
-.directive('egPrintContainer', ['$compile', function($compile) {
+.directive('egPrintContainer', ['$compile', '$http', function($compile, $http) {
     return {
         restrict : 'AE',
         scope : {}, // isolate our scope
@@ -163,13 +164,34 @@ function($q , $window , $timeout , $http , egHatch , egAuth , egIDL , egOrg , eg
                    ['$scope','$q','$window','$timeout','egHatch','egPrint','egEnv',
             function($scope , $q , $window , $timeout , egHatch , egPrint , egEnv) {
 
+                egPrint.clear_print_content = function() {
+                    $scope.elm.html('');
+                    $compile($scope.elm.contents())($scope.$new(true));
+                }
+
                 egPrint.ingest_print_content = function(type, content, printScope) {
 
                     if (type == 'text/csv' || type == 'text/plain') {
                         // preserve newlines, spaces, etc.
-                        content = '<link rel="stylesheet" href="'+ egEnv.basePath + 'css/print.css" type="text/css" media="print" /><pre>' + content + '</pre>';
+                        content = '<pre>' + content + '</pre>';
                     }
 
+                    return $http.get(egEnv.basePath + 'css/print.css').then(
+                        function(response) {
+                            content = '<style type="text/css" media="print">' +
+                                      response.data +
+                                      '</style>' +
+                                      content;
+                            return finish_ingest_print_content(type, content, printScope);
+                        },
+                        function() {
+                            return finish_ingest_print_content(type, content, printScope);
+                        }
+                    );
+
+                }
+
+                function finish_ingest_print_content(type, content, printScope) {
                     $scope.elm.html(content);
 
                     var sub_scope = $scope.$new(true);
