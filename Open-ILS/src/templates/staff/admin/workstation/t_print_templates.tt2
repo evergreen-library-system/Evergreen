@@ -17,6 +17,7 @@
           <option value="bills_current">[% l('Bills, Current') %]</option>
           <option value="bills_historical">[% l('Bills, Historical') %]</option>
           <option value="bill_payment">[% l('Bills, Payment') %]</option>
+          <option value="checkin">[% l('Checkin') %]</option>
           <option value="checkout">[% l('Checkout') %]</option>
           <option value="hold_transit_slip">[% l('Hold Transit Slip') %]</option>
           <option value="hold_shelf_slip">[% l('Hold Shelf Slip') %]</option>
@@ -25,8 +26,10 @@
           <option value="hold_pull_list">[% l('Hold Pull List') %]</option>
           <option value="hold_shelf_list">[% l('Hold Shelf List') %]</option>
           <option value="in_house_use_list">[% l('In-House Use List') %]</option>
+          <option value="items_out">[% l('Items Out') %]</option>
           <option value="patron_address">[% l('Patron Address') %]</option>
           <option value="patron_note">[% l('Patron Note') %]</option>
+          <option value="renew">[% l('Renew') %]</option>
           <option value="transit_slip">[% l('Transit Slip') %]</option>
         </select>
         <label for="print_context">[% l('Force Printer Context') %]</label>
