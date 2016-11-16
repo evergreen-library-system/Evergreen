@@ -76,7 +76,9 @@ function($scope , $q , $routeParams , egCore , egUser , patronSvc ,
         'circ.staff_client.do_not_auto_attempt_print'
     ]).then(function(settings) { 
         printOnComplete = !Boolean(
-            settings['circ.staff_client.do_not_auto_attempt_print']);
+            angular.isArray(settings['circ.staff_client.do_not_auto_attempt_print']) &&
+            (settings['circ.staff_client.do_not_auto_attempt_print'].indexOf('Checkout') > -1)
+        );
     });
 
     egCirc.get_noncat_types().then(function(list) {

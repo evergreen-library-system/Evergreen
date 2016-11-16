@@ -13,7 +13,7 @@ function($q , egCore , egWorkLog , patronSvc) {
     service.fetchBillSettings = function() {
         if (service.settings) return $q.when(service.settings);
         return egCore.org.settings(
-            ['ui.circ.billing.uncheck_bills_and_unfocus_payment_box','ui.circ.billing.amount_warn','ui.circ.billing.amount_limit']
+            ['ui.circ.billing.uncheck_bills_and_unfocus_payment_box','ui.circ.billing.amount_warn','ui.circ.billing.amount_limit','circ.staff_client.do_not_auto_attempt_print']
         ).then(function(s) {return service.settings = s});
     }
 
@@ -151,6 +151,7 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
     $scope.warn_amount = 1000;
     $scope.max_amount = 100000;
     $scope.amount_verified = false;
+    $scope.disable_auto_print = false;
 
     // pre-define list-returning funcs in case we access them
     // before the grid instantiates
@@ -303,7 +304,7 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
             $scope.payment_type, make_payments, note, $scope.check_number)
         .then(function(payment_ids) {
 
-            if ($scope.receipt_on_pay) {
+            if (!$scope.disable_auto_print && $scope.receipt_on_pay) {
                 printReceipt(
                     $scope.payment_type, payment_ids, make_payments, note);
             }
@@ -408,6 +409,11 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
         }
         if (s['ui.circ.billing.amount_limit']) {
             $scope.max_amount = Number(s['ui.circ.billing.amount_limit']);
+        }
+        if (s['circ.staff_client.do_not_auto_attempt_print'] && angular.isArray(s['circ.staff_client.do_not_auto_attempt_print'])) {
+            $scope.disable_auto_print = Boolean(
+                s['circ.staff_client.do_not_auto_attempt_print'].indexOf('Bill Pay') > -1
+            );
         }
     });
 

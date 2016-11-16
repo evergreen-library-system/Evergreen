@@ -13,16 +13,30 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
     var service = {
         // auto-override these events after the first override
         auto_override_checkout_events : {},
-        require_initials : false
+        require_initials : false,
+        never_auto_print : {
+            hold_shelf_slip : false,
+            hold_transit_slip : false,
+            transit_slip : false
+        }
     };
 
     egCore.startup.go().finally(function() {
         egCore.org.settings([
             'ui.staff.require_initials.patron_standing_penalty',
             'ui.admin.work_log.max_entries',
-            'ui.admin.patron_log.max_entries'
+            'ui.admin.patron_log.max_entries',
+            'circ.staff_client.do_not_auto_attempt_print'
         ]).then(function(set) {
             service.require_initials = Boolean(set['ui.staff.require_initials.patron_standing_penalty']);
+            if (angular.isArray(set['circ.staff_client.do_not_auto_attempt_print'])) {
+                if (set['circ.staff_client.do_not_auto_attempt_print'].indexOf('Hold Slip') > 1)
+                    service.never_auto_print['hold_shelf_slip'] = true;
+                if (set['circ.staff_client.do_not_auto_attempt_print'].indexOf('Hold/Transit Slip') > 1)
+                    service.never_auto_print['hold_transit_slip'] = true;
+                if (set['circ.staff_client.do_not_auto_attempt_print'].indexOf('Transit Slip') > 1)
+                    service.never_auto_print['transit_slip'] = true;
+            }
         });
     });
 
@@ -1358,7 +1372,17 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
 
         return service.collect_route_data(tmpl, evt, params, options)
         .then(function(data) {
-            
+
+            var template = data.transit ?
+                (data.patron ? 'hold_transit_slip' : 'transit_slip') :
+                'hold_shelf_slip';
+            if (service.never_auto_print[template]) {
+                // do not show the dialog or print if the
+                // disabled automatic print attempt type list includes
+                // the specified template
+                return;
+            }
+
             // All actions flow from the print data
 
             var print_context = {
@@ -1385,11 +1409,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
             if (evt.payload.hold) sound += '.hold';
             egCore.audio.play(sound);
 
-            function print_transit() {
-                var template = data.transit ? 
-                    (data.patron ? 'hold_transit_slip' : 'transit_slip') :
-                    'hold_shelf_slip';
-
+            function print_transit(template) {
                 return egCore.print.print({
                     context : 'default', 
                     template : template, 
@@ -1400,7 +1420,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
             // when auto-print is on, skip the dialog and go straight
             // to printing.
             if (options.auto_print_holds_transits) 
-                return print_transit();
+                return print_transit(template);
 
             return $uibModal.open({
                 templateUrl: tmpl,
@@ -1419,7 +1439,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
 
                     $scope.print = function() { 
                         $uibModalInstance.close();
-                        print_transit();
+                        print_transit(template);
                     }
                 }]
 
