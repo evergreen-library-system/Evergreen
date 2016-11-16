@@ -9,6 +9,7 @@
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/services/grid.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/services/ui.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/services/user.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/file.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/admin/workstation/app.js"></script>
 <script>
 angular.module('egCoreMod').run(['egStrings', function(s) {
@@ -17,6 +18,9 @@ angular.module('egCoreMod').run(['egStrings', function(s) {
   s.DEFAULT_WS_LABEL = '[% l('[_1] (Default)', '{{ws}}') %]';
   s.WS_EXISTS = '[% l("Workstation name already exists.  Use it anyway?") %]';
   s.WS_USED = '[% l("Workstation is already registered") %]';
+  s.PRINT_TEMPLATES_FAIL_EXPORT = "[% l('There are no customized print template to export') %]";
+  s.PRINT_TEMPLATES_SUCCESS_IMPORT = "[% l('Imported one or more print template(s)') %]";
+  s.PRINT_TEMPLATES_FAIL_IMPORT = "[% l('Failed to import any print template(s)') %]";
 }]);
 </script>
 [% END %]

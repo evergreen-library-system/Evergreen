@@ -47,6 +47,13 @@ angular.module('egWorkstationAdmin',
     });
 }])
 
+.config(['ngToastProvider', function(ngToastProvider) {
+  ngToastProvider.configure({
+    verticalPosition: 'bottom',
+    animation: 'fade'
+  });
+}])
+
 .factory('workstationSvc',
        ['$q','$timeout','$location','egCore','egConfirmDialog',
 function($q , $timeout , $location , egCore , egConfirmDialog) {
@@ -356,8 +363,8 @@ function($scope , egCore) {
 }])
 
 .controller('PrintTemplatesCtrl',
-       ['$scope','$q','egCore',
-function($scope , $q , egCore) {
+       ['$scope','$q','egCore','ngToast',
+function($scope , $q , egCore , ngToast) {
 
     $scope.print = {
         template_name : 'bills_current',
@@ -509,6 +516,44 @@ function($scope , $q , egCore) {
             $scope.print.template_content
         );
     }
+
+    $scope.exportable_templates = function() {
+        var templates = {};
+        var deferred = $q.defer();
+        var promises = [];
+        egCore.hatch.getKeys('eg.print.template.').then(function(keys) {
+            angular.forEach(keys, function(key) {
+                promises.push(egCore.hatch.getItem(key).then(function(value) {
+                    templates[key.replace('eg.print.template.', '')] = value;
+                }));
+            });
+            $q.all(promises).then(function() {
+                if (Object.keys(templates).length) {
+                    deferred.resolve(templates);
+                } else {
+                    ngToast.warning(egCore.strings.PRINT_TEMPLATES_FAIL_EXPORT);
+                    deferred.reject();
+                }
+            });
+        });
+        return deferred.promise;
+    }
+
+    $scope.imported_print_templates = { data : '' };
+    $scope.$watch('imported_print_templates.data', function(newVal, oldVal) {
+        if (newVal && newVal != oldVal) {
+            try {
+                var templates = JSON.parse(newVal);
+                angular.forEach(templates, function(template_content, template_name) {
+                    egCore.print.storePrintTemplate(template_name, template_content);
+                });
+                $scope.template_changed(); // refresh
+                ngToast.create(egCore.strings.PRINT_TEMPLATES_SUCCESS_IMPORT);
+            } catch (E) {
+                ngToast.warning(egCore.strings.PRINT_TEMPLATES_FAIL_IMPORT);
+            }
+        }
+    });
 
     $scope.template_changed(); // load the default
 }])

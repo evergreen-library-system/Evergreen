@@ -28,8 +28,17 @@
     </select>
   </div>
   <div class="col-md-7">
-    <div class="pull-right">
-      <button class="btn btn-default" ng-click="save_locally()">[% l('Save Locally') %]</button>
+    <button class="btn btn-default pull-left" ng-click="save_locally()">[% l('Save Locally') %]</button>
+    <div class="btn-group pull-right">
+      <span class="btn btn-default btn-file">
+        [% l('Import') %]
+        <input type="file" eg-file-reader container="imported_print_templates.data">
+      </span>
+      <label class="btn btn-default"
+          eg-json-exporter generator="exportable_templates"
+          default-file-name="'[% l('print_templates.json') %]'">
+          [% l('Export Customized Templates') %]
+      </label>
     </div>
   </div>
   <!-- other stuff -->
