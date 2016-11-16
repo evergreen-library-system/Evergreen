@@ -121,4 +121,23 @@ function($scope,  egCore,  egGridDataProvider , egConfirmDialog) {
         });
     }
 
+    $scope.print_list = function() {
+        var print_data = { in_house_uses : [] };
+
+        if (checkouts.length == 0) return $q.when();
+
+        angular.forEach(checkouts, function(ihu) {
+            print_data.in_house_uses.push({
+                num_uses : ihu.num_uses,
+                copy : egCore.idl.toHash(ihu.copy),
+                title : ihu.title
+            })
+        });
+
+        return egCore.print.print({
+            template : 'in_house_use_list',
+            scope : print_data
+        });
+    }
+
 }])

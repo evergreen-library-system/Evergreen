@@ -1,0 +1,28 @@
+<!--
+Template for printing in-house uses. Data specific to this template
+includes:
+
+in_house_uses - list; each entry contains:
+
+  * num_uses - number of uses
+  * copy - data for a copy, including the following keys:
+
+              barcode : barcode
+              location.name : shelving location
+              call_number.label : call number
+
+  * title - copy title
+-->
+<div>
+  <div>[% l('You marked the following in-house items used:') %]</div>
+  <hr/>
+  <ol>
+    <li ng-repeat="ihu in in_house_uses">
+      <div>[% l('Barcode: [_1] Uses: [_2]',
+        '{{ihu.copy.barcode}}',
+        '{{ihu.num_uses}}') %]</div>
+    </li>
+  </ol>
+  <hr/>
+  <div>{{current_location.shortname}} {{today | date:'short'}}</div>
+<br/>

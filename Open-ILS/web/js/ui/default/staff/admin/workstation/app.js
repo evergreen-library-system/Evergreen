@@ -401,7 +401,13 @@ function($scope , $q , egCore , ngToast) {
     };
 
     var seed_copy = {
-        barcode : '33434322323'
+        barcode : '33434322323',
+        call_number : {
+            label : '636.8 JON'
+        },
+        location : {
+            name : 'General Collection'
+        }
     }
 
     var one_hold = {
@@ -447,6 +453,14 @@ function($scope , $q , egCore , ngToast) {
                 target_copy : seed_copy,
                 title : seed_record.title
             },
+        ],
+
+        in_house_uses : [
+            {
+                num_uses : 3,
+                copy : seed_copy,
+                title : seed_record.title
+            }
         ],
 
         previous_balance : 8.45,
