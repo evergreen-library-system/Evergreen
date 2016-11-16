@@ -10,7 +10,7 @@ This release contains several bugfixes improving on Evergreen 2.11.0
 
 * A fix to that provides alphabetical sorting to the fund selector in
 the Acquisitions Selection List -> Copies interface.
-* A fix to the web client check in screen allowing users to click the
+* A fix to the web client checkin screen allowing users to click the
 title of the checked-in item to retrieve the bib record for that item.
 * The addition of a progress bar that displays when conducting a patron search in the web client.
 * A fix to the web client patron interface so that total Items Out in the
@@ -39,13 +39,13 @@ in 2.11.0.
 history during the upgrade to 2.10.
 * An improvement to the performance for the lookup of a user's circ
 history by adding an index on action.usr_circ_history(usr).
-* The addition of Spanish as a supported translations so that
-it can be configured as a language option in the public catalog.
+* A fix so that when a bib record's fingerprint changes, it gets correctly
+moved to a different metarecord.
 
 Acknowledgements
 ~~~~~~~~~~~~~~~~
 We would like to thank the following individuals who contributed code,
-tests and documentation patches to the 2.10.8 point release of
+tests and documentation patches to the 2.11.1 point release of
 Evergreen:
 
 * Galen Charlton
