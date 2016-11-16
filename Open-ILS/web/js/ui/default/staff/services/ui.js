@@ -457,7 +457,7 @@ function($window , egStrings) {
                     }
                 });
 
-                if (!$scope.selected)
+                if (!$scope.selected && !$scope.nodefault)
                     $scope.selected = egOrg.get(egAuth.user().ws_ou());
             });
 
