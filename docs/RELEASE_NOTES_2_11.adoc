@@ -1,10 +1,67 @@
-Evergreen 2.11.0 Release Notes
-==============================
+Evergreen 2.11 Release Notes
+============================
 :toc:
 :numbered:
 
-Upgrade notes
--------------
+Evergreen 2.11.1
+----------------
+
+This release contains several bugfixes improving on Evergreen 2.11.0
+
+* A fix to that provides alphabetical sorting to the fund selector in
+the Acquisitions Selection List -> Copies interface.
+* A fix to the web client check in screen allowing users to click the
+title of the checked-in item to retrieve the bib record for that item.
+* The addition of a progress bar that displays when conducting a patron search in the web client.
+* A fix to the web client patron interface so that total Items Out in the
+patron summary now includes overdue and long overdue items. It will also
+include Lost and Claims Returned items when the appropriate library
+setting is enabled.
+* A change to the public catalog My Account screen where the font for 
+leading articles will now be smaller when sorting a list by title. 
+* A fix to subject links in the catalog's record summary page so that
+periods are no longer stripped from resulting subject searches, leading
+to more accurate results when those links are clicked.
+* A fix to avoid unint warnings in the logs for prox_cache in
+open-ils.circ.hold.is_possible.
+* A fix to rounding errors that occured when summing owed/paid totals
+for display in the catalog's credit card payment form.
+* A change to sort behavior in the My Account screens. Previously, a 
+third click on a column header returned the list to its original sort
+order. Clicking column headers will now simply toggle the sort
+between ascending and descending order. 
+* The Permalink option on the catalog's record summary page will now be
+hidden in the staff client because clicking the link in the client led
+to no discernable change for users.
+* A fix to the display of permanent lists in the catalog, which had broken
+in 2.11.0.
+* A fix to the text of a notice that displays when migrating circulation
+history during the upgrade to 2.10.
+* An improvement to the performance for the lookup of a user's circ
+history by adding an index on action.usr_circ_history(usr).
+* The addition of Spanish as a supported translations so that
+it can be configured as a language option in the public catalog.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 2.10.8 point release of
+Evergreen:
+
+* Galen Charlton
+* Bill Erickson
+* Blake Henderson
+* Jim Keenan
+* Kathy Lussier
+* Christine Morgan
+* Dan Scott
+* Ben Shum
+* Remington Steed
+* Josh Stompro
+* Dan Wells
+
+2.11.0 Upgrade notes
+--------------------
 
 
 Tablefunc Extension No Longer Required
@@ -26,8 +83,8 @@ in the database to drop it:
 
 
 
-New Features
-------------
+2.11.0 New Features
+-------------------
 
 
 
@@ -480,8 +537,8 @@ Arabic, French (Canada), and Armenian.
 
 
 
-Acknowledgments
----------------
+2.11.0 Acknowledgments
+----------------------
 The Evergreen project would like to acknowledge the following
 organizations that commissioned developments in this release of
 Evergreen:
