@@ -415,7 +415,8 @@ function($scope , $q , egCore , ngToast) {
         phone_notify : '111-222-3333',
         sms_notify : '111-222-3333',
         email_notify : 'user@example.org',
-        request_time : new Date().toISOString()
+        request_time : new Date().toISOString(),
+        hold_type : 'T'
     }
 
 
@@ -430,6 +431,7 @@ function($scope , $q , egCore , ngToast) {
                     last_billing_type : 'Overdue materials',
                     total_owed : 1.50,
                     last_payment_note : 'Test Note 1',
+                    last_payment_type : 'cash_payment',
                     total_paid : 0.50,
                     balance_owed : 1.00
                 }
@@ -441,16 +443,31 @@ function($scope , $q , egCore , ngToast) {
                     last_billing_type : 'Overdue materials',
                     total_owed : 2.50,
                     last_payment_note : 'Test Note 2',
+                    last_payment_type : 'credit_payment',
                     total_paid : 0.50,
                     balance_owed : 2.00
                 }
             }
         ],
 
-        circulations : [
-            {   
-                due_date : new Date().toISOString(), 
+        copy : seed_copy,
+
+        checkins : [
+            {
+                due_date : new Date().toISOString(),
                 target_copy : seed_copy,
+                copy_barcode : seed_copy.barcode,
+                call_number : seed_copy.call_number,
+                title : seed_record.title
+            },
+        ],
+
+        circulations : [
+            {
+                circ : {
+                    due_date : new Date().toISOString(),
+                },
+                copy : seed_copy,
                 title : seed_record.title
             },
         ],
@@ -488,13 +505,33 @@ function($scope , $q , egCore , ngToast) {
         },
         title : seed_record.title,
         author : seed_record.author,
-        patron : egCore.idl.toHash(egCore.auth.user()),
+        patron : seed_user,
         address : seed_addr,
+        dest_location : egCore.idl.toHash(egCore.org.get(egCore.auth.user().ws_ou())),
+        dest_address : seed_addr,
         hold : one_hold,
         holds : [
-            {hold : one_hold, title : 'Some Title 1', author : 'Some Author 1'},
-            {hold : one_hold, title : 'Some Title 2', author : 'Some Author 2'},
-            {hold : one_hold, title : 'Some Title 3', author : 'Some Author 3'}
+            {
+                hold : one_hold, title : 'Some Title 1', author : 'Some Author 1',
+                volume : { label : '646.4 SOM' }, copy : seed_copy,
+                part : { label : 'v. 1' },
+                patron_barcode : 'S52802662',
+                patron_alias : 'XYZ', patron_last : 'Smith', patron_first : 'Jane'
+            },
+            {
+                hold : one_hold, title : 'Some Title 2', author : 'Some Author 2',
+                volume : { label : '646.4 SOM' }, copy : seed_copy,
+                part : { label : 'v. 1' },
+                patron_barcode : 'S52802662',
+                patron_alias : 'XYZ', patron_last : 'Smith', patron_first : 'Jane'
+            },
+            {
+                hold : one_hold, title : 'Some Title 3', author : 'Some Author 3',
+                volume : { label : '646.4 SOM' }, copy : seed_copy,
+                part : { label : 'v. 1' },
+                patron_barcode : 'S52802662',
+                patron_alias : 'XYZ', patron_last : 'Smith', patron_first : 'Jane'
+            }
         ]
     }
 
