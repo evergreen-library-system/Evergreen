@@ -65,3 +65,10 @@
   </eg-grid-field>
 </eg-grid>
 
+<div class="flex-row pad-vert">
+  <div class="flex-cell"></div>
+  <div class="pad-horiz">
+    <button class="btn btn-default"
+      ng-click="print_list()">[% l('Print') %]</button>
+  </div>
+</div>

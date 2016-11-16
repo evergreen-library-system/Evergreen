@@ -1,0 +1,26 @@
+<!--
+Template for printing copies from the Item Status page. Available
+macros include:
+
+copies - list; each entry is a fleshed, flattened copy record
+with a variety of keys, including
+
+  barcode
+  call_number.record.simple_record.title (title)
+  call_number.label 
+  location.name
+
+-->
+<div>
+  <div>[% l('The following items have been examined:') %]</div>
+  <hr/>
+  <ol>
+    <li ng-repeat="copy in copies">
+      <div>[% l('Title: [_1] <br> Barcode: [_2]',
+        "{{copy['call_number.record.simple_record.title']}}",
+        '{{copy.barcode}}') %]</div>
+    </li>
+  </ol>
+  <hr/>
+  <div>{{current_location.shortname}} {{today | date:'short'}}</div>
+<br/>

@@ -796,6 +796,17 @@ function($scope , $q , $routeParams , $location , $timeout , $window , egCore , 
         }
     }
 
+    $scope.print_list = function() {
+        var print_data = { copies : copyGrid.allItems() };
+
+        if (print_data.copies.length == 0) return $q.when();
+
+        return egCore.print.print({
+            template : 'item_status',
+            scope : print_data
+        });
+    }
+
     if (copyId.length > 0) {
         itemSvc.fetch(null,copyId).then(
             function() {
