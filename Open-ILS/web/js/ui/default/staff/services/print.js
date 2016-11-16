@@ -1,7 +1,6 @@
 /**
  * egPrint : manage print templates, process templates, print content
  *
- * TODO: create configurable links between print template and context.
  */
 angular.module('egCoreMod')
 
@@ -34,7 +33,11 @@ function($q , $window , $timeout , $http , egHatch , egAuth , egIDL , egOrg , eg
             .then(function(content) {
                 args.content = content;
                 if (!args.content_type) args.content_type = 'html';
-                return service.print_content(args);
+                service.getPrintTemplateContext(args.template)
+                .then(function(context) {
+                    args.context = context;
+                    return service.print_content(args);
+                });
             });
 
         } 
@@ -69,7 +72,6 @@ function($q , $window , $timeout , $http , egHatch , egAuth , egIDL , egOrg , eg
             promise = $q.when(args.content);
         }
 
-        // TODO: link print context to template type
         var context = args.context || 'default';
 
         return promise.then(function(html) {
@@ -134,6 +136,21 @@ function($q , $window , $timeout , $http , egHatch , egAuth , egIDL , egOrg , eg
 
     service.storePrintTemplate = function(name, html) {
         return egHatch.setItem('eg.print.template.' + name, html);
+    }
+
+    service.getPrintTemplateContext = function(name) {
+        var deferred = $q.defer();
+
+        egHatch.getItem('eg.print.template_context.' + name)
+        .then(
+            function(context) { deferred.resolve(context); },
+            function()        { deferred.resolve('default'); }
+        );
+
+        return deferred.promise;
+    }
+    service.storePrintTemplateContext = function(name, context) {
+        return egHatch.setItem('eg.print.template_context.' + name, context);
     }
 
     return service;

@@ -368,7 +368,8 @@ function($scope , $q , egCore , ngToast) {
 
     $scope.print = {
         template_name : 'bills_current',
-        template_output : ''
+        template_output : '',
+        template_context : 'default'
     };
 
     // print preview scope data
@@ -508,6 +509,10 @@ function($scope , $q , egCore , ngToast) {
                 $scope.print.load_failed = true;
             }
         );
+        egCore.print.getPrintTemplateContext($scope.print.template_name)
+        .then(function(template_context) {
+            $scope.print.template_context = template_context;
+        });
     }
 
     $scope.save_locally = function() {
@@ -515,21 +520,35 @@ function($scope , $q , egCore , ngToast) {
             $scope.print.template_name,
             $scope.print.template_content
         );
+        egCore.print.storePrintTemplateContext(
+            $scope.print.template_name,
+            $scope.print.template_context
+        );
     }
 
     $scope.exportable_templates = function() {
         var templates = {};
+        var contexts = {};
         var deferred = $q.defer();
         var promises = [];
-        egCore.hatch.getKeys('eg.print.template.').then(function(keys) {
+        egCore.hatch.getKeys('eg.print.template').then(function(keys) {
             angular.forEach(keys, function(key) {
-                promises.push(egCore.hatch.getItem(key).then(function(value) {
-                    templates[key.replace('eg.print.template.', '')] = value;
-                }));
+                if (key.match(/^eg\.print\.template\./)) {
+                    promises.push(egCore.hatch.getItem(key).then(function(value) {
+                        templates[key.replace('eg.print.template.', '')] = value;
+                    }));
+                } else {
+                    promises.push(egCore.hatch.getItem(key).then(function(value) {
+                        contexts[key.replace('eg.print.template_context.', '')] = value;
+                    }));
+                }
             });
             $q.all(promises).then(function() {
                 if (Object.keys(templates).length) {
-                    deferred.resolve(templates);
+                    deferred.resolve({
+                        templates: templates,
+                        contexts: contexts
+                    });
                 } else {
                     ngToast.warning(egCore.strings.PRINT_TEMPLATES_FAIL_EXPORT);
                     deferred.reject();
@@ -543,9 +562,12 @@ function($scope , $q , egCore , ngToast) {
     $scope.$watch('imported_print_templates.data', function(newVal, oldVal) {
         if (newVal && newVal != oldVal) {
             try {
-                var templates = JSON.parse(newVal);
-                angular.forEach(templates, function(template_content, template_name) {
+                var data = JSON.parse(newVal);
+                angular.forEach(data.templates, function(template_content, template_name) {
                     egCore.print.storePrintTemplate(template_name, template_content);
+                });
+                angular.forEach(data.contexts, function(template_context, template_name) {
+                    egCore.print.storePrintTemplateContext(template_name, template_context);
                 });
                 $scope.template_changed(); // refresh
                 ngToast.create(egCore.strings.PRINT_TEMPLATES_SUCCESS_IMPORT);

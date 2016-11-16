@@ -9,23 +9,35 @@
 <h2>[% l('Print Templates') %]</h2>
 
 <div class="row">
-  <div class="col-md-2">[% l('Template Name') %]</div>
-  <div class="col-md-3">
-    <select class="form-control" ng-model="print.template_name" ng-change="template_changed()">
-      <option value="bills_current">[% l('Bills, Current') %]</option>
-      <option value="bills_historical">[% l('Bills, Historical') %]</option>
-      <option value="bill_payment">[% l('Bills, Payment') %]</option>
-      <option value="checkout">[% l('Checkout') %]</option>
-      <option value="hold_transit_slip">[% l('Hold Transit Slip') %]</option>
-      <option value="hold_shelf_slip">[% l('Hold Shelf Slip') %]</option>
-      <option value="holds_for_bib">[% l('Holds for Bib Record') %]</option>
-      <option value="holds_for_patron">[% l('Holds for Patron') %]</option>
-      <option value="hold_pull_list">[% l('Hold Pull List') %]</option>
-      <option value="hold_shelf_list">[% l('Hold Shelf List') %]</option>
-      <option value="patron_address">[% l('Patron Address') %]</option>
-      <option value="patron_note">[% l('Patron Note') %]</option>
-      <option value="transit_slip">[% l('Transit Slip') %]</option>
-    </select>
+  <div class="col-md-5">
+    <div class="form-inline">
+      <div class="form-group">
+        <label for="print_tempate_name">[% l('Template Name') %]</label>
+        <select id="print_template_name" class="form-control" ng-model="print.template_name" ng-change="template_changed()">
+          <option value="bills_current">[% l('Bills, Current') %]</option>
+          <option value="bills_historical">[% l('Bills, Historical') %]</option>
+          <option value="bill_payment">[% l('Bills, Payment') %]</option>
+          <option value="checkout">[% l('Checkout') %]</option>
+          <option value="hold_transit_slip">[% l('Hold Transit Slip') %]</option>
+          <option value="hold_shelf_slip">[% l('Hold Shelf Slip') %]</option>
+          <option value="holds_for_bib">[% l('Holds for Bib Record') %]</option>
+          <option value="holds_for_patron">[% l('Holds for Patron') %]</option>
+          <option value="hold_pull_list">[% l('Hold Pull List') %]</option>
+          <option value="hold_shelf_list">[% l('Hold Shelf List') %]</option>
+          <option value="patron_address">[% l('Patron Address') %]</option>
+          <option value="patron_note">[% l('Patron Note') %]</option>
+          <option value="transit_slip">[% l('Transit Slip') %]</option>
+        </select>
+        <label for="print_context">[% l('Force Printer Context') %]</label>
+        <select class="form-control" ng-model="print.template_context">
+          <option value="default">[% l('Default') %]</option>
+          <option value="receipt">[% l('Receipt') %]</option>
+          <option value="label">[% l('Label') %]</option>
+          <option value="mail">[% l('Mail') %]</option>
+          <option value="offline">[% l('Offline') %]</option>
+        </select>
+      </div>
+    </div>
   </div>
   <div class="col-md-7">
     <button class="btn btn-default pull-left" ng-click="save_locally()">[% l('Save Locally') %]</button>
