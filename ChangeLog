@@ -1,3 +1,473 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit fcb79fdd84ade0249f0d835a129eb3a328ebbeb5
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Wed Nov 16 15:21:10 2016 -0500
+
+    bump up upgrade instructions for 2.10.8
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+19	18	docs/installation/server_upgrade.txt
+
+commit be89bb3c899f1690da167417224d0de06013576e
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Wed Nov 16 15:18:28 2016 -0500
+
+    2.10.7-2.10.8 schema upgrade script
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+109	0	Open-ILS/src/sql/Pg/version-upgrade/2.10.7-2.10.8-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.10.7-2.10.8-upgrade-db.sql
+
+commit 5ce99ef9b7dd4fb388a3b0828bab437f561dca5e
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Wed Nov 16 15:07:04 2016 -0500
+
+    update 2.10.8 release notes
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+3	1	docs/RELEASE_NOTES_2_10.adoc
+
+commit 7f35fb315deb12fd2e37f02668858db885733911
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Wed Nov 16 14:55:02 2016 -0500
+
+    LP#1488655: stamp schema upgrade script
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+94	0	Open-ILS/src/sql/Pg/upgrade/1003.schema.fix_metarecord_remapping.sql
+0	94	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.fix_metarecord_remapping.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1003.schema.fix_metarecord_remapping.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.fix_metarecord_remapping.sql
+
+commit 237a26cbf4a1c5bf3ec285ae1ec400d431d0a7de
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Fri Oct 28 11:42:52 2016 -0400
+
+    LP#1488655: fix MR remapping upon fingerprint change
+    
+    This patch ensures that if the fingerprint of a bib changes, the
+    bib will be moved to a new metarecord as opposed to ending up
+    as a member of more than one metarecord.
+    
+    To test
+    -------
+    [1] Note the metarecord that a bib belongs to.
+    [2] Change the bib so that its fingerprint changes -- with stock
+        cbf settings, editing the 245$a should suffice.
+    [3] Note that it is now a component of two metarecords.
+    [4] Apply the patch.
+    [5] Repeat step 2 or force a reingest. The bib should now be part
+        of exactly one metarecord.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Rogan Hamby <rogan.hamby@gmail.com>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+1	1	Open-ILS/src/sql/Pg/030.schema.metabib.sql
+94	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.fix_metarecord_remapping.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.fix_metarecord_remapping.sql
+
+commit 720d5b5495e72867229b6d0c1d024218c0840272
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Fri Oct 28 11:40:52 2016 -0400
+
+    LP#1488655: regression test for metarecord remapping
+    
+    This patch contains pgTAP tests for verifying that when
+    the fingerprint of a bib is changed, it remains part of
+    exactly one metarecord (as opposed to being part of both
+    its old and new MRs).
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Rogan Hamby <rogan.hamby@gmail.com>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+57	0	Open-ILS/src/sql/Pg/t/lp1488655_metarecord_remapping.pg
+ create mode 100644 Open-ILS/src/sql/Pg/t/lp1488655_metarecord_remapping.pg
+
+commit 350d602421df7d24cdd0c446e92005d946aa3450
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Wed Nov 16 14:16:51 2016 -0500
+
+    Docs: Adding 2.10.8 point release notes
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+52	0	docs/RELEASE_NOTES_2_10.adoc
+
+commit 0a21c3aa5d349fa341896e0449f0e67d504dd5a8
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Wed Nov 16 12:16:14 2016 -0500
+
+    LP#1618183: restamp backport of schema update script
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+0	12	Open-ILS/src/sql/Pg/upgrade/1000.data.add-spanish-to-i18n-locale.sql
+12	0	Open-ILS/src/sql/Pg/upgrade/1002.data.add-spanish-to-i18n-locale-rel_2_10.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/1000.data.add-spanish-to-i18n-locale.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1002.data.add-spanish-to-i18n-locale-rel_2_10.sql
+
+commit 5ef5ee2fa2d6cc12b1e4798cc902d91e772132af
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Wed Nov 16 11:56:16 2016 -0500
+
+    LP#1618183: make upgrade not die if es-ES locale already exists
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+3	2	Open-ILS/src/sql/Pg/upgrade/1000.data.add-spanish-to-i18n-locale.sql
+
+commit bc9436fca0fb4461f40e9e981b951fcca04bcda0
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Mon Aug 29 17:38:10 2016 -0400
+
+    Stamping upgrade script for Spanish locale seed data
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    
+    Conflicts:
+    	Open-ILS/src/sql/Pg/002.schema.config.sql
+
+11	0	Open-ILS/src/sql/Pg/upgrade/1000.data.add-spanish-to-i18n-locale.sql
+0	11	Open-ILS/src/sql/Pg/upgrade/XXXX.data.add-spanish-to-i18n-locale.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1000.data.add-spanish-to-i18n-locale.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.add-spanish-to-i18n-locale.sql
+
+commit 3033d048beefa27928992efd129addb38958c266
+Author: Ben Shum <ben@evergreener.net>
+Date:   Mon Aug 29 15:37:48 2016 -0400
+
+    LP#1618183: Add Spanish to config.i18n_locale
+    
+    Add Spanish to this table so that it is an option for supported translations.
+    
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+3	0	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+11	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.add-spanish-to-i18n-locale.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.add-spanish-to-i18n-locale.sql
+
+commit 519ec1ccb0a148e2816f3b2e6587c16c561e1c4b
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Wed Nov 16 11:46:40 2016 -0500
+
+    LP#1615736: stamping schema update
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    
+    Conflicts:
+    	Open-ILS/src/sql/Pg/002.schema.config.sql
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+7	0	Open-ILS/src/sql/Pg/upgrade/1001.schema.action_usr_circ_history_index.sql
+0	7	Open-ILS/src/sql/Pg/upgrade/XXXX.action_usr_circ_history_index.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1001.schema.action_usr_circ_history_index.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.action_usr_circ_history_index.sql
+
+commit 1e59d99993db01b29ae7e7a36b7062f3c3816f1c
+Author: Josh Stompro <stomproj@larl.org>
+Date:   Mon Aug 29 14:07:48 2016 -0500
+
+    LP#1615736 - Add an index on the usr field of action.usr_circ_history.
+    
+    Improve the performance of looking up a users circ history by adding
+    an index on action.usr_circ_history( usr ).
+    
+    To test for performance improvements time doing a search for a particular
+    users history before and after the index is created.
+    
+    Signed-off-by: Josh Stompro <stomproj@larl.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2	0	Open-ILS/src/sql/Pg/090.schema.action.sql
+7	0	Open-ILS/src/sql/Pg/upgrade/XXXX.action_usr_circ_history_index.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.action_usr_circ_history_index.sql
+
+commit 30abb31d8fb3d9be289db89c801af623f069b122
+Author: Josh Stompro <stomproj@larl.org>
+Date:   Tue Aug 16 09:55:21 2016 -0500
+
+    LP#1612873 - Fix text of notice message for history migration.
+    
+    The notice text that was outputed for every 10000 circs processed
+    was labeled as users, which made the output confusing.
+    
+    Signed-off-by: Josh Stompro <stomproj@larl.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+1	1	Open-ILS/src/sql/Pg/upgrade/0960.schema.decouple_co_history.sql
+1	1	Open-ILS/src/sql/Pg/version-upgrade/2.9.3-2.10.0-upgrade-db.sql
+
+commit 64351bb6eb772f693e2eda62417965f9275921a9
+Author: Christine Morgan <cmorgan@noblenet.org>
+Date:   Thu Sep 29 16:50:24 2016 -0400
+
+    lp1629075: Hide Permalink in Staff Client
+    
+    This will hide the permalink in the staff client catalog.
+    
+    Signed-off-by: Christine Morgan <cmorgan@noblenet.org>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+8	6	Open-ILS/src/templates/opac/parts/record/summary.tt2
+
+commit eccfd7b69c93ce06aee5ad6d075fcf8cce73767d
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Mon May 23 20:09:34 2016 -0400
+
+    LP#1584807: Clicking column header should not unsort list
+    
+    Clicking column headers in My Account cycled through ascending order,
+    descending order, and then unsorted. But unsorting a list after clicking a
+    header is unintutive to the user. Instead, it should toggle between ascending /
+    descending order.
+    
+    Test plan
+    * Using the concerto dataset, log in as user 99999395984 / maes1234
+    * Go to the Items Out area of my account and click the title column header to
+    sort the list.
+    * The list will first sort alphabetically in ascending order, on a second click
+    will sort alphabetically in descending order, and, on a third click, will
+    return to the default sort order.
+    * After loading the patch, clicking the column header should only result in
+    sorting in ascending and descending order.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+0	2	Open-ILS/src/templates/opac/parts/myopac/column_sort_support.tt2
+
+commit c84a2cbd19d00e2e59861408735266932fd72222
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Tue Sep 6 13:53:02 2016 -0400
+
+    LP#1620750 Prevent log warning for uninit var in checkin_retarget()
+    
+    If the retarget_mode variable is not initialized, then a warning is generated
+    in the logs every time an item is checked in. Avoid the warning by
+    short-circuiting before testing the value in the regex.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Circulate.pm
+
+commit 1421e7dc15ebdf946006bfadc924efb125a0d60b
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Sep 15 15:13:47 2016 -0400
+
+    LP#1282751 Credit card payment balance owed rounding fix
+    
+    Avoid using Perl's int() when summing owed/paid totals for display in
+    the TPAC credit card payment form, since this can lead to rounding
+    errors.
+    
+    A simple example of why we should not use int() when summing floating
+    point numbers:
+    
+    perl -e 'print "no match\n" unless ((8.29 * 100) == int(8.29 * 100))';
+    
+    Furthermore, use the relatively new fpsum() utility function for summing
+    floating point numbers so we can avoid having multiple versions of the
+    summing logic floating (*cough*) around (*cough cough*).
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+9	7	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Account.pm
+
+commit 17ddf95b1736f708bbf2bf1c4c50911142fbc151
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Fri Sep 16 13:49:01 2016 -0400
+
+    LP#1624491 Avoid uninit var prox_cache during holds processing
+    
+    open-ils.circ was logging a prox_cache hash value before it is
+    guaranteed to have been initialized. Instead, log messages _after_ they
+    have been initialized.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+3	6	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Holds.pm
+
+commit 80a1cccf7e78b0dd4ad0703906fcb299a59249f1
+Author: Ben Shum <ben@evergreener.net>
+Date:   Mon Oct 24 12:05:31 2016 -0400
+
+    Docs: Update base system requirements for Evergreen
+    
+    These memory values are woefully out of date for modern Evergreen installations.
+    
+    Recommending also at least 2 GB of RAM for client workstation, though honestly,
+    more is probably better there too.
+    
+    Also adding specific Linux distributions supported by this community instead of
+    just Linux.
+    
+    And dropping specific Windows versions (especially since two out of the three
+    are no longer supported by Microsoft).
+    
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+4	4	docs/installation/system_requirements.txt
+
+commit 90dd3c9bc1e61debc98e6da91e6aec5925e8da8a
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Sun Oct 2 17:28:05 2016 -0400
+
+    Docs: add mpm_prefork config for Apache 2.4 systems
+    
+    We had only documented the Apache 2.2 stanzas for mpm_prefork, so include a
+    section for 2.4 that uses MaxRequestWorkers and MaxConnectionsPerChild. Given
+    the memory leaks that we have seen, suggest lower settings for these two values
+    (assuming that most sites will be serving a public catalogue instead of using a
+    separate discovery layer).
+    
+    Also fix the weird formatting where Debian instructions were indented under a
+    Fedora section.
+    
+    Also use dots for ordered bullets instead of renumbering all of the bullets
+    again.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+46	28	docs/installation/server_installation.txt
+
+commit 9553e5ffbfe425dbaa615f1817a35d3f036e0b96
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Sun Oct 2 10:04:04 2016 -0400
+
+    Docs: set up default action_trigger_filters.json file
+    
+    Given that action_trigger_runner.pl looks by default for a file called
+    action_trigger_filters.json, instruct people to create that file when they are
+    first setting up their system.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+20	2	docs/installation/server_installation.txt
+
+commit b60e6e8a78fa6606b7433f53d07a298fc6930b03
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Thu Sep 29 13:50:40 2016 -0400
+
+    LP#1623955: Keep periods in subject links
+    
+    The subject links in the record summary were stripping periods, changing
+    headings that contained N.Y., for example, to NY in the subsequent search
+    string. Since normalization at index time replaces the period with a space,
+    clicking the subject links did not successfully retrieve all relevant
+    results.
+    
+    Test plan:
+    Click the Subject link for a record that has New York (N.Y.) in its heading and
+    has no other instances of ny in the keyword index. This record will not be
+    retrieved when you click the link. After loading the patch, the record will be
+    successfully retrieved, along with other records that contain New York (N.Y.) in
+    their subject headings.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/templates/opac/parts/record/subjects.tt2
+
+commit fbf55d03a2ade49067329bf3d97c46574615cfce
+Author: Josh Stompro <stomproj@larl.org>
+Date:   Fri Aug 19 15:31:11 2016 -0500
+
+    LP#1494750 - Extra closing curly bracket in style.css disables following css
+    
+    Which is the .sort_deemphasize class, so the modification of the non-filing
+    characters never happens in the sort results.
+    
+    Test Plan:
+    
+    Needed: Patron account with checkout history that contains titles with
+    non filing characters.
+    
+    Before change, view the checkout history and sort by title.  Note that the
+    leading non filing characters look the same as the rest of the title.
+    
+    After change, view the checkout history and sort by title.  Note that the
+    leading non filing characters now have a different style than the rest
+    of the title.
+    
+    Signed-off-by: Josh Stompro <stomproj@larl.org>
+    Signed-off-by: Jeanette Lundgren <jlundgren@cwmars.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+0	1	Open-ILS/src/templates/opac/css/style.css.tt2
+
+commit 441eaa7931642074c107735c9032bd1669fe8b74
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Sep 23 13:56:42 2016 -0400
+
+    LP#1526159 Webstaff Items Out includes overdue, etc.
+    
+    Items Out tally in patron summary (side-bar) is now consistent with the
+    Items Out value displayed along the top of the patron UI.  It now includes
+    overdues and optionally lost/claims-returned total.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jeanette Lundgren <jlundgren@cwmars.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	1	Open-ILS/src/templates/staff/circ/patron/t_summary.tt2
+
+commit a6f96a3850f4d52f5c1265fc708a36a0cab8b320
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Sep 2 17:01:35 2016 -0400
+
+    LP#1565009 Webstaff patron search progress bar
+    
+    Displays a progress bar while waiting for results from a patron search
+    in the browser client.  Bar only displays when a server-side search is
+    required.  (It's not displayed for cached searches, etc.).  Results grid
+    is hidden while the progress bar is visible and vice versa.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jeanette Lundgren <jlundgren@cwmars.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+15	0	Open-ILS/src/templates/staff/circ/patron/t_search_results.tt2
+10	1	Open-ILS/web/js/ui/default/staff/circ/patron/app.js
+
+commit 32fef9d64efe8733b8d29bfb9ad8ce88eaae4c8c
+Author: Jim Keenan <jkeenan@cwmars.org>
+Date:   Thu Sep 29 13:22:15 2016 -0400
+
+    LP#1629029: Fixed missing space in line 11
+    
+    Signed-off-by: Jim Keenan <jkeenan@cwmars.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	1	Open-ILS/src/templates/kpac/getit.tt2
+
+commit d58a9bbda81347bb4ffe10e38bbea32449ba7417
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Thu Sep 29 11:05:18 2016 -0400
+
+    LP#802700 Sort funds by code and year
+    
+    This commit applies Bill Erickson's change from bug #1227344 to the fund
+    selector that appears on the Selection List (picklist) screen when you click
+    "Copies" to reveal the line items table. (Bill also mentioned this in
+    bug #1266471.)
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+2	0	Open-ILS/web/js/ui/default/acq/common/li_table.js
