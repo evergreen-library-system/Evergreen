@@ -468,7 +468,8 @@ function($scope , $q , egCore , ngToast) {
                     due_date : new Date().toISOString(),
                 },
                 copy : seed_copy,
-                title : seed_record.title
+                title : seed_record.title,
+                author : seed_record.author
             },
         ],
 
