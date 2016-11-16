@@ -31,12 +31,20 @@ angular.module('egCoreMod')
     return {
         scope: {
             container: '=',
+            generator: '=',
             defaultFileName: '='
         },
         link: function (scope, element, attributes) {
             element.bind('click', function (clickEvent) {
-                var data = new Blob([JSON.stringify(scope.container)], {type : 'application/json'});
-                FileSaver.saveAs(data, scope.defaultFileName);
+                if (scope.generator) {
+                    scope.generator().then(function(value) {
+                        var data = new Blob([JSON.stringify(value)], {type : 'application/json'});
+                        FileSaver.saveAs(data, scope.defaultFileName);
+                    });
+                } else {
+                    var data = new Blob([JSON.stringify(scope.container)], {type : 'application/json'});
+                    FileSaver.saveAs(data, scope.defaultFileName);
+                }
             });
         }
     }
