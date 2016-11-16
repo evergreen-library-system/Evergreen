@@ -15,7 +15,7 @@
   <br/>
 
   <div>[% l('Hold for patron [_1], [_2] [_3]',
-    '{{patron.family_given_name}}',
+    '{{patron.family_name}}',
     '{{patron.first_given_name}}',
     '{{patron.second_given_name}}') %]</div>
   <div>[% l('Barcode: [_1]', '{{patron.card.barcode}}') %]</div>

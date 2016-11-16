@@ -19,8 +19,8 @@
   <tbody>
     <tr ng-repeat="hold_data in holds">
       <td>
-        <span ng-if="hold.patron_alias">{{hold_data.patron_alias}}</span>
-        <span ng-if="!hold.patron_alias">
+        <span ng-if="hold_data.patron_alias">{{hold_data.patron_alias}}</span>
+        <span ng-if="!hold_data.patron_alias">
           [% l('[_1], [_2]',
             '{{hold_data.patron_last}}',
             '{{hold_data.patron_first}}') %]
