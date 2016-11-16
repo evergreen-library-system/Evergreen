@@ -54,7 +54,8 @@
     </div>
     <div class="col-md-2">
       <eg-org-selector id="search_lib_selector"
-        selected="search_lib"
+        selected="search_lib" nodefault
+        label="[% l('Select...') %]"
         onchange="handle_search_lib_changed">
       </eg-org-selector>
     </div>
@@ -67,7 +68,8 @@
     </div>
     <div class="col-md-2">
       <eg-org-selector id="pref_lib_selector"
-        selected="pref_lib"
+        selected="pref_lib" nodefault
+        label="[% l('Select...') %]"
         onchange="handle_pref_lib_changed">
       </eg-org-selector>
     </div>
