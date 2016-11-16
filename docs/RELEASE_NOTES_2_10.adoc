@@ -35,8 +35,10 @@ to no discernable change for users.
 history during the upgrade to 2.10.
 * An improvement to the performance for the lookup of a user's circ
 history by adding an index on action.usr_circ_history(usr).
-* The addition of Spanish as a supported translations so that
+* The addition of Spanish as a supported translation so that
 it can be configured as a language option in the public catalog.
+* A fix so that when a bib record's fingerprint changes, it gets correctly
+moved to a different metarecord.
 
 Acknowledgements
 ~~~~~~~~~~~~~~~~
