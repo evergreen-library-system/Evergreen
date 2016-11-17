@@ -10,6 +10,8 @@
       label="[% l('Add Billing') %]" handler="addBilling"></eg-grid-action>
     <eg-grid-action 
       label="[% l('Full Details') %]" handler="showFullDetails"></eg-grid-action>
+    <eg-grid-action
+      label="[% l('Print Bills') %]" handler="printBills"></eg-grid-action>
 
     <eg-grid-field path="summary.balance_owed"></eg-grid-field>
     <eg-grid-field path="id" label="[% l('Bill #') %]"></eg-grid-field>

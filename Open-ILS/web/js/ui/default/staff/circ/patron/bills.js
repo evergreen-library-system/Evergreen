@@ -775,6 +775,39 @@ function($scope,  $q , egCore , patronSvc , billSvc , egPromptDialog , $location
             })
         }
     }
+
+    $scope.printBills = function(selected) { // FIXME: refactor me
+        if (!selected.length) return;
+        // bills print receipt assumes nested hashes, but our grid
+        // stores flattener data.  Fetch the selected xacts as
+        // fleshed pcrud objects and hashify.  
+        // (Consider an alternate approach..)
+        var ids = selected.map(function(t){ return t.id });
+        var xacts = [];
+        egCore.pcrud.search('mbt', 
+            {id : ids},
+            {flesh : 1, flesh_fields : {'mbt' : ['summary']}},
+            {authoritative : true}
+        ).then(
+            function() {
+                egCore.print.print({
+                    context : 'receipt', 
+                    template : 'bills_historical', 
+                    scope : {   
+                        transactions : xacts,
+                        current_location : egCore.idl.toHash(
+                            egCore.org.get(egCore.auth.user().ws_ou()))
+                    }
+                });
+            }, 
+            null, 
+            function(xact) {
+                xacts.push(egCore.idl.toHash(xact));
+            }
+        );
+    }
+
+
 }])
 
 .controller('BillPaymentHistoryCtrl',
