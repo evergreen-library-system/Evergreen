@@ -4,7 +4,7 @@
 </div>
 
 <div ng-show="record_id" class="row col-md-12 pad-vert">
-  <div class="col-md-9">
+  <div class="col-md-8">
     <button type="button" ng-disabled="from_route" class="btn btn-default" ng-click="opac_call('rdetailStart')">
        [% l('Start') %]
     </button>
@@ -21,7 +21,10 @@
        [% l('Back To Results') %] ( {{ search_result_index }} / {{ search_result_hit_count }} )
     </button>
   </div>
-  <div class="col-md-3">
+  <div class="col-md-4">
+    <button type="button" class="btn btn-default" ng-click="selectedHoldingsVolCopyAdd()">
+        [% l('Add Volumes') %]
+    </button>
     <button type="button" class="btn btn-default" ng-click="add_to_record_bucket()">
         [% l('Add To Bucket') %]
     </button>

@@ -954,12 +954,20 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
                 raw.push( {callnumber : v} );
             });
         } else if (vols) {
-            angular.forEach(
-                $scope.holdingsGridControls.selectedItems(),
-                function (item) {
-                    raw.push({owner : item.owner_id});
-                }
-            );
+            if (typeof $scope.holdingsGridControls.selectedItems == "function" &&
+                $scope.holdingsGridControls.selectedItems().length > 0) {
+                angular.forEach($scope.holdingsGridControls.selectedItems(),
+                    function (item) {
+                        raw.push({
+                            owner : item.owner_id,
+                            label : item.call_number.label
+                        });
+                    });
+            } else {
+                raw.push({
+                    owner : egCore.auth.user().ws_ou()
+                });
+            }
         }
 
         if (raw.length == 0) raw.push({});
