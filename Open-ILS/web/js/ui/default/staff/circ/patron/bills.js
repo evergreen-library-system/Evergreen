@@ -331,6 +331,7 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
 
         // page data not yet refreshed, capture data from current scope
         var print_data = {
+            payment_type : type,
             payment_note : note,
             previous_balance : Number($scope.summary.balance_owed()),
             payment_total : Number($scope.payment_amount),
