@@ -491,6 +491,17 @@
               [% l('Log Out') %]
             </a>
           </li>
+          <li class="divider"></li>
+          <li>
+            <a href disabled="disabled">
+              <span
+                title="[% l('Hatch Connection Status') %]"
+                class="glyphicon glyphicon-transfer"
+                ng-class="{'connect-status-ok' : hatchConnected()}">
+              </span>
+              [% l('Hatch') %]
+            </a>
+          </li>
         </ul>
       </li>
     </ul>

@@ -42,7 +42,6 @@
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/services/coresvc.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/services/user.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/services/navbar.js"></script>
-<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/statusbar.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/services/ui.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/services/date.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/services/op_change.js"></script>

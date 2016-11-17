@@ -42,9 +42,6 @@
     <div id="top-content-container" class="container" ng-cloak>[% content %]</div>
 
     [% 
-      # status bar along bottom of page
-      INCLUDE "staff/statusbar.tt2";
-
       # script imports
       INCLUDE "staff/base_js.tt2";
 

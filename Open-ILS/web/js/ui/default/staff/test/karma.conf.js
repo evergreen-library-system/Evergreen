@@ -42,7 +42,6 @@ module.exports = function(config){
       'services/user.js',
       'services/startup.js',
       'services/ui.js',
-      'services/statusbar.js',
       'services/grid.js',
       'services/op_change.js',
       'services/navbar.js', 'services/date.js',

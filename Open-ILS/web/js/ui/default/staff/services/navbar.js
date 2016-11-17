@@ -99,6 +99,11 @@ angular.module('egCoreMod')
                     return egCore.auth.token();
                 }
 
+                // Returns true if the browser is connected to Hatch
+                $scope.hatchConnected = function() {
+                    return egCore.hatch.hatchAvailable;
+                }
+
                 // tied to logout link
                 $scope.logout = function() {
                     egCore.auth.logout();
