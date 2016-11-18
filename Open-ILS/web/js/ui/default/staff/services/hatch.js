@@ -33,6 +33,7 @@ angular.module('egCoreMod')
     service.messages = {};
     service.pending = [];
     service.hatchAvailable = null;
+    service.cachedPrintConfig = {};
     service.state = 'IDLE'; // IDLE, INIT, CONNECTED, NO_CONNECTION
 
     // write a message to the Hatch port
@@ -188,31 +189,15 @@ angular.module('egCoreMod')
         };
     }
 
-    service.getPrintConfig = function() {
-        if (service.printConfig) 
-            return $q.when(service.printConfig);
-
-        return service.getRemoteItem('eg.print.config')
-        .then(function(conf) { 
-            return (service.printConfig = conf || {}) 
-        });
-    }
-
-    service.setPrintConfig = function(conf) {
-        service.printConfig = conf;
-        return service.setRemoteItem('eg.print.config', conf);
-    }
-
-
     service.remotePrint = function(
         context, contentType, content, withDialog) {
 
-        return service.getPrintConfig().then(
-            function(conf) {
+        return service.getPrintConfig(context).then(
+            function(config) {
                 // print configuration retrieved; print
                 return service.attemptHatchDelivery({
                     action : 'print',
-                    config : conf[context],
+                    settings : config,
                     content : content, 
                     contentType : contentType,
                     showDialog : withDialog,
@@ -221,43 +206,27 @@ angular.module('egCoreMod')
         );
     }
 
-    // launch the print dialog then attach the resulting configuration
-    // to the requested context, then store the final values.
-    service.configurePrinter = function(context, printer) {
-
-        // load current settings
-        return service.getPrintConfig()
-
-        // dispatch the print configuration request
+    // 'force' avoids using the config cache
+    service.getPrintConfig = function(context, force) {
+        if (service.cachedPrintConfig[context] && !force) {
+            return $q.when(service.cachedPrintConfig[context])
+        }
+        return service.getRemoteItem('eg.print.config.' + context)
         .then(function(config) {
+            return service.cachedPrintConfig[context] = config;
+        });
+    }
 
-            // loaded remote config
-            if (!config[context]) config[context] = {};
-            config[context].printer = printer;
-            return service.attemptHatchDelivery({
-                key : 'no-op', 
-                action : 'print-config',
-                config : config[context]
-            })
-        })
+    service.setPrintConfig = function(context, config) {
+        service.cachedPrintConfig[context] = config;
+        return service.setRemoteItem('eg.print.config.' + context, config);
+    }
 
-        // set the returned settings to the requested context
-        .then(function(newconf) {
-            if (angular.isObject(newconf)) {
-                newconf.printer = printer;
-                return service.printConfig[context] = newconf;
-            } else {
-                console.warn("configurePrinter() returned " + newconf);
-            }
-        })
-
-        // store the newly linked settings
-        .then(function() {
-            service.setItem('eg.print.config', service.printConfig);
-        })
-
-        // return the final settings to the caller
-        .then(function() {return service.printConfig});
+    service.getPrinterOptions = function(name) {
+        return service.attemptHatchDelivery({
+            action : 'printer-options',
+            printer : name
+        });
     }
 
     service.getPrinters = function() {

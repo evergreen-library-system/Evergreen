@@ -220,17 +220,17 @@ function($scope , $window , $location , egCore , egConfirmDialog) {
 .controller('PrintConfigCtrl',
        ['$scope','egCore',
 function($scope , egCore) {
-    console.log('PrintConfigCtrl');
 
-    $scope.actionPending = false;
-    $scope.isTestView = false;
-
+    $scope.printConfig = {};
     $scope.setContext = function(ctx) { 
         $scope.context = ctx; 
         $scope.isTestView = false;
-        $scope.actionPending = false;
     }
     $scope.setContext('default');
+
+    $scope.hatchNotConnected = function() {
+        return !egCore.hatch.hatchAvailable;
+    }
 
     $scope.getPrinterByAttr = function(attr, value) {
         var printer;
@@ -240,49 +240,47 @@ function($scope , egCore) {
         return printer;
     }
 
-    $scope.currentPrinter = function() {
-        if ($scope.printConfig && $scope.printConfig[$scope.context]) {
-            return $scope.getPrinterByAttr(
-                'name', $scope.printConfig[$scope.context].printer
-            );
-        }
-    }
-
     // fetch info on all remote printers
     egCore.hatch.getPrinters()
     .then(function(printers) { 
         $scope.printers = printers;
-        $scope.defaultPrinter = 
-            $scope.getPrinterByAttr('is-default', true);
-    })
-    .then(function() { return egCore.hatch.getPrintConfig() })
-    .then(function(config) {
-        $scope.printConfig = config;
 
-        var pname = '';
-        if ($scope.defaultPrinter) {
-            pname = $scope.defaultPrinter.name;
+        var def = $scope.getPrinterByAttr('is-default', true);
+        if (!def && printers.length) def = printers[0];
 
-        } else if ($scope.printers.length == 1) {
-            // if the OS does not report a default printer, but only
-            // one printer is available, treat it as the default.
-            pname = $scope.printers[0].name;
+        if (def) {
+            $scope.defaultPrinter = def;
+            loadPrinterOptions(def.name);
         }
-
-        // apply the default printer to every context which has
-        // no printer configured.
+    }).then(function() {
         angular.forEach(
             ['default','receipt','label','mail','offline'],
             function(ctx) {
-                if (!$scope.printConfig[ctx]) {
-                    $scope.printConfig[ctx] = {
-                        context : ctx,
-                        printer : pname
+                egCore.hatch.getPrintConfig(ctx).then(function(conf) {
+                    if (conf) {
+                        $scope.printConfig[ctx] = conf;
+                    } else {
+                        $scope.resetPrinterSettings(ctx);
                     }
-                }
+                });
             }
         );
     });
+
+    $scope.resetPrinterSettings = function(context) {
+        $scope.printConfig[context] = {
+            context : context,
+            printer : $scope.defaultPrinter ? $scope.defaultPrinter.name : null,
+            autoMargins : true, 
+            allPages : true,
+            pageRanges : []
+        };
+    }
+
+    $scope.savePrinterSettings = function(context) {
+        return egCore.hatch.setPrintConfig(
+            context, $scope.printConfig[context]);
+    }
 
     $scope.printerConfString = function() {
         if ($scope.printConfigError) return $scope.printConfigError;
@@ -292,24 +290,14 @@ function($scope , egCore) {
             $scope.printConfig[$scope.context], undefined, 2);
     }
 
-    $scope.resetConfig = function() {
-        $scope.actionPending = true;
-        $scope.printConfigError = null;
-        $scope.printConfig[$scope.context] = {
-            context : $scope.context
-        }
-        
-        if ($scope.defaultPrinter) {
-            $scope.printConfig[$scope.context].printer = 
-                $scope.defaultPrinter.name;
-        }
-
-        egCore.hatch.setPrintConfig($scope.printConfig)
-        .finally(function() {$scope.actionPending = false});
+    function loadPrinterOptions(name) {
+        egCore.hatch.getPrinterOptions(name).then(
+            function(options) {$scope.printerOptions = options});
     }
 
     $scope.setPrinter = function(name) {
         $scope.printConfig[$scope.context].printer = name;
+        loadPrinterOptions(name);
     }
 
     // for testing
