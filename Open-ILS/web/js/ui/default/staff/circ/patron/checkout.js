@@ -151,8 +151,11 @@ function($scope , $q , $routeParams , egCore , egUser , patronSvc ,
             function(co_resp) {
                 // update stats locally so we don't have to fetch them w/
                 // each checkout.
-                patronSvc.patron_stats.checkouts.out++;
-                patronSvc.patron_stats.checkouts.total_out++;
+                //check for renew so that is doesn't update incorrectly
+                if(co_resp.evt[0].payload.parent_circ == null){
+                    patronSvc.patron_stats.checkouts.out++;
+                    patronSvc.patron_stats.checkouts.total_out++;
+                }
 
                 // copy the response event into the original grid row item
                 // note: angular.copy clobbers the destination

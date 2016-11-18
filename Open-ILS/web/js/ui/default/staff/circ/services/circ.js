@@ -460,6 +460,9 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
                 return service.precat_dialog(params, options);
 
             case 'OPEN_CIRCULATION_EXISTS':
+                if(evt[0].payload.auto_renew == 1){
+                    return service.renew(params, options);
+                }
                 egCore.audio.play('error.checkout.open_circ');
                 return service.circ_exists_dialog(evt, params, options);
 
