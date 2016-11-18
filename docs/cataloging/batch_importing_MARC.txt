@@ -186,6 +186,30 @@ quality points by increasing subsequent records by a power of 2 (two).
 +
 image::media/Batch_Importing_MARC_Records8.jpg[Batch_Importing_MARC_Records8]
 
+Merge/Overlay Profiles
+~~~~~~~~~~~~~~~~~~~~~~
+
+If Evergreen finds a match for an incoming record in the database, you need to identify which fields should be replaced, which should be preserved, and which should be added to the record.
+Click the Merge/Overlay Profiles button to create a profile that contains this information.
+
+You can use these profiles when importing records through the MARC Batch Importer or Acquisitions Load MARC Order Records interface.
+
+You can create a new profile by clicking the New Merge Profile button. Available options for handling the fields include:
+
+. _Preserve specification_ - fields in the existing record that should be preserved.
+
+. _Replace specification_ - fields in existing record that should be replaced by those in the incoming record.
+
+. _Add specification_ - fields from incoming record that should be added to existing record (in addition to any already there.)
+
+. _Remove specification_ - fields that should be removed from incoming record.
+
+. _Update bib source_ - If this value is false, just the bibliographic data will be updated when you overlay a new MARC record.  If it is true, then Evergreen will also update
+the record's bib source to the one you select on import; the last edit date to the date the new record is imported, and the last editor to the person who imported the new
+record.
+
+You can add multiple tags to the specification options, separating each tag with a comma.
+
 
 Import Item Attributes
 ~~~~~~~~~~~~~~~~~~~~~~
