@@ -23,9 +23,26 @@ Importing Authorities
 . Don't set a value for Holdings Import Profile, because this doesn't apply to authority records.
 . Select a file of authority data and put it in the *File to Upload* field.
 . Make sure all the settings are correct, then press *Upload.*
++
+The screen displays "Uploading... Processing..." to show that the records
+are being transferred to the server, then displays a progress bar to show
+the actual import progress. When the staff client displays the progress
+bar, you can disconnect your staff client safely. Very large batches of
+records might time out at this stage.
+
 . Evergreen will automatically assign a thesaurus based on the *Subj* fixed field, which is character 11 in the 008 field.
 . Evergreen will also try to determine who edited the record (based on the MARC 905u field or the user performing the import) and set the edit date, which you can view
 when you examine the record in the future.
+
+. Once the import is finished, the staff client displays the results of
+the import process. You can manually display the import progress by
+selecting the _Inspect Queue_ tab of the _MARC Batch Import/Export_
+interface and selecting the queue name. By default, the staff client does
+not display records that were imported successfully; it only shows records
+that conflicted with existing entries in the database. The screen shows
+the overall status of the import process in the top right-hand corner,
+with the Total and Imported number of records for the queue.
+
 
 [TIP]
 =================
