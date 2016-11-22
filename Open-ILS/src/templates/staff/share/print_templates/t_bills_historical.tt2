@@ -1,5 +1,5 @@
 Welcome to {{current_location.name}}!<br/>
-You have the following bills:
+You had the following bills:
 <hr/>
 <dl>
   <div ng-repeat="xact in transactions">
