@@ -2605,10 +2605,22 @@ sub do_checkin {
             }
         }
     } else { # no-op checkin
-        if ($U->is_true( $self->copy->floating )) { # XXX floating items still stick where they are even with no-op checkin?
-            $self->checkin_changed(1);
-            $self->copy->circ_lib( $self->circ_lib );
-            $self->update_copy;
+        if ($self->copy->floating) { # XXX floating items still stick where they are even with no-op checkin?
+            my $res = $self->editor->json_query(
+                {
+                    from => [
+                        'evergreen.can_float',
+                        $self->copy->floating->id,
+                        $self->copy->circ_lib,
+                        $self->circ_lib
+                    ]
+                }
+            );
+            if ($res && @$res && $U->is_true($res->[0]->{'evergreen.can_float'})) {
+                $self->checkin_changed(1);
+                $self->copy->circ_lib( $self->circ_lib );
+                $self->update_copy;
+            }
         }
     }
 
