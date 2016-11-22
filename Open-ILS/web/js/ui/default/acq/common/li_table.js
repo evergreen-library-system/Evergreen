@@ -1786,17 +1786,25 @@ function AcqLiTable() {
 
     this.generateMakeRecTab = function(bib_id,default_view, row) {
         return function() {
-            xulG.new_tab(
-                XUL_OPAC_WRAPPER,
-                {tab_name: localeStrings.XUL_RECORD_DETAIL_PAGE, browser:false},
-                {
-                    no_xulG : false, 
-                    show_nav_buttons : true, 
-                    show_print_button : true, 
-                    opac_url : xulG.url_prefix('opac_rdetail|' + bib_id),
-                    default_view : default_view
+            if(openils.XUL.isXUL() && !window.IAMBROWSER) {
+                xulG.new_tab(
+                    XUL_OPAC_WRAPPER,
+                    {tab_name: localeStrings.XUL_RECORD_DETAIL_PAGE, browser:false},
+                    {
+                        no_xulG : false, 
+                        show_nav_buttons : true, 
+                        show_print_button : true, 
+                        opac_url : xulG.url_prefix('opac_rdetail|' + bib_id),
+                        default_view : default_view
+                    }
+                );
+            } else {
+                var url = '/eg/staff/cat/catalog/record/' + bib_id;
+                if (default_view == 'copy_browser') {
+                    url += '/holdings';
                 }
-            );
+                window.open(url);
+            }
 
             if(row) nodeByName("action_none", row).selected = true;
         }
@@ -3742,9 +3750,14 @@ function AcqLiTable() {
             }
         );
 
-        win = window.open(
-            oilsBasePath + '/acq/lineitem/findbib?query=' + encodeURIComponent(query),
-            '', 'resizable,scrollbars=1,chrome');
+        if(openils.XUL.isXUL() && !window.IAMBROWSER) {
+            win = window.open(
+                oilsBasePath + '/acq/lineitem/findbib?query=' + encodeURIComponent(query),
+                '', 'resizable,scrollbars=1,chrome');
+        } else {
+            win = window.open( oilsBasePath + '/acq/lineitem/findbib?query=' + encodeURIComponent(query));
+        }
+
 
         win.window.recordFound = function(bibId) { 
             win.close();
