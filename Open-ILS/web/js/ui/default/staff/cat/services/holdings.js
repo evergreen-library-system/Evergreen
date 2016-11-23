@@ -33,9 +33,11 @@ function(egCore , $q) {
     // resolved with the last received copy
     service.prototype.fetch = function(opts) {
         var svc = this;
-        if (svc.ongoing) {
-            console.log('Skipping fetch, ongoing = true');
-            return $q.when();
+
+        if (svc.ongoing && svc.p) {
+            svc.p.cancel = true;
+            console.log('Canceling fetch for org '+ svc.org.id());
+            if (svc.p.reject) svc.p.reject();
         }
 
         var rid = opts.rid;
@@ -61,12 +63,13 @@ function(egCore , $q) {
         var org_list = egCore.org.descendants(org.id(), true);
         console.log('Holdings fetch with: rid='+rid+' org='+org_list+' copy='+copy+' vol='+vol+' empty='+empty);
 
-        return egCore.pcrud.search(
+        var p = egCore.pcrud.search(
             'acn',
             {record : rid, owning_lib : org_list, deleted : 'f'},
             svc.flesh
         ).then(
             function() { // finished
+                if (p.cancel) return;
                 svc.copies = svc.copies.sort(
                     function (a, b) {
                         function compare_array (x, y, i) {
@@ -236,6 +239,7 @@ function(egCore , $q) {
 
             // notify reads the stream of copies, one at a time.
             function(cn) {
+                if (p.cancel) return;
 
                 var copies = cn.copies().filter(function(cp){ return cp.deleted() == 'f' });
                 cn.copies([]);
@@ -278,6 +282,8 @@ function(egCore , $q) {
                 return cn;
             }
         );
+
+        return svc.p = p;
     };
 
     return service;

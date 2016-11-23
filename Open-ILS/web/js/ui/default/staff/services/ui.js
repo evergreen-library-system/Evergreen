@@ -493,6 +493,8 @@ function($window , egStrings) {
                 var orgId = scope.hatch.getLocalItem(scope.stickySetting);
                 if (orgId) {
                     scope.selected = scope.egOrg.get(orgId);
+                    if (scope.onchange)
+                        scope.onchange(scope.selected);
                 }
             }
 
