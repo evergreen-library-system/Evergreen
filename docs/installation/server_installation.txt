@@ -125,6 +125,14 @@ additional packages may be required.  As the *root* Linux account:
 make -f Open-ILS/src/extras/Makefile.install <osname>-developer
 ------------------------------------------------------------------------------
 +
+ * To install packages required for building Evergreen translations, use
+   the <osname>-translator Makefile.install target.
++
+[source, bash]
+------------------------------------------------------------------------------
+make -f Open-ILS/src/extras/Makefile.install <osname>-translator
+------------------------------------------------------------------------------
++
  * To install packages required for building Evergreen release bundles, use
    the <osname>-packager Makefile.install target.
 +
