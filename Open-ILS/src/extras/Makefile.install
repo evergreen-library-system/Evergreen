@@ -90,6 +90,15 @@ debian-jessie-developer:
 debian-wheezy-developer:
 	@make -f $(DIR)/Makefile.debian-wheezy install_developer
 
+ubuntu-xenial-translator:
+	@make -f $(DIR)/Makefile.ubuntu-xenial install_translator
+ubuntu-trusty-translator:
+	@make -f $(DIR)/Makefile.ubuntu-trusty install_translator
+debian-jessie-translator:
+	@make -f $(DIR)/Makefile.debian-jessie install_translator
+debian-wheezy-translator:
+	@make -f $(DIR)/Makefile.debian-wheezy install_translator
+
 ubuntu-xenial-packager:
 	@make -f $(DIR)/Makefile.ubuntu-xenial install_packager
 ubuntu-trusty-packager:
