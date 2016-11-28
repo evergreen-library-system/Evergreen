@@ -205,8 +205,11 @@ function AcqLiTable() {
 
         /* Note that this will directly contain dijits, not the AutoWidget
          * wrapper object. */
-        this.batchUpdateWidgets = {};
+        if (!this.batchUpdateWidgets) {
+            this.batchUpdateWidgets = {};
+        }
 
+        if (this.batchUpdateWidgets.item_count) this.batchUpdateWidgets.item_count.destroy();
         this.batchUpdateWidgets.item_count = new dijit.form.TextBox(
             {
                 "style": {"width": "3em"},
@@ -217,45 +220,53 @@ function AcqLiTable() {
             "acq-bu-item_count"
         );
 
-        (new openils.widget.AutoFieldWidget({
-            "fmClass": "acqdf",
-            "selfReference": true,
-            "dijitArgs": { "required": false },
-            "forceSync": true,
-            "parentNode": "acq-bu-distribution_formula"
-        })).build(
-            function(w) {
-                dojo.style(w.domNode, {"width": "12em"});
-                /* dijitArgs to AutoFieldWidget won't work for 'disabled' */
-                w.attr(
-                    "disabled",
-                    dojo.indexOf(disabled_fields, "distribution_formula") != -1
-                );
-                self.batchUpdateWidgets.distribution_formula = w;
-            }
+        if (!this.batchUpdateWidgets.distribution_formula) {
+            (new openils.widget.AutoFieldWidget({
+                "fmClass": "acqdf",
+                "selfReference": true,
+                "dijitArgs": { "required": false },
+                "forceSync": true,
+                "parentNode": "acq-bu-distribution_formula"
+            })).build(
+                function(w) {
+                    dojo.style(w.domNode, {"width": "12em"});
+                    self.batchUpdateWidgets.distribution_formula = w;
+                }
+            );
+        }
+
+        /* dijitArgs to AutoFieldWidget won't work for 'disabled' */
+        self.batchUpdateWidgets.distribution_formula.attr(
+            'disabled',
+            dojo.indexOf(disabled_fields, "distribution_formula") != -1
         );
 
         function buildOneBatchWidget(field, args) {
-            (new openils.widget.AutoFieldWidget(args)).build(
-                function(w, aw) {
-                    if (field == "fund") {
-                        dojo.connect(
-                            w, "onChange", function(val) {
-                                self._updateFundSelectorStyle(aw, val);
-                            }
-                        );
-                        if (w.store)
-                            self._ensureCSSFundClasses(w.store);
-                    }
+            if (!self.batchUpdateWidgets[field]) {
+                (new openils.widget.AutoFieldWidget(args)).build(
+                    function(w, aw) {
+                        if (field == "fund") {
+                            dojo.connect(
+                                w, "onChange", function(val) {
+                                    self._updateFundSelectorStyle(aw, val);
+                                }
+                            );
+                            if (w.store)
+                                self._ensureCSSFundClasses(w.store);
+                        }
 
-                    dojo.style(w.domNode, {"width": "10em"});
-                    w.attr(
-                        "disabled",
-                        dojo.indexOf(disabled_fields, field) != -1
-                    );
-                    self.batchUpdateWidgets[field] = w;
-                }
-            );
+                        dojo.style(w.domNode, {"width": "10em"});
+                        self.batchUpdateWidgets[field] = w;
+                    }
+                );
+            }
+
+            if (self.batchUpdateWidgets[field]) {
+                self.batchUpdateWidgets[field].attr(
+                    "disabled",
+                    dojo.indexOf(disabled_fields, field) != -1
+                );
+            }
         }
 
         dojo.forEach(
