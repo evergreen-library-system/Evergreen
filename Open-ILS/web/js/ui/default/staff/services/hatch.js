@@ -33,8 +33,10 @@ angular.module('egCoreMod')
     service.messages = {};
     service.pending = [];
     service.hatchAvailable = null;
-    service.cachedPrintConfig = {};
-    service.state = 'IDLE'; // IDLE, INIT, CONNECTED, NO_CONNECTION
+
+    // key/value cache -- avoid unnecessary Hatch extension requests.
+    // Only affects *RemoteItem calls.
+    service.keyCache = {}; 
 
     // write a message to the Hatch port
     service.sendToHatch = function(msg) {
@@ -46,7 +48,7 @@ angular.module('egCoreMod')
             msg2[key] = val;
         });
 
-        console.debug("sending to Hatch: " + JSON.stringify(msg2,null,2));
+        console.debug("sending to Hatch: " + JSON.stringify(msg2));
 
         msg2.from = 'page';
         $window.postMessage(msg2, $window.location.origin);
@@ -59,19 +61,23 @@ angular.module('egCoreMod')
         msg.msgid = service.msgId++;
         msg.deferred = $q.defer();
 
-        if (service.state == 'NO_CONNECTION') {
+        if (service.hatchAvailable === false) { // Hatch is closed.
             msg.deferred.reject(msg);
 
-        } else if (service.state.match(/CONNECTED|INIT/)) {
-            // Hatch is known to be open
+        } else if (service.hatchAvailable === true) { // Hatch is open.
             service.messages[msg.msgid] = msg;
             service.sendToHatch(msg);
 
-        } else if (service.state == 'IDLE') { 
+        } else { // Hatch state unknown
             service.messages[msg.msgid] = msg;
             service.pending.push(msg);
             $timeout(service.openHatch);
         }
+
+        /*
+        console.debug(
+            Object.keys(service.messages).length + " pending Hatch requests");
+        */
 
         return msg.deferred.promise;
     }
@@ -82,8 +88,7 @@ angular.module('egCoreMod')
     service.resolveRequest = function(msg) {
 
         if (!service.messages[msg.msgid]) {
-            console.warn('no cached message for ' 
-                + msg.msgid + ' : ' + JSON.stringify(msg, null, 2));
+            console.error('no cached message for id = ' + msg.msgid);
             return;
         }
 
@@ -92,32 +97,12 @@ angular.module('egCoreMod')
         msg.deferred = service.messages[msg.msgid].deferred;
         delete service.messages[msg.msgid]; // un-cache
 
-        switch (service.state) {
-
-            case 'CONNECTED': // received a standard Hatch response
-                if (msg.status == 200) {
-                    msg.deferred.resolve(msg.content);
-                } else {
-                    msg.deferred.reject();
-                    console.warn("Hatch command failed with status=" 
-                        + msg.status + " and message=" + msg.message);
-                }
-                break;
-
-            case 'INIT':
-                if (msg.status == 200) {
-                    service.hatchAvailable = true; // public flag
-                    service.state = 'CONNECTED';
-                    service.hatchOpened();
-                } else {
-                    msg.deferred.reject();
-                    service.hatchWontOpen(msg.message);
-                }
-                break;
-
-            default:
-                console.warn(
-                    "Received message in unexpected state: " + service.state); 
+        if (msg.status == 200) {
+            msg.deferred.resolve(msg.content);
+        } else {
+            console.warn("Hatch command failed with status=" 
+                + msg.status + " and message=" + msg.message);
+            msg.deferred.reject();
         }
     }
 
@@ -138,39 +123,31 @@ angular.module('egCoreMod')
             // We only care about messages from the Hatch extension.
             if (event.data && event.data.from == 'extension') {
 
-                console.debug('Hatch says: ' 
-                    + JSON.stringify(event.data, null, 2));
+                // Avoid logging full Hatch responses. they can get large.
+                console.debug(
+                    'Hatch responded to message ID ' + event.data.msgid);
 
                 service.resolveRequest(event.data);
             }
         }); 
 
-        service.state = 'INIT';
-        service.attemptHatchDelivery({action : 'init'});
+        service.hatchAvailable = true; // public flag
+        service.hatchOpened();
     }
 
     service.hatchWontOpen = function(err) {
         console.debug("Hatch connection failed: " + err);
-        service.state = 'NO_CONNECTION';
         service.hatchAvailable = false;
-        service.hatchClosed();
-    }
-
-    service.hatchClosed = function() {
-        service.printers = [];
-        service.printConfig = {};
         while ( (msg = service.pending.shift()) ) {
             msg.deferred.reject(msg);
             delete service.messages[msg.msgid];
         }
-        if (service.onHatchClose)
-            service.onHatchClose();
     }
 
     // Returns true if Hatch is required or if we are currently
     // communicating with the Hatch service. 
     service.usingHatch = function() {
-        return service.state == 'CONNECTED' || service.hatchRequired();
+        return service.hatchAvailable || service.hatchRequired();
     }
 
     // Returns true if this browser (via localStorage) is 
@@ -206,19 +183,11 @@ angular.module('egCoreMod')
         );
     }
 
-    // 'force' avoids using the config cache
-    service.getPrintConfig = function(context, force) {
-        if (service.cachedPrintConfig[context] && !force) {
-            return $q.when(service.cachedPrintConfig[context])
-        }
-        return service.getRemoteItem('eg.print.config.' + context)
-        .then(function(config) {
-            return service.cachedPrintConfig[context] = config;
-        });
+    service.getPrintConfig = function(context) {
+        return service.getRemoteItem('eg.print.config.' + context);
     }
 
     service.setPrintConfig = function(context, config) {
-        service.cachedPrintConfig[context] = config;
         return service.setRemoteItem('eg.print.config.' + context, config);
     }
 
@@ -253,9 +222,8 @@ angular.module('egCoreMod')
         return service.getRemoteItem(key)['catch'](
             function(msg) {
                 if (service.hatchRequired()) {
-                    console.error("Unable to getItem: " + key
-                     + "; hatchRequired=true, but hatch is not connected");
-                     return null;
+                    console.error("getRemoteItem() failed for key " + key);
+                    return null;
                 }
                 return service.getLocalItem(msg.key);
             }
@@ -263,10 +231,16 @@ angular.module('egCoreMod')
     }
 
     service.getRemoteItem = function(key) {
+        
+        if (service.keyCache[key] != undefined)
+            return $q.when(service.keyCache[key])
+
         return service.attemptHatchDelivery({
             key : key,
             action : 'get'
-        })
+        }).then(function(content) {
+            return service.keyCache[key] = content;
+        });
     }
 
     service.getLocalItem = function(key) {
@@ -295,8 +269,7 @@ angular.module('egCoreMod')
         return service.setRemoteItem(key, value)['catch'](
             function(msg) {
                 if (service.hatchRequired()) {
-                    console.error("Unable to setItem: " + key
-                     + "; hatchRequired=true, but hatch is not connected");
+                    console.error("setRemoteItem() failed for key " + key);
                      return null;
                 }
                 return service.setLocalItem(msg.key, value);
@@ -306,6 +279,7 @@ angular.module('egCoreMod')
 
     // set the value for a stored or new item
     service.setRemoteItem = function(key, value) {
+        service.keyCache[key] = value;
         return service.attemptHatchDelivery({
             key : key, 
             content : value, 
@@ -371,6 +345,7 @@ angular.module('egCoreMod')
     }
 
     service.removeRemoteItem = function(key) {
+        delete service.keyCache[key];
         return service.attemptHatchDelivery({
             key : key,
             action : 'remove'
@@ -407,9 +382,8 @@ angular.module('egCoreMod')
         return service.getRemoteKeys(prefix)['catch'](
             function() { 
                 if (service.hatchRequired()) {
-                    console.error("Unable to get pref keys; "
-                     + "hatchRequired=true, but hatch is not connected");
-                     return [];
+                    console.error("getRemoteKeys() failed");
+                    return [];
                 }
                 return service.getLocalKeys(prefix) 
             }
