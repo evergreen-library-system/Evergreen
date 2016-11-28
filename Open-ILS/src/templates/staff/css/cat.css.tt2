@@ -60,6 +60,7 @@ input.marcedit:focus {
 
 .marcsfcodedelimiter {
     color: blue;
+    font-family: 'Lucida Console', Monaco, monospace;
     font-weight: normal;
     text-align: center;
     padding-right: 0px !important;
