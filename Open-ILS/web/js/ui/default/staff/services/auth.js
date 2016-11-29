@@ -191,9 +191,11 @@ function($q , $timeout , $rootScope , $window , $location , egNet , egHatch) {
         service.login_api(args).then(function(evt) {
 
             if (evt.textcode == 'SUCCESS') {
-                egHatch.setLoginSessionItem('eg.auth.token.oc', service.token());
-                egHatch.setLoginSessionItem('eg.auth.time.oc', service.authtime());
-                service.OCuser(service.user());
+                if (args.type != 'persist') {
+                    egHatch.setLoginSessionItem('eg.auth.token.oc', service.token());
+                    egHatch.setLoginSessionItem('eg.auth.time.oc', service.authtime());
+                    service.OCuser(service.user());
+                }
                 service.handle_login_ok(args, evt);
                 service.testAuthToken().then(
                     deferred.resolve,

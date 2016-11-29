@@ -96,7 +96,7 @@ angular.module('egCoreMod')
                         egCore.auth.opChange(args).then(
                             function() {
                                 console.log('op change success');
-                                $scope.op_changed = true;
+                                $scope.op_changed = egCore.auth.OCtoken() ? true : false;
                                 $scope.username = egCore.auth.user().usrname();
                                 ngToast.create(egCore.strings.OP_CHANGE_SUCCESS);
                             }, // note success with toast?
