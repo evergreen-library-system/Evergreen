@@ -5,8 +5,6 @@
 %]
 
 [% BLOCK APP_JS %]
-<!-- needed for login -->
-<script src="[% ctx.media_prefix %]/js/dojo/opensrf/md5.js"></script>
 <!-- splash / login page app -->
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/app.js"></script>
 [% END %]

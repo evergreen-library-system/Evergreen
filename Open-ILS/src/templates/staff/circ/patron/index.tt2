@@ -23,9 +23,6 @@
 
 <!-- load the rest on demand? -->
 
-<!-- required for credentials verify API -->
-<script src="[% ctx.media_prefix %]/js/dojo/opensrf/md5.js"></script>
-
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/patron/checkout.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/patron/items_out.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/patron/holds.js"></script>
