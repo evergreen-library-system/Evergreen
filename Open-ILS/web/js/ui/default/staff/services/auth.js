@@ -191,12 +191,14 @@ function($q , $timeout , $rootScope , $window , $location , egNet , egHatch) {
         service.login_api(args).then(function(evt) {
 
             if (evt.textcode == 'SUCCESS') {
-                service.OCuser(service.user());
                 egHatch.setLoginSessionItem('eg.auth.token.oc', service.token());
                 egHatch.setLoginSessionItem('eg.auth.time.oc', service.authtime());
+                service.OCuser(service.user());
                 service.handle_login_ok(args, evt);
-                deferred.resolve();
-
+                service.testAuthToken().then(
+                    deferred.resolve,
+                    function () { service.opChangeUndo().then(deferred.reject)  }
+                );
             } else {
                 // note: the likely outcome here is a NO_SESION
                 // server event, which results in broadcasting an 

@@ -75,6 +75,7 @@ angular.module('egCoreMod')
                 $scope.changeOperatorUndo = function() {
                         egCore.auth.opChangeUndo();
                         $scope.op_changed = false;
+                        $scope.username = egCore.auth.user().usrname();
                         ngToast.create(egCore.strings.OP_CHANGE_SUCCESS);
                 }
 
@@ -96,6 +97,7 @@ angular.module('egCoreMod')
                             function() {
                                 console.log('op change success');
                                 $scope.op_changed = true;
+                                $scope.username = egCore.auth.user().usrname();
                                 ngToast.create(egCore.strings.OP_CHANGE_SUCCESS);
                             }, // note success with toast?
                             function() {
