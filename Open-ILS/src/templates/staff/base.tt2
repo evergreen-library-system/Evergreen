@@ -4,6 +4,12 @@
     [%- IF ctx.page_app %] ng-app="[% ctx.page_app %]"[% END -%]
     [%- IF ctx.page_ctrl %] ng-controller="[% ctx.page_ctrl %]"[% END %]>
   <head>
+    <!-- enables ng-cloak to be usable before angular has been able to fully load -->
+    <style type="text/css">
+    [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+        display: none !important;
+    }       
+    </style>
     <title>[% l('Evergreen Staff [_1]', ctx.page_title) %]</title>
     <base href="/eg/staff/">
     <meta charset="utf-8">
@@ -33,7 +39,7 @@
     <eg-navbar></eg-navbar>
 
     <!-- main page content goes here -->
-    <div id="top-content-container" class="container">[% content %]</div>
+    <div id="top-content-container" class="container" ng-cloak>[% content %]</div>
 
     [% 
       # status bar along bottom of page
