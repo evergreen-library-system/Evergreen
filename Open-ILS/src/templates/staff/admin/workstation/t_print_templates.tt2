@@ -30,6 +30,7 @@
           <option value="patron_address">[% l('Patron Address') %]</option>
           <option value="patron_note">[% l('Patron Note') %]</option>
           <option value="renew">[% l('Renew') %]</option>
+          <option value="transit_list">[% l('Transit List') %]</option>
           <option value="transit_slip">[% l('Transit Slip') %]</option>
         </select>
         <label for="print_context">[% l('Force Printer Context') %]</label>

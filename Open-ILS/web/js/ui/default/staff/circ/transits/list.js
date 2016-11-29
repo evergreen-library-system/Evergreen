@@ -242,5 +242,47 @@ function($scope , $q , $routeParams , $window , egCore , egTransits , egGridData
     $scope.$watch('dates.end_date', function(newVal, oldVal) {
         if (newVal && newVal != oldVal) refresh_page();
     });
+
+    function fetch_all_matching_transits(transits) {
+        var deferred = $q.defer();
+        var filter = current_query();
+        egCore.pcrud.search('atc',
+            filter, {
+                'flesh' : 5,
+                // atc -> target_copy       -> call_number -> record -> simple_record
+                // atc -> hold_transit_copy -> hold        -> usr    -> card
+                'flesh_fields' : {
+                    'atc' : ['target_copy','dest','source','hold_transit_copy'],
+                    'acp' : ['call_number','location','circ_lib'],
+                    'acn' : ['record'],
+                    'bre' : ['simple_record'],
+                    'ahtc' : ['hold'],
+                    'ahr' : ['usr'],
+                    'au' : ['card']
+                },
+                'select' : { 'bre' : ['id'] },
+                order_by : { atc : 'source_send_time' },
+            }
+        ).then(
+            deferred.resolve, null,
+            function(transit) {
+                transits.push(egCore.idl.toHash(transit));
+            }
+        );
+        return deferred.promise;
+    }
+
+    $scope.print_full_list = function() {
+        var print_data = { transits : [] };
+
+        return fetch_all_matching_transits(print_data.transits).then(function() {
+            if (print_data.transits.length == 0) return $q.when();
+            return egCore.print.print({
+                template : 'transit_list',
+                scope : print_data
+            });
+        });
+
+    }
 }])
 

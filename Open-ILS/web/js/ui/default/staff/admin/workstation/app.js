@@ -403,7 +403,12 @@ function($scope , $q , egCore , ngToast) {
     var seed_copy = {
         barcode : '33434322323',
         call_number : {
-            label : '636.8 JON'
+            label : '636.8 JON',
+            record : {
+                simple_record : {
+                    'title' : 'Test Title'
+                }
+            }
         },
         location : {
             name : 'General Collection'
@@ -419,6 +424,20 @@ function($scope , $q , egCore , ngToast) {
         hold_type : 'T'
     }
 
+    var seed_transit = {
+        source : {
+            name : 'Library Y',
+            shortname : 'LY',
+            holds_address : seed_addr
+        },
+        dest : {
+            name : 'Library X',
+            shortname : 'LX',
+            holds_address : seed_addr
+        },
+        source_send_time : new Date().toISOString(),
+        target_copy : seed_copy
+    }
 
     $scope.preview_scope = {
         //bills
@@ -496,14 +515,8 @@ function($scope , $q , egCore , ngToast) {
             value : 'This patron is super nice!'
         },
 
-        transit : {
-            dest : {
-                name : 'Library X',
-                shortname : 'LX',
-                holds_address : seed_addr
-            },
-            target_copy : seed_copy
-        },
+        transit : seed_transit,
+        transits : [ seed_transit ],
         title : seed_record.title,
         author : seed_record.author,
         patron : seed_user,

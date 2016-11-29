@@ -1,0 +1,30 @@
+<!--
+Template for printing transits. Data specific to this template
+includes:
+
+transits - list; each entry contains:
+
+  * copy_status
+  * dest (library, keys include shortname)
+  * source_send_time
+  * id
+  * source (library, keys include shortname)
+  * target_copy (copy, keys include barcode)
+  * target_copy.call_number.record.simple_record.title
+-->
+<div>
+  <div>[% l('Transits:') %]</div>
+  <hr/>
+  <ol>
+    <li ng-repeat="transit in transits">
+      <div>[% l('From: [_1] To: [_2] <br> When: [_3] <br> Barcode: [_4] Title: [_5]',
+        '{{transit.source.shortname}}',
+        '{{transit.dest.shortname}}',
+        "{{transit.source_send_time | date:'short'}}",
+        '{{transit.target_copy.barcode}}',
+        '{{transit.target_copy.call_number.record.simple_record.title}}') %]</div>
+    </li>
+  </ol>
+  <hr/>
+  <div>{{current_location.shortname}} {{today | date:'short'}}</div>
+<br/>
