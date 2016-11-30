@@ -280,6 +280,7 @@ angular.module('egCoreMod')
             }
             $scope.restoreEmbed = function() {
                 $scope.showIframe = true;
+                $scope.reload();
             }
         }]
     }

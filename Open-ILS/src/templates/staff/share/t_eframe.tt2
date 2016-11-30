@@ -3,7 +3,7 @@
   <button type="button" class="btn btn-default btn-xs" ng-show="allowEscape && !showIframe" ng-click="restoreEmbed()">[% l('Re-embed') %]</button>
   <!-- height is calculated at render time -->
   <iframe 
-    ng-if="showIframe"
+    ng-show="showIframe"
     ng-attr-style="{{ autoresize ? undefined : 'height:' + height + 'px' }}"
     src="{{url}}">
   </iframe>
