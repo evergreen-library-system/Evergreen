@@ -26,6 +26,7 @@
           <option value="hold_pull_list">[% l('Hold Pull List') %]</option>
           <option value="hold_shelf_list">[% l('Hold Shelf List') %]</option>
           <option value="in_house_use_list">[% l('In-House Use List') %]</option>
+          <option value="item_status">[% l('Item Status') %]</option>
           <option value="items_out">[% l('Items Out') %]</option>
           <option value="patron_address">[% l('Patron Address') %]</option>
           <option value="patron_note">[% l('Patron Note') %]</option>
