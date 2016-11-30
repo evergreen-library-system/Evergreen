@@ -1,0 +1,128 @@
+BEGIN;
+
+SELECT plan(4);
+
+CREATE OR REPLACE FUNCTION test_marc_merges() RETURNS SETOF TEXT AS $func$
+DECLARE
+    incoming_marc TEXT;
+    existing_marc TEXT;
+    merge_profile_1 BIGINT;
+    merge_profile_2 BIGINT;
+    merge_profile_3 BIGINT;
+    merge_profile_4 BIGINT;
+BEGIN
+    incoming_marc := $$<record    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"    xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd"    xmlns="http://www.loc.gov/MARC21/slim">
+  <leader>00531nam a2200157 a 4500</leader>
+  <controlfield tag="005">20080729170300.0</controlfield>
+  <controlfield tag="008">      t19981999enka              0 eng  </controlfield>
+  <datafield tag="245" ind1="1" ind2="4">
+    <subfield code="a">merge-example-incoming</subfield>
+  </datafield>
+  <datafield tag="505" ind1="1" ind2="4">
+    <subfield code="a">contents-notes-incoming</subfield>
+  </datafield>
+  <datafield tag="856" ind1="1" ind2="4">
+    <subfield code="u">https://example.org/page-incoming</subfield>
+  </datafield>
+</record>$$;
+    existing_marc := $$<record    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"    xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd"    xmlns="http://www.loc.gov/MARC21/slim">
+  <leader>00531nam a2200157 a 4500</leader>
+  <controlfield tag="005">20080729170300.0</controlfield>
+  <controlfield tag="008">      t19981999enka              0 eng  </controlfield>
+  <datafield tag="245" ind1="1" ind2="4">
+    <subfield code="a">merge-example-existing</subfield>
+  </datafield>
+  <datafield tag="505" ind1="1" ind2="4">
+    <subfield code="a">contents-notes-existing</subfield>
+  </datafield>
+  <datafield tag="856" ind1="1" ind2="4">
+    <subfield code="u">https://example.org/page-existing</subfield>
+  </datafield>
+</record>$$;
+
+    INSERT INTO vandelay.merge_profile (owner, name, add_spec, replace_spec, strip_spec, preserve_spec)
+        VALUES (1, 'Test MP 1', '505', NULL, NULL, NULL);
+    SELECT CURRVAL('vandelay.merge_profile_id_seq') INTO merge_profile_1;
+    INSERT INTO vandelay.merge_profile (owner, name, add_spec, replace_spec, strip_spec, preserve_spec)
+        VALUES (1, 'Test MP 2', NULL, '505', NULL, NULL);
+    SELECT CURRVAL('vandelay.merge_profile_id_seq') INTO merge_profile_2;
+    INSERT INTO vandelay.merge_profile (owner, name, add_spec, replace_spec, strip_spec, preserve_spec)
+        VALUES (1, 'Test MP 3', NULL, NULL, NULL, '505');
+    SELECT CURRVAL('vandelay.merge_profile_id_seq') INTO merge_profile_3;
+    INSERT INTO vandelay.merge_profile (owner, name, add_spec, replace_spec, strip_spec, preserve_spec)
+        VALUES (1, 'Test MP 4', '856', '505', NULL, NULL);
+    SELECT CURRVAL('vandelay.merge_profile_id_seq') INTO merge_profile_4;
+
+    -- using evergreen.xml_pretty_print(textval::XML)::TEXT to normalize the
+    -- values we're comparing
+    RETURN NEXT is(evergreen.xml_pretty_print(vandelay.merge_record_xml_using_profile(incoming_marc, existing_marc, merge_profile_1)::XML)::TEXT, evergreen.xml_pretty_print($$<record    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"    xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd"    xmlns="http://www.loc.gov/MARC21/slim">
+  <leader>00531nam a2200157 a 4500</leader>
+  <controlfield tag="005">20080729170300.0</controlfield>
+  <controlfield tag="008">      t19981999enka              0 eng  </controlfield>
+  <datafield tag="245" ind1="1" ind2="4">
+    <subfield code="a">merge-example-existing</subfield>
+  </datafield>
+  <datafield tag="505" ind1="1" ind2="4">
+    <subfield code="a">contents-notes-incoming</subfield>
+  </datafield>
+  <datafield tag="505" ind1="1" ind2="4">
+    <subfield code="a">contents-notes-existing</subfield>
+  </datafield>
+  <datafield tag="856" ind1="1" ind2="4">
+    <subfield code="u">https://example.org/page-existing</subfield>
+  </datafield>
+</record>$$::XML)::TEXT, 'merge with add 505 rule');
+
+    RETURN NEXT is(evergreen.xml_pretty_print(vandelay.merge_record_xml_using_profile(incoming_marc, existing_marc, merge_profile_2)::XML)::TEXT, evergreen.xml_pretty_print($$<record    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"    xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd"    xmlns="http://www.loc.gov/MARC21/slim">
+  <leader>00531nam a2200157 a 4500</leader>
+  <controlfield tag="005">20080729170300.0</controlfield>
+  <controlfield tag="008">      t19981999enka              0 eng  </controlfield>
+  <datafield tag="245" ind1="1" ind2="4">
+    <subfield code="a">merge-example-existing</subfield>
+  </datafield>
+  <datafield tag="505" ind1="1" ind2="4">
+    <subfield code="a">contents-notes-incoming</subfield>
+  </datafield>
+  <datafield tag="856" ind1="1" ind2="4">
+    <subfield code="u">https://example.org/page-existing</subfield>
+  </datafield>
+</record>$$::XML)::TEXT, 'merge with replace 505 rule');
+
+    RETURN NEXT is(evergreen.xml_pretty_print(vandelay.merge_record_xml_using_profile(incoming_marc, existing_marc, merge_profile_3)::XML)::TEXT, evergreen.xml_pretty_print($$<record    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"    xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd"    xmlns="http://www.loc.gov/MARC21/slim">
+  <leader>00531nam a2200157 a 4500</leader>
+  <controlfield tag="005">20080729170300.0</controlfield>
+  <controlfield tag="008">      t19981999enka              0 eng  </controlfield>
+  <datafield tag="245" ind1="1" ind2="4">
+    <subfield code="a">merge-example-incoming</subfield>
+  </datafield>
+  <datafield tag="505" ind1="1" ind2="4">
+    <subfield code="a">contents-notes-existing</subfield>
+  </datafield>
+  <datafield tag="856" ind1="1" ind2="4">
+    <subfield code="u">https://example.org/page-incoming</subfield>
+  </datafield>
+</record>$$::XML)::TEXT, 'merge with preserve 505 rule');
+
+    RETURN NEXT is(evergreen.xml_pretty_print(vandelay.merge_record_xml_using_profile(incoming_marc, existing_marc, merge_profile_4)::XML)::TEXT, evergreen.xml_pretty_print($$<record    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"    xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd"    xmlns="http://www.loc.gov/MARC21/slim">
+  <leader>00531nam a2200157 a 4500</leader>
+  <controlfield tag="005">20080729170300.0</controlfield>
+  <controlfield tag="008">      t19981999enka              0 eng  </controlfield>
+  <datafield tag="245" ind1="1" ind2="4">
+    <subfield code="a">merge-example-existing</subfield>
+  </datafield>
+  <datafield tag="505" ind1="1" ind2="4">
+    <subfield code="a">contents-notes-incoming</subfield>
+  </datafield>
+  <datafield tag="856" ind1="1" ind2="4">
+    <subfield code="u">https://example.org/page-incoming</subfield>
+  </datafield>
+  <datafield tag="856" ind1="1" ind2="4">
+    <subfield code="u">https://example.org/page-existing</subfield>
+  </datafield>
+</record>$$::XML)::TEXT, 'merge with add 856 and replace 505 rule');
+END;
+$func$ LANGUAGE plpgsql;
+
+SELECT * FROM test_marc_merges();
+
+ROLLBACK;
