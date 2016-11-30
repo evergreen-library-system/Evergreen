@@ -412,7 +412,12 @@ function($scope , $q , egCore , ngToast) {
         },
         location : {
             name : 'General Collection'
-        }
+        },
+        // flattened versions for item status template
+        // TODO - make this go away
+        'call_number.label' : '636.8 JON',
+        'call_number.record.simple_record.title' : 'Test Title',
+        'location.name' : 'General Colleciton'
     }
 
     var one_hold = {
@@ -470,6 +475,7 @@ function($scope , $q , egCore , ngToast) {
         ],
 
         copy : seed_copy,
+        copies : [ seed_copy ],
 
         checkins : [
             {
