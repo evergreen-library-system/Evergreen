@@ -1,0 +1,27 @@
+<div class="strong-text-2">[% l('Surveys') %]</div>
+<div class="row pad-vert" ng-repeat="survey in surveys">
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-2 strong-text">[% l('Survey') %] #{{survey.id()}}</div>
+      <div class="col-md-6 strong-text">{{survey.description()}}</div>
+      <div class="col-md-4">
+        <div class="pull-right">
+          <span class="pad-horiz alert alert-warning strong-text" ng-if="survey.required() == 't'">[% l('Required') %]</span>
+          <span class="pad-horiz  alert alert-info strong-text " ng-if="survey.opac() == 't'">[% l('OPAC Visible') %]</span>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 well" style="margin-left:12px">
+        <ol>
+          <li ng-repeat="question in survey.questions()">{{question.question()}}
+            <div class="row" ng-repeat="response in question.responses() | limitTo:-1">
+              <span class="col-md-4">[% l('Last Answered on: ') %]{{response.answer_date() | date}}</span>
+              <span class="col-md-3">[% l('Answer: ') %] <span class="strong-text">{{response.answer().answer()}}</span></span>
+          </div>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>

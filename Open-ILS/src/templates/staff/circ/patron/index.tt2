@@ -158,6 +158,11 @@ angular.module('egCoreMod').run(['egStrings', function(s) {
             </a>
           </li>
           <li>
+            <a href="./circ/patron/{{patron().id()}}/surveys">
+              [% l('Surveys') %]
+            </a>
+          </li>
+          <li>
             <a href="./circ/patron/{{patron().id()}}/group">
               [% l('Group Member Details') %]
             </a>

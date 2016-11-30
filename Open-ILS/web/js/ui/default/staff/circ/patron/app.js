@@ -214,6 +214,12 @@ angular.module('egPatronApp', ['ngRoute', 'ui.bootstrap',
         resolve : resolver
     });
 
+    $routeProvider.when('/circ/patron/:id/surveys', {
+        templateUrl: './circ/patron/t_surveys',
+        controller: 'PatronSurveyCtrl',
+        resolve : resolver
+    });
+
     $routeProvider.otherwise({redirectTo : '/circ/patron/search'});
 })
 
@@ -1630,6 +1636,33 @@ function($scope,  $routeParams , $q , egCore , patronSvc) {
             cat.owner(egCore.org.get(cat.owner())); // owner flesh
             to_flesh[cat.id()].stat_cat(cat);
         });
+    });
+}])
+
+.controller('PatronSurveyCtrl',
+       ['$scope','$routeParams','$location','egCore','patronSvc',
+function($scope,  $routeParams , $location , egCore , patronSvc) {
+    $scope.initTab('other', $routeParams.id);
+    var usr_id = $routeParams.id;
+    var org_ids = egCore.org.fullPath(egCore.auth.user().ws_ou(), true);
+    $scope.surveys = [];
+    // fetch the surveys
+    egCore.pcrud.search('asvr',
+        {usr : usr_id},
+        {flesh : 4, flesh_fields : {
+            asvr : ['question', 'survey', 'answer'],
+            asv : ['responses', 'questions'],
+            asvq : ['responses', 'question']
+    }},
+        {authoritative : true})
+    .then(null, null, function(survey) {
+        var sameSurveyId = false;
+        if (survey.survey().id() && $scope.surveys.length > 0) {
+            for (sid = 0; sid < $scope.surveys.length; sid++) {
+                if (survey.survey().id() == $scope.surveys[sid].id()) sameSurveyId = true; 
+            }
+        }
+        if (!sameSurveyId) $scope.surveys.push(survey.survey());
     });
 }])
 
