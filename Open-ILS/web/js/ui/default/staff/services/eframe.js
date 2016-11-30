@@ -18,12 +18,21 @@ angular.module('egCoreMod')
 
             // called after onload of each new iframe page
             onchange : '=?',
+
+            // for tweaking height
             saveSpace : '@',
+            minHeight : '=?',
+
+            // to display button for displaying embedded page
+            // in a new tab
+            allowEscape : '=?'
         },
 
         templateUrl : './share/t_eframe',
 
         link: function (scope, element, attrs) {
+            scope.autoresize = 'autoresize' in attrs;
+            scope.showIframe = true;
             element.find('iframe').on(
                 'load',
                 function() {scope.egEmbedFrameLoader(this)}
@@ -38,6 +47,9 @@ angular.module('egCoreMod')
             // Set the initial iframe height to just under the window height.
             // leave room for the navbar, padding, margins, etc.
             $scope.height = $window.outerHeight - $scope.save_space;
+            if ($scope.minHeight && $scope.height < $scope.minHeight) {
+                $scope.height = $scope.minHeight;
+            }
 
             // browser client doesn't use cookies, so we don't load the
             // (at the time of writing, quite limited) angular.cookies
@@ -78,9 +90,13 @@ angular.module('egCoreMod')
                 $scope.frame = {dom:iframe};
                 $scope.iframe = iframe;
 
-                // Reset the iframe height to the final content height.
-                if ($scope.height < $scope.iframe.contentWindow.document.body.scrollHeight)
-                    $scope.height = $scope.iframe.contentWindow.document.body.scrollHeight;
+                if ($scope.autoresize) {
+                    iFrameResize({}, $scope.iframe);
+                } else {
+                    // Reset the iframe height to the final content height.
+                    if ($scope.height < $scope.iframe.contentWindow.document.body.scrollHeight)
+                        $scope.height = $scope.iframe.contentWindow.document.body.scrollHeight;
+                }
 
                 var page = $scope.iframe.contentWindow.location.href;
                 console.debug('egEmbedFrameLoader(): ' + page);
@@ -89,6 +105,10 @@ angular.module('egCoreMod')
                 $scope.reload = function() {
                     $scope.iframe.contentWindow.location.replace(
                         $scope.iframe.contentWindow.location);
+                }
+
+                $scope.style = function() {
+                    return 'height:' + $scope.height + 'px';
                 }
 
                 // tell the iframe'd window its inside the staff client
@@ -106,6 +126,7 @@ angular.module('egCoreMod')
 
                 // Adjust the height again if the iframe loads the openils.Util Dojo module
                 $timeout(function () {
+                    if ($scope.autoresize) return; // let iframe-resizer handle it
                     if ($scope.iframe.contentWindow.openils && $scope.iframe.contentWindow.openils.Util) {
 
                         // HACK! for patron reg page
@@ -250,6 +271,15 @@ angular.module('egCoreMod')
                 }
 
                 if ($scope.onchange) $scope.onchange(page);
+            }
+
+            // open a new tab with the embedded URL
+            $scope.escapeEmbed = function() {
+                $scope.showIframe = false;
+                $window.open($scope.url, '_blank').focus();
+            }
+            $scope.restoreEmbed = function() {
+                $scope.showIframe = true;
             }
         }]
     }

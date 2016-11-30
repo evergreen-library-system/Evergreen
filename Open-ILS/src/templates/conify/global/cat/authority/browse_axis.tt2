@@ -8,7 +8,6 @@
             <button dojoType="dijit.form.Button" onClick="aba_grid.deleteSelected()">[% l('Delete Selected') %]</button>
         </div>
     </div>
-    <div>
         <table  jsId="aba_grid"
                 dojoType="openils.widget.AutoGrid"
                 autoHeight="true"
@@ -19,7 +18,6 @@
                 fmClass="aba"
                 editOnEnter="true">
         </table>
-    </div>
 </div>
 <script type="text/javascript">
     dojo.require("openils.widget.AutoGrid");

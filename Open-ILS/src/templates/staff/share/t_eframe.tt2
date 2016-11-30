@@ -1,8 +1,11 @@
 <div class="eg-embed-frame">
+  <button type="button" class="btn btn-default btn-xs" ng-show="allowEscape &&  showIframe" ng-click="escapeEmbed()">[% l('Open in New Window') %]</button>
+  <button type="button" class="btn btn-default btn-xs" ng-show="allowEscape && !showIframe" ng-click="restoreEmbed()">[% l('Re-embed') %]</button>
   <!-- height is calculated at render time -->
   <iframe 
-    src="{{url}}" 
-    style="height:{{height}}px">
+    ng-if="showIframe"
+    ng-attr-style="{{ autoresize ? undefined : 'height:' + height + 'px' }}"
+    src="{{url}}">
   </iframe>
 </div>
 

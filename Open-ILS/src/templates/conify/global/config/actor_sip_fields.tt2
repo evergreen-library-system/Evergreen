@@ -8,7 +8,6 @@
             <button dojoType='dijit.form.Button' onClick='actorSipFieldsGrid.deleteSelected()'>[% l('Delete Selected') %]</button>
         </div>
     </div>
-    <div>
     <table  jsId="actorSipFieldsGrid"
             dojoType="openils.widget.AutoGrid"
             fieldOrder="['field', 'name', 'one_only']"

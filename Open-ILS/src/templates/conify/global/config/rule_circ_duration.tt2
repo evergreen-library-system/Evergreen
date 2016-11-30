@@ -8,7 +8,6 @@
             <button dojoType='dijit.form.Button' onClick='ruleCircDurationGrid.deleteSelected()'>[% l('Delete Selected') %]</button>
         </div>
     </div>
-    <div>
     <table  jsId="ruleCircDurationGrid"
             dojoType="openils.widget.AutoGrid"
             fieldOrder="['name', 'max_renewals', 'shrt', 'normal', 'extended']"

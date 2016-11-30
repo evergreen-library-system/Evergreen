@@ -5,7 +5,6 @@
         <div>[% l('Global Flags') %]</div>
         <div></div>
     </div>
-    <div>
     <table  jsId="gfGrid"
             dojoType="openils.widget.AutoGrid"
             fieldOrder="['name', 'label', 'enabled', 'value']"

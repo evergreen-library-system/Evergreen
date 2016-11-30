@@ -9,7 +9,7 @@ angular.module('egLocalAdmin',
     var resolver = {delay : function(egStartup) {return egStartup.go()}};
 
     var eframe_template = 
-        '<eg-embed-frame url="local_admin_url" handlers="funcs"></eg-embed-frame>';
+        '<eg-embed-frame allow-escape="true" min-height="min_height" url="local_admin_url" handlers="funcs"></eg-embed-frame>';
 
     // non-conify routes come first
     $routeProvider.when('/admin/local/money/cash_reports', {
@@ -75,6 +75,8 @@ function($scope , $routeParams , $location , egCore) {
 
     var conify_path = '/eg/conify/global/' + 
         $routeParams.schema + '/' + $routeParams.page;
+
+    $scope.min_height = 800;
 
     // embed URL must include protocol/domain or it will be loaded via
     // push-state, resulting in an infinitely nested pages.

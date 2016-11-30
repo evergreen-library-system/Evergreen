@@ -8,7 +8,6 @@
             <button dojoType="dijit.form.Button" onClick="acs_grid.deleteSelected()">[% l('Delete Selected') %]</button>
         </div>
     </div>
-    <div>
     <table  jsId="acs_grid"
             dojoType="openils.widget.AutoGrid"
             autoHeight="true"

@@ -9,7 +9,7 @@ angular.module('egServerAdmin',
     var resolver = {delay : function(egStartup) {return egStartup.go()}};
 
     var eframe_template = 
-        '<eg-embed-frame url="server_admin_url" handlers="funcs"></eg-embed-frame>';
+        '<eg-embed-frame allow-escape="true" min-height="min_height" url="server_admin_url" handlers="funcs"></eg-embed-frame>';
 
     // old-style Confiy
     $routeProvider.when('/admin/server/legacy/:schema/:page', {
@@ -50,6 +50,8 @@ function($scope , $routeParams , $location , egCore) {
     var conify_path = '/eg/conify/global/' +
         (angular.isDefined($routeParams.module) ? ($routeParams.module + '/') : '') +
         $routeParams.schema + '/' + $routeParams.page;
+
+    $scope.min_height = 800;
 
     // embed URL must include protocol/domain or it will be loaded via
     // push-state, resulting in an infinitely nested pages.
