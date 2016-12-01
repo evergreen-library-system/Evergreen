@@ -7,13 +7,13 @@ Documentation URL
 You can add a link to local documentation that can help staff create a report template.  To add documentation to a report template, click *Admin* -> *Local Administration* -> *Reports*, and create a new report template.  A new field, *Documentation URL*, appears in the *Template Configuration* panel.  Enter a URL that points to relevant documentation.
 
 
-image::media/2.7_Enhancements_to_Reports1.jpg[Reports1]
+image::media/2_7_Enhancements_to_Reports1.jpg[Reports1]
 
 
 The link to this documentation will also appear in your list of report templates.
 
 
-image::media/2.7_Enhancements_to_Reports2a.jpg[Reports2a]
+image::media/2_7_Enhancements_to_Reports2a.jpg[Reports2a]
 
 Field Hints
 ~~~~~~~~~~~
@@ -23,10 +23,10 @@ Descriptive information about fields or filters in a report template can be adde
 
 To view a field hint, click the *Column Picker*, and select *Field Hint*.  The column will be added to the display.
 
-image::media/2.7_Enhancements_to_Reports2.jpg[Reports2]
+image::media/2_7_Enhancements_to_Reports2.jpg[Reports2]
 
 
 To add or edit a field hint, select a filter or field, and click *Change Field Hint*.  Enter text, and click *Ok*.
 
 
-image::media/2.7_Enhancements_to_Reports3.jpg[Reports3]
+image::media/2_7_Enhancements_to_Reports3.jpg[Reports3]
