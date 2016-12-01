@@ -167,10 +167,10 @@ Cancel/Delay reasons have been modified so that you can easily differentiate bet
 
 The cancel/delay reason label is displayed as the line item status in the list of line items or as the copy status in the list of copies.
 
-image::media/2.7_Enhancements_to_Canceled2.jpg[Canceled2]
+image::media/2_7_Enhancements_to_Canceled2.jpg[Canceled2]
 
 
-image::media/2.7_Enhancements_to_Canceled4.jpg[Canceled4]
+image::media/2_7_Enhancements_to_Canceled4.jpg[Canceled4]
 
 A delayed line item can now be canceled.  You can mark a line item as delayed, and if later, the order cannot be filled, you can change the line item's status to canceled.  When delayed line items are canceled, the encumbrances are deleted.
 
@@ -181,7 +181,7 @@ Paid PO Line Items
 
 Purchase Order line items are marked as "Paid" in red text when all non-cancelled copies on the line item have been invoiced.
 
-image::media/2.10_Lineitem_Paid.PNG[Paid Lineitem]
+image::media/2_10_Lineitem_Paid.png[Paid Lineitem]
 
 
 Brief Records
