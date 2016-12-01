@@ -295,12 +295,14 @@ sub find_patron {
     my $key  =  (@_ > 1) ? shift : 'barcode';  # if we have multiple args, the first is the key index (default barcode)
     my $patron_id = shift;
 
+    $self->verify_session;
     return OpenILS::SIP::Patron->new($key => $patron_id, authtoken => $self->{authtoken}, @_);
 }
 
 
 sub find_item {
     my $self = shift;
+    $self->verify_session;
     return OpenILS::SIP::Item->new(@_);
 }
 
