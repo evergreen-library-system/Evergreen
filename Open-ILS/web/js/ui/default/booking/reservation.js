@@ -835,7 +835,11 @@ function my_init() {
     init_aous_cache();
     init_timestamp_widgets();
 
-    if (!(opts = xulG.bresv_interface_opts)) opts = {};
-    if (early_action_passthru())
-        provide_brt_selector(document.getElementById("brt_selector_here"));
+    setTimeout(
+        function() {
+            if (!(opts = xulG.bresv_interface_opts)) opts = {};
+            if (early_action_passthru())
+                provide_brt_selector(document.getElementById("brt_selector_here"));
+        }, 0
+    );
 }

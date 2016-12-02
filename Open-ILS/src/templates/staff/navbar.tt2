@@ -340,6 +340,21 @@
        </ul>
       </li>
 
+      <!-- booking -->
+      <li class="dropdown" uib-dropdown>
+        <a href uib-dropdown-toggle>[% l('Booking') %]<b class="caret"></b>
+        </a>
+        <ul uib-dropdown-menu>
+          <li>
+            <a href="./booking/legacy/booking/reservation" target="_self">
+              <span class="glyphicon glyphicon-plus"></span>
+              [% l('Create Reservations') %]
+            </a>
+          </li>
+          <li class="divider"></li>
+        </ul>
+      </li>
+
       <!-- admin -->
       <li class="dropdown" uib-dropdown>
         <a href uib-dropdown-toggle>[% l('Administration') %]<b class="caret"></b></a>

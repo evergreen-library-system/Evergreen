@@ -1,0 +1,20 @@
+[%
+  WRAPPER "staff/base.tt2";
+  ctx.page_title = l("Booking");
+  ctx.page_app = "egBooking";
+%]
+
+[% BLOCK APP_JS %]
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/grid.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/eframe.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/ui.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/user.js"></script>
+<!--<script src="[% ctx.media_prefix %]/js/ui/default/staff/reporter/services/template.js"></script>-->
+<!--[% INCLUDE 'staff/reporter/share/report_strings.tt2' %]-->
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/booking/app.js"></script>
+<link rel="stylesheet" href="[% ctx.base_path %]/staff/css/booking.css" />
+[% END %]
+
+<div ng-view></div>
+
+[% END %]
