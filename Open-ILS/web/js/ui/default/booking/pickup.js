@@ -28,5 +28,7 @@ function my_init() {
     }, document.getElementById("patron_barcode"));
     init_auto_l10n(document.getElementById("auto_l10n_start_here"));
 
-    react_to_pass_in(xulG.bresv_interface_opts);
+    setTimeout(
+        function() { react_to_pass_in(xulG.bresv_interface_opts); }, 0
+    );
 }

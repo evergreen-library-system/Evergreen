@@ -351,7 +351,24 @@
               [% l('Create Reservations') %]
             </a>
           </li>
-          <li class="divider"></li>
+          <li>
+            <a href="./booking/legacy/booking/pull_list" target="_self">
+              <span class="glyphicon glyphicon-ok"></span>
+              [% l('Pull List') %]
+            </a>
+          </li>
+          <li>
+            <a href="./booking/legacy/booking/capture" target="_self">
+              <span class="glyphicon glyphicon-pushpin"></span>
+              [% l('Capture Resources') %]
+            </a>
+          </li>
+          <li>
+            <a href="./booking/legacy/booking/pickup" target="_self">
+              <span class="glyphicon glyphicon-user"></span>
+              [% l('Pick Up Reservations') %]
+            </a>
+          </li>
         </ul>
       </li>
 
