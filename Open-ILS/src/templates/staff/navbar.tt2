@@ -353,7 +353,7 @@
           </li>
           <li>
             <a href="./booking/legacy/booking/pull_list" target="_self">
-              <span class="glyphicon glyphicon-ok"></span>
+              <span class="glyphicon glyphicon-th-list"></span>
               [% l('Pull List') %]
             </a>
           </li>
@@ -365,8 +365,14 @@
           </li>
           <li>
             <a href="./booking/legacy/booking/pickup" target="_self">
-              <span class="glyphicon glyphicon-user"></span>
+              <span class="glyphicon glyphicon-export"></span>
               [% l('Pick Up Reservations') %]
+            </a>
+          </li>
+          <li>
+            <a href="./booking/legacy/booking/return" target="_self">
+              <span class="glyphicon glyphicon-import"></span>
+              [% l('Return Reservations') %]
             </a>
           </li>
         </ul>
