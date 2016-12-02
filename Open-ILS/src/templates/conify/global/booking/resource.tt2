@@ -55,15 +55,19 @@
 
             var search = {'owner':list};
 
-            if (xulG && xulG.resultant_brsrc)
-                search = {id: xulG.resultant_brsrc};
+            setTimeout(
+                function() {
+                    if (xulG && xulG.resultant_brsrc)
+                        search = {id: xulG.resultant_brsrc};
 
-            brsrcGrid.overrideEditWidgets.type =
-                new openils.widget.PCrudAutocompleteBox({
-                    "fmclass": "brt", "searchAttr": "name"
-                });
-            brsrcGrid.overrideEditWidgets.type.shove = {"create": ""};
-            brsrcGrid.loadAll({order_by:{brsrc : 'barcode'}}, search);
+                    brsrcGrid.overrideEditWidgets.type =
+                        new openils.widget.PCrudAutocompleteBox({
+                            "fmclass": "brt", "searchAttr": "name"
+                        });
+                    brsrcGrid.overrideEditWidgets.type.shove = {"create": ""};
+                    brsrcGrid.loadAll({order_by:{brsrc : 'barcode'}}, search);
+                }, 0
+            );
         }
     );
 </script>

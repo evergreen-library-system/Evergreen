@@ -1,0 +1,39 @@
+
+<div class="container-fluid" style="text-align:center">
+  <div class="alert alert-info alert-less-pad strong-text-2">
+    <span>[% l('Booking Administration') %]</span>
+  </div>
+</div>
+
+<div class="container admin-splash-container">
+
+[%
+    interfaces = [
+     [ l('Resource Attribute Maps'), "./admin/booking/conify/resource_attr_map" ]
+    ,[ l('Resource Attribute Values'), "./admin/booking/conify/resource_attr_value" ]
+    ,[ l('Resource Attributes'), "./admin/booking/conify/resource_attr" ]
+    ,[ l('Resource Types'), "./admin/booking/conify/resource_type" ]
+    ,[ l('Resources'), "./admin/booking/conify/resource" ]
+   ];
+
+   USE table(interfaces, cols=3);
+%]
+
+<div class="row">
+[% FOREACH col = table.cols %]
+    <div class="col-md-4">
+    [% FOREACH item = col %][% IF item.1 %]
+        <div class="row new-entry">
+            <div class="col-md-12">
+            <span class="glyphicon glyphicon-pencil"></span>
+            <a target="_self" href="[% item.1 %]">
+                [% item.0 %]
+            </a>
+            </div>
+        </div>
+    [% END %][% END %]
+    </div>
+[% END %]
+</div>
+
+</div>

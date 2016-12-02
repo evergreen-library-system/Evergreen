@@ -413,6 +413,12 @@
             </a>
           </li>
           <li>
+            <a href="./admin/booking/index" target="_self">
+              <span class="glyphicon glyphicon-calendar"></span>
+              [% l('Booking Administration') %]
+            </a>
+          </li>
+          <li>
             <a href="./reporter/legacy/main" target="_self">
               <span class="glyphicon glyphicon-object-align-bottom"></span>
               [% l('Reports') %]
