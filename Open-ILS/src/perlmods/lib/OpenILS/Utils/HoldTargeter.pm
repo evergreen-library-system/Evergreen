@@ -143,7 +143,6 @@ sub find_holds_to_target {
 
     if ($parallel) {
         # In parallel mode, we need to also grab the metarecord for each hold.
-        $query->{select}->{mmrsm} = ['metarecord'];
         $query->{from} = {
             ahr => {
                 rhrr => {
@@ -158,6 +157,28 @@ sub find_holds_to_target {
                 }
             }
         };
+
+        # In parallel mode, only process holds within the current process
+        # whose metarecord ID modulo the parallel targeter count matches
+        # our paralell targeting slot.  This ensures that no 2 processes
+        # will be operating on the same potential copy sets.
+        #
+        # E.g. Running 5 parallel and we are slot 3 (0-based slot 2) of 5, 
+        # process holds whose metarecord ID's are 2, 7, 12, 17, ...
+        # WHERE MOD(mmrsm.id, 5) = 2
+
+        # Slots are 1-based at the API level, but 0-based for modulo.
+        my $slot = $self->{parallel_slot} - 1;
+
+        $query->{where}->{'+mmrsm'} = {
+            id => {
+                '=' => {
+                    transform => 'mod',
+                    value => $slot,
+                    params => [$parallel]
+                }
+            }
+        };
     }
 
     # Newest-first sorting cares only about hold create_time.
@@ -166,30 +187,6 @@ sub find_holds_to_target {
         if $self->{newest_first};
 
     my $holds = $self->editor->json_query($query, {substream => 1});
-
-    # In parallel mode, only process holds within the current process
-    # whose metarecord ID modulo the parallel targeter count matches
-    # our paralell targeting slot.  This ensures that no 2 processes
-    # will be operating on the same potential copy sets.
-    #
-    # E.g. Running 5 parallel and we are slot 3 (0-based slot 2) of 5, 
-    # process holds whose metarecord ID's are 2, 7, 12, 17, ...
-    if ($parallel) {
-
-        # Slots are 1-based at the API level, but 0-based for modulo.
-        my $slot = $self->{parallel_slot} - 1;
-
-        my @slot_holds = 
-            grep { ($_->{metarecord} % $parallel) == $slot } @$holds;
-
-        $logger->info(sprintf(
-            "targeter: parallel targeter (slot %d of %d) trimmed ".
-            "targetable holds set down to %d from %d holds",
-            $slot + 1, $parallel, scalar(@slot_holds), scalar(@$holds)
-        ));
-
-        $holds = \@slot_holds;
-    }
 
     return map {$_->{id}} @$holds;
 }
