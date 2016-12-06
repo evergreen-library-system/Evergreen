@@ -24,7 +24,7 @@
                                     if (inputs[i].name == 'record' && !inputs[i].disabled) inputs[i].checked = this.checked;}"/>
                         </td>
                         <td width="40%" class="opac-auto-108"><a href="[% mkurl('', {anonsort=>(CGI.param('anonsort') == 'titlesort' ? 'titlesort.descending' : 'titlesort')}) %]">[% l('Title') %]</a></td>
-                        <td width="40%" class="opac-auto-108"><a href="[% mkurl('', {anonsort=>(CGI.param('anonsort') == 'authorsort' ? 'authorsort.descending' : 'authorsort')}) %]">[% l('Author(s)') %]</a% l('Author(s)') %]</td>
+                        <td width="40%" class="opac-auto-108"><a href="[% mkurl('', {anonsort=>(CGI.param('anonsort') == 'authorsort' ? 'authorsort.descending' : 'authorsort')}) %]">[% l('Author(s)') %]</a></td>
                         <td width='18%'>[% l('Local Call Number') %]</td>
                         <td width="1%" class="nowrap">
                             <select name="action">
