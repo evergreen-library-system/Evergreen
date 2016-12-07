@@ -17,6 +17,12 @@ END;
     [% UNLESS took_care_of_form -%]
     <form action="[% ctx.opac_root %]/results" method="get">
     [%- END %]
+    [% IF ctx.page == 'rresult' && ctx.metarecord && search.metarecord_default %]
+    <input type="hidden" name="modifier" value="metabib"/>
+    [% END %]
+    [% IF (ctx.page == 'place_hold' || ctx.page == 'myopac' || ctx.page == 'home' || ctx.page == 'record') && search.metarecord_default %]
+    <input type="hidden" name="modifier" value="metabib"/>
+    [% END %]
     <div id="search-box">
         <span class="search_catalog_lbl mobile_hide">[% l('Search the Catalog') %]</span>
         <span class="adv_search_catalog_lbl"><a href="[% mkurl(ctx.opac_root _ '/advanced', {},  expert_search_parms.merge(browse_search_parms, facet_search_parms)) %]"
