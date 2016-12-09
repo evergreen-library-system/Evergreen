@@ -1,0 +1,29 @@
+Placing purchase requests from a patron record
+----------------------------------------------
+
+indexterm:[patrons, purchase requests]
+
+Patrons may wish to suggest titles for your Library to purchase.  You can track these requests within Evergreen,
+whether or not you are using the acquisitions module for other purposes.  This section describes how you can record
+these requests within a patron's record.
+
+. Retrieve the patron's record.
+
+. Select Other --> Acquisition Requests. This takes you to the Requests Screen.
+
+. The Requests Screen will show any other requests that this patron has made.  You may sort the requests by clicking on the column headers.
+
+. To add the request, click the _Create Request_ button.
++
+NOTE: You will need the CREATE_PURCHASE_REQUEST permission to add a request.
++
+. The request type field is required.  Every other field is optional, although it is recommended that you enter as much information about the
+request as possible.
+
+. The _Pickup Library_, _User_, and _Request Date/Time_ field will be filled in automatically.
+
+. You have the option to automatically place a hold for the patron if your library decides to purchase the item.  If you'd like Evergreen to
+generate this hold, check the _Place Hold_ box.
+
+. When you have finished entering information about the request, click the _Save_ button.
+
