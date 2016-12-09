@@ -309,6 +309,10 @@ include::acquisitions/receive_items_from_invoice.txt[]
 
 include::acquisitions/vandelay_acquisitions_integration.txt[]
 
+include::acquisitions/purchase_requests_patron_view.txt[]
+
+include::acquisitions/purchase_requests_management.txt[]
+
 
 Cataloging
 ==========
