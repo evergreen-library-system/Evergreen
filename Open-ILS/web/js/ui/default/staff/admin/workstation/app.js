@@ -817,7 +817,7 @@ function($scope , $q , $window , $location , egCore , egAlertDialog , workstatio
     $scope.can_delete_ws = function(name) {
         var ws = all_workstations.filter(
             function(ws) { return ws.name == name })[0];
-        return ws && reg_perm_orgs.indexOf(ws.owning_lib);
+        return ws && reg_perm_orgs.indexOf(ws.owning_lib) != -1;
     }
 
     $scope.remove_ws = function(remove_me) {
