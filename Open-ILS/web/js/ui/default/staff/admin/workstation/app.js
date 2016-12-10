@@ -729,9 +729,10 @@ function($scope , $q , $window , $location , egCore , egAlertDialog , workstatio
         reg_perm_orgs = orgList;
 
         // hide orgs in the context org selector where this login
-        // does not have the reg_ws perm
+        // does not have the reg_ws perm or the org can't have users
         $scope.wsOrgHidden = function(id) {
-            return reg_perm_orgs.indexOf(id) == -1;
+            return reg_perm_orgs.indexOf(id) == -1
+                || $scope.cant_have_users(id);
         }
 
     // fetch the locally stored workstation data
