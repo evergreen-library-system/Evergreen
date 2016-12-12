@@ -174,7 +174,7 @@ function cdDateToHours(date) {
 
 function cdDateToDate(date) {
     var date_obj = new Date(Date.parse(date));
-    return date_obj.toISOString().replace(/T.*/,''); // == %F
+    return date_obj.toLocaleDateString();
 }
 
 
