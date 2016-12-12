@@ -169,7 +169,19 @@ function($uibModal , $q , egCore , egConfirmDialog , egAlertDialog) {
         return egCore.net.request(
             'open-ils.circ',
             'open-ils.circ.hold.update.batch',
-            egCore.auth.token(), null, new_values);
+            egCore.auth.token(), null, new_values).then(
+            function(resp) {
+                if (evt = egCore.evt.parse(resp)) {
+                    egCore.audio.play(
+                        'warning.hold.batch_update');
+                    console.error('unable to batch update holds: '
+                        + evt.toString());
+                } else {
+                    egCore.audio.play(
+                        'success.hold.batch_update');
+                }
+            }
+        );
     }
 
     service.set_copy_quality = function(hold_ids) {
