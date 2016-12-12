@@ -238,13 +238,13 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
         var data = final_resp.data = {};
 
         if (!final_resp.evt[0]) {
-            egCore.audio.play('warning.unknown.no_event');
+            egCore.audio.play('error.unknown.no_event');
             return;
         }
 
         var payload = final_resp.evt[0].payload;
         if (!payload) {
-            egCore.audio.play('warning.unknown.no_payload');
+            egCore.audio.play('error.unknown.no_payload');
             return;
         }
 
@@ -456,11 +456,11 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
                 return $q.when(final_resp);
 
             case 'ITEM_NOT_CATALOGED':
-                egCore.audio.play('warning.checkout.no_cataloged');
+                egCore.audio.play('error.checkout.no_cataloged');
                 return service.precat_dialog(params, options);
 
             case 'OPEN_CIRCULATION_EXISTS':
-                egCore.audio.play('warning.checkout.open_circ');
+                egCore.audio.play('error.checkout.open_circ');
                 return service.circ_exists_dialog(evt, params, options);
 
             case 'COPY_IN_TRANSIT':
@@ -485,7 +485,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
                 );
 
             default:
-                egCore.audio.play('warning.checkout.unknown');
+                egCore.audio.play('error.checkout.unknown');
                 return service.exit_alert(
                     egCore.strings.CHECKOUT_FAILED_GENERIC, {
                         barcode : params.copy_barcode,
@@ -1323,13 +1323,13 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
                 ).then(function() { return final_resp });
 
             case 'ASSET_COPY_NOT_FOUND':
-                egCore.audio.play('warning.checkin.not_found');
+                egCore.audio.play('error.checkin.not_found');
                 return egAlertDialog.open(
                     egCore.strings.UNCAT_ALERT_DIALOG, params)
                     .result.then(function() {return final_resp});
 
             case 'ITEM_NOT_CATALOGED':
-                egCore.audio.play('warning.checkin.not_cataloged');
+                egCore.audio.play('error.checkin.not_cataloged');
                 evt[0].route_to = egCore.strings.ROUTE_TO_CATALOGING;
                 if (options.no_precat_alert) 
                     return $q.when(final_resp);
