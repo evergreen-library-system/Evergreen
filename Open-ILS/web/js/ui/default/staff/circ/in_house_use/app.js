@@ -79,6 +79,7 @@ function($scope,  egCore,  egGridDataProvider , egConfirmDialog) {
             ).then(function(copy) {
 
                 if (!copy) {
+                    egCore.audio.play('error.in_house.copy_not_found');
                     $scope.copyNotFound = true;
                     return;
                 }
@@ -108,7 +109,12 @@ function($scope,  egCore,  egGridDataProvider , egConfirmDialog) {
             'open-ils.circ', method, egCore.auth.token(), args
 
         ).then(function(resp) {
-            if (evt = egCore.evt.parse(resp)) return alert(evt);
+            if (evt = egCore.evt.parse(resp)) {
+                egCore.audio.play('error.in_house');
+                return alert(evt);
+            }
+
+            egCore.audio.play('success.in_house');
 
             var item = {num_uses : resp.length};
             item.copy = data.copy;

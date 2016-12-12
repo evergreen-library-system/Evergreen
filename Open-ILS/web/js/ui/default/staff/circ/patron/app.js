@@ -694,6 +694,7 @@ function($scope , $location , egCore , egConfirmDialog , egUser , patronSvc) {
 
     // jump to the patron checkout UI
     function loadPatron(user_id) {
+        egCore.audio.play('success.patron.by_barcode');
         $location
         .path('/circ/patron/' + user_id + '/checkout')
         .search('card', $scope.args.barcode);
@@ -739,6 +740,7 @@ function($scope , $location , egCore , egConfirmDialog , egUser , patronSvc) {
             if (!resp || !resp[0]) {
                 $scope.bcNotFound = args.barcode;
                 $scope.selectMe = true;
+                egCore.audio.play('warning.patron.not_found');
                 return;
             }
 
@@ -760,6 +762,7 @@ function($scope , $location , egCore , egConfirmDialog , egUser , patronSvc) {
                 // opt-in disallowed at this location by patron's home library
                 $scope.optInRestricted = true;
                 $scope.selectMe = true;
+                egCore.audio.play('warning.patron.opt_in_restricted');
                 return;
             }
            
