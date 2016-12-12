@@ -237,10 +237,16 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
     service.munge_resp_data = function(final_resp,worklog_action,worklog_method) {
         var data = final_resp.data = {};
 
-        if (!final_resp.evt[0]) return;
+        if (!final_resp.evt[0]) {
+            egCore.audio.play('warning.unknown.no_event');
+            return;
+        }
 
         var payload = final_resp.evt[0].payload;
-        if (!payload) return;
+        if (!payload) {
+            egCore.audio.play('warning.unknown.no_payload');
+            return;
+        }
 
         data.circ = payload.circ;
         data.parent_circ = payload.parent_circ;
@@ -446,6 +452,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
         // Other events
         switch (evt[0].textcode) {
             case 'SUCCESS':
+                egCore.audio.play('success.checkout');
                 return $q.when(final_resp);
 
             case 'ITEM_NOT_CATALOGED':
@@ -453,27 +460,32 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
                 return service.precat_dialog(params, options);
 
             case 'OPEN_CIRCULATION_EXISTS':
+                egCore.audio.play('warning.checkout.open_circ');
                 return service.circ_exists_dialog(evt, params, options);
 
             case 'COPY_IN_TRANSIT':
+                egCore.audio.play('warning.checkout.in_transit');
                 return service.copy_in_transit_dialog(evt, params, options);
 
             case 'PATRON_CARD_INACTIVE':
             case 'PATRON_INACTIVE':
             case 'PATRON_ACCOUNT_EXPIRED':
             case 'CIRC_CLAIMS_RETURNED':
+                egCore.audio.play('warning.checkout');
                 return service.exit_alert(
                     egCore.strings[evt[0].textcode],
                     {barcode : params.copy_barcode}
                 );
 
             case 'PERM_FAILURE':
+                egCore.audio.play('warning.checkout.permission');
                 return service.exit_alert(
                     egCore.strings[evt[0].textcode],
                     {permission : evt[0].ilsperm}
                 );
 
             default:
+                egCore.audio.play('warning.checkout.unknown');
                 return service.exit_alert(
                     egCore.strings.CHECKOUT_FAILED_GENERIC, {
                         barcode : params.copy_barcode,
