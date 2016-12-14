@@ -426,13 +426,6 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
                     {barcode : params.copy_barcode}
                 );
 
-            case 'PERM_FAILURE':
-                egCore.audio.play('warning.renew.permission');
-                return service.exit_alert(
-                    egCore.strings[evt[0].textcode],
-                    {permission : evt[0].ilsperm}
-                );
-
             default:
                 egCore.audio.play('warning.renew.unknown');
                 return service.exit_alert(
@@ -484,13 +477,6 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
                 return service.exit_alert(
                     egCore.strings[evt[0].textcode],
                     {barcode : params.copy_barcode}
-                );
-
-            case 'PERM_FAILURE':
-                egCore.audio.play('warning.checkout.permission');
-                return service.exit_alert(
-                    egCore.strings[evt[0].textcode],
-                    {permission : evt[0].ilsperm}
                 );
 
             default:

@@ -5,9 +5,14 @@
   <div class="modal-header">
     <button type="button" class="close" 
       ng-click="cancel()" aria-hidden="true">&times;</button>
-    <h4 class="modal-title alert alert-info">[% l('Operator Change') %]</h4> 
+    <h4 class="modal-title alert alert-info">{{title}}</h4>
   </div>
   <div class="modal-body">
+    <div class="row" ng-if="message">
+      <div class="col-md-12">
+        <p>{{message}}</p>
+      </div>
+    </div>
     <div class="row">
       <div class="col-md-4">
         [% l('Username:') %]
@@ -26,7 +31,7 @@
         <input ng-keyup="$event.keyCode == 13 ? ok() : null" type='password' ng-model="args.password" class="form-control"/>
       </div>
     </div>
-    <div class="row">
+    <div class="row" ng-if="displayTypeField == true">
       <div class="col-md-4">
         [% l('Login Type:') %]
       </div>

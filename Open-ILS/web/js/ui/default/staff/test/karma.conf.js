@@ -44,6 +44,7 @@ module.exports = function(config){
       'services/ui.js',
       'services/statusbar.js',
       'services/grid.js',
+      'services/op_change.js',
       'services/navbar.js', 'services/date.js',
       // load app scripts
       'app.js',

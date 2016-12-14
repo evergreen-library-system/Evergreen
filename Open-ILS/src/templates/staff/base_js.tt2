@@ -44,6 +44,7 @@
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/services/statusbar.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/services/ui.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/services/date.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/op_change.js"></script>
 
 [% ELSE %]
 
@@ -82,6 +83,8 @@
     s.EG_CONFIRM_DELETE_RECORD_BODY = "[% l('Delete record {{id}}?') %]";
     s.OP_CHANGE_SUCCESS = "[% l('Operator Change Succeeded') %]";
     s.OP_CHANGE_FAILURE = "[% l('Operator Change Failed') %]";
+    s.OP_CHANGE_TITLE = "[% l('Operator Change') %]";
+    s.OP_CHANGE_PERM_MESSAGE = "[% l('Another staff member with the above permission may authorize this specific action.  Please notify your library administrator if you need this permission.  If you feel you have received this exception in error, please inform your friendly Evergreen developers or helpdesk staff of the above permission.') %]";
   }]);
 </script>
 
