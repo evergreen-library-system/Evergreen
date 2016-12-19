@@ -16,6 +16,11 @@
             dojo.require("dijit.layout.LayoutContainer");
             dojo.require("dijit.layout.ContentPane");
         </script>
+        <style>
+            .tundra .dijitComboBoxDisabled, .tundra .dijitTextBoxDisabled {
+                    color: gray !important;
+            }
+        </style>
     </head>
     <body class='tundra'>
         [% INCLUDE login.tt2 %] <!-- shared login page -->
