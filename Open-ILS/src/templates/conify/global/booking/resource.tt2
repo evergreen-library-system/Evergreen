@@ -57,7 +57,7 @@
 
             setTimeout(
                 function() {
-                    if (xulG && xulG.resultant_brsrc)
+                    if (typeof xulG != 'undefined' && xulG.resultant_brsrc)
                         search = {id: xulG.resultant_brsrc};
 
                     brsrcGrid.overrideEditWidgets.type =
