@@ -1,0 +1,67 @@
+Using UnAPI
+===========
+
+Evergreen's unAPI support includes access to many
+record types. For example, the following URL would fetch
+bib 267 in MODS32 along with holdings, volume, copy,
+and record attribute information:
+
+https://example.org/opac/extras/unapi?id=tag::U2@bre/267{holdings_xml,acn,acp,mra}&format=mods32
+
+To access the new unAPI features, the unAPI ID should have the
+following form:
+
+  * +tag::U2@+
+  * followed by class name, which may be
+    * +bre+ (bibs)
+    * +biblio_record_entry_feed+ (multiple bibs)
+    * +acl+ (copy locations)
+    * +acn+ (volumes)
+    * +acnp+ (call number prefixes)
+    * +acns+ (call number suffixes)
+    * +acp+ (copies)
+    * +acpn+ (copy notes)
+    * +aou+ (org units)
+    * +ascecm+ (copy stat cat entries)
+    * +auri+ (located URIs)
+    * +bmp+ (monographic parts)
+    * +cbs+ (bib sources)
+    * +ccs+ (copy statuses)
+    * +circ+ (loan checkout and due dates)
+    * +holdings_xml+ (holdings)
+    * +mmr+ (metarecords)
+    * +mmr_holdings_xml+ (metarecords with holdings)
+    * +mmr_mra+ (metarecords with record attributes)
+    * +mra+ (record attributes)
+    * +sbsum+ (serial basic summaries)
+    * +sdist+ (serial distributions)
+    * +siss+ (serial issues)
+    * +sisum+ (serial index summaries)
+    * +sitem+ (serial items)
+    * +sssum+ (serial supplement summaries)
+    * +sstr+ (serial streams)
+    * +ssub+ (serial subscriptions)
+    * +sunit+ (serial units)
+  * followed by +/+
+  * followed by a record identifier (or in the case of
+    the +biblio_record_entry_feed+ class, multiple IDs separated
+    by commas)
+  * followed, optionally, by limit and offset in square brackets
+  * followed, optionally, by a comma-separated list of "includes"
+    enclosed in curly brackets.  The list of includes is
+    the same as the list of classes with the following addition:
+    * +bre.extern+ (information from the non-MARC parts of a bib
+      record)
+   * followed, optionally, by +/+ and org unit; "-" signifies
+     the top of the org unit tree
+   * followed, optionally, by +/+ and org unit depth
+   * followed, optionally, by +/+ and a path. If the path
+     is +barcode+ and the class is +acp+, the record ID is taken
+     to be a copy barcode rather than a copy ID; for example, in
+     +tag::U2@acp/ACQ140{acn,bre,mra}/-/0/barcode+, +ACQ140+ is
+     meant to be a copy barcode.
+   * followed, optionally, by +&format=+ and the format in which the record
+     should be retrieved. If this part is omitted, the list of available
+     formats will be retrieved.
+
+

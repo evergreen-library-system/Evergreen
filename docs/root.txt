@@ -609,6 +609,27 @@ include::development/updating_translations_launchpad.txt[]
 // Return to normal title levels.
 :leveloffset: 0
 
+
+Getting Data from Evergreen
+===========================
+
+Introduction
+------------
+
+You may be interested in re-using data from your Evergreen installation in
+another application.  This part describes several methods to get the data
+you need.
+
+// Push titles down one level.
+:leveloffset: 1
+
+include::development/data_supercat.txt[]
+
+include::development/data_unapi.txt[]
+
+// Return to normal title levels.
+:leveloffset: 0
+
 include::attributions.txt[]
 
 include::licensing.txt[]
