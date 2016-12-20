@@ -8,6 +8,21 @@
 
     result_count = ctx.result_start;
 
+    # don't display a box for the search_format filter,
+    # as that's got its own widget
+    ignore_filters = ['search_format'];
+
+    trimmed_filters = [];
+    FOR filter IN ctx.query_struct.filters;
+        fname = filter.name;
+        IF ignore_filters.grep('^' _ fname _ '$').size;
+            NEXT;
+        END;
+        trimmed_filters.push(filter);
+    END;
+
+    ctx.query_struct.filters = trimmed_filters;
+
 %]
 
 [% PROCESS "opac/parts/result/paginate.tt2" %] 
@@ -25,8 +40,16 @@
     <h3 class="sr-only">[% l('Saved Searches') %]</h3>
     [% INCLUDE "opac/parts/staff_saved_searches.tt2" %]
     [%-  END %]
-    <h3 class="sr-only">[% l('Search Results filters') %]</h3>
-    [% INCLUDE 'opac/parts/result/adv_filter.tt2' %]
+    [% IF ctx.query_struct.filters.size > 0 %]
+        [% stuff = INCLUDE 'opac/parts/result/adv_filter.tt2' %]
+        [% IF stuff %]
+        <h3 class="sr-only">[% l('Search Results filters') %]</h3>
+        <div class="facet_box_wrapper filter_box_wrapper">
+            <div class="filter_box_label">[% l('Filtered By') %]</div>
+            [% stuff %]
+        </div>
+        [% END %]
+    [% END %]
     <h3 class="sr-only">[% l('Search Results facets') %]</h3>
     [% INCLUDE 'opac/parts/result/facets.tt2' %]
     <h3 class="sr-only">[% l('Search Results List') %]</h3>

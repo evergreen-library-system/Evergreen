@@ -1073,6 +1073,14 @@ div#facet_sidebar {
     background: [% css_colors.background_invert %] !important;
 }
 
+.filter_box_label {
+    color: [% css_colors.background_invert %];
+    font-weight:bold;
+    padding-top:4px;
+    padding-bottom:4px;
+    padding-left:12px;
+}
+
 .facet_box_temp .header .title {
     float:left;
     padding-top:6px;
@@ -1100,6 +1108,16 @@ div#facet_sidebar {
     padding: 0 0.5em;
     width: 14em;
     overflow: hidden;
+}
+
+.filter_box_wrapper {
+    margin-bottom: 3px;
+    padding: 2px;
+    border: 1px solid [% css_colors.background_invert %];
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    font-weight:bold;
+    padding-top:4px;
 }
 
 .facet_template {
@@ -1731,7 +1749,7 @@ a.preflib_change {
     clear: both;
 }
 
-.small_view_only, #refine_hits, #return_to_hits {
+.small_view_only, #filter_hits, #refine_hits, #return_to_hits {
     display: none;
 }
 
@@ -1854,7 +1872,7 @@ a.preflib_change {
     #dash_wrapper .opac-button {
         top: 0px;
     }
-    .small_view_only {
+    .small_view_only, #filter_hits {
         display: inline !important;
     }
     #dash_identity a {
