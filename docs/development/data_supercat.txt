@@ -7,7 +7,7 @@ Introduction
 You can use SuperCat to get data about ISBNs, metarecords, bibliographic
 records, and authority records.
 
-Throughout this section, replace <hostname> with the domain or subdomain
+Throughout this section, replace `<hostname>` with the domain or subdomain
 of your Evergreen installation to try these examples on your own system.
 
 ISBNs
@@ -17,7 +17,9 @@ Given one ISBN, Evergreen can return a list of related records and ISBNs,
 including alternate editions and translations.  To use the Supercat
 oISBN tool, use http or https to access the following URL.
 
+----
 http://<hostname>/opac/extras/oisbn/<ISBN_to_query>
+----
 
 For example, the URL http://gapines.org/opac/extras/oisbn/0439136350 returns
 the following list of catalog record IDs and ISBNs:
@@ -65,7 +67,9 @@ Record formats
 
 First, determine which format you'd like to receive data in.  To see the
 available formats for bibliographic records, visit 
+----
 http://<hostname>/opac/extras/supercat/formats/record
+----
 
 Similarly, authority record formats can be found at
 http://libcat.linnbenton.edu/opac/extras/supercat/formats/authority
@@ -115,7 +119,9 @@ Retrieve records
 ~~~~~~~~~~~~~~~~
 
 You can retrieve records using URLs in the following format:
+----
 http://<hostname>/opac/extras/supercat/retrieve/<format>/<record-type>/<record-ID>
+----
 
 For example, http://gapines.org/opac/extras/supercat/retrieve/mods/record/33333
 returns the following record.
@@ -202,7 +208,9 @@ Recent records
 
 SuperCat can return feeds of recently edited or created authority and bibliographic records:
 
+----
 http://<hostname>/opac/extras/feed/freshmeat/<feed-type>/<record-type>/<import-or-edit>/<limit>/<date>
+----
 
 Note the following features:
 
