@@ -170,36 +170,38 @@
                 callnum = String(volume.label());
             }
             /* handle spine labels differently if using LC */
-            if (volume.label_class() == 3) {
-                /* for LC, split between classification subclass letters and numbers */
-                var lc_class_re = /^([A-Z]{1,3})([0-9]+.*?)$/i;
-                var lc_class_match = lc_class_re.exec(callnum);
-                if (lc_class_match && lc_class_match.length > 1) {
-                    callnum = lc_class_match[1] + ' ' + lc_class_match[2];
-                }
+            var lab_class = volume.label_class();
+            if (lab_class.id() == 3) {
+                /* Establish a pattern where every return value should be isolated on its own line 
+                   on the spine label: subclass letters, subclass numbers, cutter numbers, trailing stuff (date) */
+                var patt1 = /^([A-Z]{1,3})\s*(\d+(?:\.\d+)?)\s*(\.[A-Z]\d*)\s*([A-Z]\d*)?\s*(\d\d\d\d(?:-\d\d\d\d)?)?\s*(.*)$/i;
+                var result = callnum.match(patt1);
+                if (result) { 
+                    callnum = result.slice(1).join('\t');  
+                } else {
+                    callnum = callnum.split(/\s+/).join('\t');
+                } 
 
-                /* for LC, split between Cutter numbers */
-                var lc_cutter_re = /^(.*)(\.[A-Z]{1}[0-9]+.*?)$/ig;
-                var lc_cutter_match = lc_cutter_re.exec(callnum);
-                if (lc_cutter_match && lc_cutter_match.length > 1) {
-                    callnum = '';
-                    for (var i = 1; i < lc_cutter_match.length; i++) {
-                        callnum += lc_cutter_match[i] + ' ';
-                    }
-                }
+                /* If result is null, leave callnum alone. Can't parse this malformed call num */
+            } else {
+                callnum = callnum.split(/\s+/).join('\t');
             }
 
             /* Only add the prefixes and suffixes once */
             if (!override || volume.id() != override.acn) {
                 if (volume.prefix()) {
-                    callnum = volume.prefix() + ' ' + callnum;
+                    callnum = volume.prefix() + '\t' + callnum;
                 }
                 if (volume.suffix()) {
-                    callnum += ' ' + volume.suffix();
+                    callnum += '\t' + volume.suffix();
                 }
             }
 
-            names = callnum.split(/\s+/);
+            /* At this point, the call number pieces are separated by tab characters.  This allows
+            *  some space-containing constructs like "v. 1" to appear on one line
+            */
+            callnum = callnum.replace(/\t\t/g,'\t');  /* Squeeze out empties */ 
+            names = callnum.split('\t');
             var j = 0;
             while (j < label_cfg.spine_length || j < label_cfg.pocket_length) {
                 var hb2 = document.createElement('hbox'); label_node.appendChild(hb2);

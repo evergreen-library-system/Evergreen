@@ -174,7 +174,7 @@ function cdDateToHours(date) {
 
 function cdDateToDate(date) {
     var date_obj = new Date(Date.parse(date));
-    return date_obj.toISOString().replace(/T.*/,''); // == %F
+    return date_obj.toLocaleDateString();
 }
 
 
@@ -191,7 +191,7 @@ function cdBuildRow( date ) {
     var row;
     var flesh = false;
 
-    if( sh == '00:00:00' && eh == '23:59:59' ) {
+    if( sh == '00:00' && eh == '23:59' ) {
 
         if( sd == ed ) {
             row = cdAllDayTemplate.cloneNode(true);
