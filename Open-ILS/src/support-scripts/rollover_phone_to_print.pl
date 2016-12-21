@@ -74,7 +74,7 @@ sub rollover_events_phone_to_print {
             $event->target
         )) {
             $logger->info("rollover created event $new_id from event " . $event->id);
-            push @$finished, $new_id;
+            push @$finished, $event->id;
         }
     }
 
