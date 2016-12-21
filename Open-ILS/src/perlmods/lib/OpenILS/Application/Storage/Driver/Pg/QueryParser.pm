@@ -980,7 +980,7 @@ sub toSQL {
 $with
 SELECT  $key AS id,
         $agg_records,
-        ${rel}::NUMERIC AS rel,
+        (${rel})::NUMERIC AS rel,
         $rank AS rank, 
         FIRST(pubdate_t.value) AS tie_break,
         STRING_AGG(ARRAY_TO_STRING(pop_with.badges,','),',') AS badges,
