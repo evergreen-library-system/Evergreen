@@ -875,7 +875,7 @@ sub toSQL {
 $with
 SELECT  $key AS id,
         $agg_records,
-        $rel AS rel,
+        (${rel})::NUMERIC AS rel,
         $rank AS rank, 
         FIRST(pubdate_t.value) AS tie_break
   FROM  metabib.metarecord_source_map m
