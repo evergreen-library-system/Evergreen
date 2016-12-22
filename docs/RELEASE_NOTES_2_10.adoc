@@ -3,6 +3,34 @@ Evergreen 2.10 Release Notes
 :toc:
 :numbered:
 
+Evergreen 2.10.9
+----------------
+
+This release contains several bugfixes improving on Evergreen 2.10.8
+
+* A fix to the web client patron interface that changed the holds count in the
+patron summary from total / available to available / total.
+* A fix to an issue where the Closed Dates Editor was displaying an extra day of closure.
+* A fix to the Closed Dates Editor so that it now displays "All Day" when the library is closed for the entire day.
+* A fix to properly format LC Call numbers in spine label printing.
+* A fix to a bug that was causing intermittent search failures.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+testing and documentation patches to the 2.10.9 point release of
+Evergreen:
+
+* Galen Charlton
+* Kyle Huckins
+* Jeanette Lundgren
+* Dan Pearl
+* Michelle Purcell
+* Jane Sandberg
+* Dan Scott
+* Remington Steed
+
+
 Evergreen 2.10.8
 ----------------
 
