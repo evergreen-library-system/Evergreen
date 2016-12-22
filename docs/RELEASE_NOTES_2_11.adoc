@@ -3,6 +3,51 @@ Evergreen 2.11 Release Notes
 :toc:
 :numbered:
 
+Evergreen 2.11.2
+----------------
+
+This release contains several bugfixes improving on Evergreen 2.11.1
+
+* A fix to the web client patron interface that changed the holds count in the
+patron summary from total / available to available / total.
+* A fix to an issue where the Closed Dates Editor was displaying an extra day of
+ closure.
+* A fix to the Closed Dates Editor so that it now displays "All Day" when the
+library is closed for the entire day.
+* A fix to properly format LC Call numbers in spine label printing.
+* A fix to a bug that was causing intermittent search failures.
+* A fix to a bug that was causing search failures for Copy Location Group
+searches.
+* A fix to significant increased slowness with holds transfers.
+* The addition of an index to the action.aged_circulation table to resolve a 
+problem with long-running queries.
+* A fix to redirects that for one-hit metarecord searches for systems that
+have enabled the setting to immediately jump to a bib record on one-hit searches.
+* A fix to the new acquisitions cost field available in the copy editor to
+resolve an issue where accidentally clearing out the value in the field resulted
+in an error.
+* A fix to a bug that broke the Alternate Printable Hold Pull List and Vandelay
+uploads on systems that were running OpenSRF 2.5.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+testing and documentation patches to the 2.11.1 point release of
+Evergreen:
+
+* Galen Charlton
+* Bill Erickson
+* Kyle Huckins
+* Jeanette Lundgren
+* Michele Morgan
+* Dan Pearl
+* Michelle Purcell
+* Mike Rylander
+* Jane Sandberg
+* Dan Scott
+* Chris Sharp
+* Remington Steed
+
 Evergreen 2.11.1
 ----------------
 
@@ -12,7 +57,7 @@ This release contains several bug fixes improving on Evergreen 2.11.0
 the Acquisitions Selection List -> Copies interface.
 * A fix to the web client check in screen allowing users to click the
 title of the checked-in item to retrieve the bib record for that item.
-* The addition of a progress bar that displays when conducting a patron search in the web client.
+* The addition of a progress bar that displays when conducting a patron searchin the web client.
 * A fix to the web client patron interface so that total Items Out in the
 patron summary now includes overdue and long overdue items. It will also
 include Lost and Claims Returned items when the appropriate library
