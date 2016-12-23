@@ -6,6 +6,12 @@
   </div>
   <div class="modal-body">
       <div class="row">
+        <div class="col-xs-3">
+          <label for="merge_profile_selector">[% l('Choose merge profile') %]</label>
+          <eg-fm-value-selector id="merge_profile_selector" ng-model="merge_profile" idl-class="vmp" ou-setting="cat.default_merge_profile" filter="{'preserve_spec':{'=':null}}" sticky-setting="eg.cat.record_bucket.default_merge_profile"></eg-fm-value-selector>
+        </div>
+      </div>
+      <div class="row">
           <div class="col-xs-6">
             <h4>[% l('Lead record') %]</h4>
             <div ng-if="lead_id">
@@ -13,11 +19,12 @@
                  <tab heading="[% l('Bib [_1]', '{{lead_id}}') %]">
                    <button class="btn btn-default btn-sm" ng-class="{disabled : editing_inplace}" ng-click="edit_lead_inplace()">[% l('Edit') %]</button>
                    <button class="btn btn-default btn-sm" ng-class="{disabled : editing_inplace}" ng-click="edit_lead()">[% l('Edit using full editor') %]</button>
-                   <eg-marc-edit-record dirty-flag="dirty_flag" record-id="lead_id"
+                   <eg-marc-edit-record dirty-flag="dirty_flag" marc-xml="lead.marc_xml"
+                             in-place-mode="true"
                              record-type="bre" flat-only="true" embedded="true" 
-                             ng-if="editing_inplace" on-save="post_edit_inplace">
+                             ng-show="editing_inplace" on-save="post_edit_inplace">
                    </eg-marc-edit-record>
-                   <eg-record-breaker record-id="lead_id" ng-if="!editing_inplace"></eg-record-breaker>
+                   <eg-record-breaker record-id="lead_id" marc-xml="lead.marc_xml" ng-show="!editing_inplace"></eg-record-breaker>
                    <eg-volume-list record-id="lead_id" edit-copies="true" edit-volumes="true"></eg-volume-list>
                  </tab>
                </tabset>

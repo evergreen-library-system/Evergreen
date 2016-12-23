@@ -550,6 +550,8 @@ function($scope,  $q , $routeParams,  bucketSvc,  egCore,  $window,
                 ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
                 $scope.records = [];
                 $scope.lead_id = 0;
+                $scope.merge_profile = null;
+                $scope.lead = { marc_xml : null };
                 $scope.editing_inplace = false;
                 angular.forEach(records, function(rec) {
                     $scope.records.push({ id : rec.id });
@@ -557,16 +559,59 @@ function($scope,  $q , $routeParams,  bucketSvc,  egCore,  $window,
                 $scope.ok = function() {
                     $uibModalInstance.close({
                         lead_id : $scope.lead_id,
-                        records : $scope.records
+                        records : $scope.records,
+                        merge_profile : $scope.merge_profile,
+                        lead : $scope.lead
                     });
                 }
                 $scope.cancel = function () { $uibModalInstance.dismiss() }
+
+                $scope.merge_marc = function() {
+                    // need lead, at least one sub, and a merge profile
+                    if (!$scope.lead_id) return;
+                    if (!$scope.merge_profile) return;
+
+                    if (!$scope.records.length) {
+                        // if we got here, the last subordinate record
+                        // was likely removed, so let's refresh the
+                        // lead for the sake of a consistent display
+                        egCore.pcrud.retrieve('bre', $scope.lead_id)
+                        .then(function(rec) {
+                            $scope.lead.marc_xml = rec.marc();
+                        });
+                        return;
+                    }
+
+                    var recs = $scope.records.map(function(val) { return val.id; });
+                    recs.unshift($scope.lead_id);
+                    egCore.net.request(
+                        'open-ils.cat',
+                        'open-ils.cat.merge.biblio.per_profile',
+                        egCore.auth.token(),
+                        $scope.merge_profile,
+                        recs
+                    ).then(function(merged) {
+                        if (merged) $scope.lead.marc_xml = merged;
+                    });
+                }
+                $scope.$watch('merge_profile', function(newVal, oldVal) {
+                    if (newVal && newVal !== oldVal) {
+                        $scope.merge_marc();
+                    }
+                });
+
                 $scope.use_as_lead = function(rec) {
                     if ($scope.lead_id) {
                         $scope.records.push({ id : $scope.lead_id });
                     }
                     $scope.lead_id = rec.id;
                     $scope.drop(rec);
+
+                    egCore.pcrud.retrieve('bre', $scope.lead_id)
+                    .then(function(rec) {
+                        $scope.lead.marc_xml = rec.marc();
+                        $scope.merge_marc();
+                    });
                 }
                 $scope.drop = function(rec) {
                     angular.forEach($scope.records, function(val, i) {
@@ -574,6 +619,7 @@ function($scope,  $q , $routeParams,  bucketSvc,  egCore,  $window,
                             $scope.records.splice(i, 1);
                         }
                     });
+                    $scope.merge_marc();
                 }
                 $scope.post_edit_inplace = function() {
                     $scope.editing_inplace = false;
@@ -582,36 +628,61 @@ function($scope,  $q , $routeParams,  bucketSvc,  egCore,  $window,
                     $scope.editing_inplace = true;
                 }
                 $scope.edit_lead = function() {
-                    var lead_id = $scope.lead_id;
+                    var lead = { marc_xml : $scope.lead.marc_xml };
+
+                    // passing the on-save callback this way is a
+                    // hack - this invocation of the MARC editor doesn't
+                    // need it, but for some reason using this stomps
+                    // over the callback set by the other MARC editor
+                    // instance
+                    var callback = $scope.post_edit_inplace;
+
                     $uibModal.open({
                         templateUrl: './cat/bucket/record/t_edit_lead_record',
                         size: 'lg',
                         controller:
                             ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
                             $scope.focusMe = true;
-                            $scope.record_id = lead_id;
+                            $scope.lead = lead;
                             $scope.dirty_flag = false;
                             $scope.ok = function() { $uibModalInstance.close() }
                             $scope.cancel = function () { $uibModalInstance.dismiss() }
+                            $scope.on_save = callback;
                         }]
                     }).result.then(function() {
-                        // TODO: need a way to force a refresh of the egRecordBreaker, as
-                        // the record ID does not change
+                        $scope.lead.marc_xml = lead.marc_xml;
                     });
                 };
             }]
         }).result.then(function (args) {
             if (!args.lead_id) return;
             if (!args.records.length) return;
-            egCore.net.request(
-                'open-ils.cat',
-                'open-ils.cat.biblio.records.merge',
-                egCore.auth.token(),
-                args.lead_id,
-                args.records.map(function(val) { return val.id; })
-            ).then(function() {
-                $window.location.href =
-                    egCore.env.basePath + 'cat/catalog/record/' + args.lead_id;
+
+            function update_bib() {
+                if (args.merge_profile) {
+                    return egCore.pcrud.retrieve('bre', args.lead_id)
+                    .then(function(rec) {
+                        rec.marc(args.lead.marc_xml);
+                        rec.edit_date('now');
+                        rec.editor(egCore.auth.user().id());
+                        return egCore.pcrud.update(rec);
+                    });
+                } else {
+                    return $q.when();
+                }
+            }
+
+            update_bib().then(function() {
+                egCore.net.request(
+                    'open-ils.cat',
+                    'open-ils.cat.biblio.records.merge',
+                    egCore.auth.token(),
+                    args.lead_id,
+                    args.records.map(function(val) { return val.id; })
+                ).then(function() {
+                    $window.location.href =
+                        egCore.env.basePath + 'cat/catalog/record/' + args.lead_id;
+                });
             });
         });
     }
