@@ -559,6 +559,97 @@ function($window , egStrings) {
     }
 ])
 
+/*
+ *  egFmValueSelector - widget for selecting a value from list specified
+ *                      by IDL class
+ */
+.directive('egFmValueSelector', function() {
+    return {
+        restrict : 'E',
+        transclude : true,
+        scope : {
+            idlClass : '@',
+            ngModel : '=',
+
+            // optional filter for refining the set of rows that
+            // get returned. Example:
+            //
+            // filter="{'column':{'=':null}}"
+            filter : '=',
+
+            // optional name of settings key for persisting
+            // the last selected value
+            stickySetting : '@',
+
+            // optional OU setting for fetching default value;
+            // used only if sticky setting not set
+            ouSetting : '@'
+        },
+        require: 'ngModel',
+        templateUrl : './share/t_fm_value_selector',
+        controller : ['$scope','egCore', function($scope , egCore) {
+
+            $scope.org = egCore.org; // for use in the link function
+            $scope.auth = egCore.auth; // for use in the link function
+            $scope.hatch = egCore.hatch // for use in the link function
+
+            function flatten_linked_values(cls, list) {
+                var results = [];
+                var fields = egCore.idl.classes[cls].fields;
+                var id_field;
+                var selector;
+                angular.forEach(fields, function(fld) {
+                    if (fld.datatype == 'id') {
+                        id_field = fld.name;
+                        selector = fld.selector ? fld.selector : id_field;
+                        return;
+                    }
+                });
+                angular.forEach(list, function(item) {
+                    var rec = egCore.idl.toHash(item);
+                    results.push({
+                        id : rec[id_field],
+                        name : rec[selector]
+                    });
+                });
+                return results;
+            }
+
+            var search = {};
+            search[egCore.idl.classes[$scope.idlClass].pkey] = {'!=' : null};
+            if ($scope.filter) {
+                angular.extend(search, $scope.filter);
+            }
+            egCore.pcrud.search(
+                $scope.idlClass, search, {}, {atomic : true}
+            ).then(function(list) {
+                $scope.linked_values = flatten_linked_values($scope.idlClass, list);
+            });
+
+            $scope.handleChange = function(value) {
+                if ($scope.stickySetting) {
+                    egCore.hatch.setLocalItem($scope.stickySetting, value);
+                }
+            }
+
+        }],
+        link : function(scope, element, attrs) {
+            if (scope.stickySetting && (angular.isUndefined(scope.ngModel) || (scope.ngModel === null))) {
+                var value = scope.hatch.getLocalItem(scope.stickySetting);
+                scope.ngModel = value;
+            }
+            if (scope.ouSetting && (angular.isUndefined(scope.ngModel) || (scope.ngModel === null))) {
+                scope.org.settings([scope.ouSetting], scope.auth.user().ws_ou())
+                .then(function(set) {
+                    var value = parseInt(set[scope.ouSetting]);
+                    if (!isNaN(value))
+                        scope.ngModel = value;
+                });
+            }
+        }
+    }
+})
+
 .factory('egWorkLog', ['egCore', function(egCore) {
     var service = {};
 
