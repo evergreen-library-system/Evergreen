@@ -306,8 +306,42 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
             controller:
                 ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
                 $scope.focusMe = true;
-                $scope.overlay_target = overlay_target;
+                $scope.merge_profile = null;
+                $scope.overlay_target = {
+                    id : overlay_target,
+                    merged : false
+                };
+
+                egCore.pcrud.retrieve('bre', $scope.overlay_target.id)
+                .then(function(rec) {
+                    $scope.overlay_target.orig_marc_xml = rec.marc();
+                    $scope.overlay_target.marc_xml = rec.marc();
+                    $scope.merge_marc(); // in case a sticky value was already set
+                });
+
+                $scope.merge_marc = function() {
+                    if (!$scope.merge_profile) return;
+                    egCore.net.request(
+                        'open-ils.cat',
+                        'open-ils.cat.merge.marc.per_profile',
+                        egCore.auth.token(),
+                        $scope.merge_profile,
+                        [ args.marc_xml, $scope.overlay_target.orig_marc_xml ]
+                    ).then(function(merged) {
+                        if (merged) {
+                            $scope.overlay_target.marc_xml = merged;
+                            $scope.overlay_target.merged = true;
+                        }
+                    });
+                }
+                $scope.$watch('merge_profile', function(newVal, oldVal) {
+                    if (newVal && newVal !== oldVal) {
+                        $scope.merge_marc();
+                    }
+                });
+
                 $scope.args = args;
+                args.overlay_target = $scope.overlay_target;
                 $scope.ok = function(args) { $uibModalInstance.close(args) };
                 $scope.cancel = function () { $uibModalInstance.dismiss() };
                 $scope.editOverlayRecord = function() {
@@ -324,6 +358,7 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
                             $scope.cancel = function () { $uibModalInstance.dismiss() }
                         }]
                     }).result.then(function (args) {
+                        $scope.merge_marc();
                         if (!args || !args.name) return;
                     });
                 };
@@ -334,7 +369,7 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
                 'open-ils.cat.biblio.record.marc.replace',
                 egCore.auth.token(),
                 overlay_target,
-                args.marc_xml,
+                (args.overlay_target.merged ? args.overlay_target.marc_xml : args.marc_xml),
                 null, // FIXME bib source
                 null,
                 $scope.selectFieldStripGroups()
