@@ -376,6 +376,12 @@
     asset::copy_location->sequence( 'asset.copy_location_id_seq' );
 
     #---------------------------------------------------------------------
+    package asset::copy_location_group;
+    
+    asset::copy_location_group->table( 'asset.copy_location_group' );
+    asset::copy_location_group->sequence( 'asset.copy_location_group_id_seq' );
+
+    #---------------------------------------------------------------------
     package asset::copy;
     
     asset::copy->table( 'asset.copy' );
