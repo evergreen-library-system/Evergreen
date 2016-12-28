@@ -26,10 +26,10 @@ angular.module('egCoreMod')
             inspect(element);
         },
 
-        controller:['$scope','$window','$location','$timeout','hotkeys','egCore','$uibModal','ngToast',
-                    'egOpChange',
-            function($scope , $window , $location , $timeout , hotkeys , egCore , $uibModal , ngToast,
-                    egOpChange) {
+        controller:['$scope','$window','$location','$timeout','hotkeys',
+                    'egCore','$uibModal','ngToast','egOpChange',
+            function($scope , $window , $location , $timeout , hotkeys ,
+                     egCore , $uibModal , ngToast, egOpChange) {
 
                 function navTo(path) {                                           
                     // Strip the leading "./" if any.
@@ -75,11 +75,17 @@ angular.module('egCoreMod')
                 }
 
                 $scope.changeOperatorUndo = function() {
-                    $scope.op_changed = egOpChange.changeOperatorUndo();
+                    egOpChange.changeOperatorUndo().then(function() {
+                        $scope.op_changed = false;
+                        $scope.username = egCore.auth.user().usrname();
+                    });
                 }
 
                 $scope.changeOperator = function() {
-                    $scope.op_changed = egOpChange.changeOperator(true);
+                    egOpChange.changeOperator(true).then(function() {
+                        $scope.op_changed = true;
+                        $scope.username = egCore.auth.user().usrname();
+                    });
                 }
 
                 $scope.currentToken = function () {
