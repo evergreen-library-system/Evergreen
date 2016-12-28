@@ -248,12 +248,22 @@ function($q , $timeout , $location , egCore,  egUser , $locale) {
         service.patron_stats = null;
         service.noncat_ids = [];
         service.hasAlerts = false;
-        service.alertsShown = false;
         service.patronExpired = false;
         service.patronExpiresSoon = false;
         service.invalidAddresses = false;
     }
     service.resetPatronLists();  // initialize
+
+    // Returns true if the last alerted patron matches the current
+    // patron.  Otherwise, the last alerted patron is set to the 
+    // current patron and false is returned.
+    service.alertsShown = function() {
+        var key = 'eg.circ.last_alerted_patron';
+        var last_id = egCore.hatch.getSessionItem(key);
+        if (last_id && last_id == service.current.id()) return true;
+        egCore.hatch.setSessionItem(key, service.current.id());
+        return false;
+    }
 
     // shortcut to force-reload the current primary
     service.refreshPrimary = function() {
@@ -584,8 +594,7 @@ function($scope,  $q,  $location , $filter,  egCore,  egUser,  patronSvc) {
         $scope.alert_penalties = 
             function() {return patronSvc.alert_penalties}
 
-        if (patronSvc.alertsShown) return false;
-        patronSvc.alertsShown = true;
+        if (patronSvc.alertsShown()) return false;
 
         // if the patron has any unshown alerts, show them now
         if (patronSvc.hasAlerts && 
