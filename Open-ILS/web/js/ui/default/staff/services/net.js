@@ -39,51 +39,90 @@ function($q,  $rootScope,  egEvent) {
 
     var net = {};
 
-    // raises the egAuthExpired event on NO_SESSION
-    net.checkResponse = function(resp) {
-        var content = resp.content();
-        if (!content) return null;
-        var evt = egEvent.parse(content);
-        if (evt && evt.textcode == 'NO_SESSION') {
-            $rootScope.$broadcast('egAuthExpired') 
-        } else {
-            return content;
+    // Simple container class for tracking a single request.
+    function NetRequest(kwargs) {
+        var self = this;
+        angular.forEach(kwargs, function(val, key) { self[key] = val });
+    }
+
+    // Relay response object to the caller for typical/successful responses.  
+    // Applies special handling to response events that require global
+    // attention.
+    net.handleResponse = function(request) {
+        request.evt = egEvent.parse(request.last);
+
+        if (request.evt) {
+
+            if (request.evt.textcode == 'NO_SESSION') {
+                $rootScope.$broadcast('egAuthExpired');
+                request.deferred.reject();
+                return;
+
+            } else if (request.evt.textcode == 'PERM_FAILURE') {
+
+                if (!net.handlePermFailure) {
+                    // nothing we can do, pass the failure up to the caller.
+                    console.debug("egNet has no handlePermFailure()");
+                    request.deferred.notify(request.last);
+                    return;
+                }
+
+                // handlePermFailure() starts a new series of promises.
+                // Tell our in-progress promise to resolve, etc. along
+                // with the new handlePermFailure promise.
+                request.superseded = true;
+                net.handlePermFailure(request).then(
+                    request.deferred.resolve, 
+                    request.deferred.reject, 
+                    request.deferred.notify
+                );
+            }
         }
+
+        request.deferred.notify(request.last);
     };
 
     net.request = function(service, method) {
-        var last;
-        var deferred = $q.defer();
         var params = Array.prototype.slice.call(arguments, 2);
+
+        var request = new NetRequest({
+            service    : service,
+            method     : method,
+            params     : params,
+            deferred   : $q.defer(),
+            superseded : false
+        });
+
         console.debug('egNet ' + method);
         new OpenSRF.ClientSession(service).request({
             async  : true,
-            method : method,
-            params : params,
+            method : request.method,
+            params : request.params,
             oncomplete : function() {
-                deferred.resolve(last);
+                if (!request.superseded)
+                    request.deferred.resolve(request.last);
             },
             onresponse : function(r) {
-                last = net.checkResponse(r.recv());
-                deferred.notify(last);
+                request.last = r.recv().content();
+                net.handleResponse(request);
             },
             onerror : function(msg) {
                 // 'msg' currently tells us very little, so don't 
                 // bother JSON-ifying it, since there is the off
                 // chance that JSON-ification could fail, e.g if 
                 // the object has circular refs.
-                console.error(method + 
-                    ' (' + params + ')  failed.  See server logs.');
+                console.error(request.method + 
+                    ' (' + request.params + ')  failed.  See server logs.');
                 deferred.reject(msg);
             },
             onmethoderror : function(req, statCode, statMsg) { 
                 console.error('error calling method ' + 
-                method + ' : ' + statCode + ' : ' + statMsg);
+                    request.method + ' : ' + statCode + ' : ' + statMsg);
             }
 
         }).send();
 
-        return deferred.promise;
+        return request.deferred.promise;
     }
 
     // In addition to the service and method names, accepts a single array
