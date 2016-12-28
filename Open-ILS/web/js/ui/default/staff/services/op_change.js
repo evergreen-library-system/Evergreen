@@ -15,17 +15,18 @@ function($uibModal, $interpolate, $rootScope, $q, egAuth, egStrings, egNet, ngTo
 
     // Returns a promise resolved upon successful op-change.
     // Rejected otherwise.
-    service.changeOperator = function(showTypes, permEvt) {
+    service.changeOperator = function(permEvt) {
         return $uibModal.open({
             templateUrl: './share/t_opchange',
             controller:
                 ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
                 $scope.args = {username : '', password : '', type : 'temp'};
-                $scope.displayTypeField = showTypes;
                 $scope.title = egStrings.OP_CHANGE_TITLE;
                 if (permEvt) {
                     $scope.title = permEvt.desc + ": " + permEvt.ilsperm;
                     $scope.message = egStrings.OP_CHANGE_PERM_MESSAGE;
+                } else {
+                    $scope.displayTypeField = true;
                 }
                 $scope.focus = true;
                 $scope.ok = function() { $uibModalInstance.close($scope.args) }
@@ -40,26 +41,34 @@ function($uibModal, $interpolate, $rootScope, $q, egAuth, egStrings, egNet, ngTo
             return egAuth.opChange(args).then(
                 function() {
                     console.debug('op-change succeeded');
-                    ngToast.create(egStrings.OP_CHANGE_SUCCESS);
+                    if (permEvt) {
+                        ngToast.create(egStrings.PERM_OP_CHANGE_SUCCESS);
+                    } else {
+                        ngToast.create(egStrings.OP_CHANGE_SUCCESS);
+                    }
                 },
                 function() {
                     console.debug('op-change failed');
-                    ngToast.warning(egStrings.OP_CHANGE_FAILURE);
+                    if (permEvt) {
+                        ngToast.warning(egStrings.PERM_OP_CHANGE_FAILURE);
+                    } else {
+                        ngToast.warning(egStrings.OP_CHANGE_FAILURE);
+                    }
                 }
             );
         });
     }
 
     // Returns a promise resolved on successful op-change undo.
-    service.changeOperatorUndo = function() {
+    service.changeOperatorUndo = function(hideToast) {
         return egAuth.opChangeUndo().then(
             function() {
                 console.debug('op-change undo succeeded');
-                ngToast.create(egStrings.OP_CHANGE_SUCCESS);
+                if (!hideToast) ngToast.create(egStrings.OP_CHANGE_SUCCESS);
             },
             function() {
                 console.debug('op-change undo failed');
-                ngToast.warning(egStrings.OP_CHANGE_FAILURE);
+                if (!hideToast) ngToast.warning(egStrings.OP_CHANGE_FAILURE);
             }
         );
     }
@@ -76,7 +85,7 @@ function($uibModal, $interpolate, $rootScope, $q, egAuth, egStrings, egNet, ngTo
     egNet.handlePermFailure = function(request) {
         console.debug("perm override required for "+request.method);
 
-        return service.changeOperator(false, request.evt).then(function() {
+        return service.changeOperator(request.evt).then(function() {
 
             return egNet.requestWithParamList(
                 request.service,
@@ -88,7 +97,7 @@ function($uibModal, $interpolate, $rootScope, $q, egAuth, egStrings, egNet, ngTo
             )['finally'](function() {
                 // always undo the operator change after a perm override.
                 console.debug("clearing op-change after perm override redo");
-                service.changeOperatorUndo();
+                service.changeOperatorUndo(true);
             });
         });
     }

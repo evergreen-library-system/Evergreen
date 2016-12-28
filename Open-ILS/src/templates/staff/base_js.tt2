@@ -85,6 +85,8 @@
     s.OP_CHANGE_FAILURE = "[% l('Operator Change Failed') %]";
     s.OP_CHANGE_TITLE = "[% l('Operator Change') %]";
     s.OP_CHANGE_PERM_MESSAGE = "[% l('Another staff member with the above permission may authorize this specific action.  Please notify your library administrator if you need this permission.  If you feel you have received this exception in error, please inform your friendly Evergreen developers or helpdesk staff of the above permission.') %]";
+    s.PERM_OP_CHANGE_SUCCESS = "[% l('Permission Override Login Succeeded') %]";
+    s.PERM_OP_CHANGE_FAILURE = "[% l('Permission Override Login Failed') %]";
   }]);
 </script>
 

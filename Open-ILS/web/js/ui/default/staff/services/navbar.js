@@ -82,8 +82,8 @@ angular.module('egCoreMod')
                 }
 
                 $scope.changeOperator = function() {
-                    egOpChange.changeOperator(true).then(function() {
-                        $scope.op_changed = true;
+                    egOpChange.changeOperator().then(function() {
+                        $scope.op_changed = egCore.auth.OCtoken() ? true : false;
                         $scope.username = egCore.auth.user().usrname();
                     });
                 }
