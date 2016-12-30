@@ -1443,8 +1443,10 @@ sub retrieve_hold_queue_status_impl {
 
     my $user_org = $e->json_query({select => {au => ['home_ou']}, from => 'au', where => {id => $hold->usr}})->[0]->{home_ou};
 
-    my $default_wait = $U->ou_ancestor_setting_value($user_org, OILS_SETTING_HOLD_ESIMATE_WAIT_INTERVAL);
-    my $min_wait = $U->ou_ancestor_setting_value($user_org, 'circ.holds.min_estimated_wait_interval');
+    my $default_wait = $U->ou_ancestor_setting_value(
+        $user_org, OILS_SETTING_HOLD_ESIMATE_WAIT_INTERVAL, $e);
+    my $min_wait = $U->ou_ancestor_setting_value(
+        $user_org, 'circ.holds.min_estimated_wait_interval', $e);
     $min_wait = OpenSRF::Utils::interval_to_seconds($min_wait || '0 seconds');
     $default_wait ||= '0 seconds';
 
