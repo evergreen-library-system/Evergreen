@@ -242,11 +242,10 @@ sub name {
 
 sub format_name {
     my $u = shift;
-    return OpenILS::SIP::clean_text(
-        sprintf('%s %s %s', 
-            ($u->first_given_name || ''),
-            ($u->second_given_name || ''),
-            ($u->family_name || '')));
+    return sprintf('%s %s %s',
+                   ($u->first_given_name || ''),
+                   ($u->second_given_name || ''),
+                   ($u->family_name || ''));
 }
 
 sub home_library {
@@ -259,19 +258,18 @@ sub home_library {
 sub __addr_string {
     my $addr = shift;
     return "" unless $addr;
-    my $return = OpenILS::SIP::clean_text(
-        join( ' ', map {$_ || ''} (
-            $addr->street1,
-            $addr->street2,
-            $addr->city . ',',
-            $addr->county,
-            $addr->state,
-            $addr->country,
-            $addr->post_code
-            )
-        )
-    );
-    $return =~ s/\s+/ /sg;     # Compress any run of of whitespace to one space
+    my $return = join( ' ', map {$_ || ''}
+                           (
+                               $addr->street1,
+                               $addr->street2,
+                               $addr->city . ',',
+                               $addr->county,
+                               $addr->state,
+                               $addr->country,
+                               $addr->post_code
+                           )
+                       );
+    $return =~ s/\s+/ /sg; # Compress any run of of whitespace to one space
     return $return;
 }
 
@@ -290,7 +288,7 @@ sub address {
 
 sub email_addr {
     my $self = shift;
-    return OpenILS::SIP::clean_text($self->{user}->email);
+    return $self->{user}->email;
 }
 
 sub home_phone {
@@ -322,7 +320,7 @@ sub ptype {
         [$self->{user}->profile->id, {no_i18n => 1}])->name
         if $use_code =~ /true/io;
 
-    return OpenILS::SIP::clean_text($self->{user}->profile->name);
+    return $self->{user}->profile->name;
 }
 
 sub language {
@@ -578,7 +576,7 @@ sub __format_holds {
 
         } else {
             push(@response, 
-                OpenILS::SIP::clean_text($self->__hold_to_title($hold)));
+                $self->__hold_to_title($hold));
         }
     }
 
@@ -777,7 +775,7 @@ sub overdue_items {
         if($return_datatype eq 'barcode') {
             push( @o, __circ_to_barcode($self->{editor}, $circid));
         } else {
-            push( @o, OpenILS::SIP::clean_text(__circ_to_title($self->{editor}, $circid)));
+            push( @o, __circ_to_title($self->{editor}, $circid));
         }
     }
     @overdues = @o;
@@ -834,7 +832,7 @@ sub charged_items_impl {
         if($return_datatype eq 'barcode' or $force_bc) {
             push( @c, __circ_to_barcode($self->{editor}, $circid));
         } else {
-            push( @c, OpenILS::SIP::clean_text(__circ_to_title($self->{editor}, $circid)));
+            push( @c, __circ_to_title($self->{editor}, $circid));
         }
     }
 
@@ -862,7 +860,7 @@ sub fine_items {
            } else {
                $line .= $xact->last_billing_note;
            }
-           push @fines, OpenILS::SIP::clean_text($line);
+           push @fines, $line;
        }
     };
     my $log_status = $@ ? 'ERROR: ' . $@ : 'OK';
@@ -899,7 +897,7 @@ sub block {
 
     # retrieve the un-fleshed user object for update
     $u = $e->retrieve_actor_user($u->id);
-    my $note = OpenILS::SIP::clean_text($u->alert_message) || "";
+    my $note = $u->alert_message || "";
     $note = "<sip> CARD BLOCKED BY SELF-CHECK MACHINE. $blocked_card_msg</sip>\n$note"; # XXX Config option
     $note =~ s/\s*$//;  # kill trailng whitespace
     $u->alert_message($note);
@@ -941,7 +939,7 @@ sub enable {
 
     # retrieve the un-fleshed user object for update
     $u = $e->retrieve_actor_user($u->id);
-    my $note = OpenILS::SIP::clean_text($u->alert_message) || "";
+    my $note = $u->alert_message || "";
     $note =~ s#<sip>.*</sip>##;
     $note =~ s/^\s*//;  # kill leading whitespace
     $note =~ s/\s*$//;  # kill trailng whitespace
@@ -977,7 +975,7 @@ sub inet_privileges {
     my $e = OpenILS::SIP->editor();
     $INET_PRIVS = $e->retrieve_all_config_net_access_level() unless $INET_PRIVS;
     my ($level) = grep { $_->id eq $self->{user}->net_access_level } @$INET_PRIVS;
-    my $name = OpenILS::SIP::clean_text($level->name);
+    my $name = $level->name;
     syslog('LOG_DEBUG', "OILS: Patron inet_privs = $name");
     return $name;
 }

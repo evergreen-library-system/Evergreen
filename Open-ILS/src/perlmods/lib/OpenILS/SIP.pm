@@ -25,8 +25,6 @@ use OpenSRF::Utils::SettingsClient;
 use OpenILS::Application::AppUtils;
 use OpenSRF::Utils qw/:datetime/;
 use DateTime::Format::ISO8601;
-use Encode;
-use Unicode::Normalize;
 
 my $U = 'OpenILS::Application::AppUtils';
 
@@ -127,48 +125,6 @@ sub make_editor {
     OpenILS::Utils::CStoreEditor::init() if $cstore_init;
     $cstore_init = 0;
     return OpenILS::Utils::CStoreEditor->new;
-}
-
-=head2 clean_text(scalar)
-
-Evergreen uses the UTF8 encoding for everything from the database up. Perl
-doesn't know this, however, so we have to convince it to treat our UTF8 strings
-as UTF8 strings. This may enable OpenNCIP to correctly calculate the checksums
-for UTF8 text for SIP clients that support such modern options.
-
-The target encoding is set in the <encoding> element of the SIPServer.pm
-configuration file.
-
-=cut
-
-sub clean_text {
-    my $text = shift || '';
-
-    # Convert our incoming UTF8 data into Perl's internal string format
-
-    # Also convert to Normalization Form D, as the ASCII, iso-8859-1,
-    # and latin-1 encodings (at least) require this to substitute
-    # characters rather than simply returning a string truncated
-    # after the first non-ASCII character
-    $text = NFD(decode_utf8($text));
-
-    if ($target_encoding eq 'ascii') {
-
-        # Try to maintain a reasonable version of the content by
-        # stripping diacritics from the text, given that the SIP client
-        # wants just plain ASCII. This is the base requirement according
-        # to the SIP2 specification.
-
-        # Stripping the combining characters converts ""béè♁ts"
-        # into "bee?ts" instead of "b???ts" - better, eh?
-        $text =~ s/\pM+//og;
-    }
-
-    # Characters that cannot be represented in the target encoding will
-    # generally be replaced with a question mark (?) character.
-    $text = encode($target_encoding, $text);
-
-    return $text;
 }
 
 my %org_sn_cache;
