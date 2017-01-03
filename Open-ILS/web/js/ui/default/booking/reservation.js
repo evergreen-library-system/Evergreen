@@ -797,6 +797,13 @@ function early_action_passthru() {
         return false;
     }
 
+    var uri = location.href;
+    var query = uri.substring(uri.indexOf("?") + 1, uri.length);
+    var queryObject = dojo.queryToObject(query);
+    if (typeof queryObject['patron_barcode'] != 'undefined') {
+        opts.patron_barcode = queryObject['patron_barcode'];
+    }
+
     if (opts.patron_barcode) {
         document.getElementById("contain_patron_barcode").style.display="none";
         document.getElementById("patron_barcode").value = opts.patron_barcode;
@@ -837,7 +844,11 @@ function my_init() {
 
     setTimeout(
         function() {
-            if (!(opts = xulG.bresv_interface_opts)) opts = {};
+            if (typeof xulG != 'undefined' && typeof xulG.bresv_interface_opts != 'undefined') {
+                opts = xulG.bresv_interface_opts;
+            } else {
+                opts = {};
+            }
             if (early_action_passthru())
                 provide_brt_selector(document.getElementById("brt_selector_here"));
         }, 0

@@ -165,6 +165,21 @@ angular.module('egCoreMod').run(['egStrings', function(s) {
               [% l('Test Password') %]
             </a>
           </li>
+          <li>
+            <a href="./booking/legacy/booking/reservation?patron_barcode={{patron().card().barcode()}}" target="_top">
+              [% l('Booking: Create or Cancel Reservations') %]
+            </a>
+          </li>
+          <li>
+            <a href="./booking/legacy/booking/pickup?patron_barcode={{patron().card().barcode()}}" target="_top">
+              [% l('Booking: Pick Up Reservations') %]
+            </a>
+          </li>
+          <li>
+            <a href="./booking/legacy/booking/return?patron_barcode={{patron().card().barcode()}}" target="_top">
+              [% l('Booking: Return Reservations') %]
+            </a>
+          </li>
        </ul>
       </li>
       <li ng-class="{active : tab == 'search'}" class="pull-right">
