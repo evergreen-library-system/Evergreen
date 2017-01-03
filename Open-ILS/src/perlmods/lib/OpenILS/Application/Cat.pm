@@ -640,14 +640,19 @@ sub retrieve_copies {
         @org_ids = ($user_obj->home_ou);
     }
 
+    # Create an editor that can be shared across all iterations of 
+    # _build_volume_list().  Otherwise, .authoritative calls can result 
+    # in creating too many cstore connections.
+    my $e = new_editor();
+
     if( $self->api_name =~ /global/ ) {
-        return _build_volume_list( { record => $docid, deleted => 'f', label => { '<>' => '##URI##' } } );
+        return _build_volume_list($e, { record => $docid, deleted => 'f', label => { '<>' => '##URI##' } } );
 
     } else {
 
         my @all_vols;
         for my $orgid (@org_ids) {
-            my $vols = _build_volume_list( 
+            my $vols = _build_volume_list($e,
                     { record => $docid, owning_lib => $orgid, deleted => 'f', label => { '<>' => '##URI##' } } );
             push( @all_vols, @$vols );
         }
@@ -660,10 +665,12 @@ sub retrieve_copies {
 
 
 sub _build_volume_list {
+    my $e = shift;
     my $search_hash = shift;
 
+    $e ||= new_editor();
+
     $search_hash->{deleted} = 'f';
-    my $e = new_editor();
 
     my $vols = $e->search_asset_call_number([
         $search_hash,
