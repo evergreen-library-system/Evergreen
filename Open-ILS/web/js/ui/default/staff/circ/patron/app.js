@@ -190,6 +190,12 @@ angular.module('egPatronApp', ['ngRoute', 'ui.bootstrap',
         resolve : resolver
     });
 
+    $routeProvider.when('/circ/patron/:id/message_center', {
+        templateUrl: './circ/patron/t_message_center',
+        controller: 'PatronMessageCenterCtrl',
+        resolve : resolver
+    });
+
     $routeProvider.when('/circ/patron/:id/edit_perms', {
         templateUrl: './circ/patron/t_edit_perms',
         controller: 'PatronPermsCtrl',
@@ -1637,6 +1643,19 @@ function($scope,  $routeParams,  $location , egCore , patronSvc) {
     url += '?patron_id=' + encodeURIComponent($routeParams.id);
 
     $scope.triggered_events_url = url;
+    $scope.funcs = {};
+}])
+
+.controller('PatronMessageCenterCtrl',
+       ['$scope','$routeParams','$location','egCore','patronSvc',
+function($scope,  $routeParams,  $location , egCore , patronSvc) {
+    $scope.initTab('other', $routeParams.id);
+
+    var url = $location.protocol() + '://' + $location.host()
+        + egCore.env.basePath.replace(/\/staff.*/,  '/actor/user/message');
+    url += '/' + encodeURIComponent($routeParams.id);
+
+    $scope.message_center_url = url;
     $scope.funcs = {};
 }])
 

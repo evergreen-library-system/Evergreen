@@ -146,6 +146,11 @@ angular.module('egCoreMod').run(['egStrings', function(s) {
             </a>
           </li>
           <li>
+            <a href="./circ/patron/{{patron().id()}}/message_center">
+              [% l('Message Center') %]
+            </a>
+          </li>
+          <li>
             <a href="./circ/patron/{{patron().id()}}/stat_cats">
               [% l('Statistical Categories') %]
             </a>
