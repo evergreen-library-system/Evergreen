@@ -6,11 +6,11 @@ Evergreen 2.11 Release Notes
 Evergreen 2.11.1
 ----------------
 
-This release contains several bugfixes improving on Evergreen 2.11.0
+This release contains several bug fixes improving on Evergreen 2.11.0
 
 * A fix to that provides alphabetical sorting to the fund selector in
 the Acquisitions Selection List -> Copies interface.
-* A fix to the web client checkin screen allowing users to click the
+* A fix to the web client check in screen allowing users to click the
 title of the checked-in item to retrieve the bib record for that item.
 * The addition of a progress bar that displays when conducting a patron search in the web client.
 * A fix to the web client patron interface so that total Items Out in the
@@ -24,7 +24,7 @@ periods are no longer stripped from resulting subject searches, leading
 to more accurate results when those links are clicked.
 * A fix to avoid unint warnings in the logs for prox_cache in
 open-ils.circ.hold.is_possible.
-* A fix to rounding errors that occured when summing owed/paid totals
+* A fix to rounding errors that occurred when summing owed/paid totals
 for display in the catalog's credit card payment form.
 * A change to sort behavior in the My Account screens. Previously, a 
 third click on a column header returned the list to its original sort
@@ -32,7 +32,7 @@ order. Clicking column headers will now simply toggle the sort
 between ascending and descending order. 
 * The Permalink option on the catalog's record summary page will now be
 hidden in the staff client because clicking the link in the client led
-to no discernable change for users.
+to no discernible change for users.
 * A fix to the display of permanent lists in the catalog, which had broken
 in 2.11.0.
 * A fix to the text of a notice that displays when migrating circulation
@@ -138,7 +138,7 @@ be cleaned up automatically if and when the user performs the activity
 in question.  However, administrators can also force an activity
 cleanup via SQL.  This is useful for ensuring that all old activity
 data is deleted and for controlling when the cleanup occurs, which 
-may be useulf on very large actor.usr_activity tables.
+may be useful on very large actor.usr_activity tables.
 
 To force clean all activity types:
 
@@ -300,16 +300,16 @@ status admin interface.
 Email Checkout Receipts
 ^^^^^^^^^^^^^^^^^^^^^^^
 This feature allows patrons to receive checkout receipts through email
-at the circulation desk and in the Evergreen self-checkout interface.
-Patrons need to opt in to receive email receipts by default and must
-have an email address associated with their account. Opt in can be staff
-mediated at the time of account creation or in existing accounts.
-Patrons can also opt in directly in their OPAC account or through patron
-self-registration. This feature does not affect the behavior of
-checkouts from SIP2 devices.
+at the circulation desk in the web client and in the Evergreen self-checkout
+interface. Patrons need to opt in to receive
+email receipts by default and must have an email address associated with their
+ account. Opt in can be staff mediated at the time of account creation or in
+existing accounts. Patrons can also opt in directly in their OPAC account or
+through patron self-registration. This feature does not affect the behavior of
+checkouts from the XUL client or SIP2 devices.
 
 Patrons can opt in to receive email checkout receipts by default via
-a new _Email checkout reciepts by default_ patron setting.
+a new _Email checkout receipts by default_ patron setting.
 
 This feature also enhances the patron staging tables so that patron
 settings can be chosen during self-registration.
@@ -336,7 +336,7 @@ The _Maximum payment amount allowed_ (ui.circ.billing.amount_limit)
 setting identifies the maximum amount of
 money that can be accepted through the staff client.
 
-These settings only effect the staff client, not credit
+These settings only affect the staff client, not credit
 cards accepted through the OPAC, or direct API calls
 from third party tools.
 
@@ -409,7 +409,7 @@ Popularity Boost for Ranking Search Results
 This feature uses factors such as  circulation and hold activity, record and item age, and item ownership counts to generate popularity badges for bibliographic
 records. Each badge will have a five-point scale, where more points indicates a more popular record.  The average of the badge points earned by each record will constitute a "popularity rating". The number and types of badges will break ties for average popularity, and relevance will sort items with like popularity. 
 
-A new sort axis of popularity is created to sort first on the weighted average popularity of each record, followed by the query-specific relevance available today.  A new option is created in the dropdown called _Most Popular_ that sorts on the combination of "activity metric" (aka badge ranking, aka popularity) first and then the existing, stock relevance ranking when those are equal.  For instance, given two records that both have a badge ranking of "4.5", they sort in the order of the query relevance ranking that is calculated today as a tie breaker.  Those two records will sort above other records with lower badge rankings regardless of what today's relevance ranking says about them.
+A new sort axis of popularity is created to sort first on the weighted average popularity of each record, followed by the query-specific relevance available today.  A new option is created in the drop-down called _Most Popular_ that sorts on the combination of "activity metric" (aka badge ranking, aka popularity) first and then the existing, stock relevance ranking when those are equal.  For instance, given two records that both have a badge ranking of "4.5", they sort in the order of the query relevance ranking that is calculated today as a tie breaker.  Those two records will sort above other records with lower badge rankings regardless of what today's relevance ranking says about them.
 
 In addition, a new sort axis of _Popularity-Adjusted Relevance_ is created that augments the normal Relevance sort with a normalized popularity value by multiplying the base relevance by a value controlled by a new global flag, generally set to a decimal number between 1 and 2.
 
@@ -424,7 +424,7 @@ Badge Configuration
 Administrative interfaces to configure badges are only available in the web
 client. Administrators can also configure badges directly via the database. 	
 
-Available Popluarity Parameters available for badges include:
+Available Popularity Parameters available for badges include:
 
 * Holds Filled Over Time
 * Holds Requested Over Time
@@ -448,7 +448,7 @@ based on the following available filters:
 * Circulation modifier
 * Copy location group
 
-Badges can also be be restricted to materials owned by a specific organiztional
+Badges can also be be restricted to materials owned by a specific organizational
 unit.
 
 This new feature comes with a starter badge based on the top 97th percentile of
@@ -467,7 +467,7 @@ displayed with its rating.
 New Global Flags
 ++++++++++++++++
 * **OPAC Default Sort (opac.default_sort)**: Identifies the default sort method
-to be used in the catlaog.
+to be used in the catalog.
 
 * **Maximum popularity importance multiplier for popularity-adjusted relevance
 searches (search.max_popularity_importance_multiplier):** A multiplier identifying
@@ -531,7 +531,7 @@ Translation Updates
 ^^^^^^^^^^^^^^^^^^^
 Translations in this release have been significantly increased.  In
 particular, Spanish has received a huge update with over 9,000 new
-translations, Czech has received a sizeable update of over 800
+translations, Czech has received a sizable update of over 800
 translations, and additional smaller updates have been added for
 Arabic, French (Canada), and Armenian.
 
@@ -579,7 +579,7 @@ patches:
  * Equinox Software, Inc.
  * Emerald Data Networks, Inc.
  * Evergreen Indiana
- * Georgia Public Library Serivce
+ * Georgia Public Library Service
  * King County Library System
  * Knihovna Jabok
  * Laurentian University
@@ -588,7 +588,7 @@ patches:
  * North of Boston Library Exchange
  * Traverse Area District Library
 
-We regret any omissions.  If a contributor has been inadvertantly
+We regret any omissions.  If a contributor has been inadvertently
 missed, please open a bug at http://bugs.launchpad.net/evergreen/
 with a correction.
 
