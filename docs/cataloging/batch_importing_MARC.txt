@@ -319,7 +319,16 @@ be uploaded to a queue.
 +
 image::media/marc_batch_import_acq_overlay.png[Batch Importing MARC Records]
 
-. The screen will display records that have been uploaded to your queue.
+. The screen will display records that have been uploaded to your queue. Above
+the table there are three sections:
+  * *Queue Actions* lists common actions for this queue. _Export Non-Imported
+Records_ will export a MARC file of records that failed to import, allowing
+those records to be edited as needed and imported separately. (Those
+records can be viewed by clicking the _Limit to Non-Imported Records_
+filter.)
+  * *Queue Summary* shows a brief summary of the records included in the queue.
+  * *Queue Filters* provides options for limiting which records display in the
+table.
 +
 image::media/Batch_Importing_MARC_Records15.jpg[Batch_Importing_MARC_Records15]
 
