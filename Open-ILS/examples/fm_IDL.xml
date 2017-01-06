@@ -2490,6 +2490,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Thesauri" name="thesauri" reporter:datatype="link" oils_persist:virtual="true"/>
 			<field reporter:label="Browse Axis Maps" name="axis_maps" reporter:datatype="link" oils_persist:virtual="true"/>
 			<field reporter:label="Joiner" name="joiner" reporter:datatype="text" />
+			<field reporter:label="Heading Field" name="heading_field" reporter:datatype="link" />
 		</fields>
 		<links>
 			<link field="axis_maps" reltype="has_many" key="field" map="" class="abaafm"/>
@@ -2498,6 +2499,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="thesauri" reltype="has_many" key="control_set" map="" class="at"/>
 			<link field="main_entry" reltype="has_a" key="id" map="" class="acsaf"/>
 			<link field="sub_entries" reltype="has_many" key="main_entry" map="" class="acsaf"/>
+			<link field="heading" reltype="has_a" key="id" map="" class="ahf"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
@@ -2686,6 +2688,31 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="atag" reltype="has_a" key="id" map="" class="acsaf"/>
 		</links>
 	</class>
+
+	<class id="ahf" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="authority::heading_field" oils_persist:tablename="authority.heading_field" reporter:label="Authority Heading Fields">
+		<fields oils_persist:primary="id" oils_persist:sequence="authority.heading_fields_id_seq">
+			<field name="id" reporter:datatype="id" />
+			<field name="heading_type" reporter:datatype="text" reporter:label="Heading Type" />
+			<field name="heading_purpose" reporter:datatype="text" reporter:label="Heading Purpose" />
+			<field name="label" reporter:datatype="text" reporter:label="Heading Field Label" />
+			<field name="format" reporter:datatype="text" reporter:label="Heading XSLT Format" />
+			<field name="heading_xpath" reporter:datatype="text" reporter:label="Heading XPath" />
+			<field name="component_xpath" reporter:datatype="text" reporter:label="Heading Component XPath" />
+			<field name="type_xpath" reporter:datatype="text" reporter:label="Related/Variant Type XPath" />
+			<field name="thesaurus_xpath" reporter:datatype="text" reporter:label="Thesaurus XPath" />
+			<field name="thesaurus_override_xpath" reporter:datatype="text" reporter:label="Thesaurus Override XPath" />
+			<field name="joiner" reporter:datatype="text" reporter:label="Joiner string" />
+		</fields>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="CREATE_AUTHORITY_CONTROL_SET" global_required="true"/>
+				<retrieve/>
+				<update permission="UPDATE_AUTHORITY_CONTROL_SET" global_required="true"/>
+				<delete permission="UPDATE_AUTHORITY_CONTROL_SET" global_required="true"/>
+			</actions>
+		</permacrud>
+	</class>
+
 	<class id="clm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::language_map" oils_persist:tablename="config.language_map" reporter:label="Language Map" oils_persist:field_safe="true">
 		<fields oils_persist:primary="code" oils_persist:sequence="">
 			<field reporter:label="Language Code" name="code" reporter:selector="value" reporter:datatype="text"/>

@@ -1074,3 +1074,199 @@ INSERT INTO authority.record_entry(marc, last_xact_id) VALUES ($$<marcxml:record
       <marcxml:subfield code="a">Puppies</marcxml:subfield>
     </marcxml:datafield>
 	  </marcxml:record>$$, :xact_id);
+INSERT INTO authority.record_entry(marc, last_xact_id) VALUES ($$<marcxml:record xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:marcxml="http://www.loc.gov/MARC21/slim" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:madsrdf="http://www.loc.gov/mads/rdf/v1#" xmlns:ri="http://id.loc.gov/ontologies/RecordInfo#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mets="http://www.loc.gov/METS/">
+  <marcxml:leader>04524cz  a2200769n  4500</marcxml:leader>
+  <marcxml:controlfield tag="001">sh85082617</marcxml:controlfield>
+  <marcxml:controlfield tag="003">DLC</marcxml:controlfield>
+  <marcxml:controlfield tag="005">20151028130522.2</marcxml:controlfield>
+  <marcxml:controlfield tag="008">860211|| anannbabn          |a ana      </marcxml:controlfield>
+  <marcxml:datafield tag="010" ind1=" " ind2=" ">
+    <marcxml:subfield code="a">sh 85082617 </marcxml:subfield>
+  </marcxml:datafield>
+  <marcxml:datafield tag="034" ind1=" " ind2=" ">
+    <marcxml:subfield code="d">W1510027</marcxml:subfield>
+    <marcxml:subfield code="e">W1510027</marcxml:subfield>
+    <marcxml:subfield code="f">N0630410</marcxml:subfield>
+    <marcxml:subfield code="g">N0630410</marcxml:subfield>
+    <marcxml:subfield code="2">geonames</marcxml:subfield>
+  </marcxml:datafield>
+  <marcxml:datafield tag="040" ind1=" " ind2=" ">
+    <marcxml:subfield code="a">DLC</marcxml:subfield>
+    <marcxml:subfield code="c">DLC</marcxml:subfield>
+    <marcxml:subfield code="d">DLC</marcxml:subfield>
+  </marcxml:datafield>
+  <marcxml:datafield tag="151" ind1=" " ind2=" ">
+    <marcxml:subfield code="a">Denali, Mount (Alaska)</marcxml:subfield>
+  </marcxml:datafield>
+  <marcxml:datafield tag="451" ind1=" " ind2=" ">
+    <marcxml:subfield code="a">Bolshoy Mountain (Alaska)</marcxml:subfield>
+  </marcxml:datafield>
+  <marcxml:datafield tag="451" ind1=" " ind2=" ">
+    <marcxml:subfield code="a">Bulshaia Gora (Alaska)</marcxml:subfield>
+  </marcxml:datafield>
+  <marcxml:datafield tag="451" ind1=" " ind2=" ">
+    <marcxml:subfield code="a">Bulshaya Gora (Alaska)</marcxml:subfield>
+  </marcxml:datafield>
+  <marcxml:datafield tag="451" ind1=" " ind2=" ">
+    <marcxml:subfield code="a">Bulshoe (Alaska)</marcxml:subfield>
+  </marcxml:datafield>
+  <marcxml:datafield tag="451" ind1=" " ind2=" ">
+    <marcxml:subfield code="a">Churchill Peaks (Alaska)</marcxml:subfield>
+  </marcxml:datafield>
+  <marcxml:datafield tag="451" ind1=" " ind2=" ">
+    <marcxml:subfield code="a">Deenaalee Mountain (Alaska)</marcxml:subfield>
+  </marcxml:datafield>
+  <marcxml:datafield tag="451" ind1=" " ind2=" ">
+    <marcxml:subfield code="a">Deenadhee (Alaska)</marcxml:subfield>
+  </marcxml:datafield>
+  <marcxml:datafield tag="451" ind1=" " ind2=" ">
+    <marcxml:subfield code="a">Deenadheet (Alaska)</marcxml:subfield>
+  </marcxml:datafield>
+  <marcxml:datafield tag="451" ind1=" " ind2=" ">
+    <marcxml:subfield code="a">Deenalee (Alaska)</marcxml:subfield>
+  </marcxml:datafield>
+  <marcxml:datafield tag="451" ind1=" " ind2=" ">
+    <marcxml:subfield code="a">Deghilaay Ce'e (Alaska)</marcxml:subfield>
+  </marcxml:datafield>
+  <marcxml:datafield tag="451" ind1=" " ind2=" ">
+    <marcxml:subfield code="a">Deghilaay Ke'e (Alaska)</marcxml:subfield>
+  </marcxml:datafield>
+  <marcxml:datafield tag="451" ind1=" " ind2=" ">
+    <marcxml:subfield code="a">Delaykah (Alaska)</marcxml:subfield>
+  </marcxml:datafield>
+  <marcxml:datafield tag="451" ind1=" " ind2=" ">
+    <marcxml:subfield code="a">Denadhe (Alaska)</marcxml:subfield>
+  </marcxml:datafield>
+  <marcxml:datafield tag="451" ind1=" " ind2=" ">
+    <marcxml:subfield code="a">Denagadh (Alaska)</marcxml:subfield>
+  </marcxml:datafield>
+  <marcxml:datafield tag="451" ind1=" " ind2=" ">
+    <marcxml:subfield code="a">Denaze (Alaska)</marcxml:subfield>
+  </marcxml:datafield>
+  <marcxml:datafield tag="451" ind1=" " ind2=" ">
+    <marcxml:subfield code="a">Dengadh (Alaska)</marcxml:subfield>
+  </marcxml:datafield>
+  <marcxml:datafield tag="451" ind1=" " ind2=" ">
+    <marcxml:subfield code="a">Dengadhe (Alaska)</marcxml:subfield>
+  </marcxml:datafield>
+  <marcxml:datafield tag="451" ind1=" " ind2=" ">
+    <marcxml:subfield code="a">Dengadhi (Alaska)</marcxml:subfield>
+  </marcxml:datafield>
+  <marcxml:datafield tag="451" ind1=" " ind2=" ">
+    <marcxml:subfield code="a">Dengadhiy (Alaska)</marcxml:subfield>
+  </marcxml:datafield>
+  <marcxml:datafield tag="451" ind1=" " ind2=" ">
+    <marcxml:subfield code="a">Densmore's Mountain (Alaska)</marcxml:subfield>
+  </marcxml:datafield>
+  <marcxml:datafield tag="451" ind1=" " ind2=" ">
+    <marcxml:subfield code="a">Densmores Peak (Alaska)</marcxml:subfield>
+  </marcxml:datafield>
+  <marcxml:datafield tag="451" ind1=" " ind2=" ">
+    <marcxml:subfield code="a">Dghelaay Ce'e (Alaska)</marcxml:subfield>
+  </marcxml:datafield>
+  <marcxml:datafield tag="451" ind1=" " ind2=" ">
+    <marcxml:subfield code="a">Dghelaay Ke'e (Alaska)</marcxml:subfield>
+  </marcxml:datafield>
+  <marcxml:datafield tag="451" ind1=" " ind2=" ">
+    <marcxml:subfield code="a">Dghelay Ka'a (Alaska)</marcxml:subfield>
+  </marcxml:datafield>
+  <marcxml:datafield tag="451" ind1=" " ind2=" ">
+    <marcxml:subfield code="a">Dghili Ka'a (Alaska)</marcxml:subfield>
+  </marcxml:datafield>
+  <marcxml:datafield tag="451" ind1=" " ind2=" ">
+    <marcxml:subfield code="a">Diinaadhi (Alaska)</marcxml:subfield>
+  </marcxml:datafield>
+  <marcxml:datafield tag="451" ind1=" " ind2=" ">
+    <marcxml:subfield code="a">Diinaadhii (Alaska)</marcxml:subfield>
+  </marcxml:datafield>
+  <marcxml:datafield tag="451" ind1=" " ind2=" ">
+    <marcxml:subfield code="a">Diinaadhiit (Alaska)</marcxml:subfield>
+  </marcxml:datafield>
+  <marcxml:datafield tag="451" ind1=" " ind2=" ">
+    <marcxml:subfield code="a">Diinaalii (Alaska)</marcxml:subfield>
+  </marcxml:datafield>
+  <marcxml:datafield tag="451" ind1=" " ind2=" ">
+    <marcxml:subfield code="a">Diinaazii (Alaska)</marcxml:subfield>
+  </marcxml:datafield>
+  <marcxml:datafield tag="451" ind1=" " ind2=" ">
+    <marcxml:subfield code="a">Diineezi (Alaska)</marcxml:subfield>
+  </marcxml:datafield>
+  <marcxml:datafield tag="451" ind1=" " ind2=" ">
+    <marcxml:subfield code="a">Din-al-ee (Alaska : Mount Denali)</marcxml:subfield>
+  </marcxml:datafield>
+  <marcxml:datafield tag="451" ind1=" " ind2=" ">
+    <marcxml:subfield code="a">Din-az-ee (Alaska : Mount Denali)</marcxml:subfield>
+  </marcxml:datafield>
+  <marcxml:datafield tag="451" ind1=" " ind2=" ">
+    <marcxml:subfield code="a">Doleika (Alaska)</marcxml:subfield>
+  </marcxml:datafield>
+  <marcxml:datafield tag="451" ind1=" " ind2=" ">
+    <marcxml:subfield code="a">Doleyka (Alaska)</marcxml:subfield>
+  </marcxml:datafield>
+  <marcxml:datafield tag="451" ind1=" " ind2=" ">
+    <marcxml:subfield code="w">nne</marcxml:subfield>
+    <marcxml:subfield code="a">McKinley, Mount (Alaska)</marcxml:subfield>
+  </marcxml:datafield>
+  <marcxml:datafield tag="451" ind1=" " ind2=" ">
+    <marcxml:subfield code="a">Mount Denali (Alaska)</marcxml:subfield>
+  </marcxml:datafield>
+  <marcxml:datafield tag="451" ind1=" " ind2=" ">
+    <marcxml:subfield code="a">Mount Doleika (Alaska)</marcxml:subfield>
+  </marcxml:datafield>
+  <marcxml:datafield tag="451" ind1=" " ind2=" ">
+    <marcxml:subfield code="a">Mount McKinley (Alaska)</marcxml:subfield>
+  </marcxml:datafield>
+  <marcxml:datafield tag="451" ind1=" " ind2=" ">
+    <marcxml:subfield code="a">North Peak (Alaska : Mount Denali)</marcxml:subfield>
+  </marcxml:datafield>
+  <marcxml:datafield tag="451" ind1=" " ind2=" ">
+    <marcxml:subfield code="a">South Peak (Alaska : Mount Denali)</marcxml:subfield>
+  </marcxml:datafield>
+  <marcxml:datafield tag="451" ind1=" " ind2=" ">
+    <marcxml:subfield code="a">Tenada (Alaska)</marcxml:subfield>
+  </marcxml:datafield>
+  <marcxml:datafield tag="451" ind1=" " ind2=" ">
+    <marcxml:subfield code="a">Tenda (Alaska)</marcxml:subfield>
+  </marcxml:datafield>
+  <marcxml:datafield tag="451" ind1=" " ind2=" ">
+    <marcxml:subfield code="a">Tennaly (Alaska)</marcxml:subfield>
+  </marcxml:datafield>
+  <marcxml:datafield tag="451" ind1=" " ind2=" ">
+    <marcxml:subfield code="a">To-lah-gah (Alaska)</marcxml:subfield>
+  </marcxml:datafield>
+  <marcxml:datafield tag="451" ind1=" " ind2=" ">
+    <marcxml:subfield code="a">Traleika (Alaska : Mount Denali)</marcxml:subfield>
+  </marcxml:datafield>
+  <marcxml:datafield tag="451" ind1=" " ind2=" ">
+    <marcxml:subfield code="a">Traleyka (Alaska)</marcxml:subfield>
+  </marcxml:datafield>
+  <marcxml:datafield tag="551" ind1=" " ind2=" ">
+    <marcxml:subfield code="w">g</marcxml:subfield>
+    <marcxml:subfield code="a">Alaska Range (Alaska)</marcxml:subfield>
+  </marcxml:datafield>
+  <marcxml:datafield tag="550" ind1=" " ind2=" ">
+    <marcxml:subfield code="w">g</marcxml:subfield>
+    <marcxml:subfield code="a">Mountains</marcxml:subfield>
+    <marcxml:subfield code="z">Alaska</marcxml:subfield>
+  </marcxml:datafield>
+  <marcxml:datafield tag="670" ind1=" " ind2=" ">
+    <marcxml:subfield code="a">GeoNames [algorithmically matched]</marcxml:subfield>
+    <marcxml:subfield code="b">summit; 63°04ʹ10ʺN 151°00ʹ27ʺW</marcxml:subfield>
+  </marcxml:datafield>
+  <marcxml:datafield tag="670" ind1=" " ind2=" ">
+    <marcxml:subfield code="a">GNIS, Aug. 31, 2015:</marcxml:subfield>
+    <marcxml:subfield code="b">(Denali; summit in Denali County, Alaska; variant names: Bolshoy; Bulshaia Gora; Bulshaya Gora; Bulshoe; Churchill Peaks; Deenaalee; Deenadhee; Deenadheet; Deenalee; Deghilaay Ce'e; Deghilaay Ke'e; Delaykah; Denadhe; Denagadh; Denaze; Dengadh; Dengadhe; Dengadhi; Dengadhiy; Densmore's Mountain; Densmores Peak; Dghelaay Ce'e; Dghelaay Ke'e; Dghelay Ka'a; Dghili Ka'a; Diinaadhi; Diinaadhii; Diinaadhiit; Diinaalii; Diinaazii; Diineezi; Din-al-ee; Din-az-ee; Doleika; Doleyka; Mount Denali; Mount Doleika; Mount McKinley; North Peak; North Peak Mount McKinley; South Peak; South Peak Mount McKinley; Tenada; Tenda; Tennaly; To-lah-gah; Traleika; Traleyka; Denali also name of ppl and several other jurisdictions in Alaska; Bolshoy also name of several islands; Deenaalee also name of lake; Din-al-ee and Din-az-ee also variant names for Mount Foraker in Denali County; Traleika also name of summit in "Alaska Range near Mount McKinley" [no county listed]; North Peak and South Peak also names for other summits in other counties in Alaska)</marcxml:subfield>
+  </marcxml:datafield>
+  <marcxml:datafield tag="670" ind1=" " ind2=" ">
+    <marcxml:subfield code="a">Washington Post online, Aug. 31, 2015:</marcxml:subfield>
+    <marcxml:subfield code="b">(article: Obama will rename the highest U.S. peak, dropping McKinley for Denali; President Obama in Anchorage on Monday will announce the renaming of Mount McKinley, honoring the 25th president, to Mount Denali, an Athabascan name used by generations of Alaska Natives that means "the great one.")</marcxml:subfield>
+  </marcxml:datafield>
+  <marcxml:datafield tag="670" ind1=" " ind2=" ">
+    <marcxml:subfield code="a">Columbia gazetteer online, Aug. 31, 2015:</marcxml:subfield>
+    <marcxml:subfield code="b">(McKinley, Mount or Denali (=the great one), mountain (20,320 ft/6,194 m), S central Alaska, in the Alaska Range; 63°04ʹN 151°00ʹW. Highest point in North America. McKinley features two main peaks: the higher is South Peak (20,320 ft/6,194 m) and North Peak (19,470 ft/5,934 m); the two together have sometimes been known as the Churchhill Peaks. Other notable peaks on the mountain are South Buttress (15,885 ft/4,842 m), East Buttress (14,730 ft/4,490 m), and Browne Tower (14,530 ft/4,429m). Permanent snowfields cover more than half the mountain and feed numerous glaciers. Mount McKinley was first scaled successfully by the American explorer Hudson Stuck in 1913. It is included in Denali National Park and Preserve.)</marcxml:subfield>
+  </marcxml:datafield>
+  <marcxml:datafield tag="781" ind1=" " ind2="0">
+    <marcxml:subfield code="z">Alaska</marcxml:subfield>
+    <marcxml:subfield code="z">Denali, Mount</marcxml:subfield>
+  </marcxml:datafield>
+</marcxml:record>$$, :xact_id);
