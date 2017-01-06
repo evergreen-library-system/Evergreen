@@ -136,11 +136,11 @@
           <span><a href="[% CGI.param('redirect_to') || CGI.referer | html %]">[% l('Continue') %]</a></span>
            [% IF ctx.is_staff %]
              [% IF CGI.param('hold_type') == 'C';
-                  hold_type_label = 'copy';
+                  hold_type_label = l('copy');
                 ELSIF CGI.param('hold_type') == 'V';
-                  hold_type_label = 'volume';
+                  hold_type_label = l('volume');
                 ELSE;
-                  hold_type_label = 'title';
+                  hold_type_label = l('title');
               END %]
                <span><a href="[% mkurl(ctx.opac_root _ '/place_hold', {hold_source_page => CGI.param('hold_source_page'), bre_id => CGI.param('bre_id')}) %]">
                [% l('Place another hold for this ') %] [% hold_type_label %]</a>
