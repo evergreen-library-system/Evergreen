@@ -30,6 +30,12 @@ BEGIN;
 -- load RDA bibs
 \i bibs_rda.sql
 
+-- load LC authorities
+\i auth_lc.sql
+
+-- load MeSH authorities
+\i auth_mesh.sql
+
 -- insert all loaded bibs into the biblio.record_entry in insert order
 INSERT INTO biblio.record_entry (marc, last_xact_id) 
     SELECT marc, tag FROM marcxml_import ORDER BY id;
