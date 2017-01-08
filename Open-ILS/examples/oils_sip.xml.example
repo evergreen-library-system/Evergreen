@@ -53,21 +53,21 @@
 				timeout="600" 
 				retries="3"/>
 	
+			<!-- The default encoding defined in the SIP specification is -->
+			<!-- ASCII, which isn't great for French, Spanish, Armenian. -->
+			<!-- You can specify a different encoding here, based on the -->
+			<!-- encodings supported by your SIP client and your Encode -->
+			<!-- module; run the following command to get a list of supported -->
+			<!-- encodings: -->
+			<!--   perl -MEncode -le "print for Encode->encodings(':all')" -->
+
+			<!-- UTF-8 is the recommended encoding if your SIP client supports it -->
+			<encoding>ascii</encoding>
+
 			<!-- implementation specific config options go here -->
 			<implementation_config>
 				<bootstrap>SYSCONFDIR/opensrf_core.xml</bootstrap>
 				<currency>USD</currency>
-
-				<!-- The default encoding defined in the SIP specification is -->
-				<!-- ASCII, which isn't great for French, Spanish, Armenian. -->
-				<!-- You can specify a different encoding here, based on the -->
-				<!-- encodings supported by your SIP client and your Encode -->
-				<!-- module; run the following command to get a list of supported -->
-				<!-- encodings: -->
-				<!--   perl -MEncode -le "print for Encode->encodings(':all')" -->
-
-				<!-- UTF-8 is the recommended encoding if your SIP client supports it -->
-				<encoding>ascii</encoding>
 
 				<!-- These defines what this SIP code has the ability to support -->
 				<supports>
