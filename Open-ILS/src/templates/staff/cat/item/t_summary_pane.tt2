@@ -127,8 +127,8 @@
     <div class="flex-cell">[% l('Holdable') %]</div>
     <div class="flex-cell well">{{copy.opac_visible()}}</div>
 
-    <div class="flex-cell">[% l('Renewal Workstation') %]</div>
-    <div class="flex-cell well">{{circ_summary.last_renewal_workstation()}}</div>
+    <div class="flex-cell">[% l('In-House Uses') %]</div>
+    <div class="flex-cell well">{{copy._inHouseUseCount}}</div>
 
     <div class="flex-cell">[% l('Checkin Time') %]</div>
     <div class="flex-cell well">
@@ -143,6 +143,9 @@
 
     <div class="flex-cell">[% l('Circulate') %]</div>
     <div class="flex-cell well">{{copy.circulate()}}</div>
+
+    <div class="flex-cell">[% l('Renewal Workstation') %]</div>
+    <div class="flex-cell well">{{circ_summary.last_renewal_workstation()}}</div>
 
     <div class="flex-cell">[% l('Remaining Renewals') %]</div>
     <div class="flex-cell well">{{circ.renewal_remaining()}}</div>

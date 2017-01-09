@@ -90,6 +90,13 @@ function(egCore) {
             function(copy) {
 
                 var flatCopy;
+
+                egCore.pcrud.search('aihu', 
+                    {item : copy.id()}, {}, {idlist : true, atomic : true})
+                .then(function(uses) { 
+                    copy._inHouseUseCount = uses.length;
+                });
+
                 if (noListDupes) {
                     // use the existing copy if possible
                     flatCopy = service.copies.filter(
