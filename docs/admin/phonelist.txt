@@ -5,7 +5,7 @@ PhoneList.pm is a mod_perl module for Apache that works with Evergreen
 to generate callings lists for patron holds or overdues. It outputs a csv file
 that can be fed into an auto-dialer script to call patrons with little
 or no staff intervention.  It is accessed and configured via a special
-URL and passing any parameters as a ``Query String'' on the URL.  The
+URL and passing any parameters as a `Query String` on the URL.  The
 parameters are listed in the table below.
 
 .Parameters for the phonelist program:
@@ -24,10 +24,10 @@ The URL is
 
 A couple of examples follow:
 
-`https://your.evergreen-server.tld/phonelist?user=circuser&passwd=password&skipemail
+`https://your.evergreen-server.tld/phonelist?user=circuser&passwd=password&skipemail`
 
 The above example would sign in as user circuser with password of
-``password'' and get a list of patrons with holds to call who do not
+`password` and get a list of patrons with holds to call who do not
 have email notification turned on. It would run at whatever branch is
 normally associated with circuser. 
 
@@ -41,7 +41,7 @@ conventional HTTP authentication parameters.
 
 `https://user:password@your.evergreen-server.tld/phonelist?overdue&ws_ou=2`
 
-The above logs in as ``user'' with ``password'' and runs overdues for location ID 2.
+The above logs in as `user` with `password` and runs overdues for location ID 2.
 
 The following sections provide more information on getting what you want in your output.
 
@@ -52,10 +52,10 @@ If you are not familiar with HTTP/URL query strings, the format is
 quite simple.
 
 You add parameters to the end of the URL, the first parameter is
-separated from the URL page with a question mark (``?'') character. If
+separated from the URL page with a question mark (`?`) character. If
 the parameter is to be given an extra value, then that value follows
-the parameter name after an equals sign (``=''). Subsequent parameters
-are separated from the previous parameter by an ampersand (``&'').
+the parameter name after an equals sign (`=`). Subsequent parameters
+are separated from the previous parameter by an ampersand (`&`).
 
 Here is an example with 1 parameter that has no value:
 
@@ -99,7 +99,7 @@ afternoon and there was no new information to gather.
 The program does indicate that it has already looked at a particular
 hold or overdue and will skip it on later runs. This prevents
 duplicates to the same patron in the same run. It will, however,
-create a ``duplicate'' for the same patron if a different copy is put
+create a `duplicate` for the same patron if a different copy is put
 on hold for that patron in between two runs.
 
 The specific content of the CSV file will vary if you are looking at
