@@ -174,7 +174,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td colspan='0'>
+                                    <td colspan='8'>
                                         <span name="liid"># </span> | 
                                         <span name="li_existing_count">0</span> 
                                         <span name="catalog" class='hidden'> | <a title='[% l('Show In Catalog') %]' name="catalog_link" href="javascript:void(0);">[% l('&#x279F; catalog') %]</a></span> 
@@ -223,7 +223,7 @@
                     <td><input type='text' size='8' name='price'/></td>
                 </tr>
                 <tr id='acq-inline-copies-row' class='acq-inline-copies-row'>
-                    <td colspan='0'>
+                    <td colspan='8'>
                         <table class='acq-li-inline-copies-table'>
                             <thead>
                                 <tr>
