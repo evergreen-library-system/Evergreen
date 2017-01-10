@@ -3158,7 +3158,7 @@ function AcqLiTable() {
         }
         var path = oilsBasePath + '/acq/invoice/view?create=1';
         dojo.forEach(liIds, function(li, idx) { path += '&attach_li=' + li });
-        if (openils.XUL.isXUL())
+        if (openils.XUL.isXUL() && !window.IAMBROWSER)
             openils.XUL.newTabEasy(path, localeStrings.NEW_INVOICE, null, true);
         else
             location.href = path;

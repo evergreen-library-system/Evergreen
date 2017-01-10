@@ -11,7 +11,7 @@ function InvoiceLinkDialogManager(which, target) {
             var join = (idx == 0) ? '?' : '&';
             path += join + "attach_" + self.which + "=" + id;
         });
-        if (openils.XUL.isXUL()) {
+        if (openils.XUL.isXUL() && !window.IAMBROWSER) {
             openils.XUL.newTabEasy(
                 path,
                 /* tab title */ dojo.string.substitute(

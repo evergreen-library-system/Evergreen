@@ -275,7 +275,7 @@ function performSearch(pageDir, clearFirst) {
 
     var searchObject = termManager.buildSearchObject();
 
-    if (openils.XUL.isXUL()) {
+    if (openils.XUL.isXUL() && !window.IAMBROWSER) {
 
         cookieSvc.setCookieString(cookieUriSSL, null, 
             "invs=" + base64Encode(searchObject) + ';max-age=2592000', null);
@@ -373,7 +373,7 @@ function renderUnifiedSearch() {
 
         var searchObject, searchConjunction;
 
-        if (openils.XUL.isXUL()) {
+        if (openils.XUL.isXUL() && !window.IAMBROWSER) {
     
             if (!cookieSvc) {
 
