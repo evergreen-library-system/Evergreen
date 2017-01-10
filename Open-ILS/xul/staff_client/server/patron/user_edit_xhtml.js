@@ -360,7 +360,7 @@ function display_perm (root,perm_def,staff_perms, r) {
 
 
     var dis = false;
-    if ((up && up.id() < 0) || !sp || !sp.grantable()) dis = true; 
+    if ((up && up.id() < 0) || !sp || !Number(sp.grantable())) dis = true; 
     if (all) dis = false; 
 
     var label_cell = findNodeByName(prow,'plabel');
@@ -391,7 +391,9 @@ function display_perm (root,perm_def,staff_perms, r) {
     
     var grant_cell = findNodeByName(prow,'pgrant');
     findNodeByName(grant_cell,'p.grantable').disabled = dis;
-    findNodeByName(grant_cell,'p.grantable').checked = up ? (up.grantable() ? true : false) : false;
+    findNodeByName(grant_cell,'p.grantable').checked = 
+        up ? (Number(up.grantable()) ? true : false) : false;
+
     if (r % 2) grant_cell.className += ' odd';
 
 }
