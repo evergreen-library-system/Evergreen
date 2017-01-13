@@ -54,6 +54,11 @@
             <li role="menuitem">
                 <a ng-click="clearRecordMarks()">[% l('Reset Record Marks') %]</a>
             </li>
+            <li role="menuitem">
+                <a ng-click="mark_hold_transfer_dest()">
+                   [% l('Mark as Title Hold Transfer Destination') %]
+                </a>
+            </li>
         </ul>
     </div>
   </div>
