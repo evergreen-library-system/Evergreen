@@ -536,6 +536,8 @@ Use this section for understanding the circulation procedures in the Evergreen s
 // Push titles down one level.
 :leveloffset: 1
 
+include::circulation/circulating_items_web_client.txt[]
+
 include::circulation/circulation_patron_records_web_client.txt[]
 
 // Return to normal title levels.
