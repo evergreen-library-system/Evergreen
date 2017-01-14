@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <acsconfig xmlns="http://openncip.org/acs-config/1.0/">
 
 	<error-detect enabled="true" />
