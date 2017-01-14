@@ -49,6 +49,7 @@ webcore-install:
 	rm -f $(DESTDIR)$(reportsdir)/fm_IDL.xml
 	cp $(DESTDIR)@sysconfdir@/fm_IDL.xml $(DESTDIR)$(WEBDIR)/reports/
 	cp -r @top_srcdir@/Open-ILS/web/. $(DESTDIR)$(WEBDIR)
+	rm -f $(DESTDIR)$(WEBDIR)/Makefile*
 	cp @top_srcdir@/Open-ILS/xsl/*.xsl $(opacextrasdir)
 	cp @top_srcdir@/Open-ILS/xsl/*.xsl $(DESTDIR)$(XSLDIR)
 
