@@ -496,9 +496,9 @@ sub load_rresults {
         my $stat = 0;
         if ($is_meta) {
             # if the MR has a single constituent record, it will
-            # be in array position 2 of the result blob.
+            # be in array position 4 of the result blob.
             # otherwise, we don't want to redirect anyway.
-            my $bre_id = $results->{ids}->[0]->[2];
+            my $bre_id = $results->{ids}->[0]->[4];
             $stat = $self->check_1hit_redirect([$bre_id]) if $bre_id;
         } else {
             my $stat = $self->check_1hit_redirect($rec_ids);
