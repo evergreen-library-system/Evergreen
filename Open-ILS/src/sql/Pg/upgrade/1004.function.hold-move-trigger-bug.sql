@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('1004', :eg_version); 
+
 CREATE OR REPLACE FUNCTION reporter.hold_request_record_mapper () RETURNS TRIGGER AS $$
 BEGIN
     IF TG_OP = 'INSERT' THEN
