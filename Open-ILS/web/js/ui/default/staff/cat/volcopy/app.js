@@ -328,7 +328,7 @@ function(egCore , $q) {
                     '<div class="label label-danger" ng-if="duplicate_barcode">{{duplicate_barcode_string}}</div>'+
                     '<div class="label label-danger" ng-if="empty_barcode">{{empty_barcode_string}}</div>'+
                 '</div>'+
-                '<div class="col-xs-3"><input class="form-control" type="number" ng-model="copy_number" ng-change="updateCopyNo()"/></div>'+
+                '<div class="col-xs-3"><input class="form-control" type="number" min="1" ng-model="copy_number" ng-change="updateCopyNo()"/></div>'+
                 '<div class="col-xs-4"><eg-basic-combo-box eg-disabled="record == 0" list="parts" selected="part"></eg-basic-combo-box></div>'+
             '</div>',
 
