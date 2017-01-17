@@ -232,6 +232,7 @@ CREATE INDEX aged_circ_copy_circ_lib_idx ON "action".aged_circulation (copy_circ
 CREATE INDEX aged_circ_copy_owning_lib_idx ON "action".aged_circulation (copy_owning_lib);
 CREATE INDEX aged_circ_copy_location_idx ON "action".aged_circulation (copy_location);
 CREATE INDEX action_aged_circulation_target_copy_idx ON action.aged_circulation (target_copy);
+CREATE INDEX action_aged_circulation_parent_circ_idx ON action.aged_circulation (parent_circ);
 
 CREATE OR REPLACE VIEW action.all_circulation AS
     SELECT  id,usr_post_code, usr_home_ou, usr_profile, usr_birth_year, copy_call_number, copy_location,
