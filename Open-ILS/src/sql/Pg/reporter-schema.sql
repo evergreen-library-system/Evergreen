@@ -284,7 +284,7 @@ CREATE INDEX reporter_hold_request_record_bib_record_idx ON reporter.hold_reques
 
 ALTER TABLE reporter.hold_request_record ADD PRIMARY KEY USING INDEX reporter_hold_request_record_pkey_idx;
 
-CREATE FUNCTION reporter.hold_request_record_mapper () RETURNS TRIGGER AS $$
+CREATE OR REPLACE FUNCTION reporter.hold_request_record_mapper () RETURNS TRIGGER AS $$
 BEGIN
     IF TG_OP = 'INSERT' THEN
         INSERT INTO reporter.hold_request_record (id, target, hold_type, bib_record)
@@ -322,7 +322,8 @@ BEGIN
                         THEN (SELECT mr.master_record FROM metabib.metarecord mr WHERE mr.id = NEW.target)
                     WHEN NEW.hold_type = 'P'
                         THEN (SELECT bmp.record FROM biblio.monograph_part bmp WHERE bmp.id = NEW.target)
-                END;
+                END
+         WHERE  id = NEW.id;
     END IF;
     RETURN NEW;
 END;
