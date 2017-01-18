@@ -223,6 +223,9 @@ function($scope , egCore) {
     }
     $scope.setContext('default');
 
+    $scope.setContentType = function(type) { $scope.contentType = type }
+    $scope.setContentType('text/plain');
+
     $scope.useHatchPrinting = function() {
         return egCore.hatch.usePrinting();
     }
@@ -238,33 +241,6 @@ function($scope , egCore) {
         });
         return printer;
     }
-
-    // fetch info on all remote printers
-    egCore.hatch.getPrinters()
-    .then(function(printers) { 
-        $scope.printers = printers;
-
-        var def = $scope.getPrinterByAttr('is-default', true);
-        if (!def && printers.length) def = printers[0];
-
-        if (def) {
-            $scope.defaultPrinter = def;
-            loadPrinterOptions(def.name);
-        }
-    }).then(function() {
-        angular.forEach(
-            ['default','receipt','label','mail','offline'],
-            function(ctx) {
-                egCore.hatch.getPrintConfig(ctx).then(function(conf) {
-                    if (conf) {
-                        $scope.printConfig[ctx] = conf;
-                    } else {
-                        $scope.resetPrinterSettings(ctx);
-                    }
-                });
-            }
-        );
-    });
 
     $scope.resetPrinterSettings = function(context) {
         $scope.printConfig[context] = {
@@ -299,9 +275,6 @@ function($scope , egCore) {
         loadPrinterOptions(name);
     }
 
-    // for testing
-    $scope.setContentType = function(type) { $scope.contentType = type }
-
     $scope.testPrint = function(withDialog) {
         if ($scope.contentType == 'text/plain') {
             egCore.print.print({
@@ -325,7 +298,36 @@ function($scope , egCore) {
         }
     }
 
-    $scope.setContentType('text/plain');
+    // Load startup data....
+    // Don't bother talking to Hatch if it's not there.
+    if (!egCore.hatch.hatchAvailable) return;
+
+    // fetch info on all remote printers
+    egCore.hatch.getPrinters()
+    .then(function(printers) { 
+        $scope.printers = printers;
+
+        var def = $scope.getPrinterByAttr('is-default', true);
+        if (!def && printers.length) def = printers[0];
+
+        if (def) {
+            $scope.defaultPrinter = def;
+            loadPrinterOptions(def.name);
+        }
+    }).then(function() {
+        angular.forEach(
+            ['default','receipt','label','mail','offline'],
+            function(ctx) {
+                egCore.hatch.getPrintConfig(ctx).then(function(conf) {
+                    if (conf) {
+                        $scope.printConfig[ctx] = conf;
+                    } else {
+                        $scope.resetPrinterSettings(ctx);
+                    }
+                });
+            }
+        );
+    });
 
 }])
 
@@ -661,8 +663,10 @@ function($scope , $q , egCore , egConfirmDialog) {
     function refreshKeys() {
         $scope.keys = {local : [], remote : []};
 
-        egCore.hatch.getRemoteKeys().then(
-            function(keys) { $scope.keys.remote = keys.sort() })
+        if (egCore.hatch.hatchAvailable) {
+            egCore.hatch.getRemoteKeys().then(
+                function(keys) { $scope.keys.remote = keys.sort() })
+        }
     
         // local calls are non-async
         $scope.keys.local = egCore.hatch.getLocalKeys();

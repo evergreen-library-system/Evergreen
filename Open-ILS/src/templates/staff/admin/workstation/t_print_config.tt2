@@ -15,19 +15,15 @@
 
   <div class="row"> 
     <div class="col-md-12">
-      <h2>[% l('Remote Printer Settings') %]</h2>
-
-      <div class="alert alert-warning" ng-if="!hatchIsOpen()">
-[% l('Remote printing is not available on this browser.  The settings below will have no effect.') %]
-      </div>
+      <h2>[% l('Hatch Printer Settings') %]</h2>
 
       <div class="alert alert-warning" 
         ng-if="hatchIsOpen() && !useHatchPrinting()">
         <p>
-[% l("Remote printing is not enabled on this browser.  The settings below will have no effect until remote printing is enabled.") %]
+[% l("Hatch printing is not enabled on this browser.  The settings below will have no effect until Hatch printing is enabled.") %]
           <a href="./admin/workstation/hatch" target="_self" 
             title="[% l('Hatch Administration') %]">
-            [% l('Enable Remote Printing.') %]
+            [% l('Enable Hatch Printing.') %]
           </a>
         </p>
       </div>
@@ -59,8 +55,12 @@
       <div class="tab-content">
         <div class="tab-pane active">
 
+          <div class="alert alert-warning" ng-if="!isTestView && !hatchIsOpen()">
+[% l('Hatch is not installed in this browser.  Printing must be configured via the native browser print configuration.') %]
+          </div>
+
           <!-- printer config UI -->
-          <div class="row" ng-hide="isTestView">
+          <div class="row" ng-hide="isTestView || !hatchIsOpen()">
             <div class="col-md-6">
               <div class="input-group">
                 <div class="input-group-btn" uib-dropdown>
@@ -100,7 +100,7 @@
             </div>
           </div><!-- row -->
 
-          <div class="row" ng-hide="isTestView"> 
+          <div class="row" ng-hide="isTestView || !hatchIsOpen()"> 
             <div class="col-md-10">
               <div class="row">
                 <div class="col-md-1"></div>
@@ -351,7 +351,7 @@
             </div><!-- col -->
           </div><!-- row -->
 
-          <div class="row" ng-hide="isTestView">
+          <div class="row" ng-hide="isTestView || !hatchIsOpen()">
             <div class="col-md-12">
               <h3>[% l('Compiled Printer Settings') %]</h3>
               <pre>{{printerConfString()}}</pre>
