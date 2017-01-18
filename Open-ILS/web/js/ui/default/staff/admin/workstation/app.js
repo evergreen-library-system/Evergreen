@@ -38,6 +38,11 @@ angular.module('egWorkstationAdmin',
         resolve : resolver
     });
 
+    $routeProvider.when('/admin/workstation/hatch', {
+        templateUrl: './admin/workstation/t_hatch',
+        controller: 'HatchCtrl',
+        resolve : resolver
+    });
 
     // default page 
     $routeProvider.otherwise({
@@ -165,16 +170,6 @@ function($q , $timeout , $location , egCore , egConfirmDialog) {
        ['$scope','$window','$location','egCore','egConfirmDialog',
 function($scope , $window , $location , egCore , egConfirmDialog) {
 
-    // ---------------------
-    // Hatch Configs
-    $scope.hatchRequired = 
-        egCore.hatch.getLocalItem('eg.hatch.required');
-
-    $scope.updateHatchRequired = function() {
-        egCore.hatch.setLocalItem(
-            'eg.hatch.required', $scope.hatchRequired);
-    }
-
     egCore.hatch.getItem('eg.audio.disable').then(function(val) {
         $scope.disable_sound = val;
     });
@@ -198,7 +193,7 @@ function($scope , $window , $location , egCore , egConfirmDialog) {
         $scope.adv_pane = val;
     });
     $scope.$watch('adv_pane', function(newVal, oldVal) {
-        if (newVal != oldVal) {
+        if (typeof newVal != 'undefined' && newVal != oldVal) {
             egCore.hatch.setItem('eg.search.adv_pane', newVal);
         }
     });
@@ -228,8 +223,12 @@ function($scope , egCore) {
     }
     $scope.setContext('default');
 
-    $scope.hatchNotConnected = function() {
-        return !egCore.hatch.hatchAvailable;
+    $scope.useHatchPrinting = function() {
+        return egCore.hatch.usePrinting();
+    }
+
+    $scope.hatchIsOpen = function() {
+        return egCore.hatch.hatchAvailable;
     }
 
     $scope.getPrinterByAttr = function(attr, value) {
@@ -845,6 +844,35 @@ function($scope , $q , $window , $location , egCore , egAlertDialog , workstatio
             $scope.newWSName = '';
         });
     }
+}])
+
+.controller('HatchCtrl',
+       ['$scope','egCore',
+function($scope , egCore) {
+    var hatch = egCore.hatch;  // convenience
+
+    $scope.hatch_available = hatch.hatchAvailable;
+    $scope.hatch_printing = hatch.usePrinting();
+    $scope.hatch_settings = hatch.useSettings();
+    $scope.hatch_offline  = hatch.useOffline();
+
+    // Apply Hatch settings as changes occur in the UI.
+    
+    $scope.$watch('hatch_printing', function(newval) {
+        if (typeof newval != 'boolean') return;
+        hatch.setLocalItem('eg.hatch.enable.printing', newval);
+    });
+
+    $scope.$watch('hatch_settings', function(newval) {
+        if (typeof newval != 'boolean') return;
+        hatch.setLocalItem('eg.hatch.enable.settings', newval);
+    });
+
+    $scope.$watch('hatch_offline', function(newval) {
+        if (typeof newval != 'boolean') return;
+        hatch.setLocalItem('eg.hatch.enable.offline', newval);
+    });
+
 }])
 
 

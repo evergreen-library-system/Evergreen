@@ -123,8 +123,8 @@
       [% l('Strict Barcode') %]
     </label>
   </div>
-  <div class="pad-horiz" ng-if="using_hatch"></div>
-  <div class="checkbox" ng-if="using_hatch">
+  <div class="pad-horiz" ng-if="using_hatch_printer"></div>
+  <div class="checkbox" ng-if="using_hatch_printer">
     <label>
       <input ng-model="show_print_dialog" type="checkbox"/>
       [% l('Show Print Dialog') %]

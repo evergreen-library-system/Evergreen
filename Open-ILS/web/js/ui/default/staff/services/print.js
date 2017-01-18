@@ -59,7 +59,7 @@ function($q , $window , $timeout , $http , egHatch , egAuth , egIDL , egOrg , eg
     service.print_content = function(args) {
         service.fleshPrintScope(args.scope);
 
-        var promise = egHatch.hatchAvailable ?
+        var promise = egHatch.usePrinting() ?
             service.print_via_hatch(args) :
             service.print_via_browser(args);
 

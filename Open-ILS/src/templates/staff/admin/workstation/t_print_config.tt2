@@ -15,9 +15,21 @@
 
   <div class="row"> 
     <div class="col-md-12">
-      <h2>[% l('Printer Settings for Remote Printing') %]</h2>
-      <div class="alert alert-warning" ng-show="hatchNotConnected()">
-        [% l("Hatch is not connected") %]
+      <h2>[% l('Remote Printer Settings') %]</h2>
+
+      <div class="alert alert-warning" ng-if="!hatchIsOpen()">
+[% l('Remote printing is not available on this browser.  The settings below will have no effect.') %]
+      </div>
+
+      <div class="alert alert-warning" 
+        ng-if="hatchIsOpen() && !useHatchPrinting()">
+        <p>
+[% l("Remote printing is not enabled on this browser.  The settings below will have no effect until remote printing is enabled.") %]
+          <a href="./admin/workstation/hatch" target="_self" 
+            title="[% l('Hatch Administration') %]">
+            [% l('Enable Remote Printing.') %]
+          </a>
+        </p>
       </div>
     </div>
   </div>

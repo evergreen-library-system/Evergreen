@@ -41,7 +41,7 @@ function($scope , $q , $window , $location , egCore , checkinSvc , egGridDataPro
     $scope.checkins = checkinSvc.checkins;
     var today = new Date();
     $scope.checkinArgs = {backdate : today}
-    $scope.using_hatch = egCore.hatch.usingHatch();
+    $scope.using_hatch_printer = egCore.hatch.usePrinting();
     $scope.modifiers = {};
     $scope.fine_total = 0;
     $scope.is_capture = $location.path().match(/capture$/);

@@ -3,10 +3,10 @@
  *
  * Dispatches print and data storage requests to the appropriate handler.
  *
- * With each top-level request, if a connection to Hatch is established,
- * the request is relayed.  If a connection has not been attempted, an
- * attempt is made then the request is handled.  If Hatch is known to be
- * inaccessible, requests are routed to local handlers.
+ * If Hatch is configured to honor the request -- current request types
+ * are 'settings', 'offline', and 'printing' -- the request will be
+ * relayed to the Hatch service.  Otherwise, the request is handled
+ * locally.
  *
  * Most handlers also provide direct remote and local variants to the
  * application can decide to which to use as needed.
@@ -31,12 +31,36 @@ angular.module('egCoreMod')
     var service = {};
     service.msgId = 1;
     service.messages = {};
-    service.pending = [];
-    service.hatchAvailable = null;
+    service.hatchAvailable = false;
 
     // key/value cache -- avoid unnecessary Hatch extension requests.
     // Only affects *RemoteItem calls.
     service.keyCache = {}; 
+
+    /**
+     * List string prefixes for On-Call storage keys. On-Call keys
+     * are those that can be set/get/remove'd from localStorage when
+     * Hatch is not avaialable, even though Hatch is configured as the
+     * primary storage location for the key in question.  On-Call keys
+     * are those that allow the user to login and perform basic admin
+     * tasks (like disabling Hatch) even when Hatch is down.
+     * AKA Browser Staff Run Level 3.
+     * Note that no attempt is made to synchronize data between Hatch
+     * and localStorage for On-Call keys.  Only one destation is active 
+     * at a time and each maintains its own data separately.
+     */
+    service.onCallPrefixes = ['eg.workstation'];
+
+    // Returns true if the key can be set/get in localStorage even when 
+    // Hatch is not available.
+    service.keyIsOnCall = function(key) {
+        var oncall = false;
+        angular.forEach(service.onCallPrefixes, function(pfx) {
+            if (key.match(new RegExp('^' + pfx))) 
+                oncall = true;
+        });
+        return oncall;
+    }
 
     // write a message to the Hatch port
     service.sendToHatch = function(msg) {
@@ -54,30 +78,20 @@ angular.module('egCoreMod')
         $window.postMessage(msg2, $window.location.origin);
     }
 
-    // Send the request to Hatch if it's available.  
-    // Otherwise handle the request locally.
+    // Send request to Hatch or reject if Hatch is unavailable
     service.attemptHatchDelivery = function(msg) {
-
         msg.msgid = service.msgId++;
         msg.deferred = $q.defer();
 
-        if (service.hatchAvailable === false) { // Hatch is closed.
-            msg.deferred.reject(msg);
-
-        } else if (service.hatchAvailable === true) { // Hatch is open.
+        if (service.hatchAvailable) {
             service.messages[msg.msgid] = msg;
             service.sendToHatch(msg);
 
-        } else { // Hatch state unknown
-            service.messages[msg.msgid] = msg;
-            service.pending.push(msg);
-            $timeout(service.openHatch);
+        } else {
+            console.error(
+                'Hatch request attempted but Hatch is not available');
+            msg.deferred.reject(msg);
         }
-
-        /*
-        console.debug(
-            Object.keys(service.messages).length + " pending Hatch requests");
-        */
 
         return msg.deferred.promise;
     }
@@ -112,7 +126,7 @@ angular.module('egCoreMod')
         // the page body to indicate it's available.
 
         if (!$window.document.body.getAttribute('hatch-is-open')) {
-            service.hatchWontOpen('Hatch is not available');
+            console.debug("Hatch is not available");
             return;
         }
 
@@ -132,38 +146,6 @@ angular.module('egCoreMod')
         }); 
 
         service.hatchAvailable = true; // public flag
-        service.hatchOpened();
-    }
-
-    service.hatchWontOpen = function(err) {
-        console.debug("Hatch connection failed: " + err);
-        service.hatchAvailable = false;
-        while ( (msg = service.pending.shift()) ) {
-            msg.deferred.reject(msg);
-            delete service.messages[msg.msgid];
-        }
-    }
-
-    // Returns true if Hatch is required or if we are currently
-    // communicating with the Hatch service. 
-    service.usingHatch = function() {
-        return service.hatchAvailable || service.hatchRequired();
-    }
-
-    // Returns true if this browser (via localStorage) is 
-    // configured to require Hatch.
-    service.hatchRequired = function() {
-        return service.getLocalItem('eg.hatch.required');
-    }
-
-    service.hatchOpened = function() {
-        // let others know we're connected
-        if (service.onHatchOpen) service.onHatchOpen();
-
-        // Deliver any previously queued requests 
-        while ( (msg = service.pending.shift()) ) {
-            service.sendToHatch(msg);
-        };
     }
 
     service.remotePrint = function(
@@ -217,17 +199,36 @@ angular.module('egCoreMod')
         );
     }
 
+    service.usePrinting = function() {
+        return service.getLocalItem('eg.hatch.enable.printing');
+    }
+
+    service.useSettings = function() {
+        return service.getLocalItem('eg.hatch.enable.settings');
+    }
+
+    service.useOffline = function() {
+        return service.getLocalItem('eg.hatch.enable.offline');
+    }
+
     // get the value for a stored item
     service.getItem = function(key) {
-        return service.getRemoteItem(key)['catch'](
-            function(msg) {
-                if (service.hatchRequired()) {
-                    console.error("getRemoteItem() failed for key " + key);
-                    return null;
-                }
-                return service.getLocalItem(msg.key);
-            }
-        );
+
+        if (!service.useSettings())
+            return $q.when(service.getLocalItem(key));
+
+        if (service.hatchAvailable) 
+            return service.getRemoteItem(key);
+
+        if (service.keyIsOnCall(key)) {
+            console.warn("Unable to getItem from Hatch: " + key + 
+                ". Retrieving item from local storage instead");
+
+            return $q.when(service.getLocalItem(key));
+        }
+
+        console.error("Unable to getItem from Hatch: " + key);
+        return $q.reject();
     }
 
     service.getRemoteItem = function(key) {
@@ -246,7 +247,14 @@ angular.module('egCoreMod')
     service.getLocalItem = function(key) {
         var val = $window.localStorage.getItem(key);
         if (val == null) return;
-        return JSON.parse(val);
+        try {
+            return JSON.parse(val);
+        } catch(E) {
+            console.error(
+                "Deleting invalid JSON for localItem: " + key + " => " + val);
+            service.removeLocalItem(key);
+            return null;
+        }
     }
 
     service.getLoginSessionItem = function(key) {
@@ -266,15 +274,21 @@ angular.module('egCoreMod')
      * tmp values are removed during logout or browser close.
      */
     service.setItem = function(key, value) {
-        return service.setRemoteItem(key, value)['catch'](
-            function(msg) {
-                if (service.hatchRequired()) {
-                    console.error("setRemoteItem() failed for key " + key);
-                     return null;
-                }
-                return service.setLocalItem(msg.key, value);
-            }
-        );
+        if (service.useSettings())
+            return $q.when(service.setLocalItem(key, value));
+
+        if (service.hatchAvailable)
+            return service.setRemoteItem(key, value);
+
+        if (service.keyIsOnCall(key)) {
+            console.warn("Unable to setItem in Hatch: " + 
+                key + ". Setting in local storage instead");
+
+            return $q.when(service.setLocalItem(key, value));
+        }
+
+        console.error("Unable to setItem in Hatch: " + key);
+        return $q.reject();
     }
 
     // set the value for a stored or new item
@@ -320,28 +334,23 @@ angular.module('egCoreMod')
         $window.sessionStorage.setItem(key, jsonified);
     }
 
-    // assumes the appender and appendee are both strings
-    // TODO: support arrays as well
-    service.appendLocalItem = function(key, value) {
-        var item = service.getLocalItem(key);
-        if (item) {
-            if (typeof item != 'string') {
-                logger.warn("egHatch.appendLocalItem => "
-                    + "cannot append to a non-string item: " + key);
-                return;
-            }
-            value = item + value; // concatenate our value
-        }
-        service.setLocalitem(key, value);
-    }
-
     // remove a stored item
     service.removeItem = function(key) {
-        return service.removeRemoteItem(key)['catch'](
-            function(msg) { 
-                return service.removeLocalItem(msg.key) 
-            }
-        );
+        if (!service.useSettings())
+            return $q.when(service.removeLocalItem(key));
+
+        if (service.hatchAvailable) 
+            return service.removeRemoteItem(key);
+
+        if (service.keyIsOnCall(key)) {
+            console.warn("Unable to removeItem from Hatch: " + key + 
+                ". Removing item from local storage instead");
+
+            return $q.when(service.removeLocalItem(key));
+        }
+
+        console.error("Unable to removeItem from Hatch: " + key);
+        return $q.reject();
     }
 
     service.removeRemoteItem = function(key) {
@@ -379,15 +388,9 @@ angular.module('egCoreMod')
 
     // if set, prefix limits the return set to keys starting with 'prefix'
     service.getKeys = function(prefix) {
-        return service.getRemoteKeys(prefix)['catch'](
-            function() { 
-                if (service.hatchRequired()) {
-                    console.error("getRemoteKeys() failed");
-                    return [];
-                }
-                return service.getLocalKeys(prefix) 
-            }
-        );
+        if (service.useSettings()) 
+            return service.getRemoteKeys(prefix);
+        return $q.when(service.getLocalKeys(prefix));
     }
 
     service.getRemoteKeys = function(prefix) {
@@ -443,6 +446,10 @@ angular.module('egCoreMod')
         });
         service.setLocalItem('eg.hatch.login_keys', keys);
     }
+
+    // The only requirement for opening Hatch is that the DOM be loaded.
+    // Open the connection now so its state will be immediately available.
+    service.openHatch();
 
     return service;
 }])
