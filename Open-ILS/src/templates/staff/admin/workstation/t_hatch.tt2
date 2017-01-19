@@ -12,7 +12,7 @@
   </div>
 
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-4">
       <div class="checkbox">
         <label>
           <input type="checkbox" 
@@ -24,7 +24,7 @@
   </div>
 
   <div class="row new-entry">
-    <div class="col-md-6">
+    <div class="col-md-4">
       <div class="checkbox">
         <label>
           <input type="checkbox" 
@@ -33,10 +33,20 @@
         </label>
       </div>
     </div>
+    <div class="col-md-3">
+      <button class="btn btn-default" ng-click="copy_to_hatch()">
+        [% l('Copy Local Storage Settings To Hatch') %]
+      </button>
+    </div>
+    <div class="col-md-3">
+      <button class="btn btn-default" ng-click="copy_to_local()">
+        [% l('Copy Hatch Settings To Local Storage') %]
+      </button>
+    </div>
   </div>
 
   <div class="row new-entry">
-    <div class="col-md-6">
+    <div class="col-md-4">
       <div class="checkbox">
         <label>
           <input type="checkbox" 

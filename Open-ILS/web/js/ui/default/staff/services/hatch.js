@@ -274,7 +274,7 @@ angular.module('egCoreMod')
      * tmp values are removed during logout or browser close.
      */
     service.setItem = function(key, value) {
-        if (service.useSettings())
+        if (!service.useSettings())
             return $q.when(service.setLocalItem(key, value));
 
         if (service.hatchAvailable)
@@ -445,6 +445,58 @@ angular.module('egCoreMod')
             return k != key;
         });
         service.setLocalItem('eg.hatch.login_keys', keys);
+    }
+
+    // Copy all stored settings from localStorage to Hatch.
+    // If 'move' is true, delete the local settings once cloned.
+    service.copySettingsToHatch = function(move) {
+        var deferred = $q.defer();
+        var keys = service.getLocalKeys();
+
+        angular.forEach(keys, function(key) {
+
+            // Hatch keys are local-only
+            if (key.match(/^eg.hatch/)) return;
+
+            console.debug("Copying to Hatch Storage: " + key);
+            service.setRemoteItem(key, service.getLocalItem(key))
+            .then(function() { // key successfully cloned.
+
+                // delete the local copy if requested.
+                if (move) service.removeLocalItem(key);
+
+                // resolve the promise after processing the last key.
+                if (key == keys[keys.length-1]) 
+                    deferred.resolve();
+            });
+        });
+
+        return deferred.promise;
+    }
+
+    // Copy all stored settings from Hatch to localStorage.
+    // If 'move' is true, delete the Hatch settings once cloned.
+    service.copySettingsToLocal = function(move) {
+        var deferred = $q.defer();
+
+        service.getRemoteKeys().then(function(keys) {
+            angular.forEach(keys, function(key) {
+                service.getRemoteItem(key).then(function(val) {
+
+                    console.debug("Copying to Local Storage: " + key);
+                    service.setLocalItem(key, val);
+
+                    // delete the remote copy if requested.
+                    if (move) service.removeRemoteItem(key);
+
+                    // resolve the promise after processing the last key.
+                    if (key == keys[keys.length-1]) 
+                        deferred.resolve();
+                });
+            });
+        });
+
+        return deferred.promise;
     }
 
     // The only requirement for opening Hatch is that the DOM be loaded.
