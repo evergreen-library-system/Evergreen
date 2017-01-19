@@ -1043,8 +1043,8 @@ sub copy_is_permitted {
     my $resp = $self->editor->json_query({
         from => [
             'action.hold_retarget_permit_test',
-            $self->hold->request_lib,
             $self->hold->pickup_lib,
+            $self->hold->request_lib,
             $copy->{id},
             $self->hold->usr,
             $self->hold->requestor
