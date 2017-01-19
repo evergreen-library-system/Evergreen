@@ -275,9 +275,9 @@ function($scope,  $q,  $routeParams,  $timeout,  egCore , egUser,  patronSvc , $
                     $scope.ok = function(args) {
                         // toISOString gives us Zulu time, so
                         // adjust for that before truncating to date
-                        var adjust_date = new Date( $scope.args.date );
+                        var adjust_date = new Date( $scope.args.due_date );
                         adjust_date.setMinutes(
-                            $scope.args.date.getMinutes() - adjust_date.getTimezoneOffset()
+                            $scope.args.due_date.getMinutes() - adjust_date.getTimezoneOffset()
                         );
                         var due = adjust_date.toISOString().replace(/T.*/,'');
                         console.debug("applying due date of " + due);
