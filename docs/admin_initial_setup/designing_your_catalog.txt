@@ -299,7 +299,7 @@ Setting a default language and adding optional languages
 --------------------------------------------------------
 
 _OILSWebLocale_ adds support for a specific language. Add this variable to the
-Virtual Host section in _/etc/apache2/sites-available/eg.conf_.
+Virtual Host section in _/etc/apache2/eg_vhost.conf_.
 
 _OILSWebDefaultLocale_ specifies which locale to display when a user lands on a
 page in TPAC and has not chosen a different locale from the TPAC locale picker.
@@ -315,16 +315,18 @@ PerlAddVar OILSWebDefaultLocale "fr-CA"
 Below is a table of the currently supported languages packaged with Evergreen:
 
 [options="header"]
-|================================================================
+|===
 |Language| Code| PO file
+|Armenian| hy_am| /openils/var/data/locale/opac/hy-AM.po
 |Czech| cs_cz| /openils/var/data/locale/opac/cs-CZ.po
+|Finnish| fi_fi| /openils/var/data/locale/opac/fi-FI.po
 |English - Canada| en_ca| /openils/var/data/locale/opac/en-CA.po
 |English - Great Britain| en_gb| /openils/var/data/locale/opac/en-GB.po
 |*English - United States| en_us| not applicable
 |French - Canada| fr_ca| /openils/var/data/locale/opac/fr-CA.po
-|Portuguese - Brazil| pt_br| /openils/var/data/locale/opac/pt_BR.po
-|Russian| ru_ru| /openils/var/data/locale/opac/ru_RU.po
-|=================================================================
+|Portuguese - Brazil| pt_br| /openils/var/data/locale/opac/pt-BR.po
+|Spanish| es_es| /openils/var/data/locale/opac/es-ES.po
+|===
 *American English is built into Evergreen so you do not need to set up this
 language and there are no PO files. 
 
