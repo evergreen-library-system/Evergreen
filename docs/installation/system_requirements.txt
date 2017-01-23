@@ -11,6 +11,12 @@ The following are the base requirements setting Evergreen up on a test server:
  * Linux Operating System (community supports Debian, Ubuntu, or Fedora)
  * Ports 80 and 443 should be opened in your firewall for TCP connections to allow OPAC and staff client connections to the Evergreen server.
 
+Web Client Requirements
+~~~~~~~~~~~~~~~~~~~~~~~
+
+The current stable release of Firefox or Chrome is required to run the web
+client in a browser.
+
 Staff Client Requirements
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
