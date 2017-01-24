@@ -567,7 +567,7 @@ g.apply = function(field,value) {
         value = null;
     }
     if (field == 'alert_message') { value = value.replace(/^\W+$/g,''); }
-    if (field == 'price' || field == 'deposit_amount') {
+    if (field == 'price' || field == 'deposit_amount' || field == 'cost'){
         if (value == '') {
             value = null;
         } else {
