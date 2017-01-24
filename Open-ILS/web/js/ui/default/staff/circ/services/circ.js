@@ -27,9 +27,12 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
             'ui.staff.require_initials.patron_standing_penalty',
             'ui.admin.work_log.max_entries',
             'ui.admin.patron_log.max_entries',
-            'circ.staff_client.do_not_auto_attempt_print'
+            'circ.staff_client.do_not_auto_attempt_print',
+            'circ.clear_hold_on_checkout'
         ]).then(function(set) {
             service.require_initials = Boolean(set['ui.staff.require_initials.patron_standing_penalty']);
+	    service.clearHold = Boolean(set['circ.clear_hold_on_checkout']);
+
             if (angular.isArray(set['circ.staff_client.do_not_auto_attempt_print'])) {
                 if (set['circ.staff_client.do_not_auto_attempt_print'].indexOf('Hold Slip') > 1)
                     service.never_auto_print['hold_shelf_slip'] = true;
@@ -732,12 +735,53 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
                 ['$scope', '$uibModalInstance', 
                 function($scope, $uibModalInstance) {
                 $scope.events = evt;
+
+                // Find the event, if any, that is for ITEM_ON_HOLDS_SHELF
+                //  and grab the patron name of the owner. 
+                $scope.holdEvent = evt.filter(
+		     function(e) {
+                        return e.textcode === 'ITEM_ON_HOLDS_SHELF'
+                     }
+                );
+
+                if ($scope.holdEvent) {
+		   // Ensure we have a scalar here 
+                   if (angular.isArray($scope.holdEvent)) {
+                       $scope.holdEvent = $scope.holdEvent[0];
+                   }
+
+                   $scope.patronName = $scope.holdEvent.payload.patron_name;
+                   $scope.holdID = $scope.holdEvent.payload.hold_id;
+                }
+
                 $scope.auto_override =
                     evt.filter(function(e){
                         return service.checkout_auto_override_after_first.indexOf(evt.textcode) > -1;
                     }).length > 0;
                 $scope.copy_barcode = params.copy_barcode; // may be null
-                $scope.ok = function() { $uibModalInstance.close() }
+
+                // Implementation note: Why not use a primitive here? It
+                // doesn't work.  See: 
+                // http://stackoverflow.com/questions/18642371/checkbox-not-binding-to-scope-in-angularjs
+                $scope.formdata = {clearHold : service.clearHold};
+
+                $scope.ok = function() { 
+                        $uibModalInstance.close();
+
+                        // Handle the cancellation of the assciated hold here
+                        if ($scope.formdata.clearHold && $scope.holdID) {
+                            $scope.args = {
+                            cancel_reason : 5,
+                                note: 'Item checked out by other patron'
+			    };
+                            egCore.net.request(
+                                'open-ils.circ', 'open-ils.circ.hold.cancel',
+                                egCore.auth.token(), $scope.holdID,
+                                $scope.args.cancel_reason,
+                                $scope.args.note);
+                        }
+		}
+
                 $scope.cancel = function ($event) { 
                     $uibModalInstance.dismiss();
                     $event.preventDefault();
