@@ -59,8 +59,9 @@ function(egCore) {
     service.flesh = {   
         flesh : 3, 
         flesh_fields : {
-            acp : ['call_number','location','status','location','floating','circ_modifier','age_protect'],
-            acn : ['record','prefix','suffix'],
+            acp : ['call_number','location','status','location','floating','circ_modifier',
+                'age_protect','circ_lib'],
+            acn : ['record','prefix','suffix','label_class'],
             bre : ['simple_record','creator','editor']
         },
         select : { 
@@ -70,51 +71,134 @@ function(egCore) {
         } 
     }
 
+    service.circFlesh = {
+        flesh : 2,
+        flesh_fields : {
+            circ : [
+                'usr',
+                'workstation',
+                'checkin_workstation',
+                'checkin_lib',
+                'duration_rule',
+                'max_fine_rule',
+                'recurring_fine_rule'
+            ],
+            au : ['card']
+        },
+        order_by : {circ : 'xact_start desc'},
+        limit :  1
+    }
+
+    //Retrieve separate copy, combcirc, and accs information
+    service.getCopy = function(barcode, id) {
+        if (barcode) return egCore.pcrud.search(
+            'acp', {barcode : barcode, deleted : 'f'},
+            service.flesh).then(function(copy) {return copy});
+
+        return egCore.pcrud.retrieve( 'acp', id, service.flesh)
+            .then(function(copy) {return copy});
+    }
+    service.getCirc = function(id) {
+        return egCore.pcrud.search('combcirc', { target_copy : id },
+            service.circFlesh).then(function(circ) {return circ});
+    }
+    service.getSummary = function(id) {
+        return circ_summary = egCore.net.request(
+            'open-ils.circ',
+            'open-ils.circ.renewal_chain.retrieve_by_circ.summary',
+            egCore.auth.token(), id).then(
+                function(circ_summary) {return circ_summary});
+    }
+
+    //Combine copy, circ, and accs information
+    service.retrieveCopyData = function(barcode, id) {
+        var copyData = {};
+
+        var fetchCopy = function(barcode, id) {
+            return service.getCopy(barcode, id)
+                .then(function(copy) {
+                    copyData.copy = copy;
+                    return copyData;
+                });
+        }
+        var fetchCirc = function(copy) {
+            return service.getCirc(copy.id())
+                .then(function(circ) {
+                    copyData.circ = circ;
+                    return copyData;
+                });
+        }
+        var fetchSummary = function(circ) {
+            return service.getSummary(circ.id())
+                .then(function(summary) {
+                    copyData.circ_summary = summary;
+                    return copyData;
+                });
+        }
+        return fetchCopy(barcode, id).then(function(res) {
+            return fetchCirc(copyData.copy).then(function(res) {
+                if (copyData.circ) {
+                    return fetchSummary(copyData.circ).then(function() {
+                        return copyData;
+                    });
+                } else {
+                    return copyData;
+                }
+            });
+        });
+
+    }
+
     // resolved with the last received copy
     service.fetch = function(barcode, id, noListDupes) {
-        var promise;
+        var copy;
+        var circ;
+        var circ_summary;
+        var lastRes = {};
 
-        if (barcode) {
-            promise = egCore.pcrud.search('acp', 
-                {barcode : barcode, deleted : 'f'}, service.flesh);
-        } else {
-            promise = egCore.pcrud.retrieve('acp', id, service.flesh);
-        }
-
-        var lastRes;
-        return promise.then(
-            function() {return lastRes},
-            null, // error
-
-            // notify reads the stream of copies, one at a time.
-            function(copy) {
-
-                var flatCopy;
-
-                egCore.pcrud.search('aihu', 
-                    {item : copy.id()}, {}, {idlist : true, atomic : true})
-                .then(function(uses) { 
-                    copy._inHouseUseCount = uses.length;
-                });
-
-                if (noListDupes) {
-                    // use the existing copy if possible
-                    flatCopy = service.copies.filter(
-                        function(c) {return c.id == copy.id()})[0];
-                }
-
-                if (!flatCopy) {
-                    flatCopy = egCore.idl.toHash(copy, true);
-                    flatCopy.index = service.index++;
-                    service.copies.unshift(flatCopy);
-                }
-
-                return lastRes = {
-                    copy : copy, 
-                    index : flatCopy.index
-                }
+        return service.retrieveCopyData(barcode, id)
+        .then(function(copyData) {
+            //Make sure we're getting a completed copyData - no plain acp or circ objects
+            if (copyData.circ) {
+                // flesh circ_lib locally
+                copyData.circ.circ_lib(egCore.org.get(copyData.circ.circ_lib()));
+                copyData.circ.checkin_workstation(
+                    egCore.org.get(copyData.circ.checkin_workstation()));
             }
-        );
+            var flatCopy;
+
+            if (noListDupes) {
+                // use the existing copy if possible
+                flatCopy = service.copies.filter(
+                    function(c) {return c.id == copyData.copy.id()})[0];
+            }
+
+            if (!flatCopy) {
+                flatCopy = egCore.idl.toHash(copyData.copy, true);
+
+                if (copyData.circ) {
+                    flatCopy._circ = egCore.idl.toHash(copyData.circ, true);
+                    flatCopy._circ_summary = egCore.idl.toHash(copyData.circ_summary, true);
+                }
+                flatCopy.index = service.index++;
+                service.copies.unshift(flatCopy);
+            }
+
+            //Get in-house use count
+            egCore.pcrud.search('aihu',
+                {item : flatCopy.id}, {}, {idlist : true, atomic : true})
+            .then(function(uses) {
+                flatCopy._inHouseUseCount = uses.length;
+                copyData.copy._inHouseUseCount = uses.length;
+            });
+
+            return lastRes = {
+                copy : copyData.copy,
+                index : flatCopy.index
+            }
+        });
+
+
     }
 
     return service;
