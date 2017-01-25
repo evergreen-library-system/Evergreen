@@ -239,6 +239,8 @@ sub process_spool {
     my $filename = shift;
     my $bib_source = shift;
 
+    $client->max_chunk_count($self->{max_bundle_count}) if (!$client->can('max_bundle_count') && $self->{max_bundle_count});
+
     my $e = new_editor(authtoken => $auth, xact => 1);
     return $e->die_event unless $e->checkauth;
 
@@ -330,7 +332,6 @@ __PACKAGE__->register_method(
     method      => "process_spool",
     api_level   => 1,
     argc        => 3,
-    #max_chunk_size => 0,
     max_bundle_count => 1,
     record_type => 'bib'
 );                      
@@ -339,7 +340,6 @@ __PACKAGE__->register_method(
     method      => "process_spool",
     api_level   => 1,
     argc        => 3,
-    #max_chunk_size => 0,
     max_bundle_count => 1,
     record_type => 'auth'
 );                      
@@ -350,7 +350,6 @@ __PACKAGE__->register_method(
     api_level   => 1,
     argc        => 3,
     stream      => 1,
-    #max_chunk_size => 0,
     max_bundle_count => 1,
     record_type => 'bib'
 );                      
@@ -360,7 +359,6 @@ __PACKAGE__->register_method(
     api_level   => 1,
     argc        => 3,
     stream      => 1,
-    #max_chunk_size => 0,
     max_bundle_count => 1,
     record_type => 'auth'
 );
@@ -783,7 +781,6 @@ __PACKAGE__->register_method(
     api_level   => 1,
     argc        => 2,
     stream      => 1,
-    #max_chunk_size => 0,
     max_bundle_count => 1,
     record_type => 'bib',
     signature => {
@@ -800,13 +797,14 @@ __PACKAGE__->register_method(
     api_level   => 1,
     argc        => 2,
     stream      => 1,
-    #max_chunk_size => 0,
     max_bundle_count => 1,
     record_type => 'auth'
 );
 
 sub import_queue {
     my($self, $conn, $auth, $q_id, $options) = @_;
+    $conn->max_chunk_count($self->{max_bundle_count}) if (!$conn->can('max_bundle_count') && $self->{max_bundle_count});
+
     my $e = new_editor(authtoken => $auth, xact => 1);
     return $e->die_event unless $e->checkauth;
     $options ||= {};
