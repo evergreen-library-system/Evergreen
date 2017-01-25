@@ -1,3 +1,611 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 50ef8149c901014b93dd99f95b6746e392fad49e
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Mon Feb 24 12:09:57 2014 -0500
+
+    Bump OpenILS.pm version
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit e583a25b6ba8e2f48fde56c6af09007195f7f71b
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Wed Jan 25 16:12:36 2017 -0500
+
+    2.10.8-2.10.9 schema upgrade script
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+5	0	Open-ILS/src/sql/Pg/version-upgrade/2.10.8-2.10.9-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.10.8-2.10.9-upgrade-db.sql
+
+commit d23f3818b256f95041a4361d4b61ad7ab5b691c0
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Thu Dec 22 14:20:33 2016 -0500
+
+    Docs: Adding release notes for 2.10.9 point release
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+28	0	docs/RELEASE_NOTES_2_10.adoc
+
+commit efca05c66aa1e9c7db990aa47a842bc73b6b94a0
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Thu Dec 22 14:20:33 2016 -0500
+
+    Docs: Adding release notes for 2.11.2 point release
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+46	1	docs/RELEASE_NOTES_2_11.adoc
+
+commit 03d24c911d930aa6de25e284664b1f4892aaff08
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Jan 25 12:33:24 2017 -0500
+
+    LP#1657885: Inform Vandelay of new chunking/bundling logic, part deux
+    
+    Here we conditionally use the old "max_chunk_count" method provided by OpenSRF
+    when Evergreen is running atop a version that doesn't know about the bundling
+    rename.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+4	6	Open-ILS/src/perlmods/lib/OpenILS/Application/Vandelay.pm
+
+commit 0bcfb31f391ff420b4f242474b87726f864a19e4
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Jan 25 10:56:23 2017 -0500
+
+    LP#1657885: Inform Vandelay of new chunking/bundling logic
+    
+    There is a naive attempt to force immediate streaming of results in Vandelay
+    for certain processes, but it both only helps a little, and breaks under the
+    new OpenSRF bundling/chunking logic.  So, we'll drop it where it's not
+    directly configurable, and test for the appropriate features where we can.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+13	7	Open-ILS/src/perlmods/lib/OpenILS/Application/Vandelay.pm
+
+commit bce74e812685b137fc0ffa5ebdceb2a057249871
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Thu Jan 19 15:54:53 2017 -0500
+
+    LP#1657885: Account for new bundling/chunking logic in OpenSRF 2.5+
+    
+    When chunking was renamed bundling and actually chunking added in OpenSRF 2.5,
+    the few places in Evergreen that tried to make use of the old mechanism
+    directly now break. The most obvious breakage is in the alternate printable
+    hold pull list, which we fix here.  Evidence of other broken code should
+    be fixed as needed, though spots to look our for are z39.50 results and
+    Vandelay processing.
+    
+    To test:
+    
+     1) In Evergreen 2.11 running on top of OpenSRF 2.5+, attempt to use the
+        alt pull list printing interface at a location with many holds on their
+        pull list.  The progress bar will spin forever.
+     2) After applying this patch, do the same.  The interface should work
+        quickly.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+4	4	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Holds.pm
+
+commit ad80f096534d525e08e55408992c33b0ed563bde
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Jan 18 14:38:00 2017 -0500
+
+    LP#1657237: Rewrite the hold target cache
+    
+    We fixed the trigger that caused the problem in bug 167237, but now we need
+    to rewrite reporter.hold_request_record because T-holds are probably all
+    wrong.  No data was lost, we're just addressing the contents of a materialized
+    view.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+
+26	0	Open-ILS/src/sql/Pg/upgrade/1004.function.hold-move-trigger-bug.sql
+
+commit 6815904700aebaa1dd5a1011bbc35754ee0a6e24
+Author: Michele Morgan <mmorgan@noblenet.org>
+Date:   Tue Jan 24 09:17:58 2017 -0500
+
+    LP#1659006: Treat the Cost field like the other money fields in the copy editor,
+    reverting to null if blanked.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	1	Open-ILS/xul/staff_client/server/cat/copy_editor.js
+
+commit 0117ed68446e1308905405ab6514cdd5cd89cab6
+Author: Jeanette Lundgren <jlundgren@cwmars.org>
+Date:   Wed Jan 18 14:22:58 2017 -0500
+
+    LP#1494362 Docs: oversized screenshot
+    
+    Signed-off-by: Jeanette Lundgren <jlundgren@cwmars.org>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+-	-	docs/media/catalogue-3.png
+
+commit 5da54ca031ee81e348c68e6a96d239838de33bee
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Tue Jan 17 16:58:39 2017 -0500
+
+    LP#1657282: fix redirect of one-hit metarecord searches
+    
+    This patches fixes a bug where, when performing a metarecord
+    ("Group Formats and Editions") search, one-hit result sets
+    get redirected to a "/eg/opac/record/0.0..." page, which
+    results in a "Bad Request" error being shown to the user.
+    
+    To test:
+    
+    [1] Perform a metarecord search that would result in exactly
+        one metarecord search. Observe that the browser displays
+        a "Bad Request" error page.
+    [2] Apply the patch and perform step 1 again. This time, the
+        search should succeed. Note that if the metarecord contains
+        more than one component, a results page with one grouped
+        hit is displayed; if the metarecord has exactly one component,
+        that bib's record page is displayed.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+2	2	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Search.pm
+
+commit 6badeb7a7ce8ab4172808343b1e88e068d1fc524
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Jan 17 15:24:53 2017 -0500
+
+    LP#1657241 Stamping aged circ parent_circ index
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+7	0	Open-ILS/src/sql/Pg/upgrade/1005.schema.aged_circulation_parent_circ_idx.sql
+0	7	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.aged_circulation_parent_circ_idx.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1005.schema.aged_circulation_parent_circ_idx.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.aged_circulation_parent_circ_idx.sql
+
+commit d18bc22ab32f7b127478c8185b257443a5ee7828
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Tue Jan 17 15:09:15 2017 -0500
+
+    LP#1657241 - Add parent_circ index to action.aged_circulation
+    
+    The lack of a parent_circ index on the aged_circulation table
+    was causing very long-running queries.  This solves the problem.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	0	Open-ILS/src/sql/Pg/090.schema.action.sql
+7	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.aged_circulation_parent_circ_idx.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.aged_circulation_parent_circ_idx.sql
+
+commit 637afff589653e589385f94090cb9c60e3f34ea5
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Jan 17 15:08:58 2017 -0500
+
+    LP#1657237 Stamping rhrr mat view trigger repair
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+51	0	Open-ILS/src/sql/Pg/upgrade/1004.function.hold-move-trigger-bug.sql
+0	49	Open-ILS/src/sql/Pg/upgrade/XXXX.function.hold-move-trigger-bug.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1004.function.hold-move-trigger-bug.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.function.hold-move-trigger-bug.sql
+
+commit 49b5ae1bc4eaedbf7b42d6f5b38fbe9be2d22700
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Tue Jan 17 14:46:36 2017 -0500
+
+    LP#1657237: Properly constrain matview trigger function
+    
+    The function maintaining the reporter.hold_request_record table
+    was performing an unconstrained update when a hold was moved.  This
+    fixes that.
+    
+    To test:
+    
+    [1] Apply the patch, the perform an asset merge that would
+        change the target of a hold request.  Verify that
+        reporter.hold_request_record is properly update.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+3	2	Open-ILS/src/sql/Pg/reporter-schema.sql
+49	0	Open-ILS/src/sql/Pg/upgrade/XXXX.function.hold-move-trigger-bug.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.function.hold-move-trigger-bug.sql
+
+commit c957bbf9a32bbacf37a5f20832cab3ec4885e326
+Author: Michelle Purcell <purcellm05@gmail.com>
+Date:   Sat Jan 14 10:46:56 2017 -0300
+
+    Docs: adding section about circulating items in the Web client
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+397	0	docs/circulation/circulating_items_web_client.txt
+-	-	docs/media/backdate_checkin_web_client.png
+-	-	docs/media/backdate_post_checkin_web_client.png
+-	-	docs/media/backdate_post_date_web_client.png
+-	-	docs/media/backdate_red_web_client.png
+-	-	docs/media/check_in_menu_web_client.png
+-	-	docs/media/checkin_barcode_web_client.png
+-	-	docs/media/checkin_options_web_client.png
+-	-	docs/media/checkout_item_barcode_web_client.png
+-	-	docs/media/checkout_menu_web_client.png
+-	-	docs/media/claimed_date_web_client.png
+-	-	docs/media/cr_section_web_client.png
+-	-	docs/media/due_date_display_web_client.png
+-	-	docs/media/edit_due_date_action_web_client.png
+-	-	docs/media/in_house_use_web_client.png
+-	-	docs/media/item_status_altview_web_client.png
+-	-	docs/media/item_status_barcode_web_client.png
+-	-	docs/media/item_status_list_view_web_client.png
+-	-	docs/media/item_status_menu_web_client.png
+-	-	docs/media/items_out_click_web_client.png
+-	-	docs/media/last_few_circs_action_web_client.png
+-	-	docs/media/last_few_circs_display_web_client.png
+-	-	docs/media/lost_cr_section_web_client.png
+-	-	docs/media/lost_section_web_client.png
+-	-	docs/media/mark_claims_returned_web_client.png
+-	-	docs/media/mark_lost_web_client.png
+-	-	docs/media/overdue_checkin_web_client.png
+-	-	docs/media/patron_summary_checkouts_web_client.png
+-	-	docs/media/precat_web_client.png
+-	-	docs/media/record_in_house_action_web_client.png
+-	-	docs/media/renew_action_web_client.png
+-	-	docs/media/renew_item_calendar_web_client.png
+-	-	docs/media/renew_item_web_client.png
+-	-	docs/media/retrieve_patron_web_client.png
+-	-	docs/media/specify_due_date1_web_client.png
+2	0	docs/root.txt
+ create mode 100644 docs/circulation/circulating_items_web_client.txt
+ create mode 100644 docs/media/backdate_checkin_web_client.png
+ create mode 100644 docs/media/backdate_post_checkin_web_client.png
+ create mode 100644 docs/media/backdate_post_date_web_client.png
+ create mode 100644 docs/media/backdate_red_web_client.png
+ create mode 100644 docs/media/check_in_menu_web_client.png
+ create mode 100644 docs/media/checkin_barcode_web_client.png
+ create mode 100644 docs/media/checkin_options_web_client.png
+ create mode 100644 docs/media/checkout_item_barcode_web_client.png
+ create mode 100644 docs/media/checkout_menu_web_client.png
+ create mode 100644 docs/media/claimed_date_web_client.png
+ create mode 100644 docs/media/cr_section_web_client.png
+ create mode 100644 docs/media/due_date_display_web_client.png
+ create mode 100644 docs/media/edit_due_date_action_web_client.png
+ create mode 100644 docs/media/in_house_use_web_client.png
+ create mode 100644 docs/media/item_status_altview_web_client.png
+ create mode 100644 docs/media/item_status_barcode_web_client.png
+ create mode 100644 docs/media/item_status_list_view_web_client.png
+ create mode 100644 docs/media/item_status_menu_web_client.png
+ create mode 100644 docs/media/items_out_click_web_client.png
+ create mode 100644 docs/media/last_few_circs_action_web_client.png
+ create mode 100644 docs/media/last_few_circs_display_web_client.png
+ create mode 100644 docs/media/lost_cr_section_web_client.png
+ create mode 100644 docs/media/lost_section_web_client.png
+ create mode 100644 docs/media/mark_claims_returned_web_client.png
+ create mode 100644 docs/media/mark_lost_web_client.png
+ create mode 100644 docs/media/overdue_checkin_web_client.png
+ create mode 100644 docs/media/patron_summary_checkouts_web_client.png
+ create mode 100644 docs/media/precat_web_client.png
+ create mode 100644 docs/media/record_in_house_action_web_client.png
+ create mode 100644 docs/media/renew_action_web_client.png
+ create mode 100644 docs/media/renew_item_calendar_web_client.png
+ create mode 100644 docs/media/renew_item_web_client.png
+ create mode 100644 docs/media/retrieve_patron_web_client.png
+ create mode 100644 docs/media/specify_due_date1_web_client.png
+
+commit 94ed523032edc28a53ade54df9b7c26a36a8b6e4
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Dec 28 14:43:34 2016 -0500
+
+    LP#1655149: Badges need CDBI support for location groups
+    
+    The badge code needs to inspect copy location groups, and tries to do so using
+    Class::DBI classes. But we haven't told CDBI about aclg and friends.  Here we
+    tell Class::DBI about asset.copy_location_group so that storage can retrieve
+    directly.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+8	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/CDBI/asset.pm
+6	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+
+commit 289f25a0c6d314057eb37fd358d14bc8308c67e7
+Author: Jeanette Lundgren <jlundgren@cwmars.org>
+Date:   Mon Jan 9 12:10:12 2017 -0500
+
+    Updated link syntax to fix broken section link.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+5	4	docs/admin/phonelist.txt
+
+commit fdae54a34dbeb57f3a788b8c11a95154a57f4f97
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Thu Jan 5 13:55:49 2017 -0500
+
+    Docs: 2.11 Release Note corrections and clarifications.
+    
+    Fixes several typos in the 2.11 Release Notes and in the template for release
+    notes acknowledgements. Also resets the acknowledgements as TODOs for the
+    next release. Added clarification to the email checkout receipts to let users
+    know that email receipts are not available in the XUL client, but only in the
+    web client.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+21	21	docs/RELEASE_NOTES_2_11.adoc
+4	33	docs/RELEASE_NOTES_NEXT/_acknowledgments
+
+commit 854fe8d71bf6969e072d9fe6c0731bd89c31deb8
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Thu Jan 5 10:03:48 2017 -0500
+
+    Docs: Add "export non-imported records"
+    
+    This commit briefly describes the queue actions, summary and filter
+    sections of the Inspect Queue page in Vandelay, as well as explaining
+    the new "Export Non-Imported Records" action. This commit includes
+    updated screenshots.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+10	1	docs/cataloging/batch_importing_MARC.txt
+-	-	docs/media/Batch_Importing_MARC_Records12.jpg
+-	-	docs/media/Batch_Importing_MARC_Records15.jpg
+
+commit 55bf52cb84be826cd167db288fff298216f944c5
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Wed Dec 21 16:32:26 2016 -0500
+
+    LP#1651808: avoid a class of intermittent search failures
+    
+    This patch fixes a bug where catalog searches can sometimes fail
+    with a PostgreSQL error that looks like this:
+    
+    ERROR: type of parameter 56 (double precision) does not match that when preparing the plan (numeric)
+    CONTEXT: PL/pgSQL function search.query_parser_fts(integer,integer,text,integer[],integer[],integer,integer,integer,boolean,boolean,boolean,integer) line 319 at assignment
+    
+    In particular, it ensures that the relevance values are coerced
+    to the Pg NUMERIC data type regardless of how the core query is
+    constructed; otherwise, it can sometimes end up as a double
+    precision value.  Because of how Pg backends cache query plans,
+    that change of type can result in the error above.
+    
+    To test
+    -------
+    [1] (Optional) Configure the max_children values for open-ils.storage
+        to permit only one drone, which in turn forces all catalog
+        search requests to go through a single Pg backend.
+    [2] Set the default_preferred_language_weight opensrf.xml setting
+        to 0.
+    [3] Perform a catalog search that has just a filter, e.g.,
+        item_lang(eng).
+    [4] Perform a catalog search that includes search term, e.g.,
+        cats
+    [5] The second search should fail.
+    [6] Apply the patch and try steps 3 and 4 again; this time, both
+        searches should work.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Driver/Pg/QueryParser.pm
+
+commit ad022e3ea5a55c363bb688068c2ad22d7e0a51c7
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Tue Dec 20 10:07:46 2016 -0800
+
+    fixing formatting in supercat docs
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+9	1	docs/development/data_supercat.txt
+
+commit e2957d85e53b4664b9fafe8f71557bad3e390741
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Tue Dec 20 09:32:34 2016 -0800
+
+    Docs: Adding information about Supercat and UnAPI
+
+238	0	docs/development/data_supercat.txt
+67	0	docs/development/data_unapi.txt
+21	0	docs/root.txt
+ create mode 100644 docs/development/data_supercat.txt
+ create mode 100644 docs/development/data_unapi.txt
+
+commit 3292c5708490ed337d831acbbf2f12d58b5ea5d4
+Author: Dan Pearl <dpearl@cwmars.org>
+Date:   Thu Jun 2 15:17:44 2016 -0400
+
+    LP#1586509 Bug fix to LP#1352542 caused extraneous blank line to appear in
+    spine label.  This affected LC call numbers that had only one cutter number
+    plus additional text following.
+    
+    Signed-off-by: Dan Pearl <dpearl@cwmars.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+21	19	Open-ILS/xul/staff_client/server/cat/spine_labels.js
+
+commit 6dcdd6f5d156a57540e14be040581fcf7e69c8e6
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Mon Dec 12 16:13:00 2016 -0500
+
+    LP#1594937 Fix off-by-one display of closed dates
+    
+    The switch to toISOString() to format dates introduced an off-by-one error in
+    the closed dates display, showing one extra day of closure due to the timezone
+    being ignored in toISOString().
+    
+    toLocaleDateString() is the future of locale-sensitive date formats. In XUL,
+    because it is an old version of Firefox, it lacks locale sensitivity, but for
+    the purposes of the web staff client it's a good base to build on as even
+    Internet Explorer supports the locale and options arguments as of IE 11.
+    
+    And for the immediate purposes of showing the right dates in the closed dates
+    editor, it works.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+1	1	Open-ILS/xul/staff_client/server/admin/closed_dates.js
+
+commit d708e9d8247e0cbeb7f42c754a84070d4cc5ad9f
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Mon Dec 12 15:39:08 2016 -0500
+
+    LP#1432753 Restore "All day" verbiage to Closed Dates editor
+    
+    Commit ede7e78925 replaced the JSAN calls to util.date.formatted_date() with
+    inline date/time handling, in the process returning times with granularity to
+    the minute instead of to the second. This resulted in the test for "all day"
+    closings always failing.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+1	1	Open-ILS/xul/staff_client/server/admin/closed_dates.js
+
+commit 9e7dc6eef6db00fc4d297b2eb3f94ff359ee0913
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Thu Dec 8 21:31:25 2016 -0800
+
+    Docs: LP1268054 add patron purchase request doc
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+53	0	docs/acquisitions/purchase_requests_management.txt
+29	0	docs/acquisitions/purchase_requests_patron_view.txt
+4	0	docs/root.txt
+ create mode 100644 docs/acquisitions/purchase_requests_management.txt
+ create mode 100644 docs/acquisitions/purchase_requests_patron_view.txt
+
+commit 1470114b82f343138f5382e0130b6f07a03560de
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Thu Dec 1 10:47:20 2016 -0800
+
+    Docs: Making sure that image filenames don't include . character, as this can cause some versions of a2x to fail
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+3	3	docs/acquisitions/selection_lists_po.txt
+-	-	docs/media/2.10_Lineitem_Paid.PNG
+-	-	docs/media/2.7_Enhancements_to_Canceled2.jpg
+-	-	docs/media/2.7_Enhancements_to_Canceled4.jpg
+-	-	docs/media/2.7_Enhancements_to_Reports1.jpg
+-	-	docs/media/2.7_Enhancements_to_Reports2.jpg
+-	-	docs/media/2.7_Enhancements_to_Reports2a.jpg
+-	-	docs/media/2.7_Enhancements_to_Reports3.jpg
+-	-	docs/media/2.7_Enhancements_to_Reports4.jpg
+-	-	docs/media/2.7_Enhancements_to_Reports5.jpg
+-	-	docs/media/2.7_Enhancements_to_Reports6.jpg
+-	-	docs/media/2_10_Lineitem_Paid.png
+-	-	docs/media/2_7_Enhancements_to_Canceled2.jpg
+-	-	docs/media/2_7_Enhancements_to_Canceled4.jpg
+-	-	docs/media/2_7_Enhancements_to_Reports1.jpg
+-	-	docs/media/2_7_Enhancements_to_Reports2.jpg
+-	-	docs/media/2_7_Enhancements_to_Reports2a.jpg
+-	-	docs/media/2_7_Enhancements_to_Reports3.jpg
+-	-	docs/media/2_7_Enhancements_to_Reports4.jpg
+-	-	docs/media/2_7_Enhancements_to_Reports5.jpg
+-	-	docs/media/2_7_Enhancements_to_Reports6.jpg
+3	3	docs/reports/reporter_generating_reports.txt
+4	4	docs/reports/reporter_template_enhancements.txt
+ delete mode 100644 docs/media/2.10_Lineitem_Paid.PNG
+ delete mode 100644 docs/media/2.7_Enhancements_to_Canceled2.jpg
+ delete mode 100644 docs/media/2.7_Enhancements_to_Canceled4.jpg
+ delete mode 100644 docs/media/2.7_Enhancements_to_Reports1.jpg
+ delete mode 100644 docs/media/2.7_Enhancements_to_Reports2.jpg
+ delete mode 100644 docs/media/2.7_Enhancements_to_Reports2a.jpg
+ delete mode 100644 docs/media/2.7_Enhancements_to_Reports3.jpg
+ delete mode 100644 docs/media/2.7_Enhancements_to_Reports4.jpg
+ delete mode 100644 docs/media/2.7_Enhancements_to_Reports5.jpg
+ delete mode 100644 docs/media/2.7_Enhancements_to_Reports6.jpg
+ create mode 100644 docs/media/2_10_Lineitem_Paid.png
+ create mode 100644 docs/media/2_7_Enhancements_to_Canceled2.jpg
+ create mode 100644 docs/media/2_7_Enhancements_to_Canceled4.jpg
+ create mode 100644 docs/media/2_7_Enhancements_to_Reports1.jpg
+ create mode 100644 docs/media/2_7_Enhancements_to_Reports2.jpg
+ create mode 100644 docs/media/2_7_Enhancements_to_Reports2a.jpg
+ create mode 100644 docs/media/2_7_Enhancements_to_Reports3.jpg
+ create mode 100644 docs/media/2_7_Enhancements_to_Reports4.jpg
+ create mode 100644 docs/media/2_7_Enhancements_to_Reports5.jpg
+ create mode 100644 docs/media/2_7_Enhancements_to_Reports6.jpg
+
+commit e469e74487e310b6805a682bdb19cf37d8e62c70
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Thu Dec 1 10:32:41 2016 -0800
+
+    Docs: fixing missing anchor
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+1	0	docs/cataloging/authorities.txt
+
+commit 56522c440097c07a16ea1a5d05b5d14734217370
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Sat Nov 19 08:56:33 2016 -0800
+
+    Docs: consolidating some duplicate language
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+17	0	docs/cataloging/authorities.txt
+0	40	docs/cataloging/batch_importing_MARC.txt
+
+commit 9855d90a4193a70c9c602ac20dfa0052ac377c1f
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Thu Nov 17 20:25:36 2016 -0800
+
+    Docs: Incorporating overlay/merge profiles documentation from Evergreen in Action + new 2.11 feature
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+24	0	docs/cataloging/batch_importing_MARC.txt
+
+commit e985a70cada82586e5ac06aee193c95b2f0f105e
+Author: Kyle Huckins <khuckins@catalystdevworks.com>
+Date:   Tue Oct 4 09:01:02 2016 -0700
+
+    LP#1528916 Patron Holds Ready/Total
+    
+    Switch order or patron_stats().holds.ready and
+    patron_stats().holds.total in t_summary and patron
+    index.
+    
+    Signed-off-by: Kyle Huckins <khuckins@catalystdevworks.com>
+    
+     Changes to be committed:
+    	modified:   Open-ILS/src/templates/staff/circ/patron/index.tt2
+    	modified:   Open-ILS/src/templates/staff/circ/patron/t_summary.tt2
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	1	Open-ILS/src/templates/staff/circ/patron/index.tt2
+1	1	Open-ILS/src/templates/staff/circ/patron/t_summary.tt2
+
+commit 71b53d8e7e0a3432dd75d5a3d3c264f60a2b4706
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Thu Nov 17 17:02:46 2016 -0800
+
+    Docs: documenting new authority features
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+21	2	docs/cataloging/authorities.txt
