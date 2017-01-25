@@ -1,3 +1,339 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 1f611dfc61fc80d754d33562158430d3ec53ddec
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Wed Jan 25 16:14:25 2017 -0500
+
+    bump up upgrade instructions for 2.10.9
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+19	18	docs/installation/server_upgrade.txt
+
+commit 695b766a984093f2166632cd42915fd0ae9e96df
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Wed Jan 25 16:12:36 2017 -0500
+
+    2.10.8-2.10.9 schema upgrade script
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+5	0	Open-ILS/src/sql/Pg/version-upgrade/2.10.8-2.10.9-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.10.8-2.10.9-upgrade-db.sql
+
+commit 7c4082115f3d2095bf8023c8f67b72f5a34a7fc3
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Thu Dec 22 14:20:33 2016 -0500
+
+    Docs: Adding release notes for 2.10.9 point release
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+28	0	docs/RELEASE_NOTES_2_10.adoc
+
+commit d246d32659fb271c56af7818329ac9bc3f889795
+Author: Jeanette Lundgren <jlundgren@cwmars.org>
+Date:   Wed Jan 18 14:22:58 2017 -0500
+
+    LP#1494362 Docs: oversized screenshot
+    
+    Signed-off-by: Jeanette Lundgren <jlundgren@cwmars.org>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+-	-	docs/media/catalogue-3.png
+
+commit 880ab76ec692a50fc3c2807f5e040dc40dddecca
+Author: Michelle Purcell <purcellm05@gmail.com>
+Date:   Sat Jan 14 10:46:56 2017 -0300
+
+    Docs: adding section about circulating items in the Web client
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+397	0	docs/circulation/circulating_items_web_client.txt
+-	-	docs/media/backdate_checkin_web_client.png
+-	-	docs/media/backdate_post_checkin_web_client.png
+-	-	docs/media/backdate_post_date_web_client.png
+-	-	docs/media/backdate_red_web_client.png
+-	-	docs/media/check_in_menu_web_client.png
+-	-	docs/media/checkin_barcode_web_client.png
+-	-	docs/media/checkin_options_web_client.png
+-	-	docs/media/checkout_item_barcode_web_client.png
+-	-	docs/media/checkout_menu_web_client.png
+-	-	docs/media/claimed_date_web_client.png
+-	-	docs/media/cr_section_web_client.png
+-	-	docs/media/due_date_display_web_client.png
+-	-	docs/media/edit_due_date_action_web_client.png
+-	-	docs/media/in_house_use_web_client.png
+-	-	docs/media/item_status_altview_web_client.png
+-	-	docs/media/item_status_barcode_web_client.png
+-	-	docs/media/item_status_list_view_web_client.png
+-	-	docs/media/item_status_menu_web_client.png
+-	-	docs/media/items_out_click_web_client.png
+-	-	docs/media/last_few_circs_action_web_client.png
+-	-	docs/media/last_few_circs_display_web_client.png
+-	-	docs/media/lost_cr_section_web_client.png
+-	-	docs/media/lost_section_web_client.png
+-	-	docs/media/mark_claims_returned_web_client.png
+-	-	docs/media/mark_lost_web_client.png
+-	-	docs/media/overdue_checkin_web_client.png
+-	-	docs/media/patron_summary_checkouts_web_client.png
+-	-	docs/media/precat_web_client.png
+-	-	docs/media/record_in_house_action_web_client.png
+-	-	docs/media/renew_action_web_client.png
+-	-	docs/media/renew_item_calendar_web_client.png
+-	-	docs/media/renew_item_web_client.png
+-	-	docs/media/retrieve_patron_web_client.png
+-	-	docs/media/specify_due_date1_web_client.png
+2	0	docs/root.txt
+ create mode 100644 docs/circulation/circulating_items_web_client.txt
+ create mode 100644 docs/media/backdate_checkin_web_client.png
+ create mode 100644 docs/media/backdate_post_checkin_web_client.png
+ create mode 100644 docs/media/backdate_post_date_web_client.png
+ create mode 100644 docs/media/backdate_red_web_client.png
+ create mode 100644 docs/media/check_in_menu_web_client.png
+ create mode 100644 docs/media/checkin_barcode_web_client.png
+ create mode 100644 docs/media/checkin_options_web_client.png
+ create mode 100644 docs/media/checkout_item_barcode_web_client.png
+ create mode 100644 docs/media/checkout_menu_web_client.png
+ create mode 100644 docs/media/claimed_date_web_client.png
+ create mode 100644 docs/media/cr_section_web_client.png
+ create mode 100644 docs/media/due_date_display_web_client.png
+ create mode 100644 docs/media/edit_due_date_action_web_client.png
+ create mode 100644 docs/media/in_house_use_web_client.png
+ create mode 100644 docs/media/item_status_altview_web_client.png
+ create mode 100644 docs/media/item_status_barcode_web_client.png
+ create mode 100644 docs/media/item_status_list_view_web_client.png
+ create mode 100644 docs/media/item_status_menu_web_client.png
+ create mode 100644 docs/media/items_out_click_web_client.png
+ create mode 100644 docs/media/last_few_circs_action_web_client.png
+ create mode 100644 docs/media/last_few_circs_display_web_client.png
+ create mode 100644 docs/media/lost_cr_section_web_client.png
+ create mode 100644 docs/media/lost_section_web_client.png
+ create mode 100644 docs/media/mark_claims_returned_web_client.png
+ create mode 100644 docs/media/mark_lost_web_client.png
+ create mode 100644 docs/media/overdue_checkin_web_client.png
+ create mode 100644 docs/media/patron_summary_checkouts_web_client.png
+ create mode 100644 docs/media/precat_web_client.png
+ create mode 100644 docs/media/record_in_house_action_web_client.png
+ create mode 100644 docs/media/renew_action_web_client.png
+ create mode 100644 docs/media/renew_item_calendar_web_client.png
+ create mode 100644 docs/media/renew_item_web_client.png
+ create mode 100644 docs/media/retrieve_patron_web_client.png
+ create mode 100644 docs/media/specify_due_date1_web_client.png
+
+commit 9e0a26109333a5ef91605f17d18ccf4e9997e887
+Author: Jeanette Lundgren <jlundgren@cwmars.org>
+Date:   Mon Jan 9 12:10:12 2017 -0500
+
+    Updated link syntax to fix broken section link.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+5	4	docs/admin/phonelist.txt
+
+commit fb71e951241b02045dac4d25bfe3b59f9eda8bb9
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Thu Jan 5 10:03:48 2017 -0500
+
+    Docs: Add "export non-imported records"
+    
+    This commit briefly describes the queue actions, summary and filter
+    sections of the Inspect Queue page in Vandelay, as well as explaining
+    the new "Export Non-Imported Records" action. This commit includes
+    updated screenshots.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+10	1	docs/cataloging/batch_importing_MARC.txt
+-	-	docs/media/Batch_Importing_MARC_Records12.jpg
+-	-	docs/media/Batch_Importing_MARC_Records15.jpg
+
+commit 0382522b2b87679d365bf9000ea40d7fdf8ca1c0
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Wed Dec 21 16:32:26 2016 -0500
+
+    LP#1651808: avoid a class of intermittent search failures
+    
+    This patch fixes a bug where catalog searches can sometimes fail
+    with a PostgreSQL error that looks like this:
+    
+    ERROR: type of parameter 56 (double precision) does not match that when preparing the plan (numeric)
+    CONTEXT: PL/pgSQL function search.query_parser_fts(integer,integer,text,integer[],integer[],integer,integer,integer,boolean,boolean,boolean,integer) line 319 at assignment
+    
+    In particular, it ensures that the relevance values are coerced
+    to the Pg NUMERIC data type regardless of how the core query is
+    constructed; otherwise, it can sometimes end up as a double
+    precision value.  Because of how Pg backends cache query plans,
+    that change of type can result in the error above.
+    
+    To test
+    -------
+    [1] (Optional) Configure the max_children values for open-ils.storage
+        to permit only one drone, which in turn forces all catalog
+        search requests to go through a single Pg backend.
+    [2] Set the default_preferred_language_weight opensrf.xml setting
+        to 0.
+    [3] Perform a catalog search that has just a filter, e.g.,
+        item_lang(eng).
+    [4] Perform a catalog search that includes search term, e.g.,
+        cats
+    [5] The second search should fail.
+    [6] Apply the patch and try steps 3 and 4 again; this time, both
+        searches should work.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    
+    Conflicts:
+    	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Driver/Pg/QueryParser.pm
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Driver/Pg/QueryParser.pm
+
+commit 72aaaa32ffa3be9b6cbda8bf5276244e9f485222
+Author: Dan Pearl <dpearl@cwmars.org>
+Date:   Thu Jun 2 15:17:44 2016 -0400
+
+    LP#1586509 Bug fix to LP#1352542 caused extraneous blank line to appear in
+    spine label.  This affected LC call numbers that had only one cutter number
+    plus additional text following.
+    
+    Signed-off-by: Dan Pearl <dpearl@cwmars.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+21	19	Open-ILS/xul/staff_client/server/cat/spine_labels.js
+
+commit c1c645b93bf01ccc1d3a81feb7c884e6c1063c00
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Mon Dec 12 16:13:00 2016 -0500
+
+    LP#1594937 Fix off-by-one display of closed dates
+    
+    The switch to toISOString() to format dates introduced an off-by-one error in
+    the closed dates display, showing one extra day of closure due to the timezone
+    being ignored in toISOString().
+    
+    toLocaleDateString() is the future of locale-sensitive date formats. In XUL,
+    because it is an old version of Firefox, it lacks locale sensitivity, but for
+    the purposes of the web staff client it's a good base to build on as even
+    Internet Explorer supports the locale and options arguments as of IE 11.
+    
+    And for the immediate purposes of showing the right dates in the closed dates
+    editor, it works.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+1	1	Open-ILS/xul/staff_client/server/admin/closed_dates.js
+
+commit 5e98cb8eb23d93997372277aab501d97ca13427a
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Mon Dec 12 15:39:08 2016 -0500
+
+    LP#1432753 Restore "All day" verbiage to Closed Dates editor
+    
+    Commit ede7e78925 replaced the JSAN calls to util.date.formatted_date() with
+    inline date/time handling, in the process returning times with granularity to
+    the minute instead of to the second. This resulted in the test for "all day"
+    closings always failing.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+1	1	Open-ILS/xul/staff_client/server/admin/closed_dates.js
+
+commit bd0876e6152f4049d86c0b61111883c1b7be5a9a
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Thu Dec 8 21:31:25 2016 -0800
+
+    Docs: LP1268054 add patron purchase request doc
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+53	0	docs/acquisitions/purchase_requests_management.txt
+29	0	docs/acquisitions/purchase_requests_patron_view.txt
+4	0	docs/root.txt
+ create mode 100644 docs/acquisitions/purchase_requests_management.txt
+ create mode 100644 docs/acquisitions/purchase_requests_patron_view.txt
+
+commit 1da6a20881cf25f1ede9467b18e94114a6a20804
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Thu Dec 1 10:47:20 2016 -0800
+
+    Docs: Making sure that image filenames don't include . character, as this can cause some versions of a2x to fail
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+3	3	docs/acquisitions/selection_lists_po.txt
+-	-	docs/media/2.10_Lineitem_Paid.PNG
+-	-	docs/media/2.7_Enhancements_to_Canceled2.jpg
+-	-	docs/media/2.7_Enhancements_to_Canceled4.jpg
+-	-	docs/media/2.7_Enhancements_to_Reports1.jpg
+-	-	docs/media/2.7_Enhancements_to_Reports2.jpg
+-	-	docs/media/2.7_Enhancements_to_Reports2a.jpg
+-	-	docs/media/2.7_Enhancements_to_Reports3.jpg
+-	-	docs/media/2.7_Enhancements_to_Reports4.jpg
+-	-	docs/media/2.7_Enhancements_to_Reports5.jpg
+-	-	docs/media/2.7_Enhancements_to_Reports6.jpg
+-	-	docs/media/2_10_Lineitem_Paid.png
+-	-	docs/media/2_7_Enhancements_to_Canceled2.jpg
+-	-	docs/media/2_7_Enhancements_to_Canceled4.jpg
+-	-	docs/media/2_7_Enhancements_to_Reports1.jpg
+-	-	docs/media/2_7_Enhancements_to_Reports2.jpg
+-	-	docs/media/2_7_Enhancements_to_Reports2a.jpg
+-	-	docs/media/2_7_Enhancements_to_Reports3.jpg
+-	-	docs/media/2_7_Enhancements_to_Reports4.jpg
+-	-	docs/media/2_7_Enhancements_to_Reports5.jpg
+-	-	docs/media/2_7_Enhancements_to_Reports6.jpg
+3	3	docs/reports/reporter_generating_reports.txt
+4	4	docs/reports/reporter_template_enhancements.txt
+ delete mode 100644 docs/media/2.10_Lineitem_Paid.PNG
+ delete mode 100644 docs/media/2.7_Enhancements_to_Canceled2.jpg
+ delete mode 100644 docs/media/2.7_Enhancements_to_Canceled4.jpg
+ delete mode 100644 docs/media/2.7_Enhancements_to_Reports1.jpg
+ delete mode 100644 docs/media/2.7_Enhancements_to_Reports2.jpg
+ delete mode 100644 docs/media/2.7_Enhancements_to_Reports2a.jpg
+ delete mode 100644 docs/media/2.7_Enhancements_to_Reports3.jpg
+ delete mode 100644 docs/media/2.7_Enhancements_to_Reports4.jpg
+ delete mode 100644 docs/media/2.7_Enhancements_to_Reports5.jpg
+ delete mode 100644 docs/media/2.7_Enhancements_to_Reports6.jpg
+ create mode 100644 docs/media/2_10_Lineitem_Paid.png
+ create mode 100644 docs/media/2_7_Enhancements_to_Canceled2.jpg
+ create mode 100644 docs/media/2_7_Enhancements_to_Canceled4.jpg
+ create mode 100644 docs/media/2_7_Enhancements_to_Reports1.jpg
+ create mode 100644 docs/media/2_7_Enhancements_to_Reports2.jpg
+ create mode 100644 docs/media/2_7_Enhancements_to_Reports2a.jpg
+ create mode 100644 docs/media/2_7_Enhancements_to_Reports3.jpg
+ create mode 100644 docs/media/2_7_Enhancements_to_Reports4.jpg
+ create mode 100644 docs/media/2_7_Enhancements_to_Reports5.jpg
+ create mode 100644 docs/media/2_7_Enhancements_to_Reports6.jpg
+
+commit f1ec5738fa2ffb9038a35a0dc595bfa693d9e7a8
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Sat Nov 19 08:56:33 2016 -0800
+
+    Docs: consolidating some duplicate language
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+17	0	docs/cataloging/authorities.txt
+0	40	docs/cataloging/batch_importing_MARC.txt
+
+commit ce5f5a4e4d95f6da151aeedfcbad95dd80cc923d
+Author: Kyle Huckins <khuckins@catalystdevworks.com>
+Date:   Tue Oct 4 09:01:02 2016 -0700
+
+    LP#1528916 Patron Holds Ready/Total
+    
+    Switch order or patron_stats().holds.ready and
+    patron_stats().holds.total in t_summary and patron
+    index.
+    
+    Signed-off-by: Kyle Huckins <khuckins@catalystdevworks.com>
+    
+     Changes to be committed:
+    	modified:   Open-ILS/src/templates/staff/circ/patron/index.tt2
+    	modified:   Open-ILS/src/templates/staff/circ/patron/t_summary.tt2
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	1	Open-ILS/src/templates/staff/circ/patron/index.tt2
+1	1	Open-ILS/src/templates/staff/circ/patron/t_summary.tt2
