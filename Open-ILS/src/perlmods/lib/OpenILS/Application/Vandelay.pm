@@ -330,7 +330,8 @@ __PACKAGE__->register_method(
     method      => "process_spool",
     api_level   => 1,
     argc        => 3,
-    max_chunk_size => 0,
+    #max_chunk_size => 0,
+    max_bundle_count => 1,
     record_type => 'bib'
 );                      
 __PACKAGE__->register_method(  
@@ -338,7 +339,8 @@ __PACKAGE__->register_method(
     method      => "process_spool",
     api_level   => 1,
     argc        => 3,
-    max_chunk_size => 0,
+    #max_chunk_size => 0,
+    max_bundle_count => 1,
     record_type => 'auth'
 );                      
 
@@ -348,7 +350,8 @@ __PACKAGE__->register_method(
     api_level   => 1,
     argc        => 3,
     stream      => 1,
-    max_chunk_size => 0,
+    #max_chunk_size => 0,
+    max_bundle_count => 1,
     record_type => 'bib'
 );                      
 __PACKAGE__->register_method(  
@@ -357,7 +360,8 @@ __PACKAGE__->register_method(
     api_level   => 1,
     argc        => 3,
     stream      => 1,
-    max_chunk_size => 0,
+    #max_chunk_size => 0,
+    max_bundle_count => 1,
     record_type => 'auth'
 );
 
@@ -779,7 +783,8 @@ __PACKAGE__->register_method(
     api_level   => 1,
     argc        => 2,
     stream      => 1,
-    max_chunk_size => 0,
+    #max_chunk_size => 0,
+    max_bundle_count => 1,
     record_type => 'bib',
     signature => {
         desc => q/
@@ -795,7 +800,8 @@ __PACKAGE__->register_method(
     api_level   => 1,
     argc        => 2,
     stream      => 1,
-    max_chunk_size => 0,
+    #max_chunk_size => 0,
+    max_bundle_count => 1,
     record_type => 'auth'
 );
 
@@ -901,7 +907,7 @@ sub import_record_list_impl {
         report_all => $$args{report_all}
     };
 
-    $conn->max_chunk_count(1) if $$args{report_all};
+    $conn->max_chunk_count(1) if (!$conn->can('max_bundle_size') && $conn->can('max_chunk_size') && $$args{report_all});
 
     my $auto_overlay_exact = $$args{auto_overlay_exact};
     my $auto_overlay_1match = $$args{auto_overlay_1match};
