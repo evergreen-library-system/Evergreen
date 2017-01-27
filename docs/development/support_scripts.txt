@@ -23,6 +23,7 @@ to more thorough documentation, if available.
  * authority_control_fields.pl
    -- Links bibliographic records to the best matching authority record.
       Should be run at least once a day (only for changed records).
+      You can accomplish this by running _authority_control_fields.pl --days-back=1_
  * autogen.sh
    -- Generates web files used by the OPAC, especially files related to
       organization unit hierarchy, fieldmapper IDL, locales selection,
