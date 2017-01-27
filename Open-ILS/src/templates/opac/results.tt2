@@ -37,7 +37,7 @@
           </div>
           [% IF CGI.param('query') %]
           <div>
-            <a href="[% mkurl(ctx.opac_root _ '/results', {}, ['metarecord']); %]">
+            <a href="[% mkurl(ctx.opac_root _ '/results', {}, ['metarecord','page']); %]">
               [% l('&#9668; Return to Grouped Search Results') %]
             </a>
           </div>
