@@ -27,7 +27,7 @@
     <link rel="stylesheet" href="[% ctx.base_path %]/staff/css/cat.css" />
     <link rel="stylesheet" href="[% ctx.base_path %]/staff/css/style.css" />
   </head>
-  <body hatch-is-welcome-here>
+  <body>
     <toast></toast>
 
     <!-- load the navbar template inline since it's used on every page -->
