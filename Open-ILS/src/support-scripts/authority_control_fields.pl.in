@@ -589,6 +589,13 @@ Specifies the ending ID of the range of bibliographic records to process.
 This option is ignored unless it is accompanied by the B<-s> or B<--start>
 option.
 
+=item * B<--days_back>=I<number-of-days>
+
+Specifies that only bibliographic records that have been created in the
+past few days should be processed.  You must specify how many days back
+to include.  This option is incompatible with the B<-s> and B<--start>
+options.  
+
 =back
 
 =head1 EXAMPLES
