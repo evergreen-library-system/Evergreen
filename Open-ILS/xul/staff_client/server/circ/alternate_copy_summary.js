@@ -346,6 +346,9 @@ function load_item() {
             transit_list.clear();
             transit_list.append( { 'row' : { 'my' : { 'atc' : details.transit, } } });
 
+            //Set transit caption back to default of "In Transit"
+            $('transit_caption').setAttribute('label', $('circStrings').getString('staff.circ.copy_details.transit_caption'));
+            
             var transit_copy_status = typeof details.transit.copy_status() == 'object' ? details.transit.copy_status() : data.hash.ccs[ details.transit.copy_status() ];
                 set("transit_copy_status", transit_copy_status.name() );
                 set_tooltip("transit_copy_status", document.getElementById('circStrings').getFormattedString(
@@ -365,6 +368,7 @@ function load_item() {
             set("target_copy", details.transit.target_copy()); 
             set("hold_transit_copy", details.transit.hold_transit_copy()); 
         } else {
+            transit_list.clear();
             $('transit_caption').setAttribute('label', $('circStrings').getString('staff.circ.copy_details.not_transit'));
         }
 
@@ -650,7 +654,10 @@ function load_item() {
 
             hold_list.clear();
             hold_list.append( { 'row' : { 'my' : { 'ahr' : better_fleshed_hold_blob.hold, 'acp' : details.copy, 'status' : status_robj, } } });
-
+            
+            //Set hold_caption back to default of "Captured for Hold"
+            $('hold_caption').setAttribute('label', $('circStrings').getString('staff.circ.copy_details.hold_caption'));
+     
             JSAN.use('patron.util'); 
             var au_obj = patron.util.retrieve_fleshed_au_via_id( ses(), details.hold.usr() );
             $('hold_patron_name').setAttribute('value', $('circStrings').getFormattedString('staff.circ.copy_details.user_details', [au_obj.family_name(), au_obj.first_given_name(), au_obj.card().barcode()]) );
@@ -701,6 +708,9 @@ function load_item() {
             set("cancel_note", details.hold.cancel_note()); 
             set("notes", details.hold.notes()); 
         } else {
+            // Clear the hold list and remove patron name from hold screen
+            hold_list.clear();
+            $('hold_patron_name').removeAttribute('value');
             if (details.copy.status() == 8 /* ON HOLDS SHELF */) {
                 $('hold_caption').setAttribute('label', $('circStrings').getString('staff.circ.copy_details.bad_hold_status'));
             } else {
