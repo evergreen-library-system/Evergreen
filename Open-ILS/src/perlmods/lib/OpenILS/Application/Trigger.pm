@@ -757,6 +757,7 @@ sub grouped_events {
         $client->status( new OpenSRF::DomainObject::oilsContinueStatus );
     }
 
+    my @invalid; # sync for events with a null grouping field
     for my  $e (@fleshed_events) {
         if (my $group = $e->event->event_def->group_field) {
 
@@ -771,12 +772,19 @@ sub grouped_events {
             };
 
             unless($node) { # should not get here, but to be safe..
-                $e->update_state('invalid');
+                push @invalid, $e;
                 next;
             }
 
             # get the grouping value for the grouping object on this event
             my $ident_value = $node->$group_field();
+
+            # could by false-y, so check definedness
+            if (!defined($ident_value)) {
+                push @invalid, $e;
+                next;
+            }
+
             if(ref $ident_value) {
                 my $ident_field = $ident_value->Identity; 
                 $ident_value = $ident_value->$ident_field()
@@ -791,6 +799,7 @@ sub grouped_events {
         }
     }
 
+    OpenILS::Application::Trigger::Event->invalidate(@invalid) if @invalid;
 
     return \%groups;
 }

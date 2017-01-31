@@ -10,6 +10,27 @@ use Safe;
 
 my $log = 'OpenSRF::Utils::Logger';
 
+sub invalidate {
+    my $class = shift;
+    my @events = @_;
+
+    # if called as an instance method
+    unshift(@events,$class) if ref($class);
+
+    my $e = new_editor();
+    $e->xact_begin;
+
+    map {
+        $_->editor($e);
+        $_->standalone(0);
+        $_->update_state('invalid');
+    } @events;
+
+    $e->commit;
+
+    return @events;
+}
+
 sub new {
     my $class = shift;
     my $id = shift;
