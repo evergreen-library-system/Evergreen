@@ -1,0 +1,41 @@
+<!-- manage batch changes dialog -->
+<form class="form-validated" novalidate ng-submit="ok()" name="form">
+  <div>
+    <div class="modal-header">
+      <button type="button" class="close" 
+        ng-click="cancel()" aria-hidden="true">&times;</button>
+      <h4 class="modal-title">[% l('View batch changes') %]</h4>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-md-4">
+          <strong>[% l('Name') %]</strong>
+        </div>
+        <div class="col-md-3">
+          <strong>[% l('Completed') %]</strong>
+        </div>
+        <div class="col-md-3">
+          <strong>[% l('Rolled back') %]</strong>
+        </div>
+      </div>
+      <div class="row" ng-repeat="g in fieldset_groups track by $index">
+        <div class="col-md-4">
+          {{g.name()}}
+        </div>
+        <div class="col-md-3">
+          {{g.complete_time() | date}}
+        </div>
+        <div class="col-md-3">
+          {{g.rollback_time() | date}}
+        </div>
+        <div class="col-md-2">
+          <button class="btn btn-primary"
+            ng-click="deleteChangeset(g)">[% l('Delete') %]</button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <input type="submit" class="btn btn-primary" value="[% l('OK') %]"/>
+    </div>
+  </div> <!-- modal-content -->
+</form>

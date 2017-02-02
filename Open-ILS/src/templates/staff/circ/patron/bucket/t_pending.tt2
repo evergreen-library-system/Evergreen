@@ -1,0 +1,60 @@
+<form ng-submit="search()">
+<div class="row">
+  <div class="col-md-6">
+      <div class="input-group">
+        <span class="input-group-addon">[% l('Scan Card') %]</span>
+        <input type="text" class="form-control" focus-me="focusMe"
+        ng-model="bucketSvc.barcodeString" placeholder="[% l('Barcode...') %]">
+      </div>
+  </div>
+  <div class="col-md-6">
+    <div class="btn-pad" style="padding:4px;">
+      <div class="flex-row">
+        <div class="strong-text">[% l('OR') %]</div>
+        <div class="btn-pad">
+          <input type="file" eg-file-reader
+            container="barcodesFromFile" value="[% l('Upload from File') %]">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</form>
+
+<br/>
+
+<eg-grid
+  ng-hide="forbidden"
+  features="-sort,-multisort,-display"
+  id-field="id"
+  idl-class="au"
+  auto-fields="true"
+  grid-controls="gridControls"
+  items-provider="gridDataProvider"
+  menu-label="[% l('Buckets') %]"
+  persist-key="user.bucket.pending">
+
+  [% INCLUDE 'staff/circ/patron/bucket/t_grid_menu.tt2' %]
+
+  <!-- actions drop-down -->
+  <eg-grid-action label="[% l('Add To Bucket') %]" 
+    handler="addToBucket"></eg-grid-action>
+
+  <eg-grid-action label="[% l('Clear List') %]" 
+    handler="resetPendingList"></eg-grid-action>
+
+  <eg-grid-field path="id" required hidden></eg-grid-field>
+
+  <eg-grid-field label="[% l('Barcode') %]"
+    path="card.barcode" visible>
+    <a target="_self" href="[% ctx.base_path %]/staff/circ/patron/{{item.id}}/edit">
+      {{item['card.barcode']}}
+    </a>
+  </eg-grid-field>
+
+  <eg-grid-field label="[% l('First Name') %]" path="first_given_name" visible></eg-grid-field>
+  <eg-grid-field label="[% l('Middle Name') %]" path="second_given_name" visible></eg-grid-field>
+  <eg-grid-field label="[% l('Last Name') %]" path="family_name" visible></eg-grid-field>
+  <eg-grid-field label="[% l('Home Library') %]"    path="home_ou.name" visible></eg-grid-field>
+
+</eg-grid>

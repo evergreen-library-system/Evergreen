@@ -4,7 +4,7 @@
  * Search, checkout, items out, holds, bills, edit, etc.
  */
 
-angular.module('egPatronApp', ['ngRoute', 'ui.bootstrap', 
+angular.module('egPatronApp', ['ngRoute', 'ui.bootstrap', 'egUserBucketMod', 
     'egCoreMod', 'egUiMod', 'egGridMod', 'egUserMod', 'ngToast',
     'egPatronSearchMod'])
 
@@ -527,12 +527,12 @@ function($scope , $location , egCore , egConfirmDialog , egUser , patronSvc) {
  * Manages patron search
  */
 .controller('PatronSearchCtrl',
-       ['$scope','$q','$routeParams','$timeout','$window','$location','egCore',
-       '$filter','egUser', 'patronSvc','egGridDataProvider','$document',
-       'egPatronMerge','egProgressDialog','$controller',
-function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore,
-        $filter,  egUser,  patronSvc , egGridDataProvider , $document,
-        egPatronMerge , egProgressDialog,  $controller) {
+       ['$scope','$q','$routeParams','$timeout','$window','$location','egCore','ngToast',
+       '$filter','egUser', 'patronSvc','egGridDataProvider','$document','bucketSvc',
+       'egPatronMerge','egProgressDialog','$controller','$interpolate','$uibModal',
+function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore , ngToast,
+         $filter,  egUser,  patronSvc , egGridDataProvider , $document , bucketSvc,
+        egPatronMerge , egProgressDialog , $controller , $interpolate , $uibModal) {
 
     angular.extend(this, $controller('BasePatronSearchCtrl', {$scope : $scope}));
     $scope.initTab('search');
@@ -541,7 +541,65 @@ function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore,
         activateItem : function(item) {
             $location.path('/circ/patron/' + item.id() + '/checkout');
         },
-        selectedItems : function() {return []}
+        selectedItems : function() { return [] }
+    }
+
+    $scope.bucketSvc = bucketSvc;
+    $scope.bucketSvc.fetchUserBuckets();
+    $scope.addToBucket = function(item, data, recs) {
+        if (recs.length == 0) return;
+        var added_count = 0;
+        var failed_count = 0;
+        var p = [];
+        angular.forEach(recs,
+            function(rec) {
+                var item = new egCore.idl.cubi();
+                item.bucket(data.id());
+                item.target_user(rec.id());
+                p.push(egCore.net.request(
+                    'open-ils.actor',
+                    'open-ils.actor.container.item.create',
+                    egCore.auth.token(), 'user', item
+                ).then(
+                    function(){ added_count++ },
+                    function(){ failed_count++ }
+                ));
+            }
+        );
+
+        $q.all(p).then( function () {
+            if (added_count) ngToast.create($interpolate(egCore.strings.BUCKET_ADD_SUCCESS)({ count: ''+added_count, name: data.name()} ));
+            if (failed_count) ngToast.warning($interpolate(egCore.strings.BUCKET_ADD_FAIL)({ count: ''+failed_count, name: data.name() } ));
+        });
+    }
+
+    var temp_scope = $scope;
+    $scope.openCreateBucketDialog = function() {
+        $uibModal.open({
+            templateUrl: './circ/patron/bucket/t_bucket_create',
+            controller:
+                ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
+                $scope.focusMe = true;
+                $scope.ok = function(args) { $uibModalInstance.close(args) }
+                $scope.cancel = function () { $uibModalInstance.dismiss() }
+            }]
+        }).result.then(function (args) {
+            if (!args || !args.name) return;
+            bucketSvc.createBucket(args.name, args.desc).then(
+                function(id) {
+                    if (id) {
+                        $scope.bucketSvc.fetchBucket(id).then(function (b) {
+                            $scope.addToBucket(
+                                null,
+                                b,
+                                $scope.gridControls.selectedItems()
+                            );
+                            $scope.bucketSvc.fetchUserBuckets(true);
+                        });
+                    }
+                }
+            );
+        });
     }
 
     $scope.$watch(
@@ -553,6 +611,10 @@ function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore,
         true
     );
 
+    $scope.need_one_selected = function() {
+        var items = $scope.gridControls.selectedItems();
+        return (items.length > 0) ? false : true;
+    }
     $scope.need_two_selected = function() {
         var items = $scope.gridControls.selectedItems();
         return (items.length == 2) ? false : true;

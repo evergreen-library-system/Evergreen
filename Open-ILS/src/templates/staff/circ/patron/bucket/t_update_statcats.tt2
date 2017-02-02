@@ -1,0 +1,54 @@
+<!-- edit statcats dialog -->
+<style>
+progress {
+  text-align: center;
+  height: 25px;
+  width: 500px;
+  margin-bottom: 10px;
+}
+
+progress:before {
+  content: attr(label);
+  position: relative;
+  top: 5px;
+}
+</style>
+
+<form class="form-validated" novalidate ng-submit="ok(args)" name="form">
+  <div>
+    <div class="modal-header">
+      <button type="button" class="close" 
+        ng-click="cancel()" aria-hidden="true">&times;</button>
+      <h4 class="modal-title">[% l('Update statistical categories') %]</h4>
+    </div>
+    <div class="modal-body">
+      <div>
+        <div class="row" ng-repeat="sc in stat_cats track by $index">
+          <div class="col-md-4">
+            {{sc.name()}}
+          </div>
+          <div class="col-md-4">
+            <select class="form-control" ng-model="sc.new_value">
+              <option value="">[% l('Unchanged') %]</option>
+              <option ng-repeat="e in sc.entries()" value="{{e.value()}}">{{e.value()}}</option>
+            </select>
+            <input type="text" ng-disabled="!sc.allow_freetext()" class="form-control" ng-model="sc.new_value"/>
+          </div>
+          <div class="col-md-4">
+            <strong>[% l('Remove:') %]</strong> <input type="checkbox" ng-model="sc.delete_me"/>
+          </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <input type="submit" class="btn btn-primary" 
+          ng-disabled="form.$invalid" value="[% l('Apply Changes') %]"/>
+      <button class="btn btn-warning" ng-click="cancel()"
+          ng-class="{disabled : actionPending}">[% l('Cancel') %]</button>
+    </div>
+    <div class="modal-body" ng-show='running'>
+      <div ng-repeat="progress in states">
+        <progress label="{{progress.label}}" max="{{progress.max}}" value="{{progress.count}}">{{progress.label}}</progress>
+      </div>
+    </div>
+  </div> <!-- modal-content -->
+</form>

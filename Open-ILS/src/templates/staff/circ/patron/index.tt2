@@ -11,6 +11,7 @@
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/services/user.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/services/eframe.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/services/date.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/user-bucket.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/services/patrons.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/services/billing.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/services/circ.js"></script>
@@ -61,6 +62,10 @@ angular.module('egCoreMod').run(['egStrings', function(s) {
   s.PATRON_PURGE_STAFF_BAD_BARCODE = "[% l('Could not retrieve a destination account with the barcode provided. Aborting the purge...') %]";
   s.PATRON_PURGE_OVERRIDE_PROMPT = "[% l('The account has open transactions (circulations and/or unpaid bills). Purge anyway?') %]";
   s.PATRON_EDIT_COLLISION = "[% l('Patron record was modified by another user while you were editing it. Your changes were not saved; please reapply them.') %]";
+  s.OPT_IN_DIALOG_TITLE = "[% l('Verify Permission to Share Personal Information') %]";
+  s.OPT_IN_DIALOG = "[% l('Does patron [_1], [_2] from [_3] ([_4]) consent to having their personal information shared with your library?', '{{family_name}}', '{{first_given_name}}', '{{org_name}}', '{{org_shortname}}') %]";
+  s.BUCKET_ADD_SUCCESS = "[% l('Successfully added [_1] users to bucket [_2].', '{{count}}', '{{name}}') %]";
+  s.BUCKET_ADD_FAIL = "[% l('Failed to add [_1] users to bucket [_2].', '{{count}}', '{{name}}') %]";
 }]);
 </script>
 

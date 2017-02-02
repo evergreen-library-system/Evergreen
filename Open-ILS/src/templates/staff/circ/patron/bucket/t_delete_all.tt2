@@ -1,0 +1,43 @@
+<!-- edit bucket dialog -->
+<style>
+progress {
+  text-align: center;
+  height: 25px;
+  width: 500px;
+  margin-bottom: 10px;
+}
+
+progress:before {
+  content: attr(label);
+  position: relative;
+  top: 5px;
+}
+</style>
+
+<form class="form-validated" novalidate ng-submit="ok(args)" name="form">
+  <div>
+    <div class="modal-header">
+      <button type="button" class="close" 
+        ng-click="cancel()" aria-hidden="true">&times;</button>
+      <h4 class="modal-title">[% l('Delete all users') %]</h4>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label for="edit-delete-name">[% l('Name for delete set') %]</label>
+        <input type="text" class="form-control" focus-me='focusMe' required
+          id="edit-delete-name" ng-model="args.name" placeholder="[% l('Name...') %]"/>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <input type="submit" class="btn btn-primary" 
+          ng-disabled="form.$invalid" value="[% l('Apply Changes') %]"/>
+      <button class="btn btn-warning" ng-click="cancel()"
+          ng-class="{disabled : actionPending}">[% l('Cancel') %]</button>
+    </div>
+    <div class="modal-body" ng-show='running'>
+      <div ng-repeat="progress in states">
+        <progress label="{{progress.label}}" max="{{progress.max}}" value="{{progress.count}}">{{progress.label}}</progress>
+      </div>
+    </div>
+  </div> <!-- modal-content -->
+</form>

@@ -22,14 +22,53 @@ my $svc = 'open-ils.cstore';
 my $meth = 'open-ils.cstore.direct.container';
 my %types;
 my %ctypes;
+my %itypes;
+my %htypes;
+my %qtypes;
+my %ttypes;
+my %batch_perm;
+my %table;
+
+$batch_perm{'biblio'} = ['UPDATE_MARC'];
+$batch_perm{'callnumber'} = ['UPDATE_VOLUME'];
+$batch_perm{'copy'} = ['UPDATE_COPY'];
+$batch_perm{'user'} = ['UPDATE_USER'];
+
 $types{'biblio'} = "$meth.biblio_record_entry_bucket";
 $types{'callnumber'} = "$meth.call_number_bucket";
 $types{'copy'} = "$meth.copy_bucket";
 $types{'user'} = "$meth.user_bucket";
+
 $ctypes{'biblio'} = "container_biblio_record_entry_bucket";
 $ctypes{'callnumber'} = "container_call_number_bucket";
 $ctypes{'copy'} = "container_copy_bucket";
 $ctypes{'user'} = "container_user_bucket";
+
+$itypes{'biblio'} = "biblio_record_entry";
+$itypes{'callnumber'} = "asset_call_number";
+$itypes{'copy'} = "asset_copy";
+$itypes{'user'} = "actor_user";
+
+$ttypes{'biblio'} = "biblio_record_entry";
+$ttypes{'callnumber'} = "call_number";
+$ttypes{'copy'} = "copy";
+$ttypes{'user'} = "user";
+
+$htypes{'biblio'} = "bre";
+$htypes{'callnumber'} = "acn";
+$htypes{'copy'} = "acp";
+$htypes{'user'} = "au";
+
+$table{'biblio'} = "biblio.record_entry";
+$table{'callnumber'} = "asset.call_number";
+$table{'copy'} = "asset.copy";
+$table{'user'} = "actor.usr";
+
+#$qtypes{'biblio'} = 0 
+#$qtypes{'callnumber'} = 0;
+#$qtypes{'copy'} = 0;
+$qtypes{'user'} = 1;
+
 my $event;
 
 sub _sort_buckets {
@@ -647,6 +686,467 @@ sub anon_cache {
         return $blob->{$field_key};
     }
 }
+
+sub batch_statcat_apply {
+    my $self = shift;
+    my $client = shift;
+    my $ses = shift;
+    my $c_id = shift;
+    my $changes = shift;
+
+    # $changes is a hashref that looks like:
+    #   {
+    #       remove  => [ qw/ stat cat ids to remove / ],
+    #       apply   => { $statcat_id => $value_string, ... }
+    #   }
+
+    my $class = 'user';
+    my $max = 0;
+    my $count = 0;
+    my $stage = 0;
+
+    my $e = new_editor(xact=>1, authtoken=>$ses);
+    return $e->die_event unless $e->checkauth;
+    $client->respond({ ord => $stage++, stage => 'CONTAINER_BATCH_UPDATE_PERM_CHECK' });
+    return $e->die_event unless $e->allowed('CONTAINER_BATCH_UPDATE');
+
+    my $meth = 'retrieve_' . $ctypes{$class};
+    my $bkt = $e->$meth($c_id) or return $e->die_event;
+
+    unless($bkt->owner eq $e->requestor->id) {
+        $client->respond({ ord => $stage++, stage => 'CONTAINER_PERM_CHECK' });
+        my $owner = $e->retrieve_actor_user($bkt->owner)
+            or return $e->die_event;
+        return $e->die_event unless (
+            $e->allowed('VIEW_CONTAINER', $bkt->owning_lib) || $e->allowed('VIEW_CONTAINER', $owner->home_ou)
+        );
+    }
+
+    $meth = 'search_' . $ctypes{$class} . '_item';
+    my $contents = $e->$meth({bucket => $c_id});
+
+    if ($self->{perms}) {
+        $max = scalar(@$contents);
+        $client->respond({ ord => $stage, max => $max, count => 0, stage => 'ITEM_PERM_CHECK' });
+        for my $item (@$contents) {
+            $count++;
+            $meth = 'retrieve_' . $itypes{$class};
+            my $field = 'target_'.$ttypes{$class};
+            my $obj = $e->$meth($item->$field);
+
+            for my $perm_field (keys %{$self->{perms}}) {
+                my $perm_def = $self->{perms}->{$perm_field};
+                my ($pwhat,$pwhere) = ([split ' ', $perm_def], $perm_field);
+                for my $p (@$pwhat) {
+                    $e->allowed($p, $obj->$pwhere) or return $e->die_event;
+                }
+            }
+            $client->respond({ ord => $stage, max => $max, count => $count, stage => 'ITEM_PERM_CHECK' });
+        }
+        $stage++;
+    }
+
+    my @users = map { $_->target_user } @$contents;
+    $max = scalar(@users) * scalar(@{$changes->{remove}});
+    $count = 0;
+    $client->respond({ ord => $stage, max => $max, count => $count, stage => 'STAT_CAT_REMOVE' });
+
+    my $chunk = int($max / 10) || 1;
+    my $to_remove = $e->search_actor_stat_cat_entry_user_map({ target_usr => \@users, stat_cat => $changes->{remove} });
+    for my $t (@$to_remove) {
+        $e->delete_actor_stat_cat_entry_user_map($t);
+        $count++;
+        $client->respond({ ord => $stage, max => $max, count => $count, stage => 'STAT_CAT_REMOVE' })
+            unless ($count % $chunk);
+    }
+
+    $stage++;
+
+    $max = scalar(@users) * scalar(keys %{$changes->{apply}});
+    $count = 0;
+    $client->respond({ ord => $stage, max => $max, count => $count, stage => 'STAT_CAT_APPLY' });
+
+    $chunk = int($max / 10) || 1;
+    for my $item (@$contents) {
+        for my $astatcat (keys %{$changes->{apply}}) {
+            my $new_value = $changes->{apply}->{$astatcat};
+            my $to_change = $e->search_actor_stat_cat_entry_user_map({ target_usr => $item->target_user, stat_cat => $astatcat });
+            if (@$to_change) {
+                $to_change = $$to_change[0];
+                $to_change->stat_cat_entry($new_value);
+                $e->update_actor_stat_cat_entry_user_map($to_change);
+            } else {
+                $to_change = new Fieldmapper::actor::stat_cat_entry_user_map;
+                $to_change->stat_cat_entry($new_value);
+                $to_change->stat_cat($astatcat);
+                $to_change->target_usr($item->target_user);
+                $e->create_actor_stat_cat_entry_user_map($to_change);
+            }
+            $count++;
+            $client->respond({ ord => $stage, max => $max, count => $count, stage => 'STAT_CAT_APPLY' })
+                unless ($count % $chunk);
+        }
+    }
+
+    $e->commit;
+
+    return { stage => 'COMPLETE' };
+}
+
+__PACKAGE__->register_method(
+    method  => "batch_statcat_apply",
+    api_name    => "open-ils.actor.container.user.batch_statcat_apply",
+    ctype       => 'user',
+    perms       => {
+            home_ou     => 'UPDATE_USER', # field -> perm means "test this perm with field as context OU", both old and new
+    },
+    fields      => [ qw/active profile juvenile home_ou expire_date barred net_access_level/ ],
+    signature => {
+        desc => 'Edits allowed fields on users in a bucket',
+        params => [{
+            desc => 'Session key', type => 'string',
+            desc => 'User container id',
+            desc => 'Hash of statcats to apply or remove', type => 'hash',
+        }],
+        return => {
+            desc => 'Object with the structure { stage => "stage string", max => max_for_stage, count => count_in_stage }',
+            type => 'hash'
+        }
+    }
+);
+
+
+sub apply_rollback {
+    my $self = shift;
+    my $client = shift;
+    my $ses = shift;
+    my $c_id = shift;
+    my $main_fsg = shift;
+
+    my $max = 0;
+    my $count = 0;
+    my $stage = 0;
+
+    my $class = $self->{ctype} or return undef;
+
+    my $e = new_editor(xact=>1, authtoken=>$ses);
+    return $e->die_event unless $e->checkauth;
+
+    for my $bp (@{$batch_perm{$class}}) {
+        return { stage => 'COMPLETE' } unless $e->allowed($bp);
+    }
+
+    $client->respond({ ord => $stage++, stage => 'CONTAINER_BATCH_UPDATE_PERM_CHECK' });
+    return $e->die_event unless $e->allowed('CONTAINER_BATCH_UPDATE');
+
+    my $meth = 'retrieve_' . $ctypes{$class};
+    my $bkt = $e->$meth($c_id) or return $e->die_event;
+
+    unless($bkt->owner eq $e->requestor->id) {
+        $client->respond({ ord => $stage++, stage => 'CONTAINER_PERM_CHECK' });
+        my $owner = $e->retrieve_actor_user($bkt->owner)
+            or return $e->die_event;
+        return $e->die_event unless (
+            $e->allowed('VIEW_CONTAINER', $bkt->owning_lib) || $e->allowed('VIEW_CONTAINER', $owner->home_ou)
+        );
+    }
+
+    $main_fsg = $e->retrieve_action_fieldset_group($main_fsg);
+    return { stage => 'COMPLETE', error => 'No field set group' } unless $main_fsg;
+
+    my $rbg = $e->retrieve_action_fieldset_group($main_fsg->rollback_group);
+    return { stage => 'COMPLETE', error => 'No rollback field set group' } unless $rbg;
+
+    my $fieldsets = $e->search_action_fieldset({fieldset_group => $rbg->id});
+    $max = scalar(@$fieldsets);
+
+    $client->respond({ ord => $stage, max => $max, count => 0, stage => 'APPLY_EDITS' });
+    for my $fs (@$fieldsets) {
+        my $res = $e->json_query({
+            from => ['action.apply_fieldset', $fs->id, $table{$class}, 'id', undef]
+        })->[0]->{'action.apply_fieldset'};
+
+        $client->respond({
+            ord => $stage,
+            max => $max,
+            count => ++$count,
+            stage => 'APPLY_EDITS',
+            error => $res ? "Could not apply fieldset ".$fs->id.": $res" : undef
+        });
+    }
+
+    $main_fsg->rollback_time('now');
+    $e->update_action_fieldset_group($main_fsg);
+
+    $e->commit;
+
+    return { stage => 'COMPLETE' };
+}
+__PACKAGE__->register_method(
+    method  => "apply_rollback",
+    max_bundle_count => 1,
+    api_name    => "open-ils.actor.container.user.apply_rollback",
+    ctype       => 'user',
+    signature => {
+        desc => 'Applys rollback of a fieldset group to users in a bucket',
+        params => [
+            { desc => 'Session key', type => 'string' },
+            { desc => 'User container id', type => 'number' },
+            { desc => 'Main (non-rollback) fieldset group' },
+        ],
+        return => {
+            desc => 'Object with the structure { fieldset_group => $id, stage => "COMPLETE", error => ("error string if any"|undef if none) }',
+            type => 'hash'
+        }
+    }
+);
+
+
+sub batch_edit {
+    my $self = shift;
+    my $client = shift;
+    my $ses = shift;
+    my $c_id = shift;
+    my $edit_name = shift;
+    my $edits = shift;
+
+    my $max = 0;
+    my $count = 0;
+    my $stage = 0;
+
+    my $class = $self->{ctype} or return undef;
+
+    my $e = new_editor(xact=>1, authtoken=>$ses);
+    return $e->die_event unless $e->checkauth;
+
+    for my $bp (@{$batch_perm{$class}}) {
+        return { stage => 'COMPLETE' } unless $e->allowed($bp);
+    }
+
+    $client->respond({ ord => $stage++, stage => 'CONTAINER_BATCH_UPDATE_PERM_CHECK' });
+    return $e->die_event unless $e->allowed('CONTAINER_BATCH_UPDATE');
+
+    my $meth = 'retrieve_' . $ctypes{$class};
+    my $bkt = $e->$meth($c_id) or return $e->die_event;
+
+    unless($bkt->owner eq $e->requestor->id) {
+        $client->respond({ ord => $stage++, stage => 'CONTAINER_PERM_CHECK' });
+        my $owner = $e->retrieve_actor_user($bkt->owner)
+            or return $e->die_event;
+        return $e->die_event unless (
+            $e->allowed('VIEW_CONTAINER', $bkt->owning_lib) || $e->allowed('VIEW_CONTAINER', $owner->home_ou)
+        );
+    }
+
+    $meth = 'search_' . $ctypes{$class} . '_item';
+    my $contents = $e->$meth({bucket => $c_id});
+
+    $max = 0;
+    $max = scalar(@$contents) if ($self->{perms});
+    $max += scalar(@$contents) if ($self->{base_perm});
+
+    my $obj_cache = {};
+    if ($self->{base_perm}) {
+        $client->respond({ ord => $stage, max => $max, count => $count, stage => 'ITEM_PERM_CHECK' });
+        for my $item (@$contents) {
+            $count++;
+            $meth = 'retrieve_' . $itypes{$class};
+            my $field = 'target_'.$ttypes{$class};
+            my $obj = $$obj_cache{$item->$field} = $e->$meth($item->$field);
+
+            for my $perm_field (keys %{$self->{base_perm}}) {
+                my $perm_def = $self->{base_perm}->{$perm_field};
+                my ($pwhat,$pwhere) = ([split ' ', $perm_def], $perm_field);
+                for my $p (@$pwhat) {
+                    $e->allowed($p, $obj->$pwhere) or return $e->die_event;
+                    if ($$edits{$pwhere}) {
+                        $e->allowed($p, $$edits{$pwhere}) or do {
+                            $logger->warn("Cannot update $class ".$obj->id.", $pwhat at $pwhere not allowed.");
+                            return $e->die_event;
+                        };
+                    }
+                }
+            }
+            $client->respond({ ord => $stage, max => $max, count => $count, stage => 'ITEM_PERM_CHECK' });
+        }
+    }
+
+    if ($self->{perms}) {
+        $client->respond({ ord => $stage, max => $max, count => $count, stage => 'ITEM_PERM_CHECK' });
+        for my $item (@$contents) {
+            $count++;
+            $meth = 'retrieve_' . $itypes{$class};
+            my $field = 'target_'.$ttypes{$class};
+            my $obj = $$obj_cache{$item->$field} || $e->$meth($item->$field);
+
+            for my $perm_field (keys %{$self->{perms}}) {
+                my $perm_def = $self->{perms}->{$perm_field};
+                if (ref($perm_def) eq 'HASH') { # we care about specific values being set
+                    for my $perm_value (keys %$perm_def) {
+                        if (exists $$edits{$perm_field} && $$edits{$perm_field} eq $perm_value) { # check permission
+                            while (my ($pwhat,$pwhere) = each %{$$perm_def{$perm_value}}) {
+                                if ($pwhere eq '*') {
+                                    $pwhere = undef;
+                                } else {
+                                    $pwhere = $obj->$pwhere;
+                                }
+                                $pwhat = [ split / /, $pwhat ];
+                                for my $p (@$pwhat) {
+                                    $e->allowed($p, $pwhere) or do {
+                                        $pwhere ||= "everywhere";
+                                        $logger->warn("Cannot update $class ".$obj->id.", $pwhat at $pwhere not allowed.");
+                                        return $e->die_event;
+                                    };
+                                }
+                            }
+                        }
+                    }
+                } elsif (ref($perm_def) eq 'CODE') { # we need to run the code on old and new, and pass both tests
+                    if (exists $$edits{$perm_field}) {
+                        $perm_def->($e, $obj->$perm_field) or return $e->die_event;
+                        $perm_def->($e, $$edits{$perm_field}) or return $e->die_event;
+                    }
+                } else { # we're checking an ou field
+                    my ($pwhat,$pwhere) = ([split ' ', $perm_def], $perm_field);
+                    if ($$edits{$pwhere}) {
+                        for my $p (@$pwhat) {
+                            $e->allowed($p, $obj->$pwhere) or return $e->die_event;
+                            $e->allowed($p, $$edits{$pwhere}) or do {
+                                $logger->warn("Cannot update $class ".$obj->id.", $pwhat at $pwhere not allowed.");
+                                return $e->die_event;
+                            };
+                        }
+                    }
+                }
+            }
+            $client->respond({ ord => $stage, max => $max, count => $count, stage => 'ITEM_PERM_CHECK' });
+        }
+        $stage++;
+    }
+
+    $client->respond({ ord => $stage++, stage => 'FIELDSET_GROUP_CREATE' });
+    my $fsgroup = Fieldmapper::action::fieldset_group->new;
+    $fsgroup->isnew(1);
+    $fsgroup->name($edit_name);
+    $fsgroup->creator($e->requestor->id);
+    $fsgroup->owning_lib($e->requestor->ws_ou);
+    $fsgroup->container($c_id);
+    $fsgroup->container_type($ttypes{$class});
+    $fsgroup = $e->create_action_fieldset_group($fsgroup);
+
+    $client->respond({ ord => $stage++, stage => 'FIELDSET_CREATE' });
+    my $fieldset = Fieldmapper::action::fieldset->new;
+    $fieldset->isnew(1);
+    $fieldset->fieldset_group($fsgroup->id);
+    $fieldset->owner($e->requestor->id);
+    $fieldset->owning_lib($e->requestor->ws_ou);
+    $fieldset->status('PENDING');
+    $fieldset->classname($htypes{$class});
+    $fieldset->name($edit_name . ' batch group fieldset');
+    $fieldset->stored_query($qtypes{$class});
+    $fieldset = $e->create_action_fieldset($fieldset);
+
+    my @keys = keys %$edits;
+    $max = scalar(@keys);
+    $count = 0;
+    $client->respond({ ord => $stage, count=> $count, max => $max, stage => 'FIELDSET_EDITS_CREATE' });
+    for my $key (@keys) {
+        if ($self->{fields}) { # restrict edits to registered fields
+            next unless (grep { $_ eq $key } @{$self->{fields}});
+        }
+        my $fs_cv = Fieldmapper::action::fieldset_col_val->new;
+        $fs_cv->isnew(1);
+        $fs_cv->fieldset($fieldset->id);
+        $fs_cv->col($key);
+        $fs_cv->val($$edits{$key});
+        $e->create_action_fieldset_col_val($fs_cv);
+        $count++;
+        $client->respond({ ord => $stage, count=> $count, max => $max, stage => 'FIELDSET_EDITS_CREATE' });
+    }
+
+    $client->respond({ ord => ++$stage, stage => 'CONSTRUCT_QUERY' });
+    my $qstore = OpenSRF::AppSession->connect('open-ils.qstore');
+    my $prep = $qstore->request('open-ils.qstore.prepare', $fieldset->stored_query)->gather(1);
+    my $token = $prep->{token};
+    $qstore->request('open-ils.qstore.bind_param', $token, {bucket => $c_id})->gather(1);
+    my $sql = $qstore->request('open-ils.qstore.sql', $token)->gather(1);
+    $sql =~ s/\n\s*/ /g; # normalize the string
+    $sql =~ s/;\s*//g; # kill trailing semicolon
+
+    $client->respond({ ord => ++$stage, stage => 'APPLY_EDITS' });
+    my $res = $e->json_query({
+        from => ['action.apply_fieldset', $fieldset->id, $table{$class}, 'id', $sql]
+    })->[0]->{'action.apply_fieldset'};
+
+    $e->commit;
+    $qstore->disconnect;
+
+    return { fieldset_group => $fsgroup->id, stage => 'COMPLETE', error => $res };
+}
+
+__PACKAGE__->register_method(
+    method  => "batch_edit",
+    max_bundle_count => 1,
+    api_name    => "open-ils.actor.container.user.batch_edit",
+    ctype       => 'user',
+    base_perm   => { home_ou => 'UPDATE_USER' },
+    perms       => {
+            profile => sub {
+                my ($e, $group) = @_;
+                my $g = $e->retrieve_permission_grp_tree($group);
+                if (my $p = $g->application_perm()) {
+                    return $e->allowed($p);
+                }
+                return 1;
+            }, # code ref is run with params (editor,value), for both old and new value
+            # home_ou => 'UPDATE_USER', # field -> perm means "test this perm with field as context OU", both old and new
+            barred  => {
+                    t => { BAR_PATRON => 'home_ou' },
+                    f => { UNBAR_PATRON => 'home_ou' }
+            } # field -> struct means "if field getting value "key" check -> perm -> at context org, both old and new
+    },
+    fields      => [ qw/active profile juvenile home_ou expire_date barred net_access_level/ ],
+    signature => {
+        desc => 'Edits allowed fields on users in a bucket',
+        params => [
+            { desc => 'Session key', type => 'string' },
+            { desc => 'User container id', type => 'number' },
+            { desc => 'Batch edit name', type => 'string' },
+            { desc => 'Edit hash, key is column, value is new value to apply', type => 'hash' },
+        ],
+        return => {
+            desc => 'Object with the structure { fieldset_group => $id, stage => "COMPLETE", error => ("error string if any"|undef if none) }',
+            type => 'hash'
+        }
+    }
+);
+
+__PACKAGE__->register_method(
+    method  => "batch_edit",
+    api_name    => "open-ils.actor.container.user.batch_delete",
+    ctype       => 'user',
+    perms       => {
+            deleted => {
+                    t => { 'DELETE_USER UPDATE_USER' => 'home_ou' },
+                    f => { 'UPDATE_USER' => 'home_ou' }
+            }
+    },
+    fields      => [ qw/deleted/ ],
+    signature => {
+        desc => 'Deletes users in a bucket',
+        params => [{
+            { desc => 'Session key', type => 'string' },
+            { desc => 'User container id', type => 'number' },
+            { desc => 'Batch delete name', type => 'string' },
+            { desc => 'Edit delete, key is "deleted", value is new value to apply ("t")', type => 'hash' },
+            
+        }],
+        return => {
+            desc => 'Object with the structure { fieldset_group => $id, stage => "COMPLETE", error => ("error string if any"|undef if none) }',
+            type => 'hash'
+        }
+    }
+);
 
 
 

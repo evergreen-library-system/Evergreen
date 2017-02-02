@@ -1,0 +1,49 @@
+<eg-grid
+  ng-hide="forbidden"
+  features="allowAll,-display"
+  id-field="id"
+  idl-class="au"
+  auto-fields="true"
+  grid-controls="gridControls"
+  menu-label="[% l('Buckets') %]"
+  persist-key="user.bucket.view">
+
+  [% INCLUDE 'staff/circ/patron/bucket/t_grid_menu.tt2' %]
+
+  <eg-grid-menu-item disabled="noDeletePerms" label="[% l('Delete all users') %]"
+    handler="deleteAllUsers" standalone="true"></eg-grid-menu-item>
+
+  <eg-grid-menu-item disabled="noUpdatePerms" label="[% l('Batch edit all users') %]"
+    handler="updateAllUsers" standalone="true"></eg-grid-menu-item>
+
+  <eg-grid-menu-item label="[% l('View batch edits') %]"
+    handler="viewChangesets" standalone="true"></eg-grid-menu-item>
+
+  <eg-grid-menu-item label="[% l('Roll back batch edit') %]"
+    handler="applyRollback" standalone="true"></eg-grid-menu-item>
+
+  <eg-grid-menu-item label="[% l('Batch modify statistical categories') %]"
+    handler="modifyStatcats" standalone="true"></eg-grid-menu-item>
+
+  <eg-grid-action label="[% l('Individually Edit Selected Users') %]" 
+    handler="spawnUserEdit"></eg-grid-action>
+  <eg-grid-action label="[% l('Remove Selected Users from Bucket') %]" 
+    handler="detachUsers"></eg-grid-action>
+
+  <eg-grid-field path="id" required hidden></eg-grid-field>
+
+  <eg-grid-field label="[% l('Barcode') %]"
+    path="card.barcode" visible>
+    <a target="_self" href="[% ctx.base_path %]/staff/circ/patron/{{item.id}}/edit">
+      {{item['card.barcode']}}
+    </a>
+  </eg-grid-field>
+
+  <eg-grid-field label="[% l('First Name') %]" path="first_given_name" visible></eg-grid-field>
+  <eg-grid-field label="[% l('Middle Name') %]" path="second_given_name" visible></eg-grid-field>
+  <eg-grid-field label="[% l('Last Name') %]" path="family_name" visible></eg-grid-field>
+  <eg-grid-field label="[% l('Home Library') %]"    path="home_ou.name" visible></eg-grid-field>
+  <eg-grid-field path="mailing_address.*" hidden></eg-grid-field>
+  <eg-grid-field path="billing_address.*" hidden></eg-grid-field>
+
+</eg-grid>

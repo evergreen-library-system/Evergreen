@@ -1,0 +1,25 @@
+<!-- load bucket by id ("shared") -->
+<form class="form-validated" novalidate name="form" ng-submit="ok(args)">
+  <div>
+    <div class="modal-header">
+      <button type="button" class="close" 
+        ng-click="cancel()" aria-hidden="true">&times;</button>
+      <h4 class="modal-title">[% l('Load Shared Bucket Bucket by ID') %]</h4>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label for="load-bucket-id">[% l('Bucket ID') %]</label>
+        <!-- NOTE: type='number' / required -->
+        <input type="number" class="form-control" focus-me='focusMe' required
+          id="load-bucket-id" ng-model="args.id" placeholder="[% l('Bucket ID...') %]"/>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <input type="submit" ng-disabled="form.$invalid" 
+          class="btn btn-primary" value="[% l('Load Bucket') %]"/>
+      <button class="btn btn-warning" 
+          ng-click="cancel()">[% l('Cancel') %]</button>
+    </div>
+  </div> <!-- modal-content -->
+</form>
+

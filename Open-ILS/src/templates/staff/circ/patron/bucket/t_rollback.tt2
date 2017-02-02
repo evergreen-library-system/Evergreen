@@ -1,0 +1,48 @@
+<!-- edit bucket dialog -->
+<style>
+progress {
+  text-align: center;
+  height: 25px;
+  width: 500px;
+  margin-bottom: 10px;
+}
+
+progress:before {
+  content: attr(label);
+  position: relative;
+  top: 5px;
+}
+</style>
+
+<form class="form-validated" novalidate ng-submit="ok(args)" name="form">
+  <div>
+    <div class="modal-header">
+      <button type="button" class="close" 
+        ng-click="cancel()" aria-hidden="true">&times;</button>
+      <h4 class="modal-title">[% l('Roll back batch edit') %]</h4>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <select
+            class="form-control"
+            ng-model="revert_me"
+            required
+            ng-options="g.name() for g in revertable_fieldset_groups track by g.id()"
+        >
+          <option value="">[% l('--- Select edit to roll back ---') %]</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <input type="submit" class="btn btn-primary" 
+          ng-disabled="form.$invalid" value="[% l('Roll Back Changes') %]"/>
+      <button class="btn btn-warning" ng-click="cancel()"
+          ng-class="{disabled : actionPending}">[% l('Cancel') %]</button>
+    </div>
+    <div class="modal-body" ng-show='running'>
+      <div ng-repeat="progress in states">
+        <progress label="{{progress.label}}" max="{{progress.max}}" value="{{progress.count}}">{{progress.label}}</progress>
+      </div>
+    </div>
+  </div> <!-- modal-content -->
+</form>

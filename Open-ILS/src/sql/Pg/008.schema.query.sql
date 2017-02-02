@@ -1160,4 +1160,27 @@ CREATE OR REPLACE RULE query_expr_xsubq_delete_rule AS
     DO INSTEAD
     DELETE FROM query.expression WHERE id = OLD.id;
 
+INSERT INTO query.bind_variable (name,type,description,label)
+    SELECT  'bucket','number','ID of the bucket to pull items from','Bucket ID';
+
+-- Assumes completely empty 'query' schema
+INSERT INTO query.stored_query (type, use_distinct) VALUES ('SELECT', TRUE); -- 1
+
+INSERT INTO query.from_relation (type, table_name, class_name, table_alias) VALUES ('RELATION', 'container.user_bucket_item', 'cubi', 'cubi'); -- 1
+UPDATE query.stored_query SET from_clause = 1;
+
+INSERT INTO query.expr_xcol (table_alias, column_name) VALUES ('cubi', 'target_user'); -- 1
+INSERT INTO query.select_item (stored_query,seq_no,expression) VALUES (1,1,1);
+
+INSERT INTO query.expr_xcol (table_alias, column_name) VALUES ('cubi', 'bucket'); -- 2
+INSERT INTO query.expr_xbind (bind_variable) VALUES ('bucket'); -- 3
+
+INSERT INTO query.expr_xop (left_operand, operator, right_operand) VALUES (2, '=', 3); -- 4
+UPDATE query.stored_query SET where_clause = 4;
+
+SELECT SETVAL('query.stored_query_id_seq', 1000, TRUE) FROM query.stored_query;
+SELECT SETVAL('query.from_relation_id_seq', 1000, TRUE) FROM query.from_relation;
+SELECT SETVAL('query.expression_id_seq', 10000, TRUE) FROM query.expression;
+
+
 COMMIT;

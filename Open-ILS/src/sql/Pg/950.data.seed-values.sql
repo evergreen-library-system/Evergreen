@@ -1679,7 +1679,9 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 590, 'ADMIN_COPY_TAG_TYPES', oils_i18n_gettext( 590,
     'Administer copy tag types', 'ppl', 'description' )),
  ( 591, 'ADMIN_COPY_TAG', oils_i18n_gettext( 591,
-    'Administer copy tag', 'ppl', 'description' ))
+    'Administer copy tag', 'ppl', 'description' )),
+ ( 592,'CONTAINER_BATCH_UPDATE', oils_i18n_gettext( 592,
+    'Allow batch update via buckets', 'ppl', 'description' ))
 ;
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
@@ -5378,6 +5380,7 @@ INSERT INTO container.user_bucket_type (code,label) VALUES ('folks:circ.checkout
 INSERT INTO container.user_bucket_type (code,label) VALUES ('folks:hold.view', oils_i18n_gettext('folks:hold.view', 'View Holds', 'cubt', 'label'));
 INSERT INTO container.user_bucket_type (code,label) VALUES ('folks:hold.cancel', oils_i18n_gettext('folks:hold.cancel', 'Cancel Holds', 'cubt', 'label'));
 
+INSERT INTO container.user_bucket_type (code,label) SELECT code,label FROM container.copy_bucket_type where code = 'staff_client';
 
 ----------------------------------
 -- MARC21 record structure data --

@@ -4,14 +4,24 @@
   idl-class="au" id-field="id"
   features="-sort,-display,-multisort"
   main-label="[% l('Patron Search Results') %]"
+  menu-label="[% l('Add To Bucket') %]"
   grid-controls="gridControls"
   items-provider="patronSearchGridProvider"
   persist-key="circ.patron.search"
   dateformat="{{$root.egDateAndTimeFormat}}">
 
   <eg-grid-menu-item handler="merge_patrons"
-    disabled="need_two_selected"
+    disabled="need_two_selected" standalone="true"
     label="[% l('Merge Patrons') %]"></eg-grid-menu-item>
+
+  <eg-grid-menu-item label="[% l('New Bucket') %]"
+    handler="openCreateBucketDialog"></eg-grid-menu-item>
+
+  <eg-grid-menu-item divider="true"></eg-grid-menu-item>
+
+  <eg-grid-menu-item ng-repeat="bkt in bucketSvc.allBuckets"
+    label="{{bkt.name()}}" handler-data="bkt"
+    handler="addToBucket" disabled="need_one_selected"></eg-grid-menu-item>
 
   <eg-grid-field label="[% ('ID') %]" path='id' visible></eg-grid-field>
   <eg-grid-field label="[% ('Card') %]" path='card.barcode' visible></eg-grid-field>

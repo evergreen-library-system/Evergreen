@@ -1,0 +1,145 @@
+<!-- edit bucket dialog -->
+<style>
+progress {
+  text-align: center;
+  height: 25px;
+  width: 500px;
+  margin-bottom: 10px;
+}
+
+progress:before {
+  content: attr(label);
+  position: relative;
+  top: 5px;
+}
+</style>
+
+<form class="form-validated" novalidate ng-submit="ok(args)" name="form">
+  <div>
+    <div class="modal-header">
+      <button type="button" class="close" 
+        ng-click="cancel()" aria-hidden="true">&times;</button>
+      <h4 class="modal-title">[% l('Update all users') %]</h4>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label for="edit-name">[% l('Name for edit set') %]</label>
+        <input type="text" class="form-control" focus-me='focusMe' required
+          id="edit-name" ng-model="args.name" placeholder="[% l('Name...') %]"/>
+      </div>
+      <hr/>
+      <div>
+        <div class="row">
+          <div class="col-md-3">
+            <eg-org-selector
+                selected="args.home_ou"
+                nodefault
+                label="[% l('Home Library') %]"
+                disable-test="disable_home_org">
+            </eg-org-selector>
+            <br/>
+            <button class="btn btn-default" ng-click="unset_field($event,'home_ou')">[% l('Unset') %]</button>
+          </div>
+          <div class="col-md-3">
+            <div class="btn-group patron-search-selector" uib-dropdown>
+              <button type="button" class="btn btn-default" uib-dropdown-toggle>
+                <span style="padding-right: 5px;">{{args.profile.name() || "[% l('Main Profile') %]"}}</span>
+                <span class="caret"></span>
+              </button>
+              <ul uib-dropdown-menu>
+                <li ng-repeat="grp in profiles">
+                  <a href a-disabled="grp.cannot_use"
+                    style="padding-left: {{pgt_depth(grp) * 10 + 5}}px"
+                    ng-click="args.profile = grp">{{grp.name()}}</a>
+                </li>
+              </ul>
+              <br/>
+              <button class="btn btn-default" ng-click="unset_field($event,'profile')">[% l('Unset') %]</button>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="btn-group patron-search-selector" uib-dropdown>
+              <button type="button" class="btn btn-default" uib-dropdown-toggle>
+                <span style="padding-right: 5px;">{{args.net_access_level.name() || "[% l('Internet Access Level') %]"}}</span>
+                <span class="caret"></span>
+              </button>
+              <ul uib-dropdown-menu>
+                <li ng-repeat="l in net_access_levels">
+                  <a href
+                    ng-click="args.net_access_level = l">{{l.name()}}</a>
+                </li>
+              </ul>
+              <br/>
+              <button class="btn btn-default" ng-click="unset_field($event,'net_access_level')">[% l('Unset') %]</button>
+            </div>
+          </div>
+        </div>
+        <br/>
+        <br/>
+      </div>
+      <div class="form-group">
+        <div class="row">
+          <div class="col-md-6">
+            <label for="edit-active">[% l('Barred flag') %]</label>
+          </div>
+          <div class="col-md-6">
+            <select class="form-control" id="edit-active" ng-model="args.barred">
+              <option value="">[% l('Unchanged') %]</option>
+              <option value="t">[% l('True') %]</option>
+              <option value="f">[% l('False') %]</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="row">
+          <div class="col-md-6">
+            <label for="edit-active">[% l('Active flag') %]</label>
+          </div>
+          <div class="col-md-6">
+            <select class="form-control" id="edit-active" ng-model="args.active">
+              <option value="">[% l('Unchanged') %]</option>
+              <option value="t">[% l('True') %]</option>
+              <option value="f">[% l('False') %]</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="row">
+          <div class="col-md-6">
+            <label for="edit-juvenile">[% l('Juvenile flag') %]</label>
+          </div>
+          <div class="col-md-6">
+            <select class="form-control" id="edit-juvenile" ng-model="args.juvenile">
+              <option value="">[% l('Unchanged') %]</option>
+              <option value="t">[% l('True') %]</option>
+              <option value="f">[% l('False') %]</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="row">
+          <div class="col-md-6">
+            <label for="edit-expire_date">[% l('Privilege Expiration Date') %]</label>
+          </div>
+          <div class="col-md-6">
+            <input type="date" class="form-control" id="edit-expire_date" ng-model="args.expire_date"/>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <input type="submit" class="btn btn-primary" 
+          ng-disabled="form.$invalid" value="[% l('Apply Changes') %]"/>
+      <button class="btn btn-warning" ng-click="cancel()"
+          ng-class="{disabled : actionPending}">[% l('Cancel') %]</button>
+    </div>
+    <div class="modal-body" ng-show='running'>
+      <div ng-repeat="progress in states">
+        <progress label="{{progress.label}}" max="{{progress.max}}" value="{{progress.count}}">{{progress.label}}</progress>
+      </div>
+    </div>
+  </div> <!-- modal-content -->
+</form>

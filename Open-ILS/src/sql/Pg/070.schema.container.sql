@@ -37,6 +37,7 @@ CREATE TABLE container.copy_bucket (
 	btype		TEXT				NOT NULL DEFAULT 'misc' REFERENCES container.copy_bucket_type (code) DEFERRABLE INITIALLY DEFERRED,
 	description TEXT,
 	pub		BOOL				NOT NULL DEFAULT FALSE,
+	owning_lib	INT				REFERENCES actor.org_unit (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
 	create_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
 	CONSTRAINT cb_name_once_per_owner UNIQUE (owner,name,btype)
 );
@@ -91,6 +92,7 @@ CREATE TABLE container.call_number_bucket (
 	btype	TEXT	NOT NULL DEFAULT 'misc' REFERENCES container.call_number_bucket_type (code) DEFERRABLE INITIALLY DEFERRED,
 	description TEXT,
 	pub	BOOL	NOT NULL DEFAULT FALSE,
+	owning_lib	INT				REFERENCES actor.org_unit (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
 	create_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
 	CONSTRAINT cnb_name_once_per_owner UNIQUE (owner,name,btype)
 );
@@ -146,6 +148,7 @@ CREATE TABLE container.biblio_record_entry_bucket (
 	btype	TEXT	NOT NULL DEFAULT 'misc' REFERENCES container.biblio_record_entry_bucket_type (code) DEFERRABLE INITIALLY DEFERRED,
 	description TEXT,
 	pub	BOOL	NOT NULL DEFAULT FALSE,
+	owning_lib	INT				REFERENCES actor.org_unit (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
 	create_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
 	CONSTRAINT breb_name_once_per_owner UNIQUE (owner,name,btype)
 );
@@ -199,6 +202,7 @@ CREATE TABLE container.user_bucket (
 	btype	TEXT	NOT NULL DEFAULT 'misc' REFERENCES container.user_bucket_type (code) DEFERRABLE INITIALLY DEFERRED,
 	description TEXT,
 	pub	BOOL	NOT NULL DEFAULT FALSE,
+	owning_lib	INT				REFERENCES actor.org_unit (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
 	create_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
 	CONSTRAINT ub_name_once_per_owner UNIQUE (owner,name,btype)
 );

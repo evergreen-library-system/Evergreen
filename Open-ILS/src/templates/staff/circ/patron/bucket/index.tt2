@@ -1,0 +1,79 @@
+[%
+  WRAPPER "staff/base.tt2";
+  ctx.page_title = l("User Buckets"); 
+  ctx.page_app = "egCatUserBuckets";
+  ctx.page_ctrl = "UserBucketCtrl";
+%]
+
+[% BLOCK APP_JS %]
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/grid.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/ui.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/file.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/user-bucket.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/patron/bucket/app.js"></script>
+
+<script>
+angular.module('egCoreMod').run(['egStrings', function(s) {
+
+  s.CONTAINER_BATCH_UPDATE_PERM_CHECK = "[% l('Container batch update permission check') %]";
+  s.CONTAINER_PERM_CHECK = "[% l('Container permission check') %]";
+  s.ITEM_PERM_CHECK = "[% l('Item permission check') %]";
+  s.STAT_CAT_REMOVE = "[% l('Statistical category removal') %]";
+  s.STAT_CAT_APPLY = "[% l('Statistical category application') %]";
+  s.FIELDSET_GROUP_CREATE = "[% l('Fieldset group creation') %]";
+  s.FIELDSET_CREATE = "[% l('Fieldset creation') %]";
+  s.FIELDSET_EDITS_CREATE = "[% l('Fieldset change creation') %]";
+  s.CONSTRUCT_QUERY = "[% l('Query construction') %]";
+  s.APPLY_EDITS = "[% l('Applying edits') %]";
+  s.COMPLETE = "[% l('Complete') %]";
+  s.BATCH_FAILED = "[% l('Batch update failed!') %]";
+
+}]);
+</script>
+
+[% END %]
+
+<!-- using native Bootstrap taps because of limitations
+with angular-ui tabsets. it always defaults to making the
+first tab active, so it can't be driven from the route
+https://github.com/angular-ui/bootstrap/issues/910 
+No JS is needed to drive the native tabs, since we're
+changing routes with each tab selection anyway.
+-->
+
+<ul class="nav nav-tabs">
+  <li ng-class="{active : tab == 'add'}">
+    <a href="./circ/patron/bucket/add/{{bucketSvc.currentBucket.id()}}">
+        [% l('Pending Users') %]
+        <span ng-cloak>({{bucketSvc.pendingList.length}})</span>
+    </a>
+  </li>
+  <li ng-class="{active : tab == 'view'}">
+    <a href="./circ/patron/bucket/view/{{bucketSvc.currentBucket.id()}}">
+        [% l('Bucket View') %]
+        <span ng-cloak>({{bucketSvc.currentBucket.items().length}})</span>
+    </a>
+  </li>
+</ul>
+<div class="tab-content">
+  <div class="tab-pane active">
+
+    <!-- bucket info header -->
+    <div class="row">
+      <div class="col-md-6">
+        [% INCLUDE 'staff/circ/patron/bucket/t_bucket_info.tt2' %]
+      </div>
+    </div>
+
+    <!-- bucket not accessible warning -->
+    <div class="col-md-10 col-md-offset-1" ng-show="forbidden">
+      <div class="alert alert-warning">
+        [% l('The selected bucket "{{bucketId}}" is not visible to this login.') %]
+      </div>
+    </div>
+
+    <div ng-view></div>
+  </div>
+</div>
+
+[% END %]
