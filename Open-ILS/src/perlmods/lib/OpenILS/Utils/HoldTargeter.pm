@@ -47,8 +47,9 @@ sub new {
 #
 # Optional parameters:
 #
-# hold => <id>
-#  (Re)target a specific hold.
+# hold => <id> / [<id>, <id>, ...]
+#  (Re)target one or more specific holds.  Specified as a single hold ID
+#  or an array ref of hold IDs.
 #
 # return_count => 1
 #   Return the total number of holds processed instead of a result
@@ -105,7 +106,11 @@ sub target {
 sub find_holds_to_target {
     my $self = shift;
 
-    return ($self->{hold}) if $self->{hold};
+    if ($self->{hold}) {
+        # $self->{hold} can be a single hold ID or an array ref of hold IDs
+        return @{$self->{hold}} if ref $self->{hold} eq 'ARRAY';
+        return ($self->{hold});
+    }
 
     my $query = {
         select => {ahr => ['id']},
