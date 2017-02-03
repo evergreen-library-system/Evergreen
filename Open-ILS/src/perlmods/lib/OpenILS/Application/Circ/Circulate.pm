@@ -2788,6 +2788,9 @@ sub do_checkin {
             $self->handle_fines;
         }
 
+        # Void any item deposits if the library wants to
+        $self->check_circ_deposit(1);
+
         $self->checkin_handle_circ_finish;
         return if $self->bail_out;
         $self->checkin_changed(1);
@@ -3043,18 +3046,32 @@ sub finish_fines_and_voiding {
 }
 
 
-# if a deposit was payed for this item, push the event
+# if a deposit was paid for this item, push the event
+# if called with a truthy param perform the void, depending on settings
 sub check_circ_deposit {
     my $self = shift;
+    my $void = shift;
+
     return unless $self->circ;
+
     my $deposit = $self->editor->search_money_billing(
         {   btype => 5, 
             xact => $self->circ->id, 
             voided => 'f'
         }, {idlist => 1})->[0];
 
-    $self->push_events(OpenILS::Event->new(
-        'ITEM_DEPOSIT_PAID', payload => $deposit)) if $deposit;
+    return unless $deposit;
+
+    if ($void) {
+         my $void_on_checkin = $U->ou_ancestor_setting_value(
+             $self->circ_lib,OILS_SETTING_VOID_ITEM_DEPOSIT_ON_CHECKIN,$self->editor);
+         if ( $void_on_checkin ) {
+            my $evt = $CC->void_bills($self->editor,[$deposit], "DEPOSIT ITEM RETURNED");
+            return $evt if $evt;
+        }
+    } else { # if void is unset this is just a check, notify that there was a deposit billing
+        $self->push_events(OpenILS::Event->new('ITEM_DEPOSIT_PAID', payload => $deposit));
+    }
 }
 
 sub reshelve_copy {

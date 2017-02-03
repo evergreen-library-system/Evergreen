@@ -4239,6 +4239,15 @@ INSERT into config.org_unit_setting_type
         'coust', 'description'),
     'bool', null)
 
+,( 'circ.void_item_deposit', 'circ',
+    oils_i18n_gettext('circ.void_item_deposit',
+        'Void item deposit fee on checkin',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.void_item_deposit',
+        'If a deposit was charged when checking out an item, void it when the item is returned',
+        'coust', 'description'),
+    'bool', null)
+
 ,( 'circ.void_lost_proc_fee_on_checkin', 'circ',
     oils_i18n_gettext('circ.void_lost_proc_fee_on_checkin',
         'Void processing fee on lost item return',

@@ -98,6 +98,7 @@ econst OILS_SETTING_BLOCK_HOLD_FOR_EXPIRED_PATRON       => 'circ.holds.expired_p
 econst OILS_SETTING_ALLOW_RENEW_FOR_EXPIRED_PATRON      => 'circ.renew.expired_patron_allow';
 econst OILS_SETTING_GENERATE_OVERDUE_ON_LOST_RETURN     => 'circ.lost.generate_overdue_on_checkin';
 econst OILS_SETTING_MAX_DUPLICATE_HOLDS => 'circ.holds.max_duplicate_holds';
+econst OILS_SETTING_VOID_ITEM_DEPOSIT_ON_CHECKIN => 'circ.void_item_deposit';
 
 
 
