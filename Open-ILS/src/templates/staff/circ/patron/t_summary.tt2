@@ -13,8 +13,16 @@
         {{penalty.set_date() | date:'shortDate'}}
       </div>
     </div>
+    <div class="row patron-summary-divider">
+      <div
+        class="col-md-9 patron-summary-alert"
+        title="[% l('Patron Alert Message') %]"
+        ng-if="patron().alert_message()">
+        {{patron().alert_message()}}
+      </div>
+    </div>
     <div class="row" 
-      ng-class="{'patron-summary-divider' : alert_penalties().length}">
+      ng-class="{'patron-summary-divider' : alert_penalties().length || patron().alert_message()}">
       <div class="col-md-5">[% l('Profile') %]</div>
       <div class="col-md-7">{{patron().profile().name()}}</div>
     </div>
