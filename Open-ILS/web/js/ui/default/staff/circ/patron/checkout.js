@@ -151,8 +151,10 @@ function($scope , $q , $routeParams , egCore , egUser , patronSvc ,
             function(co_resp) {
                 // update stats locally so we don't have to fetch them w/
                 // each checkout.
-                //check for renew so that is doesn't update incorrectly
-                if(co_resp.evt[0].payload.parent_circ == null){
+
+                // Avoid updating checkout counts when a checkout turns
+                // into a renewal via auto_renew.
+                if (!co_resp.auto_renew) {
                     patronSvc.patron_stats.checkouts.out++;
                     patronSvc.patron_stats.checkouts.total_out++;
                 }

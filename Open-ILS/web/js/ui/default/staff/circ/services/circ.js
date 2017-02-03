@@ -143,6 +143,13 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
 
                 if (!angular.isArray(evt)) evt = [evt];
 
+                if (evt[0].payload && evt[0].payload.auto_renew == 1) {
+                    // open circulation found with auto-renew toggle on.
+                    console.debug('Auto-renewing item ' + params.copy_barcode);
+                    options.auto_renew = true;
+                    return service.renew(params, options);
+                }
+
                 return service.flesh_response_data('checkout', evt, params, options)
                 .then(function() {
                     return service.handle_checkout_resp(evt, params, options);
@@ -188,6 +195,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
                     return service.handle_renew_resp(evt, params, options);
                 })
                 .then(function(final_resp) {
+                    final_resp.auto_renew = options.auto_renew;
                     return service.munge_resp_data(final_resp,'renew',method)
                 })
             });
@@ -460,9 +468,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
                 return service.precat_dialog(params, options);
 
             case 'OPEN_CIRCULATION_EXISTS':
-                if(evt[0].payload.auto_renew == 1){
-                    return service.renew(params, options);
-                }
+                // auto_renew checked in service.checkout()
                 egCore.audio.play('error.checkout.open_circ');
                 return service.circ_exists_dialog(evt, params, options);
 
