@@ -109,8 +109,8 @@ suggested permissions and, if any are missing, you will know how to add them.
 
 Where to find existing permissions and what they mean
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-In the staff client, in the upper right corner of the screen, click on *Admin >
-Server Administration > Permissions*.
+In the staff client, in the upper right corner of the screen, click on
+*Administration > Server Administration > Permissions*.
 
 The list of available permissions will appear on screen and you can scroll down
 through them to see permissions that are already available in your default
@@ -124,8 +124,8 @@ understandable descriptions.
 
 Where to find existing Permission Groups
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-In the staff client, in the upper right corner of the screen, navigate to *Admin
-> Server Administration > Permission Groups*.
+In the staff client, in the upper right corner of the screen, navigate to
+*Administration > Server Administration > Permission Groups*.
 
 Two panes will open on your screen. The left pane provides a tree view of
 existing Permission Groups. The right pane contains two tabs: Group
@@ -197,14 +197,14 @@ Granting Secondary Permissions Groups
 . Click _Edit_.
 . Click _Secondary Groups_, located to the right of the _Main (Profile) Permission Group_.
 +
-image::media/sup-permissions-1.png[Secondary Permissions Group]
+image::media/sup-permissions-1_web_client.png[Secondary Permissions Group]
 +
 . From the dropdown menu select one of the secondary permission groups.
 +
-image::media/sup-permissions-2.png[Secondary Permission Group List]
+image::media/sup-permissions-2_web_client.png[Secondary Permission Group List]
 +
 . Click _Add_.
-. Click _Save_.
+. Click _Apply Changes_.
 +
 image::media/sup-permissions-3.png[Secondary Permission Group Save]
 +
@@ -217,15 +217,15 @@ Removing Secondary Group Permissions
 . Click _Edit_.
 . Click _Secondary Groups_, located to the right of the _Main (Profile) Permission Group_.
 +
-image::media/sup-permissions-1.png[Secondary Permissions Group]
+image::media/sup-permissions-1_web_client.png[Secondary Permissions Group]
 +
 . Click _Delete_ beside the permission group you would like to remove.
 +
-image::media/sup-permissions-4.png[Secondary Permissions Group Delete]
+image::media/sup-permissions-4_web_client.png[Secondary Permissions Group Delete]
 +
-. Click _Save_.
+. Click _Apply Changes_.
 +
-image::media/sup-permissions-5.png[Secondary Permissions Group Save]
+image::media/sup-permissions-5_web_client.png[Secondary Permissions Group Save]
 +
 . Click _Save_ in the top right hand corner of the _Edit Screen_ to save the user's account.
 

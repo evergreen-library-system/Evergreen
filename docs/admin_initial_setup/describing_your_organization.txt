@@ -32,7 +32,7 @@ bookmobiles or sub-branches is 3.
 
 Create and edit Organization Unit Types 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-. Open *Admin > Server Administration > Organization Types*.
+. Open *Administration > Server Administration > Organization Types*.
 . In the left panel, expand the *Organization Unit Types* hierarchy. 
 . Click on a organization type to edit the existing type or to add a new
   organization unit. 
@@ -58,7 +58,7 @@ library entities.
 
 Create and edit Organizational Units 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-. Open *Admin > Server Administration > Organizational Units*.
+. Open *Administration > Server Administration > Organizational Units*.
 . In the left panel, expand the the Organizational Units hierarchy, select a
   unit.
 . A form opens in the right panel, displaying the data for the selected
@@ -100,7 +100,7 @@ autogen.sh
 
 Set closed dates using the Closed Dates Editor 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-. Open *Admin > Local Administration > Closed Dates Editor*.
+. Open *Administration > Local Administration > Closed Dates Editor*.
 . Select type of closure: typically Single Day or Multiple Day.
 . Click the Calendar gadget to select the All Day date or starting and ending
   dates.
