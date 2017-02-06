@@ -3,7 +3,7 @@
  */
 
 angular.module('egCatZ3950Search',
-    ['ngRoute', 'ui.bootstrap', 'egCoreMod', 'egUiMod', 'egGridMod', 'egZ3950Mod', 'egMarcMod'])
+    ['ngRoute', 'ui.bootstrap', 'ngOrderObjectBy', 'egCoreMod', 'egUiMod', 'egGridMod', 'egZ3950Mod', 'egMarcMod'])
 
 .config(function($routeProvider, $locationProvider, $compileProvider) {
     $locationProvider.html5Mode(true);
