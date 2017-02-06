@@ -35,7 +35,8 @@ module.exports = function(grunt) {
             'bower_components/angular-cookies/angular-cookies.min.js.map',
             'bower_components/iframe-resizer/js/iframeResizer.min.js',
             'bower_components/iframe-resizer/js/iframeResizer.map',
-            'bower_components/iframe-resizer/js/iframeResizer.contentWindow.min.js'
+            'bower_components/iframe-resizer/js/iframeResizer.contentWindow.min.js',
+            'bower_components/angular-order-object-by/src/ng-order-object-by.js'
           ]
         }]
       },
