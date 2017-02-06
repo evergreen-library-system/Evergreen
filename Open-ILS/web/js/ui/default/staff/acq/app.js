@@ -53,7 +53,7 @@ function($scope , $routeParams , $location , $window , $timeout , egCore) {
 
     var acq_path = '/eg/acq/' + 
         $routeParams.noun + '/' + $routeParams.verb +
-        ((typeof $routeParams.record != 'undefined') ? '/' + $routeParams.record : '')
+        ((typeof $routeParams.record != 'undefined') ? '/' + $routeParams.record : '') +
         location.search;
 
     $scope.min_height = 2000; // give lots of space to start

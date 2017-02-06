@@ -765,10 +765,13 @@ function AcqLiTable() {
                         openils.Util.show(nodeByName('queue', row), 'inline');
                         var link = nodeByName("queue_link", row);
                         link.onclick = function() { 
+                            var url = oilsBasePath + '/vandelay/vandelay?qtype=bib&qid=' + qrec.queue()
                             // open a new tab to the vandelay queue for this record
-                            openils.XUL.newTabEasy(
-                                oilsBasePath + '/vandelay/vandelay?qtype=bib&qid=' + qrec.queue()
-                            );
+                            if (window.IAMBROWSER) {
+                                xulG.relay_url(url);
+                            } else {
+                                openils.XUL.newTabEasy(url);
+                            }
                         }
                     }
                 }
@@ -1236,10 +1239,13 @@ function AcqLiTable() {
             openils.Util.show(nodeByName("invoices_span", row), "inline");
             var link = nodeByName("invoices_link", row);
             link.onclick = function() {
-                openils.XUL.newTabEasy(
-                    oilsBasePath + "/acq/search/unified?so=" +
-                    base64Encode({"jub":[{"id": li.id()}]}) + "&rt=invoice"
-                );
+                var url = oilsBasePath + "/acq/search/unified?so=" +
+                          base64Encode({"jub":[{"id": li.id()}]}) + "&rt=invoice"
+                if (window.IAMBROWSER) {
+                    xulG.relay_url(url);
+                } else {
+                    openils.XUL.newTabEasy(url);
+                }
                 return false;
             };
         }
