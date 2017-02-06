@@ -17,6 +17,12 @@ angular.module('egAcquisitions',
         resolve : resolver
     });
 
+    $routeProvider.when('/acq/legacy/:noun/:verb/:record', {
+        template: eframe_template,
+        controller: 'EmbedAcqCtl',
+        resolve : resolver
+    });
+
     // default page 
     $routeProvider.otherwise({
         templateUrl : './t_splash',
@@ -25,15 +31,30 @@ angular.module('egAcquisitions',
 }])
 
 .controller('EmbedAcqCtl', 
-       ['$scope','$routeParams','$location','egCore',
-function($scope , $routeParams , $location , egCore) {
+       ['$scope','$routeParams','$location','$window','$timeout','egCore',
+function($scope , $routeParams , $location , $window , $timeout , egCore) {
+
+    var relay_url = function(url) {
+        if (url.match(/\/eg\/acq/)) {
+            var munged_url = egCore.env.basePath + 
+                url.replace(/^.*?\/eg\/acq\//, "acq/legacy/");
+            $timeout(function() { $window.open(munged_url, '_blank') });
+        } else if (url.match(/\/eg\/vandelay/)) {
+            var munged_url = egCore.env.basePath + 
+                url.replace(/^.*?\/eg\/vandelay\/vandelay/, "cat/catalog/vandelay");
+            $timeout(function() { $window.open(munged_url, '_blank') });
+        }
+    }
 
     $scope.funcs = {
         ses : egCore.auth.token(),
+        relay_url : relay_url
     }
 
     var acq_path = '/eg/acq/' + 
-        $routeParams.noun + '/' + $routeParams.verb + location.search;
+        $routeParams.noun + '/' + $routeParams.verb +
+        ((typeof $routeParams.record != 'undefined') ? '/' + $routeParams.record : '')
+        location.search;
 
     $scope.min_height = 2000; // give lots of space to start
 

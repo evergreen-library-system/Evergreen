@@ -1542,7 +1542,7 @@ function($scope , $location) {
 .controller('VandelayCtrl',
        ['$scope','$location',
 function($scope , $location) {
-    $scope.vandelay_url = $location.absUrl().replace(/\/staff.*/, '/vandelay/vandelay');
+    $scope.vandelay_url = $location.absUrl().replace(/\/staff\/cat\/catalog\/vandelay/, '/vandelay/vandelay');
 }])
 
 .controller('ManageAuthoritiesCtrl',
