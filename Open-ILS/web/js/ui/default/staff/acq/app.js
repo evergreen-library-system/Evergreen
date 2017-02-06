@@ -9,7 +9,7 @@ angular.module('egAcquisitions',
     var resolver = {delay : function(egStartup) {return egStartup.go()}};
 
     var eframe_template = 
-        '<eg-embed-frame url="acq_url" handlers="funcs"></eg-embed-frame>';
+        '<eg-embed-frame allow-escape="true" min-height="min_height" url="acq_url" handlers="funcs"></eg-embed-frame>';
 
     $routeProvider.when('/acq/legacy/:noun/:verb', {
         template: eframe_template,
@@ -34,6 +34,8 @@ function($scope , $routeParams , $location , egCore) {
 
     var acq_path = '/eg/acq/' + 
         $routeParams.noun + '/' + $routeParams.verb + location.search;
+
+    $scope.min_height = 2000; // give lots of space to start
 
     // embed URL must include protocol/domain or it will be loaded via
     // push-state, resulting in an infinitely nested pages.
