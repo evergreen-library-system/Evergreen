@@ -80,6 +80,34 @@ function($timeout , $parse) {
 
 
 /**
+ * egProgressModal.open();
+ */
+.factory('egProgressModal', 
+
+        ['$uibModal','$interpolate',
+function($uibModal, $interpolate){
+    var service = {};
+
+    service.open = function() {
+        return $uibModal.open({
+            templateUrl: './share/t_progress_bar',
+            controller: ['$scope', '$uibModalInstance',
+                function($scope, $uibModalInstance) {
+                  service.currentInstance = $uibModalInstance;
+                }
+            ]
+        });
+    };
+    service.close = function() {
+        if (service.currentInstance) {
+            service.currentInstance.close();
+            delete service.currentInstance;
+        }
+    }
+    return service;
+}])
+
+/**
  * egAlertDialog.open({message : 'hello {{name}}'}).result.then(
  *     function() { console.log('alert closed') });
  */

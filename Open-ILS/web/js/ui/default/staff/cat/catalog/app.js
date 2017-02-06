@@ -243,13 +243,12 @@ function($scope , $routeParams , $location , $window , $q , egCore) {
     
 
 }])
-
 .controller('CatalogCtrl',
        ['$scope','$routeParams','$location','$window','$q','egCore','egHolds','egCirc','egConfirmDialog','ngToast',
-        'egGridDataProvider','egHoldGridActions','$timeout','$uibModal','holdingsSvc','egUser','conjoinedSvc',
+        'egGridDataProvider','egHoldGridActions','egProgressModal','$timeout','$uibModal','holdingsSvc','egUser','conjoinedSvc',
         '$cookies',
 function($scope , $routeParams , $location , $window , $q , egCore , egHolds , egCirc , egConfirmDialog , ngToast ,
-         egGridDataProvider , egHoldGridActions , $timeout , $uibModal , holdingsSvc , egUser , conjoinedSvc,
+         egGridDataProvider , egHoldGridActions ,egProgressModal, $timeout , $uibModal , holdingsSvc , egUser , conjoinedSvc,
          $cookies
 ) {
 
@@ -1353,6 +1352,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
     var hold_ids = []; // current list of holds
     function fetchHolds(offset, count) {
         var ids = hold_ids.slice(offset, offset + count);
+
         return egHolds.fetch_holds(ids).then(null, null,
             function(hold_data) { 
                 return hold_data;
@@ -1364,7 +1364,6 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         if ($scope.record_tab != 'holds') return $q.when();
         var deferred = $q.defer();
         hold_ids = []; // no caching ATM
-
         // fetch the IDs
         egCore.net.request(
             'open-ils.circ',
@@ -1373,11 +1372,15 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
             {pickup_lib : egCore.org.descendants($scope.pickup_ou.id(), true)}
         ).then(
             function(hold_data) {
+                if(hold_data.title_holds.length){
+                    egProgressModal.open().result;};
                 angular.forEach(hold_data, function(list, type) {
                     hold_ids = hold_ids.concat(list);
                 });
                 fetchHolds(offset, count).then(
-                    deferred.resolve, null, deferred.notify);
+                    deferred.resolve, null, deferred.notify).then(function(){
+                    egProgressModal.close();
+                    });
             }
         );
 
@@ -1504,6 +1507,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
                 $scope.detail_hold_record_id = $scope.record_id; 
                 // refresh the holds grid
                 provider.refresh();
+
                 break;
         }
     }
