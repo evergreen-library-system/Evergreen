@@ -114,12 +114,12 @@ div.select-box-wrapper {
     display:inline-block;
 }
 
-#dashboard {
+#dashboard, #dashboard_e {
     margin-top: 1em;
     height: 3em;
 }
 
-#dashboard span.dash-align a {
+#dashboard span.dash-align a, #dashboard_e span.dash-align a {
     font-weight: bold;
     text-decoration: none;
 }
@@ -130,9 +130,9 @@ div.select-box-wrapper {
 
 #logout_link { left: 1px; }
 
-#dash_checked { color: [% css_colors.text_attention %]; }
-#dash_holds { color: [% css_colors.text_attention %]; }
-#dash_pickup { color: [% css_colors.text_goodnews %]; }
+#dash_checked, #dash_e_checked { color: [% css_colors.text_attention %]; }
+#dash_holds, #dash_e_holds { color: [% css_colors.text_attention %]; }
+#dash_pickup, #dash_e_pickup { color: [% css_colors.text_goodnews %]; }
 
 /*  
 #dash_fines { color: [% css_colors.text_badnews %]; }

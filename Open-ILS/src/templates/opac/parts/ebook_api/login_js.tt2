@@ -1,0 +1,41 @@
+<script type="text/javascript">
+var vendors_requiring_password = [];
+
+[% IF !loc_value; PROCESS get_library; END; %]
+[% IF ebook_api.overdrive.enabled == 'true'
+    AND loc_value
+    AND ctx.get_org_setting(loc_value, 'ebook_api.overdrive.password_required') %]
+vendors_requiring_password.push('overdrive');
+[% END %]
+
+dojo.addOnLoad(function() {
+    var handle = dojo.connect(dojo.byId('#login-form-box'), 'onclick', function(evt) {
+        // disconnect this event since it's one-time-only
+        // (when we switch to jQuery, we can use .one() here)
+        dojo.disconnect(handle);
+
+        // we cache the username (and password) for now, but will
+        // replace that with the patron's active barcode later
+        vendors_requiring_password.forEach(function(v) {
+            if (vendor_list.includes(v)) {
+                checkSession(v, function(v,ses) {
+                    var username = dojo.byId('#username_field').value;
+                    var password = dojo.byId('#password_field').value;
+                    new OpenSRF.ClientSession('open-ils.ebook_api').request({
+                        method: 'open-ils.ebook_api.patron.cache_password',
+                        params: [ ses, password ],
+                        async: true,
+                        oncomplete: function(r) {
+                            var resp = r.recv();
+                            if (resp) {
+                                console.log('patron password has been cached');
+                                return;
+                            }
+                        }
+                    }).send();
+                });
+            }
+        });
+    });
+});
+</script>

@@ -381,6 +381,11 @@ END;
                                                              %]
                                                         [% END %] <!-- END detail_record_view -->
                                                     </table>
+                                                    [% 
+                                                        IF ebook_api.enabled == 'true';
+                                                            INCLUDE "opac/parts/ebook_api/avail.tt2";
+                                                        END;
+                                                    %]
                                                     [% PROCESS "opac/parts/result/copy_counts.tt2" %]
                                                     [% IF rec.user_circulated %]
                                                     <div class="result_item_circulated">

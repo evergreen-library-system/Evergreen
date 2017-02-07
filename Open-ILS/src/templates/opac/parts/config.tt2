@@ -51,6 +51,17 @@ google_analytics.enabled = 'false';
 google_analytics.code = 'UA-9999999-99';
 
 ##############################################################################
+# Ebook API integration
+##############################################################################
+ebook_api.enabled = 'false';
+ebook_api.ebook_test.enabled = 'false';
+ebook_api.ebook_test.base_uris = [ 'http://example.com/ebookapi/t/' ];
+ebook_api.oneclickdigital.enabled = 'false';
+ebook_api.oneclickdigital.base_uris = [ 'http://example.oneclickdigital.com/Products/ProductDetail.aspx' ];
+ebook_api.overdrive.enabled = 'false';
+ebook_api.overdrive.base_uris = [ 'http://elm.lib.overdrive.com/' ];
+
+##############################################################################
 # Enable "Forgot your password?" prompt at login
 ##############################################################################
 reset_password = 'true';

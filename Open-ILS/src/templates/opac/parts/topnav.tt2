@@ -69,6 +69,22 @@
                         %]</span> [% l("Fines") %]</a>
                 </span>
             </div>
+            <div id="dashboard_e" class="hidden">
+                <span class="dash-align">
+                    <a class="dash-link" href="[% mkurl(ctx.opac_root _ '/myopac/ebook_circs')
+                        %]"><span id="dash_e_checked">-</span> [% l("E-Items Checked Out") %]</a>
+                </span>
+                <span class="dash_divider">|</span>
+                <span class="dash-align">
+                    <a class="dash-link" href="[% mkurl(ctx.opac_root _ '/myopac/ebook_holds')
+                        %]"><span id="dash_e_holds">-</span> [% l("E-Items on Hold") %]</a>
+                </span>
+                <span class="dash_divider">|</span>
+                <span class="dash-align">
+                    <a class="dash-link" href="[% mkurl(ctx.opac_root _ '/myopac/ebook_holds_ready')
+                        %]"><span id="dash_e_pickup">-</span> [% l("E-Items Ready for Checkout") %]</a>
+                </span>
+            </div>
         </div>
         [% END %]
     </div>
