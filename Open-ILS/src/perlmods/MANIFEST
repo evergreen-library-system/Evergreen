@@ -42,6 +42,7 @@ lib/OpenILS/Application/Collections.pm
 lib/OpenILS/Application/EbookAPI.pm
 lib/OpenILS/Application/EbookAPI/Test.pm
 lib/OpenILS/Application/EbookAPI/OverDrive.pm
+lib/OpenILS/Application/EbookAPI/OneClickdigital.pm
 lib/OpenILS/Application/Fielder.pm
 lib/OpenILS/Application/PermaCrud.pm
 lib/OpenILS/Application/Proxy.pm

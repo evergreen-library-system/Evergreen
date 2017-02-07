@@ -16800,3 +16800,39 @@ VALUES (
     'ebook_api',
     'bool'
 );
+
+INSERT INTO config.org_unit_setting_type
+    (name, label, description, grp, datatype) 
+VALUES (
+    'ebook_api.oneclickdigital.library_id',
+    oils_i18n_gettext(
+        'ebook_api.oneclickdigital.library_id',
+        'OneClickdigital Library ID',
+        'coust',
+        'label'
+    ),
+    oils_i18n_gettext(
+        'ebook_api.oneclickdigital.library_id',
+        'Identifier assigned to this library by OneClickdigital',
+        'coust',
+        'description'
+    ),
+    'ebook_api',
+    'string'
+),(
+    'ebook_api.oneclickdigital.basic_token',
+    oils_i18n_gettext(
+        'ebook_api.oneclickdigital.basic_token',
+        'OneClickdigital Basic Token',
+        'coust',
+        'label'
+    ),
+    oils_i18n_gettext(
+        'ebook_api.oneclickdigital.basic_token',
+        'Basic token for client authentication with OneClickdigital API (supplied by OneClickdigital)',
+        'coust',
+        'description'
+    ),
+    'ebook_api',
+    'string'
+);
