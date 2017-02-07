@@ -722,6 +722,7 @@ sub set_item_lost {
         $e, $copy_id,
         perm => 'SET_CIRC_LOST',
         status => OILS_COPY_STATUS_LOST,
+        alt_status => 16, #Long Overdue,
         ous_proc_fee => OILS_SETTING_LOST_PROCESSING_FEE,
         ous_void_od => OILS_SETTING_VOID_OVERDUE_ON_LOST,
         bill_type => 3,
@@ -741,6 +742,7 @@ sub set_item_long_overdue {
         $e, $copy_id,
         perm => 'SET_CIRC_LONG_OVERDUE',
         status => 16, # Long Overdue
+        alt_status => OILS_COPY_STATUS_LOST,
         ous_proc_fee => 'circ.longoverdue_materials_processing_fee',
         ous_void_od => 'circ.void_overdue_on_longoverdue',
         bill_type => 10,
@@ -774,7 +776,7 @@ sub set_item_lost_or_lod {
     $e->allowed($args{perm}, $circ->circ_lib) or return $e->die_event;
 
     return $e->die_event(OpenILS::Event->new($args{event}))
-	    if $copy->status == $args{status};
+	    if ($copy->status == $args{status} || $copy->status == $args{alt_status});
 
     # ---------------------------------------------------------------------
     # fetch the related org settings
