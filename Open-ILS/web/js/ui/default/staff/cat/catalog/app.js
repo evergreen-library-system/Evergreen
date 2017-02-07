@@ -703,6 +703,12 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         });
     }
 
+    $scope.view_place_orders = function() {
+        if (!$scope.record_id) return;
+        var url = egCore.env.basePath + 'acq/legacy/lineitem/related/' + $scope.record_id + '?target=bib';
+        $timeout(function() { $window.open(url, '_blank') });
+    }
+
     $scope.replaceBarcodes = function() {
         var copy_list = gatherSelectedRawCopies();
         if (copy_list.length == 0) return;
