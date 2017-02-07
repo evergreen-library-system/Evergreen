@@ -321,6 +321,26 @@ For each setting name passed, search "up" the org_unit tree until
 we find the first occurrence of an org_unit_setting with the given name.
 $$;
 
+CREATE OR REPLACE FUNCTION actor.org_unit_ancestor_setting_batch_by_org(
+    setting_name TEXT, org_ids INTEGER[]) 
+    RETURNS SETOF actor.org_unit_setting AS 
+$FUNK$
+DECLARE
+    setting RECORD;
+    org_id INTEGER;
+BEGIN
+    /*  Returns one actor.org_unit_setting row per org unit ID provided.
+        When no setting exists for a given org unit, the setting row
+        will contain all empty values. */
+    FOREACH org_id IN ARRAY org_ids LOOP
+        SELECT INTO setting * FROM 
+            actor.org_unit_ancestor_setting(setting_name, org_id);
+        RETURN NEXT setting;
+    END LOOP;
+    RETURN;
+END;
+$FUNK$ LANGUAGE plpgsql STABLE;
+
 CREATE OR REPLACE FUNCTION evergreen.get_barcodes(select_ou INT, type TEXT, in_barcode TEXT) RETURNS SETOF evergreen.barcode_set AS $$
 DECLARE
     cur_barcode TEXT;
