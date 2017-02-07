@@ -103,8 +103,14 @@ CREATE TABLE authority.thesaurus (
     code        TEXT    PRIMARY KEY,     -- MARC21 thesaurus code
     control_set INT     REFERENCES authority.control_set (id) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
     name        TEXT    NOT NULL UNIQUE, -- i18n
-    description TEXT                     -- i18n
+    description TEXT,                     -- i18n
+    short_code  TEXT,
+    uri         TEXT
 );
+
+CREATE TRIGGER thes_code_tracking_trigger
+    AFTER UPDATE ON authority.thesaurus
+    FOR EACH ROW EXECUTE PROCEDURE oils_i18n_code_tracking('at');
 
 CREATE TABLE authority.browse_axis (
     code        TEXT    PRIMARY KEY,
@@ -216,6 +222,11 @@ BEGIN
         thes_code := '|';
     ELSIF thes_code = 'z' THEN
         thes_code := COALESCE( oils_xpath_string('//*[@tag="040"]/*[@code="f"][1]', marcxml), '' );
+    ELSE
+        SELECT code INTO thes_code FROM authority.thesaurus WHERE short_code = thes_code;
+        IF NOT FOUND THEN
+            thes_code := '|'; -- default
+        END IF;
     END IF;
     RETURN thes_code;
 END;

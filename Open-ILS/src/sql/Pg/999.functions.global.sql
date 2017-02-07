@@ -1266,7 +1266,7 @@ BEGIN
     IF NEW.control_set IS NULL THEN
         SELECT  control_set INTO NEW.control_set
           FROM  authority.thesaurus
-          WHERE vandelay.marc21_extract_fixed_field(NEW.marc,'Subj') = code;
+          WHERE authority.extract_thesaurus(NEW.marc) = code;
     END IF;
 
     RETURN NEW;
@@ -1280,7 +1280,7 @@ BEGIN
         SELECT  auth_id,
                 vandelay.marc21_extract_fixed_field(marc,'RecStat'),
                 vandelay.marc21_extract_fixed_field(marc,'ELvl'),
-                vandelay.marc21_extract_fixed_field(marc,'Subj')
+                authority.extract_thesaurus(marc)
           FROM  authority.record_entry
           WHERE id = auth_id;
     RETURN;
