@@ -4,11 +4,16 @@ if(!dojo._hasResource["openils.XUL"]) {
     dojo.declare('openils.XUL', null, {});
 
     openils.XUL.Component_copy;
-    try {
-        openils.XUL.Component_copy = Components;
-    } catch (e) {
-        openils.XUL.Component_copy = null;
-    };
+    if (!window.IAMBROWSER) {
+        // looks like Firefox also exposes 'Components', so its
+        // existence is not sufficient check of XUL-ness
+        try {
+            if (Components.classes)
+                openils.XUL.Component_copy = Components;
+        } catch (e) {
+            openils.XUL.Component_copy = null;
+        };
+    }
 
     openils.XUL.isXUL = function() {
         if(location.protocol == 'chrome:' || location.protocol == 'oils:') return true;
