@@ -2215,3 +2215,28 @@ label[for*=expert_]
   color: [% css_colors.text_badnews %]; 
   padding: 10px;
 }
+
+/*Inline rules from other templates files*/
+
+.td-left{text-align:left; width:100%;}
+.td-search-left{text-align:left;}
+#myopac_summary_div{padding:0px;}
+.div-left{float: left;} 
+.td-right{text-align:right;}
+.login-form-left{float: left; padding-bottom: 10px; margin-right: 40px;}
+.hold-div{padding-left: 10px; padding-bottom: 15px;}
+.hold-span{font-weight: bold;}
+.padding-left-6{padding-left: 6px;}
+.padding-left-10{padding-left:10px;}
+.padding-left-5{padding-left: 5px;}
+
+/* Rules from metarecord_hold_filters.tt2 */
+
+.metarecord_filters{
+      padding: 5px;
+      margin-top: 5px;
+      border-bottom: 1px solid #333;
+      border-top: 1px solid #333; }
+.metarecord_filter_container{float : left;margin-right: 10px;}
+.metarecord_filter_container select{padding: 2px;width: 13em; /* consistent w/ adv search selectors */}
+.metarecord_filter_header{padding-bottom: 5px;}

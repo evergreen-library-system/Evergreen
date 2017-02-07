@@ -21,7 +21,7 @@
                     [% INCLUDE "opac/parts/advanced/global_row.tt2" %]
                     <!-- add a new row -->
                     <tr id='adv_global_addrow'>
-                        <td align='left'>
+                        <td class="td-search-left">
                             <a href="javascript:;" id="myopac_new_global_row" onclick='addSearchRow();'>[% l('Add Search Row') %]</a>
                         </td>
                     </tr>

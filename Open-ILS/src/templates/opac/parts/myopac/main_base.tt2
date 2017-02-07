@@ -3,9 +3,9 @@
     WRAPPER "opac/parts/myopac/base.tt2";
 %]
 
-<div id='myopac_summary_div' style="padding:0px;">
+<div id='myopac_summary_div'>
 
-    <div style="float:left;">
+    <div class='div-left'>
         <div class="header_middle">[% l('Account Summary') %]</div>
     </div>
 
@@ -40,13 +40,13 @@
             <table class="acct_sum_table" title="[% l('Account Summary') %]">
                 <tr>
                     <td>[% l("Account Expiration Date") %]</td>
-                    <td align="right">
+                    <td class='td-right'>
                         [% date.format(ctx.parse_datetime(ctx.user.expire_date), DATE_FORMAT) %]
                     </td>
                 </tr>
                 <tr>
                     <td>[% l("Items Currently Checked out ([_1])", ctx.user_stats.checkouts.total_out) %]</td>
-                    <td align="right">
+                    <td class='td-right'>
                         <a href="[% mkurl(ctx.opac_root _ '/myopac/circs') %]"
                             title="[% l('View My Checked Out Items') %]">
                             [% l("View All") %]
@@ -55,7 +55,7 @@
                 </tr>
                 <tr>
                     <td>[% l('Items Currently on Hold ([_1])', ctx.user_stats.holds.total) %]</td>
-                    <td align="right">
+                    <td class='td-right'>
                         <a href="[% mkurl(ctx.opac_root _ '/myopac/holds') %]"
                             title="[% l('View My Holds') %]">
                             [% l('View All') %]
@@ -64,7 +64,7 @@
                 </tr>
                 <tr>
                     <td>[% l('Items ready for pickup ([_1])', ctx.user_stats.holds.ready) %]</td>
-                    <td align="right">
+                    <td class='td-right'>
                         <a href="[% mkurl(ctx.opac_root _ '/myopac/holds', {available => 1}) %]"
                             title="[% l('View My Holds Ready for Pickup') %]">
                             [% l('View All') %]

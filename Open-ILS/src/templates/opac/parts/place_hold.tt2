@@ -92,9 +92,9 @@
                     </div>
                     [% IF hdata.parts AND !this_hold_disallowed %]
                         [% IF hdata.parts.size > 0 %]
-                        <div style='padding-left: 10px; padding-bottom: 15px;'>
+                        <div class='hold-div'>
                             [% IF enable.radio.parts == 'true' %]
-                                <span style='font-weight: bold;'><label for='select_hold_part'>[%
+                                <span class='hold-span'><label for='select_hold_part'>[%
                                l('Select a Part:')
                                %]</label></span>
                              <div class='radio-parts-selection'>

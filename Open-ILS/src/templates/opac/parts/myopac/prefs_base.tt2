@@ -12,7 +12,7 @@
 
 <div id='myopac_prefs_div'>
     <div id="acct_prefs_tabs">
-        <div style="float:left;">
+        <div class='float-left'>
                 [%- FOREACH page IN acct_prefs_pages;
                     IF page.url == prefs_page;
                         cls_select = "align selected";

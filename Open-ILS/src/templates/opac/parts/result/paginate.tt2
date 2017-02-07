@@ -7,7 +7,7 @@
                 '<span class="result_count_number">' _ ctx.hit_count _ '</span>')  ~%]
                 Results [_1] - [_2] of about [_3]
                 [%~ END %]
-                <span style='padding-left: 6px;'>
+                <span class='padding-left-6'>
                     [%~ |l('<span class="result_count_number">' _ (page + 1) _ '</span>',
                     '<span class="result_count_number">' _ page_count _ '</span>') ~%]
                     (page [_1] of [_2])

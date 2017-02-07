@@ -13,11 +13,11 @@
 </div>
 [% END %]
 
-<div id='login-form-box' class='login_boxes left_brain' style='float:left'>
+<div id='login-form-box' class='login_boxes left_brain float-left'>
     <h1>[% l('Log in to Your Account') %]</h1>
     [% l('Please enter the following information:') %]
     <form method='post'>
-        <div style="float: left; padding-bottom: 10px; margin-right: 40px;">
+        <div class='login-form-left'>
             <label for='username_field' class="lbl1" >[% l('Library Card Number or Username') %]</label>
             <div class="input_bg">
                 <input type='text' id="username_field" name="username" autofocus />
@@ -25,7 +25,7 @@
             <div class="lbl2">[% l('Please include leading zeros.') %]</div>
             <div class="lbl2">[% l('Example: 0026626051') %]</div>
         </div>
-        <div style="float: left;">
+        <div class='float-left'>
             <label for="password_field" class="lbl1" >[% l('PIN Number or Password') %]</label>
             <div class="input_bg">
                 <input id="password_field" name="password" type="password" />
