@@ -710,7 +710,8 @@ function AcqLiTable() {
         row.setAttribute('li', li.id());
         var tds = dojo.query('[attr]', row);
         dojo.forEach(tds, function(td) {self.setRowAttr(td, liWrapper, td.getAttribute('attr'), td.getAttribute('attr_type'));});
-        dojo.query('[name=source_label]', row)[0].appendChild(document.createTextNode(li.source_label()));
+        if (li.source_label() !== null)
+            dojo.query('[name=source_label]', row)[0].appendChild(document.createTextNode(li.source_label()));
 
         // so we can scroll to it later
         dojo.query('[name=bib-info-cell]', row)[0].id = 'li-title-ref-' + li.id();
