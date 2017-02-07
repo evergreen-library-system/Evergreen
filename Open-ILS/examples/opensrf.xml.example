@@ -1247,7 +1247,27 @@ vim:et:ts=4:sw=4:
                 </app_settings>
             </open-ils.hold-targeter>
 
-
+            <open-ils.ebook_api>
+                <keepalive>5</keepalive>
+                <stateless>1</stateless>
+                <language>perl</language>
+                <implementation>OpenILS::Application::EbookAPI</implementation>
+                <max_requests>100</max_requests>
+                <unix_config>
+                    <unix_sock>ebook_api_unix.sock</unix_sock>
+                    <unix_pid>ebook_api_unix.pid</unix_pid>
+                    <unix_log>ebook_api_unix.log</unix_log>
+                    <max_requests>100</max_requests>
+                    <min_children>1</min_children>
+                    <max_children>15</max_children>
+                    <min_spare_children>1</min_spare_children>
+                    <max_spare_children>5</max_spare_children>
+                </unix_config>
+                <app_settings>
+                  <cache_timeout>300</cache_timeout>
+                  <request_timeout>60</request_timeout>
+                </app_settings>
+            </open-ils.ebook_api>
         </apps>
     </default>
 
@@ -1293,6 +1313,7 @@ vim:et:ts=4:sw=4:
                 <appname>open-ils.vandelay</appname>  
                 <appname>open-ils.serial</appname>  
                 <appname>open-ils.hold-targeter</appname>  
+                <appname>open-ils.ebook_api</appname>
             </activeapps>
         </localhost>
     </hosts>

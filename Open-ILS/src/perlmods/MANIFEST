@@ -39,6 +39,8 @@ lib/OpenILS/Application/Circ/StatCat.pm
 lib/OpenILS/Application/Circ/Survey.pm
 lib/OpenILS/Application/Circ/Transit.pm
 lib/OpenILS/Application/Collections.pm
+lib/OpenILS/Application/EbookAPI.pm
+lib/OpenILS/Application/EbookAPI/Test.pm
 lib/OpenILS/Application/Fielder.pm
 lib/OpenILS/Application/PermaCrud.pm
 lib/OpenILS/Application/Proxy.pm
