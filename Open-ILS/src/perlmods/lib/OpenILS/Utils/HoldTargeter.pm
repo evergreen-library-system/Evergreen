@@ -256,14 +256,17 @@ sub init {
 }
 
 # Org unit setting fetch+cache
+# $e is the OpenILS::Utils::HoldTargeter::Single editor.  Use it if
+# provided to avoid timeouts on the in-transaction child editor.
 sub get_ou_setting {
-    my ($self, $org_id, $setting) = @_;
+    my ($self, $org_id, $setting, $e) = @_;
     my $c = $self->{ou_setting_cache};
 
+    $e ||= $self->{editor};
     $c->{$org_id} = {} unless $c->{$org_id};
 
     $c->{$org_id}->{$setting} =
-        $U->ou_ancestor_setting_value($org_id, $setting, $self->{editor})
+        $U->ou_ancestor_setting_value($org_id, $setting, $e)
         unless exists $c->{$org_id}->{$setting};
 
     return $c->{$org_id}->{$setting};
@@ -671,7 +674,7 @@ sub compile_weighted_proximity_map {
 
         my $weight = $self->parent->get_ou_setting(
             $copy_hash->{circ_lib},
-            'circ.holds.org_unit_target_weight') || 1;
+            'circ.holds.org_unit_target_weight', $self->editor) || 1;
 
         # Each copy is added to the list once per target weight.
         push(@{$prox_map{$prox}}, $copy_hash) foreach (1 .. $weight);
@@ -695,7 +698,8 @@ sub filter_closed_date_copies {
                 'circ.holds.target_when_closed_if_at_pickup_lib' :
                 'circ.holds.target_when_closed';
 
-            unless ($self->parent->get_ou_setting($clib, $ous)) {
+            unless (
+                $self->parent->get_ou_setting($clib, $ous, $self->editor)) {
                 # Targeting not allowed at this circ lib when its closed
 
                 $self->log_hold("skipping copy ".
@@ -838,7 +842,8 @@ sub attempt_to_find_copy {
 
     my $max_loops = $self->parent->get_ou_setting(
         $self->hold->pickup_lib,
-        'circ.holds.max_org_unit_target_loops'
+        'circ.holds.max_org_unit_target_loops',
+        $self->editor
     );
 
     return $self->target_by_org_loops($max_loops) if $max_loops;
@@ -1122,11 +1127,13 @@ sub process_recalls {
     my $pu_lib = $self->hold->pickup_lib;
 
     my $threshold =
-        $self->parent->get_ou_setting($pu_lib, 'circ.holds.recall_threshold')
+        $self->parent->get_ou_setting(
+            $pu_lib, 'circ.holds.recall_threshold', $self->editor)
         or return 1;
 
     my $interval =
-        $self->parent->get_ou_setting($pu_lib, 'circ.holds.recall_return_interval')
+        $self->parent->get_ou_setting(
+            $pu_lib, 'circ.holds.recall_return_interval', $self->editor)
         or return 1;
 
     # Give me the ID of every checked out copy living at the hold
@@ -1172,7 +1179,8 @@ sub process_recalls {
     );
 
     my $fine_rules =
-        $self->parent->get_ou_setting($pu_lib, 'circ.holds.recall_fine_rules');
+        $self->parent->get_ou_setting(
+            $pu_lib, 'circ.holds.recall_fine_rules', $self->editor);
 
     # If the OU hasn't defined new fine rules for recalls, keep them
     # as they were
