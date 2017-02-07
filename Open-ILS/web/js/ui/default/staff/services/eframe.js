@@ -276,7 +276,7 @@ angular.module('egCoreMod')
             // open a new tab with the embedded URL
             $scope.escapeEmbed = function() {
                 $scope.showIframe = false;
-                $window.open($scope.url, '_blank').focus();
+                $window.open($scope.iframe.contentWindow.location, '_blank').focus();
             }
             $scope.restoreEmbed = function() {
                 $scope.showIframe = true;
