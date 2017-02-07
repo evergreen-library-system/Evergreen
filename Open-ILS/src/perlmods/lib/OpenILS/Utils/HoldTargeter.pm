@@ -272,6 +272,33 @@ sub get_ou_setting {
     return $c->{$org_id}->{$setting};
 }
 
+# Fetches settings for a batch of org units.  Useful for pre-caching
+# setting values across a wide variety of org units without having to
+# make a lookup call for every org unit.
+# First checks to see if a value exists in the cache.
+# For all non-cached values, looks up in DB, then caches the value.
+sub precache_batch_ou_settings {
+    my ($self, $org_ids, $setting, $e) = @_;
+
+    $e ||= $self->{editor};
+    my $c = $self->{ou_setting_cache};
+
+    my @orgs;
+    for my $org_id (@$org_ids) {
+        next if exists $c->{$org_id}->{$setting};
+        push (@orgs, $org_id);
+    }
+
+    return unless @orgs; # value aready cached for all requested orgs.
+
+    my %settings = 
+        $U->ou_ancestor_setting_batch_by_org_insecure(\@orgs, $setting, $e);
+
+    for my $org_id (keys %settings) {
+        $c->{$org_id}->{$setting} = $settings{$org_id}->{value};
+    }
+}
+
 # -----------------------------------------------------------------------
 # Knows how to target a single hold.
 # -----------------------------------------------------------------------
@@ -649,6 +676,14 @@ sub update_copy_maps {
     return $self->exit_targeter("Error creating hold copy maps", 1);
 }
 
+# unique set of circ lib IDs for all in-progress copy blobs.
+sub get_copy_circ_libs {
+    my $self = shift;
+    my %orgs = map {$_->{circ_lib} => 1} @{$self->copies};
+    return [keys %orgs];
+}
+
+
 # Returns a map of proximity values to arrays of copy hashes.
 # The copy hash arrays are weighted consistent with the org unit hold
 # target weight, meaning that a given copy may appear more than once
@@ -666,6 +701,11 @@ sub compile_weighted_proximity_map {
 
     my %copy_prox_map =
         map {$_->{target_copy} => $_->{proximity}} @$hold_copy_maps;
+
+    # Pre-fetch the org setting value for all circ libs so that
+    # later calls can reference the cached value.
+    $self->parent->precache_batch_ou_settings($self->get_copy_circ_libs, 
+        'circ.holds.org_unit_target_weight', $self->editor);
 
     my %prox_map;
     for my $copy_hash (@{$self->copies}) {
@@ -687,6 +727,22 @@ sub compile_weighted_proximity_map {
 sub filter_closed_date_copies {
     my $self = shift;
 
+    # Pre-fetch the org setting value for all represented circ libs that
+    # are closed, minuse the pickup_lib, since it has its own special setting.
+    my $circ_libs = $self->get_copy_circ_libs;
+    $circ_libs = [
+        grep {
+            $self->parent->{closed_orgs}->{$_} && 
+            $_ ne $self->hold->pickup_lib
+        } @$circ_libs
+    ];
+
+    # If none of the represented circ libs are closed, we're done here.
+    return 1 unless @$circ_libs;
+
+    $self->parent->precache_batch_ou_settings(
+        $circ_libs, 'circ.holds.target_when_closed', $self->editor);
+
     my @filtered_copies;
     for my $copy_hash (@{$self->copies}) {
         my $clib = $copy_hash->{circ_lib};
@@ -703,7 +759,7 @@ sub filter_closed_date_copies {
                 # Targeting not allowed at this circ lib when its closed
 
                 $self->log_hold("skipping copy ".
-                    $copy_hash->{id}."at closed org $clib");
+                    $copy_hash->{id}." at closed org $clib");
 
                 next;
             }
