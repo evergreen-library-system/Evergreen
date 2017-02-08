@@ -46,9 +46,31 @@ function($scope , $routeParams , $location , $window , $timeout , egCore) {
         }
     }
 
+    // minimal version sufficient to update copy barcodes
+    var volume_item_creator = function(params) {
+        egCore.net.request(
+            'open-ils.actor',
+            'open-ils.actor.anon_cache.set_value',
+            null, 'edit-these-copies', {
+                copies: params.existing_copies.map(function(acp) { return acp.id(); }),
+                raw: [],
+                hide_vols : false,
+                hide_copies : false
+            }
+        ).then(function(key) {
+            if (key) {
+                var url = egCore.env.basePath + 'cat/volcopy/' + key;
+                $timeout(function() { $window.open(url, '_blank') });
+            } else {
+                alert('Could not create anonymous cache key!');
+            }
+        });
+    }
+
     $scope.funcs = {
         ses : egCore.auth.token(),
-        relay_url : relay_url
+        relay_url : relay_url,
+        volume_item_creator : volume_item_creator
     }
 
     var acq_path = '/eg/acq/' + 
