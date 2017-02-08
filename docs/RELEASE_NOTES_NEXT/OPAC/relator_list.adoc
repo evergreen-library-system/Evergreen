@@ -1,0 +1,8 @@
+RDA Improvements
+^^^^^^^^^^^^^^^^
+ * Author fields are now normalized to strip ending periods so that authors from
+RDA and non-RDA records are collapsed in browse and facet headings.
+ * All author/contrbutor roles will now be displayed in the record detail.
+Previously, some of the roles were omitted or were duplicated.
+
+This new feature will require a record reingest.
