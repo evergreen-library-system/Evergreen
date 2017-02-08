@@ -1,3 +1,5 @@
+SELECT evergreen.upgrade_deps_block_check('1006', :eg_version);
+
 BEGIN;
 
 -- This function is used to help clean up facet labels. Due to quirks in
