@@ -1,0 +1,9 @@
+Metarecord Search Improvements
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+This release brings several improvement to the Group Formats and Editions
+search. 
+
+ * Limiters on the advanced search page can now be successfully applied to 
+Group Formats and Editions searches,
+ * Electronic resources are now retrievable through these searches,
+ * Paged navigation has improved.
