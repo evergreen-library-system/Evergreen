@@ -2,7 +2,7 @@
 BEGIN;
 
 -- Number of tests that will be run
-SELECT plan(15);
+SELECT plan(18);
 
 -- Run the tests
 
@@ -27,7 +27,7 @@ SELECT is(evergreen.unaccent_and_squash('aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsSt
           'English Characters');
 
 SELECT is(evergreen.unaccent_and_squash('0123456789!@#$%^&*()-+'),
-          '0123456789!@#$%^&*()-+', 'Numbers and Symbols');
+          '0123456789', 'Numbers and Symbols');
 
 SELECT is(evergreen.unaccent_and_squash('ÁÉÍÑÓÚÜáéíñóúü¿¡'),
           'aeinouuaeinouu¿¡', 'Spanish');
@@ -55,6 +55,17 @@ SELECT is(evergreen.unaccent_and_squash('El Niño'),
 
 SELECT is(evergreen.unaccent_and_squash('Œuvres'),
           'euvres', 'oe ligature');
+
+-- Punctuation Tests
+
+SELECT is(evergreen.unaccent_and_squash('O''Brien'),
+          'obrien', 'Apostrophe');
+
+SELECT is(evergreen.unaccent_and_squash('Grubbly-Plank'),
+          'grubblyplank', 'Hyphen');
+
+SELECT is(evergreen.unaccent_and_squash('p&#$(a#*&$!s))(\\s'),
+          'pass', 'Punctuation hash');
 
 -- Finish the test and clean up.
 SELECT * FROM finish();
