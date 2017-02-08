@@ -159,7 +159,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td colspan='0'>
+                                    <td colspan='8'>
                                         <table><tr>
                                             <td>[% l('Order Identifier') %]</td>
                                             <td>
