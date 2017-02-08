@@ -204,11 +204,11 @@
                     </td>
                     <td>
                         <select name='actions'>
-                            <option name='action_none'>[% l('-- Actions --') %]</option>
-                            <option name='action_update_barcodes'>[% l('Update Barcodes') %]</option>
-                            <option name='action_holdings_maint'>[% l('Holdings Maint.') %]</option>
-                            <option name='action_manage_claims'>[% l('Claims') %]</option>
-                            <option name='action_view_history'>[% l('View History') %]</option>
+                            <option name='action_none' value='action_none'>[% l('-- Actions --') %]</option>
+                            <option name='action_update_barcodes' value='action_update_barcodes'>[% l('Update Barcodes') %]</option>
+                            <option name='action_holdings_maint' value='action_holdings_maint'>[% l('Holdings Maint.') %]</option>
+                            <option name='action_manage_claims' value='action_manage_claims'>[% l('Claims') %]</option>
+                            <option name='action_view_history' value='action_view_history'>[% l('View History') %]</option>
                         </select>
                     </td>
                     <td>

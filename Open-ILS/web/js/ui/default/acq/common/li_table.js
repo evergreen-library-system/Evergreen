@@ -922,7 +922,6 @@ function AcqLiTable() {
         option.disabled = !(count || eligible);
         option.innerHTML =
             dojo.string.substitute(localeStrings.NUM_CLAIMS_EXISTING, [count]);
-        option.onclick = function() { self.claimDialog.show(li); };
     };
 
     this.clearEligibility = function(li) {
@@ -1224,12 +1223,25 @@ function AcqLiTable() {
     this.updateLiState = function(li, row) {
         if (!row) row = this._findLiRow(li);
 
+        nodeByName("actions", row).onchange = function() {
+            switch(this.options[this.selectedIndex].value) {
+                case 'action_update_barcodes':
+                    self.showRealCopyEditUI(li);
+                    nodeByName("action_none", row).selected = true;
+                    break;
+                case 'action_holdings_maint':
+                    (self.generateMakeRecTab( li.eg_bib_id(), 'copy_browser', row ))();
+                    break;
+                case 'action_manage_claims':
+                    self.fetchClaimInfo(li.id(), true, function(full) { self.claimDialog.show(full) }, row);
+                    break;
+                case 'action_view_history':
+                    location.href = oilsBasePath + '/acq/lineitem/history/' + li.id();
+                    break;
+            }
+        };
         var actUpdateBarcodes = nodeByName("action_update_barcodes", row);
         var actHoldingsMaint = nodeByName("action_holdings_maint", row);
-
-        // always allow access to LI history
-        nodeByName('action_view_history', row).onclick = 
-            function() { location.href = oilsBasePath + '/acq/lineitem/history/' + li.id(); };
 
         /* handle row coloring for based on LI state */
         openils.Util.removeCSSClass(row, /^oils-acq-li-state-/);
@@ -1262,13 +1274,7 @@ function AcqLiTable() {
                 (lids && !lids.filter(function(lid) { return lid.eg_copy_id() })[0] )) {
 
             actUpdateBarcodes.disabled = false;
-            actUpdateBarcodes.onclick = function() {
-                self.showRealCopyEditUI(li);
-                nodeByName("action_none", row).selected = true;
-            }
             actHoldingsMaint.disabled = false;
-            actHoldingsMaint.onclick = 
-                self.generateMakeRecTab( li.eg_bib_id(), 'copy_browser', row );
         }
 
         var state_cell = nodeByName("li_state_" + li.state(), row);
