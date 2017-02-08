@@ -2,6 +2,7 @@
 <script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/acq/common/vlagent.js'> </script>
 <script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/acq/common/li_table.js'> </script>
 <script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/acq/financial/claim_voucher.js'> </script>
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/file-saver/FileSaver.min.js'> </script>
 <div id='acq-lit-table-container'>
 
     <div> <!-- Container for actions selector and paging controls.

@@ -3122,10 +3122,15 @@ function AcqLiTable() {
                 }
             }
             try {
-                openils.XUL.contentToFileSaveDialog(
-                    value_list.join("\n"),
-                    localeStrings.EXPORT_SAVE_DIALOG_TITLE
-                );
+                if (window.IAMBROWSER) {
+                    var blob = new Blob(value_list, {type: "text/plain;charset=utf-8"});
+                    saveAs(blob, "export_attr_list.txt");
+                } else {
+                    openils.XUL.contentToFileSaveDialog(
+                        value_list.join("\n"),
+                        localeStrings.EXPORT_SAVE_DIALOG_TITLE
+                    );
+                }
             } catch (E) {
                 alert(E);
             }
