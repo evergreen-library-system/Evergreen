@@ -95,7 +95,7 @@ if (!dojo._hasResource["openils.widget.XULTermLoader"]) {
                         var reader = new FileReader();
                         reader.onloadend = function(evt) {
                             data = self[
-                                this.parseCSV ? "parseAsCSV" : "parseUnimaginatively"
+                                self.parseCSV ? "parseAsCSV" : "parseUnimaginatively"
                             ](evt.target.result);
                             updateTermList();
                         };
