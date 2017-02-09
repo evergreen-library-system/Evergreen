@@ -1,9 +1,9 @@
 <div class="form-horizontal">
-    <div ng-repeat="(code, search_field) in fields | orderObjectBy: 'label'" class="z3950-search-field-list form-group">
-        <label for="z3950-field-{{code}}" class="col-xs-6 control-label">{{search_field.label}}</label>
+    <div ng-repeat="search_field in fields | orderObjectBy: 'label'" class="z3950-search-field-list form-group">
+        <label for="z3950-field-{{search_field.key}}" class="col-xs-6 control-label">{{search_field.label}}</label>
         <div class="col-xs-6">
-            <input type="text" class="form=control" id="z3950-field-{{code}}" ng-model="search_field.query" ng-if="code != 'item_type'">
-            <select ng-if="code == 'item_type'" ng-model="search_field.query">
+            <input type="text" class="form=control" id="z3950-field-{{search_field.key}}" ng-model="search_field.query" ng-if="search_field.key != 'item_type'">
+            <select ng-if="search_field.key == 'item_type'" ng-model="search_field.query">
                 <option value="">[% l('All Formats') %]</option>
                 <option value='art'>[% l('Papers or Articles') %]</option>
                 <option value='bks'>[% l('Books') %]</option>
