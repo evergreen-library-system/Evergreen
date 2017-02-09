@@ -1437,9 +1437,10 @@ sub opensearch_feed {
 
     my $org_unit = get_ou($org);
 
-    # Apostrophes break search and get indexed as spaces anyway
-    # XXX ^that's kinda a lie ...
     my $safe_terms = $terms;
+
+    # XXX Apostrophes used to break search, but no longer do.  The following
+    # XXX line breaks phrase searching in OpenSearch, and should be removed.
     $safe_terms =~ s{'}{ }go;
     
     my $query_terms = 'site('.$org_unit->[0]->shortname.") $safe_terms";
