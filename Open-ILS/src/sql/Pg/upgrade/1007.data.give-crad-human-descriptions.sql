@@ -1,3 +1,5 @@
+SELECT evergreen.upgrade_deps_block_check('1007', :eg_version);
+
 BEGIN;
 
 UPDATE config.record_attr_definition
