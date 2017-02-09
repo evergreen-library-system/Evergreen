@@ -1,5 +1,5 @@
 angular.module('egAcquisitions',
-    ['ngRoute', 'ui.bootstrap', 'egCoreMod','egUiMod'])
+    ['ngRoute', 'ui.bootstrap', 'egCoreMod','egUiMod','egMarcMod'])
 
 .config(['$routeProvider','$locationProvider','$compileProvider', 
  function($routeProvider , $locationProvider , $compileProvider) {
@@ -31,8 +31,8 @@ angular.module('egAcquisitions',
 }])
 
 .controller('EmbedAcqCtl', 
-       ['$scope','$routeParams','$location','$window','$timeout','egCore',
-function($scope , $routeParams , $location , $window , $timeout , egCore) {
+       ['$scope','$routeParams','$location','$window','$timeout','egCore','$uibModal',
+function($scope , $routeParams , $location , $window , $timeout , egCore , $uibModal) {
 
     var relay_url = function(url) {
         if (url.match(/\/eg\/acq/)) {
@@ -67,10 +67,39 @@ function($scope , $routeParams , $location , $window , $timeout , egCore) {
         });
     }
 
+    var edit_marc_order_record = function(li, callback) {
+        var args = {
+            'marc_xml' : li.marc()
+        };
+        $uibModal.open({
+            templateUrl: './acq/t_edit_marc_order_record',
+            size: 'lg',
+            controller:
+                ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
+                $scope.focusMe = true;
+                $scope.args = args;
+                $scope.dirty_flag = false;
+                $scope.ok = function(args) { $uibModalInstance.close(args) }
+                $scope.cancel = function () { $uibModalInstance.dismiss() }
+            }]
+        }).result.then(function (args) {
+            li.marc(args.marc_xml);
+            egCore.net.request(
+                'open-ils.acq',
+                'open-ils.acq.lineitem.update',
+                egCore.auth.token(),
+                li
+            ).then(function() {
+                callback(li);
+            });
+        });
+    }
+
     $scope.funcs = {
         ses : egCore.auth.token(),
         relay_url : relay_url,
-        volume_item_creator : volume_item_creator
+        volume_item_creator : volume_item_creator,
+        edit_marc_order_record : edit_marc_order_record
     }
 
     var acq_path = '/eg/acq/' + 

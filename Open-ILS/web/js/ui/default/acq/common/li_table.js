@@ -3506,15 +3506,19 @@ function AcqLiTable() {
 
     this.editOrderMarc = function(li) {
 
+        var self = this;
+        if(window.IAMBROWSER) {
+            xulG.edit_marc_order_record(li, function(li) { self.drawInfo(li.id()) });
+            return;
+        }
+
         /*  To run in Firefox directly, must set signed.applets.codebase_principal_support
             to true in about:config */
-
         if(openils.XUL.isXUL()) {
             win = window.open('/xul/' + openils.XUL.buildId() + '/server/cat/marcedit.xul','','chrome');
         } else {
             win = window.open('/xul/server/cat/marcedit.xul','','chrome'); 
         }
-        var self = this;
         win.xulG = {
             record : {marc : li.marc(), "rtype": "bre"},
             save : {
