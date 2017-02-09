@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('0986', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1008', :eg_version);
 
 CREATE OR REPLACE FUNCTION evergreen.unaccent_and_squash ( IN arg text) RETURNS text
     IMMUTABLE STRICT AS $$
