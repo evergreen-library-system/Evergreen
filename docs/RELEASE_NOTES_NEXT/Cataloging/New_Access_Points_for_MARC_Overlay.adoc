@@ -1,0 +1,13 @@
+New Access Points for MARC Merge/Overlay Profiles
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Catalogers can now select a MARC merge/overlay profile to apply when
+merging records in the (browser client) record bucket merge and Z39.50
+record overlay interfaces. In both interfaces, if the user selects
+a merge profile, the results of the merge are displayed, giving the
+user the opportunity to choose a different merge profile or edit
+the records involved prior to committing to the merge.
+
+A new library setting, "Default Merge Profile (Z39.50 and Record Buckets)",
+specifies the merge profile to preselect in the new merge profile
+selectors in the record bucket merge and Z39.50 overlay logs. The
+selectors will also remember the last selection that the user made.
