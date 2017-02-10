@@ -32,7 +32,7 @@ function($q , $window , $timeout , $http , egHatch , egAuth , egIDL , egOrg , eg
             return service.getPrintTemplate(args.template)
             .then(function(content) {
                 args.content = content;
-                if (!args.content_type) args.content_type = 'html';
+                if (!args.content_type) args.content_type = 'text/html';
                 service.getPrintTemplateContext(args.template)
                 .then(function(context) {
                     args.context = context;
