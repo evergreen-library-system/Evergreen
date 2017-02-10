@@ -1,6 +1,6 @@
-SELECT evergreen.upgrade_deps_block_check('1007', :eg_version);
-
 BEGIN;
+
+SELECT evergreen.upgrade_deps_block_check('1007', :eg_version);
 
 UPDATE config.record_attr_definition
 SET description = oils_i18n_gettext('audience', 'Audience', 'crad', 'label')

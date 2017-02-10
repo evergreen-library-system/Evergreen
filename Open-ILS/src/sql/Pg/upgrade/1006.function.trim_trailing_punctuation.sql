@@ -1,6 +1,6 @@
-SELECT evergreen.upgrade_deps_block_check('1006', :eg_version);
-
 BEGIN;
+
+SELECT evergreen.upgrade_deps_block_check('1006', :eg_version);
 
 -- This function is used to help clean up facet labels. Due to quirks in
 -- MARC parsing, some facet labels may be generated with periods or commas
