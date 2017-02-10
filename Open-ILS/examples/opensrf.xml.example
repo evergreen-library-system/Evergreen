@@ -295,6 +295,24 @@ vim:et:ts=4:sw=4:
             </ContentCafe>
 
             <!--
+            Segregating the details for obalkyknih.cz out for easier use.
+            -->
+            <ObalkyKnih>
+                <!-- Covers are there always -->
+
+                <!-- Annotations provided by obalkyknih.cz is mapped to evergreen summary -->
+                <summary>false</summary>
+                
+                <!-- Provider obalkyknih.cz provides TOC as text and as PDF plus thumbnail -->
+                <tocPdf>true</tocPdf>
+                <tocText>false</tocText>
+                
+                <!-- User reviews from obalkyknih.cz -->
+                <reviews>true</reviews>
+
+            </ObalkyKnih>
+
+            <!--
  
             You can add free-form settings here and they will be accessible
             within the added content module

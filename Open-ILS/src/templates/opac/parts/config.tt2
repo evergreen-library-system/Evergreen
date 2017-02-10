@@ -218,4 +218,12 @@ ctx.exclude_electronic_checkbox = 0;
 # TIME_FORMAT = '%H:%M'; # for 16:32 (24 hour) format
 ##############################################################################
 
+##############################################################################
+# Obalkyknih.cz support
+##############################################################################
+# Obalkyknihy.cz is free Czech service providing added content and book covers
+# Set to 'true' to enable
+##############################################################################
+# obalkyknih_cz.enabled = 'true';
+
 %]
