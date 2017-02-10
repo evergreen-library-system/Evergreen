@@ -57,7 +57,7 @@ image::media/copy_locations_editor.png[screenshot of Copy Location Editor]
 
 User Permission Group
 ~~~~~~~~~~~~~~~~~~~~~
-
+Do this in Register Patron
 * The user permission group is also commonly used as a data element in
 circulation policies. 
 * Other user data that can be used for circulation policies include the
