@@ -412,52 +412,41 @@ sub load_rresults {
     # the query string, not special args.
     my $args = {'limit' => $limit, 'offset' => $offset};
 
-    if (0) { #($metarecord) {
-        my $bre_ids = $self->recs_from_metarecord(
-            $metarecord, $ctx->{search_ou}, $depth);
-       
-        # force the metarecord result blob to match the format of regular search results
-        $results->{ids} = [map { [$_] } @$bre_ids];
-        $results->{count} = scalar(@{$results->{ids}});
+    return Apache2::Const::OK unless $query;
 
-    } else {
-
-        return Apache2::Const::OK unless $query;
-
-        if ($tag_circs) {
-            $args->{tag_circulated_records} = 1;
-            $args->{authtoken} = $self->editor->authtoken;
-        }
-        $args->{from_metarecord} = $metarecord if $metarecord;
-
-        # Stuff these into the TT context so that templates can use them in redrawing forms
-        $ctx->{user_query} = $user_query;
-        $ctx->{processed_search_query} = $query;
-
-        $query = "$_ $query" for @facets;
-
-        my $ltag = $is_meta ? '[mmr search]' : '[bre search]';
-        $logger->activity("EGWeb: $ltag $query");
-
-        try {
-
-            my $method = 'open-ils.search.biblio.multiclass.query';
-            $method .= '.staff' if $ctx->{is_staff};
-            $method =~ s/biblio/metabib/ if $is_meta;
-
-            my $ses = OpenSRF::AppSession->create('open-ils.search');
-
-            $self->timelog("Firing off the multiclass query");
-            my $req = $ses->request($method, $args, $query, 1);
-            $results = $req->gather(1);
-            $self->timelog("Returned from the multiclass query");
-
-        } catch Error with {
-            my $err = shift;
-            $logger->error("multiclass search error: $err");
-            $results = {count => 0, ids => []};
-        };
+    if ($tag_circs) {
+        $args->{tag_circulated_records} = 1;
+        $args->{authtoken} = $self->editor->authtoken;
     }
+    $args->{from_metarecord} = $metarecord if $metarecord;
+
+    # Stuff these into the TT context so that templates can use them in redrawing forms
+    $ctx->{user_query} = $user_query;
+    $ctx->{processed_search_query} = $query;
+
+    $query = "$_ $query" for @facets;
+
+    my $ltag = $is_meta ? '[mmr search]' : '[bre search]';
+    $logger->activity("EGWeb: $ltag $query");
+
+    try {
+
+        my $method = 'open-ils.search.biblio.multiclass.query';
+        $method .= '.staff' if $ctx->{is_staff};
+        $method =~ s/biblio/metabib/ if $is_meta;
+
+        my $ses = OpenSRF::AppSession->create('open-ils.search');
+
+        $self->timelog("Firing off the multiclass query");
+        my $req = $ses->request($method, $args, $query, 1);
+        $results = $req->gather(1);
+        $self->timelog("Returned from the multiclass query");
+
+    } catch Error with {
+        my $err = shift;
+        $logger->error("multiclass search error: $err");
+        $results = {count => 0, ids => []};
+    };
 
     my $rec_ids = [map { $_->[0] } @{$results->{ids}}];
 
