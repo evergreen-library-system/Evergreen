@@ -31,8 +31,8 @@ to disallow an item from circulating.
 * *Reference?* flag - The reference? flag in the copy editor can also be used as
 a data element in circulation policies.
 
-Copy Locations
-~~~~~~~~~~~~~~
+Copy location data
+~~~~~~~~~~~~~~~~~~
 
 * To get to the Copy Locations Editor, navigate to *Admin > Local Administration
   > Copy Locations Editor*. 
@@ -55,9 +55,13 @@ image::media/copy_locations_editor.png[screenshot of Copy Location Editor]
 
 * Copy locations can also be used as a data element in circulation policies. 
 
-User Permission Group
+User data
 ~~~~~~~~~~~~~~~~~~~~~
-Do this in Register Patron
+
+Finally, several characteristics of specific patrons can affect circulation
+policies.  You may modify these characteristics in Search -> Search for Patrons
+or Circulation -> Register Patron.
+
 * The user permission group is also commonly used as a data element in
 circulation policies. 
 * Other user data that can be used for circulation policies include the
