@@ -227,5 +227,5 @@ input[type=checkbox]
   -webkit-transform: scale(2.3); /* Safari and Chrome */
   -o-transform: scale(2.3); /* Opera */
   padding: 10px;
-  transform: scale(2.3);
+  transform: scale(1.5);
 }
