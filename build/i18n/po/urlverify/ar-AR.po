@@ -1,0 +1,144 @@
+# Arabic translation for evergreen
+# Copyright (c) 2016 Rosetta Contributors and Canonical Ltd 2016
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2016.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: evergreen\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2016-08-26 13:07+0000\n"
+"PO-Revision-Date: 2017-01-18 19:58+0000\n"
+"Last-Translator: fares othman <Unknown>\n"
+"Language-Team: Arabic <ar@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2017-01-19 05:40+0000\n"
+"X-Generator: Launchpad (build 18302)\n"
+
+#: ../../Open-ILS/src/templates/url_verify/create_session.tt2:107
+msgid "Add"
+msgstr "إضافة"
+
+#: ../../Open-ILS/src/templates/url_verify/review_attempt.tt2:51
+msgid "Attempt ID"
+msgstr "مُعرف المحاولة"
+
+#: ../../Open-ILS/src/templates/url_verify/create_session.tt2:130
+msgid "Begin"
+msgstr "تبدأ"
+
+#: ../../Open-ILS/src/templates/url_verify/sessions.tt2:43
+msgid "Creator "
+msgstr "المُنتج "
+
+#: ../../Open-ILS/src/templates/url_verify/review_attempt.tt2:34 ../../Open-ILS/src/templates/url_verify/select_urls.tt2:35
+msgid "Download CSV"
+msgstr "تَنزيل CSV"
+
+#: ../../Open-ILS/src/templates/url_verify/sessions.tt2:2
+msgid "Link Checker"
+msgstr "مُدقق الصلة أو الرابط"
+
+#: ../../Open-ILS/src/templates/url_verify/create_session.tt2:2
+msgid "Link Checker - Create Session"
+msgstr "مُدقق الرابط ـ إنشاء جلسة"
+
+#: ../../Open-ILS/src/templates/url_verify/review_attempt.tt2:2
+msgid "Link Checker - Review Verification Attempt"
+msgstr "مُدقق الرابط ـ محاولة مراجعة التأكيد"
+
+#: ../../Open-ILS/src/templates/url_verify/select_urls.tt2:2
+msgid "Link Checker - Select URLs"
+msgstr "مُدقق الرابط ـ اختيار روابط يو آر إل"
+
+#: ../../Open-ILS/src/templates/url_verify/create_session.tt2:90
+msgid ""
+"NOTE: When cloning sessions, any saved searches used in the original session "
+"will already be mentioned in the 'Search' field above. You should not need "
+"to select them again here."
+msgstr ""
+"ملاحظة: عند استنساخ الجلسات، أي عمليات بحث محفوظة ومستخدمة في الجلسة الأصلية "
+"ينبغي مسبقاً الإشارة إليها في حقل\"البحث\" أعلاه. لا يجب و لا حاجة لتحديدها "
+"مرة أخرى هنا."
+
+#: ../../Open-ILS/src/templates/url_verify/sessions.tt2:21
+msgid "New Link Checker Session"
+msgstr "جلسة مُدقق رابط جديد"
+
+#: ../../Open-ILS/src/templates/url_verify/create_session.tt2:88
+msgid "Optionally select one or more to combine with 'Search' field above."
+msgstr ""
+"اختيارياً، يمكنك تحديد أو اختيار واحد أو أكثر لتتحد مع حقل 'البحث' أعلاه."
+
+#: ../../Open-ILS/src/templates/url_verify/select_urls.tt2:30
+msgid "Print URLs"
+msgstr "طباعة روابط يو آر إل"
+
+#: ../../Open-ILS/src/templates/url_verify/review_attempt.tt2:30
+msgid "Print verification results"
+msgstr "نتائج تحقق الطباعة"
+
+#: ../../Open-ILS/src/templates/url_verify/create_session.tt2:116
+msgid "Process immediately?"
+msgstr "المعالجة حالاً؟"
+
+#: ../../Open-ILS/src/templates/url_verify/create_session.tt2:79
+msgid "Saved searches:"
+msgstr "البحث المحفوظ:"
+
+#: ../../Open-ILS/src/templates/url_verify/create_session.tt2:53
+msgid "Search scope:"
+msgstr "مجال البحث:"
+
+#: ../../Open-ILS/src/templates/url_verify/create_session.tt2:67
+msgid "Search:"
+msgstr "بحث:"
+
+#: ../../Open-ILS/src/templates/url_verify/create_session.tt2:41
+msgid "Session name:"
+msgstr "اسم الجَلسة"
+
+#: ../../Open-ILS/src/templates/url_verify/create_session.tt2:105
+msgid "Subfield(s)"
+msgstr "الحقول الفرعية"
+
+#: ../../Open-ILS/src/templates/url_verify/create_session.tt2:103
+msgid "Tag"
+msgstr "التاج"
+
+#: ../../Open-ILS/src/templates/url_verify/create_session.tt2:97
+msgid "Tags and subfields to search for URLs:"
+msgstr "التيجان والحقول الفرعية للبحث من أجل روابط يو آر إل:"
+
+#: ../../Open-ILS/src/templates/url_verify/create_session.tt2:59
+msgid ""
+"This will only be used if your search doesn't contain an explicit filter "
+"such as site(BR1)"
+msgstr ""
+"لن يتم استخدام هذا إذا لم يتضمن بحثك تصفية مرشحة صريحة مثل موقع (BR1)"
+
+#: ../../Open-ILS/src/templates/url_verify/sessions.tt2:46
+msgid "URL Selectors"
+msgstr "روابط يو آر إل المحددة أو المختارة"
+
+#: ../../Open-ILS/src/templates/url_verify/sessions.tt2:42
+msgid "Verification Attempts"
+msgstr "محاولات التحقق"
+
+#: ../../Open-ILS/src/templates/url_verify/select_urls.tt2:37
+msgid "Verify Selected URLs"
+msgstr "التحقق من روابط يو آر إل المُختارة"
+
+#: ../../Open-ILS/src/templates/url_verify/sessions.tt2:25
+msgid "View existing sessions started at:"
+msgstr "بدأ عرض الجلسات المتواجدة عند:"
+
+#: ../../Open-ILS/src/templates/url_verify/review_attempt.tt2:33
+msgid "link-checker-results"
+msgstr "link-checker-results"
+
+#: ../../Open-ILS/src/templates/url_verify/select_urls.tt2:34
+msgid "link-checker-urls"
+msgstr "link-checker-urls"

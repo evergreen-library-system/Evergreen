@@ -1,17 +1,21 @@
-#. extracted from ../../Open-ILS/xul/staff_client/chrome/locale/en-US/offline.properties
+# Arabic translation for evergreen
+# Copyright (c) 2016 Rosetta Contributors and Canonical Ltd 2016
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2016.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-07 02:03-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Project-Id-Version: evergreen\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2015-02-27 11:41-0400\n"
+"PO-Revision-Date: 2017-01-19 09:22+0000\n"
+"Last-Translator: fares othman <Unknown>\n"
+"Language-Team: Arabic <ar@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.7.0\n"
-"X-Accelerator-Marker: &\n"
+"X-Launchpad-Export-Date: 2017-01-21 06:03+0000\n"
+"X-Generator: Launchpad (build 18302)\n"
 
 #: common.exception
 msgid ""
@@ -20,599 +24,678 @@ msgid ""
 "%1$s\n"
 "%2$s\n"
 msgstr ""
+"!! صادف البرنامج خطأ غير متوقع.  لطفاً ينبغي إبلاغ مُدير أو مُطور النظام "
+"بالتالي:\n"
+"%1$s\n"
+"%2$s\n"
 
 #: common.jsan.missing
 msgid "The JSAN library object is missing."
-msgstr ""
+msgstr "كائن المكتبة JSAN مفقود."
 
 #: common.ok
+msgctxt "common.ok"
 msgid "Ok"
-msgstr ""
+msgstr "موافق"
+
+#: common.ok.label
+msgctxt "common.ok.label"
+msgid "Ok"
+msgstr "موافق"
+
+#: common.ok.accesskey
+msgid "O"
+msgstr "O"
+
+#: common.cancel.label
+msgctxt "common.cancel.label"
+msgid "Cancel"
+msgstr "إلغاء"
+
+#: common.cancel.accesskey
+msgctxt "common.cancel.accesskey"
+msgid "C"
+msgstr "C"
 
 #: common.clear
 msgid "Clear"
-msgstr ""
+msgstr "مَسح"
 
 #: common.confirm
 msgid "Check here to confirm this message."
-msgstr ""
+msgstr "تحقق هنا لتأكيد هذه الرسالة."
 
 #: common.error.default
 msgid "Please report that this happened."
-msgstr ""
+msgstr "لطفاً ينبغي الإبلاغ/تقرير بأن هذا قد حدث."
 
 #: common.error.copy_msg
 msgid "Copy Message"
-msgstr ""
+msgstr "نسخ الرسالة"
 
 #: common.barcode.status.warning
 msgid "Warning: As of %1$s, this barcode (%2$s) was flagged %3$s."
-msgstr ""
+msgstr "تحذير: اعتباراً مِن %1$s، هذا الباركود (%2$s) تمّ رصفه/تأشيره %3$s."
 
 #: common.barcode.status.warning.lost
 msgid "Lost"
-msgstr ""
+msgstr "المفقود"
 
 #: common.barcode.status.warning.expired
 msgid "Expired"
-msgstr ""
+msgstr "انتهاء الصلاحية"
 
 #: common.barcode.status.warning.barred
 msgid "Barred"
-msgstr ""
+msgstr "محظور"
 
 #: common.barcode.status.warning.blocked
 msgid "Blocked"
-msgstr ""
+msgstr "ممنوع/محجوب"
 
 #: common.barcode.status.warning.unknown
 msgid "with an unknown code: %1$s"
-msgstr ""
+msgstr "مع كود/ رمز غير معروف: %1$s"
 
 #: common.date.invalid
 msgid "Invalid Date"
-msgstr ""
+msgstr "تاريخ غير صحيح"
 
 #: common.no
 msgid "No"
-msgstr ""
+msgstr "لا"
 
 #: common.no.accesskey
 msgid "N"
-msgstr ""
+msgstr "N"
 
 #: common.yes
 msgid "Yes"
-msgstr ""
+msgstr "نعم"
 
 #: common.yes.accesskey
 msgid "Y"
-msgstr ""
+msgstr "Y"
 
 #: common.unimplemented
 msgid "Not Yet Implemented"
-msgstr ""
+msgstr "لم يتم التطبيق بعد"
 
 #: cat.bib_record
 msgid "Bib Record: %1$s"
-msgstr ""
+msgstr "التسجيلة الببليوغرافية: %1$s"
+
+#: serial.delete_record.confirm
+msgid "Are you sure you want to delete MFHD record #%1$s?"
+msgstr "هل أنت متأكد مِن أنك تريد حذف تسجيلة إم إف أتش دي #%1$s؟"
 
 #: cat.opac.delete_record.confirm
 msgid "Are you sure you want to delete title record #%1$s from the catalog?"
-msgstr ""
+msgstr "هل أنت متأكد مِن أنك تريد حذف عنوان التسجيلة #%1$s مِن الفهرس؟"
 
 #: cat.opac.delete_record
 msgid "Delete Record"
-msgstr ""
+msgstr "حذف التسجيلة"
 
 #: cat.opac.delete
 msgid "Delete"
-msgstr ""
+msgstr "حذف"
 
 #: cat.opac.undelete_record.confirm
-msgid "Are you sure you want to undelete title record #%1$s from the catalog?"
-msgstr ""
+msgid ""
+"Are you sure you want to undelete title record #%1$s from the catalog?"
+msgstr "هل أنت متأكد من أنك لا تريد حذف التسجيلة #%1$s مِن الفهرس؟"
 
 #: cat.opac.undelete_record
 msgid "Undelete Record"
-msgstr ""
+msgstr "إلغاء حذف التسجيلة"
 
 #: cat.opac.undelete
 msgid "Undelete"
-msgstr ""
+msgstr "إلغاء الحذف"
 
 #: cat.opac.cancel
+msgctxt "cat.opac.cancel"
 msgid "Cancel"
-msgstr ""
+msgstr "إلغاء"
 
 #: cat.opac.record_deleted
 msgid "Record deleted."
-msgstr ""
+msgstr "التسجيلة تمّ حذفها"
 
 #: cat.opac.record_deleted.confirm
 msgctxt "cat.opac.record_deleted.confirm"
 msgid "Check here to confirm this action."
-msgstr ""
+msgstr "تحقق هنا لتأكيد هذا الإجراء."
 
 #: cat.opac.record_undeleted
 msgid "Record undeleted."
-msgstr ""
+msgstr "التسجيلة لم تحذف"
 
 #: cat.opac.record_undeleted.confirm
 msgctxt "cat.opac.record_undeleted.confirm"
 msgid "Check here to confirm this action."
-msgstr ""
+msgstr "تحقق هنا لتأكيد هذا الإجراء."
 
 #. # variables: document ID, error code, error description
 #: cat.opac.record_deleted.error
 msgid "Error deleting record #%1$s : %2$s : %3$s"
-msgstr ""
+msgstr "خطأ في حذف التسجيلات #%1$s : %2$s : %3$s"
 
 #. # variables: document ID, error code, error description
 #: cat.opac.record_undeleted.error
 msgid "Error undeleting record #%1$s : %2$s : %3$s"
-msgstr ""
+msgstr "خطأ في عدم حذف التسجيلة #%1$s : %2$s : %3$s"
 
 #: cat.opac.record_marked_for_overlay.record_id.alert
 msgctxt "cat.opac.record_marked_for_overlay.record_id.alert"
 msgid "Record with ID %1$s marked for overlay."
-msgstr ""
+msgstr "التسجيلة التي مُعرفها %1$s تمّ تعليمها/تميزها من أجل التراكب."
 
 #: cat.opac.record_marked_for_overlay.tcn.alert
 msgctxt "cat.opac.record_marked_for_overlay.tcn.alert"
 msgid "Record with TCN %1$s marked for overlay."
-msgstr ""
+msgstr "التسجيلة مع رقم النقل %1$s تمّ تمييزها مِن أجل التراكب"
+
+#: cat.opac.record_marked_for_multi_home.record_id.alert
+msgctxt "cat.opac.record_marked_for_multi_home.record_id.alert"
+msgid "Record with ID %1$s targeted for Multi-Bib items."
+msgstr "التسجيلة مع المُعرف %1$s تمّ تحديد هدفها لـِ نُسخ مكتبات متعددة."
+
+#: cat.opac.record_marked_for_multi_home.tcn.alert
+msgid "Record with TCN %1$s targeted for Mutli-Bib items."
+msgstr "التسجيلة مع  رقم النقل %1$s تمّ تحديد هدفها لـِ نُسخ مكتبات متعددة."
+
+#: cat.opac.clear_statusbar
+msgid "Un-target/un-mark this record?"
+msgstr "إلغاء الهدف / عدم تمييز هذه التسجيلة؟"
 
 #: cat.save_record
 msgid "Save Record"
-msgstr ""
+msgstr "حفظ التسجيلة"
 
 #: cat.save.failure
 msgid "Record not likely updated."
-msgstr ""
+msgstr "مِن المحتمل أنه لم يتم تحديث التسجيلة."
 
 #: cat.record.counter
 msgid "Record %1$s of %2$s"
-msgstr ""
+msgstr "التسجيلة %1$s مِن %2$s"
 
 #: cat.preference.error
 msgid "Preference not likely updated."
-msgstr ""
+msgstr "مِن المحتمل أنه لم يتم تحديث التفضيلات/الأولويات."
 
 #: staff.admin.survey.save_response.label
 msgid "Save this response"
-msgstr ""
+msgstr "حفظ هذا الرد/الإجابة"
 
 #: staff.admin.survey.save_response.accesskey
 msgid "R"
-msgstr ""
+msgstr "R"
 
 #: circ.bad_checkdigit
 msgid "This barcode has a bad check digit."
-msgstr ""
+msgstr "هذا الباركود لديه أرقام سيئة."
 
 #: circ.barcode.enter
 msgid "Please enter a patron barcode first."
-msgstr ""
+msgstr "لطفاً أدخل باركود المستفيد أولاً."
 
 #: circ.barcode.warning
 msgid "Barcode Warning"
-msgstr ""
+msgstr "تحذير الباركود"
 
 #: circ.standalone
 msgid "Standalone"
-msgstr ""
+msgstr "مُستقلة"
 
 #: circ.duplicate_scan.msg
 msgid "This barcode has already been scanned."
-msgstr ""
+msgstr "هذا الباركود تمّ مسحه مُسبقاً"
 
 #: circ.duplicate_scan.field
 msgid "Duplicate Scan"
-msgstr ""
+msgstr "تكرار المسح الضوئي"
 
 #: circ.offline_checkout.nonbarcoded
 msgid "or choose a non-barcoded option..."
-msgstr ""
+msgstr "أو اختيار خيار  بدون باركود ..."
 
 #: circ.offline_checkout.items
 msgid "Enter the number of items:"
-msgstr ""
+msgstr "أدخل رقم النُسخة:"
 
 #: circ.offline_checkout.download.warning
 msgid ""
 "WARNING: The non-barcode types have not been downloaded from the server.  "
 "You should log in to retrieve these."
 msgstr ""
+"تحذير: لم يتم تحميل أنواع بدون باركود مِن الخادم. يجب عليك تسجيل الدخول "
+"لاستردادها."
 
 #: circ.offline_checkout.barcode.flagged.lost
 msgid "Warning: As of %1$s, this barcode (%2$s) was flagged Lost."
 msgstr ""
+"تحذير: اعتباراً مِن %1$s, هذا الباركود (%2$s) تمّ الإشارة إليه كـَ مفقود."
 
 #: circ.offline_checkout.barcode.flagged.expired
 msgid "Warning: As of %1$s, this barcode (%2$s) was flagged Expired."
 msgstr ""
+"تحذير: اعتباراً مِن %1$s, هذا الباركود (%2$s) تمّ الإشارة إليه كـَ انتهاء "
+"الصلاحية."
 
 #: circ.offline_checkout.barcode.flagged.barred
 msgid "Warning: As of %1$s, this barcode (%2$s) was flagged Barred."
 msgstr ""
+"تحذير: اعتباراً مِن %1$s, هذا الباركود (%2$s) تمّ الإشارة إليه كـَ ممنوع."
 
 #: circ.offline_checkout.barcode.flagged.blocked
 msgid "Warning: As of %1$s, this barcode (%2$s) was flagged Blocked."
 msgstr ""
+"تحذير: اعتباراً مِن %1$s, هذا الباركود (%2$s) تمّ الإشارة إليه كـَ إيقاف."
 
 #: circ.offline_checkout.barcode.flagged.unknown
 msgid ""
-"Warning: As of %1$s, this barcode (%2$s) was flagged with an unknown code: %"
-"3$s."
+"Warning: As of %1$s, this barcode (%2$s) was flagged with an unknown code: "
+"%3$s."
 msgstr ""
+"تحذير: اعتباراً مِن %1$s, هذا الباركود (%2$s) تمّ الإشارة إليه كـَ كود غير "
+"معروف: %3$s."
 
 #: circ.offline_checkout.date.early
 msgid "Due date needs to be after today."
-msgstr ""
+msgstr "تاريخ الاستحقاق ينبغي أن يكون بعد اليوم."
 
 #: circ.offline_checkout.required_field
 msgid "Required Field"
-msgstr ""
+msgstr "الحقل مطلوب"
 
 #: circ.offline_checkout.valid_count
 msgid "Please try again and enter a valid count."
-msgstr ""
+msgstr "لطفاً ينبغي المحاولة مرة أخرى وإدخال عدد صحيح."
 
 #: circ.offline_checkout.required_value
 msgid "Required Value"
-msgstr ""
+msgstr "الحقل مطلوب"
 
 #: circ.offline_register.future.birth.date
 msgid "Patron needs to be born yesterday."
-msgstr ""
+msgstr "ينبغي أن يكون المستفيد ولد/سُجل أمس."
 
 #: circ.offline_register.invalid.birth.date
 msgid "Happy birthday!  You need to be more than 0 days old."
-msgstr ""
+msgstr "عيد ميلاد سعيد!  أنت تحتاج لأن تكون أكبر مِن 0 أيام عُمراً."
 
 #: circ.offline_register.survey.prompt
 msgid "Choose a response..."
-msgstr ""
+msgstr "اختيار استجابة..."
 
 #: circ.offline_register.missing.post_code
 msgid "Missing Address : Postal Code"
-msgstr ""
+msgstr "العنوان مفقود: الرمز البريدي"
 
 #: circ.offline_register.missing.state
 msgid "Missing Address : State"
-msgstr ""
+msgstr "العنوان مفقود: الحالة"
 
 #: circ.offline_register.missing.city
 msgid "Missing Address : City"
-msgstr ""
+msgstr "العنوان مفقود: المدينة"
 
 #: circ.offline_register.missing.street1
 msgid "Missing Address : Line 1"
-msgstr ""
+msgstr "العنوان مفقود: السطر 1"
 
 #: circ.offline_register.missing.ident_value
 msgid "Missing Identification Value"
-msgstr ""
+msgstr "قيمة التعريف مفقودة"
 
 #: circ.offline_register.missing.ident_type
 msgid "Missing Identification Type"
-msgstr ""
+msgstr "نوع التعريف مفقود"
 
 #: circ.offline_register.missing.dob
 msgid "Missing Date of Birth"
-msgstr ""
+msgstr "تاريخ ميلاد مفقود"
 
 #: circ.offline_register.missing.first_given_name
 msgid "Missing First Name"
-msgstr ""
+msgstr "الاسم الأول مفقود"
 
 #: circ.offline_register.missing.family_name
 msgid "Missing Last Name"
-msgstr ""
+msgstr "الاسم الأخير مفقود"
 
 #: circ.offline_register.missing.passwd
 msgid "Missing Password"
-msgstr ""
+msgstr "كلمة المرور مفقودة"
 
 #: circ.offline_register.missing.barcode
 msgid "Missing Barcode"
-msgstr ""
+msgstr "الباركود مفقود"
 
 #: circ.offline_register.missing.profile
 msgid "Missing Profile"
-msgstr ""
+msgstr "البروفايل مفقود"
 
 #: circ.offline_register.missing.home_ou
 msgid "Missing Home Library"
-msgstr ""
+msgstr "المكتبة الرئيسية مفقودة"
 
 #: circ.offline_register.missing.alert
 msgid "Please fix the following:"
-msgstr ""
+msgstr "لطفاً ينبغي تصحيح ما يلي:"
 
 #: circ.offline_register.patron.saved
 msgid "Patron Registration Saved"
-msgstr ""
+msgstr "تمّ حفظ تسجيل المستفيد"
 
 #: circ.offline_register.missing.library.list
 msgid "Missing library list."
-msgstr ""
+msgstr "قائمة مفقودات المكتبة."
 
 #: circ.offline_register.missing.profile.list
 msgid "Missing profile list."
-msgstr ""
+msgstr "قائمة البروفايل مفقودة."
 
 #: circ.offline_register.missing.id.type.list
 msgid "Missing identification type list."
-msgstr ""
+msgstr "قائمة نوع التعريف مفقودة."
 
 #: circ.offline_register.missing.required.surveys
 msgid "Missing required surveys."
-msgstr ""
+msgstr "المسوحات/الاستعراض المطلوب مفقود"
 
 #: circ.offline_register.missing.files.error
 msgid ""
 "ERROR: Offline patron registration requires some server-generated files.  "
 "Please login periodically to retrieve these files."
 msgstr ""
+"خطأ: تسجيل بشكل غير متصل للمستفيد يتطلب بعض ملفات الخادم المُوَلدة. لطفاً "
+"ينبغي تسجيل الدخول بشكل دوري لاسترداد هذه الملفات."
 
 #: jsan.file_not_found.error
 msgid "File not found: %1$s"
-msgstr ""
+msgstr "الملف غير موجود: %1$s"
 
 #: jsan.namespace.creation.error
 msgid "Could not create namespace[%1$s]: %2$s"
-msgstr ""
+msgstr "لا يمكن إنشاء اسم فراغ[%1$s]: %2$s"
 
 #: menu.cmd_edit_copy_buckets.tab
 msgid "Copy Buckets"
-msgstr ""
+msgstr "سلال النُسخ"
 
 #: menu.cmd_edit_volume_buckets.tab
 msgid "Volume Buckets"
-msgstr ""
+msgstr "سلال المجلد"
 
 #: menu.cmd_edit_record_buckets.tab
 msgid "Record Buckets"
-msgstr ""
+msgstr "سلال التسجيلات"
 
 #: menu.cmd_edit_user_buckets.tab
 msgid "User Buckets"
-msgstr ""
+msgstr "سلال المستخدم"
 
 #: menu.cmd_replace_barcode.prompt
 msgid "Enter original barcode for the item:"
-msgstr ""
+msgstr "إدخال الباركود الأصلي لهذه النُسخة:"
 
 #: menu.cmd_replace_barcode.label
 msgctxt "menu.cmd_replace_barcode.label"
 msgid "Replace Barcode"
-msgstr ""
+msgstr "استبدال الباركود"
 
 #: menu.cmd_replace_barcode.retrieval.error
 msgid "We were unable to retrieve an item with barcode \"%1$s\"."
-msgstr ""
+msgstr "مِن غير الممكن استرداد هذه النُسخة بهذا الباركود \"%1$s\"."
 
 #: menu.cmd_replace_barcode.replacement.prompt
 msgid "Enter the replacement barcode for the item:"
-msgstr ""
+msgstr "أدخل الباركود البديل لهذه النُسخة:"
 
 #: menu.cmd_replace_barcode.replacement.label
 msgctxt "menu.cmd_replace_barcode.replacement.label"
 msgid "Replace Barcode"
-msgstr ""
+msgstr "استبدال الباركود"
 
 #: menu.cmd_replace_barcode.blank.error
 msgid "Rename aborted.  Blank for barcode not allowed."
-msgstr ""
+msgstr "إعادة التسمية فشلت. باركود فارغ غير مسموح به."
 
 #: menu.cmd_replace_barcode.duplicate.error
 msgid "Rename aborted.  Another copy has barcode \"%1$s\"."
-msgstr ""
+msgstr "إعادة التسمية فشلت. نسخة أخرى لديها نفس الباركود \"%1$s\"."
 
 #: menu.cmd_replace_barcode.testing.error
 msgid "Error testing replacement barcode \"%1$s\"."
-msgstr ""
+msgstr "خطأ في اختبار الباركود المُستبدَل \"%1$s\"."
 
 #: menu.cmd_replace_barcode.permission.error
 msgid "Rename aborted.  Insufficient permission."
-msgstr ""
+msgstr "تمّ إبطال/إلغاء إعادة التسمية. صلاحية غير كافية."
 
 #: menu.cmd_replace_barcode.renaming.error
 msgid "Error renaming item."
-msgstr ""
+msgstr "خطأ في إعادة تسمية النسخة."
 
 #: menu.cmd_replace_barcode.renaming.failure
 msgid "The rename operation probably failed."
-msgstr ""
+msgstr "عملية إعادة تسمية ربما فشلت."
 
 #: menu.cmd_search_opac.tab
 msgid "Catalog"
-msgstr ""
+msgstr "الفهرس"
 
 #: menu.cmd_search_bib_id.tab
 msgid "What is the internal ID for the bibliographic record?"
-msgstr ""
+msgstr "ما هو المُعرف الداخلي للتسجيلة الببليوجرافية؟"
 
 #: menu.cmd_search_bib_id.prompt
 msgid "Bib ID Lookup"
-msgstr ""
+msgstr "البحث عن مُعرف المكتبة"
+
+#: menu.cmd_search_usr_id.tab
+msgid "What is the internal database ID for the patron account?"
+msgstr "ما هو مُعرف قاعدة البيانات الداخلي لحساب المستفيد؟"
+
+#: menu.cmd_search_usr_id.prompt
+msgid "Patron ID Lookup"
+msgstr "البحث عن مُعرف المُستفيد"
 
 #: menu.cmd_search_tcn.tab
 msgid "What is the TCN or accession ID for the record?"
-msgstr ""
+msgstr "ما هو رقم النقل أو مُعرف الانضمام للتسجيلة؟"
 
 #: menu.cmd_search_tcn.prompt
 msgid "TCN Lookup"
-msgstr ""
+msgstr "البحث عن رقم التحكم في النقل"
 
 #: menu.cmd_search_tcn.not_found.error
 msgid "\"%1$s\" not found"
-msgstr ""
+msgstr "\"%1$s\" غير موجودة"
 
 #: menu.cmd_search_tcn.deleted.error
 msgid "\"%1$s\" is deleted.  Show the deleted record anyway?"
-msgstr ""
+msgstr "\"%1$s\" تمّ حذفها. إظهار التسجيلة المحذوفة على أية حال؟"
 
 #: menu.cmd_patron_register.related.tab
 msgid "Editing Related Patron"
-msgstr ""
+msgstr "تعديل المستفيد ذو الصلة"
 
 #: menu.cmd_patron_register.tab
 msgid "Register Patron"
-msgstr ""
+msgstr "تسجيل المستفيد"
 
 #. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode
 #: staff.circ.work_log_patron_registration.message
 msgid "%1$s registered %3$s (%2$s)"
-msgstr ""
+msgstr "%1$s المُسجلة %3$s (%2$s)"
+
+#. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Hold ID  5 - Hold Type
+#: staff.circ.work_log_hold_placed.message
+msgid "%1$s placed hold %4$s (%5$s) for %3$s (%2$s)"
+msgstr "%1$s وضع الحجز %4$s (%5$s) لـِ %3$s (%2$s)"
 
 #: menu.cmd_browse_holds.tab
 msgid "Hold Browser"
-msgstr ""
+msgstr "استعراض الحجز"
 
 #: menu.cmd_browse_holds_shelf.tab
 msgid "Holds Shelf"
-msgstr ""
+msgstr "رف الحجوزات"
 
 #: menu.cmd_browse_hold_pull_list.tab
 msgid "On Shelf Pull List"
-msgstr ""
+msgstr "قائمة السحب على الرف"
 
 #: menu.cmd_local_admin.tab
 msgid "Local Administration"
-msgstr ""
+msgstr "الإدارة المحلية"
 
 #: menu.cmd_open_vandelay.tab
 msgid "MARC Import/Export"
-msgstr ""
+msgstr "مارك استيراد/تصدير"
+
+#: menu.cmd_marc_batch_edit.tab
+msgid "MARC Batch Edit"
+msgstr "تعديل دفعة مارك"
 
 #: menu.cmd_open_conify.tab
 msgid "Server Settings"
-msgstr ""
+msgstr "إعدادات الخادم"
 
 #: menu.cmd_retrieve_last_patron.session.error
 msgid "No patron visited yet this session."
-msgstr ""
+msgstr "لمّ يزور مستفيد هذه الجلسة حتى الآن."
 
 #: menu.cmd_retrieve_last_record.session.error
 msgid "No record visited yet this session."
-msgstr ""
+msgstr "لا توجد تسجيلات تمّ زيارتها حتى الآن لهذه الجلسة."
 
 #: menu.cmd_retrieve_last_record.status
 msgid "Retrieving title..."
-msgstr ""
+msgstr "استرجاع العنوان ..."
 
 #: menu.cmd_chg_session.label
 msgid "Change Login"
-msgstr ""
+msgstr "تغيير الدخول"
 
 #: menu.cmd_chg_session.operator.label
 msgid "Change Operator: %1$s"
-msgstr ""
+msgstr "تغيير المُشغل: %1$s"
 
 #: menu.cmd_manage_offline_xacts.tab
 msgid "Offline Transactions"
-msgstr ""
+msgstr "المُعاملات/ الإجراءات بدون اتصال"
 
 #: menu.cmd_download_patrons.complete.status
 msgid "Download completed"
-msgstr ""
+msgstr "اِكتمل التنزيل"
 
 #: menu.cmd_download_patrons.error
 msgid ""
 "There was a problem with the download.  The server returned a status %1$s : "
 "%2$s"
-msgstr ""
+msgstr "توجد مشكلة في التحميل. الخادم استرجع الحالة %1$s : %2$s"
 
 #: menu.cmd_stat_cat_edit.tab
 msgid "Statistical Category Editor"
-msgstr ""
+msgstr "محرر الفئة الإحصائي"
 
 #: menu.cmd_non_cat_type_edit.tab
 msgid "Non-Cataloged Type Editor"
-msgstr ""
+msgstr "مُحرر نوع غير المُفهرسة"
 
 #: menu.cmd_copy_location_edit.tab
 msgid "Copy Location Editor"
-msgstr ""
+msgstr "محرر موقع النسخة"
 
 #: menu.cmd_console.tab
 msgid "JavaScript Console"
-msgstr ""
+msgstr "وحدة تحكم جافا سكربت"
 
 #: menu.cmd_shell.tab
 msgid "JavaScript Shell"
-msgstr ""
+msgstr "جافا سكربت شل"
 
 #: menu.cmd_xuleditor.tab
 msgid "XUL Editor"
-msgstr ""
+msgstr "مُحرر XUL"
 
 #: menu.cmd_fieldmapper.tab
 msgid "Fieldmapper"
-msgstr ""
+msgstr "مخطط الحقل"
 
 #: menu.cmd_public_opac.tab
 msgid "OPAC"
-msgstr ""
+msgstr "الأوباك"
 
 #: menu.cmd_extension_manager.tab
 msgid "Extension Manager"
-msgstr ""
+msgstr "مدير الإضافات"
 
 #: menu.cmd_theme_manager.tab
 msgid "Theme Manager"
-msgstr ""
+msgstr "مدير القوالب/الثيمات"
 
 #: menu.cmd_shutdown.prompt
 msgid "Exit Evergreen completely?"
-msgstr ""
+msgstr "الخروج مِن إيفر غرين تماماً؟"
 
 #: menu.spawn_search.msg
 msgid "Editor would like to search for: %1$s"
-msgstr ""
+msgstr "المُحرر يريد البحث عن/ لـِ : %1$s"
 
 #: menu.cmd_verify_credentials.tabname
 msgid "Verify Credentials"
-msgstr ""
+msgstr "تأكيد معلومات الدخول"
 
 #: menu.close_all_tabs.error
 msgid "Error closing all tabs"
-msgstr ""
+msgstr "خطأ في إغلاق كافة التبويبات"
 
 #: menu.new_tab.tab
 msgid "Tab"
+msgstr "تبويب"
+
+#: menu.new_tab.max_tab_dialog
+msgid ""
+"Sorry, we can't create any more tabs in this window.\n"
+"Would you like to create a new tab in another window?"
 msgstr ""
+"نأسف، لا يمكننا إنشاء المزيد من التبويبات في هذه النافذة.\n"
+"هل تريد إنشاء تبويب جديد في نافذة اخرى؟"
 
 #: main.session_cookie.error
 msgid "Error setting session cookie: %1$s"
-msgstr ""
+msgstr "خطأ في كوكيز إعداد الجلسة: %1$s"
 
 #: menu.set_tab.error
 msgid "pause for error"
-msgstr ""
+msgstr "توقف للخطأ"
 
 #: menu.reset_network_stats
 msgid "Reset network activity summary?"
-msgstr ""
+msgstr "إعادة تعيين ملخص نشاط الشبكة؟"
 
 #: main.testing
 msgid "Testing"
-msgstr ""
+msgstr "اختبار"
 
 #: main.transaction_export.title
 msgid "Save Transaction File As"
-msgstr ""
+msgstr "حفظ ملف الإجراء/العملية كـَ"
 
 #: main.transaction_export.prompt
 msgid "Would you like to overwrite the existing file %1$s?"
-msgstr ""
+msgstr "هل ترغب في الكتابة فوق الملف الموجود %1$s؟"
 
 #: main.transaction_export.prompt.title
 msgid "Transaction Export Warning"
-msgstr ""
+msgstr "تحذير عملية التصدير"
 
 #: main.transaction_export.success.prompt
 msgid ""
@@ -620,16 +703,19 @@ msgid ""
 "recommend that you now purge the transactions from this staff client.  Would "
 "you like for us to do this?"
 msgstr ""
+"تم تصدير المعاملات الخاصة بك بنجاح إلى الملف %1$s. نوصي بشدة أن تقوم الآن "
+"تطهير المعاملات في برنامج طاقم المكتبة. هل تريد أن نقوم بذلك؟"
 
 #: main.transaction_export.success.title
 msgid "Transaction Export Successful"
-msgstr ""
+msgstr "عملية التصدير ناجحة"
 
 #: main.transaction_export.filename.error
 msgid ""
 "Error purging transactions:  Taking too long to find a unique filename for "
 "archival."
 msgstr ""
+"خطأ في تطهير المعاملات: أخذ وقتاً طويلاً للعثور على اسم فريد من أجل الأرشفة"
 
 #: main.transaction_export.duplicate.warning
 msgid ""
@@ -637,26 +723,30 @@ msgid ""
 "the set you just exported is solely for archival purposes, we run the risk "
 "of duplicate transactions being processed on the server."
 msgstr ""
+"لطفاً ينبغي ملاحظة أن لديك الآن مجموعتين من المعاملات متطابقة. إلا المجموعة "
+"التي قمت بتصديرها فقط لأغراض الأرشفة، نتعرض لخطر تكرار المعاملات المُعالجة "
+"على الخادم"
 
 #: main.transaction_export.no_filename.error
 msgid ""
 "Either you did not choose a filename, or you tried to overwrite an existing "
 "file."
-msgstr ""
+msgstr "إما أنك لم تختار اسم الملف، أو حاولت الكتابة فوق ملف موجود."
 
 #: main.transaction_export.no_transactions.error
 msgid "There are no outstanding transactions to export."
-msgstr ""
+msgstr "لا توجد معاملات/إجراءات مُعلقة للتصدير."
 
 #: main.transaction_import.outstanding.error
 msgid ""
 "There are already outstanding transactions on this staff client.  Upload "
 "these first."
 msgstr ""
+"هناك مُسبقاً معاملات مُعلقة في برنامج طاقم المكتبة. ينبغي عليك تحميلها أولاً."
 
 #: main.transaction_import.title
 msgid "Import Transaction File"
-msgstr ""
+msgstr "استيراد ملف المُعاملات"
 
 #: main.transaction_import.delete.prompt
 msgid ""
@@ -665,22 +755,25 @@ msgid ""
 "We recommend that you delete the external copy.  Would you like for us to "
 "delete %1$s?"
 msgstr ""
+"تم ترحيل المعاملات الخاصة بك بنجاح إلى برنامج طاقم المكتبة.\n"
+"\n"
+"نوصي بحذف النسخة الخارجية. هل ترغب بحذف %1$s?"
 
 #: main.transaction_import.success
 msgid "Transaction Import Successful"
-msgstr ""
+msgstr "عملية الاستيراد ناجحة"
 
 #: main.on_debug.clear_cache
 msgid "cache cleared"
-msgstr ""
+msgstr "تم مسح الكاش"
 
 #: main.on_debug.debug
 msgid "debug the debug :D"
-msgstr ""
+msgstr "تقويم تصحيح الأخطاء :D"
 
 #: main.new_window_btn.login_first_warning
 msgid "Please login first!"
-msgstr ""
+msgstr "لطفاً تسجيل الدخول أولاً!"
 
 #: main.settings.migrate
 msgid ""
@@ -688,6 +781,8 @@ msgid ""
 "location than your previous installation.  Should we attempt to migrate "
 "these settings?"
 msgstr ""
+"هذا الإصدار من برنامج طاقم المكتبة يخزن الإعدادات المحلية في موقع مختلف عن "
+"مكان تثبيتك السابق. يجب علينا محاولة ترحيل هذه الإعدادات؟"
 
 #: main.settings.migrate.failed
 msgid ""
@@ -700,6 +795,13 @@ msgid ""
 "\t%2$s\n"
 "which is where we used to store such information.\n"
 msgstr ""
+"تحذير: غير قادر على ترحيل إعدادات القديمة. تظهر إعدادات وملفات التكوين في "
+"المواقع المتعددة الموجودة. \n"
+"لحل هذه المشكلة يدوياً ينبغي الأخذ بعين الاعتبار:\n"
+"\t%1$s\n"
+"وهو في الدليل حيث نريد تخزين الإعدادات من أجل حساب نظام التشغيل الحالي، و:\n"
+"\t%2$s\n"
+"والذي هو المكان الذي يستخدم لتخزين هذه المعلومات.\n"
 
 #: main.settings.migrate.confirm
 msgid ""
@@ -708,62 +810,68 @@ msgid ""
 "to\n"
 "%2$s?"
 msgstr ""
+"نقل ملفات الإعدادات والتكوينات من\n"
+"%1$s\n"
+"إلى\n"
+"%2$s?"
 
 #: main.settings.migrate.error
 msgid "Error trying to move %1$s to directory %2$s"
-msgstr ""
+msgstr "خطأ في محاولة النقل %1$s إلى المسار %2$s"
 
 #: network.override.exceptions
 msgid "Exceptions"
-msgstr ""
+msgstr "الاِستثناءات"
 
 #: network.override.override
 msgid "Override "
-msgstr ""
+msgstr "تجاوز "
 
 #: network.override.force.prompt
 msgid "Force this action?"
-msgstr ""
+msgstr "هل تريد إجبار هذا الإجراء؟"
 
 #: network.ignore_errors
 msgid "Ignore Errors"
-msgstr ""
+msgstr "تجاهل الأخطاء"
 
 #: network.method_not_found.error
 msgid "Method not found for %1$s"
-msgstr ""
+msgstr "لا توجد طريقة لـِ %1$s"
 
 #: network.new_session.authorize
 msgctxt "network.new_session.authorize"
 msgid "Authorize"
-msgstr ""
+msgstr "تخويل/ترخيص"
 
 #: network.new_session.expired
 msgid "Session Expired"
-msgstr ""
+msgstr "انتهت الجلسة"
 
 #: network.new_session.expired.prompt
 msgid "Please enter the credentials for a new login session."
-msgstr ""
+msgstr "لطفاً ينبغي إدخال بيانات الاعتماد لجلسة تسجيل الدخول الجديدة."
 
 #: network.new_session.operator_change
 msgid "Operator Change"
-msgstr ""
+msgstr "تغيير المُشغل"
 
 #: network.new_session.operator_change.prompt
 msgid ""
 "Please enter the credentials for the new login session.  Note that the "
 "previous session is still active."
 msgstr ""
+"لطفاً ينبغي إدخال بيانات الاعتماد لجلسة تسجيل الدخول الجديدة. لاحظ أن الجلسة "
+"السابقة لاتزال فعالة/نشطة."
 
 #: network.permission.authorize
 msgctxt "network.permission.authorize"
 msgid "Authorize"
-msgstr ""
+msgstr "تخويل/ترخيص"
 
 #: network.permission.description.brief
 msgid "Permission Denied: %1$s"
-msgstr ""
+msgstr "تمّ رفض الصلاحية: %1$s"
 
 #: network.permission.description.full
 msgid ""
@@ -773,10 +881,15 @@ msgid ""
 "inform your friendly Evergreen developers or helpdesk staff of the above "
 "permission and this debug information: %1$s"
 msgstr ""
+"موظف آخر من طاقم المكتبة لديه الصلاحية الموضحة أعلاه تعطيه الإذن بالقيام "
+"بهذا العمل تحديداً. لطفاً ينبغي إبلاغ مسؤول المكتبة الخاصة بك إذا كنت بحاجة "
+"إلى هذا الإذن أو الصلاحية. إذا كنت تشعر بأنك قد تلقيت هذا الاستثناء عن طريق "
+"الخطأ، ينبغي إبلاغ مطورين إيفرغرين أو مكتب المساعدة من أجل الإذن المذكور "
+"أعلاه وهذا يصحح الأخطاء في المعلومات: %1$s"
 
 #: network.server_or_method.error
 msgid "Server or method error"
-msgstr ""
+msgstr "خطأ في الطريقة أو الخادم"
 
 #: network.server.failure.exception
 msgid ""
@@ -786,62 +899,67 @@ msgid ""
 "a bug in Evergreen and not network problems, please contact your help desk "
 "or friendly Evergreen administrators, and give them this information:"
 msgstr ""
+"فشل في الشبكة أو الخادم. لطفاً ينبغي التحقق من اتصال الإنترنت الخاص بك إلى "
+"%1$s واختيار إعادة محاولة الاتصال بالشبكة. إذا كنت بحاجة إلى الدخول إلى وضع "
+"دون الاتصال، اختر تجاهل الأخطاء هنا وفي الحوارات اللاحقة. إذا كنت تعتقد أن "
+"هذا الخطأ هو بسبب وجود خطأ في إيفرغرين وليس مشاكل في الشبكة، ينبغي الاتصال "
+"بمكتب المساعدة الخاص بك أو مديري إيفرغرين، وإعطائهم هذه المعلومات:"
 
 #: network.server.method
 msgid "method=%1$s"
-msgstr ""
+msgstr "الأسلوب=%1$s"
 
 #: network.server.params
 msgid "params=%1$s"
-msgstr ""
+msgstr "البارمترات=%1$s"
 
 #: network.server.thrown_label
 msgid "THROWN:"
-msgstr ""
+msgstr "القذف:"
 
 #: network.server.status_label
 msgid "STATUS:"
-msgstr ""
+msgstr "الحالة:"
 
 #: network.network_failure
 msgid "Network Failure"
-msgstr ""
+msgstr "فشل في الشبكة"
 
 #: network.retry_network
 msgid "Retry Network"
-msgstr ""
+msgstr "إعادة الشبكة"
 
 #: network.unknown_status
 msgid "Unknown status"
-msgstr ""
+msgstr "حالة غير معروفة"
 
 #: network.window_title.error
 msgid "Error setting window titles to match new login"
-msgstr ""
+msgstr "خطأ في عناوين إعداد النافذة مِن أجل مطابقة الدخول الجديد"
 
 #: openils.global_util.clear_cache.error
 msgid "Problem clearing the cache: %1$s"
-msgstr ""
+msgstr "مشكلة في مسح ذاكرة التخزين المؤقت: %1$s"
 
 #: openils.global_util.clipboard.error
 msgid "Clipboard action failed: %1$s"
-msgstr ""
+msgstr "فشل عمل الحافظة: %1$s"
 
 #: openils.global_util.clipboard
 msgid "Copied \"%1$s\" to clipboard."
-msgstr ""
+msgstr "المَنسوخ \"%1$s\" في الحافظة."
 
 #: openils.global_util.content_window_jsobject.error
 msgid "Error with get_contentWindow(%1$s) and wrappedJSObject: %2$s"
-msgstr ""
+msgstr "خطأ في get_contentWindow(%1$s) و wrappedJSObject: %2$s"
 
 #: openils.global_util.content_window.error
 msgid "Error with get_contentWindow(%1$s): %2$s"
-msgstr ""
+msgstr "خطأ في get_contentWindow(%1$s): %2$s"
 
 #: openils.global_util.font_size.error
 msgid "Error adjusting the font size: %1$s"
-msgstr ""
+msgstr "خطأ في ضبط حجم الخط: %1$s"
 
 #: list.row_fetch_warning
 msgid ""
@@ -850,328 +968,570 @@ msgid ""
 "retrieved, and this may take some time and lag the staff client.  Would you "
 "like to proceed?"
 msgstr ""
+"تحذير: تمّ فقط %1$s من أصل %2$s صفوف في هذه القائمة التي تمّ استرجاعها للعرض "
+"المباشر والحالي. إن فرز هذه القائمة يتطلب أن يتم استرجاع كل هذه الصفوف، وهذا "
+"قد يستغرق بعض الوقت وتأخر برنامج طاقم المكتبة. هل ترغب في المتابعة؟"
 
 #: list.columns_saved
 msgid "Column configuration saved."
-msgstr ""
+msgstr "تمّ حفظ تكوين/تهيئة العامود"
 
 #: list.column_save_disabled
 msgid "Column configuration save disabled by server policy."
-msgstr ""
+msgstr "تكوين وتهيئة عمود حفظ غير المُفعلة حسب سياسة الخادم."
 
 #: list.row_retrieving
 msgid "Retrieving..."
-msgstr ""
+msgstr "يتم الآن الاستدعاء..."
 
 #: list.save_csv_as
 msgid "Save List CSV As..."
-msgstr ""
+msgstr "حفظ قائمة CSV باسم ..."
 
 #: list.actions.menu.label
 msgid "List Actions"
-msgstr ""
+msgstr "قائمة الإجراءات"
 
 #: list.actions.menu.accesskey
 msgctxt "list.actions.menu.accesskey"
 msgid "L"
-msgstr ""
+msgstr "L"
 
 #: list.actions.field_to_clipboard.label
 msgid "Copy Field from Selected Row to Clipboard"
-msgstr ""
+msgstr "نسخ الحقل من الصف المحدد إلى الحافظة"
 
 #: list.actions.field_to_clipboard.accesskey
+msgctxt "list.actions.field_to_clipboard.accesskey"
 msgid "C"
-msgstr ""
+msgstr "C"
 
 #: list.actions.csv_to_clipboard.label
 msgid "Copy List CSV to Clipboard"
-msgstr ""
+msgstr "نسخ قائمة CSV في الحافظة"
 
 #: list.actions.csv_to_clipboard.accesskey
 msgctxt "list.actions.csv_to_clipboard.accesskey"
 msgid "L"
-msgstr ""
+msgstr "L"
 
 #: list.actions.csv_to_printer.label
 msgid "Print List CSV"
-msgstr ""
+msgstr "طباعة قائمة CSV"
 
 #: list.actions.csv_to_printer.accesskey
 msgid "P"
-msgstr ""
+msgstr "P"
 
 #: list.actions.extended_to_printer.label
 msgid "Print List Expanded Format"
-msgstr ""
+msgstr "تنسيق قائمة الطباعة المُوسعة"
 
 #: list.actions.extended_to_printer.accesskey
 msgid "x"
-msgstr ""
+msgstr "x"
 
 #: list.actions.csv_to_file.label
 msgid "Save List CSV to File"
-msgstr ""
+msgstr "حفظ قائمة CSV في ملف"
 
 #: list.actions.csv_to_file.accesskey
 msgid "F"
-msgstr ""
+msgstr "F"
 
 #: list.actions.save_column_configuration.label
 msgid "Save Column Configuration"
-msgstr ""
+msgstr "حفظ عامود التهيئة"
 
 #: list.actions.save_column_configuration.accesskey
 msgid "S"
-msgstr ""
+msgstr "S"
 
 #: list.dump_extended_format.record_separator
 msgid "=-=-="
-msgstr ""
+msgstr "=-=-="
+
+#: list.line_number
+msgid "#"
+msgstr "#"
 
 #: menu.cmd_survey_wizard.inadequate_perm
-msgid "You are lacking the CREATE_SURVEY permission and/or working locations."
-msgstr ""
+msgid ""
+"You are lacking the CREATE_SURVEY permission and/or working locations."
+msgstr "أنت تفتقر إلى الصلاحية CREATE_SURVEY و/أو مواقع العمل."
 
 #: menu.cmd_local_admin_fonts_and_sounds.tab
 msgid "Global Font and Sound Settings"
-msgstr ""
+msgstr "إعدادات الفونت/الخط العالمي والصوت"
 
 #: menu.cmd_local_admin_printer.tab
 msgid "Printer Settings Editor"
-msgstr ""
+msgstr "محرر إعدادات الطابعة"
 
 #: menu.cmd_local_admin_do_not_auto_attempt_print_setting.tab
 msgid "'Do Not Attempt Auto-Print' Setting"
-msgstr ""
+msgstr "إعداد \"عدم محاولة الطباعة التلقائية\""
 
 #: menu.cmd_local_admin_closed_dates.tab
 msgid "Closed Dates Editor"
-msgstr ""
+msgstr "مُحرر تواريخ الإغلاق"
 
 #: menu.cmd_local_admin_copy_locations.tab
 msgid "Copy Locations Editor"
-msgstr ""
+msgstr "مُحرر مواقع النُسخ"
 
 #: menu.cmd_local_admin_lib_settings.tab
 msgid "Library Settings Editor"
-msgstr ""
+msgstr "مُحرر إعدادات المكتبة"
 
 #: menu.cmd_local_admin_non_cat_types.tab
 msgid "Non-cataloged Types Editor"
-msgstr ""
+msgstr "مُحرر أنواع غير المفهرسة"
 
 #: menu.cmd_local_admin_stat_cats.tab
 msgid "Statistical Categories Editor"
-msgstr ""
+msgstr "مُحرر الفئات/التصنيفات الإحصائية"
 
 #: menu.cmd_local_admin_reports.tab
 msgid "Reports"
-msgstr ""
+msgstr "تقارير"
+
+#: menu.cmd_local_admin_age_overdue_circulations_to_lost.tab
+msgid "Age to Lost"
+msgstr "مُدة الفُقدان"
 
 #: menu.cmd_local_admin_cash_reports.tab
 msgid "Cash Reports"
-msgstr ""
+msgstr "تقارير الدفع النقدي"
 
 #: menu.cmd_local_admin_transit_list.tab
 msgid "Transits"
-msgstr ""
+msgstr "المنقولات"
 
 #: menu.cmd_acq_create_invoice.tab
 msgid "New Invoice"
-msgstr ""
-
-#: menu.cmd_acq_view_picklist.tab
-msgid "Selection Lists"
-msgstr ""
+msgstr "فاتورة جديدة"
 
 #: menu.cmd_acq_bib_search.tab
-msgid "Title Search"
-msgstr ""
+msgid "MARC Federated Search"
+msgstr "البحث الاتحادي في مارك"
 
 #: menu.cmd_acq_from_bib.tab
-msgid "Import Catalog Records"
-msgstr ""
+msgid "Load Catalog Record IDs"
+msgstr "مُعرفات تسجيلات تحميل الفهرس"
 
 #: menu.cmd_acq_unified_search.tab
 msgid "Acquisitions Search"
-msgstr ""
+msgstr "بحث في التزويد"
 
 #: menu.cmd_acq_upload.tab
-msgid "Load Order Record"
-msgstr ""
+msgid "Load MARC Order Records"
+msgstr "تحميل تسجيلات مارك"
 
 #: menu.cmd_acq_new_brief_record.tab
 msgid "New Brief Record"
-msgstr ""
+msgstr "موجز تسجيلة جديد"
 
-#: menu.cmd_acq_view_po.tab
+#: menu.cmd_acq_po.tab
 msgid "Purchase Orders"
-msgstr ""
-
-#: menu.cmd_acq_view_po_events.tab
-msgid "Purchase Order Events"
-msgstr ""
+msgstr "طلبات الشراء"
 
 #: menu.cmd_acq_user_requests.tab
-msgid "User Requests"
-msgstr ""
-
-#: menu.cmd_acq_view_fund.tab
-msgid "Funds"
-msgstr ""
-
-#: menu.cmd_acq_view_funding_source.tab
-msgid "Funding Sources"
-msgstr ""
-
-#: menu.cmd_acq_view_provider.tab
-msgid "Providers"
-msgstr ""
-
-#: menu.cmd_acq_view_edi_account.tab
-msgid "EDI Accounts"
-msgstr ""
-
-#: menu.cmd_acq_view_currency_type.tab
-msgid "Currency Types"
-msgstr ""
-
-#: menu.cmd_acq_view_exchange_rate.tab
-msgid "Exchange Rates"
-msgstr ""
-
-#: menu.cmd_acq_view_distrib_formula.tab
-msgid "Distribution Formulas"
-msgstr ""
+msgid "Patron Requests"
+msgstr "طلبات المستفيد"
 
 #: menu.cmd_acq_claim_eligible.tab
-msgid "Claim-Eligible Items"
-msgstr ""
+msgid "Claim-Ready Items"
+msgstr "نُسخ المُطالبة الجاهزة"
+
+#: menu.cmd_serial_batch_receive.tab
+msgid "Batch Receive"
+msgstr "استلام دفعة"
+
+#: menu.cmd_url_verify.tab
+msgid "Link Checker"
+msgstr "مُدقق الصلة أو الرابط"
 
 #: menu.cmd_booking_resource.tab
 msgid "Resources"
-msgstr ""
+msgstr "المَصادر"
 
 #: menu.cmd_booking_reservation.tab
 msgid "Reservations"
-msgstr ""
+msgstr "الحجوزات"
 
 #: menu.cmd_booking_reservation_pickup.tab
 msgid "Reservation Pickup"
-msgstr ""
+msgstr "استلام الحجز"
 
 #: menu.cmd_booking_reservation_return.tab
 msgid "Reservation Return"
-msgstr ""
+msgstr "إرجاع الحجز"
+
+#: menu.cmd_server_admin_conify_remote_account.tab
+msgid "Remote Accounts"
+msgstr "حسابات تحكم عن بعد"
 
 #: menu.cmd_booking_pull_list.tab
 msgid "Booking Pull List"
-msgstr ""
+msgstr "قائمة سحب الحجز"
 
 #: menu.cmd_booking_capture.tab
 msgid "Booking Capture"
-msgstr ""
+msgstr "استلام الحجز"
+
+#: menu.cmd_authority_manage.tab
+msgid "Manage Authorities"
+msgstr "إدارة الملفات الاستنادية"
+
+#: menu.cmd_search_prefs.tab
+msgid "Search Preferences"
+msgstr "أفضليات/أولويات البحث"
+
+#: menu.local_admin.barcode_completion.tab
+msgid "Barcode Completion"
+msgstr "إكمال الباركود"
 
 #: menu.local_admin.circ_matrix_matchpoint.tab
 msgid "Circulation Policies"
-msgstr ""
+msgstr "قواعد الإعارة"
 
 #: menu.local_admin.hold_matrix_matchpoint.tab
 msgid "Hold Policies"
-msgstr ""
+msgstr "قواعد الحجز"
+
+#: menu.local_admin.item_attribute_editor.tab
+msgid "Admin Item Attribute Editor"
+msgstr "مُحرر سمة إدارة النُسخة"
 
 #: menu.local_admin.work_log.tab
 msgid "Work Log"
-msgstr ""
+msgstr "سجل العمل"
 
 #: menu.local_admin.patrons_due_refunds.tab
 msgid "Patrons With Negative Balances"
-msgstr ""
+msgstr "المستفيدين أصحاب الأرصدة السلبية"
 
 #: menu.circulation.staged_patrons.tab
 msgid "Pending Patrons"
-msgstr ""
+msgstr "المستفيدين المُعلقين"
 
 #: load_printer_settings_error_description
 msgid ""
 "Printer settings did not load cleanly with this version of Evergreen.  You "
 "should reconfigure your printer under Printer Settings Editor."
 msgstr ""
+"لم يتم تحميل إعدادات الطابعة على نحو نظيف مع هذا الإصدار من إيفرغرين. يجب "
+"إعادة تكوين وتهيئة الطابعة الخاصة بك تحت محرر إعدادات الطابعة."
 
 #: load_printer_settings_error_title
 msgid "Printer Settings"
-msgstr ""
+msgstr "إعدادات الطباعة"
 
 #: staff.cat.util.copy_editor.batch_edit
 msgid "Batch Edit"
-msgstr ""
+msgstr "تعديل الدفعة"
 
 #: staff.cat.util.copy_editor.batch_view
 msgid "Batch View"
-msgstr ""
+msgstr "عرض الدفعة"
 
 #: staff.cat.util.copy_editor.edit
 msgid "Edit"
-msgstr ""
+msgstr "تَعديل"
 
 #: staff.cat.util.copy_editor.view
 msgid "View"
-msgstr ""
+msgstr "إظهار"
 
 #: staff.circ.copy_status.add_volumes.perm_failure
 msgid "You do not have permission to add volumes to the workstation library."
-msgstr ""
+msgstr "ليس لديك صلاحية لإضافة مجلدات إلى محطة عمل المكتبة."
 
 #: staff.circ.copy_status.add_volumes.title
 msgid "Add Volume/Item for Record # %1$s"
+msgstr "إضافة مجلد/نُسخة للتسجيلة # %1$s"
+
+#: staff.cat.copy_browser.marked_record_for_multi_home_indicator.tcn.label
+msgid "Record with TCN %1$s targeted for Multi-Bib items."
 msgstr ""
+"التسجيلة التي لديها رقم التحكم في النقل %1$s مُستهدفة من أجل نُسخ "
+"ببليوغرافية متعددة"
+
+#: staff.cat.copy_browser.marked_record_for_multi_home_indicator.record_id.label
+msgctxt ""
+"staff.cat.copy_browser.marked_record_for_multi_home_indicator.record_id.label"
+msgid "Record with ID %1$s targeted for Multi-Bib items."
+msgstr "التسجيلة مع المُعرف %1$s تمّ تحديد هدفها لـِ نُسخ مكتبات متعددة."
 
 #: staff.cat.z3950.marked_record_for_overlay_indicator.tcn.label
 msgctxt "staff.cat.z3950.marked_record_for_overlay_indicator.tcn.label"
 msgid "Record with TCN %1$s marked for overlay."
-msgstr ""
+msgstr "التسجيلة مع رقم التحكم في النقل %1$s تمّ تمييزها مِن أجل التراكب ."
 
 #: staff.cat.z3950.marked_record_for_overlay_indicator.record_id.label
 msgctxt "staff.cat.z3950.marked_record_for_overlay_indicator.record_id.label"
 msgid "Record with ID %1$s marked for overlay."
-msgstr ""
+msgstr "التسجيلة التي مُعرفها %1$s تمّ تعليمها/تميزها من أجل التراكب."
 
 #: staff.cat.opac.marked_record_for_hold_transfer_indicator.tcn.label
 msgid "Record with TCN %1$s marked for title hold transfer."
 msgstr ""
+"التسجيلة التي لديها رقم التحكم في النقل %1$s مُميزة من أجل نقل عنوان الحجز."
 
 #: staff.cat.opac.marked_record_for_hold_transfer_indicator.record_id.label
 msgid "Record with ID %1$s marked for title hold transfer."
 msgstr ""
+"التسجيلة التي لديها رقم التحكم في النقل %1$s مُستهدفة من نقل عنوان الحجز."
 
 #: staff.cat.opac.title_for_hold_transfer.destination_needed.label
 msgid "Need to mark a record as a Title Hold Transfer Destination first."
-msgstr ""
+msgstr "تحتاج لـِ تمييز التسجيل كـَ وجهة نقل لعنوان الحجز أولاً."
 
 #: staff.cat.opac.title_for_hold_transfer.success.label
 msgid "Holds transferred."
-msgstr ""
+msgstr "تمّ نقل الحجوزات."
 
 #: staff.cat.opac.title_for_hold_transfer.failure.label
 msgid "Holds not transferred."
-msgstr ""
+msgstr "لم يتمّ نقل الحجوزات."
+
+#: staff.cat.opac.related_items
+msgid "Related Lineitems"
+msgstr "القيود ذات العلاقة/الصلة"
+
+#: staff.cat.opac.serial_alt_mgmt
+msgid "Subscriptions"
+msgstr "الاِشتراكات"
 
 #: staff.cat.create_or_rebarcode_items
 msgid "Create or Re-barcode Items"
-msgstr ""
+msgstr "إناء أو إعادة المسح ضوئياً للنُسخ"
+
+#: staff.cat.bib_source.can_have_copies.false
+msgid "Records from %1$s cannot have copies."
+msgstr "التسجيلات مِن %1$s لا تمتلك نُسخ."
 
 #: printing.nothing_to_reprint
 msgid "Nothing to re-print"
-msgstr ""
+msgstr "لا شيء مِن أجل إعادة الطباعة"
 
 #: printing.prompt_for_external_print_cmd
 msgid ""
-"Enter external print command and parameters (use %receipt.txt% or %"
-"receipt.html% as the file containing the print data. Those values will be "
+"Enter external print command and parameters (use %receipt.txt% or "
+"%receipt.html% as the file containing the print data. Those values will be "
 "substituted with the proper path.):"
 msgstr ""
+"إدخال الأوامر الخارجية للطباعة والبارمترات (استخدام %receipt.txt% أو "
+"%receipt.html% كما في الملف الذي يحتوي على البيانات المطبوعة، سيتم استبدال "
+"هذه القيم مع المسار الصحيح.):"
 
 #: printing.print_strategy_saved
-msgid "Print strategy (%1$s) saved to file system."
+msgid "Print strategy (%1$s) for %2$s context saved to file system."
+msgstr "استراتيجية الطباعة (%1$s) في السياق %2$s تمّ حفظها في ملف النظام."
+
+#: text_editor.prompt_for_external_cmd
+msgid ""
+"Enter external text editor command and parameters (use %letter.txt% as the "
+"file containing the text. This value will be substituted with the proper "
+"path.):"
 msgstr ""
+"أدخل الأوامر والبارمترات لـِ مُحرر النص الخارجي (استخدام %letter.txt% كما في "
+"الملف الذي يحتوي على النص، سوف يتم استبدال هذه القيمة مع المسار الصحيح.):"
+
+#: menu.tab1.accesskey
+msgid "1"
+msgstr "1"
+
+#: menu.tab2.accesskey
+msgid "2"
+msgstr "2"
+
+#: menu.tab3.accesskey
+msgid "3"
+msgstr "3"
+
+#: menu.tab4.accesskey
+msgid "4"
+msgstr "4"
+
+#: menu.tab5.accesskey
+msgid "5"
+msgstr "5"
+
+#: menu.tab6.accesskey
+msgid "6"
+msgstr "6"
+
+#: menu.tab7.accesskey
+msgid "7"
+msgstr "7"
+
+#: menu.tab8.accesskey
+msgid "8"
+msgstr "8"
+
+#: menu.tab9.accesskey
+msgid "9"
+msgstr "٩"
+
+#: menu.tab10.accesskey
+msgid "0"
+msgstr "0"
+
+#: generic.unsaved_data_warning
+msgid ""
+"This action may cause you to lose unsaved information in the current "
+"interface. Continue anyway?"
+msgstr ""
+"مِن المحتمل أن هذا الإجراء تسبب في فقدان المعلومات غير المحفوظة في الواجهة "
+"الحالية. هل تريد المتابعة على أية حال؟"
+
+#: browser.reload.unsaved_data_warning
+msgid "This page may have unsaved data. Reload it anyway?"
+msgstr ""
+"مِن المحتمل أنه لم يتم حفظ بيانات هذه الصفحة. إعادة التحميل على أية حال؟"
+
+#: menu.close_tab.unsaved_data_warning
+msgid "This tab may have unsaved data. Close it anyway?"
+msgstr "مِن المحتمل أنه لم يتم حفظ بيانات هذا التبويب. إغلاق على أية حال؟"
+
+#: menu.replace_tab.unsaved_data_warning
+msgid "This tab may have unsaved data. Replace it anyway?"
+msgstr ""
+"مِن المحتمل أنه لم يتم حفظ بيانات هذا التبويب. هل تريد استبداله على أية حال؟"
+
+#: menu.close_window.unsaved_data_warning
+msgid "This window may have unsaved data. Close it anyway?"
+msgstr "مِن المحتمل أن البيانات لم تُحفظ في هذه النافذة. إغلاق على أية حال؟"
+
+#: menu.logoff.unsaved_data_warning
+msgid "This session may have unsaved data. Logoff anyway?"
+msgstr ""
+"مِن المحتمل أن البيانات لم تُحفظ في هذه الجلسة. هل تريد تسجيل الخروج على أية "
+"حال؟"
+
+#: menu.shutdown.unsaved_data_warning
+msgid "This application may have unsaved data. Exit it anyway?"
+msgstr ""
+"مِن المحتمل أن البيانات لم تُحفظ في هذه الجلسة. هل تريد الخروج/إغلاقها على "
+"أية حال؟"
+
+#: hotkeys.Default
+msgctxt "hotkeys.Default"
+msgid "Default"
+msgstr "افتراضي"
+
+#: hotkeys.None
+msgid "No Hotkeys"
+msgstr "بدون مفاتيح تشغيل"
+
+#: barcode_choice.join_barcodes
+msgid "%1$s / %2$s"
+msgstr "%1$s / %2$s"
+
+#: barcode_choice.actor
+msgid "%1$s : %2$s, %3$s from %4$s (%5$s)"
+msgstr "%1$s : %2$s, %3$s مِن %4$s (%5$s)"
+
+#: barcode_choice.asset
+msgid "%1$s : %2$s from %3$s (%4$s)"
+msgstr "%1$s : %2$s مِن %3$s (%4$s)"
+
+#: barcode_choice.none
+msgid "None of the above"
+msgstr "لا شيء أعلاه"
+
+#: barcode_choice.prompt
+msgid ""
+"After auto completion multiple barcodes may match your input. Please choose "
+"the barcode you intended below."
+msgstr ""
+"بعد الانتهاء الباركودات المتعددة الآلية قد تتطابق مع المدخلات الخاصة بك. "
+"لطفاً ينبغي اختيار الباركود المُراد أدناه."
+
+#: barcode_choice.errors_found
+msgid ""
+"In addition to the options below, one or more errors were encountered on "
+"items not shown."
+msgstr ""
+"بالإضافة إلى الخيارات أدناه، واحد أو أكثر من الأخطاء المُصادفة في النُسخ غير "
+"ظاهرة أو معروضة."
+
+#: barcode_choice.title
+msgid "Barcode Choice"
+msgstr "اختيار الباركود"
+
+#: barcode_choice.choice_label
+msgid "Found Barcodes:"
+msgstr "الباركودات الموجودة:"
+
+#: barcode_choice.actor_label
+msgid "Patron : %1$s"
+msgstr "المستفيد : %1$s"
+
+#: barcode_choice.asset_label
+msgid "Item : %1$s"
+msgstr "النُسخة : %1$s"
+
+#: barcode_choice.serial_label
+msgid "Serial : %1$s"
+msgstr "السلسلة : %1$s"
+
+#: barcode_choice.booking_label
+msgid "Booking : %1$s"
+msgstr "الحجز : %1$s"
+
+#: staff.main.button_bar.none
+msgid "None"
+msgstr "لا يُوجد"
+
+#: staff.main.button_bar.default
+msgctxt "staff.main.button_bar.default"
+msgid "Default"
+msgstr "افتراضي"
+
+#: util.hide_elements.title
+msgid "Hide UI Elements"
+msgstr "إخفاء عناصر UI"
+
+#: util.hide_elements.desc
+msgid ""
+"This is a list of hideable elements for this interface.  Check the ones that "
+"you want hidden and the library (and descendants) you want to affect:"
+msgstr ""
+"هذه هي قائمة من العناصر القابلة للإخفاء لهذه الواجهة. تحقق من تلك التي تريد "
+"إخفائها  والمكتبة وفروعها التي تريد التأثير فيها:"
+
+#: util.hide_elements.current_setting_preamble
+msgid ""
+"Workstation library %1$s is currently hiding these elements based on a "
+"setting inherited from %2$s:"
+msgstr ""
+"مكتبة محطة العمل %1$s تخفي حالياً هذه العناصر اعتماداً على الإعداد الموروث "
+"من %2$s:"
+
+#: util.hide_elements.current_setting_nonexistent
+msgid ""
+"Workstation library %1$s is not currently hiding any of these elements."
+msgstr "مكتبة محطة العمل %1$s لا تخفي حالياً أياً من هذه العناصر"
+
+#: util.hide_elements.update_setting.update_success
+msgid "Successfully updated the setting."
+msgstr "تم تحديث الإعداد بنجاح"
+
+#: util.hide_elements.update_setting.delete_success
+msgid "Successfully deleted the setting."
+msgstr "تم حذف الإعداد بنجاح"
+
+#: util.hide_elements.update_setting.failure
+msgid "Setting not changed."
+msgstr "الاعدادت لم تتغير."
+
+#: util.hide_elements.missing_permission
+msgid "Missing permission %1$s"
+msgstr "الصلاحية المفقودة %1$s"
+
+#: menu.cmd_server_admin_floating_groups.tab
+msgid "Floating Groups"
+msgstr "المجموعات العائمة"

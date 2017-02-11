@@ -1,77 +1,126 @@
-#. extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/cat.properties
+# Arabic translation for evergreen
+# Copyright (c) 2016 Rosetta Contributors and Canonical Ltd 2016
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2016.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-07 02:03-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Project-Id-Version: evergreen\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2016-08-25 17:09-0400\n"
+"PO-Revision-Date: 2017-01-20 18:24+0000\n"
+"Last-Translator: fares othman <Unknown>\n"
+"Language-Team: Arabic <ar@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.7.0\n"
-"X-Accelerator-Marker: &\n"
+"X-Launchpad-Export-Date: 2017-01-21 06:03+0000\n"
+"X-Generator: Launchpad (build 18302)\n"
 
 #: bib.no_marc
 msgid "No MARC Record"
-msgstr ""
+msgstr "لا توجد تسجيلات مارك"
 
 #: cat.barcode_for_item
 msgid "The barcode for the item is %1$s"
-msgstr ""
+msgstr "باركود هذه النُسخة %1$s"
 
 #: cat.batch_operation_failed
 msgid "The whole batch operation failed. %1$s"
-msgstr ""
+msgstr "عملية الدفعة الكاملة فشلت. %1$s"
 
 #: cat.copy_buckets.tab
 msgid "Copy Buckets"
-msgstr ""
+msgstr "سلال النُسخ"
 
 #: cat.total_bucket_items_in_bucket
 msgid "Contains %1$s bucket items"
-msgstr ""
+msgstr "تحتوي %1$s نُسخ السلة"
 
 #: cat.results_returned
 msgid "Returning %1$s hits"
-msgstr ""
+msgstr "استرجاع %1$s إصابة"
 
 #: staff.cat.bib_brief.record_id
-msgid "Record ID = %1$s"
-msgstr ""
+msgid "Database ID = %1$s"
+msgstr "مُعرف قاعدة البيانات = %1$s"
 
 #: staff.cat.bib_brief.deleted
 msgid "(Deleted)"
-msgstr ""
+msgstr "(محذوف)"
 
 #: staff.cat.bib_brief.inactive
 msgid "(Inactive)"
-msgstr ""
+msgstr "(غير مُفَعلة)"
 
 #: staff.cat.bib_brief.noncat
 msgid "(Not Cataloged)"
-msgstr ""
+msgstr "(غير مُفهرسة)"
 
 #: staff.cat.bib_brief.noncat.alert
 msgid "Item not cataloged."
+msgstr "النُسخة غير مُفهرسة."
+
+#. # %1$s = Bib Record Database ID
+#: staff.cat.manage_multi_bib_items.tab_name
+msgid "Manage Conjoined Items for Bib with DB ID %1$s"
+msgstr "إدارة النُسخ الموحدة للمكتبة مع مُعرف قاعدة البيانات %1$s"
+
+#: staff.cat.manage_multi_bib_items.result.column.value.error
+msgid "Error"
+msgstr "خَطأ"
+
+#: staff.cat.manage_multi_bib_items.result.column.value.success
+msgid "Success"
+msgstr "نجحت"
+
+#: staff.cat.manage_multi_bib_items.result.column.value.failed
+msgid "Failed"
+msgstr "فشلت"
+
+#: staff.cat.manage_multi_bib_items.result.column.value.item_linked_to_bib
+msgid "Item linked to bib"
+msgstr "النُسخة المُرتبطة بالمكتبة"
+
+#: staff.cat.manage_multi_bib_items.result.column.value.item_native_to_bib
+msgid "Item native to bib"
+msgstr "النُسخة المحلية لـِ المكتبة"
+
+#: staff.cat.manage_multi_bib_items.result.column.value.peer_type_updated
+msgid "Peer Type updated"
+msgstr "تمّ تحديث نوع النظير"
+
+#: staff.cat.manage_multi_bib_items.prompt.title
+msgid "Change Peer Type"
+msgstr "تغيير نوع النظير"
+
+#. # %1$s = Bib Record Database ID
+#: staff.cat.manage_multi_bib_items.prompt.confirm.unlink_item_from_bib.singular
+msgid "Unlink selected item from Bib with DB ID %1$s"
 msgstr ""
+"النُسخة المحددة غير المرتبطة مِن المكتبة مع مُعرف قاعدة البيانات %1$s"
+
+#. # %1$s = Bib Record Database ID, %2$s = Number of selected items
+#: staff.cat.manage_multi_bib_items.prompt.confirm.unlink_item_from_bib.plural
+msgid "Unlink %2$s selected items from Bib with DB ID %1$s"
+msgstr ""
+"غير المُرتبطة %2$s النُسخ المحددة مِن المكتبة مع مُعرف قاعدة البيانات %1$s"
 
 #: staff.cat.copy_browser.add_item.title
 msgid "Add Item"
-msgstr ""
+msgstr "إضافة نسخة"
 
 #: staff.cat.copy_browser.add_item.error
 msgid "copy browser -> add copies"
-msgstr ""
+msgstr "مُتصفح النسخة -> إضافة نُسخ"
 
 #: staff.cat.copy_browser.add_items_bucket.error
 msgid "copy browser -> add copies to bucket"
-msgstr ""
+msgstr "مُتصفح النسخة -> إضافة نُسخ إلى السلة"
 
 #: staff.cat.copy_browser.make_bookable.create_failed_silent
 msgid "No response from server"
-msgstr ""
+msgstr "لاتوجد استجابة من الخادم"
 
 #: staff.cat.copy_browser.make_bookable.create_failed
 msgid ""
@@ -79,220 +128,235 @@ msgid ""
 "%3$s\n"
 "%4$s"
 msgstr ""
+"خطأ من الخادم: %1$d %2$s\n"
+"%3$s\n"
+"%4$s"
 
 #: staff.cat.copy_browser.make_bookable.newtab_failed
 msgid "Could not open new tab"
-msgstr ""
+msgstr "لا يمكن فتح تبويب جديد"
 
 #: staff.cat.copy_browser.make_bookable.newtab_name
 msgid "Resources"
-msgstr ""
+msgstr "المصادر"
 
 #: staff.cat.copy_browser.replace_barcode.failed
 msgid "Barcode %1$s not likely replaced."
-msgstr ""
+msgstr "الباركود %1$s مِن غير الممكن استبداله."
 
 #: staff.cat.copy_browser.replace_barcode.error
 msgid "copy browser -> replace barcode"
-msgstr ""
+msgstr "مُتصفح النُسخة -> استبدال باركود"
 
 #: staff.cat.copy_browser.edit_items.error
 msgid "Copy Browser -> Edit Items"
-msgstr ""
+msgstr "مُتصفح النُسخة -> تعديل نُسخ"
 
 #: staff.cat.copy_browser.delete_items.confirm.plural
 msgid "Are you sure you would like to delete these %1$s items?"
-msgstr ""
+msgstr "هل أنت متأكد مِن أنك تريد حذف هذه النُسخ %1$s ؟"
 
 #: staff.cat.copy_browser.delete_items.confirm
 msgid "Are you sure you would like to delete this item?"
-msgstr ""
+msgstr "هل أنت متأكد مِن أنك تريد حذف هذه النُسخة؟"
 
 #: staff.cat.copy_browser.delete_items.title
 msgid "Delete Items?"
-msgstr ""
+msgstr "حذف النُسخ؟"
 
 #: staff.cat.copy_browser.delete_items.delete
 msgctxt "staff.cat.copy_browser.delete_items.delete"
 msgid "Delete"
-msgstr ""
+msgstr "حذف"
 
 #: staff.cat.copy_browser.delete_items.cancel
 msgctxt "staff.cat.copy_browser.delete_items.cancel"
 msgid "Cancel"
-msgstr ""
+msgstr "إلغاء"
 
 #: staff.cat.copy_browser.delete_items.override
 msgctxt "staff.cat.copy_browser.delete_items.override"
 msgid "Override Delete Failure?"
-msgstr ""
+msgstr "تجاهل فشل الحذف؟"
 
 #: staff.cat.copy_browser.delete_items.complete
 msgid "Action complete."
-msgstr ""
+msgstr "الإجراء مُكتمل/تام."
 
 #: staff.cat.copy_browser.delete_items.error
 msgid "copy browser -> delete items"
-msgstr ""
+msgstr "مُتصفح النُسخة -> حذف نسخ"
 
 #: staff.cat.copy_browser.print_spine.tab
 msgctxt "staff.cat.copy_browser.print_spine.tab"
 msgid "Spine Labels"
-msgstr ""
+msgstr "تسميات ظهر الكتاب"
 
 #: staff.cat.copy_browser.print_spine.error
 msgid "copy browser -> Spine Labels"
-msgstr ""
+msgstr "مُتصفح النُسخة -> تسميات ظهر الكتاب"
 
 #: staff.cat.copy_browser.add_volume.permission_error
 msgid "You do not have permission to add volumes to that library."
-msgstr ""
+msgstr "ليس لديك الصلاحية/إذن لإضافة مجلدات لهذه المكتبة."
 
 #: staff.cat.copy_browser.add_volume.title
 msgid "Add Volume/Item"
-msgstr ""
+msgstr "إضافة مُجلد/نسخة"
 
 #: staff.cat.copy_browser.add_volume.error
 msgid "copy browser -> add volumes"
-msgstr ""
+msgstr "مُتصفح النُسخة -> إضافة مجلدات"
 
 #: staff.cat.edit_volume.permission_error
 msgid "You do not have permission to edit the volume or volumes selected."
-msgstr ""
+msgstr "ليس لديك الصلاحية لـِ تحرير المجلد/المجلدات المحددة."
 
 #: staff.cat.edit_volume.title
 msgid "Volume"
-msgstr ""
+msgstr "المُجلد"
 
 #: staff.cat.edit_volume.title.plural
 msgctxt "staff.cat.edit_volume.title.plural"
 msgid "Volumes"
-msgstr ""
+msgstr "المُجلدات"
 
 #: staff.cat.edit_volumes.override.confirm
 msgid "Override volume re-labeling collision and merge the volumes?"
-msgstr ""
+msgstr "تجاهل تعارض إعادة تسمية المجلد ودمج المجلدات؟"
 
 #: staff.cat.edit_volumes.label_exists.details
 msgid "%1$s"
-msgstr ""
+msgstr "%1$s"
+
+#: staff.cat.edit_volume.exception
+msgid "An error occurred while you were trying to edit these volumes."
+msgstr "حدث خطأ أثناء محاولتك تعديل هذه المجلدات."
+
+#: staff.cat.copy_browser.can_have_copies.false
+msgid "Records from %1$s cannot have copies."
+msgstr "التسجيلات مِن %1$s لا تمتلك نُسخ."
 
 #: staff.cat.copy_browser.delete_volume.prompt
 msgid "Are you sure you would like to delete this volume?"
-msgstr ""
+msgstr "هل أنت متأكد مِن أنك تريد حذف هذا المجلد؟"
 
 #: staff.cat.copy_browser.delete_volume.prompt.plural
 msgid "Are you sure you would like to delete these %1$s volumes?"
-msgstr ""
+msgstr "هل أنت متأكد مِن أنك تريد حذف هذه %1$s المجلدات؟"
 
 #: staff.cat.copy_browser.delete_volume.title
 msgid "Delete Volumes?"
-msgstr ""
+msgstr "حذف مُجلدات؟"
 
 #: staff.cat.copy_browser.delete_volume.delete
 msgctxt "staff.cat.copy_browser.delete_volume.delete"
 msgid "Delete"
-msgstr ""
+msgstr "حذف"
 
 #: staff.cat.copy_browser.delete_volume.cancel
 msgctxt "staff.cat.copy_browser.delete_volume.cancel"
 msgid "Cancel"
-msgstr ""
+msgstr "إلغاء"
 
 #: staff.cat.copy_browser.delete_volume.override
 msgctxt "staff.cat.copy_browser.delete_volume.override"
 msgid "Override Delete Failure?"
-msgstr ""
+msgstr "تجاهل فشل الحذف؟"
 
 #: staff.cat.copy_browser.delete_volume.copies_remain
 msgid ""
-"You must delete all the copies on the volume before you may delete the "
-"volume itself."
-msgstr ""
+"You must delete all the items on the volume before you may delete the volume "
+"itself."
+msgstr "يجب حذف كافة النُسخ في المجلد قبل حذف المجلد نفسه."
 
-#: staff.cat.copy_browser.delete_volume.success
-msgid "Volumes deleted."
-msgstr ""
+#: staff.cat.copy_browser.delete_volume.copies_remain.confirm
+msgid "Delete Volume and Items"
+msgstr "حذف المجلدات والنُسخ"
+
+#: staff.cat.copy_browser.delete_volume.copies_remain.cancel
+msgid "Cancel Delete"
+msgstr "إلغاء الحذف"
 
 #: staff.cat.copy_browser.delete_volume.exception
 msgid "copy browser -> delete volumes"
-msgstr ""
+msgstr "مُتصفح النُسخة -> حذف مجلدات"
 
 #: staff.cat.copy_browser.mark_library.alert
 msgid "Library + Record marked as Volume Transfer Destination"
-msgstr ""
+msgstr "تمّ تمييز المكتبة + التسجيلة كـَ  وجهة نقل مجلد"
 
 #: staff.cat.copy_browser.mark_library.prompt
 msgid "Choose just one Library to mark as Volume Transfer Destination"
-msgstr ""
+msgstr "اختيار مكتبة واحدة فقط لـِ تُميز كـَ  وجهة نقل مجلد"
 
 #: staff.cat.copy_browser.mark_library.title
 msgctxt "staff.cat.copy_browser.mark_library.title"
 msgid "Limit Selection"
-msgstr ""
+msgstr "حد الاختيار"
 
 #: staff.cat.copy_browser.mark_volume.alert
 msgid "Volume marked as Item Transfer Destination"
-msgstr ""
+msgstr "تمّ تمييز المجلد كـَ  وجهة نقل نُسخة"
 
 #: staff.cat.copy_browser.mark_volume.prompt
 msgid "Choose just one Volume to mark as Item Transfer Destination"
-msgstr ""
+msgstr "اختيار مجلد واحد فقط لـِ تميزه كـَ  وجهة نقل نُسخة"
 
 #: staff.cat.copy_browser.mark_volume.title
 msgctxt "staff.cat.copy_browser.mark_volume.title"
 msgid "Limit Selection"
-msgstr ""
+msgstr "حد الاختيار"
 
 #: staff.cat.copy_browser.transfer_volume.alert
 msgid ""
 "Please mark a library as the destination from within holdings maintenance "
 "and then try this again."
-msgstr ""
+msgstr "لطفاً ميّز المكتبة كوجهة مِن داخل مقتنيات الصيانة ثم حاول مرة أخرى."
 
 #: staff.cat.copy_browser.transfer.prompt
 msgid "Transfer volumes %1$s to library %2$s on the following record?"
-msgstr ""
+msgstr "هل تريد نقل المجلدات %1$s إلى المكتبة %2$s للتسجيلات التالية؟"
 
 #: staff.cat.copy_browser.transfer.submit.label
 msgctxt "staff.cat.copy_browser.transfer.submit.label"
 msgid "Transfer"
-msgstr ""
+msgstr "النَقل"
 
 #: staff.cat.copy_browser.transfer.cancel.label
 msgctxt "staff.cat.copy_browser.transfer.cancel.label"
 msgid "Cancel"
-msgstr ""
+msgstr "إلغاء"
 
 #: staff.cat.copy_browser.transfer.cancel.accesskey
 msgctxt "staff.cat.copy_browser.transfer.cancel.accesskey"
 msgid "C"
-msgstr ""
+msgstr "C"
 
 #: staff.cat.copy_browser.transfer.title
 msgid "Volume Transfer"
-msgstr ""
+msgstr "نقل المجلد"
 
 #: staff.cat.copy_browser.transfer.incomplete
 msgctxt "staff.cat.copy_browser.transfer.incomplete"
 msgid "Transfer Aborted"
-msgstr ""
+msgstr "إحباط النقل"
 
 #: staff.cat.copy_browser.transfer.override.failure
 msgid "Override Volume Transfer Failure?"
-msgstr ""
+msgstr "تجاهل فشل نقل المجلد؟"
 
 #: staff.cat.copy_browser.transfer.ineligible_destination
 msgid "That destination cannot have volumes."
-msgstr ""
+msgstr "تلك الوجهة لا تمتلك مجلدات."
 
 #: staff.cat.copy_browser.transfer.success
 msgid "Volumes transferred."
-msgstr ""
+msgstr "المجلدات المنقولة."
 
 #: staff.cat.copy_browser.transfer.unexpected_error
 msgid "All volumes not likely transferred."
-msgstr ""
+msgstr "مِن المحتمل أن جميع المجلدات لم يتمّ نقلها."
 
 #: staff.cat.copy_browser.transfer_items.missing_volume
 msgctxt "staff.cat.copy_browser.transfer_items.missing_volume"
@@ -300,307 +364,322 @@ msgid ""
 "Please mark a volume as the destination from within holdings maintenance and "
 "then try this again."
 msgstr ""
+"لطفاً ينبغي تمييز المجلد كوجهة مِن داخل حيازات الصيانة ثم حاول مرة أخرى."
 
 #: staff.cat.copy_browser.transfer_items.unexpected_error
 msgid "All copies not likely transferred."
+msgstr "مِن المحتمل أن كافة النُسخ لم يتم نقلها."
+
+#: staff.cat.copy_browser.link_as_multi_bib.missing_bib
+msgid ""
+"Please Mark a bib record as a Target for Conjoined Items and try this again."
 msgstr ""
+"لطفاً ينبغي تمييز التسجيلة الببليوغرافية كـَ هدف للنُسخ الموحدة ثم حاول مرة "
+"أخرى."
 
 #: staff.cat.copy_browser.missing_library
 msgid "Missing library list."
-msgstr ""
+msgstr "قائمة مفقودات المكتبة."
 
 #: staff.cat.copy_browser.consortial_copy_count.error
 msgid "Error retrieving consortial copy count."
-msgstr ""
+msgstr "خطأ في استرداد حساب النسخة التعاونية."
 
 #: staff.cat.copy_browser.list_init.tree_location
 msgid "Location/Barcode"
-msgstr ""
+msgstr "الموقع/الباركود"
 
 #: staff.cat.copy_browser.list_init.volume_count
 msgctxt "staff.cat.copy_browser.list_init.volume_count"
 msgid "Volumes"
-msgstr ""
+msgstr "المجلدات"
 
 #: staff.cat.copy_browser.list_init.copy_count
 msgid "Copies"
-msgstr ""
+msgstr "النُسخ"
 
 #: staff.cat.copy_browser.actions.error
 msgid "Copy Browser Actions"
-msgstr ""
+msgstr "إجراءات مُتصفح النُسخة"
 
 #: staff.cat.copy_browser.refresh_list.error
 msgid "Problem refreshing the volume/copy tree."
-msgstr ""
+msgstr "خطأ في انعاش المجلد/شجرة النُسخة."
 
 #: staff.cat.copy_buckets.render_pending_copies.complete
 msgctxt "staff.cat.copy_buckets.render_pending_copies.complete"
 msgid "Action completed."
-msgstr ""
+msgstr "تمّ إكمال الإجراء"
 
 #: staff.cat.copy_buckets.retrieve_row.error
 msgid "Error retrieving details for item with copy id = %1$s"
-msgstr ""
+msgstr "حدث خطأ أثناء استرداد تفاصيل النسخة مع مُعرف النُسخة = %1$s"
 
 #: staff.cat.copy_buckets.menulist.render.choose_bucket
 msgctxt "staff.cat.copy_buckets.menulist.render.choose_bucket"
 msgid "Choose a bucket..."
-msgstr ""
+msgstr "اختيار سلة..."
 
 #: staff.cat.copy_buckets.menulist.render.retrieve_bucket
 msgctxt "staff.cat.copy_buckets.menulist.render.retrieve_bucket"
 msgid "Retrieve shared bucket..."
-msgstr ""
+msgstr "استرداد السلة المُشتركة"
 
 #: staff.cat.copy_buckets.menulist.change_bucket.prompt
 msgctxt "staff.cat.copy_buckets.menulist.change_bucket.prompt"
 msgid "Enter bucket number:"
-msgstr ""
+msgstr "إدخال رقم السلة:"
 
 #: staff.cat.copy_buckets.menulist.change_bucket.undefined
 msgctxt "staff.cat.copy_buckets.menulist.change_bucket.undefined"
 msgid "Could not find a bucket with ID = %1$s"
-msgstr ""
+msgstr "لا يمكن العثور على السلة التي مُعرفها = %1$s"
 
 #: staff.cat.copy_buckets.menulist.change_bucket.error
 msgid "Error retrieving bucket.  Did you use a valid bucket id?"
+msgstr "حدث خطأ أثناء استرداد السلة. هل استخدمت معرف سلة صالح؟"
+
+#: staff.cat.copy_buckets.copy_buckets_batch_copy_delete.confirm
+msgid "Are you sure you want to delete all items in bucket from catalog?"
 msgstr ""
+"هل أنت متأكد مِن أنك تريد حذف جميع النُسخ الموجودة في السلة من الفهرس؟"
 
 #: staff.cat.copy_buckets.copy_buckets_add.error
 msgctxt "staff.cat.copy_buckets.copy_buckets_add.error"
 msgid "Addition likely failed."
-msgstr ""
+msgstr "من المحتمل أن الإضافة فشلت"
 
 #: staff.cat.copy_buckets.copy_buckets_sel_add.error
 msgctxt "staff.cat.copy_buckets.copy_buckets_sel_add.error"
 msgid "Addition likely failed."
-msgstr ""
+msgstr "من المحتمل أن الإضافة فشلت"
 
 #: staff.cat.copy_buckets.copy_buckets_delete_item.error
 msgid "Deletion likely failed."
-msgstr ""
+msgstr "من المحتمل أن الحذف فشل"
 
 #: staff.cat.copy_buckets.copy_buckets_delete_item.complete
 msgctxt "staff.cat.copy_buckets.copy_buckets_delete_item.complete"
 msgid "Action completed."
-msgstr ""
+msgstr "تمّ إكمال الإجراء"
 
 #: staff.cat.copy_buckets.copy_buckets_delete_bucket.confirm
 msgctxt "staff.cat.copy_buckets.copy_buckets_delete_bucket.confirm"
 msgid "Delete the bucket named %1$s?"
-msgstr ""
+msgstr "هل تريد حذف السلة التي اسمها %1$s؟"
 
 #: staff.cat.copy_buckets.copy_buckets_delete_bucket.complete
 msgctxt "staff.cat.copy_buckets.copy_buckets_delete_bucket.complete"
 msgid "Action completed."
-msgstr ""
+msgstr "تمّ إكمال الإجراء"
 
 #: staff.cat.copy_buckets.copy_buckets_delete_bucket.error
 msgid "Bucket deletion likely failed."
-msgstr ""
+msgstr "من المحتمل أن حذف السلة قد فشل."
 
 #: staff.cat.copy_buckets.copy_buckets_new_bucket.prompt
 msgctxt "staff.cat.copy_buckets.copy_buckets_new_bucket.prompt"
 msgid "What would you like to name the bucket?"
-msgstr ""
+msgstr "ماذا تريد أن تُسمي هذه السلة؟"
 
 #: staff.cat.copy_buckets.copy_buckets_new_bucket.title
 msgctxt "staff.cat.copy_buckets.copy_buckets_new_bucket.title"
 msgid "Bucket Creation"
-msgstr ""
+msgstr "إنشاء السلة"
 
 #: staff.cat.copy_buckets.copy_buckets_new_bucket.container_exists
 msgctxt "staff.cat.copy_buckets.copy_buckets_new_bucket.container_exists"
 msgid "You already have a bucket with that name."
-msgstr ""
+msgstr "لديك مُسبقاً سلة بهذا الاسم."
 
 #: staff.cat.copy_buckets.copy_buckets_new_bucket.success
 msgid "Bucket \"%1$s\" created."
-msgstr ""
+msgstr "السلة \"%1$s\" تمّ إنشاؤها."
 
 #: staff.cat.copy_buckets.copy_buckets_new_bucket.error
 msgctxt "staff.cat.copy_buckets.copy_buckets_new_bucket.error"
 msgid "Bucket creation failed."
-msgstr ""
+msgstr "فشل إنشاء السلة."
 
 #: staff.cat.copy_buckets.batch.error
 msgid "Batch Item Deletion"
-msgstr ""
+msgstr "الدفعة المُعدة لحذف النسخة"
 
 #: staff.cat.copy_buckets.copy_buckets_transfer_to_volume.no_volume
 msgid ""
 "Please mark a volume as the destination from within the copy browser and "
 "then try this again."
-msgstr ""
+msgstr "لطفاً ميّز المجلد كوجهة من داخل مُتصفح النسخة ثم حاول مرة أخرى."
 
 #: staff.cat.copy_buckets.copy_buckets_transfer_to_volume.confirm
 msgid ""
 "Transfer the items in bucket \"%1$s\" from their original volumes to the "
 "volume labelled \"%2$s\" for the library \"%3$s\" on the following record?"
 msgstr ""
+"أنقل النسخ في السلة \"%1$s\" مِن مجلداتها الأصلية إلى المجلد المسمى/المعنون "
+"\"%2$s\" للمكتبة \"%3$s\" للتسجيلات التالية؟"
 
 #: staff.cat.copy_buckets.copy_buckets_transfer_to_volume.error
 msgid "Items not likely transferred."
-msgstr ""
+msgstr "مِن المحتمل ان النُسخ لم تنقل"
 
 #: staff.cat.copy_buckets.cmd_export_to_copy_status.error
 msgid "Copy Status from Copy Buckets"
-msgstr ""
+msgstr "حالة النُسخة في سلال النسخ"
 
 #: staff.cat.copy_buckets.prep_item_for_list.error
 msgid "List building failed."
-msgstr ""
+msgstr "بناء القائمة فشل"
 
 #: staff.cat.copy_buckets_quick.bucket_prompt
 msgid "Copy this item into which bucket?"
-msgstr ""
+msgstr "إلى أي سلة تريد نسخ هذه النُسخة؟"
 
 #: staff.cat.copy_buckets_quick.bucket_prompt.plural
 msgctxt "staff.cat.copy_buckets_quick.bucket_prompt.plural"
 msgid "Copy these %1$s items into which bucket?"
-msgstr ""
+msgstr "هل تريد نسخ هذه النُسخ %1$s إلى تلك السلة؟"
 
 #: staff.cat.copy_buckets_quick.copy_buckets_new_bucket.prompt
 msgctxt "staff.cat.copy_buckets_quick.copy_buckets_new_bucket.prompt"
 msgid "What would you like to name the bucket?"
-msgstr ""
+msgstr "ماذا تريد أن تُسمي هذه السلة؟"
 
 #: staff.cat.copy_buckets_quick.copy_buckets_new_bucket.title
 msgctxt "staff.cat.copy_buckets_quick.copy_buckets_new_bucket.title"
 msgid "Bucket Creation"
-msgstr ""
+msgstr "إنشاء السلة"
 
 #: staff.cat.copy_buckets_quick.copy_buckets_new_bucket.error
 msgctxt "staff.cat.copy_buckets_quick.copy_buckets_new_bucket.error"
 msgid "Bucket creation failed."
-msgstr ""
+msgstr "فشل إنشاء السلة."
 
 #: staff.cat.copy_buckets_quick.addition.error
 msgid "Addition likely failed for bucket = %1$s and copy ID = %2$s."
-msgstr ""
+msgstr "مَن المحتمل فشل الإضافة لـِ السلة = %1$s ومُعرف النُسخة = %2$s."
 
 #: staff.cat.copy_editor.caption
 msgid "Copy Editor"
-msgstr ""
+msgstr "مُحرر النُسخة"
 
 #: staff.cat.copy_editor.create_copies
 msgid "Modify/Create Copies"
-msgstr ""
+msgstr "تعديل/إنشاء نُسخ"
 
 #: staff.cat.copy_editor.create_copies.accesskey
 msgid "M"
-msgstr ""
+msgstr "M"
 
 #: staff.cat.copy_editor.copy_notes
 msgid "Copy Notes"
-msgstr ""
+msgstr "ملاحظات النُسخة"
 
 #: staff.cat.copy_editor.status
 msgid "Status"
-msgstr ""
+msgstr "الحالة"
 
 #: staff.cat.copy_editor.retrieve_templates.error
 msgid "Error retrieving templates"
-msgstr ""
+msgstr "خطأ في استرداد التركيبات"
 
 #: staff.cat.copy_editor.apply_templates.error
 msgid "Error applying template"
-msgstr ""
+msgstr "خطأ في تطبيق التركيبة"
 
 #: staff.cat.copy_editor.save_as_template.prompt
 msgid "Enter template name:"
-msgstr ""
+msgstr "إدخال اسم التركيبة:"
 
 #: staff.cat.copy_editor.save_as_template.title
 msgid "Save As Template"
-msgstr ""
+msgstr "حفظ التركيبة بـِ اسم"
 
 #: staff.cat.copy_editor.save_as_template.success
 msgid "Template \"%1$s\" saved."
-msgstr ""
+msgstr "التركيبة \"%1$s\" تمّ حفظها."
 
 #: staff.cat.copy_editor.save_as_template.error
 msgid "Error saving template"
-msgstr ""
+msgstr "خطأ في حفظ التركيبة"
 
 #: staff.cat.copy_editor.delete_template.confirm
 msgid "Delete template \"%1$s\"?"
-msgstr ""
+msgstr "حذف التركيبة \"%1$s\"؟"
 
 #: staff.cat.copy_editor.delete_template.success
 msgid "Template \"%1$s\" deleted."
-msgstr ""
+msgstr "التركيبة \"%1$s\" تمّ حذفها."
 
 #: staff.cat.copy_editor.delete_template.error
 msgid "Error deleting template"
-msgstr ""
+msgstr "خطأ في حذف التركيبة"
 
 #: staff.cat.copy_editor.export_templates.title
 msgid "Save Templates File As"
-msgstr ""
+msgstr "حفظ ملف التركيبة بـِ اسم"
 
 #: staff.cat.copy_editor.export_templates.error
 msgid "Error exporting templates"
-msgstr ""
+msgstr "خطأ في تصدير التركيبات"
 
 #: staff.cat.copy_editor.import_templates.title
 msgid "Import Templates File"
-msgstr ""
+msgstr "استيراد ملف التركيبات"
 
 #: staff.cat.copy_editor.import_templates.replace.prompt
 msgid "Replace the existing template with the imported template?"
-msgstr ""
+msgstr "استبدال التركيبة الموجودة بـِ التركيبة المستوردة؟"
 
 #: staff.cat.copy_editor.import_templates.replace.title
 msgid "Template %1$s already exists."
-msgstr ""
+msgstr "التركيبة %1$s موجودة مُسبقاً."
 
 #: staff.cat.copy_editor.import_templates.replace.yes
 msgctxt "staff.cat.copy_editor.import_templates.replace.yes"
 msgid "Yes"
-msgstr ""
+msgstr "نعم"
 
 #: staff.cat.copy_editor.import_templates.replace.no
 msgctxt "staff.cat.copy_editor.import_templates.replace.no"
 msgid "No"
-msgstr ""
+msgstr "لا"
 
 #: staff.cat.copy_editor.import_templates.replace.click_here
 msgctxt "staff.cat.copy_editor.import_templates.replace.click_here"
 msgid "Click here"
-msgstr ""
+msgstr "أنقر هنا"
 
 #: staff.cat.copy_editor.import_templates.save.prompt
 msgid "Save all of these imported templates permanently to this account?"
-msgstr ""
+msgstr "حفظ كل من هذه التركيبات المستوردة بشكل دائم إلى هذا الحساب؟"
 
 #: staff.cat.copy_editor.import_templates.save.title
 msgid "Final warning"
-msgstr ""
+msgstr "الإنذار الأخير/النهائي"
 
 #: staff.cat.copy_editor.import_templates.save.yes
 msgctxt "staff.cat.copy_editor.import_templates.save.yes"
 msgid "Yes"
-msgstr ""
+msgstr "نعم"
 
 #: staff.cat.copy_editor.import_templates.save.no
 msgctxt "staff.cat.copy_editor.import_templates.save.no"
 msgid "No"
-msgstr ""
+msgstr "لا"
 
 #: staff.cat.copy_editor.import_templates.save.click_here
 msgctxt "staff.cat.copy_editor.import_templates.save.click_here"
 msgid "Click here"
-msgstr ""
+msgstr "أنقر هنا"
 
 #: staff.cat.copy_editor.import_templates.save.success
 msgid "All templates saved."
-msgstr ""
+msgstr "تمّ حفظ كافة التركيبات."
 
 #: staff.cat.copy_editor.import_templates.save.error
 msgid "Error saving templates"
-msgstr ""
+msgstr "خطأ في حفظ التركيبات"
 
 #: staff.cat.copy_editor.import_templates.note
 msgid ""
@@ -608,809 +687,843 @@ msgid ""
 "you try to create, but if that does not happen, then these templates will "
 "disappear with the next invocation of the item attribute editor."
 msgstr ""
+"ملاحظة: سوف يتم حفظ هذه التركيبات المستوردة مع أي تركيبة جديدة تحاول "
+"إنشائها، ولكن إذا لم يحدث ذلك، فإن هذه التركيبات سوف تختفي مع الاحتجاج "
+"التالي لـِ مُحرر خاصية النُسخة."
 
 #: staff.cat.copy_editor.import_templates.error
 msgid "Error importing templates"
-msgstr ""
+msgstr "خطأ في استيراد التركيبات"
+
+#: staff.cat.copy_editor.apply_unsafe_field
+msgid ""
+"Template tried to change field '%1$s', which is not allowed currently."
+msgstr "تحاول التركيبة تغيير الحقل '%1$s', وهو غير مسموح به حالياً."
 
 #: staff.cat.copy_editor.apply_owning_lib.undefined_volume.error
 msgid ""
 "Error retrieving Volume information for copy %1$s.  The owning library for "
 "this copy will not be changed."
 msgstr ""
+"خطأ في استرداد معلومات المجلد لهذه النُسخة %1$s.  المكتبة المالكة لهذه "
+"النُسخة سوف لن تتغيير."
 
 #: staff.cat.copy_editor.apply_owning_lib.call_number.error
 msgid ""
 "Error changing owning library for copy %1$s.  The owning library for this "
 "copy will not be changed."
 msgstr ""
+"خطأ في تغيير المكتبة المالكة لهذه النُسخة %1$s. المكتبة المالكة لهذه النُسخة "
+"سوف لن تتغيير."
 
 #: staff.cat.copy_editor.copy_count
 msgid "1 copy"
-msgstr ""
+msgstr "1 نُسخة"
 
 #: staff.cat.copy_editor.copy_count.plural
 msgid "%1$s copies"
-msgstr ""
+msgstr "%1$s نُسخ"
 
 #: staff.cat.copy_editor.apply.label
 msgctxt "staff.cat.copy_editor.apply.label"
 msgid "Apply"
-msgstr ""
+msgstr "تطبيق"
 
 #: staff.cat.copy_editor.apply.accesskey
 msgctxt "staff.cat.copy_editor.apply.accesskey"
 msgid "A"
-msgstr ""
+msgstr "A"
 
 #: staff.cat.copy_editor.cancel.label
 msgctxt "staff.cat.copy_editor.cancel.label"
 msgid "Cancel"
-msgstr ""
+msgstr "إلغاء"
 
 #: staff.cat.copy_editor.handle_update.error
 msgid "copy update error:"
-msgstr ""
+msgstr "خطأ في تحديث النُسخة:"
 
 #: staff.cat.copy_editor.add_stat_cat.error
 msgid "Error adding statistical category to display definition"
-msgstr ""
+msgstr "خطأ في إضافة الفئة الإحصائية لإظهار التعريف."
 
 #: staff.cat.copy_editor.populate_stat_cat.error
 msgid "Error populating statistical categories for display"
-msgstr ""
+msgstr "خطأ في مِلء الفئات الإحصائية مِن أجل عرضها"
 
 #: staff.cat.copy_editor.remove_stat_cat_entry
 msgid "<Remove Stat Cat>"
-msgstr ""
+msgstr "<إزالة حالة الفهرسة>"
 
 #: staff.cat.copy_editor.remove_age_based_hold_protection
 msgid "<Remove Protection>"
-msgstr ""
+msgstr "<إزالة الحماية/الحفظ>"
 
 #: staff.cat.copy_editor.remove_circulate_as_type
 msgid "<Remove Circulate as Type>"
-msgstr ""
+msgstr "<إزالة الإعارة كـَ نوع>"
+
+#: staff.cat.copy_editor.remove_floating
+msgid "<Remove Floating>"
+msgstr "<إزالة العائمة>"
 
 #: staff.cat.copy_editor.field.unset_or_null
 msgctxt "staff.cat.copy_editor.field.unset_or_null"
 msgid "<Unset>"
-msgstr ""
+msgstr "<إلغاء تعيين>"
 
 #: staff.cat.copy_editor.field.owning_library.label
 msgid "Owning Lib : Call Number"
-msgstr ""
+msgstr "المكتبة المالكة : رمز الاستدعاء"
 
 #: staff.cat.copy_editor.field.creator.label
 msgid "Creator"
-msgstr ""
+msgstr "المُنشىء"
 
 #: staff.cat.copy_editor.field.last_editor.label
 msgid "Last Editor"
-msgstr ""
+msgstr "المُحرر الأخير"
 
 #: staff.cat.copy_editor.field.barcode.label
 msgid "Barcode"
-msgstr ""
+msgstr "الباركود"
 
 #: staff.cat.copy_editor.field.creation_date.label
 msgid "Creation Date"
-msgstr ""
+msgstr "تاريخ الإنشاء"
+
+#: staff.cat.copy_editor.field.active_date.label
+msgid "Active Date"
+msgstr "تاريخ التفعيل"
 
 #: staff.cat.copy_editor.field.last_edit_date.label
 msgid "Last Edit Date"
-msgstr ""
+msgstr "تاريخ آخر تعديل"
 
 #: staff.cat.copy_editor.field.location.label
 msgid "Location/Collection"
-msgstr ""
+msgstr "الموقع/المجموعة"
 
 #: staff.cat.copy_editor.field.circulation_library.label
 msgid "Circulation Library"
-msgstr ""
+msgstr "مكتبة الإعارة"
 
 #: staff.cat.copy_editor.field.copy_number.label
 msgid "Copy Number"
-msgstr ""
+msgstr "رقم النُسخة"
 
 #: staff.cat.copy_editor.field.circulate.label
 msgid "Circulate?"
-msgstr ""
+msgstr "إعارة؟"
 
 #: staff.cat.copy_editor.field.circulate.yes_or_true
 msgctxt "staff.cat.copy_editor.field.circulate.yes_or_true"
 msgid "Yes"
-msgstr ""
+msgstr "نعم"
 
 #: staff.cat.copy_editor.field.circulate.no_or_false
 msgctxt "staff.cat.copy_editor.field.circulate.no_or_false"
 msgid "No"
-msgstr ""
+msgstr "لا"
 
 #: staff.cat.copy_editor.field.holdable.label
 msgid "Holdable?"
-msgstr ""
+msgstr "قابل للحجز؟"
 
 #: staff.cat.copy_editor.field.holdable.yes_or_true
 msgctxt "staff.cat.copy_editor.field.holdable.yes_or_true"
 msgid "Yes"
-msgstr ""
+msgstr "نعم"
 
 #: staff.cat.copy_editor.field.holdable.no_or_false
 msgctxt "staff.cat.copy_editor.field.holdable.no_or_false"
 msgid "No"
-msgstr ""
+msgstr "لا"
 
 #: staff.cat.copy_editor.field.floating.label
 msgid "Floating?"
-msgstr ""
-
-#: staff.cat.copy_editor.field.floating.yes_or_true
-msgctxt "staff.cat.copy_editor.field.floating.yes_or_true"
-msgid "Yes"
-msgstr ""
-
-#: staff.cat.copy_editor.field.floating.no_or_false
-msgctxt "staff.cat.copy_editor.field.floating.no_or_false"
-msgid "No"
-msgstr ""
+msgstr "عائمة؟"
 
 #: staff.cat.copy_editor.field.age_based_hold_protection.label
 msgid "Age-based Hold Protection"
-msgstr ""
+msgstr "حماية الحجز بناءً على العمر"
 
 #: staff.cat.copy_editor.field.loan_duration.label
 msgid "Loan Duration"
-msgstr ""
+msgstr "مدة الإعارة"
 
 #: staff.cat.copy_editor.field.loan_duration.short
 msgid "Short"
-msgstr ""
+msgstr "قصيرة"
 
 #: staff.cat.copy_editor.field.loan_duration.normal
 msgctxt "staff.cat.copy_editor.field.loan_duration.normal"
 msgid "Normal"
-msgstr ""
+msgstr "عادية"
 
 #: staff.cat.copy_editor.field.loan_duration.extended
 msgid "Long"
-msgstr ""
+msgstr "طويلة"
 
 #: staff.cat.copy_editor.field.fine_level.label
 msgid "Fine Level"
-msgstr ""
+msgstr "مستوى الغرامة"
 
 #: staff.cat.copy_editor.field.fine_level.low
 msgid "Low"
-msgstr ""
+msgstr "منخفضة"
 
 #: staff.cat.copy_editor.field.fine_level.normal
 msgctxt "staff.cat.copy_editor.field.fine_level.normal"
 msgid "Normal"
-msgstr ""
+msgstr "عادية"
 
 #: staff.cat.copy_editor.field.fine_level.high
 msgid "High"
-msgstr ""
+msgstr "مرتفعة"
 
 #: staff.cat.copy_editor.field.circulate_as_type.label
 msgid "Circulate as Type"
-msgstr ""
+msgstr "إعارة كنوع"
 
 #: staff.cat.copy_editor.field.circulation_modifier.label
 msgid "Circulation Modifier"
-msgstr ""
+msgstr "مُعدِّل الإعارة"
 
 #: staff.cat.copy_editor.field.alert_message.label
 msgid "Alert Message"
-msgstr ""
+msgstr "رسالة التنبيه"
 
 #: staff.cat.copy_editor.field.deposit.label
 msgid "Deposit?"
-msgstr ""
+msgstr "إيداع؟"
 
 #: staff.cat.copy_editor.field.deposit.yes_or_true
 msgctxt "staff.cat.copy_editor.field.deposit.yes_or_true"
 msgid "Yes"
-msgstr ""
+msgstr "نعم"
 
 #: staff.cat.copy_editor.field.deposit.no_or_false
 msgctxt "staff.cat.copy_editor.field.deposit.no_or_false"
 msgid "No"
-msgstr ""
+msgstr "لا"
 
 #: staff.cat.copy_editor.field.deposit_amount.label
 msgid "Deposit Amount"
-msgstr ""
+msgstr "مقدار الإيداع"
 
 #: staff.cat.copy_editor.field.price.label
 msgid "Price"
-msgstr ""
+msgstr "السعر"
+
+#: staff.cat.copy_editor.field.cost.label
+msgid "Acquisition Cost"
+msgstr "تكلفة التزويد"
 
 #: staff.cat.copy_editor.field.opac_visible.label
 msgid "OPAC Visible?"
-msgstr ""
+msgstr "إظهار في الأوباك؟"
 
 #: staff.cat.copy_editor.field.opac_visible.yes_or_true
 msgctxt "staff.cat.copy_editor.field.opac_visible.yes_or_true"
 msgid "Yes"
-msgstr ""
+msgstr "نعم"
 
 #: staff.cat.copy_editor.field.opac_visible.no_or_false
 msgctxt "staff.cat.copy_editor.field.opac_visible.no_or_false"
 msgid "No"
-msgstr ""
+msgstr "لا"
 
 #: staff.cat.copy_editor.field.reference.label
 msgid "Reference?"
-msgstr ""
+msgstr "إحالات/مراجع؟"
 
 #: staff.cat.copy_editor.field.reference.yes_or_true
 msgctxt "staff.cat.copy_editor.field.reference.yes_or_true"
 msgid "Yes"
-msgstr ""
+msgstr "نعم"
 
 #: staff.cat.copy_editor.field.reference.no_or_false
 msgctxt "staff.cat.copy_editor.field.reference.no_or_false"
 msgid "No"
-msgstr ""
+msgstr "لا"
 
 #: staff.cat.copy_editor.field.mint_condition.label
 msgid "Quality"
-msgstr ""
+msgstr "الجودة"
 
 #: staff.cat.copy_editor.field.mint_condition.yes_or_true
 msgid "Good"
-msgstr ""
+msgstr "جَيدة"
 
 #: staff.cat.copy_editor.field.mint_condition.no_or_false
 msgid "Mediocre"
-msgstr ""
+msgstr "متوسط"
 
 #: staff.cat.copy_notes.render_notes.label
 msgid "Add New Note"
-msgstr ""
+msgstr "إضافة ملاحظة جديدة"
 
 #: staff.cat.copy_notes.render_notes.accesskey
 msgctxt "staff.cat.copy_notes.render_notes.accesskey"
 msgid "A"
-msgstr ""
+msgstr "A"
 
 #: staff.cat.copy_notes.widgets_apply.note_id
 msgid "Note ID:"
-msgstr ""
+msgstr "مُعرف الملاحظة:"
 
 #: staff.cat.copy_notes.widgets_apply.creator_id
 msgid "Creator ID:"
-msgstr ""
+msgstr "مُعرف المُنشيء:"
 
 #: staff.cat.copy_notes.widgets.public
 msgid "Public"
-msgstr ""
+msgstr "عام/عمومي"
 
 #: staff.cat.copy_notes.widgets.private
 msgid "Private"
-msgstr ""
+msgstr "خَاص/خصوصي"
 
 #: staff.cat.copy_notes.delete_note.label
 msgid "Delete This Note"
-msgstr ""
+msgstr "حذف هذه الملاحظة"
 
 #: staff.cat.copy_notes.delete_note.prompt.msg
 msgid "Delete the note titled \"%1$s\" created on %2$s?"
-msgstr ""
+msgstr "حذف الملاحظة المعنونة بـِ \"%1$s\" والتي تمّ إنشاؤها في %2$s؟"
 
 #: staff.cat.copy_notes.delete_note.prompt.title
 msgid "Delete Note"
-msgstr ""
+msgstr "حذف الملاحظة"
 
 #: staff.cat.copy_notes.delete_note.prompt.yes
 msgctxt "staff.cat.copy_notes.delete_note.prompt.yes"
 msgid "Yes"
-msgstr ""
+msgstr "نعم"
 
 #: staff.cat.copy_notes.delete_note.prompt.no
 msgctxt "staff.cat.copy_notes.delete_note.prompt.no"
 msgid "No"
-msgstr ""
+msgstr "لا"
 
 #: staff.cat.copy_notes.delete_note.success
 msgid "Note deleted."
-msgstr ""
+msgstr "تمَ حذف الملاحظة."
 
 #: staff.cat.copy_notes.delete_note.close_window
 msgid "Close Window"
-msgstr ""
+msgstr "إغلاق النافذة"
+
+#: staff.cat.copy_notes.delete_note.close_window.accesskey
+msgid "W"
+msgstr "W"
 
 #: staff.cat.copy_notes.new_note.label
 msgid "New Note"
-msgstr ""
+msgstr "مُلاحظة جديدة"
 
 #: staff.cat.copy_notes.new_note.public
 msgid "Public?"
-msgstr ""
+msgstr "عام/عمومي؟"
 
 #: staff.cat.copy_notes.new_note.title
 msgid "Title"
-msgstr ""
+msgstr "العنوان"
 
 #: staff.cat.copy_notes.new_note.note
 msgid "Note"
-msgstr ""
+msgstr "مُلاحظة"
 
 #: staff.cat.copy_notes.new_note.initials
 msgid "Initials"
-msgstr ""
+msgstr "الأحرف البادئة"
 
 #: staff.cat.copy_notes.new_note.cancel.label
 msgctxt "staff.cat.copy_notes.new_note.cancel.label"
 msgid "Cancel"
-msgstr ""
+msgstr "إلغاء"
 
 #: staff.cat.copy_notes.new_note.cancel.accesskey
 msgctxt "staff.cat.copy_notes.new_note.cancel.accesskey"
 msgid "C"
-msgstr ""
+msgstr "C"
 
 #: staff.cat.copy_notes.new_note.add_note.label
 msgid "Add Note"
-msgstr ""
+msgstr "إضافة ملاحظة"
 
 #: staff.cat.copy_notes.new_note.add_note.accesskey
 msgctxt "staff.cat.copy_notes.new_note.add_note.accesskey"
 msgid "A"
-msgstr ""
+msgstr "A"
 
 #: staff.cat.copy_notes.new_note.error
 msgid "The note was not likely created."
-msgstr ""
+msgstr "مِن المحتمل أن الملاحظة لم يتم إنشاؤها."
 
 #: staff.cat.copy_summary.copy_id
 msgid "Copy ID = %1$s"
-msgstr ""
+msgstr "مُعرف النُسخة = %1$s"
 
 #: staff.cat.copy_summary.total_circs.label
 msgid "Total Circs"
-msgstr ""
+msgstr "مجموع الإعارات"
 
 #: staff.cat.copy_summary.yes
 msgctxt "staff.cat.copy_summary.yes"
 msgid "Yes"
-msgstr ""
+msgstr "نعم"
 
 #: staff.cat.copy_summary.no
 msgctxt "staff.cat.copy_summary.no"
 msgid "No"
-msgstr ""
+msgstr "لا"
 
 #: staff.cat.copy_summary.unset
 msgctxt "staff.cat.copy_summary.unset"
 msgid "<Unset>"
-msgstr ""
+msgstr "<إلغاء تعيين>"
 
 #: staff.cat.copy_summary.not_cataloged
 msgid "Not Cataloged"
-msgstr ""
+msgstr "غير المُفهرسة"
+
+#: staff.cat.marcedit.authority_see_also
+msgid "See also: %1$s"
+msgstr "أنظر أيضاً: %1$s"
+
+#: staff.cat.marcedit.authority_see_from
+msgid "See from: %1$s"
+msgstr "أنظر مِن: %1$s"
 
 #: staff.cat.marcedit.help.add_row
 msgid "Add Row: CTRL+Enter"
-msgstr ""
+msgstr "إضافة صف: CTRL+Enter"
 
 #: staff.cat.marcedit.help.insert_row
 msgid "Insert Row: CTRL+Shift+Enter"
-msgstr ""
+msgstr "إداراج صف: CTRL+Shift+Enter"
 
 #: staff.cat.marcedit.help.copy_row_up
 msgid "Copy Current Row Above: CTRL+Up"
-msgstr ""
+msgstr "نسخ الصف الحالي إلى أعلى: CTRL+Up"
 
 #: staff.cat.marcedit.help.copy_row_down
 msgid "Copy Current Row Below: CTRL+Down"
-msgstr ""
+msgstr "نسخ الصف الحالي إلى أسفل: CTRL+Down"
 
 #: staff.cat.marcedit.help.add_subfield
 msgid "Add Subfield: CTRL+D (CTRL+I on Mac OS X)"
-msgstr ""
+msgstr "إضافة حقل فرعي: CTRL+D"
 
 #: staff.cat.marcedit.help.remove_row
 msgid "Remove Row: CTRL+Del"
-msgstr ""
+msgstr "إزالة صف: CTRL+Del"
 
 #: staff.cat.marcedit.help.remove_subfield
 msgid "Remove Subfield: SHIFT+Del"
-msgstr ""
+msgstr "إزالة حقل فرعي: SHIFT+Del"
 
 #: staff.cat.marcedit.help.replace_006
 msgid "Create/Replace 006: CTRL+F6"
-msgstr ""
+msgstr "إنشاء/استبدال 006: CTRL+F6"
 
 #: staff.cat.marcedit.help.replace_007
 msgid "Create/Replace 007: CTRL+F7"
-msgstr ""
+msgstr "إنشاء/استبدال 007: CTRL+F7"
 
 #: staff.cat.marcedit.help.replace_008
 msgid "Create/Replace 008: CTRL+F8"
-msgstr ""
+msgstr "إنشاء/استبدال 008: CTRL+F8"
 
 #: staff.cat.marcedit.save.label
 msgid "Save Record"
-msgstr ""
+msgstr "حفظ التسجيلة"
 
 #: staff.cat.marcedit.marcTag.LDR.label
 msgid "MARC Leader"
-msgstr ""
+msgstr "الفاتح في مارك"
 
 #: staff.cat.marcedit.add_row.label
 msgid "Add Row"
-msgstr ""
+msgstr "إضافة صف"
 
 #: staff.cat.marcedit.insert_row.label
 msgid "Insert Row"
-msgstr ""
+msgstr "إِدراج صف"
 
 #: staff.cat.marcedit.remove_row.label
 msgid "Remove Row"
-msgstr ""
+msgstr "إزالة صف"
 
 #: staff.cat.marcedit.replace_006.label
 msgid "Add/Replace 006"
-msgstr ""
+msgstr "إضافة/استبدال 006"
 
 #: staff.cat.marcedit.replace_007.label
 msgid "Add/Replace 007"
-msgstr ""
+msgstr "إضافة/استبدال 007"
 
 #: staff.cat.marcedit.replace_008.label
 msgid "Add/Replace 008"
-msgstr ""
+msgstr "إضافة/استبدال 008"
 
 #: staff.cat.marcedit.not_authority_field.label
 msgid "Not a controlled subfield"
-msgstr ""
+msgstr "حقل فرعي غير مضبوط"
+
+#: staff.cat.marcedit.apply_full.label
+msgid "Apply Full Authority (1XX)"
+msgstr "تطبيق إسناد تام/كامل (1XX)"
 
 #: staff.cat.marcedit.apply_selected.label
 msgid "Apply Selected"
-msgstr ""
+msgstr "تطبيق المُحدد"
 
 #: staff.cat.marcedit.no_authority_match.label
 msgid "No matching authority records found"
-msgstr ""
+msgstr "لا توجد تسجيلات إسناد مُطابقة"
+
+#: staff.cat.marcedit.next_page.label
+msgid "Next page"
+msgstr "الصفحة التالية"
+
+#: staff.cat.marcedit.previous_page.label
+msgid "Previous page"
+msgstr "الصفحة السابقة"
+
+#: staff.cat.marcedit.create_authority.label
+msgid "Create New Authority from this Field"
+msgstr "إنشاء إسناد جديد مِن هذا الحقل"
+
+#: staff.cat.marcedit.create_authority_now.label
+msgid "Create Immediately"
+msgstr "إنشاء مباشرة/فوراً"
+
+#: staff.cat.marcedit.create_authority_success.label
+msgid "Created new authority record"
+msgstr "تمّ إنشاء تسجيلة إسناد جديدة"
+
+#: staff.cat.marcedit.create_authority_edit.label
+msgid "Create and Edit..."
+msgstr "إِنشاء وتحرير..."
 
 #: staff.cat.marc_new.tab_name
 msgid "MARC Template"
-msgstr ""
+msgstr "تركيبة مارك"
 
 #: staff.cat.marc_new.create_record.label
 msgid "Create Record"
-msgstr ""
+msgstr "إنشاء تسجيلة"
 
 #: staff.cat.marc_new.system_local.label
 msgid "System Local"
-msgstr ""
+msgstr "النظام المحلي"
 
 #: staff.cat.marc_new.retrieving.label
 msgctxt "staff.cat.marc_new.retrieving.label"
 msgid "Retrieving title..."
-msgstr ""
+msgstr "استرجاع العنوان ..."
 
 #: staff.cat.marc_new.creating_record.error
 msgid "Error creating MARC record."
-msgstr ""
+msgstr "خطأ في إنشاء تسجيلة مارك."
 
 #: staff.cat.marc_new.loading_template.error
 msgid "Error loading MARC template: %1$s"
-msgstr ""
+msgstr "خطأ في تحميل تركيبة مارك: %1$s"
+
+#: staff.cat.marc_new.set_default.error
+msgid "Error setting default MARC template: %1$s"
+msgstr "خطأ في إعدادات تركيبة مارك الافتراضية: %1$s"
+
+#: staff.cat.marc_new.set_default.success
+msgid "Default template set to %1$s"
+msgstr "تعيين التركيبة الافتراضية لـِ %1$s"
 
 #: staff.cat.opac.set_marc_edit.alert
 msgid "Record successfully saved."
-msgstr ""
+msgstr "تمّ حفظ التسجيلة بنجاح."
 
 #: staff.cat.opac.set_marc_edit.std_unexpected_error
 msgid "Record not likely updated."
-msgstr ""
+msgstr "مِن المحتمل أنه لم يتم تحديث التسجيلة."
 
 #: staff.cat.opac.refresh.function_not_implemented.alert
 msgid "Not yet implemented.  Work around: Choose Duplicate in New Tab option"
-msgstr ""
+msgstr "لم تُنفذ حتى الآن.ـ كمحاولة للتغلب ـ : كرر اختيار خيار تبويب جديد"
 
 #: staff.cat.opac.set_tab_name
-msgid "Record: %1$s"
-msgstr ""
+msgid "Record DB ID: %1$s"
+msgstr "مُعرف قاعدة بيانات التسجيلة: %1$s"
 
 #: staff.cat.opac.title_for_hold_transfer.destination_needed.label
 msgid "Need to mark a record as a Title Hold Transfer Destination first."
-msgstr ""
+msgstr "تحتاج لـِ تمييز التسجيل كـَ وجهة نقل لعنوان الحجز أولاً."
 
 #: staff.cat.opac.title_for_hold_transfer.success.label
 msgid "Holds transferred."
-msgstr ""
+msgstr "تمّ نقل الحجوزات."
 
 #: staff.cat.opac.title_for_hold_transfer.failure.label
 msgid "Holds not transferred."
+msgstr "لم يتمّ نقل الحجوزات."
+
+#: staff.cat.opac.title_for_hold_transfer.many_bibs.warning
+msgid ""
+"WARNING: Move selected holds from multiple bibs to single targeted bib?"
 msgstr ""
+"تحذير: أنقل الحجوزات المحددة مِن مكتبات متعددة إلى المكتبة المستهدفة؟"
 
 #: staff.cat.record_buckets.tab_name
 msgid "Record Buckets"
-msgstr ""
+msgstr "سلال التسجيلات"
 
 #: staff.cat.record_buckets.save_file_as
 msgid "Save File As"
-msgstr ""
+msgstr "حفظ الملف كـَ"
 
 #: staff.cat.record_buckets.export_records.alert
 msgid "File not downloaded."
-msgstr ""
+msgstr "لم يتم تحميل الملف"
 
 #: staff.cat.record_buckets.export_records.std_unexpected_error
 msgid "Records could not be exported."
-msgstr ""
+msgstr "لا يمكن تصدير التسجيلات"
 
 #: staff.cat.record_buckets.rednder_pending_records.alert
 msgctxt "staff.cat.record_buckets.rednder_pending_records.alert"
 msgid "Action completed."
-msgstr ""
+msgstr "تمّ إكمال الإجراء"
 
 #: staff.cat.record_buckets.retrieve_row.std_unexpected_error
 msgid "Error retrieving mvr for record with ID = %1$s"
-msgstr ""
+msgstr "خطأ في استرداد mvr للتسجيلة التي مُعرفها = %1$s"
 
 #: staff.cat.record_buckets.buckets.std_unexpected_error
 msgid "Could not retrieve your buckets."
-msgstr ""
+msgstr "لا يمكن استرداد السلال الخاصة بك"
 
 #: staff.cat.record_buckets.menulist_placeholder.item1
 msgctxt "staff.cat.record_buckets.menulist_placeholder.item1"
 msgid "Choose a bucket..."
-msgstr ""
+msgstr "اختيار سلة..."
 
 #: staff.cat.record_buckets.menulist_placeholder.item2
 msgctxt "staff.cat.record_buckets.menulist_placeholder.item2"
 msgid "Retrieve shared bucket..."
-msgstr ""
+msgstr "استرداد السلة المُشتركة"
 
 #: staff.cat.record_buckets.change_bucket.bucket_id
 msgctxt "staff.cat.record_buckets.change_bucket.bucket_id"
 msgid "Enter bucket number:"
-msgstr ""
+msgstr "إدخال رقم السلة:"
 
 #: staff.cat.record_buckets.change_bucket.error
 msgid "Error retrieving bucket.  Did you use a valid bucket ID?"
-msgstr ""
+msgstr "حدث خطأ أثناء استرداد السلة. هل تستخدم مُعرف سلة صحيح؟"
 
 #: staff.cat.record_buckets.delete_bucket_named
 msgctxt "staff.cat.record_buckets.delete_bucket_named"
 msgid "Delete the bucket named %1$s?"
-msgstr ""
+msgstr "هل تريد حذف السلة التي اسمها %1$s؟"
 
 #: staff.cat.record_buckets.new_bucket.bucket_prompt
 msgctxt "staff.cat.record_buckets.new_bucket.bucket_prompt"
 msgid "What would you like to name the bucket?"
-msgstr ""
+msgstr "ماذا تريد أن تُسمي هذه السلة؟"
 
 #: staff.cat.record_buckets.new_bucket.bucket_prompt_title
 msgctxt "staff.cat.record_buckets.new_bucket.bucket_prompt_title"
 msgid "Bucket Creation"
-msgstr ""
+msgstr "إنشاء السلة"
 
 #: staff.cat.record_buckets.new_bucket.same_name_alert
 msgctxt "staff.cat.record_buckets.new_bucket.same_name_alert"
 msgid "You already have a bucket with that name."
-msgstr ""
+msgstr "لديك مُسبقاً سلة بهذا الاسم."
 
 #: staff.cat.record_buckets.new_bucket.bucket_created
 msgid "Bucket %1$s created."
-msgstr ""
-
-#: staff.cat.record_buckets.merge_records.merge_lead
-msgid "Merge these records? (Select the \"lead\" record first)"
-msgstr ""
-
-#: staff.cat.record_buckets.merge_records.button.label
-msgid "Merge"
-msgstr ""
-
-#: staff.cat.record_buckets.merge_records.cancel_button.label
-msgctxt "staff.cat.record_buckets.merge_records.cancel_button.label"
-msgid "Cancel"
-msgstr ""
-
-#: staff.cat.record_buckets.merge_records.cancel_button.accesskey
-msgctxt "staff.cat.record_buckets.merge_records.cancel_button.accesskey"
-msgid "C"
-msgstr ""
-
-#: staff.cat.record_buckets.merge_records.lead_record_number
-msgid "Lead Record? # %1$s"
-msgstr ""
-
-#: staff.cat.record_buckets.merge_records.lead
-msgid "Lead"
-msgstr ""
+msgstr "السلة %1$s تمّ إنشاؤها."
 
 #: staff.cat.record_buckets.merge_records.fancy_prompt_title
 msgid "Record Merging"
-msgstr ""
+msgstr "دمج التسجيلات"
 
-#: staff.cat.record_buckets.merge_records.fancy_prompt.alert
-msgid "Merge Aborted"
-msgstr ""
-
-#: staff.cat.record_buckets.merge_records.success
-msgid "Records were successfully merged."
-msgstr ""
-
-#: staff.cat.record_buckets.merge_records.catch.std_unex_error
+#: staff.cat.record_buckets.merge_records.catch.std_unex_err
 msgid "Records were not likely merged."
-msgstr ""
+msgstr "مِن المحتمل أنه لم يتم دمج التسجيلات."
 
 #: staff.cat.record_buckets.delete_records.xml1
 msgid "Delete these records?"
-msgstr ""
+msgstr "هل تريد حذف هذه التسجيلات؟"
 
 #: staff.cat.record_buckets.delete_records.button.label
 msgctxt "staff.cat.record_buckets.delete_records.button.label"
 msgid "Delete"
-msgstr ""
+msgstr "حذف"
 
 #: staff.cat.record_buckets.delete_records.cancel_button.label
 msgctxt "staff.cat.record_buckets.delete_records.cancel_button.label"
 msgid "Cancel"
-msgstr ""
+msgstr "إلغاء"
 
 #: staff.cat.record_buckets.delete_records.cancel_button.accesskey
 msgctxt "staff.cat.record_buckets.delete_records.cancel_button.accesskey"
 msgid "C"
-msgstr ""
+msgstr "C"
 
 #: staff.cat.record_buckets.delete_records.xml2
 msgid "Record? # %1$s"
-msgstr ""
+msgstr "التسجيلة؟ # %1$s"
 
 #: staff.cat.record_buckets.delete_records.fancy_prompt_title
 msgid "Record Purging"
-msgstr ""
+msgstr "تنظيف وتطهير التسجيلة"
 
 #: staff.cat.record_buckets.delete_records.fancy_prompt.alert
 msgid "Delete Aborted"
-msgstr ""
+msgstr "تمّ إلغاء الحذف"
 
 #: staff.cat.record_buckets.delete_records.s1
 msgid "Error deleting these records:\n"
-msgstr ""
+msgstr "خطأ في حذف هذه التسجيلات:\n"
 
 #: staff.cat.record_buckets.delete_records.s2
 msgid "Record #%1$s : %2$s  : %3$s\n"
-msgstr ""
+msgstr "التسجيلة #%1$s : %2$s  : %3$s\n"
 
 #: staff.cat.record_buckets.delete_records.delete_success.alert
 msgid "Records deleted."
-msgstr ""
+msgstr "تمَ حذف التسجيلات."
 
 #: staff.cat.record_buckets.delete_records.catch.std_unex_err
 msgid "Records were not likely deleted."
-msgstr ""
+msgstr "مِن المحتمل أنه لم يتم حذف التسجيلات."
 
 #: staff.cat.record_buckets.cmd_broken.alert
 msgid "Not Yet Implemented"
-msgstr ""
+msgstr "لم يتم التطبيق بعد"
 
 #: staff.cat.record_buckets.cmd_sel_opac.tab_name
 msgctxt "staff.cat.record_buckets.cmd_sel_opac.tab_name"
 msgid "Retrieving title..."
-msgstr ""
+msgstr "استرجاع العنوان ..."
 
 #: staff.cat.record_buckets.cmd_sel_opac.catch.std_unex_err
 msgid "Showing in OPAC"
-msgstr ""
+msgstr "إظهار في الأوباك"
 
 #: staff.cat.record_buckets.submit.query_status
 msgctxt "staff.cat.record_buckets.submit.query_status"
 msgid "Searching..."
-msgstr ""
+msgstr "البحث جاري..."
 
 #: staff.cat.record_buckets.prep_record_for_list.std_unex_err
 msgid "Could not retrieve this record: %1$s"
-msgstr ""
+msgstr "لا يمكن استرداد هذه التسجيلة: %1$s"
 
 #: staff.cat.record_buckets_quick.copy_one_record
 msgid "Copy this record into which bucket?"
-msgstr ""
+msgstr "هل تريد نسخ هذه التسجيلة إلى تلك السلة؟"
 
 #: staff.cat.record_buckets_quick.copy_multiple_records
 msgctxt "staff.cat.record_buckets_quick.copy_multiple_records"
 msgid "Copy these %1$s items into which bucket?"
-msgstr ""
+msgstr "هل تريد نسخ هذه التسجيلات %1$s إلى تلك السلة؟"
 
 #: staff.cat.record_buckets_quick.initing_record_buckets_quick_xul
 msgid "Trying to init record_buckets_quick.xul"
-msgstr ""
+msgstr "محاولة الحرف الأول لـِ record_buckets_quick.xul"
 
 #: staff.cat.record_buckets_quick.name_of_bucket
 msgctxt "staff.cat.record_buckets_quick.name_of_bucket"
 msgid "What would you like to name the bucket?"
-msgstr ""
+msgstr "ماذا تريد أن تُسمي هذه السلة؟"
 
 #: staff.cat.record_buckets_quick.name_of_bucket.title
 msgctxt "staff.cat.record_buckets_quick.name_of_bucket.title"
 msgid "Bucket Creation"
-msgstr ""
+msgstr "إنشاء السلة"
 
 #: staff.cat.record_buckets_quick.bucket_creation_failure
 msgctxt "staff.cat.record_buckets_quick.bucket_creation_failure"
 msgid "Bucket creation failed."
-msgstr ""
+msgstr "فشل إنشاء السلة."
 
 #: staff.cat.record_buckets_quick.add_to_bucket.addition_failed
 msgid "Addition likely failed for bucket = %1$s and record ID = %2$s"
-msgstr ""
+msgstr "مِن المحتمل أن الإضافة فشلت لـِ السلة = %1$s ومُعرف التسجيلة = %2$s"
 
 #: staff.cat.record_buckets.menulist.change_bucket.undefined
 msgctxt "staff.cat.record_buckets.menulist.change_bucket.undefined"
 msgid "Could not find a bucket with ID = %1$s"
-msgstr ""
+msgstr "لا يمكن العثور على السلة التي مُعرفها = %1$s"
 
 #: staff.cat.spine_labels.copy
 msgid "copy"
-msgstr ""
+msgstr "نُسخة"
 
 #: staff.cat.spine_labels.copies
 msgid "copies"
-msgstr ""
+msgstr "نُسخ"
 
 #: staff.cat.spine_labels.generate.std_unexpeceted_err
 msgid "Generate"
-msgstr ""
+msgstr "تَوليد"
 
 #: staff.cat.spine_labels.preview.title
 msgctxt "staff.cat.spine_labels.preview.title"
 msgid "Spine Labels"
-msgstr ""
+msgstr "تسميات ظهر الكتاب"
 
 #: staff.cat.spine_labels.preview.std_unexpected_err
 msgid "Preview and Print"
-msgstr ""
+msgstr "معاينة وطباعة"
 
 #: staff.cat.util.replace_barcode.old_bc_window_prompt.prompt
 msgid "Enter original barcode for the copy:"
-msgstr ""
+msgstr "أدخل الباركود الأصلي للنُسخة:"
 
 #: staff.cat.util.replace_barcode.old_bc_window_prompt.title
 msgctxt "staff.cat.util.replace_barcode.old_bc_window_prompt.title"
 msgid "Replace Barcode"
-msgstr ""
+msgstr "استبدال الباركود"
 
 #: staff.cat.util.replace_barcode.error_alert
 msgid "We were unable to retrieve an item with barcode \"%1$s\"."
-msgstr ""
+msgstr "مِن غير الممكن استرداد هذه النُسخة بهذا الباركود \"%1$s\"."
 
 #: staff.cat.util.replace_barcode.new_bc_window_prompt.prompt
 msgid "Enter the replacement barcode for the copy:"
-msgstr ""
+msgstr "أدخل الباركود المُستبدَل لهذه النُسخة:"
 
 #: staff.cat.util.replace_barcode.new_bc_window_prompt.title
 msgctxt "staff.cat.util.replace_barcode.new_bc_window_prompt.title"
 msgid "Replace Barcode"
-msgstr ""
+msgstr "استبدال الباركود"
 
 #: staff.cat.util.replace_barcode.new_bc.failed
 msgid "Rename aborted.  Blank barcodes are not allowed."
-msgstr ""
+msgstr "إلغاء إعادة التسمية. غير مسموح بـِ الباركودات الفارغة."
 
 #: staff.cat.util.replace_barcode.testing_error
 msgid "Error testing replacement barcode \"%1$s\"."
-msgstr ""
+msgstr "خطأ في اختبار الباركود المُستبدَل \"%1$s\"."
 
 #: staff.cat.util.replace_barcode.insufficient_permission_for_rename
 msgid "Rename aborted.  Insufficient permission."
-msgstr ""
+msgstr "تمّ إلغاء إعادة التسمية. صلاحية غير كافية."
 
 #: staff.cat.util.replace_barcode.item_rename_error
 msgid "Error renaming item."
-msgstr ""
+msgstr "خطأ في إعادة تسمية النسخة."
 
 #: staff.cat.util.replace_barcode.rename_error
 msgid "Rename did not likely occur."
-msgstr ""
+msgstr "مِن المحتمل أنه لم تحدث إعادة التسمية."
 
 #: staff.cat.util.transfer_copies.unmarked_volume_alert
 msgctxt "staff.cat.util.transfer_copies.unmarked_volume_alert"
@@ -1418,535 +1531,643 @@ msgid ""
 "Please mark a volume as the destination from within holdings maintenance and "
 "then try this again."
 msgstr ""
+"لطفاً ينبغي تمييز المجلد كوجهة مِن داخل حيازات الصيانة ثم حاول مرة أخرى."
 
 #: staff.cat.util.transfer_copies.params_message
 msgid ""
 "Transfer items from their original volumes to %1$s's volume labelled %2$s on "
 "the following record (and change their circulation libs to match)?"
 msgstr ""
+"نقل النُسخ مِن مجلداتها الأصلية إلى %1$s's المجلد الذي تم تسميته %2$s "
+"للتسجيلة التالية (وغيّر مكتبات الإعارة الخاصة بها مِن أجل المطابقة)؟"
 
 #: staff.cat.util.transfer_copies.transfer.label
 msgctxt "staff.cat.util.transfer_copies.transfer.label"
 msgid "Transfer"
-msgstr ""
+msgstr "نقل"
 
 #: staff.cat.util.transfer_copies.cancel.label
 msgctxt "staff.cat.util.transfer_copies.cancel.label"
 msgid "Cancel"
-msgstr ""
+msgstr "إلغاء"
 
 #: staff.cat.util.transfer_copies.cancel.accesskey
 msgctxt "staff.cat.util.transfer_copies.cancel.accesskey"
 msgid "C"
-msgstr ""
+msgstr "C"
 
 #: staff.cat.util.transfer_copies.window_title
 msgid "Item Transfer"
-msgstr ""
+msgstr "نقل النُسخة"
 
 #: staff.cat.util.transfer_copies.aborted_transfer
 msgctxt "staff.cat.util.transfer_copies.aborted_transfer"
 msgid "Transfer Aborted"
-msgstr ""
+msgstr "إحباط النقل"
 
 #: staff.cat.util.transfer_copies.override_transfer_failure
 msgid "Override Transfer Failure?"
-msgstr ""
+msgstr "تجاهل فشل النقل؟"
 
 #: staff.cat.util.transfer_copies.successful_transfer
 msgid "Items transferred."
-msgstr ""
+msgstr "تمّ نقل النُسخ."
 
 #: staff.cat.util.transfer_copies.transfer_error
 msgid "All items not likely transferred."
-msgstr ""
+msgstr "مِن المحتمل أن جميع النُسخ لم يتم نقلها."
 
 #: staff.cat.util.spine_editor.tab_name
 msgctxt "staff.cat.util.spine_editor.tab_name"
 msgid "Spine Labels"
-msgstr ""
+msgstr "تسميات ظهر الكتاب"
 
 #: staff.cat.util.spine_editor.spine_editor_error
 msgctxt "staff.cat.util.spine_editor.spine_editor_error"
 msgid "Spine Labels"
-msgstr ""
+msgstr "تسميات ظهر الكتاب"
 
 #: staff.cat.util.show_in_opac.unknown_barcode
 msgid "%1$s is not cataloged"
-msgstr ""
+msgstr "%1$s لم يتم فهرستها"
 
 #: staff.cat.util.show_in_opac.catalog_error_for_doc_id
 msgid "Error opening catalog for document ID = %1$s"
-msgstr ""
+msgstr "خطأ في فتح الفهرس للوثيقة التي مُعرفها = %1$s"
 
 #: staff.cat.util.copy_editor.batch_in_title
 msgid "Batch "
-msgstr ""
+msgstr "الكمية المُعدَة "
 
 #: staff.cat.util.copy_editor.edit_in_title
 msgctxt "staff.cat.util.copy_editor.edit_in_title"
 msgid "Edit"
-msgstr ""
+msgstr "تعديل"
 
 #: staff.cat.util.copy_editor.view_in_title
 msgctxt "staff.cat.util.copy_editor.view_in_title"
 msgid "View"
-msgstr ""
+msgstr "إظهار"
 
 #: staff.cat.util.copy_editor.copy_attributes_in_title
 msgid "Copy Attributes"
-msgstr ""
+msgstr "خصائص النسخة"
 
 #: staff.cat.util.copy_editor.batch_edit
 msgid "Batch Edit"
-msgstr ""
+msgstr "تعديل الدفعة"
 
 #: staff.cat.util.copy_editor.batch_view
 msgid "Batch View"
-msgstr ""
+msgstr "عرض الدفعة"
 
 #: staff.cat.util.copy_editor.edit
 msgctxt "staff.cat.util.copy_editor.edit"
 msgid "Edit"
-msgstr ""
+msgstr "تعديل"
 
 #: staff.cat.util.copy_editor.view
 msgctxt "staff.cat.util.copy_editor.view"
 msgid "View"
-msgstr ""
+msgstr "إظهار"
 
 #: staff.cat.util.mark_item_damaged.af_message
 msgid ""
 "Action failed.  One or more of these items is in a special status such as "
-"\"Checked Out\" or \"In Transit\" and cannot be changed to the Damaged status."
+"\"Checked Out\" or \"In Transit\" and cannot be changed to the Damaged "
+"status."
 msgstr ""
+"فشل الإجراء. واحد أو أكثر من هذه النُسخ هي في حالة خاصة مثل \"الإعارة\" أو "
+"\"في النقل\"  و لا يمكن تغييرها إلى حالة إتلاف."
 
 #: staff.cat.util.mark_item_damaged.af_title
 msgctxt "staff.cat.util.mark_item_damaged.af_title"
 msgid "Action failed."
-msgstr ""
+msgstr "تمّ فشل الإجراء."
 
 #: staff.cat.util.mark_item_damaged.af_ok_label
 msgctxt "staff.cat.util.mark_item_damaged.af_ok_label"
 msgid "OK"
-msgstr ""
+msgstr "نعم"
 
 #: staff.cat.util.mark_item_damaged.af_confirm_action
 msgctxt "staff.cat.util.mark_item_damaged.af_confirm_action"
 msgid "Check here to confirm this message"
-msgstr ""
+msgstr "تحقق هنا لتأكيد هذه الرسالة"
 
 #: staff.cat.util.mark_item_damaged.md_message
 msgid "Change the status for these items to Damaged?  Barcodes: %1$s"
-msgstr ""
+msgstr "تغيير حالة هذه النُسخ إلى تالفة؟  الباركودات: %1$s"
 
 #: staff.cat.util.mark_item_damaged.md_title
 msgid "Mark Damaged"
-msgstr ""
+msgstr "تمييز التالفة"
 
 #: staff.cat.util.mark_item_damaged.md_ok_label
 msgctxt "staff.cat.util.mark_item_damaged.md_ok_label"
 msgid "OK"
-msgstr ""
+msgstr "نعم"
 
 #: staff.cat.util.mark_item_damaged.md_cancel_label
 msgctxt "staff.cat.util.mark_item_damaged.md_cancel_label"
 msgid "Cancel"
-msgstr ""
+msgstr "إلغاء"
 
 #: staff.cat.util.mark_item_damaged.md_confirm_action
 msgctxt "staff.cat.util.mark_item_damaged.md_confirm_action"
 msgid "Check here to confirm this action"
-msgstr ""
+msgstr "تحقق هنا لتأكيد هذا الإجراء"
 
 #: staff.cat.util.mark_item_damaged.checkin.title
 msgid "Checkin Item Before Marking Damaged?"
-msgstr ""
+msgstr "إرجاع النُسخة قبل تمييزها كـ تالفة؟"
 
 #: staff.cat.util.mark_item_damaged.checkin.normal_checkin
 msgid "Normal Checkin"
-msgstr ""
+msgstr "إرجاع عادي"
 
 #: staff.cat.util.mark_item_damaged.checkin.no_checkin
 msgctxt "staff.cat.util.mark_item_damaged.checkin.no_checkin"
 msgid "Cancel"
-msgstr ""
+msgstr "إلغاء"
 
 #: staff.cat.util.mark_item_damaged.checkin.forgiving_checkin
 msgid "Forgiving Checkin"
-msgstr ""
+msgstr "تسامح الإرجاع"
 
 #: staff.cat.util.mark_item_damaged.checkin.confirm_action
 msgctxt "staff.cat.util.mark_item_damaged.checkin.confirm_action"
 msgid "Check here to confirm this action"
-msgstr ""
+msgstr "تحقق هنا لتأكيد هذا الإجراء"
 
 #: staff.cat.util.mark_item_damaged.item_circulating_to_patron
 msgid "Item %1$s is checked out to patron, %2$s, and is due on %3$s. "
-msgstr ""
+msgstr "النُسخة %1$s تمّ إعارتها للمستفيد، %2$s, وهي مُستحقة الرد في %3$s. "
 
 #: staff.cat.util.mark_item_damaged.charge_patron_prompt.message
 msgid ""
 "Item %1$s will be marked damaged.  Was returned on %3$s for %2$s.  Charge "
 "this patron $%4$s for the damage? "
 msgstr ""
+"النُسخة %1$s سيتم تمييزها كـَ تالفة.  تمّ إعادتها في %3$s لـِ %2$s.  حَمّل "
+"هذا المُستفيد $%4$s هذا الضرر؟ "
 
 #: staff.cat.util.mark_item_damaged.charge_patron_prompt.title
 msgid "Charge Patron For Damaged Item? "
-msgstr ""
+msgstr "تحميل المُستفيد ضرر أو اتلاف النسخة؟ "
 
 #: staff.cat.util.mark_item_damaged.charge_patron_prompt.ok_label
 msgid "OK "
-msgstr ""
+msgstr "موافق "
 
 #: staff.cat.util.mark_item_damaged.charge_patron_prompt.change_amount_label
 msgid "Change Amount "
-msgstr ""
+msgstr "تغيير المقدار "
 
 #: staff.cat.util.mark_item_damaged.charge_patron_prompt.cancel_label
-msgid "Cancel "
-msgstr ""
+msgid "No Charge"
+msgstr "بدون رسم/ثمن"
 
 #: staff.cat.util.mark_item_damaged.charge_patron_prompt.confirm_action
 msgid "Check here to confirm this action "
-msgstr ""
+msgstr "تحقق هنا لتأكيد هذا الإجراء "
 
 #: staff.cat.util.mark_item_damaged.marking_error
 msgid "Error marking item %1$s damaged."
-msgstr ""
+msgstr "خطأ في تمييز النُسخة %1$s التالفة."
 
 #: staff.cat.util.mark_item_damaged.one_item_damaged
 msgid "Item marked Damaged"
-msgstr ""
+msgstr "تمّ تمييز النُسخة كـّ تالفة"
 
 #: staff.cat.util.mark_item_damaged.multiple_item_damaged
 msgid "%1$s items marked Damaged."
-msgstr ""
+msgstr "%1$s النُسخ المميزة كـَ تالفة."
 
 #: staff.cat.util.mark_item_missing.af_message
 msgid ""
 "Action failed.  One or more of these items is in a special status such as "
-"\"Checked Out\" or \"In Transit\" and cannot be changed to the Missing status."
+"\"Checked Out\" or \"In Transit\" and cannot be changed to the Missing "
+"status."
 msgstr ""
+"فشل الإجراء. واحد أو أكثر من هذه النُسخ هي في حالة خاصة مثل \"إعارة\" أو "
+"\"في النقل\" و لا يمكن تغييره إلى حالة مفقود."
 
 #: staff.cat.util.mark_item_missing.af_title
 msgctxt "staff.cat.util.mark_item_missing.af_title"
 msgid "Action failed."
-msgstr ""
+msgstr "تمّ فشل الإجراء."
 
 #: staff.cat.util.mark_item_missing.af_ok_label
 msgctxt "staff.cat.util.mark_item_missing.af_ok_label"
 msgid "OK"
-msgstr ""
+msgstr "نعم"
 
 #: staff.cat.util.mark_item_missing.af_confirm_action
 msgctxt "staff.cat.util.mark_item_missing.af_confirm_action"
 msgid "Check here to confirm this message"
-msgstr ""
+msgstr "تحقق هنا لتأكيد هذه الرسالة"
 
 #: staff.cat.util.mark_item_missing.ms_message
 msgid "'Change the status for these items to Missing? Barcodes: %1$s"
-msgstr ""
+msgstr "'هل تريد تغيير حالة هذه النُسخ إلى مفقودة؟ الباركودات: %1$s"
 
 #: staff.cat.util.mark_item_missing.ms_title
 msgid "Mark Missing"
-msgstr ""
+msgstr "تحديد حالة النُسخة كمفقودة"
 
 #: staff.cat.util.mark_item_missing.ms_ok_label
 msgctxt "staff.cat.util.mark_item_missing.ms_ok_label"
 msgid "OK"
-msgstr ""
+msgstr "نعم"
 
 #: staff.cat.util.mark_item_missing.ms_cancel_label
 msgctxt "staff.cat.util.mark_item_missing.ms_cancel_label"
 msgid "Cancel"
-msgstr ""
+msgstr "إلغاء"
 
 #: staff.cat.util.mark_item_missing.ms_confirm_action
 msgctxt "staff.cat.util.mark_item_missing.ms_confirm_action"
 msgid "Check here to confirm this action"
-msgstr ""
+msgstr "تحقق هنا لتأكيد هذا الإجراء"
 
 #: staff.cat.util.mark_item_missing.marking_error
 msgid "Error marking item %1$s missing."
-msgstr ""
+msgstr "خطأ في تمييز النُسخة %1$s كـَ مفقودة."
 
 #: staff.cat.util.mark_item_missing.one_item_missing
 msgid "Item marked Missing"
-msgstr ""
+msgstr "النسخة تمّ تمييزها كـَ مفقودة"
 
 #: staff.cat.util.mark_item_missing.multiple_item_missing
 msgid "%1$s items marked Missing."
+msgstr "%1$s تمّ تمييز هذه النسخ كـَ مفقودة."
+
+#: staff.cat.util.mark_item_missing_pieces.ms_message
+msgid "Mark these items as missing pieces?  Barcodes: %1$s"
+msgstr "تمييز هذه النُسخ كـ أجزاء مفقودة؟  الباركودات: %1$s"
+
+#: staff.cat.util.mark_item_missing_pieces.ms_title
+msgid "Mark Missing Pieces"
+msgstr "تمييز الأجزاء المفقودة"
+
+#: staff.cat.util.mark_item_missing_pieces.ms_ok_label
+msgctxt "staff.cat.util.mark_item_missing_pieces.ms_ok_label"
+msgid "OK"
+msgstr "نعم"
+
+#: staff.cat.util.mark_item_missing_pieces.ms_cancel_label
+msgctxt "staff.cat.util.mark_item_missing_pieces.ms_cancel_label"
+msgid "Cancel"
+msgstr "إلغاء"
+
+#: staff.cat.util.mark_item_missing_pieces.ms_confirm_action
+msgctxt "staff.cat.util.mark_item_missing_pieces.ms_confirm_action"
+msgid "Check here to confirm this action"
+msgstr "تحقق هنا لتأكيد هذا الإجراء"
+
+#: staff.cat.util.mark_item_missing_pieces.marking_error
+msgid "Error marking item %1$s as missing pieces."
+msgstr "خطأ في تمييز النسخة %1$s كـَ أجزاء مفقودة."
+
+#: staff.cat.util.mark_item_missing_pieces.one_item_missing_pieces
+msgid "Item marked as missing pieces."
+msgstr "تمّ تمييز النُسخة كـَ أجزاء مفقودة"
+
+#: staff.cat.util.mark_item_missing_pieces.multiple_item_missing_pieces
+msgid "%1$s items marked as missing pieces."
+msgstr "%1$s النُسخ التي تمّ تمييزها كـَ أجزاء مفقودة."
+
+#: staff.cat.util.mark_item_missing_pieces.circ_not_found
+msgid ""
+"No circulation found for item with barcode %1$s.  Item left unmodified."
 msgstr ""
+"لم يتم العثور على إعارة للنُسخة التي باركودها %1$s.  تمّ ترك النُسخة بدون "
+"تعديل."
+
+#: staff.cat.util.show_in_opac.retrieving_title
+msgctxt "staff.cat.util.show_in_opac.retrieving_title"
+msgid "Retrieving title..."
+msgstr "استرجاع العنوان ..."
+
+#: staff.cat.util.add_titles_to_bucket.number_of_precats_skipped
+msgid "Skipping %1$s pre-cat records..."
+msgstr "تجاوز %1$s التسجيلات المُفهرسة مُسبقاً..."
 
 #: staff.cat.volume_buckets.window_tab_name
 msgid "Volume Buckets"
-msgstr ""
+msgstr "سلال المجلد"
 
 #: staff.cat.volume_copy_creator.my_init.btn.label
 msgctxt "staff.cat.volume_copy_creator.my_init.btn.label"
 msgid "Apply"
-msgstr ""
+msgstr "تطبيق"
 
 #: staff.cat.volume_copy_creator.my_init.btn.accesskey
 msgctxt "staff.cat.volume_copy_creator.my_init.btn.accesskey"
 msgid "A"
-msgstr ""
+msgstr "A"
+
+#: staff.cat.volume_copy_creator.create_part.btn.label
+msgid "Create Part Designator"
+msgstr "إنشاء الجزء المُصَمم"
 
 #: staff.cat.volume_copy_creator.edit_then_create.btn.label
 msgid "Edit then Create"
-msgstr ""
+msgstr "تعديل ثم إنشاء"
 
 #: staff.cat.volume_copy_creator.edit_then_create.btn.accesskey
 msgctxt "staff.cat.volume_copy_creator.edit_then_create.btn.accesskey"
 msgid "C"
-msgstr ""
+msgstr "C"
 
 #: staff.cat.volume_copy_creator.create_with_defaults.btn.label
 msgid "Create with Defaults"
-msgstr ""
+msgstr "إنشاء مع الإعدادات الافتراضية"
 
 #: staff.cat.volume_copy_creator.create_with_defaults.btn.accesskey
 msgid "D"
-msgstr ""
+msgstr "D"
+
+#: staff.cat.volume_copy_creator.create.btn.label
+msgid "Create Volumes/Items"
+msgstr "إنشاء مجلدات/نُسخ"
+
+#: staff.cat.volume_copy_creator.create.btn.accesskey
+msgctxt "staff.cat.volume_copy_creator.create.btn.accesskey"
+msgid "C"
+msgstr "C"
 
 #: staff.cat.volume_copy_creator.edit_then_rebarcode.btn.label
 msgid "Edit then Re-barcode"
-msgstr ""
+msgstr "تعديل ثم إعادة المسح الضوئي"
 
 #: staff.cat.volume_copy_creator.edit_then_rebarcode.btn.accesskey
 msgid "E"
-msgstr ""
+msgstr "E"
 
 #: staff.cat.volume_copy_creator.rebarcode.btn.label
-msgid "Re-barcode"
-msgstr ""
+msgid "Re-barcode / Update Items"
+msgstr "إعادة المسح الضوئي/ تحديث النُسخ"
 
 #: staff.cat.volume_copy_creator.rebarcode.btn.accesskey
 msgid "R"
-msgstr ""
+msgstr "R"
 
 #: staff.cat.volume_copy_creator.render_volume_count_entry.message
 msgid ""
 "You may not add more than %1$s items at a time for a given volume in this "
 "interface."
 msgstr ""
+"لا تستطيع إضافة المزيد/أكثر مِن %1$s نُسخ في الوقت لـِ المجلد المعطى في نفس "
+"الواجهة/الشاشة."
 
 #: staff.cat.volume_copy_creator.render_volume_count_entry.title
 msgid "Maximum items exceeded."
-msgstr ""
+msgstr "تجاوزت النُسخ الحد الأقصى"
 
 #: staff.cat.volume_copy_creator.render_volume_count_entry.ok_label
 msgid "Ok"
-msgstr ""
+msgstr "موافق"
+
+#: staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.classification
+msgid "Classification"
+msgstr "التصنيف"
+
+#: staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.prefix
+msgid "Prefix"
+msgstr "بادئة"
 
 #: staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.call_nums
-msgid "Call Numbers"
-msgstr ""
+msgid "Call Number"
+msgstr "رمز الاستدعاء"
+
+#: staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.suffix
+msgid "Suffix"
+msgstr "لاحقة"
 
 #: staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.num_of_copies
 msgid "# of Copies"
-msgstr ""
+msgstr "# مِن النُسخ"
+
+#: staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.barcodes_and_parts
+msgid "Barcode / Part Designation"
+msgstr "الباركود / تعيين الجزء"
 
 #: staff.cat.volume_copy_creator.render_barcode_entry.alert_message
 msgid "\"%1$s\" is an invalid barcode."
-msgstr ""
+msgstr "\"%1$s\" هو الباركود غير صالح."
 
 #: staff.cat.volume_copy_creator.render_barcode_entry.alert_title
 msgid "Invalid Barcode"
-msgstr ""
+msgstr "الباركود غير صالح"
 
 #: staff.cat.volume_copy_creator.render_barcode_entry.alert_ok_button
 msgctxt "staff.cat.volume_copy_creator.render_barcode_entry.alert_ok_button"
 msgid "OK"
-msgstr ""
+msgstr "نعم"
 
 #: staff.cat.volume_copy_creator.render_barcode_entry.alert_confirm
 msgid "Check here to confirm this message."
-msgstr ""
+msgstr "تحقق هنا لتأكيد هذه الرسالة."
 
 #: staff.cat.volume_copy_creator.stash_and_close.problem_with_volume
 msgid ""
 "Problem finding or creating %1$s.  We will skip item creation for this "
 "volume."
-msgstr ""
+msgstr "مشكلة في العثور أو إنشاء %1$s.  سيتم تجاوز إنشاء النسخة لهذا المجلد."
 
 #: staff.cat.volume_copy_creator.stash_and_close.tree_err2
 msgid "volume tree update 2"
-msgstr ""
+msgstr "تحديث شجرة المجلد 2"
 
 #: staff.cat.volume_copy_creator.stash_and_close.tree_err3
 msgid "volume tree update 3"
-msgstr ""
+msgstr "تحديث شجرة المجلد 3"
 
 #: staff.cat.volume_copy_creator.load_prefs.err_retrieving_prefs
 msgid "Error retrieving stored preferences"
-msgstr ""
+msgstr "خطأ في استرداد التفضيلات المُخزنة"
 
 #: staff.cat.volume_copy_creator.save_prefs.err_storing_prefs
 msgid "Error storing preferences"
-msgstr ""
+msgstr "خطأ في تخزين التفضيلات"
+
+#. # %1$s = Call Number Prefix Label, %2$s = Call Number Prefix Owning Lib Shortname
+#: staff.cat.volume_copy_creator.call_number_prefix.menuitem_label
+msgctxt "staff.cat.volume_copy_creator.call_number_prefix.menuitem_label"
+msgid "%2$s : %1$s"
+msgstr "%2$s : %1$s"
+
+#. # %1$s = Call Number Suffix Label, %2$s = Call Number Suffix Owning Lib Shortname
+#: staff.cat.volume_copy_creator.call_number_suffix.menuitem_label
+msgctxt "staff.cat.volume_copy_creator.call_number_suffix.menuitem_label"
+msgid "%2$s : %1$s"
+msgstr "%2$s : %1$s"
 
 #: staff.cat.z3950.native_catalog
 msgid "Native Catalog"
-msgstr ""
+msgstr "الفهرس المحلي"
 
 #: staff.cat.z3950.obj_list_init.list_construction_error
 msgid "Failure during list construction."
-msgstr ""
+msgstr "فشل أثناء بناء القائمة."
 
 #: staff.cat.z3950.results_view.label
 msgid "Results View"
-msgstr ""
+msgstr "عرض النتائج"
 
 #: staff.cat.z3950.results_view.accesskey
 msgctxt "staff.cat.z3950.results_view.accesskey"
 msgid "V"
-msgstr ""
+msgstr "V"
 
 #: staff.cat.z3950.marc_view.label
 msgid "MARC View"
-msgstr ""
+msgstr "عرض مارك"
 
 #: staff.cat.z3950.marc_view.accesskey
 msgctxt "staff.cat.z3950.marc_view.accesskey"
 msgid "V"
-msgstr ""
+msgstr "V"
 
 #: staff.cat.z3950.hide_top_pane.label
 msgid "Hide Top Pane"
-msgstr ""
+msgstr "إخفاء الجانب العلوي"
 
 #: staff.cat.z3950.hide_top_pane.accesskey
 msgctxt "staff.cat.z3950.hide_top_pane.accesskey"
 msgid "T"
-msgstr ""
+msgstr "T"
 
 #: staff.cat.z3950.unhide_top_pane.label
 msgid "Show Top Pane"
-msgstr ""
+msgstr "إظهار الجانب العلوي"
 
 #: staff.cat.z3950.unhide_top_pane.accesskey
 msgctxt "staff.cat.z3950.unhide_top_pane.accesskey"
 msgid "T"
-msgstr ""
+msgstr "T"
 
 #: staff.cat.z3950.marked_record_for_overlay_indicator.record_id.label
 msgid "Record with ID %1$s marked for overlay."
-msgstr ""
+msgstr "التسجيلة التي مُعرفها %1$s تمّ تمييزها من أجل التراكب."
 
 #: staff.cat.z3950.marked_record_for_overlay_indicator.tcn.label
 msgid "Record with TCN %1$s marked for overlay."
-msgstr ""
+msgstr "التسجيلة مع رقم التحكم بالنقل  %1$s تمّ تمييزها مِن أجل التراكب ."
 
 #: staff.cat.z3950.marked_record_for_overlay_indicator.no_record.label
 msgid "No record marked for overlay."
-msgstr ""
+msgstr "لا توجد تسجيلات مميزة مِن أجل التراكب"
 
 #: staff.cat.z3950.obj_controller_init.marc_view_error
 msgid "Failure during MARC view."
-msgstr ""
+msgstr "فشل أثناء عرض مارك."
 
 #: staff.cat.z3950.obj_controller_init.marc_import_error
 msgid "Failure during MARC import."
-msgstr ""
+msgstr "فشل أثناء استيراد مارك."
 
 #: staff.cat.z3950.obj_controller_init.marc_import_overlay_error
 msgid "Failure during MARC import overlay."
-msgstr ""
+msgstr "تجاهل الفشل أثناء استيراد مارك."
 
 #: staff.cat.z3950.obj_controller_init.search_fields_error
 msgid "Error setting up search fields."
-msgstr ""
+msgstr "حدث خطأ أثناء إعداد حقول البحث."
 
 #: staff.cat.z3950.obj_controller_init.z39_service_error
 msgid "Z39.50 services not likely retrieved."
-msgstr ""
+msgstr "خوادم Z39.50 مِن المحتمل لم يتم استرجاعها."
 
 #: staff.cat.z3950.initial_search.no_search_selection
 msgid "No services selected to search."
-msgstr ""
+msgstr "لا توجد خدمات محددة لـِ البحث"
 
 #: staff.cat.z3950.initial_search.too_many_selections
 msgid "Only one service can be used with raw search at a time."
-msgstr ""
+msgstr "خدمة واحدة فقط يمكن استخدامها في البحث الصريح في وقت واحد."
 
 #: staff.cat.z3950.initial_search.searching
 msgctxt "staff.cat.z3950.initial_search.searching"
 msgid "Searching..."
-msgstr ""
+msgstr "البحث جاري..."
 
 #: staff.cat.z3950.initial_search.failed_search
 msgid "Failure during initial search."
-msgstr ""
+msgstr "فشل خلال البحث الأولي."
 
 #: staff.cat.z3950.initial_search.raw_prompt.title
 msgid "Raw Z39.50 PQN Search"
-msgstr ""
+msgstr "البحث الصوتي الخام  لـِ بروتوكول زد 39.5"
 
 #: staff.cat.z3950.initial_search.raw_prompt.msg
 msgid ""
 "WARNING: This is not a simple keyword search.  Enter raw z39.50 PQN search "
 "string: "
 msgstr ""
-
-#: staff.cat.z3950.initial_search.raw_prompt.default_value
-msgctxt "staff.cat.z3950.initial_search.raw_prompt.default_value"
-msgid ""
-msgstr ""
+"هذا ليس بحث بسيط بالكلمات المفتاحية. أدخل سترينك البحث الصوتي الخام لـِ "
+"بروتوكول زد 39.5 : "
 
 #: staff.cat.z3950.initial_search.raw_search_unsupported_for_native_catalog
 msgid "Raw z39.50 PQN search not yet implemented for native catalog."
 msgstr ""
+"لم يتم تضمين البحث الصوتي الخام لـِ بروتوكول زد 39.5 حتى الآن من أجل الفهرس "
+"المحلي"
 
 #: staff.cat.z3950.page_next.more_results
 msgid "Retrieving more results..."
-msgstr ""
+msgstr "استرجاع المزيد مِن النتائج..."
 
 #: staff.cat.z3950.page_next.subsequent_search_error
 msgid "Failure during subsequent search."
-msgstr ""
+msgstr "فشل أثناء البحث اللاحق/التابع."
 
 #: staff.cat.z3950.search.search_error
 msgid "Failure during actual search."
-msgstr ""
+msgstr "فشل أثناء البحث الفعلي."
 
 #: staff.cat.z3950.handle_results.null_server_error
 msgid "Server Error: request returned null"
-msgstr ""
+msgstr "خطأ خادم: الطلب استعاد قيمة فارغة"
 
 #: staff.cat.z3950.handle_results.server_error
 msgid "Server Error: %1$s : %2$s"
-msgstr ""
+msgstr "خطأ الخادم: %1$s : %2$s"
 
 #: staff.cat.z3950.handle_results.raw_query
 msgid "Raw query: %1$s"
-msgstr ""
+msgstr "الاستعلام الصريح: %1$s"
 
 #: staff.cat.z3950.handle_results.showing_results
 msgid "Showing %1$s of %2$s for %3$s"
-msgstr ""
+msgstr "إظهار %1$s مِن %2$s لـِ %3$s"
 
 #: staff.cat.z3950.handle_results.showing_total_results
 msgid "Showing %1$s of %2$s "
-msgstr ""
+msgstr "إظهار %1$s مِن %2$s "
 
 #: staff.cat.z3950.handle_results.num_of_results
 msgid "%1$s records found"
-msgstr ""
+msgstr "%1$s تسجيلة تمّ إيجادها"
 
 #: staff.cat.z3950.handle_results.result_error
 msgid "Error retrieving results."
-msgstr ""
+msgstr "خطأ في استرداد النتائج."
 
 #: staff.cat.z3950.handle_results.search_result_error
 msgid "Failure during search result handling."
-msgstr ""
+msgstr "فشل أثناء معالجة نتيجة البحث."
 
 #: staff.cat.z3950.replace_tab_with_opac.tab_name
 msgctxt "staff.cat.z3950.replace_tab_with_opac.tab_name"
 msgid "Retrieving title..."
-msgstr ""
+msgstr "استرجاع العنوان ..."
+
+#: staff.cat.z3950.spawn_marc_editor.save_button_label
+msgid "Import Record"
+msgstr "استيراد تسجيلة"
 
 #: staff.cat.z3950.spawn_marc_editor.same_tcn
 msgctxt "staff.cat.z3950.spawn_marc_editor.same_tcn"
@@ -1954,100 +2175,104 @@ msgid ""
 "A record with TCN %1$s already exists.\n"
 "FIXME: add record summary here"
 msgstr ""
+"التسجيلة ذات رقم التحكم بالنقل  %1$s موجودة مُسبقاً.\n"
+"أصلحني: إضافة مُلخص تسجيلة هنا"
 
 #: staff.cat.z3950.spawn_marc_editor.title
 msgctxt "staff.cat.z3950.spawn_marc_editor.title"
 msgid "Import Collision"
-msgstr ""
+msgstr "استيراد التعارض"
 
 #: staff.cat.z3950.spawn_marc_editor.btn1_overlay
 msgctxt "staff.cat.z3950.spawn_marc_editor.btn1_overlay"
 msgid "Overlay"
-msgstr ""
+msgstr "التراكب"
 
 #: staff.cat.z3950.spawn_marc_editor.btn2_import
 msgid "Import with alternate TCN %1$s"
-msgstr ""
+msgstr "استيراد مع رقم التحكم بالنقل البديل  %1$s"
 
 #: staff.cat.z3950.spawn_marc_editor.permission_error
 msgctxt "staff.cat.z3950.spawn_marc_editor.permission_error"
 msgid "check permission"
-msgstr ""
+msgstr "تحقق مِن الصلاحية"
 
 #: staff.cat.z3950.spawn_marc_editor.btn3_cancel_import
 msgctxt "staff.cat.z3950.spawn_marc_editor.btn3_cancel_import"
 msgid "Cancel Import"
-msgstr ""
+msgstr "إلغاء الاستيراد"
 
 #: staff.cat.z3950.spawn_marc_editor.confirm_action
 msgctxt "staff.cat.z3950.spawn_marc_editor.confirm_action"
 msgid "Check here to confirm this action"
-msgstr ""
+msgstr "تحقق هنا لتأكيد هذا الإجراء"
 
 #: staff.cat.z3950.spawn_marc_editor.successful_overlay
 msgctxt "staff.cat.z3950.spawn_marc_editor.successful_overlay"
 msgid "Record successfully overlaid."
-msgstr ""
+msgstr "تمّ التراكب بنجاح لـِ التسجيلة."
 
 #: staff.cat.z3950.spawn_marc_editor.successful_import_with_new_tcn
 msgid "Record successfully imported with alternate TCN."
-msgstr ""
+msgstr "تمّ استيراد التسجيلة بنجاح مع رقم التحكم بالنقل البديل"
 
 #: staff.cat.z3950.spawn_marc_editor.import_cancelled
 msgid "Record import cancelled"
-msgstr ""
+msgstr "تمّ إلغاء استيراد التسجيلة"
 
 #: staff.cat.z3950.spawn_marc_editor.successful_import
 msgid "Record successfully imported."
-msgstr ""
+msgstr "تمّ استيراد التسجيلة بنجاح."
 
 #: staff.cat.z3950.spawn_marc_editor.import_error
 msgid "Record not likely imported."
-msgstr ""
+msgstr "مِن المحتمل أن التسجيلة لم يتم استيرادها."
 
 #: staff.cat.z3950.confirm_overlay.description
 msgid "Overlay this record?"
-msgstr ""
+msgstr "تراكب هذه التسجيلة؟"
 
 #: staff.cat.z3950.confirm_overlay.lead.label
 msgctxt "staff.cat.z3950.confirm_overlay.lead.label"
 msgid "Overlay"
-msgstr ""
+msgstr "تراكب"
 
 #: staff.cat.z3950.confirm_overlay.lead.accesskey
 msgid "O"
-msgstr ""
+msgstr "O"
 
 #: staff.cat.z3950.confirm_overlay.cancel.label
 msgctxt "staff.cat.z3950.confirm_overlay.cancel.label"
 msgid "Cancel"
-msgstr ""
+msgstr "إلغاء"
 
 #: staff.cat.z3950.confirm_overlay.cancel.accesskey
 msgctxt "staff.cat.z3950.confirm_overlay.cancel.accesskey"
 msgid "C"
-msgstr ""
+msgstr "C"
 
 #: staff.cat.z3950.confirm_overlay.title
 msgid "Record Overlay"
-msgstr ""
+msgstr "تراكب التسجيلة"
 
 #: staff.cat.z3950.confirm_overlay.aborted
 msgid "Overlay Aborted"
-msgstr ""
+msgstr "تمّ إحباط التراكب"
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.try_again
 msgid ""
 "Please mark a record for overlay from within the catalog and try this again."
 msgstr ""
+"لطفاً ينبغي تمييز التسجيلة لـِ التراكب مِن داخل التسجيلة ومحاولة ذلك مرة "
+"أخرى."
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.tab_name
 msgid "MARC Editor"
-msgstr ""
+msgstr "مُحرر مارك"
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.overlay_record_label
 msgid "Overlay Record"
-msgstr ""
+msgstr "تراكب التسجيلة"
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.same_tcn
 msgctxt "staff.cat.z3950.spawn_marc_editor_for_overlay.same_tcn"
@@ -2055,52 +2280,118 @@ msgid ""
 "A record with TCN %1$s already exists.\n"
 "FIXME: add record summary here"
 msgstr ""
+"التسجيلة ذات رقم التحكم بالنقل  %1$s موجودة مُسبقاً.\n"
+"أصلحني: إضافة مُلخص تسجيلة هنا"
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.import_collision
 msgctxt "staff.cat.z3950.spawn_marc_editor_for_overlay.import_collision"
 msgid "Import Collision"
-msgstr ""
+msgstr "استيراد التعارض"
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.btn1_overlay
 msgid "Overlay with alternate TCN %1$s"
-msgstr ""
+msgstr "التراكب مع البديل رقم التحكم بالنقل %1$s"
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.permission_error
 msgctxt "staff.cat.z3950.spawn_marc_editor_for_overlay.permission_error"
 msgid "check permission"
-msgstr ""
+msgstr "تحقق مِن الصلاحية"
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.btn2_cancel
 msgctxt "staff.cat.z3950.spawn_marc_editor_for_overlay.btn2_cancel"
 msgid "Cancel Import"
-msgstr ""
+msgstr "إلغاء الاستيراد"
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.confirm_action
 msgctxt "staff.cat.z3950.spawn_marc_editor_for_overlay.confirm_action"
 msgid "Check here to confirm this action"
-msgstr ""
+msgstr "تحقق هنا لتأكيد هذا الإجراء"
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.successful_overlay_with_new_TCN
 msgid "Record successfully overlaid with alternate TCN."
-msgstr ""
+msgstr "تمّ بنجاح تراكب التسجيلة مع رقم التحكم بالنقل البديل."
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.cancelled_overlay
 msgid "Record overlay cancelled"
-msgstr ""
+msgstr "تمّ إلغاء تراكب التسجيلة"
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.success_overlay
 msgctxt "staff.cat.z3950.spawn_marc_editor_for_overlay.success_overlay"
 msgid "Record successfully overlaid."
-msgstr ""
+msgstr "تمّ التراكب بنجاح لـِ التسجيلة."
 
 #: staff.cat.z3950.spawn_marc_editor_for_overlay.overlay_error
 msgid "Record not likely overlaid."
-msgstr ""
+msgstr "مِن المحتمل لم يتم تراكب التسجيلة."
 
 #: staff.cat.z3950.load_creds.z3950_cred_error
 msgid "Error retrieving stored z39.50 credentials"
-msgstr ""
+msgstr "خطأ في استرداد البيانات المُخزنة لـِ اعتمادات z39.50"
 
 #: staff.cat.z3950.save_creds.z3950_cred_error
 msgid "Problem storing z39.50 credentials."
-msgstr ""
+msgstr "مشكلة في تخزين بيانات الاعتماد لـِ  Z39.50."
+
+#: staff.cat.bib_brief.title.label
+msgid "Title:"
+msgstr "العنوان:"
+
+#: staff.cat.bib_brief.author.label
+msgid "Author:"
+msgstr "المؤلف:"
+
+#: staff.cat.bib_brief.edition.label
+msgid "Edition:"
+msgstr "الطبعة:"
+
+#: staff.cat.bib_brief.pubdate.label
+msgid "Pub Date:"
+msgstr "تاريخ النشر:"
+
+#: staff.cat.bib_brief.bib_call_number.label
+msgid "Bib Call #:"
+msgstr "الاستدعاء الببليوغرافي #:"
+
+#: staff.cat.bib_brief.call_number.label
+msgid "Item Call #:"
+msgstr "استدعاء النُسخة #:"
+
+#: staff.cat.bib_brief.tcn.label
+msgid "TCN:"
+msgstr "رقم التحكم بالنقل:"
+
+#: staff.cat.bib_brief.mvr_doc_id.label
+msgid "Bib DB ID:"
+msgstr "مُعرف قاعدة البيانات الببليوغرافية:"
+
+#: staff.cat.bib_brief.owner.label
+msgid "Record Owner:"
+msgstr "مالك التسجيلة:"
+
+#: staff.cat.bib_brief.creator.label
+msgid "Created By:"
+msgstr "تم الإنشاء بوساطة:"
+
+#: staff.cat.bib_brief.create_date.label
+msgid "Created On:"
+msgstr "تمّ الإنشاء في:"
+
+#: staff.cat.bib_brief.editor.label
+msgid "Last Edited By:"
+msgstr "تم إدخال آخر تعديل بوساطة:"
+
+#: staff.cat.bib_brief.edit_date.label
+msgid "Last Edited On:"
+msgstr "أحدث تعديل في:"
+
+#: staff.cat.bib_brief.holds.label
+msgid "Holds:"
+msgstr "الحجوزات:"
+
+#: staff.cat.bib_brief.items.label
+msgid "Items:"
+msgstr "النُسخ:"
+
+#: staff.cat.bib_brief.items.available.tooltip
+msgid "%1$s available"
+msgstr "%1$s مُتاحة"

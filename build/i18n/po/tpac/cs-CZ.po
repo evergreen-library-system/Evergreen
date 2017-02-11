@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2016-08-25 22:33+0000\n"
-"PO-Revision-Date: 2016-09-07 11:32+0000\n"
+"PO-Revision-Date: 2017-01-31 13:07+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2016-09-08 05:55+0000\n"
-"X-Generator: Launchpad (build 18179)\n"
+"X-Launchpad-Export-Date: 2017-02-02 05:31+0000\n"
+"X-Generator: Launchpad (build 18315)\n"
 
 #: ../../Open-ILS/src/templates/opac/register.tt2:63
 msgid ""
@@ -327,7 +327,7 @@ msgstr "Další  autor"
 
 #: ../../Open-ILS/src/templates/opac/parts/record/extras.tt2:23
 msgid "Additional Content"
-msgstr "Doplňkový obsah"
+msgstr "Doplňující informace k obsahu"
 
 #: ../../Open-ILS/src/templates/opac/parts/record/issues-mfhd.tt2:4
 msgid "Additional Index Information"
@@ -551,7 +551,7 @@ msgstr "Srpen"
 
 #: ../../Open-ILS/src/templates/opac/css/style.css.tt2:2072 ../../Open-ILS/src/templates/opac/css/style.css.tt2:2080 ../../Open-ILS/src/templates/opac/css/style.css.tt2:2089 ../../Open-ILS/src/templates/opac/css/style.css.tt2:2097 ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:93 ../../Open-ILS/src/templates/opac/myopac/circs.tt2:70 ../../Open-ILS/src/templates/opac/myopac/hold_history.tt2:59 ../../Open-ILS/src/templates/opac/myopac/holds.tt2:109 ../../Open-ILS/src/templates/opac/myopac/main.tt2:29 ../../Open-ILS/src/templates/opac/parts/qtype_selector.tt2:1 ../../Open-ILS/src/templates/opac/parts/record/authors.tt2:1 ../../Open-ILS/src/templates/opac/parts/relators.tt2:1
 msgid "Author"
-msgstr "Autor:"
+msgstr "Autor"
 
 #: ../../Open-ILS/src/templates/opac/parts/record/addedcontent.tt2:3
 msgid "Author Notes"
@@ -808,7 +808,7 @@ msgstr "Signatura"
 
 #: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:171
 msgid "Call number:"
-msgstr "Signatura"
+msgstr "Signatura:"
 
 #: ../../Open-ILS/src/templates/opac/parts/relators.tt2:1
 msgid "Calligrapher"
@@ -1053,7 +1053,7 @@ msgstr "Obsahuje frázi"
 
 #: ../../Open-ILS/src/templates/opac/parts/record/contents.tt2:199
 msgid "Content descriptions"
-msgstr "Popisy obsahu"
+msgstr "Údaje o obsahu"
 
 #: ../../Open-ILS/src/templates/opac/parts/relators.tt2:1
 msgid "Contestant"
@@ -1474,7 +1474,7 @@ msgstr "Elektronický zdroj"
 
 #: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:106 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:130
 msgid "Electronic resources"
-msgstr "Dostupné elektronické zdroje"
+msgstr "Dostupné elektronické zdroje:"
 
 #: ../../Open-ILS/src/templates/opac/parts/relators.tt2:1
 msgid "Electrotyper"
@@ -1822,7 +1822,7 @@ msgstr "Grafický technik"
 
 #: ../../Open-ILS/src/templates/opac/parts/advanced/search.tt2:139 ../../Open-ILS/src/templates/opac/results.tt2:90
 msgid "Group Formats and Editions"
-msgstr "Seskupit nosiče a vydání"
+msgstr "Seskupit stejné tituly"
 
 #: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:232
 msgid "HTML View"
@@ -1886,7 +1886,7 @@ msgstr "Lze rezervovat?"
 #. (serial.location)
 #: ../../Open-ILS/src/templates/opac/parts/record/issues-mfhd.tt2:23
 msgid "Holdings summary (%1)"
-msgstr "Přehled exwmplářů (%1)"
+msgstr "Souhrn dostupných čísel (%1)"
 
 #: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:3
 msgid "Holds"
@@ -1922,7 +1922,7 @@ msgstr "Hosticí instituce"
 
 #: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:358
 msgid "I have checked this item out before"
-msgstr "Tuto knihovní jednotku jsem si vypůjčil(a) již dříve"
+msgstr "Tento titul jsem již  měl(a) vyůjčený"
 
 #: ../../Open-ILS/src/templates/opac/parts/advanced/numeric.tt2:11
 msgid "ISBN"
@@ -2783,7 +2783,7 @@ msgstr "Poznámka ke zvláštnostem číslování "
 
 #: ../../Open-ILS/src/templates/opac/advanced.tt2:27 ../../Open-ILS/src/templates/opac/parts/advanced/numeric.tt2:2
 msgid "Numeric Search"
-msgstr "Numerické vyhledávání"
+msgstr "Hledání podle identifikátorů"
 
 #: ../../Open-ILS/src/templates/opac/temp_warn.tt2:22
 msgid "OK"
@@ -4595,11 +4595,11 @@ msgstr "Hlasový herec"
 
 #: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:159
 msgid "Volume hold"
-msgstr "Rezervace svazku"
+msgstr "Rezervace signatury"
 
 #: ../../Open-ILS/src/templates/opac/parts/record/issues-mfhd.tt2:4
 msgid "Volumes"
-msgstr "Svazky"
+msgstr "Ročníky"
 
 #: ../../Open-ILS/src/templates/opac/parts/hold_status.tt2:49
 msgid "Waiting for copy"
@@ -4781,7 +4781,7 @@ msgstr "Vaše heslo nebylo správné"
 #. (ctx.user.email)
 #: ../../Open-ILS/src/templates/opac/record/email.tt2:12
 msgid "Your email has been queued for delivery to %1"
-msgstr "Váš e-mail byl zařazen k odeslání na adresu   %1"
+msgstr "Váš e-mail byl zařazen do fronty a bude brzy odeslán na adresu   %1"
 
 #. (fmt_expire_date)
 #: ../../Open-ILS/src/templates/opac/parts/myopac/main_base.tt2:37

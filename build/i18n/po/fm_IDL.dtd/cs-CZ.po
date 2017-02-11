@@ -4,14 +4,14 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
 "POT-Creation-Date: 2016-08-25 17:08-0400\n"
-"PO-Revision-Date: 2016-09-08 10:15+0000\n"
+"PO-Revision-Date: 2017-01-10 12:32+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2016-09-09 05:56+0000\n"
-"X-Generator: Launchpad (build 18184)\n"
+"X-Launchpad-Export-Date: 2017-01-11 05:34+0000\n"
+"X-Generator: Launchpad (build 18302)\n"
 "X-Accelerator-Marker: &\n"
 
 #: class.stgu.label:9550
@@ -2307,7 +2307,7 @@ msgstr "Přehled finančních fondů"
 #: class.acn.label:2933 field.sunit.call_number.label:5136
 #: field.acp.call_number.label:6772
 msgid "Call Number/Volume"
-msgstr "Signatura / svazek"
+msgstr "Signatura"
 
 #: field.uvsbrem.session.label:10311 field.uvus.session.label:10337
 #: field.uvu.session.label:10376 field.uvva.session.label:10430
@@ -3416,7 +3416,7 @@ msgstr "Půjčující knihovna"
 
 #: field.acn.id.label:2941
 msgid "Call Number/Volume ID"
-msgstr "ID signatury / svazku"
+msgstr "Signatura/ ID signatury"
 
 #: field.qfr.join_type.label:9887
 msgid "Join Type"
@@ -4874,7 +4874,7 @@ msgstr "Domovská knihovna uživatele"
 
 #: field.ccvm.composite_def.label:1140
 msgid "Composite Definition"
-msgstr "Kombinovaná definice"
+msgstr "Sdružená definice"
 
 #: class.aun.label:2245
 msgid "User Note"
@@ -5800,7 +5800,7 @@ msgstr "Exemplář"
 
 #: field.aout.can_have_vols.label:6417
 msgid "Can Have Volumes?"
-msgstr "Může mít svazky"
+msgstr "Může mít signatury?"
 
 #: field.rocit.stop_fines.label:11245
 msgid "Stop Fines Reason"
@@ -6409,7 +6409,7 @@ msgstr "Cílový exemplář"
 #: field.vii.import_error.label:366 field.vqbr.import_error.label:513
 #: field.vqar.import_error.label:633
 msgid "Import Error"
-msgstr "Chyba importu"
+msgstr "Chyba při importu"
 
 #: field.ateo.is_error.label:1264
 msgid "Is Error"
@@ -6976,7 +6976,7 @@ msgstr "Přednastavená cena"
 
 #: class.acns.label:2895
 msgid "Call Number/Volume Suffix"
-msgstr "Sufix signatury / svazku"
+msgstr "Signatura / Sufix signatury"
 
 #: field.uvuv.redirect_to.label:10474
 msgid "Redirected To"
@@ -7427,7 +7427,7 @@ msgstr "Poznámka ke skupině exemplářů"
 
 #: field.sunit.copy_number.label:5141 field.acp.copy_number.label:6777
 msgid "Copy Number on Volume"
-msgstr "Číslo exempláře na svazku"
+msgstr "Číslo exempláře v signatuře"
 
 #: field.mbts.last_payment_type.label:2158
 #: field.mbtslv.last_payment_type.label:2186
@@ -7744,7 +7744,7 @@ msgstr "Připojené zastaralé výpůjčky"
 
 #: field.acqlia.order_ident.label:8780
 msgid "Order Identifier"
-msgstr "Starší identifikátor"
+msgstr "Identifikátor objednávky"
 
 #: field.mrd.bib_level.label:3819
 msgid "BLvl"
@@ -8310,7 +8310,7 @@ msgstr "Nadřazený výraz"
 
 #: class.acnp.label:2914
 msgid "Call Number/Volume Prefix"
-msgstr "Signatura / Prefix svazku"
+msgstr "Signatura / Prefix signatury"
 
 #: field.cmfpm.start_pos.label:10200 field.cmpcsm.start_pos.label:10230
 msgid "Start Postion"
@@ -8486,7 +8486,7 @@ msgstr "Existuje výraz"
 
 #: field.aur.volume.label:7570
 msgid "Volume"
-msgstr "Svazek"
+msgstr "Signatura"
 
 #: field.siss.edit_date.label:5097 field.sitem.edit_date.label:5208
 #: field.act.edit_date.label:6865 field.rocit.edit_date.label:11231

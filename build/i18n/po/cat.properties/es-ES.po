@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2016-08-25 17:09-0400\n"
-"PO-Revision-Date: 2016-06-07 21:11+0000\n"
+"PO-Revision-Date: 2016-10-20 13:10+0000\n"
 "Last-Translator: Anahi Valdez <avaldez@emeralddata.net>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2016-08-26 05:18+0000\n"
-"X-Generator: Launchpad (build 18179)\n"
+"X-Launchpad-Export-Date: 2016-10-21 05:49+0000\n"
+"X-Generator: Launchpad (build 18246)\n"
 
 #: bib.no_marc
 msgid "No MARC Record"
@@ -948,7 +948,7 @@ msgstr "Precio"
 
 #: staff.cat.copy_editor.field.cost.label
 msgid "Acquisition Cost"
-msgstr ""
+msgstr "Coste de Adquisición"
 
 #: staff.cat.copy_editor.field.opac_visible.label
 msgid "OPAC Visible?"

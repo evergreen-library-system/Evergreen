@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2015-02-27 11:41-0400\n"
-"PO-Revision-Date: 2012-05-01 20:05+0000\n"
-"Last-Translator: Warren Layton <Unknown>\n"
+"PO-Revision-Date: 2017-01-13 03:48+0000\n"
+"Last-Translator: Darrell Rodgers <drodgers@emeralddata.net>\n"
 "Language-Team: English (Canada) <en_CA@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2015-08-07 05:45+0000\n"
-"X-Generator: Launchpad (build 17656)\n"
+"X-Launchpad-Export-Date: 2017-01-14 05:31+0000\n"
+"X-Generator: Launchpad (build 18302)\n"
 
 #: staff.serial.editor_base.handle_update.error
 msgid "serial update error:"
@@ -319,27 +319,27 @@ msgstr "Notes (Item/Dist/Sub)"
 
 #: staff.serial.manage_items.set_claimed_success
 msgid "Successfully claimed %1$s item(s)"
-msgstr ""
+msgstr "Successfully claimed %1$s item(s)"
 
 #: staff.serial.manage_items.set_not_held_success
 msgid "Successfully set %1$s item(s) to 'Not Held'"
-msgstr ""
+msgstr "Successfully set %1$s item(s) to 'Not Held'"
 
 #: staff.serial.manage_items.set_not_published_success
 msgid "Successfully set %1$s item(s) to 'Not Published'"
-msgstr ""
+msgstr "Successfully set %1$s item(s) to 'Not Published'"
 
 #: staff.serial.manage_items.alert_notes.title
 msgid "Serial Alerts"
-msgstr ""
+msgstr "Serial Alerts"
 
 #: staff.serial.manage_items.alert_button.label
 msgid "1 Alert"
-msgstr ""
+msgstr "1 Alert"
 
 #: staff.serial.manage_items.alert_button.plural.label
 msgid "%1s Alerts"
-msgstr ""
+msgstr "%1s Alerts"
 
 #: staff.serial.manage_subs.add.error
 msgid "error adding object in manage_subs.js:"
@@ -526,7 +526,7 @@ msgstr "Print Routing List"
 
 #: batch_receive.unit_barcode_collision
 msgid "Serial unit barcode '%1$s' collides with an existing barcode."
-msgstr ""
+msgstr "Serial unit barcode '%1$s' collides with an existing barcode."
 
 #: pattern_wizard.enumeration.a
 msgctxt "pattern_wizard.enumeration.a"

@@ -3,14 +3,14 @@ msgstr ""
 "Project-Id-Version: Evergeen 1.4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-02-27 11:41-0400\n"
-"PO-Revision-Date: 2016-09-05 10:01+0000\n"
+"PO-Revision-Date: 2016-12-13 12:57+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <petrkubiska@seznam.cz>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2016-09-06 05:58+0000\n"
-"X-Generator: Launchpad (build 18179)\n"
+"X-Launchpad-Export-Date: 2016-12-14 05:04+0000\n"
+"X-Generator: Launchpad (build 18293)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: Czech\n"
@@ -143,7 +143,7 @@ msgstr "Smazat"
 #: cat.opac.undelete_record.confirm
 msgid ""
 "Are you sure you want to undelete title record #%1$s from the catalog?"
-msgstr "Opravdu chcete obnovirt záznam titulu #%1$s z katalogu?"
+msgstr "Opravdu chcete obnovit záznam titulu #%1$s z katalogu?"
 
 #: cat.opac.undelete_record
 msgid "Undelete Record"
@@ -425,7 +425,7 @@ msgstr "Skupiny exemplářů"
 
 #: menu.cmd_edit_volume_buckets.tab
 msgid "Volume Buckets"
-msgstr "Skupiny svazků"
+msgstr "Skupiny  signatur"
 
 #: menu.cmd_edit_record_buckets.tab
 msgid "Record Buckets"
@@ -1252,12 +1252,12 @@ msgstr "Zobrazit"
 #: staff.circ.copy_status.add_volumes.perm_failure
 msgid "You do not have permission to add volumes to the workstation library."
 msgstr ""
-"Nemáte oprávnění přidávat  svazky do knihovny, v níž je registrována "
+"Nemáte oprávnění přidávat  signatury do knihovny, v níž je registrována "
 "pracovní stanice."
 
 #: staff.circ.copy_status.add_volumes.title
 msgid "Add Volume/Item for Record # %1$s"
-msgstr "Přidat svazek/exemplář k záznamu číslo %1$s"
+msgstr "Přidat signaturu/exemplář k záznamu číslo %1$s"
 
 #: staff.cat.copy_browser.marked_record_for_multi_home_indicator.tcn.label
 msgid "Record with TCN %1$s targeted for Multi-Bib items."

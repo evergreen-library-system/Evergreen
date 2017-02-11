@@ -1,32 +1,40 @@
+# Arabic translation for evergreen
+# Copyright (c) 2016 Rosetta Contributors and Canonical Ltd 2016
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2016.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2010-06-07 02:03:45-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Project-Id-Version: evergreen\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2015-02-27 11:41-0400\n"
+"PO-Revision-Date: 2016-12-26 21:36+0000\n"
+"Last-Translator: fares othman <Unknown>\n"
+"Language-Team: Arabic <ar@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.7.0\n"
+"X-Launchpad-Export-Date: 2016-12-27 04:39+0000\n"
+"X-Generator: Launchpad (build 18298)\n"
 
 #: XULTermLoader.js:LABEL_TEXT
 msgid " term(s) loaded"
-msgstr ""
+msgstr " تمّ تحميل المصطلحات"
 
 #: XULTermLoader.js:BUTTON_TEXT
 msgid "Load more terms"
-msgstr ""
+msgstr "قم بتحميل المزيد من المصطلحات"
 
 #: XULTermLoader.js:TERM_LIMIT
 msgid "You have already loaded the maximum number of terms."
-msgstr ""
+msgstr "لقد تجاوزت الحد الأقصى لعدد المصطلحات المسموح به"
 
 #: XULTermLoader.js:TERM_LIMIT_SOME
-msgid "Could not load all terms from the file without exceeding maximum number of terms. Some data not included."
-msgstr ""
+msgid ""
+"Could not load all terms from the file without exceeding maximum number of "
+"terms. Some data not included."
+msgstr "فشل في تحميل كل المصطلحات من ملف. بعض البيانات غير متضمنة"
 
 #: XULTermLoader.js:CHOOSE_FILE
 msgid "Choose a file from which to read search terms."
-msgstr ""
+msgstr "اختر ملف ليتم تحميل المصطلحات منه"

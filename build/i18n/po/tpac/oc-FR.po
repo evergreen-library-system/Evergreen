@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2016-08-25 22:33+0000\n"
-"PO-Revision-Date: 2012-11-02 18:08+0000\n"
+"PO-Revision-Date: 2016-10-04 14:23+0000\n"
 "Last-Translator: Cédric VALMARY (Tot en òc) <cvalmary@yahoo.fr>\n"
 "Language-Team: Occitan (post 1500) <oc@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2016-08-26 05:27+0000\n"
-"X-Generator: Launchpad (build 18179)\n"
+"X-Launchpad-Export-Date: 2016-10-05 05:48+0000\n"
+"X-Generator: Launchpad (build 18217)\n"
 
 #: ../../Open-ILS/src/templates/opac/register.tt2:63
 msgid ""
@@ -31,7 +31,7 @@ msgstr ""
 #. (copyright_clean)
 #: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:147
 msgid " (%1)"
-msgstr ""
+msgstr " (%1)"
 
 #: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:159
 msgid " / "
@@ -39,7 +39,7 @@ msgstr " / "
 
 #: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:126
 msgid " edit"
-msgstr ""
+msgstr " modificar"
 
 #. ("<b>' _ bad_user _ '</b>")
 #: ../../Open-ILS/src/templates/opac/myopac/update_username.tt2:15
@@ -73,7 +73,7 @@ msgstr ""
 #. (ctx.page_title, libname)
 #: ../../Open-ILS/src/templates/opac/parts/base.tt2:21
 msgid "%1 - %2"
-msgstr ""
+msgstr "%1 - %2"
 
 #. (libname)
 #: ../../Open-ILS/src/templates/opac/parts/base.tt2:23
@@ -114,12 +114,12 @@ msgstr ""
 #. (ctx.user_stats.messages.unread)
 #: ../../Open-ILS/src/templates/opac/parts/base.tt2:17
 msgid "(%1)"
-msgstr ""
+msgstr "(%1)"
 
 #. (example)
 #: ../../Open-ILS/src/templates/opac/register.tt2:167
 msgid "(Example: %1)"
-msgstr ""
+msgstr "(Exemple: %1)"
 
 #: ../../Open-ILS/src/templates/opac/parts/record/copy_counts.tt2:46
 msgid "(Show preferred library)"
@@ -133,7 +133,7 @@ msgstr "(Far veire)"
 #. ("<strong>' _ i18n_searchtrunc _ '</strong>")
 #: ../../Open-ILS/src/templates/opac/parts/result/lowhits.tt2:41 ../../Open-ILS/src/templates/opac/parts/result/lowhits.tt2:48
 msgid "(example: %1)"
-msgstr ""
+msgstr "(exemple: %1)"
 
 #. ("<strong>&quot;^' _ i18n_searchbegins _ '&quot;</strong>", "<em>' _ i18n_searchbegins _ '</em>", "<strong>&quot;' _ i18n_searchends _ '$&quot;</strong>", "<em>' _ i18n_searchends _ '</em>")
 #: ../../Open-ILS/src/templates/opac/parts/result/lowhits.tt2:56
@@ -153,11 +153,11 @@ msgstr "(pas afichat)"
 #. ("<span class=\"result_count_number\">' _ (page + 1) _ '</span>", "<span class=\"result_count_number\">' _ page_count _ '</span>")
 #: ../../Open-ILS/src/templates/opac/parts/result/paginate.tt2:14
 msgid "(page %1 of %2)"
-msgstr ""
+msgstr "(pagina %1 de %2)"
 
 #: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:115
 msgid "- All Parts -"
-msgstr "- Totsa las partidas -"
+msgstr "- Totas las partidas -"
 
 #: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:321 ../../Open-ILS/src/templates/opac/parts/anon_list.tt2:31
 msgid "-- Actions for these items --"
@@ -265,7 +265,7 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:94
 msgid "Active Barcode"
-msgstr "Còda de barras actiu"
+msgstr "Còdi de barras actiu"
 
 #: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:45
 msgid "Active/Create Date"
@@ -277,11 +277,11 @@ msgstr "Actiu ?"
 
 #: ../../Open-ILS/src/templates/opac/parts/relators.tt2:1
 msgid "Actor"
-msgstr ""
+msgstr "Actor"
 
 #: ../../Open-ILS/src/templates/opac/parts/relators.tt2:1
 msgid "Adapter"
-msgstr ""
+msgstr "Adaptador"
 
 #. (attrs.title)
 #: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:393
@@ -351,7 +351,7 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/relators.tt2:1
 msgid "Addressee"
-msgstr ""
+msgstr "Destinatari"
 
 #: ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:126 ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:129
 msgid "Addresses"
@@ -359,11 +359,11 @@ msgstr "Adreças"
 
 #: ../../Open-ILS/src/templates/opac/parts/result/lowhits.tt2:37
 msgid "Adjacency"
-msgstr ""
+msgstr "Proximitat"
 
 #: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:25
 msgid "Advanced"
-msgstr ""
+msgstr "Avançat"
 
 #: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:133
 msgid "Advanced Hold Options"
@@ -423,11 +423,11 @@ msgstr "E"
 
 #: ../../Open-ILS/src/templates/opac/parts/relators.tt2:1
 msgid "Animator"
-msgstr ""
+msgstr "Animator"
 
 #: ../../Open-ILS/src/templates/opac/parts/record/extras.tt2:23
 msgid "Annotation"
-msgstr "Annotacion"
+msgstr "Anotacion"
 
 #: ../../Open-ILS/src/templates/opac/parts/relators.tt2:1
 msgid "Annotator"
@@ -447,7 +447,7 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/relators.tt2:1
 msgid "Applicant"
-msgstr ""
+msgstr "Candidat"
 
 #: ../../Open-ILS/src/templates/opac/myopac/main_payment_form.tt2:181
 msgid "April"
@@ -455,7 +455,7 @@ msgstr "Abril"
 
 #: ../../Open-ILS/src/templates/opac/parts/relators.tt2:1
 msgid "Architect"
-msgstr ""
+msgstr "Arquitècte"
 
 #. (money(ctx.fines.balance_owed))
 #: ../../Open-ILS/src/templates/opac/myopac/main_payment_form.tt2:29
@@ -624,11 +624,11 @@ msgstr "Sòlde degut"
 
 #: ../../Open-ILS/src/templates/opac/css/style.css.tt2:2075 ../../Open-ILS/src/templates/opac/css/style.css.tt2:2084 ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:97 ../../Open-ILS/src/templates/opac/myopac/circs.tt2:73 ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:41
 msgid "Barcode"
-msgstr "Còde de barras"
+msgstr "Còdi de barras"
 
 #: ../../Open-ILS/src/templates/opac/password_reset.tt2:56
 msgid "Barcode:"
-msgstr "Còde de barras :"
+msgstr "Còdi de barras :"
 
 #: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:23
 msgid "Basic"
@@ -769,11 +769,11 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:98
 msgid "Call Number"
-msgstr "Numèro de còta"
+msgstr "Numèro de quòta"
 
 #: ../../Open-ILS/src/templates/opac/parts/advanced/numeric.tt2:13
 msgid "Call Number (Shelf Browse)"
-msgstr "Còta (exploracion de rais)"
+msgstr "Quòta (exploracion de rais)"
 
 #: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:37
 msgid "Call Number / Copy Notes"
@@ -781,15 +781,15 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/cnbrowse.tt2:1 ../../Open-ILS/src/templates/opac/cnbrowse.tt2:10
 msgid "Call Number Browse"
-msgstr "Exploracion de còtas"
+msgstr "Exploracion de quòtas"
 
 #: ../../Open-ILS/src/templates/opac/css/style.css.tt2:2076 ../../Open-ILS/src/templates/opac/css/style.css.tt2:2085 ../../Open-ILS/src/templates/opac/myopac/circs.tt2:74 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:324
 msgid "Call number"
-msgstr "Còta"
+msgstr "Quòta"
 
 #: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:171
 msgid "Call number:"
-msgstr "Còta :"
+msgstr "Quòta :"
 
 #: ../../Open-ILS/src/templates/opac/parts/relators.tt2:1
 msgid "Calligrapher"
@@ -1559,7 +1559,7 @@ msgstr "Exemple : 0026626051"
 
 #: ../../Open-ILS/src/templates/opac/parts/record/addedcontent.tt2:3 ../../Open-ILS/src/templates/opac/parts/record/extras.tt2:23
 msgid "Excerpt"
-msgstr "Extrach"
+msgstr "Extrait"
 
 #: ../../Open-ILS/src/templates/opac/parts/advanced/search.tt2:115 ../../Open-ILS/src/templates/opac/results.tt2:106
 msgid "Exclude Electronic Resources"
@@ -1769,7 +1769,7 @@ msgstr "Validar"
 
 #: ../../Open-ILS/src/templates/opac/myopac/holds/edit.tt2:115 ../../Open-ILS/src/templates/opac/register.tt2:193
 msgid "Go Back"
-msgstr "Tornar en rèire"
+msgstr "Tornar en arrièr"
 
 #: ../../Open-ILS/src/templates/opac/myopac/main_pay.tt2:28
 msgid "Go back to try again or to cancel this payment attempt."
@@ -2042,7 +2042,7 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/config.tt2:1
 msgid "Item Type"
-msgstr "Tipe d’element"
+msgstr "Tipe d'element"
 
 #: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:39
 msgid "Item details and Actions"
@@ -2350,7 +2350,7 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/login/form.tt2:54
 msgid "Log in"
-msgstr "Dobrir la sesilha"
+msgstr "Dobrir la session"
 
 #: ../../Open-ILS/src/templates/opac/password_reset.tt2:29
 msgid "Log in to My Account"
@@ -3053,7 +3053,7 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/footer.tt2:26
 msgid "Powered by"
-msgstr "Produch per"
+msgstr "Produit per"
 
 #: ../../Open-ILS/src/templates/opac/parts/relators.tt2:1
 msgid "Praeses"
@@ -3115,7 +3115,7 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/myopac/main_payments.tt2:46 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:74
 msgid "Print"
-msgstr "Estampar"
+msgstr "Imprimir"
 
 #: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:73
 msgid "Print / Email Actions Image"
@@ -3651,7 +3651,7 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/myopac/main_payment_form.tt2:158
 msgid "Security Code"
-msgstr "Còde de seguretat"
+msgstr "Còdi de seguretat"
 
 #: ../../Open-ILS/src/templates/opac/parts/bookbag_actions.tt2:85
 msgid "See All"

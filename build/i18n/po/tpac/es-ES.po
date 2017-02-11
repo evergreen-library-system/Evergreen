@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2016-08-25 22:33+0000\n"
-"PO-Revision-Date: 2016-08-26 21:13+0000\n"
-"Last-Translator: Anahi Valdez <avaldez@emeralddata.net>\n"
+"PO-Revision-Date: 2017-01-10 05:47+0000\n"
+"Last-Translator: Adam Bowling <abowling@emeralddata.net>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2016-08-27 05:20+0000\n"
-"X-Generator: Launchpad (build 18179)\n"
+"X-Launchpad-Export-Date: 2017-01-11 05:34+0000\n"
+"X-Generator: Launchpad (build 18302)\n"
 
 #: ../../Open-ILS/src/templates/opac/register.tt2:63
 msgid ""
@@ -94,7 +94,7 @@ msgstr "%1 BusquedaAbierta"
 #. (attrs.copy_counts.$depth.available, attrs.copy_counts.$depth.count, ou_name)
 #: ../../Open-ILS/src/templates/opac/parts/record/copy_counts.tt2:22 ../../Open-ILS/src/templates/opac/parts/record/copy_counts.tt2:40 ../../Open-ILS/src/templates/opac/parts/result/copy_counts.tt2:14 ../../Open-ILS/src/templates/opac/parts/result/copy_counts.tt2:33
 msgid "%1 of %quant(%2,copy,copies) available at %3."
-msgstr "%1 de %cuant(%2,copia,copias) disponibles a %3."
+msgstr "%1 de %quant(%2,copia,copias) disponibles a %3."
 
 #: ../../Open-ILS/src/templates/opac/parts/header.tt2:1
 msgid "%m/%d/%Y"
@@ -299,7 +299,7 @@ msgstr "Adaptador"
 #. (attrs.title)
 #: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:393
 msgid "Add %1 to my list"
-msgstr "Añadir 1 % a mi lista"
+msgstr "Añadir %1 a mi lista"
 
 #: ../../Open-ILS/src/templates/opac/parts/advanced/expert.tt2:35 ../../Open-ILS/src/templates/opac/parts/advanced/search.tt2:25
 msgid "Add Search Row"
@@ -493,12 +493,12 @@ msgstr "¿Está seguro que desea eliminar los elementos seleccionados?"
 #: ../../Open-ILS/src/templates/opac/myopac/messages/list.tt2:53
 msgid "Are you sure you wish to permanently delete the selected messsage(s)?"
 msgstr ""
-"¿Está seguro de que desea eliminar permanentemente el messsage(s) "
-"seleccionado ?"
+"¿Está seguro de que desea eliminar permanentemente el mensaje(s) "
+"seleccionado?"
 
 #: ../../Open-ILS/src/templates/opac/myopac/messages/single_message.tt2:16
 msgid "Are you sure you wish to permanently delete this messsage?"
-msgstr "¿Está seguro que desea permanentemente eliminar este messsage ?"
+msgstr "\"¿Está seguro que desea permanentemente eliminar este mensaje?"
 
 #: ../../Open-ILS/src/templates/opac/myopac/circs.tt2:37
 msgid "Are you sure you wish to renew the selected item(s)?"
@@ -1651,7 +1651,7 @@ msgstr "facsímilista"
 #. (ctx.message_update_failed)
 #: ../../Open-ILS/src/templates/opac/myopac/messages/list.tt2:39
 msgid "Failed to delete %1 message(s)."
-msgstr "No se pudo eliminar el 1% mensaje(s)."
+msgstr "No se pudo eliminar el %1 mensaje(s)."
 
 #. (ctx.message_update_failed)
 #: ../../Open-ILS/src/templates/opac/myopac/messages/list.tt2:39
@@ -1764,7 +1764,7 @@ msgstr "Viernes: %1- %2"
 
 #: ../../Open-ILS/src/templates/opac/parts/library/hours.tt2:71
 msgid "Friday: closed"
-msgstr "Viernes: cerado"
+msgstr "Viernes: cerrado"
 
 #: ../../Open-ILS/src/templates/opac/parts/hold_status.tt2:31
 msgid "Fulfilled"
@@ -1813,7 +1813,7 @@ msgstr "Regrese para intentar nuevamente o para cancelar el intento de pago."
 #. (rec_attrs.title)
 #: ../../Open-ILS/src/templates/opac/parts/record/cnbrowse.tt2:38
 msgid "Go to record %1"
-msgstr "Ir al registro 1 %"
+msgstr "Ir al registro %1"
 
 #: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:52
 msgid "Go to..."
@@ -2472,12 +2472,12 @@ msgstr "Marcar como no leido"
 #. (ctx.message_update_changed)
 #: ../../Open-ILS/src/templates/opac/myopac/messages/list.tt2:27
 msgid "Marked %1  message(s) as unread."
-msgstr "Marcado mensaje(s) 1% como no leído ."
+msgstr "Marcado mensaje(s) %1 como no leído."
 
 #. (ctx.message_update_changed)
 #: ../../Open-ILS/src/templates/opac/myopac/messages/list.tt2:27
 msgid "Marked %1 message(s) as read."
-msgstr "Marcado mensaje(s) 1 % leido."
+msgstr "Marcado mensaje(s) %1 leido."
 
 #: ../../Open-ILS/src/templates/opac/parts/relators.tt2:1
 msgid "Markup editor"
@@ -2546,7 +2546,7 @@ msgstr "Moderador"
 #. ("<time property=\"opens\" content=\"' _ date.format(open, { 'format' => '%H:%M:%S' }) _ '\">' _ date.format(open) _ '</time>", "<time property=\"closes\" content=\"' _ date.format(close, { 'format' => '%H:%M:%S' }) _ '\">' _ date.format(close) _ '</time>")
 #: ../../Open-ILS/src/templates/opac/parts/library/hours.tt2:21
 msgid "Monday: %1 - %2"
-msgstr "Lunes: 1% - 2%"
+msgstr "Lunes: %1 - %2"
 
 #: ../../Open-ILS/src/templates/opac/parts/library/hours.tt2:19
 msgid "Monday: closed"
@@ -3023,7 +3023,7 @@ msgstr "Ubicación de Recolección"
 
 #: ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:113
 msgid "Pickup holds from behind the desk when possible?"
-msgstr "Recoger mantiene desde detrás del mostrador cuando sea posible ?"
+msgstr "¿Recoger mantiene desde detrás del mostrador cuando sea posible?"
 
 #: ../../Open-ILS/src/templates/opac/myopac/holds/edit.tt2:49
 msgid "Pickup library"
@@ -3040,7 +3040,7 @@ msgstr "Crear Apartado"
 #. (attrs.title)
 #: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:54 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:383
 msgid "Place Hold on %1"
-msgstr "Hacer reserva en 1 %"
+msgstr "Hacer reserva en %1"
 
 #: ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:146
 msgid "Place another hold for this "
@@ -3138,15 +3138,15 @@ msgstr "Cita preferida de materiales descritos "
 #. ("<span class=\"bold\">' _ ctx.get_aou(ctx.pref_ou).name _ '</span>")
 #: ../../Open-ILS/src/templates/opac/parts/pref_lib_display.tt2:2
 msgid "Preferred library: %1"
-msgstr "biblioteca preferida : 1 %"
+msgstr "Biblioteca preferida: %1"
 
 #: ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:68
 msgid "Preferred pickup location"
-msgstr "lugar de recogida preferido"
+msgstr "Lugar de recogida preferido"
 
 #: ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:55
 msgid "Preferred search location"
-msgstr "ubicación de búsqueda preferido"
+msgstr "Ubicación de búsqueda preferido"
 
 #: ../../Open-ILS/src/templates/opac/parts/relators.tt2:1
 msgid "Presenter"
@@ -3396,7 +3396,7 @@ msgstr "Fuente Normal"
 #. (attrs.title)
 #: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:393
 msgid "Remove %1 from my list"
-msgstr "Eliminar% 1 de mi lista"
+msgstr "Eliminar %1 de mi lista"
 
 #: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:189
 msgid "Remove Default List"
@@ -3538,7 +3538,7 @@ msgstr "Los comentarios de los amp; Más"
 #. (attrs.title)
 #: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:413
 msgid "Reviews and More for %1"
-msgstr "Los comentarios y más de 1 %"
+msgstr "Los comentarios y más de %1"
 
 #: ../../Open-ILS/src/templates/opac/parts/relators.tt2:1
 msgid "Rubricator"
@@ -3551,7 +3551,7 @@ msgstr "Los mensajes de texto no estan habilitados para este sitio."
 #. ("<time property=\"opens\" content=\"' _ date.format(open, { 'format' => '%H:%M:%S' }) _ '\">' _ date.format(open) _ '</time>", "<time property=\"closes\" content=\"' _ date.format(close, { 'format' => '%H:%M:%S' }) _ '\">' _ date.format(close) _ '</time>")
 #: ../../Open-ILS/src/templates/opac/parts/library/hours.tt2:86
 msgid "Saturday: %1 - %2"
-msgstr "Sábado: % 1 - 2 %"
+msgstr "Sábado: %1 - %2"
 
 #: ../../Open-ILS/src/templates/opac/parts/library/hours.tt2:84
 msgid "Saturday: closed"
@@ -3776,7 +3776,7 @@ msgstr "Seleccione una página de la cuenta"
 #. (attrs.title)
 #: ../../Open-ILS/src/templates/opac/myopac/holds.tt2:176
 msgid "Select hold %1"
-msgstr "Seleccione Espera 1 %"
+msgstr "Seleccione Espera %1"
 
 #: ../../Open-ILS/src/templates/opac/browse.tt2:41
 msgid "Select holding library"
@@ -3789,7 +3789,7 @@ msgstr "Seleccionar tipo de ejemplar:"
 #. (message.title)
 #: ../../Open-ILS/src/templates/opac/myopac/messages/list.tt2:101
 msgid "Select message %1"
-msgstr "Seleccione el mensaje % 1"
+msgstr "Seleccione el mensaje %1"
 
 #: ../../Open-ILS/src/templates/opac/parts/qtype_selector.tt2:10
 msgid "Select query type:"
@@ -3896,7 +3896,7 @@ msgstr "Ubicación de estantería"
 #. (facet.cmf.label)
 #: ../../Open-ILS/src/templates/opac/parts/result/facets.tt2:71
 msgid "Show Fewer %1 Entries"
-msgstr "Mostrar menos entradas 1 %"
+msgstr "Mostrar menos entradas %1"
 
 #: ../../Open-ILS/src/templates/opac/results.tt2:73
 msgid "Show Fewer Details"
@@ -3905,7 +3905,7 @@ msgstr "Mostrar menos detalles"
 #. (facet.cmf.label)
 #: ../../Open-ILS/src/templates/opac/parts/result/facets.tt2:76
 msgid "Show More %1 Entries"
-msgstr "Mostrar mas entradas 1 %"
+msgstr "Mostrar mas entradas %1"
 
 #: ../../Open-ILS/src/templates/opac/results.tt2:74
 msgid "Show More Details"
@@ -3972,23 +3972,24 @@ msgstr "Cantante"
 
 #: ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:103
 msgid "Skip warning when adding to temporary book list?"
-msgstr "Omitir la advertencia cuando se añade a la lista de libros temporal?"
+msgstr ""
+"¿Omitir la advertencia cuando se añade a la lista de libros temporal?"
 
 #. ("<q>' _ qhtml _ '</q>", fmt_bookbag)
 #: ../../Open-ILS/src/templates/opac/parts/result/lowhits.tt2:7
 msgid "Sorry, no entries were found for %1 within %2."
-msgstr "Lo sentimos, no se encontraron entradas para% 1 dentro de % 2."
+msgstr "Lo sentimos, no se encontraron entradas para%1 dentro de %2."
 
 #. ("<q>' _ qhtml _ '</q>")
 #: ../../Open-ILS/src/templates/opac/parts/result/lowhits.tt2:7
 msgid "Sorry, no entries were found for %1."
-msgstr "Lo sentimos , no se encontraron entradas para el 1 %"
+msgstr "Lo sentimos, no se encontraron entradas para el %1"
 
 #. (fmt_bookbag)
 #: ../../Open-ILS/src/templates/opac/parts/result/lowhits.tt2:7
 msgid "Sorry, no entries were found for your search within %1."
 msgstr ""
-"Lo sentimos , no se encontraron entradas para su búsqueda dentro de 1 % ."
+"Lo sentimos, no se encontraron entradas para su búsqueda dentro de %1."
 
 #: ../../Open-ILS/src/templates/opac/parts/result/lowhits.tt2:7
 msgid "Sorry, no entries were found for your search."
@@ -4020,7 +4021,7 @@ msgstr "Ordenar por fecha de publicación"
 
 #: ../../Open-ILS/src/templates/opac/parts/filtersort.tt2:4
 msgid "Sort by Relevance"
-msgstr "Ordenar por reelevancia"
+msgstr "Ordenar por relevancia"
 
 #: ../../Open-ILS/src/templates/opac/parts/filtersort.tt2:5
 msgid "Sort by Title"
@@ -4154,7 +4155,7 @@ msgstr "Resumen: "
 #. ("<time property=\"opens\" content=\"' _ date.format(open, { 'format' => '%H:%M:%S' }) _ '\">' _ date.format(open) _ '</time>", "<time property=\"closes\" content=\"' _ date.format(close, { 'format' => '%H:%M:%S' }) _ '\">' _ date.format(close) _ '</time>")
 #: ../../Open-ILS/src/templates/opac/parts/library/hours.tt2:99
 msgid "Sunday: %1 - %2"
-msgstr "Domingo: 1 % - 2 %"
+msgstr "Domingo: %1 - %2"
 
 #: ../../Open-ILS/src/templates/opac/parts/library/hours.tt2:97
 msgid "Sunday: closed"
@@ -4372,7 +4373,7 @@ msgstr "Este campo es requerido"
 #. (rec.mr_constituent_count)
 #: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:93
 msgid "This group contains %1 records"
-msgstr "Este grupo contiene % 1 registros"
+msgstr "Este grupo contiene %1 registros"
 
 #: ../../Open-ILS/src/templates/opac/temp_warn.tt2:11
 msgid ""
@@ -4418,7 +4419,7 @@ msgstr ""
 #. ("<time property=\"opens\" content=\"' _ date.format(open, { 'format' => '%H:%M:%S' }) _ '\">' _ date.format(open) _ '</time>", "<time property=\"closes\" content=\"' _ date.format(close, { 'format' => '%H:%M:%S' }) _ '\">' _ date.format(close) _ '</time>")
 #: ../../Open-ILS/src/templates/opac/parts/library/hours.tt2:60
 msgid "Thursday: %1 - %2"
-msgstr "Jueves: % 1 - 2 %"
+msgstr "Jueves: %1 - %2"
 
 #: ../../Open-ILS/src/templates/opac/parts/library/hours.tt2:58
 msgid "Thursday: closed"
@@ -4504,7 +4505,7 @@ msgstr "Martes: %1- %2"
 
 #: ../../Open-ILS/src/templates/opac/parts/library/hours.tt2:32
 msgid "Tuesday: closed"
-msgstr "Martes: Cerrado"
+msgstr "Martes: cerrado"
 
 #: ../../Open-ILS/src/templates/opac/parts/relators.tt2:1
 msgid "Type designer"
@@ -4597,7 +4598,7 @@ msgstr "Ver Mi Lista"
 #. (mr_attrs.title)
 #: ../../Open-ILS/src/templates/opac/results.tt2:35
 msgid "Viewing Results for Grouped Record: %1"
-msgstr "Visualización de los resultados agrupados de registro :% 1"
+msgstr "Visualización de los resultados agrupados de registro : %1"
 
 #: ../../Open-ILS/src/templates/opac/parts/login/help.tt2:8
 msgid ""
@@ -4630,15 +4631,15 @@ msgstr "Esperando copia"
 #. ("<time property=\"opens\" content=\"' _ date.format(open, { 'format' => '%H:%M:%S' }) _ '\">' _ date.format(open) _ '</time>", "<time property=\"closes\" content=\"' _ date.format(close, { 'format' => '%H:%M:%S' }) _ '\">' _ date.format(close) _ '</time>")
 #: ../../Open-ILS/src/templates/opac/parts/library/hours.tt2:47
 msgid "Wednesday: %1 - %2"
-msgstr "Miércoles: % 1 - 2 %"
+msgstr "Miércoles: %1 - %2"
 
 #: ../../Open-ILS/src/templates/opac/parts/library/hours.tt2:45
 msgid "Wednesday: closed"
-msgstr "Miércoles: Cerrado"
+msgstr "Miércoles: cerrado"
 
 #: ../../Open-ILS/src/templates/opac/parts/record/contents.tt2:1
 msgid "With Note: "
-msgstr "con la nota "
+msgstr "Con la nota: "
 
 #: ../../Open-ILS/src/templates/opac/parts/relators.tt2:1
 msgid "Witness"
@@ -4778,7 +4779,7 @@ msgid ""
 "address %1"
 msgstr ""
 "Su cuenta no tiene actualmente un conjunto de direcciones de correo "
-"electrónico. Configurar su dirección de correo% ."
+"electrónico. Configurar su dirección de correo %1"
 
 #: ../../Open-ILS/src/templates/opac/browse.tt2:91
 msgid ""
@@ -4804,7 +4805,7 @@ msgstr "Tú contraseña actual no coincide"
 #. (ctx.user.email)
 #: ../../Open-ILS/src/templates/opac/record/email.tt2:12
 msgid "Your email has been queued for delivery to %1"
-msgstr "Su correo electrónico ha puesto en linea para su entrega al 1 %"
+msgstr "Su correo electrónico ha puesto en linea para su entrega al %1"
 
 #. (fmt_expire_date)
 #: ../../Open-ILS/src/templates/opac/parts/myopac/main_base.tt2:37
@@ -4812,7 +4813,7 @@ msgid ""
 "Your library card expired on %1. Please contact a librarian to resolve this "
 "issue."
 msgstr ""
-"Su tarjeta de la biblioteca expiró el 1%. Por favor, póngase en contacto con "
+"Su tarjeta de la biblioteca expiró el %1. Por favor, póngase en contacto con "
 "un bibliotecario para resolver este problema."
 
 #: ../../Open-ILS/src/templates/opac/sms_cn.tt2:23

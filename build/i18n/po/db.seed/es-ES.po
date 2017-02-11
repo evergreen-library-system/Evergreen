@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2016-08-25 17:09-0400\n"
-"PO-Revision-Date: 2016-06-23 15:07+0000\n"
+"PO-Revision-Date: 2016-09-14 18:19+0000\n"
 "Last-Translator: Anahi Valdez <avaldez@emeralddata.net>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2016-08-26 05:21+0000\n"
-"X-Generator: Launchpad (build 18179)\n"
+"X-Launchpad-Export-Date: 2016-09-15 05:52+0000\n"
+"X-Generator: Launchpad (build 18186)\n"
 
 #: 950.data.seed-values.sql:7962
 msgid "Estonia "
@@ -182,7 +182,7 @@ msgstr "Gato : Uso ID interno de TCN Valor"
 
 #: 950.data.seed-values.sql:16385
 msgid "Notification of a group of circs"
-msgstr ""
+msgstr "La notificación de un grupo de circs"
 
 #: 950.data.seed-values.sql:8184
 msgid "Wake Island "
@@ -773,6 +773,8 @@ msgid ""
 "Maximum popularity importance multiplier for popularity-adjusted relevance "
 "searches (decimal value between 1.0 and 2.0)"
 msgstr ""
+"Multiplicador máximo de popularidad importancia para las búsquedas "
+"Relevancia Popularidad ajustados (valor decimal entre 1.0 y 2.0)"
 
 #: 950.data.seed-values.sql:7815
 msgid "Bonne"
@@ -1401,6 +1403,7 @@ msgstr ""
 #: 950.data.seed-values.sql:16398
 msgid "Notification of a group of circs at the end of a checkout session"
 msgstr ""
+"Notificación de un grupo de circs al final de una sesión de pago y envío"
 
 #: 950.data.seed-values.sql:1239
 msgid ""
@@ -3545,7 +3548,7 @@ msgstr "Finno-Ugrian (Otras)"
 
 #: 950.data.seed-values.sql:16337
 msgid "Patron search diacritic insensitive"
-msgstr ""
+msgstr "Patrón de búsqueda diacrítica insensibles"
 
 #: 950.data.seed-values.sql:1499
 msgid "Allows a user to reopen an Acquisitions invoice"
@@ -5134,7 +5137,7 @@ msgstr "Gambia "
 
 #: 950.data.seed-values.sql:5083
 msgid "Maximum payment amount allowed."
-msgstr ""
+msgstr "Cantidad máxima permitida de pago."
 
 #: 950.data.seed-values.sql:6864
 msgid "Tok Pisin"
@@ -6008,7 +6011,7 @@ msgstr "Elementos de ajuste Visualización fuera largamente esperadas"
 
 #: 950.data.seed-values.sql:16376 950.data.seed-values.sql:16377
 msgid "Email checkout receipts by default?"
-msgstr ""
+msgstr "Recibos de pago y envio de coreo electronico por defecto?"
 
 #: 950.data.seed-values.sql:1594
 msgid "Allow a user to add/remove users to/from the \"Volunteers\" group"
@@ -6651,6 +6654,9 @@ msgid ""
 "diacritical marks or spaces. (e.g., Ines will match Inés; de la Cruz will "
 "match Delacruz)"
 msgstr ""
+"Igualar patrón últimos nombres, primero, y medias, independientemente del "
+"uso de signos diacríticos o espacios. (Por ejemplo, Inés coincidirá con "
+"Inés; de la Cruz coincidirá Delacruz)"
 
 #: 950.data.seed-values.sql:3114
 msgid "Use Active Date for Age Protection"
@@ -6720,6 +6726,8 @@ msgid ""
 "Authority Automation: Disable automatic authority updates from modifying bib "
 "record editor and edit_date"
 msgstr ""
+"Automatización Autoridad: Desactivar actualizaciones automáticas de "
+"autoridad de modificar editor de registro bib y edit_date"
 
 #: 950.data.seed-values.sql:611
 msgid "Allow a user to create a new non-cataloged item type"
@@ -7178,6 +7186,8 @@ msgid ""
 "In the Patron Bills interface, a payment attempt will warn if the amount "
 "exceeds the value of this setting."
 msgstr ""
+"En el interfaz de facturas patronos, un intento de pago le avisará si la "
+"cantidad excede el valor de este ajuste."
 
 #: 950.data.seed-values.sql:6886
 msgid "Vai"
@@ -9223,6 +9233,8 @@ msgid ""
 "The payment amount in the Patron Bills interface may not exceed the value of "
 "this setting."
 msgstr ""
+"La cantidad del pago en la interfaz de facturas patronos no podrá superar el "
+"valor de esta configuración."
 
 #: 950.data.seed-values.sql:16099
 msgid "OPAC: Org Unit is not a hold pickup library"
@@ -10166,6 +10178,8 @@ msgid ""
 "OPAC Default Sort (titlesort, authorsort, pubdate, popularity, poprel, or "
 "empty)"
 msgstr ""
+"OPAC Ordenar Por Defecto (titlesort, authorsort, pubdate, popularidad, "
+"poprel o vacío)"
 
 #: 950.data.seed-values.sql:6917
 msgid "The item is intended for young people, approximate ages 9-13 years."
@@ -11889,7 +11903,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:5093
 msgid "Payment amount threshold for Are You Sure? dialog."
-msgstr ""
+msgstr "Pago cantidad de umbral ¿Estás seguro? diálogo."
 
 #: 950.data.seed-values.sql:5242 950.data.seed-values.sql:5245
 #: 950.data.seed-values.sql:5246 950.data.seed-values.sql:5253
@@ -12277,7 +12291,7 @@ msgstr "UPDATE_PERM"
 
 #: 950.data.seed-values.sql:331
 msgid "Canceled Transit"
-msgstr ""
+msgstr "Transito Cancelado"
 
 #: 950.data.seed-values.sql:2966
 msgid "Claim Never Checked Out: Mark copy as missing"

@@ -8,133 +8,133 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2015-02-27 11:41-0400\n"
-"PO-Revision-Date: 2015-11-20 10:20+0000\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"PO-Revision-Date: 2017-01-20 18:25+0000\n"
+"Last-Translator: fares othman <Unknown>\n"
 "Language-Team: Arabic <ar@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2015-11-21 05:12+0000\n"
-"X-Generator: Launchpad (build 17850)\n"
+"X-Launchpad-Export-Date: 2017-01-21 06:03+0000\n"
+"X-Generator: Launchpad (build 18302)\n"
 
 #: capture.js:AUTO_ATTR_VALUE_capture
 msgid "Capture"
-msgstr ""
+msgstr "الالتقاط"
 
 #: capture.js:SLIP_DATE
 msgid "Slip date"
-msgstr ""
+msgstr "تاريخ الانزلاق"
 
 #: capture.js:CAPTURED_NOTHING
 msgid "Didn't capture anything."
-msgstr ""
+msgstr "لم يتم التقاط أي شيء"
 
 #: capture.js:AUTHOR
 msgid "Author"
-msgstr ""
+msgstr "المؤلف"
 
 #: capture.js:CAPTURE_BRESV_DATES
 msgid "Reservation time:"
-msgstr ""
+msgstr "وقت الحجز:"
 
 #: capture.js:CAPTURE_INFO
 msgid "Capture Information"
-msgstr ""
+msgstr "معلومات الالتقاط"
 
 #: capture.js:HERES_WHAT_WE_KNOW
 msgid "The following information is available about the failed capture:"
-msgstr ""
+msgstr "المعلومات التالية مُتاحة حول الالتقاط الفاشل:"
 
 #: capture.js:AT
 msgid "at"
-msgstr ""
+msgstr "في"
 
 #: capture.js:RESERVED
 msgid "Reserved for patron"
-msgstr ""
+msgstr "المحجوزة للمستفيد"
 
 #: capture.js:CAPTURE_CAUSES_TRANSIT
 msgid "This item is now in transit!"
-msgstr ""
+msgstr "هذه النُسخة في طريقها الآن للنقل!"
 
 #: capture.js:TITLE
 msgid "Title"
-msgstr ""
+msgstr "العنوان"
 
 #: capture.js:UNKNOWN_PROBLEM
 msgid "An unknown problem occurred during capture attempt."
-msgstr ""
+msgstr "حدثت مشكلة غير معروفة أثناء محاولة الالتقاط."
 
 #: capture.js:PRINTED_BY
 msgid "Printed by"
-msgstr ""
+msgstr "المطبوعة مِن قِبل"
 
 #: capture.js:NO_PAYLOAD
 msgid ""
 "We did not receive further information from the server about this attempt to "
 "capture."
-msgstr ""
+msgstr "لم نحصل على المزيد من المعلومات من الخادم حول محاولة الالتقاط. هذه."
 
 #: capture.js:CAPTURE_TRANSIT_SOURCE
 msgid "From:"
-msgstr ""
+msgstr "مِن:"
 
 #: capture.js:CAPTURE_TRANSIT_DEST
 msgid "To:"
-msgstr ""
+msgstr "لــِ:"
 
 #: capture.js:FAILURE
 msgid "Capture failed"
-msgstr ""
+msgstr "فشل الالتقاط"
 
 #: capture.js:RESERVATION_SHELF
 msgid "RESERVATION SHELF"
-msgstr ""
+msgstr "رف الحجوزات"
 
 #: capture.js:SUCCESS
 msgid "Capture succeeded"
-msgstr ""
+msgstr "نجحَ الالتقاط"
 
 #: capture.js:PRINT_ACCESSKEY
 msgid "P"
-msgstr ""
+msgstr "P"
 
 #: capture.js:CAPTURE_BRESV_BRSRC
 msgid "Resource barcode:"
-msgstr ""
+msgstr "باركود المصدر:"
 
 #: capture.js:DURATION
 msgid "Reserved from"
-msgstr ""
+msgstr "محجوزة مِن"
 
 #: capture.js:PRINT
 msgid "<u>P</u>rint"
-msgstr ""
+msgstr "<u>P</u>طباعة"
 
 #: capture.js:CAPTURE_BRESV_PICKUP_LIB capture.js:AUTO_pickup_lib_selector
 msgid "Pickup library:"
-msgstr ""
+msgstr "مكتبة الالتقاط"
 
 #: capture.js:NEEDS_ROUTED_TO
 msgid "This item need to be routed to"
-msgstr ""
+msgstr "تحتاج هذه النُسخة إلى توجيهها لــِ"
 
 #: capture.js:BARCODE
 msgid "Barcode"
-msgstr ""
+msgstr "الباركود"
 
 #: capture.js:REQUEST
 msgid "Request time"
-msgstr ""
+msgstr "وقت الطلب"
 
 #: capture.js:TRANSIT
 msgid "*** TRANSIT ***"
-msgstr ""
+msgstr "*** النقل والعبور ***"
 
 #: capture.js:AUTO_resource_barcode
 msgid "Enter barcode:"
-msgstr ""
+msgstr "إدخال الباركود:"
 
 #: capture.js:AUTO_capture_heading
 msgid "Capture Reserved Resources"
-msgstr ""
+msgstr "التقاط المصادر المحجوزة"
