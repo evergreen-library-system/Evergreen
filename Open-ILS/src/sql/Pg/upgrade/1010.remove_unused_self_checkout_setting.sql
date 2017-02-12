@@ -2,7 +2,7 @@
 
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1010', :eg_version);
 
 DELETE FROM actor.org_unit_setting WHERE name = 'circ.selfcheck.require_patron_password';
 
