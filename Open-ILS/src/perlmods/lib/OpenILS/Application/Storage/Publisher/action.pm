@@ -1098,7 +1098,7 @@ sub new_hold_copy_targeter {
 
     try {
         if ($one_hold) {
-            $self->method_lookup('open-ils.storage.transaction.begin')->run( $client );
+            $self->method_lookup('open-ils.storage.transaction.begin')->run();
             $holds = [ action::hold_request->search_where( { id => $one_hold, fulfillment_time => undef, cancel_time => undef, frozen => 'f' } ) ];
         } elsif ( $check_expire ) {
 
@@ -1195,7 +1195,7 @@ sub new_hold_copy_targeter {
                 $log->debug("Cleaning up after previous transaction\n");
                 $self->method_lookup('open-ils.storage.transaction.rollback')->run;
             }
-            $self->method_lookup('open-ils.storage.transaction.begin')->run( $client );
+            $self->method_lookup('open-ils.storage.transaction.begin')->run();
             $log->info("Processing hold ".$hold->id."...\n");
 
             #first, re-fetch the hold, to make sure it's not captured already
@@ -1710,7 +1710,7 @@ sub reservation_targeter {
 
     try {
         if ($one_reservation) {
-            $self->method_lookup('open-ils.storage.transaction.begin')->run( $client );
+            $self->method_lookup('open-ils.storage.transaction.begin')->run();
             $reservations = [ booking::reservation->search_where( { id => $one_reservation, capture_time => undef, cancel_time => undef } ) ];
         } else {
 
@@ -1738,7 +1738,7 @@ sub reservation_targeter {
                 $log->debug("Cleaning up after previous transaction\n");
                 $self->method_lookup('open-ils.storage.transaction.rollback')->run;
             }
-            $self->method_lookup('open-ils.storage.transaction.begin')->run( $client );
+            $self->method_lookup('open-ils.storage.transaction.begin')->run();
             $log->info("Processing reservation ".$bresv->id."...\n");
 
             #first, re-fetch the hold, to make sure it's not captured already
