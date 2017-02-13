@@ -12,7 +12,8 @@
   <eg-grid-action handler="make_copies_bookable"
     label="[% l('Make Items Bookable') %]"></eg-grid-action>
   <eg-grid-action handler="book_copies_now"
-    label="[% l('Book Items Now') %]"></eg-grid-action>
+    disabled="need_one_selected"
+    label="[% l('Book Item Now') %]"></eg-grid-action>
   <eg-grid-action handler="requestItems"
     label="[% l('Request Items') %]"></eg-grid-action>
   <eg-grid-action handler="attach_to_peer_bib"
