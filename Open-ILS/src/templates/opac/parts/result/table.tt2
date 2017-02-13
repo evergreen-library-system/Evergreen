@@ -66,7 +66,12 @@
                     </thead>
                     <tbody id="result_table">
                     [%  FOR rec IN ctx.records;
-                            attrs = {marc_xml => rec.marc_xml};
+                            attrs = {};
+                            attrs.marc_xml = rec.marc_xml;
+                            attrs.mr_constituent_ids = [];
+                            FOREACH mr_constituent_id IN rec.mr_constituent_ids;
+                                attrs.mr_constituent_ids.push(mr_constituent_id);
+                            END;
                             PROCESS get_marc_attrs args=attrs;
                             IF show_detail_view;
                                 attrs.title = attrs.title_extended;

@@ -674,6 +674,7 @@ __PACKAGE__->add_search_filter( 'skip_check' );
 __PACKAGE__->add_search_filter( 'superpage' );
 __PACKAGE__->add_search_filter( 'superpage_size' );
 __PACKAGE__->add_search_filter( 'estimation_strategy' );
+__PACKAGE__->add_search_filter( 'from_metarecord' );
 __PACKAGE__->add_search_modifier( 'available' );
 __PACKAGE__->add_search_modifier( 'staff' );
 __PACKAGE__->add_search_modifier( 'deleted' );
@@ -1358,6 +1359,12 @@ sub flatten {
                     $where .= "${NOT}COALESCE(bre.source IN ("
                            . join(',', map { $self->QueryParser->quote_value($_) } @{ $filter->args })
                            . "), false)";
+                }
+            } elsif ($filter->name eq 'from_metarecord') {
+                if (@{$filter->args} > 0) {
+                    my $key = 'm.metarecord';
+                    $where .= $joiner if $where ne '';
+                    $where .= "$key ${NOT}IN (" . join(',', map { $self->QueryParser->quote_value($_) } @{$filter->args}) . ')';
                 }
             }
         }

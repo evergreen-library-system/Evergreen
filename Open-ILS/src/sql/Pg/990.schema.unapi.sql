@@ -1387,12 +1387,13 @@ CREATE OR REPLACE FUNCTION unapi.mmr_mra (
                             rad.composite,
                             rad.multi,
                             rad.filter,
-                            rad.sorter
+                            rad.sorter,
+                            cmra.source_list
                         ),
                         cmra.value
                     )
               FROM  (
-                SELECT DISTINCT aid, attr, value
+                SELECT DISTINCT aid, attr, value, STRING_AGG(x.id::TEXT, ',') AS source_list
                   FROM (
                     SELECT  v.source AS id,
                             c.id AS aid,
@@ -1402,6 +1403,7 @@ CREATE OR REPLACE FUNCTION unapi.mmr_mra (
                             JOIN config.coded_value_map c ON ( c.id = ANY( v.vlist ) )
                     ) AS x
                     JOIN sourcelist ON (x.id = sourcelist.source)
+                    GROUP BY 1, 2, 3
                 ) AS cmra
                 JOIN config.record_attr_definition rad ON (cmra.attr = rad.name)
                 UNION ALL

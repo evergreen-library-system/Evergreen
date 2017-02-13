@@ -602,18 +602,36 @@
                 NEXT IF ccvm.opac_visible == 'f';
 
                 format = {};
-                type = ccvm.code.remove('-'); # blu-ray to bluray
-                format.label = ccvm.search_label || ccvm.value;
-                format.icon = PROCESS get_ccvm_icon ccvm=ccvm;
-                format.itemtype = schema_typemap.$type || 'CreativeWork';
+                this_icon_source = node.getAttribute('source_list');
+                including = 'F';
+                # Just display everything if we don't have the data
+                IF NOT args.mr_constituent_ids OR NOT this_icon_source;
+                    including = 'T';
+                # We have an array of search-included bib IDs and we have the bib ID that this icon belongs to
+                ELSE;
+                    FOR mr_constituent_id IN args.mr_constituent_ids;
+                        IF this_icon_source.split(',').grep('^' _ mr_constituent_id _ '$' ).size;
+                            # This bib appears to be in the array of filtered bibs
+                            including = 'T';
+                        END;
+                    END;
+                END;
+                IF including == 'T';
+                    type = ccvm.code.remove('-'); # blu-ray to bluray
+                    format.label = ccvm.search_label || ccvm.value;
+                    format.icon = PROCESS get_ccvm_icon ccvm=ccvm;
+                    format.itemtype = schema_typemap.$type || 'CreativeWork';
+                    format.search_format = ccvm.code;
+                    format.source_bibs = this_icon_source.split(',');
 
-                args.all_formats.push(format); # metarecords want all formats
+                    args.all_formats.push(format); # metarecords want all formats
 
-                IF !args.format_label;
-                    # use the first format as the default
-                    args.format_label = format.label; 
-                    args.schema.itemtype = format.itemtype;
-                    args.format_icon = format.icon;
+                    IF !args.format_label;
+                        # use the first format as the default
+                        args.format_label = format.label;
+                        args.schema.itemtype = format.itemtype;
+                        args.format_icon = format.icon;
+                    END;
                 END;
             END;
         END;
