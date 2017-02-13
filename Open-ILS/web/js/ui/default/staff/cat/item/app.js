@@ -331,6 +331,64 @@ function($scope , $q , $routeParams , $location , $timeout , $window , egCore , 
         });
     }
 
+    $scope.make_copies_bookable = function() {
+
+        var copies_by_record = {};
+        var record_list = [];
+        angular.forEach(
+            copyGrid.selectedItems(),
+            function (item) {
+                var record_id = item['call_number.record.id'];
+                if (typeof copies_by_record[ record_id ] == 'undefined') {
+                    copies_by_record[ record_id ] = [];
+                    record_list.push( record_id );
+                }
+                copies_by_record[ record_id ].push(item.id);
+            }
+        );
+
+        var promises = [];
+        var combined_results = [];
+        angular.forEach(record_list, function(record_id) {
+            promises.push(
+                egCore.net.request(
+                    'open-ils.booking',
+                    'open-ils.booking.resources.create_from_copies',
+                    egCore.auth.token(),
+                    copies_by_record[record_id]
+                ).then(function(results) {
+                    if (results && results['brsrc']) {
+                        combined_results = combined_results.concat(results['brsrc']);
+                    }
+                })
+            );
+        });
+
+        $q.all(promises).then(function() {
+            if (combined_results.length > 0) {
+                $uibModal.open({
+                    template: '<eg-embed-frame url="booking_admin_url" handlers="funcs"></eg-embed-frame>',
+                    animation: true,
+                    size: 'md',
+                    controller:
+                           ['$scope','$location','egCore','$uibModalInstance',
+                    function($scope , $location , egCore , $uibModalInstance) {
+
+                        $scope.funcs = {
+                            ses : egCore.auth.token(),
+                            resultant_brsrc : combined_results.map(function(o) { return o[0]; })
+                        }
+
+                        var booking_path = '/eg/conify/global/booking/resource';
+
+                        $scope.booking_admin_url =
+                            $location.absUrl().replace(/\/eg\/staff.*/, booking_path);
+                    }]
+                });
+            }
+        });
+    }
+
     $scope.requestItems = function() {
         var copy_list = gatherSelectedHoldingsIds();
         if (copy_list.length == 0) return;
