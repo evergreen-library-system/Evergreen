@@ -1,6 +1,6 @@
 BEGIN;
 
--- SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1012', :eg_version);
 UPDATE vandelay.merge_profile
 SET preserve_spec = '901c',
     replace_spec = NULL
