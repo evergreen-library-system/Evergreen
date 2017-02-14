@@ -166,11 +166,12 @@ IF num_uris > 0;
     [%- IF num_uris > 1 %]</ul>[% END %]
 </div>
 [%- END %]
-[%- # Hold/copy summary
-    IF ctx.copy_summary.0.count
-%]
 <div id="copy_hold_counts">
-[%- INCLUDE "opac/parts/record/copy_counts.tt2" %]
+[%-
+# Hold/copy summary
+IF ctx.copy_summary.0.count;
+INCLUDE "opac/parts/record/copy_counts.tt2";
+%]
     <span id="rdetail_hold_counts">
         <h2>[% l('Current holds') %]</h2>
         <p>
@@ -190,9 +191,66 @@ IF num_uris > 0;
             %]
         </p>
     </span>
-[%- INCLUDE "opac/parts/record/copy_table.tt2" copies=ctx.copies %]
-</div>
 [%- END %]
+<div id="metarecord_population">
+[%-
+# l( 'mmr id = ' _ ctx.mmr_id );
+# l( 'mmr data = ' _ ctx.mmr_data );
+mmr_attrs = {marc_xml => ctx.mmr_data.marc_xml};
+PROCESS get_marc_attrs args=mmr_attrs;
+
+IF args.mmr_unique_bib.size > 1;
+%]
+<h3>View Other Formats and Editions</h3>
+<span class="metarecord_population_format">
+[%- IF mmr_attrs.format_label;
+    FOR format IN mmr_attrs.all_formats;
+
+        link = mkurl(ctx.opac_root _ '/record/' _ format.source_bibs.0);
+        IF format.source_bibs.size > 1;
+            link = mkurl( ctx.opac_root _ '/results', { modifier => 'metabib', metarecord => ctx.mmr_id, 'fi:icon_format' => format.search_format, 'fi:from_metarecord' => ctx.mmr_id }, stop_parms.merge(expert_search_parms, general_search_parms, browse_search_parms, facet_search_parms, ['qtype','fi:search_format','fi:icon_format','fi:item_lang','fi:from_metarecord']) );
+        END; -%]
+        <span class="metarecord_population_span_link">
+            <a href="[%- l( link ) %]">
+        [% format.label | html %]
+        ([%- l( format.source_bibs.size ) %])
+        </a></span><br />
+
+    [%- END %]
+    </span>
+    [%- IF mmr_attrs.all_lang.size > 0 %]
+    <span class="metarecord_population_item_lang">
+    [% FOR lang IN mmr_attrs.all_lang;
+        link = mkurl(ctx.opac_root _ '/record/' _ lang.source_bibs.0);
+        IF lang.source_bibs.size > 1;
+            USE url(ctx.opac_root _ '/results');
+            link = mkurl( ctx.opac_root _ '/results', { modifier => 'metabib', metarecord => ctx.mmr_id, 'fi:item_lang' => lang.search_format, 'fi:from_metarecord' => ctx.mmr_id }, stop_parms.merge(expert_search_parms, general_search_parms, browse_search_parms, facet_search_parms, ['qtype','fi:search_format','fi:icon_format','fi:item_lang','fi:from_metarecord']) );
+        END; -%]
+        <span class="metarecord_population_span_link">
+            <a href="[%- l( link ) %]">
+        [% lang.label | html %]
+        ([%- l( lang.source_bibs.size ) %])
+        </a></span><br />
+    [%- END %]
+    </span> <!-- metarecord_population_item_lang -->
+[%- END %]
+<div class="metarecord_population_all">
+    [%
+    link = mkurl( ctx.opac_root _ '/results', { modifier => 'metabib', metarecord => ctx.mmr_id, 'fi:from_metarecord' => ctx.mmr_id }, stop_parms.merge(expert_search_parms, general_search_parms, browse_search_parms, facet_search_parms, ['qtype','fi:search_format','fi:icon_format','fi:item_lang','fi:from_metarecord'] ) );
+    %]
+    <span class="metarecord_population_span_link">
+        <a href="[%- l( link ) %]">View all [%- args.mmr_unique_bib.size %] formats and editions
+        </a></span><br />
+</div>
+[%- END;
+END # ending tag for IF args.mmr_unique_bib.size > 1; %]
+</div> <!-- metarecord_population -->
+[%-
+IF ctx.copy_summary.0.count;
+INCLUDE "opac/parts/record/copy_table.tt2" copies=ctx.copies;
+END;
+ %]
+</div>
 
 <h2 id='rdetail_record_details'>[% l("Record details") %]</h2>
 <ul>

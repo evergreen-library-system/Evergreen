@@ -86,7 +86,7 @@
                                 ELSE;
                                     # for MR, bre_id refers to the master and in
                                     # this case, only, record
-                                    record_url = mkurl(ctx.opac_root _ '/record/' _ rec.bre_id, { badges => rec.badges.join(',') });
+                                    record_url = mkurl(ctx.opac_root _ '/record/' _ attrs.mr_constituent_ids.0, { badges => rec.badges.join(',') });
                                 END;
                                 hold_type = 'M';
                             ELSE;

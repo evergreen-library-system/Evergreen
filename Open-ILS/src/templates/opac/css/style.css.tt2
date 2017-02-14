@@ -485,6 +485,33 @@ div.format_icon {
     margin-right: 17px;
 }
 
+#metarecord_population {
+    overflow: hidden;
+    width: 40%;
+    padding-bottom: 10px;
+}
+
+.metarecord_population_span_link {
+    line-height: 20px;
+}
+
+.metarecord_population_format {
+    border-right: thin;
+    display: inline-block;
+    margin-right: 1em;
+    padding-right: 1em;
+    vertical-align: top;
+}
+
+.metarecord_population_item_lang {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.metarecord_population_all {
+    padding-top:10px;
+}
+
 .result_util {
     border-bottom: 1px dotted [% css_colors.accent_light %];
     padding-top: 6px;
@@ -2001,6 +2028,15 @@ a.preflib_change {
     }
     h2.rdetail_uris {
         clear: both;
+    }
+    #metarecord_population {
+        overflow: hidden;
+        width: 100%;
+    }
+    .metarecord_population_span_link {
+    }
+    .metarecord_population_item_lang {
+        float: none;
     }
     .search_catalog_lbl {
 	margin-left: 0;

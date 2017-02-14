@@ -1366,7 +1366,7 @@ CREATE OR REPLACE FUNCTION unapi.mmr_mra (
                 WITH aou AS (SELECT COALESCE(id, (evergreen.org_top()).id) AS id
                     FROM actor.org_unit WHERE shortname = $5 LIMIT 1)
                 SELECT source
-                FROM metabib.metarecord_source_map, aou
+                FROM metabib.metarecord_source_map mmsm, aou
                 WHERE metarecord = $1 AND (
                     EXISTS (
                         SELECT 1 FROM asset.opac_visible_copies
@@ -1375,6 +1375,7 @@ CREATE OR REPLACE FUNCTION unapi.mmr_mra (
                         LIMIT 1
                     )
                     OR EXISTS (SELECT 1 FROM located_uris(source, aou.id, $10) LIMIT 1)
+                    OR EXISTS (SELECT 1 FROM biblio.record_entry b JOIN config.bib_source src ON (b.source = src.id) WHERE src.transcendant AND b.id = mmsm.source LIMIT 1)
                 )
             )
             SELECT  cmra.aid,
