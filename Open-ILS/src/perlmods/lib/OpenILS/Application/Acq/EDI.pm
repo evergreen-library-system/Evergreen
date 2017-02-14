@@ -136,7 +136,7 @@ sub retrieve_core {
                             in_dir => $account->in_dir
                         },
                         remote_file => {ilike => $remote_file},
-                        status      => {'in' => [qw/ processed proc_error /]},
+                        status      => {'in' => [qw/ processed proc_error trans_error /]},
                     },
                     { join => {"acqedi" => {}}, limit => 1 }
                 ], { idlist => 1 }
