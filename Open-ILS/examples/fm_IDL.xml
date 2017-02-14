@@ -10720,27 +10720,27 @@ SELECT  usr,
 	<class id="rhcrpbapd" controller="open-ils.cstore open-ils.pcrud open-ils.reporter-store" oils_obj:fieldmapper="reporter::hold_copy_ratio_per_bib_and_pickup_desc" oils_persist:readonly="true" reporter:label="Hold/Copy Ratio per Bib and Pickup Library (and Descendants) ">
 		<oils_persist:source_definition>
             WITH counts_at_ou AS (
-                SELECT bib_record, pickup_lib, count(DISTINCT ahr.id) AS holds_at_pickup_library, 
-                    COALESCE(count(DISTINCT ac.id),0) as copy_count_at_pickup_library
-                FROM action.hold_request ahr
-                JOIN reporter.hold_request_record rhrr USING (id)
-                LEFT JOIN action.hold_copy_map ahcm ON (ahr.id = ahcm.hold)
-                LEFT JOIN asset.copy ac ON (ahcm.target_copy = ac.id AND ahr.pickup_lib = ac.circ_lib)
-                WHERE ahr.cancel_time IS NULL
-                AND ahr.fulfillment_time IS NULL
-                GROUP BY bib_record, pickup_lib
+                SELECT  rhrr.bib_record AS id,
+                        aou.id AS pickup_lib_or_desc,
+                        COUNT(DISTINCT ahr.id) AS holds_at_or_below,
+                        COALESCE(COUNT(DISTINCT ac.id),0) AS copy_count_at_or_below
+                  FROM  actor.org_unit aou
+                        JOIN actor.org_unit_type aout ON (aou.ou_type = aout.id),
+                        action.hold_request ahr
+                        JOIN reporter.hold_request_record rhrr USING (id)
+                        LEFT JOIN action.hold_copy_map ahcm ON (ahr.id = ahcm.hold)
+                        LEFT JOIN asset.copy ac ON (ahcm.target_copy = ac.id)
+                  WHERE ahr.cancel_time IS NULL AND ahr.fulfillment_time IS NULL
+                        AND ac.circ_lib IN (SELECT id FROM actor.org_unit_descendants(aou.id))
+                        AND (actor.org_unit_ancestor_at_depth(ahr.pickup_lib,aout.depth)).id = (actor.org_unit_ancestor_at_depth(ac.circ_lib,aout.depth)).id
+                  GROUP BY 1, 2
             )
-            SELECT *,
-                CASE WHEN copy_count_at_or_below = 0 THEN 'Infinity'::FLOAT ELSE holds_at_or_below::FLOAT/copy_count_at_or_below END AS hold_copy_ratio_at_or_below_ou,
-                CASE WHEN copy_count_everywhere = 0 THEN 'Infinity'::FLOAT ELSE holds_everywhere::FLOAT/copy_count_everywhere END AS everywhere_ratio
-            FROM
-                (SELECT bib_record AS id, aou.id AS pickup_lib_or_desc, SUM(holds_at_pickup_library) AS holds_at_or_below, SUM(copy_count_at_pickup_library) AS copy_count_at_or_below
-                FROM actor.org_unit aou
-                JOIN counts_at_ou cao ON (cao.pickup_lib IN (SELECT id FROM actor.org_unit_descendants(aou.id))) 
-                GROUP BY bib_record, pickup_lib_or_desc
-                )x
-                JOIN
-                (SELECT bib_record AS id, count(DISTINCT ahr.id) AS holds_everywhere, COALESCE(count(DISTINCT target_copy),0) as copy_count_everywhere
+            SELECT x.id, x.pickup_lib_or_desc, x.holds_at_or_below, x.copy_count_at_or_below,
+                   y.holds_everywhere, y.copy_count_everywhere,
+                CASE WHEN copy_count_at_or_below = 0 THEN 'Infinity'::FLOAT ELSE x.holds_at_or_below::FLOAT/x.copy_count_at_or_below END AS hold_copy_ratio_at_or_below_ou,
+                CASE WHEN copy_count_everywhere = 0 THEN 'Infinity'::FLOAT ELSE y.holds_everywhere::FLOAT/y.copy_count_everywhere END AS everywhere_ratio
+            FROM counts_at_ou x
+                JOIN (SELECT bib_record AS id, count(DISTINCT ahr.id) AS holds_everywhere, COALESCE(count(DISTINCT target_copy),0) as copy_count_everywhere
                     FROM
                         action.hold_request ahr
                         JOIN reporter.hold_request_record rhrr USING (id)
