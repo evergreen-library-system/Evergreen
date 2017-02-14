@@ -1,0 +1,10 @@
+Additional SMS Carriers
+^^^^^^^^^^^^^^^^^^^^^^^
+SMS carrier definitions are now included for Google Fi and
+Republic Wireless. These will be automatically loaded when
+installing a new Evergreen system; admins who wish to
+add these definitions during an upgrade can use the following
+email gateway values:
+
+ * Google Fi: `$number@msg.fi.google.com`
+ * Republic Wireless: `$number@text.republicwireless.com`
