@@ -516,7 +516,7 @@ sub load_rresults {
                 my $ses = OpenSRF::AppSession->create('open-ils.search');
                 $self->timelog("Firing off the multiclass query");
                 $args->{from_metarecord} = $rec_id;
-                my $req = $ses->request($method, $args, $query, 0);
+                my $req = $ses->request($method, $args, $query, 1);
                 $meta_results = $req->gather(1);
                 $self->timelog("Returned from the multiclass query");
 
