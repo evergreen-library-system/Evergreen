@@ -1893,7 +1893,7 @@ sub bib_record_list_via_search {
     }
 
     # Throw away other junk from search, keeping only bib IDs.
-    return [ map { pop @$_ } @{$search_result->{ids}} ];
+    return [ map { shift @$_ } @{$search_result->{ids}} ];
 }
 
 # 'no_flesh' avoids fleshing the target_biblio_record_entry
