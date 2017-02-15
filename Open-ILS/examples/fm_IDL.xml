@@ -7503,6 +7503,7 @@ SELECT  usr,
 			<field name="marc_code" reporter:datatype="text"/>
 			<field name="name" reporter:datatype="text" oils_persist:i18n="true"/>
 			<field name="description" reporter:datatype="text" oils_persist:i18n="true"/>
+			<field name="rtl" reporter:datatype="bool"/>
 		</fields>
 		<links/>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">

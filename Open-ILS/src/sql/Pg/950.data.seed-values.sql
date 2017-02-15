@@ -372,6 +372,9 @@ INSERT INTO config.i18n_locale (code,marc_code,name,description)
 INSERT INTO config.i18n_locale (code,marc_code,name,description)
     VALUES ('ru-RU', 'rus', oils_i18n_gettext('ru-RU', 'Russian', 'i18n_l', 'name'),
 	oils_i18n_gettext('ru-RU', 'Russian', 'i18n_l', 'description'));
+INSERT INTO config.i18n_locale (code,marc_code,name,description,rtl)
+    VALUES ('ar-JO', 'ara', oils_i18n_gettext('ar-JO', 'Arabic (Jordan)', 'i18n_l', 'name'),
+	oils_i18n_gettext('ar-JO', 'Arabic (Jordan)', 'i18n_l', 'description'), 'true');
 
 -- Z39.50 server attributes
 

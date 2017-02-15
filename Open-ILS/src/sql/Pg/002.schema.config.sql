@@ -547,7 +547,8 @@ CREATE TABLE config.i18n_locale (
     code        TEXT    PRIMARY KEY,
     marc_code   TEXT    NOT NULL, -- should exist in config.coded_value_map WHERE ctype = 'item_lang'
     name        TEXT    UNIQUE NOT NULL,
-    description TEXT
+    description TEXT,
+    rtl         BOOL    NOT NULL DEFAULT FALSE
 );
 
 CREATE TABLE config.i18n_core (
