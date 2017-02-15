@@ -1,4 +1,3 @@
-
 [%  PROCESS "opac/parts/misc_util.tt2";
     USE ResolverResolver;
     ctx.page_title = attrs.title | html
@@ -27,33 +26,35 @@
         [%- INCLUDE "opac/parts/record/authors.tt2" %]
     </div>
     <div id="rdetail_image_div">
-	[%- IF obalkyknih_cz.enabled == 'true' %]
-    	[%- 
-      		isbnissn = '';
-      		IF attrs.isbns.0;
-              		isbnissn = attrs.isbns.0;
-              		IF (matches = isbnissn.match('^(.+?)(\s.+)$'));
-                		isbnissn = matches.0;
-              		END;
-            	END;
+        [%- IF obalkyknih_cz.enabled == 'true' %]
+        [%- 
+            isbnissn = '';
+            IF attrs.isbns.0;
+                    isbnissn = attrs.isbns.0;
+                    IF (matches = isbnissn.match('^(.+?)(\s.+)$'));
+                        isbnissn = matches.0;
+                    END;
+                END;
             IF attrs.issns.0;
-              	isbnissn=attrs.issns.0;
+                isbnissn=attrs.issns.0;
             END;
-     	%]
+        %]
         <a href='http://obalkyknih.cz/view?isbn=[% isbnissn %]'>
             <img
               alt="[% l('Image of item') %]" id='rdetail_image'
               src='[% ctx.media_prefix %]/opac/extras/ac/jacket/[% record.summary.jacket_size %]/r/[% ctx.bre_id | uri %]' />
         </a>
+        [%  ELSE %]
+            <a href='[% ctx.media_prefix %]/opac/extras/ac/jacket/large/r/[% ctx.bre_id | uri %]'><img
+                    alt="[% l('Image of item') %]" id='rdetail_image'
+                    src='[% ctx.media_prefix %]/opac/extras/ac/jacket/[% record.summary.jacket_size %]/r/[% ctx.bre_id | uri %]' />
+            </a>
+        [%- END %]
         <br />
-	[%  ELSE %]
-        	<a href='[% ctx.media_prefix %]/opac/extras/ac/jacket/large/r/[% ctx.bre_id | uri %]'><img
-            		alt="[% l('Image of item') %]" id='rdetail_image'
-            		src='[% ctx.media_prefix %]/opac/extras/ac/jacket/[% record.summary.jacket_size %]/r/[% ctx.bre_id | uri %]' />
-        	</a>
-	[%- END %]    
     </div>
     <div id="format_actions">
+
+
         [%- IF attrs.format_label %]
           [% FOR format IN attrs.all_formats %]
               <img title="[% format.label | html %]" 
@@ -62,6 +63,7 @@
               [% format.label | html %]
           [% END %]
         [%- END %]
+
         <div id="rdetail_actions_div">
             [%- search_ou = ctx.search_ou;
                 IF ctx.place_unfillable ||
@@ -78,33 +80,44 @@
             </div>
             [%- END -%]
             <div class="rdetail_aux_utils toggle_list">
-            [%  IF ctx.user;
-                INCLUDE "opac/parts/bookbag_actions.tt2";
-            %]
-            [%  ELSE;
-                operation = ctx.mylist.grep(ctx.bre_id).size ? "delete" : "add";
-                label = (operation == "add") ? l("Add to my list") : l("Remove from my list"); 
-            %]
-                <a href="[% mkurl(ctx.opac_root _ '/mylist/' _ operation, {record => ctx.bre_id}, stop_parms) %]" class="no-dec" rel="nofollow" vocab="">
-                    <img src="[% ctx.media_prefix %]/images/clipboard.png" alt="" />
-                    [% label %]
-                </a>
-            [% END %]
-            </div>
-            <div class="rdetail_aux_utils">
-                <img src="[% ctx.media_prefix %]/images/clipboard.png" alt="[% l('Print / Email Actions Image') %]" />
-                <a href="[% mkurl(ctx.opac_root _ '/record/print/' _ ctx.bre_id) %]" class="no-dec" rel="nofollow" vocab="">[% l('Print') %]</a> /
-                <a href="[% mkurl(ctx.opac_root _ '/record/email/' _ ctx.bre_id) %]" class="no-dec" rel="nofollow" vocab="">[% l('Email') %]</a>
-            </div>
-            [%- IF ctx.refworks.enabled == 'true' %]
-                [%- INCLUDE 'opac/parts/record/refworks.tt2' %]
-            [%- END %]
-            <div class="rdetail_aux_utils share_record">
-                <a href="[% mkurl('', {locg =>CGI.param('locg'), copy_depth =>CGI.param('copy_depth')}, 1) %]" class="no-dec">
-                     <img src="[% ctx.media_prefix %]/images/link.png" alt="[% l('Permalink') %]" />
-                     [% l('Permalink') %]
-                </a>
-            </div>
+			[%  IF ctx.user;
+				INCLUDE "opac/parts/bookbag_actions.tt2";
+			%]
+			[%  ELSE;
+				operation = ctx.mylist.grep(ctx.bre_id).size ? "delete" : "add";
+				label = (operation == "add") ? l("Add to my list") : l("Remove from my list"); 
+			%]
+				<a href="[% mkurl(ctx.opac_root _ '/mylist/' _ operation, {record => ctx.bre_id}, stop_parms) %]" class="no-dec" rel="nofollow" vocab="">
+					<img src="[% ctx.media_prefix %]/images/clipboard.png" alt="" />
+					[% label %]
+				</a>
+			[% END %]
+			</div>
+			<div class="rdetail_aux_utils toggle_list">
+					[% IF ctx.mylist.size %]
+						[%- IF ctx.user; %]
+						<a href="[% mkurl(ctx.opac_root _ '/myopac/lists') %]" class="no-dec" rel="nofollow" vocab=""><img src="[% ctx.media_prefix %]/images/clipboard.png" alt="[% l('View My Lists') %]" />[% l(' View My Lists') %]</a>
+						[%- ELSE %]
+						<a href="[% mkurl(ctx.opac_root _ '/mylist') %]" class="no-dec" rel="nofollow" vocab=""><img src="[% ctx.media_prefix %]/images/clipboard.png" alt="[% l('View My Temporary List') %]" />[% l(' View My Temporary List') %]</a>
+						[%- END %]
+					[% END %]
+				</div>
+				<div class="rdetail_aux_utils">
+					<img src="[% ctx.media_prefix %]/images/clipboard.png" alt="[% l('Print / Email Actions Image') %]" />
+					<a href="[% mkurl(ctx.opac_root _ '/record/print/' _ ctx.bre_id) %]" class="no-dec" rel="nofollow" vocab="">[% l('Print') %]</a> /
+					<a href="[% mkurl(ctx.opac_root _ '/record/email/' _ ctx.bre_id) %]" class="no-dec" rel="nofollow" vocab="">[% l('Email') %]</a>
+				</div>
+				[%- IF ctx.refworks.enabled == 'true' %]
+					[%- INCLUDE 'opac/parts/record/refworks.tt2' %]
+				[%- END %]
+                         [% IF !ctx.is_staff %]
+				<div class="rdetail_aux_utils share_record">
+					<a href="[% mkurl('', {locg =>CGI.param('locg'), copy_depth =>CGI.param('copy_depth')}, 1) %]" class="no-dec">
+						 <img src="[% ctx.media_prefix %]/images/link.png" alt="[% l('Permalink') %]" />
+						 [% l('Permalink') %]
+					</a>
+				</div>
+			[% END %]
             [%- IF ctx.is_staff %]
             <div class="rdetail_aux_utils clear_addedcontent_cache">
                 <a href="[% ctx.media_prefix %]/opac/extras/ac/clearcache/all/r/[% ctx.bre_id | uri %]" class="no-dec" target="_blank">

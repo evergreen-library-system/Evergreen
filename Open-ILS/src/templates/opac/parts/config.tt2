@@ -224,6 +224,6 @@ ctx.exclude_electronic_checkbox = 0;
 # Obalkyknihy.cz is free Czech service providing added content and book covers
 # Set to 'true' to enable
 ##############################################################################
-# obalkyknih_cz.enabled = 'true';
+# obalkyknih_cz.enabled = 'false';
 
 %]
