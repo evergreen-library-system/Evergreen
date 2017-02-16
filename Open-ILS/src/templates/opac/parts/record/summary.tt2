@@ -201,7 +201,7 @@ PROCESS get_marc_attrs args=mmr_attrs;
 
 IF args.mmr_unique_bib.size > 1;
 %]
-<h3>View Other Formats and Editions</h3>
+<h3>View other formats and editions</h3>
 <span class="metarecord_population_format">
 [%- IF mmr_attrs.format_label;
     FOR format IN mmr_attrs.all_formats;
