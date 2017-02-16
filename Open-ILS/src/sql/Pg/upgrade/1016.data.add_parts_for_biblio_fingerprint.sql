@@ -1,6 +1,6 @@
 BEGIN;
 
--- SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1016', :eg_version);
 
 INSERT INTO config.biblio_fingerprint (name, xpath, format)
     VALUES (
