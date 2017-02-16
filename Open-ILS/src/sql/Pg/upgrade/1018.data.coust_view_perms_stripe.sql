@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1018', :eg_version);
 
 UPDATE config.org_unit_setting_type
     SET view_perm = (SELECT id FROM permission.perm_list
