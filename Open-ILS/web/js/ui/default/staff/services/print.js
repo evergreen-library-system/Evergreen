@@ -79,6 +79,8 @@ function($q , $window , $timeout , $http , egHatch , egAuth , egIDL , egOrg , eg
         }
 
         return promise.then(function(html) {
+            // For good measure, wrap the compiled HTML in container tags.
+            html = "<html><body>" + html + "</body></html>";
             return egHatch.remotePrint(
                 args.context || 'default',
                 args.content_type, 
@@ -214,15 +216,12 @@ function($q , $window , $timeout , $http , egHatch , egAuth , egIDL , egOrg , eg
 
                     var resp = $compile($scope.elm.contents())(sub_scope);
 
+
                     var deferred = $q.defer();
                     $timeout(function(){
-                        // give the $digest a chance to complete then
-                        // resolve with the compiled HTML from our
-                        // print container
-
-                        deferred.resolve(
-                            resp.contents()[0].parentNode.innerHTML
-                        );
+                        // give the $digest a chance to complete then resolve
+                        // with the compiled HTML from our print container
+                        deferred.resolve($scope.elm.html());
                     });
 
                     return deferred.promise;
