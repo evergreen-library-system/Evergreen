@@ -3,6 +3,97 @@ Evergreen 2.11 Release Notes
 :toc:
 :numbered:
 
+Evergreen 2.11.3
+----------------
+This is a security release that also contains several other bugfixes improving
+on Evergreen 2.11.2.  All users of Evergreen 2.11.x are recommended to upgrade
+to 2.11.3 as soon as possible.
+
+Security Issue: Credit Processor Stripe Settings Permissions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Unprivileged users can retrieve organizational unit setting values for
+setting types lacking a "view" permission.  When the feature adding
+Stripe credit card processing was added, the upgrade script neglected
+to add the VIEW_CREDIT_CARD_PROCESSING permission to the
+organizational unit setting type.  This means that anyone can retrieve
+and view the settings for Stripe credit card processing.
+
+Any system that upgraded from Evergreen version 2.5 to 2.6 is
+affected.  If you use Stripe for credit card processing, it is
+strongly recommended that you apply this upgrade.  Even if you do not
+use Stripe, applying this upgrade is still recommended.  If you did
+not upgrade from version 2.5 to 2.6 of Evergreen, but started with a
+later version, applying this upgrade is harmless.
+
+If you are not ready to perform a full upgrade, and if you use Stripe,
+you can protect the settings by running the following two SQL statements:
+
+[source,sql]
+----
+UPDATE config.org_unit_setting_type
+    SET view_perm = (SELECT id FROM permission.perm_list
+        WHERE code = 'VIEW_CREDIT_CARD_PROCESSING' LIMIT 1)
+    WHERE name LIKE 'credit.processor.stripe%' AND view_perm IS NULL;
+
+UPDATE config.org_unit_setting_type
+    SET update_perm = (SELECT id FROM permission.perm_list
+        WHERE code = 'ADMIN_CREDIT_CARD_PROCESSING' LIMIT 1)
+    WHERE name LIKE 'credit.processor.stripe%' AND update_perm IS NULL;
+----
+
+Other Fixes
+~~~~~~~~~~~
+Evergreen 2.11.3 also contains the following bugfixes:
+
+* A fix to correctly apply floating group settings when performing
+no-op checkins.
+* An improvement to the speed of looking up patrons by their username;
+this is particularly important for large databases.
+* A fix to properly display the contents of temporary lists ('My List') in the
+public catalog, as well as a fix of the HTML coding of that page.
+* A fix to the Spanish translation of the public catalog that could
+cause catalog searches to fail.
+* A fix of a problem where certain kinds of requests of information
+about the organizational unit hierarchy to consume all available
+`open-ils.cstore` backends.
+* A fix to allow staff to use the 'place another hold' link without
+running into a user interface loop.
+* A fix to the 'Edit Due Date' form in the web staff client.
+* A fix to the definition of the stock 'Full Overlay' merge profile.
+* A fix to sort billing types in alphabetical order in the web staff
+client.
+* A fix to the display of the popularity score in the public catalog.
+* A fix to the 'return to grouped search results' link in the public
+catalog.
+* A fix to allow pre-cat checkouts in the web staff client without requiring
+a circulation modifier.
+* A fix to how Action/Trigger event definitions with nullable grouping
+fields handle null values.
+* Other typo and documentation fixes.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+testing and documentation patches to the 2.11.3 point release of
+Evergreen:
+
+* Ben Shum
+* Bill Erickson
+* Blake Henderson
+* Chris Sharp
+* Christine Burns
+* Dan Wells
+* Galen Charlton
+* Jane Sandberg
+* Jason Boyer
+* Jason Etheridge
+* Jason Stephenson
+* Jeanette Lundgren
+* Josh Stompro
+* Kathy Lussier
+* Kyle Huckins
+* Mike Rylander
+
 Evergreen 2.11.2
 ----------------
 
