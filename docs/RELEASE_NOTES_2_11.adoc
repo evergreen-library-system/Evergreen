@@ -41,6 +41,13 @@ UPDATE config.org_unit_setting_type
     WHERE name LIKE 'credit.processor.stripe%' AND update_perm IS NULL;
 ----
 
+Missing Upgrade Script Notice
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+It was recently discovered that the 2.11.2 tarball was missing the
+upgrade script for 2.11.1.  If you upgraded straight to 2.11.2 from
+2.11.0 or prior, please make sure to apply the
+2.11.0-2.11.1-upgrade-db.sql before moving on to the 2.11.3 script.
+
 Other Fixes
 ~~~~~~~~~~~
 Evergreen 2.11.3 also contains the following bugfixes:
