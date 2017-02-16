@@ -1,3 +1,443 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 24581ad294799024e5a082461573f42c0e422b83
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Mon Feb 24 12:09:57 2014 -0500
+
+    Bump OpenILS.pm version
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit a193de552ed912e1a46fa018ca6899cf22ddc82c
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Feb 16 13:07:59 2017 -0500
+
+    Add note about missing upgrade script to release notes
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+7	0	docs/RELEASE_NOTES_2_11.adoc
+
+commit 83f86077b161163990f37a423720e0c0864d95cc
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Thu Feb 16 12:46:13 2017 -0500
+
+    release notes for Evergreen 2.11
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+91	0	docs/RELEASE_NOTES_2_11.adoc
+
+commit 9b231f9c95a35e6ac22faa3cea4e405ec49b57cf
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Thu Feb 16 12:13:05 2017 -0500
+
+    LP#16663435: stamp database update
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    
+    Conflicts:
+    	Open-ILS/src/sql/Pg/002.schema.config.sql
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+15	0	Open-ILS/src/sql/Pg/upgrade/1018.data.coust_view_perms_stripe.sql
+0	15	Open-ILS/src/sql/Pg/upgrade/XXXX.data.coust_view_perms_stripe.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1018.data.coust_view_perms_stripe.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.coust_view_perms_stripe.sql
+
+commit 528a62ded5946b89d8f82de5579431e4e045666f
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Tue Feb 14 15:12:47 2017 -0500
+
+    LP#16663435 - Release Note for Missing Stripe Settings Permissions
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+15	0	docs/RELEASE_NOTES_NEXT/Administration/stripe_settings_permission.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Administration/stripe_settings_permission.adoc
+
+commit 0cd4e92b140f27ec28f8a33768e242b5e1259106
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Tue Feb 14 13:27:31 2017 -0500
+
+    LP#16663435 - Stripe org settings lack view permissions.
+    
+    Unprivileged users can retrieve organizational unit setting values
+    for setting types lacking a "view" permission.  When the feature adding
+    Stripe credit card processing was added, the upgrade script neglected to
+    add the VIEW_CREDIT_CARD_PROCESSING permission to the organizational unit
+    setting type (which was included in 0396.data.org-setting-payflowpro.sql).
+    
+    Fresh installs are not affected, but anyone who upgraded through 0863.data.stripe-payments.sql
+    (included in the 2.5.3-2.6.0-upgrade-db.sql version upgrade script) and is
+    using Stripe credit card processing should run this script.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+15	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.coust_view_perms_stripe.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.coust_view_perms_stripe.sql
+
+commit 25d4b1833277e8564496396dd135aae2ef2bed72
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Wed Feb 15 17:25:49 2017 -0500
+
+    Forward-port 2.11.2 Upgrade Script
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+85	0	Open-ILS/src/sql/Pg/version-upgrade/2.11.1-2.11.2-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.11.1-2.11.2-upgrade-db.sql
+
+commit 144763714beceb16e8b3e78c137b6a7a1814eb29
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Wed Feb 15 10:26:39 2017 -0500
+
+    LP#1639236: fix display of temporary list items
+    
+    Peer to the fix for bug 1638921.
+    
+    To test
+    -------
+    [1] Apply patch.
+    [2] In public catalog, add one or more bibs to the temporary
+        list ('My List').
+    [3] Click the 'View List' button, then verify that the titles
+        are displayed.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/AppUtils.pm
+
+commit b442a17ad26a34d35197079e1f12128773f1ae81
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Tue Nov 22 14:35:58 2016 -0500
+
+    LP 1473054: No-op Checkin Should Not Always Float a Floating Copy.
+    
+    Prior to this patch, a no-op checkin would not check if a copy should
+    float using the evergreen.can_float() function.  It would simply float
+    the copy to the org_unit where the checkin happened if the copy had a
+    float value set.
+    
+    This commit changes the behavior to use evergreen.can_float() to
+    determine if the copy should float to the org_unit where the checkin
+    happened.  This change makes the behavior consistent with a regular
+    checkin.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Josh Stompro <stomproj@larl.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+16	4	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Circulate.pm
+
+commit bef6834b077b2f6786bc6c0682b25dac4ae8c52d
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Tue Dec 6 13:42:58 2016 -0500
+
+    LP#1647819 - Missing closing angle bracket in anon_list.tt2
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/templates/opac/parts/anon_list.tt2
+
+commit ba2737276eb72774e2ec00d3b6b9e7b11493a355
+Author: Ben Shum <ben@evergreener.net>
+Date:   Sat Feb 11 18:41:42 2017 -0500
+
+    LP#1652098: backport es-ES.po for tpac
+    
+    To address the concerns from this bug, backporting the tpac language files
+    before changes in master template for 2.12 forces us to drift too much to
+    allow for smooth sync.
+    
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+44	43	build/i18n/po/tpac/es-ES.po
+
+commit cd568ce696e548f0bc1314ec9336f21f961b7294
+Author: Ben Shum <ben@evergreener.net>
+Date:   Fri Sep 9 10:12:43 2016 -0400
+
+    LP#1621412: Fix typo in acq li_attr.tt2
+    
+    As noticed by Eva Cerninakova, there is a mispelling for "identifier"
+    in this file. Fixed.
+    
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/templates/acq/settings/li_attr.tt2
+1	1	build/i18n/po/acq/acq.pot
+1	1	build/i18n/po/acq/cs-CZ.po
+
+commit 071bbcb3adf1c37b5a004ea182b90c62ddeba200
+Author: Jason Boyer <jboyer@library.in.gov>
+Date:   Mon Feb 13 16:49:18 2017 -0500
+
+    LP1664376: Correct Closing Tag for Badges on record summary page
+    
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/templates/opac/parts/record/summary.tt2
+
+commit 2167e553aa61159bf96c3f28d03436f1c0df291d
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Tue Feb 14 09:17:22 2017 -0500
+
+    LP#1643932: stamp schema update
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+8	0	Open-ILS/src/sql/Pg/upgrade/1013.schema.actor_usr_usrname_unaccent_idx.sql
+0	8	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.actor_usr_usrname_unaccent_idx.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1013.schema.actor_usr_usrname_unaccent_idx.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.actor_usr_usrname_unaccent_idx.sql
+
+commit a33fcc42f8f2cd9e1b578cf296ecc2b1712e1e2f
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Mon Dec 5 17:46:02 2016 -0500
+
+    LP#1643932 - Fix search slowness when patron searching by username
+    
+    Bug 1501781 introduced a feature to improve patron name searching,
+    but which was causing very slow queries when searching by username.
+    Adding an index to username solves the slowness problem.
+    
+    Suggested by Mike Rylander.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	0	Open-ILS/src/sql/Pg/005.schema.actors.sql
+8	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.actor_usr_usrname_unaccent_idx.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.actor_usr_usrname_unaccent_idx.sql
+
+commit 422ef9560227739be2c90d3af7434965e9ab1707
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Tue Feb 14 00:44:06 2017 -0500
+
+    LP#1663663: Stamping upgrade script for overlay merge profile fix
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+14	0	Open-ILS/src/sql/Pg/upgrade/1012.data.fix_full_overlay_vmp.sql
+0	14	Open-ILS/src/sql/Pg/upgrade/XXXX.data.fix_full_overlay_vmp.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1012.data.fix_full_overlay_vmp.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.fix_full_overlay_vmp.sql
+
+commit f0349f16954d4a712e33bf021693926af02bffcd
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Fri Feb 10 11:45:12 2017 -0500
+
+    LP#1663663: seed data upgrade script
+    
+    This patch attempts to repair the Full Overlay merge profile
+    in 2.11 and 2.12-masterish databases.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+14	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.fix_full_overlay_vmp.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.fix_full_overlay_vmp.sql
+
+commit beb42bdb1a5ef87cac26f29f2e7d739c6a8e6c99
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Thu Jan 5 16:36:21 2017 +0000
+
+    LP#1663663: unbreak Full Overlay merge profile
+    
+    This patch fixes a regression introduced in 2.11 that had
+    the effect of making the stock Full Overlay merge profile
+    act like a match-only merge that also updates the bib source.
+    
+    To test
+    -------
+    [1] After applying the patches, verify that the Full Overlay
+        merge profile now fullly updates the target bib record.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	1	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+
+commit d3b5caa02dacc9453c114109c29faa674bc573c3
+Author: Kyle Huckins <khuckins@catalystdevworks.com>
+Date:   Wed Oct 5 09:08:27 2016 -0700
+
+    LP#1528919: Alphabetise non-catalogued item types
+    
+    Use an orderBy expression on the lists of noncat types
+    on the patron checkout page and inhouse-use page.
+    
+    Signed-off-by: Kyle Huckins <khuckins@catalystdevworks.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/templates/staff/circ/in_house_use/index.tt2
+1	1	Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2
+
+commit d66d29de0053908703eaafd6271e519a6f8540ac
+Author: Kyle Huckins <khuckins@catalystdevworks.com>
+Date:   Tue Oct 4 13:24:54 2016 -0700
+
+    LP#1528911 Billing Type Alphabetical
+    
+    Add an orderBy expression to the options in the
+    billing type selection box.
+    
+    Signed-off-by: Kyle Huckins <khuckins@catalystdevworks.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/templates/staff/circ/share/t_bill_patron_dialog.tt2
+
+commit 4db888b8c32d44cfe474c8e0c520c405b137c16d
+Author: Jeanette Lundgren <jlundgren@cwmars.org>
+Date:   Tue Jan 10 15:21:05 2017 -0500
+
+    docs: LP1655400 Phonelist.pm broken formatting
+    
+    Signed-off-by: Jeanette Lundgren <jlundgren@cwmars.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+8	8	docs/admin/phonelist.txt
+
+commit abdb8f289159a01a62b8422732e28d635c136817
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Jan 3 11:59:26 2017 -0500
+
+    LP#1653742 Copy tree authoritative API share cstores
+    
+    Avoid opening one cstore connection per requested org unit in the
+    open-ils.cat.asset.copy_tree.retrieve.authoritative API by creating a
+    single shared cstore connection at the top of the API shared by all
+    API actions.
+    
+    To test:
+    
+    1. In one terminal:
+    
+    % tail osrfsys.log | grep transaction.begin
+    
+    2. In another terminal:
+    
+    srfsh% request open-ils.cat
+    open-ils.cat.asset.copy_tree.retrieve.authoritative "AUTOTOKEN", 217,
+    [1,2,3,4,5,6,7,8,9]
+    
+    3. 9 cstore transactions are opened before patching.  After patching,
+    only 1 is created.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+10	3	Open-ILS/src/perlmods/lib/OpenILS/Application/Cat.pm
+
+commit 0830611fec2a055209759a17fc42ef24ba5499d9
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Fri Jan 6 11:13:26 2017 -0500
+
+    LP#1654534: Prevent loop that occurs when staff us 'place another hold' link
+    
+    A hidden field that tracked the page the user was on before placing a hold was
+    inadvertently removed in another bug fix. As a result, if staff used the link
+    to place another hold on the same title, they were stuck in a loop where they
+    couldn't return to the source page after hitting the 'continue' button. This
+    commit restores that hidden field.
+    
+    Also provides a fix so that hold labels used in the place another hold link
+    can be translated.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+1	0	Open-ILS/src/templates/opac/parts/place_hold.tt2
+3	3	Open-ILS/src/templates/opac/parts/place_hold_result.tt2
+
+commit 6fccc214d274efe5f8cb947e1c0ba1672245112b
+Author: Kyle Huckins <khuckins@catalystdevworks.com>
+Date:   Tue Oct 4 15:55:23 2016 -0700
+
+    LP#1537217 Precat Checkout Circ Modifier
+    
+    Precat checkout in the browser client no longer
+    requires the use of a circ modifier(when circ
+    modifiers exist).  Similarly, no circ modifier
+    is chosen by default.
+    
+    Signed-off-by: Kyle Huckins <khuckins@catalystdevworks.com>
+    Signed-off-by: Christine Burns <christine.burns@bc.libraries.coop>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	0	Open-ILS/src/templates/staff/circ/share/t_precat_dialog.tt2
+2	2	Open-ILS/web/js/ui/default/staff/circ/services/circ.js
+
+commit ef2124b022ab718f168731b8991bfe1aaa605239
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Tue Jan 31 12:35:05 2017 -0500
+
+    LP#1660059: Protect against null value in group field
+    
+    If a nullable event grouping field is configured, and a null value is indeed
+    encountered when pulling together events, the Action/Trigger code will exit
+    unceremoniously.  To prevent this, we will now collect events with either
+    a null grouping object or grouping field, and use a new batch invalidation
+    API call to get rid of them as quickly as possible after group sorting is
+    complete.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+10	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Trigger.pm
+21	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Trigger/Event.pm
+
+commit 29513e911158b5063cdf20727e805033d57e292e
+Author: blake <blake@mobiusconsortium.org>
+Date:   Fri Jan 27 10:57:12 2017 -0600
+
+    LP1659892: Remove page from URL in metarecord navigation
+    
+    Scrubs the 'page' URI value from the "Return to Grouped Search Results"
+    preventing the resulting page from showing the currently selected page.
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	1	Open-ILS/src/templates/opac/results.tt2
+
+commit a876d9b7aacefe068415a1fcd060d4eb5174fe53
+Author: Kyle Huckins <khuckins@catalystdevworks.com>
+Date:   Thu Jan 19 12:35:00 2017 -0800
+
+    LP#1657466 - Edit Due Date Doesn't Submit
+    
+    Change references of nonexistant scope variable args.date
+    to args.due_date, enabling edit due date to correctly
+    submit.
+    
+    Signed-off-by: Kyle Huckins <khuckins@catalystdevworks.com>
+    
+     Changes to be committed:
+    	modified:   Open-ILS/web/js/ui/default/staff/circ/patron/items_out.js
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+2	2	Open-ILS/web/js/ui/default/staff/circ/patron/items_out.js
+
+commit 67fa976d75ba282eaaacdb3af5795570ef78e9fd
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Thu Jan 26 18:07:55 2017 -0800
+
+    Docs: authority_control_field script --days-back feature
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+1	0	docs/development/support_scripts.txt
