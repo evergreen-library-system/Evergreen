@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('YYYY', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1025', :eg_version);
 
 -- Add Arabic (Jordan) to i18n_locale table as a stock language option
 INSERT INTO config.i18n_locale (code,marc_code,name,description,rtl)
