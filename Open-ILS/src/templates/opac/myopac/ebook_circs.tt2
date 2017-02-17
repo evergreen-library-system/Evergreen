@@ -29,8 +29,8 @@
             class="table_no_border_space table_no_cell_pad item_list_padding">
             <thead>
             <tr>
-                <th>[% sort_head("sort_title", l("Title")) %]</th>
-                <th>[% sort_head("author", l("Author")) %]</th>
+                <th>[% l("Title") %]</th>
+                <th>[% l("Author") %]</th>
                 <th>[% l("Due Date") %]</th>
                 <th>[% l("Actions") %]</th>
             </tr>
