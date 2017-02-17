@@ -136,14 +136,14 @@ INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, 
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, facet_xpath, facet_field, authority_xpath, browse_xpath ) VALUES 
     (10, 'author', 'other', oils_i18n_gettext(10, 'Other Author', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:name[@type='personal' and not(mods32:role/mods32:roleTerm[text()='creator'])]$$, $$//*[local-name()='namePart']$$, TRUE, '//@xlink:href',$$//*[local-name()='namePart']$$ ); -- /* to fool vim */;
 
-INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, facet_field, authority_xpath ) VALUES 
-    (11, 'subject', 'geographic', oils_i18n_gettext(11, 'Geographic Subject', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:subject/mods32:geographic$$, TRUE, '//@xlink:href' );
+INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, facet_field, authority_xpath, browse_field ) VALUES 
+    (11, 'subject', 'geographic', oils_i18n_gettext(11, 'Geographic Subject', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:subject/mods32:geographic$$, TRUE, '//@xlink:href', FALSE );
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, facet_xpath, facet_field, authority_xpath ) VALUES 
     (12, 'subject', 'name', oils_i18n_gettext(12, 'Name Subject', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:subject/mods32:name$$, $$//*[local-name()='namePart']$$, TRUE, '//@xlink:href' ); -- /* to fool vim */;
-INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, facet_field, authority_xpath ) VALUES 
-    (13, 'subject', 'temporal', oils_i18n_gettext(13, 'Temporal Subject', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:subject/mods32:temporal$$, TRUE, '//@xlink:href' );
-INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, facet_field, authority_xpath ) VALUES 
-    (14, 'subject', 'topic', oils_i18n_gettext(14, 'Topic Subject', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:subject/mods32:topic$$, TRUE, '//@xlink:href' );
+INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, facet_field, authority_xpath, browse_field ) VALUES 
+    (13, 'subject', 'temporal', oils_i18n_gettext(13, 'Temporal Subject', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:subject/mods32:temporal$$, TRUE, '//@xlink:href', FALSE );
+INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, facet_field, authority_xpath, browse_field ) VALUES 
+    (14, 'subject', 'topic', oils_i18n_gettext(14, 'Topic Subject', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:subject/mods32:topic$$, TRUE, '//@xlink:href', FALSE );
 --INSERT INTO config.metabib_field ( id, field_class, name, format, xpath ) VALUES 
 --  ( id, field_class, name, xpath ) VALUES ( 'subject', 'genre', 'mods32', $$//mods32:mods/mods32:genre$$ );
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, browse_field ) VALUES 
@@ -188,6 +188,29 @@ INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, 
     (33, 'identifier', 'genre', oils_i18n_gettext(33, 'Genre', 'cmf', 'label'), 'marcxml', $$//marc:datafield[@tag='655']$$, FALSE, TRUE, $$//*[local-name()='subfield' and contains('abvxyz',@code)]$$, ' -- ' ); -- /* to fool vim */;
 
 UPDATE config.metabib_field SET joiner = ' -- ' WHERE field_class = 'subject' AND name NOT IN ('name', 'complete');
+
+INSERT INTO config.metabib_field ( id, field_class, name, label, 
+     format, xpath, search_field, browse_field, authority_xpath, joiner ) VALUES
+    (34, 'subject', 'topic_browse', oils_i18n_gettext(34, 'Topic Browse', 'cmf', 'label'), 
+     'mods32', $$//mods32:mods/mods32:subject[local-name(./*[1]) = "topic"]$$, FALSE, TRUE, '//@xlink:href', ' -- ' ); -- /* to fool vim */;
+
+INSERT INTO config.metabib_field ( id, field_class, name, label, 
+     format, xpath, search_field, browse_field, authority_xpath, joiner ) VALUES
+    (35, 'subject', 'geographic_browse', oils_i18n_gettext(35, 'Geographic Name Browse', 'cmf', 'label'), 
+     'mods32', $$//mods32:mods/mods32:subject[local-name(./*[1]) = "geographic"]$$, FALSE, TRUE, '//@xlink:href', ' -- ' ); -- /* to fool vim */;
+
+INSERT INTO config.metabib_field ( id, field_class, name, label, 
+     format, xpath, search_field, browse_field, authority_xpath, joiner ) VALUES
+    (36, 'subject', 'temporal_browse', oils_i18n_gettext(36, 'Temporal Term Browse', 'cmf', 'label'), 
+     'mods32', $$//mods32:mods/mods32:subject[local-name(./*[1]) = "temporal"]$$, FALSE, TRUE, '//@xlink:href', ' -- ' ); -- /* to fool vim */;
+
+INSERT INTO config.metabib_field_index_norm_map (field,norm)
+    SELECT  m.id,
+            i.id
+      FROM  config.metabib_field m,
+        config.index_normalizer i
+      WHERE i.func IN ('naco_normalize')
+            AND m.id IN (34, 35, 36);
 
 SELECT SETVAL('config.metabib_field_id_seq', GREATEST(1000, (SELECT MAX(id) FROM config.metabib_field)));
 
@@ -13230,19 +13253,19 @@ INSERT INTO authority.control_set_bib_field_metabib_field_map (bib_field, metabi
 
     SELECT  DISTINCT b.id AS bib_field, m.id AS metabib_field
       FROM  authority.control_set_bib_field b JOIN authority.control_set_authority_field a ON (b.authority_field = a.id), config.metabib_field m
-      WHERE a.tag = '148' AND m.name = 'temporal'
+      WHERE a.tag = '148' AND m.name = 'temporal_browse'
 
         UNION
 
     SELECT  DISTINCT b.id AS bib_field, m.id AS metabib_field
       FROM  authority.control_set_bib_field b JOIN authority.control_set_authority_field a ON (b.authority_field = a.id), config.metabib_field m
-      WHERE a.tag = '150' AND m.name = 'topic'
+      WHERE a.tag = '150' AND m.name = 'topic_browse'
 
         UNION
 
     SELECT  DISTINCT b.id AS bib_field, m.id AS metabib_field
       FROM  authority.control_set_bib_field b JOIN authority.control_set_authority_field a ON (b.authority_field = a.id), config.metabib_field m
-      WHERE a.tag = '151' AND m.name = 'geographic'
+      WHERE a.tag = '151' AND m.name = 'geographic_browse'
 
         UNION
 
