@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('1020', :eg_version);
+
 CREATE OR REPLACE FUNCTION actor.org_unit_ancestor_setting_batch_by_org(
     setting_name TEXT, org_ids INTEGER[]) 
     RETURNS SETOF actor.org_unit_setting AS 

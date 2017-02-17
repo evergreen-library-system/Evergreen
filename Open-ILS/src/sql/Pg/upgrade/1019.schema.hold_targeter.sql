@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('1019', :eg_version);
+
 CREATE OR REPLACE FUNCTION
     action.hold_request_regen_copy_maps(
         hold_id INTEGER, copy_ids INTEGER[]) RETURNS VOID AS $$
