@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1021', :eg_version);
 
 -- Add missing permissions noted in LP 1517137 adjusting those added manually and ignoring those already in place.
 
