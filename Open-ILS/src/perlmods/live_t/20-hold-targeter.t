@@ -17,17 +17,17 @@ my $e = new_editor();
 $script->bootstrap;
 $e->init;
 
-# == Targeting Concerto hold 1.  Title hold.
+# == Targeting Concerto hold 67.  Title hold.
 
-my $hold_id = 1;
+my $hold_id = 67;
 my $result = $targeter->target(hold => $hold_id)->[0];
 
 ok($result->{success}, "Targeting hold $hold_id returned success");
 
-# Concerto hold 1 targets record 2 with a pickup_lib of 5.  
-# There are several viable copies with circ lib 5.
+# Concerto hold 67 targets record 70 with a pickup_lib of 4.  
+# There are several viable copies with circ lib 4.
 my $current_copy = $e->retrieve_asset_copy($result->{target});
-is($current_copy->circ_lib.'', '5', 'Targeted copy lives at pickup lib');
+is($current_copy->circ_lib.'', '4', 'Targeted copy lives at pickup lib');
 
 my $maps = $e->search_action_hold_copy_map([
     {hold => $hold_id},
@@ -37,9 +37,9 @@ my $maps = $e->search_action_hold_copy_map([
     }
 ]);
 
-is(scalar(@$maps), 25, "Hold $hold_id has 25 mapped potential copies");
+is(scalar(@$maps), 29, "Hold $hold_id has 29 mapped potential copies");
 
-is(scalar(grep {$_->target_copy->call_number->record != 2} @$maps), 0,
+is(scalar(grep {$_->target_copy->call_number->record != 70} @$maps), 0,
     'All targeted copies belong to the targeted bib record');
 
 # Retarget to confirm a new copy is selected and that the previously
@@ -48,7 +48,7 @@ is(scalar(grep {$_->target_copy->call_number->record != 2} @$maps), 0,
 $result = $targeter->target(hold => $hold_id)->[0];
 
 isnt($result->{target}, $current_copy->id, 
-    'Second targeter run on hold 1 selected targeted a different copy');
+    'Second targeter run on hold 67 selected targeted a different copy');
 
 my $unfulfilled = $e->search_action_unfulfilled_hold_list(
     {hold => $hold_id, current_copy => $current_copy->id})->[0];
@@ -64,8 +64,8 @@ is($result->{target}, $prev_target,
 
 $maps = $e->search_action_hold_copy_map({hold => $hold_id});
 
-is(scalar(@$maps), 25, 
-    "Hold $hold_id retains 25 mapped potential copies with --skip-viable");
+is(scalar(@$maps), 29, 
+    "Hold $hold_id retains 29 mapped potential copies with --skip-viable");
 
 
 # == Metarecord hold tests
@@ -89,11 +89,11 @@ $maps = $e->search_action_hold_copy_map([
     }
 ]);
 
-is(scalar(@$maps), 22, "Hold $hold_id has 22 mapped potential copies");
+is(scalar(@$maps), 31, "Hold $hold_id has 31 mapped potential copies");
 
-# Only 1 bib record (45) links to metarecord 42.  It also satisfies the 
+# Only 1 bib record (42) links to metarecord 42.  It also satisfies the 
 # holdable_format criteria.
-is(scalar(grep {$_->target_copy->call_number->record != 45} @$maps), 0,
+is(scalar(grep {$_->target_copy->call_number->record != 42} @$maps), 0,
     'All targeted copies belong to the targeted bib record');
 
 # Bib 101 has mr_hold_format 'book'.  Link it to the targeted metabib
@@ -107,7 +107,7 @@ $e->update_metabib_metarecord_source_map($mrmap_101) or die $e->die_event;
 
 # Temporarily point the original bib (42) at another metarecord
 
-my $mrmap_42 = $e->search_metabib_metarecord_source_map({source => 45})->[0];
+my $mrmap_42 = $e->search_metabib_metarecord_source_map({source => 42})->[0];
 my $orig_42_mr = $mrmap_42->metarecord;
 $mrmap_42->metarecord(1);
 $e->update_metabib_metarecord_source_map($mrmap_42) or die $e->die_event;
