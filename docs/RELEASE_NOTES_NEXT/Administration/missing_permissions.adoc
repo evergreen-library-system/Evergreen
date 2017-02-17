@@ -1,0 +1,7 @@
+Addition of missing permissions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Required permissions that were previously missing from the stock data have now
+been added. If Evergreen sites have already manually added these permissions,
+the upgrade script will remove the old permission and create the new one,
+maintaining any maps to permission groups, with the stock permission ID.
+
