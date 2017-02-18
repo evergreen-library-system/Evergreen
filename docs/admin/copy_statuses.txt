@@ -20,6 +20,12 @@ client.
 active date to this status will set the active date. If the copy already has
 an active date, then no changes will be made to the active date. If unchecked,
 this status will never set the copy's active date. 
+* Is Available - If checked, copies with this status will appear in catalog 
+searches where "limit to available" is selected as a search filter.  Also, 
+copies with this status will check out without status warnings.
+By default, the "Available" and "Reshelving" statuses have the "Is Available" 
+flag set. The flag may be applied to local/custom statuses via the copy status 
+admin interface.
   
 Evergreen comes pre-loaded with a number of copy statuses.
 
