@@ -106,6 +106,13 @@ $_TT_helpers = {
         return new_editor()->retrieve_actor_org_unit($org_id);
     },
 
+    get_org_unit_ancestor_at_depth => sub {
+      my $org_id = shift;
+      my $depth = shift;
+      $org_id = $org_id->id if ref $org_id;
+      return new_editor()->retrieve_actor_org_unit($U->org_unit_ancestor_at_depth($org_id, $depth));
+    }, 
+
     # given a copy, returns the title and author in a hash
     get_copy_bib_basics => sub {
         my $copy_id = shift;

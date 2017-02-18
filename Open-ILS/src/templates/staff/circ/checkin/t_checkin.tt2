@@ -112,13 +112,13 @@
         <button class="btn btn-default" 
           ng-click="print_receipt()">[% l('Print Receipt') %]</button>
       </div>
-      <div class="checkbox" ng-if="using_hatch">
+      <div class="checkbox" ng-if="using_hatch_printer">
         <label>
           <input ng-model="show_print_dialog" type="checkbox"/>
           [% l('Show Print Dialog') %]
         </label>
       </div>
-      <div class="pad-horiz" ng-if="using_hatch"></div>
+      <div class="pad-horiz" ng-if="using_hatch_printer"></div>
       <div class="checkbox">
         <label>
           <input ng-model="trim_list" type="checkbox"/>

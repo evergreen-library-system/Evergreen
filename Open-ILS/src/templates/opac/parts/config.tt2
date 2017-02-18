@@ -167,6 +167,9 @@ search.basic_config = {
     none_label => l("All Formats"),
 };
 
+# Make metarecord search the default.
+#search.metarecord_default = 1;
+
 ##############################################################################
 # Show Google Book Previews
 # Set to 1 or 'true' to enable
@@ -214,5 +217,13 @@ ctx.exclude_electronic_checkbox = 0;
 # TIME_FORMAT = '%H:%M:%S'; # for 16:32:32 (24 hour) format
 # TIME_FORMAT = '%H:%M'; # for 16:32 (24 hour) format
 ##############################################################################
+
+##############################################################################
+# Obalkyknih.cz support
+##############################################################################
+# Obalkyknihy.cz is free Czech service providing added content and book covers
+# Set to 'true' to enable
+##############################################################################
+# obalkyknih_cz.enabled = 'false';
 
 %]

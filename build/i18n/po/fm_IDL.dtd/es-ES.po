@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2016-08-25 17:08-0400\n"
-"PO-Revision-Date: 2016-07-07 17:41+0000\n"
+"PO-Revision-Date: 2016-11-09 16:31+0000\n"
 "Last-Translator: Anahi Valdez <avaldez@emeralddata.net>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2016-08-26 05:23+0000\n"
-"X-Generator: Launchpad (build 18179)\n"
+"X-Launchpad-Export-Date: 2016-11-11 05:47+0000\n"
+"X-Generator: Launchpad (build 18255)\n"
 
 #: class.stgu.label:9550
 msgid "User Stage"
@@ -594,7 +594,7 @@ msgstr "SAN"
 
 #: field.rp.require_horizon.label:277
 msgid "Require Horizon"
-msgstr ""
+msgstr "Requiere Horizonte"
 
 #: class.ccls.label:1976
 msgid "Circulation Limit Set"
@@ -876,7 +876,7 @@ msgstr "Los mapas de entrada Stat-Cat"
 
 #: field.rb.popularity_parameter.label:316
 msgid "Popularity Parameter"
-msgstr ""
+msgstr "Parámetro de Popularidad"
 
 #: class.bravm.label:4602 field.bravm.id.label:4604
 msgid "Reservation Attribute Value Map"
@@ -913,7 +913,7 @@ msgstr "Unidad organizativa Tipo del ajuste de registro"
 
 #: class.rrbs.label:243 class.rb.label:291
 msgid "Statistical Popularity Badge"
-msgstr ""
+msgstr "Insignia de Popularidad Estadística"
 
 #: field.combcirc.usr_birth_year.label:4253
 #: field.acirc.usr_birth_year.label:4341
@@ -1060,7 +1060,7 @@ msgstr "Estado del Pub"
 
 #: field.rb.importance_interval.label:305
 msgid "Importance Interval"
-msgstr ""
+msgstr "Intervalo de Importancia"
 
 #: field.aufhmxl.max.label:9708
 msgid "Max Loop"
@@ -1225,7 +1225,7 @@ msgstr "Anterior Parada"
 
 #: field.rrbs.badge.label:251
 msgid "Badge"
-msgstr ""
+msgstr "Insignia"
 
 #: field.acqpa.address_type.label:7831
 msgid "Address Type"
@@ -1587,7 +1587,7 @@ msgstr "Final de registro de objetivo"
 
 #: field.rb.last_calc.label:315
 msgid "Last Refresh Time"
-msgstr ""
+msgstr "Último Tiempo de Actualización"
 
 #: field.acn.uris.label:2947
 msgid "URIs"
@@ -1632,7 +1632,7 @@ msgstr "Los campos MARC aplanada"
 
 #: field.rp.require_importance.label:279
 msgid "Require Importance"
-msgstr ""
+msgstr "Requiere Importancia"
 
 #: class.acpn.label:3561
 msgid "Copy Note"
@@ -1657,7 +1657,7 @@ msgstr "Calendario Fiscal"
 
 #: field.vmp.update_bib_source.label:203
 msgid "Update Bib. Source"
-msgstr ""
+msgstr "Actualizar Bib. Fuente"
 
 #: class.qseq.label:9756
 msgid "Query Sequence"
@@ -1682,7 +1682,7 @@ msgstr "Debido Virtual Fecha / Hora"
 
 #: field.rb.src_filter.label:310
 msgid "Bib Source Filter"
-msgstr ""
+msgstr "Filtro de Fuente del bib"
 
 #: field.circ.unrecovered.label:4177 field.bresv.unrecovered.label:4551
 #: field.mbt.unrecovered.label:6515
@@ -1821,7 +1821,7 @@ msgstr "Tipo de ajuste de Set"
 
 #: field.rp.func.label:276
 msgid "Population Function"
-msgstr ""
+msgstr "Función Población"
 
 #: field.bresv.xact_start.label:4550 field.mbt.xact_start.label:6514
 #: field.rccbs.xact_start.label:10950
@@ -2096,7 +2096,7 @@ msgstr "Comprobando Fecha/Hora de Escaneo"
 
 #: field.rb.horizon_age.label:303
 msgid "Age Horizon"
-msgstr ""
+msgstr "Horizonte de la Edad"
 
 #: field.acqinv.payment_auth.label:7723
 msgid "Payment Auth"
@@ -2405,7 +2405,7 @@ msgstr "Requerido"
 
 #: class.rp.label:266
 msgid "Statistical Popularity Parameter"
-msgstr ""
+msgstr "Parámetro de Popularidad Estadística"
 
 #: field.rccc.dewey_range_hundreds.label:10895
 msgid "Dewey Range - Hundreds"
@@ -2462,7 +2462,7 @@ msgstr "Artículo línea texto de alerta"
 
 #: field.rrbs.score.label:253
 msgid "Score"
-msgstr ""
+msgstr "Puntuación:"
 
 #: class.mrd.label:3816
 msgid "Basic Record Descriptor"
@@ -2549,11 +2549,11 @@ msgstr "Idioma"
 
 #: field.rb.recalc_interval.label:312
 msgid "Recalculation Interval"
-msgstr ""
+msgstr "Intervalo de Recálculo"
 
 #: field.rb.circ_mod_filter.label:309
 msgid "Circ Mod Filter"
-msgstr ""
+msgstr "Filtro Circ Mod"
 
 #: field.sunit.detailed_contents.label:5167
 msgid "Detailed Contents"
@@ -2959,7 +2959,7 @@ msgstr "Se Agrupa Por"
 
 #: field.rb.fixed_rating.label:313
 msgid "Fixed Rating"
-msgstr ""
+msgstr "Calificación Fija"
 
 #: field.cmrcfld.tag.label:903 field.cmrcsubfld.tag.label:931
 #: field.crad.tag.label:962
@@ -3590,7 +3590,7 @@ msgstr "Alias de la tabla"
 
 #: field.stgs.value.label:9633
 msgid "User Setting Value"
-msgstr ""
+msgstr "Valor de Configuración del Usuario"
 
 #: field.vbq.complete.label:465 field.vaq.complete.label:607
 #: field.acqinv.complete.label:7726 field.stgu.complete.label:9566
@@ -3692,7 +3692,7 @@ msgstr "Mantenga Cancelar solicitud Causa"
 
 #: field.rb.scope.label:301
 msgid "Scope"
-msgstr ""
+msgstr "Ámbito"
 
 #: field.ccmm.renewals.label:1926
 msgid "Renewals Override"
@@ -3784,7 +3784,7 @@ msgstr "Nivel de acceso a internet"
 
 #: field.combcirc.active_circ.label:4261
 msgid "Linked Active Circulation"
-msgstr ""
+msgstr "Circulación Activa Vinculada"
 
 #: class.xsubq.label:10164
 msgid "Subquery Expression"
@@ -3916,7 +3916,7 @@ msgstr "Forma de pago de facturas"
 
 #: field.rp.require_percentile.label:278
 msgid "Require Percentile"
-msgstr ""
+msgstr "Requerir Percentil"
 
 #: class.asva.label:6965
 msgid "Survey Answer"
@@ -4101,7 +4101,7 @@ msgstr "Diseño"
 
 #: field.stgs.setting.label:9632
 msgid "User Setting Code"
-msgstr ""
+msgstr "Código de Configuración del Usuario"
 
 #: field.cmrcfld.hidden.label:909 field.cmrcsubfld.hidden.label:936
 msgid "Hidden?"
@@ -4424,7 +4424,7 @@ msgstr "Pidiendo biblioteca"
 
 #: field.rb.discard.label:314
 msgid "Discard Value Count"
-msgstr ""
+msgstr "Descartar el Recuento de Valores"
 
 #: field.srlu.department.label:5066
 msgid "Department"
@@ -4707,7 +4707,7 @@ msgstr "Nivel de acceso a red"
 
 #: field.rb.importance_scale.label:306
 msgid "Importance Scale"
-msgstr ""
+msgstr "Escala de Importancia"
 
 #: field.cmrcfld.fixed_field.label:906
 msgid "Fixed Field?"
@@ -5067,7 +5067,7 @@ msgstr "Relleno"
 
 #: field.rb.importance_age.label:304
 msgid "Importance Horizon"
-msgstr ""
+msgstr "Horizonte de la Importancia"
 
 #: field.rccbs.usr.label:10948
 msgid "User Link"
@@ -7413,7 +7413,7 @@ msgstr "Captura de retención requiere la verificación"
 
 #: field.bre.mattrs.label:3081
 msgid "MVF Attributes"
-msgstr ""
+msgstr "MVF Atributos"
 
 #: field.rccbs.last_payment_ts.label:10957
 msgid "Last Payment Date/Time"
@@ -7618,7 +7618,7 @@ msgstr "Autor"
 
 #: field.rb.percentile.label:307
 msgid "Percentile"
-msgstr ""
+msgstr "Porcentaje"
 
 #: class.rmsr.label:9154
 msgid "Fast Simple Record Extracts"
@@ -7742,7 +7742,7 @@ msgstr "Suscripción"
 
 #: field.combcirc.aged_circ.label:4262
 msgid "Linked Aged Circulation"
-msgstr ""
+msgstr "Circulación Envejecida Vinculada"
 
 #: field.acqlia.order_ident.label:8780
 msgid "Order Identifier"
@@ -7913,7 +7913,7 @@ msgstr "Z3950 Indice de mapas campo"
 
 #: class.stgs.label:9627
 msgid "User Setting Stage"
-msgstr ""
+msgstr "Etapa de Configuración del Usuario"
 
 #: field.aur.email_notify.label:7562
 msgid "Email Notify"
@@ -7950,7 +7950,7 @@ msgstr "Mantenga matriz de pesos"
 
 #: field.rb.loc_grp_filter.label:311
 msgid "Location Group Filter"
-msgstr ""
+msgstr "Filtro de Grupo de Ubicaciones"
 
 #: field.ssub.expected_date_offset.label:4912
 msgid "Expected Date Offset"
@@ -7967,7 +7967,7 @@ msgstr "Ignorar Período de gracia"
 
 #: field.rb.attr_filter.label:308
 msgid "Attribute Filter"
-msgstr ""
+msgstr "Filtro de Atributo"
 
 #: field.aum.id.label:2205 field.auml.id.label:2228
 msgid "Message ID"
@@ -8007,7 +8007,7 @@ msgstr "Recursos"
 
 #: field.combcirc.checkin_scan_time.label:4241
 msgid "Checkin Scan Time"
-msgstr ""
+msgstr "El registro del tiempo de escán"
 
 #: field.aoupa.hold_pickup_lib.label:5477
 msgid "Hold Pickup Lib"

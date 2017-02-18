@@ -91,7 +91,7 @@ CREATE TRIGGER no_overlapping_deps
     BEFORE INSERT OR UPDATE ON config.db_patch_dependencies
     FOR EACH ROW EXECUTE PROCEDURE evergreen.array_overlap_check ('deprecates');
 
-INSERT INTO config.upgrade_log (version, applied_to) VALUES ('1009', :eg_version); -- csharp/kmlussier
+INSERT INTO config.upgrade_log (version, applied_to) VALUES ('1025', :eg_version); -- bshum/kmlussier
 
 CREATE TABLE config.bib_source (
 	id		SERIAL	PRIMARY KEY,
@@ -168,6 +168,20 @@ INSERT INTO config.biblio_fingerprint (name, xpath, format, first_word)
             '//marc:datafield[@tag="260"]/marc:subfield[@code="b"]',
         'marcxml',
         TRUE
+    );
+
+INSERT INTO config.biblio_fingerprint (name, xpath, format)
+    VALUES (
+        'PartName',
+        '//mods32:mods/mods32:titleInfo/mods32:partName',
+        'mods32'
+    );
+
+INSERT INTO config.biblio_fingerprint (name, xpath, format)
+    VALUES (
+        'PartNumber',
+        '//mods32:mods/mods32:titleInfo/mods32:partNumber',
+        'mods32'
     );
 
 CREATE TABLE config.metabib_class (
@@ -533,7 +547,8 @@ CREATE TABLE config.i18n_locale (
     code        TEXT    PRIMARY KEY,
     marc_code   TEXT    NOT NULL, -- should exist in config.coded_value_map WHERE ctype = 'item_lang'
     name        TEXT    UNIQUE NOT NULL,
-    description TEXT
+    description TEXT,
+    rtl         BOOL    NOT NULL DEFAULT FALSE
 );
 
 CREATE TABLE config.i18n_core (

@@ -1,0 +1,91 @@
+Batch Hold Targeter Speed-up and New Features
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Adds a new open-ils.hold-targeter service, supporting new targeting options
+and runtime optimizations to speed up targeting.  The service is launched
+from a new targeting script, hold_targeter_v2.pl (default location:
+/openils/bin/hold_targeter_v2.pl).
+
+This code has no effect on the existing hold targeter, which is still
+available as of this release and functions as before.
+
+New Features/Options
+++++++++++++++++++++
+
+* Adds a global configuration flag 'circ.holds.retarget_interval' for 
+  setting the hold retarget interval.
+
+* --target-all option forces the targeter to process all active
+  holds, regardless of when they were last targeted.
+
+* --retarget-interval option make is possible to override the new
+  'circ.holds.retarget_interval' setting via the command line 
+  when calling the hold targeter.
+
+* --skip-viable option causes the hold targeter to avoid modifying 
+  the currently targeted copy (i.e. the copy on the pull list) for holds 
+  that target a viable (capturable) copy.  
+  
+  For skipped holds, no entry is added to the unfulfilled_hold_list.
+  The set of potential copies (hold copy maps) are refreshed for all
+  processed holds, regardless of target viability.
+
+  This option is useful for 1.) finding targets for holds that require 
+  new targets and 2.) adding new/modified copies to the potential copy 
+  lists (for op capture) more frequently than you may want to do full
+  retargeting of all holds.
+
+* --newest-first option processes holds in reverse order of request_time,
+  so that newer holds are (re)targeted first.  This is primarily useful
+  when a large backlog of old, un-targetable holds exist.  With 
+  --newest-first, the older holds will be processed last.
+
+* --parallel option overrides the parallel settings found in opensrf.xml
+  for simpler modification and testing.
+
+* --lockfile option allows the caller to specifiy a lock file instead
+  of using the default /tmp/hold_targeter-LOCK
+
+* --verbose option prints progress info to STDOUT, showing the number of
+  holds processed per parallel targeter instance.
+
+* When configured, hold target loops cycle through all org units (with 
+  targetable copies) instead of repeatedly targeting copies at the pickup
+  library when multiple targetable copies exist at the pickup library.
+
+* When configured, hold target loops prioritize (targetable) org units
+  first by the number of previous target attempts, then by their 
+  weight/proximity.  This effectivy back-fills org units that had no
+  targetable copies during earlier target loops so that they are 
+  targeted as many times as other org units (to the extent possible, 
+  anyway).
+
+Examples
+++++++++
+
+* Traditional daily hold targeter with a value set for 
+  'circ.holds.retarget_interval'.
+
+[code,sh]
+--------------------------------------------------------------------------
+/openils/bin/hold_targeter_v2.pl
+--------------------------------------------------------------------------
+
+* (Re)target non-viable holds twice a day, only processing holds that 
+  have never been targeter or those that have not been re-targeted in
+  the last 12 hours.
+
+[code,sh]
+--------------------------------------------------------------------------
+/openils/bin/hold_targeter_v2.pl --skp-viable --retarget-interval "12h"
+--------------------------------------------------------------------------
+
+* (Re)target non-viable holds twice a day, processing all holds regardles
+  of when or if they were targeted before, running 3 targeters in
+  parallel.
+
+[code,sh]
+--------------------------------------------------------------------------
+/openils/bin/hold_targeter_v2.pl --skip-viable --target-all --parallel 3
+--------------------------------------------------------------------------
+

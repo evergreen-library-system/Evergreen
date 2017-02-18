@@ -1,0 +1,21 @@
+-- Load the TAP functions.
+BEGIN;
+
+-- Plan the tests.
+SELECT plan(2);
+
+-- Run the tests.
+
+SELECT isnt_empty(
+    'SELECT * FROM config.org_unit_setting_type WHERE name = $$circ.in_house_use.copy_alert$$',
+    'circ.in_house_use.copy_alert exists'
+);
+
+SELECT isnt_empty(
+    'SELECT * FROM config.org_unit_setting_type WHERE name = $$circ.in_house_use.checkin_alert$$',
+    'circ.in_house_use.checkin_alert exists'
+);
+
+-- Finish the tests and clean up.
+SELECT * FROM finish();
+ROLLBACK;

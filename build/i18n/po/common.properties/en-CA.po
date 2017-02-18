@@ -4,14 +4,14 @@ msgstr ""
 "Project-Id-Version: Evergreen ILS > common.properties.po\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-08-25 17:09-0400\n"
-"PO-Revision-Date: 2013-01-31 19:02+0000\n"
-"Last-Translator: Warren Layton <Unknown>\n"
+"PO-Revision-Date: 2017-01-13 03:40+0000\n"
+"Last-Translator: Darrell Rodgers <drodgers@emeralddata.net>\n"
 "Language-Team: <warren.layton@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2016-08-26 05:18+0000\n"
-"X-Generator: Launchpad (build 18179)\n"
+"X-Launchpad-Export-Date: 2017-01-14 05:30+0000\n"
+"X-Generator: Launchpad (build 18302)\n"
 "X-Poedit-Country: CANADA\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: English\n"
@@ -151,7 +151,7 @@ msgstr "[ %1$s %2$s @ %3$s ]"
 
 #: staff.checkout_column_label_service
 msgid "Service"
-msgstr ""
+msgstr "Service"
 
 #: staff.acp_label_barcode
 msgctxt "staff.acp_label_barcode"
@@ -213,7 +213,7 @@ msgstr "Price"
 
 #: staff.acp_label_cost
 msgid "Acquisition Cost"
-msgstr ""
+msgstr "Acquisition Cost"
 
 #: staff.acp_label_status
 msgctxt "staff.acp_label_status"
@@ -222,7 +222,7 @@ msgstr "Status"
 
 #: staff.acp_label_age_protect
 msgid "Age-based Hold Protection"
-msgstr ""
+msgstr "Age-based Hold Protection"
 
 #: staff.ahr_current_copy_label
 msgid "Current Copy"
@@ -283,7 +283,7 @@ msgstr "Pickup Library"
 
 #: staff.ahr_current_shelf_lib_label
 msgid "Current Shelf Library"
-msgstr ""
+msgstr "Current Shelf Library"
 
 #: staff.ahr_prev_check_time_label
 msgid "Previous Check Time"

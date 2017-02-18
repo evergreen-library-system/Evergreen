@@ -4,24 +4,7 @@ limiting the set of desired records for a given metarecord.
 %]
 
 <style>
-  /* TODO: MOVE ME */
-  .metarecord_filters {
-      padding: 5px;
-      margin-top: 5px;
-      border-bottom: 1px solid #333;
-      border-top: 1px solid #333;
-  }
-  .metarecord_filter_container {
-    float : left;
-    margin-right: 10px;
-  }
-  .metarecord_filter_container select {
-    padding: 2px;
-    width: 13em; /* consistent w/ adv search selectors */
-  }
-  .metarecord_filter_header {
-    padding-bottom: 5px;
-  }
+  /* The rules has been moved to style.css  */
 </style>
 
 [% BLOCK metarecord_hold_filters_selector;

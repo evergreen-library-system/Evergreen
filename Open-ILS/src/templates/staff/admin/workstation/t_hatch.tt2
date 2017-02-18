@@ -1,0 +1,62 @@
+<div class="container admin-splash-container">
+
+  <h2>[% l('Print / Storage Service ("Hatch")') %]</h2>
+
+  <div class="alert alert-success" ng-if="hatch_available">
+    [% l("Hatch is Available") %]
+    <span class="glyphicon glyphicon-thumbs-up"></span>
+  </div>
+
+  <div class="alert alert-danger" ng-if="!hatch_available">
+    [% l("Hatch is Not Installed In This Browser") %]
+  </div>
+
+  <div class="row">
+    <div class="col-md-4">
+      <div class="checkbox">
+        <label>
+          <input type="checkbox" 
+            ng-model="hatch_printing">
+            [% l('Use Hatch For Printing') %]
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <div class="row new-entry">
+    <div class="col-md-4">
+      <div class="checkbox">
+        <label>
+          <input type="checkbox" 
+            ng-model="hatch_settings">
+            [% l('Store Local Settings in Hatch') %]
+        </label>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <button class="btn btn-default" ng-click="copy_to_hatch()">
+        [% l('Copy Local Storage Settings To Hatch') %]
+      </button>
+    </div>
+    <div class="col-md-3">
+      <button class="btn btn-default" ng-click="copy_to_local()">
+        [% l('Copy Hatch Settings To Local Storage') %]
+      </button>
+    </div>
+  </div>
+
+  <div class="row new-entry">
+    <div class="col-md-4">
+      <div class="checkbox">
+        <label>
+          <input type="checkbox" 
+            ng-model="hatch_offline">
+            [% l('Store Offline Transaction Data in Hatch') %]
+        </label>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+

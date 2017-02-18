@@ -2338,8 +2338,6 @@
 <!ENTITY staff.server.admin.org_settings.circ.selfcheck.patron_login_timeout.desc "Number of seconds of inactivity before the patron is logged out of the selfcheck interface">
 <!ENTITY staff.server.admin.org_settings.circ.selfcheck.alert_on_checkout_event "Selfcheck: Pop-up alert for errors">
 <!ENTITY staff.server.admin.org_settings.circ.selfcheck.alert_on_checkout_event.desc "If true, checkout/renewal errors will cause a pop-up window in addition to the on-screen message">
-<!ENTITY staff.server.admin.org_settings.circ.selfcheck.require_patron_password "Selfcheck: Require patron password">
-<!ENTITY staff.server.admin.org_settings.circ.selfcheck.require_patron_password.desc "If true, patrons will be required to enter their password in addition to their username/barcode to log into the selfcheck interface">
 <!ENTITY staff.server.admin.org_settings.global.juvenile_age_threshold "Juvenile Age Threshold">
 <!ENTITY staff.server.admin.org_settings.global.juvenile_age_threshold.desc 'The age at which a user is no long considered a juvenile.  For example, "18 years".'>
 <!ENTITY staff.server.admin.org_settings.cat.bib.keep_on_empty "Do not automatically delete empty bib records">

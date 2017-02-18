@@ -156,6 +156,8 @@ sub load {
     return $self->load_logout if $path =~ m|opac/logout|;
     return $self->load_patron_reg if $path =~ m|opac/register|;
 
+    $self->load_simple("myopac") if $path =~ m:opac/myopac:; # A default page for myopac parts
+
     if($path =~ m|opac/login|) {
         return $self->load_login unless $self->editor->requestor; # already logged in?
 

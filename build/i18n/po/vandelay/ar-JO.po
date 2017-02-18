@@ -1,0 +1,622 @@
+# Arabic translation for evergreen
+# Copyright (c) 2016 Rosetta Contributors and Canonical Ltd 2016
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2016.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: evergreen\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2016-08-26 13:06+0000\n"
+"PO-Revision-Date: 2017-01-18 17:56+0000\n"
+"Last-Translator: fares othman <Unknown>\n"
+"Language-Team: Arabic <ar@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2017-01-19 05:40+0000\n"
+"X-Generator: Launchpad (build 18302)\n"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:104
+msgid "&#171; Previous"
+msgstr "&#171; السابق"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/export.tt2:8
+msgid "(starting from 0)"
+msgstr "(البداية من 0)"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queueselect.tt2:6 ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:12
+msgid "Acquisitions Records"
+msgstr "تسجيلات التزويد"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:285
+msgid "Apply"
+msgstr "تطبيق"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queueselect.tt2:22
+msgid "Are you sure you want to delete the selected queues?"
+msgstr "هل أنت متأكد من رغبتك في حذف قوائم الانتظار المحددة؟"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:20
+msgid "Are you sure you want to delete this queue?"
+msgstr "هل أنت متأكد من أنك تريد حذف هذا الانتظار ـ الطابور او الصف ـ؟"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:68
+msgid "Are you sure you want to delete this record?"
+msgstr "هل أنت متأكد من أنك تريد حذف هذا التسجيلة؟"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/import_errors.tt2:16
+msgid "Author"
+msgstr "المؤلف"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/export.tt2:30 ../../Open-ILS/src/templates/vandelay/inc/queueselect.tt2:7 ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:11
+msgid "Authority Records"
+msgstr "تسجيلات الإسناد"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:7
+msgid "Authority attributes"
+msgstr "خصائص الإسناد"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:261
+msgid "Auto-overlay In-process Acquisition Copies"
+msgstr "تراكب آلي في مُعالجة نُسخ التزويد"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:110
+msgid "Auto-overlay In-process Acquisitions Copies"
+msgstr "تراكب آلي في معالجة نُسخ التزويد"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/import_errors.tt2:4 ../../Open-ILS/src/templates/vandelay/inc/matches.tt2:43
+msgid "Back To Import Queue"
+msgstr "رجوع لاستيراد صف الانتظار ـ الطابور ـ"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:236 ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:85
+msgid "Best/Single Match Minimum Quality Ratio"
+msgstr "أفضل مطابفة للحد الأدنى من نسبة الجودة"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/export.tt2:29 ../../Open-ILS/src/templates/vandelay/inc/queueselect.tt2:5 ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:10
+msgid "Bibliographic Records"
+msgstr "التسجيلات الببليوغرافية"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:4
+msgid "Bibliographic attributes"
+msgstr "الخصائص الببليوغرافية"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/import_errors.tt2:57 ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:84
+msgid "CSV"
+msgstr "ملف CSV"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:55 ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:63 ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:267 ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:286
+msgid "Cancel"
+msgstr "إلغاء"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:16 ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:80
+msgid "Code"
+msgstr "الكـود"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/item_attrs.tt2:14 ../../Open-ILS/src/templates/vandelay/inc/profiles.tt2:10
+msgid "Context Org Unit"
+msgstr "وحدة سياق ـ إطار ـ المؤسسة"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:258 ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:107
+msgid "Copy Import Actions"
+msgstr "إجراءات استيراد النُسخة"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:280
+msgid "Copy Records to Bucket"
+msgstr "نسخ التسجيلات إلى السلة"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:23
+msgid "Copy To Bucket"
+msgstr "نسخ إلى السلة"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:53
+msgid "Create"
+msgstr "إنشاء"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:10
+msgid "Create Attribute Definition"
+msgstr "إنشاء خاصية التعريف"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/matches.tt2:21
+msgid "Create Date"
+msgstr "تاريخ الإنشاء"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:17
+msgid "Create a New Upload Queue"
+msgstr "إنشاء ـ قائمة انتظار ـ طابور تحميل جديد"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/matches.tt2:20
+msgid "Creator"
+msgstr "المُنشىء"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:22
+msgid "Delete Queue"
+msgstr "حذف طابور الانتظار"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/item_attrs.tt2:10 ../../Open-ILS/src/templates/vandelay/inc/profiles.tt2:6 ../../Open-ILS/src/templates/vandelay/inc/queueselect.tt2:21
+msgid "Delete Selected"
+msgstr "حذف المحدد"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:69
+msgid "Delete record"
+msgstr "حذف تسجيلة"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:20 ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:81
+msgid "Description"
+msgstr "الوَصف"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/marchtml.tt2:7
+msgid "Edit"
+msgstr "تعديل"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/import_errors.tt2:58 ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:85
+msgid "Email"
+msgstr "البريد الإلكتروني"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/import_errors.tt2:14
+msgid "Error Detail"
+msgstr "تَفاصيل الخَطأ"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:1
+msgid "Evergreen MARC File Upload"
+msgstr "تحميل ملف إيفرغرين مارك"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/export.tt2:41
+msgid "Evergreen Record Entry"
+msgstr "مدخل تسجيلة إيفرغرين"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:28 ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:37
+msgid "Example"
+msgstr "مِثال"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/import_errors.tt2:55
+msgid "Export Items As..."
+msgstr "تصدير النُسخ كـَ..."
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:18
+msgid "Export Non-Imported Records"
+msgstr "تصدير التسجيلات غير المستوردة"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:82
+msgid "Export Queue As..."
+msgstr "تصدير قائمة الانتظار كـَ ..."
+
+#: ../../Open-ILS/src/templates/vandelay/inc/export.tt2:1 ../../Open-ILS/src/templates/vandelay/inc/toolbar.tt2:3
+msgid "Export Records"
+msgstr "تصدير التسجيلات"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:118
+msgid "File to Upload:"
+msgstr "ملف التحميل:"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/export.tt2:12
+msgid "From CSV File"
+msgstr "مِن ملف CSV"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/matches.tt2:29
+msgid "Heading"
+msgstr "رأسية"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:40
+msgid "Holdings Import Profile"
+msgstr "بروفيل ـ ملف ـ استيراد الحجوزات"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/item_attrs.tt2:7 ../../Open-ILS/src/templates/vandelay/inc/toolbar.tt2:15
+msgid "Holdings Import Profiles"
+msgstr "بروفيلات ـ ملفات ـ استيراد الحجوزات"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:79 ../../Open-ILS/src/templates/vandelay/inc/import_errors.tt2:12 ../../Open-ILS/src/templates/vandelay/inc/matches.tt2:12
+msgid "ID"
+msgstr "الرمز المعرّف"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/import_errors.tt2:17
+msgid "ISBN"
+msgstr "ردمك"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/import_errors.tt2:18
+msgid "ISSN"
+msgstr "ردمد"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:270
+msgid "Import"
+msgstr "استيراد"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:16
+msgid "Import All  Records"
+msgstr "استيراد كافة التسجيلات"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/import_errors.tt2:13
+msgid "Import Error"
+msgstr "خطأ في الاستيراد"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/import_errors.tt2:9
+msgid "Import Errors"
+msgstr "أخطاء في الاستيراد"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:148 ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:190
+msgid "Import Failures"
+msgstr "فشل الاستيراد"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/import_errors.tt2:49 ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:202
+msgid "Import Items"
+msgstr "استيراد نُسخ"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/matches.tt2:39
+msgid "Import Matches"
+msgstr "استيراد المُتطابقات"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:214 ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:63
+msgid "Import Non-Matching Records"
+msgstr "استيراد التسجيلات غير المطابقة"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/toolbar.tt2:5
+msgid "Import Records"
+msgstr "استيراد التسجيلات"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:15
+msgid "Import Selected Records"
+msgstr "استيراد التسجيلات المُحددة"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:152 ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:194
+msgid "Import Time"
+msgstr "وقت الاستيراد"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:153 ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:195
+msgid "Imported As"
+msgstr "الاستيراد كـَ"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/export.tt2:55
+msgid "Include holdings in Bibliographic Records"
+msgstr "تتضمن الحجوزات في التسجيلات الببليوغرافية"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/toolbar.tt2:7
+msgid "Inspect Queue"
+msgstr "تفقد طابور الانتظار"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:243 ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:92
+msgid "Insufficient Quality Fall-Through Profile"
+msgstr "نوعية غير كافية للسقوط من خلال البروفايل"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:39
+msgid "Item Import Failures"
+msgstr "فشل في استيراد النسخة"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:38
+msgid "Items Imported"
+msgstr "النُسخ المُستوردة"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:37
+msgid "Items in Queue"
+msgstr "النُسخ في طابور الانتظار"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/matches.tt2:22
+msgid "Last Edit Date"
+msgstr "تاريخ آخر تعديل"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:33
+msgid "Limit matches to bucket"
+msgstr "حدود التوافق لـِ السلة"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/import_errors.tt2:51
+msgid "Limit to Import Failures"
+msgstr "حد إلى إخفاقات الاستيراد"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:56
+msgid "Limit to Non-Imported Records"
+msgstr "حد إلى التسجيلات غير المُستوردة"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:63
+msgid "Limit to Records with Import Errors"
+msgstr "حد إلى التسجيلات التي فيها أخطاء استيراد"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:49
+msgid "Limit to Records with Matches"
+msgstr "حد إلى التسجيلات المُطابقة"
+
+#: ../../Open-ILS/src/templates/vandelay/vandelay.tt2:8
+msgid "Loading..."
+msgstr "يتم الآن التحميل..."
+
+#: ../../Open-ILS/src/templates/vandelay/vandelay.tt2:2
+msgid "MARC Import/Export"
+msgstr "مارك استيراد/تصدير"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/marchtml.tt2:2
+msgid "MARC Record"
+msgstr "تسجيلة مارك"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/export.tt2:40
+msgid "MARC XML"
+msgstr "مارك XML"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/export.tt2:38
+msgid "MARC21"
+msgstr "مارك 21"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/export.tt2:50
+msgid "MARC8"
+msgstr "مارك8"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/matches.tt2:17
+msgid "Match Score"
+msgstr "نتيجة المطابقة"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/matches.tt2:19
+msgid "Matched Record Quality"
+msgstr "مطابقة جودة التسجيلة"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:142 ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:184
+msgid "Matches"
+msgstr "تُطابق"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/toolbar.tt2:11
+msgid "Merge / Overlay Profiles"
+msgstr "دمج / ملفات البروفايلات المتراكبة"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:232 ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:81
+msgid "Merge On Best Match"
+msgstr "دمج في أحسن/أقرب تطابق"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:220 ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:69
+msgid "Merge On Exact Match (901c)"
+msgstr "دمج في التطابق المضبوط (901c)"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:226 ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:75
+msgid "Merge On Single Match"
+msgstr "دمج في تطابق واحد"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:207 ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:57
+msgid "Merge Profile"
+msgstr "دمج ملف البروفايل"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/matches.tt2:8
+msgid "Merge Target"
+msgstr "دمج المُستهدف"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/item_attrs.tt2:9
+msgid "New Definition"
+msgstr "تعريف جديد"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/profiles.tt2:5
+msgid "New Merge Profile"
+msgstr "دمج جديد لـِ بروفايل"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:239 ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:88
+msgid "New Record Quality / Quality of Best Match"
+msgstr "جودة تسجيلة جديدة / جودة أقرب مُطابقة"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:107
+msgid "Next &#187;"
+msgstr "التالي &#187;"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/export.tt2:15 ../../Open-ILS/src/templates/vandelay/inc/export.tt2:20
+msgid "Or"
+msgstr "أو"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/profiles.tt2:3
+msgid "Overlay / Merge Profiles"
+msgstr "تراكب / دمج ملفات البروفايلات"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:99
+msgid "Page"
+msgstr "الصَفحة"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:282
+msgid "Please enter the name of the bucket to append/create."
+msgstr "لطفاً ينبغي إدخال اسم السلة لـِ الإضافة/ الإنشاء."
+
+#: ../../Open-ILS/src/templates/vandelay/inc/import_errors.tt2:56 ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:83
+msgid "Print"
+msgstr "طباعة"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/progress.tt2:13
+msgid "Processing... "
+msgstr "قَيد المُعالجة "
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queueselect.tt2:13
+msgid "Queue"
+msgstr "طابور الاِنتظار"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:6
+msgid "Queue "
+msgstr "الطابور "
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:13
+msgid "Queue Actions"
+msgstr "إجراءات طابور الانتظار"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:46
+msgid "Queue Filters"
+msgstr "تصفيات طابور الانتظار"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:30
+msgid "Queue Summary"
+msgstr "مُلخص طابور الانتظار"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queueselect.tt2:3
+msgid "Queue Type"
+msgstr "نوع طابور الانتظار"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/matches.tt2:18
+msgid "Queued Record Quality"
+msgstr "جودة تسجيلات طابور الانتظار"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/export.tt2:22
+msgid "Record Bucket ID"
+msgstr "مُعرف سلة التسجيلات"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/toolbar.tt2:9 ../../Open-ILS/src/templates/vandelay/vandelay.tt2:36
+msgid "Record Display Attributes"
+msgstr "خصائص إظهار التسجيلة"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/export.tt2:46
+msgid "Record Encoding"
+msgstr "ترميز التسجيلة"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/export.tt2:35
+msgid "Record Format"
+msgstr "تنسيق التسجيلة"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/export.tt2:17
+msgid "Record ID"
+msgstr "مُعرف التسجيلة"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:54
+msgid "Record Import Actions"
+msgstr "إجراءات استيراد التسجيلات"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:34
+msgid "Record Import Failures"
+msgstr "فشل استيراد التسجيلات"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:28
+msgid "Record Match Set"
+msgstr "مجموعة تطابق التسجيلة"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/toolbar.tt2:13
+msgid "Record Match Sets"
+msgstr "مجموعات تطابق التسجيلة"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/marchtml.tt2:4
+msgid "Record Saved"
+msgstr "تمّ حفظ التسجيلات"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/export.tt2:26 ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:6
+msgid "Record Type"
+msgstr "نوع التسجيلة"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:33
+msgid "Records Imported:"
+msgstr "التسجيلات المُستوردة:"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:87
+msgid "Records Per Page"
+msgstr "التسجيلات في كل صفحة"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:32
+msgid "Records in Queue:"
+msgstr "التسجيلات في طابور الانتظار"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:85
+msgid "Remove"
+msgstr "حذف"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:46
+msgid "Remove (advanced)"
+msgstr "حذف (متقدم)"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:249 ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:98
+msgid "Remove MARC Field Groups"
+msgstr "حذف مجموعات حقول مارك"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/export.tt2:60
+msgid "Retrieve Records"
+msgstr "استرجاع التسجيلات"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/marchtml.tt2:6
+msgid "Return"
+msgstr "رجوع"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/marchtml.tt2:3
+msgid "Save Changes"
+msgstr "حفظ التغييرات"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queueselect.tt2:2
+msgid "Select a Queue to Inspect"
+msgstr "اختيار طابور الانتظار للاختبار"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:47
+msgid "Select a Record Source"
+msgstr "اختيار مصدر التسجيلة"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/matches.tt2:23
+msgid "Source"
+msgstr "المَصدر"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:83
+msgid "Subfield"
+msgstr "الحقل الفرعي"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:33
+msgid "Subfield(s)"
+msgstr "الحقول الفرعية"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/matches.tt2:33
+msgid "TCN Source"
+msgstr "مصدر رقم التحكم بالنقل"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/matches.tt2:34
+msgid "TCN Value"
+msgstr "قيمة رقم التحكم بالنقل"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:82
+msgid "Tag"
+msgstr "التاج"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:24
+msgid "Tag(s)"
+msgstr "التيجان"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/import_errors.tt2:15
+msgid "Title"
+msgstr "العنوان"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/export.tt2:39
+msgid "UNIMARC"
+msgstr "مارك العالمي الموحد ـ يوني مارك ـ"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/import_errors.tt2:19
+msgid "UPC"
+msgstr "UPC"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/export.tt2:49
+msgid "UTF-8"
+msgstr "UTF-8"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:61
+msgid "Update"
+msgstr "تحديث"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:120
+msgid "Upload"
+msgstr "تَحميل"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/progress.tt2:8
+msgid "Upload Status"
+msgstr "حالة التحميل"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/progress.tt2:10
+msgid "Uploading..."
+msgstr "عملية التحميل جارية..."
+
+#: ../../Open-ILS/src/templates/vandelay/inc/export.tt2:5
+msgid "Use Field Number"
+msgstr "استخدام رقم الحقل"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:17
+msgid "View Import Items"
+msgstr "إظهار النُسخ المستوردة"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/matches.tt2:13 ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:136 ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:178
+msgid "View MARC"
+msgstr "إظهار مارك"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:84
+msgid "XPath"
+msgstr "Xمسار"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:41
+msgid "XPath (advanced)"
+msgstr "Xمسار (متقدم)"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:36
+msgid "You can enter multiple subfields, separated by spaces and/or commas"
+msgstr "يمكنك إدخال حقول الفرعية متعددة، مفصولة بمسافات و / أو فواصل"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:27
+msgid "You can enter multiple tags, separated by spaces and/or commas"
+msgstr "يمكنك إدخال تيجان متعددة، مفصولة بمسافات و / أو فواصل"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:21
+msgid "or Add to an Existing Queue"
+msgstr "أو إضافة إلى طابور الانتظار الحالي"

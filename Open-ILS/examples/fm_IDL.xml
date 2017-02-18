@@ -2623,10 +2623,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<create permission="CREATE_MARC IMPORT_MARC" global_required="true"/>
+				<create permission="CREATE_AUTHORITY_RECORD IMPORT_MARC" global_required="true"/>
 				<retrieve/>
-				<update permission="UPDATE_MARC" global_required="true"/>
-				<delete permission="UPDATE_MARC" global_required="true"/>
+				<update permission="UPDATE_AUTHORITY_RECORD" global_required="true"/>
+				<delete permission="DELETE_AUTHORITY_RECORD" global_required="true"/>
 			</actions>
 		</permacrud>
 	</class>
@@ -7503,6 +7503,7 @@ SELECT  usr,
 			<field name="marc_code" reporter:datatype="text"/>
 			<field name="name" reporter:datatype="text" oils_persist:i18n="true"/>
 			<field name="description" reporter:datatype="text" oils_persist:i18n="true"/>
+			<field name="rtl" reporter:datatype="bool"/>
 		</fields>
 		<links/>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">

@@ -1,0 +1,50 @@
+-- tests to verify biblio fingerprints avoid conflating
+-- works where words coming from titles and authors might overlap
+BEGIN;
+
+SELECT plan(1);
+
+INSERT INTO biblio.record_entry (last_xact_id, marc) VALUES (
+    'bib-fingerprint-test-1',
+    $record$<record xmlns="http://www.loc.gov/MARC21/slim">
+  <leader>02137cam a2200457 a 4500</leader>
+  <controlfield tag="001">ocn694080497</controlfield>
+  <controlfield tag="005">20160729104757.0</controlfield>
+  <controlfield tag="008">101217s2011    txu      b    001 0 eng  </controlfield>
+  <datafield tag="100" ind1="0" ind2="0">
+    <subfield code="a">Jasper, Frances</subfield>
+  </datafield>
+  <datafield tag="245" ind1="0" ind2="0">
+    <subfield code="a">Gzarniblat</subfield>
+  </datafield>
+</record>$record$);
+
+INSERT INTO biblio.record_entry (last_xact_id, marc) VALUES (
+    'bib-fingerprint-test-2',
+    $record$<record xmlns="http://www.loc.gov/MARC21/slim">
+  <leader>02137cam a2200457 a 4500</leader>
+  <controlfield tag="001">ocn694080497</controlfield>
+  <controlfield tag="005">20160729104757.0</controlfield>
+  <controlfield tag="008">101217s2011    txu      b    001 0 eng  </controlfield>
+  <datafield tag="245" ind1="0" ind2="0">
+    <subfield code="a">Gzarniblat Jasper</subfield>
+  </datafield>
+</record>$record$);
+
+SELECT results_ne(
+    $$
+        SELECT metarecord FROM metabib.metarecord_source_map
+        WHERE source = (
+            SELECT id FROM biblio.record_entry WHERE last_xact_id = 'bib-fingerprint-test-1'
+        )
+    $$,
+    $$ 
+        SELECT metarecord FROM metabib.metarecord_source_map
+        WHERE source = (
+            SELECT id FROM biblio.record_entry WHERE last_xact_id = 'bib-fingerprint-test-2'
+        )
+    $$,
+    'LP#1528901: same words in title and author do not stick different bibs in same metarecord'
+);
+
+ROLLBACK;

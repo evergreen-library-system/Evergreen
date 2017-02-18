@@ -23,7 +23,7 @@
                     <td><input dojoType="dijit.form.TextBox" name="subfield"></input></td>
                 </tr>
                 <tr>
-                    <td><label for="ident">[% l('Identifer Field?: ') %]</label></td>
+                    <td><label for="ident">[% l('Identifier Field?: ') %]</label></td>
                     <td>
                         <select dojoType="dijit.form.FilteringSelect" name="ident">
                             <option value='f' selected='selected'>[% l('False') %]</option>

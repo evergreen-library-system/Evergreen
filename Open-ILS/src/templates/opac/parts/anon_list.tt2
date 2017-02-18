@@ -17,14 +17,14 @@
             <table class="table_no_border_space table_no_cell_pad table_no_border">
                 <thead id="acct_list_header_anon">
                     <tr>
-                        <td width="1%" style="padding-left:10px;">
+                        <td width="1%" class='padding-left-10'>
                             <input type="checkbox" onclick="
                                 var inputs=document.getElementsByTagName('input'); 
                                 for (i = 0; i < inputs.length; i++) { 
                                     if (inputs[i].name == 'record' && !inputs[i].disabled) inputs[i].checked = this.checked;}"/>
                         </td>
                         <td width="40%" class="opac-auto-108"><a href="[% mkurl('', {anonsort=>(CGI.param('anonsort') == 'titlesort' ? 'titlesort.descending' : 'titlesort')}) %]">[% l('Title') %]</a></td>
-                        <td width="40%" class="opac-auto-108"><a href="[% mkurl('', {anonsort=>(CGI.param('anonsort') == 'authorsort' ? 'authorsort.descending' : 'authorsort')}) %]">[% l('Author(s)') %]</a% l('Author(s)') %]</td>
+                        <td width="40%" class="opac-auto-108"><a href="[% mkurl('', {anonsort=>(CGI.param('anonsort') == 'authorsort' ? 'authorsort.descending' : 'authorsort')}) %]">[% l('Author(s)') %]</a></td>
                         <td width='18%'>[% l('Local Call Number') %]</td>
                         <td width="1%" class="nowrap">
                             <select name="action">
@@ -49,11 +49,11 @@
                         attrs = {marc_xml => ctx.mylist_marc_xml.$item};
                         PROCESS get_marc_attrs args=attrs %]
                     <tr>
-                        <td class="item_list_padding" style="padding-left: 10px;">
+                        <td class="item_list_padding padding-left-10">
                             <input type="checkbox" name="record" value="[% item %]" />
                         </td>
-                        <td class="item_list_padding" style="padding-left: 5px;"><a href="[% mkurl(ctx.opac_root _ '/record/' _ item, {}, ['edit_notes', 'id']) %]">[% attrs.title | html %]</a></td>
-                        <td class="item_list_padding" style="padding-left: 5px;"><a href="[%- 
+                        <td class="item_list_padding padding-left-5" ><a href="[% mkurl(ctx.opac_root _ '/record/' _ item, {}, ['edit_notes', 'id']) %]">[% attrs.title | html %]</a></td>
+                        <td class="item_list_padding padding-left-5"><a href="[%- 
                             authorquery = attrs.author | replace('[,\.:;]', '');
                             mkurl(
                                 ctx.opac_root _ '/results',
@@ -61,7 +61,7 @@
                                 ['page', 'id', 'edit_notes']
                             )
                         -%]">[% attrs.author | html %]</a></td>
-                        <td class="item_list_padding" style="padding-left: 5px;">
+                        <td class="item_list_padding padding-left-5">
                         [% 
                             copy = attrs.holdings.0;
                             IF copy;

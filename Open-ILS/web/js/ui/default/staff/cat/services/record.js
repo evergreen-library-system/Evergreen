@@ -81,7 +81,7 @@ angular.module('egCoreMod')
         template : '<pre>{{breaker}}</pre>',
         scope : {
             recordId : '=',
-            marcXml  : '@',
+            marcXml  : '=',
         },
         link : function(scope, element, attrs) {
             scope.element = angular.element(element);

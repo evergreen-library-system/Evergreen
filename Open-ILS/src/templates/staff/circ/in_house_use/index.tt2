@@ -8,6 +8,7 @@
 [% BLOCK APP_JS %]
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/services/grid.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/services/ui.js"></script>
+[% INCLUDE 'staff/circ/share/circ_strings.tt2' %]
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/in_house_use/app.js"></script>
 [% END %]
 
@@ -45,7 +46,7 @@
             </li>
             <li class="divider"></li>
             <li><a href
-              ng-repeat='type in nonCatTypes'
+              ng-repeat="type in nonCatTypes | orderBy:'name()'"
               ng-click="args.noncat_type=type.id()">{{type.name()}}</a>
             </li>
           </ul>

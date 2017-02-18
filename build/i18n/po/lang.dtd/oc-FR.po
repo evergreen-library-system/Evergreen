@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2016-08-25 17:08-0400\n"
-"PO-Revision-Date: 2012-11-02 20:58+0000\n"
+"PO-Revision-Date: 2016-10-04 14:54+0000\n"
 "Last-Translator: Cédric VALMARY (Tot en òc) <cvalmary@yahoo.fr>\n"
 "Language-Team: Occitan (post 1500) <oc@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2016-08-26 05:25+0000\n"
-"X-Generator: Launchpad (build 18179)\n"
+"X-Launchpad-Export-Date: 2016-10-05 05:48+0000\n"
+"X-Generator: Launchpad (build 18217)\n"
 
 #: lang.version
 msgid "remote v1"
@@ -190,7 +190,7 @@ msgstr "Nom d'&utilizaire :"
 #: common.barcode
 msgctxt "common.barcode"
 msgid "Barcode"
-msgstr "Còde de barras"
+msgstr "Còdi de barras"
 
 #: common.password
 msgctxt "common.password"
@@ -226,23 +226,23 @@ msgstr ""
 
 #: common.debug.label
 msgid "Debug:"
-msgstr ""
+msgstr "Debug :"
 
 #: common.debug.btn.execute
 msgid "Execute"
-msgstr ""
+msgstr "Executar"
 
 #: common.debug.btn.inspect
 msgid "Inspect"
-msgstr ""
+msgstr "Inspectar"
 
 #: common.debug.btn.js2JSON
 msgid "js2JSON"
-msgstr ""
+msgstr "js2JSON"
 
 #: common.debug.menu.btn
 msgid "Debug"
-msgstr ""
+msgstr "Desbugatge"
 
 #: common.true
 msgid "True"
@@ -255,12 +255,12 @@ msgstr "Fals"
 #: common.browser.forward.label
 #: common.browser.forward.accesskey
 msgid "Go Forwar&d"
-msgstr ""
+msgstr "Procedir"
 
 #: common.browser.backward.label
 #: common.browser.backward.accesskey
 msgid "Go &Back"
-msgstr "&Recuolar"
+msgstr "&Recular"
 
 #: common.browser.reload.label
 #: common.browser.reload.accesskey
@@ -270,7 +270,7 @@ msgstr "Recar&gar"
 #: common.browser.print.label
 #: common.browser.print.accesskey
 msgid "&Print Page"
-msgstr ""
+msgstr "Imprimir la pagina"
 
 #: common.browser.help.label
 #: common.browser.help.accesskey
@@ -281,12 +281,12 @@ msgstr "A&juda"
 #: common.browser.find.label
 #: common.browser.find.accesskey
 msgid "F&ind in Page"
-msgstr ""
+msgstr "Trobar dins la pagina"
 
 #: common.browser.set_url.label
 #: common.browser.set_url.accesskey
 msgid "Modify &URL"
-msgstr ""
+msgstr "Modificar l’URL"
 
 #: common.browser.view_source.label
 #: common.browser.view_source.accesskey
@@ -326,7 +326,7 @@ msgstr ""
 #: common.clipboard.close.accesskey
 msgctxt "common.clipboard.close.label common.clipboard.close.accesskey"
 msgid "&Close"
-msgstr ""
+msgstr "&Tampar"
 
 #: common.sort.first.ascending
 msgid "Sort First (Ascending)"
@@ -391,12 +391,12 @@ msgstr "A prepaus"
 #: staff.acp_label_barcode
 msgctxt "staff.acp_label_barcode"
 msgid "Barcode"
-msgstr "Còde de barras"
+msgstr "Còdi de barras"
 
 #: staff.acp_label_call_number
 msgctxt "staff.acp_label_call_number"
 msgid "Call Number"
-msgstr "Numèro de còta"
+msgstr "Numèro de quòta"
 
 #: staff.acp_label_circ_as_type
 msgid "Circulate As Type"
@@ -461,7 +461,7 @@ msgstr ""
 
 #: staff.ahr_current_copy_label
 msgid "Current Copy"
-msgstr ""
+msgstr "Exemplar actual"
 
 #: staff.ahr_email_notify_label
 msgid "Email Notify"
@@ -473,7 +473,7 @@ msgstr "Temps d'expiracion"
 
 #: staff.ahr_fulfillment_time_label
 msgid "Fulfillment Time"
-msgstr ""
+msgstr "Ora de responsa"
 
 #: staff.ahr_hold_type_label
 msgctxt "staff.ahr_hold_type_label"
@@ -491,17 +491,17 @@ msgstr ""
 #: staff.ahr_ischanged_label
 msgctxt "staff.ahr_ischanged_label"
 msgid "Is changed"
-msgstr ""
+msgstr "Es modificat"
 
 #: staff.ahr_isdeleted_label
 msgctxt "staff.ahr_isdeleted_label"
 msgid "Is deleted"
-msgstr ""
+msgstr "Es suprimit"
 
 #: staff.ahr_isnew_label
 msgctxt "staff.ahr_isnew_label"
 msgid "Is new"
-msgstr ""
+msgstr "Es novèl"
 
 #: staff.ahr_phone_notify_label
 msgid "Phone Notify"
@@ -522,7 +522,7 @@ msgstr ""
 
 #: staff.ahr_requestor_label
 msgid "Requestor"
-msgstr ""
+msgstr "Demandaire"
 
 #: staff.ahr_selection_depth_label
 msgid "Selection Depth"
@@ -559,7 +559,7 @@ msgstr "Messatge d’alèrta"
 #: staff.au_billing_address_label
 msgctxt "staff.au_billing_address_label"
 msgid "Billing Address"
-msgstr ""
+msgstr "Adreça de facturacion"
 
 #: staff.au_card_label
 msgid "Card"
@@ -602,12 +602,12 @@ msgstr "Corrièr electronic"
 #: staff.au_evening_phone_label
 msgctxt "staff.au_evening_phone_label"
 msgid "Evening Phone"
-msgstr ""
+msgstr "Numèro de telefòn lo ser"
 
 #: staff.au_expire_date_label
 msgctxt "staff.au_expire_date_label"
 msgid "Expire Date"
-msgstr ""
+msgstr "Data d’expiracion"
 
 #: staff.au_family_name_label
 msgctxt "staff.au_family_name_label"
@@ -641,26 +641,26 @@ msgstr "Tipe d'identificacion"
 
 #: staff.au_ident_value2_label
 msgid "Identification Value2"
-msgstr ""
+msgstr "Valor d’identificacion 2"
 
 #: staff.au_ident_value_label
 msgid "Identification Value"
-msgstr ""
+msgstr "Valor d’identificacion"
 
 #: staff.au_ischanged_label
 msgctxt "staff.au_ischanged_label"
 msgid "Is changed"
-msgstr ""
+msgstr "Es modificat"
 
 #: staff.au_isdeleted_label
 msgctxt "staff.au_isdeleted_label"
 msgid "Is deleted"
-msgstr ""
+msgstr "Es suprimit"
 
 #: staff.au_isnew_label
 msgctxt "staff.au_isnew_label"
 msgid "Is new"
-msgstr ""
+msgstr "Es novèl"
 
 #: staff.au_label_active
 msgctxt "staff.au_label_active"
@@ -679,7 +679,7 @@ msgstr "Pichon nom"
 
 #: staff.au_label_id
 msgid "Database ID"
-msgstr ""
+msgstr "ID basa de donadas"
 
 #: staff.au_label_prefix
 msgctxt "staff.au_label_prefix"
@@ -783,7 +783,7 @@ msgstr "Nom d'utilizaire"
 
 #: staff.admin.survey.available.label
 msgid "Available to:"
-msgstr "Disponible per :"
+msgstr "Disponible per :"
 
 #: staff.admin.survey.description.label
 msgid "Description:"
@@ -818,7 +818,7 @@ msgstr ""
 
 #: staff.admin.survey.staff_client.label
 msgid "Staff Client:"
-msgstr "Client membre del personal :"
+msgstr "Client membre del personal :"
 
 #: staff.admin.survey.start.label
 msgid "Start:"
@@ -939,7 +939,7 @@ msgstr ""
 
 #: staff.auth.login_header
 msgid "Log in"
-msgstr "Dobrir una sesilha"
+msgstr "Dobrir una session"
 
 #: staff.auth.logoff_prompt
 msgid "Log off"
@@ -957,7 +957,7 @@ msgstr "L"
 #: staff.auth.name_prompt
 msgctxt "staff.auth.name_prompt"
 msgid "Name:"
-msgstr "Nom :"
+msgstr "Nom :"
 
 #: staff.auth.name_prompt.key
 msgctxt "staff.auth.name_prompt.key"
@@ -1113,12 +1113,12 @@ msgstr ""
 #: staff.browse_list.barcode
 msgctxt "staff.browse_list.barcode"
 msgid "Barcode"
-msgstr "Còde de barras"
+msgstr "Còdi de barras"
 
 #: staff.browse_list.callnumber
 msgctxt "staff.browse_list.callnumber"
 msgid "Call Number"
-msgstr "Numèro de còta"
+msgstr "Numèro de quòta"
 
 #: staff.browse_list.circ_as_type
 msgid "Circulate As"
@@ -1496,7 +1496,7 @@ msgstr "&Anullar"
 
 #: staff.cat.record_buckets.merge_records.lead
 msgid "Lead Record?"
-msgstr "Enregistrament principal"
+msgstr "Enregistrament principal ?"
 
 #: staff.cat.record_buckets.merge_records.remove_from_consideration
 msgid "Remove from consideration?"
@@ -1529,7 +1529,7 @@ msgstr ""
 #: staff.cat.search_callnumber
 msgctxt "staff.cat.search_callnumber"
 msgid "Call Number"
-msgstr "Numèro de còta"
+msgstr "Numèro de quòta"
 
 #: staff.cat.search_count_copy
 msgctxt "staff.cat.search_count_copy"
@@ -1705,7 +1705,7 @@ msgstr ""
 
 #: staff.cat.type_of_material.t
 msgid "Manuscript Language Material"
-msgstr "Tèxte manuscrich"
+msgstr "Tèxte manuscrit"
 
 #: staff.checkin.auto_print_label
 msgctxt "staff.checkin.auto_print_label"
@@ -1729,17 +1729,17 @@ msgstr "D"
 #: staff.checkin.print_receipt.label
 msgctxt "staff.checkin.print_receipt.label"
 msgid "Print List"
-msgstr "Estampar la lista"
+msgstr "Imprimir la lista"
 
 #: staff.renew.print_receipt.label
 msgctxt "staff.renew.print_receipt.label"
 msgid "Print List"
-msgstr "Estampar la lista"
+msgstr "Imprimir la lista"
 
 #: staff.checkin.reprint_receipt_label
 msgctxt "staff.checkin.reprint_receipt_label"
 msgid "Re-Print Last List"
-msgstr "Tornar estampar la darrièra lista"
+msgstr "Reïmprimir la darrièra lista"
 
 #: staff.checkin.reprint_receipt_label.accesskey
 msgctxt "staff.checkin.reprint_receipt_label.accesskey"
@@ -1952,7 +1952,7 @@ msgstr "GA"
 
 #: staff.circ.offline_register.post_code.label
 msgid "Postal Code"
-msgstr "Còde postal"
+msgstr "Còdi postal"
 
 #: staff.circ.offline_register.country.label
 msgctxt "staff.circ.offline_register.country.label"
@@ -2122,7 +2122,7 @@ msgstr ""
 #: staff.copy.attr.barcode
 msgctxt "staff.copy.attr.barcode"
 msgid "Barcode"
-msgstr "Còde de barras"
+msgstr "Còdi de barras"
 
 #: staff.copy.attr.circulate
 msgid "Circulate?"
@@ -2613,12 +2613,12 @@ msgstr "&Acabat"
 #: staff.hold_capture.print_receipt.label
 msgctxt "staff.hold_capture.print_receipt.label"
 msgid "Print List"
-msgstr "Estampar la lista"
+msgstr "Imprimir la lista"
 
 #: staff.hold_capture.reprint_receipt_label
 msgctxt "staff.hold_capture.reprint_receipt_label"
 msgid "Re-Print Last List"
-msgstr "Tornar estampar la darrièra lista"
+msgstr "Reïmprimir la darrièra lista"
 
 #: staff.hold_capture.reprint_receipt_label.accesskey
 msgctxt "staff.hold_capture.reprint_receipt_label.accesskey"
@@ -2689,7 +2689,7 @@ msgstr ""
 #: staff.main.auth.debug.clear
 msgctxt "staff.main.auth.debug.clear"
 msgid "Clear Cache"
-msgstr "Escafar l'escondedor"
+msgstr "Escafar lo cache"
 
 #: staff.main.auth.debug.clear.accesskey
 msgctxt "staff.main.auth.debug.clear.accesskey"
@@ -2861,7 +2861,7 @@ msgstr "3"
 #: staff.main.menu.admin.clear_cache.label
 msgctxt "staff.main.menu.admin.clear_cache.label"
 msgid "Clear Cache"
-msgstr "Escafar l'escondedor"
+msgstr "Escafar lo cache"
 
 #: staff.main.menu.admin.cmd_console.label
 #: staff.main.menu.admin.cmd_console.accesskey
@@ -12445,7 +12445,7 @@ msgctxt ""
 "staff.patron.bill_history.print.label "
 "staff.patron.bill_history.print.accesskey"
 msgid "&Print"
-msgstr "Estam&par"
+msgstr "Im&primir"
 
 #: staff.patron.bill_history.selected_billed.label
 msgid "Selected Billed:"
@@ -12573,7 +12573,7 @@ msgctxt ""
 "staff.patron.bill_interface.print.label "
 "staff.patron.bill_interface.print.accesskey"
 msgid "&Print"
-msgstr "Estam&par"
+msgstr "Im&primir"
 
 #: staff.patron.bill_interface.selected_billed.label
 msgid "Checked Billed:"
@@ -12715,7 +12715,7 @@ msgstr "Verificar"
 
 #: staff.patron.bills_overlay.credit_card.label
 msgid "Credit Card"
-msgstr "Carta de credit"
+msgstr "Carta de crèdit"
 
 #: staff.patron.bills_overlay.patron_credit.label
 msgid "Patron Credit"
@@ -13091,7 +13091,7 @@ msgctxt ""
 "staff.patron.holds_overlay.print.label "
 "staff.patron.holds_overlay.print.accesskey"
 msgid "&Print"
-msgstr "Estam&par"
+msgstr "Im&primir"
 
 #: staff.patron.holds_overlay.print_full_pull_list.label
 #: staff.patron.holds_overlay.print_full_pull_list.accesskey
@@ -13235,7 +13235,7 @@ msgstr "Copiar cap al quichapapièrs"
 #: staff.patron.search_result_overlay.print.label
 msgctxt "staff.patron.search_result_overlay.print.label"
 msgid "Print"
-msgstr "Estampar"
+msgstr "Imprimir"
 
 #: staff.patron.summary_overlay.psagbc.alert.label
 msgctxt "staff.patron.summary_overlay.psagbc.alert.label"
@@ -13296,7 +13296,7 @@ msgstr "Nom d'utilizaire :"
 #: staff.patron.user_edit.barcode.label
 msgctxt "staff.patron.user_edit.barcode.label"
 msgid "Barcode:"
-msgstr "Còde de barras :"
+msgstr "Còdi de barras :"
 
 #: staff.patron.user_edit.firstname.label
 msgctxt "staff.patron.user_edit.firstname.label"
@@ -13573,7 +13573,7 @@ msgstr "Etiqueta"
 
 #: staff.patron.ue.zip_code.label
 msgid "Zip Code"
-msgstr "Còde postal"
+msgstr "Còdi postal"
 
 #: staff.patron.ue.street_1.label
 msgid "Street 1"
@@ -13686,7 +13686,7 @@ msgstr ""
 
 #: staff.patron.ue.back.label
 msgid "Back"
-msgstr "Retorn"
+msgstr "Precedenta"
 
 #: staff.patron.ue.forward.label
 msgid "Forward"
@@ -13701,7 +13701,7 @@ msgstr ""
 #: staff.patron.ue.barcode.label
 msgctxt "staff.patron.ue.barcode.label"
 msgid "Barcode"
-msgstr "Còde de barras"
+msgstr "Còdi de barras"
 
 #: staff.patron.ue.addresses.label
 msgctxt "staff.patron.ue.addresses.label"
@@ -14106,7 +14106,7 @@ msgstr ""
 #: staff.circ.alternate_copy_summary.Barcode.label
 msgctxt "staff.circ.alternate_copy_summary.Barcode.label"
 msgid "Barcode"
-msgstr "Còde de barras"
+msgstr "Còdi de barras"
 
 #: staff.circ.alternate_copy_summary.Call_Number.label
 msgid "Item Call #"
@@ -14684,7 +14684,7 @@ msgstr ""
 
 #: staff.client.portal.poweredby
 msgid "Powered by"
-msgstr "Produch per"
+msgstr "Produit per"
 
 #: staff.client.portal.open_new_tab.description
 msgid "Open in a new tab"

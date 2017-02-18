@@ -1073,11 +1073,12 @@ BEGIN
             raw_text := REGEXP_REPLACE(raw_text, E'^(\\w+).*?$', E'\\1');
         END IF;
 
-		output_text := output_text || REGEXP_REPLACE(raw_text, E'\\s+', '', 'g');
+		output_text := output_text || idx.name || ':' ||
+					   REGEXP_REPLACE(raw_text, E'\\s+', '', 'g') || ' ';
 
 	END LOOP;
 
-    RETURN output_text;
+    RETURN BTRIM(output_text);
 
 END;
 $func$ LANGUAGE PLPGSQL;

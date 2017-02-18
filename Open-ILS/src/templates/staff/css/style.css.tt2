@@ -128,6 +128,7 @@ table.list tr.selected td { /* deprecated? */
 .pad-vert {padding : 20px 0px 10px 0px;}
 .pad-left {padding-left: 10px;}
 .pad-right {padding-right: 10px;}
+.pad-right-min {padding-right: 5px;}
 .pad-all-min {padding : 5px; }
 .pad-all-min2 {padding : 2px; }
 .pad-all {padding : 10px; }

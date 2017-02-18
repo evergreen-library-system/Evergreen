@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2016-08-25 17:09-0400\n"
-"PO-Revision-Date: 2016-06-10 13:40+0000\n"
+"PO-Revision-Date: 2016-11-11 21:42+0000\n"
 "Last-Translator: Anahi Valdez <avaldez@emeralddata.net>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2016-08-26 05:18+0000\n"
-"X-Generator: Launchpad (build 18179)\n"
+"X-Launchpad-Export-Date: 2016-11-12 05:26+0000\n"
+"X-Generator: Launchpad (build 18255)\n"
 
 #: conify.js:SURVEY_ID
 msgid "Survey ID # ${0}"
@@ -23,7 +23,7 @@ msgstr "Estudio de ID # ${0}"
 
 #: conify.js:IS_AVAILABLE
 msgid "Is Available"
-msgstr ""
+msgstr "Está Disponible"
 
 #: conify.js:SUCCESS_NEW_PERM_MAP
 msgid "New permission map created"
@@ -256,6 +256,9 @@ msgid ""
 "No questions can be modified or added at this time. The survey Start Date "
 "must be set for the future to add new questions or modify existing questions."
 msgstr ""
+"No se pueden modificar ni agregar preguntas en este momento. La fecha de "
+"inicio de la encuesta debe establecerse para el futuro para agregar nuevas "
+"preguntas o modificar las preguntas existentes."
 
 #: conify.js:ERROR_SAVING_HOLDS
 msgid "Problem saving Holds Address data for ${0}"

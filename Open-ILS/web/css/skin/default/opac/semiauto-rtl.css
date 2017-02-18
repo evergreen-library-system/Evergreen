@@ -1,0 +1,40 @@
+.qtype_selector_margin {
+    margin-left: 7px;
+}
+.item_list_padding {
+    padding: 8px 0px 6px 0px;
+}
+.opac-auto-108 {
+    padding-right: 5px;
+}
+#search-box table {
+    right: -10px;
+}
+#util_back_btn {
+    right: 10px;
+}
+#util_help_btn {
+    right: 40px;
+}
+#util_forw_btn {
+    right: 50px;
+}
+#util_home_btn {
+    right: 20px;
+}
+#util_print_btn {
+    right: 30px;
+}
+.opac-auto-161 {
+    text-align: left;
+    padding-left: 7px;
+}
+.opac-auto-164 {
+    padding-right: 5px;
+}
+.selector_actions_for_list {
+    margin-left: 11px;
+}
+.selector_actions_for_list_inner_option {
+    margin-right: 2em;
+}

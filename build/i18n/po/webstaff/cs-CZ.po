@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2016-08-25 22:31+0000\n"
-"PO-Revision-Date: 2016-09-07 13:23+0000\n"
+"PO-Revision-Date: 2016-09-29 14:40+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2016-09-08 05:55+0000\n"
-"X-Generator: Launchpad (build 18179)\n"
+"X-Launchpad-Export-Date: 2016-09-30 05:49+0000\n"
+"X-Generator: Launchpad (build 18204)\n"
 
 #: ../../Open-ILS/src/templates/staff/circ/share/t_transit_dialog.tt2:36
 msgid ""
@@ -388,7 +388,7 @@ msgstr "Stáří"
 
 #: ../../Open-ILS/src/templates/staff/admin/server/t_splash.tt2:10
 msgid "Age Hold Protect Rules"
-msgstr "Doba ochrany před rezervacemi"
+msgstr "Pravidla dočasné ochrany před rezervacemi"
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:97
 msgid "Age Protect"
@@ -4553,7 +4553,7 @@ msgstr "Hledat exempláře podle čárového kódu"
 
 #: ../../Open-ILS/src/templates/staff/navbar.tt2:42
 msgid "Search for Patrons"
-msgstr "Hledt čtenáře"
+msgstr "Hledat čtenáře"
 
 #: ../../Open-ILS/src/templates/staff/navbar.tt2:180 ../../Open-ILS/src/templates/staff/navbar.tt2:58
 msgid "Search the Catalog"

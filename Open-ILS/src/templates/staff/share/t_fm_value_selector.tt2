@@ -1,0 +1,5 @@
+<select
+  ng-options="item.id as item.name for item in linked_values"
+  ng-model="ngModel"
+  ng-change="handleChange(ngModel)"
+</select>

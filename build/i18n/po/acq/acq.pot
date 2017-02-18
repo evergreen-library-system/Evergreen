@@ -709,7 +709,7 @@ msgid "ISSN"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/acq/settings/li_attr.tt2:26
-msgid "Identifer Field?: "
+msgid "Identifier Field?: "
 msgstr ""
 
 #: ../../Open-ILS/src/templates/acq/receiving/process.tt2:11 ../../Open-ILS/src/templates/acq/settings/li_attr.tt2:54

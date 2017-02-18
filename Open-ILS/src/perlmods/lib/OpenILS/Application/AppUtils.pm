@@ -1333,6 +1333,44 @@ sub ou_ancestor_setting_batch_insecure {
     return %result;
 }
 
+# Returns a hash of hashes like so:
+# { 
+#   $lookup_org_id => {org => $context_org, value => $setting_value},
+#   $lookup_org_id2 => {org => $context_org2, value => $setting_value2},
+#   $lookup_org_id3 => {} # example of no setting value exists
+#   ...
+# }
+sub ou_ancestor_setting_batch_by_org_insecure {
+    my ($self, $org_ids, $name, $e) = @_;
+
+    $e ||= OpenILS::Utils::CStoreEditor->new();
+    my %result = map { $_ => {value => undef} } @$org_ids;
+
+    my $query = {
+        from => [
+            'actor.org_unit_ancestor_setting_batch_by_org',
+            $name, '{' . join(',', @$org_ids) . '}'
+        ]
+    };
+
+    # DB func returns an array of settings matching the order of the
+    # list of org unit IDs.  If the setting does not contain a valid
+    # ->id value, then no setting value exists for that org unit.
+    my $settings = $e->json_query($query);
+    for my $idx (0 .. $#$org_ids) {
+        my $setting = $settings->[$idx];
+        my $org_id = $org_ids->[$idx];
+
+        next unless $setting->{id}; # null ID means no value is present.
+
+        $result{$org_id}->{org} = $setting->{org_unit};
+        $result{$org_id}->{value} = 
+            OpenSRF::Utils::JSON->JSON2perl($setting->{value});
+    }
+
+    return %result;
+}
+
 # returns the ISO8601 string representation of the requested epoch in GMT
 sub epoch2ISO8601 {
     my( $self, $epoch ) = @_;
@@ -1893,7 +1931,7 @@ sub bib_record_list_via_search {
     }
 
     # Throw away other junk from search, keeping only bib IDs.
-    return [ map { pop @$_ } @{$search_result->{ids}} ];
+    return [ map { shift @$_ } @{$search_result->{ids}} ];
 }
 
 # 'no_flesh' avoids fleshing the target_biblio_record_entry

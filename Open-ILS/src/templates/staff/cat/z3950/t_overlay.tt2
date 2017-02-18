@@ -6,17 +6,24 @@
   </div>
   <div class="modal-body">
       <div class="row">
+        <div class="col-xs-3">
+          <label for="merge_profile_selector">[% l('Choose merge profile') %]</label>
+          <eg-fm-value-selector id="merge_profile_selector" ng-model="merge_profile" idl-class="vmp" filter="{'preserve_spec':{'=':null}}" ou-setting="cat.default_merge_profile" sticky-setting="eg.cat.z3950.default_merge_profile"></eg-fm-value-selector>
+           <button class="btn btn-default" ng-click="editOverlayRecord()">
+               [% l('Edit Z39.50 Record') %]
+           </button>
+        </div>
+      </div>
+      <div class="row">
           <div class="col-xs-6">
-              <div>[% l('Replace TCN [_1] ...', '{{overlay_target}}') %]</div>
-              <eg-record-html record-id="overlay_target" />
+              <div>[% l('Replace TCN [_1] ...', '{{overlay_target.id}}') %]</div>
+              <eg-record-breaker marc-xml="overlay_target.orig_marc_xml"></eg-record-breaker>
           </div>
           <div class="col-xs-6">
               <div>[% l('With this?') %]
-                  <button class="btn btn-default" ng-click="editOverlayRecord()">
-                      [% l('Edit') %]
-                  </button>
+                  <span ng-if="overlay_target.merged">[% l('(merged)') %]</span>
               </div>
-              <eg-record-html marc-xml="{{args.marc_xml}}" />
+              <eg-record-breaker marc-xml="overlay_target.marc_xml"></eg-record-breaker>
           </div>
       </div>
   </div>

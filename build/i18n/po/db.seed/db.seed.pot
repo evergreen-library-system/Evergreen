@@ -2907,11 +2907,6 @@ msgstr ""
 msgid "Gayo"
 msgstr ""
 
-# id::coust.label__circ.selfcheck.require_patron_password
-#: 950.data.seed-values.sql:3546
-msgid "Require patron password"
-msgstr ""
-
 # id::ccvm.value__828 id::ccvm.value__856 id::ccvm.value__856
 # id::ccvm.value__856 id::ccvm.value__856 id::ccvm.value__856
 #: 950.data.seed-values.sql:7682 950.data.seed-values.sql:7712
@@ -6475,13 +6470,6 @@ msgstr ""
 # id::ppl.description__60
 #: 950.data.seed-values.sql:597
 msgid "User may link a copy to an entry in a statistical category"
-msgstr ""
-
-# id::coust.description__circ.selfcheck.require_patron_password
-#: 950.data.seed-values.sql:3549
-msgid ""
-"If true, patrons will be required to enter their password in addition to "
-"their username/barcode to log into the selfcheck interface"
 msgstr ""
 
 # id::ccvm.value__893 id::ccvm.value__893 id::ccvm.value__893
@@ -15642,11 +15630,6 @@ msgstr ""
 # id::ccvm.value__95
 #: 950.data.seed-values.sql:6520
 msgid "Crimean Tatar"
-msgstr ""
-
-# id::ppl.description__339
-#: 950.data.seed-values.sql:1155
-msgid "UPDATE_ORG_UNIT_SETTING.circ.selfcheck.require_patron_password"
 msgstr ""
 
 # id::ccvm.value__441

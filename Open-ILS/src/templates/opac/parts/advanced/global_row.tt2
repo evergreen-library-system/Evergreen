@@ -24,7 +24,7 @@
 
 <!-- tag the second row so the bool column won't be hidden -->
 <tr[% IF loop.index == 1 %] id="adv_global_row"[% END %]>
-    <td align='left' width='100%'>
+    <td class="td-left">
 
         <!-- bool selector.  hide for first row.  safe to ignore first bool value in form submission -->
         <select title="[% l('Boolean search operator') %]" 

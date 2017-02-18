@@ -218,3 +218,14 @@ A {
    box-shadow:         inset 0 0 8px #ADADB2;
    border-radius: 12px;
 }
+
+input[type=checkbox]
+{
+  /* Double-sized Checkboxes */
+  -ms-transform: scale(2.3); /* IE */
+  -moz-transform: scale(2.3); /* FF */
+  -webkit-transform: scale(2.3); /* Safari and Chrome */
+  -o-transform: scale(2.3); /* Opera */
+  padding: 10px;
+  transform: scale(1.5);
+}

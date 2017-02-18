@@ -1,0 +1,861 @@
+# Arabic translation for evergreen
+# Copyright (c) 2016 Rosetta Contributors and Canonical Ltd 2016
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2016.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: evergreen\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2016-08-25 17:09-0400\n"
+"PO-Revision-Date: 2017-01-20 12:27+0000\n"
+"Last-Translator: fares othman <Unknown>\n"
+"Language-Team: Arabic <ar@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2017-01-21 06:03+0000\n"
+"X-Generator: Launchpad (build 18302)\n"
+
+#: common.exception
+msgid ""
+"!! This software has encountered an error.  Please tell your friendly system "
+"administrator or software developer the following:\n"
+"%1$s\n"
+"%2$s\n"
+msgstr ""
+"!! صادف هذا البرنامج خطأ.  لطفاً ينبغي إبلاغ مدير النظام أو مُطوري "
+"البرنامج::\n"
+"%1$s\n"
+"%2$s\n"
+
+#: common.jsan.missing
+msgid "The JSAN library object is missing."
+msgstr "كائن المكتبة JSAN مفقود."
+
+#: common.error
+msgid "Please inform your help desk or developers of this error:"
+msgstr "لطفاً ينبغي إبلاغ مكتب المساعدة الخاص بك أو المطورين بهذا الخطأ:"
+
+#: common.ok
+msgid "Ok"
+msgstr "موافق"
+
+#: common.clear
+msgid "Clear"
+msgstr "مَسح"
+
+#: common.confirm
+msgid "Check here to confirm this message."
+msgstr "تحقق هنا لتأكيد هذه الرسالة."
+
+#: common.cancelled
+msgid "Action Cancelled"
+msgstr "تمّ إلغاء الإجراء"
+
+#: common.error.default
+msgid "Please report that this happened."
+msgstr "لطفاً ينبغي الإبلاغ/تقرير بأن هذا قد حدث."
+
+#: common.barcode.status.warning
+msgid "Warning: As of %1$s, this barcode (%2$s) was flagged %3$s."
+msgstr "تحذير: اعتباراً مِن %1$s، هذا الباركود (%2$s) تمّ رصفه/تأشيره %3$s."
+
+#: common.barcode.status.warning.lost
+msgid "Lost"
+msgstr "المفقود"
+
+#: common.barcode.status.warning.expired
+msgid "Expired"
+msgstr "انتهاء الصلاحية"
+
+#: common.barcode.status.warning.barred
+msgctxt "common.barcode.status.warning.barred"
+msgid "Barred"
+msgstr "محظور"
+
+#: common.barcode.status.warning.blocked
+msgid "Blocked"
+msgstr "ممنوع/محجوب"
+
+#: common.barcode.status.warning.unknown
+msgid "with an unknown code: %1$s"
+msgstr "مع كود غير معروف: %1$s"
+
+#: common.date.invalid
+msgid "Invalid Date"
+msgstr "تاريخ غير صحيح"
+
+#: common.action_complete
+msgid "Action completed."
+msgstr "تمّ إكمال الإجراء"
+
+#. # common.grouping_string = the string that should be inserted between elements of a grouped list
+#: common.grouping_string
+msgid ", "
+msgstr "، "
+
+#: common.unimplemented
+msgid "Not yet implemented"
+msgstr "لم يتم التنفيذ حتى الآن"
+
+#: common.yes
+msgctxt "common.yes"
+msgid "Yes"
+msgstr "نعم"
+
+#: common.no
+msgid "No"
+msgstr "لا"
+
+#: common.check_to_confirm
+msgid "Check here to confirm this message"
+msgstr "تحقق هنا لتأكيد هذه الرسالة"
+
+#: common.processing
+msgid "Processing"
+msgstr "قَيد المُعالجة"
+
+#: lang.version
+msgid "remote v1"
+msgstr "تحكم عن بعد v1"
+
+#: openils.global_util.clear_cache.error
+msgid "Problem clearing the cache: %1$s"
+msgstr "مشكلة في مسح ذاكرة التخزين المؤقت: %1$s"
+
+#: openils.global_util.clipboard.error
+msgid "Clipboard action failed: %1$s"
+msgstr "فشل عمل الحافظة: %1$s"
+
+#: openils.global_util.clipboard
+msgid "Copied \"%1$s\" to clipboard."
+msgstr "المَنسوخ \"%1$s\" في الحافظة."
+
+#: openils.global_util.content_window_jsobject.error
+msgid "Error with get_contentWindow(%1$s) and wrappedJSObject: %2$s"
+msgstr "خطأ في get_contentWindow(%1$s) و wrappedJSObject: %2$s"
+
+#: openils.global_util.content_window.error
+msgid "Error with get_contentWindow(%1$s): %2$s"
+msgstr "خطأ في get_contentWindow(%1$s): %2$s"
+
+#: openils.global_util.font_size.error
+msgid "Error adjusting the font size: %1$s"
+msgstr "خطأ في ضبط حجم الخط: %1$s"
+
+#. # Appended to notes with certain settings enabled.  First position is staff initials, and second position is a date for when the initials were added.
+#: staff.initials.format
+msgid "[ %1$s %2$s @ %3$s ]"
+msgstr "[ %1$s %2$s @ %3$s ]"
+
+#: staff.checkout_column_label_service
+msgid "Service"
+msgstr "الخدمة"
+
+#: staff.acp_label_barcode
+msgctxt "staff.acp_label_barcode"
+msgid "Barcode"
+msgstr "باركود"
+
+#: staff.acp_label_call_number
+msgid "Call Number"
+msgstr "رمز الاستدعاء"
+
+#: staff.acp_label_circ_as_type
+msgid "Circulate As Type"
+msgstr "قم بالإعارة كفئة"
+
+#: staff.acp_label_circ_lib
+msgid "Circulation Library"
+msgstr "مكتبة الإعارة"
+
+#: staff.acp_label_circ_modifier
+msgid "Circulation Modifier"
+msgstr "مُعدِّل الإعارة"
+
+#. # %1$s = circ modifier code, %2$s = circ modifier name, %3$s = circ modifier description
+#: staff.circ_modifier.display
+msgid "%1$s : %2$s : %3$s"
+msgstr "%1$s : %2$s : %3$s"
+
+#: staff.acp_label_copy_number
+msgid "Copy Number"
+msgstr "رقم النُسخة"
+
+#: staff.acp_label_parts
+msgid "Part"
+msgstr "جزء"
+
+#: staff.acp_label_deposit_amount
+msgid "Deposit Amount"
+msgstr "مقدار الإيداع"
+
+#: staff.acp_label_fine_level
+msgid "Fine Level"
+msgstr "مستوى الغرامة"
+
+#: staff.acp_label_id
+msgid "Copy ID"
+msgstr "مُعرف النُسخة"
+
+#: staff.acp_label_loan_duration
+msgid "Loan Duration"
+msgstr "مدة الإعارة"
+
+#: staff.acp_label_location
+msgid "Location"
+msgstr "الموقع"
+
+#: staff.acp_label_price
+msgid "Price"
+msgstr "السعر"
+
+#: staff.acp_label_cost
+msgid "Acquisition Cost"
+msgstr "تكلفة التزويد"
+
+#: staff.acp_label_status
+msgctxt "staff.acp_label_status"
+msgid "Status"
+msgstr "الحالة"
+
+#: staff.acp_label_age_protect
+msgid "Age-based Hold Protection"
+msgstr "حماية الحجز بناءً على العمر"
+
+#: staff.ahr_current_copy_label
+msgid "Current Copy"
+msgstr "النُسخة الحالية"
+
+#: staff.ahr_current_copy_location_label
+msgid "Current Copy Location"
+msgstr "موقع النُسخة الحالي"
+
+#: staff.ahr_email_notify_label
+msgid "Email Notify"
+msgstr "الإخطار عبر البريد الإلكتروني"
+
+#: staff.ahr_expire_date_label
+msgid "Expire Date"
+msgstr "تاريخ انتهاء الصلاحية"
+
+#: staff.ahr_fulfillment_time_label
+msgid "Fulfillment Time"
+msgstr "وقت الاستيفاء"
+
+#: staff.ahr_hold_type_label
+msgctxt "staff.ahr_hold_type_label"
+msgid "Type"
+msgstr "النوع"
+
+#: staff.ahr_holdable_formats_label
+msgid "Holdable Formats"
+msgstr "صيغ الحجز"
+
+#: staff.ahr_holdable_part_label
+msgid "Holdable Part"
+msgstr "الجزأ القابل للحجز"
+
+#: staff.ahr_issuance_label_label
+msgid "Issuance Label"
+msgstr "تسمية العدد"
+
+#: staff.ahr_id_label
+msgid "Hold ID"
+msgstr "مُعرف الحجز"
+
+#: staff.ahr_phone_notify_label
+msgid "Phone Notify"
+msgstr "الإخطار عبر الهاتف"
+
+#: staff.ahr_sms_notify_label
+msgid "Text Notify"
+msgstr "الإخطار النصي"
+
+#: staff.ahr_sms_carrier_label
+msgid "Text Carrier"
+msgstr "ناقل النص"
+
+#: staff.ahr_pickup_lib_label
+msgid "Pickup Library"
+msgstr "مكتبة الاستلام"
+
+#: staff.ahr_current_shelf_lib_label
+msgid "Current Shelf Library"
+msgstr "رف المكتبة الحالي"
+
+#: staff.ahr_prev_check_time_label
+msgid "Previous Check Time"
+msgstr "وقت الإعارة السابقة"
+
+#: staff.ahr_requestor_label
+msgid "Requestor"
+msgstr "مُقدم الطلب"
+
+#: staff.ahr_selection_depth_label
+msgid "Selection Depth"
+msgstr "عمق الاختيار"
+
+#: staff.ahr_top_of_queue_label
+msgid "Top of Queue"
+msgstr "بداية صف الانتظار"
+
+#: staff.ahr_status_label
+msgctxt "staff.ahr_status_label"
+msgid "Status"
+msgstr "الحالة"
+
+#: staff.ahr_target_label
+msgid "Target"
+msgstr "المُستهدف"
+
+#: staff.ahr_usr_label
+msgctxt "staff.ahr_usr_label"
+msgid "User"
+msgstr "المستخدم"
+
+#: staff.circ_label_due_date
+msgid "Due Date"
+msgstr "تاريخ استحقاق الرد"
+
+#: staff.circ_label_due_time
+msgid "Due Time"
+msgstr "وقت استحقاق الرد"
+
+#: staff.circ_label_id
+msgid "Circulation ID"
+msgstr "مُعرف الإعارة"
+
+#: staff.circ_label_renewal_remaining
+msgid "Remaining Renewals"
+msgstr "طلبات التمديد المتبقية"
+
+#: staff.mvr_label_author
+msgctxt "staff.mvr_label_author"
+msgid "Author"
+msgstr "المُؤلف"
+
+#: staff.mvr_label_doc_id
+msgid "Document ID"
+msgstr "مُعرف تعريف الوثيقة"
+
+#: staff.mvr_label_title
+msgctxt "staff.mvr_label_title"
+msgid "Title"
+msgstr "العنوان"
+
+#: staff.bills_xact_dates_label
+msgid "Record / Dates"
+msgstr "التسجيلة / تواريخ"
+
+#: staff.bills_information
+msgid "Information"
+msgstr "المعلومات"
+
+#: staff.bills_current_payment_label
+msgid "Current Payment"
+msgstr "مقدار الدفع الحالي"
+
+#: staff.csp_id_label
+msgid "Penalty Type ID"
+msgstr "مُعرف نوع العقوبة"
+
+#: staff.csp_name_label
+msgid "Name"
+msgstr "الاِسم"
+
+#: staff.csp_label_label
+msgid "Label"
+msgstr "التسمية"
+
+#: staff.csp_block_list_label
+msgid "Block List"
+msgstr "قائمة المنع"
+
+#: staff.csp_block_circ_label
+msgid "Blocks Circulations?"
+msgstr "إعارات ممنوعة؟"
+
+#: staff.csp_block_renew_label
+msgid "Blocks Renewals?"
+msgstr "تمديدات ممنوعة؟"
+
+#: staff.csp_block_hold_label
+msgid "Blocks Holds?"
+msgstr "حجوزات ممنوعة؟"
+
+#: staff.csp_block_circ_yes
+msgctxt "staff.csp_block_circ_yes"
+msgid "Yes"
+msgstr "نعم"
+
+#: staff.csp_block_renew_yes
+msgctxt "staff.csp_block_renew_yes"
+msgid "Yes"
+msgstr "نعم"
+
+#: staff.csp_block_hold_yes
+msgctxt "staff.csp_block_hold_yes"
+msgid "Yes"
+msgstr "نعم"
+
+#: staff.ausp_id_label
+msgid "Penalty ID "
+msgstr "مُعرف العقوبة "
+
+#: staff.ausp_staff_label
+msgid "Applied By "
+msgstr "تطبيق حسب "
+
+#: staff.ausp_set_date_label
+msgid "Applied On "
+msgstr "تطبيق على "
+
+#: staff.ausp_note_label
+msgid "Note "
+msgstr "ملاحظة "
+
+#: staff.ausp_org_unit_label
+msgid "Library "
+msgstr "المكتبة "
+
+#: staff.ausp_org_unit_full_label
+msgid "Library (Full Name)"
+msgstr "المكتبة (الاسم الكامل)"
+
+#: staff.mbts_id_label
+msgid "Bill # "
+msgstr "إصدار فاتورة # "
+
+#: staff.mbts_xact_start_label
+msgid "Start"
+msgstr "بِداية"
+
+#: staff.mbts_xact_finish_label
+msgid "Finish"
+msgstr "إنهاء"
+
+#: staff.mbts_xact_type_label
+msgctxt "staff.mbts_xact_type_label"
+msgid "Type"
+msgstr "النوع"
+
+#: staff.mbts_total_owed_label
+msgid "Total Billed"
+msgstr "إجمالي الفاتورة"
+
+#: staff.mbts_total_paid_label
+msgid "Total Paid"
+msgstr "المقدار الكلي المدفوع"
+
+#: staff.mbts_balance_owed_label
+msgid "Balance Owed"
+msgstr "الرصيد المُستحق"
+
+#: staff.mbts_usr_label
+msgctxt "staff.mbts_usr_label"
+msgid "User"
+msgstr "المستخدم"
+
+#: staff.mbts_last_billing_note_label
+msgid "Last Billing Note"
+msgstr "ملاحظة الفاتورة الأخيرة"
+
+#: staff.mbts_last_billing_type_label
+msgid "Last Billing Type"
+msgstr "نوع الفاتورة الأخيرة"
+
+#: staff.mbts_last_billing_timestamp_label
+msgid "Last Billed"
+msgstr "آخر فاتورة"
+
+#: staff.mbts_last_payment_note_label
+msgid "Last Payment Note"
+msgstr "ملاحظة آخر دفع"
+
+#: staff.mbts_last_payment_type_label
+msgid "Last Payment Type"
+msgstr "نوع آخر دفع"
+
+#: staff.mbts_last_payment_timestamp_label
+msgid "Last Payment"
+msgstr "آخر دفع"
+
+#: staff.mb_billing_type_label
+msgid "Billing Type"
+msgstr "نوع الفواتير"
+
+#: staff.mb_xact_label
+msgctxt "staff.mb_xact_label"
+msgid "Transaction ID"
+msgstr "مُعرف المُعاملة"
+
+#: staff.mb_billing_ts_label
+msgctxt "staff.mb_billing_ts_label"
+msgid "When"
+msgstr "متى/عندما"
+
+#: staff.mb_void_time_label
+msgid "Void Time"
+msgstr "الوقت الملغي"
+
+#: staff.mb_note_label
+msgctxt "staff.mb_note_label"
+msgid "Note"
+msgstr "مُلاحظة"
+
+#: staff.mb_amount_label
+msgctxt "staff.mb_amount_label"
+msgid "Amount"
+msgstr "المقدار"
+
+#: staff.mb_voider_label
+msgid "Voider"
+msgstr "المُلغِي"
+
+#: staff.mb_voided_label
+msgctxt "staff.mb_voided_label"
+msgid "Voided"
+msgstr "المُلغَي"
+
+#: staff.mb_id_label
+msgid "Billing ID"
+msgstr "مُعرف الفاتورة"
+
+#: staff.mp_credit_card_payment_label
+msgid "Credit Card Payment"
+msgstr "دفع بالبطاقة الائتمانية"
+
+#: staff.mp_forgive_payment_label
+msgid "Forgive Payment"
+msgstr "الدفع المُسامَح به"
+
+#: staff.mp_payment_timestamp_label
+msgctxt "staff.mp_payment_timestamp_label"
+msgid "When"
+msgstr "متى/عندما"
+
+#: staff.mp_payment_type_label
+msgid "Payment Type"
+msgstr "نوع الدفع"
+
+#: staff.mp_voided_label
+msgctxt "staff.mp_voided_label"
+msgid "Voided"
+msgstr "المَلغي"
+
+#: staff.mp_id_label
+msgid "Payment ID"
+msgstr "مُعرف الدفع"
+
+#: staff.mp_goods_payment_label
+msgid "Goods Payment"
+msgstr "الدفع لـِ السلع/البضائع"
+
+#: staff.mp_xact_label
+msgctxt "staff.mp_xact_label"
+msgid "Transaction ID"
+msgstr "مُعرف المعاملة"
+
+#: staff.mp_credit_payment_label
+msgid "Credit Payment"
+msgstr "إئتمان الدفع"
+
+#: staff.mp_work_payment_label
+msgid "Work Payment"
+msgstr "الدفع"
+
+#: staff.mp_note_label
+msgctxt "staff.mp_note_label"
+msgid "Note"
+msgstr "مُلاحظة"
+
+#: staff.mp_cash_payment_label
+msgid "Cash Payment"
+msgstr "دفع نقدي"
+
+#: staff.mp_amount_label
+msgctxt "staff.mp_amount_label"
+msgid "Amount"
+msgstr "المقدار"
+
+#: staff.mp_check_payment_label
+msgid "Check Payment"
+msgstr "التحقق من الدفع"
+
+#: staff.mp_cash_drawer_label
+msgid "Workstation"
+msgstr "محطة العمل"
+
+#: staff.mp_accepting_usr_label
+msgid "Staff"
+msgstr "طاقم العمل"
+
+#: staff.card_barcode_label
+msgctxt "staff.card_barcode_label"
+msgid "Barcode"
+msgstr "الباركود"
+
+#: staff.au_active_label
+msgid "Active"
+msgstr "مُفعل"
+
+#: staff.au_usrname_label
+msgid "Login Name"
+msgstr "اسم الدخول"
+
+#: staff.au_profile_label
+msgid "Profile"
+msgstr "الملف التعريفي"
+
+#: staff.au_barred_label
+msgctxt "staff.au_barred_label"
+msgid "Barred"
+msgstr "محظور"
+
+#: staff.au_alert_message_label
+msgid "Alert"
+msgstr "تنبيه"
+
+#: staff.au_claims_returned_count_label
+msgid "Returns Claimed"
+msgstr "المُطالبات المُسترجعة"
+
+#: staff.au_create_date_label
+msgid "Created On"
+msgstr "تمّ الإنشاء في"
+
+#: staff.au_expire_date_label
+msgid "Expires On"
+msgstr "انتهاء الصلاحية في"
+
+#: staff.au_last_update_time_label
+msgid "Updated On"
+msgstr "تحديث في"
+
+#: staff.au_home_library_label
+msgid "Home Library"
+msgstr "المكتبة الرئيسية"
+
+#: staff.au_home_library_fullname_label
+msgid "Home Library (Full Name)"
+msgstr "المكتبة الرئيسية ـ الاسم الكامل ـ"
+
+#: staff.au_credit_forward_balance_label
+msgid "Credit"
+msgstr "الإئتمان"
+
+#: staff.au_day_phone_label
+msgid "Day Phone"
+msgstr "هاتف الاتصالات النهارية"
+
+#: staff.au_evening_phone_label
+msgid "Evening Phone"
+msgstr "هاتف الاتصالات المسائية"
+
+#: staff.au_other_phone_label
+msgid "Other Phone"
+msgstr "أرقام هواتف أخرى"
+
+#: staff.au_alias_label
+msgid "Alias"
+msgstr "الأسماء المُستعارة"
+
+#: staff.au_email_label
+msgid "Email"
+msgstr "البريد الإلكتروني"
+
+#: staff.au_birth_date_label
+msgid "Birth Date"
+msgstr "تَاريخ الميلاد"
+
+#: staff.au_ident_type_label
+msgid "Identification Type"
+msgstr "نوع التعريف"
+
+#: staff.au_ident_value_label
+msgid "Identification Value"
+msgstr "قيمة التعريف"
+
+#: staff.au_ident_type2_label
+msgid "Identification Type 2"
+msgstr "نوع التعريف 2"
+
+#: staff.au_ident_value2_label
+msgid "Identification Value 2"
+msgstr "قيمة التعريف 2"
+
+#: staff.au_net_access_level_label
+msgid "Internet Access"
+msgstr "إتاحة ووصول لـِ الإنترنت"
+
+#: staff.au_master_account_label
+msgid "Group Lead"
+msgstr "المجموعة القائدة"
+
+#: staff.au_group_id_label
+msgid "Group ID"
+msgstr "مُعرف المجموعة"
+
+#: staff.au_id_label
+msgid "User ID"
+msgstr "مُعرف المُستخدم"
+
+#: staff.au_name_prefix_label
+msgid "Name Prefix"
+msgstr "بادئة الاسم"
+
+#: staff.au_family_name_label
+msgid "Family Name"
+msgstr "اسم العائلة"
+
+#: staff.au_first_given_name_label
+msgid "First Name"
+msgstr "الاسم الأول"
+
+#: staff.au_second_given_name_label
+msgid "Middle Name"
+msgstr "الاسم الأوسط"
+
+#: staff.au_name_suffix_label
+msgid "Name Suffix"
+msgstr "لاحقة الاسم"
+
+#: staff.z39_50.search_class.author
+msgctxt "staff.z39_50.search_class.author"
+msgid "Author"
+msgstr "المُؤلف"
+
+#: staff.z39_50.search_class.isbn
+msgid "ISBN"
+msgstr "ردمك"
+
+#: staff.z39_50.search_class.issn
+msgid "ISSN"
+msgstr "ردمد"
+
+#: staff.z39_50.search_class.item_type
+msgid "Item Type"
+msgstr "نوع النُسخة"
+
+#: staff.z39_50.search_class.item_type.all
+msgid "All Formats"
+msgstr "كل الصيغ"
+
+#: staff.z39_50.search_class.item_type.art
+msgid "Papers/Articles"
+msgstr "الأوراق/المقالات"
+
+#: staff.z39_50.search_class.item_type.bks
+msgid "Books"
+msgstr "الكُتب"
+
+#: staff.z39_50.search_class.item_type.com
+msgid "Computer files"
+msgstr "ملفات حاسوبية"
+
+#: staff.z39_50.search_class.item_type.map
+msgid "Maps"
+msgstr "خرائط"
+
+#: staff.z39_50.search_class.item_type.mix
+msgid "Mixed material"
+msgstr "مواد مختلطة"
+
+#: staff.z39_50.search_class.item_type.rec
+msgid "Sound recordings"
+msgstr "تسجيلات صوتية"
+
+#: staff.z39_50.search_class.item_type.sco
+msgid "Musical scores"
+msgstr "النوتات الموسيقية"
+
+#: staff.z39_50.search_class.item_type.ser
+msgid "Serials"
+msgstr "الدوريات"
+
+#: staff.z39_50.search_class.item_type.url
+msgid "Internet Resources"
+msgstr "مصادر إنترنت"
+
+#: staff.z39_50.search_class.item_type.vis
+msgid "Visual materials"
+msgstr "المواد المرئية"
+
+#: staff.z39_50.search_class.lccn
+msgid "LCCN"
+msgstr "رقم الضبط في مكتبة الكونغرس"
+
+#: staff.z39_50.search_class.pubdate
+msgid "Publication Date"
+msgstr "تاريخ النشر"
+
+#: staff.z39_50.search_class.publisher
+msgid "Publisher"
+msgstr "الناشر"
+
+#: staff.z39_50.search_class.tcn
+msgid "Accession #"
+msgstr "انضمام #"
+
+#: staff.z39_50.search_class.title
+msgctxt "staff.z39_50.search_class.title"
+msgid "Title"
+msgstr "العنوان"
+
+#: staff.z39_50_import_interface_label
+msgid "Z39.50 Import"
+msgstr "استيراد بـِ Z39.50"
+
+#: staff.main.data.loaded
+msgid "Data loaded."
+msgstr "تاريخ التحميل"
+
+#: staff.main.gen_offline_widgets.synced
+msgid "Offline interface synchronized with server."
+msgstr "واجهة دون اتصال المُتزامنة مع الخادم"
+
+#: staff.main.gen_offline_widgets.noncat_sort.error
+msgid "error in noncat sorting: "
+msgstr "خطأ في فرز غير المُفهرسة "
+
+#: staff.main.gen_offline_widgets.please_wait
+msgid "Please wait"
+msgstr "اِنتظر من فضلك"
+
+#: staff.main.gen_offline_widgets.workstation_registration_denied
+msgid "You do not have permission to register a workstation."
+msgstr "ليس لديك الصلاحية لتسجيل الدخول إلى محطة العمل"
+
+#: staff.main.gen_offline_widgets.registration.override
+msgid "Override Registration Failure?"
+msgstr "تجاوز فشل التسجيل؟"
+
+#: staff.main.gen_offline_widgets.registration.error
+msgid "Workstation Registration error (%1$s)"
+msgstr "خطأ تسجيل في محطة العمل (%1$s)"
+
+#: staff.main.gen_offline_widgets.registration.success
+msgid "Registration successful"
+msgstr "تم التسجيل بنجاح"
+
+#: staff.main.gen_offline_widgets.registration.empty
+msgid "Please specify a workstation name"
+msgstr "لطفاً ينبغي تحديد اسم محطة العمل"
+
+#: staff.util.timestamp_dialog.future_date_disallowed
+msgid "Future dates disallowed."
+msgstr "تواريخ مستقبلية غير مسموح بها"
+
+#: staff.util.timestamp_dialog.past_date_disallowed
+msgid "Past dates disallowed."
+msgstr "التواريخ الماضية غير مسموح بها."
+
+#: staff.util.timestamp_dialog.today_disallowed
+msgid "Today disallowed."
+msgstr "تاريخ اليوم غير مسموح به"
+
+#: tab.label.triggered_events_for_copy
+msgid "Triggered Events: %1$s"
+msgstr "أحداث الإطلاق: %1$s"

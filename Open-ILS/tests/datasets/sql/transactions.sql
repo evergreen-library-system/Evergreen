@@ -136,6 +136,14 @@ BEGIN
 
         END LOOP;                                                                   
     END LOOP;                                                                   
+
+    -- finally, add a metarecord hold w/ a holdable_format
+    -- for patron id=2 (home_ou=9)
+    PERFORM evergreen.populate_hold(
+        'M', 42, 2, 2, 9, FALSE, NULL, 
+        '{"0":[{"_attr":"mr_hold_format","_val":"score"}]}'
+    );
+
 END $$;
 
 

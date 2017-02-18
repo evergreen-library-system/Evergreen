@@ -477,6 +477,13 @@ CREATE TABLE action.hold_copy_map (
 -- CREATE INDEX acm_hold_idx ON action.hold_copy_map (hold);
 CREATE INDEX acm_copy_idx ON action.hold_copy_map (target_copy);
 
+CREATE OR REPLACE FUNCTION
+    action.hold_request_regen_copy_maps(
+        hold_id INTEGER, copy_ids INTEGER[]) RETURNS VOID AS $$
+    DELETE FROM action.hold_copy_map WHERE hold = $1;
+    INSERT INTO action.hold_copy_map (hold, target_copy) SELECT $1, UNNEST($2);
+$$ LANGUAGE SQL;
+
 CREATE TABLE action.transit_copy (
 	id			SERIAL				PRIMARY KEY,
 	source_send_time	TIMESTAMP WITH TIME ZONE,

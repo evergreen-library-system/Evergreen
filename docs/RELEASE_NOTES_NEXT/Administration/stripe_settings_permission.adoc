@@ -1,0 +1,15 @@
+Credit Processor Stripe Settings Permissions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Unprivileged users can retrieve organizational unit setting values for
+setting types lacking a "view" permission.  When the feature adding
+Stripe credit card processing was added, the upgrade script neglected
+to add the VIEW_CREDIT_CARD_PROCESSING permission to the
+organizational unit setting type.  This means that anyone can retrieve
+and view the settings for Stripe credit card processing.
+
+Any system that upgraded from Evergreen version 2.5 to 2.6 is
+affected.  If you use Stripe for credit card processing, it is
+strongly recommended that you apply this upgrade.  Even if you do not
+use Stripe, applying this upgrade is still recommended.  If you did
+not upgrade from version 2.5 to 2.6 of Evergreen, but started with a
+later version, applying this upgrade is harmless.

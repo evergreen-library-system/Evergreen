@@ -1,0 +1,6 @@
+Arabic and Right-to-Left Language Support for the catalog
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+New stylesheets and other changes to the catalog to allow for 
+better support of right-to-left (RTL) languages, such as Arabic.
+
+Also add Arabic (Jordan) as a new supported language.

@@ -1251,6 +1251,9 @@ function fleshFMRow(row, fmcls, args) {
     if(fmcls == 'au' && fmfield == 'dob' && !orgSettings['ui.patron.edit.au.dob.calendar'])
         dijitArgs.popupClass = "";
 
+    if(fmcls == 'au' && fmfield == 'ident_type')
+        dijitArgs.fetchProperties = { sort: [{attribute:"name",descending:false}] };
+
     var value = row.getAttribute('wvalue');
     if(value !== null)
         dijitArgs.value = value;

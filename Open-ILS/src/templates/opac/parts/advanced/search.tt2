@@ -21,7 +21,7 @@
                     [% INCLUDE "opac/parts/advanced/global_row.tt2" %]
                     <!-- add a new row -->
                     <tr id='adv_global_addrow'>
-                        <td align='left'>
+                        <td class="td-search-left">
                             <a href="javascript:;" id="myopac_new_global_row" onclick='addSearchRow();'>[% l('Add Search Row') %]</a>
                         </td>
                     </tr>
@@ -132,7 +132,7 @@
                             <input> (below) to drop down inline w/ its label -->
                         <div class="adv_search_available">
                             <input type='checkbox' name="modifier" value="metabib"
-                              [%- CGI.param('modifier').grep('metabib').size ?
+                              [%- CGI.param('modifier').grep('metabib').size || search.metarecord_default ?
                                     ' checked="checked"' : '' %]
                                 id='opac.result.ismetabib' />
                             <label for='opac.result.ismetabib'>

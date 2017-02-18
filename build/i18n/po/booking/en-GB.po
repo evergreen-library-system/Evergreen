@@ -1,0 +1,54 @@
+# English (United Kingdom) translation for evergreen
+# Copyright (c) 2017 Rosetta Contributors and Canonical Ltd 2017
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2017.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: evergreen\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2016-08-26 13:08+0000\n"
+"PO-Revision-Date: 2017-01-12 00:18+0000\n"
+"Last-Translator: Darrell Rodgers <drodgers@emeralddata.net>\n"
+"Language-Team: English (United Kingdom) <en_GB@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2017-01-13 05:37+0000\n"
+"X-Generator: Launchpad (build 18302)\n"
+
+#: ../../Open-ILS/src/templates/booking/pickup.tt2:25 ../../Open-ILS/src/templates/booking/pickup.tt2:50 ../../Open-ILS/src/templates/booking/return.tt2:32 ../../Open-ILS/src/templates/booking/return.tt2:57
+msgid "Barcode"
+msgstr "Barcode"
+
+#: ../../Open-ILS/src/templates/booking/pickup.tt2:52 ../../Open-ILS/src/templates/booking/return.tt2:34 ../../Open-ILS/src/templates/booking/return.tt2:58
+msgid "Due time"
+msgstr "Due time"
+
+#: ../../Open-ILS/src/templates/booking/pickup.tt2:27 ../../Open-ILS/src/templates/booking/reservation.tt2:101
+msgid "End time"
+msgstr "End time"
+
+#: ../../Open-ILS/src/templates/booking/pickup.tt2:51 ../../Open-ILS/src/templates/booking/return.tt2:33
+msgid "Pickup time"
+msgstr "Pickup time"
+
+#: ../../Open-ILS/src/templates/booking/reservation.tt2:99
+msgid "Resource"
+msgstr "Resource"
+
+#: ../../Open-ILS/src/templates/booking/return.tt2:59
+msgid "Return time"
+msgstr "Return time"
+
+#: ../../Open-ILS/src/templates/booking/pickup.tt2:26 ../../Open-ILS/src/templates/booking/reservation.tt2:100
+msgid "Start time"
+msgstr "Start time"
+
+#: ../../Open-ILS/src/templates/booking/pickup.tt2:24 ../../Open-ILS/src/templates/booking/pickup.tt2:49 ../../Open-ILS/src/templates/booking/return.tt2:31 ../../Open-ILS/src/templates/booking/return.tt2:56
+msgid "Title"
+msgstr "Title"
+
+#: ../../Open-ILS/src/templates/booking/reservation.tt2:98
+msgid "Type"
+msgstr "Type"

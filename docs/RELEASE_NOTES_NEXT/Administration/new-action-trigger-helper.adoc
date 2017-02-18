@@ -1,0 +1,7 @@
+get_org_unit_ancestor_at_depth Helper Added to Action Trigger Reactor Helpers
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+In action trigger templates it's now possible to call
+helpers.get_org_unit_ancestor_at_depth($id_or_aou, $depth) in order to retrieve
+a fleshed aou for the target aou's ancestor at the chosen depth. This could be
+used to retrieve the name of the library system rather than a specific branch
+name, for instance.

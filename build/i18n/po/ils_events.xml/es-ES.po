@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2016-08-25 17:09-0400\n"
-"PO-Revision-Date: 2016-08-16 16:03+0000\n"
+"PO-Revision-Date: 2016-11-11 21:44+0000\n"
 "Last-Translator: Anahi Valdez <avaldez@emeralddata.net>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2016-08-26 05:23+0000\n"
-"X-Generator: Launchpad (build 18179)\n"
+"X-Launchpad-Export-Date: 2016-11-12 05:26+0000\n"
+"X-Generator: Launchpad (build 18255)\n"
 
 #: 1621.CONTAINER_COPY_BUCKET_NOT_FOUND:514
 msgid "The requested container_copy_bucket was not found"
@@ -899,7 +899,7 @@ msgstr ""
 
 #: 1232.ITEM_DEPOSIT_REQUIRED:162
 msgid "Payment of an item deposit is required."
-msgstr ""
+msgstr "Se requiere el pago de un depósito de artículo."
 
 #: 1709.MAX_HOLDS:743
 msgid "User has reached the maximum number of holds"
@@ -1162,7 +1162,7 @@ msgstr "No se encontró la vandelay_queued_authority_record solicitado"
 
 #: 1234.ITEM_DEPOSIT_PAID:168
 msgid "An item deposit was paid."
-msgstr ""
+msgstr "Se pagó un depósito de artículo."
 
 #: 1597.BIBLIO_RECORD_NOTE_NOT_FOUND:442
 msgid "The requested biblio_record_note was not found"
@@ -1208,7 +1208,7 @@ msgstr "El elemento guardado ha sido editado por otro usuario"
 
 #: 7028.PATRON_CIRC_MISMATCH:931
 msgid "Potentially notified patron does not own the circulation."
-msgstr ""
+msgstr "El cliente potencialmente notificado no posee la circulación."
 
 #: 1843.ACQ_LINEITEM_ATTR_NOT_FOUND:612
 msgid "The requested acq.lineitem_attr was not found"
@@ -1300,7 +1300,7 @@ msgstr "El patrón en cuestión ha alcanzado la cantidad máxima fina"
 
 #: 1233.ITEM_RENTAL_FEE_REQUIRED:165
 msgid "Payment of an item rental fee is required."
-msgstr ""
+msgstr "Se requiere el pago de una cuota de alquiler de artículos."
 
 #: 1574.CONTAINER_CALL_NUMBER_BUCKET_ITEM_NOT_FOUND:374
 msgid "The requested container_call_number_bucket_item was not found"

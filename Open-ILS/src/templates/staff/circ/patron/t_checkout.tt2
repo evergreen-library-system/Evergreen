@@ -18,7 +18,7 @@
             </li>
             <li class="divider"></li>
             <li>
-              <a href ng-repeat='type in nonCatTypes'
+              <a href ng-repeat="type in nonCatTypes | orderBy:'name()'"
                ng-click="checkoutArgs.noncat_type=type.id()">{{type.name()}}</a>
             </li>
           </ul>
@@ -123,8 +123,8 @@
       [% l('Strict Barcode') %]
     </label>
   </div>
-  <div class="pad-horiz" ng-if="using_hatch"></div>
-  <div class="checkbox" ng-if="using_hatch">
+  <div class="pad-horiz" ng-if="using_hatch_printer"></div>
+  <div class="checkbox" ng-if="using_hatch_printer">
     <label>
       <input ng-model="show_print_dialog" type="checkbox"/>
       [% l('Show Print Dialog') %]

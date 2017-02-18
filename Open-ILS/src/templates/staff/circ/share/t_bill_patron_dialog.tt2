@@ -61,7 +61,7 @@
         <div class="col-md-8">
           <select ng-model="billArgs.billingType" class="form-control"
             ng-change="updateDefaultPrice()">
-            <option ng-repeat="type in billingTypes" value="{{type.id()}}">
+            <option ng-repeat="type in billingTypes | orderBy:'name()'" value="{{type.id()}}">
               {{type.name()}}
             </option>
           </select>

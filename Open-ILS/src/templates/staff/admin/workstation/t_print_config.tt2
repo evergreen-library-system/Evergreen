@@ -15,7 +15,18 @@
 
   <div class="row"> 
     <div class="col-md-12">
-      <h2>[% l('Printer Settings for Remote Printing') %]</h2>
+      <h2>[% l('Hatch Printer Settings') %]</h2>
+
+      <div class="alert alert-warning" 
+        ng-if="hatchIsOpen() && !useHatchPrinting()">
+        <p>
+[% l("Hatch printing is not enabled on this browser.  The settings below will have no effect until Hatch printing is enabled.") %]
+          <a href="./admin/workstation/hatch" target="_self" 
+            title="[% l('Hatch Administration') %]">
+            [% l('Enable Hatch Printing.') %]
+          </a>
+        </p>
+      </div>
     </div>
   </div>
 
@@ -44,8 +55,12 @@
       <div class="tab-content">
         <div class="tab-pane active">
 
+          <div class="alert alert-warning" ng-if="!isTestView && !hatchIsOpen()">
+[% l('Hatch is not installed in this browser.  Printing must be configured via the native browser print configuration.') %]
+          </div>
+
           <!-- printer config UI -->
-          <div class="row" ng-hide="isTestView">
+          <div class="row" ng-hide="isTestView || !hatchIsOpen()">
             <div class="col-md-6">
               <div class="input-group">
                 <div class="input-group-btn" uib-dropdown>
@@ -71,28 +86,274 @@
                   value="{{printConfig[context].printer}}">
               </div><!-- /input-group -->
             </div><!-- col -->
-            <div class="col-md-6">
-              <div class="input-group">
-                <div class="input-group-btn">
-                  <button type="button" 
-                    ng-click="configurePrinter()"
-                    ng-class="{disabled : actionPending || !printers[0]}"
-                    class="btn btn-default btn-success">
-                      [% l('Configure Printer') %]
-                  </button>
-                  <button type="button" 
-                    ng-click="resetConfig()"
-                    ng-class="{disabled : actionPending}"
-                    class="btn btn-default btn-warning">
-                      [% l('Reset Configuration') %]
-                  </button>
-                </div>
-              </div>
+            <div class="col-md-4">
+              <span class="pad-right-min">
+                <button class="btn btn-warning" 
+                  ng-click="resetPrinterSettings(context)">
+                  [% l('Reset Form') %]
+                </button>
+              </span>
+              <button class="btn btn-success" 
+                ng-click="savePrinterSettings(context)">
+                [% l('Apply Changes') %]
+              </button>
             </div>
           </div><!-- row -->
-          <div class="row" ng-hide="isTestView"> 
+
+          <div class="row" ng-hide="isTestView || !hatchIsOpen()"> 
+            <div class="col-md-10">
+              <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-2">
+                  <label>[% l('Print Color') %]</label>
+                </div>
+                <div class="col-md-4">
+                  <select
+                    class="form-control"
+                    ng-model="printConfig[context].printColor"
+                    ng-options="val for val in printerOptions.printColor | orderBy:'val'">
+                  </select>  
+                </div>
+                <div class="col-md-3">
+                  <span>[% l('Default: [_1]', 
+                    '{{printerOptions.defaultPrintColor}}') %]</span>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-2">
+                  <label>[% l('Paper Source') %]</label>
+                </div>
+                <div class="col-md-4">
+                  <select
+                    class="form-control"
+                    ng-model="printConfig[context].paperSource"
+                    ng-options="val for val in printerOptions.paperSource | orderBy:'val'">
+                  </select>  
+                </div>
+                <div class="col-md-3">
+                  <span>[% l('Default: [_1]', 
+                    '{{printerOptions.defaultPaperSource}}') %]</span>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-2">
+                  <label>[% l('Paper Type') %]</label>
+                </div>
+                <div class="col-md-4">
+                  <select
+                    class="form-control"
+                    ng-model="printConfig[context].paper"
+                    ng-options="val for val in printerOptions.paper | orderBy:'val'">
+                  </select>  
+                </div>
+                <div class="col-md-3">
+                  <span>[% l('Default: [_1]', 
+                    '{{printerOptions.defaultPaper}}') %]</span>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-2">
+                  <label>[% l('Page Orientation') %]</label>
+                </div>
+                <div class="col-md-4">
+                  <select
+                    class="form-control"
+                    ng-model="printConfig[context].pageOrientation"
+                    ng-options="val for val in printerOptions.pageOrientation | orderBy:'val'">
+                  </select>  
+                </div>
+                <div class="col-md-3">
+                  <span>[% l('Default: [_1]', 
+                    '{{printerOptions.defaultPageOrientation}}') %]</span>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-2">
+                  <label>[% l('Collation') %]</label>
+                </div>
+                <div class="col-md-4">
+                  <select
+                    class="form-control"
+                    ng-model="printConfig[context].collation"
+                    ng-options="val for val in printerOptions.collation | orderBy:'val'">
+                  </select>  
+                </div>
+                <div class="col-md-3">
+                  <span>[% l('Default: [_1]', 
+                    '{{printerOptions.defaultCollation}}') %]</span>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-2">
+                  <label>[% l('Print Quality') %]</label>
+                </div>
+                <div class="col-md-4">
+                  <select
+                    class="form-control"
+                    ng-model="printConfig[context].printQuality"
+                    ng-options="val for val in printerOptions.printQuality | orderBy:'val'">
+                  </select>  
+                </div>
+                <div class="col-md-3">
+                  <span>[% l('Default: [_1]', 
+                    '{{printerOptions.defaultPrintQuality}}') %]</span>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-2">
+                  <label>[% l('Print Sides') %]</label>
+                </div>
+                <div class="col-md-4">
+                  <select
+                    class="form-control"
+                    ng-model="printConfig[context].printSides"
+                    ng-options="val for val in printerOptions.printSides | orderBy:'val'">
+                  </select>  
+                </div>
+                <div class="col-md-3">
+                  <span>[% l('Default: [_1]', 
+                    '{{printerOptions.defaultPrintSides}}') %]</span>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-2">
+                  <label>[% l('Number of Copies') %]</label>
+                </div>
+                <div class="col-md-4">
+                  <input type="text" size="4" class="form-control"
+                    ng-model="printConfig[context].copies"/>
+                </div>
+                <div class="col-md-3">
+                  <span>[% l('Default: [_1]', 
+                    '{{printerOptions.defaultCopies}}') %]</span>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-1">
+                  <input type="radio" name="margins" 
+                    ng-click="printConfig[context].autoMargins=true"
+                    ng-checked="printConfig[context].autoMargins"/>
+                </div>
+                <div class="col-md-2">
+                  <label>[% l('Automatic Margins') %]</label>
+                </div>
+                <div class="col-md-4">
+                  <select
+                    class="form-control"
+                    ng-model="printConfig[context].marginType"
+                    ng-disabled="!printConfig[context].autoMargins" 
+                    ng-options="val for val in printerOptions.marginType | orderBy:'val'">
+                  </select>  
+                </div>
+                <div class="col-md-3">
+                  <span>[% l('Default: [_1]', 
+                    '{{printerOptions.defaultMarginType}}') %]</span>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-1">
+                  <input type="radio" name="margins"
+                    ng-click="printConfig[context].autoMargins=false"
+                    ng-checked="!printConfig[context].autoMargins"/>
+                </div>
+                <div class="col-md-2">
+                  <label>[% l('Manual Margins') %]</label>
+                </div>
+                <div class="col-md-2">
+                  <div class="input-group">
+                    <span class="input-group-addon">[% l('Left') %]</span>
+                    <input type="text" class="form-control"
+                      ng-disabled="printConfig[context].autoMargins"
+                      ng-model="printConfig[context].leftMargin"/>
+                  </div>
+                </div>
+                <div class="col-md-2">
+                  <div class="input-group">
+                    <span class="input-group-addon">[% l('Top') %]</span>
+                    <input type="text" class="form-control"
+                      ng-disabled="printConfig[context].autoMargins"
+                      ng-model="printConfig[context].topMargin"/>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-2">
+                  <div class="input-group">
+                    <span class="input-group-addon">[% l('Right') %]</span>
+                    <input type="text" class="form-control"
+                      ng-disabled="printConfig[context].autoMargins"
+                      ng-model="printConfig[context].rightMargin"/>
+                  </div>
+                </div>
+                <div class="col-md-2">
+                  <div class="input-group">
+                    <span class="input-group-addon">[% l('Bottom') %]</span>
+                    <input type="text" class="form-control"
+                      ng-disabled="printConfig[context].autoMargins"
+                      ng-model="printConfig[context].bottomMargin"/>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-2"><label>[% l('Page Ranges') %]</label></div>
+                <div class="col-md-2">
+                  [% l('All Pages') %]
+                  <input type='radio' name='pageRanges' 
+                    ng-checked="printConfig[context].allPages"
+                    ng-click="printConfig[context].allPages=true"/>
+                </div>
+                <div class="col-md-2">
+                  [% l('Page Range') %]
+                  <input type='radio' name='pageRanges' 
+                    ng-checked="!printConfig[context].allPages"
+                    ng-click="printConfig[context].allPages=false"/>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-2">
+                  <div class="input-group">
+                    <span class="input-group-addon">[% l('Start') %]</span>
+                    <input type="text" class="form-control"
+                      ng-disabled="printConfig[context].allPages"
+                      ng-model="printConfig[context].pageRanges[0]"/>
+                  </div>
+                </div>
+                <div class="col-md-2">
+                  <div class="input-group">
+                    <span class="input-group-addon">[% l('End') %]</span>
+                    <input type="text" class="form-control"
+                      ng-disabled="printConfig[context].allPages"
+                      ng-model="printConfig[context].pageRanges[1]"/>
+                  </div>
+                </div>
+                <!-- TODO: support multiple page ranges by 
+                    dynamically adding additional pageRanges[X] pairs -->
+              </div>
+            </div><!-- col -->
+          </div><!-- row -->
+
+          <div class="row" ng-hide="isTestView || !hatchIsOpen()">
             <div class="col-md-12">
-              <h2>[% l('Compiled Printer Settings') %]</h2>
+              <h3>[% l('Compiled Printer Settings') %]</h3>
               <pre>{{printerConfString()}}</pre>
             </div><!-- col -->
           </div><!-- row -->

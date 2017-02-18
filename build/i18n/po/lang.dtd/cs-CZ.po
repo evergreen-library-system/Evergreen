@@ -3,14 +3,14 @@ msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-08-25 17:08-0400\n"
-"PO-Revision-Date: 2016-09-06 09:24+0000\n"
+"PO-Revision-Date: 2017-02-01 13:06+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2016-09-07 06:40+0000\n"
-"X-Generator: Launchpad (build 18179)\n"
+"X-Launchpad-Export-Date: 2017-02-02 05:31+0000\n"
+"X-Generator: Launchpad (build 18315)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: Czech\n"
@@ -3556,7 +3556,7 @@ msgstr "V"
 
 #: staff.main.menu.cat.add_volume.label
 msgid "Add Volume"
-msgstr "Přidat svazek"
+msgstr "Přidat signaturu"
 
 #: staff.main.menu.cat.authority_manage.label
 #: staff.main.menu.cat.authority_manage.accesskey
@@ -3615,7 +3615,7 @@ msgstr "Skupiny &záznamů"
 #: staff.main.menu.cat.edit_volume_buckets.label
 #: staff.main.menu.cat.edit_volume_buckets.accesskey
 msgid "Manage &Volume Buckets"
-msgstr "Skupiny sva&zků"
+msgstr "Skupiny signa&tur"
 
 #: staff.main.menu.cat.edit_user_buckets.label
 #: staff.main.menu.cat.edit_user_buckets.accesskey
@@ -3657,7 +3657,7 @@ msgstr "V"
 
 #: staff.main.menu.cat.volume_status.label
 msgid "Display Volume"
-msgstr "Zobrazit svazek"
+msgstr "Zobrazit signaturu"
 
 #: staff.main.menu.cat.vandelay.label
 msgid "MARC Batch Import/Export"
@@ -4007,7 +4007,7 @@ msgstr "R"
 
 #: staff.main.menu.edit.buckets.volumes
 msgid "Volume Buckets"
-msgstr "Skupiny svazků"
+msgstr "Skupiny  signatur"
 
 #: staff.main.menu.edit.buckets.volumes.accesskey
 msgctxt "staff.main.menu.edit.buckets.volumes.accesskey"
@@ -4133,7 +4133,7 @@ msgstr "R"
 #: staff.main.menu.entity.volume.label
 msgctxt "staff.main.menu.entity.volume.label"
 msgid "Volumes"
-msgstr "Svazky"
+msgstr "Signatury"
 
 #: staff.main.menu.file.close.label
 #: staff.main.menu.file.close.accesskey
@@ -5636,7 +5636,7 @@ msgstr "Dlužná částka"
 
 #: staff.mbts_id_label
 msgid "Bill # "
-msgstr "Účet číslo "
+msgstr "Číslo transakce "
 
 #: staff.mbts_total_owed_label
 msgctxt "staff.mbts_total_owed_label"
@@ -7429,7 +7429,7 @@ msgstr "Vlastnická knihovna"
 
 #: staff.volume.wizard.page1
 msgid "Entering Volumes"
-msgstr "Zadávání svazků"
+msgstr "Zadávání svazků/signatur"
 
 #: staff.volume.wizard.page2
 msgid "Entering Copies"
@@ -7445,7 +7445,7 @@ msgstr "Zadávánívýchozích hodnot atributů na úrovni exempláře"
 
 #: staff.volume.wizard.title
 msgid "Batch Add Volumes or Copies Wizard"
-msgstr "Průvodce pro dávkové přidávání svazků nebo exemplářů"
+msgstr "Průvodce pro dávkové přidávání signatur/svazků nebo exemplářů"
 
 #: staff.xuleditor_label
 msgid "XUL TEST"
@@ -8449,7 +8449,7 @@ msgstr "Rezervace exempláře"
 
 #: staff.server.admin.hold_pull.volume_hold
 msgid "Volume Hold"
-msgstr "Rezervace svazku"
+msgstr "Rezervace signatury"
 
 #: staff.server.admin.hold_pull.title_hold
 msgid "Title Hold"
@@ -8774,7 +8774,9 @@ msgstr "Rezervace: Interval pro upozornění o vypršení"
 msgid ""
 "Amount of time before a hold expires at which point the patron should be "
 "alerted"
-msgstr "Časové období před vypršením rezervace"
+msgstr ""
+"Časové období před vypršením rezervace při jehož dosažení by měl být čtenář "
+"upozorněn"
 
 #: staff.server.admin.org_settings.circ.hold_expire_interval
 msgid "Holds: Expire Interval"
@@ -9921,7 +9923,7 @@ msgstr "Upravit  vlastnosti exempláře"
 #: staff.circ.copy_status_overlay.sel_vol_copy_edit.label
 #: staff.circ.copy_status_overlay.sel_vol_copy_edit.accesskey
 msgid "Edit Items/&Volumes Per Bib"
-msgstr "Upravit  exempláře/s&vazky  bib. zázn."
+msgstr "Upravit  exempláře/s&ignatury  bib  záznamu"
 
 #: staff.circ.copy_status_overlay.sel_mark_items_damaged.label
 #: staff.circ.copy_status_overlay.sel_mark_items_damaged.accesskey
@@ -9975,7 +9977,7 @@ msgctxt ""
 "staff.circ.copy_status_overlay.cmd_transfer_items.label "
 "staff.circ.copy_status_overlay.cmd_transfer_items.accesskey"
 msgid "&Transfer Items to Previously Marked Volume"
-msgstr "&Přesunout exempláře do předem označeného svazku"
+msgstr "&Přesunout exempláře do předem označené signatury"
 
 #: staff.circ.copy_status_overlay.cmd_add_volumes.label
 #: staff.circ.copy_status_overlay.cmd_add_volumes.accesskey
@@ -9983,7 +9985,7 @@ msgctxt ""
 "staff.circ.copy_status_overlay.cmd_add_volumes.label "
 "staff.circ.copy_status_overlay.cmd_add_volumes.accesskey"
 msgid "Add &Volumes"
-msgstr "Přidat sva&zky"
+msgstr "Přidat signa&tury"
 
 #: staff.circ.copy_status_overlay.cmd_mark_library.label
 #: staff.circ.copy_status_overlay.cmd_mark_library.accesskey
@@ -9991,7 +9993,7 @@ msgctxt ""
 "staff.circ.copy_status_overlay.cmd_mark_library.label "
 "staff.circ.copy_status_overlay.cmd_mark_library.accesskey"
 msgid "&Mark Library as Volume Transfer Destination"
-msgstr "&Označit knihovnu jako cíl  přesunu svazku"
+msgstr "&Označit knihovnu jako cíl  přesunu signatury"
 
 #: staff.circ.copy_status_overlay.cmd_add_items.label
 #: staff.circ.copy_status_overlay.cmd_add_items.accesskey
@@ -10007,7 +10009,7 @@ msgctxt ""
 "staff.circ.copy_status_overlay.cmd_edit_volumes.label "
 "staff.circ.copy_status_overlay.cmd_edit_volumes.accesskey"
 msgid "&Edit Volumes"
-msgstr "&Editovat svazky"
+msgstr "&Editovat signatury"
 
 #: staff.circ.copy_status_overlay.cmd_mark_volume.label
 #: staff.circ.copy_status_overlay.cmd_mark_volume.accesskey
@@ -10015,7 +10017,7 @@ msgctxt ""
 "staff.circ.copy_status_overlay.cmd_mark_volume.label "
 "staff.circ.copy_status_overlay.cmd_mark_volume.accesskey"
 msgid "&Mark Volume as Item Transfer Destination"
-msgstr "&Označit svazek jako cíl přesunu exempláře"
+msgstr "&Označit signaturu jako cíl přesunu exempláře"
 
 #: staff.circ.copy_status_overlay.cmd_transfer_volumes.label
 #: staff.circ.copy_status_overlay.cmd_transfer_volumes.accesskey
@@ -10023,7 +10025,7 @@ msgctxt ""
 "staff.circ.copy_status_overlay.cmd_transfer_volumes.label "
 "staff.circ.copy_status_overlay.cmd_transfer_volumes.accesskey"
 msgid "&Transfer Volumes to Previously Marked Library"
-msgstr "&Přesunout  svazky do předem označené knihovny"
+msgstr "&Přesunout  signatury do předem označené knihovny"
 
 #: staff.circ.copy_status_overlay.cmd_delete_items.label
 msgctxt "staff.circ.copy_status_overlay.cmd_delete_items.label"
@@ -10033,7 +10035,7 @@ msgstr "Smazat exempláře"
 #: staff.circ.copy_status_overlay.cmd_delete_volumes.label
 msgctxt "staff.circ.copy_status_overlay.cmd_delete_volumes.label"
 msgid "Delete Volumes"
-msgstr "Smazat  svazky"
+msgstr "Smazat  signatury"
 
 #: staff.circ.copy_status_overlay.copy_actions.sel_mark_items_damaged.label
 #: staff.circ.copy_status_overlay.copy_actions.sel_mark_items_damaged.accesskey
@@ -10370,7 +10372,7 @@ msgstr "Zobrazit formát MARC"
 
 #: staff.cat.bib_brief.add_volumes
 msgid "Add Volumes"
-msgstr "Přidat svazky"
+msgstr "Přidat signatury"
 
 #: staff.cat.bib_brief.author.label
 msgctxt "staff.cat.bib_brief.author.label"
@@ -10845,7 +10847,7 @@ msgctxt ""
 "staff.cat.copy_browser.actions.cmd_transfer_items.label "
 "staff.cat.copy_browser.actions.cmd_transfer_items.accesskey"
 msgid "&Transfer Items to Previously Marked Volume"
-msgstr "&Přesunout exempláře do předem označeného svazku"
+msgstr "&Přesunout exempláře do předem označené signatury"
 
 #: staff.cat.copy_browser.actions.cmd_link_as_multi_bib.label
 #: staff.cat.copy_browser.actions.cmd_link_as_multi_bib.accesskey
@@ -10859,7 +10861,7 @@ msgctxt ""
 "staff.cat.copy_browser.actions.cmd_add_volumes.label "
 "staff.cat.copy_browser.actions.cmd_add_volumes.accesskey"
 msgid "Add &Volumes"
-msgstr "Přidat &svazky"
+msgstr "Přidat &sigantury"
 
 #: staff.cat.copy_browser.actions.cmd_mark_library.label
 #: staff.cat.copy_browser.actions.cmd_mark_library.accesskey
@@ -10867,7 +10869,7 @@ msgctxt ""
 "staff.cat.copy_browser.actions.cmd_mark_library.label "
 "staff.cat.copy_browser.actions.cmd_mark_library.accesskey"
 msgid "&Mark Library as Volume Transfer Destination"
-msgstr "&Označit knihovnu jako cíl  přesunu svazku"
+msgstr "&Označit knihovnu jako cíl  přesunu signatury"
 
 #: staff.cat.copy_browser.actions.cmd_add_items.label
 #: staff.cat.copy_browser.actions.cmd_add_items.accesskey
@@ -10883,7 +10885,7 @@ msgctxt ""
 "staff.cat.copy_browser.actions.cmd_edit_volumes.label "
 "staff.cat.copy_browser.actions.cmd_edit_volumes.accesskey"
 msgid "&Edit Volumes"
-msgstr "&Editovat svazky"
+msgstr "&Editovat signatury"
 
 #: staff.cat.copy_browser.actions.cmd_mark_volume.label
 #: staff.cat.copy_browser.actions.cmd_mark_volume.accesskey
@@ -10891,7 +10893,7 @@ msgctxt ""
 "staff.cat.copy_browser.actions.cmd_mark_volume.label "
 "staff.cat.copy_browser.actions.cmd_mark_volume.accesskey"
 msgid "&Mark Volume as Item Transfer Destination"
-msgstr "&Označit svazek jako cíl přesunu exempláře"
+msgstr "&Označit signaturu jako cíl přesunu exempláře"
 
 #: staff.cat.copy_browser.actions.cmd_transfer_volume.label
 #: staff.cat.copy_browser.actions.cmd_transfer_volume.accesskey
@@ -10899,7 +10901,7 @@ msgctxt ""
 "staff.cat.copy_browser.actions.cmd_transfer_volume.label "
 "staff.cat.copy_browser.actions.cmd_transfer_volume.accesskey"
 msgid "&Transfer Volumes to Previously Marked Library"
-msgstr "&Přesunout  svazky do předem označené knihovny"
+msgstr "&Přesunout  signatury do předem označené knihovny"
 
 #: staff.cat.copy_browser.actions.cmd_delete_items.label
 msgctxt "staff.cat.copy_browser.actions.cmd_delete_items.label"
@@ -10909,7 +10911,7 @@ msgstr "Smazat exempláře"
 #: staff.cat.copy_browser.actions.cmd_delete_volumes.label
 msgctxt "staff.cat.copy_browser.actions.cmd_delete_volumes.label"
 msgid "Delete Volumes"
-msgstr "Smazat  svazky"
+msgstr "Smazat  signatury"
 
 #: staff.cat.copy_browser.actions.cmd_request_items.label
 #: staff.cat.copy_browser.actions.cmd_request_items.accesskey
@@ -10966,7 +10968,7 @@ msgid ""
 "record."
 msgstr ""
 "Pokud jsou položky níže uvedeného seznamu označeny zeleně a tučně, znamená "
-"to, že knihovna má pro tento záznam svazky."
+"to, že v knihovně pro tento záznam existují signatury"
 
 #: staff.cat.copy_browser.holdings_maintenance.depth_filter_menu
 msgid "Limit:"
@@ -10983,7 +10985,7 @@ msgstr "Dostupné:"
 
 #: staff.cat.copy_browser.holdings_maintenance.show_acns
 msgid "Show Volumes"
-msgstr "Zobrazit svazky"
+msgstr "Zobrazit signatury"
 
 #: staff.cat.copy_browser.holdings_maintenance.show_acps
 msgid "Show Items"
@@ -11057,7 +11059,7 @@ msgctxt ""
 "staff.cat.copy_browser.holdings_maintenance.cmd_transfer_items.label "
 "staff.cat.copy_browser.holdings_maintenance.cmd_transfer_items.accesskey"
 msgid "&Transfer Items to Previously Marked Volume"
-msgstr "Přes&unout exempláře do předem označeného svazku"
+msgstr "&Přesunout exempláře do předem označené signatury"
 
 #: staff.cat.copy_browser.holdings_maintenance.cmd_add_volumes.label
 #: staff.cat.copy_browser.holdings_maintenance.cmd_add_volumes.accesskey
@@ -11065,7 +11067,7 @@ msgctxt ""
 "staff.cat.copy_browser.holdings_maintenance.cmd_add_volumes.label "
 "staff.cat.copy_browser.holdings_maintenance.cmd_add_volumes.accesskey"
 msgid "Add &Volumes"
-msgstr "Přida&t svazky"
+msgstr "Přidat signa&tury"
 
 #: staff.cat.copy_browser.holdings_maintenance.cmd_mark_library.label
 #: staff.cat.copy_browser.holdings_maintenance.cmd_mark_library.accesskey
@@ -11073,7 +11075,7 @@ msgctxt ""
 "staff.cat.copy_browser.holdings_maintenance.cmd_mark_library.label "
 "staff.cat.copy_browser.holdings_maintenance.cmd_mark_library.accesskey"
 msgid "&Mark Library as Volume Transfer Destination"
-msgstr "&Označit knihovnu jako cíl  přesunu svazku"
+msgstr "&Označit knihovnu jako cíl  přesunu signatury"
 
 #: staff.cat.copy_browser.holdings_maintenance.cmd_add_items.label
 #: staff.cat.copy_browser.holdings_maintenance.cmd_add_items.accesskey
@@ -11089,7 +11091,7 @@ msgctxt ""
 "staff.cat.copy_browser.holdings_maintenance.cmd_edit_volumes.label "
 "staff.cat.copy_browser.holdings_maintenance.cmd_edit_volumes.accesskey"
 msgid "&Edit Volumes"
-msgstr "&Editovat svazky"
+msgstr "&Editovat signatury"
 
 #: staff.cat.copy_browser.holdings_maintenance.cmd_mark_volume.label
 #: staff.cat.copy_browser.holdings_maintenance.cmd_mark_volume.accesskey
@@ -11097,7 +11099,7 @@ msgctxt ""
 "staff.cat.copy_browser.holdings_maintenance.cmd_mark_volume.label "
 "staff.cat.copy_browser.holdings_maintenance.cmd_mark_volume.accesskey"
 msgid "&Mark Volume as Item Transfer Destination"
-msgstr "Označ&it svazek jako cíl přesunu exempláře"
+msgstr "&Označit signaturu jako cíl přesunu exempláře"
 
 #: staff.cat.copy_browser.holdings_maintenance.cmd_transfer_volume.label
 #: staff.cat.copy_browser.holdings_maintenance.cmd_transfer_volume.accesskey
@@ -11105,7 +11107,7 @@ msgctxt ""
 "staff.cat.copy_browser.holdings_maintenance.cmd_transfer_volume.label "
 "staff.cat.copy_browser.holdings_maintenance.cmd_transfer_volume.accesskey"
 msgid "&Transfer Volumes to Previously Marked Library"
-msgstr "Přesunout  s&vazky do předem označené knihovny"
+msgstr "&Přesunout  signatury do předem označené knihovny"
 
 #: staff.cat.copy_browser.holdings_maintenance.cmd_delete_items.label
 msgctxt "staff.cat.copy_browser.holdings_maintenance.cmd_delete_items.label"
@@ -11116,7 +11118,7 @@ msgstr "Smazat exempláře"
 msgctxt ""
 "staff.cat.copy_browser.holdings_maintenance.cmd_delete_volumes.label"
 msgid "Delete Volumes"
-msgstr "Smazat  svazky"
+msgstr "Smazat  signatury"
 
 #: staff.cat.copy_browser.holdings_maintenance.sel_mark_items_damaged.label
 #: staff.cat.copy_browser.holdings_maintenance.sel_mark_items_damaged.accesskey
@@ -11251,7 +11253,7 @@ msgstr "Přidat vybrané"
 #: staff.cat.copy_buckets_overlay.info_box.bucket.label
 msgctxt "staff.cat.copy_buckets_overlay.info_box.bucket.label"
 msgid "Bucket #"
-msgstr "Skupina #"
+msgstr "Skupina č."
 
 #: staff.cat.copy_buckets_overlay.info_box.owner.label
 msgctxt "staff.cat.copy_buckets_overlay.info_box.owner.label"
@@ -11293,7 +11295,7 @@ msgstr "Rezervova&t tyto  exempláře"
 
 #: staff.cat.copy_buckets_overlay.copy_buckets.copy_buckets_transfer_to_volume.label
 msgid "Transfer to Specific Volume"
-msgstr "Přesunout do specifického svazku"
+msgstr "Přesunout do specifické signatury"
 
 #: staff.cat.copy_buckets_overlay.copy_buckets.copy_buckets_batch_copy_edit.label
 msgid "Edit Item Attributes"
@@ -11382,7 +11384,7 @@ msgstr "&Resetovat"
 #: staff.cat.copy_editor.identification.label
 msgctxt "staff.cat.copy_editor.identification.label"
 msgid "Identification"
-msgstr "Číslo dokladu"
+msgstr "Identifikační údaje"
 
 #: staff.cat.copy_editor.identification.location.label
 msgctxt "staff.cat.copy_editor.identification.location.label"
@@ -11821,7 +11823,7 @@ msgstr "Přidat vybrané do nevyřízených záznamů"
 #: staff.cat.record_buckets_overlay.info_box.label
 msgctxt "staff.cat.record_buckets_overlay.info_box.label"
 msgid "Bucket #"
-msgstr "Skupina #"
+msgstr "Skupina č."
 
 #: staff.cat.record_buckets_overlay.bucket_owner.label
 msgctxt "staff.cat.record_buckets_overlay.bucket_owner.label"
@@ -12078,11 +12080,11 @@ msgstr "Dostupná makra"
 
 #: staff.cat.volume_copy_creator.title
 msgid "Volume and Copy Editor"
-msgstr "Editace svazků a exemplářů"
+msgstr "Editace signatur a exemplářů"
 
 #: staff.cat.volume_copy_creator.label
 msgid "Volume and Copy Creator"
-msgstr "Tvorba svazků a exemplářů"
+msgstr "Tvorba signatur a exemplářů"
 
 #: staff.cat.volume_copy_creator.check_barcodes.label
 #: staff.cat.volume_copy_creator.check_barcodes.accesskey
@@ -12106,7 +12108,7 @@ msgstr "Knihovna"
 
 #: staff.cat.volume_copy_creator.num_of_volumes_label.value
 msgid "# of volumes"
-msgstr "# ze svazků"
+msgstr "# ze signatur"
 
 #: staff.cat.volume_copy_creator.batch_bar
 msgid "BATCH"
@@ -12132,11 +12134,11 @@ msgstr "Sufix:"
 #: staff.cat.volume_editor.title
 msgctxt "staff.cat.volume_editor.title"
 msgid "Volumes"
-msgstr "Svazky"
+msgstr "Signatury"
 
 #: staff.cat.volume_editor.caption.label
 msgid "Volume Editor"
-msgstr "Editor svazku"
+msgstr "Editor sigantury"
 
 #: staff.cat.volume_editor.modify.label
 #: staff.cat.volume_editor.modify.accesskey
@@ -12155,7 +12157,7 @@ msgstr "Stor&no"
 #: staff.cat.volume_editor.automerge.label
 #: staff.cat.volume_editor.automerge.accesskey
 msgid "&Auto-Merge on Volume Collision"
-msgstr "&Automaticky sloučit při kolizi svazků"
+msgstr "&Automaticky sloučit při kolizi signatur"
 
 #: staff.cat.volume_editor.automerge.description
 msgid ""
@@ -12163,9 +12165,10 @@ msgid ""
 "same call number label (and prefix/suffix), then merge them (including items "
 "they contain) into a single volume if checked.  Otherwise, report an error."
 msgstr ""
-"Pokud má jeden nebo více svazků ve stejném záznamu stejnou signaturu (včetně "
-"prefixu/sufixu), pak je sloučíte (včetně exemplářů, které obsahují), pokud "
-"je volba zaškrtnutá. Jinak nahlaste chybu."
+"Pokud je tato volba zaškrtnutá, pak v případě, že dvě nebo více signatur ve "
+"stejném záznamu a pro stejou knihovnu  jsou  totožné  (včetně "
+"prefixu/sufixu), pak je sloučíte (včetně exemplářů, které obsahují).  Pokud "
+"volba zašrtnutá není, systém hlásí  chybu."
 
 #: staff.cat.volume_editor.owning_lib
 msgid "Owning lib"
@@ -12748,7 +12751,7 @@ msgstr "Zaplaceno"
 
 #: staff.patron.bills_overlay.still_checked_out.label
 msgid "Red Items are still Checked Out"
-msgstr "Červené položky jsou stále označené"
+msgstr "Exempláře označené červeně čtenář dosud nevrátil"
 
 #: staff.patron.bills_overlay.longoverdue_checked_out.label
 msgid "Orange Items are Long Overdue"
@@ -13047,7 +13050,7 @@ msgstr "(Upozornění)"
 
 #: staff.patron.display_overlay.see_notes.value
 msgid "(See Notes)"
-msgstr "(Prohlédnou poznámky)"
+msgstr "(Zkontrolovat poznámky)"
 
 #: staff.patron.display_overlay.max_bills.value
 msgid "(Maximum Bills)"
@@ -13183,7 +13186,7 @@ msgstr "Knihovna půjčující exemplář"
 
 #: staff.patron.holds_overlay.owning_lib.label
 msgid "Volume Owning Library"
-msgstr "Knihovna vlastnící svazek"
+msgstr "Knihovna vlastnící signaturu"
 
 #: staff.patron.holds_overlay.home_lib.label
 msgid "Patron Home Library foo"
@@ -14180,7 +14183,7 @@ msgstr "Export"
 
 #: staff.patron.items_overlay.print_one.label
 msgid "Print Item Receipt"
-msgstr "Vytisknout potvrzení"
+msgstr "Vytisknout potvrzení k položce"
 
 #: staff.generic.list_actions.label
 #: staff.generic.list_actions.accesskey

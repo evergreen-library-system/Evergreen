@@ -9061,16 +9061,6 @@ msgid ""
 "the on-screen message"
 msgstr ""
 
-#: staff.server.admin.org_settings.circ.selfcheck.require_patron_password
-msgid "Selfcheck: Require patron password"
-msgstr ""
-
-#: staff.server.admin.org_settings.circ.selfcheck.require_patron_password.desc
-msgid ""
-"If true, patrons will be required to enter their password in addition to "
-"their username/barcode to log into the selfcheck interface"
-msgstr ""
-
 #: staff.server.admin.org_settings.global.juvenile_age_threshold
 msgid "Juvenile Age Threshold"
 msgstr ""

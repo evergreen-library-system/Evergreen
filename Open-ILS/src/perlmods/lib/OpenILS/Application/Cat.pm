@@ -640,14 +640,19 @@ sub retrieve_copies {
         @org_ids = ($user_obj->home_ou);
     }
 
+    # Create an editor that can be shared across all iterations of 
+    # _build_volume_list().  Otherwise, .authoritative calls can result 
+    # in creating too many cstore connections.
+    my $e = new_editor();
+
     if( $self->api_name =~ /global/ ) {
-        return _build_volume_list( { record => $docid, deleted => 'f', label => { '<>' => '##URI##' } } );
+        return _build_volume_list($e, { record => $docid, deleted => 'f', label => { '<>' => '##URI##' } } );
 
     } else {
 
         my @all_vols;
         for my $orgid (@org_ids) {
-            my $vols = _build_volume_list( 
+            my $vols = _build_volume_list($e,
                     { record => $docid, owning_lib => $orgid, deleted => 'f', label => { '<>' => '##URI##' } } );
             push( @all_vols, @$vols );
         }
@@ -660,10 +665,12 @@ sub retrieve_copies {
 
 
 sub _build_volume_list {
+    my $e = shift;
     my $search_hash = shift;
 
+    $e ||= new_editor();
+
     $search_hash->{deleted} = 'f';
-    my $e = new_editor();
 
     my $vols = $e->search_asset_call_number([
         $search_hash,
@@ -925,6 +932,122 @@ sub in_db_auth_merge {
 
     $editor->commit;
     return $count;
+}
+
+__PACKAGE__->register_method(
+    method    => 'calculate_marc_merge',
+    api_name  => 'open-ils.cat.merge.marc.per_profile',
+    signature => q/
+        Calculate the result of merging one or more MARC records
+        per the specified merge profile
+        @param auth The login session key
+        @param merge_profile ID of the record merge profile
+        @param records Array of two or more MARCXML records to be
+                       merged. If two are supplied, the first
+                       is treated as the record to be overlaid,
+                       and the the incoming record that will
+                       overlay the first. If more than two are
+                       supplied, the first is treated as the
+                       record to be overlaid, and each following
+                       record in turn will be merged into that
+                       record.
+        @return MARCXML string of the results of the merge
+    /
+);
+__PACKAGE__->register_method(
+    method    => 'calculate_bib_marc_merge',
+    api_name  => 'open-ils.cat.merge.biblio.per_profile',
+    signature => q/
+        Calculate the result of merging one or more bib records
+        per the specified merge profile
+        @param auth The login session key
+        @param merge_profile ID of the record merge profile
+        @param records Array of two or more bib record IDs of
+                       the bibs to be merged.
+        @return MARCXML string of the results of the merge
+    /
+);
+__PACKAGE__->register_method(
+    method    => 'calculate_authority_marc_merge',
+    api_name  => 'open-ils.cat.merge.authority.per_profile',
+    signature => q/
+        Calculate the result of merging one or more authority records
+        per the specified merge profile
+        @param auth The login session key
+        @param merge_profile ID of the record merge profile
+        @param records Array of two or more bib record IDs of
+                       the bibs to be merged.
+        @return MARCXML string of the results of the merge
+    /
+);
+
+sub _handle_marc_merge {
+    my ($e, $merge_profile_id, $records) = @_;
+
+    my $result = shift @$records;
+    foreach my $incoming (@$records) {
+        my $response = $e->json_query({
+            from => [
+                'vandelay.merge_record_xml_using_profile',
+                $incoming, $result,
+                $merge_profile_id
+            ]
+        });
+        return unless ref($response);
+        $result = $response->[0]->{'vandelay.merge_record_xml_using_profile'};
+    }
+    return $result;
+}
+
+sub calculate_marc_merge {
+    my( $self, $conn, $auth, $merge_profile_id, $records ) = @_;
+
+    my $e = new_editor(authtoken=>$auth, xact=>1);
+    return $e->die_event unless $e->checkauth;
+
+    my $merge_profile = $e->retrieve_vandelay_merge_profile($merge_profile_id)
+        or return $e->die_event;
+    return $e->die_event unless ref($records) && @$records >= 2;
+
+    return _handle_marc_merge($e, $merge_profile_id, $records)
+}
+
+sub calculate_bib_marc_merge {
+    my( $self, $conn, $auth, $merge_profile_id, $bib_ids ) = @_;
+
+    my $e = new_editor(authtoken=>$auth, xact=>1);
+    return $e->die_event unless $e->checkauth;
+
+    my $merge_profile = $e->retrieve_vandelay_merge_profile($merge_profile_id)
+        or return $e->die_event;
+    return $e->die_event unless ref($bib_ids) && @$bib_ids >= 2;
+
+    my $records = [];
+    foreach my $id (@$bib_ids) {
+        my $bre = $e->retrieve_biblio_record_entry($id) or return $e->die_event;
+        push @$records, $bre->marc();
+    }
+
+    return _handle_marc_merge($e, $merge_profile_id, $records)
+}
+
+sub calculate_authority_marc_merge {
+    my( $self, $conn, $auth, $merge_profile_id, $authority_ids ) = @_;
+
+    my $e = new_editor(authtoken=>$auth, xact=>1);
+    return $e->die_event unless $e->checkauth;
+
+    my $merge_profile = $e->retrieve_vandelay_merge_profile($merge_profile_id)
+        or return $e->die_event;
+    return $e->die_event unless ref($authority_ids) && @$authority_ids >= 2;
+
+    my $records = [];
+    foreach my $id (@$authority_ids) {
+        my $are = $e->retrieve_authority_record_entry($id) or return $e->die_event;
+        push @$records, $are->marc();
+    }
+
+    return _handle_marc_merge($e, $merge_profile_id, $records)
 }
 
 __PACKAGE__->register_method(

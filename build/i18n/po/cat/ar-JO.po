@@ -1,0 +1,58 @@
+# Arabic translation for evergreen
+# Copyright (c) 2016 Rosetta Contributors and Canonical Ltd 2016
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2016.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: evergreen\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2016-08-26 13:08+0000\n"
+"PO-Revision-Date: 2016-10-26 09:16+0000\n"
+"Last-Translator: fares othman <Unknown>\n"
+"Language-Team: Arabic <ar@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2016-10-27 05:59+0000\n"
+"X-Generator: Launchpad (build 18246)\n"
+
+#: ../../Open-ILS/src/templates/cat/authority/list.tt2:1
+msgid "Authority record list"
+msgstr "قائمة التسجيلات الاستنادية"
+
+#: ../../Open-ILS/src/templates/cat/authority/list.tt2:22
+msgid "Authority type: "
+msgstr "نوع الإسناد "
+
+#: ../../Open-ILS/src/templates/cat/authority/list.tt2:76
+msgid "Clear"
+msgstr "مَسح"
+
+#: ../../Open-ILS/src/templates/cat/authority/list.tt2:38
+msgid "Library: "
+msgstr "المكتبة: "
+
+#: ../../Open-ILS/src/templates/cat/authority/list.tt2:71
+msgid "Merge"
+msgstr "دَمج"
+
+#: ../../Open-ILS/src/templates/cat/authority/list.tt2:50
+msgid "Next"
+msgstr "التالي"
+
+#: ../../Open-ILS/src/templates/cat/authority/list.tt2:47
+msgid "Page: "
+msgstr "الصفحة: "
+
+#: ../../Open-ILS/src/templates/cat/authority/list.tt2:41
+msgid "Previous"
+msgstr "السابق"
+
+#: ../../Open-ILS/src/templates/cat/authority/list.tt2:18
+msgid "Search term: "
+msgstr "مصطلح البحث: "
+
+#: ../../Open-ILS/src/templates/cat/authority/list.tt2:58
+msgid "Submit"
+msgstr "تأكيد"

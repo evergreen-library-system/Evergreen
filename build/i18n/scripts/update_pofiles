@@ -36,7 +36,7 @@ if ($help) {
 check_options();
 
 my %locs = (
-    ar => "ar-AR",
+    ar => "ar-JO",
     cs => "cs-CZ",
     de => "de-DE",
     en_CA => "en-CA",

@@ -21,6 +21,8 @@ angular.module('egCoreMod').run(['egStrings', function(s) {
   s.PRINT_TEMPLATES_FAIL_EXPORT = "[% l('There are no customized print template to export') %]";
   s.PRINT_TEMPLATES_SUCCESS_IMPORT = "[% l('Imported one or more print template(s)') %]";
   s.PRINT_TEMPLATES_FAIL_IMPORT = "[% l('Failed to import any print template(s)') %]";
+  s.HATCH_SETTINGS_MIGRATION_SUCCESS = "[% l('Settings successfully migrated') %]";
+  s.HATCH_SETTINGS_MIGRATION_FAILURE = "[% l('Settings migration failed') %]";
 }]);
 </script>
 [% END %]

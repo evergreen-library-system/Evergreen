@@ -215,6 +215,26 @@ sub load_record {
 
     $self->timelog("past added content stage 2");
 
+    # Gather up metarecord info for display
+    # Let's start by getting the metarecord ID
+    my $mmr_id = OpenILS::Utils::CStoreEditor->new->json_query({
+        select   => { mmrsm => [ 'metarecord' ] },
+        from     => 'mmrsm',
+        where    => { 'source' => $rec_id }
+    })->[0]->{metarecord};
+    # If this record is apart of a meta group, I want to know more
+    if ( $mmr_id ) {
+        my (undef, @metarecord_data) = $self->get_records_and_facets([$mmr_id], undef, {
+            flesh => '{holdings_xml,mra}',
+            metarecord => 1,
+            site => $org_name,
+            depth => $depth,
+            pref_lib => $pref_ou
+        });
+        my ($rec) = grep { $_->{mmr_id} == $mmr_id } @metarecord_data;
+        $ctx->{mmr_id} = $mmr_id;
+        $ctx->{mmr_data} = $rec;
+    }
     return Apache2::Const::OK;
 }
 

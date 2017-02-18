@@ -3,14 +3,14 @@ msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
 "POT-Creation-Date: 2016-08-25 17:09-0400\n"
-"PO-Revision-Date: 2016-09-08 09:47+0000\n"
+"PO-Revision-Date: 2017-01-12 16:08+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2016-09-09 05:55+0000\n"
-"X-Generator: Launchpad (build 18184)\n"
+"X-Launchpad-Export-Date: 2017-01-13 05:36+0000\n"
+"X-Generator: Launchpad (build 18302)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Poedit-Language: Czech\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -647,7 +647,7 @@ msgid ""
 msgstr ""
 "Při plnění příslušné rezervace při výpůjčce odpovědět pouze exempláři, které "
 "jsou v souladu s příhodným zachycením rezervace. Bez tohoto nastavení může "
-"dojít k zachycení titulů nebo svazků, které nejsou rezervovatelné. S tímto "
+"dojít k zachycení titulů nebo signatur, které nejsou rezervovatelné. S tímto "
 "nastavení budou využity pouze rezervovaelné exempláře."
 
 #: 950.data.seed-values.sql:525
@@ -1673,7 +1673,7 @@ msgstr "UPDATE_ORG_UNIT_SETTING.circ.hold_expire_alert_interval"
 
 #: 950.data.seed-values.sql:7622
 msgid "Pavans"
-msgstr "Pavana"
+msgstr "Pavany"
 
 #: 950.data.seed-values.sql:6562 950.data.seed-values.sql:6565
 msgid "Frisian"
@@ -3238,7 +3238,7 @@ msgstr "Pertitura v rozsahu miniatury nebo studie"
 
 #: 950.data.seed-values.sql:7586
 msgid "Chaconnes"
-msgstr ""
+msgstr "Ciacona"
 
 #: 950.data.seed-values.sql:14239
 msgid "US Cellular"
@@ -3334,7 +3334,7 @@ msgstr "Cassini – Soldnerovo zobrazení"
 
 #: 950.data.seed-values.sql:7577
 msgid "Anthems"
-msgstr "Hymny"
+msgstr "Anthemy"
 
 #: 950.data.seed-values.sql:7919
 msgid "Solomon Islands "
@@ -3384,7 +3384,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:7603
 msgid "Hymns"
-msgstr "Chvalozpěvy"
+msgstr "Hymny, chvalozpěvy"
 
 #: 950.data.seed-values.sql:1301
 msgid "ADMIN_INDEX_NORMALIZER"
@@ -3504,7 +3504,7 @@ msgid ""
 "interface."
 msgstr ""
 "Výchozí status, pokud je exemplář vytvořen s polužitím běžného rozhraní pro "
-"vytvoření svazků / exemplářů."
+"vytvoření signatur / exemplářů."
 
 #: 950.data.seed-values.sql:663
 msgid "Allow a user to update an organization unit setting"
@@ -4007,7 +4007,7 @@ msgid ""
 "instances."
 msgstr ""
 "Pokud je nastavena hodnota \"pravda\", na některých místech je zkombinováno "
-"rozhraní pro tvorbu svazků a exemplářů s editorem vlastnotsí exemplářů."
+"rozhraní pro tvorbu signatur exemplářů s editorem vlastnotsí exemplářů."
 
 # id::clm.value__sga
 #: 950.data.seed-values.sql:6801
@@ -4539,7 +4539,7 @@ msgstr "2_měsíce_2_prodloužení"
 
 #: 950.data.seed-values.sql:7584
 msgid "Canzonas"
-msgstr "kancóna"
+msgstr "Canzony"
 
 #: 950.data.seed-values.sql:7054 950.data.seed-values.sql:7055
 #: 950.data.seed-values.sql:7120 950.data.seed-values.sql:7121
@@ -5705,7 +5705,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:2885
 msgid "Delete volume with last copy"
-msgstr "S posledním exemplářem smazat záznam"
+msgstr "S posledním exemplářem smazat signaturu"
 
 # id::clfm.description__u
 #: 950.data.seed-values.sql:6953
@@ -6231,7 +6231,7 @@ msgstr "Název díla"
 
 #: 950.data.seed-values.sql:639
 msgid "Allow a user to view all notes attached to a volume"
-msgstr "Povolit uživateli zobrazit všechny poznámky připojené ke svazku"
+msgstr "Povolit uživateli zobrazit všechny poznámky připojené k signatuře"
 
 #: 950.data.seed-values.sql:8093
 msgid "Pitcairn Island "
@@ -6342,7 +6342,7 @@ msgstr "DELETE_LIT_FORM"
 
 #: 950.data.seed-values.sql:7591
 msgid "Chorale preludes"
-msgstr "Chorální preludia"
+msgstr "Chorálové předehry"
 
 #: 950.data.seed-values.sql:4839
 msgid "Require staff initials for entry/edit of copy notes."
@@ -7297,11 +7297,9 @@ msgstr "Organizační jednotka nedědí zobrazení (vizibilitu)"
 msgid "User may create a copy statistical category"
 msgstr "Uživatel smí vytvořit statistickou kategorii exempláře"
 
-# id::cblvl.value__b
-# možná by bylo lepší užít číslo periodika
 #: 950.data.seed-values.sql:6968
 msgid "Serial component part"
-msgstr "Číslo/svazek seriálu"
+msgstr "Číslo periodika"
 
 #: 950.data.seed-values.sql:6737
 msgid "Niuean"
@@ -7610,7 +7608,7 @@ msgstr "3_měsíce_0_prodloužení"
 
 #: 950.data.seed-values.sql:7602
 msgid "Gospel music"
-msgstr "Gospelová hudba"
+msgstr "Gospel music (duchovní písně severoamerických černochů)"
 
 #: 950.data.seed-values.sql:6673
 msgid "Latvian"
@@ -7619,7 +7617,7 @@ msgstr "Lotyština"
 #: 950.data.seed-values.sql:651
 msgid "Allow a user to delete another user's volume note"
 msgstr ""
-"Povolit uživateli smazat poznámku ke svazku vytvořenou jiným uživatelem"
+"Povolit uživateli smazat poznámku k signatuře vytvořené jiným uživatelem"
 
 #: 950.data.seed-values.sql:7850 950.data.seed-values.sql:8544
 #: 950.data.seed-values.sql:8554
@@ -7752,7 +7750,7 @@ msgstr "Přihlášení prostřednictvím translátoru-v1"
 
 #: 950.data.seed-values.sql:7595
 msgid "Country music"
-msgstr "Country music"
+msgstr "Country"
 
 #: 950.data.seed-values.sql:7701 950.data.seed-values.sql:8335
 #: 950.data.seed-values.sql:8365 950.data.seed-values.sql:8395
@@ -7832,11 +7830,9 @@ msgstr "Humor, satira apod."
 msgid "Micronesia (Federated States) "
 msgstr "Federativní státy Mikronésie "
 
-# id::clfm.description__i
-# velice nejistý překlad
 #: 950.data.seed-values.sql:6948
 msgid "The item is a single letter or collection of correspondence."
-msgstr "Exemplář je jediný odpovídající zadání nebo sbírce."
+msgstr "Tato položka  je jednotlivým dopisem nebo sbírkou korespondence"
 
 # id::clm.value__phi
 #: 950.data.seed-values.sql:6767
@@ -8207,7 +8203,7 @@ msgstr "Fulahština"
 #: 950.data.seed-values.sql:2888
 msgid "Automatically delete a volume when the last linked copy is deleted"
 msgstr ""
-"Automaticky smazat svazek, pokud je smazán poslední připojený exemplář."
+"Automaticky smazat signaturu, pokud je smazán poslední připojený exemplář."
 
 #: 950.data.seed-values.sql:8123
 msgid "Sao Tome and Principe "
@@ -9240,7 +9236,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:645
 msgid "Allow a user to create a new volume note"
-msgstr "Povolit uživateli vytvořit novou poznámku ke svazku"
+msgstr "Povolit uživateli vytvořit novou poznámku k signatuře"
 
 #: 950.data.seed-values.sql:272
 msgid "28_days_0_renew"
@@ -10121,7 +10117,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:7587
 msgid "Chance compositions"
-msgstr ""
+msgstr "Aleatorická hudba"
 
 #: 950.data.seed-values.sql:8219
 msgid "No dates given; B.C. date involved"
@@ -10186,7 +10182,7 @@ msgstr "Efik"
 
 #: 950.data.seed-values.sql:7582
 msgid "Canons and rounds"
-msgstr "Kánony a kolové písně"
+msgstr "Kánony"
 
 #: 950.data.seed-values.sql:8167
 msgid "Burkina Faso "
@@ -10194,7 +10190,7 @@ msgstr "Burkina Faso "
 
 #: 950.data.seed-values.sql:7635
 msgid "Square dance music"
-msgstr ""
+msgstr "Čtverylky"
 
 #: 950.data.seed-values.sql:1191
 msgid "Allow a user to create trigger event definitions"
@@ -10212,7 +10208,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:7589
 msgid "Chant, Christian"
-msgstr "Křesťanské chorály"
+msgstr "Bohoslužebný zpěv, křesťanský"
 
 #: 950.data.seed-values.sql:585
 msgid "User may create an entry in a copy statistical category"
@@ -10317,7 +10313,7 @@ msgstr "Jidiš"
 
 #: 950.data.seed-values.sql:7613
 msgid "Musical reviews and comedies"
-msgstr ""
+msgstr "Hudební revue a muzikály"
 
 #: 950.data.seed-values.sql:11498
 msgid "ISBN is unrecognizable"
@@ -10729,7 +10725,8 @@ msgstr "Výchozí čtenářské nastavení"
 
 #: 950.data.seed-values.sql:4137
 msgid "Horizontal layout for Volume/Copy Creator/Editor."
-msgstr "Horizontální uspořádání rozhraní pro tvorbu/editaci svazků/exemplářů"
+msgstr ""
+"Horizontální uspořádání rozhraní pro tvorbu/editaci signatur/exemplářů"
 
 #: 950.data.seed-values.sql:6977 950.data.seed-values.sql:7048
 #: 950.data.seed-values.sql:7049 950.data.seed-values.sql:7117
@@ -11069,7 +11066,7 @@ msgstr "DELETE_PERM"
 
 #: 950.data.seed-values.sql:4848
 msgid "Unified Volume/Item Creator/Editor"
-msgstr "Sjednocený editor svazků/exemplářů"
+msgstr "Sjednocený editor sigantur/exemplářů"
 
 #: 950.data.seed-values.sql:6491
 msgid "Central American Indian (Other)"
@@ -11191,7 +11188,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:487
 msgid "Allow a user to place a volume level hold"
-msgstr "Povolit uživateli zadat rezervaci na úrovni svazku"
+msgstr "Povolit uživateli zadat rezervaci na úrovni signatury"
 
 #: 950.data.seed-values.sql:393 950.data.seed-values.sql:414
 #: 950.data.seed-values.sql:5184
@@ -11361,7 +11358,7 @@ msgstr "Kentucky "
 
 #: 950.data.seed-values.sql:7588
 msgid "Chansons, Polyphonic"
-msgstr "Píseň, polyfonní"
+msgstr "Chansony, polyfonní"
 
 # id::pgt.name__3
 #: 950.data.seed-values.sql:1613
@@ -12036,7 +12033,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:513
 msgid "Allow a user to create a volume"
-msgstr "Povolit uživateli vytvořit svazek"
+msgstr "Povolit uživateli vytvořit signaturu"
 
 #: 950.data.seed-values.sql:11477
 msgid "US Dollars"
@@ -12120,7 +12117,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:7590
 msgid "Chants, other"
-msgstr "Písně, ostatní"
+msgstr "Bohoslužebný zpěv, jiný než křesťanský"
 
 #: 950.data.seed-values.sql:1159
 msgid "UPDATE_ORG_UNIT_SETTING.cat.bib.keep_on_empty"
@@ -12485,7 +12482,7 @@ msgid ""
 "duplicate of VOLUME_UPDATE; user must have both permissions at appropriate "
 "level to merge records."
 msgstr ""
-"Povolit uživateli upravit svazky - potřebné pro sloučení záznamu. Toto "
+"Povolit uživateli upravit sigantury - potřebné pro sloučení záznamu. Toto "
 "duplikuje VOLUME_UPDATE; uživatel musí mít  pro sloučení záznamů obě "
 "oprávnění na příslušné úrovni."
 
@@ -13966,7 +13963,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:7597
 msgid "Divertimentos, serenades, cassations, divertissements, and notturni"
-msgstr ""
+msgstr "Divertimenta, serenády, kasace a nokturna"
 
 #: 950.data.seed-values.sql:4626
 msgid ""
@@ -14089,7 +14086,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:7404
 msgid "volume"
-msgstr "svazek"
+msgstr "signatura"
 
 #: 950.data.seed-values.sql:1621
 msgid "Acquisitions Administrator"

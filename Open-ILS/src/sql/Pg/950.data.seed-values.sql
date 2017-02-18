@@ -372,6 +372,9 @@ INSERT INTO config.i18n_locale (code,marc_code,name,description)
 INSERT INTO config.i18n_locale (code,marc_code,name,description)
     VALUES ('ru-RU', 'rus', oils_i18n_gettext('ru-RU', 'Russian', 'i18n_l', 'name'),
 	oils_i18n_gettext('ru-RU', 'Russian', 'i18n_l', 'description'));
+INSERT INTO config.i18n_locale (code,marc_code,name,description,rtl)
+    VALUES ('ar-JO', 'ara', oils_i18n_gettext('ar-JO', 'Arabic (Jordan)', 'i18n_l', 'name'),
+	oils_i18n_gettext('ar-JO', 'Arabic (Jordan)', 'i18n_l', 'description'), 'true');
 
 -- Z39.50 server attributes
 
@@ -1155,8 +1158,6 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
     'UPDATE_ORG_UNIT_SETTING.circ.selfcheck.patron_login_timeout', 'ppl', 'description' )),
  ( 338, 'UPDATE_ORG_UNIT_SETTING.circ.selfcheck.alert_on_checkout_event', oils_i18n_gettext( 338, 
     'UPDATE_ORG_UNIT_SETTING.circ.selfcheck.alert_on_checkout_event', 'ppl', 'description' )),
- ( 339, 'UPDATE_ORG_UNIT_SETTING.circ.selfcheck.require_patron_password', oils_i18n_gettext( 339, 
-    'UPDATE_ORG_UNIT_SETTING.circ.selfcheck.require_patron_password', 'ppl', 'description' )),
  ( 340, 'UPDATE_ORG_UNIT_SETTING.global.juvenile_age_threshold', oils_i18n_gettext( 340, 
     'UPDATE_ORG_UNIT_SETTING.global.juvenile_age_threshold', 'ppl', 'description' )),
  ( 341, 'UPDATE_ORG_UNIT_SETTING.cat.bib.keep_on_empty', oils_i18n_gettext( 341, 
@@ -1603,7 +1604,57 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 562, 'ADMIN_TAG_TABLE', oils_i18n_gettext( 562, 
     'Allow administration of MARC tag tables', 'ppl', 'description' )),
  ( 563, 'ADJUST_BILLS', oils_i18n_gettext( 563,
-    'Allow a user to adjust a bill (generally to zero)', 'ppl', 'description' ))
+    'Allow a user to adjust a bill (generally to zero)', 'ppl', 'description' )),
+ ( 564, 'MARK_ITEM_CATALOGING', oils_i18n_gettext( 564,
+    'Allow a user to mark an item status as ''cataloging''', 'ppl', 'description' )),
+ ( 565, 'MARK_ITEM_DAMAGED', oils_i18n_gettext( 565,
+    'Allow a user to mark an item status as ''damaged''', 'ppl', 'description' )),
+ ( 566, 'MARK_ITEM_DISCARD', oils_i18n_gettext( 566,
+    'Allow a user to mark an item status as ''discard''', 'ppl', 'description' )),
+ ( 567, 'MARK_ITEM_RESERVES', oils_i18n_gettext( 567,
+    'Allow a user to mark an item status as ''reserves''', 'ppl', 'description' )),
+ ( 568, 'ADMIN_ORG_UNIT_SETTING_TYPE_LOG', oils_i18n_gettext( 568,
+    'Allow a user to modify the org unit settings log', 'ppl', 'description' )),
+ ( 570, 'CREATE_POP_BADGE', oils_i18n_gettext( 570,
+    'Allow a user to create a new popularity badge', 'ppl', 'description' )),
+ ( 571, 'DELETE_POP_BADGE', oils_i18n_gettext( 571,
+    'Allow a user to delete a popularity badge', 'ppl', 'description' )),
+ ( 572, 'UPDATE_POP_BADGE', oils_i18n_gettext( 572,
+    'Allow a user to modify a popularity badge', 'ppl', 'description' )),
+ ( 573, 'CREATE_POP_PARAMETER', oils_i18n_gettext( 573,
+    'Allow a user to create a popularity badge parameter', 'ppl', 'description' )),
+ ( 574, 'DELETE_POP_PARAMETER', oils_i18n_gettext( 574,
+    'Allow a user to delete a popularity badge parameter', 'ppl', 'description' )),
+ ( 575, 'UPDATE_POP_PARAMETER', oils_i18n_gettext( 575,
+    'Allow a user to modify a popularity badge parameter', 'ppl', 'description' )),
+ ( 576, 'CREATE_AUTHORITY_RECORD', oils_i18n_gettext( 576,
+    'Allow a user to create an authority record', 'ppl', 'description' )),
+ ( 577, 'DELETE_AUTHORITY_RECORD', oils_i18n_gettext( 577,
+    'Allow a user to delete an authority record', 'ppl', 'description' )),
+ ( 578, 'UPDATE_AUTHORITY_RECORD', oils_i18n_gettext( 578,
+    'Allow a user to modify an authority record', 'ppl', 'description' )),
+ ( 579, 'CREATE_AUTHORITY_CONTROL_SET', oils_i18n_gettext( 579,
+    'Allow a user to create an authority control set', 'ppl', 'description' )),
+ ( 580, 'DELETE_AUTHORITY_CONTROL_SET', oils_i18n_gettext( 580,
+    'Allow a user to delete an authority control set', 'ppl', 'description' )),
+ ( 581, 'UPDATE_AUTHORITY_CONTROL_SET', oils_i18n_gettext( 581,
+    'Allow a user to modify an authority control set', 'ppl', 'description' )),
+ ( 582, 'ACTOR_USER_DELETE_OPEN_XACTS.override', oils_i18n_gettext( 582,
+    'Override the ACTOR_USER_DELETE_OPEN_XACTS event', 'ppl', 'description' )),
+ ( 583, 'PATRON_EXCEEDS_LOST_COUNT.override', oils_i18n_gettext( 583,
+    'Override the PATRON_EXCEEDS_LOST_COUNT event', 'ppl', 'description' )),
+ ( 584, 'MAX_HOLDS.override', oils_i18n_gettext( 584,
+    'Override the MAX_HOLDS event', 'ppl', 'description' )),
+ ( 585, 'ITEM_DEPOSIT_REQUIRED.override', oils_i18n_gettext( 585,
+    'Override the ITEM_DEPOSIT_REQUIRED event', 'ppl', 'description' )),
+ ( 586, 'ITEM_DEPOSIT_PAID.override', oils_i18n_gettext( 586,
+    'Override the ITEM_DEPOSIT_PAID event', 'ppl', 'description' )),
+ ( 587, 'COPY_STATUS_LOST_AND_PAID.override', oils_i18n_gettext( 587,
+    'Override the COPY_STATUS_LOST_AND_PAID event', 'ppl', 'description' )),
+ ( 588, 'ITEM_NOT_HOLDABLE.override', oils_i18n_gettext( 588,
+    'Override the ITEM_NOT_HOLDABLE event', 'ppl', 'description' )),
+ ( 589, 'ITEM_RENTAL_FEE_REQUIRED.override', oils_i18n_gettext( 589,
+    'Override the ITEM_RENTAL_FEE_REQUIRED event', 'ppl', 'description' ))
 ;
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
@@ -1852,7 +1903,10 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 			'UPDATE_MARC',
 			'UPDATE_RECORD',
 			'user_request.view',
-			'VIEW_AUTHORITY_RECORD_NOTES');
+			'VIEW_AUTHORITY_RECORD_NOTES',
+			'CREATE_AUTHORITY_RECORD',
+			'DELETE_AUTHORITY_RECORD',
+			'UPDATE_AUTHORITY_RECORD');
 
 INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 	SELECT
@@ -1893,7 +1947,14 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 			'UPDATE_MFHD_RECORD',
 			'UPDATE_VOLUME',
 			'UPDATE_VOLUME_NOTE',
-			'VIEW_SERIAL_SUBSCRIPTION');
+			'VIEW_SERIAL_SUBSCRIPTION',
+			'MARK_ITEM_CATALOGING',
+			'MARK_ITEM_DAMAGED',
+			'MARK_ITEM_DISCARD',
+			'MARK_ITEM_RESERVES',
+			'',
+			'',
+			'');
 
 
 -- Add advanced cataloguing permissions to the Cataloging Admin group
@@ -1939,8 +2000,10 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 			'UPDATE_MERGE_PROFILE',
 			'UPDATE_MONOGRAPH_PART',
 			'UPDATE_VOLUME_PREFIX',
-			'UPDATE_VOLUME_SUFFIX'
-		);
+			'UPDATE_VOLUME_SUFFIX',
+			'CREATE_AUTHORITY_CONTROL_SET',
+			'DELETE_AUTHORITY_CONTROL_SET',
+			'UPDATE_AUTHORITY_CONTROL_SET');
 
 INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 	SELECT
@@ -1962,7 +2025,13 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 			'UPDATE_COPY_LOCATION',
 			'UPDATE_COPY_STAT_CAT',
 			'UPDATE_COPY_STAT_CAT_ENTRY',
-			'VIEW_REPORT_OUTPUT');
+			'VIEW_REPORT_OUTPUT'
+			'CREATE_POP_BADGE',
+			'DELETE_POP_BADGE',
+			'UPDATE_POP_BADGE',
+			'CREATE_POP_PARAMETER',
+			'DELETE_POP_PARAMETER',
+			'UPDATE_POP_PARAMETER');
 
 
 -- Add basic circulation permissions to the Circulators group
@@ -2175,7 +2244,15 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 			'VIEW_STANDING_PENALTY',
 			'VOID_BILLING',
             'TRANSIT_CHECKIN_INTERVAL_BLOCK.override',
-			'VOLUME_HOLDS');
+			'VOLUME_HOLDS',
+			'ACTOR_USER_DELETE_OPEN_XACTS.override',
+			'PATRON_EXCEEDS_LOST_COUNT.override',
+			'MAX_HOLDS.override',
+			'ITEM_DEPOSIT_REQUIRED.override',
+			'ITEM_RENTAL_FEE_REQUIRED.override',
+			'ITEM_DEPOSIT_PAID.override',
+			'COPY_STATUS_LOST_AND_PAID.override',
+			'ITEM_NOT_HOLDABLE.override');
 
 
 -- Add basic sys admin permissions to the Local Administrator group
@@ -3549,15 +3626,6 @@ INSERT into config.org_unit_setting_type
         'coust', 'label'),
     oils_i18n_gettext('circ.selfcheck.patron_password_required',
         'Patron must log in with barcode and password at selfcheck station',
-        'coust', 'description'),
-    'bool', null)
-
-,( 'circ.selfcheck.require_patron_password', 'self',
-    oils_i18n_gettext('circ.selfcheck.require_patron_password',
-        'Require patron password',
-        'coust', 'label'),
-    oils_i18n_gettext('circ.selfcheck.require_patron_password',
-        'If true, patrons will be required to enter their password in addition to their username/barcode to log into the selfcheck interface',
         'coust', 'description'),
     'bool', null)
 
@@ -4983,6 +5051,23 @@ INSERT into config.org_unit_setting_type
         'description'
     ),
     'string', null)
+,(
+    'cat.default_merge_profile', 'cat',
+    oils_i18n_gettext(
+        'cat.default_merge_profile',
+        'Default Merge Profile (Z39.50 and Record Buckets)',
+        'coust',
+        'label'
+    ),
+     oils_i18n_gettext(
+        'cat.default_merge_profile',
+        'Default merge profile to use during Z39.50 imports and record bucket merges',
+        'coust',
+        'description'
+    ),
+    'link',
+    'vmp'
+)
 ,( 'opac.browse.pager_shortcuts', 'opac',
     oils_i18n_gettext(
         'opac.browse.pager_shortcuts',
@@ -14426,6 +14511,42 @@ INSERT INTO config.sms_carrier VALUES
         ),
         '$number@myhelio.com',
         TRUE
+    ),
+
+    -- Republic Wireless and Google Fi
+    (
+        66,
+        oils_i18n_gettext(
+            66,
+            'USA',
+            'csc',
+            'region'
+        ),
+        oils_i18n_gettext(
+            66,
+            'Republic Wireless (must enable on device)',
+            'csc',
+            'name'
+        ),
+        '$number@text.republicwireless.com',
+        TRUE
+    ),
+    (
+        67,
+        oils_i18n_gettext(
+            67,
+            'USA',
+            'csc',
+            'region'
+        ),
+        oils_i18n_gettext(
+            67,
+            'Google Fi',
+            'csc',
+            'name'
+        ),
+        '$number@msg.fi.google.com',
+        TRUE
     )
 ;
 
@@ -14582,7 +14703,7 @@ INSERT INTO action_trigger.environment (
 INSERT INTO vandelay.merge_profile (id, owner, name, replace_spec, update_bib_source) 
     VALUES (1, 1, oils_i18n_gettext(1, 'Match-Only Merge', 'vmp', 'name'), '901c', false);
 
-INSERT INTO vandelay.merge_profile (id, owner, name, replace_spec, update_bib_source) 
+INSERT INTO vandelay.merge_profile (id, owner, name, preserve_spec, update_bib_source)
     VALUES (2, 1, oils_i18n_gettext(2, 'Full Overlay', 'vmp', 'name'), '901c', true);
 
 SELECT SETVAL('vandelay.merge_profile_id_seq'::TEXT, 100);
@@ -16487,3 +16608,38 @@ INSERT INTO action_trigger.environment (
     currval('action_trigger.event_definition_id_seq'),
     'circ_lib'
 );
+
+INSERT INTO config.org_unit_setting_type
+(name, grp, label, description, datatype)
+VALUES
+('circ.in_house_use.copy_alert',
+ 'circ',
+ oils_i18n_gettext('circ.in_house_use.copy_alert',
+     'Display copy alert for in-house-use',
+     'coust', 'label'),
+ oils_i18n_gettext('circ.in_house_use.copy_alert',
+     'Display copy alert for in-house-use',
+     'coust', 'description'),
+ 'bool'),
+('circ.in_house_use.checkin_alert',
+ 'circ',
+ oils_i18n_gettext('circ.in_house_use.checkin_alert',
+     'Display copy location checkin alert for in-house-use',
+     'coust', 'label'),
+ oils_i18n_gettext('circ.in_house_use.checkin_alert',
+     'Display copy location checkin alert for in-house-use',
+     'coust', 'description'),
+ 'bool');
+
+INSERT INTO config.global_flag (name, label, value, enabled) VALUES (
+    'circ.holds.retarget_interval',
+    oils_i18n_gettext(
+        'circ.holds.retarget_interval',
+        'Holds Retarget Interval', 
+        'cgf',
+        'label'
+    ),
+    '24h',
+    TRUE
+);
+

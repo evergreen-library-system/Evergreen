@@ -1,0 +1,2712 @@
+# Arabic translation for evergreen
+# Copyright (c) 2016 Rosetta Contributors and Canonical Ltd 2016
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2016.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: evergreen\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2015-02-27 11:41-0400\n"
+"PO-Revision-Date: 2017-01-19 09:21+0000\n"
+"Last-Translator: fares othman <Unknown>\n"
+"Language-Team: Arabic <ar@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2017-01-21 06:03+0000\n"
+"X-Generator: Launchpad (build 18302)\n"
+
+#. =================================================================
+#. Some generic stuff
+#. =================================================================
+#: lang.version
+msgid "remote v1"
+msgstr "ريموت v1"
+
+#: lang.description
+msgid "English"
+msgstr "الإنجليزية"
+
+#: lang.author
+msgid "PINES"
+msgstr "الشجرة الصنوبرية"
+
+#: common.all
+msgid "All"
+msgstr "الكل"
+
+#: common.currency
+msgid "$"
+msgstr "$"
+
+#: common.language
+msgid "Language: "
+msgstr "اللغة "
+
+#: common.name
+msgid "Name"
+msgstr "الاسم"
+
+#: common.none
+msgid "None"
+msgstr "لا يوجد"
+
+#: common.title
+msgctxt "common.title"
+msgid "Title"
+msgstr "العنوان"
+
+#: common.author
+msgctxt "common.author"
+msgid "Author"
+msgstr "المؤلف"
+
+#: common.authors
+msgid "Authors"
+msgstr "المؤلفون"
+
+#: common.callnumber
+msgctxt "common.callnumber"
+msgid "Call Number"
+msgstr "رمز الاستدعاء"
+
+#: common.edition
+msgid "Edition"
+msgstr "الطبعة"
+
+#: common.subject
+msgid "Subject"
+msgstr "الموضوع"
+
+#: common.series
+msgid "Series"
+msgstr "السلسلة"
+
+#: common.keyword
+msgid "Keyword"
+msgstr "الكلمة المقتاحية"
+
+#: common.type
+msgid "Search Type"
+msgstr "البحث عن نوع"
+
+#: common.isbn
+msgctxt "common.isbn"
+msgid "ISBN"
+msgstr "ردمك"
+
+#: common.format
+msgid "Format"
+msgstr "التنسيق"
+
+#. Message displayed while search results are loading
+#: common.loading
+msgctxt "common.loading"
+msgid "Loading..."
+msgstr "جاري التحميل..."
+
+#: common.login
+msgctxt "common.login"
+msgid "Login"
+msgstr "الدخول"
+
+#: common.logout
+msgid "Log Out"
+msgstr "الخروج"
+
+#: common.physical
+msgid "Physical Description"
+msgstr "الوصف المادي"
+
+#: common.pubdate
+msgid "Publication Date"
+msgstr "تاريخ النشر"
+
+#: common.publisher
+msgid "Publisher"
+msgstr "الناشر"
+
+#: common.results
+msgid "Results"
+msgstr "النتائج"
+
+#: common.select
+msgid "Select"
+msgstr "اختيار"
+
+#: common.status
+msgid "Status"
+msgstr "الحالة"
+
+#: common.at
+msgid "at"
+msgstr "في"
+
+#: common.of
+msgid "of"
+msgstr "من"
+
+#: common.no
+msgid "No"
+msgstr "لا"
+
+#: common.yes
+msgid "Yes"
+msgstr "نعم"
+
+#: common.cancel
+msgctxt "common.cancel"
+msgid "Cancel"
+msgstr "إلغاء"
+
+#: common.library
+msgctxt "common.library"
+msgid "Library"
+msgstr "المكتبة"
+
+#: common.username
+msgid "Username"
+msgstr "اسم المستخدم"
+
+#: common.password
+msgctxt "common.password"
+msgid "Password"
+msgstr "كلمة المرور"
+
+#: common.submit
+msgctxt "common.submit"
+msgid "Submit"
+msgstr "تأكيد"
+
+#: common.close
+msgid "close"
+msgstr "إغلاق"
+
+#: common.and
+msgid "and"
+msgstr "و"
+
+#: common.user_not_found
+msgid "User not found"
+msgstr "المستخدم غير موجود"
+
+#: opac.advanced.wizard.title
+msgctxt "opac.advanced.wizard.title"
+msgid "Advanced Search"
+msgstr "بحث متقدم"
+
+#: common.nowSearching
+msgid "Now searching "
+msgstr "البحث جاري "
+
+#: common.ofAtLeast
+msgid " of about "
+msgstr " من حول "
+
+#: common.relevancy
+msgid "Match Score: "
+msgstr "النتيجة المُطابِقة: "
+
+#: common.tips
+msgid "Tips:"
+msgstr "نصائح:"
+
+#: common.tips.tip1
+msgid ""
+"Click on a folder icon in the sidebar to access related quick searches"
+msgstr ""
+"يمكنك النقر على أيقونة المجلد في الشريط الجانبي للوصول إلى نتائج ذات علاقة"
+
+#: common.tips.tip2
+msgid ""
+"If you don't find what you want try expanding your search using the range "
+"selector at the right of the search bar"
+msgstr ""
+"إذا كنت لا تجد ينبغي محاولة توسيع بحثك باستخدام محدد النطاق على يمين شريط "
+"البحث"
+
+#: common.org.openAll
+msgid "Expand All"
+msgstr "تمديد الكل"
+
+#: common.org.closeAll
+msgid "Close All"
+msgstr "إغلاق الكل"
+
+#: common.org.cancel
+msgctxt "common.org.cancel"
+msgid "Cancel"
+msgstr "إلغاء"
+
+#: common.org.loading
+msgid "Loading library selector..."
+msgstr "تحميل محدد المكتبة..."
+
+#: common.org.note
+msgctxt "common.org.note"
+msgid "Tip:"
+msgstr "تلميح:"
+
+#: common.org.notetext
+msgid ""
+"Click on a location's name to select it.  Click on the folder icons to "
+"expand a section."
+msgstr ""
+"أنقر على اسم الموقع لـِ اختياره. أنقر على أيقونات المجلد لتمديد/توسيع القسم."
+
+#: opac.login.login
+msgctxt "opac.login.login"
+msgid "Login"
+msgstr "تسجيل الدخول"
+
+#: opac.basic
+msgctxt "opac.basic"
+msgid "Basic Catalog (HTML only)"
+msgstr "الفهرس الأساسي ـ فقط HTML"
+
+#: common.password_criteria
+msgid ""
+"The password must be at least 7 characters in length, \n"
+"contain at least one letter (a-z/A-Z), \n"
+"and contain at least one number."
+msgstr ""
+"يجب أن تكون كلمة المرور لا يقل عن 7 أحرف، \n"
+"تحتوي على حرف واحد على الأقل حرف، \n"
+"ويحتوي على رقم واحد على الأقل."
+
+#: common.a2z.title
+msgid "Title: A to Z"
+msgstr "العنوان: A to Z"
+
+#: common.z2a.title
+msgid "Title: Z to A"
+msgstr "العنوان: Z to A"
+
+#: common.a2z.author
+msgid "Author: A to Z"
+msgstr "المؤلف: A to Z"
+
+#: common.z2a.author
+msgid "Author: Z to A"
+msgstr "المؤلف: Z to A"
+
+#: common.new2old.pubdate
+msgid "Date: Newest to Oldest"
+msgstr "التاريخ: من الأحدث إلى الأقدم"
+
+#: common.old2new.pubdate
+msgid "Date: Oldest to Newest"
+msgstr "التاريخ: من الأقدم إلى الأحدث"
+
+#: opac.style.reddish
+msgid "Reddish"
+msgstr "مُحمر"
+
+#: holds.where_am_i
+msgid ""
+"Holds lists are not as simple as \n"
+"'first come, first served.'  A complex matrix combining \n"
+"consideration of item ownership, patron home library, and item purchase \n"
+"date determines  priorities for holds; the list is dynamic, changing \n"
+"with every hold placed.  Therefore, any indication of a place in the \n"
+"holds list would be inaccurate.  The holds system is designed to \n"
+"obtain a requested item in the fastest and most efficient way possible. \n"
+"Your library will contact you when you hold items become \n"
+"available."
+msgstr ""
+"قوائم الحجوزات ليست بسيطة كـَ \n"
+"'يأتي أولاً، يخدم أولاً'  مصفوفة تجميع مُعقدة \n"
+"مراعاة ملكية النُسخة،مكتبة المستفيد الرئيسية، وشراء النُسخة \n"
+"تاريخ تحديد أولويات الحجز. القائمة الديناميكية، تتغير \n"
+" مع كل حجز يتم وضعه، لذلك أي دلالة على مكان وجود  \n"
+"قائمة الحجوزات ستكون غير دقيقة. نظام الحجوزات مصمم من أجلِ \n"
+"الحصول على العنصر المطلوب في أسرع وأكفأ طريقة ممكنة \n"
+"مكتبتك سوف تتواصل معك عندما تصبح نُسخك المحجوزة \n"
+"مُتاحة"
+
+#: holds.advanced_options
+msgid ""
+"If you wish to broaden the scope of your hold to include other \n"
+"versions of this title, select the formats that would be acceptable. \n"
+"The first available copy will be sent to you."
+msgstr ""
+"إذا كنت ترغب في توسيع نطاق حيازاتك لتشمل إصدارات \n"
+"أخرى لهذه العنوان، ينبغي اختيارالتنسيقات التي من شأنها أن تكون مقبولة \n"
+"النسخة الأولى المُتاحة سوف تُرسل لك"
+
+#. =================================================================
+#. Events and Permissions
+#. =================================================================
+#: ilsevent.0
+msgid "Operation Succeeded"
+msgstr "تمّ نجاح العملية"
+
+#: ilsevent.1000
+msgid "Login failed.  The username or password entered was incorrect."
+msgstr "فشل تسجيل الدخول.  اسم المستخدم أو كلمة المرور  غير صحيحة."
+
+#: ilsevent.1001
+msgid "Login session has timed out or does not exist"
+msgstr "تم انتهاء فترة الانتظار ـ الجلسة ـ أو أنهاغير موجودة"
+
+#: ilsevent.1002
+msgid "User was not found in the database"
+msgstr "لم يتم العثور على المستخدم في قاعدة البيانات"
+
+#: ilsevent.1200
+msgid "The given username already exists in the database"
+msgstr "اسم المستخدم موجود مسبقا في قاعدة البيانات"
+
+#: ilsevent.5000
+msgid "Permission Denied"
+msgstr "غير مسموح"
+
+#: ilsperm.CREATE_HOLD
+msgid "User is not allowed to create holds for other users at this location"
+msgstr "لا يُسمح للمستفيد وضع حجز للمستفيدين الآخرين في هذا الموقع"
+
+#. =================================================================
+#. common/pages
+#. =================================================================
+#: common.cn.loading
+msgid "Loading Callnumber Page..."
+msgstr "صفحة تحميل رمز الاستدعاء..."
+
+#: common.cn.browsing
+msgid "You are now browsing"
+msgstr "أنت تتصفح الآن"
+
+#: common.cn.previous
+msgid "&lt;&lt; Previous Page"
+msgstr "&lt;&lt; الصفحة السابقة"
+
+#: common.cn.shelf
+msgctxt "common.cn.shelf"
+msgid "Shelf Browser"
+msgstr "تصفح الرف"
+
+#: common.cn.next
+msgid "Next Page &gt;&gt;"
+msgstr "الصفحة التالية &gt;&gt;"
+
+#: common.textsize.title
+msgid "Text Size: "
+msgstr "حجم النص: "
+
+#: common.textsize.regular
+msgid "Regular"
+msgstr "نِظامي"
+
+#. Regular / Large
+#: common.textsize.separator
+msgid "/"
+msgstr "/"
+
+#: common.textsize.large
+msgid "Large"
+msgstr "كبير"
+
+#: common.googlechromeframe.why
+msgid ""
+"Installing the Google Chrome Frame plugin for Internet Explorer will improve "
+"your Evergreen experience with more speed and advanced features!"
+msgstr ""
+"تثبيت إطار جوجل كروم مِن أجل تصفح الإنترنت سيحسن تجربة إيفر غرين مع المزيد "
+"من السرعة والميزات المتقدمة!"
+
+#: common.googlechromeframe.install
+msgid "Install Now!"
+msgstr "تثبيت الآن!"
+
+#: common.googlechromeframe.dontask
+msgid "Don't ask me again"
+msgstr "لا تَسألني مرة أخرى"
+
+#: home.js.disabled
+msgid ""
+"JavaScript must be enabled in order for you to use the regular Evergreen "
+"Catalog. \n"
+"However, it seems JavaScript is either disabled or not supported by your "
+"browser. \n"
+"To use the regular Evergreen Catalog, enable JavaScript by changing your "
+"browser options, then \n"
+"<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. "
+"\n"
+"<br/><br/>Alternatively, you can use the basic HTML-only catalog: "
+msgstr ""
+"يجب تمكين جافا سكريبت لتتمكن من استخدام فهرس إيفرغرين بشكل مُنتظم \n"
+"ومع ذلك، يبدو أن جافا سكريبت معطل أو غير معتمد من قبل متصفحك \n"
+"من أجل استخدام فهرس إيفرغرين، ينبغي تمكين جافا سكريبت من خلال تغيير خيارات "
+"متصفحك، ثم  \n"
+"<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. "
+"\n"
+"<br/><br/>بدلاً من ذلك، يمكنك استخدام أتش تي إم إل فقط في الفهرس الأساسي "
+
+#. =================================================================
+#. MyOPAC bookbag page
+#. =================================================================
+#: myopac.delete.bookbag
+msgid ""
+"This will remove the selected bookbag and all items contained within the "
+"bookbag. \n"
+"Are you sure you wish to continue?"
+msgstr ""
+"سيؤدي ذلك إلى إزالة حقيبة الكتب المُحددة وجميع النُسخ الواردة في حقيبة الكتب "
+"\n"
+"هل ترغب في الاستمرار؟"
+
+#: myopac.no.bookbags
+msgid "You have not created any bookbags"
+msgstr "لم تقم بإنشاء أية حقائب كتاب"
+
+#: myopac.bookbags.title
+msgctxt "myopac.bookbags.title"
+msgid "My Bookbags"
+msgstr "حقائب الكتاب الخاصة بي"
+
+#: myopac.bookbag.items
+msgid "# Items"
+msgstr "# النُسخ"
+
+#: myopac.bookbag.shared
+msgid "Shared"
+msgstr "تمّ مشاركتها"
+
+#: myopac.bookbag.toggle
+msgid "Share / Hide"
+msgstr "مشاركة / إخفاء"
+
+#: myopac.bookbag.delete
+msgid "Delete this bookbag?"
+msgstr "حذف حقيبة الكتاب؟"
+
+#: myopac.items
+msgid "Items"
+msgstr "النُسخ"
+
+#: myopac.view
+msgid "(View)"
+msgstr "(عرض)"
+
+#: myopac.atom.feed
+msgid "ATOM Feed"
+msgstr "تغذية ذرية"
+
+#: myopac.bookbag.hide
+msgid "Hide"
+msgstr "إخفاء"
+
+#: myopac.delete
+msgid "Delete"
+msgstr "حذف"
+
+#: myopac.bookbag.create
+msgid "Create a new Bookbag"
+msgstr "إنشاء حقيبة كتاب جديدة"
+
+#: myopac.bookbag.naming
+msgid "Enter the name of the new Bookbag: "
+msgstr "إدخال اسم حقيبة الكتب الجديدة: "
+
+#: myopac.bookbag.share
+msgid "Share this Bookbag"
+msgstr "شارك حقيبة الكتاب هذه"
+
+#: myopac.bookbag.refworks
+msgctxt "myopac.bookbag.refworks"
+msgid "Export to RefWorks"
+msgstr "تصدير إلى RefWorks"
+
+#: myopac.bookbag.no.items
+msgid "The selected bookbag contains no items..."
+msgstr "لا تتضمن حقيبة الكتاب المحددة أية نسخ..."
+
+#: myopac.bookbag.remove
+msgid "Remove this item?"
+msgstr "إزالة هذه النسخة؟"
+
+#: myopac.remove.link
+msgid "remove"
+msgstr "إِزالة"
+
+#: myopac.publish.text
+msgid ""
+"Sharing a Bookbag means that the contents of the Bookbag will be visible to "
+"others. \n"
+"To see the public view of a shared Bookbag, click the \"View\" link in the \n"
+"\"Shared\" column of the Bookbag list at the top of this page."
+msgstr ""
+"مشاركة حقيبة الكتب يُقصد به أن محتويات حقيبة الكتب سوف تكون مرئية للآخرين \n"
+"مِن أجل رؤية العرض العام لـِ حقيبة الكتب المُشَارَكة، أنقر على رابط \"عرض\" "
+"في \n"
+"عامود \"مُشاركة\" في قائمة حقيبة الكتب في أعلى هذه الصفحة"
+
+#: myopac.item.confirm
+msgid "Are you sure you wish to remove this bookbag item?"
+msgstr "هل أنت متأكد مِن أنك تريد حذف نسخة حقيبة الكتاب هذه؟"
+
+#: myopac.publish.confirm
+msgid ""
+"Sharing this bookbag will allow the contents \n"
+"of the bookbag to be seen by others.  Are you sure you wish to share this "
+"bookbag?"
+msgstr ""
+"مُشاركة حقيبة الكتب سوف يسمح لمحتويات \n"
+"حقيبة الكتب أن تكون مرئية من قبل الآخرين  هل ترغب في مشاركة حقيبة الكتب هذه؟"
+
+#: myopac.unpublish.confirm
+msgid "Are you sure you wish to hide this bookbag?"
+msgstr "هل أنت متأكد مِن أنك تريد إخفاء حقيبة الكتاب هذه؟"
+
+#: myopac.update.success
+msgid "The Bookbag was successfully updated."
+msgstr "تمّ تحديث حقيبة الكتاب بنجاح."
+
+#: myopac.updated.success
+msgid "Bookbag successfully updated"
+msgstr "تمّ تحديث حقيبة الكتاب بنجاح."
+
+#: myopac.create.warning
+msgid ""
+"Warning: Adding items to a bookbag creates a link between you and the \n"
+"items in the database.  The contents of the bookbag are NOT publicly \n"
+"viewable unless the bookbag is shared. However, if you prefer not to \n"
+"have any link between your patron record and a particular item or items, \n"
+"we suggest that you do not place said items in a bookbag or that you \n"
+"avoid using bookbags all together.  Thank you."
+msgstr ""
+"تحذير: إضافة النُسخ إلى حقيبة الكتب ينشيء ارتباط بينك وبين \n"
+"النُسخ في قاعدة البيانات. محتويات حقيبة الكتب ليست عامة \n"
+"قابلية العرض غير قابلة إذا تمت مشاركة حقيبة الكتب. ومع ذلك إذا كنت تفضل عدم "
+"\n"
+"وجود أي رابط بين تسجيلة المستفيد والنسخة المعنية \n"
+"نقترح عليك أن لا تضع البنود المذكورة في حقيبة الكتب أو  \n"
+"تجنب استخدام حقائب الكتب مع بعضها، شكراً جزيلاً لك"
+
+#: myopac.describe.bookbags
+msgid "Bookbags are..."
+msgstr "حقائب الكتاب هي..."
+
+#. =================================================================
+#. MyOPAC Checked Page
+#. =================================================================
+#: myopac.checked.out
+msgid "Total items out:"
+msgstr "مجموع النُسخ مِن:"
+
+#: myopac.checked.overdue
+msgid "Total items overdue:"
+msgstr "مجموع النسخ المتأخرة:"
+
+#: myopac.checked.renew
+msgid "Renew Selected Items"
+msgstr "تجديد النسخ المحددة"
+
+#: myopac.checked.renewing
+msgid "Renewing..."
+msgstr "تجديد..."
+
+#: myopac.checked.renew.remaining
+msgctxt "myopac.checked.renew.remaining"
+msgid "Renewals Remaining"
+msgstr "التجديدات المُتبقية"
+
+#: myopac.checked.noitems
+msgid "You have no items checked out at this time"
+msgstr "ليس لديك نسخ معارة في هذا الوقت"
+
+#: myopac.checked.other.circ
+msgid "Other Circulations"
+msgstr "إعارات أخرى"
+
+#: myopac.checked.circ.lib
+msgid "Circulating Library"
+msgstr "مكتبة الإعارة"
+
+#: myopac.checked.item.type
+msgid "Circulation Type"
+msgstr "نوع الإعارة"
+
+#: myopac.checked.circ.time
+msgid "Please return by ..."
+msgstr "لطفاً ينبغي إرجاعها مِن قبل ..."
+
+#: myopac.checked.renew.success
+msgid "item(s) successfully renewed"
+msgstr "تمّ تجديد النُسخ بنجاح"
+
+#: myopac.checked.renew.confirm
+msgid "Are you sure you wish to renew the selected item(s)?"
+msgstr "هل تؤكد تمديد الإعارة للنُسخ المحددة؟"
+
+#: myopac.checked.renew.fail
+msgid ""
+"The system is unable to renew the selected item at this time.  This usually "
+"means the item is needed to fulfill a hold.  Please see a librarian for "
+"further help."
+msgstr ""
+"النظام غير قادر على تجديد النُسخة المحددة في هذا الوقت. وهذا يعني عادة أن "
+"النُسخة بحاجة إلى تنفيذ الحجز. لطفاً تواصل مع أمين المكتبة لمزيد من التفاصيل."
+
+#: myopac.checked.renew.fail2
+msgid ""
+"Library policy prevents the renewal of this item at this time.  Please see a "
+"librarian for further details."
+msgstr ""
+"سياسة المكتبة تمنع تجديد هذه النُسخة في هذا الوقت. لطفاً تواصل مع أمين "
+"المكتبة لمزيد من التفاصيل."
+
+#. =================================================================
+#. MyOPAC Fines Page
+#. =================================================================
+#: myopac.fines.title
+msgctxt "myopac.fines.title"
+msgid "Summary"
+msgstr "المُلخص"
+
+#: myopac.fines.owed
+msgid "Total Owed"
+msgstr "المقدار الكلي المستحق"
+
+#: myopac.fines.paid
+msgid "Total Paid"
+msgstr "المقدار الكلي المدفوع"
+
+#: myopac.fines.balance
+msgid "Balance Owed"
+msgstr "الرصيد المُستحق"
+
+#: myopac.fines.status
+msgctxt "myopac.fines.status"
+msgid "Loading..."
+msgstr "يتم الآن التحميل..."
+
+#: myopac.fines.overdue
+msgid "Overdue Materials"
+msgstr "المواد المتأخرة"
+
+#: myopac.fines.checkout
+msgid "Checkout Date"
+msgstr "تاريخ الإعارة"
+
+#: myopac.fines.due
+msgctxt "myopac.fines.due"
+msgid "Due Date"
+msgstr "تاريخ استحقاق الرد"
+
+#: myopac.fines.returned
+msgid "Date Returned"
+msgstr "تاريخ الإرجاع"
+
+#: myopac.fines.accruing
+msgid "(fines accruing)"
+msgstr "(الغرامات المستحقة)"
+
+#: myopac.fines.other
+msgid "Other Fees"
+msgstr "الرسوم الأخرى"
+
+#: myopac.fines.time.start
+msgid "Transaction Start Time"
+msgstr "بداية تاريخ الإجراء"
+
+#: myopac.fines.time.paid
+msgid "Last Payment Time"
+msgstr "تاريخ آخر دفع"
+
+#: myopac.fines.owed.initial
+msgid "Initial Amount Owed"
+msgstr "المبلغ أو الكمية الأولية المستحقة"
+
+#: myopac.fines.paid.amount
+msgid "Total Amount Paid"
+msgstr "المجموع الكلي المدفوع"
+
+#: myopac.fines.type
+msgid "Billing Type"
+msgstr "نوع الفاتورة"
+
+#. =================================================================
+#. MyOPAC Holds Page
+#. =================================================================
+#: myopac.holds.formats
+msgid "Formats"
+msgstr "التنسيقات"
+
+#: myopac.holds.location
+msgid "Pickup Location"
+msgstr "موقع الاستلام"
+
+#: myopac.holds.edit
+msgid "Edit"
+msgstr "تعديل"
+
+#: myopac.holds.status.none
+msgid "You have no items on hold at this time"
+msgstr "ليس لديك نُسخ للحجز في هذا الوقت"
+
+#: myopac.holds.status.waiting
+msgid "Waiting for copy"
+msgstr "انتظار النَسخ"
+
+#: myopac.holds.status.intransit
+msgid "In Transit"
+msgstr "في حالة النقل"
+
+#: myopac.holds.status.available
+msgid "Ready for Pickup"
+msgstr "جاهز للاستلام"
+
+#: myopac.holds.status.suspended
+msgid "Suspended"
+msgstr "مُعلّق"
+
+#: myopac.holds.cancel
+msgctxt "myopac.holds.cancel"
+msgid "Cancel"
+msgstr "إلغاء"
+
+#: myopac.holds.verify
+msgid ""
+"If you wish to cancel the selected hold, click OK, otherwise click Cancel."
+msgstr "إذا كنت تريد إلغاء الحجز المحدد، أنقر على نعم، وإلا أقر على إلغاء."
+
+#: myopac.holds.freeze_selected
+msgid "Suspend"
+msgstr "تعليق"
+
+#: myopac.holds.thaw_selected
+msgid "Activate"
+msgstr "تفعيل"
+
+#: myopac.holds.thaw_date_selected
+msgid "Set Active Date"
+msgstr "حدد تاريخ التفعيل"
+
+#: myopac.holds.cancel_selected
+msgctxt "myopac.holds.cancel_selected"
+msgid "Cancel"
+msgstr "إلغاء"
+
+#: myopac.holds.processing
+msgid "Processing holds... This may take a moment."
+msgstr "معالجة الحجوزات... سيستغرق هذا لحظات."
+
+#: myopac.holds.actions
+msgid "Actions for selected holds"
+msgstr "الإجراءات الخاصة بالحجوزات المحددة"
+
+#: myopac.holds.cancel.confirm
+msgid "Are you sure you wish to cancel the selected holds?"
+msgstr "هل أنت متأكد مِن أنك تريد إلغاء الحجوزات المحددة؟"
+
+#: myopac.holds.freeze.confirm
+msgid ""
+"Are you sure you wish to suspend the selected holds? \n"
+"If an item has already been selected to fulfill the hold, it will not be "
+"suspended"
+msgstr ""
+"هل أنت متأكد أنك ترغب في تعليق الحجز المُحدد؟ \n"
+"إذا تم تحديد النُسخة لتحقيق الحجز، فإنه لن يتم تعليقها"
+
+#: myopac.holds.thaw.confirm
+msgid "Are you sure you wish to activate the selected holds?"
+msgstr "هل أنت متأكد مِن أنك تريد تفعيل الحجوزات المحددة؟"
+
+#: myopac.holds.thaw_date.confirm
+msgid ""
+"Are you sure you wish to change the activate date for the selected holds?"
+msgstr "هل أنت متأكد مِن أنك تريد تغيير تاريخ التفعيل لـِ الحجوزات المحددة؟"
+
+#: myopac.holds.freeze.select_thaw
+msgid ""
+"Select an automatic activation date.  If no date is chosen, the holds will "
+"remain suspended until they are manually activated."
+msgstr ""
+"تحديد تاريخ التفعيل الآلي. إذا لم يتم اختيار أي تاريخ، ستبقى الحجوزات مُعلقة "
+"حتى يتم تفعيلها يدوياً."
+
+#: opac.holds.freeze
+msgid "Suspend this hold"
+msgstr "تعليق هذا الحجز"
+
+#: opac.holds.freeze.help
+msgid ""
+"A suspended hold will retain its place in the queue, but will not be "
+"fulfilled until it has been activated."
+msgstr ""
+"سيحفظ الحجز المُعلق في مكانه في قائمة/طابور الانتظار، ولكن لن يتم التنفيذ "
+"حتى يتم تفعيله."
+
+#: opac.holds.freeze.thaw_date
+msgid "Automatically activate hold on:"
+msgstr "تفعيل الحجز أتوماتيكياً في:"
+
+#: opac.holds.expire_time
+msgid "Expiration date"
+msgstr "تاريخ اِنتهاء الصلاحية"
+
+#: myopac.holds.estimated_wait
+msgid "Estimated Wait (days)"
+msgstr "المُهلة المقدرة (بالأيام)"
+
+#. =================================================================
+#. MyOPAC Preferences Page
+#. =================================================================
+#: myopac.prefs.title
+msgid "Preferences"
+msgstr "الإحالات/التفضيلات"
+
+#: myopac.prefs.hits
+msgid "Search hits per page"
+msgstr "البحث الذي أصاب في كل صفحة"
+
+#: myopac.prefs.font
+msgid "Default Font Size"
+msgstr "حجم الخط الافتراضي"
+
+#: myopac.prefs.font.regular
+msgid "Regular Font"
+msgstr "الخط الاعتيادي"
+
+#: myopac.prefs.font.large
+msgid "Large Font"
+msgstr "خط كبير"
+
+#: myopac.prefs.holds.notify
+msgid "Default Hold Notification Method"
+msgstr "طريقة إشعارات الحجز الافتراضي"
+
+#: myopac.prefs.holds.both
+msgid "Use Phone and Email"
+msgstr "استخدام الهاتف والبريد الإلكتروني"
+
+#: myopac.prefs.holds.phone
+msgid "Use Phone Only"
+msgstr "استخدام الهاتف فقط"
+
+#: myopac.prefs.holds.email
+msgid "Use Email Only"
+msgstr "استخدام البريد الإلكتروني فقط"
+
+#: myopac.prefs.search.location
+msgid "Default Search Location"
+msgstr "موقع البحث الافتراضي"
+
+#: myopac.prefs.search.home
+msgid "Always search my home library by default."
+msgstr "البحث دائماً في مكتبتي الرئيسية بشكل افتراضي."
+
+#: myopac.prefs.search.range
+msgid "Default Search Range"
+msgstr "نطاق البحث الافتراضي"
+
+#: myopac.prefs.save
+msgid "Save Preference Changes"
+msgstr "حفظ تغييرات الإحالات/التفضيلات"
+
+#: myopac.prefs.save.success
+msgid "Preferences successfully updated"
+msgstr "الإحالات/التفضيلات تمّ تحديثها بنجاح."
+
+#: myopac.prefs.save.failed
+msgid "Preferences update failed!"
+msgstr "لقد فشل تحديث التفضيلات/الإحالات!"
+
+#: myopac.prefs.help
+msgid ""
+"This setting defines how you will be notified of holds that are ready to be "
+"picked up from the library. \n"
+"By default, holds will use the notification style you choose here. \n"
+"However, you will still have the option to change individual holds "
+"regardless of this setting."
+msgstr ""
+"يحدد هذا الإعداد كيف سيتم إعلامك بالحجز الجاهز ليتم انتقاؤها من المكتبة \n"
+"افتراضياً، الحجوزات سوف تستخدم ستايل إخطار يمكنك اختياره مِن هنا \n"
+"ومع ذلك، لا يزال لديك خيار لتغيير الحجوزات الفردية بغض النظر عن هذا الإعداد"
+
+#: myopac.holds.unfrozen
+msgid "Active"
+msgstr "مُفعل"
+
+#: myopac.holds.frozen.until
+msgid "Activate on..."
+msgstr "تفعيل على..."
+
+#. =================================================================
+#. MyOPAC Summary page
+#. =================================================================
+#: myopac.summary.expired
+msgid ""
+"Your account expired on <span id='myopac.expired.date'/>! \n"
+"Please see a librarian to renew your account."
+msgstr ""
+"حسابك سوف ينتهي في <span id='myopac.expired.date'/>! \n"
+"لطفاً ينبغي الرجوع إلى أمين المكتبة من أجل تجديد حسابك"
+
+#: myopac.summary.notes
+msgid "* Staff Notes *"
+msgstr "* ملاحظات الطاقم *"
+
+#: myopac.summary.phone.day
+msgid "Day Phone"
+msgstr "هاتف الاتصالات النهارية"
+
+#: myopac.summary.phone.evening
+msgid "Evening Phone"
+msgstr "هاتف الاتصالات المسائية"
+
+#: myopac.summary.phone.other
+msgid "Other Phone"
+msgstr "أرقام الهواتف الأخرى"
+
+#: myopac.summary.change
+msgid "Change"
+msgstr "تغيير"
+
+#: myopac.summary.username.enter
+msgid "Enter new username:"
+msgstr "إدخال اسم مستخدم جديد:"
+
+#: myopac.summary.password.text
+msgid "(not shown)"
+msgstr "(مخفية)"
+
+#: myopac.summary.password.current
+msgid "Enter current password:"
+msgstr "إدخال كلمة المرور الحالية:"
+
+#: myopac.summary.password.new
+msgid "Enter new password:"
+msgstr "إدخال كلمة المرور الجديدة:"
+
+#: myopac.summary.password.reenter
+msgid "Re-enter new password:"
+msgstr "إعادة إدخال كلمة المرور:"
+
+#: myopac.summary.email
+msgid "Email Address"
+msgstr "عنوان البريد الإلكتروني"
+
+#: myopac.summary.email.new
+msgid "Enter new email address:"
+msgstr "إدخال بريد إلكتروني جديد:"
+
+#: myopac.summary.id.primary
+msgid "Primary Identification"
+msgstr "المُعرف الأساسي"
+
+#: myopac.summary.barcode
+msgid "Active Barcode"
+msgstr "تفعيل الباركود"
+
+#: myopac.summary.home
+msgid "Home Library"
+msgstr "المكتبة الرئيسية"
+
+#: myopac.summary.genesis
+msgid "Account Creation Date"
+msgstr "تاريخ إنشاء الحساب"
+
+#: myopac.summary.addresses
+msgid "Addresses"
+msgstr "العناوين"
+
+#: myopac.summary.addresses.pending
+msgid "Pending Addresses"
+msgstr "العناوين المُعلقة"
+
+#: myopac.summary.address.type
+msgid "Address Type"
+msgstr "فئة العنوان"
+
+#: myopac.summary.address.street
+msgid "Street"
+msgstr "الشارع"
+
+#: myopac.summary.address.city
+msgid "City"
+msgstr "المدينة"
+
+#: myopac.summary.address.county
+msgid "County"
+msgstr "البلد"
+
+#: myopac.summary.address.state
+msgid "State"
+msgstr "الولاية"
+
+#: myopac.summary.address.country
+msgid "Country"
+msgstr "البلد"
+
+#: myopac.summary.address.zip
+msgid "Zip"
+msgstr "الرمز البريدي"
+
+#: myopac.summary.address.edit
+msgid "Edit Address"
+msgstr "تعديل العنوان"
+
+#: myopac.summary.address.invalid
+msgid "Invalid Address"
+msgstr "عِنوان غير صحيح"
+
+#: myopac.summary.username.error
+msgid "Please enter a username"
+msgstr "لطفاً ينبغي إدخال اسم المستخدم"
+
+#: myopac.summary.username.dup
+msgid ""
+"The requested username is not available.  Please choose a different username."
+msgstr "اسم المستخدم المطلوب غير متاح، لطفاً ينبغي اختيار اسم مستخدم مختلف."
+
+#: myopac.summary.username.success
+msgid "Username successfully updated"
+msgstr "تم تحديث اسم المستخدم بنجاح"
+
+#: myopac.summary.username.failure
+msgid "Username update failed"
+msgstr "لقد فشل تحديث اسم المستخدم"
+
+#: myopac.summary.username.invalid
+msgid ""
+"Username cannot contain spaces or have the same format as a barcode, and may "
+"be restricted by policy"
+msgstr ""
+"اسم المستخدم لا يمكن أن يتضمن فراغات أو أن يكون نفس تنسيق الباركود، كما "
+"ينبغي التقيُد بالسياسة العامة"
+
+#: myopac.summary.email.error
+msgid "Please enter a valid email address"
+msgstr "لطفاً ينبغي إدخال عنوان بريد إلكتروني صحيح"
+
+#: myopac.summary.email.success
+msgid "Email address successfully updated"
+msgstr "تمّ تحديث البريد الالكتروني بنجاح"
+
+#: myopac.summary.email.failed
+msgid "Email address update failed"
+msgstr "لقد فشل تحديث البريد الالكتروني"
+
+#: myopac.summary.password.error
+msgid "Passwords are empty or do not match"
+msgstr "كلمات المرور فارغة أو غير مُطابقة"
+
+#: myopac.summary.password.success
+msgctxt "myopac.summary.password.success"
+msgid "Password successfully updated"
+msgstr "تمّ تحديث كلمة المرور بنجاح"
+
+#: myopac.summary.password.failure
+msgid "Password update failed"
+msgstr "لقد فشل تحديث كلمة المرور"
+
+#. =================================================================
+#. Advanced Search Page
+#. =================================================================
+#: opac.advanced.wizard.contains
+msgid "Selected field contains the following words"
+msgstr "الحقل المحدد يتضمن الكلمات التالية"
+
+#: opac.advanced.wizard.nocontains
+msgid "Selected field does <u>not</u> contain the following words"
+msgstr "الحقل المحدد <u>لا</u> يتضمن الكلمات التالية"
+
+#: opac.advanced.wizard.exact
+msgid "Selected field contains the <u>exact</u> phrase"
+msgstr "الحقل المحدد يتضمن <u>بالضبط</u> العبارة"
+
+#: opac.advanced.refined.title
+msgid "Refined Advanced Search"
+msgstr "البحث المتقدم المكرر"
+
+#: opac.advanced.refined.title_contains
+msgid "Title contains the following words"
+msgstr "العنوان يتضمن الكلمات التالية"
+
+#: opac.advanced.refined.author_contains
+msgid "Author contains the following words"
+msgstr "المؤلف يتضمن الكلمات التالية"
+
+#: opac.advanced.refined.subject_contains
+msgid "Subject contains the following words"
+msgstr "الموضوع يتضمن الكلمات التالية"
+
+#: opac.advanced.refined.series_contains
+msgid "Series contains the following words"
+msgstr "السلسلة تتضمن الكلمات التالية"
+
+#: opac.advanced.refined.contains
+msgid "Contains"
+msgstr "تحتوي"
+
+#: opac.advanced.refined.nocontains
+msgid "Does not contain"
+msgstr "لا يحتوي"
+
+#: opac.advanced.refined.exact
+msgid "Matches Exactly"
+msgstr "تطابق بالضبط"
+
+#: opac.advanced.marc.warning
+msgid "For Librarians"
+msgstr "لـِ أمناء المكتبة"
+
+#: opac.advanced.marc.title
+msgctxt "opac.advanced.marc.title"
+msgid "MARC Expert Search"
+msgstr "بحث مارك الخبير"
+
+#: opac.advanced.marc.tag
+msgid "MARC Tag"
+msgstr "تاج مارك"
+
+#: opac.advanced.marc.ind1
+msgid "Indicator 1"
+msgstr "المؤشر 1"
+
+#: opac.advanced.marc.ind2
+msgid "Indicator 2"
+msgstr "المؤشر 2"
+
+#: opac.advanced.marc.subfield
+msgid "Subfield"
+msgstr "الحقل الفرعي"
+
+#: opac.advanced.marc.value
+msgid "Value"
+msgstr "القيمة"
+
+#: opac.advanced.marc.addrow
+msgid "Add a new row"
+msgstr "إضافة صف جديد"
+
+#: opac.advanced.quick.title
+msgctxt "opac.advanced.quick.title"
+msgid "Quick Search"
+msgstr "بحث سريع"
+
+#: opac.advanced.quick.isbn
+msgctxt "opac.advanced.quick.isbn"
+msgid "ISBN"
+msgstr "ردمك"
+
+#: opac.advanced.quick.issn
+msgid "ISSN"
+msgstr "ردمد"
+
+#: opac.advanced.quick.lccn
+msgid "LCCN"
+msgstr "رقم الضبط في مكتبة الكونغرس"
+
+#. title control number
+#: opac.advanced.quick.tcn
+msgid "TCN"
+msgstr "رقم التحكم في النقل"
+
+#: opac.advanced.quick.barcode
+msgid "Item Barcode"
+msgstr "باركود النُسخة"
+
+#: opac.advanced.quick.cn
+msgctxt "opac.advanced.quick.cn"
+msgid "Call Number"
+msgstr "رمز الاستدعاء"
+
+#: opac.advanced.copy_loc_filter
+msgid "Shelving Location"
+msgstr "موقع الرفوف"
+
+#. ==========================================================
+#. MARC expert search
+#. ==========================================================
+#: search.marc
+msgctxt "search.marc"
+msgid "MARC Expert Search"
+msgstr "بحث مارك الخبير"
+
+#: search.marc.tag
+msgid "Tag:"
+msgstr "التاج:"
+
+#: search.marc.subfield
+msgid "Subfield:"
+msgstr "الحقل الفرعي:"
+
+#: search.marc.value
+msgid "Value:"
+msgstr "القيمة:"
+
+#: search.marc.add.row
+msgid "Add Row"
+msgstr "إضافة صف"
+
+#. ==========================================================
+#. Status bar
+#. ==========================================================
+#: status.results
+msgid "Including results for"
+msgstr "تضمين النتائج لـِ"
+
+#. ==========================================================
+#. Tips
+#. ==========================================================
+#: tips.label
+msgctxt "tips.label"
+msgid "Tip:"
+msgstr "تلميح:"
+
+#. =================================================================
+#. More generic stuff
+#. =================================================================
+#: opac.session_expiring
+msgid "Your login session will timeout in 1 minute unless there is activity."
+msgstr ""
+"جلسة تسجيل الدخول الخاصة بك ستنتهي مهلتها في 1 دقيقة ما لم يكن هناك "
+"نشاط/تفعيل."
+
+#: opac.session_expired
+msgid "Your login session has expired"
+msgstr "لقد انتهت صلاحية جلسة تسجيل الدخول الخاصة بك"
+
+#: navigate.home
+msgid "Home"
+msgstr "الصفحة الرئيسية"
+
+#: navigate.home.title
+msgid "Go to the Home page"
+msgstr "الذهاب إلى الصفحة الرئيسية"
+
+#: opac.navigate.advanced
+msgctxt "opac.navigate.advanced"
+msgid "Advanced Search"
+msgstr "بحث متقدم"
+
+#: opac.navigate.advanced.title
+msgid "Go to the Advanced Search Page"
+msgstr "الذهاب إلى صفحة البحث المتقدم"
+
+#: navigate.myopac
+msgctxt "navigate.myopac"
+msgid "My Account"
+msgstr "حسابي"
+
+#: opac.navigate.myopac
+msgctxt "opac.navigate.myopac"
+msgid "My Account"
+msgstr "حسابي"
+
+#: navigate.myopac.title
+msgid "Go to My OPAC"
+msgstr "الذهاب إلى الأوباك الخاص بي"
+
+#: navigate.login
+msgid "Log in"
+msgstr "تسجيل الدخول"
+
+#: navigate.login.title
+msgid "Log in for personalized features"
+msgstr "تسجيل الدخول إلى السمات الشخصية"
+
+#: navigate.logout
+msgctxt "navigate.logout"
+msgid "Log out"
+msgstr "تَسجيل الخروج"
+
+#: navigate.logout.title
+msgctxt "navigate.logout.title"
+msgid "Log out"
+msgstr "تَسجيل الخروج"
+
+#: opac.navigate.selectNewOrg
+msgid "Choose a different library"
+msgstr "اختيار مكتبة مختلفة"
+
+#: opac.navigate.selectOrg
+msgctxt "opac.navigate.selectOrg"
+msgid "Choose a library to search"
+msgstr "اختيار المكتبة لـِ البحث"
+
+#: navigate.loggedinas
+msgid "You are logged in as "
+msgstr "لقد قمت بالدخول كـَ/بـِ اسم "
+
+#: navigate.loggedinas.title
+msgid "Logged in as..."
+msgstr "تمّ دخولك باسم..."
+
+#: navigate.titleGroupResults
+msgid "My Search Results"
+msgstr "نتائج البحث الخاص بي"
+
+#: navigate.titleResults
+msgid "My Title Results"
+msgstr "نتائج العنوان الخاص بي"
+
+#: navigate.facetRefine
+msgid "Refine your search"
+msgstr "كرر بحثك"
+
+#: navigate.title.details
+msgid "My Title Details"
+msgstr "تفاصيل العنوان الخاص بي"
+
+#: navigate.record.details
+msgid "Record Details"
+msgstr "تفاصيل التسجيلة"
+
+#. =================================================================
+#. Footer
+#. =================================================================
+#: footer.basic
+msgctxt "footer.basic"
+msgid "Basic Catalog (HTML only)"
+msgstr "الفهرس الأساسي ـ فقط HTML"
+
+#: footer.find.library
+msgid "Find a Library Near Me"
+msgstr "العثور/البحث على المكتبة القريبة مني"
+
+#: footer.find.url
+msgid "http://www.georgialibraries.org/lib/directories/pineslibdir.html"
+msgstr "http://www.georgialibraries.org/lib/directories/pineslibdir.html"
+
+#: footer.help.url
+msgid "http://open-ils.org/dokuwiki/doku.php?id=evergreen-user:opac_help"
+msgstr "http://open-ils.org/dokuwiki/doku.php?id=evergreen-user:opac_help"
+
+#: footer.help
+msgid "Help"
+msgstr "المساعدة"
+
+#: footer.library.url
+msgid "http://www.georgialibraries.org/public/pines.html"
+msgstr "http://www.georgialibraries.org/public/pines.html"
+
+#: footer.library.about
+msgid "About PINES"
+msgstr "حول الشجرة الصنوبرية"
+
+#: footer.union.url
+msgid "http://www.galileo.usg.edu/"
+msgstr "http://www.galileo.usg.edu/"
+
+#: footer.union
+msgid "GALILEO"
+msgstr "جاليليو"
+
+#: footer.copyright
+msgid "Copyright &#xA9; 2006-2012 Georgia Public Library Service, and others"
+msgstr "حقوق الملكية الفكرية &#xA9; 2006-2012 مكتبة جورجيا العامة، وآخرون"
+
+#. Introduces the logo for the project
+#: footer.logo
+msgid "Powered by"
+msgstr "مدعوم من قبل"
+
+#. =================================================================
+#. My OPAC
+#. =================================================================
+#: myopac.account
+msgid "Account Summary"
+msgstr "مُلخص الحساب"
+
+#: myopac.checkouts
+msgid "Items Checked Out"
+msgstr "النُسخ المُعارة"
+
+#: myopac.holds
+msgid "Items on Hold"
+msgstr "النُسخ التي في الحجز"
+
+#: myopac.fines
+msgid "Fines"
+msgstr "الغرامات"
+
+#: myopac.preferences
+msgid "Account Preferences"
+msgstr "تفضيلات الحساب"
+
+#: myopac.bookbags
+msgctxt "myopac.bookbags"
+msgid "My Bookbags"
+msgstr "حقائب الكتاب الخاصة بي"
+
+#. =================================================================
+#. Sidebar
+#. =================================================================
+#: sidebar.relevantSubjects.headerLabel
+msgid "Relevant Subjects"
+msgstr "الموضوعات ذات الصلة"
+
+#: sidebar.relevantAuthors.headerLabel
+msgid "Relevant Authors"
+msgstr "المؤلفون ذوي العلاقة"
+
+#: sidebar.relevantSeries.headerLabel
+msgid "Relevant Series"
+msgstr "السلاسل ذات الصلة"
+
+#: sidebar.relevantReviews.headerLabel
+msgctxt "sidebar.relevantReviews.headerLabel"
+msgid "Reviews"
+msgstr "مراجعات"
+
+#: sidebar.quick.search
+msgctxt "sidebar.quick.search"
+msgid "Quick Search"
+msgstr "بحث سريع"
+
+#: sidebar.authority.browse
+msgid "Authority Browse"
+msgstr "استعراض الاسناد"
+
+#: sidebar.copy.not.found
+msgid "No copy with the requested barcode was found"
+msgstr "لم يتم العثور على نسخة مع الباركود المطلوب."
+
+#: sidebar.copy.not.cataloged
+msgid "The copy with the requested barcode is not cataloged"
+msgstr "النُسخة مع الباركود المطلوب غير مُفهرسة."
+
+#. =================================================================
+#. Search formats
+#. =================================================================
+#: opac.search.books
+msgid "Books"
+msgstr "الكُتب"
+
+#: opac.search.allFormats
+msgid "All Formats"
+msgstr "كافة الصيغ"
+
+#: opac.search.largePrint
+msgid "Large Print Books"
+msgstr "كتب بحروف طباعة كبيرة"
+
+#: opac.search.ebook
+msgid "E-Books"
+msgstr "الكتب الإلكترونية"
+
+#: opac.search.audioBooks
+msgid "Audiobooks"
+msgstr "الكتب الصوتية"
+
+#: opac.search.videoRecordings
+msgid "Video Recordings"
+msgstr "تسجيلات فيديو"
+
+#: opac.search.music
+msgid "Music"
+msgstr "موسيقى"
+
+#: opac.search.electronic
+msgid "Electronic Resources"
+msgstr "المصادر الإلكترونية"
+
+#: opac.search.nowSearching
+msgid "Now Searching"
+msgstr "يتم البحث الآن"
+
+#. =================================================================
+#. Page Titles
+#. =================================================================
+#: opac.title.home
+msgid "Evergreen Home"
+msgstr "صفحة إيفر غرين الرئيسية"
+
+#: opac.title.mresult
+msgid "Evergreen Title Groups"
+msgstr "مجموعات عناوين إيفرغرين"
+
+#: opac.title.rresult
+msgid "Evergreen Titles"
+msgstr "عناوين إيفر غرين"
+
+#: opac.title.myopac
+msgid "Evergreen My Account"
+msgstr "حسابي في إيفر غرين"
+
+#: opac.title.rdetail
+msgid "Evergreen Title Details"
+msgstr "تفاصيل العنوان في إيفر غرين"
+
+#: opac.title.advanced
+msgid "Evergreen Advanced Search"
+msgstr "البحث المُتقدم في إيفر غرين"
+
+#: opac.title.reqitems
+msgid "Evergreen Request Items"
+msgstr "النسخ المطلوبة في إيفر غرين"
+
+#: opac.title.cnbrowse
+msgid "Evergreen Call Number Browse"
+msgstr "استعراض رموز الاستدعاء في إيفر غرين"
+
+#: opac.title.authbrowse
+msgid "Evergreen Authority Record Browse"
+msgstr "استعراض تسجيلات الإسناد في إيفر غرين"
+
+#: opac.holds.forMe
+msgid "Place this hold for myself"
+msgstr "وضع هذا الحجز مِن أجلي"
+
+#: opac.holds.xulRecipient
+msgid "Enter recipient barcode"
+msgstr "إدخال باركود المُستلم"
+
+#: opac.holds.recipient
+msgid "Recipient"
+msgstr "المُستلم"
+
+#: opac.holds.placeHold
+msgctxt "opac.holds.placeHold"
+msgid "Place Hold"
+msgstr "حجز"
+
+#: opac.holds.exportRefWorks
+msgctxt "opac.holds.exportRefWorks"
+msgid "Export to RefWorks"
+msgstr "تصدير إلى RefWorks"
+
+#: opac.holds.contactPhone
+msgid "Contact telephone number"
+msgstr "رقم هاتف الاتصال"
+
+#: opac.holds.contactEmail
+msgid "Contact email address"
+msgstr "عنوان الاتصال بالبريد الالكتروني"
+
+#: opac.holds.pickupLocation
+msgid "Pickup location"
+msgstr "موقع الاستقبال"
+
+#: opac.holds.success
+msgid "Hold was successfully placed"
+msgstr "تم وضع الحجز بنجاح"
+
+#: opac.holds.failure
+msgid "Hold was not successfully placed"
+msgstr "الحجز لم يتم وضعه بنجاح"
+
+#: opac.hold.has_parts
+msgid ""
+"The system was not able to place the requested hold.  The item requested has "
+"multiple parts to choose from.  Try selecting a specific part for the hold."
+msgstr ""
+"النظام لم يتمكن من وضع الحجز المطلوب. النُسخة المطلوبة لديها أجزاء متعددة "
+"للاختيار من بينها. حاول اختيار جزء محدد مِن أجل الحجز."
+
+#. =================================================================
+#. Advanced
+#. =================================================================
+#: advanced.search.title
+msgid "Search Input"
+msgstr "مُدخلات البحث"
+
+#: advanced.add.row
+msgid "Add Search Row"
+msgstr "إضافة صف بحث"
+
+#: advanced.search.submit
+msgid "Submit Search"
+msgstr "تأكيد البحث"
+
+#: advanced.search.reset
+msgid "Reset Form"
+msgstr "إعادة ضبط النموذج"
+
+#: advanced.search.filters
+msgid "Search Filters"
+msgstr "تصفيات البحث"
+
+#: advanced.item.form
+msgid "Item Form"
+msgstr "شكل مصدر المعلومات"
+
+#: advanced.item.type
+msgid "Item Type"
+msgstr "نوع مصدر المعلومات"
+
+#: advanced.link
+msgid "Advanced"
+msgstr "متقدم"
+
+#: advanced.basic.link
+msgid "Basic"
+msgstr "أساسي"
+
+#: advanced.literary.form
+msgid "Literary Form"
+msgstr "الشكل الأدبي"
+
+#: advanced.non.fiction
+msgid "Non Fiction"
+msgstr "غير خيالية/غير روائية"
+
+#: advanced.fiction
+msgid "Fiction"
+msgstr "خيالية/روائية"
+
+#: advanced.language
+msgid "Language"
+msgstr "اللغات"
+
+#: advanced.audience
+msgid "Audience"
+msgstr "الجمهور المُستهدف"
+
+#: advanced.adult
+msgid "Adult"
+msgstr "البالغين"
+
+#: advanced.juvenile
+msgid "Juvenile"
+msgstr "القاصرين"
+
+#: advanced.general
+msgid "General"
+msgstr "الجمهور العام"
+
+#: advanced.sort.criteria
+msgid "Sort Criteria"
+msgstr "معايير الفرز"
+
+#: advanced.search.library
+msgid "Search Library"
+msgstr "المكتبة المُراد البحث فيها"
+
+#: advanced.relevance
+msgid "Relevance"
+msgstr "العلاقة/الصلة"
+
+#: advanced.pubdate
+msgid "Publication date"
+msgstr "تاريخ النشر"
+
+#: advanced.sort.asc
+msgid "Ascending / A to Z"
+msgstr "تصاعدي / A to Z"
+
+#: advanced.sort.desc
+msgid "Descending / Z to A"
+msgstr "تنازلي / Z to A"
+
+#: advanced.frbrize
+msgid "Group Formats and Editions"
+msgstr "تنسيقات المجموعة والطبعات"
+
+#: advanced.go
+msgid "Go"
+msgstr "الذهاب"
+
+#: advanced.biblevel
+msgid "Bib Level"
+msgstr "المستوى الببليوغرافي"
+
+#: advanced.filter.pubyear
+msgid "Publication Year"
+msgstr "تاريخ النشر"
+
+#: advanced.filter.pubyear.equals
+msgid "Is"
+msgstr "هــو"
+
+#: advanced.filter.pubyear.before
+msgid "Before"
+msgstr "قبل"
+
+#: advanced.filter.pubyear.after
+msgid "After"
+msgstr "بعد"
+
+#: advanced.filter.pubyear.between
+msgid "Between"
+msgstr "ما بين"
+
+#. =================================================================
+#. Rdetail
+#. =================================================================
+#: rdetail.print
+msgid "print these details"
+msgstr "طباعة هذه التفاصيل"
+
+#: rdetail.cn.part
+msgid "Part"
+msgstr "الجزء"
+
+#: rdetail.cn.barcode
+msgctxt "rdetail.cn.barcode"
+msgid "Barcode"
+msgstr "الباركود"
+
+#: rdetail.cn.location
+msgid "Location"
+msgstr "الموقع"
+
+#: rdetail.cn.hold.age
+msgid "Age Hold Protection"
+msgstr "حماية مدة الحجز"
+
+#: rdetail.cn.genesis
+msgid "Create Date"
+msgstr "تاريخ الإنشاء"
+
+#: rdetail.cn.active
+msgid "Active Date"
+msgstr "تاريخ التفعيل"
+
+#: rdetail.cn.holdable
+msgid "Holdable"
+msgstr "قابل للحجز"
+
+#: rdetail.cn.due
+msgctxt "rdetail.cn.due"
+msgid "Due Date"
+msgstr "تاريخ استحقاق الرد"
+
+#: rdetail.cn.more
+msgid "more info..."
+msgstr "لمزيد مِن المعلومات..."
+
+#: rdetail.cn.less
+msgid "less info"
+msgstr "معلومات أقل"
+
+#: rdetail.cn.hold
+msgid "place hold"
+msgstr "حجز"
+
+#: rdetail.cn.reserve
+msgid "book now"
+msgstr "حجز/سَجل الآن"
+
+#: rdetail.cn.multi_home
+msgid "linked titles"
+msgstr "العناوين المُرتبطة"
+
+#: rdetail.cn.disabled
+msgid "- Disabled -"
+msgstr "- غير قادر -"
+
+#: rdetail.cn.note
+msgid "Copy Note"
+msgstr "ملاحظة النُسخة"
+
+#: rdetail.cn.category
+msgid "Copy Category"
+msgstr "فئة النُسخة"
+
+#: rdetail.cn.print
+msgid "Print Page"
+msgstr "طباعة الصفحة"
+
+#: rdetail.page.results
+msgid "First results page"
+msgstr "صفحة النتائج الأولى"
+
+#. Result # &common.of; #
+#: rdetail.result
+msgid "Result"
+msgstr "النَتيجة"
+
+#: rdetail.start
+msgid "Start"
+msgstr "البداية"
+
+#: rdetail.page.previous
+msgid "Previous page"
+msgstr "الصفحة السابقة"
+
+#: rdetail.page.previous.short
+msgid "&#171;"
+msgstr "&#171;"
+
+#: rdetail.page.next
+msgid "Next page"
+msgstr "الصفحة التالية"
+
+#: rdetail.page.next.short
+msgid "&#187;"
+msgstr "&#187;"
+
+#: rdetail.page.last
+msgid "Last results page"
+msgstr "صفحة النتائج الأخيرة"
+
+#: rdetail.end
+msgid "End"
+msgstr "النِهاية"
+
+#: rdetail.more
+msgid "More Actions..."
+msgstr "مزيد مِن الإجراءات"
+
+#: rdetail.bookbag.add
+msgid "Add to bookbag"
+msgstr "إضافة إلى حقيبة الكتاب"
+
+#: rdetail.bookbag.create
+msgid "Create a new bookbag"
+msgstr "إنشاء حقيبة كتاب جديدة"
+
+#: rdetail.record.deleted
+msgid ""
+"This record has been deleted from the database. \n"
+"We recommend that you remove this title from any bookbags it may have been "
+"added to."
+msgstr ""
+"هذه التسجيلة تمّ حذفها مِن قاعدة البيانات \n"
+"نحن ننصح بإزالة هذا العنوان مِن أية حقائب كتب قد يكون مُضاف إليها"
+
+#: rdetail.none
+msgid "(none)"
+msgstr "(لا يوجد)"
+
+#: rdetail.bookbag.add.success
+msgid "Item successfully added to bookbag"
+msgstr "تمّ إضافة النُسخة بنجاح إلى حقيبة الكتاب"
+
+#: rdetail.bookbag.name
+msgid "Enter the name of the new bookbag"
+msgstr "إدخال اسم حقيبة الكتاب الجديدة."
+
+#: rdetail.bookbag.create.success
+msgid "Bookbag successfully created"
+msgstr "تمّ إنشاء حقيبة الكتاب بنجاح"
+
+#: rdetail.detailMain.headerLabel
+msgid "Record Summary"
+msgstr "مُلخص التسجيلة"
+
+#: rdetail.detailMain.subjects
+msgctxt "rdetail.detailMain.subjects"
+msgid "Subjects"
+msgstr "الموضوعات"
+
+#: rdetail.detailMain.abstract
+msgid "Abstract"
+msgstr "المُلخص"
+
+#: rdetail.detailMain.viewMarc
+msgid "View MARC"
+msgstr "إظهار مارك"
+
+#: rdetail.detailMain.hideMarc
+msgid "Return to title details"
+msgstr "الرجوع إلى تفاصيل العنوان"
+
+#: rdetail.author.search
+msgid "Perform an author search"
+msgstr "إجراء البحث عن المؤلف"
+
+#: rdetail.copyInfo.headerLabel
+msgid "Copy Information"
+msgstr "معلومات النُسخة"
+
+#: rdetail.copyInfo.library
+msgctxt "rdetail.copyInfo.library"
+msgid "Library"
+msgstr "المكتبة"
+
+#: rdetail.copyInfo.callnumber
+msgid "Callnumber"
+msgstr "رمز الاستدعاء"
+
+#: rdetail.copyInfo.copylocation
+msgid "Copy Location"
+msgstr "موقع النسخة"
+
+#: rdetail.copyInfo.local
+msgid "View Copy Information for this location only"
+msgstr "إظهار معلومات النُسخة لهذا الموقع فقط"
+
+#: rdetail.copyInfo.all
+msgid "View copy information for all libraries"
+msgstr "إظهار معلومات النُسخة لكافة المكتبات"
+
+#: rdetail.copyInfo.actions
+msgid "Actions"
+msgstr "الإجراءات"
+
+#: rdetail.copyInfo.print
+msgid "Print Call Numbers for this library"
+msgstr "طباعة رموز الاستدعاء لهذه المكتبة"
+
+#: rdetail.copyInfo.details
+msgid "Copy Details"
+msgstr "تفاصيل النُسخة"
+
+#: rdetail.copyInfo.browse
+msgid "Browse Call Numbers"
+msgstr "استعراض رموز الاستدعاء"
+
+#: rdetail.copyInfo.hold
+msgctxt "rdetail.copyInfo.hold"
+msgid "Place Hold"
+msgstr "حجز"
+
+#: rdetail.extras.summary
+msgid "Copy Summary"
+msgstr "ملخص النُسخة"
+
+#: rdetail.extras.browser
+msgctxt "rdetail.extras.browser"
+msgid "Shelf Browser"
+msgstr "متصفح الـــرّف"
+
+#: rdetail.extras.bib_summary
+msgctxt "rdetail.extras.bib_summary"
+msgid "Summary"
+msgstr "المُلخص"
+
+#: rdetail.extras.reviews
+msgctxt "rdetail.extras.reviews"
+msgid "Reviews"
+msgstr "مراجعات"
+
+#: rdetail.extras.toc
+msgid "Table of Contents"
+msgstr "جدول المحتويات"
+
+#: rdetail.extras.excerpt
+msgid "Excerpt"
+msgstr "المقتطف"
+
+#: rdetail.extras.preview
+msgid "Preview"
+msgstr "معاينة"
+
+#: rdetail.extras.author.notes
+msgid "Author Notes"
+msgstr "ملاحظات المؤلف"
+
+#: rdetail.extras.annotation
+msgid "Annotation"
+msgstr "الحاشية"
+
+#: rdetail.extras.marc
+msgid "MARC Record"
+msgstr "تسجيلة مارك"
+
+#: rdetail.extras.foreign_items
+msgid "Linked Titles"
+msgstr "العناوين المُرتبطة"
+
+#: rdetail.extras.call.null
+msgid "There are no call numbers for this item at this location."
+msgstr "لا يوجد رموز استدعاء لهذه النسخة في هذا الموقع."
+
+#: rdetail.extras.call.local
+msgctxt "rdetail.extras.call.local"
+msgid "Local Call Numbers:"
+msgstr "رموز الاستدعاء المحلية:"
+
+#: rdetail.extras.preview.fulltext
+msgid "Full text"
+msgstr "النَص الكامل"
+
+#: rdetail.extras.preview.title
+msgid "See the full text of this book."
+msgstr "عرض النص الكامل لهذا الكتاب."
+
+#: rdetail.extras.preview.badge
+msgid "Show a preview of this book from Google Book Search"
+msgstr "عرض مُعاينة هذا الكتاب مِن بحث غوغول بوك"
+
+#: rdetail.extras.novelist
+msgid "Suggestions by NoveList"
+msgstr "الاقتراحات مِن قبل الروائي/القصاص"
+
+#: rdetail.loading
+msgid "Loading copy information..."
+msgstr "تحميل معلومات النُسخة..."
+
+#: rdetail.noneAvailable
+msgid " * There are no copies in this location"
+msgstr " * لا يوجد أي نُسخ في هذا الموقع"
+
+#: rdetail.summary.online
+msgid "Online Resources"
+msgstr "مصادر على الخط المباشر"
+
+#: rdetail.summary.subjects
+msgctxt "rdetail.summary.subjects"
+msgid "Subjects"
+msgstr "الموضوعات"
+
+#: rdetail.summary.issues_held
+msgid "Issues Held"
+msgstr "أعداد الدورية ـ المقبوضة"
+
+#: result.sort_by
+msgid "Sort Results by Relevance"
+msgstr "فرز النتائج حسب الصلة"
+
+#: result.sort_by.title
+msgid "Sort Results by Title"
+msgstr "فرز النتائج حسب العنوان"
+
+#: result.sort_by.author
+msgid "Sort Results by Author"
+msgstr "فرز النتائج حسب المؤلف"
+
+#: result.sort_by.pubdate
+msgid "Sort Results by Publication Date"
+msgstr "فرز النتائج حسب تاريخ النشر"
+
+#: result.limit2avail
+msgid "Limit to Available"
+msgstr "الحدود المتاحة"
+
+#: result.info.copies
+msgid "Available copies / Total copies"
+msgstr "النسخ المتاحة"
+
+#: result.info.no.items
+msgid "No items with the selected format were found in this location."
+msgstr "لم يتم العثور على نُسخ بالتنسيق/الشكل المحدد في هذا الموقع."
+
+#: result.info.format.items
+msgid "Listed below are all items in the catalog with the chosen format."
+msgstr ""
+"القائمة المُدرجة أدناه هي كافة النُسخ في الكتالوج/الفهرس بالتنسيق/الشكل "
+"المحدد."
+
+#: result.info.show
+msgid "Show records for"
+msgstr "إظهار التسجيلات لـِ"
+
+#: result.lowhits.few
+msgid "Few hits were returned for your search."
+msgstr "إصابات قليلة تمّ إرجاعها بواسطة بحثك."
+
+#: result.lowhits.zero
+msgid "Zero hits were returned for your search."
+msgstr "لا إصابات تمّ إرجاعها بواسطة بحثك."
+
+#: result.lowhits.did.you.mean
+msgid "Maybe you meant:"
+msgstr "ربما كنت تقصد:"
+
+#: result.lowhits.formats
+msgid "You will find more hits when searching all item formats:"
+msgstr ""
+"سوف تجد المزيد من الإصابات في حالةالبحث عن كافة تنسيقات/أشكال النُسخة:"
+
+#: result.lowhits.formats.search
+msgid "Search again with all formats?"
+msgstr "هل تريد البحث مرة أخرى مع كافة التنسيقات/الأشكال؟"
+
+#: result.lowhits.related
+msgid "You may also like to try these related searches:"
+msgstr "قد ترغب أيضاً في المحاولة اعتماداً على البحث ذو الصلة:"
+
+#: result.lowhits.expand
+msgid "You may also wish to expand your search range to:"
+msgstr "قد ترغب أيضاً بتوسيع مجال بحثك إلى:"
+
+#: result.lowhits.class
+msgid "You can try searching the same terms by:"
+msgstr "يمكنك محاولة البحث بنفس المصطلحات حسب:"
+
+#: result.lowhits.title
+msgid "title"
+msgstr "العنوان"
+
+#: result.lowhits.author
+msgid "author"
+msgstr "المؤلف"
+
+#: result.lowhits.subject
+msgid "subject"
+msgstr "المَوضوع"
+
+#: result.lowhits.series
+msgid "series"
+msgstr "السلسلة"
+
+#: result.lowhits.keyword
+msgid "keyword"
+msgstr "كلمة مفتاحية"
+
+#: result.table.keyword
+msgid "View titles for this record"
+msgstr "عرض العناوين لهذه التسجيلة"
+
+#: result.table.author
+msgid "Perform an Author Search"
+msgstr "بحث عن مؤلف"
+
+#: result.googleBooks.browse
+msgid "Browse in Google Books Search"
+msgstr "استعراض في بحث غوغول بوك"
+
+#: result.localCallNumbers
+msgctxt "result.localCallNumbers"
+msgid "Local Call Numbers:"
+msgstr "رموز الاستدعاء المحلية:"
+
+#: common.call.number.label
+msgid "Call Number:"
+msgstr "رمز الاستدعاء:"
+
+#: common.isbn.label
+msgid "ISBN:"
+msgstr "ردمك:"
+
+#: common.issn.label
+msgid "ISSN:"
+msgstr "ردمد:"
+
+#: common.mono_parts.label
+msgid "Monograph Parts:"
+msgstr "أجزاء الكتاب/المونوغراف"
+
+#: common.copy.barcode.label
+msgid "Copy Barcode:"
+msgstr "باركود النُسخة:"
+
+#: common.issuance_label.label
+msgid "Issuance Label:"
+msgstr "تسمية العدد"
+
+#: common.hold.place
+msgid "Place hold for my account"
+msgstr "وضع الحجز مِن أجل حسابي"
+
+#: common.hold.check
+msgid "Checking for possibility of hold fulfillment..."
+msgstr "التحقق من إمكانية تنفيذ الحجز..."
+
+#: common.hold.create
+msgid "Create / Edit a Hold"
+msgstr "إنشاء / تعديل حجز"
+
+#: common.hold.update
+msgid "Update Hold"
+msgstr "تحديث الحجز"
+
+#: common.hold.type.label
+msgid "Hold Type:"
+msgstr "نوع الحجز:"
+
+#: common.hold.volume
+msgid "Volume Hold"
+msgstr "مجلد الحجز"
+
+#: common.hold.copy
+msgid "Copy Hold"
+msgstr "حجز النُسخة"
+
+#: common.hold.issuance
+msgid "Issuance Hold"
+msgstr "حجز الاصدار"
+
+#: common.hold.advanced
+msgid "Advanced Hold Options"
+msgstr "خيارات متقدمة للحجز"
+
+#: common.hold.delivery
+msgid "Please select a physical location where your hold can be delivered."
+msgstr "لطفاً ينبغي تحديد الموقع المادي حيث يمكن أن يتم تسليمك حجزك."
+
+#: common.hold.checked_out
+msgid "This item is already checked out."
+msgstr "تمّ إعارة هذه النُسخة مُسبقاً."
+
+#: common.hold.checked_out.override
+msgid ""
+"This item is already checked out.  Would you like to place the hold anyway?"
+msgstr "تمّ إعارة هذه النُسخة مُسبقاً. هل ترغب بوضع الحجز على أية حال؟"
+
+#: common.hold.exists
+msgid "A hold already exists on the requested item."
+msgstr "الحجز موجود مُسبقاً في النُسخة المطلوبة."
+
+#: common.hold.exists.override
+msgid ""
+"A hold already exists on the requested item. Would you like to create the "
+"hold anyway?"
+msgstr ""
+"الحجز موجود مُسبقاً في النُسخة المطلوبة. هل ترغب في إنشاء الحجز على أية حال؟"
+
+#: common.hold.age_protect.override
+msgid ""
+"This hold may take extra time to fill due to library policies. Would you "
+"like to create the hold anyway?"
+msgstr ""
+"يستغرق هذا الحجز وقتاً إضافياً بسبب سياسات المكتبة. هل ترغب في إنشاء الحجز "
+"على أية حال؟"
+
+#: common.hold.place_unfillable.override
+msgid ""
+"The requested hold cannot currently be filled. You have permission to place "
+"the hold regardless, but should only do so if you believe the hold will "
+"eventually be filled. Would you like to create the hold anyway?"
+msgstr ""
+"الحجز المطلوب لا يمكن شغله حالياً . عل الرغم مِن أن لديك صلاحية/إذن لوضع حجز "
+"بدون أية عوائق، ولكن يجب أن تفعل ذلك إلا إذا كنت تعتقد في نهاية المطاف سيتم "
+"إشغاله. هل ترغب في إنشاء الحجز على أية حال؟"
+
+#: common.hold.barred
+msgid ""
+"PATRON BARRED. Please see any notes in the \n"
+"\"Staff Notes\" section of your \"My Account\" page or contact your local "
+"library."
+msgstr ""
+"حظر ومنع المستفيد. لطفاً ينبغي مشاهدة أية ملاحظات في \n"
+" قسم \"ملاحظات طاقم المكتبة\" في صفحة \"حسابي\" الخاص بك أو اتصل بمكتبتك "
+"المحلية"
+
+#: common.hold.item.invalid
+msgid ""
+"This hold is no longer valid. It's likely that the \n"
+"target for the hold was deleted from the system.  Please cancel this hold "
+"and \n"
+"place a new one."
+msgstr ""
+"هذا الحجز لم يعد صالحاً. فمن المحتمل أن \n"
+"الحجز المستهدف تمّ حذفه من النظام. لطفاً ينبغي إلغاء هذا الحجز و \n"
+"وضع آخر جديد"
+
+#: common.hold.patron.invalid
+msgid "The patron barcode entered as the hold recipient is invalid."
+msgstr "باركود المُستفيد المُدخل للحجز غير صالح."
+
+#. Was (??), perhaps change to a button or icon?
+#: common.help
+msgid "(Help)"
+msgstr "(مُساعدة)"
+
+#: common.phone.format.help
+msgid ""
+"The phone number does not have the correct format. The expected format is "
+"XXX-YYY-ZZZZ"
+msgstr ""
+"تنسيق رقم الهاتف لديك غير صحيح. التنسيق الصحيح المُتوقع هو  XXX-YYY-ZZZZ"
+
+#: common.hold.failed
+msgid ""
+"No items were found that could fulfill the requested holds. \n"
+"It's possible that choosing a different format will result in a successful "
+"hold. \n"
+"It is also possible that you have exceeded the number of allowable holds. \n"
+"For further information, please consult your local librarian."
+msgstr ""
+"لم يتم العثور على النُسخ التي تلبي طلب الحجوزات \n"
+"من الممكن أن اختيار تنسيق مُختلف سوف يؤدي إلى حجز ناجح \n"
+"ومن الممكن أيضاً أنك قد تجاوزت العدد المسموح للحجز \n"
+"لمزيد من المعلومات، لطفاً ينبغي الرجوع إلى المكتبة المحلية."
+
+#: common.control.click
+msgid "(control-click to select multiple formats)"
+msgstr "(أنقر الضبط لتحديد واختيار صيغ/تنسيقات متعددة)"
+
+#: common.format.alternatives
+msgid "Acceptable Alternative Formats:"
+msgstr "التنسيقات البديلة المقبولة:"
+
+#: common.phone.format
+msgid "(XXX-YYY-ZZZZ)"
+msgstr "(XXX-YYY-ZZZZ)"
+
+#: common.phone.enable
+msgid "Enable phone notifications for this hold?"
+msgstr "هل ترغب في تمكين إخطارات الهاتف لهذا الحجز؟"
+
+#: common.email.enable
+msgid "Enable email notifications for this hold?"
+msgstr "هل ترغب في تمكين إخطارات البريد الإلكتروني لهذا الحجز؟"
+
+#: common.email.none
+msgid "(Patron has no configured email address)"
+msgstr "(لم يتم تكوين/تهيئة بريد إلكتروني لهذا المستفيد)"
+
+#: common.email.set
+msgid ""
+"(See <a class='classic_link' id='holds.no_email.my_account'>My Account</a> "
+"for setting your email address)"
+msgstr ""
+"(أنظر <a class='classic_link' id='holds.no_email.my_account'>حسابي</a> مِن "
+"أجل إعدادات بريدك الإلكتروني)"
+
+#: common.keywords.label
+msgid "Keywords:"
+msgstr "الكلمات المفتاحية:"
+
+#: common.physical.label
+msgid "Physical Description:"
+msgstr "الوصف المادي:"
+
+#: common.series.label
+msgid "Series:"
+msgstr "السلسلة:"
+
+#: common.subject.label
+msgid "Subject:"
+msgstr "المَوضوع:"
+
+#: common.title.label
+msgid "Title:"
+msgstr "العنوان:"
+
+#: common.author.label
+msgid "Author:"
+msgstr "المؤلف:"
+
+#: common.format.label
+msgid "Format:"
+msgstr "التَنسيق:"
+
+#: library.select
+msgid "Find results in"
+msgstr "العثور على النتائج في"
+
+#: library.select.label
+msgid "Choose a different library..."
+msgstr "اختيار مكتبة أخرى..."
+
+#: library.select.help
+msgctxt "library.select.help"
+msgid "Choose a library to search"
+msgstr "اختيار المكتبة لـِ البحث"
+
+#: login.username
+msgid "Enter your username or library barcode"
+msgstr "إدخال اسم المستخدم الخاص بك أو باركود المكتبة."
+
+#: login.password.change
+msgid "Change Password"
+msgstr "تغيير كلمة المرور"
+
+#: login.first.time
+msgid ""
+"This appears to be the first time you have logged in. \n"
+"You will need to change your password."
+msgstr ""
+"يبدو أن هذه هي المرة الأولى التي قمت بتسجيل الدخول \n"
+"سوف تحتاج إلى تغيير كلمة المرور الخاصة بك"
+
+#: login.password.current.enter
+msgid "Enter your current password"
+msgstr "إدخال كلمة المرور الحالية الخاصة بك"
+
+#: login.password.new.enter
+msgid "Enter the new password"
+msgstr "إدخال كلمة المرور الجديدة"
+
+#: login.password.new.reenter
+msgid "Re-type the new password for verification"
+msgstr "إعادة كتابة كلمة المرور الجديدة مِن أجل التأكيد"
+
+#: login.password.update
+msgid "Update Password"
+msgstr "تحديث كلمة المرور"
+
+#: login.password.nomatch
+msgid "Passwords do not match"
+msgstr "كلمات المرور غير مطابقة"
+
+#: login.password.success
+msgctxt "login.password.success"
+msgid "Password successfully updated"
+msgstr "تمّ تحديث كلمة المرور بنجاح"
+
+#: login.password.strength
+msgid "The password provided is not strong enough."
+msgstr "كلمة المرور المُقدَمَة ليست قوية كفاية."
+
+#: login.barcode.inactive
+msgid ""
+"The barcode used to login is marked as inactive.  Please contact your local "
+"library."
+msgstr ""
+"الباركود المُدخل غير مُفعل. لطفاً ينبغي التواصل مع طاقم مكتبتك المحلية."
+
+#: login.account.inactive
+msgid ""
+"This account has been deactivated.  Please contact your local library."
+msgstr ""
+"لقد تمّ إلغاء تفعيل هذا الحساب. لطفاً ينبغي التواصل مع مكتبتك المحلية."
+
+#: login.failed
+msgid ""
+"Login failed. The username or password provided was not valid. \n"
+"Passwords are case-sensitive.  Check your Caps-Lock key and try again or "
+"contact your local library."
+msgstr ""
+"فشل تسجيل الدخول. اسم المستخدم أو كلمة المرور المقدمة غير صحيحة \n"
+"كلمات المرور حساسة لحالة الأحرف. ينبغي التحقق من مفتاح كابس لوك، والمحاولة "
+"مرة أخرى أو اتصل مكتبتك المحلية"
+
+#: button.go
+msgid "Go!"
+msgstr "الذهاب!"
+
+#. =================================================================
+#. Slimpac Simple Search
+#. =================================================================
+#: slimpac.language.select
+msgid "Select language"
+msgstr "اختيار اللغة"
+
+#: slimpac.start.title
+msgid "Simple Search"
+msgstr "البحث البسيط"
+
+#: slimpac.start.nowSearching
+msgid "Now searching: "
+msgstr "الآن يتم البحث: "
+
+#: slimpac.start.dynamic
+msgid "Dynamic Catalog"
+msgstr "الكتالوج/الفهرس الديناميكي"
+
+#. =================================================================
+#. Slimpac Advanced Search
+#. =================================================================
+#: slimpac.advanced.language
+msgid "Item Language"
+msgstr "لغة النُسخة"
+
+#: slimpac.advanced.create_date
+msgid "Record Creation Date"
+msgstr "تاريخ إنشاء التسجيلة"
+
+#: slimpac.advanced.edit_date
+msgid "Record Edit Date"
+msgstr "تاريخ تعديل التسجيلة"
+
+#: opac.image_provided
+msgid "Image provided by"
+msgstr "الصورة المُقدَمَة مِن قبل"
+
+#: vendor.name
+msgid "Amazon"
+msgstr "أَمازون"
+
+#: vendor.base_link
+msgid "http://amazon.com/dp/"
+msgstr "http://amazon.com/dp/"
+
+#. =================================================================
+#. Selfcheck
+#. =================================================================
+#: selfck.staff_login_label
+msgid "Staff login"
+msgstr "تسجيل الدخول طاقم المكتبة"
+
+#: selfck.staff_login
+msgid "Library barcode or username"
+msgstr "باركود المكتبة أو اسم المستخدم"
+
+#: selfck.staff_pw
+msgctxt "selfck.staff_pw"
+msgid "Password"
+msgstr "كلمة المرور"
+
+#: selfck.submit
+msgctxt "selfck.submit"
+msgid "Submit"
+msgstr "تأكيد"
+
+#: selfck.clear
+msgid "Clear"
+msgstr "مَسح"
+
+#: selfck.patron_barcode_label
+msgid "Please scan your library barcode"
+msgstr "لطفاً ينبغي المسح ضوئياً لباركود المكتبة الخاص بك"
+
+#: selfck.item_barcode_label
+msgid "Please scan an item to checkout or renew:"
+msgstr "لطفاً ينبغي المسح الضوئي للنُسخة لإعارتها أو تمديدها:"
+
+#: selfck.barcode
+msgctxt "selfck.barcode"
+msgid "Barcode"
+msgstr "الباركود"
+
+#: selfck.title
+msgctxt "selfck.title"
+msgid "Title"
+msgstr "العنوان"
+
+#: selfck.author
+msgctxt "selfck.author"
+msgid "Author"
+msgstr "المؤلف"
+
+#: selfck.due_date
+msgctxt "selfck.due_date"
+msgid "Due Date"
+msgstr "تاريخ استحقاق الرد"
+
+#: selfck.remaining
+msgctxt "selfck.remaining"
+msgid "Renewals Remaining"
+msgstr "التجديدات المُتبقية"
+
+#: selfck.cotype
+msgid "Type"
+msgstr "النوع"
+
+#: selfck.cotype_co
+msgid "Checkout"
+msgstr "إعارة"
+
+#: selfck.cotype_rn
+msgid "Renewal"
+msgstr "تمديد"
+
+#: selfck.done
+msgid "Done"
+msgstr "تم"
+
+#: selfck.welcome
+msgid "Welcome"
+msgstr "أهلاً وسهلاً"
+
+#: selfck.printing
+msgid "Printing Receipt..."
+msgstr "طباعة الإيصال ..."
+
+#. event messages
+#: selfck.event.co_success
+msgid "Check out succeeded"
+msgstr "تمّت الإعارة بنجاح"
+
+#: selfck.event.co_unknown
+msgid "An unknown event has occurred"
+msgstr "حادثة غير معروفة قد حدثت"
+
+#: selfck.event.dupe_barcode
+msgid "This item has already been checked out during this session"
+msgstr "تمّ إعارة هذه النُسخة مُسبقاً خلال هذه الجلسة"
+
+#: selfck.event.patron_not_found
+msgid "The patron barcode was not found"
+msgstr "لم يتم العثور على باركود المستفيد"
+
+#: selfck.event.item_noncat
+msgid "The requested item is not in the catalog"
+msgstr "النُسخة المطلوبة ليست في الفهرس"
+
+#: selfck.event.item_nocirc
+msgid "The requested item is not allowed to circulate"
+msgstr "النُسخة المطلوبة غير مسموح بإعارتها"
+
+#: selfck.event.already_out
+msgid "The requested item is already checked out to another patron"
+msgstr "النُسخة المطلوبة تمّ إعارتها مُسبقاً لمستفيد آخر"
+
+#: selfck.items_out
+msgid "You checked out the following items"
+msgstr "لقد قمت بإعارة النُسخ التالية"
+
+#: selfck.org_hours
+msgid "Hours of Operation"
+msgstr "ساعات العملية"
+
+#: selfck.org_phone
+msgid "Library Phone Number"
+msgstr "رقم هاتف المكتبة"
+
+#: selfck.day0
+msgid "Monday"
+msgstr "الإِثنين"
+
+#: selfck.day1
+msgid "Tuesday"
+msgstr "الثُلاثاء"
+
+#: selfck.day2
+msgid "Wednesday"
+msgstr "الأَربعاء"
+
+#: selfck.day3
+msgid "Thursday"
+msgstr "الخَميس"
+
+#: selfck.day4
+msgid "Friday"
+msgstr "الجُمعة"
+
+#: selfck.day5
+msgid "Saturday"
+msgstr "السَبت"
+
+#: selfck.day6
+msgid "Sunday"
+msgstr "الأَحد"
+
+#: circ.fail_part.actor.usr.barred
+msgid "The patron is barred"
+msgstr "المستفيد محظور"
+
+#: circ.fail_part.asset.copy.circulate
+msgid "The item does not circulate"
+msgstr "لا يمكن إعارة هذه النُسخة"
+
+#: circ.fail_part.asset.copy_location.circulate
+msgid "Items from this shelving location do not circulate"
+msgstr "النُسخ في موقع الرفوف هذا غير مسموح بإعارتها"
+
+#: circ.fail_part.asset.copy.status
+msgid "The item cannot circulate at this time"
+msgstr "لا يمكن إعارة النُسخة في الوقت الحالي"
+
+#: circ.fail_part.circ.holds.target_skip_me
+msgid "The item's circulation library does not fulfill holds"
+msgstr "المكتبة التي توجد بها النُسخة لا تقبل الحجز."
+
+#: circ.fail_part.config.circ_matrix_circ_mod_test
+msgid "The patron has too many items of this type checked out"
+msgstr "المستفيد قام باستعارة الكثير من نُسخ هذه الفئة"
+
+#: circ.fail_part.config.circ_matrix_test.available_copy_hold_ratio
+msgid "The available item-to-hold ratio is too low"
+msgstr "النسبة المُتاحة لـِ نسخة الحجز منخفضة جداً"
+
+#: circ.fail_part.config.circ_matrix_test.circulate
+msgid "Circulation rules reject this item as non-circulatable"
+msgstr "تم رفض إعارة هذه النُسخة وفقاً لقواعد الإعارة"
+
+#: circ.fail_part.config.circ_matrix_test.total_copy_hold_ratio
+msgid "The total item-to-hold ratio is too low"
+msgstr "نسبة المجموع الإجمالي لـِ نسخة الحجز منخفضة جداً"
+
+#: circ.fail_part.config.hold_matrix_test.holdable
+msgid "Hold rules reject this item as unholdable"
+msgstr "قواعد الحجز ترفض هذه النسخة لأنها غير قابلة للحجز"
+
+#: circ.fail_part.config.hold_matrix_test.max_holds
+msgid "The patron has reached the maximum number of holds"
+msgstr "لقد تجاوز المستفيد الحد الأقصى لعدد النُسخ المحجوزة"
+
+#: circ.fail_part.config.rule_age_hold_protect.prox
+msgid "The item is too new to transit this far"
+msgstr "النُسخة جديدة جداً من أجل العبور إلى أبعد من ذلك"
+
+#: circ.fail_part.no_item
+msgid "The system could not find this item"
+msgstr "النظام لا يستطيع العثور على هذه النُسخة"
+
+#: circ.fail_part.no_ultimate_items
+msgid "The system could not find any items to match this hold request"
+msgstr "النظام لا يستطيع العثور على أية نُسخ لـِ مطابقة طلب الحجز هذا"
+
+#: circ.fail_part.no_matchpoint
+msgid "System rules do not define how to handle this item"
+msgstr "قواعد نظام لم تحدد كيفية معالجة أوالتعامل مع هذه النُسخة"
+
+#: circ.fail_part.no_user
+msgid "The system could not find this patron"
+msgstr "النظام لم  يستطع العثور على هذا المستفيد"
+
+#: circ.fail_part.transit_range
+msgid "The item cannot transit this far"
+msgstr "لا يُمكن للنسخة العبور أبعد من هذا"

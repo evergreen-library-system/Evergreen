@@ -1,0 +1,146 @@
+# Spanish translation for evergreen
+# Copyright (c) 2016 Rosetta Contributors and Canonical Ltd 2016
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2016.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: evergreen\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2016-08-26 13:07+0000\n"
+"PO-Revision-Date: 2016-11-11 21:35+0000\n"
+"Last-Translator: Anahi Valdez <avaldez@emeralddata.net>\n"
+"Language-Team: Spanish <es@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2016-11-12 05:27+0000\n"
+"X-Generator: Launchpad (build 18255)\n"
+
+#: ../../Open-ILS/src/templates/url_verify/create_session.tt2:107
+msgid "Add"
+msgstr "Agregar"
+
+#: ../../Open-ILS/src/templates/url_verify/review_attempt.tt2:51
+msgid "Attempt ID"
+msgstr "Identificación Intento"
+
+#: ../../Open-ILS/src/templates/url_verify/create_session.tt2:130
+msgid "Begin"
+msgstr "Inicio"
+
+#: ../../Open-ILS/src/templates/url_verify/sessions.tt2:43
+msgid "Creator "
+msgstr "Creador "
+
+#: ../../Open-ILS/src/templates/url_verify/review_attempt.tt2:34 ../../Open-ILS/src/templates/url_verify/select_urls.tt2:35
+msgid "Download CSV"
+msgstr "Descargar CSV"
+
+#: ../../Open-ILS/src/templates/url_verify/sessions.tt2:2
+msgid "Link Checker"
+msgstr "Comprobador de enlaces"
+
+#: ../../Open-ILS/src/templates/url_verify/create_session.tt2:2
+msgid "Link Checker - Create Session"
+msgstr "Comprobador de Vínculos - Crear Sesión"
+
+#: ../../Open-ILS/src/templates/url_verify/review_attempt.tt2:2
+msgid "Link Checker - Review Verification Attempt"
+msgstr "Comprobador de Vínculos - Revisar el Intento de Verificación"
+
+#: ../../Open-ILS/src/templates/url_verify/select_urls.tt2:2
+msgid "Link Checker - Select URLs"
+msgstr "Comprobador de Vínculos- Seleccionar URL"
+
+#: ../../Open-ILS/src/templates/url_verify/create_session.tt2:90
+msgid ""
+"NOTE: When cloning sessions, any saved searches used in the original session "
+"will already be mentioned in the 'Search' field above. You should not need "
+"to select them again here."
+msgstr ""
+"NOTA: Cuando se clonan sesiones, las búsquedas guardadas que se usaron en la "
+"sesión original ya se mencionarán en el campo \"Buscar\" de arriba. No "
+"deberías volver a seleccionarlos aquí."
+
+#: ../../Open-ILS/src/templates/url_verify/sessions.tt2:21
+msgid "New Link Checker Session"
+msgstr "Nueva Sesión de Verificador de Enlaces"
+
+#: ../../Open-ILS/src/templates/url_verify/create_session.tt2:88
+msgid "Optionally select one or more to combine with 'Search' field above."
+msgstr ""
+"Opcionalmente, seleccione uno o más para combinar con el campo \"Buscar\" de "
+"arriba."
+
+#: ../../Open-ILS/src/templates/url_verify/select_urls.tt2:30
+msgid "Print URLs"
+msgstr "Printar URLS"
+
+#: ../../Open-ILS/src/templates/url_verify/review_attempt.tt2:30
+msgid "Print verification results"
+msgstr "Imprimir los resultados de la verificación"
+
+#: ../../Open-ILS/src/templates/url_verify/create_session.tt2:116
+msgid "Process immediately?"
+msgstr "Proceso inmediatamente?"
+
+#: ../../Open-ILS/src/templates/url_verify/create_session.tt2:79
+msgid "Saved searches:"
+msgstr "Búsquedas guardadas:"
+
+#: ../../Open-ILS/src/templates/url_verify/create_session.tt2:53
+msgid "Search scope:"
+msgstr "Alcance de la búsqueda:"
+
+#: ../../Open-ILS/src/templates/url_verify/create_session.tt2:67
+msgid "Search:"
+msgstr "Búsqueda:"
+
+#: ../../Open-ILS/src/templates/url_verify/create_session.tt2:41
+msgid "Session name:"
+msgstr "Nombre de sesión:"
+
+#: ../../Open-ILS/src/templates/url_verify/create_session.tt2:105
+msgid "Subfield(s)"
+msgstr "Sub-campo(s)"
+
+#: ../../Open-ILS/src/templates/url_verify/create_session.tt2:103
+msgid "Tag"
+msgstr "Etiqueta"
+
+#: ../../Open-ILS/src/templates/url_verify/create_session.tt2:97
+msgid "Tags and subfields to search for URLs:"
+msgstr "Etiquetas y subcampos para buscar URL:"
+
+#: ../../Open-ILS/src/templates/url_verify/create_session.tt2:59
+msgid ""
+"This will only be used if your search doesn't contain an explicit filter "
+"such as site(BR1)"
+msgstr ""
+"Esto sólo se utilizará si su búsqueda no contiene un filtro explícito como "
+"el sitio (BR1)"
+
+#: ../../Open-ILS/src/templates/url_verify/sessions.tt2:46
+msgid "URL Selectors"
+msgstr "Sectores URL"
+
+#: ../../Open-ILS/src/templates/url_verify/sessions.tt2:42
+msgid "Verification Attempts"
+msgstr "Los intentos de verificación"
+
+#: ../../Open-ILS/src/templates/url_verify/select_urls.tt2:37
+msgid "Verify Selected URLs"
+msgstr "Verificar las URL Seleccionadas"
+
+#: ../../Open-ILS/src/templates/url_verify/sessions.tt2:25
+msgid "View existing sessions started at:"
+msgstr "Ver sesiones existentes comenzó en:"
+
+#: ../../Open-ILS/src/templates/url_verify/review_attempt.tt2:33
+msgid "link-checker-results"
+msgstr "comprobador de enlaces-resultados"
+
+#: ../../Open-ILS/src/templates/url_verify/select_urls.tt2:34
+msgid "link-checker-urls"
+msgstr "Urls del-verificador-de enlaces"

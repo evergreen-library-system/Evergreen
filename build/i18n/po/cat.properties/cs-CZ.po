@@ -3,14 +3,14 @@ msgstr ""
 "Project-Id-Version: Evergreen\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-08-25 17:09-0400\n"
-"PO-Revision-Date: 2016-09-02 12:59+0000\n"
+"PO-Revision-Date: 2016-12-13 13:40+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2016-09-03 05:55+0000\n"
-"X-Generator: Launchpad (build 18179)\n"
+"X-Launchpad-Export-Date: 2016-12-14 05:03+0000\n"
+"X-Generator: Launchpad (build 18293)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: Czech\n"
@@ -195,32 +195,33 @@ msgstr "prohlížeč exemplářů -> hřbetní štítky"
 
 #: staff.cat.copy_browser.add_volume.permission_error
 msgid "You do not have permission to add volumes to that library."
-msgstr "Nemáte oprávnění k přidávání svazků do této knihovny."
+msgstr "Nemáte oprávnění k přidávání signatur do této knihovny."
 
 #: staff.cat.copy_browser.add_volume.title
 msgid "Add Volume/Item"
-msgstr "Přidat svazek/exemplář"
+msgstr "Přidat signaturu/exemplář"
 
 #: staff.cat.copy_browser.add_volume.error
 msgid "copy browser -> add volumes"
-msgstr "prohlížeč exemplářů -> přidat svazky"
+msgstr "prohlížeč exemplářů -> přidat signatury"
 
 #: staff.cat.edit_volume.permission_error
 msgid "You do not have permission to edit the volume or volumes selected."
-msgstr "Nemáte oprávnění k editaci svazku nebo vybraných svazků."
+msgstr "Nemáte oprávnění k editaci sigantury  nebo vybraných signatur"
 
 #: staff.cat.edit_volume.title
 msgid "Volume"
-msgstr "Svazek"
+msgstr "Signatura"
 
 #: staff.cat.edit_volume.title.plural
 msgctxt "staff.cat.edit_volume.title.plural"
 msgid "Volumes"
-msgstr "Svazky"
+msgstr "Signatury"
 
 #: staff.cat.edit_volumes.override.confirm
 msgid "Override volume re-labeling collision and merge the volumes?"
-msgstr "Obejít vzniklou kolizi při přeznačování  svazků a svazky sloučit?"
+msgstr ""
+"Obejít vzniklou kolizi při přeznačování  signatur a sloučit signatury?"
 
 #: staff.cat.edit_volumes.label_exists.details
 msgid "%1$s"
@@ -228,7 +229,7 @@ msgstr "%1$s"
 
 #: staff.cat.edit_volume.exception
 msgid "An error occurred while you were trying to edit these volumes."
-msgstr "Zatímco jste se pokoušeli upravit svazky, došlo k chybě."
+msgstr "Při pokusu o úpravu signatury, došlo k chybě."
 
 #: staff.cat.copy_browser.can_have_copies.false
 msgid "Records from %1$s cannot have copies."
@@ -236,15 +237,15 @@ msgstr "Záznamy z %1$s nemohou mít exempláře"
 
 #: staff.cat.copy_browser.delete_volume.prompt
 msgid "Are you sure you would like to delete this volume?"
-msgstr "Opravdu chcete smazat tento svazek?"
+msgstr "Opravdu chcete smazat tuto signaturu?"
 
 #: staff.cat.copy_browser.delete_volume.prompt.plural
 msgid "Are you sure you would like to delete these %1$s volumes?"
-msgstr "Opravdu chcete smazat tyto %1$s svazky?"
+msgstr "Opravdu chcete smazat tyto %1$s signatury?"
 
 #: staff.cat.copy_browser.delete_volume.title
 msgid "Delete Volumes?"
-msgstr "Smazat svazky?"
+msgstr "Smazat signatury?"
 
 #: staff.cat.copy_browser.delete_volume.delete
 msgctxt "staff.cat.copy_browser.delete_volume.delete"
@@ -265,11 +266,13 @@ msgstr "Obejít chybu při mazání?"
 msgid ""
 "You must delete all the items on the volume before you may delete the volume "
 "itself."
-msgstr "Před vymazáním svazku musíte smazat všechny exempláře ve svazku"
+msgstr ""
+"Před vymazáním signatury  musíte smazat všechny exempláře, které jsou k dané "
+"signatuře připojeny."
 
 #: staff.cat.copy_browser.delete_volume.copies_remain.confirm
 msgid "Delete Volume and Items"
-msgstr "Smazat svazky a exempláře"
+msgstr "Smazat sigantury  a exempláře"
 
 #: staff.cat.copy_browser.delete_volume.copies_remain.cancel
 msgid "Cancel Delete"
@@ -277,15 +280,15 @@ msgstr "Zrušit mazání"
 
 #: staff.cat.copy_browser.delete_volume.exception
 msgid "copy browser -> delete volumes"
-msgstr "prohlížeč exemplářů -> smazat svazky"
+msgstr "prohlížeč exemplářů -> smazat sigantury"
 
 #: staff.cat.copy_browser.mark_library.alert
 msgid "Library + Record marked as Volume Transfer Destination"
-msgstr "Knihovna + záznam byly označeny jako cíl přesunu svazků"
+msgstr "Knihovna + záznam byly označeny jako cíl přesunu signatury"
 
 #: staff.cat.copy_browser.mark_library.prompt
 msgid "Choose just one Library to mark as Volume Transfer Destination"
-msgstr "Označte pouze jednu knihovnu jako cíl přesunu svazků"
+msgstr "Označte pouze jednu knihovnu jako cíl přesunu signatury"
 
 #: staff.cat.copy_browser.mark_library.title
 msgctxt "staff.cat.copy_browser.mark_library.title"
@@ -294,11 +297,11 @@ msgstr "Omezit výběr"
 
 #: staff.cat.copy_browser.mark_volume.alert
 msgid "Volume marked as Item Transfer Destination"
-msgstr "Svazek označen jako cíl přesunu exempláře"
+msgstr "Signatura byla označena  jako cíl přesunu exempláře"
 
 #: staff.cat.copy_browser.mark_volume.prompt
 msgid "Choose just one Volume to mark as Item Transfer Destination"
-msgstr "Označte pouze jeden svazek jako cíl přesunu exempláře"
+msgstr "Označte pouze jednu signaturu jako cíl přesunu exempláře"
 
 #: staff.cat.copy_browser.mark_volume.title
 msgctxt "staff.cat.copy_browser.mark_volume.title"
@@ -315,7 +318,7 @@ msgstr ""
 
 #: staff.cat.copy_browser.transfer.prompt
 msgid "Transfer volumes %1$s to library %2$s on the following record?"
-msgstr "Přesunout svazky %1$s do knihovny %2$s v následujícím záznamu?"
+msgstr "Přesunout sigantury  %1$s do knihovny %2$s v následujícím záznamu?"
 
 #: staff.cat.copy_browser.transfer.submit.label
 msgctxt "staff.cat.copy_browser.transfer.submit.label"
@@ -334,7 +337,7 @@ msgstr "C"
 
 #: staff.cat.copy_browser.transfer.title
 msgid "Volume Transfer"
-msgstr "Přesun svazků"
+msgstr "Přesun signatury"
 
 #: staff.cat.copy_browser.transfer.incomplete
 msgctxt "staff.cat.copy_browser.transfer.incomplete"
@@ -343,19 +346,19 @@ msgstr "Přesun zrušen"
 
 #: staff.cat.copy_browser.transfer.override.failure
 msgid "Override Volume Transfer Failure?"
-msgstr "Obejít chybu v přesunu svazku?"
+msgstr "Obejít chybu v přesunu signatury?"
 
 #: staff.cat.copy_browser.transfer.ineligible_destination
 msgid "That destination cannot have volumes."
-msgstr "Tento cíl nemůže mít svazky."
+msgstr "Tento cíl nemůže mít signatury"
 
 #: staff.cat.copy_browser.transfer.success
 msgid "Volumes transferred."
-msgstr "Svazky přesunuty."
+msgstr "Signatury byly  přesunuty."
 
 #: staff.cat.copy_browser.transfer.unexpected_error
 msgid "All volumes not likely transferred."
-msgstr "Pravděpodobně nebyly přesunuty všechny svazky."
+msgstr "Pravděpodobně nebyly přesunuty všechny signatury"
 
 #: staff.cat.copy_browser.transfer_items.missing_volume
 msgctxt "staff.cat.copy_browser.transfer_items.missing_volume"
@@ -363,7 +366,7 @@ msgid ""
 "Please mark a volume as the destination from within holdings maintenance and "
 "then try this again."
 msgstr ""
-"Prosím označte ve správě exemplářů svazek, který má být cílový, a poté "
+"Prosím označte ve správě exemplářů signatur, která má být cílová, a poté "
 "zkuste proces zopakovat."
 
 #: staff.cat.copy_browser.transfer_items.unexpected_error
@@ -392,7 +395,7 @@ msgstr "Umístění/čárový kód"
 #: staff.cat.copy_browser.list_init.volume_count
 msgctxt "staff.cat.copy_browser.list_init.volume_count"
 msgid "Volumes"
-msgstr "Svazky"
+msgstr "Signatury"
 
 #: staff.cat.copy_browser.list_init.copy_count
 msgid "Copies"
@@ -404,7 +407,7 @@ msgstr "Akce v prohlížeči exemplářů"
 
 #: staff.cat.copy_browser.refresh_list.error
 msgid "Problem refreshing the volume/copy tree."
-msgstr "Problém s aktualizací seznamu svazků/exemplářů."
+msgstr "Problém při  aktualizací seznamu signatur/exemplářů."
 
 #: staff.cat.copy_buckets.render_pending_copies.complete
 msgctxt "staff.cat.copy_buckets.render_pending_copies.complete"
@@ -423,12 +426,12 @@ msgstr "Vyberte skupinu"
 #: staff.cat.copy_buckets.menulist.render.retrieve_bucket
 msgctxt "staff.cat.copy_buckets.menulist.render.retrieve_bucket"
 msgid "Retrieve shared bucket..."
-msgstr "Načítání sdílené skupiny..."
+msgstr "Načíst sdílenou skupinu ..."
 
 #: staff.cat.copy_buckets.menulist.change_bucket.prompt
 msgctxt "staff.cat.copy_buckets.menulist.change_bucket.prompt"
 msgid "Enter bucket number:"
-msgstr "Vložte číslo skupiny:"
+msgstr "Zadejte číslo skupiny:"
 
 #: staff.cat.copy_buckets.menulist.change_bucket.undefined
 msgctxt "staff.cat.copy_buckets.menulist.change_bucket.undefined"
@@ -509,7 +512,7 @@ msgid ""
 "Please mark a volume as the destination from within the copy browser and "
 "then try this again."
 msgstr ""
-"Prosím označte v prohlížeči exemplářů svazek, který má být cílový, a poté "
+"Prosím označte v prohlížeči exemplářů signaturu, která má být cílový, a poté "
 "zkuste proces zopakovat."
 
 #: staff.cat.copy_buckets.copy_buckets_transfer_to_volume.confirm
@@ -517,8 +520,8 @@ msgid ""
 "Transfer the items in bucket \"%1$s\" from their original volumes to the "
 "volume labelled \"%2$s\" for the library \"%3$s\" on the following record?"
 msgstr ""
-"Přesunout exempláře ve skupině  \"%1$s\"  z původních svazků do svazku "
-"označeného jako \"%2$s\" do knihovny \"%3$s\" v následujícím záznamu?"
+"Přesunout exempláře ve skupině  \"%1$s\"  z původních sigantur  do signatury "
+" označené jako \"%2$s\" do knihovny \"%3$s\" v následujícím záznamu?"
 
 #: staff.cat.copy_buckets.copy_buckets_transfer_to_volume.error
 msgid "Items not likely transferred."
@@ -709,8 +712,8 @@ msgid ""
 "Error retrieving Volume information for copy %1$s.  The owning library for "
 "this copy will not be changed."
 msgstr ""
-"Chyba při načítání informací o svazku pro exemplář %1$s. Domovská knihovna u "
-"tohoto exempláře nebude změněna."
+"Chyba při načítání informací o signatuře pro exemplář %1$s. Domovská "
+"knihovna u tohoto exempláře nebude změněna."
 
 #: staff.cat.copy_editor.apply_owning_lib.call_number.error
 msgid ""
@@ -1320,7 +1323,7 @@ msgstr "Vyberte skupinu"
 #: staff.cat.record_buckets.menulist_placeholder.item2
 msgctxt "staff.cat.record_buckets.menulist_placeholder.item2"
 msgid "Retrieve shared bucket..."
-msgstr "Načítání sdílené skupiny..."
+msgstr "Načíst sdílenou skupinu ..."
 
 #: staff.cat.record_buckets.change_bucket.bucket_id
 msgctxt "staff.cat.record_buckets.change_bucket.bucket_id"
@@ -1540,7 +1543,7 @@ msgid ""
 "Please mark a volume as the destination from within holdings maintenance and "
 "then try this again."
 msgstr ""
-"Označte ve správě exemplářů svazek, který má být cílový, a poté zkuste "
+"Označte ve správě exemplářů signaturu,  která má být cílová, a poté zkuste "
 "proces zopakovat."
 
 #: staff.cat.util.transfer_copies.params_message
@@ -1548,7 +1551,7 @@ msgid ""
 "Transfer items from their original volumes to %1$s's volume labelled %2$s on "
 "the following record (and change their circulation libs to match)?"
 msgstr ""
-"Chcete přesunout exempláře z jejich původních svazků do svazků %1$s's "
+"Chcete přesunout exempláře z jejich původních signatur  do signatur %1$s's "
 "označených %2$s v následujícím záznamu (a změnit adekvátně jejich výpůjční "
 "knihovny)?"
 
@@ -1869,7 +1872,7 @@ msgstr "Přeskočení  %1$s předkatalogizovaných záznamů..."
 
 #: staff.cat.volume_buckets.window_tab_name
 msgid "Volume Buckets"
-msgstr "Skupiny svazků"
+msgstr "Skupiny  signatur"
 
 #: staff.cat.volume_copy_creator.my_init.btn.label
 msgctxt "staff.cat.volume_copy_creator.my_init.btn.label"
@@ -1904,7 +1907,7 @@ msgstr "D"
 
 #: staff.cat.volume_copy_creator.create.btn.label
 msgid "Create Volumes/Items"
-msgstr "Vytvořit svazky/exempláře"
+msgstr "Vytvořit signatury/exempláře"
 
 #: staff.cat.volume_copy_creator.create.btn.accesskey
 msgctxt "staff.cat.volume_copy_creator.create.btn.accesskey"
@@ -1932,7 +1935,7 @@ msgid ""
 "You may not add more than %1$s items at a time for a given volume in this "
 "interface."
 msgstr ""
-"V tomto rozhraní nelze k vybranému svazku přidat více než %1$s exemplářů "
+"V tomto rozhraní nelze k vybrané signatuře přidat více než %1$s exemplářů "
 "najednou."
 
 #: staff.cat.volume_copy_creator.render_volume_count_entry.title
@@ -1989,16 +1992,16 @@ msgid ""
 "Problem finding or creating %1$s.  We will skip item creation for this "
 "volume."
 msgstr ""
-"Problém s nalezením nebo vytvořením %1$s. Pro svazek nebudou vytvořeny "
+"Problém s nalezením nebo vytvořením %1$s. Pro signaturu nebudou vytvořeny "
 "exempláře."
 
 #: staff.cat.volume_copy_creator.stash_and_close.tree_err2
 msgid "volume tree update 2"
-msgstr "2. aktualizace seznamu svazků"
+msgstr "2. aktualizace seznamu signatur"
 
 #: staff.cat.volume_copy_creator.stash_and_close.tree_err3
 msgid "volume tree update 3"
-msgstr "3. aktualizace seznamu svazků"
+msgstr "3. aktualizace seznamu signatur"
 
 #: staff.cat.volume_copy_creator.load_prefs.err_retrieving_prefs
 msgid "Error retrieving stored preferences"

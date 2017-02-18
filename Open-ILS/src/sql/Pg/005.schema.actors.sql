@@ -85,6 +85,7 @@ CREATE INDEX actor_usr_family_name_idx ON actor.usr (evergreen.lowercase(family_
 CREATE INDEX actor_usr_first_given_name_unaccent_idx ON actor.usr (evergreen.unaccent_and_squash(first_given_name));
 CREATE INDEX actor_usr_second_given_name_unaccent_idx ON actor.usr (evergreen.unaccent_and_squash(second_given_name));
 CREATE INDEX actor_usr_family_name_unaccent_idx ON actor.usr (evergreen.unaccent_and_squash(family_name));
+CREATE INDEX actor_usr_usrname_unaccent_idx ON actor.usr (evergreen.unaccent_and_squash(usrname));
 
 CREATE INDEX actor_usr_usrname_idx ON actor.usr (evergreen.lowercase(usrname));
 CREATE INDEX actor_usr_email_idx ON actor.usr (evergreen.lowercase(email));

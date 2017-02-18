@@ -1,0 +1,7 @@
+Removed unused selfcheck password setting
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+There was an unused duplicate selfcheck password setting that was removed
+to avoid confusion over which library setting was supposed to be set to
+enable passwords for selfcheck. After upgrading, verify that your library
+policy remains consistent for this setting.
+
