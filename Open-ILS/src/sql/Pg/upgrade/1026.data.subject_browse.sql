@@ -1,6 +1,6 @@
 BEGIN;
 
--- SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1026', :eg_version);
 
 INSERT INTO config.metabib_field ( id, field_class, name, label, 
      format, xpath, search_field, browse_field, authority_xpath, joiner ) VALUES
