@@ -956,12 +956,12 @@ div.result_table_utils_cont {
 
 .hold_note_title { font-weight: bold; }
 
-#acct_checked_main_header td, #acct_holds_main_header td, #acct_checked_hist_header td, #acct_holds_hist_header td, #acct_list_header td, #acct_list_header_anon td, #temp_list_holds td, #acct_messages_main_header, #ebook_circs_main_table, #ebook_holds_main_table td {
+#acct_checked_main_header td, #acct_holds_main_header td, #acct_checked_hist_header td, #acct_holds_hist_header td, #acct_list_header td, #acct_list_header_anon td, #temp_list_holds td, #acct_messages_main_header, #ebook_circs_main_table td, #ebook_holds_main_table td {
     background: [% css_colors.accent_lighter2 %];
     padding: 10px;
 }
 
-#acct_checked_main_header th, #acct_holds_main_header th, #acct_checked_hist_header th, acct_holds_hist_header th, #acct_list_header th, #acct_list_header_anon th, #temp_list_holds th, #acct_messages_main_header, #ebook_circs_main_table, #ebook_holds_main_table th {
+#acct_checked_main_header th, #acct_holds_main_header th, #acct_checked_hist_header th, acct_holds_hist_header th, #acct_list_header th, #acct_list_header_anon th, #temp_list_holds th, #acct_messages_main_header, #ebook_circs_main_table th, #ebook_holds_main_table th {
     text-align: left;
     padding: 0px 10px 0px 10px;
 }
