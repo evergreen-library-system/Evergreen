@@ -103,9 +103,9 @@ sub initialize {
     my $ou = $self->{ou};
 
     my $discovery_base_uri = OpenILS::Application::AppUtils->ou_ancestor_setting_value($ou, 'ebook_api.overdrive.discovery_base_uri');
-    $self->{discovery_base_uri} = $discovery_base_uri || 'http://api.overdrive.com/v1';
+    $self->{discovery_base_uri} = $discovery_base_uri || 'https://api.overdrive.com/v1';
     my $circulation_base_uri = OpenILS::Application::AppUtils->ou_ancestor_setting_value($ou, 'ebook_api.overdrive.circulation_base_uri');
-    $self->{circulation_base_uri} = $circulation_base_uri || 'http://patron.api.overdrive.com/v1';
+    $self->{circulation_base_uri} = $circulation_base_uri || 'https://patron.api.overdrive.com/v1';
 
     my $account_id = OpenILS::Application::AppUtils->ou_ancestor_setting_value($ou, 'ebook_api.overdrive.account_id');
     if ($account_id) {

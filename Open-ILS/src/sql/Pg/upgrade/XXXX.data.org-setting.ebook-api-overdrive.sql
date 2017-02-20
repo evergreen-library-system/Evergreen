@@ -17,7 +17,7 @@ VALUES (
     ),
     oils_i18n_gettext(
         'ebook_api.overdrive.discovery_base_uri',
-        'Base URI for OverDrive Discovery API (defaults to http://api.overdrive.com/v1)',
+        'Base URI for OverDrive Discovery API (defaults to https://api.overdrive.com/v1). Using HTTPS here is strongly encouraged.',
         'coust',
         'description'
     ),
@@ -33,7 +33,7 @@ VALUES (
     ),
     oils_i18n_gettext(
         'ebook_api.overdrive.circulation_base_uri',
-        'Base URI for OverDrive Circulation API (defaults to http://patron.api.overdrive.com/v1)',
+        'Base URI for OverDrive Circulation API (defaults to https://patron.api.overdrive.com/v1). Using HTTPS here is strongly encouraged.',
         'coust',
         'description'
     ),
