@@ -1,4 +1,4 @@
-N;
+BEGIN;
 
 -- stop on error
 \set ON_ERROR_STOP on
@@ -30,12 +30,6 @@ N;
 -- load RDA bibs
 \i bibs_rda.sql
 
--- load EbookAPI bibs
-\i bibs_ebook_api.sql
-
--- load metarecord bibs
-\i bibs_mr.sql
-
 -- insert all loaded bibs into the biblio.record_entry in insert order
 INSERT INTO biblio.record_entry (marc, last_xact_id) 
     SELECT marc, tag FROM marcxml_import ORDER BY id;
@@ -54,9 +48,6 @@ INSERT INTO biblio.record_entry (marc, last_xact_id)
 
 -- load RDA copies, etc.
 \i assets_rda.sql
-
--- load MR copies, etc.
-\i assets_mr.sql
 
 -- load copy-related data
 \i assets_extras.sql
@@ -80,9 +71,15 @@ DELETE FROM marcxml_import;
 -- load EbookAPI bibs
 \i bibs_ebook_api.sql
 
+-- load metarecord bibs
+\i bibs_mr.sql
+
 -- insert all loaded bibs into the biblio.record_entry in insert order
 INSERT INTO biblio.record_entry (marc, last_xact_id)
     SELECT marc, tag FROM marcxml_import ORDER BY id;
+
+-- load MR copies, etc.
+\i assets_mr.sql
 
 -- clean up the env
 \i env_destroy.sql
