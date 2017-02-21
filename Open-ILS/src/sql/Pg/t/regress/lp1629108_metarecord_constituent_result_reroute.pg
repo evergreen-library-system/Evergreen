@@ -114,16 +114,16 @@ $F$ LANGUAGE SQL STABLE;
 
 -- Now make sure that the a query against it doesn't break
 PREPARE thrower AS select mmr_mra::varchar from unapi.mmr_mra
-(15,'','',null::text[],'CONS',0,null::HSTORE,null::HSTORE,true,1);
+(240,'','',null::text[],'CONS',0,null::HSTORE,null::HSTORE,true,1);
 
 SELECT performs_ok( 'thrower',250,'Generic check for unapi.mmr_mra breakage' ); 
 
 -- Make sure that the function returns the new XML property source_list
 SELECT is(  
 (
-select mmr_mra::varchar ~ 'source_list="15,16,17"' from unapi.mmr_mra
-(15,'','',null::text[],'CONS',0,null::HSTORE,null::HSTORE,true,1)
-), true, 'unapi.mmr_mra results have source_list="15,16,17sfaf"' );
+select mmr_mra::varchar ~ 'source_list="242,243,244"' from unapi.mmr_mra
+(240,'','',null::text[],'CONS',0,null::HSTORE,null::HSTORE,true,1)
+), true, 'unapi.mmr_mra results have source_list="242,243,244sfaf"' );
 
 
 -- Finish the tests and clean up.
