@@ -430,7 +430,7 @@ sub check_password {
 sub currency {              # not really implemented
     my $self = shift;
     syslog('LOG_DEBUG', 'OILS: Patron->currency()');
-    return 'USD';
+    return OpenILS::SIP->config()->{implementation_config}->{currency} || 'USD';
 }
 
 sub fee_amount {
