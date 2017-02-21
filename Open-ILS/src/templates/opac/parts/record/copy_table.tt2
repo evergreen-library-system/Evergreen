@@ -25,7 +25,11 @@ FOREACH copy_info IN copies;
     END;
 END;
 -%]
-[%- IF has_copies; %]
+[%-
+IF has_copies; 
+  depth = CGI.param('copy_depth').defined ? CGI.param('copy_depth') : CGI.param('depth').defined ? CGI.param('depth') : ctx.copy_summary.last.depth;
+  total_copies = ctx.copy_summary.$depth.count;
+%]
 <table class="table_no_border_space table_no_cell_pad table_no_border" width="100%" id="rdetails_status">
     <thead>
         <tr>
@@ -256,7 +260,7 @@ END; # FOREACH bib
                     l('Previous [_1]', ctx.copy_offset - new_offset) %]</a>
             </td>
         [%- END %]
-        [%- IF copies.size >= ctx.copy_limit AND NOT serial_holdings %]
+        [%- IF copies.size >= ctx.copy_limit AND NOT serial_holdings AND (ctx.copy_offset + ctx.copy_limit < total_copies) %]
             <td>
                 <a href="[% mkurl('', {copy_offset => ctx.copy_offset + ctx.copy_limit, copy_limit => ctx.copy_limit}) %]">[%
                     l('Next [_1]', ctx.copy_limit) %] &raquo;</a>
@@ -267,7 +271,7 @@ END; # FOREACH bib
         <tr>
             <td>
                 [%- more_copies_limit = 50 %] [%# TODO: config %]
-                [%- IF  ctx.copy_limit != more_copies_limit AND copies.size >= ctx.copy_limit %]
+                [%- IF  ctx.copy_limit != more_copies_limit AND copies.size >= ctx.copy_limit AND ctx.copy_limit < total_copies %]
                     <div class="rdetail_show_copies">
                         <img src="[% ctx.media_prefix %]/images/plus_sign.png" alt="[% l('Show more copies icon') %]"/>
                         <a href="[% mkurl('', {copy_limit => more_copies_limit, copy_offset => 0}) %]">[% l('Show more copies') %]</a>
