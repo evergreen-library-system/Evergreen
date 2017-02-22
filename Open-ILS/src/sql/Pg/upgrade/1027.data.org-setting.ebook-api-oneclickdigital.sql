@@ -2,6 +2,9 @@ BEGIN;
 
 SELECT evergreen.upgrade_deps_block_check('1027', :eg_version);
 
+INSERT INTO config.settings_group (name, label)
+    VALUES ('ebook_api', 'Ebook API Integration');
+
 INSERT INTO config.org_unit_setting_type
     (name, label, description, grp, datatype) 
 VALUES (

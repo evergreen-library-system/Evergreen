@@ -76,10 +76,6 @@ ALTER TABLE biblio.record_entry DISABLE TRIGGER USER;
 UPDATE biblio.record_entry SET fingerprint = biblio.extract_fingerprint(marc) WHERE NOT deleted;
 ALTER TABLE biblio.record_entry ENABLE TRIGGER USER;
 
-SELECT metabib.remap_metarecord_for_bib(id, fingerprint)
-FROM biblio.record_entry
-WHERE NOT deleted;
-
 \qecho Remapping metarecords
 SELECT metabib.remap_metarecord_for_bib(id, fingerprint)
 FROM biblio.record_entry
