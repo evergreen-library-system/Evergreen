@@ -1,10 +1,3 @@
-<style>
-/* FIXME: move me */
-#item-status-alert-msg {
-  flex:7; /* fill the remaining horizontal space */
-}
-</style>
-
 <div class="">
 
   <div class="flex-row">
@@ -138,9 +131,6 @@
   </div>
 
   <div class="flex-row">
-    <div class="flex-cell">[% l('TCN') %]</div>
-    <div class="flex-cell well">{{copy.call_number().record().tcn_value()}}</div>
-
     <div class="flex-cell">[% l('Circulate') %]</div>
     <div class="flex-cell well">{{copy.circulate()}}</div>
 
@@ -166,9 +156,6 @@
 
     <div class="flex-cell">[% l('Age-based Hold Protection') %]</div>
     <div class="flex-cell well">{{copy.age_protect().name()}}</div>
-    <!-- empty -->
-    <div class="flex-cell"></div>
-    <div class="flex-cell"></div>
 
     <div class="flex-cell">[% l('Checkin Workstation') %]</div>
     <div class="flex-cell well">
@@ -179,9 +166,7 @@
 
   <div class="flex-row">
     <div class="flex-cell">[% l('Alert Message') %]</div>
-    <div id="item-status-alert-msg" class="well">
-      {{copy.alert_message()}}
-    </div>
+    <div class="well" style="flex:7">{{copy.alert_message()}}</div>
   </div>
 
 </div>
