@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-25 17:09-0400\n"
+"POT-Creation-Date: 2017-02-21 20:30-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1158,6 +1158,10 @@ msgstr ""
 
 #: staff.circ.utils.create_date
 msgid "Date Created"
+msgstr ""
+
+#: staff.circ.utils.active_date
+msgid "Date Active"
 msgstr ""
 
 #: staff.circ.utils.edit_date
