@@ -559,3 +559,4 @@ sub do_get_patron_xacts {
     return $self->handle_http_request($req, $self->{session_id});
 }
 
+1;

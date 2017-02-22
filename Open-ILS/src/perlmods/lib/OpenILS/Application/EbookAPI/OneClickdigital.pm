@@ -303,3 +303,4 @@ sub get_patron_holds {
     }
 }
 
+1;
