@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2016-08-25 17:09-0400\n"
+"POT-Creation-Date: 2017-02-21 20:30-0400\n"
 "PO-Revision-Date: 2012-01-11 15:59+0000\n"
 "Last-Translator: Daniel Winzen <d@winzen4.de>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2016-08-26 05:23+0000\n"
-"X-Generator: Launchpad (build 18179)\n"
+"X-Launchpad-Export-Date: 2017-02-22 05:41+0000\n"
+"X-Generator: Launchpad (build 18326)\n"
 
 #: 1208.TITLE_LAST_COPY:71
 msgid "The last copy attached to a title is being removed or deleted"
@@ -159,10 +159,6 @@ msgstr ""
 
 #: 1527.OPEN_TCN_NOT_FOUND:238
 msgid "No TCN could be found that does not collide with existing records"
-msgstr ""
-
-#: 7016.ITEM_ON_HOLDS_SHELF:895
-msgid "This requested item is currently on the holds shelf"
 msgstr ""
 
 #: 2001.DATABASE_UPDATE_FAILED:776
@@ -378,8 +374,8 @@ msgid ""
 "more than one lineitem"
 msgstr ""
 
-#: 10004.ACQ_LINEITEM_NO_PRICE:996
-msgid "The lineitem has no price"
+#: 7016.ITEM_ON_HOLDS_SHELF:895
+msgid "This item is currently on the holds shelf for another patron"
 msgstr ""
 
 #: 1226.REFUND_EXCEEDS_DESK_PAYMENTS:140
@@ -1257,6 +1253,10 @@ msgstr ""
 
 #: 1848.ACQ_FUND_NOT_FOUND:627
 msgid "The requested acq.fund was not found"
+msgstr ""
+
+#: 10004.ACQ_LINEITEM_NO_PRICE:996
+msgid "The lineitem has no price"
 msgstr ""
 
 #: 11106.TOTAL_HOLD_COPY_RATIO_EXCEEDED:1044

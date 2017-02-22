@@ -9,8 +9,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2016-08-26 05:26+0000\n"
-"X-Generator: Launchpad (build 18179)\n"
+"X-Launchpad-Export-Date: 2017-02-13 05:34+0000\n"
+"X-Generator: Launchpad (build 18326)\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Bookmarks: 1332,1333,-1,-1,-1,-1,-1,-1,-1,-1\n"
 
@@ -8898,18 +8898,6 @@ msgstr ""
 "Если верно, ошибки приема/обновления приведут к высвечиванию окна в добавок "
 "сообщения на экране."
 
-#: staff.server.admin.org_settings.circ.selfcheck.require_patron_password
-msgid "Selfcheck: Require patron password"
-msgstr "Самовыдача: Требует пароля патрона"
-
-#: staff.server.admin.org_settings.circ.selfcheck.require_patron_password.desc
-msgid ""
-"If true, patrons will be required to enter their password in addition to "
-"their username/barcode to log into the selfcheck interface"
-msgstr ""
-"Если верно, пользователям надо будет ввести свои пароли в добавок  своим "
-"регистрационным именам и штрих кодам чтобы войти в интерфейс самовыдачи"
-
 #: staff.server.admin.org_settings.global.juvenile_age_threshold
 msgid "Juvenile Age Threshold"
 msgstr "Порог подросткового возраста"
@@ -15080,6 +15068,16 @@ msgstr ""
 
 #~ msgid "Server Settings"
 #~ msgstr "Настройки сервера"
+
+#~ msgid "Selfcheck: Require patron password"
+#~ msgstr "Самовыдача: Требует пароля патрона"
+
+#~ msgid ""
+#~ "If true, patrons will be required to enter their password in addition to "
+#~ "their username/barcode to log into the selfcheck interface"
+#~ msgstr ""
+#~ "Если верно, пользователям надо будет ввести свои пароли в добавок  своим "
+#~ "регистрационным именам и штрих кодам чтобы войти в интерфейс самовыдачи"
 
 #~ msgid "&Import"
 #~ msgstr "&Импорт"

@@ -14,8 +14,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-01-30 05:29+0000\n"
-"X-Generator: Launchpad (build 18315)\n"
+"X-Launchpad-Export-Date: 2017-02-13 05:32+0000\n"
+"X-Generator: Launchpad (build 18326)\n"
 "Language: AR\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
@@ -8886,18 +8886,6 @@ msgstr ""
 "في حالة التفعيل، ستظهر نافذة منبثقة تنبيه بأخطاء الإعارة والتجديد، بالإضافة "
 "برسالة خطأ على الشاشة."
 
-#: staff.server.admin.org_settings.circ.selfcheck.require_patron_password
-msgid "Selfcheck: Require patron password"
-msgstr "التحقق الذاتي: يتطلب كلمة مرور المستفيد"
-
-#: staff.server.admin.org_settings.circ.selfcheck.require_patron_password.desc
-msgid ""
-"If true, patrons will be required to enter their password in addition to "
-"their username/barcode to log into the selfcheck interface"
-msgstr ""
-"في حالة التفعيل، سيطالب المستفيدين بإدخال كلمة المرور و اسم المستخدم أو "
-"الباركود الخاص بهم لتسجيل الدخول إلى واجهة التحقق الذاتي."
-
 #: staff.server.admin.org_settings.global.juvenile_age_threshold
 msgid "Juvenile Age Threshold"
 msgstr "حد عمر القاصرين"
@@ -15002,3 +14990,13 @@ msgstr "إغلاق"
 #: staff.bucketz39_search.open_queue
 msgid "Open Queue"
 msgstr "فتح صف الانتظار"
+
+#~ msgid "Selfcheck: Require patron password"
+#~ msgstr "التحقق الذاتي: يتطلب كلمة مرور المستفيد"
+
+#~ msgid ""
+#~ "If true, patrons will be required to enter their password in addition to "
+#~ "their username/barcode to log into the selfcheck interface"
+#~ msgstr ""
+#~ "في حالة التفعيل، سيطالب المستفيدين بإدخال كلمة المرور و اسم المستخدم أو "
+#~ "الباركود الخاص بهم لتسجيل الدخول إلى واجهة التحقق الذاتي."

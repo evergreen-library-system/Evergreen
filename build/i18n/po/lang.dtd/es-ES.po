@@ -14,8 +14,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2016-11-12 05:26+0000\n"
-"X-Generator: Launchpad (build 18255)\n"
+"X-Launchpad-Export-Date: 2017-02-13 05:35+0000\n"
+"X-Generator: Launchpad (build 18326)\n"
 
 #: lang.version
 msgid "remote v1"
@@ -8924,19 +8924,6 @@ msgstr ""
 "Si es verdad, los Errores de Pago y Envío / Renovación causarán Una ventana "
 "emergente,: Además del Mensaje en Pantalla"
 
-#: staff.server.admin.org_settings.circ.selfcheck.require_patron_password
-msgid "Selfcheck: Require patron password"
-msgstr "Autocomprobac: Solicitar contraseña patrón"
-
-#: staff.server.admin.org_settings.circ.selfcheck.require_patron_password.desc
-msgid ""
-"If true, patrons will be required to enter their password in addition to "
-"their username/barcode to log into the selfcheck interface"
-msgstr ""
-"Si es verdad, se requerirá a los clientes a introducir su contraseña, además "
-"de su nombre de usuario / código de barras para iniciar sesión en la "
-"interfaz autocheckin"
-
 #: staff.server.admin.org_settings.global.juvenile_age_threshold
 msgid "Juvenile Age Threshold"
 msgstr "Umbral de menores de edad"
@@ -15308,3 +15295,14 @@ msgstr "Cola Abierta"
 #~ msgctxt "ev.staff.patron.ue_xhtml.view_errors.label"
 #~ msgid "View Errors"
 #~ msgstr "Ver errores"
+
+#~ msgid ""
+#~ "If true, patrons will be required to enter their password in addition to "
+#~ "their username/barcode to log into the selfcheck interface"
+#~ msgstr ""
+#~ "Si es verdad, se requerirá a los clientes a introducir su contraseña, además "
+#~ "de su nombre de usuario / código de barras para iniciar sesión en la "
+#~ "interfaz autocheckin"
+
+#~ msgid "Selfcheck: Require patron password"
+#~ msgstr "Autocomprobac: Solicitar contraseña patrón"

@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2016-08-26 13:08+0000\n"
+"POT-Creation-Date: 2017-02-22 03:00+0000\n"
 "PO-Revision-Date: 2017-01-10 12:54+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-01-11 05:34+0000\n"
-"X-Generator: Launchpad (build 18302)\n"
+"X-Launchpad-Export-Date: 2017-02-22 05:43+0000\n"
+"X-Generator: Launchpad (build 18326)\n"
 
 #. (i18n_vac)
 #: ../../Open-ILS/src/templates/conify/global/acq/edi_account.tt2:54
@@ -56,7 +56,7 @@ msgstr "%1, %2 a %3 jsou parametry (s)FTP/SSH."
 msgid "&#x2196; Return To Coded Value Maps"
 msgstr "&#x2196; Zpět na mapu kódovaných údajů"
 
-#: ../../Open-ILS/src/templates/conify/global/asset/copy_location_group.tt2:94
+#: ../../Open-ILS/src/templates/conify/global/asset/copy_location_group.tt2:97
 msgid "&larr; Add"
 msgstr "&larr; Přidat"
 
@@ -97,7 +97,7 @@ msgstr ""
 msgid "Account"
 msgstr "Účet"
 
-#: ../../Open-ILS/src/templates/conify/global/actor/org_unit_custom_tree.tt2:59
+#: ../../Open-ILS/src/templates/conify/global/actor/org_unit_custom_tree.tt2:62
 msgid "Activate Tree"
 msgstr "Aktivovat stroj"
 
@@ -137,7 +137,7 @@ msgstr "Pravidla dočasné ochrany před rezervacemi"
 msgid "Apply"
 msgstr "Použít"
 
-#: ../../Open-ILS/src/templates/conify/global/acq/distribution_formula.tt2:44 ../../Open-ILS/src/templates/conify/global/acq/distribution_formula.tt2:81 ../../Open-ILS/src/templates/conify/global/actor/org_unit_custom_tree.tt2:63 ../../Open-ILS/src/templates/conify/global/asset/copy_location_order.tt2:18
+#: ../../Open-ILS/src/templates/conify/global/acq/distribution_formula.tt2:44 ../../Open-ILS/src/templates/conify/global/acq/distribution_formula.tt2:81 ../../Open-ILS/src/templates/conify/global/actor/org_unit_custom_tree.tt2:66 ../../Open-ILS/src/templates/conify/global/asset/copy_location_order.tt2:18
 msgid "Apply Changes"
 msgstr "Potvrdit změny"
 
@@ -165,7 +165,7 @@ msgstr "Zvuková páska"
 msgid "Authority Fields"
 msgstr "Autoritní pole"
 
-#: ../../Open-ILS/src/templates/conify/global/cat/authority/control_set_authority_field.tt2:29
+#: ../../Open-ILS/src/templates/conify/global/cat/authority/control_set_authority_field.tt2:28
 msgid "Axes"
 msgstr "Osy"
 
@@ -268,7 +268,7 @@ msgstr "Storno"
 msgid "Cancel Reasons"
 msgstr "Důvod zrušení"
 
-#: ../../Open-ILS/src/templates/conify/global/actor/org_unit_custom_tree.tt2:25
+#: ../../Open-ILS/src/templates/conify/global/actor/org_unit_custom_tree.tt2:28
 msgid ""
 "Changes to custom org trees may require web server (apache) reload before "
 "taking effect"
@@ -360,7 +360,7 @@ msgstr "Hodnoty kódů polí pevné délky"
 msgid "Coded Value: "
 msgstr "Hodnoty kódů polí pevné délky "
 
-#: ../../Open-ILS/src/templates/conify/global/actor/org_unit_custom_tree.tt2:34 ../../Open-ILS/src/templates/conify/global/actor/org_unit_custom_tree.tt2:53
+#: ../../Open-ILS/src/templates/conify/global/actor/org_unit_custom_tree.tt2:37 ../../Open-ILS/src/templates/conify/global/actor/org_unit_custom_tree.tt2:56
 msgid "Collapse"
 msgstr "Sbalit"
 
@@ -428,7 +428,7 @@ msgstr "Bibliografická pole kontrolní sady"
 msgid "Control Sets"
 msgstr "Kontrolní sada"
 
-#: ../../Open-ILS/src/templates/conify/global/cat/authority/control_set_authority_field.tt2:27
+#: ../../Open-ILS/src/templates/conify/global/cat/authority/control_set_authority_field.tt2:26
 msgid "Controlled Bib Fields"
 msgstr "Kontrolovaná bib. pole"
 
@@ -440,7 +440,7 @@ msgstr "Umístění"
 msgid "Copy Location Group"
 msgstr "Skupina umístění"
 
-#: ../../Open-ILS/src/templates/conify/global/asset/copy_location_group.tt2:54
+#: ../../Open-ILS/src/templates/conify/global/asset/copy_location_group.tt2:57
 msgid "Copy Location Groups"
 msgstr "Skupiny umístění"
 
@@ -448,7 +448,7 @@ msgstr "Skupiny umístění"
 msgid "Copy Location Order"
 msgstr "Umístění exemplářů: pořadí"
 
-#: ../../Open-ILS/src/templates/conify/global/asset/copy_location_group.tt2:95
+#: ../../Open-ILS/src/templates/conify/global/asset/copy_location_group.tt2:98
 msgid "Copy Locations"
 msgstr "Umístění"
 
@@ -472,7 +472,7 @@ msgstr "Ověření pro "
 msgid "Currency"
 msgstr "Měna"
 
-#: ../../Open-ILS/src/templates/conify/global/actor/org_unit_custom_tree.tt2:41
+#: ../../Open-ILS/src/templates/conify/global/actor/org_unit_custom_tree.tt2:44
 msgid "Custom Unit Tree: "
 msgstr "Přizpůsobený strom organizačních jednotek "
 
@@ -484,15 +484,15 @@ msgstr "Denně"
 msgid "Date"
 msgstr "Datum"
 
-#: ../../Open-ILS/src/templates/conify/global/actor/org_unit_custom_tree.tt2:60
+#: ../../Open-ILS/src/templates/conify/global/actor/org_unit_custom_tree.tt2:63
 msgid "Deactivate Tree"
 msgstr "Deaktivovat strom"
 
-#: ../../Open-ILS/src/templates/conify/global/asset/copy_location_group.tt2:126 ../../Open-ILS/src/templates/conify/global/config/composite_attr_entry_definition.tt2:45
+#: ../../Open-ILS/src/templates/conify/global/asset/copy_location_group.tt2:129 ../../Open-ILS/src/templates/conify/global/config/composite_attr_entry_definition.tt2:45
 msgid "Delete"
 msgstr "Smazat"
 
-#: ../../Open-ILS/src/templates/conify/global/acq/cancel_reason.tt2:12 ../../Open-ILS/src/templates/conify/global/acq/claim_event_type.tt2:11 ../../Open-ILS/src/templates/conify/global/acq/claim_policy.tt2:10 ../../Open-ILS/src/templates/conify/global/acq/claim_policy_action.tt2:12 ../../Open-ILS/src/templates/conify/global/acq/claim_type.tt2:10 ../../Open-ILS/src/templates/conify/global/acq/distribution_formula.tt2:10 ../../Open-ILS/src/templates/conify/global/acq/edi_account.tt2:14 ../../Open-ILS/src/templates/conify/global/acq/exchange_rate.tt2:7 ../../Open-ILS/src/templates/conify/global/acq/fund_tag.tt2:12 ../../Open-ILS/src/templates/conify/global/acq/invoice_item_type.tt2:7 ../../Open-ILS/src/templates/conify/global/acq/invoice_payment_method.tt2:7 ../../Open-ILS/src/templates/conify/global/acq/lineitem_alert.tt2:12 ../../Open-ILS/src/templates/conify/global/acq/lineitem_marc_attr_def.tt2:12 ../../Open-ILS/src/templates/conify/global/acq/provider.tt2:10 ../../Open-ILS/src/templates/conify/global/acq/provider.tt2:107 ../../Open-ILS/src/templates/conify/global/acq/provider.tt2:134 ../../Open-ILS/src/templates/conify/global/acq/provider.tt2:46 ../../Open-ILS/src/templates/conify/global/acq/provider.tt2:67 ../../Open-ILS/src/templates/conify/global/acq/provider.tt2:86 ../../Open-ILS/src/templates/conify/global/action/survey.tt2:7 ../../Open-ILS/src/templates/conify/global/action_trigger/event_definition.tt2:25 ../../Open-ILS/src/templates/conify/global/action_trigger/event_definition.tt2:51 ../../Open-ILS/src/templates/conify/global/action_trigger/event_definition.tt2:73 ../../Open-ILS/src/templates/conify/global/action_trigger/event_definition.tt2:98 ../../Open-ILS/src/templates/conify/global/action_trigger/event_definition_data.tt2:13 ../../Open-ILS/src/templates/conify/global/action_trigger/event_definition_data.tt2:34 ../../Open-ILS/src/templates/conify/global/actor/address_alert.tt2:8 ../../Open-ILS/src/templates/conify/global/actor/org_unit_custom_tree.tt2:56 ../../Open-ILS/src/templates/conify/global/actor/search_filter_group.tt2:20 ../../Open-ILS/src/templates/conify/global/actor/search_filter_group.tt2:67 ../../Open-ILS/src/templates/conify/global/asset/copy_template.tt2:12 ../../Open-ILS/src/templates/conify/global/biblio/monograph_part.tt2:10 ../../Open-ILS/src/templates/conify/global/booking/resource.tt2:7 ../../Open-ILS/src/templates/conify/global/booking/resource_attr.tt2:7 ../../Open-ILS/src/templates/conify/global/booking/resource_attr_map.tt2:7 ../../Open-ILS/src/templates/conify/global/booking/resource_attr_value.tt2:7 ../../Open-ILS/src/templates/conify/global/booking/resource_type.tt2:7 ../../Open-ILS/src/templates/conify/global/cat/authority/browse_axis.tt2:8 ../../Open-ILS/src/templates/conify/global/cat/authority/browse_axis_authority_field_map.tt2:8 ../../Open-ILS/src/templates/conify/global/cat/authority/control_set.tt2:8 ../../Open-ILS/src/templates/conify/global/cat/authority/control_set_authority_field.tt2:8 ../../Open-ILS/src/templates/conify/global/cat/authority/control_set_bib_field.tt2:8 ../../Open-ILS/src/templates/conify/global/cat/authority/thesaurus.tt2:8 ../../Open-ILS/src/templates/conify/global/config/acn_prefix.tt2:12 ../../Open-ILS/src/templates/conify/global/config/acn_suffix.tt2:12 ../../Open-ILS/src/templates/conify/global/config/actor_sip_fields.tt2:8 ../../Open-ILS/src/templates/conify/global/config/asset_sip_fields.tt2:8 ../../Open-ILS/src/templates/conify/global/config/billing_type.tt2:12 ../../Open-ILS/src/templates/conify/global/config/circ_limit_group.tt2:7 ../../Open-ILS/src/templates/conify/global/config/circ_limit_set.tt2:8 ../../Open-ILS/src/templates/conify/global/config/circ_matrix_weights.tt2:8 ../../Open-ILS/src/templates/conify/global/config/circ_modifier.tt2:24 ../../Open-ILS/src/templates/conify/global/config/coded_value_map.tt2:8 ../../Open-ILS/src/templates/conify/global/config/hold_matrix_weights.tt2:8 ../../Open-ILS/src/templates/conify/global/config/metabib_class_ts_map.tt2:8 ../../Open-ILS/src/templates/conify/global/config/metabib_field.tt2:8 ../../Open-ILS/src/templates/conify/global/config/metabib_field_ts_map.tt2:8 ../../Open-ILS/src/templates/conify/global/config/org_unit_proximity_adjustment.tt2:10 ../../Open-ILS/src/templates/conify/global/config/org_unit_setting_type.tt2:24 ../../Open-ILS/src/templates/conify/global/config/record_attr_definition.tt2:9 ../../Open-ILS/src/templates/conify/global/config/remote_account.tt2:7 ../../Open-ILS/src/templates/conify/global/config/rule_age_hold_protect.tt2:8 ../../Open-ILS/src/templates/conify/global/config/rule_circ_duration.tt2:8 ../../Open-ILS/src/templates/conify/global/config/rule_max_fine.tt2:8 ../../Open-ILS/src/templates/conify/global/config/rule_recurring_fine.tt2:8 ../../Open-ILS/src/templates/conify/global/config/sms_carrier.tt2:12 ../../Open-ILS/src/templates/conify/global/config/standing_penalty.tt2:12 ../../Open-ILS/src/templates/conify/global/config/usr_activity_type.tt2:12 ../../Open-ILS/src/templates/conify/global/config/usr_setting_type.tt2:24 ../../Open-ILS/src/templates/conify/global/config/weight_assoc.tt2:8 ../../Open-ILS/src/templates/conify/global/config/z3950_index_field_map.tt2:17 ../../Open-ILS/src/templates/conify/global/config/z3950_source.tt2:14 ../../Open-ILS/src/templates/conify/global/config/z3950_source.tt2:82 ../../Open-ILS/src/templates/conify/global/permission/grp_penalty_threshold.tt2:8 ../../Open-ILS/src/templates/conify/global/vandelay/import_bib_trash_group.tt2:23 ../../Open-ILS/src/templates/conify/global/vandelay/import_bib_trash_group.tt2:70 ../../Open-ILS/src/templates/conify/global/vandelay/match_set.tt2:10
+#: ../../Open-ILS/src/templates/conify/global/acq/cancel_reason.tt2:12 ../../Open-ILS/src/templates/conify/global/acq/claim_event_type.tt2:11 ../../Open-ILS/src/templates/conify/global/acq/claim_policy.tt2:10 ../../Open-ILS/src/templates/conify/global/acq/claim_policy_action.tt2:12 ../../Open-ILS/src/templates/conify/global/acq/claim_type.tt2:10 ../../Open-ILS/src/templates/conify/global/acq/distribution_formula.tt2:10 ../../Open-ILS/src/templates/conify/global/acq/edi_account.tt2:14 ../../Open-ILS/src/templates/conify/global/acq/exchange_rate.tt2:7 ../../Open-ILS/src/templates/conify/global/acq/fund_tag.tt2:12 ../../Open-ILS/src/templates/conify/global/acq/invoice_item_type.tt2:7 ../../Open-ILS/src/templates/conify/global/acq/invoice_payment_method.tt2:7 ../../Open-ILS/src/templates/conify/global/acq/lineitem_alert.tt2:12 ../../Open-ILS/src/templates/conify/global/acq/lineitem_marc_attr_def.tt2:12 ../../Open-ILS/src/templates/conify/global/acq/provider.tt2:10 ../../Open-ILS/src/templates/conify/global/acq/provider.tt2:107 ../../Open-ILS/src/templates/conify/global/acq/provider.tt2:134 ../../Open-ILS/src/templates/conify/global/acq/provider.tt2:46 ../../Open-ILS/src/templates/conify/global/acq/provider.tt2:67 ../../Open-ILS/src/templates/conify/global/acq/provider.tt2:86 ../../Open-ILS/src/templates/conify/global/action/survey.tt2:7 ../../Open-ILS/src/templates/conify/global/action_trigger/event_definition.tt2:25 ../../Open-ILS/src/templates/conify/global/action_trigger/event_definition.tt2:51 ../../Open-ILS/src/templates/conify/global/action_trigger/event_definition.tt2:73 ../../Open-ILS/src/templates/conify/global/action_trigger/event_definition.tt2:98 ../../Open-ILS/src/templates/conify/global/action_trigger/event_definition_data.tt2:13 ../../Open-ILS/src/templates/conify/global/action_trigger/event_definition_data.tt2:34 ../../Open-ILS/src/templates/conify/global/actor/address_alert.tt2:8 ../../Open-ILS/src/templates/conify/global/actor/org_unit_custom_tree.tt2:59 ../../Open-ILS/src/templates/conify/global/actor/search_filter_group.tt2:20 ../../Open-ILS/src/templates/conify/global/actor/search_filter_group.tt2:67 ../../Open-ILS/src/templates/conify/global/asset/copy_template.tt2:12 ../../Open-ILS/src/templates/conify/global/biblio/monograph_part.tt2:10 ../../Open-ILS/src/templates/conify/global/booking/resource.tt2:7 ../../Open-ILS/src/templates/conify/global/booking/resource_attr.tt2:7 ../../Open-ILS/src/templates/conify/global/booking/resource_attr_map.tt2:7 ../../Open-ILS/src/templates/conify/global/booking/resource_attr_value.tt2:7 ../../Open-ILS/src/templates/conify/global/booking/resource_type.tt2:7 ../../Open-ILS/src/templates/conify/global/cat/authority/browse_axis.tt2:8 ../../Open-ILS/src/templates/conify/global/cat/authority/browse_axis_authority_field_map.tt2:8 ../../Open-ILS/src/templates/conify/global/cat/authority/control_set.tt2:8 ../../Open-ILS/src/templates/conify/global/cat/authority/control_set_authority_field.tt2:8 ../../Open-ILS/src/templates/conify/global/cat/authority/control_set_bib_field.tt2:8 ../../Open-ILS/src/templates/conify/global/cat/authority/thesaurus.tt2:8 ../../Open-ILS/src/templates/conify/global/config/acn_prefix.tt2:12 ../../Open-ILS/src/templates/conify/global/config/acn_suffix.tt2:12 ../../Open-ILS/src/templates/conify/global/config/actor_sip_fields.tt2:8 ../../Open-ILS/src/templates/conify/global/config/asset_sip_fields.tt2:8 ../../Open-ILS/src/templates/conify/global/config/billing_type.tt2:12 ../../Open-ILS/src/templates/conify/global/config/circ_limit_group.tt2:7 ../../Open-ILS/src/templates/conify/global/config/circ_limit_set.tt2:8 ../../Open-ILS/src/templates/conify/global/config/circ_matrix_weights.tt2:8 ../../Open-ILS/src/templates/conify/global/config/circ_modifier.tt2:24 ../../Open-ILS/src/templates/conify/global/config/coded_value_map.tt2:8 ../../Open-ILS/src/templates/conify/global/config/hold_matrix_weights.tt2:8 ../../Open-ILS/src/templates/conify/global/config/metabib_class_ts_map.tt2:8 ../../Open-ILS/src/templates/conify/global/config/metabib_field.tt2:8 ../../Open-ILS/src/templates/conify/global/config/metabib_field_ts_map.tt2:8 ../../Open-ILS/src/templates/conify/global/config/org_unit_proximity_adjustment.tt2:10 ../../Open-ILS/src/templates/conify/global/config/org_unit_setting_type.tt2:24 ../../Open-ILS/src/templates/conify/global/config/record_attr_definition.tt2:9 ../../Open-ILS/src/templates/conify/global/config/remote_account.tt2:7 ../../Open-ILS/src/templates/conify/global/config/rule_age_hold_protect.tt2:8 ../../Open-ILS/src/templates/conify/global/config/rule_circ_duration.tt2:8 ../../Open-ILS/src/templates/conify/global/config/rule_max_fine.tt2:8 ../../Open-ILS/src/templates/conify/global/config/rule_recurring_fine.tt2:8 ../../Open-ILS/src/templates/conify/global/config/sms_carrier.tt2:12 ../../Open-ILS/src/templates/conify/global/config/standing_penalty.tt2:12 ../../Open-ILS/src/templates/conify/global/config/usr_activity_type.tt2:12 ../../Open-ILS/src/templates/conify/global/config/usr_setting_type.tt2:24 ../../Open-ILS/src/templates/conify/global/config/weight_assoc.tt2:8 ../../Open-ILS/src/templates/conify/global/config/z3950_index_field_map.tt2:17 ../../Open-ILS/src/templates/conify/global/config/z3950_source.tt2:14 ../../Open-ILS/src/templates/conify/global/config/z3950_source.tt2:82 ../../Open-ILS/src/templates/conify/global/permission/grp_penalty_threshold.tt2:8 ../../Open-ILS/src/templates/conify/global/vandelay/import_bib_trash_group.tt2:23 ../../Open-ILS/src/templates/conify/global/vandelay/import_bib_trash_group.tt2:70 ../../Open-ILS/src/templates/conify/global/vandelay/match_set.tt2:10
 msgid "Delete Selected"
 msgstr "Smazat vybrané"
 
@@ -532,7 +532,7 @@ msgstr "Distribuční vzorce"
 msgid "EDI Accounts"
 msgstr "EDI účty"
 
-#: ../../Open-ILS/src/templates/conify/global/asset/copy_location_group.tt2:125 ../../Open-ILS/src/templates/conify/global/config/best_hold_order.tt2:97
+#: ../../Open-ILS/src/templates/conify/global/asset/copy_location_group.tt2:128 ../../Open-ILS/src/templates/conify/global/config/best_hold_order.tt2:97
 msgid "Edit"
 msgstr "Upravit"
 
@@ -576,7 +576,7 @@ msgstr "Směnné kurzy"
 msgid "Exclude"
 msgstr "Vyloučit"
 
-#: ../../Open-ILS/src/templates/conify/global/actor/org_unit_custom_tree.tt2:33 ../../Open-ILS/src/templates/conify/global/actor/org_unit_custom_tree.tt2:52
+#: ../../Open-ILS/src/templates/conify/global/actor/org_unit_custom_tree.tt2:36 ../../Open-ILS/src/templates/conify/global/actor/org_unit_custom_tree.tt2:55
 msgid "Expand"
 msgstr "Rozbalit"
 
@@ -596,7 +596,7 @@ msgstr "Pohyblivý"
 msgid "Floating Groups Configuration"
 msgstr "Konfigurace pohyblivých skupin"
 
-#: ../../Open-ILS/src/templates/conify/global/actor/org_unit_custom_tree.tt2:31
+#: ../../Open-ILS/src/templates/conify/global/actor/org_unit_custom_tree.tt2:34
 msgid "Full Org Unit Tree"
 msgstr "Plný strom organizačních jednotek"
 
@@ -620,7 +620,7 @@ msgstr "Globální indikátoy"
 msgid "Go"
 msgstr "Potvrdit"
 
-#: ../../Open-ILS/src/templates/conify/global/asset/copy_location_group.tt2:75
+#: ../../Open-ILS/src/templates/conify/global/asset/copy_location_group.tt2:78
 msgid "Group Entries"
 msgstr "Skupiny položek"
 
@@ -756,7 +756,7 @@ msgstr "Připojené sady limitů"
 msgid "Local Note"
 msgstr "Místní poznámka"
 
-#: ../../Open-ILS/src/templates/conify/global/asset/copy_location_group.tt2:66
+#: ../../Open-ILS/src/templates/conify/global/asset/copy_location_group.tt2:69
 msgid "Location Groups"
 msgstr "Skupiny umístění"
 
@@ -873,7 +873,7 @@ msgstr "Název:"
 msgid "Negate?"
 msgstr "Potlačit?"
 
-#: ../../Open-ILS/src/templates/conify/global/action_trigger/event_definition.tt2:23 ../../Open-ILS/src/templates/conify/global/action_trigger/event_definition.tt2:50 ../../Open-ILS/src/templates/conify/global/action_trigger/event_definition.tt2:72 ../../Open-ILS/src/templates/conify/global/action_trigger/event_definition.tt2:97 ../../Open-ILS/src/templates/conify/global/action_trigger/event_definition_data.tt2:12 ../../Open-ILS/src/templates/conify/global/action_trigger/event_definition_data.tt2:33 ../../Open-ILS/src/templates/conify/global/actor/search_filter_group.tt2:19 ../../Open-ILS/src/templates/conify/global/actor/search_filter_group.tt2:66 ../../Open-ILS/src/templates/conify/global/asset/copy_location_group.tt2:67 ../../Open-ILS/src/templates/conify/global/config/barcode_completion.tt2:6 ../../Open-ILS/src/templates/conify/global/config/circ_limit_set.tt2:7 ../../Open-ILS/src/templates/conify/global/config/circ_matrix_matchpoint.tt2:6 ../../Open-ILS/src/templates/conify/global/config/floating_groups.tt2:6 ../../Open-ILS/src/templates/conify/global/config/hold_matrix_matchpoint.tt2:5 ../../Open-ILS/src/templates/conify/global/config/idl_field_doc.tt2:10 ../../Open-ILS/src/templates/conify/global/config/remote_account.tt2:6 ../../Open-ILS/src/templates/conify/global/config/z3950_index_field_map.tt2:13 ../../Open-ILS/src/templates/conify/global/config/z3950_source.tt2:13
+#: ../../Open-ILS/src/templates/conify/global/action_trigger/event_definition.tt2:23 ../../Open-ILS/src/templates/conify/global/action_trigger/event_definition.tt2:50 ../../Open-ILS/src/templates/conify/global/action_trigger/event_definition.tt2:72 ../../Open-ILS/src/templates/conify/global/action_trigger/event_definition.tt2:97 ../../Open-ILS/src/templates/conify/global/action_trigger/event_definition_data.tt2:12 ../../Open-ILS/src/templates/conify/global/action_trigger/event_definition_data.tt2:33 ../../Open-ILS/src/templates/conify/global/actor/search_filter_group.tt2:19 ../../Open-ILS/src/templates/conify/global/actor/search_filter_group.tt2:66 ../../Open-ILS/src/templates/conify/global/asset/copy_location_group.tt2:70 ../../Open-ILS/src/templates/conify/global/config/barcode_completion.tt2:6 ../../Open-ILS/src/templates/conify/global/config/circ_limit_set.tt2:7 ../../Open-ILS/src/templates/conify/global/config/circ_matrix_matchpoint.tt2:6 ../../Open-ILS/src/templates/conify/global/config/floating_groups.tt2:6 ../../Open-ILS/src/templates/conify/global/config/hold_matrix_matchpoint.tt2:5 ../../Open-ILS/src/templates/conify/global/config/idl_field_doc.tt2:10 ../../Open-ILS/src/templates/conify/global/config/remote_account.tt2:6 ../../Open-ILS/src/templates/conify/global/config/z3950_index_field_map.tt2:13 ../../Open-ILS/src/templates/conify/global/config/z3950_source.tt2:13
 msgid "New"
 msgstr "Nový"
 
@@ -1145,7 +1145,7 @@ msgstr ""
 msgid "Normalized Authority Heading"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/conify/global/asset/copy_location_group.tt2:124
+#: ../../Open-ILS/src/templates/conify/global/asset/copy_location_group.tt2:127
 msgid "Not Visible"
 msgstr ""
 
@@ -1153,7 +1153,7 @@ msgstr ""
 msgid "Note"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/conify/global/actor/org_unit_custom_tree.tt2:46
+#: ../../Open-ILS/src/templates/conify/global/actor/org_unit_custom_tree.tt2:49
 msgid "OPAC"
 msgstr ""
 
@@ -1177,7 +1177,7 @@ msgstr ""
 msgid "Org Unit"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/conify/global/actor/org_unit_custom_tree.tt2:2 ../../Open-ILS/src/templates/conify/global/actor/org_unit_custom_tree.tt2:22
+#: ../../Open-ILS/src/templates/conify/global/actor/org_unit_custom_tree.tt2:2 ../../Open-ILS/src/templates/conify/global/actor/org_unit_custom_tree.tt2:25
 msgid "Org Unit Custom Tree"
 msgstr ""
 
@@ -1293,7 +1293,7 @@ msgstr ""
 msgid "Remove"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/conify/global/asset/copy_location_group.tt2:76
+#: ../../Open-ILS/src/templates/conify/global/asset/copy_location_group.tt2:79
 msgid "Remove &rarr;"
 msgstr ""
 
@@ -1476,7 +1476,7 @@ msgstr ""
 msgid "Thesauri"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/conify/global/actor/org_unit_custom_tree.tt2:24
+#: ../../Open-ILS/src/templates/conify/global/actor/org_unit_custom_tree.tt2:27
 msgid ""
 "To add new nodes to the custom tree, drag them from the full tree on the left"
 msgstr ""
@@ -1563,7 +1563,7 @@ msgstr ""
 msgid "Video Tape"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/conify/global/asset/copy_location_group.tt2:123
+#: ../../Open-ILS/src/templates/conify/global/asset/copy_location_group.tt2:126
 msgid "Visible"
 msgstr ""
 

@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2016-08-26 13:08+0000\n"
+"POT-Creation-Date: 2017-02-22 03:02+0000\n"
 "PO-Revision-Date: 2017-01-23 06:15+0000\n"
 "Last-Translator: fares othman <Unknown>\n"
 "Language-Team: Arabic <ar@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-01-24 05:34+0000\n"
-"X-Generator: Launchpad (build 18312)\n"
+"X-Launchpad-Export-Date: 2017-02-22 05:43+0000\n"
+"X-Generator: Launchpad (build 18326)\n"
 
 #: ../../Open-ILS/src/templates/acq/invoice/view.tt2:6
 msgid " Invoice "
@@ -45,15 +45,15 @@ msgstr "$%1"
 msgid "%1 term(s) prepared for search"
 msgstr "%1 المصطلحات التي إعدادها للبحث"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:58
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:59
 msgid "&#171; Previous"
 msgstr "&#171; السابق"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:284 ../../Open-ILS/src/templates/acq/common/li_table.tt2:397 ../../Open-ILS/src/templates/acq/lineitem/worksheet.tt2:12
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:285 ../../Open-ILS/src/templates/acq/common/li_table.tt2:398 ../../Open-ILS/src/templates/acq/lineitem/worksheet.tt2:12
 msgid "&#x2196; Return"
 msgstr "&#x2196; إرجاع"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:282
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:283
 msgid "&#x2196; Return To Invoice"
 msgstr "&#x2196; إرجاع إلى الفاتورة"
 
@@ -65,19 +65,19 @@ msgstr "&#x2196; إرجاع إلى الفاتورة"
 msgid "&#x2196; Return to Search"
 msgstr "&#x2196; الرجوع إلى البحث"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:182
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:183
 msgid "&#x270D; worksheet"
 msgstr "&#x270D; ورقة عمل"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:180
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:181
 msgid "&#x279F; catalog"
 msgstr "&#x279F; الفهرس"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:189
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:190
 msgid "&#x27AC; queue"
 msgstr "&#x27AC; الطابور"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:181
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:182
 msgid "&#x27BE; link to catalog"
 msgstr "&#x27BE; الربط بـِ الفهرس"
 
@@ -85,15 +85,15 @@ msgstr "&#x27BE; الربط بـِ الفهرس"
 msgid "(building the results list progressively)"
 msgstr "(بناء قائمة النتائج تدريجياً)"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:206
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:207
 msgid "-- Actions --"
 msgstr "-- الإجراءات --"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:29
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:30
 msgid "----PO----"
 msgstr "----طلبات الشراء----"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:22
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:23
 msgid "--Actions--"
 msgstr "--الإجراءات--"
 
@@ -117,7 +117,7 @@ msgstr "استلام فاتورة التزويد"
 msgid "Acquisitions Search"
 msgstr "بحث في التزويد"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:129
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:130
 msgid "Actions"
 msgstr "الإِجراءات"
 
@@ -141,7 +141,7 @@ msgstr "تفعيل بدون تحميل النُسخ"
 msgid "Actual Price"
 msgstr "السعر الفعلي"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:27
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:28
 msgid "Add Brief Record"
 msgstr "إضافة موجز تسجيلة"
 
@@ -177,7 +177,7 @@ msgstr "إضافة ملف"
 msgid "Add more search terms"
 msgstr "إضافة المزيد من مصطلحات البحث"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:31 ../../Open-ILS/src/templates/acq/lineitem/related.tt2:44
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:32 ../../Open-ILS/src/templates/acq/lineitem/related.tt2:44
 msgid "Add to Purchase Order"
 msgstr "إضافة إلى طلب الشراء"
 
@@ -185,11 +185,11 @@ msgstr "إضافة إلى طلب الشراء"
 msgid "Add to Selection List"
 msgstr "إضافة إلى قائمة الاختيار"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:523
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:524
 msgid "Add to Selection List: "
 msgstr "إضافة إلى قائمة الاختيار "
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:273
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:274
 msgid "Add/Edit Items"
 msgstr "إضافة/تعديل نُسخ"
 
@@ -206,7 +206,7 @@ msgstr "تعليقات إضافية"
 msgid "Against item: %1 (%2)"
 msgstr "النُسخة المُقابلة: %1 (%2)"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:483
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:484
 msgid "All Line Items"
 msgstr "كافة القيود"
 
@@ -234,7 +234,7 @@ msgstr "الكمية: "
 msgid "Apply"
 msgstr "تطبيق"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:36
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:37
 msgid "Apply Claim Policy to Selected Line Items"
 msgstr "تطبيق سياسة المُطالبة لـِ القيود المحددة"
 
@@ -242,7 +242,7 @@ msgstr "تطبيق سياسة المُطالبة لـِ القيود المحد�
 msgid "Apply Credit"
 msgstr "تطبيق الائتمان"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:111
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:112
 msgid "Apply to Selected"
 msgstr "تطبيق على المحدد"
 
@@ -250,7 +250,7 @@ msgstr "تطبيق على المحدد"
 msgid "Approve Selected Titles"
 msgstr "قبول العناوين المحددة"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:217
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:218
 msgid "Approved"
 msgstr "مقبول"
 
@@ -262,15 +262,15 @@ msgstr "المؤلف"
 msgid "Balance"
 msgstr "الرصيد"
 
-#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:122 ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:95 ../../Open-ILS/src/templates/acq/common/li_table.tt2:231 ../../Open-ILS/src/templates/acq/common/li_table.tt2:364 ../../Open-ILS/src/templates/acq/common/li_table.tt2:415 ../../Open-ILS/src/templates/acq/invoice/receive.tt2:47
+#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:122 ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:95 ../../Open-ILS/src/templates/acq/common/li_table.tt2:232 ../../Open-ILS/src/templates/acq/common/li_table.tt2:365 ../../Open-ILS/src/templates/acq/common/li_table.tt2:416 ../../Open-ILS/src/templates/acq/invoice/receive.tt2:47
 msgid "Barcode"
 msgstr "باركود"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:349
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:350
 msgid "Batch Update"
 msgstr "تحديث الدفعة"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:554
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:555
 msgid "Batch Update Funds"
 msgstr "أموال تحديث الدفعة"
 
@@ -294,27 +294,27 @@ msgstr "النُسخ الببليوغرافية"
 msgid "Billed"
 msgstr "الفاتورة مُصدرة"
 
-#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:119 ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:91 ../../Open-ILS/src/templates/acq/common/li_table.tt2:230
+#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:119 ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:91 ../../Open-ILS/src/templates/acq/common/li_table.tt2:231
 msgid "Branch"
 msgstr "فِرع"
 
-#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:123 ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:99 ../../Open-ILS/src/templates/acq/common/li_table.tt2:232
+#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:123 ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:99 ../../Open-ILS/src/templates/acq/common/li_table.tt2:233
 msgid "Call Number"
 msgstr "رمز الاستدعاء"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:336 ../../Open-ILS/src/templates/acq/common/li_table.tt2:363 ../../Open-ILS/src/templates/acq/common/li_table.tt2:414 ../../Open-ILS/src/templates/acq/invoice/receive.tt2:46
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:337 ../../Open-ILS/src/templates/acq/common/li_table.tt2:364 ../../Open-ILS/src/templates/acq/common/li_table.tt2:415 ../../Open-ILS/src/templates/acq/invoice/receive.tt2:46
 msgid "Callnumber"
 msgstr "رمز الاستدعاء"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:381 ../../Open-ILS/src/templates/acq/common/li_table.tt2:499 ../../Open-ILS/src/templates/acq/common/li_table.tt2:570 ../../Open-ILS/src/templates/acq/common/li_table.tt2:589 ../../Open-ILS/src/templates/acq/invoice/view.tt2:338
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:382 ../../Open-ILS/src/templates/acq/common/li_table.tt2:500 ../../Open-ILS/src/templates/acq/common/li_table.tt2:571 ../../Open-ILS/src/templates/acq/common/li_table.tt2:590 ../../Open-ILS/src/templates/acq/invoice/view.tt2:338
 msgid "Cancel"
 msgstr "إلغاء"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:540
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:541
 msgid "Cancel Copy"
 msgstr "إلغاء نسخة"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:48
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:49
 msgid "Cancel Line Items"
 msgstr "إلغاء القيود"
 
@@ -326,7 +326,7 @@ msgstr "إِلغاء الطلب"
 msgid "Cancel Selected"
 msgstr "إلغاء المحدد"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:35
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:36
 msgid "Cancel Selected Line Items"
 msgstr "إلغاء القيود المحددة"
 
@@ -334,7 +334,7 @@ msgstr "إلغاء القيود المحددة"
 msgid "Cancel order"
 msgstr "إلغاء الطلب"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:221
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:222
 msgid "Canceled"
 msgstr "تمّ الإلغاء"
 
@@ -354,15 +354,15 @@ msgstr "اختيار الفاتورة"
 msgid "Choose the Lead Selection List:"
 msgstr "اختيار قائمة الاختيار القائدة"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:235 ../../Open-ILS/src/templates/acq/common/li_table.tt2:335 ../../Open-ILS/src/templates/acq/common/li_table.tt2:362 ../../Open-ILS/src/templates/acq/common/li_table.tt2:413 ../../Open-ILS/src/templates/acq/common/li_table.tt2:84 ../../Open-ILS/src/templates/acq/invoice/receive.tt2:44
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:236 ../../Open-ILS/src/templates/acq/common/li_table.tt2:336 ../../Open-ILS/src/templates/acq/common/li_table.tt2:363 ../../Open-ILS/src/templates/acq/common/li_table.tt2:414 ../../Open-ILS/src/templates/acq/common/li_table.tt2:85 ../../Open-ILS/src/templates/acq/invoice/receive.tt2:44
 msgid "Circ Modifier"
 msgstr "مُعدل الإعارة"
 
-#: ../../Open-ILS/src/templates/acq/common/final_claim_dialog.tt2:6 ../../Open-ILS/src/templates/acq/common/li_table.tt2:381
+#: ../../Open-ILS/src/templates/acq/common/final_claim_dialog.tt2:6 ../../Open-ILS/src/templates/acq/common/li_table.tt2:382
 msgid "Claim"
 msgstr "المُطالبة"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:543
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:544
 msgid "Claim policy:"
 msgstr "سياسة المُطالبة:"
 
@@ -378,7 +378,7 @@ msgstr "نسخ المُطالبة المحددة"
 msgid "Claim type:"
 msgstr "نوع المُطالبة:"
 
-#: ../../Open-ILS/src/templates/acq/common/claim_dialog.tt2:5 ../../Open-ILS/src/templates/acq/common/li_table.tt2:209
+#: ../../Open-ILS/src/templates/acq/common/claim_dialog.tt2:5 ../../Open-ILS/src/templates/acq/common/li_table.tt2:210
 msgid "Claims"
 msgstr "الإدعاءات"
 
@@ -410,7 +410,7 @@ msgstr "الكـود"
 msgid "Code:"
 msgstr "الرمز/الكود:"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:236 ../../Open-ILS/src/templates/acq/common/li_table.tt2:333 ../../Open-ILS/src/templates/acq/common/li_table.tt2:360 ../../Open-ILS/src/templates/acq/common/li_table.tt2:78 ../../Open-ILS/src/templates/acq/invoice/receive.tt2:43
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:237 ../../Open-ILS/src/templates/acq/common/li_table.tt2:334 ../../Open-ILS/src/templates/acq/common/li_table.tt2:361 ../../Open-ILS/src/templates/acq/common/li_table.tt2:79 ../../Open-ILS/src/templates/acq/invoice/receive.tt2:43
 msgid "Collection Code"
 msgstr "كود/ رمز المجموعة"
 
@@ -426,16 +426,16 @@ msgstr "وحدة سياق ـ إطار ـ المؤسسة"
 msgid "Context Org Unit:"
 msgstr "وحدة المحتوى التنظيمية"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:391 ../../Open-ILS/src/templates/acq/common/li_table.tt2:69
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:392 ../../Open-ILS/src/templates/acq/common/li_table.tt2:70
 msgid "Copies"
 msgstr "النُسخ"
 
 #. ("<span name=\"count\">0</span>")
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:200
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:201
 msgid "Copies(%1)"
 msgstr "النُسخ(%1)"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:234 ../../Open-ILS/src/templates/acq/common/li_table.tt2:332 ../../Open-ILS/src/templates/acq/common/li_table.tt2:359 ../../Open-ILS/src/templates/acq/common/li_table.tt2:412 ../../Open-ILS/src/templates/acq/common/li_table.tt2:75 ../../Open-ILS/src/templates/acq/invoice/receive.tt2:42
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:235 ../../Open-ILS/src/templates/acq/common/li_table.tt2:333 ../../Open-ILS/src/templates/acq/common/li_table.tt2:360 ../../Open-ILS/src/templates/acq/common/li_table.tt2:413 ../../Open-ILS/src/templates/acq/common/li_table.tt2:76 ../../Open-ILS/src/templates/acq/invoice/receive.tt2:42
 msgid "Copy Location"
 msgstr "موقع النُسخة"
 
@@ -451,11 +451,11 @@ msgstr "إنشاء تخصيص"
 msgid "Create Invoice"
 msgstr "إِنشاء فاتورة"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:39
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:40
 msgid "Create Invoice From Selected Line Items"
 msgstr "إنشاء الفاتورة من القيود المحددة"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:30 ../../Open-ILS/src/templates/acq/lineitem/related.tt2:47 ../../Open-ILS/src/templates/acq/picklist/upload.tt2:10 ../../Open-ILS/src/templates/acq/po/create.tt2:2 ../../Open-ILS/src/templates/acq/po/create.tt2:3
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:31 ../../Open-ILS/src/templates/acq/lineitem/related.tt2:47 ../../Open-ILS/src/templates/acq/picklist/upload.tt2:10 ../../Open-ILS/src/templates/acq/po/create.tt2:2 ../../Open-ILS/src/templates/acq/po/create.tt2:3
 msgid "Create Purchase Order"
 msgstr "إنشاء طلب شراء"
 
@@ -496,7 +496,7 @@ msgstr "حذف المحدد"
 msgid "Delete Selected Copy"
 msgstr "حذف النُسخة المحددة"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:26
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:27
 msgid "Delete Selected Items"
 msgstr "حذف النُسخ المحددة"
 
@@ -524,15 +524,15 @@ msgstr "فصل"
 msgid "Direct Charges, Taxes, Fees, etc."
 msgstr "الأعباء المباشرة والضرائب والرسوم، الخ."
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:87
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:88
 msgid "Distribution Formula"
 msgstr "صيغة التوزيع"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:307
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:308
 msgid "Distribution Formulas"
 msgstr "صيغ التوزيع"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:317
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:318
 msgid "Distribution formulas applied to this lineitem:"
 msgstr "صيغ التوزيع التي تمّ تطبيقها على هذا القيد:"
 
@@ -578,7 +578,7 @@ msgstr "عدد الدخول: %1"
 msgid "Estimated Cost"
 msgstr "التكلفة المتوقعة"
 
-#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:68 ../../Open-ILS/src/templates/acq/common/li_table.tt2:131
+#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:68 ../../Open-ILS/src/templates/acq/common/li_table.tt2:132
 msgid "Estimated Price"
 msgstr "السعر المقدر"
 
@@ -586,11 +586,11 @@ msgstr "السعر المقدر"
 msgid "Evergreen Catalog"
 msgstr "فهرس إيفر غرين"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:198
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:199
 msgid "Expand"
 msgstr "توسيع"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:125
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:126
 msgid "Expand All"
 msgstr "تمديد الكل"
 
@@ -598,11 +598,11 @@ msgstr "تمديد الكل"
 msgid "Expected Cost: "
 msgstr "التكلفة المتوقعة: "
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:44
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:45
 msgid "Export List"
 msgstr "قائمة التصدير"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:28
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:29
 msgid "Export Single Attribute List"
 msgstr "تصدير قائمة الخاصية الواحدة"
 
@@ -630,7 +630,7 @@ msgstr "وضع اللمسات الأخيرة لطلب بلانكيت"
 msgid "Fiscal Year"
 msgstr "السنة المَالية"
 
-#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:116 ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:87 ../../Open-ILS/src/templates/acq/common/li_table.tt2:233 ../../Open-ILS/src/templates/acq/common/li_table.tt2:334 ../../Open-ILS/src/templates/acq/common/li_table.tt2:361 ../../Open-ILS/src/templates/acq/common/li_table.tt2:81 ../../Open-ILS/src/templates/acq/invoice/receive.tt2:45 ../../Open-ILS/src/templates/acq/invoice/view.tt2:123 ../../Open-ILS/src/templates/acq/po/item_table.tt2:7
+#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:116 ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:87 ../../Open-ILS/src/templates/acq/common/li_table.tt2:234 ../../Open-ILS/src/templates/acq/common/li_table.tt2:335 ../../Open-ILS/src/templates/acq/common/li_table.tt2:362 ../../Open-ILS/src/templates/acq/common/li_table.tt2:82 ../../Open-ILS/src/templates/acq/invoice/receive.tt2:45 ../../Open-ILS/src/templates/acq/invoice/view.tt2:123 ../../Open-ILS/src/templates/acq/po/item_table.tt2:7
 msgid "Fund"
 msgstr "التمويل/الاعتماد المالي"
 
@@ -662,7 +662,7 @@ msgstr "مصادر التمويل"
 msgid "Funds"
 msgstr "التمويل"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:182
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:183
 msgid "Generate Worksheet"
 msgstr "توليد صفحة العمل"
 
@@ -670,7 +670,7 @@ msgstr "توليد صفحة العمل"
 msgid "Generated Attributes"
 msgstr "السمات المُولدَة"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:289 ../../Open-ILS/src/templates/acq/common/li_table.tt2:590
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:290 ../../Open-ILS/src/templates/acq/common/li_table.tt2:591
 msgid "Go"
 msgstr "الذهاب"
 
@@ -694,7 +694,7 @@ msgstr "الأرشيف"
 msgid "Hits Per Source"
 msgstr "الإصابات حسب المصدر"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:208
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:209
 msgid "Holdings Maint."
 msgstr "صيانة الحيازات"
 
@@ -702,23 +702,23 @@ msgstr "صيانة الحيازات"
 msgid "ID"
 msgstr "المُعرف"
 
-#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:60 ../../Open-ILS/src/templates/acq/common/li_table.tt2:167
+#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:60 ../../Open-ILS/src/templates/acq/common/li_table.tt2:168
 msgid "ISBN"
 msgstr "ردمك"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:169
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:170
 msgid "ISSN"
 msgstr "ردمد"
-
-#: ../../Open-ILS/src/templates/acq/settings/li_attr.tt2:26
-msgid "Identifer Field?: "
-msgstr "معرف الحقل؟: "
 
 #: ../../Open-ILS/src/templates/acq/receiving/process.tt2:11 ../../Open-ILS/src/templates/acq/settings/li_attr.tt2:54
 msgid "Identifier"
 msgstr "المُعرف"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:491
+#: ../../Open-ILS/src/templates/acq/settings/li_attr.tt2:26
+msgid "Identifier Field?: "
+msgstr ""
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:492
 msgid "Import Bibs and Create Copies"
 msgstr "استيراد مكتبات وإنشاء نُسخ"
 
@@ -726,7 +726,7 @@ msgstr "استيراد مكتبات وإنشاء نُسخ"
 msgid "Import Non-Matching Records"
 msgstr "استيراد التسجيلات غير المطابقة"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:189
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:190
 msgid "Import Queue"
 msgstr "استيراد الطابور"
 
@@ -758,11 +758,11 @@ msgstr "الفَاتورة #"
 msgid "Invoicing"
 msgstr "إِصدار الفواتير"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:286
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:287
 msgid "Item Count: "
 msgstr "تعداد النُسخة: "
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:127 ../../Open-ILS/src/templates/acq/financial/claim_eligible.tt2:22
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:128 ../../Open-ILS/src/templates/acq/financial/claim_eligible.tt2:22
 msgid "Items"
 msgstr "النُسخ"
 
@@ -787,7 +787,7 @@ msgstr "حدود عملية إغلاق أو تصفية السنة المالية
 msgid "Limit to Invoiceable Items"
 msgstr "حدود النُسخ القابلة لإصدار فواتيرها"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:121
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:122
 msgid "Line Items"
 msgstr "القيود"
 
@@ -827,15 +827,15 @@ msgstr "الرابط"
 msgid "Link Invoice"
 msgstr "رابط الفاتورة"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:40
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:41
 msgid "Link Selected Line Items to Invoice"
 msgstr "رابط القيود المُحددة لـِ الفاتورة"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:181
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:182
 msgid "Link To Catalog Record"
 msgstr "رابط تسجيلة الفهرس"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:34
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:35
 msgid "Load Bibs and Items"
 msgstr "تحميل المكتبات والنُسخ"
 
@@ -867,11 +867,11 @@ msgstr "تسجيلة مارك لـِ ILS"
 msgid "MARC Order Record"
 msgstr "تسجيلة الطلب في مارك"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:25
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:26
 msgid "Mark Ready for Order"
 msgstr "التمييز جاهز لـِ الطلب"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:24
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:25
 msgid "Mark Ready for Selector"
 msgstr "التمييز جاهزة لـِ المُحددة"
 
@@ -879,19 +879,19 @@ msgstr "التمييز جاهزة لـِ المُحددة"
 msgid "Mark Selected Copies Received"
 msgstr "تمييز النُسخ المُحددة المُستلمة"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:37
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:38
 msgid "Mark Selected Line Items as Received"
 msgstr "تمييز القيود المحددة كـَ مُستلمة"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:584
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:585
 msgid "Mark all"
 msgstr "تمييز الكل"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:582
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:583
 msgid "Mark selected"
 msgstr "تمييز المُحدد"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:381
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:382
 msgid "Mark&nbsp;Received"
 msgstr "تمييز المُستَلَم"
 
@@ -927,7 +927,7 @@ msgstr "قوائم اختياراتي"
 msgid "Name"
 msgstr "الاسم"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:467
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:468
 msgid "Name (optional)"
 msgstr "الاسم (اختياري)"
 
@@ -935,7 +935,7 @@ msgstr "الاسم (اختياري)"
 msgid "Name:"
 msgstr "الاسم:"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:214 ../../Open-ILS/src/templates/acq/po/search.tt2:55
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:215 ../../Open-ILS/src/templates/acq/po/search.tt2:55
 msgid "New"
 msgstr "جَديد"
 
@@ -995,11 +995,11 @@ msgstr "موجز تسجيلة جديد مثل هذا"
 msgid "Next"
 msgstr "التالي"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:59
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:60
 msgid "Next &#187;"
 msgstr "التالي &#187;"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:252
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:253
 msgid "No Copies"
 msgstr "لا توجد نُسخ"
 
@@ -1015,7 +1015,7 @@ msgstr "لا مزيد مِن السمات للبحث حسب"
 msgid "No. Copies"
 msgstr "أرقام النُسخ"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:237 ../../Open-ILS/src/templates/acq/fund/view.tt2:127 ../../Open-ILS/src/templates/acq/po/item_table.tt2:10
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:238 ../../Open-ILS/src/templates/acq/fund/view.tt2:127 ../../Open-ILS/src/templates/acq/po/item_table.tt2:10
 msgid "Note"
 msgstr "الملاحظة"
 
@@ -1031,12 +1031,12 @@ msgstr "ملاحظة:"
 msgid "Note: "
 msgstr "ملاحظة: "
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:128 ../../Open-ILS/src/templates/acq/common/li_table.tt2:365 ../../Open-ILS/src/templates/acq/po/view.tt2:48
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:129 ../../Open-ILS/src/templates/acq/common/li_table.tt2:366 ../../Open-ILS/src/templates/acq/po/view.tt2:48
 msgid "Notes"
 msgstr "ملاحظات"
 
 #. ("<span name=\"notes_count\">0</span>")
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:202
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:203
 msgid "Notes(%1)"
 msgstr "ملاحظات(%1)"
 
@@ -1044,7 +1044,7 @@ msgstr "ملاحظات(%1)"
 msgid "On order"
 msgstr "قَيد الطلب"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:219
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:220
 msgid "On-Order"
 msgstr "قَيد الطلب"
 
@@ -1052,15 +1052,15 @@ msgstr "قَيد الطلب"
 msgid "Or create a new queue"
 msgstr "أو إنشاء طابور جديد"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:164
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:165
 msgid "Order Identifier"
 msgstr "مُعرف الطلب"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:216
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:217
 msgid "Order-Ready"
 msgstr "الطلب جاهز"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:463 ../../Open-ILS/src/templates/acq/po/search.tt2:71
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:464 ../../Open-ILS/src/templates/acq/po/search.tt2:71
 msgid "Ordering Agency"
 msgstr "وكالة الطلب"
 
@@ -1072,7 +1072,7 @@ msgstr "وكالة الطلب:"
 msgid "Owner"
 msgstr "المالك"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:331 ../../Open-ILS/src/templates/acq/common/li_table.tt2:358 ../../Open-ILS/src/templates/acq/common/li_table.tt2:411 ../../Open-ILS/src/templates/acq/common/li_table.tt2:72 ../../Open-ILS/src/templates/acq/invoice/receive.tt2:41
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:332 ../../Open-ILS/src/templates/acq/common/li_table.tt2:359 ../../Open-ILS/src/templates/acq/common/li_table.tt2:412 ../../Open-ILS/src/templates/acq/common/li_table.tt2:73 ../../Open-ILS/src/templates/acq/invoice/receive.tt2:41
 msgid "Owning Branch"
 msgstr "الفرع المالك"
 
@@ -1104,7 +1104,7 @@ msgstr "اسم ملف ـ طلب الشراء ـ مُستخدم مُسبقاً "
 msgid "PO ordering agency"
 msgstr "وكالة الطلب الخاصة بـِ ـ طلب الشراء ـ"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:190 ../../Open-ILS/src/templates/acq/invoice/view.tt2:127 ../../Open-ILS/src/templates/acq/invoice/view.tt2:93
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:191 ../../Open-ILS/src/templates/acq/invoice/view.tt2:127 ../../Open-ILS/src/templates/acq/invoice/view.tt2:93
 msgid "Paid"
 msgstr "مدفوع"
 
@@ -1112,7 +1112,7 @@ msgstr "مدفوع"
 msgid "Patron Request"
 msgstr "طلب المستفيد"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:185 ../../Open-ILS/src/templates/acq/picklist/user_request.tt2:2
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:186 ../../Open-ILS/src/templates/acq/picklist/user_request.tt2:2
 msgid "Patron Requests"
 msgstr "طلبات المستفيد"
 
@@ -1120,7 +1120,7 @@ msgstr "طلبات المستفيد"
 msgid "Pending"
 msgstr "مُعلقة"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:218
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:219
 msgid "Pending-Order"
 msgstr "الطلب المُعلق"
 
@@ -1140,7 +1140,7 @@ msgstr "أداء عملية أغلاق وتصفية السنة المالية: "
 msgid "Please enter an amount between 0 and 100"
 msgstr "لطفاً ينبغي إدخال المقدار ما بين 0 و 100"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:479
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:480
 msgid "Prepayment Required"
 msgstr "الدفع المسبق المطلوب"
 
@@ -1156,7 +1156,7 @@ msgstr "السابق"
 msgid "Previous"
 msgstr "السابق"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:32
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:33
 msgid "Print Purchase Order"
 msgstr "طباعة طلب الشراء"
 
@@ -1193,7 +1193,7 @@ msgid ""
 "bibliographic record IDs."
 msgstr "تزويد/تقديم ملف مصطلحات البحث"
 
-#: ../../Open-ILS/src/templates/acq/common/inv_dialog.tt2:18 ../../Open-ILS/src/templates/acq/common/li_table.tt2:188 ../../Open-ILS/src/templates/acq/common/li_table.tt2:475 ../../Open-ILS/src/templates/acq/picklist/upload.tt2:22 ../../Open-ILS/src/templates/acq/po/search.tt2:42 ../../Open-ILS/src/templates/acq/po/view.tt2:46
+#: ../../Open-ILS/src/templates/acq/common/inv_dialog.tt2:18 ../../Open-ILS/src/templates/acq/common/li_table.tt2:189 ../../Open-ILS/src/templates/acq/common/li_table.tt2:476 ../../Open-ILS/src/templates/acq/picklist/upload.tt2:22 ../../Open-ILS/src/templates/acq/po/search.tt2:42 ../../Open-ILS/src/templates/acq/po/view.tt2:46
 msgid "Provider"
 msgstr "المُزود"
 
@@ -1201,7 +1201,7 @@ msgstr "المُزود"
 msgid "Pubdate"
 msgstr "تاريخ النشر"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:184 ../../Open-ILS/src/templates/acq/po/events.tt2:55 ../../Open-ILS/src/templates/acq/po/view.tt2:2
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:185 ../../Open-ILS/src/templates/acq/po/events.tt2:55 ../../Open-ILS/src/templates/acq/po/view.tt2:2
 msgid "Purchase Order"
 msgstr "طلب الشراء"
 
@@ -1227,7 +1227,7 @@ msgstr "طلبات الشراء"
 msgid "Real Copies Processed"
 msgstr "النُسخ الفعلية المُعالجَة"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:537 ../../Open-ILS/src/templates/acq/picklist/user_request.tt2:74 ../../Open-ILS/src/templates/acq/po/view.tt2:115
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:538 ../../Open-ILS/src/templates/acq/picklist/user_request.tt2:74 ../../Open-ILS/src/templates/acq/po/view.tt2:115
 msgid "Reason:"
 msgstr "السَبب:"
 
@@ -1243,11 +1243,11 @@ msgstr "النُسخ المُحددة المُستَلمة"
 msgid "Receive Time"
 msgstr "وقت الاستلام"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:220
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:221
 msgid "Received"
 msgstr "المُستلمة"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:366
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:367
 msgid "Receiver"
 msgstr "المُستَلِم"
 
@@ -1315,7 +1315,7 @@ msgstr "إظهار شكل/نموذج البحث"
 msgid "Same as source amount?"
 msgstr "هل تريد أن يكون تماماً كـَ مقدار المصدر؟"
 
-#: ../../Open-ILS/src/templates/acq/common/add_to_po.tt2:55 ../../Open-ILS/src/templates/acq/common/li_table.tt2:530 ../../Open-ILS/src/templates/acq/common/li_table.tt2:546 ../../Open-ILS/src/templates/acq/invoice/view.tt2:169
+#: ../../Open-ILS/src/templates/acq/common/add_to_po.tt2:55 ../../Open-ILS/src/templates/acq/common/li_table.tt2:531 ../../Open-ILS/src/templates/acq/common/li_table.tt2:547 ../../Open-ILS/src/templates/acq/invoice/view.tt2:169
 msgid "Save"
 msgstr "حِفظ"
 
@@ -1323,11 +1323,11 @@ msgstr "حِفظ"
 msgid "Save &amp; Clear"
 msgstr "حفظ ومسح"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:292 ../../Open-ILS/src/templates/acq/common/li_table.tt2:401
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:293 ../../Open-ILS/src/templates/acq/common/li_table.tt2:402
 msgid "Save Changes"
 msgstr "حفظ التغييرات"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:23
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:24
 msgid "Save Items To Selection List"
 msgstr "حفظ النُسخ إلى القائمة المُحددة"
 
@@ -1339,15 +1339,15 @@ msgstr "حفظ التغييرات الجديدة"
 msgid "Save Record"
 msgstr "حفظ التسجيلة"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:514
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:515
 msgid "Save all"
 msgstr "حِفظ الكل"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:519
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:520
 msgid "Save as Selection List: "
 msgstr "حفظ كـَ قائمة اختيار: "
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:512
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:513
 msgid "Save selected"
 msgstr "حفظ المُحدد"
 
@@ -1387,7 +1387,7 @@ msgstr "تحديد الكل"
 msgid "Select Claim Action"
 msgstr "اختيار إجراء المُطالبة"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:183
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:184
 msgid "Select List"
 msgstr "قائمة الاختيار"
 
@@ -1396,11 +1396,11 @@ msgstr "قائمة الاختيار"
 msgid "Select a fund for the new items: %1"
 msgstr "اختيار التمويل للنُسخ الجديدة: %1"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:563
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:564
 msgid "Select a new fund:"
 msgstr "اختيار تمويل جديد:"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:487
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:488
 msgid "Selected Line Items"
 msgstr "القيود المُحددة"
 
@@ -1417,7 +1417,7 @@ msgstr "قوائم الاختيار"
 msgid "Selection list %1"
 msgstr "قائمة الاختيار %1"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:215
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:216
 msgid "Selector-Ready"
 msgstr "المُحدد جاهز"
 
@@ -1438,7 +1438,7 @@ msgstr "موقع الرفوف"
 msgid "Show Details"
 msgstr "إظهار التفاصيل"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:180
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:181
 msgid "Show In Catalog"
 msgstr "إظهار في الفهرس"
 
@@ -1482,7 +1482,7 @@ msgstr "مجال تاريخ البداية"
 msgid "State"
 msgstr "الولاية"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:130
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:131
 msgid "Status"
 msgstr "الحالة"
 
@@ -1499,7 +1499,7 @@ msgstr "الحقل الفرعي"
 msgid "Subfield: "
 msgstr "الحقول الفرعية: "
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:447 ../../Open-ILS/src/templates/acq/common/li_table.tt2:496 ../../Open-ILS/src/templates/acq/common/li_table.tt2:571 ../../Open-ILS/src/templates/acq/picklist/bib_search.tt2:43
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:448 ../../Open-ILS/src/templates/acq/common/li_table.tt2:497 ../../Open-ILS/src/templates/acq/common/li_table.tt2:572 ../../Open-ILS/src/templates/acq/picklist/bib_search.tt2:43
 msgid "Submit"
 msgstr "تأكيد"
 
@@ -1568,15 +1568,15 @@ msgstr ""
 "بُطلانُها (هذا يعني، إزالتها تماماً) بدلاً من نقلها إلى تمويلات "
 "مماثلة/مُناظِرَة في السنة المالية اللاحقة."
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:471
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:472
 msgid "This name is used by another PO"
 msgstr "هذا الاسم مُستخدم مِن قبل ـ طلب شراء ـ آخر"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:557
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:558
 msgid "This will also update any existing encumbered or spent debits."
 msgstr "هذا أيضاً سوف يحدث أية أعباء أو مَدِينات مُنفقة موجودة."
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:556
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:557
 msgid "This will update the fund for all copies attached to these lineitems."
 msgstr "هذا سوف يحدث التمويل لكل النُسخ المُرفقة لـِ هذه القيود."
 
@@ -1680,19 +1680,19 @@ msgstr "نقل أموال"
 msgid "True"
 msgstr "صحيح"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:168
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:169
 msgid "UPC"
 msgstr "UPC"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:381
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:382
 msgid "Un-Receive"
 msgstr "غير مُستَلم"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:38
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:39
 msgid "Un-Receive Selected Line Items"
 msgstr "القيود المُحددة غير المُستلمة"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:207
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:208
 msgid "Update Barcodes"
 msgstr "تحديث الباركودات"
 
@@ -1732,7 +1732,7 @@ msgstr "البَائع"
 msgid "View"
 msgstr "إظهار"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:210
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:211
 msgid "View History"
 msgstr "عرض الأرشيف"
 
@@ -1749,11 +1749,11 @@ msgstr "عرض الفواتير (%1)"
 msgid "View MARC"
 msgstr "إظهار مارك"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:472 ../../Open-ILS/src/templates/acq/po/view.tt2:23
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:473 ../../Open-ILS/src/templates/acq/po/view.tt2:23
 msgid "View PO"
 msgstr "عرض ـ طلبات الشراء ـ"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:33
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:34
 msgid "View PO History"
 msgstr "عرض أرشيف ـ طلبات الشراء ـ"
 
@@ -1793,7 +1793,7 @@ msgstr "كُل"
 msgid "any"
 msgstr "أيا مِن"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:187
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:188
 msgid "claim policy:"
 msgstr "سياسة المُطالبة:"
 
@@ -1853,7 +1853,7 @@ msgstr "لـِ المصطلحات التالية:"
 msgid "purchase orders"
 msgstr "طلبات الشراء"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:185
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:186
 msgid "requests"
 msgstr "الطلبات"
 
@@ -1861,6 +1861,6 @@ msgstr "الطلبات"
 msgid "selection lists"
 msgstr "قوائم الاختيار"
 
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:186
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:187
 msgid "view invoice(s)"
 msgstr "عرض الفواتير"

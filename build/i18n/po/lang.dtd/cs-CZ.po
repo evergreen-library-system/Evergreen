@@ -9,8 +9,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-02-02 05:31+0000\n"
-"X-Generator: Launchpad (build 18315)\n"
+"X-Launchpad-Export-Date: 2017-02-13 05:33+0000\n"
+"X-Generator: Launchpad (build 18326)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: Czech\n"
@@ -8918,19 +8918,6 @@ msgstr ""
 "výpůjčce/prodloužení výpůjčky, objeví se kromě zprávy na obrazovce také  "
 "vyskakovací okno."
 
-#: staff.server.admin.org_settings.circ.selfcheck.require_patron_password
-msgid "Selfcheck: Require patron password"
-msgstr "Samoobslužný výpůjční protokol: Požadovatpo čtenáři heslo"
-
-#: staff.server.admin.org_settings.circ.selfcheck.require_patron_password.desc
-msgid ""
-"If true, patrons will be required to enter their password in addition to "
-"their username/barcode to log into the selfcheck interface"
-msgstr ""
-"Je-li tato hodnota nastavena jako pravdivá, čtenáři budou muset  v rozhraní "
-"samoobslužné výpůjční stanice zadávat kromě svého uživatelského "
-"jména/čárového kódu také své heslo"
-
 #: staff.server.admin.org_settings.global.juvenile_age_threshold
 msgid "Juvenile Age Threshold"
 msgstr "Hranice zletilosti"
@@ -15687,6 +15674,9 @@ msgstr "Otevřít frontu"
 #~ msgid "Large"
 #~ msgstr "Velký"
 
+#~ msgid "Selfcheck: Require patron password"
+#~ msgstr "Samoobslužný výpůjční protokol: Požadovatpo čtenáři heslo"
+
 #~ msgid "Edit Phone Notification"
 #~ msgstr "Změnit telefonní číslo pro upozornění"
 
@@ -15859,3 +15849,11 @@ msgstr "Otevřít frontu"
 #~ msgctxt "staff.patron.ue.address_label.label"
 #~ msgid "Address Label"
 #~ msgstr "Štítek adresy"
+
+#~ msgid ""
+#~ "If true, patrons will be required to enter their password in addition to "
+#~ "their username/barcode to log into the selfcheck interface"
+#~ msgstr ""
+#~ "Je-li tato hodnota nastavena jako pravdivá, čtenáři budou muset  v rozhraní "
+#~ "samoobslužné výpůjční stanice zadávat kromě svého uživatelského "
+#~ "jména/čárového kódu také své heslo"
