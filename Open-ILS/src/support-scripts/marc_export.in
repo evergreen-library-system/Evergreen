@@ -22,6 +22,7 @@ use MARC::Field;
 use MARC::Record;
 use MARC::File::XML (BinaryEncoding => 'UTF-8');
 use Date::Manip::Date;
+use Encode;
 my $U = 'OpenILS::Application::AppUtils';
 
 binmode(STDERR, ':utf8');
@@ -480,13 +481,13 @@ sub next {
                             MARC::Field->new(
                                 '852', '4', ' ',
                                 ($location ? ('a' => $location) : ()),
-                                b => $acp->call_number()->owning_lib()->shortname(),
-                                b => $acp->circ_lib()->shortname(),
-                                c => $acp->location()->name(),
-                                j => $acp->call_number()->label(),
-                                ($acp->circ_modifier() ? (g => $acp->circ_modifier()) : ()),
-                                p => $acp->barcode(),
-                                ($price ? (y => $price) : ()),
+                                b => Encode::decode_utf8($acp->call_number()->owning_lib()->shortname()),
+                                b => Encode::decode_utf8($acp->circ_lib()->shortname()),
+                                c => Encode::decode_utf8($acp->location()->name()),
+                                j => Encode::decode_utf8($acp->call_number()->label()),
+                                ($acp->circ_modifier() ? (g => Encode::decode_utf8($acp->circ_modifier())) : ()),
+                                p => Encode::decode_utf8($acp->barcode()),
+                                ($price ? (y => Encode::decode_utf8($price)) : ()),
                                 ($acp->copy_number() ? (t => $acp->copy_number()) : ()),
                                 ($U->is_true($acp->ref()) ? (x => 'reference') : ()),
                                 (!$U->is_true($acp->holdable()) ? (x => 'unholdable') : ()),
