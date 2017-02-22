@@ -1,6 +1,0 @@
-Links to Other Formats and Editions
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The record summary pages in the catalog will now link to other formats and
-editions of a title. The links will allow users to quickly jump to another
-format of the title or an edition written in another language. 
-

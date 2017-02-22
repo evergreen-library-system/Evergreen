@@ -1,4 +1,0 @@
-Active Date Column Picker Option
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The active date will now be available as a column picker option in the Item
-Status screen.

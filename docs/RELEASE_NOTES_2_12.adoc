@@ -1,0 +1,623 @@
+Evergreen 2.12-beta Release Notes
+=================================
+:toc:
+:numbered:
+
+Upgrade notes
+-------------
+Evergreen 2.12 now requires OpenSRF 2.5 or later; certain functionality
+will not work if you attempt to run Evergreen 2.12 on OpenSRF 2.4. Evergreen
+2.12 also requires PostgreSQL 9.3 or later.
+
+The stock schema upgrade script performs a browse reingest, recalculates
+bib fingerprints, and remaps metarecords.
+
+New Features
+------------
+
+
+
+Administration
+~~~~~~~~~~~~~~
+
+
+
+Additional SMS Carriers
+^^^^^^^^^^^^^^^^^^^^^^^
+SMS carrier definitions are now included for Google Fi and
+Republic Wireless. These will be automatically loaded when
+installing a new Evergreen system; admins who wish to
+add these definitions during an upgrade can use the following
+email gateway values:
+
+ * Google Fi: `$number@msg.fi.google.com`
+ * Republic Wireless: `$number@text.republicwireless.com`
+
+
+
+
+Bibliographic Fingerprint Improvements
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The bibliographic fingerprint will now incorporate subfield n and p from MARC
+title fields to better distinguish between records of the same series that
+may share the same title but have a different part. With this change, these
+MARC records will no longer be grouped together in a 'Group Formats & Editions'
+search.
+
+The bibliographic fingerprint was also changed to better distinguish between a
+the fields contributing to the fingerprint. This change will help the system
+distinguish between a record for the movie _Blue Steel_ and another record for
+the book _Blue_ written by Danielle Steel.
+
+
+
+
+
+
+Batch Hold Targeter Speed-up and New Features
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Adds a new open-ils.hold-targeter service, supporting new targeting options
+and runtime optimizations to speed up targeting.  The service is launched
+from a new targeting script, hold_targeter_v2.pl (default location:
+/openils/bin/hold_targeter_v2.pl).
+
+This code has no effect on the existing hold targeter, which is still
+available as of this release and functions as before.
+
+New Features/Options
+++++++++++++++++++++
+
+* Adds a global configuration flag 'circ.holds.retarget_interval' for 
+  setting the hold retarget interval.
+
+* --target-all option forces the targeter to process all active
+  holds, regardless of when they were last targeted.
+
+* --retarget-interval option make is possible to override the new
+  'circ.holds.retarget_interval' setting via the command line 
+  when calling the hold targeter.
+
+* --skip-viable option causes the hold targeter to avoid modifying 
+  the currently targeted copy (i.e. the copy on the pull list) for holds 
+  that target a viable (capturable) copy.  
+  
+  For skipped holds, no entry is added to the unfulfilled_hold_list.
+  The set of potential copies (hold copy maps) are refreshed for all
+  processed holds, regardless of target viability.
+
+  This option is useful for 1.) finding targets for holds that require 
+  new targets and 2.) adding new/modified copies to the potential copy 
+  lists (for op capture) more frequently than you may want to do full
+  retargeting of all holds.
+
+* --newest-first option processes holds in reverse order of request_time,
+  so that newer holds are (re)targeted first.  This is primarily useful
+  when a large backlog of old, un-targetable holds exist.  With 
+  --newest-first, the older holds will be processed last.
+
+* --parallel option overrides the parallel settings found in opensrf.xml
+  for simpler modification and testing.
+
+* --lockfile option allows the caller to specifiy a lock file instead
+  of using the default /tmp/hold_targeter-LOCK
+
+* --verbose option prints progress info to STDOUT, showing the number of
+  holds processed per parallel targeter instance.
+
+* When configured, hold target loops cycle through all org units (with 
+  targetable copies) instead of repeatedly targeting copies at the pickup
+  library when multiple targetable copies exist at the pickup library.
+
+* When configured, hold target loops prioritize (targetable) org units
+  first by the number of previous target attempts, then by their 
+  weight/proximity.  This effectively back-fills org units that had no
+  targetable copies during earlier target loops so that they are 
+  targeted as many times as other org units (to the extent possible, 
+  anyway).
+
+Examples
+++++++++
+
+* Traditional daily hold targeter with a value set for 
+  'circ.holds.retarget_interval'.
+
+[source,sh]
+--------------------------------------------------------------------------
+/openils/bin/hold_targeter_v2.pl
+--------------------------------------------------------------------------
+
+* (Re)target non-viable holds twice a day, only processing holds that 
+  have never been targeter or those that have not been re-targeted in
+  the last 12 hours.
+
+[source,sh]
+--------------------------------------------------------------------------
+/openils/bin/hold_targeter_v2.pl --skip-viable --retarget-interval "12h"
+--------------------------------------------------------------------------
+
+* (Re)target non-viable holds twice a day, processing all holds regardless
+  of when or if they were targeted before, running 3 targeters in
+  parallel.
+
+[source,sh]
+--------------------------------------------------------------------------
+/openils/bin/hold_targeter_v2.pl --skip-viable --target-all --parallel 3
+--------------------------------------------------------------------------
+
+
+
+
+
+Add separate make target for translator
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Add a separate make target during installation for translator to allow
+for easier installation of i18n prerequisites.
+
+
+
+
+
+Addition of missing permissions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Required permissions that were previously missing from the stock data have now
+been added. If Evergreen sites have already manually added these permissions,
+the upgrade script will remove the old permission and create the new one,
+maintaining any maps to permission groups, with the stock permission ID.
+
+
+
+
+
+get_org_unit_ancestor_at_depth Helper Added to Action Trigger Reactor Helpers
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+In action trigger templates it's now possible to call
+helpers.get_org_unit_ancestor_at_depth($id_or_aou, $depth) in order to retrieve
+a fleshed aou for the target aou's ancestor at the chosen depth. This could be
+used to retrieve the name of the library system rather than a specific branch
+name, for instance.
+
+
+
+
+Removed unused selfcheck password setting
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+There was an unused duplicate selfcheck password setting that was removed
+to avoid confusion over which library setting was supposed to be set to
+enable passwords for selfcheck. After upgrading, verify that your library
+policy remains consistent for this setting.
+
+
+
+
+
+Credit Processor Stripe Settings Permissions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Unprivileged users can retrieve organizational unit setting values for
+setting types lacking a "view" permission.  When the feature adding
+Stripe credit card processing was added, the upgrade script neglected
+to add the VIEW_CREDIT_CARD_PROCESSING permission to the
+organizational unit setting type.  This means that anyone can retrieve
+and view the settings for Stripe credit card processing.
+
+Any system that upgraded from Evergreen version 2.5 to 2.6 is
+affected.  If you use Stripe for credit card processing, it is
+strongly recommended that you apply this upgrade.  Even if you do not
+use Stripe, applying this upgrade is still recommended.  If you did
+not upgrade from version 2.5 to 2.6 of Evergreen, but started with a
+later version, applying this upgrade is harmless.
+
+
+
+
+Cataloging
+~~~~~~~~~~
+
+
+
+New Access Points for MARC Merge/Overlay Profiles
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Catalogers can now select a MARC merge/overlay profile to apply when
+merging records in the (browser client) record bucket merge and Z39.50
+record overlay interfaces. In both interfaces, if the user selects
+a merge profile, the results of the merge are displayed, giving the
+user the opportunity to choose a different merge profile or edit
+the records involved prior to committing to the merge.
+
+A new library setting, "Default Merge Profile (Z39.50 and Record Buckets)",
+specifies the merge profile to preselect in the new merge profile
+selectors in the record bucket merge and Z39.50 overlay logs. The
+selectors will also remember the last selection that the user made.
+
+
+
+
+Circulation
+~~~~~~~~~~~
+
+
+
+Display Copy Alerts With In-House-Use
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Two library settings are used to control the display of copy alert
+messages or copy location check in alerts when recording in-house-use
+in Evergreen.
+
+Setting 'Display copy alert for in-house-use' to true for an
+organization will cause an alert to appear with the copy's alert
+message, if it has one, when recording in-house-use for the copy.
+
+Setting 'Display copy location check in alert for in-house-use' to true
+for an organization will cause an alert to display a message
+indicating that the item needs to be routed to its location if the
+location has check in alert set to true.
+
+The settings are independent of one another because you may want to
+display one and not the other when recording in-house-use.
+
+
+
+
+Client
+~~~~~~
+
+
+
+Active Date Column Picker Option
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The active date will now be available as a column picker option in the Item
+Status screen.
+
+
+
+
+Punctuation Insensitive Patron Search
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+When performing a patron search, punctuation characters will be
+ignored.  So if the patron is named O'Brien, then you can enter Obrien,
+O'Brien, O Brien, etc. in the search box.
+
+This behavior affects the Last Name (internally: family_name), First Name
+(first_given_name), and Middle Name (second_given_name) fields of the search.
+
+
+
+
+
+
+Touch screen improvements for Evergreen self-check interface
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Improvements were made to the Evergreen self-check interface to make it easier
+to use in a touch-screen environment.
+
+ * The pay fines link is now a pay fines button, matching other buttons on the
+page.
+ * The checkboxes have been enlarged, making them easier to activate when using
+a touch screen.
+
+
+
+
+
+Trial Production Use of the Web Staff Client
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The new web staff client is ready for trial production use in all functional
+areas with the exception of serials and offline transactions. In addition to
+many bug fixes in the areas of circulation, cataloging, administration and
+reporting, Release 2.12 sees the following additions to web client
+functionality.
+
+ * Acquisitions interfaces and functionality have been integrated into the web
+ staff client.
+ * Booking interfaces and functionality have been integrated into the web staff
+ client.
+ * Hatch, the program that will allow for unmediated printing to multiple
+ printers, sharing of workstation settings, and, eventually, offline 
+ transactions is now available. A windows installer for Hatch will be available
+ on the Evergreen-ILS Downloads page.
+
+The Evergreen developers will keep pilot libraries updated about known web
+client issues by posting known bugs to https://wiki.evergreen-ils.org/doku.php?id=dev:browser_staff:known_issues .
+
+About Hatch
++++++++++++
+Hatch is not required to use the web client, but should be used for workstations
+that need to perform the following tasks.
+
+ * Unmediated printing to multiple printers. Workstations can print to multiple
+ printers without Hatch, but will need to click through a dialog to select a
+ printer. Hatch allows workstations to automatically print, without dialog, to
+ different printers. 
+ * Storage of workstation settings in a place outside the browser. Storing local
+ preferences in hatch will prevent tampering with preferences via the browser
+ developer tools and protect the settings from possible deletion if the browser
+ deletes settings in local storage.
+ * When offline functionality is available, hatch will be required to perform
+ offline transactions.
+ 
+Hatch is currently run as a Chrome extension and is not available in Firefox. To
+use hatch on Windows, Evergreen sites should:
+
+ . install a java runtime environment version 8 (or higher) if not already
+ installed,
+ . download and execute the installer from the Evergreen downloads page, 
+ . open Chrome and navigate to chrome://extensions,
+ . enable _Developer Mode_ along the top right of the page,
+ . click the _Load Unpacked Extension_ button,
+ . load the directory at Hatch -> extension -> app,
+ .. In Windows, the default location for the app directory will be
+ C:\Program Files (x86)\Hatch\extension\app
+ . enable hatch features in the web client by going to Administration ->
+ Workstation Administration -> Print/Storage Service ("Hatch") and choosing
+ which services to use with Hatch.
+ .. this page will also inform you that hatch is connected. 
+
+
+
+
+Infrastructure
+~~~~~~~~~~~~~~
+
+
+
+Client Timezone Awareness
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Previously, adjusting the time zone in which a database session operates
+could not be done in any way except globally, directly within the database.
+However, allowing modification of the timezone parameter now supports
+localization efforts for those consortia that span multiple time zones.
+
+Implementation
+++++++++++++++
+
+CStore and other services that interact with the primary Evergreen database
+make use of the functionality provided by LP#1485371 in OpenSRF in order to
+set the time zone configuration parameter available in PostgreSQL.  This has
+the effect of interpreting all timestamps written to or read from the database
+in the client's time zone.
+
+Within CStore (and related, C-based services), all stateful sessions make use
+of this capability, setting the database time zone upon a successful CONNECT
+message from the client.  The time zone is reset to the database default when
+a session is terminated either due to client DISCONNECT or server keepalive
+timeout.
+
+All stateless requests record the current database time zone, set the database
+time zone to that of the client's, run the query, and then reset the database
+time zone on each request that carries a client time zone value.  It is expect
+that this will not cause any noticeable increase in latency or query execution
+time, as this setting is local to the specific PostgreSQL server backend process.
+
+Within the Storage service, the timezone will be set automatically by a simple
+wrapper method used by the existing method registration mechanism for method
+publishing.  Disconnect and error callbacks are registered to revert the time
+zone setting within the database.  This provides completely transparent time
+zone manipulation for backend services that make use of open-ils.storage.
+
+
+
+
+Public Catalog
+~~~~~~~~~~~~~~
+
+
+
+New Subject Browse Index Definitions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+New subject browse index definitions have been added that display the entire
+heading as a unit with hyphens between terms instead of displaying individual
+terms separately. 
+
+For example, the browse heading for:
+
+=650 \0$aCats$zUnited States$vCorrespondence.
+
+will display in a single entry as:
+
+Cats -- United States -- Correspondence
+
+Rather than separate entries for Cats and United States. 
+
+Name subjects will continue to display as separate entries because additional
+work would be required for the heading to be punctuated correctly.
+
+
+
+
+Advanced Search Limiters Enhancement
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Advanced search limiters will no longer propagate to the basic search box in
+the catalog. Instead, the limiters applied to the search will appear in the
+left sidebar of the search results screen where they can be easily cleared by
+clicking an 'x.' On a small, mobile device, the advanced search limiters can
+be seen by clicking an 'x filter applied' link or by clicking the 'Refine
+these results' button that typically shows facets to the user.
+
+The selected limiters will be applied to any search from the search bar until:
+ * The user actively removes the filters from the search or
+ * The user starts a new basic or advanced search from scratch.
+
+
+
+
+Arabic and Right-to-Left Language Support for the catalog
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+New stylesheets and other changes to the catalog to allow for 
+better support of right-to-left (RTL) languages, such as Arabic.
+
+Also add Arabic (Jordan) as a new supported language.
+
+
+
+
+E-book integration
+^^^^^^^^^^^^^^^^^^
+OverDrive and OneClickdigital integration has been added to Evergreen. The
+system will now support:
+ * Display of e-book availability in the search results and record summary
+ pages.
+ * Display of e-book checkouts and holds in a patron's My Account pages.
+
+To enable this feature, Evergreen sites need to:
+  * Ensure the new <http_client> block and open-ils.ebook_api service have been
+  added to opensrf.xml and (in the case of the open-ils.ebook_api_service)
+  opensrf_core.xml. Both blocks are now included in the example files.
+  * Contact their vendor to obtain credentials for their API account.
+  * Edit the config.tt2 file to set ebook_api.enabled to true. Administrators
+  will also need to enable specific vendor APIs and add base URIs that are used
+  in 856 fields.
+  * Add the credentials for their API account in the new Ebook API Integration
+  settings provided in the Library Settings Editor.
+
+New settings available in the Library Settings Editor
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+The following settings have been added to the Library Settings Editor:
+  * OneClickdigital Basic Token (ebook_api.overdrive.discovery_base_uri)
+  * OneClickdigital Library ID (ebook_api.oneclickdigital.library_id)
+  * Overdrive Account ID (ebook_api.overdrive.account_id)
+  * Overdrive Authorization Name (ebook_api.overdrive.authorizationname)
+  * Overdrive Basic Token (ebook_api.overdrive.basic_token)
+  * Overdrive Circulation API Base URI (ebook_api.overdrive.circulation_base_uri)
+  * Overdrive Discovery API Base URI (ebook_api.overdrive.discovery_base_uri)
+  * Overdrive Granted Authorization Redirect URI (ebook_api.overdrive.granted_auth_redirect_uri)
+  * Overdrive Password Required (ebook_api.overdrive.password_required)
+  * Overdrive Website ID (ebook_api.overdrive.websiteid)
+
+New config.tt2 settings
++++++++++++++++++++++++
+  * ebook_api.enabled
+  * ebook_api.ebook_test_.enabled
+  * ebook_api.ebook_test.base_uris
+  * ebook_api.oneclickdigital.enabled
+  * ebook_api.oneclickdigital.base_uris
+  * ebook_api.overdrive.enabled
+  * ebook_api.overdrive.base_uris
+
+
+
+
+
+
+Links to Other Formats and Editions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The record summary pages in the catalog will now link to other formats and
+editions of a title. The links will allow users to quickly jump to another
+format of the title or an edition written in another language. 
+
+
+
+
+
+Metarecord Search Improvements
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+This release brings several improvement to the Group Formats and Editions
+search. 
+
+ * Limiters on the advanced search page can now be successfully applied to 
+Group Formats and Editions searches,
+ * Electronic resources are now retrievable through these searches,
+ * Paged navigation has improved.
+
+
+
+
+Allow Metarecord Search by default
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Before the TPAC, a site could configure the public catalog to use metarecord searching
+by default, via a configuration file.  Here we bring that back.
+
+A new setting called search.metarecord_default is present in
+templates/opac/parts/config.tt2 to enable this feature.  By setting this to
+a true value (normally 1) the TPAC will silently include the #metabib search
+modifier in the search form on any interfaces that do not have a UI component
+that allows the user to control the setting.
+
+
+
+
+
+
+RDA Improvements
+^^^^^^^^^^^^^^^^
+ * Author fields are now normalized to strip ending periods so that authors from
+RDA and non-RDA records are collapsed in browse and facet headings.
+ * All author/contributor roles will now be displayed in the record detail.
+Previously, some of the roles were omitted or were duplicated.
+
+
+Acknowledgments
+---------------
+The Evergreen project would like to acknowledge the following
+organizations that commissioned developments in this release of
+Evergreen:
+
+TODO
+
+We would also like to thank the following individuals who contributed
+code, translations, documentations patches and tests to this release of
+Evergreen:
+
+* Ben Shum
+* Bill Erickson
+* Billy Horn
+* Blake Henderson
+* Chris Sharp
+* Christine Burns
+* Christine Morgan
+* Clare Sobotka
+* Dan Pearl
+* Dan Scott
+* Dan Wells
+* Debbie Luchenbill
+* Galen Charlton
+* Jakub Kotrla
+* Jane Sandberg
+* Jason Boyer
+* Jason Etheridge
+* Jason Stephenson
+* Jeanette Lundgren
+* Jeff Davis
+* Jeff Godin
+* Jennifer Pringle
+* Jillianne Presley
+* Jim Keenan
+* Josh Stompro
+* Kate Butler
+* Kathy Lussier
+* Kyle Huckins
+* Michele Morgan
+* Michelle Purcell
+* Mike Rylander
+* Nawras Othman
+* Remington Steed
+* Rogan Hamby
+* Terran McCanna
+* Thomas Berezansky
+
+We also thank the following organizations whose employees contributed
+patches:
+
+* British Columbia Libraries Cooperative
+* Catalyst DevWorks
+* C/W MARS
+* Equinox Open Library Initiative
+* Georga PINES
+* Indiana State Library
+* King County Library System
+* Lake Agassiz Regional Library
+* Laurentian University
+* Linn-Benton Community College
+* MassLNC
+* Merrimack Valley Library Consortium
+* MOBIUS Consortium
+* National Library of the Czech Republic
+* North of Boston Library Exchange
+* Rodgers Memorial Library
+* Traverse Area District Library
+
+We regret any omissions.  If a contributor has been inadvertently
+missed, please open a bug at http://bugs.launchpad.net/evergreen/
+with a correction.
+
