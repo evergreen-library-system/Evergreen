@@ -1,4 +1,0 @@
-Support for Ubuntu 16.04
-^^^^^^^^^^^^^^^^^^^^^^^^
-Adds support for Ubuntu Xenial Xerus (16.04).
-

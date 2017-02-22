@@ -1,9 +1,14 @@
-Bibliographic Fingerprint Improvement
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Bibliographic Fingerprint Improvements
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 The bibliographic fingerprint will now incorporate subfield n and p from MARC
 title fields to better distinguish between records of the same series that
 may share the same title but have a different part. With this change, these
 MARC records will no longer be grouped together in a 'Group Formats & Editions'
 search.
+
+The bibliographic fingerprint was also changed to better distinguish between a
+the fields contributing to the fingerprint. This change will help the system
+distinguish between a record for the movie _Blue Steel_ and another record for
+the book _Blue_ written by Danielle Steel.
 
 
