@@ -27,17 +27,18 @@ that need to perform the following tasks.
  printers without Hatch, but will need to click through a dialog to select a
  printer. Hatch allows workstations to automatically print, without dialog, to
  different printers. 
- * Sharing of workstation settings. When hatch is available for more browsers,
- this functionality will allow sharing across browsers. Libraries may also
- install hatch on a separate computer where the settings can be shared by all
- workstations in the library. Storing local preferences in hatch will also
- prevent tampering with preferences via the browser developer tools.
+ * Storage of workstation settings in a place outside the browser. Storing local
+ preferences in hatch will prevent tampering with preferences via the browser
+ developer tools and protect the settings from possible deletion if the browser
+ deletes settings in local storage.
  * When offline functionality is available, hatch will be required to perform
  offline transactions.
  
 Hatch is currently run as a Chrome extension and is not available in Firefox. To
 use hatch on Windows, Evergreen sites should:
 
+ . install a java runtime environment version 8 (or higher) if not already
+ installed,
  . download and execute the installer from the Evergreen downloads page, 
  . open Chrome and navigate to chrome://extensions,
  . enable _Developer Mode_ along the top right of the page,
