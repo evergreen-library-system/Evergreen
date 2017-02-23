@@ -1054,7 +1054,9 @@ sub run_indb_circ_test {
             $self->circ_matrix_matchpoint->recurring_fine_rule->grace_period($results->[0]->{grace_period});
         }
         $self->circ_matrix_matchpoint->max_fine_rule($self->editor->retrieve_config_rules_max_fine($results->[0]->{max_fine_rule}));
-        $self->circ_matrix_matchpoint->hard_due_date($self->editor->retrieve_config_hard_due_date($results->[0]->{hard_due_date}));
+        if(defined($results->[0]->{hard_due_date})) {
+            $self->circ_matrix_matchpoint->hard_due_date($self->editor->retrieve_config_hard_due_date($results->[0]->{hard_due_date}));
+        }
         # Grab the *last* response for limit_groups, where it is more likely to be filled
         $self->limit_groups($results->[-1]->{limit_groups});
     }
