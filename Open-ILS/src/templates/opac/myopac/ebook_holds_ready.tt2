@@ -1,0 +1,50 @@
+[%  PROCESS "opac/parts/header.tt2";
+    PROCESS "opac/parts/misc_util.tt2";
+    PROCESS "opac/parts/hold_status.tt2";
+    PROCESS "opac/parts/myopac/column_sort_support.tt2";
+    WRAPPER "opac/parts/myopac/base.tt2";
+    myopac_page = "ebook_holds_ready";
+    limit = (ctx.holds_limit.defined) ? ctx.holds_limit : 0;
+    offset = (ctx.holds_offset.defined) ? ctx.holds_offset : 0;
+    count = (ctx.holds_ids.size.defined) ? ctx.holds_ids.size : 0;
+%]
+<h3 class="sr-only">[% l('E-Items Ready for Checkout') %]</h3>
+<div id='myopac_holds_div'>
+
+    <div id="acct_holds_tabs">
+        <div class="align">
+            <a href='[% mkurl('holds', {}, ['limit','offset','available','sort','sort_type']) %]'>[% l("Items on Hold") %]</a>
+        </div>
+        <div class="align">
+            <a href='[% mkurl('ebook_holds', {}, ['limit','offset','available','sort','sort_type']) %]'>[% l("E-Items on Hold") %]</a>
+        </div>
+        <div class="align selected">
+            <a href='#'>[% l("E-Items Ready for Checkout") %]</a>
+        </div>
+        <div class="align">
+            <a href='[% mkurl('hold_history', {}, ['limit','offset','available','sort','sort_type']) %]'>[% l("Holds History") %]</a>
+        </div>
+    </div>
+
+    <div class="header_middle">
+        <span class="float-left">[% l('E-Items Ready for Checkout') %]</span>
+    </div>
+    <div class="clear-both"></div>
+    <div id="no_ebook_holds" class="warning_box hidden">[% l('You have no e-item holds ready to be checked out.') %]</div>
+    <div id='ebook_holds_main' class="hidden">
+        <table id="ebook_holds_main_table"
+            title="[% l('E-Items Ready for Checkout') %]"
+            class="table_no_border_space table_no_cell_pad item_list_padding">
+            <thead>
+            <tr>
+                <th>[% l("Title") %]</th>
+                <th>[% l("Author") %]</th>
+                <th>[% l("Expire Date") %]</th>
+                <th>[% l("Actions") %]</th>
+            </tr>
+            </thead>
+            <tbody id="ebook_holds_main_table_body"></tbody>
+        </table>
+    </div>
+</div>
+[% END %]

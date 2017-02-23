@@ -3,15 +3,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2016-08-25 17:09-0400\n"
+"POT-Creation-Date: 2017-02-21 20:30-0400\n"
 "PO-Revision-Date: 2013-10-15 08:54+0000\n"
 "Last-Translator: Finnish <Unknown>\n"
 "Language-Team: Finnish <evergreen@jns.fi>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2016-08-26 05:23+0000\n"
-"X-Generator: Launchpad (build 18179)\n"
+"X-Launchpad-Export-Date: 2017-02-22 05:41+0000\n"
+"X-Generator: Launchpad (build 18326)\n"
 "Language: fi\n"
 
 #: 1208.TITLE_LAST_COPY:71
@@ -168,10 +168,6 @@ msgid "No TCN could be found that does not collide with existing records"
 msgstr ""
 "Tietuenumeroa, joka ei olisi ristiriidassa olemassaolevien tietueiden "
 "kanssa, ei löytynyt"
-
-#: 7016.ITEM_ON_HOLDS_SHELF:895
-msgid "This requested item is currently on the holds shelf"
-msgstr "Pyydetty nide on tällä hetkellä varaushyllyssä"
 
 #: 2001.DATABASE_UPDATE_FAILED:776
 msgid "The attempt to write to the DB failed"
@@ -392,9 +388,9 @@ msgstr ""
 "Pyydettyä kohdetta acq.purchase_order ei voi jakaa, koska siinä on vain yksi "
 "nimike"
 
-#: 10004.ACQ_LINEITEM_NO_PRICE:996
-msgid "The lineitem has no price"
-msgstr "Nimikkeellä ei ole hintaa"
+#: 7016.ITEM_ON_HOLDS_SHELF:895
+msgid "This item is currently on the holds shelf for another patron"
+msgstr ""
 
 #: 1226.REFUND_EXCEEDS_DESK_PAYMENTS:140
 msgid ""
@@ -1313,6 +1309,10 @@ msgstr "Pyydettyä kohdetta authority_record_note ei löytynyt"
 msgid "The requested acq.fund was not found"
 msgstr "Pyydettyä kohdetta acq.fund ei löytynyt"
 
+#: 10004.ACQ_LINEITEM_NO_PRICE:996
+msgid "The lineitem has no price"
+msgstr "Nimikkeellä ei ole hintaa"
+
 #: 11106.TOTAL_HOLD_COPY_RATIO_EXCEEDED:1044
 msgid ""
 "Renewal attempt failed because the \"hold / total copies\" ratio exceeds the "
@@ -1334,6 +1334,9 @@ msgstr ""
 #: 1604.MONEY_USER_SUMMARY_NOT_FOUND:463
 msgid "The requested money_user_summary was not found"
 msgstr "Pyydettyä kohdetta money_user_summary ei löytynyt"
+
+#~ msgid "This requested item is currently on the holds shelf"
+#~ msgstr "Pyydetty nide on tällä hetkellä varaushyllyssä"
 
 #~ msgid "The requested acq.po_lineitem was not found"
 #~ msgstr "Pyydettyä kohdetta acq.po_lineitem ei löydy"

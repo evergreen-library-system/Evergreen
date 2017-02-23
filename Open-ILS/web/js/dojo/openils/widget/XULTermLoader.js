@@ -35,13 +35,24 @@ if (!dojo._hasResource["openils.widget.XULTermLoader"]) {
                     "span", {"innerHTML": this.terms.length},
                     this.labelNode, "first"
                 );
-                this.buttonNode = dojo.create(
-                    "button", {
-                        "innerHTML": this._.BUTTON_TEXT,
-                        "onclick": function() { self.loadTerms(); }
-                    },
-                    this.domNode, "last"
-                );
+                if (window.parent.IEMBEDXUL) {
+                    this.buttonNode = dojo.create(
+                        "input", {
+                            "type" : "file",
+                            "innerHTML": this._.BUTTON_TEXT,
+                            "onchange": function(evt) { self.loadTerms(evt); }
+                        },
+                        this.domNode, "last"
+                    );
+                } else {
+                    this.buttonNode = dojo.create(
+                        "button", {
+                            "innerHTML": this._.BUTTON_TEXT,
+                            "onclick": function() { self.loadTerms(); }
+                        },
+                        this.domNode, "last"
+                    );
+                }
 
                 if (this.args.parentNode)
                     dojo.place(this.domNode, this.args.parentNode, "last");
@@ -57,31 +68,49 @@ if (!dojo._hasResource["openils.widget.XULTermLoader"]) {
             "focus": function() {
                 this.buttonNode.focus();
             },
-            "loadTerms": function() {
+            "loadTerms": function(evt) {
                 try {
                     if (this.terms.length >= this.args.termLimit) {
                         alert(this._.TERM_LIMIT);
                         return;
                     }
-                    var data = this[
-                        this.parseCSV ? "parseAsCSV" : "parseUnimaginatively"
-                    ](
-                        openils.XUL.contentFromFileOpenDialog(
-                            this._.CHOOSE_FILE, this.args.fileSizeLimit
-                        )
-                    );
+                    var data;
+                    var self = this;
 
-                    if (data.length + this.terms.length >=
-                        this.args.termLimit) {
-                        alert(this._.TERM_LIMIT_SOME);
-                        var can = this.args.termLimit - this.terms.length;
-                        if (can > 0)
-                            this.terms = this.terms.concat(data.slice(0, can));
-                    } else {
-                        this.terms = this.terms.concat(data);
+                    function updateTermList() {
+                        if (data.length + self.terms.length >=
+                            self.args.termLimit) {
+                            alert(self._.TERM_LIMIT_SOME);
+                            var can = self.args.termLimit - self.terms.length;
+                            if (can > 0)
+                                self.terms = self.terms.concat(data.slice(0, can));
+                        } else {
+                            self.terms = self.terms.concat(data);
+                        }
+                        self.attr("value", self.terms);
+                        self.updateCount();
                     }
-                    this.attr("value", this.terms);
-                    this.updateCount();
+
+                    if (evt && window.IAMBROWSER) {
+                        var reader = new FileReader();
+                        reader.onloadend = function(evt) {
+                            data = self[
+                                self.parseCSV ? "parseAsCSV" : "parseUnimaginatively"
+                            ](evt.target.result);
+                            updateTermList();
+                        };
+                        reader.readAsText(evt.target.files[0]);
+                    } else {
+                        data = this[
+                            this.parseCSV ? "parseAsCSV" : "parseUnimaginatively"
+                        ](
+                            openils.XUL.contentFromFileOpenDialog(
+                                this._.CHOOSE_FILE, this.args.fileSizeLimit
+                            )
+                        );
+                        updateTermList();
+                    }
+
                 } catch(E) {
                     alert(E);
                 }

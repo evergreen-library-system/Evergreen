@@ -232,6 +232,39 @@ vim:et:ts=4:sw=4:
         instructions on mapping the old XML entries to database tables.
         -->
 
+        <http_client>
+            <!--
+            These settings are used by the OpenILS::Utils::HTTPClient module
+            when communicating with external services (e.g. third-party APIs)
+            over HTTP.  Values are passed along to LWP::UserAgent.
+            -->
+
+            <!-- custom useragent for HTTP requests
+            <useragent>Evergreen</useragent>
+            -->
+
+            <!-- default timeout value (in seconds) -->
+            <default_timeout>60</default_timeout>
+
+            <ssl_opts>
+                <!--
+                When using HTTPS, verify that the external server has a valid
+                SSL certificate matching the expected hostname.  (Set to 0 to
+                disable verification, 1 to enable it.)
+                -->
+                <verify_hostname>1</verify_hostname>
+
+                <!--
+                If verify_hostname is enabled, you may need to specify a path
+                for CA certificates installed on your system.  Use ONE of the
+                following settings.  See LWP::UserAgent docs for details.
+                <SSL_ca_path>/etc/ssl/certs</SSL_ca_path>
+                <SSL_ca_file>/etc/ssl/certs/ca-certificates.crt</SSL_ca_file>
+                -->
+            </ssl_opts>
+
+        </http_client>
+
         <added_content>
             <!-- load the OpenLibrary added content module -->
             <module>OpenILS::WWW::AddedContent::OpenLibrary</module>
@@ -1214,7 +1247,27 @@ vim:et:ts=4:sw=4:
                 </app_settings>
             </open-ils.hold-targeter>
 
-
+            <open-ils.ebook_api>
+                <keepalive>5</keepalive>
+                <stateless>1</stateless>
+                <language>perl</language>
+                <implementation>OpenILS::Application::EbookAPI</implementation>
+                <max_requests>100</max_requests>
+                <unix_config>
+                    <unix_sock>ebook_api_unix.sock</unix_sock>
+                    <unix_pid>ebook_api_unix.pid</unix_pid>
+                    <unix_log>ebook_api_unix.log</unix_log>
+                    <max_requests>100</max_requests>
+                    <min_children>1</min_children>
+                    <max_children>15</max_children>
+                    <min_spare_children>1</min_spare_children>
+                    <max_spare_children>5</max_spare_children>
+                </unix_config>
+                <app_settings>
+                  <cache_timeout>300</cache_timeout>
+                  <request_timeout>60</request_timeout>
+                </app_settings>
+            </open-ils.ebook_api>
         </apps>
     </default>
 
@@ -1260,6 +1313,7 @@ vim:et:ts=4:sw=4:
                 <appname>open-ils.vandelay</appname>  
                 <appname>open-ils.serial</appname>  
                 <appname>open-ils.hold-targeter</appname>  
+                <appname>open-ils.ebook_api</appname>
             </activeapps>
         </localhost>
     </hosts>

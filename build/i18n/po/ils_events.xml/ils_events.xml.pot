@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2016-08-25 17:09:06-0400\n"
+"POT-Creation-Date: 2017-02-21 20:30:15-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -152,10 +152,6 @@ msgstr ""
 
 #: 1527.OPEN_TCN_NOT_FOUND:238
 msgid "No TCN could be found that does not collide with existing records"
-msgstr ""
-
-#: 7016.ITEM_ON_HOLDS_SHELF:895
-msgid "This requested item is currently on the holds shelf"
 msgstr ""
 
 #: 2001.DATABASE_UPDATE_FAILED:776
@@ -371,8 +367,8 @@ msgid ""
 "more than one lineitem"
 msgstr ""
 
-#: 10004.ACQ_LINEITEM_NO_PRICE:996
-msgid "The lineitem has no price"
+#: 7016.ITEM_ON_HOLDS_SHELF:895
+msgid "This item is currently on the holds shelf for another patron"
 msgstr ""
 
 #: 1226.REFUND_EXCEEDS_DESK_PAYMENTS:140
@@ -1250,6 +1246,10 @@ msgstr ""
 
 #: 1848.ACQ_FUND_NOT_FOUND:627
 msgid "The requested acq.fund was not found"
+msgstr ""
+
+#: 10004.ACQ_LINEITEM_NO_PRICE:996
+msgid "The lineitem has no price"
 msgstr ""
 
 #: 11106.TOTAL_HOLD_COPY_RATIO_EXCEEDED:1044

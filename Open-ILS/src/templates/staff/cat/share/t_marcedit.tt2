@@ -42,8 +42,8 @@
           <button class="btn btn-primary" ng-click="saveRecord()">{{ saveLabel || "[% l('Save') %]"}}</button>
         </span>
         <span class="btn-group">
-          <button ng-hide="brandNewRecord || embedded || Record().deleted()" class="btn btn-default" ng-click="deleteRecord()">[% l('Delete') %]</button>
-          <button ng-if="!brandNewRecord && Record().deleted()" class="btn btn-default" ng-click="undeleteRecord()">[% l('Undelete') %]</button>
+          <button ng-hide="brandNewRecord || embedded || Record().deleted() == 't'" class="btn btn-default" ng-click="deleteRecord()">[% l('Delete') %]</button>
+          <button ng-hide="brandNewRecord || Record().deleted() != 't'" class="btn btn-default" ng-click="undeleteRecord()">[% l('Undelete') %]</button>
         </span>
         <span class="btn-group">
           <button class="btn btn-default" ng-click="showHelp = !showHelp">[% l('Help') %]</button>

@@ -124,6 +124,10 @@
         want_dojo = 1;
     END;
 
+    IF ebook_api.enabled == 'true';
+        want_dojo = 1;
+    END;
+
     # Especially useful for image 'alt' tags and link title tags,
     # where the content may need to be unique (making it longer)
     # but should not exceed 75 chars for ideal screen reader support.

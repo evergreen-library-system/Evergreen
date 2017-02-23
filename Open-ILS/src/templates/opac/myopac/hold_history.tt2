@@ -15,6 +15,14 @@
         <div class="align">
             <a href='[% mkurl('holds',{},['limit','offset']) %]'>[% l("Items on Hold") %]</a>
         </div>
+        [% IF ebook_api.enabled %]
+        <div class="align">
+            <a href='[% mkurl('ebook_holds', {}, ['limit','offset','available','sort','sort_type']) %]'>[% l("E-Items on Hold") %]</a>
+        </div>
+        <div class="align">
+            <a href='[% mkurl('ebook_holds_ready', {}, ['limit','offset','available','sort','sort_type']) %]'>[% l("E-Items Ready for Checkout") %]</a>
+        </div>
+        [% END %]
         <div class="align selected">
             <a href="#">[% l("Holds History") %]</a>
         </div>

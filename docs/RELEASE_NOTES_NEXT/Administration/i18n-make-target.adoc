@@ -1,5 +1,0 @@
-Add separate make target for translator
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Add a separate make target during installation for translator to allow
-for easier installation of i18n prerequisities.
-

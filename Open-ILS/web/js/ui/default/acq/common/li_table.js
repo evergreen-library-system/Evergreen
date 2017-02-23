@@ -710,7 +710,8 @@ function AcqLiTable() {
         row.setAttribute('li', li.id());
         var tds = dojo.query('[attr]', row);
         dojo.forEach(tds, function(td) {self.setRowAttr(td, liWrapper, td.getAttribute('attr'), td.getAttribute('attr_type'));});
-        dojo.query('[name=source_label]', row)[0].appendChild(document.createTextNode(li.source_label()));
+        if (li.source_label() !== null)
+            dojo.query('[name=source_label]', row)[0].appendChild(document.createTextNode(li.source_label()));
 
         // so we can scroll to it later
         dojo.query('[name=bib-info-cell]', row)[0].id = 'li-title-ref-' + li.id();
@@ -765,10 +766,13 @@ function AcqLiTable() {
                         openils.Util.show(nodeByName('queue', row), 'inline');
                         var link = nodeByName("queue_link", row);
                         link.onclick = function() { 
+                            var url = oilsBasePath + '/vandelay/vandelay?qtype=bib&qid=' + qrec.queue()
                             // open a new tab to the vandelay queue for this record
-                            openils.XUL.newTabEasy(
-                                oilsBasePath + '/vandelay/vandelay?qtype=bib&qid=' + qrec.queue()
-                            );
+                            if (window.IAMBROWSER) {
+                                xulG.relay_url(url);
+                            } else {
+                                openils.XUL.newTabEasy(url);
+                            }
                         }
                     }
                 }
@@ -918,7 +922,6 @@ function AcqLiTable() {
         option.disabled = !(count || eligible);
         option.innerHTML =
             dojo.string.substitute(localeStrings.NUM_CLAIMS_EXISTING, [count]);
-        option.onclick = function() { self.claimDialog.show(li); };
     };
 
     this.clearEligibility = function(li) {
@@ -1220,12 +1223,25 @@ function AcqLiTable() {
     this.updateLiState = function(li, row) {
         if (!row) row = this._findLiRow(li);
 
+        nodeByName("actions", row).onchange = function() {
+            switch(this.options[this.selectedIndex].value) {
+                case 'action_update_barcodes':
+                    self.showRealCopyEditUI(li);
+                    nodeByName("action_none", row).selected = true;
+                    break;
+                case 'action_holdings_maint':
+                    (self.generateMakeRecTab( li.eg_bib_id(), 'copy_browser', row ))();
+                    break;
+                case 'action_manage_claims':
+                    self.fetchClaimInfo(li.id(), true, function(full) { self.claimDialog.show(full) }, row);
+                    break;
+                case 'action_view_history':
+                    location.href = oilsBasePath + '/acq/lineitem/history/' + li.id();
+                    break;
+            }
+        };
         var actUpdateBarcodes = nodeByName("action_update_barcodes", row);
         var actHoldingsMaint = nodeByName("action_holdings_maint", row);
-
-        // always allow access to LI history
-        nodeByName('action_view_history', row).onclick = 
-            function() { location.href = oilsBasePath + '/acq/lineitem/history/' + li.id(); };
 
         /* handle row coloring for based on LI state */
         openils.Util.removeCSSClass(row, /^oils-acq-li-state-/);
@@ -1236,10 +1252,13 @@ function AcqLiTable() {
             openils.Util.show(nodeByName("invoices_span", row), "inline");
             var link = nodeByName("invoices_link", row);
             link.onclick = function() {
-                openils.XUL.newTabEasy(
-                    oilsBasePath + "/acq/search/unified?so=" +
-                    base64Encode({"jub":[{"id": li.id()}]}) + "&rt=invoice"
-                );
+                var url = oilsBasePath + "/acq/search/unified?so=" +
+                          base64Encode({"jub":[{"id": li.id()}]}) + "&rt=invoice"
+                if (window.IAMBROWSER) {
+                    xulG.relay_url(url);
+                } else {
+                    openils.XUL.newTabEasy(url);
+                }
                 return false;
             };
         }
@@ -1255,13 +1274,7 @@ function AcqLiTable() {
                 (lids && !lids.filter(function(lid) { return lid.eg_copy_id() })[0] )) {
 
             actUpdateBarcodes.disabled = false;
-            actUpdateBarcodes.onclick = function() {
-                self.showRealCopyEditUI(li);
-                nodeByName("action_none", row).selected = true;
-            }
             actHoldingsMaint.disabled = false;
-            actHoldingsMaint.onclick = 
-                self.generateMakeRecTab( li.eg_bib_id(), 'copy_browser', row );
         }
 
         var state_cell = nodeByName("li_state_" + li.state(), row);
@@ -3115,10 +3128,15 @@ function AcqLiTable() {
                 }
             }
             try {
-                openils.XUL.contentToFileSaveDialog(
-                    value_list.join("\n"),
-                    localeStrings.EXPORT_SAVE_DIALOG_TITLE
-                );
+                if (window.IAMBROWSER) {
+                    var blob = new Blob(value_list, {type: "text/plain;charset=utf-8"});
+                    saveAs(blob, "export_attr_list.txt");
+                } else {
+                    openils.XUL.contentToFileSaveDialog(
+                        value_list.join("\n"),
+                        localeStrings.EXPORT_SAVE_DIALOG_TITLE
+                    );
+                }
             } catch (E) {
                 alert(E);
             }
@@ -3158,7 +3176,7 @@ function AcqLiTable() {
         }
         var path = oilsBasePath + '/acq/invoice/view?create=1';
         dojo.forEach(liIds, function(li, idx) { path += '&attach_li=' + li });
-        if (openils.XUL.isXUL())
+        if (openils.XUL.isXUL() && !window.IAMBROWSER)
             openils.XUL.newTabEasy(path, localeStrings.NEW_INVOICE, null, true);
         else
             location.href = path;
@@ -3488,15 +3506,19 @@ function AcqLiTable() {
 
     this.editOrderMarc = function(li) {
 
+        var self = this;
+        if(window.IAMBROWSER) {
+            xulG.edit_marc_order_record(li, function(li) { self.drawInfo(li.id()) });
+            return;
+        }
+
         /*  To run in Firefox directly, must set signed.applets.codebase_principal_support
             to true in about:config */
-
         if(openils.XUL.isXUL()) {
             win = window.open('/xul/' + openils.XUL.buildId() + '/server/cat/marcedit.xul','','chrome');
         } else {
             win = window.open('/xul/server/cat/marcedit.xul','','chrome'); 
         }
-        var self = this;
         win.xulG = {
             record : {marc : li.marc(), "rtype": "bre"},
             save : {

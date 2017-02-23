@@ -1,0 +1,42 @@
+[%  PROCESS "opac/parts/header.tt2";
+    PROCESS "opac/parts/misc_util.tt2";
+    PROCESS "opac/parts/myopac/column_sort_support.tt2";
+    WRAPPER "opac/parts/myopac/base.tt2";
+    myopac_page = "ebook_circs"  %]
+<h3 class="sr-only">[% l('E-Items Currently Checked Out') %]</h3>
+<div id='myopac_checked_div'>
+
+    <div id="acct_checked_tabs">
+        <div class="align">
+            <a href="[% mkurl('circs',{},1) %]">[% l("Current Items Checked Out") %]</a>
+        </div>
+        <div class="align selected">
+            <a href="#">[% l("E-Items Currently Checked Out") %]</a>
+        </div>
+        <div class="align">
+            <a href="[% mkurl('circ_history',{},1) %]">[% l("Check Out History") %]</a>
+        </div>
+    </div>
+
+    <div class="header_middle">
+        <span class="float-left">[% l('E-Items Currently Checked Out') %]</span>
+    </div>
+    <div class="clear-both"></div>
+    <div id="no_ebook_circs" class="warning_box hidden">[% l('You have no e-items checked out.') %]</div>
+    <div id='ebook_circs_main' class="hidden">
+        <table id="ebook_circs_main_table"
+            title="[% l('E-Items Currently Checked Out') %]"
+            class="table_no_border_space table_no_cell_pad item_list_padding">
+            <thead>
+            <tr>
+                <th>[% l("Title") %]</th>
+                <th>[% l("Author") %]</th>
+                <th>[% l("Due Date") %]</th>
+                <th>[% l("Actions") %]</th>
+            </tr>
+            </thead>
+            <tbody id="ebook_circs_main_table_body"></tbody>
+        </table>
+    </div>
+</div>
+[% END %]

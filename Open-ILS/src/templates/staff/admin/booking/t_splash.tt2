@@ -9,11 +9,11 @@
 
 [%
     interfaces = [
-     [ l('Resource Attribute Maps'), "./admin/booking/conify/resource_attr_map" ]
-    ,[ l('Resource Attribute Values'), "./admin/booking/conify/resource_attr_value" ]
-    ,[ l('Resource Attributes'), "./admin/booking/conify/resource_attr" ]
-    ,[ l('Resource Types'), "./admin/booking/conify/resource_type" ]
-    ,[ l('Resources'), "./admin/booking/conify/resource" ]
+     [ l('Resources'), "./admin/server/booking/resource" ]
+    ,[ l('Resource Attribute Maps'), "./admin/server/booking/resource_attr_map" ]
+    ,[ l('Resource Attribute Values'), "./admin/server/booking/resource_attr_value" ]
+    ,[ l('Resource Attributes'), "./admin/server/booking/resource_attr" ]
+    ,[ l('Resource Types'), "./admin/server/booking/resource_type" ]
    ];
 
    USE table(interfaces, cols=3);

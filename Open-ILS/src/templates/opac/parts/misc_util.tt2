@@ -407,6 +407,17 @@
             END;
         END;
 
+        IF ebook_api.overdrive.enabled == 'true';
+            FOR marc037 IN xml.findnodes('//*[@tag="037"]');
+                marc037_id = marc037.findnodes('./*[@code="a"]').textContent;
+                marc037_source = marc037.findnodes('./*[@code="b"]').textContent;
+                IF marc037_source.match('OverDrive') AND marc037_id;
+                    args.overdrive_id = marc037_id;
+                    LAST;
+                END;
+            END;
+        END;
+
         # Extract the 856 URLs that are not otherwise represented by asset.uri's
         args.online_res = [];
         FOR node IN xml.findnodes('//*[@tag="856" and @ind1="4" and (@ind2="0" or @ind2="1")]');
@@ -503,7 +514,46 @@
                         res.note = '';
                     END;
                     args.uris.push(res);
+
+                    IF ebook_api.ebook_test.enabled == 'true';
+                        IF !args.ebook_test_id;
+                            FOR base_uri IN ebook_api.ebook_test.base_uris;
+                                IF res.href.match(base_uri);
+                                    args.ebook_test_id = res.href.remove(base_uri);
+                                    LAST;
+                                END;
+                            END;
+                        END;
+                    END;
+
+                    IF ebook_api.oneclickdigital.enabled == 'true';
+                        # A record might conceivably have multiple OneClickdigital URIs,
+                        # but we use (the same) ISBN as the ebook ID in each case.
+                        IF !args.oneclickdigital_id;
+                            FOR base_uri IN ebook_api.oneclickdigital.base_uris;
+                                IF res.href.match(base_uri);
+                                    # found a OneClickdigital URI, let's grab our ID and move on
+                                    args.oneclickdigital_id = clean_isbn;
+                                    LAST;
+                                END;
+                            END;
+                        END;
+                    END;
+
+                    IF ebook_api.overdrive.enabled == 'true';
+                        # Ideally we already have an OverDrive record ID from MARC 037 (see above).
+                        # But for older records, it will be embedded in the URI in MARC 856.
+                        IF !args.overdrive_id;
+                            FOR base_uri IN ebook_api.overdrive.base_uris;
+                                IF res.href.match(base_uri);
+                                    args.overdrive_id = res.href.remove('^.*/ContentDetails.htm\?ID=');
+                                    LAST;
+                                END;
+                            END;
+                        END;
+                    END;
                 END;
+
                 NEXT;
             ELSE;
                 copies = volume.findnodes('./*[local-name()="copies"]/*[local-name()="copy"]');

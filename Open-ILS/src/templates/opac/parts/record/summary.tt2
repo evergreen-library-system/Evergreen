@@ -186,6 +186,11 @@ IF num_uris > 0;
     [%- END %]
     [%- IF num_uris > 1 %]</ul>[% END %]
 </div>
+[%
+IF ebook_api.enabled == 'true';
+    INCLUDE "opac/parts/ebook_api/avail.tt2";
+END;
+%]
 [%- END %]
 <div id="copy_hold_counts">
 [%-

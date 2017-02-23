@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2016-08-25 22:31+0000\n"
+"POT-Creation-Date: 2017-02-22 03:03+0000\n"
 "PO-Revision-Date: 2016-09-26 21:08+0000\n"
 "Last-Translator: Anahi Valdez <avaldez@emeralddata.net>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2016-09-27 05:53+0000\n"
-"X-Generator: Launchpad (build 18204)\n"
+"X-Launchpad-Export-Date: 2017-02-22 05:43+0000\n"
+"X-Generator: Launchpad (build 18326)\n"
 
 #: ../../Open-ILS/src/templates/staff/circ/share/t_transit_dialog.tt2:36
 msgid ""
@@ -113,20 +113,20 @@ msgstr ""
 msgid "#"
 msgstr "#"
 
-#: ../../Open-ILS/src/templates/staff/cat/share/t_volume_list.tt2:13 ../../Open-ILS/src/templates/staff/circ/patron/t_bills.tt2:115
+#: ../../Open-ILS/src/templates/staff/cat/share/t_volume_list.tt2:13 ../../Open-ILS/src/templates/staff/circ/patron/t_bills.tt2:116
 msgid "# Copies"
 msgstr "# de copias"
 
-#: ../../Open-ILS/src/templates/staff/circ/in_house_use/index.tt2:73
+#: ../../Open-ILS/src/templates/staff/circ/in_house_use/index.tt2:75
 msgid "# of Uses"
 msgstr "# de Usos"
 
-#: ../../Open-ILS/src/templates/staff/circ/in_house_use/index.tt2:26
+#: ../../Open-ILS/src/templates/staff/circ/in_house_use/index.tt2:27
 msgid "# of Uses:"
 msgstr "# de Usos:"
 
 #. ("{{ws}}")
-#: ../../Open-ILS/src/templates/staff/admin/workstation/index.tt2:16
+#: ../../Open-ILS/src/templates/staff/admin/workstation/index.tt2:18
 msgid "%1 (Default)"
 msgstr "%1 (Predeterminada)"
 
@@ -165,15 +165,20 @@ msgstr "1% patrono(s) con el mismo teléfono"
 msgid "%1 was already checked in."
 msgstr "%1 ya se registró."
 
+#. ("{{hold_data.patron_last}}", "{{hold_data.patron_first}}")
+#: ../../Open-ILS/src/templates/staff/share/print_templates/t_hold_shelf_list.tt2:24
+msgid "%1, %2"
+msgstr ""
+
 #. ("{{patron().family_name()}}", "{{patron().first_given_name()}}", "{{patron().second_given_name()}}")
-#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:71
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:72 ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:36
 msgid "%1, %2 %3"
 msgstr "%1, %2 %3"
 
+#. ("{{prev_circ_usr.family_name()}}", "{{prev_circ_usr.first_given_name()}}", "{{prev_circ_usr.second_given_name()}}", "{{prev_circ_usr.card().barcode()}}")
+#. ("{{circ.usr().family_name()}}", "{{circ.usr().first_given_name()}}", "{{circ.usr().second_given_name()}}", "{{circ.usr().card().barcode()}}")
 #. ("{{hold.usr().family_name()}}", "{{hold.usr().first_given_name()}}", "{{hold.usr().second_given_name()}}", "{{hold.usr().card().barcode()}}")
 #. ("{{hold.requestor().family_name()}}", "{{hold.requestor().first_given_name()}}", "{{hold.requestor().second_given_name()}}", "{{hold.requestor().card().barcode()}}")
-#. ("{{circ.usr().family_name()}}", "{{circ.usr().first_given_name()}}", "{{circ.usr().second_given_name()}}", "{{circ.usr().card().barcode()}}")
-#. ("{{prev_circ_usr.family_name()}}", "{{prev_circ_usr.first_given_name()}}", "{{prev_circ_usr.second_given_name()}}", "{{prev_circ_usr.card().barcode()}}")
 #. ("{{user.family_name()}}", "{{user.first_given_name()}}", "{{user.second_given_name()}}", "{{user.card().barcode()}}")
 #: ../../Open-ILS/src/templates/staff/cat/item/t_circ_list_pane.tt2:22 ../../Open-ILS/src/templates/staff/cat/item/t_circs_pane.tt2:113 ../../Open-ILS/src/templates/staff/cat/item/t_circs_pane.tt2:18 ../../Open-ILS/src/templates/staff/cat/item/t_holds_pane.tt2:17 ../../Open-ILS/src/templates/staff/cat/item/t_holds_pane.tt2:30 ../../Open-ILS/src/templates/staff/circ/patron/t_move_to_group_dialog.tt2:15
 msgid "%1, %2 %3 : %4"
@@ -182,7 +187,7 @@ msgstr "%1, %2 %3 : %4"
 #. ("{{current_overlay_target}}")
 #. ("{{current_voltransfer_target}}")
 #. ("{{current_conjoined_target}}")
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_catalog.tt2:36 ../../Open-ILS/src/templates/staff/cat/catalog/t_catalog.tt2:42 ../../Open-ILS/src/templates/staff/cat/catalog/t_catalog.tt2:48
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_catalog.tt2:39 ../../Open-ILS/src/templates/staff/cat/catalog/t_catalog.tt2:45 ../../Open-ILS/src/templates/staff/cat/catalog/t_catalog.tt2:51
 msgid "(Currently %1)"
 msgstr "(En la actualidad %1)"
 
@@ -194,7 +199,11 @@ msgstr "(Eliminado)"
 msgid "(Unset)"
 msgstr "(No definido)"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:145
+#: ../../Open-ILS/src/templates/staff/cat/z3950/t_overlay.tt2:24
+msgid "(merged)"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:167
 msgid "(print)"
 msgstr "(imprimir)"
 
@@ -218,7 +227,7 @@ msgstr "<Circulación Envejecido>"
 msgid "<NONE>"
 msgstr "<NADA>"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:296
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:435
 msgid "<no workstation>"
 msgstr "<Ninguna estación de trabajo>"
 
@@ -240,7 +249,7 @@ msgstr "Abortar %1 tránsitos?"
 msgid "Abort 1 transit?"
 msgstr "Abortar 1 de tránsito?"
 
-#: ../../Open-ILS/src/templates/staff/circ/share/t_abort_transit_dialog.tt2:27 ../../Open-ILS/src/templates/staff/circ/transits/t_list.tt2:41
+#: ../../Open-ILS/src/templates/staff/circ/share/t_abort_transit_dialog.tt2:27 ../../Open-ILS/src/templates/staff/circ/transits/t_list.tt2:42
 msgid "Abort Transit"
 msgstr "Abortar tránsito"
 
@@ -271,6 +280,14 @@ msgstr "Aceptar sólo las copias de \"buena calidad\"?"
 #: ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:44 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:231 ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:204
 msgid "Acquisition Cost"
 msgstr "Coste de adquisición"
+
+#: ../../Open-ILS/src/templates/staff/acq/index.tt2:1 ../../Open-ILS/src/templates/staff/navbar.tt2:262
+msgid "Acquisitions"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/admin/acq/index.tt2:1 ../../Open-ILS/src/templates/staff/admin/acq/t_splash.tt2:4 ../../Open-ILS/src/templates/staff/navbar.tt2:412
+msgid "Acquisitions Administration"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_patron_groups_dialog.tt2:19
 msgid "Action"
@@ -305,7 +322,7 @@ msgstr "Activar"
 msgid "Actor Stat Cat Sip Fields"
 msgstr "Actor Stat Cat Sip Campos"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:63 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:65 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:37 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:39 ../../Open-ILS/src/templates/staff/circ/patron/t_patron_groups_dialog.tt2:50
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:65 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:67 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:42 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:44 ../../Open-ILS/src/templates/staff/circ/patron/t_patron_groups_dialog.tt2:50
 msgid "Add"
 msgstr "Añadir"
 
@@ -329,7 +346,7 @@ msgstr "Añadir Campos"
 msgid "Add Item"
 msgstr "Añadir elemento"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:37 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:11
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:37 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:11 ../../Open-ILS/src/templates/staff/circ/transits/t_list.tt2:37
 msgid "Add Items to Bucket"
 msgstr "Añadir los artículos del cangilón"
 
@@ -349,7 +366,7 @@ msgstr "Agregar Fila: CTRL+Enter"
 msgid "Add Subfield: CTRL+D or CTRL+I"
 msgstr "Añadir subcampo: CTRL + D o CTRL + I"
 
-#: ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_pending.tt2:29 ../../Open-ILS/src/templates/staff/cat/bucket/record/t_pending.tt2:14 ../../Open-ILS/src/templates/staff/cat/bucket/record/t_search.tt2:43 ../../Open-ILS/src/templates/staff/cat/catalog/t_add_to_bucket.tt2:4 ../../Open-ILS/src/templates/staff/cat/catalog/t_catalog.tt2:26
+#: ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_pending.tt2:29 ../../Open-ILS/src/templates/staff/cat/bucket/record/t_pending.tt2:14 ../../Open-ILS/src/templates/staff/cat/bucket/record/t_search.tt2:43 ../../Open-ILS/src/templates/staff/cat/catalog/t_add_to_bucket.tt2:4 ../../Open-ILS/src/templates/staff/cat/catalog/t_catalog.tt2:29
 msgid "Add To Bucket"
 msgstr "Añadir del cangilón"
 
@@ -365,6 +382,10 @@ msgstr "Añadir a la espera"
 msgid "Add To Selected Bucket"
 msgstr "Agregar al Cubo Seleccionada"
 
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_catalog.tt2:26
+msgid "Add Volumes"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:234
 msgid "Add/Edit Copy Notes"
 msgstr "Añadir/Editar copiar notas"
@@ -373,17 +394,32 @@ msgstr "Añadir/Editar copiar notas"
 msgid "Add/Replace 008"
 msgstr "Agregar/Reemplazar 008"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:686
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:693
 msgid "Address"
 msgstr "Dirección"
+
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:59
+msgid "Address Alert"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/admin/actor/org_unit/t_index.tt2:31
 msgid "Addresses"
 msgstr "Direcciónes"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:262 ../../Open-ILS/src/templates/staff/t_splash.tt2:66
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:383 ../../Open-ILS/src/templates/staff/t_splash.tt2:66
 msgid "Administration"
 msgstr "Administración"
+
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:114
+msgid "Advanced (default)"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:110
+msgid ""
+"Advanced search has secondary panes for Numeric and MARC Expert searching. "
+"You can change which one is loaded by default when opening a new catalog "
+"window here."
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/reporter/share/report_strings.tt2:100 ../../Open-ILS/src/templates/staff/reporter/share/report_strings.tt2:19
 msgid "After (Date/Time)"
@@ -401,7 +437,7 @@ msgstr "Mantenga la edad Proteja Reglas"
 msgid "Age Protect"
 msgstr "Proteger la edad"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:112 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:164 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:322 ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:287
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:114 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:164 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:322 ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:287
 msgid "Age-based Hold Protection"
 msgstr "Protección De Reserva Basado En Edad"
 
@@ -445,6 +481,10 @@ msgstr "Todos los campos"
 msgid "All Formats"
 msgstr "Todos los Formatos"
 
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:318
+msgid "All Pages"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:21
 msgid "Allow Call Number attributes in Copy Templates"
 msgstr "Permitir que los atributos en plantillas de copia"
@@ -473,7 +513,7 @@ msgstr "Cantidad:"
 msgid "An address is required during registration."
 msgstr "Se requiere una dirección durante el registro."
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_bills.tt2:81
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_bills.tt2:82
 msgid "Annotate"
 msgstr "Comentar"
 
@@ -489,11 +529,11 @@ msgstr "Aplicado en"
 msgid "Apply"
 msgstr "Aplicar"
 
-#: ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_bucket_edit.tt2:29 ../../Open-ILS/src/templates/staff/cat/bucket/record/t_bucket_edit.tt2:29 ../../Open-ILS/src/templates/staff/circ/patron/t_patron_cards_dialog.tt2:33 ../../Open-ILS/src/templates/staff/circ/patron/t_patron_groups_dialog.tt2:56
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:98 ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_bucket_edit.tt2:29 ../../Open-ILS/src/templates/staff/cat/bucket/record/t_bucket_edit.tt2:29 ../../Open-ILS/src/templates/staff/circ/patron/t_patron_cards_dialog.tt2:33 ../../Open-ILS/src/templates/staff/circ/patron/t_patron_groups_dialog.tt2:56
 msgid "Apply Changes"
 msgstr "Aplicar Cambios"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_bills.tt2:90
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_bills.tt2:91
 msgid "Apply Payment"
 msgstr "Aplicar Pago"
 
@@ -514,7 +554,7 @@ msgid "Archived Penalties / Messages"
 msgstr "Penalizaciones archivados / Mensajes"
 
 #. ("{{payment_amount}}")
-#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:49
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:47
 msgid "Are you sure you want to apply a payment of $%1?"
 msgstr "Estas seguro que desea aplicar un pago de $%1?"
 
@@ -544,7 +584,7 @@ msgstr ""
 "¿Seguro que desea transferir los elementos seleccionados al volumen marcada?"
 
 #. ("{{xactIds}}")
-#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:41
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:39
 msgid ""
 "Are you sure you would like to refund excess payment on bills %1?  This "
 "action will simply put the amount in the Payment Pending column as a "
@@ -571,7 +611,7 @@ msgstr "Stat Activo Cat Sip Campos"
 msgid "Attach conjoined items"
 msgstr "Adjuntar elementos unidos"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:80 ../../Open-ILS/src/templates/staff/cat/z3950/t_list.tt2:125 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:74 ../../Open-ILS/src/templates/staff/circ/holds/t_pull_list.tt2:80 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:85 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:107 ../../Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2:69 ../../Open-ILS/src/templates/staff/circ/renew/t_renew.tt2:110 ../../Open-ILS/src/templates/staff/circ/share/t_precat_dialog.tt2:19 ../../Open-ILS/src/templates/staff/share/print_templates/t_hold_pull_list.tt2:13 ../../Open-ILS/src/templates/staff/share/print_templates/t_hold_shelf_list.tt2:13
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:80 ../../Open-ILS/src/templates/staff/cat/z3950/t_list.tt2:125 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:74 ../../Open-ILS/src/templates/staff/circ/holds/t_pull_list.tt2:80 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:85 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:107 ../../Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2:69 ../../Open-ILS/src/templates/staff/circ/renew/t_renew.tt2:110 ../../Open-ILS/src/templates/staff/circ/share/t_precat_dialog.tt2:19 ../../Open-ILS/src/templates/staff/share/print_templates/t_hold_pull_list.tt2:13 ../../Open-ILS/src/templates/staff/share/print_templates/t_hold_shelf_list.tt2:14
 msgid "Author"
 msgstr "Autor"
 
@@ -611,6 +651,10 @@ msgstr "Auto-Retención de impresión y de Tránsito Slips"
 #: ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:55
 msgid "Auto-generate Barcodes"
 msgstr "Auto-generar códigos de barras"
+
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:252
+msgid "Automatic Margins"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:70 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:74 ../../Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2:59
 msgid "Available Date"
@@ -653,7 +697,7 @@ msgstr "Balance"
 msgid "Balance Owed"
 msgstr "Total Debido"
 
-#: ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_pending.tt2:37 ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_view.tt2:26 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:99 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:56 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:11 ../../Open-ILS/src/templates/staff/cat/share/t_marcedit.tt2:10 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:116 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:151 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:52 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin.tt2:54 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin.tt2:59 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:34 ../../Open-ILS/src/templates/staff/circ/in_house_use/index.tt2:38 ../../Open-ILS/src/templates/staff/circ/in_house_use/index.tt2:44 ../../Open-ILS/src/templates/staff/circ/in_house_use/index.tt2:74 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_payments.tt2:30 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_payments.tt2:63 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_xacts.tt2:32 ../../Open-ILS/src/templates/staff/circ/patron/t_bills_list.tt2:66 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:11 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:17 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:73 ../../Open-ILS/src/templates/staff/circ/patron/t_credentials.tt2:21 ../../Open-ILS/src/templates/staff/circ/patron/t_credentials.tt2:25 ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:76 ../../Open-ILS/src/templates/staff/circ/patron/t_patron_cards_dialog.tt2:10 ../../Open-ILS/src/templates/staff/circ/patron/t_search.tt2:55 ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:47 ../../Open-ILS/src/templates/staff/circ/renew/t_renew.tt2:15 ../../Open-ILS/src/templates/staff/circ/renew/t_renew.tt2:76
+#: ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_pending.tt2:37 ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_view.tt2:26 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:101 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:61 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:11 ../../Open-ILS/src/templates/staff/cat/share/t_marcedit.tt2:10 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:116 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:151 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:52 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin.tt2:54 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin.tt2:59 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:34 ../../Open-ILS/src/templates/staff/circ/in_house_use/index.tt2:39 ../../Open-ILS/src/templates/staff/circ/in_house_use/index.tt2:45 ../../Open-ILS/src/templates/staff/circ/in_house_use/index.tt2:76 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_payments.tt2:30 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_payments.tt2:63 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_xacts.tt2:34 ../../Open-ILS/src/templates/staff/circ/patron/t_bills_list.tt2:66 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:11 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:17 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:73 ../../Open-ILS/src/templates/staff/circ/patron/t_credentials.tt2:21 ../../Open-ILS/src/templates/staff/circ/patron/t_credentials.tt2:25 ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:76 ../../Open-ILS/src/templates/staff/circ/patron/t_patron_cards_dialog.tt2:10 ../../Open-ILS/src/templates/staff/circ/patron/t_search.tt2:55 ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:47 ../../Open-ILS/src/templates/staff/circ/renew/t_renew.tt2:15 ../../Open-ILS/src/templates/staff/circ/renew/t_renew.tt2:76 ../../Open-ILS/src/templates/staff/circ/transits/t_list.tt2:50
 msgid "Barcode"
 msgstr "Código de barras"
 
@@ -670,7 +714,7 @@ msgstr ""
 msgid "Barcode Not Found: %1"
 msgstr "Códigos de barras no encontrado: %1"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:160
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:167
 msgid "Barcode is already in use"
 msgstr "El código de barras está en uso"
 
@@ -692,11 +736,16 @@ msgstr "Código de barras: "
 msgid "Barcode: %1"
 msgstr "Código de barras: %1"
 
-#. ("{{renewal.copy.barcode}}", "{{renewal.circ.due_date | date:\"short\"}}")
 #. ("{{checkout.copy.barcode}}", "{{checkout.circ.due_date | date:\"short\"}}")
+#. ("{{renewal.copy.barcode}}", "{{renewal.circ.due_date | date:\"short\"}}")
 #: ../../Open-ILS/src/templates/staff/share/print_templates/t_checkout.tt2:8 ../../Open-ILS/src/templates/staff/share/print_templates/t_items_out.tt2:8 ../../Open-ILS/src/templates/staff/share/print_templates/t_renew.tt2:8
 msgid "Barcode: %1 Due: %2"
 msgstr "Código de barras: %1 Debido:%2"
+
+#. ("{{ihu.copy.barcode}}", "{{ihu.num_uses}}")
+#: ../../Open-ILS/src/templates/staff/share/print_templates/t_in_house_use_list.tt2:21
+msgid "Barcode: %1 Uses: %2"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/reporter/share/report_strings.tt2:125
 msgid "Bare"
@@ -728,7 +777,7 @@ msgstr "Entre"
 
 #. ("{{lead_id}}")
 #. ("{{rec.id}}")
-#: ../../Open-ILS/src/templates/staff/cat/bucket/record/t_merge_records.tt2:13 ../../Open-ILS/src/templates/staff/cat/bucket/record/t_merge_records.tt2:32
+#: ../../Open-ILS/src/templates/staff/cat/bucket/record/t_merge_records.tt2:19 ../../Open-ILS/src/templates/staff/cat/bucket/record/t_merge_records.tt2:39
 msgid "Bib %1"
 msgstr "Bib %1"
 
@@ -753,7 +802,7 @@ msgstr "Bib Registro TCN"
 msgid "Bibliographic"
 msgstr "Bibliográfico"
 
-#: ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:44 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_xacts.tt2:15 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:83 ../../Open-ILS/src/templates/staff/circ/renew/t_renew.tt2:86 ../../Open-ILS/src/templates/staff/circ/share/t_bill_patron_dialog.tt2:18
+#: ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:44 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_xacts.tt2:17 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:83 ../../Open-ILS/src/templates/staff/circ/renew/t_renew.tt2:86 ../../Open-ILS/src/templates/staff/circ/share/t_bill_patron_dialog.tt2:18
 msgid "Bill #"
 msgstr "Bill #"
 
@@ -795,19 +844,19 @@ msgstr "Tipos de facturación"
 msgid "Billings Voided:"
 msgstr "Facturaciones Anuladas:"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:116 ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:112
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:117 ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:112
 msgid "Bills"
 msgstr "Facturas"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:15
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:17
 msgid "Bills, Current"
 msgstr "Facturas, Corriente"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:16
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:18
 msgid "Bills, Historical"
 msgstr "Facturas, Histórical"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:17
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:19
 msgid "Bills, Payment"
 msgstr "Facturas, Pago"
 
@@ -815,25 +864,29 @@ msgstr "Facturas, Pago"
 msgid "Block"
 msgstr "Bloquear"
 
-#: ../../Open-ILS/src/templates/staff/admin/server/t_splash.tt2:10
-msgid "Booking Resource Attribute Maps"
-msgstr "Mapas de reserva de recursos de atributos"
+#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:16
+msgid "Book Item Now"
+msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/admin/server/t_splash.tt2:10
-msgid "Booking Resource Attribute Values"
-msgstr "Reserva de recursos valores de atributos"
+#: ../../Open-ILS/src/templates/staff/booking/index.tt2:1 ../../Open-ILS/src/templates/staff/navbar.tt2:345
+msgid "Booking"
+msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/admin/server/t_splash.tt2:10
-msgid "Booking Resource Attributes"
-msgstr "Atributos de Reserva de Recursos"
+#: ../../Open-ILS/src/templates/staff/admin/booking/index.tt2:1 ../../Open-ILS/src/templates/staff/admin/booking/t_splash.tt2:4 ../../Open-ILS/src/templates/staff/navbar.tt2:418
+msgid "Booking Administration"
+msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/admin/server/t_splash.tt2:10
-msgid "Booking Resource Types"
-msgstr "Tipos de Recursos de Reserva"
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:177
+msgid "Booking: Create or Cancel Reservations"
+msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/admin/server/t_splash.tt2:10
-msgid "Booking Resources"
-msgstr "Recursos para Reservar"
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:182
+msgid "Booking: Pick Up Reservations"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:187
+msgid "Booking: Return Reservations"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/cat/z3950/t_search_fields.tt2:9
 msgid "Books"
@@ -842,6 +895,10 @@ msgstr "Libros"
 #: ../../Open-ILS/src/templates/staff/reporter/share/report_strings.tt2:131
 msgid "Boolean Value"
 msgstr "Valor booleano"
+
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:306
+msgid "Bottom"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_load_shared.tt2:11 ../../Open-ILS/src/templates/staff/cat/bucket/record/t_load_shared.tt2:11
 msgid "Bucket ID"
@@ -875,7 +932,7 @@ msgstr "Llamar # Prefijo"
 msgid "Call # Suffix"
 msgstr "Llamar # Sufijo"
 
-#: ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_pending.tt2:42 ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_view.tt2:31 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:96 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:57 ../../Open-ILS/src/templates/staff/cat/share/t_marcedit.tt2:7 ../../Open-ILS/src/templates/staff/cat/share/t_volume_list.tt2:12 ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:130 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:119 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:154 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:47 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:77 ../../Open-ILS/src/templates/staff/circ/holds/t_pull_list.tt2:72 ../../Open-ILS/src/templates/staff/circ/in_house_use/index.tt2:75 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:86 ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:58 ../../Open-ILS/src/templates/staff/circ/renew/t_renew.tt2:89 ../../Open-ILS/src/templates/staff/circ/share/t_hold_details.tt2:20 ../../Open-ILS/src/templates/staff/share/print_templates/t_hold_pull_list.tt2:15 ../../Open-ILS/src/templates/staff/share/print_templates/t_hold_shelf_list.tt2:15
+#: ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_pending.tt2:42 ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_view.tt2:31 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:98 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:62 ../../Open-ILS/src/templates/staff/cat/share/t_marcedit.tt2:7 ../../Open-ILS/src/templates/staff/cat/share/t_volume_list.tt2:12 ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:130 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:119 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:154 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:47 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:77 ../../Open-ILS/src/templates/staff/circ/holds/t_pull_list.tt2:72 ../../Open-ILS/src/templates/staff/circ/in_house_use/index.tt2:77 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:86 ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:58 ../../Open-ILS/src/templates/staff/circ/renew/t_renew.tt2:89 ../../Open-ILS/src/templates/staff/circ/share/t_hold_details.tt2:20 ../../Open-ILS/src/templates/staff/share/print_templates/t_hold_pull_list.tt2:15 ../../Open-ILS/src/templates/staff/share/print_templates/t_hold_shelf_list.tt2:15
 msgid "Call Number"
 msgstr "Llamar al Número"
 
@@ -891,7 +948,7 @@ msgstr "Llame al número de sufijos"
 msgid "Call Number: "
 msgstr "Llamar al Número: "
 
-#: ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_bucket_create.tt2:32 ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_bucket_delete.tt2:13 ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_bucket_edit.tt2:31 ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_load_shared.tt2:21 ../../Open-ILS/src/templates/staff/cat/bucket/record/t_bucket_create.tt2:32 ../../Open-ILS/src/templates/staff/cat/bucket/record/t_bucket_delete.tt2:13 ../../Open-ILS/src/templates/staff/cat/bucket/record/t_bucket_edit.tt2:31 ../../Open-ILS/src/templates/staff/cat/bucket/record/t_bucket_export.tt2:36 ../../Open-ILS/src/templates/staff/cat/bucket/record/t_edit_lead_record.tt2:14 ../../Open-ILS/src/templates/staff/cat/bucket/record/t_load_shared.tt2:21 ../../Open-ILS/src/templates/staff/cat/bucket/record/t_merge_records.tt2:46 ../../Open-ILS/src/templates/staff/cat/catalog/t_add_to_bucket.tt2:37 ../../Open-ILS/src/templates/staff/cat/catalog/t_choose_vol_target_lib.tt2:21 ../../Open-ILS/src/templates/staff/cat/catalog/t_conjoined_selector.tt2:22 ../../Open-ILS/src/templates/staff/cat/catalog/t_request_items.tt2:44 ../../Open-ILS/src/templates/staff/cat/share/t_authority_link_dialog.tt2:13 ../../Open-ILS/src/templates/staff/cat/share/t_edit_new_authority.tt2:13 ../../Open-ILS/src/templates/staff/cat/share/t_physchar_dialog.tt2:13 ../../Open-ILS/src/templates/staff/cat/share/t_replace_barcode.tt2:26 ../../Open-ILS/src/templates/staff/cat/volcopy/t_copy_notes.tt2:36 ../../Open-ILS/src/templates/staff/cat/z3950/t_edit_overlay_record.tt2:14 ../../Open-ILS/src/templates/staff/cat/z3950/t_marc_edit.tt2:15 ../../Open-ILS/src/templates/staff/cat/z3950/t_marc_html.tt2:12 ../../Open-ILS/src/templates/staff/cat/z3950/t_overlay.tt2:26 ../../Open-ILS/src/templates/staff/cat/z3950/t_raw_search.tt2:19 ../../Open-ILS/src/templates/staff/circ/patron/t_edit_due_date_dialog.tt2:22 ../../Open-ILS/src/templates/staff/circ/patron/t_move_to_group_dialog.tt2:26 ../../Open-ILS/src/templates/staff/circ/patron/t_new_note_dialog.tt2:39 ../../Open-ILS/src/templates/staff/circ/patron/t_patron_cards_dialog.tt2:35 ../../Open-ILS/src/templates/staff/circ/patron/t_patron_groups_dialog.tt2:57 ../../Open-ILS/src/templates/staff/circ/patron/t_renew_with_date_dialog.tt2:22 ../../Open-ILS/src/templates/staff/circ/share/t_backdate_dialog.tt2:22 ../../Open-ILS/src/templates/staff/circ/share/t_bad_barcode_dialog.tt2:19 ../../Open-ILS/src/templates/staff/circ/share/t_bill_patron_dialog.tt2:88 ../../Open-ILS/src/templates/staff/circ/share/t_circ_exists_dialog.tt2:38 ../../Open-ILS/src/templates/staff/circ/share/t_copy_in_transit_dialog.tt2:30 ../../Open-ILS/src/templates/staff/circ/share/t_copy_not_avail_dialog.tt2:18 ../../Open-ILS/src/templates/staff/circ/share/t_event_override_dialog.tt2:27 ../../Open-ILS/src/templates/staff/circ/share/t_hold_copy_quality_dialog.tt2:20 ../../Open-ILS/src/templates/staff/circ/share/t_hold_dates.tt2:75 ../../Open-ILS/src/templates/staff/circ/share/t_hold_edit_pickup_lib.tt2:19 ../../Open-ILS/src/templates/staff/circ/share/t_hold_note_dialog.tt2:48 ../../Open-ILS/src/templates/staff/circ/share/t_hold_notification_dialog.tt2:30 ../../Open-ILS/src/templates/staff/circ/share/t_hold_notification_prefs.tt2:74 ../../Open-ILS/src/templates/staff/circ/share/t_mark_claims_returned_dialog.tt2:25 ../../Open-ILS/src/templates/staff/circ/share/t_new_message_dialog.tt2:49 ../../Open-ILS/src/templates/staff/circ/share/t_noncat_dialog.tt2:23 ../../Open-ILS/src/templates/staff/circ/share/t_precat_dialog.tt2:40 ../../Open-ILS/src/templates/staff/share/t_confirm_dialog.tt2:16 ../../Open-ILS/src/templates/staff/share/t_fm_record_editor.tt2:60 ../../Open-ILS/src/templates/staff/share/t_prompt_dialog.tt2:19 ../../Open-ILS/src/templates/staff/share/t_select_dialog.tt2:21
+#: ../../Open-ILS/src/templates/staff/acq/t_edit_marc_order_record.tt2:14 ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_bucket_create.tt2:32 ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_bucket_delete.tt2:13 ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_bucket_edit.tt2:31 ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_load_shared.tt2:21 ../../Open-ILS/src/templates/staff/cat/bucket/record/t_bucket_create.tt2:32 ../../Open-ILS/src/templates/staff/cat/bucket/record/t_bucket_delete.tt2:13 ../../Open-ILS/src/templates/staff/cat/bucket/record/t_bucket_edit.tt2:31 ../../Open-ILS/src/templates/staff/cat/bucket/record/t_bucket_export.tt2:36 ../../Open-ILS/src/templates/staff/cat/bucket/record/t_edit_lead_record.tt2:16 ../../Open-ILS/src/templates/staff/cat/bucket/record/t_load_shared.tt2:21 ../../Open-ILS/src/templates/staff/cat/bucket/record/t_merge_records.tt2:53 ../../Open-ILS/src/templates/staff/cat/catalog/t_add_to_bucket.tt2:37 ../../Open-ILS/src/templates/staff/cat/catalog/t_choose_vol_target_lib.tt2:21 ../../Open-ILS/src/templates/staff/cat/catalog/t_conjoined_selector.tt2:22 ../../Open-ILS/src/templates/staff/cat/catalog/t_request_items.tt2:44 ../../Open-ILS/src/templates/staff/cat/share/t_authority_link_dialog.tt2:13 ../../Open-ILS/src/templates/staff/cat/share/t_edit_new_authority.tt2:13 ../../Open-ILS/src/templates/staff/cat/share/t_physchar_dialog.tt2:13 ../../Open-ILS/src/templates/staff/cat/share/t_replace_barcode.tt2:26 ../../Open-ILS/src/templates/staff/cat/volcopy/t_copy_notes.tt2:36 ../../Open-ILS/src/templates/staff/cat/z3950/t_edit_overlay_record.tt2:14 ../../Open-ILS/src/templates/staff/cat/z3950/t_marc_edit.tt2:15 ../../Open-ILS/src/templates/staff/cat/z3950/t_marc_html.tt2:12 ../../Open-ILS/src/templates/staff/cat/z3950/t_overlay.tt2:33 ../../Open-ILS/src/templates/staff/cat/z3950/t_raw_search.tt2:19 ../../Open-ILS/src/templates/staff/circ/patron/t_edit_due_date_dialog.tt2:22 ../../Open-ILS/src/templates/staff/circ/patron/t_move_to_group_dialog.tt2:26 ../../Open-ILS/src/templates/staff/circ/patron/t_new_note_dialog.tt2:44 ../../Open-ILS/src/templates/staff/circ/patron/t_patron_cards_dialog.tt2:35 ../../Open-ILS/src/templates/staff/circ/patron/t_patron_groups_dialog.tt2:57 ../../Open-ILS/src/templates/staff/circ/patron/t_renew_with_date_dialog.tt2:22 ../../Open-ILS/src/templates/staff/circ/share/t_backdate_dialog.tt2:22 ../../Open-ILS/src/templates/staff/circ/share/t_bad_barcode_dialog.tt2:19 ../../Open-ILS/src/templates/staff/circ/share/t_bill_patron_dialog.tt2:88 ../../Open-ILS/src/templates/staff/circ/share/t_circ_exists_dialog.tt2:38 ../../Open-ILS/src/templates/staff/circ/share/t_copy_in_transit_dialog.tt2:30 ../../Open-ILS/src/templates/staff/circ/share/t_copy_not_avail_dialog.tt2:18 ../../Open-ILS/src/templates/staff/circ/share/t_event_override_dialog.tt2:27 ../../Open-ILS/src/templates/staff/circ/share/t_hold_copy_quality_dialog.tt2:20 ../../Open-ILS/src/templates/staff/circ/share/t_hold_dates.tt2:75 ../../Open-ILS/src/templates/staff/circ/share/t_hold_edit_pickup_lib.tt2:19 ../../Open-ILS/src/templates/staff/circ/share/t_hold_note_dialog.tt2:48 ../../Open-ILS/src/templates/staff/circ/share/t_hold_notification_dialog.tt2:30 ../../Open-ILS/src/templates/staff/circ/share/t_hold_notification_prefs.tt2:74 ../../Open-ILS/src/templates/staff/circ/share/t_mark_claims_returned_dialog.tt2:25 ../../Open-ILS/src/templates/staff/circ/share/t_new_message_dialog.tt2:49 ../../Open-ILS/src/templates/staff/circ/share/t_noncat_dialog.tt2:23 ../../Open-ILS/src/templates/staff/circ/share/t_precat_dialog.tt2:41 ../../Open-ILS/src/templates/staff/share/t_confirm_dialog.tt2:16 ../../Open-ILS/src/templates/staff/share/t_fm_record_editor.tt2:60 ../../Open-ILS/src/templates/staff/share/t_opchange.tt2:47 ../../Open-ILS/src/templates/staff/share/t_prompt_dialog.tt2:19 ../../Open-ILS/src/templates/staff/share/t_select_dialog.tt2:21
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -916,11 +973,15 @@ msgstr "Nota Del Cancelamiento"
 msgid "Cancel Reason:"
 msgstr "Motivo de Cancelar:"
 
+#: ../../Open-ILS/src/templates/staff/admin/acq/t_splash.tt2:10
+msgid "Cancel Reasons"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/staff/circ/share/t_hold_details.tt2:50
 msgid "Cancel Time"
 msgstr "Cancelar Tiempo"
 
-#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:23
+#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:28
 msgid "Cancel Transit"
 msgstr "Cancelar Tránsito"
 
@@ -940,11 +1001,15 @@ msgstr "Sostiene la Captura"
 msgid "Capture Local Holds As Transits"
 msgstr "Capturar sostienes locales como tránsitos"
 
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:363
+msgid "Capture Resources"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/staff/cat/item/t_holds_pane.tt2:9
 msgid "Captured Hold Info"
 msgstr "Capturado Info de Retención"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:101
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:123
 msgid "Card"
 msgstr "Tarjeta"
 
@@ -956,7 +1021,7 @@ msgstr "Efectivo"
 msgid "Cash Drawer"
 msgstr "Cajón de Dinero"
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:70
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:73
 msgid "Cash Payment"
 msgstr "Pago En Efectivo"
 
@@ -996,7 +1061,7 @@ msgstr "Cambiar Carpetas"
 msgid "Change Given:"
 msgstr "Cambio Dado:"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:329 ../../Open-ILS/src/templates/staff/reporter/t_edit_template.tt2:200
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:468 ../../Open-ILS/src/templates/staff/reporter/t_edit_template.tt2:200
 msgid "Change Operator"
 msgstr "Cambiar operador"
 
@@ -1024,15 +1089,15 @@ msgstr "Seleccionar"
 msgid "Check All Refunds"
 msgstr "Comprobar todos los reembolsos"
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:67 ../../Open-ILS/src/templates/staff/circ/checkin/index.tt2:1 ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:67 ../../Open-ILS/src/templates/staff/navbar.tt2:82 ../../Open-ILS/src/templates/staff/navbar.tt2:84
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:70 ../../Open-ILS/src/templates/staff/circ/checkin/index.tt2:1 ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:67 ../../Open-ILS/src/templates/staff/navbar.tt2:82 ../../Open-ILS/src/templates/staff/navbar.tt2:84
 msgid "Check In"
 msgstr "Entradas"
 
-#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:19 ../../Open-ILS/src/templates/staff/t_splash.tt2:22
+#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:24 ../../Open-ILS/src/templates/staff/t_splash.tt2:22
 msgid "Check In Items"
 msgstr "Entrada de artículos"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:46
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:44
 msgid "Check In Items?"
 msgstr "Entrada de artículos?"
 
@@ -1044,7 +1109,7 @@ msgstr "Entradas a la biblioteca"
 msgid "Check Number"
 msgstr "Verifique el Número"
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:65 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:96 ../../Open-ILS/src/templates/staff/navbar.tt2:74 ../../Open-ILS/src/templates/staff/navbar.tt2:76
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:68 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:97 ../../Open-ILS/src/templates/staff/navbar.tt2:74 ../../Open-ILS/src/templates/staff/navbar.tt2:76
 msgid "Check Out"
 msgstr "Extraer"
 
@@ -1060,7 +1125,7 @@ msgstr "Sacar Artículos"
 msgid "Check Out Library"
 msgstr "Verificar Biblioteca"
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:71
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:74
 msgid "Check Payment"
 msgstr "Comprobar Pago"
 
@@ -1075,6 +1140,10 @@ msgstr "Registrado"
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:19
 msgid "Checked Out"
 msgstr "Verificado"
+
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:20
+msgid "Checkin"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:47
 msgid "Checkin Date"
@@ -1100,7 +1169,7 @@ msgstr "Hora de entrada"
 msgid "Checkin Workstation"
 msgstr "Estación de Trabajo de Entrega"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:18
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:21
 msgid "Checkout"
 msgstr "Finalizar compra"
 
@@ -1132,9 +1201,13 @@ msgstr "Hijo(a)"
 msgid "Child nullable"
 msgstr "Anulable niño"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:43
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:45
 msgid "Choose Library for Volume/Copy Transfer Destination"
 msgstr "Elija la biblioteca de volumen / Copia de destino de transferencia"
+
+#: ../../Open-ILS/src/templates/staff/cat/bucket/record/t_merge_records.tt2:10 ../../Open-ILS/src/templates/staff/cat/z3950/t_overlay.tt2:10
+msgid "Choose merge profile"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/cat/catalog/t_choose_vol_target_lib.tt2:5
 msgid "Choose volume transfer target"
@@ -1156,11 +1229,11 @@ msgstr "Circ Biblioteca"
 msgid "Circ Modifier"
 msgstr "Modificador Circ"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:110 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:144 ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:68
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:112 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:144 ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:68
 msgid "Circulate"
 msgstr "Circular"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:109
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:111
 msgid "Circulate As MARC Type"
 msgstr "Circular Como Tipo MARC"
 
@@ -1172,7 +1245,7 @@ msgstr "Circular como Tipo"
 msgid "Circulate?"
 msgstr "¿Circular?"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:105
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:107
 msgid "Circulating Library"
 msgstr "Biblioteca circulante"
 
@@ -1209,7 +1282,7 @@ msgstr "Reglas de circulación Max Bellas"
 msgid "Circulation Modifer"
 msgstr "Circulación Modificador"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:107 ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:198 ../../Open-ILS/src/templates/staff/circ/share/t_precat_dialog.tt2:29
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:109 ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:198 ../../Open-ILS/src/templates/staff/circ/share/t_precat_dialog.tt2:29
 msgid "Circulation Modifier"
 msgstr "Modificador De Circulación"
 
@@ -1229,7 +1302,27 @@ msgstr "Circulación y patrocinadores"
 msgid "City"
 msgstr "Ciudad"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:82
+#: ../../Open-ILS/src/templates/staff/admin/acq/t_splash.tt2:10
+msgid "Claim Event Types"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/admin/acq/t_splash.tt2:10
+msgid "Claim Policies"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/admin/acq/t_splash.tt2:10
+msgid "Claim Policy Actions"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/admin/acq/t_splash.tt2:10
+msgid "Claim Types"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:325
+msgid "Claim-Ready Items"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:104
 msgid "Claimed Returned"
 msgstr "Reivindicada Devuelto"
 
@@ -1257,7 +1350,7 @@ msgstr "Despejar estas retenciones"
 msgid "Click OK for TRUE and Cancel for FALSE."
 msgstr "Click en OK para VERDADERO o en Cancelar para FALSO."
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:64
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:67
 msgid "Close"
 msgstr "Cerrar"
 
@@ -1269,13 +1362,17 @@ msgstr "Código"
 msgid "Collapse ... Reload to restore"
 msgstr "Colapso ... recarga para almacenar"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:78
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:79
 msgid "Collapse Patron Summary Display"
 msgstr "Colapso pantalla resumen patrón"
 
 #: ../../Open-ILS/src/templates/staff/cat/share/t_record_summary.tt2:20
 msgid "Collapse Record Summary Display"
 msgstr "Colapsar pantalla resumen de registros"
+
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:179
+msgid "Collation"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/reporter/t_edit_template.tt2:173 ../../Open-ILS/src/templates/staff/reporter/t_edit_template.tt2:223
 msgid "Column"
@@ -1285,7 +1382,7 @@ msgstr "Columna"
 msgid "Column Label"
 msgstr "Etiqueta de columna"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:95
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:356
 msgid "Compiled Printer Settings"
 msgstr "Configuración de la Impresora compilados"
 
@@ -1301,15 +1398,11 @@ msgstr "Archivos de computadora"
 msgid "Configure Columns"
 msgstr "Configurar las columnas"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:81
-msgid "Configure Printer"
-msgstr "Configurar impresora"
-
 #: ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_bucket_delete.tt2:6 ../../Open-ILS/src/templates/staff/cat/bucket/record/t_bucket_delete.tt2:6
 msgid "Confirm Bucket Delete"
 msgstr "Confirmar Borrar Cubo"
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:78
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:81
 msgid "Confirm Record Deletion"
 msgstr "Confirmar Registro de Borrado"
 
@@ -1317,7 +1410,7 @@ msgstr "Confirmar Registro de Borrado"
 msgid "Conjoined Item Target set"
 msgstr "Conjunto de objetos de destino"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_catalog.tt2:47 ../../Open-ILS/src/templates/staff/cat/catalog/t_catalog.tt2:92
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_catalog.tt2:50 ../../Open-ILS/src/templates/staff/cat/catalog/t_catalog.tt2:95
 msgid "Conjoined Items"
 msgstr "Articulos Unidos"
 
@@ -1329,11 +1422,11 @@ msgstr "Contiene subcadena coincidente"
 msgid "Contains Matching substring (ignore case)"
 msgstr "Contiene subcadena coincidente (ignorar mayúsculas)"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:64 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:71 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:80 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:49
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:66 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:73 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:82 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:49
 msgid "Copies"
 msgstr "Copias"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:91
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:93
 msgid "Copies to Previously Marked Library"
 msgstr "Copias a la biblioteca de marcado previamente"
 
@@ -1346,7 +1439,7 @@ msgstr "Copiar"
 msgid "Copy \"%1\" was mis-scanned or is not cataloged"
 msgstr "Copia \"%1\" ha sido mis-escaneada o no está catalogado"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:98 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:53
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:100 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:53
 msgid "Copy #"
 msgstr "Copia #"
 
@@ -1371,11 +1464,15 @@ msgstr "Copiar La Filla Actual Hacia Arriba: CTRL+Up"
 msgid "Copy Current Row Below: CTRL+Down"
 msgstr "Copiar La Fila Actual Hacia Abajo: CTRL+Down"
 
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_hatch.tt2:43
+msgid "Copy Hatch Settings To Local Storage"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/staff/cat/catalog/t_request_items.tt2:23
 msgid "Copy Hold"
 msgstr "Copie el Asidero"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:108 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:124 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:120 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:163 ../../Open-ILS/src/templates/staff/circ/patron/t_bills_list.tt2:74
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:110 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:124 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:120 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:163 ../../Open-ILS/src/templates/staff/circ/patron/t_bills_list.tt2:74
 msgid "Copy ID"
 msgstr "Copiar ID"
 
@@ -1383,7 +1480,11 @@ msgstr "Copiar ID"
 msgid "Copy In Transit"
 msgstr "Copia en transito"
 
-#: ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:47 ../../Open-ILS/src/templates/staff/circ/holds/t_pull_list.tt2:71
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_hatch.tt2:38
+msgid "Copy Local Storage Settings To Hatch"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:47 ../../Open-ILS/src/templates/staff/circ/holds/t_pull_list.tt2:71 ../../Open-ILS/src/templates/staff/circ/transits/t_list.tt2:54
 msgid "Copy Location"
 msgstr "Copiar ubicación"
 
@@ -1391,7 +1492,7 @@ msgstr "Copiar ubicación"
 msgid "Copy Not Available."
 msgstr "Ninguna copia disponible."
 
-#: ../../Open-ILS/src/templates/staff/cat/share/t_replace_barcode.tt2:34 ../../Open-ILS/src/templates/staff/circ/in_house_use/index.tt2:64
+#: ../../Open-ILS/src/templates/staff/cat/share/t_replace_barcode.tt2:34 ../../Open-ILS/src/templates/staff/circ/in_house_use/index.tt2:65
 msgid "Copy Not Found"
 msgstr "Copia no encontrada"
 
@@ -1412,7 +1513,7 @@ msgstr "Estado de la copia: %1"
 msgid "Copy Statuses"
 msgstr "Estados de copia"
 
-#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_view.tt2:20
+#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_view.tt2:21
 msgid "Copy Templates"
 msgstr "Copiar Plantillas"
 
@@ -1457,17 +1558,29 @@ msgstr "Cantidad..."
 msgid "Create Bucket"
 msgstr "Crear Cubo"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_pending_list.tt2:21 ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:44
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_pending_list.tt2:21 ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:65
 msgid "Create Date"
 msgstr "Crear Fecha"
+
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:337
+msgid "Create Invoice"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/navbar.tt2:222
 msgid "Create New MARC Record"
 msgstr "Crear Nuevo Registro MARC"
 
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:318
+msgid "Create Purchase Order"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/staff/circ/share/t_hold_notification_dialog.tt2:5
 msgid "Create Record of Hold Notification"
 msgstr "Crear Registro de Notificación de Retención"
+
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:351
+msgid "Create Reservations"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_new_note_dialog.tt2:5 ../../Open-ILS/src/templates/staff/circ/share/t_hold_note_dialog.tt2:5
 msgid "Create a new note"
@@ -1528,13 +1641,17 @@ msgstr "Crédito disponible:"
 msgid "Credit Card"
 msgstr "Tarjeta de crédito"
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:72
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:75
 msgid "Credit Card Payment"
 msgstr "Pago con Tajeta de Crédito"
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:73
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:76
 msgid "Credit Payment"
 msgstr "Pago Con Crédito"
+
+#: ../../Open-ILS/src/templates/staff/admin/acq/t_splash.tt2:10
+msgid "Currency Types"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:59 ../../Open-ILS/src/templates/staff/circ/holds/t_pull_list.tt2:60 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:65 ../../Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2:48 ../../Open-ILS/src/templates/staff/circ/share/t_hold_details.tt2:14 ../../Open-ILS/src/templates/staff/share/print_templates/t_holds_for_bib.tt2:12
 msgid "Current Copy"
@@ -1580,7 +1697,7 @@ msgstr "Fecha Activo"
 msgid "Date Created"
 msgstr "Fecha de Creación"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:31 ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:32
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:52 ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:53
 msgid "Date of Birth"
 msgstr "Fecha de Nacimiento"
 
@@ -1592,7 +1709,7 @@ msgstr "Fecha:"
 msgid "Day Name"
 msgstr "Nombre del día"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:109
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:131
 msgid "Day Phone"
 msgstr "Teléfono durante el día"
 
@@ -1612,7 +1729,7 @@ msgstr "Día del año"
 msgid "Day(s)"
 msgstr "Día(s)"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:26 ../../Open-ILS/src/templates/staff/reporter/share/report_strings.tt2:10 ../../Open-ILS/src/templates/staff/reporter/t_edit_template.tt2:69
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:37 ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:39 ../../Open-ILS/src/templates/staff/reporter/share/report_strings.tt2:10 ../../Open-ILS/src/templates/staff/reporter/t_edit_template.tt2:69
 msgid "Default"
 msgstr "Predeterminado"
 
@@ -1620,19 +1737,32 @@ msgstr "Predeterminado"
 msgid "Default Filter Library"
 msgstr "Filtro de biblioteca predeterminado"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:650
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:657
 msgid "Default SMS Carrier"
 msgstr "Portador de SMS predeterminado"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:639
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:646
 msgid "Default SMS/Text Number"
 msgstr "Portador de SMS / Textear Número Predeterminado"
 
-#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_view.tt2:23
+#. ("{{printerOptions.defaultPrintColor}}")
+#. ("{{printerOptions.defaultPaperSource}}")
+#. ("{{printerOptions.defaultPaper}}")
+#. ("{{printerOptions.defaultPageOrientation}}")
+#. ("{{printerOptions.defaultCollation}}")
+#. ("{{printerOptions.defaultPrintQuality}}")
+#. ("{{printerOptions.defaultPrintSides}}")
+#. ("{{printerOptions.defaultCopies}}")
+#. ("{{printerOptions.defaultMarginType}}")
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:118 ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:135 ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:153 ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:171 ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:189 ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:207 ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:225 ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:240 ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:263
+msgid "Default: %1"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_view.tt2:24
 msgid "Defaults"
 msgstr "Predeterminados"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:61 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:77 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:79 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:81 ../../Open-ILS/src/templates/staff/cat/share/t_marcedit.tt2:45 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:17 ../../Open-ILS/src/templates/staff/circ/patron/t_notes.tt2:35 ../../Open-ILS/src/templates/staff/circ/patron/t_patron_groups_dialog.tt2:26 ../../Open-ILS/src/templates/staff/circ/share/t_hold_details.tt2:104
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:79 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:81 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:83 ../../Open-ILS/src/templates/staff/cat/share/t_marcedit.tt2:45 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:17 ../../Open-ILS/src/templates/staff/circ/patron/t_notes.tt2:35 ../../Open-ILS/src/templates/staff/circ/patron/t_patron_groups_dialog.tt2:26 ../../Open-ILS/src/templates/staff/circ/share/t_hold_details.tt2:104
 msgid "Delete"
 msgstr "Eliminar"
 
@@ -1640,9 +1770,13 @@ msgstr "Eliminar"
 msgid "Delete Bucket"
 msgstr "Eliminar Cubo"
 
-#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:17
+#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:22
 msgid "Delete Items"
 msgstr "Borrar elementos"
+
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:50
+msgid "Delete Note?"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/admin/actor/org_unit/t_main_tab.tt2:65
 msgid "Delete Org"
@@ -1665,7 +1799,7 @@ msgid "Delete bucket {{bucket().name()}}?"
 msgstr "Eliminar Cubo {{cubo().nombre()}}?"
 
 #. ("{{deleteKey}}")
-#: ../../Open-ILS/src/templates/staff/admin/workstation/index.tt2:15
+#: ../../Open-ILS/src/templates/staff/admin/workstation/index.tt2:17
 msgid "Delete content for key \"%1\"?"
 msgstr "Eliminar contenido de la clave \"%1\"?"
 
@@ -1673,13 +1807,22 @@ msgstr "Eliminar contenido de la clave \"%1\"?"
 msgid "Delete field"
 msgstr "Eliminar campo"
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:79
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:82
 msgid "Delete record {{id}}?"
 msgstr "Borrar registro {{id}}"
+
+#. ("{{note_title}}", "{{create_date | date}}")
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:51
+msgid "Delete the note titled \\\"%1\\\" created on %2?"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/cat/bucket/record/index.tt2:24
 msgid "Delete these records?"
 msgstr "¿Borrar estos registros?"
+
+#: ../../Open-ILS/src/templates/staff/cat/volcopy/index.tt2:17
+msgid "Deleted volume/copy template"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/cat/volcopy/t_copy_notes.tt2:71
 msgid "Deleted?"
@@ -1709,7 +1852,7 @@ msgstr "Escritorio"
 msgid "Destination"
 msgstr "Destinación"
 
-#: ../../Open-ILS/src/templates/staff/circ/transits/t_list.tt2:50
+#: ../../Open-ILS/src/templates/staff/circ/transits/t_list.tt2:63
 msgid "Destination Library"
 msgstr "Biblioteca de destino"
 
@@ -1717,11 +1860,11 @@ msgstr "Biblioteca de destino"
 msgid "Detail View"
 msgstr "Vista de Detalle"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:101
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:59
 msgid "Disable Sounds?"
 msgstr "Sonidos Disponibles"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:136
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:137
 msgid "Display Alert and Messages"
 msgstr "Alerta de pantalla y mensajes"
 
@@ -1736,6 +1879,10 @@ msgstr "Visualización por defecto para la pestaña copias completadas"
 #: ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:83
 msgid "Display defaults for Working Copy tab"
 msgstr "Visualización por defecto para la pestaña Copia de Trabajo"
+
+#: ../../Open-ILS/src/templates/staff/admin/acq/t_splash.tt2:10
+msgid "Distribution Formulas"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/circ/share/t_hold_shelf_dialog.tt2:61 ../../Open-ILS/src/templates/staff/circ/share/t_transit_dialog.tt2:62
 msgid "Do Not Print"
@@ -1753,7 +1900,7 @@ msgstr "URL documentación"
 msgid "Does Not Equal Any"
 msgstr "Es distinto de"
 
-#: ../../Open-ILS/src/templates/staff/cat/bucket/record/t_edit_lead_record.tt2:13 ../../Open-ILS/src/templates/staff/cat/share/t_embedded_volcopy.tt2:12 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:151
+#: ../../Open-ILS/src/templates/staff/cat/bucket/record/t_edit_lead_record.tt2:15 ../../Open-ILS/src/templates/staff/cat/share/t_embedded_volcopy.tt2:12 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:151
 msgid "Done"
 msgstr "Hecho"
 
@@ -1777,7 +1924,15 @@ msgstr "Código de barras duplicado"
 msgid "Duration Rule"
 msgstr "Regla de duración"
 
-#: ../../Open-ILS/src/templates/staff/cat/bucket/record/t_merge_records.tt2:14 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:68 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:70 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:72 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:74 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:42 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:44 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:46 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:48 ../../Open-ILS/src/templates/staff/cat/volcopy/t_view.tt2:17 ../../Open-ILS/src/templates/staff/cat/z3950/t_overlay.tt2:16 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:126
+#: ../../Open-ILS/src/templates/staff/admin/acq/t_splash.tt2:10
+msgid "EDI Accounts"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/admin/acq/t_splash.tt2:10
+msgid "EDI Messages"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/cat/bucket/record/t_merge_records.tt2:20 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:70 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:72 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:74 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:76 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:47 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:49 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:51 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:53 ../../Open-ILS/src/templates/staff/cat/volcopy/t_view.tt2:18 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:127
 msgid "Edit"
 msgstr "Editar"
 
@@ -1798,9 +1953,17 @@ msgstr "Editar Fecha de vencimiento para %1 de artículos"
 msgid "Edit Hold Dates"
 msgstr "Editar Fechas de Retención"
 
+#: ../../Open-ILS/src/templates/staff/circ/transits/t_list.tt2:39
+msgid "Edit Item Attributes"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/staff/cat/bucket/record/t_edit_lead_record.tt2:5
 msgid "Edit Lead Record"
 msgstr "Editar registro de entrega"
+
+#: ../../Open-ILS/src/templates/staff/acq/t_edit_marc_order_record.tt2:5
+msgid "Edit MARC Order Record"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/cat/share/t_edit_new_authority.tt2:5
 msgid "Edit New Authority"
@@ -1843,6 +2006,14 @@ msgstr "Editar Copias Seleccionadas"
 msgid "Edit Statistical Data"
 msgstr "Editar Datos Estadísticos"
 
+#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_view.tt2:45
+msgid "Edit Volume/Copy Templates"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/cat/z3950/t_overlay.tt2:13
+msgid "Edit Z39.50 Record"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/staff/circ/share/t_hold_edit_pickup_lib.tt2:6
 msgid "Edit hold pickup library"
 msgstr "Editar biblioteca de recogida de retención"
@@ -1851,7 +2022,7 @@ msgstr "Editar biblioteca de recogida de retención"
 msgid "Edit then Import"
 msgstr "Editar después importar"
 
-#: ../../Open-ILS/src/templates/staff/cat/bucket/record/t_merge_records.tt2:15
+#: ../../Open-ILS/src/templates/staff/cat/bucket/record/t_merge_records.tt2:21
 msgid "Edit using full editor"
 msgstr "Editar usando el editor completo"
 
@@ -1867,7 +2038,7 @@ msgstr "Editar volúmenes y copias"
 msgid "Edited"
 msgstr "Modificado"
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:68
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:71
 msgid "Edited Patron"
 msgstr "Editado Patrón"
 
@@ -1887,7 +2058,7 @@ msgstr "Fecha Efectiva"
 msgid "Effective Date:"
 msgstr "Fecha Efectiva:"
 
-#: ../../Open-ILS/src/templates/staff/admin/actor/org_unit/t_main_tab.tt2:22 ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:626 ../../Open-ILS/src/templates/staff/circ/patron/t_pending_list.tt2:25 ../../Open-ILS/src/templates/staff/circ/patron/t_search.tt2:67 ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:129
+#: ../../Open-ILS/src/templates/staff/admin/actor/org_unit/t_main_tab.tt2:22 ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:633 ../../Open-ILS/src/templates/staff/circ/patron/t_pending_list.tt2:25 ../../Open-ILS/src/templates/staff/circ/patron/t_search.tt2:67 ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:151
 msgid "Email"
 msgstr "Correo electrónico"
 
@@ -1903,15 +2074,19 @@ msgstr "Recibo por correo electrónico"
 msgid "Emailed checkout receipt"
 msgstr "Recibo de pago enviadas por correo electrónico"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:78
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:80
 msgid "Empty Volumes"
 msgstr "Volúmenes vacíos"
+
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:26
+msgid "Enable Hatch Printing."
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/cat/bucket/record/t_bucket_export.tt2:18
 msgid "Encoding"
 msgstr "Codificación"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_catalog.tt2:18
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:342 ../../Open-ILS/src/templates/staff/cat/catalog/t_catalog.tt2:18
 msgid "End"
 msgstr "Finalizar"
 
@@ -1946,7 +2121,7 @@ msgid "Enter due date for items: %1"
 msgstr "Introduzca la fecha de vencimiento para los artículos: 1%"
 
 #. ("{{ids}}")
-#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:42
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:40
 msgid "Enter new note for #%1:"
 msgstr "Introducir nueva nota para #%1:"
 
@@ -1954,7 +2129,7 @@ msgstr "Introducir nueva nota para #%1:"
 msgid "Enter the number of {{type.name()}} circulating"
 msgstr "Introduzca el numero de {{type.name()}} circulando"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:43
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:41
 msgid "Enter the patron barcode"
 msgstr "Introduzca el código de patrón"
 
@@ -1966,7 +2141,7 @@ msgstr "Equivalente"
 msgid "Equals Any"
 msgstr "Igual a cualquiera"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:114
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:72
 msgid "Error"
 msgstr "Error"
 
@@ -1974,7 +2149,7 @@ msgstr "Error"
 msgid "Error (-1)"
 msgstr "Error (-1)"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:113
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:135
 msgid "Evening Phone"
 msgstr "Teléfono Nocturno"
 
@@ -1983,20 +2158,24 @@ msgid "Evergreen Documentation"
 msgstr "Documentación de Evergreen"
 
 #. (ctx.page_title)
-#: ../../Open-ILS/src/templates/staff/base.tt2:7
+#: ../../Open-ILS/src/templates/staff/base.tt2:13
 msgid "Evergreen Staff %1"
 msgstr "Personal de Evergreen %1"
 
 #. ("{{' _ set_str _ '}}")
 #. ("{{org_settings['ui.patron.edit.au.email.example']}}")
 #. ("{{org_settings['ui.patron.edit.phone.example']}}")
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:113 ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:331 ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:360 ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:378 ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:396
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:120 ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:338 ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:367 ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:385 ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:403
 msgid "Example: %1"
 msgstr "Ejemplo: %1"
 
 #: ../../Open-ILS/src/templates/staff/circ/share/t_event_override_dialog.tt2:6
 msgid "Exceptions occurred during checkout."
 msgstr "Excepciones occurrieron durante la compra."
+
+#: ../../Open-ILS/src/templates/staff/admin/acq/t_splash.tt2:10
+msgid "Exchange Rates"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/cat/volcopy/t_copy_notes.tt2:49
 msgid "Existing Copy Notes"
@@ -2010,7 +2189,7 @@ msgstr "Salir"
 msgid "Expand"
 msgstr "Expandir"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:83
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:84
 msgid "Expand Patron Summary Display"
 msgstr "Ampliar el Patrón Resumen de Visualización"
 
@@ -2018,13 +2197,17 @@ msgstr "Ampliar el Patrón Resumen de Visualización"
 msgid "Expand Record Summary Display"
 msgstr "Expandir Resumen de registros de visualización"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:48
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:70
 msgid "Expire Date"
 msgstr "Fecha de caducidad"
 
 #: ../../Open-ILS/src/templates/staff/cat/bucket/record/t_bucket_export.tt2:34 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:29
 msgid "Export"
 msgstr "Exportar"
+
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:58
+msgid "Export Customized Templates"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/cat/bucket/record/t_bucket_export.tt2:7 ../../Open-ILS/src/templates/staff/cat/bucket/record/t_view.tt2:28
 msgid "Export Records"
@@ -2033,6 +2216,10 @@ msgstr "Exportar registros"
 #: ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:240
 msgid "Extended"
 msgstr "Extendido"
+
+#: ../../Open-ILS/src/templates/staff/admin/workstation/index.tt2:23
+msgid "Failed to import any print template(s)"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_credentials.tt2:53
 msgid "Failure testing credentials"
@@ -2090,7 +2277,7 @@ msgstr "Nivel Fino"
 msgid "Fine Tally:"
 msgstr "Tally Fina:"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:53
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:75
 msgid "Fines Owed"
 msgstr "Multas Debidas"
 
@@ -2098,7 +2285,7 @@ msgstr "Multas Debidas"
 msgid "Fines Stopped"
 msgstr "Multas Detenidas"
 
-#: ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:53 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_payments.tt2:48 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_xacts.tt2:16 ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:31 ../../Open-ILS/src/templates/staff/circ/share/t_bill_patron_dialog.tt2:36
+#: ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:53 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_payments.tt2:48 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_xacts.tt2:18 ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:31 ../../Open-ILS/src/templates/staff/circ/share/t_bill_patron_dialog.tt2:36
 msgid "Finish"
 msgstr "Finalizar"
 
@@ -2142,6 +2329,10 @@ msgstr "Fuerza de Calidad de Copia"
 msgid "Force Hold"
 msgstr "Sostenga fuerza"
 
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:37
+msgid "Force Printer Context"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/staff/circ/share/t_copy_not_avail_dialog.tt2:16
 msgid "Force this action?"
 msgstr "¿Forzar esta acción?"
@@ -2150,7 +2341,7 @@ msgstr "¿Forzar esta acción?"
 msgid "Forgive"
 msgstr "Perdonar"
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:75
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:78
 msgid "Forgive Payment"
 msgstr "Pago Perdonado"
 
@@ -2158,11 +2349,32 @@ msgstr "Pago Perdonado"
 msgid "Forgive fines?"
 msgstr "Perdonar multas?"
 
+#. ("{{transit.source.shortname}}", "{{transit.dest.shortname}}", "{{transit.source_send_time | date:'short'}}", "{{transit.target_copy.barcode}}", "{{transit.target_copy.call_number.record.simple_record.title}}")
+#: ../../Open-ILS/src/templates/staff/share/print_templates/t_transit_list.tt2:20
+msgid "From: %1 To: %2 <br> When: %3 <br> Barcode: %4 Title: %5"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_payments.tt2:10 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_xacts.tt2:12 ../../Open-ILS/src/templates/staff/circ/patron/t_bills_list.tt2:44
 msgid "Full Details"
 msgstr "Detalles completos"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:194
+#: ../../Open-ILS/src/templates/staff/admin/acq/t_splash.tt2:10
+msgid "Fund Tags"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/admin/acq/t_splash.tt2:10
+msgid "Funding Sources"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/admin/acq/t_splash.tt2:10
+msgid "Funds"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:268
+msgid "General Search"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:201
 msgid "Generate Password"
 msgstr "Generar contraseña"
 
@@ -2198,7 +2410,7 @@ msgstr "Buena condición"
 msgid "Goods"
 msgstr "Mercancías"
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:76
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:79
 msgid "Goods Payment"
 msgstr "Pago Por Beneficios"
 
@@ -2214,15 +2426,15 @@ msgstr "Mayor o igual a"
 msgid "Group"
 msgstr "Grupo"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:61
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:83
 msgid "Group Fines"
 msgstr "Multas de Grupo"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:156 ../../Open-ILS/src/templates/staff/circ/patron/t_group.tt2:2
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:162 ../../Open-ILS/src/templates/staff/circ/patron/t_group.tt2:2
 msgid "Group Member Details"
 msgstr "Detalles de miembros del grupo"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:111
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:372
 msgid "HTML"
 msgstr "HTML"
 
@@ -2230,9 +2442,33 @@ msgstr "HTML"
 msgid "Hard Due Date Changes"
 msgstr "Fecha cambios debido duros"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:30 ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:31
-msgid "Hatch URL"
-msgstr "URL Escotilla"
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:25
+msgid "Hatch Administration"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:18
+msgid "Hatch Printer Settings"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_hatch.tt2:6
+msgid "Hatch is Available"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_hatch.tt2:11
+msgid "Hatch is Not Installed In This Browser"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:59
+msgid ""
+"Hatch is not installed in this browser.  Printing must be configured via the "
+"native browser print configuration."
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:23
+msgid ""
+"Hatch printing is not enabled on this browser.  The settings below will have "
+"no effect until Hatch printing is enabled."
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/cat/share/t_marcedit.tt2:49
 msgid "Help"
@@ -2290,11 +2526,11 @@ msgstr "Identificador de la reserva"
 msgid "Hold Matchpoint Weights"
 msgstr "Mantenga el cargo punto de partido"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:23
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:26
 msgid "Hold Pull List"
 msgstr "Mantenga lista de puesta"
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:77
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:80
 msgid "Hold Request"
 msgstr "Solicitud de Reserva"
 
@@ -2306,11 +2542,11 @@ msgstr "Fecha de solicitud de Retención"
 msgid "Hold Shelf Delay"
 msgstr "Mantenga Estante de Retardo"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:24
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:27
 msgid "Hold Shelf List"
 msgstr "Mantenga la lista de estantería"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:20
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:23
 msgid "Hold Shelf Slip"
 msgstr "Mantenga Plataforma de Deslizamiento"
 
@@ -2322,7 +2558,7 @@ msgstr "Nota Del Apartado"
 msgid "Hold Transfer Destination set"
 msgstr "Mantenga Transferencia conjunto de destino"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:19
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:22
 msgid "Hold Transit Slip"
 msgstr "Mantenga Slip de Tránsito"
 
@@ -2330,7 +2566,7 @@ msgstr "Mantenga Slip de Tránsito"
 msgid "Hold Type"
 msgstr "Tipo de Retención"
 
-#. ("{{patron.family_given_name}}", "{{patron.first_given_name}}", "{{patron.second_given_name}}")
+#. ("{{patron.family_name}}", "{{patron.first_given_name}}", "{{patron.second_given_name}}")
 #: ../../Open-ILS/src/templates/staff/share/print_templates/t_hold_shelf_slip.tt2:20 ../../Open-ILS/src/templates/staff/share/print_templates/t_hold_transit_slip.tt2:17
 msgid "Hold for patron %1, %2 %3"
 msgstr "Mantenga la posición durante patrón %1, %2 %3"
@@ -2339,7 +2575,7 @@ msgstr "Mantenga la posición durante patrón %1, %2 %3"
 msgid "Hold for patron {{patron.alias}}"
 msgstr "Mantenga la posición durante patron {{patron.alias}}"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:111 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:127 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:25 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:50 ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:78
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:113 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:127 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:25 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:50 ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:78
 msgid "Holdable"
 msgstr "Sostenible"
 
@@ -2351,11 +2587,11 @@ msgstr "¿Se puede apartar?"
 msgid "Holdings"
 msgstr "Valores en cartera"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_catalog.tt2:87
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_catalog.tt2:90
 msgid "Holdings View"
 msgstr "Ver Asimientos"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:108 ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:95
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:109 ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:117
 msgid "Holds"
 msgstr "Asimiento"
 
@@ -2363,7 +2599,7 @@ msgstr "Asimiento"
 msgid "Holds / Transit"
 msgstr "Asimientos/ Transito"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:613
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:620
 msgid "Holds Notices"
 msgstr "Sostiene Avisos"
 
@@ -2380,11 +2616,11 @@ msgstr "Estantería de apartados"
 msgid "Holds available: %1"
 msgstr "Sostienes disponibles: 1%"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:21
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:24
 msgid "Holds for Bib Record"
 msgstr "Se mantiene para Bib Registro"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:22
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:25
 msgid "Holds for Patron"
 msgstr "Se mantiene para Patrón"
 
@@ -2397,7 +2633,7 @@ msgstr "Se cumple para registro: 1%"
 msgid "Home"
 msgstr "Inicio"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_pending_list.tt2:26 ../../Open-ILS/src/templates/staff/circ/patron/t_search.tt2:134 ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:22
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_pending_list.tt2:26 ../../Open-ILS/src/templates/staff/circ/patron/t_search.tt2:134 ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:43
 msgid "Home Library"
 msgstr "Biblioteca Principal"
 
@@ -2417,15 +2653,15 @@ msgstr "Hora del día"
 msgid "Hours of Operation"
 msgstr "Horas de Operación"
 
-#: ../../Open-ILS/src/templates/staff/admin/server/config/marc_field.tt2:49 ../../Open-ILS/src/templates/staff/cat/catalog/t_conjoined_items.tt2:31
+#: ../../Open-ILS/src/templates/staff/admin/server/config/marc_field.tt2:49 ../../Open-ILS/src/templates/staff/cat/catalog/t_conjoined_items.tt2:31 ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:30
 msgid "ID"
 msgstr "ID"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:121
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:143
 msgid "ID1"
 msgstr "ID1"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:125
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:147
 msgid "ID2"
 msgstr "ID2"
 
@@ -2461,7 +2697,7 @@ msgstr "Ignorar Artículos Pre-catalogados"
 msgid "Immediately"
 msgstr "Inmediatamente"
 
-#: ../../Open-ILS/src/templates/staff/cat/share/z3950_strings.tt2:9 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:23 ../../Open-ILS/src/templates/staff/cat/z3950/t_list.tt2:108 ../../Open-ILS/src/templates/staff/cat/z3950/t_list.tt2:95
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:52 ../../Open-ILS/src/templates/staff/cat/share/z3950_strings.tt2:9 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:23 ../../Open-ILS/src/templates/staff/cat/z3950/t_list.tt2:108 ../../Open-ILS/src/templates/staff/cat/z3950/t_list.tt2:95
 msgid "Import"
 msgstr "Importar"
 
@@ -2477,6 +2713,10 @@ msgstr "Importar registro"
 msgid "Import Record from Z39.50"
 msgstr "Importación Registro de Z39.50"
 
+#: ../../Open-ILS/src/templates/staff/admin/workstation/index.tt2:22
+msgid "Imported one or more print template(s)"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/staff/cat/share/z3950_strings.tt2:5
 msgid "Imported record"
 msgstr "Registro Importado"
@@ -2489,9 +2729,13 @@ msgstr "En Tránsito"
 msgid "In list"
 msgstr "En la lista"
 
-#: ../../Open-ILS/src/templates/staff/circ/in_house_use/index.tt2:1 ../../Open-ILS/src/templates/staff/circ/in_house_use/index.tt2:70
+#: ../../Open-ILS/src/templates/staff/circ/in_house_use/index.tt2:1 ../../Open-ILS/src/templates/staff/circ/in_house_use/index.tt2:71
 msgid "In-House Use"
 msgstr "Uso Interno"
+
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:28
+msgid "In-House Use List"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_search.tt2:143
 msgid "Include Inactive?"
@@ -2501,11 +2745,11 @@ msgstr "Incluir Inactivo?"
 msgid "Include Items?"
 msgstr "Incluir artículos?"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:110
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:68
 msgid "Info"
 msgstr "Información"
 
-#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_copy_notes.tt2:32 ../../Open-ILS/src/templates/staff/circ/share/t_new_message_dialog.tt2:45
+#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_copy_notes.tt2:32 ../../Open-ILS/src/templates/staff/circ/patron/t_new_note_dialog.tt2:40 ../../Open-ILS/src/templates/staff/circ/share/t_new_message_dialog.tt2:45
 msgid "Initials"
 msgstr "Iniciales"
 
@@ -2525,9 +2769,17 @@ msgstr "Insertar campo antes"
 msgid "Internet Resources"
 msgstr "Recursos de internet"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:329 ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:356 ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:374 ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:392
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:336 ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:363 ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:381 ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:399
 msgid "Invalidate"
 msgstr "Invalidar"
+
+#: ../../Open-ILS/src/templates/staff/admin/acq/t_splash.tt2:10
+msgid "Invoice Item Types"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/admin/acq/t_splash.tt2:10
+msgid "Invoice Payment Method"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/reporter/share/report_strings.tt2:111 ../../Open-ILS/src/templates/staff/reporter/share/report_strings.tt2:30
 msgid "Is NULL"
@@ -2576,7 +2828,7 @@ msgstr "Código de barras del artículo:"
 msgid "Item Details"
 msgstr "Detalles del artículo"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:52 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:28
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:54 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:33
 msgid "Item Holds"
 msgstr "Sostiene De artículo"
 
@@ -2588,15 +2840,15 @@ msgstr "Elemento no encontrado"
 msgid "Item Search and Cataloging"
 msgstr "Tema de búsqueda y catalogación"
 
-#: ../../Open-ILS/src/templates/staff/cat/item/index.tt2:1 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:5 ../../Open-ILS/src/templates/staff/circ/transits/t_list.tt2:38 ../../Open-ILS/src/templates/staff/navbar.tt2:160 ../../Open-ILS/src/templates/staff/navbar.tt2:48
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:29 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:1 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:5 ../../Open-ILS/src/templates/staff/navbar.tt2:160 ../../Open-ILS/src/templates/staff/navbar.tt2:48
 msgid "Item Status"
 msgstr "Estado del elemento"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:48
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:50
 msgid "Item Status (detail)"
 msgstr "Estado del artículo (detalle)"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:46
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:48
 msgid "Item Status (list)"
 msgstr "Estado del artículo (detalle)"
 
@@ -2616,11 +2868,11 @@ msgstr "Conjunto de objetos de transferencia de destino"
 msgid "Item Type"
 msgstr "Tipo de artículo"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:55 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:33
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:57 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:38
 msgid "Item as Damaged"
 msgstr "Artículo según lo dañado"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:57 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:35
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:59 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:40
 msgid "Item as Missing"
 msgstr "Artículo como Desaparecido"
 
@@ -2640,7 +2892,7 @@ msgstr "El artículo no es capturado por una retención"
 msgid "Item(s) transfered"
 msgstr "Artículo(s) transferido"
 
-#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:38 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:45
+#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:43 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:50
 msgid "Items"
 msgstr "Artículos"
 
@@ -2652,7 +2904,7 @@ msgstr "Artículos Registrados"
 msgid "Items Checked Out"
 msgstr "Ejemplares Prestados"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:100 ../../Open-ILS/src/templates/staff/circ/patron/t_group.tt2:41 ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:67
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:30 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:101 ../../Open-ILS/src/templates/staff/circ/patron/t_group.tt2:41 ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:89
 msgid "Items Out"
 msgstr "Artículos Prestados"
 
@@ -2660,19 +2912,19 @@ msgstr "Artículos Prestados"
 msgid "Items Overdue"
 msgstr "Articulos Vencidos"
 
-#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:52
+#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:57
 msgid "Items to Previously Marked Library"
 msgstr "Los artículos a la biblioteca de marcado previamente"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:93 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:54
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:95 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:59
 msgid "Items to Previously Marked Volume"
 msgstr "Artículos al volumen previamente marcados"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:32
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:43 ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:41
 msgid "Label"
 msgstr "Etiqueta"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:36
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:57
 msgid "Last Activity"
 msgstr "Última actividad"
 
@@ -2704,7 +2956,7 @@ msgstr "Último pago"
 msgid "Last Renewed On"
 msgstr "Última renovacion en"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:40
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:61
 msgid "Last Updated"
 msgstr "Actualizado por ultima vez"
 
@@ -2712,9 +2964,13 @@ msgstr "Actualizado por ultima vez"
 msgid "Last Value"
 msgstr "Último valor"
 
-#: ../../Open-ILS/src/templates/staff/cat/bucket/record/t_merge_records.tt2:10
+#: ../../Open-ILS/src/templates/staff/cat/bucket/record/t_merge_records.tt2:16
 msgid "Lead record"
 msgstr "Registro de cliente potencial"
+
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:279
+msgid "Left"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/reporter/share/report_strings.tt2:103 ../../Open-ILS/src/templates/staff/reporter/share/report_strings.tt2:22
 msgid "Less than"
@@ -2728,7 +2984,7 @@ msgstr "Menor o igual a"
 msgid "Library"
 msgstr "Librería"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:59
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:61
 msgid "Library as Volume Transfer Destination"
 msgstr "Biblioteca como transferencia de Volumen de Destino"
 
@@ -2736,11 +2992,19 @@ msgstr "Biblioteca como transferencia de Volumen de Destino"
 msgid "Library: "
 msgstr "Biblioteca: "
 
+#: ../../Open-ILS/src/templates/staff/admin/acq/t_splash.tt2:10
+msgid "Line Item Alerts"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/admin/acq/t_splash.tt2:10
+msgid "Line Item MARC Attribute Definitions"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/staff/navbar.tt2:247
 msgid "Link Checker"
 msgstr "Comprobador de enlaces"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:41 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:15
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:43 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:20
 msgid "Link as Conjoined to Previously Marked Bib Record"
 msgstr "Enlace como en conjunción marcado previamente Bib Registro"
 
@@ -2756,6 +3020,14 @@ msgstr "Cargar"
 msgid "Load Bucket"
 msgstr "Carga del cubo"
 
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:299
+msgid "Load Catalog Record IDs"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:306
+msgid "Load MARC Order Records"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_pending_list.tt2:19
 msgid "Load Patron"
 msgstr "Cargar Patrón"
@@ -2768,7 +3040,7 @@ msgstr "Cargar Cubo Compartido"
 msgid "Load Shared Bucket Bucket by ID"
 msgstr "Cargar compartida Cubo Cubo por ID"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:123
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:130 ../../Open-ILS/src/templates/staff/circ/patron/t_search_results.tt2:8
 msgid "Loading..."
 msgstr "Cargando…"
 
@@ -2781,7 +3053,7 @@ msgstr "Cargando… %1"
 msgid "Loan Duration"
 msgstr "Duración Del Préstamo"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:285
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:406
 msgid "Local Administration"
 msgstr "Administración local"
 
@@ -2793,7 +3065,7 @@ msgstr "Catálogo local"
 msgid "Local Prefs"
 msgstr "Pref locales"
 
-#: ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_pending.tt2:43 ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_view.tt2:32 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:97 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:58 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:56 ../../Open-ILS/src/templates/staff/circ/in_house_use/index.tt2:76 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:95 ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:54 ../../Open-ILS/src/templates/staff/circ/renew/t_renew.tt2:98
+#: ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_pending.tt2:43 ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_view.tt2:32 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:99 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:63 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:56 ../../Open-ILS/src/templates/staff/circ/in_house_use/index.tt2:78 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:95 ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:54 ../../Open-ILS/src/templates/staff/circ/renew/t_renew.tt2:98
 msgid "Location"
 msgstr "Ubicación"
 
@@ -2801,7 +3073,7 @@ msgstr "Ubicación"
 msgid "Location:"
 msgstr "Localización:"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:335
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:480
 msgid "Log Out"
 msgstr "Cerrar sesión"
 
@@ -2809,11 +3081,15 @@ msgstr "Cerrar sesión"
 msgid "Login Failed"
 msgstr "Error al acceder"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:77
+#: ../../Open-ILS/src/templates/staff/share/t_opchange.tt2:31
+msgid "Login Type:"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:99
 msgid "Long Overdue"
 msgstr "desde hace mucho tiempo"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:87
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:109
 msgid "Lost"
 msgstr "Perdido"
 
@@ -2837,9 +3113,17 @@ msgstr "MARC Lotes de Importación/Exportación"
 msgid "MARC Coded Value Maps"
 msgstr "MARC Mapas de Valor Codificado"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_catalog.tt2:67
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_catalog.tt2:70
 msgid "MARC Edit"
 msgstr "MARC Editar"
+
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:116
+msgid "MARC Expert"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:293
+msgid "MARC Federated Search"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/admin/server/t_splash.tt2:10
 msgid "MARC Import Remove Fields"
@@ -2877,7 +3161,7 @@ msgstr "Buscar MARC /Faceta campos"
 msgid "MARC Tag Tables"
 msgstr "MARC Tablas de variables"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_catalog.tt2:72
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_catalog.tt2:75
 msgid "MARC View"
 msgstr "Vista MARC"
 
@@ -2889,17 +3173,21 @@ msgstr "MARC XML"
 msgid "MARC8"
 msgstr "MARC8"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:35
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:46 ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:42
 msgid "Mail"
 msgstr "Correo"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/register.tt2:14 ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:696
+#: ../../Open-ILS/src/templates/staff/circ/patron/register.tt2:14 ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:703
 msgid "Mailing"
 msgstr "Envío de correo"
 
 #: ../../Open-ILS/src/templates/staff/admin/actor/org_unit/t_index.tt2:21
 msgid "Main Settings"
 msgstr "Configuración principal"
+
+#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:13
+msgid "Make Items Bookable"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:262
 msgid "Make column narrower"
@@ -2921,15 +3209,19 @@ msgstr "Administración de vínculos de registros de autoridad"
 msgid "Manual Floating Active"
 msgstr "Manual Flotante Activo"
 
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:275
+msgid "Manual Margins"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/staff/cat/z3950/t_search_fields.tt2:11
 msgid "Maps"
 msgstr "Mapas"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:54 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:56 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:58 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:60 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:32 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:34
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:56 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:58 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:60 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:62 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:37 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:39
 msgid "Mark"
 msgstr "Marcar"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:58
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_workstations.tt2:64
 msgid "Mark As Default"
 msgstr "Marcar como predeterminado"
 
@@ -2974,7 +3266,7 @@ msgstr "Marca Nunca Prestado: 1%"
 msgid "Mark as Title Hold Transfer Destination"
 msgstr "Marcar como Título espera Transferir Destino"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_catalog.tt2:30
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_catalog.tt2:33
 msgid "Mark for:"
 msgstr "Marcar para:"
 
@@ -2998,9 +3290,13 @@ msgstr "Máximo"
 msgid "Max Fine Rule"
 msgstr "Max Regla Fina"
 
-#: ../../Open-ILS/src/templates/staff/cat/bucket/record/t_merge_records.tt2:45
+#: ../../Open-ILS/src/templates/staff/cat/bucket/record/t_merge_records.tt2:52
 msgid "Merge"
 msgstr "Unir"
+
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_search_results.tt2:26
+msgid "Merge Patrons"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/cat/bucket/record/t_view.tt2:25
 msgid "Merge Selected Records"
@@ -3014,7 +3310,11 @@ msgstr "Combinar registros?"
 msgid "Message"
 msgstr "Mensaje"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:123
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:152
+msgid "Message Center"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:124
 msgid "Messages"
 msgstr "Mensajes"
 
@@ -3042,7 +3342,7 @@ msgstr "Faltando Numero de Llamadas"
 msgid "Mixed material"
 msgstr "Material mixto"
 
-#: ../../Open-ILS/src/templates/staff/cat/z3950/t_edit_overlay_record.tt2:9
+#: ../../Open-ILS/src/templates/staff/acq/t_edit_marc_order_record.tt2:9 ../../Open-ILS/src/templates/staff/cat/z3950/t_edit_overlay_record.tt2:9
 msgid "Modify"
 msgstr "Modificar"
 
@@ -3055,7 +3355,7 @@ msgstr "Modificar Fechas para 1% de retención(s)"
 msgid "Modify Penalty / Message"
 msgstr "Modificar Pena / Mensaje"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_catalog.tt2:82
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_catalog.tt2:85
 msgid "Monograph Parts"
 msgstr "Piezas monografía"
 
@@ -3137,6 +3437,10 @@ msgstr "Mover el usuario en este grupo?"
 msgid "Musical scores"
 msgstr "Partituras musicales"
 
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:275
+msgid "My Selection Lists"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/staff/admin/actor/org_unit/t_main_tab.tt2:60
 msgid ""
 "NOTE: A server-side \"autogen\" process is needed to complete updates, "
@@ -3162,7 +3466,7 @@ msgstr ""
 "NOTA: La nueva unidad organizativa no existirá en la base de datos hasta que "
 "se aplique la actualización Org."
 
-#: ../../Open-ILS/src/templates/staff/admin/actor/org_unit/t_main_tab.tt2:6 ../../Open-ILS/src/templates/staff/admin/server/config/marc_field.tt2:47 ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_bucket_create.tt2:13 ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_bucket_edit.tt2:11 ../../Open-ILS/src/templates/staff/cat/bucket/record/t_bucket_create.tt2:13 ../../Open-ILS/src/templates/staff/cat/bucket/record/t_bucket_edit.tt2:11 ../../Open-ILS/src/templates/staff/reporter/t_edit_template.tt2:222
+#: ../../Open-ILS/src/templates/staff/admin/actor/org_unit/t_main_tab.tt2:6 ../../Open-ILS/src/templates/staff/admin/server/config/marc_field.tt2:47 ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_bucket_create.tt2:13 ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_bucket_edit.tt2:11 ../../Open-ILS/src/templates/staff/cat/bucket/record/t_bucket_create.tt2:13 ../../Open-ILS/src/templates/staff/cat/bucket/record/t_bucket_edit.tt2:11 ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:34 ../../Open-ILS/src/templates/staff/reporter/t_edit_template.tt2:222
 msgid "Name"
 msgstr "Nombre"
 
@@ -3186,7 +3490,7 @@ msgstr "Necesario para la Retención"
 msgid "Needs Transiting"
 msgstr "Necesidades de Tránsito"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:26
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:47
 msgid "Net Access"
 msgstr "Acceso a la Red"
 
@@ -3194,7 +3498,7 @@ msgstr "Acceso a la Red"
 msgid "Network Connection Status"
 msgstr "Estado de la conexión a la red"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:844
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:851
 msgid "New Address"
 msgstr "Nueva dirección"
 
@@ -3205,6 +3509,10 @@ msgstr "Nuevo Equilibrio:"
 #: ../../Open-ILS/src/templates/staff/cat/share/t_replace_barcode.tt2:23
 msgid "New Barcode..."
 msgstr "Nuevo código de barras..."
+
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:281
+msgid "New Brief Record"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_bucket_selector.tt2:7 ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_grid_menu.tt2:3 ../../Open-ILS/src/templates/staff/cat/bucket/record/t_bucket_selector.tt2:7 ../../Open-ILS/src/templates/staff/cat/bucket/record/t_grid_menu.tt2:3
 msgid "New Bucket"
@@ -3250,11 +3558,11 @@ msgstr "No hay artículos para mostrar"
 msgid "No Previous Circ Group"
 msgstr "Sin Previo Grupo Circ"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:68
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:83
 msgid "No Printer Selected"
 msgstr "Ninguna Impresora Seleccionada"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:65
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:80
 msgid "No Printers Found"
 msgstr "No se han encontrado impresoras"
 
@@ -3299,7 +3607,7 @@ msgstr "Ningún usuario seleccionado para el movimiento."
 msgid "Non-Aggregate"
 msgstr "No Agregados"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:91
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:113
 msgid "Non-Cataloged"
 msgstr "No catalogado"
 
@@ -3356,7 +3664,7 @@ msgstr "Nota:"
 msgid "Note: %1"
 msgstr "Nota: %1"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:141 ../../Open-ILS/src/templates/staff/circ/share/t_hold_details.tt2:58
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:142 ../../Open-ILS/src/templates/staff/circ/share/t_hold_details.tt2:58
 msgid "Notes"
 msgstr "Notas"
 
@@ -3387,6 +3695,10 @@ msgstr "Notificar por el texto: 1%"
 msgid "Nullability"
 msgstr "Nulabilidad"
 
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:233
+msgid "Number of Copies"
+msgstr ""
+
 #. ("{{dialog.num_circs}}")
 #: ../../Open-ILS/src/templates/staff/circ/share/t_backdate_dialog.tt2:9
 msgid "Number of circulations selected: %1"
@@ -3396,11 +3708,15 @@ msgstr "Número de circulaciones seleccionados: 1%"
 msgid "Number of items: "
 msgstr "Número de artículos: "
 
-#: ../../Open-ILS/src/templates/staff/cat/bucket/record/t_records_not_deleted.tt2:16 ../../Open-ILS/src/templates/staff/cat/catalog/t_choose_vol_target_lib.tt2:20 ../../Open-ILS/src/templates/staff/cat/catalog/t_conjoined_selector.tt2:21 ../../Open-ILS/src/templates/staff/cat/catalog/t_request_items.tt2:43 ../../Open-ILS/src/templates/staff/cat/volcopy/t_copy_notes.tt2:35 ../../Open-ILS/src/templates/staff/circ/patron/t_edit_due_date_dialog.tt2:21 ../../Open-ILS/src/templates/staff/circ/patron/t_new_note_dialog.tt2:38 ../../Open-ILS/src/templates/staff/circ/share/t_hold_note_dialog.tt2:47 ../../Open-ILS/src/templates/staff/circ/share/t_hold_notification_dialog.tt2:29 ../../Open-ILS/src/templates/staff/circ/share/t_new_message_dialog.tt2:48 ../../Open-ILS/src/templates/staff/circ/share/t_noncat_dialog.tt2:21 ../../Open-ILS/src/templates/staff/share/t_alert_dialog.tt2:14
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:115
+msgid "Numeric"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/cat/bucket/record/t_records_not_deleted.tt2:16 ../../Open-ILS/src/templates/staff/cat/catalog/t_choose_vol_target_lib.tt2:20 ../../Open-ILS/src/templates/staff/cat/catalog/t_conjoined_selector.tt2:21 ../../Open-ILS/src/templates/staff/cat/catalog/t_request_items.tt2:43 ../../Open-ILS/src/templates/staff/cat/volcopy/t_copy_notes.tt2:35 ../../Open-ILS/src/templates/staff/circ/patron/t_edit_due_date_dialog.tt2:21 ../../Open-ILS/src/templates/staff/circ/patron/t_new_note_dialog.tt2:43 ../../Open-ILS/src/templates/staff/circ/share/t_hold_note_dialog.tt2:47 ../../Open-ILS/src/templates/staff/circ/share/t_hold_notification_dialog.tt2:29 ../../Open-ILS/src/templates/staff/circ/share/t_new_message_dialog.tt2:48 ../../Open-ILS/src/templates/staff/circ/share/t_noncat_dialog.tt2:21 ../../Open-ILS/src/templates/staff/share/t_alert_dialog.tt2:14
 msgid "OK"
 msgstr "OK"
 
-#: ../../Open-ILS/src/templates/staff/share/t_confirm_dialog.tt2:14 ../../Open-ILS/src/templates/staff/share/t_prompt_dialog.tt2:18 ../../Open-ILS/src/templates/staff/share/t_select_dialog.tt2:20
+#: ../../Open-ILS/src/templates/staff/share/t_confirm_dialog.tt2:14 ../../Open-ILS/src/templates/staff/share/t_opchange.tt2:46 ../../Open-ILS/src/templates/staff/share/t_prompt_dialog.tt2:18 ../../Open-ILS/src/templates/staff/share/t_select_dialog.tt2:20
 msgid "OK/Continue"
 msgstr "OK /Continuar"
 
@@ -3408,7 +3724,7 @@ msgstr "OK /Continuar"
 msgid "OPAC"
 msgstr "OPAC"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_catalog.tt2:62
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_catalog.tt2:65
 msgid "OPAC View"
 msgstr "Ver OPAC"
 
@@ -3428,7 +3744,7 @@ msgstr "O"
 msgid "OU Type"
 msgstr "Tipo de OU"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:38
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:49 ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:43
 msgid "Offline"
 msgstr "Desconectada"
 
@@ -3456,9 +3772,29 @@ msgstr "La circulación abierta"
 msgid "Open Hold Requests"
 msgstr "Manten Abierta Peticiones"
 
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:331
+msgid "Open Invoices"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/share/t_eframe.tt2:2
+msgid "Open in New Window"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/staff/reporter/t_edit_template.tt2:225
 msgid "Operator"
 msgstr "Operador"
+
+#: ../../Open-ILS/src/templates/staff/share/t_opchange.tt2:8
+msgid "Operator Change"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:84
+msgid "Operator Change Failed"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:83
+msgid "Operator Change Succeeded"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/admin/actor/org_unit/index.tt2:14
 msgid "Org Unit Deleted"
@@ -3504,11 +3840,11 @@ msgstr "Balance Original:"
 msgid "Original Barcode..."
 msgstr "Código de barras original ..."
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:130
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:131
 msgid "Other"
 msgstr "Otro"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:117
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:139
 msgid "Other Phone"
 msgstr "Otro Teléfono"
 
@@ -3524,15 +3860,15 @@ msgstr "Salida"
 msgid "Output Folders"
 msgstr "Carpetas de salida"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:72
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:94
 msgid "Overdue"
 msgstr "Atrasado"
 
-#: ../../Open-ILS/src/templates/staff/cat/z3950/t_list.tt2:103 ../../Open-ILS/src/templates/staff/cat/z3950/t_list.tt2:116 ../../Open-ILS/src/templates/staff/cat/z3950/t_overlay.tt2:25
+#: ../../Open-ILS/src/templates/staff/cat/z3950/t_list.tt2:103 ../../Open-ILS/src/templates/staff/cat/z3950/t_list.tt2:116 ../../Open-ILS/src/templates/staff/cat/z3950/t_overlay.tt2:32
 msgid "Overlay"
 msgstr "Sobreponer"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_catalog.tt2:35
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_catalog.tt2:38
 msgid "Overlay Target"
 msgstr "Superposición de Destino"
 
@@ -3545,11 +3881,11 @@ msgid "Owed for Selected:"
 msgstr "Adeudado por seleccionada:"
 
 #. ("{{addr._linked_owner}}")
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:690
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:697
 msgid "Owned by %1"
 msgstr "Propiedad de 1%"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:95 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:33 ../../Open-ILS/src/templates/staff/cat/share/t_volume_list.tt2:11 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:41
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:97 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:33 ../../Open-ILS/src/templates/staff/cat/share/t_volume_list.tt2:11 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:41
 msgid "Owning Library"
 msgstr "Biblioteca Dueña"
 
@@ -3558,9 +3894,29 @@ msgstr "Biblioteca Dueña"
 msgid "Page %1"
 msgstr "Página %1"
 
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:161
+msgid "Page Orientation"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:324
+msgid "Page Range"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:316
+msgid "Page Ranges"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_bills.tt2:37
 msgid "Paid for Selected:"
 msgstr "Pagado por seleccionado:"
+
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:125
+msgid "Paper Source"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:143
+msgid "Paper Type"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/cat/z3950/t_search_fields.tt2:8
 msgid "Papers or Articles"
@@ -3578,7 +3934,7 @@ msgstr "Nullible Padres"
 msgid "Part"
 msgstr "Parte"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:104
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:106
 msgid "Parts"
 msgstr "Partes"
 
@@ -3586,19 +3942,27 @@ msgstr "Partes"
 msgid "Password"
 msgstr "Contraseña"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_log.tt2:28 ../../Open-ILS/src/templates/staff/admin/workstation/t_log.tt2:54 ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:29 ../../Open-ILS/src/templates/staff/cat/item/t_circs_pane.tt2:109 ../../Open-ILS/src/templates/staff/cat/item/t_circs_pane.tt2:14 ../../Open-ILS/src/templates/staff/cat/item/t_holds_pane.tt2:13 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:1
+#: ../../Open-ILS/src/templates/staff/share/t_opchange.tt2:22
+msgid "Password:"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_log.tt2:28 ../../Open-ILS/src/templates/staff/admin/workstation/t_log.tt2:54 ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:29 ../../Open-ILS/src/templates/staff/cat/item/t_circs_pane.tt2:109 ../../Open-ILS/src/templates/staff/cat/item/t_circs_pane.tt2:14 ../../Open-ILS/src/templates/staff/cat/item/t_holds_pane.tt2:13 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:1 ../../Open-ILS/src/templates/staff/share/print_templates/t_hold_shelf_list.tt2:11
 msgid "Patron"
 msgstr "Usuario"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:25
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:31
 msgid "Patron Address"
 msgstr "Patrón Dirección"
+
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:19
+msgid "Patron Alert Message"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/share/print_templates/t_holds_for_bib.tt2:11
 msgid "Patron Alias"
 msgstr "Alias Patron"
 
-#: ../../Open-ILS/src/templates/staff/admin/t_user_perms_lookup.tt2:12 ../../Open-ILS/src/templates/staff/admin/t_user_perms_lookup.tt2:5 ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:66 ../../Open-ILS/src/templates/staff/circ/patron/t_bcsearch.tt2:10 ../../Open-ILS/src/templates/staff/circ/patron/t_bcsearch.tt2:6 ../../Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2:55 ../../Open-ILS/src/templates/staff/circ/transits/t_list.tt2:59 ../../Open-ILS/src/templates/staff/share/print_templates/t_holds_for_bib.tt2:9
+#: ../../Open-ILS/src/templates/staff/admin/t_user_perms_lookup.tt2:12 ../../Open-ILS/src/templates/staff/admin/t_user_perms_lookup.tt2:5 ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:66 ../../Open-ILS/src/templates/staff/circ/patron/t_bcsearch.tt2:10 ../../Open-ILS/src/templates/staff/circ/patron/t_bcsearch.tt2:6 ../../Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2:55 ../../Open-ILS/src/templates/staff/circ/transits/t_list.tt2:71 ../../Open-ILS/src/templates/staff/share/print_templates/t_holds_for_bib.tt2:9
 msgid "Patron Barcode"
 msgstr "Código de barras del Patrón"
 
@@ -3626,7 +3990,7 @@ msgstr "Editar patrón"
 msgid "Patron Last"
 msgstr "Último Patron"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:26
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:32
 msgid "Patron Note"
 msgstr "Nota de Patrono"
 
@@ -3634,11 +3998,15 @@ msgstr "Nota de Patrono"
 msgid "Patron Registration"
 msgstr "Registro de patrón"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:172
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:287
+msgid "Patron Requests"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:193
 msgid "Patron Search"
 msgstr "Patrón de búsqueda"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_search_results.tt2:4
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_search_results.tt2:19
 msgid "Patron Search Results"
 msgstr "Patrono Resultados de búsqueda"
 
@@ -3703,7 +4071,7 @@ msgstr "Identificación Del Pago"
 msgid "Payment Method:"
 msgstr "Método de pago:"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_bills.tt2:72
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_bills.tt2:73
 msgid "Payment Received"
 msgstr "Pago recibido"
 
@@ -3724,7 +4092,7 @@ msgid "Payments"
 msgstr "Pagos"
 
 #. ("{{max_amount}}")
-#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:51
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:49
 msgid "Payments over $%1 are denied by policy."
 msgstr "Pagos de más de $%1 sonnegados por política."
 
@@ -3778,12 +4146,16 @@ msgstr "Grupo de Permisos"
 msgid "Permissions"
 msgstr "Permisos:"
 
+#: ../../Open-ILS/src/templates/staff/share/t_opchange.tt2:38
+msgid "Persistent"
+msgstr ""
+
 #. ("{{note.usr.family_name}}", "{{note.usr.first_given_name}}", "{{note.usr.second_given_name}}", "{{note.usr.card.barcode}}")
 #: ../../Open-ILS/src/templates/staff/share/print_templates/t_patron_note.tt2:1
 msgid "Pertaining to %1, %2 %3 : %4"
 msgstr "Referente a %1, %2 %3: %4"
 
-#: ../../Open-ILS/src/templates/staff/admin/actor/org_unit/t_main_tab.tt2:30 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:75 ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:620 ../../Open-ILS/src/templates/staff/circ/patron/t_search.tt2:82 ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:36 ../../Open-ILS/src/templates/staff/circ/share/t_bill_patron_dialog.tt2:41 ../../Open-ILS/src/templates/staff/circ/share/t_transit_dialog.tt2:19
+#: ../../Open-ILS/src/templates/staff/admin/actor/org_unit/t_main_tab.tt2:30 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:75 ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:627 ../../Open-ILS/src/templates/staff/circ/patron/t_search.tt2:82 ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:36 ../../Open-ILS/src/templates/staff/circ/share/t_bill_patron_dialog.tt2:41 ../../Open-ILS/src/templates/staff/circ/share/t_transit_dialog.tt2:19
 msgid "Phone"
 msgstr "Teléfono"
 
@@ -3795,13 +4167,17 @@ msgstr "Teléfono #"
 msgid "Phone Notify"
 msgstr "Notificar por teléfono"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:701
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:708
 msgid "Physical"
 msgstr "Física"
 
 #: ../../Open-ILS/src/templates/staff/cat/share/t_physchar_dialog.tt2:5
 msgid "Physical Characteristics Wizard"
 msgstr "Asistente de Características Físicas"
+
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:369
+msgid "Pick Up Reservations"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/cat/catalog/t_request_items.tt2:31 ../../Open-ILS/src/templates/staff/cat/item/t_holds_pane.tt2:39 ../../Open-ILS/src/templates/staff/circ/share/t_hold_details.tt2:24
 msgid "Pickup Lib"
@@ -3815,11 +4191,11 @@ msgstr "Biblioteca de Recolección"
 msgid "Place Hold"
 msgstr "Crear Apartado"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:107
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:368
 msgid "Plain Text"
 msgstr "Texto plano"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:39
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:37
 msgid "Please annotate this payment"
 msgstr "Por favor, anote este pago"
 
@@ -3831,7 +4207,7 @@ msgstr "Por favor, cambie el nombre del informe"
 msgid "Please enter a report name"
 msgstr "Por favor ingrese un nombre de informe"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:48 ../../Open-ILS/src/templates/staff/circ/patron/register.tt2:16
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:46 ../../Open-ILS/src/templates/staff/circ/patron/register.tt2:16
 msgid "Please enter valid values for all required fields."
 msgstr ""
 "Por favor, introduzca los valores válidos para todos los campos requeridos."
@@ -3844,7 +4220,11 @@ msgstr "Por favor provea una carpeta de informe"
 msgid "Please provide an output folder"
 msgstr "Por favor provea una carpeta de salida"
 
-#: ../../Open-ILS/src/templates/staff/cat/bucket/record/t_merge_records.tt2:26
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_workstations.tt2:10
+msgid "Please register a workstation."
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/cat/bucket/record/t_merge_records.tt2:33
 msgid "Please select a lead record from the right..."
 msgstr ""
 "Por favor, seleccione un registro de cliente potencial desde la derecha ..."
@@ -3865,11 +4245,11 @@ msgstr "Después De Ser Clarificado"
 msgid "Potential Copies"
 msgstr "Copias Potenciales"
 
-#: ../../Open-ILS/src/templates/staff/circ/share/t_precat_dialog.tt2:38
+#: ../../Open-ILS/src/templates/staff/circ/share/t_precat_dialog.tt2:39
 msgid "Precat Checkout"
 msgstr "Precat Pedido"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:102 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:58 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:46
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:104 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:58 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:46
 msgid "Prefix"
 msgstr "Prefijo"
 
@@ -3880,7 +4260,7 @@ msgstr ""
 "Presione un botón de navegación de arriba (por ejemplo, Hora de salida) para "
 "desactivar esta alerta."
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:42
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:69
 msgid "Preview"
 msgstr "Previsualizar"
 
@@ -3896,7 +4276,7 @@ msgstr "Anterior Grupo de Circ"
 msgid "Previous Page"
 msgstr "Página anterior"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:106 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:30 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:206 ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:159
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:108 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:30 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:206 ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:159
 msgid "Price"
 msgstr "Precio"
 
@@ -3904,17 +4284,25 @@ msgstr "Precio"
 msgid "Primary"
 msgstr "Primario"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:120 ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:100 ../../Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2:89 ../../Open-ILS/src/templates/staff/circ/patron/t_notes.tt2:32 ../../Open-ILS/src/templates/staff/circ/share/t_hold_shelf_dialog.tt2:59 ../../Open-ILS/src/templates/staff/circ/share/t_transit_dialog.tt2:60
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:381 ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:100 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:77 ../../Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2:89 ../../Open-ILS/src/templates/staff/circ/patron/t_notes.tt2:32 ../../Open-ILS/src/templates/staff/circ/share/t_hold_shelf_dialog.tt2:59 ../../Open-ILS/src/templates/staff/circ/share/t_transit_dialog.tt2:60
 msgid "Print"
 msgstr "Imprimir"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_bills_list.tt2:19
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_hatch.tt2:3
+msgid "Print / Storage Service (\"Hatch\")"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_xacts.tt2:14 ../../Open-ILS/src/templates/staff/circ/patron/t_bills_list.tt2:19
 msgid "Print Bills"
 msgstr "Imprimir las cuentas"
 
 #: ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:184
 msgid "Print CSV"
 msgstr "Imprimir CSV"
+
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:108
+msgid "Print Color"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/circ/holds/t_pull_list.tt2:15 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:27
 msgid "Print Full List"
@@ -3932,9 +4320,21 @@ msgstr "Imprimir comprobante de artículos"
 msgid "Print Letter"
 msgstr "Imprimir la letra"
 
+#: ../../Open-ILS/src/templates/staff/circ/in_house_use/index.tt2:86
+msgid "Print List"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:197
+msgid "Print Quality"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin.tt2:113 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:135 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:144 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:159 ../../Open-ILS/src/templates/staff/circ/renew/t_renew.tt2:125
 msgid "Print Receipt"
 msgstr "Imprimir Comprobante"
+
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:215
+msgid "Print Sides"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:73
 msgid "Print Spine Labels"
@@ -3945,9 +4345,13 @@ msgstr "Imprimir etiquetas de la columna vertebral"
 msgid "Print Template Not Found: %1"
 msgstr "Plantilla de impresión no encontrado: %1"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:9 ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:131
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:9 ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:29
 msgid "Print Templates"
 msgstr "Imprimir Plantillas"
+
+#: ../../Open-ILS/src/templates/staff/circ/transits/t_list.tt2:44
+msgid "Print Transits"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/circ/share/t_hold_details.tt2:82
 msgid "Print on Slip"
@@ -3957,9 +4361,13 @@ msgstr "Imprimir en papel"
 msgid "Print on Slip?"
 msgstr "Imprimir en Slip?"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:124
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:385
 msgid "Print with Dialog"
 msgstr "Imprimir con diálogo"
+
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:47
+msgid "Print/Storage Service (\"Hatch\")"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/statusbar.tt2:21
 msgid "Print/Store Connection Status"
@@ -3975,21 +4383,21 @@ msgstr "Imprimir por %1"
 msgid "Printed by %1 at %2"
 msgstr "Impreso por 1% al 2%"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:122
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:20
 msgid "Printer Settings"
 msgstr "Configuración de la impresora"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:18
-msgid "Printer Settings for Remote Printing"
-msgstr "Configuración de la impresora para la impresión remota"
-
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:18
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:26
 msgid "Profile"
 msgstr "Perfil"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:424 ../../Open-ILS/src/templates/staff/circ/patron/t_search.tt2:112 ../../Open-ILS/src/templates/staff/circ/patron/t_search.tt2:120
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:431 ../../Open-ILS/src/templates/staff/circ/patron/t_search.tt2:112 ../../Open-ILS/src/templates/staff/circ/patron/t_search.tt2:120
 msgid "Profile Group"
 msgstr "Perfil del grupo"
+
+#: ../../Open-ILS/src/templates/staff/admin/acq/t_splash.tt2:10
+msgid "Providers"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/cat/share/t_record_summary.tt2:46 ../../Open-ILS/src/templates/staff/cat/share/t_record_summary.tt2:80
 msgid "Pub Date:"
@@ -4011,9 +4419,17 @@ msgstr "Visible para el público?"
 msgid "Publisher"
 msgstr "Editor"
 
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:357
+msgid "Pull List"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/staff/navbar.tt2:98
 msgid "Pull List for Hold Requests"
 msgstr "Tire lista de solicitudes de reserva"
+
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:312
+msgid "Purchase Orders"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:325 ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:174
 msgid "Quality"
@@ -4067,6 +4483,10 @@ msgstr "Novato Z39.50 cadena de búsqueda PQN"
 msgid "Raw Z39.50 Search"
 msgstr "Búsqueda de datos binarios Z3950"
 
+#: ../../Open-ILS/src/templates/staff/share/t_eframe.tt2:3
+msgid "Re-embed"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/staff/circ/share/hold_strings.tt2:9
 msgid "Ready for Pickup"
 msgstr "Listo para recoger"
@@ -4084,11 +4504,11 @@ msgstr "Razon(es) incluyen: %1"
 msgid "Recall Hold"
 msgstr "Llamada en Retención"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:29
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:40 ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:40
 msgid "Receipt"
 msgstr "Recibo"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_bills.tt2:111
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_bills.tt2:112
 msgid "Receipt On Payment"
 msgstr "Recibo de pago"
 
@@ -4113,7 +4533,7 @@ msgstr "Registro De Cubos"
 msgid "Record Format"
 msgstr "Formato de registro"
 
-#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:30
+#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:35
 msgid "Record Holds"
 msgstr "Sostiene Registro"
 
@@ -4159,7 +4579,7 @@ msgstr "Grabar con TCN %1 marcado para la superposición."
 msgid "Records That Could Not Be Deleted"
 msgstr "Registros que no se pueden eliminar"
 
-#: ../../Open-ILS/src/templates/staff/cat/bucket/record/t_merge_records.tt2:30
+#: ../../Open-ILS/src/templates/staff/cat/bucket/record/t_merge_records.tt2:37
 msgid "Records to merge into lead"
 msgstr "Registros para combinar en plomo"
 
@@ -4171,7 +4591,7 @@ msgstr "Regla Multa Recurrente"
 msgid "Redo: CTRL-y"
 msgstr "Rehacer: Ctrl-y"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:113 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:99 ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:72
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:115 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:99 ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:72
 msgid "Reference"
 msgstr "Referencia"
 
@@ -4191,7 +4611,7 @@ msgstr "Factura rectificativa"
 msgid "Refunds Available:"
 msgstr "Reembolsos disponibles:"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:87
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_workstations.tt2:35
 msgid "Register"
 msgstr "Registrar"
 
@@ -4203,13 +4623,17 @@ msgstr "Registrar usuario"
 msgid "Register a New Group Member by Cloning Selected Patron"
 msgstr "Registrar un miembro nuevo grupo de clonación seleccionada Patrón"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:68
-msgid "Register a New Workstation For This Computer"
-msgstr "Registrar una nueva estación de trabajo para este ordenador"
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_workstations.tt2:15
+msgid "Register a New Workstation For This Browser"
+msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:69
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:72
 msgid "Registered Patron"
 msgstr "Patrón Registrado"
+
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:11
+msgid "Registered Workstations"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/reporter/share/report_strings.tt2:94
 msgid "Relative Date"
@@ -4226,6 +4650,10 @@ msgstr "Cuentas Remotas"
 #: ../../Open-ILS/src/templates/staff/admin/workstation/t_stored_prefs.tt2:32
 msgid "Remote Prefs"
 msgstr "Pref Remotas"
+
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_workstations.tt2:69
+msgid "Remove"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/reporter/t_edit_template.tt2:166 ../../Open-ILS/src/templates/staff/reporter/t_edit_template.tt2:215
 msgid "Remove Field"
@@ -4267,11 +4695,11 @@ msgstr "Retire registros seleccionados de Cubo"
 msgid "Remove Subfield: Shift+Del"
 msgstr "Retire subcampo: Shift+Del"
 
-#: ../../Open-ILS/src/templates/staff/cat/bucket/record/t_merge_records.tt2:34
+#: ../../Open-ILS/src/templates/staff/cat/bucket/record/t_merge_records.tt2:41
 msgid "Remove from consideration"
 msgstr "Sacar de la consideración"
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:66 ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:62 ../../Open-ILS/src/templates/staff/circ/renew/index.tt2:1 ../../Open-ILS/src/templates/staff/circ/share/t_circ_exists_dialog.tt2:36
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:33 ../../Open-ILS/src/templates/staff/base_js.tt2:69 ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:62 ../../Open-ILS/src/templates/staff/circ/renew/index.tt2:1 ../../Open-ILS/src/templates/staff/circ/share/t_circ_exists_dialog.tt2:36
 msgid "Renew"
 msgstr "Renovar"
 
@@ -4279,11 +4707,11 @@ msgstr "Renovar"
 msgid "Renew All"
 msgstr "Renovar Todo"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:45
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:43
 msgid "Renew All Items?"
 msgstr "Renovar todos los artículos?"
 
-#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:21 ../../Open-ILS/src/templates/staff/circ/renew/t_renew.tt2:5 ../../Open-ILS/src/templates/staff/navbar.tt2:104
+#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:26 ../../Open-ILS/src/templates/staff/circ/renew/t_renew.tt2:5 ../../Open-ILS/src/templates/staff/navbar.tt2:104
 msgid "Renew Items"
 msgstr "Renovar Artículo"
 
@@ -4291,7 +4719,7 @@ msgstr "Renovar Artículo"
 msgid "Renew Items with Specific Due Date"
 msgstr "Renovar artículos con fecha de vencimiento específica"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:44
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:42
 msgid "Renew Items?"
 msgstr "Renovar artículos?"
 
@@ -4315,11 +4743,11 @@ msgstr "¿Renovación?"
 msgid "Renewals Remaining"
 msgstr "Renovaciones pendientes"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:156 ../../Open-ILS/src/templates/staff/navbar.tt2:154
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:163 ../../Open-ILS/src/templates/staff/navbar.tt2:154
 msgid "Replace Barcode"
 msgstr "Reemplazar El Código De Barras"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:75 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:49
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:77 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:54
 msgid "Replace Barcodes"
 msgstr "Reemplazar Códigos de Barras"
 
@@ -4327,8 +4755,8 @@ msgstr "Reemplazar Códigos de Barras"
 msgid "Replace Item Barcode"
 msgstr "Reemplazar código de barras del artículo"
 
-#. ("{{overlay_target}}")
-#: ../../Open-ILS/src/templates/staff/cat/z3950/t_overlay.tt2:10
+#. ("{{overlay_target.id}}")
+#: ../../Open-ILS/src/templates/staff/cat/z3950/t_overlay.tt2:19
 msgid "Replace TCN %1 ..."
 msgstr "Reemplazar TCN % 1 ..."
 
@@ -4344,7 +4772,7 @@ msgstr "Carpetas de informes"
 msgid "Reporter"
 msgstr "Reportero"
 
-#: ../../Open-ILS/src/templates/staff/reporter/share/report_strings.tt2:39 ../../Open-ILS/src/templates/staff/t_splash.tt2:84
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:424 ../../Open-ILS/src/templates/staff/reporter/share/report_strings.tt2:39 ../../Open-ILS/src/templates/staff/t_splash.tt2:84
 msgid "Reports"
 msgstr "Reportes"
 
@@ -4361,7 +4789,7 @@ msgstr "Fecha de Solicitud:"
 msgid "Request Date: %1"
 msgstr "Fecha de Solicitud: %1"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:39 ../../Open-ILS/src/templates/staff/cat/catalog/t_request_items.tt2:5 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:13
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:39 ../../Open-ILS/src/templates/staff/cat/catalog/t_request_items.tt2:5 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:18
 msgid "Request Items"
 msgstr "Artículos de solicitud"
 
@@ -4374,7 +4802,7 @@ msgid "Requested Username"
 msgstr "Nombre de usuario solicitado"
 
 #. ("{{stage_user_requestor}}")
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:71
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:78
 msgid "Requested by %1"
 msgstr "Solicitado por 1%"
 
@@ -4390,15 +4818,11 @@ msgstr "Información Requisita"
 msgid "Reset Columns"
 msgstr "Reiniciar columnas"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:87
-msgid "Reset Configuration"
-msgstr "Reiniciar configuración"
-
-#: ../../Open-ILS/src/templates/staff/admin/actor/org_unit/t_main_tab.tt2:50
+#: ../../Open-ILS/src/templates/staff/admin/actor/org_unit/t_main_tab.tt2:50 ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:93
 msgid "Reset Form"
 msgstr "Reiniciar formulario"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_catalog.tt2:52
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_catalog.tt2:55
 msgid "Reset Record Marks"
 msgstr "Restablecer Registro de Marcas"
 
@@ -4410,6 +4834,30 @@ msgstr "Restablecer asimiento(s) 1%?"
 #: ../../Open-ILS/src/templates/staff/circ/holds/index.tt2:20
 msgid "Reshelve"
 msgstr "Devolver al estante"
+
+#: ../../Open-ILS/src/templates/staff/admin/booking/t_splash.tt2:10
+msgid "Resource Attribute Maps"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/admin/booking/t_splash.tt2:10
+msgid "Resource Attribute Values"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/admin/booking/t_splash.tt2:10
+msgid "Resource Attributes"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/admin/booking/t_splash.tt2:10
+msgid "Resource Types"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/admin/booking/t_splash.tt2:10
+msgid "Resources"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:474
+msgid "Restore Operator"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin.tt2:211
 msgid "Retarget All Statuses"
@@ -4459,6 +4907,14 @@ msgstr "Obtener patrón"
 msgid "Retrieve Selected Patrons"
 msgstr "Recuperar Clientes Seleccionados"
 
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:375
+msgid "Return Reservations"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:298
+msgid "Right"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/staff/reporter/share/report_strings.tt2:176 ../../Open-ILS/src/templates/staff/reporter/share/report_strings.tt2:86
 msgid "Round"
 msgstr "Ronda"
@@ -4484,7 +4940,7 @@ msgstr "Fila Seleccionada Columna"
 msgid "Rows %1"
 msgstr "Columnas %1"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:632
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:639
 msgid "SMS"
 msgstr "SMS"
 
@@ -4520,7 +4976,7 @@ msgstr "Guardar Columnas"
 msgid "Save Completed"
 msgstr "Guardar Completado"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:32
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:49
 msgid "Save Locally"
 msgstr "Guardar Localmente"
 
@@ -4543,6 +4999,10 @@ msgstr "Guardar cambios"
 #: ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:137
 msgid "Save... "
 msgstr "Guardar... "
+
+#: ../../Open-ILS/src/templates/staff/cat/volcopy/index.tt2:16
+msgid "Saved volume/copy template(s)"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_pending.tt2:5 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:48
 msgid "Scan Item"
@@ -4580,7 +5040,7 @@ msgstr "Búsqueda en el catálogo"
 msgid "Searching..."
 msgstr "Buscando…"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:440
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:447
 msgid "Secondary Groups"
 msgstr "Grupos Secundarios"
 
@@ -4588,7 +5048,7 @@ msgstr "Grupos Secundarios"
 msgid "Secondary Permission Groups"
 msgstr "Grupos de Permisos Secundarias"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:158
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:165
 msgid "See All"
 msgstr "Ver Todos"
 
@@ -4622,7 +5082,7 @@ msgstr "Seleccione el operador"
 msgid "Select Page"
 msgstr "Seleccione la página"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:53
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:68
 msgid "Select Printer"
 msgstr "Seleccionar impresora"
 
@@ -4646,6 +5106,10 @@ msgstr "Seleccione la estación de trabajo"
 msgid "Select the value, or cancel:"
 msgstr "Seleccione el valor, o cancelar:"
 
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:101 ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:87
+msgid "Select..."
+msgstr ""
+
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history.tt2:21
 msgid "Selected Billed:"
 msgstr "Seleccionado Facturado:"
@@ -4666,7 +5130,7 @@ msgstr "Enviar Correos Electrónicos"
 msgid "Serials"
 msgstr "Series"
 
-#: ../../Open-ILS/src/templates/staff/admin/server/index.tt2:1 ../../Open-ILS/src/templates/staff/admin/server/t_splash.tt2:4 ../../Open-ILS/src/templates/staff/navbar.tt2:279
+#: ../../Open-ILS/src/templates/staff/admin/server/index.tt2:1 ../../Open-ILS/src/templates/staff/admin/server/t_splash.tt2:4 ../../Open-ILS/src/templates/staff/navbar.tt2:400
 msgid "Server Administration"
 msgstr "Administración del Servidor"
 
@@ -4702,9 +5166,17 @@ msgstr "Establezca Superior de cola"
 msgid "Set Workstation Default"
 msgstr "Conjunto de estaciones de trabajo predeterminado"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_catalog.tt2:99
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_catalog.tt2:102
 msgid "Set default view"
 msgstr "Establecer vista predeterminada"
+
+#: ../../Open-ILS/src/templates/staff/admin/workstation/index.tt2:25
+msgid "Settings migration failed"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/admin/workstation/index.tt2:24
+msgid "Settings successfully migrated"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_grid_menu.tt2:12 ../../Open-ILS/src/templates/staff/cat/bucket/record/t_grid_menu.tt2:12
 msgid "Shared Bucket"
@@ -4718,7 +5190,7 @@ msgstr "Estantería Fecha de Caducidad"
 msgid "Shelf Expire Time"
 msgstr "Fecha De Expiración En El Estante"
 
-#: ../../Open-ILS/src/templates/staff/share/print_templates/t_hold_pull_list.tt2:14 ../../Open-ILS/src/templates/staff/share/print_templates/t_hold_shelf_list.tt2:14
+#: ../../Open-ILS/src/templates/staff/share/print_templates/t_hold_pull_list.tt2:14
 msgid "Shelf Location"
 msgstr "Estantería Localización"
 
@@ -4738,7 +5210,7 @@ msgstr "Breve"
 msgid "Short Name"
 msgstr "Nombre Corto"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:45 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:47 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:49 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:51 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:25 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:27 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:29
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:47 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:49 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:51 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:53 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:30 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:32 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:34
 msgid "Show"
 msgstr "Mostrar"
 
@@ -4859,7 +5331,7 @@ msgstr "Ordenar Prioridad/Dirección"
 msgid "Sound recordings"
 msgstr "Grabaciones de sonido"
 
-#: ../../Open-ILS/src/templates/staff/circ/transits/t_list.tt2:49
+#: ../../Open-ILS/src/templates/staff/circ/transits/t_list.tt2:62
 msgid "Source Library"
 msgstr "Orígen de Biblioteca"
 
@@ -4879,7 +5351,7 @@ msgstr "Fecha de vencimiento específica"
 msgid "Stack subfields"
 msgstr "Subcampos de pila"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_log.tt2:31 ../../Open-ILS/src/templates/staff/admin/workstation/t_log.tt2:57
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_log.tt2:31 ../../Open-ILS/src/templates/staff/admin/workstation/t_log.tt2:57 ../../Open-ILS/src/templates/staff/share/t_opchange.tt2:37
 msgid "Staff"
 msgstr "Personal administrativo"
 
@@ -4899,7 +5371,7 @@ msgstr "Sólo Personal"
 msgid "Staff-Generated Penalties / Messages"
 msgstr "Personal-Generados Sanciones/Mensajes"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_catalog.tt2:9 ../../Open-ILS/src/templates/staff/cat/share/t_authority_browser.tt2:4 ../../Open-ILS/src/templates/staff/cat/share/t_authority_browser.tt2:54 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:62 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_payments.tt2:49 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_xacts.tt2:17 ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:23 ../../Open-ILS/src/templates/staff/circ/share/t_bill_patron_dialog.tt2:30 ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:64
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:334 ../../Open-ILS/src/templates/staff/cat/catalog/t_catalog.tt2:9 ../../Open-ILS/src/templates/staff/cat/share/t_authority_browser.tt2:4 ../../Open-ILS/src/templates/staff/cat/share/t_authority_browser.tt2:54 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:62 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_payments.tt2:49 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_xacts.tt2:19 ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:23 ../../Open-ILS/src/templates/staff/circ/share/t_bill_patron_dialog.tt2:30 ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:64
 msgid "Start"
 msgstr "Iniciar"
 
@@ -4915,11 +5387,11 @@ msgstr "Fecha de inicio: "
 msgid "State"
 msgstr "Estado"
 
-#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:93 ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:262 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:151 ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:849
+#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:93 ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:262 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:157 ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:856
 msgid "Statistical Categories"
 msgstr "Categorías Estadísticas"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:100 ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:82 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:22 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:90 ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:219 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:161 ../../Open-ILS/src/templates/staff/circ/holds/t_pull_list.tt2:82 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:87 ../../Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2:71 ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:64 ../../Open-ILS/src/templates/staff/circ/share/t_hold_details.tt2:26
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:102 ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:82 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:22 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:90 ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:219 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:161 ../../Open-ILS/src/templates/staff/circ/holds/t_pull_list.tt2:82 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:87 ../../Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2:71 ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:64 ../../Open-ILS/src/templates/staff/circ/share/t_hold_details.tt2:26
 msgid "Status"
 msgstr "Estatus"
 
@@ -4935,11 +5407,19 @@ msgstr "Detener multas de motivos"
 msgid "Stop Fines Time"
 msgstr "Deja Tiempo de multas"
 
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_hatch.tt2:32
+msgid "Store Local Settings in Hatch"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_hatch.tt2:54
+msgid "Store Offline Transaction Data in Hatch"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:111
 msgid "Store Selected"
 msgstr "Tienda Seleccionada"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:140
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:38
 msgid "Stored Preferences"
 msgstr "Preferencias Almacenados"
 
@@ -4959,7 +5439,7 @@ msgstr "Calle 2"
 msgid "Strict Barcode"
 msgstr "Código de barras estricto"
 
-#: ../../Open-ILS/src/templates/staff/admin/t_user_perms_lookup.tt2:15 ../../Open-ILS/src/templates/staff/cat/catalog/t_retrieve_by_id.tt2:15 ../../Open-ILS/src/templates/staff/cat/catalog/t_retrieve_by_tcn.tt2:15 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:58 ../../Open-ILS/src/templates/staff/cat/item/missing_pieces.tt2:43 ../../Open-ILS/src/templates/staff/cat/share/t_replace_barcode.tt2:25 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin.tt2:62 ../../Open-ILS/src/templates/staff/circ/in_house_use/index.tt2:57 ../../Open-ILS/src/templates/staff/circ/patron/t_bcsearch.tt2:13 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:33 ../../Open-ILS/src/templates/staff/circ/patron/t_renew_with_date_dialog.tt2:21 ../../Open-ILS/src/templates/staff/circ/renew/t_renew.tt2:21 ../../Open-ILS/src/templates/staff/circ/share/t_backdate_dialog.tt2:21 ../../Open-ILS/src/templates/staff/circ/share/t_hold_dates.tt2:74 ../../Open-ILS/src/templates/staff/circ/share/t_hold_edit_pickup_lib.tt2:18 ../../Open-ILS/src/templates/staff/circ/share/t_hold_notification_prefs.tt2:73 ../../Open-ILS/src/templates/staff/circ/share/t_mark_claims_returned_dialog.tt2:24
+#: ../../Open-ILS/src/templates/staff/admin/t_user_perms_lookup.tt2:15 ../../Open-ILS/src/templates/staff/cat/catalog/t_retrieve_by_id.tt2:15 ../../Open-ILS/src/templates/staff/cat/catalog/t_retrieve_by_tcn.tt2:15 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:58 ../../Open-ILS/src/templates/staff/cat/item/missing_pieces.tt2:43 ../../Open-ILS/src/templates/staff/cat/share/t_replace_barcode.tt2:25 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin.tt2:62 ../../Open-ILS/src/templates/staff/circ/in_house_use/index.tt2:58 ../../Open-ILS/src/templates/staff/circ/patron/t_bcsearch.tt2:13 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:33 ../../Open-ILS/src/templates/staff/circ/patron/t_renew_with_date_dialog.tt2:21 ../../Open-ILS/src/templates/staff/circ/renew/t_renew.tt2:21 ../../Open-ILS/src/templates/staff/circ/share/t_backdate_dialog.tt2:21 ../../Open-ILS/src/templates/staff/circ/share/t_hold_dates.tt2:74 ../../Open-ILS/src/templates/staff/circ/share/t_hold_edit_pickup_lib.tt2:18 ../../Open-ILS/src/templates/staff/circ/share/t_hold_notification_prefs.tt2:73 ../../Open-ILS/src/templates/staff/circ/share/t_mark_claims_returned_dialog.tt2:24
 msgid "Submit"
 msgstr "Someter"
 
@@ -4975,11 +5455,11 @@ msgstr "Subcadena"
 msgid "Succes testing credentials"
 msgstr "Éxito de pruebas de credenciales"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:108
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:66
 msgid "Success"
 msgstr "Éxito"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:103 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:66 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:48
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:105 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:66 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:48
 msgid "Suffix"
 msgstr "Sufijo"
 
@@ -4995,7 +5475,7 @@ msgstr "Suma"
 msgid "Suppress Holds and Transits"
 msgstr "Reprimir Sostiene y Tránsitos"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:900
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:907
 msgid "Surveys"
 msgstr "Encuestas"
 
@@ -5028,7 +5508,7 @@ msgstr "Etiqueta"
 msgid "Target library:"
 msgstr "Biblioteca de destino:"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:48 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:4 ../../Open-ILS/src/templates/staff/reporter/share/report_strings.tt2:38
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:75 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:4 ../../Open-ILS/src/templates/staff/reporter/share/report_strings.tt2:38
 msgid "Template"
 msgstr "Plantilla"
 
@@ -5036,7 +5516,7 @@ msgstr "Plantilla"
 msgid "Template Description"
 msgstr "Descripción de la plantilla"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:12 ../../Open-ILS/src/templates/staff/reporter/t_edit_template.tt2:6
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:15 ../../Open-ILS/src/templates/staff/reporter/t_edit_template.tt2:6
 msgid "Template Name"
 msgstr "Nombre de la plantilla"
 
@@ -5052,19 +5532,23 @@ msgstr "La plantilla se ha guardado correctamente"
 msgid "Templates"
 msgstr "Plantillas"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:158
+#: ../../Open-ILS/src/templates/staff/share/t_opchange.tt2:36
+msgid "Temporary"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:419
 msgid "Test HTML Print"
 msgstr "Prueba de impresión HTML"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:166
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:172
 msgid "Test Password"
 msgstr "Probar Contraseñas"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:134 ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:148
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:395 ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:409
 msgid "Test Print"
 msgstr "Impresión de Prueba"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:41
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:52
 msgid "Test Printing"
 msgstr "Prueba de Impresión"
 
@@ -5080,6 +5564,25 @@ msgstr ""
 "La tarjeta utilizada para recuperar esta cuenta está inactiva y no puede ser "
 "utilizado para hacer circular artículos."
 
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:82
+msgid ""
+"The default search library setting determines what library is searched from "
+"the advanced search screen and portal page by default. Manual selection of a "
+"search library will override it. One recommendation is to set the search "
+"library to the highest point you would normally want to search."
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/share/print_templates/t_item_status.tt2:15
+msgid "The following items have been examined:"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:96
+msgid ""
+"The preferred library is used to show copies and URIs regardless of the "
+"library searched. One recommendation is to set this to your workstation "
+"library so that local copies show up first in search results."
+msgstr ""
+
 #: ../../Open-ILS/src/templates/staff/cat/bucket/copy/index.tt2:65 ../../Open-ILS/src/templates/staff/cat/bucket/record/index.tt2:70
 msgid "The selected bucket \"{{bucketId}}\" is not visible to this login."
 msgstr "El cubo seleccionado \"{{bucketId}}\" no es visible a esta entrada."
@@ -5088,6 +5591,10 @@ msgstr "El cubo seleccionado \"{{bucketId}}\" no es visible a esta entrada."
 #: ../../Open-ILS/src/templates/staff/circ/share/t_abort_transit_dialog.tt2:21
 msgid "There are %1 associated holds."
 msgstr "Hay% 1 asociado sostiene"
+
+#: ../../Open-ILS/src/templates/staff/admin/workstation/index.tt2:21
+msgid "There are no customized print template to export"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/circ/share/t_abort_transit_dialog.tt2:20
 msgid "There is 1 associated hold."
@@ -5141,11 +5648,11 @@ msgstr "Este artículo debe ser dirigido al %1Privado Sostiene Estante2%"
 msgid "This item should be routed to the %1Public Holds Shelf%2"
 msgstr "Este artículo debe ser dirigido al 1%Público Sostiene Estante2%"
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:63
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:66
 msgid "This page may have unsaved data."
 msgstr "Esta página puede tener los datos no guardados."
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:61
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:64
 msgid ""
 "This page may have unsaved data.\\n\\nAre you sure you want to leave this "
 "page?"
@@ -5157,13 +5664,7 @@ msgstr ""
 msgid "This patron's record is not viewable at your library."
 msgstr "Registro de este patrón no es visible en su biblioteca."
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:21
-msgid "This workstation uses a remote print / storage service (\"Hatch\")?"
-msgstr ""
-"Esta estación de trabajo utiliza un servicio de impresión / almacenamiento "
-"remoto (\"Hatch\")?"
-
-#: ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_pending.tt2:45 ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_view.tt2:34 ../../Open-ILS/src/templates/staff/cat/bucket/record/t_view.tt2:33 ../../Open-ILS/src/templates/staff/cat/catalog/t_conjoined_items.tt2:25 ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:74 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:60 ../../Open-ILS/src/templates/staff/cat/z3950/t_list.tt2:124 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:65 ../../Open-ILS/src/templates/staff/circ/holds/t_pull_list.tt2:74 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:79 ../../Open-ILS/src/templates/staff/circ/in_house_use/index.tt2:77 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_payments.tt2:20 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_payments.tt2:54 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_xacts.tt2:22 ../../Open-ILS/src/templates/staff/circ/patron/t_bills_list.tt2:57 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:101 ../../Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2:63 ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:87 ../../Open-ILS/src/templates/staff/circ/patron/t_new_note_dialog.tt2:10 ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:8 ../../Open-ILS/src/templates/staff/circ/renew/t_renew.tt2:104 ../../Open-ILS/src/templates/staff/circ/share/t_hold_note_dialog.tt2:28 ../../Open-ILS/src/templates/staff/circ/share/t_precat_dialog.tt2:14 ../../Open-ILS/src/templates/staff/share/print_templates/t_hold_pull_list.tt2:12 ../../Open-ILS/src/templates/staff/share/print_templates/t_hold_shelf_list.tt2:12
+#: ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_pending.tt2:45 ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_view.tt2:34 ../../Open-ILS/src/templates/staff/cat/bucket/record/t_view.tt2:33 ../../Open-ILS/src/templates/staff/cat/catalog/t_conjoined_items.tt2:25 ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:74 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:65 ../../Open-ILS/src/templates/staff/cat/z3950/t_list.tt2:124 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:65 ../../Open-ILS/src/templates/staff/circ/holds/t_pull_list.tt2:74 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:79 ../../Open-ILS/src/templates/staff/circ/in_house_use/index.tt2:79 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_payments.tt2:20 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_payments.tt2:54 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_xacts.tt2:24 ../../Open-ILS/src/templates/staff/circ/patron/t_bills_list.tt2:57 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:101 ../../Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2:63 ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:87 ../../Open-ILS/src/templates/staff/circ/patron/t_new_note_dialog.tt2:10 ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:8 ../../Open-ILS/src/templates/staff/circ/renew/t_renew.tt2:104 ../../Open-ILS/src/templates/staff/circ/share/t_hold_note_dialog.tt2:28 ../../Open-ILS/src/templates/staff/circ/share/t_precat_dialog.tt2:14 ../../Open-ILS/src/templates/staff/circ/transits/t_list.tt2:56 ../../Open-ILS/src/templates/staff/share/print_templates/t_hold_pull_list.tt2:12 ../../Open-ILS/src/templates/staff/share/print_templates/t_hold_shelf_list.tt2:13
 msgid "Title"
 msgstr "Título"
 
@@ -5180,11 +5681,20 @@ msgstr "Título:"
 msgid "Title: %1"
 msgstr "Título: %1"
 
+#. ("{{copy['call_number.record.simple_record.title']}}", "{{copy.barcode}}")
+#: ../../Open-ILS/src/templates/staff/share/print_templates/t_item_status.tt2:19
+msgid "Title: %1 <br> Barcode: %2"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/staff/navbar.tt2:19
 msgid "Toggle navigation"
 msgstr "Intercambiar navegación"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_payments.tt2:50 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_xacts.tt2:18 ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:25 ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:6 ../../Open-ILS/src/templates/staff/circ/share/t_bill_patron_dialog.tt2:20 ../../Open-ILS/src/templates/staff/circ/share/t_bill_patron_dialog.tt2:32 ../../Open-ILS/src/templates/staff/share/print_templates/t_bills_current.tt2:24 ../../Open-ILS/src/templates/staff/share/print_templates/t_bills_historical.tt2:24
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:287
+msgid "Top"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_payments.tt2:50 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_xacts.tt2:20 ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:25 ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:6 ../../Open-ILS/src/templates/staff/circ/share/t_bill_patron_dialog.tt2:20 ../../Open-ILS/src/templates/staff/circ/share/t_bill_patron_dialog.tt2:32 ../../Open-ILS/src/templates/staff/share/print_templates/t_bills_current.tt2:24 ../../Open-ILS/src/templates/staff/share/print_templates/t_bills_historical.tt2:24
 msgid "Total Billed"
 msgstr "Total Facturado"
 
@@ -5224,7 +5734,7 @@ msgstr "Total Debido:"
 msgid "Total Owed: "
 msgstr "Total Debido: "
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_payments.tt2:51 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_xacts.tt2:19 ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:17 ../../Open-ILS/src/templates/staff/circ/share/t_bill_patron_dialog.tt2:26 ../../Open-ILS/src/templates/staff/share/print_templates/t_bills_current.tt2:34 ../../Open-ILS/src/templates/staff/share/print_templates/t_bills_historical.tt2:34
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_payments.tt2:51 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_xacts.tt2:21 ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:17 ../../Open-ILS/src/templates/staff/circ/share/t_bill_patron_dialog.tt2:26 ../../Open-ILS/src/templates/staff/share/print_templates/t_bills_current.tt2:34 ../../Open-ILS/src/templates/staff/share/print_templates/t_bills_historical.tt2:34
 msgid "Total Paid"
 msgstr "Total Pagado"
 
@@ -5255,7 +5765,7 @@ msgstr "Transacción para %1 facturado:"
 msgid "Transactions"
 msgstr "Transacciones"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:84 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:86 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:88 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:90 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:92 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:51 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:53
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:86 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:88 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:90 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:92 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:94 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:56 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:58
 msgid "Transfer"
 msgstr "Transferir"
 
@@ -5303,7 +5813,7 @@ msgstr "Destino Del Tránsito"
 msgid "Transit Destination:"
 msgstr "Destino de Tránsito:"
 
-#: ../../Open-ILS/src/templates/staff/circ/transits/list.tt2:1 ../../Open-ILS/src/templates/staff/circ/transits/t_list.tt2:3
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:34 ../../Open-ILS/src/templates/staff/circ/transits/list.tt2:1 ../../Open-ILS/src/templates/staff/circ/transits/t_list.tt2:3
 msgid "Transit List"
 msgstr "Lista de tránsitos"
 
@@ -5315,7 +5825,7 @@ msgstr "Tiempo de Tránsito Recibe"
 msgid "Transit Send Time"
 msgstr "Tiempo de Envio del Tránsito"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:27 ../../Open-ILS/src/templates/staff/circ/share/t_transit_dialog.tt2:6
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:35 ../../Open-ILS/src/templates/staff/circ/share/t_transit_dialog.tt2:6
 msgid "Transit Slip"
 msgstr "Nota De Tránsito"
 
@@ -5335,11 +5845,15 @@ msgstr "Forma tránsitos"
 msgid "Transits To"
 msgstr "Tránsitos a"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:50 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:26 ../../Open-ILS/src/templates/staff/cat/item/t_view.tt2:24
+#: ../../Open-ILS/src/templates/staff/share/print_templates/t_transit_list.tt2:16
+msgid "Transits:"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:52 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:31 ../../Open-ILS/src/templates/staff/cat/item/t_view.tt2:24
 msgid "Triggered Events"
 msgstr "Eventos Activados"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:146
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:147
 msgid "Triggered Events / Notifications"
 msgstr "Eventos Activados/Notificaciones"
 
@@ -5355,7 +5869,7 @@ msgstr "Verdadero"
 msgid "Try Patron Search"
 msgstr "Trate Patrón de búsqueda"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_conjoined_items.tt2:30 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_payments.tt2:52 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_xacts.tt2:20 ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:15 ../../Open-ILS/src/templates/staff/circ/share/t_bill_patron_dialog.tt2:24 ../../Open-ILS/src/templates/staff/share/print_templates/t_bills_current.tt2:14 ../../Open-ILS/src/templates/staff/share/print_templates/t_bills_historical.tt2:14 ../../Open-ILS/src/templates/staff/share/print_templates/t_hold_pull_list.tt2:11 ../../Open-ILS/src/templates/staff/share/print_templates/t_hold_shelf_list.tt2:11
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_conjoined_items.tt2:30 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_payments.tt2:52 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_xacts.tt2:22 ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:15 ../../Open-ILS/src/templates/staff/circ/share/t_bill_patron_dialog.tt2:24 ../../Open-ILS/src/templates/staff/share/print_templates/t_bills_current.tt2:14 ../../Open-ILS/src/templates/staff/share/print_templates/t_bills_historical.tt2:14 ../../Open-ILS/src/templates/staff/share/print_templates/t_hold_pull_list.tt2:11 ../../Open-ILS/src/templates/staff/share/print_templates/t_hold_shelf_list.tt2:12
 msgid "Type"
 msgstr "Tipo"
 
@@ -5377,7 +5891,7 @@ msgid "Unable to checkout copy \"%1\" : %2"
 msgstr "No se puede sacar copia \"%1\" : %2"
 
 #. ("{{print.template_name}}")
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:50
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:77
 msgid "Unable to load template '%1'.  The web server returned an error."
 msgstr ""
 "No se puede cargar la plantilla '% 1'. El servidor Web devuelve un error."
@@ -5416,7 +5930,7 @@ msgstr "Anule el Inicio de bandera de cola para 1% de retención(s)?"
 msgid "Update Activate Email"
 msgstr "Actualizar el correo electrónico activo"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:454
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:461
 msgid "Update Expire Date"
 msgstr "Actualizar Fecha de Vencimiento"
 
@@ -5452,15 +5966,19 @@ msgstr "Subir un archivo"
 msgid "Upper case"
 msgstr "Mayúsculas"
 
-#: ../../Open-ILS/src/templates/staff/cat/z3950/t_edit_overlay_record.tt2:13
+#: ../../Open-ILS/src/templates/staff/acq/t_edit_marc_order_record.tt2:13 ../../Open-ILS/src/templates/staff/cat/z3950/t_edit_overlay_record.tt2:13
 msgid "Use Edits"
 msgstr "Use ediciones"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:55
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_hatch.tt2:20
+msgid "Use Hatch For Printing"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_workstations.tt2:61
 msgid "Use Now"
 msgstr "Usar ahora"
 
-#: ../../Open-ILS/src/templates/staff/cat/bucket/record/t_merge_records.tt2:33
+#: ../../Open-ILS/src/templates/staff/cat/bucket/record/t_merge_records.tt2:40
 msgid "Use as lead record"
 msgstr "Usar como registro inicial"
 
@@ -5480,7 +5998,7 @@ msgstr "Tipos de Actividad del Usuario"
 msgid "User Barcode"
 msgstr "Código de barras del usuario"
 
-#: ../../Open-ILS/src/templates/staff/admin/user_perms.tt2:1 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:161 ../../Open-ILS/src/templates/staff/navbar.tt2:273
+#: ../../Open-ILS/src/templates/staff/admin/user_perms.tt2:1 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:167 ../../Open-ILS/src/templates/staff/navbar.tt2:394
 msgid "User Permission Editor"
 msgstr "Editor de permisos de usuarios"
 
@@ -5488,17 +6006,21 @@ msgstr "Editor de permisos de usuarios"
 msgid "User Setting Types"
 msgstr "Tipos de usuario Marco"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:556
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:563
 msgid "User Settings"
 msgstr "Configuración del Usuario"
 
-#: ../../Open-ILS/src/templates/staff/cat/z3950/t_target.tt2:9 ../../Open-ILS/src/templates/staff/circ/patron/t_credentials.tt2:11 ../../Open-ILS/src/templates/staff/circ/patron/t_credentials.tt2:15 ../../Open-ILS/src/templates/staff/circ/patron/t_search.tt2:63 ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:105 ../../Open-ILS/src/templates/staff/t_login.tt2:16
+#: ../../Open-ILS/src/templates/staff/cat/z3950/t_target.tt2:9 ../../Open-ILS/src/templates/staff/circ/patron/t_credentials.tt2:11 ../../Open-ILS/src/templates/staff/circ/patron/t_credentials.tt2:15 ../../Open-ILS/src/templates/staff/circ/patron/t_search.tt2:63 ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:127 ../../Open-ILS/src/templates/staff/t_login.tt2:16
 msgid "Username"
 msgstr "Nombre de Usuario:"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:182
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:189
 msgid "Username is already in use"
 msgstr "El nombre de usuario ya está en uso"
+
+#: ../../Open-ILS/src/templates/staff/share/t_opchange.tt2:13
+msgid "Username:"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/cat/share/t_marcedit.tt2:39
 msgid "Validate"
@@ -5524,11 +6046,11 @@ msgstr "Verificar"
 msgid "Verify Credentials"
 msgstr "Verificar credenciales"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:50
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:48
 msgid "Verify Payment Amount"
 msgstr "Verificar cantidad de pago"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_catalog.tt2:77
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_catalog.tt2:80
 msgid "View Holds"
 msgstr "Ver Apartados"
 
@@ -5539,6 +6061,10 @@ msgstr "Ver los detalles del elemento"
 #: ../../Open-ILS/src/templates/staff/cat/z3950/t_list.tt2:112 ../../Open-ILS/src/templates/staff/cat/z3950/t_list.tt2:99 ../../Open-ILS/src/templates/staff/cat/z3950/t_marc_html.tt2:5
 msgid "View MARC"
 msgstr "Ver MARCA"
+
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:41
+msgid "View/Place Orders"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/cat/z3950/t_search_fields.tt2:17
 msgid "Visual materials"
@@ -5560,7 +6086,7 @@ msgstr "Invalidado"
 msgid "Volume Attributes"
 msgstr "Atributos Volumen"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_catalog.tt2:41
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_catalog.tt2:44
 msgid "Volume Transfer"
 msgstr "Transferir Volumen"
 
@@ -5568,7 +6094,7 @@ msgstr "Transferir Volumen"
 msgid "Volume Transfer Target set"
 msgstr "Volumen determinado objetivo de transferencia"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:61
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:63
 msgid "Volume as Item Transfer Destination"
 msgstr "Volumen como Transferencia de elementos del Destino"
 
@@ -5584,27 +6110,27 @@ msgstr "Volumen/Detalle predeterminados de copia"
 msgid "Volume/Copy Editor"
 msgstr "Volumen/Copia Editor"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:69 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:43 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:42
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:71 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:48 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:42
 msgid "Volumes"
 msgstr "Volúmenes"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:66 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:73 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:82
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:68 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:75 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:84
 msgid "Volumes and Copies"
 msgstr "Volúmenes y Copias"
 
-#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:40 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:47
+#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:45 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:52
 msgid "Volumes and Items"
 msgstr "Volúmenes y artículos"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:87
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:89
 msgid "Volumes to Previously Marked Library"
 msgstr "Volúmenes a la biblioteca marcada previamente"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:85
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:87
 msgid "Volumes to Previously Marked Record"
 msgstr "Volúmenes a Registros Marcados Anteriormente"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:89
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:91
 msgid "Volumes to Previously Marked Record and Library"
 msgstr "Volúmenes a Anteriormente Registros Marcados y Biblioteca"
 
@@ -5616,7 +6142,7 @@ msgstr "Esperando la captura"
 msgid "Waiting for Copy"
 msgstr "Esperando la copia"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:112
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:70
 msgid "Warning"
 msgstr "Advertencia"
 
@@ -5633,7 +6159,7 @@ msgstr "Asociación de cargos"
 msgid "Welcome to %1"
 msgstr "Bienvenido al 1%"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:161
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:422
 msgid "Welcome, Stranger!"
 msgstr "Bienvenido, Extraño!"
 
@@ -5649,7 +6175,7 @@ msgstr "Se eliminarán {{copias}} copias y {{volúmenes}} volúmenes"
 msgid "Will unlink {{peers}} copies"
 msgstr "Va desvincular {{compañeros}} copias"
 
-#: ../../Open-ILS/src/templates/staff/cat/z3950/t_overlay.tt2:14
+#: ../../Open-ILS/src/templates/staff/cat/z3950/t_overlay.tt2:23
 msgid "With this?"
 msgstr "Con este"
 
@@ -5661,7 +6187,7 @@ msgstr "Trabajo"
 msgid "Work Log"
 msgstr "Registro de trabajo"
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:74
+#: ../../Open-ILS/src/templates/staff/base_js.tt2:77
 msgid "Work Payment"
 msgstr "Pago de Trabajo"
 
@@ -5669,31 +6195,40 @@ msgstr "Pago de Trabajo"
 msgid "Working Copies"
 msgstr "Copias de Trabajo"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:82 ../../Open-ILS/src/templates/staff/navbar.tt2:267 ../../Open-ILS/src/templates/staff/t_login.tt2:34
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:82 ../../Open-ILS/src/templates/staff/navbar.tt2:388 ../../Open-ILS/src/templates/staff/t_login.tt2:34
 msgid "Workstation"
 msgstr "Estación de trabajo"
+
+#. ("{{removing_ws}}")
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_workstations.tt2:4
+msgid "Workstation \"%1\" is no longer valid.  Removing registration."
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/admin/workstation/index.tt2:1 ../../Open-ILS/src/templates/staff/t_splash.tt2:78
 msgid "Workstation Administration"
 msgstr "Administración de estación de trabajo"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:82 ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:83
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_workstations.tt2:29 ../../Open-ILS/src/templates/staff/admin/workstation/t_workstations.tt2:30
 msgid "Workstation Name"
 msgstr "Nombre de estación de trabajo"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/index.tt2:17
+#: ../../Open-ILS/src/templates/staff/admin/workstation/index.tt2:20
+msgid "Workstation is already registered"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/admin/workstation/index.tt2:19
 msgid "Workstation name already exists.  Use it anyway?"
 msgstr "Nombre de estación de trabajo ya existe. Utilizar de todos modos?"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:38
-msgid "Workstations Registered With This Computer"
-msgstr "Estaciones de trabajo registrados en este equipo"
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_workstations.tt2:44
+msgid "Workstations Registered With This Browser"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/circ/holds/index.tt2:23 ../../Open-ILS/src/templates/staff/circ/share/hold_strings.tt2:13
 msgid "Wrong Shelf"
 msgstr "Estante incorrecto"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:708
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:715
 msgid "X"
 msgstr "X"
 
@@ -5744,6 +6279,10 @@ msgstr "Usted tiene los siguientes artículos:"
 #: ../../Open-ILS/src/templates/staff/share/print_templates/t_holds_for_patron.tt2:3
 msgid "You have the following title on hold:"
 msgstr "Usted tiene el siguiente título en espera:"
+
+#: ../../Open-ILS/src/templates/staff/share/print_templates/t_in_house_use_list.tt2:17
+msgid "You marked the following in-house items used:"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/share/print_templates/t_renew.tt2:3
 msgid "You renewed the following items:"
@@ -5802,6 +6341,10 @@ msgstr "f8"
 msgid "invalid start date -  YYYY-MM-DD"
 msgstr "fecha inicial inválida -  AAAA-MM-DD"
 
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:57
+msgid "print_templates.json"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:140 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:154
 msgid "receipt option"
 msgstr "opción de recibo"
@@ -5822,10 +6365,48 @@ msgstr "shift+f3"
 msgid "shift+f8"
 msgstr "shift+f8"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:297
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:436
 msgid "{{username}} @ {{workstation}}"
 msgstr "{{Usuario}} @ {{estación de trabajo}}"
 
 #: ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_bucket_info.tt2:6 ../../Open-ILS/src/templates/staff/cat/bucket/record/t_bucket_info.tt2:6
 msgid "{} items"
 msgstr "{} artículos"
+
+#~ msgid "Configure Printer"
+#~ msgstr "Configurar impresora"
+
+#~ msgid "Hatch URL"
+#~ msgstr "URL Escotilla"
+
+#~ msgid "Printer Settings for Remote Printing"
+#~ msgstr "Configuración de la impresora para la impresión remota"
+
+#~ msgid "Register a New Workstation For This Computer"
+#~ msgstr "Registrar una nueva estación de trabajo para este ordenador"
+
+#~ msgid "Reset Configuration"
+#~ msgstr "Reiniciar configuración"
+
+#~ msgid "This workstation uses a remote print / storage service (\"Hatch\")?"
+#~ msgstr ""
+#~ "Esta estación de trabajo utiliza un servicio de impresión / almacenamiento "
+#~ "remoto (\"Hatch\")?"
+
+#~ msgid "Workstations Registered With This Computer"
+#~ msgstr "Estaciones de trabajo registrados en este equipo"
+
+#~ msgid "Booking Resource Attributes"
+#~ msgstr "Atributos de Reserva de Recursos"
+
+#~ msgid "Booking Resource Attribute Values"
+#~ msgstr "Reserva de recursos valores de atributos"
+
+#~ msgid "Booking Resource Attribute Maps"
+#~ msgstr "Mapas de reserva de recursos de atributos"
+
+#~ msgid "Booking Resource Types"
+#~ msgstr "Tipos de Recursos de Reserva"
+
+#~ msgid "Booking Resources"
+#~ msgstr "Recursos para Reservar"

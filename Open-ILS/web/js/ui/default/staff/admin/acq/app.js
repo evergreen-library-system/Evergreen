@@ -9,7 +9,7 @@ angular.module('egAcqAdmin',
     var resolver = {delay : function(egStartup) {return egStartup.go()}};
 
     var eframe_template = 
-        '<eg-embed-frame url="acq_admin_url" handlers="funcs"></eg-embed-frame>';
+        '<eg-embed-frame allow-escape="true" min-height="min_height" url="acq_admin_url" handlers="funcs"></eg-embed-frame>';
 
     $routeProvider.when('/admin/acq/:noun/:verb/:extra?', {
         template: eframe_template,
@@ -48,6 +48,8 @@ function($scope , $routeParams , $location , egCore) {
                 : '')
             + location.search;
     }
+
+    $scope.min_height = 2000; // give lots of space to start
 
     // embed URL must include protocol/domain or it will be loaded via
     // push-state, resulting in an infinitely nested pages.

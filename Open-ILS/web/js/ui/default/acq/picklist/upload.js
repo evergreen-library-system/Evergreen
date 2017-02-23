@@ -177,7 +177,11 @@ function acqHandlePostUpload(key, plId) {
                                 link.setAttribute('href', url); 
                             } else {
                                 link.setAttribute('href', 'javascript:;'); // for linky-ness
-                                link.onclick = function() { openils.XUL.newTabEasy(url, null, null, true) };
+                                if (window.IAMBROWSER) {
+                                    link.onclick = function() { xulG.relay_url(url) };
+                                } else {
+                                    link.onclick = function() { openils.XUL.newTabEasy(url, null, null, true) };
+                                }
                             }
                         }
                             

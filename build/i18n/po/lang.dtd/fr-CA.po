@@ -9,8 +9,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2016-08-26 05:24+0000\n"
-"X-Generator: Launchpad (build 18179)\n"
+"X-Launchpad-Export-Date: 2017-02-13 05:33+0000\n"
+"X-Generator: Launchpad (build 18326)\n"
 "X-Poedit-Country: CANADA\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: French\n"
@@ -8921,19 +8921,6 @@ msgstr ""
 "Si le paramètre est réglé à Vrai, les erreurs de prêt et de renouvèlement "
 "s’affichent dans une fenêtre éclair en plus du message à l’écran"
 
-#: staff.server.admin.org_settings.circ.selfcheck.require_patron_password
-msgid "Selfcheck: Require patron password"
-msgstr "Autocontrôle : Exiger le mot de passe de l’usager"
-
-#: staff.server.admin.org_settings.circ.selfcheck.require_patron_password.desc
-msgid ""
-"If true, patrons will be required to enter their password in addition to "
-"their username/barcode to log into the selfcheck interface"
-msgstr ""
-"Si ce paramètre est réglé à Vrai, les usagers doivent saisir leur mot de "
-"passe en plus de leur nom d’utilisateur ou code à barres pour ouvrir une "
-"session dans l’interface d’autocontrôle."
-
 #: staff.server.admin.org_settings.global.juvenile_age_threshold
 msgid "Juvenile Age Threshold"
 msgstr "Seuil d’âge mineur"
@@ -15776,6 +15763,17 @@ msgstr ""
 #~ msgctxt "staff.patron_display.radio.physical_address.label"
 #~ msgid "Billing"
 #~ msgstr "Facturation"
+
+#~ msgid "Selfcheck: Require patron password"
+#~ msgstr "Autocontrôle : Exiger le mot de passe de l’usager"
+
+#~ msgid ""
+#~ "If true, patrons will be required to enter their password in addition to "
+#~ "their username/barcode to log into the selfcheck interface"
+#~ msgstr ""
+#~ "Si ce paramètre est réglé à Vrai, les usagers doivent saisir leur mot de "
+#~ "passe en plus de leur nom d’utilisateur ou code à barres pour ouvrir une "
+#~ "session dans l’interface d’autocontrôle."
 
 #~ msgid "Approve Pending Address"
 #~ msgstr "Approuver la modification d’adresse en attente"

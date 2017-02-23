@@ -2,6 +2,7 @@
 <script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/acq/common/vlagent.js'> </script>
 <script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/acq/common/li_table.js'> </script>
 <script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/acq/financial/claim_voucher.js'> </script>
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/file-saver/FileSaver.min.js'> </script>
 <div id='acq-lit-table-container'>
 
     <div> <!-- Container for actions selector and paging controls.
@@ -159,7 +160,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td colspan='0'>
+                                    <td colspan='8'>
                                         <table><tr>
                                             <td>[% l('Order Identifier') %]</td>
                                             <td>
@@ -174,7 +175,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td colspan='0'>
+                                    <td colspan='8'>
                                         <span name="liid"># </span> | 
                                         <span name="li_existing_count">0</span> 
                                         <span name="catalog" class='hidden'> | <a title='[% l('Show In Catalog') %]' name="catalog_link" href="javascript:void(0);">[% l('&#x279F; catalog') %]</a></span> 
@@ -203,11 +204,11 @@
                     </td>
                     <td>
                         <select name='actions'>
-                            <option name='action_none'>[% l('-- Actions --') %]</option>
-                            <option name='action_update_barcodes'>[% l('Update Barcodes') %]</option>
-                            <option name='action_holdings_maint'>[% l('Holdings Maint.') %]</option>
-                            <option name='action_manage_claims'>[% l('Claims') %]</option>
-                            <option name='action_view_history'>[% l('View History') %]</option>
+                            <option name='action_none' value='action_none'>[% l('-- Actions --') %]</option>
+                            <option name='action_update_barcodes' value='action_update_barcodes'>[% l('Update Barcodes') %]</option>
+                            <option name='action_holdings_maint' value='action_holdings_maint'>[% l('Holdings Maint.') %]</option>
+                            <option name='action_manage_claims' value='action_manage_claims'>[% l('Claims') %]</option>
+                            <option name='action_view_history' value='action_view_history'>[% l('View History') %]</option>
                         </select>
                     </td>
                     <td>
@@ -223,7 +224,7 @@
                     <td><input type='text' size='8' name='price'/></td>
                 </tr>
                 <tr id='acq-inline-copies-row' class='acq-inline-copies-row'>
-                    <td colspan='0'>
+                    <td colspan='8'>
                         <table class='acq-li-inline-copies-table'>
                             <thead>
                                 <tr>

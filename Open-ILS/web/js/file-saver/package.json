@@ -1,0 +1,37 @@
+{
+  "name": "file-saver",
+  "version": "1.3.3",
+  "description": "An HTML5 saveAs() FileSaver implementation",
+  "main": "FileSaver.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 0",
+    "build": "uglifyjs FileSaver.js --mangle --comments /@source/ > FileSaver.min.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eligrey/FileSaver.js"
+  },
+  "keywords": [
+    "filesaver",
+    "saveas",
+    "blob"
+  ],
+  "author": {
+    "name": "Eli Grey",
+    "email": "me@eligrey.com"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/eligrey/FileSaver.js/issues"
+  },
+  "homepage": "https://github.com/eligrey/FileSaver.js#readme",
+  "devDependencies": {
+    "uglify-js": "^2.6.2"
+  },
+  "readme": "If you need to save really large files bigger then the blob's size limitation or don't have \nenough RAM, then have a look at the more advanced [StreamSaver.js](https://github.com/jimmywarting/StreamSaver.js)\nthat can save data directly to the hard drive asynchronously with the power of the new streams API. That will have\nsupport for progress, cancelation and knowing when it's done writing\n\nFileSaver.js\n============\n\nFileSaver.js implements the `saveAs()` FileSaver interface in browsers that do\nnot natively support it. There is a [FileSaver.js demo][1] that demonstrates saving\nvarious media types.\n\nFileSaver.js is the solution to saving files on the client-side, and is perfect for\nwebapps that need to generate files, or for saving sensitive information that shouldn't be\nsent to an external server.\n\nLooking for `canvas.toBlob()` for saving canvases? Check out\n[canvas-toBlob.js][2] for a cross-browser implementation.\n\nSupported browsers\n------------------\n\n| Browser        | Constructs as | Filenames    | Max Blob Size | Dependencies |\n| -------------- | ------------- | ------------ | ------------- | ------------ |\n| Firefox 20+    | Blob          | Yes          | 800 MiB       | None         |\n| Firefox < 20   | data: URI     | No           | n/a           | [Blob.js](https://github.com/eligrey/Blob.js) |\n| Chrome         | Blob          | Yes          | [500 MiB][3]  | None         |\n| Chrome for Android | Blob      | Yes          | [500 MiB][3]  | None         |\n| Edge           | Blob          | Yes          | ?             | None         |\n| IE 10+         | Blob          | Yes          | 600 MiB       | None         |\n| Opera 15+      | Blob          | Yes          | 500 MiB       | None         |\n| Opera < 15     | data: URI     | No           | n/a           | [Blob.js](https://github.com/eligrey/Blob.js) |\n| Safari 6.1+*   | Blob          | No           | ?             | None         |\n| Safari < 6     | data: URI     | No           | n/a           | [Blob.js](https://github.com/eligrey/Blob.js) |\n\nFeature detection is possible:\n\n```js\ntry {\n    var isFileSaverSupported = !!new Blob;\n} catch (e) {}\n```\n\n### IE < 10\n\nIt is possible to save text files in IE < 10 without Flash-based polyfills.\nSee [ChenWenBrian and koffsyrup's `saveTextAs()`](https://github.com/koffsyrup/FileSaver.js#examples) for more details.\n\n### Safari 6.1+\n\nBlobs may be opened instead of saved sometimes—you may have to direct your Safari users to manually\npress <kbd>⌘</kbd>+<kbd>S</kbd> to save the file after it is opened. Using the `application/octet-stream` MIME type to force downloads [can cause issues in Safari](https://github.com/eligrey/FileSaver.js/issues/12#issuecomment-47247096).\n\n### iOS\n\nsaveAs must be run within a user interaction event such as onTouchDown or onClick; setTimeout will prevent saveAs from triggering. Due to restrictions in iOS saveAs opens in a new window instead of downloading, if you want this fixed please [tell Apple](https://bugs.webkit.org/show_bug.cgi?id=102914) how this bug is affecting you.\n\nSyntax\n------\n\n```js\nFileSaver saveAs(Blob/File data, optional DOMString filename, optional Boolean disableAutoBOM)\n```\n\nPass `true` for `disableAutoBOM` if you don't want FileSaver.js to automatically provide Unicode text encoding hints (see: [byte order mark](https://en.wikipedia.org/wiki/Byte_order_mark)).\n\nExamples\n--------\n\n### Saving text\n\n```js\nvar blob = new Blob([\"Hello, world!\"], {type: \"text/plain;charset=utf-8\"});\nsaveAs(blob, \"hello world.txt\");\n```\n\nThe standard W3C File API [`Blob`][4] interface is not available in all browsers.\n[Blob.js][5] is a cross-browser `Blob` implementation that solves this.\n\n### Saving a canvas\n\n```js\nvar canvas = document.getElementById(\"my-canvas\"), ctx = canvas.getContext(\"2d\");\n// draw to canvas...\ncanvas.toBlob(function(blob) {\n    saveAs(blob, \"pretty image.png\");\n});\n```\n\nNote: The standard HTML5 `canvas.toBlob()` method is not available in all browsers.\n[canvas-toBlob.js][6] is a cross-browser `canvas.toBlob()` that polyfills this.\n\n### Saving File\n\nYou can save a File constructor without specifying a filename. The\nFile itself already contains a name, There is a hand full of ways to get a file\ninstance (from storage, file input, new constructor)\nBut if you still want to change the name, then you can change it in the 2nd argument\n\n```js\nvar file = new File([\"Hello, world!\"], \"hello world.txt\", {type: \"text/plain;charset=utf-8\"});\nsaveAs(file);\n```\n\n\n\n![Tracking image](https://in.getclicky.com/212712ns.gif)\n\n  [1]: http://eligrey.com/demos/FileSaver.js/\n  [2]: https://github.com/eligrey/canvas-toBlob.js\n  [3]: https://code.google.com/p/chromium/issues/detail?id=375297\n  [4]: https://developer.mozilla.org/en-US/docs/DOM/Blob\n  [5]: https://github.com/eligrey/Blob.js\n  [6]: https://github.com/eligrey/canvas-toBlob.js\n\nContributing\n------------\n\nThe `FileSaver.js` distribution file is compiled with Uglify.js like so:\n\n```bash\nuglifyjs FileSaver.js --mangle --comments /@source/ > FileSaver.min.js\n# or simply:\nnpm run build\n```\n\nPlease make sure you build a production version before submitting a pull request.\n\nInstallation\n------------------\n\n```bash\nnpm install file-saver --save\nbower install file-saver\n```\n",
+  "readmeFilename": "README.md",
+  "_id": "file-saver@1.3.3",
+  "_shasum": "cdd4c44d3aa264eac2f68ec165bc791c34af1232",
+  "_from": "file-saver@",
+  "_resolved": "https://registry.npmjs.org/file-saver/-/file-saver-1.3.3.tgz"
+}

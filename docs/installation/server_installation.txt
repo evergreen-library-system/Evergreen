@@ -54,21 +54,20 @@ autoreconf -i
 Installing prerequisites
 ------------------------
 
-  * **PostgreSQL**: Version 9.3 is recommended. The minimum supported version
-    is 9.1.
+  * **PostgreSQL**: The minimum supported version is 9.3.
   * **Linux**: Evergreen 2.8 has been tested on Debian Jessie (8.0), 
     Debian Wheezy (7.0), Ubuntu Xenial Xerus (16.04), 
     Ubuntu Trusty Tahr (14.04), and Fedora. 
     If you are running an older version of these distributions, you may want 
     to upgrade before upgrading Evergreen. For instructions on upgrading these
     distributions, visit the Debian, Ubuntu or Fedora websites.
-  * **OpenSRF**: The minimum supported version of OpenSRF is 2.4.0.
+  * **OpenSRF**: The minimum supported version of OpenSRF is 2.5.0.
 
 
 Evergreen has a number of prerequisite packages that must be installed
 before you can successfully configure, compile, and install Evergreen.
 
-1. Begin by installing the most recent version of OpenSRF (2.4.0 or later).
+1. Begin by installing the most recent version of OpenSRF (2.5.0 or later).
    You can download OpenSRF releases from http://evergreen-ils.org/opensrf-downloads/
 2. On some distributions, it is necessary to install PostgreSQL 9.1+ from external
    repositories.

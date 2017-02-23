@@ -33,6 +33,10 @@ angular.module('egCoreMod')
         link: function (scope, element, attrs) {
             scope.autoresize = 'autoresize' in attrs;
             scope.showIframe = true;
+            // well, I *might* embed XUL; in any event, this gives a way
+            // for things like Dojo widgets to detect whether they are
+            // running in an eframe before the frame load has finished.
+            window.IEMBEDXUL = true;
             element.find('iframe').on(
                 'load',
                 function() {scope.egEmbedFrameLoader(this)}
@@ -276,7 +280,7 @@ angular.module('egCoreMod')
             // open a new tab with the embedded URL
             $scope.escapeEmbed = function() {
                 $scope.showIframe = false;
-                $window.open($scope.url, '_blank').focus();
+                $window.open($scope.iframe.contentWindow.location, '_blank').focus();
             }
             $scope.restoreEmbed = function() {
                 $scope.showIframe = true;

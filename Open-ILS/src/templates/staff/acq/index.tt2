@@ -12,6 +12,11 @@
 <!--<script src="[% ctx.media_prefix %]/js/ui/default/staff/reporter/services/template.js"></script>-->
 <!--[% INCLUDE 'staff/reporter/share/report_strings.tt2' %]-->
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/acq/app.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/marcrecord.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/cat/services/record.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/cat/services/tagtable.js"></script>
+[% INCLUDE 'staff/cat/share/marcedit_strings.tt2' %]
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/cat/services/marcedit.js"></script>
 <link rel="stylesheet" href="[% ctx.base_path %]/staff/css/acq.css" />
 [% END %]
 

@@ -39,6 +39,10 @@ lib/OpenILS/Application/Circ/StatCat.pm
 lib/OpenILS/Application/Circ/Survey.pm
 lib/OpenILS/Application/Circ/Transit.pm
 lib/OpenILS/Application/Collections.pm
+lib/OpenILS/Application/EbookAPI.pm
+lib/OpenILS/Application/EbookAPI/Test.pm
+lib/OpenILS/Application/EbookAPI/OverDrive.pm
+lib/OpenILS/Application/EbookAPI/OneClickdigital.pm
 lib/OpenILS/Application/Fielder.pm
 lib/OpenILS/Application/PermaCrud.pm
 lib/OpenILS/Application/Proxy.pm
@@ -132,6 +136,7 @@ lib/OpenILS/Utils/Cronscript.pm
 lib/OpenILS/Utils/Cronscript.pm.in
 lib/OpenILS/Utils/CStoreEditor.pm
 lib/OpenILS/Utils/Fieldmapper.pm
+lib/OpenILS/Utils/HTTPClient.pm
 lib/OpenILS/Utils/ISBN.pm
 lib/OpenILS/Utils/Lockfile.pm
 lib/OpenILS/Utils/MFHD.pm
