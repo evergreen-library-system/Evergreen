@@ -510,6 +510,55 @@ to T which will result in a small image with the text "No Image Available" in
 place of a book cover. If you set this value to 1 a 1X1 blank image will be in
 place of a book cover. 
 
+Obalkyknih.cz
+~~~~~~~~~~~~~
+
+Setting up Obalkyknih.cz account
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+If your library wishes to use added content provided by Obalkyknih.cz, a service based in the Czech Republic, you have to http://obalkyknih.cz/signup[create an Obalkyknih.cz account].
+Please note that the interface is only available in Czech. After logging in your Obalkyknih.cz account, you have to add your IP address and Evergreen server address to your account settings.
+(In case each library uses an address of its own, all of these addresses have to be added.) 
+
+Enabling Obalkyknih.cz in Evergreen
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Set obalkyknih_cz.enabled to true in '/openils/var/templates/opac/parts/config.tt2':
+
+[source,perl]
+----
+obalkyknih_cz.enabled = 'true';
+----
+
+Enable added content from Obalkyknih.cz in '/openils/conf/opensrf.xml' configuration file (and – at the same time – disable added content from Open Library, i.e., Evergreen's default added content provider):
+
+[source,xml]
+----
+<!-- <module>OpenILS::WWW::AddedContent::OpenLibrary</module> -->
+<module>OpenILS::WWW::AddedContent::ObalkyKnih</module>
+----
+
+Using default settings for Obalkyknih.cz means all types of added content from Obalkyknih.cz are visible in your online catalog.
+If the module is enabled, book covers are always displayed. Other types of added content (summaries, ratings or tables of contents) can be: 
+
+* switched off using _false_ option,
+* switched on again using _true_ option.
+
+The following types of added content are used: 
+
+* summary (or annotation)
+* tocPDF (table of contents available as image)
+* tocText (table of contents available as text)
+* review (user reviews)
+
+An example of how to switch off summaries: 
+
+[source,xml]
+----
+<summary>false</summary>
+----
+
+
 Google Analytics
 ~~~~~~~~~~~~~~~~
 
@@ -746,3 +795,4 @@ bash# grep "template error" /var/log/apache2/error_log
   unexpected token (!=)\n  [% last_cn = 0;\n        FOR copy_info IN
   ctx.copies;\n            callnum = copy_info.call_number_label;\n
 ----
+
