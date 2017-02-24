@@ -6,12 +6,12 @@
 # ----------------------------------------------------------------------------------
 # Point / to the opac - if you have a custom skin or locale, point at it here
 # ----------------------------------------------------------------------------------
-RedirectMatch 301 ^/$ /eg/opac/home
+RewriteRule ^/$ %{REQUEST_SCHEME}://%{HTTP_HOST}/eg/opac/home [R=301,L]
 
 # ----------------------------------------------------------------------------------
 # Redirect staff to the correct URL if they forget to include the final /
 # ----------------------------------------------------------------------------------
-RedirectMatch 301 ^/eg/staff$ /eg/staff/
+RewriteRule ^/eg/staff$ https://%{HTTP_HOST}/eg/staff/ [R=301,L]
 
 # ----------------------------------------------------------------------------------
 # Point / to the IP address redirector
@@ -34,8 +34,8 @@ RedirectMatch 301 ^/eg/staff$ /eg/staff/
 # ----------------------------------------------------------------------------------
 # Assign a default locale to the accessible OPAC
 # ----------------------------------------------------------------------------------
-RedirectMatch 301 ^/opac/extras/slimpac/start.html$    /opac/en-US/extras/slimpac/start.html
-RedirectMatch 301 ^/opac/extras/slimpac/advanced.html$ /opac/en-US/extras/slimpac/advanced.html
+RewriteRule ^/opac/extras/slimpac/start.html$ %{REQUEST_SCHEME}://%{HTTP_HOST}/opac/en-US/extras/slimpac/start.html [R=301,L]
+RewriteRule ^/opac/extras/slimpac/advanced.html$ %{REQUEST_SCHEME}://%{HTTP_HOST}/opac/en-US/extras/slimpac/advanced.html [R=301,L]
 
 # ----------------------------------------------------------------------------------
 # Configure the gateway and translator
@@ -285,7 +285,7 @@ Options -Indexes
 </LocationMatch>
 
 RewriteCond %{QUERY_STRING} locale=([^&]*)
-RewriteRule ^/opac/[a-z]{2}-[A-Z]{2}/extras/slimpac/(.*)$ /opac/%1/extras/slimpac/$1? [redirect]
+RewriteRule ^/opac/[a-z]{2}-[A-Z]{2}/extras/slimpac/(.*)$ %{REQUEST_SCHEME}://%{HTTP_HOST}/opac/%1/extras/slimpac/$1? [redirect]
 <LocationMatch /opac/[a-z]{2}-[A-Z]{2}/extras/slimpac/>
     AddOutputFilter INCLUDES;XMLENT .html
 </LocationMatch>
