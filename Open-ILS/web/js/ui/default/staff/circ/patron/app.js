@@ -816,10 +816,10 @@ function($scope , $location , egCore , egConfirmDialog , egUser , patronSvc) {
 .controller('PatronSearchCtrl',
        ['$scope','$q','$routeParams','$timeout','$window','$location','egCore',
        '$filter','egUser', 'patronSvc','egGridDataProvider','$document',
-       'egPatronMerge',
+       'egPatronMerge','egProgressDialog',
 function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore,
         $filter,  egUser,  patronSvc , egGridDataProvider , $document,
-        egPatronMerge) {
+        egPatronMerge , egProgressDialog) {
 
     $scope.initTab('search');
     $scope.focusMe = true;
@@ -980,8 +980,13 @@ function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore,
             return deferred.promise;
         }
 
-        // Dispay the search progress bar to indicate a search is in progress
-        $scope.show_search_progress = true;
+        if (!Object.keys(fullSearch.search).length) {
+            // Empty searches are rejected by the server.  Avoid 
+            // running the the empty search that runs on page load. 
+            return $q.when();
+        }
+
+        egProgressDialog.open(); // Indeterminate
 
         patronSvc.patrons = [];
         egCore.net.request(
@@ -998,19 +1003,17 @@ function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore,
 
         ).then(
             function() {
-                // hide progress bar on 0-hits searches
-                $scope.show_search_progress = false;
                 deferred.resolve();
             },
             null, // onerror
             function(user) {
                 // hide progress bar as soon as the first result appears.
-                $scope.show_search_progress = false;
+                egProgressDialog.close();
                 patronSvc.localFlesh(user); // inline
                 patronSvc.patrons.push(user);
                 deferred.notify(user);
             }
-        );
+        )['finally'](egProgressDialog.close); // close on 0-hits or error
 
         return deferred.promise;
     };
