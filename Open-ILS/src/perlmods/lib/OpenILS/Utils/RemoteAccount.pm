@@ -605,11 +605,22 @@ sub get_ftp {
     my $self = shift;
     my $filename;
 
+    my $remote_filename = $self->{get_args}->[0];
     eval { $filename = $self->_ftp->get(@{$self->{get_args}}) };
     if ($@ or not $filename) {
         $logger->error(
             $self->_error(
                 "get from", $self->remote_host, "failed with error: $@"
+            )
+        );
+        return;
+    }
+    if (!defined(${$filename->sref})) {
+        # the underlying scalar is still undef, so Net::FTP must have
+        # successfully retrieved an empty file... which we should skip
+        $logger->error(
+            $self->_error(
+                "get $remote_filename from", $self->remote_host, ": remote file is zero-length"
             )
         );
         return;
