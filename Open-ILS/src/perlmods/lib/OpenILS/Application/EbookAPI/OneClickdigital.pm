@@ -77,7 +77,8 @@ sub initialize {
     my $self = shift;
     my $ou = $self->{ou};
 
-    $self->{base_uri} = 'https://api.oneclickdigital.us/v1'; # TODO pull from org setting?
+    my $base_uri = 'https://api.oneclickdigital.com/v1';
+    $self->{base_uri} = OpenILS::Application::AppUtils->ou_ancestor_setting_value($ou, 'ebook_api.oneclickdigital.base_uri') || $base_uri;
 
     my $library_id = OpenILS::Application::AppUtils->ou_ancestor_setting_value($ou, 'ebook_api.oneclickdigital.library_id');
     if ($library_id) {
