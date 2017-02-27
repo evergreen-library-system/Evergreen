@@ -40,14 +40,14 @@ CREATE OR REPLACE FUNCTION public.naco_normalize( TEXT, TEXT ) RETURNS TEXT AS $
     # transformations based on Unicode category codes
     $str =~ s/[\p{Cc}\p{Cf}\p{Co}\p{Cs}\p{Lm}\p{Mc}\p{Me}\p{Mn}]//g;
 
-    if ($sf && $sf =~ /^a/o) {
-        my $commapos = index($str, ',');
-        if ($commapos > -1) {
-            if ($commapos != length($str) - 1) {
+	if ($sf && $sf =~ /^a/o) {
+		my $commapos = index($str, ',');
+		if ($commapos > -1) {
+			if ($commapos != length($str) - 1) {
                 $str =~ s/,/\x07/; # preserve first comma
-            }
-        }
-    }
+			}
+		}
+	}
 
     # since we've stripped out the control characters, we can now
     # use a few as placeholders temporarily
@@ -69,7 +69,8 @@ CREATE OR REPLACE FUNCTION public.naco_normalize( TEXT, TEXT ) RETURNS TEXT AS $
     return lc $str;
 $func$ LANGUAGE 'plperlu' STRICT IMMUTABLE;
 
-
+-- Currently, the only difference from naco_normalize is that search_normalize
+-- turns apostrophes into spaces, while naco_normalize collapses them.
 CREATE OR REPLACE FUNCTION public.search_normalize( TEXT, TEXT ) RETURNS TEXT AS $func$
 
     use strict;
@@ -105,14 +106,14 @@ CREATE OR REPLACE FUNCTION public.search_normalize( TEXT, TEXT ) RETURNS TEXT AS
     # transformations based on Unicode category codes
     $str =~ s/[\p{Cc}\p{Cf}\p{Co}\p{Cs}\p{Lm}\p{Mc}\p{Me}\p{Mn}]//g;
 
-    if ($sf && $sf =~ /^a/o) {
-        my $commapos = index($str, ',');
-        if ($commapos > -1) {
-            if ($commapos != length($str) - 1) {
+	if ($sf && $sf =~ /^a/o) {
+		my $commapos = index($str, ',');
+		if ($commapos > -1) {
+			if ($commapos != length($str) - 1) {
                 $str =~ s/,/\x07/; # preserve first comma
-            }
-        }
-    }
+			}
+		}
+	}
 
     # since we've stripped out the control characters, we can now
     # use a few as placeholders temporarily
