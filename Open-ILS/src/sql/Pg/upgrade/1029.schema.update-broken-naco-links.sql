@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1029', :eg_version); -- csharp/gmcharlt
 
 UPDATE config.index_normalizer SET description = 'Apply NACO normalization rules to the extracted text.  See https://www.loc.gov/aba/pcc/naco/normrule-2.html for details.' WHERE func = 'naco_normalize';
 UPDATE config.index_normalizer SET description = 'Apply NACO normalization rules to the extracted text, retaining the first comma.  See https://www.loc.gov/aba/pcc/naco/normrule-2.html for details.' WHERE func = 'naco_normalize_keep_comma';
