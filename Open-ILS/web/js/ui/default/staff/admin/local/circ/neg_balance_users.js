@@ -20,7 +20,11 @@ function($scope , $q , $timeout , $location , $window , egCore , egGridDataProvi
             'open-ils.actor',
             'open-ils.actor.users.negative_balance',
             egCore.auth.token(), $scope.context_org.id())
-        .then(deferred.resolve, null, deferred.notify);
+        .then(deferred.resolve, null, function(blob) {
+            // Give the grid a top-level identifier field
+            blob.usr_id = blob.usr.id();
+            deferred.notify(blob)
+        });
 
         return deferred.promise;
     }
