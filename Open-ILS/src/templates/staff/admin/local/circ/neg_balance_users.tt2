@@ -23,6 +23,7 @@
     <div class="form-group">
       <label>[% l('Patron Library') %]</label>
       <eg-org-selector onchange="org_changed" 
+        disable-test="disable_org"
         selected="context_org"></eg-org-selector>
     </div>
   </div>

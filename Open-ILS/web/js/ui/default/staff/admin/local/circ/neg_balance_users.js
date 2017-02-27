@@ -6,8 +6,6 @@ angular.module('egAdminCirc',
        ['$scope','$q','$timeout','$location','$window','egCore','egGridDataProvider',
 function($scope , $q , $timeout , $location , $window , egCore , egGridDataProvider) {
 
-    egCore.startup.go(); // standalone mode requires manual startup
-
     $scope.grid_provider = egGridDataProvider.instance({});
 
     // API does not currenlty support paging, so it's all or none.
@@ -30,8 +28,12 @@ function($scope , $q , $timeout , $location , $window , egCore , egGridDataProvi
     }
 
     $scope.org_changed = function(org) {
-        $scope.context_org = org; // hmm, why necessary.
         $scope.grid_provider.refresh();
+    }
+
+    $scope.disable_org = function(org_id) {
+        if (!org_id) return true;
+        return egCore.org.get(org_id).ou_type().can_have_users() != 't';
     }
 
     // NOTE: Chrome only allows one tab/window to open per user
