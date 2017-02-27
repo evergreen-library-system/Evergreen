@@ -7,7 +7,13 @@
     </ng-pluralize>
   </span>
   <span> / [% l('Created {{bucket().create_time() | date}}') %]</span>
-  <span ng-show="bucket()._owner_name"> / {{bucket()._owner_name}} @ {{bucket()._owner_ou}}</span>
+  <span ng-show="bucket()._owner_name"> / 
+    {{bucket()._owner_name}} 
+    <a target="_self" href="./circ/patron/{{bucket().owner()}}/checkout">
+      ({{bucket()._owner_ident}})
+    </a>
+    @ {{bucket()._owner_ou}}
+  </span>
   <span ng-show="bucket().description()"> / {{bucket().description()}}</span>
 </div>
 

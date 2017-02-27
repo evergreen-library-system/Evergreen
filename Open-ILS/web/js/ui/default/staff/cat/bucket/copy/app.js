@@ -154,9 +154,14 @@ angular.module('egCatCopyBuckets',
                 return;
             }
             egCore.pcrud.retrieve(
-                'au', bucket.owner()
+                'au', bucket.owner(),
+                {flesh : 1, flesh_fields : {au : ["card"]}}
             ).then(function(patron) {
-                bucket._owner_name = patron.usrname();
+                // On the off chance no barcode is present (it's not 
+                // required) use the patron username as the identifier.
+                bucket._owner_ident = patron.card() ? 
+                    patron.card().barcode() : patron.usrname();
+                bucket._owner_name = patron.family_name();
                 bucket._owner_ou = egCore.org.get(patron.home_ou()).shortname();
             });
 
