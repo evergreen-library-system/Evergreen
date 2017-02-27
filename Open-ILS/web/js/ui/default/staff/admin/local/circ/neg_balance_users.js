@@ -47,4 +47,12 @@ function($scope , $q , $timeout , $location , $window , egCore , egGridDataProvi
             });
         });
     }
+
+    $scope.grid_controls = {
+        activateItem : function(selected) { 
+            // activateItem returns a single row.
+            $scope.get_user([selected]) 
+        }
+    }
+
 }])
