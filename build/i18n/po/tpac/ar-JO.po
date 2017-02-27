@@ -516,11 +516,11 @@ msgid "Are you sure you wish to delete the selected item(s)?"
 msgstr "هل تؤكد حذف النُسخ المحددة؟"
 
 #: ../../Open-ILS/src/templates/opac/myopac/messages/list.tt2:53
-msgid "Are you sure you wish to permanently delete the selected messsage(s)?"
+msgid "Are you sure you wish to permanently delete the selected message(s)?"
 msgstr "هل تؤكد حذف الرسائل المحددة بشكل دائم؟"
 
 #: ../../Open-ILS/src/templates/opac/myopac/messages/single_message.tt2:16
-msgid "Are you sure you wish to permanently delete this messsage?"
+msgid "Are you sure you wish to permanently delete this message?"
 msgstr "هل تؤكد حذف هذه الرسالة بشكل دائم؟"
 
 #: ../../Open-ILS/src/templates/opac/myopac/circs.tt2:42

@@ -13,7 +13,7 @@
                 [% l('Return to Message List') %]
                 </a>
                 <button type="submit" name="action" value="mark_deleted" class="opac-button"
-                    onclick="return confirm('[% l("Are you sure you wish to permanently delete this messsage?") %]')">
+                    onclick="return confirm('[% l("Are you sure you wish to permanently delete this message?") %]')">
                     [% l('Delete') %]
                 </button>
                 <button type="submit" name="action" value="mark_unread" class="opac-button">
