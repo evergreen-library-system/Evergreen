@@ -61,7 +61,7 @@ div.result_table_utils_cont{text-align:right;float:right;}
 #myopac_sum_fines_placehold{float:left;}
 .acct_holds_temp td{text-align:right;}
 #acct_checked_tabs .align, #acct_holds_tabs .align, #acct_prefs_tabs .align{float:right;}
-#acct_checked_main_header th, #acct_holds_main_header th, #acct_checked_hist_header th, acct_holds_hist_header th, #acct_list_header th, #acct_list_header_anon th, #temp_list_holds th, #acct_messages_main_header th{text-align:right;}
+#acct_checked_main_header th, #acct_holds_main_header th, #acct_checked_hist_header th, acct_holds_hist_header th, #acct_list_header th, #acct_list_header_anon th, #temp_list_holds th, #acct_messages_main_header th, #ebook_circs_main_table th, #ebook_holds_main_table th {text-align:right;}
 .myopac_payments_table th{text-align:right;}
 div#facet_sidebar{float:right;margin-left:1em;}
 .facet_box_temp .header .title{float:right;padding-right:12px;}
