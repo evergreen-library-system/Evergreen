@@ -550,8 +550,8 @@ function($window , egStrings) {
            + '</ul>'
           + '</div>',
 
-        controller : ['$scope','$timeout','egOrg','egAuth','egCore','egStartup',
-              function($scope , $timeout , egOrg , egAuth , egCore , egStartup) {
+        controller : ['$scope','$timeout','egCore','egStartup',
+              function($scope , $timeout , egCore , egStartup) {
 
             if ($scope.alldisabled) {
                 $scope.disable_button = $scope.alldisabled == 'true' ? true : false;
@@ -559,19 +559,18 @@ function($window , egStrings) {
                 $scope.disable_button = false;
             }
 
-            $scope.egOrg = egOrg; // for use in the link function
-            $scope.egAuth = egAuth; // for use in the link function
-            $scope.hatch = egCore.hatch // for use in the link function
-
             // avoid linking the full fleshed tree to the scope by 
             // tossing in a flattened list.
             // --
             // Run-time code referencing post-start data should be run
             // from within a startup block, otherwise accessing this
             // module before startup completes will lead to failure.
+            //
+            // controller() runs before link().
+            // This post-startup code runs after link().
             egStartup.go().then(function() {
 
-                $scope.orgList = egOrg.list().map(function(org) {
+                $scope.orgList = egCore.org.list().map(function(org) {
                     return {
                         id : org.id(),
                         shortname : org.shortname(), 
@@ -579,9 +578,38 @@ function($window , egStrings) {
                     }
                 });
 
-                if (!$scope.selected && !$scope.nodefault)
-                    $scope.selected = egOrg.get(egAuth.user().ws_ou());
+                // Apply default values
+
+                if ($scope.stickySetting) {
+                    var orgId = egCore.hatch.getLocalItem($scope.stickySetting);
+                    if (orgId) {
+                        $scope.selected = egCore.org.get(orgId);
+                    }
+                }
+
+                if (!$scope.selected && !$scope.nodefault) {
+                    $scope.selected = 
+                        egCore.org.get(egCore.auth.user().ws_ou());
+                }
+
+                fire_orgsel_onchange(); // no-op if nothing is selected
             });
+
+            /**
+             * Fire onchange handler after a timeout, so the
+             * $scope.selected value has a chance to propagate to
+             * the page controllers before the onchange fires.  This
+             * way, the caller does not have to manually capture the
+             * $scope.selected value during onchange.
+             */
+            function fire_orgsel_onchange() {
+                if (!$scope.selected || !$scope.onchange) return;
+                $timeout(function() {
+                    console.debug(
+                        'egOrgSelector onchange('+$scope.selected.id()+')');
+                    $scope.onchange($scope.selected)
+                });
+            }
 
             $scope.getSelectedName = function() {
                 if ($scope.selected && $scope.selected.shortname)
@@ -590,11 +618,11 @@ function($window , egStrings) {
             }
 
             $scope.orgChanged = function(org) {
-                $scope.selected = egOrg.get(org.id);
+                $scope.selected = egCore.org.get(org.id);
                 if ($scope.stickySetting) {
                     egCore.hatch.setLocalItem($scope.stickySetting, org.id);
                 }
-                if ($scope.onchange) $scope.onchange($scope.selected);
+                fire_orgsel_onchange();
             }
 
         }],
@@ -610,20 +638,7 @@ function($window , egStrings) {
                         scope[field] = false;
                 }
             );
-
-            if (scope.stickySetting) {
-                var orgId = scope.hatch.getLocalItem(scope.stickySetting);
-                if (orgId) {
-                    scope.selected = scope.egOrg.get(orgId);
-                    if (scope.onchange)
-                        scope.onchange(scope.selected);
-                }
-            }
-
-            if (!scope.selected && !scope.nodefault)
-                scope.selected = scope.egOrg.get(scope.egAuth.user().ws_ou());
         }
-
     }
 })
 
