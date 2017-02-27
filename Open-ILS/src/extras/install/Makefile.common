@@ -24,8 +24,9 @@ install_libdbi:
 	tar -zxf $(LIBDBI).tar.gz
 	tar -zxf $(LIBDBI_DRIVERS).tar.gz
 	cd $(LIBDBI) && ./configure --disable-docs && make all install
-	cd $(LIBDBI_DRIVERS) && ./configure  \
-		--disable-docs --with-pgsql --enable-libdbi && make all install  
+	cd $(LIBDBI_DRIVERS) && ./configure --disable-docs --enable-libdbi \
+		--with-pgsql --with-pgsql-incdir=$$(pg_config --includedir) \
+		--with-pgsql-libdir=$$(pg_config --libdir) && make all install  
 
 # NOTE: Deprecate me with wheezy
 install_nodejs_from_source:

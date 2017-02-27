@@ -54,7 +54,8 @@ autoreconf -i
 Installing prerequisites
 ------------------------
 
-  * **PostgreSQL**: The minimum supported version is 9.3.
+  * **PostgreSQL**: Version 9.4 is recommended. 
+    The minimum supported version is 9.3.
   * **Linux**: Evergreen 2.8 has been tested on Debian Jessie (8.0), 
     Debian Wheezy (7.0), Ubuntu Xenial Xerus (16.04), 
     and Ubuntu Trusty Tahr (14.04).
@@ -69,15 +70,17 @@ before you can successfully configure, compile, and install Evergreen.
 
 1. Begin by installing the most recent version of OpenSRF (2.5.0 or later).
    You can download OpenSRF releases from http://evergreen-ils.org/opensrf-downloads/
-2. On some distributions, it is necessary to install PostgreSQL 9.1+ from external
+2. On some distributions, it is necessary to install PostgreSQL 9.4+ from external
    repositories.
 +
-  * Debian (Wheezy and Jessie) and Ubuntu (Trusty and Xenial) comes with
-    PostgreSQL 9.1+, so no additional steps are required.
+  * Debian (Wheezy) and Ubuntu (Trusty) comes with older versions of 
+    PostgreSQL, so steps are taken to automatically utilize the 
+    PostgreSQL community's apt sources. 
+    (For complete details, see: https://wiki.postgresql.org/wiki/Apt)
+  * Debian (Jessie) and Ubuntu (Xenial) comes with PostgreSQL 9.4+,
+    so no additional steps are required.
 +
-3. On Debian and Ubuntu, run `aptitude update` as the *root* Linux account to
-   retrieve the new packages from the backports repository.
-4. Issue the following commands as the *root* Linux account to install
+3. Issue the following commands as the *root* Linux account to install
    prerequisites using the `Makefile.install` prerequisite installer,
    substituting `debian-jessie`, `debian-wheezy`,
    `ubuntu-xenial`, or `ubuntu-trusty` for <osname> below:
@@ -87,7 +90,7 @@ before you can successfully configure, compile, and install Evergreen.
 make -f Open-ILS/src/extras/Makefile.install <osname>
 ------------------------------------------------------------------------------
 +
-5. Add the libdbi-libdbd libraries to the system dynamic library path by
+4. Add the libdbi-libdbd libraries to the system dynamic library path by
    issuing the following commands as the *root* Linux account:
 +
 [NOTE]
@@ -101,7 +104,7 @@ echo "/usr/local/lib/dbd" > /etc/ld.so.conf.d/eg.conf
 ldconfig
 ------------------------------------------------------------------------------
 
-6. OPTIONAL: Developer additions
+5. OPTIONAL: Developer additions
 +
 To perform certain developer tasks from a Git source code checkout, 
 additional packages may be required.  As the *root* Linux account:
@@ -572,10 +575,10 @@ Creating the database on a remote server
 In a production instance of Evergreen, your PostgreSQL server should be
 installed on a dedicated server.
 
-PostgreSQL 9.1 and later
+PostgreSQL 9.4 and later
 ^^^^^^^^^^^^^^^^^^^^^^^^
 To create the database instance on a remote database server running PostgreSQL
-9.1 or later, simply use the `--create-database` flag on `eg_db_config`.
+9.4 or later, simply use the `--create-database` flag on `eg_db_config`.
 
 Starting Evergreen
 ------------------

@@ -1,6 +1,7 @@
 # actions required by all debian-based OSs
 
 APT_TOOL=apt-get -yq
+RELEASE_CODENAME=$(shell lsb_release -cs)
 
 install_debs:
 	$(APT_TOOL) install $(DEBS)
@@ -29,6 +30,15 @@ debian_sys_config:
 	for m in $(DEB_APACHE_DISCONF); do a2disconf $$m; done;
 	# refresh the dynamic library cache
 	ldconfig
+
+# Adding this for installing versions from PostgreSQL community apt source
+debian_postgresql_repo:
+	if test -z "$$(grep -R apt.postgresql.org /etc/apt/)" ; then \
+		echo "deb http://apt.postgresql.org/pub/repos/apt/ $(RELEASE_CODENAME)-pgdg main" \
+		     > /etc/apt/sources.list.d/pgdg.list; \
+		wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - ; \
+		$(APT_TOOL) update ; \
+	fi
 
 clean:
 	echo "cleaning"

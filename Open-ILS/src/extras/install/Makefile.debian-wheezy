@@ -62,7 +62,7 @@ export DEBS = \
 	libuniversal-require-perl\
 	libunix-syslog-perl\
 	libyaz-dev\
-	postgresql-client-9.1\
+	postgresql-client-9.4\
 	libsoap-lite-perl\
 	libbz2-dev\
 	libparse-recdescent-perl\
@@ -87,12 +87,16 @@ export CPAN_MODULES_FORCE = \
 	Business::Stripe \
 	Class::DBI::Frozen::301
 
-PGSQL_SERVER_DEBS_91 = \
-	$(DEB_PGSQL_COMMON_MODS) \
-	postgresql-9.1 \
-	postgresql-contrib-9.1 \
-	postgresql-plperl-9.1 \
-	postgresql-server-dev-9.1
+PGSQL_APT_REPO_DEBS = \
+    wget \
+    ca-certificates
+
+PGSQL_SERVER_DEBS_94 = \
+    $(DEB_PGSQL_COMMON_MODS) \
+    postgresql-9.4 \
+    postgresql-contrib-9.4 \
+    postgresql-plperl-9.4 \
+    postgresql-server-dev-9.4
 
 # note: some prereqs are repeated in the developer/packager 
 # sections to support building Evergreen packages on servers
@@ -123,6 +127,8 @@ TRANSLATOR_DEBS = \
 	bzr
 
 all:
+	make -f $(DIR)/Makefile.debian DEBS="$(PGSQL_APT_REPO_DEBS)"
+	make -f $(DIR)/Makefile.debian debian_postgresql_repo
 	make -f $(DIR)/Makefile.debian install_debs
 	make -f $(DIR)/Makefile.debian test_for_libdbi_pkg
 	make -f $(DIR)/Makefile.common install_cpan
@@ -131,7 +137,7 @@ all:
 	make -f $(DIR)/Makefile.debian debian_sys_config
 
 install_postgres_server:
-	make -f $(DIR)/Makefile.debian DEBS="$(PGSQL_SERVER_DEBS_91)"
+	make -f $(DIR)/Makefile.debian DEBS="$(PGSQL_SERVER_DEBS_94)"
 
 install_developer:
 	make -f $(DIR)/Makefile.debian DEBS="$(DEVELOPER_DEBS)"
