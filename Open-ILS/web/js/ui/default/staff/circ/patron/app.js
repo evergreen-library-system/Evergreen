@@ -897,7 +897,7 @@ function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore,
             $scope.searchArgs[key] = val.value;
         });
         if (propagate_inactive) {
-            $scope.searchArgs[inactive] = propagate_inactive;
+            $scope.searchArgs.inactive = propagate_inactive;
         }
     }
 
