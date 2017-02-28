@@ -312,10 +312,10 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
                     merged : false
                 };
 
+                $scope.overlay_target.marc_xml = args.marc_xml;
                 egCore.pcrud.retrieve('bre', $scope.overlay_target.id)
                 .then(function(rec) {
                     $scope.overlay_target.orig_marc_xml = rec.marc();
-                    $scope.overlay_target.marc_xml = rec.marc();
                     $scope.merge_marc(); // in case a sticky value was already set
                 });
 
