@@ -1559,11 +1559,7 @@ sub handle_checkout_holds {
     my $hold = $e->search_action_hold_request({   
         current_copy        => $copy->id , 
         cancel_time         => undef, 
-        fulfillment_time    => undef,
-        '-or' => [
-            {expire_time => undef},
-            {expire_time => {'>' => 'now'}}
-        ]
+        fulfillment_time    => undef
     })->[0];
 
     if($hold and $hold->usr != $patron->id) {
