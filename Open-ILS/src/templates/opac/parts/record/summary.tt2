@@ -56,18 +56,20 @@
             </div>
             [%- END -%]
             <div class="rdetail_aux_utils toggle_list">
+        [% IF !ctx.is_staff %]
             [%  IF ctx.user;
                 INCLUDE "opac/parts/bookbag_actions.tt2";
             %]
             [%  ELSE;
                 operation = ctx.mylist.grep(ctx.bre_id).size ? "delete" : "add";
-                label = (operation == "add") ? l("Add to my list") : l("Remove from my list"); 
+                label = (operation == "add") ? l("Add to my list") : l("Remove from my list");
             %]
                 <a href="[% mkurl(ctx.opac_root _ '/mylist/' _ operation, {record => ctx.bre_id}, stop_parms) %]" class="no-dec" rel="nofollow" vocab="">
                     <img src="[% ctx.media_prefix %]/images/clipboard.png" alt="" />
                     [% label %]
                 </a>
             [% END %]
+        [% END %]
             </div>
             <div class="rdetail_aux_utils">
                 <img src="[% ctx.media_prefix %]/images/clipboard.png" alt="[% l('Print / Email Actions Image') %]" />
