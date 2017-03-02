@@ -13,7 +13,7 @@ follows:
     ** The *user* Linux account is the account that you use to log onto the
        Linux system as a regular user.
     ** The *root* Linux account is an account that has system administrator
-       privileges. On Debian and Fedora you can switch to this account from
+       privileges. On Debian you can switch to this account from
        your *user* account by issuing the `su -` command and entering the
        password for the *root* account when prompted. On Ubuntu you can switch
        to this account from your *user* account using the `sudo su -` command
@@ -57,10 +57,10 @@ Installing prerequisites
   * **PostgreSQL**: The minimum supported version is 9.3.
   * **Linux**: Evergreen 2.8 has been tested on Debian Jessie (8.0), 
     Debian Wheezy (7.0), Ubuntu Xenial Xerus (16.04), 
-    Ubuntu Trusty Tahr (14.04), and Fedora. 
+    and Ubuntu Trusty Tahr (14.04).
     If you are running an older version of these distributions, you may want 
     to upgrade before upgrading Evergreen. For instructions on upgrading these
-    distributions, visit the Debian, Ubuntu or Fedora websites.
+    distributions, visit the Debian or Ubuntu websites.
   * **OpenSRF**: The minimum supported version of OpenSRF is 2.5.0.
 
 
@@ -74,13 +74,12 @@ before you can successfully configure, compile, and install Evergreen.
 +
   * Debian (Wheezy and Jessie) and Ubuntu (Trusty and Xenial) comes with
     PostgreSQL 9.1+, so no additional steps are required.
-  * Fedora 19 and 20 come with PostgreSQL 9.2+, so no additional steps are required.
 +
 3. On Debian and Ubuntu, run `aptitude update` as the *root* Linux account to
    retrieve the new packages from the backports repository.
 4. Issue the following commands as the *root* Linux account to install
    prerequisites using the `Makefile.install` prerequisite installer,
-   substituting `debian-jessie`, `debian-wheezy`, `fedora`, 
+   substituting `debian-jessie`, `debian-wheezy`,
    `ubuntu-xenial`, or `ubuntu-trusty` for <osname> below:
 +
 [source, bash]
@@ -99,13 +98,6 @@ and Debian Jessie targets use libdbd-pgsql from packages.
 [source, bash]
 ------------------------------------------------------------------------------
 echo "/usr/local/lib/dbd" > /etc/ld.so.conf.d/eg.conf
-ldconfig
-------------------------------------------------------------------------------
-+
-.Fedora
-[source, bash]
-------------------------------------------------------------------------------
-echo "/usr/lib64/dbd" > /etc/ld.so.conf.d/eg.conf
 ldconfig
 ------------------------------------------------------------------------------
 
@@ -327,17 +319,6 @@ mkdir /etc/apache2/ssl
 cd /etc/apache2/ssl
 ------------------------------------------------------------------------------------
 +
-.Fedora
-[source,bash]
-------------------------------------------------------------------------------
-cp Open-ILS/examples/apache_24/eg_24.conf       /etc/httpd/conf.d/
-cp Open-ILS/examples/apache_24/eg_vhost_24.conf /etc/httpd/eg_vhost.conf
-cp Open-ILS/examples/apache/eg_startup          /etc/httpd/
-# Now set up SSL
-mkdir /etc/httpd/ssl
-cd /etc/httpd/ssl
-------------------------------------------------------------------------------
-+
 . The `openssl` command cuts a new SSL key for your Apache server. For a
 production server, you should purchase a signed SSL certificate, but you can
 just use a self-signed certificate and accept the warnings in the staff client
@@ -356,14 +337,10 @@ place.
      you *must* secure this for a production instance):
      * (Apache 2.2): Replace `Allow from 10.0.0.0/8` with `Allow from all`
      * (Apache 2.4): Replace `Require host 10.0.0.0/8` with `Require all granted`
-  b. (Fedora): Change references from the non-existent `/etc/apache2/` directory
-     to `/etc/httpd/`.
 . Change the user for the Apache server.
   * (Debian and Ubuntu): As the *root* Linux account, edit
     `/etc/apache2/envvars`.  Change `export APACHE_RUN_USER=www-data` to 
     `export APACHE_RUN_USER=opensrf`.
-  * (Fedora): As the *root* Linux account , edit `/etc/httpd/conf/httpd.conf`.
-    Change `User apache` to `User opensrf`.
 . As the *root* Linux account, configure Apache with KeepAlive settings
   appropriate for Evergreen. Higher values can improve the performance of a
   single client by allowing multiple requests to be sent over the same TCP
@@ -372,15 +349,12 @@ place.
   * (Debian and Ubuntu): Edit `/etc/apache2/apache2.conf`.
     a. Change `KeepAliveTimeout` to `1`.
     b. Change `MaxKeepAliveRequests` to `100`.
-  * (Fedora): Edit `/etc/httpd/conf/httpd.conf`.
-    a. Change `KeepAliveTimeout` to `1`.
-    b. Change `MaxKeepAliveRequests` to `100`.
 . As the *root* Linux account, configure the prefork module to start and keep
   enough Apache servers available to provide quick responses to clients without
   running out of memory. The following settings are a good starting point for a
   site that exposes the default Evergreen catalogue to the web:
 +
-.Debian Wheezy (`/etc/apache2/apache2.conf`) and Fedora (`/etc/httpd/conf/httpd.conf`)
+.Debian Wheezy (`/etc/apache2/apache2.conf`)
 [source,bash]
 ------------------------------------------------------------------------------
 <IfModule mpm_prefork_module>
@@ -413,9 +387,6 @@ a2dismod mpm_event
 a2enmod mpm_prefork
 ------------------------------------------------------------------------------
 +
-. (Fedora): As the *root* Linux account, edit the `/etc/httpd/eg_vhost.conf`
-   file to change references from the non-existent `/etc/apache2/` directory
-   to `/etc/httpd/`.
 . (Debian Wheezy): As the *root* Linux account, enable the Evergreen site:
 +
 [source,bash]
@@ -504,7 +475,7 @@ by every Evergreen system. You can install the packages required by Debian or
 Ubuntu on the machine of your choice using the following commands as the
 *root* Linux account:
 
-.(Debian / Ubuntu / Fedora) Installing PostgreSQL server packages
+.(Debian / Ubuntu) Installing PostgreSQL server packages
 
 Each OS build target provides the postgres server installation packages
 required for each operating system.  To install Postgres server packages, 
@@ -517,18 +488,6 @@ make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-jessie
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-wheezy
 make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-trusty
 make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-xenial
-make -f Open-ILS/src/extras/Makefile.install postgres-server-fedora
-------------------------------------------------------------------------------
-
-.(Fedora) Postgres initialization
-
-Installing Postgres on Fedora also requires you to initialize the PostgreSQL
-cluster and start the service. Issue the following commands as the *root* user:
-
-[source, bash]
-------------------------------------------------------------------------------
-postgresql-setup initdb
-systemctl start postgresql
 ------------------------------------------------------------------------------
 
 For a standalone PostgreSQL server, install the following Perl modules for your
@@ -536,12 +495,6 @@ distribution as the *root* Linux account:
 
 .(Debian Wheezy, Ubuntu Trusty, and Ubuntu Xenial) 
 No extra modules required for these distributions.
-
-.(Fedora)
-[source, bash]
-------------------------------------------------------------------------------
-cpan Rose::URI
-------------------------------------------------------------------------------
 
 You need to create a PostgreSQL superuser to create and access the database.
 Issue the following command as the *postgres* Linux account to create a new
@@ -558,8 +511,8 @@ createuser -s -P evergreen
 Your PostgreSQL database may be configured by default to prevent connections,
 for example, it might reject attempts to connect via TCP/IP or from other
 servers. To enable TCP/IP connections from localhost, check your `pg_hba.conf`
-file, found in the `/etc/postgresql/` directory on Debian and Ubuntu, and in
-the `/var/lib/pgsql/data/` directory on Fedora. A simple way to enable TCP/IP
+file, found in the `/etc/postgresql/` directory on Debian and Ubuntu.
+A simple way to enable TCP/IP
 connections from localhost to all databases with password authentication, which
 would be suitable for a test install of Evergreen on a single server, is to
 ensure the file contains the following entries _before_ any "host ... ident"
