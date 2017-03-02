@@ -131,7 +131,17 @@ END;
         [% END %]
         </form>
     [% END %]
-    [% IF (is_advanced AND NOT is_special) AND CGI.param('qtype') %]
+    [% IF ctx.query_struct.filters.size > 0 %]
+        [% stuff = INCLUDE 'opac/parts/result/adv_filter.tt2' %]
+        [% IF stuff %]
+        <h3 class="sr-only">[% l('Search Results filters') %]</h3>
+        <div id="adv_filter_results_block">
+        <span class="adv_filter_results_block_label">[% l('Filtered by:') %]</span>
+            [% stuff %]
+        </div>
+        [% END %]
+    [% END %]
+        [% IF (is_advanced AND NOT is_special) AND CGI.param('qtype') %]
     <div class="refine_search result_block_visible">
         [% IF fcount > 0 %]
         <span id="filter_hits">[ <a href="#" onclick="getFacety();">[% l('[quant,_1,filter,filters] applied', fcount) %]</a> ]</span>
@@ -141,6 +151,7 @@ END;
         %]</a> ]
     </div>
     [% END %]
+
     <!-- Canonicalized query:
 
     [% ctx.canonicalized_query | html %]
