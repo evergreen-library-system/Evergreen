@@ -25,7 +25,6 @@ authors = [
 
 BLOCK normalize_qterm;
     subfield.textContent.replace('[#"^$\+\-,\.:;&|\[\]()]', ' ');
-    subfield.textContent.replace('\s{2,}', ' ');
 END;
 
 BLOCK normalize_authors;
