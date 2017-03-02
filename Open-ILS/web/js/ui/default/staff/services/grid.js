@@ -68,6 +68,7 @@ angular.module('egGridMod',
             //  These functions are defined by the calling scope and 
             //  invoked as-is by the grid w/ the specified parameters.
             //
+            //  collectStarted    : function() {}
             //  itemRetrieved     : function(item) {}
             //  allItemsRetrieved : function() {}
             //
@@ -1000,6 +1001,15 @@ angular.module('egGridMod',
 
                 $scope.items = [];
                 $scope.selected = {};
+
+                // Inform the caller we've asked the data provider
+                // for data.  This is useful for knowing when collection
+                // has started (e.g. to display a progress dialg) when 
+                // using the stock (flattener) data provider, where the 
+                // user is not directly defining a get() handler.
+                if (grid.controls.collectStarted)
+                    grid.controls.collectStarted(grid.offset, grid.limit);
+
                 grid.dataProvider.get(grid.offset, grid.limit).then(
                 function() {
                     if (grid.controls.allItemsRetrieved)

@@ -245,9 +245,9 @@ function($scope , $q , $routeParams , $window , $location , egCore , egHolds , e
 
 .controller('HoldsPullListCtrl',
        ['$scope','$q','$routeParams','$window','$location','egCore',
-        'egHolds','egCirc','egHoldGridActions',
+        'egHolds','egCirc','egHoldGridActions','egProgressDialog',
 function($scope , $q , $routeParams , $window , $location , egCore , 
-         egHolds , egCirc , egHoldGridActions) {
+         egHolds , egCirc , egHoldGridActions , egProgressDialog) {
 
     $scope.detail_hold_id = $routeParams.hold_id;
 
@@ -261,12 +261,22 @@ function($scope , $q , $routeParams , $window , $location , egCore ,
         setSort : function() {
             return ['copy_location_order_position','call_number_sort_key']
         },
+        collectStarted : function(offset) {
+            // Launch an indeterminate -> semi-determinate progress
+            // modal.  Using a determinate modal that starts counting
+            // on the post-grid holds data retrieval results in a modal
+            // that's stuck at 0% for most of its life, which is aggravating.
+            egProgressDialog.open();
+        },
         itemRetrieved : function(item) {
+            egProgressDialog.increment();
             if (!cached_details[item.id]) {
                 details_needed[item.id] = item;
             }
         },
-        allItemsRetrieved : flesh_holds
+        allItemsRetrieved : function() {
+            flesh_holds().finally(egProgressDialog.close);
+        }
     }
 
 
@@ -275,40 +285,36 @@ function($scope , $q , $routeParams , $window , $location , egCore ,
     // and friends have access to holds data they understand.
     // Only fetch not-yet-cached data.
     function flesh_holds() {
+        egProgressDialog.increment();
 
         // Start by fleshing hold details from our cached data.
         var items = $scope.gridControls.allItems();
         angular.forEach(items, function(item) {
-            if (!cached_details[item.id]) return;
+            if (!cached_details[item.id]) return $q.when();
             angular.forEach(cached_details[item.id], 
                 function(val, key) { item[key] = val })
         });
 
         // Exit if all needed details were already cached
-        if (Object.keys(details_needed).length == 0) return;
+        if (Object.keys(details_needed).length == 0) return $q.when();
 
-        $scope.print_list_loading = true;
-        $scope.print_list_progress = 0;
-
-        egCore.net.request(
+        return egCore.net.request(
             'open-ils.circ',
             'open-ils.circ.hold.details.batch.retrieve.authoritative',
             egCore.auth.token(), Object.keys(details_needed)
-        ).then(
-            function() {
-                $scope.print_list_loading = false;
-                $scope.print_list_progress = null;
-            }, null,
-            function(hold_info) {
-                var hold_id = hold_info.hold.id();
-                cached_details[hold_id] = hold_info;
-                var item = details_needed[hold_id];
-                delete details_needed[hold_id];
-                angular.forEach(hold_info, 
-                    function(val, key) { item[key] = val });
-                $scope.print_list_progress++;
-            }
-        );
+
+        ).then(null, null, function(hold_info) {
+            egProgressDialog.increment();
+            var hold_id = hold_info.hold.id();
+            cached_details[hold_id] = hold_info;
+            var item = details_needed[hold_id];
+            delete details_needed[hold_id];
+
+            // flesh the grid item from the blob of hold data.
+            angular.forEach(hold_info, 
+                function(val, key) { item[key] = val });
+
+        });
     }
 
     $scope.grid_actions = egHoldGridActions;
@@ -343,11 +349,9 @@ function($scope , $q , $routeParams , $window , $location , egCore ,
         win.focus();
     }
 
-    $scope.print_list_progress = null;
     $scope.print_full_list = function() {
         var print_holds = [];
-        $scope.print_list_loading = true;
-        $scope.print_list_progress = 0;
+        egProgressDialog.open({value : 0});
 
         // collect the full list of holds
         egCore.net.request(
@@ -367,7 +371,7 @@ function($scope , $q , $routeParams , $window , $location , egCore ,
             },
             null, 
             function(hold_data) {
-                $scope.print_list_progress++;
+                egProgressDialog.increment();
                 egHolds.local_flesh(hold_data);
                 print_holds.push(hold_data);
                 hold_data.title = hold_data.mvr.title();
@@ -377,10 +381,7 @@ function($scope , $q , $routeParams , $window , $location , egCore ,
                 hold_data.volume = egCore.idl.toHash(hold_data.volume);
                 hold_data.part = egCore.idl.toHash(hold_data.part);
             }
-        ).finally(function() {
-            $scope.print_list_loading = false;
-            $scope.print_list_progress = null;
-        });
+        ).finally(egProgressDialog.close);
     }
 
 }])

@@ -1,7 +1,3 @@
-<div ng-if="print_list_progress !== null" class="strong-text-2">
-  [% l('Loading... [_1]', '{{print_list_progress}}') %]
-</div>
-
 <eg-grid
   id-field="id"
   idl-class="ahopl"
