@@ -40,16 +40,6 @@
     <h3 class="sr-only">[% l('Saved Searches') %]</h3>
     [% INCLUDE "opac/parts/staff_saved_searches.tt2" %]
     [%-  END %]
-    [% IF ctx.query_struct.filters.size > 0 %]
-        [% stuff = INCLUDE 'opac/parts/result/adv_filter.tt2' %]
-        [% IF stuff %]
-        <h3 class="sr-only">[% l('Search Results filters') %]</h3>
-        <div class="facet_box_wrapper filter_box_wrapper">
-            <div class="filter_box_label">[% l('Filtered By') %]</div>
-            [% stuff %]
-        </div>
-        [% END %]
-    [% END %]
     <h3 class="sr-only">[% l('Search Results facets') %]</h3>
     [% INCLUDE 'opac/parts/result/facets.tt2' %]
     <h3 class="sr-only">[% l('Search Results List') %]</h3>

@@ -1054,6 +1054,42 @@ div.adv_search_available {
     margin: auto;
 }
 
+/* styling for advanced search filters that display with searchbar */
+
+#adv_filter_results_block h4 { display: inline; }
+
+#adv_filter_results_block {
+    margin-top: 10px;
+    margin-bottom: 16px;
+}
+
+.adv_filter_results_block_label {
+    font-weight:bold;
+    padding: 4px 6px 4px 12px;
+}
+
+.adv_filter_results_group {
+    font-size: 12px;
+    display: inline-block;
+    background:  [% css_colors.accent_lighter2 %];
+    border-style: solid;
+    border-color: [% css_colors.accent_medium %];
+    border-width: 1px;
+    border-radius: 4px;
+    padding: 2px 4px 2px 4px;
+    margin-right:6px;
+}
+
+.remove_filter {
+   font-size: 16px;
+   margin-left: 3px;
+ }
+
+a.remove_filter {
+    text-decoration: none;
+    color: [% css_colors.accent_dark %];
+}
+
 [%- IF we_want_to_turn_on_facet_styling.defined; %]
 /* some facet styling */
 .facetClassContainer { margin: 2px; border: 1px solid [% css_colors.accent_light %]; }
