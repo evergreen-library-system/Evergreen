@@ -793,7 +793,7 @@ sub toString {
         searchClass => "'$class'",
     );
 
-    return $marctxt_xslt->output_string($new_doc); 
+    return $marctxt_xslt->output_as_bytes($new_doc);
 }
 
 
@@ -845,7 +845,7 @@ sub toString {
         searchClass => "'$class'",
     );
 
-    return $ris_xslt->output_string($new_doc); 
+    return $ris_xslt->output_as_bytes($new_doc);
 }
 
 
