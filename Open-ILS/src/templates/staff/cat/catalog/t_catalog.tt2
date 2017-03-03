@@ -33,10 +33,22 @@
             [% l('Mark for:') %] <span class="caret"></span>
         </button>
         <ul uib-dropdown-menu role="menu" aria-labelledby="mark-for-button">
-            <li role="menuitem">
+             <li role="menuitem">
+                    <a ng-click="markConjoined()">
+                        [% l('Conjoined Items') %]
+                    <span class="target-record-aside" ng-if="current_conjoined_target">[% l('(Currently [_1])', '{{current_conjoined_target}}') %]</span>
+                </a>
+            </li>
+           <li role="menuitem">
                 <a ng-click="markOverlay()">
                     [% l('Overlay Target') %]
                     <span class="target-record-aside" ng-if="current_overlay_target">[% l('(Currently [_1])', '{{current_overlay_target}}') %]</span>
+                </a>
+            </li>
+            <li role="menuitem">
+                <a ng-click="mark_hold_transfer_dest()">
+                   [% l('Title Hold Transfer') %]
+                <span class="target-record-aside" ng-if="current_hold_transfer_dest">[% l('(Currently [_1])', '{{current_hold_transfer_dest}}') %]</span>
                 </a>
             </li>
             <li role="menuitem">
@@ -46,18 +58,7 @@
                 </a>
             </li>
             <li role="menuitem">
-                    <a ng-click="markConjoined()">
-                        [% l('Conjoined Items') %]
-                    <span class="target-record-aside" ng-if="current_conjoined_target">[% l('(Currently [_1])', '{{current_conjoined_target}}') %]</span>
-                </a>
-            </li>
-            <li role="menuitem">
                 <a ng-click="clearRecordMarks()">[% l('Reset Record Marks') %]</a>
-            </li>
-            <li role="menuitem">
-                <a ng-click="mark_hold_transfer_dest()">
-                   [% l('Mark as Title Hold Transfer Destination') %]
-                </a>
             </li>
         </ul>
     </div>

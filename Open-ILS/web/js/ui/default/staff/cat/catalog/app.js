@@ -387,9 +387,11 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         $scope.current_overlay_target     = null;
         $scope.current_voltransfer_target = null;
         $scope.current_conjoined_target   = null;
+        $scope.current_hold_transfer_dest = null;
         egCore.hatch.removeLocalItem('eg.cat.marked_volume_transfer_record');
         egCore.hatch.removeLocalItem('eg.cat.marked_conjoined_record');
         egCore.hatch.removeLocalItem('eg.cat.marked_overlay_record');
+        egCore.hatch.removeLocalItem('eg.circ.hold.title_transfer_target');
     }
 
     $scope.stop_unload = false;
@@ -1440,7 +1442,10 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         });
     }
 
+    $scope.current_hold_transfer_dest = egCore.hatch.getLocalItem ('eg.circ.hold.title_transfer_target');
+
     $scope.mark_hold_transfer_dest = function() {
+        $scope.current_hold_transfer_dest = $scope.record_id;
         egCore.hatch.setLocalItem(
             'eg.circ.hold.title_transfer_target', $scope.record_id);
         ngToast.create(egCore.strings.HOLD_TRANSFER_DEST_MARKED);
