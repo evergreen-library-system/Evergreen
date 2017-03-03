@@ -245,10 +245,10 @@ function($scope , $routeParams , $location , $window , $q , egCore) {
 }])
 .controller('CatalogCtrl',
        ['$scope','$routeParams','$location','$window','$q','egCore','egHolds','egCirc','egConfirmDialog','ngToast',
-        'egGridDataProvider','egHoldGridActions','egProgressModal','$timeout','$uibModal','holdingsSvc','egUser','conjoinedSvc',
+        'egGridDataProvider','egHoldGridActions','egProgressDialog','$timeout','$uibModal','holdingsSvc','egUser','conjoinedSvc',
         '$cookies',
 function($scope , $routeParams , $location , $window , $q , egCore , egHolds , egCirc , egConfirmDialog , ngToast ,
-         egGridDataProvider , egHoldGridActions ,egProgressModal, $timeout , $uibModal , holdingsSvc , egUser , conjoinedSvc,
+         egGridDataProvider , egHoldGridActions , egProgressDialog , $timeout , $uibModal , holdingsSvc , egUser , conjoinedSvc,
          $cookies
 ) {
 
@@ -1364,6 +1364,10 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         if ($scope.record_tab != 'holds') return $q.when();
         var deferred = $q.defer();
         hold_ids = []; // no caching ATM
+
+        // open a determinate progress dialog, max value set below.
+        egProgressDialog.open({max : 1, value : 0});
+
         // fetch the IDs
         egCore.net.request(
             'open-ils.circ',
@@ -1372,15 +1376,25 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
             {pickup_lib : egCore.org.descendants($scope.pickup_ou.id(), true)}
         ).then(
             function(hold_data) {
-                if(hold_data.title_holds.length){
-                    egProgressModal.open().result;};
                 angular.forEach(hold_data, function(list, type) {
                     hold_ids = hold_ids.concat(list);
                 });
-                fetchHolds(offset, count).then(
-                    deferred.resolve, null, deferred.notify).then(function(){
-                    egProgressModal.close();
-                    });
+
+                // Set the max value of the progress bar to the lesser of
+                // the total number of holds to fetch or the page size
+                // of the grid.
+                egProgressDialog.update(
+                    {max : Math.min(hold_ids.length, count)});
+
+                var holds_fetched = 0;
+                fetchHolds(offset, count)
+                .then(deferred.resolve, null, 
+                    function(hold_data) {
+                        holds_fetched++;
+                        deferred.notify(hold_data);
+                        egProgressDialog.increment();
+                    }
+                )['finally'](egProgressDialog.close);
             }
         );
 
