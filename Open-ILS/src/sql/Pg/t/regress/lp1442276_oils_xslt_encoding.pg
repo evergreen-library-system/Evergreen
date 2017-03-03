@@ -1,0 +1,45 @@
+BEGIN;
+
+SELECT plan(2);
+
+INSERT INTO biblio.record_entry(id, last_xact_id, marc) VALUES
+(999999999, 'pgtap', '<record xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd"><leader>01750 am a2200481Ia 4500</leader><controlfield tag="001">2784593</controlfield><controlfield tag="003">CONIFER</controlfield><controlfield tag="005">20121031173514.0</controlfield><controlfield tag="008">121026s2012    ja ac         001 0beng d</controlfield><datafield tag="020" ind1=" " ind2=" "><subfield code="a">2760550060</subfield></datafield><datafield tag="110" ind1="2" ind2=" "><subfield code="a">Association d''économie politique.</subfield></datafield><datafield tag="245" ind1="1" ind2="0"><subfield code="a">Syndicalisme et société</subfield></datafield><datafield tag="260" ind1=" " ind2=" "><subfield code="a">Sillery [Que.] :</subfield><subfield code="b">Presses de l''Université du Québec,</subfield><subfield code="c">1988.</subfield></datafield><datafield tag="300" ind1=" " ind2=" "><subfield code="a">209 p. ;</subfield><subfield code="c">29 cm.</subfield></datafield><datafield tag="650" ind1=" " ind2="0"><subfield code="a">Syndicalism</subfield><subfield code="x">Political aspects</subfield><subfield code="z">Québec (Province)</subfield><subfield code="v">Congresses.</subfield></datafield><datafield tag="901" ind1=" " ind2=" "><subfield code="a">5894462</subfield><subfield code="b">OCoLC</subfield><subfield code="c">2784593</subfield><subfield code="t">biblio</subfield></datafield></record>')
+;
+INSERT INTO config.xml_transform(name, namespace_uri, prefix, xslt) VALUES (
+'testdeclaration', 'http://example.org/testdeclaration', 'testdeclaration', $$<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet xmlns="http://www.loc.gov/mods/v3" xmlns:marc="http://www.loc.gov/MARC21/slim"
+	xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+	exclude-result-prefixes="xlink marc" version="1.0">
+	<xsl:output encoding="UTF-8" indent="yes" method="xml"/>
+<xsl:template match="//marc:record">
+	<xsl:for-each select="marc:datafield[@tag='245']/marc:subfield[@code='a']">
+		<title>
+			<xsl:value-of select="text()" />
+		</title>
+	</xsl:for-each>
+</xsl:template>
+</xsl:stylesheet>$$
+),('testnodeclaration', 'http://example.org/testnodeclaration', 'testnodeclaration', 
+$$<xsl:stylesheet xmlns="http://www.loc.gov/mods/v3" xmlns:marc="http://www.loc.gov/MARC21/slim"
+	xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+	exclude-result-prefixes="xlink marc" version="1.0">
+	<xsl:output indent="yes" method="xml"/>
+<xsl:template match="//marc:record">
+	<xsl:for-each select="marc:datafield[@tag='245']/marc:subfield[@code='a']">
+		<title>
+			<xsl:value-of select="text()" />
+		</title>
+	</xsl:for-each>
+</xsl:template>
+</xsl:stylesheet>$$
+);
+
+SELECT is(evergreen.oils_xslt_process(bre.marc, cxt.xslt), $$<?xml version="1.0" encoding="UTF-8"?>
+<title xmlns="http://www.loc.gov/mods/v3">Syndicalisme et société</title>
+$$, 'Is our XSLT output corrupted?') FROM biblio.record_entry bre, config.xml_transform cxt WHERE bre.id = 999999999 AND cxt.name = 'testdeclaration';
+
+SELECT is(evergreen.oils_xslt_process(bre.marc, cxt.xslt), $$<?xml version="1.0"?>
+<title xmlns="http://www.loc.gov/mods/v3">Syndicalisme et société</title>
+$$, 'Is our XSLT output corrupted?') FROM biblio.record_entry bre, config.xml_transform cxt WHERE bre.id = 999999999 AND cxt.name = 'testnodeclaration';
+
+ROLLBACK;
