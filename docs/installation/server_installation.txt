@@ -115,7 +115,7 @@ ldconfig
 To perform certain developer tasks from a Git source code checkout, 
 additional packages may be required.  As the *root* Linux account:
 +
- * To install packages needed for retriving and managing web dependencies,
+ * To install packages needed for retrieving and managing web dependencies,
    use the <osname>-developer Makefile.install target.  Currently, 
    this is only needed for building and installing the (preview) browser 
    staff client.
