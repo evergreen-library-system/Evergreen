@@ -1,0 +1,30 @@
+<!--
+  Generic progress bar wrapped in a modal dialog.
+-->
+
+<div>
+  <div class="modal-header"></div>
+  <div class="modal-body">
+    <div class="row eg-modal-progress">
+
+      <div ng-if="data.hasvalue() && data.hasmax()">
+        <!-- determinate progress bar.  shows max/value progress -->
+        <div class="col-md-10">
+          <progress max="{{data.max}}" value="{{data.value}}"></progress>
+        </div>
+        <div class="col-md-2">{{data.percent()}}%</div>
+      </div>
+
+      <div ng-if="data.hasvalue() && !data.hasmax()">
+        <!-- semi-determinate progress bar.  shows value -->
+        <div class="col-md-10"><progress max="1"></progress></div>
+        <div class="col-md-2">{{data.value}}...</div>
+      </div>
+
+      <div ng-if="!data.hasvalue()">
+        <!-- indeterminate -->
+        <div class="col-md-12"><progress max="1"></progress></div>
+      </div>
+    </div>
+  </div>
+</div>

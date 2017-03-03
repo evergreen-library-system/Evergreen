@@ -78,32 +78,126 @@ function($timeout , $parse) {
     };
 })
 
-
 /**
- * egProgressModal.open();
+ * Progress Dialog. 
+ *
+ * egProgressDialog.open();
+ * egProgressDialog.open({value : 0});
+ * egProgressDialog.open({value : 0, max : 123});
+ * egProgressDialog.increment();
+ * egProgressDialog.increment();
+ * egProgressDialog.close();
+ *
+ * Each dialog has 2 numbers, 'max' and 'value'.
+ * The content of these values determines how the dialog displays.  
+ *
+ * There are 3 flavors:
+ *
+ * -- value is set, max is set
+ * determinate: shows a progression with a percent complete.
+ *
+ * -- value is set, max is unset
+ * semi-determinate, with a value report.  Shows a value-less
+ * <progress/>, but shows the value as a number in the dialog.
+ *
+ * This is useful in cases where the total number of items to retrieve
+ * from the server is unknown, but we know how many items we've
+ * retrieved thus far.  It helps to reinforce that something specific
+ * is happening, but we don't know when it will end.
+ *
+ * -- value is unset
+ * indeterminate: shows a generic value-less <progress/> with no 
+ * clear indication of progress.
+ *
+ * Only 1 egProgressDialog instance will be activate at a time.
+ * Each invocation of .open() destroys any existing instance.
  */
-.factory('egProgressModal', 
 
-        ['$uibModal','$interpolate',
-function($uibModal, $interpolate){
+/* Simple storage class for egProgressDialog data maintenance.
+ * This data lives outside of egProgressDialog so it can be 
+ * directly imported into egProgressDialog's $uibModalInstance.
+ */
+.factory('egProgressData', [
+    function() {
+        var service = {}; // max/value initially unset
+
+        service.reset = function() {
+            delete service.max;
+            delete service.value;
+        }
+
+        service.hasvalue = function() {
+            return Number.isInteger(service.value);
+        }
+
+        service.hasmax = function() {
+            return Number.isInteger(service.max);
+        }
+
+        service.percent = function() {
+            if (service.hasvalue()  && 
+                service.hasmax()    && 
+                service.max > 0     &&
+                service.value <= service.max)
+                return Math.floor((service.value / service.max) * 100);
+            return 100;
+        }
+
+        return service;
+    }
+])
+
+.factory('egProgressDialog', [
+            'egProgressData','$uibModal', 
+    function(egProgressData , $uibModal) {
     var service = {};
 
-    service.open = function() {
+    service.open = function(args) {
+        service.close(); // force-kill existing instances.
+
+        // Reset to an indeterminate progress bar, 
+        // overlay with caller values.
+        egProgressData.reset();
+        service.update(angular.extend({}, args));
+
         return $uibModal.open({
-            templateUrl: './share/t_progress_bar',
-            controller: ['$scope', '$uibModalInstance',
-                function($scope, $uibModalInstance) {
+            templateUrl: './share/t_progress_dialog',
+            controller: ['$scope','$uibModalInstance','egProgressData',
+                function( $scope , $uibModalInstance , egProgressData) {
                   service.currentInstance = $uibModalInstance;
+                  $scope.data = egProgressData; // tiny service
                 }
             ]
         });
     };
+
     service.close = function() {
         if (service.currentInstance) {
             service.currentInstance.close();
             delete service.currentInstance;
         }
     }
+
+    // Set the current state of the progress bar.
+    service.update = function(args) {
+        if (args.max != undefined) 
+            egProgressData.max = args.max;
+        if (args.value != undefined) 
+            egProgressData.value = args.value;
+    }
+
+    // Increment the current value.  If no amount is specified,
+    // it increments by 1.  Calling increment() on an indetermite
+    // progress bar will force it to be a (semi-)determinate bar.
+    service.increment = function(amt) {
+        if (!Number.isInteger(amt)) amt = 1;
+
+        if (!egProgressData.hasvalue())
+            egProgressData.value = 0;
+
+        egProgressData.value += amt;
+    }
+
     return service;
 }])
 

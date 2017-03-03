@@ -473,6 +473,11 @@ table.list tr.selected td { /* deprecated? */
     }
 }
 
+.eg-modal-progress progress {
+  width: 100%;
+  height: 25px;
+}
+
 [%# 
 vim: ft=css 
 %]
