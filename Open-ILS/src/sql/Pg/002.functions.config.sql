@@ -91,7 +91,7 @@ CREATE OR REPLACE FUNCTION evergreen.oils_xslt_process(TEXT, TEXT) RETURNS TEXT 
   $_SHARED{'_xslt_process'}{stylesheets}{$xslt} = $stylesheet
     unless ($_SHARED{'_xslt_process'}{stylesheets}{$xslt});
 
-  return $stylesheet->output_string(
+  return $stylesheet->output_as_chars(
     $stylesheet->transform(
       $parser->parse_string($doc)
     )
