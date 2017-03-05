@@ -2688,6 +2688,7 @@ sub retrieve_record_transform {
     my $rid = shift;
 
     (my $transform = $self->api_name) =~ s/^.+record\.([^\.]+)\.retrieve$/$1/o;
+    my $xslt = $record_xslt{$transform}{xslt};
 
     my $_storage = OpenSRF::AppSession->create( 'open-ils.cstore' );
     #$_storage->connect;
@@ -2699,7 +2700,7 @@ sub retrieve_record_transform {
 
     return undef unless ($record);
 
-    return $U->entityize($record_xslt{$transform}{xslt}->transform( $_parser->parse_string( $record->marc ) )->toString);
+    return $U->entityize($xslt->output_as_chars($xslt->transform($_parser->parse_string($record->marc))));
 }
 
 sub retrieve_isbn_transform {
@@ -2717,12 +2718,13 @@ sub retrieve_isbn_transform {
     return undef unless (@$recs);
 
     (my $transform = $self->api_name) =~ s/^.+isbn\.([^\.]+)\.retrieve$/$1/o;
+    my $xslt = $record_xslt{$transform}{xslt};
 
     my $record = $_storage->request( 'open-ils.cstore.direct.biblio.record_entry.retrieve' => $recs->[0]->record )->gather(1);
 
     return undef unless ($record);
 
-    return $U->entityize($record_xslt{$transform}{xslt}->transform( $_parser->parse_string( $record->marc ) )->toString);
+    return $U->entityize($xslt->output_as_chars($xslt->transform($_parser->parse_string($record->marc))));
 }
 
 sub retrieve_record_objects {
