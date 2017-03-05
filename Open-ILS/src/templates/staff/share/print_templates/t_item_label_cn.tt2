@@ -1,0 +1,10 @@
+<pre>
+{{
+    [
+         get_cn_and_location_prefix(copy)
+        ,copy['call_number.label']
+        ,get_cn_and_location_suffix(copy)
+    ]
+    | cn_wrap:settings['webstaff.cat.label.call_number_wrap_filter_width']:settings['webstaff.cat.label.call_number_wrap_filter_height']:copy['call_number.label_class']
+}}
+</pre>

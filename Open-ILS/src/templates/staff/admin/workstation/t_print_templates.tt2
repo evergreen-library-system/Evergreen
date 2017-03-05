@@ -46,6 +46,7 @@
     </div>
   </div>
   <div class="col-md-7">
+    <button class="btn btn-default pull-left" ng-click="reset_to_default()">[% l('Reset to Default') %]</button>
     <button class="btn btn-default pull-left" ng-click="save_locally()">[% l('Save Locally') %]</button>
     <div class="btn-group pull-right">
       <span class="btn btn-default btn-file">

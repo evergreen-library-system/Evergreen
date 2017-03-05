@@ -1,0 +1,161 @@
+<style>
+  /* TODO: move me */
+  .print-template-text {
+    height: 36em;
+    width: 100%;
+  }
+  .cn-template-text {
+    height: 12em;
+    width: 100%;
+  }
+</style>
+
+<h2>[% l('Print Item Labels') %]</h2>
+
+<div class="row bg-info">
+    <div class="col-md-6">
+        <div class="row">
+            <div class="col-md-1">
+                <span class="h4">[% l('Template') %]</span>
+            </div>
+            <div class="col-md-5">
+                <eg-basic-combo-box list="template_name_list" selected="template_name"></eg-basic-combo-box>
+            </div>
+            <div class="col-md-1">
+                <button class="btn btn-default" ng-click="applyTemplate(template_name)">[% l('Apply') %]</button>
+            </div>
+            <div class="col-md-1">
+                <span class="h4">[% l('Printer') %]</span>
+            </div>
+            <div class="col-md-4">
+                <select class="form-control" ng-model="print.template_context">
+                  <option value="default">[% l('Default') %]</option>
+                  <option value="receipt">[% l('Receipt') %]</option>
+                  <option value="label">[% l('Label') %]</option>
+                  <option value="mail">[% l('Mail') %]</option>
+                  <option value="offline">[% l('Offline') %]</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="btn-group">
+            <button class="btn btn-default" ng-click="saveTemplate(template_name)">[% l('Save') %]</button>
+            <button class="btn btn-default" ng-click="deleteTemplate(template_name)">[% l('Delete') %]</button>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="btn-group">
+            <span class="btn btn-default btn-file">
+                [% l('Import') %]
+                <input type="file" eg-file-reader container="imported_templates.data">
+            </span>
+            <label class="btn btn-default"
+                eg-json-exporter container="templates"
+                default-file-name="'[% l('exported_label_templates.json') %]'">
+                [% l('Export') %]
+            </label>
+            <label class="btn btn-default" ng-click="reset_to_default()">[% l('Default') %]</button>
+        </div>
+    </div>
+    <div class="col-md-1 pull-right">
+        <button class="btn btn-default" ng-click="print_labels()">[% l('Print') %]</button>
+    </div>
+</div>
+
+<hr/>
+
+<div class="row">
+  <div class="col-md-5">
+    <ul class="nav nav-tabs">
+        <li ng-class="{active : current_tab == 'cn_template'}">
+            <a ng-click="set_tab('cn_template')">
+                [% l('Call Number Template') %]
+            </a>
+        </li>
+        <li ng-class="{active : current_tab == 'call_numbers'}">
+            <a ng-click="set_tab('call_numbers')">
+                [% l('Call Numbers') %]
+            </a>
+        </li>
+        <li ng-class="{active : current_tab == 'settings'}">
+            <a ng-click="set_tab('settings')">
+                [% l('Settings') %]
+            </a>
+        </li>
+        <li ng-class="{active : current_tab == 'template'}">
+            <a ng-click="set_tab('template')">
+                [% l('Label Template') %]
+            </a>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active">
+            <div ng-show="current_tab == 'cn_template'">
+                <h4>
+                    [% l('Call Number Preview') %]
+                </h4>
+                <div eg-print-template-output ng-show="true"
+                    content="print.cn_template_content"
+                    context="{ copy : preview_scope.copies[0], get_cn_and_location_prefix : preview_scope.get_cn_and_location_prefix, get_cn_and_location_suffix : preview_scope.get_cn_and_location_suffix, settings : preview_scope.settings }"></div>
+                <h4>
+                    [% l('Call Number Template') %]
+                </h4>
+                <div><span>[% l('Changes here will wipe out manual changes in the Call Numbers tab.') %]<br/></span></div>
+                <textarea ng-model="print.cn_template_content" class="print-template-text">
+                </textarea>
+                <div ng-repeat="copy in preview_scope.copies">
+                    <div id="cn_for_copy_{{copy.id}}" eg-print-template-output ng-show="false"
+                        content="print.cn_template_content"
+                        context="{ copy : copy, get_cn_and_location_prefix : preview_scope.get_cn_and_location_prefix, get_cn_and_location_suffix : preview_scope.get_cn_and_location_suffix, settings : preview_scope.settings }"></div>
+                </div>
+            </div>
+            <div ng-show="current_tab == 'call_numbers'">
+                <h4>
+                    [% l('Formatted Call Numbers') %]
+                </h4>
+                <div><span>[% l('Manual adjustments may be made here. These do not get saved with templates.') %]<br/></span></div>
+                <div ng-repeat="cn in rendered_call_number_set">
+                    <textarea ng-model="cn.value" class="cn-template-text">
+                    </textarea>
+                </div>
+            </div>
+            <div ng-show="current_tab == 'settings'">
+                <div><span>[% l('These settings do get saved with templates and will override corresponding Library Settings.') %]<br/></span></div>
+                <div ng-repeat="s in org_unit_settings">
+                    <div class="row" style="margin-top: 5mm; border-top: solid thin black">
+                        <div class="col-md-6" style="font-weight: bold">{{s.label}}</div>
+                        <div class="col-md-6"><input type="text" ng-model="preview_scope.settings[s.name]"></input></div>
+                    </div>
+
+                    <div class="row">
+                        <div>{{s.description}}</div>
+                    </div>
+                </div>
+
+            </div>
+            <div ng-show="current_tab == 'template'">
+                <div ng-if="print.load_failed" class="alert alert-danger">
+                  [% l(
+                    "Unable to load template '[_1]'.  The web server returned an error.",
+                    '{{print.template_name}}')
+                  %]
+                </div>
+                <div>
+                  <textarea ng-model="print.template_content" class="print-template-text">
+                  </textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+  <div class="col-md-7">
+    <h3>
+        [% l('Label Preview') %]
+    </h3>
+    <div eg-print-template-output
+      content="print.template_content"
+      context="preview_scope"></div>
+  </div> <!-- col -->
+</div>
+

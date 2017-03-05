@@ -1,0 +1,30 @@
+[%
+  WRAPPER "staff/base.tt2";
+  ctx.page_title = l("Print Item Labels"); 
+  ctx.page_app = "egPrintLabels";
+%]
+
+[% BLOCK APP_JS %]
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/grid.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/ui.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/file.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/eframe.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/cat/printlabels/app.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/cat/services/record.js"></script>
+<script>
+angular.module('egCoreMod').run(['egStrings', function(s) {
+    s.KEY_EXPIRED = "[% l('Key expired, please close this window; it no longer remembers which items you are printing labels for.') %]";
+    s.PRINT_LABEL_TEMPLATE_SUCCESS_SAVE = "[% l('Saved print label template(s)') %]";
+    s.PRINT_LABEL_TEMPLATE_SUCCESS_DELETE = "[% l('Deleted print label template') %]";
+}]);
+</script>
+[% END %]
+
+<style>
+</style>
+
+<div ng-view></div>
+
+[% END %]
+
+

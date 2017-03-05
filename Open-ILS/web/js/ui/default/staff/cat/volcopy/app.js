@@ -1586,11 +1586,30 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
             egNet.request(
                 'open-ils.cat',
                 'open-ils.cat.asset.volume.fleshed.batch.update.override',
-                egCore.auth.token(), cnList, 1, { auto_merge_vols : 1, create_parts : 1 }
-            ).then(function(update_count) {
+                egCore.auth.token(), cnList, 1, { auto_merge_vols : 1, create_parts : 1, return_copy_ids : 1 }
+            ).then(function(copy_ids) {
                 if (and_exit) {
                     $scope.dirty = false;
-                    $timeout(function(){$window.close()});
+                    if ($scope.defaults.print_item_labels) {
+                        egCore.net.request(
+                            'open-ils.actor',
+                            'open-ils.actor.anon_cache.set_value',
+                            null, 'print-labels-these-copies', {
+                                copies : copy_ids
+                            }
+                        ).then(function(key) {
+                            if (key) {
+                                var url = egCore.env.basePath + 'cat/printlabels/' + key;
+                                $timeout(function() { $window.open(url, '_blank') }).then(
+                                    function() { $timeout(function(){$window.close()}); }
+                                );
+                            } else {
+                                alert('Could not create anonymous cache key!');
+                            }
+                        });
+                    } else {
+                        $timeout(function(){$window.close()});
+                    }
                 }
             });
         }

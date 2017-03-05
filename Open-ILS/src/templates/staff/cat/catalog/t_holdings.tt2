@@ -55,6 +55,8 @@
       label="[% l('Triggered Events') %]"></eg-grid-action>
     <eg-grid-action handler="selectedHoldingsItemStatusHolds" group="[% l('Show') %]"
       label="[% l('Item Holds') %]"></eg-grid-action>
+    <eg-grid-action handler="selectedHoldingsPrintLabels" group="[% l('Show') %]"
+      label="[% l('Print Labels') %]"></eg-grid-action>
 
     <eg-grid-action handler="selectedHoldingsDamaged" group="[% l('Mark') %]"
       label="[% l('Item as Damaged') %]"></eg-grid-action>

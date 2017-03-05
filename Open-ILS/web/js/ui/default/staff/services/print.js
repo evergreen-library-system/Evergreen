@@ -235,6 +235,10 @@ function($q , $window , $timeout , $http , egHatch , egAuth , egIDL , egOrg , eg
         return egHatch.setItem('eg.print.template.' + name, html);
     }
 
+    service.removePrintTemplate = function(name) {
+        return egHatch.removeItem('eg.print.template.' + name);
+    }
+
     service.getPrintTemplateContext = function(name) {
         var deferred = $q.defer();
 
@@ -248,6 +252,9 @@ function($q , $window , $timeout , $http , egHatch , egAuth , egIDL , egOrg , eg
     }
     service.storePrintTemplateContext = function(name, context) {
         return egHatch.setItem('eg.print.template_context.' + name, context);
+    }
+    service.removePrintTemplateContext = function(name) {
+        return egHatch.removeItem('eg.print.template_context.' + name);
     }
 
     return service;

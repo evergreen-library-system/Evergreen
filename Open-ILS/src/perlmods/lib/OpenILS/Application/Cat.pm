@@ -1103,6 +1103,7 @@ sub fleshed_volume_update {
     my $retarget_holds = [];
     my $auto_merge_vols = $options->{auto_merge_vols};
     my $create_parts = $options->{create_parts};
+    my $copy_ids = [];
 
     for my $vol (@$volumes) {
         $logger->info("vol-update: investigating volume ".$vol->id);
@@ -1148,12 +1149,17 @@ sub fleshed_volume_update {
             $evt = $assetcom->update_fleshed_copies(
                 $editor, $oargs, $vol, $copies, $delete_stats, $retarget_holds, undef, $create_parts);
             return $evt if $evt;
+            push( @$copy_ids, $_->id ) for @$copies;
         }
     }
 
     $editor->finish;
     reset_hold_list($auth, $retarget_holds);
-    return scalar(@$volumes);
+    if ($options->{return_copy_ids}) {
+        return $copy_ids;
+    } else {
+        return scalar(@$volumes);
+    }
 }
 
 

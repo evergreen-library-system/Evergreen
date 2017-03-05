@@ -1,0 +1,285 @@
+<!--
+Template for printing item labels (spine, pocket, etc.).
+
+Like receipt slip templates, this template uses AngularJS
+which fuses HTML and code together.  The code portion is
+mostly used to bind data for the item labels being printed
+to various HTML elements, but you can also use code to
+perform conditional logic, transform the data, etc.
+
+-->
+<!--
+
+The <style> section is for holding most of our CSS, which
+is a language for controlling the appearance of HTML markup.
+
+The {{ and }} markers are similar to HTML's < and > characters,
+but are for separating AngularJS variables and code from the
+HTML itself.
+
+-->
+<style>
+    /* The .spine here defines a CSS "class", which in this case, is used by our
+       left label */
+    .spine {
+
+        /* this pulls from the "Item Print Label Font Family" setting, but will
+           default to 'monospace' */
+        font-family: {{settings['webstaff.cat.label.font.family'] || 'monospace'}};
+
+        /* this pulls from the "Item Print Label Font Size" setting, but will
+           default to 'normal' */
+        font-size: {{settings['webstaff.cat.label.font.size'] || '10'}};
+
+        /* this pulls from the "Item Print Label Font Weight" setting, but will
+           default to 'normal' */
+        font-weight: {{settings['webstaff.cat.label.font.weight'] || 'normal'}};
+
+        /* this pulls from the "Item Print Label - Height for Left Label"
+           setting, but will default to '1.25in' */
+        height: {{settings['webstaff.cat.label.left_label.height'] || '1.25in'}};
+        min-height: {{settings['webstaff.cat.label.left_label.height'] || '1.25in'}};
+        max-height: {{settings['webstaff.cat.label.left_label.height'] || '1.25in'}};
+
+        /* this pulls from the "Item Print Label - Width for Left Label"
+           setting, but will default to '1in' */
+        width: {{settings['webstaff.cat.label.left_label.width'] || '1in'}};
+        min-width: {{settings['webstaff.cat.label.left_label.width'] || '1in'}};
+        max-width: {{settings['webstaff.cat.label.left_label.width'] || '1in'}};
+
+        /* this pulls from the "Item Print Label - Left Margin for Left Label"
+           setting, but will default to '0in' */
+        margin-left: {{settings['webstaff.cat.label.left_label.left_margin'] || '0in'}};
+    }
+
+    /* This CSS class is used by our right label */
+    .pocket {
+
+        /* this pulls from the "Item Print Label Font Family" setting, but will
+           default to 'monospace' */
+        font-family: {{settings['webstaff.cat.label.font.family'] || 'monospace'}};
+
+        /* this pulls from the "Item Print Label Font Size" setting, but will
+           default to 'normal' */
+        font-size: {{settings['webstaff.cat.label.font.size'] || '10'}};
+
+        /* this pulls from the "Item Print Label Font Weight" setting, but will
+           default to 'normal' */
+        font-weight: {{settings['webstaff.cat.label.font.weight'] || 'normal'}};
+
+        /* this pulls from the "Item Print Label - Height for Left Label"
+           setting, but will default to '1.25in' */
+        height: {{settings['webstaff.cat.label.right_label.height'] || '1.25in'}};
+        min-height: {{settings['webstaff.cat.label.right_label.height'] || '1.25in'}};
+        max-height: {{settings['webstaff.cat.label.right_label.height'] || '1.25in'}};
+
+        /* this pulls from the "Item Print Label - Width for Left Label"
+           setting, but will default to '2.625in' */
+        width: {{settings['webstaff.cat.label.right_label.width'] || '2.625in'}};
+        min-width: {{settings['webstaff.cat.label.right_label.width'] || '2.625in'}};
+        max-width: {{settings['webstaff.cat.label.right_label.width'] || '2.625in'}};
+
+        /* this pulls from the "Item Print Label - Left Margin for Left Label"
+           setting, but will default to '0in' */
+        margin-left: {{settings['webstaff.cat.label.right_label.left_margin'] || '0in'}};
+
+    }
+
+    /* This is to help mitigate artifacts in the Preview pane which don't
+       actually print */
+    .labels ::-webkit-scrollbar { 
+        display: none; 
+    }
+
+    /* This pulls from the "Item Print Label - Inline CSS" setting */
+    {{settings['webstaff.cat.label.inline_css']||''}}
+
+</style>
+
+<!-- Here we are implementing our combined label as 2-column HTML <table>, with
+     each table containing a <pre> tag for preserving whitespace and linefeeds.
+
+     The ng-repeat attribute is from AngularJS, and in this case is looping
+     through a list of all the items that were selected when the Print Label
+     interface was invoked.  Each iteration puts item data into the variable
+     "copy", which may be referenced in the HTML by escaping it with {{ and }}
+
+     The following are available, and you may treat these similar to the
+     "macros" in earlier versions of Evergreen:
+
+                copy['active_date']
+                copy['age_protect']
+                copy['alert_message']
+                copy['barcode']
+                copy['call_number.copies']
+                copy['call_number.create_date']
+                copy['call_number.deleted']
+                copy['call_number.edit_date']
+                copy['call_number.id']
+                copy['call_number.label']
+                copy['call_number.label_class']
+                copy['call_number.label_sortkey']
+                copy['call_number.notes']
+                copy['call_number.owning_lib']
+                copy['call_number.prefix.id']
+                copy['call_number.prefix.label']
+                copy['call_number.prefix.label_sortkey']
+                copy['call_number.prefix.owning_lib']
+                copy['call_number.record.active']
+                copy['call_number.record.author_field_entries']
+                copy['call_number.record.call_numbers']
+                copy['call_number.record.create_date']
+                copy['call_number.record.creator.ws_ou']
+                copy['call_number.record.deleted']
+                copy['call_number.record.edit_date']
+                copy['call_number.record.fingerprint']
+                copy['call_number.record.fixed_fields']
+                copy['call_number.record.full_record_entries']
+                copy['call_number.record.id']
+                copy['call_number.record.identifier_field_entries']
+                copy['call_number.record.keyword_field_entries']
+                copy['call_number.record.language']
+                copy['call_number.record.last_xact_id']
+                copy['call_number.record.marc']
+                copy['call_number.record.metarecord']
+                copy['call_number.record.notes']
+                copy['call_number.record.owner']
+                copy['call_number.record.quality']
+                copy['call_number.record.series_field_entries']
+                copy['call_number.record.share_depth']
+                copy['call_number.record.simple_record.author']
+                copy['call_number.record.simple_record.fingerprint']
+                copy['call_number.record.simple_record.id']
+                copy['call_number.record.simple_record.isbn']
+                copy['call_number.record.simple_record.issn']
+                copy['call_number.record.simple_record.pubdate']
+                copy['call_number.record.simple_record.publisher']
+                copy['call_number.record.simple_record.quality']
+                copy['call_number.record.simple_record.tcn_source']
+                copy['call_number.record.simple_record.tcn_value']
+                copy['call_number.record.simple_record.title']
+                copy['call_number.record.source']
+                copy['call_number.record.subject_field_entries']
+                copy['call_number.record.tcn_source']
+                copy['call_number.record.tcn_value']
+                copy['call_number.record.title_field_entries']
+                copy['call_number.suffix.id']
+                copy['call_number.suffix.label']
+                copy['call_number.suffix.label_sortkey']
+                copy['call_number.suffix.owning_lib']
+                copy['call_number.uri_maps']
+                copy['call_number.uris']
+                copy['circ_as_type']
+                copy['circ_lib']
+                copy['circ_modifier']
+                copy['circulate']
+                copy['copy_number']
+                copy['cost']
+                copy['create_date']
+                copy['deleted']
+                copy['deposit']
+                copy['deposit_amount']
+                copy['dummy_author']
+                copy['dummy_isbn']
+                copy['dummy_title']
+                copy['edit_date']
+                copy['fine_level']
+                copy['floating']
+                copy['holdable']
+                copy['id']
+                copy['loan_duration']
+                copy['location.checkin_alert']
+                copy['location.circulate']
+                copy['location.copies']
+                copy['location.deleted']
+                copy['location.holdable']
+                copy['location.hold_verify']
+                copy['location.id']
+                copy['location.label_prefix']
+                copy['location.label_suffix']
+                copy['location.name']
+                copy['location.opac_visible']
+                copy['location.orders']
+                copy['location.owning_lib']
+                copy['mint_condition']
+                copy['opac_visible']
+                copy['price']
+                copy['ref']
+                copy['status_changed_time']
+                copy['status.copy_active']
+                copy['status.holdable']
+                copy['status.id']
+                copy['status.is_available']
+                copy['status.name']
+                copy['status.opac_visible']
+                copy['status.restrict_copy_delete']
+
+    There are also two functions available.  The following pulls manually
+    edited call numbers for a given item:
+
+                get_cn_for(copy)
+
+    And this one pulls bibliographic data for a given item:
+
+                get_bib_for(copy)
+
+    It returns a data structure similar to "copy" that has the following fields:
+
+                get_bib_for(copy)['author']
+                get_bib_for(copy)['copy_count']
+                get_bib_for(copy)['doc_id']
+                get_bib_for(copy)['doc_type']
+                get_bib_for(copy)['edition']
+                get_bib_for(copy)['isbn']
+                get_bib_for(copy)['physical_description']
+                get_bib_for(copy)['pubdate']
+                get_bib_for(copy)['publisher']
+                get_bib_for(copy)['series.0']
+                get_bib_for(copy)['synopsis']
+                get_bib_for(copy)['tcn']
+                get_bib_for(copy)['title']
+                get_bib_for(copy)['toc']
+                get_bib_for(copy)['types_of_resource.0']
+
+    Finally, there are filter functions which can be used to modify or transform
+    data being outputted.  For example, consider the following:
+
+                get_bib_for(copy)['title'] | limitTo:28
+
+    This would show up to the first 28 characters for an item's title and
+    truncate the rest.  Now, this:
+
+                get_bib_for(copy)['title'] | wrap:28
+
+    This would try to the wrap the item's title every 28 characters.
+
+                get_bib_for(copy)['title'] | wrap:28:multi:'  '
+
+    This does the same thing but indents subsequent lines with 2 spaces each.
+    
+                get_bib_for(copy)['title'] | wrap:28:once:'  '
+
+    This wraps the title just once, prefixes the second line with two spaces,
+    and truncates anything after the 2nd line.
+
+-->
+
+<table class="labels" style="page-break-after: always;" ng-repeat="copy in copies"><tr valign="top"><td>
+
+<!-- Spine Label contents -->
+<pre class="spine" style="border:none" ng-show="true">
+{{get_cn_for(copy)}}
+</pre>
+
+</td><td>
+
+<!-- Pocket Label contents -->
+<pre class="pocket" style="border:none" ng-show="true">
+{{copy.barcode}}
+{{copy['call_number.label']}}
+{{get_bib_for(copy).author }}
+{{get_bib_for(copy).title | wrap:28:'once':' '}}
+</pre>
+
+</td></tr></table>
+

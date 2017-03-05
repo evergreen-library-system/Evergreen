@@ -1416,6 +1416,23 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         );
     }
 
+    $scope.selectedHoldingsPrintLabels = function() {
+        egCore.net.request(
+            'open-ils.actor',
+            'open-ils.actor.anon_cache.set_value',
+            null, 'print-labels-these-copies', {
+                copies : gatherSelectedHoldingsIds()
+            }
+        ).then(function(key) {
+            if (key) {
+                var url = egCore.env.basePath + 'cat/printlabels/' + key;
+                $timeout(function() { $window.open(url, '_blank') });
+            } else {
+                alert('Could not create anonymous cache key!');
+            }
+        });
+    }
+
     $scope.selectedHoldingsDamaged = function () {
         egCirc.mark_damaged(gatherSelectedHoldingsIds()).then(function() {
             holdingsSvcInst.fetchAgain().then(function() {

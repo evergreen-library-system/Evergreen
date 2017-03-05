@@ -555,6 +555,16 @@ function($scope , $q , egCore , ngToast) {
         });
     }
 
+    $scope.reset_to_default = function() {
+        egCore.print.removePrintTemplate(
+            $scope.print.template_name
+        );
+        egCore.print.removePrintTemplateContext(
+            $scope.print.template_name
+        );
+        $scope.template_changed();
+    }
+
     $scope.save_locally = function() {
         egCore.print.storePrintTemplate(
             $scope.print.template_name,

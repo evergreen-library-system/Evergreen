@@ -69,8 +69,8 @@
             <div class="row pad-vert">
                 <div class="col-xs-12">
                     <label>
-                        <input type="checkbox" ng-change="saveDefaults()" ng-model="defaults.print_spine_labels"/>
-                        [% l('Print Spine Labels') %]
+                        <input type="checkbox" ng-change="saveDefaults()" ng-model="defaults.print_item_labels"/>
+                        [% l('Print Item Labels on Save &amp; Exit') %]
                     </label>
                 </div>
             </div>

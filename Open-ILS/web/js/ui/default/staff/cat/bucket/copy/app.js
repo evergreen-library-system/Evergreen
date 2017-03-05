@@ -485,6 +485,28 @@ function($scope,  $q , $routeParams , $timeout , $window , $uibModal , bucketSvc
         });
     }
 
+    $scope.print_labels = function() {
+        var cp_list = []
+        angular.forEach($scope.gridControls.selectedItems(), function (i) {
+            cp_list.push(i.id);
+        })
+
+        egCore.net.request(
+            'open-ils.actor',
+            'open-ils.actor.anon_cache.set_value',
+            null, 'print-labels-these-copies', {
+                copies : cp_list
+            }
+        ).then(function(key) {
+            if (key) {
+                var url = egCore.env.basePath + 'cat/printlabels/' + key;
+                $timeout(function() { $window.open(url, '_blank') });
+            } else {
+                alert('Could not create anonymous cache key!');
+            }
+        });
+    }
+
     $scope.requestItems = function() {
         var copy_list = $scope.gridControls.selectedItems().map(
             function (i) {
