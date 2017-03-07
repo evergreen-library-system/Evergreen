@@ -19,7 +19,9 @@ function($timeout , $parse) {
                     $timeout(function() {element[0].focus()});
             });
             element.bind('blur', function() {
-                scope.$apply(model.assign(scope, false));
+                $timeout(function() {
+                    scope.$apply(model.assign(scope, false));
+                });
             })
         }
     };
@@ -41,7 +43,9 @@ function($timeout , $parse) {
                     $timeout(function() {element[0].blur()});
             });
             element.bind('focus', function() {
-                scope.$apply(model.assign(scope, false));
+                $timeout(function() {
+                    scope.$apply(model.assign(scope, false));
+                });
             })
         }
     };
@@ -61,7 +65,9 @@ function($timeout , $parse) {
                     $timeout(function() {element[0].select()});
             });
             element.bind('blur', function() {
-                scope.$apply(model.assign(scope, false));
+                $timeout(function() {
+                    scope.$apply(model.assign(scope, false));
+                });
             })
         }
     };
