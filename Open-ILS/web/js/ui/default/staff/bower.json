@@ -30,7 +30,7 @@
     "angular-tree-control": "~0.2.28",
     "angular-animate": "~1.5.3",
     "angular-hotkeys": "cfp-angular-hotkeys#^1.7.0",
-    "angular-cookies": "^1.5.8"
+    "angular-cookies": "~1.5.8"
   },
   "resolutions": {
     "angular": "~1.5.5"
