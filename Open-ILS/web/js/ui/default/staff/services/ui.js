@@ -398,6 +398,7 @@ function($uibModal, $interpolate) {
     var service = {};
 
     service.open = function(title, message, msg_scope, ok_button_label, cancel_button_label) {
+        msg_scope = msg_scope || {};
         return $uibModal.open({
             templateUrl: './share/t_confirm_dialog',
             controller: ['$scope', '$uibModalInstance',

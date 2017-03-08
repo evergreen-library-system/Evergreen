@@ -19,6 +19,7 @@
     ,[ l('Distribution Formulas'), "./admin/acq/conify/distribution_formula" ]
     ,[ l('EDI Accounts'), "./admin/acq/conify/edi_account" ]
     ,[ l('EDI Messages'), "./admin/acq/po/edi_messages" ]
+    ,[ l('EDI Attribute Sets'), "./admin/acq/edi_attr_set" ]
     ,[ l('Exchange Rates'), "./admin/acq/conify/exchange_rate" ]
     ,[ l('Fund Tags'), "./admin/acq/conify/fund_tag" ]
     ,[ l('Funding Sources'), "./admin/acq/funding_source/list" ]
