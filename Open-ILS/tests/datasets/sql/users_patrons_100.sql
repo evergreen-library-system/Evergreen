@@ -2106,3 +2106,43 @@ UPDATE actor.usr SET
     credit_forward_balance = '0', 
     mailing_address = CURRVAL('actor.usr_address_id_seq') 
     WHERE id=CURRVAL('actor.usr_id_seq');
+
+INSERT INTO actor.usr
+    (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix)
+    VALUES (2, 3, 'jbautista', 9, 'Bautista', 'joseb1234',
+        'José', 'Antonio', NOW() + '3 years'::INTERVAL, NULL, '');
+
+INSERT INTO actor.usr_address
+    (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr)
+    VALUES ('Canada', 't', 'H3B 1X9', '800 René-Lévesque Blvd W', 't',
+        'QC', 'Montréal', 'Suite 201', '', CURRVAL('actor.usr_id_seq'));
+
+INSERT INTO actor.card (barcode, usr)
+    VALUES ('99999361323', CURRVAL('actor.usr_id_seq'));
+
+UPDATE actor.usr SET
+    card = CURRVAL('actor.card_id_seq'),
+    billing_address = CURRVAL('actor.usr_address_id_seq'),
+    credit_forward_balance = '0',
+    mailing_address = CURRVAL('actor.usr_address_id_seq')
+    WHERE id=CURRVAL('actor.usr_id_seq');
+
+INSERT INTO actor.usr
+    (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix)
+    VALUES (2, 3, 'mkawasaki', 9, 'Kawasaki', 'mkawasaki1234',
+        '川﨑 宗則', 'Munenori', NOW() + '3 years'::INTERVAL, NULL, '');
+
+INSERT INTO actor.usr_address
+    (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr)
+    VALUES ('Canada', 't', 'H3B 1X9', '800 René-Lévesque Blvd W', 't',
+        'QC', 'Montréal', 'Suite 101', '', CURRVAL('actor.usr_id_seq'));
+
+INSERT INTO actor.card (barcode, usr)
+    VALUES ('99999361366', CURRVAL('actor.usr_id_seq'));
+
+UPDATE actor.usr SET
+    card = CURRVAL('actor.card_id_seq'),
+    billing_address = CURRVAL('actor.usr_address_id_seq'),
+    credit_forward_balance = '0',
+    mailing_address = CURRVAL('actor.usr_address_id_seq')
+    WHERE id=CURRVAL('actor.usr_id_seq');
