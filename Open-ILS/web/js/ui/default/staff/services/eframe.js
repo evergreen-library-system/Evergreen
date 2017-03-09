@@ -256,6 +256,7 @@ angular.module('egCoreMod')
 
                             deferred.resolve({
                                 "barcode": barcode, 
+                                "pickup_lib": user.home_ou(), 
                                 "settings" : settings, 
                                 "user_email" : user.email(), 
                                 "patron_name" : patron_name
