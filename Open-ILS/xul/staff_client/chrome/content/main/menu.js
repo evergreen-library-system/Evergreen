@@ -2836,7 +2836,7 @@ commands:
             user.first_given_name() + ' ' +
             ( user.second_given_name() ? user.second_given_name() + ' ' : '' ) +
             ( user.suffix() ? user.suffix() : '');
-        return {"barcode": barcode, "settings" : settings, "user_email" : user.email(), "patron_name" : patron_name};
+        return {"barcode": barcode, "pickup_lib" : user.home_ou(), "settings" : settings, "user_email" : user.email(), "patron_name" : patron_name};
     },
 
     'sort_menu' : function(menu, recurse) {

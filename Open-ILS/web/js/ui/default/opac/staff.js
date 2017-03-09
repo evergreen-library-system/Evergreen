@@ -110,6 +110,7 @@ function staff_hold_usr_barcode_changed2(
     }
     cur_hold_barcode = load_info.barcode;
     if(!only_settings || (isload && isload !== true)) document.getElementById('hold_usr_input').value = load_info.barcode; // Safe at this point as we already set cur_hold_barcode
+    if(!only_settings || (isload && isload !== true) && load_info.pickup_lib) document.getElementById('pickup_lib').value = load_info.pickup_lib; // Safe at this point as we already set cur_hold_barcode
     if(load_info.settings['opac.default_pickup_location'])
         document.getElementById('pickup_lib').value = load_info.settings['opac.default_pickup_location'];
     if(!load_info.settings['opac.default_phone']) load_info.settings['opac.default_phone'] = '';
