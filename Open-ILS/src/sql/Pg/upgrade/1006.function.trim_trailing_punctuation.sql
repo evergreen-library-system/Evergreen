@@ -50,3 +50,11 @@ INSERT INTO config.metabib_field_index_norm_map (field,norm,pos)
 
 COMMIT;
 
+\qecho To apply the improvements for facets and browse entries for author
+\qecho headings, you need to perform a browse and facet reingest of your
+\qecho records. It may take a while. You can cancel now withoug losing
+\qecho the effect of the rest of the upgrade script, and arrange the reingest
+\qecho later.
+\qecho 
+SELECT metabib.reingest_metabib_field_entries(id, FALSE, FALSE, TRUE)
+    FROM biblio.record_entry;
