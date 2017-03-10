@@ -14,7 +14,7 @@ angular.module('egCoreMod')
      * Converts an interval string to seconds.
      *
      * egDate.intervalToSeconds('1 min 2 seconds')) => 62
-     * egDate.intervalToSeconds('2 days')) => 172800
+     * egDate.intervalToSeconds('2 days')) => 172800 (except across time changes)
      * egDate.intervalToSeconds('02:00:23')) => 7223
      */
     service.intervalToSeconds = function(interval) {
