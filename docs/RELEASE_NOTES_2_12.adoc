@@ -446,11 +446,10 @@ work would be required for the heading to be punctuated correctly.
 Advanced Search Limiters Enhancement
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Advanced search limiters will no longer propagate to the basic search box in
-the catalog. Instead, the limiters applied to the search will appear in the
-left sidebar of the search results screen where they can be easily cleared by
-clicking an 'x.' On a small, mobile device, the advanced search limiters can
-be seen by clicking an 'x filter applied' link or by clicking the 'Refine
-these results' button that typically shows facets to the user.
+the catalog. Instead, the limiters applied to the search will appear underneath
+the search box where they can be easily cleared by clicking an 'x.' On a small,
+mobile device, the advanced search limiters can be seen by clicking an 'x filter
+applied' link. 
 
 The selected limiters will be applied to any search from the search bar until:
  * The user actively removes the filters from the search or
