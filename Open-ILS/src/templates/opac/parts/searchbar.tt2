@@ -131,27 +131,44 @@ END;
         [% END %]
         </form>
     [% END %]
+    [% IF fcount > 0 %]
+      <div class="refine_search result_block_visible">
+        <span id="filter_hits">[ <a href="#" onclick="getAdvLimits();return false;">[% l('[quant,_1,filter,filters] applied', fcount) %]</a> ]</span>
+      </div>
+    [% END %]
     [% IF ctx.query_struct.filters.size > 0 %]
         [% stuff = INCLUDE 'opac/parts/result/adv_filter.tt2' %]
         [% IF stuff %]
         <h3 class="sr-only">[% l('Search Results filters') %]</h3>
-        <div id="adv_filter_results_block">
+        <div id="adv_filter_results_block" class="adv_filter_results_hide">
         <span class="adv_filter_results_block_label">[% l('Filtered by:') %]</span>
             [% stuff %]
         </div>
         [% END %]
     [% END %]
-        [% IF (is_advanced AND NOT is_special) AND CGI.param('qtype') %]
+    [% IF (is_advanced AND NOT is_special) AND CGI.param('qtype') %]
     <div class="refine_search result_block_visible">
-        [% IF fcount > 0 %]
-        <span id="filter_hits">[ <a href="#" onclick="getFacety();">[% l('[quant,_1,filter,filters] applied', fcount) %]</a> ]</span>
-        [% END %]
         [ <a href="[% mkurl(ctx.opac_root _ '/advanced') %]">[%
             l('Refine My Original Search')
         %]</a> ]
     </div>
     [% END %]
 
+    <script>
+    function getAdvLimits() {
+        var AdvLimitsClass = document.getElementById('adv_filter_results_block').classList;
+        if (AdvLimitsClass.contains("adv_filter_results_hide")) {
+           AdvLimitsClass.remove("adv_filter_results_hide");
+        } else {
+           AdvLimitsClass.add("adv_filter_results_hide");
+        }
+        if (AdvLimitsClass.contains("adv_filter_results_show")) {
+           AdvLimitsClass.remove("adv_filter_results_show");
+        } else {
+           AdvLimitsClass.add("adv_filter_results_show");
+        }
+     }
+     </script>
     <!-- Canonicalized query:
 
     [% ctx.canonicalized_query | html %]

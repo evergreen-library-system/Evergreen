@@ -11,7 +11,8 @@ FOR filter IN ctx.query_struct.filters;
     IF crad AND NOT pubdate_filters.grep('^' _ filter.name _ '$').size;
         remove_filter = 'fi:' _ fname;
 -%]
-         <div class="adv_filter_results_group">
+         <div class="adv_filter_results_group_wrapper">
+           <div class="adv_filter_results_group">
             <h4 class="title">[% IF filter.negate; l('Not'); END %] [% (crad.description || crad.label) | html %]</h4>
             [% temp = [];
                FOR fval IN fvalues;
@@ -35,11 +36,13 @@ FOR filter IN ctx.query_struct.filters;
               title="[% l('Remove [_1] filter', (crad.description || crad.label)) %]"
               aria-label=[% l('Remove [_1] filter', (crad.description || crad.label)) %]"
               href="[% mkurl('', {}, [remove_filter]) %]" rel="nofollow" vocab="">&times; </a>
+             </div>
            </div>
     [%- END; # IF crad -%]
 
 [%-  IF filter.name == 'locations'; locs = ctx.search_acpl('id',filter.args) -%]
-    <div class="adv_filter_results_group">
+    <div class="adv_filter_results_group_wrapper">
+      <div class="adv_filter_results_group">
             <h4 class="title">[% IF filter.negate; l('Not'); END %] [% l('Locations') %]</h4>
             [% temp = [];
                FOR loc IN locs;
@@ -53,7 +56,7 @@ FOR filter IN ctx.query_struct.filters;
             <a class="button remove_filter"
               title="[% l('Remove location filter') %]"
               href="[% mkurl('', {}, ['fi:locations']) %]" rel="nofollow" vocab=""> &times;</a>
-
+      </div>
     </div> 
 [%- END; # IF locations -%]
 
@@ -61,7 +64,8 @@ FOR filter IN ctx.query_struct.filters;
     date1 = CGI.param('date1');
     date2 = CGI.param('date2');
 -%]
-    <div class="adv_filter_results_group">
+    <div class="adv_filter_results_group_wrapper">
+      <div class="adv_filter_results_group">
             <h4 class="title">[% IF filter.negate; l('Not'); END %] [% l('Publication Year') %]</h4>
               <span class="adv_search_result_filter">
               [% IF    filter.name == 'date1'      %][% l('[_1]', date1) %]
@@ -73,6 +77,7 @@ FOR filter IN ctx.query_struct.filters;
               <a class="button remove_filter"
               title="[% l('Remove publication date filter') %]"
               href="[% mkurl('', {}, ['pubdate', 'date1', 'date2']) %]" rel="nofollow" vocab="">&times; </a>
+      </div>
     </div>
 
 [%- END; # IF pubdate_filters -%]
