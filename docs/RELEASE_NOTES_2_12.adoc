@@ -39,7 +39,7 @@ email gateway values:
 
 Bibliographic Fingerprint Improvements
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The bibliographic fingerprint will now incorporate subfield n and p from MARC
+The bibliographic fingerprint will now incorporate subfield $n and $p from MARC
 title fields to better distinguish between records of the same series that
 may share the same title but have a different part. With this change, these
 MARC records will no longer be grouped together in a 'Group Formats & Editions'
