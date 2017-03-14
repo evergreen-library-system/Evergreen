@@ -1,3 +1,14 @@
+<!--
+Template for printing a list of items that a patron has checked out.
+Fields include:
+
+* circulations - list of current loans, including
+
+  * copy.barcode
+  * circ.due_date
+  * title
+
+-->
 <div>
   <div>[% l('Welcome to [_1]', '{{current_location.name}}') %]</div>
   <div>[% l('You have the following items:') %]</div>
