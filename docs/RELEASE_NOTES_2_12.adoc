@@ -45,7 +45,7 @@ may share the same title but have a different part. With this change, these
 MARC records will no longer be grouped together in a 'Group Formats & Editions'
 search.
 
-The bibliographic fingerprint was also changed to better distinguish between a
+The bibliographic fingerprint was also changed to better distinguish between
 the fields contributing to the fingerprint. This change will help the system
 distinguish between a record for the movie _Blue Steel_ and another record for
 the book _Blue_ written by Danielle Steel.
@@ -72,38 +72,40 @@ New Features/Options
 * Adds a global configuration flag 'circ.holds.retarget_interval' for 
   setting the hold retarget interval.
 
-* --target-all option forces the targeter to process all active
+* `--target-all` option forces the targeter to process all active
   holds, regardless of when they were last targeted.
 
-* --retarget-interval option make is possible to override the new
+* `--retarget-interval` option make is possible to override the new
   'circ.holds.retarget_interval' setting via the command line 
   when calling the hold targeter.
 
-* --skip-viable option causes the hold targeter to avoid modifying 
+* `--skip-viable` option causes the hold targeter to avoid modifying 
   the currently targeted copy (i.e. the copy on the pull list) for holds 
   that target a viable (capturable) copy.  
-  
+  {empty} +
+  {empty} +
   For skipped holds, no entry is added to the unfulfilled_hold_list.
   The set of potential copies (hold copy maps) are refreshed for all
   processed holds, regardless of target viability.
-
+  {empty} +
+  {empty} +
   This option is useful for 1.) finding targets for holds that require 
   new targets and 2.) adding new/modified copies to the potential copy 
-  lists (for op capture) more frequently than you may want to do full
+  lists (for opportunistic capture) more frequently than you may want to do full
   retargeting of all holds.
 
-* --newest-first option processes holds in reverse order of request_time,
+* `--newest-first` option processes holds in reverse order of request_time,
   so that newer holds are (re)targeted first.  This is primarily useful
   when a large backlog of old, un-targetable holds exist.  With 
-  --newest-first, the older holds will be processed last.
+  `--newest-first`, the older holds will be processed last.
 
-* --parallel option overrides the parallel settings found in opensrf.xml
+* `--parallel` option overrides the parallel settings found in `opensrf.xml`
   for simpler modification and testing.
 
-* --lockfile option allows the caller to specify a lock file instead
+* `--lockfile` option allows the caller to specify a lock file instead
   of using the default /tmp/hold_targeter-LOCK
 
-* --verbose option prints progress info to STDOUT, showing the number of
+* `--verbose` option prints progress info to STDOUT, showing the number of
   holds processed per parallel targeter instance.
 
 * When configured, hold target loops cycle through all org units (with 
@@ -173,7 +175,7 @@ maintaining any maps to permission groups, with the stock permission ID.
 get_org_unit_ancestor_at_depth Helper Added to Action Trigger Reactor Helpers
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 In action trigger templates it's now possible to call
-helpers.get_org_unit_ancestor_at_depth($id_or_aou, $depth) in order to retrieve
+`helpers.get_org_unit_ancestor_at_depth($id_or_aou, $depth)` in order to retrieve
 a fleshed aou for the target aou's ancestor at the chosen depth. This could be
 used to retrieve the name of the library system rather than a specific branch
 name, for instance.
@@ -525,7 +527,7 @@ https://developer.overdrive.com/docs/getting-started[OverDrive API
 documentation].
 
 To enable OverDrive API integration, adjust the following public catalog settings
-in config.tt2:
+in `config.tt2`:
 
   * `ebook_api.enabled`: set to "true".
   * `ebook_api.overdrive.enabled`: set to "true".
@@ -553,7 +555,7 @@ For more information, consult the
 http://developer.oneclickdigital.us/[OneClickdigital API documentation].
 
 To enable OneClickdigital API integration, adjust the following public catalog
-settings in config.tt2:
+settings in `config.tt2`:
 
   * `ebook_api.enabled`: set to "true".
   * `ebook_api.oneclickdigital.enabled`: set to "true".
@@ -563,7 +565,7 @@ settings in config.tt2:
     record identifiers for OneClickdigital titles.
 
 Additional configuration
-+++++++++++++++++++++++++++++++
+++++++++++++++++++++++++
 Evergreen communicates with third-party vendor APIs using the new
 `OpenILS::Utils::HTTPClient` module.  This module is configured using
 settings in `opensrf.xml`.  The default settings should work for most
@@ -603,7 +605,7 @@ Before the TPAC, a site could configure the public catalog to use metarecord sea
 by default, via a configuration file.  Here we bring that back.
 
 A new setting called search.metarecord_default is present in
-templates/opac/parts/config.tt2 to enable this feature.  By setting this to
+`templates/opac/parts/config.tt2` to enable this feature.  By setting this to
 a true value (normally 1) the TPAC will silently include the #metabib search
 modifier in the search form on any interfaces that do not have a UI component
 that allows the user to control the setting.
@@ -622,7 +624,7 @@ Obalkyknih.cz Integration
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 Evergreen now integrates with Czech added content provider obalkyknih.cz. A new
 setting called obalkyknih_cz.enabled is available in
-templates/opac/parts/config.tt2 to enable this new feature.
+`templates/opac/parts/config.tt2` to enable this new feature.
 
 
 Acknowledgments
