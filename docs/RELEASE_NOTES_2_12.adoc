@@ -100,7 +100,7 @@ New Features/Options
 * --parallel option overrides the parallel settings found in opensrf.xml
   for simpler modification and testing.
 
-* --lockfile option allows the caller to specifiy a lock file instead
+* --lockfile option allows the caller to specify a lock file instead
   of using the default /tmp/hold_targeter-LOCK
 
 * --verbose option prints progress info to STDOUT, showing the number of
