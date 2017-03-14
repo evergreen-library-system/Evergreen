@@ -7,10 +7,11 @@ Upgrade notes
 -------------
 Evergreen 2.12 now requires OpenSRF 2.5 or later; certain functionality
 will not work if you attempt to run Evergreen 2.12 on OpenSRF 2.4. Evergreen
-2.12 also requires PostgreSQL 9.3 or later.
+2.12 recommends PostgreSQL 9.4. The minimum supported version of PostgreSQL is
+9.3.
 
-The stock schema upgrade script performs a browse reingest, recalculates
-bib fingerprints, and remaps metarecords.
+The stock schema upgrade script performs a browse reingest,
+recalculates bib fingerprints, and remaps metarecords.
 
 New Features
 ------------
@@ -644,6 +645,8 @@ We would also like to thank the following individuals who contributed
 code, translations, documentations patches and tests to this release of
 Evergreen:
 
+* Adam Bowling
+* Anahi Valdez
 * Ben Shum
 * Bill Erickson
 * Billy Horn
@@ -656,7 +659,10 @@ Evergreen:
 * Dan Pearl
 * Dan Scott
 * Dan Wells
+* Darrell Rodgers
 * Debbie Luchenbill
+* Eva Cerninakova
+* Fares Othman
 * Galen Charlton
 * Jakub Kotrla
 * Jane Sandberg
@@ -669,6 +675,7 @@ Evergreen:
 * Jennifer Pringle
 * Jillianne Presley
 * Jim Keenan
+* Job Diógenes Ribeiro Borges
 * Jonathan Schatz
 * Josh Stompro
 * Kate Butler
@@ -691,11 +698,14 @@ patches:
 * British Columbia Libraries Cooperative
 * Catalyst DevWorks
 * C/W MARS
+* Emerald Data Networks, Inc.
 * Equinox Open Library Initiative
 * Georgia PINES
 * Indiana State Library
 * The Institute for the Study of Totalitarian Regimes, Prague
+* Jordanian Library and Information Association
 * King County Library System
+* Knihovna Jabok
 * Lake Agassiz Regional Library
 * Laurentian University
 * Linn-Benton Community College
