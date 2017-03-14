@@ -256,6 +256,9 @@ sub update_state {
 
         $e->clear_start_time() if ($e->state eq 'pending');
 
+        $e->complete_time('now')
+            if ($e->state eq 'complete' && !$e->complete_time);
+
         if ($fields && ref($fields)) {
             $e->$_($$fields{$_}) for (keys %$fields);
         }
