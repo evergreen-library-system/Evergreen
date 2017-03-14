@@ -458,8 +458,8 @@ Ebook API integration
 Evergreen 2.12 supports partial integration with third-party APIs
 provided by OverDrive and OneClickdigital.  When ebook API integration
 is enabled, bibliographic records from these vendors that appear in your
-OPAC will include vendor holdings and availability information.  Also,
-when a user is logged in, the OPAC dashboard and My Account interface
+public catalog will include vendor holdings and availability information.  Also,
+when a user is logged in, the public catalog dashboard and My Account interface
 will include information about that user's checkouts and holds for
 supported vendors.
 
@@ -474,7 +474,7 @@ collections or automatically import vendor records into your system; it
 merely augments records that are already in Evergreen.
 
 A future Evergreen release will add the ability for users to check out
-titles, place holds, etc., directly via the OPAC.
+titles, place holds, etc., directly via the public catalog.
 
 Ebook API service configuration
 +++++++++++++++++++++++++++++++
@@ -508,7 +508,7 @@ the following new org unit settings:
     during patron authentication, set this setting to "true."  If you do
     not require the patron's PIN for OverDrive authentication, set this
     setting to "false."  (If set to "true," the password entered by a
-    patron when logging into the OPAC will be cached in plain text in
+    patron when logging into the public catalog will be cached in plain text in
     memcached.)
   * *OverDrive Discovery API Base URI* and *OverDrive Circulation API
     Base URI*: By default, Evergreen uses OverDrive's production API, so
@@ -524,7 +524,7 @@ For more information, consult the
 https://developer.overdrive.com/docs/getting-started[OverDrive API
 documentation].
 
-To enable OverDrive API integration, adjust the following OPAC settings
+To enable OverDrive API integration, adjust the following public catalog settings
 in config.tt2:
 
   * `ebook_api.enabled`: set to "true".
@@ -552,7 +552,7 @@ the values to be used for the following new org unit settings:
 For more information, consult the
 http://developer.oneclickdigital.us/[OneClickdigital API documentation].
 
-To enable OneClickdigital API integration, adjust the following OPAC
+To enable OneClickdigital API integration, adjust the following public catalog
 settings in config.tt2:
 
   * `ebook_api.enabled`: set to "true".
