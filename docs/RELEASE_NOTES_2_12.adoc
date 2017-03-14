@@ -10,7 +10,7 @@ will not work if you attempt to run Evergreen 2.12 on OpenSRF 2.4. Evergreen
 2.12 recommends PostgreSQL 9.4. The minimum supported version of PostgreSQL is
 9.3.
 
-The stock schema upgrade script performs a browse reingest,
+The stock schema upgrade script performs a browse and facet reingest,
 recalculates bib fingerprints, and remaps metarecords.
 
 This version also adds two new services, `open-ils.ebook_api` and
