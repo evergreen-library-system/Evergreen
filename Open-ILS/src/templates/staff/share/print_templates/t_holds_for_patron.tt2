@@ -1,3 +1,11 @@
+<!--
+Template for printing a list of hold requests for a patron. Fields include:
+
+* holds - a list of hold request, each of which includes
+ 
+  * title
+
+-->
 <div>
   <div>[% l('Welcome to [_1]', '{{current_location.name}}') %]</div>
   <div>[% l('You have the following title on hold:') %]</div>

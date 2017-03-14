@@ -1,3 +1,13 @@
+<!--
+Template for printing a renewal receipt. Fields include:
+
+* circulations - list of renewals made during the session, including
+
+  * title
+  * copy.barcode
+  * circ.due_date
+
+-->
 <div>
   <div>[% l('Welcome to [_1]', '{{current_location.name}}') %]</div>
   <div>[% l('You renewed the following items:') %]</div>

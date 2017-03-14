@@ -1,3 +1,18 @@
+<!--
+Template for printing a list of items on the hold shelf. Fields include:
+
+* holds - list of hold requests, including
+
+  * patron_alias
+  * patron_last
+  * patron_first
+  * hold.hold_type
+  * title
+  * author
+  * volume.label
+  * copy.barcode
+
+-->
 <table id='shelf-list-template-table'>
   <style>
     #pull-list-template-table td,

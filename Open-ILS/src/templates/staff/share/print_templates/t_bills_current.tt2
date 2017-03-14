@@ -1,3 +1,13 @@
+<!-
+Template for printing a list of current bills. Data specific
+to this template includes:
+
+* transasctions - a list of transactions, each of which
+  contains:
+
+  summary - information about the transaction
+
+-->
 Welcome to {{current_location.name}}!<br/>
 You have the following bills:
 <hr/>
