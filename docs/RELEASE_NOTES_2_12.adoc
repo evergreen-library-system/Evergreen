@@ -1,5 +1,5 @@
-Evergreen 2.12-beta Release Notes
-=================================
+Evergreen 2.12-rc Release Notes
+===============================
 :toc:
 :numbered:
 
