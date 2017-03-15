@@ -708,16 +708,15 @@ patches:
 * Georgia PINES
 * Indiana State Library
 * The Institute for the Study of Totalitarian Regimes, Prague
+* Jabok Library
 * Jordanian Library and Information Association
 * King County Library System
-* Knihovna Jabok
 * Lake Agassiz Regional Library
 * Laurentian University
 * Linn-Benton Community College
 * MassLNC
 * Merrimack Valley Library Consortium
 * MOBIUS Consortium
-* National Library of the Czech Republic
 * North of Boston Library Exchange
 * Pioneer Library System
 * Rodgers Memorial Library
