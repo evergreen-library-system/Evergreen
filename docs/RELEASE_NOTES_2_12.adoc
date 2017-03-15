@@ -162,6 +162,16 @@ For those only interested in building Evergreen translations, a separate
 of i18n prerequisites.
 
 
+Allow admin to specify where Perl modules will be installed
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Add `--with-perlbase` option to `configure` to specify an alternative
+location for installing the Perl modules. This can be useful for setups
+that want to run the Perl modules from a shared filesystem or
+environments that need to run multiple versions of Evergreen
+simultaneously.
+
+Users of `--with-perlbase` are responsible for ensuring that `PERL5LIB`
+is set appropriately.
 
 
 
