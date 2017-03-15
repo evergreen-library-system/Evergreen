@@ -9441,7 +9441,7 @@ INSERT INTO action_trigger.event_params (event_def, param, value)
 
 -- trigger data related to acq user requests
 
-INSERT INTO action_trigger.hook (key,core_type,description,passive) VALUES (
+INSERT INTO action_trigger.hook (key,core_type,description) VALUES (
         'aur.ordered',
         'aur', 
         oils_i18n_gettext(
@@ -9449,8 +9449,7 @@ INSERT INTO action_trigger.hook (key,core_type,description,passive) VALUES (
             'A patron acquisition request has been marked On-Order.',
             'ath',
             'description'
-        ), 
-        TRUE
+        ) 
     ), (
         'aur.received', 
         'aur', 
@@ -9459,8 +9458,7 @@ INSERT INTO action_trigger.hook (key,core_type,description,passive) VALUES (
             'A patron acquisition request has been marked Received.',
             'ath',
             'description'
-        ),
-        TRUE
+        )
     ), (
         'aur.cancelled',
         'aur',
@@ -9469,8 +9467,7 @@ INSERT INTO action_trigger.hook (key,core_type,description,passive) VALUES (
             'A patron acquisition request has been marked Cancelled.',
             'ath',
             'description'
-        ),
-        TRUE
+        )
     ), (
         'aur.created',
         'aur',
@@ -9479,8 +9476,7 @@ INSERT INTO action_trigger.hook (key,core_type,description,passive) VALUES (
             'A patron has made an acquisitions request.',
             'ath',
             'description'
-        ),
-        TRUE
+        )
     ), (
         'aur.rejected',
         'aur',
@@ -9489,8 +9485,7 @@ INSERT INTO action_trigger.hook (key,core_type,description,passive) VALUES (
             'A patron acquisition request has been rejected.',
             'ath',
             'description'
-        ),
-        TRUE
+        )
     )
 ;
 
@@ -9764,12 +9759,11 @@ INSERT INTO action_trigger.environment ( event_def, path) VALUES
     ( 20, 'usr.home_ou' );
 
 
-INSERT INTO action_trigger.hook (key, core_type, description, passive)
+INSERT INTO action_trigger.hook (key, core_type, description)
     VALUES (
         'format.acqcle.html',
         'acqcle',
-        'Formats claim events into a voucher',
-        TRUE
+        'Formats claim events into a voucher'
     );
 
 INSERT INTO action_trigger.event_definition (
@@ -9824,12 +9818,11 @@ INSERT INTO action_trigger.environment (event_def, path) VALUES
 ;
 
 
-INSERT INTO action_trigger.hook (key, core_type, description, passive)
+INSERT INTO action_trigger.hook (key, core_type, description)
     VALUES (
         'format.acqinv.html',
         'acqinv',
-        'Formats invoices into a voucher',
-        TRUE
+        'Formats invoices into a voucher'
     );
 
 INSERT INTO action_trigger.event_definition (
@@ -10318,12 +10311,11 @@ INSERT INTO action_trigger.reactor (module,description) VALUES
 
 -- self-check checkout receipt
 
-INSERT INTO action_trigger.hook (key, core_type, description, passive) 
+INSERT INTO action_trigger.hook (key, core_type, description) 
     VALUES (
         'format.selfcheck.checkout',
         'circ',
-        'Formats circ objects for self-checkout receipt',
-        TRUE
+        'Formats circ objects for self-checkout receipt'
     );
 
 INSERT INTO action_trigger.event_definition (id, active, owner, name, hook, validator, reactor, group_field, granularity, template )
@@ -10424,12 +10416,11 @@ INSERT INTO action_trigger.environment ( event_def, path) VALUES
 
 -- items out selfcheck receipt
 
-INSERT INTO action_trigger.hook (key, core_type, description, passive) 
+INSERT INTO action_trigger.hook (key, core_type, description) 
     VALUES (
         'format.selfcheck.items_out',
         'circ',
-        'Formats items out for self-checkout receipt',
-        TRUE
+        'Formats items out for self-checkout receipt'
     );
 
 INSERT INTO action_trigger.event_definition (id, active, owner, name, hook, validator, reactor, group_field, granularity, template )
@@ -10472,12 +10463,11 @@ INSERT INTO action_trigger.environment ( event_def, path) VALUES
     ( 11, 'circ_lib.hours_of_operation'),
     ( 11, 'usr');
 
-INSERT INTO action_trigger.hook (key, core_type, description, passive) 
+INSERT INTO action_trigger.hook (key, core_type, description) 
     VALUES (
         'format.selfcheck.holds',
         'ahr',
-        'Formats holds for self-checkout receipt',
-        TRUE
+        'Formats holds for self-checkout receipt'
     );
 
 INSERT INTO action_trigger.event_definition (id, active, owner, name, hook, validator, reactor, group_field, granularity, template )
@@ -10533,12 +10523,11 @@ INSERT INTO action_trigger.environment ( event_def, path) VALUES
 
 -- fines receipt
 
-INSERT INTO action_trigger.hook (key, core_type, description, passive) 
+INSERT INTO action_trigger.hook (key, core_type, description) 
     VALUES (
         'format.selfcheck.fines',
         'au',
-        'Formats fines for self-checkout receipt',
-        TRUE
+        'Formats fines for self-checkout receipt'
     );
 
 INSERT INTO action_trigger.event_definition (id, active, owner, name, hook, validator, reactor, granularity, template )
@@ -10583,12 +10572,11 @@ $$
 $$
 );
 
-INSERT INTO action_trigger.hook (key, core_type, description, passive) 
+INSERT INTO action_trigger.hook (key, core_type, description) 
     VALUES (
         'format.acqli.html',
         'jub',
-        'Formats lineitem worksheet for titles received',
-        TRUE
+        'Formats lineitem worksheet for titles received'
     );
 
 INSERT INTO action_trigger.event_definition (id, active, owner, name, hook, validator, reactor, granularity, template)
