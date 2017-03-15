@@ -1,31 +1,33 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# German translation for evergreen
+# Copyright (c) 2017 Rosetta Contributors and Canonical Ltd 2017
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2017.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Project-Id-Version: evergreen\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2017-02-22 03:02+0000\n"
+"PO-Revision-Date: 2017-02-15 03:24+0000\n"
+"Last-Translator: vulpecula <Unknown>\n"
+"Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2017-02-22 05:43+0000\n"
+"X-Generator: Launchpad (build 18326)\n"
 
 #: ../../Open-ILS/src/templates/acq/invoice/view.tt2:6
 msgid " Invoice "
-msgstr ""
+msgstr " Rechnung "
 
 #: ../../Open-ILS/src/templates/acq/invoice/receive.tt2:39
 msgid " Select All"
-msgstr ""
+msgstr " Alles auswählen"
 
 #: ../../Open-ILS/src/templates/acq/invoice/view.tt2:90
 msgid "# Invoiced / # Paid"
-msgstr ""
+msgstr "# Rechnung / # Bezahlt"
 
 #: ../../Open-ILS/src/templates/acq/common/notes.tt2:7
 msgid "#x2196; Return"
@@ -36,12 +38,12 @@ msgstr ""
 #. ("<span id=\"acq-po-view-total-spent\"></span>")
 #: ../../Open-ILS/src/templates/acq/po/view.tt2:106 ../../Open-ILS/src/templates/acq/po/view.tt2:65 ../../Open-ILS/src/templates/acq/po/view.tt2:74
 msgid "$%1"
-msgstr ""
+msgstr "$%1"
 
 #. ("<span id=\"records-up\">0</span>")
 #: ../../Open-ILS/src/templates/acq/lineitem/search.tt2:99
 msgid "%1 term(s) prepared for search"
-msgstr ""
+msgstr "%1 Begriff(e) für die Suche vorbereitet"
 
 #: ../../Open-ILS/src/templates/acq/common/li_table.tt2:59
 msgid "&#171; Previous"
@@ -53,39 +55,39 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/acq/common/li_table.tt2:283
 msgid "&#x2196; Return To Invoice"
-msgstr ""
+msgstr "&#x2196; Zurück zur Rechnung"
 
 #: ../../Open-ILS/src/templates/acq/picklist/view.tt2:20 ../../Open-ILS/src/templates/acq/po/view.tt2:133
 msgid "&#x2196; Return to Invoice"
-msgstr ""
+msgstr "&#x2196;  Zurück zur Rechnung"
 
 #: ../../Open-ILS/src/templates/acq/picklist/view.tt2:17 ../../Open-ILS/src/templates/acq/po/view.tt2:130
 msgid "&#x2196; Return to Search"
-msgstr ""
+msgstr "&#x2196; Zurück zur Suche"
 
 #: ../../Open-ILS/src/templates/acq/common/li_table.tt2:183
 msgid "&#x270D; worksheet"
-msgstr ""
+msgstr "&#x270D; Arbeitsblatt"
 
 #: ../../Open-ILS/src/templates/acq/common/li_table.tt2:181
 msgid "&#x279F; catalog"
-msgstr ""
+msgstr "&#x279F; Katalog"
 
 #: ../../Open-ILS/src/templates/acq/common/li_table.tt2:190
 msgid "&#x27AC; queue"
-msgstr ""
+msgstr "&#x27AC; Warteschlange"
 
 #: ../../Open-ILS/src/templates/acq/common/li_table.tt2:182
 msgid "&#x27BE; link to catalog"
-msgstr ""
+msgstr "&#x27BE; Link zum Katalog"
 
 #: ../../Open-ILS/src/templates/acq/invoice/view.tt2:220
 msgid "(building the results list progressively)"
-msgstr ""
+msgstr "(Schrittweise Aufbau der Ergebnisliste)--"
 
 #: ../../Open-ILS/src/templates/acq/common/li_table.tt2:207
 msgid "-- Actions --"
-msgstr ""
+msgstr "-- Maßnahmen --"
 
 #: ../../Open-ILS/src/templates/acq/common/li_table.tt2:30
 msgid "----PO----"
@@ -101,31 +103,31 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/acq/lineitem/search.tt2:62
 msgid "ALL of the following terms match"
-msgstr ""
+msgstr "ALLE folgenden Begriffe entsprechen"
 
 #: ../../Open-ILS/src/templates/acq/lineitem/search.tt2:55
 msgid "ANY of the following terms match"
-msgstr ""
+msgstr "Einer der folgenden Begriffe entspricht"
 
 #: ../../Open-ILS/src/templates/acq/invoice/receive.tt2:2
 msgid "Acquisitions Invoice Receiving"
-msgstr ""
+msgstr "Rechnungseingangserfassung"
 
 #: ../../Open-ILS/src/templates/acq/search/unified.tt2:11 ../../Open-ILS/src/templates/acq/search/unified.tt2:2
 msgid "Acquisitions Search"
-msgstr ""
+msgstr "Sucherfassung"
 
 #: ../../Open-ILS/src/templates/acq/common/li_table.tt2:130
 msgid "Actions"
-msgstr ""
+msgstr "Maßnahmen"
 
 #: ../../Open-ILS/src/templates/acq/po/view.tt2:26
 msgid "Activatable?"
-msgstr ""
+msgstr "Aktivierbar?"
 
 #: ../../Open-ILS/src/templates/acq/po/search.tt2:20 ../../Open-ILS/src/templates/acq/po/view.tt2:31
 msgid "Activate Order"
-msgstr ""
+msgstr "Bestellung aktivieren"
 
 #: ../../Open-ILS/src/templates/acq/picklist/upload.tt2:16
 msgid "Activate Purchase Order"
@@ -133,47 +135,47 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/acq/po/view.tt2:35
 msgid "Activate Without Loading Items"
-msgstr ""
+msgstr "Aktivieren ohne Artikel zu laden"
 
 #: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:62
 msgid "Actual Price"
-msgstr ""
+msgstr "Aktueller Preis"
 
 #: ../../Open-ILS/src/templates/acq/common/li_table.tt2:28
 msgid "Add Brief Record"
-msgstr ""
+msgstr "Kurze Aufnahme hinzufügen"
 
 #: ../../Open-ILS/src/templates/acq/invoice/view.tt2:145
 msgid "Add Charge..."
-msgstr ""
+msgstr "Kosten hinzufügen..."
 
 #: ../../Open-ILS/src/templates/acq/invoice/view.tt2:340
 msgid "Add New Items"
-msgstr ""
+msgstr "Neue Artikel hinzufügen"
 
 #: ../../Open-ILS/src/templates/acq/invoice/view.tt2:262 ../../Open-ILS/src/templates/acq/search/unified.tt2:83
 msgid "Add Search Term"
-msgstr ""
+msgstr "Suchbegriff hinzufügen"
 
 #: ../../Open-ILS/src/templates/acq/invoice/view.tt2:268
 msgid "Add Selected Items to Invoice"
-msgstr ""
+msgstr "Ausgewählte Artikel zur Rechnung hinzufügen"
 
 #: ../../Open-ILS/src/templates/acq/fund/view.tt2:236
 msgid "Add Tag"
-msgstr ""
+msgstr "Etikett hinzufügen"
 
 #: ../../Open-ILS/src/templates/acq/picklist/brief_record.tt2:10
 msgid "Add To Selection List"
-msgstr ""
+msgstr "Zur Auswahlliste hinzufügen"
 
 #: ../../Open-ILS/src/templates/acq/lineitem/search.tt2:102
 msgid "Add file"
-msgstr ""
+msgstr "Datei hinzufügen"
 
 #: ../../Open-ILS/src/templates/acq/lineitem/search.tt2:75
 msgid "Add more search terms"
-msgstr ""
+msgstr "Weitere Suchbegriffe hinzufügen"
 
 #: ../../Open-ILS/src/templates/acq/common/li_table.tt2:32 ../../Open-ILS/src/templates/acq/lineitem/related.tt2:44
 msgid "Add to Purchase Order"
@@ -181,15 +183,15 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/acq/lineitem/related.tt2:41 ../../Open-ILS/src/templates/acq/picklist/upload.tt2:30 ../../Open-ILS/src/templates/acq/picklist/user_request.tt2:68
 msgid "Add to Selection List"
-msgstr ""
+msgstr "Zur Auswahlliste hinzufügen"
 
 #: ../../Open-ILS/src/templates/acq/common/li_table.tt2:524
 msgid "Add to Selection List: "
-msgstr ""
+msgstr "Zur Auswahlliste hinzufügen: "
 
 #: ../../Open-ILS/src/templates/acq/common/li_table.tt2:274
 msgid "Add/Edit Items"
-msgstr ""
+msgstr "Artikel hinzufügen/bearbeiten"
 
 #: ../../Open-ILS/src/templates/acq/picklist/brief_record.tt2:14
 msgid "Adding to Purchase Order"
@@ -197,24 +199,24 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/acq/common/notes.tt2:31
 msgid "Additional comments"
-msgstr ""
+msgstr "Weitere Kommentare"
 
 #. ("<span id=\"acq-lit-li-claim-dia-li-title\"></span>", "<span id=\"acq-lit-li-claim-dia-li-id\"></span>")
 #: ../../Open-ILS/src/templates/acq/common/claim_dialog.tt2:6
 msgid "Against item: %1 (%2)"
-msgstr ""
+msgstr "Gegen Artikel: %1 (%2)"
 
 #: ../../Open-ILS/src/templates/acq/common/li_table.tt2:484
 msgid "All Line Items"
-msgstr ""
+msgstr "Alle Einzelposten"
 
 #: ../../Open-ILS/src/templates/acq/funding_source/view.tt2:36
 msgid "Allocate to Fund"
-msgstr ""
+msgstr "Geldmittel zuweisen"
 
-#: ../../Open-ILS/src/templates/acq/fund/view.tt2:179 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:128
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:179 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:139
 msgid "Allocations"
-msgstr ""
+msgstr "Zuweisungen"
 
 #: ../../Open-ILS/src/templates/acq/po/view.tt2:136
 msgid "Allow activation with <br/> zero-copy lineitems"
@@ -222,15 +224,15 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/acq/fund/view.tt2:82
 msgid "Amount to transfer from"
-msgstr ""
+msgstr "Betrag zu überweisen von"
 
-#: ../../Open-ILS/src/templates/acq/fund/view.tt2:33 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:16 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:46
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:33 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:16 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:57
 msgid "Amount: "
-msgstr ""
+msgstr "Betrag: "
 
-#: ../../Open-ILS/src/templates/acq/fund/view.tt2:61 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:29 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:72 ../../Open-ILS/src/templates/acq/settings/li_attr.tt2:40
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:61 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:29 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:83 ../../Open-ILS/src/templates/acq/settings/li_attr.tt2:40
 msgid "Apply"
-msgstr ""
+msgstr "Anwenden"
 
 #: ../../Open-ILS/src/templates/acq/common/li_table.tt2:37
 msgid "Apply Claim Policy to Selected Line Items"
@@ -238,35 +240,35 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/acq/funding_source/view.tt2:12
 msgid "Apply Credit"
-msgstr ""
+msgstr "Guthaben beantragen"
 
 #: ../../Open-ILS/src/templates/acq/common/li_table.tt2:112
 msgid "Apply to Selected"
-msgstr ""
+msgstr "Auf Auswahl anwenden"
 
 #: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:138
 msgid "Approve Selected Titles"
-msgstr ""
+msgstr "Ausgewählte Titel bestätigen"
 
 #: ../../Open-ILS/src/templates/acq/common/li_table.tt2:218
 msgid "Approved"
-msgstr ""
+msgstr "Bestätigt"
 
 #: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:59 ../../Open-ILS/src/templates/acq/po/item_table.tt2:9
 msgid "Author"
-msgstr ""
+msgstr "Autor"
 
-#: ../../Open-ILS/src/templates/acq/fund/view.tt2:165 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:94 ../../Open-ILS/src/templates/acq/invoice/view.tt2:162
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:165 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:105 ../../Open-ILS/src/templates/acq/invoice/view.tt2:162
 msgid "Balance"
-msgstr ""
+msgstr "Kontostand"
 
 #: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:122 ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:95 ../../Open-ILS/src/templates/acq/common/li_table.tt2:232 ../../Open-ILS/src/templates/acq/common/li_table.tt2:365 ../../Open-ILS/src/templates/acq/common/li_table.tt2:416 ../../Open-ILS/src/templates/acq/invoice/receive.tt2:47
 msgid "Barcode"
-msgstr ""
+msgstr "Strichcode"
 
 #: ../../Open-ILS/src/templates/acq/common/li_table.tt2:350
 msgid "Batch Update"
-msgstr ""
+msgstr "Batch Aktualisierung"
 
 #: ../../Open-ILS/src/templates/acq/common/li_table.tt2:555
 msgid "Batch Update Funds"
@@ -274,7 +276,7 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/acq/picklist/from_bib.tt2:17
 msgid "Begin a new search"
-msgstr ""
+msgstr "Neue Suche beginnen"
 
 #: ../../Open-ILS/src/templates/acq/common/vlagent.tt2:39
 msgid "Best/Single Match Minimum Quality Ratio"
@@ -286,59 +288,59 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/acq/invoice/view.tt2:81
 msgid "Bibliographic Items"
-msgstr ""
+msgstr "Bibliographische Artikel"
 
 #: ../../Open-ILS/src/templates/acq/invoice/view.tt2:125 ../../Open-ILS/src/templates/acq/invoice/view.tt2:91
 msgid "Billed"
-msgstr ""
+msgstr "Abgerechnet"
 
 #: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:119 ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:91 ../../Open-ILS/src/templates/acq/common/li_table.tt2:231
 msgid "Branch"
-msgstr ""
+msgstr "Filiale"
 
 #: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:123 ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:99 ../../Open-ILS/src/templates/acq/common/li_table.tt2:233
 msgid "Call Number"
-msgstr ""
+msgstr "Rufnummer"
 
 #: ../../Open-ILS/src/templates/acq/common/li_table.tt2:337 ../../Open-ILS/src/templates/acq/common/li_table.tt2:364 ../../Open-ILS/src/templates/acq/common/li_table.tt2:415 ../../Open-ILS/src/templates/acq/invoice/receive.tt2:46
 msgid "Callnumber"
-msgstr ""
+msgstr "Rufnummer"
 
 #: ../../Open-ILS/src/templates/acq/common/li_table.tt2:382 ../../Open-ILS/src/templates/acq/common/li_table.tt2:500 ../../Open-ILS/src/templates/acq/common/li_table.tt2:571 ../../Open-ILS/src/templates/acq/common/li_table.tt2:590 ../../Open-ILS/src/templates/acq/invoice/view.tt2:338
 msgid "Cancel"
-msgstr ""
+msgstr "Abbrechen"
 
 #: ../../Open-ILS/src/templates/acq/common/li_table.tt2:541
 msgid "Cancel Copy"
-msgstr ""
+msgstr "Kopie abbrechen"
 
 #: ../../Open-ILS/src/templates/acq/common/li_table.tt2:49
 msgid "Cancel Line Items"
-msgstr ""
+msgstr "Einzelposten stornieren"
 
 #: ../../Open-ILS/src/templates/acq/picklist/user_request.tt2:71 ../../Open-ILS/src/templates/acq/picklist/user_request.tt2:79
 msgid "Cancel Request"
-msgstr ""
+msgstr "Anfrage abbrechen"
 
 #: ../../Open-ILS/src/templates/acq/po/events.tt2:9
 msgid "Cancel Selected"
-msgstr ""
+msgstr "Auswahl abbrechen"
 
 #: ../../Open-ILS/src/templates/acq/common/li_table.tt2:36
 msgid "Cancel Selected Line Items"
-msgstr ""
+msgstr "Ausgewählte Einzelposten stornieren"
 
 #: ../../Open-ILS/src/templates/acq/po/view.tt2:112 ../../Open-ILS/src/templates/acq/po/view.tt2:120
 msgid "Cancel order"
-msgstr ""
+msgstr "Bestellung stornieren"
 
 #: ../../Open-ILS/src/templates/acq/common/li_table.tt2:222
 msgid "Canceled"
-msgstr ""
+msgstr "Abgebrochen"
 
 #: ../../Open-ILS/src/templates/acq/invoice/view.tt2:122 ../../Open-ILS/src/templates/acq/po/item_table.tt2:6
 msgid "Charge Type"
-msgstr ""
+msgstr "Gebührenart"
 
 #: ../../Open-ILS/src/templates/acq/common/notes.tt2:27
 msgid "Choose alert code "
@@ -346,7 +348,7 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/acq/common/inv_dialog.tt2:3
 msgid "Choose invoice"
-msgstr ""
+msgstr "Rechnung auswählen"
 
 #: ../../Open-ILS/src/templates/acq/picklist/list.tt2:53 ../../Open-ILS/src/templates/acq/search/unified.tt2:171
 msgid "Choose the Lead Selection List:"
@@ -400,7 +402,7 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/acq/fund/view.tt2:162 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:93 ../../Open-ILS/src/templates/acq/settings/li_attr.tt2:50
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:162 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:104 ../../Open-ILS/src/templates/acq/settings/li_attr.tt2:50
 msgid "Code"
 msgstr ""
 
@@ -466,11 +468,11 @@ msgstr ""
 msgid "Create date: %1"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/acq/funding_source/view.tt2:106
+#: ../../Open-ILS/src/templates/acq/funding_source/view.tt2:117
 msgid "Credits"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/acq/currency_type/list.tt2:3 ../../Open-ILS/src/templates/acq/fund/view.tt2:163 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:97
+#: ../../Open-ILS/src/templates/acq/currency_type/list.tt2:3 ../../Open-ILS/src/templates/acq/fund/view.tt2:163 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:108
 msgid "Currency Type"
 msgstr ""
 
@@ -640,7 +642,7 @@ msgstr ""
 msgid "Fund Propagation &amp; Rollover"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:166 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:40
+#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:166 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:49
 msgid "Fund: "
 msgstr ""
 
@@ -696,7 +698,7 @@ msgstr ""
 msgid "Holdings Maint."
 msgstr ""
 
-#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:115 ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:57 ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:86 ../../Open-ILS/src/templates/acq/fund/view.tt2:160 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:91 ../../Open-ILS/src/templates/acq/po/search.tt2:39 ../../Open-ILS/src/templates/acq/po/search.tt2:99 ../../Open-ILS/src/templates/acq/po/view.tt2:13 ../../Open-ILS/src/templates/acq/settings/li_attr.tt2:49
+#: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:115 ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:57 ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:86 ../../Open-ILS/src/templates/acq/fund/view.tt2:160 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:102 ../../Open-ILS/src/templates/acq/po/search.tt2:39 ../../Open-ILS/src/templates/acq/po/search.tt2:99 ../../Open-ILS/src/templates/acq/po/view.tt2:13 ../../Open-ILS/src/templates/acq/settings/li_attr.tt2:49
 msgid "ID"
 msgstr ""
 
@@ -921,7 +923,7 @@ msgstr ""
 msgid "My Selection Lists"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/acq/fund/view.tt2:161 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:92 ../../Open-ILS/src/templates/acq/po/view.tt2:18 ../../Open-ILS/src/templates/acq/search/unified.tt2:111 ../../Open-ILS/src/templates/acq/search/unified.tt2:202
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:161 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:103 ../../Open-ILS/src/templates/acq/po/view.tt2:18 ../../Open-ILS/src/templates/acq/search/unified.tt2:111 ../../Open-ILS/src/templates/acq/search/unified.tt2:202
 msgid "Name"
 msgstr ""
 
@@ -1025,7 +1027,7 @@ msgstr ""
 msgid "Note:"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/acq/fund/view.tt2:54 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:22 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:65
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:54 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:22 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:76
 msgid "Note: "
 msgstr ""
 
@@ -1066,7 +1068,7 @@ msgstr ""
 msgid "Ordering Agency:"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/acq/fund/view.tt2:164 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:98 ../../Open-ILS/src/templates/acq/search/unified.tt2:204
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:164 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:109 ../../Open-ILS/src/templates/acq/search/unified.tt2:204
 msgid "Owner"
 msgstr ""
 
@@ -1126,7 +1128,7 @@ msgstr ""
 msgid "Per Copy"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/acq/fund/view.tt2:41 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:53
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:41 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:64
 msgid "Percent: "
 msgstr ""
 
@@ -1134,7 +1136,7 @@ msgstr ""
 msgid "Perform Fiscal Year Close-out Operation: "
 msgstr ""
 
-#: ../../Open-ILS/src/templates/acq/fund/view.tt2:46 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:58
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:46 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:69
 msgid "Please enter an amount between 0 and 100"
 msgstr ""
 
@@ -1167,7 +1169,11 @@ msgid "Process"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/acq/fund/list.tt2:51
-msgid "Propagation creates new funds for the subsequent fiscal year based on the funds for the selected fiscal year.  Only funds with the propagate setting enabled will be affected.  No money or encumbrances are altered during this process."
+msgid ""
+"Propagation creates new funds for the subsequent fiscal year based on the "
+"funds for the selected fiscal year.  Only funds with the propagate setting "
+"enabled will be affected.  No money or encumbrances are altered during this "
+"process."
 msgstr ""
 
 #: ../../Open-ILS/src/templates/acq/invoice/view.tt2:173
@@ -1179,7 +1185,9 @@ msgid "Provide a file of search terms"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/acq/picklist/from_bib.tt2:5
-msgid "Provide one or more CSV files whose first columns contain Evergreen bibliographic record IDs."
+msgid ""
+"Provide one or more CSV files whose first columns contain Evergreen "
+"bibliographic record IDs."
 msgstr ""
 
 #: ../../Open-ILS/src/templates/acq/common/inv_dialog.tt2:18 ../../Open-ILS/src/templates/acq/common/li_table.tt2:189 ../../Open-ILS/src/templates/acq/common/li_table.tt2:476 ../../Open-ILS/src/templates/acq/picklist/upload.tt2:22 ../../Open-ILS/src/templates/acq/po/search.tt2:42 ../../Open-ILS/src/templates/acq/po/view.tt2:46
@@ -1492,7 +1500,7 @@ msgstr ""
 msgid "Submit"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/acq/fund/view.tt2:153 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:83
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:153 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:94
 msgid "Summary"
 msgstr ""
 
@@ -1513,7 +1521,12 @@ msgid "The remaining are listed below."
 msgstr ""
 
 #: ../../Open-ILS/src/templates/acq/fund/list.tt2:67
-msgid "The year end close out operation moves encumbrances from the selected fiscal year to the analogous funds in the subsequent fiscal year and it deactivates funds for the selected fiscal year.  Additionally, for all funds that have the \"Rollover\" setting enabled, this process will move all unspent money to the analogous fund in the subsequent fiscal year."
+msgid ""
+"The year end close out operation moves encumbrances from the selected fiscal "
+"year to the analogous funds in the subsequent fiscal year and it deactivates "
+"funds for the selected fiscal year.  Additionally, for all funds that have "
+"the \"Rollover\" setting enabled, this process will move all unspent money "
+"to the analogous fund in the subsequent fiscal year."
 msgstr ""
 
 #: ../../Open-ILS/src/templates/acq/po/item_table.tt2:28
@@ -1538,7 +1551,10 @@ msgid "This invoice has no more copies to receive."
 msgstr ""
 
 #: ../../Open-ILS/src/templates/acq/fund/list.tt2:84
-msgid "This modifies the above described Close-out Operation, causing funds to be transfered into the void (that is, entirely removed) instead of being transfered to the analogous funds in the subsequent fiscal year."
+msgid ""
+"This modifies the above described Close-out Operation, causing funds to be "
+"transfered into the void (that is, entirely removed) instead of being "
+"transfered to the analogous funds in the subsequent fiscal year."
 msgstr ""
 
 #: ../../Open-ILS/src/templates/acq/common/li_table.tt2:472
@@ -1586,11 +1602,11 @@ msgstr ""
 msgid "Total Copies: %1"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/acq/funding_source/view.tt2:95
+#: ../../Open-ILS/src/templates/acq/funding_source/view.tt2:106
 msgid "Total Credits"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/acq/fund/view.tt2:168 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:96
+#: ../../Open-ILS/src/templates/acq/fund/view.tt2:168 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:107
 msgid "Total Debits"
 msgstr ""
 
@@ -1739,7 +1755,9 @@ msgid "View Selection List"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/acq/fund/list.tt2:107
-msgid "When Dry Run is selected, the system will generate a summary of the changes that would occur during the selected operation(s). No data will be changed."
+msgid ""
+"When Dry Run is selected, the system will generate a summary of the changes "
+"that would occur during the selected operation(s). No data will be changed."
 msgstr ""
 
 #: ../../Open-ILS/src/templates/acq/settings/li_attr.tt2:55

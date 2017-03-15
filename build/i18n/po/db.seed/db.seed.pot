@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2017-02-21 20:30:18-0400\n"
+"POT-Creation-Date: 2017-03-15 16:25:23-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -107,6 +107,14 @@ msgstr ""
 # id::coust.label__ui.patron.registration.require_address
 #: 950.data.seed-values.sql:4904
 msgid "Require at least one address for Patron Registration"
+msgstr ""
+
+# id::coust.description__ebook_api.oneclickdigital.base_uri
+#: 950.data.seed-values.sql:16814
+msgid ""
+"Base URI for OneClickdigital API (defaults to "
+"https://api.oneclickdigital.com/v1). Using HTTPS here is strongly "
+"encouraged."
 msgstr ""
 
 # id::ppl.description__531
@@ -2213,7 +2221,7 @@ msgid ""
 msgstr ""
 
 # id::coust.label__ebook_api.oneclickdigital.basic_token
-#: 950.data.seed-values.sql:16824
+#: 950.data.seed-values.sql:16840
 msgid "OneClickdigital Basic Token"
 msgstr ""
 
@@ -5451,7 +5459,7 @@ msgid "Elamite"
 msgstr ""
 
 # id::coust.description__ebook_api.oneclickdigital.library_id
-#: 950.data.seed-values.sql:16814
+#: 950.data.seed-values.sql:16830
 msgid "Identifier assigned to this library by OneClickdigital"
 msgstr ""
 
@@ -9338,7 +9346,7 @@ msgid "Create suffix label definition."
 msgstr ""
 
 # id::coust.label__ebook_api.oneclickdigital.library_id
-#: 950.data.seed-values.sql:16808
+#: 950.data.seed-values.sql:16824
 msgid "OneClickdigital Library ID"
 msgstr ""
 
@@ -11079,6 +11087,11 @@ msgstr ""
 # id::ppl.description__281
 #: 950.data.seed-values.sql:1068
 msgid "UPDATE_PICKUP_LIB_FROM_HOLDS_SHELF"
+msgstr ""
+
+# id::coust.label__ebook_api.oneclickdigital.base_uri
+#: 950.data.seed-values.sql:16808
+msgid "OneClickdigital Base URI"
 msgstr ""
 
 # id::cbt.name__101
@@ -13779,7 +13792,7 @@ msgid "US Dollars"
 msgstr ""
 
 # id::coust.description__ebook_api.oneclickdigital.basic_token
-#: 950.data.seed-values.sql:16830
+#: 950.data.seed-values.sql:16846
 msgid ""
 "Basic token for client authentication with OneClickdigital API (supplied by "
 "OneClickdigital)"
