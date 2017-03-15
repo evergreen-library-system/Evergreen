@@ -42,13 +42,13 @@ email gateway values:
 
 Bibliographic Fingerprint Improvements
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The bibliographic fingerprint will now incorporate subfield $n and $p from MARC
-title fields to better distinguish between records of the same series that
+The bibliographic fingerprint will now incorporate subfields $n and $p from MARC
+title fields to better distinguish among records of the same series that
 may share the same title but have a different part. With this change, these
 MARC records will no longer be grouped together in a 'Group Formats & Editions'
 search.
 
-The bibliographic fingerprint was also changed to better distinguish between
+The bibliographic fingerprint was also changed to better distinguish among
 the fields contributing to the fingerprint. This change will help the system
 distinguish between a record for the movie _Blue Steel_ and another record for
 the book _Blue_ written by Danielle Steel.
@@ -453,7 +453,7 @@ Arabic and Right-to-Left Language Support for the catalog
 New stylesheets and other changes to the catalog to allow for 
 better support of right-to-left (RTL) languages, such as Arabic.
 
-Also add Arabic (Jordan) as a new supported language.
+Also adds Arabic (Jordan) as a new supported language.
 
 
 
