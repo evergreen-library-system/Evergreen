@@ -4,14 +4,14 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
 "POT-Creation-Date: 2017-02-21 20:28-0400\n"
-"PO-Revision-Date: 2017-01-10 12:32+0000\n"
+"PO-Revision-Date: 2017-03-09 06:41+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-02-22 05:39+0000\n"
-"X-Generator: Launchpad (build 18326)\n"
+"X-Launchpad-Export-Date: 2017-03-14 06:19+0000\n"
+"X-Generator: Launchpad (build 18331)\n"
 "X-Accelerator-Marker: &\n"
 
 #: class.stgu.label:9551
@@ -1981,7 +1981,7 @@ msgstr "Filtrovat?"
 #: field.brsrc.attr_maps.label:4442 field.bra.attr_maps.label:4472
 #: field.brav.attr_maps.label:4496
 msgid "Resource Attribute Maps"
-msgstr "ATributy zdrojů"
+msgstr "Atributy zdrojů"
 
 #: field.asv.usr_summary.label:5540
 msgid "Display in User Summary"
@@ -2143,7 +2143,7 @@ msgstr "Přehled sady limitů výpůjční matice"
 
 #: field.acs.thesauri.label:2440 field.acsaf.thesauri.label:2470
 msgid "Thesauri"
-msgstr "Tezaurus"
+msgstr "Tezaury"
 
 #: field.cclsgm.limit_group.label:2082
 msgid "Limit Group"
@@ -4076,7 +4076,7 @@ msgstr "Vyzvednutí rezervací"
 
 #: field.asv.id.label:5533
 msgid "Survey ID"
-msgstr "ID výzkumu"
+msgstr "ID průzkumu"
 
 #: field.rccc.patron_county.label:10890
 msgid "Patron County"
@@ -5135,7 +5135,7 @@ msgstr "Zděděný typ poplatku"
 
 #: field.ccvm.concept_uri.label:1139
 msgid "Concept URI"
-msgstr ""
+msgstr "URI konceptu"
 
 #: field.acqpa.street1.label:7840
 msgid "Street 1"
@@ -5160,7 +5160,7 @@ msgstr "Odesílající knihovna"
 
 #: class.cclsacpl.label:2052
 msgid "Circulation Limit Set Copy Location Map"
-msgstr ""
+msgstr "Mapa umístění pro sadu výpůjčních limitů"
 
 #: field.vqbra.id.label:561 field.vqara.id.label:678
 msgid "Attribute ID"
@@ -5418,7 +5418,7 @@ msgstr "Placeno celkem"
 
 #: class.aalink.label:6379
 msgid "Authority to Authority Linking"
-msgstr ""
+msgstr "Autorita pro linkování autorit"
 
 #: field.brt.name.label:4402
 msgid "Resource Type Name"
@@ -5780,7 +5780,7 @@ msgstr "Datum / čas přijetí"
 
 #: field.asv.poll.label:5537
 msgid "Poll Style?"
-msgstr "Styl ankety"
+msgstr "Styl ankety?"
 
 #: field.qcb.id.label:9864
 msgid "Case Branch ID"
@@ -6417,7 +6417,7 @@ msgstr "Je chyba"
 
 #: class.uvsbrem.label:10297
 msgid "URL Verify Session Biblio Record Entry Map"
-msgstr ""
+msgstr "Mapa bibliografických záznamů pro relaci ověření URL"
 
 #: field.circ.desk_renewal.label:4146 field.combcirc.desk_renewal.label:4219
 #: field.acirc.desk_renewal.label:4308 field.rodcirc.desk_renewal.label:11169
@@ -7212,7 +7212,7 @@ msgstr "Dopravce"
 
 #: field.acqedi.vendcode.label:8964
 msgid "Vendor Assigned Code"
-msgstr "Kód dodavatele"
+msgstr "Přidělený kód dodavatele"
 
 #: field.cbho.shtime.label:2820
 msgid "Copy Has Been Home At All Lately"
@@ -7907,7 +7907,7 @@ msgstr "Alternativní název sloupce"
 
 #: class.czifm.label:1231
 msgid "Z39.50 Index Field Map"
-msgstr ""
+msgstr "Mapa indexovaných polí Z39.50"
 
 #: class.stgs.label:9628
 msgid "User Setting Stage"
@@ -8141,7 +8141,7 @@ msgstr "PSČ čtenáře"
 
 #: field.brt.resource_attrs.label:4412 field.aou.rsrc_attrs.label:6110
 msgid "Resource Attributes"
-msgstr "Atribut zdroje"
+msgstr "Atributy zdroje"
 
 #: field.uvva.finish_time.label:10433
 msgid "Finish Time"
@@ -8383,7 +8383,7 @@ msgstr "Stav"
 
 #: class.puopm.label:7145
 msgid "User Object Permission Map"
-msgstr ""
+msgstr "Mapa oprávnění objektu uživatel"
 
 #: field.circ.stop_fines.label:4160 field.combcirc.stop_fines.label:4233
 #: field.acirc.stop_fines.label:4322 field.rodcirc.stop_fines.label:11182

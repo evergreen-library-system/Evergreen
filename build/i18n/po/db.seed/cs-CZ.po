@@ -3,14 +3,14 @@ msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
 "POT-Creation-Date: 2017-02-21 20:30-0400\n"
-"PO-Revision-Date: 2017-01-12 16:08+0000\n"
+"PO-Revision-Date: 2017-03-08 13:29+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-02-22 05:36+0000\n"
-"X-Generator: Launchpad (build 18326)\n"
+"X-Launchpad-Export-Date: 2017-03-09 05:31+0000\n"
+"X-Generator: Launchpad (build 18330)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Poedit-Language: Czech\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -57,7 +57,7 @@ msgstr "filmový pás"
 
 #: 950.data.seed-values.sql:1651
 msgid "Allow a user to modify a popularity badge parameter"
-msgstr ""
+msgstr "Povolit uživateli upravovat parametry známek popularity"
 
 # id::clm.value__nor
 #: 950.data.seed-values.sql:6860
@@ -72,7 +72,7 @@ msgstr "LCCN"
 
 #: 950.data.seed-values.sql:15621
 msgid "Rollover Distribution Formulae Funds"
-msgstr ""
+msgstr "Překlopit fondy distribučních formulí"
 
 #: 950.data.seed-values.sql:35
 msgid "Alerting block on Circ"
@@ -375,7 +375,7 @@ msgstr "Přehled dat"
 
 #: 950.data.seed-values.sql:1633
 msgid "Allow a user to mark an item status as 'damaged'"
-msgstr ""
+msgstr "Povolit uživateli změnit status exempláře na  'Poškozené'"
 
 #: 950.data.seed-values.sql:14153
 msgid "Chariton Valley Wireless"
@@ -391,7 +391,7 @@ msgstr "OPAC"
 
 #: 950.data.seed-values.sql:1643
 msgid "Allow a user to delete a popularity badge"
-msgstr ""
+msgstr "Povolit uživateli smazat známku popularity"
 
 #: 950.data.seed-values.sql:1334
 msgid "ADMIN_INVOICE_PAYMENT_METHOD"
@@ -464,7 +464,7 @@ msgstr "Zkrácený název"
 
 #: 950.data.seed-values.sql:7924
 msgid "Equirectangular"
-msgstr ""
+msgstr "Obdélníkové zobrazení (equirectangular)"
 
 #: 950.data.seed-values.sql:8234
 msgid "Rwanda "
@@ -483,7 +483,7 @@ msgstr "Arménie "
 #: 950.data.seed-values.sql:8626 950.data.seed-values.sql:8639
 #: 950.data.seed-values.sql:8652
 msgid "Form lines"
-msgstr ""
+msgstr "Tvarové čáry"
 
 #: 950.data.seed-values.sql:13110
 msgid "Heading -- Form Subdivision"
@@ -530,7 +530,7 @@ msgstr "UPDATE_ORG_UNIT_SETTING_ALL"
 
 #: 950.data.seed-values.sql:1649
 msgid "Allow a user to delete a popularity badge parameter"
-msgstr ""
+msgstr "Povolit uživateli smazat parametr známky popularity"
 
 #: 950.data.seed-values.sql:15659
 msgid "Maximum Parallel Z39.50 Batch Searches"
@@ -811,6 +811,8 @@ msgid ""
 "Maximum popularity importance multiplier for popularity-adjusted relevance "
 "searches (decimal value between 1.0 and 2.0)"
 msgstr ""
+"Násobitel důležitosti maximální popularity pro hledání s využitím relevance "
+"upravené podle populary (desetinné číslo mezi 1,0 a 2,0)"
 
 #: 950.data.seed-values.sql:7933
 msgid "Bonne"
@@ -826,7 +828,7 @@ msgstr "Povolí čtenáři změnit datum vrácení  exempláře na jakékoliv da
 
 #: 950.data.seed-values.sql:7916
 msgid "Goode's homolographic"
-msgstr ""
+msgstr "Goodovo homolografické zobrazení"
 
 #: 950.data.seed-values.sql:7793 950.data.seed-values.sql:7823
 #: 950.data.seed-values.sql:8457 950.data.seed-values.sql:8487
@@ -1439,6 +1441,8 @@ msgid ""
 "Basic token for client authentication with OverDrive API (supplied by "
 "OverDrive)"
 msgstr ""
+"Základní token pro autentizaci klienta pomocí OverDrive API (dodané  "
+"OverDrive)"
 
 #: 950.data.seed-values.sql:7014
 msgid "Sorbian languages"
@@ -1494,7 +1498,7 @@ msgstr "Guatemala "
 
 #: 950.data.seed-values.sql:1673
 msgid "Override the ITEM_DEPOSIT_PAID event"
-msgstr ""
+msgstr "Obejít  událost  ITEM_DEPOSIT_PAID"
 
 #: 950.data.seed-values.sql:14
 msgid "Set"
@@ -1651,7 +1655,7 @@ msgstr "CREATE_XML_TRANSFORM"
 
 #: 950.data.seed-values.sql:7929
 msgid "Space oblique Mercator"
-msgstr ""
+msgstr "Prostorové nepřímé Mercatorovo zobrazení"
 
 #: 950.data.seed-values.sql:6570
 msgid "Assamese"
@@ -1761,7 +1765,7 @@ msgstr "Nový záznam není dostatečně kvalitní"
 #: 950.data.seed-values.sql:8728 950.data.seed-values.sql:8744
 #: 950.data.seed-values.sql:8760
 msgid "Phonodisc, phonowire, etc."
-msgstr ""
+msgstr "Zvukový záznam"
 
 #: 950.data.seed-values.sql:14289
 msgid "Simple Mobile"
@@ -1889,7 +1893,7 @@ msgstr "Koodo Mobile"
 
 #: 950.data.seed-values.sql:1641
 msgid "Allow a user to create a new popularity badge"
-msgstr ""
+msgstr "Povolit uživatel novou známku popularity"
 
 #: 950.data.seed-values.sql:4844
 msgid ""
@@ -1973,7 +1977,7 @@ msgstr "Povolit uživateli smazat finanční zdroj"
 
 #: 950.data.seed-values.sql:7462
 msgid "unmediated"
-msgstr ""
+msgstr "bez média"
 
 #: 950.data.seed-values.sql:3713
 msgid ""
@@ -1997,7 +2001,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:16824
 msgid "OneClickdigital Basic Token"
-msgstr ""
+msgstr "Základní token pro OneClickdigital"
 
 # id::clm.value__wln
 #: 950.data.seed-values.sql:7015
@@ -2083,7 +2087,7 @@ msgstr "ADMIN_ACQ_FISCAL_YEAR"
 
 #: 950.data.seed-values.sql:7744
 msgid "Program music"
-msgstr ""
+msgstr "programní hudba"
 
 #: 950.data.seed-values.sql:7995
 msgid "Not arrangement or transposition or not specified"
@@ -2355,6 +2359,8 @@ msgid ""
 "https://patron.api.overdrive.com/v1). Using HTTPS here is strongly "
 "encouraged."
 msgstr ""
+"URI báze pro API výpůjček OverDrive (výchozí  "
+"https://patron.api.overdrive.com/v1). Je silně doporučováno použití  HTTPS ."
 
 #: 950.data.seed-values.sql:9491
 msgid "A patron acquisition request has been rejected."
@@ -2626,7 +2632,7 @@ msgstr "Povoli uživateli vytvořit seznam pro vyzvednutí"
 
 #: 950.data.seed-values.sql:1657
 msgid "Allow a user to modify an authority record"
-msgstr ""
+msgstr "Povolit uživatel upravit autoritní záznam"
 
 # id::clfm.value__m
 #: 950.data.seed-values.sql:7068
@@ -2660,7 +2666,7 @@ msgstr "Standardy/specifikace"
 
 #: 950.data.seed-values.sql:7946
 msgid "Cordiform"
-msgstr ""
+msgstr "Srdcovité zobrazení"
 
 #: 950.data.seed-values.sql:8086
 msgid "Fiji "
@@ -3363,7 +3369,7 @@ msgstr "Belgie "
 
 #: 950.data.seed-values.sql:7847
 msgid "Close score"
-msgstr ""
+msgstr "Vybrat skóre"
 
 #: 950.data.seed-values.sql:8180
 msgid "North Carolina "
@@ -3786,7 +3792,7 @@ msgstr "Vánoční ostrov "
 
 #: 950.data.seed-values.sql:7911
 msgid "Chamberlin trimetric"
-msgstr ""
+msgstr "Chamberlinovo trimetrické zobrazení"
 
 # id::clm.value__mas
 #: 950.data.seed-values.sql:6817
@@ -4312,7 +4318,7 @@ msgstr "Němčina"
 
 #: 950.data.seed-values.sql:16659
 msgid "Holds Retarget Interval"
-msgstr ""
+msgstr "Interval pro přesměrování rezervací na nové cíle"
 
 #: 950.data.seed-values.sql:12365
 msgid "Import failed due to barcode collision"
@@ -4392,7 +4398,7 @@ msgstr "Finance"
 
 #: 950.data.seed-values.sql:6463
 msgid "Video Format"
-msgstr ""
+msgstr "Formát videa"
 
 # id::clm.value__nap
 #: 950.data.seed-values.sql:6844
@@ -4558,7 +4564,7 @@ msgstr "Esperanto"
 
 #: 950.data.seed-values.sql:16788
 msgid "OverDrive Password Required"
-msgstr ""
+msgstr "Je požadováno heslo pro OverDrive"
 
 #: 950.data.seed-values.sql:16304
 msgid "Patron Self-Reg. Display Timeout"
@@ -4574,7 +4580,7 @@ msgstr "Povolit uživateli vrátit exemplář"
 
 #: 950.data.seed-values.sql:6458
 msgid "Literary Form"
-msgstr ""
+msgstr "Literární žánr"
 
 #: 950.data.seed-values.sql:8235
 msgid "South Africa "
@@ -4586,7 +4592,7 @@ msgstr "Mauritánie "
 
 #: 950.data.seed-values.sql:15201 950.data.seed-values.sql:15207
 msgid "Link Checker's Review Attempt interface's saved columns"
-msgstr ""
+msgstr "Uložené sloupce rozhraní"
 
 # id::crcd.name__5
 #: 950.data.seed-values.sql:287
@@ -4850,7 +4856,7 @@ msgstr "Elamština"
 
 #: 950.data.seed-values.sql:16814
 msgid "Identifier assigned to this library by OneClickdigital"
-msgstr ""
+msgstr "Identifikátor OneClickdigital přidělený této knihovně"
 
 #: 950.data.seed-values.sql:3503
 msgid "Skip offline renewal if newer item Status Changed Time."
@@ -4899,7 +4905,7 @@ msgstr "Rodina písma pro tisk vnějších a vnitřních štítků."
 
 #: 950.data.seed-values.sql:3022
 msgid "Booking elbow room"
-msgstr ""
+msgstr "Prostor pro odklonění rezervace zdroje"
 
 #: 950.data.seed-values.sql:742
 msgid "Allow a user to un-bar a patron"
@@ -4920,7 +4926,7 @@ msgstr "Výchozí profil slučení pri nahrávání"
 
 #: 950.data.seed-values.sql:6452
 msgid "Item Form"
-msgstr ""
+msgstr "Forma popisné jednotky"
 
 #: 950.data.seed-values.sql:1058
 msgid "UPDATE_TRANSIT"
@@ -5031,7 +5037,7 @@ msgstr "DELETE_TRANSIT"
 
 #: 950.data.seed-values.sql:1669
 msgid "Override the MAX_HOLDS event"
-msgstr ""
+msgstr "Obejít událost MAX_HOLDS"
 
 #: 950.data.seed-values.sql:13086
 msgid "See From Tracing -- Uniform Title"
@@ -5059,7 +5065,7 @@ msgstr "hmatový text"
 
 #: 950.data.seed-values.sql:13289
 msgid "Alternate no attempt to code"
-msgstr ""
+msgstr "Alternativně kód se neuvádí"
 
 #: 950.data.seed-values.sql:4104
 msgid "Regular expression defining the patron barcode format"
@@ -5171,7 +5177,7 @@ msgstr "Požadovat heslo čtenáře"
 
 #: 950.data.seed-values.sql:1645
 msgid "Allow a user to modify a popularity badge"
-msgstr ""
+msgstr "Povolit uživateli upravit známky popularity"
 
 #: 950.data.seed-values.sql:7101
 msgid "CED videodisc"
@@ -5230,7 +5236,7 @@ msgstr "Kumyčtina"
 
 #: 950.data.seed-values.sql:7909
 msgid "General vertical near-sided"
-msgstr ""
+msgstr "Azimutální stejnoploché zobrazení"
 
 #: 950.data.seed-values.sql:13
 msgid "Back-to-back"
@@ -5349,7 +5355,7 @@ msgstr "DELETE_ITEM_FORM"
 
 #: 950.data.seed-values.sql:194
 msgid "Topic Browse"
-msgstr ""
+msgstr "Prohlížení podle tématu"
 
 #: 950.data.seed-values.sql:188
 msgid "Genre"
@@ -5471,7 +5477,7 @@ msgstr "Vermont "
 
 #: 950.data.seed-values.sql:14548
 msgid "Republic Wireless (must enable on device)"
-msgstr ""
+msgstr "Republic Wireless (musí být nastaveno na zařízení)"
 
 #: 950.data.seed-values.sql:3890
 msgid "PayflowPro partner"
@@ -5540,7 +5546,7 @@ msgstr "Burundi "
 
 #: 950.data.seed-values.sql:7945
 msgid "Dymaxion"
-msgstr ""
+msgstr "Dymaxion"
 
 #: 950.data.seed-values.sql:7718
 msgid "Folk music"
@@ -6038,6 +6044,8 @@ msgstr "Rogers Wireless"
 msgid ""
 "Default merge profile to use during Z39.50 imports and record bucket merges"
 msgstr ""
+"Výchozí profil pro sloučení při importu Z39.50 a při sloučení v rámci "
+"skupiny záznamů"
 
 #: 950.data.seed-values.sql:3263
 msgid ""
@@ -6173,6 +6181,8 @@ msgstr "Měkké hranice"
 #: 950.data.seed-values.sql:16649 950.data.seed-values.sql:16652
 msgid "Display copy location checkin alert for in-house-use"
 msgstr ""
+"Přo úrezenčním užití zobrazit varování při vrácení související s umístěním "
+"exempláře"
 
 #: 950.data.seed-values.sql:4367
 msgid ""
@@ -6408,6 +6418,8 @@ msgid ""
 "Allows staff to designate a custom copy status on received lineitems.  "
 "Default status is \"In Process\"."
 msgstr ""
+"Povolit personálu definovat vlastní status přijímaných položek. Výchozím "
+"statusem je \"Zpracovává se\"."
 
 #: 950.data.seed-values.sql:1012
 msgid "TRANSIT_COPY"
@@ -6467,6 +6479,7 @@ msgstr "Ameritech"
 #: 950.data.seed-values.sql:1639
 msgid "Allow a user to modify the org unit settings log"
 msgstr ""
+"Povolit uživateli upravit záznam (log) nastavení organizační jednotky"
 
 #: 950.data.seed-values.sql:1168
 msgid "UPDATE_ORG_UNIT_SETTING.circ.hold_boundary.hard"
@@ -6519,7 +6532,7 @@ msgstr "Djula"
 
 #: 950.data.seed-values.sql:1637
 msgid "Allow a user to mark an item status as 'reserves'"
-msgstr ""
+msgstr "Povolit uživateli označit status exempláře jako 'rezervovaný zdroj'"
 
 #: 950.data.seed-values.sql:8149
 msgid "Laos "
@@ -6579,7 +6592,7 @@ msgstr "Definice označení smazat prefix"
 
 #: 950.data.seed-values.sql:7738
 msgid "Passacaglias"
-msgstr ""
+msgstr "Passacaglie"
 
 #: 950.data.seed-values.sql:7018
 msgid "Xhosa"
@@ -6670,7 +6683,7 @@ msgstr "Bhútán "
 
 #: 950.data.seed-values.sql:2744
 msgid "Initial status for received items"
-msgstr ""
+msgstr "Počáteční status pro přijímané položky"
 
 #: 950.data.seed-values.sql:8232
 msgid "Romania "
@@ -6806,7 +6819,7 @@ msgstr "Neplatná hodnota pro \"circ_as_type\" (půjčovat jako typ)"
 
 #: 950.data.seed-values.sql:1661
 msgid "Allow a user to delete an authority control set"
-msgstr ""
+msgstr "Povolit uživatele smazat kontrolní sadu pro autority"
 
 #: 950.data.seed-values.sql:14754
 msgid "Verification via remoteauth"
@@ -6835,6 +6848,9 @@ msgid ""
 "diacritical marks or spaces. (e.g., Ines will match Inés; de la Cruz will "
 "match Delacruz)"
 msgstr ""
+"Shoda u příjmení čtenář pro jména, prostřední jména a příjmení bez ohledu na "
+"diakrické znady nebo mezery (např.  Ines se shoduje s  Inés; de la Cruz se "
+"shoduje s Delacruz)"
 
 #: 950.data.seed-values.sql:3224
 msgid "Use Active Date for Age Protection"
@@ -6905,6 +6921,8 @@ msgid ""
 "Authority Automation: Disable automatic authority updates from modifying bib "
 "record editor and edit_date"
 msgstr ""
+"Automatizace autorit:  Zakázat automatickou aktualizace autority z editoru "
+"pro úpravu záznamů a editaci data"
 
 #: 950.data.seed-values.sql:640
 msgid "Allow a user to create a new non-cataloged item type"
@@ -6950,7 +6968,7 @@ msgstr "Makedonie "
 
 #: 950.data.seed-values.sql:1663
 msgid "Allow a user to modify an authority control set"
-msgstr ""
+msgstr "Povolit uživateli upravit kontrolní set pro autority"
 
 #: 950.data.seed-values.sql:171
 msgid "Local Free-Text Call Number"
@@ -6994,7 +7012,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:399 950.data.seed-values.sql:400
 msgid "Arabic (Jordan)"
-msgstr ""
+msgstr "arabština (Jordánsko)"
 
 #: 950.data.seed-values.sql:4853
 msgid ""
@@ -7269,7 +7287,7 @@ msgstr "Dominikánská republika "
 
 #: 950.data.seed-values.sql:16746
 msgid "Authorization name for this library, as assigned by OverDrive"
-msgstr ""
+msgstr "Autorizační jméno této knihovny, přidělené od OverDrive"
 
 #: 950.data.seed-values.sql:7923
 msgid "Gauss-Kruger"
@@ -7375,6 +7393,8 @@ msgid ""
 "In the Patron Bills interface, a payment attempt will warn if the amount "
 "exceeds the value of this setting."
 msgstr ""
+"V rozhaní pro platby čtenáře se při pokusu o platbu zobrazí varování, pokud "
+"částka překročí hodnotu v tomto nastavení."
 
 # id::clm.value__vai
 #: 950.data.seed-values.sql:7004
@@ -7510,7 +7530,7 @@ msgstr "Yukon "
 
 #: 950.data.seed-values.sql:1679
 msgid "Override the ITEM_RENTAL_FEE_REQUIRED event"
-msgstr ""
+msgstr "Obejít událost ITEM_RENTAL_FEE_REQUIRED"
 
 #: 950.data.seed-values.sql:4925
 msgid ""
@@ -7690,7 +7710,7 @@ msgstr "Aramejština"
 
 #: 950.data.seed-values.sql:7894
 msgid "No parts in hand or not specified"
-msgstr ""
+msgstr "Bez hlasů nebo nespecifikován"
 
 #: 950.data.seed-values.sql:990
 msgid "DELETE_ORG_ADDRESS"
@@ -7736,7 +7756,7 @@ msgstr "Lotyština"
 
 #: 950.data.seed-values.sql:16724
 msgid "OverDrive Website ID"
-msgstr ""
+msgstr "ID z webové stráky OverDrive"
 
 #: 950.data.seed-values.sql:680
 msgid "Allow a user to delete another user's volume note"
@@ -7781,6 +7801,8 @@ msgstr ""
 #: 950.data.seed-values.sql:11455
 msgid "Deletes a cbreb object used as a target if it has a btype of \"temp\""
 msgstr ""
+"Smaže objekt cbreb použítý jako cíl, pokud btype (typ poplatku) dopovídá "
+"\"temp\""
 
 #: 950.data.seed-values.sql:2724
 msgid "Audiobooks"
@@ -7830,7 +7852,7 @@ msgstr "Odkazy zkratek pro stránkování prohlížení v OPACu"
 #: 950.data.seed-values.sql:8721 950.data.seed-values.sql:8737
 #: 950.data.seed-values.sql:8753
 msgid "Plates"
-msgstr ""
+msgstr "Obrazové přílohy"
 
 #: 950.data.seed-values.sql:8278
 msgid "Egypt "
@@ -7939,7 +7961,7 @@ msgstr "kazeta počítačové pásky"
 
 #: 950.data.seed-values.sql:1647
 msgid "Allow a user to create a popularity badge parameter"
-msgstr ""
+msgstr "Povolit uživael vytvořit parametry známek popularity"
 
 #: 950.data.seed-values.sql:8137
 msgid "Korea (South) "
@@ -7965,7 +7987,7 @@ msgstr "Filipínské jazyky (ostatní)"
 
 #: 950.data.seed-values.sql:16772
 msgid "OverDrive Granted Authorization Redirect URI"
-msgstr ""
+msgstr "URI přesměrování garantované autorizace OverDrive"
 
 # id::clm.value__kpe
 #: 950.data.seed-values.sql:6776
@@ -8211,7 +8233,7 @@ msgstr "DELETE_BIBLIO_FINGERPRINT"
 
 #: 950.data.seed-values.sql:7758
 msgid "Teatro lirico"
-msgstr ""
+msgstr "Teatro lirico"
 
 #: 950.data.seed-values.sql:7967 950.data.seed-values.sql:8661
 #: 950.data.seed-values.sql:8671
@@ -8264,6 +8286,8 @@ msgid ""
 "Does this library require a password when authenticating patrons with the "
 "OverDrive API?"
 msgstr ""
+"Požaduje tato knihovna heslo při autentizaci uživatele prostřednictvím API "
+"OverDrive?"
 
 #: 950.data.seed-values.sql:8073
 msgid "Dominica "
@@ -8295,7 +8319,7 @@ msgstr "Vytvořit definici označení sufixu"
 
 #: 950.data.seed-values.sql:16808
 msgid "OneClickdigital Library ID"
-msgstr ""
+msgstr "ID knihovny OneClickdigital"
 
 #: 950.data.seed-values.sql:8295
 msgid "Victoria "
@@ -8399,7 +8423,7 @@ msgstr "DELETE_ACQ_FUNDING_SOURCE"
 
 #: 950.data.seed-values.sql:16640 950.data.seed-values.sql:16643
 msgid "Display copy alert for in-house-use"
-msgstr ""
+msgstr "Při prezenčním užití zobrazit upozornění související s exemplářem"
 
 #: 950.data.seed-values.sql:1468
 msgid "ADMIN_SERIAL_STREAM"
@@ -8502,7 +8526,7 @@ msgstr "Slovinština"
 
 #: 950.data.seed-values.sql:7944
 msgid "Van Der Grinten"
-msgstr ""
+msgstr "Van Der Grintenovo zobrazení"
 
 #: 950.data.seed-values.sql:14766
 msgid "Self-Check User Verification"
@@ -8841,7 +8865,7 @@ msgstr "Směrování odkazu  viz též -- chronologický termín"
 
 #: 950.data.seed-values.sql:6456
 msgid "Language"
-msgstr ""
+msgstr "Jazyk"
 
 #: 950.data.seed-values.sql:1134
 msgid "DELETE_IMPORT_ITEM"
@@ -8906,7 +8930,7 @@ msgstr "Výchozí číslo pro SMS/zprávy"
 
 #: 950.data.seed-values.sql:1665
 msgid "Override the ACTOR_USER_DELETE_OPEN_XACTS event"
-msgstr ""
+msgstr "Obejít událost  ACTOR_USER_DELETE_OPEN_XACTS"
 
 #: 950.data.seed-values.sql:4113
 msgid ""
@@ -9041,6 +9065,8 @@ msgstr "Počet URL, která mají být paralelně testována"
 msgid ""
 "Account ID (a.k.a. Library ID) for this library, as assigned by OverDrive"
 msgstr ""
+"ID účtu (t.j. ID knihovny) pro tuto knihovnu, které bylo přiděleno od "
+"OverDrive"
 
 #: 950.data.seed-values.sql:8229
 msgid "Réunion "
@@ -9072,7 +9098,7 @@ msgstr "Japonsko "
 
 #: 950.data.seed-values.sql:16676
 msgid "OverDrive Discovery API Base URI"
-msgstr ""
+msgstr "URI báze API pro OverDrive Discovery"
 
 #: 950.data.seed-values.sql:596
 msgid "Allow a user to create a container item for another user"
@@ -9295,7 +9321,7 @@ msgstr "Nepálština"
 
 #: 950.data.seed-values.sql:14565
 msgid "Google Fi"
-msgstr ""
+msgstr "Google Fi"
 
 #: 950.data.seed-values.sql:7494
 msgid "film roll"
@@ -9867,7 +9893,7 @@ msgstr "Různé"
 
 #: 950.data.seed-values.sql:1675
 msgid "Override the COPY_STATUS_LOST_AND_PAID event"
-msgstr ""
+msgstr "Obejít událost COPY_STATUS_LOST_AND_PAID"
 
 #: 950.data.seed-values.sql:3494
 msgid "Skip offline checkout if newer item Status Changed Time."
@@ -9944,11 +9970,11 @@ msgstr "Povolí sloučení uživatelských záznamů"
 
 #: 950.data.seed-values.sql:1635
 msgid "Allow a user to mark an item status as 'discard'"
-msgstr ""
+msgstr "Povolit uživateli označit status exempláře jako 'vyřazeno'"
 
 #: 950.data.seed-values.sql:5079
 msgid "Default Merge Profile (Z39.50 and Record Buckets)"
-msgstr ""
+msgstr "Výchozí profil pro sloučení (Z39.50 a skupiny záznamů)"
 
 #: 950.data.seed-values.sql:1558
 msgid "User may update custom org unit trees"
@@ -9964,7 +9990,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:16756
 msgid "OverDrive Basic Token"
-msgstr ""
+msgstr "Token OverDrive Basic"
 
 #: 950.data.seed-values.sql:8061
 msgid "Comoros "
@@ -10120,7 +10146,7 @@ msgstr "Moteta"
 
 #: 950.data.seed-values.sql:1667
 msgid "Override the PATRON_EXCEEDS_LOST_COUNT event"
-msgstr ""
+msgstr "Obejít událost PATRON_EXCEEDS_LOST_COUNT"
 
 #: 950.data.seed-values.sql:7927
 msgid "Oblique Mercator"
@@ -10155,7 +10181,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:3548
 msgid "Self-serve password reset request time-to-live"
-msgstr ""
+msgstr "Doba platnosti dat při  samoobslužné žádosti o přenastavení hesla"
 
 #: 950.data.seed-values.sql:3773
 msgid "Patron Merge Barcode Delete"
@@ -10276,7 +10302,7 @@ msgstr "Fidžijština"
 
 #: 950.data.seed-values.sql:1653
 msgid "Allow a user to create an authority record"
-msgstr ""
+msgstr "Povolit uživateli vytvořit autoritní záznam"
 
 #: 950.data.seed-values.sql:8252
 msgid "Swaziland "
@@ -10404,7 +10430,7 @@ msgstr "Konžština"
 
 #: 950.data.seed-values.sql:7989
 msgid "Live action"
-msgstr ""
+msgstr "Živé dění"
 
 #: 950.data.seed-values.sql:1574
 msgid "Allows a user to overlay copy data in MARC import"
@@ -10933,7 +10959,7 @@ msgstr "Irán "
 
 #: 950.data.seed-values.sql:204
 msgid "Temporal Term Browse"
-msgstr ""
+msgstr "Prohlížení dočasných termínů"
 
 #: 950.data.seed-values.sql:754
 msgid "Allow a user to add/remove users to/from the \"Cataloger\" group"
@@ -11030,7 +11056,7 @@ msgstr "Nokturna"
 
 #: 950.data.seed-values.sql:7737
 msgid "Part-songs"
-msgstr ""
+msgstr "Sbory (vícehlasé vokální skladby)"
 
 #: 950.data.seed-values.sql:632
 msgid "User may delete an entry from a patron statistical category"
@@ -11360,11 +11386,11 @@ msgstr "Cingular (Postpaid)"
 
 #: 950.data.seed-values.sql:7849
 msgid "Condensed score"
-msgstr ""
+msgstr "Výtah z partitury"
 
 #: 950.data.seed-values.sql:7942
 msgid "Goode's homolosine"
-msgstr ""
+msgstr "Goodsovo homolosinové zobrazení"
 
 #: 950.data.seed-values.sql:516
 msgid "Allow a user to place a volume level hold"
@@ -11386,7 +11412,7 @@ msgstr "Fantazie"
 
 #: 950.data.seed-values.sql:16730
 msgid "Website ID for this library, as assigned by OverDrive"
-msgstr ""
+msgstr "ID webové stránky pro tuto knihovnu přidělené OverDrive"
 
 #: 950.data.seed-values.sql:6923
 msgid "Sidamo"
@@ -11654,7 +11680,7 @@ msgstr "Tato specializovaná knihovna"
 
 #: 950.data.seed-values.sql:1631
 msgid "Allow a user to mark an item status as 'cataloging'"
-msgstr ""
+msgstr "Povolit uživatel označit status exempláře jako \"katalogizace\""
 
 #: 950.data.seed-values.sql:473
 msgid "Example Consortium"
@@ -11680,7 +11706,7 @@ msgstr "UPDATE_ORG_UNIT_SETTING.circ.hold_boundary.soft"
 
 #: 950.data.seed-values.sql:6440
 msgid "Bib Level"
-msgstr ""
+msgstr "Bibliografická úroveň"
 
 #: 950.data.seed-values.sql:1342
 msgid "ADMIN_MERGE_PROFILE"
@@ -11734,7 +11760,7 @@ msgstr "Vytvořit/Změnit/Smazat mapu atributů kódovaných údajů  SVF zázna
 
 #: 950.data.seed-values.sql:199
 msgid "Geographic Name Browse"
-msgstr ""
+msgstr "Procházení geografických názvů"
 
 #: 950.data.seed-values.sql:14945 950.data.seed-values.sql:14951
 msgid "Opt out of warning when adding a book to a temporary book list"
@@ -11742,7 +11768,7 @@ msgstr "Zrušit varování při vkládání knihy do dočasného seznamu knih"
 
 #: 950.data.seed-values.sql:7943
 msgid "Miller's bipolar oblique conformal conic"
-msgstr ""
+msgstr "Millerovo bipolární šikmé stejnoúhlé kuželové zobrazení"
 
 #: 950.data.seed-values.sql:2701
 msgid "Library"
@@ -11805,7 +11831,7 @@ msgstr "Disk Blu-ray"
 
 #: 950.data.seed-values.sql:16778
 msgid "URI provided to OverDrive for use with granted authorization"
-msgstr ""
+msgstr "URI poskytnuté OverDrive pro použití při garantované autorizaci"
 
 #: 950.data.seed-values.sql:7044
 msgid "Manuscript language material"
@@ -12067,7 +12093,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:16708
 msgid "OverDrive Account ID"
-msgstr ""
+msgstr "ID účtu OverDrive"
 
 #: 950.data.seed-values.sql:1278
 msgid "Allow a user to place holds on serials issuances"
@@ -12185,7 +12211,7 @@ msgstr "Libérie "
 
 #: 950.data.seed-values.sql:7846
 msgid "Condensed score or piano-conductor score"
-msgstr ""
+msgstr "Výtah z partitury nabo klavírní výtah pro dirigenta"
 
 #: 950.data.seed-values.sql:101
 msgid "Subject"
@@ -12260,6 +12286,8 @@ msgid ""
 "Basic token for client authentication with OneClickdigital API (supplied by "
 "OneClickdigital)"
 msgstr ""
+"Základní token pro autentizaci klienta prostřednictvím API OneClickdigital  "
+"(poskytnuté od  OneClickdigital)"
 
 #: 950.data.seed-values.sql:4835
 msgid "The State field will be required on the patron registration screen."
@@ -12302,7 +12330,7 @@ msgstr "Mluvený gramofonový záznam"
 
 #: 950.data.seed-values.sql:7848
 msgid "Chorus score"
-msgstr ""
+msgstr "Sborová partitura"
 
 #: 950.data.seed-values.sql:8025
 msgid "Barbados "
@@ -12351,7 +12379,7 @@ msgstr "Zdrženo: Žádná akce"
 
 #: 950.data.seed-values.sql:7851
 msgid "Vocal score"
-msgstr ""
+msgstr "Vokální partitura"
 
 #: 950.data.seed-values.sql:7712
 msgid "Concertos"
@@ -12844,6 +12872,8 @@ msgid ""
 "Base URI for OverDrive Discovery API (defaults to "
 "https://api.overdrive.com/v1). Using HTTPS here is strongly encouraged."
 msgstr ""
+"URI báze pro API OverDrive Discovery API (výchozí   "
+"https://api.overdrive.com/v1).  Je důrazně doporučeno použití  HTTPS."
 
 #: 950.data.seed-values.sql:878
 msgid "Allow a user to mark an item status as 'inter-library loan'"
@@ -13307,6 +13337,8 @@ msgid ""
 "Set to \"circ\" or \"cat\" for stock circulator or cataloger toolbar, "
 "respectively."
 msgstr ""
+"Nastavit  \"circ\", respektive \"cat\" pro nástrojovou lištu  personálu ve "
+"výpůjčních službách, respektive katalogizátorů."
 
 # id::clfm.description__m
 #: 950.data.seed-values.sql:7068
@@ -13733,7 +13765,7 @@ msgstr "Kuaňamština"
 
 #: 950.data.seed-values.sql:6439
 msgid "Audience"
-msgstr ""
+msgstr "Audience"
 
 #: 950.data.seed-values.sql:7052
 msgid "Notated music"
@@ -13820,7 +13852,7 @@ msgstr "UPDATE_BILLING_TYPE"
 
 #: 950.data.seed-values.sql:1659
 msgid "Allow a user to create an authority control set"
-msgstr ""
+msgstr "Povolit uživateli kontrolní sadu autorit"
 
 #: 950.data.seed-values.sql:8049
 msgid "Chad "
@@ -13942,7 +13974,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:1655
 msgid "Allow a user to delete an authority record"
-msgstr ""
+msgstr "Povolit uživateli smazat autoritní záznam"
 
 #: 950.data.seed-values.sql:3908
 msgid "PayflowPro test mode"
@@ -14003,7 +14035,7 @@ msgstr "Polština"
 
 #: 950.data.seed-values.sql:16740
 msgid "OverDrive Authorization Name"
-msgstr ""
+msgstr "Autorizační jméno pro OverDrive"
 
 #: 950.data.seed-values.sql:12451
 msgid "CSV output has been requested for records in an Importer Bib Queue."
@@ -14250,7 +14282,7 @@ msgstr "Malajsko-polynéské jazyky (ostatní)"
 
 #: 950.data.seed-values.sql:13520
 msgid "Fido"
-msgstr ""
+msgstr "Fido"
 
 #: 950.data.seed-values.sql:6754
 msgid "Kalâtdlisut"
@@ -14382,11 +14414,11 @@ msgstr "Offline: Povolení uživatelských jmen čtenářů"
 
 #: 950.data.seed-values.sql:1677
 msgid "Override the ITEM_NOT_HOLDABLE event"
-msgstr ""
+msgstr "Obejít událost  Exemplář není rezervovatelný  -  ITEM_NOT_HOLDABLE"
 
 #: 950.data.seed-values.sql:16692
 msgid "OverDrive Circulation API Base URI"
-msgstr ""
+msgstr "URI báze API pro výpůjčky OverDrive"
 
 #: 950.data.seed-values.sql:4922
 msgid ""
@@ -14499,7 +14531,7 @@ msgstr "Limit pro blokaci při čerpání z fondu"
 
 #: 950.data.seed-values.sql:7586
 msgid "microopaque"
-msgstr ""
+msgstr "Mikrokarta"
 
 #: 950.data.seed-values.sql:8118
 msgid "Idaho "
@@ -14594,7 +14626,7 @@ msgstr "Eskymáčtina"
 
 #: 950.data.seed-values.sql:1671
 msgid "Override the ITEM_DEPOSIT_REQUIRED event"
-msgstr ""
+msgstr "Obejít událost Je požadován vklad   - ITEM_DEPOSIT_REQUIRED"
 
 #: 950.data.seed-values.sql:60
 msgid "Patron had an invalid daytime phone number"

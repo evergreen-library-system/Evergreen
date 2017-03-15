@@ -3,14 +3,14 @@ msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-08-25 17:08-0400\n"
-"PO-Revision-Date: 2017-02-01 13:06+0000\n"
+"PO-Revision-Date: 2017-03-13 13:37+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-02-13 05:33+0000\n"
-"X-Generator: Launchpad (build 18326)\n"
+"X-Launchpad-Export-Date: 2017-03-14 06:20+0000\n"
+"X-Generator: Launchpad (build 18331)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: Czech\n"
@@ -1317,7 +1317,7 @@ msgstr "Editovat bib. záznam"
 
 #: staff.bibs_abreast.holdings
 msgid "Holdings"
-msgstr "Knihovní fond"
+msgstr "Správa exemplářů"
 
 #: staff.cat.opac.add_bucket.label
 #: staff.cat.opac.add_bucket.accesskey
@@ -3012,7 +3012,7 @@ msgstr "Vyhledávání MARC/Fasetové třídy"
 
 #: staff.main.menu.admin.server_admin.conify.metabib_class_ts_map.label
 msgid "MARC Search/Facet Class FTS Maps"
-msgstr ""
+msgstr "FTS mapy pro třídy MARC vyhledávání/faset"
 
 #: staff.main.menu.admin.server_admin.conify.metabib_field.label
 msgid "MARC Search/Facet Fields"
@@ -3020,7 +3020,7 @@ msgstr "Vyhledávání MARC / fasetová pole"
 
 #: staff.main.menu.admin.server_admin.conify.metabib_field_ts_map.label
 msgid "MARC Search/Facet Field FTS Maps"
-msgstr ""
+msgstr "FTS mapy pro MARC vyhledávání /fasety"
 
 #: staff.main.menu.admin.server_admin.conify.acn_prefix.label
 msgid "Call Number Prefixes"
@@ -3108,11 +3108,11 @@ msgstr "Asociace vah"
 
 #: staff.main.menu.admin.server_admin.conify.config_actor_sip_fields
 msgid "Actor Stat Cat Sip Fields"
-msgstr "Činitel Sip pole statistických kategorií"
+msgstr "Sip pole statistických kategorií pro \"actor\""
 
 #: staff.main.menu.admin.server_admin.conify.config_asset_sip_fields
 msgid "Asset Stat Cat Sip Fields"
-msgstr ""
+msgstr "Pole SIp statistických katagorií pro Asset"
 
 #: staff.main.menu.admin.server_admin.conify.config_usr_activity_type
 msgid "User Activity Types"
@@ -7979,7 +7979,7 @@ msgstr "Přeprava"
 
 #: staff.server.admin.transit.list.print
 msgid "Print Transits"
-msgstr "Tisk přepravy"
+msgstr "Tisk seznamu přeprav"
 
 #: staff.server.admin.transit.list.actions
 msgid "Actions for Selected Transits"
@@ -10065,7 +10065,7 @@ msgstr "Potvrdi&t"
 #: staff.circ.copy_status_overlay.copy_status_upload_file.label
 #: staff.circ.copy_status_overlay.copy_status_upload_file.accesskey
 msgid "&Upload From File"
-msgstr "&Nahrát ze souboru"
+msgstr "&Načíst ze souboru"
 
 #: staff.circ.copy_status_overlay.cataloger_actions.label
 #: staff.circ.copy_status_overlay.cataloger_actions.accesskey
@@ -11286,7 +11286,7 @@ msgstr "Přesunout do specifické signatury"
 
 #: staff.cat.copy_buckets_overlay.copy_buckets.copy_buckets_batch_copy_edit.label
 msgid "Edit Item Attributes"
-msgstr "Upravit vlastnosti  &exempláře"
+msgstr "Upravit vlastnosti  exempláře"
 
 #: staff.cat.copy_buckets_overlay.copy_buckets.copy_buckets_batch_copy_delete.label
 msgid "Delete All from Catalog"
@@ -14951,10 +14951,11 @@ msgid ""
 "library searched. One recommendation is to set this to your workstation "
 "library so that local copies show up first in search results."
 msgstr ""
-"Pro preferovanou knihovnu jsou při vyhledávání zobrazovány exempláře a URI. "
-"Jedno z doporučení je nastavit jako preferovanou tuknihovnu, v níž je "
-"registrována pracovní stanice, aby se ve výsledcích hledání zobrazovaly na "
-"prvním místě exempláře z této knihovny."
+"Při vyhledání jsou  zobrazovány exempláře a URI pro preferovanou knihovnu "
+"bez ohledu na to, ve které knihovně se vyhledává. Jedním z doporučení je "
+"nastavit jako preferovanou tu knihovnu, v níž je registrována pracovní "
+"stanice, aby se ve výsledcích hledání zobrazovaly na prvním místě exempláře "
+"z této knihovny."
 
 #: staff.search_prefs.adv_pane.caption
 msgid "Advanced Search Default Pane"
@@ -14966,8 +14967,8 @@ msgid ""
 "You can change which one is loaded by default when opening a new catalog "
 "window here."
 msgstr ""
-"Pokročilé vyhledávání má sekundární pole pro numerické vyhledávání a "
-"expertní vyhledávání v MARCu. Můžete zvolit, které z nich z polí bude "
+"Pokročilé vyhledávání má sekundární pole pro Hledání podle identifikátorů a "
+"pro  Expertní vyhledávání v MARCu. Můžete zvolit, které z nich z polí bude "
 "standardně zobrazeno při otevření nového okna katalogu."
 
 #: staff.search_prefs.adv_pane.advanced
