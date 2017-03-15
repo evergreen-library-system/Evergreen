@@ -393,7 +393,7 @@ timeout.
 
 All stateless requests record the current database time zone, set the database
 time zone to that of the client's, run the query, and then reset the database
-time zone on each request that carries a client time zone value.  It is expect
+time zone on each request that carries a client time zone value.  It is expected
 that this will not cause any noticeable increase in latency or query execution
 time, as this setting is local to the specific PostgreSQL server backend process.
 
@@ -702,6 +702,7 @@ We also thank the following organizations whose employees contributed
 patches:
 
 * British Columbia Libraries Cooperative
+* Calvin College
 * Catalyst DevWorks
 * C/W MARS
 * Emerald Data Networks, Inc.
