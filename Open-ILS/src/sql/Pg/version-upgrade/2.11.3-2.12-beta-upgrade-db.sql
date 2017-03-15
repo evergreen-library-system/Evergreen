@@ -768,10 +768,10 @@ SELECT metabib.remap_metarecord_for_bib(id, fingerprint)
 FROM biblio.record_entry
 WHERE NOT deleted;
 
-\qecho Running a browse-only reingest of your bib records. It may take a while.
+\qecho Running a browse and reingest of your bib records. It may take a while.
 \qecho You may cancel now without losing the effect of the rest of the
 \qecho upgrade script, and arrange the reingest later.
 \qecho .
-SELECT metabib.reingest_metabib_field_entries(id, TRUE, FALSE, TRUE)
+SELECT metabib.reingest_metabib_field_entries(id, FALSE, FALSE, TRUE)
     FROM biblio.record_entry;
 
