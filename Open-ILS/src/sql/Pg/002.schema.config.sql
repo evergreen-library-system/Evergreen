@@ -340,7 +340,8 @@ BEGIN
         UPDATE  config.hard_due_date
           SET   ceiling_date = temp_value.ceiling_date
           WHERE id = temp_value.hard_due_date
-                AND ceiling_date <> temp_value.ceiling_date; -- Time is equal if we've already updated the chdd
+                AND ceiling_date <> temp_value.ceiling_date -- Time is equal if we've already updated the chdd
+                AND temp_value.ceiling_date >= NOW(); -- Don't update ceiling dates to the past
 
         IF FOUND THEN
             updated := updated + 1;

@@ -65,7 +65,7 @@
             suppressFields="['hard_due_date']"
             suppressEditFields="['id']"
             fmClass="chddv"
-            hideSelector="true"
+            hideSelector="false"
             editOnEnter="true">
         </table>
     </div>
