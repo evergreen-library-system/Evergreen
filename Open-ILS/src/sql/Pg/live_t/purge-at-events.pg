@@ -1,0 +1,90 @@
+BEGIN;
+
+SELECT plan(8);
+
+-- event_definition 1 uses checkout.due (passive) hook
+\set evt_def_pasv 1
+
+-- event_definition 1 uses format.po.html (active) hook
+\set evt_def_actv 4
+
+/* ---------------------------------------------------------------
+ * Test Interval Constraints
+ * ---------------------------------------------------------------*/
+
+UPDATE action_trigger.event_definition 
+    SET delay = '1 day', max_delay = NULL WHERE id = :evt_def_pasv;
+
+PREPARE delay_required AS 
+    UPDATE action_trigger.event_definition 
+    SET retention_interval = '1 hour' WHERE id = :evt_def_pasv;
+
+SELECT throws_ok('delay_required', 'P0001', 
+    'retention_interval requires max_delay', 'No Max Delay Test');
+
+UPDATE action_trigger.event_definition 
+    SET max_delay = '2 days' WHERE id = :evt_def_pasv;
+
+PREPARE short_interval AS 
+    UPDATE action_trigger.event_definition 
+    SET retention_interval = '1 hour' WHERE id = :evt_def_pasv;
+
+SELECT throws_ok('short_interval', 'P0001', 
+    'retention_interval is too short', 'Short Interval Update Test');
+
+-- '2 days' is longer than " '2 days' - '1 day' "
+PREPARE ok_interval AS 
+    UPDATE action_trigger.event_definition 
+    SET retention_interval = '2 days' WHERE id = :evt_def_pasv;
+
+SELECT lives_ok('ok_interval', 'Long Interval Update Test');
+
+PREPARE any_interval AS 
+    UPDATE action_trigger.event_definition 
+    SET retention_interval = '1 min' WHERE id = :evt_def_actv;
+
+SELECT lives_ok('any_interval', 'Active hooks allow any interval');
+
+/* ---------------------------------------------------------------
+ * Test Purging
+ * ---------------------------------------------------------------*/
+
+INSERT INTO action_trigger.event_output (id, data, create_time)
+    VALUES 
+    (1010, '', NOW()), -- passive, non-purged
+    (1011, '', NOW() - '4 days'::INTERVAL), -- passive purge
+    (1012, '', NOW() - '4 days'::INTERVAL), -- active purge
+    (1013, '', NOW()) -- orphan purge
+;
+
+INSERT INTO action_trigger.event (id, target, event_def, run_time, 
+    start_time, update_time, state, template_output) VALUES
+    (1010, 1, :evt_def_pasv, NOW(), NOW(), NOW(), 'pending', NULL),
+    (1011, 1, :evt_def_pasv, NOW(), NOW(), NOW(), 'error', NULL),
+    (1012, 1, :evt_def_pasv, NOW(), NOW(), NOW() - '4 days'::INTERVAL, 'complete', 1011), -- purge
+    (1013, 1, :evt_def_pasv, NOW(), NOW(), NOW() - '4 days'::INTERVAL, 'pending', NULL),
+    (1014, 1, :evt_def_actv, NOW(), NOW(), NOW() - '10 minutes'::INTERVAL, 'complete', 1012), -- purge
+    (1015, 1, :evt_def_pasv, NOW(), NOW(), NOW(), 'complete', 1010)
+;
+
+SELECT action_trigger.purge_events();
+
+SELECT is( -- purged outputs
+    (SELECT COUNT(*) FROM action_trigger.event_output WHERE id IN (1011,1012,1013)), 
+    0::BIGINT, 'Expired Template Output Purged');
+
+SELECT is( -- non-purged outputs
+    (SELECT COUNT(*) FROM action_trigger.event_output WHERE id IN (1010)), 
+    1::BIGINT, 'Non-Expired Template Output Retained');
+
+SELECT is( -- purged events
+    (SELECT COUNT(*) FROM action_trigger.event WHERE id IN (1012,1014)), 
+    0::BIGINT, 'Expired Event Purged');
+
+SELECT is( -- non-purged events
+    (SELECT COUNT(*) FROM action_trigger.event WHERE id IN (1010,1011,1013,1015)), 
+    4::BIGINT, 'Non-Expired Event Retained');
+
+SELECT * FROM finish();
+ROLLBACK;
+
