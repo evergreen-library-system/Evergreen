@@ -380,6 +380,37 @@ sub request {
     }
 }
 
+sub get_details {
+    my ($self, $conn, $session_id, $title_id) = @_;
+    my $handler = new_handler($session_id);
+    return $handler->get_title_info($title_id);
+}
+__PACKAGE__->register_method(
+    method => 'get_details',
+    api_name => 'open-ils.ebook_api.title.details',
+    api_level => 1,
+    argc => 2,
+    signature => {
+        desc => "Get basic metadata for an ebook title",
+        params => [
+            {
+                name => 'session_id',
+                desc => 'The session ID (provided by open-ils.ebook_api.start_session)',
+                type => 'string'
+            },
+            {
+                name => 'title_id',
+                desc => 'The title ID (ISBN, unique identifier, etc.)',
+                type => 'string'
+            }
+        ],
+        return => {
+            desc => 'Success: { title => "Title", author => "Author Name" } / Failure: { error => "Title not found" }',
+            type => 'hashref'
+        }
+    }
+);
+
 sub get_availability {
     my ($self, $conn, $session_id, $title_id) = @_;
     my $handler = new_handler($session_id);

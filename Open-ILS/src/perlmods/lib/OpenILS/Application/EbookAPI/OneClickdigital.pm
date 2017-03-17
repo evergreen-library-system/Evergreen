@@ -127,6 +127,29 @@ sub do_patron_auth {
     return;
 }
 
+# get basic metadata for an item (title, author, cover image if any)
+# GET http://api.oneclickdigital.us/v1/libraries/{libraryId}/titles/{isbn}
+sub get_title_info {
+    my ($self, $isbn) = @_;
+    my $base_uri = $self->{base_uri};
+    my $library_id = $self->{library_id};
+    my $session_id = $self->{session_id};
+    my $req = {
+        method => 'GET',
+        uri    => "$base_uri/libraries/$library_id/titles/$isbn"
+    };
+    my $res = $self->request($req, $session_id);
+    if (defined ($res)) {
+        return {
+            title  => $res->{content}->{title},
+            author => $res->{content}->{authors}[0]{text}
+        };
+    } else {
+        $logger->error("EbookAPI: could not retrieve OneClickdigital title details for ISBN $isbn");
+        return;
+    }
+}
+
 # does this title have available "copies"? y/n
 # GET http://api.oneclickdigital.us/v1/libraries/{libraryID}/media/{isbn}/availability
 sub do_availability_lookup {

@@ -1,6 +1,6 @@
 #!perl
 use strict; use warnings;
-use Test::More tests => 21; # XXX
+use Test::More tests => 23; # XXX
 use OpenILS::Utils::TestUtils;
 
 diag("Tests Ebook API");
@@ -56,6 +56,18 @@ ok($new_session_id, 'Initiated new EbookAPI session when valid session ID not pr
 # ------------------------------------------------------------ 
 # 3. Title availability and holdings.
 # ------------------------------------------------------------ 
+
+# Title details for valid title ID.
+my $title_001_details_req = $ebook_api->request(
+    'open-ils.ebook_api.title.details', $session_id, '001');
+my $title_001_details = $title_001_details_req->recv->content;
+ok(ref($title_001_details) && $title_001_details->{title}, 'Title details check 1/2 (valid title)');
+
+# Title details for invalid title ID.
+my $title_004_details_req = $ebook_api->request(
+    'open-ils.ebook_api.title.details', $session_id, '004');
+my $title_004_details = $title_004_details_req->recv->content;
+ok(ref($title_004_details) && $title_004_details->{error}, 'Title details check 1/2 (invalid title returns error message)');
 
 # Title is not available.
 my $title_001_avail_req = $ebook_api->request(

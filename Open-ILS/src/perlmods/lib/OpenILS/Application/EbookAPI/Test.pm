@@ -42,6 +42,7 @@
 #   - do_client_auth: authenticate client with external API (e.g. get client
 #     token if needed)
 #   - do_patron_auth: get a patron-specific bearer token, or just the patron ID
+#   - get_title_info: get basic title details (title, author, optional cover image)
 #   - do_holdings_lookup: how many total/available "copies" are there for this
 #     title? (n/a for OneClickdigital)
 #   - do_availability_lookup: does this title have available "copies"? y/n
@@ -162,6 +163,43 @@ sub do_patron_auth {
 
     # All other values return undef.
     return undef;
+}
+
+# get basic info (title, author, eventually a thumbnail URL) for a title
+sub get_title_info {
+    my $self = shift;
+
+    # External ID for title.  Depending on the API, this could be an ISBN
+    # or an identifier unique to that vendor.
+    my $title_id = shift;
+
+    # Prepare data structure to be used as return value.
+    my $title_info = {
+        title  => '',
+        author => ''
+    };
+
+    # If title lookup fails or title is not found, our return value
+    # is somewhat different.
+    my $title_not_found = {
+        error => 'Title not found.'
+    };
+
+    # For testing purposes, we have only three valid titles (001, 002, 003).
+    # All other title IDs return an error message.
+    if ($title_id eq '001') {
+        $title_info->{title} = 'The Fellowship of the Ring';
+        $title_info->{author} = 'J.R.R. Tolkien';
+    } elsif ($title_id eq '002') {
+        $title_info->{title} = 'The Two Towers';
+        $title_info->{author} = 'J.R.R. Tolkien';
+    } elsif ($title_id eq '003') {
+        $title_info->{title} = 'The Return of the King';
+        $title_info->{author} = 'J.R.R. Tolkien';
+    } else {
+        return $title_not_found;
+    }
+    return $title_info;
 }
 
 # get detailed holdings information (copy counts and formats), OR basic
