@@ -688,6 +688,9 @@ __PACKAGE__->add_search_filter( 'record_list' );
 
 __PACKAGE__->add_search_filter( 'has_browse_entry' );
 
+# copy_tag(copy_tag_code,copy_tag_search)
+__PACKAGE__->add_search_filter( 'copy_tag' );
+
 # used internally, but generally not user-settable
 __PACKAGE__->add_search_filter( 'preferred_language' );
 __PACKAGE__->add_search_filter( 'preferred_language_weight' );
@@ -713,6 +716,7 @@ use OpenSRF::Utils::Logger qw($logger);
 use OpenSRF::Utils qw/:datetime/;
 use Data::Dumper;
 use OpenILS::Application::AppUtils;
+use OpenILS::Utils::Normalize qw/search_normalize/;
 my $apputils = "OpenILS::Application::AppUtils";
 
 our %_dfilter_controlled_cache = ();
@@ -1298,6 +1302,51 @@ sub flatten {
                             $where .= $joiner if $where ne '';
                             $where .= "(container_${filter_alias} IS " . ( $NOT ? 'NULL)' : 'NOT NULL)');
                         }
+                    }
+                }
+            } elsif ($filter->name eq 'copy_tag') {
+                my $valid_copy_tag_search = 0;
+                my $copy_tag_type;
+                my $tag_value;
+                if (@{$filter->args} >= 2) { # must have at least two parts, tag (or *) and terms
+                    my @fargs = @{$filter->args};
+                    $copy_tag_type = shift(@fargs);
+                    $tag_value = join(' ', @fargs);
+                    $valid_copy_tag_search = 1;
+                }
+                if ($valid_copy_tag_search) {
+                    my $norm_value = search_normalize($tag_value);
+                    my @tokens = split /\s+/, $norm_value;
+                    
+                    my $filter_alias = "$filter";
+                    $filter_alias =~ s/^.*\(0(x[0-9a-fA-F]+)\)$/$1/go;
+                    $filter_alias =~ s/\|/_/go;
+
+                    $with .= ",\n     " if $with;
+                    $with .= "copy_tag_${filter_alias} AS (\n";
+                    $with .= "       SELECT cn.record AS record FROM config.copy_tag_type cctt\n";
+                    $with .= "             JOIN asset.copy_tag acpt ON (cctt.code = acpt.tag_type)\n";
+                    $with .= "             JOIN asset.copy_tag_copy_map acptcm ON (acpt.id = acptcm.tag)\n";
+                    $with .= "             JOIN asset.copy cp ON (acptcm.copy = cp.id)\n";
+                    $with .= "             JOIN asset.call_number cn ON (cp.call_number = cn.id)\n";
+                    $with .= "       WHERE 1 = 1 \n";
+                    if ($copy_tag_type ne '*') {
+                        $with .= "             AND cctt.code = " . $self->QueryParser->quote_value($copy_tag_type) . "\n";
+                    }
+                    if (@tokens) {
+                        $with .= '             AND acpt.value @@ to_tsquery(' . $self->QueryParser->quote_value(join(' & ', @tokens)) . ")\n";
+                    }
+                    if (!$self->find_modifier('staff')) {
+                        $with .= "             AND acpt.pub IS TRUE\n";
+                    }
+                    $with .= "     )";
+
+                    my $optimize_join = 1 if $self->top_plan and !$NOT;
+                    $from .= "\n" . ${spc} x 3 . ( $optimize_join ? 'INNER' : 'LEFT') . " JOIN copy_tag_${filter_alias} ON copy_tag_${filter_alias}.record = m.source";
+
+                    if (!$optimize_join) {
+                        $where .= $joiner if $where ne '';
+                        $where .= "(copy_tag_${filter_alias} IS " . ( $NOT ? 'NULL)' : 'NOT NULL)');
                     }
                 }
             } elsif ($filter->name eq 'record_list') {
