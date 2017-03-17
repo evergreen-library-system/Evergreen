@@ -1219,4 +1219,13 @@ ALTER TABLE config.marc_subfield
            )
           );
 
+CREATE TABLE config.copy_tag_type (
+    code            TEXT NOT NULL PRIMARY KEY,
+    label           TEXT NOT NULL,
+    owner           INTEGER NOT NULL -- REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED
+);
+
+CREATE INDEX config_copy_tag_type_owner_idx
+    ON config.copy_tag_type (owner);
+
 COMMIT;

@@ -1675,7 +1675,11 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 588, 'ITEM_NOT_HOLDABLE.override', oils_i18n_gettext( 588,
     'Override the ITEM_NOT_HOLDABLE event', 'ppl', 'description' )),
  ( 589, 'ITEM_RENTAL_FEE_REQUIRED.override', oils_i18n_gettext( 589,
-    'Override the ITEM_RENTAL_FEE_REQUIRED event', 'ppl', 'description' ))
+    'Override the ITEM_RENTAL_FEE_REQUIRED event', 'ppl', 'description' )),
+ ( 590, 'ADMIN_COPY_TAG_TYPES', oils_i18n_gettext( 590,
+    'Administer copy tag types', 'ppl', 'description' )),
+ ( 591, 'ADMIN_COPY_TAG', oils_i18n_gettext( 591,
+    'Administer copy tag', 'ppl', 'description' ))
 ;
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
@@ -16876,3 +16880,25 @@ INSERT into config.org_unit_setting_type (
     )
     ,'string'
 );
+
+INSERT INTO config.org_unit_setting_type
+    (name, label, description, grp, datatype)
+VALUES (
+    'opac.search.enable_bookplate_search',
+    oils_i18n_gettext(
+        'opac.search.enable_bookplate_search',
+        'Enable Digital Bookplate Search',
+        'coust',
+        'label'
+    ),
+    oils_i18n_gettext(
+        'opac.search.enable_bookplate_search',
+        'If enabled, adds a "Digital Bookplate" option to the query type selectors in the public catalog for search on copy tags.',   
+        'coust',
+        'description'
+    ),
+    'opac',
+    'bool'
+);
+
+INSERT INTO config.copy_tag_type (code, label, owner) VALUES ('bookplate', 'Digital Bookplate', 1);
