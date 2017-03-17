@@ -21,6 +21,12 @@ var xacts = {
     holds_ready: []
 };
 
+// Ebook to perform actions on.
+var active_ebook;
+if (typeof ebook_action.title_id !== 'undefined') {
+    active_ebook = new Ebook(ebook_action.vendor, ebook_action.title_id);
+}
+
 dojo.addOnLoad(function() {
 
     dojo.forEach(vendor_list, function(v) {
@@ -98,7 +104,11 @@ function updateMyAccountSummary() {
 }
 
 function updateCheckoutView() {
-    if (xacts.checkouts.length < 1) {
+    if (typeof ebook_action.type !== 'undefined') {
+        if (ebook_action.type == 'checkout') {
+            getReadyForCheckout();
+        }
+    } else if (xacts.checkouts.length < 1) {
         dojo.removeClass('no_ebook_circs', "hidden");
     } else {
         dojo.forEach(xacts.checkouts, function(x) {
@@ -164,6 +174,61 @@ function updateHoldReadyView() {
         dojo.addClass('no_ebook_holds', "hidden");
         dojo.removeClass('ebook_holds_main', "hidden");
     }
+}
+
+// set up page for user to perform a checkout
+function getReadyForCheckout() {
+    if (typeof active_ebook === 'undefined') {
+        console.log('No active ebook specified, cannot prepare for checkout');
+        dojo.removeClass('ebook_checkout_failed', "hidden");
+    } else {
+        active_ebook.getDetails( function(ebook) {
+            dojo.empty('ebook_circs_main_table_body');
+            var tr = dojo.create("tr", null, dojo.byId('ebook_circs_main_table_body'));
+            dojo.create("td", { innerHTML: ebook.title }, tr);
+            dojo.create("td", { innerHTML: ebook.author }, tr);
+            dojo.create("td", null, tr);
+            dojo.create("td", { id: "checkout-button-td" }, tr);
+            var button = dojo.create("input", { id: "checkout-button", type: "button", value: l_strings.checkout }, dojo.byId('checkout-button-td'));
+            ebook.conns.checkout = dojo.connect(button, 'onclick', "doCheckout");
+            dojo.removeClass('ebook_circs_main', "hidden");
+        });
+    }
+}
+
+// check out our active ebook
+function doCheckout() {
+    active_ebook.checkout(authtoken, patron_id, function(resp) {
+        if (resp.due_date) {
+            console.log('Checkout succeeded!');
+            dojo.destroy('checkout-button');
+            dojo.removeClass('ebook_checkout_succeeded', "hidden");
+            // add our successful checkout to top of transaction cache
+            var new_xact = {
+                title_id: active_ebook.id,
+                title: active_ebook.title,
+                author: active_ebook.author,
+                due_date: resp.due_date,
+                download_url: '' // TODO - for OverDrive, user must "lock in" a format first!
+            };
+            xacts.checkouts.unshift(new_xact);
+            // unset variables related to the transaction we have performed,
+            // to avoid any weirdness on page reload
+            ebook_action = {};
+            active_ebook = undefined;
+            // update page to account for successful checkout
+            addTotalsToPage();
+            addTransactionsToPage();
+            // clear transaction cache to force a refresh on next page load
+            dojo.cookie('ebook_xact_cache', '', {path: '/', expires: '-1h'});
+        } else {
+            console.log('Checkout failed: ' + resp.error_msg);
+            dojo.removeClass('ebook_checkout_failed', "hidden");
+        }
+        // When we switch to jQuery, we can use .one() instead of .on(),
+        // obviating the need for an explicit disconnect here.
+        dojo.disconnect(active_ebook.conns.checkout);
+    });
 }
 
 // deserialize transactions from cache, returning them as a JS object
