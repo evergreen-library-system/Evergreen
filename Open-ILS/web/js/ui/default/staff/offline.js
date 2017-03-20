@@ -1,10 +1,730 @@
+/**
+ * App to drive the offline UI
+ */
 
-angular.module('egCoreMod')
-// toss tihs onto egCoreMod since the page app may vary
+lf.isOffline = true;
+
+angular.module('egOffline', ['ngRoute', 'ui.bootstrap', 'egCoreMod', 'egUiMod', 'ngToast', 'tableSort'])
+
+.config(
+       ['$routeProvider','$locationProvider','$compileProvider',
+function($routeProvider , $locationProvider , $compileProvider) {
+
+    $locationProvider.html5Mode(true);
+    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|blob):/);
+
+    /**
+     * Route resolvers allow us to run async commands
+     * before the page controller is instantiated.
+     */
+    var resolver = {delay : ['egCore', 
+        function(egCore) {
+            return egCore.startup.go();
+        }
+    ]};
+
+    $routeProvider.when('/offline-interface/:tab', {
+        templateUrl: 'offline-template',
+        controller: 'OfflineCtrl',
+        resolve : resolver
+    });
+
+    // default page 
+    $routeProvider.otherwise({
+        templateUrl : 'offline-template',
+        controller : 'OfflineCtrl',
+        resolve : resolver
+    });
+}])
+
+.controller('OfflineSessionCtrl', 
+           ['$scope','$window','egCore','$routeParams','$http','$q','$timeout','egPromptDialog','ngToast','egProgressDialog',
+    function($scope , $window , egCore , $routeParams , $http , $q , $timeout , egPromptDialog , ngToast , egProgressDialog) {
+        $scope.active_session_tab = 'pending';
+
+        $scope.lookupNoncatTypeName = function (type) {
+            var nc =  $scope.noncats.filter(function(n){ return n.id() == type })[0];
+            if (nc) return nc.name();
+            return '';
+        }
+
+        $scope.createDate = function (ts, epoch) {
+            if (!ts) return '';
+            if (epoch) ts = ts * 1000;
+            return new Date(ts);
+        }
+
+        $scope.setSession = function (s, ind) {
+            $scope.current_session = s;
+            $scope.current_session_index = ind;
+
+            return $scope.refreshExceptions(s);
+        }
+
+        $scope.createSession = function () {
+
+            return egPromptDialog.open(
+                egCore.strings.OFFLINE_SESSION_DESC, '',
+                {ok : function(value) {
+                    if (value) {
+
+                        return $http.get(formURL({action:'create',desc:value})).then(function(res) {
+                            if (res.data.ilsevent == "0") return $q.when(res.data.payload);
+                            return $q.reject();
+                        }).then(function (seskey) {
+                            return $scope.refreshSessions().then(function() {
+                                if (seskey) {
+                                    var s = $scope.sessions.filter(function(s){ s.key == seskey })[0];
+                                    var ind = $scope.sessions.length - 1; // sorted by create time, so new one is last
+                                    return $scope.setSession(s, ind);
+                                }
+                            });
+                        }, function() {
+                            ngToast.warning(egCore.strings.OFFLINE_SESSION_CREATE_FAILED);
+                        });
+                    }
+                }}
+            );
+        }
+
+        $scope.processSession = function (s, ind) {
+            return $scope.setSession(s, ind).then(function() {
+                egProgressDialog.open();
+
+                return $http.get(
+                    formURL({action:'execute',seskey:$scope.current_session.key})
+                ).then(function(res) {
+                    if (res.data.ilsevent == "0") return $q.when(res.data.payload);
+                    return $q.reject();
+                }).then(function () {
+                    egProgressDialog.close();
+                    return $scope.refreshSessions()
+                        .then(function(){ return $scope.refreshExceptions(s) });
+                },function () {
+                    egProgressDialog.close();
+                    return $scope.refreshSessions().then(function() {
+                        ngToast.warning(egCore.strings.OFFLINE_SESSION_PROCESSING_FAILED);
+                    });
+                });
+            });
+        }
+
+        $scope.refreshExceptions = function (s) {
+            return $http.get(
+                formURL({
+                    action      : 'status',
+                    status_type : 'exceptions',
+                    seskey      : s.key
+                })
+            ).then(function(res) {
+                if (res.data.ilsevent) {
+                    $scope.current_session.exceptions = [];
+                } else {
+                    $scope.current_session.exceptions = res.data;
+                }
+                return $q.when();
+            });
+        }
+
+        $scope.refreshSessions = function () {
+
+            return $http.get(formURL({action:'status',status_type:'sessions'})).then(function(res) {
+                if (res.data) {
+                    $scope.sessions = res.data;
+                    return $q.when();
+                }
+                return $q.reject();
+            }).then(function() {
+                var creator_list = [$q.when()];
+                angular.forEach($scope.sessions, function (s) {
+                    s.total = 0;
+                    s.org = egCore.org.get(s.org).shortname();
+                    creator_list.push(egCore.pcrud.retrieve('au',s.creator).then(function(u) {
+                        s.creator = u.family_name();
+                    }));
+                    angular.forEach(s.scripts, function(sc) {
+                        s.total += sc.count;
+                    });
+                });
+
+                return $q.all(creator_list);
+            });
+        }
+
+        $scope.reprintLast = function () {
+            egCore.print.reprintLast();
+        }
+
+
+        $scope.uploadPending = function (s, ind) {
+            return $scope.setSession(s, ind).then(function() {
+
+                egProgressDialog.open();
+                return $scope.createOfflineXactBlob().then(function(blob) {
+
+                    var form = new FormData();
+                    form.append("ses", egCore.auth.token());
+                    form.append("org", $scope.org.id());
+                    form.append("ws", $scope.current_workstation_name());
+                    form.append("wc", 1);
+                    form.append("action", "load");
+                    form.append("seskey", $scope.current_session.key);
+                    form.append("file", blob, "file");
+
+                    return $http.post(
+                        '/cgi-bin/offline/offline.pl?' + new Date().getTime(),
+                        form,
+                        {
+                            transformRequest: angular.identity,
+                            headers: {'Content-Type': undefined}
+                        }
+                    ).then(function(res) {
+                        egProgressDialog.close();
+                        if (res.data.ilsevent == "0") {
+                            return $scope.clear_pending(true).then(function() {
+                                return $scope.refreshSessions();
+                            });
+                        } else {
+                            ngToast.warning(egCore.strings.OFFLINE_SESSION_UPLOAD_FAILED);
+                            return $scope.refreshSessions();
+                        }
+                    },function () { egProgressDialog.close() });
+                });
+            });
+        }
+
+        $scope.retrieveDetails = function (x) {
+            alert(JSON.stringify(x, null, 2)); // egAlertDialog kills pretty printing
+        }
+
+        $scope.retrieveItem = function (bc) {
+            return egCore.pcrud.search('acp',{deleted: 'f', barcode: bc}).then(function(copy) {
+                if (copy) {
+                    return $window.open(
+                        egCore.env.basePath +
+                        '/cat/item/' + copy.id(),
+                        '_blank'
+                    ).focus();
+                }
+
+                ngToast.warning(egCore.strings.ITEM_NOT_FOUND);
+            });
+        }
+
+        $scope.retrievePatron = function (bc) {
+            return egCore.pcrud.search('ac',{barcode: bc}).then(function(card) {
+                if (card) {
+                    return $window.open(
+                        egCore.env.basePath +
+                        '/circ/patron/' + card.usr() + '/checkout',
+                        '_blank'
+                    ).focus();
+                }
+
+                ngToast.warning(egCore.strings.PATRON_NOT_FOUND);
+            });
+        }
+
+        function formURL (params) {
+            var url = '/cgi-bin/offline/offline.pl?' + new Date().getTime();
+
+            var defaults = {
+                org : $scope.org ? $scope.org.id() : null,
+                ws  : $scope.current_workstation_name(),
+                wc  : 1,
+                ses : egCore.auth.token()
+            }
+
+            angular.extend(params, defaults)
+
+            var first = true;
+            for (var k in params) {
+                url += '&' + k + '=' + window.encodeURIComponent(params[k]);
+            }
+            return url;
+        }
+
+        $scope.$watch('org',function(n){if (n) $scope.refreshSessions()});
+
+    }
+])
+
+.controller('OfflineCtrl', 
+           ['$q','$scope','$window','$location','$rootScope','egCore','egLovefield','$routeParams','$timeout','$http','ngToast','egConfirmDialog','egUnloadPrompt',
+    function($q , $scope , $window , $location , $rootScope , egCore , egLovefield , $routeParams , $timeout , $http , ngToast , egConfirmDialog , egUnloadPrompt) {
+        $scope.active_tab = $routeParams.tab || 'checkout';
+
+        // Immediately redirect if we're really offline
+        if (!$window.navigator.onLine) {
+            if ($location.path().match(/session$/)) {
+                var path = $location.path();
+                return $location.path(path.replace('session','checkout'));
+            }
+        }
+
+        var today = new Date();
+        today.setHours(0);
+        today.setMinutes(0);
+        today.setSeconds(0);
+        today.setMilliseconds(0);
+
+        $scope.minDate = today;
+        $scope.blocked_patron = null;
+        $scope.bad_barcode = null;
+        $scope.barcode_type = 'barcode';
+        $scope.focusMe = true;
+        $scope.shared = { outOfRange : false, due_date : null, due_date_offset : '' };
+        $scope.workstation_obj = null;
+        $scope.workstation = '';
+        $scope.workstation_owner = '';
+        $scope.workstations = [];
+        $scope.org = null;
+        $scope.do_print = Boolean($scope.active_tab == 'checkout');
+        $scope.do_print_changed = false;
+        $scope.printed = false;
+
+        $scope.imported_pending_xacts = { data : '' };
+
+        $scope.xact_page = { checkin:[], checkout:[], renew:[], in_house_use:[] };
+        $scope.all_xact = [];
+        $scope.noncats = [];
+
+        $scope.checkout = { noncat_type : '' };
+        $scope.renew = { noncat_type : '' };
+        $scope.in_house_use = {count : 1};
+        $scope.checkin = { backdate : new Date() };
+
+        $scope.current_workstation_owning_lib = function () {
+            return $scope.workstations.filter(function(w) {
+                return $scope.workstation == w.id
+            })[0].owning_lib;
+        }
+
+        $scope.current_workstation_name = function () {
+            return $scope.workstations.filter(function(w) {
+                return $scope.workstation == w.id
+            })[0].name;
+        }
+
+        $scope.$watch('workstation', function (n,o) {
+            if (egCore.env.aou)
+                $scope.org = egCore.org.get($scope.current_workstation_owning_lib());
+        });
+
+        $scope.changeCheck = function () {
+            $scope.strict_barcode = !$scope.strict_barcode;
+            $scope.do_check_changed = true;
+            egCore.hatch.setItem('eg.offline.strict_barcode', $scope.strict_barcode)
+        }
+
+        $scope.changePrint = function () {
+            $scope.do_print = !$scope.do_print;
+            $scope.do_print_changed = true;
+            egCore.hatch.setItem('eg.offline.print_receipt', $scope.do_print)
+        }
+
+        $scope.logged_in = egCore.auth.token() ? true : false;
+
+        if (!$scope.logged_in && $routeParams.tab == 'session')
+            $scope.active_tab = 'checkout';
+        
+        egCore.hatch.getItem('eg.offline.print_receipt')
+        .then(function(setting) {
+            $scope.do_print = setting;
+            if (setting !== undefined) $scope.do_print_changed = true;
+        });
+
+        egCore.hatch.getItem('eg.offline.strict_barcode')
+        .then(function(setting) {
+            $scope.strict_barcode = setting;
+            if (setting !== undefined) $scope.do_check_changed = true;
+        });
+
+        egCore.hatch.getItem('eg.workstation.all')
+        .then(function(all) {
+            if (all && all.length) {
+                $scope.workstations = all;
+
+                if (ws = $location.search().ws) {
+                    // user requested a workstation via URL
+                    var match = all.filter(
+                        function(w) {return ws == w.name} )[0];
+
+                    if (match) {
+                        // requested WS registered on this client
+                        $scope.workstation = match.id;
+                    } else {
+                        // the requested WS is not registered on this client
+                        $scope.wsNotRegistered = true;
+                    }
+                } else {
+                    // no workstation requested; use the default
+                    egCore.hatch.getItem('eg.workstation.default')
+                    .then(function(ws) {
+                        var ws_obj = all.filter(function(w) {
+                            return ws == w.name
+                        })[0];
+
+                        $scope.workstation_obj = ws_obj;
+                        $scope.workstation = ws_obj.id;
+                        $scope.workstation_owner = ws_obj.owning_lib;
+
+                        return egLovefield.reconstituteList('cnct').then(function () {
+                            $scope.noncats = egCore.env.cnct.list;
+                        });
+                    });
+                }
+            } 
+        });
+
+        $scope.downloadBlockList = function () {
+            var url = '/standalone/list.txt?ses='
+                + egCore.auth.token()
+                + '&' + new Date().getTime();
+            return $http.get(url).then(
+                function (res) {
+                    if (res.data) {
+                        var lines = res.data.split('\n');
+                        egLovefield.destroyOfflineBlocks().then(function(){
+                            angular.forEach(lines, function (l) {
+                                var parts = l.split(' ');
+                                egLovefield.addOfflineBlock(parts[0], parts[1]);
+                            });
+                            return $q.when();
+                        }).then(function(){
+                            ngToast.create(egCore.strings.OFFLINE_BLOCKLIST_SUCCESS);
+                        });
+                    }
+                },function(){
+                    ngToast.warning(egCore.strings.OFFLINE_BLOCKLIST_FAIL);
+                    egCore.audio.play('warning.offline.blocklist_fail');
+                }
+            );
+        }
+
+        $scope.createOfflineXactBlob = function () {
+            return egLovefield.retrievePendingOfflineXacts().then(function(list) {
+                var flat_list = [];
+                angular.forEach(list, function (i) {
+                    flat_list.push(JSON.stringify(i) + '\n');
+                });
+
+                var blob = new Blob(flat_list, {type: 'text/plain'});
+
+                return $q.when(blob)
+            });
+        }
+
+        $scope.pending_xacts = [];
+        $scope.retrieve_pending = function () {
+            return egLovefield.retrievePendingOfflineXacts().then(function(list) {
+                $scope.pending_xacts = list;
+                return $q.when(list);
+            });
+        }
+
+        $scope.save = function () {
+            var promises = [$q.when()];
+            angular.forEach($scope.all_xact, function (x) {
+                promises.push(egLovefield.addOfflineXact(x));
+            });
+
+            var prints = [$q.when()];
+            if ($scope.do_print) {
+                angular.forEach(['checkin','checkout','renew','in_house_use'], function(xtype) {
+                    if ($scope.xact_page[xtype].length > 0) {
+                        prints.push(egCore.print.print({
+                            context : 'offline', 
+                            template : 'offline_'+xtype,
+                            scope : {
+                                transactions    : $scope.xact_page[xtype]
+                            }
+                        }));
+                    }
+                });
+            }
+
+            return $q.all(promises.concat(prints)).finally(function() {
+                egUnloadPrompt.clear();
+                if (prints.length > 1) $scope.printed = true;
+                $scope.all_xact = [];
+                $scope.xact_page = { checkin:[], checkout:[], renew:[], in_house_use:[] };
+                angular.forEach(['checkout','renew'], function (xtype) {
+                    $scope[xtype].patron_barcode = '';
+                });
+                $scope.retrieve_pending();
+            });
+        }
+
+        $rootScope.save_offline_xacts = function () { return $scope.save() };
+        $rootScope.active_tab = function (t) { $scope.active_tab = t };
+
+        $scope.logout = function () {
+            egCore.auth.logout();
+            $window.location.href = location.href;
+        }
+
+        $scope.clear_pending = function (skip_confirm) {
+            if (skip_confirm) {
+                return egLovefield.destroyPendingOfflineXacts().then(function () {
+                    return $scope.retrieve_pending();
+                });
+            }
+            return egConfirmDialog.open(
+                egCore.strings.CONFIRM_CLEAR_PENDING,
+                egCore.strings.CONFIRM_CLEAR_PENDING_BODY,
+                {}
+            ).result.then(function() {
+                return egLovefield.destroyPendingOfflineXacts().then(function () {
+                    return $scope.retrieve_pending();
+                });
+            });
+
+        }
+
+        $scope.retrieve_pending();
+        $scope.$watch('active_tab', function (n,o) {
+            if (n != o && !$scope.do_check_changed && n != 'checkout') $scope.strict_barcode = false;
+            if (n != o && !$scope.do_check_changed && n == 'checkout') $scope.strict_barcode = true;
+            if (n != o && !$scope.do_print_changed && n != 'checkout') $scope.do_print = false;
+            if (n != o && !$scope.do_print_changed && n == 'checkout') $scope.do_print = true;
+            if (n != o && n == 'session') $scope.retrieve_pending();
+        });
+
+        $scope.$watch('imported_pending_xacts.data', function (n, o) {
+            if (n != 0) {
+                var lines = n.split('\n');
+                var promises = [];
+
+                angular.forEach(lines, function (l) {
+                    if (!l) return;
+
+                    try {
+                        promises.push(
+                            egLovefield.addOfflineXact(JSON.parse(l))
+                        );
+                    } catch (err) {
+                        ngToast.warning(err);
+                    }
+                });
+
+                $q.all(promises).then(function () { $scope.retrieve_pending() });
+            }
+        });
+
+        $scope.resetDueDate = function (xtype) {
+            $scope.shared.due_date = new Date();
+            $scope.shared.due_date.setDate($scope.shared.due_date.getDate() + parseInt($scope.shared.due_date_offset));
+        }
+
+        $scope.notEnough = function (xtype) {
+
+            if (xtype == 'checkout') {
+                if ($scope.shared.outOfRange) return true;
+                if (
+                    $scope.checkout.patron_barcode &&
+                    ($scope.shared.due_date || $scope.shared.due_date_offset) &&
+                    ($scope.checkout.barcode || ($scope.checkout.noncat_type && $scope.checkout.noncat_count))
+                ) return false;
+                return true;
+            }
+
+            if (xtype == 'renew') {
+                if ($scope.shared.outOfRange) return true;
+                if (
+                    $scope.renew.barcode &&
+                    ($scope.shared.due_date || $scope.shared.due_date_offset)
+                ) return false;
+                return true;
+            }
+
+            if (xtype == 'in_house_use') {
+                if (
+                    $scope.in_house_use.barcode && $scope.in_house_use.count
+                ) return false;
+                return true;
+            }
+
+            if (xtype == 'checkin') {
+                if (
+                    $scope.checkin.barcode && $scope.checkin.backdate
+                ) return false;
+                return true;
+            }
+        }
+
+        $scope.clear = function (xtype) {
+            $scope[xtype] = {};
+            if (xtype=="in_house_use") $scope[xtype].count = 1;
+        }
+
+        $scope.add = function (xtype,next_focus) {
+
+            var barcode = $scope[xtype].barcode;
+            if (barcode) {
+                if ($scope.xact_page[xtype].filter(function(x){ return x.barcode == barcode }).length > 0) {
+                    ngToast.warning(egCore.strings.DUPLICATE_BARCODE);
+                    egCore.audio.play('warning.offline.duplicate_barcode');
+                    $scope[xtype].barcode = '';
+                    if (next_focus) $('#'+next_focus).focus();
+                    return;
+                }
+            }
+
+            var pbarcode = $scope[xtype].patron_barcode;
+            if (pbarcode) {
+                egLovefield.testOfflineBlock(pbarcode).then(function (blocked) {
+                    if (blocked) {
+                        egCore.audio.play('warning.offline.blocked_patron');
+                        egConfirmDialog.open(
+                            egCore.strings.PATRON_BLOCKED,
+                            egCore.strings.PATRON_BLOCKED_WHY[blocked],
+                            {}, egCore.strings.ALLOW, egCore.strings.REJECT
+                        ).result.then(
+                            function(){ // forced
+                                $scope.blocked_patron = null;
+                                _add_impl(xtype,true)
+                                if (next_focus) $('#'+next_focus).focus();
+                            },function(){ // stopped
+                                $scope.blocked_patron = xtype;
+                                if (next_focus) $('#'+next_focus).focus();
+                                return;
+                            }
+                        );
+                    } else {
+                        $scope.blocked_patron = null;
+                        _add_impl(xtype,true)
+                        if (next_focus) $('#'+next_focus).focus();
+                    }
+                });
+            } else {
+                _add_impl(xtype);
+                if (next_focus) $('#'+next_focus).focus();
+            }
+        }
+
+        function _add_impl (xtype,digest) {
+            var pbarcode = $scope[xtype].patron_barcode;
+            var backdate = $scope[xtype].backdate;
+
+            if ($scope.strict_barcode && pbarcode) {
+                if (!check_barcode(pbarcode)) {
+                    $scope.bad_barcode = xtype;
+                    egCore.audio.play('warning.offline.bad_barcode');
+                    return egConfirmDialog.open(
+                        egCore.strings.BAD_PATRON_BARCODE,
+                        egCore.strings.BAD_PATRON_BARCODE_CD,
+                        {}, egCore.strings.ALLOW, egCore.strings.REJECT
+                    ).result.then(
+                        function(){ // forced
+                            $scope.blocked_patron = null;
+                            return _add_impl2(xtype,digest)
+                        },function(){ // stopped
+                            $scope.blocked_patron = xtype;
+                        }
+                    );
+                }
+            }
+
+            if ($scope.strict_barcode && $scope[xtype].barcode) {
+                if (!check_barcode($scope[xtype].barcode)) {
+                    $scope.bad_barcode = xtype;
+                    egCore.audio.play('warning.offline.bad_barcode');
+                    return egConfirmDialog.open(
+                        egCore.strings.BAD_BARCODE,
+                        egCore.strings.BAD_BARCODE_CD,
+                        {}, egCore.strings.ALLOW, egCore.strings.REJECT
+                    ).result.then(
+                        function(){ // forced
+                            $scope.blocked_patron = null;
+                            return _add_impl2(xtype,digest)
+                        },function(){ // stopped
+                            $scope.blocked_patron = xtype;
+                        }
+                    );
+                }
+            }
+
+            return _add_impl2(xtype,digest);
+        }
+
+        function _add_impl2 (xtype,digest) {
+            var pbarcode = $scope[xtype].patron_barcode;
+            var backdate = $scope[xtype].backdate;
+
+            $scope.bad_barcode = null;
+
+            var now = new Date().getTime();
+            now = now / 1000;
+
+            if ($scope[xtype].noncat_type) $scope[xtype].noncat = 1;
+
+            if ($scope.shared.due_date && (xtype == 'checkout' || xtype == 'renew')) {
+                $scope[xtype].due_date = $scope.shared.due_date.toISOString();
+                $scope[xtype].checkout_time = new Date().toISOString();
+            }
+
+            var xact = { timestamp : parseInt(now), type : xtype, delta : 0 };
+
+            $scope.xact_page[xtype].push(
+                angular.extend(xact, $scope[xtype])
+            );
+
+            $scope.all_xact.push(xact)
+            egUnloadPrompt.attach($rootScope);
+
+            $scope[xtype] = {};
+
+            if (pbarcode) $scope[xtype].patron_barcode = pbarcode;
+            if (backdate) $scope[xtype].backdate = backdate;
+            if (xtype=="in_house_use") $scope[xtype].count = 1;
+
+            if (digest) $timeout(function(){$scope.$apply()});
+        }
+
+        check_barcode = function(bc) {
+            if (bc != Number(bc)) return false;
+            bc = bc.toString();
+            // "16.00" == Number("16.00"), but the . is bad.
+            // Throw out any barcode that isn't just digits
+            if (bc.search(/\D/) != -1) return false;
+            var last_digit = bc.substr(bc.length-1);
+            var stripped_barcode = bc.substr(0,bc.length-1);
+            return barcode_checkdigit(stripped_barcode).toString() == last_digit;
+        }
+    
+        barcode_checkdigit = function(bc) {
+            var reverse_barcode = bc.toString().split('').reverse();
+            var check_sum = 0; var multiplier = 2;
+            for (var i = 0; i < reverse_barcode.length; i++) {
+                var digit = reverse_barcode[i];
+                var product = digit * multiplier; product = product.toString();
+                var temp_sum = 0;
+                for (var j = 0; j < product.length; j++) {
+                    temp_sum += Number( product[j] );
+                }
+                check_sum += Number( temp_sum );
+                multiplier = ( multiplier == 2 ? 1 : 2 );
+            }
+            check_sum = check_sum.toString();
+            var next_multiple_of_10 = (check_sum.match(/(\d*)\d$/)[1] * 10) + 10;
+            var check_digit = next_multiple_of_10 - Number(check_sum);
+            if (check_digit == 10) check_digit = 0;
+            return check_digit;
+        }
+
+    }
+])
+
+// dummy service so standalone patron editor can reference it
+.factory('patronSvc', function() { return { /* dummy */ } })
 
 .factory('patronRegSvc', ['$q', 'egCore', 'egLovefield', function($q, egCore, egLovefield) {
 
+    egLovefield.isOffline = true;
+
     var service = {
+        org : null,                // will come from workstation org 
         field_doc : {},            // config.idl_field_doc
         profiles : [],             // permission groups
         edit_profiles : [],        // perm groups we can modify
@@ -21,6 +741,10 @@ angular.module('egCoreMod')
         virt_id : -1,               // virtual ID for new objects
         init_done : false           // have we loaded our initialization data?
     };
+
+    service.offlineMode = function () {
+        return lf.isOffline;
+    }
 
     // launch a series of parallel data retrieval calls
     service.init = function(scope) {
@@ -41,98 +765,16 @@ angular.module('egCoreMod')
             service.get_org_settings(),
             service.get_stat_cats(),
             service.get_surveys(),
-            service.get_clone_user(),
-            service.get_stage_user(),
             service.get_net_access_levels()
         ]);
     };
 
-    service.get_clone_user = function() {
-        if (!service.clone_id) return $q.when();
-        // we could load egUser and use its get() function, but loading
-        // user.js into the standalone register UI would mean creating a
-        // new module, since egUser is not loaded into egCoreMod.  This
-        // is a lot simpler.
-        return egCore.net.request(
-            'open-ils.actor',
-            'open-ils.actor.user.fleshed.retrieve',
-            egCore.auth.token(), service.clone_id, 
-            ['billing_address', 'mailing_address'])
-        .then(function(cuser) {
-            if (e = egCore.evt.parse(cuser)) {
-                alert(e);
-            } else {
-                service.clone_user = cuser;
-            }
-        });
-    }
-
-    // When editing a user with addresses linked to other users, fetch
-    // the linked user(s) so we can display their names and edit links.
     service.get_linked_addr_users = function(addrs) {
-        angular.forEach(addrs, function(addr) {
-            if (addr.usr == service.existing_patron.id()) return;
-            egCore.pcrud.retrieve('au', addr.usr)
-            .then(function(usr) {
-                addr._linked_owner_id = usr.id();
-                addr._linked_owner = service.format_name(
-                    usr.family_name(),
-                    usr.first_given_name(),
-                    usr.second_given_name()
-                );
-            })
-        });
+        return $q.when();
     }
 
     service.apply_secondary_groups = function(user_id, group_ids) {
-        return egCore.net.request(
-            'open-ils.actor',
-            'open-ils.actor.user.set_groups',
-            egCore.auth.token(), user_id, group_ids)
-        .then(function(resp) {
-            if (resp == 1) {
-                return true;
-            } else {
-                // debugging -- should be no events
-                alert('linked groups failure ' + egCore.evt.parse(resp));
-            }
-        });
-    }
-
-    service.get_stage_user = function() {
-        if (!service.stage_username) return $q.when();
-
-        // fetch the staged user object
-        return egCore.net.request(
-            'open-ils.actor',
-            'open-ils.actor.user.stage.retrieve.by_username',
-            egCore.auth.token(), 
-            service.stage_username
-        ).then(function(suser) {
-            if (e = egCore.evt.parse(suser)) {
-                alert(e);
-            } else {
-                service.stage_user = suser;
-            }
-        }).then(function() {
-
-            if (!service.stage_user) return;
-            var requestor = service.stage_user.user.requesting_usr();
-
-            if (!requestor) return;
-
-            // fetch the requesting user
-            return egCore.net.request(
-                'open-ils.actor', 
-                'open-ils.actor.user.retrieve.parts',
-                egCore.auth.token(),
-                requestor, 
-                ['family_name', 'first_given_name', 'second_given_name'] 
-            ).then(function(parts) {
-                service.stage_user_requestor = 
-                    service.format_name(parts[0], parts[1], parts[2]);
-            })
-        });
+        return $q.when(true);
     }
 
     // See note above about not loading egUser.
@@ -142,59 +784,15 @@ angular.module('egCoreMod')
     }
 
     service.check_dupe_username = function(usrname) {
-
-        // empty usernames can't be dupes
-        if (!usrname) return $q.when(false);
-
-        // avoid dupe check if username matches the originally loaded usrname
-        if (service.existing_patron) {
-            if (usrname == service.existing_patron.usrname())
-                return $q.when(false);
-        }
-
-        return egCore.net.request(
-            'open-ils.actor',
-            'open-ils.actor.username.exists',
-            egCore.auth.token(), usrname);
+        return $q.when(false);
     }
-
-    //service.check_grp_app_perm = function(grp_id) {
 
     // determine which user groups our user is not allowed to modify
     service.set_edit_profiles = function() {
-        var all_app_perms = [];
-        var failed_perms = [];
-
-        // extract the application permissions
-        angular.forEach(service.profiles, function(grp) {
-            if (grp.application_perm())
-                all_app_perms.push(grp.application_perm());
-        }); 
-
-        // fill in service.edit_profiles by inspecting failed_perms
-        function traverse_grp_tree(grp, failed) {
-            failed = failed || 
-                failed_perms.indexOf(grp.application_perm()) > -1;
-
-            if (!failed) service.edit_profiles.push(grp);
-
-            angular.forEach(
-                service.profiles.filter( // children of grp
-                    function(p) { return p.parent() == grp.id() }),
-                function(child) {traverse_grp_tree(child, failed)}
-            );
-        }
-
-        return egCore.perm.hasPermAt(all_app_perms, true).then(
-            function(perm_orgs) {
-                angular.forEach(all_app_perms, function(p) {
-                    if (perm_orgs[p].length == 0)
-                        failed_perms.push(p);
-                });
-
-                traverse_grp_tree(egCore.env.pgt.tree);
-            }
+        service.edit_profiles = egCore.env.pgt.list.filter(
+            function (p) { return p.application_perm() == 'group_application.user.patron' }
         );
+        return $q.when;
     }
 
     // resolves to a hash of perm-name => boolean value indicating
@@ -212,214 +810,84 @@ angular.module('egCoreMod')
             'UPDATE_PATRON_PRIMARY_CARD'
         ];
 
-        return egCore.perm.hasPermAt(perms_needed, true)
-        .then(function(perm_map) {
-
-            angular.forEach(perms_needed, function(perm) {
-                perm_map[perm] = 
-                    Boolean(perm_map[perm].indexOf(org_id) > -1);
-            });
-
-            return perm_map;
+        var hash = {};
+        angular.forEach(perms_needed, function (p) {
+            hash[p] = true;
         });
+
+        return $q.when(hash);
     }
 
     service.get_surveys = function() {
-        var org_ids = egCore.org.fullPath(egCore.auth.user().ws_ou(), true);
+        return egLovefield.reconstituteList('asv').then(function(offline) {
+            return egLovefield.reconstituteList('asvq')
+                    .then(function(){
+                        return egLovefield.reconstituteList('asva');
+                    }).then(function() {
+                        angular.forEach(egCore.env.asv.list, function (s) {
+                            s.questions( egCore.env.asva.list.filter( function (a) {
+                                return q.survey().id == s.id();
+                            }));
+                        });
 
-        return egCore.pcrud.search('asv', {
-                owner : org_ids,
-                start_date : {'<=' : 'now'},
-                end_date : {'>=' : 'now'}
-            }, {   
-                flesh : 2, 
-                flesh_fields : {
-                    asv : ['questions'], 
-                    asvq : ['answers']
-                }
-            }, 
-            {atomic : true}
-        ).then(function(surveys) {
-            surveys = surveys.sort(function(a,b) {
-                return a.name() < b.name() ? -1 : 1 });
-            service.surveys = surveys;
-            angular.forEach(surveys, function(survey) {
-                angular.forEach(survey.questions(), function(question) {
-                    service.survey_questions[question.id()] = question;
-                    angular.forEach(question.answers(), function(answer) {
-                        service.survey_answers[answer.id()] = answer;
+                        angular.forEach(egCore.env.asvq.list, function (q) {
+                            q.survey( egCore.env.asv.map[ q.survey().id ] );
+                            q.answers( egCore.env.asva.list.filter( function (a) {
+                                return q.id() == a.question();
+                            }));
+                        });
+
+                        angular.forEach(egCore.env.asva.list, function (a) {
+                            a.question( egCore.env.asvq.map[ a.question().id ] );
+                        });
+
+                        service.surveys = egCore.env.asv.list;
+                        service.survey_questions = egCore.env.asvq.list;
+                        service.survey_answers = egCore.env.asva.list;
+
+                        return $q.when();
                     });
-                });
-            });
-
-            egLovefield.setListInOfflineCache('asv', service.surveys)
-            egLovefield.setListInOfflineCache('asvq', service.survey_questions)
-            egLovefield.setListInOfflineCache('asva', service.survey_answers)
-
         });
     }
 
     service.get_stat_cats = function() {
-        return egCore.net.request(
-            'open-ils.circ',
-            'open-ils.circ.stat_cat.actor.retrieve.all',
-            egCore.auth.token(), egCore.auth.user().ws_ou()
-        ).then(function(cats) {
-            cats = cats.sort(function(a, b) {
-                return a.name() < b.name() ? -1 : 1});
-            angular.forEach(cats, function(cat) {
-                cat.entries(
-                    cat.entries().sort(function(a,b) {
-                        return a.value() < b.value() ? -1 : 1
-                    })
-                );
-            });
-            service.stat_cats = cats;
-            return egLovefield.setStatCatsCache(cats);
-        });
+        return egLovefield.getStatCatsCache().then(
+            function(cats) {
+                service.stat_cats = cats;
+                return $q.when();
+            }
+        );
     };
 
     service.get_org_settings = function() {
-        return egCore.org.settings([
-            'global.password_regex',
-            'global.juvenile_age_threshold',
-            'patron.password.use_phone',
-            'ui.patron.default_inet_access_level',
-            'ui.patron.default_ident_type',
-            'ui.patron.default_country',
-            'ui.patron.registration.require_address',
-            'circ.holds.behind_desk_pickup_supported',
-            'circ.patron_edit.clone.copy_address',
-            'ui.patron.edit.au.prefix.require',
-            'ui.patron.edit.au.prefix.show',
-            'ui.patron.edit.au.prefix.suggest',
-            'ui.patron.edit.ac.barcode.regex',
-            'ui.patron.edit.au.second_given_name.show',
-            'ui.patron.edit.au.second_given_name.suggest',
-            'ui.patron.edit.au.suffix.show',
-            'ui.patron.edit.au.suffix.suggest',
-            'ui.patron.edit.au.alias.show',
-            'ui.patron.edit.au.alias.suggest',
-            'ui.patron.edit.au.dob.require',
-            'ui.patron.edit.au.dob.show',
-            'ui.patron.edit.au.dob.suggest',
-            'ui.patron.edit.au.dob.calendar',
-            'ui.patron.edit.au.juvenile.show',
-            'ui.patron.edit.au.juvenile.suggest',
-            'ui.patron.edit.au.ident_value.show',
-            'ui.patron.edit.au.ident_value.suggest',
-            'ui.patron.edit.au.ident_value2.show',
-            'ui.patron.edit.au.ident_value2.suggest',
-            'ui.patron.edit.au.email.require',
-            'ui.patron.edit.au.email.show',
-            'ui.patron.edit.au.email.suggest',
-            'ui.patron.edit.au.email.regex',
-            'ui.patron.edit.au.email.example',
-            'ui.patron.edit.au.day_phone.require',
-            'ui.patron.edit.au.day_phone.show',
-            'ui.patron.edit.au.day_phone.suggest',
-            'ui.patron.edit.au.day_phone.regex',
-            'ui.patron.edit.au.day_phone.example',
-            'ui.patron.edit.au.evening_phone.require',
-            'ui.patron.edit.au.evening_phone.show',
-            'ui.patron.edit.au.evening_phone.suggest',
-            'ui.patron.edit.au.evening_phone.regex',
-            'ui.patron.edit.au.evening_phone.example',
-            'ui.patron.edit.au.other_phone.require',
-            'ui.patron.edit.au.other_phone.show',
-            'ui.patron.edit.au.other_phone.suggest',
-            'ui.patron.edit.au.other_phone.regex',
-            'ui.patron.edit.au.other_phone.example',
-            'ui.patron.edit.phone.regex',
-            'ui.patron.edit.phone.example',
-            'ui.patron.edit.au.active.show',
-            'ui.patron.edit.au.active.suggest',
-            'ui.patron.edit.au.barred.show',
-            'ui.patron.edit.au.barred.suggest',
-            'ui.patron.edit.au.master_account.show',
-            'ui.patron.edit.au.master_account.suggest',
-            'ui.patron.edit.au.claims_returned_count.show',
-            'ui.patron.edit.au.claims_returned_count.suggest',
-            'ui.patron.edit.au.claims_never_checked_out_count.show',
-            'ui.patron.edit.au.claims_never_checked_out_count.suggest',
-            'ui.patron.edit.au.alert_message.show',
-            'ui.patron.edit.au.alert_message.suggest',
-            'ui.patron.edit.aua.post_code.regex',
-            'ui.patron.edit.aua.post_code.example',
-            'ui.patron.edit.aua.county.require',
-            'format.date',
-            'ui.patron.edit.default_suggested',
-            'opac.barcode_regex',
-            'opac.username_regex',
-            'sms.enable',
-            'ui.patron.edit.aua.state.require',
-            'ui.patron.edit.aua.state.suggest',
-            'ui.patron.edit.aua.state.show',
-            'ui.admin.work_log.max_entries',
-            'ui.admin.patron_log.max_entries'
-        ]).then(function(settings) {
-            service.org_settings = settings;
-            if (egCore && egCore.env && !egCore.env.aous) {
-                egCore.env.aous = settings;
-                console.log('setting egCore.env.aous');
+        return egLovefield.getSettingsCache().then(
+            function (list) {
+                var hash = {};
+                angular.forEach(list, function (s) {
+                    hash[s.name] = s.value;
+                });
+                service.org_settings = hash;
+                if (egCore && egCore.env && !egCore.env.aous) {
+                    egCore.env.aous = hash;
+                    console.log('setting egCore.env.aous');
+                }
+                return $q.when();
             }
-            return service.process_org_settings(settings);
-        });
-    };
-
-    // some org settings require the retrieval of additional data
-    service.process_org_settings = function(settings) {
-
-        var promises = [egLovefield.setSettingsCache(settings)];
-
-        if (settings['sms.enable']) {
-            // fetch SMS carriers
-            promises.push(
-                egCore.pcrud.search('csc', 
-                    {active: 'true'}, 
-                    {'order_by':[
-                        {'class':'csc', 'field':'name'},
-                        {'class':'csc', 'field':'region'}
-                    ]}, {atomic : true}
-                ).then(function(carriers) {
-                    service.sms_carriers = carriers;
-                })
-            );
-        } else {
-            // if other promises are added below, this is not necessary.
-            promises.push($q.when());  
-        }
-
-        // other post-org-settings processing goes here,
-        // adding to promises as needed.
-
-        return $q.all(promises);
+        );
     };
 
     service.get_ident_types = function() {
-        if (egCore.env.cit) {
+        return egLovefield.reconstituteList('cit').then(function() {
             service.ident_types = egCore.env.cit.list;
             return $q.when();
-        } else {
-            return egCore.pcrud.retrieveAll('cit', {}, {atomic : true})
-            .then(function(types) { 
-                egCore.env.absorbList(types, 'cit')
-                service.ident_types = types 
-            });
-        }
+        });
     };
 
     service.get_net_access_levels = function() {
-        if (egCore.env.cnal) {
+        return egLovefield.reconstituteList('cnal').then(function() {
             service.net_access_levels = egCore.env.cnal.list;
             return $q.when();
-        } else {
-            return egCore.pcrud.retrieveAll('cnal', {}, {atomic : true})
-            .then(function(levels) { 
-                egCore.env.absorbList(levels, 'cnal')
-                service.net_access_levels = levels 
-            });
-        }
+        });
     }
 
     service.get_perm_groups = function() {
@@ -427,41 +895,23 @@ angular.module('egCoreMod')
             service.profiles = egCore.env.pgt.list;
             return service.set_edit_profiles();
         } else {
-            return egCore.pcrud.search('pgt', {parent : null}, 
-                {flesh : -1, flesh_fields : {pgt : ['children']}}
-            ).then(
-                function(tree) {
-                    egCore.env.absorbTree(tree, 'pgt')
-                    service.profiles = egCore.env.pgt.list;
-                    return service.set_edit_profiles();
-                }
-            );
+            return egLovefield.reconstituteTree('pgt').then(function(offline) {
+                service.profiles = egCore.env.pgt.list;
+                return service.set_edit_profiles();
+            });
         }
     }
 
     service.get_field_doc = function() {
-        var to_cache = [];
-        return egCore.pcrud.search('fdoc', {
-            fm_class: ['au', 'ac', 'aua', 'actsc', 'asv', 'asvq', 'asva']})
-        .then(
-            function () {
-                return egLovefield.setListInOfflineCache('fdoc', to_cache)
-            },
-            null,
-            function(doc) {
-                if (!service.field_doc[doc.fm_class()]) {
-                    service.field_doc[doc.fm_class()] = {};
-                }
+        return egLovefield.getListFromOfflineCache('fdoc').then(function (list) {
+            angular.forEach(list, function(doc) {
                 service.field_doc[doc.fm_class()][doc.field()] = doc;
-                to_cache.push(doc);
-            }
-        );
-
+            });
+            return $q.when();
+        });
     };
 
     service.get_user_settings = function() {
-        var org_ids = egCore.org.ancestors(egCore.auth.user().ws_ou(), true);
-
         var static_types = [
             'circ.holds_behind_desk', 
             'circ.collections.exempt', 
@@ -471,137 +921,40 @@ angular.module('egCoreMod')
             'opac.default_sms_carrier', 
             'opac.default_sms_notify'];
 
-        return egCore.pcrud.search('cust', {
-            '-or' : [
-                {name : static_types}, // common user settings
-                {name : { // opt-in notification user settings
-                    'in': {
-                        select : {atevdef : ['opt_in_setting']}, 
-                        from : 'atevdef',
-                        // we only care about opt-in settings for 
-                        // event_defs our users encounter
-                        where : {'+atevdef' : {owner : org_ids}}
-                    }
-                }}
-            ]
-        }, {}, {atomic : true}).then(function(setting_types) {
+        angular.forEach(static_types, function (t) {
+            service.user_settings[t] = null;
+        });
 
-            egCore.env.absorbList(setting_types, 'cust'); // why not...
-
-            angular.forEach(setting_types, function(stype) {
+        return egLovefield.getListFromOfflineCache('cust').then(function (list) {
+            angular.forEach(list, function(stype) {
                 service.user_setting_types[stype.name()] = stype;
                 if (static_types.indexOf(stype.name()) == -1) {
                     service.opt_in_setting_types[stype.name()] = stype;
                 }
+                if (stype.reg_default() != undefined) {
+                    service.user_settings[setting.name()] = 
+                        setting.reg_default();
+                }
             });
-
-            if (service.patron_id) {
-                // retrieve applied values for the current user 
-                // for the setting types we care about.
-
-                var setting_names = 
-                    setting_types.map(function(obj) { return obj.name() });
-
-                return egCore.net.request(
-                    'open-ils.actor', 
-                    'open-ils.actor.patron.settings.retrieve.authoritative',
-                    egCore.auth.token(),
-                    service.patron_id,
-                    setting_names
-                ).then(function(settings) {
-                    service.user_settings = settings;
-                });
-            } else {
-
-                // apply default user setting values
-                angular.forEach(setting_types, function(stype, index) {
-                    if (stype.reg_default() != undefined) {
-                        service.user_settings[setting.name()] = 
-                            setting.reg_default();
-                    }
-                });
-            }
+            return $q.when();
         });
     }
 
     service.invalidate_field = function(patron, field) {
-        console.log('Invalidating patron field ' + field);
-
-        return egCore.net.request(
-            'open-ils.actor',
-            'open-ils.actor.invalidate.' + field,
-            egCore.auth.token(), patron.id, null, patron.home_ou.id()
-
-        ).then(function(res) {
-            // clear the invalid value from the form
-            patron[field] = '';
-
-            // update last_xact_id so future save operations
-            // on this patron will be allowed
-            patron.last_xact_id = res.payload.last_xact_id[patron.id];
-        });
+        return;
     }
 
     service.dupe_patron_search = function(patron, type, value) {
-        var search;
-
-        console.log('Dupe search called with "'+ type +'" and value '+ value);
-
-        switch (type) {
-
-            case 'name':
-                var fname = patron.first_given_name;   
-                var lname = patron.family_name;   
-                if (!(fname && lname)) return $q.when({count:0});
-                search = {
-                    first_given_name : {value : fname, group : 0},
-                    family_name : {value : lname, group : 0}
-                };
-                break;
-
-            case 'email':
-                search = {email : {value : value, group : 0}};
-                break;
-
-            case 'ident':
-                search = {ident : {value : value, group : 2}};
-                break;
-
-            case 'phone':
-                search = {phone : {value : value, group : 2}};
-                break;
-
-            case 'address':
-                search = {};
-                angular.forEach(['street1', 'street2', 'city', 'post_code'],
-                    function(field) {
-                        if(value[field])
-                            search[field] = {value : value[field], group: 1};
-                    }
-                );
-                break;
-        }
-
-        return egCore.net.request( 
-            'open-ils.actor', 
-            'open-ils.actor.patron.search.advanced',
-            egCore.auth.token(), search, null, null, 1
-        ).then(function(res) {
-            res = res.filter(function(id) {return id != patron.id});
-            return {
-                count : res.length,
-                search : search
-            };
-        });
+        return $q.when({ search : search, count : 0 });
     }
 
     service.init_patron = function(current) {
 
         if (!current)
-            return $q.when(service.init_new_patron());
+            return service.init_new_patron();
 
         service.patron = current;
-        return $q.when(service.init_existing_patron(current));
+        return service.init_existing_patron(current)
     }
 
     service.ingest_address = function(patron, addr) {
@@ -672,7 +1025,6 @@ angular.module('egCoreMod')
             service.stat_cat_entry_maps[map.stat_cat.id] = map.stat_cat_entry;
         });
 
-        service.patron = patron;
         return patron;
     }
 
@@ -695,12 +1047,14 @@ angular.module('egCoreMod')
             _primary : 'on'
         };
 
+        var home_ou = egCore.org.get(service.org);
+
         var user = {
             isnew : true,
             active : true,
             card : card,
             cards : [card],
-            home_ou : egCore.org.get(egCore.auth.user().ws_ou()),
+            home_ou : home_ou,
             stat_cat_entries : [],
             groups : [],
             addresses : [addr]
@@ -1018,10 +1372,14 @@ angular.module('egCoreMod')
 
         if (!patron.isnew()) patron.ischanged(true);
 
-        return egCore.net.request(
-            'open-ils.actor', 
-            'open-ils.actor.patron.update',
-            egCore.auth.token(), patron);
+        return egLovefield.addOfflineXact({
+            user        : egCore.idl.toHash(patron),
+            timestamp   : parseInt(new Date().getTime() / 1000),
+            type        : 'register',
+            delta       : 0
+        }).then(function (success) {
+            if (success) return patron;
+        });
     }
 
     service.remove_staged_user = function() {
@@ -1035,33 +1393,7 @@ angular.module('egCoreMod')
     }
 
     service.save_user_settings = function(new_user, user_settings) {
-        // user_settings contains the values from the scope/form.
-        // service.user_settings contain the values from page load time.
-
-        var settings = {};
-        if (service.patron_id) {
-            // only update modified settings for existing patrons
-            angular.forEach(user_settings, function(val, key) {
-                if (val !== service.user_settings[key])
-                    settings[key] = val;
-            });
-
-        } else {
-            // all non-null setting values are updated for new patrons
-            angular.forEach(user_settings, function(val, key) {
-                if (val !== null) settings[key] = val;
-            });
-        }
-
-        if (Object.keys(settings).length == 0) return $q.when();
-
-        return egCore.net.request(
-            'open-ils.actor',
-            'open-ils.actor.patron.settings.update',
-            egCore.auth.token(), new_user.id(), settings
-        ).then(function(resp) {
-            return resp;
-        });
+        return;
     }
 
     // Applies field-specific validation regex's from org settings 
@@ -1109,13 +1441,16 @@ angular.module('egCoreMod')
 .controller('PatronRegCtrl',
        ['$scope','$routeParams','$q','$uibModal','$window','egCore',
         'patronSvc','patronRegSvc','egUnloadPrompt','egAlertDialog',
-        'egWorkLog',
+        'egWorkLog','$timeout','egLovefield','$rootScope',
 function($scope , $routeParams , $q , $uibModal , $window , egCore ,
          patronSvc , patronRegSvc , egUnloadPrompt, egAlertDialog ,
-         egWorkLog) {
+         egWorkLog , $timeout , egLovefield , $rootScope) {
+
+    $scope.rs = $rootScope;
+    if ($scope.workstation_obj) patronRegSvc.org = $scope.workstation_obj.owning_lib;
+    $scope.offline = true;
 
     $scope.page_data_loaded = false;
-    $scope.hold_notify_type = { phone : null, email : null, sms : null };
     $scope.clone_id = patronRegSvc.clone_id = $routeParams.clone_id;
     $scope.stage_username = 
         patronRegSvc.stage_username = $routeParams.stage_username;
@@ -1132,15 +1467,10 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
     // has at the currently selected patron home org unit.
     $scope.perms = {};
 
-    if (!$scope.edit_passthru) {
-        // in edit more, scope.edit_passthru is delivered to us by
-        // the enclosing controller.  In register mode, there is 
-        // no enclosing controller, so we create our own.
-        $scope.edit_passthru = {};
-    }
+    $scope.edit_passthru = {};
 
     // 0=all, 1=suggested, 2=all
-    $scope.edit_passthru.vis_level = 0; 
+    $scope.edit_passthru.vis_level = 2; 
 
     // Apply default values for new patrons during initial registration
     // prs is shorthand for patronSvc
@@ -1149,9 +1479,8 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
             // passsword may originate from staged user.
             $scope.generate_password();
         }
-        $scope.hold_notify_type.phone = true;
-        $scope.hold_notify_type.email = true;
-	$scope.hold_notify_type.sms = false;
+        $scope.hold_notify_phone = true;
+        $scope.hold_notify_email = true;
 
         // staged users may be loaded w/ a profile.
         $scope.set_expire_date();
@@ -1190,20 +1519,13 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
         return field_patterns[cls][field];
     }
 
-    // Main page load function.  Kicks off tab init and data loading.
-    $q.all([
-
-        $scope.initTab ? // initTab comes from patron app
-            $scope.initTab('edit', $routeParams.id) : $q.when(),
-
-        patronRegSvc.init(),
-
-    ]).then(function(){ return patronRegSvc.init_patron(patronSvc ? patronSvc.current : patronRegSvc.patron ) })
-      .then(function(patron) {
+    patronRegSvc.offlineMode($scope.offline); // force offline if ng-init'd to do so
+    patronRegSvc.init().then(function() {
         // called after initTab and patronRegSvc.init have completed
+    
+        var prs = patronRegSvc; // brevity
         // in standalone mode, we have no patronSvc
-        var prs = patronRegSvc;
-        $scope.patron = patron;
+        $scope.patron = prs.init_patron(patronSvc ? patronSvc.current : null);
         $scope.field_doc = prs.field_doc;
         $scope.edit_profiles = prs.edit_profiles;
         $scope.ident_types = prs.ident_types;
@@ -1218,29 +1540,29 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
         $scope.stat_cat_entry_maps = prs.stat_cat_entry_maps;
         $scope.stage_user = prs.stage_user;
         $scope.stage_user_requestor = prs.stage_user_requestor;
-
+    
         $scope.user_settings = prs.user_settings;
+        // clone the user settings back into the patronRegSvc so
+        // we have a copy of the original state of the settings.
         prs.user_settings = {};
-
+        angular.forEach($scope.user_settings, function(val, key) {
+            prs.user_settings[key] = val;
+        });
+    
         extract_hold_notify();
-        if ($scope.patron.isnew)
-            set_new_patron_defaults(prs);
-
         $scope.handle_home_org_changed();
-
+    
         if ($scope.org_settings['ui.patron.edit.default_suggested'])
             $scope.edit_passthru.vis_level = 1;
-
-        // Stat cats are fetched from open-ils.storage, where 't'==1
-        $scope.hasRequiredStatCat = prs.stat_cats.filter(
-                function(cat) {return cat.required() == 1} ).length > 0;
-
+    
+        if ($scope.patron.isnew) 
+            set_new_patron_defaults(prs);
+    
         $scope.page_data_loaded = true;
-
+    
         prs.set_field_patterns(field_patterns);
         apply_username_regex();
     });
-
 
     // update the currently displayed field documentation
     $scope.set_selected_field_doc = function(cls, field) {
@@ -1337,7 +1659,7 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
         if (field == 'passwd' && $scope.patron && !$scope.patron.isnew) 
           return false;
 
-        return (field_visibility[cls + '.' + field] == 3);
+        return (field_visibility[cls + '.' + field] == 3 || default_field_visibility[cls + '.' + field] == 3);
     }
 
     // generates a random 4-digit password
@@ -1408,6 +1730,7 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
     } 
 
     $scope.post_code_changed = function(addr) { 
+        if ($scope.offline) return;
         egCore.net.request(
             'open-ils.search', 'open-ils.search.zip', addr.post_code)
         .then(function(resp) {
@@ -1442,21 +1765,8 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
 
     $scope.barcode_changed = function(bc) {
         if (!bc) return;
-        $scope.dupe_barcode = false;
-        egCore.net.request(
-            'open-ils.actor',
-            'open-ils.actor.barcode.exists',
-            egCore.auth.token(), bc
-        ).then(function(resp) {
-            if (resp == '1') { // duplicate card
-                $scope.dupe_barcode = true;
-                console.log('duplicate barcode detected: ' + bc);
-            } else {
-                if (!$scope.patron.usrname)
-                    $scope.patron.usrname = bc;
-                // No dupe -- A-OK
-            }
-        });
+        if (!$scope.patron.usrname)
+            $scope.patron.usrname = bc;
     }
 
     $scope.cards_dialog = function() {
@@ -1517,18 +1827,21 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
     // Translate hold notify preferences from the form/scope back into a 
     // single user setting value for opac.hold_notify.
     function compress_hold_notify() {
-        var hold_notify_methods = [];
-        if ($scope.hold_notify_type.phone) {
-            hold_notify_methods.push('phone');
+        var hold_notify = '';
+        var splitter = '';
+        if ($scope.hold_notify_phone) {
+            hold_notify = 'phone';
+            splitter = ':';
         }
-        if ($scope.hold_notify_type.email) {
-            hold_notify_methods.push('email');
+        if ($scope.hold_notify_email) {
+            hold_notify = splitter + 'email';
+            splitter = ':';
         }
-        if ($scope.hold_notify_type.sms) {
-            hold_notify_methods.push('sms');
+        if ($scope.hold_notify_sms) {
+            hold_notify = splitter + 'sms';
+            splitter = ':';
         }
-
-        $scope.user_settings['opac.hold_notify'] = hold_notify_methods.join(':');
+        $scope.user_settings['opac.hold_notify'] = hold_notify;
     }
 
     // dialog for selecting additional permission groups
@@ -1593,11 +1906,11 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
     }
 
     function extract_hold_notify() {
-        var notify = $scope.user_settings['opac.hold_notify'];
+        notify = $scope.user_settings['opac.hold_notify'];
         if (!notify) return;
-        $scope.hold_notify_type.phone = Boolean(notify.match(/phone/));
-        $scope.hold_notify_type.email = Boolean(notify.match(/email/));
-        $scope.hold_notify_type.sms = Boolean(notify.match(/sms/));
+        $scope.hold_notify_phone = Boolean(notify.match(/phone/));
+        $scope.hold_notify_email = Boolean(notify.match(/email/));
+        $scope.hold_notify_sms = Boolean(notify.match(/sms/));
     }
 
     $scope.invalidate_field = function(field) {
@@ -1605,6 +1918,7 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
     }
 
     address_alert = function(addr) {
+        if ($scope.offline) return;
         var args = {
             street1: addr.street1,
             street2: addr.street2,
@@ -1640,12 +1954,8 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
         });
     }
 
-    $scope.handle_home_org_changed = function() {
-        org_id = $scope.patron.home_ou.id();
-        patronRegSvc.has_perms_for_org(org_id).then(function(map) {
-            angular.forEach(map, function(v, k) { $scope.perms[k] = v });
-        });
-    }
+    // Dummy function in offline mode
+    $scope.handle_home_org_changed = function() {}
 
     // This is called with every character typed in a form field,
     // since that's the only way to gaurantee something has changed.
@@ -1655,13 +1965,13 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
         // it's been called before.  This will allow for re-attach after
         // the user clicks through the unload warning. egUnloadPrompt
         // will ensure we only attach once.
-        egUnloadPrompt.attach($scope);
+        egUnloadPrompt.attach($rootScope);
     }
 
     // also monitor when form is changed *by the user*, as using
     // an ng-change handler doesn't work with eg-date-input
     $scope.$watch('reg_form.$pristine', function(newVal, oldVal) {
-        if (!newVal) egUnloadPrompt.attach($scope);
+        if (!newVal) egUnloadPrompt.attach($rootScope);
     });
 
     // username regex (if present) must be removed any time
@@ -1691,10 +2001,13 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
     // The alternative is ng-change, but it's called with each character
     // typed, which would be overkill for many of the actions called here.
     $scope.handle_field_changed = function(obj, field_name) {
+        if (!obj) return;
+
         var cls = obj.classname; // set by egIdl
         var value = obj[field_name];
 
-        console.log('changing field ' + field_name + ' to ' + value);
+        // Hush!
+        //console.log('changing field ' + field_name + ' to ' + value);
 
         switch (field_name) {
             case 'day_phone' : 
@@ -1703,50 +2016,18 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
                     $scope.org_settings['patron.password.use_phone']) {
                     $scope.patron.passwd = phone.substr(-4);
                 }
-            case 'evening_phone' : 
-            case 'other_phone' : 
-                $scope.dupe_value_changed('phone', value);
-                break;
-
-            case 'ident_value':
-            case 'ident_value2':
-                $scope.dupe_value_changed('ident', value);
-                break;
-
-            case 'first_given_name':
-            case 'family_name':
-                $scope.dupe_value_changed('name', value);
-                break;
-
-            case 'email':
-                $scope.dupe_value_changed('email', value);
-                break;
-
-            case 'street1':
-            case 'street2':
-            case 'city':
-                // dupe search on address wants the address object as the value.
-                $scope.dupe_value_changed('address', obj);
-                address_alert(obj);
-                break;
-
-            case 'post_code':
-                $scope.post_code_changed(obj);
-                break;
-
-            case 'usrname':
-                patronRegSvc.check_dupe_username(value)
-                .then(function(yes) {$scope.dupe_username = Boolean(yes)});
                 break;
 
             case 'barcode':
-                // TODO: finish barcode_changed handler.
-                $scope.barcode_changed(value);
                 apply_username_regex();
+                $scope.barcode_changed(value);
                 break;
 
             case 'dob':
                 maintain_juvenile_flag();
+                break;
+
+            default:
                 break;
         }
     }
@@ -1780,9 +2061,7 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
 
     // Returns true if the Save and Save & Clone buttons should be disabled.
     $scope.edit_passthru.hide_save_actions = function() {
-        return $scope.patron.isnew ?
-            !$scope.perms.CREATE_USER : 
-            !$scope.perms.UPDATE_USER;
+        return false;
     }
 
     // Returns true if any input elements are tagged as invalid
@@ -1821,73 +2100,10 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
         var updated_user;
 
         patronRegSvc.save_user($scope.patron)
+        .then($scope.rs.save_offline_xacts)
         .then(function(new_user) { 
-            if (new_user && new_user.classname) {
-                updated_user = new_user;
-                return patronRegSvc.save_user_settings(
-                    new_user, $scope.user_settings); 
-            } else {
-                var evt = egCore.evt.parse(new_user);
-
-                if (evt && evt.textcode == 'XACT_COLLISION') {
-                    return egAlertDialog.open(
-                        egCore.strings.PATRON_EDIT_COLLISION).result;
-                }
-
-                // debug only -- should not get here.
-                alert('Patron update failed. \n\n' + js2JSON(new_user));
-            }
-
-        }).then(function() {
-
-            // only remove the staged user if the update succeeded.
-            if (updated_user) 
-                return patronRegSvc.remove_staged_user();
-
-            return $q.when();
-
-        }).then(function() {
-
-            // linked groups for new users must be created after the new
-            // user is created.
-            if ($scope.patron.isnew && 
-                $scope.patron.groups && $scope.patron.groups.length) {
-                var ids = $scope.patron.groups.map(function(g) {return g.id()});
-                return patronRegSvc.apply_secondary_groups(updated_user.id(), ids)
-            }
-
-            return $q.when();
-
-        }).then(function() {
-
-            if (updated_user) {
-                egWorkLog.record(
-                    $scope.patron.isnew
-                    ? egCore.strings.EG_WORK_LOG_REGISTERED_PATRON
-                    : egCore.strings.EG_WORK_LOG_EDITED_PATRON, {
-                        'action' : $scope.patron.isnew ? 'registered_patron' : 'edited_patron',
-                        'patron_id' : updated_user.id()
-                    }
-                );
-            }
-
-            // reloading the page means potentially losing some information
-            // (e.g. last patron search), but is the only way to ensure all
-            // components are properly updated to reflect the modified patron.
-            if (updated_user && save_args.clone) {
-                // open a separate tab for registering a new 
-                // patron from our cloned data.
-                var url = 'https://' 
-                    + $window.location.hostname 
-                    + egCore.env.basePath 
-                    + '/circ/patron/register/clone/' 
-                    + updated_user.id();
-                $window.open(url, '_blank').focus();
-
-            } else {
-                // reload the current page
-                $window.location.href = location.href;
-            }
+            // reload the current page
+            $window.location.href = location.href;
         });
     }
 }])

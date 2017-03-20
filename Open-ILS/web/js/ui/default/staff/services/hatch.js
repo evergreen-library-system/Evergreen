@@ -310,6 +310,42 @@ angular.module('egCoreMod')
         $window.localStorage.setItem(key, jsonified);
     }
 
+    service.appendItem = function(key, value) {
+        if (!service.useSettings())
+            return $q.when(service.appendLocalItem(key, value));
+
+        if (service.hatchAvailable)
+            return service.appendRemoteItem(key, value);
+
+        if (service.keyIsOnCall(key)) {
+            console.warn("Unable to appendItem in Hatch: " + 
+                key + ". Setting in local storage instead");
+
+            return $q.when(service.appendLocalItem(key, value));
+        }
+
+        console.error("Unable to appendItem in Hatch: " + key);
+        return $q.reject();
+    }
+
+    // append the value to a stored or new item
+    service.appendRemoteItem = function(key, value) {
+        service.keyCache[key] = value;
+        return service.attemptHatchDelivery({
+            key : key, 
+            content : value, 
+            action : 'append',
+        });
+    }
+
+    service.appendLocalItem = function(key, value, jsonified) {
+        if (jsonified === undefined ) 
+            jsonified = JSON.stringify(value);
+
+        var old_value = $window.localStorage.getItem(key) || '';
+        $window.localStorage.setItem( key, old_value + jsonified );
+    }
+
     // Set the value for the given key.  
     // "LoginSession" items are removed when the user logs out or the 
     // browser is closed.

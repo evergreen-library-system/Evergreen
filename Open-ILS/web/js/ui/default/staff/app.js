@@ -40,8 +40,12 @@ function($routeProvider , $locationProvider) {
     /* inject services into our controller.  Spelling them
      * out like this allows the auto-magic injector to work
      * even if the code has been minified */
-           ['$scope','$location','$window','egCore',
-    function($scope , $location , $window , egCore) {
+           ['$scope','$location','$window','egCore','egLovefield',
+    function($scope , $location , $window , egCore , egLovefield) {
+        egLovefield.havePendingOfflineXacts() .then(function(eh){
+            $scope.pendingXacts = eh;
+        });
+
         $scope.focusMe = true;
         $scope.args = {};
         $scope.workstations = [];

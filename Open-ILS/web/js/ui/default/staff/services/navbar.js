@@ -5,47 +5,26 @@ angular.module('egCoreMod')
         restrict : 'AE',
         transclude : true,
         templateUrl : 'eg-navbar-template',
-        link : function(scope, element, attrs) {
+        controller:['$scope','$window','$location','$timeout','hotkeys','$rootScope',
+                    'egCore','$uibModal','ngToast','egOpChange','$element',
+            function($scope , $window , $location , $timeout , hotkeys , $rootScope ,
+                     egCore , $uibModal , ngToast , egOpChange , $element) {
 
-            // Find all eg-accesskey entries within the menu and attach
-            // hotkey handlers for each.  
-            // jqlite doesn't support selectors, so we have to 
-            // manually navigate to the elements we're interested in.
-            function inspect(elm) {
-                elm = angular.element(elm);
-                if (elm.attr('eg-accesskey')) {
-                    scope.addHotkey(
-                        elm.attr('eg-accesskey'),
-                        elm.attr('href'),
-                        elm.attr('eg-accesskey-desc'),
-                        elm
-                    );
-                }
-                angular.forEach(elm.children(), inspect);
-            }
-            inspect(element);
-        },
-
-        controller:['$scope','$window','$location','$timeout','hotkeys',
-                    'egCore','$uibModal','ngToast','egOpChange',
-            function($scope , $window , $location , $timeout , hotkeys ,
-                     egCore , $uibModal , ngToast, egOpChange) {
+                $scope.rs = $rootScope;
 
                 $scope.reprintLast = function (e) {
                     egCore.print.reprintLast();
                     return e.preventDefault();
                 }
 
-                function navTo(path) {                                           
-                    // Strip the leading "./" if any.
+                function navTo(path) {
                     path = path.replace(/^\.\//,'');
-                    var reg = new RegExp($location.path());
                     $window.location.href = egCore.env.basePath + path;
                 }       
 
                 // adds a keyboard shortcut
                 // http://chieffancypants.github.io/angular-hotkeys/
-                $scope.addHotkey = function(key, path, desc, elm) {                 
+                $scope.addHotkey = function(key, path, desc, elm) {
                     angular.forEach(key.split(' '), function (k) {
                         hotkeys.add({
                             combo: k,
@@ -53,12 +32,26 @@ angular.module('egCoreMod')
                             description: desc,
                             callback: function(e) {
                                 e.preventDefault();
-                                if (path) return navTo(path);
+                                if (path) return navTo(path,route);
                                 return $timeout(function(){$(elm).trigger('click')});
                             }
                         });
                     });
                 };
+
+                function inspect(elm) {
+                    elm = angular.element(elm);
+                    if (elm.attr('eg-accesskey')) {
+                        $scope.addHotkey(
+                            elm.attr('eg-accesskey'),
+                            elm.attr('href'),
+                            elm.attr('eg-accesskey-desc'),
+                            elm
+                        );
+                    }
+                    angular.forEach(elm.children(), inspect);
+                }
+                $timeout(function(){inspect($element)});
 
                 $scope.retrieveLastRecord = function() {
                     var last_record = egCore.hatch.getLocalItem("eg.cat.last_record_retrieved");

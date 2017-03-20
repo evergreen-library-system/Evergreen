@@ -18,8 +18,8 @@
 angular.module('egCoreMod')
 
 .factory('egOrg', 
-       ['$q','egEnv','egAuth','egNet',
-function($q,  egEnv,  egAuth,  egNet) { 
+       ['$q','egEnv','egAuth','egNet','$injector',
+function($q,  egEnv,  egAuth,  egNet , $injector) { 
 
     var service = {};
 
@@ -98,17 +98,34 @@ function($q,  egEnv,  egAuth,  egNet) {
         return list;
     }
 
+    var egLovefield = null;
     // returns a promise, resolved with a hash of setting name =>
     // setting value for the selected org unit.  Org unit defaults to 
     // auth workstation org unit.
     service.settings = function(names, ou_id) {
+        if (!egLovefield) {
+            egLovefield = $injector.get('egLovefield');
+        }
+
+        // allow non-array
+        if (!angular.isArray(names)) names = [names];
+
+        if (lf.isOffline) {
+            return egLovefield.getSettingsCache(names)
+                .then(function(settings) {
+                    var hash = {};
+                    angular.forEach(settings, function (s) {
+                        hash[s.name] = s.value;
+                    });
+                    return $q.when(hash);
+                });
+        }
+
         var deferred = $q.defer();
         ou_id = ou_id || egAuth.user().ws_ou();
         var here = (ou_id == egAuth.user().ws_ou());
 
-        // allow non-array
-        if (!angular.isArray(names)) names = [names];
-        
+       
         if (here) { 
             // only cache org settings retrieved for the current 
             // workstation org unit.
@@ -136,9 +153,11 @@ function($q,  egEnv,  egAuth,  egNet) {
                 if (here) service.cachedSettings[key] = settings[key];
             });
 
-            // resolve with cached settings if 'here', since 'settings'
-            // will only contain settings we had to retrieve
-            deferred.resolve(here ? service.cachedSettings : settings);
+            return egLovefield.setSettingsCache(settings).then(function() {
+                // resolve with cached settings if 'here', since 'settings'
+                // will only contain settings we had to retrieve
+                deferred.resolve(here ? service.cachedSettings : settings);
+            });
         });
         return deferred.promise;
     }

@@ -1,7 +1,7 @@
 [% DOC_IMG = '/images/question-mark.png' %]
 
 <!-- register banner -->
-<div ng-if="!patron_id" class='patron-reg-fixed-bar'>
+<div ng-if="!patron_id" ng-class='{"patron-reg-fixed-bar":!offline}'>
 
   <div class="container-fluid" style="text-align:center">
     <div class="alert alert-info alert-less-pad strong-text-2">
@@ -161,7 +161,7 @@ within the "form" by name for validation.
   <div class="col-md-6 patron-reg-example">
       <button class="btn btn-default" ng-show="!patron.isnew"
         ng-click="replace_card()">[% l('Replace Barcode') %]</button>
-      <button class="btn btn-default" 
+      <button class="btn btn-default" ng-if="!patron.isnew" 
         ng-click="cards_dialog()">[% l('See All') %]</button>
       <div ng-show="dupe_barcode" class="patron-reg-validation-alert">
         <span>[% l('Barcode is already in use') %]</span>
@@ -443,7 +443,7 @@ within the "form" by name for validation.
     </div>
   </div>
   <div class="col-md-3">
-    <button class="btn btn-default" ng-disabled="!perms.CREATE_USER_GROUP_LINK"
+    <button class="btn btn-default" ng-if="!offline" ng-disabled="!perms.CREATE_USER_GROUP_LINK"
       ng-click="secondary_groups_dialog()">[% l('Secondary Groups') %]</button>
   </div> 
 </div>
@@ -558,6 +558,8 @@ within the "form" by name for validation.
     [% draw_example_text('au', 'alert_message') %]
   </div>
 </div>
+
+<div ng-if="!offline">
 
 <div class="alert alert-success row" role="alert">
   <div class="col-md-6">[% l('User Settings') %]</div>
@@ -676,6 +678,8 @@ within the "form" by name for validation.
       type='checkbox' ng-model="user_settings[type.name()]"/>
   </div>
 </div>
+
+</div> <!-- end offline test -->
 
 <!-- addresses -->
 
@@ -843,7 +847,8 @@ within the "form" by name for validation.
     class="btn btn-success">[% l('New Address') %]</button>
 </div>
 
-<div class="alert alert-success row" role="alert" 
+<div ng-if="!offline">
+<div class="alert alert-success row" role="alert"
     ng-show="show_field('stat_cats') || hasRequiredStatCat" ng-if="stat_cats.length > 0">
     <div class="col-md-6">[% l('Statistical Categories') %]</div>
 </div>
@@ -888,6 +893,7 @@ within the "form" by name for validation.
     </div>
 
   </div><!-- show/hide wrapper -->
+</div>
 </div>
 
 <!-- surveys -->

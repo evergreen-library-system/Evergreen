@@ -58,9 +58,12 @@ function($q , $window , $timeout , $http , egHatch , egAuth , egIDL , egOrg , eg
     service.fleshPrintScope = function(scope) {
         if (!scope) scope = {};
         scope.today = new Date().toISOString();
-        scope.staff = egIDL.toHash(egAuth.user());
-        scope.current_location = 
-            egIDL.toHash(egOrg.get(egAuth.user().ws_ou()));
+
+        if (!lf.isOffline) {
+            scope.staff = egIDL.toHash(egAuth.user());
+            scope.current_location = 
+                egIDL.toHash(egOrg.get(egAuth.user().ws_ou()));
+        }
 
         return service.fetch_includes(scope);
     }

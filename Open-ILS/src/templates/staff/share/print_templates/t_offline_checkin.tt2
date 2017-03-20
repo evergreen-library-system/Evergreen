@@ -1,0 +1,25 @@
+<!--
+Template for printing offline checkout receipts; fields available include:
+
+* transactions - list of loans made during this session. Each
+  includes:
+
+  * barcode
+  * backdate
+  * timestamp
+
+-->
+<div>
+  <div>[% l('You checked in the following [_1] items:', '{{transactions.length}}') %]</div>
+  <hr/>
+  <ol>
+    <li ng-repeat="checkin in transactions">
+      <div>[% l('Barcode: [_1] Checkin date: [_2]', 
+        '{{checkin.barcode}}',
+        '{{checkin.backdate | date:"short"}}') %]</div>
+    </li>
+  </ol>
+  <hr/>
+  <div>{{today | date:'short'}}</div>
+<br/>
+

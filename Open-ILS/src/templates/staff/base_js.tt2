@@ -1,3 +1,80 @@
+<script src="/upup.min.js"></script>
+<script>
+UpUp.start({
+  'content-url': '[% ctx.base_path %]/staff/offline-interface',
+  'cache-version': '[% USE date(format = '%Y-%m-%d'); date.format; %]',
+  'service-worker-url': '/upup.sw.min.js',
+  'assets': [
+    '/IDL2js',
+    '[% ctx.media_prefix %]/js/ui/default/staff/build/css/bootstrap.min.css',
+    '[% ctx.media_prefix %]/js/ui/default/staff/build/css/hotkeys.min.css',
+    '[% ctx.media_prefix %]/js/ui/default/staff/build/css/ngToast.min.css',
+    '[% ctx.media_prefix %]/js/ui/default/staff/build/css/ngToast-animations.min.css',
+    '[% ctx.media_prefix %]/js/ui/default/staff/build/css/tree-control.css',
+    '[% ctx.media_prefix %]/js/ui/default/staff/build/css/tree-control-attribute.css',
+    '[% ctx.media_prefix %]/js/ui/default/staff/build/css/tablesort.css',
+    '[% ctx.base_path %]/staff/css/print.css',
+    '[% ctx.base_path %]/staff/css/cat.css',
+    '[% ctx.base_path %]/staff/css/style.css',
+    '[% ctx.base_path %]/staff/css/circ.css',
+    '[% ctx.media_prefix %]/js/dojo/opensrf/md5.js',
+    '[% ctx.media_prefix %]/js/ui/default/staff/build/js/jquery.min.js',
+    '[% ctx.media_prefix %]/js/ui/default/staff/build/js/angular.min.js',
+    '[% ctx.media_prefix %]/js/ui/default/staff/build/js/angular-route.min.js',
+    '[% ctx.media_prefix %]/js/ui/default/staff/build/js/ui-bootstrap-tpls.min.js',
+    '[% ctx.media_prefix %]/js/ui/default/staff/build/js/hotkeys.min.js',
+    '[% ctx.media_prefix %]/js/ui/default/staff/build/js/angular-file-saver.bundle.min.js',
+    '[% ctx.media_prefix %]/js/ui/default/staff/build/js/angular-location-update.min.js',
+    '[% ctx.media_prefix %]/js/ui/default/staff/build/js/angular-animate.min.js',
+    '[% ctx.media_prefix %]/js/ui/default/staff/build/js/angular-sanitize.min.js',
+    '[% ctx.media_prefix %]/js/ui/default/staff/build/js/angular-cookies.min.js',
+    '[% ctx.media_prefix %]/js/ui/default/staff/build/js/ngToast.min.js',
+    '[% ctx.media_prefix %]/js/ui/default/staff/build/js/angular-tree-control.js',
+    '[% ctx.media_prefix %]/js/ui/default/staff/build/js/iframeResizer.min.js',
+    '[% ctx.media_prefix %]/js/ui/default/staff/build/js/ng-order-object-by.js',
+    '[% ctx.media_prefix %]/js/ui/default/staff/build/js/angular-tablesort.js',
+    '[% ctx.media_prefix %]/js/ui/default/staff/build/js/lovefield.min.js',
+    '[% ctx.media_prefix %]/js/ui/default/staff/build/fonts/glyphicons-halflings-regular.woff',
+    '[% ctx.media_prefix %]/js/ui/default/staff/build/fonts/glyphicons-halflings-regular.woff2',
+    '[% ctx.media_prefix %]/js/dojo/opensrf/JSON_v1.js',
+    '[% ctx.media_prefix %]/js/dojo/opensrf/opensrf.js',
+    '[% ctx.media_prefix %]/js/dojo/opensrf/opensrf_ws.js',
+    '[% ctx.media_prefix %]/js/ui/default/staff/services/core.js',
+    '[% ctx.media_prefix %]/js/ui/default/staff/services/strings.js',
+    '[% ctx.media_prefix %]/js/ui/default/staff/services/idl.js',
+    '[% ctx.media_prefix %]/js/ui/default/staff/services/event.js',
+    '[% ctx.media_prefix %]/js/ui/default/staff/services/net.js',
+    '[% ctx.media_prefix %]/js/ui/default/staff/services/auth.js',
+    '[% ctx.media_prefix %]/js/ui/default/staff/services/pcrud.js',
+    '[% ctx.media_prefix %]/js/ui/default/staff/services/env.js',
+    '[% ctx.media_prefix %]/js/ui/default/staff/services/org.js',
+    '[% ctx.media_prefix %]/js/ui/default/staff/services/startup.js',
+    '[% ctx.media_prefix %]/js/ui/default/staff/services/hatch.js',
+    '[% ctx.media_prefix %]/js/ui/default/staff/services/print.js',
+    '[% ctx.media_prefix %]/js/ui/default/staff/services/audio.js',
+    '[% ctx.media_prefix %]/js/ui/default/staff/services/coresvc.js',
+    '[% ctx.media_prefix %]/js/ui/default/staff/services/user.js',
+    '[% ctx.media_prefix %]/js/ui/default/staff/services/navbar.js',
+    '[% ctx.media_prefix %]/js/ui/default/staff/services/statusbar.js',
+    '[% ctx.media_prefix %]/js/ui/default/staff/services/ui.js',
+    '[% ctx.media_prefix %]/js/ui/default/staff/services/date.js',
+    '[% ctx.media_prefix %]/js/ui/default/staff/services/op_change.js',
+    '[% ctx.media_prefix %]/js/ui/default/staff/services/lovefield.js',
+    '[% ctx.media_prefix %]/js/ui/default/staff/services/file.js',
+    '[% ctx.media_prefix %]/js/ui/default/staff/offline.js',
+    '[% ctx.base_path %]/staff/share/t_alert_dialog',
+    '[% ctx.base_path %]/staff/share/t_confirm_dialog',
+    '[% ctx.base_path %]/staff/share/t_datetime',
+    '[% ctx.base_path %]/staff/share/t_progress_dialog',
+    '[% ctx.base_path %]/staff/share/print_templates/t_offline_in_house_use',
+    '[% ctx.base_path %]/staff/share/print_templates/t_offline_checkout',
+    '[% ctx.base_path %]/staff/share/print_templates/t_offline_checkin',
+    '[% ctx.base_path %]/staff/share/print_templates/t_offline_renew',
+    '/images/question-mark.png'
+  ]
+});
+</script>
+
 <script src="/IDL2js"></script>
 <script src="[% ctx.media_prefix %]/js/dojo/opensrf/md5.js"></script>
 
@@ -47,6 +124,7 @@
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/services/ui.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/services/date.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/services/op_change.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/lovefield.js"></script>
 
 [% ELSE %]
 
@@ -92,6 +170,19 @@
     s.OPT_IN_DIALOG_TITLE = "[% l('Verify Permission to Share Personal Information') %]";
     s.OPT_IN_DIALOG = "[% l('Does patron [_1], [_2] from [_3] ([_4]) consent to having their personal information shared with your library?', '{{family_name}}', '{{first_given_name}}', '{{org_name}}', '{{org_shortname}}') %]";
     s.OPT_IN_RESTRICTED = "[% l("This patron's record is not viewable at your library.") %]";
+    s.OFFLINE_SESSION_DESC = "[% l('Offline session description') %]";
+    s.OFFLINE_SESSION_CREATE_FAILED = "[% l('Offline session creation failed') %]";
+    s.OFFLINE_SESSION_PROCESSING_FAILED = "[% l('Offline session processing failed') %]";
+    s.OFFLINE_SESSION_UPLOAD_FAILED = "[% l('Offline transaction upload failed') %]";
+    s.PATRON_NOT_FOUND = "[% l('Patron not found') %]";
+    s.PATRON_BLOCKED = "[% l('Patron blocked') %]";
+    s.BAD_BARCODE = "[% l('Bad item barcode') %]";
+    s.BAD_BARCODE_CD = "[% l('Item barcode does not have a correct check digit.') %]";
+    s.BAD_PATRON_BARCODE = "[% l('Bad patron barcode') %]";
+    s.BAD_PATRON_BARCODE_CD = "[% l('Patron barcode does not have a correct check digit.') %]";
+    s.ITEM_NOT_FOUND = "[% l('Item not found') %]";
+    s.CONFIRM_CLEAR_PENDING = "[% l('Clear pending transactions') %]";
+    s.CONFIRM_CLEAR_PENDING_BODY = "[% l('Are you certain you want to clear these pending offline transactions? This action is irreversible. Transactions cannot be recovered after clearing!') %]";
   }]);
 </script>
 

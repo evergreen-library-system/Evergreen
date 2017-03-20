@@ -6,6 +6,7 @@
 
 [% BLOCK APP_JS %]
 <!-- splash / login page app -->
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/lovefield.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/app.js"></script>
 [% END %]
 

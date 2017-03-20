@@ -695,8 +695,8 @@ function($window , egStrings) {
            + '</ul>'
           + '</div>',
 
-        controller : ['$scope','$timeout','egCore','egStartup',
-              function($scope , $timeout , egCore , egStartup) {
+        controller : ['$scope','$timeout','egCore','egStartup','egLovefield','$q',
+              function($scope , $timeout , egCore , egStartup , egLovefield , $q) {
 
             if ($scope.alldisabled) {
                 $scope.disable_button = $scope.alldisabled == 'true' ? true : false;
@@ -713,32 +713,40 @@ function($window , egStrings) {
             //
             // controller() runs before link().
             // This post-startup code runs after link().
-            egStartup.go().then(function() {
-
-                $scope.orgList = egCore.org.list().map(function(org) {
-                    return {
-                        id : org.id(),
-                        shortname : org.shortname(), 
-                        depth : org.ou_type().depth()
-                    }
-                });
-
-                // Apply default values
-
-                if ($scope.stickySetting) {
-                    var orgId = egCore.hatch.getLocalItem($scope.stickySetting);
-                    if (orgId) {
-                        $scope.selected = egCore.org.get(orgId);
-                    }
+            egStartup.go(
+            ).then(
+                function() {
+                    return egCore.env.classLoaders.aou();
                 }
+            ).then(
+                function() {
 
-                if (!$scope.selected && !$scope.nodefault) {
-                    $scope.selected = 
-                        egCore.org.get(egCore.auth.user().ws_ou());
+                    $scope.orgList = egCore.org.list().map(function(org) {
+                        return {
+                            id : org.id(),
+                            shortname : org.shortname(), 
+                            depth : org.ou_type().depth()
+                        }
+                    });
+                    
+    
+                    // Apply default values
+    
+                    if ($scope.stickySetting) {
+                        var orgId = egCore.hatch.getLocalItem($scope.stickySetting);
+                        if (orgId) {
+                            $scope.selected = egCore.org.get(orgId);
+                        }
+                    }
+    
+                    if (!$scope.selected && !$scope.nodefault && egCore.auth.user()) {
+                        $scope.selected = 
+                            egCore.org.get(egCore.auth.user().ws_ou());
+                    }
+    
+                    fire_orgsel_onchange(); // no-op if nothing is selected
                 }
-
-                fire_orgsel_onchange(); // no-op if nothing is selected
-            });
+            );
 
             /**
              * Fire onchange handler after a timeout, so the
@@ -787,6 +795,17 @@ function($window , egStrings) {
     }
 })
 
+.directive('nextOnEnter', function () {
+    return function (scope, element, attrs) {
+        element.bind("keydown keypress", function (event) {
+            if(event.which === 13) {
+                $('#'+attrs.nextOnEnter).focus();
+                event.preventDefault();
+            }
+        });
+    };
+})
+
 /* http://eric.sau.pe/angularjs-detect-enter-key-ngenter/ */
 .directive('egEnter', function () {
     return function (scope, element, attrs) {
@@ -810,18 +829,43 @@ function($window , egStrings) {
     function(egStrings, egCore) {
         return {
             scope : {
+                id : '@',
                 closeText : '@',
                 ngModel : '=',
                 ngChange : '=',
                 ngBlur : '=',
+                minDate : '=?',
+                maxDate : '=?',
                 ngDisabled : '=',
                 ngRequired : '=',
                 hideDatePicker : '=',
-                dateFormat : '=?'
+                dateFormat : '=?',
+                outOfRange : '=?'
             },
             require: 'ngModel',
             templateUrl: './share/t_datetime',
             replace: true,
+            controller : ['$scope', function($scope) {
+                $scope.options = {
+                    minDate : $scope.minDate,
+                    maxDate : $scope.maxDate
+                };
+
+                var maxDateObj = $scope.maxDate ? new Date($scope.maxDate) : null;
+                var minDateObj = $scope.minDate ? new Date($scope.minDate) : null;
+
+                if ($scope.outOfRange !== undefined && (maxDateObj || minDateObj)) {
+                    $scope.$watch('ngModel', function (n,o) {
+                        if (n && n != o) {
+                            var bad = false;
+                            var newdate = new Date(n);
+                            if (maxDateObj && newdate.getTime() > maxDateObj.getTime()) bad = true;
+                            if (minDateObj && newdate.getTime() < minDateObj.getTime()) bad = true;
+                            $scope.outOfRange = bad;
+                        }
+                    });
+                }
+            }],
             link : function(scope, elm, attrs) {
                 if (!scope.closeText)
                     scope.closeText = egStrings.EG_DATE_INPUT_CLOSE_TEXT;

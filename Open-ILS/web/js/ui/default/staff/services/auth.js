@@ -61,23 +61,33 @@ function($q , $timeout , $rootScope , $window , $location , egNet , egHatch) {
 
         if (token) {
 
-            egNet.request(
-                'open-ils.auth',
-                'open-ils.auth.session.retrieve', token)
-
-            .then(function(user) {
-                if (user && user.classname) {
-                    // authtoken test succeeded
-                    service.user(user);
-                    service.poll();
-                    service.check_workstation(deferred);
-
-                } else {
-                    // authtoken test failed
-                    egHatch.clearLoginSessionItems();
-                    deferred.reject(); 
-                }
-            });
+            if (lf.isOffline && !$location.path().match(/\/session/) ) {
+                // Just stop here if we're in the offline interface but not on the session tab
+                $timeout(function(){deferred.resolve()});
+            } else if (lf.isOffline && $location.path().match(/\/session/) && !$window.navigator.onLine) {
+                // Likewise, if we're in the offline interface on the session tab and the network is down.
+                // The session tab itself will redirect appropriately due to no network.
+                $timeout(function(){deferred.resolve()});
+            } else {
+                // Otherwise, check the token.  This will freeze all other interfaces, which is what we want.
+                egNet.request(
+                    'open-ils.auth',
+                    'open-ils.auth.session.retrieve', token)
+    
+                .then(function(user) {
+                    if (user && user.classname) {
+                        // authtoken test succeeded
+                        service.user(user);
+                        service.poll();
+                        service.check_workstation(deferred);
+    
+                    } else {
+                        // authtoken test failed
+                        egHatch.clearLoginSessionItems();
+                        deferred.reject(); 
+                    }
+                });
+            }
 
         } else {
             // no authtoken to test

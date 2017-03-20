@@ -46,12 +46,20 @@ angular.module('egCoreMod')
 
 // env fetcher
 .factory('egEnv', 
-       ['$q','$window','egAuth','egPCRUD','egIDL',
-function($q,  $window , egAuth,  egPCRUD,  egIDL) { 
+       ['$q','$window','$injector','egAuth','egPCRUD','egIDL',
+function($q,  $window , $injector , egAuth,  egPCRUD,  egIDL) { 
 
     var service = {
         // collection of custom loader functions
-        loaders : []
+        loaders : [],
+
+        // Add class hints to this list when offline does not need them and
+        // if they cause "Maximum call stack size exceeded" console errors.
+        // If offline does need a list that causes problems, a custom loader
+        // will be necessary.
+        // We'll start with authority-related classes causing problems in the
+        // staff catalog.
+        ignoreOffline : ['at','acs','abaafm','aba','acsbf','acsaf']
     };
 
 
@@ -87,19 +95,25 @@ function($q,  $window , egAuth,  egPCRUD,  egIDL) {
     /** given a tree-shaped collection, captures the tree and
      *  flattens the tree for absorption.
      */
-    service.absorbTree = function(tree, class_) {
+    service.absorbTree = function(tree, class_, noOffline) {
+        if (service[class_] && service[class_].loaded) return;
+
         var list = [];
         function squash(node) {
             list.push(node);
             angular.forEach(node.children(), squash);
         }
         squash(tree);
-        var blob = service.absorbList(list, class_);
+        var blob = service.absorbList(list, class_, noOffline);
         blob.tree = tree;
     };
 
+    var egLovefield; // we'll inject it manually
+
     /** caches the object list both as the list and an id => object map */
-    service.absorbList = function(list, class_) {
+    service.absorbList = function(list, class_, noOffline) {
+        if (service[class_] && service[class_].loaded) return service[class_];
+
         var blob;
         var pkey = egIDL.classes[class_].pkey;
 
@@ -116,8 +130,19 @@ function($q,  $window , egAuth,  egPCRUD,  egIDL) {
             blob = {list : list, map : {}};
         }
 
+        if (!noOffline && service.ignoreOffline.indexOf(class_) < 0) {
+            if (!egLovefield) {
+                egLovefield = $injector.get('egLovefield');
+            }
+            console.debug('About to cache a list of ' + class_ + ' objects...');
+            egLovefield.isCacheGood(class_).then(function(good) {
+                if (!good) egLovefield.setListInOfflineCache(class_, blob.list);
+            });
+        }
+
         angular.forEach(list, function(item) {blob.map[item[pkey]()] = item});
         service[class_] = blob;
+        service[class_].loaded = true;
         return blob;
     };
 
@@ -135,35 +160,45 @@ function($q,  $window , egAuth,  egPCRUD,  egIDL) {
     service.classLoaders = {
         aou : function() {
 
-            // EXPERIMENT: cache the org tree in session storage.
-            // This means that if the org tree changes, users will have to
-            // open the client in a new browser tab to clear the cached tree.
-            var treeJSON = $window.sessionStorage.getItem('eg.env.aou.tree');
-            if (treeJSON) {
-                console.debug('serving org tree from cache');
-                var tree = JSON2js(treeJSON);
-                service.absorbTree(tree, 'aou')
-                return $q.when(tree);
+            if (!egLovefield) {
+                egLovefield = $injector.get('egLovefield');
             }
 
-            // sort orgs at each level by shortname
-            function sort_aou(node) {
-                node.children(node.children().sort(function(a, b) {
-                    return a.shortname() < b.shortname() ? -1 : 1;
-                }));
-                angular.forEach(node.children(), sort_aou);
-            }
-
-            return egPCRUD.search('aou', {parent_ou : null}, 
-                {flesh : -1, flesh_fields : {aou : ['children', 'ou_type']}}
-            ).then(
-                function(tree) {
-                    sort_aou(tree);
-                    $window.sessionStorage.setItem(
-                        'eg.env.aou.tree', js2JSON(tree));
+            return egLovefield.reconstituteTree('aou').then(function(offline) {
+                if (offline) return $q.when();
+                if (service.aou && service.aou.loaded) return $q.when();
+    
+                // EXPERIMENT: cache the org tree in session storage.
+                // This means that if the org tree changes, users will have to
+                // open the client in a new browser tab to clear the cached tree.
+                var treeJSON = $window.sessionStorage.getItem('eg.env.aou.tree');
+                if (treeJSON) {
+                    console.debug('serving org tree from cache');
+                    var tree = JSON2js(treeJSON);
                     service.absorbTree(tree, 'aou')
+                    return $q.when(tree);
                 }
-            );
+    
+                // sort orgs at each level by shortname
+                function sort_aou(node) {
+                    node.children(node.children().sort(function(a, b) {
+                        return a.shortname() < b.shortname() ? -1 : 1;
+                    }));
+                    angular.forEach(node.children(), sort_aou);
+                }
+    
+                return egPCRUD.search('aou', {parent_ou : null}, 
+                    {flesh : -1, flesh_fields : {aou : ['children', 'ou_type']}}
+                ).then(
+                    function(tree) {
+                        sort_aou(tree);
+                        $window.sessionStorage.setItem(
+                            'eg.env.aou.tree', js2JSON(tree));
+                        service.absorbTree(tree, 'aou');
+                        return $q.when();
+                    }
+                );
+            });
         },
     };
 

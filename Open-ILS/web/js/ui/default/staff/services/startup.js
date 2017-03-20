@@ -48,6 +48,8 @@ function($q,  $rootScope,  $location,  $window,  egIDL,  egAuth,  egEnv , egOrg 
     // returns true if we are staying on the current page
     // false if we are redirecting to login
     service.expiredAuthHandler = function() {
+        if (lf.isOffline) return true; // Only set by the offline UI
+
         console.debug('egStartup.expiredAuthHandler()');
         egAuth.logout(); // clean up
 

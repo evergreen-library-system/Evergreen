@@ -3,10 +3,12 @@
     <!-- Date Picker -->
     <div class="input-group">
       <input type="text"
+        id="{{id}}"
         class="form-control"
         ng-show="!hideDatePicker"
         uib-datepicker-popup="{{date_format}}"
         is-open="datePickerIsOpen"
+        datepicker-options="options"
         ng-model="ngModel"
         ng-change="ngChange"
         ng-blur="ngBlur"
@@ -35,6 +37,10 @@
         ng-change="ngChange">
       </uib-timepicker>
     </span>
+  </div>
+
+  <div>
+    <span ng-show="outOfRange" class="label label-danger">[% l('Input is out of range.') %]</span>
   </div>
 </div>
 

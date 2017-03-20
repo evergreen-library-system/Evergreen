@@ -37,6 +37,7 @@ module.exports = function(grunt) {
             'node_modules/iframe-resizer/js/iframeResizer.map',
             'node_modules/iframe-resizer/js/iframeResizer.contentWindow.min.js',
             'node_modules/angular-order-object-by/src/ng-order-object-by.js',
+            'node_modules/angular-tablesort/js/angular-tablesort.js',
             'node_modules/lovefield/dist/lovefield.min.js',
             'node_modules/lovefield/dist/lovefield.min.js.map',
             'node_modules/moment/min/moment-with-locales.min.js',
@@ -58,6 +59,7 @@ module.exports = function(grunt) {
             'node_modules/ngtoast/dist/ngToast-animations.min.css',
             'node_modules/angular-tree-control/css/tree-control.css',
             'node_modules/angular-tree-control/css/tree-control-attribute.css',
+            'node_modules/angular-tablesort/tablesort.css'
           ]
         }]
       },
@@ -72,7 +74,8 @@ module.exports = function(grunt) {
             'node_modules/bootstrap/dist/fonts/glyphicons-halflings-regular.eot',
             'node_modules/bootstrap/dist/fonts/glyphicons-halflings-regular.svg',
             'node_modules/bootstrap/dist/fonts/glyphicons-halflings-regular.ttf',
-            'node_modules/bootstrap/dist/fonts/glyphicons-halflings-regular.woff'
+            'node_modules/bootstrap/dist/fonts/glyphicons-halflings-regular.woff',
+            'node_modules/bootstrap/dist/fonts/glyphicons-halflings-regular.woff2'
           ]
         }]
       },
@@ -110,7 +113,7 @@ module.exports = function(grunt) {
             'build/css/ngToast.min.css',
             'build/css/ngToast-animations.min.css',
             'build/css/tree-control.css',
-            'build/css/tree-control-attribute.css',
+            'build/css/tree-control-attribute.css'
           ]
         }
       }
@@ -130,7 +133,7 @@ module.exports = function(grunt) {
           rename: function (dst, src) {
             return src.replace('.js', '.min.js');
           }
-        }],
+        }]
       },
       build: {
         src: [
@@ -172,6 +175,7 @@ module.exports = function(grunt) {
             'services/ui.js',
             'services/date.js',
             'services/op_change.js',
+            'services/file.js'
         ],
         dest: 'build/js/<%= pkg.name %>.<%= pkg.version %>.min.js'
       },
@@ -181,7 +185,7 @@ module.exports = function(grunt) {
     // to more easily detect if concat order is incorrect
     concat: {
       options: {
-       separator: ';',
+       separator: ';'
       }
     },
 
@@ -190,19 +194,19 @@ module.exports = function(grunt) {
       // Generate test/data/IDL2js.js for unit tests.
       // note: the output of this script is *not* part of the final build.
       idl2js : {
-        command : 'cd test/data && perl idl2js.pl',
+        command : 'cd test/data && perl idl2js.pl'
       },
 
       // Remove the unit test IDL2js.js file.  We don't need it after testing
       rmidl2js : {
-        command : 'rm test/data/IDL2js.js',
+        command : 'rm test/data/IDL2js.js'
       }
     },
 
     // unit tests configuration
     karma : {
       unit: {
-        configFile: 'test/karma.conf.js',
+        configFile: 'test/karma.conf.js'
         //background: true  // for now, visually babysit unit tests
       }
     }

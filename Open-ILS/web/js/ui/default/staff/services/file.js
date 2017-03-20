@@ -35,18 +35,72 @@ angular.module('egCoreMod')
             defaultFileName: '='
         },
         link: function (scope, element, attributes) {
+            var name = scope.defaultFileName || 'evergreen-json-export';
             element.bind('click', function (clickEvent) {
                 if (scope.generator) {
                     scope.generator().then(function(value) {
                         var data = new Blob([JSON.stringify(value)], {type : 'application/json'});
-                        FileSaver.saveAs(data, scope.defaultFileName);
+                        FileSaver.saveAs(data, name);
                     });
                 } else {
                     var data = new Blob([JSON.stringify(scope.container)], {type : 'application/json'});
-                    FileSaver.saveAs(data, scope.defaultFileName);
+                    FileSaver.saveAs(data, name);
                 }
             });
         }
     }
 }])
+
+// The following directives use a attr instead of binding to get the default file name!
+.directive('egStringExporter', ['FileSaver', 'Blob', function(FileSaver, Blob) {
+    return {
+        scope: {
+            contentType: '=',
+            string: '=',
+            generator: '=',
+            defaultFileName: '@'
+        },
+        link: function (scope, element, attributes) {
+            var type = scope.contentType || 'text/plain';
+            var name = scope.defaultFileName || 'evergreen-string-export';
+            element.bind('click', function (clickEvent) {
+                if (scope.generator) {
+                    scope.generator().then(function(value) {
+                        var data = new Blob([value], {type : type});
+                        FileSaver.saveAs(data, name);
+                    });
+                } else {
+                    var data = new Blob([scope.string], {type : type});
+                    FileSaver.saveAs(data, name);
+                }
+            });
+        }
+    }
+}])
+
+.directive('egLineExporter', ['FileSaver', 'Blob', function(FileSaver, Blob) {
+    return {
+        scope: {
+            contentType: '=',
+            jsonArray: '=',
+            defaultFileName: '@'
+        },
+        link: function (scope, element, attributes) {
+            element.bind('click', function (clickEvent) {
+                var type = scope.contentType || 'text/plain';
+                var fname = scope.defaultFileName || 'evergreen-string-export';
+                FileSaver.saveAs(
+                    new Blob(
+                        scope.jsonArray.map(function (line) {
+                            return JSON.stringify(line) + '\n';
+                        }),
+                        {type : type}
+                    ),
+                    fname
+                );
+            });
+        }
+    }
+}])
+
 ;

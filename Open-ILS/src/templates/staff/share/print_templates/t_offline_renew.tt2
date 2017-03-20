@@ -1,0 +1,24 @@
+<!--
+Template for printing offline renew receipts; fields available include:
+
+* transactions - list of loans made during this session. Each
+  includes:
+
+  * barcode
+  * due_date
+
+-->
+<div>
+  <div>[% l('You renewed the following [_1] items:', '{{transactions.length}}') %]</div>
+  <hr/>
+  <ol>
+    <li ng-repeat="checkout in transactions">
+      <div>[% l('Barcode: [_1] Due: [_2]', 
+        '{{checkout.barcode}}',
+        '{{checkout.due_date | date:"short"}}') %]</div>
+    </li>
+  </ol>
+  <hr/>
+  <div>{{today | date:'short'}}</div>
+<br/>
+

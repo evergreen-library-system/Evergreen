@@ -27,7 +27,7 @@
       ng-disabled="edit_passthru.hide_save_actions()"
       ng-click="edit_passthru.save()">[% l('Save') %]</button>
   </span>
-  <span class="pad-all-min">
+  <span ng-if="!offline" class="pad-all-min">
     <button type="button" class="btn btn-default"
       ng-disabled="edit_passthru.hide_save_actions()"
       ng_click="edit_passthru.save({clone:true})">[% l('Save & Clone') %]</button>

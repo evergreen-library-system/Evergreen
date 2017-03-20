@@ -49,6 +49,12 @@
               </div>
             </div>
 
+            <div class="form-group">
+              <div class="col-md-offset-4 col-md-6">
+                <span ng-show="pendingXacts" class="label label-warning">[% l('Unprocessed offline transactions waiting for upload') %]</span>
+              </div>
+            </div>
+
           </form>
         </fieldset>
       </div>

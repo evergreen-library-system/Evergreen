@@ -50,8 +50,6 @@ angular.module('egCoreMod')
                             else
                                 obj.a[i][j] = angular.copy(thing[j]);
                         }
-                    } else {
-                        obj.a[i] = angular.copy(thing);
                     }
                 }
             }
