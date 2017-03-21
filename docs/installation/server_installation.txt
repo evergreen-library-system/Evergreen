@@ -406,7 +406,7 @@ a2dissite 000-default  # OPTIONAL: disable the default site (the "It Works" page
 a2ensite eg.conf
 ------------------------------------------------------------------------------
 +
-. (Ubuntu): As the *root* Linux account, enable Apache to write
+. (Debian and Ubuntu): As the *root* Linux account, enable Apache to write
    to the lock directory; this is currently necessary because Apache
    is running as the `opensrf` user:
 +
