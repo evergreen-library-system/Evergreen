@@ -54,6 +54,8 @@ function($q , $window , $timeout , $http , egHatch , egAuth , egIDL , egOrg , eg
             egIDL.toHash(egOrg.get(egAuth.user().ws_ou()));
     }
 
+    service.last_print = {};
+
     // Template has been fetched (or no template needed) 
     // Process the template and send the result off to the printer.
     service.print_content = function(args) {
@@ -81,13 +83,24 @@ function($q , $window , $timeout , $http , egHatch , egAuth , egIDL , egOrg , eg
         return promise.then(function(html) {
             // For good measure, wrap the compiled HTML in container tags.
             html = "<html><body>" + html + "</body></html>";
-            return egHatch.remotePrint(
-                args.context || 'default',
-                args.content_type, 
-                html, 
-                args.show_dialog
-            );
+            service.last_print.content = html;
+            service.last_print.context = args.context || 'default';
+            service.last_print.content_type = args.content_type;
+            service.last_print.show_dialog = args.show_dialog;
+
+            egHatch.setItem('eg.print.last_printed', service.last_print);
+
+            return service._remotePrint();
         });
+    }
+
+    service._remotePrint = function () {
+        return egHatch.remotePrint(
+            service.last_print.context,
+            service.last_print.content_type,
+            service.last_print.content, 
+            service.last_print.show_dialog
+        );
     }
 
     service.print_via_browser = function(args) {
@@ -111,11 +124,52 @@ function($q , $window , $timeout , $http , egHatch , egAuth , egIDL , egOrg , eg
                   content;
 
         }).then(function(content) {
+            service.last_print.content = content;
+            service.last_print.content_type = type;
+            service.last_print.printScope = printScope
+
+            egHatch.setItem('eg.print.last_printed', service.last_print);
+
             // Ingest the content into the page DOM.
-            return service.ingest_print_content(type, content, printScope);
+            return service.ingest_print_content(
+                service.last_print.content_type,
+                service.last_print.content,
+                service.last_print.printScope
+            );
 
         }).then(function() { 
             $window.print();
+        });
+    }
+
+    service.reprintLast = function () {
+        var deferred = $q.defer();
+        var promise = deferred.promise;
+        promise.finally( function() { service.clear_print_content() });
+
+        egHatch.getItem(
+            'eg.print.last_printed'
+        ).then(function (last) {
+            if (last && last.content) {
+                service.last_print = last;
+
+                if (egHatch.usePrinting()) {
+                    promise.then(function () {
+                        egHatch._remotePrint()
+                    });
+                } else {
+                    promise.then(function () {
+                        service.ingest_print_content(
+                            service.last_print.content_type,
+                            service.last_print.content,
+                            service.last_print.printScope
+                        ).then(function() { $window.print() });
+                    });
+                }
+                return deferred.resolve();
+            } else {
+                return deferred.reject();
+            }
         });
     }
 
