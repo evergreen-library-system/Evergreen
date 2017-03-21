@@ -168,6 +168,15 @@
               <span>[% l('Scan Item as Missing Pieces') %]</span>
             </a>
           </li>
+          <li class="divider"></li>
+          <li>
+            <a href="" ng-click="reprintLast($event)"
+              eg-accesskey="[% l('f9') %]" 
+              eg-accesskey-desc="[% l('Reprint Last Receipt') %]">
+              <span class="glyphicon glyphicon-print"></span>
+              <span>[% l('Reprint Last Receipt') %]</span>
+            </a>
+          </li>
         </ul>
       </li><!-- circ -->
 

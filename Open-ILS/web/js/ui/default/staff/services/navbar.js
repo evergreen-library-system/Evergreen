@@ -31,6 +31,11 @@ angular.module('egCoreMod')
             function($scope , $window , $location , $timeout , hotkeys ,
                      egCore , $uibModal , ngToast, egOpChange) {
 
+                $scope.reprintLast = function (e) {
+                    egCore.print.reprintLast();
+                    return e.preventDefault();
+                }
+
                 function navTo(path) {                                           
                     // Strip the leading "./" if any.
                     path = path.replace(/^\.\//,'');
