@@ -41,15 +41,17 @@ angular.module('egCoreMod')
                 // adds a keyboard shortcut
                 // http://chieffancypants.github.io/angular-hotkeys/
                 $scope.addHotkey = function(key, path, desc, elm) {                 
-                    hotkeys.add({
-                        combo: key,
-                        allowIn: ['INPUT','SELECT','TEXTAREA'],
-                        description: desc,
-                        callback: function(e) {
-                            e.preventDefault();
-                            if (path) return navTo(path);
-                            return $timeout(function(){$(elm).trigger('click')});
-                        }
+                    angular.forEach(key.split(' '), function (k) {
+                        hotkeys.add({
+                            combo: k,
+                            allowIn: ['INPUT','SELECT','TEXTAREA'],
+                            description: desc,
+                            callback: function(e) {
+                                e.preventDefault();
+                                if (path) return navTo(path);
+                                return $timeout(function(){$(elm).trigger('click')});
+                            }
+                        });
                     });
                 };
 
