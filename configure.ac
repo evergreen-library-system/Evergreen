@@ -344,6 +344,16 @@ if test "x$openils_core" = "xtrue"; then
     AC_FUNC_STRTOD
     AC_CHECK_FUNCS([localtime_r memset nl_langinfo setlocale strcasecmp strchr strdup strerror strncasecmp])
 
+    #---------------------------------
+    # Check for unit test framework.
+    #---------------------------------
+    PKG_CHECK_MODULES([CHECK], [check >= 0.9.0], [enable_tests=yes],
+                      [enable_tests=no])
+    AM_CONDITIONAL(CHECK_TESTS, test x$enable_tests = xyes)
+    if test "x$enable_tests" = "xno"; then
+        AC_MSG_WARN(Check unit testing framework not found.)
+    fi
+
     #----------------------------
     # Create Makefiles/Output
     #----------------------------
