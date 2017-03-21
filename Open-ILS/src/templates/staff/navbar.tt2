@@ -36,7 +36,7 @@
         <ul uib-dropdown-menu>
           <li>
             <a href="./circ/patron/search" target="_self"
-              eg-accesskey="[% l('alt+s') %]" 
+              eg-accesskey="[% l('alt+s') %] [% l('f4') %]" 
               eg-accesskey-desc="[% l('Patron search by name, address, etc.') %]">
               <span class="glyphicon glyphicon-user"></span>
               <span eg-accesskey-label>[% l('Search for Patrons') %]</span>
@@ -99,7 +99,9 @@
             </a>
           </li>
           <li>
-            <a href="./circ/renew/renew" target="_self">
+            <a href="./circ/renew/renew" target="_self"
+              eg-accesskey="[% l('ctrl+f2') %]" 
+              eg-accesskey-desc="[% l('Renew items') %]">
               <span class="glyphicon glyphicon-refresh"></span>
               [% l('Renew Items') %]
             </a>
