@@ -10,12 +10,12 @@ TESTS = check_util check_idl
 check_PROGRAMS = check_util check_idl
 
 check_util_SOURCES = $(COMMON) check_util.c
-check_util_CFLAGS = $(AM_CFLAGS)
-check_util_LDFLAGS = $(AM_LDFLAGS) -loils_idl -loils_utils -lcheck
+check_util_CFLAGS = $(AM_CFLAGS) $(CHECK_CFLAGS)
+check_util_LDFLAGS = $(AM_LDFLAGS) $(CHECK_LIBS) -loils_idl -loils_utils 
 check_util_DEPENDENCIES = ../liboils_idl.la ../liboils_utils.la
 
 check_idl_SOURCES = $(COMMON) check_idl.c
-check_idl_CFLAGS = $(AM_CFLAGS)
-check_idl_LDFLAGS = $(AM_LDFLAGS) -loils_idl -loils_utils -lcheck
+check_idl_CFLAGS = $(AM_CFLAGS) $(CHECK_CFLAGS)
+check_idl_LDFLAGS = $(AM_LDFLAGS) $(CHECK_LIBS) -loils_idl -loils_utils 
 check_idl_DEPENDENCIES = ../liboils_idl.la ../liboils_utils.la
 
