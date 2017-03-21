@@ -29,6 +29,7 @@ use OpenSRF::EX qw(:try);
 use OpenSRF::Utils::SettingsClient;
 use OpenSRF::Utils::Logger qw($logger);
 use OpenSRF::Utils::Cache;
+use OpenSRF::Utils::JSON;
 use OpenILS::Application::AppUtils;
 use Data::Dumper;
 
@@ -462,6 +463,96 @@ sub do_holdings_lookup {
     }
 
     return $holdings;
+}
+
+# POST https://patron.api.overdrive.com/v1/patrons/me/checkouts
+# Authorization: Bearer {OAuth patron access token}
+# Content-Type: application/json; charset=utf-8
+# 
+# Request content looks like this:
+# {
+#     "fields": [
+#         {
+#             "name": "reserveId",
+#             "value": "76C1B7D0-17F4-4C05-8397-C66C17411584"
+#         }
+#     ]
+# }
+#
+# Response looks like this:
+# {
+#     "reserveId": "76C1B7D0-17F4-4C05-8397-C66C17411584",
+#     "expires": "10/14/2013 10:56:00 AM",
+#     "isFormatLockedIn": false,
+#     "formats": [
+#         {
+#             "reserveId": "76C1B7D0-17F4-4C05-8397-C66C17411584",
+#             "formatType": "ebook-overdrive",
+#             "linkTemplates": {
+#                 "downloadLink": {
+#                     "href": "https://patron.api.overdrive.com/v1/patrons/me/checkouts/76C1B7D0-17F4-4C05-8397-C66C17411584/formats/ebook-overdrive/downloadlink?errorpageurl={errorpageurl}&odreadauthurl={odreadauthurl}",
+#                     ...
+#                 },
+#                 ...
+#             },
+#             ...
+#         }
+#     ],
+#     ...
+# }
+sub checkout {
+    my ($self, $title_id, $patron_token) = @_;
+    my $request_content = {
+        fields => [
+            {
+                name  => 'reserveId',
+                value => $title_id
+            }
+        ]
+    };
+    my $req = {
+        method  => 'POST',
+        uri     => $self->{circulation_base_uri} . "/patrons/me/checkouts",
+        content => OpenSRF::Utils::JSON->perl2JSON($request_content)
+    };
+    if (my $res = $self->handle_http_request($req, $self->{session_id})) {
+        if ($res->{content}->{expires}) {
+            return { due_date => $res->{content}->{expires} };
+        }
+        $logger->error("EbookAPI: checkout failed for OverDrive title $title_id");
+        return { error_msg => ( (defined $res->{content}) ? $res->{content} : 'Unknown checkout error' ) };
+    }
+    $logger->error("EbookAPI: no response received from OverDrive server");
+    return;
+}
+
+# renew is not supported by OverDrive API
+sub renew {
+    $logger->error("EbookAPI: OverDrive API does not support renewals");
+    return { error_msg => "Title cannot be renewed." };
+}
+
+# NB: A title cannot be checked in once a format has been locked in.
+# Successful checkin returns an HTTP 204 response with no content.
+# DELETE https://patron.api.overdrive.com/v1/patrons/me/checkouts/08F7D7E6-423F-45A6-9A1E-5AE9122C82E7
+# Authorization: Bearer {OAuth patron access token}
+# Host: patron.api.overdrive.com
+sub checkin {
+    my ($self, $title_id, $patron_token) = @_;
+    my $req = {
+        method  => 'DELETE',
+        uri     => $self->{circulation_base_uri} . "/patrons/me/checkouts/$title_id"
+    };
+    if (my $res = $self->handle_http_request($req, $self->{session_id})) {
+        if ($res->{status} =~ /^204/) {
+            return {};
+        } else {
+            $logger->error("EbookAPI: checkin failed for OverDrive title $title_id");
+            return { error_msg => ( (defined $res->{content}) ? $res->{content} : 'Checkin failed' ) };
+        }
+    }
+    $logger->error("EbookAPI: no response received from OverDrive server");
+    return;
 }
 
 # List of patron checkouts:
