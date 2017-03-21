@@ -229,7 +229,7 @@ PROCESS get_marc_attrs args=mmr_attrs;
 
 IF args.mmr_unique_bib.size > 1;
 %]
-<h3>View other formats and editions</h3>
+<h3>[% l("View other formats and editions") %]</h3>
 <span class="metarecord_population_format">
 [%- IF mmr_attrs.format_label;
     FOR format IN mmr_attrs.all_formats;
@@ -267,7 +267,7 @@ IF args.mmr_unique_bib.size > 1;
     link = mkurl( ctx.opac_root _ '/results', { modifier => 'metabib', metarecord => ctx.mmr_id, 'fi:from_metarecord' => ctx.mmr_id }, stop_parms.merge(expert_search_parms, general_search_parms, browse_search_parms, facet_search_parms, ['qtype','fi:search_format','fi:icon_format','fi:item_lang','fi:from_metarecord'] ) );
     %]
     <span class="metarecord_population_span_link">
-        <a href="[%- l( link ) %]">View all [%- args.mmr_unique_bib.size %] formats and editions
+        <a href="[%- l( link ) %]">[% l("View all formats and editions ") %] ([%- args.mmr_unique_bib.size %]) 
         </a></span><br />
 </div>
 [%- END;
