@@ -7,7 +7,7 @@ use OpenILS::Utils::Fieldmapper;
 sub ils_version {
     # version format is "x-y-z", for example "2-0-0" for Evergreen 2.0.0
     # For branches, format is "x-y"
-    return "2-12-rc";
+    return "HEAD";
 }
 
 __PACKAGE__->register_method(
