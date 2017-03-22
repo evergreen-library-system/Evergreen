@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2017-02-21 20:30-0400\n"
+"POT-Creation-Date: 2017-03-15 16:25-0400\n"
 "PO-Revision-Date: 2013-01-19 17:30+0000\n"
 "Last-Translator: Dennis Baudys <Unknown>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-02-23 05:39+0000\n"
-"X-Generator: Launchpad (build 18326)\n"
+"X-Launchpad-Export-Date: 2017-03-19 06:09+0000\n"
+"X-Generator: Launchpad (build 18332)\n"
 
 #: 950.data.seed-values.sql:8080
 msgid "Estonia "
@@ -94,6 +94,12 @@ msgstr ""
 
 #: 950.data.seed-values.sql:4904
 msgid "Require at least one address for Patron Registration"
+msgstr ""
+
+#: 950.data.seed-values.sql:16814
+msgid ""
+"Base URI for OneClickdigital API (defaults to "
+"https://api.oneclickdigital.com/v1). Using HTTPS here is strongly encouraged."
 msgstr ""
 
 #: 950.data.seed-values.sql:1564
@@ -1790,7 +1796,7 @@ msgid ""
 "balances after an interval of time."
 msgstr ""
 
-#: 950.data.seed-values.sql:16824
+#: 950.data.seed-values.sql:16840
 msgid "OneClickdigital Basic Token"
 msgstr ""
 
@@ -4387,7 +4393,7 @@ msgstr ""
 msgid "Elamite"
 msgstr "Elamisch"
 
-#: 950.data.seed-values.sql:16814
+#: 950.data.seed-values.sql:16830
 msgid "Identifier assigned to this library by OneClickdigital"
 msgstr ""
 
@@ -7512,7 +7518,7 @@ msgstr ""
 msgid "Create suffix label definition."
 msgstr ""
 
-#: 950.data.seed-values.sql:16808
+#: 950.data.seed-values.sql:16824
 msgid "OneClickdigital Library ID"
 msgstr ""
 
@@ -8916,6 +8922,10 @@ msgstr ""
 
 #: 950.data.seed-values.sql:1068
 msgid "UPDATE_PICKUP_LIB_FROM_HOLDS_SHELF"
+msgstr ""
+
+#: 950.data.seed-values.sql:16808
+msgid "OneClickdigital Base URI"
 msgstr ""
 
 #: 950.data.seed-values.sql:500
@@ -11081,7 +11091,7 @@ msgstr ""
 msgid "US Dollars"
 msgstr ""
 
-#: 950.data.seed-values.sql:16830
+#: 950.data.seed-values.sql:16846
 msgid ""
 "Basic token for client authentication with OneClickdigital API (supplied by "
 "OneClickdigital)"

@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2017-02-21 20:30-0400\n"
-"PO-Revision-Date: 2017-02-25 09:57+0000\n"
+"POT-Creation-Date: 2017-03-15 16:25-0400\n"
+"PO-Revision-Date: 2017-03-19 15:18+0000\n"
 "Last-Translator: fares othman <Unknown>\n"
 "Language-Team: Arabic <ar@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-02-27 05:31+0000\n"
-"X-Generator: Launchpad (build 18328)\n"
+"X-Launchpad-Export-Date: 2017-03-20 05:55+0000\n"
+"X-Generator: Launchpad (build 18332)\n"
 "Language: ar\n"
 
 #: 950.data.seed-values.sql:8080
@@ -57,7 +57,7 @@ msgstr "بَكرة فلمية"
 
 #: 950.data.seed-values.sql:1651
 msgid "Allow a user to modify a popularity badge parameter"
-msgstr ""
+msgstr "السماح بتعديل باراميتر شارة الرواجية"
 
 #: 950.data.seed-values.sql:6860
 msgid "Norwegian"
@@ -101,6 +101,12 @@ msgstr ""
 #: 950.data.seed-values.sql:4904
 msgid "Require at least one address for Patron Registration"
 msgstr "عِنوان واحد على الأقل مطلوب لتسجيل المستفيد"
+
+#: 950.data.seed-values.sql:16814
+msgid ""
+"Base URI for OneClickdigital API (defaults to "
+"https://api.oneclickdigital.com/v1). Using HTTPS here is strongly encouraged."
+msgstr ""
 
 #: 950.data.seed-values.sql:1564
 msgid "Allows a user to create/retrieve/update/delete address alerts"
@@ -371,7 +377,7 @@ msgstr "الأوباك"
 
 #: 950.data.seed-values.sql:1643
 msgid "Allow a user to delete a popularity badge"
-msgstr ""
+msgstr "السماح للمستخدم بحذف شارة الرواجية"
 
 #: 950.data.seed-values.sql:1334
 msgid "ADMIN_INVOICE_PAYMENT_METHOD"
@@ -502,7 +508,7 @@ msgstr "DATE_ORG_UNIT_SETTING_ALL"
 
 #: 950.data.seed-values.sql:1649
 msgid "Allow a user to delete a popularity badge parameter"
-msgstr ""
+msgstr "السماح للمستخدم بحذف باراميتر شارة الرواجية"
 
 #: 950.data.seed-values.sql:15659
 msgid "Maximum Parallel Z39.50 Batch Searches"
@@ -1346,6 +1352,8 @@ msgid ""
 "Basic token for client authentication with OverDrive API (supplied by "
 "OverDrive)"
 msgstr ""
+"الرمز الأساسي لـِ مصادقة برنامج العميل مع  واجهة برمجة التطبيقات لـِ ـ "
+"الأوفر درايف ـ"
 
 #: 950.data.seed-values.sql:7014
 msgid "Sorbian languages"
@@ -1785,7 +1793,7 @@ msgstr "كوودو موبايل"
 
 #: 950.data.seed-values.sql:1641
 msgid "Allow a user to create a new popularity badge"
-msgstr ""
+msgstr "السماح للمستخدم بإنشاء شارة رواجية جديدة"
 
 #: 950.data.seed-values.sql:4844
 msgid ""
@@ -1886,9 +1894,9 @@ msgstr ""
 "ضبط القيمة إلى \"صحيح\" لمنع الأرصدة السالبة في كل الأوقات، أو  عندما "
 "استخدامها مع إعداد الفترة، لمنع الأرصدة السالبة بعد فترة معينة من الوقت."
 
-#: 950.data.seed-values.sql:16824
+#: 950.data.seed-values.sql:16840
 msgid "OneClickdigital Basic Token"
-msgstr ""
+msgstr "الرمز الأساسي لـِ ـ نقرة واحدة رقمية ـ"
 
 #: 950.data.seed-values.sql:7015
 msgid "Walloon"
@@ -1960,7 +1968,7 @@ msgstr "كشافات"
 
 #: 950.data.seed-values.sql:6566
 msgid "Mapuche"
-msgstr "مابوتشي"
+msgstr "لغة مابوتشي"
 
 #: 950.data.seed-values.sql:6998
 msgid "Uighur"
@@ -2725,7 +2733,7 @@ msgstr "التحقق/التأكيد عن طريق المُترجمv1"
 
 #: 950.data.seed-values.sql:11621
 msgid "Shipping Charge"
-msgstr ""
+msgstr "رسوم الشحن"
 
 #: 950.data.seed-values.sql:11740 950.data.seed-values.sql:11935
 #: 950.data.seed-values.sql:11936
@@ -2926,7 +2934,7 @@ msgstr "مدة إبقاء سجل الحجز - ملغي (انتهاء صلاحي�
 
 #: 950.data.seed-values.sql:6634
 msgid "Creoles and Pidgins, English-based (Other)"
-msgstr "كري"
+msgstr "لغة كريولس وبيدجينس"
 
 #: 950.data.seed-values.sql:7026
 msgid "Zhuang"
@@ -3586,7 +3594,7 @@ msgstr "رسائل نصية قصيرة"
 
 #: 950.data.seed-values.sql:8307
 msgid "Christmas Island (Indian Ocean) "
-msgstr ""
+msgstr "جزيرة كريسماس ـ المحيط الهندي ـ "
 
 #: 950.data.seed-values.sql:7911
 msgid "Chamberlin trimetric"
@@ -3993,7 +4001,7 @@ msgstr "تاريخ مشكوك فيه"
 
 #: 950.data.seed-values.sql:6820
 msgid "Mandar"
-msgstr ""
+msgstr "لغة ماندار"
 
 #: 950.data.seed-values.sql:1042
 msgid "UPDATE_METABIB_FIELD"
@@ -4088,7 +4096,7 @@ msgstr "الأَلمانية"
 
 #: 950.data.seed-values.sql:16659
 msgid "Holds Retarget Interval"
-msgstr ""
+msgstr "الفاصل الزمني لإعادة توجيه الحجوزات"
 
 #: 950.data.seed-values.sql:12365
 msgid "Import failed due to barcode collision"
@@ -4321,7 +4329,7 @@ msgstr "إسبرانتو"
 
 #: 950.data.seed-values.sql:16788
 msgid "OverDrive Password Required"
-msgstr ""
+msgstr "كلمة المرور لـِ ـ الأوفر درايف ـ مطلوبة"
 
 #: 950.data.seed-values.sql:16304
 msgid "Patron Self-Reg. Display Timeout"
@@ -4479,7 +4487,7 @@ msgstr "الصحراء الغربية "
 
 #: 950.data.seed-values.sql:14340
 msgid "Pioneer Cellular"
-msgstr ""
+msgstr "بايونير سيلليولار للاتصالات"
 
 #: 950.data.seed-values.sql:1466
 msgid "ADMIN_SERIAL_DISTRIBUTION"
@@ -4595,9 +4603,9 @@ msgstr "استخدام التنبيهات الصوتية لـِ أحداث ال�
 msgid "Elamite"
 msgstr "العيلامية"
 
-#: 950.data.seed-values.sql:16814
+#: 950.data.seed-values.sql:16830
 msgid "Identifier assigned to this library by OneClickdigital"
-msgstr ""
+msgstr "المعرف المُخصص لهذه المكتبة عن طريق نقرة واحدة رقمية"
 
 #: 950.data.seed-values.sql:3503
 msgid "Skip offline renewal if newer item Status Changed Time."
@@ -4876,7 +4884,7 @@ msgstr "غير مُحدد"
 
 #: 950.data.seed-values.sql:7097
 msgid "EIAJ"
-msgstr ""
+msgstr "جمعية الصناعات الإلكترونية اليابانية"
 
 #: 950.data.seed-values.sql:6886
 msgid "Phoenician"
@@ -4908,7 +4916,7 @@ msgstr "كلمة مرور المستفيد مطلوبة"
 
 #: 950.data.seed-values.sql:1645
 msgid "Allow a user to modify a popularity badge"
-msgstr ""
+msgstr "السماح للمستخدم بتعديل شارة الرواجية"
 
 #: 950.data.seed-values.sql:7101
 msgid "CED videodisc"
@@ -4973,7 +4981,7 @@ msgstr "العودة إلى الوراء"
 
 #: 950.data.seed-values.sql:6574
 msgid "Avaric"
-msgstr "الأَفاريكية"
+msgstr "لغة أفاريك"
 
 #: 950.data.seed-values.sql:27
 msgid "Patron exceeds max checked out item threshold"
@@ -5079,7 +5087,7 @@ msgstr "DELETE_ITEM_FORM"
 
 #: 950.data.seed-values.sql:194
 msgid "Topic Browse"
-msgstr ""
+msgstr "استعراض موضوعي"
 
 #: 950.data.seed-values.sql:188
 msgid "Genre"
@@ -5193,15 +5201,15 @@ msgstr "فيرمونت "
 
 #: 950.data.seed-values.sql:14548
 msgid "Republic Wireless (must enable on device)"
-msgstr ""
+msgstr "ري بابليك اللاسلكية ـ ينبغي التمكين على الجهاز ـ"
 
 #: 950.data.seed-values.sql:3890
 msgid "PayflowPro partner"
-msgstr ""
+msgstr "شركاء بيفلوبرو"
 
 #: 950.data.seed-values.sql:6575
 msgid "Avestan"
-msgstr "الأَفستية"
+msgstr "اللغة الأَفستية"
 
 #: 950.data.seed-values.sql:6824
 msgid "Minangkabau"
@@ -5375,7 +5383,7 @@ msgstr "CREATE_COPY_STATUS"
 
 #: 950.data.seed-values.sql:6571
 msgid "Bable"
-msgstr ""
+msgstr "لغة بابل"
 
 #: 950.data.seed-values.sql:4046
 msgid ""
@@ -5436,7 +5444,7 @@ msgstr "تمكين المستخدم مِن إنشاء/تحديث/ حذف أنو�
 
 #: 950.data.seed-values.sql:3917
 msgid "PayflowPro vendor"
-msgstr ""
+msgstr "المزود بيفلوبرو"
 
 #: 950.data.seed-values.sql:2833 950.data.seed-values.sql:2836
 msgid "Staff Login Inactivity Timeout (in seconds)"
@@ -5491,7 +5499,7 @@ msgstr "الشكل الأدبي لهذه النُسخة غير معروف."
 
 #: 950.data.seed-values.sql:6576
 msgid "Awadhi"
-msgstr "الأودهيَة"
+msgstr "اللغة الأودهيَة"
 
 #: 950.data.seed-values.sql:6637
 msgid "Cree"
@@ -5736,6 +5744,8 @@ msgstr "روجرز اللاسلكية"
 msgid ""
 "Default merge profile to use during Z39.50 imports and record bucket merges"
 msgstr ""
+"بشكل افتراضي دمج البروفايل من أجل الاستخدام خلال استيرادات بروتوكول زد 39.50 "
+"وسلة التسجيلة لـِ الدمج"
 
 #: 950.data.seed-values.sql:3263
 msgid ""
@@ -5751,7 +5761,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:6579
 msgid "Banda"
-msgstr "باندا"
+msgstr "لغة باندا"
 
 #: 950.data.seed-values.sql:5292
 msgid "Author of work"
@@ -5864,7 +5874,7 @@ msgstr "الإطار/الحد اللين"
 
 #: 950.data.seed-values.sql:16649 950.data.seed-values.sql:16652
 msgid "Display copy location checkin alert for in-house-use"
-msgstr ""
+msgstr "إظهار تنبيه موقع إعارة النسخة من أجل الاستخدام داخل المكتبة"
 
 #: 950.data.seed-values.sql:4367
 msgid ""
@@ -5981,7 +5991,7 @@ msgstr "أقراص ديفيدي"
 
 #: 950.data.seed-values.sql:165
 msgid "EAN"
-msgstr ""
+msgstr "كود \"يو أي إن\""
 
 #: 950.data.seed-values.sql:8316
 msgid "Saint Lucia "
@@ -6092,6 +6102,8 @@ msgid ""
 "Allows staff to designate a custom copy status on received lineitems.  "
 "Default status is \"In Process\"."
 msgstr ""
+"السماح للموظفين بتعيين حالة النسخة المخصصة في القيود المستلمة. الحالة "
+"الافتراضية هي\"قَيد المعالجة\"."
 
 #: 950.data.seed-values.sql:1012
 msgid "TRANSIT_COPY"
@@ -6335,7 +6347,7 @@ msgstr "بوتان "
 
 #: 950.data.seed-values.sql:2744
 msgid "Initial status for received items"
-msgstr ""
+msgstr "الحالة الأولية للنُسخ المستلمة"
 
 #: 950.data.seed-values.sql:8232
 msgid "Romania "
@@ -6399,7 +6411,7 @@ msgstr "إسقاط مُتعامد"
 
 #: 950.data.seed-values.sql:13077
 msgid "LoC"
-msgstr ""
+msgstr "مكتبة الكونغرس"
 
 #: 950.data.seed-values.sql:7666
 msgid "audio disc"
@@ -6748,7 +6760,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:6578
 msgid "Azerbaijani"
-msgstr "الأذربيجانيَة"
+msgstr "اللغة الأذربيجانيَة"
 
 #: 950.data.seed-values.sql:1082
 msgid "CREATE_LOCALE"
@@ -6911,7 +6923,7 @@ msgstr "جمهورية الدومنيكان "
 
 #: 950.data.seed-values.sql:16746
 msgid "Authorization name for this library, as assigned by OverDrive"
-msgstr ""
+msgstr "عنوان الترخيص لهذه المكتبة، كما تم تعيينه من خلال ـ الأوفر درايف ـ"
 
 #: 950.data.seed-values.sql:7923
 msgid "Gauss-Kruger"
@@ -7104,7 +7116,7 @@ msgstr "مدغشقر "
 
 #: 950.data.seed-values.sql:163
 msgid "ISMN"
-msgstr ""
+msgstr "الرقم الدولي المعياري للموسيقا ـ ردمم ـ"
 
 #: 950.data.seed-values.sql:676
 msgid "Allow a user to create a new title note"
@@ -7262,7 +7274,7 @@ msgstr "تعيين الهامش الأيسر للتسميات في عدد من �
 
 #: 950.data.seed-values.sql:2700
 msgid "GUI"
-msgstr ""
+msgstr "واجهة المستخدم الرسومية"
 
 #: 950.data.seed-values.sql:8169
 msgid "Martinique "
@@ -7356,7 +7368,7 @@ msgstr "اللاتفيَة"
 
 #: 950.data.seed-values.sql:16724
 msgid "OverDrive Website ID"
-msgstr ""
+msgstr "معرف موقع الويب لـِ  ـ الأوفر درايف ـ"
 
 #: 950.data.seed-values.sql:680
 msgid "Allow a user to delete another user's volume note"
@@ -7550,7 +7562,7 @@ msgstr "كاسيت شريط حاسوبي"
 
 #: 950.data.seed-values.sql:1647
 msgid "Allow a user to create a popularity badge parameter"
-msgstr ""
+msgstr "السماح للمستخدم بإنشاء باراميتر شارة الرواجية"
 
 #: 950.data.seed-values.sql:8137
 msgid "Korea (South) "
@@ -7574,7 +7586,7 @@ msgstr "الفلبين (أخرى)"
 
 #: 950.data.seed-values.sql:16772
 msgid "OverDrive Granted Authorization Redirect URI"
-msgstr ""
+msgstr "ـ الأوفر درايف ـ منح ترخيص إعادة توجيه لـِ معرف الموارد الموحد"
 
 #: 950.data.seed-values.sql:6776
 msgid "Kpelle"
@@ -7746,7 +7758,7 @@ msgstr "السماح لـِ المستخدم بإنشاء مستخدم آخر"
 
 #: 950.data.seed-values.sql:6581
 msgid "Bashkir"
-msgstr "الباشكيرية"
+msgstr "اللغة الباشكيرية"
 
 #: 950.data.seed-values.sql:1474
 msgid "Update suffix label definition."
@@ -7853,6 +7865,8 @@ msgid ""
 "Does this library require a password when authenticating patrons with the "
 "OverDrive API?"
 msgstr ""
+"هل تتطلب هذه المكتبة كلمة مرور عند مصادقة مستفيدين من خلال ـ الأوفر درايف ـ "
+"لـِ برمجة واجهة التطبيق"
 
 #: 950.data.seed-values.sql:8073
 msgid "Dominica "
@@ -7882,9 +7896,9 @@ msgstr "أطالس"
 msgid "Create suffix label definition."
 msgstr "إنشاء لاحقة تسمية التعريف."
 
-#: 950.data.seed-values.sql:16808
+#: 950.data.seed-values.sql:16824
 msgid "OneClickdigital Library ID"
-msgstr ""
+msgstr "معرف المكتبة لـِ نقرة واحدة رقمية"
 
 #: 950.data.seed-values.sql:8295
 msgid "Victoria "
@@ -7983,7 +7997,7 @@ msgstr "DELETE_ACQ_FUNDING_SOURCE"
 
 #: 950.data.seed-values.sql:16640 950.data.seed-values.sql:16643
 msgid "Display copy alert for in-house-use"
-msgstr ""
+msgstr "إظهار تنبيه النسخة من أجل الاستخدام داخل المكتبة"
 
 #: 950.data.seed-values.sql:1468
 msgid "ADMIN_SERIAL_STREAM"
@@ -8004,7 +8018,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:6644
 msgid "Dargwa"
-msgstr ""
+msgstr "لغة الدارغوا"
 
 #: 950.data.seed-values.sql:13133
 msgid "Established Heading Linking Entry -- Genre/Form Term"
@@ -8085,7 +8099,7 @@ msgstr "فان دير جرنتين"
 
 #: 950.data.seed-values.sql:14766
 msgid "Self-Check User Verification"
-msgstr ""
+msgstr "تأكيد التحقق الذاتي للمستخدم"
 
 #: 950.data.seed-values.sql:3299
 msgid ""
@@ -8147,7 +8161,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:14272
 msgid "South Central Communications"
-msgstr ""
+msgstr "اتصالات سنترال الجنوب"
 
 #: 950.data.seed-values.sql:11650
 msgid "This line item is not accepted by the seller."
@@ -8355,11 +8369,11 @@ msgstr "السماح بالتحديث من محطة العمل خلال تجاو
 
 #: 950.data.seed-values.sql:6947
 msgid "Serer"
-msgstr ""
+msgstr "لغة سيرير"
 
 #: 950.data.seed-values.sql:3440
 msgid "Void lost max interval"
-msgstr ""
+msgstr "إلغاء فقدان الفاصل الزمني كحد أقصى"
 
 #: 950.data.seed-values.sql:3998
 msgid "Format Dates with this pattern."
@@ -8396,7 +8410,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:6917
 msgid "Selkup"
-msgstr ""
+msgstr "لغة سيلك أب"
 
 #: 950.data.seed-values.sql:13125
 msgid "See Also From Tracing -- Chronological Term"
@@ -8432,17 +8446,19 @@ msgstr "رزم"
 
 #: 950.data.seed-values.sql:8131
 msgid "Johnston Atoll "
-msgstr ""
+msgstr "جونستون أتول "
 
 #: 950.data.seed-values.sql:14119
 msgid "Cellular South"
-msgstr ""
+msgstr "سيللولير الجنوبي"
 
 #: 950.data.seed-values.sql:15665
 msgid ""
 "The maximum number of Z39.50 searches that can be in-flight at any given "
 "time when performing batch Z39.50 searches"
 msgstr ""
+"الحد الأقصى لعدد عمليات البحث باستخدام زد 39.50 التي يمكن أن تكون في العملية "
+"في أي وقت مُعطى عند إجراء دفعة من عمليات البحث باستخدام زد 39.50"
 
 #: 950.data.seed-values.sql:8084
 msgid "French Guiana "
@@ -8537,7 +8553,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:14902
 msgid "Auto-Override Permitted Hold Blocks (Patrons)"
-msgstr ""
+msgstr "تجاهل تلقائي لـِ منع الحجز المسموح به ـ مستفيدين ـ"
 
 #: 950.data.seed-values.sql:11744
 msgid "Historical Hold Retention Age - Fulfilled"
@@ -8573,7 +8589,7 @@ msgstr "المُدير الشامل"
 
 #: 950.data.seed-values.sql:3449
 msgid "Cap Max Fine at Item Price"
-msgstr ""
+msgstr "أقصى غرامة تجاوز من سعر النسخة"
 
 #: 950.data.seed-values.sql:7048 950.data.seed-values.sql:7145
 #: 950.data.seed-values.sql:7146 950.data.seed-values.sql:7214
@@ -8743,7 +8759,7 @@ msgstr "مُعدل الإعارة الافتراضي"
 
 #: 950.data.seed-values.sql:11
 msgid "Bound Volume"
-msgstr ""
+msgstr "حدود المجلد"
 
 #: 950.data.seed-values.sql:2824
 msgid "Persistent Login Duration"
@@ -8759,7 +8775,7 @@ msgstr "النيجر الكردفانية وأخرى"
 
 #: 950.data.seed-values.sql:7402
 msgid "still image"
-msgstr ""
+msgstr "صورة ثابتة"
 
 #: 950.data.seed-values.sql:8250
 msgid "Somalia "
@@ -8814,7 +8830,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:6586
 msgid "Basa"
-msgstr ""
+msgstr "لغة بازا"
 
 #: 950.data.seed-values.sql:1208
 msgid "Allow a user to administer trigger event definitions"
@@ -8837,7 +8853,7 @@ msgstr "معلومات إثنولوجية ـ الأجناس البشرية"
 
 #: 950.data.seed-values.sql:269
 msgid "Paperback Book"
-msgstr ""
+msgstr "كتاب ورقي الغلاف"
 
 #: 950.data.seed-values.sql:6851
 msgid "Nepali"
@@ -8845,7 +8861,7 @@ msgstr "نيبال"
 
 #: 950.data.seed-values.sql:14565
 msgid "Google Fi"
-msgstr ""
+msgstr "جوجل فاي"
 
 #: 950.data.seed-values.sql:7494
 msgid "film roll"
@@ -8960,7 +8976,7 @@ msgstr "أنظر من التتابع -- تقسيم تسلسل زمني"
 
 #: 950.data.seed-values.sql:6568
 msgid "Artificial (Other)"
-msgstr "الاصطناعية (أخرى)"
+msgstr "اللغة الاصطناعية (أخرى)"
 
 #: 950.data.seed-values.sql:4028
 msgid ""
@@ -8994,7 +9010,7 @@ msgstr "لغات أوتوماين"
 
 #: 950.data.seed-values.sql:13709
 msgid "Panacea Mobile"
-msgstr ""
+msgstr "باناسي للموبايلات"
 
 #: 950.data.seed-values.sql:510
 msgid "Allow a user to log in to the staff client"
@@ -9093,7 +9109,7 @@ msgstr "إيراني (آخر)"
 
 #: 950.data.seed-values.sql:6605
 msgid "Bugis"
-msgstr ""
+msgstr "لغة باغيز"
 
 #: 950.data.seed-values.sql:2890
 msgid ""
@@ -9115,7 +9131,7 @@ msgstr "الحد الأقصى لـِ محاولات المكتبة المُست�
 
 #: 950.data.seed-values.sql:15
 msgid "e-Reader Preload"
-msgstr ""
+msgstr "القارئ الإلكتروني لـِ التحميل المسبق"
 
 #: 950.data.seed-values.sql:5372
 msgid "Friends"
@@ -9184,7 +9200,7 @@ msgstr "تراجم"
 
 #: 950.data.seed-values.sql:6866
 msgid "Nyoro"
-msgstr ""
+msgstr "لغة نايورو"
 
 #: 950.data.seed-values.sql:1046
 msgid "UPDATE_ORG_ADDRESS"
@@ -9220,7 +9236,7 @@ msgstr "اقتراح لاحقة الحقل في تسجيل المستفيد"
 
 #: 950.data.seed-values.sql:455
 msgid "Consortium"
-msgstr ""
+msgstr "تكتل تعاوني"
 
 #: 950.data.seed-values.sql:3953 950.data.seed-values.sql:3956
 msgid "PayPal signature"
@@ -9259,7 +9275,7 @@ msgstr "CREATE_MARC_CODE"
 
 #: 950.data.seed-values.sql:6610 950.data.seed-values.sql:6765
 msgid "Khmer"
-msgstr ""
+msgstr "اللغة الخميرية"
 
 #: 950.data.seed-values.sql:4985
 msgid ""
@@ -9345,7 +9361,7 @@ msgstr "موسيقا بريلوديس"
 
 #: 950.data.seed-values.sql:6735
 msgid "Iloko"
-msgstr ""
+msgstr "لغة للوكو"
 
 #: 950.data.seed-values.sql:7160 950.data.seed-values.sql:7161
 #: 950.data.seed-values.sql:7229 950.data.seed-values.sql:7230
@@ -9383,11 +9399,15 @@ msgstr "45 دورة في الدقيقة"
 
 #: 950.data.seed-values.sql:5366
 msgid "Book List"
-msgstr ""
+msgstr "قائمة الحجز"
 
 #: 950.data.seed-values.sql:1068
 msgid "UPDATE_PICKUP_LIB_FROM_HOLDS_SHELF"
 msgstr "UPDATE_PICKUP_LIB_FROM_HOLDS_SHELF"
+
+#: 950.data.seed-values.sql:16808
+msgid "OneClickdigital Base URI"
+msgstr ""
 
 #: 950.data.seed-values.sql:500
 msgid "Misc"
@@ -9419,7 +9439,7 @@ msgstr "تاريخ مفصل باليوم والشهر والسنة"
 
 #: 950.data.seed-values.sql:13779
 msgid "Cincinnati Bell"
-msgstr ""
+msgstr "سينسيناتي بيل"
 
 #: 950.data.seed-values.sql:5123
 msgid "Use Lost and Paid copy status"
@@ -9435,7 +9455,7 @@ msgstr "UPDATE_LOCALE"
 
 #: 950.data.seed-values.sql:6976
 msgid "Tiv"
-msgstr ""
+msgstr "لغة تايف"
 
 #: 950.data.seed-values.sql:2704
 msgid "Holds"
@@ -9472,7 +9492,7 @@ msgstr "السماح للمستخدم بـِ تمييز حالة النسخة ك
 
 #: 950.data.seed-values.sql:5079
 msgid "Default Merge Profile (Z39.50 and Record Buckets)"
-msgstr ""
+msgstr "بشكل افتراضي دمج البروفايل ـ بروتوكول زد 39.50 وسلال التسجيلات ـ"
 
 #: 950.data.seed-values.sql:1558
 msgid "User may update custom org unit trees"
@@ -9488,7 +9508,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:16756
 msgid "OverDrive Basic Token"
-msgstr ""
+msgstr "الرمز الأساسي لـِ ـ الأوفر درايف ـ"
 
 #: 950.data.seed-values.sql:8061
 msgid "Comoros "
@@ -9586,7 +9606,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:14000
 msgid "AT&T Global Smart Messaging Suite"
-msgstr ""
+msgstr "ـ آ تي ـ العالمية للتراسل الذكي"
 
 #: 950.data.seed-values.sql:5171
 msgid "Negative Balance Interval (DEFAULT)"
@@ -9696,7 +9716,7 @@ msgstr "السماح لـِ المستخدم بتغيير الحالة المف�
 
 #: 950.data.seed-values.sql:6671
 msgid "Fang"
-msgstr ""
+msgstr "لغة فانغ"
 
 #: 950.data.seed-values.sql:7119
 msgid "1.4 m. per second"
@@ -9724,7 +9744,7 @@ msgstr "الحقل other_phone مطلوب في تسجيل المستفيد"
 
 #: 950.data.seed-values.sql:6551
 msgid "Afrihili (Artificial language)"
-msgstr "أفرهيلي (لغة اصطناعية)"
+msgstr "لغة أفرهيلي (لغة اصطناعية)"
 
 #: 950.data.seed-values.sql:11663
 msgid "Delayed: Backorder"
@@ -9827,7 +9847,7 @@ msgstr "50_cent_per_day"
 
 #: 950.data.seed-values.sql:3854 950.data.seed-values.sql:3857
 msgid "AuthorizeNet test mode"
-msgstr ""
+msgstr "وضع الاختبار لـِ أوثورايزن"
 
 #: 950.data.seed-values.sql:8134
 msgid "Kenya "
@@ -9969,7 +9989,7 @@ msgstr "التراتيل"
 
 #: 950.data.seed-values.sql:13622
 msgid "MTS Mobility"
-msgstr ""
+msgstr "ـ إم تي إس ـ للموبايلات"
 
 #: 950.data.seed-values.sql:7021
 msgid "Yiddish"
@@ -10022,7 +10042,7 @@ msgstr "CREATE_CN_BTYPE"
 
 #: 950.data.seed-values.sql:13588
 msgid "PC Telecom"
-msgstr ""
+msgstr "ـ بي سي ـ للاتصالات"
 
 #: 950.data.seed-values.sql:8315
 msgid "Saint Helena "
@@ -10079,7 +10099,7 @@ msgstr "إعارات أرشيفية حسب النُسخة"
 
 #: 950.data.seed-values.sql:161
 msgid "UPC"
-msgstr ""
+msgstr "كود المنتج العالمي"
 
 #: 950.data.seed-values.sql:6560
 msgid "English, Old (ca. 450-1100)"
@@ -10104,7 +10124,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:3737
 msgid "Suppress Hold Transits Group"
-msgstr ""
+msgstr "إخفاء مجموعة عبور الحجز"
 
 #: 950.data.seed-values.sql:6593
 msgid "Bhojpuri"
@@ -10140,7 +10160,7 @@ msgstr "روايات"
 
 #: 950.data.seed-values.sql:7016
 msgid "Wolof"
-msgstr ""
+msgstr "لغة ولوف"
 
 #: 950.data.seed-values.sql:2944
 msgid "Set the default font size for spine and pocket labels"
@@ -10171,11 +10191,11 @@ msgstr "نموذج كرة أرضية"
 #: 950.data.seed-values.sql:522 950.data.seed-values.sql:526
 #: 950.data.seed-values.sql:570
 msgid "* no longer applicable"
-msgstr ""
+msgstr "* لم يعد قابلاً للتطبيق"
 
 #: 950.data.seed-values.sql:6631
 msgid "Coptic"
-msgstr ""
+msgstr "اللغة القبطية"
 
 #: 950.data.seed-values.sql:7060
 msgid "Fiction (not further specified)"
@@ -10187,7 +10207,7 @@ msgstr "نوتة موسيقية لمسية"
 
 #: 950.data.seed-values.sql:6921
 msgid "Shan"
-msgstr ""
+msgstr "لغة شان"
 
 #: 950.data.seed-values.sql:3776
 msgid "Delete barcode(s) of subordinate user(s) in a patron merge"
@@ -10249,7 +10269,7 @@ msgstr "كدو"
 
 #: 950.data.seed-values.sql:6792
 msgid "Lezgian"
-msgstr ""
+msgstr "لغة ليزغاين"
 
 #: 950.data.seed-values.sql:1372
 msgid "CREATE_COPY_BTYPE"
@@ -10297,7 +10317,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:11657
 msgid "Delayed: Split Quantity"
-msgstr ""
+msgstr "المُتأخرات: تقسيم الكمية"
 
 #: 950.data.seed-values.sql:7682 950.data.seed-values.sql:8362
 #: 950.data.seed-values.sql:8376 950.data.seed-values.sql:8390
@@ -10405,7 +10425,7 @@ msgstr "إيران "
 
 #: 950.data.seed-values.sql:204
 msgid "Temporal Term Browse"
-msgstr ""
+msgstr "مستعرض المصطلحات الزمنية"
 
 #: 950.data.seed-values.sql:754
 msgid "Allow a user to add/remove users to/from the \"Cataloger\" group"
@@ -10481,7 +10501,7 @@ msgstr "دراما ومسرحيات"
 
 #: 950.data.seed-values.sql:167
 msgid "ISRC"
-msgstr ""
+msgstr "ـ أي إس آر سي ـ"
 
 #: 950.data.seed-values.sql:1366
 msgid "CREATE_BIB_SOURCE"
@@ -10833,7 +10853,7 @@ msgstr "موسيقا الفنتازيا"
 
 #: 950.data.seed-values.sql:16730
 msgid "Website ID for this library, as assigned by OverDrive"
-msgstr ""
+msgstr "معرف موقع الويب لهذه المكتبة، كما تم تعيينها بواسطة ـ الأوفر درايف ـ"
 
 #: 950.data.seed-values.sql:6923
 msgid "Sidamo"
@@ -10868,7 +10888,7 @@ msgstr "بليز "
 
 #: 950.data.seed-values.sql:14408
 msgid "Teleflip"
-msgstr ""
+msgstr "تيلي فليب"
 
 #: 950.data.seed-values.sql:1710
 msgid "System Administrator"
@@ -10950,7 +10970,7 @@ msgstr "بطاقة رسم مُجسم ـ ستيريوغراف"
 
 #: 950.data.seed-values.sql:15024
 msgid "Allow funds to be rolled over without bringing the money along"
-msgstr ""
+msgstr "السماح بترحيل التمويلات بدون جلب الأموال من شخص لآخر"
 
 #: 950.data.seed-values.sql:6838
 msgid "Munda (Other)"
@@ -11106,7 +11126,7 @@ msgstr "UPDATE_ORG_UNIT_SETTING.circ.hold_boundary.soft"
 
 #: 950.data.seed-values.sql:6440
 msgid "Bib Level"
-msgstr ""
+msgstr "المستوى الببليوغرافي"
 
 #: 950.data.seed-values.sql:1342
 msgid "ADMIN_MERGE_PROFILE"
@@ -11157,11 +11177,11 @@ msgstr "إنشاء/تحديث/حذف خريطة القيمة المكودة لخ
 
 #: 950.data.seed-values.sql:199
 msgid "Geographic Name Browse"
-msgstr ""
+msgstr "متصفح العنوان الجغرافي"
 
 #: 950.data.seed-values.sql:14945 950.data.seed-values.sql:14951
 msgid "Opt out of warning when adding a book to a temporary book list"
-msgstr ""
+msgstr "إلغاء التحذير عند إضافة كتاب إلى قائمة الحجز المؤقتة"
 
 #: 950.data.seed-values.sql:7943
 msgid "Miller's bipolar oblique conformal conic"
@@ -11301,7 +11321,7 @@ msgstr "داياك"
 
 #: 950.data.seed-values.sql:13484
 msgid "Telus Mobility"
-msgstr ""
+msgstr "تيلوس للموبايلات"
 
 #: 950.data.seed-values.sql:8016
 msgid "Antigua and Barbuda "
@@ -11314,7 +11334,7 @@ msgstr "كلمة مرور البايبال"
 #: 950.data.seed-values.sql:1202
 msgid ""
 "Allow a user to force renewal of an item that could fulfill a hold request"
-msgstr ""
+msgstr "السماح للمستخدم بإجبار تجديد النسخة التي تم التحقق من طلب الحجز"
 
 #: 950.data.seed-values.sql:8019
 msgid "Australia "
@@ -11364,6 +11384,8 @@ msgstr "UPDATE_ORG_UNIT_SETTING.opac.barcode_regex"
 msgid ""
 "Long-overdue items are usable on checkin instead of going \"home\" first"
 msgstr ""
+"النسخ المستحقة الرد والتي طال انتظارها صالحة للاستعمال لـِ الإرجاع بدلاً من "
+"الذهاب أولاً إلى  \"الصفحة الرئيسية\""
 
 #: 950.data.seed-values.sql:8136
 msgid "Korea (North) "
@@ -11375,7 +11397,7 @@ msgstr "الولايات المتحدة الأمريكية متفرقات. جز�
 
 #: 950.data.seed-values.sql:4877
 msgid "Default showing suggested patron registration fields"
-msgstr ""
+msgstr "بشكل افتراضي إظهار حقول تسجيل المستفيد المُقترح"
 
 #: 950.data.seed-values.sql:5101
 msgid ""
@@ -11458,7 +11480,7 @@ msgstr "إظهار الحقل الممنوع في تسجيل المستفيد"
 
 #: 950.data.seed-values.sql:16708
 msgid "OverDrive Account ID"
-msgstr ""
+msgstr "معرف حساب ـ الأوفر درايف ـ"
 
 #: 950.data.seed-values.sql:1278
 msgid "Allow a user to place holds on serials issuances"
@@ -11466,11 +11488,11 @@ msgstr "السماح لـِ المستخدم بوضع الحجوزات لـِ أ
 
 #: 950.data.seed-values.sql:6712
 msgid "Gwich'in"
-msgstr ""
+msgstr "لغة جوايشن"
 
 #: 950.data.seed-values.sql:16407
 msgid "OPAC Metarecord Hold Formats Attribute"
-msgstr ""
+msgstr "خاصية تنسيقات الحجز لـِ ميتاداتا التسجيلة في الأوباك"
 
 #: 950.data.seed-values.sql:8194
 msgid "Nicaragua "
@@ -11500,7 +11522,7 @@ msgstr "باشتو"
 
 #: 950.data.seed-values.sql:3620
 msgid "Selfcheck override events list"
-msgstr ""
+msgstr "التحقق الذاتي لتجاهل قائمة الأحداث"
 
 #: 950.data.seed-values.sql:7076 950.data.seed-values.sql:7884
 msgid "Microfiche"
@@ -11637,7 +11659,7 @@ msgstr "السماح للمستخدم بإنشاء مجلد"
 msgid "US Dollars"
 msgstr "دولار أمريكي"
 
-#: 950.data.seed-values.sql:16830
+#: 950.data.seed-values.sql:16846
 msgid ""
 "Basic token for client authentication with OneClickdigital API (supplied by "
 "OneClickdigital)"
@@ -11662,11 +11684,11 @@ msgstr "تنبيه طاقم العمل عند حذف النُسخة الأخير
 
 #: 950.data.seed-values.sql:13675
 msgid "Globalstar"
-msgstr ""
+msgstr "غلوبال ستار"
 
 #: 950.data.seed-values.sql:169
 msgid "SICI"
-msgstr ""
+msgstr "ـ إس أي سي أي ـ"
 
 #: 950.data.seed-values.sql:6785
 msgid "Lahnda"
@@ -11786,7 +11808,7 @@ msgstr "دمج التسجيلات على أفضل مطابقة افتراضيا�
 
 #: 950.data.seed-values.sql:14136
 msgid "Cellcom"
-msgstr ""
+msgstr "سللكوم"
 
 #: 950.data.seed-values.sql:8062
 msgid "Costa Rica "
@@ -11817,7 +11839,7 @@ msgstr "السماح للمستخدم بتعيين الإعارة كمتأخر �
 
 #: 950.data.seed-values.sql:13898
 msgid "Esendex"
-msgstr ""
+msgstr "إسينديكس"
 
 #: 950.data.seed-values.sql:3794
 msgid "Void processing fee when lost item returned"
@@ -11929,7 +11951,7 @@ msgstr "التايلندية (أخرى)"
 
 #: 950.data.seed-values.sql:13847
 msgid "MetroPCS"
-msgstr ""
+msgstr "مترو ـ بي سي اس ـ"
 
 #: 950.data.seed-values.sql:6857
 msgid "Norwegian (Bokmål)"
@@ -12026,7 +12048,7 @@ msgstr "نقل ملغي"
 
 #: 950.data.seed-values.sql:3076
 msgid "Claim Never Checked Out: Mark copy as missing"
-msgstr ""
+msgstr "المُطالبة لم يتم إعارتها: ينبغي تمييز النسخة كـَ مفقودة"
 
 #: 950.data.seed-values.sql:988
 msgid "DELETE_NET_ACCESS_LEVEL"
@@ -12233,7 +12255,7 @@ msgstr "يجب تنسيق سجل الإعارة للطباعة"
 
 #: 950.data.seed-values.sql:2869
 msgid "Retain empty bib records"
-msgstr ""
+msgstr "الاحتفاظ بالتسجيلات الببليوغرافية الفارغة"
 
 #: 950.data.seed-values.sql:7606
 msgid "microfiche cassette"
@@ -12442,7 +12464,7 @@ msgstr "عند رفض رسوم النُسخ الضائعة، ضع هذا الم�
 
 #: 950.data.seed-values.sql:13762
 msgid "Golden State Cellular"
-msgstr ""
+msgstr "غولدن ستايت للخلويات"
 
 #: 950.data.seed-values.sql:3335
 msgid ""
@@ -12480,7 +12502,7 @@ msgstr "أنظر من التتابع -- التقسيم الفرعي الجغرا
 
 #: 950.data.seed-values.sql:15481
 msgid "Best-hold selection sort order"
-msgstr ""
+msgstr "أفضل اختيار حجز لترتيب الفرز"
 
 #: 950.data.seed-values.sql:966
 msgid "DELETE_CIRC_DURATION"
@@ -12516,7 +12538,7 @@ msgstr "السماح للمستخدم بإضافة، بتحديث، بحذف ا�
 
 #: 950.data.seed-values.sql:3395
 msgid "FIFO"
-msgstr ""
+msgstr "ـ في فو ـ"
 
 #: 950.data.seed-values.sql:4073
 msgid ""
@@ -12667,6 +12689,8 @@ msgid ""
 "Don't look for more than this number of records with holdings when "
 "displaying browse headings with visible record counts."
 msgstr ""
+"لا تقم بالبحث عن أكثر من هذا العدد من التسجيلات مع الحيازات عند عرض المستعرض "
+"الترويسات مع تعدادات التسجيلة المرئية"
 
 #: 950.data.seed-values.sql:898
 msgid "Allow a user to create/view/update/delete a fund"
@@ -12706,7 +12730,7 @@ msgstr "روايات"
 
 #: 950.data.seed-values.sql:38
 msgid "Alerting block on Circ, Hold and Renew"
-msgstr ""
+msgstr "تنبيه الحظر لـِ الإعارة، الحجز والتجديد"
 
 #: 950.data.seed-values.sql:11768
 msgid "Historical Hold Retention Age - Canceled (Staff forced)"
@@ -12873,7 +12897,7 @@ msgstr "إحباط إصدار فواتير النُسخ الضائعة في حا
 
 #: 950.data.seed-values.sql:6577
 msgid "Aymara"
-msgstr "الأيمارا"
+msgstr "لغة أيمارا"
 
 #: 950.data.seed-values.sql:6907
 msgid "South American Indian (Other)"
@@ -12953,7 +12977,7 @@ msgstr "شينوك جارغون"
 
 #: 950.data.seed-values.sql:6554
 msgid "Akan"
-msgstr "أكان"
+msgstr "لغة أكان"
 
 #: 950.data.seed-values.sql:7574
 msgid "film cassette"
@@ -13112,7 +13136,7 @@ msgstr "UPDATE_BILLING_TYPE"
 
 #: 950.data.seed-values.sql:1659
 msgid "Allow a user to create an authority control set"
-msgstr ""
+msgstr "السماح للمستخدم بـ إنشاء مجموعة ضبط إسناد"
 
 #: 950.data.seed-values.sql:8049
 msgid "Chad "
@@ -13288,7 +13312,7 @@ msgstr "بُولندية"
 
 #: 950.data.seed-values.sql:16740
 msgid "OverDrive Authorization Name"
-msgstr ""
+msgstr "عنوان تصريح ـ الأوفر درايف ـ"
 
 #: 950.data.seed-values.sql:12451
 msgid "CSV output has been requested for records in an Importer Bib Queue."
@@ -13457,7 +13481,7 @@ msgstr "CREATE_AUTHORITY_IMPORT_QUEUE"
 
 #: 950.data.seed-values.sql:6663
 msgid "English, Middle (1100-1500)"
-msgstr "الإنكليزية، أواسط (1100-1500)"
+msgstr "الإنكليزية، الوسيطة (1100-1500)"
 
 #: 950.data.seed-values.sql:6954
 msgid "Sumerian"
@@ -13521,7 +13545,7 @@ msgstr "فيدو"
 
 #: 950.data.seed-values.sql:6754
 msgid "Kalâtdlisut"
-msgstr ""
+msgstr "لغة كالتدليسوت"
 
 #: 950.data.seed-values.sql:5195
 msgid ""
@@ -13610,7 +13634,7 @@ msgstr "لغة العمل"
 
 #: 950.data.seed-values.sql:15182 950.data.seed-values.sql:15188
 msgid "Link Checker's URL Selection interface's saved columns"
-msgstr ""
+msgstr "الرابط المدقق لـِ الأعمدة المحفوظة في واجهة اختيار الروابط"
 
 #: 950.data.seed-values.sql:6544
 msgid "Afar"
@@ -13647,6 +13671,8 @@ msgstr "تجاهل الحدث ITEM_NOT_HOLDABLE"
 #: 950.data.seed-values.sql:16692
 msgid "OverDrive Circulation API Base URI"
 msgstr ""
+"معرف الموارد الموحد الأساسي لـِ واجهة برمجة التطبيقات لـِ ـ الأوفر درايف ـ "
+"الإعارة"
 
 #: 950.data.seed-values.sql:4922
 msgid ""

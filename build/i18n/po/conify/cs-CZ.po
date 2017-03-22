@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2017-02-22 03:00+0000\n"
-"PO-Revision-Date: 2017-03-09 06:30+0000\n"
+"PO-Revision-Date: 2017-03-20 20:13+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-03-14 06:20+0000\n"
-"X-Generator: Launchpad (build 18331)\n"
+"X-Launchpad-Export-Date: 2017-03-22 06:18+0000\n"
+"X-Generator: Launchpad (build 18334)\n"
 
 #. (i18n_vac)
 #: ../../Open-ILS/src/templates/conify/global/acq/edi_account.tt2:54
@@ -1174,7 +1174,7 @@ msgstr "Objekt"
 
 #: ../../Open-ILS/src/templates/conify/global/acq/invoice_item_type.tt2:38
 msgid "Only one of \"prorate\" and \"blanket\" may be selected"
-msgstr ""
+msgstr "Může být vybráno jen jedno z\"poměrně rozdělit\" a \"paušální\""
 
 #: ../../Open-ILS/src/templates/conify/global/config/best_hold_order.tt2:44
 msgid "Order:"
@@ -1350,7 +1350,7 @@ msgstr "Uložit změny"
 
 #: ../../Open-ILS/src/templates/conify/global/vandelay/match_set_tree.tt2:115
 msgid "Save Changes To Expression"
-msgstr ""
+msgstr "Uložit změny do výrazu"
 
 #: ../../Open-ILS/src/templates/conify/global/actor/search_filter_group.tt2:1 ../../Open-ILS/src/templates/conify/global/actor/search_filter_group.tt2:17 ../../Open-ILS/src/templates/conify/global/actor/search_filter_group.tt2:64
 msgid "Search Filter Group"
@@ -1636,11 +1636,11 @@ msgstr "biblio"
 
 #: ../../Open-ILS/src/templates/conify/global/config/best_hold_order.tt2:58 ../../Open-ILS/src/templates/conify/global/config/best_hold_order.tt2:60
 msgid "j"
-msgstr ""
+msgstr "j"
 
 #: ../../Open-ILS/src/templates/conify/global/config/best_hold_order.tt2:52 ../../Open-ILS/src/templates/conify/global/config/best_hold_order.tt2:54
 msgid "k"
-msgstr ""
+msgstr "k"
 
 #: ../../Open-ILS/src/templates/conify/global/vandelay/match_set.tt2:42
 msgid "mfhd"
