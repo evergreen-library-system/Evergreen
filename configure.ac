@@ -236,6 +236,8 @@ if ! test -d "$DBI_LIBS"; then
 fi
 AC_SUBST([DBI_LIBS])
 
+AM_CONDITIONAL(CHECK_TESTS, test x$enable_tests = xyes)
+
 if test "x$openils_core" = "xtrue"; then
 
     AC_PATH_PROG([OSRF_CONFIG], [osrf_config])
@@ -349,7 +351,6 @@ if test "x$openils_core" = "xtrue"; then
     #---------------------------------
     PKG_CHECK_MODULES([CHECK], [check >= 0.9.0], [enable_tests=yes],
                       [enable_tests=no])
-    AM_CONDITIONAL(CHECK_TESTS, test x$enable_tests = xyes)
     if test "x$enable_tests" = "xno"; then
         AC_MSG_WARN(Check unit testing framework not found.)
     fi
