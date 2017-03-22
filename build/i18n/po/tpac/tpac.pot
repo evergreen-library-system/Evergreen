@@ -4557,6 +4557,14 @@ msgstr ""
 msgid "View My Temporary List"
 msgstr ""
 
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:270
+msgid "View all formats and editions "
+msgstr ""
+
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:232
+msgid "View other formats and editions"
+msgstr ""
+
 #. (mr_attrs.title)
 #: ../../Open-ILS/src/templates/opac/results.tt2:35
 msgid "Viewing Results for Grouped Record: %1"
