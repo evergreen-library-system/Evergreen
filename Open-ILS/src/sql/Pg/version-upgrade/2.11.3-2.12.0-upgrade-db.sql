@@ -1,5 +1,5 @@
---Upgrade Script for 2.11.3 to 2.12-rc
-\set eg_version '''2.12-rc'''
+--Upgrade Script for 2.11.3 to 2.12.0
+\set eg_version '''2.12.0'''
 BEGIN;
 
 SELECT evergreen.upgrade_deps_block_check('1006', :eg_version);
