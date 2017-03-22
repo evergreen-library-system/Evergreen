@@ -1,5 +1,5 @@
-Evergreen 2.12-rc Release Notes
-===============================
+Evergreen 2.12.0 Release Notes
+==============================
 :toc:
 :numbered:
 
@@ -737,6 +737,6 @@ patches:
 
 
 We regret any omissions.  If a contributor has been inadvertently
-missed, please open a bug at http://bugs.launchpad.net/evergreen/
+missed, please open a bug at https://bugs.launchpad.net/evergreen/
 with a correction.
 
