@@ -152,5 +152,5 @@ var aou_hash = {
   </script>
 [% END %]
 
-<script type="text/javascript">$('client_tz_id').value = OpenSRF.tz</script>
+<script type="text/javascript">if ($('client_tz_id')) { $('client_tz_id').value = OpenSRF.tz }</script>
 [%- END; # want_dojo -%]
