@@ -4,6 +4,7 @@ use warnings;
 use OpenILS::Application;
 use base qw/OpenILS::Application/;
 use OpenILS::Utils::HoldTargeter;
+use OpenSRF::Utils::Logger qw(:logger);
 
 __PACKAGE__->register_method(
     method    => 'hold_targeter',
@@ -50,15 +51,26 @@ sub hold_targeter {
     my $throttle = $args->{return_throttle} || 1;
     my $count = 0;
 
-    for my $hold_id ($targeter->find_holds_to_target) {
+    my @hold_ids = $targeter->find_holds_to_target;
+    my $total = scalar(@hold_ids);
+
+    $logger->info("targeter processing $total holds");
+
+    for my $hold_id (@hold_ids) {
         $count++;
 
-        my $single = OpenILS::Utils::HoldTargeter::Single->new(
-            parent => $targeter,
-            skip_viable => $args->{skip_viable}
-        );
+        my $single = 
+            OpenILS::Utils::HoldTargeter::Single->new(parent => $targeter);
 
-        $single->target($hold_id);
+        # Don't let an explosion on a single hold stop processing
+        eval { $single->target($hold_id) };
+
+        if ($@) {
+            my $msg = "Targeter failed processing hold: $hold_id : $@";
+            $single->error(1);
+            $logger->error($msg);
+            $single->message($msg) unless $single->message;
+        }
 
         if (($count % $throttle) == 0) { 
             # Time to reply to the caller.  Return either the number
@@ -66,6 +78,8 @@ sub hold_targeter {
 
             my $res = $args->{return_count} ? $count : $single->result;
             $client->respond($res);
+
+            $logger->info("targeted $count of $total holds");
         }
     }
 
