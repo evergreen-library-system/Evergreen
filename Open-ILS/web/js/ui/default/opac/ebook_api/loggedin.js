@@ -127,6 +127,13 @@ function updateCheckoutView() {
 }
 
 function updateHoldView() {
+    // handle hold actions
+    if (typeof ebook_action.type !== 'undefined') {
+        getReadyForHold();
+        return;
+    }
+
+    // no hold action, just displaying holds
     var holds_pending = xacts.holds_pending;
     var holds_ready = xacts.holds_ready;
 
@@ -196,6 +203,43 @@ function getReadyForCheckout() {
     }
 }
 
+// set up page for user to place a hold
+function getReadyForHold() {
+    if (typeof active_ebook === 'undefined') {
+        console.log('No active ebook specified, cannot prepare for hold');
+        dojo.removeClass('ebook_hold_failed', "hidden");
+    } else {
+        active_ebook.getDetails( function(ebook) {
+            dojo.empty('ebook_holds_main_table_body');
+            var tr = dojo.create("tr", null, dojo.byId('ebook_holds_main_table_body'));
+            dojo.create("td", { innerHTML: ebook.title }, tr);
+            dojo.create("td", { innerHTML: ebook.author }, tr);
+            dojo.create("td", null, tr); // Expire Date
+            dojo.create("td", null, tr); // Status
+            dojo.create("td", { id: "hold-button-td" }, tr);
+            if (ebook_action.type == 'place_hold') {
+                var button = dojo.create("input", { id: "hold-button", type: "button", value: l_strings.place_hold }, dojo.byId('hold-button-td'));
+                ebook.conns.checkout = dojo.connect(button, 'onclick', "doPlaceHold");
+            } else if (ebook_action.type == 'cancel_hold') {
+                var button = dojo.create("input", { id: "hold-button", type: "button", value: l_strings.cancel_hold }, dojo.byId('hold-button-td'));
+                ebook.conns.checkout = dojo.connect(button, 'onclick', "doCancelHold");
+            }
+            dojo.removeClass('ebook_holds_main', "hidden");
+        });
+    }
+}
+
+function cleanupAfterAction() {
+    // unset variables related to the transaction we have performed,
+    // to avoid any weirdness on page reload
+    ebook_action = {};
+    // update page to account for successful checkout
+    addTotalsToPage();
+    addTransactionsToPage();
+    // clear transaction cache to force a refresh on next page load
+    dojo.cookie('ebook_xact_cache', '', {path: '/', expires: '-1h'});
+}
+
 // check out our active ebook
 function doCheckout() {
     active_ebook.checkout(authtoken, patron_id, function(resp) {
@@ -212,15 +256,7 @@ function doCheckout() {
                 download_url: '' // TODO - for OverDrive, user must "lock in" a format first!
             };
             xacts.checkouts.unshift(new_xact);
-            // unset variables related to the transaction we have performed,
-            // to avoid any weirdness on page reload
-            ebook_action = {};
-            active_ebook = undefined;
-            // update page to account for successful checkout
-            addTotalsToPage();
-            addTransactionsToPage();
-            // clear transaction cache to force a refresh on next page load
-            dojo.cookie('ebook_xact_cache', '', {path: '/', expires: '-1h'});
+            cleanupAfterAction();
         } else {
             console.log('Checkout failed: ' + resp.error_msg);
             dojo.removeClass('ebook_checkout_failed', "hidden");
@@ -228,6 +264,34 @@ function doCheckout() {
         // When we switch to jQuery, we can use .one() instead of .on(),
         // obviating the need for an explicit disconnect here.
         dojo.disconnect(active_ebook.conns.checkout);
+    });
+}
+
+// place hold on our active ebook
+function doPlaceHold() {
+    active_ebook.placeHold(authtoken, patron_id, function(resp) {
+        if (resp.error_msg) {
+            console.log('Place hold failed: ' . resp.error_msg);
+            dojo.removeClass('ebook_place_hold_failed', "hidden");
+        } else {
+            console.log('Place hold succeeded!');
+            dojo.destroy('hold-button');
+            dojo.removeClass('ebook_place_hold_succeeded', "hidden");
+            var new_hold = {
+                title_id: active_ebook.id,
+                title: active_ebook.title,
+                author: active_ebook.author,
+                queue_position: resp.queue_position,
+                queue_size: resp.queue_size,
+                expire_date: resp.expire_date
+            };
+            if ( resp.is_ready || (resp.queue_position === 1 && resp.queue_size === 1) ) {
+                xacts.holds_ready.unshift(new_hold);
+            } else {
+                xacts.holds_pending.unshift(new_hold);
+            }
+            cleanupAfterAction();
+        }
     });
 }
 

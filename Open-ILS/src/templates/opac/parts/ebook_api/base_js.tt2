@@ -13,6 +13,8 @@ l_strings.download = '[% l('Download') %]';
 l_strings.ready_for_checkout = '[% l('Ready for Checkout') %]';
 l_strings.suspended = '[% l('Suspended') %]';
 l_strings.checkout = '[% l('Checkout') %]';
+l_strings.place_hold = '[% l('Place Hold') %]';
+l_strings.cancel_hold = '[% l('Cancel Hold') %]';
 
 // give us cookies!
 dojo.require("dojo.cookie");
