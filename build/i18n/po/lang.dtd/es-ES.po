@@ -6014,7 +6014,7 @@ msgstr "Modificar &Pena / Mensaje"
 #: staff.patron_display.penalty.menu.actions.archive.label
 #: staff.patron_display.penalty.menu.actions.archive.accesskey
 msgid "&Archive Penalty/Message"
-msgstr "Pena %Archivo / Mensaje"
+msgstr "Pena &Archivo / Mensaje"
 
 #: staff.patron_display.apply_penalty_dialog.title
 msgctxt "staff.patron_display.apply_penalty_dialog.title"
