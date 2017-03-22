@@ -58,19 +58,19 @@ sub new {
 # retarget_interval => <interval string>
 #   Override the 'circ.holds.retarget_interval' global_flag value.
 #
+# soft_retarget_interval => <interval string>
+#   Apply soft retarget logic to holds whose prev_check_time sits
+#   between the retarget_interval and the soft_retarget_interval.
+#
+# next_check_interval => <interval string>
+#   Use this interval to determine when the targeter will run next
+#   instead of relying on the retarget_interval.  This value is used
+#   to determine if an org unit will be closed during the next iteration
+#   of the targeter.  Applying a specific interval is useful when
+#   the retarget_interval is shorter than the time between targeter runs.
+#
 # newest_first => 1
 #   Target holds in reverse order of create_time. 
-#
-# skip_viable => 1
-#   Avoid retargeting holds whose current_copy is still viable and
-#   permitted.  This is useful for repairing holds whose targeted copy
-#   has become non-viable for a given hold because its status changed or
-#   policies affecting the hold/copy no longer allow it to be targeted.
-#   This setting can be used in conjunction with any other settings.
-#
-# target_all => 1
-#   USE WITH CAUTION.  Forces (re)targeting of all active holds.  This
-#   is primarily useful or testing.
 #
 # parallel_count => n
 #   Number of parallel targeters running.  This acts as the indication
@@ -91,10 +91,9 @@ sub target {
     my @responses;
 
     for my $hold_id ($self->find_holds_to_target) {
-        my $single = OpenILS::Utils::HoldTargeter::Single->new(
-            parent => $self,
-            skip_viable => $args{skip_viable}
-        );
+        my $single = 
+            OpenILS::Utils::HoldTargeter::Single->new(parent => $self);
+
         $single->target($hold_id);
         push(@responses, $single->result) unless $self->{return_count};
         $count++;
@@ -128,19 +127,14 @@ sub find_holds_to_target {
         ]
     };
 
-    if (!$self->{target_all}) {
-        # Unless we're retargeting all holds, limit to holds that have no
-        # prev_check_time or those whose prev_check_time occurred
-        # before the retarget interval.
-
-        my $date = DateTime->now->subtract(
-            seconds => $self->{retarget_interval});
-
-        $query->{where}->{'-or'} = [
-            {prev_check_time => undef},
-            {prev_check_time => {'<=' => $date->strftime('%F %T%z')}}
-        ];
-    }
+    # Target holds that have no prev_check_time or those whose re-target
+    # time has come.  If a soft_retarget_time is specified, that acts as
+    # the boundary.  Otherwise, the retarget_time is used.
+    my $start_time = $self->{soft_retarget_time} || $self->{retarget_time};
+    $query->{where}->{'-or'} = [
+        {prev_check_time => undef},
+        {prev_check_time => {'<=' => $start_time->strftime('%F %T%z')}}
+    ];
 
     # parallel < 1 means no parallel
     my $parallel = ($self->{parallel_count} || 0) > 1 ? 
@@ -206,54 +200,75 @@ sub init {
     my $self = shift;
     my $e = $self->editor;
 
-    my $closed_orgs_query = {
-        close_start => {'<=', 'now'},
-        close_end => {'>=', 'now'}
-    };
+    # See if the caller provided an interval
+    my $interval = $self->{retarget_interval};
 
-    if (!$self->{target_all}) {
+    if (!$interval) { 
+        # See if we have a global flag value for the interval
 
-        # See if the caller provided an interval
-        my $interval = $self->{retarget_interval};
+        $interval = $e->search_config_global_flag({
+            name => 'circ.holds.retarget_interval',
+            enabled => 't'
+        })->[0];
 
-        if (!$interval) {
-            # See if we have a global flag value for the interval
-
-            $interval = $e->search_config_global_flag({
-                name => 'circ.holds.retarget_interval',
-                enabled => 't'
-            })->[0];
-
-            # If no flag is present, default to a 24-hour retarget interval.
-            $interval = $interval ? $interval->value : '24h';
-        }
-
-        # Convert the interval to seconds for current and future use.
-        $self->{retarget_interval} = interval_to_seconds($interval);
-
-        # An org unit is considered closed for retargeting purposes
-        # if it's closed both now and at the next re-target date.
-
-        my $next_check_time =
-            DateTime->now->add(seconds => $self->{retarget_interval})
-            ->strftime('%F %T%z');
-
-        $closed_orgs_query = {
-            '-and' => [
-                $closed_orgs_query, {
-                    close_start => {'<=', $next_check_time},
-                    close_end => {'>=', $next_check_time}
-                }
-            ]
-        }
+        # If no flag is present, default to a 24-hour retarget interval.
+        $interval = $interval ? $interval->value : '24h';
     }
 
-    my $closed =
-        $self->editor->search_actor_org_unit_closed_date($closed_orgs_query);
+    my $retarget_seconds = interval_to_seconds($interval);
+
+    $self->{retarget_time} = DateTime->now(time_zone => 'local')
+        ->subtract(seconds => $retarget_seconds);
+
+    $logger->info("Using retarget time: ".
+        $self->{retarget_time}->strftime('%F %T%z'));
+
+    if ($self->{soft_retarget_interval}) {
+
+        my $secs = OpenSRF::Utils->interval_to_seconds(
+            $self->{soft_retarget_interval});
+
+        $self->{soft_retarget_time} = 
+            DateTime->now(time_zone => 'local')->subtract(seconds => $secs);
+
+        $logger->info("Using soft retarget time: " .
+            $self->{soft_retarget_time}->strftime('%F %T%z'));
+    }
+
+    # Holds targeted in the current targeter instance not be retargeted
+    # until the next check date.  If a next_check_interval is provided
+    # it overrides the retarget_interval.
+    my $next_check_secs = 
+        $self->{next_check_interval} ?
+        OpenSRF::Utils->interval_to_seconds($self->{next_check_interval}) :
+        $retarget_seconds;
+
+    my $next_check_date = 
+        DateTime->now(time_zone => 'local')->add(seconds => $next_check_secs);
+
+    my $next_check_time = $next_check_date->strftime('%F %T%z');
+
+    $logger->info("Next check time: $next_check_time");
+
+    # An org unit is considered closed for retargeting purposes
+    # if it's closed both now and at the next re-target date.
+    my $closed = $self->editor->search_actor_org_unit_closed_date({
+        '-and' => [{   
+            close_start => {'<=', 'now'},
+            close_end => {'>=', 'now'}
+        }, {
+            close_start => {'<=', $next_check_time},
+            close_end => {'>=', $next_check_time}
+        }]
+    });
+
+    my @closed_orgs = map {$_->org_unit} @$closed;
+    $logger->info("closed org unit IDs: @closed_orgs");
 
     # Map of org id to 1. Any org in the map is closed.
-    $self->{closed_orgs} = {map {$_->org_unit => 1} @$closed};
+    $self->{closed_orgs} = {map {$_ => 1} @closed_orgs};
 }
+
 
 # Org unit setting fetch+cache
 # $e is the OpenILS::Utils::HoldTargeter::Single editor.  Use it if
@@ -453,7 +468,8 @@ sub handle_expired_hold {
 
     my $ex_time =
         $dt_parser->parse_datetime(cleanse_ISO8601($hold->expire_time));
-    return 1 unless DateTime->compare($ex_time, DateTime->now) < 0;
+    return 1 unless 
+        DateTime->compare($ex_time, DateTime->now(time_zone => 'local')) < 0;
 
     # Hold is expired --
 
@@ -821,24 +837,40 @@ sub inspect_previous_target {
     # exit if previous target is no longer valid.
     return 1 unless $prev;
 
-    if ($self->{skip_viable}) {
-        # In skip_viable mode, leave the hold as-is if the existing
-        # current_copy is still permitted.
-        # Note: viability checking is done this late in the process
-        # (specifically after other potential copies have been fetched)
-        # because we first need to confirm the current_copy is a valid
-        # potential copy (e.g. it's holdable, non-deleted, etc.), which
-        # copy_is_permitted, which only checks hold matrix policies,
-        # does not check.
+    my $soft_retarget = 0;
 
-        return $self->exit_targeter("Skipping with viable target = $prev_id")
-            if $self->copy_is_permitted($prev);
+    if ($self->parent->{soft_retarget_time}) {
+        # A hold is soft-retarget-able if its prev_check_time is
+        # later then the retarget_time, i.e. it sits between the
+        # soft_retarget_time and the retarget_time.
 
-        # Previous copy is now confirmed non-viable.
+        my $pct = $dt_parser->parse_datetime(
+            cleanse_ISO8601($hold->prev_check_time));
+
+        $soft_retarget =
+            DateTime->compare($pct, $self->parent->{retarget_time}) > 0;
+    }
+
+    if ($soft_retarget) {
+
+        # In soft-retarget mode, if the existing copy is still a valid
+        # target for the hold, exit early.
+        if ($self->copy_is_permitted($prev)) {
+
+            # Commit to persist the updated action.hold_copy_map's
+            $self->editor->commit;
+
+            return $self->exit_targeter(
+                "Exiting early on soft-retarget with viable copy = $prev_id");
+
+        } else {
+            $self->log_hold("soft retarget failed because copy $prev_id is ".
+                "no longer targetable for this hold.  Retargeting...");
+        }
 
     } else {
 
-        # Previous copy may be targetable.  Keep it around for later
+        # Previous copy /may/ be targetable.  Keep it around for later
         # in case we need to confirm its viability and re-use it.
         $self->{valid_previous_copy} = $prev;
     }

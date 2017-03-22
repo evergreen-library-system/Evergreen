@@ -6,6 +6,7 @@ use OpenSRF::System;
 use OpenSRF::AppSession;
 use OpenSRF::Utils::SettingsClient;
 use OpenILS::Utils::Fieldmapper;
+$ENV{OSRF_LOG_CLIENT} = 1;
 #----------------------------------------------------------------
 # Batch hold (re)targeter
 #
@@ -18,25 +19,25 @@ my $osrf_config = '/openils/conf/opensrf_core.xml';
 my $lockfile = '/tmp/hold_targeter-LOCK';
 my $parallel = 0;
 my $verbose = 0;
-my $target_all;
-my $skip_viable;
 my $retarget_interval;
+my $soft_retarget_interval;
+my $next_check_interval;
 my $recv_timeout = 3600;
 my $parallel_init_sleep = 0;
 
 # how often the server sends a summary reply per backend.
-my $return_throttle = 50;
+my $return_throttle = 500;
 
 GetOptions(
-    'osrf-config=s'     => \$osrf_config,
-    'lockfile=s'        => \$lockfile,
-    'parallel=i'        => \$parallel,
-    'verbose'           => \$verbose,
-    'target-all'        => \$target_all,
-    'skip-viable'       => \$skip_viable,
-    'retarget-interval=s'   => \$retarget_interval,
+    'help'                  => \$help,
+    'osrf-config=s'         => \$osrf_config,
+    'lockfile=s'            => \$lockfile,
+    'parallel=i'            => \$parallel,
+    'verbose'               => \$verbose,
     'parallel-init-sleep=i' => \$parallel_init_sleep,
-    'help'              => \$help
+    'retarget-interval=s'   => \$retarget_interval,
+    'next-check-interval=s'    => \$next_check_interval,
+    'soft-retarget-interval=s' => \$soft_retarget_interval,
 ) || die "\nSee --help for more\n";
 
 sub help {
@@ -58,7 +59,6 @@ General Options
     --lockfile [/tmp/hold_targeter-LOCK]
         Full path to lock file
 
-
     --verbose
         Print process counts
 
@@ -76,15 +76,31 @@ Targeting Options
 
         Defaults to no sleep.
 
-    --target-all
-        Target all active holds, regardless of when they were last targeted.
+    --soft-retarget-interval
+        Holds whose previous check time sits between the
+        --soft-retarget-interval and the --retarget-interval are 
+        treated like this:
+        
+        1. The list of potential copies is updated for all matching holds.
+        2. Holds that have a viable target are otherwise left untouched,
+           including their prev_check_time.
+        3. Holds with no viable target are fully retargeted.
 
-    --skip-viable
-        Avoid modifying holds that currently target viable copies.  In
-        other words, only (re)target holds in a non-viable state.
+    --next-check-interval
+        Specify how long after the current run time the targeter will
+        retarget the currently affected holds.  Applying a specific
+        interval is useful when the retarget_interval is shorter than
+        the time between targeter runs.
+
+        This value is used to determine if an org unit will be closed
+        during the next iteration of the targeter.  It overrides the
+        default behavior of calculating the next retarget time from the
+        retarget-interval.
 
     --retarget-interval
-        Override the 'circ.holds.retarget_interval' global_flag value. 
+        Retarget holds whose previous check time occured before the
+        requested interval.
+        Overrides the 'circ.holds.retarget_interval' global_flag value. 
 
 HELP
 
@@ -130,9 +146,9 @@ sub run_batches {
                 return_throttle => $return_throttle,
                 parallel_count  => $parallel,
                 parallel_slot   => $slot,
-                skip_viable     => $skip_viable,
-                target_all      => $target_all,
-                retarget_interval => $retarget_interval
+                retarget_interval      => $retarget_interval,
+                next_check_interval    => $next_check_interval,
+                soft_retarget_interval => $soft_retarget_interval
             }
         );
 
@@ -151,6 +167,8 @@ sub run_batches {
         for my $req (@reqs) {
             # Pull all responses off the receive queues.
             while (my $resp = $req->recv(0)) {
+                die $req->failed . "\n" if $req->failed;
+
                 $verbose && print sprintf(
                     "Targeter [%d] processed %d holds\n",
                     $req->{_parallel_slot},
