@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2017-02-21 20:30-0400\n"
+"POT-Creation-Date: 2017-03-15 16:25-0400\n"
 "PO-Revision-Date: 2016-09-14 18:19+0000\n"
 "Last-Translator: Anahi Valdez <avaldez@emeralddata.net>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-02-23 05:40+0000\n"
-"X-Generator: Launchpad (build 18326)\n"
+"X-Launchpad-Export-Date: 2017-03-19 06:10+0000\n"
+"X-Generator: Launchpad (build 18332)\n"
 
 #: 950.data.seed-values.sql:8080
 msgid "Estonia "
@@ -100,6 +100,12 @@ msgstr ""
 #: 950.data.seed-values.sql:4904
 msgid "Require at least one address for Patron Registration"
 msgstr "Al menos una dirección es necesaria para el registro del usuario"
+
+#: 950.data.seed-values.sql:16814
+msgid ""
+"Base URI for OneClickdigital API (defaults to "
+"https://api.oneclickdigital.com/v1). Using HTTPS here is strongly encouraged."
+msgstr ""
 
 #: 950.data.seed-values.sql:1564
 msgid "Allows a user to create/retrieve/update/delete address alerts"
@@ -1974,7 +1980,7 @@ msgstr ""
 "del intervalo, para prohibir saldos negativos después de un intervalo de "
 "tiempo."
 
-#: 950.data.seed-values.sql:16824
+#: 950.data.seed-values.sql:16840
 msgid "OneClickdigital Basic Token"
 msgstr ""
 
@@ -4791,7 +4797,7 @@ msgstr "Use alertas de audio para eventos de verificación propia"
 msgid "Elamite"
 msgstr "Elamita"
 
-#: 950.data.seed-values.sql:16814
+#: 950.data.seed-values.sql:16830
 msgid "Identifier assigned to this library by OneClickdigital"
 msgstr ""
 
@@ -8207,7 +8213,7 @@ msgstr "Atlas"
 msgid "Create suffix label definition."
 msgstr "Crear sufijo definición de etiqueta."
 
-#: 950.data.seed-values.sql:16808
+#: 950.data.seed-values.sql:16824
 msgid "OneClickdigital Library ID"
 msgstr ""
 
@@ -9761,6 +9767,10 @@ msgstr "Lista de Libros"
 #: 950.data.seed-values.sql:1068
 msgid "UPDATE_PICKUP_LIB_FROM_HOLDS_SHELF"
 msgstr "UPDATE_PICKUP_LIB_FROM_HOLDS_SHELF"
+
+#: 950.data.seed-values.sql:16808
+msgid "OneClickdigital Base URI"
+msgstr ""
 
 #: 950.data.seed-values.sql:500
 msgid "Misc"
@@ -12120,7 +12130,7 @@ msgstr "Permitir a un usuario crear un volumen"
 msgid "US Dollars"
 msgstr "Dólares estadounidenses"
 
-#: 950.data.seed-values.sql:16830
+#: 950.data.seed-values.sql:16846
 msgid ""
 "Basic token for client authentication with OneClickdigital API (supplied by "
 "OneClickdigital)"

@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2017-02-27 18:00+0000\n"
+"POT-Creation-Date: 2017-03-16 00:14+0000\n"
 "PO-Revision-Date: 2017-02-28 17:01+0000\n"
 "Last-Translator: fares othman <Unknown>\n"
 "Language-Team: Arabic <ar@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-03-01 05:36+0000\n"
-"X-Generator: Launchpad (build 18329)\n"
+"X-Launchpad-Export-Date: 2017-03-19 06:13+0000\n"
+"X-Generator: Launchpad (build 18332)\n"
 "Language: AR\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
@@ -45,11 +45,11 @@ msgstr " (%1)"
 msgid " / "
 msgstr " / "
 
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:99
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:101
 msgid " View My Lists"
 msgstr " عرض قوائمي"
 
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:101
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:103
 msgid " View My Temporary List"
 msgstr " عرض قائمتي المؤقتة"
 
@@ -116,7 +116,7 @@ msgid "%m/%d/%Y"
 msgstr "%m/%d/%Y"
 
 #. (ctx.record_hold_count, ctx.copy_summary.$count_entry.count)
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:204
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:206
 msgid ""
 "%quant(%1,current hold,current holds) with %quant(%2,total copy,total "
 "copies)."
@@ -320,7 +320,7 @@ msgid "Adapter"
 msgstr "مُقتبس سينمائي"
 
 #. (attrs.title)
-#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:428
+#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:429
 msgid "Add %1 to my list"
 msgstr "إضافة %1 إلى القائمة الخاصة بي"
 
@@ -333,7 +333,7 @@ msgstr "إضافة صف بحث"
 msgid "Add item to a list: %1"
 msgstr "إضافة نُسخة إلى قائمة: %1"
 
-#: ../../Open-ILS/src/templates/opac/parts/bookbag_actions.tt2:44 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:86 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:428
+#: ../../Open-ILS/src/templates/opac/parts/bookbag_actions.tt2:44 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:87 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:429
 msgid "Add to my list"
 msgstr "إضافة إلى القائمة الخاصة بي"
 
@@ -663,7 +663,7 @@ msgstr "الرجوع إلى التسجيلات"
 msgid "Back to results"
 msgstr "الرجوع إلى النتائج"
 
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:417
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:419
 msgid "Badges:"
 msgstr "بطاقات الانتساب:"
 
@@ -974,7 +974,7 @@ msgstr "ملاحظة التوثيق/المراجع: "
 msgid "City"
 msgstr "المدينة"
 
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:124
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:126
 msgid "Clear AddedContent Cache"
 msgstr "مسح الذاكرة المؤقتة لــِ المحتوى المُضاف"
 
@@ -1154,7 +1154,7 @@ msgstr "مدعي حقوق التأليف والنشر"
 msgid "Copyright holder"
 msgstr "صاحب حقوق الطبع والنشر"
 
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:406
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:408
 msgid "Copyright:"
 msgstr "حقوق الملكية:"
 
@@ -1238,7 +1238,7 @@ msgstr "كلمة المرور الحالية"
 msgid "Current Username"
 msgstr "اسم المستخدم الحالي"
 
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:202
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:204
 msgid "Current holds"
 msgstr "الحجوزات الحالية"
 
@@ -1421,7 +1421,7 @@ msgstr "مكان التوزيع"
 msgid "Distributor"
 msgstr "الموزع"
 
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:378 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:245
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:380 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:245
 msgid "Distributor:"
 msgstr "الموزع:"
 
@@ -1522,7 +1522,7 @@ msgstr "تعديل حجز النُسخة %1"
 msgid "Editing Hold"
 msgstr "يتم تعديل الحجز"
 
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:312 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:299
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:314 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:299
 msgid "Edition:"
 msgstr "الطبعة:"
 
@@ -1546,7 +1546,7 @@ msgstr "عامل الكهرباء"
 msgid "Electronic resource"
 msgstr "المصادر الإلكترونية"
 
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:141 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:165
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:143 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:167
 msgid "Electronic resources"
 msgstr "المصادر الإلكترونية"
 
@@ -1554,7 +1554,7 @@ msgstr "المصادر الإلكترونية"
 msgid "Electrotyper"
 msgstr "المتخصص بالطباعة الإلكترونية"
 
-#: ../../Open-ILS/src/templates/opac/myopac/main_payments.tt2:50 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:108
+#: ../../Open-ILS/src/templates/opac/myopac/main_payments.tt2:50 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:110
 msgid "Email"
 msgstr "البريد الإلكتروني"
 
@@ -2007,7 +2007,7 @@ msgstr "لقد تم اختبار هذه النسخة من قبل"
 msgid "ISBN"
 msgstr "ردمك"
 
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:292 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:260
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:294 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:260
 msgid "ISBN:"
 msgstr "ردمك:"
 
@@ -2015,7 +2015,7 @@ msgstr "ردمك:"
 msgid "ISSN"
 msgstr "ردمد"
 
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:299 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:268
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:301 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:268
 msgid "ISSN:"
 msgstr "ردمد:"
 
@@ -2516,7 +2516,7 @@ msgstr "مكان الصنع"
 msgid "Manufacturer"
 msgstr "الصانع"
 
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:392 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:252
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:394 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:252
 msgid "Manufacturer:"
 msgstr "الصانع:"
 
@@ -3054,7 +3054,7 @@ msgstr "بحث عن مؤلف"
 msgid "Performer"
 msgstr "المؤدي"
 
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:116 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:117
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:118 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:119
 msgid "Permalink"
 msgstr "الرابط الدائم"
 
@@ -3087,7 +3087,7 @@ msgstr "مصور فوتوغرافي"
 msgid "Phys. Desc.:"
 msgstr "الوصف المادي:"
 
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:306
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:308
 msgid "Physical Description:"
 msgstr "الوصف المادي"
 
@@ -3257,11 +3257,11 @@ msgstr "النُسخ المحجوزة سابقاً"
 msgid "Primary Identification"
 msgstr "التعريف الرئيسي"
 
-#: ../../Open-ILS/src/templates/opac/myopac/main_payments.tt2:46 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:107
+#: ../../Open-ILS/src/templates/opac/myopac/main_payments.tt2:46 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:109
 msgid "Print"
 msgstr "طباعة"
 
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:106
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:108
 msgid "Print / Email Actions Image"
 msgstr "طباعة / صورة اجراءات البريد الإلكتروني"
 
@@ -3309,7 +3309,7 @@ msgstr "يتم الآن المعالجة..."
 msgid "Producer"
 msgstr "المنتج"
 
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:364 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:238
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:366 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:238
 msgid "Producer:"
 msgstr "المنتج:"
 
@@ -3369,7 +3369,7 @@ msgstr "منشورات حول المواد الموصوفة: "
 msgid "Publisher"
 msgstr "الناشر"
 
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:333 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:215
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:335 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:215
 msgid "Publisher:"
 msgstr "الناشر:"
 
@@ -3397,7 +3397,7 @@ msgstr "مخرج برامج راديو"
 msgid "Radio producer"
 msgstr "منتج برامج راديو"
 
-#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:452
+#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:454
 msgid "Ratings Icon"
 msgstr "أيقونة التقييم"
 
@@ -3437,7 +3437,7 @@ msgstr "تفاصيل حجوزات التسجيلة"
 msgid "Record Holdings Summary"
 msgstr "مُلخص حجوزات التسجيلة"
 
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:281
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:283
 msgid "Record details"
 msgstr "تفاصيل التسجيلة"
 
@@ -3475,7 +3475,7 @@ msgid "Remove %1 filter"
 msgstr "إزالة التصفية %1"
 
 #. (attrs.title)
-#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:428
+#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:429
 msgid "Remove %1 from my list"
 msgstr "حذف %1 من القائمة الخاصة بي"
 
@@ -3491,7 +3491,7 @@ msgstr "حذف صف بحث"
 msgid "Remove from list"
 msgstr "حذف من القائمة"
 
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:86 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:428
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:87 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:429
 msgid "Remove from my list"
 msgstr "حذف من القائمة الخاصة بي"
 
@@ -3620,12 +3620,12 @@ msgstr "المُراجع"
 msgid "Reviews"
 msgstr "مراجعات"
 
-#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:453
+#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:455
 msgid "Reviews &amp; More"
 msgstr "المراجعات &amp; إلخ"
 
 #. (attrs.title)
-#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:448
+#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:450
 msgid "Reviews and More for %1"
 msgstr "مراجعات والمزيد حول %1"
 
@@ -4673,11 +4673,11 @@ msgstr "عرض النُسخ المحجوزة المُتاحة للاستلام."
 msgid "View My List"
 msgstr "عرض القائمة الخاصة بي"
 
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:99
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:101
 msgid "View My Lists"
 msgstr "عرض قوائمي"
 
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:101
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:103
 msgid "View My Temporary List"
 msgstr "عرض قائمتي المؤقتة"
 

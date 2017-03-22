@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2016-08-25 17:08-0400\n"
-"PO-Revision-Date: 2017-01-29 10:18+0000\n"
+"PO-Revision-Date: 2017-03-19 11:07+0000\n"
 "Last-Translator: fares othman <Unknown>\n"
 "Language-Team: Arabic <ar@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-02-13 05:32+0000\n"
-"X-Generator: Launchpad (build 18326)\n"
+"X-Launchpad-Export-Date: 2017-03-20 05:55+0000\n"
+"X-Generator: Launchpad (build 18332)\n"
 "Language: AR\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
@@ -29,7 +29,7 @@ msgstr "الإنكليزية"
 
 #: lang.author
 msgid "PINES"
-msgstr "الشجرة الصنوبرية"
+msgstr "الاتاحات"
 
 #: common.check_date.description
 msgid "Check today's date above."
@@ -627,7 +627,7 @@ msgstr "طلبات الحجز"
 #. "OU" is an organization unit - typically a library
 #: staff.au_home_ou_label
 msgid "Home OU"
-msgstr ""
+msgstr "الصفحة الرئيسة لـِ ـ أو يو ـ"
 
 #: staff.au_id_label
 msgid "User ID"
@@ -701,7 +701,7 @@ msgstr "لاحقة"
 #. "xact" is a transaction
 #: staff.au_last_xact_id_label
 msgid "Last Xact ID"
-msgstr ""
+msgstr "معرف ـ إكس آكت ـ الأخير"
 
 #: staff.au_mailing_address_label
 msgctxt "staff.au_mailing_address_label"
@@ -3506,7 +3506,7 @@ msgstr "مُحرر صلاحيات المستخدم"
 #: staff.main.menu.admin.xuleditor.label
 #: staff.main.menu.admin.xuleditor.accesskey
 msgid "&XUL Test"
-msgstr ""
+msgstr "اختبار ـ إكس يو إل ـ"
 
 #: staff.main.menu.admin.venkman.label
 msgid "Venkman"
@@ -6782,7 +6782,7 @@ msgstr "استلام"
 
 #: staff.serial.manage_items.advanced_receive.label
 msgid "Adv. Receive"
-msgstr ""
+msgstr "استلام ـ متقدم"
 
 #: staff.serial.manage_items.show_all.label
 msgid "Show All"
@@ -7437,7 +7437,7 @@ msgstr "الدفعة ـ إضافة مجلدات أو معالج النُسخ"
 
 #: staff.xuleditor_label
 msgid "XUL TEST"
-msgstr ""
+msgstr "اختبار ـ إكس يو إل ـ"
 
 #: staff.z39_50.search_class.author
 msgctxt "staff.z39_50.search_class.author"
@@ -11847,7 +11847,7 @@ msgstr "XML"
 
 #: staff.cat.record_buckets_overlay.menuitem.export_eg_bre.label
 msgid "Evergreen BRE"
-msgstr ""
+msgstr "إيفرغرين ـ بي آر إي ـ"
 
 #: staff.cat.select_unit.title
 msgid "Select Serial Unit"
@@ -13388,7 +13388,7 @@ msgstr "الاسم"
 
 #: staff.patron.user_edit.working_ou.label
 msgid "Work OU?"
-msgstr ""
+msgstr "التشغيل لـِ ـ أو يو ـ؟"
 
 #: staff.patron.user_edit.permission_list.label
 msgctxt "staff.patron.user_edit.permission_list.label"
