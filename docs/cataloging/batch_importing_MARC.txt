@@ -2,7 +2,7 @@ Batch Importing MARC Records
 ----------------------------
 [[batchimport]]
 The cataloging module includes an enhanced MARC Batch Import interface for
-loading MARC records. In general, it can handle batches up to 5,000 records
+loading MARC (and MARCXML) records. In general, it can handle batches up to 5,000 records
 without a problem. This interface allows you to specify match points
 between incoming and existing records, to specify MARC fields that should be
 overlaid or preserved, and to only overlay records if the incoming record is
@@ -314,8 +314,8 @@ Acquisitions module.  The system will attempt to overlay copies that:
 * that lineitem detail has the same owning_lib as the incoming copy's owning_lib, and
 * the current copy associated with that lineitem detail is _In process_.
 
-. *Browse* to find the appropriate file, and click *Upload*.  The files will
-be uploaded to a queue.
+. *Browse* to find the appropriate file, and click *Upload*.  The file will
+be uploaded to a queue. The file can be in either MARC or MARCXML format.
 +
 image::media/marc_batch_import_acq_overlay.png[Batch Importing MARC Records]
 
