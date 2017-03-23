@@ -412,7 +412,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
         // Other events
         switch (evt[0].textcode) {
             case 'SUCCESS':
-                egCore.audio.play('success.renew');
+                egCore.audio.play('info.renew');
                 return $q.when(final_resp);
 
             case 'COPY_IN_TRANSIT':
