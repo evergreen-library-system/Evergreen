@@ -62,7 +62,7 @@
   <eg-grid-field label="[% l('Barcode') %]"        path='barcode' visible></eg-grid-field>
   <eg-grid-field label="[% l('Call Number') %]"    path="call_number.label" visible></eg-grid-field>
   <eg-grid-field label="[% l('Due Date') %]"       path="_circ.due_date" visible>
-    {{item['_circ']['due_date'] | date:'MM/dd/yy HH:mm a'}}
+    {{item['_circ']['due_date'] | date:'short'}}
   </eg-grid-field>
   <eg-grid-field label="[% l('Location') %]"       path="location.name" visible></eg-grid-field>
   <eg-grid-field label="[% l('Status') %]"         path="status.name" visible></eg-grid-field>
@@ -78,14 +78,14 @@
   <eg-grid-field label="[% l('Age-Based Hold Protection') %]"  path="age_protect" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Author') %]"               path="call_number.record.simple_record.author"  hidden></eg-grid-field>
   <eg-grid-field label="[% l('Checkin Date') %]"         path="_circ_summary.last_checkin_time" hidden>
-    {{item['_circ_summary']['last_checkin_time'] | date:'MM/dd/yy HH:mm a'}}
+    {{item['_circ_summary']['last_checkin_time'] | date:'short'}}
   </eg-grid-field>
   <eg-grid-field label="[% l('Checkin Scan Date') %]"    path="_circ_summary.last_checkin_scan_time" hidden>
-    {{item['_circ_summary.last_checkin_scan_time'] | date:'MM/dd/yy HH:mm a'}}
+    {{item['_circ_summary.last_checkin_scan_time'] | date:'short'}}
   </eg-grid-field>
   <eg-grid-field label="[% l('Checkin Workstation') %]"  path="_circ_summary.last_checkin_workstation" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Checkout Date') %]"  path="_circ_summary.start_time" hidden>
-    {{item['_circ_summary']['start_time'] | date:'MM/dd/yy HH:mm a'}}
+    {{item['_circ_summary']['start_time'] | date:'short'}}
   </eg-grid-field>
   <eg-grid-field label="[% l('Checkout Workstation') %]"  path="_circ_summary.checkout_workstation" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Checkout/Renewal Library') %]"  path="_circ.circ_lib.name" hidden></eg-grid-field>
@@ -102,16 +102,16 @@
   <eg-grid-field label="[% l('Copy Number') %]"           path="copy_number" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Created By') %]"            path="creator" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Date Created') %]"          path="create_date" hidden>
-    {{item['create_date'] | date:'MM/dd/yy HH:mm a'}}
+    {{item['create_date'] | date:'short'}}
   </eg-grid-field>
   <eg-grid-field label="[% l('Date Last Edited') %]"      path="edit_date" hidden>
-    {{item['edit_date'] | date:'MM/dd/yy HH:mm a'}}
+    {{item['edit_date'] | date:'short'}}
   </eg-grid-field>
   <eg-grid-field label="[% l('Date Record Created') %]"   path="call_number.record.create_date" hidden>
-    {{item['call_number.record.create_date'] | date:'MM/dd/yy HH:mm a'}}
+    {{item['call_number.record.create_date'] | date:'short'}}
   </eg-grid-field>
   <eg-grid-field label="[% l('Date Record Last Edited') %]"    path="call_number.record.edit_date" hidden>
-    {{item['call_number.record.create_date'] | date:'MM/dd/yy HH:mm a'}}
+    {{item['call_number.record.create_date'] | date:'short'}}
   </eg-grid-field>
   <eg-grid-field label="[% l('Deleted?') %]"              path="deleted" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Document ID') %]"           path="call_number.record.id" hidden></eg-grid-field>
@@ -119,7 +119,7 @@
   <eg-grid-field label="[% l('Fine Level') %]"            path="fine_level" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Fines Stopped') %]"         path="_circ_summary.last_stop_fines" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Fines Stopped Time') %]"    path="_circ_summary.last_stop_fines_time" hidden>
-    {{item['_circ_summary']['last_stop_fines_time'] | date:'MM/dd/yy HH:mm a'}}
+    {{item['_circ_summary']['last_stop_fines_time'] | date:'short'}}
   </eg-grid-field>
   <eg-grid-field label="[% l('Floating?') %]"             path="floating" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Holdable?') %]"             path="holdable" hidden></eg-grid-field>
@@ -138,12 +138,12 @@
   <eg-grid-field label="[% l('Reference?') %]"            path="ref" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Remaining Renewals') %]"    path="_circ.renewals_remaining" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Status Changed Time') %]"   path="status_changed_time" hidden>
-    {{item['status_changed_time'] | date:'MM/dd/yy HH:mm a'}}
+    {{item['status_changed_time'] | date:'short'}}
   </eg-grid-field>
   <eg-grid-field label="[% l('TCN') %]"                   path="call_number.record.tcn_value" hidden></eg-grid-field>
   <eg-grid-field label="[% l('TCN Source') %]"            path="call_number.record.tcn_source" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Transaction Complete') %]"  path="_circ.xact_finish" hidden>
-    {{item['_circ']['xact_finish'] | date:'MM/dd/yy HH:mm a'}}
+    {{item['_circ']['xact_finish'] | date:'short'}}
   </eg-grid-field>
 </eg-grid>
 </eg-grid>
