@@ -728,7 +728,7 @@ function(egCore , $q) {
 
                             $scope.struct[cn.id()] = [cp];
                             $scope.allcopies.push(cp);
-                            if (!scope.defaults.classification) {
+                            if (!$scope.defaults.classification) {
                                 egCore.org.settings(
                                     ['cat.default_classification_scheme'],
                                     cn.owning_lib()
@@ -794,6 +794,40 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
             floating : true
         }
     };
+
+    $scope.new_lib_to_add = egCore.org.get(egCore.auth.user().ws_ou());
+    $scope.changeNewLib = function (org) {
+        $scope.new_lib_to_add = org;
+    }
+    $scope.addLibToStruct = function () {
+        var newLib = $scope.new_lib_to_add;
+        var cn = new egCore.idl.acn();
+        cn.id( --itemSvc.new_cn_id );
+        cn.isnew( true );
+        cn.prefix( $scope.defaults.prefix || -1 );
+        cn.suffix( $scope.defaults.suffix || -1 );
+        cn.label_class( $scope.defaults.classification || 1 );
+        cn.owning_lib( newLib.id() );
+        cn.record( $scope.record_id );
+
+        var cp = itemSvc.generateNewCopy(
+            cn,
+            newLib.id(),
+            $scope.fast_add,
+            true
+        );
+
+        $scope.data.addCopy(cp);
+
+        if (!$scope.defaults.classification) {
+            egCore.org.settings(
+                ['cat.default_classification_scheme'],
+                cn.owning_lib()
+            ).then(function (val) {
+                cn.label_class(val['cat.default_classification_scheme']);
+            });
+        }
+    }
 
     $scope.embedded = ($routeParams.mode && $routeParams.mode == 'embedded') ? true : false;
     $scope.edit_templates = ($location.path().match(/edit_template/)) ? true : false;
