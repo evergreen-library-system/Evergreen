@@ -642,6 +642,8 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
     // the returned event.
     service.override_dialog = function(evt, params, options, action) {
         if (!angular.isArray(evt)) evt = [evt];
+
+        egCore.audio.play('warning.circ.event_override');
         return $uibModal.open({
             templateUrl: './circ/share/t_event_override_dialog',
             controller: 
