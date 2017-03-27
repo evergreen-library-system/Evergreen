@@ -545,7 +545,8 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
         if (items.length == 0) return;
 
         var ids = items.map(function(item) {return item.id});
-            
+
+        egCore.audio.play('warning.circ.refund_confirmation');
         egConfirmDialog.open(
             egCore.strings.CONFIRM_REFUND_PAYMENT, '', 
             {   xactIds : ''+ids,
