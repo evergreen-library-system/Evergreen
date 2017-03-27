@@ -58,7 +58,7 @@ type â€“ public, academic, special, school, and even tribal and home libraries â
 in over a dozen countries worldwide.
 
 
-include::RELEASE_NOTES_2_11.adoc[]
+include::RELEASE_NOTES_2_12.adoc[]
 
 
 Software Installation
