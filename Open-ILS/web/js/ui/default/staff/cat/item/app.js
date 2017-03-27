@@ -213,6 +213,7 @@ function($scope , $q , $routeParams , $location , $timeout , $window , egCore , 
                 $scope.args.barcode = '';
             } else {
                 $scope.context.itemNotFound = true;
+                egCore.audio.play('warning.item_status.itemNotFound');
             }
             $scope.context.selectBarcode = true;
         })
@@ -1002,6 +1003,7 @@ function($scope , $q , $location , $routeParams , $timeout , $window , egCore , 
             if (!res) {
                 copyId = null;
                 $scope.context.itemNotFound = true;
+                egCore.audio.play('warning.item_status.itemNotFound');
                 deferred.reject(); // avoid propagation of data fetch calls
                 return;
             }
