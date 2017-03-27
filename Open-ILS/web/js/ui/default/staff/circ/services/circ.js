@@ -1477,6 +1477,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
         var ok = service.check_barcode(bc);
         if (ok) return $q.when();
 
+        egCore.audio.play('warning.circ.bad_barcode');
         return $uibModal.open({
             templateUrl: './circ/share/t_bad_barcode_dialog',
             controller: 
