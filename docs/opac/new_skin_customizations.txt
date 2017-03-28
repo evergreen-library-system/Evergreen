@@ -53,7 +53,8 @@ NOTE: All paths are relative to `/openils/var/templates/opac`
   ** controlling if the "Show More Details" button is visible or activated by default in OPAC search results
   ** hiding phone notification options (useful for libraries that do not do phone notifications)
   ** disallowing password or e-mail changes (useful for libraries that use centralized authentication or single sign-on systems)
-  ** displaying a maintenance message in the OPAC and KPAC (this is controlled by the _ctx.maintenance_message_ variable)
+  ** displaying a maintenance message in the public catalog and KPAC (this is controlled by the _ctx.maintenance_message_ variable)
+  ** displaying previews of books when available from Google Books.  This is controlled by the _ctx.google_books_preview_ variable, which is set to 0 by default to protect the privacy of users who might not want to share their browsing behavior with Google.
 * `parts/footer.tt2` and `parts/topnav_links.tt2`: contains customizable
   links. Defaults like 'Link 1' will not mean much to your users!
 * `parts/homesearch.tt2`: holds the large Evergreen logo on the home page
