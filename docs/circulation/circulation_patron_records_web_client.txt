@@ -440,9 +440,9 @@ image::media/staff-penalties-2_web_client.png[Apply Penalty Dialog Box]
 
 There are three options: Notes, Alerts, Blocks
 
-* *Note*: This will create a non-blocking, non-alerting note visible to staff. Staff will be alerted to the message by the light-blue framing around the patron name, and can view the message by clicking the _Messages_ button on the patron record.  (Notes created in this fashion will not display via _Other_ -> _Notes_, and cannot be shared with the patron. See the <<circulation_patron_notes,Patron Notes>> section for notes which can be shared with the patron.)
+* *Note*: This will create a non-blocking, non-alerting note visible to staff. Staff can view the message by clicking the _Messages_ button on the patron record.  (Notes created in this fashion will not display via _Other_ -> _Notes_, and cannot be shared with the patron. See the <<circulation_patron_notes,Patron Notes>> section for notes which can be shared with the patron.)
 
-* *Alert*: This will create a non-blocking alert which appears when the patron record is first retrieved.  The alert will generate a dark-blue frame around the patron name. Alerts may be viewed by clicking the _Messages_ button on the patron record or by selecting _Other_ -> _Display Alerts and Messages_.
+* *Alert*: This will create a non-blocking alert which appears when the patron record is first retrieved.  The alert will cause the patron name to display in red, rather than black, text. Alerts may be viewed by clicking the _Messages_ button on the patron record or by selecting _Other_ -> _Display Alerts and Messages_.
 
 * *Block*: This will create a blocking alert which appears when the patron record is first retrieved, and which behaves much as the non-blocking alert described previously. The patron will be also blocked from circulation, holds and renewals until the block is cleared by staff.
 
