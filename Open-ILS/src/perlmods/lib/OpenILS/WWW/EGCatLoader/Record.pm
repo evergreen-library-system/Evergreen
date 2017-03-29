@@ -102,6 +102,7 @@ sub load_record {
     $ctx->{copies} = $copy_rec->gather(1);
 
     # Add public copy notes to each copy - and while we're in there, grab peer bib records
+    # and copy tags
     my %cached_bibs = ();
     foreach my $copy (@{$ctx->{copies}}) {
         $copy->{notes} = $U->simplereq(
@@ -110,6 +111,19 @@ sub load_record {
             {itemid => $copy->{id}, pub => 1 }
         );
         $self->timelog("past copy note retrieval call");
+        my $meth = 'open-ils.circ.copy_tags.retrieve';
+        $meth .= ".staff" if $ctx->{is_staff};
+        $copy->{tags} = $U->simplereq(
+            'open-ils.circ',
+            $meth,
+            {
+                ($ctx->{is_staff} ? (authtoken => $ctx->{authtoken}) : ()),
+                copy_id  => $copy->{id},
+                scope    => $org,
+                depth    => $copy_depth,
+            }
+        );
+        $self->timelog("past copy tag retrieval call");
         $copy->{peer_bibs} = $U->simplereq(
             'open-ils.search',
             'open-ils.search.multi_home.bib_ids.by_barcode',

@@ -20,11 +20,21 @@ sub _prepare_biblio_search_basics {
     $parts{$_} = [ $cgi->param($_) ] for (@part_names);
 
     my $full_query = '';
+    my @bookplate_queries = ();
     for (my $i = 0; $i < scalar @{$parts{'qtype'}}; $i++) {
         my ($qtype, $contains, $query, $bool) = map { $parts{$_}->[$i] } @part_names;
 
         next unless $query =~ /\S/;
 
+        # Hack for bookplates; "bookplate" is not a real search
+        # class, so grabbing them out of the advanced search query
+        # params to convert to a copy_tag(*,...) filter later
+        if ($qtype eq 'bookplate') {
+            $query =~ s/[)(]/ /g; # don't break on 'foo(bar)baz'
+            push @bookplate_queries, $query;
+            next;
+        }
+ 
         # Hack for journal title
         my $jtitle = 0;
         if ($qtype eq 'jtitle') {
@@ -63,15 +73,23 @@ sub _prepare_biblio_search_basics {
         $full_query = $full_query ? "($full_query $bool $query)" : $query;
     }
 
-    return $full_query;
+    return $full_query, \@bookplate_queries;
 }
 
 sub _prepare_biblio_search {
     my ($cgi, $ctx) = @_;
 
     # XXX This will still contain the jtitle hack...
-    my $user_query = _prepare_biblio_search_basics($cgi) || '';
+    my ($user_query, $bookplate_queries) = _prepare_biblio_search_basics($cgi);
+    $user_query //= '';
+    $bookplate_queries //= [];
     my $query = $user_query;
+    if (@$bookplate_queries) {
+        $query .= " " . join(" ", map { "copy_tag(*,$_)" } @$bookplate_queries);
+        # hack to handle the case where a bookplate comes from the
+        # simple search box
+        $user_query = $bookplate_queries->[0] if $user_query eq '';
+    }
 
     $query .= ' ' . $ctx->{global_search_filter} if $ctx->{global_search_filter};
 

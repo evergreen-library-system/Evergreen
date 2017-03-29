@@ -5,7 +5,13 @@
     {value => "author", label => l("Author"), plural_label => l("Authors"), browse => 1},
     {value => "subject", label => l("Subject"), plural_label => l("Subjects"), browse => 1},
     {value => "series", label => l("Series"), plural_label => l("Series"), browse => 1}
-] %]
+];
+    IF  ctx.get_org_setting(ctx.search_ou, 'opac.search.enable_bookplate_search');
+        query_types.push(
+            {value => "bookplate", label => l("Digital Bookplate"), plural_label => l("Digital Bookplates")}
+        );
+    END;
+-%]
 <select name="[% name || 'qtype' %]"[% IF id; ' id="'; id ; '"' ; END -%]
     title="[% l('Select query type:') %]">
     [%  query_type = query_type || CGI.param('qtype') || search.default_qtypes.0;

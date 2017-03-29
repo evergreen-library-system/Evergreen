@@ -231,6 +231,17 @@ END; # FOREACH bib
             [% END %]
         [% END %]
 
+        [% IF copy_info.tags; %]
+            [% FOREACH tag IN copy_info.tags; %]
+                <tr class="copy_tag_row">
+                    <td>&nbsp;</td>
+                    <td class="copy_tag" colspan="4"</td>
+                        <span class="copy_tag_value">[% tag.value | html %]</span>
+                    </td>
+                <tr>
+            [% END %]
+        [% END %]
+
 <tr><td>
 [%- IF copy_info.peer_bib_marc.size > 1;
 '<ul>';

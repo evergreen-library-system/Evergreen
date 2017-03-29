@@ -714,6 +714,15 @@ div.format_icon {
     word-wrap:normal;
 }
 
+#rdetails_status tbody td.copy_tag {
+    border-color: [% css_colors.primary %];
+    border-style: dashed;
+    border-width: 2px;
+}
+#rdetails_status tbody .copy_tag_value {
+    font-weight: bolder;
+}
+
 .rdetail_extras {
     background-color: [% css_colors.primary_fade %];
     border: 1px solid [% css_colors.primary %];
