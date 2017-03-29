@@ -1003,6 +1003,74 @@ sub delete_copy_note {
     return 1;
 }
 
+__PACKAGE__->register_method(
+    method      => 'fetch_copy_tags',
+    authoritative   => 1,
+    api_name        => 'open-ils.circ.copy_tags.retrieve',
+    signature   => q/
+        Returns an array of publicly-visible copy tag objects.  
+        @param args A named hash of parameters including:
+            copy_id     : The id of the item whose notes we want to retrieve
+            tag_type    : Type of copy tags to retrieve, e.g., 'bookplate' (optional)
+            scope       : top of org subtree whose copy tags we want to see
+            depth       : how far down to look for copy tags (optional)
+        @return An array of copy tag objects
+    /);
+__PACKAGE__->register_method(
+    method      => 'fetch_copy_tags',
+    authoritative   => 1,
+    api_name        => 'open-ils.circ.copy_tags.retrieve.staff',
+    signature   => q/
+        Returns an array of all copy tag objects.  
+        @param args A named hash of parameters including:
+            authtoken   : Required to view non-public notes
+            copy_id     : The id of the item whose notes we want to retrieve (optional)
+            tag_type    : Type of copy tags to retrieve, e.g., 'bookplate'
+            scope       : top of org subtree whose copy tags we want to see
+            depth       : how far down to look for copy tags (optional)
+        @return An array of copy tag objects
+    /);
+
+sub fetch_copy_tags {
+    my ($self, $conn, $args) = @_;
+
+    my $org = $args->{scope};
+    my $depth = $args->{depth};
+
+    my $filter = {};
+    my $e;
+    if ($self->api_name =~ /\.staff/) {
+        my $authtoken = $args->{authtoken};
+        return new OpenILS::Event("BAD_PARAMS", "desc" => "authtoken required") unless defined $authtoken;    
+        $e = new_editor(authtoken => $args->{authtoken});
+        return $e->event unless $e->checkauth;
+        return $e->event unless $e->allowed('STAFF_LOGIN', $org);
+    } else {
+        $e = new_editor();
+        $filter->{pub} = 't';
+    }
+    $filter->{tag_type} = $args->{tag_type} if exists($args->{tag_type});
+    $filter->{'+acptcm'} = {
+        copy => $args->{copy_id}
+    };
+
+    # filter by owner of copy tag and depth
+    $filter->{owner} = {
+        in => {
+            select => {aou => [{
+                column => 'id',
+                transform => 'actor.org_unit_descendants',
+                result_field => 'id',
+                (defined($depth) ? ( params => [$depth] ) : ()),
+            }]},
+            from => 'aou',
+            where => {id => $org}
+        }
+    };
+
+    return $e->search_asset_copy_tag([$filter, { join => { acptcm => {} } }]);
+}
+
 
 __PACKAGE__->register_method(
     method => 'age_hold_rules',
