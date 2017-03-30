@@ -74,6 +74,7 @@ angular.module('egFmRecordEditorMod',
 
             $scope.record_label = egCore.idl.classes[$scope.idlClass].label;
             $scope.rec_orgs = {};
+            $scope.rec_org_values = {};
 
             if ($scope.mode == 'update') {
                 egCore.pcrud.retrieve($scope.idlClass, $scope.recordId).then(function(r) {
@@ -160,6 +161,9 @@ angular.module('egFmRecordEditorMod',
                         $scope.rec_orgs[field.name] = function(org) {
                             if (arguments.length == 1) $scope.rec[field.name](org.id());
                             return egCore.org.get($scope.rec[field.name]());
+                        }
+                        if ($scope.rec[field.name]()) {
+                            $scope.rec_org_values[field.name] = $scope.rec_orgs[field.name]();
                         }
                     }
                 });
