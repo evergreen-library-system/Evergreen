@@ -1,0 +1,36 @@
+Hold Targeter V2 Repairs and Improvements
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+* Make the batch targeter more resilient to a single-hold failure.
+* Additional batch targeter info logging.
+* Set OSRF_LOG_CLIENT in hold_targeter_v2.pl for log tracing
+* Removes the confusingly named --target-all option
+ ** The same behavior can be achieved by using --retarget-interval "0s"
+* Removes --skip-viable (see --soft-retarget-interval below)
+
+New --next-check-interval Option
+++++++++++++++++++++++++++++++++
+Specify how long after the current run time the targeter will retarget
+the currently affected holds. Applying a specific interval is useful
+when the retarget-interval is shorter than the time between targeter
+runs.
+
+For example, if the targeter is run nightly at midnight with a
+--retarget-interval 36h, you would set --next-check-interval to 48hr,
+since the holds won't be processed again until 48 hours later. This
+ensures that the org unit closed date checks are looking at the correct
+date. 
+
+This setting overrides the default behavior of calculating the next 
+retarget time from the retarget-interval.
+
+New --soft-retarget-interval Option
++++++++++++++++++++++++++++++++++++
+This is a replacement for (and rebranding of) the --skip-viable option. 
+The new option allows for time-based soft-targeting instead simple binary 
+on/off soft-targeting.
+
+How soft-targeting works:
+* Update hold copy maps for all affected holds
+* Holds with viable targets (on the pull list) are otherwise left alone.
+* Holds without viable targets are retargeted in the usual manner. 
+
