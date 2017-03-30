@@ -1,0 +1,50 @@
+[%
+  WRAPPER "staff/base.tt2";
+  ctx.page_title = l("Copy Tags");
+  ctx.page_app = "egAdminConfig";
+  ctx.page_ctrl = 'CopyTag';
+%]
+
+[% BLOCK APP_JS %]
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/grid.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/fm_record_editor.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/ui.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/admin/local/asset/copy_tag.js"></script>
+<link rel="stylesheet" href="[% ctx.base_path %]/staff/css/admin.css" />
+[% END %]
+
+<div class="container-fluid" style="text-align:center">
+  <div class="alert alert-info alert-less-pad strong-text-2">
+    [% l('Copy Tags') %]
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-4">
+    <div class="form-group">
+      <label>[% l('Filter by Owning Library:') %]</label>
+      <eg-org-selector selected="context_org" onchange="org_changed"></eg-org-selector>
+    </div>
+  </div>
+</div>
+
+<eg-grid
+    id-field="id"
+    idl-class="acpt"
+    grid-controls="gridControls"
+    features="-multiselect"
+    persist-key="admin.server.asset.copy_tag">
+
+    <eg-grid-menu-item handler="new_record" label="[% l('New Record') %]"></eg-grid-menu-item>
+    <eg-grid-action handler="edit_record" label="[% l('Edit Record') %]"></eg-grid-action>
+    <eg-grid-action handler="delete_record" label="[% l('Delete Record') %]"></eg-grid-action>
+
+    <eg-grid-field label="[% l('Owner') %]" flesher="orgById" path="owner.name"></eg-grid-field>
+    <eg-grid-field label="[% l('Tag Type') %]"  path="tag_type.label"></eg-grid-field>
+    <eg-grid-field label="[% l('Label') %]" path="label"></eg-grid-field>
+    <eg-grid-field label="[% l('Is OPAC Visible?') %]" path="pub"></eg-grid-field>
+    <eg-grid-field label="[% l('ID') %]" path='id' required hidden></eg-grid-field>
+    <eg-grid-field path='*' hidden></eg-grid-field>
+</eg-grid>
+
+[% END %]

@@ -1,0 +1,38 @@
+[%
+  WRAPPER "staff/base.tt2";
+  ctx.page_title = l("Copy Tag Types");
+  ctx.page_app = "egAdminConfig";
+  ctx.page_ctrl = 'CopyTagType';
+%]
+
+[% BLOCK APP_JS %]
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/grid.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/fm_record_editor.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/ui.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/admin/server/config/copy_tag_type.js"></script>
+<link rel="stylesheet" href="[% ctx.base_path %]/staff/css/admin.css" />
+[% END %]
+
+<div class="container-fluid" style="text-align:center">
+  <div class="alert alert-info alert-less-pad strong-text-2">
+    [% l('Copy Tag Types') %]
+  </div>
+</div>
+
+<eg-grid
+    id-field="code"
+    idl-class="cctt"
+    grid-controls="gridControls"
+    features="-multiselect"
+    persist-key="admin.server.config.copy_tag_type">
+
+    <eg-grid-menu-item handler="new_record" label="[% l('New Record') %]"></eg-grid-menu-item>
+    <eg-grid-action handler="edit_record" label="[% l('Edit Record') %]"></eg-grid-action>
+    <eg-grid-action handler="delete_record" label="[% l('Delete Record') %]"></eg-grid-action>
+
+    <eg-grid-field label="[% l('Code') %]"  path="code"></eg-grid-field>
+    <eg-grid-field label="[% l('Label') %]" path="label"></eg-grid-field>
+    <eg-grid-field label="[% l('Owner') %]" flesher="orgById" path="owner.name"></eg-grid-field>
+</eg-grid>
+
+[% END %]

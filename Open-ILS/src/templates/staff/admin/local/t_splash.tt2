@@ -20,6 +20,7 @@
     ,[ l('Copy Location Groups'), "./admin/local/asset/copy_location_group" ]
     ,[ l('Copy Location Order'), "./admin/local/asset/copy_location_order" ]
     ,[ l('Copy Locations Editor'), "./admin/local/asset/copy_locations" ]
+    ,[ l('Copy Tags'), "./admin/local/asset/copy_tag" ]
     ,[ l('Field Documentation'), "./admin/local/config/idl_field_doc" ]
     ,[ l('Group Penalty Thresholds'), "./admin/local/permission/grp_penalty_threshold" ]
     ,[ l('Hold Policies'), "./admin/local/config/hold_matrix_matchpoint" ]
