@@ -18,6 +18,7 @@
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/angular-tree-control.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/iframeResizer.min.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/ng-order-object-by.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/lovefield.min.js"></script>
 
 <!-- IDL / opensrf (network) -->
 <script src="[% ctx.media_prefix %]/js/dojo/opensrf/JSON_v1.js"></script>
