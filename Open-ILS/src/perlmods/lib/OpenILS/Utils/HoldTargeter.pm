@@ -26,7 +26,7 @@ use OpenILS::Utils::CStoreEditor qw/:funcs/;
 our $U = "OpenILS::Application::AppUtils";
 our $dt_parser = DateTime::Format::ISO8601->new;
 
-# See target() for runtime arguments.
+# See open-ils.hold-targeter API docs for runtime arguments.
 sub new {
     my ($class, %args) = @_;
     my $self = {
@@ -37,71 +37,7 @@ sub new {
     return bless($self, $class);
 }
 
-# Target and retarget holds.
-# By default, targets all holds that need targeting, meaning those that
-# have either never been targeted or those whose prev_check_time exceeds
-# the retarget interval.
-#
-# Returns an array of targeter response objects, one entry per hold
-# targeted.  See also return_count.
-#
-# Optional parameters:
-#
-# hold => <id> / [<id>, <id>, ...]
-#  (Re)target one or more specific holds.  Specified as a single hold ID
-#  or an array ref of hold IDs.
-#
-# return_count => 1
-#   Return the total number of holds processed instead of a result
-#   object for every targeted hold.  Ideal for large batch targeting.
-#
-# retarget_interval => <interval string>
-#   Override the 'circ.holds.retarget_interval' global_flag value.
-#
-# soft_retarget_interval => <interval string>
-#   Apply soft retarget logic to holds whose prev_check_time sits
-#   between the retarget_interval and the soft_retarget_interval.
-#
-# next_check_interval => <interval string>
-#   Use this interval to determine when the targeter will run next
-#   instead of relying on the retarget_interval.  This value is used
-#   to determine if an org unit will be closed during the next iteration
-#   of the targeter.  Applying a specific interval is useful when
-#   the retarget_interval is shorter than the time between targeter runs.
-#
-# newest_first => 1
-#   Target holds in reverse order of create_time. 
-#
-# parallel_count => n
-#   Number of parallel targeters running.  This acts as the indication
-#   that other targeter instances are running.
-#
-# parallel_slot => n [starts at 1]
-#   Sets the parallel targeter instance position/slot.  Used to determine
-#   which holds to process to avoid conflicts with other running instances.
-#
-sub target {
-    my ($self, %args) = @_;
-
-    $self->{$_} = $args{$_} for keys %args;
-
-    $self->init;
-
-    my $count = 0;
-    my @responses;
-
-    for my $hold_id ($self->find_holds_to_target) {
-        my $single = 
-            OpenILS::Utils::HoldTargeter::Single->new(parent => $self);
-
-        $single->target($hold_id);
-        push(@responses, $single->result) unless $self->{return_count};
-        $count++;
-    }
-
-    return $self->{return_count} ? $count : \@responses;
-}
-
+# Returns a list of hold ID's
 sub find_holds_to_target {
     my $self = shift;
 
