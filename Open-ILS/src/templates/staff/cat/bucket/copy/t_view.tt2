@@ -20,6 +20,8 @@
     handler="transferCopies"></eg-grid-action>
   <eg-grid-action label="[% l('Delete Selected Copies from Catalog') %]" 
     handler="deleteCopiesFromCatalog"></eg-grid-action>
+  <eg-grid-action label="[% l('Apply Tags') %]" 
+    handler="applyTags"></eg-grid-action>
 
   <eg-grid-field path="id" required hidden></eg-grid-field>
   <eg-grid-field path="call_number.record.id" required hidden></eg-grid-field>
