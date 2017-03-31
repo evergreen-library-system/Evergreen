@@ -7,20 +7,28 @@ diag("General hold targeter tests");
 
 use OpenILS::Const qw/:const/;
 use OpenILS::Utils::TestUtils;
-use OpenILS::Utils::HoldTargeter;
+use OpenILS::Application::AppUtils;
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
 
 my $script = OpenILS::Utils::TestUtils->new();
-my $targeter = OpenILS::Utils::HoldTargeter->new;
+my $U = 'OpenILS::Application::AppUtils';
 my $e = new_editor();
 
 $script->bootstrap;
 $e->init;
 
+sub target {
+    return $U->simplereq(
+        'open-ils.hold-targeter', 
+        'open-ils.hold-targeter.target', 
+        @_
+    );
+}
+
 # == Targeting Concerto hold 67.  Title hold.
 
 my $hold_id = 67;
-my $result = $targeter->target(hold => $hold_id)->[0];
+my $result = target({hold => $hold_id});
 
 ok($result->{success}, "Targeting hold $hold_id returned success");
 
@@ -45,7 +53,7 @@ is(scalar(grep {$_->target_copy->call_number->record != 70} @$maps), 0,
 # Retarget to confirm a new copy is selected and that the previously
 # targeted item has a new entry in action.unfulfilled_hold_list.
 
-$result = $targeter->target(hold => $hold_id)->[0];
+$result = target({hold => $hold_id});
 
 isnt($result->{target}, $current_copy->id, 
     'Second targeter run on hold 67 selected targeted a different copy');
@@ -57,15 +65,15 @@ isnt($unfulfilled, undef, 'Previous copy has unfulfilled hold entry');
 
 my $prev_target = $result->{target};
 
-$result = $targeter->target(hold => $hold_id, skip_viable => 1)->[0];
+$result = target({hold => $hold_id, soft_retarget_interval => '0s'});
 
 is($result->{target}, $prev_target, 
-    "Hold $hold_id target remains the same with --skip-viable");
+    "Hold $hold_id target remains the same with soft_retarget_interval");
 
 $maps = $e->search_action_hold_copy_map({hold => $hold_id});
 
 is(scalar(@$maps), 29, 
-    "Hold $hold_id retains 29 mapped potential copies with --skip-viable");
+    "Hold $hold_id retains 29 mapped potential copies with soft_retarget_interval");
 
 
 # == Metarecord hold tests
@@ -74,7 +82,7 @@ is(scalar(@$maps), 29,
 # holdable_format '{"0":[{"_attr":"mr_hold_format","_val":"score"}]}'.
 
 $hold_id = 263;
-$result = $targeter->target(hold => $hold_id)->[0];
+$result = target({hold => $hold_id});
 
 ok($result->{success}, "Targeting hold $hold_id returned success");
 
@@ -115,7 +123,7 @@ $e->xact_commit;
 
 # This time no copies should be targeted, since no records match
 # the holdable_formats criteria.
-$result = $targeter->target(hold => $hold_id)->[0];
+$result = target({hold => $hold_id});
 
 isnt($result->{success}, 1, 
     'Unable to target MR hold without copies matching holdable_format');
@@ -133,7 +141,7 @@ $hold->clear_holdable_formats;
 $e->update_action_hold_request($hold) or die $e->die_event;
 $e->xact_commit;
 
-$result = $targeter->target(hold => $hold_id)->[0];
+$result = target({hold => $hold_id});
 
 $current_copy = $e->retrieve_asset_copy([
     $result->{target},
