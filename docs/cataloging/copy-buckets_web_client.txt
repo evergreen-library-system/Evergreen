@@ -1,5 +1,5 @@
-Section X - Copy Buckets
-------------------------
+Copy Buckets
+------------
 
 Copy buckets are containers copy records can be put into to easily perform batch actions on.  Copies stay in buckets until they are removed.
 

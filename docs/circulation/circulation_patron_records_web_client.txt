@@ -1,7 +1,7 @@
 Circulation - Patron Record 
 ---------------------------
 
-[[searching_patrons_wc]] 
+[[searching_patrons]] 
 Searching Patrons 
 ~~~~~~~~~~~~~~~~~
 
@@ -128,14 +128,14 @@ image::media/patron_self_registration2.jpg[Patron Self-Registration form]
 . Fill in the necessary patron information for your library, and click *Save* to create the permanent patron account.
 
 
-[[updating_patron_information_wc]] 
+[[updating_patron_information]] 
 Updating Patron Information
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 indexterm:[patrons, updating]
 
 Retrieve the patron record as described in the section
-<<searching_patrons_wc,Searching Patrons>>.
+<<searching_patrons,Searching Patrons>>.
 
 Click on _Edit_ from the options that display at the top of the patron record. 
 
@@ -165,7 +165,7 @@ stating that the ``Patron account is EXPIRED.''
 image::media/circulation_patron_records-11_web_client.png[circulation_patron_records 11]
 
 Open the patron record in edit mode as described in the section
-<<updating_patron_information_wc,Updating Patron Information>>.
+<<updating_patron_information,Updating Patron Information>>.
 
 Navigate to the information field labeled _Privilege Expiration Date_.  Enter a
 new date in this box.  When you place your cursor in the _Patron Expiration Date
@@ -185,10 +185,10 @@ Lost Library Cards
 indexterm:[library cards, replacing]
 
 Retrieve the patron record as described in the section
-<<searching_patrons_wc,Searching Patrons>>. 
+<<searching_patrons,Searching Patrons>>. 
 
 Open the patron record in edit mode as described in the section
-<<updating_patron_information_wc,Updating Patron Information>>.
+<<updating_patron_information,Updating Patron Information>>.
  
 Next to the _Barcode_ field, select the _Replace Barcode_ button.
 
@@ -200,9 +200,8 @@ pane.
 
 If a patron’s barcode is mistakenly replaced, the old barcode may be reinstated.
 Retrieve the patron record as described in the section
-<<searching_patrons_wc,Searching Patrons>>. Open the patron record in
-edit mode as described in the section <<updating_patron_information_wc,Updating
-Patron Information>>.
+<<searching_patrons,Searching Patrons>>. Open the patron record in
+edit mode as described in the section <<updating_patron_information,Updating Patron Information>>.
 
 Select the _See All_ button next to the _Replace Barcode_ button.  This will
 display the current and past barcodes associated with this account. 
@@ -226,10 +225,10 @@ indexterm:[patrons, passwords]
 
 A patron’s password may be reset from the OPAC or through the staff client.  To
 reset the password from the staff client, retrieve the patron record as
-described in the section <<searching_patrons_wc,Searching Patrons>>. 
+described in the section <<searching_patrons,Searching Patrons>>. 
 
 Open the patron record in edit mode as described in the section
-<<updating_patron_information_wc,Updating Patron Information>>.
+<<updating_patron_information,Updating Patron Information>>.
 
 Select the _Reset Password_ button next to the _Password_ field.  
 
@@ -275,10 +274,10 @@ indexterm:[patrons, barring]
 
 A patron may be barred from circulation activities.  To bar a patron, retrieve
 the patron record as described in the section
-<<searching_patrons_wc,Searching Patrons>>. 
+<<searching_patrons,Searching Patrons>>. 
 
 Open the patron record in edit mode as described in the section 
-<<updating_patron_information_wc,Updating Patron Information>>.
+<<updating_patron_information,Updating Patron Information>>.
 
 Check the box for _Barred_ in the patron account. 
 
@@ -320,21 +319,21 @@ patrons, but staff may be given permissions to override blocks.
 Staff-Generated Messages
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-[[staff_generated_messages_wc]]
+[[staff_generated_messages]]
 indexterm:[patrons, messages]
 
 There are several types of messages available for staff to leave notes on patron records.
 
 *Patron Notes*: These notes are added via _Other_ -> _Notes_ in the patron record. These notes can be viewable by staff only or shared with the patron. Staff initials can be required. (See the section <<circulation_patron_notes,Patron Notes>> for more.)
 
-*Patron Alerts*: This type of alert is added via _Edit_ button in the patron record. There is currently no way to require staff initials for this type of alert. (See the section <<circulation_patron_alerts_wc,Patron Alerts>> for more.)
+*Patron Alerts*: This type of alert is added via _Edit_ button in the patron record. There is currently no way to require staff initials for this type of alert. (See the section <<circulation_patron_alerts,Patron Alerts>> for more.)
 
 *Staff-Generated Penalties/Messages*: These messages are added via the _Messages_ button in the patron record. They can be a note, alert or block. Staff initials can be required. (See the section <<staff_generated_penalties_web_client,Staff-Generated Penalties/Messages>> for more.)
 
 Patron Alerts 
 ~~~~~~~~~~~~~~
 
-[[circulation_patron_alerts_wc]]
+[[circulation_patron_alerts]]
 indexterm:[patrons, Alerts]
     
 When an account has an alert on it, a Stop sign is displayed when the record is
@@ -358,10 +357,10 @@ been renewed), the message will disappear automatically.
 *Staff-generated alerts*: Must be added and removed manually. 
 
 To add an alert to a patron account, retrieve the patron record as described 
-in the section <<searching_patrons_wc,Searching Patrons>>. 
+in the section <<searching_patrons,Searching Patrons>>. 
 
 Open the patron record in edit mode as described in the section 
-<<updating_patron_information_wc,Updating Patron Information>>.
+<<updating_patron_information,Updating Patron Information>>.
 
 Enter the alert text in the Alert Message field.
 
@@ -370,10 +369,10 @@ image::media/circulation_patron_records-20.png[circulation_patron_records 20]
 _Save_ the record. The screen will refresh and the alert will display.
 
 To remove the alert, retrieve the patron record as described in the section
-<<searching_patrons_wc,Searching Patrons>>. 
+<<searching_patrons,Searching Patrons>>. 
 
 Open the patron record in edit mode as described in the section 
-<<updating_patron_information_wc,Updating Patron Information>>.
+<<updating_patron_information,Updating Patron Information>>.
 
 Delete the alert text in the _Alert Message_ field. 
 
@@ -385,6 +384,9 @@ the account.
 Patron Notes 
 ~~~~~~~~~~~~
 
+[[circulation_patron_notes]]
+indexterm:[patrons, Notes]
+
 Notes are strictly communicative and may be made visible to the patron via their
 account on the OPAC.  In the OPAC, these notes display on the account summary
 screen in the OPAC.
@@ -392,10 +394,10 @@ screen in the OPAC.
 image::media/circulation_patron_records-23_web_client.png[circulation_patron_records 23]
 
 To insert or remove a note, retrieve the patron record as described in the
-section  <<searching_patrons_wc,Searching Patrons>>. 
+section  <<searching_patrons,Searching Patrons>>. 
 
 Open the patron record in edit mode as described in the section
-<<updating_patron_information_wc,Updating Patron Information>>.
+<<updating_patron_information,Updating Patron Information>>.
 
 Use the Other menu to navigate to _Notes_.
 

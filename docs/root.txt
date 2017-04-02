@@ -166,30 +166,21 @@ include::admin/apache_rewrite_tricks.txt[]
 include::admin/apache_access_handler.txt[]
 
 
-Using the Staff Client
-======================
+Using the Browser Staff Client
+==============================
 
 
 Introduction
 ------------
 
-This part of the documentation deals with general Staff Client usage including
+This part of the documentation deals with general Browser Client usage including
 logging in, navigation and shortcuts.
 
+For information about the XUL client, consult the http://docs.evergreen-ils.org/2.11/[Evergreen 2.11 documentation].
 
-include::admin/staff_client-login.txt[]
+include::admin/web_client-login.txt[]
 
-include::admin/staff_client-button_bar_toolbar.txt[]
-
-include::admin/staff_client-sticky_settings.txt[]
-
-include::admin/staff_client-tab_buttons.txt[]
-
-include::admin/staff_client-double_clicking.txt[]
-
-include::admin/staff_client-patron_border.txt[]
-
-include::admin/staff_client-sorting_columns.txt[]
+include::admin/web_client-browser-tab-shortcuts.txt[]
 
 include::admin/staff_client-column_picker.txt[]
 
@@ -206,8 +197,6 @@ include::admin/workstation_admin_receipt_template_editor.txt[]
 
 // Return to normal title levels.
 :leveloffset: 0
-
-include::admin/workstation_admin_customizable_toolbar.txt[]
 
 System Administration From the Staff Client
 ===========================================
@@ -317,11 +306,10 @@ include::acquisitions/purchase_requests_management.txt[]
 Cataloging
 ==========
 
-Introduction
-------------
+include::cataloging/cataloging_web_client.txt[]
 
-Cataloguers should use this part for understanding the cataloguing procedures
-used in Evergreen.
+include::cataloging/copy-buckets_web_client.txt[]
+
 
 include::cataloging/MARC_Editor.txt[]
 
@@ -384,13 +372,13 @@ Introduction
 Use this section for understanding the circulation procedures in the Evergreen
 system.  
 
-include::circulation/circulating_items.txt[]
+include::circulation/circulating_items_web_client.txt[]
 
 include::circulation/holds.txt[]
 
 include::circulation/booking.txt[]
 
-include::circulation/circulation_patron_records.txt[]
+include::circulation/circulation_patron_records_web_client.txt[]
 
 include::circulation/triggered_events.txt[]
 
@@ -435,127 +423,6 @@ include::reports/reporter_template_terminology.txt[]
 include::reports/reporter_template_enhancements.txt[]
 
 include::reports/reporter_export_usingpgAdmin.txt[]
-
-Web Client Preview
-==================
-
-Introduction
-------------
-
-The Evergreen Web Staff Client is in the early stages of development and is
-being provided as a "preview" version beginning in Evergreen version 2.7.  If
-you are an early adopter, thank you!  Please keep in mind:
-
-  . *We want your feedback!* Please report any errors, bugs, strange behavior,
-etc. using https://bugs.launchpad.net/evergreen/[Launchpad]. And please send
-requested features or design improvements to the
-mailto:open-ils-dev@list.georgialibraries.org[Evergreen Developers email list].
-
-  . *It is changing rapidly.* Features are being added in "sprints" grouped by
-workflow. Read the
-http://evergreen-ils.org/dokuwiki/doku.php?id=dev:browser_staff:dev_sprints[development
-wiki page] and watch the
-http://libmail.georgialibraries.org/mailman/listinfo/open-ils-general[general
-email list] for updates. (However, these changes will only appear on your client
-when your version of Evergreen is upgraded. Ask your server administrator for
-details.)
-
-  . *The design may change significantly.* Initially, it will follow the design
-of the current XUL-based staff client. But the browser framework provides more
-flexibility for design choices. Also, Evergreen hired an
-http://lima-julia.tumblr.com/EG-style-guide[intern] from December 2014 through
-March 2015 to create a
-http://evergreen-ils.org/documentation/previews/proposed_style_guide.html[User
-Interface Style Guide]. Watch http://evergreen-ils.org/communicate/irc/[IRC] and the
-http://libmail.georgialibraries.org/mailman/listinfo/open-ils-general[general
-email list] to follow the progress.
-
-The following rationale was published in the Release Notes for Evergreen 2.7:
-====
-The 2.7 release will contain a preview of web client circulation features.
-Circulation is the first step in moving all staff functions from the existing
-XULRunner-based client to a web application that will be based on AngularJS.
-
-Evergreen is moving away from the existing client because XULRunner no longer
-supports features critical to the Evergreen software, including remote XUL,
-multi-part streaming, and XML JavaScript. The new web client is expected to show
-some speed improvements, to provide comprehensive support for
-internationalization/localization, to provide good support for assistive
-technologies, to be easier to customize locally, and to be more mobile friendly.
-
-The intent of the preview is to make it easier for end users at Evergreen sites
-to try the new client, become familiar with its features, and to discover/report
-bugs that are found. Instructions to implement the web client can be found in
-the code in Open-ILS/web/js/ui/default/staff/README.install. These will be
-revised and moved to the full README for 2.7.1.
-====
-
-Evergreen 2.9 includes the following improvements to the web client preview:
-====
-The web staff client now includes additional functionality to support
-cataloging and item maintenance, including:
-
-- a new MARC editor
-- the service backing the authority headings chooser now has the ability
-  to filter the browse by subject thesaurus
-- Z39.50 search and record import
-- improvements to copy and record bucket functionality
-- embedding the link checker interface
-- embedding the MARC batch import/export interface
-- the web staff volume/copy editor
-
-Nearly all of the cataloging functionality available in the XUL staff client is
-now present in the web staff client with the exception of printing spine
-labels. Nonetheless, the web staff client remains a preview and is not
-recommended for production use.
-====
-
-
-Using the Web Client
---------------------
-
-Introduction
-~~~~~~~~~~~~
-This part of the documentation deals with general client usage including
-logging in, navigation and shortcuts.
-
-// Push titles down one level.
-:leveloffset: 1
-
-include::admin/web_client-login.txt[]
-
-include::admin/web_client-browser-tab-shortcuts.txt[]
-
-// Return to normal title levels.
-:leveloffset: 0
-
-Circulation
------------
-Use this section for understanding the circulation procedures in the Evergreen system.
-
-// Push titles down one level.
-:leveloffset: 1
-
-include::circulation/circulating_items_web_client.txt[]
-
-include::circulation/circulation_patron_records_web_client.txt[]
-
-// Return to normal title levels.
-:leveloffset: 0
-
-Cataloging
-----------
-
-// Push titles down one level.
-:leveloffset: 1
-
-include::cataloging/cataloging_web_client.txt[]
-
-include::cataloging/copy-buckets_web_client.txt[]
-
-// Return to normal title levels.
-:leveloffset: 0
-
 
 Using the Public Access Catalog
 ===============================
