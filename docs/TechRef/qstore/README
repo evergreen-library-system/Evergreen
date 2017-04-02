@@ -1,0 +1,60 @@
+This archive includes documentation of the query schema and the
+qstore server, along with some examples of stored queries.
+
+The query schema stores database queries in an abstract form
+within the database itself.
+
+The qstore server loads queries from the query schema, constructs
+the corresponding SQL, and executes the queries.
+
+Table of contents:
+
+qstore.odt
+
+	Documentation of the qstore methods.
+
+query_dump.sh
+
+	A shell script used to generate query_dump.sql, using the
+	pg_dump utility.  I include this script mostly for my own
+	convenience in case I want to update this archive, but you may
+	find it useful to know exactly where the sql script came from.
+	(Note: after generating the sql script I manually edited it to
+	remove the loading of the datatype table.)
+
+query_dump.sql
+
+	An sql script to install a collection of examples.  The script
+	assumes that the query schema exists but has no data in it,
+	except for the datatypes in query.datatype as installed by
+	the installation script.
+
+query_schema.odt
+
+	Documentation of the query schema.
+
+README
+
+	You're looking at it.
+
+stored_queries.txt
+
+	SQL queries generated from the queries loaded by query_dump.sql.
+
+test_qstore.txt
+
+	Documentation of the test_qstore utility.  The same documentation
+	appears in a comment block at the top of test_qstore.c.
+
+The sql script loads 25 example queries, with query ids in the range 1-25.  
+These are the queries I used to develop and test qstore.  I used
+the test_qstore utility to generate each query, and then pasted the
+output into stored_queries.txt.
+
+The queries themselves are not particularly useful, and often don't
+even make much sense from an application standpoint.  They are just
+exercises in the generation of syntax.  In any case they all run
+successfully within psql (except for query # 12, which features
+an unsubstituted bind variable).
+
+Scott McKellar

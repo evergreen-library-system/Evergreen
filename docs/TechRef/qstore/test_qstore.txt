@@ -1,0 +1,48 @@
+test_qstore
+
+This command-line utility exercises most of the code used in the qstore server, but
+without the complications of sending and receiving OSRF messages.
+
+Synopsis:
+
+test_qstore  [options]  query_id
+
+Query_id is the id of a row in the query.stored_query table, defining a stored query.
+
+The program reads the specified row in query.stored_query, along with associated rows
+in other tables, and displays the corresponding query as an SQL command.  Optionally it
+may execute the query, display the column names of the query result, and/or display the
+bind variables.
+
+In order to connect to the database, test_qstore uses various connection parameters
+that may be specified on the command line.  Any connection parameter not specified
+reverts to a plausible default.
+
+The database password may be read from a specified file or entered from the keyboard.
+
+Options:
+
+-b  Boolean; Display the name of any bind variables, and their default values.
+
+-D  Specifies the name of the database driver; defaults to "pgsql".
+
+-c  Boolean; display column names of the query results, as assigned by PostgreSQL.
+
+-d  Specifies the database name; defaults to "evergreen".
+
+-h  Specifies the hostname of the database; defaults to "localhost".
+
+-i  Specifies the name of the IDL file; defaults to "/openils/conf/fm_IDL.xml".
+
+-p  Specifies the port number of the database; defaults to 5432.
+
+-u  Specifies the database user name; defaults to "evergreen".
+
+-v  Boolean; Run in verbose mode, spewing various detailed messages.  This option is not
+	likely to be useful unless you are troubleshooting the code that loads the stored
+	query.
+
+-w  Specifies the name of a file containing the database password (no default).
+
+-x  Boolean: Execute the query and display the results.
+

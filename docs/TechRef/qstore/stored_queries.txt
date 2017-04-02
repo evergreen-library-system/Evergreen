@@ -1,0 +1,316 @@
+Stored Queries
+
+1: JOIN
+
+SELECT
+   "aou".id AS "id",
+   "aou".name AS "name",
+   "aou".shortname AS "short_name"
+FROM
+   actor.org_unit AS "aou"
+      INNER JOIN actor.org_unit_type AS "aout"
+         ON TRUE
+WHERE
+   "aou".parent_ou > 3;
+
+------------------------------------------------------------
+2: UNION
+
+SELECT
+   "aou".id AS "id",
+   "aou".name AS "name",
+   "aou".shortname AS "short_name"
+FROM
+   actor.org_unit AS "aou"
+      INNER JOIN actor.org_unit_type AS "aout"
+         ON TRUE
+WHERE
+   "aou".parent_ou > 3
+UNION
+SELECT
+   "aou".id AS "id",
+   "aou".name AS "name",
+   "aou".shortname AS "short_name"
+FROM
+   actor.org_unit AS "aou"
+      INNER JOIN actor.org_unit_type AS "aout"
+         ON TRUE
+WHERE
+   "aou".parent_ou > 3;
+
+-----------------------------------------------------------
+3: Simple query (to be used elsewhere as a subquery)
+
+SELECT
+   "aou".ou_type
+FROM
+   actor.org_unit AS "aou"
+WHERE
+   "aou".id = 3;
+
+-------------------------------------------------------------
+4: SELECTing a subquery
+
+SELECT
+   "aout".id,
+   (
+      SELECT
+         "aou".ou_type
+      FROM
+         actor.org_unit AS "aou"
+      WHERE
+         "aou".id = 3
+   )
+FROM
+   actor.org_unit_type AS "aout";
+
+--------------------------------------------------------------
+5: IN clause with a subquery
+
+SELECT
+   "aout".id
+FROM
+   actor.org_unit_type AS "aout"
+WHERE
+   "aout".id IN (
+      SELECT
+         "aou".ou_type
+      FROM
+         actor.org_unit AS "aou"
+      WHERE
+         "aou".id = 3
+   );
+
+---------------------------------------------------------------
+6: Subquery in the FROM clause
+
+SELECT
+   "aou".ou_type
+FROM
+   (
+      SELECT
+         "aou".ou_type
+      FROM
+         actor.org_unit AS "aou"
+      WHERE
+         "aou".id = 3
+   ) AS "aou";
+
+----------------------------------------------------------------
+7: JOINing to a subquery
+
+SELECT
+   "aou".ou_type AS "goober"
+FROM
+   actor.usr AS "au"
+      INNER JOIN (
+         SELECT
+            "aou".ou_type
+         FROM
+            actor.org_unit AS "aou"
+         WHERE
+            "aou".id = 3
+      ) AS "aou"
+         ON "au".id = "aou".ou_type;
+
+----------------------------------------------------------------
+8: EXISTS clause
+
+SELECT
+   "aout".id
+FROM
+   actor.org_unit_type AS "aout"
+WHERE
+   EXISTS (
+      SELECT
+         "aou".ou_type
+      FROM
+         actor.org_unit AS "aou"
+      WHERE
+         "aou".id = 3
+   );
+
+----------------------------------------------------------------
+9: SELECTing a wild card
+
+SELECT
+   "aou".*
+FROM
+   actor.org_unit AS "aou";
+
+------------------------------------------------------------------
+10: ORDER BY clause
+
+SELECT
+   "aou".id AS "id",
+   "aou".parent_ou AS "parent",
+   "aou".shortname AS "short_name"
+FROM
+   actor.org_unit AS "aou"
+ORDER BY
+   "aou".parent_ou,
+   "aou".id;
+
+--------------------------------------------------------------------
+11: Looking up table name in IDL
+
+SELECT
+   "aou".id AS "id"
+FROM
+   actor.org_unit AS "aou";
+
+--------------------------------------------------------------------
+12: numeric bind variable (also works if default value is available)
+
+SELECT
+   "aou".id,
+   "aou".name,
+   "aou".shortname,
+   "aou".opac_visible,
+   "aou".parent_ou
+FROM
+   actor.org_unit AS "aou"
+WHERE
+   "aou".id = :ou;
+
+--------------------------------------------------------------------
+13: string bind variable (using default value 'BRE' for :shortname)
+
+SELECT
+   "aou".id,
+   "aou".name,
+   "aou".shortname,
+   "aou".opac_visible,
+   "aou".parent_ou
+FROM
+   actor.org_unit AS "aou"
+WHERE
+   "aou".shortname = 'BR3';
+
+--------------------------------------------------------------------
+14: IS NULL expression
+
+SELECT
+   "aou".id
+FROM
+   actor.org_unit AS "aou"
+WHERE
+   "aou".parent_ou IS NULL;
+
+--------------------------------------------------------------------
+15: Series expression (chain of ORs)
+
+SELECT
+   "aou".id AS "id"
+FROM
+   actor.org_unit AS "aou"
+WHERE
+   "aou".parent_ou IS NULL
+   OR "aou".email IS NULL
+   OR "aou".holds_address IS NULL;
+
+--------------------------------------------------------------------
+16: IN list
+
+SELECT
+   "aou".id AS "id"
+FROM
+   actor.org_unit AS "aou"
+WHERE
+   "aou".parent_ou IN (1, 3, 6);
+
+--------------------------------------------------------------------
+17: Function call
+
+SELECT
+   "aou".id AS "id",
+   "aou".name AS "name",
+   upper("aou".name) AS "name"
+FROM
+   actor.org_unit AS "aou"
+WHERE
+   "aou".parent_ou IN (1, 3, 6);
+
+--------------------------------------------------------------------
+18: Function call with subfield
+
+SELECT
+   "aou".id AS "id",
+   "aou".name AS "id",
+   (actor.org_unit_ancestors("aou".id))."name" AS "root_name"
+FROM
+   actor.org_unit AS "aou"
+WHERE
+   "aou".id = 3;
+
+--------------------------------------------------------------------
+19: BETWEEN expression
+
+SELECT
+   "aou".id AS "id"
+FROM
+   actor.org_unit AS "aou"
+WHERE
+   "aou".parent_ou BETWEEN 1 AND 4;
+
+--------------------------------------------------------------------
+20: EXTRACT and CURRENT_DATE functions
+
+SELECT
+   "au".id AS "id",
+   EXTRACT(DOW FROM "au".create_date) AS "create_day",
+   CURRENT_DATE  AS "today"
+FROM
+   actor.usr AS "au";
+
+--------------------------------------------------------------------
+21: GROUP BY, with aggregate function last
+
+SELECT
+   "aou".parent_ou AS "parent",
+   COUNT(1) AS "how_many"
+FROM
+   actor.org_unit AS "aou"
+GROUP BY 1;
+
+--------------------------------------------------------------------
+22: GROUP BY, with aggregate function first
+
+SELECT
+   COUNT(1) AS "how_many",
+   "aou".parent_ou AS "parent"
+FROM
+   actor.org_unit AS "aou"
+GROUP BY 2;
+
+--------------------------------------------------------------------
+23: Function in the FROM clause
+
+SELECT
+   *
+FROM
+   upper('goober');
+
+--------------------------------------------------------------------
+24: CASE expression
+
+SELECT
+   "aou".id AS "id",
+   CASE "aou".id
+      WHEN 1
+         THEN 'First'
+      WHEN 2
+         THEN 'Second'
+      ELSE
+         'Other'
+   END AS "Branch sequence"
+FROM
+   actor.org_unit AS "aou";
+
+--------------------------------------------------------------------
+25: CAST expression
+
+SELECT
+   CAST ("aou".id AS TEXT) AS "cast_text"
+FROM
+   actor.org_unit AS "aou";
