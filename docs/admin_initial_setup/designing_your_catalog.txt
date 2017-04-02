@@ -205,6 +205,47 @@ these are replaced by the contents of variables passed as extra arguments to the
 Once the link and link text has been edited to your satisfaction, load the page
 in a Web browser and see the live changes immediately.
 
+Adding translations to PO file
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+After you have added custom text in translatable form to a TT2 template, you need to add the custom strings and its translations to the PO file containing the translations. Evergreen PO files are stored  in _/openils/var/template/data/locale/_ 
+
+The PO file consists of pairs of the text extracted from the code:  Message ID  denoted as _msgid_ and message string denoted as _msgstr_.  When adding the custom string to PO file: 
+
+* The line with English expressions must start with _msgid_. The English term must be enclosed in double apostrophes. 
+* The line with translation start with /msgstr/. The translation to local language must be and enclosed in enclosed in double apostrophes.  
+* It is recommended to  add a note in which template and on which line the particular string is located. The lines with notes must be marked as comments i.e., start with number sign (#) 
+
+Example: 
+
+----
+
+# ---------------------------------------------------------------------
+# The lines below contains the custom strings manually added to the catalog
+# ---------------------------------------------------------------------
+
+#: ../../Open-ILS/src/custom_templates/opac/parts/topnav_links.tt2:1
+msgid "Union Catalog of the Czech Republic"
+msgstr "Souborný katalog České republiky"
+
+
+#: ../../Open-ILS/src/custom_templates/opac/parts/topnav_links.tt2:1
+msgid "Uniform Information Gateway "
+msgstr "Jednotná informační brána"
+
+----
+
+[NOTE]
+====
+It is good practice to save backup copy of the original PO file before changing it.
+====
+
+After making changes, restart Apache to make the changes take effect. As root run the command:
+
+----
+service apache2 restart
+----
+
 Adding and removing MARC fields from the record details display page
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -286,6 +327,31 @@ Below is a table of the currently supported languages packaged with Evergreen:
 |=================================================================
 *American English is built into Evergreen so you do not need to set up this
 language and there are no PO files. 
+
+Updating translations in Evergreen using current translations from Launchpad
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Due to Evergreen release workflow/schedule, some language strings may already have been translated in Launchpad,
+but are not yet packaged with Evergreen. In such cases, it is possible to manually replace the PO file in
+Evergreen with an up-to-date PO file downloaded from Launchpad. 
+
+. Visit the Evergreen translation site in https://translations.launchpad.net/evergreen[Launchpad] 
+. Select required language (e.g. _Czech_ or _Spanish_)
+. Open the  _tpac_  template  and  then select option _Download translation_. Note: to be able to download the translation file you need to be logged in to Launchpad.
+. Select _PO format_ and submit the _request for download_ button. You can also request for download of all existitng templates and languages at once, see https://translations.launchpad.net/evergreen/master/+export. The download link will be sent You to email address provided. 
+. Download the file and name it according to the language used (e.g., _cs-CZ.po_ for Czech or  _es-ES.po_ for Spanish)  
+. Copy the downloaded file to  _/openils/var/template/data/locale_. It is a good practice to backup the original PO file before.
+. Be sure that the desired language is set as default, using the <<_setting_a_default_language_and_adding_optional_languages,Default language>> procedures.
+
+Analogously, to update the web staff client translations, download the translation template _webstaff_ and copy it to _openils/var/template/data/locale/staff_.
+
+
+Changes require web server reload to take effect. As root run the command 
+
+----
+service apache2 restart
+----
+
 
 Editing the formats select box options in the search interface.
 ---------------------------------------------------------------
