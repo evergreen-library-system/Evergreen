@@ -106,9 +106,10 @@
         END;
     END;
 
-    # Dojo is required to use the copy locations advanced search filter,
-    # therefore, it should always be enabled.
-    want_dojo = 1;
+    # Dojo is required for the copy locations advanced search filter
+    IF ctx.page == 'advanced';
+        want_dojo = 1;
+    END;
 
     use_autosuggest = ctx.get_cgf("opac.use_autosuggest");
 
