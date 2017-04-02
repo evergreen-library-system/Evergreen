@@ -1,0 +1,390 @@
+Qstore
+======
+
+The qstore server (open-ils.qstore) executes database queries that have
+been previously defined, in an abstract form, within the database
+itself.  Such queries may be used for periodic reporting, ad hoc
+investigations, or automated updates.
+
+In some cases a query may be qualified by values to be supplied at
+execution time, called bind variables.  For example, a query may be
+limited to a particular org unit, or a short list of user ids.
+
+Before executing a query, the qstore client must open an application
+session with the qstore server by sending it a CONNECT message.  Then it
+must perform a series of steps to set up the query, execute it, and get
+the results.  Finally, the client may close the query explicitly with an
+additional method call.  Alternatively it may simply close the
+application session by sending a DISCONNECT message to the server.
+
+Here is a brief summary of the available methods.  Each will be
+discussed in greater detail in a later section:
+
+.  open-ils.qstore.prepare – load the query
+.  open-ils.qstore.sql – return the query as SQL
+.  open-ils.qstore.param_list – return a list of bind variables
+.  open-ils.qstore.bind_param – assign values to one or more bind
+variables
+.  open-ils.qstore.execute – execute the query and return the results
+.  open-ils.qstore.execute.atomic – an atomic version of the execute
+method
+.  open-ils.qstore.columns – return a list of column names for the
+results
+.  open-ils.qstore.finish – close a query, freeing any associated
+resources
+.  open-ils.qstore.messages – return any error message for a specified
+query
+
+The prepare method
+------------------
+Summary: Load a specified query.   Return a list of bind variables, and
+a token by which the query may be referenced in future method calls.
+
+Parameter: The id of a row in the query.stored_query table, identifying
+the stored query..
+
+Returns: A JSON object with two members:
+
+.  “token”: a text string to be used as a token for identifying the
+query in future method calls.  This string is designed to be unique, but
+otherwise has no very useful meaning.
+.  “bind_variables”: a (possibly empty) JSON object defining any bind
+variables required by the query.  See the discussion of the bind_param
+method.
+
+A client may juggle multiple queries in the same application session,
+using the corresponding tokens to identify the query to which each
+method call applies.
+
+The sql method
+--------------
+Summary: Return the query as an SQL string.
+
+Parameter: The token returned previously by the prepare method for the
+same query.
+
+Returns: A string containing the generated SQL corresponding to the
+stored query.  It will incorporate the specified values of any bind
+variables.  If no value has been assigned to a given bind variable, and
+there is no default value for it, then the generated SQL will include
+the name of the bind variable wherever it appears, preceded by a colon
+to distinguish it from a column name.  The user may review such a query
+but cannot execute it.
+
+The param_list method
+---------------------
+Summary: Returns information about the bind variables required by the
+query, if any.
+
+Parameter: The token returned previously by the prepare method for the
+same query.
+
+Returns: A JSON object keyed on the bind variable name.  The data
+associated with each name is another JSON object, with the following
+entries:
+
+.  “label”: the contents of query.bind_variable.label for this
+variable.  This is the identifier usually shown to the user for this
+variable.
+.  “type”: the contents of query.bind_variable.type for this variable.
+It is one of “string”, “number”, “string_list”, or “number_list”.
+.  “description”: the contents of query.bind_variable.description for
+this variable.
+.  “default_value”: the value that will be assigned to the variable if
+the user doesn't override it.
+.  “actual_value”: the value assigned by the user, overriding any
+default.
+
+Depending on the type, the default or actual value of a bind variable
+may be a string, a number, a JSON array of strings, or a JSON array of
+numbers.
+
+If a given variable has no default value, then there will be no entry
+for “default_value”.  On the other hand if the default value is a null,
+then there will be an entry for “default_value” whose associated data is
+a JSON null.  Likewise for “actual_value”.
+
+The bind_param method
+---------------------
+Summary: Assign a value to one or more bind variables.
+
+Parameter: This is the only qstore method that requires two parameters:
+
+.  The token returned previously by the prepare method for the same
+query.
+.  A (possibly empty) JSON object keyed on bind variable name.  The
+value associated with each bind variable name is the value to be
+assigned to the corresponding bind variable, overriding any default, and
+replacing any value previously assigned.
+
+The execute method
+------------------
+Summary: Execute the specified query, and return the results.
+
+Parameter: The token returned previously by the prepare method for the
+same query.
+
+Returns: Zero or more responses, each containing one row returned by the
+query.  Each row is represented by a JSON array of values.
+
+The execute.atomic method
+-------------------------
+Summary: Execute the specified query, and return the results.
+
+Parameter: The token returned previously by the prepare method for the
+same query.
+
+Returns: A JSON array containing zero or more entries.  Each entry
+represents a row as a JSON array of values.
+
+The columns method
+------------------
+Summary: Return the column names assigned by PostgreSQL to the result
+set of the query.
+
+Parameter: The token returned previously by the prepare method for the
+same query.
+
+Returns: An array of strings, each string being a column name.
+
+The finish method
+-----------------
+Summary: Close a query, freeing any resources associated with it, and
+rendering the token invalid for future method calls.
+
+Parameter: The token returned previously by the prepare method for the
+same query.
+
+Closing the application session will finish any unfinished queries for
+that session.
+
+The messages method
+-------------------
+Summary: Return any error messages associated with a query.
+
+Parameter: The token returned previously by the prepare method for the
+same query.
+
+Returns: A JSON array of strings, each string being an error message
+issued in connection with the specified query.  The messages appear in
+the order in which they were issued.  Typically the first message
+describes the error as it was first encountered, and subsequent messages
+describe the context in which the error occurred.
+
+The messages returned include all those issued for the specified query,
+including any issued for previous method calls.  Since currently there
+is no method for purging error messages, they just accumulate.
+
+In many cases (but not all), qstore writes similar messages to its log.
+ The messages method is based on the notion that most users shouldn't
+have to examine log files.  They may however need help in interpreting
+the error messages.
+
+Example
+
+The following srfsh session illustrates these methods.  After opening an
+application session, we prepare query 12:
+
+----
+srfsh# open open-ils.qstore
+
+Service open-ils.qstore opened
+
+srfsh# request open-ils.qstore open-ils.qstore.prepare 12
+
+Received Data: {
+  "token":"1_1279135310_6487",
+  "bind_variables":{
+    "ou":{
+      "label":"lib",
+      "type":"number",
+      "description":"org unit"
+    }
+  }
+}
+----
+
+The server concocts a unique token, "1_1279135310_6487”, that we will
+use henceforth to identify this query.  We could also prepare an
+unrelated query, or even the same query more than once, and qstore would
+assign each of them a different token and keep them all straight.  For
+this example, though, we'll stick to the one query.
+
+This query has one bind variable named “ou”, whose value needs to be
+numeric.  The label, “lib”, is a short name for handy reference
+(although in this case it's actually longer than the name used
+internally).  The description tells us that it identifies an org unit.
+ In a real example the description probably should be more verbose, so
+that user could see it in a tool tip (for example) and figure out what
+to do.
+
+In this case there is no default value, i.e. there is no entry for
+“default_value”.  That means we can't run the query yet – but we can
+still look at the SQL for it:
+
+----
+srfsh# request open-ils.qstore open-ils.qstore.sql "1_1279135310_6487"
+
+Received Data: "SELECT\n   \"aou\".id,\n   \"aou\".name,\n  
+\"aou\".shortname,\n  
+
+\"aou\".opac_visible,\n   \"aou\".parent_ou \nFROM\n   actor.org_unit AS
+\"aou\" \nWHERE\n   \"aou\".id = :ou;\n"
+----
+
+When we call the sql method, we pass it the token that the prepare
+method assigned earlier.  The server returns the generated SQL, trying
+to make it readable by inserting newlines and indentation.  In srfsh,
+though, the output is pretty ugly because all the newlines and quotation
+marks are escaped within a JSON string.  In this document, at least,
+it's line-wrapped so that it fits on the page.  In a proper GUI it
+should look much nicer.
+
+At the end of the SQL, the query refers to the bind variablee as “:ou”,
+the variable preceded by a colon.  The colon indicates that “ou” is a
+variable name rather than a column name.  It also makes the SQL invalid
+until we replace the variable with a real value.  Let's do that now, and
+then look at the SQL again:
+
+----
+srfsh# request open-ils.qstore open-ils.qstore.bind_param \
+"1_1279135310_6487" {"ou":3}
+
+srfsh# request open-ils.qstore open-ils.qstore.sql "1_1279135310_6487"
+
+Received Data: "SELECT\n   \"aou\".id,\n   \"aou\".name,\n  
+\"aou\".shortname,\n  
+\"aou\".opac_visible,\n   \"aou\".parent_ou \nFROM\n   actor.org_unit
+AS \"aou\" \nWHERE\n   \"aou\".id = 3;\n"
+----
+
+When we call the bind_param method we pass not only the token but also a
+JSON object assigning a value to one or more bind variables – just one
+in this case.  Now the generated SQL looks normal.
+
+We can also verify the substitution by calling the param_list method:
+
+----
+srfsh# request open-ils.qstore open-ils.qstore.param_list \
+"1_1279135310_6487"
+
+Received Data: {
+  "ou":{
+    "label":"lib",
+    "type":"number",
+    "description":"org unit",
+    "actual_value":3
+  }
+}
+----
+
+Now we see an “actual_value” of 3.  The SQL is ready to go.
+
+----
+srfsh# request open-ils.qstore open-ils.qstore.execute
+"1_1279135310_6487"
+
+Received Data: [
+  3,
+  "Example System 2",
+  "SYS2",
+  "t",
+  1
+]
+----
+
+This query returns only one row, so we get only one response.  If there
+were multiple rows, srfsh would display multiple lines of “Received
+Data.”  The one response is a JSON array of column values.
+
+Here's the atomic version of the same method call:
+
+----
+srfsh# request open-ils.qstore open-ils.qstore.execute.atomic \
+"1_1279135310_6487"
+
+Received Data: [
+  [
+    3,
+    "Example System 2",
+    "SYS2",
+    "t",
+    1
+  ]
+]
+----
+
+The difference isn't obvious because there's only one row, but notice
+the an extra layer of square brackets.  This result is an array of
+arrays of column values.  If there were multiple rows, they'd all be in
+the same array.
+
+This response does not identify the columns.  For that we must make
+another call:
+
+----
+srfsh# request open-ils.qstore open-ils.qstore.columns
+"1_1279135310_6487"
+
+Received Data: [
+  "id",
+  "name",
+  "shortname",
+  "opac_visible",
+  "parent_ou"
+]
+----
+
+The result is a JSON array of column names.  These are the same names
+that you would get if you ran the query in psql.  They may not be unique
+or even helpful.  Ideally the query should assign good column aliases,
+but if it doesn't, you have to take what you can get.
+
+Now let's make a mistake, just so that we can see an error message.
+ We're going to assign a value to a bind variable that doesn't exist,
+and then ask for any error messages:
+
+----
+srfsh# request open-ils.qstore open-ils.qstore.bind_param
+"1_1279135310_6487" {"goober":3}
+
+Received Exception:
+Name: osrfMethodException
+Status: Unable to apply values to bind variables
+Status: 400
+Received Exception:
+Name: osrfMethodException
+Status: An unknown server error occurred
+Status: 404
+
+srfsh# request open-ils.qstore open-ils.qstore.messages
+"1_1279135310_6487"
+
+Received Data: [
+  "Can't assign value to bind variable \"goober\": no such variable"
+]
+----
+
+The result is a JSON array of error messages as strings.  In this case
+there's only one message.  In other cases there may be a series of
+messages, the first one describing the error at the lowest level, and
+the rest providing additional context.
+
+Now that we're done with this query, we can shut it down:
+
+----
+srfsh# request open-ils.qstore open-ils.qstore.finish
+"1_1279135310_6487"
+
+Received no data from server
+
+srfsh# close open-ils.qstore
+
+Service "open-ils.qstore" closed
+
+srfsh# exit
+----
+
+The finish method closes the query and frees associated memory.  In this
+case we could have skipped it, because we immediately close the session
+anyway, thereby closing any outstanding queries.

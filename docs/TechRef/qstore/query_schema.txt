@@ -1,0 +1,856 @@
+The Query Schema
+
+ 
+
+Introduction
+
+The query schema stores user-defined queries in an abstract form.  The
+qstore server reads the query tables, constructs the corresponding SQL,
+executes the query, and returns the result set.  This machinery supports
+three main kinds of uses:
+
+1.  Ad hoc queries
+2.  Repeated queries for reports or other kinds of extracts
+3.  Identifying rows that may be subject to automated updates
+
+Queries may be customized at run time through the use of bind variables.
+ For example, a query might  extract circulation statistics for a given
+branch.  It could include a bind variable as a placeholder for the org
+unit id, which the user would supply at run time.  A bind variable may
+represent a single value or a variable-length list of values.
+
+Although there are some limitations, the query tables can represent most
+of the queries that anyone is likely to want.  In particular they
+support many SQL constructs that json_query does not support.
+
+Warning: the machinery comprising qstore and the query tables is a text
+generator with little understanding of how databases work.  Depending on
+the contents of the query tables, it may generate invalid SQL.
+ PostgreSQL is the final arbiter.
+
+Summary of Tables
+
+The query schema includes the following tables, each of which is
+described in a later section:
+
+1.  stored_query – stores the topmost level of a query or subquery:
+SELECT, UNION, INTERSECT, or EXCEPT.  Other tables link to
+query.stored_query, directly or indirectly.
+2.  query_sequence – specifies the sequence of subordinate queries
+within a UNION, INTERSECT, or EXCEPT.
+3.  expression – each row represents an expression, often a
+subexpression of some larger expression.
+4.  from_relation – each row represents a FROM clause, or part of a FROM
+clause, identifying a table, view, subquery, or function from which the
+data are to be drawn.
+5.  select_item – each row specifies the location and content of an
+entry in a SELECT list.
+6.  order_by_item – each row specifies the location and content of an
+entry in an ORDER BY list.
+7.  function_sig – represents the names and return types of functions.
+8.  case_branch – represents branches in CASE expressions.
+9.  datatype – defines datatypes that may be used in CAST expressions.
+10. bind_variable – represents bind variables whose values may be
+supplied at execution time.
+
+Three other tables are currently unused, and will not be discussed in
+any detail here:
+
+1.  record_column – defines column sets for functions in a FROM clause.
+2.  function_param_def – defines the parameters of functions.
+3.  subfield – defines the components of composite types.
+
+The latter two may or may not turn out to be useful for the user
+interface code.
+
+Query.stored_query
+
+The stored_query table is the entry point into the query schema.  When
+you want qstore to construct a query, you give it the id of a row in
+query.stored_query.  Then qstore reads that row and all the rows
+connected to it, directly or indirectly, that collectively define the
+entire query.
+
+The columns are as follows:
+
+        id                        integer                primary key
+
+        type                        text                not null
+
+        use_all                        boolean        not null default
+false
+
+        use_distinct                boolean        not null default
+false
+
+        from_clause                integer                points to
+query.from_relation
+
+        where_clause                integer                points to
+query.expression
+
+        having_clause                integer                points to
+query.expression
+
+        limit_count                integer                points to
+query_expression
+
+        offset_count                integer                points to
+query_expression
+
+The id is normally assigned by a database sequence.
+
+The type column must be one of SELECT, UNION, INTERSECT, or UNION.  Most
+queries, of course, are SELECT statements.  Neither the query schema nor
+qstore supports queries in the form of VALUES lists.
+
+The use_all column indicates whether there will be an ALL clause on a
+UNION, INTERSECT, or UNION.  It is not meaningful for a SELECT.
+
+The use_distinct column indicates whether there will be a DISTINCT
+clause.  It is meaningful only for a SELECT.
+
+The from_clause column is meaningful only for a SELECT.  It points to
+the query.from_relation table to define the top-level or core relation
+in a FROM clause.
+
+.
+
+The where_clause and having_clause columns point to the query.expression
+table to define a WHERE and HAVING clause, respectively.  The
+expressions must evaluate to a boolean result, or else PostgreSQL will
+reject the query.  These columns are meaningful only for a SELECT.
+
+The limit_count and offset_count columns point to the query.expression
+table to define values for a LIMIT and OFFSET clause, respectively.  The
+expressions must evaluate to a numeric result, or else PostgreSQL will
+reject the query.  These columns are meaningful only for a SELECT.
+
+For GROUP BY clauses, see the section on the query.select_item table.
+
+Query.query_sequence
+
+The query.query_sequence table defines the sequence of subordinate
+queries within a UNION, INTERSECT, or EXCEPT query.  It provides a layer
+of indirection so that the same query can appear in multiple contexts.
+
+Its columns are as follows:
+
+        id                        integer                primary key
+
+        parent_query                integer                not null;
+points to query.stored_query
+
+        seq_no                        integer                not null
+
+        child_query                integer                not null
+
+The id is normally assigned by a database sequence.
+
+The parent_query column points to the UNION, INTERSECT, or EXCEPT query
+to which the subordinate query is subordinate.
+
+The seq_no column defines the placement of a given subordinate query
+within the parent.  No two subordinates of the same parent may have the
+same value for seq_no.
+
+The child_query column points to the subordinate query.  Typically it
+points to a SELECT, but it may point to a nested UNION, INTERSECT, or
+EXCEPT.
+
+Query.expression
+
+The query.expression table is easily the most complicated of the tables
+in the query schema.  There are many types of expressions, and they may
+be combined into structures of arbitrary complexity.  Expressions may
+appear in several different places within a query: in a SELECT list, in
+a WHERE, ORDER BY, or ON clause, or as subexpressions within larger
+expressions.
+
+Different kinds of expressions call for different combinations of
+ columns to be populated, as described in the Appendix.  However the
+following columns are relevant to all kinds of expressions:
+
+        id                        integer                primary key
+
+        type                        text                not null
+
+        parenthesize                boolean        not null; default
+false
+
+        parent_expr                integer                points to
+query.expression
+
+        seq_no                        integer                not null;
+default 1
+
+        negate                        boolean        not null; default
+false
+
+The id is normally assigned by a database sequence.
+
+The type column currently has sixteen possible values, which we will
+examine briefly below after introducing the other columns.
+
+If set to true, the parenthesize column tells qstore to enclose the
+entire expression in parentheses.  Usually qstore can figure out for
+itself when it needs to insert parentheses, but this column is available
+when you need it.
+
+The parent_expr column identifies the larger expression to which a
+subexpression belongs.  It isn't needed for every subexpression; only
+for those that may form series of two or more subexpressions, such as
+the parameters of a function call or the branches of a CASE expression.
+
+The seq_no column defines the sequence of subexpressions within the same
+larger expression.  No two expressions with the same parent expression
+may have the same sequence number.
+
+If true, the negate column tells qstore to negate the entire expression
+by inserting a NOT somewhere.  It is sensible to use it only when the
+expression evaluates to a boolean result.
+
+The usage of the remaining columns depends on the value of the type
+column, as detailed in the Appendix.  Here's a summary:
+
+The literal column contains a number (as text) or a string literal.  It
+may also contain “true” or “false” as a boolean literal.
+
+The column_name column contains the name of a column.  It may optionally
+be qualified by the table_alias column.
+
+The left_operand and right_operand columns point to subexpressions to
+appear with a designated operator.  The left_operand operator is also
+used to point to subexpressions in several other kinds of expressions,
+such as IN expressions and casts.
+
+The function_id column, pointing to a row in query.function_sig, is used
+to express a function call.
+
+The subquery column, pointing to a row in query.stored_query, refers to
+a subquery.
+
+The cast_type column, pointing to a row in query.datatype, is used to
+express a CAST expression.
+
+The bind_variable column, pointing to a row in query.bind_variable,
+identifies a placeholder whose value will be supplied by the user when
+he or she executes the query.
+
+Currently there are sixteen allowed values for the type column,
+signifying sixteen kinds of expressions:
+
+1.  xbet                BETWEEN expression
+2.  xbind                bind variable
+3.  xbool                boolean literal
+4.  xcase                CASE expression
+5.  xcast                CAST expression
+6.  xcol                column reference
+7.  xex                EXISTS expression
+8.  xfunc                function call
+9.  xin                IN expression
+10. xisnull                IS NULL expression
+11. xnull                null
+12. xnum                numeric literal
+13. xop                operator with one or two operands
+14. xser                series of subexpressions separated by operators
+or commas
+15. xstr                string literal
+16. xsubq                subquery
+
+For each expression type there is an updatable view containing only the
+columns that are relevant to that type.  The name of the view is the
+type prefaced by “expr_”; e.g.. query.exp_xbet.
+
+Neither the query schema nor qstore tries to determine the datatype of
+an expression.  For example, you can encode a nonsensical expression
+like 'W' + 3, or NOT CURRENT_DATE.  Though qstore will blithely generate
+the corresponding SQL, PostgreSQL will reject it.
+
+Query.from_relation
+
+A row in query.from_relation defines a table, view, function or subquery
+in the FROM clause, from which the SELECT will draw its data.
+
+Query.from_relation includes the following columns:
+
+        id                        integer                primary key
+
+        type                        text                not null
+
+        table_name                text
+
+        class_name                text
+
+        subquery                integer                points to
+query.stored_relation
+
+        function_call                integer                points to
+query.expression
+
+        table_alias                text
+
+        parent_relation        integer                points to
+query.from_relation
+
+        seq_no                        integer                not null;
+default 1
+
+        join_type                text
+
+        on_clause                integer                points to
+query.expression
+
+The id is normally assigned by a database sequence.
+
+The type must be one of RELATION (meaning table or view), SUBQUERY, or
+FUNCTION.  Depending on the type, different combinations of the other
+columns may be populated or not populated.
+
+The table_name column may be populated for a RELATION to specify the
+name of a table or view.
+
+The class_name column is another way to specify a table or view for a
+RELATION.  If table_name is null, qstore looks up the class_name in the
+IDL in order to get the name of the table or view – or in some cases the
+body of a subquery defined in the IDL.
+
+If the type is SUBQUERY, then the subquery column must point to a row in
+query.stored_query.  Otherwise this column has no meaning.
+
+If the type is FUNCTION, then the function_call column must point to a
+row in query.expression, and that row must represent a function call
+expression.  Otherwise this column has no meaning.
+
+The table_alias column defines an alias to be used for the table, view,
+subquery, or function.  If table_alias is null, but class_name is
+populated, then qstore will use the class_name as an alias.
+
+The parent_relation column is used for joins.  If a relation is joined
+to the top-level relation (the one to which the query.stored_query table
+points), then parent_relation points to the top level.  Otherwise it
+points to a relation that points to the top level, directly or
+indirectly.
+
+The seq_no field defines the sequence of relations with the same parent.
+ No two rows with the same value of parent_relation may have the same
+seq_no.
+
+If parent_relation is populated, then the join_type column must be
+populated with one of INNER, LEFT, RIGHT or FULL to indicate the type of
+join.
+
+The on_clause column is meaningful only if parent_relation is populated.
+ It points to a row in query.expression representing the join condition,
+which must evaluate to a boolean result.
+
+Query.select_item
+
+Each row in query.select_item represents an item in a SELECT list.  The
+columns are as follows:
+
+        id                        integer                primary key
+
+        stored_query                integer                not null
+
+        seq_no                        integer                not null
+
+        expression                integer                not null
+
+        column_alias                text
+
+        grouped_by                boolean        not null; default false
+
+The id is normally assigned by a database sequence.
+
+The stored_query column points to the query to whose SELECT list the
+item belongs.  The query must be a SELECT.
+
+The seq_no column defines the sequence of items within the SELECT list.
+ No two items within the same SELECT list may have the same value of
+seq_no.
+
+The expression column points to a row of any type in query.expression.
+
+The column_alias column specifies a column alias to be supplied in an AS
+clause.  The generated SQL will enclose the column alias in double
+quotes.
+
+The grouped_by column stipulates that the SELECT item be referenced in a
+GROUP BY clause.  The generated SQL references the item by its ordinal
+position within the list, which may or may not be the same as the value
+of the seq_no column.  It's up to you to ensure that the resulting GROUP
+BY clause is valid; i.e. if any item is in a GROUP BY clause, then every
+other item that isn't an aggregate function must also be included in the
+GROUP BY clause.
+
+In SQL it is possible, though seldom useful, to include something in the
+GROUP BY clause that is not included in the SELECT list.  However the
+query schema provides no way to encode such a query directly.  The
+workaround, should you ever need it, is to do the GROUP BY in a subquery
+that includes everything it needs in the SELECT list, while the outer
+query picks out only the items you want to keep.
+
+Query.order_by_item
+
+Each row in query.order_by_item specifies an expression in an ORDER BY
+list.  Its columns are as follows:
+
+        id                        integer                primary key
+
+        stored_query                integer                not null;
+points to query.stored_query
+
+        seq_no                        integer                not null
+
+        expression                integer                not null;
+points to query.expression
+
+The id is normally assigned by a database sequence.
+
+The stored_query column identifies the query to which the ORDER BY
+clause applies.  This query must be a SELECT.
+
+The seq_no column defines the sequence of items in the ORDER BY clause.
+ No two ORDER BY items for the same query may have the same value in
+seq_no.
+
+The expression column, pointing to a row in query.expression, identifies
+an expression by which the query results will be sorted.
+
+The generated ORDER BY clause includes the specified expressions bodily,
+rather than by referring to items by their ordinal position in the
+SELECT clause.  As a result, you can include expressions that aren't in
+the SELECT clause at all.
+
+As a further result, the ORDER by clause becomes ugly and bulky if the
+expressions are large and complicated.  If you really want to reference
+expressions in the SELECT list by number, use the corresponding numeric
+constants as your ORDER BY expressions.
+
+It may seem confusing that ORDER BY doesn't work the same way as GROUP
+BY (see the discussion of the latter in the section on the
+query.select_item table).  In SQL, either clause can reference an
+expression outside of the SELECT clause, but the query schema allows
+such a reference only for ORDER BY.  For GROUP BY you can get the same
+effect only through an awkward workaround.
+
+These design choices reflect a sense that having to use a workaround, in
+order to list an expression not in the SELECT list, is more likely to be
+a problem for ORDER BY than for GROUP BY.
+
+Query.function_sig.
+
+The query.function_sig table stores information about function
+signatures:
+
+        id                        integer                primary key
+
+        function_name        text                not null
+
+        return_type                integer                points to
+query.datatype
+
+        is_aggregate                boolean        not null; default
+false
+
+The id is normally assigned by a database sequence.
+
+The function_name column stores the name of the function.
+
+The return_type column, pointing to a row in query.datatype, indicates
+the return type of the function.
+
+The is_aggregate column, if true, indicates that the function is an
+aggregate function such as max() or sum().  Aggregate functions
+typically don't have specific return types, because the effective return
+type depends on the type of the argument.
+
+Qstore pays attention only to the id and function_name columns; the
+other two columns may be useful to the user interface.  Likewise qstore
+pays no attention to the query.function_param_def table, which defines
+the datatypes of the function parameters.
+
+Query.case_branch
+
+The query schema represents a CASE expression as a row in
+query.expression, with the type column set to “xcase”.  For each branch
+of the CASE expression there is a row in query.case_branch.  Its columns
+are as follows:
+
+        id                        integer                primary key
+
+        parent_expr                integer                not null;
+points to query.expression
+
+        seq_no                        integer                not null
+
+        condition                integer                points to
+query.expression
+
+        result                        integer                not null;
+points to query.expression
+
+The id is normally assigned by a database sequence.
+
+The parent_expr column points to a row in query.expression representing
+the entire CASE expression to which the branch belongs.
+
+The seq_no column defines the sequence of branches within the CASE
+expression.  No two branches within the same CASE expression may have
+the same value of seq_no.
+
+The condition column, pointing to a row in query.expression, represents
+a possible value of the expression being tested.  In the generated SQL,
+the corresponding expression will follow the WHEN keyword.
+
+The result column, pointing to a row in query.expression, represents the
+value to which the CASE expression evaluates if the branch is followed.
+ In the generated SQL, the corresponding expression will follow the THEN
+or ELSE keyword.
+
+If the condition column is null, then the branch is the ELSE branch.
+ There may be no more than one such branch in a given CASE statement,
+and it must be the last branch.
+
+Query.datatype
+
+The query schema represents a CAST expression with a row in
+query.expression, where the type column is set to “xcast”.  To identify
+the datatype to which the operand is being cast, the query.row.datatype
+column points to a row in query.datatype, which has the following
+columns:
+
+        id                        integer                primary key
+
+        datatype_name        text                not null
+
+        is_numeric                boolean        not null; default false
+
+        is_composite                boolean        not null; default
+false
+
+The id is normally assigned by a database sequence.
+
+The datatype_name column, of course, the name of the datatype.
+
+The is_numeric column, if true, indicates that the the type is numeric.
+
+The is_composite column, if true, indicates that the datatype is
+composed of two or more subfields, which may themselves be defined in
+the query.subfield table.
+
+Qstore pays attention only to the datatype_name and id columns.  The
+other two columns, and the query.subfield table, may be useful for the
+user interface.
+
+Query.bind_variable
+
+The query.bind_variable table defines variables that may appear within
+the query.  Before executing the query, the user must supply a value for
+each such variable, or accept the default value if one is defined.  The
+columns are as follows:
+
+        name                        text                primary key
+
+        type                        text                not null
+
+        description                text                not null
+
+        default_value                text
+
+        laqbel                        text                not null
+
+The name column is the primary key, and contains the name of the
+variable
+
+Depending on what kind of value the variable may hold, the type column
+contains one of “string”, “number”, “string_list”, or “number_list”..
+ The first two denote individual scalar values, and the latter two
+denote comma-separated lists of scalars.  A null value may be encoded by
+the JSON keyword “null”.
+
+The description column describes the variable so that the user can know
+what it's for.
+
+The default_value column, if populated, contains the value that will be
+used if the user does not specify some other value.  This value must be
+encoded as JSON; a list type must be encoded as a JSON array.
+
+The label column is the identifier that will normally be shown to the
+user.  It should be reasonably short and descriptive, but it need not be
+unique.  The name provides uniqueness, and since it will mainly be used
+internally, need not be as human-friendly as the label.
+
+If qstore is asked to generate SQL for query with a bind variable that
+has not been assigned a value, it will include the bind variable name in
+the output SQL, preceded by a colon to mark it as a bind variable.  Such
+a query cannot be executed, but it can be displayed to the user for
+review.
+
+Appendix: Expressions
+
+A row in the query.expression table may represent any of several kinds
+of expressions, as denoted by the contents of the type column.  As noted
+earlier, some of the columns in query.expression apply to all kinds of
+expressions.  The rest apply only to some kinds of expressions and not
+to others, in various combinations.
+
+This appendix discusses each expression type in turn, and how to
+represent it.
+
+xbet: BETWEEN
+
+An “xbet” expression involves three subexpressions:
+
+        A BETWEEN B AND C
+
+The left_operand column points to subexpression A.  There must be
+exactly two other rows representing subexpressions B and C, whose
+parent_expr columns point to the “xbet” row.
+
+The values of their seq_no columns determine which one comes first.
+
+If the negate column is set to true, then the result is a NOT BETWEEN
+expression.
+
+xbind: Bind Variable
+
+An “xbind” expression refers to a bind variable, i.e. a value or series
+of values that the user must supply before executing the query.  In
+query.expression, the bind_variable column points to a row in the
+ query.bind_variable table, which defines a name and a label for the
+bind variable, and possibly a default value.
+
+xbool: BOOLEAN
+
+An “xbool” expression is a boolean literal.  The literal column contains
+“true” or “false” in any combination of upper, lower, or mixed case.
+
+xcase: CASE
+
+An “xcase” expression represents a CASE structure, as in the following
+example:
+
+        CASE A
+
+                WHEN B THEN C
+
+                WHEN D THEN E
+
+                ELSE F
+
+        END
+
+The left_operand column contains A, the value being tested.  Each branch
+of the CASE is represented by a row in query.case_branch, where the
+condition column points to subexpressions B and D, and the result column
+points to subexpressions C, E, and F.  For the ELSE branch, the
+condition column is null.
+
+In the query.case_branch table, the seq_no column defines the order in
+which the branches appear.  If there is an ELSE branch, it must come
+last.
+
+xcast: CAST
+
+An “xcast” expression casts a subexpression to a datatype:
+
+        CAST (A AS B)
+
+The left_operand column points to A, the expression being cast.  The
+cast_type column points to a row in query.datatype that defines the
+datatype B.
+
+xcol: Column Reference
+
+An “xcol” expression refers to the contents of a column, optionally
+qualified by an alias for a table, view, or other relation:
+
+        “A”.B
+
+The column_name column contains the name of the column B.  The
+table_alias column, if not null, contains the alias A.  Since qstore
+always encloses the alias in quotation marks, there is no way to qualify
+a column name by a raw table name.
+
+xex: EXISTS
+
+An “xex” expression is an EXISTS clause with a subquery.  The subquery
+column points to a row in query.stored_query.
+
+If the negate column is set to true, the result is a NOT EXISTS
+expression.
+
+xfunc: Function Call
+
+An “xfunc” expression is a function call:
+
+        A( B, C, D ... )
+
+The function_id column points to a row in query.function_sig that
+defines the function name A and other aspects of the function
+signature..  Each parameter B, C, etc. is represented by a row in
+query.expression, where parent_expr points to the “xfunc” row.  The
+seq_no columns for the various parameters define their positions within
+the parameter list.
+
+If a function returns a composite type, it is possible to specify a
+subfield of the return value:
+
+        (A( B, C, D ... )).”E”
+
+In such a case, the column_name column contains the subfield name E.
+
+Some built-in SQL functions don't follow the usual syntax of
+parameter-passing.  For example, the following function not only don't
+accept any parameters, they don't even accept empty parentheses:
+
+        current_date
+
+        current_time
+
+        current_timestamp
+
+        localtime
+
+        localtimestamp
+
+Qstore treats these functions as special exceptions in order to avoid
+adding empty parentheses.
+
+The extract function requires an extra keyword within the parameter
+list:
+
+        extract( A FROM B )
+
+...where A is one of a short list of unquoted strings.  Qstore treats
+calls to extract() as a special exception: pass A as if it were a string
+literal, and qstore will build the call with a FROM and an unquoted A.
+
+Qstore does not currently support other irregular functions.
+
+xin: IN
+
+An “xin” expression may take either of two forms.  One form involves a
+subquery:
+
+        A IN ( subquery )
+
+The left_operand column contains a pointer to another row in
+query.expression, representing the value A to be tested.  The subquery
+column points to a row in query.stored_query, defining the subquery.
+
+The other form involves a list of values:
+
+        A IN (B, C, D ... )
+
+Again, the left_operand indicates the value to be tested.  Each value in
+the list is represented by a row in query.expression whose parent_expr
+column points to the “xin” row.  The seq_no columns of the subexpression
+rows define the order of their appearance.
+
+If the negate column is set to true, then the result is a NOT IN
+expression.
+
+xisnull: IS NULL
+
+An “xisnull” expression tests whether a given value is null:
+
+        A IS NULL
+
+The left_operand column points to row in query.expression representing
+the value to be tested.
+
+If the negate column is set to true, then the result is an IS NOT NULL
+expression.
+
+xnull: NULL
+
+An “xnull” expression represents a null value (and not a test for
+nullity).
+
+xnum: NUMBER
+
+An “xnum” expression represents a numeric literal.  The literal column
+contains the value as a string.  This string may contain leading and/or
+trailing white space, but otherwise must be numeric – possibly including
+a leading minus sign, a decimal point, and/or scientific notation.
+ Currently this validation applies JSON's rules, which may differ in
+some respects from SQL's rules.
+
+xop: Operator
+
+An “xop” expression consists of an operator and one or two operands:
+
+        A operator B
+
+        C operator
+
+        operator D
+
+The operator column contains the operator as a string.  This string may
+contain any of the usual SQL operators.  It may also contain a
+non-standard custom operator, as long as it does not include white space
+or a semicolon.  (This support for custom operators was inherited from
+json_query, where it makes sense.  In qstore this support is unnecessary
+and may be withdrawn in future releases.)
+
+As special exceptions, the phrases "similar to", "is distinct from", and
+"is not distinct from" may be used as binary operators, in any
+combination of upper, lower, and mixed case, provided that they contain
+no additional white space.
+
+For a binary operator, then the left_operand column points to another
+row in query.expression that represents the operand to the left of the
+operator.  Likewise the right_operand column identifies the expression
+on the right.
+
+A few operators take only one operand.  Accordingly only the
+left_operand or right_operand column should be populated, depending on
+whether the operand should appear to the left of the operator (such as
+the factorial operator “!”) or to its right (such as the unary minus
+operator).
+
+xser: Series
+
+An “xser” expression is a series of expressions separated by a specified
+operator, or (if no operator is specifed) by commas:
+
+        A operator B operator C operator ... D
+
+        A, B, C, ... D
+
+ Typically the operator will be AND or OR, combining multiple conditions
+in the WHERE clause.  It is also possible to use, for example, an
+arithmetic operator like “+”, or the concatenation operator “||”.
+
+If the operator column is null, then qstore separates the expressions
+with commas.  By enclosing such a series in parentheses you can
+construct a tuple.
+
+Each subexpression in the series is represented by another row in
+query.expression, whose parent_expr column points to the “xser” row.
+ The seq_no columns of the subexpressions define the order of their
+appearance within the series.
+
+The same operator is used for the entire series.  If you need to combine
+different operators in the same expression, as in A + B – C, then you
+must nest multiple “xser” and “xop” expressions as needed.
+
+Strictly speaking, the “xser” type isn't necessary.  You can create all
+the same expressions by nesting “xop” expressions, although it may be
+rather cumbersome to do so.  The “xser” type is merely a convenience,
+making it easier to express certain common constructs.
+
+xstr: Character String
+
+An “xstr” expression consists of a character string, which must be
+stored in the literal column.  If the string contains any special
+characters such as quotation marks or backslashes, qstore will escape
+them as needed when it constructs the query.
+
+xsubq: Subquery
+
+An “xsubq” expression represents a subquery.  The subquery column points
+to a row in query.stored_query to identify the query.
