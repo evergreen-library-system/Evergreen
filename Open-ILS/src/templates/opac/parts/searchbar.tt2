@@ -123,6 +123,7 @@ END;
         [% IF is_advanced;
             FOR p IN CGI.params.keys;
                 NEXT UNLESS p.match('^fi:');
+                NEXT IF p.match('^fi:search_format');
                 FOR pv IN CGI.params.$p;
                     %]<input type="hidden" name="[% p | html %]" value="[% pv | html %]" />[%
                 END;
