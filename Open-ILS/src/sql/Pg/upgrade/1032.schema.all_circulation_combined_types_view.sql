@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1032', :eg_version); -- Bmagic/csharp/gmcharlt
 
 CREATE OR REPLACE VIEW action.all_circulation_combined_types AS 
  SELECT acirc.id AS id,
