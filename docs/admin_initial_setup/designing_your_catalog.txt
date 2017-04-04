@@ -317,9 +317,9 @@ Below is a table of the currently supported languages packaged with Evergreen:
 [options="header"]
 |===
 |Language| Code| PO file
+|Arabic - Jordan| ar_jo | /openils/var/data/locale/opac/ar-JO.po
 |Armenian| hy_am| /openils/var/data/locale/opac/hy-AM.po
 |Czech| cs_cz| /openils/var/data/locale/opac/cs-CZ.po
-|Finnish| fi_fi| /openils/var/data/locale/opac/fi-FI.po
 |English - Canada| en_ca| /openils/var/data/locale/opac/en-CA.po
 |English - Great Britain| en_gb| /openils/var/data/locale/opac/en-GB.po
 |*English - United States| en_us| not applicable
