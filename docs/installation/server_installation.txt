@@ -135,41 +135,25 @@ make -f Open-ILS/src/extras/Makefile.install <osname>-translator
 make -f Open-ILS/src/extras/Makefile.install <osname>-packager
 ------------------------------------------------------------------------------
 
-Optional: Extra steps for browser-based staff client
-----------------------------------------------------
+Optional: Extra steps for web staff client
+------------------------------------------
 
 [NOTE]
 Skip this entire section if you are using an official release tarball downloaded
 from http://evergreen-ils.org/downloads
 
+Install dependencies for web staff client
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 [NOTE]
-You make skip the subsection `Install dependencies for browser-based staff client'
-if you are installing on either Debian Jessie, Ubuntu Trusty, or Ubuntu Xenial and you have
-installed the `Optional: Developer Additions' described above.  You will still
-need to do the steps in `Install files for browser-based staff client' below.
+You may skip this section if you are installing on either Debian Jessie,
+Ubuntu Trusty, or Ubuntu Xenial and you have installed the previously described
+'Optional: Developer Additions'.  You will still need to do the following
+steps in <<install_files_for_web_staff_client,Install files for web staff client>>.
 
-Install dependencies for browser-based staff client
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-1. Install Node.js.  For more information see also:
-   https://github.com/joyent/node/wiki/installation[Node.js Installation]
-+
-[source,sh]
-------------------------------------------------------------------------------
-# Go to a temporary directory
-cd /tmp
-
-# Clone the code and checkout the necessary version
-git clone https://github.com/joyent/node.git
-cd node
-git checkout -b v0.10.28 v0.10.28
-
-# set -j to the number of CPU cores on the server + 1
-./configure && make -j2 && sudo make install
-
-# update packages
-% sudo npm update
-------------------------------------------------------------------------------
+1. Install the long-term stability (LTS) release of
+https://nodejs.org[Node.js]. Add the Node.js `/bin` directory to your
+environment variable `PATH`.
 +
 2. Install Grunt CLI
 +
@@ -185,8 +169,9 @@ git checkout -b v0.10.28 v0.10.28
 % sudo npm install -g bower
 ------------------------------------------------------------------------------
 
-Install files for browser-based staff client
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[[install_files_for_web_staff_client]]
+Install files for web staff client
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 1. Building, Testing, Minification: The remaining steps all take place within
    the staff JS web root:
