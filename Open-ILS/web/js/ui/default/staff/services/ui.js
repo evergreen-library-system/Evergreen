@@ -884,6 +884,8 @@ function($window , egStrings) {
             || data.action == 'registered_patron'
             || data.action == 'paid_bill') {
             entry['patron_id'] = data.patron_id;
+        }
+        if (data.action == 'requested_hold') {
             entry['hold_id'] = data.hold_id;
         }
         if (data.action == 'paid_bill') {
