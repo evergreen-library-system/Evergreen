@@ -1186,10 +1186,21 @@ sub create_purchase_order {
 sub check_purchase_order_received {
     my($mgr, $po_id) = @_;
 
-    my $non_recv_li = $mgr->editor->search_acq_lineitem(
-        {   purchase_order => $po_id,
-            state => {'!=' => 'received'}
-        }, {idlist=>1});
+	my $non_recv_li = $mgr->editor->json_query({
+		"select" =>{
+        	"jub" =>["id"]
+    	},
+    	"from" =>{
+        	"jub" => {"acqcr" => {"type" => "left"}}
+    	},
+    	"where" =>{
+        	"+jub" => {"id" => $po_id},
+        	"-or" => [
+            	{"+jub" => {"state" => "received"}},
+            	{"+acqcr" => {"keep_debits" =>"t"}}
+        	]
+    	}
+	});
 
     my $po = $mgr->editor->retrieve_acq_purchase_order($po_id);
     return $po if @$non_recv_li;
