@@ -8,7 +8,16 @@ angular.module('egCoreMod')
        ['$q','$window','$timeout','$http','egHatch','egAuth','egIDL','egOrg','egEnv',
 function($q , $window , $timeout , $http , egHatch , egAuth , egIDL , egOrg , egEnv) {
 
-    var service = {};
+    var service = {
+        include_settings : [
+            'circ.staff_client.receipt.alert_text',
+            'circ.staff_client.receipt.event_text',
+            'circ.staff_client.receipt.footer_text',
+            'circ.staff_client.receipt.header_text',
+            'circ.staff_client.receipt.notice_text'
+        ]
+    };
+
 
     service.template_base_path = 'share/print_templates/t_';
 
@@ -52,6 +61,26 @@ function($q , $window , $timeout , $http , egHatch , egAuth , egIDL , egOrg , eg
         scope.staff = egIDL.toHash(egAuth.user());
         scope.current_location = 
             egIDL.toHash(egOrg.get(egAuth.user().ws_ou()));
+
+        return service.fetch_includes(scope);
+    }
+
+    // Retrieve org settings for receipt includes and add them
+    // to the print scope under scope.includes.<name>
+    service.fetch_includes = function(scope) {
+        // org settings for the workstation org are cached
+        // within egOrg.  No need to cache them locally.
+        return egOrg.settings(service.include_settings).then(
+
+            function(settings) {
+                scope.includes = {};
+                angular.forEach(settings, function(val, key) {
+                    // strip the settings prefix so you just have
+                    // e.g. scope.includes.alert_text
+                    scope.includes[key.split(/\./).pop()] = val;
+                });
+            }
+        );
     }
 
     service.last_print = {};
@@ -59,14 +88,14 @@ function($q , $window , $timeout , $http , egHatch , egAuth , egIDL , egOrg , eg
     // Template has been fetched (or no template needed) 
     // Process the template and send the result off to the printer.
     service.print_content = function(args) {
-        service.fleshPrintScope(args.scope);
+        return service.fleshPrintScope(args.scope).then(function() {
+            var promise = egHatch.usePrinting() ?
+                service.print_via_hatch(args) :
+                service.print_via_browser(args);
 
-        var promise = egHatch.usePrinting() ?
-            service.print_via_hatch(args) :
-            service.print_via_browser(args);
-
-        return promise['finally'](
-            function() { service.clear_print_content() });
+            return promise['finally'](
+                function() { service.clear_print_content() });
+        });
     }
 
     service.print_via_hatch = function(args) {
