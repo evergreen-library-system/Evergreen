@@ -2695,7 +2695,7 @@ INSERT INTO config.usr_setting_type (name,opac_visible,label,description,datatyp
 
 -- Add groups for org_unit settings
 INSERT INTO config.settings_group (name, label) VALUES
-('acq', oils_i18n_gettext('config.settings_group.system', 'Acquisitions', 'coust', 'label')),
+('acq', oils_i18n_gettext('config.settings_group.acquisitions', 'Acquisitions', 'coust', 'label')),
 ('sys', oils_i18n_gettext('config.settings_group.system', 'System', 'coust', 'label')),
 ('gui', oils_i18n_gettext('config.settings_group.gui', 'GUI', 'coust', 'label')),
 ('lib', oils_i18n_gettext('config.settings_group.lib', 'Library', 'coust', 'label')),
@@ -8355,328 +8355,328 @@ INSERT INTO config.coded_value_map (id, ctype, code, value) VALUES (1352, 'pub_s
 -- i18n ids are left as-is because they are exactly the same value.
 -- The ' ' codes only apply to the first position because if there's anything in pos 1 then additional spaces are just filler.
 -- There's also no need for them to be opac visible because there are composite attributes that OR these numbered attributes together.
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1353, 'accm1', ' ', oils_i18n_gettext('1735', 'No accompanying matter', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1354, 'accm1', 'a', oils_i18n_gettext('713', 'Discography', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1355, 'accm1', 'b', oils_i18n_gettext('714', 'Bibliography', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1356, 'accm1', 'c', oils_i18n_gettext('715', 'Thematic index', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1357, 'accm1', 'd', oils_i18n_gettext('716', 'Libretto or text', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1358, 'accm1', 'e', oils_i18n_gettext('717', 'Biography of composer or author', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1359, 'accm1', 'f', oils_i18n_gettext('718', 'Biography or performer or history of ensemble', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1360, 'accm1', 'g', oils_i18n_gettext('719', 'Technical and/or historical information on instruments', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1361, 'accm1', 'h', oils_i18n_gettext('720', 'Technical information on music', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1362, 'accm1', 'i', oils_i18n_gettext('721', 'Historical information', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1363, 'accm1', 'k', oils_i18n_gettext('722', 'Ethnological information', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1364, 'accm1', 'r', oils_i18n_gettext('723', 'Instructional materials', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1365, 'accm1', 's', oils_i18n_gettext('724', 'Music', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1366, 'accm1', 'z', oils_i18n_gettext('725', 'Other accompanying matter', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1353, 'accm1', ' ', oils_i18n_gettext('1353', 'No accompanying matter', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1354, 'accm1', 'a', oils_i18n_gettext('1354', 'Discography', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1355, 'accm1', 'b', oils_i18n_gettext('1355', 'Bibliography', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1356, 'accm1', 'c', oils_i18n_gettext('1356', 'Thematic index', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1357, 'accm1', 'd', oils_i18n_gettext('1357', 'Libretto or text', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1358, 'accm1', 'e', oils_i18n_gettext('1358', 'Biography of composer or author', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1359, 'accm1', 'f', oils_i18n_gettext('1359', 'Biography or performer or history of ensemble', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1360, 'accm1', 'g', oils_i18n_gettext('1360', 'Technical and/or historical information on instruments', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1361, 'accm1', 'h', oils_i18n_gettext('1361', 'Technical information on music', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1362, 'accm1', 'i', oils_i18n_gettext('1362', 'Historical information', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1363, 'accm1', 'k', oils_i18n_gettext('1363', 'Ethnological information', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1364, 'accm1', 'r', oils_i18n_gettext('1364', 'Instructional materials', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1365, 'accm1', 's', oils_i18n_gettext('1365', 'Music', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1366, 'accm1', 'z', oils_i18n_gettext('1366', 'Other accompanying matter', 'ccvm', 'value'), FALSE);
 
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1367, 'accm2', 'a', oils_i18n_gettext('713', 'Discography', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1368, 'accm2', 'b', oils_i18n_gettext('714', 'Bibliography', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1369, 'accm2', 'c', oils_i18n_gettext('715', 'Thematic index', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1370, 'accm2', 'd', oils_i18n_gettext('716', 'Libretto or text', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1371, 'accm2', 'e', oils_i18n_gettext('717', 'Biography of composer or author', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1372, 'accm2', 'f', oils_i18n_gettext('718', 'Biography or performer or history of ensemble', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1373, 'accm2', 'g', oils_i18n_gettext('719', 'Technical and/or historical information on instruments', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1374, 'accm2', 'h', oils_i18n_gettext('720', 'Technical information on music', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1375, 'accm2', 'i', oils_i18n_gettext('721', 'Historical information', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1376, 'accm2', 'k', oils_i18n_gettext('722', 'Ethnological information', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1377, 'accm2', 'r', oils_i18n_gettext('723', 'Instructional materials', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1378, 'accm2', 's', oils_i18n_gettext('724', 'Music', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1379, 'accm2', 'z', oils_i18n_gettext('725', 'Other accompanying matter', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1367, 'accm2', 'a', oils_i18n_gettext('1367', 'Discography', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1368, 'accm2', 'b', oils_i18n_gettext('1368', 'Bibliography', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1369, 'accm2', 'c', oils_i18n_gettext('1369', 'Thematic index', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1370, 'accm2', 'd', oils_i18n_gettext('1370', 'Libretto or text', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1371, 'accm2', 'e', oils_i18n_gettext('1371', 'Biography of composer or author', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1372, 'accm2', 'f', oils_i18n_gettext('1372', 'Biography or performer or history of ensemble', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1373, 'accm2', 'g', oils_i18n_gettext('1373', 'Technical and/or historical information on instruments', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1374, 'accm2', 'h', oils_i18n_gettext('1374', 'Technical information on music', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1375, 'accm2', 'i', oils_i18n_gettext('1375', 'Historical information', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1376, 'accm2', 'k', oils_i18n_gettext('1376', 'Ethnological information', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1377, 'accm2', 'r', oils_i18n_gettext('1377', 'Instructional materials', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1378, 'accm2', 's', oils_i18n_gettext('1378', 'Music', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1379, 'accm2', 'z', oils_i18n_gettext('1379', 'Other accompanying matter', 'ccvm', 'value'), FALSE);
 
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1380, 'accm3', 'a', oils_i18n_gettext('713', 'Discography', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1381, 'accm3', 'b', oils_i18n_gettext('714', 'Bibliography', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1382, 'accm3', 'c', oils_i18n_gettext('715', 'Thematic index', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1383, 'accm3', 'd', oils_i18n_gettext('716', 'Libretto or text', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1384, 'accm3', 'e', oils_i18n_gettext('717', 'Biography of composer or author', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1385, 'accm3', 'f', oils_i18n_gettext('718', 'Biography or performer or history of ensemble', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1386, 'accm3', 'g', oils_i18n_gettext('719', 'Technical and/or historical information on instruments', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1387, 'accm3', 'h', oils_i18n_gettext('720', 'Technical information on music', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1388, 'accm3', 'i', oils_i18n_gettext('721', 'Historical information', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1389, 'accm3', 'k', oils_i18n_gettext('722', 'Ethnological information', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1390, 'accm3', 'r', oils_i18n_gettext('723', 'Instructional materials', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1391, 'accm3', 's', oils_i18n_gettext('724', 'Music', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1392, 'accm3', 'z', oils_i18n_gettext('725', 'Other accompanying matter', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1380, 'accm3', 'a', oils_i18n_gettext('1380', 'Discography', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1381, 'accm3', 'b', oils_i18n_gettext('1381', 'Bibliography', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1382, 'accm3', 'c', oils_i18n_gettext('1382', 'Thematic index', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1383, 'accm3', 'd', oils_i18n_gettext('1383', 'Libretto or text', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1384, 'accm3', 'e', oils_i18n_gettext('1384', 'Biography of composer or author', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1385, 'accm3', 'f', oils_i18n_gettext('1385', 'Biography or performer or history of ensemble', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1386, 'accm3', 'g', oils_i18n_gettext('1386', 'Technical and/or historical information on instruments', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1387, 'accm3', 'h', oils_i18n_gettext('1387', 'Technical information on music', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1388, 'accm3', 'i', oils_i18n_gettext('1388', 'Historical information', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1389, 'accm3', 'k', oils_i18n_gettext('1389', 'Ethnological information', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1390, 'accm3', 'r', oils_i18n_gettext('1390', 'Instructional materials', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1391, 'accm3', 's', oils_i18n_gettext('1391', 'Music', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1392, 'accm3', 'z', oils_i18n_gettext('1392', 'Other accompanying matter', 'ccvm', 'value'), FALSE);
 
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1393, 'accm4', 'a', oils_i18n_gettext('713', 'Discography', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1394, 'accm4', 'b', oils_i18n_gettext('714', 'Bibliography', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1395, 'accm4', 'c', oils_i18n_gettext('715', 'Thematic index', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1396, 'accm4', 'd', oils_i18n_gettext('716', 'Libretto or text', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1397, 'accm4', 'e', oils_i18n_gettext('717', 'Biography of composer or author', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1398, 'accm4', 'f', oils_i18n_gettext('718', 'Biography or performer or history of ensemble', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1399, 'accm4', 'g', oils_i18n_gettext('719', 'Technical and/or historical information on instruments', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1400, 'accm4', 'h', oils_i18n_gettext('720', 'Technical information on music', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1401, 'accm4', 'i', oils_i18n_gettext('721', 'Historical information', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1402, 'accm4', 'k', oils_i18n_gettext('722', 'Ethnological information', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1403, 'accm4', 'r', oils_i18n_gettext('723', 'Instructional materials', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1404, 'accm4', 's', oils_i18n_gettext('724', 'Music', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1405, 'accm4', 'z', oils_i18n_gettext('725', 'Other accompanying matter', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1393, 'accm4', 'a', oils_i18n_gettext('1393', 'Discography', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1394, 'accm4', 'b', oils_i18n_gettext('1394', 'Bibliography', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1395, 'accm4', 'c', oils_i18n_gettext('1395', 'Thematic index', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1396, 'accm4', 'd', oils_i18n_gettext('1396', 'Libretto or text', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1397, 'accm4', 'e', oils_i18n_gettext('1397', 'Biography of composer or author', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1398, 'accm4', 'f', oils_i18n_gettext('1398', 'Biography or performer or history of ensemble', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1399, 'accm4', 'g', oils_i18n_gettext('1399', 'Technical and/or historical information on instruments', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1400, 'accm4', 'h', oils_i18n_gettext('1400', 'Technical information on music', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1401, 'accm4', 'i', oils_i18n_gettext('1401', 'Historical information', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1402, 'accm4', 'k', oils_i18n_gettext('1402', 'Ethnological information', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1403, 'accm4', 'r', oils_i18n_gettext('1403', 'Instructional materials', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1404, 'accm4', 's', oils_i18n_gettext('1404', 'Music', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1405, 'accm4', 'z', oils_i18n_gettext('1405', 'Other accompanying matter', 'ccvm', 'value'), FALSE);
 
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1406, 'accm5', 'a', oils_i18n_gettext('713', 'Discography', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1407, 'accm5', 'b', oils_i18n_gettext('714', 'Bibliography', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1408, 'accm5', 'c', oils_i18n_gettext('715', 'Thematic index', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1409, 'accm5', 'd', oils_i18n_gettext('716', 'Libretto or text', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1410, 'accm5', 'e', oils_i18n_gettext('717', 'Biography of composer or author', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1411, 'accm5', 'f', oils_i18n_gettext('718', 'Biography or performer or history of ensemble', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1412, 'accm5', 'g', oils_i18n_gettext('719', 'Technical and/or historical information on instruments', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1413, 'accm5', 'h', oils_i18n_gettext('720', 'Technical information on music', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1414, 'accm5', 'i', oils_i18n_gettext('721', 'Historical information', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1415, 'accm5', 'k', oils_i18n_gettext('722', 'Ethnological information', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1416, 'accm5', 'r', oils_i18n_gettext('723', 'Instructional materials', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1417, 'accm5', 's', oils_i18n_gettext('724', 'Music', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1418, 'accm5', 'z', oils_i18n_gettext('725', 'Other accompanying matter', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1406, 'accm5', 'a', oils_i18n_gettext('1406', 'Discography', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1407, 'accm5', 'b', oils_i18n_gettext('1407', 'Bibliography', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1408, 'accm5', 'c', oils_i18n_gettext('1408', 'Thematic index', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1409, 'accm5', 'd', oils_i18n_gettext('1409', 'Libretto or text', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1410, 'accm5', 'e', oils_i18n_gettext('1410', 'Biography of composer or author', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1411, 'accm5', 'f', oils_i18n_gettext('1411', 'Biography or performer or history of ensemble', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1412, 'accm5', 'g', oils_i18n_gettext('1412', 'Technical and/or historical information on instruments', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1413, 'accm5', 'h', oils_i18n_gettext('1413', 'Technical information on music', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1414, 'accm5', 'i', oils_i18n_gettext('1414', 'Historical information', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1415, 'accm5', 'k', oils_i18n_gettext('1415', 'Ethnological information', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1416, 'accm5', 'r', oils_i18n_gettext('1416', 'Instructional materials', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1417, 'accm5', 's', oils_i18n_gettext('1417', 'Music', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1418, 'accm5', 'z', oils_i18n_gettext('1418', 'Other accompanying matter', 'ccvm', 'value'), FALSE);
 
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1419, 'accm6', 'a', oils_i18n_gettext('713', 'Discography', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1420, 'accm6', 'b', oils_i18n_gettext('714', 'Bibliography', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1421, 'accm6', 'c', oils_i18n_gettext('715', 'Thematic index', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1422, 'accm6', 'd', oils_i18n_gettext('716', 'Libretto or text', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1423, 'accm6', 'e', oils_i18n_gettext('717', 'Biography of composer or author', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1424, 'accm6', 'f', oils_i18n_gettext('718', 'Biography or performer or history of ensemble', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1425, 'accm6', 'g', oils_i18n_gettext('719', 'Technical and/or historical information on instruments', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1426, 'accm6', 'h', oils_i18n_gettext('720', 'Technical information on music', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1427, 'accm6', 'i', oils_i18n_gettext('721', 'Historical information', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1428, 'accm6', 'k', oils_i18n_gettext('722', 'Ethnological information', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1429, 'accm6', 'r', oils_i18n_gettext('723', 'Instructional materials', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1430, 'accm6', 's', oils_i18n_gettext('724', 'Music', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1431, 'accm6', 'z', oils_i18n_gettext('725', 'Other accompanying matter', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1419, 'accm6', 'a', oils_i18n_gettext('1419', 'Discography', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1420, 'accm6', 'b', oils_i18n_gettext('1420', 'Bibliography', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1421, 'accm6', 'c', oils_i18n_gettext('1421', 'Thematic index', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1422, 'accm6', 'd', oils_i18n_gettext('1422', 'Libretto or text', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1423, 'accm6', 'e', oils_i18n_gettext('1423', 'Biography of composer or author', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1424, 'accm6', 'f', oils_i18n_gettext('1424', 'Biography or performer or history of ensemble', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1425, 'accm6', 'g', oils_i18n_gettext('1425', 'Technical and/or historical information on instruments', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1426, 'accm6', 'h', oils_i18n_gettext('1426', 'Technical information on music', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1427, 'accm6', 'i', oils_i18n_gettext('1427', 'Historical information', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1428, 'accm6', 'k', oils_i18n_gettext('1428', 'Ethnological information', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1429, 'accm6', 'r', oils_i18n_gettext('1429', 'Instructional materials', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1430, 'accm6', 's', oils_i18n_gettext('1430', 'Music', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1431, 'accm6', 'z', oils_i18n_gettext('1431', 'Other accompanying matter', 'ccvm', 'value'), FALSE);
 
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1432, 'cont1', ' ', oils_i18n_gettext('835', 'Not specified', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1433, 'cont1', 'a', oils_i18n_gettext('836', 'Abstracts/summaries', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1434, 'cont1', 'b', oils_i18n_gettext('837', 'Bibliographies', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1435, 'cont1', 'c', oils_i18n_gettext('838', 'Catalogs', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1436, 'cont1', 'd', oils_i18n_gettext('839', 'Dictionaries', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1437, 'cont1', 'e', oils_i18n_gettext('840', 'Encyclopedias', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1438, 'cont1', 'f', oils_i18n_gettext('841', 'Handbooks', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1439, 'cont1', 'g', oils_i18n_gettext('842', 'Legal articles', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1440, 'cont1', 'h', oils_i18n_gettext('843', 'Biography', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1441, 'cont1', 'i', oils_i18n_gettext('844', 'Indexes', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1442, 'cont1', 'j', oils_i18n_gettext('845', 'Patent document', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1443, 'cont1', 'k', oils_i18n_gettext('846', 'Discographies', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1444, 'cont1', 'l', oils_i18n_gettext('847', 'Legislation', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1445, 'cont1', 'm', oils_i18n_gettext('848', 'Theses', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1446, 'cont1', 'n', oils_i18n_gettext('849', 'Surveys of the literature in a subject area', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1447, 'cont1', 'o', oils_i18n_gettext('850', 'Reviews', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1448, 'cont1', 'p', oils_i18n_gettext('851', 'Programmed texts', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1449, 'cont1', 'q', oils_i18n_gettext('852', 'Filmographies', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1450, 'cont1', 'r', oils_i18n_gettext('853', 'Directories', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1451, 'cont1', 's', oils_i18n_gettext('854', 'Statistics', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1452, 'cont1', 't', oils_i18n_gettext('855', 'Technical reports', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1453, 'cont1', 'u', oils_i18n_gettext('856', 'Standards/specifications', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1454, 'cont1', 'v', oils_i18n_gettext('857', 'Legal cases and case notes', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1455, 'cont1', 'w', oils_i18n_gettext('858', 'Law reports and digests', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1456, 'cont1', 'x', oils_i18n_gettext('859', 'Other reports', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1457, 'cont1', 'y', oils_i18n_gettext('860', 'Yearbooks', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1458, 'cont1', 'z', oils_i18n_gettext('861', 'Treaties', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1459, 'cont1', '2', oils_i18n_gettext('862', 'Offprints', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1460, 'cont1', '5', oils_i18n_gettext('863', 'Calendars', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1461, 'cont1', '6', oils_i18n_gettext('864', 'Comics/graphic novels', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1432, 'cont1', ' ', oils_i18n_gettext('1432', 'Not specified', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1433, 'cont1', 'a', oils_i18n_gettext('1433', 'Abstracts/summaries', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1434, 'cont1', 'b', oils_i18n_gettext('1434', 'Bibliographies', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1435, 'cont1', 'c', oils_i18n_gettext('1435', 'Catalogs', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1436, 'cont1', 'd', oils_i18n_gettext('1436', 'Dictionaries', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1437, 'cont1', 'e', oils_i18n_gettext('1437', 'Encyclopedias', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1438, 'cont1', 'f', oils_i18n_gettext('1438', 'Handbooks', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1439, 'cont1', 'g', oils_i18n_gettext('1439', 'Legal articles', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1440, 'cont1', 'h', oils_i18n_gettext('1440', 'Biography', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1441, 'cont1', 'i', oils_i18n_gettext('1441', 'Indexes', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1442, 'cont1', 'j', oils_i18n_gettext('1442', 'Patent document', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1443, 'cont1', 'k', oils_i18n_gettext('1443', 'Discographies', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1444, 'cont1', 'l', oils_i18n_gettext('1444', 'Legislation', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1445, 'cont1', 'm', oils_i18n_gettext('1445', 'Theses', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1446, 'cont1', 'n', oils_i18n_gettext('1446', 'Surveys of the literature in a subject area', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1447, 'cont1', 'o', oils_i18n_gettext('1447', 'Reviews', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1448, 'cont1', 'p', oils_i18n_gettext('1448', 'Programmed texts', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1449, 'cont1', 'q', oils_i18n_gettext('1449', 'Filmographies', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1450, 'cont1', 'r', oils_i18n_gettext('1450', 'Directories', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1451, 'cont1', 's', oils_i18n_gettext('1451', 'Statistics', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1452, 'cont1', 't', oils_i18n_gettext('1452', 'Technical reports', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1453, 'cont1', 'u', oils_i18n_gettext('1453', 'Standards/specifications', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1454, 'cont1', 'v', oils_i18n_gettext('1454', 'Legal cases and case notes', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1455, 'cont1', 'w', oils_i18n_gettext('1455', 'Law reports and digests', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1456, 'cont1', 'x', oils_i18n_gettext('1456', 'Other reports', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1457, 'cont1', 'y', oils_i18n_gettext('1457', 'Yearbooks', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1458, 'cont1', 'z', oils_i18n_gettext('1458', 'Treaties', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1459, 'cont1', '2', oils_i18n_gettext('1459', 'Offprints', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1460, 'cont1', '5', oils_i18n_gettext('1460', 'Calendars', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1461, 'cont1', '6', oils_i18n_gettext('1461', 'Comics/graphic novels', 'ccvm', 'value'), FALSE);
 
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1462, 'cont2', 'a', oils_i18n_gettext('836', 'Abstracts/summaries', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1463, 'cont2', 'b', oils_i18n_gettext('837', 'Bibliographies', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1464, 'cont2', 'c', oils_i18n_gettext('838', 'Catalogs', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1465, 'cont2', 'd', oils_i18n_gettext('839', 'Dictionaries', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1466, 'cont2', 'e', oils_i18n_gettext('840', 'Encyclopedias', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1467, 'cont2', 'f', oils_i18n_gettext('841', 'Handbooks', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1468, 'cont2', 'g', oils_i18n_gettext('842', 'Legal articles', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1469, 'cont2', 'h', oils_i18n_gettext('843', 'Biography', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1470, 'cont2', 'i', oils_i18n_gettext('844', 'Indexes', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1471, 'cont2', 'j', oils_i18n_gettext('845', 'Patent document', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1472, 'cont2', 'k', oils_i18n_gettext('846', 'Discographies', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1473, 'cont2', 'l', oils_i18n_gettext('847', 'Legislation', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1474, 'cont2', 'm', oils_i18n_gettext('848', 'Theses', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1475, 'cont2', 'n', oils_i18n_gettext('849', 'Surveys of the literature in a subject area', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1476, 'cont2', 'o', oils_i18n_gettext('850', 'Reviews', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1477, 'cont2', 'p', oils_i18n_gettext('851', 'Programmed texts', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1478, 'cont2', 'q', oils_i18n_gettext('852', 'Filmographies', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1479, 'cont2', 'r', oils_i18n_gettext('853', 'Directories', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1480, 'cont2', 's', oils_i18n_gettext('854', 'Statistics', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1481, 'cont2', 't', oils_i18n_gettext('855', 'Technical reports', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1482, 'cont2', 'u', oils_i18n_gettext('856', 'Standards/specifications', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1483, 'cont2', 'v', oils_i18n_gettext('857', 'Legal cases and case notes', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1484, 'cont2', 'w', oils_i18n_gettext('858', 'Law reports and digests', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1485, 'cont2', 'x', oils_i18n_gettext('859', 'Other reports', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1486, 'cont2', 'y', oils_i18n_gettext('860', 'Yearbooks', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1487, 'cont2', 'z', oils_i18n_gettext('861', 'Treaties', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1488, 'cont2', '2', oils_i18n_gettext('862', 'Offprints', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1489, 'cont2', '5', oils_i18n_gettext('863', 'Calendars', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1490, 'cont2', '6', oils_i18n_gettext('864', 'Comics/graphic novels', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1462, 'cont2', 'a', oils_i18n_gettext('1462', 'Abstracts/summaries', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1463, 'cont2', 'b', oils_i18n_gettext('1463', 'Bibliographies', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1464, 'cont2', 'c', oils_i18n_gettext('1464', 'Catalogs', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1465, 'cont2', 'd', oils_i18n_gettext('1465', 'Dictionaries', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1466, 'cont2', 'e', oils_i18n_gettext('1466', 'Encyclopedias', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1467, 'cont2', 'f', oils_i18n_gettext('1467', 'Handbooks', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1468, 'cont2', 'g', oils_i18n_gettext('1468', 'Legal articles', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1469, 'cont2', 'h', oils_i18n_gettext('1469', 'Biography', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1470, 'cont2', 'i', oils_i18n_gettext('1470', 'Indexes', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1471, 'cont2', 'j', oils_i18n_gettext('1471', 'Patent document', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1472, 'cont2', 'k', oils_i18n_gettext('1472', 'Discographies', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1473, 'cont2', 'l', oils_i18n_gettext('1473', 'Legislation', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1474, 'cont2', 'm', oils_i18n_gettext('1474', 'Theses', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1475, 'cont2', 'n', oils_i18n_gettext('1475', 'Surveys of the literature in a subject area', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1476, 'cont2', 'o', oils_i18n_gettext('1476', 'Reviews', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1477, 'cont2', 'p', oils_i18n_gettext('1477', 'Programmed texts', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1478, 'cont2', 'q', oils_i18n_gettext('1478', 'Filmographies', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1479, 'cont2', 'r', oils_i18n_gettext('1479', 'Directories', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1480, 'cont2', 's', oils_i18n_gettext('1480', 'Statistics', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1481, 'cont2', 't', oils_i18n_gettext('1481', 'Technical reports', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1482, 'cont2', 'u', oils_i18n_gettext('1482', 'Standards/specifications', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1483, 'cont2', 'v', oils_i18n_gettext('1483', 'Legal cases and case notes', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1484, 'cont2', 'w', oils_i18n_gettext('1484', 'Law reports and digests', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1485, 'cont2', 'x', oils_i18n_gettext('1485', 'Other reports', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1486, 'cont2', 'y', oils_i18n_gettext('1486', 'Yearbooks', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1487, 'cont2', 'z', oils_i18n_gettext('1487', 'Treaties', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1488, 'cont2', '2', oils_i18n_gettext('1488', 'Offprints', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1489, 'cont2', '5', oils_i18n_gettext('1489', 'Calendars', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1490, 'cont2', '6', oils_i18n_gettext('1490', 'Comics/graphic novels', 'ccvm', 'value'), FALSE);
 
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1491, 'cont3', 'a', oils_i18n_gettext('836', 'Abstracts/summaries', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1492, 'cont3', 'b', oils_i18n_gettext('837', 'Bibliographies', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1493, 'cont3', 'c', oils_i18n_gettext('838', 'Catalogs', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1494, 'cont3', 'd', oils_i18n_gettext('839', 'Dictionaries', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1495, 'cont3', 'e', oils_i18n_gettext('840', 'Encyclopedias', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1496, 'cont3', 'f', oils_i18n_gettext('841', 'Handbooks', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1497, 'cont3', 'g', oils_i18n_gettext('842', 'Legal articles', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1498, 'cont3', 'h', oils_i18n_gettext('843', 'Biography', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1499, 'cont3', 'i', oils_i18n_gettext('844', 'Indexes', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1500, 'cont3', 'j', oils_i18n_gettext('845', 'Patent document', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1501, 'cont3', 'k', oils_i18n_gettext('846', 'Discographies', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1502, 'cont3', 'l', oils_i18n_gettext('847', 'Legislation', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1503, 'cont3', 'm', oils_i18n_gettext('848', 'Theses', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1504, 'cont3', 'n', oils_i18n_gettext('849', 'Surveys of the literature in a subject area', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1505, 'cont3', 'o', oils_i18n_gettext('850', 'Reviews', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1506, 'cont3', 'p', oils_i18n_gettext('851', 'Programmed texts', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1507, 'cont3', 'q', oils_i18n_gettext('852', 'Filmographies', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1508, 'cont3', 'r', oils_i18n_gettext('853', 'Directories', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1509, 'cont3', 's', oils_i18n_gettext('854', 'Statistics', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1510, 'cont3', 't', oils_i18n_gettext('855', 'Technical reports', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1511, 'cont3', 'u', oils_i18n_gettext('856', 'Standards/specifications', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1512, 'cont3', 'v', oils_i18n_gettext('857', 'Legal cases and case notes', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1513, 'cont3', 'w', oils_i18n_gettext('858', 'Law reports and digests', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1514, 'cont3', 'x', oils_i18n_gettext('859', 'Other reports', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1515, 'cont3', 'y', oils_i18n_gettext('860', 'Yearbooks', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1516, 'cont3', 'z', oils_i18n_gettext('861', 'Treaties', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1517, 'cont3', '2', oils_i18n_gettext('862', 'Offprints', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1518, 'cont3', '5', oils_i18n_gettext('863', 'Calendars', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1519, 'cont3', '6', oils_i18n_gettext('864', 'Comics/graphic novels', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1491, 'cont3', 'a', oils_i18n_gettext('1491', 'Abstracts/summaries', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1492, 'cont3', 'b', oils_i18n_gettext('1492', 'Bibliographies', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1493, 'cont3', 'c', oils_i18n_gettext('1493', 'Catalogs', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1494, 'cont3', 'd', oils_i18n_gettext('1494', 'Dictionaries', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1495, 'cont3', 'e', oils_i18n_gettext('1495', 'Encyclopedias', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1496, 'cont3', 'f', oils_i18n_gettext('1496', 'Handbooks', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1497, 'cont3', 'g', oils_i18n_gettext('1497', 'Legal articles', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1498, 'cont3', 'h', oils_i18n_gettext('1498', 'Biography', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1499, 'cont3', 'i', oils_i18n_gettext('1499', 'Indexes', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1500, 'cont3', 'j', oils_i18n_gettext('1500', 'Patent document', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1501, 'cont3', 'k', oils_i18n_gettext('1501', 'Discographies', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1502, 'cont3', 'l', oils_i18n_gettext('1502', 'Legislation', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1503, 'cont3', 'm', oils_i18n_gettext('1503', 'Theses', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1504, 'cont3', 'n', oils_i18n_gettext('1504', 'Surveys of the literature in a subject area', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1505, 'cont3', 'o', oils_i18n_gettext('1505', 'Reviews', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1506, 'cont3', 'p', oils_i18n_gettext('1506', 'Programmed texts', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1507, 'cont3', 'q', oils_i18n_gettext('1507', 'Filmographies', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1508, 'cont3', 'r', oils_i18n_gettext('1508', 'Directories', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1509, 'cont3', 's', oils_i18n_gettext('1509', 'Statistics', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1510, 'cont3', 't', oils_i18n_gettext('1510', 'Technical reports', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1511, 'cont3', 'u', oils_i18n_gettext('1511', 'Standards/specifications', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1512, 'cont3', 'v', oils_i18n_gettext('1512', 'Legal cases and case notes', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1513, 'cont3', 'w', oils_i18n_gettext('1513', 'Law reports and digests', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1514, 'cont3', 'x', oils_i18n_gettext('1514', 'Other reports', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1515, 'cont3', 'y', oils_i18n_gettext('1515', 'Yearbooks', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1516, 'cont3', 'z', oils_i18n_gettext('1516', 'Treaties', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1517, 'cont3', '2', oils_i18n_gettext('1517', 'Offprints', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1518, 'cont3', '5', oils_i18n_gettext('1518', 'Calendars', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1519, 'cont3', '6', oils_i18n_gettext('1519', 'Comics/graphic novels', 'ccvm', 'value'), FALSE);
 
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1520, 'cont4', 'a', oils_i18n_gettext('836', 'Abstracts/summaries', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1521, 'cont4', 'b', oils_i18n_gettext('837', 'Bibliographies', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1522, 'cont4', 'c', oils_i18n_gettext('838', 'Catalogs', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1523, 'cont4', 'd', oils_i18n_gettext('839', 'Dictionaries', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1524, 'cont4', 'e', oils_i18n_gettext('840', 'Encyclopedias', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1525, 'cont4', 'f', oils_i18n_gettext('841', 'Handbooks', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1526, 'cont4', 'g', oils_i18n_gettext('842', 'Legal articles', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1527, 'cont4', 'h', oils_i18n_gettext('843', 'Biography', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1528, 'cont4', 'i', oils_i18n_gettext('844', 'Indexes', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1529, 'cont4', 'j', oils_i18n_gettext('845', 'Patent document', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1530, 'cont4', 'k', oils_i18n_gettext('846', 'Discographies', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1531, 'cont4', 'l', oils_i18n_gettext('847', 'Legislation', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1532, 'cont4', 'm', oils_i18n_gettext('848', 'Theses', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1533, 'cont4', 'n', oils_i18n_gettext('849', 'Surveys of the literature in a subject area', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1534, 'cont4', 'o', oils_i18n_gettext('850', 'Reviews', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1535, 'cont4', 'p', oils_i18n_gettext('851', 'Programmed texts', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1536, 'cont4', 'q', oils_i18n_gettext('852', 'Filmographies', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1537, 'cont4', 'r', oils_i18n_gettext('853', 'Directories', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1538, 'cont4', 's', oils_i18n_gettext('854', 'Statistics', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1539, 'cont4', 't', oils_i18n_gettext('855', 'Technical reports', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1540, 'cont4', 'u', oils_i18n_gettext('856', 'Standards/specifications', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1541, 'cont4', 'v', oils_i18n_gettext('857', 'Legal cases and case notes', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1542, 'cont4', 'w', oils_i18n_gettext('858', 'Law reports and digests', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1543, 'cont4', 'x', oils_i18n_gettext('859', 'Other reports', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1544, 'cont4', 'y', oils_i18n_gettext('860', 'Yearbooks', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1545, 'cont4', 'z', oils_i18n_gettext('861', 'Treaties', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1546, 'cont4', '2', oils_i18n_gettext('862', 'Offprints', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1547, 'cont4', '5', oils_i18n_gettext('863', 'Calendars', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1548, 'cont4', '6', oils_i18n_gettext('864', 'Comics/graphic novels', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1520, 'cont4', 'a', oils_i18n_gettext('1520', 'Abstracts/summaries', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1521, 'cont4', 'b', oils_i18n_gettext('1521', 'Bibliographies', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1522, 'cont4', 'c', oils_i18n_gettext('1522', 'Catalogs', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1523, 'cont4', 'd', oils_i18n_gettext('1523', 'Dictionaries', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1524, 'cont4', 'e', oils_i18n_gettext('1524', 'Encyclopedias', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1525, 'cont4', 'f', oils_i18n_gettext('1525', 'Handbooks', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1526, 'cont4', 'g', oils_i18n_gettext('1526', 'Legal articles', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1527, 'cont4', 'h', oils_i18n_gettext('1527', 'Biography', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1528, 'cont4', 'i', oils_i18n_gettext('1528', 'Indexes', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1529, 'cont4', 'j', oils_i18n_gettext('1529', 'Patent document', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1530, 'cont4', 'k', oils_i18n_gettext('1530', 'Discographies', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1531, 'cont4', 'l', oils_i18n_gettext('1531', 'Legislation', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1532, 'cont4', 'm', oils_i18n_gettext('1532', 'Theses', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1533, 'cont4', 'n', oils_i18n_gettext('1533', 'Surveys of the literature in a subject area', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1534, 'cont4', 'o', oils_i18n_gettext('1534', 'Reviews', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1535, 'cont4', 'p', oils_i18n_gettext('1535', 'Programmed texts', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1536, 'cont4', 'q', oils_i18n_gettext('1536', 'Filmographies', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1537, 'cont4', 'r', oils_i18n_gettext('1537', 'Directories', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1538, 'cont4', 's', oils_i18n_gettext('1538', 'Statistics', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1539, 'cont4', 't', oils_i18n_gettext('1539', 'Technical reports', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1540, 'cont4', 'u', oils_i18n_gettext('1540', 'Standards/specifications', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1541, 'cont4', 'v', oils_i18n_gettext('1541', 'Legal cases and case notes', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1542, 'cont4', 'w', oils_i18n_gettext('1542', 'Law reports and digests', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1543, 'cont4', 'x', oils_i18n_gettext('1543', 'Other reports', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1544, 'cont4', 'y', oils_i18n_gettext('1544', 'Yearbooks', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1545, 'cont4', 'z', oils_i18n_gettext('1545', 'Treaties', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1546, 'cont4', '2', oils_i18n_gettext('1546', 'Offprints', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1547, 'cont4', '5', oils_i18n_gettext('1547', 'Calendars', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1548, 'cont4', '6', oils_i18n_gettext('1548', 'Comics/graphic novels', 'ccvm', 'value'), FALSE);
 
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1549, 'ltxt1', ' ', oils_i18n_gettext('881', 'Item is a music sound recording', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1550, 'ltxt1', 'a', oils_i18n_gettext('882', 'Autobiography', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1551, 'ltxt1', 'b', oils_i18n_gettext('883', 'Biography', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1552, 'ltxt1', 'c', oils_i18n_gettext('884', 'Conference proceedings', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1553, 'ltxt1', 'd', oils_i18n_gettext('885', 'Drama', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1554, 'ltxt1', 'e', oils_i18n_gettext('886', 'Essays', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1555, 'ltxt1', 'f', oils_i18n_gettext('887', 'Fiction', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1556, 'ltxt1', 'g', oils_i18n_gettext('888', 'Reporting', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1557, 'ltxt1', 'h', oils_i18n_gettext('889', 'History', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1558, 'ltxt1', 'i', oils_i18n_gettext('890', 'Instruction', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1559, 'ltxt1', 'j', oils_i18n_gettext('891', 'Language instruction', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1560, 'ltxt1', 'k', oils_i18n_gettext('892', 'Comedy', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1561, 'ltxt1', 'l', oils_i18n_gettext('893', 'Lectures, speeches', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1562, 'ltxt1', 'm', oils_i18n_gettext('894', 'Memoirs', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1563, 'ltxt1', 'n', oils_i18n_gettext('895', 'Not applicable', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1564, 'ltxt1', 'o', oils_i18n_gettext('896', 'Folktales', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1565, 'ltxt1', 'p', oils_i18n_gettext('897', 'Poetry', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1566, 'ltxt1', 'r', oils_i18n_gettext('898', 'Rehearsals', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1567, 'ltxt1', 's', oils_i18n_gettext('899', 'Sounds', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1568, 'ltxt1', 't', oils_i18n_gettext('900', 'Interviews', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1569, 'ltxt1', 'z', oils_i18n_gettext('901', 'Other', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1549, 'ltxt1', ' ', oils_i18n_gettext('1549', 'Item is a music sound recording', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1550, 'ltxt1', 'a', oils_i18n_gettext('1550', 'Autobiography', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1551, 'ltxt1', 'b', oils_i18n_gettext('1551', 'Biography', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1552, 'ltxt1', 'c', oils_i18n_gettext('1552', 'Conference proceedings', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1553, 'ltxt1', 'd', oils_i18n_gettext('1553', 'Drama', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1554, 'ltxt1', 'e', oils_i18n_gettext('1554', 'Essays', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1555, 'ltxt1', 'f', oils_i18n_gettext('1555', 'Fiction', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1556, 'ltxt1', 'g', oils_i18n_gettext('1556', 'Reporting', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1557, 'ltxt1', 'h', oils_i18n_gettext('1557', 'History', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1558, 'ltxt1', 'i', oils_i18n_gettext('1558', 'Instruction', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1559, 'ltxt1', 'j', oils_i18n_gettext('1559', 'Language instruction', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1560, 'ltxt1', 'k', oils_i18n_gettext('1560', 'Comedy', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1561, 'ltxt1', 'l', oils_i18n_gettext('1561', 'Lectures, speeches', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1562, 'ltxt1', 'm', oils_i18n_gettext('1562', 'Memoirs', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1563, 'ltxt1', 'n', oils_i18n_gettext('1563', 'Not applicable', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1564, 'ltxt1', 'o', oils_i18n_gettext('1564', 'Folktales', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1565, 'ltxt1', 'p', oils_i18n_gettext('1565', 'Poetry', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1566, 'ltxt1', 'r', oils_i18n_gettext('1566', 'Rehearsals', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1567, 'ltxt1', 's', oils_i18n_gettext('1567', 'Sounds', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1568, 'ltxt1', 't', oils_i18n_gettext('1568', 'Interviews', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1569, 'ltxt1', 'z', oils_i18n_gettext('1569', 'Other', 'ccvm', 'value'), FALSE);
 
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1570, 'ltxt2', 'a', oils_i18n_gettext('882', 'Autobiography', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1571, 'ltxt2', 'b', oils_i18n_gettext('883', 'Biography', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1572, 'ltxt2', 'c', oils_i18n_gettext('884', 'Conference proceedings', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1573, 'ltxt2', 'd', oils_i18n_gettext('885', 'Drama', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1574, 'ltxt2', 'e', oils_i18n_gettext('886', 'Essays', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1575, 'ltxt2', 'f', oils_i18n_gettext('887', 'Fiction', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1576, 'ltxt2', 'g', oils_i18n_gettext('888', 'Reporting', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1577, 'ltxt2', 'h', oils_i18n_gettext('889', 'History', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1578, 'ltxt2', 'i', oils_i18n_gettext('890', 'Instruction', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1579, 'ltxt2', 'j', oils_i18n_gettext('891', 'Language instruction', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1580, 'ltxt2', 'k', oils_i18n_gettext('892', 'Comedy', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1581, 'ltxt2', 'l', oils_i18n_gettext('893', 'Lectures, speeches', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1582, 'ltxt2', 'm', oils_i18n_gettext('894', 'Memoirs', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1583, 'ltxt2', 'n', oils_i18n_gettext('895', 'Not applicable', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1584, 'ltxt2', 'o', oils_i18n_gettext('896', 'Folktales', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1585, 'ltxt2', 'p', oils_i18n_gettext('897', 'Poetry', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1586, 'ltxt2', 'r', oils_i18n_gettext('898', 'Rehearsals', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1587, 'ltxt2', 's', oils_i18n_gettext('899', 'Sounds', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1588, 'ltxt2', 't', oils_i18n_gettext('900', 'Interviews', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1589, 'ltxt2', 'z', oils_i18n_gettext('901', 'Other', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1570, 'ltxt2', 'a', oils_i18n_gettext('1570', 'Autobiography', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1571, 'ltxt2', 'b', oils_i18n_gettext('1571', 'Biography', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1572, 'ltxt2', 'c', oils_i18n_gettext('1572', 'Conference proceedings', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1573, 'ltxt2', 'd', oils_i18n_gettext('1573', 'Drama', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1574, 'ltxt2', 'e', oils_i18n_gettext('1574', 'Essays', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1575, 'ltxt2', 'f', oils_i18n_gettext('1575', 'Fiction', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1576, 'ltxt2', 'g', oils_i18n_gettext('1576', 'Reporting', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1577, 'ltxt2', 'h', oils_i18n_gettext('1577', 'History', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1578, 'ltxt2', 'i', oils_i18n_gettext('1578', 'Instruction', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1579, 'ltxt2', 'j', oils_i18n_gettext('1579', 'Language instruction', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1580, 'ltxt2', 'k', oils_i18n_gettext('1580', 'Comedy', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1581, 'ltxt2', 'l', oils_i18n_gettext('1581', 'Lectures, speeches', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1582, 'ltxt2', 'm', oils_i18n_gettext('1582', 'Memoirs', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1583, 'ltxt2', 'n', oils_i18n_gettext('1583', 'Not applicable', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1584, 'ltxt2', 'o', oils_i18n_gettext('1584', 'Folktales', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1585, 'ltxt2', 'p', oils_i18n_gettext('1585', 'Poetry', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1586, 'ltxt2', 'r', oils_i18n_gettext('1586', 'Rehearsals', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1587, 'ltxt2', 's', oils_i18n_gettext('1587', 'Sounds', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1588, 'ltxt2', 't', oils_i18n_gettext('1588', 'Interviews', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1589, 'ltxt2', 'z', oils_i18n_gettext('1589', 'Other', 'ccvm', 'value'), FALSE);
 
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1590, 'relf1', ' ', oils_i18n_gettext('965', 'No relief shown', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1591, 'relf1', 'a', oils_i18n_gettext('966', 'Contours', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1592, 'relf1', 'b', oils_i18n_gettext('967', 'Shading', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1593, 'relf1', 'c', oils_i18n_gettext('968', 'Gradient and bathymetric tints', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1594, 'relf1', 'd', oils_i18n_gettext('969', 'Hachures', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1595, 'relf1', 'e', oils_i18n_gettext('970', 'Bathymetry, soundings', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1596, 'relf1', 'f', oils_i18n_gettext('971', 'Form lines', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1597, 'relf1', 'g', oils_i18n_gettext('972', 'Spot heights', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1598, 'relf1', 'i', oils_i18n_gettext('973', 'Pictorially', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1599, 'relf1', 'j', oils_i18n_gettext('974', 'Land forms', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1600, 'relf1', 'k', oils_i18n_gettext('975', 'Bathymetry, isolines', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1601, 'relf1', 'm', oils_i18n_gettext('976', 'Rock drawings', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1602, 'relf1', 'z', oils_i18n_gettext('977', 'Other', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1590, 'relf1', ' ', oils_i18n_gettext('1590', 'No relief shown', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1591, 'relf1', 'a', oils_i18n_gettext('1591', 'Contours', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1592, 'relf1', 'b', oils_i18n_gettext('1592', 'Shading', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1593, 'relf1', 'c', oils_i18n_gettext('1593', 'Gradient and bathymetric tints', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1594, 'relf1', 'd', oils_i18n_gettext('1594', 'Hachures', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1595, 'relf1', 'e', oils_i18n_gettext('1595', 'Bathymetry, soundings', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1596, 'relf1', 'f', oils_i18n_gettext('1596', 'Form lines', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1597, 'relf1', 'g', oils_i18n_gettext('1597', 'Spot heights', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1598, 'relf1', 'i', oils_i18n_gettext('1598', 'Pictorially', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1599, 'relf1', 'j', oils_i18n_gettext('1599', 'Land forms', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1600, 'relf1', 'k', oils_i18n_gettext('1600', 'Bathymetry, isolines', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1601, 'relf1', 'm', oils_i18n_gettext('1601', 'Rock drawings', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1602, 'relf1', 'z', oils_i18n_gettext('1602', 'Other', 'ccvm', 'value'), FALSE);
 
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1603, 'relf2', 'a', oils_i18n_gettext('966', 'Contours', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1604, 'relf2', 'b', oils_i18n_gettext('967', 'Shading', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1605, 'relf2', 'c', oils_i18n_gettext('968', 'Gradient and bathymetric tints', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1606, 'relf2', 'd', oils_i18n_gettext('969', 'Hachures', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1607, 'relf2', 'e', oils_i18n_gettext('970', 'Bathymetry, soundings', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1608, 'relf2', 'f', oils_i18n_gettext('971', 'Form lines', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1609, 'relf2', 'g', oils_i18n_gettext('972', 'Spot heights', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1610, 'relf2', 'i', oils_i18n_gettext('973', 'Pictorially', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1611, 'relf2', 'j', oils_i18n_gettext('974', 'Land forms', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1612, 'relf2', 'k', oils_i18n_gettext('975', 'Bathymetry, isolines', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1613, 'relf2', 'm', oils_i18n_gettext('976', 'Rock drawings', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1614, 'relf2', 'z', oils_i18n_gettext('977', 'Other', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1603, 'relf2', 'a', oils_i18n_gettext('1603', 'Contours', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1604, 'relf2', 'b', oils_i18n_gettext('1604', 'Shading', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1605, 'relf2', 'c', oils_i18n_gettext('1605', 'Gradient and bathymetric tints', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1606, 'relf2', 'd', oils_i18n_gettext('1606', 'Hachures', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1607, 'relf2', 'e', oils_i18n_gettext('1607', 'Bathymetry, soundings', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1608, 'relf2', 'f', oils_i18n_gettext('1608', 'Form lines', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1609, 'relf2', 'g', oils_i18n_gettext('1609', 'Spot heights', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1610, 'relf2', 'i', oils_i18n_gettext('1610', 'Pictorially', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1611, 'relf2', 'j', oils_i18n_gettext('1611', 'Land forms', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1612, 'relf2', 'k', oils_i18n_gettext('1612', 'Bathymetry, isolines', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1613, 'relf2', 'm', oils_i18n_gettext('1613', 'Rock drawings', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1614, 'relf2', 'z', oils_i18n_gettext('1614', 'Other', 'ccvm', 'value'), FALSE);
 
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1615, 'relf3', 'a', oils_i18n_gettext('966', 'Contours', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1616, 'relf3', 'b', oils_i18n_gettext('967', 'Shading', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1617, 'relf3', 'c', oils_i18n_gettext('968', 'Gradient and bathymetric tints', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1618, 'relf3', 'd', oils_i18n_gettext('969', 'Hachures', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1619, 'relf3', 'e', oils_i18n_gettext('970', 'Bathymetry, soundings', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1620, 'relf3', 'f', oils_i18n_gettext('971', 'Form lines', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1621, 'relf3', 'g', oils_i18n_gettext('972', 'Spot heights', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1622, 'relf3', 'i', oils_i18n_gettext('973', 'Pictorially', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1623, 'relf3', 'j', oils_i18n_gettext('974', 'Land forms', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1624, 'relf3', 'k', oils_i18n_gettext('975', 'Bathymetry, isolines', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1625, 'relf3', 'm', oils_i18n_gettext('976', 'Rock drawings', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1626, 'relf3', 'z', oils_i18n_gettext('977', 'Other', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1615, 'relf3', 'a', oils_i18n_gettext('1615', 'Contours', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1616, 'relf3', 'b', oils_i18n_gettext('1616', 'Shading', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1617, 'relf3', 'c', oils_i18n_gettext('1617', 'Gradient and bathymetric tints', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1618, 'relf3', 'd', oils_i18n_gettext('1618', 'Hachures', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1619, 'relf3', 'e', oils_i18n_gettext('1619', 'Bathymetry, soundings', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1620, 'relf3', 'f', oils_i18n_gettext('1620', 'Form lines', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1621, 'relf3', 'g', oils_i18n_gettext('1621', 'Spot heights', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1622, 'relf3', 'i', oils_i18n_gettext('1622', 'Pictorially', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1623, 'relf3', 'j', oils_i18n_gettext('1623', 'Land forms', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1624, 'relf3', 'k', oils_i18n_gettext('1624', 'Bathymetry, isolines', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1625, 'relf3', 'm', oils_i18n_gettext('1625', 'Rock drawings', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1626, 'relf3', 'z', oils_i18n_gettext('1626', 'Other', 'ccvm', 'value'), FALSE);
 
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1627, 'relf4', 'a', oils_i18n_gettext('966', 'Contours', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1628, 'relf4', 'b', oils_i18n_gettext('967', 'Shading', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1629, 'relf4', 'c', oils_i18n_gettext('968', 'Gradient and bathymetric tints', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1630, 'relf4', 'd', oils_i18n_gettext('969', 'Hachures', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1631, 'relf4', 'e', oils_i18n_gettext('970', 'Bathymetry, soundings', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1632, 'relf4', 'f', oils_i18n_gettext('971', 'Form lines', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1633, 'relf4', 'g', oils_i18n_gettext('972', 'Spot heights', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1634, 'relf4', 'i', oils_i18n_gettext('973', 'Pictorially', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1635, 'relf4', 'j', oils_i18n_gettext('974', 'Land forms', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1636, 'relf4', 'k', oils_i18n_gettext('975', 'Bathymetry, isolines', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1637, 'relf4', 'm', oils_i18n_gettext('976', 'Rock drawings', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1638, 'relf4', 'z', oils_i18n_gettext('977', 'Other', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1627, 'relf4', 'a', oils_i18n_gettext('1627', 'Contours', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1628, 'relf4', 'b', oils_i18n_gettext('1628', 'Shading', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1629, 'relf4', 'c', oils_i18n_gettext('1629', 'Gradient and bathymetric tints', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1630, 'relf4', 'd', oils_i18n_gettext('1630', 'Hachures', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1631, 'relf4', 'e', oils_i18n_gettext('1631', 'Bathymetry, soundings', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1632, 'relf4', 'f', oils_i18n_gettext('1632', 'Form lines', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1633, 'relf4', 'g', oils_i18n_gettext('1633', 'Spot heights', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1634, 'relf4', 'i', oils_i18n_gettext('1634', 'Pictorially', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1635, 'relf4', 'j', oils_i18n_gettext('1635', 'Land forms', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1636, 'relf4', 'k', oils_i18n_gettext('1636', 'Bathymetry, isolines', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1637, 'relf4', 'm', oils_i18n_gettext('1637', 'Rock drawings', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1638, 'relf4', 'z', oils_i18n_gettext('1638', 'Other', 'ccvm', 'value'), FALSE);
 
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1639, 'spfm1', ' ', oils_i18n_gettext('978', 'No specified special format characteristics', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1640, 'spfm1', 'e', oils_i18n_gettext('979', 'Manuscript', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1641, 'spfm1', 'j', oils_i18n_gettext('980', 'Picture card, post card', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1642, 'spfm1', 'k', oils_i18n_gettext('981', 'Calendar', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1643, 'spfm1', 'l', oils_i18n_gettext('982', 'Puzzle', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1644, 'spfm1', 'n', oils_i18n_gettext('983', 'Game', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1645, 'spfm1', 'o', oils_i18n_gettext('984', 'Wall map', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1646, 'spfm1', 'p', oils_i18n_gettext('985', 'Playing cards', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1647, 'spfm1', 'r', oils_i18n_gettext('986', 'Loose-leaf', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1648, 'spfm1', 'z', oils_i18n_gettext('987', 'Other', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1639, 'spfm1', ' ', oils_i18n_gettext('1639', 'No specified special format characteristics', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1640, 'spfm1', 'e', oils_i18n_gettext('1640', 'Manuscript', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1641, 'spfm1', 'j', oils_i18n_gettext('1641', 'Picture card, post card', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1642, 'spfm1', 'k', oils_i18n_gettext('1642', 'Calendar', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1643, 'spfm1', 'l', oils_i18n_gettext('1643', 'Puzzle', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1644, 'spfm1', 'n', oils_i18n_gettext('1644', 'Game', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1645, 'spfm1', 'o', oils_i18n_gettext('1645', 'Wall map', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1646, 'spfm1', 'p', oils_i18n_gettext('1646', 'Playing cards', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1647, 'spfm1', 'r', oils_i18n_gettext('1647', 'Loose-leaf', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1648, 'spfm1', 'z', oils_i18n_gettext('1648', 'Other', 'ccvm', 'value'), FALSE);
 
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1649, 'spfm2', 'e', oils_i18n_gettext('979', 'Manuscript', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1650, 'spfm2', 'j', oils_i18n_gettext('980', 'Picture card, post card', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1651, 'spfm2', 'k', oils_i18n_gettext('981', 'Calendar', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1652, 'spfm2', 'l', oils_i18n_gettext('982', 'Puzzle', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1653, 'spfm2', 'n', oils_i18n_gettext('983', 'Game', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1654, 'spfm2', 'o', oils_i18n_gettext('984', 'Wall map', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1655, 'spfm2', 'p', oils_i18n_gettext('985', 'Playing cards', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1656, 'spfm2', 'r', oils_i18n_gettext('986', 'Loose-leaf', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1657, 'spfm2', 'z', oils_i18n_gettext('987', 'Other', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1649, 'spfm2', 'e', oils_i18n_gettext('1649', 'Manuscript', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1650, 'spfm2', 'j', oils_i18n_gettext('1650', 'Picture card, post card', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1651, 'spfm2', 'k', oils_i18n_gettext('1651', 'Calendar', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1652, 'spfm2', 'l', oils_i18n_gettext('1652', 'Puzzle', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1653, 'spfm2', 'n', oils_i18n_gettext('1653', 'Game', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1654, 'spfm2', 'o', oils_i18n_gettext('1654', 'Wall map', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1655, 'spfm2', 'p', oils_i18n_gettext('1655', 'Playing cards', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1656, 'spfm2', 'r', oils_i18n_gettext('1656', 'Loose-leaf', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1657, 'spfm2', 'z', oils_i18n_gettext('1657', 'Other', 'ccvm', 'value'), FALSE);
 
 -- Illustrations
 INSERT INTO config.coded_value_map (id, ctype, code, value) VALUES (1658, 'ills', ' ', oils_i18n_gettext('1658', 'No Illustrations', 'ccvm', 'value'));
@@ -8696,70 +8696,70 @@ INSERT INTO config.coded_value_map (id, ctype, code, value) VALUES (1671, 'ills'
 INSERT INTO config.coded_value_map (id, ctype, code, value) VALUES (1672, 'ills', 'o', oils_i18n_gettext('1672', 'Photographs', 'ccvm', 'value'));
 INSERT INTO config.coded_value_map (id, ctype, code, value) VALUES (1673, 'ills', 'p', oils_i18n_gettext('1673', 'Illuminations', 'ccvm', 'value'));
 	
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1674, 'ills1', ' ', oils_i18n_gettext('1658', 'No Illustrations', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1675, 'ills1', 'a', oils_i18n_gettext('1659', 'Illustrations', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1676, 'ills1', 'b', oils_i18n_gettext('1660', 'Maps', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1677, 'ills1', 'c', oils_i18n_gettext('1661', 'Portraits', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1678, 'ills1', 'd', oils_i18n_gettext('1662', 'Charts', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1679, 'ills1', 'e', oils_i18n_gettext('1663', 'Plans', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1680, 'ills1', 'f', oils_i18n_gettext('1664', 'Plates', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1681, 'ills1', 'g', oils_i18n_gettext('1665', 'Music', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1682, 'ills1', 'h', oils_i18n_gettext('1666', 'Facsimiles', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1683, 'ills1', 'i', oils_i18n_gettext('1667', 'Coats of arms', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1684, 'ills1', 'j', oils_i18n_gettext('1668', 'Genealogical tables', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1685, 'ills1', 'k', oils_i18n_gettext('1669', 'Forms', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1686, 'ills1', 'l', oils_i18n_gettext('1670', 'Samples', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1687, 'ills1', 'm', oils_i18n_gettext('1671', 'Phonodisc, phonowire, etc.', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1688, 'ills1', 'o', oils_i18n_gettext('1672', 'Photographs', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1689, 'ills1', 'p', oils_i18n_gettext('1673', 'Illuminations', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1674, 'ills1', ' ', oils_i18n_gettext('1674', 'No Illustrations', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1675, 'ills1', 'a', oils_i18n_gettext('1675', 'Illustrations', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1676, 'ills1', 'b', oils_i18n_gettext('1676', 'Maps', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1677, 'ills1', 'c', oils_i18n_gettext('1677', 'Portraits', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1678, 'ills1', 'd', oils_i18n_gettext('1678', 'Charts', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1679, 'ills1', 'e', oils_i18n_gettext('1679', 'Plans', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1680, 'ills1', 'f', oils_i18n_gettext('1680', 'Plates', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1681, 'ills1', 'g', oils_i18n_gettext('1681', 'Music', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1682, 'ills1', 'h', oils_i18n_gettext('1682', 'Facsimiles', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1683, 'ills1', 'i', oils_i18n_gettext('1683', 'Coats of arms', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1684, 'ills1', 'j', oils_i18n_gettext('1684', 'Genealogical tables', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1685, 'ills1', 'k', oils_i18n_gettext('1685', 'Forms', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1686, 'ills1', 'l', oils_i18n_gettext('1686', 'Samples', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1687, 'ills1', 'm', oils_i18n_gettext('1687', 'Phonodisc, phonowire, etc.', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1688, 'ills1', 'o', oils_i18n_gettext('1688', 'Photographs', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1689, 'ills1', 'p', oils_i18n_gettext('1689', 'Illuminations', 'ccvm', 'value'), FALSE);
 	
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1690, 'ills2', 'a', oils_i18n_gettext('1659', 'Illustrations', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1691, 'ills2', 'b', oils_i18n_gettext('1660', 'Maps', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1692, 'ills2', 'c', oils_i18n_gettext('1661', 'Portraits', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1693, 'ills2', 'd', oils_i18n_gettext('1662', 'Charts', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1694, 'ills2', 'e', oils_i18n_gettext('1663', 'Plans', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1695, 'ills2', 'f', oils_i18n_gettext('1664', 'Plates', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1696, 'ills2', 'g', oils_i18n_gettext('1665', 'Music', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1697, 'ills2', 'h', oils_i18n_gettext('1666', 'Facsimiles', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1698, 'ills2', 'i', oils_i18n_gettext('1667', 'Coats of arms', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1699, 'ills2', 'j', oils_i18n_gettext('1668', 'Genealogical tables', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1700, 'ills2', 'k', oils_i18n_gettext('1669', 'Forms', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1701, 'ills2', 'l', oils_i18n_gettext('1670', 'Samples', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1702, 'ills2', 'm', oils_i18n_gettext('1671', 'Phonodisc, phonowire, etc.', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1703, 'ills2', 'o', oils_i18n_gettext('1672', 'Photographs', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1704, 'ills2', 'p', oils_i18n_gettext('1673', 'Illuminations', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1690, 'ills2', 'a', oils_i18n_gettext('1690', 'Illustrations', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1691, 'ills2', 'b', oils_i18n_gettext('1691', 'Maps', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1692, 'ills2', 'c', oils_i18n_gettext('1692', 'Portraits', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1693, 'ills2', 'd', oils_i18n_gettext('1693', 'Charts', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1694, 'ills2', 'e', oils_i18n_gettext('1694', 'Plans', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1695, 'ills2', 'f', oils_i18n_gettext('1695', 'Plates', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1696, 'ills2', 'g', oils_i18n_gettext('1696', 'Music', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1697, 'ills2', 'h', oils_i18n_gettext('1697', 'Facsimiles', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1698, 'ills2', 'i', oils_i18n_gettext('1698', 'Coats of arms', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1699, 'ills2', 'j', oils_i18n_gettext('1699', 'Genealogical tables', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1700, 'ills2', 'k', oils_i18n_gettext('1700', 'Forms', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1701, 'ills2', 'l', oils_i18n_gettext('1701', 'Samples', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1702, 'ills2', 'm', oils_i18n_gettext('1702', 'Phonodisc, phonowire, etc.', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1703, 'ills2', 'o', oils_i18n_gettext('1703', 'Photographs', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1704, 'ills2', 'p', oils_i18n_gettext('1704', 'Illuminations', 'ccvm', 'value'), FALSE);
 	
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1705, 'ills3', 'a', oils_i18n_gettext('1659', 'Illustrations', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1706, 'ills3', 'b', oils_i18n_gettext('1660', 'Maps', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1707, 'ills3', 'c', oils_i18n_gettext('1661', 'Portraits', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1708, 'ills3', 'd', oils_i18n_gettext('1662', 'Charts', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1709, 'ills3', 'e', oils_i18n_gettext('1663', 'Plans', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1710, 'ills3', 'f', oils_i18n_gettext('1664', 'Plates', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1711, 'ills3', 'g', oils_i18n_gettext('1665', 'Music', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1712, 'ills3', 'h', oils_i18n_gettext('1666', 'Facsimiles', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1713, 'ills3', 'i', oils_i18n_gettext('1667', 'Coats of arms', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1714, 'ills3', 'j', oils_i18n_gettext('1668', 'Genealogical tables', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1715, 'ills3', 'k', oils_i18n_gettext('1669', 'Forms', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1716, 'ills3', 'l', oils_i18n_gettext('1670', 'Samples', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1717, 'ills3', 'm', oils_i18n_gettext('1671', 'Phonodisc, phonowire, etc.', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1718, 'ills3', 'o', oils_i18n_gettext('1672', 'Photographs', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1719, 'ills3', 'p', oils_i18n_gettext('1673', 'Illuminations', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1705, 'ills3', 'a', oils_i18n_gettext('1705', 'Illustrations', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1706, 'ills3', 'b', oils_i18n_gettext('1706', 'Maps', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1707, 'ills3', 'c', oils_i18n_gettext('1707', 'Portraits', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1708, 'ills3', 'd', oils_i18n_gettext('1708', 'Charts', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1709, 'ills3', 'e', oils_i18n_gettext('1709', 'Plans', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1710, 'ills3', 'f', oils_i18n_gettext('1710', 'Plates', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1711, 'ills3', 'g', oils_i18n_gettext('1711', 'Music', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1712, 'ills3', 'h', oils_i18n_gettext('1712', 'Facsimiles', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1713, 'ills3', 'i', oils_i18n_gettext('1713', 'Coats of arms', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1714, 'ills3', 'j', oils_i18n_gettext('1714', 'Genealogical tables', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1715, 'ills3', 'k', oils_i18n_gettext('1715', 'Forms', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1716, 'ills3', 'l', oils_i18n_gettext('1716', 'Samples', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1717, 'ills3', 'm', oils_i18n_gettext('1717', 'Phonodisc, phonowire, etc.', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1718, 'ills3', 'o', oils_i18n_gettext('1718', 'Photographs', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1719, 'ills3', 'p', oils_i18n_gettext('1719', 'Illuminations', 'ccvm', 'value'), FALSE);
 	
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1720, 'ills4', 'a', oils_i18n_gettext('1659', 'Illustrations', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1721, 'ills4', 'b', oils_i18n_gettext('1660', 'Maps', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1722, 'ills4', 'c', oils_i18n_gettext('1661', 'Portraits', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1723, 'ills4', 'd', oils_i18n_gettext('1662', 'Charts', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1724, 'ills4', 'e', oils_i18n_gettext('1663', 'Plans', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1725, 'ills4', 'f', oils_i18n_gettext('1664', 'Plates', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1726, 'ills4', 'g', oils_i18n_gettext('1665', 'Music', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1727, 'ills4', 'h', oils_i18n_gettext('1666', 'Facsimiles', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1728, 'ills4', 'i', oils_i18n_gettext('1667', 'Coats of arms', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1729, 'ills4', 'j', oils_i18n_gettext('1668', 'Genealogical tables', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1730, 'ills4', 'k', oils_i18n_gettext('1669', 'Forms', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1731, 'ills4', 'l', oils_i18n_gettext('1670', 'Samples', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1732, 'ills4', 'm', oils_i18n_gettext('1671', 'Phonodisc, phonowire, etc.', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1733, 'ills4', 'o', oils_i18n_gettext('1672', 'Photographs', 'ccvm', 'value'), FALSE);
-INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1734, 'ills4', 'p', oils_i18n_gettext('1673', 'Illuminations', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1720, 'ills4', 'a', oils_i18n_gettext('1720', 'Illustrations', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1721, 'ills4', 'b', oils_i18n_gettext('1721', 'Maps', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1722, 'ills4', 'c', oils_i18n_gettext('1722', 'Portraits', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1723, 'ills4', 'd', oils_i18n_gettext('1723', 'Charts', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1724, 'ills4', 'e', oils_i18n_gettext('1724', 'Plans', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1725, 'ills4', 'f', oils_i18n_gettext('1725', 'Plates', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1726, 'ills4', 'g', oils_i18n_gettext('1726', 'Music', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1727, 'ills4', 'h', oils_i18n_gettext('1727', 'Facsimiles', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1728, 'ills4', 'i', oils_i18n_gettext('1728', 'Coats of arms', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1729, 'ills4', 'j', oils_i18n_gettext('1729', 'Genealogical tables', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1730, 'ills4', 'k', oils_i18n_gettext('1730', 'Forms', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1731, 'ills4', 'l', oils_i18n_gettext('1731', 'Samples', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1732, 'ills4', 'm', oils_i18n_gettext('1732', 'Phonodisc, phonowire, etc.', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1733, 'ills4', 'o', oils_i18n_gettext('1733', 'Photographs', 'ccvm', 'value'), FALSE);
+INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1734, 'ills4', 'p', oils_i18n_gettext('1734', 'Illuminations', 'ccvm', 'value'), FALSE);
 
 
 -- carve out a slot of 10k IDs for stock CCVMs
@@ -12366,7 +12366,7 @@ INSERT INTO vandelay.import_error ( code, description ) VALUES ( 'import.item.du
 INSERT INTO vandelay.import_error ( code, description ) VALUES ( 'import.item.invalid.circ_modifier', oils_i18n_gettext('import.item.invalid.circ_modifier', 'Import failed due to invalid circulation modifier', 'vie', 'description') );
 INSERT INTO vandelay.import_error ( code, description ) VALUES ( 'import.item.invalid.location', oils_i18n_gettext('import.item.invalid.location', 'Import failed due to invalid copy location', 'vie', 'description') );
 INSERT INTO vandelay.import_error ( code, description ) VALUES ( 'import.duplicate.sysid', oils_i18n_gettext('import.duplicate.sysid', 'Import failed due to system id collision', 'vie', 'description') );
-INSERT INTO vandelay.import_error ( code, description ) VALUES ( 'import.duplicate.tcn', oils_i18n_gettext('import.duplicate.sysid', 'Import failed due to system id collision', 'vie', 'description') );
+INSERT INTO vandelay.import_error ( code, description ) VALUES ( 'import.duplicate.tcn', oils_i18n_gettext('import.duplicate.tcn', 'Import failed due to system id collision', 'vie', 'description') );
 INSERT INTO vandelay.import_error ( code, description ) VALUES ( 'overlay.missing.sysid', oils_i18n_gettext('overlay.missing.sysid', 'Overlay failed due to missing system id', 'vie', 'description') );
 INSERT INTO vandelay.import_error ( code, description ) VALUES ( 'import.auth.duplicate.acn', oils_i18n_gettext('import.auth.duplicate.acn', 'Import failed due to Accession Number collision', 'vie', 'description') );
 INSERT INTO vandelay.import_error ( code, description ) VALUES ( 'import.xml.malformed', oils_i18n_gettext('import.xml.malformed', 'Malformed record cause Import failure', 'vie', 'description') );
@@ -16165,13 +16165,13 @@ VALUES (
     'gui',
     'bool',
     oils_i18n_gettext(
-        'ui.patron.edit.aua.county.require',
+        'ui.patron.edit.aua.county.show',
         'Show county field on patron registration',
         'coust',
         'label'
     ),
     oils_i18n_gettext(
-        'ui.patron.edit.aua.county.require',
+        'ui.patron.edit.aua.county.show',
         'The county field will be shown on the patron registration screen',
         'coust',
         'description'
@@ -16191,7 +16191,7 @@ VALUES (
     oils_i18n_gettext(
         'vandelay.item.barcode.auto',
         'Auto-generate deault item barcodes when no item barcode is present',
-        'coust', 'label'),
+        'coust', 'description'),
     'bool',
     NULL
 ), (
@@ -16204,7 +16204,7 @@ VALUES (
     oils_i18n_gettext(
         'vandelay.item.barcode.prefix',
         'Apply this prefix to any auto-generated item barcodes',
-        'coust', 'label'),
+        'coust', 'description'),
     'string',
     NULL
 ), (
@@ -16217,7 +16217,7 @@ VALUES (
     oils_i18n_gettext(
         'vandelay.item.call_number.auto',
         'Auto-generate default item call numbers when no item call number is present',
-        'coust', 'label'),
+        'coust', 'description'),
     'bool',
     NULL
 ), (
@@ -16230,7 +16230,7 @@ VALUES (
     oils_i18n_gettext(
         'vandelay.item.call_number.prefix',
         'Apply this prefix to any auto-generated item call numbers',
-        'coust', 'label'),
+        'coust', 'description'),
     'string',
     NULL
 ), (
@@ -16243,7 +16243,7 @@ VALUES (
     oils_i18n_gettext(
         'vandelay.item.copy_location.default',
         'Default copy location value for imported items',
-        'coust', 'label'),
+        'coust', 'description'),
     'link',
     'acpl'
 ), (
@@ -16256,7 +16256,7 @@ VALUES (
     oils_i18n_gettext(
         'vandelay.item.circ_modifier.default',
         'Default circulation modifier value for imported items',
-        'coust', 'label'),
+        'coust', 'description'),
     'link',
     'ccm'
 );
