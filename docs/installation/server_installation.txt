@@ -161,13 +161,6 @@ environment variable `PATH`.
 ------------------------------------------------------------------------------
 % sudo npm install -g grunt-cli
 ------------------------------------------------------------------------------
-+
-3. Install Bower
-+
-[source,sh]
-------------------------------------------------------------------------------
-% sudo npm install -g bower
-------------------------------------------------------------------------------
 
 [[install_files_for_web_staff_client]]
 Install files for web staff client
@@ -186,8 +179,7 @@ cd $EVERGREEN_ROOT/Open-ILS/web/js/ui/default/staff/
 +
 [source,sh]
 ------------------------------------------------------------------------------
-npm install   # fetch Grunt dependencies
-bower install # fetch JS dependencies
+npm install   # fetch JS dependencies
 ------------------------------------------------------------------------------
 +
 3. Run the build script.

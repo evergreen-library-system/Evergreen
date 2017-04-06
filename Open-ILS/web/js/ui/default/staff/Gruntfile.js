@@ -4,7 +4,7 @@ module.exports = function(grunt) {
   var config = { 
     pkg: grunt.file.readJSON('package.json'),
 
-    // copy the files we care about from bower-fetched dependencies
+    // copy the files we care about from fetched dependencies
     // into our build directory
     copy: {
 
@@ -15,28 +15,28 @@ module.exports = function(grunt) {
           filter: 'isFile',
           expand : true,
           src: [
-            'bower_components/angular/angular.min.js',
-            'bower_components/angular/angular.min.js.map',
-            'bower_components/angular-animate/angular-animate.min.js',
-            'bower_components/angular-animate/angular-animate.min.js.map',
-            'bower_components/angular-sanitize/angular-sanitize.min.js',
-            'bower_components/angular-sanitize/angular-sanitize.min.js.map',
-            'bower_components/angular-route/angular-route.min.js',
-            'bower_components/angular-route/angular-route.min.js.map',
-            'bower_components/angular-bootstrap/ui-bootstrap.min.js',
-            'bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js',
-            'bower_components/angular-hotkeys/build/hotkeys.min.js',
-            'bower_components/angular-file-saver/dist/angular-file-saver.bundle.min.js',
-            'bower_components/angular-location-update/angular-location-update.min.js',
-            'bower_components/angular-tree-control/angular-tree-control.js',
-            'bower_components/ngtoast/dist/ngToast.min.js',
-            'bower_components/jquery/dist/jquery.min.js',
-            'bower_components/angular-cookies/angular-cookies.min.js',
-            'bower_components/angular-cookies/angular-cookies.min.js.map',
-            'bower_components/iframe-resizer/js/iframeResizer.min.js',
-            'bower_components/iframe-resizer/js/iframeResizer.map',
-            'bower_components/iframe-resizer/js/iframeResizer.contentWindow.min.js',
-            'bower_components/angular-order-object-by/src/ng-order-object-by.js'
+            'node_modules/angular/angular.min.js',
+            'node_modules/angular/angular.min.js.map',
+            'node_modules/angular-animate/angular-animate.min.js',
+            'node_modules/angular-animate/angular-animate.min.js.map',
+            'node_modules/angular-sanitize/angular-sanitize.min.js',
+            'node_modules/angular-sanitize/angular-sanitize.min.js.map',
+            'node_modules/angular-route/angular-route.min.js',
+            'node_modules/angular-route/angular-route.min.js.map',
+            'node_modules/angular-ui-bootstrap/dist/ui-bootstrap.min.js',
+            'node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.min.js',
+            'node_modules/angular-hotkeys/build/hotkeys.min.js',
+            'node_modules/angular-file-saver/dist/angular-file-saver.bundle.min.js',
+            'node_modules/angular-location-update/angular-location-update.min.js',
+            'node_modules/angular-tree-control/angular-tree-control.js',
+            'node_modules/ng-toast/dist/ngToast.min.js',
+            'node_modules/jquery/dist/jquery.min.js',
+            'node_modules/angular-cookies/angular-cookies.min.js',
+            'node_modules/angular-cookies/angular-cookies.min.js.map',
+            'node_modules/iframe-resizer/js/iframeResizer.min.js',
+            'node_modules/iframe-resizer/js/iframeResizer.map',
+            'node_modules/iframe-resizer/js/iframeResizer.contentWindow.min.js',
+            'node_modules/angular-order-object-by/src/ng-order-object-by.js'
           ]
         }]
       },
@@ -48,12 +48,12 @@ module.exports = function(grunt) {
           filter : 'isFile',
           expand : true,
           src : [
-            'bower_components/angular-hotkeys/build/hotkeys.min.css',
-            'bower_components/bootstrap/dist/css/bootstrap.min.css', 
-            'bower_components/ngtoast/dist/ngToast.min.css',
-            'bower_components/ngtoast/dist/ngToast-animations.min.css',
-            'bower_components/angular-tree-control/css/tree-control.css',
-            'bower_components/angular-tree-control/css/tree-control-attribute.css',
+            'node_modules/angular-hotkeys/build/hotkeys.min.css',
+            'node_modules/bootstrap/dist/css/bootstrap.min.css', 
+            'node_modules/ngtoast/dist/ngToast.min.css',
+            'node_modules/ngtoast/dist/ngToast-animations.min.css',
+            'node_modules/angular-tree-control/css/tree-control.css',
+            'node_modules/angular-tree-control/css/tree-control-attribute.css',
           ]
         }]
       },
@@ -65,10 +65,10 @@ module.exports = function(grunt) {
           filter : 'isFile',
           expand : true,
           src : [
-            'bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.eot',
-            'bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.svg',
-            'bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.ttf',
-            'bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.woff'
+            'node_modules/bootstrap/dist/fonts/glyphicons-halflings-regular.eot',
+            'node_modules/bootstrap/dist/fonts/glyphicons-halflings-regular.svg',
+            'node_modules/bootstrap/dist/fonts/glyphicons-halflings-regular.ttf',
+            'node_modules/bootstrap/dist/fonts/glyphicons-halflings-regular.woff'
           ]
         }]
       },
@@ -80,16 +80,16 @@ module.exports = function(grunt) {
           filter : 'isFile',
           expand : true,
           src : [
-            'bower_components/angular-tree-control/images/sample.png',
-            'bower_components/angular-tree-control/images/node-opened-2.png',
-            'bower_components/angular-tree-control/images/folder.png',
-            'bower_components/angular-tree-control/images/node-closed.png',
-            'bower_components/angular-tree-control/images/node-closed-light.png',
-            'bower_components/angular-tree-control/images/node-opened.png',
-            'bower_components/angular-tree-control/images/node-opened-light.png',
-            'bower_components/angular-tree-control/images/folder-closed.png',
-            'bower_components/angular-tree-control/images/node-closed-2.png',
-            'bower_components/angular-tree-control/images/file.png'
+            'node_modules/angular-tree-control/images/sample.png',
+            'node_modules/angular-tree-control/images/node-opened-2.png',
+            'node_modules/angular-tree-control/images/folder.png',
+            'node_modules/angular-tree-control/images/node-closed.png',
+            'node_modules/angular-tree-control/images/node-closed-light.png',
+            'node_modules/angular-tree-control/images/node-opened.png',
+            'node_modules/angular-tree-control/images/node-opened-light.png',
+            'node_modules/angular-tree-control/images/folder-closed.png',
+            'node_modules/angular-tree-control/images/node-closed-2.png',
+            'node_modules/angular-tree-control/images/file.png'
           ]
         }]
       }
