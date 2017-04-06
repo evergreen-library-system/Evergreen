@@ -23,8 +23,8 @@ module.exports = function(grunt) {
             'node_modules/angular-sanitize/angular-sanitize.min.js.map',
             'node_modules/angular-route/angular-route.min.js',
             'node_modules/angular-route/angular-route.min.js.map',
-            'node_modules/angular-ui-bootstrap/dist/ui-bootstrap.min.js',
-            'node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.min.js',
+            'node_modules/angular-ui-bootstrap/dist/ui-bootstrap.js',
+            'node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js',
             'node_modules/angular-hotkeys/build/hotkeys.min.js',
             'node_modules/angular-file-saver/dist/angular-file-saver.bundle.min.js',
             'node_modules/angular-location-update/angular-location-update.min.js',
@@ -117,6 +117,17 @@ module.exports = function(grunt) {
       options: {
         banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
       },
+      dev: {
+        files: [{
+          expand: true,
+          src: ['build/js/ui-bootstrap.js', 'build/js/ui-bootstrap-tpls.js'],
+          dest: 'build/js',
+          cwd: '.',
+          rename: function (dst, src) {
+            return src.replace('.js', '.min.js');
+          }
+        }],
+      },
       build: {
         src: [
             // These are concatenated in order in the final build file.
@@ -127,7 +138,7 @@ module.exports = function(grunt) {
             'build/js/angular-sanitize.min.js',
             'build/js/angular-route.min.js',
             'build/js/ui-bootstrap.min.js',
-            'build/js/ui-bootstrap-tpls.min.js',
+            'build/js/ui-bootstrap-tpls.js',
             'build/js/hotkeys.min.js',
             'build/js/angular-tree-control.js',
             'build/js/ngToast.min.js',
@@ -156,7 +167,7 @@ module.exports = function(grunt) {
             'services/op_change.js',
         ],
         dest: 'build/js/<%= pkg.name %>.<%= pkg.version %>.min.js'
-      }
+      },
     },
 
     // bare concat operation; useful for testing concat w/o minification
@@ -204,7 +215,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-exec');
 
-  // note: "grunt concat" is not requried 
+  // note: "grunt concat" is not required 
   grunt.registerTask('build', ['copy', 'cssmin', 'uglify']);
 
   // test only, no minification

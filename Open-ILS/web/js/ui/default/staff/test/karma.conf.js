@@ -12,7 +12,7 @@ module.exports = function(config){
       'node_modules/angular-file-saver/dist/angular-file-saver.bundle.min.js',
       'node_modules/ng-toast/dist/ngToast.min.js',
       'node_modules/angular-sanitize/angular-sanitize.min.js',
-      'build/js/ui-bootstrap.min.js',
+      'build/js/ui-bootstrap.js',
       'build/js/hotkeys.min.js',
       'build/js/angular-cookies.min.js',
       /* OpenSRF must be installed first */
