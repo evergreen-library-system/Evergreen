@@ -1194,9 +1194,9 @@ sub check_purchase_order_received {
         	"jub" => {"acqcr" => {"type" => "left"}}
     	},
     	"where" =>{
-        	"+jub" => {"id" => $po_id},
+        	"+jub" => {"purchase_order" => $po_id},
         	"-or" => [
-            	{"+jub" => {"state" => "received"}},
+            	{"+jub" => {"state" => {"!=" => "received"}}},
             	{"+acqcr" => {"keep_debits" =>"t"}}
         	]
     	}
@@ -3224,7 +3224,7 @@ sub cancel_lineitem {
             }
         }
     }
-
+ 
     update_lineitem($mgr, $li) or return 0;
     $result->{"li"} = {
         $li_id => {
@@ -3232,6 +3232,12 @@ sub cancel_lineitem {
             "cancel_reason" => $cancel_reason
         }
     };
+
+    # check to see if this cancelation should result in
+    # marking the purchase order "received"
+    my $po;
+    return 0 unless check_purchase_order_received($mgr, $li->purchase_order->id);
+
     return $result;
 }
 
