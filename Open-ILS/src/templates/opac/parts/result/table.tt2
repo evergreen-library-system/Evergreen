@@ -364,7 +364,7 @@ END;
                                                     [% PROCESS "opac/parts/result/copy_counts.tt2" %]
                                                     [% IF rec.user_circulated %]
                                                     <div class="result_item_circulated">
-                                                        <img src="[% ctx.media_prefix %]/images/green_check.png" alt="[% l('Checked Out Before') %]"/>
+                                                        <img src="[% ctx.media_prefix %]/images/green_check.png[% ctx.cache_key %]" alt="[% l('Checked Out Before') %]"/>
                                                         <span>[% l('I have checked this item out before') %]</span>
                                                     </div>
                                                     [% END %]
@@ -392,7 +392,7 @@ END;
                                                                       hold_source_page => mkurl()}, ['query','tag','subfield','term','_special','sort','page']) %]"
                                                                 [% html_text_attr('title', l('Place Hold on [_1]', attrs.title)) %]
                                                                     class="no-dec" rel="nofollow" vocab=""><img
-                                                                src="[% ctx.media_prefix %]/images/green_check.png"
+                                                                src="[% ctx.media_prefix %]/images/green_check.png[% ctx.cache_key %]"
                                                                 alt=""/><span class="result_place_hold">[% l('Place Hold') %]</span></a>
                                                         </div>
 [%- END -%]
@@ -412,7 +412,7 @@ END;
                                                             %]      
                                                             <a href="[% href %]" class="no-dec" 
                                                                 [% html_text_attr('title', title_label) %] rel="nofollow" vocab="">
-                                                                <img src="[% ctx.media_prefix %]/images/clipboard.png" alt="" />
+                                                                <img src="[% ctx.media_prefix %]/images/clipboard.png[% ctx.cache_key %]" alt="" />
                                                                 [% label %]
                                                             </a>
                                                             [% END %]
@@ -426,7 +426,7 @@ END;
                                                                 href="[% ctx.ext_proto %]://contentcafe2.btol.com/ContentCafeClient/ContentCafe.aspx?UserID=[%- 
                                                                     ENV.OILS_CONTENT_CAFE_USER %]&amp;Password=[%-
                                                                     ENV.OILS_CONTENT_CAFE_PASS %]&amp;ItemKey=[% ident | uri %]&amp;Options=Y" rel="nofollow" vocab="">
-                                                                <img src='[% ctx.media_prefix %]/images/starz.png' alt="[% l('Ratings Icon') %]"/> 
+                                                                <img src='[% ctx.media_prefix %]/images/starz.png[% ctx.cache_key %]' alt="[% l('Ratings Icon') %]"/>
                                                                 <span class="results_reviews">[% l('Reviews &amp; More') %]</span>
                                                             </a>
                                                         </div>

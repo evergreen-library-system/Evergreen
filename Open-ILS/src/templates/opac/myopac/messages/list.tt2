@@ -73,7 +73,7 @@
                     <a href="#"><img
                         alt="[% l('Messages Help') %]"
                         title="[% l('Actions for messages') %]"
-                        src="[% ctx.media_prefix %]/images/question-mark.png" /></a>
+                        src="[% ctx.media_prefix %]/images/question-mark.png[% ctx.cache_key %]" /></a>
                 </span>
             </div>
             [% IF count < 1 %]

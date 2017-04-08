@@ -83,7 +83,7 @@
                     <a href="#"><img
                         alt="[% l('Holds Help') %]"
                         title="[% l('Actions for selected holds') %]"
-                        src="[% ctx.media_prefix %]/images/question-mark.png" /></a>
+                        src="[% ctx.media_prefix %]/images/question-mark.png[% ctx.cache_key %]" /></a>
                 </td>
                 <td style="padding-left:5px;" class='error'>
                     [%  IF ctx.hold_suspend_post_capture;
@@ -223,7 +223,7 @@
                             FOR format IN formats 
                           %]
                             <img title="[% format.label | html %]" 
-                              alt="[% format.label | html %]" src="[% format.icon %]" />
+                              alt="[% format.label | html %]" src="[% format.icon %][% ctx.cache_key %]" />
                             [% END %]
                         </div>
                     </td>

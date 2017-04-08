@@ -93,7 +93,7 @@
                     <td>
                         <div class='format_icon'>
                             [% IF attrs.format_icon %]
-                            <img title="[% attrs.format_label | html %]" alt="[% attrs.format_label | html %]" src="[% attrs.format_icon %]" />
+                            <img title="[% attrs.format_label | html %]" alt="[% attrs.format_label | html %]" src="[% attrs.format_icon %][% ctx.cache_key %]" />
                             [% END %]
                         </div>
                     </td>

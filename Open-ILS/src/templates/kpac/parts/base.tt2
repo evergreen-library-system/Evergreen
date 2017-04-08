@@ -2,7 +2,7 @@
 <html xmlns='http://www.w3.org/1999/xhtml' lang='[% ctx.locale %]' xml:lang='[% ctx.locale %]'>
     <head>
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-        <link rel="stylesheet" type="text/css" href="[% ctx.media_prefix %]/css/skin/default/kpac/style.css" />
+        <link rel="stylesheet" type="text/css" href="[% ctx.media_prefix %]/css/skin/default/kpac/style.css[% ctx.cache_key %]" />
         [% IF ctx.authtime %]
         <meta http-equiv="refresh" content="[% ctx.authtime %];[% 
             ctx.logout_page _ '?redirect_to=' _ ctx.home_page %]">
@@ -18,7 +18,7 @@
             <div class="main_wrapper"> [% content %] </div>
             [% INCLUDE 'kpac/parts/footer.tt2' %]
         </div>
-        <script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/kpac/functions.js"></script>
+        <script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/kpac/functions.js[% ctx.cache_key %]"></script>
         [%- INCLUDE 'kpac/parts/acimport.tt2' %]
     </body>
 </html>

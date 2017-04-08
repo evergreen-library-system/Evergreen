@@ -80,7 +80,7 @@
     END;
 
     BLOCK get_ccvm_icon;
-        ctx.media_prefix _ '/images/format_icons/' _ ccvm.ctype _ '/' _ ccvm.code _ '.png';
+        ctx.media_prefix _ '/images/format_icons/' _ ccvm.ctype _ '/' _ ccvm.code _ '.png' _ ctx.cache_key;
     END;
 
     # Extract MARC fields from XML

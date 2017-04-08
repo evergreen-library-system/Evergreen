@@ -34,7 +34,7 @@
                             [% END %]
                         </select>
                         <img alt="[% l('List Items Help') %]"
-                            src="[% ctx.media_prefix %]/images/question-mark.png"
+                            src="[% ctx.media_prefix %]/images/question-mark.png[% ctx.cache_key %]"
                             title="[% l('The number of lists displayed per page.') %]"
                         />
                     </td>
@@ -54,7 +54,7 @@
                             [% END %]
                         </select>
                         <img alt="[% l('List Items Help') %]"
-                            src="[% ctx.media_prefix %]/images/question-mark.png"
+                            src="[% ctx.media_prefix %]/images/question-mark.png[% ctx.cache_key %]"
                             title="[% l('The number of list items displayed per page when viewing a selected list.') %]"
                         />
                     </td>

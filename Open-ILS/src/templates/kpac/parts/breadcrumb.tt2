@@ -4,7 +4,7 @@
     <!-- home page -->
     <a href="[% mkurl(ctx.kpac_root _ '/home', {}, ['trail', 'page']) %]" 
         class="bread_home"><img alt="[% l('Home') %]" 
-        src="[% ctx.media_prefix %]/images/kpac/home_icon.png" /></a>
+        src="[% ctx.media_prefix %]/images/kpac/home_icon.png[% ctx.cache_key %]" /></a>
 
     <!-- category trail -->
     [%  trail = CGI.param('trail'); 

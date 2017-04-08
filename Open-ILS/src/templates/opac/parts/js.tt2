@@ -1,5 +1,5 @@
 <!-- JS imports, etc.  -->
-<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/opac/simple.js"></script>
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/opac/simple.js[% ctx.cache_key %]"></script>
 
 <!-- DOB validation for Patron Registration in OPAC -->
 <script type="text/javascript">
@@ -20,7 +20,7 @@
 [% END -%]
 
 [%- IF ctx.is_staff %]
-<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/opac/staff.js"></script>
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/opac/staff.js[% ctx.cache_key %]"></script>
     [% IF ctx.page == 'record' %]
         [% IF ctx.search_result_index >= 0 %]
         <script>
@@ -106,7 +106,7 @@
 [% INCLUDE "opac/parts/acjs.tt2" IF ctx.page == 'record' %]
 [% IF ctx.page == 'advanced' %]
 <script type="text/javascript" 
-    src="[% ctx.media_prefix %]/js/ui/default/opac/copyloc.js"></script>
+    src="[% ctx.media_prefix %]/js/ui/default/opac/copyloc.js[% ctx.cache_key %]"></script>
 [% END %]
 
 [% IF ebook_api.enabled == 'true' %]

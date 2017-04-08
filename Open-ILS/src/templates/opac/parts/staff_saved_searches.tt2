@@ -6,9 +6,9 @@
         </div>
         <div class="button">
             [% IF ctx.saved_searches_expanded %]
-            <a href="[% mkurl('', {'sss_expand' => 0}) %]" title="[% l('Collapse') %]"><img src="[% ctx.media_prefix %]/images/staff_search_minus_btn.png" alt="[% l('Collapse') %]" /></a>
+            <a href="[% mkurl('', {'sss_expand' => 0}) %]" title="[% l('Collapse') %]"><img src="[% ctx.media_prefix %]/images/staff_search_minus_btn.png[% ctx.cache_key %]" alt="[% l('Collapse') %]" /></a>
             [% ELSE %]
-            <a href="[% mkurl('', {'sss_expand' => 1}) %]" title="[% l('Expand') %]"><img src="[% ctx.media_prefix %]/images/staff_search_plus_btn.png" alt="[% l('Expand') %]" /></a>
+            <a href="[% mkurl('', {'sss_expand' => 1}) %]" title="[% l('Expand') %]"><img src="[% ctx.media_prefix %]/images/staff_search_plus_btn.png[% ctx.cache_key %]" alt="[% l('Expand') %]" /></a>
             [% END %]
         </div>
         <div class="clear">&nbsp;</div>

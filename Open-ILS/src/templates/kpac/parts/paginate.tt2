@@ -17,7 +17,7 @@
                 IF page > 0;
                     href = mkurl('', {page => page - 1});
                 ELSE; class = class _ ' invisible'; END %]
-            <a class="[% class %]" href="[% href %]"><img src="[% ctx.media_prefix %]/images/kpac/arrow_last.png" /></a>
+            <a class="[% class %]" href="[% href %]"><img src="[% ctx.media_prefix %]/images/kpac/arrow_last.png[% ctx.cache_key %]" /></a>
         </td>
 
         <!-- page X of Y -->
@@ -37,13 +37,13 @@
                     href = mkurl('', {page => page + 1});
                 ELSE; class = class _ ' invisible'; END;
             %]
-            <a class="[% class %]" href="[% href %]"><img src="[% ctx.media_prefix %]/images/kpac/arrow_next.png" /></a>
+            <a class="[% class %]" href="[% href %]"><img src="[% ctx.media_prefix %]/images/kpac/arrow_next.png[% ctx.cache_key %]" /></a>
         </td>
 
         <!-- Top of page -->
         [% IF showtop %]
             <td class="to_top_btn"><a href="[% mkurl('').replace('#.*', '') %]">
-                <img src="[% ctx.media_prefix %]/images/kpac/to_top_btn.png" />
+                <img src="[% ctx.media_prefix %]/images/kpac/to_top_btn.png[% ctx.cache_key %]" />
             </a></td>
         [% END %]
     </tr>

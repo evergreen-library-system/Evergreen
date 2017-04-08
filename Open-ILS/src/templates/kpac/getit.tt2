@@ -18,7 +18,7 @@
                 <div class="left_brain">
 
                     [% WRAPPER 'kpac/parts/help_popups.tt2' popup_id='card_help' %]
-                        <img src="[% ctx.media_prefix %]/images/kpac/library_card.png" alt="[% l('library card') %]" /></div></td>
+                        <img src="[% ctx.media_prefix %]/images/kpac/library_card.png[% ctx.cache_key %]" alt="[% l('library card') %]" /></div></td>
                     [% END %]
                     [% WRAPPER 'kpac/parts/help_popups.tt2' popup_id='password_help' %]
                         <p>[% l('Enter your password') %]</p>
@@ -46,7 +46,7 @@
                                     </div>
                                     <a class="help_btn" href="javascript:;" 
                                         onclick="helpPopup('card_help', this, event);"><img 
-                                        src="[% ctx.media_prefix %]/images/kpac/question_mark.png" alt="[% l('pin number help') %]" /></a>
+                                        src="[% ctx.media_prefix %]/images/kpac/question_mark.png[% ctx.cache_key %]" alt="[% l('pin number help') %]" /></a>
 
                                     <div class="clear">&nbsp;</div>
                                     <div class="hr">&nbsp;</div>
@@ -60,7 +60,7 @@
 
                                     <a class="help_btn" href="javascript:;" 
                                         onclick="helpPopup('password_help', this, event);"><img 
-                                        src="[% ctx.media_prefix %]/images/kpac/question_mark.png" alt="[% l('password help') %]" /></a>
+                                        src="[% ctx.media_prefix %]/images/kpac/question_mark.png[% ctx.cache_key %]" alt="[% l('password help') %]" /></a>
 
                                     <input type="hidden" name='pickup_lib' value='0' id='pickup_lib'>
                                     
@@ -117,7 +117,7 @@
                         </div>
                         <div class="submit_btn">
                             <input type='hidden' name='action' value='hold'/>
-                            <input type='image' src="[% ctx.media_prefix %]/images/kpac/review_submit_btn.png" alt="[% l('Submit') %]"/>
+                            <input type='image' src="[% ctx.media_prefix %]/images/kpac/review_submit_btn.png[% ctx.cache_key %]" alt="[% l('Submit') %]"/>
                         </div>
                     </form>
                 </div>
@@ -152,7 +152,7 @@
                             </div>
                         [% END %]
                         <div class="submit_btn">
-                            <input type='image' src="[% ctx.media_prefix %]/images/kpac/review_submit_btn.png" alt="[% l('Submit') %]" />
+                            <input type='image' src="[% ctx.media_prefix %]/images/kpac/review_submit_btn.png[% ctx.cache_key %]" alt="[% l('Submit') %]" />
                         </div>
                     </div>
                 </div>
@@ -166,7 +166,7 @@
         <tr>
             [%  # in the absence of a sane referer, return to the detail page
                 url = ctx.kpac_root _ (ctx.referer.match('results') ? '/results' : '/record/' _ ctx.bre_id) %]
-            <td><a href="[% mkurl(url) %]"><img src="[% ctx.media_prefix %]/images/kpac/cancel_back_btn.png" /></a></td>
+            <td><a href="[% mkurl(url) %]"><img src="[% ctx.media_prefix %]/images/kpac/cancel_back_btn.png[% ctx.cache_key %]" /></a></td>
             <td width="100%" class="nav_mid_bg">&nbsp;</td>
         </tr>
     </table>

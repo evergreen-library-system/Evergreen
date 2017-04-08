@@ -56,7 +56,7 @@
                 <a href="#"><img 
                     alt="[% l('Renewing Help') %]"
                     title="[% l('Actions for checked out items') %]"
-                    src="[% ctx.media_prefix %]/images/question-mark.png" /></a>
+                    src="[% ctx.media_prefix %]/images/question-mark.png[% ctx.cache_key %]" /></a>
             </span>
         </div>
 

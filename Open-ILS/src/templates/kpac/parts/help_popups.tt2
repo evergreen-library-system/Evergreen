@@ -18,7 +18,7 @@
             </tr>
             <tr>
                 <td colspan="3" align="center" valign="top">
-                    <img class="popup_arrow_bm" src="[% ctx.media_prefix %]/images/kpac/popup_arrow_bm.png" />
+                    <img class="popup_arrow_bm" src="[% ctx.media_prefix %]/images/kpac/popup_arrow_bm.png[% ctx.cache_key %]" />
                 </td>
             </tr>
         </table>

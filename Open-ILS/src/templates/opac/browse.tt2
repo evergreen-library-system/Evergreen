@@ -45,7 +45,7 @@
 
 			<input id='search-submit-go' type="submit" value="[% l('Browse') %]" alt="[% l('Browse') %]" class="opac-button"/>
                         <img id="browse-submit-spinner" 
-                        src="[% ctx.media_prefix %]/opac/images/progressbar_green.gif" 
+                        src="[% ctx.media_prefix %]/opac/images/progressbar_green.gif[% ctx.cache_key %]"
                         class="hidden" style="width: 16px; height: 16px;" 
                         alt="[% l('Search in progress icon') %]" />
                     </form>
@@ -70,7 +70,7 @@
                     [% END %]
 
                     <img id="browse-pager-spinner-[% id %]" 
-                        src="[% ctx.media_prefix %]/opac/images/progressbar_green.gif" 
+                        src="[% ctx.media_prefix %]/opac/images/progressbar_green.gif[% ctx.cache_key %]"
                         class="hidden" style="width: 16px; height: 16px;" 
                         alt="[% l('Search in progress icon') %]" />
                 </div>

@@ -81,7 +81,7 @@
                 <!--
                 <td style="padding-left:5px;">
                     <a href="#"><img alt="[% l('Deleting Help') %]"
-                        src="[% ctx.media_prefix %]/images/question-mark.png" /></a>
+                        src="[% ctx.media_prefix %]/images/question-mark.png[% ctx.cache_key %]" /></a>
                 </td>
                 -->
             </tr>

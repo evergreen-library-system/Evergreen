@@ -1,10 +1,10 @@
 [%
 # HTML display chunks
-progress_icon = '<img id="ebook_avail_spinner" src="/opac/images/progressbar_green.gif" alt="' _ l("Checking availability for this item...") _ '"/>'
+progress_icon = '<img id="ebook_avail_spinner" src="/opac/images/progressbar_green.gif[% ctx.cache_key %]" alt="' _ l("Checking availability for this item...") _ '"/>'
 %]
 
-<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/opac/ebook_api/session.js"></script>
-<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/opac/ebook_api/ebook.js"></script>
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/opac/ebook_api/session.js[% ctx.cache_key %]"></script>
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/opac/ebook_api/ebook.js[% ctx.cache_key %]"></script>
 <script type="text/javascript">
 
 // translatable strings as JS variables
@@ -65,7 +65,7 @@ dojo.addOnLoad(function() {
 </script>
 
 [%- IF ctx.user %]
-<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/opac/ebook_api/relation.js"></script>
-<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/opac/ebook_api/loggedin.js"></script>
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/opac/ebook_api/relation.js[% ctx.cache_key %]"></script>
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/opac/ebook_api/loggedin.js[% ctx.cache_key %]"></script>
 [%- END %]
 

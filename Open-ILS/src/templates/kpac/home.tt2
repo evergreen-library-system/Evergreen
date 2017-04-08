@@ -37,7 +37,7 @@
 
                             <td><input type="text" class="search_box" name="query" 
                                 value="[% CGI.param('nosprop') ? '' : CGI.param('query') | html  %]"/></td>
-                            <td><input type="image" src="[% ctx.media_prefix %]/images/kpac/search_btn.png" alt="[% l('search') %]" /></td>
+                            <td><input type="image" src="[% ctx.media_prefix %]/images/kpac/search_btn.png[% ctx.cache_key %]" alt="[% l('search') %]" /></td>
                         </tr>
                     </table>
                 </form>

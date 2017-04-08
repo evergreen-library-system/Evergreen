@@ -36,7 +36,7 @@
         IF img.match('^/') OR img.match('^https?://');
             img;
         ELSE;
-            ctx.media_prefix _ '/images/kpac/' _ img;
+            ctx.media_prefix _ '/images/kpac/' _ img _ ctx.cache_key;
         END;
     END;
 %]

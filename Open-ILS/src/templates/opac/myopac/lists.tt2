@@ -55,7 +55,7 @@
                         onclick="alert('[% bb_publish_text %]')">
                         <img alt="[% l('Sharing Help') %]"
                             [% html_text_attr('title', bb_publish_text) %]
-                            src="[% ctx.media_prefix %]/images/question-mark.png" />
+                            src="[% ctx.media_prefix %]/images/question-mark.png[% ctx.cache_key %]" />
                     </a>
                 </td>
             </tr>
@@ -226,7 +226,7 @@
                 [% IF bbag.pub == 't'; %]
                 <a target='_blank' href='/opac/extras/feed/bookbag/rss2-full/[% bbag.id %]'><img
                     alt="[% l('RSS Feed') %]" border="0"
-                    src="[% ctx.media_prefix %]/images/small-rss.png"/></a>
+                    src="[% ctx.media_prefix %]/images/small-rss.png[% ctx.cache_key %]"/></a>
                 [% END %]
                 [% IF bbag.pub == 't'; %]
                 <a href='[%-

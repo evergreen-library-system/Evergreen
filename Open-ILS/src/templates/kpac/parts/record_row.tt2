@@ -1,6 +1,6 @@
 <div class="search_results">
     <div class="item_detail_image">
-        [%  img_src = ctx.media_prefix _ '/images/kpac/item_image.jpg'; # default image
+        [%  img_src = ctx.media_prefix _ '/images/kpac/item_image.jpg' _ ctx.cache_key; # default image
             ident = attrs.isbn_clean || attrs.upc; 
             IF ident; 
                 img_src = ctx.media_prefix _ '/opac/extras/ac/jacket/medium/' _ ident;
@@ -21,9 +21,9 @@
         [% IF show_actions %]
         <div class="item_detail_actions">
             <div class="button"><a href="[% mkurl(ctx.kpac_root _ '/record/' _ rec_id) %]"><img 
-                src="[% ctx.media_prefix %]/images/kpac/more_info_btn.png" alt="[% l('more info') %]" /></a></div>
+                src="[% ctx.media_prefix %]/images/kpac/more_info_btn.png[% ctx.cache_key %]" alt="[% l('more info') %]" /></a></div>
             <div class="button"><a href="[% mkurl(ctx.kpac_root _ '/getit/' _ rec_id) %]"><img 
-                src="[% ctx.media_prefix %]/images/kpac/get_it_btn_sm.png" alt="[% l('get it') %]" /></a></div>
+                src="[% ctx.media_prefix %]/images/kpac/get_it_btn_sm.png[% ctx.cache_key %]" alt="[% l('get it') %]" /></a></div>
             <div class="clear">&nbsp;</div>
         </div>
         [% END %]

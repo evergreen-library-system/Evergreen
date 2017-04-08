@@ -38,7 +38,7 @@
 %]
 <ul class="popmenu">
     <li><a href="#" class="no-dec">
-          <img src="[% ctx.media_prefix %]/images/clipboard.png" 
+          <img src="[% ctx.media_prefix %]/images/clipboard.png[% ctx.cache_key %]"
               [% html_text_attr('alt', 
                 l('Add item to a list: [_1]', record_title)) %]/>
           [% l("Add to my list") %]

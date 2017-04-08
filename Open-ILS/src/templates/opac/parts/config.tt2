@@ -237,4 +237,17 @@ ctx.exclude_electronic_checkbox = 0;
 ##############################################################################
 # obalkyknih_cz.enabled = 'false';
 
+
+##############################################################################
+# Browser cache-busting key
+##############################################################################
+# Links to assets like stylesheets, JavaScript, and images will have this
+# key appended so that browsers will be forced to request a new version.
+# Enables you to set a cache max-date of years.
+#
+# If unset, it falls back to eg_cache_hash (which is set every time you run
+# "autogen", which may or may not be when you change styles etc)
+##############################################################################
+# ctx.cache_key = '001'
+
 %]

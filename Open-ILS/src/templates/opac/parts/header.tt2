@@ -147,4 +147,13 @@
     MACRO img_alt(text) BLOCK;
         html_text_attr('alt', text);
     END;
+
+    # Browser cache-busting key
+    # Fall back to the eg_cache_hash (set by autogen) so that we don't have to
+    # add conditionals into the rest of the templates
+    IF ctx.cache_key AND ctx.cache_key != "?" _ ctx.eg_cache_hash;
+        ctx.cache_key = "?v=" _ ctx.cache_key;
+    ELSE;
+        ctx.cache_key = "?" _ ctx.eg_cache_hash;
+    END;
 %]

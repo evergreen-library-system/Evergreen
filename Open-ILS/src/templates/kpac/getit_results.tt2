@@ -41,9 +41,9 @@
 <div class="sub_navigation2 checkout">
     <table cellpadding="0" cellspacing="0" border="0" width="100%"><tr>
         <td><a href="[% mkurl(ctx.kpac_root _ '/results', {}, kill_params) %]">
-            <img src="[% ctx.media_prefix %]/images/kpac/back_to_results_btn.png" /></a></td>
+            <img src="[% ctx.media_prefix %]/images/kpac/back_to_results_btn.png[% ctx.cache_key %]" /></a></td>
         <td width="100%" class="nav_mid_bg">&nbsp;</td>
-        <td><img src="[% ctx.media_prefix %]/images/kpac/back_to_book.png" /></td>
+        <td><img src="[% ctx.media_prefix %]/images/kpac/back_to_book.png[% ctx.cache_key %]" /></td>
         <td nowrap="nowrap">
             <a class="checkout_res_back" href="[% mkurl(ctx.kpac_root _ '/record/' _ ctx.bre_id, {}, kill_params) %]">
                 [%  title = attrs.title || '';

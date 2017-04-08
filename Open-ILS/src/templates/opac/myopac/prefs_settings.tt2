@@ -46,7 +46,7 @@
                             [% END %]
                         </select>
                         <a href="#"><img alt="[% l('Search Hits Help') %]" 
-                            src="[% ctx.media_prefix %]/images/question-mark.png"
+                            src="[% ctx.media_prefix %]/images/question-mark.png[% ctx.cache_key %]"
                         /></a>
                     </td>
                 </tr>
