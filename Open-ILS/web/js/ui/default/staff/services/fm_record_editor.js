@@ -75,6 +75,7 @@ angular.module('egFmRecordEditorMod',
             $scope.record_label = egCore.idl.classes[$scope.idlClass].label;
             $scope.rec_orgs = {};
             $scope.rec_org_values = {};
+            $scope.id_is_editable = false;
 
             if ($scope.mode == 'update') {
                 egCore.pcrud.retrieve($scope.idlClass, $scope.recordId).then(function(r) {
@@ -83,6 +84,9 @@ angular.module('egFmRecordEditorMod',
                     $scope.fields = get_field_list();
                 });
             } else {
+                if (!('pkey_sequence' in egCore.idl.classes[$scope.idlClass])) {
+                    $scope.id_is_editable = true;
+                }
                 $scope.rec = new egCore.idl[$scope.idlClass]();
                 $scope.fields = get_field_list();
             }

@@ -11,7 +11,13 @@
         <label for="rec-{{field.name}}">{{field.label}}</label>
       </div>
       <div class="col-md-9">
-        <span  ng-if="field.datatype == 'id'">{{rec[field.name]()}}</span>
+        <span  ng-if="field.datatype == 'id' && !id_is_editable">{{rec[field.name]()}}</span>
+        <input ng-if="field.datatype == 'id' &&  id_is_editable"
+          ng-readonly="field.readonly"
+          ng-required="field.is_required()"
+          ng-model="rec[field.name]"
+          ng-model-options="{ getterSetter : true }">
+        </input>
         <input ng-if="field.datatype == 'text'"
           ng-readonly="field.readonly"
           ng-required="field.is_required()"
