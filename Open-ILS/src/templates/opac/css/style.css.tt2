@@ -1680,6 +1680,13 @@ a.dash-link:hover { text-decoration: underline !important; }
     padding-bottom: 4px;
     margin-bottom: 10px;
     border-bottom: 1px dotted [% css_colors.accent_medium %];
+    width: 100%;
+}
+.list_create_table_label {
+    width: 30%;
+}
+#list_description, #list_create_name {
+        width: 500px;
 }
 .list-create-table-buttons input[type=image] { margin-top: 2px; }
 .result_table_format_cell { padding: 0px 10px; text-align: center; }
@@ -1942,6 +1949,14 @@ a.opac-button-header:hover, #dash_wrapper a.opac-button:hover {
     margin-right: 5em;
     [% END -%]
 }
+.bookbag-controls-title-block {
+    float:left;
+    width:40%;
+}
+.bookbag-controls-button-block {
+    float:left;
+    width:50%;
+}
 h2.bookbag-name { margin-bottom: 0em; padding-bottom: 0em; }
 .bookbag-share .fixed { min-width: 4em; }
 .bookbag-specific {
@@ -1955,11 +1970,13 @@ h2.bookbag-name { margin-bottom: 0em; padding-bottom: 0em; }
     [% IF rtl == 't' -%]
     float: right;
     text-align: right;
+    margin-right: 15px;
     [% ELSE -%]
     float: left;
     text-align: left;
+    margin-left: 15px;
     [% END -%]
-    width: 45%;
+    width: 40%;
 }
 .bookbag-specific div.meta {
     [% IF rtl == 't' -%]
@@ -1970,6 +1987,9 @@ h2.bookbag-name { margin-bottom: 0em; padding-bottom: 0em; }
     text-align: right;
     [% END -%]
     width: 54%;
+    border: 1px solid [% css_colors.accent_light %];
+    padding: 5px;
+    margin-top: 5px;
 }
 #bbag-name-desc-form tr th { vertical-align: middle; }
 #bbag-name-desc-form .saver { vertical-align: middle; text-align: center; }
@@ -1978,8 +1998,27 @@ h2.bookbag-name { margin-bottom: 0em; padding-bottom: 0em; }
     font-style: italic;
     max-width: 40em;
 }
-#bbag-edit-description { width: 20em; }
-#bbag-edit-name { width: 20em; }
+.bbag-edit-desc-label {
+    float:left;
+    width:8em;
+}
+.bbag-edit-desc-save {
+    clear:both;
+    margin-bottom:10px;
+}
+#bbag-edit-description { width: 20em; float:left;}
+#bbag-edit-name { width: 20em; float: left; }
+.bbag-action {
+    margin-left: 15px;
+}
+.bbag-navigate-list {
+    padding-left: 32px;
+    float:left;
+}
+.bbag-navigate-list-pages {
+    padding-left: 10px;
+    float:left;
+}
 textarea { font-family: sans-serif; }
 table.bookbag-specific {
     border-right: 1px solid [% css_colors.accent_dark %];
@@ -1989,21 +2028,22 @@ table.bookbag-specific {
 .bookbag-share {
     [% IF rtl == 't' -%]
     float: right;
+    padding: 0px 10px 0px 0px;
     [% ELSE -%]
     float: left;
+    padding: 0px 0px 0px 10px;
     [% END -%]
-    padding: 5px 0;
 }
+.bookbag-share .fixed { min-width: 6em; }
 .bookbag-controls {
     [% IF rtl == 't' -%]
     float: right;
-    padding: 5px 10px 0px 0px;
+    padding: 0px 10px 0px 0px;
     [% ELSE -%]
     float: left;
-    padding: 5px 0px 0px 10px;
+    padding: 0px 0px 0px 10px;
     [% END -%]
 }
-
 .bookbag-specific td.list_checkbox {
     [% IF rtl == 't' -%]
     padding-right: 10px !important;
@@ -2485,6 +2525,9 @@ a.preflib_change {
          display:none;
      }
     .radio-parts-selection { width: 90%; }
+    #list_description, #list_create_name {
+        width: 300px;
+    }
 }
 
 @media only screen and (max-width: 600px) {
@@ -2540,7 +2583,69 @@ a.preflib_change {
        padding: 2px 4px 3px 4px;
        font-size: [% css_fonts.size_base %];
     }
-
+    .bookbag-controls-title-block {
+        clear:left;
+        width:90%;
+    }
+    .bookbag-controls-button-block {
+        clear:left;
+        width;90%;
+    }
+    .bookbag-specific {
+        margin-left: 0px;
+    }
+    .bookbag-specific div.sort {
+        float: left;
+        width: 95%;
+        margin: 5px 0px 5px 0px;
+        text-align: left;
+        border: 1px #ccc solid;
+        padding:5px;
+    }
+    .bookbag-specific div.meta {
+        float: left;
+        width: 95%;
+        margin-left:0px;
+        margin-bottom:5px;
+        padding:5px;
+        text-align: left;
+    }
+    #bbag-edit-name {
+        float: left;
+        width: 220px;
+    }
+    #bbag-edit-description {
+        width: 220px;
+        margin-top:5px;
+    }
+    .bbag-content {
+        padding:5px;
+        border:1px #ccc solid;
+    }
+    .bbag-action {
+        margin-left:0px;
+        margin-bottom:5px;
+    }
+    .bbag-action-field {
+        width:230px;
+    }
+    .bookbag-specific div.sort select {
+        width:180px;
+    }
+    .bookbag-specific td.list_checkbox {
+        padding-left: 0px !important;
+    }
+    .bookbag-specific td.list_entry {
+        min-width: 5em;
+        padding-left: 5px !important;
+    }
+    .bbag-navigate-list {
+        display: none;
+    }
+    .bbag-navigate-list-pages {
+        text-align:right;
+        float:right;
+    }
     #dash_wrapper div {
         background: transparent;
         padding: 0px;
@@ -2582,6 +2687,9 @@ a.preflib_change {
     }
     #myopac_sum_fines {
         display: none;
+    }
+    #list_description, #list_create_name {
+        width: 170px;
     }
     .results_header_lbl {
         display: none;

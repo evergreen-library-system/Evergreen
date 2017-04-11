@@ -1,5 +1,7 @@
         [% IF ctx.mylist.size %]
         <div class="bookbag-specific">
+        <p class="big-strong">[% l('Temporary List') %]</p>
+        <div class="sort">
             <form method="get">
                 <label for="anonsort">[% l("Sort list items by: ") %]</label>
                 [% INCLUDE "opac/parts/filtersort.tt2" mode='bookbag'
@@ -7,41 +9,39 @@
                 <input type="hidden" name="id"
                     value="[% CGI.param('id') | html %]" />
                 [%- INCLUDE "opac/parts/preserve_params.tt2"; %]
-                <input type="submit" value="[% l('Sort') %]" />
+                <input class="opac-button" type="submit" value="[% l('Sort') %]" />
             </form>
         </div>
-
         <form action="[% mkurl(ctx.opac_root _ '/mylist/move') %]" method="get">
-        <div>
-            <p class="big-strong">[% l('Temporary List') %]</p>
-            <table class="table_no_border_space table_no_cell_pad table_no_border">
+        <div class="bbag-action" style="clear:both;">
+            <select name="action">
+                <option>[% l('-- Actions for these items --') %]</option>
+                <option value="place_hold">[% l('Place hold') %]</option>
+                <option value="delete">[% l('Remove from list') %]</option>
+                [% IF ctx.user AND ctx.bookbags.size %]
+                    <optgroup label="[% l('Move selected items to list:') %]">
+                    [% FOR bbag IN ctx.bookbags %]]
+                        <option value="[% bbag.id %]" class="selector_actions_for_list_inner_option">[% bbag.name | html %]</option>
+                    [% END %]
+                    </optgroup>
+                [% END %]
+            </select>
+            [%- INCLUDE "opac/parts/preserve_params.tt2"; %]
+            <input class="opac-button" type="submit" value="[% l('Go') %]" />
+        </div>
+        <div class="bbag-content">
+            <table class="bookbag-specific table_no_cell_pad table_no_border_space table_no_border" width="100%">
                 <thead id="acct_list_header_anon">
                     <tr>
-                        <td width="1%" class='padding-left-10'>
+                        <td class='list_checkbox'>
                             <input type="checkbox" onclick="
                                 var inputs=document.getElementsByTagName('input'); 
                                 for (i = 0; i < inputs.length; i++) { 
                                     if (inputs[i].name == 'record' && !inputs[i].disabled) inputs[i].checked = this.checked;}"/>
                         </td>
-                        <td width="40%" class="opac-auto-108"><a href="[% mkurl('', {anonsort=>(CGI.param('anonsort') == 'titlesort' ? 'titlesort.descending' : 'titlesort')}) %]">[% l('Title') %]</a></td>
-                        <td width="40%" class="opac-auto-108"><a href="[% mkurl('', {anonsort=>(CGI.param('anonsort') == 'authorsort' ? 'authorsort.descending' : 'authorsort')}) %]">[% l('Author(s)') %]</a></td>
-                        <td width='18%'>[% l('Local Call Number') %]</td>
-                        <td width="1%" class="nowrap">
-                            <select name="action">
-                                <option>[% l('-- Actions for these items --') %]</option>
-                                <option value="place_hold">[% l('Place hold') %]</option>
-                                <option value="delete">[% l('Remove from list') %]</option>
-                                [% IF ctx.user AND ctx.bookbags.size %]
-                                <optgroup label="[% l('Move selected items to list:') %]">
-                                    [% FOR bbag IN ctx.bookbags %]]
-                                    <option value="[% bbag.id %]" class="selector_actions_for_list_inner_option">[% bbag.name | html %]</option>
-                                    [% END %]
-                                </optgroup>
-                                [% END %]
-                            </select>
-                            [%- INCLUDE "opac/parts/preserve_params.tt2"; %]
-                            <input type="submit" value="[% l('Go') %]" />
-                        </td>
+                        <td><a href="[% mkurl('', {anonsort=>(CGI.param('anonsort') == 'titlesort' ? 'titlesort.descending' : 'titlesort')}) %]">[% l('Title') %]</a></td>
+                        <td><a href="[% mkurl('', {anonsort=>(CGI.param('anonsort') == 'authorsort' ? 'authorsort.descending' : 'authorsort')}) %]">[% l('Author(s)') %]</a></td>
+                        <td>[% l('Local Call Number') %]</td>
                     </tr>
                 </thead>
                 <tbody>
@@ -49,11 +49,11 @@
                         attrs = {marc_xml => ctx.mylist_marc_xml.$item};
                         PROCESS get_marc_attrs args=attrs %]
                     <tr>
-                        <td class="item_list_padding padding-left-10">
+                        <td class="list_checkbox">
                             <input type="checkbox" name="record" value="[% item %]" />
                         </td>
-                        <td class="item_list_padding padding-left-5" ><a href="[% mkurl(ctx.opac_root _ '/record/' _ item, {}, ['edit_notes', 'id']) %]">[% attrs.title | html %]</a></td>
-                        <td class="item_list_padding padding-left-5"><a href="[%- 
+                        <td class="list_entry"><a href="[% mkurl(ctx.opac_root _ '/record/' _ item, {}, ['edit_notes', 'id']) %]">[% attrs.title | html %]</a></td>
+                        <td class="list_entry"><a href="[%- 
                             authorquery = attrs.author | replace('[,\.:;]', '');
                             mkurl(
                                 ctx.opac_root _ '/results',
@@ -61,7 +61,7 @@
                                 ['page', 'id', 'edit_notes']
                             )
                         -%]">[% attrs.author | html %]</a></td>
-                        <td class="item_list_padding padding-left-5">
+                        <td class="list_entry mobile_hide">
                         [% 
                             copy = attrs.holdings.0;
                             IF copy;
@@ -84,4 +84,5 @@
             <br /><br />
         </div>
         </form>
+        </div>
         [% END %]
