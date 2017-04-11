@@ -18,12 +18,13 @@ BUILD_ONLY=NO # -b
 UPGRADE_PREVIEW=NO # -r
 SKIP_I18N=NO # -i
 BUILD_BROWSER_CLIENT=NO # -c
+SKIP_XUL=NO # -x
 
 # path to OpenSRF libraries
 [ "$(which osrf_config)" ] && OSRF_JS_PATH="$(osrf_config --libdir)/javascript";
 
 
-while getopts ":hv:f:F:nptbrij:c" opt; do
+while getopts ":hv:f:F:nptbrij:cx" opt; do
     case $opt in
         v)
             VERSION=$OPTARG
@@ -58,6 +59,9 @@ while getopts ":hv:f:F:nptbrij:c" opt; do
         ;;
         c)
             BUILD_BROWSER_CLIENT=YES
+        ;;
+        x)
+            SKIP_XUL=YES
         ;;
         \?)
             echo "Invalid Option: -$OPTARG"
@@ -347,31 +351,34 @@ if [ $PREV_BRANCH != "PACKAGE" ]; then # We need to have tagged to do this ;)
     cp Evergreen-ILS-$VERSION/ChangeLog ChangeLog-$PREV_VERSION-$VERSION
 fi
 
-echo "Running enough of configure to build staff client"
-cd Evergreen-ILS-$VERSION/
-./configure --disable-core --disable-web --disable-updates --disable-apache-modules --disable-reporter
+if [ "$SKIP_XUL" = "NO" ]; then
+    echo "Running enough of configure to build staff client"
+    cd Evergreen-ILS-$VERSION/
+    ./configure --disable-core --disable-web --disable-updates --disable-apache-modules --disable-reporter
 
-echo "Building Release Staff Clients"
-cd Open-ILS/xul/staff_client
+    echo "Building Release Staff Clients"
+    cd Open-ILS/xul/staff_client
 
-echo "Grabbing XULRunner (to avoid issues with version changes)"
-wget http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/$XULRUNNER_VERSION/runtimes/xulrunner-$XULRUNNER_VERSION.en-US.win32.zip
-wget http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/$XULRUNNER_VERSION/runtimes/xulrunner-$XULRUNNER_VERSION.en-US.linux-i686.tar.bz2
-wget http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/$XULRUNNER_VERSION/runtimes/xulrunner-$XULRUNNER_VERSION.en-US.linux-x86_64.tar.bz2
+    echo "Grabbing XULRunner (to avoid issues with version changes)"
+    wget http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/$XULRUNNER_VERSION/runtimes/xulrunner-$XULRUNNER_VERSION.en-US.win32.zip
+    wget http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/$XULRUNNER_VERSION/runtimes/xulrunner-$XULRUNNER_VERSION.en-US.linux-i686.tar.bz2
+    wget http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/$XULRUNNER_VERSION/runtimes/xulrunner-$XULRUNNER_VERSION.en-US.linux-x86_64.tar.bz2
 
-make rigrelease
-make STAFF_CLIENT_STAMP_ID=rel_$UNDER_VERSION OPENSRF_JSLIBS="$OSRF_JS_PATH" build
-make win-client
-mv evergreen_staff_client_setup.exe ../../../../evergreen-setup-$VERSION.exe
-make linux32-client
-mv evergreen_staff_client_i686.tar.bz2 ../../../../evergreen-client-${VERSION}_i686.tar.bz2
-make linux64-client
-mv evergreen_staff_client_x86_64.tar.bz2 ../../../../evergreen-client-${VERSION}_x86_64.tar.bz2
-cd ../../../../
-md5sum evergreen-setup-$VERSION.exe > evergreen-setup-$VERSION.exe.md5
-md5sum evergreen-client-${VERSION}_i686.tar.bz2 > evergreen-client-${VERSION}_i686.tar.bz2.md5
-md5sum evergreen-client-${VERSION}_x86_64.tar.bz2 > evergreen-client-${VERSION}_x86_64.tar.bz2.md5
-
+    make rigrelease
+    make STAFF_CLIENT_STAMP_ID=rel_$UNDER_VERSION OPENSRF_JSLIBS="$OSRF_JS_PATH" build
+    make win-client
+    mv evergreen_staff_client_setup.exe ../../../../evergreen-setup-$VERSION.exe
+    make linux32-client
+    mv evergreen_staff_client_i686.tar.bz2 ../../../../evergreen-client-${VERSION}_i686.tar.bz2
+    make linux64-client
+    mv evergreen_staff_client_x86_64.tar.bz2 ../../../../evergreen-client-${VERSION}_x86_64.tar.bz2
+    cd ../../../../
+    md5sum evergreen-setup-$VERSION.exe > evergreen-setup-$VERSION.exe.md5
+    md5sum evergreen-client-${VERSION}_i686.tar.bz2 > evergreen-client-${VERSION}_i686.tar.bz2.md5
+    md5sum evergreen-client-${VERSION}_x86_64.tar.bz2 > evergreen-client-${VERSION}_x86_64.tar.bz2.md5
+else
+    echo "Skipping XULRunner staff client build"
+fi
 
 echo "Removing build directory"
 rm -rf Evergreen-ILS-$VERSION/
