@@ -787,7 +787,7 @@ sub receive_lineitem_detail {
     my $li = check_lineitem_received($mgr, $lid->lineitem) or return 0;
     return 1 if $li == 1; # li not received
 
-    return check_purchase_order_received($mgr, $li->purchase_order) or return 0;
+    return check_purchase_order_received($mgr, $li->purchase_order);
 }
 
 
@@ -1191,21 +1191,29 @@ sub create_purchase_order {
 sub check_purchase_order_received {
     my($mgr, $po_id) = @_;
 
-	my $non_recv_li = $mgr->editor->json_query({
-		"select" =>{
-        	"jub" =>["id"]
-    	},
-    	"from" =>{
-        	"jub" => {"acqcr" => {"type" => "left"}}
-    	},
-    	"where" =>{
-        	"+jub" => {"purchase_order" => $po_id},
-        	"-or" => [
-            	{"+jub" => {"state" => {"!=" => "received"}}},
-            	{"+acqcr" => {"keep_debits" =>"t"}}
-        	]
-    	}
-	});
+    my $non_recv_li = $mgr->editor->json_query({
+        "select" =>{
+            "jub" =>["id"]
+        },
+        "from" =>{
+            "jub" => {"acqcr" => {"type" => "left"}}
+        },
+        "where" => {
+            "+jub" => {"purchase_order" => $po_id},
+            # Return lineitems that are not in the received/cancelled [sic] 
+            # state OR those that are canceled with keep_debits=true.
+            "-or" => [
+                {"+jub" => {
+                    "state" => {"not in" => ["received", "cancelled"]}}
+                }, {
+                    "-and" => [
+                        {"+jub" => {"state" => "cancelled"}},
+                        {"+acqcr" => {"keep_debits" =>"t"}}
+                    ]
+                }
+            ]
+        }
+    });
 
     my $po = $mgr->editor->retrieve_acq_purchase_order($po_id);
     return $po if @$non_recv_li;
@@ -3240,7 +3248,6 @@ sub cancel_lineitem {
 
     # check to see if this cancelation should result in
     # marking the purchase order "received"
-    my $po;
     return 0 unless check_purchase_order_received($mgr, $li->purchase_order->id);
 
     return $result;
