@@ -36,7 +36,6 @@ install_nodejs_from_source:
 	./configure && make && make install
 	npm update
 	npm install -g grunt-cli
-	npm install -g bower
 
 clean:
 	make -C $(LIBDBI) clean
