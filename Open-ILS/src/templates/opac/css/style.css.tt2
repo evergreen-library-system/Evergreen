@@ -1082,8 +1082,19 @@ div.adv_search_available {
     display: inline-block;
     margin-left: 1em;
     margin-bottom: 8px;
-    }
+}
 
+.adv_filter_results_group_header {
+    display: inline-block;
+}
+
+.adv_filter_results_group_values {
+    display: inline;
+}
+
+.adv_search_result_filter {
+    display: inline-block;
+}
 
 .remove_filter {
    font-size: 16px;
@@ -1093,6 +1104,14 @@ div.adv_search_available {
 a.remove_filter {
     text-decoration: none;
     color: [% css_colors.accent_dark %];
+}
+
+#filter_hits {
+     display: inline-block;
+}
+
+#refine_search_link {
+    display: inline-block;
 }
 
 [%- IF we_want_to_turn_on_facet_styling.defined; %]

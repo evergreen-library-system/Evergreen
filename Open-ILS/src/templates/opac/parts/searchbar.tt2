@@ -148,9 +148,9 @@ END;
     [% END %]
     [% IF (is_advanced AND NOT is_special) AND CGI.param('qtype') %]
     <div class="refine_search result_block_visible">
-        [ <a href="[% mkurl(ctx.opac_root _ '/advanced') %]">[%
+        <span id="refine_search_link">[ <a href="[% mkurl(ctx.opac_root _ '/advanced') %]">[%
             l('Refine My Original Search')
-        %]</a> ]
+        %]</a> ]</span>
     </div>
     [% END %]
 
