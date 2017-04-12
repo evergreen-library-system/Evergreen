@@ -84,6 +84,7 @@ while getopts ":hv:f:F:nptbrij:cx" opt; do
             echo "   -i skip i18n; primarily useful for (quickly) testing this script."
             echo "   -j opensrf javascript library path.  If osrf_config is found, the value derived from osrf_config --libdir."
             echo "   -c build the experimental browser client;  requires nodejs/grunt-cli/bower"
+            echo "   -x skip building the XUL client"
             echo "   NOTE: -t and -b override PREV_BRANCH/PREV_VERSION, but -b overrides -t."
             exit -1
         ;;
