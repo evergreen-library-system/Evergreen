@@ -1,0 +1,11 @@
+<select ng-model="ngModel">
+  <option value="99">[% l('Last') %]</option>
+  <option value="98">[% l('Next to Last') %]</option>
+  <option value="97">[% l('Third to Last') %]</option>
+  <option value="00">[% l('Every') %]</option>
+  <option value="01">[% l('First') %]</option>
+  <option value="02">[% l('Second') %]</option>
+  <option value="03">[% l('Third') %]</option>
+  <option value="04">[% l('Fourth') %]</option>
+  <option value="05">[% l('Fifth') %]</option>
+</select>

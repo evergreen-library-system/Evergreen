@@ -1,0 +1,26 @@
+<div>
+  <eg-grid
+    id-field="id"
+    features="-display,-sort,-multisort"
+    items-provider="mfhdGridDataProvider"
+    grid-controls="mfhdGridControls"
+    persist-key="serials.mfhd_grid">
+
+    <eg-grid-menu-item handler="createMfhd"
+      label="[% l('Create MFHD') %]"
+    />
+
+    <eg-grid-action handler="edit_mfhd" disabled="need_one_selected"
+      label="[% l('Edit MFHD') %]"></eg-grid-action>
+    <eg-grid-action handler="delete_mfhds"
+      label="[% l('Delete Selected MFHDs') %]"></eg-grid-action>
+
+    <eg-grid-field label="[% l('ID') %]"             path="id"              visible></eg-grid-field>
+    <eg-grid-field label="[% l('Owning Library') %]" path="owning_lib.name" visible></eg-grid-field>
+    <eg-grid-field label="[% l('Basic Holdings') %]" path="basic_holdings" visible></eg-grid-field>
+    <eg-grid-field label="[% l('Index Holdings') %]" path="index_holdings" hidden></eg-grid-field>
+    <eg-grid-field label="[% l('Supplement Holdings') %]" path="supplement_holdings" hidden></eg-grid-field>
+
+  </eg-grid>
+ 
+</div>

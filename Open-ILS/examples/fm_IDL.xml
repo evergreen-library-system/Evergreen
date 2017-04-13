@@ -3956,7 +3956,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			</actions>
 		</permacrud>
 	</class>
-	<class id="aua" controller="open-ils.cstore" oils_obj:fieldmapper="actor::user_address" oils_persist:tablename="actor.usr_address" reporter:label="User Address">
+	<class id="aua" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::user_address" oils_persist:tablename="actor.usr_address" reporter:label="User Address">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.usr_address_id_seq">
 			<field reporter:label="Type" name="address_type"  reporter:datatype="text"/>
 			<field reporter:label="City" name="city"  reporter:datatype="text"/>
@@ -3977,6 +3977,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
 			<link field="replaces" reltype="has_a" key="id" map="" class="aua"/>
 		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="UPDATE_USER"><context link="usr" field="home_ou"/></create>
+				<retrieve permission="VIEW_USER"><context link="usr" field="home_ou"/></retrieve>
+				<update permission="UPDATE_USER"><context link="usr" field="home_ou"/></update>
+				<delete permission="UPDATE_USER"><context link="usr" field="home_ou"/></delete>
+			</actions>
+		</permacrud>
 	</class>
 	<class id="aal" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::address_alert" oils_persist:tablename="actor.address_alert" reporter:label="Address Alert">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.address_alert_id_seq">
@@ -5069,7 +5077,7 @@ SELECT  usr,
 		</permacrud>
 	</class>
 
-	<class id="ssubn" controller="open-ils.cstore" oils_obj:fieldmapper="serial::subscription_note" oils_persist:tablename="serial.subscription_note" reporter:label="Subscription Note">
+	<class id="ssubn" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="serial::subscription_note" oils_persist:tablename="serial.subscription_note" reporter:label="Subscription Note">
 		<fields oils_persist:primary="id" oils_persist:sequence="serial.subscription_note_id_seq">
 			<field reporter:label="ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Subscription" name="subscription" reporter:datatype="link"/>
@@ -5084,6 +5092,20 @@ SELECT  usr,
 			<link field="subscription" reltype="has_a" key="id" map="" class="ssub"/>
 			<link field="creator" reltype="has_a" key="id" map="" class="au"/>
 		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_SERIAL_SUBSCRIPTION" context_field="owning_lib">
+                    <context link="subscription" field="owning_lib"/>
+                </create>
+				<retrieve />
+				<update permission="ADMIN_SERIAL_SUBSCRIPTION" context_field="owning_lib">
+                    <context link="subscription" field="owning_lib"/>
+                </update>
+				<delete permission="ADMIN_SERIAL_SUBSCRIPTION" context_field="owning_lib">
+                    <context link="subscription" field="owning_lib"/>
+                </delete>
+			</actions>
+		</permacrud>
 	</class>
 
 	<class id="sdist" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="serial::distribution" oils_persist:tablename="serial.distribution" reporter:label="Distribution">
@@ -5174,7 +5196,7 @@ SELECT  usr,
 		</fields>
 		<links>
 			<link field="distribution" reltype="has_a" key="id" map="" class="sdist"/>
-			<link field="items" reltype="has_many" key="id" map="" class="sitem"/>
+			<link field="items" reltype="has_many" key="stream" map="" class="sitem"/>
 			<link field="routing_list_users" reltype="has_many" key="stream" map="" class="srlu"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
@@ -5379,7 +5401,7 @@ SELECT  usr,
 		</permacrud>
 	</class>
 
-	<class id="sin" controller="open-ils.cstore" oils_obj:fieldmapper="serial::item_note" oils_persist:tablename="serial.item_note" reporter:label="Item Note">
+	<class id="sin" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="serial::item_note" oils_persist:tablename="serial.item_note" reporter:label="Item Note">
 		<fields oils_persist:primary="id" oils_persist:sequence="serial.item_note_id_seq">
 			<field reporter:label="ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Item" name="item" reporter:datatype="link"/>
@@ -5394,7 +5416,22 @@ SELECT  usr,
 			<link field="item" reltype="has_a" key="id" map="" class="sitem"/>
 			<link field="creator" reltype="has_a" key="id" map="" class="au"/>
 		</links>
-		<!-- Not available via PCRUD at this time -->
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_SERIAL_ITEM">
+					<context link="item" jump="stream.distribution" field="holding_lib" />
+				</create>
+				<retrieve permission="ADMIN_SERIAL_ITEM">
+					<context link="item" jump="stream.distribution" field="holding_lib" />
+				</retrieve>
+				<update permission="ADMIN_SERIAL_ITEM">
+					<context link="item" jump="stream.distribution" field="holding_lib" />
+				</update>
+				<delete permission="ADMIN_SERIAL_ITEM">
+					<context link="item" jump="stream.distribution" field="holding_lib" />
+				</delete>
+			</actions>
+		</permacrud>
 	</class>
 	<class id="sasum" controller="open-ils.cstore" oils_obj:fieldmapper="serial::any_summary" oils_persist:tablename="serial.any_summary" reporter:label="All Issues' Summaries" oils_persist:readonly="true">
 		<fields>
@@ -5499,6 +5536,27 @@ SELECT  usr,
 				<delete permission="ADMIN_SERIAL_DISTRIBUTION">
 					<context link="distribution" field="holding_lib" />
 				</delete>
+			</actions>
+		</permacrud>
+	</class>
+
+	<class id="spt" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="serial::pattern_template" oils_persist:tablename="serial.pattern_template" reporter:label="Prediction Pattern Template">
+		<fields oils_persist:primary="id" oils_persist:sequence="serial.pattern_template_id_seq">
+			<field reporter:label="ID" name="id" reporter:datatype="id" />
+			<field reporter:label="Name" name="name" reporter:datatype="text" oils_obj:required="true"/>
+			<field reporter:label="Pattern Code" name="pattern_code" reporter:datatype="text" oils_obj:required="true"/>
+			<field reporter:label="Owning Library" name="owning_lib" reporter:datatype="org_unit" oils_obj:required="true"/>
+			<field reporter:label="Share Depth" name="share_depth"  reporter:datatype="int"/>
+		</fields>
+		<links>
+			<link field="owning_lib" reltype="has_a" key="id" map="" class="aou"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_SERIAL_PATTERN_TEMPLATE" context_field="owning_lib"/>
+				<retrieve/>
+				<update permission="ADMIN_SERIAL_PATTERN_TEMPLATE" context_field="owning_lib"/>
+				<delete permission="ADMIN_SERIAL_PATTERN_TEMPLATE" context_field="owning_lib"/>
 			</actions>
 		</permacrud>
 	</class>

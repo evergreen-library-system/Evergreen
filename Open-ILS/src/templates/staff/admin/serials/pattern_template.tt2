@@ -1,0 +1,44 @@
+[%
+  WRAPPER "staff/base.tt2";
+  ctx.page_title = l("Prediction Pattern Templates");
+  ctx.page_app = "egAdminConfig";
+  ctx.page_ctrl = 'PatternTemplate';
+%]
+
+[% BLOCK APP_JS %]
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/grid.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/fm_record_editor.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/ui.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/serials/app.js"></script>
+[% INCLUDE 'staff/serials/share/serials_strings.tt2' %]
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/serials/services/core.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/serials/directives/prediction_wizard.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/admin/serials/pattern_template.js"></script>
+<link rel="stylesheet" href="[% ctx.base_path %]/staff/css/admin.css" />
+[% END %]
+
+<div class="container-fluid" style="text-align:center">
+  <div class="alert alert-info alert-less-pad strong-text-2">
+    [% l('Prediction Pattern Templates') %]
+  </div>
+</div>
+
+<eg-grid
+    id-field="id"
+    idl-class="spt"
+    grid-controls="gridControls"
+    persist-key="admin.serials.pattern_template">
+
+    <eg-grid-menu-item handler="new_record" label="[% l('New Record') %]"></eg-grid-menu-item>
+    <eg-grid-action handler="edit_record" label="[% l('Edit Record') %]" disabled="need_one_selected"></eg-grid-action>
+    <eg-grid-action handler="delete_selected" label="[% l('Delete Selected') %]"></eg-grid-action>
+
+    <eg-grid-field label="[% l('Name') %]"           path="name"></eg-grid-field>
+    <eg-grid-field label="[% l('Pattern Code') %]"   path="pattern_code"></eg-grid-field>
+    <eg-grid-field label="[% l('Owning Library') %]" path="owning_lib.name"></eg-grid-field>
+    <eg-grid-field label="[% l('Sharing Depth') %]"  path="share_depth"></eg-grid-field>
+    <eg-grid-field label="[% l('ID') %]" path='id' required hidden></eg-grid-field>
+    <eg-grid-field path='*' hidden></eg-grid-field>
+</eg-grid>
+
+[% END %]

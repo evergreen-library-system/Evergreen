@@ -1,0 +1,73 @@
+<div>
+<eg-sub-selector bib-id="bibId" ssub-id="ssubId"></eg-sub-selector>
+</div>
+
+<div>
+  <div class="form-inline pad-vert">
+    <button class="btn btn-warning" ng-click="startNewScap()">[% l('Add New') %]</button>
+    <button class="btn btn-warning" ng-click="importScapFromBibRecord()" ng-disabled="!has_pattern_to_import">[% l('Import from Bibliographic and/or MFHD Records') %]</button>
+    <button class="btn btn-warning" ng-click="importScapFromSpt()">[% l('Create from Template') %]</button>
+    <select class="form-control" ng-model="active_pattern_template.id" ng-options="spt.id as spt.name for spt in pattern_templates | orderBy:'name'"> 
+    </select>
+  </div>
+  <div class="row" ng-if="new_prediction">
+    <ng-form name="forms.newpredform" class="form-inline">
+      <div class="col-md-1"></div>
+      <div class="col-md-1">
+        <label class="checkbox-inline">
+          <input type="checkbox" ng-model="new_prediction.active">[% l('Active') %]
+        </label>
+      </div>
+      <div class="col-md-2">
+        <label>[% l('Start Date') %]</label>
+          {{new_prediction.create_date | date:"shortDate"}}
+      </div>
+      <div class="col-md-3">
+          <label>[% l('Type') %]</label>
+          <select class="form-control" ng-model="new_prediction.type">
+              <option value="basic">[% l('Basic') %]</option>
+              <option value="supplement">[% l('Supplement') %]</option>
+              <option value="index">[% l('Index') %]</option>
+          </select>
+          <button class="btn btn-default" ng-if="new_prediction.pattern_code === null"
+                  ng-click="openPatternEditorDialog(new_prediction, forms.newpredform)">[% l('Create Pattern') %]</button>
+          <button class="btn btn-default" ng-if="new_prediction.pattern_code !== null"
+                  ng-click="openPatternEditorDialog(new_prediction, forms.newpredform)">[% l('Edit Pattern') %]</button>
+        </div>
+      <div>
+          <button type="submit" class="btn btn-default" ng-click="cancelNewScap()">[% l('Cancel') %]</button>
+          <button type="submit" class="btn btn-primary" ng-disabled="(new_prediction.pattern_code === null) || !forms.newpredform.$dirty" ng-click="createScap(new_prediction)">[% l('Create') %]</button>
+      </div>
+    </form>
+  </div>
+  <h3>[% l('Existing Prediction Patterns') %]</h3>
+  <div class="row" ng-repeat="pred in predictions | orderBy: 'id' as filtered track by pred.id">
+    <ng-form name="forms['predform' + pred.id]" class="form-inline">
+    <div class="col-md-1"><label>[% l('ID') %] {{pred.id}}</label></div>
+    <div class="col-md-1">
+      <label class="checkbox-inline">
+        <input type="checkbox" ng-model="pred.active">[% l('Active') %]
+      </label>
+    </div>
+    <div class="col-md-2">
+      <label>[% l('Start Date') %]</label>
+        {{pred.create_date | date:"shortDate"}}
+    </div>
+    <div class="col-md-3">
+        <label>[% l('Type') %]</label>
+        <select class="form-control" ng-model="pred.type">
+            <option value="basic">[% l('Basic') %]</option>
+            <option value="supplement">[% l('Supplement') %]</option>
+            <option value="index">[% l('Index') %]</option>
+        </select>
+        <button class="btn btn-default" ng-click="openPatternEditorDialog(pred, forms['predform' + pred.id], false)" ng-if=" pred._can_edit_or_delete">[% l('Edit Pattern') %]</button>
+        <button class="btn btn-default" ng-click="openPatternEditorDialog(pred, forms['predform' + pred.id], true)"  ng-if="!pred._can_edit_or_delete">[% l('View Pattern') %]</button>
+    </div>
+    <div>
+        <button class="btn btn-default" ng-disabled="forms['predform' + pred.id].$dirty" ng-click="add_issuances()">[% l('Predict New Issues') %]</button>
+        <button type="submit" class="btn btn-default" ng-disabled="!pred._can_edit_or_delete" ng-click="deleteScap(pred)">[% l('Delete') %]</button>
+        <button type="submit" class="btn btn-primary" ng-disabled="!forms['predform' + pred.id].$dirty" ng-click="updateScap(pred)">[% l('Save') %]</button>
+    </div>
+    </form>
+  </div>
+</div>

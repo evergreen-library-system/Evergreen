@@ -195,6 +195,7 @@ CREATE TABLE serial.issuance (
 	label           TEXT,
 	date_published  TIMESTAMP WITH TIME ZONE,
 	caption_and_pattern INT   REFERENCES serial.caption_and_pattern (id)
+                              ON DELETE CASCADE
 	                          DEFERRABLE INITIALLY DEFERRED,
 	holding_code    TEXT      CONSTRAINT issuance_holding_code_check CHECK (
 	                            holding_code IS NULL OR could_be_serial_holding_code(holding_code)
@@ -421,5 +422,26 @@ CREATE INDEX assist_holdings_display
 CREATE TRIGGER materialize_holding_code
     AFTER INSERT OR UPDATE ON serial.issuance
     FOR EACH ROW EXECUTE PROCEDURE serial.materialize_holding_code() ;
+
+CREATE TABLE serial.pattern_template (
+    id            SERIAL PRIMARY KEY,
+    name          TEXT NOT NULL,
+    pattern_code  TEXT NOT NULL,
+    owning_lib    INTEGER REFERENCES actor.org_unit(id) DEFERRABLE INITIALLY DEFERRED,
+    share_depth   INTEGER NOT NULL DEFAULT 0
+);
+CREATE INDEX serial_pattern_template_name_idx ON serial.pattern_template (evergreen.lowercase(name));
+
+CREATE OR REPLACE FUNCTION serial.pattern_templates_visible_to(org_unit INT) RETURNS SETOF serial.pattern_template AS $func$
+BEGIN
+    RETURN QUERY SELECT *
+           FROM serial.pattern_template spt
+           WHERE (
+             SELECT ARRAY_AGG(id)
+             FROM actor.org_unit_descendants(spt.owning_lib, spt.share_depth)
+           ) @@ org_unit::TEXT::QUERY_INT;
+END;
+$func$ LANGUAGE PLPGSQL;
+
 COMMIT;
 

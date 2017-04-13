@@ -11,6 +11,10 @@
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/services/patron_search.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/cat/services/record.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/cat/services/tagtable.js"></script>
+[% INCLUDE 'staff/serials/share/serials_strings.tt2' %]
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/serials/app.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/serials/services/core.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/serials/directives/sub_selector.js"></script>
 [% INCLUDE 'staff/cat/share/marcedit_strings.tt2' %]
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/cat/services/marcedit.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/services/circ.js"></script>
@@ -49,6 +53,13 @@
       "[% l('Item Transfer Target set') %]";                
     s.MARK_OVERLAY_TARGET =                                                                                                            
       "[% l('Record Overlay Target set') %]";                
+
+    s.SERIALS_NO_SUBS = "[% l('No subscription selected') %]";
+    s.SERIALS_NO_ITEMS = "[% l('No items expected for the selected subscription') %]";
+
+    s.SERIALS_ISSUANCE_FAIL_SAVE = "[% l('Failed to save issuance') %]";
+    s.SERIALS_ISSUANCE_SUCCESS_SAVE = "[% l('Issuance saved') %]";
+
   }])
 </script>
 

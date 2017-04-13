@@ -484,6 +484,12 @@
             </a>
           </li>
           <li>
+            <a href="./admin/serials/index" target="_self">
+              <span class="glyphicon glyphicon-paperclip"></span>
+              [% l('Serials Administration') %]
+            </a>
+          </li>
+          <li>
             <a href="./admin/booking/index" target="_self">
               <span class="glyphicon glyphicon-calendar"></span>
               [% l('Booking Administration') %]

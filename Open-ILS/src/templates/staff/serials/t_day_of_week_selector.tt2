@@ -1,0 +1,9 @@
+<select ng-model="ngModel">
+  <option value="mo">[% l('Monday') %]</option>
+  <option value="tu">[% l('Tuesday') %]</option>
+  <option value="we">[% l('Wednesday') %]</option>
+  <option value="th">[% l('Thursday') %]</option>
+  <option value="fr">[% l('Friday') %]</option>
+  <option value="sa">[% l('Saturday') %]</option>
+  <option value="su">[% l('Sunday') %]</option>
+</select>

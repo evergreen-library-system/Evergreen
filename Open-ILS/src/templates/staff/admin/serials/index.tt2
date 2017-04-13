@@ -1,0 +1,33 @@
+[%
+  WRAPPER "staff/base.tt2";
+  ctx.page_title = l("Serials Administration"); 
+  ctx.page_app = "egSerialsAdmin";
+%]
+
+[% BLOCK APP_JS %]
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/grid.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/ui.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/file.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/admin/serials/app.js"></script>
+<script>
+angular.module('egCoreMod').run(['egStrings', function(s) {
+    s.SERIALS_TEMPLATE_SUCCESS_SAVE = "[% l('Saved serial template') %]";
+    s.SERIALS_TEMPLATE_SUCCESS_DELETE = "[% l('Deleted serial template') %]";
+    s.SERIALS_TEMPLATE_FAIL_SAVE = "[% l('Failed to save serial template') %]";
+    s.SERIALS_TEMPLATE_FAIL_DELETE = "[% l('Failed to delete serial template') %]";
+    s.LOAN_DURATION_SHORT = "[% l('Short') %]";
+    s.LOAN_DURATION_NORMAL = "[% l('Normal') %]";
+    s.LOAN_DURATION_EXTENDED = "[% l('Extended') %]";
+    s.FINE_LEVEL_LOW = "[% l('Low') %]";
+    s.FINE_LEVEL_NORMAL = "[% l('Normal') %]";
+    s.FINE_LEVEL_HIGH = "[% l('High') %]";
+    s.CONFIRM_DIRTY_EXIT = "[% l('There are unsaved changes; close anyway?') %]";
+}]);
+</script>
+[% END %]
+
+<div ng-view></div>
+
+[% END %]
+
+

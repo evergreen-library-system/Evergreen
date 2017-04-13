@@ -1,0 +1,117 @@
+<div>
+  <eg-grid
+    id-field="id"
+    features="-display,-sort,-multisort"
+    items-provider="itemGridProvider"
+    grid-controls="itemGridControls"
+    menu-label="[% l('Filter items... ') %]"
+    persist-key="serials.view_item_grid">
+
+    <eg-grid-menu-item handler="filter_items_all"
+      label="[% l('All') %]"></eg-grid-menu-item>
+
+    <eg-grid-menu-item handler="filter_items_have"
+      label="[% l('Held') %]"></eg-grid-menu-item>
+
+    <eg-grid-menu-item handler="filter_items_dont_have"
+      label="[% l('Not Held') %]"></eg-grid-menu-item>
+
+    <eg-grid-menu-item divider="true"></eg-grid-menu-item>
+
+    <eg-grid-menu-item ng-repeat="status in svc.item_status_i18n"
+      label="[% l('Status:') %] {{status.label}}" handler-data="status"
+      handler="filter_items_by_status"></eg-grid-menu-item>
+
+
+    <eg-grid-menu-item handler="receive_next" standalone="true"
+        label="[% l('Receive Next') %]"></eg-grid-menu-item>
+
+    <eg-grid-menu-item handler="add_issuances" standalone="true"
+        label="[% l('Predict New Issues') %]"></eg-grid-menu-item>
+
+    <eg-grid-menu-item handler="add_special_issuance" standalone="true"
+        label="[% l('Add Special Issue') %]"></eg-grid-menu-item>
+
+    <eg-grid-menu-item handler="checkbox_handler"
+      label="[% l('Barcode on receive') %]"
+      checkbox="receive_and_barcode"
+      checked="receive_and_barcode"/>
+
+    <eg-grid-menu-item handler="checkbox_handler"
+      label="[% l('Print routing lists') %]"
+      checkbox="do_print_routing_lists"
+      checked="do_print_routing_lists"/>
+
+
+<!-- Hiding this for now ... seems unnecessary?
+    <eg-grid-menu-item handler="checkbox_handler"
+      label="[% l('Bind on receive') %]"
+      checkbox="receive_and_bind"
+      checked="receive_and_bind"/>
+-->
+
+
+    <eg-grid-action handler="menu_print_routing_lists"
+      label="[% l('Print routing lists') %]"></eg-grid-action>
+
+    <eg-grid-action handler="receive_selected"
+      disabled="need_expected"
+      label="[% l('Receive selected') %]"></eg-grid-action>
+
+    <eg-grid-action handler="bind_selected"
+      disabled="need_one_selected"
+      label="[% l('Barcode selected') %]"></eg-grid-action>
+
+    <eg-grid-action handler="bind_selected"
+      disabled="need_many_selected"
+      label="[% l('Bind selected') %]"></eg-grid-action>
+
+    <eg-grid-action handler="following_issuance"
+      disabled="need_one_selected"
+      label="[% l('Add following issue') %]"></eg-grid-action>
+
+    <eg-grid-action handler="edit_issuance_holding_code"
+      label="[% l('Edit issue holding codes') %]"></eg-grid-action>
+
+    <eg-grid-action handler="set_selected_as_claimed"
+      label="[% l('Mark as claimed') %]"></eg-grid-action>
+    <eg-grid-action handler="set_selected_as_discarded"
+      label="[% l('Mark as discarded') %]"></eg-grid-action>
+    <eg-grid-action handler="set_selected_as_not_published"
+      label="[% l('Mark as not published') %]"></eg-grid-action>
+    <eg-grid-action handler="set_selected_as_not_held"
+      label="[% l('Mark as not held') %]"></eg-grid-action>
+
+    <eg-grid-action handler="item_notes"
+      label="[% l('Item Notes') %]"></eg-grid-action>
+
+    <eg-grid-action handler="reset_selected"
+      label="[% l('Reset items') %]"></eg-grid-action>
+
+    <eg-grid-action handler="delete_items"
+      label="[% l('Delete items') %]"></eg-grid-action>
+
+    <eg-grid-field label="[% l('Distribution Library') %]" path="stream.distribution.holding_lib.name" visible></eg-grid-field>
+    <eg-grid-field label="[% l('Issuance') %]" path="issuance.label" visible></eg-grid-field>
+    <eg-grid-field label="[% l('Barcode') %]" path="unit.barcode" visible></eg-grid-field>
+    <eg-grid-field label="[% l('Publication Date') %]" path="issuance.date_published" visible>{{item.issuance.date_published|date:'shortDate'}}</eg-grid-field>
+    <eg-grid-field label="[% l('Status') %]" path="status" sortable visible></eg-grid-field>
+    <eg-grid-field label="[% l('Date Expected') %]" path="date_expected" sortable visible>{{item.date_expected|date:'shortDate'}}</eg-grid-field>
+    <eg-grid-field label="[% l('Date Received') %]" path="date_received" sortable visible>{{item.date_received|date:'shortDate'}}</eg-grid-field>
+    <eg-grid-field label="[% l('Holding Type') %]" path="issuance.holding_type" visible></eg-grid-field>
+    <eg-grid-field label="[% l('Route To') %]" path="stream.routing_label"></eg-grid-field>
+    <eg-grid-field label="[% l('Receiving Template') %]" path="stream.distribution.receive_unit_template.name" visible></eg-grid-field>
+    <eg-grid-field label="[% l('Summary Display') %]" path="stream.distribution.summary_method" visible></eg-grid-field>
+    <eg-grid-field label="[% l('Receiving Call Number') %]" path="stream.distribution.receive_call_number.label"></eg-grid-field>
+    <eg-grid-field label="[% l('Binding Call Number') %]" path="stream.distribution.bind_call_number.label"></eg-grid-field>
+    <eg-grid-field label="[% l('Binding Template') %]" path="stream.distribution.bind_unit_template.name"></eg-grid-field>
+    <eg-grid-field label="[% l('Unit Label Prefix') %]" path="stream.distribution.unit_label_prefix"></eg-grid-field>
+    <eg-grid-field label="[% l('Unit Label Suffix') %]" path="stream.distribution.unit_label_suffix"></eg-grid-field>
+    <eg-grid-field label="[% l('Display Grouping') %]" path="stream.distribution.display_grouping"></eg-grid-field>
+    <eg-grid-field label="[% l('Subscription ID') %]" path="stream.distribution.subscription.id"></eg-grid-field>
+    <eg-grid-field label="[% l('Distribution ID') %]" path="stream.distribution.id"></eg-grid-field>
+    <eg-grid-field label="[% l('Stream ID') %]" path="stream.id"></eg-grid-field>
+    <eg-grid-field label="[% l('Item ID') %]" path="id"></eg-grid-field>
+  </eg-grid>
+</div>
+

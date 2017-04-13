@@ -29,7 +29,6 @@
     ,[ l('Notifications / Action Triggers'), "./admin/local/action_trigger/event_definition" ]
     ,[ l('Patrons with Negative Balances'), "./admin/local/circ/neg_balance_users" ]
     ,[ l('Search Filter Groups'), "./admin/local/actor/search_filter_group" ]
-    ,[ l('Serial Copy Template Editor'), "./admin/local/asset/copy_template" ]
     ,[ l('Standing Penalties'), "./admin/local/config/standing_penalty" ]
     ,[ l('Statistical Categories Editor'), "./admin/local/asset/stat_cat_editor" ]
     ,[ l('Statistical Popularity Badges'), "./admin/local/rating/badge" ]

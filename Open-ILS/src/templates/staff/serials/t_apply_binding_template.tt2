@@ -1,0 +1,55 @@
+<form ng-submit="ok(args)" role="form">
+
+<style>
+/* odd/even row styling */
+.modal-body > div:nth-child(odd) {
+  background-color: rgb(248, 248, 248);
+}
+</style>
+
+<div class="modal-header">
+    <button type="button" class="close" ng-click="cancel()" 
+        aria-hidden="true">&times;</button>
+    <h4 class="modal-title" ng-if="rows.length != 1">
+        [% l('Apply Binding Unit Template to [_1] Selected Distributions','{{rows.length}}') %]
+    </h4>
+    <h4 class="modal-title" ng-if="rows.length == 1">
+        [% l('Apply Binding Unit Template to [_1] Selected Distribution','{{rows.length}}') %]
+    </h4>
+</div>
+
+<div class="modal-body">
+    <div class="row">
+        <div class="col-md-8">
+            <label>
+                [% l('Distribution Library') %]
+            </label>
+        </div>
+        <div class="col-md-4">
+            <label>
+                [% l('Binding Unit Template') %]
+            </label>
+        </div>
+    </div>
+    <div class="row" ng-repeat="lib in libs">
+        <div class="col-md-8">
+            <label for="ou_{{lib.id}}">
+                {{lib.name}}
+            </label>
+        </div>
+        <div class="col-md-4">
+            <select id="ou_{{lib.id}}"
+                ng-model="args.bind_unit_template[lib.id]"
+                ng-options="t.id as t.name for t in templates[lib.id]"
+                class="form-control">
+                <option value=""></option>
+            </select>
+        </div>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <input type="submit" class="btn btn-primary" value="[% l('Update') %]"></input>
+    <button class="btn btn-warning" ng-click="cancel()">[% l('Cancel') %]</button>
+</div>
+</form>

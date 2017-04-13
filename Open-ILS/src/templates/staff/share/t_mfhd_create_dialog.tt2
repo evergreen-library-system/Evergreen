@@ -1,0 +1,25 @@
+<!--
+  MFHD creation dialog
+-->
+<div>
+  <div class="modal-header">
+    <button type="button" class="close" 
+      ng-click="cancel()" aria-hidden="true">&times;</button>
+    <h4 class="modal-title alert alert-info">Create new MFHD</h4> 
+  </div>
+  <div class="modal-body">
+    <label for="mfhd_lib_selector">
+      [% l('Select a library') %]
+    </label>
+    <eg-org-selector id="mfhd_lib_selector"
+      selected="mfhd_lib">
+    </eg-org-selector>
+  </div>
+  <div class="modal-footer">
+    [% dialog_footer %]
+    <input type="submit" class="btn btn-primary" 
+      ng-click="ok()" value="[% l('Create') %]"/>
+    <button class="btn btn-warning" 
+      ng-click="cancel()">[% l('Cancel') %]</button>
+  </div>
+</div>

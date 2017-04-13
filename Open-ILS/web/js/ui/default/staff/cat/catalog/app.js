@@ -7,7 +7,8 @@
  *
  */
 
-angular.module('egCatalogApp', ['ui.bootstrap','ngRoute','ngLocationUpdate','egCoreMod','egGridMod', 'egMarcMod', 'egUserMod', 'egHoldingsMod', 'ngToast','egPatronSearchMod'])
+angular.module('egCatalogApp', ['ui.bootstrap','ngRoute','ngLocationUpdate','egCoreMod','egGridMod', 'egMarcMod', 'egUserMod', 'egHoldingsMod', 'ngToast','egPatronSearchMod',
+'egSerialsMod','egSerialsAppDep'])
 
 .config(['ngToastProvider', function(ngToastProvider) {
   ngToastProvider.configure({
@@ -246,10 +247,10 @@ function($scope , $routeParams , $location , $window , $q , egCore) {
 .controller('CatalogCtrl',
        ['$scope','$routeParams','$location','$window','$q','egCore','egHolds','egCirc','egConfirmDialog','ngToast',
         'egGridDataProvider','egHoldGridActions','egProgressDialog','$timeout','$uibModal','holdingsSvc','egUser','conjoinedSvc',
-        '$cookies',
+        '$cookies','egSerialsCoreSvc',
 function($scope , $routeParams , $location , $window , $q , egCore , egHolds , egCirc , egConfirmDialog , ngToast ,
          egGridDataProvider , egHoldGridActions , egProgressDialog , $timeout , $uibModal , holdingsSvc , egUser , conjoinedSvc,
-         $cookies
+         $cookies , egSerialsCoreSvc
 ) {
 
     var holdingsSvcInst = new holdingsSvc();
@@ -364,6 +365,62 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
     $scope.current_overlay_target     = egCore.hatch.getLocalItem('eg.cat.marked_overlay_record');
     $scope.current_voltransfer_target = egCore.hatch.getLocalItem('eg.cat.marked_volume_transfer_record');
     $scope.current_conjoined_target   = egCore.hatch.getLocalItem('eg.cat.marked_conjoined_record');
+
+    $scope.quickReceive = function () {
+        var list = [];
+        var next_per_stream = {};
+
+        var recId = $scope.record_id;
+        return $uibModal.open({
+            templateUrl: './share/t_subscription_select_dialog',
+            controller: ['$scope', '$uibModalInstance',
+                function($scope, $uibModalInstance) {
+
+                    $scope.focus = true;
+                    $scope.rememberMe = 'eg.serials.quickreceive.last_org';
+                    $scope.record_id = recId;
+                    $scope.ssubId = null;
+
+                    $scope.ok = function() { $uibModalInstance.close($scope.ssubId) }
+                    $scope.cancel = function() { $uibModalInstance.dismiss(); }
+                }
+            ]
+        }).result.then(function(ssubId) {
+            if (ssubId) {
+                var promises = [];
+                promises.push(egSerialsCoreSvc.fetchItemsForSub(ssubId,{status:'Expected'}).then(function(){
+                    angular.forEach(egSerialsCoreSvc.itemTree, function (item) {
+                        if (next_per_stream[item.stream().id()]) return;
+                        if (item.status() == 'Expected') {
+                            next_per_stream[item.stream().id()] = item;
+                            list.push(egCore.idl.Clone(item));
+                        }
+                    });
+                }));
+
+                return $q.all(promises).then(function() {
+
+                    if (!list.length) {
+                        ngToast.warning(egCore.strings.SERIALS_NO_ITEMS);
+                        return $q.reject();
+                    }
+
+                    return egSerialsCoreSvc.process_items(
+                        'receive',
+                        $scope.record_id,
+                        list,
+                        true, // barcode
+                        false,// bind
+                        false, // print by default
+                        function() { $scope.holdings_record_id_changed($scope.record_id) }
+                    );
+                });
+            } else {
+                ngToast.warning(egCore.strings.SERIALS_NO_SUBS);
+                return $q.reject();
+            }
+        });
+    }
 
     $scope.markConjoined = function () {
         $scope.current_conjoined_target = $scope.record_id;

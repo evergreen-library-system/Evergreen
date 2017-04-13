@@ -1681,7 +1681,9 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 591, 'ADMIN_COPY_TAG', oils_i18n_gettext( 591,
     'Administer copy tag', 'ppl', 'description' )),
  ( 592,'CONTAINER_BATCH_UPDATE', oils_i18n_gettext( 592,
-    'Allow batch update via buckets', 'ppl', 'description' ))
+    'Allow batch update via buckets', 'ppl', 'description' )),
+ ( 593, 'ADMIN_SERIAL_PATTERN_TEMPLATE', oils_i18n_gettext( 593,
+    'Administer serial prediction pattern templates', 'ppl', 'description' ))
 ;
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
@@ -2489,6 +2491,7 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 			'ADMIN_SERIAL_CAPTION_PATTERN',
 			'ADMIN_SERIAL_DISTRIBUTION',
 			'ADMIN_SERIAL_ITEM',
+			'ADMIN_SERIAL_PATTERN_TEMPLATE',
 			'ADMIN_SERIAL_STREAM',
 			'ADMIN_SERIAL_SUBSCRIPTION',
 			'ISSUANCE_HOLDS',

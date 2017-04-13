@@ -1,0 +1,76 @@
+<form ng-submit="ok(list)" role="form">
+<div class="modal-header">
+    <button type="button" class="close" ng-click="cancel()" 
+        aria-hidden="true">&times;</button>
+    <h4 class="modal-title">{{ title }}</h4>
+</div>
+
+<div class="modal-body">
+  <div class="row">
+    <div class="col-md-12">
+      <span ng-show="{{mode == 'delete'}}">[% l('Will delete {{items}} item(s).') %]</span>
+      <span ng-show="{{mode == 'reset'}}">[% l('Will reset {{items}} item(s) to Expected and remove unit(s).') %]</span>
+      <span ng-show="{{mode == 'receive'}}">[% l('Will receive {{items}} item(s) without barcoding.') %]</span>
+      <span ng-show="{{mode == 'status'}}">[% l('Will change status of {{items}} item(s).') %]</span>
+    </div>
+  </div>
+
+  <div ng-show="{{ssub_alerts.length > 0}}">
+    <div class="pad-vert row">
+      <div class="col-md-12">
+        <b>[% l('Subscription alerts') %]</b>
+      </div>
+    </div>
+    <div class="row" ng-repeat="note in ssub_alerts">
+      <div class="col-md-12">
+        <dl class="dl-horizontal">
+          <dt>{{note.title()}}</dt>
+          <dd>{{note.value()}}</dd>
+        <dl>
+      </div>
+    </div>
+  </div>
+
+  <div ng-show="{{sdist_alerts.length > 0}}">
+    <div class="pad-vert row">
+      <div class="col-md-12">
+        <b>[% l('Item alerts') %]</b>
+      </div>
+    </div>
+    <div class="row" ng-repeat="note in sdist_alerts">
+      <div class="col-md-12">
+        <dl class="dl-horizontal">
+          <dt>{{note.title()}}</dt>
+          <dd>{{note.value()}}</dd>
+        <dl>
+      </div>
+    </div>
+  </div>
+
+  <div ng-show="{{sitem_alerts.length > 0}}">
+    <div class="pad-vert row">
+      <div class="col-md-12">
+        <b>[% l('Item alerts') %]</b>
+      </div>
+    </div>
+    <div class="row" ng-repeat="note in sitem_alerts">
+      <div class="col-md-12">
+        <dl class="dl-horizontal">
+          <dt>{{note.title()}}</dt>
+          <dd>{{note.value()}}</dd>
+        <dl>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="modal-footer">
+  <div class="row">
+    <div class="col-md-12">
+      <input type="submit" class="btn btn-primary" value='[% l('OK/Continue') %]'></input>
+      <button class="btn btn-warning" ng-click="cancel()">[% l('Cancel') %]</button>
+    </div>
+  </div>
+</div>
+</form>

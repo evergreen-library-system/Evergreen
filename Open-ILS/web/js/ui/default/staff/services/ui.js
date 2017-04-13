@@ -592,17 +592,19 @@ function($window , egStrings) {
         scope: {
             list: "=", // list of strings
             selected: "=",
+            onSelect: "=",
             egDisabled: "=",
             allowAll: "@",
+            placeholder: "@",
             focusMe: "=?"
         },
         template:
             '<div class="input-group">'+
-                '<input type="text" ng-disabled="egDisabled" class="form-control" ng-model="selected" ng-change="makeOpen()" focus-me="focusMe">'+
+                '<input placeholder="{{placeholder}}" type="text" ng-disabled="egDisabled" class="form-control" ng-model="selected" ng-change="makeOpen()" focus-me="focusMe">'+
                 '<div class="input-group-btn" dropdown ng-class="{open:isopen}">'+
-                    '<button type="button" ng-click="showAll()" class="btn btn-default dropdown-toggle"><span class="caret"></span></button>'+
+                    '<button type="button" ng-click="showAll()" ng-disabled="egDisabled" class="btn btn-default dropdown-toggle"><span class="caret"></span></button>'+
                     '<ul class="dropdown-menu dropdown-menu-right">'+
-                        '<li ng-repeat="item in list|filter:selected"><a href ng-click="changeValue(item)">{{item}}</a></li>'+
+                        '<li ng-repeat="item in list|filter:selected:compare"><a href ng-click="changeValue(item)">{{item}}</a></li>'+
                         '<li ng-if="complete_list" class="divider"><span></span></li>'+
                         '<li ng-if="complete_list" ng-repeat="item in list"><a href ng-click="changeValue(item)">{{item}}</a></li>'+
                     '</ul>'+
@@ -616,6 +618,12 @@ function($window , egStrings) {
                 $scope.clickedopen = false;
                 $scope.clickedclosed = null;
 
+                $scope.compare = function (ex, act) {
+                    if (act === null || act === undefined) return true;
+                    if (act.toString) act = act.toString();
+                    return new RegExp(act.toLowerCase()).test(ex)
+                }
+
                 $scope.showAll = function () {
 
                     $scope.clickedopen = !$scope.clickedopen;
@@ -628,8 +636,8 @@ function($window , egStrings) {
                         $scope.clickedclosed = !$scope.clickedopen;
                     }
 
-                    if ($scope.selected.length > 0) $scope.complete_list = true;
-                    if ($scope.selected.length == 0) $scope.complete_list = false;
+                    if ($scope.selected && $scope.selected.length > 0) $scope.complete_list = true;
+                    if (!$scope.selected || $scope.selected.length == 0) $scope.complete_list = false;
                     $scope.makeOpen();
                 }
 
@@ -638,7 +646,10 @@ function($window , egStrings) {
                         $scope.list,
                         $scope.selected
                     ).length > 0 && $scope.selected.length > 0);
-                    if ($scope.clickedclosed) $scope.isopen = false;
+                    if ($scope.clickedclosed) {
+                        $scope.isopen = false;
+                        $scope.clickedclosed = null;
+                    }
                 }
 
                 $scope.changeValue = function (newVal) {
@@ -647,6 +658,7 @@ function($window , egStrings) {
                     $scope.clickedclosed = null;
                     $scope.clickedopen = false;
                     if ($scope.selected.length == 0) $scope.complete_list = false;
+                    if ($scope.onSelect) $scope.onSelect();
                 }
 
             }

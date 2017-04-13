@@ -1,0 +1,17 @@
+<div class="input-group">
+  <input type="text"
+    class="form-control"
+    ng-show="!hideDatePicker"
+    uib-datepicker-popup="MMMM d"
+    is-open="datePickerIsOpen"
+    ng-model="dt"
+    datepicker-options="options"
+    show-button-bar="false"
+  />
+  <span class="input-group-btn">
+    <button type="button" class="btn btn-default"
+      ng-click="datePickerIsOpen=!datePickerIsOpen">
+      <i class="glyphicon glyphicon-calendar"></i>
+    </button>
+  </span>
+</div>

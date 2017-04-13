@@ -1,0 +1,6 @@
+<select ng-model="ngModel">
+  <option value="21">[% l('Spring') %]</option>
+  <option value="22">[% l('Summer') %]</option>
+  <option value="23">[% l('Autumn') %]</option>
+  <option value="24">[% l('Winter') %]</option>
+</select>

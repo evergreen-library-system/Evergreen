@@ -1054,6 +1054,9 @@
     <event code='11009' textcode='SERIAL_STREAM_NOT_EMPTY'>
         <desc xml:lang="en-US">The stream still has dependent objects</desc>
     </event>
+    <event code='11010' textcode='SERIAL_CAPTION_AND_PATTERN_NOT_EMPTY'>
+        <desc xml:lang="en-US">The prediction pattern still has dependent objects</desc>
+    </event>
 </ils_events>
 
 

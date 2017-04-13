@@ -1,0 +1,77 @@
+<div class="row">
+    <div class="col-md-4">
+        [% l('Record ID') %]
+    </div>
+    <div class="col-md-8">
+        {{ svr.sre_id }}
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        [% l('Basic Holdings') %]
+    </div>
+    <div class="col-md-8">
+        {{ svr.basic_holdings | join:' ; ' }}
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+    </div>
+    <div class="col-md-8">
+        {{ svr.basic_holdings_add | join:' ; ' }}
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        [% l('Supplement Holdings') %]
+    </div>
+    <div class="col-md-8">
+        {{ svr.supplement_holdings | join:' ; ' }}
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+    </div>
+    <div class="col-md-8">
+        {{ svr.supplement_holdings_add | join:' ; ' }}
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        [% l('Index Holdings') %]
+    </div>
+    <div class="col-md-8">
+        {{ svr.index_holdings | join:' ; ' }}
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+    </div>
+    <div class="col-md-8">
+        {{ svr.index_holdings_add | join:' ; ' }}
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        [% l('Online') %]
+    </div>
+    <div class="col-md-8">
+        {{ svr.online | join:' ; ' }}
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        [% l('Missing') %]
+    </div>
+    <div class="col-md-8">
+        {{ svr.missing | join:' ; ' }}
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        [% l('Incomplete') %]
+    </div>
+    <div class="col-md-8">
+        {{ svr.incomplete | join:' ; ' }}
+    </div>
+</div>
