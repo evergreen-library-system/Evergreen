@@ -1,0 +1,11 @@
+BEGIN;
+
+SELECT plan(1);
+
+SELECT is( code, 'COPY_STATUS_LONG_OVERDUE.override', 'Long overdue override perm is correct' )
+FROM permission.perm_list
+WHERE id = 549;
+
+SELECT * from finish();
+
+ROLLBACK;

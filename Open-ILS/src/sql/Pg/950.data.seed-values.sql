@@ -1597,7 +1597,7 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
         'When granted, newly added lineitem identifiers will propagate to linked bib records', 'ppl', 'description')),
  ( 548, 'ACQ_SET_LINEITEM_IDENTIFIER', oils_i18n_gettext(548,
         'Allows staff to change the lineitem identifier', 'ppl', 'description')),
- ( 549, 'COPY_STATUS_LONGOVERDUE.override', oils_i18n_gettext(549,
+ ( 549, 'COPY_STATUS_LONG_OVERDUE.override', oils_i18n_gettext(549,
         'Allows the user to check-in long-overdue items, prompting ' ||
             'long-overdue check-in processing', 'ppl', 'code')), 
  ( 550, 'SET_CIRC_LONG_OVERDUE', oils_i18n_gettext(550,
