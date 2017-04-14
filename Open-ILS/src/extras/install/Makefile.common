@@ -28,12 +28,10 @@ install_libdbi:
 		--with-pgsql --with-pgsql-incdir=$$(pg_config --includedir) \
 		--with-pgsql-libdir=$$(pg_config --libdir) && make all install  
 
-# NOTE: Deprecate me with wheezy
+# NOTE: Use the NodeJS Binary
 install_nodejs_from_source:
-	git clone https://github.com/joyent/node.git
-	cd node; \
-	git checkout -b $(NODEJS_SOURCE_VERSION) $(NODEJS_SOURCE_VERSION); \
-	./configure && make && make install
+	wget -N $(NODEJS_BINARY)
+	tar -C /usr/local --strip-components 1 -xJf $(NODEJS_TARBIN)
 	npm update
 	npm install -g grunt-cli
 	npm install -g bower
