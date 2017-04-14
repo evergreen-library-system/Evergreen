@@ -146,8 +146,7 @@ Install dependencies for web staff client
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 [NOTE]
-You may skip this section if you are installing on either Debian Jessie,
-Ubuntu Trusty, or Ubuntu Xenial and you have installed the previously described
+You may skip this section if you have installed the previously described
 'Optional: Developer Additions'.  You will still need to do the following
 steps in <<install_files_for_web_staff_client,Install files for web staff client>>.
 
