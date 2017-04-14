@@ -401,7 +401,7 @@ The following Library Settings enable you to set preferences related to long ove
 
 The following permissions are related to this feature:
 
-* COPY_STATUS_LONGOVERDUE.override
+* COPY_STATUS_LONG_OVERDUE.override
 
 ** Allows the user to check-in long-overdue items thus removing the long-overdue status on the item
 
