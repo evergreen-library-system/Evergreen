@@ -117,9 +117,7 @@ PGSQL_SERVER_DEBS_94 = \
 DEVELOPER_DEBS = \
 	automake \
 	autoconf \
-	libtool \
-	nodejs-legacy \
-	npm
+	libtool
 
 PACKAGER_DEBS = \
 	asciidoc \
@@ -156,8 +154,7 @@ install_postgres_server:
 # package, use the packaged version instead.
 install_developer:
 	make -f $(DIR)/Makefile.debian DEBS="$(DEVELOPER_DEBS)"
-	npm update
-	npm install -g grunt-cli
+	make -f $(DIR)/Makefile.common install_nodejs_from_source
 
 install_translator: install_developer
 	make -f $(DIR)/Makefile.debian DEBS="$(TRANSLATOR_DEBS)"
