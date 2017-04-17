@@ -166,6 +166,7 @@ updatepo: prep_output
 	@pot2po $(PROGRESS) -i po/common.properties/common.properties.pot -o $(PO)/common.properties/$(LOCALE).po  -t $(PO)/common.properties/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/conify.dtd/conify.dtd.pot -o $(PO)/conify.dtd/$(LOCALE).po  -t $(PO)/conify.dtd/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/conify.js/conify.js.pot -o $(PO)/conify.js/$(LOCALE).po  -t $(PO)/conify.js/$(LOCALE).po 
+	pocommentclean $(PO)/db.seed/$(LOCALE).po
 	@pot2po $(PROGRESS) -i po/db.seed/db.seed.pot -o $(PO)/db.seed/$(LOCALE).po  -t $(PO)/db.seed/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/fm_IDL.dtd/fm_IDL.dtd.pot -o $(PO)/fm_IDL.dtd/$(LOCALE).po  -t $(PO)/fm_IDL.dtd/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/ils_events.xml/ils_events.xml.pot -o $(PO)/ils_events.xml/$(LOCALE).po  -t $(PO)/ils_events.xml/$(LOCALE).po 
