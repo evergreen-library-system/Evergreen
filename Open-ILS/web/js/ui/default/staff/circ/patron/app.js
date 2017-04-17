@@ -989,6 +989,7 @@ function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore,
         egProgressDialog.open(); // Indeterminate
 
         patronSvc.patrons = [];
+        var which_sound = 'success';
         egCore.net.request(
             'open-ils.actor',
             'open-ils.actor.patron.search.advanced.fleshed',
@@ -1005,7 +1006,9 @@ function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore,
             function() {
                 deferred.resolve();
             },
-            null, // onerror
+            function() { // onerror
+                which_sound = 'error';
+            },
             function(user) {
                 // hide progress bar as soon as the first result appears.
                 egProgressDialog.close();
@@ -1013,7 +1016,13 @@ function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore,
                 patronSvc.patrons.push(user);
                 deferred.notify(user);
             }
-        )['finally'](egProgressDialog.close); // close on 0-hits or error
+        )['finally'](function() { // close on 0-hits or error
+            if (which_sound == 'success' && patronSvc.patrons.length == 0) {
+                which_sound = 'warning';
+            }
+            egCore.audio.play(which_sound + '.patron.by_search');
+            egProgressDialog.close();
+        });
 
         return deferred.promise;
     };
