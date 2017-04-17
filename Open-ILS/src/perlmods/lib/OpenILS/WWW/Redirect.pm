@@ -56,10 +56,16 @@ sub handler {
     my $apache = shift;
 
     my $cgi = CGI->new( $apache );
-    my $port = $cgi->server_port();
     my $hostname = $cgi->server_name();
     my $proto = ($cgi->https) ? 'https' : 'http';
     my $user_ip = $ENV{REMOTE_ADDR};
+
+    # Extract the port number from the user requested URL.
+    my $port = '';
+    my $cgiurl = $cgi->url;
+    if ($cgiurl =~ m|https?://[^:]+:\d+/|) {
+        ($port = $cgiurl) =~ s|https?://[^:]+:(\d+).*|$1|;
+    }
 
     # Apache config values
     my $skin = $apache->dir_config('OILSRedirectSkin') || 'default';
@@ -93,7 +99,8 @@ sub handler {
         }
     }
 
-    my $url = "$proto://$hostname:$port";
+    # only encode the port if a nonstandard port was requested.
+    my $url = $port ? "$proto://$hostname:$port" : "$proto://$hostname";
 
     if($use_tt) {
 
