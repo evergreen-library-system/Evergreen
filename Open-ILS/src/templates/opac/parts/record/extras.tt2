@@ -8,14 +8,13 @@
             IF ctx.google_books_preview;
                 label = l('Google Preview');
                 name = 'google_preview';
-                href = 'javascript:GBDisplayPreview();';
         %]
-        <div id="gbp_extra" class="rdetail_extras hide_me">
+        <div id="gbp_extra" class="rdetail_extras">
             <div class="rdetail_extras_hr"></div>
             <div id="gbp_extra_links" class="rdetail_extras_link">
-                <a id='gbp_arrow_link' name='[% name %]' href='[% href %]' class='rdetail_extras_lbl'>[% arrow_right %]</a>
-                <a id='gbp_arrow_down_link' name='[% name %]' href='[% href %]' class='rdetail_extras_lbl hide_me'>[% arrow_down %]</a>
-                <a name='[% name %]_lbl' href='[% href %]' class="rdetail_extras_lbl">[% label %]</a></div>
+                <a id='gbp_arrow_link' name='[% name %]' class='rdetail_extras_lbl'>[% arrow_right %]</a>
+                <a id='gbp_arrow_down_link' name='[% name %]' class='rdetail_extras_lbl'>[% arrow_down %]</a>
+                <a name='[% name %]_lbl' class="rdetail_extras_lbl">[% label %]</a></div>
         </div>
         <div id="gbp_extra_container" class='rdetail_extras_div'></div>
         [%  END %]

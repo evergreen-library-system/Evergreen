@@ -774,6 +774,10 @@ div.format_icon {
     margin:0;
 }
 
+#gbp_extra, #gbp_arrow_down_link {
+    display: none;
+}
+
 .almost-content-wrapper {
     background: [% css_colors.background %];
 }

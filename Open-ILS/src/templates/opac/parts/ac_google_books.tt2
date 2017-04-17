@@ -1,132 +1,161 @@
-<script type="text/javascript">
-var GBisbns = Array();
-var GBPreviewLink = '';
-var GBPreviewShowing = false;
+<script>
+;(function () {
+  var GBisbns = [];
+  var GBPBadgelink;
+  var GBPreviewLink = '';
+  var GBPreviewShowing = false;
+  var lang = '[% ctx.locale.substr(0,2) %]';
+  var head = document.getElementsByTagName('head')[0];
 
 /**
- *
- * @param {DOM object} isbn The form element containing the input parameters "isbns"
- */
-function searchForGBPreview( isbn ) {
-  dojo.require("dojo.io.script");
-  dojo.io.script.get({"url": "https://www.google.com/jsapi"});
-  dojo.io.script.get({"url": "https://www.googleapis.com/books/v1/volumes", "content": { "q": "isbn:" + isbn, "callback": "GBPreviewCallback"}});
-}
-
-/**
- * This function is the call-back function for the JSON scripts which 
+ * This function is the call-back function for the JSON scripts which
  * executes a Google book search response.
  *
  * @param {JSON} GBPBookInfo is the JSON object pulled from the Google books service.
  */
-function GBPreviewCallback(GBPBookInfo) {
-  if (GBPBookInfo.totalItems < 1) return;
-
-  var accessInfo = GBPBookInfo.items[0].accessInfo;
-  if ( !accessInfo ) {
-    return;
-  }
-
-  if ( accessInfo.embeddable ) {
-    GPPreviewLink = GBPBookInfo.items[0].volumeInfo.previewLink;
-    if ( !GPPreviewLink) {
-        return;
+  function GBPreviewCallback (GBPBookInfo) {
+    if (GBPBookInfo.totalItems < 1) {
+      return;
     }
+
+    var accessInfo = GBPBookInfo.items[0].accessInfo;
+    if (!accessInfo) {
+      return;
+    }
+
+    if (accessInfo.embeddable) {
+      GBPreviewLink = GBPBookInfo.items[0].volumeInfo.previewLink;
+      if (!GBPreviewLink) {
+        return;
+      }
+      if (document.location.protocol === 'https:') {
+        GBPreviewLink = GBPreviewLink.replace(/^http:/, 'https:');
+      }
+      var gbsrc = '//www.google.com/books/jsapi.js';
+      if (!head.querySelector('script[src="' + gbsrc + '"]')) {
+        var GBjsapi = document.createElement('script');
+        GBjsapi.src = gbsrc;
+        head.appendChild(GBjsapi);
+      }
     /* Add a button below the book cover image to load the preview. */
-    var GBPBadge = document.createElement( 'img' );
-    GBPBadge.id = 'gbpbadge';
-    GBPBadge.src = 'https://www.google.com/intl/[% ctx.locale.substr(0,2) %]/googlebooks/images/gbs_preview_button1.gif';
-    GBPBadge.title = dojo.byId('rdetail_title').innerHTML;
-    GBPBadge.style.border = 0;
-    GBPBadge.style.margin = '0.5em 0 0 0';
-    GBPBadgelink = document.createElement('a');
-    GBPBadgelink.id = 'gbpbadge_link';
-    GBPBadgelink.href = 'javascript:GBDisplayPreview(true);';
-    GBPBadgelink.appendChild( GBPBadge );
-    dojo.byId('rdetail_title_div').appendChild( GBPBadgelink );
-    unHideMe(dojo.byId('gbp_extra'));
+      var GBPBadge = document.createElement('img');
+      GBPBadge.id = 'gbpbadge';
+      GBPBadge.src = 'https://www.google.com/intl/' + lang + '/googlebooks/images/gbs_preview_button1.gif';
+      GBPBadge.title = document.getElementById('rdetail_title').innerHTML;
+      GBPBadge.style.border = 0;
+      GBPBadge.style.margin = '0.5em 0 0 0';
+      GBPBadgelink = document.createElement('a');
+      GBPBadgelink.id = 'gbpbadge_link';
+      GBPBadgelink.addEventListener('click', GBDisplayPreview);
+      GBPBadgelink.appendChild(GBPBadge);
+      document.getElementById('rdetail_title_div').appendChild(GBPBadgelink);
+      document.getElementById('gbp_extra').style.display = 'block';
+    }
   }
-}
+
+  function GBPViewerLoadCallback () {
+    var GBPViewer = new google.books.DefaultViewer(document.getElementById('rdetail_preview_div'));
+    GBPViewer.load(GBPreviewLink);
+    GBPViewer.resize();
+    GBPBadgelink = document.getElementById('gbpbadge_link');
+    GBPBadgelink.removeEventListener('click', GBDisplayPreview);
+    GBPBadgelink.addEventListener('click', GBShowHidePreview);
+  }
 
 /**
  *  This is called when the user clicks on the 'Preview' link.  We assume
  *  a preview is available from Google if this link was made visible.
  */
-function GBDisplayPreview(scroll_to_div) {
-  var GBPreviewPane = document.createElement('div');
-  GBPreviewPane.id = 'rdetail_preview_div';
-  GBPreviewPane.style.height = '800px';
-  GBPreviewPane.style.width = '600px';
-  GBPreviewPane.style.display = 'block';
-  var GBClear = document.createElement('div');
-  GBClear.style.padding = '1em';
-  dojo.byId('gbp_extra_container').appendChild(GBPreviewPane);
-  dojo.byId('gbp_extra_container').appendChild(GBClear);
-  if (GBPreviewPane.getAttribute('loaded') == null || GBPreviewPane.getAttribute('loaded') == "false" ) {
-     google.load("books", "0", {"callback" : GBPViewerLoadCallback, "language": "[% ctx.locale.substr(0,2) %]"} );
-     GBPreviewPane.setAttribute('loaded', 'true');
-  }
-  if (scroll_to_div) document.location.hash = '#gbp_extra';
-}
-
-function GBPViewerLoadCallback() {
-  var GBPViewer = new google.books.DefaultViewer(dojo.byId('rdetail_preview_div'));
-  GBPViewer.load(GPPreviewLink);
-  GBPViewer.resize();
-  var GBPBadgelink = dojo.byId('gbpbadge_link');
-  GBPBadgelink.href = 'javascript:GBShowHidePreview(true);';
-  dojo.forEach(
-    dojo.byId('gbp_extra_links').getElementsByTagName('a'),
-    function(link) {
-      link.href = 'javascript:GBShowHidePreview();';
+  function GBDisplayPreview () {
+    var GBPreviewPane = document.getElementById('rdetail_preview_div');
+    if (GBPreviewPane === null || typeof GBPreviewPane.loaded === 'undefined' || GBPreviewPane.loaded === 'false') {
+      GBPreviewPane = document.createElement('div');
+      GBPreviewPane.id = 'rdetail_preview_div';
+      GBPreviewPane.style.height = '800px';
+      GBPreviewPane.style.width = '600px';
+      GBPreviewPane.style.display = 'block';
+      var GBClear = document.createElement('div');
+      GBClear.style.padding = '1em';
+      document.getElementById('gbp_extra_container').appendChild(GBPreviewPane);
+      document.getElementById('gbp_extra_container').appendChild(GBClear);
+      google.books.load({'language': lang});
+      window.setTimeout(GBPViewerLoadCallback, 750);
+      var extras = document.getElementById('gbp_extra_links').getElementsByTagName('a');
+      for (var i = 0; i < extras.length; i++) {
+        extras[i].addEventListener('click', GBShowHidePreview);
+      }
+      GBPreviewPane.loaded = 'true';
     }
-  );
-  hideMe(dojo.byId('gbp_arrow_link'));
-  unHideMe(dojo.byId('gbp_arrow_down_link'));
-  GBPreviewShowing = true;
-}
-
-function GBShowHidePreview(from_button) {
-  if (!GBPreviewShowing) {
-    dojo.byId('gbp_extra_container').style.display = 'inherit';
-    hideMe(dojo.byId('gbp_arrow_link'));
-    unHideMe(dojo.byId('gbp_arrow_down_link'));
-    GBPreviewShowing = true;
-  } else if (!from_button) { // button can open, but shouldn't close
-    dojo.byId('gbp_extra_container').style.display = 'none';
-    unHideMe(dojo.byId('gbp_arrow_link'));
-    hideMe(dojo.byId('gbp_arrow_down_link'));
-    GBPreviewShowing = false;
-  }
-  // button should always scroll
-  if (from_button) document.location.hash = '#gbp_extra';
-}
-
-dojo.addOnLoad(function() {
-  var spans = dojo.query('li.rdetail_isbns span.rdetail_value');
-  for (var i = 0; i < spans.length; i++) {
-    var prop = spans[i].getAttribute('property');
-    if (!prop) {
-      continue;
-    }
-    var isbn = spans[i].textContent || spans[i].innerText;
-    if (!isbn) {
-      continue;
-    }
-    isbn = isbn.toString().replace(/^\s+/,"");
-    var idx = isbn.indexOf(" ");
-    if (idx > -1) {
-      isbn = isbn.substring(0, idx);
-    }
-    isbn = isbn.toString().replace(/-/g,"");
-    if (!isbn) {
-      continue;
-    }
-    GBisbns.push(isbn);
+    GBShowHidePreview();
+    document.location.hash = '#gbp_extra';
   }
 
-  if (GBisbns.length) {
-      searchForGBPreview(GBisbns[0]);
+  function GBShowHidePreview () {
+    if (!GBPreviewShowing) {
+      document.getElementById('gbp_extra_container').style.display = 'inherit';
+      document.getElementById('gbp_arrow_link').style.display = 'none';
+      document.getElementById('gbp_arrow_down_link').style.display = 'inline';
+      GBPreviewShowing = true;
+      document.location.hash = '#gbp_extra';
+    } else { // button can open, but shouldn't close
+      document.getElementById('gbp_extra_container').style.display = 'none';
+      document.getElementById('gbp_arrow_link').style.display = 'inline';
+      document.getElementById('gbp_arrow_down_link').style.display = 'none';
+      GBPreviewShowing = false;
+      document.location.hash = 'rdetail_title';
+    }
   }
-});
+
+  function GBLoader () {
+    var spans = document.body.querySelectorAll('li.rdetail_isbns span.rdetail_value');
+    for (var i = 0; i < spans.length; i++) {
+      var prop = spans[i].getAttribute('property');
+      if (!prop) {
+        continue;
+      }
+      var isbn = spans[i].textContent || spans[i].innerText
+      if (!isbn) {
+        continue;
+      }
+      isbn = isbn.toString().replace(/^\s+/, '');
+      var idx = isbn.indexOf(' ');
+      if (idx > -1) {
+        isbn = isbn.substring(0, idx);
+      }
+      isbn = isbn.toString().replace(/-/g, '');
+      if (!isbn) {
+        continue;
+      }
+      GBisbns.push(isbn);
+    }
+
+    if (GBisbns.length) {
+      var req = new window.XMLHttpRequest();
+      var qisbn = encodeURIComponent('isbn:' + GBisbns[0]);
+      req.open('GET', 'https://www.googleapis.com/books/v1/volumes?q=' + qisbn + '&prettyPrint=false');
+      if (req.responseType && (req.responseType = 'json')) {
+        req.onload = function (evt) {
+          var result = req.response;
+          if (result) {
+            GBPreviewCallback(result);
+          }
+        }
+      } else {
+      // IE 10/11
+        req.onload = function (evt) {
+          var result = JSON.parse(req.responseText);
+          if (result) {
+            GBPreviewCallback(result);
+          }
+        }
+      }
+      req.send();
+    }
+  };
+
+  // Skips IE9
+  if (window.addEventListener && !window.XDomainRequest) {
+    window.addEventListener('load', GBLoader, false);
+  }
+})()
 </script>
