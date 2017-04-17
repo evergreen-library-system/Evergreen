@@ -116,10 +116,6 @@
         want_dojo = 1;
     END;
 
-    IF ctx.google_books_preview;
-        want_dojo = 1;
-    END;
-
     IF ENV.OILS_NOVELIST_URL;
         want_dojo = 1;
     END;

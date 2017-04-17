@@ -59,6 +59,7 @@
     IF CGI.https; url = url.replace('^http:', 'https:'); END; %]
 <script type='text/javascript' id='EIT' src='[% url %]'></script>
 [%- END %]
+[% INCLUDE "opac/parts/ac_google_books.tt2" IF ctx.page == 'record' AND ctx.google_books_preview %]
 [%- IF want_dojo; -%]
 <script type="text/javascript">
      var djConfig = {
@@ -101,7 +102,6 @@
 [% END; # use_autosuggest %]
 
 [% INCLUDE "opac/parts/acjs.tt2" IF ctx.page == 'record' %]
-[% INCLUDE "opac/parts/ac_google_books.tt2" IF ctx.page == 'record' AND ctx.google_books_preview %]
 [% IF ctx.page == 'advanced' %]
 <script type="text/javascript" 
     src="[% ctx.media_prefix %]/js/ui/default/opac/copyloc.js"></script>
