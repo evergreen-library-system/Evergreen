@@ -8,6 +8,11 @@ Evergreen 2.12.1
 
 This release contains several bug fixes improving on Evergreen 2.12.0
 
+* A fix to the 2.12 upgrade of the subject|temporal and subject|geographic 
+indexes, where the above-mentioned browse indexes were not turned off in favor
+of new browse versions of the indexes. Sites that are upgrading from 2.12.0
+can cancel the browse reingest that comes with the new upgrade script.
+
 * A change to the default pickup library when staff place a hold. The place hold
 screen will now default to the preferred pickup location for the patron. If the
 patron does not have a preferred pickup location, it will default to the
