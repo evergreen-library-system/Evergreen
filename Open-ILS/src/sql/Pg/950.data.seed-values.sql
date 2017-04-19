@@ -350,7 +350,7 @@ INSERT INTO config.copy_status
     VALUES (16, oils_i18n_gettext(16, 'Long Overdue', 'ccs', 'name'), 'f', 'f', 'f', 't');
 INSERT INTO config.copy_status
 (id, name, holdable, opac_visible, copy_active, restrict_copy_delete)
-VALUES (17, 'Lost and Paid', FALSE, FALSE, FALSE, TRUE);
+VALUES (17, oils_i18n_gettext(17, 'Lost and Paid', 'ccs', 'name'), 'f', 'f', 'f', 't');
 INSERT INTO config.copy_status(id,name,holdable,opac_visible) VALUES (18,oils_i18n_gettext(18, 'Canceled Transit', 'ccs', 'name'),'t','t');
 
 
@@ -2695,27 +2695,27 @@ INSERT INTO config.usr_setting_type (name,opac_visible,label,description,datatyp
 
 -- Add groups for org_unit settings
 INSERT INTO config.settings_group (name, label) VALUES
-('acq', oils_i18n_gettext('config.settings_group.acquisitions', 'Acquisitions', 'coust', 'label')),
-('sys', oils_i18n_gettext('config.settings_group.system', 'System', 'coust', 'label')),
-('gui', oils_i18n_gettext('config.settings_group.gui', 'GUI', 'coust', 'label')),
-('lib', oils_i18n_gettext('config.settings_group.lib', 'Library', 'coust', 'label')),
-('sec', oils_i18n_gettext('config.settings_group.sec', 'Security', 'coust', 'label')),
-('cat', oils_i18n_gettext('config.settings_group.cat', 'Cataloging', 'coust', 'label')),
-('holds', oils_i18n_gettext('config.settings_group.holds', 'Holds', 'coust', 'label')),
-('circ', oils_i18n_gettext('config.settings_group.circulation', 'Circulation', 'coust', 'label')),
-('self', oils_i18n_gettext('config.settings_group.self', 'Self Check', 'coust', 'label')),
-('opac', oils_i18n_gettext('config.settings_group.opac', 'OPAC', 'coust', 'label')),
-('prog', oils_i18n_gettext('config.settings_group.program', 'Program', 'coust', 'label')),
-('glob', oils_i18n_gettext('config.settings_group.global', 'Global', 'coust', 'label')),
-('finance', oils_i18n_gettext('config.settings_group.finances', 'Finances', 'coust', 'label')),
-('credit', oils_i18n_gettext('config.settings_group.ccp', 'Credit Card Processing', 'coust', 'label')),
-('serial', oils_i18n_gettext('config.settings_group.serial', 'Serials', 'coust', 'label')),
-('recall', oils_i18n_gettext('config.settings_group.recall', 'Recalls', 'coust', 'label')),
-('booking', oils_i18n_gettext('config.settings_group.booking', 'Booking', 'coust', 'label')),
-('offline', oils_i18n_gettext('config.settings_group.offline', 'Offline', 'coust', 'label')),
-('receipt_template', oils_i18n_gettext('config.settings_group.receipt_template', 'Receipt Template', 'coust', 'label')),
+('acq', oils_i18n_gettext('acq', 'Acquisitions', 'csg', 'label')),
+('sys', oils_i18n_gettext('sys', 'System', 'csg', 'label')),
+('gui', oils_i18n_gettext('gui', 'GUI', 'csg', 'label')),
+('lib', oils_i18n_gettext('lib', 'Library', 'csg', 'label')),
+('sec', oils_i18n_gettext('sec', 'Security', 'csg', 'label')),
+('cat', oils_i18n_gettext('cat', 'Cataloging', 'csg', 'label')),
+('holds', oils_i18n_gettext('holds', 'Holds', 'csg', 'label')),
+('circ', oils_i18n_gettext('circ', 'Circulation', 'csg', 'label')),
+('self', oils_i18n_gettext('self', 'Self Check', 'csg', 'label')),
+('opac', oils_i18n_gettext('opac', 'OPAC', 'csg', 'label')),
+('prog', oils_i18n_gettext('prog', 'Program', 'csg', 'label')),
+('glob', oils_i18n_gettext('glob', 'Global', 'csg', 'label')),
+('finance', oils_i18n_gettext('finance', 'Finances', 'csg', 'label')),
+('credit', oils_i18n_gettext('credit', 'Credit Card Processing', 'csg', 'label')),
+('serial', oils_i18n_gettext('serial', 'Serials', 'csg', 'label')),
+('recall', oils_i18n_gettext('recall', 'Recalls', 'csg', 'label')),
+('booking', oils_i18n_gettext('booking', 'Booking', 'csg', 'label')),
+('offline', oils_i18n_gettext('offline', 'Offline', 'csg', 'label')),
+('receipt_template', oils_i18n_gettext('receipt_template', 'Receipt Template', 'csg', 'label')),
 ('sms', oils_i18n_gettext('sms','SMS Text Messages','csg','label')),
-('vandelay', oils_i18n_gettext('vandelay','Vandelay','coust','label'))
+('vandelay', oils_i18n_gettext('vandelay','Vandelay','csg','label'))
 ;
 
 
@@ -5359,7 +5359,7 @@ SELECT SETVAL('vandelay.authority_attr_definition_id_seq'::TEXT, 100);
 
 INSERT INTO container.copy_bucket_type (code,label) VALUES ('misc', oils_i18n_gettext('misc', 'Miscellaneous', 'ccpbt', 'label'));
 INSERT INTO container.copy_bucket_type (code,label) VALUES ('staff_client', oils_i18n_gettext('staff_client', 'General Staff Client container', 'ccpbt', 'label'));
-INSERT INTO container.copy_bucket_type (code,label) VALUES ( 'circ_history', 'Circulation History' );
+INSERT INTO container.copy_bucket_type (code,label) VALUES ( 'circ_history', oils_i18n_gettext('circ_history', 'Circulation History', 'ccpbt', 'label'));
 INSERT INTO container.call_number_bucket_type (code,label) VALUES ('misc', oils_i18n_gettext('misc', 'Miscellaneous', 'ccnbt', 'label'));
 INSERT INTO container.biblio_record_entry_bucket_type (code,label) VALUES ('misc', oils_i18n_gettext('misc', 'Miscellaneous', 'cbrebt', 'label'));
 INSERT INTO container.biblio_record_entry_bucket_type (code,label) VALUES ('staff_client', oils_i18n_gettext('staff_client', 'General Staff Client container', 'cbrebt', 'label'));
@@ -6436,8 +6436,8 @@ INSERT INTO config.marc21_ff_pos_map (fixed_field, tag, rec_type,start_pos, leng
 
 -- record attributes
 INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('alph','Alph','Alph');
-INSERT INTO config.record_attr_definition (name,label,fixed_field,description) values ('audience','Audn','Audn', oils_i18n_gettext('audience', 'Audience', 'crad', 'label'));
-INSERT INTO config.record_attr_definition (name,label,fixed_field,multi,description) values ('bib_level','BLvl','BLvl',FALSE,oils_i18n_gettext('bib_level', 'Bib Level', 'crad', 'label'));
+INSERT INTO config.record_attr_definition (name,label,fixed_field,description) values ('audience','Audn','Audn', oils_i18n_gettext('audience', 'Audience', 'crad', 'description'));
+INSERT INTO config.record_attr_definition (name,label,fixed_field,multi,description) values ('bib_level','BLvl','BLvl',FALSE,oils_i18n_gettext('bib_level', 'Bib Level', 'crad', 'description'));
 INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('biog','Biog','Biog');
 INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('conf','Conf','Conf');
 INSERT INTO config.record_attr_definition (name,label,fixed_field,multi) values ('control_type','Ctrl','Ctrl',FALSE);
@@ -6449,18 +6449,18 @@ INSERT INTO config.record_attr_definition (name,label,fixed_field,multi) values 
 INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('pub_status','DtSt','DtSt');
 INSERT INTO config.record_attr_definition (name,label,fixed_field,multi) values ('enc_level','ELvl','ELvl',FALSE);
 INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('fest','Fest','Fest');
-INSERT INTO config.record_attr_definition (name,label,fixed_field,description) values ('item_form','Form','Form',oils_i18n_gettext('item_form', 'Item Form', 'crad', 'label'));
+INSERT INTO config.record_attr_definition (name,label,fixed_field,description) values ('item_form','Form','Form',oils_i18n_gettext('item_form', 'Item Form', 'crad', 'description'));
 INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('gpub','GPub','GPub');
 INSERT INTO config.record_attr_definition (name,label,fixed_field,composite) values ('ills','Ills','Ills',TRUE);
 INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('indx','Indx','Indx');
-INSERT INTO config.record_attr_definition (name,label,fixed_field,description) values ('item_lang','Lang','Lang',oils_i18n_gettext('item_lang', 'Language', 'crad', 'label'));
+INSERT INTO config.record_attr_definition (name,label,fixed_field,description) values ('item_lang','Lang','Lang',oils_i18n_gettext('item_lang', 'Language', 'crad', 'description'));
 INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('language','Language (2.0 compat version)','Lang');
-INSERT INTO config.record_attr_definition (name,label,fixed_field,description) values ('lit_form','LitF','LitF',oils_i18n_gettext('lit_form', 'Literary Form', 'crad', 'label'));
+INSERT INTO config.record_attr_definition (name,label,fixed_field,description) values ('lit_form','LitF','LitF',oils_i18n_gettext('lit_form', 'Literary Form', 'crad', 'description'));
 INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('mrec','MRec','MRec');
 INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('ff_sl','S/L','S/L');
 INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('type_mat','TMat','TMat');
-INSERT INTO config.record_attr_definition (name,label,fixed_field,multi,description) values ('item_type','Type','Type',FALSE,oils_i18n_gettext('item_type', 'Item Type', 'crad', 'label'));
-INSERT INTO config.record_attr_definition (name,label,phys_char_sf,description) values ('vr_format','Videorecording format',72,oils_i18n_gettext('vr_format', 'Video Format', 'crad', 'label'));
+INSERT INTO config.record_attr_definition (name,label,fixed_field,multi,description) values ('item_type','Type','Type',FALSE,oils_i18n_gettext('item_type', 'Item Type', 'crad', 'description'));
+INSERT INTO config.record_attr_definition (name,label,phys_char_sf,description) values ('vr_format','Videorecording format',72,oils_i18n_gettext('vr_format', 'Video Format', 'crad', 'description'));
 INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('file','File','File');
 INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('freq','Freq','Freq');
 INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('regl','Regl','Regl');
@@ -13148,10 +13148,10 @@ UPDATE authority.control_set_authority_field
 
 
 INSERT INTO authority.browse_axis (code,name,description,sorter) VALUES
-    ('title','Title','Title axis','titlesort'),
-    ('author','Author','Author axis','titlesort'),
-    ('subject','Subject','Subject axis','titlesort'),
-    ('topic','Topic','Topic Subject axis','titlesort');
+    ('title',oils_i18n_gettext('title','Title','aba','name'),oils_i18n_gettext('title','Title axis','aba','description'),'titlesort'),
+    ('author',oils_i18n_gettext('author','Author','aba','name'),oils_i18n_gettext('author','Author axis','aba','description'),'titlesort'),
+    ('subject',oils_i18n_gettext('subject','Subject','aba','name'),oils_i18n_gettext('subject','Subject axis','aba','description'),'titlesort'),
+    ('topic',oils_i18n_gettext('topic','Topic','aba','name'),oils_i18n_gettext('topic','Topic Subject axis','aba','description'),'titlesort');
 
 INSERT INTO authority.browse_axis_authority_field_map (axis,field) VALUES
     ('author',  1 ),
@@ -14971,22 +14971,32 @@ INSERT INTO config.org_unit_setting_type (
 ) VALUES (
     'circ.staff.max_visible_event_age',
     'circ',
-    'Maximum visible age of User Trigger Events in Staff Interfaces',
-    'If this is unset, staff can view User Trigger Events regardless of age. When this is set to an interval, it represents the age of the oldest possible User Trigger Event that can be viewed.',
+    oils_i18n_gettext(
+        'circ.staff.max_visible_event_age',
+        'Maximum visible age of User Trigger Events in Staff Interfaces',
+        'cust',
+        'label'
+    ),
+    oils_i18n_gettext(
+        'circ.staff.max_visible_event_age',
+        'If this is unset, staff can view User Trigger Events regardless of age. When this is set to an interval, it represents the age of the oldest possible User Trigger Event that can be viewed.',
+        'cust',
+        'description'
+    ),
     'interval'
 );
 
 -- kid's opac main search filter
 
-INSERT INTO actor.search_filter_group (owner, code, label) 
-    VALUES (1, 'kpac_main', 'Kid''s OPAC Search Filter');
+INSERT INTO actor.search_filter_group (owner, code, label)
+    VALUES (1, 'kpac_main', oils_i18n_gettext(1,'Kid''s OPAC Search Filter','asfg','label'));
 
-INSERT INTO actor.search_query (label, query_text) 
-    VALUES ('Children''s Materials', 'audience(a,b,c)');
-INSERT INTO actor.search_query (label, query_text) 
-    VALUES ('Young Adult Materials', 'audience(j,d)');
-INSERT INTO actor.search_query (label, query_text) 
-    VALUES ('General/Adult Materials',  'audience(e,f,g, )');
+INSERT INTO actor.search_query (id, label, query_text)
+    VALUES (1, oils_i18n_gettext(1,'Children''s Materials','asq','label'), 'audience(a,b,c)');
+INSERT INTO actor.search_query (id, label, query_text)
+    VALUES (2, oils_i18n_gettext(2,'Young Adult Materials','asq','label'), 'audience(j,d)');
+INSERT INTO actor.search_query (id, label, query_text)
+    VALUES (3, oils_i18n_gettext(3,'General/Adult Materials','asq','label'), 'audience(e,f,g)');
 
 INSERT INTO actor.search_filter_group_entry (grp, query, pos)
     VALUES (
@@ -16856,7 +16866,7 @@ INSERT INTO config.global_flag (name, label, value, enabled) VALUES (
 );
 
 INSERT INTO config.settings_group (name, label)
-    VALUES ('ebook_api', 'Ebook API Integration');
+    VALUES ('ebook_api', oils_i18n_gettext('ebook_api', 'Ebook API Integration', 'csg', 'label');
 
 INSERT INTO config.org_unit_setting_type
     (name, label, description, grp, datatype) 
