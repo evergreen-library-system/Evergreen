@@ -58,6 +58,7 @@ AND   map.metabib_field IN (
     FROM config.metabib_field
     WHERE field_class = 'subject' AND name = 'temporal_browse'
 );
+COMMIT;
 
 \qecho Verify that bib subject fields appear to be mapped to
 \qecho to correct browse indexes
@@ -75,4 +76,3 @@ ORDER BY b.tag;
 \qecho .
 SELECT metabib.reingest_metabib_field_entries(id, TRUE, FALSE, TRUE)
     FROM biblio.record_entry;
-COMMIT;
