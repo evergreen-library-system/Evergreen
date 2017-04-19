@@ -1,22 +1,21 @@
 # Arabic translation for evergreen
-# Copyright (c) 2016 Rosetta Contributors and Canonical Ltd 2016
+# Copyright (c) 2017 Rosetta Contributors and Canonical Ltd 2017
 # This file is distributed under the same license as the evergreen package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2016.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2017.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2017-03-15 16:23-0400\n"
-"PO-Revision-Date: 2017-02-16 11:42+0000\n"
-"Last-Translator: fares othman <Unknown>\n"
+"PO-Revision-Date: 2017-04-09 07:00+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Arabic <ar@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-03-19 06:11+0000\n"
-"X-Generator: Launchpad (build 18332)\n"
-"Language: ar\n"
+"X-Launchpad-Export-Date: 2017-04-14 06:10+0000\n"
+"X-Generator: Launchpad (build 18352)\n"
 
 #: class.stgu.label:9561
 msgid "User Stage"
@@ -1853,7 +1852,7 @@ msgstr "سلة المستخدم"
 
 #: field.sunit.dummy_isbn.label:5156 field.acp.dummy_isbn.label:6792
 msgid "Dummy ISBN"
-msgstr ""
+msgstr "ردمك زائف"
 
 #: field.ath.key.label:1282
 msgid "Hook Key"
@@ -2035,7 +2034,7 @@ msgstr "أنه فعّال"
 
 #: field.czs.attrs.label:1191
 msgid "Attrs"
-msgstr ""
+msgstr "الخصائص"
 
 #: field.acsaf.nfi.label:2474
 msgid "Non-filing Indicator"
@@ -2096,7 +2095,7 @@ msgstr "أفق العمر"
 
 #: field.acqinv.payment_auth.label:7734
 msgid "Payment Auth"
-msgstr ""
+msgstr "إذن الدفع"
 
 #: class.mwp.label:6631
 msgid "Work Payment"
@@ -3143,7 +3142,7 @@ msgstr "اكتمالات/اتمام الباركود"
 
 #: field.acqpc.role.label:7881
 msgid "Role"
-msgstr ""
+msgstr "الوظِيفة"
 
 #: field.au.day_phone.label:3338 field.stgu.day_phone.label:9573
 msgid "Daytime Phone"
@@ -3686,7 +3685,7 @@ msgstr "سبب إلغاء الحجز المطلوب"
 
 #: field.rb.scope.label:301
 msgid "Scope"
-msgstr ""
+msgstr "النطاق"
 
 #: field.ccmm.renewals.label:1926
 msgid "Renewals Override"
@@ -3706,7 +3705,7 @@ msgstr "إعارة المصدر"
 
 #: field.acqf.propagate.label:8118 field.acqfsum.propagate.label:8360
 msgid "Propagate"
-msgstr ""
+msgstr "البث"
 
 #: field.circ.aaactsc_entries.label:4189
 #: field.combcirc.aaactsc_entries.label:4269
@@ -4103,7 +4102,7 @@ msgstr "مخفي؟"
 
 #: field.mbt.grocery.label:6526
 msgid "Grocery Billing link"
-msgstr ""
+msgstr "رابط مخزن الفواتير"
 
 #: field.vbq.match_set.label:467 field.vaq.match_set.label:609
 #: field.vmsp.match_set.label:743 field.vmsq.match_set.label:780
@@ -4315,7 +4314,7 @@ msgstr "المداخل"
 
 #: field.sunit.dummy_title.label:5160 field.acp.dummy_title.label:6796
 msgid "Precat Dummy Title"
-msgstr ""
+msgstr "العنوان الزائف للفهرسة المُسبقة"
 
 #: field.ahr.sms_notify.label:5671 field.ahopl.sms_notify.label:5819
 msgid "Notifications SMS Number"
@@ -5055,7 +5054,7 @@ msgstr "إخطار بالهاتف؟"
 
 #: field.cbc.padding.label:11470
 msgid "Padding"
-msgstr ""
+msgstr "الحَشو"
 
 #: field.rb.importance_age.label:304
 msgid "Importance Horizon"
@@ -5283,7 +5282,7 @@ msgstr "اسم المستخدم الأول المُعطى"
 
 #: field.cust.fm_class.label:3515
 msgid "Fieldmapper Class"
-msgstr ""
+msgstr "كلاس مُخطط خرائط الحقول"
 
 #: field.chmw.marc_type.label:1773 field.ccmw.marc_type.label:1804
 #: field.chmm.marc_type.label:1861 field.ccmm.marc_type.label:1912
@@ -5842,7 +5841,7 @@ msgstr "مصادر الحجز المُستهدف"
 
 #: field.sunit.dummy_author.label:5159 field.acp.dummy_author.label:6795
 msgid "Precat Dummy Author"
-msgstr ""
+msgstr "المؤلف الزائف للفهرسة المُسبقة"
 
 #: field.qbv.default_value.label:9835 field.cmfpm.default_val.label:10213
 msgid "Default Value"
@@ -6039,7 +6038,7 @@ msgstr "الحجوزات الفعالة"
 
 #: class.lasso.label:5448
 msgid "Org Lasso"
-msgstr ""
+msgstr "مؤسسة لاسو"
 
 #: field.au.fund_alloc_pcts.label:3378 field.aou.fund_alloc_pcts.label:6113
 #: field.acqfs.fund_alloc_pcts.label:8011
@@ -6068,7 +6067,7 @@ msgstr "المستخدم المالك"
 
 #: field.aiit.prorate.label:1607
 msgid "Prorate?"
-msgstr ""
+msgstr "وزع بالنسب؟"
 
 #: field.vii.imported_as.label:368
 msgid "Final Target Copy"
@@ -6175,7 +6174,7 @@ msgstr "رابط التعبير المُتغير"
 
 #: field.sra.bump_type.label:5433
 msgid "Bump Type"
-msgstr ""
+msgstr "نوع البمب"
 
 #: field.brsrc.curr_rsrcs.label:4454
 msgid "Reservation Current Resources"
@@ -6664,7 +6663,7 @@ msgstr "نوع الضبط"
 
 #: field.qxp.cast_type.label:9857 field.xcast.cast_type.label:10016
 msgid "Cast Type"
-msgstr ""
+msgstr "نوع الخام"
 
 #: class.ancihu.label:2332
 msgid "Non-cataloged In House Use"
@@ -7178,11 +7177,11 @@ msgstr "متن الرسالة لـِ رموز كائن جافاسكريبت ال
 
 #: class.mg.label:6477
 msgid "Grocery Transaction"
-msgstr ""
+msgstr "عملية المخزن"
 
 #: field.cmsa.alias.label:2745
 msgid "Alias (RegExp)"
-msgstr ""
+msgstr "أليس ـ التعبير النظامي ـ"
 
 #: field.aur.phone_notify.label:7572
 msgid "Phone Notify"
@@ -7199,7 +7198,7 @@ msgstr "استعلام فرعي"
 
 #: field.acqinv.shipper.label:7729
 msgid "Shipper"
-msgstr ""
+msgstr "المُرسِل"
 
 #: field.acqedi.vendcode.label:8974
 msgid "Vendor Assigned Code"
@@ -7207,7 +7206,7 @@ msgstr "رمز البائع المخصص"
 
 #: field.cbho.shtime.label:2830
 msgid "Copy Has Been Home At All Lately"
-msgstr ""
+msgstr "النسخ في الرئيسية في جميع المتأخرات"
 
 #: field.ahopl.usr_display_name.label:5853
 msgid "User Display Name"
@@ -7359,7 +7358,7 @@ msgstr "مُلخص المستخدم"
 
 #: class.combahr.label:5972
 msgid "Combined (Active & Aged) Hold Request"
-msgstr ""
+msgstr "طلب الحجز المُشترك ـ النشط والقديم ـ"
 
 #: field.amtr.success.label:159
 msgid "Success"
@@ -7516,7 +7515,7 @@ msgstr "حدث مُطالبة السلسلة"
 
 #: field.crad.joiner.label:964 field.acsaf.joiner.label:2482
 msgid "Joiner"
-msgstr ""
+msgstr "نجار"
 
 #: field.acqofscred.id.label:8062
 msgid "Ordered Fund Src ID"
@@ -7593,7 +7592,7 @@ msgstr "حقل تعيين ضبط الإسناد لـِ خريطة حقل الم�
 
 #: field.cbc.padding_end.label:11471
 msgid "Padding At End"
-msgstr ""
+msgstr "الحشو في النهاية"
 
 #: class.cfdi.label:10513
 msgid "FilterDialog Interface"
@@ -8359,7 +8358,7 @@ msgstr "شارع (1)"
 
 #: field.ahrcc.label.label:7347
 msgid "Cause Label"
-msgstr ""
+msgstr "تسمية القضية"
 
 #: field.ocirccount.overdue.label:4098 field.ocirclist.overdue.label:4140
 msgid "Overdue"
@@ -8576,7 +8575,7 @@ msgstr "اسم نوع البيانات"
 
 #: field.aiit.blanket.label:1608
 msgid "Blanket?"
-msgstr ""
+msgstr "ملغي؟"
 
 #: field.circ.renewal_remaining.label:4168
 #: field.combcirc.renewal_remaining.label:4241

@@ -1,24 +1,21 @@
 # Brazilian Portuguese translation for evergreen
-# Copyright (c) 2009 Rosetta Contributors and Canonical Ltd 2009
+# Copyright (c) 2017 Rosetta Contributors and Canonical Ltd 2017
 # This file is distributed under the same license as the evergreen package.
-# FIRST AUTHOR: Job Diogenes Ribeiro Borges <jobdrb@gmail.com>, 2009.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2017.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2017-02-21 20:30-0400\n"
-"PO-Revision-Date: 2012-05-25 22:58+0000\n"
-"Last-Translator: Tomas Abril <Unknown>\n"
+"PO-Revision-Date: 2017-04-09 07:00+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Brazilian Portuguese <pt_BR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-02-23 05:43+0000\n"
-"X-Generator: Launchpad (build 18326)\n"
-"X-Poedit-Country: BRAZIL\n"
-"X-Poedit-Language: Portuguese\n"
-"X-Poedit-SourceCharset: UTF-8\n"
+"X-Launchpad-Export-Date: 2017-04-14 06:12+0000\n"
+"X-Generator: Launchpad (build 18352)\n"
 
 #: 1208.TITLE_LAST_COPY:71
 msgid "The last copy attached to a title is being removed or deleted"
@@ -1341,18 +1338,3 @@ msgstr ""
 #: 1604.MONEY_USER_SUMMARY_NOT_FOUND:463
 msgid "The requested money_user_summary was not found"
 msgstr "O objeto \"money_user_summary\" solicitado não foi encontrado"
-
-#~ msgid "This requested item is currently on the holds shelf"
-#~ msgstr "Este item solicitado está atualmente na prateleira de reservas"
-
-#~ msgid "Copy has is marked as lost"
-#~ msgstr "O Exemplar esta marcado como perdido"
-
-#~ msgid "The requested acq.po_lineitem was not found"
-#~ msgstr "O acq.po_lineitem solicitado não foi encontrado"
-
-#~ msgid "The selecte bill has already been voided"
-#~ msgstr "A fatura selecionada já foi anulada"
-
-#~ msgid "Copy has is marked as missing"
-#~ msgstr "Exemplar esta marcado como desaparecido"

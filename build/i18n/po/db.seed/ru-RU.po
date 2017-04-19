@@ -1,16 +1,21 @@
+# Russian translation for evergreen
+# Copyright (c) 2017 Rosetta Contributors and Canonical Ltd 2017
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2017.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Evergreen 1.4\n"
-"Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
+"Project-Id-Version: evergreen\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2017-03-15 16:25-0400\n"
-"PO-Revision-Date: 2010-05-22 10:11+0000\n"
-"Last-Translator: Sergey Basalaev <SBasalaev@gmail.com>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2017-04-09 07:00+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-03-19 06:10+0000\n"
-"X-Generator: Launchpad (build 18332)\n"
+"X-Launchpad-Export-Date: 2017-04-14 06:09+0000\n"
+"X-Generator: Launchpad (build 18352)\n"
 
 #: 950.data.seed-values.sql:8080
 msgid "Estonia "
@@ -13919,81 +13924,3 @@ msgstr ""
 #: 950.data.seed-values.sql:7717
 msgid "Flamenco"
 msgstr ""
-
-# id::aou.name__7
-#~ msgid "Example Branch 4"
-#~ msgstr "Модель подразделение 4"
-
-# id::aou.name__5
-#~ msgid "Example Branch 2"
-#~ msgstr "Модель подразделение 2"
-
-# id::clm.value''in__gwi
-#~ msgid "Gwich"
-#~ msgstr "Gwich"
-
-# id::aou.name__6
-#~ msgid "Example Branch 3"
-#~ msgstr "Модель подразделение 3"
-
-# id::aou.name__4
-#~ msgid "Example Branch 1"
-#~ msgstr "Модель подразделение 1"
-
-# id::cit.name__2
-#~ msgid "SSN"
-#~ msgstr "SSN"
-
-# id::pgt.name__10
-#~ msgid "Local System Administrator"
-#~ msgstr "Локальный системный администратор"
-
-# id::aou.name__8
-#~ msgid "Example Sub-library 1"
-#~ msgstr "Модель под библиотека 1"
-
-# id::aou.name__2
-#~ msgid "Example System 1"
-#~ msgstr "Модель Система 1"
-
-# id::aou.name__3
-#~ msgid "Example System 2"
-#~ msgstr "Модель система 2"
-
-# id::aou.name__9
-#~ msgid "Example Bookmobile 1"
-#~ msgstr "Модель книжный автобус 1"
-
-# id::pgt.description__10
-#~ msgid "System maintenance, configuration, etc."
-#~ msgstr "Поддержание системой, конфигурация, итд"
-
-#~ msgid "Circ: Cap Max Fine at Item Price"
-#~ msgstr "Циркуляция: Cap Max штраф соответствующий цене единицы"
-
-#~ msgid "Book Bag"
-#~ msgstr "Сумка для книг"
-
-#~ msgid "Add to Published Book Bags"
-#~ msgstr "Добавь в сумку для книг  Изданные"
-
-#~ msgid "‡biblios.net"
-#~ msgstr "‡biblios.net"
-
-#~ msgid "List Published Book Bags"
-#~ msgstr "Опубликованный список  Book Bags"
-
-#~ msgid "Holds: Clear shelf copy status"
-#~ msgstr "Хранения:  Четкий статус полочной расстановки"
-
-#~ msgid "Selfcheck: Workstation Required"
-#~ msgstr "Самопроверка:  Рабочая станция необходима"
-
-#~ msgid "Selfcheck: Require Patron Password"
-#~ msgstr "Самопроверка: Необходимый пароль клиента"
-
-#~ msgid "GUI: Work Log: Maximum Patrons Logged"
-#~ msgstr "GUI:Регистрация работы: Максимум читателей зарегистрированно"
-
-#~ msgid "GUI: Work Log: Maximum Actions Logged"
-#~ msgstr "GUI:Регистрация работы: Максимум мероприятий зарегистрированно"

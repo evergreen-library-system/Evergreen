@@ -1,26 +1,21 @@
 # Russian translation for evergreen
-# Copyright (c) 2010 Rosetta Contributors and Canonical Ltd 2010
+# Copyright (c) 2017 Rosetta Contributors and Canonical Ltd 2017
 # This file is distributed under the same license as the evergreen package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2017.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2017-03-15 16:23-0400\n"
-"PO-Revision-Date: 2017-02-05 17:05+0000\n"
-"Last-Translator: Jane Sandberg <sandbej@linnbenton.edu>\n"
+"PO-Revision-Date: 2017-04-09 07:00+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-03-19 06:12+0000\n"
-"X-Generator: Launchpad (build 18332)\n"
-
-#: class.ccs.label:3899 field.sunit.status.label:5170
-#: field.acp.status.label:6807
-msgid "Copy Status"
-msgstr "Статус единицы"
+"X-Launchpad-Export-Date: 2017-04-14 06:11+0000\n"
+"X-Generator: Launchpad (build 18352)\n"
 
 #: class.stgu.label:9561
 msgid "User Stage"
@@ -8408,6 +8403,11 @@ msgstr "Запрос записи для Хранения"
 msgid "User Purchase Request Type"
 msgstr ""
 
+#: class.ccs.label:3899 field.sunit.status.label:5170
+#: field.acp.status.label:6807
+msgid "Copy Status"
+msgstr "Статус Копии"
+
 #: field.acqlisum.encumbrance_amount.label:11062
 #: field.acqlisumi.encumbrance_amount.label:11083
 msgid "Encumbrance Amount"
@@ -8604,36 +8604,3 @@ msgstr ""
 #: field.au.billable_transactions.label:3373
 msgid "Billable Transactions"
 msgstr "Платежные Сделки"
-
-#~ msgid "Matched Attribute"
-#~ msgstr "Подобранный атрибут"
-
-#~ msgid "Field Class"
-#~ msgstr "Тип поля"
-
-#~ msgid ""
-#~ "Circulation Matrix Circulation Modifier Subtest Circulation Modifier Set"
-#~ msgstr ""
-#~ "Матрица  циркуляции Субтест модификатора циркуляции Установка модификатора "
-#~ "циркуляции"
-
-#~ msgid "Suffix/Title"
-#~ msgstr "Суффикс/Заглавие"
-
-#~ msgid "Check Out Date/Time"
-#~ msgstr "Дата/Время регистрации выдачи (документов)"
-
-#~ msgid "Test ID"
-#~ msgstr "ID испытаний"
-
-#~ msgid "Thaw Date (if frozen)"
-#~ msgstr "Дата оттаивания (если заморожены)"
-
-#~ msgid "Field Type"
-#~ msgstr "Тип поля"
-
-#~ msgid "Circulation Modifier Subtest ID"
-#~ msgstr "ID Субтестов модификатора циркуляции"
-
-#~ msgid "Circulation Matrix Circulation Modifier Subtest"
-#~ msgstr "Матрица циркуляции  Субтест модификатора циркуляции"
