@@ -1,3 +1,581 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit b01ca85655e3a0272a21883e7d600aa422c0ce53
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Wed Apr 19 14:28:11 2017 -0400
+
+    update upgrade instructions for 2.10.11
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+19	18	docs/installation/server_upgrade.txt
+
+commit 5bcd0af9c6962f4aaa04f607db44b78d85a3b4f8
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Wed Apr 19 14:23:24 2017 -0400
+
+    2.10.10-2.10.11 schema update
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+45	0	Open-ILS/src/sql/Pg/version-upgrade/2.10.10-2.10.11-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.10.10-2.10.11-upgrade-db.sql
+
+commit cadabc997aaf3c28dfacce4c66f317433f58ac35
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Wed Apr 19 12:09:14 2017 -0400
+
+    Docs: Release notes for the 2.10.11 maintenance release
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+69	14	docs/RELEASE_NOTES_2_10.adoc
+
+commit c7a6edbd764f6510d6edeb613c01150e46d7336a
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Tue Apr 18 11:06:03 2017 -0400
+
+    LP#1670407 Add tests for xact_finish close/re-open
+    
+    Since this bug came about due to negative balance changes (and it was
+    easier), this commit extends the existing negative balances test suite
+    to include basic tests for checking both xact_finish conditions.
+    
+    One of these tests fails without the fix from the previous commit.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+11	1	Open-ILS/src/perlmods/live_t/09-lp1198465_neg_balances.t
+
+commit 5acf9948104430631d3607b604024a72d85d2986
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Mar 28 14:15:44 2017 -0400
+
+    LP#1670407 Lost checkin re-opens transaction
+    
+    Avoid re-closing a circulation that was re-opened during checkin because
+    it acquired a non-zero balance.  This is typically caused by, for
+    example, voiding a lost item fee during checkin and/or generating
+    overdues for lost-then-found items.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+24	6	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Circulate.pm
+
+commit 1ef608808fbb5266b801a618d0f8bc4757f350be
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Tue Mar 28 07:23:46 2017 -0400
+
+    Docs: adding more to the config.tt2 variable list
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+2	1	docs/opac/new_skin_customizations.txt
+
+commit 5c1ca0067e0ef5dca154f31d5aa74dd274c29912
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Mon Mar 27 23:14:36 2017 -0400
+
+    Docs: adding to the list of config.tt2 variables
+
+3	0	docs/opac/new_skin_customizations.txt
+
+commit 9f9d890bd0ca6912fe2f0465c31601ec381add12
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Wed Mar 22 09:58:39 2017 -0400
+
+    LP#1675025: Docs: mention that Vandelay can load MARCXML
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+3	3	docs/cataloging/batch_importing_MARC.txt
+
+commit 210240837a7c040d73016fdfdc80e54dd1620685
+Author: Ben Shum <ben@evergreener.net>
+Date:   Tue Mar 21 09:37:48 2017 -0400
+
+    Docs: README to include Debian for changing ownership of /var/lock/apache2
+    
+    Minor tweak to also include Debian among distributions where it might
+    be necessary to change ownership of /var/lock/apache2 to opensrf user.
+    Previously this had been Ubuntu only issue, but has since been encountered
+    during new Debian installations.
+    
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+1	1	docs/installation/server_installation.txt
+
+commit 403becfc04b6a130db5d4ed12bfc234303753668
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Thu Sep 29 14:55:41 2016 -0400
+
+    LP#1586567 Always return Fund Years sorted descending
+    
+    Currently, fund year selectors in Acq interfaces (at least Acq Admin ->
+    Funds, and Acq -> Load MARC Order Records) show the fund years in
+    database order. This commit adds a descending sort to the perl function
+    that retrieves fund years for those interfaces. It also removes the
+    unsuccessful attempt at sorting that was present in the dojo code.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Dawn Dale <ddale@georgialibraries.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+5	2	Open-ILS/src/perlmods/lib/OpenILS/Application/Acq/Financials.pm
+0	1	Open-ILS/web/js/ui/default/acq/financial/list_funds.js
+0	1	Open-ILS/web/js/ui/default/acq/picklist/upload.js
+
+commit 0c9754c15a5fafbad6818f84a58b6565e51cde72
+Author: Christine Morgan <cmorgan@noblenet.org>
+Date:   Wed Mar 1 11:12:02 2017 -0500
+
+    lp1629016: Hide List Option In Staff Client
+    
+    This will hide the option to add to Lists when in the staff client.
+    
+    Signed-off-by: Christine Morgan <cmorgan@noblenet.org>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    
+    Conflicts:
+    	Open-ILS/src/templates/opac/parts/record/summary.tt2
+
+3	1	Open-ILS/src/templates/opac/parts/record/summary.tt2
+2	0	Open-ILS/src/templates/opac/parts/result/table.tt2
+
+commit c532b0a376be74859824b211685b99e99102a7b5
+Author: Jason Etheridge <jason@esilibrary.com>
+Date:   Wed Nov 2 14:28:08 2016 -0400
+
+    lp1261835 stop colliding bill UI refreshes
+    
+    for want of promises in Angular :)
+    
+    population of the bill list in this implementation is asynchronous, but the rest
+    of the refresh action is not, and it's sadly being invoked multiple times. There
+    are different ways to fix this, but using a semaphore seems to work.
+    
+    Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+    Signed-off-by: Dawn Dale <ddale@georgialibraries.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+15	8	Open-ILS/xul/staff_client/server/patron/bill2.js
+
+commit 1021ba646946027a5cafc816945d138c919f9d0d
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Wed Nov 2 14:35:16 2016 -0400
+
+    LP#1175293 Use filtered fund dropdown in funding source interface
+    
+    The exising interface for allocating to funds from a funding source
+    view lists all funds by code only.  Since many (most?) orgs reuse
+    fund codes year to year, you eventually end up with a bunch of
+    dupes you cannot tell apart.
+    
+    Let's "borrow" an AutoFieldWidget to do the heavy lifting of creating
+    a filtered list of active funds, and include the year for further
+    user validation.
+    
+    This is inspired by a few other fund dropdowns, but may not be the
+    best overall solution.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+3	14	Open-ILS/src/templates/acq/funding_source/view.tt2
+15	0	Open-ILS/web/js/ui/default/acq/financial/view_funding_source.js
+
+commit db460bd97d5ede6d911baf8c28a182e2e1e8c0c8
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Feb 28 11:33:25 2017 -0500
+
+    LP#1668682 Checkout holds fullfill ignores expire time
+    
+    Checking out a hold-captured item for a hold whose expire time is in the
+    past, but has not yet been canceled by the hold targeter, now marks the
+    hold as fulfilled.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	5	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Circulate.pm
+
+commit 7d92425baffa8a09e2cf4441aa4f273040c43d40
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Sat Mar 11 23:05:15 2017 -0500
+
+    LP#1442276: Stamp schema upgrade for corrupted XSL output
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+43	0	Open-ILS/src/sql/Pg/upgrade/1030.function.oils_xslt_process_utf8_fix.sql
+0	43	Open-ILS/src/sql/Pg/upgrade/xxxx.function.oils_xslt_process_utf8_fix
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1030.function.oils_xslt_process_utf8_fix.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/xxxx.function.oils_xslt_process_utf8_fix
+
+commit b0b78a31e0be2854f7acea15524ce0a9013eb76c
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Fri Mar 10 22:53:18 2017 -0500
+
+    LP#1442276: Upgrade script for Encoding UTF8 output
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+43	0	Open-ILS/src/sql/Pg/upgrade/xxxx.function.oils_xslt_process_utf8_fix
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/xxxx.function.oils_xslt_process_utf8_fix
+
+commit 1ef57ea57c1109822f092e8f03bfa051783effdc
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Sun Mar 5 11:45:12 2017 -0500
+
+    LP#1442276 output_as_chars() instead of toString
+    
+    The SuperCat transform methods for records retrieved by record ID or ISBN call
+    toString on the XSLT output object, which results in a byte string and thus
+    corrupted output. Instead, call output_as_chars() on the stylesheet object to
+    generate a character string and avoid corruption.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+4	2	Open-ILS/src/perlmods/lib/OpenILS/Application/SuperCat.pm
+
+commit 4f2604a7209613cc01acca1db91a79e2fe247803
+Author: Dan Scott <dan@coffeecode.net>
+Date:   Fri Mar 3 16:03:30 2017 -0500
+
+    LP#1442276 pgTAP test for oils_xslt_process
+    
+    In moving from the deprecated XML::LibXSLT::output_string() to output_as_chars(),
+    add a regression test to ensure that we do not suffer from corrputed encoding
+    output in the future.
+    
+    We test both the case where an output encoding has been explicitly declared,
+    as well as the case where an output encoding has not been explicitly declared.
+    It was this subtle difference that was causing the problem with output_string().
+    
+    Signed-off-by: Dan Scott <dan@coffeecode.net>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+45	0	Open-ILS/src/sql/Pg/t/regress/lp1442276_oils_xslt_encoding.pg
+ create mode 100644 Open-ILS/src/sql/Pg/t/regress/lp1442276_oils_xslt_encoding.pg
+
+commit f6203116e2623d9be0be8be6b0e6143e574179b3
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Fri Mar 3 01:40:19 2017 -0500
+
+    LP#1442276 Prevent corrupted Unicode chars in MARCTXT and RIS
+    
+    The MARCTXT and RIS feeds use the deprecated XML::LibXSLT::output_string()
+    method which, depending on the stylesheet, generated either a byte string
+    or characters. Using output_as_bytes() ensures it is always a byte string
+    and avoids the resulting MARCTXT and RIS output from corrupting Unicode
+    characters.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+2	2	Open-ILS/src/perlmods/lib/OpenILS/WWW/SuperCat/Feed.pm
+
+commit 5f796d1a6eb6e7fc902e3465981aabef63ad0934
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Fri Mar 3 01:26:53 2017 -0500
+
+    LP#1442276 Encode UTF8 output of XSLT transforms
+    
+    The XML::LibXSLT::output_string() method was deprecated in favour of
+    output_as_bytes() and output_as_chars(). The latter always generates
+    UTF8 output as characters, which is what we need, while output_string()
+    behaviour depended on the stylesheet.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	1	Open-ILS/src/sql/Pg/002.functions.config.sql
+
+commit 6b07dc757f3fc30f0f39db54b1d5d5ebed40b988
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Feb 27 12:32:45 2017 -0500
+
+    LP#1576435 Inactive patron search propagation rapair
+    
+    Fix a small code thinko in the propagation of the 'inactive' flag
+    for patron-editor duplicate patron searches.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	1	Open-ILS/web/js/ui/default/staff/circ/patron/app.js
+
+commit a6da6d0936114d278561360f9756cd6a5ac60248
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Fri May 27 13:10:29 2016 -0700
+
+    LP#1576435: Include inactive patrons on patron reg duplicate search in web client
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	1	Open-ILS/src/templates/staff/circ/patron/t_edit.tt2
+12	0	Open-ILS/web/js/ui/default/staff/circ/patron/app.js
+
+commit dda300f6946bbc6198715629c451495d641bb463
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Sat Apr 23 19:12:27 2016 -0700
+
+    LP#1576435: Force "Include inactive patrons?" on patron reg duplicate search
+    
+    In the XUL client, duplicate patron checking in the patron registration
+    interface now includes inactive patrons (see LP#1217052).  However, if
+    you click on the link "Found X patron(s) with the same name," the
+    resulting patron search does not always include inactive patrons by
+    default (instead, the value of the "Include inactive patrons?" checkbox
+    is cached from your last patron search, as usual).
+    
+    To prevent user confusion in this scenario, this commit forces the
+    linked patron search in the XUL client to always include inactive
+    patrons.
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	0	Open-ILS/web/js/ui/default/actor/user/register.js
+10	1	Open-ILS/xul/staff_client/server/patron/search_form.js
+
+commit b969b551afc8253f97c3a85b1b7783e857f70dc8
+Author: Terran McCanna <tmccanna@georgialibraries.org>
+Date:   Mon Jun 6 13:38:32 2016 -0400
+
+    LP#1528647 Self-check only accepts user name value if regex for barcode
+    not set up
+    
+    The original fix only worked if password was not required for self-check.
+    This fix allows it to work when password is required as well.
+    
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+6	2	Open-ILS/web/js/dojo/openils/User.js
+
+commit 0d68ad7807620f6040b9dc5a644ad94a2e8c0ed2
+Author: Bob Wicksall <bwicksall@pls-net.org>
+Date:   Mon Jun 6 13:35:28 2016 -0400
+
+    LP#1528647 Self-check only accepts user name value if regex
+    for barcode not set up
+    
+    This fix allows a patron to log into the self-check interface with either
+    a barcode or a user name.
+    
+    Written by: Bob Wicksall <bwicksall@pls-net.org>
+    
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+5	1	Open-ILS/web/js/ui/default/circ/selfcheck/selfcheck.js
+
+commit 5cd40451fab07c436957aac5cbc103630d8a2afe
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Wed Feb 22 11:29:21 2017 -0500
+
+    LP1584891: Export MARC holdings with UTF8 subfields
+    
+    The --items option of marc_export adds a new MARC 852 field with a
+    number of subfields that it retrieves from the database. If those
+    subfields (such as call number, copy location, etc) contain Unicode
+    characters, then we need to decode the incoming UTF8 characters
+    when adding the subfield values to avoid corrupting the MARC.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+8	7	Open-ILS/src/support-scripts/marc_export.in
+
+commit 0716d6172ebcd7f57c298eab8e48cd21fe299de2
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Tue Aug 30 21:50:19 2016 -0400
+
+    LP#1618624 Fix thinko in adjust-to-zero
+    
+    It appears that this test was written for an 'unless' instead of
+    an 'if'.  'if' seems just as natural here, so let's go that route.
+    
+    This should prevent us from closing circulations prematurely, and
+    also close them when we need to.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Money.pm
+
+commit 91308bd5fcc0e6631cc477b858daffe1145cff6e
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Fri Mar 3 14:48:56 2017 -0500
+
+    Docs: trivial typo
+    
+    s/retriving/retrieving/
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+1	1	docs/installation/server_installation.txt
+
+commit 5f6a1bb64afe8de6d286456fd1b45ea7760a8da1
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Fri Feb 24 18:04:29 2017 -0500
+
+    LP#1667835: avoid edi_fetcher.pl crash upon fetching zero-length file
+    
+    This patch fixes an issue that could cause edi_fetcher.pl to crash
+    if the EDI partner supplies a zero-length file for Net::FTP to
+    download; such files are now skipped.
+    
+    Testing would entail setting up an FTP server that contains a
+    zero-length file, then setting up an EDI remote account and
+    using edi_fetcher.pl to try to retrieve the file.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+11	0	Open-ILS/src/perlmods/lib/OpenILS/Utils/RemoteAccount.pm
+
+commit edf891c6431208b15d4bfbc1f10563d525a44f1f
+Author: Jonathan Schatz <jonathan.schatz@bc.libraries.coop>
+Date:   Thu Nov 3 01:51:12 2016 -0700
+
+    Replace the 'broken cover' image asset with an actually transparent single-pixel PNG.
+    Useful for fallback to a placeholder cover.
+    
+    Signed-off-by: Jonathan Schatz <jonathan.schatz@bc.libraries.coop>
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+-	-	Open-ILS/web/opac/images/blank.png
+
+commit 0d65cb2498bc12da7f956fb75a1b69f5b71ac47c
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Mon Feb 27 10:09:09 2017 -0500
+
+    LP#1371772: update normalization library info URLs
+    
+    This patch follows up on the previous patch by adjusting
+    the normalization of URLs when the lib.prefer_external_url
+    library setting is set to true.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/templates/opac/parts/library_name_link.tt2
+
+commit bfa959111f8503bad9c6176337ab3a82db645df9
+Author: Jason Boyer <jboyer@library.in.gov>
+Date:   Mon Feb 13 16:59:01 2017 -0500
+
+    LP1371772: Correct Escape of Library Info URL
+    
+    Using the url filter in TT2 causes named anchors to
+    be escaped in such a way that urls including them
+    will likely return a 404. Since the url is being
+    used in an html document, the html filter is
+    sufficient and allows the url to work as intended.
+    
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/templates/opac/parts/library/core_info.tt2
+
+commit 9b691ffa235da8c7028ee28d16f4fd1d72697e88
+Author: Michele Morgan <mmorgan@noblenet.org>
+Date:   Tue Feb 7 13:21:48 2017 -0500
+
+    LP#1661754 - Prevent staff users from marking a Long Overdue item Lost
+    
+    Prevents circulations that are already Lost or Long Overdue from being
+    marked Lost or Long Overdue. Avoiding patrons being billed twice for the
+    same item.
+    
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+3	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Cat/AssetCommon.pm
+
+commit e9373ffd2c4d97d3063d9e0b29941d77d54892a4
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Feb 14 10:53:54 2017 -0500
+
+    LP#1662902: do not re-download EDI files that failed parsing
+    
+    Avoid fetching and creating edi_message entries for EDI messages that
+    the system cannot parse.
+    
+    In the event parsing failed due to a temporary condition (e.g. Ruby
+    translator was not running), messages can be reprocessed by either
+    deleting the offending edi_message row or setting its status to 'retry'.
+    
+    See previous commit ("LP#1662902: do not re-download EDI files that
+    failed processing") for a more detailed explanation.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Acq/EDI.pm
+
+commit 4b9ca1e9e0e68de271fa5e3e0b9663c32c230070
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Thu Feb 9 12:24:35 2017 -0500
+
+    LP#1662902: do not re-download EDI files that failed processing
+    
+    At present, the EDI fetcher ignores files (as determined by file
+    name and EDI account details) that were already successfully
+    processed. With this patch, ones that failed processing (e.g.,
+    acq.edi_message.state = 'proc_error') previously are ignored
+    as well.
+    
+    This is because most processing errors reflect conditions that
+    require some sort of manual intervention on the part of the materials
+    vendor or the Evergreen user; having edi_fetcher.pl simply redownload
+    and attempt to process the file has no effect other than causing
+    the acq.edi_message table to grow.
+    
+    With this patch, the appearance of rows in acq.edi_message whose
+    state is 'proc_error' should be taken as a signal to the Evergreen
+    admin to investigate and resolve whatever issue caused the
+    message to not be processed; after doing that, removing the
+    acq.edi_message rows will allow the file to be downloaded again
+    (assuming it's still available on the file server).
+    
+    To test
+    -------
+    [1] Arrange to create or simulate an EDI message that failed
+        processing.
+    [2] Run edi_fetcher.pl to have it attempt to download the
+        failed message in step #1; verify that the file is
+        /not/ downloaded again and that no additonal acq.edi_message
+        rows are created for it.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Acq/EDI.pm
+
+commit 364c3fa7dddaff6c1252eb5f7aa09691a0289e70
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Thu Feb 16 17:03:45 2017 -0500
+
+    update upgrade instructions for 2.10.10
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+19	18	docs/installation/server_upgrade.txt
