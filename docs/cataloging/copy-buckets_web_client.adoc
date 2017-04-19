@@ -66,19 +66,19 @@ image::media/copy-bucket-share-1.png[Bucket ID URL]
 Opening a Shared Bucket
 +++++++++++++++++++++++
 
-1. In the _Copy Bucket_ interface click *Buckets* in either the _Pending Copies_ or _Bucket View_ tab.
+. In the _Copy Bucket_ interface click *Buckets* in either the _Pending Copies_ or _Bucket View_ tab.
 +
 image::media/copy-bucket-new-1.png[Copy Bucket Interface]
 +
-3. From the drop down menu select *Shared Bucket*.
+. From the drop down menu select *Shared Bucket*.
 +
 image::media/copy-bucket-share-2.png[Copy Bucket Interface]
 +
-4. Enter the bucket ID and click *Load Bucket*.
+. Enter the bucket ID and click *Load Bucket*.
 +
 image::media/copy-bucket-share-3.png[Copy Bucket Interface]
 +
-5. The shared bucket will display and can be worked with the same as any bucket you own.
+. The shared bucket will display and can be worked with the same as any bucket you own.
 +
 image::media/copy-bucket-share-4.png[Copy Bucket Interface]
 
@@ -162,100 +162,100 @@ NOTE: Functionality currently missing.
 Removing Copies from a Bucket
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-1. Open the _Copy Bucket_ interface.  By default you are on the *Bucket View* tab.
+. Open the _Copy Bucket_ interface.  By default you are on the *Bucket View* tab.
 +
 image::media/copy-bucket-remove-1.png[Copy Bucket Interface]
 +
-3. Click on *Buckets*.
-4. From the drop down menu select the bucket containing the item(s) you would like to remove.
+. Click on *Buckets*.
+. From the drop down menu select the bucket containing the item(s) you would like to remove.
 +
 image::media/copy-bucket-remove-2.png[Copy Bucket Interface]
 +
-5. Use the check boxes to select the item(s) you wish to remove from the bucket.
-6. Click *Actions*.
-7. From the drop down menu select *Remove Selected Copies from Bucket*.
+. Use the check boxes to select the item(s) you wish to remove from the bucket.
+. Click *Actions*.
+. From the drop down menu select *Remove Selected Copies from Bucket*.
 +
 image::media/copy-bucket-remove-3.png[Copy Bucket Interface]
 +
-8. Your bucket will reload and the selected item(s) will no longer be in the bucket.
+. Your bucket will reload and the selected item(s) will no longer be in the bucket.
 
 Editing Copies in a Bucket
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-1. Open the _Copy Bucket_ interface.  By default you are on the *Bucket View* tab.
+. Open the _Copy Bucket_ interface.  By default you are on the *Bucket View* tab.
 +
 image::media/copy-bucket-remove-1.png[Copy Bucket Interface]
 +
-3. Click on *Buckets*.
-4. From the drop down menu select the bucket containing the item(s) you would like to edit.
+. Click on *Buckets*.
+. From the drop down menu select the bucket containing the item(s) you would like to edit.
 +
 image::media/copy-bucket-remove-2.png[Copy Bucket Interface]
 +
-5. Use the check boxes to select the item(s) you wish to edit.
-6. Click *Actions*.
-7. From the drop down menu select *Edit Selected Copies*.
+. Use the check boxes to select the item(s) you wish to edit.
+. Click *Actions*.
+. From the drop down menu select *Edit Selected Copies*.
 +
 image::media/copy-bucket-edit-copy-1.png[Copy Bucket Interface]
 +
-8. The _Copy Editor_ will open in a new tab.  Make your edits and then click *Save and Exit*.
+. The _Copy Editor_ will open in a new tab.  Make your edits and then click *Save and Exit*.
 +
 image::media/copy-bucket-edit-copy-2.png[Copy Bucket Interface]
 +
-9. Your items have been updated.
+. Your items have been updated.
 +
 image::media/copy-bucket-edit-copy-3.png[Copy Bucket Interface]
 
 Deleting Copies from the Catalogue
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-1. Open the _Copy Bucket_ interface.  By default you are on the *Bucket View* tab.
+. Open the _Copy Bucket_ interface.  By default you are on the *Bucket View* tab.
 +
 image::media/copy-bucket-remove-1.png[Copy Bucket Interface]
 +
-3. Click on *Buckets*.
-4. From the drop down menu select the bucket containing the item(s) you would like to delete from the catalogue.
+. Click on *Buckets*.
+. From the drop down menu select the bucket containing the item(s) you would like to delete from the catalogue.
 +
 image::media/copy-bucket-remove-2.png[Copy Bucket Interface]
 +
-5. Use the check boxes to select the item(s) you wish to delete.
-6. Click *Actions*.
-7. From the drop down menu select *Delete Selected Copies from Catalog*.
+. Use the check boxes to select the item(s) you wish to delete.
+. Click *Actions*.
+. From the drop down menu select *Delete Selected Copies from Catalog*.
 +
 image::media/copy-bucket-delete-copy-1.png[Copy Bucket Interface]
 +
-8. On the confirmation pop up click *OK/Continue*.
+. On the confirmation pop up click *OK/Continue*.
 +
 image::media/copy-bucket-delete-copy-2.png[Copy Bucket Interface]
 +
-9. The items have been deleted from the catalogue.
+. The items have been deleted from the catalogue.
 
 
 Placing Holds on Copies in a Bucket
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-1. Open the _Copy Bucket_ interface.  By default you are on the *Bucket View* tab.
+. Open the _Copy Bucket_ interface.  By default you are on the *Bucket View* tab.
 +
 image::media/copy-bucket-remove-1.png[Copy Bucket Interface]
 +
-3. Click on *Buckets*.
-4. From the drop down menu select the bucket containing the item(s) you would like to place a hold on.
+. Click on *Buckets*.
+. From the drop down menu select the bucket containing the item(s) you would like to place a hold on.
 +
 image::media/copy-bucket-remove-2.png[Copy Bucket Interface]
 +
-5. Use the check boxes to select the item(s) you wish to delete.
-6. Click *Actions*.
-7. From the drop down menu select *Request Seleted Copies*.
+. Use the check boxes to select the item(s) you wish to delete.
+. Click *Actions*.
+. From the drop down menu select *Request Seleted Copies*.
 +
 image::media/copy-bucket-request-1.png[Copy Bucket Interface]
 +
-8. Enter the barcode for the patron who the hold is for. By default the system enters the barcode of the account logged into the client.
+. Enter the barcode for the patron who the hold is for. By default the system enters the barcode of the account logged into the client.
 +
 image::media/copy-bucket-request-2.png[Copy Bucket Interface]
 +
-9. Select the correct _Pickup Library_.
-10. Select the correct _Hold Type_. (More explanation of the hold types needed here.)
-11. Click *OK*.
-12. The hold has been placed.
+. Select the correct _Pickup Library_.
+. Select the correct _Hold Type_. (More explanation of the hold types needed here.)
+. Click *OK*.
+. The hold has been placed.
 
 
 Transferring Copies to Volumes
