@@ -3,6 +3,79 @@ Evergreen 2.11 Release Notes
 :toc:
 :numbered:
 
+Evergreen 2.11.4
+----------------
+
+This release contains several bug fixes improving on Evergreen 2.11.3.
+
+* A fix to avoid fetching and creating EDI message entries that the
+system cannot parse.
+* A fix to prevent staff users from marking a long overdue item as lost 
+so that the patron will not be billed twice for the same item.
+* A fix to the link that is used on the catalog's Library Info page so
+that links with anchors can be successfully retrieved.
+* A replacement for the blank fallback image used when the catalog cannot
+retrieve an added content book cover.
+* An EDI fix that prevents EDI fetcher from crashing when the vendor
+supplies a zero-length file.
+* A fix to an issue where adjusting a bill to zero for a current checkout
+prematurely closes the transaction.
+* A fix to encoding problems in MODS output. These problems caused issues
+when using Zotero with records in the catalog.
+* A fix to Evergreen self-check to accept the user name value when a barcode
+regex has been configured for the system.
+* A fix to duplicate name checking in the patron registration screen so that
+clicking the "Found x patron(s) with same name" link will retrieve potential
+duplicate inactive patrons.
+* A fix to the bower install step used when installing the web staff client.
+* A fix that marks a hold as fulfilled when staff check out a hold-
+captured item for a hold whose expire time is in the past.
+* A change to the acquisitions funding source funds drop down menu so that
+the menu will now only display active funds and will also display the 
+year alongside the fund.
+* A fix to a problem where the Current Bills tab of the patron record
+showed duplicate charges when a check in was done from the Items Out tab.
+* A fix that hides the option to add to My Lists from the staff client since this functionality does not work as expected in the staff client.
+* A change to the fund year selectors in acq interfaces so that the years
+are sorted in descending order.
+* A fix to a billing issue where transactions were not re-opened after
+they acquired a non-zero balance at check in.
+* A change to the default pickup library when staff place a hold. The place hold
+screen will now default to the preferred pickup location for the patron. If the
+patron does not have a preferred pickup location, it will default to the
+patron's home library.
+* The ability to skip the XUL staff client build when in make_release.
+* A fix that silences a log warning that appears for every checkout where a hard
+due date is not used.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+testing and documentation patches to the 2.10.11 point release of
+Evergreen:
+
+* Jason Boyer
+* Eva Cerniňáková
+* Galen Charlton
+* Jeff Davis
+* Bill Erickson
+* Jason Etheridge
+* Debbie Luchenbill
+* Kathy Lussier
+* Christine Morgan
+* Michele Morgan
+* Terran McCanna
+* Jane Sandberg
+* Jonathan Schatz
+* Dan Scott
+* Ben Shum
+* Jason Stephenson
+* Remington Steed
+* Josh Stompro
+* Dan Wells
+* Bob Wicksall
+
+
 Evergreen 2.11.3
 ----------------
 This is a security release that also contains several other bugfixes improving
