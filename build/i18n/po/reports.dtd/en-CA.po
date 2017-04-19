@@ -1,18 +1,21 @@
-# extracted from ../../Open-ILS/web/opac/locale/en-US/reports.dtd
+# English (Canada) translation for evergreen
+# Copyright (c) 2017 Rosetta Contributors and Canonical Ltd 2017
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2017.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: evergreen\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2015-02-27 11:41-0400\n"
-"PO-Revision-Date: 2011-07-18 11:57+0000\n"
-"Last-Translator: Warren Layton <Unknown>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2017-04-09 07:00+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: English (Canada) <en_CA@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2015-08-07 05:44+0000\n"
-"X-Generator: Launchpad (build 17656)\n"
-"X-Accelerator-Marker: &\n"
+"X-Launchpad-Export-Date: 2017-04-14 06:17+0000\n"
+"X-Generator: Launchpad (build 18352)\n"
 
 #. Common Entities
 #: reports.common.logged_in_as
@@ -859,20 +862,3 @@ msgstr "Relationship"
 #: reports.xul.template_builder.field_doc.label
 msgid "Field Hint"
 msgstr ""
-
-#~ msgid "Cancel"
-#~ msgstr "Cancel"
-
-#~ msgid ""
-#~ "One or more of the selected templates could not be deleted because there are "
-#~ "reports that depend on them."
-#~ msgstr ""
-#~ "One or more of the selected templates could not be deleted because there are "
-#~ "reports that depend on them."
-
-#~ msgid ""
-#~ "One or more of The selected reports could not be deleted because there are "
-#~ "outputs that depend on them."
-#~ msgstr ""
-#~ "One or more of the selected reports could not be deleted because there are "
-#~ "outputs that depend on them."

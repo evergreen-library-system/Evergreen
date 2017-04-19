@@ -1,19 +1,21 @@
+# Czech translation for evergreen
+# Copyright (c) 2017 Rosetta Contributors and Canonical Ltd 2017
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2017.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Evergreen 1.4\n"
-"Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
+"Project-Id-Version: evergreen\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2017-02-21 20:30-0400\n"
-"PO-Revision-Date: 2017-03-11 09:14+0000\n"
-"Last-Translator: Eva Cerninakova <Unknown>\n"
-"Language-Team: UISK <PetrKubiska@seznam.cz>\n"
+"PO-Revision-Date: 2017-04-09 07:00+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-03-14 06:19+0000\n"
-"X-Generator: Launchpad (build 18331)\n"
-"X-Poedit-Country: CZECH REPUBLIC\n"
-"X-Poedit-Language: Czech\n"
-"X-Poedit-SourceCharset: utf-8\n"
+"X-Launchpad-Export-Date: 2017-04-14 06:12+0000\n"
+"X-Generator: Launchpad (build 18352)\n"
 
 #: 1208.TITLE_LAST_COPY:71
 msgid "The last copy attached to a title is being removed or deleted"
@@ -1340,26 +1342,3 @@ msgstr ""
 #: 1604.MONEY_USER_SUMMARY_NOT_FOUND:463
 msgid "The requested money_user_summary was not found"
 msgstr "Požadovaný money_user_summary nebyl nalezen"
-
-#~ msgid "Copy has is marked as lost"
-#~ msgstr "Exemplář byl označen jako ztracený"
-
-#~ msgid "The requested acq.po_lineitem was not found"
-#~ msgstr "Požadovaný acq.po_lineitem nebyl nalezen"
-
-#~ msgid "This requested item is currently on the holds shelf"
-#~ msgstr "Požadovaný exemplář se nyní nachází na regále s rezervacemi"
-
-#~ msgid "The selecte bill has already been voided"
-#~ msgstr "Označený poplatek již byl zrušen"
-
-#~ msgid ""
-#~ "A *TERRIBLE* problem has occurred: a credit card transaction was processed "
-#~ "successfuly, but the patron's payment could not be recorded within "
-#~ "Evergreen.  Please seek assistance."
-#~ msgstr ""
-#~ "Došlo k *ZÁVAŽNÉMU* problému: transakce kreditní kartou úspěšně proběhla, "
-#~ "ale Evergreen nemohl nahrát platbu čtenáře. Prosím vyhledejte pomoc."
-
-#~ msgid "Copy has is marked as missing"
-#~ msgstr "Exemplář byl označen jako nezvěstný"
