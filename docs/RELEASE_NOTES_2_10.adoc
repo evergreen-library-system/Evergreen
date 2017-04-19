@@ -3,9 +3,64 @@ Evergreen 2.10 Release Notes
 :toc:
 :numbered:
 
+Evergreen 2.10.11
+-----------------
+
+This release contains several bug fixes improving on Evergreen 2.10.10.
+
+* A fix to avoid fetching and creating EDI message entries that the
+system cannot parse.
+* A fix to prevent staff users from marking a long overdue item as lost 
+so that the patron will not be billed twice for the same item.
+* A fix to the link that is used on the catalog's Library Info page so
+that links with anchors can be successfully retrieved.
+* A replacement for the blank fallback image used when the catalog cannot
+retrieve an added content book cover.
+* An EDI fix that prevents EDI fetcher from crashing when the vendor
+supplies a zero-length file.
+* A fix to an issue where adjusting a bill to zero for a current checkout
+prematurely closes the transaction.
+* A fix to encoding problems in MODS output. These problems caused issues
+when using Zotero with records in the catalog.
+* A fix that marks a hold as fulfilled when staff check out a hold-
+captured item for a hold whose expire time is in the past.
+* A change to the acquisitions funding source funds drop down menu so that
+the menu will now only display active funds and will also display the 
+year alongside the fund.
+* A fix to a problem where the Current Bills tab of the patron record
+showed duplicate charges when a check in was done from the Items Out tab.
+* A fix that hides the option to add to My Lists from the staff client since this functionality does not work as expected in the staff client.
+* A change to the fund year selectors in acq interfaces so that the years
+are sorted in descending order.
+* A fix to a billing issue where transactions were not re-opened after
+they acquired a non-zero balance at check in.
+
+Acknowledgements
+~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+testing and documentation patches to the 2.10.11 point release of
+Evergreen:
+
+* Jason Boyer
+* Galen Charlton
+* Jeff Davis
+* Bill Erickson
+* Jason Etheridge
+* Kathy Lussier
+* Christine Morgan
+* Michele Morgan
+* Terran McCanna
+* Jane Sandberg
+* Jonathan Schatz
+* Dan Scott
+* Ben Shum
+* Remington Steed
+* Dan Wells
+* Bob Wicksall
+
 Evergreen 2.10.10
 -----------------
-This is a security release that also contains several other bugfixes improving
+This is a security release that also contains several other bug fixes improving
 on Evergreen 2.10.9.  All users of Evergreen 2.10.x are recommended to upgrade
 to 2.10.10 as soon as possible.
 
@@ -43,7 +98,8 @@ UPDATE config.org_unit_setting_type
 
 Other Fixes
 ~~~~~~~~~
-Evergreen 2.10.10 also contains the following bugfixes:
+
+Evergreen 2.10.10 also contains the following bug fixes:
 
 * A fix to correctly apply floating group settings when performing
 no-op checkins.
@@ -85,7 +141,7 @@ Evergreen:
 Evergreen 2.10.9
 ----------------
 
-This release contains several bugfixes improving on Evergreen 2.10.8
+This release contains several bug fixes improving on Evergreen 2.10.8
 
 * A fix to the web client patron interface that changed the holds count in the
 patron summary from total / available to available / total.
@@ -113,7 +169,7 @@ Evergreen:
 Evergreen 2.10.8
 ----------------
 
-This release contains several bugfixes improving on Evergreen 2.10.7
+This release contains several bug fixes improving on Evergreen 2.10.7
 
 * A fix to that provides alphabetical sorting to the fund selector in
 the Acquisitions Selection List -> Copies interface.
@@ -167,7 +223,7 @@ Evergreen:
 Evergreen 2.10.7
 ----------------
 
-This release contains several bugfixes improving on Evergreen 2.10.6.
+This release contains several bug fixes improving on Evergreen 2.10.6.
 
 * When adding a price to the Acquisitions Brief Record price field, it will
 now propogate to the lineitem estimated price field.
@@ -193,7 +249,7 @@ Evergreen:
 
 Evergreen 2.10.6
 ----------------
-This release contains bugfixes improving on Evergreen 2.10.5.
+This release contains bug fixes improving on Evergreen 2.10.5.
 
 Add Date Header to Action Trigger Email/SMS Templates
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -211,8 +267,8 @@ it to the top of any custom templates:
 And this line should be inserted into the header block of each template:
 `Date: [%- date.format(date.now, '%a, %d %b %Y %T -0000', gmt => 1) %]`
 
-Other Bugfixes
-~~~~~~~~~~~~~~
+Other Bug Fixes
+~~~~~~~~~~~~~~~
 * Prorating invoice charges now works again.
 * The claims never checked out counter on the patron record is now
   incremented correctly when marking a lost loan as
@@ -282,7 +338,7 @@ code, testing and documentation patches to the 2.10.6 point release of Evergreen
 
 Evergreen 2.10.5
 ----------------
-This release contains bugfixes improving on Evergreen 2.10.4
+This release contains bug fixes improving on Evergreen 2.10.4
 
 * Fixes SIP2 failures with patron information messages when a
 patron has one or more blocking penalties that are not otherwise
@@ -319,7 +375,7 @@ code, testing and documentation patches to the 2.10.5 point release of Evergreen
 
 Evergreen 2.10.4
 ----------------
-This release contains bugfixes improving on Evergreen 2.10.3
+This release contains bug fixes improving on Evergreen 2.10.3
 
 * Fixes the responsive view of the My Account Items Out screen so that Title and
 Author are now in separate columns.
@@ -354,7 +410,7 @@ of Evergreen:
 
 Evergreen 2.10.3
 ----------------
-This release contains bugfixes improving on Evergreen 2.10.2:
+This release contains bug fixes improving on Evergreen 2.10.2:
 
 * Fixes a critical bug where a newly-registered patron record could
   not be used to log in to Evergreen using the password supplied during
@@ -382,7 +438,7 @@ of Evergreen:
 
 Evergreen 2.10.2
 ----------------
-This release contains several bugfixes improving on Evergreen 2.10.1
+This release contains several bug fixes improving on Evergreen 2.10.1
 
 * Fixes a bug where phrase searching in the catalog failed when the phrase
 started or ended with punctuation.
@@ -1389,8 +1445,8 @@ whose label is "Search: maximum number of facet values to retrieve for
 each facet field".  The default limit value is 1,000, but lower values
 (e.g., 100) are perhaps even better for most catalogs.
 
-Significant bugfixes
-~~~~~~~~~~~~~~~~~~~~
+Significant bug fixes
+~~~~~~~~~~~~~~~~~~~~~
 
 Add acquisitions cancel reason 85 for Baker & Taylor EDI
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
