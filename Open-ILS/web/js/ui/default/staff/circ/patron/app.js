@@ -796,10 +796,13 @@ function($scope , $location , egCore , egConfirmDialog , egUser , patronSvc) {
             egUser.get(user_id, {useFields : []})
 
             .then(function(user) { // retrieve user
+                var org = egCore.org.get(user.home_ou());
                 egConfirmDialog.open(
                     egCore.strings.OPT_IN_DIALOG, '',
-                    {   org : egCore.org.get(user.home_ou()),
-                        user : user,
+                    {   family_name : user.family_name(),
+                        first_given_name : user.first_given_name(),
+                        org_name : org.name(),
+                        org_shortname : org.shortname(),
                         ok : function() { createOptIn(user.id()) },
                         cancel : function() {}
                     }
