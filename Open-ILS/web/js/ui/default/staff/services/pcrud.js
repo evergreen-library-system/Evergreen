@@ -267,12 +267,12 @@ angular.module('egCoreMod')
             var action = this.cud_action;
             var fm_obj = this.cud_list[this.cud_idx++];
 
-            if (action == 'auto') {
+            if (action == 'apply') {
                 if (fm_obj.ischanged()) action = 'update';
                 if (fm_obj.isnew())     action = 'create';
                 if (fm_obj.isdeleted()) action = 'delete';
 
-                if (action == 'auto') {
+                if (action == 'apply') {
                     // object does not need updating; move along
                     this._CUD_next_request();
                 }
