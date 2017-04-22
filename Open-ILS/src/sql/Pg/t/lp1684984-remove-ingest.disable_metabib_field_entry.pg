@@ -1,0 +1,13 @@
+BEGIN;
+
+SELECT plan(1);
+
+-- Check that config.internal_flag ingest.disable_metabib_field_entry does not exist.
+SELECT is_empty(
+    'SELECT * FROM config.internal_flag WHERE name = $$ingest.disable_metabib_field_entry$$',
+    'config.internal_flag ingest.disable_metabib_field_entry does not exist'
+);
+
+SELECT * FROM finish();
+
+ROLLBACK;

@@ -44,7 +44,6 @@ INSERT INTO config.internal_flag (name) VALUES ('ingest.reingest.force_on_same_m
 INSERT INTO config.internal_flag (name) VALUES ('ingest.disable_located_uri');
 INSERT INTO config.internal_flag (name) VALUES ('ingest.disable_metabib_full_rec');
 INSERT INTO config.internal_flag (name) VALUES ('ingest.disable_metabib_rec_descriptor');
-INSERT INTO config.internal_flag (name) VALUES ('ingest.disable_metabib_field_entry');
 INSERT INTO config.internal_flag (name) VALUES ('ingest.assume_inserts_only');
 INSERT INTO config.internal_flag (name) VALUES ('ingest.skip_browse_indexing');
 INSERT INTO config.internal_flag (name) VALUES ('ingest.skip_search_indexing');
