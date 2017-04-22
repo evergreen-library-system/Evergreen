@@ -95,6 +95,7 @@ sub new {
                'encoding=s',
                'timeout=i',
                'library=s@',
+               'descendants=s@',
                'since=s',
                'store=s',
                'debug');
@@ -138,6 +139,10 @@ Usage: $0 [options]
  --library          Export the bibliographic records that have attached
                     holdings for the listed library or libraries as
                     identified by shortname
+ --descendants      Like the --library option, but org. tree aware. It
+                    exports records that have attached holdings for the
+                    specified org. unit and all of its descendants in
+                    the tree.
 
 Examples:
 
@@ -166,7 +171,7 @@ HELP
     }
 
     # Validate some of the settings.
-    if ($opts{all} && $opts{library}) {
+    if ($opts{all} && ($opts{library} || $opts{descendants})) {
         die('Incompatible arguments: you cannot combine a request for all ' .
                 'records with a request for records by library');
     }
@@ -249,6 +254,7 @@ sub need_ids {
     $rv = 0 if ($self->{options}->{all});
     $rv = 0 if ($self->{options}->{since});
     $rv = 0 if ($self->{options}->{library});
+    $rv = 0 if ($self->{options}->{descendants});
 
     return $rv;
 }
@@ -333,6 +339,20 @@ sub new {
             my @ids = map {$_->[0]} @{$r};
             $self->{libs} = \@ids;
             $sth->finish();
+        }
+    }
+    # Ditto for descendants.  We don't worry about redundancy, the db can deal with it.
+    if ($Marque::config->option_value('descendants')) {
+        # Unlike the above, we're looping to make this simpler in the database.
+        my $sth = $self->{handle}->prepare(
+                'select id from actor.org_unit_descendants((select id from actor.org_unit where shortname=?))');
+        foreach my $shortname (@{$Marque::config->option_value('descendants')}) {
+            if ($sth->execute($shortname)) {
+                my $r = $sth->fetchall_arrayref();
+                my @ids = map {$_->[0]} @{$r};
+                push(@{$self->{libs}}, @ids);
+                $sth->finish();
+            }
         }
     }
 
