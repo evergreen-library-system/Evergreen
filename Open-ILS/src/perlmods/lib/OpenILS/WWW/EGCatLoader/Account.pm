@@ -1034,6 +1034,13 @@ sub load_place_hold {
     } else {
         $ctx->{default_sms_notify} = '';
     }
+    if ($cgi->param('hold_suspend')) {
+        $ctx->{frozen} = 1;
+        if ($cgi->param('thaw_date') =~ m:^(\d{2})/(\d{2})/(\d{4})$:){
+            $ctx->{thaw_date} = "$3-$1-$2";
+        }
+    }
+
 
     # If we have a default pickup location, grab it
     if ($$user_setting_map{'opac.default_pickup_location'}) {
@@ -1050,6 +1057,8 @@ sub load_place_hold {
         if ($ctx->{phone_notify}) { $hdata->{phone_notify} = $ctx->{phone_notify}; }
         if ($ctx->{sms_notify}) { $hdata->{sms_notify} = $ctx->{sms_notify}; }
         if ($ctx->{sms_carrier}) { $hdata->{sms_carrier} = $ctx->{sms_carrier}; }
+        if ($ctx->{frozen}) { $hdata->{frozen} = 1; }
+        if ($ctx->{thaw_date}) { $hdata->{thaw_date} = $ctx->{thaw_date}; }
         return $hdata;
     };
 
@@ -1289,10 +1298,6 @@ sub attempt_hold_placement {
 
     my @create_targets = map {$_->{target_id}} (grep { !$_->{hold_failed} } @hold_data);
 
-    my $thaw_date;
-    if ($cgi->param('hold_suspend') && $cgi->param('thaw_date') =~ m:^(\d{2})/(\d{2})/(\d{4})$:){
-        $thaw_date = "$3-$1-$2";
-    }
 
     if(@create_targets) {
 
@@ -1313,8 +1318,6 @@ sub attempt_hold_placement {
                 pickup_lib => $pickup_lib,
                 hold_type => $hold_type,
                 holdable_formats_map => $holdable_formats,
-                frozen => $cgi->param('hold_suspend'),
-                thaw_date => $thaw_date
             }),
             \@create_targets
         );
