@@ -71,8 +71,8 @@
     if (GBPreviewPane === null || typeof GBPreviewPane.loaded === 'undefined' || GBPreviewPane.loaded === 'false') {
       GBPreviewPane = document.createElement('div');
       GBPreviewPane.id = 'rdetail_preview_div';
-      GBPreviewPane.style.height = '800px';
-      GBPreviewPane.style.width = '600px';
+      GBPreviewPane.style.height = document.documentElement.clientHeight + 'px';
+      GBPreviewPane.style.width = document.documentElement.clientWidth + 'px';
       GBPreviewPane.style.display = 'block';
       var GBClear = document.createElement('div');
       GBClear.style.padding = '1em';
