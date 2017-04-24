@@ -798,7 +798,8 @@ function($scope , $location , egCore , egConfirmDialog , egUser , patronSvc) {
             .then(function(user) { // retrieve user
                 var org = egCore.org.get(user.home_ou());
                 egConfirmDialog.open(
-                    egCore.strings.OPT_IN_DIALOG, '',
+                    egCore.strings.OPT_IN_DIALOG_TITLE,
+                    egCore.strings.OPT_IN_DIALOG,
                     {   family_name : user.family_name(),
                         first_given_name : user.first_given_name(),
                         org_name : org.name(),
