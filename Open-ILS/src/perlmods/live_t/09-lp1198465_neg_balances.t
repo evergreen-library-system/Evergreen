@@ -1,6 +1,6 @@
 #!perl
 
-use Test::More tests => 129;
+use Test::More tests => 132;
 
 diag("Test features of Conditional Negative Balances code.");
 
@@ -836,81 +836,54 @@ is(
 );
 
 
-###############################
-## 11. Manually voiding lost book fee does not result in negative balances
-###############################
-#
-#### Setup use case variables
-#$xact_id = 5;
-#$item_id = 6;
-#$item_barcode = 'CONC4000040';
-#
-## Setup Org Unit Settings
+##############################
+# Restore then generate new overdues on xact with adjustments
+##############################
+
+### Setup use case variables
+$xact_id = 5;
+$item_id = 6;
+$item_barcode = 'CONC4000041';
+
+# Setup Org Unit Settings
 # ALREADY SET:
 #     'bill.prohibit_negative_balance_default' => 1
-#
-#$summary = fetch_billable_xact_summary($xact_id);
-#ok( $summary, 'CASE 11: Found the transaction summary');
-#is(
-#    $summary->balance_owed,
-#    '50.00',
-#    'Starting balance owed is 50.00 for lost item'
-#);
-#
-#### confirm the copy is lost
-#$item_req = $storage_ses->request('open-ils.storage.direct.asset.copy.retrieve', $item_id);
-#if (my $item_resp = $item_req->recv) {
-#    if (my $item = $item_resp->content) {
-#        is(
-#            $item->status,
-#            3,
-#            'Item with id = ' . $item_id . ' has status of LOST'
-#        );
-#    }
-#}
-#
-#### partially pay the bill
-#$payment_blob = {
-#    userid => $patron_id,
-#    note => '09-lp1198465_neg_balances.t',
-#    payment_type => 'cash_payment',
-#    patron_credit => '0.00',
-#    payments => [ [ $xact_id, '10.00' ] ]
-#};
-#$pay_resp = pay_bills($payment_blob);
-#
-#is(
-#    scalar( @{ $pay_resp->{payments} } ),
-#    1,
-#    'Payment response included one payment id'
-#);
-#
-#$summary = fetch_billable_xact_summary($xact_id);
-#is(
-#    $summary->balance_owed,
-#    '40.00',
-#    'Remaining balance of 40.00 after payment'
-#);
-#
-#### TODO: manually void "the rest" of the bill (i.e. prevent neg bal)
-#### XXX: HARDCODING billing id for now; should look up the LOST bill for this xact?
-#my @billing_ids = (6);
-#my $void_resp = void_bills(\@billing_ids);
-#
-#is(
-#    $void_resp,
-#    '1',
-#    'Voiding was successful'
-#);
-#
-#### verify ending state
-#
-#$summary = fetch_billable_xact_summary($xact_id);
-#is(
-#    $summary->balance_owed,
-#    '0.00',
-#    'Patron has a balance of 0.00 (negative balance prohibited)'
-#);
+$settings = {
+    'circ.restore_overdue_on_lost_return' => 1,
+    'circ.lost.generate_overdue_on_checkin' => 1
+};
+
+$apputils->simplereq(
+    'open-ils.actor',
+    'open-ils.actor.org_unit.settings.update',
+    $script->authtoken,
+    $org_id,
+    $settings
+);
+
+$summary = fetch_billable_xact_summary($xact_id);
+is(
+    $summary->balance_owed,
+    '50.00',
+    'Starting balance owed is 50.00 for lost item'
+);
+
+$checkin_resp = $script->do_checkin_override({
+    barcode => $item_barcode
+});
+is(
+    $checkin_resp->{ilsevent},
+    0,
+    'Checkin returned a SUCCESS event'
+);
+
+### verify ending state
+$summary = fetch_billable_xact_summary($xact_id);
+is(
+    $summary->balance_owed,
+    '3.00',
+    'Patron has a balance of 3.00 (newly generated fines, up to maxfines)'
+);
 
 
 ##############################

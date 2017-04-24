@@ -527,13 +527,16 @@ sub generate_fines {
                 { xact => $c->id,
                   btype => 1,
                   billing_ts => { '>' => $c->$due_date_method } },
-                { order_by => {mb => 'billing_ts DESC'}}
+                { order_by => {mb => 'billing_ts DESC'},
+                  flesh => 1,
+                  flesh_fields => {mb => ['adjustments']} }
             ])};
 
             my $f_idx = 0;
             my $fine = $fines[$f_idx] if (@fines);
             my $current_fine_total = 0;
             $current_fine_total += int($_->amount * 100) for (grep { $_ and !$U->is_true($_->voided) } @fines);
+            $current_fine_total -= int($_->amount * 100) for (map { @{$_->adjustments} } @fines);
     
             my $last_fine;
             if ($fine) {
