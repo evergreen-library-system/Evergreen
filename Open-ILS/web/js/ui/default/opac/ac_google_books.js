@@ -1,4 +1,3 @@
-<script>
 ;(function () {
   var GBisbns = [];
   var GBPBadgelink;
@@ -161,4 +160,3 @@
     window.addEventListener('load', GBLoader, false);
   }
 })()
-</script>

@@ -59,7 +59,9 @@
     IF CGI.https; url = url.replace('^http:', 'https:'); END; %]
 <script type='text/javascript' id='EIT' src='[% url %]'></script>
 [%- END %]
-[% INCLUDE "opac/parts/ac_google_books.tt2" IF ctx.page == 'record' AND ctx.google_books_preview %]
+[%- IF ctx.page == 'record' AND ctx.google_books_preview %]
+<script src='[% ctx.media_prefix %]/js/ui/default/opac/ac_google_books.js' async defer></script>
+[%- END %]
 [%- IF want_dojo; -%]
 <script type="text/javascript">
      var djConfig = {
