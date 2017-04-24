@@ -4,7 +4,10 @@
   var GBPBadgelink;
   var GBPreviewLink = '';
   var GBPreviewShowing = false;
-  var lang = '[% ctx.locale.substr(0,2) %]';
+  var lang = 'en';
+  if (document.documentElement.lang) {
+    lang = document.documentElement.lang.substr(0,2) || 'en';
+  }
   var head = document.getElementsByTagName('head')[0];
 
 /**
