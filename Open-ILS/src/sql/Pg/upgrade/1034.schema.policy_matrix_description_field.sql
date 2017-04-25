@@ -1,6 +1,6 @@
 BEGIN;
 
--- SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1034', :eg_version);
 
 ALTER TABLE config.hold_matrix_matchpoint
     ADD COLUMN description TEXT;
