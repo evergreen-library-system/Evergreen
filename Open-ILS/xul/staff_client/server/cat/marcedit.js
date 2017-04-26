@@ -1242,6 +1242,7 @@ function save_attempt(xml_string) {
                 tab.marc_edit_changed = false;
             }
             oils_unlock_page();
+            oils_unlock_page(); /* kludge for LP1491875 */
             if (result.id) {
                 replace_on_complete = fastItemAdd_attempt(result.id);
             }
