@@ -90,9 +90,9 @@
             number_of_expert_rows = CGI.param('tag').list.size;
             index = 0;
             WHILE index < number_of_expert_rows %]
-                <input type="hidden" name="tag" value="[% CGI.param('tag').list.$index %]" />
-                <input type="hidden" name="subfield" value="[% CGI.param('subfield').list.$index %]" />
-                <input type="hidden" name="term" value="[% CGI.param('term').list.$index %]" />
+                <input type="hidden" name="tag" value="[% CGI.param('tag').list.$index | html %]" />
+                <input type="hidden" name="subfield" value="[% CGI.param('subfield').list.$index | html %]" />
+                <input type="hidden" name="term" value="[% CGI.param('term').list.$index | html %]" />
                 [% index = index + 1; %]
             [% END %]
         [% END %]
