@@ -183,16 +183,6 @@ INSERT INTO config.biblio_fingerprint (name, xpath, format)
         'mods32'
     );
 
-CREATE OR REPLACE FUNCTION 
-    config.metabib_representative_field_is_valid(INTEGER, TEXT) RETURNS BOOLEAN AS $$
-    SELECT EXISTS (SELECT 1 FROM config.metabib_field WHERE id = $1 AND field_class = $2);
-$$ LANGUAGE SQL STRICT IMMUTABLE;
-
-COMMENT ON FUNCTION config.metabib_representative_field_is_valid(INTEGER, TEXT) IS $$
-Ensure the field_class value on the selected representative field matches
-the class name.
-$$;
-
 CREATE TABLE config.metabib_class (
     name     TEXT    PRIMARY KEY,
     label    TEXT    NOT NULL UNIQUE,

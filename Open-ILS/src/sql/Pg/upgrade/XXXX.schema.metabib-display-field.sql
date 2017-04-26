@@ -146,24 +146,9 @@ BEGIN
 
             -- XXX much of this should be moved into oils_xpath_string...
             curr_text := ARRAY_TO_STRING(evergreen.array_remove_item_by_value(evergreen.array_remove_item_by_value(
-                oils_xpath( '//text()',
-                    REGEXP_REPLACE(
-                        REGEXP_REPLACE( -- This escapes all &s not followed by "amp;".  Data ise returned from oils_xpath (above) in UTF-8, not entity encoded
-                            REGEXP_REPLACE( -- This escapes embeded <s
-                                xml_node,
-                                $re$(>[^<]+)(<)([^>]+<)$re$,
-                                E'\\1&lt;\\3',
-                                'g'
-                            ),
-                            '&(?!amp;)',
-                            '&amp;',
-                            'g'
-                        ),
-                        E'\\s+',
-                        ' ',
-                        'g'
-                    )
-                ), ' '), ''),
+                oils_xpath( '//text()', -- get the content of all the nodes within the main selected node
+                    REGEXP_REPLACE( xml_node, E'\\s+', ' ', 'g' ) -- Translate adjacent whitespace to a single space
+                ), ' '), ''),  -- throw away morally empty (bankrupt?) strings
                 joiner
             );
 
@@ -340,6 +325,10 @@ BEGIN
     END IF;
 
     FOR ind_data IN SELECT * FROM biblio.extract_metabib_field_entry( bib_id ) LOOP
+
+	-- don't store what has been normalized away
+        CONTINUE WHEN ind_data.value IS NULL;
+
         IF ind_data.field < 0 THEN
             ind_data.field = -1 * ind_data.field;
         END IF;
@@ -362,6 +351,8 @@ BEGIN
             -- evergreen.oils_tsearch2()) changes.  It may or may not be
             -- expensive to add a comparison of index_vector to index_vector
             -- to the WHERE clause below.
+
+            CONTINUE WHEN ind_data.sort_value IS NULL;
 
             value_prepped := metabib.browse_normalize(ind_data.value, ind_data.field);
             SELECT INTO mbe_row * FROM metabib.browse_entry
