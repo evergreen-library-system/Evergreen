@@ -10,7 +10,7 @@
     <label for="locale_picker">[% l("Language:") %]</label>
     [%- FOREACH param IN CGI.params(); -%]
         [%- NEXT IF param.key == 'set_eg_locale'; -%]
-        <input type="hidden" name="[% param.key %]" value="[% param.value %]" />
+        <input type="hidden" name="[% param.key | html %]" value="[% param.value | html %]" />
     [%- END; -%]
     <select id="locale_picker" name="set_eg_locale">
     [%- FOREACH locale IN ctx.locales.keys %]
