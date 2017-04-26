@@ -1216,9 +1216,10 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
         if ($scope.patron.isnew) 
             set_new_patron_defaults(prs);
 
+        // Stat cats are fetched from open-ils.storage, where 't'==1
         $scope.hasRequiredStatCat = prs.stat_cats.filter(
                 function(cat) {return cat.required() == 1} ).length > 0;
-            
+
         $scope.page_data_loaded = true;
 
         prs.set_field_patterns(field_patterns);
@@ -1274,7 +1275,7 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
         'stat_cats' : 1,
         'surveys' : 1
     }; 
-    
+
     // Returns true if the selected field should be visible
     // given the current required/suggested/all setting.
     // The visibility flag applied to each field as a result of calling
