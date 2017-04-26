@@ -466,7 +466,8 @@ function($uibModal , $q , egCore , egConfirmDialog , egAlertDialog) {
             hold.current_copy(hold_data.copy);
             
             // likewise, current_copy's status isn't fleshed in the API
-            if(hold.current_copy().status() && typeof hold.current_copy().status() != 'object')
+            if(hold.current_copy().status() !== null &&
+               typeof hold.current_copy().status() != 'object')
                 egCore.pcrud.retrieve('ccs',hold.current_copy().status()
                     ).then(function(c) { hold.current_copy().status(c) });
         }
