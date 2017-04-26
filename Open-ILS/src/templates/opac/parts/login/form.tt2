@@ -49,7 +49,7 @@
             END;
                 redirect = redirect  | replace('^http:', 'https:');
             %]
-            <input type='hidden' name='redirect_to' value='[% redirect %]'/>
+            <input type='hidden' name='redirect_to' value='[% redirect | html %]'/>
             <input type="checkbox" name="persist" id="login_persist" /><label for="login_persist"> [% l('Stay logged in?') %]</label>
             <input type="submit" value="[% l('Log in') %]" alt="[% l('Log in') %]" class="opac-button" />
         </div>
