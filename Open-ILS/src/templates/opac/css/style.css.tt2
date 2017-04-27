@@ -1366,7 +1366,11 @@ div.adv_search_available {
 
 .adv_filter_results_block_label {
     font-weight:bold;
+    [% IF rtl == 't' -%]
+    padding: 4px 12px 4px 0px;
+    [% ELSE -%]
     padding: 4px 0px 4px 12px;
+    [% END -%]
 }
 
 .adv_filter_results_group {
@@ -1382,7 +1386,11 @@ div.adv_search_available {
 
 .adv_filter_results_group_wrapper {
     display: inline-block;
+    [% IF rtl == 't' -%]
+    margin-right: 1em;
+    [% ELSE -%]
     margin-left: 1em;
+    [% END -%]
     margin-bottom: 8px;
 }
 
@@ -1399,9 +1407,13 @@ div.adv_search_available {
 }
 
 .remove_filter {
-   font-size: 16px;
-   margin-left: 3px;
- }
+    font-size: 16px;
+    [% IF rtl == 't' -%]
+    margin-right: 3px;
+    [% ELSE -%]
+    margin-left: 3px;
+    [% END -%]
+}
 
 a.remove_filter {
     text-decoration: none;
@@ -1588,6 +1600,9 @@ div#facet_sidebar {
 #adv_global_search { width: 100%; }
 #adv_global_search select { width: 13em; }
 #adv_global_addrow td { padding-top: 7px; }
+[% IF rtl == 't' -%]
+#adv_global_addrow.td-search-left{text-align:right;}
+[% END -%]
 #adv_global_input_table { width: 100%; }
 #adv_global_input_table select { width: 7em; }
 .adv_adv_link {
@@ -2109,10 +2124,22 @@ table.bookbag-specific {
 .result-bookbag-item-note { font-style: italic; }
 .lowhits-bookbag-name { font-weight: bold; }
 .oils_AS { font-weight: bold; color: [% css_colors.text_match %]; }
-.oils_AS_match_term { text-align: left; color: [% css_colors.text %]; }
+.oils_AS_match_term {
+    [% IF rtl == 't' -%]
+    text-align: right;
+    [% ELSE -%]
+    text-align: left;
+    [% END -%]
+    color: [% css_colors.text %];
+}
 .oils_AS_match_field {
     font-size: [% css_fonts.size_smallest %]; padding: 0.65em 0;
-    text-align: right; color: [% css_colors.accent_medium %];
+    [% IF rtl == 't' -%]
+    text-align: left;
+    [% ELSE -%]
+    text-align: right;
+    [% END -%]
+    color: [% css_colors.accent_medium %];
 }
 table.result_holdings_table {
     margin-top: 1em;
@@ -2133,9 +2160,27 @@ a.preflib_change {
   line-height: normal;
   text-decoration: none;
 }
-.rdetail-holding-group { margin-left: 1.5em; }
-.rdetail-holding-group span { margin-left: 1.5em; }
-.rdetail-holding-group .paging { margin-left: 1.5em; }
+.rdetail-holding-group {
+    [% IF rtl == 't' -%]
+    margin-right: 1.5em;
+    [% ELSE -%]
+    margin-left: 1.5em;
+    [% END -%]
+}
+.rdetail-holding-group span {
+    [% IF rtl == 't' -%]
+    margin-right: 1.5em;
+    [% ELSE -%]
+    margin-left: 1.5em;
+    [% END -%]
+}
+.rdetail-holding-group .paging {
+    [% IF rtl == 't' -%]
+    margin-right: 1.5em;
+    [% ELSE -%]
+    margin-left: 1.5em;
+    [% END -%]
+}
 #rdetail_deleted_exp {
     font-weight: bold;
     padding: 1em;
@@ -2144,7 +2189,18 @@ a.preflib_change {
 }
 
 #ac_tab_wrapper { width : 100%; }
-.ac_tab { float: left; padding-right: 10px; font-size: [% css_fonts.size_big %]; padding: 5px; border: 1px solid [% css_colors.primary_offset %]; }
+.ac_tab {
+    [% IF rtl == 't' -%]
+    float: right;
+    padding-left: 10px;
+    [% ELSE -%]
+    float: left;
+    padding-right: 10px;
+    [% END -%]
+    font-size: [% css_fonts.size_big %];
+    padding: 5px;
+    border: 1px solid [% css_colors.primary_offset %];
+}
 .ac_tab_selected { background-color: [% css_colors.primary_offset %]; }
 .ac_tab_selected a { color: [% css_colors.text_invert %]; }
 #ac_content { clear: both; width: 100%; margin-top: 10px; }
@@ -2221,10 +2277,15 @@ a.preflib_change {
 }
     
 #locale_picker_form {
+    [% IF rtl == 't' -%]
+    float: left;
+    border-left: thin [% css_colors.control %] solid;
+    [% ELSE -%]
     float: right;
+    border-right: thin [% css_colors.control %] solid;
+    [% END -%]
     padding: 0.5em;
     margin-top: 2em;
-    border-right: thin [% css_colors.control %] solid;
 }
 
 #locale_picker_form * {
@@ -2267,7 +2328,11 @@ a.preflib_change {
     font-color: #c00;
 }
 .browse-result-sources, .browse-result-authority-bib-links {
+    [% IF rtl == 't' -%]
+    margin-right: 1em;
+    [% ELSE -%]
     margin-left: 1em;
+    [% END -%]
 }
 .browse-result-best-match {
     font-weight: bold;
@@ -2283,7 +2348,11 @@ a.preflib_change {
 }
 .browse-result-authority-field-name {
     font-style: italic;
+    [% IF rtl == 't' -%]
+    margin-left: 1em;
+    [% ELSE -%]
     margin-right: 1em;
+    [% END -%]
 }
 .browse-leading-article-warning {
     font-style: italic;
@@ -2306,7 +2375,11 @@ a.preflib_change {
 }
 
 #main-content-register {
+    [% IF rtl == 't' -%]
+    margin-right: 40px;
+    [% ELSE -%]
     margin-left: 40px;
+    [% END -%]
     font-size: [% css_fonts.size_bigger %];
 }
 
@@ -2317,17 +2390,29 @@ a.preflib_change {
 }
 
 #main-content-register td {
+    [% IF rtl == 't' -%]
+    text-align: right;
+    [% ELSE -%]
     text-align: left;
+    [% END -%]
 }
 
 #main-content-register td:not(:first-child) {
+    [% IF rtl == 't' -%]
+    padding-right: 20px;
+    [% ELSE -%]
     padding-left: 20px;
+    [% END -%]
 }
 
 .patron-reg-invalid {
     font-weight: bold;
     color: red;
+    [% IF rtl == 't' -%]
+    padding-left: 10px;
+    [% ELSE -%]
     padding-right: 10px;
+    [% END -%]
 }
 
 .result_footer_nav1 {
@@ -2439,11 +2524,17 @@ a.preflib_change {
         display: none;
     }
     #acct_tabs a, #acct_fines_tabs a {
-       padding: 2px 4px 3px 4px;
+       [% IF rtl == 't' -%]
+       -moz-border-radius: 6px 0px 0px 6px;
+       border-radius: 6px 0px 0px 6px;
+       margin: 0px 0px 0px 5px;
+       [% ELSE -%]
        -moz-border-radius: 6px 6px 0px 0px;
        border-radius: 6px 6px 0px 0px;
-       font-size: [% css_fonts.size_base %];
        margin: 0px 5px 0px 0px;
+       [% END -%]
+       padding: 2px 4px 3px 4px;
+       font-size: [% css_fonts.size_base %];
     }
 
     #dash_wrapper div {
@@ -2461,14 +2552,23 @@ a.preflib_change {
         display: inline !important;
     }
     #dash_identity a {
+        [% IF rtl == 't' -%]
+        float:right;
+        [% ELSE -%]
         float:left;
+        [% END -%]
     }
     #dashboard, #dashboard_e {
         display: none;
     }
     #holds_box form blockquote {
+        [% IF rtl == 't' -%]
+        margin-right: 10px;
+        margin-left: 2px;
+        [% ELSE -%]
         margin-left: 10px;
         margin-right: 2px;
+        [% END -%]
     }
     #holds_box form blockquote select {
         width: 100%;
@@ -2495,8 +2595,13 @@ a.preflib_change {
         display: none;
     }
     .result_table_pic_header {
+        [% IF rtl == 't' -%]
+        padding-right: 0px !important;
+        padding-left: 5px;
+        [% ELSE -%]
         padding-left: 0px !important;
         padding-right: 5px;
+        [% END -%]
         width: 0px !important;
         margin: 0px;
     }
@@ -2571,7 +2676,11 @@ a.preflib_change {
         width: inherit;
     }
     .facet_template .count {
+        [% IF rtl == 't' -%]
+        padding-right: 1em;
+        [% ELSE -%]
         padding-left: 1em;
+        [% END -%]
     }
     #facet_sidebar {
         margin-top: 0.5em;
@@ -2584,7 +2693,11 @@ a.preflib_change {
         width: 300px;
     }
     #format_actions {
+        [% IF rtl == 't' -%]
+        float: right;
+        [% ELSE -%]
         float: left;
+        [% END -%]
     }
     .rdetail_aux_utils {
         padding: 0px;
@@ -2609,7 +2722,11 @@ a.preflib_change {
         float: none;
     }
     .search_catalog_lbl {
+        [% IF rtl == 't' -%]
+	margin-right: 0;
+        [% ELSE -%]
 	margin-left: 0;
+        [% END -%]
 	white-space: nowrap;
     }
     .adv_search_catalog_lbl { 
@@ -2650,7 +2767,11 @@ a.preflib_change {
         margin: 2px 2px 0px 2px;
         padding: 2px 2px 5px 2px; 
         -moz-border-radius: 10px 0px 0px 0px;
-        border-radius: 7px 7px 0px 0px;                                                                                                           
+        [% IF rtl == 't' -%]
+        border-radius: 7px 0px 0px 7px;
+        [% ELSE -%]
+        border-radius: 7px 7px 0px 0px;
+        [% END -%]
     }
     #adv_global_tbody td {
         border-bottom: thin solid [% css_colors.accent_light %];
@@ -2670,7 +2791,11 @@ a.preflib_change {
         thead tr {
                 position: absolute;
                 top: -9999px;
+                [% IF rtl == 't' -%]
+                right: -9999px;
+                [% ELSE -%]
                 left: -9999px;
+                [% END -%]
         }
 
         table#acct_checked_main_header, table#acct_holds_main_header, table#acct_checked_hist_header, table#acct_holds_hist_header, table#ebook_circs_main_table, table#ebook_holds_main_table {
@@ -2693,7 +2818,11 @@ a.preflib_change {
                 border: none;
                 border-bottom: 1px solid #eee;
                 position: relative;
+                [% IF rtl == 't' -%]
+                padding-right: 40%;
+                [% ELSE -%]
                 padding-left: 40%;
+                [% END -%]
         }
 
          table#acct_checked_main_header td:before, table#acct_holds_main_header td:before, table#acct_checked_hist_header td:before, table#acct_holds_hist_header td:before, table#ebook_circs_main_table td:before, table#ebook_holds_main_table td:before {
@@ -2701,9 +2830,14 @@ a.preflib_change {
                 position: absolute;
                 /* Top/left values mimic padding */
                 top: 2px;
-                left: 2px;
                 width: 40%;
+                [% IF rtl == 't' -%]
+                right: 2px;
+                padding-left: 10px;
+                [% ELSE -%]
+                left: 2px;
                 padding-right: 10px;
+                [% END -%]
                 white-space: nowrap;
         }
 
@@ -2802,17 +2936,76 @@ label[for*=expert_]
 
 /*Inline rules from other templates files*/
 
-.td-left{text-align:left; width:100%;}
-.td-search-left{text-align:left;}
+.td-left{
+    [% IF rtl == 't' -%]
+    text-align:right;
+    [% ELSE -%]
+    text-align:left;
+    [% END -%]
+    width:100%;
+}
+.td-search-left{
+    [% IF rtl == 't' -%]
+    text-align:right;
+    [% ELSE -%]
+    text-align:left;
+    [% END -%]
+}
 #myopac_summary_div{padding:0px;}
-.div-left{float: left;} 
-.td-right{text-align:right;}
-.login-form-left{float: left; padding-bottom: 10px; margin-right: 40px;}
-.hold-div{padding-left: 10px; padding-bottom: 15px;}
+.div-left{
+    [% IF rtl == 't' -%]
+    float: right;
+    [% ELSE -%]
+    float: left;
+    [% END -%]
+}
+.td-right{
+    [% IF rtl == 't' -%]
+    text-align:left;
+    [% ELSE -%]
+    text-align:right;
+    [% END -%]
+}
+.login-form-left{
+    [% IF rtl == 't' -%]
+    float: right;
+    margin-left: 40px;
+    [% ELSE -%]
+    float: left;
+    margin-right: 40px;
+    [% END -%]
+    padding-bottom: 10px;
+}
+.hold-div{
+    [% IF rtl == 't' -%]
+    padding-right: 10px;
+    [% ELSE -%]
+    padding-left: 10px;
+    [% END -%]
+    padding-bottom: 15px;
+}
 .hold-span{font-weight: bold;}
-.padding-left-6{padding-left: 6px;}
-.padding-left-10{padding-left:10px;}
-.padding-left-5{padding-left: 5px;}
+.padding-left-6{
+    [% IF rtl == 't' -%]
+    padding-right: 6px;
+    [% ELSE -%]
+    padding-left: 6px;
+    [% END -%]
+}
+.padding-left-10{
+    [% IF rtl == 't' -%]
+    padding-right:10px;
+    [% ELSE -%]
+    padding-left:10px;
+    [% END -%]
+}
+.padding-left-5{
+    [% IF rtl == 't' -%]
+    padding-right: 5px;
+    [% ELSE -%]
+    padding-left: 5px;
+    [% END -%]
+}
 
 /* Rules from metarecord_hold_filters.tt2 */
 
@@ -2821,6 +3014,14 @@ label[for*=expert_]
       margin-top: 5px;
       border-bottom: 1px solid #333;
       border-top: 1px solid #333; }
-.metarecord_filter_container{float : left;margin-right: 10px;}
+.metarecord_filter_container{
+    [% IF rtl == 't' -%]
+    float : right;
+    margin-left: 10px;
+    [% ELSE -%]
+    float : left;
+    margin-right: 10px;
+    [% END -%]
+}
 .metarecord_filter_container select{padding: 2px;width: 13em; /* consistent w/ adv search selectors */}
 .metarecord_filter_header{padding-bottom: 5px;}

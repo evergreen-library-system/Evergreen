@@ -12,7 +12,6 @@
         <link rel="stylesheet" type="text/css" href="[% ctx.media_prefix %]/css/skin/default/opac/semiauto.css" />
         <link rel="stylesheet" type="text/css" href="[% ctx.opac_root %]/css/style.css" />
         [% IF ctx.get_i18n_l(ctx.eg_locale).rtl == 't' %]
-        <link rel="stylesheet" type="text/css" href="[% ctx.opac_root %]/css/style-rtl.css" />
         <link rel="stylesheet" type="text/css" href="[% ctx.media_prefix %]/css/skin/default/opac/semiauto-rtl.css" />
         [% END %]
         
