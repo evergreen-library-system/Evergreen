@@ -966,7 +966,7 @@ sub _rebill_xact {
         if ($U->is_true($billing->voided)) {
             $amount = $billing->amount;
         } else { # adjusted billing
-            map { $amount = $U->fpadd($amount, $_->amount) } @{$billing->adjustments};
+            map { $amount = $U->fpsum($amount, $_->amount) } @{$billing->adjustments};
         }
         my $evt = $CC->create_bill(
             $e,
@@ -989,7 +989,7 @@ sub _is_fully_adjusted {
     my ($billing) = @_;
 
     my $amount_adj = 0;
-    map { $amount_adj = $U->fpadd($amount_adj, $_->amount) } @{$billing->adjustments};
+    map { $amount_adj = $U->fpsum($amount_adj, $_->amount) } @{$billing->adjustments};
 
     return $billing->amount == $amount_adj;
 }
