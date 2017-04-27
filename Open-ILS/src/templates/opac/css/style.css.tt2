@@ -1,6 +1,7 @@
 [%-
     PROCESS "opac/parts/css/colors.tt2";
     PROCESS "opac/parts/css/fonts.tt2";
+    rtl = ctx.get_i18n_l(ctx.eg_locale).rtl;
 %]
 
 body {
@@ -8,6 +9,9 @@ body {
     font-family: Arial, Helvetica, sans-serif;
     font-size: [% css_fonts.size_base %];
     background: [% css_colors.primary %];
+    [% IF rtl == 't' -%]
+    direction: rtl;
+    [%- END %]
 }
 
 button, input {
@@ -48,7 +52,11 @@ a {
 .searchbar {
     font-weight: bold;
     padding-top: 10px;
+    [% IF rtl == 't' -%]
+    margin-right: 1em;
+    [%- ELSE %]
     margin-left: 1em;
+    [%- END %]
 }
 
 .refine_search {
@@ -93,13 +101,22 @@ h2.graphic880 {
 div.select-box-wrapper {
     position:absolute;
     padding-top:2px;
-    padding-left:3px;
     overflow:hidden;
+    [% IF rtl == 't' -%]
+    padding-right: 3px;
+    text-align:right;
+    [%- ELSE %]
+    padding-left:3px;
     text-align:left;
+    [%- END %]
 }
 
 #dash_wrapper {
+    [% IF rtl == 't' -%]
+    margin-right: 0.5em;
+    [%- ELSE %]
     margin-left: 0.5em;
+    [%- END %]
 }
 
 #dash_wrapper div {
@@ -128,7 +145,13 @@ div.select-box-wrapper {
     font-weight: bold;
 }
 
-#logout_link { left: 1px; }
+#logout_link {
+    [% IF rtl == 't' -%]
+    right: 1px;
+    [%- ELSE %]
+    left: 1px;
+    [%- END %]
+}
 
 #dash_checked, #dash_e_checked { color: [% css_colors.text_attention %]; }
 #dash_holds, #dash_e_holds { color: [% css_colors.text_attention %]; }
@@ -156,7 +179,11 @@ for now until a better color is picked - if needed.
     border-radius: 0;
     z-index: 2;
     margin-top: 0.2em;
+    [% IF rtl == 't' -%]
+    margin-right: -1.5em;
+    [%- ELSE %]
     margin-left: -1.5em;
+    [%- END %]
 }
 
 #header-wrap {
@@ -194,9 +221,14 @@ for now until a better color is picked - if needed.
 #header-links a {
     color: [% css_colors.text_invert %];
     display: block;
+    text-decoration: none;
+    [% IF rtl == 't' -%]
+    float: right;
+    margin-left: 22px;
+    [%- ELSE %]
     float:left;
     margin-right:22px;
-    text-decoration: none;
+    [%- END %]
 }
 
 #header-links a:hover {
@@ -225,13 +257,22 @@ for now until a better color is picked - if needed.
 }
 
 #gold-links {
+    [% IF rtl == 't' -%]
+    margin-right: 1em;
+    padding-right: 0px;
+    [%- ELSE %]
     margin-left: 1em;
     padding-left:0px;
+    [%- END %]
 }
 
 #gold-links-home {
     margin:auto;
+    [% IF rtl == 't' -%]
+    padding-right: 0px;
+    [%- ELSE %]
     padding-left:0px;
+    [%- END %]
 }
 
 #gold-links-holder {
@@ -240,8 +281,13 @@ for now until a better color is picked - if needed.
 }
 
 #util-bar {
+    [% IF rtl == 't' -%]
+    margin-right: 1em;
+    padding-right: 0px;
+    [%- ELSE %]
     margin-left: 1em;
     padding-left:0px;
+    [%- END %]
     height:0px;
 }
 
@@ -254,14 +300,23 @@ for now until a better color is picked - if needed.
 #search-wrapper #breadcrumb {
     margin-top:0px;
     font-size: [% css_fonts.size_smaller %];
+    [% IF rtl == 't' -%]
+    float: right;
+    [%- ELSE %]
     float:left;
+    [%- END %]
 }
 
 #search-wrapper #search-within {
     margin-top:10px;
-    float:right;
     position:relative;
+    [% IF rtl == 't' -%]
+    float: left;
+    right: -173px;
+    [%- ELSE %]
+    float:right;
     left:-173px;
+    [%- END %]
 }
 
 #search-wrapper #breadcrumb a {
@@ -273,26 +328,42 @@ for now until a better color is picked - if needed.
 }
 
 #search-wrapper #search-box {
+    [% IF rtl == 't' -%]
+    margin-right: 1em;
+    padding-right: 0px;
+    [%- ELSE %]
     margin-left: 1em;
     padding-left: 0px;
+    [%- END %]
     padding-top: 10px;
     padding-bottom: 10px;
 }
 
 #adv_search_tabs, #acct_tabs, #acct_fines_tabs, #acct_checked_tabs, #acct_holds_tabs, #acct_prefs_tabs, #results_header_inner{
+    [% IF rtl == 't' -%]
+    margin-right:2px;
+    [%- ELSE %]
     margin-left: 2px;
+    [%- END %]
     overflow: auto;
 }
 
 #adv_search_tabs a, #acct_tabs a, #acct_fines_tabs a, #acct_checked_tabs a, #acct_holds_tabs a, #acct_prefs_tabs a {
+    [% IF rtl == 't' -%]
+    float: right;
+    margin: 10px 0px 0px 7px;
+    -moz-border-radius: 10px 10px 0px 0px;
+    border-radius: 10px 10px 0px 0px;
+    [%- ELSE %]
     float: left;
+    margin: 10px 7px 0px 0px;
+    -moz-border-radius: 10px 10px 0px 0px; 
+    border-radius: 10px 10px 0px 0px;
+    [%- END %]
     text-align: center;
     vertical-align: middle;
     display: block;
-    margin: 10px 7px 0px 0px;
     padding: 10px 0px 10px 0px;
-    -moz-border-radius: 10px 10px 0px 0px; 
-    border-radius: 10px 10px 0px 0px;
     font-weight: bold;
     color: [% css_colors.text_invert %];
     background: [% css_colors.control %];
@@ -317,30 +388,49 @@ for now until a better color is picked - if needed.
     border-bottom: none;
 }
 .adv_filter_block {
-    padding: 15px;
+    [% IF rtl == 't' -%]
+    float: right;
+    [%- ELSE %]
     float: left;
+    [%- END %]
+    padding: 15px;
     clear: both;
 }
 .adv_filter_block_item {
+    [% IF rtl == 't' -%]
+    float: right;
+    [%- ELSE %]
     float: left;
+    [%- END %]
     padding: 5px;
 }
 
 #adv_special_block {
+    [% IF rtl == 't' -%]
+    float: right;
+    [%- ELSE %]
     float: left;
+    [%- END %]
     padding: 5px;
     margin-top: 5px;
 }
 
 #adv_search_submit {
-    position: relative;
+    [% IF rtl == 't' -%]
+    margin-right: 10px;
+    [%- ELSE %]
     margin-left: 10px;
-
+    [%- END %]
+    position: relative;
 }
 
 .checkbox_col {
     width: 1%;
+    [% IF rtl == 't' -%]
+    padding-right: 10px !important;
+    [%- ELSE %]
     padding-left: 10px !important;
+    [%- END %]
 }
 
 #adv_search.on, #num_search.on, #expert_search.on {
@@ -385,8 +475,13 @@ for now until a better color is picked - if needed.
 }
 
 .rdetail_header {
+    [% IF rtl == 't' -%]
+    padding: 5px 0px 6px 7px;
+    margin-right: 1em;
+    [%- ELSE %]
     padding: 5px 7px 6px 0px;
     margin-left: 1em;
+    [%- END %]
     border-bottom: 1px dotted [% css_colors.accent_light %];
 }
 
@@ -399,14 +494,22 @@ for now until a better color is picked - if needed.
 .rdetail_result_count {
     color: [% css_colors.text %];
     font-weight: normal;
-    padding-left: 1em;
     display: inline-block;
+    [% IF rtl == 't' -%]
+    padding-right: 1em;
+    [%- ELSE %]
+    padding-left: 1em;
+    [%- END %]
 }
 
 .rdetail_result_nav {
     font-weight:normal;
-    padding-left: 1em;
     display: inline-block;
+    [% IF rtl == 't' -%]
+    padding-right: 1em;
+    [%- ELSE %]
+    padding-left: 1em;
+    [%- END %]
 }
 
 #rdetail_details_table {
@@ -416,7 +519,11 @@ for now until a better color is picked - if needed.
 #rdetail_image { border: none; }
 #rdetail_image_cell {
     padding-top: 3px;
+    [% IF rtl == 't' -%]
+    padding-left: 10px;
+    [%- ELSE %]
     padding-right: 10px;
+    [%- END %]
 }
 
 h2.rdetail_uris {
@@ -428,7 +535,11 @@ div.rdetail_uris {
 }
 div.rdetail_uris ul li {
     position: relative;
+    [% IF rtl == 't' -%]
+    right: 1em;
+    [%- ELSE %]
     left: 1em;
+    [%- END %]
 }
 
 div.rdetail_show_copies {
@@ -436,16 +547,26 @@ div.rdetail_show_copies {
 }
 
 div#rdetail_actions_div {
-    float: right;
     background: [% css_colors.background %];
+    [% IF rtl == 't' -%]
+    float: left;
+    [%- ELSE %]
+    float: right;
+    [%- END %]
 }
 
 span#rdetail_copy_counts {
     display: inline-block;
-    border-right: thin;
     vertical-align: top;
+    [% IF rtl == 't' -%]
+    border-left: thin;
+    margin-left: 1em;
+    padding-left: 1em;
+    [%- ELSE %]
+    border-right: thin;
     margin-right: 1em;
     padding-right: 1em;
+    [%- END %]
 }
 
 span#rdetail_hold_counts {
@@ -453,19 +574,34 @@ span#rdetail_hold_counts {
     vertical-align: top;
 }
 span#rdetail_hold_counts p {
+    [% IF rtl == 't' -%]
+    padding-right: 2em;
+    [%- ELSE %]
     padding-left: 2em;
+    [%- END %]
 }
 
 #rdetail_image_div {
+    [% IF rtl == 't' -%]
+    float: right;
+    margin-left: 1em;
+    [%- ELSE %]
     float: left;
     margin-right: 1em;
+    [%- END %]
 }
 
 .rdetail_aux_utils {
+    padding-bottom: 6px;
+    [% IF rtl == 't' -%]
+    border-right: 1px dotted #ccc;
+    padding-right:17px;
+    padding-left:70px;
+    [%- ELSE %]
     border-left:1px dotted [% css_colors.accent_light %];
     padding-left: 17px;
-    padding-bottom: 6px;
     padding-right: 70px;
+    [%- END %]
 }
 
 div.place_hold {
@@ -481,8 +617,13 @@ div.share_record {
 }
 
 div.format_icon {
+    [% IF rtl == 't' -%]
+    float: left;
+    margin-left: 17px;
+    [%- ELSE %]
     float: right;
     margin-right: 17px;
+    [%- END %]
 }
 
 #metarecord_population {
@@ -512,17 +653,18 @@ div.format_icon {
     padding-top:10px;
 }
 
-.result_util {
-    border-bottom: 1px dotted [% css_colors.accent_light %];
-    padding-top: 6px;
-}
-
 .results_aux_utils {
     display: table-cell;
 }
 
 .result_util {
+    border-bottom: 1px dotted [% css_colors.accent_light %];
+    padding-top: 6px;
+    [% IF rtl == 't' -%]
+    padding-right: 1em;
+    [%- ELSE %]
     padding-left: 1em;
+    [%- END %]
 }
 
 .results_reviews {
@@ -534,7 +676,11 @@ div.format_icon {
 }
 
 #rdetails_status td {
+    [% IF rtl == 't' -%]
+    padding: 7px 13px 3px 0px;
+    [%- ELSE %]
     padding: 7px 0px 3px 13px;
+    [%- END %]
     white-space: nowrap;
 }
 
@@ -544,16 +690,26 @@ div.format_icon {
 }
 
 #rdetails_status thead th {
-    background-color: [% css_colors.accent_lighter2 %];
+    [% IF rtl == 't' -%]
+    padding: 13px 13px 13px 0px;
+    text-align: right;
+    [%- ELSE %]
     padding: 13px 0px 13px 13px;
+    text-align: left;
+    [%- END %]
+    background-color: [% css_colors.accent_lighter2 %];
     font-size: [% css_fonts.size_smaller %];
     font-weight: bold;
-    text-align: left;
 }
 
 #rdetails_status tbody td {
+    [% IF rtl == 't' -%]
+    padding-right: 13px;
+    text-align: right;
+    [%- ELSE %]
     padding-left: 13px;
     text-align: left;
+    [%- END %]
 }
 #rdetails_status tbody td.copy_note {
     color: [% css_colors.primary %];
@@ -574,10 +730,15 @@ div.format_icon {
 }
 
 .rdetail_extras_hr {
-    height: 1px;
-    background: [% css_colors.accent_light %];
+    [% IF rtl == 't' -%]
+    margin-right: 1px;
+    margin-left: 1px;
+    [%- ELSE %]
     margin-left: 1px;
     margin-right: 1px;
+    [%- END %]
+    height: 1px;
+    background: [% css_colors.accent_light %];
 }
 
 .rdetail_extras_link {
@@ -592,13 +753,21 @@ div.format_icon {
 }
 
 ##rdetail_extras_expand, #rdetail_extras_collapse, #rdetail_locs_collapse {
+    [% IF rtl == 't' -%]
+    margin-right: 13px;
+    [%- ELSE %]
     margin-left: 13px;
+    [%- END %]
 }
 
 #rdetail_locs_expand, #rdetail_locs_collapse {
+    [% IF rtl == 't' -%]
+    margin-right: 13px;
+    [%- ELSE %]
+    margin-left:13px;
+    [%- END %]
     padding-bottom:3px;
     margin-top:15px;
-    margin-left:13px;
 }
 
 #rdetail_anotes_div .biography {
@@ -618,21 +787,45 @@ div.format_icon {
 .content-wrapper-record-page { top: -15px; position: relative; }
 
 #main-content-home {
+    [% IF rtl == 't' -%]
+    padding-right: 17px;
+    margin-right: 1em;
+    [%- ELSE %]
     padding-left: 17px;
     margin-left: 1em;
+    [%- END %]
 }
 #main-content {
+    [% IF rtl == 't' -%]
+    padding-right: 0px;
+    [%- ELSE %]
     padding-left: 0px;
+    [%- END %]
     margin: 0 1em;
     clear: both;
 }
 
 #main-content-after-bar {
+    [% IF rtl == 't' -%]
+    margin-right: 1em;
+    padding-right: 4px;
+    [%- ELSE %]
     margin-left: 1em;
     padding-left: 4px;
+    [%- END %]
 }
 
-#results-side-bar { float: left; width: 174px; margin-right: 5px; background: [% css_colors.background %]; }
+#results-side-bar {
+    [% IF rtl == 't' -%]
+    float: right; 
+    margin-left: 5px;
+    [%- ELSE %]
+    float: left;
+    margin-right: 5px; 
+    [%- END %]
+    width: 174px;
+    background: [% css_colors.background %];
+}
 
 #main-content .login_boxes {
     border: 1px solid [% css_colors.accent_lighter %];
@@ -652,7 +845,11 @@ div.format_icon {
 }
 
 #main-content .left_brain {
+    [% IF rtl == 't' -%]
+    padding-right: 28px;
+    [% ELSE -%]
     padding-left:28px;
+    [% END -%]
     padding-top:25px;
 }
 
@@ -666,16 +863,25 @@ div.format_icon {
 }
 
 #main-content .left_brain .input_bg {
+    [% IF rtl == 't' -%]
+    padding: 10px 13px 0px 10px;
+    [% ELSE -%]
     padding:10px 10px 0px 13px;
+    [% END -%]
     width:167px;
     height:29px;
 }
 
 .login-help-box {
+    [% IF rtl == 't' -%]
+    float: right;
+    margin-right: 2em;
+    [% ELSE -%]
     float: left;
+    margin-left: 2em;
+    [% END -%]
     width: 200px;
     text-align: center;
-    margin-left: 2em;
 }
 
 .login-help-button {
@@ -716,8 +922,12 @@ div.format_icon {
 }
 
 .results_header_lbl {
-    font-weight: bold;
+    [% IF rtl == 't' -%]
+    float: right;
+    [% ELSE -%]
     float: left;
+    [% END -%]
+    font-weight: bold;
     color: [% css_colors.text %];
     /* this border is not visible, but it keeps these labels the same size
     as the buttons */
@@ -739,13 +949,20 @@ collapse correctly when the window width decreases */
 }
 
 .results_header_sel {
-    /* width: 88px; */
+    [% IF rtl == 't' -%]
+    float: right;
+    [% ELSE -%]
     float:left;
+    [% END -%]
     margin:0;
 }
 
 .results_header_nav1 {
+    [% IF rtl == 't' -%]
+    padding: 5px 0px 6px 7px;
+    [% ELSE -%]
     padding: 5px 7px 6px 0px;
+    [% END -%]
     border-bottom: 1px dotted [% css_colors.accent_light %];
 }
 
@@ -780,9 +997,14 @@ tr.result_table_row > td.result_table_title_cell {
 }
 
 .result_metadata {
+    [% IF rtl == 't' -%]
+    float: right;
+    padding-left: 2em;
+    [% ELSE -%]
     float: left;
-    width: 30em;
     padding-right: 2em;
+    [% END -%]
+    width: 30em;
 }
 
 tr.result_table_row:nth-child(n+2) > td {
@@ -790,13 +1012,21 @@ tr.result_table_row:nth-child(n+2) > td {
 }
 
 tr.result_table_row > td.result_table_pic_header {
+    [% IF rtl == 't' -%]
+    padding-right: 1em;
+    [% ELSE -%]
+    padding-left: 1em;
+    [% END -%]
     white-space: nowrap;
     width: 78px;
-    padding-left: 1em;
 }
 
 .result_number {
+    [% IF rtl == 't' -%]
+    padding-right: 1em;
+    [% ELSE -%]
     padding-left: 1em;
+    [% END -%]
     white-space: nowrap;
 }
 
@@ -810,11 +1040,13 @@ tr.result_table_row > td.result_table_pic_header {
 }
 
 div.result_table_utils_cont {
+    [% IF rtl == 't' -%]
+    text-align: right;
+    float: right;
+    [% ELSE -%]
     text-align:left;
     float: left;
-}
-
-.icon_text {
+    [% END -%]
 }
 
 #myopac_summary_div p {
@@ -826,8 +1058,26 @@ div.result_table_utils_cont {
     padding-bottom:5px;
 }
 
-.zero_search_hits_main { float:left; width:300px; margin-top: 2ex; }
-.zero_search_hits_saved { float:left; width:200px; margin-top: 2ex; margin-right: 2em; }
+.zero_search_hits_main {
+    [% IF rtl == 't' -%]
+    float: right;
+    [% ELSE -%]
+    float:left;
+    [% END -%]
+    width:300px;
+    margin-top: 2ex;
+}
+.zero_search_hits_saved {
+    [% IF rtl == 't' -%]
+    float: right;
+    margin-left: 2em;
+    [% ELSE -%]
+    float:left;
+    margin-right: 2em;
+    [% END -%]
+    width:200px;
+    margin-top: 2ex;
+}
 
 #zero_search_hits p {
     margin-top:0;
@@ -844,7 +1094,11 @@ div.result_table_utils_cont {
 }
 
 #lowhits_help {
+    [% IF rtl == 't' -%]
+    float: left;
+    [% ELSE -%]
     float: right;
+    [% END-%]
     width: 353px;
     background: [% css_colors.accent_light %];
     padding: 10px;
@@ -852,7 +1106,11 @@ div.result_table_utils_cont {
 }
 
 .results_info_table td {
+    [% IF rtl == 't' -%]
+    padding-left: 10px;
+    [% ELSE -%]
     padding-right: 10px;
+    [% END-%]
 }
 
 #myopac_holds_main_table {
@@ -879,17 +1137,25 @@ div.result_table_utils_cont {
 }
 
 #myopac_prefs_div .data_grid td {
+    [% IF rtl == 't' -%]
+    padding: 6px 17px 7px 0px;
+    [% ELSE -%]
+    padding:6px 0px 7px 17px;
+    [% END -%]
     background:[% css_colors.accent_ultralight %];
     border-bottom:3px solid [% css_colors.background %];
-    padding:6px 0px 7px 17px;
 }
 
 .header_middle {
+    [% IF rtl == 't' -%]
+    padding: 0px 0px 0px 7px;
+    [% ELSE -%]
+    padding: 0px 7px 0px 0px;
+    [% END -%]
     height:22px;
     font-size: [% css_fonts.size_bigger %];
     font-weight:bold;
     color:[% css_colors.primary_fade %];
-    padding: 0px 7px 0px 0px;
     border-bottom: 1px dotted [% css_colors.accent_light %];
     clear: both;
 }
@@ -899,8 +1165,13 @@ div.result_table_utils_cont {
 }
 
 #acct_sum_block {
-     float:left;
-     clear:left;
+    [% IF rtl == 't' -%]
+    float: right;
+    clear: right;
+    [% ELSE -%]
+    float: left;
+    clear: left;
+    [% END -%]
 }
 
 .acct_sum_table {
@@ -927,22 +1198,42 @@ div.result_table_utils_cont {
 }
 
 #myopac_sum_fines {
+    [% IF rtl == 't' -%]
+    float: left;
+    padding: 15px 23px 0px 0px;
+    [% ELSE -%]
     float:right;
     padding: 15px 0px 0px 23px;
+    [% END -%]
     background: [% css_colors.accent_ultralight %];
     width: 177px;
     height: 166px;
 }
 
-#myopac_sum_fines_placehold { float: right; width: 177px; height: 166px; }
+#myopac_sum_fines_placehold {
+    [% IF rtl == 't' -%]
+    float: left;
+    [% ELSE -%]
+    float: right;
+    [% END -%]
+    width: 177px;
+    height: 166px;
+}
 
 .acct_holds_temp td {
+    [% IF rtl == 't' -%]
+    text-align: right;
+    [% ELSE -%]
     text-align: left;
+    [% END -%]
 }
 
 #acct_checked_tabs .align, #acct_holds_tabs .align, #acct_prefs_tabs .align {
+    [% IF rtl == 't' -%]
+    float: right;
+    [% ELSE -%]
     float:left;
-    /*padding-left:10px;*/
+    [% END -%]
 }
 
 #acct_checked_main_header, #acct_holds_main_header, #acct_checked_hist_header, #acct_holds_hist_header, #acct_list_header, #acct_list_header_anon, #temp_list_holds, #acct_messages_main_header, #ebook_circs_main_table, #ebook_holds_main_table {
@@ -962,7 +1253,11 @@ div.result_table_utils_cont {
 }
 
 #acct_checked_main_header th, #acct_holds_main_header th, #acct_checked_hist_header th, acct_holds_hist_header th, #acct_list_header th, #acct_list_header_anon th, #temp_list_holds th, #acct_messages_main_header, #ebook_circs_main_table th, #ebook_holds_main_table th {
+    [% IF rtl == 't' -%]
+    text-align: right;
+    [% ELSE -%]
     text-align: left;
+    [% END -%]
     padding: 0px 10px 0px 10px;
 }
 
@@ -1006,7 +1301,14 @@ div.result_table_utils_cont {
     padding-right: 5px;
 }
 
-.myopac_payments_table th { text-align: left; }
+.myopac_payments_table th {
+    [% IF rtl == 't' -%]
+    text-align: right; }
+    [% ELSE -%]
+    text-align: left;
+    [% END -%]
+}
+
 .myopac_payments_table thead th { border-bottom: 1px dashed [% css_colors.accent_darker %]; }
 .myopac_payments_table thead th:first-child { width: 8em; }
 .myopac_payments_table tbody tr:nth-child(odd) { background-color: [% css_colors.accent_lighter %]; }
@@ -1136,8 +1438,13 @@ a.remove_filter {
 [%- END -%]
 
 div#facet_sidebar {
+    [% IF rtl == 't' -%]
+    float: right;
+    margin-left: 1em;
+    [% ELSE -%]
     float: left;
     margin-right: 1em;
+    [% END-%]
 }
 
 .facet_box_temp {
@@ -1169,9 +1476,14 @@ div#facet_sidebar {
 }
 
 .facet_box_temp .header .title {
+    [% IF rtl == 't' -%]
+    float: right;
+    padding-right: 12px;
+    [% ELSE -%]
     float:left;
-    padding-top:6px;
     padding-left:12px;
+    [% END -%]
+    padding-top:6px;
 }
 
 /* in this context, where h4 is primarily for structure, 
@@ -1182,9 +1494,14 @@ div#facet_sidebar {
 }
 
 .facet_box_temp .header a.button {
+    [% IF rtl == 't' -%]
+    float: left;
+    padding-left: 6px;
+    [% ELSE -%]
     float:right;
-    padding-top:6px;
     padding-right:6px;
+    [% END -%]
+    padding-top:6px;
     color:[% css_colors.text_invert %];
 }
 
@@ -1243,9 +1560,13 @@ div#facet_sidebar {
 }
 
 #footer {
+    [% IF rtl == 't' -%]
+    margin-right: 1em;
+    [% ELSE -%]
+    margin-left: 1em;
+    [% END -%]
     padding-top:5px;
     padding-bottom: 10px;
-    margin-left: 1em;
     font-size: [% css_fonts.size_small %];
 }
 
@@ -1273,19 +1594,43 @@ div#facet_sidebar {
     font-size: [% css_fonts.size_smaller %];
     color: [% css_colors.text_alert %];
 }
-#acct_prefs_header { float: left; }
+#acct_prefs_header {
+    [% IF rtl == 't' -%]
+    float: right;
+    [% ELSE -%]
+    float: left;
+    [% END -%]
+}
 .search_page_nav_link {
     cursor: pointer;
+    [% IF rtl == 't' -%]
+    padding-right: 1em;
+    [% ELSE -%]
     padding-left: 1em;
+    [% END -%]
 }
 #opac.result.sort { width: 160px; }
 .renew-summary, .message-update-summary { font-size: [% css_fonts.size_bigger %]; font-style: italic; margin: 0.5ex 0; }
-.failure-text { margin-left: 4em; font-style: italic; color: [% css_colors.text_alert %]; }
+.failure-text {
+    [% IF rtl == 't' -%]
+    margin-right: 4em;
+    [% ELSE -%]
+    margin-left: 4em;
+    [% END -%]
+    font-style: italic;
+    color: [% css_colors.text_alert %];
+}
 .refine-controls { font-size: [% css_fonts.size_bigger %]; padding: 0.5ex 0; }
 #adv_search_refine input[type=text] { border: 1px inset [% css_colors.accent_light %] !important; }
 #adv_search_refine select { border: 1px inset [% css_colors.accent_light %] !important; }
 #adv_search_refine {
-    padding-left: 5em; background-color: [% css_colors.accent_lighter2 %]; margin: 2ex 0;
+    [% IF rtl == 't' -%]
+    padding-right: 5em;
+    [% ELSE -%]
+    padding-left: 5em;
+    [% END -%]
+    background-color: [% css_colors.accent_lighter2 %];
+    margin: 2ex 0;
 }
 .row-remover { position: relative; top: 1px; vertical-align: middle; }
 .subtle-button {
@@ -1299,7 +1644,15 @@ div#facet_sidebar {
 .pending-addr td { background-color: [% css_colors.background_alert %] !important; border: 0 !important; }
 
 #account-update-email table { text-align: center; padding: 20px; margin-top: 18px; border-collapse: collapse; }
-#account-update-email table td { padding: 5px 15px 5px 15px; border-bottom: 1px solid [% css_colors.accent_lighter %]; text-align: left;}
+#account-update-email table td {
+    [% IF rtl == 't' -%]
+    text-align: right;
+    [% ELSE -%]
+    text-align: left;
+    [% END -%]
+    padding: 5px 15px 5px 15px;
+    border-bottom: 1px solid [% css_colors.accent_lighter %];
+}
 #account-update-email-error { font-size: [% css_fonts.size_biggest %]; padding: 10px; border:1px solid [% css_colors.border_standard %];}
 a.dash-link:hover { text-decoration: underline !important; }
 #list_create_table td { vertical-align: middle; padding: 0 8px; }
@@ -1316,14 +1669,41 @@ a.dash-link:hover { text-decoration: underline !important; }
 #hold_editor h2 { font-size: [% css_fonts.size_big %]; font-weight: normal; text-indent: 2em; font-style: italic; }
 #hold_editor h1, #hold_editor h2 { margin: 2px 0; }
 #hold_editor_table { background-color: [% css_colors.accent_lighter %]; padding: 0.5em; }
-#hold_editor_table th { text-align: right; padding-right: 1em; }
+#hold_editor_table th {
+    [% IF rtl == 't' -%]
+    text-align: left;
+    padding-left: 1em;
+    [% ELSE -%]
+    text-align: right;
+    padding-right: 1em;
+    [% END -%]
+}
 #hold_editor_table td { padding: 0.25em 0; }
-.fmt-note { vertical-align: middle; padding-left: 1em !important; }
+.fmt-note {
+    [% IF rtl == 't' -%]
+    padding-right: 1em !important;
+    [% ELSE -%]
+    padding-left: 1em !important;
+    [% END -%]
+    vertical-align: middle;
+}
 .hold-editor-controls { text-align: center; padding-top: 1em !important; }
 .hold-editor-controls a { padding-left: 2em; }
 
-.text-right { text-align: right; }
-.text-right-top { text-align: right; vertical-align: top; }
+.text-right {
+    [% IF rtl == 't' -%]
+    text-align: left;
+    [% ELSE -%]
+    text-align: right;
+    [% END -%]
+}
+.text-right-top {
+    [% IF rtl == 't' -%]
+    text-align: right;
+    [% ELSE -%]
+    vertical-align: top;
+    [% END -%]
+}
 .rdetail-author-div {
     padding-bottom: 10px;
     display: inline-block;
@@ -1332,7 +1712,15 @@ a.dash-link:hover { text-decoration: underline !important; }
 .invisible { visibility: hidden; }
 .rdetail-extras-summary { margin: 10px; }
 .staff-hold { background-color: [% css_colors.accent_lightest %]; }
-.expert-search tbody tr th { text-align: right; padding-left: 2em; }
+.expert-search tbody tr th {
+    [% IF rtl == 't' -%]
+    text-align: left;
+    padding-right: 2em;
+    [% ELSE -%]
+    text-align: right;
+    padding-left: 2em;
+    [% END -%]
+}
 .expert-search-row { padding-top: 10px; }
 #adv_expert_row label { font-weight: bold; }
 
@@ -1343,7 +1731,13 @@ a.dash-link:hover { text-decoration: underline !important; }
     padding-bottom: 1ex;
 }
 .cn_browse_item { padding: 2ex; }
-.results-paginator-list { padding-left: 1em; }
+.results-paginator-list {
+    [% IF rtl == 't' -%]
+    padding-right: 1em;
+    [% ELSE -%]
+    padding-left: 1em;
+    [% END -%]
+}
 .results-paginator-selected { color: [% css_colors.text_alert %]; }
 .inactive-hold { background: [% css_colors.accent_lightest %]; }
 .unread-patron-message { font-weight: bold; }
@@ -1368,8 +1762,12 @@ a.dash-link:hover { text-decoration: underline !important; }
 }
 
 .mr_holds_no_formats { 
-  padding: 5px;
+  [% IF rtl == 't' -%]
+  margin-right: 25px;
+  [% ELSE -%]
   margin-left: 25px;
+  [% END -%]
+  padding: 5px;
   font-size: 110%;
   font-weight: bold;
   color: [% css_colors.text_invert %]; 
@@ -1383,7 +1781,11 @@ a.dash-link:hover { text-decoration: underline !important; }
 .big-strong {font-weight: bold; font-size: [% css_fonts.size_bigger %]; }
 
 .results_header_btns, .results_header_sel {
+    [% IF rtl == 't' -%]
+    float: right;
+    [% ELSE -%]
     float:left;
+    [% END -%]
 }
 
 /*
@@ -1448,7 +1850,11 @@ a.opac-button-header:hover, #dash_wrapper a.opac-button:hover {
 }
 
 .rdetail-mfhd-type {
+    [% IF rtl == 't' -%]
+    padding-right: 1em;
+    [% ELSE -%]
     padding-left: 1em;
+    [% END -%]
 }
 
 .rdetail-mfhd-bottom {
@@ -1462,8 +1868,13 @@ a.opac-button-header:hover, #dash_wrapper a.opac-button:hover {
 }
 
 .rdetail_content {
+    [% IF rtl == 't' -%]
+    margin-right: 1.5em;
+    padding-right: 1.5em;
+    [% ELSE -%]
     margin-left: 1.5em;
     padding-left: 1.5em;
+    [% END -%]
 }
 
 .rdetail_content_type, .rdetail_subject_type {
@@ -1492,21 +1903,55 @@ a.opac-button-header:hover, #dash_wrapper a.opac-button:hover {
 }
 
 .rdetail_openurl_entry {
+    [% IF rtl == 't' -%]
+    margin-right: 1em;
+    padding-right: 1em;
+    [% ELSE -%]
     margin-left: 1em;
     padding-left: 1em;
+    [% END -%]
 }
 .bookbag-controls-holder { width: 100%; }
 .bookbag-controls-holder:nth-child(odd) { background-color: [% css_colors.accent_lighter2 %]; }
 .bookbag-controls-holder:nth-child(even) { background-color: [% css_colors.accent_lightest %]; }
 .bookbag-controls-holder .most {
+    [% IF rtl == 't' -%]
+    padding-right: 0;
+    margin-left: 5em;
+    [% ELSE -%]
     padding-left: 0;
     margin-right: 5em;
+    [% END -%]
 }
 h2.bookbag-name { margin-bottom: 0em; padding-bottom: 0em; }
 .bookbag-share .fixed { min-width: 4em; }
-.bookbag-specific { margin-left: 1em; }
-.bookbag-specific div.sort { float: left; width: 45%; text-align: left; }
-.bookbag-specific div.meta { float: right; width: 54%; text-align: right; }
+.bookbag-specific {
+    [% IF rtl == 't' -%]
+    margin-right: 1em;
+    [% ELSE -%]
+    margin-left: 1em;
+    [% END -%]
+}
+.bookbag-specific div.sort {
+    [% IF rtl == 't' -%]
+    float: right;
+    text-align: right;
+    [% ELSE -%]
+    float: left;
+    text-align: left;
+    [% END -%]
+    width: 45%;
+}
+.bookbag-specific div.meta {
+    [% IF rtl == 't' -%]
+    float: left;
+    text-align: left;
+    [% ELSE -%]
+    float: right;
+    text-align: right;
+    [% END -%]
+    width: 54%;
+}
 #bbag-name-desc-form tr th { vertical-align: middle; }
 #bbag-name-desc-form .saver { vertical-align: middle; text-align: center; }
 .bookbag-description {
@@ -1523,20 +1968,37 @@ table.bookbag-specific {
     margin-bottom: 2ex;
 }
 .bookbag-share {
+    [% IF rtl == 't' -%]
+    float: right;
+    [% ELSE -%]
     float: left;
+    [% END -%]
     padding: 5px 0;
 }
 .bookbag-controls {
+    [% IF rtl == 't' -%]
+    float: right;
+    padding: 5px 10px 0px 0px;
+    [% ELSE -%]
     float: left;
     padding: 5px 0px 0px 10px;
+    [% END -%]
 }
 
 .bookbag-specific td.list_checkbox {
+    [% IF rtl == 't' -%]
+    padding-right: 10px !important;
+    [% ELSE -%]
     padding-left: 10px !important;
+    [% END -%]
 }
 .bookbag-specific td.list_entry {
     min-width: 10em;
+    [% IF rtl == 't' -%]
+    padding-right: 5px !important;
+    [% ELSE -%]
     padding-left: 5px !important;
+    [% END -%]
 }
 .bookbag-specific td.list_actions {
     white-space: nowrap !important;
@@ -1582,16 +2044,48 @@ table.bookbag-specific {
     height: 15px;
 }
 .alert { color: [% css_colors.text_alert %]; }
-.float-left { float: left; }
-.float-right { float: right; }
+.float-left {
+    [% IF rtl == 't' -%]
+    float: right;
+    [% ELSE -%]
+    float: left;
+    [% END -%]
+}
+.float-right {
+    [% IF rtl == 't' -%]
+    float: left;
+    [% ELSE -%]
+    float: right;
+    [% END -%]
+}
 
 .saved-searches-header { width: 100%; font-weight: bold; font-size: [% css_fonts.size_bigger %]; }
-.saved-searches-header .button { float: right; width: 28px; }
-.saved-searches-header .text { float: left; padding-right: 1em; margin: 0.5ex 0;}
+.saved-searches-header .button {
+    [% IF rtl == 't' -%]
+    float: left;
+    [% ELSE -%]
+    float: right;
+    width: 28px;
+    [% END -%]
+}
+.saved-searches-header .text {
+    [% IF rtl == 't' -%]
+    float: right;
+    padding-left: 1em;
+    [% ELSE -%]
+    float: left;
+    padding-right: 1em;
+    [% END -%]
+    margin: 0.5ex 0;
+}
 .saved-searches-header {font-weight: bold; font-size: [% css_fonts.size_bigger %]; }
 .saved-searches { border-bottom: 1px solid [% css_colors.accent_medium %]; padding-right: 1em; }
 #staff-saved-search { /* wraps .saved-searches-header and .saved-searches on the record page */
+    [% IF rtl == 't' -%]
+    border-left: 1px solid [% css_colors.accent_darker %];
+    [% ELSE -%]
     border-right: 1px solid [% css_colors.accent_darker %];
+    [% END -%]
 }
 .result_item_circulated {
     padding-top: 4px;
@@ -1600,7 +2094,11 @@ table.bookbag-specific {
 .result_item_circulated span {
     position: relative;
     top:-3px;
+    [% IF rtl == 't' -%]
+    right: 3px;
+    [% ELSE -%]
     left:3px;
+    [% END -%]
 }
 
 #search-only-bookbag-container { margin: 2ex 0; font-weight: bold; }
