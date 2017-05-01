@@ -233,16 +233,28 @@ More on Claimed Returned Items
 - When an item is marked Claimed Returned, the value in *Claims-returned Count* field in the patron record is automatically increased. Staff can manually adjust this count by editing the patron record.
 ====================================
 
-In-house Use
-~~~~~~~~~~~~
-1) To record in-house use, select *Circulation* -> *Record In-House Use*.
-
-image::media/record_in_house_action_web_client.png[]
+In-house Use (F6)
+~~~~~~~~~~~~~~~~~
+1) To record in-house use, select *Circulation* -> *Record-In House Use*, click *Check Out* -> *Record In-House Use* on the circulation toolbar , or press *F6*. 
  
-2) To record in-house use for cataloged items, enter number of uses, scan barcode or type barcode and click *Submit*.
+image::media/record_in_house_action.png[]
+ 
+2) To record in-house use for cataloged items, enter number of uses, scan 
+ barcode or type barcode and click *Submit*.
+ 
+image::media/in_house_use.png[]
+ 
+[NOTE]
+====================================
+There are two independent library settings that will allow copy alerts to display when scanned in In-house Use:
+*Display copy alert for in-house-use* set to true will cause an alert message to appear, if it has one, when recording in-house-use for the copy.
+*Display copy location check in alert for in-house-use* set to true will cause an alert message indicating that the item needs to be routed to its location if the location has check in alert set to true.
+====================================
+ 
+3) To record in-house use for non-cataloged items, enter number of uses, choose non-cataloged type from drop-down menu, and click *Submit*.
 
-image::media/in_house_use_web_client.png[]
-
+image::media/in_house_use_non_cat.png[]
+ 
 [NOTE] 
 The statistics of in-house use are separated from circulation statistics. The in-house use count of cataloged items is not included in the items' total use count.
 
