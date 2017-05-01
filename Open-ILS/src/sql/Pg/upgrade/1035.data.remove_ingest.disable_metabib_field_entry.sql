@@ -1,6 +1,6 @@
 BEGIN;
 
--- SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+INSERT INTO config.upgrade_log (version, applied_to) VALUES ('1035', :eg_version); -- dyrcona/gmcharlt
 
 -- Per Lp bug 1684984, the config.internal_flag,
 -- ingest.disable_metabib_field_entry, was made obsolete by the
