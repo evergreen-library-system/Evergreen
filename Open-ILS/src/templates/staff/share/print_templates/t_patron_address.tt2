@@ -1,3 +1,16 @@
+<!--
+Template for printing a patron address. Fields include:
+
+* first_given_name
+* second_given_name
+* family_name
+* address.street1
+* address.street2
+* address.city
+* address.state
+* address.post_code
+
+-->
 <div>
   <div>
     {{patron.first_given_name}} 

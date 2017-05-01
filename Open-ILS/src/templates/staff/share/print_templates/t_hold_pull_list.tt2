@@ -1,3 +1,15 @@
+<!--
+Template for printing a table of holds to pull. Fields include:
+
+* holds - list of holds, each of which includes:
+
+  * title
+  * author
+  * hold.hold_type
+  * copy.location_name
+  * volume.label - call number
+  * copy.barcode
+-->
 <table id='pull-list-template-table'>
   <style>
     #pull-list-template-table td,

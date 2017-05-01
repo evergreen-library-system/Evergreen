@@ -1054,7 +1054,9 @@ sub run_indb_circ_test {
             $self->circ_matrix_matchpoint->recurring_fine_rule->grace_period($results->[0]->{grace_period});
         }
         $self->circ_matrix_matchpoint->max_fine_rule($self->editor->retrieve_config_rules_max_fine($results->[0]->{max_fine_rule}));
-        $self->circ_matrix_matchpoint->hard_due_date($self->editor->retrieve_config_hard_due_date($results->[0]->{hard_due_date}));
+        if(defined($results->[0]->{hard_due_date})) {
+            $self->circ_matrix_matchpoint->hard_due_date($self->editor->retrieve_config_hard_due_date($results->[0]->{hard_due_date}));
+        }
         # Grab the *last* response for limit_groups, where it is more likely to be filled
         $self->limit_groups($results->[-1]->{limit_groups});
     }
@@ -3330,16 +3332,34 @@ sub checkin_handle_circ_start {
 
 sub checkin_handle_circ_finish {
     my $self = shift;
+    my $e = $self->editor;
     my $circ = $self->circ;
 
-    # see if there are any fines owed on this circ.  if not, close it
-    my ($obt) = $U->fetch_mbts($circ->id, $self->editor);
-    $circ->xact_finish('now') if( $obt and $obt->balance_owed == 0 );
+    # Do one last check before the final circulation update to see 
+    # if the xact_finish value should be set or not.
+    #
+    # The underlying money.billable_xact may have been updated to
+    # reflect a change in xact_finish during checkin bills handling, 
+    # however we can't simply refresh the circulation from the DB,
+    # because other changes may be pending.  Instead, reproduce the
+    # xact_finish check here.  It won't hurt to do it again.
 
-    $logger->debug("circulator: ".$obt->balance_owed." is owed on this circulation");
+    my $sum = $e->retrieve_money_billable_transaction_summary($circ->id);
+    if ($sum) { # is this test still needed?
 
-    return $self->bail_on_events($self->editor->event)
-        unless $self->editor->update_action_circulation($circ);
+        my $balance = $sum->balance_owed;
+
+        if ($balance == 0) {
+            $circ->xact_finish('now');
+        } else {
+            $circ->clear_xact_finish;
+        }
+
+        $logger->info("circulator: $balance is owed on this circulation");
+    }
+
+    return $self->bail_on_events($e->event)
+        unless $e->update_action_circulation($circ);
 
     return undef;
 }

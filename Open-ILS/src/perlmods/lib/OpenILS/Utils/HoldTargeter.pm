@@ -176,7 +176,7 @@ sub find_holds_to_target {
         my $slot = $self->{parallel_slot} - 1;
 
         $query->{where}->{'+mmrsm'} = {
-            id => {
+            metarecord => {
                 '=' => {
                     transform => 'mod',
                     value => $slot,

@@ -49,8 +49,8 @@
           </select>
         </span>
         <eg-org-selector ng-if="field.datatype == 'org_unit'"
-          selected="rec_orgs[field.name]()"
-          onchange="rec_orgs[field.name]">
+          selected="rec_org_values[field.name]"
+          onchange="rec_orgs[field.name]" nodefault>
         </eg-org-selector>
       </div>
     </div>

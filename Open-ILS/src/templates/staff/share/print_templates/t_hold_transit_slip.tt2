@@ -1,3 +1,26 @@
+<!--
+Template for printing hold transit slips. Fields include:
+
+* dest_location.name - name of destination library
+* dest_location.shortname
+* dest_address.street1
+* dest_address.street2
+* dest_address.city
+* dest_address.state
+* dest_address.post_code
+* hold.behind_desk
+* copy.barcode
+* title
+* patron.family_name
+* patron.first_given_name
+* patron.second_given_name
+* patron.card.barcode
+* hold.request_time
+* hold.phone_notify
+* hold.sms_notify
+* hold.email_notify
+
+-->
 <div>
   <div>[% l('This item needs to be routed to [_1]', '<b>{{dest_location.shortname}}</b>') %]</div>
   <div>{{dest_location.name}}</div>

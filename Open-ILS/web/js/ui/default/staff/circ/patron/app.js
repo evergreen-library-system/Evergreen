@@ -796,10 +796,14 @@ function($scope , $location , egCore , egConfirmDialog , egUser , patronSvc) {
             egUser.get(user_id, {useFields : []})
 
             .then(function(user) { // retrieve user
+                var org = egCore.org.get(user.home_ou());
                 egConfirmDialog.open(
-                    egCore.strings.OPT_IN_DIALOG, '',
-                    {   org : egCore.org.get(user.home_ou()),
-                        user : user,
+                    egCore.strings.OPT_IN_DIALOG_TITLE,
+                    egCore.strings.OPT_IN_DIALOG,
+                    {   family_name : user.family_name(),
+                        first_given_name : user.first_given_name(),
+                        org_name : org.name(),
+                        org_shortname : org.shortname(),
                         ok : function() { createOptIn(user.id()) },
                         cancel : function() {}
                     }
@@ -989,6 +993,7 @@ function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore,
         egProgressDialog.open(); // Indeterminate
 
         patronSvc.patrons = [];
+        var which_sound = 'success';
         egCore.net.request(
             'open-ils.actor',
             'open-ils.actor.patron.search.advanced.fleshed',
@@ -1005,7 +1010,9 @@ function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore,
             function() {
                 deferred.resolve();
             },
-            null, // onerror
+            function() { // onerror
+                which_sound = 'error';
+            },
             function(user) {
                 // hide progress bar as soon as the first result appears.
                 egProgressDialog.close();
@@ -1013,7 +1020,13 @@ function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore,
                 patronSvc.patrons.push(user);
                 deferred.notify(user);
             }
-        )['finally'](egProgressDialog.close); // close on 0-hits or error
+        )['finally'](function() { // close on 0-hits or error
+            if (which_sound == 'success' && patronSvc.patrons.length == 0) {
+                which_sound = 'warning';
+            }
+            egCore.audio.play(which_sound + '.patron.by_search');
+            egProgressDialog.close();
+        });
 
         return deferred.promise;
     };

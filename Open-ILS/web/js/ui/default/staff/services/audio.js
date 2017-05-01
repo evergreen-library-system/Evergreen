@@ -39,6 +39,7 @@ angular.module('egCoreMod')
     }
 
     service.play_url = function(path, orig_path) {
+        console.log('audio: play_url('+path+','+orig_path+')');
 
         egHatch.getItem('eg.audio.disable').then(function(audio_disabled) {
             if (!audio_disabled) {
@@ -51,6 +52,7 @@ angular.module('egCoreMod')
                 player.onloadeddata = function() {
                     service.url_cache[orig_path] = url;
                     player.play();
+                    console.log('audio: ' + url);
                 };
 
                 if (service.url_cache[path]) {

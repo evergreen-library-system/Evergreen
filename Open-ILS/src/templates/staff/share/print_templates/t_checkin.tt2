@@ -1,3 +1,15 @@
+<!--
+Template for printing a checkin receipt. Data specific to this
+template includes:
+
+* checkins - list of checkins recorded during the session. Each
+  includes:
+
+  * title
+  * copy_barcode
+  * call_number.label
+
+-->
 <div>
   <div>[% l('Welcome to [_1]', '{{current_location.name}}') %]</div>
   <div>[% l('You checked in the following items:') %]</div>

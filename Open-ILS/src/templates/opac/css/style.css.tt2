@@ -1054,6 +1054,66 @@ div.adv_search_available {
     margin: auto;
 }
 
+/* styling for advanced search filters that display with searchbar */
+
+#adv_filter_results_block h4 { display: inline; }
+
+#adv_filter_results_block {
+    margin-top: 6px;
+}
+
+.adv_filter_results_block_label {
+    font-weight:bold;
+    padding: 4px 0px 4px 12px;
+}
+
+.adv_filter_results_group {
+    font-size: 12px;
+    display: inline-block;
+    background:  [% css_colors.accent_lighter2 %];
+    border-style: solid;
+    border-color: [% css_colors.accent_medium %];
+    border-width: 1px;
+    border-radius: 4px;
+    padding: 2px 4px 2px 4px;
+}
+
+.adv_filter_results_group_wrapper {
+    display: inline-block;
+    margin-left: 1em;
+    margin-bottom: 8px;
+}
+
+.adv_filter_results_group_header {
+    display: inline-block;
+}
+
+.adv_filter_results_group_values {
+    display: inline;
+}
+
+.adv_search_result_filter {
+    display: inline-block;
+}
+
+.remove_filter {
+   font-size: 16px;
+   margin-left: 3px;
+ }
+
+a.remove_filter {
+    text-decoration: none;
+    color: [% css_colors.accent_dark %];
+}
+
+#filter_hits {
+     display: inline-block;
+}
+
+#refine_search_link {
+    display: inline-block;
+}
+
 [%- IF we_want_to_turn_on_facet_styling.defined; %]
 /* some facet styling */
 .facetClassContainer { margin: 2px; border: 1px solid [% css_colors.accent_light %]; }
@@ -1905,7 +1965,7 @@ a.preflib_change {
     #dash_identity a {
         float:left;
     }
-    #dashboard {
+    #dashboard, #dashboard_e {
         display: none;
     }
     #holds_box form blockquote {
@@ -1962,6 +2022,18 @@ a.preflib_change {
     }
     .results_header_btns a {
         margin: 0.3em;
+    }
+    .adv_filter_results_hide {
+        display: none;
+    }
+    .adv_filter_results_show {
+        display: block;
+    }
+    .adv_filter_results_block_label {
+        display: block;
+    }
+    .adv_filter_results_group_wrapper {
+        display: block;
     }
     #main-content {
         margin: 0 1px;
@@ -2089,10 +2161,10 @@ a.preflib_change {
         border-bottom: none;
     }
         /* Force table to not be like tables anymore */
-        table#acct_checked_main_header thead tr th, table#acct_holds_main_header thead tr th, table#acct_checked_hist_header thead tr th, #acct_holds_hist_header thead tr th, #ebook_circs_main_table thead tr th, #ebook_holds_main_table thead tr th {
+        table#acct_checked_main_header thead tr th, table#acct_holds_main_header thead tr th, table#acct_checked_hist_header thead tr th, table#acct_holds_hist_header thead tr th, table#ebook_circs_main_table thead tr th, table#ebook_holds_main_table thead tr th {
                 display: block;
         }
-        table#acct_checked_main_header tbody tr td, table#acct_holds_main_header tbody tr td, table#acct_checked_hist_header tbody tr td, #acct_holds_hist_header tbody tr td, #ebook_circs_main_table thead tr td, #ebook_holds_main_table thead tr td {
+        table#acct_checked_main_header tbody tr td, table#acct_holds_main_header tbody tr td, table#acct_checked_hist_header tbody tr td, table#acct_holds_hist_header tbody tr td, table#ebook_circs_main_table tbody tr td, table#ebook_holds_main_table tbody tr td {
                 display: block;
         }
 
@@ -2103,19 +2175,22 @@ a.preflib_change {
                 left: -9999px;
         }
 
-        table#acct_checked_main_header, table#acct_holds_main_header, table#acct_checked_hist_header, #acct_holds_hist_header {
+        table#acct_checked_main_header, table#acct_holds_main_header, table#acct_checked_hist_header, table#acct_holds_hist_header, table#ebook_circs_main_table, table#ebook_holds_main_table {
                 width: 90%;
         }
 
         table#acct_checked_main_header tr, table#acct_holds_main_header tr, table#acct_checked_hist_header tr { border: 1px solid #ddd; }
 
         /* Holds history gets large white border to mimic header cell on other
-           account screens that provide visual cue for next title */
+           account screens that provide visual cue for next title. We should do
+           the same for ebook tables too since we have no actions on those
+           tables. If actions get added, we should move those tables out of
+           here. */
 
-        table#acct_holds_hist_header tr { border-top: 25px solid #fff; }
+        table#acct_holds_hist_header tr, table#ebook_circs_main_table tr, table#ebook_holds_main_table tr { border-top: 25px solid #fff; }
 
 
-        table#acct_checked_main_header td, table#acct_holds_main_header td, table#acct_checked_hist_header td, #acct_holds_hist_header td {
+        table#acct_checked_main_header td, table#acct_holds_main_header td, table#acct_checked_hist_header td, table#acct_holds_hist_header td, table#ebook_circs_main_table td, table#ebook_holds_main_table td {
                 /* Behave  like a "row" */
                 border: none;
                 border-bottom: 1px solid #eee;
@@ -2123,7 +2198,7 @@ a.preflib_change {
                 padding-left: 40%;
         }
 
-         table#acct_checked_main_header td:before, table#acct_holds_main_header td:before, table#acct_checked_hist_header td:before, #acct_holds_hist_header td_before {
+         table#acct_checked_main_header td:before, table#acct_holds_main_header td:before, table#acct_checked_hist_header td:before, table#acct_holds_hist_header td:before, table#ebook_circs_main_table td:before, table#ebook_holds_main_table td:before {
                 /* Now like a table header */
                 position: absolute;
                 /* Top/left values mimic padding */
@@ -2165,6 +2240,17 @@ a.preflib_change {
         table#acct_holds_hist_header td:nth-of-type(3):before { content: "[% l('Format') %]"; }
         table#acct_holds_hist_header td:nth-of-type(4):before { content: "[% l('Pickup Location') %]"; }
         table#acct_holds_hist_header td:nth-of-type(8):before { content: "[% l('Status') %]"; }
+
+        table#ebook_circs_main_table td:nth-of-type(1):before { content: "[% l('Title') %]"; }
+        table#ebook_circs_main_table td:nth-of-type(2):before { content: "[% l('Author') %]"; }
+        table#ebook_circs_main_table td:nth-of-type(3):before { content: "[% l('Due Date') %]"; }
+        table#ebook_circs_main_table td:nth-of-type(4):before { content: "[% l('Actions') %]"; }
+
+        table#ebook_holds_main_table td:nth-of-type(1):before { content: "[% l('Title') %]"; }
+        table#ebook_holds_main_table td:nth-of-type(2):before { content: "[% l('Author') %]"; }
+        table#ebook_holds_main_table td:nth-of-type(3):before { content: "[% l('Due Date') %]"; }
+        table#ebook_holds_main_table td:nth-of-type(4):before { content: "[% l('Actions') %]"; }
+
 
 
        /*Want to see these in mobile ONLY */

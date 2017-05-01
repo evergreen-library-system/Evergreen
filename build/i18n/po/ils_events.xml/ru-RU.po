@@ -1,16 +1,21 @@
+# Russian translation for evergreen
+# Copyright (c) 2017 Rosetta Contributors and Canonical Ltd 2017
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2017.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
+"Project-Id-Version: evergreen\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2017-02-21 20:30-0400\n"
-"PO-Revision-Date: 2010-05-11 08:59+0000\n"
-"Last-Translator: TZ <tigran@flib.sci.am>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2017-04-09 07:00+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-02-23 05:43+0000\n"
-"X-Generator: Launchpad (build 18326)\n"
+"X-Launchpad-Export-Date: 2017-04-14 06:12+0000\n"
+"X-Generator: Launchpad (build 18352)\n"
 
 #: 1208.TITLE_LAST_COPY:71
 msgid "The last copy attached to a title is being removed or deleted"
@@ -1280,18 +1285,3 @@ msgstr ""
 #: 1604.MONEY_USER_SUMMARY_NOT_FOUND:463
 msgid "The requested money_user_summary was not found"
 msgstr "Запрашиваемый money_user_summary не найден"
-
-#~ msgid "This requested item is currently on the holds shelf"
-#~ msgstr "Запршенная единица находится на полке хранений"
-
-#~ msgid "Copy has is marked as lost"
-#~ msgstr "Копия отмечена как утерянная"
-
-#~ msgid "The selecte bill has already been voided"
-#~ msgstr "Выбор счета для оплаты опустошен"
-
-#~ msgid "Copy has is marked as missing"
-#~ msgstr "Копия отмечена как отсутствующая"
-
-#~ msgid "The requested acq.po_lineitem was not found"
-#~ msgstr "Запрашиваемый assacq.po_lineitem не был найден"

@@ -11,16 +11,10 @@ FOR filter IN ctx.query_struct.filters;
     IF crad AND NOT pubdate_filters.grep('^' _ filter.name _ '$').size;
         remove_filter = 'fi:' _ fname;
 -%]
-    <div class="facet_box_temp filter_box_temp">
-        <div class="header">
-            <a class="button"
-              title="[% l('Remove [_1] filter', (crad.description || crad.label)) %]"
-              href="[% mkurl('', {}, [remove_filter]) %]" rel="nofollow" vocab=""> ✘ </a>
-            <h4 class="title">[% IF filter.negate; l('Not'); END %] [% (crad.description || crad.label) | html %]</h4>
-        </div>
-        <div class="box_wrapper">
-            <div class="box">
-            [% temp = [];
+         <div class="adv_filter_results_group_wrapper">
+           <div class="adv_filter_results_group">
+           <div class="adv_filter_results_group_header"> <h4 class="title">[% IF filter.negate; l('Not'); END %] [% (crad.description || crad.label) | html %]</h4></div>
+           <div class="adv_filter_results_group_values"> [% temp = [];
                FOR fval IN fvalues;
                 thing = ctx.search_ccvm('ctype',fname,'code',fval).0;
                 display_value = thing.search_label || thing.value;
@@ -30,63 +24,62 @@ FOR filter IN ctx.query_struct.filters;
                END;
                FOR display_value IN temp.sort;
             %]
-                    <div class="facet_template filter_template">
-                        <div class="facet filter">
-                              [% display_value | html%]
-                        </div>
-                    </div>
+                 <span class="adv_search_result_filter">
+                    [% display_value | html %]
+                 </span>
+                 [% UNLESS loop.last %]
+                  <span class="adv_search_result_filter"> [% l('OR') %] </span>
+                 [% END %]
             [% END; # FOR %]
+             </div>
+              <a class="button remove_filter"
+              title="[% l('Remove [_1] filter', (crad.description || crad.label)) %]"
+              aria-label=[% l('Remove [_1] filter', (crad.description || crad.label)) %]"
+              href="[% mkurl('', {}, [remove_filter]) %]" rel="nofollow" vocab="">&times; </a>
+
             </div>
-        </div> <!-- box_wrapper -->
-    </div> <!-- facet_box_temp -->
+           </div>
     [%- END; # IF crad -%]
 
 [%-  IF filter.name == 'locations'; locs = ctx.search_acpl('id',filter.args) -%]
-    <div class="facet_box_temp filter_box_temp">
-        <div class="header">
-            <a class="button"
-              title="[% l('Remove location filter') %]"
-              href="[% mkurl('', {}, ['fi:locations']) %]" rel="nofollow" vocab=""> ✘ </a>
+    <div class="adv_filter_results_group_wrapper">
+      <div class="adv_filter_results_group">
             <h4 class="title">[% IF filter.negate; l('Not'); END %] [% l('Locations') %]</h4>
-        </div>
-        <div class="box_wrapper">
-            <div class="box">
             [% temp = [];
                FOR loc IN locs;
                 temp.push(loc.name);
                END;
                FOR display_name IN temp.sort; %]
-                <div class="facet_template filter_template">
-                  <div class="facet filter">
+                  <span class="adv_search_result_filter">
                     [% display_name | html%]
-                  </div>
-                </div>
+                  </span>
             [% END; # FOR %]
-            </div>
-        </div> <!-- box_wrapper -->
-    </div> <!-- facet_box_temp -->
+            <a class="button remove_filter"
+              title="[% l('Remove location filter') %]"
+              href="[% mkurl('', {}, ['fi:locations']) %]" rel="nofollow" vocab=""> &times;</a>
+      </div>
+    </div> 
 [%- END; # IF locations -%]
 
 [%- IF pubdate_filters.grep('^' _ filter.name _ '$').size;
     date1 = CGI.param('date1');
     date2 = CGI.param('date2');
 -%]
-    <div class="facet_box_temp filter_box_temp">
-        <div class="header">
-            <a class="button"
-              title="[% l('Remove publication date filter') %]"
-              href="[% mkurl('', {}, ['pubdate', 'date1', 'date2']) %]" rel="nofollow" vocab=""> ✘ </a>
+    <div class="adv_filter_results_group_wrapper">
+      <div class="adv_filter_results_group">
             <h4 class="title">[% IF filter.negate; l('Not'); END %] [% l('Publication Year') %]</h4>
-        </div>
-        <div class="box_wrapper">
-            <div class="box">
+              <span class="adv_search_result_filter">
               [% IF    filter.name == 'date1'      %][% l('[_1]', date1) %]
               [% ELSIF filter.name == 'before'  %][% l('Before [_1]', date1) %]
               [% ELSIF filter.name == 'after'   %][% l('After [_1]', date1) %]
               [% ELSIF filter.name == 'between' %][% l('Between [_1] and [_2]', date1, date2) %]
               [% END %]
-            </div>
-        </div> <!-- box_wrapper -->
-    </div> <!-- facet_box_temp -->
+              </span>
+              <a class="button remove_filter"
+              title="[% l('Remove publication date filter') %]"
+              href="[% mkurl('', {}, ['pubdate', 'date1', 'date2']) %]" rel="nofollow" vocab="">&times; </a>
+      </div>
+    </div>
+
 [%- END; # IF pubdate_filters -%]
 [%- END; # FOR -%]

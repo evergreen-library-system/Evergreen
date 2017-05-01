@@ -34,7 +34,7 @@ GetOptions(
     'verbose'           => \$verbose,
     'target-all'        => \$target_all,
     'skip-viable'       => \$skip_viable,
-    'retarget-interval' => \$retarget_interval,
+    'retarget-interval=s'   => \$retarget_interval,
     'parallel-init-sleep=i' => \$parallel_init_sleep,
     'help'              => \$help
 ) || die "\nSee --help for more\n";

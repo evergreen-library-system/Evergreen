@@ -1,3 +1,16 @@
+<!--
+Template for printing a list of holds associated with a
+bib record. Fields include:
+
+* holds - list of holds, including
+
+  * hold.request_time
+  * patron_barcode
+  * patron_last - patron surname
+  * patron_alias - hold alias for the patorn
+  * copy.barcode
+
+-->
 <div>
   <div>[% l('Holds for record: [_1]', '{{holds[0].title}}') %]</div>
   <hr/>

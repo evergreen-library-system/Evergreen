@@ -412,7 +412,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
         // Other events
         switch (evt[0].textcode) {
             case 'SUCCESS':
-                egCore.audio.play('success.renew');
+                egCore.audio.play('info.renew');
                 return $q.when(final_resp);
 
             case 'COPY_IN_TRANSIT':
@@ -642,6 +642,8 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
     // the returned event.
     service.override_dialog = function(evt, params, options, action) {
         if (!angular.isArray(evt)) evt = [evt];
+
+        egCore.audio.play('warning.circ.event_override');
         return $uibModal.open({
             templateUrl: './circ/share/t_event_override_dialog',
             controller: 
@@ -1477,6 +1479,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
         var ok = service.check_barcode(bc);
         if (ok) return $q.when();
 
+        egCore.audio.play('warning.circ.bad_barcode');
         return $uibModal.open({
             templateUrl: './circ/share/t_bad_barcode_dialog',
             controller: 

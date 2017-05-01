@@ -1,3 +1,14 @@
+<!--
+Template for printing checkout receipts; fields available include:
+
+* circulations - list of loans made during this session. Each
+  includes:
+
+  * title
+  * copy_barcode
+  * due_date
+
+-->
 <div>
   <div>[% l('Welcome to [_1]', '{{current_location.name}}') %]</div>
   <div>[% l('You checked out the following items:') %]</div>

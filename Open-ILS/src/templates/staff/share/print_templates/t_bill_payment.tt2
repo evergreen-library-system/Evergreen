@@ -1,3 +1,14 @@
+<!--
+Template for bill payment receipts. Data specific to this template
+includes:
+
+* current_location.name - name of workstation location
+* payment_type
+* payment_total - total paid
+* new_balance - balance after the payments were applied
+* payments - list of specific payments
+
+-->
 Welcome to {{current_location.name}}!<br/>
 A receipt of your  transaction:<hr/>
 

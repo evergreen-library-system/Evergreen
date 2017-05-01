@@ -1,10 +1,69 @@
-Evergreen 2.12.0 Release Notes
-==============================
+Evergreen 2.12 Release Notes
+============================
 :toc:
 :numbered:
 
-Upgrade notes
--------------
+Evergreen 2.12.1 
+----------------
+
+This release contains several bug fixes improving on Evergreen 2.12.0
+
+* A fix to the 2.12 upgrade of the subject|temporal and subject|geographic 
+indexes, where the above-mentioned browse indexes were not turned off in favor
+of new browse versions of the indexes. Sites that are upgrading from 2.12.0
+can cancel the browse reingest that comes with the new upgrade script.
+
+* A change to the default pickup library when staff place a hold. The place hold
+screen will now default to the preferred pickup location for the patron. If the
+patron does not have a preferred pickup location, it will default to the
+patron's home library.
+* A fix to a problem where users could not change the selected Org Unit on the
+MARC Tag Tables server admin page.
+* A fix to the seed data for translations for some Coded Value Map entries.
+* The ability to skip the XUL staff client build when in make_release.
+* Revised layout and styling for the advanced search limiter block that displays
+on the search results page.
+* A fix that silences a log warning that appears for every checkout where a hard
+due date is not used.
+* Tweaks for sounds that are used in the web staff client.
+* The addition of f4 and ctrl-f2 as hotkeys in the web staff client.
+* Additional help text for receipt templates in the web staff client.
+* The reinstatement of the Reprint Last Receipt functionality in the web staff client.
+* The ability in the web staff client copy editor to add new volumes to
+libraries that were not selected in holdings view.
+* A fix to a billing issue where transactions were not re-opened after they
+acquired a non-zero balance at check in.
+* A change to the web staff client work log to prevent it from storing 
+unnecessary data.
+* A fix to a translation issue for the record attributes displayed in the 
+advanced search limiter block on the search results page.
+* A fix to hold targeting for metarecord holds when the new hold targeter is
+run in parallel mode.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+testing and documentation patches to the 2.12.1 point release of
+Evergreen:
+
+* Eva Cerniňáková
+* Galen Charlton
+* Bill Erickson
+* Jason Etherige
+* Jeanette Lundgren
+* Kathy Lussier
+* Mike Rylander
+* Jane Sandberg
+* Dan Scott
+* Ben Shum
+* Robert Soulliere
+* Jason Stephenson
+* Josh Stompro
+* Dan Wells
+
+
+2.12.0 Upgrade notes
+--------------------
 Evergreen 2.12 now requires OpenSRF 2.5 or later; certain functionality
 will not work if you attempt to run Evergreen 2.12 on OpenSRF 2.4. Evergreen
 2.12 recommends PostgreSQL 9.4. The minimum supported version of PostgreSQL is
@@ -16,10 +75,8 @@ recalculates bib fingerprints, and remaps metarecords.
 This version also adds two new services, `open-ils.ebook_api` and
 `open-ils.hold-targeter`.
 
-New Features
-------------
-
-
+2.12.0 New Features
+-------------------
 
 Administration
 ~~~~~~~~~~~~~~
@@ -446,11 +503,10 @@ work would be required for the heading to be punctuated correctly.
 Advanced Search Limiters Enhancement
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Advanced search limiters will no longer propagate to the basic search box in
-the catalog. Instead, the limiters applied to the search will appear in the
-left sidebar of the search results screen where they can be easily cleared by
-clicking an 'x.' On a small, mobile device, the advanced search limiters can
-be seen by clicking an 'x filter applied' link or by clicking the 'Refine
-these results' button that typically shows facets to the user.
+the catalog. Instead, the limiters applied to the search will appear underneath
+the search box where they can be easily cleared by clicking an 'x.' On a small,
+mobile device, the advanced search limiters can be seen by clicking an 'x filter
+applied' link. 
 
 The selected limiters will be applied to any search from the search bar until:
  * The user actively removes the filters from the search or
@@ -641,8 +697,8 @@ setting called obalkyknih_cz.enabled is available in
 `templates/opac/parts/config.tt2` to enable this new feature.
 
 
-Acknowledgments
----------------
+2.12.0 Acknowledgments
+----------------------
 The Evergreen project would like to acknowledge the following
 organizations that commissioned developments in this release of
 Evergreen:

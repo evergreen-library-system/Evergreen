@@ -1,3 +1,13 @@
+<!--
+Template for printing a patron note. Fields include:
+
+* note.usr.family_name
+* note.usr.first_name
+* note.usr.second_given_name
+* note.usr.card.barcode
+* note.create_date
+
+-->
 <h3>[% l(
   'Pertaining to [_1], [_2] [_3] : [_4]',
   '{{note.usr.family_name}}',

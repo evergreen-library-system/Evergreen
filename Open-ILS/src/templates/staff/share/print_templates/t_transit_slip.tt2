@@ -1,3 +1,17 @@
+<!--
+Template for printing a transit slip. Fields include:
+
+* dest_location.name - name of destination library
+* dest_location.shortname
+* dest_address.street1
+* dest_address.street2
+* dest_address.city
+* dest_address.state
+* dest_address.post_code
+* copy.barcode
+* title
+* author
+-->
 <div>
   <div>[% l('This item needs to be routed to [_1]', '<b>{{dest_location.shortname}}</b>') %]</div>
   <div>{{dest_location.name}}</div>

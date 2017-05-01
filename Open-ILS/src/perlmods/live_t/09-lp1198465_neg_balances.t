@@ -1,6 +1,6 @@
 #!perl
 
-use Test::More tests => 127;
+use Test::More tests => 129;
 
 diag("Test features of Conditional Negative Balances code.");
 
@@ -531,6 +531,11 @@ is(
     'Remaining balance of 0.00 after payment'
 );
 
+ok(
+    $summary->xact_finish ne '',
+    'xact_finish is set due to 0.00 balance'
+);
+
 ### check-in the lost copy
 
 $item_req = $storage_ses->request('open-ils.storage.direct.asset.copy.retrieve', $item_id);
@@ -574,6 +579,11 @@ is(
     $summary->balance_owed,
     '-50.00',
     'Patron has a negative balance (credit) of 50.00 due to overpayment'
+);
+
+ok(
+    !defined($summary->xact_finish),
+    'xact_finish is not set due to non-zero balance'
 );
 
 
