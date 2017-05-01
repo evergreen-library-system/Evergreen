@@ -302,6 +302,8 @@ include::acquisitions/purchase_requests_patron_view.adoc[]
 
 include::acquisitions/purchase_requests_management.adoc[]
 
+include::acquisitions/blanket.adoc[]
+
 
 Cataloging
 ==========
