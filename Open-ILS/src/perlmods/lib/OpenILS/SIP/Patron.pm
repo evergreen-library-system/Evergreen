@@ -427,7 +427,7 @@ sub check_password {
         $self->{editor},$self->{user}->id, $pwd);
 }
 
-sub currency {              # not really implemented
+sub currency {
     my $self = shift;
     syslog('LOG_DEBUG', 'OILS: Patron->currency()');
     return OpenILS::SIP->config()->{implementation_config}->{currency} || 'USD';
