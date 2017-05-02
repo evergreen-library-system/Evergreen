@@ -40,6 +40,8 @@ that include placeholder images, text, or links that you should override.
 
 NOTE: All paths are relative to `/openils/var/templates/opac`
 
+[[configtt2]]
+
 * `parts/config.tt2`: contains many configuration settings that affect the
   behavior of the TPAC, including:
   ** hiding the *Place Hold* button for available items
@@ -55,6 +57,10 @@ NOTE: All paths are relative to `/openils/var/templates/opac`
   ** disallowing password or e-mail changes (useful for libraries that use centralized authentication or single sign-on systems)
   ** displaying a maintenance message in the public catalog and KPAC (this is controlled by the _ctx.maintenance_message_ variable)
   ** displaying previews of books when available from Google Books.  This is controlled by the _ctx.google_books_preview_ variable, which is set to 0 by default to protect the privacy of users who might not want to share their browsing behavior with Google.
+  ** disabling the "Group Formats and Editions" search. This is controlled by 
+setting the metarecords.disabled variable to 1.
+  ** setting the default search to a 'Group Formats and Editions' search. This
+is done by setting the search.metarecord_default variable to 1.
 * `parts/footer.tt2` and `parts/topnav_links.tt2`: contains customizable
   links. Defaults like 'Link 1' will not mean much to your users!
 * `parts/homesearch.tt2`: holds the large Evergreen logo on the home page
