@@ -52,11 +52,18 @@ NOTE: All paths are relative to `/openils/var/templates/opac`
   ** controlling the size of cover art on the record details page
   ** defining which facets to display, and in which order
   ** controlling basic and advanced search options
-  ** controlling if the "Show More Details" button is visible or activated by default in OPAC search results
-  ** hiding phone notification options (useful for libraries that do not do phone notifications)
-  ** disallowing password or e-mail changes (useful for libraries that use centralized authentication or single sign-on systems)
-  ** displaying a maintenance message in the public catalog and KPAC (this is controlled by the _ctx.maintenance_message_ variable)
-  ** displaying previews of books when available from Google Books.  This is controlled by the _ctx.google_books_preview_ variable, which is set to 0 by default to protect the privacy of users who might not want to share their browsing behavior with Google.
+  ** controlling if the "Show More Details" button is visible or activated by
+default in OPAC search results
+  ** hiding phone notification options (useful for libraries that do not do
+phone notifications)
+  ** disallowing password or e-mail changes (useful for libraries that use
+centralized authentication or single sign-on systems)
+  ** displaying a maintenance message in the public catalog and KPAC (this is
+controlled by the _ctx.maintenance_message_ variable)
+  ** displaying previews of books when available from Google Books.  This is
+controlled by the _ctx.google_books_preview_ variable, which is set to 0 by
+default to protect the privacy of users who might not want to share their
+browsing behavior with Google.
   ** disabling the "Group Formats and Editions" search. This is controlled by 
 setting the metarecords.disabled variable to 1.
   ** setting the default search to a 'Group Formats and Editions' search. This
@@ -102,9 +109,13 @@ is done by setting the search.metarecord_default variable to 1.
   a few colors and everything will work, but in practice you will need to
   experiment to avoid light-gray-on-white low-contrast combinations.
 
-The following are templates that are less frequently overridden, but some libraries benefit from the added customization options.
+The following are templates that are less frequently overridden, but some
+libraries benefit from the added customization options.
 
-* `parts/advanced/numeric.tt2`: defines the search options of the Advanced Search > Numeric search. If you wanted to add a bib call number search option, which is different from the item copy call number; you would add the following code to `numeric.tt2`.
+* `parts/advanced/numeric.tt2`: defines the search options of the Advanced
+Search > Numeric search. If you wanted to add a bib call number search option,
+which is different from the item copy call number; you would add the following
+code to `numeric.tt2`.
 +
 ------------------------------------------------------------------------------
 <option value="identifier|bibcn">[% l('Bib Call Number') %]</option>  
