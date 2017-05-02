@@ -2125,7 +2125,7 @@ sub sru_search {
         my $op =  '||' if uc $self->op() eq 'OR';
         $op ||=  '&&';
 
-        return  "$leftStr $rightStr";
+        return  "$leftStr $op $rightStr";
     }
 
     sub toEvergreenAuth {
