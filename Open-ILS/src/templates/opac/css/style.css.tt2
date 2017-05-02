@@ -594,7 +594,7 @@ span#rdetail_hold_counts p {
 .rdetail_aux_utils {
     padding-bottom: 6px;
     [% IF rtl == 't' -%]
-    border-right: 1px dotted #ccc;
+    border-right: 1px dotted [% css_colors.accent_light %];
     padding-right:17px;
     padding-left:70px;
     [%- ELSE %]
@@ -2600,7 +2600,7 @@ a.preflib_change {
         width: 95%;
         margin: 5px 0px 5px 0px;
         text-align: left;
-        border: 1px #ccc solid;
+        border: 1px solid [% css_colors.accent_light %];
         padding:5px;
     }
     .bookbag-specific div.meta {
@@ -2621,7 +2621,7 @@ a.preflib_change {
     }
     .bbag-content {
         padding:5px;
-        border:1px #ccc solid;
+        border:1px solid [% css_colors.accent_light %];
     }
     .bbag-action {
         margin-left:0px;
