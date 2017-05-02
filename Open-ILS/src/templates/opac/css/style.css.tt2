@@ -1946,11 +1946,19 @@ a.opac-button-header:hover, #dash_wrapper a.opac-button:hover {
     [% END -%]
 }
 .bookbag-controls-title-block {
+    [% IF rtl == 't' -%]
+    float:right;
+    [% ELSE -%]
     float:left;
+    [% END -%]
     width:40%;
 }
 .bookbag-controls-button-block {
+    [% IF rtl == 't' -%]
+    float:right;
+    [% ELSE -%]
     float:left;
+    [% END -%]
     width:50%;
 }
 h2.bookbag-name { margin-bottom: 0em; padding-bottom: 0em; }
@@ -1996,25 +2004,57 @@ h2.bookbag-name { margin-bottom: 0em; padding-bottom: 0em; }
     max-width: 40em;
 }
 .bbag-edit-desc-label {
+    [% IF rtl == 't' -%]
+    float:right;
+    [% ELSE -%]
     float:left;
+    [% END -%]
     width:8em;
 }
 .bbag-edit-desc-save {
     clear:both;
     margin-bottom:10px;
 }
-#bbag-edit-description { width: 20em; float:left;}
-#bbag-edit-name { width: 20em; float: left; }
+#bbag-edit-description {
+    width: 20em;
+    [% IF rtl == 't' -%]
+    float:right;
+    [% ELSE -%]
+    float:left;
+    [% END -%]
+}
+#bbag-edit-name {
+    width: 20em;
+    [% IF rtl == 't' -%]
+    float: right;
+    [% ELSE -%]
+    float: left;
+    [% END -%]
+}
 .bbag-action {
+    [% IF rtl == 't' -%]
+    margin-right: 15px;
+    [% ELSE -%]
     margin-left: 15px;
+    [% END -%]
 }
 .bbag-navigate-list {
+    [% IF rtl == 't' -%]
+    padding-right: 32px;
+    float:right;
+    [% ELSE -%]
     padding-left: 32px;
     float:left;
+    [% END -%]
 }
 .bbag-navigate-list-pages {
+    [% IF rtl == 't' -%]
+    padding-right: 10px;
+    float:right;
+    [% ELSE -%]
     padding-left: 10px;
     float:left;
+    [% END -%]
 }
 textarea { font-family: sans-serif; }
 table.bookbag-specific {
@@ -2581,34 +2621,61 @@ a.preflib_change {
        font-size: [% css_fonts.size_base %];
     }
     .bookbag-controls-title-block {
+        [% IF rtl == 't' -%]
+        clear:right;
+        [% ELSE -%]
         clear:left;
+        [% END -%]
         width:90%;
     }
     .bookbag-controls-button-block {
+        [% IF rtl == 't' -%]
+        clear:right;
+        [% ELSE -%]
         clear:left;
+        [% END -%]
         width;90%;
     }
     .bookbag-specific {
+        [% IF rtl == 't' -%]
+        margin-right: 0px;
+        [% ELSE -%]
         margin-left: 0px;
+        [% END -%]
     }
     .bookbag-specific div.sort {
+        [% IF rtl == 't' -%]
+        float: right;
+        text-align: right;
+        [% ELSE -%]
         float: left;
+        text-align: left;
+        [% END -%]
         width: 95%;
         margin: 5px 0px 5px 0px;
-        text-align: left;
         border: 1px solid [% css_colors.accent_light %];
         padding:5px;
     }
     .bookbag-specific div.meta {
+        [% IF rtl == 't' -%]
+        float: right;
+        margin-right:0px;
+        text-align: right;
+        [% ELSE -%]
         float: left;
-        width: 95%;
         margin-left:0px;
+        text-align: left;
+        [% END -%]
+        width: 95%;
         margin-bottom:5px;
         padding:5px;
-        text-align: left;
     }
     #bbag-edit-name {
+        [% IF rtl == 't' -%]
+        float: right;
+        [% ELSE -%]
         float: left;
+        [% END -%]
         width: 220px;
     }
     #bbag-edit-description {
@@ -2620,7 +2687,11 @@ a.preflib_change {
         border:1px solid [% css_colors.accent_light %];
     }
     .bbag-action {
+        [% IF rtl == 't' -%]
+        margin-right:0px;
+        [% ELSE -%]
         margin-left:0px;
+        [% END -%]
         margin-bottom:5px;
     }
     .bbag-action-field {
@@ -2630,18 +2701,31 @@ a.preflib_change {
         width:180px;
     }
     .bookbag-specific td.list_checkbox {
+        [% IF rtl == 't' -%]
+        padding-right: 0px !important;
+        [% ELSE -%]
         padding-left: 0px !important;
+        [% END -%]
     }
     .bookbag-specific td.list_entry {
         min-width: 5em;
+        [% IF rtl == 't' -%]
+        padding-right: 5px !important;
+        [% ELSE -%]
         padding-left: 5px !important;
+        [% END -%]
     }
     .bbag-navigate-list {
         display: none;
     }
     .bbag-navigate-list-pages {
+        [% IF rtl == 't' -%]
+        text-align:left;
+        float:left;
+        [% ELSE -%]
         text-align:right;
         float:right;
+        [% END -%]
     }
     #dash_wrapper div {
         background: transparent;
