@@ -49,6 +49,7 @@
       GBPBadgelink = document.createElement('a');
       GBPBadgelink.id = 'gbpbadge_link';
       GBPBadgelink.addEventListener('click', GBDisplayPreview);
+      GBExtrasActivate(true);
       GBPBadgelink.appendChild(GBPBadge);
       document.getElementById('rdetail_title_div').appendChild(GBPBadgelink);
       document.getElementById('gbp_extra').style.display = 'block';
@@ -62,6 +63,18 @@
     GBPBadgelink = document.getElementById('gbpbadge_link');
     GBPBadgelink.removeEventListener('click', GBDisplayPreview);
     GBPBadgelink.addEventListener('click', GBShowHidePreview);
+  }
+
+  function GBExtrasActivate (init) {
+    var extras = document.getElementById('gbp_extra_links').getElementsByTagName('a');
+    for (var i = 0; i < extras.length; i++) {
+      if (init) {
+        extras[i].addEventListener('click', GBDisplayPreview);
+      } else {
+        extras[i].removeEventListener('click', GBDisplayPreview);
+        extras[i].addEventListener('click', GBShowHidePreview);
+      }
+    }
   }
 
 /**
@@ -82,10 +95,6 @@
       document.getElementById('gbp_extra_container').appendChild(GBClear);
       google.books.load({'language': lang});
       window.setTimeout(GBPViewerLoadCallback, 750);
-      var extras = document.getElementById('gbp_extra_links').getElementsByTagName('a');
-      for (var i = 0; i < extras.length; i++) {
-        extras[i].addEventListener('click', GBShowHidePreview);
-      }
       GBPreviewPane.loaded = 'true';
     }
     GBShowHidePreview();
