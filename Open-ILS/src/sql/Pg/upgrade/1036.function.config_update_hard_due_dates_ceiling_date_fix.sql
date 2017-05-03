@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('1036', :eg_version);
+
 CREATE OR REPLACE FUNCTION config.update_hard_due_dates () RETURNS INT AS $func$
 DECLARE
     temp_value  config.hard_due_date_values%ROWTYPE;
