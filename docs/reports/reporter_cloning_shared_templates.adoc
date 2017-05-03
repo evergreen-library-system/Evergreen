@@ -14,8 +14,7 @@ Folders_.
 The steps below assume you have already created at least one _Templates_ folder.  
 If you haven’t done this, please see <<reporter_creating_folders,Creating Folders>>.
 
-. Access the reports interface from the _Admin_ (-) menu under _Local 
-Administration --> Reports_
+. Access the reports interface from _Administration_ --> _Reports_
 . Under _Shared Folders_ expand the _Templates_ folder and the subfolder of the 
 report you wish to clone.  To expand the folders click on the grey arrow or 
 folder icon.  Do not click on the blue underlined hyperlink.
