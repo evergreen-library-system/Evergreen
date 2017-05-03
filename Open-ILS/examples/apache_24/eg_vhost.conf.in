@@ -120,6 +120,12 @@ RewriteRule . - [E=OILS_OPAC_RID:%2,E=OILS_TIME_YEAR:%{TIME_YEAR}]
 RewriteCond %{REQUEST_URI} ^/opac/(.*?)/
 RewriteRule . - [E=locale:%1]
 
+# ----------------------------------------------------------------------------------
+# Rewrite JSPac->TPac with redirects
+# ----------------------------------------------------------------------------------
+# My Account
+RewriteRule /opac/[^/]*/skin/default/xml/myopac.xml %{REQUEST_SCHEME}://%{HTTP_HOST}/eg/opac/myopac/main?%{ENV:OILS_JSPAC_SEARCH_TYPE}%{ENV:OILS_JSPAC_SEARCH_TERMS}%{ENV:OILS_JSPAC_SEARCH_LOCATION} [NE,R,L]
+
 # -----------------------------------------------------------------------------$
 # Force HTTPS for /eg/circ/selfcheck
 # -----------------------------------------------------------------------------$
