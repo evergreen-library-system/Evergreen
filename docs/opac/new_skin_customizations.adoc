@@ -78,12 +78,21 @@ NOTE: All paths are relative to `/openils/var/templates/opac`
   on first login that is misleading if your library does not set the initial
   password for an account to the last four digits of the phone number associated
   with the account.
+* `myopac/
 * `parts/myopac/main_refund_policy.tt2`: describes the policy for refunds for
   your library.
 * `parts/myopac/prefs_hints.tt2`: suggests that users should have a valid email
   on file so they can receive courtesy and overdue notices. If your library
   does not send out email notices, you should edit this to avoid misleading your
   users.
+* `myopac/update_password_msg.tt2`: defines the password format that needs
+  to be used when setting a user password. If your Evergreen site has set
+  _Password format_ regex in the <<lse-global, Library Settings Editor>>, you
+  should update the language to describe the format that should be used.  
+* `password_reset.tt2`: in the msg_map section, you might want to change the
+  NOT_STRONG text that appears when the user tries to set a password that
+  does not match the required format. Ideally, this message will tell the user
+  how they should format the password.
 * `parts/css/fonts.tt2`: defines the font sizes for the TPAC in terms of one
   base font size, and all other sizes derived from that in percentages. The
   default is 12 pixels, but http://goo.gl/WfNkE[some design sites] strongly
