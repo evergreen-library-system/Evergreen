@@ -91,7 +91,6 @@ is done by setting the search.metarecord_default variable to 1.
   on first login that is misleading if your library does not set the initial
   password for an account to the last four digits of the phone number associated
   with the account.
-* `myopac/
 * `parts/myopac/main_refund_policy.tt2`: describes the policy for refunds for
   your library.
 * `parts/myopac/prefs_hints.tt2`: suggests that users should have a valid email
