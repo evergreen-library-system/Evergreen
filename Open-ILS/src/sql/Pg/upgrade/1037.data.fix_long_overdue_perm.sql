@@ -7,7 +7,7 @@ BEGIN;
 
 
 -- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version); -- jeff
+SELECT evergreen.upgrade_deps_block_check('1037', :eg_version); -- jeff
 
 -- For some time now, the database seed data / upgrade scripts have created
 -- a permission with id 549 and code COPY_STATUS_LONGOVERDUE.override, while

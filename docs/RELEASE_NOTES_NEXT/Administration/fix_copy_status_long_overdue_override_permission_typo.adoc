@@ -1,0 +1,7 @@
+Fix COPY_STATUS_LONGOVERDUE.override Permission Typo
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The existing permission was incorrectly created with a code of
+COPY_STATUS_LONGOVERDUE.override, while the event thrown requires a
+permission with a code of COPY_STATUS_LONG_OVERDUE.override.  This
+update changes the permission code to match what the event requires.
+
