@@ -1,0 +1,14 @@
+[%-
+    opac_root = ctx.opac_root;
+    IF ctx.kpac_root;
+        opac_root = ctx.kpac_root;
+    END;
+
+    loc_name = copy_info.copy_location;
+    loc_url = copy_info.location_url;
+
+    IF loc_url; '<a property="offeredBy" typeof="Library" href="'; loc_url | html; '">'; END;
+    '<span property="name">'; loc_name | html; '</span>';
+    IF loc_url; '</a>'; END;
+-%]
+

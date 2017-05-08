@@ -125,6 +125,7 @@ function clCreateNew() {
     cl.checkin_alert( $('cl_new_checkin_alert_yes').checked ? 1 : 0 );
     cl.label_prefix( $('cl_new_label_prefix').value );
     cl.label_suffix( $('cl_new_label_suffix').value );
+    cl.url( $('cl_new_url').value );
 
     var req = new Request(CREATE_CL, SESSION, cl);
     req.send(true);
@@ -174,6 +175,7 @@ function clBuildRow( tbody, row, cl ) {
     appendClear($n( row, 'cl_checkin_alert'), (isTrue(cl.checkin_alert())) ? _TRUE.cloneNode(true) : _FALSE.cloneNode(true) );
     $n( row, 'cl_label_prefix').appendChild(text(cl.label_prefix() || ''));
     $n( row, 'cl_label_suffix').appendChild(text(cl.label_suffix() || ''));
+    $n( row, 'cl_url').appendChild(text(cl.url() || ''));
 
     var edit = $n( row, 'cl_edit');
     edit.onclick = function() { clEdit( cl, tbody, row ); };
@@ -233,6 +235,14 @@ function clEdit( cl, tbody, row ) {
     }
     label_suffix.value = cl.label_suffix();
 
+    var url = $n(r, 'cl_edit_url');
+    if (cl.url()) {
+        url.setAttribute('size', cl.url().length + 3);
+    } else {
+        url.setAttribute('size', 20);
+    }
+    url.value = cl.url();
+
     $n(r, 'cl_edit_cancel').onclick = function(){cleanTbody(tbody,'edit');}
     $n(r, 'cl_edit_commit').onclick = function(){clEditCommit( tbody, r, cl ); }
 
@@ -272,6 +282,7 @@ function clEditCommit( tbody, r, cl ) {
     cl.name($n(r, 'cl_edit_name').value);
     cl.label_prefix($n(r, 'cl_edit_label_prefix').value);
     cl.label_suffix($n(r, 'cl_edit_label_suffix').value);
+    cl.url($n(r, 'cl_edit_url').value);
 
     var req = new Request( UPDATE_CL, SESSION, cl );
     req.send(true);

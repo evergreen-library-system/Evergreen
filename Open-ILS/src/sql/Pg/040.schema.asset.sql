@@ -32,7 +32,8 @@ CREATE TABLE asset.copy_location (
 	label_prefix	TEXT,
 	label_suffix	TEXT,
 	checkin_alert	BOOL	NOT NULL DEFAULT FALSE,
-	deleted		BOOL	NOT NULL DEFAULT FALSE
+	deleted		BOOL	NOT NULL DEFAULT FALSE,
+	url		TEXT
 );
 CREATE UNIQUE INDEX acl_name_once_per_lib ON asset.copy_location (name, owning_lib) WHERE deleted = FALSE OR deleted IS FALSE;
 

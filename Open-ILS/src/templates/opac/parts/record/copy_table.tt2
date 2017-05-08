@@ -136,7 +136,7 @@ END; # FOREACH bib
                     '<meta property="gtin13" content="' _ attrs.gtin13 _ '" />';
                 END; -%]
             </td>
-            <td property="availableAtOrFrom">[% copy_info.copy_location | html %]</td>
+            <td property="availableAtOrFrom">[%- INCLUDE "opac/parts/location_name_link.tt2"; -%]</td>
             [%- IF ctx.is_staff %]
             <td>
                 [% copy_info.age_protect ?
