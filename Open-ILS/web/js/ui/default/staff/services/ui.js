@@ -976,6 +976,42 @@ function($window , egStrings) {
     }
 })
 
+/*
+ *  egShareDepthSelector - widget for selecting a share depth
+ */
+.directive('egShareDepthSelector', function() {
+    return {
+        restrict : 'E',
+        transclude : true,
+        scope : {
+            ngModel : '=',
+        },
+        require: 'ngModel',
+        templateUrl : './share/t_share_depth_selector',
+        controller : ['$scope','egCore', function($scope , egCore) {
+            $scope.values = [];
+            egCore.pcrud.search('aout',
+                { id : {'!=' : null} },
+                { order_by : {aout : ['depth', 'name']} },
+                { atomic : true }
+            ).then(function(list) {
+                var scratch = [];
+                angular.forEach(list, function(aout) {
+                    var depth = parseInt(aout.depth());
+                    if (depth in scratch) {
+                        scratch[depth].push(aout.name());
+                    } else {
+                        scratch[depth] = [ aout.name() ]
+                    }
+                });
+                scratch.forEach(function(val, idx) {
+                    $scope.values.push({ id : idx,  name : scratch[idx].join(' / ') });
+                });
+            });
+        }]
+    }
+})
+
 .factory('egWorkLog', ['egCore', function(egCore) {
     var service = {};
 
