@@ -384,7 +384,7 @@ time.
 incoming requests. If there are fewer than this number of spare child
 processes, new processes will be spawned.
 
-<14>  The minimum number of child processes that should be available to handle
+<14>  The maximum number of child processes that should be available to handle
 incoming requests. If there are more than this number of spare child processes,
 the extra processes will be killed.
 
