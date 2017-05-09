@@ -1408,7 +1408,7 @@ sub retrieve_cached_facets {
     return undef unless ($key and $key =~ /_facets$/);
 
     eval {
-        local $SIG{ALARM} = sub {die};
+        local $SIG{ALRM} = sub {die};
         alarm(2); # we'll sleep for as much as 2s
         do {
             die if $cache->get_cache($key . '_COMPLETE');
