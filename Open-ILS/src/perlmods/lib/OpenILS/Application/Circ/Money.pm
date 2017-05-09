@@ -981,7 +981,7 @@ sub _rebill_xact {
         $rebill_amount += $billing->amount;
 
         # if we have a postive (or zero) balance now, stop
-        last if $rebill_amount >= $xact_balance;
+        last if ($xact_balance + $rebill_amount >= 0);
     }
 }
 
