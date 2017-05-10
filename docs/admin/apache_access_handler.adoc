@@ -28,35 +28,35 @@ Use of the module is a simple addition to a Location block in Apache:
 The available options are:
 
 OILSAccessHandlerLoginURL::
-  Default: /eg/opac/login +
-  The page to redirect to when Login is needed
+*  Default: /eg/opac/login
+*  The page to redirect to when Login is needed
 OILSAccessHandlerLoginURLRedirectVar::
-  Default: redirect_to +
-  The variable the login page wants the "destination" URL stored in
+*  Default: redirect_to
+*  The variable the login page wants the "destination" URL stored in
 OILSAccessHandlerFailURL::
-  Default: <unset> +
-  URL to go to if Permission, Good Standing, or Home OU checks fail. If not set
+*  Default: <unset>
+*  URL to go to if Permission, Good Standing, or Home OU checks fail. If not set
   a 403 error is generated instead. To customize the 403 you could use an
   ErrorDocument statement.
 OILSAccessHandlerCheckOU::
-  Default: <User Home OU> +
-  Org Unit to check Permissions at and/or to load Referrer from. Can be a
+*  Default: <User Home OU>
+*  Org Unit to check Permissions at and/or to load Referrer from. Can be a
   shortname or an ID.
 OILSAccessHandlerPermission::
-  Default: <unset> +
-  Permission, or comma- or space-delimited set of permissions, the user must have to
+*  Default: <unset>
+*  Permission, or comma- or space-delimited set of permissions, the user must have to
   access the protected area.
 OILSAccessHandlerGoodStanding::
-  Default: 0 +
-  If set to a true value the user must be both Active and not Barred.
+*  Default: 0
+*  If set to a true value the user must be both Active and not Barred.
 OILSAccessHandlerHomeOU::
-  Default: <unset> +
-  An Org Unit, or comma- or space-delimited set of Org Units, that the user's Home OU must
+*  Default: <unset>
+*  An Org Unit, or comma- or space-delimited set of Org Units, that the user's Home OU must
   be equal to or a descendant of to access this resource. Can be set to
   shortnames or IDs.
 OILSAccessHandlerReferrerSetting::
-  Default: <unset> +
-  Library Setting to pull a forced referrer string out of, if set.
+*  Default: <unset>
+*  Library Setting to pull a forced referrer string out of, if set.
 
 As the AccessHandler module does not actually serve the content it is
 protecting, but instead merely hands control back to Apache when it is done
