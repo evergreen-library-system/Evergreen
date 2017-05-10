@@ -1,4 +1,4 @@
-<form role="form" class="form-validated eg-edit-fm-record">
+<form role="form" class="form-validated eg-edit-fm-record" name="fm_record_form">
 
   <div class="modal-header">
     <button type="button" class="close"
@@ -11,58 +11,67 @@
         <label for="rec-{{field.name}}">{{field.label}}</label>
       </div>
       <div class="col-md-9">
-        <span  ng-if="field.datatype == 'id' && !id_is_editable">{{rec[field.name]()}}</span>
-        <input ng-if="field.datatype == 'id' &&  id_is_editable"
-          ng-readonly="field.readonly"
-          ng-required="field.is_required()"
-          ng-model="rec[field.name]"
-          ng-model-options="{ getterSetter : true }">
-        </input>
-        <input ng-if="field.datatype == 'text'"
-          ng-readonly="field.readonly"
-          ng-required="field.is_required()"
-          ng-model="rec[field.name]"
-          ng-model-options="{ getterSetter : true }">
-        </input>
-        <input ng-if="field.datatype == 'int'"
-          type="number"
-          ng-readonly="field.readonly"
-          ng-required="field.is_required()"
-          ng-model="rec[field.name]"
-          ng-model-options="{ getterSetter : true }">
-        </input>
-        <input ng-if="field.datatype == 'float'"
-          type="number" step="0.1"
-          ng-readonly="field.readonly"
-          ng-required="field.is_required()"
-          ng-model="rec[field.name]"
-          ng-model-options="{ getterSetter : true }">
-        </input>
-        <input ng-if="field.datatype == 'bool'"
-          type="checkbox"
-          ng-readonly="field.readonly"
-          ng-model="rec[field.name]"
-          ng-model-options="{ getterSetter : true }">
-        </input>
-        <span ng-if="field.datatype == 'link'"
-          ng-class="{nullable : !field.is_required()}">
-          <select ng-if="field.datatype == 'link'"
+        <span  ng-if="field.use_custom_template">
+          <eg-fm-custom-field-input template="field.custom_template" handlers="field.handlers">
+        </span>
+        <span  ng-if="!field.use_custom_template">
+          <span  ng-if="field.datatype == 'id' && !id_is_editable">{{rec[field.name]()}}</span>
+          <input ng-if="field.datatype == 'id' &&  id_is_editable"
             ng-readonly="field.readonly"
             ng-required="field.is_required()"
-            ng-options="item.id as item.name for item in field.linked_values"
             ng-model="rec[field.name]"
             ng-model-options="{ getterSetter : true }">
-          </select>
+          </input>
+          <input ng-if="field.datatype == 'text'"
+            ng-readonly="field.readonly"
+            ng-required="field.is_required()"
+            ng-model="rec[field.name]"
+            ng-model-options="{ getterSetter : true }">
+          </input>
+          <input ng-if="field.datatype == 'int'"
+            type="number"
+            ng-readonly="field.readonly"
+            ng-required="field.is_required()"
+            ng-model="rec[field.name]"
+            ng-model-options="{ getterSetter : true }">
+          </input>
+          <input ng-if="field.datatype == 'float'"
+            type="number" step="0.1"
+            ng-readonly="field.readonly"
+            ng-required="field.is_required()"
+            ng-model="rec[field.name]"
+            ng-model-options="{ getterSetter : true }">
+          </input>
+          <input ng-if="field.datatype == 'bool'"
+            type="checkbox"
+            ng-readonly="field.readonly"
+            ng-model="rec[field.name]"
+            ng-model-options="{ getterSetter : true }">
+          </input>
+          <span ng-if="field.datatype == 'link'"
+            ng-class="{nullable : !field.is_required()}">
+            <select ng-if="field.datatype == 'link'"
+              ng-readonly="field.readonly"
+              ng-required="field.is_required()"
+              ng-options="item.id as item.name for item in field.linked_values"
+              ng-model="rec[field.name]"
+              ng-model-options="{ getterSetter : true }">
+            </select>
+          </span>
+          <eg-org-selector ng-if="field.datatype == 'org_unit' && !field.org_default_allowed"
+            selected="rec_org_values[field.name]"
+            onchange="rec_orgs[field.name]" nodefault>
+          </eg-org-selector>
+          <eg-org-selector ng-if="field.datatype == 'org_unit' && field.org_default_allowed"
+            selected="rec_org_values[field.name]"
+            onchange="rec_orgs[field.name]">
+          </eg-org-selector>
         </span>
-        <eg-org-selector ng-if="field.datatype == 'org_unit'"
-          selected="rec_org_values[field.name]"
-          onchange="rec_orgs[field.name]" nodefault>
-        </eg-org-selector>
       </div>
     </div>
   </div>
   <div class="modal-footer">
-    <button class="btn btn-primary" ng-click="ok()">[% l('Save') %]</button>
+    <button class="btn btn-primary" type="submit" ng-disabled="fm_record_form.$invalid" ng-click="ok()">[% l('Save') %]</button>
     <button class="btn btn-warning" ng-click="cancel()">[% l('Cancel') %]</button>
   </div>
 </form>
