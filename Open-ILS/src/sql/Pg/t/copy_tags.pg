@@ -1,0 +1,55 @@
+BEGIN;
+
+-- Plan the tests.
+SELECT plan(4);
+
+INSERT INTO asset.copy_tag(tag_type, label, owner ) VALUES ('bookplate', 'lp1673857_dummy_copy_tag', 1);
+SELECT is(
+  value,
+  'lp1673857_dummy_copy_tag',
+  'Copy tag label can be used to set copy tag value')
+FROM asset.copy_tag
+WHERE tag_type = 'bookplate'
+AND   label = 'lp1673857_dummy_copy_tag'
+AND   owner = 1;
+
+UPDATE asset.copy_tag
+SET    value = 'jane q. smith'
+WHERE tag_type = 'bookplate'
+AND   label = 'lp1673857_dummy_copy_tag'
+AND   owner = 1;
+
+SELECT is(
+  COUNT(*),
+  1::BIGINT,
+  'Copy tag value FTS works #1'
+)
+FROM asset.copy_tag
+WHERE tag_type = 'bookplate'
+AND   label = 'lp1673857_dummy_copy_tag'
+AND   value @@ to_tsquery('jane')
+AND   owner = 1;
+
+SELECT is(
+  COUNT(*),
+  1::BIGINT,
+  'Copy tag value FTS works #2'
+)
+FROM asset.copy_tag
+WHERE tag_type = 'bookplate'
+AND   label = 'lp1673857_dummy_copy_tag'
+AND   value @@ to_tsquery('jane & smith')
+AND   owner = 1;
+
+SELECT is(
+  COUNT(*),
+  0::BIGINT,
+  'Copy tag value FTS works #3'
+)
+FROM asset.copy_tag
+WHERE tag_type = 'bookplate'
+AND   label = 'lp1673857_dummy_copy_tag'
+AND   value @@ to_tsquery('jane & wesson')
+AND   owner = 1;
+
+ROLLBACK;

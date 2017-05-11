@@ -40,7 +40,7 @@ is (scalar(@{$QParser->facet_fields()->{'author'}}), 1, "Removed facet field");
 $QParser->remove_facet_class('author');
 is ($QParser->facet_class_count, 1, "Removed facet class");
 
-is ($QParser->filter_count, 28, "Correct number of filters");
+is ($QParser->filter_count, 29, "Correct number of filters");
 is (scalar(@{$QParser->filter_normalizers('skip_check')}), 0, 'No filter normalizers by default');
 $QParser->add_filter_normalizer('skip_check', \&test_filter_norm);
 is (scalar(@{$QParser->filter_normalizers('skip_check')}), 1, 'Added filter normalizer');
@@ -284,6 +284,7 @@ sub init_qp {
     $QParser->add_search_filter( 'skip_check' );
     $QParser->add_search_filter( 'superpage' );
     $QParser->add_search_filter( 'estimation_strategy' );
+    $QParser->add_search_filter( 'copy_tag' );
     $QParser->add_search_modifier( 'available' );
     $QParser->add_search_modifier( 'staff' );
 
