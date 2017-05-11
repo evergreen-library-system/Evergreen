@@ -2844,9 +2844,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Browse XPath" name="browse_xpath" reporter:datatype="text" />
 			<field reporter:label="Restrict?" name="restrict" reporter:datatype="bool" />
 			<field reporter:label="Display Field?" name="display_field" reporter:datatype="bool" />
+			<field reporter:label="Display Field Map" name="display_field_map" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="field_class" reltype="has_a" key="name" map="" class="cmc"/>
+			<link field="display_field_map" reltype="might_have" key="field" map="" class="cdfm"/>
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
@@ -3734,14 +3736,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="source" reltype="has_a" key="id" map="" class="bre"/>
 			<link field="field" reltype="has_a" key="id" map="" class="cmf"/>
 		</links>
-        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
-            <actions>
-                <retrieve/>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<retrieve/>
 			</actions>
 		</permacrud>
 	</class>
 	<class id="mfde" controller="open-ils.cstore open-ils.pcrud" 
-	  oils_persist:tablename="metabib.flat_display_entry"
+		oils_persist:tablename="metabib.flat_display_entry"
 		oils_obj:fieldmapper="metabib::flat_display_entry" 
 		oils_persist:field_safe="true"
 		reporter:label="Flat Display Field Entry View" 
@@ -3757,14 +3759,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="field" reltype="has_a" key="id" map="" class="cmf"/>
 			<link field="name" reltype="has_a" key="name" map="" class="cdfm"/>
 		</links>
-    <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
 				<retrieve/>
 			</actions>
 		</permacrud>
 	</class>
 	<class id="cdfm" controller="open-ils.cstore open-ils.pcrud" 
-	  oils_persist:tablename="config.display_field_map"
+		oils_persist:tablename="config.display_field_map"
 		oils_obj:fieldmapper="config::display_field_map"
 		oils_persist:field_safe="true"
 		reporter:label="Display Field Map" 
@@ -3777,9 +3779,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<links>
 			<link field="field" reltype="has_a" key="id" map="" class="cmf"/>
 		</links>
-    <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
 				<retrieve/>
+				<create permission="CREATE_METABIB_FIELD" global_required="true"/>
+				<update permission="UPDATE_METABIB_FIELD" global_required="true"/>
+				<delete permission="DELETE_METABIB_FIELD" global_required="true"/>
 			</actions>
 		</permacrud>
 	</class>
