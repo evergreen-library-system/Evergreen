@@ -3741,41 +3741,47 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</permacrud>
 	</class>
 	<class id="mfde" controller="open-ils.cstore open-ils.pcrud" 
+	  oils_persist:tablename="metabib.flat_display_entry"
 		oils_obj:fieldmapper="metabib::flat_display_entry" 
 		oils_persist:field_safe="true"
-		reporter:label="Flat Display Field Entry View" oils_persist:readonly="true">
-		<oils_persist:source_definition>
-			SELECT
-				mde.source,
-				mde.value,
-				cmf.id AS field,
-				cmf.field_class,
-				cmf.name,
-				cmf.label,
-				cmc.name AS representative
-			FROM metabib.display_entry mde
-			JOIN config.metabib_field cmf ON (cmf.id = mde.field)                                                                                                                LEFT JOIN config.metabib_class cmc ON
-				(cmc.name = cmf.field_class AND cmc.representative_field = cmf.id)
-		</oils_persist:source_definition>
+		reporter:label="Flat Display Field Entry View" 
+		oils_persist:readonly="true">
 		<fields>
 			<field name="source" reporter:datatype="id" />
 			<field name="value" reporter:datatype="text"/>
-			<field name="field" reporter:datatype="link"/>
-			<field name="field_class" reporter:datatype="text"/>
 			<field name="name" reporter:datatype="text"/>
-			<field name="label" reporter:datatype="text"/>
-			<field name="representative" reporter:datatype="text"/>
 		</fields>
 		<links>
 			<link field="source" reltype="has_a" key="id" map="" class="bre"/>
-			<link field="field" reltype="has_a" key="id" map="" class="cmf"/>
+			<link field="name" reltype="has_a" key="name" map="" class="cdfm"/>
 		</links>
-        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
-            <actions>
-                <retrieve/>
+    <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<retrieve/>
 			</actions>
 		</permacrud>
 	</class>
+	<class id="cdfm" controller="open-ils.cstore open-ils.pcrud" 
+	  oils_persist:tablename="config.display_field_map"
+		oils_obj:fieldmapper="config::display_field_map"
+		oils_persist:field_safe="true"
+		reporter:label="Display Field Map" 
+		oils_persist:readonly="true">
+		<fields oils_persist:primary="name">
+			<field name="name" reporter:datatype="text"/>
+			<field name="field" reporter:datatype="link"/>
+			<field name="multi" reporter:datatype="bool"/>
+		</fields>
+		<links>
+			<link field="field" reltype="has_a" key="id" map="" class="cmf"/>
+		</links>
+    <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<retrieve/>
+			</actions>
+		</permacrud>
+	</class>
+
 	<class id="mfae" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="metabib::facet_entry" oils_persist:tablename="metabib.facet_entry" reporter:label="Combined Facet Entry" oils_persist:readonly="true">
 		<fields oils_persist:primary="id" oils_persist:sequence="metabib.facet_entry_id_seq">
 			<field name="id" reporter:datatype="id" />
