@@ -22,6 +22,7 @@ CREATE VIEW metabib.flat_display_entry AS
     SELECT
         mde.source,
         cdfm.name,
+        mde.field,
         CASE WHEN cdfm.multi THEN
             TO_JSON(ARRAY_AGG(value))
         ELSE
@@ -29,7 +30,7 @@ CREATE VIEW metabib.flat_display_entry AS
         END AS value
     FROM metabib.display_entry mde
     JOIN config.display_field_map cdfm ON (cdfm.field = mde.field)
-    GROUP BY 1, 2;
+    GROUP BY 1, 2, 3;
 
 CREATE INDEX metabib_display_entry_field_idx 
     ON metabib.display_entry (field);
