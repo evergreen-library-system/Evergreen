@@ -292,6 +292,8 @@ DROP TRIGGER display_field_normalize_tgr ON metabib.display_entry;
 DROP FUNCTION metabib.display_field_normalize_trigger();
 DROP INDEX metabib.metabib_display_entry_source_idx;
 DROP INDEX metabib.metabib_display_entry_field_idx;
+DROP VIEW metabib.wide_display_entry;
+DROP VIEW metabib.compressed_display_entry;
 DROP VIEW metabib.flat_display_entry;
 DROP TABLE config.display_field_map;
 DROP TABLE metabib.display_entry;

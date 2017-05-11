@@ -3135,7 +3135,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="SVF Attributes" name="attrs" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="MVF Attributes" name="mattrs" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Display Fields" name="display_entries" oils_persist:virtual="true" reporter:datatype="link"/>
-			<field reporter:label="Flat Display Fields" name="flat_display_entries" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Flat Display Entries" name="flat_display_entries" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Compressed Display Entries" name="compressed_display_entries" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Wide Display Entries" name="wide_display_entry" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
@@ -3161,6 +3163,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="source" reltype="has_a" key="id" map="" class="cbs"/>
 			<link field="display_entries" reltype="has_many" key="source" map="" class="mde"/>
 			<link field="flat_display_entries" reltype="has_many" key="source" map="" class="mfde"/>
+			<link field="compressed_display_entries" reltype="has_many" key="source" map="" class="mcde"/>
+			<link field="wide_display_entry" reltype="might_have" key="source" map="" class="mwde"/>
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
@@ -3746,11 +3750,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		oils_persist:tablename="metabib.flat_display_entry"
 		oils_obj:fieldmapper="metabib::flat_display_entry" 
 		oils_persist:field_safe="true"
-		reporter:label="Flat Display Field Entry View" 
+		reporter:label="Flat Display Entry" 
 		oils_persist:readonly="true">
 		<fields>
 			<field name="source" reporter:datatype="id" />
 			<field name="name" reporter:datatype="text"/>
+			<field name="multi" reporter:datatype="bool"/>
+			<field name="label" reporter:datatype="text"/>
 			<field name="field" reporter:datatype="link"/>
 			<field name="value" reporter:datatype="text"/>
 		</fields>
@@ -3765,6 +3771,56 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			</actions>
 		</permacrud>
 	</class>
+	<class id="mcde" controller="open-ils.cstore open-ils.pcrud" 
+		oils_persist:tablename="metabib.compressed_display_entry"
+		oils_obj:fieldmapper="metabib::compressed_display_entry" 
+		oils_persist:field_safe="true"
+		reporter:label="Compressed Display Entry" 
+		oils_persist:readonly="true">
+		<fields>
+			<field name="source" reporter:datatype="id" />
+			<field name="name" reporter:datatype="text"/>
+			<field name="multi" reporter:datatype="bool"/>
+			<field name="label" reporter:datatype="text"/>
+			<field name="field" reporter:datatype="link"/>
+			<field name="value" reporter:datatype="text"/>
+		</fields>
+		<links>
+			<link field="source" reltype="has_a" key="id" map="" class="bre"/>
+			<link field="field" reltype="has_a" key="id" map="" class="cmf"/>
+			<link field="name" reltype="has_a" key="name" map="" class="cdfm"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<retrieve/>
+			</actions>
+		</permacrud>
+	</class>
+	<class id="mwde" controller="open-ils.cstore open-ils.pcrud" 
+		oils_persist:tablename="metabib.wide_display_entry"
+		oils_obj:fieldmapper="metabib::wide_display_entry" 
+		oils_persist:field_safe="true"
+		reporter:label="Wide Display Entry" 
+		oils_persist:readonly="true">
+		<fields oils_persist:primary="source">
+			<field name="source" reporter:label="Record ID" reporter:datatype="id" />
+			<field name="title" reporter:label="Title" reporter:datatype="text"/>
+			<field name="author" reporter:label="Author" reporter:datatype="text"/>
+			<field name="subject" reporter:label="Subject" reporter:datatype="text"/>
+			<field name="topic_subject" reporter:label="Topic Subject" reporter:datatype="text"/>
+			<field name="isbn" reporter:label="ISBN" reporter:datatype="text"/>
+			<!-- TODO add all well-known fields -->
+		</fields>
+		<links>
+			<link field="source" reltype="has_a" key="id" map="" class="bre"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<retrieve/>
+			</actions>
+		</permacrud>
+	</class>
+
 	<class id="cdfm" controller="open-ils.cstore open-ils.pcrud" 
 		oils_persist:tablename="config.display_field_map"
 		oils_obj:fieldmapper="config::display_field_map"

@@ -20,14 +20,19 @@ VALUES
         '//mods32:mods/mods32:subject'),
     (40, 'subject', 'display|topic_subject', 'mods32', TRUE, FALSE, FALSE,
         oils_i18n_gettext(40, 'Subject', 'cmf', 'label'),
-        '//mods32:mods/mods32:subject/mods32:topic')
+        '//mods32:mods/mods32:subject/mods32:topic'),
+    (41, 'identifier', 'display|isbn', 'marcxml', TRUE, FALSE, FALSE,
+        oils_i18n_gettext(41, 'ISBN', 'cmf', 'label'),
+        $$//marc:datafield[@tag='020']/marc:subfield[@code='a' or @code='z']$$)
+
 ;
 
 INSERT INTO config.display_field_map (name, field, multi) VALUES
     ('title', 37, FALSE),
     ('author', 38, FALSE),
     ('subject', 39, TRUE),
-    ('topic_subject', 40, TRUE)
+    ('topic_subject', 40, TRUE),
+    ('isbn', 41, TRUE)
 ;
 
 COMMIT;
