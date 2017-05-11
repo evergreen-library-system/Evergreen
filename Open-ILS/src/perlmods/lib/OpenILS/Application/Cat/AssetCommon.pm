@@ -259,6 +259,51 @@ sub update_copy_notes {
 }
 
 
+sub update_copy_tags {
+    my($class, $editor, $copy) = @_;
+
+    return undef if $copy->isdeleted;
+
+    my $evt;
+    my $incoming_maps = $copy->tags;
+
+    for my $incoming_map (@$incoming_maps) {
+        next unless $incoming_map;
+
+        if ($incoming_map->isnew) {
+            next if ($incoming_map->isdeleted); # if it was added and deleted in the same session
+
+            my $tag_id;
+            if ($incoming_map->tag->isnew) {
+                my $new_tag = Fieldmapper::asset::copy_tag->new();
+                $new_tag->owner( $incoming_map->tag->owner );
+                $new_tag->label( $incoming_map->tag->label );
+                $new_tag->tag_type( $incoming_map->tag->tag_type );
+                $new_tag->pub( $incoming_map->tag->pub );
+                my $tag = $editor->create_asset_copy_tag($new_tag)
+                    or return $editor->event;
+                $tag_id = $tag->id;
+            } else {
+                $tag_id = $incoming_map->tag->id;
+            }
+            my $new_map = Fieldmapper::asset::copy_tag_copy_map->new();
+            $new_map->copy( $copy->id );
+            $new_map->tag( $tag_id );
+            $incoming_map = $editor->create_asset_copy_tag_copy_map($new_map)
+                or return $editor->event;
+
+        } elsif ($incoming_map->ischanged) {
+            $incoming_map = $editor->update_asset_copy_tag_copy_map($incoming_map)
+        } elsif ($incoming_map->isdeleted) {
+            $incoming_map = $editor->delete_asset_copy_tag_copy_map($incoming_map)
+        }
+    
+    }
+
+    return undef;
+}
+
+
 
 sub update_copy {
     my($class, $editor, $override, $vol, $copy, $retarget_holds, $force_delete_empty_bib) = @_;
@@ -370,6 +415,8 @@ sub update_fleshed_copies {
 
         my $notes = $copy->notes;
         $copy->clear_notes;
+        my $tags = $copy->tags;
+        $copy->clear_tags;
 
         if( $copy->isdeleted ) {
             $evt = $class->delete_copy($editor, $override, $vol, $copy, $retarget_holds, $force_delete_empty_bib);
@@ -394,6 +441,10 @@ sub update_fleshed_copies {
 
         $copy->notes( $notes );
         $evt = $class->update_copy_notes($editor, $copy);
+
+        $copy->tags( $tags );
+        $evt = $class->update_copy_tags($editor, $copy);
+
         return $evt if $evt;
     }
 

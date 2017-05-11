@@ -302,6 +302,12 @@
                         [% l('Floating') %]
                     </label>
                 </div>
+                <div class="col-xs-6">
+                    <label>
+                        <input type="checkbox" ng-change="saveDefaults()" ng-model="defaults.copy_tags"/>
+                        [% l('Add/Edit Copy Tags') %]
+                    </label>
+                </div>
             </div>
         </div>
 

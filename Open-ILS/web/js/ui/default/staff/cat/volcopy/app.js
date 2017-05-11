@@ -246,8 +246,9 @@ function(egCore , $q) {
     service.flesh = {   
         flesh : 3, 
         flesh_fields : {
-            acp : ['call_number','parts','stat_cat_entries', 'notes'],
-            acn : ['label_class','prefix','suffix']
+            acp : ['call_number','parts','stat_cat_entries', 'notes', 'tags'],
+            acn : ['label_class','prefix','suffix'],
+            acptcm : ['tag']
         }
     }
 
@@ -786,6 +787,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
         auto_gen_barcode : false,
         statcats : true,
         copy_notes : true,
+        copy_tags : true,
         attributes : {
             status : true,
             loan_duration : true,
@@ -1658,6 +1660,125 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
         });
     }
 
+    $scope.copy_tags_dialog = function(copy_list) {
+        if (!angular.isArray(copy_list)) copy_list = [copy_list];
+
+        return $uibModal.open({
+            templateUrl: './cat/volcopy/t_copy_tags',
+            animation: true,
+            controller:
+                   ['$scope','$uibModalInstance',
+            function($scope , $uibModalInstance) {
+
+                $scope.tag_map = [];
+                var tag_hash = {};
+                var shared_tags = {};
+                angular.forEach(copy_list, function (cp) {
+                    angular.forEach(cp.tags(), function(tag) {
+                        if (!(tag.tag().id() in shared_tags)) {
+                            shared_tags[tag.tag().id()] = 1;
+                        } else {
+                            shared_tags[tag.tag().id()]++;
+                        }
+                        if (!(tag.tag().id() in tag_hash)) {
+                            tag_hash[tag.tag().id()] = tag;
+                        }
+                    });
+                });
+                angular.forEach(tag_hash, function(value, key) {
+                    if (shared_tags[key] == copy_list.length) {
+                        $scope.tag_map.push(value);
+                    }
+                });
+
+                $scope.tag_types = [];
+                egCore.pcrud.retrieveAll('cctt', {order_by : { cctt : 'label' }}, {atomic : true}).then(function(list) {
+                    $scope.tag_types = list;
+                    $scope.tag_type = $scope.tag_types[0].code(); // just pick a default
+                });
+
+                $scope.getTags = function(val) {
+                    return egCore.pcrud.search('acpt',
+                        { 
+                            owner :  egCore.org.fullPath(egCore.auth.user().ws_ou(), true),
+                            label : { 'startwith' : {
+                                        transform: 'evergreen.lowercase',
+                                        value : [ 'evergreen.lowercase', val ]
+                                    }},
+                            tag_type : $scope.tag_type
+                        },
+                        { order_by : { 'acpt' : ['label'] } }, { atomic: true }
+                    ).then(function(list) {
+                        return list.map(function(item) {
+                            return item.label();
+                        });
+                    });
+                }
+
+                $scope.addTag = function() {
+                    var tagLabel = $scope.selectedLabel;
+                    // clear the typeahead
+                    $scope.selectedLabel = "";
+
+                    // first, check tags already associated with the copy
+                    var foundMatch = false;
+                    angular.forEach($scope.tag_map, function(tag) {
+                        if (tag.tag().label() ==  tagLabel && tag.tag().tag_type() == $scope.tag_type) {
+                            foundMatch = true;
+                            if (tag.isdeleted()) tag.isdeleted(0); // just deleting the mapping
+                        }
+                    });
+                    if (!foundMatch) {
+                        egCore.pcrud.search('acpt',
+                            { 
+                                owner : egCore.org.fullPath(egCore.auth.user().ws_ou(), true),
+                                label : tagLabel,
+                                tag_type : $scope.tag_type
+                            },
+                            { order_by : { 'acpt' : ['label'] } }, { atomic: true }
+                        ).then(function(list) {
+                            if (list.length > 0) {
+                                var newMap = new egCore.idl.acptcm();
+                                newMap.isnew(1);
+                                newMap.copy(copy_list[0].id());
+                                newMap.tag(egCore.idl.Clone(list[0]));
+                                $scope.tag_map.push(newMap);
+                            } else {
+                                var newTag = new egCore.idl.acpt();
+                                newTag.isnew(1);
+                                newTag.owner(egCore.auth.user().ws_ou());
+                                newTag.label(tagLabel);
+                                newTag.pub('t');
+                                newTag.tag_type($scope.tag_type);
+
+                                var newMap = new egCore.idl.acptcm();
+                                newMap.isnew(1);
+                                newMap.copy(copy_list[0].id());
+                                newMap.tag(newTag);
+                                $scope.tag_map.push(newMap);
+                            }
+                        });
+                    }
+                }
+
+                $scope.ok = function(note) {
+                    // in the multi-item case, this works OK for
+                    // adding new maps to existing tags, but doesn't handle
+                    // all possibilities
+                    angular.forEach(copy_list, function (cp) {
+                        cp.tags($scope.tag_map);
+                    });
+                    $uibModalInstance.close();
+                }
+
+                $scope.cancel = function($event) {
+                    $uibModalInstance.dismiss();
+                    $event.preventDefault();
+                }
+            }]
+        });
+    }
+
 }])
 
 .directive("egVolTemplate", function () {
@@ -1676,6 +1797,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                     auto_gen_barcode : false,
                     statcats : true,
                     copy_notes : true,
+                    copy_tags : true,
                     attributes : {
                         status : true,
                         loan_duration : true,

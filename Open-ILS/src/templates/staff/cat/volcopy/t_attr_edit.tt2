@@ -401,6 +401,15 @@
                         ng-options="a.id() as a.name() for a in floating_list"
                     ></select>
                 </div>
+                <div class="col-md-6">
+                    <button
+                      class="btn btn-default"
+                      ng-disabled="!defaults.copy_tags"
+                      ng-click="copy_tags_dialog(workingGridControls.selectedItems())"
+                      type="button">
+                        [% l('Copy Tags') %]
+                    </button>
+                </div>
             </div>
         </div>
 
