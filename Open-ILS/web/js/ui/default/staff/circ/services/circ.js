@@ -624,6 +624,8 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
         var org = egCore.org.get(org_id);
         var addr_id = org[addr_type]();
 
+        if (!addr_id) return $q.when(null);
+
         if (egCore.env.aoa && egCore.env.aoa.map[addr_id]) 
             return $q.when(egCore.env.aoa.map[addr_id]); 
 
@@ -1404,7 +1406,9 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
                 // route_dialog includes the "route to holds shelf" 
                 // dialog, which has no transit
                 print_context.transit = egCore.idl.toHash(data.transit);
-                print_context.dest_address = egCore.idl.toHash(data.address);
+                if (data.address) {
+                    print_context.dest_address = egCore.idl.toHash(data.address);
+                }
                 print_context.dest_location =
                     egCore.idl.toHash(egCore.org.get(data.transit.dest()));
             }
