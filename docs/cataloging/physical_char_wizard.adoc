@@ -5,18 +5,21 @@ The MARC 007 Field Physical Characteristics Wizard enables catalogers to interac
 
 *To Access the MARC 007 Field Physical Characteristics Wizard for a Record that Does Not Already Contain the 007 Field (i.e. Creating the 007 Field from Scratch):*
 
-. Within the bibliographic record that needs to be edited, select *MARC Edit*.
+. Within the bibliographic record that needs to be edited, select *Actions for this Record*.
+. Click *MARC Edit*.
 . Make sure that the Flat-Text Editor checkbox is not selected and that you are not using the Flat-Text Editor interface.
 . Right-click in the MARC field column.
 +
-image::media/pcw1_2.12.jpg[]
+image::media/pcw1.jpg[]
 +
 . Click *Add/Replace 007*. The 007 row will appear in the record.
-. Click the chain link icon to the right of the field.
+. Right-click in the 007 textbox field.
 +
-image::media/pcw2_2.12.jpg[]
+image::media/pcw2.jpg[]
 +
 . Click *Physical Characteristics Wizard*.
+
+image::media/pcw3.jpg[]
 
 The *MARC 007 Field Physical Characteristics Wizard* will open.
 
@@ -28,23 +31,49 @@ The first value defines the *Category of Material*. Users select the Category of
 
 Once the Category of Material is selected, click *Next*.
 
-Evergreen will display the result of each selection in the preview above. The affected character will be in red.
+Evergreen will display the pipe symbol (vertical bar) for each position that represents a potential value for the selected Category of Material and will skip obsolete values.
 
-image::media/pcw3_2.12.jpg[]
+image::media/pcw4.jpg[]
 
 By clicking either the *Previous* or *Next* buttons, the user may step forward and backward, as needed, through the various positions in the 007 field.
 
-Once the user enters all of the applicable values for the 007 field and is ready to exit the wizard, click *Save*.
+image::media/pcw5.jpg[]
 
-image::media/pcw4_2.12.jpg[]
+As a visual reference, the position that the wizard is displaying will appear in bold font. That way, users know which position they are working on at any given point within the wizard.
+
+image::media/pcw6.jpg[]
+
+Once the user enters all of the applicable values for the 007 field and is ready to exit the wizard, click *OK*.
+
+image::media/pcw7.jpg[]
 
 All of the values selected will be stored and displayed within the 007 field of the bibliographic record.
 
-image::media/pcw5_2.12.jpg[]
+image::media/pcw8.jpg[]
 
-Continue editing the MARC record, as needed. Once the user is finished editing the record, click *Save*.
+Continue editing the MARC record, as needed. Once the user is finished editing the record, click *Save Record*.
 
-image::media/pcw6_2.12.jpg[]
+image::media/pcw9.jpg[]
+
+*To Access the MARC 007 Field Physical Characteristics Wizard for a Record that Already Contains the 007 Field (i.e. Edit an Existing 007 Field):*
+
+. Within the bibliographic record that needs to be edited, select *Actions for this Record*.
+. Click *MARC Edit*.
+. Right-click in the 007 textbox field.
+. Click *Physical Characteristics Wizard*.
++
+image::media/pcw10.jpg[]
++
+. Click the *Previous* and *Next* buttons to navigate forward and backward through the various positions. The current position that the wizard is on will be indicated by bold font.
+. Each position will display a label that describes the significance of that position. For the position that needs to be edited, choose its appropriate value from the dropdown options.
++
+image::media/pcw11.jpg[]
++
+. Once all edits of the 007 field are made, click *OK*.
+. After finishing all other edits to the MARC record, click *Save Record*.
+
+[NOTE]
+If the user edits an existing 007 field that does not already account for the skipped positions, then Evergreen will not automatically generate where the skipped positions should be in the 007 field. It is recommended that users delete the existing 007 field and start with a new 007 field, to ensure that Evergreen appropriately accounts for the obsolete positions for the Category of Material selected.
 
 *Administration*
 
