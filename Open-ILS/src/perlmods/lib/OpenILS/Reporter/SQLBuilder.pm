@@ -386,8 +386,8 @@ sub toSQL {
     my $val = $self->{params};
     $val = $$val[0] if (ref($val));
 
-    return "EXTRACT(YEAR FROM \$_$$\$$rtime\$_$$\$::TIMESTAMPTZ + \$_$$\$$val months\$_$$\$)" .
-        " || \$_$$\$-\$_$$\$ || LPAD(EXTRACT(MONTH FROM \$_$$\$$rtime\$_$$\$::TIMESTAMPTZ + \$_$$\$$val months\$_$$\$)::text,2,\$_$$\$0\$_$$\$)";
+    return "(EXTRACT(YEAR FROM \$_$$\$$rtime\$_$$\$::TIMESTAMPTZ + \$_$$\$$val months\$_$$\$)" .
+        " || \$_$$\$-\$_$$\$ || LPAD(EXTRACT(MONTH FROM \$_$$\$$rtime\$_$$\$::TIMESTAMPTZ + \$_$$\$$val months\$_$$\$)::text,2,\$_$$\$0\$_$$\$))";
 }
 
 
@@ -694,8 +694,8 @@ package OpenILS::Reporter::SQLBuilder::Column::Transform::month_trunc;
 
 sub toSQL {
     my $self = shift;
-    return 'EXTRACT(YEAR FROM "' . $self->{_relation} . '"."' . $self->name . '")' .
-        ' || \'-\' || LPAD(EXTRACT(MONTH FROM "' . $self->{_relation} . '"."' . $self->name . '")::text,2,\'0\')';
+    return '(EXTRACT(YEAR FROM "' . $self->{_relation} . '"."' . $self->name . '")' .
+        ' || \'-\' || LPAD(EXTRACT(MONTH FROM "' . $self->{_relation} . '"."' . $self->name . '")::text,2,\'0\'))';
 }
 
 sub is_aggregate { return 0 }
@@ -728,8 +728,8 @@ package OpenILS::Reporter::SQLBuilder::Column::Transform::quarter;
 
 sub toSQL {
     my $self = shift;
-    return 'EXTRACT(YEAR FROM "' . $self->{_relation} . '"."' . $self->name . '")' .
-        ' || \'-Q\' || EXTRACT(QUARTER FROM "' . $self->{_relation} . '"."' . $self->name . '")';
+    return '(EXTRACT(YEAR FROM "' . $self->{_relation} . '"."' . $self->name . '")' .
+        ' || \'-Q\' || EXTRACT(QUARTER FROM "' . $self->{_relation} . '"."' . $self->name . '"))';
 }
 
 sub is_aggregate { return 0 }
