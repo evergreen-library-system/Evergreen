@@ -14,8 +14,14 @@
       <div>
         <address>
           <strong>{{dest_location.name}}</strong><br>
-          {{dest_address.street1}} {{dest_address.street2}}<br/>
-          {{dest_address.city}}, {{dest_address.state}} {{dest_address.post_code}}<br/>
+          <span ng-if="dest_address">
+            {{dest_address.street1}} {{dest_address.street2}}<br/>
+            {{dest_address.city}}, {{dest_address.state}} {{dest_address.post_code}}
+          </span>
+          <span ng-if="!dest_address">
+            [% l('We do not have a holds address for this library.') %]
+          </span>
+          <br/>
           <abbr title="[% l('Phone') %]">P:</abbr> {{dest_location.phone}}
         </address>
       </div>
