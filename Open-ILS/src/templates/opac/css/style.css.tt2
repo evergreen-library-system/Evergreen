@@ -468,7 +468,7 @@ for now until a better color is picked - if needed.
 }
 
 #mobile_acct_search_links {
-      background: [% css_colors.primary_fade %];
+      background-color: [% css_colors.primary_fade %];
 }
 
 .rdetail_header {
@@ -1101,7 +1101,7 @@ div.result_table_utils_cont {
     float: right;
     [% END-%]
     width: 353px;
-    background: [% css_colors.accent_light %];
+    background-color: [% css_colors.accent_light %];
     padding: 10px;
     margin-top: 7px;
 }
@@ -1377,7 +1377,7 @@ div.adv_search_available {
 .adv_filter_results_group {
     font-size: 12px;
     display: inline-block;
-    background:  [% css_colors.accent_lighter2 %];
+    background-color:  [% css_colors.accent_lighter2 %];
     border-style: solid;
     border-color: [% css_colors.accent_medium %];
     border-width: 1px;
@@ -1475,7 +1475,7 @@ div#facet_sidebar {
 }
 
 .facet_box_temp.filter_box_temp .header {
-    background: [% css_colors.background_invert %] !important;
+    background-color: [% css_colors.background_invert %] !important;
 }
 
 .filter_box_label {
@@ -1791,7 +1791,7 @@ a.dash-link:hover { text-decoration: underline !important; }
   font-size: 110%;
   font-weight: bold;
   color: [% css_colors.text_invert %]; 
-  background: [% css_colors.primary %];
+  background-color: [% css_colors.primary %];
 }
  
 .holds_item_row_separator td {
@@ -2524,7 +2524,7 @@ a.preflib_change {
 .sms_text pre {
     font-family: Arial, Helvetica, sans-serif;
     font-size: [% css_fonts.size_medium %];
-    background: [% css_colors.accent_lightest %];
+    background-color: [% css_colors.accent_lightest %];
     padding: .5%;
     /* Allow text to wrap */
     white-space: pre-wrap;       /* css-3 */
@@ -2738,7 +2738,7 @@ a.preflib_change {
         [% END -%]
     }
     #dash_wrapper div {
-        background: transparent;
+        background-color: transparent;
         padding: 0px;
     }
     #dash_wrapper {
