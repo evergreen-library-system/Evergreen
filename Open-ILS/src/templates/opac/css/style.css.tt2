@@ -377,7 +377,7 @@ for now until a better color is picked - if needed.
 }
 
 #mobile_acct_search_links {
-      background: [% css_colors.primary_fade %];
+      background-color: [% css_colors.primary_fade %];
 }
 
 .rdetail_header {
@@ -820,7 +820,7 @@ div.result_table_utils_cont {
 #lowhits_help {
     float: right;
     width: 353px;
-    background: [% css_colors.accent_light %];
+    background-color: [% css_colors.accent_light %];
     padding: 10px;
     margin-top: 7px;
 }
@@ -1269,7 +1269,7 @@ a.dash-link:hover { text-decoration: underline !important; }
   font-size: 110%;
   font-weight: bold;
   color: [% css_colors.text_invert %]; 
-  background: [% css_colors.primary %];
+  background-color: [% css_colors.primary %];
 }
  
 .holds_item_row_separator td {
@@ -1757,7 +1757,7 @@ a.preflib_change {
 .sms_text pre {
     font-family: Arial, Helvetica, sans-serif;
     font-size: [% css_fonts.size_medium %];
-    background: [% css_colors.accent_lightest %];
+    background-color: [% css_colors.accent_lightest %];
     padding: .5%;
     /* Allow text to wrap */
     white-space: pre-wrap;       /* css-3 */
@@ -1842,7 +1842,7 @@ a.preflib_change {
     }
 
     #dash_wrapper div {
-        background: transparent;
+        background-color: transparent;
         padding: 0px;
     }
     #dash_wrapper {
