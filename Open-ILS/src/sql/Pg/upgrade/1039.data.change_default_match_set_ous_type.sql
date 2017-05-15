@@ -1,6 +1,6 @@
 BEGIN;
 
--- SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1039', :eg_version); -- jeffdavis/gmcharlt
 
 UPDATE config.org_unit_setting_type
 SET datatype = 'link', fm_class = 'vms'
