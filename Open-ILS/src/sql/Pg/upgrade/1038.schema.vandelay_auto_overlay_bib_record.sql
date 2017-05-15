@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version); 
+SELECT evergreen.upgrade_deps_block_check('1038', :eg_version); 
 
 -- This function was replaced back in 2011, but never made it
 -- into an upgrade script.  Here it is, nearly 6 years later.
