@@ -212,7 +212,8 @@ function($scope , $q , $routeParams , $window , egCore , egTransits , egGridData
     function current_query() {
         var filter = {
             'source_send_time' : { 'between' : date_range() },
-            'dest_recv_time'   : null
+            'dest_recv_time'   : null,
+            'cancel_time'      : null
         };
         if ($scope.transit_direction == 'to') { filter['dest'] = $scope.context_org.id(); }
         if ($scope.transit_direction == 'from') { filter['source'] = $scope.context_org.id(); }
