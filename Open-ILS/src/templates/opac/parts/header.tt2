@@ -111,6 +111,12 @@
         want_dojo = 1;
     END;
 
+    # ... and for code that tweaks visibility of types on the added
+    # content tab
+    IF ctx.page == 'record' AND (ctx.expand_addedcontent OR ctx.expand_all);
+        want_dojo = 1;
+    END;
+
     use_autosuggest = ctx.get_cgf("opac.use_autosuggest");
 
     IF use_autosuggest.enabled == "t";
