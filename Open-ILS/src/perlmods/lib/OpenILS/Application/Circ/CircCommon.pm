@@ -804,7 +804,11 @@ sub bill_payment_map_for_xact {
     }
 
     # Try to map payments to bills by amounts starting with the
-    # largest payments:
+    # largest payments.
+    # To avoid modifying the array we're iterating over (which can result in a
+    # "Use of freed value in iteration" error), we create a copy of the
+    # payments array and remove handled payments from that instead.
+    my @handled_payments = @$payments;
     foreach my $payment (sort {$b->amount() <=> $a->amount()} @$payments) {
         my @bills2pay = grep {$_->{bill}->amount() == $payment->amount()} @entries;
         if (@bills2pay) {
@@ -812,10 +816,13 @@ sub bill_payment_map_for_xact {
             $entry->{bill}->amount(0);
             push @{$entry->{payments}}, $payment;
             # Remove the payment from the master list.
-            my @p = grep {$_->id() != $payment->id()} @$payments;
-            $payments = \@p;
+            my @p = grep {$_->id() != $payment->id()} @handled_payments;
+            @handled_payments = @p;
         }
     }
+    # Now, update our list of payments so that it only includes unhandled
+    # (unmapped) payments.
+    $payments = \@handled_payments;
 
     # Map remaining bills to payments in whatever order.
     foreach  my $entry (grep {$_->{bill}->amount() > 0} @entries) {
