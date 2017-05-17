@@ -12,7 +12,23 @@ FOR f IN ctx.query_struct.filters;
     fcount = fcount + 1;
 END;
 
+    # don't display a box for the search_format filter,
+    # as that's got its own widget
+    ignore_filters = ['search_format'];
+
+    trimmed_filters = [];
+    FOR filter IN ctx.query_struct.filters;
+        fname = filter.name;
+        IF ignore_filters.grep('^' _ fname _ '$').size;
+            NEXT;
+        END;
+        trimmed_filters.push(filter);
+    END;
+
+    ctx.query_struct.filters = trimmed_filters;
+
  %]
+
 <div id="search-wrapper">
     [% UNLESS took_care_of_form -%]
     <form action="[% ctx.opac_root %]/results" method="get">
