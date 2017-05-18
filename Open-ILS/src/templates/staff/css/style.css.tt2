@@ -358,6 +358,10 @@ table.list tr.selected td { /* deprecated? */
   cursor: e-resize;
 }
 
+.eg-grid-column-last-mod {
+  background-color: #78FA89;
+}
+
 .eg-grid-menu-item {
   margin-right: 10px;
 }

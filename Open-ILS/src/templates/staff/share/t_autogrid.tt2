@@ -218,6 +218,7 @@
     </div>
     <div class="eg-grid-cell"
         eg-grid-column-drag-dest
+        ng-class="{'eg-grid-column-last-mod' : lastModColumn==col.name}"
         column="{{col.name}}"
         eg-right-click="onContextMenu($event)"
         ng-repeat="col in columns"
@@ -247,6 +248,10 @@
     <div class="eg-grid-cell eg-grid-cell-conf-header">
       <div class="eg-grid-conf-cell-entry">[% l('Expand') %]</div>
       <div class="eg-grid-conf-cell-entry">[% l('Shrink') %]</div>
+      <div class="eg-grid-conf-cell-entry">[% l('Left') %]</div>
+      <div class="eg-grid-conf-cell-entry">[% l('Right') %]</div>
+      <div class="eg-grid-conf-cell-entry">[% l('Far Left') %]</div>
+      <div class="eg-grid-conf-cell-entry">[% l('Far Right') %]</div>
       <div class="eg-grid-conf-cell-entry" ng-if="!disableMultiSort">[% l('Sort') %]</div>
     </div>
     <div class="eg-grid-cell"
@@ -256,13 +261,37 @@
       <div class="eg-grid-conf-cell-entry">
         <a href="" title="[% l('Make column wider') %]"
           ng-click="modifyColumnFlex(col,1)">
-          <span class="glyphicon glyphicon-fast-forward"></span>
+          <span class="glyphicon glyphicon-resize-full"></span>
         </a>
       </div>
       <div class="eg-grid-conf-cell-entry">
         <a href="" title="[% l('Make column narrower') %]"
           ng-click="modifyColumnFlex(col,-1)">
+          <span class="glyphicon glyphicon-resize-small"></span>
+        </a>
+      </div>
+      <div class="eg-grid-conf-cell-entry">
+        <a href="" title="[% l('Move column left') %]"
+          ng-click="modifyColumnPos(col, -1)">
+          <span class="glyphicon glyphicon-backward"></span>
+        </a>
+      </div>
+      <div class="eg-grid-conf-cell-entry">
+        <a href="" title="[% l('Move column right') %]"
+          ng-click="modifyColumnPos(col, 1)">
+          <span class="glyphicon glyphicon-forward"></span>
+        </a>
+      </div>
+      <div class="eg-grid-conf-cell-entry">
+        <a href="" title="[% l('Move column far left') %]"
+          ng-click="modifyColumnPos(col, -10000)">
           <span class="glyphicon glyphicon-fast-backward"></span>
+        </a>
+      </div>
+      <div class="eg-grid-conf-cell-entry">
+        <a href="" title="[% l('Move column far right') %]"
+          ng-click="modifyColumnPos(col, 10000)">
+          <span class="glyphicon glyphicon-fast-forward"></span>
         </a>
       </div>
       <div class="eg-grid-conf-cell-entry" ng-if="!disableMultiSort">

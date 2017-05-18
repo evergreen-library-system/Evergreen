@@ -747,8 +747,39 @@ angular.module('egGridMod',
                     column.flex = 1;
             }
             $scope.modifyColumnFlex = function(col, val) {
+                $scope.lastModColumn = col.name;
                 grid.modifyColumnFlex(col, val);
             }
+
+            grid.modifyColumnPos = function(col, diff) {
+                var srcIdx, targetIdx;
+                angular.forEach(grid.columnsProvider.columns,
+                    function(c, i) { if (c.name == col.name) srcIdx = i });
+
+                targetIdx = srcIdx + diff;
+                if (targetIdx < 0) {
+                    targetIdx = 0;
+                } else if (targetIdx >= grid.columnsProvider.columns.length) {
+                    // Target index follows the last visible column.
+                    var lastVisible = 0;
+                    angular.forEach(grid.columnsProvider.columns, 
+                        function(column, idx) {
+                            if (column.visible) lastVisible = idx;
+                        }
+                    );
+                    targetIdx = lastVisible + 1;
+                }
+
+                // Splice column out of old position, insert at new position.
+                grid.columnsProvider.columns.splice(srcIdx, 1);
+                grid.columnsProvider.columns.splice(targetIdx, 0, col);
+            }
+
+            $scope.modifyColumnPos = function(col, diff) {
+                $scope.lastModColumn = col.name;
+                return grid.modifyColumnPos(col, diff);
+            }
+
 
             // handles click, control-click, and shift-click
             $scope.handleRowClick = function($event, item) {
@@ -859,6 +890,7 @@ angular.module('egGridMod',
                     $scope.showGridConf = true;
                 }
 
+                delete $scope.lastModColumn;
                 $scope.gridColumnPickerIsOpen = false;
             }
 
