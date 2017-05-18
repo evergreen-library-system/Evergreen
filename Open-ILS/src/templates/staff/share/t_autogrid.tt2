@@ -8,13 +8,13 @@
 
   <div class="eg-grid-primary-label">{{mainLabel}}</div>
 
-  <div class="btn-group" 
+  <div class="btn-group" style="margin-top: 4px"
     is-open="gridMenuIsOpen" ng-if="menuLabel && showMenu" uib-dropdown>
     <button type="button" class="btn btn-default eg-grid-menu-item" uib-dropdown-toggle>
       {{menuLabel}}<span class="caret"></span>
     </button>
     <ul class="scrollable-menu" uib-dropdown-menu>
-      <li ng-repeat="item in menuItems | filter : { standalone : 'false' }" ng-class="{divider: item.divider}">
+      <li ng-repeat="item in menuItems | filter : { standalone : 'false' }" ng-if="!item.checkbox && !item.hidden()" ng-class="{divider: item.divider}">
         <a ng-if="!item.divider" href a-disabled="item.disabled()"
           ng-click="item.handler()">{{item.label}}</a>
       </li>
@@ -36,6 +36,11 @@
       ng-click="item.handler(item, item.handlerData)">
         {{item.label}}
     </button>
+  </div>
+
+  <!-- Always show checkbox items as a
+       horizontal row of buttons -->
+  <div class="btn-group" ng-if="showMenu">
     <div ng-if="item.checkbox"
       class="btn btn-default eg-grid-menu-item"
       ng-repeat="item in menuItems">
