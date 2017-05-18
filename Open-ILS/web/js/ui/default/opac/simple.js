@@ -107,6 +107,14 @@ function exclude_onchange(checkbox) {
         // Other functions' form submits may create duplicates of this, so /g
         var reg = /-search_format\(electronic\)/g;
         search_box.value = search_box.value.replace(reg, "");
+        // Remove from the search form itself
+        var search_format_inputs = document.getElementsByName("fi:-search_format");
+        for (var j = 0; j < search_format_inputs.length; j++) {
+            if (search_format_inputs[j].value == 'electronic') {
+                search_format_inputs[j].parentNode.removeChild(search_format_inputs[j]);
+            }
+        }
+
     }
 
     checkbox.form.submit();
