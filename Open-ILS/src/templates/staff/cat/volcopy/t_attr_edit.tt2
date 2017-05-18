@@ -211,7 +211,7 @@
                 <div class="nullable col-md-6" ng-class="{'bg-success': working.circ_modifier !== undefined}">
                     <select class="form-control"
                         ng-disabled="!defaults.attributes.circ_modifier" ng-model="working.circ_modifier"
-                        ng-options="m.code() as m.name() for m in circ_modifier_list"
+                        ng-options="m.code() as m.name() for m in circ_modifier_list | orderBy: 'name()'"
                     >
                         <option value="">[% l('<NONE>') %]</option>
                     </select>
