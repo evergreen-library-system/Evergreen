@@ -492,7 +492,7 @@
             </a>
           </li>
           <li class="divider"></li>
-          <li>
+          <li class="disabled">
             <a href disabled="disabled">
               <span
                 title="[% l('Hatch Connection Status') %]"
