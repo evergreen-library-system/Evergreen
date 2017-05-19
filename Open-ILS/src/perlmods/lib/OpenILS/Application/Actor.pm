@@ -4792,14 +4792,13 @@ sub mark_users_contact_invalid {
     return $e->die_event unless $e->checkauth;
     
     my $howfind = {};
-    if ($patron_id){
+    if (defined $patron_id && $patron_id ne "") {
         $howfind = {usr => $patron_id};
-    }
-    elsif ($contact){
+    } elsif (defined $contact && $contact ne "") {
         $howfind = {$contact_type => $contact};
-    }
-    else{ #Error out if no patron id set or no contact is set.
-        return $e->die_event;
+    } else {
+        # Error out if no patron id set or no contact is set.
+        return OpenILS::Event->new('BAD_PARAMS');
     }
  
     return OpenILS::Utils::BadContact->mark_users_contact_invalid(
