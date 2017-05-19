@@ -1,0 +1,7 @@
+Fix to reporter.classic_current_circ view
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The `reporter.classic_current_circ` view, which is part of some
+extra views defined in `Open-ILS/src/sql/Pg/example.reporter-extension.sql`,
+has been fixed to not exclude loans for patrons who do not have a
+billing address set. Users of this view should rerun
+`Open-ILS/src/sql/Pg/example.reporter-extension.sql` during upgrade.
