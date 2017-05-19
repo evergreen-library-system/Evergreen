@@ -154,7 +154,7 @@ function($scope , $q , $routeParams , egCore , egUser , patronSvc ,
 
                 // Avoid updating checkout counts when a checkout turns
                 // into a renewal via auto_renew.
-                if (!co_resp.auto_renew) {
+                if (!co_resp.auto_renew && !params.noncat) {
                     patronSvc.patron_stats.checkouts.out++;
                     patronSvc.patron_stats.checkouts.total_out++;
                 }
@@ -198,7 +198,10 @@ function($scope , $q , $routeParams , egCore , egUser , patronSvc ,
             row_item.title = egCore.env.cnct.map[params.noncat_type].name();
             row_item.noncat_count = params.noncat_count;
             row_item.circ = new egCore.idl.circ();
-            row_item.circ.due_date(co_resp.evt.payload.noncat_circ.duedate());
+            row_item.circ.due_date(co_resp.evt[0].payload.noncat_circ.duedate());
+            // Non-cat circs don't return the full list of circs.
+            // Refresh the list of non-cat circs from the server.
+            patronSvc.getUserNonCats(patronSvc.current.id());
         }
     }
 

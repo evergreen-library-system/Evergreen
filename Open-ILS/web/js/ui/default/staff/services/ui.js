@@ -873,6 +873,10 @@ function($window , egStrings) {
             entry['item_id'] = data.response.data.acp.id();
             entry['patron_id'] = data.response.data.au.id();
         }
+        if (data.action == 'noncat_checkout') {
+            entry['user'] = data.response.data.au.family_name();
+            entry['patron_id'] = data.response.data.au.id();
+        }
         if (data.action == 'renew') {
             entry['item'] = data.response.params.copy_barcode;
             entry['user'] = data.response.data.au.family_name();

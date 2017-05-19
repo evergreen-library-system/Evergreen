@@ -150,12 +150,14 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
                     return service.renew(params, options);
                 }
 
-                return service.flesh_response_data('checkout', evt, params, options)
+                var action = params.noncat ? 'noncat_checkout' : 'checkout';
+
+                return service.flesh_response_data(action, evt, params, options)
                 .then(function() {
                     return service.handle_checkout_resp(evt, params, options);
                 })
                 .then(function(final_resp) {
-                    return service.munge_resp_data(final_resp,'checkout',method)
+                    return service.munge_resp_data(final_resp,action,method)
                 })
             });
         });
@@ -288,7 +290,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
         }
 
         egWorkLog.record(
-            worklog_action == 'checkout'
+            (worklog_action == 'checkout' || worklog_action == 'noncat_checkout')
             ? egCore.strings.EG_WORK_LOG_CHECKOUT
             : (worklog_action == 'renew'
                 ? egCore.strings.EG_WORK_LOG_RENEW
@@ -566,11 +568,16 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
         } 
 
         // TODO: renewal responses should include the patron
-        if (!payload.patron && payload.circ) {
-            promises.push(
-                egCore.pcrud.retrieve('au', payload.circ.usr())
-                .then(function(user) {payload.patron = user})
-            );
+        if (!payload.patron) {
+            var user_id;
+            if (payload.circ) user_id = payload.circ.usr();
+            if (payload.noncat_circ) user_id = payload.noncat_circ.patron();
+            if (user_id) {
+                promises.push(
+                    egCore.pcrud.retrieve('au', user_id)
+                    .then(function(user) {payload.patron = user})
+                );
+            }
         }
 
         // extract precat values
