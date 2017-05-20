@@ -1302,6 +1302,7 @@ vim:et:ts=4:sw=4:
                 <appname>open-ils.justintime</appname>  
                 <appname>open-ils.cstore</appname>  
                 <appname>open-ils.collections</appname>  
+                <appname>open-ils.qstore</appname>
                 <appname>open-ils.reporter</appname>  
                 <appname>open-ils.reporter-store</appname>  
                 <!-- <appname>open-ils.resolver</appname> -->
