@@ -509,7 +509,8 @@ authority_control_fields.pl - Controls fields in bibliographic records with auth
 =head1 SYNOPSIS
 
 C<authority_control_fields.pl> [B<--configuration>=I<opensrf_core.conf>] [B<--refresh>]
-[[B<--record>=I<record>[ B<--record>=I<record>]]] | [B<--all>] | [B<--start_id>=I<start-ID> B<--end_id>=I<end-ID>]
+[[B<--record>=I<record>[ B<--record>=I<record>]]] | [B<--all>] | [B<--start_id>=I<start-ID> B<--end_id>=I<end-ID>] |
+[B<--days_back>=I<number-of-days>]
 
 =head1 DESCRIPTION
 
@@ -586,15 +587,15 @@ option.
 =item * B<-e> I<end-ID>, B<--end_id>=I<end-ID>
 
 Specifies the ending ID of the range of bibliographic records to process.
-This option is ignored unless it is accompanied by the B<-s> or B<--start>
+This option is ignored unless it is accompanied by the B<-s> or B<--start_id>
 option.
 
 =item * B<--days_back>=I<number-of-days>
 
 Specifies that only bibliographic records that have been created in the
 past few days should be processed.  You must specify how many days back
-to include.  This option is incompatible with the B<-s> and B<--start>
-options.  
+to include.  This option is incompatible with the B<-s> and B<--start_id>
+options.
 
 =back
 
