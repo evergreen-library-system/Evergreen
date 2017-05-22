@@ -2356,6 +2356,164 @@ sub delete_note {
 ##########################################################################
 # subscription methods
 #
+
+__PACKAGE__->register_method(
+    method      => 'safe_delete',
+    api_name        =>  'open-ils.serial.subscription.safe_delete',
+    signature   => q/
+        Deletes an existing subscription and related records
+        (distributions, streams, etc.), but only if there are no serial
+        items with a status other than Expected, and no non-deleted 
+        serial units.
+        @param authtoken The login session key
+        @param subid The id of the subscription to delete
+        @return 1 on success - Event otherwise.
+        /
+);
+
+__PACKAGE__->register_method(
+    method      => 'safe_delete',
+    api_name        =>  'open-ils.serial.distribution.safe_delete',
+    signature   => q/
+        Deletes an existing distribution and related records
+        (streams, etc.), but only if there are no attached serial items
+        with a status other than Expected, and no non-deleted serial
+        units.
+        @param authtoken The login session key
+        @param subid The id of the distribution to delete
+        @return 1 on success - Event otherwise.
+        /
+);
+
+__PACKAGE__->register_method(
+    method      => 'safe_delete',
+    api_name        =>  'open-ils.serial.stream.safe_delete',
+    signature   => q/
+        Deletes an existing stream and associated routing list, but only
+        if there are no attached serial items with a status other than
+        Expected, and no non-deleted serial units.
+        items and no issuances.
+        @param authtoken The login session key
+        @param strid The id of the stream to delete
+        @return 1 on success - Event otherwise.
+        /
+);
+
+__PACKAGE__->register_method(
+    method      => 'safe_delete',
+    api_name        =>  'open-ils.serial.subscription.safe_delete.dry_run',
+);
+__PACKAGE__->register_method(
+    method      => 'safe_delete',
+    api_name        =>  'open-ils.serial.distribution.safe_delete.dry_run',
+);
+__PACKAGE__->register_method(
+    method      => 'safe_delete',
+    api_name        =>  'open-ils.serial.stream.safe_delete.dry_run',
+);
+
+sub safe_delete {
+    my( $self, $conn, $authtoken, $id ) = @_;
+
+    $self->api_name =~ /serial\.(\w*)\.safe_delete/;
+    my $type = $1;
+
+    my $e = new_editor(xact=>1, authtoken=>$authtoken);
+    return $e->die_event unless $e->checkauth;
+
+    my $obj;
+
+    if ($type eq 'stream') {
+        my $sstr = $e->retrieve_serial_stream([
+            $id, {
+                "flesh" => 2, "flesh_fields" => {
+                    "sstr" => ["items","distribution"],
+                    "sitem" => ["unit"]
+                }
+            }
+        ]) or return $e->die_event;
+
+        return $e->die_event unless $e->allowed(
+            "ADMIN_SERIAL_STREAM", $sstr->distribution->holding_lib
+        );
+
+        foreach my $sitem (@{$sstr->items}) {
+            if ($sitem->status ne 'Expected') {
+                return OpenILS::Event->new('SERIAL_STREAM_NOT_EMPTY', payload=>$id);
+            }
+            if ($sitem->unit && !$U->is_true($sitem->unit->deleted)) {
+                return OpenILS::Event->new('SERIAL_STREAM_NOT_EMPTY', payload=>$id);
+            }
+        }
+
+        $obj = $sstr;
+
+    } elsif ($type eq 'distribution') {
+        my $sdist = $e->retrieve_serial_distribution([
+            $id, {
+                "flesh" => 3, "flesh_fields" => {
+                    "sstr" => ["items"],
+                    "sdist" => ["streams"],
+                    "sitem" => ["unit"]
+                }
+            }
+        ]) or return $e->die_event;
+
+        return $e->die_event unless
+            $e->allowed("ADMIN_SERIAL_DISTRIBUTION", $sdist->holding_lib);
+
+        foreach my $sstr (@{$sdist->streams}) {
+            foreach my $sitem (@{$sstr->items}) {
+                if ($sitem->status ne 'Expected') {
+                    return OpenILS::Event->new('SERIAL_DISTRIBUTION_NOT_EMPTY', payload=>$id);
+                }
+                if ($sitem->unit && !$U->is_true($sitem->unit->deleted)) {
+                    return OpenILS::Event->new('SERIAL_DISTRIBUTION_NOT_EMPTY', payload=>$id);
+                }
+            }
+        }
+
+        $obj = $sdist;
+
+    } else { # subscription
+        my $sub = $e->retrieve_serial_subscription([
+            $id, {
+                "flesh" => 4, "flesh_fields" => {
+                    "ssub" => [qw/distributions issuances/],
+                    "sdist" => [qw/streams/],
+                    "sstr" => ["items"],
+                    "sitem" => ["unit"]
+                }
+            }
+        ]) or return $e->die_event;
+
+        return $e->die_event unless
+            $e->allowed("ADMIN_SERIAL_SUBSCRIPTION", $sub->owning_lib);
+
+        foreach my $sdist (@{$sub->distributions}) {
+            foreach my $sstr (@{$sdist->streams}) {
+                foreach my $sitem (@{$sstr->items}) {
+                    if ($sitem->status ne 'Expected') {
+                        return OpenILS::Event->new('SERIAL_SUBSCRIPTION_NOT_EMPTY', payload=>$id);
+                    }
+                    if ($sitem->unit && !$U->is_true($sitem->unit->deleted)) {
+                        return OpenILS::Event->new('SERIAL_SUBSCRIPTION_NOT_EMPTY', payload=>$id);
+                    }
+                }
+            }
+        }
+
+        $obj = $sub;
+    }
+
+    if (! ($self->api_name =~ /dry_run/)) {
+        my $method = "delete_serial_${type}";
+        $e->$method($obj) or return $e->die_event;
+        $e->commit;
+    }
+    return 1;
+}
+
 __PACKAGE__->register_method(
     method    => 'fleshed_ssub_alter',
     api_name  => 'open-ils.serial.subscription.fleshed.batch.update',
