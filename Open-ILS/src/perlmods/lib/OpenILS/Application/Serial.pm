@@ -3637,7 +3637,7 @@ sub bre_by_identifier {
         $search->disconnect;
 
         # Un-nest results. They tend to look like [[1],[2],[3]] for some reason.
-        @ids = map { @{$_} } @{$search_result->{"ids"}};
+        @ids = map { @{$_}[0] } @{$search_result->{"ids"}};
 
         unless (@ids) {
             $e->disconnect;
