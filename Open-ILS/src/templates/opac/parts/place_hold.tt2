@@ -23,7 +23,7 @@
               ELSE; some_holds_allowed = 1; END;
             END %]
       
-    <form method="post" name="PlaceHold" [% IF hdata.parts.size > 0 AND enable.radio.parts == 'true' %] onsubmit="return validateHoldForm()" [% END %] >
+    <form method="post" name="PlaceHold" onsubmit="return validateHoldForm()" >
         <input type="hidden" name="hold_type" value="[% CGI.param('hold_type') | html %]" />
         [%  
             redirect = CGI.param('hold_source_page') || CGI.param('redirect_to') || CGI.referer;
@@ -175,7 +175,7 @@
         <p>
             [% l('Notify when hold is ready for pickup?') %]
             <blockquote>
-                <input type="checkbox" id="email_notify" name="email_notify" value="t"
+                <input class="hold-alert-method" type="checkbox" id="email_notify" name="email_notify" value="t"
                     [% IF !ctx.user.email %]disabled="true"[% ELSIF ctx.default_email_notify %]checked="checked"[% END %]/>
                     <label for="email_notify">[% l('Yes, by Email') %]</label><br/>
                 <blockquote>
@@ -183,7 +183,7 @@
                      ELSE; l('Email Address:') %] <span name="email_address">[% ctx.user.email %]</span>[% END %]
                 </blockquote>
                 [%- IF allow_phone_notifications == 'true' %]
-                <input type="checkbox" id="phone_notify_checkbox" name="phone_notify_checkbox"
+                <input class="hold-alert-method" type="checkbox" id="phone_notify_checkbox" name="phone_notify_checkbox"
                     [% IF ctx.default_phone_notify %]checked="checked"[% END %]/>
                     <label for="phone_notify_checkbox">[% l('Yes, by Phone') %]</label><br/>
                 <blockquote>
@@ -193,7 +193,7 @@
                 </blockquote>
                 [%- END -%]
                 [% IF ctx.get_org_setting(ctx.search_ou, 'sms.enable') == 1 %]
-                <input type="checkbox" id="sms_notify_checkbox" name="sms_notify_checkbox"
+                <input class="hold-alert-method" type="checkbox" id="sms_notify_checkbox" name="sms_notify_checkbox"
                     [% IF ctx.default_sms_notify %]checked="checked"[% END %]/>
                     <label for="sms_notify_checkbox">[% l('Yes, by Text Messaging') %]</label><br/>
                 <blockquote>

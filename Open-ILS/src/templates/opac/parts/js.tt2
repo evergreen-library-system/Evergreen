@@ -59,6 +59,13 @@
     IF CGI.https; url = url.replace('^http:', 'https:'); END; %]
 <script type='text/javascript' id='EIT' src='[% url %]'></script>
 [%- END %]
+
+<!-- Require some inputs and selections for browsers that don't support required form field element -->
+[% IF ctx.page == 'place_hold' %]
+  <script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/opac/holds-validation.js">
+  </script>
+[% END %]
+
 [%- IF want_dojo; -%]
 <script type="text/javascript">
      var djConfig = {
@@ -127,30 +134,6 @@ var aou_hash = {
 [% END %]
 };
 </script>
-
-<!-- Require radio parts selection for browsers that don't support required form field element -->
-[% IF ctx.page == 'place_hold' %]
-  <script type="text/javascript">
-    function validateRadioSelection (radios) {
-       for (i = 0; i < radios.length; ++ i)
-       {
-         if (radios[i].checked) return true;
-       }
-       return false;
-    }
-    function validateHoldForm() {
-      if (validateRadioSelection (document.getElementsByName("part")))
-      {
-        return true;
-       }
-       else
-       {
-          alert ("Please select a part");
-          return false;
-        }
-     }
-  </script>
-[% END %]
 
 <script type="text/javascript">if ($('client_tz_id')) { $('client_tz_id').value = OpenSRF.tz }</script>
 [%- END; # want_dojo -%]
