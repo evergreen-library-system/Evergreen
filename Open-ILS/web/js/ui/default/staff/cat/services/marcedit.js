@@ -698,6 +698,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                 $scope.$watch('stackSubfields.enabled', function (newVal, oldVal) {
                     if (newVal != oldVal) egCore.hatch.setItem('cat.marcedit.stack_subfields', newVal);
                 });
+                $scope.caretRecId = $scope.recordId;
 
                 egTagTable.loadTagTable({ marcRecordType : $scope.record_type });
 
@@ -736,7 +737,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                         new_field_index++;
                     }
 
-                    $scope.current_event_target = 'r' + $scope.recordId +
+                    $scope.current_event_target = 'r' + $scope.caretRecId +
                                                   'f' + new_field_index + 'tag';
 
                     $scope.current_event_target_cursor_pos = 0;
@@ -760,7 +761,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                     domnode.scope().$destroy();
                     domnode.remove();
 
-                    $scope.current_event_target = 'r' + $scope.recordId +
+                    $scope.current_event_target = 'r' + $scope.caretRecId +
                                                   'f' + del_field + 'tag';
 
                     $scope.current_event_target_cursor_pos = 0;
@@ -864,7 +865,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                             new_sf = index_sf;
                         }
 
-                        $scope.current_event_target = 'r' + $scope.recordId +
+                        $scope.current_event_target = 'r' + $scope.caretRecId +
                                                       'f' + event.data.scope.field.position + 
                                                       's' + new_sf + 'code';
 
@@ -915,11 +916,11 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                         );
 
                         if (!event.data.scope.field.subfields[sf]) {
-                            $scope.current_event_target = 'r' + $scope.recordId +
+                            $scope.current_event_target = 'r' + $scope.caretRecId +
                                                           'f' + event.data.scope.field.position + 
                                                           'tag';
                         } else {
-                            $scope.current_event_target = 'r' + $scope.recordId +
+                            $scope.current_event_target = 'r' + $scope.caretRecId +
                                                           'f' + event.data.scope.field.position + 
                                                           's' + sf + 'value';
                         }
@@ -961,7 +962,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                                 field_obj
                             );
 
-                            $scope.current_event_target = 'r' + $scope.recordId +
+                            $scope.current_event_target = 'r' + $scope.caretRecId +
                                                           'f' + index_field + 'tag';
 
                             $scope.current_event_target_cursor_pos = 0;
@@ -975,7 +976,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                                 $timeout(function(){
                                     $scope.current_event_target_cursor_pos = 0;
                                     $scope.current_event_target_cursor_pos_end = 0;
-                                    $scope.current_event_target = 'r' + $scope.recordId +
+                                    $scope.current_event_target = 'r' + $scope.caretRecId +
                                                                   'f' + (event.data.scope.field.position - 1) +
                                                                   'tag';
                                 }).then(setCaret);
@@ -1014,7 +1015,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                                 field_obj
                             );
 
-                            $scope.current_event_target = 'r' + $scope.recordId +
+                            $scope.current_event_target = 'r' + $scope.caretRecId +
                                                           'f' + new_field + 'tag';
 
                             $scope.current_event_target_cursor_pos = 0;
@@ -1028,7 +1029,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                                 $timeout(function(){
                                     $scope.current_event_target_cursor_pos = 0;
                                     $scope.current_event_target_cursor_pos_end = 0;
-                                    $scope.current_event_target = 'r' + $scope.recordId +
+                                    $scope.current_event_target = 'r' + $scope.caretRecId +
                                                                   'f' + (event.data.scope.field.position + 1) +
                                                                   'tag';
                                 }).then(setCaret);
@@ -1089,6 +1090,10 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                                 var are = new egCore.idl.are();
                                 are.marc($scope.marcXml);
                                 deferred.resolve(are);
+                            } else if ($scope.recordType == 'sre') {
+                                var sre = new egCore.idl.sre();
+                                sre.marc($scope.marcXml);
+                                deferred.resolve(sre);
                             }
                             $scope.brandNewRecord = true;
                         }
@@ -1097,6 +1102,12 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                         $scope.in_redo = true;
                         $scope[$scope.record_type] = rec;
                         $scope.record = new MARC21.Record({ marcxml : $scope.Record().marc() });
+                        if (!$scope.recordId) {
+                            var sf901c = $scope.record.subfield('901', 'c');
+                            if (sf901c !== null) {
+                                $scope.caretRecId = sf901c[1];
+                            }
+                        }
                         $scope.calculated_record_type = $scope.record.recordType();
                         $scope.controlfields = $scope.record.fields.filter(function(f){ return f.isControlfield() });
                         $scope.datafields = $scope.record.fields.filter(function(f){ return !f.isControlfield() });
@@ -1330,6 +1341,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                             $scope.Record()
                         ).then(function(bre) {
                             $scope.recordId = bre.id(); 
+                            $scope.caretRecId = $scope.recordId;
                             if ($scope.enable_fast_add) {
                                 egCore.net.request(
                                     'open-ils.actor',
