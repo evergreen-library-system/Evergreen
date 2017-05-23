@@ -19,6 +19,7 @@
 %]
 [% IF NOT sms_carrier_hide_label; l('Mobile carrier:'); END; %]
 <select name="sms_carrier">
+    <option value="">[% l('') %]</option>
     [% FOR carrier IN carriers.sort('name','region') -%]
     <option value='[% carrier.id | html %]'[%
         default_carrier == carrier.id ? ' selected="selected"' : ''
