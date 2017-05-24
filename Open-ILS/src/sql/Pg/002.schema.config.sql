@@ -93,6 +93,7 @@ CREATE TRIGGER no_overlapping_deps
 
 INSERT INTO config.upgrade_log (version, applied_to) VALUES ('1040', :eg_version); --gmcharlt/berick
 INSERT INTO config.upgrade_log (version, applied_to) VALUES ('2.12.2', :eg_version);
+INSERT INTO config.upgrade_log (version, applied_to) VALUES ('2.12.2', :eg_version);
 
 CREATE TABLE config.bib_source (
 	id		SERIAL	PRIMARY KEY,
