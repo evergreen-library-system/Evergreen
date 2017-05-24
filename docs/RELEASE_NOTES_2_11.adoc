@@ -3,6 +3,63 @@ Evergreen 2.11 Release Notes
 :toc:
 :numbered:
 
+Evergreen 2.11.5
+----------------
+
+This release contains several bug fixes improving on Evergreen 2.11.4.
+
+* A fix to remove the Chilifresh patron reviews header for Evergreen sites
+that do not use Chilifresh.
+* A fix that marks acquisitions POs as received when all line items on the 
+PO are received or canceled.
+* A typo fix to the long overdue override permission that prevented staff
+from being able to override long overdue check ins.
+* A fix to use a library's configured currency in SIP patron responses
+instead of always using US dollars.
+* A fix to SIP timeouts caused by invalid sessions
+* A fix that allows boolean fields to be recognized in queries to the
+Z39.50 server.
+* A fix to use the correct method during adjust to zero on negative
+balances.
+* A correction to the datatype for the Vandelay Default Record Match Set
+setting.
+* The removal of the _Keep_ field from MARC Batch Import Item Attributes.
+The field was not previously implemented.
+* A fix to set the complete time value for grouped Action/Trigger events
+when an event's state reach complete, consistent with non-grouped events.
+* A fix to a bug in the rollover_phone_to_print.pl script that kept failed
+call files from being moved.
+* A new index for acq.edi_message that speeds up the check for duplicate
+EDI messages.
+* A fix that ensures JSON strings are converted to UTF8, ensuring that
+non-ASCII data display correctly.
+* A fix to avoid an erroneous unsaved data popup to appear during MARC
+record creation.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+testing and documentation patches to the 2.11.5 point release of
+Evergreen:
+
+* Galen Charlton
+* Jeff Davis
+* Bill Erickson
+* Jason Etheridge
+* Jeff Godin
+* Blake Henderson
+* Linda Jansova
+* Kathy Lussier
+* Jillianne Presley
+* Jane Sandberg
+* Dan Scott
+* Chris Sharp
+* Remington Steed
+* Jason Stephenson
+* Josh Stompro
+* Remington Steed
+
+
 Evergreen 2.11.4
 ----------------
 
@@ -51,7 +108,7 @@ due date is not used.
 Acknowledgements
 ~~~~~~~~~~~~~~~~
 We would like to thank the following individuals who contributed code,
-testing and documentation patches to the 2.10.11 point release of
+testing and documentation patches to the 2.11.4 point release of
 Evergreen:
 
 * Jason Boyer
