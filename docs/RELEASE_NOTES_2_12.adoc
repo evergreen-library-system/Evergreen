@@ -3,6 +3,146 @@ Evergreen 2.12 Release Notes
 :toc:
 :numbered:
 
+Evergreen 2.12.2
+----------------
+
+This release contains several bug fixes improving on Evergreen 2.12.2.
+
+Upgrade Notes
+~~~~~~~~~~~~~
+* Administrators of Evergreen who use RTL locales and who have customized
+`style-rtl.css.tt2` should now incorporate their customizations into
+`style.css.tt2`.
+* The `reporter.classic_current_circ` view, which is part of some
+extra views defined in `Open-ILS/src/sql/Pg/example.reporter-extension.sql`,
+has been fixed to not exclude loans for patrons who do not have a
+billing address set. Users of this view should rerun
+`Open-ILS/src/sql/Pg/example.reporter-extension.sql` during upgrade.
+
+Hold Targeter Repairs and Improvements
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+A series of changes were made to the new hold targeter available in 2.12.
+
+* Make the batch targeter more resilient to a single-hold failure.
+* Additional batch targeter info logging.
+* Set OSRF_LOG_CLIENT in hold_targeter_v2.pl for log tracing
+* Removes the confusingly named --target-all option
+ ** The same behavior can be achieved by using --retarget-interval "0s"
+* Removes --skip-viable (see --soft-retarget-interval below)
+
+New --next-check-interval Option
+++++++++++++++++++++++++++++++++
+Specify how long after the current run time the targeter will retarget
+the currently affected holds. Applying a specific interval is useful
+when the retarget-interval is shorter than the time between targeter
+runs.
+
+For example, if the targeter is run nightly at midnight with a
+--retarget-interval 36h, you would set --next-check-interval to 48hr,
+since the holds won't be processed again until 48 hours later. This
+ensures that the org unit closed date checks are looking at the correct
+date. 
+
+This setting overrides the default behavior of calculating the next 
+retarget time from the retarget-interval.
+
+New --soft-retarget-interval Option
++++++++++++++++++++++++++++++++++++
+This is a replacement for (and rebranding of) the --skip-viable option. 
+The new option allows for time-based soft-targeting instead simple binary 
+on/off soft-targeting.
+
+How soft-targeting works:
+* Update hold copy maps for all affected holds
+* Holds with viable targets (on the pull list) are otherwise left alone.
+* Holds without viable targets are retargeted in the usual manner. 
+
+Other Bug Fixes
+~~~~~~~~~~~~~~
+* A fix to remove the Chilifresh patron reviews header for Evergreen sites
+that do not use Chilifresh.
+* A fix that marks acquisitions POs as received when all line items on the 
+PO are received or canceled.
+* A typo fix to the long overdue override permission that prevented staff
+from being able to override long overdue check ins.
+* A fix to use a library's configured currency in SIP patron responses
+instead of always using US dollars.
+* A fix to SIP timeouts caused by invalid sessions
+* A fix that allows boolean fields to be recognized in queries to the
+Z39.50 server.
+* A fix to use the correct method during adjust to zero on negative
+balances.
+* A correction to the datatype for the Vandelay Default Record Match Set
+setting.
+* The removal of the _Keep_ field from MARC Batch Import Item Attributes.
+The field was not previously implemented.
+* A fix to set the complete time value for grouped Action/Trigger events
+when an event's state reach complete, consistent with non-grouped events.
+* A fix to a bug in the rollover_phone_to_print.pl script that kept failed
+call files from being moved.
+* A new index for acq.edi_message that speeds up the check for duplicate
+EDI messages.
+* A fix that ensures JSON strings are converted to UTF8, ensuring that
+non-ASCII data display correctly.
+* A fix to avoid an erroneous unsaved data popup to appear during MARC
+record creation.
+* A typo fix in the web client's bill payment receipt template.
+* A correction to ebook account links on the My Account Summary page.
+* Improved responsive design for the ebook My Account screens so that
+they display better on mobile devices.
+* A fix to a bug that prevented a patron opt-in dialog from loading.
+* The RTL stylesheet for the public catalog,
+`templates/opac/css/style-rtl.css.tt2`, has been merged into the LTR
+one (`templates/opac/css/style.css.tt2`). The combined stylesheet
+template will emit RTL or LTR styles based on the value of
+the `rtl` flag of the active locale. An `rtl` variable is also available
+in the template to allow the correct style to be chosen.
+* A fix to leaking of the internal port number to the client when
+Apache is configured to use nonstandard ports in combination with a proxy
+server.
+* The addition of the vandelay.auto_overlay_bib_record upgrade script,
+which was missed in a 2.1-2.2 era upgrade script. It isn't necessary for
+sites that began using Evergreen since then to run the script, but
+it is harmless to run.
+* A web staff client fix that will hid the behind-desk option for
+for libraries that do not support "Behind Desk Pickup".
+* A web staff client fix that caused hold transit check ins to fail
+silently when the transit destination does not have a holds address.
+* A web staff client fix that now requires the entry of user statistical
+categories in the patron editor if those stat cats are configured to
+be required.
+* A fix to a problem with the "Exclude Electronic Resources" checkbox
+that prevented users from removing a selection from the box.
+* The removal of the search format limiters from the new advanced search
+limiter block on the search results page. The search format limiters
+should not display there because they can be selected from the search bar.
+
+
+
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+testing and documentation patches to the 2.12.2 point release of
+Evergreen:
+
+* Galen Charlton
+* Jeff Davis
+* Bill Erickson
+* Jason Etheridge
+* Jeff Godin
+* Blake Henderson
+* Linda Jansova
+* Kathy Lussier
+* Jillianne Presley
+* Jane Sandberg
+* Dan Scott
+* Chris Sharp
+* Remington Steed
+* Jason Stephenson
+* Josh Stompro
+* Remington Steed
+
 Evergreen 2.12.1 
 ----------------
 
@@ -77,6 +217,15 @@ This version also adds two new services, `open-ils.ebook_api` and
 
 2.12.0 New Features
 -------------------
+
+Acquisitions
+~~~~~~~~~~~~
+Default status for received line items
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+A new Library Setting has been added to allow libraries to set the default
+status for received line items. The previous behavior was to use the
+"In process" status for all acquisitions items that are received.
+
 
 Administration
 ~~~~~~~~~~~~~~
