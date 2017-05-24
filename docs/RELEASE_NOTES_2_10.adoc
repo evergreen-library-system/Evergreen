@@ -3,6 +3,32 @@ Evergreen 2.10 Release Notes
 :toc:
 :numbered:
 
+Evergreen 2.10.12
+-----------------
+This release is a security release.
+
+Security Issue: XSS Vulnerability in Public Catalog
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+This release fixes several cross-site scripting (XSS) vulnerabilities
+in the public catalog. When upgrading, Evergreen administrators should
+review whether any of the following templates have been customized
+or overridden. If so, either the template should be replaced with the
+stock version or the XSS fix (which entails adding the `| html` filter
+in several places) applied to the customized version.
+
+* `Open-ILS/src/templates/opac/parts/locale_picker.tt2`
+* `Open-ILS/src/templates/opac/parts/login/form.tt2`
+* `Open-ILS/src/templates/opac/parts/searchbar.tt2`
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+testing and documentation patches to the 2.10.12 point release of
+Evergreen:
+
+* Galen Charlton
+* Dan Scott
+
 Evergreen 2.10.11
 -----------------
 
