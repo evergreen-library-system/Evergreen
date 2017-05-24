@@ -537,10 +537,14 @@ sub added_content_stage1 {
     # This avoids us having to route out of the cluster 
     # and back in to reach the top-level virtualhost.
     my $ac_addr = $ENV{SERVER_ADDR};
+    # Internal connections are HTTP-only (no HTTPS) and assume the
+    # connection port is '80' unless otherwise specified in the Apache
+    # configuration (e.g. for proxy setups)
+    my $ac_port = $self->apache->dir_config('OILSWebInternalHTTPPort') || 80;
     my $ac_host = $self->apache->hostname;
     my $ac_failed = 0;
 
-    $logger->info("tpac: added content connecting to $ac_addr / $ac_host");
+    $logger->info("tpac: added content connecting to $ac_addr:$ac_port / $ac_host");
 
     $ctx->{added_content} = {};
     for my $type (@$ac_types) {
@@ -556,9 +560,10 @@ sub added_content_stage1 {
         # Connecting to oneself should either be very fast (normal) 
         # or very slow (routing problems).
 
-        my $req = Net::HTTP::NB->new(Host => $ac_addr, Timeout => 1);
+        my $req = Net::HTTP::NB->new(
+            Host => $ac_addr, Timeout => 1, PeerPort => $ac_port);
         if (!$req) {
-            $logger->warn("Unable to connect to $ac_addr / $ac_host".
+            $logger->warn("Unable to connect to $ac_addr:$ac_port / $ac_host".
                 " for added content lookup for $rec_id: $@");
             $ac_failed = 1;
             next;
