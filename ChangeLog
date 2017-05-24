@@ -1,3 +1,2481 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 8d697596e2d1495af136f01455155d4591358965
+Author: blake <blake@mobiusconsortium.org>
+Date:   Wed May 24 13:06:24 2017 -0500
+
+    bumping Perl version string for 2.12.2
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit 37b9555d913f3df6663b2f4123d3d232fea3c1a0
+Author: blake <blake@mobiusconsortium.org>
+Date:   Wed May 24 13:05:52 2017 -0500
+
+    Translation updates - po files
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+
+3	3	build/i18n/po/AutoFieldWidget.js/ar-JO.po
+3	3	build/i18n/po/AutoFieldWidget.js/cs-CZ.po
+3	3	build/i18n/po/AutoFieldWidget.js/de-DE.po
+3	3	build/i18n/po/AutoFieldWidget.js/en-CA.po
+3	3	build/i18n/po/AutoFieldWidget.js/en-GB.po
+3	3	build/i18n/po/AutoFieldWidget.js/es-ES.po
+3	3	build/i18n/po/AutoFieldWidget.js/fi-FI.po
+3	3	build/i18n/po/AutoFieldWidget.js/fr-CA.po
+3	3	build/i18n/po/AutoFieldWidget.js/hy-AM.po
+3	3	build/i18n/po/AutoFieldWidget.js/oc-FR.po
+3	3	build/i18n/po/AutoFieldWidget.js/pt-BR.po
+3	3	build/i18n/po/AutoFieldWidget.js/ru-RU.po
+3	3	build/i18n/po/AutoFieldWidget.js/tr-TR.po
+3	3	build/i18n/po/FlattenerGrid.js/ar-JO.po
+3	3	build/i18n/po/FlattenerGrid.js/cs-CZ.po
+3	3	build/i18n/po/FlattenerGrid.js/de-DE.po
+3	3	build/i18n/po/FlattenerGrid.js/en-CA.po
+3	3	build/i18n/po/FlattenerGrid.js/es-ES.po
+3	3	build/i18n/po/FlattenerGrid.js/fr-CA.po
+3	3	build/i18n/po/PCrudFilterPane.js/ar-JO.po
+3	3	build/i18n/po/PCrudFilterPane.js/cs-CZ.po
+3	3	build/i18n/po/PCrudFilterPane.js/de-DE.po
+3	3	build/i18n/po/PCrudFilterPane.js/es-ES.po
+3	3	build/i18n/po/Searcher.js/ar-JO.po
+3	3	build/i18n/po/Searcher.js/cs-CZ.po
+3	3	build/i18n/po/Searcher.js/de-DE.po
+3	3	build/i18n/po/Searcher.js/en-CA.po
+3	3	build/i18n/po/Searcher.js/en-GB.po
+3	3	build/i18n/po/Searcher.js/es-ES.po
+3	3	build/i18n/po/Searcher.js/fi-FI.po
+3	3	build/i18n/po/Searcher.js/fr-CA.po
+3	3	build/i18n/po/Searcher.js/hy-AM.po
+3	3	build/i18n/po/Searcher.js/oc-FR.po
+3	3	build/i18n/po/Searcher.js/pt-BR.po
+3	3	build/i18n/po/Searcher.js/ru-RU.po
+3	3	build/i18n/po/TranslatorPopup.js/ar-JO.po
+3	3	build/i18n/po/TranslatorPopup.js/cs-CZ.po
+3	3	build/i18n/po/TranslatorPopup.js/de-DE.po
+3	3	build/i18n/po/TranslatorPopup.js/en-CA.po
+3	3	build/i18n/po/TranslatorPopup.js/en-GB.po
+3	3	build/i18n/po/TranslatorPopup.js/es-ES.po
+3	3	build/i18n/po/TranslatorPopup.js/fi-FI.po
+3	3	build/i18n/po/TranslatorPopup.js/fr-CA.po
+3	3	build/i18n/po/TranslatorPopup.js/hy-AM.po
+3	3	build/i18n/po/TranslatorPopup.js/oc-FR.po
+3	3	build/i18n/po/TranslatorPopup.js/pt-BR.po
+3	3	build/i18n/po/TranslatorPopup.js/ru-RU.po
+3	3	build/i18n/po/TranslatorPopup.js/tr-TR.po
+3	3	build/i18n/po/URLVerify.js/ar-JO.po
+3	3	build/i18n/po/URLVerify.js/cs-CZ.po
+3	3	build/i18n/po/URLVerify.js/de-DE.po
+3	3	build/i18n/po/URLVerify.js/en-GB.po
+3	3	build/i18n/po/URLVerify.js/es-ES.po
+3	3	build/i18n/po/URLVerify.js/hy-AM.po
+3	3	build/i18n/po/URLVerify.js/pt-BR.po
+3	3	build/i18n/po/User.js/ar-JO.po
+3	3	build/i18n/po/User.js/cs-CZ.po
+3	3	build/i18n/po/User.js/de-DE.po
+3	3	build/i18n/po/User.js/en-CA.po
+3	3	build/i18n/po/User.js/en-GB.po
+3	3	build/i18n/po/User.js/es-ES.po
+3	3	build/i18n/po/User.js/fi-FI.po
+3	3	build/i18n/po/User.js/fr-CA.po
+3	3	build/i18n/po/User.js/hy-AM.po
+3	3	build/i18n/po/User.js/oc-FR.po
+3	3	build/i18n/po/User.js/pt-BR.po
+3	3	build/i18n/po/User.js/ru-RU.po
+3	3	build/i18n/po/User.js/tr-TR.po
+3	3	build/i18n/po/XULTermLoader.js/ar-JO.po
+3	3	build/i18n/po/XULTermLoader.js/cs-CZ.po
+3	3	build/i18n/po/XULTermLoader.js/de-DE.po
+3	3	build/i18n/po/XULTermLoader.js/en-CA.po
+3	3	build/i18n/po/XULTermLoader.js/en-GB.po
+3	3	build/i18n/po/XULTermLoader.js/es-ES.po
+3	3	build/i18n/po/XULTermLoader.js/fi-FI.po
+3	3	build/i18n/po/XULTermLoader.js/fr-CA.po
+3	3	build/i18n/po/XULTermLoader.js/hy-AM.po
+3	3	build/i18n/po/XULTermLoader.js/oc-FR.po
+3	3	build/i18n/po/XULTermLoader.js/pt-BR.po
+3	3	build/i18n/po/XULTermLoader.js/ru-RU.po
+3	3	build/i18n/po/XULTermLoader.js/tr-TR.po
+3	3	build/i18n/po/acq.js/ar-JO.po
+3	3	build/i18n/po/acq.js/cs-CZ.po
+3	3	build/i18n/po/acq.js/de-DE.po
+3	3	build/i18n/po/acq.js/en-CA.po
+3	3	build/i18n/po/acq.js/en-GB.po
+3	3	build/i18n/po/acq.js/es-ES.po
+3	3	build/i18n/po/acq.js/fi-FI.po
+3	3	build/i18n/po/acq.js/fr-CA.po
+3	3	build/i18n/po/acq.js/hy-AM.po
+3	3	build/i18n/po/acq.js/oc-FR.po
+3	3	build/i18n/po/acq.js/pt-BR.po
+3	3	build/i18n/po/acq.js/ru-RU.po
+3	3	build/i18n/po/acq.js/tr-TR.po
+12	12	build/i18n/po/actor/de-DE.po
+3	3	build/i18n/po/admin.properties/ar-JO.po
+3	3	build/i18n/po/admin.properties/cs-CZ.po
+3	3	build/i18n/po/admin.properties/de-DE.po
+3	3	build/i18n/po/admin.properties/en-CA.po
+3	3	build/i18n/po/admin.properties/en-GB.po
+3	3	build/i18n/po/admin.properties/es-ES.po
+3	3	build/i18n/po/admin.properties/fi-FI.po
+3	3	build/i18n/po/admin.properties/fr-CA.po
+3	3	build/i18n/po/admin.properties/hy-AM.po
+3	3	build/i18n/po/admin.properties/oc-FR.po
+3	3	build/i18n/po/admin.properties/pt-BR.po
+3	3	build/i18n/po/admin.properties/ru-RU.po
+3	3	build/i18n/po/admin.properties/tr-TR.po
+3	3	build/i18n/po/auth.properties/ar-JO.po
+3	3	build/i18n/po/auth.properties/cs-CZ.po
+3	3	build/i18n/po/auth.properties/de-DE.po
+3	3	build/i18n/po/auth.properties/en-CA.po
+3	3	build/i18n/po/auth.properties/en-GB.po
+3	3	build/i18n/po/auth.properties/es-ES.po
+3	3	build/i18n/po/auth.properties/fi-FI.po
+3	3	build/i18n/po/auth.properties/fr-CA.po
+3	3	build/i18n/po/auth.properties/hy-AM.po
+3	3	build/i18n/po/auth.properties/oc-FR.po
+3	3	build/i18n/po/auth.properties/pt-BR.po
+3	3	build/i18n/po/auth.properties/ru-RU.po
+3	3	build/i18n/po/auth.properties/tr-TR.po
+3	3	build/i18n/po/authority.js/ar-JO.po
+3	3	build/i18n/po/authority.js/cs-CZ.po
+3	3	build/i18n/po/authority.js/de-DE.po
+3	3	build/i18n/po/authority.js/en-CA.po
+3	3	build/i18n/po/authority.js/en-GB.po
+3	3	build/i18n/po/authority.js/es-ES.po
+3	3	build/i18n/po/authority.js/fi-FI.po
+3	3	build/i18n/po/authority.js/fr-CA.po
+3	3	build/i18n/po/authority.js/hy-AM.po
+3	3	build/i18n/po/authority.js/oc-FR.po
+3	3	build/i18n/po/authority.js/pt-BR.po
+3	3	build/i18n/po/authority.js/ru-RU.po
+3	3	build/i18n/po/authority.js/tr-TR.po
+3	3	build/i18n/po/capture.js/ar-JO.po
+3	3	build/i18n/po/capture.js/cs-CZ.po
+3	3	build/i18n/po/capture.js/de-DE.po
+3	3	build/i18n/po/capture.js/en-CA.po
+3	3	build/i18n/po/capture.js/en-GB.po
+3	3	build/i18n/po/capture.js/es-ES.po
+3	3	build/i18n/po/capture.js/fi-FI.po
+3	3	build/i18n/po/capture.js/fr-CA.po
+3	3	build/i18n/po/capture.js/hy-AM.po
+3	3	build/i18n/po/capture.js/oc-FR.po
+3	3	build/i18n/po/capture.js/pt-BR.po
+3	3	build/i18n/po/capture.js/ru-RU.po
+3	3	build/i18n/po/cat.properties/ar-JO.po
+3	3	build/i18n/po/cat.properties/cs-CZ.po
+3	3	build/i18n/po/cat.properties/de-DE.po
+3	3	build/i18n/po/cat.properties/en-CA.po
+3	3	build/i18n/po/cat.properties/en-GB.po
+3	3	build/i18n/po/cat.properties/es-ES.po
+3	3	build/i18n/po/cat.properties/fi-FI.po
+3	3	build/i18n/po/cat.properties/fr-CA.po
+3	3	build/i18n/po/cat.properties/hy-AM.po
+3	3	build/i18n/po/cat.properties/oc-FR.po
+3	3	build/i18n/po/cat.properties/pt-BR.po
+3	3	build/i18n/po/cat.properties/ru-RU.po
+3	3	build/i18n/po/cat.properties/tr-TR.po
+3	3	build/i18n/po/circ.properties/ar-JO.po
+3	3	build/i18n/po/circ.properties/cs-CZ.po
+3	3	build/i18n/po/circ.properties/de-DE.po
+3	3	build/i18n/po/circ.properties/en-CA.po
+3	3	build/i18n/po/circ.properties/en-GB.po
+3	3	build/i18n/po/circ.properties/es-ES.po
+3	3	build/i18n/po/circ.properties/fi-FI.po
+3	3	build/i18n/po/circ.properties/fr-CA.po
+3	3	build/i18n/po/circ.properties/hy-AM.po
+3	3	build/i18n/po/circ.properties/oc-FR.po
+3	3	build/i18n/po/circ.properties/pt-BR.po
+3	3	build/i18n/po/circ.properties/ru-RU.po
+3	3	build/i18n/po/circ.properties/tr-TR.po
+3	3	build/i18n/po/common.properties/ar-JO.po
+3	3	build/i18n/po/common.properties/cs-CZ.po
+3	3	build/i18n/po/common.properties/de-DE.po
+3	3	build/i18n/po/common.properties/en-CA.po
+3	3	build/i18n/po/common.properties/en-GB.po
+3	3	build/i18n/po/common.properties/es-ES.po
+3	3	build/i18n/po/common.properties/fi-FI.po
+3	3	build/i18n/po/common.properties/fr-CA.po
+3	3	build/i18n/po/common.properties/hy-AM.po
+3	3	build/i18n/po/common.properties/oc-FR.po
+3	3	build/i18n/po/common.properties/pt-BR.po
+3	3	build/i18n/po/common.properties/ru-RU.po
+3	3	build/i18n/po/conify.dtd/ar-JO.po
+3	3	build/i18n/po/conify.dtd/cs-CZ.po
+3	3	build/i18n/po/conify.dtd/de-DE.po
+3	3	build/i18n/po/conify.dtd/en-CA.po
+3	3	build/i18n/po/conify.dtd/en-GB.po
+3	3	build/i18n/po/conify.dtd/es-ES.po
+3	3	build/i18n/po/conify.dtd/fi-FI.po
+3	3	build/i18n/po/conify.dtd/fr-CA.po
+3	3	build/i18n/po/conify.dtd/hy-AM.po
+3	3	build/i18n/po/conify.dtd/oc-FR.po
+3	3	build/i18n/po/conify.dtd/pt-BR.po
+3	3	build/i18n/po/conify.dtd/ru-RU.po
+3	3	build/i18n/po/conify.js/ar-JO.po
+3	3	build/i18n/po/conify.js/cs-CZ.po
+3	3	build/i18n/po/conify.js/de-DE.po
+3	3	build/i18n/po/conify.js/en-CA.po
+3	3	build/i18n/po/conify.js/en-GB.po
+3	3	build/i18n/po/conify.js/es-ES.po
+3	3	build/i18n/po/conify.js/fi-FI.po
+3	3	build/i18n/po/conify.js/fr-CA.po
+3	3	build/i18n/po/conify.js/hy-AM.po
+3	3	build/i18n/po/conify.js/oc-FR.po
+3	3	build/i18n/po/conify.js/pt-BR.po
+3	3	build/i18n/po/conify.js/ru-RU.po
+3	3	build/i18n/po/conify.js/tr-TR.po
+3	3	build/i18n/po/db.seed/ar-JO.po
+3	3	build/i18n/po/db.seed/cs-CZ.po
+3	3	build/i18n/po/db.seed/de-DE.po
+3	3	build/i18n/po/db.seed/en-CA.po
+3	3	build/i18n/po/db.seed/en-GB.po
+3	3	build/i18n/po/db.seed/es-ES.po
+3	3	build/i18n/po/db.seed/fi-FI.po
+3	3	build/i18n/po/db.seed/fr-CA.po
+3	3	build/i18n/po/db.seed/hy-AM.po
+3	3	build/i18n/po/db.seed/oc-FR.po
+3	3	build/i18n/po/db.seed/pt-BR.po
+3	3	build/i18n/po/db.seed/ru-RU.po
+3	3	build/i18n/po/db.seed/tr-TR.po
+6	7	build/i18n/po/fm_IDL.dtd/ar-JO.po
+6	7	build/i18n/po/fm_IDL.dtd/cs-CZ.po
+3	7	build/i18n/po/fm_IDL.dtd/de-DE.po
+6	7	build/i18n/po/fm_IDL.dtd/en-CA.po
+6	7	build/i18n/po/fm_IDL.dtd/en-GB.po
+6	7	build/i18n/po/fm_IDL.dtd/es-ES.po
+6	7	build/i18n/po/fm_IDL.dtd/fi-FI.po
+3	7	build/i18n/po/fm_IDL.dtd/fr-CA.po
+6	7	build/i18n/po/fm_IDL.dtd/hy-AM.po
+3	7	build/i18n/po/fm_IDL.dtd/oc-FR.po
+6	7	build/i18n/po/fm_IDL.dtd/pt-BR.po
+6	7	build/i18n/po/fm_IDL.dtd/ru-RU.po
+3	7	build/i18n/po/fm_IDL.dtd/tr-TR.po
+3	3	build/i18n/po/ils_events.xml/ar-JO.po
+3	3	build/i18n/po/ils_events.xml/cs-CZ.po
+3	3	build/i18n/po/ils_events.xml/de-DE.po
+3	3	build/i18n/po/ils_events.xml/en-CA.po
+3	3	build/i18n/po/ils_events.xml/en-GB.po
+3	3	build/i18n/po/ils_events.xml/es-ES.po
+3	3	build/i18n/po/ils_events.xml/fi-FI.po
+3	3	build/i18n/po/ils_events.xml/fr-CA.po
+3	3	build/i18n/po/ils_events.xml/hy-AM.po
+3	3	build/i18n/po/ils_events.xml/pt-BR.po
+3	3	build/i18n/po/ils_events.xml/ru-RU.po
+80	48	build/i18n/po/lang.dtd/ar-JO.po
+53	37	build/i18n/po/lang.dtd/cs-CZ.po
+25	26	build/i18n/po/lang.dtd/de-DE.po
+54	38	build/i18n/po/lang.dtd/en-CA.po
+54	38	build/i18n/po/lang.dtd/en-GB.po
+86	54	build/i18n/po/lang.dtd/es-ES.po
+55	39	build/i18n/po/lang.dtd/fi-FI.po
+25	26	build/i18n/po/lang.dtd/fr-CA.po
+51	35	build/i18n/po/lang.dtd/hy-AM.po
+25	26	build/i18n/po/lang.dtd/oc-FR.po
+25	26	build/i18n/po/lang.dtd/pt-BR.po
+25	26	build/i18n/po/lang.dtd/ru-RU.po
+25	26	build/i18n/po/lang.dtd/tr-TR.po
+3	3	build/i18n/po/match_set.js/ar-JO.po
+3	3	build/i18n/po/match_set.js/cs-CZ.po
+3	3	build/i18n/po/match_set.js/en-GB.po
+3	3	build/i18n/po/match_set.js/es-ES.po
+3	3	build/i18n/po/match_set.js/fr-CA.po
+3	3	build/i18n/po/match_set.js/hy-AM.po
+3	3	build/i18n/po/offline.properties/ar-JO.po
+3	3	build/i18n/po/offline.properties/cs-CZ.po
+3	3	build/i18n/po/offline.properties/de-DE.po
+3	3	build/i18n/po/offline.properties/en-CA.po
+3	3	build/i18n/po/offline.properties/en-GB.po
+3	3	build/i18n/po/offline.properties/es-ES.po
+3	3	build/i18n/po/offline.properties/fi-FI.po
+3	3	build/i18n/po/offline.properties/fr-CA.po
+3	3	build/i18n/po/offline.properties/hy-AM.po
+3	3	build/i18n/po/offline.properties/oc-FR.po
+3	3	build/i18n/po/offline.properties/pt-BR.po
+3	3	build/i18n/po/offline.properties/ru-RU.po
+3	3	build/i18n/po/offline.properties/tr-TR.po
+3	3	build/i18n/po/opac.dtd/ar-JO.po
+3	3	build/i18n/po/opac.dtd/cs-CZ.po
+3	3	build/i18n/po/opac.dtd/de-DE.po
+3	3	build/i18n/po/opac.dtd/en-CA.po
+3	3	build/i18n/po/opac.dtd/en-GB.po
+3	3	build/i18n/po/opac.dtd/es-ES.po
+3	3	build/i18n/po/opac.dtd/fi-FI.po
+3	3	build/i18n/po/opac.dtd/fr-CA.po
+3	3	build/i18n/po/opac.dtd/he-IL.po
+3	3	build/i18n/po/opac.dtd/hy-AM.po
+3	3	build/i18n/po/opac.dtd/oc-FR.po
+3	3	build/i18n/po/opac.dtd/pt-BR.po
+3	3	build/i18n/po/opac.dtd/ru-RU.po
+3	3	build/i18n/po/opac.dtd/tr-TR.po
+3	3	build/i18n/po/opac.js/ar-JO.po
+3	3	build/i18n/po/opac.js/cs-CZ.po
+3	3	build/i18n/po/opac.js/de-DE.po
+3	3	build/i18n/po/opac.js/en-CA.po
+3	3	build/i18n/po/opac.js/en-GB.po
+3	3	build/i18n/po/opac.js/es-ES.po
+3	3	build/i18n/po/opac.js/fi-FI.po
+3	3	build/i18n/po/opac.js/fr-CA.po
+3	3	build/i18n/po/opac.js/hy-AM.po
+3	3	build/i18n/po/opac.js/oc-FR.po
+3	3	build/i18n/po/opac.js/pt-BR.po
+3	3	build/i18n/po/opac.js/ru-RU.po
+3	3	build/i18n/po/opac.js/sv-SE.po
+3	3	build/i18n/po/opac.js/tr-TR.po
+3	3	build/i18n/po/patron.properties/ar-JO.po
+3	3	build/i18n/po/patron.properties/cs-CZ.po
+3	3	build/i18n/po/patron.properties/de-DE.po
+3	3	build/i18n/po/patron.properties/en-CA.po
+3	3	build/i18n/po/patron.properties/en-GB.po
+3	3	build/i18n/po/patron.properties/es-ES.po
+3	3	build/i18n/po/patron.properties/fi-FI.po
+3	3	build/i18n/po/patron.properties/fr-CA.po
+3	3	build/i18n/po/patron.properties/hy-AM.po
+3	3	build/i18n/po/patron.properties/oc-FR.po
+3	3	build/i18n/po/patron.properties/pt-BR.po
+3	3	build/i18n/po/patron.properties/ru-RU.po
+3	3	build/i18n/po/patron.properties/tr-TR.po
+3	3	build/i18n/po/pickup_and_return.js/ar-JO.po
+3	3	build/i18n/po/pickup_and_return.js/cs-CZ.po
+3	3	build/i18n/po/pickup_and_return.js/de-DE.po
+3	3	build/i18n/po/pickup_and_return.js/en-CA.po
+3	3	build/i18n/po/pickup_and_return.js/en-GB.po
+3	3	build/i18n/po/pickup_and_return.js/es-ES.po
+3	3	build/i18n/po/pickup_and_return.js/fi-FI.po
+3	3	build/i18n/po/pickup_and_return.js/fr-CA.po
+3	3	build/i18n/po/pickup_and_return.js/hy-AM.po
+3	3	build/i18n/po/pickup_and_return.js/oc-FR.po
+3	3	build/i18n/po/pickup_and_return.js/pt-BR.po
+3	3	build/i18n/po/pickup_and_return.js/ru-RU.po
+3	3	build/i18n/po/pull_list.js/ar-JO.po
+3	3	build/i18n/po/pull_list.js/cs-CZ.po
+3	3	build/i18n/po/pull_list.js/de-DE.po
+3	3	build/i18n/po/pull_list.js/en-CA.po
+3	3	build/i18n/po/pull_list.js/en-GB.po
+3	3	build/i18n/po/pull_list.js/es-ES.po
+3	3	build/i18n/po/pull_list.js/fi-FI.po
+3	3	build/i18n/po/pull_list.js/fr-CA.po
+3	3	build/i18n/po/pull_list.js/hy-AM.po
+3	3	build/i18n/po/pull_list.js/oc-FR.po
+3	3	build/i18n/po/pull_list.js/pt-BR.po
+3	3	build/i18n/po/pull_list.js/ru-RU.po
+3	3	build/i18n/po/pull_list.js/tr-TR.po
+3	3	build/i18n/po/register.js/ar-JO.po
+3	3	build/i18n/po/register.js/cs-CZ.po
+6	6	build/i18n/po/register.js/de-DE.po
+3	3	build/i18n/po/register.js/en-CA.po
+3	3	build/i18n/po/register.js/en-GB.po
+3	3	build/i18n/po/register.js/es-ES.po
+3	3	build/i18n/po/register.js/fi-FI.po
+3	3	build/i18n/po/register.js/fr-CA.po
+3	3	build/i18n/po/register.js/hy-AM.po
+3	3	build/i18n/po/register.js/oc-FR.po
+3	3	build/i18n/po/register.js/pt-BR.po
+3	3	build/i18n/po/register.js/ru-RU.po
+3	3	build/i18n/po/register.js/tr-TR.po
+3	3	build/i18n/po/reports.dtd/ar-JO.po
+3	3	build/i18n/po/reports.dtd/cs-CZ.po
+3	3	build/i18n/po/reports.dtd/de-DE.po
+3	3	build/i18n/po/reports.dtd/en-CA.po
+3	3	build/i18n/po/reports.dtd/en-GB.po
+3	3	build/i18n/po/reports.dtd/es-ES.po
+3	3	build/i18n/po/reports.dtd/fi-FI.po
+3	3	build/i18n/po/reports.dtd/fr-CA.po
+3	3	build/i18n/po/reports.dtd/hy-AM.po
+3	3	build/i18n/po/reports.dtd/pt-BR.po
+3	3	build/i18n/po/reports.dtd/ru-RU.po
+3	3	build/i18n/po/reports.dtd/tr-TR.po
+3	3	build/i18n/po/reports.js/ar-JO.po
+3	3	build/i18n/po/reports.js/cs-CZ.po
+3	3	build/i18n/po/reports.js/de-DE.po
+3	3	build/i18n/po/reports.js/en-CA.po
+3	3	build/i18n/po/reports.js/en-GB.po
+3	3	build/i18n/po/reports.js/es-ES.po
+3	3	build/i18n/po/reports.js/fi-FI.po
+3	3	build/i18n/po/reports.js/fr-CA.po
+3	3	build/i18n/po/reports.js/hu-HU.po
+3	3	build/i18n/po/reports.js/hy-AM.po
+3	3	build/i18n/po/reports.js/oc-FR.po
+3	3	build/i18n/po/reports.js/pt-BR.po
+3	3	build/i18n/po/reports.js/ru-RU.po
+3	3	build/i18n/po/reports.js/tr-TR.po
+3	3	build/i18n/po/reservation.js/ar-JO.po
+3	3	build/i18n/po/reservation.js/cs-CZ.po
+3	3	build/i18n/po/reservation.js/de-DE.po
+3	3	build/i18n/po/reservation.js/en-CA.po
+3	3	build/i18n/po/reservation.js/en-GB.po
+3	3	build/i18n/po/reservation.js/es-ES.po
+3	3	build/i18n/po/reservation.js/fi-FI.po
+3	3	build/i18n/po/reservation.js/fr-CA.po
+3	3	build/i18n/po/reservation.js/hy-AM.po
+3	3	build/i18n/po/reservation.js/oc-FR.po
+3	3	build/i18n/po/reservation.js/pt-BR.po
+3	3	build/i18n/po/reservation.js/ru-RU.po
+3	3	build/i18n/po/selfcheck.js/ar-JO.po
+3	3	build/i18n/po/selfcheck.js/cs-CZ.po
+3	3	build/i18n/po/selfcheck.js/de-DE.po
+3	3	build/i18n/po/selfcheck.js/en-CA.po
+3	3	build/i18n/po/selfcheck.js/en-GB.po
+3	3	build/i18n/po/selfcheck.js/es-ES.po
+3	3	build/i18n/po/selfcheck.js/fi-FI.po
+3	3	build/i18n/po/selfcheck.js/fr-CA.po
+3	3	build/i18n/po/selfcheck.js/hy-AM.po
+3	3	build/i18n/po/selfcheck.js/oc-FR.po
+3	3	build/i18n/po/selfcheck.js/pt-BR.po
+3	3	build/i18n/po/selfcheck.js/ru-RU.po
+3	3	build/i18n/po/serial.js/ar-JO.po
+3	3	build/i18n/po/serial.js/cs-CZ.po
+3	3	build/i18n/po/serial.js/de-DE.po
+3	3	build/i18n/po/serial.js/en-GB.po
+3	3	build/i18n/po/serial.js/es-ES.po
+3	3	build/i18n/po/serial.js/hy-AM.po
+3	3	build/i18n/po/serial.properties/ar-JO.po
+3	3	build/i18n/po/serial.properties/cs-CZ.po
+3	3	build/i18n/po/serial.properties/de-DE.po
+3	3	build/i18n/po/serial.properties/en-CA.po
+3	3	build/i18n/po/serial.properties/en-GB.po
+3	3	build/i18n/po/serial.properties/es-ES.po
+3	3	build/i18n/po/serial.properties/fi-FI.po
+3	3	build/i18n/po/serial.properties/fr-CA.po
+3	3	build/i18n/po/serial.properties/hy-AM.po
+3	3	build/i18n/po/serial.properties/oc-FR.po
+3	3	build/i18n/po/serial.properties/pt-BR.po
+3	3	build/i18n/po/serial.properties/tr-TR.po
+99	92	build/i18n/po/tpac/ar-JO.po
+99	92	build/i18n/po/tpac/cs-CZ.po
+95	91	build/i18n/po/tpac/de-DE.po
+95	91	build/i18n/po/tpac/en-CA.po
+95	91	build/i18n/po/tpac/en-GB.po
+99	92	build/i18n/po/tpac/es-ES.po
+95	91	build/i18n/po/tpac/fi-FI.po
+95	91	build/i18n/po/tpac/fr-CA.po
+95	91	build/i18n/po/tpac/hy-AM.po
+95	91	build/i18n/po/tpac/oc-FR.po
+95	91	build/i18n/po/tpac/pt-BR.po
+95	91	build/i18n/po/tpac/ru-RU.po
+95	91	build/i18n/po/tpac/tr-TR.po
+3	3	build/i18n/po/vandelay.js/ar-JO.po
+3	3	build/i18n/po/vandelay.js/cs-CZ.po
+3	3	build/i18n/po/vandelay.js/en-CA.po
+3	3	build/i18n/po/vandelay.js/en-GB.po
+3	3	build/i18n/po/vandelay.js/es-ES.po
+3	3	build/i18n/po/vandelay.js/hy-AM.po
+3	3	build/i18n/po/vandelay.js/pt-BR.po
+173	149	build/i18n/po/webstaff/ar-JO.po
+173	149	build/i18n/po/webstaff/cs-CZ.po
+173	149	build/i18n/po/webstaff/es-ES.po
+173	149	build/i18n/po/webstaff/ru-RU.po
+
+commit 1007cd833a8a73686d931703284ae842d7e12f05
+Author: blake <blake@mobiusconsortium.org>
+Date:   Wed May 24 12:54:39 2017 -0500
+
+    Translation updates - newpot
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+
+2683	2683	build/i18n/po/fm_IDL.dtd/fm_IDL.dtd.pot
+85	1165	build/i18n/po/tpac/tpac.pot
+67	54	build/i18n/po/webstaff/webstaff.pot
+
+commit de338bccf996b5c76e191619c7ca7078f24fedf2
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Wed May 24 12:35:09 2017 -0400
+
+    2.10.11-2.10.12 schema update
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+5	0	Open-ILS/src/sql/Pg/version-upgrade/2.10.11-2.10.12-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.10.11-2.10.12-upgrade-db.sql
+
+commit 3867a32c1e7bb82e1de11da6e4f31c8f2378d200
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Wed May 24 12:26:45 2017 -0400
+
+    update 2.12.2 release notes
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+15	1	docs/RELEASE_NOTES_2_12.adoc
+
+commit 3e663fb2381f0c13c80b776483af7a331be666e4
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Wed Apr 26 00:19:42 2017 -0400
+
+    LP#1478128: Avoid XSS in public catalog
+    
+    This patch escapes various GET param values by passing them through
+    the Template Toolkit html filter, including:
+    
+    * in the locale picker
+    * in the searchbar
+    * in the login form
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/templates/opac/parts/locale_picker.tt2
+1	1	Open-ILS/src/templates/opac/parts/login/form.tt2
+4	4	Open-ILS/src/templates/opac/parts/searchbar.tt2
+
+commit 03cc7bf48036a01bc8dc01be2f7429c15462d61e
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Wed May 24 00:00:38 2017 -0400
+
+    Docs: 2.12.2 Maintenance release notes
+    
+    Well, this turned out to be a busy maintenance release. Lots of bug fixes
+    are now outlined in the 2.12.2 release notes.
+    
+    This commit also adds a missing new feature - LSE setting for default
+    status for received acq line items - to the 2.12.0 notes.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+149	0	docs/RELEASE_NOTES_2_12.adoc
+
+commit d3276b9a917ba58419304eecda4610acb5076499
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Tue May 23 22:59:35 2017 -0400
+
+    Docs: 2.11.5 maintenance release notes
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+58	1	docs/RELEASE_NOTES_2_11.adoc
+
+commit f46fbdf5d3e31f8a8c3248b03aa85591ac23db02
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Wed May 17 12:11:33 2017 -0400
+
+    LP#1677902: Remove search formats from advanced search limiter block
+    
+    The original behavior of the advanced search limiter block was to remove
+    search formats from the display because it is available for limiting in the
+    search bar. Other code broke this behavior, and I've now restored it by
+    adding the ignore search format code to the searchbar.tt2 file. It also fixes
+    a problem where the search format limiters were incorrectly displaying on the
+    low hits page.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+
+0	15	Open-ILS/src/templates/opac/parts/result/table.tt2
+16	0	Open-ILS/src/templates/opac/parts/searchbar.tt2
+
+commit f37e6c73176d2ab83f5b2ff5780263120b1e5daa
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Sat May 20 08:39:18 2017 -0400
+
+    LP#1650410: include --days_back in synopsis and other tidying
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+5	4	Open-ILS/src/support-scripts/authority_control_fields.pl.in
+
+commit 78939ab62d354add7d5c3b569363ab2174f047b4
+Author: Jane Sandberg <sandbergja@users.noreply.github.com>
+Date:   Thu Jan 26 16:00:53 2017 -0800
+
+    LP#1650410: doc authority_control_fields.pl's --days_back flag
+    
+    This patch updates the POD that in turn is displayed when
+    running authority_control_fields.pl -h
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+7	0	Open-ILS/src/support-scripts/authority_control_fields.pl.in
+
+commit 91e2c59db4862579af548742ecad5b5f53decac2
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Thu May 18 15:43:53 2017 -0700
+
+    LP#1690468: fix Exclude Electronic Resources checkbox with advanced search limiters
+    
+    When advanced search limiters are applied, you cannot successfully
+    uncheck the Exclude Electronic Resources checkbox.  When you uncheck it,
+    your current search is reloaded, but e-resources are still excluded
+    (and the box remains checked).
+    
+    When you use the checkbox to exclude e-resources, the search form on the
+    results page contains a hidden input element:
+    
+    <input type="hidden" name="fi:-search_format" value="electronic" />
+    
+    This commit uses Javascript to remove that element from the search form
+    when the box is unchecked, before submitting the search.
+    
+    Test plan:
+    
+    [1] Enable the "Exclude Electronic Resources" checkbox in config.tt2.
+    [2] Do an advanced search, applying at least one search filter (e.g.
+        Language = "English").
+    [3] On the search results page, check the Exclude Electronic Resources
+        checkbox.  This repeats your search, excluding e-resources.
+    [4] Uncheck the Exclude Electronic Resources box.  Your search is
+        repeated, but e-resources are still excluded and the box remains
+        checked on your new results page.
+    [5] Apply this fix.
+    [6] Refresh the page or clear your browser cache, and try to uncheck the
+        Exclude Electronic Resources box again.  This time, it should work:
+        e-resources will no longer be excluded, and the box is unchecked
+        when your new results page loads.
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+8	0	Open-ILS/web/js/ui/default/opac/simple.js
+
+commit a1f3cc9b8db9a0c680c2cb94a5612fda120bb5ed
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Thu May 18 21:59:28 2017 -0400
+
+    LP#1610246: add upgrade note
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+7	0	docs/RELEASE_NOTES_NEXT/Reports/fix_classic_current_circ.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Reports/fix_classic_current_circ.adoc
+
+commit 254e42e1f843a18d71f34a92986502cdcd450e0e
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Fri Aug 5 09:27:23 2016 -0400
+
+    LP#1610246 Classic Circulation View excluding circulations
+    
+    The reporter.classic_current_circ view, which is available via
+    Open-ILS/src/sql/Pg/example.reporter-extension.sql, was excluding
+    circulations because it was assuming all users have a billing address
+    This branch corrects that with a LEFT JOIN.
+    
+    No upgrade script will be included since these views are not assumed
+    to be installed by all Evergreen instances.  Please re-run the
+    example.reporter-extension.sql file to apply this change for your
+    instance.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/sql/Pg/example.reporter-extension.sql
+
+commit a4add9ca465974bc775c5076c8543f96c37f55f5
+Author: Jason Etheridge <jason@esilibrary.com>
+Date:   Wed Apr 26 17:23:26 2017 -0400
+
+    LP#1491875: avoid erroneous "unsaved data" popup during MARC record creation
+    
+    Test plan
+    ---------
+    [1] Navigate to Cataloging -> Create New MARC Record.
+    [2] Choose a template, click Load
+    [3] Enter data in a fixed field, for example, Date1
+    [4] Enter data in a MARC field such as 100
+    [5] Click Create Record:
+    
+        The "This tab may have unsaved data. ..." pop up will appear.
+        Clicking OK will save the record and take the user to their default
+        view of the record.
+        Clicking Cancel will save the record and return the user to the MARC
+        Edit screen.
+        The behavior when clicking Cancel can lead to confusion as to
+        whether the record has actually been saved.
+    
+    [6] Apply the patch and repeats steps #1-#5.
+    [7] This time, no extraneous unsaved data warning should appear.
+    
+    Note that this patch's kludge doesn't fix all possible instances
+    of the warning; see https://bugs.launchpad.net/evergreen/+bug/1491875/comments/6
+    for details.
+    
+    Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+    SIgned-off-by: Andrea Neiman <abneiman@equinoxinitiative.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	0	Open-ILS/xul/staff_client/server/cat/marcedit.js
+
+commit 271babb432a56922272d72de72096a32ebc4e9af
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Mar 31 10:21:45 2017 -0400
+
+    LP#1677661 Hold targeter live test use API, etc.
+    
+    Teach the hold targeter live tests to call the open-ils.hold.targeter
+    API instead of calling the now-defunct Utils::HoldTargeter batch
+    targeter function.  Apart from the loss of this function, calling the
+    API allows the live tests to exercise more of the targeting code.
+    
+    Teach the live tests to test --soft-retarget-interval instead of the
+    deprecated --skip-viable option.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+18	10	Open-ILS/src/perlmods/live_t/20-hold-targeter.t
+
+commit 67716ead95fa5addab903e3055b7d9a4acb0773a
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Mar 31 10:21:25 2017 -0400
+
+    LP#1677661 Targeter V2 remove unused batch API
+    
+    Remove the unusued batch target() function from Utils::HoldTargeter to
+    avoid code duplication.  The same (but more resilient) batch targeting
+    construct exists in the open-ils.hold-targeter API.
+    
+    Move API docs from Utils::HoldTargeter to the open-ils.hold-targeter API
+    docs for added visbility / findability.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+43	18	Open-ILS/src/perlmods/lib/OpenILS/Application/HoldTargeter.pm
+2	66	Open-ILS/src/perlmods/lib/OpenILS/Utils/HoldTargeter.pm
+
+commit 5044f0f9f4c94e284475db1d125b8c2bcaeab61f
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Mar 30 11:47:20 2017 -0400
+
+    LP#1677661 Targeter V2 extras release notes
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+36	0	docs/RELEASE_NOTES_NEXT/Administration/hold-targeter-v2-improvements.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Administration/hold-targeter-v2-improvements.adoc
+
+commit 448057dd9eaeea988cb6bdaa495f0541c317344d
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Mar 22 11:47:21 2017 -0400
+
+    LP#1677661 Hold Targeter V2 Repairs & Improvements
+    
+    * Make the batch targeter more resilient to a single-hold failure.
+    
+    * Additional batch targeter info logging.
+    
+    * Set OSRF_LOG_CLIENT in hold_targeter_v2.pl for log tracing
+    
+    * Removes the confusingly name --target-all option
+    
+    * Adds a new --next-check-interval option for specifying when the
+      targeter will next affect the currently processed holds, which may be
+      different that now + retarget-interval in cases where the targeter is
+      not constantly running.
+    
+    * Replaces the --skip-viable option with a new --soft-retarget-interval
+      option, allowing for time-based soft-targeting.
+    
+    * Soft-targeting now updates hold_copy_maps for all affected holds, not
+      just those requiring a full retarget.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+20	6	Open-ILS/src/perlmods/lib/OpenILS/Application/HoldTargeter.pm
+108	76	Open-ILS/src/perlmods/lib/OpenILS/Utils/HoldTargeter.pm
+40	22	Open-ILS/src/support-scripts/hold_targeter_v2.pl
+
+commit a3a949c5b6e60bd48cbaf1a4c735bdb8eadf1887
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Apr 26 12:42:21 2017 -0400
+
+    LP#1618949 Required patron stats format repairs
+    
+    Fixes a broken div column class, which caused the patron stat cats to
+    stretch across the page.
+    
+    Other div nesting/formatting fixes and additional inline code comments.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+32	39	Open-ILS/src/templates/staff/circ/patron/t_edit.tt2
+3	2	Open-ILS/web/js/ui/default/staff/circ/patron/regctl.js
+
+commit 871690108f58b73e48f1ee8041b1b42166bc222e
+Author: Billy Horn <bhorn@catalystdevworks.com>
+Date:   Mon Nov 7 14:29:53 2016 -0800
+
+    LP#1618949 Patron edit forces required stat cats
+    
+    Display required stat cats as required form fields and prevent the
+    patron editor form from submitting when required stat cats do not have
+    values.
+    
+    Signed-off-by: Billy Horn <bhorn@catalystdevworks.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+11	6	Open-ILS/src/templates/staff/circ/patron/t_edit.tt2
+4	1	Open-ILS/web/js/ui/default/staff/circ/patron/regctl.js
+
+commit d8cd4e8f8d8d9efd5145d30a431cadae64f225f0
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri May 12 16:22:14 2017 -0400
+
+    LP#1670242 Webstaff checkin transit holds addr fix
+    
+    Gracefully handle cases where a checkin results in a transit to a branch
+    with no holds address.  Route dialog and print templates now display "We
+    do not have a holds address for this library. "
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+8	2	Open-ILS/src/templates/staff/circ/share/t_transit_dialog.tt2
+10	5	Open-ILS/src/templates/staff/share/print_templates/t_hold_transit_slip.tt2
+10	5	Open-ILS/src/templates/staff/share/print_templates/t_transit_slip.tt2
+5	1	Open-ILS/web/js/ui/default/staff/circ/services/circ.js
+
+commit f8198ba45237a93fd930058a9a2c080ee32a04a7
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Oct 6 10:27:15 2016 -0400
+
+    Webstaff: hide behind-desk option when not supported
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+
+2	1	Open-ILS/src/templates/staff/circ/patron/t_edit.tt2
+
+commit a44049502364f851d52b9dec9cac99270ca2fede
+Author: Galen Charlton <gmc@esilibrary.com>
+Date:   Fri Nov 11 14:52:11 2016 -0500
+
+    LP#1641208: util.file no longer mangles UTF8 when writing JSON
+    
+    This patch ensures that JSON strings are converted to UTF8
+    before they are writing to XUL profile files by util.file. Doing this
+    fixes a bug where by OU names like "ბიზნესისა" can get mangled
+    in certain XUL client interfaces.
+    
+    To test
+    -------
+    [1] Set an OU name to ბიზნესისა
+    [2] In the transit list, note that the OU selector displays
+        the name as ÑØÖÜÔáØáÐ.
+    [3] Apply the patch (note that it's not necessary to rebuild
+        the staff client to test this).
+    [4] Restart the staff client, clearing cache beforehand.
+    [5] Note that the OU name is now displayed correctly in the transit
+        list.
+    
+    Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+    Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+
+11	2	Open-ILS/xul/staff_client/chrome/content/util/file.js
+
+commit baf94caad1df88ccda10f5fc1092c4ad8302ead4
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed May 17 13:14:17 2017 -0400
+
+    LP#1673799 Stamping EDI query SQL update
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+7	0	Open-ILS/src/sql/Pg/upgrade/1040.schema.index_edi_message_remote_file.sql
+0	7	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.index_edi_message_remote_file.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1040.schema.index_edi_message_remote_file.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.index_edi_message_remote_file.sql
+
+commit 45d30ad4edb23c8aa92a75b8f3088b9d9a8b3a6c
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Fri Mar 17 11:47:46 2017 -0400
+
+    LP#1673799: new acqedim index to speed up duplicate file check
+    
+    This patch adds a new index on acq.edi_message to speed up
+    the check for duplicate EDI messages that edi_fetcher.pl runs,
+    replacing use of "ilike" with invocations of the evergreen.lowercase()
+    stored procedure.
+    
+    To test
+    -------
+    [1] Arrange to create or simulate an EDI message that failed
+        processing.
+    [2] Run edi_fetcher.pl to have it attempt to download the
+        failed message in step #1; verify that the file is
+        /not/ downloaded again and that no additonal acq.edi_message
+        rows are created for it.
+    [3] (Extra credit) Try steps 1 and 2 in a database that has a
+        very large number of rows in acq.edi_message.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+4	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Acq/EDI.pm
+1	0	Open-ILS/src/sql/Pg/200.schema.acq.sql
+7	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.index_edi_message_remote_file.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.index_edi_message_remote_file.sql
+
+commit bef0a805e64cd113ff3073db9f46a5bc2afdafe6
+Author: Josh Stompro <stomproj@larl.org>
+Date:   Wed Dec 21 13:57:32 2016 -0600
+
+    LP#1650807: fix rollover_phone_to_print.pl to ack failed calls
+    
+    This patch fixes a bug in rollover_phone_to_print.pl that kept
+    failed callfiles from being moved.
+    
+    The list of new event ID's that the script created was being sent to the
+    mediator, which couldn't do anything with them.  The original event ID's
+    need to be sent to have those call files moved.
+    
+    Signed-off-by: Josh Stompro <stomproj@larl.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/support-scripts/rollover_phone_to_print.pl
+
+commit 0ef165435f41df5a53db9159554cd4dd2f985200
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Mar 14 13:57:12 2017 -0400
+
+    LP#1672824 A/T complete_time set on grouped events
+    
+    Set the complete_time value on grouped Action/Trigger events when an
+    event's state reaches "complete", consisten with non-grouped events.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+3	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Trigger/EventGroup.pm
+
+commit e5b88ad432effe4e8ca61a72e3fa21d6f7aa4991
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Sat Aug 20 10:46:11 2016 -0400
+
+    LP#117794 - Remove references to "Keep" field in Vandelay docs.
+    
+    Since the "Keep" field of Vandelay Import Item Attributes is
+    not implemented, remove references to it in the documentation.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+1	5	docs/cataloging/batch_importing_MARC.adoc
+
+commit fa6cc748c424a7de61e15068154c7dda9d806c21
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Sat Aug 20 10:36:57 2016 -0400
+
+    LP#1177794 - remove "Keep" field from Vandelay Import Item Attributes.
+    
+    The "Keep" field in Vandelay Import Item Attributes is not
+    currently implemented, so remove from all user interfaces.
+    However, I didn't change the vandelay.import_item_attr_definition
+    table, leaving the option for this to be implemented in the future.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    
+    Conflicts:
+    	build/i18n/po/fm_IDL.dtd/fm_IDL.dtd.pot
+
+0	1	Open-ILS/examples/fm_IDL.xml
+0	4	build/i18n/po/fm_IDL.dtd/fm_IDL.dtd.pot
+
+commit 71d57f10c48c31f2329166f5c98beceef1712073
+Author: Jason Boyer <jboyer@library.in.gov>
+Date:   Tue May 9 11:07:46 2017 -0400
+
+    LP1689576: Fix ALARM -> ALRM Typo
+    
+    In Biblio.pm, when trying to set a timeout handler for $SIG{ALARM}
+    when retrieving cached facets as part of a catalog search,
+    a warning is dropped in the logs to this effect:
+    "No such signal: SIGALARM at
+    /usr/local/share/perl/5.18.2/OpenILS/Application/Search/Biblio.pm
+    line 1411"
+    When using $SIG{ALRM} instead the handler is set as expected.
+    
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Search/Biblio.pm
+
+commit 80fce43417fe30552255f866ea699c864610424b
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Mon May 15 17:03:28 2017 -0400
+
+    LP#1552861: stamp database update
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+38	0	Open-ILS/src/sql/Pg/upgrade/1039.data.change_default_match_set_ous_type.sql
+0	38	Open-ILS/src/sql/Pg/upgrade/XXXX.data.change_default_match_set_ous_type.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1039.data.change_default_match_set_ous_type.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.change_default_match_set_ous_type.sql
+
+commit f04f4a6ee73c811ceffb83a3bac9e1caf070561f
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Wed May 10 10:00:46 2017 -0700
+
+    LP#1552861: add upgrade script
+    
+    Also, a test plan for the fix:
+    
+    [1] Set the vandelay.default_match_set setting for several
+        org units. In at least one case, set it to the ID
+        of a valid vandelay.match_set entry; in another case,
+        set it to a numeric ID that doesn't match any existing
+        vms rows; and finally, in another case set it to the
+        name of a match set.
+    [2] Apply the patch and run the database update. Verify that
+        the update script will indicate that there are invalid
+        settings, then delete.
+    [3] Open the library settings editor and verify that in the
+        case where a valid match set was used, the editor provides
+        a drop-down with possible vms values with the correct
+        one selected.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+38	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.change_default_match_set_ous_type.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.change_default_match_set_ous_type.sql
+
+commit 78970cb5838766e3d4df1931efd787e4caf50f84
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Thu Mar 3 10:55:34 2016 -0800
+
+    LP#1552861: use correct datatype for vandelay.default_match_set org setting
+    
+    Values for this setting should be links to vandelay.match_set, not strings.
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    
+    Conflicts:
+    	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+
+commit 272fbb4793477a18b5530156fe1b55045c35b789
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon May 15 14:16:05 2017 -0400
+
+    LP#1170514 Stamping vandelay bib-overlay resync SQL
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+44	0	Open-ILS/src/sql/Pg/upgrade/1038.schema.vandelay_auto_overlay_bib_record.sql
+0	44	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.vandelay_auto_overlay_bib_record.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1038.schema.vandelay_auto_overlay_bib_record.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.vandelay_auto_overlay_bib_record.sql
+
+commit bb0bb3250364f8d844c439c1fd18449a747cdd9e
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Tue Apr 11 10:20:30 2017 -0400
+
+    LP#1170514 - Upgrade script for vandelay.auto_overlay_bib_record
+    
+    This script got missed in the 2.1-2.2 era and finally makes it
+    in nearly six years later.  Not necessary for sites that began using
+    Evergreen since then, but harmless to run.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+44	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.vandelay_auto_overlay_bib_record.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.vandelay_auto_overlay_bib_record.sql
+
+commit 72e12ff74699285edde5307fba920874d70c68f9
+Author: Jeanette Lundgren <jlundgren@cwmars.org>
+Date:   Wed May 10 17:00:39 2017 -0400
+
+    Docs: LP#1673841 Fix formatting in Apache docs
+    
+    From Jeanette's comment on the bug:
+    
+    "I converted into a simple unordered list and it is easier to read, but
+    the list bullet spacing makes for a long list.
+    
+    To conserve some scrolling, do you want me to put it in a table instead
+    with 3 column headers (option | default | description)?"
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+16	16	docs/admin/apache_access_handler.adoc
+
+commit 091bdd5aabc8618cc5d747427606fed31d2c39d2
+Author: Jeanette Lundgren <jlundgren@cwmars.org>
+Date:   Wed May 3 16:17:19 2017 -0400
+
+    Docs: Update reporter_cloning_shared_templates.adoc
+    
+    Small correction to match the new menu names and path in the web client.
+    Also fix the arrow character by changing from --> to ->.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+1	2	docs/reports/reporter_cloning_shared_templates.adoc
+
+commit 87b54d786acffbb3794994bb4d8b023f41fa5b7c
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed May 3 10:48:49 2017 -0400
+
+    LP#1648234 Retain myopac redirect and keep refs
+    
+    Leave the myopac.xml redirect in eg_vhost.conf since of all the
+    redirects it's the most likely to be used.  This version of the redirect
+    is proxy-proofed.
+    
+    Additionally keep all of the original myopac redirects in
+    Open-ILS/examples/jspac_redirects.conf for reference.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+6	0	Open-ILS/examples/apache/eg_vhost.conf.in
+6	0	Open-ILS/examples/apache_24/eg_vhost.conf.in
+43	0	Open-ILS/examples/jspac_redirects.conf
+7	5	docs/RELEASE_NOTES_NEXT/Administration/remove-jspac-redir.adoc
+ create mode 100644 Open-ILS/examples/jspac_redirects.conf
+
+commit b5c804dde1bdfdec8251f12ab81511fdbc6cac0b
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Apr 17 14:20:17 2017 -0400
+
+    LP#1648234 Remove Apache JSPAC redirects
+    
+    Remove automatic URL redirects from JSPAC URLs to TPAC URLs in the
+    example Apache configuration files.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+0	44	Open-ILS/examples/apache/eg_vhost.conf.in
+0	44	Open-ILS/examples/apache_24/eg_vhost.conf.in
+8	0	docs/RELEASE_NOTES_NEXT/Administration/remove-jspac-redir.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Administration/remove-jspac-redir.adoc
+
+commit c98cf46927ddc682c3bf70b764f6d9cfced163d4
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Apr 17 14:09:10 2017 -0400
+
+    LP#1648234 IP Redirect honors client port
+    
+    IP-based redirection now redirects the client to the same port number
+    originally requsted by the client, instead of using the port that the
+    Apache server is listening on.  This prevents internal Apache from
+    leaking to the caller when a proxy is used.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+9	2	Open-ILS/src/perlmods/lib/OpenILS/WWW/Redirect.pm
+
+commit 04512556ce39459a80d40a726f3a3692e5ebcff3
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Wed Mar 22 12:15:06 2017 -0400
+
+    LP#1648234: fix Apache 2.2 version of redirect rules
+    
+    Apache 2.2 doesn't actually set a REQUEST_SCHEME variable,
+    so we'll simulate it.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+13	4	Open-ILS/examples/apache/eg_vhost.conf.in
+
+commit b4683a5bf0bc83241d7dbca3c7d961e94c01eec1
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Feb 24 17:09:17 2017 -0500
+
+    LP#1648234 Apache redirects to standard ports
+    
+    Certain Apache redirects now send the browser to standard 80/443 ports
+    instead of defaulting to the internally configured Apache ports,
+    which may be non-standard, particularly in a proxied environment.
+    
+    Leaking the non-standard ports to the browser causes the browser to
+    bypass the proxy and could cause the browser to request inaccessible
+    pages.
+    
+    Paths affected by this patch:
+    
+    /
+    /eg/staff
+    /opac/extras/slimpac/start.html
+    /opac/extras/slimpac/advanced.html
+    /opac/extras/slimpac/.*?locale=.*
+    
+    To test:
+    
+    1. Configure Apache to use non-standard ports for port 80/443 (e.g. 7080
+    and 7443).
+    2. Confirm the issue by navigatigating to http://HOST/
+    3. This should redirect to http://HOST:7080/eg/opac/home
+    4. Apply the Apache config changes and reload/restart Apache.
+    5. Clear the browser cache to reset any redirects
+    6. Navigate to http://HOST/
+    7. Confirm it redirects the browser to http://HOST/eg/opac/home
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+5	5	Open-ILS/examples/apache/eg_vhost.conf.in
+5	5	Open-ILS/examples/apache_24/eg_vhost.conf.in
+
+commit bf478cb8d7506735af3d69437b42e4d471780c34
+Author: blake <blake@mobiusconsortium.org>
+Date:   Tue May 2 14:04:37 2017 -0500
+
+    Docs: Update MARC editor docs for web client
+    
+    Provided Webby screen shots and updated the language to match the web based
+    staff client.
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+13	16	docs/cataloging/MARC_Editor.adoc
+11	40	docs/cataloging/physical_char_wizard.adoc
+-	-	docs/media/ffrc1_2.12.jpg
+-	-	docs/media/ffrc2_2.12.jpg
+-	-	docs/media/ffrc3_2.12.jpg
+-	-	docs/media/pcw1_2.12.jpg
+-	-	docs/media/pcw2_2.12.jpg
+-	-	docs/media/pcw3_2.12.jpg
+-	-	docs/media/pcw4_2.12.jpg
+-	-	docs/media/pcw5_2.12.jpg
+-	-	docs/media/pcw6_2.12.jpg
+ create mode 100755 docs/media/ffrc1_2.12.jpg
+ create mode 100755 docs/media/ffrc2_2.12.jpg
+ create mode 100755 docs/media/ffrc3_2.12.jpg
+ create mode 100755 docs/media/pcw1_2.12.jpg
+ create mode 100755 docs/media/pcw2_2.12.jpg
+ create mode 100755 docs/media/pcw3_2.12.jpg
+ create mode 100755 docs/media/pcw4_2.12.jpg
+ create mode 100755 docs/media/pcw5_2.12.jpg
+ create mode 100755 docs/media/pcw6_2.12.jpg
+
+commit d0f39edd028159f30e949ea17bb3cd88f54b657d
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Thu Apr 27 13:54:12 2017 -0700
+
+    LP#1647852: Use correct method during adjust to zero on negative balance
+    
+    Implementing Brent Mills' suggestion on Launchpad.
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+2	2	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Money.pm
+
+commit aebee2c65cd113390659815ed5ef9d3df143555e
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Mon May 8 22:51:42 2017 -0400
+
+    Docs typo: s/minimum/maximum/
+    
+    A small thing, but it means exactly the opposite. Thanks to _adb in IRC for
+    pointing this out!
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+
+1	1	docs/development/intro_opensrf.adoc
+
+commit 0eabc697dbfa1c07ceae6dad4068cf4bbbb6c254
+Author: Robert Soulliere <robert.soulliere@mohawkcollege.ca>
+Date:   Mon May 8 10:37:10 2017 -0400
+
+    Docs: Update upgrade instructions for 2.12.1
+    
+    Change references to the latest Evergreen version 2.12.1.
+    
+    Signed-off-by: Robert Soulliere <robert.soulliere@mohawkcollege.ca>
+
+19	16	docs/installation/server_upgrade.adoc
+
+commit 60b3c36ccb9e55e376b9cb58a76e505d9c9cb415
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue May 2 11:51:12 2017 -0400
+
+    LP#1687649 Z39.50 CQL query parser honors bools
+    
+    To test with yaz-client, Z server on localhost, database=evergreen:
+    
+    Z> open localhost:2210/evergreen
+    Z> find @or @attr 1=4 @attr 4=6 "potter" @attr 1=4 @attr 4=6 "piano"
+    
+    "Number of hits:" value should be greater than zero (~38) using the
+    concerto data set.
+    
+    Similarly, opensrf logs should contain the line:
+    
+    SRU search string [(title = potter or title = piano)] converted to
+    [title:potter || title:piano]
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/WWW/SuperCat.pm
+
+commit 7374f723d17d0964fd0af9b8c2fc3c15003e3703
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Thu Dec 1 17:24:01 2016 -0500
+
+    LP#1646638 - Fix SIP timeouts due to invalid sessions
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+2	0	Open-ILS/src/perlmods/lib/OpenILS/SIP.pm
+
+commit 75bd47794fe3710f110ba9c1b3dd50da0b815c87
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Mon May 1 14:47:58 2017 -0400
+
+    LP#1667221: (follow-up) remove comment that is now a lie
+    
+    Also, here's a test plan:
+    
+    [1] Edit /openils/conf/oils_sip.xml and set the currency
+        defined in the implementation section to be something
+        other than USD.
+    [2] Start the SIP server and perform a patron information
+        request; note that the BH field in the response contains
+        'USD'.
+    [3] Apply the patch and restart the SIP server.
+    [4] Repeat step 2; this time, the currency should be whatever
+        is specified in oils_sip.xml.
+    [5] Comment out the currency section in oils_sip.xml and restart
+        the SIP server.
+    [6] Repeat step 2; this time, the currency should be back to 'USD'.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/SIP/Patron.pm
+
+commit c5f33f473a901f7021c55002eb88613baacf0909
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Mon Feb 20 17:20:26 2017 -0800
+
+    LP#1667221: use library currency as SIP patron currency instead of always using USD
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/SIP/Patron.pm
+
+commit d5142a3ecfc3938eff8d27ddd05e1fda87af3a5a
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Sat May 6 14:16:57 2017 -0400
+
+    LP#1378829 Stamp Upgrade Script & Add Release Note
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+101	0	Open-ILS/src/sql/Pg/upgrade/1037.data.fix_long_overdue_perm.sql
+0	101	Open-ILS/src/sql/Pg/upgrade/XXXX.data.fix_long_overdue_perm.sql
+7	0	docs/RELEASE_NOTES_NEXT/Administration/fix_copy_status_long_overdue_override_permission_typo.adoc
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1037.data.fix_long_overdue_perm.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.fix_long_overdue_perm.sql
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Administration/fix_copy_status_long_overdue_override_permission_typo.adoc
+
+commit 7363b86a5358e03422aae7811cb6397fc7c3a48d
+Author: Jeff Godin <jgodin@tadl.org>
+Date:   Fri Apr 14 10:21:40 2017 -0400
+
+    LP#1378829 Fix long overdue override permission
+    
+    Fix override permission used when checking in a copy that is "long
+    overdue".
+    
+    The existing permission was incorrectly created with a code of
+    COPY_STATUS_LONGOVERDUE.override, while the event thrown requires a
+    permission with a code of COPY_STATUS_LONG_OVERDUE.override
+    
+    This commit updates the seed data and a few references to the
+    old/incorrect permission in documentation, and also includes an
+    upgrade script designed to accommodate the various likely ways in
+    which sites may have already locally addressed this issue.
+    
+    A simple pgtap test is also included.
+    
+    Signed-off-by: Jeff Godin <jgodin@tadl.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+1	1	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+11	0	Open-ILS/src/sql/Pg/t/regress/lp1378829_fix_long_overdue_perm.pg
+101	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.fix_long_overdue_perm.sql
+1	1	docs/circulation/circulating_items.adoc
+1	1	docs/circulation/circulating_items_web_client.adoc
+ create mode 100644 Open-ILS/src/sql/Pg/t/regress/lp1378829_fix_long_overdue_perm.pg
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.fix_long_overdue_perm.sql
+
+commit 7bf1563a5aada74051bf91ab782b6df5d146b1f5
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Fri May 5 12:29:38 2017 -0400
+
+    Docs: Remove stray bullet entry
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+0	1	docs/opac/new_skin_customizations.adoc
+
+commit 557bec5178afe23c449b7367b067ccf93ee13e9b
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Fri May 5 12:14:19 2017 -0400
+
+    Docs: Add files to the list of tpac files that should be customized
+    
+    We have a list of tpac files that should be customized on an Evergreen system.
+    There are a couple of files related to password formats that should be included
+    here.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+9	0	docs/opac/new_skin_customizations.adoc
+
+commit a5c8ec3e7e6825ec558d1905e6642c4331aa93b4
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Tue May 2 21:07:48 2017 -0400
+
+    Docs: Reducing line length to 80 characters in using OPAC docs
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+333	101	docs/opac/using_the_public_access_catalog.adoc
+
+commit 48aa83ec0cb08a4af7ca5ed26b0be0b4e5ac8280
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Tue May 2 19:20:20 2017 -0400
+
+    Docs: Sibling links documentation
+    
+    Adds documentation and a screenshot for the new sibling links that display
+    on the record details page. Also removes a bit of duplicated documentation.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+-	-	docs/media/other-formats-and-editions.png
+13	9	docs/opac/using_the_public_access_catalog.adoc
+ create mode 100644 docs/media/other-formats-and-editions.png
+
+commit d606dbe2cec21b96c7863a02bddc0b6644343ecf
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Tue May 2 13:46:31 2017 -0400
+
+    Docs: Reducing line size to 80 characters
+    
+    Reducing the line size in a couple of docs to 80 character. Makes for easier
+    editing for those who are working from a command line editor.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+18	7	docs/opac/new_skin_customizations.adoc
+42	13	docs/opac/tpac_meta_record_holds.adoc
+
+commit 5534861421d4119f904ac7e4dcf38d303bd55194
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Tue May 2 13:33:54 2017 -0400
+
+    Docs: Documentation for default metarecord search
+    
+    Adding documentation on how to configure a default metarecord search in the
+    admin section. The catalog section also containts a tip about this option with
+    a link to the admin section for further details on how to configure it.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+6	0	docs/opac/new_skin_customizations.adoc
+8	0	docs/opac/tpac_meta_record_holds.adoc
+
+commit 1830abfcf1f6b9a51e2be7e6e9bc2124137a347c
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Thu Apr 27 15:31:39 2017 -0400
+
+    LP#1691009 Cache the RTL and LTR stylesheets
+    
+    To allow browsers to cache the correct version of the stylesheet, append a GET
+    param indicating the direction.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+3	1	Open-ILS/src/templates/opac/parts/base.tt2
+
+commit fd089c7f35318f87335fb7126bcb1b5d7c29da56
+Author: Ben Shum <ben@evergreener.net>
+Date:   Thu Apr 27 11:43:55 2017 -0400
+
+    LP#1681009 Merge the RTL style with the LTR style (part2)
+    
+    Finishing up the rest of the file and removing the RTL specific one
+    
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+0	46	Open-ILS/src/templates/opac/css/style-rtl.css.tt2
+225	24	Open-ILS/src/templates/opac/css/style.css.tt2
+0	1	Open-ILS/src/templates/opac/parts/base.tt2
+ delete mode 100644 Open-ILS/src/templates/opac/css/style-rtl.css.tt2
+
+commit ca935283509fb11ed0b021e0179fdc0b42f404e0
+Author: Dan Scott <dan@coffeecode.net>
+Date:   Thu Apr 27 11:41:00 2017 -0400
+
+    LP#1681009 Merge the RTL style with the LTR style
+    
+    Rather than adding the right-to-left stylesheet
+    Open-ILS/src/templates/opac/css/style-rtl.css.tt2 as something that
+    gets included in addition to the LTR style.css.tt2 when a RTL language is in
+    play, merge the logic directly into the stylesheet so that we save bytes over
+    the network, browser rendering time, and reduce the possibility that RTL will
+    be forgotten about when new features are added or styles are optimized.
+    
+    Signed-off-by: Dan Scott <dan@coffeecode.net>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+0	104	Open-ILS/src/templates/opac/css/style-rtl.css.tt2
+562	64	Open-ILS/src/templates/opac/css/style.css.tt2
+
+commit e1cda10bdd842988700b021182c3b5379d595c2e
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Mon May 1 16:45:29 2017 -0400
+
+    LP#1257915: add live_t tests
+    
+    And here's a test plan for humans:
+    
+    [1] Create a purchase order with, say, 3 lineitems and 2
+        copies on each of these.
+    [2] Receive the first two lineitems outright.
+    [3] Receive one of the copies on the last lineitem and cancel
+        the other with a cancellation reason that's permanent (e.g.,
+        bad ISBN) rather than temporary (e.g., backordered).
+    [4] Note that the purchase order's state remains 'on-order'
+    [5] Apply the patch.
+    [6] Repeat steps #1-4. This time, the PO's state should be
+        'received'.
+    [7] Repeat steps #1-4, but this time, choose backordered as
+        the cancellation reason. This time, the PO's state should
+        remain 'on-order'.
+    
+    It should be noted that the patches for this bug do *not*
+    retrospectively mark purchase orders as being received.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+64	0	Open-ILS/src/perlmods/live_t/22-acq-po-status.t
+ create mode 100644 Open-ILS/src/perlmods/live_t/22-acq-po-status.t
+
+commit 076328c9e501f5b33274212428d0fad01aaa81db
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Apr 12 16:54:25 2017 -0400
+
+    LP#1257915 Repair receive-when-cancel query
+    
+    Repaire the json_query used to determine if a PO is ready to be marked
+    received.
+    
+    A PO is non-receiveable if it has any lineitems that are not in the
+    received/cancelled [sic] state OR any that are canceled with a
+    keep_debits=true cancel reason.
+    
+    Prior to this change, simply having a state of "cancelled" was enough to
+    prevent receiving.
+    
+    * Replace tabs w/ spaces
+    * Remove unnecessary "or return 0" clause which was causing Perl
+      precedence warnings.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+24	17	Open-ILS/src/perlmods/lib/OpenILS/Application/Acq/Order.pm
+
+commit 69834618324cac093849d83ab06475d8ea1d58cf
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Fri Apr 7 08:45:06 2017 -0400
+
+    LP#1257915 - Also check whether to mark the PO received when canceling.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+9	3	Open-ILS/src/perlmods/lib/OpenILS/Application/Acq/Order.pm
+
+commit 0e2fb07031d5be7cadbd62132444a66ae2de95a8
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Wed Apr 5 09:52:50 2017 -0400
+
+    LP#1257915 - Mark POs received when all lineitems are received or canceled.
+    
+    Previously, Evergreen only considered lineitems not in a "received" status
+    when deciding whether to consider a purchase order to be "received".  Now
+    items with cancel reasons that do not keep debits (e.g. not backordered)
+    are considered "done".
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+15	4	Open-ILS/src/perlmods/lib/OpenILS/Application/Acq/Order.pm
+
+commit f57af22bda0d8e268ef29bae216ae69301047aba
+Author: Jillianne Presley <jillianne.presley.1641@mail.linnbenton.edu>
+Date:   Sun Apr 30 18:45:01 2017 -0700
+
+    Docs: adding release notes regarding blanket orders
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+41	0	docs/acquisitions/blanket.adoc
+2	0	docs/root.adoc
+ create mode 100644 docs/acquisitions/blanket.adoc
+
+commit 4b8092bd3a9a5bc29bbedf45e4921c054f6bab96
+Author: Debbie Luchenbill <deborah@mobiusconsortium.org>
+Date:   Sun Apr 30 18:24:13 2017 -0700
+
+    Docs: New docs for in-house use settings
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+2	0	docs/admin/librarysettings.adoc
+20	8	docs/circulation/circulating_items_web_client.adoc
+-	-	docs/media/in_house_use_non_cat.png
+ create mode 100644 docs/media/in_house_use_non_cat.png
+
+commit 828385ec0e0816a5f2558a5b9563790aff68fd7b
+Author: Linda Jansova <skolkova@chello.cz>
+Date:   Tue Nov 29 08:49:52 2016 -0500
+
+    LP#1628655: Do not show Patron Reviews if Chilifresh is not in use
+    
+    The Patron reviews header used for Chilifresh content displays in the catalog
+    even for Evergreen sites that do not use Chilifresh. This patch hides it if
+    a site is not using Chilifresh.
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+2	0	Open-ILS/src/templates/opac/parts/record/awards.tt2
+
+commit 055ec5b8cfda05b19e7a23982007498d6a048e8d
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Wed Apr 5 17:25:49 2017 -0400
+
+    LP#1680142: Fix responsive design issue with ebook display
+    
+    Fixes the following responsive design issues:
+    * Removes the e-book dashboard display when the screen size is reduced.
+    * Changes the table display for e-items currently checked out, e-items on hold,
+    and e-iterms ready for checkout interfaces to mimic the responsive behavior of
+    other My Account screens.
+    * Fixes a couple of Holds History CSS problems discovered while I was here.
+    
+    Test Plan:
+    Enable ebook services. Log into your account and resize the screen to the size
+    of a mobile device. The ebook dashboard will display while the main account
+    dashboard disappears. Go into My Account, click Items checked out and then
+    click E-Items Currently Checked Out. The table has not reformatted itself for
+    responsive design view.
+    
+    Post-patch: When you log in and resize the screen, the e-items dashboard
+    display will disappear along with the main account dashboard. When you access
+    the E-Items Currently Checked Out interface, the table will reformat itself
+    with column headers along the left side.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    
+    Conflicts:
+    	Open-ILS/src/templates/opac/css/style.css.tt2
+    
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+22	8	Open-ILS/src/templates/opac/css/style.css.tt2
+
+commit dfdf3c27d4d4f15f020293b4545e05682539ce40
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Mon Apr 24 13:16:21 2017 -0400
+
+    LP#1681466: move text to body of confirm dialog and add title
+    
+    This patch tweaks the opt-in confirm dialog to add a
+    title and move the text to the body of the dialog, making it
+    consistent with other dialogs that ask long questions.
+    
+    Test case for the entire bug fix
+    --------------------------------
+    [1] Ensure that <opt_in> is set to true in opensrf.xml.
+    [2] In the web staff client, open the checkout page
+        and do a barcode search for a patron is *not* the
+        same system as the workstation that the staff user
+        is registered to.
+    [3] Verify that a dialog box is presented asking the
+        staff user to confirm that personal information can be
+        shared with the workstation's library.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	0	Open-ILS/src/templates/staff/circ/patron/index.tt2
+2	1	Open-ILS/web/js/ui/default/staff/circ/patron/app.js
+
+commit 78cb6df0dbda1663804db78c2e3aa2f7d9af1af7
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Wed Apr 19 09:42:38 2017 -0700
+
+    LP#1681466: Text for web client opt-in dialog
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	0	Open-ILS/src/templates/staff/circ/patron/index.tt2
+5	2	Open-ILS/web/js/ui/default/staff/circ/patron/app.js
+
+commit 4156876612de3802208ec95ce37d4d4b264c2d2d
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Wed Apr 19 10:15:21 2017 -0400
+
+    Docs: Fix docs build warnings
+    
+    This commit fixes the following kinds of warnings given by asciidoc when
+    building the docs HTML:
+    
+      - Incorrect header level
+      - Incorrect list numbering
+      - List numbering interrupted by an image (needs '+' on blank lines)
+      - In one case, a list used '1)' style numbering, which AsciiDoc
+        doesn't recognize. This commit corrects that, even though it caused
+        no errors.
+    
+    These are minor issues, but fixing them is easy and prevents future
+    confusion and errors.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+2	2	docs/cataloging/authorities.adoc
+38	38	docs/cataloging/copy-buckets_web_client.adoc
+20	25	docs/circulation/circulation_patron_records.adoc
+
+commit 518cac486dcf63fdd03739662fd5961d7859cd26
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Apr 25 10:29:35 2017 -0400
+
+    LP#1682447 Fix README symlink for server_installation.adoc
+    
+    Otherwise autoreconf fails on missing README file.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jeff Godin <jgodin@tadl.org>
+
+1	1	README
+
+commit 094d28d2e6bcd896eefdf7201d12bf0b638feff4
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Fri Apr 7 14:15:54 2017 -0400
+
+    Change all docs filenames to .adoc
+    
+    This commit renames all AsciiDoc files to have the ".adoc" extension.
+    Also, this commit updates all "include::" references in the root.adoc
+    file.
+    
+    RATIONALE: Some editing tools, including GitHub, will auto-generate an
+    HTML preview for AsciiDoc files if they have the filename extension
+    ".adoc" or ".asciidoc". The community agreed to this change in 2015 (see
+    http://markmail.org/thread/z2s7xnxavpjzirwx).
+    
+    NOTE: The docs build script will need to change the reference from
+    "root.txt" to "root.adoc".
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+47	0	docs/QueryParser_Changes.adoc
+0	47	docs/QueryParser_Changes.txt
+611	0	docs/RELEASE_NOTES_2_2.adoc
+0	611	docs/RELEASE_NOTES_2_2.txt
+72	0	docs/RELEASE_NOTES_2_2_1.adoc
+0	72	docs/RELEASE_NOTES_2_2_1.txt
+597	0	docs/RELEASE_NOTES_2_3.adoc
+0	597	docs/RELEASE_NOTES_2_3.txt
+557	0	docs/RELEASE_NOTES_2_4.adoc
+0	557	docs/RELEASE_NOTES_2_4.txt
+1126	0	docs/RELEASE_NOTES_2_5.adoc
+0	1126	docs/RELEASE_NOTES_2_5.txt
+603	0	docs/RELEASE_NOTES_2_6.adoc
+0	603	docs/RELEASE_NOTES_2_6.txt
+508	0	docs/RELEASE_NOTES_2_7.adoc
+0	508	docs/RELEASE_NOTES_2_7.txt
+872	0	docs/RELEASE_NOTES_2_8.adoc
+0	872	docs/RELEASE_NOTES_2_8.txt
+1130	0	docs/RELEASE_NOTES_2_9.adoc
+0	1130	docs/RELEASE_NOTES_2_9.txt
+46	0	docs/TechRef/Circ/calculated-proximity-adjustments.adoc
+0	46	docs/TechRef/Circ/calculated-proximity-adjustments.txt
+247	0	docs/TechRef/Circ/custom-best-hold-selection.adoc
+0	247	docs/TechRef/Circ/custom-best-hold-selection.txt
+93	0	docs/TechRef/Circ/holds-go-home.adoc
+0	93	docs/TechRef/Circ/holds-go-home.txt
+124	0	docs/TechRef/Flattener/design.adoc
+0	124	docs/TechRef/Flattener/design.txt
+138	0	docs/TechRef/KidsOPAC.adoc
+0	138	docs/TechRef/KidsOPAC.txt
+113	0	docs/TechRef/LinkChecker.adoc
+0	113	docs/TechRef/LinkChecker.txt
+657	0	docs/TechRef/Telephony/telephony-setup-guide.adoc
+0	657	docs/TechRef/Telephony/telephony-setup-guide.txt
+67	0	docs/TechRef/alternate_graphic_fields.adoc
+0	67	docs/TechRef/alternate_graphic_fields.txt
+78	0	docs/TechRef/notify_csv.adoc
+0	78	docs/TechRef/notify_csv.txt
+101	0	docs/TechRef/popularity-rating.adoc
+0	101	docs/TechRef/popularity-rating.txt
+25	0	docs/acquisitions/introduction.adoc
+0	25	docs/acquisitions/introduction.txt
+268	0	docs/acquisitions/invoices.adoc
+0	268	docs/acquisitions/invoices.txt
+53	0	docs/acquisitions/purchase_requests_management.adoc
+0	53	docs/acquisitions/purchase_requests_management.txt
+29	0	docs/acquisitions/purchase_requests_patron_view.adoc
+0	29	docs/acquisitions/purchase_requests_patron_view.txt
+73	0	docs/acquisitions/receive_items_from_invoice.adoc
+0	73	docs/acquisitions/receive_items_from_invoice.txt
+292	0	docs/acquisitions/selection_lists_po.adoc
+0	292	docs/acquisitions/selection_lists_po.txt
+216	0	docs/acquisitions/vandelay_acquisitions_integration.adoc
+0	216	docs/acquisitions/vandelay_acquisitions_integration.txt
+60	0	docs/admin/Best_Hold_Selection_Sort_Order.adoc
+0	60	docs/admin/Best_Hold_Selection_Sort_Order.txt
+57	0	docs/admin/MARC_Import_Remove_Fields.adoc
+0	57	docs/admin/MARC_Import_Remove_Fields.txt
+199	0	docs/admin/MARC_RAD_MVF_CRA.adoc
+0	199	docs/admin/MARC_RAD_MVF_CRA.txt
+44	0	docs/admin/Org_Unit_Proximity_Adjustments.adoc
+0	44	docs/admin/Org_Unit_Proximity_Adjustments.txt
+127	0	docs/admin/SMS_messaging.adoc
+0	127	docs/admin/SMS_messaging.txt
+1014	0	docs/admin/acquisitions_admin.adoc
+0	1014	docs/admin/acquisitions_admin.txt
+252	0	docs/admin/actiontriggers.adoc
+0	252	docs/admin/actiontriggers.txt
+23	0	docs/admin/age_hold_protection.adoc
+0	23	docs/admin/age_hold_protection.txt
+141	0	docs/admin/apache_access_handler.adoc
+0	141	docs/admin/apache_access_handler.txt
+148	0	docs/admin/apache_rewrite_tricks.adoc
+0	148	docs/admin/apache_rewrite_tricks.txt
+55	0	docs/admin/authentication_proxy.adoc
+0	55	docs/admin/authentication_proxy.txt
+151	0	docs/admin/authorities.adoc
+0	151	docs/admin/authorities.txt
+32	0	docs/admin/auto_suggest_search.adoc
+0	32	docs/admin/auto_suggest_search.txt
+199	0	docs/admin/booking-admin.adoc
+0	199	docs/admin/booking-admin.txt
+47	0	docs/admin/circulation_limit_groups.adoc
+0	47	docs/admin/circulation_limit_groups.txt
+46	0	docs/admin/cn_prefixes_and_suffixes.adoc
+0	46	docs/admin/cn_prefixes_and_suffixes.txt
+87	0	docs/admin/copy_statuses.adoc
+0	87	docs/admin/copy_statuses.txt
+60	0	docs/admin/customize_staff_client.adoc
+0	60	docs/admin/customize_staff_client.txt
+120	0	docs/admin/floating_groups.adoc
+0	120	docs/admin/floating_groups.txt
+53	0	docs/admin/hold_driven_recalls.adoc
+0	53	docs/admin/hold_driven_recalls.txt
+138	0	docs/admin/lsa-address_alert.adoc
+0	138	docs/admin/lsa-address_alert.txt
+254	0	docs/admin/lsa-barcode_completion.adoc
+0	254	docs/admin/lsa-barcode_completion.txt
+25	0	docs/admin/lsa-standing_penalties.adoc
+0	25	docs/admin/lsa-standing_penalties.txt
+79	0	docs/admin/lsa-statcat.adoc
+0	79	docs/admin/lsa-statcat.txt
+25	0	docs/admin/lsa-work_log.adoc
+0	25	docs/admin/lsa-work_log.txt
+169	0	docs/admin/patron_address_by_zip_code.adoc
+0	169	docs/admin/patron_address_by_zip_code.txt
+88	0	docs/admin/permissions.adoc
+0	88	docs/admin/permissions.txt
+192	0	docs/admin/phonelist.adoc
+0	192	docs/admin/phonelist.txt
+49	0	docs/admin/recent_staff_searches.adoc
+0	49	docs/admin/recent_staff_searches.txt
+71	0	docs/admin/restrict_Z39.50_sources_by_perm_group.adoc
+0	71	docs/admin/restrict_Z39.50_sources_by_perm_group.txt
+671	0	docs/admin/sip_server.adoc
+0	671	docs/admin/sip_server.txt
+36	0	docs/admin/staff_client-button_bar_toolbar.adoc
+0	36	docs/admin/staff_client-button_bar_toolbar.txt
+28	0	docs/admin/staff_client-column_picker.adoc
+0	28	docs/admin/staff_client-column_picker.txt
+23	0	docs/admin/staff_client-double_clicking.adoc
+0	23	docs/admin/staff_client-double_clicking.txt
+178	0	docs/admin/staff_client-login.adoc
+0	178	docs/admin/staff_client-login.txt
+22	0	docs/admin/staff_client-patron_border.adoc
+0	22	docs/admin/staff_client-patron_border.txt
+42	0	docs/admin/staff_client-recent_searches.adoc
+0	42	docs/admin/staff_client-recent_searches.txt
+6	0	docs/admin/staff_client-return_to_results_from_marc.adoc
+0	6	docs/admin/staff_client-return_to_results_from_marc.txt
+59	0	docs/admin/staff_client-sorting_columns.adoc
+0	59	docs/admin/staff_client-sorting_columns.txt
+17	0	docs/admin/staff_client-sticky_settings.adoc
+0	17	docs/admin/staff_client-sticky_settings.txt
+6	0	docs/admin/staff_client-tab_buttons.adoc
+0	6	docs/admin/staff_client-tab_buttons.txt
+294	0	docs/admin/template_toolkit.adoc
+0	294	docs/admin/template_toolkit.txt
+32	0	docs/admin/user_activity_type.adoc
+0	32	docs/admin/user_activity_type.txt
+23	0	docs/admin/web_client-browser-tab-shortcuts.adoc
+0	23	docs/admin/web_client-browser-tab-shortcuts.txt
+53	0	docs/admin/web_client-login.adoc
+0	53	docs/admin/web_client-login.txt
+135	0	docs/admin/workstation_admin.adoc
+0	135	docs/admin/workstation_admin.txt
+60	0	docs/admin/workstation_admin_customizable_toolbar.adoc
+0	60	docs/admin/workstation_admin_customizable_toolbar.txt
+628	0	docs/admin/workstation_admin_receipt_template_editor.adoc
+0	628	docs/admin/workstation_admin_receipt_template_editor.txt
+251	0	docs/admin_initial_setup/borrowing_items.adoc
+0	251	docs/admin_initial_setup/borrowing_items.txt
+113	0	docs/admin_initial_setup/describing_your_organization.adoc
+0	113	docs/admin_initial_setup/describing_your_organization.txt
+379	0	docs/admin_initial_setup/describing_your_people.adoc
+0	379	docs/admin_initial_setup/describing_your_people.txt
+866	0	docs/admin_initial_setup/designing_your_catalog.adoc
+0	866	docs/admin_initial_setup/designing_your_catalog.txt
+31	0	docs/admin_initial_setup/hard_due_dates.adoc
+0	31	docs/admin_initial_setup/hard_due_dates.txt
+195	0	docs/admin_initial_setup/importing_via_staff_client.adoc
+0	195	docs/admin_initial_setup/importing_via_staff_client.txt
+228	0	docs/admin_initial_setup/migrating_patron_data.adoc
+0	228	docs/admin_initial_setup/migrating_patron_data.txt
+350	0	docs/admin_initial_setup/migrating_your_data.adoc
+0	350	docs/admin_initial_setup/migrating_your_data.txt
+239	0	docs/admin_initial_setup/ordering_materials.adoc
+0	239	docs/admin_initial_setup/ordering_materials.txt
+51	0	docs/attributions.adoc
+0	51	docs/attributions.txt
+94	0	docs/cataloging/MARC_Editor.adoc
+0	94	docs/cataloging/MARC_Editor.txt
+48	0	docs/cataloging/MARC_batch_edit.adoc
+0	48	docs/cataloging/MARC_batch_edit.txt
+134	0	docs/cataloging/authorities.adoc
+0	134	docs/cataloging/authorities.txt
+405	0	docs/cataloging/batch_importing_MARC.adoc
+0	405	docs/cataloging/batch_importing_MARC.txt
+158	0	docs/cataloging/cataloging_electronic_resources.adoc
+0	158	docs/cataloging/cataloging_electronic_resources.txt
+29	0	docs/cataloging/cataloging_web_client.adoc
+0	29	docs/cataloging/cataloging_web_client.txt
+95	0	docs/cataloging/conjoined_items.adoc
+0	95	docs/cataloging/conjoined_items.txt
+298	0	docs/cataloging/copy-buckets_web_client.adoc
+0	298	docs/cataloging/copy-buckets_web_client.txt
+84	0	docs/cataloging/link_checker.adoc
+0	84	docs/cataloging/link_checker.txt
+76	0	docs/cataloging/monograph_parts.adoc
+0	76	docs/cataloging/monograph_parts.txt
+55	0	docs/cataloging/overlay_record_3950_import.adoc
+0	55	docs/cataloging/overlay_record_3950_import.txt
+86	0	docs/cataloging/physical_char_wizard.adoc
+0	86	docs/cataloging/physical_char_wizard.txt
+17	0	docs/cataloging/tpac_copy_edit_links.adoc
+0	17	docs/cataloging/tpac_copy_edit_links.txt
+102	0	docs/cataloging/z39.50_search_enhancements.adoc
+0	102	docs/cataloging/z39.50_search_enhancements.txt
+138	0	docs/circ_limits.adoc
+0	138	docs/circ_limits.txt
+272	0	docs/circulation/booking.adoc
+0	272	docs/circulation/booking.txt
+563	0	docs/circulation/circulating_items.adoc
+0	563	docs/circulation/circulating_items.txt
+397	0	docs/circulation/circulating_items_web_client.adoc
+0	397	docs/circulation/circulating_items_web_client.txt
+1073	0	docs/circulation/circulation_patron_records.adoc
+0	1073	docs/circulation/circulation_patron_records.txt
+494	0	docs/circulation/circulation_patron_records_web_client.adoc
+0	494	docs/circulation/circulation_patron_records_web_client.txt
+492	0	docs/circulation/holds.adoc
+0	492	docs/circulation/holds.txt
+265	0	docs/circulation/offline_mode.adoc
+0	265	docs/circulation/offline_mode.txt
+73	0	docs/circulation/rfid_product_integration.adoc
+0	73	docs/circulation/rfid_product_integration.txt
+137	0	docs/circulation/self_check.adoc
+0	137	docs/circulation/self_check.txt
+72	0	docs/circulation/triggered_events.adoc
+0	72	docs/circulation/triggered_events.txt
+246	0	docs/development/data_supercat.adoc
+0	246	docs/development/data_supercat.txt
+67	0	docs/development/data_unapi.adoc
+0	67	docs/development/data_unapi.txt
+1359	0	docs/development/intro_opensrf.adoc
+0	1359	docs/development/intro_opensrf.txt
+39	0	docs/development/pgtap.adoc
+0	39	docs/development/pgtap.txt
+179	0	docs/development/support_scripts.adoc
+0	179	docs/development/support_scripts.txt
+54	0	docs/development/updating_translations_launchpad.adoc
+0	54	docs/development/updating_translations_launchpad.txt
+212	0	docs/installation/edi_setup.adoc
+0	212	docs/installation/edi_setup.txt
+690	0	docs/installation/server_installation.adoc
+0	690	docs/installation/server_installation.txt
+355	0	docs/installation/server_upgrade.adoc
+0	355	docs/installation/server_upgrade.txt
+161	0	docs/installation/staff_client_installation.adoc
+0	161	docs/installation/staff_client_installation.txt
+38	0	docs/installation/system_requirements.adoc
+0	38	docs/installation/system_requirements.txt
+12	0	docs/licensing.adoc
+0	12	docs/licensing.txt
+98	0	docs/opac/advanced_features.adoc
+0	98	docs/opac/advanced_features.txt
+31	0	docs/opac/catalog_browse.adoc
+0	31	docs/opac/catalog_browse.txt
+197	0	docs/opac/kids_opac.adoc
+0	197	docs/opac/kids_opac.txt
+44	0	docs/opac/linked_libraries.adoc
+0	44	docs/opac/linked_libraries.txt
+78	0	docs/opac/my_lists.adoc
+0	78	docs/opac/my_lists.txt
+106	0	docs/opac/new_skin_customizations.adoc
+0	106	docs/opac/new_skin_customizations.txt
+32	0	docs/opac/opensearch.adoc
+0	32	docs/opac/opensearch.txt
+95	0	docs/opac/search_form.adoc
+0	95	docs/opac/search_form.txt
+68	0	docs/opac/tpac_meta_record_holds.adoc
+0	68	docs/opac/tpac_meta_record_holds.txt
+655	0	docs/opac/using_the_public_access_catalog.adoc
+0	655	docs/opac/using_the_public_access_catalog.txt
+263	0	docs/reports/reporter_add_data_source.adoc
+0	263	docs/reports/reporter_add_data_source.txt
+42	0	docs/reports/reporter_cloning_shared_templates.adoc
+0	42	docs/reports/reporter_cloning_shared_templates.txt
+291	0	docs/reports/reporter_create_templates.adoc
+0	291	docs/reports/reporter_create_templates.txt
+64	0	docs/reports/reporter_daemon.adoc
+0	64	docs/reports/reporter_daemon.txt
+56	0	docs/reports/reporter_export_usingpgAdmin.adoc
+0	56	docs/reports/reporter_export_usingpgAdmin.txt
+76	0	docs/reports/reporter_folder.adoc
+0	76	docs/reports/reporter_folder.txt
+109	0	docs/reports/reporter_generating_reports.adoc
+0	109	docs/reports/reporter_generating_reports.txt
+42	0	docs/reports/reporter_running_recurring_reports.adoc
+0	42	docs/reports/reporter_running_recurring_reports.txt
+32	0	docs/reports/reporter_template_enhancements.adoc
+0	32	docs/reports/reporter_template_enhancements.txt
+106	0	docs/reports/reporter_template_terminology.adoc
+0	106	docs/reports/reporter_template_terminology.txt
+41	0	docs/reports/reporter_view_output.adoc
+0	41	docs/reports/reporter_view_output.txt
+529	0	docs/root.adoc
+0	529	docs/root.txt
+37	0	docs/serials/A-intro.adoc
+0	37	docs/serials/A-intro.txt
+41	0	docs/serials/B-copy_template.adoc
+0	41	docs/serials/B-copy_template.txt
+218	0	docs/serials/C-subscription-SCV.adoc
+0	218	docs/serials/C-subscription-SCV.txt
+216	0	docs/serials/D-subscription-ASCV.adoc
+0	216	docs/serials/D-subscription-ASCV.txt
+19	0	docs/serials/E-edit_subscriptions.adoc
+0	19	docs/serials/E-edit_subscriptions.txt
+102	0	docs/serials/F-Receiving.adoc
+0	102	docs/serials/F-Receiving.txt
+9	0	docs/serials/G-Special_issue.adoc
+0	9	docs/serials/G-Special_issue.txt
+51	0	docs/serials/Group_Serials_Issues_in_the_OPAC_2.2.adoc
+0	51	docs/serials/Group_Serials_Issues_in_the_OPAC_2.2.txt
+35	0	docs/serials/H-holdings_statements.adoc
+0	35	docs/serials/H-holdings_statements.txt
+ create mode 100644 docs/QueryParser_Changes.adoc
+ delete mode 100644 docs/QueryParser_Changes.txt
+ create mode 100644 docs/RELEASE_NOTES_2_2.adoc
+ delete mode 100644 docs/RELEASE_NOTES_2_2.txt
+ create mode 100644 docs/RELEASE_NOTES_2_2_1.adoc
+ delete mode 100644 docs/RELEASE_NOTES_2_2_1.txt
+ create mode 100644 docs/RELEASE_NOTES_2_3.adoc
+ delete mode 100644 docs/RELEASE_NOTES_2_3.txt
+ create mode 100644 docs/RELEASE_NOTES_2_4.adoc
+ delete mode 100644 docs/RELEASE_NOTES_2_4.txt
+ create mode 100644 docs/RELEASE_NOTES_2_5.adoc
+ delete mode 100644 docs/RELEASE_NOTES_2_5.txt
+ create mode 100644 docs/RELEASE_NOTES_2_6.adoc
+ delete mode 100644 docs/RELEASE_NOTES_2_6.txt
+ create mode 100644 docs/RELEASE_NOTES_2_7.adoc
+ delete mode 100644 docs/RELEASE_NOTES_2_7.txt
+ create mode 100644 docs/RELEASE_NOTES_2_8.adoc
+ delete mode 100644 docs/RELEASE_NOTES_2_8.txt
+ create mode 100644 docs/RELEASE_NOTES_2_9.adoc
+ delete mode 100644 docs/RELEASE_NOTES_2_9.txt
+ create mode 100644 docs/TechRef/Circ/calculated-proximity-adjustments.adoc
+ delete mode 100644 docs/TechRef/Circ/calculated-proximity-adjustments.txt
+ create mode 100644 docs/TechRef/Circ/custom-best-hold-selection.adoc
+ delete mode 100644 docs/TechRef/Circ/custom-best-hold-selection.txt
+ create mode 100644 docs/TechRef/Circ/holds-go-home.adoc
+ delete mode 100644 docs/TechRef/Circ/holds-go-home.txt
+ create mode 100644 docs/TechRef/Flattener/design.adoc
+ delete mode 100644 docs/TechRef/Flattener/design.txt
+ create mode 100644 docs/TechRef/KidsOPAC.adoc
+ delete mode 100644 docs/TechRef/KidsOPAC.txt
+ create mode 100644 docs/TechRef/LinkChecker.adoc
+ delete mode 100644 docs/TechRef/LinkChecker.txt
+ create mode 100644 docs/TechRef/Telephony/telephony-setup-guide.adoc
+ delete mode 100644 docs/TechRef/Telephony/telephony-setup-guide.txt
+ create mode 100644 docs/TechRef/alternate_graphic_fields.adoc
+ delete mode 100644 docs/TechRef/alternate_graphic_fields.txt
+ create mode 100644 docs/TechRef/notify_csv.adoc
+ delete mode 100644 docs/TechRef/notify_csv.txt
+ create mode 100644 docs/TechRef/popularity-rating.adoc
+ delete mode 100644 docs/TechRef/popularity-rating.txt
+ create mode 100644 docs/acquisitions/introduction.adoc
+ delete mode 100644 docs/acquisitions/introduction.txt
+ create mode 100644 docs/acquisitions/invoices.adoc
+ delete mode 100644 docs/acquisitions/invoices.txt
+ create mode 100644 docs/acquisitions/purchase_requests_management.adoc
+ delete mode 100644 docs/acquisitions/purchase_requests_management.txt
+ create mode 100644 docs/acquisitions/purchase_requests_patron_view.adoc
+ delete mode 100644 docs/acquisitions/purchase_requests_patron_view.txt
+ create mode 100644 docs/acquisitions/receive_items_from_invoice.adoc
+ delete mode 100644 docs/acquisitions/receive_items_from_invoice.txt
+ create mode 100644 docs/acquisitions/selection_lists_po.adoc
+ delete mode 100644 docs/acquisitions/selection_lists_po.txt
+ create mode 100644 docs/acquisitions/vandelay_acquisitions_integration.adoc
+ delete mode 100644 docs/acquisitions/vandelay_acquisitions_integration.txt
+ create mode 100644 docs/admin/Best_Hold_Selection_Sort_Order.adoc
+ delete mode 100644 docs/admin/Best_Hold_Selection_Sort_Order.txt
+ create mode 100644 docs/admin/MARC_Import_Remove_Fields.adoc
+ delete mode 100644 docs/admin/MARC_Import_Remove_Fields.txt
+ create mode 100644 docs/admin/MARC_RAD_MVF_CRA.adoc
+ delete mode 100644 docs/admin/MARC_RAD_MVF_CRA.txt
+ create mode 100644 docs/admin/Org_Unit_Proximity_Adjustments.adoc
+ delete mode 100644 docs/admin/Org_Unit_Proximity_Adjustments.txt
+ create mode 100644 docs/admin/SMS_messaging.adoc
+ delete mode 100644 docs/admin/SMS_messaging.txt
+ create mode 100644 docs/admin/acquisitions_admin.adoc
+ delete mode 100644 docs/admin/acquisitions_admin.txt
+ create mode 100644 docs/admin/actiontriggers.adoc
+ delete mode 100644 docs/admin/actiontriggers.txt
+ create mode 100644 docs/admin/age_hold_protection.adoc
+ delete mode 100644 docs/admin/age_hold_protection.txt
+ create mode 100644 docs/admin/apache_access_handler.adoc
+ delete mode 100644 docs/admin/apache_access_handler.txt
+ create mode 100644 docs/admin/apache_rewrite_tricks.adoc
+ delete mode 100644 docs/admin/apache_rewrite_tricks.txt
+ create mode 100644 docs/admin/authentication_proxy.adoc
+ delete mode 100644 docs/admin/authentication_proxy.txt
+ create mode 100644 docs/admin/authorities.adoc
+ delete mode 100644 docs/admin/authorities.txt
+ create mode 100644 docs/admin/auto_suggest_search.adoc
+ delete mode 100644 docs/admin/auto_suggest_search.txt
+ create mode 100644 docs/admin/booking-admin.adoc
+ delete mode 100644 docs/admin/booking-admin.txt
+ create mode 100644 docs/admin/circulation_limit_groups.adoc
+ delete mode 100644 docs/admin/circulation_limit_groups.txt
+ create mode 100644 docs/admin/cn_prefixes_and_suffixes.adoc
+ delete mode 100644 docs/admin/cn_prefixes_and_suffixes.txt
+ create mode 100644 docs/admin/copy_statuses.adoc
+ delete mode 100644 docs/admin/copy_statuses.txt
+ create mode 100644 docs/admin/customize_staff_client.adoc
+ delete mode 100644 docs/admin/customize_staff_client.txt
+ create mode 100644 docs/admin/floating_groups.adoc
+ delete mode 100644 docs/admin/floating_groups.txt
+ create mode 100644 docs/admin/hold_driven_recalls.adoc
+ delete mode 100644 docs/admin/hold_driven_recalls.txt
+ create mode 100644 docs/admin/lsa-address_alert.adoc
+ delete mode 100644 docs/admin/lsa-address_alert.txt
+ create mode 100644 docs/admin/lsa-barcode_completion.adoc
+ delete mode 100644 docs/admin/lsa-barcode_completion.txt
+ create mode 100644 docs/admin/lsa-standing_penalties.adoc
+ delete mode 100644 docs/admin/lsa-standing_penalties.txt
+ create mode 100644 docs/admin/lsa-statcat.adoc
+ delete mode 100644 docs/admin/lsa-statcat.txt
+ create mode 100644 docs/admin/lsa-work_log.adoc
+ delete mode 100644 docs/admin/lsa-work_log.txt
+ create mode 100644 docs/admin/patron_address_by_zip_code.adoc
+ delete mode 100644 docs/admin/patron_address_by_zip_code.txt
+ create mode 100644 docs/admin/permissions.adoc
+ delete mode 100644 docs/admin/permissions.txt
+ create mode 100644 docs/admin/phonelist.adoc
+ delete mode 100644 docs/admin/phonelist.txt
+ create mode 100644 docs/admin/recent_staff_searches.adoc
+ delete mode 100644 docs/admin/recent_staff_searches.txt
+ create mode 100644 docs/admin/restrict_Z39.50_sources_by_perm_group.adoc
+ delete mode 100644 docs/admin/restrict_Z39.50_sources_by_perm_group.txt
+ create mode 100644 docs/admin/sip_server.adoc
+ delete mode 100644 docs/admin/sip_server.txt
+ create mode 100644 docs/admin/staff_client-button_bar_toolbar.adoc
+ delete mode 100644 docs/admin/staff_client-button_bar_toolbar.txt
+ create mode 100644 docs/admin/staff_client-column_picker.adoc
+ delete mode 100644 docs/admin/staff_client-column_picker.txt
+ create mode 100644 docs/admin/staff_client-double_clicking.adoc
+ delete mode 100644 docs/admin/staff_client-double_clicking.txt
+ create mode 100644 docs/admin/staff_client-login.adoc
+ delete mode 100644 docs/admin/staff_client-login.txt
+ create mode 100644 docs/admin/staff_client-patron_border.adoc
+ delete mode 100644 docs/admin/staff_client-patron_border.txt
+ create mode 100644 docs/admin/staff_client-recent_searches.adoc
+ delete mode 100644 docs/admin/staff_client-recent_searches.txt
+ create mode 100644 docs/admin/staff_client-return_to_results_from_marc.adoc
+ delete mode 100644 docs/admin/staff_client-return_to_results_from_marc.txt
+ create mode 100644 docs/admin/staff_client-sorting_columns.adoc
+ delete mode 100644 docs/admin/staff_client-sorting_columns.txt
+ create mode 100644 docs/admin/staff_client-sticky_settings.adoc
+ delete mode 100644 docs/admin/staff_client-sticky_settings.txt
+ create mode 100644 docs/admin/staff_client-tab_buttons.adoc
+ delete mode 100644 docs/admin/staff_client-tab_buttons.txt
+ create mode 100644 docs/admin/template_toolkit.adoc
+ delete mode 100644 docs/admin/template_toolkit.txt
+ create mode 100644 docs/admin/user_activity_type.adoc
+ delete mode 100644 docs/admin/user_activity_type.txt
+ create mode 100644 docs/admin/web_client-browser-tab-shortcuts.adoc
+ delete mode 100644 docs/admin/web_client-browser-tab-shortcuts.txt
+ create mode 100644 docs/admin/web_client-login.adoc
+ delete mode 100644 docs/admin/web_client-login.txt
+ create mode 100644 docs/admin/workstation_admin.adoc
+ delete mode 100644 docs/admin/workstation_admin.txt
+ create mode 100644 docs/admin/workstation_admin_customizable_toolbar.adoc
+ delete mode 100644 docs/admin/workstation_admin_customizable_toolbar.txt
+ create mode 100644 docs/admin/workstation_admin_receipt_template_editor.adoc
+ delete mode 100644 docs/admin/workstation_admin_receipt_template_editor.txt
+ create mode 100644 docs/admin_initial_setup/borrowing_items.adoc
+ delete mode 100644 docs/admin_initial_setup/borrowing_items.txt
+ create mode 100644 docs/admin_initial_setup/describing_your_organization.adoc
+ delete mode 100644 docs/admin_initial_setup/describing_your_organization.txt
+ create mode 100644 docs/admin_initial_setup/describing_your_people.adoc
+ delete mode 100644 docs/admin_initial_setup/describing_your_people.txt
+ create mode 100644 docs/admin_initial_setup/designing_your_catalog.adoc
+ delete mode 100644 docs/admin_initial_setup/designing_your_catalog.txt
+ create mode 100644 docs/admin_initial_setup/hard_due_dates.adoc
+ delete mode 100644 docs/admin_initial_setup/hard_due_dates.txt
+ create mode 100644 docs/admin_initial_setup/importing_via_staff_client.adoc
+ delete mode 100644 docs/admin_initial_setup/importing_via_staff_client.txt
+ create mode 100644 docs/admin_initial_setup/migrating_patron_data.adoc
+ delete mode 100644 docs/admin_initial_setup/migrating_patron_data.txt
+ create mode 100644 docs/admin_initial_setup/migrating_your_data.adoc
+ delete mode 100644 docs/admin_initial_setup/migrating_your_data.txt
+ create mode 100644 docs/admin_initial_setup/ordering_materials.adoc
+ delete mode 100644 docs/admin_initial_setup/ordering_materials.txt
+ create mode 100644 docs/attributions.adoc
+ delete mode 100644 docs/attributions.txt
+ create mode 100644 docs/cataloging/MARC_Editor.adoc
+ delete mode 100644 docs/cataloging/MARC_Editor.txt
+ create mode 100644 docs/cataloging/MARC_batch_edit.adoc
+ delete mode 100644 docs/cataloging/MARC_batch_edit.txt
+ create mode 100644 docs/cataloging/authorities.adoc
+ delete mode 100644 docs/cataloging/authorities.txt
+ create mode 100644 docs/cataloging/batch_importing_MARC.adoc
+ delete mode 100644 docs/cataloging/batch_importing_MARC.txt
+ create mode 100644 docs/cataloging/cataloging_electronic_resources.adoc
+ delete mode 100644 docs/cataloging/cataloging_electronic_resources.txt
+ create mode 100644 docs/cataloging/cataloging_web_client.adoc
+ delete mode 100644 docs/cataloging/cataloging_web_client.txt
+ create mode 100644 docs/cataloging/conjoined_items.adoc
+ delete mode 100644 docs/cataloging/conjoined_items.txt
+ create mode 100755 docs/cataloging/copy-buckets_web_client.adoc
+ delete mode 100755 docs/cataloging/copy-buckets_web_client.txt
+ create mode 100644 docs/cataloging/link_checker.adoc
+ delete mode 100644 docs/cataloging/link_checker.txt
+ create mode 100644 docs/cataloging/monograph_parts.adoc
+ delete mode 100644 docs/cataloging/monograph_parts.txt
+ create mode 100644 docs/cataloging/overlay_record_3950_import.adoc
+ delete mode 100644 docs/cataloging/overlay_record_3950_import.txt
+ create mode 100644 docs/cataloging/physical_char_wizard.adoc
+ delete mode 100644 docs/cataloging/physical_char_wizard.txt
+ create mode 100644 docs/cataloging/tpac_copy_edit_links.adoc
+ delete mode 100644 docs/cataloging/tpac_copy_edit_links.txt
+ create mode 100644 docs/cataloging/z39.50_search_enhancements.adoc
+ delete mode 100644 docs/cataloging/z39.50_search_enhancements.txt
+ create mode 100644 docs/circ_limits.adoc
+ delete mode 100644 docs/circ_limits.txt
+ create mode 100644 docs/circulation/booking.adoc
+ delete mode 100644 docs/circulation/booking.txt
+ create mode 100644 docs/circulation/circulating_items.adoc
+ delete mode 100644 docs/circulation/circulating_items.txt
+ create mode 100644 docs/circulation/circulating_items_web_client.adoc
+ delete mode 100644 docs/circulation/circulating_items_web_client.txt
+ create mode 100644 docs/circulation/circulation_patron_records.adoc
+ delete mode 100644 docs/circulation/circulation_patron_records.txt
+ create mode 100644 docs/circulation/circulation_patron_records_web_client.adoc
+ delete mode 100644 docs/circulation/circulation_patron_records_web_client.txt
+ create mode 100644 docs/circulation/holds.adoc
+ delete mode 100644 docs/circulation/holds.txt
+ create mode 100644 docs/circulation/offline_mode.adoc
+ delete mode 100644 docs/circulation/offline_mode.txt
+ create mode 100644 docs/circulation/rfid_product_integration.adoc
+ delete mode 100644 docs/circulation/rfid_product_integration.txt
+ create mode 100644 docs/circulation/self_check.adoc
+ delete mode 100644 docs/circulation/self_check.txt
+ create mode 100644 docs/circulation/triggered_events.adoc
+ delete mode 100644 docs/circulation/triggered_events.txt
+ create mode 100644 docs/development/data_supercat.adoc
+ delete mode 100644 docs/development/data_supercat.txt
+ create mode 100644 docs/development/data_unapi.adoc
+ delete mode 100644 docs/development/data_unapi.txt
+ create mode 100644 docs/development/intro_opensrf.adoc
+ delete mode 100644 docs/development/intro_opensrf.txt
+ create mode 100644 docs/development/pgtap.adoc
+ delete mode 100644 docs/development/pgtap.txt
+ create mode 100644 docs/development/support_scripts.adoc
+ delete mode 100644 docs/development/support_scripts.txt
+ create mode 100644 docs/development/updating_translations_launchpad.adoc
+ delete mode 100644 docs/development/updating_translations_launchpad.txt
+ create mode 100644 docs/installation/edi_setup.adoc
+ delete mode 100644 docs/installation/edi_setup.txt
+ create mode 100644 docs/installation/server_installation.adoc
+ delete mode 100644 docs/installation/server_installation.txt
+ create mode 100644 docs/installation/server_upgrade.adoc
+ delete mode 100644 docs/installation/server_upgrade.txt
+ create mode 100644 docs/installation/staff_client_installation.adoc
+ delete mode 100644 docs/installation/staff_client_installation.txt
+ create mode 100644 docs/installation/system_requirements.adoc
+ delete mode 100644 docs/installation/system_requirements.txt
+ create mode 100644 docs/licensing.adoc
+ delete mode 100644 docs/licensing.txt
+ create mode 100644 docs/opac/advanced_features.adoc
+ delete mode 100644 docs/opac/advanced_features.txt
+ create mode 100644 docs/opac/catalog_browse.adoc
+ delete mode 100644 docs/opac/catalog_browse.txt
+ create mode 100644 docs/opac/kids_opac.adoc
+ delete mode 100644 docs/opac/kids_opac.txt
+ create mode 100644 docs/opac/linked_libraries.adoc
+ delete mode 100644 docs/opac/linked_libraries.txt
+ create mode 100644 docs/opac/my_lists.adoc
+ delete mode 100644 docs/opac/my_lists.txt
+ create mode 100644 docs/opac/new_skin_customizations.adoc
+ delete mode 100644 docs/opac/new_skin_customizations.txt
+ create mode 100644 docs/opac/opensearch.adoc
+ delete mode 100644 docs/opac/opensearch.txt
+ create mode 100644 docs/opac/search_form.adoc
+ delete mode 100644 docs/opac/search_form.txt
+ create mode 100644 docs/opac/tpac_meta_record_holds.adoc
+ delete mode 100644 docs/opac/tpac_meta_record_holds.txt
+ create mode 100644 docs/opac/using_the_public_access_catalog.adoc
+ delete mode 100644 docs/opac/using_the_public_access_catalog.txt
+ create mode 100644 docs/reports/reporter_add_data_source.adoc
+ delete mode 100644 docs/reports/reporter_add_data_source.txt
+ create mode 100644 docs/reports/reporter_cloning_shared_templates.adoc
+ delete mode 100644 docs/reports/reporter_cloning_shared_templates.txt
+ create mode 100644 docs/reports/reporter_create_templates.adoc
+ delete mode 100644 docs/reports/reporter_create_templates.txt
+ create mode 100644 docs/reports/reporter_daemon.adoc
+ delete mode 100644 docs/reports/reporter_daemon.txt
+ create mode 100644 docs/reports/reporter_export_usingpgAdmin.adoc
+ delete mode 100644 docs/reports/reporter_export_usingpgAdmin.txt
+ create mode 100644 docs/reports/reporter_folder.adoc
+ delete mode 100644 docs/reports/reporter_folder.txt
+ create mode 100644 docs/reports/reporter_generating_reports.adoc
+ delete mode 100644 docs/reports/reporter_generating_reports.txt
+ create mode 100644 docs/reports/reporter_running_recurring_reports.adoc
+ delete mode 100644 docs/reports/reporter_running_recurring_reports.txt
+ create mode 100644 docs/reports/reporter_template_enhancements.adoc
+ delete mode 100644 docs/reports/reporter_template_enhancements.txt
+ create mode 100644 docs/reports/reporter_template_terminology.adoc
+ delete mode 100644 docs/reports/reporter_template_terminology.txt
+ create mode 100644 docs/reports/reporter_view_output.adoc
+ delete mode 100644 docs/reports/reporter_view_output.txt
+ create mode 100644 docs/root.adoc
+ delete mode 100644 docs/root.txt
+ create mode 100644 docs/serials/A-intro.adoc
+ delete mode 100644 docs/serials/A-intro.txt
+ create mode 100644 docs/serials/B-copy_template.adoc
+ delete mode 100644 docs/serials/B-copy_template.txt
+ create mode 100644 docs/serials/C-subscription-SCV.adoc
+ delete mode 100644 docs/serials/C-subscription-SCV.txt
+ create mode 100644 docs/serials/D-subscription-ASCV.adoc
+ delete mode 100644 docs/serials/D-subscription-ASCV.txt
+ create mode 100644 docs/serials/E-edit_subscriptions.adoc
+ delete mode 100644 docs/serials/E-edit_subscriptions.txt
+ create mode 100644 docs/serials/F-Receiving.adoc
+ delete mode 100644 docs/serials/F-Receiving.txt
+ create mode 100644 docs/serials/G-Special_issue.adoc
+ delete mode 100644 docs/serials/G-Special_issue.txt
+ create mode 100644 docs/serials/Group_Serials_Issues_in_the_OPAC_2.2.adoc
+ delete mode 100644 docs/serials/Group_Serials_Issues_in_the_OPAC_2.2.txt
+ create mode 100644 docs/serials/H-holdings_statements.adoc
+ delete mode 100644 docs/serials/H-holdings_statements.txt
+
+commit 47dc23f05825aca7a3562d5a8a9b76be30117b4e
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Wed Apr 19 02:02:33 2017 -0400
+
+    LP#1684011: My Account summary ebook link correction
+    
+    The links on the My Account Summary page to the user's ebook checkouts and holds
+    go to the incorrect URL. The links are updated in this commit to the correct
+    URL.
+    
+    Test Plan:
+    * If your test system is not configured for ebook access, enabled it in the
+    config.tt2 file by setting ebook_api_enabled to true and
+    ebook_api.ebook_test.enabled to true.
+    * Log into a patron account
+    * The Account Summary page will show links to E-Items Currently Checked out,
+    E-Items Currently on Hold, and E-Items ready for pickup. Pre-patch, clicking one
+    of those links will bring you to a 404 page. Post-patch, clicking those links
+    should bring you to the appropriate My Account tab.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+3	3	Open-ILS/src/templates/opac/parts/myopac/main_base.tt2
+
+commit 097f3de7caaff6840383ccc30244303fc2568bf2
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Mon Apr 17 22:57:11 2017 -0400
+
+    LP#1683562: Typo fix in bill payment receipt template
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/templates/staff/share/print_templates/t_bill_payment.tt2
+
+commit 7a6e446c4e42c9debc4116a80a713f8c125b3c4d
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Fri Apr 21 09:12:54 2017 -0400
+
+    forward-port 2.12.0-2.12.1 database update
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+78	0	Open-ILS/src/sql/Pg/version-upgrade/2.12.0-2.12.1-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.12.0-2.12.1-upgrade-db.sql
+
+commit 6eed29a1512de39e7ffb1bfbc2324ab423f836ff
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Wed Apr 5 21:15:45 2017 -0700
+
+    Docs: Adding more information about closed dates editor
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+30	1	docs/admin_initial_setup/describing_your_organization.txt
+-	-	docs/media/closed_dates.png
+ create mode 100644 docs/media/closed_dates.png
