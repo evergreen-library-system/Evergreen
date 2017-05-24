@@ -1,0 +1,16 @@
+Apache Internal Port Configuration Option
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Apache configuration now supports a new variable which allows admins to
+specify the port used by Apache to handle HTTP traffic.  The value is
+used for HTTP requests routed from Perl handlers back to the same Apache
+instance, like added content requests.  Use this when running Apache
+with a non-standard port, typical with a proxy setup.  Defaults to "80".
+
+[source,conf]
+-------------------------------------------------------------------
+<Location /eg>
+    ...
+    PerlSetVar OILSWebInternalHTTPPort "7080"
+    ...
+</Location>
+-------------------------------------------------------------------

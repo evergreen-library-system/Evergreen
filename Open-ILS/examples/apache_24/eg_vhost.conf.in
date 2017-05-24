@@ -618,6 +618,12 @@ RewriteRule ^/openurl$ ${openurl:%1} [NE,PT]
     PerlSetVar OILSWebWebDir "@localstatedir@/web"
     PerlSetVar OILSWebDefaultTemplateExtension "tt2"
 
+    # Port Apache listens on for HTTP traffic.  Used for HTTP requests 
+    # routed from Perl handlers back to the same Apache instance, like
+    # added content requests.  Use this when running Apache with a 
+    # non-standard port, typical with a proxy setup.  Defaults to "80".
+    # PerlSetVar OILSWebInternalHTTPPort "7080"
+
     # Enable Template-Toolkit error debugging messages (apache error log)
     PerlSetVar OILSWebDebugTemplate "false"
     # local cache of compiled Template Toolkit templates
