@@ -74,7 +74,7 @@ NOTE: All paths are relative to `/openils/var/templates/opac`
   images with text on them (which is not an acceptable practice for
   accessibility reasons), and promises of answers to frequently asked questions
   that might not exist at your site.
-* `parts/login/password_hint.tt2`: contains a hint about your users' password
+* \`parts/login/password_hint.tt2\`: contains a hint about your users' password
   on first login that is misleading if your library does not set the initial
   password for an account to the last four digits of the phone number associated
   with the account.
@@ -92,7 +92,7 @@ NOTE: All paths are relative to `/openils/var/templates/opac`
   NOT_STRONG text that appears when the user tries to set a password that
   does not match the required format. Ideally, this message will tell the user
   how they should format the password.
-* `parts/css/fonts.tt2`: defines the font sizes for the TPAC in terms of one
+* \`parts/css/fonts.tt2\`: defines the font sizes for the TPAC in terms of one
   base font size, and all other sizes derived from that in percentages. The
   default is 12 pixels, but http://goo.gl/WfNkE[some design sites] strongly
   suggest a base font size of 16 pixels. Perhaps you want to try '1em' as a
