@@ -1,0 +1,33 @@
+Fine Item Detail Enhancements
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+SIP now suppports enhancements for the Fine Item Detail returned by by Patron Information
+Response (code 64).  Different manufacturers of self-check systems specify the format
+of the fine item detail differently.  A new option allows you to select the format to
+return.
+
+Configuration
++++++++++++++
+After installation of Evergreen and SIP, in the Evergreen configuration directory (typically
+/openils/conf) the SIP configuration file oils_sip.xml awaits your modifications to use this
+feature.
+
+In the <implementation_config><options> section, you can place an option of the form +
+        `<option name='av_format' value='`__<value>__`'>` +
+where __<value>__ is one of thsee values:
+
+* `3m`
+* `eg_legacy`
+* `swyer_a`
+* `swyer_b`
+
+If you omit the option, the default will act as though you wrote +
+        `<option name='av_format' value='eg_legacy'>`
+
+Currently, the behaviour of `eg_legacy` is close to, but not precisely that of `3m`.  The
+`eg_legacy` produces the pre-enhancement behavior in Evergreen.   Currently, the
+`swyer_a` behavior
+is identical to that of `3m`, but there is no guarantee that this will always be the case.
+
+If you change the brand of your self-check equipment, you may need to change the value
+of the option to be consistent with the new brand.
+
