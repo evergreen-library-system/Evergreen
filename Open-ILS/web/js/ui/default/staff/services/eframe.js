@@ -19,6 +19,9 @@ angular.module('egCoreMod')
             // called after onload of each new iframe page
             onchange : '=?',
 
+            // called after egFrameEmbedLoader, during link phase
+            afterload : '@',
+
             // for tweaking height
             saveSpace : '@',
             minHeight : '=?',
@@ -39,7 +42,10 @@ angular.module('egCoreMod')
             window.IEMBEDXUL = true;
             element.find('iframe').on(
                 'load',
-                function() {scope.egEmbedFrameLoader(this)}
+                function() {
+                    scope.egEmbedFrameLoader(this);
+                    if (scope.afterload) this.contentWindow[scope.afterload]();
+                }
             );
         },
 
