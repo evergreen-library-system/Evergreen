@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2017-03-15 16:25:23-0400\n"
+"POT-Creation-Date: 2017-05-25 00:15:50-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,8 +21,8 @@ msgstr ""
 msgid "Series Title"
 msgstr ""
 
-# id::ccvm.value__520 id::ccvm.value__897 id::ccvm.value__897
-# id::ccvm.value__897
+# id::ccvm.value__520 id::ccvm.value__897 id::ccvm.value__1565
+# id::ccvm.value__1585
 #: 950.data.seed-values.sql:7069 950.data.seed-values.sql:7875
 #: 950.data.seed-values.sql:8580 950.data.seed-values.sql:8601
 msgid "Poetry"
@@ -172,7 +172,7 @@ msgstr ""
 msgid "Not Applicable"
 msgstr ""
 
-# id::ccvm.value__894 id::ccvm.value__894 id::ccvm.value__894
+# id::ccvm.value__894 id::ccvm.value__1562 id::ccvm.value__1582
 #: 950.data.seed-values.sql:7872 950.data.seed-values.sql:8577
 #: 950.data.seed-values.sql:8598
 msgid "Memoirs"
@@ -341,7 +341,7 @@ msgid ""
 "50 results.  This setting allows you to raise or lower that limit."
 msgstr ""
 
-# id::ccvm.value__983 id::ccvm.value__983 id::ccvm.value__983
+# id::ccvm.value__983 id::ccvm.value__1644 id::ccvm.value__1653
 #: 950.data.seed-values.sql:7971 950.data.seed-values.sql:8665
 #: 950.data.seed-values.sql:8675
 msgid "Game"
@@ -529,8 +529,8 @@ msgstr ""
 msgid "Armenia (Republic) "
 msgstr ""
 
-# id::ccvm.value__971 id::ccvm.value__971 id::ccvm.value__971
-# id::ccvm.value__971 id::ccvm.value__971
+# id::ccvm.value__971 id::ccvm.value__1596 id::ccvm.value__1608
+# id::ccvm.value__1620 id::ccvm.value__1632
 #: 950.data.seed-values.sql:7957 950.data.seed-values.sql:8613
 #: 950.data.seed-values.sql:8626 950.data.seed-values.sql:8639
 #: 950.data.seed-values.sql:8652
@@ -661,7 +661,7 @@ msgstr ""
 msgid "Allows a user to create a purchase order"
 msgstr ""
 
-# id::ccvm.value__890 id::ccvm.value__890 id::ccvm.value__890
+# id::ccvm.value__890 id::ccvm.value__1558 id::ccvm.value__1578
 #: 950.data.seed-values.sql:7868 950.data.seed-values.sql:8573
 #: 950.data.seed-values.sql:8594
 msgid "Instruction"
@@ -780,8 +780,8 @@ msgstr ""
 msgid "Item Status for Missing Pieces"
 msgstr ""
 
-# id::ccvm.value__1659 id::ccvm.value__1659 id::ccvm.value__1659
-# id::ccvm.value__1659 id::ccvm.value__1659
+# id::ccvm.value__1659 id::ccvm.value__1675 id::ccvm.value__1690
+# id::ccvm.value__1705 id::ccvm.value__1720
 #: 950.data.seed-values.sql:8683 950.data.seed-values.sql:8700
 #: 950.data.seed-values.sql:8716 950.data.seed-values.sql:8732
 #: 950.data.seed-values.sql:8748
@@ -848,9 +848,9 @@ msgstr ""
 msgid "Temne"
 msgstr ""
 
-# id::ccvm.value__718 id::ccvm.value__718 id::ccvm.value__718
-# id::ccvm.value__718 id::ccvm.value__718 id::ccvm.value__718
-# id::ccvm.value__718
+# id::ccvm.value__718 id::ccvm.value__1359 id::ccvm.value__1372
+# id::ccvm.value__1385 id::ccvm.value__1398 id::ccvm.value__1411
+# id::ccvm.value__1424
 #: 950.data.seed-values.sql:7684 950.data.seed-values.sql:8364
 #: 950.data.seed-values.sql:8378 950.data.seed-values.sql:8392
 #: 950.data.seed-values.sql:8406 950.data.seed-values.sql:8420
@@ -908,8 +908,8 @@ msgstr ""
 msgid "Goode's homolographic"
 msgstr ""
 
-# id::ccvm.value__821 id::ccvm.value__849 id::ccvm.value__849
-# id::ccvm.value__849 id::ccvm.value__849 id::ccvm.value__849
+# id::ccvm.value__821 id::ccvm.value__849 id::ccvm.value__1446
+# id::ccvm.value__1475 id::ccvm.value__1504 id::ccvm.value__1533
 #: 950.data.seed-values.sql:7793 950.data.seed-values.sql:7823
 #: 950.data.seed-values.sql:8457 950.data.seed-values.sql:8487
 #: 950.data.seed-values.sql:8517 950.data.seed-values.sql:8547
@@ -1206,8 +1206,8 @@ msgstr ""
 msgid "Khasi"
 msgstr ""
 
-# id::ccvm.value__974 id::ccvm.value__974 id::ccvm.value__974
-# id::ccvm.value__974 id::ccvm.value__974
+# id::ccvm.value__974 id::ccvm.value__1599 id::ccvm.value__1611
+# id::ccvm.value__1623 id::ccvm.value__1635
 #: 950.data.seed-values.sql:7960 950.data.seed-values.sql:8616
 #: 950.data.seed-values.sql:8629 950.data.seed-values.sql:8642
 #: 950.data.seed-values.sql:8655
@@ -1258,8 +1258,8 @@ msgstr ""
 msgid "Suggest barred field on patron registration"
 msgstr ""
 
-# id::ccvm.value__830 id::ccvm.value__858 id::ccvm.value__858
-# id::ccvm.value__858 id::ccvm.value__858 id::ccvm.value__858
+# id::ccvm.value__830 id::ccvm.value__858 id::ccvm.value__1455
+# id::ccvm.value__1484 id::ccvm.value__1513 id::ccvm.value__1542
 #: 950.data.seed-values.sql:7802 950.data.seed-values.sql:7832
 #: 950.data.seed-values.sql:8466 950.data.seed-values.sql:8496
 #: 950.data.seed-values.sql:8526 950.data.seed-values.sql:8556
@@ -1557,8 +1557,8 @@ msgstr ""
 msgid "Bahamas "
 msgstr ""
 
-# id::ccvm.value__1666 id::ccvm.value__1666 id::ccvm.value__1666
-# id::ccvm.value__1666 id::ccvm.value__1666
+# id::ccvm.value__1666 id::ccvm.value__1682 id::ccvm.value__1697
+# id::ccvm.value__1712 id::ccvm.value__1727
 #: 950.data.seed-values.sql:8690 950.data.seed-values.sql:8707
 #: 950.data.seed-values.sql:8723 950.data.seed-values.sql:8739
 #: 950.data.seed-values.sql:8755
@@ -1649,7 +1649,7 @@ msgstr ""
 msgid "Skip For Hold Targeting"
 msgstr ""
 
-# id::ccvm.value__978 id::ccvm.value__978
+# id::ccvm.value__978 id::ccvm.value__1639
 #: 950.data.seed-values.sql:7966 950.data.seed-values.sql:8660
 msgid "No specified special format characteristics"
 msgstr ""
@@ -1850,7 +1850,7 @@ msgstr ""
 msgid "Org Unit Target Weight"
 msgstr ""
 
-# id::coust.label__vandelay.item.copy_location.default
+# id::coust.description__vandelay.item.copy_location.default
 #: 950.data.seed-values.sql:16243
 msgid "Default copy location value for imported items"
 msgstr ""
@@ -1931,9 +1931,9 @@ msgstr ""
 msgid "Centennial Wireless"
 msgstr ""
 
-# id::ccvm.value__719 id::ccvm.value__719 id::ccvm.value__719
-# id::ccvm.value__719 id::ccvm.value__719 id::ccvm.value__719
-# id::ccvm.value__719
+# id::ccvm.value__719 id::ccvm.value__1360 id::ccvm.value__1373
+# id::ccvm.value__1386 id::ccvm.value__1399 id::ccvm.value__1412
+# id::ccvm.value__1425
 #: 950.data.seed-values.sql:7685 950.data.seed-values.sql:8365
 #: 950.data.seed-values.sql:8379 950.data.seed-values.sql:8393
 #: 950.data.seed-values.sql:8407 950.data.seed-values.sql:8421
@@ -1951,8 +1951,8 @@ msgstr ""
 msgid "New record had insufficient quality"
 msgstr ""
 
-# id::ccvm.value__1671 id::ccvm.value__1671 id::ccvm.value__1671
-# id::ccvm.value__1671 id::ccvm.value__1671
+# id::ccvm.value__1671 id::ccvm.value__1687 id::ccvm.value__1702
+# id::ccvm.value__1717 id::ccvm.value__1732
 #: 950.data.seed-values.sql:8695 950.data.seed-values.sql:8712
 #: 950.data.seed-values.sql:8728 950.data.seed-values.sql:8744
 #: 950.data.seed-values.sql:8760
@@ -2255,8 +2255,8 @@ msgstr ""
 msgid "Rapanui"
 msgstr ""
 
-# id::ccvm.value__1661 id::ccvm.value__1661 id::ccvm.value__1661
-# id::ccvm.value__1661 id::ccvm.value__1661
+# id::ccvm.value__1661 id::ccvm.value__1677 id::ccvm.value__1692
+# id::ccvm.value__1707 id::ccvm.value__1722
 #: 950.data.seed-values.sql:8685 950.data.seed-values.sql:8702
 #: 950.data.seed-values.sql:8718 950.data.seed-values.sql:8734
 #: 950.data.seed-values.sql:8750
@@ -2304,8 +2304,8 @@ msgstr ""
 msgid "3_days_1_renew"
 msgstr ""
 
-# id::ccvm.value__817 id::ccvm.value__844 id::ccvm.value__844
-# id::ccvm.value__844 id::ccvm.value__844 id::ccvm.value__844
+# id::ccvm.value__817 id::ccvm.value__844 id::ccvm.value__1441
+# id::ccvm.value__1470 id::ccvm.value__1499 id::ccvm.value__1528
 #: 950.data.seed-values.sql:7789 950.data.seed-values.sql:7818
 #: 950.data.seed-values.sql:8452 950.data.seed-values.sql:8482
 #: 950.data.seed-values.sql:8512 950.data.seed-values.sql:8542
@@ -2365,8 +2365,8 @@ msgstr ""
 msgid "Allow a user to update another user's hold"
 msgstr ""
 
-# id::ccvm.value__831 id::ccvm.value__860 id::ccvm.value__860
-# id::ccvm.value__860 id::ccvm.value__860 id::ccvm.value__860
+# id::ccvm.value__831 id::ccvm.value__860 id::ccvm.value__1457
+# id::ccvm.value__1486 id::ccvm.value__1515 id::ccvm.value__1544
 #: 950.data.seed-values.sql:7803 950.data.seed-values.sql:7834
 #: 950.data.seed-values.sql:8468 950.data.seed-values.sql:8498
 #: 950.data.seed-values.sql:8528 950.data.seed-values.sql:8558
@@ -2557,7 +2557,7 @@ msgstr ""
 msgid "American Samoa "
 msgstr ""
 
-# id::ccvm.value__882 id::ccvm.value__882 id::ccvm.value__882
+# id::ccvm.value__882 id::ccvm.value__1550 id::ccvm.value__1570
 #: 950.data.seed-values.sql:7860 950.data.seed-values.sql:8565
 #: 950.data.seed-values.sql:8586
 msgid "Autobiography"
@@ -2592,8 +2592,8 @@ msgstr ""
 msgid "Gabon "
 msgstr ""
 
-# id::ccvm.value__1670 id::ccvm.value__1670 id::ccvm.value__1670
-# id::ccvm.value__1670 id::ccvm.value__1670
+# id::ccvm.value__1670 id::ccvm.value__1686 id::ccvm.value__1701
+# id::ccvm.value__1716 id::ccvm.value__1731
 #: 950.data.seed-values.sql:8694 950.data.seed-values.sql:8711
 #: 950.data.seed-values.sql:8727 950.data.seed-values.sql:8743
 #: 950.data.seed-values.sql:8759
@@ -2867,8 +2867,8 @@ msgstr ""
 msgid "Nevada "
 msgstr ""
 
-# id::ccvm.value__1667 id::ccvm.value__1667 id::ccvm.value__1667
-# id::ccvm.value__1667 id::ccvm.value__1667
+# id::ccvm.value__1667 id::ccvm.value__1683 id::ccvm.value__1698
+# id::ccvm.value__1713 id::ccvm.value__1728
 #: 950.data.seed-values.sql:8691 950.data.seed-values.sql:8708
 #: 950.data.seed-values.sql:8724 950.data.seed-values.sql:8740
 #: 950.data.seed-values.sql:8756
@@ -2890,8 +2890,8 @@ msgstr ""
 msgid "Kosovo "
 msgstr ""
 
-# id::ccvm.value__859 id::ccvm.value__859 id::ccvm.value__859
-# id::ccvm.value__859 id::ccvm.value__859
+# id::ccvm.value__859 id::ccvm.value__1456 id::ccvm.value__1485
+# id::ccvm.value__1514 id::ccvm.value__1543
 #: 950.data.seed-values.sql:7833 950.data.seed-values.sql:8467
 #: 950.data.seed-values.sql:8497 950.data.seed-values.sql:8527
 #: 950.data.seed-values.sql:8557
@@ -2978,8 +2978,8 @@ msgstr ""
 msgid "Gayo"
 msgstr ""
 
-# id::ccvm.value__828 id::ccvm.value__856 id::ccvm.value__856
-# id::ccvm.value__856 id::ccvm.value__856 id::ccvm.value__856
+# id::ccvm.value__828 id::ccvm.value__856 id::ccvm.value__1453
+# id::ccvm.value__1482 id::ccvm.value__1511 id::ccvm.value__1540
 #: 950.data.seed-values.sql:7800 950.data.seed-values.sql:7830
 #: 950.data.seed-values.sql:8464 950.data.seed-values.sql:8494
 #: 950.data.seed-values.sql:8524 950.data.seed-values.sql:8554
@@ -3116,7 +3116,7 @@ msgid ""
 "%INCLUDE(alert_text)%"
 msgstr ""
 
-# id::coust.label__ui.patron.edit.aua.county.require
+# id::coust.label__ui.patron.edit.aua.county.show
 #: 950.data.seed-values.sql:16167
 msgid "Show county field on patron registration"
 msgstr ""
@@ -3126,8 +3126,8 @@ msgstr ""
 msgid "URL Verification Queue"
 msgstr ""
 
-# id::ccvm.value__1669 id::ccvm.value__1669 id::ccvm.value__1669
-# id::ccvm.value__1669 id::ccvm.value__1669
+# id::ccvm.value__1669 id::ccvm.value__1685 id::ccvm.value__1700
+# id::ccvm.value__1715 id::ccvm.value__1730
 #: 950.data.seed-values.sql:8693 950.data.seed-values.sql:8710
 #: 950.data.seed-values.sql:8726 950.data.seed-values.sql:8742
 #: 950.data.seed-values.sql:8758
@@ -3265,8 +3265,8 @@ msgid ""
 " is 1."
 msgstr ""
 
-# id::ccvm.value__819 id::ccvm.value__847 id::ccvm.value__847
-# id::ccvm.value__847 id::ccvm.value__847 id::ccvm.value__847
+# id::ccvm.value__819 id::ccvm.value__847 id::ccvm.value__1444
+# id::ccvm.value__1473 id::ccvm.value__1502 id::ccvm.value__1531
 #: 950.data.seed-values.sql:7791 950.data.seed-values.sql:7821
 #: 950.data.seed-values.sql:8455 950.data.seed-values.sql:8485
 #: 950.data.seed-values.sql:8515 950.data.seed-values.sql:8545
@@ -3570,7 +3570,7 @@ msgstr ""
 msgid "Allow a user to add/remove users to/from the \"LocalAdmin\" group"
 msgstr ""
 
-# id::coust.label__vandelay.item.circ_modifier.default
+# id::coust.description__vandelay.item.circ_modifier.default
 #: 950.data.seed-values.sql:16256
 msgid "Default circulation modifier value for imported items"
 msgstr ""
@@ -3630,8 +3630,8 @@ msgstr ""
 msgid "Florida "
 msgstr ""
 
-# id::ccvm.value__970 id::ccvm.value__970 id::ccvm.value__970
-# id::ccvm.value__970 id::ccvm.value__970
+# id::ccvm.value__970 id::ccvm.value__1595 id::ccvm.value__1607
+# id::ccvm.value__1619 id::ccvm.value__1631
 #: 950.data.seed-values.sql:7956 950.data.seed-values.sql:8612
 #: 950.data.seed-values.sql:8625 950.data.seed-values.sql:8638
 #: 950.data.seed-values.sql:8651
@@ -3923,9 +3923,9 @@ msgstr ""
 msgid "Canceled: Not Found"
 msgstr ""
 
-# id::ccvm.value__715 id::ccvm.value__715 id::ccvm.value__715
-# id::ccvm.value__715 id::ccvm.value__715 id::ccvm.value__715
-# id::ccvm.value__715
+# id::ccvm.value__715 id::ccvm.value__1356 id::ccvm.value__1369
+# id::ccvm.value__1382 id::ccvm.value__1395 id::ccvm.value__1408
+# id::ccvm.value__1421
 #: 950.data.seed-values.sql:7681 950.data.seed-values.sql:8361
 #: 950.data.seed-values.sql:8375 950.data.seed-values.sql:8389
 #: 950.data.seed-values.sql:8403 950.data.seed-values.sql:8417
@@ -3953,8 +3953,8 @@ msgstr ""
 msgid "Negative Balance Interval for Lost"
 msgstr ""
 
-# id::ccvm.value__973 id::ccvm.value__973 id::ccvm.value__973
-# id::ccvm.value__973 id::ccvm.value__973
+# id::ccvm.value__973 id::ccvm.value__1598 id::ccvm.value__1610
+# id::ccvm.value__1622 id::ccvm.value__1634
 #: 950.data.seed-values.sql:7959 950.data.seed-values.sql:8615
 #: 950.data.seed-values.sql:8628 950.data.seed-values.sql:8641
 #: 950.data.seed-values.sql:8654
@@ -4158,15 +4158,15 @@ msgstr ""
 msgid "cartographic moving image"
 msgstr ""
 
-# id::ccvm.value__1668 id::ccvm.value__1668 id::ccvm.value__1668
-# id::ccvm.value__1668 id::ccvm.value__1668
+# id::ccvm.value__1668 id::ccvm.value__1684 id::ccvm.value__1699
+# id::ccvm.value__1714 id::ccvm.value__1729
 #: 950.data.seed-values.sql:8692 950.data.seed-values.sql:8709
 #: 950.data.seed-values.sql:8725 950.data.seed-values.sql:8741
 #: 950.data.seed-values.sql:8757
 msgid "Genealogical tables"
 msgstr ""
 
-# id::ccvm.value__888 id::ccvm.value__888 id::ccvm.value__888
+# id::ccvm.value__888 id::ccvm.value__1556 id::ccvm.value__1576
 #: 950.data.seed-values.sql:7866 950.data.seed-values.sql:8571
 #: 950.data.seed-values.sql:8592
 msgid "Reporting"
@@ -4316,7 +4316,7 @@ msgstr ""
 msgid "Saint Pierre and Miquelon "
 msgstr ""
 
-# id::pgt.name__6 id::coust.label__config.settings_group.system
+# id::pgt.name__6 id::coust.label__config.settings_group.acquisitions
 #: 950.data.seed-values.sql:1696 950.data.seed-values.sql:2698
 msgid "Acquisitions"
 msgstr ""
@@ -4582,7 +4582,7 @@ msgstr ""
 msgid "Maine "
 msgstr ""
 
-# id::ccvm.value__891 id::ccvm.value__891 id::ccvm.value__891
+# id::ccvm.value__891 id::ccvm.value__1559 id::ccvm.value__1579
 #: 950.data.seed-values.sql:7869 950.data.seed-values.sql:8574
 #: 950.data.seed-values.sql:8595
 msgid "Language instruction"
@@ -4628,7 +4628,7 @@ msgstr ""
 msgid "Art and Architecture Thesaurus"
 msgstr ""
 
-# id::ccvm.value__986 id::ccvm.value__986 id::ccvm.value__986
+# id::ccvm.value__986 id::ccvm.value__1647 id::ccvm.value__1656
 #: 950.data.seed-values.sql:7974 950.data.seed-values.sql:8668
 #: 950.data.seed-values.sql:8678
 msgid "Loose-leaf"
@@ -5049,7 +5049,7 @@ msgstr ""
 msgid "UPDATE_VOLUME_NOTE"
 msgstr ""
 
-# id::ccvm.value__981 id::ccvm.value__981 id::ccvm.value__981
+# id::ccvm.value__981 id::ccvm.value__1642 id::ccvm.value__1651
 #: 950.data.seed-values.sql:7969 950.data.seed-values.sql:8663
 #: 950.data.seed-values.sql:8673
 msgid "Calendar"
@@ -5352,8 +5352,8 @@ msgstr ""
 msgid "Patron exceeds fine threshold"
 msgstr ""
 
-# id::ccvm.value__832 id::ccvm.value__861 id::ccvm.value__861
-# id::ccvm.value__861 id::ccvm.value__861 id::ccvm.value__861
+# id::ccvm.value__832 id::ccvm.value__861 id::ccvm.value__1458
+# id::ccvm.value__1487 id::ccvm.value__1516 id::ccvm.value__1545
 #: 950.data.seed-values.sql:7804 950.data.seed-values.sql:7835
 #: 950.data.seed-values.sql:8469 950.data.seed-values.sql:8499
 #: 950.data.seed-values.sql:8529 950.data.seed-values.sql:8559
@@ -5409,8 +5409,8 @@ msgid ""
 " \"available\".  Examples: \"1 day\", \"6 hours\""
 msgstr ""
 
-# id::ccvm.value__966 id::ccvm.value__966 id::ccvm.value__966
-# id::ccvm.value__966 id::ccvm.value__966
+# id::ccvm.value__966 id::ccvm.value__1591 id::ccvm.value__1603
+# id::ccvm.value__1615 id::ccvm.value__1627
 #: 950.data.seed-values.sql:7952 950.data.seed-values.sql:8608
 #: 950.data.seed-values.sql:8621 950.data.seed-values.sql:8634
 #: 950.data.seed-values.sql:8647
@@ -5772,7 +5772,7 @@ msgstr ""
 msgid "Andorra "
 msgstr ""
 
-# id::ccvm.value__808 id::ccvm.value__835 id::ccvm.value__835
+# id::ccvm.value__808 id::ccvm.value__835 id::ccvm.value__1432
 #: 950.data.seed-values.sql:7780 950.data.seed-values.sql:7809
 #: 950.data.seed-values.sql:8443
 msgid "Not specified"
@@ -5798,7 +5798,7 @@ msgstr ""
 msgid "UPDATE_AUDIENCE"
 msgstr ""
 
-# id::ccvm.value__965 id::ccvm.value__965
+# id::ccvm.value__965 id::ccvm.value__1590
 #: 950.data.seed-values.sql:7951 950.data.seed-values.sql:8607
 msgid "No relief shown"
 msgstr ""
@@ -5848,7 +5848,7 @@ msgstr ""
 msgid "VIEW_AUTHORITY_RECORD_NOTES"
 msgstr ""
 
-# id::ccvm.value__889 id::ccvm.value__889 id::ccvm.value__889
+# id::ccvm.value__889 id::ccvm.value__1557 id::ccvm.value__1577
 #: 950.data.seed-values.sql:7867 950.data.seed-values.sql:8572
 #: 950.data.seed-values.sql:8593
 msgid "History"
@@ -6358,8 +6358,8 @@ msgstr ""
 msgid "Michigan "
 msgstr ""
 
-# id::ccvm.value__822 id::ccvm.value__850 id::ccvm.value__850
-# id::ccvm.value__850 id::ccvm.value__850 id::ccvm.value__850
+# id::ccvm.value__822 id::ccvm.value__850 id::ccvm.value__1447
+# id::ccvm.value__1476 id::ccvm.value__1505 id::ccvm.value__1534
 #: 950.data.seed-values.sql:7794 950.data.seed-values.sql:7824
 #: 950.data.seed-values.sql:8458 950.data.seed-values.sql:8488
 #: 950.data.seed-values.sql:8518 950.data.seed-values.sql:8548
@@ -6579,15 +6579,15 @@ msgstr ""
 msgid "Disable auth requirement for texting call numbers."
 msgstr ""
 
-# id::ccvm.value__893 id::ccvm.value__893 id::ccvm.value__893
+# id::ccvm.value__893 id::ccvm.value__1561 id::ccvm.value__1581
 #: 950.data.seed-values.sql:7871 950.data.seed-values.sql:8576
 #: 950.data.seed-values.sql:8597
 msgid "Lectures, speeches"
 msgstr ""
 
-# id::ccvm.value__723 id::ccvm.value__723 id::ccvm.value__723
-# id::ccvm.value__723 id::ccvm.value__723 id::ccvm.value__723
-# id::ccvm.value__723
+# id::ccvm.value__723 id::ccvm.value__1364 id::ccvm.value__1377
+# id::ccvm.value__1390 id::ccvm.value__1403 id::ccvm.value__1416
+# id::ccvm.value__1429
 #: 950.data.seed-values.sql:7689 950.data.seed-values.sql:8369
 #: 950.data.seed-values.sql:8383 950.data.seed-values.sql:8397
 #: 950.data.seed-values.sql:8411 950.data.seed-values.sql:8425
@@ -6595,7 +6595,7 @@ msgstr ""
 msgid "Instructional materials"
 msgstr ""
 
-# id::ccvm.value__881 id::ccvm.value__881
+# id::ccvm.value__881 id::ccvm.value__1549
 #: 950.data.seed-values.sql:7859 950.data.seed-values.sql:8564
 msgid "Item is a music sound recording"
 msgstr ""
@@ -6908,9 +6908,9 @@ msgstr ""
 msgid "Allow a user to delete trigger event definitions"
 msgstr ""
 
-# id::ccvm.value__717 id::ccvm.value__717 id::ccvm.value__717
-# id::ccvm.value__717 id::ccvm.value__717 id::ccvm.value__717
-# id::ccvm.value__717
+# id::ccvm.value__717 id::ccvm.value__1358 id::ccvm.value__1371
+# id::ccvm.value__1384 id::ccvm.value__1397 id::ccvm.value__1410
+# id::ccvm.value__1423
 #: 950.data.seed-values.sql:7683 950.data.seed-values.sql:8363
 #: 950.data.seed-values.sql:8377 950.data.seed-values.sql:8391
 #: 950.data.seed-values.sql:8405 950.data.seed-values.sql:8419
@@ -6949,8 +6949,8 @@ msgstr ""
 msgid "Allow a user to add/remove users to/from the \"Volunteers\" group"
 msgstr ""
 
-# id::ccvm.value__1663 id::ccvm.value__1663 id::ccvm.value__1663
-# id::ccvm.value__1663 id::ccvm.value__1663
+# id::ccvm.value__1663 id::ccvm.value__1679 id::ccvm.value__1694
+# id::ccvm.value__1709 id::ccvm.value__1724
 #: 950.data.seed-values.sql:8687 950.data.seed-values.sql:8704
 #: 950.data.seed-values.sql:8720 950.data.seed-values.sql:8736
 #: 950.data.seed-values.sql:8752
@@ -7044,8 +7044,8 @@ msgid ""
 "copy in the Checked Out status"
 msgstr ""
 
-# id::ccvm.value__815 id::ccvm.value__842 id::ccvm.value__842
-# id::ccvm.value__842 id::ccvm.value__842 id::ccvm.value__842
+# id::ccvm.value__815 id::ccvm.value__842 id::ccvm.value__1439
+# id::ccvm.value__1468 id::ccvm.value__1497 id::ccvm.value__1526
 #: 950.data.seed-values.sql:7787 950.data.seed-values.sql:7816
 #: 950.data.seed-values.sql:8450 950.data.seed-values.sql:8480
 #: 950.data.seed-values.sql:8510 950.data.seed-values.sql:8540
@@ -7370,8 +7370,8 @@ msgstr ""
 msgid "Laos "
 msgstr ""
 
-# id::ccvm.value__968 id::ccvm.value__968 id::ccvm.value__968
-# id::ccvm.value__968 id::ccvm.value__968
+# id::ccvm.value__968 id::ccvm.value__1593 id::ccvm.value__1605
+# id::ccvm.value__1617 id::ccvm.value__1629
 #: 950.data.seed-values.sql:7954 950.data.seed-values.sql:8610
 #: 950.data.seed-values.sql:8623 950.data.seed-values.sql:8636
 #: 950.data.seed-values.sql:8649
@@ -7404,9 +7404,9 @@ msgstr ""
 msgid "Mon-Khmer (Other)"
 msgstr ""
 
-# id::ccvm.value__713 id::ccvm.value__713 id::ccvm.value__713
-# id::ccvm.value__713 id::ccvm.value__713 id::ccvm.value__713
-# id::ccvm.value__713
+# id::ccvm.value__713 id::ccvm.value__1354 id::ccvm.value__1367
+# id::ccvm.value__1380 id::ccvm.value__1393 id::ccvm.value__1406
+# id::ccvm.value__1419
 #: 950.data.seed-values.sql:7679 950.data.seed-values.sql:8359
 #: 950.data.seed-values.sql:8373 950.data.seed-values.sql:8387
 #: 950.data.seed-values.sql:8401 950.data.seed-values.sql:8415
@@ -7800,7 +7800,7 @@ msgstr ""
 msgid "Allows a user to create report templates"
 msgstr ""
 
-# id::coust.label__vandelay.item.barcode.auto
+# id::coust.description__vandelay.item.barcode.auto
 #: 950.data.seed-values.sql:16191
 msgid "Auto-generate deault item barcodes when no item barcode is present"
 msgstr ""
@@ -7865,8 +7865,8 @@ msgstr ""
 msgid "CREATE_BIB_IMPORT_FIELD_DEF"
 msgstr ""
 
-# id::ccvm.value__1662 id::ccvm.value__1662 id::ccvm.value__1662
-# id::ccvm.value__1662 id::ccvm.value__1662
+# id::ccvm.value__1662 id::ccvm.value__1678 id::ccvm.value__1693
+# id::ccvm.value__1708 id::ccvm.value__1723
 #: 950.data.seed-values.sql:8686 950.data.seed-values.sql:8703
 #: 950.data.seed-values.sql:8719 950.data.seed-values.sql:8735
 #: 950.data.seed-values.sql:8751
@@ -8071,8 +8071,8 @@ msgstr ""
 msgid "Allow a user to view billing types"
 msgstr ""
 
-# id::ccvm.value__862 id::ccvm.value__862 id::ccvm.value__862
-# id::ccvm.value__862 id::ccvm.value__862
+# id::ccvm.value__862 id::ccvm.value__1459 id::ccvm.value__1488
+# id::ccvm.value__1517 id::ccvm.value__1546
 #: 950.data.seed-values.sql:7836 950.data.seed-values.sql:8470
 #: 950.data.seed-values.sql:8500 950.data.seed-values.sql:8530
 #: 950.data.seed-values.sql:8560
@@ -8411,8 +8411,8 @@ msgstr ""
 msgid "Abkhaz"
 msgstr ""
 
-# id::ccvm.value__834 id::ccvm.value__864 id::ccvm.value__864
-# id::ccvm.value__864 id::ccvm.value__864 id::ccvm.value__864
+# id::ccvm.value__834 id::ccvm.value__864 id::ccvm.value__1461
+# id::ccvm.value__1490 id::ccvm.value__1519 id::ccvm.value__1548
 #: 950.data.seed-values.sql:7806 950.data.seed-values.sql:7838
 #: 950.data.seed-values.sql:8472 950.data.seed-values.sql:8502
 #: 950.data.seed-values.sql:8532 950.data.seed-values.sql:8562
@@ -8439,8 +8439,8 @@ msgstr ""
 msgid "View Circulations"
 msgstr ""
 
-# id::ccvm.value__967 id::ccvm.value__967 id::ccvm.value__967
-# id::ccvm.value__967 id::ccvm.value__967
+# id::ccvm.value__967 id::ccvm.value__1592 id::ccvm.value__1604
+# id::ccvm.value__1616 id::ccvm.value__1628
 #: 950.data.seed-values.sql:7953 950.data.seed-values.sql:8609
 #: 950.data.seed-values.sql:8622 950.data.seed-values.sql:8635
 #: 950.data.seed-values.sql:8648
@@ -8727,7 +8727,7 @@ msgstr ""
 msgid "Allow a user to delete another user's volume note"
 msgstr ""
 
-# id::ccvm.value__980 id::ccvm.value__980 id::ccvm.value__980
+# id::ccvm.value__980 id::ccvm.value__1641 id::ccvm.value__1650
 #: 950.data.seed-values.sql:7968 950.data.seed-values.sql:8662
 #: 950.data.seed-values.sql:8672
 msgid "Picture card, post card"
@@ -8821,8 +8821,8 @@ msgstr ""
 msgid "Paging shortcut links for OPAC Browse"
 msgstr ""
 
-# id::ccvm.value__1664 id::ccvm.value__1664 id::ccvm.value__1664
-# id::ccvm.value__1664 id::ccvm.value__1664
+# id::ccvm.value__1664 id::ccvm.value__1680 id::ccvm.value__1695
+# id::ccvm.value__1710 id::ccvm.value__1725
 #: 950.data.seed-values.sql:8688 950.data.seed-values.sql:8705
 #: 950.data.seed-values.sql:8721 950.data.seed-values.sql:8737
 #: 950.data.seed-values.sql:8753
@@ -8880,8 +8880,8 @@ msgstr ""
 msgid "Country music"
 msgstr ""
 
-# id::ccvm.value__845 id::ccvm.value__845 id::ccvm.value__845
-# id::ccvm.value__845 id::ccvm.value__845
+# id::ccvm.value__845 id::ccvm.value__1442 id::ccvm.value__1471
+# id::ccvm.value__1500 id::ccvm.value__1529
 #: 950.data.seed-values.sql:7819 950.data.seed-values.sql:8453
 #: 950.data.seed-values.sql:8483 950.data.seed-values.sql:8513
 #: 950.data.seed-values.sql:8543
@@ -9247,7 +9247,7 @@ msgstr ""
 msgid "Teatro lirico"
 msgstr ""
 
-# id::ccvm.value__979 id::ccvm.value__979 id::ccvm.value__979
+# id::ccvm.value__979 id::ccvm.value__1640 id::ccvm.value__1649
 #: 950.data.seed-values.sql:7967 950.data.seed-values.sql:8661
 #: 950.data.seed-values.sql:8671
 msgid "Manuscript"
@@ -9417,7 +9417,7 @@ msgstr ""
 msgid "Hold Shelf Status Delay"
 msgstr ""
 
-# id::coust.label__vandelay.item.call_number.prefix
+# id::coust.description__vandelay.item.call_number.prefix
 #: 950.data.seed-values.sql:16230
 msgid "Apply this prefix to any auto-generated item call numbers"
 msgstr ""
@@ -9547,7 +9547,7 @@ msgstr ""
 msgid "Delayed: Pieces Delivered"
 msgstr ""
 
-# id::ccvm.value__899 id::ccvm.value__899 id::ccvm.value__899
+# id::ccvm.value__899 id::ccvm.value__1567 id::ccvm.value__1587
 #: 950.data.seed-values.sql:7877 950.data.seed-values.sql:8582
 #: 950.data.seed-values.sql:8603
 msgid "Sounds"
@@ -9591,8 +9591,8 @@ msgid ""
 " hold during hold placement time, alert the patron"
 msgstr ""
 
-# id::ccvm.value__514 id::ccvm.value__886 id::ccvm.value__886
-# id::ccvm.value__886
+# id::ccvm.value__514 id::ccvm.value__886 id::ccvm.value__1554
+# id::ccvm.value__1574
 #: 950.data.seed-values.sql:7063 950.data.seed-values.sql:7864
 #: 950.data.seed-values.sql:8569 950.data.seed-values.sql:8590
 msgid "Essays"
@@ -9719,7 +9719,7 @@ msgstr ""
 msgid "Cat: Defines the control number identifier used in 003 and 035 fields."
 msgstr ""
 
-# id::ccvm.value__885 id::ccvm.value__885 id::ccvm.value__885
+# id::ccvm.value__885 id::ccvm.value__1553 id::ccvm.value__1573
 #: 950.data.seed-values.sql:7863 950.data.seed-values.sql:8568
 #: 950.data.seed-values.sql:8589
 msgid "Drama"
@@ -9814,8 +9814,8 @@ msgstr ""
 msgid "Vandelay Default Copy Location"
 msgstr ""
 
-# id::ccvm.value__1660 id::ccvm.value__1660 id::ccvm.value__1660
-# id::ccvm.value__1660 id::ccvm.value__1660
+# id::ccvm.value__1660 id::ccvm.value__1676 id::ccvm.value__1691
+# id::ccvm.value__1706 id::ccvm.value__1721
 #: 950.data.seed-values.sql:8684 950.data.seed-values.sql:8701
 #: 950.data.seed-values.sql:8717 950.data.seed-values.sql:8733
 #: 950.data.seed-values.sql:8749
@@ -9847,16 +9847,16 @@ msgstr ""
 msgid "Direct electronic"
 msgstr ""
 
-# id::ccvm.value__811 id::ccvm.value__838 id::ccvm.value__838
-# id::ccvm.value__838 id::ccvm.value__838 id::ccvm.value__838
+# id::ccvm.value__811 id::ccvm.value__838 id::ccvm.value__1435
+# id::ccvm.value__1464 id::ccvm.value__1493 id::ccvm.value__1522
 #: 950.data.seed-values.sql:7783 950.data.seed-values.sql:7812
 #: 950.data.seed-values.sql:8446 950.data.seed-values.sql:8476
 #: 950.data.seed-values.sql:8506 950.data.seed-values.sql:8536
 msgid "Catalogs"
 msgstr ""
 
-# id::ccvm.value__827 id::ccvm.value__855 id::ccvm.value__855
-# id::ccvm.value__855 id::ccvm.value__855 id::ccvm.value__855
+# id::ccvm.value__827 id::ccvm.value__855 id::ccvm.value__1452
+# id::ccvm.value__1481 id::ccvm.value__1510 id::ccvm.value__1539
 #: 950.data.seed-values.sql:7799 950.data.seed-values.sql:7829
 #: 950.data.seed-values.sql:8463 950.data.seed-values.sql:8493
 #: 950.data.seed-values.sql:8523 950.data.seed-values.sql:8553
@@ -9870,7 +9870,7 @@ msgid ""
 "workstation"
 msgstr ""
 
-# id::coust.label__vandelay.item.call_number.auto
+# id::coust.description__vandelay.item.call_number.auto
 #: 950.data.seed-values.sql:16217
 msgid ""
 "Auto-generate default item call numbers when no item call number is present"
@@ -10003,7 +10003,7 @@ msgstr ""
 msgid "Holds: Hard boundary"
 msgstr ""
 
-# id::ccvm.value__982 id::ccvm.value__982 id::ccvm.value__982
+# id::ccvm.value__982 id::ccvm.value__1643 id::ccvm.value__1652
 #: 950.data.seed-values.sql:7970 950.data.seed-values.sql:8664
 #: 950.data.seed-values.sql:8674
 msgid "Puzzle"
@@ -10232,8 +10232,8 @@ msgid ""
 "value of this setting."
 msgstr ""
 
-# id::ccvm.value__1673 id::ccvm.value__1673 id::ccvm.value__1673
-# id::ccvm.value__1673 id::ccvm.value__1673
+# id::ccvm.value__1673 id::ccvm.value__1689 id::ccvm.value__1704
+# id::ccvm.value__1719 id::ccvm.value__1734
 #: 950.data.seed-values.sql:8697 950.data.seed-values.sql:8714
 #: 950.data.seed-values.sql:8730 950.data.seed-values.sql:8746
 #: 950.data.seed-values.sql:8762
@@ -10298,8 +10298,8 @@ msgstr ""
 msgid "VIEW_INVOICE"
 msgstr ""
 
-# id::ccvm.value__829 id::ccvm.value__857 id::ccvm.value__857
-# id::ccvm.value__857 id::ccvm.value__857 id::ccvm.value__857
+# id::ccvm.value__829 id::ccvm.value__857 id::ccvm.value__1454
+# id::ccvm.value__1483 id::ccvm.value__1512 id::ccvm.value__1541
 #: 950.data.seed-values.sql:7801 950.data.seed-values.sql:7831
 #: 950.data.seed-values.sql:8465 950.data.seed-values.sql:8495
 #: 950.data.seed-values.sql:8525 950.data.seed-values.sql:8555
@@ -10444,9 +10444,9 @@ msgstr ""
 msgid "Aitoff"
 msgstr ""
 
-# id::ccvm.value__722 id::ccvm.value__722 id::ccvm.value__722
-# id::ccvm.value__722 id::ccvm.value__722 id::ccvm.value__722
-# id::ccvm.value__722
+# id::ccvm.value__722 id::ccvm.value__1363 id::ccvm.value__1376
+# id::ccvm.value__1389 id::ccvm.value__1402 id::ccvm.value__1415
+# id::ccvm.value__1428
 #: 950.data.seed-values.sql:7688 950.data.seed-values.sql:8368
 #: 950.data.seed-values.sql:8382 950.data.seed-values.sql:8396
 #: 950.data.seed-values.sql:8410 950.data.seed-values.sql:8424
@@ -10843,8 +10843,8 @@ msgid "Greek, Ancient (to 1453)"
 msgstr ""
 
 # id::ccvm.value__816 id::ccvm.value__843 id::ccvm.value__883
-# id::ccvm.value__843 id::ccvm.value__843 id::ccvm.value__843
-# id::ccvm.value__843 id::ccvm.value__883 id::ccvm.value__883
+# id::ccvm.value__1440 id::ccvm.value__1469 id::ccvm.value__1498
+# id::ccvm.value__1527 id::ccvm.value__1551 id::ccvm.value__1571
 #: 950.data.seed-values.sql:7788 950.data.seed-values.sql:7817
 #: 950.data.seed-values.sql:7861 950.data.seed-values.sql:8451
 #: 950.data.seed-values.sql:8481 950.data.seed-values.sql:8511
@@ -11166,7 +11166,7 @@ msgid ""
 "interface is selected."
 msgstr ""
 
-# id::ccvm.value__985 id::ccvm.value__985 id::ccvm.value__985
+# id::ccvm.value__985 id::ccvm.value__1646 id::ccvm.value__1655
 #: 950.data.seed-values.sql:7973 950.data.seed-values.sql:8667
 #: 950.data.seed-values.sql:8677
 msgid "Playing cards"
@@ -11301,7 +11301,7 @@ msgstr ""
 msgid "ADMIN_Z3950_SOURCE"
 msgstr ""
 
-# id::coust.label__vandelay.item.barcode.prefix
+# id::coust.description__vandelay.item.barcode.prefix
 #: 950.data.seed-values.sql:16204
 msgid "Apply this prefix to any auto-generated item barcodes"
 msgstr ""
@@ -11330,7 +11330,7 @@ msgstr ""
 msgid "Allow a user to change the settings for an organization unit"
 msgstr ""
 
-# id::ccvm.value__1658 id::ccvm.value__1658
+# id::ccvm.value__1658 id::ccvm.value__1674
 #: 950.data.seed-values.sql:8682 950.data.seed-values.sql:8699
 msgid "No Illustrations"
 msgstr ""
@@ -11492,7 +11492,7 @@ msgstr ""
 msgid "Delayed: Backorder"
 msgstr ""
 
-# id::ccvm.value__892 id::ccvm.value__892 id::ccvm.value__892
+# id::ccvm.value__892 id::ccvm.value__1560 id::ccvm.value__1580
 #: 950.data.seed-values.sql:7870 950.data.seed-values.sql:8575
 #: 950.data.seed-values.sql:8596
 msgid "Comedy"
@@ -11510,7 +11510,7 @@ msgstr ""
 msgid "Allow multiple username changes"
 msgstr ""
 
-# id::ccvm.value__896 id::ccvm.value__896 id::ccvm.value__896
+# id::ccvm.value__896 id::ccvm.value__1564 id::ccvm.value__1584
 #: 950.data.seed-values.sql:7874 950.data.seed-values.sql:8579
 #: 950.data.seed-values.sql:8600
 msgid "Folktales"
@@ -11549,8 +11549,8 @@ msgstr ""
 msgid "Swaziland "
 msgstr ""
 
-# id::ccvm.value__976 id::ccvm.value__976 id::ccvm.value__976
-# id::ccvm.value__976 id::ccvm.value__976
+# id::ccvm.value__976 id::ccvm.value__1601 id::ccvm.value__1613
+# id::ccvm.value__1625 id::ccvm.value__1637
 #: 950.data.seed-values.sql:7962 950.data.seed-values.sql:8618
 #: 950.data.seed-values.sql:8631 950.data.seed-values.sql:8644
 #: 950.data.seed-values.sql:8657
@@ -11618,9 +11618,9 @@ msgstr ""
 msgid "Kenya "
 msgstr ""
 
-# id::ccvm.value__720 id::ccvm.value__720 id::ccvm.value__720
-# id::ccvm.value__720 id::ccvm.value__720 id::ccvm.value__720
-# id::ccvm.value__720
+# id::ccvm.value__720 id::ccvm.value__1361 id::ccvm.value__1374
+# id::ccvm.value__1387 id::ccvm.value__1400 id::ccvm.value__1413
+# id::ccvm.value__1426
 #: 950.data.seed-values.sql:7686 950.data.seed-values.sql:8366
 #: 950.data.seed-values.sql:8380 950.data.seed-values.sql:8394
 #: 950.data.seed-values.sql:8408 950.data.seed-values.sql:8422
@@ -12091,7 +12091,7 @@ msgstr ""
 msgid "Sonatas"
 msgstr ""
 
-# id::ccvm.value__984 id::ccvm.value__984 id::ccvm.value__984
+# id::ccvm.value__984 id::ccvm.value__1645 id::ccvm.value__1654
 #: 950.data.seed-values.sql:7972 950.data.seed-values.sql:8666
 #: 950.data.seed-values.sql:8676
 msgid "Wall map"
@@ -12164,9 +12164,9 @@ msgstr ""
 msgid "Delayed: Split Quantity"
 msgstr ""
 
-# id::ccvm.value__716 id::ccvm.value__716 id::ccvm.value__716
-# id::ccvm.value__716 id::ccvm.value__716 id::ccvm.value__716
-# id::ccvm.value__716
+# id::ccvm.value__716 id::ccvm.value__1357 id::ccvm.value__1370
+# id::ccvm.value__1383 id::ccvm.value__1396 id::ccvm.value__1409
+# id::ccvm.value__1422
 #: 950.data.seed-values.sql:7682 950.data.seed-values.sql:8362
 #: 950.data.seed-values.sql:8376 950.data.seed-values.sql:8390
 #: 950.data.seed-values.sql:8404 950.data.seed-values.sql:8418
@@ -12276,8 +12276,8 @@ msgstr ""
 msgid "VHS"
 msgstr ""
 
-# id::ccvm.value__969 id::ccvm.value__969 id::ccvm.value__969
-# id::ccvm.value__969 id::ccvm.value__969
+# id::ccvm.value__969 id::ccvm.value__1594 id::ccvm.value__1606
+# id::ccvm.value__1618 id::ccvm.value__1630
 #: 950.data.seed-values.sql:7955 950.data.seed-values.sql:8611
 #: 950.data.seed-values.sql:8624 950.data.seed-values.sql:8637
 #: 950.data.seed-values.sql:8650
@@ -12413,8 +12413,8 @@ msgstr ""
 msgid "User may delete an entry from a patron statistical category"
 msgstr ""
 
-# id::ccvm.value__820 id::ccvm.value__848 id::ccvm.value__848
-# id::ccvm.value__848 id::ccvm.value__848 id::ccvm.value__848
+# id::ccvm.value__820 id::ccvm.value__848 id::ccvm.value__1445
+# id::ccvm.value__1474 id::ccvm.value__1503 id::ccvm.value__1532
 #: 950.data.seed-values.sql:7792 950.data.seed-values.sql:7822
 #: 950.data.seed-values.sql:8456 950.data.seed-values.sql:8486
 #: 950.data.seed-values.sql:8516 950.data.seed-values.sql:8546
@@ -12591,8 +12591,8 @@ msgid "LC subject headings for children's literature"
 msgstr ""
 
 # id::ccvm.value__765 id::ccvm.value__878 id::ccvm.value__895
-# id::ccvm.value__998 id::ccvm.value__1005 id::ccvm.value__895
-# id::ccvm.value__895 id::at.name__n
+# id::ccvm.value__998 id::ccvm.value__1005 id::ccvm.value__1563
+# id::ccvm.value__1583 id::at.name__n
 #: 950.data.seed-values.sql:7733 950.data.seed-values.sql:7854
 #: 950.data.seed-values.sql:7873 950.data.seed-values.sql:7990
 #: 950.data.seed-values.sql:7999 950.data.seed-values.sql:8578
@@ -12662,9 +12662,9 @@ msgstr ""
 msgid "Allow a user to view/credit/debit a fund"
 msgstr ""
 
-# id::ccvm.value__714 id::ccvm.value__714 id::ccvm.value__714
-# id::ccvm.value__714 id::ccvm.value__714 id::ccvm.value__714
-# id::ccvm.value__714
+# id::ccvm.value__714 id::ccvm.value__1355 id::ccvm.value__1368
+# id::ccvm.value__1381 id::ccvm.value__1394 id::ccvm.value__1407
+# id::ccvm.value__1420
 #: 950.data.seed-values.sql:7680 950.data.seed-values.sql:8360
 #: 950.data.seed-values.sql:8374 950.data.seed-values.sql:8388
 #: 950.data.seed-values.sql:8402 950.data.seed-values.sql:8416
@@ -12687,7 +12687,7 @@ msgstr ""
 msgid "National Agricultural Library subject authority file"
 msgstr ""
 
-# id::ccvm.value__900 id::ccvm.value__900 id::ccvm.value__900
+# id::ccvm.value__900 id::ccvm.value__1568 id::ccvm.value__1588
 #: 950.data.seed-values.sql:7878 950.data.seed-values.sql:8583
 #: 950.data.seed-values.sql:8604
 msgid "Interviews"
@@ -12835,15 +12835,15 @@ msgstr ""
 msgid "Guinea "
 msgstr ""
 
-# id::ccvm.value__812 id::ccvm.value__839 id::ccvm.value__839
-# id::ccvm.value__839 id::ccvm.value__839 id::ccvm.value__839
+# id::ccvm.value__812 id::ccvm.value__839 id::ccvm.value__1436
+# id::ccvm.value__1465 id::ccvm.value__1494 id::ccvm.value__1523
 #: 950.data.seed-values.sql:7784 950.data.seed-values.sql:7813
 #: 950.data.seed-values.sql:8447 950.data.seed-values.sql:8477
 #: 950.data.seed-values.sql:8507 950.data.seed-values.sql:8537
 msgid "Dictionaries"
 msgstr ""
 
-# id::ccvm.value__884 id::ccvm.value__884 id::ccvm.value__884
+# id::ccvm.value__884 id::ccvm.value__1552 id::ccvm.value__1572
 #: 950.data.seed-values.sql:7862 950.data.seed-values.sql:8567
 #: 950.data.seed-values.sql:8588
 msgid "Conference proceedings"
@@ -13178,8 +13178,8 @@ msgstr ""
 msgid "Baltic (Other)"
 msgstr ""
 
-# id::ccvm.value__810 id::ccvm.value__837 id::ccvm.value__837
-# id::ccvm.value__837 id::ccvm.value__837 id::ccvm.value__837
+# id::ccvm.value__810 id::ccvm.value__837 id::ccvm.value__1434
+# id::ccvm.value__1463 id::ccvm.value__1492 id::ccvm.value__1521
 #: 950.data.seed-values.sql:7782 950.data.seed-values.sql:7811
 #: 950.data.seed-values.sql:8445 950.data.seed-values.sql:8475
 #: 950.data.seed-values.sql:8505 950.data.seed-values.sql:8535
@@ -13225,8 +13225,8 @@ msgstr ""
 msgid "CREATE_BILLING_TYPE"
 msgstr ""
 
-# id::ccvm.value__823 id::ccvm.value__851 id::ccvm.value__851
-# id::ccvm.value__851 id::ccvm.value__851 id::ccvm.value__851
+# id::ccvm.value__823 id::ccvm.value__851 id::ccvm.value__1448
+# id::ccvm.value__1477 id::ccvm.value__1506 id::ccvm.value__1535
 #: 950.data.seed-values.sql:7795 950.data.seed-values.sql:7825
 #: 950.data.seed-values.sql:8459 950.data.seed-values.sql:8489
 #: 950.data.seed-values.sql:8519 950.data.seed-values.sql:8549
@@ -13601,8 +13601,8 @@ msgstr ""
 msgid "Prince Edward Island "
 msgstr ""
 
-# id::ccvm.value__818 id::ccvm.value__846 id::ccvm.value__846
-# id::ccvm.value__846 id::ccvm.value__846 id::ccvm.value__846
+# id::ccvm.value__818 id::ccvm.value__846 id::ccvm.value__1443
+# id::ccvm.value__1472 id::ccvm.value__1501 id::ccvm.value__1530
 #: 950.data.seed-values.sql:7790 950.data.seed-values.sql:7820
 #: 950.data.seed-values.sql:8454 950.data.seed-values.sql:8484
 #: 950.data.seed-values.sql:8514 950.data.seed-values.sql:8544
@@ -13675,8 +13675,8 @@ msgstr ""
 msgid "Maximum wait time (in seconds) for a URL to lookup"
 msgstr ""
 
-# id::ccvm.value__813 id::ccvm.value__840 id::ccvm.value__840
-# id::ccvm.value__840 id::ccvm.value__840 id::ccvm.value__840
+# id::ccvm.value__813 id::ccvm.value__840 id::ccvm.value__1437
+# id::ccvm.value__1466 id::ccvm.value__1495 id::ccvm.value__1524
 #: 950.data.seed-values.sql:7785 950.data.seed-values.sql:7814
 #: 950.data.seed-values.sql:8448 950.data.seed-values.sql:8478
 #: 950.data.seed-values.sql:8508 950.data.seed-values.sql:8538
@@ -13721,8 +13721,8 @@ msgstr ""
 msgid "CREATE_LANGUAGE"
 msgstr ""
 
-# id::ccvm.value__826 id::ccvm.value__854 id::ccvm.value__854
-# id::ccvm.value__854 id::ccvm.value__854 id::ccvm.value__854
+# id::ccvm.value__826 id::ccvm.value__854 id::ccvm.value__1451
+# id::ccvm.value__1480 id::ccvm.value__1509 id::ccvm.value__1538
 #: 950.data.seed-values.sql:7798 950.data.seed-values.sql:7828
 #: 950.data.seed-values.sql:8462 950.data.seed-values.sql:8492
 #: 950.data.seed-values.sql:8522 950.data.seed-values.sql:8552
@@ -13946,9 +13946,9 @@ msgstr ""
 msgid "DELETE_AUTHORITY_RECORD_NOTE"
 msgstr ""
 
-# id::ccvm.value__725 id::ccvm.value__725 id::ccvm.value__725
-# id::ccvm.value__725 id::ccvm.value__725 id::ccvm.value__725
-# id::ccvm.value__725
+# id::ccvm.value__725 id::ccvm.value__1366 id::ccvm.value__1379
+# id::ccvm.value__1392 id::ccvm.value__1405 id::ccvm.value__1418
+# id::ccvm.value__1431
 #: 950.data.seed-values.sql:7691 950.data.seed-values.sql:8371
 #: 950.data.seed-values.sql:8385 950.data.seed-values.sql:8399
 #: 950.data.seed-values.sql:8413 950.data.seed-values.sql:8427
@@ -14035,7 +14035,7 @@ msgstr ""
 msgid "Terres australes et antarctiques françaises "
 msgstr ""
 
-# id::ccvm.value__898 id::ccvm.value__898 id::ccvm.value__898
+# id::ccvm.value__898 id::ccvm.value__1566 id::ccvm.value__1586
 #: 950.data.seed-values.sql:7876 950.data.seed-values.sql:8581
 #: 950.data.seed-values.sql:8602
 msgid "Rehearsals"
@@ -14046,8 +14046,8 @@ msgstr ""
 msgid "Program"
 msgstr ""
 
-# id::ccvm.value__975 id::ccvm.value__975 id::ccvm.value__975
-# id::ccvm.value__975 id::ccvm.value__975
+# id::ccvm.value__975 id::ccvm.value__1600 id::ccvm.value__1612
+# id::ccvm.value__1624 id::ccvm.value__1636
 #: 950.data.seed-values.sql:7961 950.data.seed-values.sql:8617
 #: 950.data.seed-values.sql:8630 950.data.seed-values.sql:8643
 #: 950.data.seed-values.sql:8656
@@ -14112,8 +14112,8 @@ msgstr ""
 msgid "Papuan (Other)"
 msgstr ""
 
-# id::ccvm.value__825 id::ccvm.value__853 id::ccvm.value__853
-# id::ccvm.value__853 id::ccvm.value__853 id::ccvm.value__853
+# id::ccvm.value__825 id::ccvm.value__853 id::ccvm.value__1450
+# id::ccvm.value__1479 id::ccvm.value__1508 id::ccvm.value__1537
 #: 950.data.seed-values.sql:7797 950.data.seed-values.sql:7827
 #: 950.data.seed-values.sql:8461 950.data.seed-values.sql:8491
 #: 950.data.seed-values.sql:8521 950.data.seed-values.sql:8551
@@ -14354,8 +14354,8 @@ msgstr ""
 msgid "The Example for validation on the email field in patron registration."
 msgstr ""
 
-# id::ccvm.value__809 id::ccvm.value__836 id::ccvm.value__836
-# id::ccvm.value__836 id::ccvm.value__836 id::ccvm.value__836
+# id::ccvm.value__809 id::ccvm.value__836 id::ccvm.value__1433
+# id::ccvm.value__1462 id::ccvm.value__1491 id::ccvm.value__1520
 #: 950.data.seed-values.sql:7781 950.data.seed-values.sql:7810
 #: 950.data.seed-values.sql:8444 950.data.seed-values.sql:8474
 #: 950.data.seed-values.sql:8504 950.data.seed-values.sql:8534
@@ -14379,10 +14379,10 @@ msgstr ""
 
 # id::cit.name__3 id::ccvm.value__555 id::ccvm.value__807 id::ccvm.value__880
 # id::ccvm.value__901 id::ccvm.value__964 id::ccvm.value__977
-# id::ccvm.value__987 id::ccvm.value__1000 id::ccvm.value__901
-# id::ccvm.value__901 id::ccvm.value__977 id::ccvm.value__977
-# id::ccvm.value__977 id::ccvm.value__977 id::ccvm.value__987
-# id::ccvm.value__987 id::at.name__z
+# id::ccvm.value__987 id::ccvm.value__1000 id::ccvm.value__1569
+# id::ccvm.value__1589 id::ccvm.value__1602 id::ccvm.value__1614
+# id::ccvm.value__1626 id::ccvm.value__1638 id::ccvm.value__1648
+# id::ccvm.value__1657 id::at.name__z
 #: 950.data.seed-values.sql:275 950.data.seed-values.sql:7112
 #: 950.data.seed-values.sql:7777 950.data.seed-values.sql:7856
 #: 950.data.seed-values.sql:7879 950.data.seed-values.sql:7948
@@ -14616,8 +14616,8 @@ msgstr ""
 msgid "Canadian English"
 msgstr ""
 
-# id::ccvm.value__814 id::ccvm.value__841 id::ccvm.value__841
-# id::ccvm.value__841 id::ccvm.value__841 id::ccvm.value__841
+# id::ccvm.value__814 id::ccvm.value__841 id::ccvm.value__1438
+# id::ccvm.value__1467 id::ccvm.value__1496 id::ccvm.value__1525
 #: 950.data.seed-values.sql:7786 950.data.seed-values.sql:7815
 #: 950.data.seed-values.sql:8449 950.data.seed-values.sql:8479
 #: 950.data.seed-values.sql:8509 950.data.seed-values.sql:8539
@@ -15016,8 +15016,8 @@ msgstr ""
 msgid "System: Rental"
 msgstr ""
 
-# id::ccvm.value__1672 id::ccvm.value__1672 id::ccvm.value__1672
-# id::ccvm.value__1672 id::ccvm.value__1672
+# id::ccvm.value__1672 id::ccvm.value__1688 id::ccvm.value__1703
+# id::ccvm.value__1718 id::ccvm.value__1733
 #: 950.data.seed-values.sql:8696 950.data.seed-values.sql:8713
 #: 950.data.seed-values.sql:8729 950.data.seed-values.sql:8745
 #: 950.data.seed-values.sql:8761
@@ -15101,7 +15101,7 @@ msgstr ""
 msgid "Samoan"
 msgstr ""
 
-# id::ccvm.value__887 id::ccvm.value__887 id::ccvm.value__887
+# id::ccvm.value__887 id::ccvm.value__1555 id::ccvm.value__1575
 #: 950.data.seed-values.sql:7865 950.data.seed-values.sql:8570
 #: 950.data.seed-values.sql:8591
 msgid "Fiction"
@@ -15117,11 +15117,11 @@ msgstr ""
 msgid "Historical Hold Retention Age - Canceled (Staff forced)"
 msgstr ""
 
-# id::aurt.label__4 id::ccvm.value__724 id::ccvm.value__724
-# id::ccvm.value__724 id::ccvm.value__724 id::ccvm.value__724
-# id::ccvm.value__724 id::ccvm.value__724 id::ccvm.value__1665
-# id::ccvm.value__1665 id::ccvm.value__1665 id::ccvm.value__1665
-# id::ccvm.value__1665
+# id::aurt.label__4 id::ccvm.value__724 id::ccvm.value__1365
+# id::ccvm.value__1378 id::ccvm.value__1391 id::ccvm.value__1404
+# id::ccvm.value__1417 id::ccvm.value__1430 id::ccvm.value__1665
+# id::ccvm.value__1681 id::ccvm.value__1696 id::ccvm.value__1711
+# id::ccvm.value__1726
 #: 950.data.seed-values.sql:2725 950.data.seed-values.sql:7690
 #: 950.data.seed-values.sql:8370 950.data.seed-values.sql:8384
 #: 950.data.seed-values.sql:8398 950.data.seed-values.sql:8412
@@ -15281,8 +15281,8 @@ msgstr ""
 msgid "Lithuania "
 msgstr ""
 
-# id::ccvm.value__824 id::ccvm.value__852 id::ccvm.value__852
-# id::ccvm.value__852 id::ccvm.value__852 id::ccvm.value__852
+# id::ccvm.value__824 id::ccvm.value__852 id::ccvm.value__1449
+# id::ccvm.value__1478 id::ccvm.value__1507 id::ccvm.value__1536
 #: 950.data.seed-values.sql:7796 950.data.seed-values.sql:7826
 #: 950.data.seed-values.sql:8460 950.data.seed-values.sql:8490
 #: 950.data.seed-values.sql:8520 950.data.seed-values.sql:8550
@@ -15439,8 +15439,8 @@ msgstr ""
 msgid "Malformed record cause Overlay failure"
 msgstr ""
 
-# id::ccvm.value__972 id::ccvm.value__972 id::ccvm.value__972
-# id::ccvm.value__972 id::ccvm.value__972
+# id::ccvm.value__972 id::ccvm.value__1597 id::ccvm.value__1609
+# id::ccvm.value__1621 id::ccvm.value__1633
 #: 950.data.seed-values.sql:7958 950.data.seed-values.sql:8614
 #: 950.data.seed-values.sql:8627 950.data.seed-values.sql:8640
 #: 950.data.seed-values.sql:8653
@@ -15827,7 +15827,7 @@ msgid "Gibraltar "
 msgstr ""
 
 # id::vie.description__import.duplicate.sysid
-# id::vie.description__import.duplicate.sysid
+# id::vie.description__import.duplicate.tcn
 #: 950.data.seed-values.sql:12368 950.data.seed-values.sql:12369
 msgid "Import failed due to system id collision"
 msgstr ""
@@ -15959,7 +15959,7 @@ msgstr ""
 msgid "North American Indian (Other)"
 msgstr ""
 
-# id::ccvm.value__1735 id::ccvm.value__1735
+# id::ccvm.value__1735 id::ccvm.value__1353
 #: 950.data.seed-values.sql:7678 950.data.seed-values.sql:8358
 msgid "No accompanying matter"
 msgstr ""
@@ -15989,9 +15989,9 @@ msgstr ""
 msgid "Nogai"
 msgstr ""
 
-# id::ccvm.value__721 id::ccvm.value__721 id::ccvm.value__721
-# id::ccvm.value__721 id::ccvm.value__721 id::ccvm.value__721
-# id::ccvm.value__721
+# id::ccvm.value__721 id::ccvm.value__1362 id::ccvm.value__1375
+# id::ccvm.value__1388 id::ccvm.value__1401 id::ccvm.value__1414
+# id::ccvm.value__1427
 #: 950.data.seed-values.sql:7687 950.data.seed-values.sql:8367
 #: 950.data.seed-values.sql:8381 950.data.seed-values.sql:8395
 #: 950.data.seed-values.sql:8409 950.data.seed-values.sql:8423
@@ -16021,7 +16021,7 @@ msgstr ""
 msgid "Sumerian"
 msgstr ""
 
-# id::coust.description__ui.patron.edit.aua.county.require
+# id::coust.description__ui.patron.edit.aua.county.show
 #: 950.data.seed-values.sql:16173
 msgid "The county field will be shown on the patron registration screen"
 msgstr ""
@@ -16058,8 +16058,8 @@ msgstr ""
 msgid "South Australia "
 msgstr ""
 
-# id::ccvm.value__833 id::ccvm.value__863 id::ccvm.value__863
-# id::ccvm.value__863 id::ccvm.value__863 id::ccvm.value__863
+# id::ccvm.value__833 id::ccvm.value__863 id::ccvm.value__1460
+# id::ccvm.value__1489 id::ccvm.value__1518 id::ccvm.value__1547
 #: 950.data.seed-values.sql:7805 950.data.seed-values.sql:7837
 #: 950.data.seed-values.sql:8471 950.data.seed-values.sql:8501
 #: 950.data.seed-values.sql:8531 950.data.seed-values.sql:8561
