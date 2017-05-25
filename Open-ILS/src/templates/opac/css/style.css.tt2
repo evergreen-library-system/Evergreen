@@ -2061,6 +2061,7 @@ table.bookbag-specific {
     border-right: 1px solid [% css_colors.accent_dark %];
     border-bottom: 1px solid [% css_colors.accent_medium %];
     margin-bottom: 2ex;
+    width: 100%;
 }
 .bookbag-share {
     [% IF rtl == 't' -%]
@@ -2700,6 +2701,10 @@ a.preflib_change {
     .bookbag-specific div.sort select {
         width:180px;
     }
+    .bookbag-specific tr {
+        display: block;
+        border-bottom: 1px solid [% css_colors.border_standard %];
+    }
     .bookbag-specific td.list_checkbox {
         [% IF rtl == 't' -%]
         padding-right: 0px !important;
@@ -2708,11 +2713,21 @@ a.preflib_change {
         [% END -%]
     }
     .bookbag-specific td.list_entry {
+        display: inline-block;
         min-width: 5em;
         [% IF rtl == 't' -%]
-        padding-right: 5px !important;
+        padding-right: 40% !important;
         [% ELSE -%]
-        padding-left: 5px !important;
+        padding-left: 40% !important;
+        [% END -%]
+    }
+    .bookbag-specific td.list_entry:before {
+        content: attr(data-label);
+        position: absolute;
+        [% IF rtl == 't' -%]
+        right: 10px;
+        [% ELSE -%]
+        left: 10px;
         [% END -%]
     }
     .bbag-navigate-list {

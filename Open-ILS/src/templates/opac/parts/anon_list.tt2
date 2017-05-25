@@ -30,7 +30,7 @@
             <input class="opac-button" type="submit" value="[% l('Go') %]" />
         </div>
         <div class="bbag-content">
-            <table class="bookbag-specific table_no_cell_pad table_no_border_space table_no_border" width="100%">
+            <table class="bookbag-specific table_no_cell_pad table_no_border_space table_no_border">
                 <thead id="acct_list_header_anon">
                     <tr>
                         <td class='list_checkbox'>
@@ -52,8 +52,8 @@
                         <td class="list_checkbox">
                             <input type="checkbox" name="record" value="[% item %]" />
                         </td>
-                        <td class="list_entry"><a href="[% mkurl(ctx.opac_root _ '/record/' _ item, {}, ['edit_notes', 'id']) %]">[% attrs.title | html %]</a></td>
-                        <td class="list_entry"><a href="[%- 
+                        <td class="list_entry" data-label="[% l('Title') %]"><a href="[% mkurl(ctx.opac_root _ '/record/' _ item, {}, ['edit_notes', 'id']) %]">[% attrs.title | html %]</a></td>
+                        <td class="list_entry" data-label="[% l('Author(s)') %]"><a href="[%-
                             authorquery = attrs.author | replace('[,\.:;]', '');
                             mkurl(
                                 ctx.opac_root _ '/results',
@@ -61,7 +61,7 @@
                                 ['page', 'id', 'edit_notes']
                             )
                         -%]">[% attrs.author | html %]</a></td>
-                        <td class="list_entry mobile_hide">
+                        <td class="list_entry" data-label="[% l('Local Call Number') %]">
                         [% 
                             copy = attrs.holdings.0;
                             IF copy;

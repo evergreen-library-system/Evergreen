@@ -347,16 +347,16 @@
                     <td class="list_checkbox">
                         <input type="checkbox" name="selected_item" value="[% item.id %]" bbag='[% bbag.id %]'/>
                     </td>
-                    <td class="list_entry">
+                    <td class="list_entry" data-label="[% l('Title') %]">
                         <a href="[% mkurl(ctx.opac_root _ '/record/' _ rec_id, {}, ['edit_notes', 'bbid']) %]">[% attrs.title | html %]</a>
                     </td>
-                    <td class="list_entry">
-                        <a href="[%- 
+                    <td class="list_entry" data-label="[% l('Author(s)') %]">
+                        <a href="[%-
                             authorquery = attrs.author | replace('[,\.:;]', '');
                             mkurl(ctx.opac_root _ '/results', {qtype => 'author', query => authorquery}, ['page', 'bbid', 'edit_notes'])
                             -%]">[% attrs.author | html %]</a>
                     </td>
-                    <td class="list_entry mobile_hide">
+                    <td class="list_entry" data-label="[% l('Local Call Number') %]">
                         [% 
                             copy = attrs.holdings.0;
                             IF copy;
@@ -373,21 +373,21 @@
                             END;
                         %]
                     </td>
-                    <td class="list_entry mobile_hide">
+                    <td class="list_entry" data-label="[% l('Publication Date') %]">
                           [% attrs.pubdate | html %]
                     </td>
-                    <td class="list_entry mobile_hide">
+                    <td class="list_entry" data-label="[% l('Format') %]">
                           [% attrs.format_label | html %]
                     </td>
                     [% IF CGI.param("edit_notes") == bbag.id %]
-                    <td class="list_entry mobile_hide">
+                    <td class="list_entry" data-label="[% l('Notes') %]">
                         [% FOR note IN item.notes %]
                         <input type="text" name="note-[% note.id %]" value="[% note.note | html %]" />
                         [% END %]
                         <input type="text" name="item-[% item.id %]" />
                     </td>
                     [% ELSE %]
-                    <td class="list_entry mobile_hide">
+                    <td class="list_entry" data-label="[% l('Notes') %]">
                         [% FOR note IN item.notes %]
                         <div>[% note.note | html %]</div>
                         [% END %]
