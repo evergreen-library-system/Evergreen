@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2017-03-16 00:14+0000\n"
-"PO-Revision-Date: 2017-03-21 13:14+0000\n"
+"POT-Creation-Date: 2017-03-22 23:30+0000\n"
+"PO-Revision-Date: 2017-04-02 18:22+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-03-22 06:17+0000\n"
-"X-Generator: Launchpad (build 18334)\n"
+"X-Launchpad-Export-Date: 2017-04-05 06:15+0000\n"
+"X-Generator: Launchpad (build 18335)\n"
 
 #: ../../Open-ILS/src/templates/opac/register.tt2:63
 msgid ""
@@ -4707,6 +4707,14 @@ msgstr "Zobrazit moje seznamy"
 #: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:103
 msgid "View My Temporary List"
 msgstr "Zobrazit můj dočasný seznam"
+
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:270
+msgid "View all formats and editions "
+msgstr "Zobrazit všechny formáty a vydání "
+
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:232
+msgid "View other formats and editions"
+msgstr "Zobrazit další formáty a vydání"
 
 #. (mr_attrs.title)
 #: ../../Open-ILS/src/templates/opac/results.tt2:35

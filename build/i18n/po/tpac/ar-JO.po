@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2017-03-16 00:14+0000\n"
-"PO-Revision-Date: 2017-02-28 17:01+0000\n"
+"POT-Creation-Date: 2017-03-22 23:30+0000\n"
+"PO-Revision-Date: 2017-03-29 09:41+0000\n"
 "Last-Translator: fares othman <Unknown>\n"
 "Language-Team: Arabic <ar@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-03-19 06:13+0000\n"
-"X-Generator: Launchpad (build 18332)\n"
+"X-Launchpad-Export-Date: 2017-04-05 06:15+0000\n"
+"X-Generator: Launchpad (build 18335)\n"
 "Language: AR\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
@@ -4680,6 +4680,14 @@ msgstr "عرض قوائمي"
 #: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:103
 msgid "View My Temporary List"
 msgstr "عرض قائمتي المؤقتة"
+
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:270
+msgid "View all formats and editions "
+msgstr "عرض كافة التنسيقات والإصدارات "
+
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:232
+msgid "View other formats and editions"
+msgstr "عرض التنسيقات والاصدارات الأخرى"
 
 #. (mr_attrs.title)
 #: ../../Open-ILS/src/templates/opac/results.tt2:35

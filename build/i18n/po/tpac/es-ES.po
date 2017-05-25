@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2017-03-16 00:14+0000\n"
-"PO-Revision-Date: 2017-03-20 15:35+0000\n"
-"Last-Translator: Jane Sandberg <sandbej@linnbenton.edu>\n"
+"POT-Creation-Date: 2017-03-22 23:30+0000\n"
+"PO-Revision-Date: 2017-04-05 19:10+0000\n"
+"Last-Translator: Adam Bowling <abowling@emeralddata.net>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-03-22 06:17+0000\n"
-"X-Generator: Launchpad (build 18334)\n"
+"X-Launchpad-Export-Date: 2017-04-07 06:08+0000\n"
+"X-Generator: Launchpad (build 18343)\n"
 
 #: ../../Open-ILS/src/templates/opac/register.tt2:63
 msgid ""
@@ -45,11 +45,11 @@ msgstr " / "
 
 #: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:101
 msgid " View My Lists"
-msgstr ""
+msgstr " Vea Mis Listas"
 
 #: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:103
 msgid " View My Temporary List"
-msgstr ""
+msgstr " Vea Mi Lista Temporal"
 
 #: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:126
 msgid " edit"
@@ -130,7 +130,7 @@ msgstr "%quant(%1,dia,dias)"
 #. (fcount)
 #: ../../Open-ILS/src/templates/opac/parts/searchbar.tt2:137
 msgid "%quant(%1,filter,filters) applied"
-msgstr ""
+msgstr "%quant(%1,filter,filters) aplicado"
 
 #: ../../Open-ILS/src/templates/opac/results.tt2:41
 msgid "&#9668; Return to Grouped Search Results"
@@ -520,10 +520,12 @@ msgstr "¿Está seguro que desea eliminar los elementos seleccionados?"
 #: ../../Open-ILS/src/templates/opac/myopac/messages/list.tt2:53
 msgid "Are you sure you wish to permanently delete the selected message(s)?"
 msgstr ""
+"¿Está seguro de que desea eliminar permanentemente el (los) mensaje(s) "
+"seleccionado(s)?"
 
 #: ../../Open-ILS/src/templates/opac/myopac/messages/single_message.tt2:16
 msgid "Are you sure you wish to permanently delete this message?"
-msgstr ""
+msgstr "¿Está seguro de que desea eliminar permanentemente este mensaje?"
 
 #: ../../Open-ILS/src/templates/opac/myopac/circs.tt2:42
 msgid "Are you sure you wish to renew the selected item(s)?"
@@ -702,7 +704,7 @@ msgstr "Antes de"
 #. (date1)
 #: ../../Open-ILS/src/templates/opac/parts/result/adv_filter.tt2:84
 msgid "Before %1"
-msgstr ""
+msgstr "Antes de %1"
 
 #: ../../Open-ILS/src/templates/opac/parts/advanced/search.tt2:87
 msgid "Between"
@@ -711,7 +713,7 @@ msgstr "Entre"
 #. (date1, date2)
 #: ../../Open-ILS/src/templates/opac/parts/result/adv_filter.tt2:86
 msgid "Between %1 and %2"
-msgstr ""
+msgstr "Entre %1 y %2"
 
 #: ../../Open-ILS/src/templates/opac/parts/config.tt2:1
 msgid "Bib Level"
@@ -952,7 +954,7 @@ msgstr "El Tomar Prestado Antes"
 
 #: ../../Open-ILS/src/templates/opac/parts/ebook_api/base_js.tt2:1
 msgid "Checking availability for this item..."
-msgstr ""
+msgstr "Verificando la disponibilidad de este artículo..."
 
 #: ../../Open-ILS/src/templates/opac/css/style.css.tt2:2148 ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:99 ../../Open-ILS/src/templates/opac/myopac/main.tt2:30
 msgid "Checkout Date"
@@ -1471,31 +1473,31 @@ msgstr "Fecha de vencimiento"
 
 #: ../../Open-ILS/src/templates/opac/parts/topnav.tt2:75
 msgid "E-Items Checked Out"
-msgstr ""
+msgstr "Artículos Electrónicos Prestado"
 
 #: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:19 ../../Open-ILS/src/templates/opac/myopac/circs.tt2:15 ../../Open-ILS/src/templates/opac/myopac/ebook_circs.tt2:14 ../../Open-ILS/src/templates/opac/myopac/ebook_circs.tt2:22 ../../Open-ILS/src/templates/opac/myopac/ebook_circs.tt2:28 ../../Open-ILS/src/templates/opac/myopac/ebook_circs.tt2:6
 msgid "E-Items Currently Checked Out"
-msgstr ""
+msgstr "Artículos Electrónicos Prestado Actualmente"
 
 #: ../../Open-ILS/src/templates/opac/parts/myopac/main_base.tt2:58
 msgid "E-Items Currently Checked out"
-msgstr ""
+msgstr "Artículos Electrónicos Prestado Actualmente"
 
 #: ../../Open-ILS/src/templates/opac/parts/myopac/main_base.tt2:73
 msgid "E-Items Currently on Hold"
-msgstr ""
+msgstr "Artículos Electrónicos Reservado Actualmente"
 
 #: ../../Open-ILS/src/templates/opac/myopac/ebook_holds.tt2:22 ../../Open-ILS/src/templates/opac/myopac/ebook_holds_ready.tt2:11 ../../Open-ILS/src/templates/opac/myopac/ebook_holds_ready.tt2:22 ../../Open-ILS/src/templates/opac/myopac/ebook_holds_ready.tt2:30 ../../Open-ILS/src/templates/opac/myopac/ebook_holds_ready.tt2:36 ../../Open-ILS/src/templates/opac/myopac/hold_history.tt2:23 ../../Open-ILS/src/templates/opac/myopac/holds.tt2:23 ../../Open-ILS/src/templates/opac/parts/topnav.tt2:85
 msgid "E-Items Ready for Checkout"
-msgstr ""
+msgstr "Artículos Electrónicos Listos para Tomar Prestado"
 
 #: ../../Open-ILS/src/templates/opac/myopac/ebook_holds.tt2:19 ../../Open-ILS/src/templates/opac/myopac/ebook_holds.tt2:30 ../../Open-ILS/src/templates/opac/myopac/ebook_holds.tt2:36 ../../Open-ILS/src/templates/opac/myopac/ebook_holds_ready.tt2:19 ../../Open-ILS/src/templates/opac/myopac/hold_history.tt2:20 ../../Open-ILS/src/templates/opac/myopac/holds.tt2:20 ../../Open-ILS/src/templates/opac/parts/topnav.tt2:80
 msgid "E-Items on Hold"
-msgstr ""
+msgstr "Artículos Electrónicos Reservado"
 
 #: ../../Open-ILS/src/templates/opac/parts/myopac/main_base.tt2:88
 msgid "E-Items ready for pickup"
-msgstr ""
+msgstr "Artículos electrónicos listos para recoger"
 
 #: ../../Open-ILS/src/templates/opac/parts/record/issues-db.tt2:1
 msgid "Earlier"
@@ -1705,7 +1707,7 @@ msgstr "Año de vencimiento"
 
 #: ../../Open-ILS/src/templates/opac/myopac/ebook_holds.tt2:42 ../../Open-ILS/src/templates/opac/myopac/ebook_holds_ready.tt2:42
 msgid "Expire Date"
-msgstr ""
+msgstr "Fecha de caducidad"
 
 #: ../../Open-ILS/src/templates/opac/parts/hold_status.tt2:7
 msgid "Expires"
@@ -1785,7 +1787,7 @@ msgstr "Cineasta"
 
 #: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:48
 msgid "Filtered By"
-msgstr ""
+msgstr "Filtrado Por"
 
 #. (locname)
 #: ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:109
@@ -2479,7 +2481,7 @@ msgstr "Ubicación de otros materiales de archivo Nota : "
 
 #: ../../Open-ILS/src/templates/opac/parts/result/adv_filter.tt2:50
 msgid "Locations"
-msgstr ""
+msgstr "Ubicaciones"
 
 #: ../../Open-ILS/src/templates/opac/parts/login/form.tt2:54
 msgid "Log in"
@@ -2692,7 +2694,7 @@ msgstr "Mi resumen de cuenta"
 
 #: ../../Open-ILS/src/templates/opac/myopac/ebook_holds.tt2:11
 msgid "My E-Item Holds"
-msgstr ""
+msgstr "Mis Artículos Electrónicos Reservas"
 
 #: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:72
 msgid "My Existing Lists"
@@ -2822,7 +2824,7 @@ msgstr "Ninguno"
 
 #: ../../Open-ILS/src/templates/opac/parts/result/adv_filter.tt2:19 ../../Open-ILS/src/templates/opac/parts/result/adv_filter.tt2:50 ../../Open-ILS/src/templates/opac/parts/result/adv_filter.tt2:79
 msgid "Not"
-msgstr ""
+msgstr "No"
 
 #: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:159
 msgid "Not holdable"
@@ -3430,7 +3432,7 @@ msgstr "Volver a introducir la nueva contraseña:"
 
 #: ../../Open-ILS/src/templates/opac/parts/ebook_api/base_js.tt2:13
 msgid "Ready for Checkout"
-msgstr ""
+msgstr "Listo para Tomar Prestado"
 
 #: ../../Open-ILS/src/templates/opac/parts/topnav.tt2:63
 msgid "Ready for Pickup"
@@ -3495,7 +3497,7 @@ msgstr "Fuente Normal"
 #. ((crad.description || crad.label))
 #: ../../Open-ILS/src/templates/opac/parts/result/adv_filter.tt2:17
 msgid "Remove %1 filter"
-msgstr ""
+msgstr "Quita %1 filtro"
 
 #. (attrs.title)
 #: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:429
@@ -3520,11 +3522,11 @@ msgstr "Eliminar de mi lista"
 
 #: ../../Open-ILS/src/templates/opac/parts/result/adv_filter.tt2:48
 msgid "Remove location filter"
-msgstr ""
+msgstr "Quita el filtro de ubicación"
 
 #: ../../Open-ILS/src/templates/opac/parts/result/adv_filter.tt2:77
 msgid "Remove publication date filter"
-msgstr ""
+msgstr "Quita la fecha de publicación"
 
 #: ../../Open-ILS/src/templates/opac/parts/advanced/expert.tt2:25 ../../Open-ILS/src/templates/opac/parts/advanced/global_row.tt2:51 ../../Open-ILS/src/templates/opac/parts/advanced/global_row.tt2:54
 msgid "Remove row"
@@ -3763,7 +3765,7 @@ msgstr "Resultados de la búsqueda facetas"
 
 #: ../../Open-ILS/src/templates/opac/parts/result/lowhits.tt2:4 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:46
 msgid "Search Results filters"
-msgstr ""
+msgstr "Filtro de Resultados de Búsqueda"
 
 #: ../../Open-ILS/src/templates/opac/results.tt2:1
 msgid "Search Results: "
@@ -4693,7 +4695,7 @@ msgstr "videógrafo"
 
 #: ../../Open-ILS/src/templates/opac/parts/myopac/main_base.tt2:57
 msgid "View My Checked Out E-Items"
-msgstr ""
+msgstr "Vea Mis Artículos Electrónicos Prestados"
 
 #: ../../Open-ILS/src/templates/opac/parts/myopac/main_base.tt2:51
 msgid "View My Checked Out Items"
@@ -4701,11 +4703,11 @@ msgstr "Ver mi control de salida Artículos."
 
 #: ../../Open-ILS/src/templates/opac/parts/myopac/main_base.tt2:72
 msgid "View My E-Items On Hold"
-msgstr ""
+msgstr "Vea Mis Artículos Electrónicos Reservados"
 
 #: ../../Open-ILS/src/templates/opac/parts/myopac/main_base.tt2:87
 msgid "View My E-Items Ready for Pickup"
-msgstr ""
+msgstr "Vea Mis Artículos Electrónicos Listos para Recoger"
 
 #: ../../Open-ILS/src/templates/opac/parts/myopac/main_base.tt2:66
 msgid "View My Holds"
@@ -4721,11 +4723,19 @@ msgstr "Ver Mi Lista"
 
 #: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:101
 msgid "View My Lists"
-msgstr ""
+msgstr "Vea Mis Listas"
 
 #: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:103
 msgid "View My Temporary List"
-msgstr ""
+msgstr "Vea Mi Lista Temporal"
+
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:270
+msgid "View all formats and editions "
+msgstr "Vea todos los formatos y ediciones "
+
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:232
+msgid "View other formats and editions"
+msgstr "Vea todos los formatos otros y ediciones"
 
 #. (mr_attrs.title)
 #: ../../Open-ILS/src/templates/opac/results.tt2:35
@@ -4878,14 +4888,15 @@ msgstr "No cuentas con ningúna multa"
 #: ../../Open-ILS/src/templates/opac/myopac/ebook_holds_ready.tt2:33
 msgid "You have no e-item holds ready to be checked out."
 msgstr ""
+"Tiene no artículos electrónicos que están listos para tomar prestado."
 
 #: ../../Open-ILS/src/templates/opac/myopac/ebook_holds.tt2:33
 msgid "You have no e-item holds."
-msgstr ""
+msgstr "Tiene no artículos electrónicos reservas."
 
 #: ../../Open-ILS/src/templates/opac/myopac/ebook_circs.tt2:25
 msgid "You have no e-items checked out."
-msgstr ""
+msgstr "Tiene no artículos electrónicos prestados."
 
 #: ../../Open-ILS/src/templates/opac/myopac/main_payments.tt2:58
 msgid "You have no historical payments to display."
@@ -5011,7 +5022,7 @@ msgstr "circ_history.csv"
 
 #: ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:138
 msgid "copy"
-msgstr ""
+msgstr "copia"
 
 #: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:115
 msgid "edit"
@@ -5039,7 +5050,7 @@ msgstr "piedra"
 
 #: ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:138
 msgid "title"
-msgstr ""
+msgstr "título"
 
 #: ../../Open-ILS/src/templates/opac/parts/topnav.tt2:33
 msgid "unread"
@@ -5051,4 +5062,4 @@ msgstr "ver"
 
 #: ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:138
 msgid "volume"
-msgstr ""
+msgstr "volumen"
