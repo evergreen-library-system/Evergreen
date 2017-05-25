@@ -2026,6 +2026,8 @@ sub sru_search {
                 my @copies;
                 for my $node ($marcxml->getElementsByTagName('holdings')) {
                     for my $volume ($node->getElementsByTagName('volume')) {
+                        my $prefix = $volume->getChildrenByTagName('call_number_prefix')->[0]->getAttribute('label');
+                        my $suffix = $volume->getChildrenByTagName('call_number_suffix')->[0]->getAttribute('label');
                         my $cn = $volume->getAttribute('label');
                         my $owning_lib = $volume->getAttribute('lib');
                         for my $copy ($volume->getElementsByTagName('copy')) {
@@ -2035,6 +2037,8 @@ sub sru_search {
                                 c => $cn,
                                 d => $copy->getChildrenByTagName('circ_lib')->[0]->getAttribute('shortname'),
                                 g => $copy->getAttribute('barcode'),
+                                k => $prefix,
+                                m => $suffix,
                                 n => $copy->getChildrenByTagName('status')->[0]->textContent
                             };
                         }
@@ -2070,6 +2074,8 @@ sub sru_search {
                             c => $copy->{c},
                             d => $copy->{d},
                             g => $copy->{g},
+                            ($copy->{k} ? (k => $copy->{k}) : ()),
+                            ($copy->{m} ? (m => $copy->{m}) : ()),
                             n => $copy->{n}
                         )
                     );
