@@ -1,6 +1,6 @@
 BEGIN;
 
--- SELECT evergreen.upgrade_deps_block_check('1XXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1044', :eg_version);
 
 UPDATE action_trigger.hook SET passive = FALSE WHERE key IN (
     'format.po.html',
