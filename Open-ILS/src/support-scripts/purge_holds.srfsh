@@ -1,4 +1,4 @@
-#!/openils/bin/srfsh
+#!BINDIR/srfsh
 open open-ils.cstore
 request open-ils.cstore open-ils.cstore.transaction.begin
 request open-ils.cstore open-ils.cstore.json_query {"from":["action.purge_holds"]}
