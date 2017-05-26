@@ -274,6 +274,9 @@ ilscore-install:
 	sed -i 's|SYSCONFDIR|@sysconfdir@|g' '$(DESTDIR)@bindir@/long-overdue-status-update.pl'
 	sed -i 's|BINDIR|@bindir@|g' '$(DESTDIR)@bindir@/thaw_expired_frozen_holds.srfsh'
 	sed -i 's|BINDIR|@bindir@|g' '$(DESTDIR)@bindir@/clear_cc_number.srfsh'
+	sed -i 's|BINDIR|@bindir@|g' '$(DESTDIR)@bindir@/purge_circulations.srfsh'
+	sed -i 's|BINDIR|@bindir@|g' '$(DESTDIR)@bindir@/purge_holds.srfsh'
+	sed -i 's|BINDIR|@bindir@|g' '$(DESTDIR)@bindir@/purge_pending_users.srfsh'
 	sed -i 's|LOCALSTATEDIR|@localstatedir@|g' '$(DESTDIR)@bindir@/oils_ctl.sh'
 	sed -i 's|SYSCONFDIR|@sysconfdir@|g' '$(DESTDIR)@bindir@/oils_ctl.sh'
 
