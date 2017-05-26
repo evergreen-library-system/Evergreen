@@ -18,6 +18,7 @@
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/services/holds.js"></script>
 [% INCLUDE 'staff/circ/share/hold_strings.tt2' %]
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/cat/services/record.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/patron_search.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/patron/app.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/patron/regctl.js"></script>
 
