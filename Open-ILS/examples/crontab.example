@@ -81,6 +81,9 @@ EG_BIN_DIR = /openils/bin
 20 3 1 * *   . ~/.bashrc && $EG_BIN_DIR/action_trigger_runner.pl --osrf-config $SRF_CORE --process-hooks --granularity monthly
 25 3 1 1 *   . ~/.bashrc && $EG_BIN_DIR/action_trigger_runner.pl --osrf-config $SRF_CORE --process-hooks --granularity yearly
 
+# Purge old A/T events
+15 1  * * *   . ~/.bashrc && $EG_BIN_DIR/purge_at_events.srfsh
+
 # Legacy overdue/predue notice generator.  Change to suit.
 #XML_FILE_PREFIX = /openils/var/data/overdue/overdue
 #0 3 * * * . ~/.bashrc && cd $EG_BIN_DIR && ./generate_circ_notices.pl --osrf_config $SRF_CORE --notice-types overdue,predue --generate-global-templates --send-email > $XML_FILE_PREFIX.$(date +"\%F").xml
