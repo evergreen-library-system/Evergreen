@@ -223,6 +223,18 @@ function($timeout , $parse) {
     return eg_context_due_date_filter;
 }])
 
+// 'join' filter
+// TODO: perhaps this should live elsewhere
+.filter('join', function() {
+    return function(arr,sep) {
+        if (typeof arr == 'object' && arr.constructor == Array) {
+            return arr.join(sep || ',');
+        } else {
+            return '';
+        }
+    };
+})
+
 /**
  * Progress Dialog. 
  *
