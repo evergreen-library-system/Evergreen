@@ -373,7 +373,7 @@ $_TT_helpers = {
         my $sms_carrier = shift;
         my $sms_notify = shift;
 
-        if (! defined $sms_notify || $sms_notify eq '') {
+        if (! defined $sms_notify || $sms_notify eq '' || ! defined $sms_carrier || $sms_carrier eq '') {
             return '';
         }
 
