@@ -624,19 +624,19 @@ within the "form" by name for validation.
     <div class='flex-cell'>
       <input 
         ng-change="field_modified()" 
-        type='checkbox' ng-model="hold_notify_phone"/>
+        type='checkbox' ng-model="hold_notify_type.phone"/>
       [% l('Phone') %]
     </div>
     <div class='flex-cell'>
       <input 
         ng-change="field_modified()" 
-        type='checkbox' ng-model="hold_notify_email"/>
+        type='checkbox' ng-model="hold_notify_type.email"/>
       [% l('Email') %]
     </div>
     <div class='flex-cell' ng-if="org_settings['sms.enable']">
       <input 
         ng-change="field_modified()" 
-        type='checkbox' ng-model="hold_notify_sms"/>
+        type='checkbox' ng-model="hold_notify_type.sms"/>
       [% l('SMS') %]
     </div>
   </div>
@@ -648,7 +648,7 @@ within the "form" by name for validation.
   </div>
   <div class="col-md-3 reg-field-input">
     <input 
-      ng-change="field_modified()" 
+      ng-change="field_modified()" ng-model="user_settings['opac.default_sms_notify']"
       type='text'/>
   </div>
 </div>
