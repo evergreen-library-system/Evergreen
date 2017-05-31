@@ -1097,6 +1097,7 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
          egWorkLog) {
 
     $scope.page_data_loaded = false;
+    $scope.hold_notify_type = { phone : null, email : null, sms : null };
     $scope.clone_id = patronRegSvc.clone_id = $routeParams.clone_id;
     $scope.stage_username = 
         patronRegSvc.stage_username = $routeParams.stage_username;
@@ -1130,8 +1131,9 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
             // passsword may originate from staged user.
             $scope.generate_password();
         }
-        $scope.hold_notify_phone = true;
-        $scope.hold_notify_email = true;
+        $scope.hold_notify_type.phone = true;
+        $scope.hold_notify_type.email = true;
+	$scope.hold_notify_type.sms = false;
 
         // staged users may be loaded w/ a profile.
         $scope.set_expire_date();
@@ -1500,16 +1502,16 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
     function compress_hold_notify() {
         var hold_notify = '';
         var splitter = '';
-        if ($scope.hold_notify_phone) {
+        if ($scope.hold_notify_type.phone) {
             hold_notify = 'phone';
             splitter = ':';
         }
-        if ($scope.hold_notify_email) {
-            hold_notify = splitter + 'email';
+        if ($scope.hold_notify_type.email) {
+            hold_notify = hold_notify + splitter + 'email';
             splitter = ':';
         }
-        if ($scope.hold_notify_sms) {
-            hold_notify = splitter + 'sms';
+        if ($scope.hold_notify_type.sms) {
+            hold_notify = hold_notify + splitter + 'sms';
             splitter = ':';
         }
         $scope.user_settings['opac.hold_notify'] = hold_notify;
@@ -1579,9 +1581,9 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
     function extract_hold_notify() {
         var notify = $scope.user_settings['opac.hold_notify'];
         if (!notify) return;
-        $scope.hold_notify_phone = Boolean(notify.match(/phone/));
-        $scope.hold_notify_email = Boolean(notify.match(/email/));
-        $scope.hold_notify_sms = Boolean(notify.match(/sms/));
+        $scope.hold_notify_type.phone = Boolean(notify.match(/phone/));
+        $scope.hold_notify_type.email = Boolean(notify.match(/email/));
+        $scope.hold_notify_type.sms = Boolean(notify.match(/sms/));
     }
 
     $scope.invalidate_field = function(field) {
