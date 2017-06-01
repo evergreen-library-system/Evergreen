@@ -4244,6 +4244,80 @@ SELECT  usr,
 			</actions>
 		</permacrud>
 	</class>
+	<class id="aacs" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action::all_circulation_slim" oils_persist:tablename="action.all_circulation_slim" reporter:core="true" reporter:label="Combined Aged and Active circulations" oils_persist:readonly="true">
+		<fields oils_persist:primary="id" oils_persist:sequence="money.billable_xact_id_seq">
+			<field reporter:label="Check In Library" name="checkin_lib" reporter:datatype="org_unit"/>
+			<field reporter:label="Check In Staff" name="checkin_staff" reporter:datatype="link"/>
+			<field reporter:label="Check In Date/Time" name="checkin_time" reporter:datatype="timestamp"/>
+			<field reporter:label="Circulating Library" name="circ_lib"  reporter:datatype="org_unit"/>
+			<field reporter:label="Circulating Staff" name="circ_staff" reporter:datatype="link"/>
+			<field reporter:label="Desk Renewal" name="desk_renewal" reporter:datatype="bool"/>
+			<field reporter:label="Due Date/Time" name="due_date" reporter:datatype="timestamp"/>
+			<field reporter:label="Circulation Duration" name="duration" reporter:datatype="interval"/>
+			<field reporter:label="Circ Duration Rule" name="duration_rule" reporter:datatype="link"/>
+			<field reporter:label="Fine Interval" name="fine_interval" reporter:datatype="interval"/>
+			<field reporter:label="Circ ID" name="id" reporter:datatype="id" />
+			<field reporter:label="Max Fine Amount" name="max_fine" reporter:datatype="money" />
+			<field reporter:label="Max Fine Rule" name="max_fine_rule" reporter:datatype="link"/>
+			<field reporter:label="OPAC Renewal" name="opac_renewal" reporter:datatype="bool"/>
+			<field reporter:label="Phone Renewal" name="phone_renewal" reporter:datatype="bool"/>
+			<field reporter:label="Recurring Fine Amount" name="recurring_fine" reporter:datatype="money" />
+			<field reporter:label="Recurring Fine Rule" name="recurring_fine_rule" reporter:datatype="link"/>
+			<field reporter:label="Remaining Renewals" name="renewal_remaining" reporter:datatype="int" />
+			<field reporter:label="Grace Period" name="grace_period" reporter:datatype="interval" />
+			<field reporter:label="Fine Stop Reason" name="stop_fines" reporter:datatype="text"/>
+			<field reporter:label="Fine Stop Date/Time" name="stop_fines_time" reporter:datatype="timestamp"/>
+			<field reporter:label="Circulating Item" name="target_copy" reporter:datatype="link"/>
+			<field reporter:label="Transaction Finish Date/Time" name="xact_finish" reporter:datatype="timestamp" />
+			<field reporter:label="Checkout Date/Time" name="xact_start" reporter:datatype="timestamp" />
+			<field reporter:label="Record Creation Date/Time" name="create_time" reporter:datatype="timestamp" />
+			<field reporter:label="Parent Circulation" name="parent_circ" reporter:datatype="link"/>
+			<field reporter:label="Checkin Scan Time" name="checkin_scan_time" reporter:datatype="timestamp"/>
+			<field reporter:label="Checkin Workstation" name="checkin_workstation" reporter:datatype="link"/>
+			<field reporter:label="Patron" name="usr" reporter:datatype="link"/>
+			<field reporter:label="Transaction Billings" name="billings" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Transaction Payments" name="payments" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Base Transaction" name="billable_transaction" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Workstation" name="workstation" reporter:datatype="link"/>
+			<field reporter:label="Circulation Type" name="circ_type" oils_persist:virtual="true" reporter:datatype="text"/>
+			<field reporter:label="Billing Totals" name="billing_total" oils_persist:virtual="true" reporter:datatype="money"/>
+			<field reporter:label="Payment Totals" name="payment_total" oils_persist:virtual="true" reporter:datatype="money"/>
+			<field reporter:label="Archived Patron Stat-Cat Entries" name="aaactsc_entries" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Archived Copy Stat-Cat Entries" name="aaasc_entries" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Linked Active Circulation" name="active_circ" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Linked Aged Circulation" name="aged_circ" oils_persist:virtual="true" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="billable_transaction" reltype="might_have" key="id" map="" class="mbt"/>
+			<link field="circ_staff" reltype="has_a" key="id" map="" class="au"/>
+			<link field="checkin_lib" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="target_copy" reltype="has_a" key="id" map="" class="acp"/>
+			<link field="checkin_staff" reltype="has_a" key="id" map="" class="au"/>
+			<link field="circ_lib" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="payments" reltype="has_many" key="xact" map="" class="mp"/>
+			<link field="billings" reltype="has_many" key="xact" map="" class="mb"/>
+			<link field="duration_rule" reltype="has_a" key="name" map="" class="crcd"/>
+			<link field="max_fine_rule" reltype="has_a" key="name" map="" class="crmf"/>
+			<link field="recurring_fine_rule" reltype="has_a" key="name" map="" class="crrf"/>
+			<link field="circ_type" reltype="might_have" key="id" map="" class="rcirct"/>
+			<link field="billing_total" reltype="might_have" key="xact" map="" class="rxbt"/>
+			<link field="payment_total" reltype="might_have" key="xact" map="" class="rxpt"/>
+			<link field="workstation" reltype="has_a" key="id" map="" class="aws"/>
+			<link field="checkin_workstation" reltype="has_a" key="id" map="" class="aws"/>
+			<link field="aaactsc_entries" reltype="has_many" key="xact" map="" class="aaactsc"/>
+			<link field="aaasc_entries" reltype="has_many" key="xact" map="" class="aaasc"/>
+			<link field="active_circ" reltype="might_have" key="id" map="" class="circ"/>
+			<link field="aged_circ" reltype="might_have" key="id" map="" class="acirc"/>
+			<link field="parent_circ" reltype="might_have" key="id" map="" class="acirc"/>
+			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<retrieve permission="VIEW_CIRCULATIONS" context_field="circ_lib" />
+			</actions>
+		</permacrud>
+	</class>
+
 	<class id="combcirc" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action::all_circulation" oils_persist:tablename="action.all_circulation" reporter:core="true" reporter:label="Combined Aged and Active Circulations" oils_persist:readonly="true">
 		<fields oils_persist:primary="id" oils_persist:sequence="money.billable_xact_id_seq">
 			<field reporter:label="Check In Library" name="checkin_lib" reporter:datatype="org_unit"/>

@@ -55,7 +55,7 @@ __PACKAGE__->register_method(
         Retrieve a circ object by id
         @param authtoken Login session key
         @pararm circid The id of the circ object
-        @param all_circ Returns an action.all_circulation object instead
+        @param all_circ Returns an action.all_circulation_slim object instead
             of an action.circulation object to pick up aged circs.
     /
 );
@@ -65,7 +65,7 @@ sub retrieve_circ {
     my $e = new_editor(authtoken => $a);
     return $e->event unless $e->checkauth;
     my $method = $all_circ ?
-        'retrieve_action_all_circulation' :
+        'retrieve_action_all_circulation_slim' :
         'retrieve_action_circulation';
     my $circ = $e->$method($i) or return $e->event;
     if( $e->requestor->id ne ($circ->usr || '') ) {
@@ -794,9 +794,9 @@ sub view_circs {
         $count = 4 unless defined $count;
     }
 
-    return $e->search_action_all_circulation([
+    return $e->search_action_all_circulation_slim([
         {target_copy => $copyid}, 
-        {limit => $count, order_by => { combcirc => "xact_start DESC" }} 
+        {limit => $count, order_by => { aacs => "xact_start DESC" }} 
     ]);
 }
 
@@ -1155,12 +1155,12 @@ sub copy_details {
 
     # find the most recent circulation for the requested copy,
     # be it active, completed, or aged.
-    my $circ = $e->search_action_all_circulation([
+    my $circ = $e->search_action_all_circulation_slim([
         { target_copy => $copy_id },
         {
             flesh => 1,
             flesh_fields => {
-                combcirc => [
+                aacs => [
                     'workstation',
                     'checkin_workstation',
                     'duration_rule',
@@ -1168,7 +1168,7 @@ sub copy_details {
                     'recurring_fine_rule'
                 ],
             },
-            order_by => { combcirc => 'xact_start desc' },
+            order_by => { aacs => 'xact_start desc' },
             limit => 1
         }
     ])->[0];
@@ -1876,7 +1876,7 @@ sub retrieve_circ_chain {
         my $chain = $e->json_query({from => ['action.all_circ_chain', $circ_id]});
 
         for my $circ_info (@$chain) {
-            my $circ = Fieldmapper::action::all_circulation->new;
+            my $circ = Fieldmapper::action::all_circulation_slim->new;
             $circ->$_($circ_info->{$_}) for keys %$circ_info;
             $conn->respond($circ);
         }
@@ -1924,18 +1924,18 @@ sub retrieve_prev_circ_chain {
     my $first_circ = 
         $e->json_query({from => ['action.all_circ_chain', $circ_id]})->[0];
 
-    my $prev_circ = $e->search_action_all_circulation([
+    my $prev_circ = $e->search_action_all_circulation_slim([
         {   target_copy => $first_circ->{target_copy},
             xact_start => {'<' => $first_circ->{xact_start}}
         }, {   
             flesh => 1,
             flesh_fields => {
-                combcirc => [
+                aacs => [
                     'active_circ',
                     'aged_circ'
                 ]
             },
-            order_by => { combcirc => 'xact_start desc' },
+            order_by => { aacs => 'xact_start desc' },
             limit => 1 
         }
     ])->[0];
@@ -1963,7 +1963,7 @@ sub retrieve_prev_circ_chain {
         {from => ['action.all_circ_chain', $prev_circ->id]});
 
     for my $circ_info (@$chain) {
-        my $circ = Fieldmapper::action::all_circulation->new;
+        my $circ = Fieldmapper::action::all_circulation_slim->new;
         $circ->$_($circ_info->{$_}) for keys %$circ_info;
         $conn->respond($circ);
     }

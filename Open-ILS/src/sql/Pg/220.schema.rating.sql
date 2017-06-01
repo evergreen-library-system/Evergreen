@@ -835,7 +835,7 @@ BEGIN
               FROM  asset.copy cp
                     JOIN precalc_copy_filter_bib_list c ON (cp.id = c.copy)
                     JOIN asset.call_number cn ON (cn.id = cp.call_number)
-                    LEFT JOIN action.all_circulation circ ON (
+                    LEFT JOIN action.all_circulation_slim circ ON (
                         circ.target_copy = cp.id
                         AND stop_fines NOT IN (
                             'LOST',

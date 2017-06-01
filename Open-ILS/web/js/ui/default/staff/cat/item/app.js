@@ -89,7 +89,7 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
         limit :  1
     }
 
-    //Retrieve separate copy, combcirc, and accs information
+    //Retrieve separate copy, aacs, and accs information
     service.getCopy = function(barcode, id) {
         if (barcode) return egCore.pcrud.search(
             'acp', {barcode : barcode, deleted : 'f'},
@@ -99,7 +99,7 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
             .then(function(copy) {return copy});
     }
     service.getCirc = function(id) {
-        return egCore.pcrud.search('combcirc', { target_copy : id },
+        return egCore.pcrud.search('aacs', { target_copy : id },
             service.circFlesh).then(function(circ) {return circ});
     }
     service.getSummary = function(id) {
@@ -1556,11 +1556,11 @@ function($scope , $q , $location , $routeParams , $timeout , $window , egCore , 
 
         }).then(function(count) {
 
-            egCore.pcrud.search('combcirc', 
+            egCore.pcrud.search('aacs', 
                 {target_copy : copyId},
                 {   flesh : 2,
                     flesh_fields : {
-                        combcirc : [
+                        aacs : [
                             'usr',
                             'workstation',                                         
                             'checkin_workstation',                                 
@@ -1568,7 +1568,7 @@ function($scope , $q , $location , $routeParams , $timeout , $window , egCore , 
                         ],
                         au : ['card']
                     },
-                    order_by : {combcirc : 'xact_start desc'}, 
+                    order_by : {aacs : 'xact_start desc'}, 
                     limit :  count
                 }
 

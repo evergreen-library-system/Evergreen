@@ -258,6 +258,47 @@ CREATE OR REPLACE VIEW action.all_circulation AS
         LEFT JOIN actor.usr_address a ON (p.mailing_address = a.id)
         LEFT JOIN actor.usr_address b ON (p.billing_address = b.id);
 
+CREATE OR REPLACE VIEW action.all_circulation_slim AS
+    SELECT * FROM action.circulation
+UNION ALL
+    SELECT
+        id,
+        NULL AS usr,
+        xact_start,
+        xact_finish,
+        unrecovered,
+        target_copy,
+        circ_lib,
+        circ_staff,
+        checkin_staff,
+        checkin_lib,
+        renewal_remaining,
+        grace_period,
+        due_date,
+        stop_fines_time,
+        checkin_time,
+        create_time,
+        duration,
+        fine_interval,
+        recurring_fine,
+        max_fine,
+        phone_renewal,
+        desk_renewal,
+        opac_renewal,
+        duration_rule,
+        recurring_fine_rule,
+        max_fine_rule,
+        stop_fines,
+        workstation,
+        checkin_workstation,
+        copy_location,
+        checkin_scan_time,
+        parent_circ
+    FROM action.aged_circulation
+;
+
+
+
 CREATE OR REPLACE FUNCTION action.age_circ_on_delete () RETURNS TRIGGER AS $$
 DECLARE
 found char := 'N';
@@ -896,13 +937,13 @@ $$ LANGUAGE 'plpgsql';
 -- same as action.circ_chain, but returns action.all_circulation 
 -- rows which may include aged circulations.
 CREATE OR REPLACE FUNCTION action.all_circ_chain (ctx_circ_id INTEGER) 
-    RETURNS SETOF action.all_circulation AS $$
+    RETURNS SETOF action.all_circulation_slim AS $$
 DECLARE
-    tmp_circ action.all_circulation%ROWTYPE;
-    circ_0 action.all_circulation%ROWTYPE;
+    tmp_circ action.all_circulation_slim%ROWTYPE;
+    circ_0 action.all_circulation_slim%ROWTYPE;
 BEGIN
 
-    SELECT INTO tmp_circ * FROM action.all_circulation WHERE id = ctx_circ_id;
+    SELECT INTO tmp_circ * FROM action.all_circulation_slim WHERE id = ctx_circ_id;
 
     IF tmp_circ IS NULL THEN
         RETURN NEXT tmp_circ;
@@ -911,7 +952,7 @@ BEGIN
 
     -- find the front of the chain
     WHILE TRUE LOOP
-        SELECT INTO tmp_circ * FROM action.all_circulation 
+        SELECT INTO tmp_circ * FROM action.all_circulation_slim 
             WHERE id = tmp_circ.parent_circ;
         IF tmp_circ IS NULL THEN
             EXIT;
@@ -926,7 +967,7 @@ BEGIN
             EXIT;
         END IF;
         RETURN NEXT tmp_circ;
-        SELECT INTO tmp_circ * FROM action.all_circulation 
+        SELECT INTO tmp_circ * FROM action.all_circulation_slim 
             WHERE parent_circ = tmp_circ.id;
     END LOOP;
 
@@ -941,14 +982,14 @@ CREATE OR REPLACE FUNCTION action.summarize_all_circ_chain
 DECLARE
 
     -- first circ in the chain
-    circ_0 action.all_circulation%ROWTYPE;
+    circ_0 action.all_circulation_slim%ROWTYPE;
 
     -- last circ in the chain
-    circ_n action.all_circulation%ROWTYPE;
+    circ_n action.all_circulation_slim%ROWTYPE;
 
     -- circ chain under construction
     chain action.circ_chain_summary;
-    tmp_circ action.all_circulation%ROWTYPE;
+    tmp_circ action.all_circulation_slim%ROWTYPE;
 
 BEGIN
     
@@ -980,7 +1021,6 @@ BEGIN
 
 END;
 $$ LANGUAGE 'plpgsql';
-
 
 CREATE OR REPLACE FUNCTION action.usr_visible_holds (usr_id INT) RETURNS SETOF action.hold_request AS $func$
 DECLARE
