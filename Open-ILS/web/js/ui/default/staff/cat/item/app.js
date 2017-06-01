@@ -1476,7 +1476,7 @@ function($scope , $q , $location , $routeParams , $timeout , $window , egCore , 
                 'open-ils.circ.renewal_chain.retrieve_by_circ.summary',
                 egCore.auth.token(), $scope.circ.id()
             ).then(function(summary) {
-                $scope.circ_summary = summary.summary;
+                $scope.circ_summary = summary;
             });
 
             if (!loadPrev) return;
