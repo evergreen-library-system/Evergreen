@@ -1,0 +1,71 @@
+BEGIN;
+
+SELECT plan(3);
+
+--------------------
+--
+-- Setup test environment and data
+--
+--------------------
+
+-- create mock permission
+INSERT INTO permission.perm_list (id, code, description)
+    VALUES (1999, 'ALTER_MATRIX_VIA_HACK','Allows a user to change something in the Matrix');
+
+-- create mock profile group
+INSERT INTO permission.grp_tree (id, name, parent, usergroup, perm_interval, description, application_perm, hold_priority)
+    VALUES (9999, 'Agent', 3, 't','3 years'::INTERVAL, 'Agent of the Matrix', 'group_application.user.staff.agent', 0);
+-- create mock profile subgroup
+INSERT INTO permission.grp_tree (id, name, parent, usergroup, perm_interval, description, application_perm, hold_priority)
+    VALUES (10000, 'Smith', 9999, 't','3 years'::INTERVAL, 'WannaCry of the Matrix', 'group_application.user.staff.smith', 0);
+-- and another independent profile
+INSERT INTO permission.grp_tree (id, name, parent, usergroup, perm_interval, description, application_perm, hold_priority)
+    VALUES (10001, 'Neo', 3, 't','3 years'::INTERVAL, 'Ye olde chosen one', 'group_application.user.staff.agent', 0);
+
+-- Insert new permission-group map into grp_perm_map
+INSERT INTO permission.grp_perm_map (id, grp, perm, depth, grantable) VALUES (887, 9999, 1999, 2, 't');
+INSERT INTO permission.grp_perm_map (id, grp, perm, depth, grantable) VALUES (888, 10001,1999, 2, 't');
+
+-- significance of the 889 ID is that it was added /after/ the rest
+INSERT INTO permission.grp_perm_map (id, grp, perm, depth, grantable) VALUES (889, 10000,1999, 1, 't');
+
+-- Create fake user
+INSERT INTO actor.usr (id, profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, expire_date, dob, suffix)
+               VALUES (7357,10000, 1, 'TEST_USER', 1, 'FAMILYNAME', 'TEST1234', 'TEST',NOW() + '3 years'::INTERVAL, NULL, NULL);
+
+Insert into actor.card (usr, barcode) VALUES (7357, 'sdvsdas456');
+
+UPDATE actor.usr SET card = CURRVAL('actor.card_id_seq') WHERE id =7357;
+
+--------------------
+--
+-- Test permission.usr_perms()
+--
+--------------------
+
+SELECT results_eq(
+    'SELECT depth FROM permission.usr_perms(7357) where perm = 1999',
+    ARRAY[1],
+    'LP#1480432: permission.usr_perms(7357) should return depth 1 permission first'
+);
+
+DELETE FROM permission.grp_perm_map WHERE id = 887;
+INSERT INTO permission.usr_perm_map (usr, perm, depth) VALUES (7357, 1999, 2);
+
+SELECT results_eq(
+    'SELECT depth FROM permission.usr_perms(7357) where perm = 1999',
+    ARRAY[1],
+    'LP#1480432: permission.usr_perms(7357) should return depth 1 permission first'
+);
+
+DELETE FROM permission.usr_perm_map WHERE usr = 7357 AND perm = 1999;
+INSERT INTO permission.usr_grp_map (usr, grp) VALUES (7357, 10001);
+
+SELECT results_eq(
+    'SELECT depth FROM permission.usr_perms(7357) where perm = 1999',
+    ARRAY[1],
+    'LP#1480432: permission.usr_perms(7357) should return depth 1 permission first'
+);
+
+ROLLBACK;
+
