@@ -2719,7 +2719,7 @@ sub load_myopac_circ_history_export {
     my $circs = $self->fetch_user_circ_history;
 
     $self->ctx->{csv}->{rows} = $self->_get_circ_history_csv(
-        [map {$_->{id}} @$ids]
+        [map {$_->source_circ} @$circs]
     );
 
     return $self->set_file_download_headers($filename, 'text/csv; encoding=UTF-8');
