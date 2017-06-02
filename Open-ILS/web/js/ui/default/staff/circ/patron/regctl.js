@@ -1500,21 +1500,18 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
     // Translate hold notify preferences from the form/scope back into a 
     // single user setting value for opac.hold_notify.
     function compress_hold_notify() {
-        var hold_notify = '';
-        var splitter = '';
+        var hold_notify_methods = [];
         if ($scope.hold_notify_type.phone) {
-            hold_notify = 'phone';
-            splitter = ':';
+            hold_notify_methods.push('phone');
         }
         if ($scope.hold_notify_type.email) {
-            hold_notify = hold_notify + splitter + 'email';
-            splitter = ':';
+            hold_notify_methods.push('email');
         }
         if ($scope.hold_notify_type.sms) {
-            hold_notify = hold_notify + splitter + 'sms';
-            splitter = ':';
+            hold_notify_methods.push('sms');
         }
-        $scope.user_settings['opac.hold_notify'] = hold_notify;
+
+        $scope.user_settings['opac.hold_notify'] = hold_notify_methods.join(':');
     }
 
     // dialog for selecting additional permission groups
