@@ -25,8 +25,8 @@
 angular.module('egCoreMod')
 
 .factory('egHatch',
-           ['$q','$window','$timeout','$interpolate','$http','$cookies',
-    function($q , $window , $timeout , $interpolate , $http , $cookies) {
+           ['$q','$window','$timeout','$interpolate','$cookies',
+    function($q , $window , $timeout , $interpolate , $cookies) {
 
     var service = {};
     service.msgId = 1;

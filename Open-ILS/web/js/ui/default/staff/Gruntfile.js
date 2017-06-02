@@ -203,7 +203,8 @@ module.exports = function(grunt) {
       // Generate test/data/IDL2js.js for unit tests.
       // note: the output of this script is *not* part of the final build.
       idl2js : {
-        command : 'cd test/data && perl idl2js.pl'
+        cwd: 'test/data',
+        command : 'perl idl2js.pl'
       },
 
       // Remove the unit test IDL2js.js file.  We don't need it after testing

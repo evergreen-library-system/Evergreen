@@ -223,12 +223,13 @@ function($q , $window , $timeout , $http , egHatch , egAuth , egIDL , egOrg , eg
             var path = service.template_base_path + name;
             console.debug('fetching template ' + path);
 
-            $http.get(path)
-            .success(function(data) { deferred.resolve(data) })
-            .error(function() {
-                console.error('unable to locate print template: ' + name);
-                deferred.reject();
-            });
+            $http.get(path).then(
+                function(data) { deferred.resolve(data.data) },
+                function() {
+                    console.error('unable to locate print template: ' + name);
+                    deferred.reject();
+                }
+            );
         });
 
         return deferred.promise;
