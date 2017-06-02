@@ -1,4 +1,4 @@
-[% 
+[%- 
     # Support multiscript records via alternate graphic 880 fields
     # get_graphic_880s(target_field='100')
     # See "Model A" in http://www.loc.gov/marc/bibliographic/ecbdmulti.html
@@ -748,4 +748,4 @@
                     || CGI.param(loc_name) || CGI.param('loc') || ctx.search_ou;
     END;
 
-%]
+-%]
