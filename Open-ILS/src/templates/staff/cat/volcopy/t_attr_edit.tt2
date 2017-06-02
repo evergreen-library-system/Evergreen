@@ -116,7 +116,7 @@
                 <div class="col-md-6" ng-class="{'bg-success': working.status !== undefined}">
                     <select class="form-control"
                         ng-disabled="!defaults.attributes.status" ng-model="working.status"
-                        ng-options="s.id() as s.name() for s in status_list">
+                        ng-options="s.id() as s.name() disable when magic_status_list.indexOf(s.id(),0) > -1 for s in status_list">
                     </select>
                 </div>
             </div>

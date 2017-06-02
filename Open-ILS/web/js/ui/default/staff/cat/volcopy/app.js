@@ -151,6 +151,18 @@ function(egCore , $q) {
 
     };
 
+    service.get_magic_statuses = function() {
+        /* TODO: make these more configurable per lp1616170 */
+        return $q.when([
+             1  /* Checked out */
+            ,3  /* Lost */
+            ,6  /* In transit */
+            ,8  /* On holds shelf */
+            ,16 /* Long overdue */
+            ,18 /* Canceled Transit */
+        ]);
+    }
+
     service.get_statuses = function() {
         if (egCore.env.ccs)
             return $q.when(egCore.env.ccs.list);
@@ -925,7 +937,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
         return true;
     }
 
-    createSimpleUpdateWatcher = function (field) {
+    createSimpleUpdateWatcher = function (field,exclude_copies_with_one_of_these_values) {
         return $scope.$watch('working.' + field, function () {
             var newval = $scope.working[field];
 
@@ -944,6 +956,10 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                     angular.forEach(
                         $scope.workingGridControls.selectedItems(),
                         function (cp) {
+                            if (exclude_copies_with_one_of_these_values
+                                && exclude_copies_with_one_of_these_values.indexOf(cp[field](),0) > -1) {
+                                return;
+                            }
                             if (cp[field]() !== newval) {
                                 cp[field](newval);
                                 cp.ischanged(1);
@@ -1478,10 +1494,13 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
         createSimpleUpdateWatcher('location');
 
         $scope.status_list = [];
+        itemSvc.get_magic_statuses().then(function(list){
+            $scope.magic_status_list = list;
+            createSimpleUpdateWatcher('status',$scope.magic_status_list);
+        });
         itemSvc.get_statuses().then(function(list){
             $scope.status_list = list;
         });
-        createSimpleUpdateWatcher('status');
 
         $scope.circ_modifier_list = [];
         itemSvc.get_circ_mods().then(function(list){
@@ -1909,6 +1928,9 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                 });
             
                 $scope.status_list = [];
+                itemSvc.get_magic_statuses().then(function(list){
+                    $scope.magic_status_list = list;
+                });
                 itemSvc.get_statuses().then(function(list){
                     $scope.status_list = list;
                 });
