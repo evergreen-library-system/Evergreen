@@ -108,7 +108,7 @@ not sure what's up, there. -->
   <form class="form-inline" role="form">
    <div class="checkbox">
       <label>
-        <input type="checkbox" ng-model="receipt_on_pay"/> 
+        <input id="receipt_on_pay" type="checkbox" ng-model="receipt_on_pay.isChecked"/>
         [% l('Receipt On Payment') %]
       </label>
     </div>
