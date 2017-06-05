@@ -45,7 +45,8 @@
   features="-sort,-multisort"
   items-provider="gridDataProvider"
   grid-controls="gridControls"
-  persist-key="circ.renew">
+  persist-key="circ.renew"
+  dateformat="{{$root.egDateAndTimeFormat}}">
 
   <eg-grid-action 
     handler="fetchLastCircPatron"
@@ -90,7 +91,7 @@
     path="acn.label"></eg-grid-field>
 
   <eg-grid-field label="[% l('Due Date') %]"    
-    path='circ.due_date' dateformat='short'></eg-grid-field>
+    path='circ.due_date' datatype="timestamp"></eg-grid-field>
 
   <eg-grid-field label="[% l('Family Name') %]"    
     path='au.family_name'></eg-grid-field>

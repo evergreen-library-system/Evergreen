@@ -15,7 +15,8 @@
     features="-sort,-multisort"
     items-provider="hold_grid_data_provider"
     grid-controls="hold_grid_controls"
-    persist-key="cat.catalog.holds">
+    persist-key="cat.catalog.holds"
+    dateformat="{{$root.egDateAndTimeFormat}}">
 
     <eg-grid-menu-item handler="detail_view" 
       label="[% l('Detail View') %]"></eg-grid-menu-item>
@@ -65,9 +66,9 @@
 
     <eg-grid-field label="[% l('Patron Barcode') %]">{{item.patron_barcode}}</eg-grid-field>
     <eg-grid-field label="[% l('Patron alias') %]">{{item.patron_alias}}</eg-grid-field>
-    <eg-grid-field label="[% l('Request Date') %]" path='hold.request_time'></eg-grid-field>
-    <eg-grid-field label="[% l('Capture Date') %]" path='hold.capture_time'></eg-grid-field>
-    <eg-grid-field label="[% l('Available Date') %]" path='hold.shelf_time'></eg-grid-field>
+    <eg-grid-field label="[% l('Request Date') %]" path='hold.request_time' datatype="timestamp"></eg-grid-field>
+    <eg-grid-field label="[% l('Capture Date') %]" path='hold.capture_time' datatype="timestamp"></eg-grid-field>
+    <eg-grid-field label="[% l('Available Date') %]" path='hold.shelf_time' datatype="timestamp"></eg-grid-field>
     <eg-grid-field label="[% l('Hold Type') %]" path='hold.hold_type'></eg-grid-field>
     <eg-grid-field label="[% l('Pickup Library') %]" path='hold.pickup_lib.shortname'></eg-grid-field>
 

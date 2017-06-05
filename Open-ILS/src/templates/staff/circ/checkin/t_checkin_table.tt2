@@ -6,7 +6,8 @@
   main-label="[% l('Items Checked In') %]"
   items-provider="gridDataProvider"
   grid-controls="gridControls"
-  persist-key="{{grid_persist_key}}">
+  persist-key="{{grid_persist_key}}"
+  dateformat="{{$root.egDateAndTimeFormat}}">
 
   <eg-grid-action 
     handler="fetchLastCircPatron"
@@ -45,13 +46,13 @@
     path='circ.id'></eg-grid-field>
 
   <eg-grid-field label="[% l('Checkin Date') %]"    
-    path='circ.checkin_time' dateformat='short'></eg-grid-field>
+    path='circ.checkin_time' datatype="timestamp"></eg-grid-field>
 
   <eg-grid-field label="[% l('Family Name') %]"    
     path='au.family_name'></eg-grid-field>
 
   <eg-grid-field label="[% l('Finish') %]"    
-    path='circ.stop_fines_time'></eg-grid-field>
+    path='circ.stop_fines_time' datatype="timestamp"></eg-grid-field>
 
   <eg-grid-field label="[% l('Location') %]"    
     path='acp.location.name'></eg-grid-field>
@@ -69,7 +70,7 @@
   </eg-grid-field>
 
   <eg-grid-field label="[% l('Due Date') %]"    
-    path='circ.due_date' dateformat='short' hidden></eg-grid-field>
+    path='circ.due_date' datatype="timestamp" hidden></eg-grid-field>
 
   <eg-grid-field label="[% l('Author') %]"      
     path="author" hidden></eg-grid-field>

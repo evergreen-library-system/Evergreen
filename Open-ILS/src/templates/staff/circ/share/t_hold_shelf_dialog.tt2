@@ -47,11 +47,11 @@
     <br/>
     <div>
       <span>[% l('Request Date:') %]</span>
-      <span>{{hold.request_time | date:'shortDate'}}</span>
+      <span>{{hold.request_time | date:$root.egDateFormat}}</span>
     </div>
     <div>
       <span>[% l('Slip Date:') %]</span>
-      <span>{{today | date:'shortDate'}}</span>
+      <span>{{today | date:$root.egDateFormat}}</span>
     </div>
   </div>
   <div class="modal-footer">

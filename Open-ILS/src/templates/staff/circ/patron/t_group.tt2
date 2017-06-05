@@ -12,7 +12,8 @@
 <eg-grid
   idl-class="au"
   sort="gridSort"
-  grid-controls="gridControls">
+  grid-controls="gridControls"
+  dateformat="{{$root.egDateAndTimeFormat}}">
 
   <eg-grid-action handler="moveToGroup"
     label="[% l('Move Another Patron To This Group') %]"></eg-grid-action>
@@ -32,7 +33,7 @@
 
   <eg-grid-field path="active"></eg-grid-field>
   <eg-grid-field path="barred"></eg-grid-field>
-  <eg-grid-field path="dob"></eg-grid-field>
+  <eg-grid-field path="dob" dateformat="{{$root.egDateFormat}}" datatype="timestamp"></eg-grid-field>
   <eg-grid-field path="family_name"></eg-grid-field>
   <eg-grid-field path="first_given_name"></eg-grid-field>
   <eg-grid-field path="master_account"></eg-grid-field>
@@ -45,7 +46,7 @@
   <eg-grid-field path="id" hidden required></eg-grid-field>
   <eg-grid-field path="usrgroup" hidden required></eg-grid-field>
   <eg-grid-field path="deleted" hidden required></eg-grid-field>
-  <eg-grid-field path="create_date" hidden required></eg-grid-field>
+  <eg-grid-field path="create_date" datatype="timestamp" hidden required></eg-grid-field>
 
   <!--
   <eg-grid-field path=".*"></eg-grid-field>

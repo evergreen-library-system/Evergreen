@@ -14,8 +14,8 @@
 angular.module('egCoreMod')
 
 .factory('egStartup', 
-       ['$q','$rootScope','$location','$window','egIDL','egAuth','egEnv',
-function($q,  $rootScope,  $location,  $window,  egIDL,  egAuth,  egEnv) {
+       ['$q','$rootScope','$location','$window','egIDL','egAuth','egEnv','egOrg',
+function($q,  $rootScope,  $location,  $window,  egIDL,  egAuth,  egEnv , egOrg ) {
 
     var service = { promise : null }
 
@@ -65,6 +65,19 @@ function($q,  $rootScope,  $location,  $window,  egIDL,  egAuth,  egEnv) {
                     function() { deferred.resolve() }, 
                     function() { 
                         deferred.reject('egEnv did not resolve')
+                    }
+                );
+                egOrg.settings([
+                    'webstaff.format.dates',
+                    'webstaff.format.date_and_time'
+                ]).then(
+                    function(set) {
+                        $rootScope.egDateFormat = set['webstaff.format.dates'] || 'shortDate';
+                        $rootScope.egDateAndTimeFormat = set['webstaff.format.date_and_time'] || 'short';
+                        deferred.resolve();
+                    },
+                    function() {
+                        deferred.reject('egOrg did not resolve');
                     }
                 );
             },

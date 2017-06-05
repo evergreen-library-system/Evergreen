@@ -100,7 +100,7 @@
     <div class="flex-cell">{{record.owner().shortname()}}</div>
 
     <div class="flex-cell strong-text">[% l('Last Edited On:') %]</div>
-    <div class="flex-cell">{{record.edit_date() | date:'short'}}</div>
+    <div class="flex-cell">{{record.edit_date() | date:$root.egDateAndTimeFormat}}</div>
   </div><!-- flex-row -->
 </div>
 

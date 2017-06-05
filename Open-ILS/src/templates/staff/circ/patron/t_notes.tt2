@@ -14,7 +14,7 @@
         <div class="pull-right">
           <span class="pad-horiz alert alert-warning" ng-if="note.pub() == 't'">[% l('Patron Visible') %]</span>
           <span class="pad-horiz alert alert-info" ng-if="note.pub() == 'f'">[% l('Staff Only') %]</span>
-          <span class="pad-horiz">{{note.create_date() | date:'short'}}</span>
+          <span class="pad-horiz">{{note.create_date() | date:$root.egDateAndTimeFormat}}</span>
           <span>[% l('Created by [_1]', '{{note.creator().usrname()}}') %]</span>
         </div>
       </div>

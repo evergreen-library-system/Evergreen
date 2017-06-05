@@ -50,31 +50,31 @@
   <div class="flex-row">
     <div class="flex-cell">[% l('Request Date') %]</div>
     <div class="flex-cell well">
-      {{hold.request_time() | date:'short'}}
+      {{hold.request_time() | date:egDateAndTimeFormat}}
     </div>
   </div>
   <div class="flex-row">
     <div class="flex-cell">[% l('Capture Date') %]</div>
     <div class="flex-cell well">
-      {{hold.capture_time() | date:'short'}}
+      {{hold.capture_time() | date:egDateAndTimeFormat}}
     </div>
   </div>
   <div class="flex-row">
     <div class="flex-cell">[% l('Shelf Time') %]</div>
     <div class="flex-cell well">
-      {{hold.shelf_time() | date:'short'}}
+      {{hold.shelf_time() | date:egDateAndTimeFormat}}
     </div>
   </div>
   <div class="flex-row">
     <div class="flex-cell">[% l('Shelf Expire Time') %]</div>
     <div class="flex-cell well">
-      {{hold.shelf_expire_time() | date:'short'}}
+      {{hold.shelf_expire_time() | date:egDateAndTimeFormat}}
     </div>
   </div>
   <div class="flex-row">
     <div class="flex-cell">[% l('Hold Expire Time') %]</div>
     <div class="flex-cell well">
-      {{hold.expire_time() | date:'short'}}
+      {{hold.expire_time() | date:egDateAndTimeFormat}}
     </div>
   </div>
   <div class="flex-row">
@@ -112,13 +112,13 @@
   <div class="flex-row">
     <div class="flex-cell">[% l('Transit Send Time') %]</div>
     <div class="flex-cell well">
-      {{transit.source_send_time() | date:'short'}}
+      {{transit.source_send_time() | date:egDateAndTimeFormat}}
     </div>
   </div>
   <div class="flex-row">
     <div class="flex-cell">[% l('Transit Receive Time') %]</div>
     <div class="flex-cell well">
-      {{transit.source_recv_time() | date:'short'}}
+      {{transit.source_recv_time() | date:egDateAndTimeFormat}}
     </div>
   </div>
 </div>

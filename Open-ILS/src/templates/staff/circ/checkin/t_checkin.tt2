@@ -9,7 +9,7 @@
   <div class="col-md-12">
     <div ng-if="is_backdate()" class="alert-danger pad-all-min">
       [% l('Backdated Check In [_1]', 
-        '{{checkinArgs.backdate | date:"shortDate"}}') %]
+        '{{checkinArgs.backdate | date:$root.egDateFormat}}') %]
     </div>
     <div ng-if="modifiers.no_precat_alert" class="alert-danger pad-all-min">
       [% l('Ignore Pre-Cataloged Items') %]

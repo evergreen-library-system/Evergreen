@@ -5,7 +5,8 @@
   sort="gridSort"
   grid-controls="gridControls"
   revision="gridRevision"
-  persist-key="circ.patron.bills">
+  persist-key="circ.patron.bills"
+  dateformat="{{$root.egDateAndTimeFormat}}">
 
   <eg-grid-menu-item label="[% l('Bill Patron') %]" 
     handler="showBillDialog"></eg-grid-menu-item>
@@ -49,7 +50,7 @@
 
   <eg-grid-field label="[% ('Balance Owed') %]" path='summary.balance_owed'></eg-grid-field>
   <eg-grid-field label="[% ('Bill #') %]" path='id'></eg-grid-field>
-  <eg-grid-field label="[% ('Start') %]" path='xact_start'></eg-grid-field>
+  <eg-grid-field label="[% ('Start') %]" path='xact_start' datatype="timestamp"></eg-grid-field>
   <eg-grid-field label="[% ('Total Billed') %]" path='summary.total_owed'></eg-grid-field>
   <eg-grid-field label="[% ('Total Paid') %]" path='summary.total_paid'></eg-grid-field>
   <eg-grid-field label="[% ('Type') %]" path='xact_type'></eg-grid-field>

@@ -2,7 +2,8 @@
   id-field="id"
   idl-class="ahopl"
   grid-controls="gridControls"
-  persist-key="circ.holds.pull">
+  persist-key="circ.holds.pull"
+  dateformat="{{$root.egDateAndTimeFormat}}">
 
   <eg-grid-menu-item handler="detail_view" 
     label="[% l('Detail View') %]"></eg-grid-menu-item>
@@ -133,7 +134,7 @@
     path='queue_position' hidden></eg-grid-field>
   <eg-grid-field label="[% l('Hold ID') %]" path='id' required hidden>
   </eg-grid-field>
-  <eg-grid-field label="[% l('Request Date') %]" path='request_time' hidden>
+  <eg-grid-field label="[% l('Request Date') %]" path='request_time' datatype="timestamp" hidden>
   </eg-grid-field>
 </eg-grid>
 

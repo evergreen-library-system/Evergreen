@@ -15,7 +15,7 @@ Template for printing a patron note. Fields include:
   '{{note.usr.second_given_name}}',
   '{{note.usr.card.barcode}}') %]</h3>
 
-<p>[% l('Created on [_1]', '{{note.create_date | date:"short"}}') %]</p>
+<p>[% l('Created on [_1]', '{{note.create_date | date:$root.egDateAndTimeFormat}}') %]</p>
 <b>{{note.title}}</b>
 <br/>
 <p>{{note.value}}</p>

@@ -17,19 +17,19 @@
   <div class="col-md-2 strong-text">[% l('Total Paid') %]</div>
   <div class="col-md-2">{{xact.summary().total_paid() | currency}}</div>
   <div class="col-md-2 strong-text">[% l('Checked Out') %]</div>
-  <div class="col-md-2">{{xact.circulation().xact_start() | date:'short'}}</div>
+  <div class="col-md-2">{{xact.circulation().xact_start() | date:$root.egDateAndTimeFormat}}</div>
 </div>
 <div class="row">
   <div class="col-md-2 strong-text">[% l('Start') %]</div>
-  <div class="col-md-2">{{xact.xact_start() | date:'short'}}</div>
+  <div class="col-md-2">{{xact.xact_start() | date:$root.egDateAndTimeFormat}}</div>
   <div class="col-md-2 strong-text">[% l('Total Billed') %]</div>
   <div class="col-md-2">{{xact.summary().balance_owed() | currency}}</div>
   <div class="col-md-2 strong-text">[% l('Due Date') %]</div>
-  <div class="col-md-2">{{xact.circulation().due_date() | date:'short'}}</div>
+  <div class="col-md-2">{{xact.circulation().due_date() | date:$root.egDateAndTimeFormat}}</div>
 </div>
 <div class="row">
   <div class="col-md-2 strong-text">[% l('Finish') %]</div>
-  <div class="col-md-2">{{xact.xact_finish() | date:'short'}}</div>
+  <div class="col-md-2">{{xact.xact_finish() | date:$root.egDateAndTimeFormat}}</div>
   <div class="col-md-2 strong-text">[% l('Renewal?') %]</div>
   <div class="col-md-2">
     <span ng-if="xact.circulation.desk_renewal == 't'">[% l('Desk') %]</span>
@@ -37,7 +37,7 @@
     <span ng-if="xact.circulation.opac_renewal == 't'">[% l('OPAC') %]</span>
   </div>
   <div class="col-md-2 strong-text">[% l('Checked In') %]</div>
-  <div class="col-md-2">{{xact.circulation().checkin_time() | date:'short'}}</div>
+  <div class="col-md-2">{{xact.circulation().checkin_time() | date:$root.egDateAndTimeFormat}}</div>
 </div>
 
 <div ng-if="xact.circulation()">
@@ -86,13 +86,13 @@
 
     <div class="col-md-2 strong-text">[% l('Created') %]</div>
     <div class="col-md-2">
-      {{xact.circulation().target_copy().create_date() | date:'short'}}
+      {{xact.circulation().target_copy().create_date() | date:$root.egDateAndTimeFormat}}
     </div>
   </div>
   <div class="row">
     <div class="col-md-2 strong-text">[% l('Edited') %]</div>
     <div class="col-md-2">
-      {{xact.circulation().target_copy().edit_date() | date:'short'}}
+      {{xact.circulation().target_copy().edit_date() | date:$root.egDateAndTimeFormat}}
     </div>
     <div class="col-md-2 strong-text">[% l('Age Protect') %]</div>
     <div class="col-md-2">
@@ -114,7 +114,8 @@
   id-field="id"
   grid-controls="xactGridControls"
   auto-fields="true"
-  page-size="10">
+  page-size="10"
+  dateformat="{{$root.egDateAndTimeFormat}}">
 
   <eg-grid-action 
     label="[% l('Void Billings') %]" handler="voidBillings"></eg-grid-action>
@@ -134,11 +135,13 @@
   id-field="id"
   auto-fields="true"
   grid-controls="paymentGridControls"
-  page-size="10">
+  page-size="10"
+  dateformat="{{$root.egDateAndTimeFormat}}">
   <eg-grid-action 
     label="[% l('Edit Note') %]" handler="editPaymentNotes"></eg-grid-action>
 
   <eg-grid-field path="cash_payment.cash_drawer.name" 
     label="[% l('Cash Drawer') %]"></eg-grid-field>
+
 </eg-grid>
 

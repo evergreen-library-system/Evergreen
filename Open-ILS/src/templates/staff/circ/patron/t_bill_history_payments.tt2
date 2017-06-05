@@ -4,14 +4,15 @@
   <eg-grid
     idl-class="mp"
     id-field="id"
-    grid-controls="gridControls">
+    grid-controls="gridControls"
+    dateformat="{{$root.egDateAndTimeFormat}}">
 
     <eg-grid-action 
       label="[% l('Full Details') %]" handler="showFullDetails"></eg-grid-action>
 
     <eg-grid-field path="amount" label="[% l('Amount') %]"></eg-grid-field>
     <eg-grid-field path="id" label="[% l('Payment ID') %]"></eg-grid-field>
-    <eg-grid-field path="payment_ts" label="[% l('Payment Time') %]"></eg-grid-field>
+    <eg-grid-field path="payment_ts" label="[% l('Payment Time') %]" datatype="timestamp"></eg-grid-field>
     <eg-grid-field path="note" label="[% l('Note') %]"></eg-grid-field>
     <eg-grid-field path="voided" label="[% l('Voided') %]"></eg-grid-field>
     <eg-grid-field path="xact.summary.xact_type" label="[% l('Transaction Type') %]"></eg-grid-field>

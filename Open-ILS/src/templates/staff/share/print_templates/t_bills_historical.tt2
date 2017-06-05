@@ -1,4 +1,4 @@
-<!-
+<!--
 Template for printing a list of past bills. Data specific
 to this template includes:
 
@@ -18,7 +18,7 @@ You had the following bills:
     <table> 
       <tr valign="top">
         <td>[% l('Date:') %]</td>
-        <td>{{xact.xact_start | date:'short'}}</td>
+        <td>{{xact.xact_start | date:$root.egDateAndTimeFormat}}</td>
       </tr> 
       <tr valign="top">
         <td>[% l('Type') %]:</td>
@@ -54,6 +54,6 @@ You had the following bills:
   </div><!-- ng-repeat -->
 </dl>
 <hr/>
-{{current_location.shortname}} {{today | date:'short'}}
+{{current_location.shortname}} {{today | date:$root.egDateAndTimeFormat}}
 <br/><br/>
 

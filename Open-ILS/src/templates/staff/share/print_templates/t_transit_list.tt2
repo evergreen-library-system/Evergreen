@@ -20,11 +20,11 @@ transits - list; each entry contains:
       <div>[% l('From: [_1] To: [_2] <br> When: [_3] <br> Barcode: [_4] Title: [_5]',
         '{{transit.source.shortname}}',
         '{{transit.dest.shortname}}',
-        "{{transit.source_send_time | date:'short'}}",
+        "{{transit.source_send_time | date:$root.egDateAndTimeFormat}}",
         '{{transit.target_copy.barcode}}',
         '{{transit.target_copy.call_number.record.simple_record.title}}') %]</div>
     </li>
   </ol>
   <hr/>
-  <div>{{current_location.shortname}} {{today | date:'short'}}</div>
+  <div>{{current_location.shortname}} {{today | date:$root.egDateAndTimeFormat}}</div>
 <br/>

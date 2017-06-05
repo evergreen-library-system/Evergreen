@@ -34,13 +34,14 @@
   features="-sort,-multisort"
   items-provider="grid_provider"
   grid-controls="grid_controls"
-  persist-key="admin.local.circ.neg_balance_users">
+  persist-key="admin.local.circ.neg_balance_users"
+  dateformat="{{$root.egDateAndTimeFormat}}">
 
   <eg-grid-action handler="get_user"
     label="[% l('Retrieve Patron') %]"></eg-grid-action>
 
   <eg-grid-field label="[% l('Barred') %]" path='usr.barred'></eg-grid-field>
-  <eg-grid-field label="[% l('Date of Birth') %]" path='usr.dob'></eg-grid-field>
+  <eg-grid-field label="[% l('Date of Birth') %]" dateformat="{{$root.egDateFormat}}" datatype="timestamp" path='usr.dob'></eg-grid-field>
   <eg-grid-field label="[% l('Last Name') %]" path='usr.family_name'></eg-grid-field>
   <eg-grid-field label="[% l('First Name') %]" path='usr.first_given_name'></eg-grid-field>
   <eg-grid-field label="[% l('Middle Name') %]" path='usr.second_given_name'></eg-grid-field>

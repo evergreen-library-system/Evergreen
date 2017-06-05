@@ -77,4 +77,4 @@ A receipt of your  transaction:<hr/>
 </p> 
 <hr/>
 <br/><br/> 
-{{current_location.shortname}} {{today | date:'short'}}
+{{current_location.shortname}} {{today | date:$root.egDateAndTimeFormat}}

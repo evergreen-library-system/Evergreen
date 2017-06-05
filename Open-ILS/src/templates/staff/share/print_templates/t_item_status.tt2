@@ -22,5 +22,5 @@ with a variety of keys, including
     </li>
   </ol>
   <hr/>
-  <div>{{current_location.shortname}} {{today | date:'short'}}</div>
+  <div>{{current_location.shortname}} {{today | date:$root.egDateAndTimeFormat}}</div>
 <br/>

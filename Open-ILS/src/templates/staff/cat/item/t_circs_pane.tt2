@@ -37,7 +37,7 @@
   <div class="flex-row">
     <div class="flex-cell">[% l('Checkout Date') %]</div>
     <div class="flex-cell well">
-      {{prev_circ_summary.start_time() | date:'short'}}
+      {{prev_circ_summary.start_time() | date:egDateAndTimeFormat}}
     </div>
   </div>
 
@@ -51,7 +51,7 @@
   <div class="flex-row">
     <div class="flex-cell">[% l('Last Renewed On') %]</div>
     <div class="flex-cell well">
-      {{prev_circ_summary.last_renewal_time() | date:'short'}}
+      {{prev_circ_summary.last_renewal_time() | date:egDateAndTimeFormat}}
     </div>
   </div>
 
@@ -71,19 +71,19 @@
   <div class="flex-row">
     <div class="flex-cell">[% l('Stop Fines Time') %]</div>
     <div class="flex-cell well">
-      {{prev_circ_summary.last_stop_fines_time() | date:'short'}}
+      {{prev_circ_summary.last_stop_fines_time() | date:egDateAndTimeFormat}}
     </div>
   </div>
   <div class="flex-row">
     <div class="flex-cell">[% l('Checkin Time') %]</div>
     <div class="flex-cell well">
-      {{prev_circ_summary.last_checkin_time() | date:'short'}}
+      {{prev_circ_summary.last_checkin_time() | date:egDateAndTimeFormat}}
     </div>
   </div>
   <div class="flex-row">
     <div class="flex-cell">[% l('Checkin Scan Time') %]</div>
     <div class="flex-cell well">
-      {{prev_circ_summary.last_checkin_scan_time() | date:'short'}}
+      {{prev_circ_summary.last_checkin_scan_time() | date:egDateAndTimeFormat}}
     </div>
   </div>
   <div class="flex-row">
@@ -129,7 +129,7 @@
   <div class="flex-row">
     <div class="flex-cell">[% l('Checkout Date') %]</div>
     <div class="flex-cell well">
-      {{circ.xact_start() | date:'short'}}
+      {{circ.xact_start() | date:egDateAndTimeFormat}}
     </div>
   </div>
 
@@ -143,7 +143,7 @@
   <div class="flex-row">
     <div class="flex-cell">[% l('Last Renewed On') %]</div>
     <div class="flex-cell well">
-      {{circ_summary.last_renewal_time() | date:'short'}}
+      {{circ_summary.last_renewal_time() | date:egDateAndTimeFormat}}
     </div>
   </div>
 
@@ -164,21 +164,21 @@
   <div class="flex-row">
     <div class="flex-cell">[% l('Stop Fines Time') %]</div>
     <div class="flex-cell well">
-      {{circ.stop_fines_time() | date:'short'}}
+      {{circ.stop_fines_time() | date:egDateAndTimeFormat}}
     </div>
   </div>
 
   <div class="flex-row">
     <div class="flex-cell">[% l('Checkin Time') %]</div>
     <div class="flex-cell well">
-      {{circ.checkin_time() | date:'short'}}
+      {{circ.checkin_time() | date:egDateAndTimeFormat}}
     </div>
   </div>
 
   <div class="flex-row">
     <div class="flex-cell">[% l('Checkin Scan Time') %]</div>
     <div class="flex-cell well">
-      {{circ.checkin_scan_time() | date:'short'}}
+      {{circ.checkin_scan_time() | date:egDateAndTimeFormat}}
     </div>
   </div>
 

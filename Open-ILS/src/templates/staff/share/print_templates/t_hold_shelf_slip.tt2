@@ -45,8 +45,8 @@ Template for printing hold request slips. Fields include:
   <br/>
 
   <div>[% l('Request Date: [_1]', 
-    '{{hold.request_time | date:"short"}}') %]</div>
-  <div>[% l('Slip Date: [_1]', '{{today | date:"short"}}') %]</div>
+    '{{hold.request_time | date:$root.egDateAndTimeFormat}}') %]</div>
+  <div>[% l('Slip Date: [_1]', '{{today | date:$root.egDateAndTimeFormat}}') %]</div>
   <div>[% l('Printed by [_1] at [_2]', 
     '{{staff.first_given_name}}', '{{current_location.shortname}}') %]</div>
 

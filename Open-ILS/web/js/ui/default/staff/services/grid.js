@@ -63,6 +63,8 @@ angular.module('egGridMod',
             // optional context menu label
             menuLabel : '@',
 
+            dateformat : '@', // optional: passed down to egGridValueFilter
+
             // Hash of control functions.
             //
             //  These functions are defined by the calling scope and 
@@ -179,7 +181,8 @@ angular.module('egGridMod',
                     idlClass : grid.idlClass,
                     defaultToHidden : (features.indexOf('-display') > -1),
                     defaultToNoSort : (features.indexOf('-sort') > -1),
-                    defaultToNoMultiSort : (features.indexOf('-multisort') > -1)
+                    defaultToNoMultiSort : (features.indexOf('-multisort') > -1),
+                    defaultDateFormat : $scope.dateformat
                 });
                 $scope.canMultiSelect = (features.indexOf('-multiselect') == -1);
 
@@ -1170,6 +1173,7 @@ angular.module('egGridMod',
         cols.defaultToHidden = args.defaultToHidden;
         cols.defaultToNoSort = args.defaultToNoSort;
         cols.defaultToNoMultiSort = args.defaultToNoMultiSort;
+        cols.defaultDateFormat = args.defaultDateFormat;
 
         // resets column width, visibility, and sort behavior
         // Visibility resets to the visibility settings defined in the 
@@ -1413,6 +1417,10 @@ angular.module('egGridMod',
             if (column.multisortable || 
                 (!cols.defaultToNoMultiSort && !column.nonmultisortable))
                 column.multisortable = true;
+
+            if (cols.defaultDateFormat && ! column.dateformat) {
+                column.dateformat = cols.defaultDateFormat;
+            }
 
             cols.columns.push(column);
 

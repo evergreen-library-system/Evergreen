@@ -13,7 +13,8 @@
   features="-sort,-multisort"
   items-provider="grid_data_provider"
   grid-controls="grid_controls"
-  persist-key="circ.pending_patrons.list">
+  persist-key="circ.pending_patrons.list"
+  dateformat="{{$root.egDateAndTimeFormat}}">
 
   <eg-grid-menu-item handler="load_patron" 
     label="[% l('Load Patron') %]"></eg-grid-menu-item>

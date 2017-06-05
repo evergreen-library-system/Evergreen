@@ -43,7 +43,8 @@
     idl-class="rb"
     grid-controls="gridControls"
     features="-multiselect"
-    persist-key="admin.local.rating.badge">
+    persist-key="admin.local.rating.badge"
+    dateformat="{{$root.egDateAndTimeFormat}}">
    
     <eg-grid-action label="[% l('Add badge') %]" handler="create_rb"></eg-grid-action> 
     <eg-grid-action label="[% l('Edit badge') %]" handler="update_rb"></eg-grid-action> 

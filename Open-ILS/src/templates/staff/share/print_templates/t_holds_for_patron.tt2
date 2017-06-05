@@ -16,7 +16,7 @@ Template for printing a list of hold requests for a patron. Fields include:
     </li>
   </ol>
   <hr/>
-  <div>{{current_location.shortname}} {{today | date:'short'}}</div>
+  <div>{{current_location.shortname}} {{today | date:$root.egDateAndTimeFormat}}</div>
   <div>[% l('You were helped by [_1]', '{{staff.first_given_name}}') %]</div>
 <br/>
 

@@ -2,11 +2,11 @@
 <h4 class="pad-vert">[% l('Hold Details') %]</h4>
 <div class="flex-row">
   <div class="flex-cell">[% l('Request Date') %]</div>
-  <div class="flex-cell well">{{hold.request_time() | date:'short'}}</div>
+  <div class="flex-cell well">{{hold.request_time() | date:$root.egDateAndTimeFormat}}</div>
   <div class="flex-cell">[% l('Capture Date') %]</div>
-  <div class="flex-cell well">{{hold.capture_time() | date:'short'}}</div>
+  <div class="flex-cell well">{{hold.capture_time() | date:$root.egDateAndTimeFormat}}</div>
   <div class="flex-cell">[% l('Available On') %]</div>
-  <div class="flex-cell well">{{hold.shelf_time() | date:'short'}}</div>
+  <div class="flex-cell well">{{hold.shelf_time() | date:$root.egDateAndTimeFormat}}</div>
  </div>
 <div class="flex-row">
   <div class="flex-cell">[% l('Hold Type') %]</div>
@@ -48,7 +48,7 @@
   <div class="flex-cell">[% l('Cancel Cause') %]</div>
   <div class="flex-cell well">{{hold.cancel_cause().label()}}</div>
   <div class="flex-cell">[% l('Cancel Time') %]</div>
-  <div class="flex-cell well">{{hold.cancel_time() | date:'short'}}</div>
+  <div class="flex-cell well">{{hold.cancel_time() | date:$root.egDateAndTimeFormat}}</div>
   <div class="flex-cell">[% l('Cancel Note') %]</div>
   <div class="flex-cell well">{{hold.cancel_note()}}</div>
 </div>
@@ -125,7 +125,7 @@
             <div class="col-md-6 strong-text">{{notify.method()}}</div>
             <div class="col-md-6">
               <div class="pull-right">
-                <span class="pad-horiz">{{notify.notify_time() | date:'short'}}</span>
+                <span class="pad-horiz">{{notify.notify_time() | date:$root.egDateAndTimeFormat}}</span>
                 <span>[% l('Created by [_1]', '{{notify.notify_staff().usrname()}}') %]</span>
               </div>
             </div>

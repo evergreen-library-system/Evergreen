@@ -33,7 +33,7 @@ Template for printing a transit slip. Fields include:
 
   <br/>
 
-  <div>[% l('Slip Date: [_1]', '{{today | date:"short"}}') %]</div>
+  <div>[% l('Slip Date: [_1]', '{{today | date:$root.egDateAndTimeFormat}}') %]</div>
   <div>[% l('Printed by [_1] at [_2]', 
     '{{staff.first_given_name}}', '{{current_location.shortname}}') %]</div>
 

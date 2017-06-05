@@ -27,7 +27,7 @@ bib record. Fields include:
     </thead>
     <tbody>
       <tr ng-repeat="hold in holds">
-        <td>{{hold.hold.request_time | date:'short'}}</td>
+        <td>{{hold.hold.request_time | date:$root.egDateAndTimeFormat}}</td>
         <td>{{hold.patron_barcode}}</td>
         <td>{{hold.patron_last}}</td>
         <td>{{hold.patron_alias}}</td>
@@ -36,7 +36,7 @@ bib record. Fields include:
     </tbody>
   </table>
   <hr/>
-  <div>{{current_location.shortname}} {{today | date:'short'}}</div>
+  <div>{{current_location.shortname}} {{today | date:$root.egDateAndTimeFormat}}</div>
   <div>[% l('Printed by [_1]', '{{staff.first_given_name}}') %]</div>
 <br/>
 

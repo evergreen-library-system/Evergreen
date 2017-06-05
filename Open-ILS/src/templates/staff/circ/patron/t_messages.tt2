@@ -3,7 +3,8 @@
 <div class="pad-vert"></div>
 <eg-grid
   idl-class="ausp"
-  grid-controls="activeGridControls">
+  grid-controls="activeGridControls"
+  dateformat="{{$root.egDateAndTimeFormat}}">
 
   <eg-grid-menu-item handler="createPenalty"
     label="[% l('Apply Penalty / Message') %]"></eg-grid-menu-item>
@@ -15,7 +16,7 @@
   <eg-grid-action label="[% l('Archive Penalty / Message') %]" 
     handler="archivePenalty"></eg-grid-action>
 
-  <eg-grid-field path="set_date" label="[% l('Applied On') %]"></eg-grid-field>
+  <eg-grid-field path="set_date" label="[% l('Applied On') %]" datatype="timestamp"></eg-grid-field>
   <eg-grid-field path="standing_penalty.label"></eg-grid-field>
   <eg-grid-field path="org_unit.shortname" label="[% l('Library') %]"></eg-grid-field>
   <eg-grid-field path="note"></eg-grid-field>
@@ -42,9 +43,10 @@
 </div>
 <eg-grid
   idl-class="ausp"
-  grid-controls="archiveGridControls">
+  grid-controls="archiveGridControls"
+  dateformat="{{$root.egDateAndTimeFormat}}">
 
-  <eg-grid-field path="set_date" label="[% l('Applied On') %]"></eg-grid-field>
+  <eg-grid-field path="set_date" label="[% l('Applied On') %]" datatype="timestamp"></eg-grid-field>
   <eg-grid-field path="standing_penalty.label"></eg-grid-field>
   <eg-grid-field path="org_unit.shortname" label="[% l('Library') %]"></eg-grid-field>
   <eg-grid-field path="note"></eg-grid-field>

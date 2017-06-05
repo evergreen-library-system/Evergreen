@@ -37,13 +37,13 @@
   </div>
   <div class="flex-row">
     <div class="flex-cell">[% l('Check Out Date') %]</div>
-    <div class="flex-cell well">{{circ.xact_start() | date:'short'}}</div>
+    <div class="flex-cell well">{{circ.xact_start() | date:egDateAndTimeFormat}}</div>
     <div class="flex-cell">[% l('Due Date') %]</div>
-    <div class="flex-cell well">{{circ.due_date() | date:'short'}}</div>
+    <div class="flex-cell well">{{circ.due_date() | date:egDateAndTimeFormat}}</div>
     <div class="flex-cell">[% l('Stop Fines Time') %]</div>
-    <div class="flex-cell well">{{circ.stop_fines_time() | date:'short'}}</div>
+    <div class="flex-cell well">{{circ.stop_fines_time() | date:egDateAndTimeFormat}}</div>
     <div class="flex-cell">[% l('Checkin Time') %]</div>
-    <div class="flex-cell well">{{circ.checkin_time() | date:'short'}}</div>
+    <div class="flex-cell well">{{circ.checkin_time() | date:egDateAndTimeFormat}}</div>
   </div>
   <div class="flex-row">
     <div class="flex-cell">[% l('Check Out Library') %]</div>

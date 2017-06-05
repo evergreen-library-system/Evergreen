@@ -10,7 +10,7 @@
         {{penalty.note() || penalty.standing_penalty().label()}}
       </div>
       <div class="col-md-3">
-        {{penalty.set_date() | date:'shortDate'}}
+        {{penalty.set_date() | date:$root.egDateFormat}}
       </div>
     </div>
     <div class="row patron-summary-divider">
@@ -51,24 +51,24 @@
       ng-class="{'patron-summary-alert' : !patron().dob()}">
       <a class="col-md-5" ng-if="obscure_dob()" ng-click="show_dob(true)">[% l('Date of Birth') %]</a>
       <div class="col-md-5" ng-if="!obscure_dob()">[% l('Date of Birth') %]</div>
-      <div class="col-md-7" ng-show="now_show_dob()">{{patron().dob() | date:'shortDate'}}</div>
+      <div class="col-md-7" ng-show="now_show_dob()">{{patron().dob() | date:$root.egDateFormat}}</div>
     </div>
     <div class="row">
       <div class="col-md-5">[% l('Last Activity') %]</div>
-      <div class="col-md-7">{{patron().usr_activity()[0].event_time() | date:'shortDate'}}</div>
+      <div class="col-md-7">{{patron().usr_activity()[0].event_time() | date:$root.egDateFormat}}</div>
     </div>
     <div class="row">
       <div class="col-md-5">[% l('Last Updated') %]</div>
-      <div class="col-md-7">{{patron().last_update_time() | date:'shortDate'}}</div>
+      <div class="col-md-7">{{patron().last_update_time() | date:$root.egDateFormat}}</div>
     </div>
     <div class="row">
       <div class="col-md-5">[% l('Create Date') %]</div>
-      <div class="col-md-7">{{patron().create_date() | date:'shortDate'}}</div>
+      <div class="col-md-7">{{patron().create_date() | date:$root.egDateFormat}}</div>
     </div>
     <div class="row"
       ng-class="{'patron-summary-alert' : isPatronExpired()}">
       <div class="col-md-5">[% l('Expire Date') %]</div>
-      <div class="col-md-7">{{patron().expire_date() | date:'shortDate'}}</div>
+      <div class="col-md-7">{{patron().expire_date() | date:$root.egDateFormat}}</div>
     </div>
     <div class="row patron-summary-divider" 
       ng-class="{'patron-summary-alert' : patron_stats().fines.balance_owed}">

@@ -37,7 +37,8 @@
     idl-class="cmrcfld"
     grid-controls="gridControls"
     features="-multiselect"
-    persist-key="admin.server.config.marc_field">
+    persist-key="admin.server.config.marc_field"
+    dateformat="{{$root.egDateAndTimeFormat}}">
 
     <eg-grid-menu-item handler="new_record" label="[% l('New Record') %]"></eg-grid-menu-item>
     <eg-grid-action handler="edit_record" label="[% l('Edit Record') %]"></eg-grid-action>

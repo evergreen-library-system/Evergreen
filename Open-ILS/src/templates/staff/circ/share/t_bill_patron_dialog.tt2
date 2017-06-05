@@ -28,13 +28,13 @@
         </div>
         <div class="row">
           <div class="col-md-3">[% l('Start') %]</div>
-          <div class="col-md-3">{{xact.xact_start | date:'short'}}</div>
+          <div class="col-md-3">{{xact.xact_start | date:$root.egDateAndTimeFormat}}</div>
           <div class="col-md-3">[% l('Total Billed') %]</div>
           <div class="col-md-3">{{xact.summary.balance_owed | currency}}</div>
         </div>
         <div class="row">
           <div class="col-md-3">[% l('Finish') %]</div>
-          <div class="col-md-3">{{xact.xact_finish | date:'short'}}</div>
+          <div class="col-md-3">{{xact.xact_finish | date:$root.egDateAndTimeFormat}}</div>
           <div class="col-md-3">[% l('Renewal?') %]</div>
           <div class="col-md-3">
             <span ng-if="xact.circulation.desk_renewal == 't'">[% l('Desk') %]</span>

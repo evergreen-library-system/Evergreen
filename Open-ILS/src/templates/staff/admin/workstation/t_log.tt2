@@ -11,7 +11,7 @@
   items-provider="grid_work_log_provider"
   grid-controls="grid_controls"
   persist-key="admin.workstation.work_log"
->
+  dateformat="{{$root.egDateAndTimeFormat}}">
 
   <eg-grid-menu-item handler="refresh_ui" 
     label="[% l('Refresh') %]"></eg-grid-menu-item>
@@ -27,7 +27,7 @@
   <eg-grid-field path='amount' label="[% l('Amount') %]" hidden></eg-grid-field>
   <eg-grid-field path='user' label="[% l('Patron') %]"></eg-grid-field>
   <eg-grid-field path='item' label="[% l('Item') %]"></eg-grid-field>
-  <eg-grid-field path='when' label="[% l('When') %]"></eg-grid-field>
+  <eg-grid-field path='when' label="[% l('When') %]" datatype="timestamp"></eg-grid-field>
   <eg-grid-field path='actor' label="[% l('Staff') %]" hidden></eg-grid-field>
 </eg-grid>
 
@@ -40,7 +40,7 @@
   items-provider="grid_patron_log_provider"
   grid-controls="grid_controls"
   persist-key="admin.workstation.patron_log"
->
+  dateformat="{{$root.egDateAndTimeFormat}}">
 
   <eg-grid-menu-item handler="load_item" 
     label="[% l('Retrieve Item') %]"></eg-grid-menu-item>
@@ -53,7 +53,7 @@
   <eg-grid-field path='amount' label="[% l('Amount') %]" hidden></eg-grid-field>
   <eg-grid-field path='user' label="[% l('Patron') %]"></eg-grid-field>
   <eg-grid-field path='item' label="[% l('Item') %]"></eg-grid-field>
-  <eg-grid-field path='when' label="[% l('When') %]"></eg-grid-field>
+  <eg-grid-field path='when' label="[% l('When') %]" datatype="timestamp"></eg-grid-field>
   <eg-grid-field path='actor' label="[% l('Staff') %]" hidden></eg-grid-field>
 </eg-grid>
 

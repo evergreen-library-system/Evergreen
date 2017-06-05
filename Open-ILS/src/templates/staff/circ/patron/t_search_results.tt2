@@ -6,7 +6,8 @@
   main-label="[% l('Patron Search Results') %]"
   grid-controls="gridControls"
   items-provider="patronSearchGridProvider"
-  persist-key="circ.patron.search">
+  persist-key="circ.patron.search"
+  dateformat="{{$root.egDateAndTimeFormat}}">
 
   <eg-grid-menu-item handler="merge_patrons"
     disabled="need_two_selected"
@@ -18,9 +19,9 @@
   <eg-grid-field label="[% ('Last Name') %]" path='family_name' visible sortable multisortable></eg-grid-field>
   <eg-grid-field label="[% ('First Name') %]" path='first_given_name' visible sortable multisortable></eg-grid-field>
   <eg-grid-field label="[% ('Middle Name') %]" path='second_given_name' visible sortable multisortable></eg-grid-field>
-  <eg-grid-field label="[% ('DoB') %]" path='dob' visible sortable multisortable></eg-grid-field>
+  <eg-grid-field label="[% ('DoB') %]" path='dob' dateformat="{{$root.egDateFormat}}" datatype="timestamp" visible sortable multisortable></eg-grid-field>
   <eg-grid-field label="[% ('Home Library') %]" path='home_ou.shortname' visible></eg-grid-field>
-  <eg-grid-field label="[% ('Created On') %]" path='create_date' visible sortable multisortable></eg-grid-field>
+  <eg-grid-field label="[% ('Created On') %]" path='create_date' datatype="timestamp" visible sortable multisortable></eg-grid-field>
 
   <eg-grid-field label="[% ('Mailing:Street 1') %]" path='mailing_address.street1' visible></eg-grid-field>
   <eg-grid-field label="[% ('Mailing:Street 2') %]" path='mailing_address.street2'></eg-grid-field>

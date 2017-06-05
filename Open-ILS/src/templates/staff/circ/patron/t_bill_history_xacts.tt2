@@ -4,7 +4,8 @@
   <eg-grid
     idl-class="mbt"
     id-field="id"
-    grid-controls="gridControls">
+    grid-controls="gridControls"
+    dateformat="{{$root.egDateAndTimeFormat}}">
 
     <eg-grid-action 
       label="[% l('Add Billing') %]" handler="addBilling"></eg-grid-action>
@@ -15,8 +16,8 @@
 
     <eg-grid-field path="summary.balance_owed"></eg-grid-field>
     <eg-grid-field path="id" label="[% l('Bill #') %]"></eg-grid-field>
-    <eg-grid-field path="xact_finish" label="[% l('Finish') %]"></eg-grid-field>
-    <eg-grid-field path="xact_start" label="[% l('Start') %]"></eg-grid-field>
+    <eg-grid-field path="xact_finish" label="[% l('Finish') %]" datatype="timestamp"></eg-grid-field>
+    <eg-grid-field path="xact_start" label="[% l('Start') %]" datatype="timestamp"></eg-grid-field>
     <eg-grid-field path="summary.total_owed" label="[% l('Total Billed') %]"></eg-grid-field>
     <eg-grid-field path="summary.total_paid" label="[% l('Total Paid') %]"></eg-grid-field>
     <eg-grid-field path="summary.xact_type" label="[% l('Type') %]"></eg-grid-field>
@@ -41,7 +42,7 @@
       path="circulation.target_copy.id" required hidden></eg-grid-field>
 
     <!-- needed for grid query -->
-    <eg-grid-field path="summary.last_payment_ts" required hidden></eg-grid-field>
+    <eg-grid-field path="summary.last_payment_ts" datatype="timestamp" required hidden></eg-grid-field>
 
     <eg-grid-field path="summary.*" hidden></eg-grid-field>
     <eg-grid-field path="circulation.target_copy.*" hidden></eg-grid-field>

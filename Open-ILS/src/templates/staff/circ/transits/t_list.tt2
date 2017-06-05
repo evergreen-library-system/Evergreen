@@ -31,7 +31,7 @@
   features="-sort,-multisort"
   grid-controls="grid_controls"
   persist-key="circ.transits.list"
->
+  dateformat="{{$root.egDateAndTimeFormat}}">
 
   <eg-grid-menu-item handler="add_copies_to_bucket" 
     label="[% l('Add Items to Bucket') %]"></eg-grid-menu-item>
@@ -61,11 +61,11 @@
   <eg-grid-field path='target_copy.call_number.record.simple_record.author' hidden></eg-grid-field>
   <eg-grid-field path='source.shortname' label="[% l('Source Library') %]" sortable></eg-grid-field>
   <eg-grid-field path='dest.shortname' label="[% l('Destination Library') %]" sortable></eg-grid-field>
-  <eg-grid-field path='source_send_time' dateformat='short' sortable></eg-grid-field>
+  <eg-grid-field path='source_send_time' datatype="timestamp" sortable></eg-grid-field>
   <eg-grid-field path='hold_transit_copy.hold.hold_type'></eg-grid-field>
-  <eg-grid-field path='hold_transit_copy.hold.request_time' hidden></eg-grid-field>
-  <eg-grid-field path='hold_transit_copy.hold.capture_time' hidden></eg-grid-field>
-  <eg-grid-field path='hold_transit_copy.hold.expire_time' hidden></eg-grid-field>
+  <eg-grid-field path='hold_transit_copy.hold.request_time' datatype="timestamp" hidden></eg-grid-field>
+  <eg-grid-field path='hold_transit_copy.hold.capture_time' datatype="timestamp" hidden></eg-grid-field>
+  <eg-grid-field path='hold_transit_copy.hold.expire_time' datatype="timestamp" hidden></eg-grid-field>
   <eg-grid-field path='hold_transit_copy.hold.usr.family_name' hidden></eg-grid-field>
   <eg-grid-field path='hold_transit_copy.hold.usr.first_given_name' hidden></eg-grid-field>
   <eg-grid-field path='hold_transit_copy.hold.usr.card.barcode' label="[% l('Patron Barcode') %]" hidden></eg-grid-field>

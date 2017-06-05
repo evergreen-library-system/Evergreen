@@ -110,7 +110,8 @@
                           grid-controls="workingGridControls"
                           on-select="handleItemSelect"
                           after-select="afterItemSelect"
-                          persist-key="cat.volcopy.copies">
+                          persist-key="cat.volcopy.copies"
+                          dateformat="{{$root.egDateAndTimeFormat}}">
         
                           <eg-grid-menu-item disabled="disableSave" handler="workingToComplete"
                            label="[% l('Store Selected') %]"></eg-grid-menu-item>
@@ -119,7 +120,7 @@
         
                         
                           <eg-grid-field label="[% l('Barcode') %]"     path='barcode' visible></eg-grid-field>
-                          <eg-grid-field label="[% l('Created') %]"     path="create_date" visible></eg-grid-field>
+                          <eg-grid-field label="[% l('Created') %]"     path="create_date" datatype="timestamp" visible></eg-grid-field>
                           <eg-grid-field label="[% l('Activated') %]"   path="active_date" visible></eg-grid-field>
                           <eg-grid-field label="[% l('Call Number') %]" path="call_number.label" visible></eg-grid-field>
                           <eg-grid-field label="[% l('Copy ID') %]"     path="id" hidden></eg-grid-field>
@@ -143,7 +144,8 @@
                  features="-pagination,-actions,-index"
                  items-provider="completedGridDataProvider"
                  grid-controls="completedGridControls"
-                 persist-key="cat.volcopy.copies.complete">
+                 persist-key="cat.volcopy.copies.complete"
+                 dateformat="{{$root.egDateAndTimeFormat}}">
                
                  <eg-grid-menu-item standalone="true" handler="completeToWorking"
                   label="[% l('Edit Selected') %]"></eg-grid-menu-item>
@@ -154,8 +156,8 @@
                   label="[% l('Save & Exit') %]"></eg-grid-menu-item>
         
                  <eg-grid-field label="[% l('Barcode') %]"     path='barcode' visible></eg-grid-field>
-                 <eg-grid-field label="[% l('Created') %]"     path="create_date" visible></eg-grid-field>
-                 <eg-grid-field label="[% l('Activated') %]"   path="active_date" visible></eg-grid-field>
+                 <eg-grid-field label="[% l('Created') %]"     path="create_date" datatype="timestamp" visible></eg-grid-field>
+                 <eg-grid-field label="[% l('Activated') %]"   path="active_date" datatype="timestamp" visible></eg-grid-field>
                  <eg-grid-field label="[% l('Call Number') %]" path="call_number.label" visible></eg-grid-field>
                  <eg-grid-field label="[% l('Circ Library') %]" flesher="orgById" path="circ_lib.name" visible></eg-grid-field>
                  <eg-grid-field label="[% l('Shelving Location') %]" flesher="locationById" path="location.name" visible></eg-grid-field>

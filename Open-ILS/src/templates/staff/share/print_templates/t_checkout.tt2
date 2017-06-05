@@ -18,11 +18,11 @@ Template for printing checkout receipts; fields available include:
       <div>{{checkout.title}}</div>
       <div>[% l('Barcode: [_1] Due: [_2]', 
         '{{checkout.copy.barcode}}',
-        '{{checkout.circ.due_date | date:"short"}}') %]</div>
+        '{{checkout.circ.due_date | date:$root.egDateAndTimeFormat}}') %]</div>
     </li>
   </ol>
   <hr/>
-  <div>{{current_location.shortname}} {{today | date:'short'}}</div>
+  <div>{{current_location.shortname}} {{today | date:$root.egDateAndTimeFormat}}</div>
   <div>[% l('You were helped by [_1]', '{{staff.first_given_name}}') %]</div>
 <br/>
 

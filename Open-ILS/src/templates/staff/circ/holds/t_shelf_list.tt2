@@ -7,7 +7,8 @@
   features="-sort,-multisort"
   items-provider="gridDataProvider"
   grid-controls="gridControls"
-  persist-key="circ.holds.shelf">
+  persist-key="circ.holds.shelf"
+  dateformat="{{$root.egDateAndTimeFormat}}">
 
   <eg-grid-menu-item handler="detail_view" 
     label="[% l('Detail View') %]"></eg-grid-menu-item>
@@ -69,9 +70,9 @@
     </a>
   </eg-grid-field>
 
-  <eg-grid-field label="[% l('Request Date') %]" path='hold.request_time'></eg-grid-field>
-  <eg-grid-field label="[% l('Capture Date') %]" path='hold.capture_time'></eg-grid-field>
-  <eg-grid-field label="[% l('Available Date') %]" path='hold.shelf_time'></eg-grid-field>
+  <eg-grid-field label="[% l('Request Date') %]" path='hold.request_time' datatype="timestamp"></eg-grid-field>
+  <eg-grid-field label="[% l('Capture Date') %]" path='hold.capture_time' datatype="timestamp"></eg-grid-field>
+  <eg-grid-field label="[% l('Available Date') %]" path='hold.shelf_time' datatype="timestamp"></eg-grid-field>
   <eg-grid-field label="[% l('Hold Type') %]" path='hold.hold_type'></eg-grid-field>
   <eg-grid-field label="[% l('Pickup Library') %]" path='hold.pickup_lib.shortname'></eg-grid-field>
   <eg-grid-field label="[% l('Post-Clear') %]" path='post_clear'></eg-grid-field>

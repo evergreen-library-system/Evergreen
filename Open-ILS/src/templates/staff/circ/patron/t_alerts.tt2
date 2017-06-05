@@ -64,7 +64,7 @@
               <div>{{penalty.note()}}</div><!-- force newline -->
             </div>
             <div class="col-md-2">
-              {{penalty.set_date() | date:'shortDate'}}
+              {{penalty.set_date() | date:$root.egDateFormat}}
             </div>
           </div>
         </div>

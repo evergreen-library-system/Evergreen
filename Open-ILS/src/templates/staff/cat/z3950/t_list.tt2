@@ -87,7 +87,8 @@
   features="-display,-sort,-multisort,-multiselect"
   items-provider="z3950SearchGridProvider"
   grid-controls="gridControls"
-  persist-key="cat.z3950_results">
+  persist-key="cat.z3950_results"
+  dateformat="{{$root.egDateAndTimeFormat}}">
 
   <eg-grid-menu-item handler="showInCatalog" disabled="cant_showInCatalog"
     label="[% l('Show in Catalog') %]"></eg-grid-menu-item>
@@ -129,6 +130,5 @@
     <eg-grid-field label="[% l('Publisher') %]" path="publisher" visible></eg-grid-field>
     <eg-grid-field label="[% l('Service') %]" path="service" visible></eg-grid-field>
     <eg-grid-field label="[% l('TCN') %]" path="tcn" visible></eg-grid-field>
-    <eg-grid-field label
     <eg-grid-field path="*" hidden></eg-grid-field>
 </eg-grid>

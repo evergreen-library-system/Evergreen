@@ -8,13 +8,13 @@
       </div>
       <div class="modal-body">
         <div ng-if="sameUser">
-          [% |l("{{circDate | date:'shortDate'}}") %]
+          [% |l("{{circDate | date:$root.egDateFormat}}") %]
           There is an open circulation on the requested item.  
           This item was already checked out to this user on [_1].
           [% END %]
         </div>
         <div ng-if="!sameUser">
-          [% |l("{{circDate | date:'shortDate'}}") %]
+          [% |l("{{circDate | date:$root.egDateFormat}}") %]
           There is an open circulation on the requested item.  
           This copy was checked out by another patron on [_1].
           [% END %]
