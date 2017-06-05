@@ -147,7 +147,7 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
     $scope.focus_payment = true;
     $scope.annotate_payment = false;
     $scope.receipt_count = 1;
-    $scope.receipt_on_pay = false;
+    $scope.receipt_on_pay = { isChecked: false };
     $scope.warn_amount = 1000;
     $scope.max_amount = 100000;
     $scope.amount_verified = false;
@@ -304,7 +304,7 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
             $scope.payment_type, make_payments, note, $scope.check_number)
         .then(function(payment_ids) {
 
-            if (!$scope.disable_auto_print && $scope.receipt_on_pay) {
+            if (!$scope.disable_auto_print && $scope.receipt_on_pay.isChecked) {
                 printReceipt(
                     $scope.payment_type, payment_ids, make_payments, note);
             }
