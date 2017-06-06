@@ -35,6 +35,9 @@
   <eg-grid-action label="[% l('Void All Billings') %]" 
     handler="voidAllBillings"></eg-grid-action>
 
+  <eg-grid-action label="[% l('Adjust to Zero') %]" 
+    handler="adjustToZero"></eg-grid-action>
+
   <eg-grid-action label="[% l('Refund') %]" 
     handler="refundXact"></eg-grid-action>
 

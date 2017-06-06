@@ -99,6 +99,18 @@ function($q , egCore , egWorkLog , patronSvc) {
         });
     }
 
+    service.adjustBillsToZero = function(bill_ids) {
+        return egCore.net.request(
+            'open-ils.circ',
+            'open-ils.circ.money.billable_xact.adjust_to_zero',
+            egCore.auth.token(),
+            bill_ids
+        ).then(function(resp) {
+            if (evt = egCore.evt.parse(resp)) return alert(evt);
+            return resp;
+        });
+    }
+
     service.updateBillNotes = function(note, ids) {
         return egCore.net.requestWithParamList(
             'open-ils.circ',
@@ -532,6 +544,25 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
                 });
             });
         });
+    }
+
+    $scope.adjustToZero = function(items) {
+        if (items.length == 0) return;
+
+        var ids = items.map(function(item) {return item.id});
+
+        egCore.audio.play('warning.circ.adjust_to_zero_confirmation');
+        egConfirmDialog.open(
+            egCore.strings.CONFIRM_ADJUST_TO_ZERO, '', 
+            {   xactIds : ''+ids,
+                ok : function() {
+                    billSvc.adjustBillsToZero(ids).then(function() {
+                        refreshDisplay();
+                    });
+                }
+            }
+        );
+
     }
 
     // note this is functionally equivalent to selecting a neg. transaction

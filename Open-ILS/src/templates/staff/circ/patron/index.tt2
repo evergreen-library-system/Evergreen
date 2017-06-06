@@ -35,6 +35,8 @@
 <script>
 angular.module('egCoreMod').run(['egStrings', function(s) {
   s.ANNOTATE_PAYMENT_MSG = "[% l('Please annotate this payment') %]";
+  s.CONFIRM_ADJUST_TO_ZERO = 
+    "[% |l('{{xactIds}}') -%]Are you sure you would like to adjust to zero the balance on bills [_1]?[% END %]";
   s.CONFIRM_REFUND_PAYMENT = 
     "[% |l('{{xactIds}}') -%]Are you sure you would like to refund excess payment on bills [_1]?  This action will simply put the amount in the Payment Pending column as a negative value.  You must still select Apply Payment!  Certain types of payments may not be refunded.  The refund may be applied to checked transactions that follow the refunded transaction.[% END %]";
   s.EDIT_BILL_PAY_NOTE = "[% l('Enter new note for #[_1]:','{{ids}}') %]";
