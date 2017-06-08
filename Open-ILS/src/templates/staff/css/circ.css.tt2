@@ -12,7 +12,7 @@
 /* there are bootstrap tyles for error, warning, etc., 
 but the ones I'm finding aren't quite cutting it..*/
 .patron-summary-alert {color: red; font-weight:bold}
-.patron-summary-alert-small {color: red}
+.patron-summary-alert-small {color: red; background-color: white;}
 .patron-summary-divider { border-top: 1px solid #CCC}
 .patron-summary-act-link {font-size: .8em;}
 
