@@ -15,6 +15,7 @@ but the ones I'm finding aren't quite cutting it..*/
 .patron-summary-alert-small {color: red; background-color: white;}
 .patron-summary-divider { border-top: 1px solid #CCC}
 .patron-summary-act-link {font-size: .8em;}
+.patron-summary-has-notes:hover, .patron-summary-has-notes:visited{ text-decoration: none; }
 
 /* FIXME: use .barcode instead */
 #patron-checkout-barcode,
