@@ -1,4 +1,12 @@
-<div class="container-fluid">
+<style type="text/css">
+  .css-form input.ng-invalid {
+    background-color: #FA787E;
+  }
+  .css-form select.ng-invalid {
+    background-color: #FA787E;
+  }
+</style>
+<div class="container-fluid"><form novalidate class="css-form" name="forms.myForm">
     <div class="row bg-info">
         <div class="col-md-1">
             <h5>[% l('Template') %]</h5>
@@ -51,7 +59,7 @@
         </div>
         <div class="nullable col-md-2" ng-class="{'bg-success': working.callnumber.classification !== undefined}">
             <select class="form-control" ng-model="working.callnumber.classification" ng-options="cl.id() as cl.name() for cl in classification_list">
-                <option value="">[% l('<NONE>') %]</option>
+                <option value="">[% l('&lt;NONE&gt;') %]</option>
             </select>
         </div>
         <div class="col-md-1 bg-info">
@@ -59,7 +67,7 @@
         </div>
         <div class="nullable col-xs-2" ng-class="{'bg-success': working.callnumber.prefix !== undefined}">
             <select class="form-control" ng-model="working.callnumber.prefix" ng-options="p.id() as p.label() for p in prefix_list">
-                <option value="">[% l('<NONE>') %]</option>
+                <option value="">[% l('&lt;NONE&gt;') %]</option>
             </select>
         </div>
         <div class="col-md-1 bg-info">
@@ -67,7 +75,7 @@
         </div>
         <div class="nullable col-md-2" ng-class="{'bg-success': working.callnumber.suffix !== undefined}">
             <select class="form-control" ng-model="working.callnumber.suffix" ng-options="s.id() as s.label() for s in suffix_list">
-                <option value="">[% l('<NONE>') %]</option>
+                <option value="">[% l('&lt;NONE&gt;') %]</option>
             </select>
         </div>
     </div>
@@ -213,11 +221,11 @@
                         ng-disabled="!defaults.attributes.circ_modifier" ng-model="working.circ_modifier"
                         ng-options="m.code() as m.name() for m in circ_modifier_list | orderBy: 'name()'"
                     >
-                        <option value="">[% l('<NONE>') %]</option>
+                        <option value="">[% l('&lt;NONE&gt;') %]</option>
                     </select>
                 </div>
                 <div class="col-md-6" ng-class="{'bg-success': working.price !== undefined}">
-                    <input class="form-control" ng-disabled="!defaults.attributes.price" ng-model="working.price" type="text"/>
+                    <input class="form-control" ng-disabled="!defaults.attributes.price" ng-model="working.price" type="number"/>
                 </div>
             </div>
 
@@ -241,7 +249,7 @@
                     </select>
                 </div>
                 <div class="col-md-6" ng-class="{'bg-success': working.cost !== undefined}">
-                    <input class="form-control" ng-disabled="!defaults.attributes.cost" ng-model="working.cost" type="text"/>
+                    <input class="form-control" ng-disabled="!defaults.attributes.cost" ng-model="working.cost" type="number"/>
                 </div>
             </div>
 
@@ -261,7 +269,7 @@
                     <select class="form-control"
                         ng-disabled="!defaults.attributes.circ_as_type" ng-model="working.circ_as_type"
                         ng-options="t.code() as t.value() for t in circ_type_list">
-                      <option value="">[% l('<NONE>') %]</option>
+                      <option value="">[% l('&lt;NONE&gt;') %]</option>
                     </select>
                 </div>
                 <div class="col-md-6" ng-class="{'bg-success': working.deposit !== undefined}">
@@ -311,7 +319,7 @@
                     </div>
                 </div>
                 <div class="col-md-6" ng-class="{'bg-success': working.deposit_amount !== undefined}">
-                    <input class="form-control" ng-disabled="!defaults.attributes.deposit_amount" ng-model="working.deposit_amount" type="text"/>
+                    <input class="form-control" ng-disabled="!defaults.attributes.deposit_amount" ng-model="working.deposit_amount" type="number"/>
                 </div>
             </div>
 
@@ -421,8 +429,9 @@
                             <select class="form-control" ng-disabled="!defaults.statcats"
                                 ng-change="statcatUpdate(sc.id())"
                                 ng-model="working.statcats[sc.id()]"
-                                ng-options="e.id() as e.value() for e in sc.entries()">
-                                <option value="">[% l('<NONE>') %]</option>
+                                ng-options="e.id() as e.value() for e in sc.entries()"
+                                ng-required="sc.required() == 't'">
+                                <option value="">[% l('&lt;NONE&gt;') %]</option>
                             </select>
                         </div>
                     </div>
@@ -432,4 +441,4 @@
 
     </div>
 </div>
-</div>
+</form></div>

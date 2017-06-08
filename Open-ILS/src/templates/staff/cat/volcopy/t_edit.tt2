@@ -112,7 +112,7 @@
                           after-select="afterItemSelect"
                           persist-key="cat.volcopy.copies">
         
-                          <eg-grid-menu-item handler="workingToComplete"
+                          <eg-grid-menu-item disabled="disableSave" handler="workingToComplete"
                            label="[% l('Store Selected') %]"></eg-grid-menu-item>
                           <eg-grid-menu-item disabled="disableSave" handler="workingSaveAndExit"
                            label="[% l('Save & Exit') %]"></eg-grid-menu-item>
