@@ -779,6 +779,8 @@ function(egCore , $q) {
        ['$scope','$q','$window','$routeParams','$location','$timeout','egCore','egNet','egGridDataProvider','itemSvc','$uibModal',
 function($scope , $q , $window , $routeParams , $location , $timeout , egCore , egNet , egGridDataProvider , itemSvc , $uibModal) {
 
+    $scope.forms = {}; // Accessed by t_attr_edit.tt2
+
     $scope.defaults = { // If defaults are not set at all, allow everything
         barcode_checkdigit : false,
         auto_gen_barcode : false,
@@ -1285,7 +1287,9 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                         can_save = false;
                 }
             );
-
+            if ($scope.forms.myForm && $scope.forms.myForm.$invalid) {
+                can_save = false;
+            }
             $scope.can_save = can_save;
         }
 
