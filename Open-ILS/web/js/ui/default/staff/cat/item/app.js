@@ -840,7 +840,6 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
             ).then(
                 function(resp) { // oncomplete
                     var evt = egCore.evt.parse(resp);
-                    console.log('evt',evt);
                     if (evt) {
                         egConfirmDialog.open(
                             egCore.strings.OVERRIDE_TRANSFER_COPIES_TO_MARKED_VOLUME_TITLE,
