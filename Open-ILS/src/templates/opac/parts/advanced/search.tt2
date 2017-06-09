@@ -143,7 +143,7 @@
                 [% CASE "copy_location" %]
                     <select id="adv_copy_location_selector"
                         title="[% l('Select Shelving Location') %]"
-                        name="fi:locations" size="3" multiple="multiple">
+                        name="fi:locations" size="4" multiple="multiple">
                     </select>
                 [%
             END;
