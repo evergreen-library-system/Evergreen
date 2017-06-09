@@ -53,6 +53,8 @@
     </a>
   </eg-grid-field>
 
+  <eg-grid-field label="[% l('Circulation Modifier') %]" path="hold.current_copy.circ_modifier">
+    {{item.hold.current_copy().circ_modifier()}}</eg-grid-field>
   <eg-grid-field label="[% l('Patron Barcode') %]" path="patron_barcode" hidden>{{item.patron_barcode}}</eg-grid-field>
   <eg-grid-field label="[% l('Patron alias') %]" path="patron_alias" hidden>{{item.patron_alias}}</eg-grid-field>
   <eg-grid-field label="[% l('Request Date') %]" path='hold.request_time' datatype="timestamp"></eg-grid-field>

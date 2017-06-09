@@ -540,6 +540,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
 
         promises.push(service.flesh_copy_location(payload.copy));
         if (payload.copy) {
+            promises.push(service.flesh_copy_circ_modifier(payload.copy));
             promises.push(
                 service.flesh_copy_status(payload.copy)
 
@@ -591,6 +592,19 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
             (payload.copy ? payload.copy.dummy_isbn() : null);});
 
         return $q.all(promises);
+    }
+
+    // fetches the full list of circ modifiers
+    service.flesh_copy_circ_modifier = function(copy) {
+        if (!copy) return $q.when();
+        if (egCore.env.ccm)
+            return $q.when(copy.circ_modifier(egCore.env.ccm.map[copy.circ_modifier()]));
+        return egCore.pcrud.retrieveAll('ccm', {}, {atomic : true}).then(
+            function(list) {
+                egCore.env.absorbList(list, 'ccm');
+                copy.circ_modifier(egCore.env.ccm.map[copy.circ_modifier()]);
+            }
+        );
     }
 
     // fetches the full list of copy statuses

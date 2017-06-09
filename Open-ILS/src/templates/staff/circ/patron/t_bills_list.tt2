@@ -78,6 +78,9 @@
     label="[% l('Copy ID') %]" name="copy_id" required hidden>
   </eg-grid-field>
 
+  <eg-grid-field path="circulation.target_copy.circ_modifier" 
+    label="[% l('Circulation Modifier') %]" name="circ_modifier">
+  </eg-grid-field>
   <!-- virtual field -->
   <eg-grid-field datatype="money" label="[% ('Payment Pending') %]" 
     name="payment_pending"></eg-grid-field>
