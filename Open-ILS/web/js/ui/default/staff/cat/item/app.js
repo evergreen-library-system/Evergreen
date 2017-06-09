@@ -840,26 +840,32 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
             ).then(
                 function(resp) { // oncomplete
                     var evt = egCore.evt.parse(resp);
-                    egConfirmDialog.open(
-                        egCore.strings.OVERRIDE_TRANSFER_COPIES_TO_MARKED_VOLUME_TITLE,
-                        egCore.strings.OVERRIDE_TRANSFER_COPIES_TO_MARKED_VOLUME_BODY,
-                        {'evt_desc': evt}
-                    ).result.then(function() {
-                        egCore.net.request(
-                            'open-ils.cat',
-                            'open-ils.cat.transfer_copies_to_volume.override',
-                            egCore.auth.token(),
-                            xfer_target,
-                            copy_ids,
-                            { events: ['TITLE_LAST_COPY', 'COPY_DELETE_WARNING'] }
-                        );
-                    });
+                    console.log('evt',evt);
+                    if (evt) {
+                        egConfirmDialog.open(
+                            egCore.strings.OVERRIDE_TRANSFER_COPIES_TO_MARKED_VOLUME_TITLE,
+                            egCore.strings.OVERRIDE_TRANSFER_COPIES_TO_MARKED_VOLUME_BODY,
+                            {'evt_desc': evt}
+                        ).result.then(function() {
+                            egCore.net.request(
+                                'open-ils.cat',
+                                'open-ils.cat.transfer_copies_to_volume.override',
+                                egCore.auth.token(),
+                                xfer_target,
+                                copy_ids,
+                                { events: ['TITLE_LAST_COPY', 'COPY_DELETE_WARNING'] }
+                            );
+                        }).then(function() {
+                            angular.forEach(items, function(cp){service.add_barcode_to_list(cp.barcode)});
+                        });
+                    } else {
+                        angular.forEach(items, function(cp){service.add_barcode_to_list(cp.barcode)});
+                    }
+
                 },
                 null, // onerror
                 null // onprogress
-            ).then(function() {
-                    angular.forEach(items, function(cp){service.add_barcode_to_list(cp.barcode)});
-            });
+            );
         }
     }
 
