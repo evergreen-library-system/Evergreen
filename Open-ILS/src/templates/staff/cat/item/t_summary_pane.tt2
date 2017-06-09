@@ -1,5 +1,9 @@
 <div class="">
 
+  <div class="label label-danger" ng-show="copy.deleted() == 't'">
+    [% l('This item has been marked as Deleted.') %]
+  </div>
+
   <div class="flex-row">
     <div class="flex-cell">[% l('Barcode') %]</div>
     <div class="flex-cell well">{{copy.barcode()}}</div>
