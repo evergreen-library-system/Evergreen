@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+INSERT INTO config.upgrade_log (version, applied_to) VALUES ('1045', :eg_version); -- csharp/berick/gmcharlt
 
 ALTER TABLE action.transit_copy
 	ADD COLUMN cancel_time TIMESTAMPTZ;
