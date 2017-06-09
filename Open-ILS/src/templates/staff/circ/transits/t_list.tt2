@@ -39,7 +39,7 @@
     label="[% l('Edit Item Attributes') %]"></eg-grid-menu-item>
 
   <eg-grid-menu-item handler="abort_transit" 
-    label="[% l('Abort Transit') %]"></eg-grid-menu-item>
+    label="[% l('Cancel Transit') %]"></eg-grid-menu-item>
   <eg-grid-menu-item handler="print_full_list"
     label="[% l('Print Transits') %]"></eg-grid-menu-item>
 
