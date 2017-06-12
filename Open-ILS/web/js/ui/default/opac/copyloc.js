@@ -10,11 +10,6 @@ function apply_adv_copy_locations() {
     var selected_id = sel.options[sel.selectedIndex].getAttribute('value');
     var org_unit = aou_hash[selected_id];
 
-    if (org_unit.can_have_vols != 't') {
-        dojo.addClass('adv_chunk_copy_location', 'hidden');
-        return;
-    }
-
     var display_orgs = [];
 
     // we want to display copy locations at the selected org,
@@ -34,7 +29,7 @@ function apply_adv_copy_locations() {
         collect_parent_orgs(aou_hash[org_id].parent_ou);
     }
 
-    collect_child_orgs(org_unit.id);
+    display_orgs.push(org_unit.id);
     collect_parent_orgs(org_unit.parent_ou);
     fetch_adv_copy_locations(display_orgs);
 }
