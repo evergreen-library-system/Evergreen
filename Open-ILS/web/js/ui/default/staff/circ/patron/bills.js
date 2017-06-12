@@ -517,32 +517,43 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
     }
 
     $scope.voidAllBillings = function(items) {
+        var promises = [];
+        var bill_ids = [];
+        var cents = 0;
         angular.forEach(items, function(item) {
+            promises.push(
+                billSvc.fetchBills(item.id).then(function(bills) {
+                    angular.forEach(bills, function(b) {
+                        if (b.voided() != 't') {
+                            cents += b.amount() * 100;
+                            bill_ids.push(b.id())
+                        }
+                    });
 
-            billSvc.fetchBills(item.id).then(function(bills) {
-                var bill_ids = [];
-                var cents = 0;
-                angular.forEach(bills, function(b) {
-                    if (b.voided() != 't') {
-                        cents += b.amount() * 100;
-                        bill_ids.push(b.id())
+                    if (bill_ids.length == 0) {
+                        // TODO: warn
+                        return;
                     }
-                });
 
-                $scope.session_voided = 
-                    ($scope.session_voided * 100 + cents) / 100;
+                })
+            );
+        });
 
-                if (bill_ids.length == 0) {
-                    // TODO: warn
-                    return;
+        $q.all(promises).then(function(){
+            egCore.audio.play('warning.circ.void_billings_confirmation');
+            egConfirmDialog.open(
+                egCore.strings.CONFIRM_VOID_BILLINGS, '', 
+                {   billIds : ''+bill_ids,
+                    amount : ''+(cents/100),
+                    ok : function() {
+                        billSvc.voidBills(bill_ids).then(function() {
+                            $scope.session_voided = 
+                                ($scope.session_voided * 100 + cents) / 100;
+                            refreshDisplay();
+                        });
+                    }
                 }
-
-                // TODO: alert of pending voiding
-
-                billSvc.voidBills(bill_ids).then(function() {
-                    refreshDisplay();
-                });
-            });
+            );
         });
     }
 
@@ -607,8 +618,8 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
  * Displays details of a single transaction
  */
 .controller('XactDetailsCtrl',
-       ['$scope','$q','$routeParams','egCore','egGridDataProvider','patronSvc','billSvc','egPromptDialog','egBilling',
-function($scope,  $q , $routeParams , egCore , egGridDataProvider , patronSvc , billSvc , egPromptDialog , egBilling) {
+       ['$scope','$q','$routeParams','egCore','egGridDataProvider','patronSvc','billSvc','egPromptDialog','egBilling','egConfirmDialog',
+function($scope,  $q , $routeParams , egCore , egGridDataProvider , patronSvc , billSvc , egPromptDialog , egBilling , egConfirmDialog ) {
 
     $scope.initTab('bills', $routeParams.id);
     var xact_id = $routeParams.xact_id;
@@ -626,8 +637,12 @@ function($scope,  $q , $routeParams , egCore , egGridDataProvider , patronSvc , 
     // -- actions
     $scope.voidBillings = function(bill_list) {
         var bill_ids = [];
+        var cents = 0;
         angular.forEach(bill_list, function(b) {
-            if (b.voided != 't') bill_ids.push(b.id);
+            if (b.voided != 't') {
+                cents += b.amount * 100;
+                bill_ids.push(b.id)
+            }
         });
 
         if (bill_ids.length == 0) {
@@ -635,18 +650,28 @@ function($scope,  $q , $routeParams , egCore , egGridDataProvider , patronSvc , 
             return;
         }
 
-        billSvc.voidBills(bill_ids).then(function() {
+        egCore.audio.play('warning.circ.void_billings_confirmation');
+        egConfirmDialog.open(
+            egCore.strings.CONFIRM_VOID_BILLINGS, '', 
+            {   billIds : ''+bill_ids,
+                amount : ''+(cents/100),
+                ok : function() {
+                    billSvc.voidBills(bill_ids).then(function() {
+                        // TODO? $scope.session_voided = ...
 
-            // refresh bills and summary data
-            // note: no need to update payments
-            patronSvc.fetchUserStats();
+                        // refresh bills and summary data
+                        // note: no need to update payments
+                        patronSvc.fetchUserStats();
 
-            egBilling.fetchXact(xact_id).then(function(xact) {
-                $scope.xact = xact
-            });
+                        egBilling.fetchXact(xact_id).then(function(xact) {
+                            $scope.xact = xact
+                        });
 
-            xactGrid.refresh();
-        });
+                        xactGrid.refresh();
+                    });
+                }
+            }
+        );
     }
 
     // batch-edit billing and payment notes, depending on 'type'
