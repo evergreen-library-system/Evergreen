@@ -121,7 +121,6 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
     // options : non-parameter controls.  e.g. "override", "check_barcode"
     service.checkout = function(params, options) {
         if (!options) options = {};
-
         console.debug('egCirc.checkout() : ' 
             + js2JSON(params) + ' : ' + js2JSON(options));
 
@@ -540,6 +539,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
 
         promises.push(service.flesh_copy_location(payload.copy));
         if (payload.copy) {
+            promises.push(service.flesh_copy_circ_library(payload.copy));
             promises.push(service.flesh_copy_circ_modifier(payload.copy));
             promises.push(
                 service.flesh_copy_status(payload.copy)
@@ -592,6 +592,12 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
             (payload.copy ? payload.copy.dummy_isbn() : null);});
 
         return $q.all(promises);
+    }
+
+    service.flesh_copy_circ_library = function(copy) {
+        if (!copy) return $q.when();
+        
+        return $q.when(copy.circ_lib(egCore.org.get( copy.circ_lib() )));
     }
 
     // fetches the full list of circ modifiers

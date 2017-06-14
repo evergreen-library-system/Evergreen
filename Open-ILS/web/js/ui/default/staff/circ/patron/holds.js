@@ -58,6 +58,7 @@ function($scope,  $q,  $routeParams,  egCore,  egUser,  patronSvc,
         //var ids = patronSvc.hold_ids.slice(offset, offset + count); 
         return egHolds.fetch_holds(patronSvc.hold_ids).then(null, null,
             function(hold_data) { 
+                egCirc.flesh_copy_circ_library(hold_data.copy);
                 patronSvc.holds.push(hold_data);
                 return hold_data;
             }
