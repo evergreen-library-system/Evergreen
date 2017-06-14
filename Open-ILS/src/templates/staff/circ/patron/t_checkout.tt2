@@ -59,7 +59,7 @@
 
 <eg-grid
   id-field="index"
-  features="-sort,-multisort"
+  features="clientsort"
   items-provider="gridDataProvider"
   grid-controls="gridControls"
   persist-key="circ.patron.checkout"
