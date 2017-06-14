@@ -40,6 +40,14 @@ function($scope , $window , $location , egCore , egGridDataProvider , egCirc) {
     var today = new Date();
     $scope.renewalArgs = {due_date : today};
 
+    $scope.sort_money = function (a,b) {
+        var ma = parseFloat(a);
+        var mb = parseFloat(b);
+        if (ma < mb) return -1;
+        if (ma > mb) return 1;
+        return 0
+    }
+
     $scope.gridDataProvider = egGridDataProvider.instance({
         get : function(offset, count) {
             return this.arrayNotifier($scope.renewals, offset, count);

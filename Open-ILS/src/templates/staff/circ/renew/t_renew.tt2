@@ -72,7 +72,7 @@
     path="acp.alert_message"></eg-grid-field>
 
   <eg-grid-field label="[% l('Balance Owed') %]"     
-    path='mbts.balance_owed'></eg-grid-field>
+    path='mbts.balance_owed' comparator="sort_money"></eg-grid-field>
 
   <eg-grid-field label="[% l('Barcode') %]" path="copy_barcode">
     <!-- FIXME: ng-if / ng-disabled not working since the contents 
