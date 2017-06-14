@@ -10,7 +10,7 @@
 
 <eg-grid
   id-field="id"
-  features="-sort,-multisort"
+  features="clientsort"
   items-provider="grid_data_provider"
   grid-controls="grid_controls"
   persist-key="circ.pending_patrons.list"
