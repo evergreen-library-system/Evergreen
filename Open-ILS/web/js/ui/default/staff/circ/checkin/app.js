@@ -58,6 +58,14 @@ function($scope , $q , $window , $location , egCore , checkinSvc , egGridDataPro
         suppress_popups = set['ui.circ.suppress_checkin_popups'];
     });
 
+    $scope.sort_money = function (a,b) {
+        var ma = parseFloat(a);
+        var mb = parseFloat(b);
+        if (ma < mb) return -1;
+        if (ma > mb) return 1;
+        return 0
+    }
+
     // checkin & hold capture modifiers
     var modifiers = [
         'void_overdues', 
