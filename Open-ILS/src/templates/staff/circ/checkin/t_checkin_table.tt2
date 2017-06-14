@@ -2,7 +2,7 @@
 
 <eg-grid
   id-field="index"
-  features="-sort,-multisort"
+  features="clientsort"
   main-label="[% l('Items Checked In') %]"
   items-provider="gridDataProvider"
   grid-controls="gridControls"
@@ -32,7 +32,7 @@
   <eg-grid-field label="[% l('Balance Owed') %]"     
     path='mbts.balance_owed'></eg-grid-field>
 
-  <eg-grid-field label="[% l('Barcode') %]" path="acp_barcode">
+  <eg-grid-field label="[% l('Barcode') %]" path="copy_barcode">
     <!-- FIXME: ng-if / ng-disabled not working since the contents 
         are $interpolate'd and not $compile'd.
         I want to hide / disable the href when there is no acp ID 
