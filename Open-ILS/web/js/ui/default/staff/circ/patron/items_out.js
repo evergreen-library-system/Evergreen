@@ -106,8 +106,8 @@ function($scope,  $q,  $routeParams,  $timeout,  egCore , egUser,  patronSvc , $
                 // fields on the bre to select.  More may be needed.
                 // note that fleshed fields are explicitly selected.
                 select : { bre : ['id'] },
-                limit  : count,
-                offset : offset,
+                //limit  : count,
+                //offset : offset,
                 // we need an order-by to support paging
                 order_by : {circ : ['xact_start']} 
 
@@ -134,8 +134,8 @@ function($scope,  $q,  $routeParams,  $timeout,  egCore , egUser,  patronSvc , $
         return egCore.pcrud.search('ancc', {id : id_list},
             {   flesh : 1,
                 flesh_fields : {ancc : ['item_type','staff']},
-                limit  : count,
-                offset : offset,
+                //limit  : count,
+                //offset : offset,
                 // we need an order-by to support paging
                 order_by : {circ : ['circ_time']} 
 

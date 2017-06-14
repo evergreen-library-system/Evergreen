@@ -29,7 +29,7 @@
   ng-if="items_out_display == 'noncat'"
   idl-class="ancc"
   id-field="id"
-  features="-sort,-multisort"
+  features="clientsort"
   items-provider="gridDataProvider"
   persist-key="circ.patron.items_out.noncat"
   dateformat="{{$root.egDateAndTimeFormat}}">
@@ -46,7 +46,7 @@
   ng-if="items_out_display != 'noncat'"
   idl-class="circ"
   id-field="id"
-  features="-sort,-multisort"
+  features="clientsort"
   items-provider="gridDataProvider"
   persist-key="circ.patron.items_out"
   dateformat="{{$root.egDateAndTimeFormat}}">
@@ -86,7 +86,7 @@
   <eg-grid-field label="[% l('Checkout / Renewal Library') %]" path='circ_lib.shortname'></eg-grid-field>
   <eg-grid-field label="[% l('Renewals Remaining') %]" path='renewal_remaining'></eg-grid-field>
   <eg-grid-field label="[% l('Fines Stopped') %]" path='stop_fines'></eg-grid-field>
-  <eg-grid-field label="[% l('Title') %]" name="title">
+  <eg-grid-field label="[% l('Title') %]" path="target_copy.call_number.record.simple_record.title" name="title">
     <a target="_self" href="[% ctx.base_path %]/staff/cat/catalog/record/{{item.target_copy().call_number().record().id()}}">
       {{item.target_copy().call_number().record().simple_record().title()}}
     </a>
