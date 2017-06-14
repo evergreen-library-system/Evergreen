@@ -133,7 +133,7 @@ function osDraw(specific_setting) {
             names.push(key);
     }
     
-    if(dojo.byId('isFiltered') == 'true') {
+    if(dojo.byId('isFiltered').value == 'true') {
         osLimitSeen(dojo.byId('searchBox').value);
     } else {
         osDrawNames(names);
