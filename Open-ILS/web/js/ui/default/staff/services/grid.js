@@ -179,6 +179,7 @@ angular.module('egGridMod',
 
                 grid.columnsProvider = egGridColumnsProvider.instance({
                     idlClass : grid.idlClass,
+                    clientSort : (features.indexOf('clientsort') > -1 && features.indexOf('-clientsort') == -1),
                     defaultToHidden : (features.indexOf('-display') > -1),
                     defaultToNoSort : (features.indexOf('-sort') > -1),
                     defaultToNoMultiSort : (features.indexOf('-multisort') > -1),
@@ -209,6 +210,8 @@ angular.module('egGridMod',
                         query : $scope.query
                     });
                 }
+
+                grid.dataProvider.columnsProvider = grid.columnsProvider;
 
                 $scope.itemFieldValue = grid.dataProvider.itemFieldValue;
                 $scope.indexValue = function(item) {
@@ -1082,6 +1085,7 @@ angular.module('egGridMod',
         restrict : 'AE',
         scope : {
             flesher: '=', // optional; function that can flesh a linked field, given the value
+            comparator: '=', // optional; function that can sort the thing at the end of 'path' 
             name  : '@', // required; unique name
             path  : '@', // optional; flesh path
             ignore: '@', // optional; fields to ignore when path is a wildcard
@@ -1170,6 +1174,7 @@ angular.module('egGridMod',
         cols.columns = [];
         cols.stockVisible = [];
         cols.idlClass = args.idlClass;
+        cols.clientSort = args.clientSort;
         cols.defaultToHidden = args.defaultToHidden;
         cols.defaultToNoSort = args.defaultToNoSort;
         cols.defaultToNoMultiSort = args.defaultToNoMultiSort;
@@ -1362,6 +1367,7 @@ angular.module('egGridMod',
         cols.cloneFromScope = function(colSpec) {
             return {
                 flesher  : colSpec.flesher,
+                comparator  : colSpec.comparator,
                 name  : colSpec.name,
                 label : colSpec.label,
                 path  : colSpec.path,
@@ -1520,6 +1526,81 @@ angular.module('egGridMod',
             // the range defined by count and offset
             gridData.arrayNotifier = function(arr, offset, count) {
                 if (!arr || arr.length == 0) return $q.when();
+
+                if (gridData.columnsProvider.clientSort
+                    && gridData.sort
+                    && gridData.sort.length > 0
+                ) {
+                    var sorter_cache = [];
+                    arr.sort(function(a,b) {
+                        for (var si = 0; si < gridData.sort.length; si++) {
+                            if (!sorter_cache[si]) { // Build sort structure on first comparison, reuse thereafter
+                                var field = gridData.sort[si];
+                                var dir = 'asc';
+
+                                if (angular.isObject(field)) {
+                                    dir = Object.values(field)[0];
+                                    field = Object.keys(field)[0];
+                                }
+
+                                var path = gridData.columnsProvider.findColumn(field).path || field;
+                                var comparator = gridData.columnsProvider.findColumn(field).comparator ||
+                                    function (x,y) { if (x < y) return -1; if (x > y) return 1; return 0 };
+
+                                sorter_cache[si] = {
+                                    field       : path,
+                                    dir         : dir,
+                                    comparator  : comparator
+                                };
+                            }
+
+                            var sc = sorter_cache[si];
+
+                            var af,bf;
+
+                            if (a._isfieldmapper || angular.isFunction(a[sc.field])) {
+                                try {af = a[sc.field](); bf = b[sc.field]() } catch (e) {};
+                            } else {
+                                af = a[sc.field]; bf = b[sc.field];
+                            }
+                            if (af === undefined && sc.field.indexOf('.') > -1) { // assume an object, not flat path
+                                var parts = sc.field.split('.');
+                                af = a;
+                                bf = b;
+                                angular.forEach(parts, function (p) {
+                                    if (af) {
+                                        if (af._isfieldmapper || angular.isFunction(af[p])) af = af[p]();
+                                        else af = af[p];
+                                    }
+                                    if (bf) {
+                                        if (bf._isfieldmapper || angular.isFunction(bf[p])) bf = bf[p]();
+                                        else bf = bf[p];
+                                    }
+                                });
+                            }
+
+                            if (af === undefined) af = null;
+                            if (bf === undefined) bf = null;
+
+                            if (af === null && bf !== null) return 1;
+                            if (bf === null && af !== null) return -1;
+
+                            if (!(bf === null && af === null)) {
+                                var partial = sc.comparator(af,bf);
+                                if (partial) {
+                                    if (sc.dir == 'desc') {
+                                        if (partial > 0) return -1;
+                                        return 1;
+                                    }
+                                    return partial;
+                                }
+                            }
+                        }
+
+                        return 0;
+                    });
+                }
+
                 if (count) arr = arr.slice(offset, offset + count);
                 var def = $q.defer();
                 // promise notifications are only witnessed when delivered
