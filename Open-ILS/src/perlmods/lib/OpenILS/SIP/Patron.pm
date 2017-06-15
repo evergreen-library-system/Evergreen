@@ -218,7 +218,7 @@ sub flesh_user_penalties {
             : undef;
         # Filter out those that do not apply and deflesh the standing_penalty.
         $applied_penalties = [map
-            { $_->standing_penalty($_->standing_penalty->id()) }
+            { $_->standing_penalty }
                 grep {
                     !defined($_->standing_penalty->ignore_proximity())
                     || ((defined($here_prox))
@@ -336,64 +336,39 @@ sub language {
 sub charge_ok {
     my $self = shift;
     my $u = $self->{user};
+    my $circ_is_blocked = 0;
 
     # compute expiration date for borrowing privileges
     my $expire = DateTime::Format::ISO8601->new->parse_datetime(cleanse_ISO8601($u->expire_date));
 
-    # determine whether patron should be allowed to circulate materials:
-    # not barred, doesn't owe too much wrt fines/fees, privileges haven't
-    # expired
-    my $circ_is_blocked = 
+    $circ_is_blocked =
         (($u->barred eq 't') or
-         ($u->standing_penalties and @{$u->standing_penalties}) or
-         (CORE::time > $expire->epoch));
+          (@{$u->standing_penalties} and grep { ( $_->block_list // '') =~ /CIRC/ } @{$u->standing_penalties}) or
+          (CORE::time > $expire->epoch));
 
     return
-        !$circ_is_blocked and
-        $u->active eq 't' and
+        !$circ_is_blocked &&
+        $u->active eq 't' &&
         $u->card->active eq 't';
 }
 
 sub renew_ok {
     my $self = shift;
     my $u = $self->{user};
-    my $e = $self->{editor};
-    my $renew_block_penalty = 'f';
+    my $renew_is_blocked = 0;
 
     # compute expiration date for borrowing privileges
     my $expire = DateTime::Format::ISO8601->new->parse_datetime(cleanse_ISO8601($u->expire_date));
 
-    # if barred or expired, forget it and save us the CPU
-    return 0 if(($u->barred eq 't') or (CORE::time > $expire->epoch));
-
-    # flesh penalties so we can look close at the block list
-    my $penalty_flesh = {
-        flesh => 2,
-        flesh_fields => {
-            au => [
-                "standing_penalties",
-            ],
-            ausp => [
-                "standing_penalty",
-            ],
-            csp => [
-                "block_list",
-            ],
-        }
-    };
-    my $user = $e->retrieve_actor_user([ $u->id, $penalty_flesh ]);
-    foreach( @{ $user->standing_penalties } )
-    {
-        # archived penalty - ignore
-        next if ( $_->stop_date && ( CORE::time >  DateTime::Format::ISO8601->new->parse_datetime(cleanse_ISO8601($_->stop_date))->epoch ) );
-        # check to see if this penalty blocks renewals
-        $renew_block_penalty = 't' if $_->standing_penalty->block_list =~ /RENEW/;
-    }
+    $renew_is_blocked =
+        (($u->barred eq 't') or
+         (@{$u->standing_penalties} and grep { ( $_->block_list // '') =~ /RENEW/ } @{$u->standing_penalties}) or
+         (CORE::time > $expire->epoch));
 
     return
+        !$renew_is_blocked &&
         $u->active eq 't' &&
-        $u->card->active eq 't' &&
-        $renew_block_penalty eq 'f';
+        $u->card->active eq 't';
 }
 
 sub recall_ok {
@@ -405,7 +380,21 @@ sub recall_ok {
 
 sub hold_ok {
     my $self = shift;
-    return $self->charge_ok;
+    my $u = $self->{user};
+    my $hold_is_blocked = 0;
+
+    # compute expiration date for borrowing privileges
+    my $expire = DateTime::Format::ISO8601->new->parse_datetime(cleanse_ISO8601($u->expire_date));
+
+    $hold_is_blocked =
+        (($u->barred eq 't') or
+         (@{$u->standing_penalties} and grep { ( $_->block_list // '') =~ /HOLD/ } @{$u->standing_penalties}) or
+         (CORE::time > $expire->epoch));
+
+    return
+        !$hold_is_blocked &&
+        $u->active eq 't' &&
+        $u->card->active eq 't';
 }
 
 # return true if the card provided is marked as lost
