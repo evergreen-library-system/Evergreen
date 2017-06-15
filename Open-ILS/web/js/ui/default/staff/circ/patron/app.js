@@ -589,8 +589,8 @@ function($q , $timeout , $location , egCore,  egUser , $locale) {
  *
  * */
 .controller('PatronCtrl',
-       ['$scope','$q','$location','$filter','egCore','egUser','patronSvc',
-function($scope,  $q,  $location , $filter,  egCore,  egUser,  patronSvc) {
+       ['$scope','$q','$location','$filter','egCore','egNet','egUser','egAlertDialog','egConfirmDialog','egPromptDialog','patronSvc',
+function($scope,  $q , $location , $filter , egCore , egNet , egUser , egAlertDialog , egConfirmDialog , egPromptDialog , patronSvc) {
 
     $scope.is_patron_edit = function() {
         return Boolean($location.path().match(/patron\/\d+\/edit$/));
@@ -645,6 +645,7 @@ function($scope,  $q,  $location , $filter,  egCore,  egUser,  patronSvc) {
         console.log('init tab ' + tab);
         $scope.tab = tab;
         $scope.aous = egCore.env.aous;
+        $scope.auth_user_id = egCore.auth.user().id();
 
         if (patron_id) {
             $scope.patron_id = patron_id;
@@ -703,6 +704,71 @@ function($scope,  $q,  $location , $filter,  egCore,  egUser,  patronSvc) {
     // of stored preference.
     $scope.collapse_summary = function() {
         return $scope.tab != 'search' && $scope.collapsePatronSummary;
+    }
+
+    function _purge_account(dest_usr,override) {
+        egNet.request(
+            'open-ils.actor',
+            'open-ils.actor.user.delete' + (override ? '.override' : ''),
+            egCore.auth.token(),
+            $scope.patron().id(),
+            dest_usr
+        ).then(function(resp){
+            if (evt = egCore.evt.parse(resp)) {
+                if (evt.code == '2004' /* ACTOR_USER_DELETE_OPEN_XACTS */) {
+                    egConfirmDialog.open(
+                        egCore.strings.PATRON_PURGE_CONFIRM_TITLE, egCore.strings.PATRON_PURGE_OVERRIDE_PROMPT,
+                        {ok : function() {
+                            _purge_account(dest_usr,true);
+                        }}
+                    );
+                } else {
+                    alert(js2JSON(evt));
+                }
+            } else {
+                location.href = egCore.env.basePath + '/circ/patron/search';
+            }
+        });
+    }
+
+    function _purge_account_with_destination(dest_barcode) {
+        egCore.pcrud.search('ac', {barcode : dest_barcode})
+        .then(function(card) {
+            if (!card) {
+                egAlertDialog.open(egCore.strings.PATRON_PURGE_STAFF_BAD_BARCODE);
+            } else {
+                _purge_account(card.usr());
+            }
+        });
+    }
+
+    $scope.purge_account = function() {
+        egConfirmDialog.open(
+            egCore.strings.PATRON_PURGE_CONFIRM_TITLE, egCore.strings.PATRON_PURGE_CONFIRM,
+            {ok : function() {
+                egConfirmDialog.open(
+                    egCore.strings.PATRON_PURGE_CONFIRM_TITLE, egCore.strings.PATRON_PURGE_LAST_CHANCE,
+                    {ok : function() {
+                        egNet.request(
+                            'open-ils.actor',
+                            'open-ils.actor.user.has_work_perm_at',
+                            egCore.auth.token(), 'STAFF_LOGIN', $scope.patron().id()
+                        ).then(function(resp) {
+                            var is_staff = resp.length > 0;
+                            if (is_staff) {
+                                egPromptDialog.open(
+                                    egCore.strings.PATRON_PURGE_STAFF_PROMPT,
+                                    null, // TODO: this would be cool if it worked: egCore.auth.user().card().barcode(),
+                                    {ok : function(barcode) {_purge_account_with_destination(barcode)}}
+                                );
+                            } else {
+                                _purge_account();
+                            }
+                        });
+                    }
+                });
+            }
+        });
     }
 
     egCore.hatch.getItem('eg.circ.patron.summary.collapse')

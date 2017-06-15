@@ -53,6 +53,12 @@ angular.module('egCoreMod').run(['egStrings', function(s) {
   s.PAYMENT_OVER_MAX = "[% l('Payments over $[_1] are denied by policy.', '{{max_amount}}') %]";
   s.PATRON_NOTE_DELETE_CONFIRM_TITLE = "[% l('Delete Note?') %]";
   s.PATRON_NOTE_DELETE_CONFIRM = "[% l('Delete the note titled \"[_1]\" created on [_2]?', '{{note_title}}', '{{create_date | date}}') %]";
+  s.PATRON_PURGE_CONFIRM_TITLE = "[% l('Completely Purge Patron Account?') %]";
+  s.PATRON_PURGE_CONFIRM = "[% l('Completely OBLITERATE this patron account, including bills, payments, bookbags, etc? This is IRREVERSIBLE.') %]";
+  s.PATRON_PURGE_LAST_CHANCE = "[% l('Last chance, are you sure you want to completely delete this account?') %]";
+  s.PATRON_PURGE_STAFF_PROMPT = "[% l('The account you are attempting to delete has STAFF_LOGIN privileges. Please enter the barcode for a destination account to receive miscellaneous staff artifacts (reports, etc.) from the account to be deleted.') %]";
+  s.PATRON_PURGE_STAFF_BAD_BARCODE = "[% l('Could not retrieve a destination account with the barcode provided. Aborting the purge...') %]";
+  s.PATRON_PURGE_OVERRIDE_PROMPT = "[% l('The account has open transactions (circulations and/or unpaid bills). Purge anyway?') %]";
   s.OPT_IN_DIALOG_TITLE = "[% l('Verify Permission to Share Personal Information') %]";
   s.OPT_IN_DIALOG = "[% l('Does patron [_1], [_2] from [_3] ([_4]) consent to having their personal information shared with your library?', '{{family_name}}', '{{first_given_name}}', '{{org_name}}', '{{org_shortname}}') %]";
 }]);
@@ -196,6 +202,11 @@ angular.module('egCoreMod').run(['egStrings', function(s) {
           <li>
             <a href="./booking/legacy/booking/return?patron_barcode={{patron().card().barcode()}}" target="_top">
               [% l('Booking: Return Reservations') %]
+            </a>
+          </li>
+          <li>
+            <a href ng-click="purge_account()" a-disabled="patron().super_user() == 't' || patron().id() == auth_user_id">
+              [% l('Completely Purge Account') %]
             </a>
           </li>
        </ul>
