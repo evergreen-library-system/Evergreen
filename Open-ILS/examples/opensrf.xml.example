@@ -683,7 +683,7 @@ vim:et:ts=4:sw=4:
                     <superpage_size>1000</superpage_size>
 
                     <!-- How many superpages to consider for searching overall. -->
-                    <max_superpages>10</max_superpages>
+                    <max_superpages>100</max_superpages>
 
                     <!-- zip code database file -->
                     <!--<zips_file>LOCALSTATEDIR/data/zips.txt</zips_file>-->

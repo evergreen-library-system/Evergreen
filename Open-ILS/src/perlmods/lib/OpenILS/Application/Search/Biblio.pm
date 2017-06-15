@@ -1409,7 +1409,7 @@ sub retrieve_cached_facets {
 
     eval {
         local $SIG{ALRM} = sub {die};
-        alarm(2); # we'll sleep for as much as 2s
+        alarm(4); # we'll sleep for as much as 4s
         do {
             die if $cache->get_cache($key . '_COMPLETE');
         } while (sleep(0.05));

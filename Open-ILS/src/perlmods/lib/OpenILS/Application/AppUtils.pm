@@ -763,6 +763,18 @@ sub find_org {
     return undef;
 }
 
+sub find_org_by_shortname {
+    my( $self, $org_tree, $shortname )  = @_;
+    return undef unless $org_tree and defined $shortname;
+    return $org_tree if ( $org_tree->shortname eq $shortname );
+    return undef unless ref($org_tree->children);
+    for my $c (@{$org_tree->children}) {
+        my $o = $self->find_org_by_shortname($c, $shortname);
+        return $o if $o;
+    }
+    return undef;
+}
+
 sub fetch_non_cat_type_by_name_and_org {
     my( $self, $name, $orgId ) = @_;
     $logger->debug("Fetching non cat type $name at org $orgId");
@@ -1460,6 +1472,12 @@ sub get_org_tree {
     $ORG_TREE{$locale} = $tree;
     $cache->put_cache("orgtree.$locale", $tree);
     return $tree;
+}
+
+sub get_global_flag {
+    my($self, $flag) = @_;
+    return undef unless ($flag);
+    return OpenILS::Utils::CStoreEditor->new->retrieve_config_global_flag($flag);
 }
 
 sub get_org_descendants {

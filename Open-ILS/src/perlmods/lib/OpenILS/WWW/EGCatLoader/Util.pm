@@ -55,6 +55,7 @@ sub child_init {
 sub init_ro_object_cache {
     my $self = shift;
     my $ctx = $self->ctx;
+    my $memcache ||= OpenSRF::Utils::Cache->new('global');
 
     # reset org unit setting cache on each page load to avoid the
     # requirement of reloading apache with each org-setting change
@@ -87,12 +88,21 @@ sub init_ro_object_cache {
         my $get_key = "get_$hint";
         my $search_key = "search_$hint";
 
+        my $memcache_key = join('.', 'EGWeb',$locale,$hint) . '.';
+
         # Retrieve the full set of objects with class $hint
         $locale_subs->{$list_key} = sub {
+            my $from_memcache = 0;
+            my $list = $memcache->get_cache($memcache_key.'list');
+            if ($list) {
+                $cache{list}{$locale}{$hint} = $list;
+                $from_memcache = 1;
+            }
             my $method = "retrieve_all_$eclass";
             my $e = new_editor();
             $cache{list}{$locale}{$hint} = $e->$method() unless $cache{list}{$locale}{$hint};
             undef $e;
+            $memcache->put_cache($memcache_key.'list',$cache{list}{$locale}{$hint}) unless $from_memcache;
             return $cache{list}{$locale}{$hint};
         };
 
@@ -336,13 +346,23 @@ my $unapi_cache;
 sub get_records_and_facets {
     my ($self, $rec_ids, $facet_key, $unapi_args) = @_;
 
+    # collect the facet data
+    my $search = OpenSRF::AppSession->create('open-ils.search');
+    my $facet_req;
+    if ($facet_key) {
+        $facet_req = $search->request(
+            'open-ils.search.facet_cache.retrieve', $facet_key
+        );
+    }
+
     $unapi_args ||= {};
     $unapi_args->{site} ||= $self->ctx->{aou_tree}->()->shortname;
     $unapi_args->{depth} ||= $self->ctx->{aou_tree}->()->ou_type->depth;
     $unapi_args->{flesh_depth} ||= 5;
 
     my $is_meta = delete $unapi_args->{metarecord};
-    my $unapi_type = $is_meta ? 'unapi.mmr' : 'unapi.bre';
+    #my $unapi_type = $is_meta ? 'unapi.mmr' : 'unapi.bre';
+    my $unapi_type = $is_meta ? 'unapi.metabib_virtual_record_feed' : 'unapi.biblio_record_entry_feed';
 
     $unapi_cache ||= OpenSRF::Utils::Cache->new('global');
     my $unapi_cache_key_suffix = join(
@@ -356,134 +376,44 @@ sub get_records_and_facets {
 
     my %tmp_data;
     my $outer_self = $self;
-    $self->timelog("get_records_and_facets(): about to call multisession");
-    my $ses = OpenSRF::MultiSession->new(
-        app => 'open-ils.cstore',
-        cap => 10, # XXX config
-        success_handler => sub {
-            my($self, $req) = @_;
-            my $data = $req->{response}->[0]->content;
 
-            $outer_self->timelog("get_records_and_facets(): got response content");
+    my $sdepth = $unapi_args->{flesh_depth};
+    my $slimit = "acn=>$sdepth,acp=>$sdepth";
+    $slimit .= ",bre=>$sdepth" if $is_meta;
+    my $flesh = $unapi_args->{flesh} || '';
 
-            # Protect against requests for non-existent records
-            return unless $data->{$unapi_type};
+    # tag the record with the MR id
+    $flesh =~ s/}$/,mmr.unapi}/g if $is_meta;
 
-            my $xml = XML::LibXML->new->parse_string($data->{$unapi_type})->documentElement;
+    my $ses = OpenSRF::AppSession->create('open-ils.cstore');
 
-            $outer_self->timelog("get_records_and_facets(): parsed xml");
-            # Protect against legacy invalid MARCXML that might not have a 901c
-            my $bre_id;
-            my $mmr_id;
-            my $bre_id_nodes =  $xml->find('*[@tag="901"]/*[@code="c"]');
-            if ($bre_id_nodes) {
-                $bre_id =  $bre_id_nodes->[0]->textContent;
-            } else {
-                $logger->warn("Missing 901 subfield 'c' in " . $xml->toString());
-            }
-
-            if ($is_meta) {
-                # extract metarecord ID from mmr.unapi tag
-                for my $node ($xml->getElementsByTagName('abbr')) {
-                    my $title = $node->getAttribute('title');
-                    ($mmr_id = $title) =~ 
-                        s/tag:open-ils.org:U2\@mmr\/(\d+)\/.*/$1/g;
-                    last if $mmr_id;
-                }
-            }
-
-            my $rec_id = $mmr_id ? $mmr_id : $bre_id;
-            $tmp_data{$rec_id} = {
-                id => $rec_id, 
-                bre_id => $bre_id, 
-                mmr_id => $mmr_id,
-                marc_xml => $xml
-            };
-
-            if ($rec_id) {
-                # Let other backends grab our data now that we're done.
-                my $key = 'TPAC_unapi_cache_'.$rec_id.'_'.$unapi_cache_key_suffix;
-                my $cache_data = $unapi_cache->get_cache($key);
-                if ($$cache_data{running}) {
-                    $unapi_cache->put_cache($key, {
-                        bre_id => $bre_id,
-                        mmr_id => $mmr_id,
-                        id => $rec_id, 
-                        marc_xml => $data->{$unapi_type} 
-                    }, 10);
-                }
-            }
-
-            $outer_self->timelog("get_records_and_facets(): end of success handler");
-        }
-    );
-
-    $self->timelog("get_records_and_facets(): about to call ".
-        "$unapi_type via json_query (rec_ids has " . scalar(@$rec_ids));
-
-    my @loop_recs = uniq @$rec_ids;
-    my %rec_timeout;
-
-    while (my $bid = shift @loop_recs) {
-
-        sleep(0.1) if $rec_timeout{$bid};
-
+    my @loop_recs;
+    for my $bid (@$rec_ids) {
         my $unapi_cache_key = 'TPAC_unapi_cache_'.$bid.'_'.$unapi_cache_key_suffix;
-        my $unapi_data = $unapi_cache->get_cache($unapi_cache_key) || {};
+        my $unapi_data = $unapi_cache->get_cache($unapi_cache_key);
 
-        if ($unapi_data->{running}) { #cache entry from ongoing, concurrent retrieval
-            if (!$rec_timeout{$bid}) {
-                $rec_timeout{$bid} = time() + 10;
-            }
-
-            if ( time() > $rec_timeout{$bid} ) { # we've waited too long. just do it
-                $unapi_data = {};
-                delete $rec_timeout{$bid};
-            } else { # we'll pause next time around to let this one try again
-                push(@loop_recs, $bid);
-                next;
-            }
-        }
-
-        if ($unapi_data->{marc_xml}) { # we got data from the cache
+        if (!$unapi_data || $unapi_data->{running}) { #cache entry not done yet, get our own copy
+            push(@loop_recs, $bid);
+        } else {
             $unapi_data->{marc_xml} = XML::LibXML->new->parse_string($unapi_data->{marc_xml})->documentElement;
             $tmp_data{$unapi_data->{id}} = $unapi_data;
-        } else { # we're the first or we timed out. success_handler will populate the real value
-            $unapi_cache->put_cache($unapi_cache_key, { running => $$ }, 10);
-
-            my $sdepth = $unapi_args->{flesh_depth};
-            my $slimit = "acn=>$sdepth,acp=>$sdepth";
-            $slimit .= ",bre=>$sdepth" if $is_meta;
-            my $flesh = $unapi_args->{flesh} || '';
-
-            # tag the record with the MR id
-            $flesh =~ s/}$/,mmr.unapi}/g if $is_meta;
-
-            $ses->request(
-                'open-ils.cstore.json_query',
-                 {from => [
-                    $unapi_type, $bid, 'marcxml','record', $flesh,
-                    $unapi_args->{site}, 
-                    $unapi_args->{depth}, 
-                    $slimit,
-                    undef, undef, $unapi_args->{pref_lib}
-                ]}
-            );
         }
     }
 
-    # gather up the unapi recs
-    $ses->session_wait(1);
-    $self->timelog("get_records_and_facets():past session wait");
+    my $unapi_req = $ses->request(
+        'open-ils.cstore.json_query',
+         {from => [
+            $unapi_type, '{'.join(',',@loop_recs).'}', 'marcxml', $flesh,
+            $unapi_args->{site}, 
+            $unapi_args->{depth}, 
+            $slimit,
+            undef, undef, $unapi_args->{pref_lib}
+        ]}
+    );
 
     my $facets = {};
-    if ($facet_key) {
+    if ($facet_req) {
         $self->timelog("get_records_and_facets():almost ready to fetch facets");
-        # collect the facet data
-        my $search = OpenSRF::AppSession->create('open-ils.search');
-        my $facet_req = $search->request(
-            'open-ils.search.facet_cache.retrieve', $facet_key
-        );
 
         my $tmp_facets = $facet_req->gather(1);
         $self->timelog("get_records_and_facets(): gathered facet data");
@@ -508,9 +438,65 @@ sub get_records_and_facets {
             }
         }
         $self->timelog("get_records_and_facets(): gathered/sorted facet data");
-        $search->kill_me;
     } else {
         $facets = undef;
+    }
+    $search->kill_me;
+
+    my $data = $unapi_req->gather(1);
+
+    $outer_self->timelog("get_records_and_facets(): got response content");
+
+    # Protect against requests for non-existent records
+    return unless $data->{$unapi_type};
+
+    my $doc = XML::LibXML->new->parse_string($data->{$unapi_type})->documentElement;
+
+    $outer_self->timelog("get_records_and_facets(): parsed xml");
+    for my $xml ($doc->getElementsByTagName('record')) {
+        $xml = XML::LibXML->new->parse_string($xml->toString)->documentElement;
+
+        # Protect against legacy invalid MARCXML that might not have a 901c
+        my $bre_id;
+        my $mmr_id;
+        my $bre_id_nodes =  $xml->find('*[@tag="901"]/*[@code="c"]');
+        if ($bre_id_nodes) {
+            $bre_id =  $bre_id_nodes->[0]->textContent;
+        } else {
+            $logger->warn("Missing 901 subfield 'c' in " . $xml->toString());
+        }
+    
+        if ($is_meta) {
+            # extract metarecord ID from mmr.unapi tag
+            for my $node ($xml->getElementsByTagName('abbr')) {
+                my $title = $node->getAttribute('title');
+                ($mmr_id = $title) =~ 
+                    s/tag:open-ils.org:U2\@mmr\/(\d+)\/.*/$1/g;
+                last if $mmr_id;
+            }
+        }
+    
+        my $rec_id = $mmr_id ? $mmr_id : $bre_id;
+        $tmp_data{$rec_id} = {
+            id => $rec_id, 
+            bre_id => $bre_id, 
+            mmr_id => $mmr_id,
+            marc_xml => $xml
+        };
+    
+        if ($rec_id) {
+            # Let other backends grab our data now that we're done.
+            my $key = 'TPAC_unapi_cache_'.$rec_id.'_'.$unapi_cache_key_suffix;
+            my $cache_data = $unapi_cache->get_cache($key);
+            if ($$cache_data{running}) {
+                $unapi_cache->put_cache($key, {
+                    bre_id => $bre_id,
+                    mmr_id => $mmr_id,
+                    id => $rec_id, 
+                    marc_xml => $xml->toString
+                }, 10);
+            }
+        }
     }
 
     return ($facets, map { $tmp_data{$_} } @$rec_ids);
