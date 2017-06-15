@@ -536,9 +536,10 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
         var promises = [];
         var payload;
         if (!evt[0] || !(payload = evt[0].payload)) return $q.when();
-
+        
         promises.push(service.flesh_copy_location(payload.copy));
         if (payload.copy) {
+            promises.push(service.flesh_acn_owning_lib(payload.volume));
             promises.push(service.flesh_copy_circ_library(payload.copy));
             promises.push(service.flesh_copy_circ_modifier(payload.copy));
             promises.push(
@@ -592,6 +593,11 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
             (payload.copy ? payload.copy.dummy_isbn() : null);});
 
         return $q.all(promises);
+    }
+
+    service.flesh_acn_owning_lib = function(acn) {
+        if (!acn) return $q.when();
+        return $q.when(acn.owning_lib(egCore.org.get( acn.owning_lib() )));
     }
 
     service.flesh_copy_circ_library = function(copy) {
