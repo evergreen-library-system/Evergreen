@@ -591,7 +591,7 @@ sub _add_patron {
     # do a dance to get the password hashed securely
     my $saved_password = $patron->passwd;
     $patron->passwd('');
-    $e->create_actor_user($patron) or return $e->die_event;
+    $e->create_actor_user($patron) or return (undef, $e->die_event);
     modify_migrated_user_password($e, $patron->id, $saved_password);
 
     my $id = $patron->id; # added by CStoreEditor
