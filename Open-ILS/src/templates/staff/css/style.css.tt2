@@ -94,7 +94,7 @@
 a.disabled {
   pointer-events: none;
   cursor: default;
-  color: #888;
+  color: #888 !important;
 }
 
 #splash-nav .panel-body div {
