@@ -518,6 +518,8 @@ function($q , $timeout , $location , egCore,  egUser , $locale) {
                 stats.checkouts.out = Number(stats.checkouts.out);
                 stats.checkouts.total_out = 
                     stats.checkouts.out + stats.checkouts.overdue;
+                
+                stats.checkouts.total_out += Number(stats.checkouts.long_overdue);
 
                 if (!egCore.env.aous['circ.do_not_tally_claims_returned'])
                     stats.checkouts.total_out += stats.checkouts.claims_returned;
