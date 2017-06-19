@@ -1,6 +1,6 @@
 BEGIN;
 
---SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1046', :eg_version); -- phasefx/berick/gmcharlt
 
 INSERT into config.org_unit_setting_type (
      name
@@ -49,20 +49,5 @@ SET
 WHERE
     name IN ('format.date','format.time')
 ;
-
--- for testing, setting removal:
---DELETE FROM actor.org_unit_setting WHERE name IN (
---     'webstaff.format.dates'
---    ,'webstaff.format.date_and_time'
---);
---DELETE FROM config.org_unit_setting_type_log WHERE field_name IN (
---     'webstaff.format.dates'
---    ,'webstaff.format.date_and_time'
---);
---DELETE FROM config.org_unit_setting_type WHERE name IN (
---     'webstaff.format.dates'
---    ,'webstaff.format.date_and_time'
---);
---UPDATE config.org_unit_setting_type SET label = REPLACE(label,'Deprecated: ','') WHERE name in ('format.date','format.time');
 
 COMMIT;
