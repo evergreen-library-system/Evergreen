@@ -584,7 +584,7 @@ angular.module('egCoreMod')
             return service.init_new_patron();
 
         service.patron = current;
-        return service.init_existing_patron(current)
+        return $q.when(service.init_existing_patron(current));
     }
 
     service.ingest_address = function(patron, addr) {
@@ -655,7 +655,7 @@ angular.module('egCoreMod')
             service.stat_cat_entry_maps[map.stat_cat.id] = map.stat_cat_entry;
         });
 
-        return patron;
+        service.patron = patron;
     }
 
     service.init_new_patron = function() {
@@ -1176,14 +1176,15 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
         $scope.initTab ? // initTab comes from patron app
             $scope.initTab('edit', $routeParams.id) : $q.when(),
 
-        patronRegSvc.init()
+        patronRegSvc.init(),
 
-    ]).then(function() {
+    ]).then(function(){ return patronRegSvc.init_patron(patronSvc ? patronSvc.current : null) })
+      .then(patronRegSvc.get_user_settings)
+      .then(function() {
         // called after initTab and patronRegSvc.init have completed
-
-        var prs = patronRegSvc; // brevity
         // in standalone mode, we have no patronSvc
-        $scope.patron = prs.init_patron(patronSvc ? patronSvc.current : null);
+        var prs = patronRegSvc;
+        $scope.patron = prs.patron;
         $scope.field_doc = prs.field_doc;
         $scope.edit_profiles = prs.edit_profiles;
         $scope.ident_types = prs.ident_types;
@@ -1200,12 +1201,7 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
         $scope.stage_user_requestor = prs.stage_user_requestor;
 
         $scope.user_settings = prs.user_settings;
-        // clone the user settings back into the patronRegSvc so
-        // we have a copy of the original state of the settings.
         prs.user_settings = {};
-        angular.forEach($scope.user_settings, function(val, key) {
-            prs.user_settings[key] = val;
-        });
 
         extract_hold_notify();
         $scope.handle_home_org_changed();
@@ -1581,7 +1577,7 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
     }
 
     function extract_hold_notify() {
-        notify = $scope.user_settings['opac.hold_notify'];
+        var notify = $scope.user_settings['opac.hold_notify'];
         if (!notify) return;
         $scope.hold_notify_phone = Boolean(notify.match(/phone/));
         $scope.hold_notify_email = Boolean(notify.match(/email/));
