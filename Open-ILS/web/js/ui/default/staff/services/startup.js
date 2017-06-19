@@ -35,7 +35,7 @@ function($q,  $rootScope,  $location,  $window,  egIDL,  egAuth,  egEnv , egOrg 
                         set['webstaff.format.date_and_time'] || 'short';
                 }
             );
-        },
+        }
     );
 
     // returns true if we are staying on the current page
