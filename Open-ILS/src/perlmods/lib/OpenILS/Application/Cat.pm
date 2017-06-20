@@ -1654,7 +1654,6 @@ sub retrieve_tag_table {
     my( $self, $conn, $auth, $marc_format, $marc_record_type ) = @_;
     my $e = new_editor( authtoken=>$auth, xact=>1 );
     return $e->die_event unless $e->checkauth;
-    return $e->die_event unless $e->allowed('UPDATE_MARC', $e->requestor->ws_ou);
 
     my $field_list_only = ($self->api_name =~ /\.field_list\./) ? 1 : 0;
     my $context_ou;
