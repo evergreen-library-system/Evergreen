@@ -1,0 +1,6 @@
+Miscellaneous Improvements
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+ * If a filter is in effect in the Library Settings Editor,
+   changing the selected library now results in the filter
+   continuing to be applied.
