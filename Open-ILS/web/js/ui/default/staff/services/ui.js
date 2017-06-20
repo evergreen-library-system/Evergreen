@@ -1024,6 +1024,29 @@ function($window , egStrings) {
     }
 })
 
+/*
+ * egHelpPopover - a helpful widget
+ */
+.directive('egHelpPopover', function() {
+    return {
+        restrict : 'E',
+        transclude : true,
+        scope : {
+            helpText : '@',
+            helpLink : '@'
+        },
+        templateUrl : './share/t_help_popover',
+        controller : ['$scope','$sce', function($scope , $sce) {
+            if ($scope.helpLink) {
+                $scope.helpHtml = $sce.trustAsHtml(
+                    '<a target="_new" href="' + $scope.helpLink + '">' +
+                    $scope.helpText + '</a>'
+                );
+            }
+        }]
+    }
+})
+
 .factory('egWorkLog', ['egCore', function(egCore) {
     var service = {};
 

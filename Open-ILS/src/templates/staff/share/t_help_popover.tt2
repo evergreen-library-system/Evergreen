@@ -1,0 +1,10 @@
+<span class="glyphicon glyphicon-question-sign"
+      uib-popover="{{helpText}}"
+      popover-trigger="click"
+      ng-if="!helpLink || helpLink.length == 0"
+></span>
+<span class="glyphicon glyphicon-question-sign"
+      uib-popover-html="helpHtml"
+      popover-trigger="click"
+      ng-if="helpLink.length > 0"
+></span>
