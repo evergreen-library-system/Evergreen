@@ -5,8 +5,7 @@ Evergreen 2.11 Release Notes
 
 Evergreen 2.11.6
 ----------------
-This release is a security release that also contains several other bug
-fixes improving on Evergreen 2.11.5.
+This release contains several bug fixes improving on Evergreen 2.11.5.
 
 * Code to prevent a hold already on the Holds Shelf from being
 transferred to another title.
