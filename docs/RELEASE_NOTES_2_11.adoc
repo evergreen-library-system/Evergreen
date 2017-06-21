@@ -3,6 +3,34 @@ Evergreen 2.11 Release Notes
 :toc:
 :numbered:
 
+Evergreen 2.11.6
+----------------
+This release is a security release that also contains several other bug
+fixes improving on Evergreen 2.11.5.
+
+* Code to prevent a hold already on the Holds Shelf from being
+transferred to another title.
+* A fix to a bug that prevented users from scheduling reports with a
+relative month if the report template used a date that applied the Year +
+Month transform with the On or After (>=) operator.
+* A fix to a bug where the max fines threshold was reached prematurely
+due to the presence of account adjustments.
+* A check that prevents a SMS message from sending if the SMS carrier
+is null.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 2.11.6 point release of
+Evergreen:
+
+* Jason Boyer
+* Galen Charlton
+* Kathy Lussier
+* Chris Sharp
+* Remington Steed
+* Dan Wells
+
 Evergreen 2.11.5
 ----------------
 This release is a security release that also contains several other bug
