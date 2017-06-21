@@ -14,11 +14,7 @@ function($uibModal , $q , egCore , egConfirmDialog , egAlertDialog) {
     service.fetch_holds = function(hold_ids) {
         var deferred = $q.defer();
 
-        // FIXME: large batches using .authoritative result in many 
-        // stranded cstore backends on the server.  Needs investigation.
-        // For now, collect holds in a series of small batches.
-        // Fetch them serially both to avoid the above problem and
-        // to maintain order.
+        // Fetch hold details in batches for better UI responsiveness.
         var batch_size = 5;
         var index = 0;
 
@@ -37,7 +33,12 @@ function($uibModal , $q , egCore , egConfirmDialog , egAlertDialog) {
             egCore.net.request(
                 'open-ils.circ',
                 'open-ils.circ.hold.details.batch.retrieve.authoritative',
-                egCore.auth.token(), ids
+                egCore.auth.token(), ids, {
+                    include_current_copy : true,
+                    include_usr          : true,
+                    include_cancel_cause : true,
+                    include_requestor    : true
+                }
 
             ).then(
                 one_batch,  // kick off the next batch
@@ -452,14 +453,23 @@ function($uibModal , $q , egCore , egConfirmDialog , egAlertDialog) {
         hold.current_shelf_lib(egCore.org.get(hold.current_shelf_lib()));
         hold_data.id = hold.id();
 
-        if (hold.requestor() && typeof hold.requestor() != 'object')
+        // TODO: LP#1697954 fleshing calls below are deprecated in favor
+        // of API fleshing.
+
+        if (hold.requestor() && typeof hold.requestor() != 'object') {
+            console.debug('fetching hold requestor');
             egCore.pcrud.retrieve('au',hold.requestor()).then(function(u) { hold.requestor(u) });
+        }
 
-        if (hold.cancel_cause() && typeof hold.cancel_cause() != 'object')
+        if (hold.cancel_cause() && typeof hold.cancel_cause() != 'object') {
+            console.debug('fetching hold cancel cause');
             egCore.pcrud.retrieve('ahrcc',hold.cancel_cause()).then(function(c) { hold.cancel_cause(c) });
+        }
 
-        if (hold.usr() && typeof hold.usr() != 'object')
+        if (hold.usr() && typeof hold.usr() != 'object') {
+            console.debug('fetching hold user');
             egCore.pcrud.retrieve('au',hold.usr()).then(function(u) { hold.usr(u) });
+        }
 
         // current_copy is not always fleshed in the API
         if (hold.current_copy() && typeof hold.current_copy() != 'object') {
@@ -621,8 +631,12 @@ function($window , $location , $timeout , egCore , egHolds , egCirc) {
                     egCore.net.request(
                         'open-ils.circ',
                         'open-ils.circ.hold.details.retrieve.authoritative',
-                        egCore.auth.token(), $scope.holdId
-
+                        egCore.auth.token(), $scope.holdId, {
+                            include_current_copy : true,
+                            include_usr          : true,
+                            include_cancel_cause : true,
+                            include_requestor    : true
+                        }
                     ).then(function(hold_data) { 
                         egHolds.local_flesh(hold_data);
     

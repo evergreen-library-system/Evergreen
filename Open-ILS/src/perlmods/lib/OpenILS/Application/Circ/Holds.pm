@@ -3377,15 +3377,14 @@ sub uber_hold_impl {
     my($e, $hold_id, $args) = @_;
     $args ||= {};
 
-    my $hold = $e->retrieve_action_hold_request(
-        [
-            $hold_id,
-            {
-                flesh => 1,
-                flesh_fields => { ahr => [ 'current_copy', 'usr', 'notes' ] }
-            }
-        ]
-    ) or return $e->event;
+    my $flesh_fields = ['current_copy', 'usr', 'notes'];
+    push (@$flesh_fields, 'requestor') if $args->{include_requestor};
+    push (@$flesh_fields, 'cancel_cause') if $args->{include_cancel_cause};
+
+    my $hold = $e->retrieve_action_hold_request([
+        $hold_id,
+        {flesh => 1, flesh_fields => {ahr => $flesh_fields}}
+    ]) or return $e->event;
 
     if($hold->usr->id ne $e->requestor->id) {
         # caller is asking for someone else's hold
@@ -3405,12 +3404,13 @@ sub uber_hold_impl {
     $hold->usr($user->id);
 
 
-    my( $mvr, $volume, $copy, $issuance, $part, $bre ) = find_hold_mvr($e, $hold, $args->{suppress_mvr});
+    my( $mvr, $volume, $copy, $issuance, $part, $bre ) = find_hold_mvr($e, $hold, $args);
 
     flesh_hold_notices([$hold], $e) unless $args->{suppress_notices};
     flesh_hold_transits([$hold]) unless $args->{suppress_transits};
 
     my $details = retrieve_hold_queue_status_impl($e, $hold);
+    $hold->usr($user) if $args->{include_usr}; # re-flesh
 
     my $resp = {
         hold    => $hold,
@@ -3446,13 +3446,14 @@ sub uber_hold_impl {
 # hold is all about
 # -----------------------------------------------------
 sub find_hold_mvr {
-    my( $e, $hold, $no_mvr ) = @_;
+    my( $e, $hold, $args ) = @_;
 
     my $tid;
     my $copy;
     my $volume;
     my $issuance;
     my $part;
+    my $no_mvr = $args->{suppress_mvr};
 
     if( $hold->hold_type eq OILS_HOLD_TYPE_METARECORD ) {
         my $mr = $e->retrieve_metabib_metarecord($hold->target)
@@ -3494,7 +3495,7 @@ sub find_hold_mvr {
 
     if(!$copy and ref $hold->current_copy ) {
         $copy = $hold->current_copy;
-        $hold->current_copy($copy->id);
+        $hold->current_copy($copy->id) unless $args->{include_current_copy};
     }
 
     if(!$volume and $copy) {
