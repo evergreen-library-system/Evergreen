@@ -50,7 +50,12 @@ function($scope,  $q,  $routeParams,  egCore,  egUser,  patronSvc,
     $scope.gridDataProvider = provider;
 
     function fetchHolds(offset, count) {
-        //var ids = patronSvc.hold_ids.slice(offset, offset + count); // we're going to just fetch all the holds up front
+        // TODO: LP#1697954 Fetch all holds on grid render to support
+        // client-side sorting.  Migrate to server-side sorting to avoid
+        // the need for fetching all items.
+
+        // we're going to just fetch all the holds up front
+        //var ids = patronSvc.hold_ids.slice(offset, offset + count); 
         return egHolds.fetch_holds(patronSvc.hold_ids).then(null, null,
             function(hold_data) { 
                 patronSvc.holds.push(hold_data);
