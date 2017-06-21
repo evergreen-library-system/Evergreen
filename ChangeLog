@@ -1,3 +1,712 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 0d6eb2d8faab22b03d32ddc8c3f278af2231d1d6
+Author: blake <blake@mobiusconsortium.org>
+Date:   Wed Jun 21 14:23:11 2017 -0500
+
+    bumping Perl version string for 2.12.3
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit f62e4d41c8df7b0716535372dc472b952a370cf7
+Author: blake <blake@mobiusconsortium.org>
+Date:   Wed Jun 21 14:21:05 2017 -0500
+
+    Translation updates - po files
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+
+2678	2672	build/i18n/po/fm_IDL.dtd/ar-JO.po
+2678	2672	build/i18n/po/fm_IDL.dtd/cs-CZ.po
+2678	2672	build/i18n/po/fm_IDL.dtd/de-DE.po
+2678	2672	build/i18n/po/fm_IDL.dtd/en-CA.po
+2678	2672	build/i18n/po/fm_IDL.dtd/en-GB.po
+2678	2672	build/i18n/po/fm_IDL.dtd/es-ES.po
+2678	2672	build/i18n/po/fm_IDL.dtd/fi-FI.po
+2678	2672	build/i18n/po/fm_IDL.dtd/fr-CA.po
+2678	2672	build/i18n/po/fm_IDL.dtd/hy-AM.po
+2678	2672	build/i18n/po/fm_IDL.dtd/oc-FR.po
+2678	2672	build/i18n/po/fm_IDL.dtd/pt-BR.po
+2678	2672	build/i18n/po/fm_IDL.dtd/ru-RU.po
+2678	2672	build/i18n/po/fm_IDL.dtd/tr-TR.po
+2	2	build/i18n/po/lang.dtd/es-ES.po
+926	1199	build/i18n/po/tpac/ar-JO.po
+927	1200	build/i18n/po/tpac/cs-CZ.po
+201	1194	build/i18n/po/tpac/de-DE.po
+751	1195	build/i18n/po/tpac/en-CA.po
+126	1197	build/i18n/po/tpac/en-GB.po
+926	1199	build/i18n/po/tpac/es-ES.po
+498	1194	build/i18n/po/tpac/fi-FI.po
+786	1194	build/i18n/po/tpac/fr-CA.po
+760	1195	build/i18n/po/tpac/hy-AM.po
+132	1194	build/i18n/po/tpac/oc-FR.po
+119	1199	build/i18n/po/tpac/pt-BR.po
+124	1198	build/i18n/po/tpac/ru-RU.po
+120	1200	build/i18n/po/tpac/tr-TR.po
+112	97	build/i18n/po/webstaff/ar-JO.po
+112	97	build/i18n/po/webstaff/cs-CZ.po
+112	97	build/i18n/po/webstaff/es-ES.po
+112	97	build/i18n/po/webstaff/ru-RU.po
+
+commit 7e72b42e5607aed7b16aeafe05f030655be4bca4
+Author: Ben Shum <ben@evergreener.net>
+Date:   Wed Jun 21 15:14:55 2017 -0400
+
+    i18n: fix syntax for Spanish lang.dtd
+    
+    As noted by FreddyEnrique in IRC, there was a syntax problem for the Spanish
+    file lang.dtd that caused an error when trying to open the Closed Date Editor.
+    
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+2	2	build/i18n/po/lang.dtd/es-ES.po
+
+commit 723646b46579c233c4e261a94075ceedde83e773
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Wed Jun 21 14:08:29 2017 -0400
+
+    Docs: 2.12.3 Release Notes
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	2	docs/RELEASE_NOTES_2_11.adoc
+78	0	docs/RELEASE_NOTES_2_12.adoc
+
+commit 514dc15d144ee7fb29ac89ebafeb7554d8c6a68d
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Wed Jun 21 13:13:46 2017 -0400
+
+    Docs: 2.11.6 Release Notes
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+28	0	docs/RELEASE_NOTES_2_11.adoc
+
+commit f57e79bead9d033c93e469b957bce7c6777bf7ee
+Author: Cesar Velez <cesar.velez@equinoxinitiative.org>
+Date:   Mon Jun 5 17:50:18 2017 -0400
+
+    LP#1665465 - Fix Print receipt on payment cbox not bound to model
+    
+    Seems that Angular for some reason has issues binding to literals...
+    According to the interwebs it's likely due to scope nesting via ng-include
+    
+    Signed-off by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+    
+    Signed-off-by: Jason Etheridge <jason@equinoxinitiative.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	1	Open-ILS/src/templates/staff/circ/patron/t_bills.tt2
+2	2	Open-ILS/web/js/ui/default/staff/circ/patron/bills.js
+
+commit b5f6ac257e04a11d90e65ccb6e9125521d54aad4
+Author: Cesar Velez <cesar.velez@equinoxinitiative.org>
+Date:   Thu Jun 15 15:56:48 2017 -0400
+
+    LP#1665115-WebStaff add longoverdue items count to Items Out
+    
+    Longover due items should always, be reflected in total tally count
+    Which is what displays in the ItemsOut tab and Patron summary area.
+    
+    Signed-off by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+    
+    Signed-off-by: Jason Etheridge <jason@equinoxinitiative.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+2	0	Open-ILS/web/js/ui/default/staff/circ/patron/app.js
+
+commit 689ca7de885413bb1059a91b3ebe7415b310153f
+Author: Cesar Velez <cesar.velez@equinoxinitiative.org>
+Date:   Fri Jun 2 15:20:14 2017 -0400
+
+    LP#1642035-Small DRY refactor to regctl.js compress_hold_notify()
+    
+    Signed-off by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+6	9	Open-ILS/web/js/ui/default/staff/circ/patron/regctl.js
+
+commit 0fe096c556ce6efc49980db037889346f9eb1e1a
+Author: Jason Boyer <jboyer@library.in.gov>
+Date:   Thu Jun 1 08:28:45 2017 -0400
+
+    lp1642035: Replace SMS Carrier Dropdown
+    
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+    Signed-off-by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+5	14	Open-ILS/src/templates/staff/circ/patron/t_edit.tt2
+
+commit 0cb2b3411a7c67391fa9b06ae96242265259a679
+Author: Jason Boyer <jboyer@library.in.gov>
+Date:   Wed May 31 15:29:46 2017 -0400
+
+    lp1642035: Editing User Hold Preferences
+    
+    The JS for hold notification values was replacing rather
+    than concatenating so only the furthest-right true value
+    would be saved. And because an ng-if directive creates
+    a child scope[1], the hold_notify_sms primitive could
+    never be true. Changed hold_notify_* to an object to
+    avoid this.
+    
+    An ng-model directive was added to enable
+    opac.default_sms_notify but opac.default_sms_carrier
+    will still require some work to enable / replace.
+    
+    [1]:https://github.com/angular/angular.js/wiki/Understanding-Scopes
+    
+    Testing:
+    
+    pre-patch:
+    Try to do anything with default sms number, fail.
+    Try to set more than one of phone + email notification, fail.
+    Try to set sms notification to anything, fail.
+    
+    post-patch:
+    Default sms notify value is populated and can be changed.
+    All 8 possible combinations of hold notify options can be set.
+    
+    Still can't set opac.default_sms_carrier value, needs additional work.
+    
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+4	4	Open-ILS/src/templates/staff/circ/patron/t_edit.tt2
+12	10	Open-ILS/web/js/ui/default/staff/circ/patron/regctl.js
+
+commit fe4fea8d5e9b80a99f045286a1039b66993c9f8b
+Author: Cesar Velez <cesar.velez@equinoxinitiative.org>
+Date:   Mon Jun 19 17:40:38 2017 -0400
+
+    LP#1696495-WebStaff fix user_settings data caching between patron views
+    
+    Appends a few promises to make sure that the user_settings are refreshed
+    each time a user is loaded from within patron app.
+    Note that testing this requires that LP1642035's fix be in place...
+    Otherwise you can't properly add user_settings inputs in Webstaff.
+    
+    Signed-off by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+9	13	Open-ILS/web/js/ui/default/staff/circ/patron/regctl.js
+
+commit 7d09559f3e9c1d67b134cc6a2cb31d9327385589
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Mon Apr 3 14:21:33 2017 -0700
+
+    LP#1679309: Don't persist advanced search format filters in searchbar
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	0	Open-ILS/src/templates/opac/parts/searchbar.tt2
+
+commit 606f8e897a4af58e29f043c6dbe5409bd224f9b7
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Tue Jun 20 16:31:43 2017 -0400
+
+    LP#1693560: Remove permission check for retrieve tag table function
+    
+    The permission check for the retrieve tag table function was preventing
+    users who don't have the UPDATE_MARC permssion from performing searches
+    in the staff catalog. Since there's nothing confidential in the table,
+    this commit removes that permission check. Thanks to Jason Boyer for
+    finding the source of the problem.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+0	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Cat.pm
+
+commit 6e6fa755f5c667cc2138cfc38fea70d72112ad5b
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed May 24 16:00:09 2017 -0400
+
+    LP#1691473 Internal Apache HTTP port configuration
+    
+    Adds an optional new Apache/mod_perl configuration variable for defining
+    the port Apache listens on for HTTP traffic.  This resolves an issue
+    where added content lookups attempting HTTP requests on the local Apache
+    instance on port 80 failed because Apache was using non-standard ports.
+    
+    To test:
+    
+    [1] Set a value for OILSWebInternalHTTPPort that's not "80".
+    [2] Restart/reload Apache
+    [3] Load a record detail in the catalog
+    [4] Confirm opensrf logs show:
+    
+    "tpac: added content connecting to <ip-address>:<new-port> / <hostname>
+    
+    <new-port> should be the value configured for OILSWebInternalHTTPPort.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+6	0	Open-ILS/examples/apache/eg_vhost.conf.in
+6	0	Open-ILS/examples/apache_24/eg_vhost.conf.in
+8	3	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Record.pm
+16	0	docs/RELEASE_NOTES_NEXT/Administration/apache-internal-http-port.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Administration/apache-internal-http-port.adoc
+
+commit d5803023359dadd5169e24e71158e989f878a2eb
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Wed May 31 08:22:58 2017 -0400
+
+    LP#1694696 - Check for blank SMS Carriers in A/T reactor
+    
+    Currently, the get_sms_gateway_email subroutine does not check
+    for the truthiness of sms_carrier, which can result in catastrophic
+    failure for a running server.  This adds that check.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Trigger/Reactor.pm
+
+commit 750d1623ed594dbe81358ed4e34e11601aa0e96f
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Tue Jun 20 14:56:43 2017 -0400
+
+    LP#1694696: add some unit tests for A/T helpers
+    
+    In particular, start with get_sms_gateway_email().
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+37	0	Open-ILS/src/perlmods/live_t/23-action-trigger-templates.t
+ create mode 100644 Open-ILS/src/perlmods/live_t/23-action-trigger-templates.t
+
+commit 9e36c70e4b56b0d2d470aac8d6a24c88da4546e5
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri May 19 12:05:47 2017 -0400
+
+    LP#1642042 Webstaff noncat real-time display
+    
+    Update non-cat counts in the patron summary side bar and show the full
+    set of non-cat circs in the Non-Cataloged Circulations tab as non-cat
+    circs occur in the patron checkout interface.
+    
+    Consistent with the XUL client, avoid updating tab-level 'items out'
+    counts with non-cat circs.
+    
+    Adds a new work log action for 'noncat_checkout' so the correct data can
+    be extracted.  As with the XUL client, this appears in the work log as a
+    'checkout' with no copy.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+5	2	Open-ILS/web/js/ui/default/staff/circ/patron/checkout.js
+15	8	Open-ILS/web/js/ui/default/staff/circ/services/circ.js
+4	0	Open-ILS/web/js/ui/default/staff/services/ui.js
+
+commit 7293106cb51986fafe5f1d0636c628121052ed55
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Mon Apr 24 14:29:04 2017 -0400
+
+    LP#1686194 Account for adjustments when generating fines
+    
+    Fine generation stops at a predetermined 'max fines' amount, but this
+    does not account for possible adjustments which lower the effective
+    fine amount.  This situation is common in cases where lost items are
+    returned, and the library wants to generate additional overdues upon
+    that event.
+    
+    With this commit, fine generation will pull in any adjustments applied
+    to overdue fines, and use those to offset the current total fine when
+    checking for max fines.
+    
+    Also includes test for this condition.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+4	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/CircCommon.pm
+47	74	Open-ILS/src/perlmods/live_t/09-lp1198465_neg_balances.t
+15	1	Open-ILS/tests/datasets/sql/neg_bal_custom_transactions.sql
+
+commit 2ffefc8be99b37329f6f7d0daa9c8f0e55079c73
+Author: Jason Etheridge <jason@equinoxinitiative.org>
+Date:   Thu Jun 8 01:02:17 2017 -0400
+
+    lp1686459 webstaff: item editor form validation
+    
+    Specifically for stat cats, we mark the select statements as required if the
+    corresponding stat cat is required, but we can also start using HTML5 validation
+    tests elsewhere in the form now as well.
+    
+    I also fixed the <NONE> entries so that they display instead of blank entries,
+    and forced the Price, Cost, and Deposit Amount fields to be of input type number,
+    though you could still enter invalid numbers here from the database's POV, so
+    better validation tests are still needed there.
+    
+    Signed-off-by: Jason Etheridge <jason@equinoxinitiative.org>
+    Signed-off-by: Andrea Neiman <abneiman@equinoxinitiative.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+21	12	Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2
+1	1	Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2
+5	1	Open-ILS/web/js/ui/default/staff/cat/volcopy/app.js
+
+commit 1002130544a3678aff6d87524758ae709900a2cc
+Author: Jason Etheridge <jason@equinoxinitiative.org>
+Date:   Mon Jun 12 11:07:59 2017 -0400
+
+    lp1671603 webstaff: add confirm step for voiding billings
+    
+    This patch adds a confirmation step for  both Void All Bills
+    in the main billing UI, and Void Billings in the Full Details UI
+    
+    Signed-off-by: Jason Etheridge <jason@equinoxinitiative.org>
+    Signed-off-by: Andrea Neiman <abneiman@equinoxinitiative.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    
+    Conflicts:
+    	Open-ILS/src/templates/staff/circ/patron/index.tt2
+
+2	0	Open-ILS/src/templates/staff/circ/patron/index.tt2
+57	32	Open-ILS/web/js/ui/default/staff/circ/patron/bills.js
+
+commit a499aff6c7e0933d6834d56610ea43f56c2eaf6e
+Author: Jason Etheridge <jason@equinoxinitiative.org>
+Date:   Fri Jun 2 12:59:24 2017 -0400
+
+    LP#1616980 webstaff: protect "magic statuses" when editing copies
+    
+    This patch fixes a bug where the web staff volume/copy editor
+    could be used to put items in or out of the following status:
+    
+    1 - Checked out
+    3 - Lost
+    6 - In transit
+    8 - On holds shelf
+    16 - Long Overdue
+    18 - Canceled Transit
+    
+    To test
+    -------
+    1. Choose to "Edit Items" on an Available copy.
+    2. Status field is fully editable. Click to open the dropdown
+    3. Click "Checked out"
+    4. Click "Save & Exit"
+    5. Result is that the item status changes to 'checked out',
+       which should not happen.
+    6. Choose to "Edit Items" on an Checked out copy.
+    7. Status field is fully editable. Click to open the dropdown
+    8. Click "Available"
+    9. Click "Save & Exit"
+    10. Result is that the item status changes to 'available'.
+    11. Apply the patch and repeat steps 1-10. This time, the magic
+        status are marked as disabled in the copy status selector.
+        If the item is already in one of the magic statuses, if the
+        user attempts to change the status, the interface will appear
+        to allow it, but the change will be silently ignored.
+    
+    Signed-off-by: Jason Etheridge <jason@equinoxinitiative.org>
+    Signed-off-by: Andrea Neiman <abneiman@equinoxinitiative.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2
+24	2	Open-ILS/web/js/ui/default/staff/cat/volcopy/app.js
+
+commit a724acf4083e070118cacf9562435f943321fe48
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Wed May 24 21:22:11 2017 -0400
+
+    LP#1681943: show all list fields in mobile view
+    
+    In mobile view, "rotate" the temporary and permanent list
+    tables 90 degrees and put the column headings on the left/right
+    side.  data-label attributes are used to stash copies of the
+    column labels; the end result is similar to how the current
+    circulations table is displayed on narrow screens.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+17	2	Open-ILS/src/templates/opac/css/style.css.tt2
+8	8	Open-ILS/src/templates/opac/myopac/lists.tt2
+4	4	Open-ILS/src/templates/opac/parts/anon_list.tt2
+
+commit 827790e8c879e5f8fc4e413b88ef1d684e97712f
+Author: Ben Shum <ben@evergreener.net>
+Date:   Mon May 1 22:42:11 2017 -0400
+
+    LP#1681943: Tweak for RTL handling for responsive my lists
+    
+    Needs some additional changes to support RTL for responsive my lists.
+    
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+89	5	Open-ILS/src/templates/opac/css/style.css.tt2
+
+commit 372912d54af658b0e349653163a8100f72c180ef
+Author: Ben Shum <ben@evergreener.net>
+Date:   Mon May 1 22:27:10 2017 -0400
+
+    LP#1681943: Use variables for CSS colors
+    
+    There were some hardcoded references to #ccc in the stylesheet, and
+    those should be variables like [% css_colors.accent_light %] instead.
+    
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+3	3	Open-ILS/src/templates/opac/css/style.css.tt2
+
+commit 2702937a62b3cc1d992eba9c29d2b8d28e2a7249
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Wed Apr 26 09:21:06 2017 -0400
+
+    LP#1681943: tweak background color of edit list description box
+    
+    This makes it consistent with the 'create new list' box
+    and improves the contrast of the inputs.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	0	Open-ILS/src/templates/opac/css/style.css.tt2
+
+commit a843c31b0e430f99d6fa14ef5f688409f2a45122
+Author: Terran McCanna <tmccanna@georgialibraries.org>
+Date:   Tue Apr 11 17:42:54 2017 -0400
+
+    LP#1681943 Improve Responsive Design in My Lists
+    
+    - Moved action dropdown out of header row so that it is no longer
+    hidden on mobile view.
+    - Hid less essential columns on mobile view, leaving only title / author.
+    - Sized and lined up buttons more neatly on both mobile and normal view.
+    - Added a title to the section for editing a list title and description.
+    
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    
+    Conflicts:
+    	Open-ILS/src/templates/opac/css/style.css.tt2
+    	Open-ILS/src/templates/opac/parts/anon_list.tt2
+    
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+116	8	Open-ILS/src/templates/opac/css/style.css.tt2
+74	68	Open-ILS/src/templates/opac/myopac/lists.tt2
+30	29	Open-ILS/src/templates/opac/parts/anon_list.tt2
+
+commit 07e2652fd5ea4c07baf4ce690aebb4445c0aa3df
+Author: Dan Scott <dan@coffeecode.net>
+Date:   Thu Jun 8 11:32:36 2017 -0400
+
+    LP#169787 High contrast text in patron summary alert buttons
+    
+    Rather than displaying red text on the default blue background for alert text
+    on an active button, display the alert text as a much higher contrast
+    red-on-white.
+    
+    Signed-off-by: Dan Scott <dan@coffeecode.net>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/templates/staff/css/circ.css.tt2
+
+commit b11548c79323b902036921cf858160745365544a
+Author: Jason Boyer <jboyer@library.in.gov>
+Date:   Fri May 12 15:14:54 2017 -0400
+
+    LP1690434: Date Comparisons in the Reporter
+    
+    Because of the way the where clause is constructed
+    in queries using the Year + Month Transform reports
+    using some types of operators could produce invalid
+    SQL.
+    
+    To test:
+    put together a simple report template with a date
+    in the Basic Filters section, using the Year + Month
+    transform and the On or After operator. (a count of
+    circs with an xact_start filter is a simple way to
+    set this up.) Schedule it with a relative date
+    such as 1 month ago and run it.
+    
+    Pre Patch: the report will fail and the error text
+    will reference a missing text >= double precision
+    comparison function.
+    
+    Post Patch: you'll get a count of how many circs
+    were opened last month (or whatever report you
+    wrote).
+    
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+6	6	Open-ILS/src/perlmods/lib/OpenILS/Reporter/SQLBuilder.pm
+
+commit de3bf714173ce725b5bdd3d84534f699d91c57f7
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Tue May 30 15:51:23 2017 -0400
+
+    LP#1694497: fix record links on 2nd+ page of grouped results
+    
+    This patch fixes a bug wherein the second (and subsequent)
+    pages of search results in the public catalog (when group
+    formats and editions is in effect) does not correctly generate
+    links to hits that are not part of of a multi-bib metarecords.
+    
+    To test
+    -------
+    1. Keyword search concerto for "piano"
+    2. Check the box for "Group formats and Editions"
+    3. Click Page 2
+    4. Click any result that is not a group (missing the parentheses after
+       the title). You will get redirected to the my account page.
+    5. Apply the patch and do steps #1-4 again. This time, you should
+       end up on the record details page.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+5	0	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Search.pm
+
+commit 162a371e66b1993faaff01aab821a5717cabd77a
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Wed May 24 16:12:27 2017 -0400
+
+    forward-port 2.12.1-2.12.2 schema update
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+187	0	Open-ILS/src/sql/Pg/version-upgrade/2.12.1-2.12.2-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.12.1-2.12.2-upgrade-db.sql
+
+commit 3f86025ab2a6c1e5ddbb8209d7f21a1572efda2e
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Tue May 30 10:05:57 2017 -0400
+
+    LP#1312824: follow-up to fix whitespace
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+2	2	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Holds.pm
+
+commit 523178b7e072a9912f2fe94293334819cebce751
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Fri May 19 11:38:53 2017 -0400
+
+    LP#1312824: Change success message for transferred holds
+    
+    The holds transferred success message should clarify which holds were
+    transferred to mitigate potential confusion.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/xul/staff_client/server/locale/en-US/cat.properties
+
+commit ecce8315e77ec28fea37bfd2b10108b462c9ce7c
+Author: Jason Boyer <JBoyer1@library.in.gov>
+Date:   Fri Apr 25 12:45:34 2014 -0400
+
+    LP1312824 open-ils.circ.hold.change_title fix
+    
+    Add a capture_time => undef limit to both change_title
+    APIs to prevent currently captured holds from being reset
+    when moving holds from one title to another.
+    More work is needed to prevent items currently in transit
+    from having their transits canceled.
+    
+    Test plan
+    ---------
+    1. Create a bib with multiple holdings
+    2. Add multiple holds to this title and capture one of them - Item
+       will have a status of On Holds Shelf
+    3. Open another bib record, open Actions for this Record menu,
+       Mark as Hold Transfer Destination
+    4. Return to the record that has a captured hold, open Actions for
+       this Record, Transfer all Title Holds
+    5. Check Captured hold, Item status is Available, hold has been reset
+       and now points to the new bib record.
+    
+    With the patch applied, steps 2-5 above should be repeated, but this
+    time in step 5 the hold will still be on the original record and the
+    item's status will still be On Holds Shelf.
+    
+    Signed-off-by: Jason Boyer <JBoyer1@library.in.gov>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+2	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Holds.pm
+
+commit 9b1f0254416123aa2ce8ce49d688d529e09d8f25
+Author: Cesar Velez <cesar.velez@equinoxinitiative.org>
+Date:   Thu May 18 18:10:03 2017 -0400
+
+    LP#1691284 alpha sort circ modifiers on the copy editor
+    
+    Alphabetically sort circ modifiers on webstaff, so large lists
+    are easier to use.
+    
+    Signed-off by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	1	Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2
+
+commit 2613d346a110b921fa37f314c4a82ce887c738af
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Thu May 25 14:32:57 2017 -0400
+
+    Docs: Fix buggy AsciiDoc rendering of backticks
+    
+    Apparently, AsciiDoc matches backticks (`) with single quotes (') as a
+    valid quote pair, and this happens before matching a pair of backticks.
+    So in cases where a pair of backticks is followed by only one single
+    quote (not within a word), the first backtick is treated as a single
+    quote, thus breaking the backtick pair and not applying the intended
+    monospace formatting.
+    
+    This commit fixes two such cases by escaping the backticks. This doesn't
+    prevent the same problem in the future, but I haven't found any way to
+    change this parsing behavior.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+2	2	docs/opac/new_skin_customizations.adoc
+
+commit 968581a09db18b61131c20e0d3bb412e545b4072
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Wed May 24 16:04:37 2017 -0400
+
+    forward-port 2.11.4-2.11.5 schema update
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+145	0	Open-ILS/src/sql/Pg/version-upgrade/2.11.4-2.11.5-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.11.4-2.11.5-upgrade-db.sql
+
+commit 00a0ae934a950b5ddf042a7dde17739058fbf650
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Wed Apr 19 17:37:56 2017 -0400
+
+    Forward-port 2.11.4 upgrade script
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+46	0	Open-ILS/src/sql/Pg/version-upgrade/2.11.3-2.11.4-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.11.3-2.11.4-upgrade-db.sql
