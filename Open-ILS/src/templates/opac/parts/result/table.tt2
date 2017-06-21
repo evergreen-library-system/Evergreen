@@ -396,6 +396,28 @@ END;
                                                                 alt=""/><span class="result_place_hold">[% l('Place Hold') %]</span></a>
                                                         </div>
 [%- END -%]
+
+                                                        [%- IF ebook_api.enabled == 'true' && args.ebook %]
+                                                        <div id="[%- rec.id -%]_ebook_checkout" class="results_aux_utils result_util ebook_action hidden">
+                                                            <a href="[% mkurl(ctx.opac_root _ '/myopac/ebook_circs',
+                                                                {title => args.ebook.ebook_id, vendor => args.ebook.vendor, action => 'checkout'},
+                                                                ['query','tag','subfield','term','_special','sort','page']) %]"
+                                                                [% html_text_attr('title', l('Check Out [_1]', attrs.title)) %]
+                                                                    class="no-dec" rel="nofollow" vocab=""><img
+                                                                src="[% ctx.media_prefix %]/images/green_check.png"
+                                                                alt=""/><span class="result_place_hold">[% l('Check Out E-Item') %]</span></a>
+                                                        </div>
+                                                        <div id="[%- rec.id -%]_ebook_place_hold" class="results_aux_utils result_util ebook_action hidden">
+                                                            <a href="[% mkurl(ctx.opac_root _ '/myopac/ebook_holds',
+                                                                {title => args.ebook.ebook_id, vendor => args.ebook.vendor, action => 'place_hold'},
+                                                                ['query','tag','subfield','term','_special','sort','page']) %]"
+                                                                [% html_text_attr('title', l('Place Hold on [_1]', attrs.title)) %]
+                                                                    class="no-dec" rel="nofollow" vocab=""><img
+                                                                src="[% ctx.media_prefix %]/images/green_check.png"
+                                                                alt=""/><span class="result_place_hold">[% l('Place Hold on E-Item') %]</span></a>
+                                                        </div>
+                                                        [%- END -%]
+
                                                         <div class="results_aux_utils result_util">
                                                         [% IF !ctx.is_staff %]
                                                             [%  IF ctx.user;

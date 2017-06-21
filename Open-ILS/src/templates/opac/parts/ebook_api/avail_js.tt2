@@ -35,6 +35,11 @@ dojo.addOnLoad(function() {
                                 var status_str = holdings.copies_available + ' of ' + holdings.copies_owned + ' available';
                                 status_node.innerHTML = status_str;
                                 dojo.removeClass(ebook.rec_id + '_ebook_holdings', "hidden");
+                                if (holdings.copies_available > 0) {
+                                    dojo.removeClass(ebook.rec_id + '_ebook_checkout', "hidden");
+                                } else {
+                                    dojo.removeClass(ebook.rec_id + '_ebook_place_hold', "hidden");
+                                }
                             }
                         }
                         // unhide holdings/availability info now that it's populated
