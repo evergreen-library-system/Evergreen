@@ -3,6 +3,84 @@ Evergreen 2.12 Release Notes
 :toc:
 :numbered:
 
+Evergreen 2.12.3
+----------------
+
+This release contains several bug fixes improving on Evergreen 2.12.2.
+
+Web Client Bug Fixes
+~~~~~~~~~~~~~~~~~~~~
+The web client, which is available for trial production use in libraries,
+received several fixes in this release:
+
+* The receipt on payment checkbox now prints a receipt at time of payment.
+* The Items Out count in the patron screen now includes long overdue
+items.
+* A fix was added to prevent values from a previously-edited patron from
+appearing in the edit form of a subsequent patron.
+* User notification preferences now save correctly in the patron
+registration and edit forms.
+* The UPDATE_MARC permission is no longer requested when performing a
+search from the staff catalog.
+* Non-cataloged circulations now display in the Items Out screen without
+requiring a refresh.
+* Required statistical categories are now required to be entered in the 
+copy editor. (A similar bug for the patron editor was fixed in the 2.12.1
+release).
+* Voiding bills now requires confirmation.
+* Staff can no longer use the copy editor to put items into or out of the
+following statuses: checked out, lost, in transit, on holds shelf, long
+overdue, and canceled transit.
+* The contrast is improved for alert text showing the amount a patron owes
+in bills.
+* Circ modifiers now sort alphabetically in the copy editor.
+
+Other Bug Fixes
+~~~~~~~~~~~~~~~
+* Code to prevent a hold already on the Holds Shelf from being
+transferred to another title.
+* A fix to a bug that prevented users from scheduling reports with a
+relative month if the report template used a date that applied the Year +
+Month transform with the On or After (>=) operator.
+* A fix to a bug where the max fines threshold was reached prematurely
+due to the presence of account adjustments.
+* A check that prevents a SMS message from attempting to sending when the SMS
+carrier is null.
+* For systems that provide search format as a filter on the advanced
+search page, a fix so that the format selected in the search bar when
+launching a new search from the results page overrides any previously-set 
+formats.
+* The addition of an optional new Apache/mod_perl configuration variable for
+defining the port Apache listens on for HTTP traffic. This resolves an issue
+where added content lookups attempting HTTP requests on the local Apache
+instance on port 80 failed because Apache was using non-standard ports.
+* A fix to the public catalog's My List page responsive design so that it now
+displays properly on mobile devices and allows users to place holds from My List. 
+* A fix to a bug where the second (and subsequent)
+pages of search results in the public catalog (when group
+formats and editions is in effect) does not correctly generate
+links to hits that are not part of of a multi-bib metarecords.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+testing and documentation patches to the 2.12.3 point release of
+Evergreen:
+
+* Jason Boyer
+* Galen Charlton
+* Jeff Davis
+* Bill Erickson
+* Jason Etheridge
+* Kathy Lussier
+* Terran McCanna
+* Dan Scott
+* Chris Sharp
+* Ben Shum
+* Remington Steed
+* Cesar Velez
+* Dan Wells
+
 Evergreen 2.12.2
 ----------------
 
