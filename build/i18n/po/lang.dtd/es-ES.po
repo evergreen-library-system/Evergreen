@@ -8142,8 +8142,8 @@ msgid ""
 "Note: All dates must have the form <b>YYYY-MM-DD</b>.  Times must have the "
 "form <b>HH:MM</b>"
 msgstr ""
-"Nota: Todas las fechas deben tener el formato <b> AAAA-MM-DD </ b>. Los "
-"tiempos deben tener la forma <b> HH: MM </ b>"
+"Nota: Todas las fechas deben tener el formato <b>AAAA-MM-DD</b>. Los "
+"tiempos deben tener la forma <b>HH:MM</b>"
 
 #: staff.server.admin.closed_dates.add.allday
 msgid "Add Single Day Closing"
