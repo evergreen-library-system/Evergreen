@@ -442,6 +442,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
             conjoinedSvc.fetch($scope.record_id).then(function(){
                 $scope.conjoinedGridDataProvider.refresh();
             });
+            egHolds.fetch_holds(hold_ids).then($scope.hold_grid_data_provider.refresh);
             init_parts_url();
             $location.update_path('/cat/catalog/record/' + $scope.record_id);
         } else {
