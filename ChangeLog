@@ -1,3 +1,196 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 8bef3a17187875c9b85b43cce3b0b2bd803f509e
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Mon Feb 24 12:09:57 2014 -0500
+
+    Bump OpenILS.pm version
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit 5a565d9bd84b60968dbd9f7961c8c38eb362e3a2
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Wed Jun 21 13:22:47 2017 -0400
+
+    Docs: Release Notes Fix
+    
+    No, release 2.11.6 is not a security release.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	2	docs/RELEASE_NOTES_2_11.adoc
+
+commit 65957fff77c45cd304210ec252eb12027c81bd57
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Wed Jun 21 13:13:46 2017 -0400
+
+    Docs: 2.11.6 Release Notes
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+28	0	docs/RELEASE_NOTES_2_11.adoc
+
+commit c801e88957518d29c8a32d79977c7a68496b08ff
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Wed May 31 08:22:58 2017 -0400
+
+    LP#1694696 - Check for blank SMS Carriers in A/T reactor
+    
+    Currently, the get_sms_gateway_email subroutine does not check
+    for the truthiness of sms_carrier, which can result in catastrophic
+    failure for a running server.  This adds that check.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Trigger/Reactor.pm
+
+commit 96ea98c669bf7131eae52e4d3adc8eeaf2d11961
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Tue Jun 20 14:56:43 2017 -0400
+
+    LP#1694696: add some unit tests for A/T helpers
+    
+    In particular, start with get_sms_gateway_email().
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+37	0	Open-ILS/src/perlmods/live_t/23-action-trigger-templates.t
+ create mode 100644 Open-ILS/src/perlmods/live_t/23-action-trigger-templates.t
+
+commit 7dddee8e2fc781f7f7860a990b5364cc5f50dffe
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Mon Apr 24 14:29:04 2017 -0400
+
+    LP#1686194 Account for adjustments when generating fines
+    
+    Fine generation stops at a predetermined 'max fines' amount, but this
+    does not account for possible adjustments which lower the effective
+    fine amount.  This situation is common in cases where lost items are
+    returned, and the library wants to generate additional overdues upon
+    that event.
+    
+    With this commit, fine generation will pull in any adjustments applied
+    to overdue fines, and use those to offset the current total fine when
+    checking for max fines.
+    
+    Also includes test for this condition.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+4	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/CircCommon.pm
+47	74	Open-ILS/src/perlmods/live_t/09-lp1198465_neg_balances.t
+15	1	Open-ILS/tests/datasets/sql/neg_bal_custom_transactions.sql
+
+commit 3c81ca661e615982562695b08c021645cb9ac204
+Author: Jason Boyer <jboyer@library.in.gov>
+Date:   Fri May 12 15:14:54 2017 -0400
+
+    LP1690434: Date Comparisons in the Reporter
+    
+    Because of the way the where clause is constructed
+    in queries using the Year + Month Transform reports
+    using some types of operators could produce invalid
+    SQL.
+    
+    To test:
+    put together a simple report template with a date
+    in the Basic Filters section, using the Year + Month
+    transform and the On or After operator. (a count of
+    circs with an xact_start filter is a simple way to
+    set this up.) Schedule it with a relative date
+    such as 1 month ago and run it.
+    
+    Pre Patch: the report will fail and the error text
+    will reference a missing text >= double precision
+    comparison function.
+    
+    Post Patch: you'll get a count of how many circs
+    were opened last month (or whatever report you
+    wrote).
+    
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+6	6	Open-ILS/src/perlmods/lib/OpenILS/Reporter/SQLBuilder.pm
+
+commit b3bb7c112fd05831ac1f2f75dfaba755a25c7e24
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Tue May 30 10:05:57 2017 -0400
+
+    LP#1312824: follow-up to fix whitespace
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+2	2	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Holds.pm
+
+commit eeaa8257fab8bb772b08c11b19c692eb47ee51f6
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Fri May 19 11:38:53 2017 -0400
+
+    LP#1312824: Change success message for transferred holds
+    
+    The holds transferred success message should clarify which holds were
+    transferred to mitigate potential confusion.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/xul/staff_client/server/locale/en-US/cat.properties
+
+commit 31d0fbdd6c88dde544777188c962d01c2f1cc638
+Author: Jason Boyer <JBoyer1@library.in.gov>
+Date:   Fri Apr 25 12:45:34 2014 -0400
+
+    LP1312824 open-ils.circ.hold.change_title fix
+    
+    Add a capture_time => undef limit to both change_title
+    APIs to prevent currently captured holds from being reset
+    when moving holds from one title to another.
+    More work is needed to prevent items currently in transit
+    from having their transits canceled.
+    
+    Test plan
+    ---------
+    1. Create a bib with multiple holdings
+    2. Add multiple holds to this title and capture one of them - Item
+       will have a status of On Holds Shelf
+    3. Open another bib record, open Actions for this Record menu,
+       Mark as Hold Transfer Destination
+    4. Return to the record that has a captured hold, open Actions for
+       this Record, Transfer all Title Holds
+    5. Check Captured hold, Item status is Available, hold has been reset
+       and now points to the new bib record.
+    
+    With the patch applied, steps 2-5 above should be repeated, but this
+    time in step 5 the hold will still be on the original record and the
+    item's status will still be On Holds Shelf.
+    
+    Signed-off-by: Jason Boyer <JBoyer1@library.in.gov>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+2	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Holds.pm
+
+commit bdc3e6fc28d2c1ebf1877c791b1903cc70346a8e
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Thu May 25 14:32:57 2017 -0400
+
+    Docs: Fix buggy AsciiDoc rendering of backticks
+    
+    Apparently, AsciiDoc matches backticks (`) with single quotes (') as a
+    valid quote pair, and this happens before matching a pair of backticks.
+    So in cases where a pair of backticks is followed by only one single
+    quote (not within a word), the first backtick is treated as a single
+    quote, thus breaking the backtick pair and not applying the intended
+    monospace formatting.
+    
+    This commit fixes two such cases by escaping the backticks. This doesn't
+    prevent the same problem in the future, but I haven't found any way to
+    change this parsing behavior.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+2	2	docs/opac/new_skin_customizations.adoc
