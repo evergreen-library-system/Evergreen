@@ -345,7 +345,7 @@
           <!-- otherwise, simply display the item value, which may 
                pass through datatype-specific filtering. -->
           <span ng-if="!col.template" style="padding-left:5px; padding-right:10px;">
-            {{itemFieldValue(item, col) | egGridValueFilter:col}}
+            {{itemFieldValue(item, col) | egGridValueFilter:col:item}}
           </span>
       </div>
     </div>

@@ -167,7 +167,7 @@
                             [% circ.circ.renewal_remaining %]
                         </td>
                         [%
-                            due_date = ctx.parse_datetime(circ.circ.due_date);
+                            due_date = ctx.parse_datetime(circ.circ.due_date, circ.circ.circ_lib);
                             due_class = (date.now > date.format(due_date, '%s')) ? 'error' : '';
                         %]
                         <td name="due_date" class='[% due_class %]'>

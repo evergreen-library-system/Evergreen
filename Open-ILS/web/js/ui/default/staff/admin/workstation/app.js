@@ -449,6 +449,8 @@ function($scope , $q , egCore , ngToast) {
         checkins : [
             {
                 due_date : new Date().toISOString(),
+                circ_lib : 1,
+                duration : '7 days',
                 target_copy : seed_copy,
                 copy_barcode : seed_copy.barcode,
                 call_number : seed_copy.call_number,
@@ -460,6 +462,8 @@ function($scope , $q , egCore , ngToast) {
             {
                 circ : {
                     due_date : new Date().toISOString(),
+                    circ_lib : 1,
+                    duration : '7 days'
                 },
                 copy : seed_copy,
                 title : seed_record.title,

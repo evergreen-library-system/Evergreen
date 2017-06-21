@@ -576,6 +576,9 @@ sub generate_fines {
                 $c->$circ_lib_method, 'circ.fines.truncate_to_max_fine');
             $truncate_to_max_fine = $U->is_true($truncate_to_max_fine);
 
+            my $tz = $U->ou_ancestor_setting_value(
+                $c->$circ_lib_method, 'lib.timezone') || 'local';
+
             my ($latest_billing_ts, $latest_amount) = ('',0);
             for (my $bill = 1; $bill <= $pending_fine_count; $bill++) {
     
@@ -592,8 +595,8 @@ sub generate_fines {
                     last;
                 }
                 
-                # XXX Use org time zone (or default to 'local') once we have the ou setting built for that
-                my $billing_ts = DateTime->from_epoch( epoch => $last_fine, time_zone => 'local' );
+                # Use org time zone (or default to 'local')
+                my $billing_ts = DateTime->from_epoch( epoch => $last_fine, time_zone => $tz );
                 my $current_bill_count = $bill;
                 while ( $current_bill_count ) {
                     $billing_ts->add( seconds_to_interval_hash( $fine_interval ) );

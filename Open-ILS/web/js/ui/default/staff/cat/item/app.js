@@ -179,6 +179,8 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
                 if (copyData.circ) {
                     flatCopy._circ = egCore.idl.toHash(copyData.circ, true);
                     flatCopy._circ_summary = egCore.idl.toHash(copyData.circ_summary, true);
+                    flatCopy._circ_lib = copyData.circ.circ_lib();
+                    flatCopy._duration = copyData.circ.duration();
                 }
                 flatCopy.index = service.index++;
                 service.copies.unshift(flatCopy);

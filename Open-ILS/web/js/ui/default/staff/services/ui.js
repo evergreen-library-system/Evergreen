@@ -84,6 +84,135 @@ function($timeout , $parse) {
     };
 })
 
+// 'egOrgDate' filter
+// Uses moment.js and moment-timezone.js to put dates into the most appropriate
+// timezone for a given (optional) org unit based on its lib.timezone setting
+.filter('egOrgDate',['egCore',
+             function(egCore) {
+
+    var formatMap = {
+        short  : 'l LT',
+        medium : 'lll',
+        long   : 'LLL',
+        full   : 'LLLL',
+
+        shortDate  : 'l',
+        mediumDate : 'll',
+        longDate   : 'LL',
+        fullDate   : 'LL',
+
+        shortTime  : 'LT',
+        mediumTime : 'LTS'
+    };
+
+    var formatReplace = [
+        [ /yyyy/g, 'YYYY' ],
+        [ /yy/g,   'YY'   ],
+        [ /y/g,    'Y'    ],
+        [ /ww/g,   'WW'   ],
+        [ /w/g,    'W'    ],
+        [ /dd/g,   'DD'   ],
+        [ /d/g,    'D'    ],
+        [ /sss/g,  'SSS'  ],
+        [ /EEEE/g, 'dddd' ],
+        [ /EEE/g,  'ddd'  ],
+        [ /Z/g,    'ZZ'   ]
+    ];
+
+    var tzcache = {'*':null};
+
+    function eg_date_filter (date, format, ouID) {
+        var fmt = formatMap[format] || format;
+        angular.forEach(formatReplace, function (r) {
+            fmt = fmt.replace(r[0],r[1]);
+        });
+
+        var d;
+        if (ouID) {
+            if (angular.isObject(ouID)) {
+                if (angular.isFunction(ouID.id)) {
+                    ouID = ouID.id();
+                } else {
+                    ouID = ouID.id;
+                }
+            }
+    
+            if (tzcache[ouID] && tzcache[ouID] !== '-') {
+                d = moment(date).tz(tzcache[ouID]);
+            } else {
+    
+                if (!tzcache[ouID]) {
+                    tzcache[ouID] = '-';
+
+                    egCore.org.settings('lib.timezone', ouID)
+                    .then(function(s) {
+                        tzcache[ouID] = s['lib.timezone'] || OpenSRF.tz;
+                    });
+                }
+
+                d = moment(date);
+            }
+        } else {
+            d = moment(date);
+        }
+
+        return d.isValid() ? d.format(fmt) : '';
+    }
+
+    eg_date_filter.$stateful = true;
+
+    return eg_date_filter;
+}])
+
+// 'egOrgDateInContext' filter
+// Uses the egOrgDate filter to make time and date location aware, and further
+// modifies the format if one of [short, medium, long, full] to show only the
+// date if the optional interval parameter is day-granular.  This is
+// particularly useful for due dates on circulations.
+.filter('egOrgDateInContext',['$filter','egCore',
+                      function($filter , egCore) {
+
+    function eg_context_date_filter (date, format, orgID, interval) {
+        var fmt = format;
+        if (!fmt) fmt = 'shortDate';
+
+        // if this is a simple, one-word format, and it doesn't say "Date" in it...
+        if (['short','medium','long','full'].filter(function(x){return fmt == x}).length > 0 && interval) {
+            var secs = egCore.date.intervalToSeconds(interval);
+            if (secs !== null && secs % 86400 == 0) fmt += 'Date';
+        }
+
+        return $filter('egOrgDate')(date, fmt, orgID);
+    }
+
+    eg_context_date_filter.$stateful = true;
+
+    return eg_context_date_filter;
+}])
+
+// 'egDueDate' filter
+// Uses the egOrgDateInContext filter to make time and date location aware, but
+// only if the supplied interval is day-granular.  This is as wrapper for
+// egOrgDateInContext to be used for circulation due date /only/.
+.filter('egDueDate',['$filter','egCore',
+                      function($filter , egCore) {
+
+    function eg_context_due_date_filter (date, format, orgID, interval) {
+        if (interval) {
+            var secs = egCore.date.intervalToSeconds(interval);
+            if (secs === null || secs % 86400 != 0) {
+                orgID = null;
+                interval = null;
+            }
+        }
+        return $filter('egOrgDateInContext')(date, format, orgID, interval);
+    }
+
+    eg_context_due_date_filter.$stateful = true;
+
+    return eg_context_due_date_filter;
+}])
+
 /**
  * Progress Dialog. 
  *

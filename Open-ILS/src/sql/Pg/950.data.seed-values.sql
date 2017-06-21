@@ -17113,3 +17113,15 @@ VALUES (
 );
 
 INSERT INTO config.copy_tag_type (code, label, owner) VALUES ('bookplate', 'Digital Bookplate', 1);
+
+INSERT into config.org_unit_setting_type
+( name, grp, label, description, datatype ) VALUES
+
+( 'lib.timezone', 'lib',
+    oils_i18n_gettext('lib.timezone',
+        'Library time zone',
+        'coust', 'label'),
+    oils_i18n_gettext('lib.timezone',
+        'Define the time zone in which a library physically resides',
+        'coust', 'description'),
+    'string');

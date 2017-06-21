@@ -38,7 +38,9 @@ module.exports = function(grunt) {
             'node_modules/iframe-resizer/js/iframeResizer.contentWindow.min.js',
             'node_modules/angular-order-object-by/src/ng-order-object-by.js',
             'node_modules/lovefield/dist/lovefield.min.js',
-            'node_modules/lovefield/dist/lovefield.min.js.map'
+            'node_modules/lovefield/dist/lovefield.min.js.map',
+            'node_modules/moment/min/moment-with-locales.min.js',
+            'node_modules/moment-timezone/builds/moment-timezone-with-data.min.js'
           ]
         }]
       },
@@ -145,6 +147,8 @@ module.exports = function(grunt) {
             'build/js/angular-tree-control.js',
             'build/js/ngToast.min.js',
             'build/js/lovefield.min.js',
+            'bulid/js/moment-with-locales.min.js',
+            'build/js/moment-timezone-with-data.min.js',
             // NOTE: OpenSRF must be installed
             // XXX: Should not be hard-coded
             '/openils/lib/javascript/JSON_v1.js',

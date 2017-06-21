@@ -2062,7 +2062,7 @@ sub basic_opac_copy_query {
                 {column => 'id', alias => 'call_number'},
                 {column => 'owning_lib', alias => 'call_number_owning_lib'}
             ],
-            circ => ['due_date'],
+            circ => ['due_date',{column => 'circ_lib', alias => 'circ_circ_lib'}],
             acnp => [
                 {column => 'label', alias => 'call_number_prefix_label'},
                 {column => 'id', alias => 'call_number_prefix'}

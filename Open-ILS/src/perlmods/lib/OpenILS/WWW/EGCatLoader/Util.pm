@@ -240,6 +240,7 @@ sub init_ro_object_cache {
     # turns an ISO date into something TT can understand
     $locale_subs->{parse_datetime} = sub {
         my $date = shift;
+        my $context_org = shift; # optional, for setting timezone via YAOUS
 
         # Calling parse_datetime() with empty $date will lead to Internal Server Error
         return '' if (!defined($date) or $date eq '');
@@ -259,6 +260,11 @@ sub init_ro_object_cache {
         my $cleansed_date = cleanse_ISO8601($date);
 
         $date = DateTime::Format::ISO8601->new->parse_datetime($cleansed_date);
+        if ($context_org) {
+            $context_org = $context_org->id if ref($context_org);
+            my $tz = $locale_subs->{get_org_setting}->($context_org,'lib.timezone');
+            $date->set_time_zone($tz) if ($tz);
+        }
         return sprintf(
             "%0.2d:%0.2d:%0.2d %0.2d-%0.2d-%0.4d",
             $date->hour,

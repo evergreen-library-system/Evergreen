@@ -100,7 +100,7 @@ use base qw/actor/;
 
 __PACKAGE__->table( 'actor_org_unit_closed' );
 __PACKAGE__->columns( Primary => qw/id/);
-__PACKAGE__->columns( Essential => qw/org_unit close_start close_end reason/);
+__PACKAGE__->columns( Essential => qw/org_unit close_start close_end reason full_day multi_day/);
 
 
 #-------------------------------------------------------------------------------

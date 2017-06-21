@@ -18,7 +18,7 @@ Fields include:
       <div>{{checkout.title}}</div>
       <div>[% l('Barcode: [_1] Due: [_2]', 
         '{{checkout.copy.barcode}}',
-        '{{checkout.circ.due_date | date:$root.egDateAndTimeFormat}}') %]</div>
+        '{{checkout.circ.due_date | egDueDate:$root.egDateAndTimeFormat:checkout.circ.circ_lib:checkout.circ.duration}}') %]</div>
     </li>
   </ol>
   <hr/>

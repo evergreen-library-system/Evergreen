@@ -17,6 +17,8 @@
     "angular-tree-control": "~0.2.28",
     "angular-order-object-by": "rxfork/ngOrderObjectBy#npm",
     "lovefield": "*",
+    "moment": "*",
+    "moment-timezone": "*",
     "bootstrap": "~3.3.6",
     "grunt": "~0.4.4",
     "grunt-cli": "^0.1.13",

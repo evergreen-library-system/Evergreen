@@ -17,7 +17,7 @@ Template for printing a renewal receipt. Fields include:
       <div>{{renewal.title}}</div>
       <div>[% l('Barcode: [_1] Due: [_2]', 
         '{{renewal.copy.barcode}}',
-        '{{renewal.circ.due_date | date:$root.egDateAndTimeFormat}}') %]</div>
+        '{{renewal.circ.due_date | egDueDate:$root.egDateAndTimeFormat:renewal.circ.circ_lib:renewal.circ.duration}}') %]</div>
     </li>
   </ol>
   <hr/>

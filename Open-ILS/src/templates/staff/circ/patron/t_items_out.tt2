@@ -38,7 +38,7 @@
   <eg-grid-field label="[% l('Item Type') %]" path='item_type.name'></eg-grid-field>
   <eg-grid-field label="[% l('Checkout Library') %]" path='circ_lib.shortname'></eg-grid-field>
   <eg-grid-field label="[% l('Checkout Date') %]" path='circ_time' datatype="timestamp"></eg-grid-field>
-  <eg-grid-field label="[% l('Due Date') %]" path='duedate' datatype="timestamp"></eg-grid-field>
+  <eg-grid-field label="[% l('Due Date') %]" path='duedate' dateformat="shortDate" datatype="timestamp"></eg-grid-field>
   <eg-grid-field label="[% l('Checkout Staff') %]" path='staff.usrname'></eg-grid-field>
 </eg-grid>
 
@@ -80,7 +80,7 @@
       {{item.target_copy().barcode()}}
     </a>
   </eg-grid-field>
-  <eg-grid-field label="[% l('Due Date') %]" path='due_date' datatype="timestamp"></eg-grid-field>
+  <eg-grid-field label="[% l('Due Date') %]" path='due_date' datefilter="egDueDate" dateonlyinterval="duration" datecontext="circ_lib" datatype="timestamp"></eg-grid-field>
   <eg-grid-field label="[% l('Workstation') %]" path='workstation.name'></eg-grid-field>
   <eg-grid-field label="[% l('Checkin Workstation') %]" path='checkin_workstation.name'></eg-grid-field>
   <eg-grid-field label="[% l('Checkout / Renewal Library') %]" path='circ_lib.shortname'></eg-grid-field>

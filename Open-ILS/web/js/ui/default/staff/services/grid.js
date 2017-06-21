@@ -64,6 +64,9 @@ angular.module('egGridMod',
             menuLabel : '@',
 
             dateformat : '@', // optional: passed down to egGridValueFilter
+            datecontext: '@', // optional: passed down to egGridValueFilter to choose TZ
+            datefilter: '@', // optional: passed down to egGridValueFilter to choose specialized date filters
+            dateonlyinterval: '@', // optional: passed down to egGridValueFilter to choose a "better" format
 
             // Hash of control functions.
             //
@@ -183,7 +186,10 @@ angular.module('egGridMod',
                     defaultToHidden : (features.indexOf('-display') > -1),
                     defaultToNoSort : (features.indexOf('-sort') > -1),
                     defaultToNoMultiSort : (features.indexOf('-multisort') > -1),
-                    defaultDateFormat : $scope.dateformat
+                    defaultDateFormat : $scope.dateformat,
+                    defaultDateContext : $scope.datecontext,
+                    defaultDateFilter : $scope.datefilter,
+                    defaultDateOnlyInterval : $scope.dateonlyinterval
                 });
                 $scope.canMultiSelect = (features.indexOf('-multiselect') == -1);
 
@@ -989,7 +995,7 @@ angular.module('egGridMod',
                             // bare value
                             var val = grid.dataProvider.itemFieldValue(item, col);
                             // filtered value (dates, etc.)
-                            val = $filter('egGridValueFilter')(val, col);
+                            val = $filter('egGridValueFilter')(val, col, item);
                             csvStr += grid.csvDatum(val);
                             csvStr += ',';
                         }
@@ -1093,6 +1099,9 @@ angular.module('egGridMod',
             flex  : '@',  // optional; default flex width
             align  : '@',  // optional; default alignment, left/center/right
             dateformat : '@', // optional: passed down to egGridValueFilter
+            datecontext: '@', // optional: passed down to egGridValueFilter to choose TZ
+            datefilter: '@', // optional: passed down to egGridValueFilter to choose specialized date filters
+            dateonlyinterval: '@', // optional: passed down to egGridValueFilter to choose a "better" format
 
             // if a field is part of an IDL object, but we are unable to
             // determine the class, because it's nested within a hash
@@ -1179,6 +1188,7 @@ angular.module('egGridMod',
         cols.defaultToNoSort = args.defaultToNoSort;
         cols.defaultToNoMultiSort = args.defaultToNoMultiSort;
         cols.defaultDateFormat = args.defaultDateFormat;
+        cols.defaultDateContext = args.defaultDateContext;
 
         // resets column width, visibility, and sort behavior
         // Visibility resets to the visibility settings defined in the 
@@ -1385,6 +1395,9 @@ angular.module('egGridMod',
                 multisortable    : colSpec.multisortable,
                 nonmultisortable : colSpec.nonmultisortable,
                 dateformat       : colSpec.dateformat,
+                datecontext      : colSpec.datecontext,
+                datefilter      : colSpec.datefilter,
+                dateonlyinterval : colSpec.dateonlyinterval,
                 parentIdlClass   : colSpec.parentIdlClass
             };
         }
@@ -1426,6 +1439,18 @@ angular.module('egGridMod',
 
             if (cols.defaultDateFormat && ! column.dateformat) {
                 column.dateformat = cols.defaultDateFormat;
+            }
+
+            if (cols.defaultDateOnlyInterval && ! column.dateonlyinterval) {
+                column.dateonlyinterval = cols.defaultDateOnlyInterval;
+            }
+
+            if (cols.defaultDateContext && ! column.datecontext) {
+                column.datecontext = cols.defaultDateContext;
+            }
+
+            if (cols.defaultDateFilter && ! column.datefilter) {
+                column.datefilter = cols.defaultDateFilter;
             }
 
             cols.columns.push(column);
@@ -1910,12 +1935,12 @@ angular.module('egGridMod',
  *    value.  (Though we could manually translate instead..)
  * Others likely to follow...
  */
-.filter('egGridValueFilter', ['$filter', function($filter) {                         
-    return function(value, column) {                                             
-        switch(column.datatype) {                                                
-            case 'bool':                                                       
+.filter('egGridValueFilter', ['$filter','egCore', function($filter,egCore) {
+    var GVF = function(value, column, item) {
+        switch(column.datatype) {
+            case 'bool':
                 switch(value) {
-                    // Browser will translate true/false for us                    
+                    // Browser will translate true/false for us
                     case 't' : 
                     case '1' :  // legacy
                     case true:
@@ -1927,16 +1952,26 @@ angular.module('egGridMod',
                     // value may be null,  '', etc.
                     default : return '';
                 }
-            case 'timestamp':                                                  
-                // canned angular date filter FTW                              
-                if (!column.dateformat) 
-                    column.dateformat = 'shortDate';
-                return $filter('date')(value, column.dateformat);
-            case 'money':                                                  
+            case 'timestamp':
+                var interval = angular.isFunction(item[column.dateonlyinterval])
+                    ? item[column.dateonlyinterval]()
+                    : item[column.dateonlyinterval];
+
+                var context = angular.isFunction(item[column.datecontext])
+                    ? item[column.datecontext]()
+                    : item[column.datecontext];
+
+                var date_filter = column.datefilter || 'egOrgDateInContext';
+
+                return $filter(date_filter)(value, column.dateformat, context, interval);
+            case 'money':
                 return $filter('currency')(value);
-            default:                                                           
-                return value;                                                  
-        }                                                                      
-    }                                                                          
+            default:
+                return value;
+        }
+    };
+
+    GVF.$stateful = true;
+    return GVF;
 }]);
 

@@ -74,7 +74,7 @@ IF has_copies;
     <td>[% bib.target_copy.barcode | html %]</td>
     <td>[% copy_info.copy_location | html %]</td>
     <td>[% copy_info.copy_status | html %]</td>
-    <td>[% copy_info.due_date | html %]</td>
+    <td>[% date.format(ctx.parse_datetime(copy_info.due_date, copy_info.circ_circ_lib),DATE_FORMAT) %]</td>
 </tr>
    [%- END; # FOREACH peer
 END; # FOREACH bib
@@ -217,7 +217,7 @@ END; # FOREACH bib
             <td>[%
                 IF copy_info.due_date;
                     date.format(
-                        ctx.parse_datetime(copy_info.due_date),
+                        ctx.parse_datetime(copy_info.due_date, copy_info.circ_circ_lib),
                         DATE_FORMAT
                     );
                 ELSE;

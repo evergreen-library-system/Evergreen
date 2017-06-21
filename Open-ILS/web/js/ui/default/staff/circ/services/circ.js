@@ -272,6 +272,9 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
         data.isbn = final_resp.evt[0].isbn;
         data.route_to = final_resp.evt[0].route_to;
 
+        if (payload.circ) data.duration = payload.circ.duration();
+        if (payload.circ) data.circ_lib = payload.circ.circ_lib();
+
         // for checkin, the mbts lives on the main circ
         if (payload.circ && payload.circ.billable_transaction())
             data.mbts = payload.circ.billable_transaction().summary();

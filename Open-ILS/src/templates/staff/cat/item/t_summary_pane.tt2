@@ -34,7 +34,7 @@
     <div class="flex-cell well">{{copy.call_number().label()}}</div>
 
     <div class="flex-cell">[% l('Due Date') %]</div>
-    <div class="flex-cell well">{{circ.due_date() | date:egDateAndTimeFormat}}</div>
+    <div class="flex-cell well">{{circ.due_date() | egDueDate:egDateAndTimeFormat:circ.circ_lib():circ.duration()}}</div>
   </div>
 
   <div class="flex-row">

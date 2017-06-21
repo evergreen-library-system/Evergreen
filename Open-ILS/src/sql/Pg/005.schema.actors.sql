@@ -483,6 +483,8 @@ CREATE TABLE actor.org_unit_closed (
 	org_unit	INT				NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
 	close_start	TIMESTAMP WITH TIME ZONE	NOT NULL,
 	close_end	TIMESTAMP WITH TIME ZONE	NOT NULL,
+    full_day    BOOLEAN                     NOT NULL DEFAULT FALSE,
+    multi_day   BOOLEAN                     NOT NULL DEFAULT FALSE,
 	reason		TEXT
 );
 

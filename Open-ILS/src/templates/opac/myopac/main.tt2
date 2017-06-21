@@ -72,8 +72,9 @@
                     </td>
                     <td name='myopac_circ_trans_due'>
                         [% ts = f.xact.circulation.due_date || f.xact.reservation.end_time || 0;
+                           due_org = f.xact.circulation.circ_lib || f.xact.reservation.pickup_lib;
                         IF ts;
-                            date.format(ctx.parse_datetime(ts), DATE_FORMAT);
+                            date.format(ctx.parse_datetime(ts, due_org), DATE_FORMAT);
                         END %]
                     </td>
                     <td name='myopac_circ_trans_finished'>

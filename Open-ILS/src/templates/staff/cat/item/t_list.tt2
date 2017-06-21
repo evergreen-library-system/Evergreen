@@ -64,7 +64,7 @@
   <eg-grid-field label="[% l('Alert Message') %]"  path='alert_message' visible></eg-grid-field>
   <eg-grid-field label="[% l('Barcode') %]"        path='barcode' visible></eg-grid-field>
   <eg-grid-field label="[% l('Call Number') %]"    path="call_number.label" visible></eg-grid-field>
-  <eg-grid-field label="[% l('Due Date') %]"       path="_circ.due_date" datatype="timestamp" visible></eg-grid-field>
+  <eg-grid-field label="[% l('Due Date') %]"       path="_circ.due_date" datecontext="_circ_lib" dateonlyinterval="_duration" datatype="timestamp" visible></eg-grid-field>
 
   <eg-grid-field label="[% l('Location') %]"       path="location.name" visible></eg-grid-field>
   <eg-grid-field label="[% l('Copy Status') %]"    path="status.name" visible></eg-grid-field>

@@ -88,7 +88,7 @@
     path="acn.label"></eg-grid-field>
 
   <eg-grid-field label="[% l('Due Date') %]"    
-    path='circ.due_date' datatype="timestamp"></eg-grid-field>
+    path='circ.due_date' datecontext="circ_lib" dateonlyinterval="duration" datatype="timestamp"></eg-grid-field>
 
   <eg-grid-field label="[% l('Family Name') %]"    
     path='au.family_name'></eg-grid-field>
