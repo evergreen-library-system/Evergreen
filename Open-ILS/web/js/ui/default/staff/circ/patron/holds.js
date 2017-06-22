@@ -83,6 +83,7 @@ function($scope,  $q,  $routeParams,  egCore,  egUser,  patronSvc,
         if ($scope.holds_display == 'alt')
             method = 'open-ils.circ.holds.canceled.id_list.retrieve.authoritative';
 
+        var current = 0;
         egCore.net.request(
             'open-ils.circ', method,
             egCore.auth.token(), $scope.patron_id
@@ -92,7 +93,14 @@ function($scope,  $q,  $routeParams,  egCore,  egUser,  patronSvc,
 
             patronSvc.hold_ids = hold_ids;
             fetchHolds(offset, count)
-            .then(deferred.resolve, null, deferred.notify);
+            .then(deferred.resolve, null, function (data) {
+                if (data) {
+                    if (current >= offset && current < count) {
+                        deferred.notify(data);
+                    }
+                    current++;
+                }
+            });
         });
 
         return deferred.promise;
