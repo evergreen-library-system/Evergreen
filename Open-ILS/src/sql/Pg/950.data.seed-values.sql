@@ -17224,6 +17224,9 @@ INSERT INTO acq.edi_attr (key, label) VALUES
     ('BUYER_ID_INCLUDE_VENDCODE', 
         oils_i18n_gettext('BUYER_ID_INCLUDE_VENDCODE', 
         'Buyer ID Qualifier Includes Vendcode', 'aea', 'label')),
+    ('BUYER_ID_ONLY_VENDCODE', 
+        oils_i18n_gettext('BUYER_ID_ONLY_VENDCODE', 
+        'Buyer ID Qualifier Only Contains Vendcode', 'aea', 'label')),
     ('INCLUDE_BIB_EDITION', 
         oils_i18n_gettext('INCLUDE_BIB_EDITION', 
         'Order Lineitems Include Edition Info', 'aea', 'label')),
@@ -17236,6 +17239,9 @@ INSERT INTO acq.edi_attr (key, label) VALUES
     ('COPY_SPEC_CODES', 
         oils_i18n_gettext('COPY_SPEC_CODES', 
         'Order Lineitem Notes Include Copy Spec Codes', 'aea', 'label')),
+    ('INCLUDE_EMPTY_IMD_VALUES', 
+        oils_i18n_gettext('INCLUDE_EMPTY_IMD_VALUES',
+        'Lineitem Title, Author, etc. Fields Are Present Even if Empty', 'aea', 'label')),
     ('INCLUDE_EMPTY_LI_NOTE', 
         oils_i18n_gettext('INCLUDE_EMPTY_LI_NOTE', 
         'Order Lineitem Notes Always Present (Even if Empty)', 'aea', 'label')),
@@ -17266,6 +17272,7 @@ INSERT INTO acq.edi_attr_set (id, label) VALUES (3, 'Brodart Default');
 INSERT INTO acq.edi_attr_set (id, label) VALUES (4, 'Midwest Tape Default');
 INSERT INTO acq.edi_attr_set (id, label) VALUES (5, 'ULS Default');
 INSERT INTO acq.edi_attr_set (id, label) VALUES (6, 'Recorded Books Default');
+INSERT INTO acq.edi_attr_set (id, label) VALUES (7, 'Midwest Library Service');
 
 -- carve out space for mucho defaults
 SELECT SETVAL('acq.edi_attr_set_id_seq'::TEXT, 1000);
@@ -17331,6 +17338,13 @@ INSERT INTO acq.edi_attr_set_map (attr_set, attr) VALUES
     (6, 'INCLUDE_COLLECTION_CODE'),
     (6, 'INCLUDE_OWNING_LIB'),
     (6, 'INCLUDE_QUANTITY'),
-    (6, 'INCLUDE_BIB_PAGINATION')
+    (6, 'INCLUDE_BIB_PAGINATION'),
+
+    -- Midwest Library Service
+    (7, 'INCLUDE_BIB_AUTHOR'),
+    (7, 'INCLUDE_BIB_EDITION'),
+    (7, 'BUYER_ID_ONLY_VENDCODE'),
+    (7, 'INCLUDE_EMPTY_IMD_VALUES')
+
 ;
 

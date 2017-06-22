@@ -131,10 +131,14 @@ sub compile_po {
             for @{$po->provider->edi_default->attr_set->attr_maps}
     }
 
-    $compiled{buyer_code} = 
-        $compiled{edi_attrs}->{BUYER_ID_INCLUDE_VENDCODE} ? # B&T
-        $compiled{vendor_san}.' '.$po->provider->edi_default->vendcode :
-        $po->provider->edi_default->vendacct;
+    $compiled{buyer_code} = $po->provider->edi_default->vendacct;
+
+    $compiled{buyer_code} = # B&T
+        $compiled{vendor_san}.' '.$po->provider->edi_default->vendcode
+        if $compiled{edi_attrs}->{BUYER_ID_INCLUDE_VENDCODE};
+
+    $compiled{buyer_code} = $po->provider->edi_default->vendcode
+        if $compiled{edi_attrs}->{BUYER_ID_ONLY_VENDCODE}; # MLS
 
     push(@{$compiled{lineitems}}, 
         $self->compile_li($_)) for @{$po->lineitems};
@@ -346,6 +350,12 @@ sub compile_copy {
 # IMD fields should only display the +::: when a value is present
 sub IMD {
     my ($self, $code, $value) = @_;
+
+    $value = ' ' if (
+        $value eq '' &&
+        $self->{compiled}->{edi_attrs}->{INCLUDE_EMPTY_IMD_VALUES}
+    );
+
     if ($value) {
         my $s = '';
         for my $part ($value =~ m/.{1,70}/g) {
@@ -388,8 +398,10 @@ BGM+220+$c{po_id}+9'
 DTM+137:$date:102'
 EDI
 
-    $edi .= "NAD+BY+$c{org_unit_san}::31B'\n"
-        unless $self->{compiled}->{edi_attrs}->{BUYER_ID_INCLUDE_VENDCODE};
+    $edi .= "NAD+BY+$c{org_unit_san}::31B'\n" unless (
+        $self->{compiled}->{edi_attrs}->{BUYER_ID_ONLY_VENDCODE} ||
+        $self->{compiled}->{edi_attrs}->{BUYER_ID_INCLUDE_VENDCODE}
+    );
 
     $edi .= <<EDI;
 NAD+BY+$c{buyer_code}::91'
