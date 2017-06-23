@@ -103,3 +103,20 @@ Ebook.prototype.placeHold = function(authtoken, patron_id, callback) {
     }).send();
 }
 
+Ebook.prototype.cancelHold = function(authtoken, patron_id, callback) {
+    var ses = dojo.cookie(this.vendor);
+    var ebook = this;
+    new OpenSRF.ClientSession('open-ils.ebook_api').request({
+        method: 'open-ils.ebook_api.cancel_hold',
+        params: [ authtoken, ses, ebook.id, patron_id ],
+        async: true,
+        oncomplete: function(r) {
+            var resp = r.recv();
+            if (resp) {
+                console.log('cancel hold response: ' + resp.content());
+                return callback(resp.content());
+            }
+        }
+    }).send();
+}
+

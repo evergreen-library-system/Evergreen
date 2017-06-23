@@ -152,13 +152,32 @@ function updateHoldView() {
             } else {
                 hold_status = h.queue_position + ' / ' + h.queue_size;
             }
+            h.doCancelHold = function() {
+                var ebook = new Ebook(this.vendor, this.title_id);
+                ebook.cancelHold(authtoken, patron_id, function(resp) {
+                    if (resp.error_msg) {
+                        console.log('Cancel hold failed: ' . resp.error_msg);
+                        dojo.removeClass('ebook_cancel_hold_failed', "hidden");
+                    } else {
+                        console.log('Cancel hold succeeded!');
+                        dojo.destroy("hold-" + ebook.id);
+                        dojo.removeClass('ebook_cancel_hold_succeeded', "hidden");
+                        // Updating the transaction cache to remove the canceled hold
+                        // is inconvenient, so we skip cleanupAfterAction() and merely
+                        // clear transaction cache to force a refresh on next page load.
+                        dojo.cookie('ebook_xact_cache', '', {path: '/', expires: '-1h'});
+                    }
+                });
+            };
             dojo.empty('ebook_holds_main_table_body');
-            var tr = dojo.create("tr", null, dojo.byId('ebook_holds_main_table_body'));
+            var tr = dojo.create("tr", { id: "hold-" + h.title_id }, dojo.byId('ebook_holds_main_table_body'));
             dojo.create("td", { innerHTML: h.title }, tr);
             dojo.create("td", { innerHTML: h.author }, tr);
             dojo.create("td", { innerHTML: h.expire_date }, tr);
             dojo.create("td", { innerHTML: hold_status }, tr);
-            dojo.create("td", null, tr); // TODO actions
+            var actions_td = dojo.create("td", null, tr);
+            var button = dojo.create("input", { id: "cancel-hold-" + h.title_id, type: "button", value: l_strings.cancel_hold }, actions_td);
+            dojo.connect(button, 'onclick', h, "doCancelHold");
         });
         dojo.addClass('no_ebook_holds', "hidden");
         dojo.removeClass('ebook_holds_main', "hidden");
@@ -176,11 +195,28 @@ function updateHoldReadyView() {
             dojo.create("td", { innerHTML: h.title }, tr);
             dojo.create("td", { innerHTML: h.author }, tr);
             dojo.create("td", { innerHTML: h.expire_date }, tr);
-            dojo.create("td", null, tr); // TODO actions
+            var actions_td = dojo.create("td", null, tr);
+            var actions_ul = dojo.create("ul", null, actions_td);
+            var cancel_hold_li = dojo.create("li", null, actions_ul);
+            dojo.create("a", { href: ebookActionUrl(h, "cancel_hold"), innerHTML: l_strings.cancel_hold }, cancel_hold_li);
         });
         dojo.addClass('no_ebook_holds', "hidden");
         dojo.removeClass('ebook_holds_main', "hidden");
     }
+}
+
+// construct a link to perform an ebook action
+// TODO: preserve any existing GET params (aside from vendor, title, action)
+function ebookActionUrl(xact, action) {
+    var base_uri;
+    if (action === 'checkout') {
+        base_uri = 'ebook_circs';
+    } else if (action === 'place_hold' || action === 'cancel_hold') {
+        base_uri = 'ebook_holds';
+    } else {
+        return;
+    }
+    return base_uri + "?vendor=" + xact.vendor + ";title=" + xact.title_id + ";action=" + action;
 }
 
 // set up page for user to perform a checkout
@@ -220,9 +256,6 @@ function getReadyForHold() {
             if (ebook_action.type == 'place_hold') {
                 var button = dojo.create("input", { id: "hold-button", type: "button", value: l_strings.place_hold }, dojo.byId('hold-button-td'));
                 ebook.conns.checkout = dojo.connect(button, 'onclick', "doPlaceHold");
-            } else if (ebook_action.type == 'cancel_hold') {
-                var button = dojo.create("input", { id: "hold-button", type: "button", value: l_strings.cancel_hold }, dojo.byId('hold-button-td'));
-                ebook.conns.checkout = dojo.connect(button, 'onclick', "doCancelHold");
             }
             dojo.removeClass('ebook_holds_main', "hidden");
         });
