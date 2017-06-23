@@ -165,6 +165,12 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
     $scope.amount_verified = false;
     $scope.disable_auto_print = false;
 
+    // check receipt_on_pay setting default persisted
+    egCore.hatch.getItem('circ.bills.receiptonpay')
+                .then(function(rcptOnPay){
+                    if (rcptOnPay) $scope.receipt_on_pay.isChecked = rcptOnPay;
+                });
+
     // pre-define list-returning funcs in case we access them
     // before the grid instantiates
     $scope.gridControls = {
@@ -323,6 +329,10 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
 
             refreshDisplay();
         })
+    }
+
+    $scope.onReceiptOnPayChanged = function(){
+        egCore.hatch.setItem('circ.bills.receiptonpay', $scope.receipt_on_pay.isChecked);
     }
 
     function printReceipt(type, payment_ids, payments_made, note) {
