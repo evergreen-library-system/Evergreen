@@ -70,6 +70,10 @@ function addTransactionsToPage() {
             updateHoldView();
         if (myopac_page === 'ebook_holds_ready')
             updateHoldView();
+        if (myopac_page === 'ebook_checkout')
+            getReadyForCheckout();
+        if (myopac_page === 'ebook_place_hold')
+            getReadyForHold();
     }
 }
         
@@ -104,11 +108,7 @@ function updateMyAccountSummary() {
 }
 
 function updateCheckoutView() {
-    if (typeof ebook_action.type !== 'undefined') {
-        if (ebook_action.type == 'checkout') {
-            getReadyForCheckout();
-        }
-    } else if (xacts.checkouts.length < 1) {
+    if (xacts.checkouts.length < 1) {
         dojo.removeClass('no_ebook_circs', "hidden");
     } else {
         dojo.forEach(xacts.checkouts, function(x) {
@@ -127,12 +127,6 @@ function updateCheckoutView() {
 }
 
 function updateHoldView() {
-    // handle hold actions
-    if (typeof ebook_action.type !== 'undefined') {
-        getReadyForHold();
-        return;
-    }
-
     if (myopac_page === 'ebook_holds_ready') {
         // only show holds that are ready for checkout
         var holds = xacts.holds_ready;

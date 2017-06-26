@@ -82,14 +82,14 @@
 
             [%- IF ebook_api.enabled == 'true' && args.ebook %]
             <div id="[%- ctx.bre_id -%]_ebook_checkout" class="rdetail_aux_utils ebook_action hidden">
-                <a href="[% mkurl(ctx.opac_root _ '/myopac/ebook_circs',
+                <a href="[% mkurl(ctx.opac_root _ '/myopac/ebook_checkout',
                     {title => args.ebook.ebook_id, vendor => args.ebook.vendor, action => 'checkout'}, stop_parms) %]"
                 class="no-dec" rel="nofollow" vocab=""><img src="[% ctx.media_prefix %]/images/green_check.png"
                     [% img_alt(l('Check Out [_1]', attrs.title)) %]/>
                 <span class="place_hold">[% l('Check Out E-Item') %]</span></a>
             </div>
             <div id="[%- ctx.bre_id -%]_ebook_place_hold" class="rdetail_aux_utils ebook_action hidden">
-                <a href="[% mkurl(ctx.opac_root _ '/myopac/ebook_holds',
+                <a href="[% mkurl(ctx.opac_root _ '/myopac/ebook_place_hold',
                     {title => args.ebook.ebook_id, vendor => args.ebook.vendor, action => 'place_hold'}, stop_parms) %]"
                 class="no-dec" rel="nofollow" vocab=""><img src="[% ctx.media_prefix %]/images/green_check.png"
                     [% img_alt(l('Place Hold on [_1]', attrs.title)) %]/>
