@@ -1512,6 +1512,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
             {pickup_lib : egCore.org.descendants($scope.pickup_ou.id(), true)}
         ).then(
             function(hold_data) {
+                hold_ids = []; // clear the list of ids, hack to avoid dups
                 angular.forEach(hold_data, function(list, type) {
                     hold_ids = hold_ids.concat(list);
                 });
