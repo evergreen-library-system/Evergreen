@@ -1102,7 +1102,7 @@ sub fleshed_volume_update {
 
         } elsif( $vol->isnew ) {
             $logger->info("vol-update: creating volume");
-            $evt = $assetcom->create_volume( $oargs, $editor, $vol );
+            ($vol,$evt) = $assetcom->create_volume( $auto_merge_vols ? { all => 1} : $oargs, $editor, $vol );
             return $evt if $evt;
 
         } elsif( $vol->ischanged ) {
