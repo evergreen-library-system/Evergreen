@@ -550,12 +550,10 @@ sub create_volume {
     if($label) {
         # now restore the label and merge into the existing record
         $vol->label($label);
-        (undef, $evt) = 
-            OpenILS::Application::Cat::Merge::merge_volumes($editor, [$vol], $$vols[0]);
-        return $evt if $evt;
+        return OpenILS::Application::Cat::Merge::merge_volumes($editor, [$vol], $$vols[0]);
     }
 
-    return undef;
+    return ($vol);
 }
 
 # returns the volume if it exists
@@ -597,10 +595,7 @@ sub find_or_create_volume {
     $vol->suffix($suffix);
     $vol->record($record_id);
 
-    my $evt = $class->create_volume(0, $e, $vol);
-    return (undef, $evt) if $evt;
-
-    return ($vol);
+    return $class->create_volume(0, $e, $vol);
 }
 
 
