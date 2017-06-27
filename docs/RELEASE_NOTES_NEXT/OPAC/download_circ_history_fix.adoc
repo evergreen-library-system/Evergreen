@@ -1,0 +1,10 @@
+Download Checkout History CSV Fixed for Large Number of Circulations
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Downloading checkout history as a CSV from My Account has been fixed
+for users with a large circulation history.  Previously, this would
+time out for patrons with more than 100 or so circulations.
+
+This feature no longer uses the action/trigger mechanism and the OPAC
+now generates the CSV directly.  The old action/trigger code is still
+present in the database and should be removed at some point in the
+near future.
