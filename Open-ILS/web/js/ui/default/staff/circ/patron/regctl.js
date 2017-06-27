@@ -499,8 +499,8 @@ angular.module('egCoreMod')
                 // apply default user setting values
                 angular.forEach(setting_types, function(stype, index) {
                     if (stype.reg_default() != undefined) {
-                        service.user_settings[setting.name()] = 
-                            setting.reg_default();
+                        service.user_settings[stype.name()] =
+                            Boolean(stype.reg_default());
                     }
                 });
             }
