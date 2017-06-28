@@ -79,11 +79,15 @@
   </eg-grid-field>
 
   <eg-grid-field path="circulation.target_copy.circ_modifier" 
-    label="[% l('Circulation Modifier') %]" name="circ_modifier">
+    label="[% l('Circulation Modifier') %]" name="circ_modifier" hidden>
   </eg-grid-field>
 
   <eg-grid-field path="circulation.target_copy.circ_lib.shortname"
-    label="[% l('Circulation Library') %]" name="circ_lib">
+    label="[% l('Circulation Library') %]" name="circ_lib" hidden>
+  </eg-grid-field>
+
+  <eg-grid-field label="[% l('Location') %]" name="xact_location">
+    {{item['grocery.billing_location.shortname']||item['circulation.circ_lib.shortname']}}
   </eg-grid-field>
 
   <!-- virtual field -->
@@ -91,7 +95,12 @@
     name="payment_pending"></eg-grid-field>
 
   <!-- import all circ fields, hidden by default -->
+  <eg-grid-field path='grocery.*' hidden> </eg-grid-field>
+  <eg-grid-field label="[% l('Billing Location') %]"
+    path='grocery.billing_location.shortname' required hidden> </eg-grid-field>
   <eg-grid-field path='circulation.*' hidden> </eg-grid-field>
+  <eg-grid-field label="[% l('Checkout / Renewal Library') %]"
+    path='circulation.circ_lib.shortname' required hidden> </eg-grid-field>
 
   <eg-grid-field path='circulation.target_copy.*' hidden> </eg-grid-field>
   

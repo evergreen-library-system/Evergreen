@@ -6500,7 +6500,7 @@ SELECT  usr,
 			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
 		</links>
 	</class>
-	<class id="mg" controller="open-ils.cstore" oils_obj:fieldmapper="money::grocery" oils_persist:tablename="money.grocery" reporter:label="Grocery Transaction">
+    <class id="mg" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="money::grocery" oils_persist:tablename="money.grocery" reporter:label="Grocery Transaction">
 		<fields oils_persist:primary="id" oils_persist:sequence="money.billable_xact_id_seq">
 			<field reporter:label="Billing Location" name="billing_location" reporter:datatype="link"/>
 			<field reporter:label="Transaction ID" name="id" reporter:datatype="id" />
@@ -6523,6 +6523,11 @@ SELECT  usr,
 			<link field="billing_total" reltype="might_have" key="xact" map="" class="rxbt"/>
 			<link field="payment_total" reltype="might_have" key="xact" map="" class="rxpt"/>
 		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <retrieve permission="VIEW_USER_TRANSACTIONS" context_field="billing_location"/>
+            </actions>
+        </permacrud>
 	</class>
 	<class id="cbs" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::bib_source" oils_persist:tablename="config.bib_source" reporter:label="Bib Source">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.bib_source_id_seq">
