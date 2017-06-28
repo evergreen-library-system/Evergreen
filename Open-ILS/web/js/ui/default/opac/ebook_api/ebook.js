@@ -91,7 +91,7 @@ Ebook.prototype.placeHold = function(authtoken, patron_id, callback) {
     var ebook = this;
     new OpenSRF.ClientSession('open-ils.ebook_api').request({
         method: 'open-ils.ebook_api.place_hold',
-        params: [ authtoken, ses, ebook.id, patron_id ],
+        params: [ authtoken, ses, ebook.id, patron_id, patron_email ],
         async: true,
         oncomplete: function(r) {
             var resp = r.recv();

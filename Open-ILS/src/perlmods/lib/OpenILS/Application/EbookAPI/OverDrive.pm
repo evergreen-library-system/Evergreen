@@ -555,6 +555,59 @@ sub checkin {
     return;
 }
 
+sub place_hold {
+    my ($self, $title_id, $patron_token, $email) = @_;
+    my $fields = [
+        {
+            name  => 'reserveId',
+            value => $title_id
+        }
+    ];
+    if ($email) {
+        push @$fields, { name => 'emailAddress', value => $email };
+        # TODO: Use autoCheckout=true when we have a patron email?
+    } else {
+        push @$fields, { name => 'ignoreEmail', value => 'true' };
+    }
+    my $request_content = { fields => $fields };
+    my $req = {
+        method  => 'POST',
+        uri     => $self->{circulation_base_uri} . "/patrons/me/holds",
+        content => OpenSRF::Utils::JSON->perl2JSON($request_content)
+    };
+    if (my $res = $self->handle_http_request($req, $self->{session_id})) {
+        if ($res->{content}->{holdPlacedDate}) {
+            return {
+                queue_position => $res->{content}->{holdListPosition},
+                queue_size => $res->{content}->{numberOfHolds},
+                expire_date => (defined $res->{content}->{holdExpires}) ? $res->{content}->{holdExpires} : undef
+            };
+        }
+        $logger->error("EbookAPI: place hold failed for OverDrive title $title_id");
+        return { error_msg => "Could not place hold." };
+    }
+    $logger->error("EbookAPI: no response received from OverDrive server");
+    return;
+}
+
+sub cancel_hold {
+    my ($self, $title_id, $patron_token) = @_;
+    my $req = {
+        method  => 'DELETE',
+        uri     => $self->{circulation_base_uri} . "/patrons/me/holds/$title_id"
+    };
+    if (my $res = $self->handle_http_request($req, $self->{session_id})) {
+        if ($res->{status} =~ /^204/) {
+            return {};
+        } else {
+            $logger->error("EbookAPI: cancel hold failed for OverDrive title $title_id");
+            return { error_msg => ( (defined $res->{content}) ? $res->{content} : 'Could not cancel hold' ) };
+        }
+    }
+    $logger->error("EbookAPI: no response received from OverDrive server");
+    return;
+}
+
 # List of patron checkouts:
 # GET http://patron.api.overdrive.com/v1/patrons/me/checkouts
 # User-Agent: {Your application}

@@ -58,6 +58,11 @@ ebook_action.vendor = '[% CGI.param("vendor") %]';
 // user- or login-specific vars
 var authtoken = '[% ctx.authtoken %]';
 var patron_id = '[% ctx.active_card %]'; // using barcode of active card as patron ID
+[%- IF ctx.user.email %]
+var patron_email = '[% ctx.user.email | html %]';
+[%- ELSE %]
+var patron_email = null;
+[%- END %]
 
 var myopac_page;
 [% IF myopac_page %]

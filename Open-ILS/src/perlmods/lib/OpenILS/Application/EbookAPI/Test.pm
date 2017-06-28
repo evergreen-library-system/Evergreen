@@ -368,6 +368,9 @@ sub place_hold {
     # Patron ID or patron auth token, as returned by do_patron_auth().
     my $user_token = shift;
 
+    # Email address of patron (optional, not used here).
+    my $email = shift;
+
     # If hold is successfully placed, return a hashref with the following
     # fields:
     # - queue_position: this user's position in hold queue for this title

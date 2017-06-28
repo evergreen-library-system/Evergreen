@@ -481,7 +481,7 @@ __PACKAGE__->register_method(
 # - barcode: patron barcode
 #
 sub do_xact {
-    my ($self, $conn, $auth, $session_id, $title_id, $barcode) = @_;
+    my ($self, $conn, $auth, $session_id, $title_id, $barcode, $email) = @_;
 
     my $action;
     if ($self->api_name =~ /checkout/) {
@@ -508,7 +508,13 @@ sub do_xact {
     my $user_token = $handler->do_patron_auth($barcode);
 
     # handler method constructs and submits request (and handles any external authentication)
-    my $res = $handler->$action($title_id, $user_token);
+    my $res;
+    # place_hold has email as optional additional param
+    if ($action eq 'place_hold') {
+        $res = $handler->place_hold($title_id, $user_token, $email);
+    } else {
+        $res = $handler->$action($title_id, $user_token);
+    }
     if (defined ($res)) {
         return $res;
     } else {
