@@ -111,8 +111,8 @@ function updateCheckoutView() {
     if (xacts.checkouts.length < 1) {
         dojo.removeClass('no_ebook_circs', "hidden");
     } else {
+        dojo.empty('ebook_circs_main_table_body');
         dojo.forEach(xacts.checkouts, function(x) {
-            dojo.empty('ebook_circs_main_table_body');
             var dl_link = '<a href="' + x.download_url + '">' + l_strings.download + '</a>';
             var tr = dojo.create("tr", null, dojo.byId('ebook_circs_main_table_body'));
             dojo.create("td", { innerHTML: x.title }, tr);
@@ -141,6 +141,7 @@ function updateHoldView() {
     if (holds.length < 1) {
         dojo.removeClass('no_ebook_holds', "hidden");
     } else {
+        dojo.empty('ebook_holds_main_table_body');
         dojo.forEach(holds, function(h) {
             var hold_status;
             if (h.is_ready) {
@@ -167,7 +168,6 @@ function updateHoldView() {
                     }
                 });
             };
-            dojo.empty('ebook_holds_main_table_body');
             var tr = dojo.create("tr", { id: "hold-" + h.title_id }, dojo.byId('ebook_holds_main_table_body'));
             dojo.create("td", { innerHTML: h.title }, tr);
             dojo.create("td", { innerHTML: h.author }, tr);
