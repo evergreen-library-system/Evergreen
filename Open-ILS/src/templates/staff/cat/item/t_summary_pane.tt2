@@ -28,7 +28,7 @@
     <div class="flex-cell well">{{copy.price()}}</div>
 
     <div class="flex-cell">[% l('Owning Library') %]</div>
-    <div class="flex-cell well">{{copy.circ_lib().shortname()}}</div>
+    <div class="flex-cell well">{{copy.call_number().owning_lib().shortname()}}</div>
 
     <div class="flex-cell">[% l('Call #') %]</div>
     <div class="flex-cell well">{{copy.call_number().label()}}</div>
