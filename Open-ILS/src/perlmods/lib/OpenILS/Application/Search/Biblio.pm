@@ -1204,10 +1204,8 @@ sub staged_search {
     # fulfill the user-specified limit and offset
     my $all_results = [];
     my $page; # current superpage
-    my $est_hit_count = 0;
     my $current_page_summary = {};
     my $global_summary = {checked => 0, visible => 0, excluded => 0, deleted => 0, total => 0};
-    my $is_real_hit_count = 0;
     my $new_ids = [];
 
     for($page = 0; $page < $max_superpages; $page++) {
@@ -1229,6 +1227,7 @@ sub staged_search {
             $logger->debug("staged search: fetching results from the database");
             $search_hash->{skip_check} = $page * $superpage_size;
             $search_hash->{return_query} = $page == 0 ? 1 : 0;
+
             my $start = time;
             $results = $U->storagereq($method, %$search_hash);
             $search_duration = time - $start;
@@ -1241,12 +1240,6 @@ sub staged_search {
             }
 
             $logger->info("staged search: DB call took $search_duration seconds and returned ".scalar(@$results)." rows, including summary");
-
-            my $hc = $summary->{estimated_hit_count} || $summary->{visible};
-            if($hc == 0) {
-                $logger->info("search returned 0 results: duration=$search_duration: params=".
-                    OpenSRF::Utils::JSON->perl2JSON($search_hash));
-            }
 
             # Create backwards-compatible result structures
             if($IAmMetabib) {
@@ -1270,42 +1263,20 @@ sub staged_search {
 
         my $current_count = scalar(@$all_results);
 
-        if ($page == 0) {
-            foreach (qw/ query_struct canonicalized_query /) {
+        if ($page == 0) { # all summaries are the same, just get the first
+            for (keys %$summary) {
                 $global_summary->{$_} = $summary->{$_};
             }
         }
 
-        $est_hit_count = $summary->{estimated_hit_count} || $summary->{visible}
-            if $page == 0;
-
-        $logger->debug("staged search: located $current_count, with estimated hits=".
-            ($summary->{estimated_hit_count} || "none") .
-            " : visible=" . ($summary->{visible} || "none") . ", checked=" .
-            ($summary->{checked} || "none")
-        );
-
-        if (defined($summary->{estimated_hit_count})) {
-            foreach (qw/ checked visible excluded deleted /) {
-                $global_summary->{$_} += $summary->{$_};
-            }
-            $global_summary->{total} = $summary->{total};
-        }
-
         # we've found all the possible hits
-        last if $current_count == $summary->{visible}
-            and not defined $summary->{estimated_hit_count};
+        last if $current_count == $summary->{visible};
 
         # we've found enough results to satisfy the requested limit/offset
         last if $current_count >= ($user_limit + $user_offset);
 
         # we've scanned all possible hits
-        if($summary->{checked} < $superpage_size) {
-            $est_hit_count = scalar(@$all_results);
-            # we have all possible results in hand, so we know the final hit count
-            $is_real_hit_count = 1;
-            last;
-        }
+        last if($summary->{checked} < $superpage_size);
     }
 
     # Let other backends grab our data now that we're done.
@@ -1317,27 +1288,10 @@ sub staged_search {
 
     my @results = grep {defined $_} @$all_results[$user_offset..($user_offset + $user_limit - 1)];
 
-    # refine the estimate if we have more than one superpage
-    if ($page > 0 and not $is_real_hit_count) {
-        if ($global_summary->{checked} >= $global_summary->{total}) {
-            $est_hit_count = $global_summary->{visible};
-        } else {
-            my $updated_hit_count = $U->storagereq(
-                'open-ils.storage.fts_paging_estimate',
-                $global_summary->{checked},
-                $global_summary->{visible},
-                $global_summary->{excluded},
-                $global_summary->{deleted},
-                $global_summary->{total}
-            );
-            $est_hit_count = $updated_hit_count->{$estimation_strategy};
-        }
-    }
-
     $conn->respond_complete(
         {
             global_summary    => $global_summary,
-            count             => $est_hit_count,
+            count             => $global_summary->{visible},
             core_limit        => $search_hash->{core_limit},
             superpage_size    => $search_hash->{check_limit},
             superpage_summary => $current_page_summary,

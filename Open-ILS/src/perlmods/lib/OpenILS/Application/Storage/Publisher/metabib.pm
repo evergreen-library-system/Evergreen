@@ -3120,14 +3120,6 @@ sub query_parser_fts {
     my $deleted  = $$summary_row{deleted};
     my $excluded = $$summary_row{excluded};
 
-    my $estimate = $visible;
-    if ( $total > $checked && $checked ) {
-
-        $$summary_row{hit_estimate} = FTS_paging_estimate($self, $client, $checked, $visible, $excluded, $deleted, $total);
-        $estimate = $$summary_row{estimated_hit_count} = $$summary_row{hit_estimate}{$estimation_strategy};
-
-    }
-
     delete $$summary_row{id};
     delete $$summary_row{rel};
     delete $$summary_row{record};
@@ -3147,7 +3139,7 @@ sub query_parser_fts {
 
     $client->respond( $summary_row );
 
-    $log->debug("Search yielded ".scalar(@$recs)." checked, visible results with an approximate visible total of $estimate.",DEBUG);
+    $log->debug("Search yielded ".scalar(@$recs)." checked, visible results with an approximate visible total of $visible.",DEBUG);
 
     for my $rec (@$recs) {
         delete $$rec{checked};
