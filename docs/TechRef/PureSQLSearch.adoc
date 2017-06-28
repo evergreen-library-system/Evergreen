@@ -1,0 +1,197 @@
+== Pure-SQL searching
+
+=== Background
+Evergreen stores all data, including that useful for patron and staff search,
+in a normalized schema that is time and space efficient for transactional use
+cases, and provides guarantees on data integrity.  In addition, development is
+made simpler than would be the case otherwise and arbitrary reporting is made
+possible.
+
+However, this structure is not effective for direct, SQL-only search
+functionality in a hierarchical, consortial dataset.  This is a problem that
+is relatively unique to Evergreen, as it is most often employed to host and
+serve large consortia with overlapping bibliographic datasets and
+non-overlapping item and location datasets.  Other search engines, including
+those built into other ILSs, do not generally have to account for
+hierarchically organized location visibility concerns as a primary use case.
+In other words, because it provides functionality that requires a hierarchical
+view of non-bibliographic data, a problem space for Evergreen is essentially
+nonexistent in competing products.
+
+Evergreen's search infrastructure has evolved over the years.  In its current
+form, the software first performs a full text search against extracted
+bibliographic data and limits this initial internal result set to a
+configurable size.  It then investigates the visibility of each result on
+several non-bibliographic axes.  These visibility tests take up the
+preponderance of CPU time spent in search, with full text search of the
+bibliographic data generally completing within milliseconds. The main reason
+this multi-stage mechanism is used is that there are many visibility axes and
+attempting to join all required data sources together in a single query will
+cause the search use case to perform very poorly.  A previous attempt to
+create a pure SQL search mechanism failed for this reason.
+
+A significant drawback of the current approach is that the costs imposed by
+visibility filtering search results using normalized non-bibliographic data,
+either in-query or separated from the main full-text query as it is today,
+make it necessary to place limits on the number of database rows matched by
+full-text query constructs.  This in turn can cause searches to omit results
+in certain situations, such as a large consortium consisting of a few large
+libraries and many small libraries.
+
+However, it has been shown possible to overcome this performance issue by
+providing an extensible way to collect all visibility related information
+together into a small number of novel data structures with a compact in-memory
+representation and very fast comparison functions.  In this way, we are able
+to use pure SQL search strategies and therefore avoid result visibility
+problems while also benefiting from improvements to the core PostgreSQL
+database engine.  Further, this will open the door to indexing improvements,
+such as removal of the need for duplicate data storage, or the use of non-XML
+data storage schemes, which could reduce resource requirements and have a
+direct, positive effect on patron and staff search experience.
+
+=== Overview of existing search logic
+
+. Construct core bibliographic search query
+. Collect non-bibliographic filtering criteria
+. Pass query and filters to a database function
+. Calculate hierarchical location information for visibility testing
+. Open cursor over core query, limited to *superpage_size * max_superpages* records
+. Core query implements bib-level sorting
+. For each result
+.. NEXT if not on requested superpage
+.. Check deleted flag, based on search type
+.. Check transcendence
+... Return result if true
+.. Check for direct Located URI in scope
+... Return result if exists
+.. Check copy status + (circ lib | owning lib) based on modifier
+.. Check peer bib copy status + (circ lib | owning lib) based on modifier
+.. Check copy location based on filter
+.. Check peer bib copy location based on filter
+.. General copy visibility checks
+... If NOT staff
+.... Check for OPAC visible copies (trigger-maintained materialization)
+.... Check for peer bib OPAC visible copies
+... If staff
+.... Confirm no copies here
+.... Confirm no peer bib map
+.... Confirm no copies anywhere
+.... Confirm no Located URIs elsewhere
+.. Return result if not excluded
+. Calculate summary row
+
+=== Overview of new mechanism
+Record and copy information (everything checked in *(7)* above) is collected
+into a novel data structure that allows all visibility-indicating criteria to
+be flattened to integer arrays.  This is facilitated by a database trigger in
+much the same way that basic OPAC copy visibility is collected for copies
+today.
+
+Most identifiers in Evergreen are stored as signed integers of either 32 or 64
+bits.  The smaller 32 bit space allows for approximately two billion positive
+entries, but all identifiers for table rows that are used as visibility axes
+fall into a range of between one and one million for all applicable use cases,
+and all identifiers of interest are positive.  Therefore, we can make use of
+the most significant bits in an integer value to create a per-axis namespacing
+mask.  When applied to the idenfitifer for a visibility axis identifier, this
+mask allows two values that are identical across axis to be identified as
+unique within a combined set of all values.
+
+Sepcifically, we retain the four most significant bits of the integer space
+and create from that 16 potential bitmasks for per-axis segregation of
+identifiers.  Further, we separate copy-centered axes and bibliographic
+record-centered attributes into two separate columns for storage purposes,
+which means we can use the same four bits for different purposes within each
+copy or bib set.
+
+In order to implement existing visibility tests with this infrastructure, six
+copy axes and two record axes are used from the possible 16 from each set.
+See the search.calculate_visibility_attribute() for details.  By using 32 bit
+integers we can collect all of the bitmasked values of each type (copy or bib)
+into a single integer array and leverage the Postgres intarray extension to
+test all axes at once.
+
+At search time, required and user-requested visibility restrictions are
+converted to *query_int* values. Results are directly filtered based on these
+calculated *query_int* values.  This works in a way analogous to record
+attribute filtering, avoiding the need to test statuses, circ and owning
+library visibility, copy locations and location groups, copy OPAC visibility,
+peer bibliographic record, Located URIs, or bibliographic record sources
+directly.
+
+=== Minimum Postgres version requirement
+Due to features, particularly functions, available only in 9.4 and newer that
+are key to the performance of the new method, Postgres 9.4 will need to be the
+new lowest supported version for use with Evergreen.  While some of the new
+features and functions could be implemented as user-defined functions in
+PL/PGSQL, they would not be fast enough to make this pure-SQL search viable.
+
+Among the important improvements that Postgres 9.4 and newer versions bring to
+Evergreen are:
+
+* Version 9.4 improved GIN indexes in ways that directly benefit Evergreen, as well as how anti-joins are planned which matters for some Evergreen searches.
+* Version 9.5 introduced many general performance improvements, especially for joins and sorting, and brought planner improvements that impact complex queries such as those generated by this code.
+* Version 9.6 delivered more general performance improvements, particularly for large servers such as those that Evergreen databases tend to live on, as well as more improvements to GIN indexes, executor changes that can avoid unnecessary work in search queries, new built-in full-text phrase searching, and initial parallel query execution.
+
+=== Performance
+The cost of the non-bibliographic filter value caching maintenance process is
+10-40% faster than existing partial caching logic which it would replace.
+
+The new code achieves up to 10% faster search times than the old, suboptimal
+mechanism time for broad searches.  The new code is faster for more selective
+searches, often by up to 90% faster.  In both broad and narrow search cases
+the new mechanism performs with complete accuracy and does not miss
+small-collection hits in large consortia as the existing code does.
+
+Unsurprisingly, and in addition to the above improvements, performance is
+improved marginally as each successive Postgres version at and beyond 9.4.
+
+=== Page rendering changes
+Previously, Evergreen would request the record details for a user-visible page
+of results in parallel, and then, serially, request the facet data for the
+result set.  Now, the facet data is requested asyncronously in the background
+and then a single feed containing all records on a result page is requested
+syncronously.  By parallelizing the result and facet metadata, page rendering
+time is cut down significantly.  Concurrent requests of the same bibliographic
+record are shared between apache backends to reduce result request time, and by
+making one request instead of ten simultaineously, database load is reduced.  A
+performance improvement of up to 20% in post-search page rendering time is seen
+from this change.
+
+Additionally, cross-apache caching of ancillary data, such as the coded value
+map and other data, via memcache significantly reduces the average page
+rendering time not just for result pages, but most pages generated by
+Evergreen.  An additional performance improvement of up to 50% in post-search
+page rendering time is seen from this change.
+
+While these changes are not directly related to the removal staged search, they
+touch areas impacted by core search changes and provided enough improvement
+that implementing them concurrently with the elimination of staged search
+seemed optimal.
+
+=== User visible configuration changes
+The stock configuration now provides an increased value for *max_superpages*
+in opensrf.xml.  The default is now 100, and the *superpage_size* remains
+1000, for a total limit of 100,000 hits per search.  This is not a limit on
+visibility per se, as all records are visibility tested and ranked before
+limiting, but simply a limit on the number of pages a user could click through
+before reaching the end of the presented result list.
+
+=== Tuning sensitivity
+User-level timeouts are still possible with both the old and new code, given a
+large enough dataset, a broad enough query, and a cold cache.  However, the
+*gin_fuzzy_search_limit* GUC can be used to set a time cap on the new
+mechanism. See https://www.postgresql.org/docs/9.6/static/gin-tips.html for
+background, though the suggested values in the documentation are significantly
+lower than would be readily useful for a large Evergreen instance.
+
+Because it uses a more complex query structure, the new mechanism is somewhat
+more sensitive to Postgres tuning in general.  In particular, lowering
+*random_page_cost* from the default of *4.0* to a more reasonable *2.0* is
+important for proper query planning.  For Evergreen use cases where the search
+indexes and relevant tables are kept in RAM or SSDs are used for storage, this
+value is acceptable and useful in general.
+
+=== Funding and development
+This project was funded by MassLNC and developed by Equinox Open Library
+Initiative.
