@@ -132,7 +132,7 @@
 
         <div class="col-md-2">
           <eg-org-selector label="[% l('Home Library') %]" 
-            selected="searchArgs.home_ou">
+            selected="searchArgs.home_ou" sticky-setting="eg.circ.patron.search.ou">
           </eg-org-selector>
         </div>
 
