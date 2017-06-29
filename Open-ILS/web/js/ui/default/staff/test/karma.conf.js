@@ -50,6 +50,7 @@ module.exports = function(config){
       'services/lovefield.js',
       'services/navbar.js', 'services/date.js',
       'services/user-bucket.js',
+      'services/i18n.js',
       // load app scripts
       'app.js',
       'circ/**/*.js',

@@ -123,6 +123,7 @@ UpUp.start({
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/services/user.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/services/navbar.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/services/ui.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/i18n.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/services/date.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/services/op_change.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/services/lovefield.js"></script>
@@ -184,6 +185,7 @@ UpUp.start({
     s.ITEM_NOT_FOUND = "[% l('Item not found') %]";
     s.CONFIRM_CLEAR_PENDING = "[% l('Clear pending transactions') %]";
     s.CONFIRM_CLEAR_PENDING_BODY = "[% l('Are you certain you want to clear these pending offline transactions? This action is irreversible. Transactions cannot be recovered after clearing!') %]";
+    s.LOCATION_NAME_OU_QUALIFIED = "[% l('{{location_name}} ({{owning_lib_shortname}})') %]";
   }]);
 </script>
 

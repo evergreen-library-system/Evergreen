@@ -183,7 +183,8 @@ module.exports = function(grunt) {
             'services/ui.js',
             'services/date.js',
             'services/op_change.js',
-            'services/file.js'
+            'services/file.js',
+            'services/i18n.js'
         ],
         dest: 'build/js/<%= pkg.name %>.<%= pkg.version %>.min.js'
       },
