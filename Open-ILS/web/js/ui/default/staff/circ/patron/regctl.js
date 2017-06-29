@@ -1810,6 +1810,14 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
                 return patronRegSvc.save_user_settings(
                     new_user, $scope.user_settings); 
             } else {
+                var evt = egCore.evt.parse(new_user);
+
+                if (evt && evt.textcode == 'XACT_COLLISION') {
+                    return egAlertDialog.open(
+                        egCore.strings.PATRON_EDIT_COLLISION).result;
+                }
+
+                // debug only -- should not get here.
                 alert('Patron update failed. \n\n' + js2JSON(new_user));
             }
 
