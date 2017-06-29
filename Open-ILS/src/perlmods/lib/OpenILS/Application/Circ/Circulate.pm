@@ -290,6 +290,16 @@ sub run_method {
 
     } else {
 
+        # checkin and reservation return can result in modifications to
+        # actor.usr.claims_never_checked_out_count without also modifying
+        # actor.last_xact_id.  Perform a no-op update on the patron to
+        # force an update to last_xact_id.
+        if ($circulator->claims_never_checked_out && $circulator->patron) {
+            $circulator->editor->update_actor_user(
+                $circulator->editor->retrieve_actor_user($circulator->patron->id))
+                or return $circulator->editor->die_event;
+        }
+
         $circulator->editor->commit;
     }
     
