@@ -538,6 +538,11 @@ sub set_circ_claims_returned {
         }
     }
 
+    # Now that all data has been munged, do a no-op update of 
+    # the patron to force a change of the last_xact_id value.
+    $e->update_actor_user($e->retrieve_actor_user($circ->usr))
+        or return $e->die_event;
+
     $e->commit;
     return 1;
 }
