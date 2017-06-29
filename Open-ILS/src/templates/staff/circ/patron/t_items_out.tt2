@@ -5,12 +5,12 @@
       circ list is meant to display -->
   <ul class="nav nav-tabs">
     <li ng-class="{active : items_out_display == 'main'}">
-      <a href ng-click="show_main_list()">
+      <a href ng-click="show_main_list(items_out_display=='alt')">
         [% l('Items Checked Out') %] ({{main_list.length}})
       </a>
     </li>
     <li ng-if="show_alt_circs" ng-class="{active : items_out_display == 'alt'}">
-      <a href ng-click="show_alt_list()">
+      <a href ng-click="show_alt_list(items_out_display=='main')">
         [% l('Other/Special Circulations') %] ({{alt_list.length}})
       </a>
     </li>

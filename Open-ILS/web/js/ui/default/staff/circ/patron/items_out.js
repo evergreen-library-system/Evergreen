@@ -55,25 +55,30 @@ function($scope,  $q,  $routeParams,  $timeout,  egCore , egUser,  patronSvc , $
     }
 
     $scope.items_out_display = 'main';
-    $scope.show_main_list = function() {
+    $scope.show_main_list = function(refresh_grid) {
         // don't need a full reset_page() to swap tabs
         $scope.items_out_display = 'main';
         patronSvc.items_out = [];
-        provider.refresh();
+        // only refresh the grid when navigating from a tab that 
+        // shares the same grid.
+        if (refresh_grid) provider.refresh();
     }
 
-    $scope.show_alt_list = function() {
+    $scope.show_alt_list = function(refresh_grid) {
         // don't need a full reset_page() to swap tabs
         $scope.items_out_display = 'alt';
         patronSvc.items_out = [];
-        provider.refresh();
+        // only refresh the grid when navigating from a tab that 
+        // shares the same grid.
+        if (refresh_grid) provider.refresh();
     }
 
     $scope.show_noncat_list = function() {
         // don't need a full reset_page() to swap tabs
         $scope.items_out_display = 'noncat';
         patronSvc.items_out = [];
-        provider.refresh();
+        // Grid refresh is not necessary because switching to the
+        // noncat_list always involves instantiating a new grid.
     }
 
     // Reload the user to pick up changes in items out, fines, etc.
@@ -84,7 +89,7 @@ function($scope,  $q,  $routeParams,  $timeout,  egCore , egUser,  patronSvc , $
         patronSvc.items_out = []; 
         $scope.main_list = [];
         $scope.alt_list = [];
-        provider.refresh() 
+        $timeout(provider.refresh);  // allow scope changes to propagate
     }
 
     var provider = egGridDataProvider.instance({});
@@ -231,6 +236,7 @@ function($scope,  $q,  $routeParams,  $timeout,  egCore , egUser,  patronSvc , $
         var id_list = $scope[$scope.items_out_display + '_list'];
 
         // see if we have the requested range cached
+        // Note this items_out list is reset w/ each items-out tab change
         if (patronSvc.items_out[offset]) {
             return provider.arrayNotifier(
                 patronSvc.items_out, offset, count);
