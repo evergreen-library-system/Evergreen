@@ -666,7 +666,17 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                 $scope.enable_fast_add = false;
                 $scope.fast_item_callnumber = '';
                 $scope.fast_item_barcode = '';
-                $scope.flatEditor = $scope.flatOnly ? true : false;
+                
+                $scope.flatEditor = { isEnabled : $scope.flatOnly ? true : false };
+                
+                egCore.hatch.getItem('cat.marcedit.flateditor').then(function(val) {
+                    $scope.flatEditor.isEnabled = val;
+                });
+                
+                $scope.$watch('flatEditor.isEnabled', function (newVal, oldVal) {
+                    if (newVal != oldVal) egCore.hatch.setItem('cat.marcedit.flateditor', newVal);
+                });
+
                 $scope.brandNewRecord = false;
                 $scope.bib_source = null;
                 $scope.record_type = $scope.recordType || 'bre';
@@ -696,7 +706,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                 };
 
                 $scope.refreshVisual = function () {
-                    if (!$scope.flatEditor) {
+                    if (!$scope.flatEditor.isEnabled) {
                         $scope.controlfields = $scope.record.fields.filter(function(f){ return f.isControlfield() });
                         $scope.datafields = $scope.record.fields.filter(function(f){ return !f.isControlfield() });
                     }
