@@ -93,8 +93,11 @@ function($scope,  $q,  $routeParams,  $timeout,  egCore , egUser,  patronSvc , $
     function fetch_circs(id_list, offset, count) {
         if (!id_list.length) return $q.when();
 
+        var deferred = $q.defer();
+        var rendered = 0;
+
         // fetch the lot of circs and stream the results back via notify
-        return egCore.pcrud.search('circ', {id : id_list},
+        egCore.pcrud.search('circ', {id : id_list},
             {   flesh : 4,
                 flesh_fields : {
                     circ : ['target_copy', 'workstation', 'checkin_workstation'],
@@ -114,7 +117,7 @@ function($scope,  $q,  $routeParams,  $timeout,  egCore , egUser,  patronSvc , $
                 // we need an order-by to support paging
                 order_by : {circ : ['xact_start']} 
 
-        }).then(null, null, function(circ) {
+        }).then(deferred.resolve, null, function(circ) {
             circ.circ_lib(egCore.org.get(circ.circ_lib())); // local fleshing
 
             if (circ.target_copy().call_number().id() == -1) {
@@ -127,14 +130,23 @@ function($scope,  $q,  $routeParams,  $timeout,  egCore , egUser,  patronSvc , $
             }
 
             patronSvc.items_out.push(circ); // toss it into the cache
-            return circ;
+
+            // We fetch all circs for client-side sorting, but only
+            // notify the caller for the page of requested circs.  
+            if (rendered++ >= offset && rendered <= count)
+                deferred.notify(circ);
         });
+
+        return deferred.promise;
     }
 
     function fetch_noncat_circs(id_list, offset, count) {
         if (!id_list.length) return $q.when();
 
-        return egCore.pcrud.search('ancc', {id : id_list},
+        var deferred = $q.defer();
+        var rendered = 0;
+
+        egCore.pcrud.search('ancc', {id : id_list},
             {   flesh : 1,
                 flesh_fields : {ancc : ['item_type','staff']},
                 // TODO: LP#1697954 Fetch all circs on grid render 
@@ -145,7 +157,7 @@ function($scope,  $q,  $routeParams,  $timeout,  egCore , egUser,  patronSvc , $
                 // we need an order-by to support paging
                 order_by : {circ : ['circ_time']} 
 
-        }).then(null, null, function(noncat_circ) {
+        }).then(deferred.resolve, null, function(noncat_circ) {
 
             // calculate the virtual due date from the item type duration
             var seconds = egCore.date.intervalToSeconds(
@@ -158,8 +170,14 @@ function($scope,  $q,  $routeParams,  $timeout,  egCore , egUser,  patronSvc , $
             noncat_circ.circ_lib(egCore.org.get(noncat_circ.circ_lib()));
 
             patronSvc.items_out.push(noncat_circ); // cache it
-            return noncat_circ;
+
+            // We fetch all noncat circs for client-side sorting, but
+            // only notify the caller for the page of requested circs.  
+            if (rendered++ >= offset && rendered <= count)
+                deferred.notify(noncat_circ);
         });
+
+        return deferred.promise;
     }
 
 
