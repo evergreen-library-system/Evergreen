@@ -13,8 +13,8 @@
 
 angular.module('egCoreMod')
 
-.config(['$routeProvider','$locationProvider','$compileProvider',
- function($routeProvider , $locationProvider , $compileProvider) {
+.config(['$locationProvider','$compileProvider',
+ function($locationProvider , $compileProvider) {
     $locationProvider.html5Mode(true);
     $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|blob):/);
 }])
