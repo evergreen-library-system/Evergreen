@@ -84,7 +84,8 @@
   <eg-grid-field label="[% l('Workstation') %]" path='workstation.name'></eg-grid-field>
   <eg-grid-field label="[% l('Checkin Workstation') %]" path='checkin_workstation.name'></eg-grid-field>
   <eg-grid-field label="[% l('Checkout / Renewal Library') %]" path='circ_lib.shortname'></eg-grid-field>
-  <eg-grid-field label="[% l('Owning Library') %]" path='target_copy.call_number.owning_lib.shortname'></eg-grid-field>
+  <eg-grid-field label="[% l('Circulation Library') %]" path='target_copy.circ_lib.shortname' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Owning Library') %]" path='target_copy.call_number.owning_lib.shortname' hidden></eg-grid-field>
   <eg-grid-field label="[% l('Renewals Remaining') %]" path='renewal_remaining'></eg-grid-field>
   <eg-grid-field label="[% l('Fines Stopped') %]" path='stop_fines'></eg-grid-field>
   <eg-grid-field label="[% l('Title') %]" path="target_copy.call_number.record.simple_record.title" name="title">
