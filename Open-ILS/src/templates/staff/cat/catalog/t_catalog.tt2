@@ -28,6 +28,9 @@
     <button type="button" class="btn btn-default" ng-click="add_to_record_bucket()">
         [% l('Add To Bucket') %]
     </button>
+    <button type="button" class="btn btn-default" ng-click="view_place_orders()">
+        [% l('View/Place Orders') %]
+    </button>
     <div class="btn-group" uib-dropdown dropdown-append-to-body>
         <button id="mark-for-button" type="button" class="btn btn-default" uib-dropdown-toggle>
             [% l('Mark for:') %] <span class="caret"></span>
