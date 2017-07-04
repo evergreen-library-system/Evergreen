@@ -29,7 +29,7 @@ dojo.addOnLoad(function() {
                             if (holdings.formats.length > 0) {
                                 var formats_ul = dojo.create("ul", null, ebook.rec_id + '_formats');
                                 dojo.forEach(holdings.formats, function(f) {
-                                    dojo.create("li", { innerHTML: f }, formats_ul);
+                                    dojo.create("li", { innerHTML: f.name }, formats_ul);
                                 });
                                 var status_node = dojo.byId(ebook.rec_id + '_status');
                                 var status_str = holdings.copies_available + ' of ' + holdings.copies_owned + ' available';

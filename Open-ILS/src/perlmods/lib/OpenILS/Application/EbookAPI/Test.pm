@@ -272,6 +272,9 @@ sub checkout {
     # Patron ID or patron auth token, as returned by do_patron_auth().
     my $user_token = shift;
 
+    # Ebook format to be checked out (optional, not used here).
+    my $format = shift;
+
     # If checkout succeeds, the response is a hashref with the following fields:
     # - due_date
     # - xact_id (optional)
@@ -503,3 +506,23 @@ sub get_patron_holds {
     return $self->{holds};
 }
 
+sub do_get_download_link {
+    my $self = shift;
+    my $request_link = shift;
+
+    # For some vendors (e.g. OverDrive), the workflow is as follows:
+    #
+    # 1. Perform a checkout.
+    # 2. Checkout response contains a URL which we use to request a
+    #    format-specific download link for the checked-out title.
+    # 3. Submit a request to the request link.
+    # 4. Response contains a (temporary/dynamic) URL which the user
+    #    clicks on to download the ebook in the desired format.
+    #    
+    # For other vendors, the download link for a title is static and not
+    # format-dependent.  In that case, we just return the original request link
+    # (but ideally the UI will skip the download link request altogether, since
+    # it's superfluous in that case).
+
+    return $request_link;
+}

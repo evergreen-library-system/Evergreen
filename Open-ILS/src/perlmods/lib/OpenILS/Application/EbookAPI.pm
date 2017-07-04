@@ -481,7 +481,7 @@ __PACKAGE__->register_method(
 # - barcode: patron barcode
 #
 sub do_xact {
-    my ($self, $conn, $auth, $session_id, $title_id, $barcode, $email) = @_;
+    my ($self, $conn, $auth, $session_id, $title_id, $barcode, $param) = @_;
 
     my $action;
     if ($self->api_name =~ /checkout/) {
@@ -509,9 +509,12 @@ sub do_xact {
 
     # handler method constructs and submits request (and handles any external authentication)
     my $res;
-    # place_hold has email as optional additional param
-    if ($action eq 'place_hold') {
-        $res = $handler->place_hold($title_id, $user_token, $email);
+    if ($action eq 'checkout') {
+        # checkout has format as optional additional param
+        $res = $handler->checkout($title_id, $user_token, $param);
+    } elsif ($action eq 'place_hold') {
+        # place_hold has email as optional additional param
+        $res = $handler->place_hold($title_id, $user_token, $param);
     } else {
         $res = $handler->$action($title_id, $user_token);
     }
@@ -840,6 +843,42 @@ __PACKAGE__->register_method(
         ],
         return => {
             desc => 'Returns a hashref of transactions: { checkouts => [], holds => [], failed => [] }',
+            type => 'hashref'
+        }
+    }
+);
+
+sub get_download_link {
+    my ($self, $conn, $auth, $session_id, $request_link) = @_;
+    my $handler = new_handler($session_id);
+    return $handler->do_get_download_link($request_link);
+}
+__PACKAGE__->register_method(
+    method => 'get_download_link',
+    api_name => 'open-ils.ebook_api.title.get_download_link',
+    api_level => 1,
+    argc => 3,
+    signature => {
+        desc => "Get download link for an OverDrive title that has been checked out",
+        params => [
+            {
+                name => 'authtoken',
+                desc => 'Authentication token',
+                type => 'string'
+            },
+            {
+                name => 'session_id',
+                desc => 'The session ID (provided by open-ils.ebook_api.start_session)',
+                type => 'string'
+            },
+            {
+                name => 'request_link',
+                desc => 'The URL used to request a download link',
+                type => 'string'
+            }
+        ],
+        return => {
+            desc => 'Success: { url => "http://example.com/download-link" } / Failure: { error_msg => "Download link request failed." }',
             type => 'hashref'
         }
     }

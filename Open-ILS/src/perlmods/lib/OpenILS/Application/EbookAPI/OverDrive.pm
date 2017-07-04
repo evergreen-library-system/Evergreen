@@ -376,10 +376,13 @@ sub get_title_info {
     };
     if (my $res = $self->handle_http_request($req, $self->{session_id})) {
         if ($res->{content}->{title}) {
-            return {
+            my $info = {
                 title  => $res->{content}->{title},
                 author => $res->{content}->{creators}[0]{name}
             };
+            # Append format information (useful for checkouts).
+            $info->{formats} = $self->get_formats($title_id);
+            return $info;
         } else {
             $logger->error("EbookAPI: OverDrive metadata lookup failed for $title_id");
         }
@@ -446,6 +449,20 @@ sub do_holdings_lookup {
     }
 
     # request available formats
+    $holdings->{formats} = $self->get_formats($title_id);
+
+    return $holdings;
+}
+
+# Returns a list of available formats for a given title.
+sub get_formats {
+    my ($self, $title_id) = @_;
+    $self->do_client_auth() if (!$self->{bearer_token});
+    $self->get_library_info() if (!$self->{collection_token});
+    my $collection_token = $self->{collection_token};
+
+    my $formats = [];
+
     my $format_req = {
         method  => 'GET',
         uri     => $self->{discovery_base_uri} . "/collections/$collection_token/products/$title_id/metadata"
@@ -453,7 +470,7 @@ sub do_holdings_lookup {
     if (my $format_res = $self->handle_http_request($format_req, $self->{session_id})) {
         if ($format_res->{content}->{formats}) {
             foreach my $f (@{$format_res->{content}->{formats}}) {
-                push @{$holdings->{formats}}, $f->{name};
+                push @$formats, { id => $f->{id}, name => $f->{name} };
             }
         } else {
             $logger->info("EbookAPI: OverDrive holdings format request for title $title_id contained no format information");
@@ -462,7 +479,7 @@ sub do_holdings_lookup {
         $logger->error("EbookAPI: failed to retrieve OverDrive holdings formats for title $title_id");
     }
 
-    return $holdings;
+    return $formats;
 }
 
 # POST https://patron.api.overdrive.com/v1/patrons/me/checkouts
@@ -500,8 +517,17 @@ sub do_holdings_lookup {
 #     ],
 #     ...
 # }
+#
+# Our return value looks like this:
+# {
+#     due_date => "10/14/2013 10:56:00 AM",
+#     formats => [
+#         "ebook-overdrive" => "https://patron.api.overdrive.com/v1/patrons/me/checkouts/76C1B7D0-17F4-4C05-8397-C66C17411584/formats/ebook-overdrive/downloadlink?errorpageurl={errorpageurl}&odreadauthurl={odreadauthurl}",
+#         ...
+#     ]
+# }
 sub checkout {
-    my ($self, $title_id, $patron_token) = @_;
+    my ($self, $title_id, $patron_token, $format) = @_;
     my $request_content = {
         fields => [
             {
@@ -510,6 +536,9 @@ sub checkout {
             }
         ]
     };
+    if ($format) {
+        push @{$request_content->{fields}}, { name => 'formatType', value => $format };
+    }
     my $req = {
         method  => 'POST',
         uri     => $self->{circulation_base_uri} . "/patrons/me/checkouts",
@@ -517,7 +546,16 @@ sub checkout {
     };
     if (my $res = $self->handle_http_request($req, $self->{session_id})) {
         if ($res->{content}->{expires}) {
-            return { due_date => $res->{content}->{expires} };
+            my $checkout = { due_date => $res->{content}->{expires} };
+            if (defined $res->{content}->{formats}) {
+                my $formats = {};
+                foreach my $f (@{$res->{content}->{formats}}) {
+                    my $ftype = $f->{formatType};
+                    $formats->{$ftype} = $f->{linkTemplates}->{downloadLink}->{href};
+                }
+                $checkout->{formats} = $formats;
+            }
+            return $checkout;
         }
         $logger->error("EbookAPI: checkout failed for OverDrive title $title_id");
         return { error_msg => ( (defined $res->{content}) ? $res->{content} : 'Unknown checkout error' ) };
@@ -637,12 +675,17 @@ sub get_patron_checkouts {
         foreach my $checkout (@{$res->{content}->{checkouts}}) {
             my $title_id = $checkout->{reserveId};
             my $title_info = $self->get_title_info($title_id);
-            # TODO get download URL - need to "lock in" a format first, see OD Checkouts API docs
+            my $formats = {};
+            foreach my $f (@{$checkout->{formats}}) {
+                my $ftype = $f->{formatType};
+                $formats->{$ftype} = $f->{linkTemplates}->{downloadLink}->{href};
+            };
             push @$checkouts, {
                 title_id => $title_id,
                 due_date => $checkout->{expires},
                 title => $title_info->{title},
-                author => $title_info->{author}
+                author => $title_info->{author},
+                formats => $formats
             }
         };
         $self->{checkouts} = $checkouts;
@@ -701,6 +744,35 @@ sub do_get_patron_xacts {
         uri     => $self->{circulation_base_uri} . "/patrons/me/$xact_type"
     };
     return $self->handle_http_request($req, $self->{session_id});
+}
+
+# get download URL for checked-out title
+sub do_get_download_link {
+    my ($self, $request_link) = @_;
+    # Request links use the same domain as the circulation base URI, but they
+    # are apparently always plain HTTP.  The request link still works if you
+    # use HTTPS instead.  So, if our circulation base URI uses HTTPS, let's
+    # force the request link to HTTPS too, for two reasons:
+    # 1. A preference for HTTPS is implied by the library's circulation base
+    #    URI setting.
+    # 2. The base URI of the request link has to match the circulation base URI
+    #    (including the same protocol) in order for the handle_http_request()
+    #    method above to automatically re-authenticate the patron, if required.
+    if ($self->{circulation_base_uri} =~ /^https:/) {
+        $request_link =~ s/^http:/https:/;
+    }
+    my $req = {
+        method  => 'GET',
+        uri     => $request_link
+    };
+    if (my $res = $self->handle_http_request($req, $self->{session_id})) {
+        if ($res->{content}->{links}->{contentlink}->{href}) {
+            return { url => $res->{content}->{links}->{contentlink}->{href} };
+        }
+        return { error_msg => ( (defined $res->{content}) ? $res->{content} : 'Could not get content link' ) };
+    }
+    $logger->error("EbookAPI: no response received from OverDrive server");
+    return;
 }
 
 1;
