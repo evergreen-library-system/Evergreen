@@ -594,10 +594,11 @@ function($window , egStrings) {
             selected: "=",
             egDisabled: "=",
             allowAll: "@",
+            focusMe: "=?"
         },
         template:
             '<div class="input-group">'+
-                '<input type="text" ng-disabled="egDisabled" class="form-control" ng-model="selected" ng-change="makeOpen()">'+
+                '<input type="text" ng-disabled="egDisabled" class="form-control" ng-model="selected" ng-change="makeOpen()" focus-me="focusMe">'+
                 '<div class="input-group-btn" dropdown ng-class="{open:isopen}">'+
                     '<button type="button" ng-click="showAll()" class="btn btn-default dropdown-toggle"><span class="caret"></span></button>'+
                     '<ul class="dropdown-menu dropdown-menu-right">'+
@@ -852,7 +853,8 @@ function($window , egStrings) {
                 ngRequired : '=',
                 hideDatePicker : '=',
                 dateFormat : '=?',
-                outOfRange : '=?'
+                outOfRange : '=?',
+                focusMe : '=?'
             },
             require: 'ngModel',
             templateUrl: './share/t_datetime',
