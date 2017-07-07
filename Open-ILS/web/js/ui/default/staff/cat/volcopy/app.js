@@ -1207,7 +1207,10 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                                         ((!$scope.only_vols) ? true : false)
                                     );
 
-                                    if (proto.barcode) cp.barcode( proto.barcode );
+                                    if (proto.barcode) {
+                                        cp.barcode( proto.barcode );
+                                        cp.empty_barcode = false;
+                                    }
 
                                     itemSvc.addCopy(cp)
                                 });
@@ -1254,7 +1257,10 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                                     true
                                 );
 
-                                if (proto.barcode) cp.barcode( proto.barcode );
+                                if (proto.barcode) {
+                                    cp.barcode( proto.barcode );
+                                    cp.empty_barcode = false;
+                                }
 
                                 itemSvc.addCopy(cp)
                             }
