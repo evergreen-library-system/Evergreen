@@ -221,6 +221,8 @@ include::admin/booking-admin.adoc[]
 
 include::admin/cn_prefixes_and_suffixes.adoc[]
 
+include::admin/desk_payments.adoc[]
+
 include::admin/circulation_limit_groups.adoc[]
 
 include::admin/copy_statuses.adoc[]
