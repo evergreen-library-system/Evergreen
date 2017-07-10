@@ -581,7 +581,7 @@ angular.module('egCoreMod')
     service.init_patron = function(current) {
 
         if (!current)
-            return service.init_new_patron();
+            return $q.when(service.init_new_patron());
 
         service.patron = current;
         return $q.when(service.init_existing_patron(current));
@@ -656,6 +656,7 @@ angular.module('egCoreMod')
         });
 
         service.patron = patron;
+        return patron;
     }
 
     service.init_new_patron = function() {
@@ -1180,13 +1181,12 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
 
         patronRegSvc.init(),
 
-    ]).then(function(){ return patronRegSvc.init_patron(patronSvc ? patronSvc.current : null) })
-      .then(patronRegSvc.get_user_settings)
-      .then(function() {
+    ]).then(function(){ return patronRegSvc.init_patron(patronSvc ? patronSvc.current : patronRegSvc.patron ) })
+      .then(function(patron) {
         // called after initTab and patronRegSvc.init have completed
         // in standalone mode, we have no patronSvc
         var prs = patronRegSvc;
-        $scope.patron = prs.patron;
+        $scope.patron = patron;
         $scope.field_doc = prs.field_doc;
         $scope.edit_profiles = prs.edit_profiles;
         $scope.ident_types = prs.ident_types;
@@ -1206,13 +1206,13 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
         prs.user_settings = {};
 
         extract_hold_notify();
+        if ($scope.patron.isnew)
+            set_new_patron_defaults(prs);
+        
         $scope.handle_home_org_changed();
 
         if ($scope.org_settings['ui.patron.edit.default_suggested'])
             $scope.edit_passthru.vis_level = 1;
-
-        if ($scope.patron.isnew) 
-            set_new_patron_defaults(prs);
 
         // Stat cats are fetched from open-ils.storage, where 't'==1
         $scope.hasRequiredStatCat = prs.stat_cats.filter(
