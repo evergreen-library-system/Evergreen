@@ -1293,6 +1293,7 @@ sub staged_search {
             global_summary    => $global_summary,
             count             => $global_summary->{visible},
             core_limit        => $search_hash->{core_limit},
+            superpage         => $page,
             superpage_size    => $search_hash->{check_limit},
             superpage_summary => $current_page_summary,
             facet_key         => $facet_key,

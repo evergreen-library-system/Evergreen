@@ -2,6 +2,7 @@
 <div class="results_header_nav1">
     <span class="h1">[% ctx.bookbag ? l('List Contents') : l('Search Results') %]</span>
     <span class="result_number">
+                [%~ IF ctx.hit_count == ctx.pagable_limit; ctx.hit_count = ctx.hit_count _ '+'; END ~%]
                 [%~ |l('<span class="result_count_number">' _ ctx.result_start _'</span>',
                 '<span class="result_count_number">' _ ctx.result_stop _ '</span>',
                 '<span class="result_count_number">' _ ctx.hit_count _ '</span>')  ~%]

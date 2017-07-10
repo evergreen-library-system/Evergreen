@@ -470,6 +470,9 @@ sub load_rresults {
 
     $ctx->{ids} = $rec_ids;
     $ctx->{hit_count} = $results->{count};
+    $ctx->{superpage} = $results->{superpage};
+    $ctx->{superpage_size} = $results->{superpage_size};
+    $ctx->{pagable_limit} = $results->{core_limit};
     $ctx->{query_struct} = $results->{global_summary}{query_struct};
     $logger->debug('query struct: '. Dumper($ctx->{query_struct}));
     $ctx->{canonicalized_query} = $results->{global_summary}{canonicalized_query};

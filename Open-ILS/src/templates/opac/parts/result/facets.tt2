@@ -120,7 +120,7 @@ FOR facet IN sorted_facets;
                               href="[% mkurl('', {facet => new_facets}) %]" rel="nofollow" vocab="">[% display_value %]</a>
                             [% END %]
                         </div>
-                        <div class="count">([% facet_data.count %])</div>
+                        <div class="count">([% facet_data.count; IF facet_data.count == (ctx.superpage + 1) * ctx.superpage_size; '+'; END %])</div>
                     </div>
                 [% 
                     ELSE;
