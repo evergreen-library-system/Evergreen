@@ -678,7 +678,6 @@ div.format_icon {
     [%- ELSE %]
     padding: 7px 0px 3px 13px;
     [%- END %]
-    white-space: nowrap;
 }
 
 #rdetails_status td[headers=copy_header_library], 
