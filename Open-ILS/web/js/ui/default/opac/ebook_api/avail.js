@@ -1,4 +1,3 @@
-<script type="text/javascript">
 dojo.addOnLoad(function() {
 
     // detect ebooks on current page for each vendor
@@ -51,4 +50,3 @@ dojo.addOnLoad(function() {
     });
 
 });
-</script>

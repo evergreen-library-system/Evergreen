@@ -123,7 +123,6 @@
 
 [% IF ebook_api.enabled == 'true' %]
     [% INCLUDE "opac/parts/ebook_api/base_js.tt2" %]
-    [% INCLUDE "opac/parts/ebook_api/avail_js.tt2" IF (ctx.page == 'rresult' OR ctx.page == 'record') %]
     [% INCLUDE "opac/parts/ebook_api/login_js.tt2" IF (ctx.page == 'login') %]
 [% END %]
 
