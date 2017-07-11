@@ -504,7 +504,6 @@ div.format_icon {
 
 #rdetails_status td {
     padding: 7px 0px 3px 13px;
-    white-space: nowrap;
 }
 
 #rdetails_status td[headers=copy_header_library], 
