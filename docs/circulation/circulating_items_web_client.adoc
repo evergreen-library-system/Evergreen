@@ -49,6 +49,61 @@ Before you scan the item, select the *Specific Due Date* checkbox. Enter the dat
 image::media/specify_due_date1_web_client.png[]
 
 
+Email Checkout Receipts
+^^^^^^^^^^^^^^^^^^^^^^^
+
+This feature allows patrons to receive checkout receipts through email at the circulation desk and in the Evergreen self-checkout interface.  Patrons need to opt in to receive email receipts by default and must have an email address associated with their account.  Opt in can be staff mediated at the time of account creation or in existing accounts.  Patrons can also opt in directly in their OPAC account or through patron self-registration.  This feature does not affect the behavior of checkouts from SIP2 devices.
+
+Staff Client Check Out
+++++++++++++++++++++++
+
+When a patron has opted to receive email checkout receipts by default, an envelope icon representing email will appear next to the receipt options in the Check Out screen.  A printer icon representing a physical receipt appears if the patron has not opted in to the default email receipts.
+
+image::media/ereceipts5_web_client.PNG[]
+
+Staff can click *Quick Receipt* and the default checkout receipt option will be triggered—an email will be sent or the receipt will print out.  The Quick Receipt option allows staff to stay in the patron account after completing the transaction.  Alternatively, staff can click *Done* to trigger the default checkout receipt and close out the patron account.  By clicking on the arrow next to the Quick Receipt or Done buttons, staff can select which receipt option to use, regardless of the selected default.  The email receipt option will be disabled if the patron account does not have an email address.
+
+Self Checkout
++++++++++++++
+
+In the Self Checkout interface, patrons will have the option to select a print or email checkout receipt, or no receipt.  The radio button for the patron's default receipt option will be selected automatically in the interface.  Patrons can select a different receipt option if desired.  The email receipt radio button will be disabled if there is no email address associated with the patron's account.
+
+image::media/ereceipts6_web_client.PNG[]
+
+Opt In
+++++++
+
+*Staff Mediated Opt In At Registration*
+
+Patrons can be opted in to receive email checkout receipts by default by library staff upon the creation of their library account.  Within the patron registration form, there is a new option below the Email Address field to select _Email checkout receipts by default?_.  Select this option if the patron wants email checkout receipts to be their default.  Save any changes.
+
+image::media/ereceipts1_web_client.PNG[]
+
+*Staff Mediated Opt In After Registration*
+
+Staff can also select email checkout receipts as the default option in a patron account after initial registration.  Within the patron account go to *Edit* and select _Email checkout receipts by default?_.  Make sure the patron also has an email address associated with their account.  Save any changes.
+
+image::media/ereceipts2_web_client.PNG[]
+
+*Patron Opt In – Self-Registration Form*
+
+If your library offers patrons the ability to request a library card through the patron self-registration form, they can select email checkout receipts by default in the initial self-registration form:
+
+image::media/ereceipts3_web_client.PNG[]
+
+*Patron Opt In - OPAC Account*
+
+Patrons can also opt in to receive email checkout receipts by default directly in their OPAC account.  After logging in, patrons can go to *Account Preferences->Notification Preferences* and enable _Email checkout receipts by default?_ and click *Save*.
+
+image::media/ereceipts4_web_client.PNG[]
+
+
+Email Checkout Receipt Configuration
+++++++++++++++++++++++++++++++++++++
+
+Email checkout receipts will be sent out through a Notifications/Action Trigger called Email Checkout Receipt.  The email template and action trigger can be customized by going to *Administration->Local Administration->Notifications/Action Trigger->Email Checkout Receipt*.
+
+
 Check In
 ~~~~~~~~
 
