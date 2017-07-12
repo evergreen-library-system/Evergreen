@@ -72,8 +72,8 @@ IF has_copies or ctx.foreign_copies;
     </td>
     <td>[% bib.target_copy.call_number.label | html %]</td>
     <td>[% bib.target_copy.barcode | html %]</td>
-    <td>[% copy_info.copy_location | html %]</td>
-    <td>[% copy_info.copy_status | html %]</td>
+    <td>[% bib.target_copy.location.name | html %]</td>
+    <td>[% bib.target_copy.status.name | html %]</td>
     <td>[% date.format(ctx.parse_datetime(copy_info.due_date, copy_info.circ_circ_lib),DATE_FORMAT) %]</td>
 </tr>
    [%- END; # FOREACH peer
