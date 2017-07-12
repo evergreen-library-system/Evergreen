@@ -67,8 +67,8 @@ END;
     </td>
     <td>[% bib.target_copy.call_number.label | html %]</td>
     <td>[% bib.target_copy.barcode | html %]</td>
-    <td>[% copy_info.copy_location | html %]</td>
-    <td>[% copy_info.copy_status | html %]</td>
+    <td>[% bib.target_copy.location.name | html %]</td>
+    <td>[% bib.target_copy.status.name | html %]</td>
     <td>[% copy_info.due_date | html %]</td>
 </tr>
    [%- END; # FOREACH peer
