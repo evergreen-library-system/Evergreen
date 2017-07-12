@@ -710,6 +710,7 @@ sub get_patron_holds {
                 queue_size => $hold->{numberOfHolds},
                 # TODO: special handling for ready-to-checkout holds
                 is_ready => ( $hold->{actions}->{checkout} ) ? 1 : 0,
+                is_frozen => ( $hold->{holdSuspension} ) ? 1 : 0,
                 create_date => $hold->{holdPlacedDate},
                 expire_date => ( $hold->{holdExpires} ) ? $hold->{holdExpires} : '-',
                 title => $title_info->{title},
