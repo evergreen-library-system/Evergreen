@@ -79,6 +79,16 @@ function(egCore) {
                 {barcode : barcode, deleted : 'f'}, service.flesh);
         } else {
             promise = egCore.pcrud.retrieve('acp', id, service.flesh);
+    //Retrieve separate copy, aacs, and accs information
+    service.getCopy = function(barcode, id) {
+        if (barcode) {
+            // handle barcode completion
+            return egCirc.handle_barcode_completion(barcode)
+            .then(function(actual_barcode) {
+                return egCore.pcrud.search(
+                    'acp', {barcode : actual_barcode, deleted : 'f'},
+                    service.flesh).then(function(copy) {return copy});
+            });
         }
 
         var lastRes;

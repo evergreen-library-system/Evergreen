@@ -1,0 +1,22 @@
+<div>
+  <div class="modal-header">
+    <button type="button" class="close" ng-click="cancel()" 
+      aria-hidden="true">&times;</button>
+    <h4 class="modal-title">[% l('Barcode Choice') %]</h4>
+  </div>
+  <div class="modal-body">
+    <div>
+      [% l('After auto completion multiple barcodes may match your input. Please choose the barcode you intended below.') %]
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div ng-repeat="match in matches">
+      <button class="btn" ng-click="ok(match.barcode)">
+      {{match.barcode}} : {{match.title}}[% l(' from ') %]{{match.org_name}} ({{match.org_shortname}})
+      </button>
+    </div>
+    <div>
+      <button class="btn" ng-click="cancel()">[% l('None of the above') %]</button>
+    </div>
+  </div>
+</div>
