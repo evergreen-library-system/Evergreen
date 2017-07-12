@@ -125,40 +125,47 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
         console.debug('egCirc.checkout() : ' 
             + js2JSON(params) + ' : ' + js2JSON(options));
 
-        var promise = options.check_barcode ? 
-            service.test_barcode(params.copy_barcode) : $q.when();
+        // handle barcode completion
+        return service.handle_barcode_completion(params.copy_barcode)
+        .then(function(barcode) {
+            console.debug('barcode after completion: ' + barcode);
+            params.copy_barcode = barcode;
 
-        // avoid re-check on override, etc.
-        delete options.check_barcode;
+            var promise = options.check_barcode ? 
+                service.test_barcode(params.copy_barcode) : $q.when();
 
-        return promise.then(function() {
+            // avoid re-check on override, etc.
+            delete options.check_barcode;
 
-            var method = 'open-ils.circ.checkout.full';
-            if (options.override) method += '.override';
+            return promise.then(function() {
 
-            return egCore.net.request(
-                'open-ils.circ', method, egCore.auth.token(), params
+                var method = 'open-ils.circ.checkout.full';
+                if (options.override) method += '.override';
 
-            ).then(function(evt) {
+                return egCore.net.request(
+                    'open-ils.circ', method, egCore.auth.token(), params
 
-                if (!angular.isArray(evt)) evt = [evt];
+                ).then(function(evt) {
 
-                if (evt[0].payload && evt[0].payload.auto_renew == 1) {
-                    // open circulation found with auto-renew toggle on.
-                    console.debug('Auto-renewing item ' + params.copy_barcode);
-                    options.auto_renew = true;
-                    return service.renew(params, options);
-                }
+                    if (!angular.isArray(evt)) evt = [evt];
 
-                var action = params.noncat ? 'noncat_checkout' : 'checkout';
+                    if (evt[0].payload && evt[0].payload.auto_renew == 1) {
+                        // open circulation found with auto-renew toggle on.
+                        console.debug('Auto-renewing item ' + params.copy_barcode);
+                        options.auto_renew = true;
+                        return service.renew(params, options);
+                    }
 
-                return service.flesh_response_data(action, evt, params, options)
-                .then(function() {
-                    return service.handle_checkout_resp(evt, params, options);
-                })
-                .then(function(final_resp) {
-                    return service.munge_resp_data(final_resp,action,method)
-                })
+                    var action = params.noncat ? 'noncat_checkout' : 'checkout';
+
+                    return service.flesh_response_data(action, evt, params, options)
+                    .then(function() {
+                        return service.handle_checkout_resp(evt, params, options);
+                    })
+                    .then(function(final_resp) {
+                        return service.munge_resp_data(final_resp,action,method)
+                    })
+                });
             });
         });
     }
@@ -173,33 +180,39 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
         console.debug('egCirc.renew() : ' 
             + js2JSON(params) + ' : ' + js2JSON(options));
 
-        var promise = options.check_barcode ? 
-            service.test_barcode(params.copy_barcode) : $q.when();
+        // handle barcode completion
+        return service.handle_barcode_completion(params.copy_barcode)
+        .then(function(barcode) {
+            params.copy_barcode = barcode;
 
-        // avoid re-check on override, etc.
-        delete options.check_barcode;
+            var promise = options.check_barcode ? 
+                service.test_barcode(params.copy_barcode) : $q.when();
 
-        return promise.then(function() {
+            // avoid re-check on override, etc.
+            delete options.check_barcode;
 
-            var method = 'open-ils.circ.renew';
-            if (options.override) method += '.override';
+            return promise.then(function() {
 
-            return egCore.net.request(
-                'open-ils.circ', method, egCore.auth.token(), params
+                var method = 'open-ils.circ.renew';
+                if (options.override) method += '.override';
 
-            ).then(function(evt) {
+                return egCore.net.request(
+                    'open-ils.circ', method, egCore.auth.token(), params
 
-                if (!angular.isArray(evt)) evt = [evt];
+                ).then(function(evt) {
 
-                return service.flesh_response_data(
-                    'renew', evt, params, options)
-                .then(function() {
-                    return service.handle_renew_resp(evt, params, options);
-                })
-                .then(function(final_resp) {
-                    final_resp.auto_renew = options.auto_renew;
-                    return service.munge_resp_data(final_resp,'renew',method)
-                })
+                    if (!angular.isArray(evt)) evt = [evt];
+
+                    return service.flesh_response_data(
+                        'renew', evt, params, options)
+                    .then(function() {
+                        return service.handle_renew_resp(evt, params, options);
+                    })
+                    .then(function(final_resp) {
+                        final_resp.auto_renew = options.auto_renew;
+                        return service.munge_resp_data(final_resp,'renew',method)
+                    })
+                });
             });
         });
     }
@@ -214,31 +227,37 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
         console.debug('egCirc.checkin() : ' 
             + js2JSON(params) + ' : ' + js2JSON(options));
 
-        var promise = options.check_barcode ? 
-            service.test_barcode(params.copy_barcode) : $q.when();
+        // handle barcode completion
+        return service.handle_barcode_completion(params.copy_barcode)
+        .then(function(barcode) {
+            params.copy_barcode = barcode;
 
-        // avoid re-check on override, etc.
-        delete options.check_barcode;
+            var promise = options.check_barcode ? 
+                service.test_barcode(params.copy_barcode) : $q.when();
 
-        return promise.then(function() {
+            // avoid re-check on override, etc.
+            delete options.check_barcode;
 
-            var method = 'open-ils.circ.checkin';
-            if (options.override) method += '.override';
+            return promise.then(function() {
 
-            return egCore.net.request(
-                'open-ils.circ', method, egCore.auth.token(), params
+                var method = 'open-ils.circ.checkin';
+                if (options.override) method += '.override';
 
-            ).then(function(evt) {
+                return egCore.net.request(
+                    'open-ils.circ', method, egCore.auth.token(), params
 
-                if (!angular.isArray(evt)) evt = [evt];
-                return service.flesh_response_data(
-                    'checkin', evt, params, options)
-                .then(function() {
-                    return service.handle_checkin_resp(evt, params, options);
-                })
-                .then(function(final_resp) {
-                    return service.munge_resp_data(final_resp,'checkin',method)
-                })
+                ).then(function(evt) {
+
+                    if (!angular.isArray(evt)) evt = [evt];
+                    return service.flesh_response_data(
+                        'checkin', evt, params, options)
+                    .then(function() {
+                        return service.handle_checkin_resp(evt, params, options);
+                    })
+                    .then(function(final_resp) {
+                        return service.munge_resp_data(final_resp,'checkin',method)
+                    })
+                });
             });
         });
     }
@@ -1598,6 +1617,72 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
         var check_digit = next_multiple_of_10 - Number(check_sum);
         if (check_digit == 10) check_digit = 0;
         return check_digit;
+    }
+
+    service.handle_barcode_completion = function(barcode) {
+        return egCore.net.request(
+            'open-ils.actor',
+            'open-ils.actor.get_barcodes',
+            egCore.auth.token(), egCore.auth.user().ws_ou(), 
+            'asset', barcode)
+
+        .then(function(resp) {
+            // TODO: handle event during barcode lookup
+            if (evt = egCore.evt.parse(resp)) {
+                console.error(evt.toString());
+                return $q.reject();
+            }
+
+            // no matching barcodes: return the barcode as entered
+            // by the user (so that, e.g., checkout can fall back to
+            // precat/noncat handling)
+            if (!resp || !resp[0]) {
+                return barcode;
+            }
+
+            // exactly one matching barcode: return it
+            if (resp.length == 1) {
+                return resp[0].barcode;
+            }
+
+            // multiple matching barcodes: let the user pick one 
+            console.debug('multiple matching barcodes');
+            var matches = [];
+            var promises = [];
+            var final_barcode;
+            angular.forEach(resp, function(cp) {
+                promises.push(
+                    egCore.net.request(
+                        'open-ils.circ',
+                        'open-ils.circ.copy_details.retrieve',
+                        egCore.auth.token(), cp.id
+                    ).then(function(r) {
+                        matches.push({
+                            barcode: r.copy.barcode(),
+                            title: r.mvr.title(),
+                            org_name: egCore.org.get(r.copy.circ_lib()).name(),
+                            org_shortname: egCore.org.get(r.copy.circ_lib()).shortname()
+                        });
+                    })
+                );
+            });
+            return $q.all(promises)
+            .then(function() {
+                return $uibModal.open({
+                    templateUrl: './circ/share/t_barcode_choice_dialog',
+                    controller:
+                        ['$scope', '$uibModalInstance',
+                        function($scope, $uibModalInstance) {
+                        $scope.matches = matches;
+                        $scope.ok = function(barcode) {
+                            $uibModalInstance.close();
+                            final_barcode = barcode;
+                        }
+                        $scope.cancel = function() {$uibModalInstance.dismiss()}
+                    }],
+                }).result.then(function() { return final_barcode });
+            })
+        });
     }
 
     service.create_penalty = function(user_id) {

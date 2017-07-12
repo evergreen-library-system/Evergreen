@@ -91,9 +91,15 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
 
     //Retrieve separate copy, aacs, and accs information
     service.getCopy = function(barcode, id) {
-        if (barcode) return egCore.pcrud.search(
-            'acp', {barcode : barcode, deleted : 'f'},
-            service.flesh).then(function(copy) {return copy});
+        if (barcode) {
+            // handle barcode completion
+            return egCirc.handle_barcode_completion(barcode)
+            .then(function(actual_barcode) {
+                return egCore.pcrud.search(
+                    'acp', {barcode : actual_barcode, deleted : 'f'},
+                    service.flesh).then(function(copy) {return copy});
+            });
+        }
 
         return egCore.pcrud.retrieve( 'acp', id, service.flesh)
             .then(function(copy) {return copy});
