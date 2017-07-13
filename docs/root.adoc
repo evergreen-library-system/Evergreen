@@ -285,6 +285,8 @@ include::admin/lsa-standing_penalties.adoc[]
 
 include::admin/lsa-statcat.adoc[]
 
+include::admin/popularity_badges_web_client.adoc[]
+
 include::admin/lsa-work_log.adoc[]
 
 Acquisitions
