@@ -178,6 +178,21 @@ For each filter type, you may select multiple criteria by holding down the
  _CTRL_ key as you click on the options. If nothing is selected for a filter, 
 the search will return results as though all options are selected.
 
+Search Filter Enhancements
+++++++++++++++++++++++++++
+
+Enhancements to the Search Filters now makes it easier to view, remove, and modify search filters while viewing search results in the Evergreen OPAC.  Filters that are selected while conducting an advanced search in the Evergreen OPAC now appear below the search box in the search results interface.
+
+For example, the screenshot below shows a Keyword search for "violin concerto" while filtering on Item Type: Musical sound recording and Shelving Location: Music.
+
+image::media/searchfilters1.PNG[search using search filters]
+
+In the search results, the Item Type and Shelving Location filters appear directly below the search box.
+
+image::media/searchfilters2.PNG[search results with search filter enhancements]
+
+Each filter can be removed by clicking the X next to the filter name to modify the search within the search results screen.  Below the search box on the search results screen, there is also a link to _Refine My Original Search_, which will bring the user back to the advanced search screen where the original search parameters selected can be viewed and modified.
+
 
 anchor:numeric_search[]
 indexterm:[advanced search, numeric search]
