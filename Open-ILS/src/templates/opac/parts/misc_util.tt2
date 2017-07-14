@@ -732,6 +732,17 @@
         END;
         args.bibid = args.bibid.0; 
 
+        IF args.ebook_test_id;
+            args.ebook.ebook_id = args.ebook_test_id;
+            args.ebook.vendor = 'ebook_test';
+        ELSIF args.oneclickdigital_id;
+            args.ebook.ebook_id = args.oneclickdigital_id;
+            args.ebook.vendor = 'oneclickdigital';
+        ELSIF args.overdrive_id;
+            args.ebook.ebook_id = args.overdrive_id;
+            args.ebook.vendor = 'overdrive';
+        END;
+
     END;
 
     # Get the library or location group
