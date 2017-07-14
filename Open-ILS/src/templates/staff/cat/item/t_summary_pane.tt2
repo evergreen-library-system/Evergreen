@@ -63,7 +63,11 @@
     </div>
 
     <div class="flex-cell">[% l('Loan Duration') %]</div>
-    <div class="flex-cell well">{{circ.duration()}}</div>
+    <div class="flex-cell well">
+      <div ng-if="copy.loan_duration() == 1">[% l('Short') %]</div>
+      <div ng-if="copy.loan_duration() == 2">[% l('Normal') %]</div>
+      <div ng-if="copy.loan_duration() == 3">[% l('Long') %]</div>
+    </div>
 
     <div class="flex-cell">[% l('Renewal Type') %]</div>
     <div class="flex-cell well">
@@ -80,7 +84,11 @@
     <div class="flex-cell">[% l('Date Created') %]</div>
     <div class="flex-cell well">{{copy.create_date() | date:egDateAndTimeFormat}}</div>
     <div class="flex-cell">[% l('Fine Level') %]</div>
-    <div class="flex-cell well">{{circ.duration_rule().name()}}</div>
+    <div class="flex-cell well">
+      <div ng-if="copy.fine_level() == 1">[% l('Low') %]</div>
+      <div ng-if="copy.fine_level() == 2">[% l('Normal') %]</div>
+      <div ng-if="copy.fine_level() == 3">[% l('High') %]</div>
+    </div>
 
     <div class="flex-cell">[% l('Total Circs') %]</div>
     <div class="flex-cell well">{{total_circs}}</div>
