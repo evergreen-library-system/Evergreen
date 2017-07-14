@@ -69,7 +69,7 @@ function addTransactionsToPage() {
         if (myopac_page === 'ebook_holds')
             updateHoldView();
         if (myopac_page === 'ebook_holds_ready')
-            updateHoldReadyView();
+            updateHoldView();
     }
 }
         
@@ -133,12 +133,16 @@ function updateHoldView() {
         return;
     }
 
-    // no hold action, just displaying holds
-    var holds_pending = xacts.holds_pending;
-    var holds_ready = xacts.holds_ready;
+    if (myopac_page === 'ebook_holds_ready') {
+        // only show holds that are ready for checkout
+        var holds = xacts.holds_ready;
+    } else {
+        var holds_pending = xacts.holds_pending;
+        var holds_ready = xacts.holds_ready;
 
-    // combine all holds into a single list, ready-for-checkout holds first
-    var holds = holds_ready.concat(holds_pending);
+        // combine all holds into a single list, ready-for-checkout holds first
+        var holds = holds_ready.concat(holds_pending);
+    }
 
     if (holds.length < 1) {
         dojo.removeClass('no_ebook_holds', "hidden");
@@ -182,41 +186,6 @@ function updateHoldView() {
         dojo.addClass('no_ebook_holds', "hidden");
         dojo.removeClass('ebook_holds_main', "hidden");
     }
-}
-
-function updateHoldReadyView() {
-    var holds = xacts.holds_ready;
-    if (holds.length < 1) {
-        dojo.removeClass('no_ebook_holds', "hidden");
-    } else {
-        dojo.forEach(holds, function(h) {
-            dojo.empty('ebook_holds_main_table_body');
-            var tr = dojo.create("tr", null, dojo.byId('ebook_holds_main_table_body'));
-            dojo.create("td", { innerHTML: h.title }, tr);
-            dojo.create("td", { innerHTML: h.author }, tr);
-            dojo.create("td", { innerHTML: h.expire_date }, tr);
-            var actions_td = dojo.create("td", null, tr);
-            var actions_ul = dojo.create("ul", null, actions_td);
-            var cancel_hold_li = dojo.create("li", null, actions_ul);
-            dojo.create("a", { href: ebookActionUrl(h, "cancel_hold"), innerHTML: l_strings.cancel_hold }, cancel_hold_li);
-        });
-        dojo.addClass('no_ebook_holds', "hidden");
-        dojo.removeClass('ebook_holds_main', "hidden");
-    }
-}
-
-// construct a link to perform an ebook action
-// TODO: preserve any existing GET params (aside from vendor, title, action)
-function ebookActionUrl(xact, action) {
-    var base_uri;
-    if (action === 'checkout') {
-        base_uri = 'ebook_circs';
-    } else if (action === 'place_hold' || action === 'cancel_hold') {
-        base_uri = 'ebook_holds';
-    } else {
-        return;
-    }
-    return base_uri + "?vendor=" + xact.vendor + ";title=" + xact.title_id + ";action=" + action;
 }
 
 // set up page for user to perform a checkout
