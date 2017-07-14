@@ -861,7 +861,7 @@ within the "form" by name for validation.
     <div class="col-md-3 reg-field-input">
       <div ng-if="cat.entries().length != 0">
         <div class="btn-group" uib-dropdown>
-          <button type="button" class="btn btn-default" uib-dropdown-toggle>
+          <button type="button" class="btn btn-default" ng-class="{'ng-invalid': cat.required() == 1 && !stat_cat_entry_maps[cat.id()] }" uib-dropdown-toggle>
             <span style="padding-right: 5px;">
               {{stat_cat_entry_maps[cat.id()]}}</span>
             <span class="caret"></span>
