@@ -45,6 +45,7 @@ IF has_copies;
             <th scope='col'>[% l("Barcode") %]</th>
             <th scope='col'>[% l("Shelving Location") %]</th>
             [%- IF ctx.is_staff %]
+            <th scope='col'>[% l("Circulation Modifier") %]</th>
             <th scope='col'>[% l("Age Hold Protection") %]</th>
             <th scope='col'>[% l("Active/Create Date") %]</th>
             [%- END %]
@@ -138,6 +139,7 @@ END; # FOREACH bib
             </td>
             <td property="availableAtOrFrom">[%- INCLUDE "opac/parts/location_name_link.tt2"; -%]</td>
             [%- IF ctx.is_staff %]
+            <td>[% copy_info.circ_modifier | html %]</td>
             <td>
                 [% copy_info.age_protect ?
                     ctx.get_crahp(copy_info.age_protect).name : l('None') | html %]

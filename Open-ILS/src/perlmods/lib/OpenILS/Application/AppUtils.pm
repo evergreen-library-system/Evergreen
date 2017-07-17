@@ -2046,7 +2046,7 @@ sub basic_opac_copy_query {
     return {
         select => {
             acp => ['id', 'barcode', 'circ_lib', 'create_date', 'active_date',
-                    'age_protect', 'holdable', 'copy_number'],
+                    'age_protect', 'holdable', 'copy_number', 'circ_modifier'],
             acpl => [
                 {column => 'name', alias => 'copy_location'},
                 {column => 'holdable', alias => 'location_holdable'},
