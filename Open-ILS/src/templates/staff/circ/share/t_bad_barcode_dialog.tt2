@@ -8,7 +8,9 @@
     <img src="[% ctx.media_prefix %]/images/bad_barcode.png"/>
     <div>
 [% |l('{{barcode}}') %]
-Bad check digit, possibly due to a bad scan.  Use this barcode ("[_1]") anyway?
+Invalid barcode: <div class="strong-text-4">[_1]</div>
+Your entry has a bad check digit, possibly due to a bad scan.<br/>
+Choose Cancel to try again, or Accept to use barcode <b>[_1]</b> anyway.
 [% END %]
     </div>
   </div>
