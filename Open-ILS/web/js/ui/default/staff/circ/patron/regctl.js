@@ -1208,7 +1208,7 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
         extract_hold_notify();
         if ($scope.patron.isnew)
             set_new_patron_defaults(prs);
-        
+
         $scope.handle_home_org_changed();
 
         if ($scope.org_settings['ui.patron.edit.default_suggested'])
