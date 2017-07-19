@@ -437,10 +437,22 @@ BEGIN
 
     visibility_org := NULLIF(visibility_org,-1);
     IF visibility_org IS NOT NULL THEN
-        opac_visibility_join := '
+        PERFORM FROM actor.org_unit WHERE id = visibility_org AND parent_ou IS NULL;
+        IF FOUND THEN
+            opac_visibility_join := '';
+        ELSE
+            opac_visibility_join := '
     JOIN asset.copy_vis_attr_cache acvac ON (acvac.record = x.source)
-    JOIN vm ON (acvac.vis_attr_vector @@ vm.c_attrs::query_int)
+    JOIN vm ON (acvac.vis_attr_vector @@
+            (vm.c_attrs || $$&$$ ||
+                search.calculate_visibility_attribute_test(
+                    $$circ_lib$$,
+                    (SELECT ARRAY_AGG(id) FROM actor.org_unit_descendants($4))
+                )
+            )::query_int
+         )
 ';
+        END IF;
     ELSE
         opac_visibility_join := '';
     END IF;
