@@ -1513,6 +1513,10 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         ).then(
             function(hold_data) {
                 hold_ids = []; // clear the list of ids, hack to avoid dups
+                // TODO: fix the underlying problem, which is that
+                // this gets called twice when switching to the holds
+                // tab; once explicitly, and once via the change handler
+                // on the OU selector
                 angular.forEach(hold_data, function(list, type) {
                     hold_ids = hold_ids.concat(list);
                 });
