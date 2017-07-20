@@ -1936,6 +1936,15 @@ angular.module('egGridMod',
  * Others likely to follow...
  */
 .filter('egGridValueFilter', ['$filter','egCore', function($filter,egCore) {
+    function traversePath(obj,path) {
+        var list = path.split('.');
+        for (var part in path) {
+            if (obj[path]) obj = obj[path]
+            else return undef;
+        }
+        return obj;
+    }
+
     var GVF = function(value, column, item) {
         switch(column.datatype) {
             case 'bool':
@@ -1957,9 +1966,15 @@ angular.module('egGridMod',
                     ? item[column.dateonlyinterval]()
                     : item[column.dateonlyinterval];
 
+                if (column.dateonlyinterval && !interval) // try it as a dotted path
+                    interval = traversePath(item, column.dateonlyinterval);
+
                 var context = angular.isFunction(item[column.datecontext])
                     ? item[column.datecontext]()
                     : item[column.datecontext];
+
+                if (column.datecontext && !context) // try it as a dotted path
+                    context = traversePath(item, column.datecontext);
 
                 var date_filter = column.datefilter || 'egOrgDateInContext';
 

@@ -100,9 +100,7 @@
     path='grocery.billing_location.shortname' required hidden> </eg-grid-field>
   <eg-grid-field path='circulation.circ_lib' required hidden></eg-grid-field>
   <eg-grid-field path='circulation.duration' required hidden></eg-grid-field>
-  <eg-grid-field path='circulation.due_date' required hidden>
-    {{ circulation.due_date | egDueDate:$root.egDateAndTimeFormat:circulation.circ_lib:circulation.duration}}
-  </eg-grid-field>
+  <eg-grid-field path='circulation.due_date' dateonlyinterval="circulation.duration" datecontext="circulation.circ_lib" required hidden></eg-grid-field>
   <eg-grid-field path='circulation.*' hidden> </eg-grid-field>
   <eg-grid-field label="[% l('Checkout / Renewal Library') %]"
     path='circulation.circ_lib.shortname' required hidden> </eg-grid-field>
