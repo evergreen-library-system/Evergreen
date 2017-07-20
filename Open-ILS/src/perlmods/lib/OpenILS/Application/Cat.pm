@@ -263,11 +263,11 @@ sub template_overlay_container {
         $template = $e->retrieve_biblio_record_entry( $titem->target_biblio_record_entry )->marc;
     }
 
-    my $responses = [];
-    my $some_failed = 0;
+    my $num_failed = 0;
+    my $num_succeeded = 0;
 
     $conn->respond_complete(
-        $actor->request('open-ils.actor.anon_cache.set_value', $auth, res_list => $responses)->gather(1)
+        $actor->request('open-ils.actor.anon_cache.set_value', $auth, batch_edit_progress => {})->gather(1)
     ) if ($actor);
 
     for my $item ( @$items ) {
@@ -281,11 +281,20 @@ sub template_overlay_container {
             )->[0]->{'vandelay.template_overlay_bib_record'};
         }
 
-        $some_failed++ if ($success eq 'f');
+        if ($success eq 'f') {
+            $num_failed++;
+        } else {
+            $num_succeeded++;
+        }
 
         if ($actor) {
-            push @$responses, { record => $rec->id, success => $success };
-            $actor->request('open-ils.actor.anon_cache.set_value', $auth, res_list => $responses);
+            $actor->request(
+                'open-ils.actor.anon_cache.set_value', $auth,
+                batch_edit_progress => {
+                    succeeded => $num_succeeded,
+                    failed    => $num_failed
+                },
+            );
         } else {
             $conn->respond({ record => $rec->id, success => $success });
         }
@@ -294,8 +303,15 @@ sub template_overlay_container {
             unless ($e->delete_container_biblio_record_entry_bucket_item($item)) {
                 $e->rollback;
                 if ($actor) {
-                    push @$responses, { complete => 1, success => 'f' };
-                    $actor->request('open-ils.actor.anon_cache.set_value', $auth, res_list => $responses);
+                    $actor->request(
+                        'open-ils.actor.anon_cache.set_value', $auth,
+                        batch_edit_progress => {
+                            complete => 1,
+                            success  => 'f',
+                            succeeded => $num_succeeded,
+                            failed    => $num_failed,
+                        }
+                    );
                     return undef;
                 } else {
                     return { complete => 1, success => 'f' };
@@ -304,21 +320,35 @@ sub template_overlay_container {
         }
     }
 
-    if ($titem && !$some_failed) {
+    if ($titem && !$num_failed) {
         return $e->die_event unless ($e->delete_container_biblio_record_entry_bucket_item($titem));
     }
 
     if ($e->commit) {
         if ($actor) {
-            push @$responses, { complete => 1, success => 't' };
-            $actor->request('open-ils.actor.anon_cache.set_value', $auth, res_list => $responses);
+            $actor->request(
+                'open-ils.actor.anon_cache.set_value', $auth,
+                batch_edit_progress => {
+                    complete => 1,
+                    success  => 't',
+                    succeeded => $num_succeeded,
+                    failed    => $num_failed,
+                }
+            );
         } else {
             return { complete => 1, success => 't' };
         }
     } else {
         if ($actor) {
-            push @$responses, { complete => 1, success => 'f' };
-            $actor->request('open-ils.actor.anon_cache.set_value', $auth, res_list => $responses);
+            $actor->request(
+                'open-ils.actor.anon_cache.set_value', $auth,
+                batch_edit_progress => {
+                    complete => 1,
+                    success  => 'f',
+                    succeeded => $num_succeeded,
+                    failed    => $num_failed,
+                }
+            );
         } else {
             return { complete => 1, success => 'f' };
         }
