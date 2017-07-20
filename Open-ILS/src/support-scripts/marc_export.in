@@ -327,6 +327,8 @@ sub new {
     $self->{acnClass} = Fieldmapper::class_for_hint('acn');
     $self->{acpClass} = Fieldmapper::class_for_hint('acp');
     $self->{sreClass} = Fieldmapper::class_for_hint('sre');
+    $self->{acnpClass} = Fieldmapper::class_for_hint('acnp');
+    $self->{acnsClass} = Fieldmapper::class_for_hint('acns');
 
     # Make an arrayref of shortname ids if the library option was
     # specified:
@@ -369,6 +371,8 @@ sub build_query {
     my @breFields = map {$breTable . '.' . $_} $self->{breClass}->real_fields();
     my $acnTable = $self->{acnClass}->Table();
     my $acpTable = $self->{acpClass}->Table();
+    my $acnpTable = $self->{acnpClass}->Table();
+    my $acnsTable = $self->{acnsClass}->Table();
 
     # Now we build the query in pieces:
 
@@ -401,6 +405,8 @@ ACN_JOIN
         }
         $from .= "\njoin $acpTable on $acpTable.call_number = $acnTable.id";
         $from .= "\nand $acpTable.deleted = 'f'" unless ($Marque::config->option_value('since'));
+        $from .= "\nleft outer join $acnpTable on $acnTable.prefix = $acnpTable.id";
+        $from .= "\nleft outer join $acnsTable on $acnTable.suffix = $acnsTable.id";
     }
 
     # The where really depends on a few options:
@@ -491,6 +497,8 @@ sub next {
                         next unless ($acp);
                         my $location = $Marque::config->option_value('location');
                         my $price = ($acp->price() ? $Marque::config->option_value('money').$acp->price() : '');
+                        my $prefix = $acp->call_number()->prefix()->label();
+                        my $suffix = $acp->call_number()->suffix()->label();
                         eval {
                             local $SIG{__WARN__} = sub {
                                 my $message = "Warning from bibliographic record " . $r->id() . ": "
@@ -505,6 +513,8 @@ sub next {
                                 b => Encode::decode_utf8($acp->circ_lib()->shortname()),
                                 c => Encode::decode_utf8($acp->location()->name()),
                                 j => Encode::decode_utf8($acp->call_number()->label()),
+                                ($prefix ? (k => Encode::decode_utf8($prefix)) : ()),
+                                ($suffix ? (m => Encode::decode_utf8($suffix)) : ()),
                                 ($acp->circ_modifier() ? (g => Encode::decode_utf8($acp->circ_modifier())) : ()),
                                 p => Encode::decode_utf8($acp->barcode()),
                                 ($price ? (y => Encode::decode_utf8($price)) : ()),
@@ -620,6 +630,42 @@ sub shelves {
     return @{$self->{shelves}};
 }
 
+# Returns an array of acnp objects.
+sub prefixes {
+    my $self = shift;
+
+    unless ($self->{prefixes} && @{$self->{prefixes}}) {
+        my $fmClass = Fieldmapper::class_for_hint('acnp');
+        my @classFields = $fmClass->real_fields();
+        my $classTable = $fmClass->Table();
+        my $query = 'select ' . join(',', @classFields);
+        $query .= "\nfrom $classTable";
+        my $result = $self->{handle}->selectall_arrayref($query, {Slice=>{}});
+        my @prefixes = map {$fmClass->from_bare_hash($_)} @{$result};
+        $self->{prefixes} = \@prefixes;
+    }
+
+    return @{$self->{prefixes}};
+}
+
+# Returns an array of acns objects.
+sub suffixes {
+    my $self = shift;
+
+    unless ($self->{suffixes} && @{$self->{suffixes}}) {
+        my $fmClass = Fieldmapper::class_for_hint('acns');
+        my @classFields = $fmClass->real_fields();
+        my $classTable = $fmClass->Table();
+        my $query = 'select ' . join(',', @classFields);
+        $query .= "\nfrom $classTable";
+        my $result = $self->{handle}->selectall_arrayref($query, {Slice=>{}});
+        my @suffixes = map {$fmClass->from_bare_hash($_)} @{$result};
+        $self->{suffixes} = \@suffixes;
+    }
+
+    return @{$self->{suffixes}};
+}
+
 # Returns an array of acn objects for a given bre object or id.
 sub acns_for_bre {
     my $self = shift;
@@ -655,6 +701,8 @@ sub acps_for_bre {
 
     my @orgs = $self->orgs();
     my @locations = $self->shelves();
+    my @prefixes = $self->prefixes();
+    my @suffixes = $self->suffixes();
 
     my @acns = $self->acns_for_bre($bre);
     if (@acns) {
@@ -675,11 +723,17 @@ sub acps_for_bre {
                 my ($acn) = grep {$_->id() == $cn} @acns;
                 my ($location) = grep {$_->id() == $loc} @locations;
                 my $olib = $acn->owning_lib();
+                my $pre = $acn->prefix();
+                my $suf = $acn->suffix();
+                my ($acnp) = grep {$_->id() == $pre} @prefixes;
+                my ($acns) = grep {$_->id() == $suf} @suffixes;
                 my ($owner) = grep {$_->id() == $olib} @orgs;
                 $acn->owning_lib($owner);
                 $_->call_number($acn);
                 $_->circ_lib($org);
                 $_->location($location);
+                $_->call_number->prefix($acnp);
+                $_->call_number->suffix($acns);
             }
             return @acps;
         }
