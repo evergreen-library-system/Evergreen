@@ -1,6 +1,6 @@
 #!perl
 
-use Test::More tests => 132;
+use Test::More tests => 133;
 
 diag("Test features of Conditional Negative Balances code.");
 
@@ -474,6 +474,23 @@ is(
     $summary->balance_owed,
     '-0.20',
     'Patron has a negative balance of -0.20 (refund of overdue fine payment)'
+);
+
+
+### adjust to zero, manually
+$apputils->simplereq(
+    'open-ils.circ',
+    'open-ils.circ.money.billable_xact.adjust_to_zero',
+    $script->authtoken,
+    [$xact_id]
+);
+
+### verify 2nd ending state
+$summary = fetch_billable_xact_summary($xact_id);
+is(
+    $summary->balance_owed,
+    '0.00',
+    'Case 13 (bonus): Patron has a balance of 0.00 (after manual adjustment of negative balance)'
 );
 
 
