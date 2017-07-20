@@ -257,28 +257,21 @@ sub show_processing_template {
                     fieldmapper.standardRequest(
                         ['open-ils.actor','open-ils.actor.anon_cache.get_value'],
                         { async : false,
-                          params: [ u.authtoken, 'res_list' ],
+                          params: [ u.authtoken, 'batch_edit_progress' ],
                           onerror : function (r) { progress_dialog.hide(); },
                           onresponse : function (r) {
                             var counter = { success : 0, fail : 0, total : 0 };
-                            dojo.forEach( openils.Util.readResponse(r), function(x) {
+                            if (x = openils.Util.readResponse(r)) {
+                                counter.success = x.succeeded;
+                                counter.fail    = x.failed;
+                                counter.total = counter.success + counter.fail;
                                 if (x.complete) {
                                     clearInterval(interval);
                                     progress_dialog.hide();
                                     if (x.success == 't') dojo.byId('complete_msg').innerHTML = 'Overlay completed successfully';
                                     else dojo.byId('complete_msg').innerHTML = 'Overlay did not complet successfully';
-                                } else {
-                                    counter.total++;
-                                    switch (x.success) {
-                                        case 't':
-                                            counter.success++;
-                                            break;
-                                        default:
-                                            counter.fail++;
-                                            break;
-                                    }
                                 }
-                            });
+                            };
 
                             // update the progress dialog
                             progress_dialog.update({progress:counter.total});
