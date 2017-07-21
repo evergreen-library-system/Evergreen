@@ -516,8 +516,14 @@ angular.module('egCoreMod')
                 // apply default user setting values
                 angular.forEach(setting_types, function(stype, index) {
                     if (stype.reg_default() != undefined) {
-                        service.user_settings[stype.name()] =
-                            Boolean(stype.reg_default());
+                        var val = stype.reg_default();
+                        if (stype.datatype() == 'bool') {
+                            // A boolean user setting type whose default 
+                            // value starts with t/T is considered 'true',
+                            // false otherwise.
+                            val = Boolean((val+'').match(/^t/i));
+                        }
+                        service.user_settings[stype.name()] = val;
                     }
                 });
             }
