@@ -2371,16 +2371,12 @@ sub apply_modified_due_date {
 sub create_due_date {
     my( $self, $duration, $date_ceiling, $force_date, $start_time ) = @_;
 
-    # if there is a raw time component (e.g. from postgres), 
-    # turn it into an interval that interval_to_seconds can parse
-    $duration =~ s/(\d{2}):(\d{2}):(\d{2})/$1 h $2 m $3 s/o;
-
     # for now, use the server timezone.  TODO: use workstation org timezone
     my $due_date = DateTime->now(time_zone => 'local');
     $due_date = DateTime::Format::ISO8601->new->parse_datetime(clean_ISO8601($start_time)) if $start_time;
 
     # add the circ duration
-    $due_date->add(seconds => OpenILS::Utils::DateTime->interval_to_seconds($duration));
+    $due_date->add(seconds => OpenILS::Utils::DateTime->interval_to_seconds($duration, $due_date));
 
     if($date_ceiling) {
         my $cdate = DateTime::Format::ISO8601->new->parse_datetime(clean_ISO8601($date_ceiling));
