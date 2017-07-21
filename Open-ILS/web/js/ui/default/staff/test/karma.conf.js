@@ -46,6 +46,7 @@ module.exports = function(config){
       'services/op_change.js',
       'services/patron_search.js',
       'services/navbar.js', 'services/date.js',
+      'services/user-bucket.js',
       // load app scripts
       'app.js',
       'circ/**/*.js',

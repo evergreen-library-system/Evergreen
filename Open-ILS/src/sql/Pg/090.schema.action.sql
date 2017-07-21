@@ -811,7 +811,7 @@ CREATE TRIGGER action_hold_request_aging_tgr
 
 CREATE TABLE action.fieldset_group (
     id              SERIAL  PRIMARY KEY,
-    name            NEXT        NOT NULL,
+    name            TEXT        NOT NULL,
     create_time     TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     complete_time   TIMESTAMPTZ,
     container       INT,        -- Points to a container of some type ...
