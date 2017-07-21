@@ -188,7 +188,7 @@ sub noncat_due_date {
 
     my $duedate = $_dt_parser->parse_datetime( clean_ISO8601($circ->circ_time) );
     $duedate = $duedate
-        ->add( seconds => interval_to_seconds($otype->circ_duration) )
+        ->add( seconds => interval_to_seconds($otype->circ_duration, $duedate) )
         ->strftime('%FT%T%z');
 
     my $offset = $U->storagereq(
