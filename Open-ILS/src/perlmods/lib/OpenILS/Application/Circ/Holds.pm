@@ -342,7 +342,7 @@ sub create_hold {
         $hold->expire_time(undef) if ($hold->expire_time && $U->datecmp($hold->expire_time) == -1);
 
     # set the configured expire time
-    unless($hold->expire_time) {
+    unless($hold->expire_time || $U->is_true($hold->frozen)) {
         $hold->expire_time(calculate_expire_time($recipient->home_ou));
     }
 

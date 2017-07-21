@@ -54,6 +54,16 @@
 
                         <div class='success'>[% l("Hold was successfully placed"); %]</div>
 
+                        [% IF hdata.frozen %]
+                        <div>
+                        [% l("Hold is suspended") %]
+                        [% IF hdata.thaw_date %]
+                        <br/>
+                        [% l("Reactivate on [_1]", date.format(ctx.parse_datetime(hdata.thaw_date), DATE_FORMAT));
+                           END %]
+                        </div>
+                        [% END %]
+
                         [% IF ctx.is_staff %]
                             <script>
                                 window.addEventListener(

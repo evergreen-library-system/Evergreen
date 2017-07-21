@@ -1036,6 +1036,9 @@ sub load_place_hold {
     }
     if ($cgi->param('hold_suspend')) {
         $ctx->{frozen} = 1;
+        # TODO: Make this support other date formats, not just mm/dd/yyyy.
+        # We should use a date input type on the forms once it is supported by Firefox.
+        # I didn't do that now because it is not available in a general release.
         if ($cgi->param('thaw_date') =~ m:^(\d{2})/(\d{2})/(\d{4})$:){
             $ctx->{thaw_date} = "$3-$1-$2";
         }

@@ -3235,3 +3235,19 @@ label[for*=expert_]
 }
 .metarecord_filter_container select{padding: 2px;width: 13em; /* consistent w/ adv search selectors */}
 .metarecord_filter_header{padding-bottom: 5px;}
+
+/* Toggled items. */
+/* A block that is initially hidden and shown by clicking an anchor. */
+[id^="toggled-block-"]{
+    display: none;
+}
+[id^="toggled-block-"]:target{
+    display: block;
+}
+/* Inline text that is initially hidden and shown by clicking an anchor. Useful on a span. */
+[id^="toggled-inline-"]{
+    display: none;
+}
+[id^="toggled-inline-"]:target{
+    display: inline;
+}
