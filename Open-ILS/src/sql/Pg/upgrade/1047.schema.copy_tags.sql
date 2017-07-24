@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('1047', :eg_version); -- gmcharlt/stompro
+
 CREATE TABLE config.copy_tag_type (
     code            TEXT NOT NULL PRIMARY KEY,
     label           TEXT NOT NULL,
