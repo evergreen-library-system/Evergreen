@@ -1,0 +1,70 @@
+Oxygen Icons 4.3.1 (KDE) (oxygen)
+link: http://www.oxygen-icons.org/
+license: Dual: CC-BY-SA 3.0 or LGPL
+formats: svg, png
+subdirectory: open_icon_library-devel/icons/oxygen
+
+Icons Used:
+address-book-new-3.svg
+contact-new-3.svg
+edit-find-user.svg
+help-contextual-2.svg
+office-chart-pie.svg
+zoom-original-4.svg
+preferences-desktop-accessibility-5.svg
+
+
+Intrigue Icon Set 0.6.2 [Green] (intrigue)
+link: http://simpleinnovation.net/index.php?page=22&source=2&id=2
+license: GPLv2
+formats: png
+subdirectory: open_icon_library-devel/icons/intrigue
+
+
+Icons Used:
+go-next.png
+go-previous.png
+
+
+GNOME Icon Theme 2.26.0 (gnome)
+link: http://art.gnome.org/
+license: GPLv2
+formats: svg, png
+subdirectories: open_icon_library-devel/icons/gnome
+open_icon_library-devel/icons_by_subject/gnome
+
+Icons Used:
+system-help-2.svg
+
+app-install-data (app-install)
+link: http://packages.debian.org/lenny/app-install-data
+licenses: Various, see docs/AUTHORS_app-install
+format: xpm, svg, png
+subdirectory: open_icon_library-devel/icons/app-install
+
+Icons Used:
+epiphany-bookmarks.svg
+
+Wikimedia Commons
+link: http://commons.wikimedia.org/wiki/Main_Page
+license: CC, GPL, PD, MIT, BSD (in seperate directories)
+format: svg, png
+subdirectory: open-icon-library-devel/icons/wiki_commons_bsd
+subdirectory: open-icon-library-devel/icons/wiki_commons_mit
+subdirectory: open-icon-library-devel/icons/wiki_commons_cc
+subdirectory: open-icon-library-devel/icons/wiki_commons_gpl
+subdirectory: open-icon-library-devel/icons/wiki_commons_pd
+
+Icons Used:
+gnome-dictionary.svg
+
+Crystal Clear (crystal_clear)
+link: http://commons.wikimedia.org/wiki/Crystal_Clear
+license: LGPL-2.1
+formats: png
+subdirectories: open_icon_library-devel/icons/crystal_clear
+open_icon_library-devel/icons_by_subject/crystal_clear
+
+
+Icons Used:
+db_update.png

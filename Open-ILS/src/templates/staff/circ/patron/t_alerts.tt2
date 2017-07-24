@@ -1,7 +1,6 @@
 <div>
 
-  <!-- FIXME: move image file -->
-  <img src='/xul/server/skin/media/images/stop_sign.png'>
+  <img src='[% ctx.media_prefix %]/images/stop_sign.png'>
 
   <div class="alert alert-info" ng-if="patron_stats().holds.ready > 0">
     [% l('Holds available: [_1]', '{{patron_stats().holds.ready}}') %]

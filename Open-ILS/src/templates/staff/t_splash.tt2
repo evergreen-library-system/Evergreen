@@ -1,7 +1,7 @@
 <div class="container">
   <div class="row">
     <div class="col-md-12 text-center">
-      <img src="/xul/server/skin/media/images/portal/logo.png"/>
+      <img src="[% ctx.media_prefix %]/images/portal/logo.png"/>
     </div>
   </div>
   <br/>
@@ -14,15 +14,15 @@
         </div>
         <div class="panel-body">
           <div>
-            <img src="/xul/server/skin/media/images/portal/forward.png"/>
+            <img src="[% ctx.media_prefix %]/images/portal/forward.png"/>
             <a target="_self" href="./circ/patron/bcsearch">[% l('Check Out Items') %]</a>
           </div>
           <div>
-            <img src="/xul/server/skin/media/images/portal/back.png"/>
+            <img src="[% ctx.media_prefix %]/images/portal/back.png"/>
             <a target="_self" href="./circ/checkin/index">[% l('Check In Items') %]</a>
           </div>
           <div>
-            <img src="/xul/server/skin/media/images/portal/retreivepatron.png"/>
+            <img src="[% ctx.media_prefix %]/images/portal/retreivepatron.png"/>
             <a target="_self" href="./circ/patron/search">[% l('Search For Patron By Name') %]</a>
           </div>
         </div>
@@ -49,11 +49,11 @@
             </div>
           </div>
           <div>
-            <img src="/xul/server/skin/media/images/portal/bucket.png"/>
+            <img src="[% ctx.media_prefix %]/images/portal/bucket.png"/>
             <a target="_self" href="./cat/bucket/record/">[% l('Record Buckets') %]</a>
           </div>
           <div>
-            <img src="/xul/server/skin/media/images/portal/bucket.png"/>
+            <img src="[% ctx.media_prefix %]/images/portal/bucket.png"/>
             <a target="_self" href="./cat/bucket/copy/">[% l('Copy Buckets') %]</a>
           </div>
         </div>
@@ -67,19 +67,19 @@
         </div>
         <div class="panel-body">
           <div>
-            <img src="/xul/server/skin/media/images/portal/helpdesk.png"/>
+            <img src="[% ctx.media_prefix %]/images/portal/helpdesk.png"/>
             <a target="_top" href="http://docs.evergreen-ils.org/">
               [% l('Evergreen Documentation') %]
             </a>
           </div>
           <div>
-            <img src="/xul/server/skin/media/images/portal/helpdesk.png"/>
+            <img src="[% ctx.media_prefix %]/images/portal/helpdesk.png"/>
             <a target="_top" href="./admin/workstation/index">
               [% l('Workstation Administration') %]
             </a>
           </div>
           <div>
-            <img src="/xul/server/skin/media/images/portal/reports.png"/>
+            <img src="[% ctx.media_prefix %]/images/portal/reports.png"/>
             <a target="_top" href="./reporter/legacy/main">
               [% l('Reports') %]
             </a>
