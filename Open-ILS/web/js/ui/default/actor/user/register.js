@@ -974,6 +974,13 @@ function uEditDrawSettingRow(tbody, dividerRow, template, stype) {
             tb.attr('value', userSettings[stype.name()]);
             dojo.connect(tb, 'onChange', function(newVal) { userSettingsToUpdate[stype.name()] = newVal; });
             break;
+        case 'circ.holds_behind_desk':
+            // Skip when hold is behind circ desk is not enabled
+            if(!orgSettings['circ.holds.behind_desk_pickup_supported']) return;
+            var cb = new dijit.form.CheckBox({scrollOnFocus:false}, getByName(row, 'widget'));
+            cb.attr('value', userSettings[stype.name()]);
+            dojo.connect(cb, 'onChange', function(newVal) { userSettingsToUpdate[stype.name()] = newVal; });
+            break;
         default:
             var cb = new dijit.form.CheckBox({scrollOnFocus:false}, getByName(row, 'widget'));
             cb.attr('value', userSettings[stype.name()]);
