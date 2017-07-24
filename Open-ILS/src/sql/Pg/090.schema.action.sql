@@ -173,9 +173,20 @@ CREATE TRIGGER mat_summary_change_tgr AFTER UPDATE ON action.circulation FOR EAC
 CREATE TRIGGER mat_summary_remove_tgr AFTER DELETE ON action.circulation FOR EACH ROW EXECUTE PROCEDURE money.mat_summary_delete ();
 
 CREATE OR REPLACE FUNCTION action.push_circ_due_time () RETURNS TRIGGER AS $$
+DECLARE
+    proper_tz TEXT := COALESCE(
+        oils_json_to_text((
+            SELECT value
+              FROM  actor.org_unit_ancestor_setting('lib.timezone',NEW.circ_lib)
+              LIMIT 1
+        )),
+        CURRENT_SETTING('timezone')
+    );
 BEGIN
-    IF (EXTRACT(EPOCH FROM NEW.duration)::INT % EXTRACT(EPOCH FROM '1 day'::INTERVAL)::INT) = 0 THEN
-        NEW.due_date = (NEW.due_date::DATE + '1 day'::INTERVAL - '1 second'::INTERVAL)::TIMESTAMPTZ;
+
+    IF (EXTRACT(EPOCH FROM NEW.duration)::INT % EXTRACT(EPOCH FROM '1 day'::INTERVAL)::INT) = 0 -- day-granular duration
+        AND SUBSTRING((NEW.due_date AT TIME ZONE proper_tz)::TIME::TEXT FROM 1 FOR 8) <> '23:59:59' THEN -- has not yet been pushed
+        NEW.due_date = ((NEW.due_date AT TIME ZONE proper_tz)::DATE + '1 day'::INTERVAL - '1 second'::INTERVAL) || ' ' || proper_tz;
     END IF;
 
     RETURN NEW;
