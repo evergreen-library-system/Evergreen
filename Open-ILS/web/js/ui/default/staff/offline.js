@@ -905,6 +905,8 @@ function($routeProvider , $locationProvider , $compileProvider) {
     service.get_field_doc = function() {
         return egLovefield.getListFromOfflineCache('fdoc').then(function (list) {
             angular.forEach(list, function(doc) {
+                if (!service.field_doc[doc.fm_class()])
+                    service.field_doc[doc.fm_class()] = {};
                 service.field_doc[doc.fm_class()][doc.field()] = doc;
             });
             return $q.when();
