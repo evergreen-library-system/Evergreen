@@ -32,31 +32,31 @@
         </button>
         <ul uib-dropdown-menu role="menu" aria-labelledby="mark-for-button">
              <li role="menuitem">
-                    <a ng-click="markConjoined()">
+                    <a ng-click="markConjoined()" href="">
                         [% l('Conjoined Items') %]
                     <span class="target-record-aside" ng-if="current_conjoined_target">[% l('(Currently [_1])', '{{current_conjoined_target}}') %]</span>
                 </a>
             </li>
            <li role="menuitem">
-                <a ng-click="markOverlay()">
+                <a ng-click="markOverlay()" href="">
                     [% l('Overlay Target') %]
                     <span class="target-record-aside" ng-if="current_overlay_target">[% l('(Currently [_1])', '{{current_overlay_target}}') %]</span>
                 </a>
             </li>
             <li role="menuitem">
-                <a ng-click="mark_hold_transfer_dest()">
+                <a ng-click="mark_hold_transfer_dest()" href="">
                    [% l('Title Hold Transfer') %]
                 <span class="target-record-aside" ng-if="current_hold_transfer_dest">[% l('(Currently [_1])', '{{current_hold_transfer_dest}}') %]</span>
                 </a>
             </li>
             <li role="menuitem">
-                <a ng-click="markVolTransfer()">
+                <a ng-click="markVolTransfer()" href="">
                     [% l('Volume Transfer') %]
                     <span class="target-record-aside" ng-if="current_voltransfer_target">[% l('(Currently [_1])', '{{current_voltransfer_target}}') %]</span>
                 </a>
             </li>
             <li role="menuitem">
-                <a ng-click="clearRecordMarks()">[% l('Reset Record Marks') %]</a>
+                <a ng-click="clearRecordMarks()" href="">[% l('Reset Record Marks') %]</a>
             </li>
         </ul>
     </div>
@@ -66,12 +66,12 @@
         </button>
         <ul uib-dropdown-menu role="menu" aria-labelledby="other-actions-button">
              <li role="menuitem">
-                    <a ng-click="add_to_record_bucket()">
+                    <a ng-click="add_to_record_bucket()" href="">
                         [% l('Add To Bucket') %]
                     </a>
             </li>
             <li role="menuitem">
-                   <a ng-click="view_place_orders()">
+                   <a ng-click="view_place_orders()" href="">
                         [% l('View/Place Orders') %]
                    </a>
             </li>
