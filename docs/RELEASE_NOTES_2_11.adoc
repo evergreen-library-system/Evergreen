@@ -3,6 +3,46 @@ Evergreen 2.11 Release Notes
 :toc:
 :numbered:
 
+Evergreen 2.11.7
+----------------
+Upgrade Note
+~~~~~~~~~~~~
+This release of Evergreen contains a fix to the _Hold/Copy Ratio per Bib
+and Pickup Library (and Descendants)_ data source. Report templates using
+this data source will need to be re-created to improve accuracy of the
+data reported from this source.
+
+Bug Fixes
+~~~~~~~~~
+This release contains several bug fixes improving on Evergreen 2.11.6
+
+* Improvements to CSS to silence some Mozilla extension warnings.
+* A fix to a failure to update targeted circulations when utilzing the recall
+functionality.
+* The addition of text wrapping in the copy details table on the bib
+record to prevent contents from falling off the page.
+* A fix to the adjust to zero option so that it can be applied correctly
+to multiple billings.
+* A fix to the "Hold/Copy Ratio per Bib and Pickup Library
+(and Descendants)" data source so that it will now include counts of eligible
+copies at locations that are not a pickup library for bib's holds.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 2.11.7 point release of
+Evergreen:
+
+* Galen Charlton
+* Jeff Davis
+* Jason Etherige
+* Pasi Kallinen
+* Kathy Lussier
+* Mike Rylander
+* Dan Scott
+* Dan Wells
+
+
 Evergreen 2.11.6
 ----------------
 This release contains several bug fixes improving on Evergreen 2.11.5.
