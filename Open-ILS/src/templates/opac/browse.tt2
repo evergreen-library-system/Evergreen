@@ -99,7 +99,6 @@
                             </p>
                     </div>
                     [% END %]
-
                     <ul class="browse-result-list">
                     [% FOR result IN ctx.browse_results %]
                         <li class="browse-result">
@@ -119,14 +118,13 @@
                                 [% END %]
                             </span>
 
+                            [% FOR a IN result.authorities;
+                                    PROCESS authority_notes authority=a IF !sees.grep(a.id);
+                               END %]
                             [% auth_headings_ul_added = 0; %]
                                 [% seenit = {}; # for headings we've rendered
                                    FOR a IN result.sees;
-                                    PROCESS authority_notes authority=a;
-
-                                    # Other than displaying public general
-                                    # notes, we can go no further sans
-                                    # control_set.
+                                    # We can go no further sans control_set.
                                     NEXT UNLESS a.control_set;
 
                                     # get_authority_fields is fast and cache-y.
@@ -158,12 +156,8 @@
                                         [% END %]
                                     [% END %]
                                 [% END %]
-                                [% FOR a IN result.authorities; # I don't think we'll ever get here...
-                                    PROCESS authority_notes authority=a IF !sees.grep(a.id);
-
-                                    # Other than displaying public general
-                                    # notes, we can go no further sans
-                                    # control_set.
+                                [% FOR a IN result.authorities;
+                                    # We can go no further sans control_set.
                                     NEXT UNLESS a.control_set;
 
                                     # get_authority_fields is fast and cache-y.
